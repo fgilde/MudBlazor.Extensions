@@ -4,139 +4,167 @@ using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
-using Nextended.Core.Contracts;
-using System.Numerics;
 using MudBlazor.Extensions.Helper;
-using Nextended.Core.Types;
-
+using Nextended.Core.Contracts;
+using System;
 
 namespace MudBlazor.Extensions.Components
 {
-    public partial class MudExRangeSlider<T> where T : struct, INumber<T>
+    public partial class MudExRangeSlider<T> where T : struct, IComparable<T>
     {
         private ElementReference _trackRef;
-        private string _startId = $"start_" + Guid.NewGuid().ToString("N");
-        private string _endId = $"end_" + Guid.NewGuid().ToString("N");
+        private readonly string _startId = $"start_{Guid.NewGuid():N}";
+        private readonly string _endId = $"end_{Guid.NewGuid():N}";
 
+        [Parameter] public IRangeAdapter<T>? Adapter { get; set; }
 
-        [Parameter, SafeCategory("Data")] public IRange<T> Value { get; set; } = new RangeOf<T>(T.Zero, T.One);
+        [Parameter, SafeCategory("Data")] public IRange<T> Value { get; set; } = new MudExRange<T>(default!, default!);
         [Parameter, SafeCategory("Data")] public EventCallback<IRange<T>> ValueChanged { get; set; }
 
+        [Parameter, SafeCategory("Data")] public T Min { get; set; } = default!;
+        [Parameter, SafeCategory("Data")] public T Max { get; set; } = default!;
 
-        [Parameter, SafeCategory("Data")] public T Min { get; set; } = T.Zero;
-        [Parameter, SafeCategory("Data")] public T Max { get; set; } = T.One;
-        [Parameter, SafeCategory("Data")] public T Step { get; set; } = T.One;
+        [Parameter, SafeCategory("Data")] public T Step { get; set; }
+        [Parameter, SafeCategory("Data")] public TimeSpan? StepSpan { get; set; }
 
-
-        [Parameter, SafeCategory("Behavior")] public bool Immediate { get; set; } = true; // fire as thumb moves
+        [Parameter, SafeCategory("Behavior")] public bool Immediate { get; set; } = true;
         [Parameter, SafeCategory("Behavior")] public bool Disabled { get; set; }
         [Parameter, SafeCategory("Behavior")] public bool ReadOnly { get; set; }
-        [Parameter, SafeCategory("Behavior")] public bool ShowInputs { get; set; } = false;
-
+        [Parameter, SafeCategory("Behavior")] public bool ShowInputs { get; set; } = true;
+        [Parameter, SafeCategory("Behavior")] public bool AllowWholeRangeDrag { get; set; } = true;
 
         [Parameter, SafeCategory("Appearance")] public Color Color { get; set; } = Color.Primary;
         [Parameter, SafeCategory("Appearance")] public string? AriaLabelledBy { get; set; }
 
+        [Parameter] public EventCallback<IRange<T>> OnChange { get; set; }
+        [Parameter] public EventCallback<IRange<T>> OnInput { get; set; }
 
-        [Parameter] public EventCallback<IRange<T>> OnChange { get; set; } // fires on commit (pointerup)
-        [Parameter] public EventCallback<IRange<T>> OnInput { get; set; } // fires while sliding if Immediate
-
-        private enum Thumb { Start, End }
-        private Thumb? _activeThumb;
+        private enum DragMode { None, StartThumb, EndThumb, WholeRange }
+        private DragMode _dragMode = DragMode.None;
         private double _trackLeft;
         private double _trackWidth;
+        private double _dragStartClientX;
+        private (double start, double end) _dragStartRange;
 
+        private IRangeAdapter<T> A => Adapter ??= RangeAdapters.For<T>(Step, StepSpan);
 
-        private string _startPx => PercentToPx(RangeMath.Percent(Value.Start, Min, Max));
-        private string _endPx => PercentToPx(RangeMath.Percent(Value.End, Min, Max));
-        private string _leftPx => PercentToPx(RangeMath.Percent(Value.Start, Min, Max));
-        private string _widthPx => PercentToPx(RangeMath.Percent(Value.End, Min, Max) - RangeMath.Percent(Value.Start, Min, Max), true);
+        protected string _startPct => Math.Clamp(A.Percent(Value.Start, Min, Max), 0, 1).ToString(System.Globalization.CultureInfo.InvariantCulture);
+        protected string _endPct => Math.Clamp(A.Percent(Value.End, Min, Max), 0, 1).ToString(System.Globalization.CultureInfo.InvariantCulture);
 
-
-        private string StartString => $"{Value.Start}";
-        private string EndString => $"{Value.End}";
-        private string MinString => $"{Min}";
-        private string MaxString => $"{Max}";
-
+        private string StartString => Value.Start.ToString() ?? string.Empty;
+        private string EndString => Value.End.ToString() ?? string.Empty;
+        private string MinString => Min.ToString() ?? string.Empty;
+        private string MaxString => Max.ToString() ?? string.Empty;
 
         private string ColorClass => $"mud-ex-range-slider-{Color.ToString().ToLower()}";
 
-
-        public override object[] GetJsArguments()
-            => new object[] { ElementReference, _trackRef, CreateDotNetObjectReference() };
+        public override object[] GetJsArguments() => new object[] { ElementReference, _trackRef, CreateDotNetObjectReference() };
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
-            if (firstRender)
-                await JsReference.InvokeVoidAsync("init");
+            if (firstRender) await JsReference.InvokeVoidAsync("init");
         }
-
-
-        private string PercentToPx(double percent, bool isWidth = false)
-        {
-            percent = Math.Clamp(percent, 0, 1);
-            if (_trackWidth <= 0)
-                return isWidth ? "0px" : "0px"; // before layout
-            var px = percent * _trackWidth;
-            return isWidth ? $"{px}px" : $"calc({px}px - 8px)"; // 8px = thumb half width for centering
-        }
-
 
         private async Task MeasureAsync()
         {
             var rect = await JsReference.InvokeAsync<DomRect>("measureTrack");
-            _trackLeft = rect.Left;
-            _trackWidth = Math.Max(1, rect.Width);
+            _trackLeft = rect.Left; _trackWidth = Math.Max(1, rect.Width);
         }
 
+        private enum Thumb { Start, End }
 
-        private async Task OnPointerDownAsync(PointerEventArgs e, Thumb thumb)
+        private async Task OnThumbPointerDownAsync(PointerEventArgs e, Thumb which)
         {
             if (Disabled || ReadOnly) return;
-            _activeThumb = thumb;
+            _dragMode = which == Thumb.Start ? DragMode.StartThumb : DragMode.EndThumb;
             await MeasureAsync();
             await JsReference.InvokeVoidAsync("startCapture");
+        }
+
+        private async Task OnRangeDragPointerDown(PointerEventArgs e)
+        {
+            if (!AllowWholeRangeDrag || Disabled || ReadOnly) return;
+            _dragMode = DragMode.WholeRange;
+            _dragStartClientX = e.ClientX;
+            _dragStartRange = (A.ToDouble(Value.Start), A.ToDouble(Value.End));
+            await MeasureAsync();
+            await JsReference.InvokeVoidAsync("startCapture");
+        }
+
+        private async Task OnTrackPointerDown(PointerEventArgs e)
+        {
+            if (Disabled || ReadOnly) return;
+            await MeasureAsync();
+            var pct = Math.Clamp((e.ClientX - _trackLeft) / _trackWidth, 0, 1);
+            var snapped = A.Snap(A.Lerp(Min, Max, pct), Min, Max);
+            var dStart = Math.Abs(A.ToDouble(snapped) - A.ToDouble(Value.Start));
+            var dEnd = Math.Abs(A.ToDouble(snapped) - A.ToDouble(Value.End));
+            if (dStart <= dEnd) await SetStartAsync(snapped, true);
+            else await SetEndAsync(snapped, true);
         }
 
         [JSInvokable]
         public async Task OnPointerMove(double clientX)
         {
             if (Disabled || ReadOnly) return;
-            if (_activeThumb is null) return;
-            var pct = Math.Clamp((clientX - _trackLeft) / _trackWidth, 0, 1);
-            var raw = RangeMath.Lerp(Min, Max, pct);
-            var snapped = RangeMath.RoundToStep(raw, Step, Min);
+            if (_dragMode == DragMode.None) return;
 
-
-            if (_activeThumb == Thumb.Start)
+            if (_dragMode == DragMode.WholeRange)
             {
-                var newStart = RangeMath.Clamp(snapped, Min, Value.End);
-                if (!newStart.Equals(Value.Start))
+                var deltaPx = clientX - _dragStartClientX;
+                var deltaPct = deltaPx / _trackWidth;
+                var delta = A.Scale(Max, Min, deltaPct);
+
+                var span = _dragStartRange.end - _dragStartRange.start;
+                var newStart = _dragStartRange.start + delta;
+                var newEnd = newStart + span;
+
+                var minD = A.ToDouble(Min);
+                var maxD = A.ToDouble(Max);
+                if (newStart < minD) { newStart = minD; newEnd = minD + span; }
+                if (newEnd > maxD) { newEnd = maxD; newStart = maxD - span; }
+
+                var s = A.FromDouble(newStart);
+                var e = A.FromDouble(newEnd);
+                s = A.Snap(s, Min, Max);
+                e = A.Snap(e, Min, Max);
+                Value = new MudExRange<T>(s, e);
+                if (Immediate) await OnInput.InvokeAsync(Value);
+                StateHasChanged();
+                return;
+            }
+
+            var pct = Math.Clamp((clientX - _trackLeft) / _trackWidth, 0, 1);
+            var snappedVal = A.Snap(A.Lerp(Min, Max, pct), Min, Max);
+
+            if (_dragMode == DragMode.StartThumb)
+            {
+                var newStart = A.Clamp(snappedVal, Min, Value.End);
+                if (!Equals(newStart, Value.Start))
                 {
-                    Value = new RangeOf<T>(newStart, Value.End);
+                    Value = new MudExRange<T>(newStart, Value.End);
                     if (Immediate) await OnInput.InvokeAsync(Value);
                     StateHasChanged();
                 }
             }
-            else
+            else if (_dragMode == DragMode.EndThumb)
             {
-                var newEnd = RangeMath.Clamp(snapped, Value.Start, Max);
-                if (!newEnd.Equals(Value.End))
+                var newEnd = A.Clamp(snappedVal, Value.Start, Max);
+                if (!Equals(newEnd, Value.End))
                 {
-                    Value = new RangeOf<T>(Value.Start, newEnd);
+                    Value = new MudExRange<T>(Value.Start, newEnd);
                     if (Immediate) await OnInput.InvokeAsync(Value);
                     StateHasChanged();
                 }
             }
         }
 
-
         [JSInvokable]
         public async Task OnPointerUp()
         {
-            if (_activeThumb is null) return;
-            _activeThumb = null;
+            if (_dragMode == DragMode.None) return;
+            _dragMode = DragMode.None;
             await ValueChanged.InvokeAsync(Value);
             await OnChange.InvokeAsync(Value);
             StateHasChanged();
@@ -144,22 +172,21 @@ namespace MudBlazor.Extensions.Components
 
         private async Task SetStartAsync(T v, bool commit)
         {
-            var s = RangeMath.Clamp(RangeMath.RoundToStep(v, Step, Min), Min, Value.End);
-            if (!s.Equals(Value.Start))
+            var s = A.Clamp(A.Snap(v, Min, Max), Min, Value.End);
+            if (!Equals(s, Value.Start))
             {
-                Value = new RangeOf<T>(s, Value.End);
+                Value = new MudExRange<T>(s, Value.End);
                 if (commit) { await ValueChanged.InvokeAsync(Value); await OnChange.InvokeAsync(Value); }
                 else if (Immediate) await OnInput.InvokeAsync(Value);
             }
         }
 
-
         private async Task SetEndAsync(T v, bool commit)
         {
-            var e = RangeMath.Clamp(RangeMath.RoundToStep(v, Step, Min), Value.Start, Max);
-            if (!e.Equals(Value.End))
+            var e = A.Clamp(A.Snap(v, Min, Max), Value.Start, Max);
+            if (!Equals(e, Value.End))
             {
-                Value = new RangeOf<T>(Value.Start, e);
+                Value = new MudExRange<T>(Value.Start, e);
                 if (commit) { await ValueChanged.InvokeAsync(Value); await OnChange.InvokeAsync(Value); }
                 else if (Immediate) await OnInput.InvokeAsync(Value);
             }
@@ -168,51 +195,30 @@ namespace MudBlazor.Extensions.Components
         private async Task OnKeyDownAsync(KeyboardEventArgs e, Thumb thumb)
         {
             if (Disabled || ReadOnly) return;
-            var delta = e.Key switch
+            int deltaSteps = e.Key switch
             {
-                "ArrowLeft" => -1,
-                "ArrowDown" => -1,
+                "ArrowLeft" or "ArrowDown" => -1,
                 "PageDown" => -10,
-                "ArrowRight" => 1,
-                "ArrowUp" => 1,
+                "ArrowRight" or "ArrowUp" => 1,
                 "PageUp" => 10,
-                "Home" => int.MinValue,
-                "End" => int.MaxValue,
                 _ => 0
             };
-            if (delta == 0) return;
-
+            bool home = e.Key == "Home";
+            bool end = e.Key == "End";
+            if (deltaSteps == 0 && !home && !end) return;
 
             if (thumb == Thumb.Start)
             {
-                var target = delta == int.MinValue ? Min : delta == int.MaxValue ? Value.End : RangeMath.FromDouble<T>(RangeMath.ToDouble(Value.Start) + RangeMath.ToDouble(Step) * delta);
+                var target = home ? Min : end ? Value.End : A.AddSteps(Value.Start, deltaSteps);
                 await SetStartAsync(target, true);
             }
             else
             {
-                var target = delta == int.MinValue ? Value.Start : delta == int.MaxValue ? Max : RangeMath.FromDouble<T>(RangeMath.ToDouble(Value.End) + RangeMath.ToDouble(Step) * delta);
+                var target = home ? Value.Start : end ? Max : A.AddSteps(Value.End, deltaSteps);
                 await SetEndAsync(target, true);
             }
         }
 
-        private async Task OnTrackClick(MouseEventArgs e)
-        {
-            if (Disabled || ReadOnly) return;
-            await MeasureAsync();
-            var pct = Math.Clamp((e.ClientX - _trackLeft) / _trackWidth, 0, 1);
-            var raw = RangeMath.Lerp(Min, Max, pct);
-            var snapped = RangeMath.RoundToStep(raw, Step, Min);
-
-
-            // choose nearest thumb
-            var dStart = Math.Abs(RangeMath.ToDouble(snapped) - RangeMath.ToDouble(Value.Start));
-            var dEnd = Math.Abs(RangeMath.ToDouble(snapped) - RangeMath.ToDouble(Value.End));
-            if (dStart <= dEnd) await SetStartAsync(snapped, true);
-            else await SetEndAsync(snapped, true);
-        }
-
-
         private record struct DomRect(double Left, double Top, double Width, double Height);
     }
-
 }

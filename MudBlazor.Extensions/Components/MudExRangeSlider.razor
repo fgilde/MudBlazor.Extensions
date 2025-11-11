@@ -1,6 +1,6 @@
-﻿@inherits MudExJsRequiredBaseComponent<MudExRangeSlider<T>>
-@typeparam T where T : struct, System.Numerics.INumber<T>
-
+﻿
+@inherits MudExJsRequiredBaseComponent<MudExRangeSlider<T>>
+@typeparam T
 
 <div @ref="ElementReference"
      class="mud-ex-range-slider @Class"
@@ -9,15 +9,19 @@
      aria-roledescription="range"
      aria-disabled="@Disabled">
 
+    <div class="mud-ex-range-slider-track @ColorClass"
+         @ref="_trackRef"
+         style="--p-start:@_startPct; --p-end:@_endPct;"
+         @onpointerdown="OnTrackPointerDown">
 
-    <div class="mud-ex-range-slider-track @ColorClass" @onclick="OnTrackClick" @ref="_trackRef">
-        <div class="mud-ex-range-slider-selection" style="left:@_leftPx; width:@_widthPx"></div>
+        <div class="mud-ex-range-slider-selection"
+             @onpointerdown="OnRangeDragPointerDown"></div>
+
         <button class="mud-ex-range-slider-thumb start"
                 id="@_startId"
                 type="button"
-                @onpointerdown="e => OnPointerDownAsync(e, Thumb.Start)"
+                @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
                 @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
-                style="left:@_startPx"
                 role="slider"
                 aria-valuemin="@MinString"
                 aria-valuemax="@MaxString"
@@ -25,13 +29,11 @@
                 aria-labelledby="@AriaLabelledBy"
                 disabled="@Disabled" />
 
-
         <button class="mud-ex-range-slider-thumb end"
                 id="@_endId"
                 type="button"
-                @onpointerdown="e => OnPointerDownAsync(e, Thumb.End)"
+                @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.End)"
                 @onkeydown="e => OnKeyDownAsync(e, Thumb.End)"
-                style="left:@_endPx"
                 role="slider"
                 aria-valuemin="@MinString"
                 aria-valuemax="@MaxString"
@@ -40,12 +42,11 @@
                 disabled="@Disabled" />
     </div>
 
-
     @if (ShowInputs)
     {
         <div class="mud-ex-range-slider-inputs">
-            <MudNumericField T="T" Value="@Value.Start" ValueChanged="v => SetStartAsync(v, true)" Min="@Min" Max="@Max" Step="@Step" Disabled="@Disabled" />
-            <MudNumericField T="T" Value="@Value.End" ValueChanged="v => SetEndAsync(v, true)" Min="@Min" Max="@Max" Step="@Step" Disabled="@Disabled" />
+            <MudNumericField T="T" Value="@Value.Start" ValueChanged="v => SetStartAsync(v, true)" Disabled="@Disabled" />
+            <MudNumericField T="T" Value="@Value.End" ValueChanged="v => SetEndAsync(v, true)" Disabled="@Disabled" />
         </div>
     }
 </div>

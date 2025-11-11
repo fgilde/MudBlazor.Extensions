@@ -17909,6 +17909,29 @@
             Implicit conversion from String to MudExSize type.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.IRangeAdapter`1">
+            <summary>
+            Adapter API to map generic T to double for layout and back, plus stepping and clamping semantics.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IRangeAdapter`1.Scale(`0,`0,System.Double)">
+            <summary>Converts a delta in percent of [min..max] to a delta-value (double-space). Used for whole-range dragging.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.RangeAdapters.For``1(``0,System.Nullable{System.TimeSpan})">
+            <summary>
+            Factory: returns a DateTimeAdapter when typeof(T) == DateTime; otherwise a numeric adapter that uses Convert.ToDouble/ChangeType.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.NumericAdapter`1">
+            <summary>
+            Numeric adapter using Convert.ToDouble/ChangeType. Works for common numeric Ts (int, long, float, double, decimal, etc.).
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.DateTimeAdapter">
+            <summary>
+            DateTime adapter with given TimeSpan step. Uses ticks internally.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.SpeechRecognitionOptions">
             <summary>
             Defines configuration options for speech recognition services.
