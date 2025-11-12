@@ -17,7 +17,7 @@ namespace MudBlazor.Extensions.Components
     public partial class MudExRangeSlider<T> where T : struct, IComparable<T>
     {
         [Parameter]
-        public IRangeMath<T> MathAdapter { get; set; }
+        public IRangeMath<T>? MathAdapter { get; set; }
 
         private ElementReference _trackRef;
         private readonly string _startId = $"start_{Guid.NewGuid():N}";
@@ -26,7 +26,7 @@ namespace MudBlazor.Extensions.Components
 
         [Parameter]
         public Func<T, IRange<T>, RangeLength<T>, int, SnapPolicy, T>? StepResolver { get; set; }
-        
+
         private T ResolveStep(T v, int steps = 0, SnapPolicy policy = SnapPolicy.Nearest)
             => StepResolver?.Invoke(v, SizeRange, StepLength, steps, policy) ?? (steps == 0
                 ? M.SnapToStep(v, SizeRange, StepLength, policy)
@@ -34,7 +34,28 @@ namespace MudBlazor.Extensions.Components
 
         private T Snap(T v, SnapPolicy policy = SnapPolicy.Nearest) => ResolveStep(v, 0, policy);
 
-        private T AddStepsLocal(T v, int steps) =>ResolveStep(v, steps);
+        private T AddStepsLocal(T v, int steps) => ResolveStep(v, steps);
+
+
+        [Parameter, SafeCategory("Appearance")]
+        public SliderOrientation Orientation { get; set; } = SliderOrientation.Horizontal;
+
+        private bool IsHorizontal => Orientation is SliderOrientation.Horizontal /* or SliderOrientation.RightToLeft */;
+
+        [Parameter, SafeCategory("Appearance")]
+        public bool IsInverted { get; set; }
+
+
+
+        private double P(T v) => Math.Clamp(M.Percent(v, SizeRange), 0, 1);
+        private double PForCss(T v) => IsInverted ? 1 - P(v) : P(v);
+
+        protected string _startPct => PForCss(Value.Start).ToString(CultureInfo.InvariantCulture);
+        protected string _endPct => PForCss(Value.End).ToString(CultureInfo.InvariantCulture);
+
+        protected string _minPct => Math.Min(PForCss(Value.Start), PForCss(Value.End)).ToString(CultureInfo.InvariantCulture);
+        protected string _maxPct => Math.Max(PForCss(Value.Start), PForCss(Value.End)).ToString(CultureInfo.InvariantCulture);
+
 
         // ---------- Binding ----------
         [Parameter, SafeCategory("Data")] public IRange<T> Value { get; set; } = new MudExRange<T>(default, default);
@@ -62,8 +83,7 @@ namespace MudBlazor.Extensions.Components
         [Parameter] public EventCallback<IRange<T>> OnChange { get; set; }
         [Parameter] public EventCallback<IRange<T>> OnInput { get; set; }
 
-        private readonly IRangeMath<T> _defaultAdapter = RangeMathFactory.For<T>();
-        private IRangeMath<T> M => MathAdapter ?? _defaultAdapter;
+        private IRangeMath<T> M { get => MathAdapter ?? field; } = RangeMathFactory.For<T>();
 
 
         private DragMode _dragMode = DragMode.None;
@@ -74,8 +94,8 @@ namespace MudBlazor.Extensions.Components
 
 
         // Prozent (CSS-Variablen) ohne vorheriges Messen
-        protected string _startPct => Math.Clamp(M.Percent(Value.Start, SizeRange), 0, 1).ToString(CultureInfo.InvariantCulture);
-        protected string _endPct => Math.Clamp(M.Percent(Value.End, SizeRange), 0, 1).ToString(CultureInfo.InvariantCulture);
+        //protected string _startPct => Math.Clamp(M.Percent(Value.Start, SizeRange), 0, 1).ToString(CultureInfo.InvariantCulture);
+        //protected string _endPct => Math.Clamp(M.Percent(Value.End, SizeRange), 0, 1).ToString(CultureInfo.InvariantCulture);
 
         private string StartString => Value.Start.ToString() ?? string.Empty;
         private string EndString => Value.End.ToString() ?? string.Empty;
@@ -94,57 +114,74 @@ namespace MudBlazor.Extensions.Components
 
         protected override void OnParametersSet()
         {
-            // Validierungen
             var sizeSpan = M.Span(SizeRange);
-            if (sizeSpan <= 0)
-                return; // keine Korrektur möglich
+            if (sizeSpan <= 0) return;
 
             if (StepLength.Delta <= 0 || StepLength.Delta > sizeSpan)
             {
-                // Schritt korrigieren (mind. 1 Raster, max. sizeSpan)
                 var corr = Math.Clamp(StepLength.Delta, 1e-12, sizeSpan);
                 StepLength = new RangeLength<T>(corr);
             }
 
             if (MinLength.HasValue && MaxLength.HasValue && Math.Abs(MinLength.Value.Delta) > Math.Abs(MaxLength.Value.Delta))
             {
-                // swap
-                var tmp = MinLength;
-                MinLength = MaxLength;
-                MaxLength = tmp;
+                (MinLength, MaxLength) = (MaxLength, MinLength);
             }
 
-            // Value normalisieren: snap + clamp + min/max Länge
-            var snapped = M.SnapRange(Value, SizeRange, StepLength); 
+            // Wichtig: per StepResolver snappen (nicht M.SnapRange => numeric!)
+            var s = Snap(Value.Start);
+            var e = Snap(Value.End);
+            var snapped = new MudExRange<T>(s, e).Normalize();
+
             var bounded = M.EnforceMinMaxLength(snapped, SizeRange, MinLength, MaxLength, Thumb.End);
             if (bounded.Start.CompareTo(bounded.End) > 0)
                 bounded = new MudExRange<T>(bounded.End, bounded.Start);
+
             Value = bounded;
         }
 
+
         // ------------- Measuring -------------
+
+        private double _trackStartCoord; // Left/Top je nach Richtung
+        private double _trackLength;     // Width/Height je nach Richtung
 
         private async Task MeasureAsync()
         {
             var rect = await JsReference.InvokeAsync<DomRect>("measureTrack");
-            _trackLeft = rect.Left; _trackWidth = Math.Max(1, rect.Width);
+            if (IsHorizontal)
+            {
+                _trackStartCoord = rect.Left;
+                _trackLength = Math.Max(1, rect.Width);
+            }
+            else
+            {
+                _trackStartCoord = rect.Top;
+                _trackLength = Math.Max(1, rect.Height);
+            }
+        }
+
+        private double PctFromClient(double clientX, double clientY)
+        {
+            var client = IsHorizontal ? clientX : clientY;
+            var rawPct = Math.Clamp((client - _trackStartCoord) / _trackLength, 0, 1);
+            return IsInverted ? (1 - rawPct) : rawPct;
         }
 
         // ------------- Interaction -------------
 
-        private async Task OnThumbPointerDownAsync(PointerEventArgs e, Thumb which)
-        {
-            if (Disabled || ReadOnly) return;
-            _dragMode = which == Thumb.Start ? DragMode.StartThumb : DragMode.EndThumb;
-            await MeasureAsync();
-            await JsReference.InvokeVoidAsync("startCapture");
-        }
+        private double _dragStartClientPrimary;   // X oder Y je nach Orientierung
+
+        // ---------- Interaction tweaks ----------
+        private double GetClientPrimary(PointerEventArgs e) => IsHorizontal ? e.ClientX : e.ClientY;
+
+        // OnThumbPointerDownAsync bleibt, aber ohne Änderung an Koordinate
 
         private async Task OnRangeDragPointerDown(PointerEventArgs e)
         {
             if (!AllowWholeRangeDrag || Disabled || ReadOnly) return;
             _dragMode = DragMode.WholeRange;
-            _dragStartClientX = e.ClientX;
+            _dragStartClientPrimary = GetClientPrimary(e);
             _dragStartRange = (M.ToDouble(Value.Start), M.ToDouble(Value.End));
             await MeasureAsync();
             await JsReference.InvokeVoidAsync("startCapture");
@@ -155,7 +192,7 @@ namespace MudBlazor.Extensions.Components
             if (Disabled || ReadOnly) return;
             await MeasureAsync();
 
-            var pct = Math.Clamp((e.ClientX - _trackLeft) / _trackWidth, 0, 1);
+            var pct = PctFromClient(e.ClientX, e.ClientY);
             var target = Snap(M.Lerp(SizeRange, pct));
             var dStart = Math.Abs(M.ToDouble(target) - M.ToDouble(Value.Start));
             var dEnd = Math.Abs(M.ToDouble(target) - M.ToDouble(Value.End));
@@ -165,50 +202,53 @@ namespace MudBlazor.Extensions.Components
         }
 
         [JSInvokable]
-        public async Task OnPointerMove(double clientX)
+        public async Task OnPointerMove(double clientX, double clientY)
         {
             if (Disabled || ReadOnly) return;
             if (_dragMode == DragMode.None) return;
 
             if (_dragMode == DragMode.WholeRange)
             {
-                // Länge beibehalten, Range verschieben
-                var deltaPx = clientX - _dragStartClientX;
-                var deltaPct = deltaPx / _trackWidth;
+                var curClient = IsHorizontal ? clientX : clientY;
+                var deltaPx = curClient - _dragStartClientPrimary;
+                var deltaPct = deltaPx / _trackLength;
                 var total = M.Difference(SizeRange.Start, SizeRange.End);
-                var delta = total * deltaPct;
+
+                // Bei invertierter Richtung kehrt ein +DeltaPx die logische Richtung um:
+                var signedDelta = total * (IsInverted ? -deltaPct : deltaPct);
 
                 var span = _dragStartRange.end - _dragStartRange.start;
-                var newStart = _dragStartRange.start + delta;
+                var newStart = _dragStartRange.start + signedDelta;
                 var newEnd = newStart + span;
 
-                // clamp in Size
                 var minD = M.ToDouble(SizeRange.Start);
                 var maxD = M.ToDouble(SizeRange.End);
                 if (newStart < minD) { newStart = minD; newEnd = minD + span; }
                 if (newEnd > maxD) { newEnd = maxD; newStart = maxD - span; }
 
-                var s = M.FromDouble(newStart);
-                var e = M.FromDouble(newEnd);
+                var s = Snap(M.FromDouble(newStart));
+                var e = Snap(M.FromDouble(newEnd));
 
-                var newRange = new MudExRange<T>(Snap(s), Snap(e)).Normalize();
-                // Whole drag: Länge bleibt, also Min/Max-Länge ignorable
+                var newRange = new MudExRange<T>(M.Clamp(s, SizeRange), M.Clamp(e, SizeRange)).Normalize();
+
+                // symmetrisches Enforcen für Whole-Drag (monatliche Steps stabil)
+                newRange = (MudExRange<T>)M.EnforceMinMaxLengthSymmetric(newRange, SizeRange, MinLength, MaxLength);
+
                 Value = newRange;
-
                 if (Immediate) await OnInput.InvokeAsync(Value);
                 StateHasChanged();
                 return;
             }
 
-            // Thumb-Drag
-            var pct = Math.Clamp((clientX - _trackLeft) / _trackWidth, 0, 1);
+            // Thumb-Drag (einseitig)
+            var pct = PctFromClient(clientX, clientY);
             var snapped = Snap(M.Lerp(SizeRange, pct));
 
             if (_dragMode == DragMode.StartThumb)
             {
                 var clampedStart = M.Clamp(snapped, new MudExRange<T>(SizeRange.Start, Value.End));
                 var r = M.EnforceMinMaxLength(new MudExRange<T>(clampedStart, Value.End),
-                                                       SizeRange, MinLength, MaxLength, Thumb.Start);
+                                              SizeRange, MinLength, MaxLength, Thumb.Start);
                 if (!Equals(r.Start, Value.Start) || !Equals(r.End, Value.End))
                 {
                     Value = r;
@@ -220,7 +260,7 @@ namespace MudBlazor.Extensions.Components
             {
                 var clampedEnd = M.Clamp(snapped, new MudExRange<T>(Value.Start, SizeRange.End));
                 var r = M.EnforceMinMaxLength(new MudExRange<T>(Value.Start, clampedEnd),
-                                                     SizeRange, MinLength, MaxLength, Thumb.End);
+                                              SizeRange, MinLength, MaxLength, Thumb.End);
                 if (!Equals(r.Start, Value.Start) || !Equals(r.End, Value.End))
                 {
                     Value = r;
@@ -229,6 +269,16 @@ namespace MudBlazor.Extensions.Components
                 }
             }
         }
+
+
+        private async Task OnThumbPointerDownAsync(PointerEventArgs e, Thumb which)
+        {
+            if (Disabled || ReadOnly) return;
+            _dragMode = which == Thumb.Start ? DragMode.StartThumb : DragMode.EndThumb;
+            await MeasureAsync();
+            await JsReference.InvokeVoidAsync("startCapture");
+        }
+        
 
         [JSInvokable]
         public async Task OnPointerUp()

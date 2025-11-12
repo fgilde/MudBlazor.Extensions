@@ -24,17 +24,29 @@
 <MudExRangeSlider T="DateTime"
                   SizeRange="@(new MudExRange<DateTime>(new(2019,1,1,2,22,12), new(2025,12,31,6,3,12)))"
                   StepLength="@(new RangeLength<DateTime>(2))"
-                  StepResolver="@(StepResolvers.DateTime.Monthly(_ => 2))"
+                  StepResolver="@(StepResolvers.DateTime.Hourly(_ => 2))"
                   MinLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(60).Ticks))"
                   MaxLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(240).Ticks))"
                   @bind-Value="_period"
                   AllowWholeRangeDrag="true" />
 
+
+
+<MudExRangeSlider T="DateTime"
+                  Orientation="SliderOrientation.Vertical"
+                  SizeRange="@(new MudExRange<DateTime>(new(2016, 1, 1), new(2024, 12, 31)))"
+                  StepLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(30).Ticks))"
+                  StepResolver="@(StepResolvers.DateTime.Quarterly(_ => 1))"
+                  @bind-Value="_period"
+                  AllowWholeRangeDrag="true">
+
+</MudExRangeSlider>
+
+
 @code {
     private IRange<int> _nums = new MudExRange<int>(20, 60);
     private IRange<DateTime> _period = new MudExRange<DateTime>(new(2021, 1, 1), new(2021, 12, 31));
     private IRange<DateTime> _period2 = new RangeOf<DateTime>(new(2021, 1, 1), new(2021, 12, 31), null);
-
 }
 
 

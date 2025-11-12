@@ -1,8 +1,16 @@
-﻿using MudBlazor.Extensions.Helper;
-using Nextended.Core.Contracts;
-using Nextended.Core.Types;
+﻿
+using System.ComponentModel;
 
 namespace MudBlazor.Extensions.Components;
+
+public enum SliderOrientation
+{
+    [Description("mud-ex-horizontal")]
+    Horizontal,
+
+    [Description("mud-ex-vertical")]
+    Vertical
+}
 
 internal enum DragMode { None, StartThumb, EndThumb, WholeRange }
 

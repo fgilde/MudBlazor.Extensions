@@ -1,48 +1,162 @@
-﻿.mud-ex-range-slider {
+﻿/* _mudexrangeslider.scss
+   Styles for MudExRangeSlider with 4 orientations support.
+   Uses CSS variables:
+     --p-start, --p-end  (0..1) set by component (already orientation-aware)
+   Works out-of-the-box for horizontal; add wrapper class .mud-ex-vertical for vertical.
+   (Optional) Add .mud-ex-horizontal explicitly; without either, horizontal rules apply.
+*/
+
+/* ---------- Base ---------- */
+.mud-ex-range-slider {
     position: relative;
     width: 100%;
     touch-action: none;
     user-select: none;
+    /* helpful defaults */
+    --ex-track-height: 28px;
+    --ex-track-width: 28px;
+    --ex-thumb-size: 14px;
+    --ex-thumb-shadow: 0 0 0 2px #fff;
+    --ex-selection-opacity: .25;
+    /* palette fallbacks (Mud themes usually define these) */
+    --ex-line: var(--mud-palette-lines-default, #80808066);
+    --ex-fg: var(--mud-palette-text-primary, #222);
+    --ex-fg-2: var(--mud-palette-text-secondary, #666);
+    --ex-bg: var(--mud-palette-surface, #fff);
+    --ex-accent: var(--mud-palette-primary, #1976d2);
+}
 
-    .mud-ex-range-slider-track {
-        --p-start: 0;
-        --p-end: 0;
-        position: relative;
-        height: 6px;
-        border-radius: 3px;
-        background: var(--mud-palette-lines-default);
-    }
+/* ---------- Color variants (applied on TRACK element via @ColorClass) ---------- */
+.mud-ex-range-slider-track.mud-ex-range-slider-primary {
+    --ex-accent: var(--mud-palette-primary, #1976d2);
+}
 
-    .mud-ex-range-slider-selection {
-        position: absolute;
-        top: 0;
-        height: 100%;
+.mud-ex-range-slider-track.mud-ex-range-slider-secondary {
+    --ex-accent: var(--mud-palette-secondary, #9c27b0);
+}
+
+.mud-ex-range-slider-track.mud-ex-range-slider-tertiary {
+    --ex-accent: var(--mud-palette-tertiary, #009688);
+}
+
+.mud-ex-range-slider-track.mud-ex-range-slider-info {
+    --ex-accent: var(--mud-palette-info, #0288d1);
+}
+
+.mud-ex-range-slider-track.mud-ex-range-slider-success {
+    --ex-accent: var(--mud-palette-success, #2e7d32);
+}
+
+.mud-ex-range-slider-track.mud-ex-range-slider-warning {
+    --ex-accent: var(--mud-palette-warning, #ed6c02);
+}
+
+.mud-ex-range-slider-track.mud-ex-range-slider-error {
+    --ex-accent: var(--mud-palette-error, #d32f2f);
+}
+
+/* ---------- Track (H) default ---------- */
+.mud-ex-range-slider .mud-ex-range-slider-track {
+    position: relative;
+    width: 100%;
+    height: var(--ex-track-height);
+    background: linear-gradient(to bottom, transparent 45%, var(--ex-line) 46%, var(--ex-line) 54%, transparent 55%);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Selection overlay (H) uses --p-start/--p-end (already inverted for RTL/BT in code-behind) */
+.mud-ex-range-slider .mud-ex-range-slider-selection {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--p-start) * 100%);
+    right: calc((1 - var(--p-end)) * 100%);
+    background: var(--ex-accent);
+    opacity: var(--ex-selection-opacity);
+    pointer-events: auto; /* to receive range-drag mousedown */
+    border-radius: 3px;
+}
+
+/* Thumbs (buttons) for H */
+.mud-ex-range-slider .mud-ex-range-slider-thumb {
+    position: absolute;
+    top: 50%;
+    width: var(--ex-thumb-size);
+    height: var(--ex-thumb-size);
+    transform: translate(-50%, -50%);
+    background: var(--bg, #fff);
+    border: 2px solid var(--ex-accent);
+    border-radius: 50%;
+    box-shadow: var(--ex-thumb-shadow);
+    cursor: grab;
+    outline: none;
+}
+
+    .mud-ex-range-slider .mud-ex-range-slider-thumb.start {
         left: calc(var(--p-start) * 100%);
-        width: calc((var(--p-end) - var(--p-start)) * 100%);
-        background: var(--mud-palette-primary);
-        border-radius: 3px;
-        pointer-events: auto;
-        cursor: grab;
-        z-index: 1;
     }
 
-    .mud-ex-range-slider-thumb {
-        position: absolute;
-        top: 50%;
-        left: calc(var(--p-start) * 100%);
-        transform: translate(-50%, -50%);
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        border: 2px solid var(--mud-palette-surface);
-        background: var(--mud-palette-background);
-        box-shadow: 0 0 0 2px var(--mud-palette-primary);
-        cursor: grab;
-        pointer-events: auto;
-        z-index: 2;
-
-        &.end {
-            left: calc(var(--p-end) * 100%);
-        }
+    .mud-ex-range-slider .mud-ex-range-slider-thumb.end {
+        left: calc(var(--p-end) * 100%);
     }
+
+    .mud-ex-range-slider .mud-ex-range-slider-thumb:active {
+        cursor: grabbing;
+    }
+
+    .mud-ex-range-slider .mud-ex-range-slider-thumb:focus-visible {
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--ex-accent), transparent 60%);
+    }
+
+/* Inputs block */
+.mud-ex-range-slider .mud-ex-range-slider-inputs {
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+}
+
+/* ---------- Vertical wrapper ---------- */
+/* Add .mud-ex-vertical on the outer container when Orientation is TopToBottom/BottomToTop */
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track {
+    width: var(--ex-track-width);
+    height: 220px; /* or 100% in a constrained container */
+    background: linear-gradient(to right, transparent 45%, var(--ex-line) 46%, var(--ex-line) 54%, transparent 55%);
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection {
+    left: 0;
+    right: 0;
+    top: calc(var(--p-start) * 100%);
+    bottom: calc((1 - var(--p-end)) * 100%);
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb {
+    left: 50%;
+    top: auto; /* we set per-start/end below */
+    transform: translate(-50%, -50%);
+}
+
+    .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb.start {
+        top: calc(var(--p-start) * 100%);
+    }
+
+    .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb.end {
+        top: calc(var(--p-end) * 100%);
+    }
+
+/* ---------- Disabled state ---------- */
+.mud-ex-range-slider[aria-disabled="true"] .mud-ex-range-slider-track {
+    opacity: .6;
+}
+
+.mud-ex-range-slider[aria-disabled="true"] .mud-ex-range-slider-thumb {
+    cursor: not-allowed;
+    filter: grayscale(.2);
+}
+
+/* ---------- Optional: hover affordance ---------- */
+.mud-ex-range-slider .mud-ex-range-slider-thumb:hover {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ex-accent), transparent 70%);
 }
