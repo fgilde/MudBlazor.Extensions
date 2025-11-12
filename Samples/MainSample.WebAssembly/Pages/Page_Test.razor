@@ -22,10 +22,11 @@
 
 
 <MudExRangeSlider T="DateTime"
-                  SizeRange="@(new MudExRange<DateTime>(new(2019,1,1), new(2025,12,31)))"
-                  StepLength="@(new RangeLength<DateTime>(1))"
-                  SnapOverride="@(RangeSnapPresets.DateTimeMonthsSnap())"
-                  AddStepsOverride="@(RangeSnapPresets.DateTimeMonthsAdd())"
+                  SizeRange="@(new MudExRange<DateTime>(new(2019,1,1,2,22,12), new(2025,12,31,6,3,12)))"
+                  StepLength="@(new RangeLength<DateTime>(2))"
+                  StepResolver="@(StepResolvers.DateTime.Monthly(_ => 2))"
+                  MinLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(60).Ticks))"
+                  MaxLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(240).Ticks))"
                   @bind-Value="_period"
                   AllowWholeRangeDrag="true" />
 

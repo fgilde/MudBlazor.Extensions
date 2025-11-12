@@ -10,6 +10,7 @@ using Nextended.Core.Types;
 using Nextended.Core.Types.Ranges.Math;
 using System;
 using System.Globalization;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components
 {
@@ -24,18 +25,16 @@ namespace MudBlazor.Extensions.Components
 
 
         [Parameter]
-        public Func<T, IRange<T>, RangeLength<T>, SnapPolicy, T>? SnapOverride { get; set; }
+        public Func<T, IRange<T>, RangeLength<T>, int, SnapPolicy, T>? StepResolver { get; set; }
+        
+        private T ResolveStep(T v, int steps = 0, SnapPolicy policy = SnapPolicy.Nearest)
+            => StepResolver?.Invoke(v, SizeRange, StepLength, steps, policy) ?? (steps == 0
+                ? M.SnapToStep(v, SizeRange, StepLength, policy)
+                : M.AddSteps(v, StepLength, steps));
 
-        [Parameter]
-        public Func<T, RangeLength<T>, int, T>? AddStepsOverride { get; set; }
+        private T Snap(T v, SnapPolicy policy = SnapPolicy.Nearest) => ResolveStep(v, 0, policy);
 
-        private T Snap(T v, SnapPolicy policy = SnapPolicy.Nearest)
-            => SnapOverride?.Invoke(v, SizeRange, StepLength, policy)
-               ?? M.SnapToStep(v, SizeRange, StepLength, policy);
-
-        private T AddStepsLocal(T v, int steps)
-            => AddStepsOverride?.Invoke(v, StepLength, steps)
-               ?? M.AddSteps(v, StepLength, steps);
+        private T AddStepsLocal(T v, int steps) =>ResolveStep(v, steps);
 
         // ---------- Binding ----------
         [Parameter, SafeCategory("Data")] public IRange<T> Value { get; set; } = new MudExRange<T>(default, default);
@@ -116,7 +115,7 @@ namespace MudBlazor.Extensions.Components
             }
 
             // Value normalisieren: snap + clamp + min/max Länge
-            var snapped = M.SnapRange(Value, SizeRange, StepLength);
+            var snapped = M.SnapRange(Value, SizeRange, StepLength); 
             var bounded = M.EnforceMinMaxLength(snapped, SizeRange, MinLength, MaxLength, Thumb.End);
             if (bounded.Start.CompareTo(bounded.End) > 0)
                 bounded = new MudExRange<T>(bounded.End, bounded.Start);

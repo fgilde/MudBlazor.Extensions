@@ -6211,22 +6211,6 @@
             Method that determines if the input value is a valid entry.
             </summary>
         </member>
-        <member name="F:MudBlazor.Extensions.Components.RangeSnapPresets.DefaultStepToMonths">
-            <summary>
-            Mappt StepLength (Ticks) -> Monate pro Step. Du kannst deine eigene Funktion übergeben.
-            Default: 1 Monat je ~30 Tage.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.RangeSnapPresets.DateTimeMonthsSnap(System.Func{Nextended.Core.Types.RangeLength{System.DateTime},System.Int32},System.Boolean)">
-            <summary>
-            Snap-Override für DateTime, der echte Monate snapt. Die Step-Länge kommt aus StepLength.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.RangeSnapPresets.DateTimeMonthsAdd(System.Func{Nextended.Core.Types.RangeLength{System.DateTime},System.Int32})">
-            <summary>
-            AddSteps-Override für DateTime, der echte Monate addiert. Die Step-Länge kommt aus StepLength.
-            </summary>
-        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSelect`1">
             <summary>
             An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well
@@ -22853,6 +22837,21 @@
             <summary>
             Converts Theme to json
             </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToMonths">
+            <summary>Default mapping: ~30 Tage ≈ 1 Monat.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToYears">
+            <summary>Default mapping: ~365 Tage ≈ 1 Jahr.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToWeeks">
+            <summary>Default mapping: 7 Tage = 1 Woche.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToDays">
+            <summary>Default mapping: 1 Tag = 1 Einheit.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToQuarters">
+            <summary>Default mapping: 3 Monate = 1 Quartal (aus Months-Konverter abgeleitet).</summary>
         </member>
         <member name="T:MudBlazor.Extensions.MudDialogButton">
             <summary>
