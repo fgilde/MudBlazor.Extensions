@@ -4,23 +4,36 @@
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
 @using Nextended.Core.Contracts
+@using Nextended.Core.Types
 @inject IMudExFileService FileService
 
 <MudExRangeSlider T="DateTime"
-                  SizeRange="@(new MudExRange<DateTime>(new(2015,1,1), new(2022,12,31)))"
-                  StepRange="@(new MudExRange<DateTime>(new(2021,1,1), new(2021,2,1)))" 
-                  @bind-Value="_period"
+                  SizeRange="@(new RangeOf<DateTime>(new(2015,1,1), new(2022,12,31),null))"
+                  StepLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(1).Ticks))"
+                  MinLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(60).Ticks))"
+                  MaxLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(240).Ticks))"
+                  @bind-Value="_period2"
                   AllowWholeRangeDrag="true" />
 
 <MudExRangeSlider T="int"
                   SizeRange="@(new MudExRange<int>(0, 100))"
-                  StepRange="@(new MudExRange<int>(0, 5))" 
+                  StepLength="@(new RangeLength<int>(5))"
                   @bind-Value="_nums" />
 
 
+<MudExRangeSlider T="DateTime"
+                  SizeRange="@(new MudExRange<DateTime>(new(2019,1,1), new(2025,12,31)))"
+                  StepLength="@(new RangeLength<DateTime>(1))"
+                  SnapOverride="@(RangeSnapPresets.DateTimeMonthsSnap())"
+                  AddStepsOverride="@(RangeSnapPresets.DateTimeMonthsAdd())"
+                  @bind-Value="_period"
+                  AllowWholeRangeDrag="true" />
+
 @code {
     private IRange<int> _nums = new MudExRange<int>(20, 60);
-    private IRange<DateTime> _period = new MudExRange<DateTime>(new(2021,1,1), new(2021,12,31));
+    private IRange<DateTime> _period = new MudExRange<DateTime>(new(2021, 1, 1), new(2021, 12, 31));
+    private IRange<DateTime> _period2 = new RangeOf<DateTime>(new(2021, 1, 1), new(2021, 12, 31), null);
+
 }
 
 

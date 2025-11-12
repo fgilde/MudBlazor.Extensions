@@ -11,7 +11,7 @@ namespace MudBlazor.Extensions.Services;
 [RegisterAs(typeof(IDialogEventService), RegisterAsImplementation = true, ServiceLifetime = ServiceLifetime.Singleton)]
 public class DialogEventService : IDialogEventService
 {
-    private ConcurrentDictionary<Type, List<Delegate>> eventHandlers = new ConcurrentDictionary<Type, List<Delegate>>();
+    private ConcurrentDictionary<Type, List<Delegate>> eventHandlers = new();
 
     /// <summary>
     /// Subscribe to a dialog event

@@ -6,6 +6,8 @@ using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Contracts;
+using Nextended.Core.Types;
+using Nextended.Core.Types.Ranges.Math;
 using System;
 using System.Globalization;
 
@@ -13,18 +15,41 @@ namespace MudBlazor.Extensions.Components
 {
     public partial class MudExRangeSlider<T> where T : struct, IComparable<T>
     {
+        [Parameter]
+        public IRangeMath<T> MathAdapter { get; set; }
+
         private ElementReference _trackRef;
         private readonly string _startId = $"start_{Guid.NewGuid():N}";
         private readonly string _endId = $"end_{Guid.NewGuid():N}";
 
+
+        [Parameter]
+        public Func<T, IRange<T>, RangeLength<T>, SnapPolicy, T>? SnapOverride { get; set; }
+
+        [Parameter]
+        public Func<T, RangeLength<T>, int, T>? AddStepsOverride { get; set; }
+
+        private T Snap(T v, SnapPolicy policy = SnapPolicy.Nearest)
+            => SnapOverride?.Invoke(v, SizeRange, StepLength, policy)
+               ?? M.SnapToStep(v, SizeRange, StepLength, policy);
+
+        private T AddStepsLocal(T v, int steps)
+            => AddStepsOverride?.Invoke(v, StepLength, steps)
+               ?? M.AddSteps(v, StepLength, steps);
+
+        // ---------- Binding ----------
         [Parameter, SafeCategory("Data")] public IRange<T> Value { get; set; } = new MudExRange<T>(default, default);
         [Parameter] public EventCallback<IRange<T>> ValueChanged { get; set; }
 
         [Parameter, SafeCategory("Data")] public IRange<T> SizeRange { get; set; } = new MudExRange<T>(default, default);
         [Parameter] public EventCallback<IRange<T>> SizeRangeChanged { get; set; }
 
-        [Parameter, SafeCategory("Data")] public IRange<T> StepRange { get; set; } = new MudExRange<T>(default, default);
-        [Parameter] public EventCallback<IRange<T>> StepRangeChanged { get; set; }
+        // NEU: Step als Länge
+        [Parameter, SafeCategory("Data")] public RangeLength<T> StepLength { get; set; } = new RangeLength<T>(0);
+
+        // NEU: Min/Max-Länge des ausgewählten Wertes (optional)
+        [Parameter, SafeCategory("Data")] public RangeLength<T>? MinLength { get; set; }
+        [Parameter, SafeCategory("Data")] public RangeLength<T>? MaxLength { get; set; }
 
         [Parameter, SafeCategory("Behavior")] public bool Immediate { get; set; } = true;
         [Parameter, SafeCategory("Behavior")] public bool Disabled { get; set; }
@@ -38,15 +63,20 @@ namespace MudBlazor.Extensions.Components
         [Parameter] public EventCallback<IRange<T>> OnChange { get; set; }
         [Parameter] public EventCallback<IRange<T>> OnInput { get; set; }
 
-        private enum DragMode { None, StartThumb, EndThumb, WholeRange }
+        private readonly IRangeMath<T> _defaultAdapter = RangeMathFactory.For<T>();
+        private IRangeMath<T> M => MathAdapter ?? _defaultAdapter;
+
+
         private DragMode _dragMode = DragMode.None;
         private double _trackLeft;
         private double _trackWidth;
         private double _dragStartClientX;
         private (double start, double end) _dragStartRange;
 
-        protected string _startPct => Math.Clamp(ValueMath<T>.Percent(Value.Start, SizeRange), 0, 1).ToString(CultureInfo.InvariantCulture);
-        protected string _endPct => Math.Clamp(ValueMath<T>.Percent(Value.End, SizeRange), 0, 1).ToString(CultureInfo.InvariantCulture);
+
+        // Prozent (CSS-Variablen) ohne vorheriges Messen
+        protected string _startPct => Math.Clamp(M.Percent(Value.Start, SizeRange), 0, 1).ToString(CultureInfo.InvariantCulture);
+        protected string _endPct => Math.Clamp(M.Percent(Value.End, SizeRange), 0, 1).ToString(CultureInfo.InvariantCulture);
 
         private string StartString => Value.Start.ToString() ?? string.Empty;
         private string EndString => Value.End.ToString() ?? string.Empty;
@@ -65,11 +95,35 @@ namespace MudBlazor.Extensions.Components
 
         protected override void OnParametersSet()
         {
-            var s = ValueMath<T>.Clamp(ValueMath<T>.SnapToStep(Value.Start, SizeRange, StepRange), SizeRange);
-            var e = ValueMath<T>.Clamp(ValueMath<T>.SnapToStep(Value.End, SizeRange, StepRange), SizeRange);
-            if (s.CompareTo(e) > 0) (s, e) = (e, s);
-            Value = new MudExRange<T>(s, e);
+            // Validierungen
+            var sizeSpan = M.Span(SizeRange);
+            if (sizeSpan <= 0)
+                return; // keine Korrektur möglich
+
+            if (StepLength.Delta <= 0 || StepLength.Delta > sizeSpan)
+            {
+                // Schritt korrigieren (mind. 1 Raster, max. sizeSpan)
+                var corr = Math.Clamp(StepLength.Delta, 1e-12, sizeSpan);
+                StepLength = new RangeLength<T>(corr);
+            }
+
+            if (MinLength.HasValue && MaxLength.HasValue && Math.Abs(MinLength.Value.Delta) > Math.Abs(MaxLength.Value.Delta))
+            {
+                // swap
+                var tmp = MinLength;
+                MinLength = MaxLength;
+                MaxLength = tmp;
+            }
+
+            // Value normalisieren: snap + clamp + min/max Länge
+            var snapped = M.SnapRange(Value, SizeRange, StepLength);
+            var bounded = M.EnforceMinMaxLength(snapped, SizeRange, MinLength, MaxLength, Thumb.End);
+            if (bounded.Start.CompareTo(bounded.End) > 0)
+                bounded = new MudExRange<T>(bounded.End, bounded.Start);
+            Value = bounded;
         }
+
+        // ------------- Measuring -------------
 
         private async Task MeasureAsync()
         {
@@ -77,7 +131,7 @@ namespace MudBlazor.Extensions.Components
             _trackLeft = rect.Left; _trackWidth = Math.Max(1, rect.Width);
         }
 
-        private enum Thumb { Start, End }
+        // ------------- Interaction -------------
 
         private async Task OnThumbPointerDownAsync(PointerEventArgs e, Thumb which)
         {
@@ -92,7 +146,7 @@ namespace MudBlazor.Extensions.Components
             if (!AllowWholeRangeDrag || Disabled || ReadOnly) return;
             _dragMode = DragMode.WholeRange;
             _dragStartClientX = e.ClientX;
-            _dragStartRange = (ValueMath<T>.ToDouble(Value.Start), ValueMath<T>.ToDouble(Value.End));
+            _dragStartRange = (M.ToDouble(Value.Start), M.ToDouble(Value.End));
             await MeasureAsync();
             await JsReference.InvokeVoidAsync("startCapture");
         }
@@ -101,12 +155,14 @@ namespace MudBlazor.Extensions.Components
         {
             if (Disabled || ReadOnly) return;
             await MeasureAsync();
+
             var pct = Math.Clamp((e.ClientX - _trackLeft) / _trackWidth, 0, 1);
-            var snapped = ValueMath<T>.SnapToStep(ValueMath<T>.Lerp(SizeRange, pct), SizeRange, StepRange);
-            var dStart = Math.Abs(ValueMath<T>.ToDouble(snapped) - ValueMath<T>.ToDouble(Value.Start));
-            var dEnd = Math.Abs(ValueMath<T>.ToDouble(snapped) - ValueMath<T>.ToDouble(Value.End));
-            if (dStart <= dEnd) await SetStartAsync(snapped, true);
-            else await SetEndAsync(snapped, true);
+            var target = Snap(M.Lerp(SizeRange, pct));
+            var dStart = Math.Abs(M.ToDouble(target) - M.ToDouble(Value.Start));
+            var dEnd = Math.Abs(M.ToDouble(target) - M.ToDouble(Value.End));
+
+            if (dStart <= dEnd) await SetStartAsync(target, true);
+            else await SetEndAsync(target, true);
         }
 
         [JSInvokable]
@@ -117,48 +173,58 @@ namespace MudBlazor.Extensions.Components
 
             if (_dragMode == DragMode.WholeRange)
             {
+                // Länge beibehalten, Range verschieben
                 var deltaPx = clientX - _dragStartClientX;
                 var deltaPct = deltaPx / _trackWidth;
-                var delta = (ValueMath<T>.ToDouble(SizeRange.End) - ValueMath<T>.ToDouble(SizeRange.Start)) * deltaPct;
+                var total = M.Difference(SizeRange.Start, SizeRange.End);
+                var delta = total * deltaPct;
 
                 var span = _dragStartRange.end - _dragStartRange.start;
                 var newStart = _dragStartRange.start + delta;
                 var newEnd = newStart + span;
 
-                var minD = ValueMath<T>.ToDouble(SizeRange.Start);
-                var maxD = ValueMath<T>.ToDouble(SizeRange.End);
+                // clamp in Size
+                var minD = M.ToDouble(SizeRange.Start);
+                var maxD = M.ToDouble(SizeRange.End);
                 if (newStart < minD) { newStart = minD; newEnd = minD + span; }
                 if (newEnd > maxD) { newEnd = maxD; newStart = maxD - span; }
 
-                var s = ValueMath<T>.FromDouble(newStart);
-                var e = ValueMath<T>.FromDouble(newEnd);
-                s = ValueMath<T>.SnapToStep(s, SizeRange, StepRange);
-                e = ValueMath<T>.SnapToStep(e, SizeRange, StepRange);
-                Value = new MudExRange<T>(s, e);
+                var s = M.FromDouble(newStart);
+                var e = M.FromDouble(newEnd);
+
+                var newRange = new MudExRange<T>(Snap(s), Snap(e)).Normalize();
+                // Whole drag: Länge bleibt, also Min/Max-Länge ignorable
+                Value = newRange;
+
                 if (Immediate) await OnInput.InvokeAsync(Value);
                 StateHasChanged();
                 return;
             }
 
+            // Thumb-Drag
             var pct = Math.Clamp((clientX - _trackLeft) / _trackWidth, 0, 1);
-            var snappedVal = ValueMath<T>.SnapToStep(ValueMath<T>.Lerp(SizeRange, pct), SizeRange, StepRange);
+            var snapped = Snap(M.Lerp(SizeRange, pct));
 
             if (_dragMode == DragMode.StartThumb)
             {
-                var newStart = ValueMath<T>.Clamp(snappedVal, new MudExRange<T>(SizeRange.Start, Value.End));
-                if (!Equals(newStart, Value.Start))
+                var clampedStart = M.Clamp(snapped, new MudExRange<T>(SizeRange.Start, Value.End));
+                var r = M.EnforceMinMaxLength(new MudExRange<T>(clampedStart, Value.End),
+                                                       SizeRange, MinLength, MaxLength, Thumb.Start);
+                if (!Equals(r.Start, Value.Start) || !Equals(r.End, Value.End))
                 {
-                    Value = new MudExRange<T>(newStart, Value.End);
+                    Value = r;
                     if (Immediate) await OnInput.InvokeAsync(Value);
                     StateHasChanged();
                 }
             }
             else if (_dragMode == DragMode.EndThumb)
             {
-                var newEnd = ValueMath<T>.Clamp(snappedVal, new MudExRange<T>(Value.Start, SizeRange.End));
-                if (!Equals(newEnd, Value.End))
+                var clampedEnd = M.Clamp(snapped, new MudExRange<T>(Value.Start, SizeRange.End));
+                var r = M.EnforceMinMaxLength(new MudExRange<T>(Value.Start, clampedEnd),
+                                                     SizeRange, MinLength, MaxLength, Thumb.End);
+                if (!Equals(r.Start, Value.Start) || !Equals(r.End, Value.End))
                 {
-                    Value = new MudExRange<T>(Value.Start, newEnd);
+                    Value = r;
                     if (Immediate) await OnInput.InvokeAsync(Value);
                     StateHasChanged();
                 }
@@ -177,10 +243,12 @@ namespace MudBlazor.Extensions.Components
 
         private async Task SetStartAsync(T v, bool commit)
         {
-            var s = ValueMath<T>.Clamp(ValueMath<T>.SnapToStep(v, SizeRange, StepRange), new MudExRange<T>(SizeRange.Start, Value.End));
-            if (!Equals(s, Value.Start))
+            var s = M.Clamp(Snap(v), new MudExRange<T>(SizeRange.Start, Value.End));
+            var r = M.EnforceMinMaxLength(new MudExRange<T>(s, Value.End), SizeRange, MinLength, MaxLength, Thumb.Start);
+
+            if (!Equals(r.Start, Value.Start) || !Equals(r.End, Value.End))
             {
-                Value = new MudExRange<T>(s, Value.End);
+                Value = r;
                 if (commit) { await ValueChanged.InvokeAsync(Value); await OnChange.InvokeAsync(Value); }
                 else if (Immediate) await OnInput.InvokeAsync(Value);
             }
@@ -188,10 +256,12 @@ namespace MudBlazor.Extensions.Components
 
         private async Task SetEndAsync(T v, bool commit)
         {
-            var e = ValueMath<T>.Clamp(ValueMath<T>.SnapToStep(v, SizeRange, StepRange), new MudExRange<T>(Value.Start, SizeRange.End));
-            if (!Equals(e, Value.End))
+            var e = M.Clamp(Snap(v), new MudExRange<T>(Value.Start, SizeRange.End));
+            var r = M.EnforceMinMaxLength(new MudExRange<T>(Value.Start, e), SizeRange, MinLength, MaxLength, Thumb.End);
+
+            if (!Equals(r.Start, Value.Start) || !Equals(r.End, Value.End))
             {
-                Value = new MudExRange<T>(Value.Start, e);
+                Value = r;
                 if (commit) { await ValueChanged.InvokeAsync(Value); await OnChange.InvokeAsync(Value); }
                 else if (Immediate) await OnInput.InvokeAsync(Value);
             }
@@ -214,16 +284,19 @@ namespace MudBlazor.Extensions.Components
 
             if (thumb == Thumb.Start)
             {
-                var target = home ? SizeRange.Start : end ? Value.End : ValueMath<T>.AddSteps(Value.Start, StepRange, deltaSteps);
+                var target = home ? SizeRange.Start
+                                  : end ? Value.End
+                                        : AddStepsLocal(Value.Start, deltaSteps);
                 await SetStartAsync(target, true);
             }
             else
             {
-                var target = home ? Value.Start : end ? SizeRange.End : ValueMath<T>.AddSteps(Value.End, StepRange, deltaSteps);
+                var target = home ? Value.Start
+                                  : end ? SizeRange.End
+                                        : AddStepsLocal(Value.End, deltaSteps);
                 await SetEndAsync(target, true);
             }
         }
 
-        private record struct DomRect(double Left, double Top, double Width, double Height);
     }
 }
