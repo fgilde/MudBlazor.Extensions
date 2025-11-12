@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
-using MudBlazor;
 using MudBlazor.Extensions.Attribute;
-using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Contracts;
 using Nextended.Core.Types;
 using Nextended.Core.Types.Ranges.Math;
-using System;
 using System.Globalization;
 using Nextended.Core.Extensions;
 
