@@ -18,7 +18,7 @@
         @if (HasTrackTemplate)
         {
             <div class="mud-ex-range-slider-track-template">
-                @TrackTemplate
+                @TrackTemplate(GetContext())
             </div>
         }
 
@@ -27,7 +27,7 @@
             @if (HasSelectionTemplate)
             {
                 <div class="mud-ex-range-slider-selection-template">
-                    @SelectionTemplate
+                    @SelectionTemplate(GetContext())
                 </div>
             }
         </div>
@@ -46,7 +46,7 @@
                  aria-labelledby="@AriaLabelledBy"
                  aria-disabled="@Disabled">
                 <div class="mud-ex-range-slider-thumb-template">
-                    @ThumbStartTemplate
+                    @ThumbStartTemplate(GetThumbContext(Thumb.Start))
                 </div>
             </div>
         }
@@ -79,7 +79,7 @@
                  aria-labelledby="@AriaLabelledBy"
                  aria-disabled="@Disabled">
                 <div class="mud-ex-range-slider-thumb-template">
-                    @ThumbEndTemplate
+                    @ThumbEndTemplate(GetThumbContext(Thumb.End))
                 </div>
             </div>
         }

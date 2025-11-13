@@ -55,23 +55,49 @@ namespace MudBlazor.Extensions.Components
         [Parameter, SafeCategory("Appearance")]
         public MudExColor SelectionColor { get; set; } = MudExColor.Primary;
 
-        // Templates
+        // Templates with context
         [Parameter, SafeCategory("Templates")]
-        public RenderFragment? TrackTemplate { get; set; }
+        public RenderFragment<MudExRangeSliderContext<T>>? TrackTemplate { get; set; }
 
         [Parameter, SafeCategory("Templates")]
-        public RenderFragment? SelectionTemplate { get; set; }
+        public RenderFragment<MudExRangeSliderContext<T>>? SelectionTemplate { get; set; }
 
         [Parameter, SafeCategory("Templates")]
-        public RenderFragment? ThumbStartTemplate { get; set; }
+        public RenderFragment<MudExRangeSliderThumbContext<T>>? ThumbStartTemplate { get; set; }
 
         [Parameter, SafeCategory("Templates")]
-        public RenderFragment? ThumbEndTemplate { get; set; }
+        public RenderFragment<MudExRangeSliderThumbContext<T>>? ThumbEndTemplate { get; set; }
 
         private bool HasTrackTemplate => TrackTemplate != null;
         private bool HasSelectionTemplate => SelectionTemplate != null;
         private bool HasThumbStartTemplate => ThumbStartTemplate != null;
         private bool HasThumbEndTemplate => ThumbEndTemplate != null;
+
+        private MudExRangeSliderContext<T> GetContext()
+            => new MudExRangeSliderContext<T>
+            {
+                Value = Value,
+                SizeRange = SizeRange,
+                StartPercent = P(Value.Start),
+                EndPercent = P(Value.End),
+                Size = Size,
+                Disabled = Disabled,
+                ReadOnly = ReadOnly
+            };
+
+        private MudExRangeSliderThumbContext<T> GetThumbContext(Thumb thumb)
+        {
+            var value = thumb == Thumb.Start ? Value.Start : Value.End;
+            return new MudExRangeSliderThumbContext<T>
+            {
+                Value = value,
+                Thumb = thumb,
+                Percent = P(value),
+                Size = Size,
+                Disabled = Disabled,
+                ReadOnly = ReadOnly
+            };
+        }
 
         private double P(T v)
             => Math.Clamp(M.Percent(v, SizeRange), 0, 1);
@@ -424,5 +450,29 @@ namespace MudBlazor.Extensions.Components
                 await SetEndAsync(target, true);
             }
         }
+    }
+
+    public class MudExRangeContextBase<T> where T: IComparable<T> { }
+
+    // Context classes
+    public class MudExRangeSliderContext<T> where T : struct, IComparable<T>
+    {
+        public IRange<T> Value { get; init; } = default!;
+        public IRange<T> SizeRange { get; init; } = default!;
+        public double StartPercent { get; init; }
+        public double EndPercent { get; init; }
+        public Size Size { get; init; }
+        public bool Disabled { get; init; }
+        public bool ReadOnly { get; init; }
+    }
+
+    public class MudExRangeSliderThumbContext<T> where T : struct, IComparable<T>
+    {
+        public T Value { get; init; } = default!;
+        public Thumb Thumb { get; init; }
+        public double Percent { get; init; }
+        public Size Size { get; init; }
+        public bool Disabled { get; init; }
+        public bool ReadOnly { get; init; }
     }
 }

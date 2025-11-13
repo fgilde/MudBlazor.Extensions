@@ -14,7 +14,7 @@ public enum SliderOrientation
 
 internal enum DragMode { None, StartThumb, EndThumb, WholeRange }
 
-internal enum Thumb { Start, End }
+public enum Thumb { Start, End }
 
 //TODO: check BoundingClientRect
 internal record struct DomRect(double Left, double Top, double Width, double Height);

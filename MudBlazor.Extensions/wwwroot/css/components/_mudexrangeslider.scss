@@ -67,46 +67,57 @@
             background: var(--ex-track-color);
             border-radius: 2px;
             pointer-events: none;
+            z-index: 0;
         }
 
-    /* Track template container */
+    /* Track template container - fills entire track */
     .mud-ex-range-slider .mud-ex-range-slider-track-template {
         position: absolute;
         left: 0;
         right: 0;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 0;
+        bottom: 0;
         pointer-events: none;
         width: 100%;
+        height: 100%;
         display: flex;
-        align-items: center;
+        align-items: stretch;
         justify-content: stretch;
+        z-index: 0;
     }
 
         .mud-ex-range-slider .mud-ex-range-slider-track-template > * {
             width: 100%;
+            height: 100%;
         }
 
-    /* Selection overlay (H) */
+    /* Selection overlay (H) - positioned within track */
     .mud-ex-range-slider .mud-ex-range-slider-selection {
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
         left: calc(var(--p-start) * 100%);
         right: calc((1 - var(--p-end)) * 100%);
         pointer-events: auto;
         cursor: move;
         z-index: 1;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items: stretch;
+        justify-content: stretch;
     }
 
-        /* Default selection bar (only when no template) */
+        /* Default selection bar (only when no template) - centered vertically */
         .mud-ex-range-slider .mud-ex-range-slider-selection:not(.mud-ex-has-template) {
+            top: 50%;
+            transform: translateY(-50%);
             height: var(--ex-selection-height);
             background: var(--ex-selection-color);
             border-radius: 2px;
+        }
+
+        /* Selection with template - fills entire track height */
+        .mud-ex-range-slider .mud-ex-range-slider-selection.mud-ex-has-template {
+            top: 0;
+            bottom: 0;
+            height: 100%;
         }
 
     /* Selection template container */
@@ -114,13 +125,14 @@
         width: 100%;
         height: 100%;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items: stretch;
+        justify-content: stretch;
         pointer-events: none;
     }
 
         .mud-ex-range-slider .mud-ex-range-slider-selection-template > * {
             width: 100%;
+            height: 100%;
         }
 
     /* Thumbs (buttons) for H */
@@ -128,7 +140,7 @@
         position: absolute;
         top: 50%;
         transform: translate(-50%, -50%);
-        cursor: ew-resize;
+        cursor: pointer;
         outline: none;
         z-index: 2;
     }
@@ -218,38 +230,41 @@
             }
 
         .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track-template {
-            left: 50%;
+            left: 0;
+            right: 0;
             top: 0;
             bottom: 0;
-            right: auto;
-            transform: translateX(-50%);
-            width: auto;
+            width: 100%;
             height: 100%;
             flex-direction: column;
         }
 
             .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track-template > * {
-                width: auto;
+                width: 100%;
                 height: 100%;
             }
 
         .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection {
-            left: 50%;
-            right: auto;
-            transform: translateX(-50%);
-            height: auto;
             top: calc(var(--p-start) * 100%);
             bottom: calc((1 - var(--p-end)) * 100%);
             flex-direction: column;
         }
 
             .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection:not(.mud-ex-has-template) {
+                left: 50%;
+                transform: translateX(-50%);
                 width: var(--ex-selection-width);
                 height: auto;
             }
 
+            .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection.mud-ex-has-template {
+                left: 0;
+                right: 0;
+                width: 100%;
+            }
+
         .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection-template > * {
-            width: auto;
+            width: 100%;
             height: 100%;
         }
 
