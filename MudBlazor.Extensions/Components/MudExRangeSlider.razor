@@ -3,15 +3,16 @@
 @typeparam T
 
 <div @ref="ElementReference"
-     class="mud-ex-range-slider @(Orientation.ToDescriptionString()) @Class"
+     class="mud-ex-range-slider @SizeClass @(Orientation.ToDescriptionString()) @Class"
      style="@Style"
      role="group"
      aria-roledescription="range"
-     aria-disabled="@Disabled">
+     aria-disabled="@Disabled"
+     aria-readonly="@ReadOnly">
 
-    <div class="mud-ex-range-slider-track @ColorClass"
+    <div class="mud-ex-range-slider-track"
          @ref="_trackRef"
-         style="--p-start:@_startPct; --p-end:@_endPct; --p-min:@_minPct; --p-max:@_maxPct;"
+         style="@TrackStyle"
          @onpointerdown="OnTrackPointerDown">
 
         <div class="mud-ex-range-slider-selection"
@@ -45,8 +46,16 @@
     @if (ShowInputs)
     {
         <div class="mud-ex-range-slider-inputs">
-            <MudTextField T="T" Value="@Value.Start" ValueChanged="v => SetStartAsync(v, true)" Disabled="@Disabled" />
-            <MudTextField T="T" Value="@Value.End"   ValueChanged="v => SetEndAsync(v, true)"   Disabled="@Disabled" />
+            <MudTextField T="T"
+                          Value="@Value.Start"
+                          ValueChanged="v => SetStartAsync(v, true)"
+                          Disabled="@Disabled"
+                          ReadOnly="@ReadOnly" />
+            <MudTextField T="T"
+                          Value="@Value.End"
+                          ValueChanged="v => SetEndAsync(v, true)"
+                          Disabled="@Disabled"
+                          ReadOnly="@ReadOnly" />
         </div>
     }
 </div>

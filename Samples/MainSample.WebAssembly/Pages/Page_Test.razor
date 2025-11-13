@@ -37,6 +37,9 @@
                   SizeRange="@(new MudExRange<DateTime>(new(2016, 1, 1), new(2024, 12, 31)))"
                   StepLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(30).Ticks))"
                   StepResolver="@(StepResolvers.DateTime.Quarterly(_ => 1))"
+                  Size="Size.Large"
+                  ThumbColor="MudExColor.Tertiary"
+                  SelectionColor="MudExColor.Tertiary"
                   @bind-Value="_period"
                   AllowWholeRangeDrag="true">
 

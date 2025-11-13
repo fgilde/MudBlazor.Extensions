@@ -5276,11 +5276,8 @@
 }
 
 /* _mudexrangeslider.scss
-   Styles for MudExRangeSlider with 4 orientations support.
-   Uses CSS variables:
-     --p-start, --p-end  (0..1) set by component (already orientation-aware)
-   Works out-of-the-box for horizontal; add wrapper class .mud-ex-vertical for vertical.
-   (Optional) Add .mud-ex-horizontal explicitly; without either, horizontal rules apply.
+   Styles for MudExRangeSlider matching MudBlazor Slider design
+   Uses CSS variables set by component for colors and sizes
 */
 /* ---------- Base ---------- */
 .mud-ex-range-slider {
@@ -5288,71 +5285,76 @@
   width: 100%;
   touch-action: none;
   user-select: none;
-  /* helpful defaults */
-  --ex-track-height: 28px;
-  --ex-track-width: 28px;
-  --ex-thumb-size: 14px;
-  --ex-thumb-shadow: 0 0 0 2px #fff;
-  --ex-selection-opacity: .25;
-  /* palette fallbacks (Mud themes usually define these) */
-  --ex-line: var(--mud-palette-lines-default, #80808066);
-  --ex-fg: var(--mud-palette-text-primary, #222);
-  --ex-fg-2: var(--mud-palette-text-secondary, #666);
-  --ex-bg: var(--mud-palette-surface, #fff);
-  --ex-accent: var(--mud-palette-primary, #1976d2);
+  /* Size defaults (Medium) - overridden by size classes */
+  --ex-track-height: 2px;
+  --ex-track-width: 2px;
+  --ex-thumb-size: 12px;
+  --ex-selection-height: 2px;
+  --ex-selection-width: 2px;
+  /* Colors set via inline style from component */
+  /* --ex-track-color, --ex-thumb-color, --ex-selection-color */
 }
 
-/* ---------- Color variants (applied on TRACK element via @ColorClass) ---------- */
-.mud-ex-range-slider-track.mud-ex-range-slider-primary {
-  --ex-accent: var(--mud-palette-primary, #1976d2);
+/* ---------- Size Variants ---------- */
+.mud-ex-range-slider.mud-ex-size-small {
+  --ex-track-height: 1px;
+  --ex-track-width: 1px;
+  --ex-thumb-size: 8px;
+  --ex-selection-height: 1px;
+  --ex-selection-width: 1px;
 }
 
-.mud-ex-range-slider-track.mud-ex-range-slider-secondary {
-  --ex-accent: var(--mud-palette-secondary, #9c27b0);
+.mud-ex-range-slider.mud-ex-size-medium {
+  --ex-track-height: 2px;
+  --ex-track-width: 2px;
+  --ex-thumb-size: 12px;
+  --ex-selection-height: 2px;
+  --ex-selection-width: 2px;
 }
 
-.mud-ex-range-slider-track.mud-ex-range-slider-tertiary {
-  --ex-accent: var(--mud-palette-tertiary, #009688);
+.mud-ex-range-slider.mud-ex-size-large {
+  --ex-track-height: 4px;
+  --ex-track-width: 4px;
+  --ex-thumb-size: 16px;
+  --ex-selection-height: 4px;
+  --ex-selection-width: 4px;
 }
 
-.mud-ex-range-slider-track.mud-ex-range-slider-info {
-  --ex-accent: var(--mud-palette-info, #0288d1);
-}
-
-.mud-ex-range-slider-track.mud-ex-range-slider-success {
-  --ex-accent: var(--mud-palette-success, #2e7d32);
-}
-
-.mud-ex-range-slider-track.mud-ex-range-slider-warning {
-  --ex-accent: var(--mud-palette-warning, #ed6c02);
-}
-
-.mud-ex-range-slider-track.mud-ex-range-slider-error {
-  --ex-accent: var(--mud-palette-error, #d32f2f);
-}
-
-/* ---------- Track (H) default ---------- */
+/* ---------- Track (Horizontal) ---------- */
 .mud-ex-range-slider .mud-ex-range-slider-track {
   position: relative;
   width: 100%;
-  height: var(--ex-track-height);
-  background: linear-gradient(to bottom, transparent 45%, var(--ex-line) 46%, var(--ex-line) 54%, transparent 55%);
-  border-radius: 4px;
+  height: 32px; /* Touch target area */
+  display: flex;
+  align-items: center;
   box-sizing: border-box;
 }
 
-/* Selection overlay (H) uses --p-start/--p-end (already inverted for RTL/BT in code-behind) */
+.mud-ex-range-slider .mud-ex-range-slider-track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--ex-track-height);
+  background: var(--ex-track-color);
+  border-radius: 2px;
+}
+
+/* Selection overlay (H) */
 .mud-ex-range-slider .mud-ex-range-slider-selection {
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: 50%;
+  transform: translateY(-50%);
   left: calc(var(--p-start) * 100%);
   right: calc((1 - var(--p-end)) * 100%);
-  background: var(--ex-accent);
-  opacity: var(--ex-selection-opacity);
-  pointer-events: auto; /* to receive range-drag mousedown */
-  border-radius: 3px;
+  height: var(--ex-selection-height);
+  background: var(--ex-selection-color);
+  pointer-events: auto;
+  border-radius: 2px;
   cursor: move;
+  z-index: 1;
 }
 
 /* Thumbs (buttons) for H */
@@ -5362,12 +5364,14 @@
   width: var(--ex-thumb-size);
   height: var(--ex-thumb-size);
   transform: translate(-50%, -50%);
-  background: var(--bg, #fff);
-  border: 2px solid var(--ex-accent);
+  background: var(--ex-thumb-color);
+  border: none;
   border-radius: 50%;
-  box-shadow: var(--ex-thumb-shadow);
-  cursor: ew-resize;
+  cursor: pointer;
   outline: none;
+  z-index: 2;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.2s ease;
 }
 
 .mud-ex-range-slider .mud-ex-range-slider-thumb.start {
@@ -5378,42 +5382,68 @@
   left: calc(var(--p-end) * 100%);
 }
 
+.mud-ex-range-slider .mud-ex-range-slider-thumb:hover {
+  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.04);
+}
+
 .mud-ex-range-slider .mud-ex-range-slider-thumb:active {
   cursor: grabbing;
+  box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.08);
 }
 
 .mud-ex-range-slider .mud-ex-range-slider-thumb:focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ex-accent), transparent 60%);
+  box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.12);
 }
 
 /* Inputs block */
 .mud-ex-range-slider .mud-ex-range-slider-inputs {
-  margin-top: 8px;
+  margin-top: 16px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
 }
 
-/* ---------- Vertical wrapper ---------- */
-/* Add .mud-ex-vertical on the outer container when Orientation is TopToBottom/BottomToTop */
+/* ---------- Vertical Orientation ---------- */
+.mud-ex-range-slider.mud-ex-vertical {
+  width: auto;
+  height: 220px;
+  display: inline-flex;
+  flex-direction: column;
+}
+
 .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track {
+  width: 32px; /* Touch target area */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track::before {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  right: auto;
+  transform: translateX(-50%);
   width: var(--ex-track-width);
-  height: 220px; /* or 100% in a constrained container */
-  background: linear-gradient(to right, transparent 45%, var(--ex-line) 46%, var(--ex-line) 54%, transparent 55%);
+  height: auto;
 }
 
 .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection {
-  left: 0;
-  right: 0;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  width: var(--ex-selection-width);
+  height: auto;
   top: calc(var(--p-start) * 100%);
   bottom: calc((1 - var(--p-end)) * 100%);
 }
 
 .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb {
   left: 50%;
-  top: auto; /* we set per-start/end below */
-  cursor: ns-resize;
+  top: auto;
   transform: translate(-50%, -50%);
+  cursor: ns-resize;
 }
 
 .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb.start {
@@ -5424,19 +5454,27 @@
   top: calc(var(--p-end) * 100%);
 }
 
-/* ---------- Disabled state ---------- */
-.mud-ex-range-slider[aria-disabled=true] .mud-ex-range-slider-track {
-  opacity: 0.6;
+/* ---------- Disabled State ---------- */
+.mud-ex-range-slider[aria-disabled=true] {
+  opacity: 0.38;
+  pointer-events: none;
 }
 
 .mud-ex-range-slider[aria-disabled=true] .mud-ex-range-slider-thumb {
   cursor: not-allowed;
-  filter: grayscale(0.2);
 }
 
-/* ---------- Optional: hover affordance ---------- */
-.mud-ex-range-slider .mud-ex-range-slider-thumb:hover {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ex-accent), transparent 70%);
+.mud-ex-range-slider[aria-disabled=true] .mud-ex-range-slider-selection {
+  cursor: not-allowed;
+}
+
+/* ---------- ReadOnly State ---------- */
+.mud-ex-range-slider[aria-readonly=true] .mud-ex-range-slider-thumb {
+  cursor: default;
+}
+
+.mud-ex-range-slider[aria-readonly=true] .mud-ex-range-slider-selection {
+  cursor: default;
 }
 
 .mud-ex-object-edit-group-flat .mud-expand-panel-text {
@@ -6052,12 +6090,12 @@
   animation: 44s -27s move infinite ease-in-out alternate;
 }
 .mud-ex-bg-dot::before {
-  text-shadow: 0.9181822057em -0.0586443831em 7px hsla(31.293452426, 100%, 50%, 0.9), -0.1638672883em 0.937006869em 7px hsla(20.5670245942, 100%, 50%, 0.9), -0.411403256em 0.3178281666em 7px hsla(226.0049866594, 100%, 50%, 0.9), -0.2290328931em 1.7658502333em 7px hsla(75.1172112801, 100%, 50%, 0.9), 0.653341861em 0.8027475665em 7px hsla(283.5438152381, 100%, 50%, 0.9), 1.4203729704em 1.9298473519em 7px hsla(166.4676377575, 100%, 50%, 0.9), 1.881238143em 2.0505581121em 7px hsla(308.8615087213, 100%, 50%, 0.9), 1.2565917706em 0.6850754629em 7px hsla(222.1671335215, 100%, 50%, 0.9), 1.2343408174em 0.5774610051em 7px hsla(116.0099002339, 100%, 50%, 0.9), -0.1920798741em -0.3165911628em 7px hsla(64.2111491148, 100%, 50%, 0.9), 2.2795752798em 2.4530156488em 7px hsla(116.7721912993, 100%, 50%, 0.9), 1.9921099493em 0.157194763em 7px hsla(193.8943746738, 100%, 50%, 0.9), -0.1550630304em 1.3776615402em 7px hsla(264.5934393451, 100%, 50%, 0.9), 0.0880404164em -0.2461480112em 7px hsla(171.2386336979, 100%, 50%, 0.9), 0.5884855472em 1.0764152905em 7px hsla(73.0852137248, 100%, 50%, 0.9), -0.3602591475em -0.2034717332em 7px hsla(342.734036034, 100%, 50%, 0.9), 1.8630118863em 0.7289314234em 7px hsla(330.0399096709, 100%, 50%, 0.9), 0.9117789186em 1.6325347317em 7px hsla(1.5532770688, 100%, 50%, 0.9), 1.207922034em 0.0715267515em 7px hsla(354.0070590558, 100%, 50%, 0.9), 1.1091055603em 0.2958729953em 7px hsla(234.8454849946, 100%, 50%, 0.9), -0.2566403372em 0.2345996687em 7px hsla(182.9451366528, 100%, 50%, 0.9), 0.8379905726em 2.3284977694em 7px hsla(343.6249837374, 100%, 50%, 0.9), -0.0194482188em 1.0863940781em 7px hsla(254.8883102111, 100%, 50%, 0.9), 0.4406647864em 0.1232827234em 7px hsla(124.2538363997, 100%, 50%, 0.9), 1.3914361467em 1.397194152em 7px hsla(109.9160803107, 100%, 50%, 0.9), 2.2264804943em 0.8544918891em 7px hsla(236.0507971811, 100%, 50%, 0.9), 0.5478316133em 1.5858703768em 7px hsla(342.0009659397, 100%, 50%, 0.9), 0.8641612101em 2.2225335003em 7px hsla(136.7556662338, 100%, 50%, 0.9), 1.0435158166em 0.2943972218em 7px hsla(238.9555726608, 100%, 50%, 0.9), 0.0062800959em 2.2331561165em 7px hsla(83.6065996699, 100%, 50%, 0.9), -0.0369852924em 0.0968230415em 7px hsla(60.6148013872, 100%, 50%, 0.9), 1.0371588248em 1.1534013075em 7px hsla(259.3109770341, 100%, 50%, 0.9), -0.1608925476em 0.4970003165em 7px hsla(334.547151419, 100%, 50%, 0.9), 2.2919486781em 1.4719910635em 7px hsla(356.0949925573, 100%, 50%, 0.9), 1.147330827em 1.1552569818em 7px hsla(325.949116229, 100%, 50%, 0.9), 2.4246194038em 2.2498396481em 7px hsla(291.6686379785, 100%, 50%, 0.9), 2.0062535779em 1.5487576859em 7px hsla(102.657846259, 100%, 50%, 0.9), 0.5412456082em -0.259362571em 7px hsla(56.6441942147, 100%, 50%, 0.9), 1.2871507317em 1.657295001em 7px hsla(168.4782502989, 100%, 50%, 0.9), 2.1007691309em 0.3770604892em 7px hsla(342.9041316432, 100%, 50%, 0.9), 1.3870041706em 0.9030896948em 7px hsla(80.9671755258, 100%, 50%, 0.9);
+  text-shadow: 1.1972210417em 0.3536522018em 7px hsla(36.6415825872, 100%, 50%, 0.9), 0.210987603em 0.9301722152em 7px hsla(44.7779280912, 100%, 50%, 0.9), 2.3907881651em 0.5173095759em 7px hsla(236.3669457303, 100%, 50%, 0.9), 0.5845847014em 1.8581131366em 7px hsla(282.2423900107, 100%, 50%, 0.9), -0.040089434em 2.2496994806em 7px hsla(194.2086816486, 100%, 50%, 0.9), 0.2869869968em 1.01520465em 7px hsla(74.8479208702, 100%, 50%, 0.9), -0.3148911953em 1.2797160184em 7px hsla(104.2060441255, 100%, 50%, 0.9), 1.2380543783em 1.6504104423em 7px hsla(217.3926854786, 100%, 50%, 0.9), 0.156181373em 0.966537409em 7px hsla(210.1969044795, 100%, 50%, 0.9), 0.0728786635em 2.0750485037em 7px hsla(177.5087034802, 100%, 50%, 0.9), -0.1738263094em 2.2169345052em 7px hsla(255.5890397772, 100%, 50%, 0.9), 0.6915796581em 1.4022961067em 7px hsla(142.145904198, 100%, 50%, 0.9), 0.196187014em 0.17478564em 7px hsla(56.3249373897, 100%, 50%, 0.9), 0.2568408191em 0.120244513em 7px hsla(99.1184890667, 100%, 50%, 0.9), 2.0896605306em 2.440303818em 7px hsla(139.689714603, 100%, 50%, 0.9), 0.0712928755em -0.0461529048em 7px hsla(107.350087977, 100%, 50%, 0.9), -0.4067057177em 0.9896365256em 7px hsla(188.4153551902, 100%, 50%, 0.9), 0.4500890988em 1.562718294em 7px hsla(114.9522123853, 100%, 50%, 0.9), 2.0370887133em 1.1338697709em 7px hsla(193.9646468111, 100%, 50%, 0.9), 0.2028665153em 0.7672804122em 7px hsla(147.1484004599, 100%, 50%, 0.9), 2.4904388129em 1.4514373034em 7px hsla(50.6335612204, 100%, 50%, 0.9), -0.3497671285em 2.3096292416em 7px hsla(247.3690781882, 100%, 50%, 0.9), 1.584875683em 1.3448382068em 7px hsla(18.5462579019, 100%, 50%, 0.9), -0.4935346011em 1.8669535279em 7px hsla(290.5998815292, 100%, 50%, 0.9), 2.032690837em 0.5303374249em 7px hsla(35.7447733608, 100%, 50%, 0.9), 1.2122989398em 2.4985943277em 7px hsla(139.4711805387, 100%, 50%, 0.9), 2.2271630007em 0.2023377499em 7px hsla(126.713284614, 100%, 50%, 0.9), 0.8995859939em 2.4488849065em 7px hsla(270.6419405812, 100%, 50%, 0.9), 2.1021350257em 0.0753349728em 7px hsla(86.518442168, 100%, 50%, 0.9), 0.3208805172em 0.5635470617em 7px hsla(295.2817641004, 100%, 50%, 0.9), 0.0350168887em 0.0473232832em 7px hsla(202.2444627218, 100%, 50%, 0.9), 0.1301619699em 1.9095490457em 7px hsla(3.9991941788, 100%, 50%, 0.9), -0.2802867173em 1.9389601058em 7px hsla(240.6580672707, 100%, 50%, 0.9), 1.4008296184em 1.9368540443em 7px hsla(160.9740024373, 100%, 50%, 0.9), 2.0802390748em -0.3963309584em 7px hsla(264.1458077756, 100%, 50%, 0.9), 0.6203368631em 2.0234509228em 7px hsla(185.928113251, 100%, 50%, 0.9), 2.1787599511em 1.9830863596em 7px hsla(347.1274462173, 100%, 50%, 0.9), 0.9181999065em 0.2379384072em 7px hsla(144.4021558594, 100%, 50%, 0.9), 1.2532898678em -0.2193630122em 7px hsla(350.338532138, 100%, 50%, 0.9), -0.4592719334em 1.6715794547em 7px hsla(13.5131278835, 100%, 50%, 0.9), 0.4388238948em 0.4936622567em 7px hsla(92.6602479586, 100%, 50%, 0.9);
   animation-duration: 44s;
   animation-delay: -27s;
 }
 .mud-ex-bg-dot::after {
-  text-shadow: 0.3064120773em 0.6618883495em 7px hsla(146.0871899284, 100%, 50%, 0.9), 0.002647822em 1.1446864922em 7px hsla(317.5576806602, 100%, 50%, 0.9), 1.6034658686em 2.0059866413em 7px hsla(174.0126706263, 100%, 50%, 0.9), 0.9015256828em 1.7437045695em 7px hsla(0.906706055, 100%, 50%, 0.9), 1.8227459703em 0.6581991822em 7px hsla(220.3784560236, 100%, 50%, 0.9), 1.1057035207em -0.0745261209em 7px hsla(3.5768946591, 100%, 50%, 0.9), -0.4814007925em 2.1426091976em 7px hsla(117.567645608, 100%, 50%, 0.9), 0.3012176616em -0.0770205727em 7px hsla(79.5011621575, 100%, 50%, 0.9), 1.580796126em 0.2348818961em 7px hsla(181.578514563, 100%, 50%, 0.9), 0.1073302801em -0.3771241707em 7px hsla(181.6415428502, 100%, 50%, 0.9), -0.1983954046em 0.6541838575em 7px hsla(72.6562478354, 100%, 50%, 0.9), 0.6102711178em 2.2220539526em 7px hsla(232.9440626097, 100%, 50%, 0.9), 1.1830578182em 1.0729910154em 7px hsla(34.4528705015, 100%, 50%, 0.9), 2.3300139074em -0.115856604em 7px hsla(90.6967979673, 100%, 50%, 0.9), 1.539852431em 1.36319808em 7px hsla(302.3680789632, 100%, 50%, 0.9), 0.8941665576em 0.9559784649em 7px hsla(181.6572853046, 100%, 50%, 0.9), 2.0287159088em 0.431789076em 7px hsla(110.0245501505, 100%, 50%, 0.9), 1.4282989426em 0.693591795em 7px hsla(255.9775600182, 100%, 50%, 0.9), 0.4171715793em 1.384395195em 7px hsla(133.8558972843, 100%, 50%, 0.9), 2.4126848086em -0.4058935573em 7px hsla(128.6047413154, 100%, 50%, 0.9), 0.9564613764em 2.4358633278em 7px hsla(257.3128590329, 100%, 50%, 0.9), 0.3334800164em 2.2879206333em 7px hsla(175.5931021145, 100%, 50%, 0.9), -0.2610943839em 0.6460600031em 7px hsla(22.0112576028, 100%, 50%, 0.9), -0.1474413492em -0.2830343202em 7px hsla(189.5661538318, 100%, 50%, 0.9), 0.4828346179em -0.4341461129em 7px hsla(68.4651404324, 100%, 50%, 0.9), 2.0489879577em 1.1867069249em 7px hsla(14.8422873742, 100%, 50%, 0.9), 1.3821890885em 1.9889013149em 7px hsla(148.6542512405, 100%, 50%, 0.9), 0.2967315887em 0.5716113242em 7px hsla(299.6115790613, 100%, 50%, 0.9), 0.5861722792em 2.293905284em 7px hsla(236.189922072, 100%, 50%, 0.9), -0.2704632216em 0.2433450972em 7px hsla(188.7384939425, 100%, 50%, 0.9), 0.1362666698em 0.7723726736em 7px hsla(306.0989075725, 100%, 50%, 0.9), -0.0757809043em -0.1550189691em 7px hsla(64.8892918722, 100%, 50%, 0.9), 1.4706091669em 0.3330872372em 7px hsla(117.7618819582, 100%, 50%, 0.9), 1.5720217142em 1.3203142177em 7px hsla(46.3101644588, 100%, 50%, 0.9), 2.1301782221em 0.8573374869em 7px hsla(287.5347965708, 100%, 50%, 0.9), -0.2220220602em 0.0309908258em 7px hsla(215.061863417, 100%, 50%, 0.9), 1.8621322459em 2.1411371307em 7px hsla(350.6093424325, 100%, 50%, 0.9), 0.432113174em 1.7518766396em 7px hsla(236.1274405317, 100%, 50%, 0.9), 2.2189561945em 1.3908847329em 7px hsla(91.4048354072, 100%, 50%, 0.9), 1.1439535961em 0.2312187964em 7px hsla(169.3725897186, 100%, 50%, 0.9), 1.4801831565em 1.858501828em 7px hsla(137.5595141153, 100%, 50%, 0.9);
+  text-shadow: 1.0910326865em 1.1134751669em 7px hsla(196.6445670206, 100%, 50%, 0.9), 1.2239338998em 1.1417585306em 7px hsla(152.6453927165, 100%, 50%, 0.9), 0.2189574956em 1.8118247677em 7px hsla(56.8103805978, 100%, 50%, 0.9), 0.7077660107em 2.0412620041em 7px hsla(239.0060700519, 100%, 50%, 0.9), -0.0076900639em 2.4360673933em 7px hsla(250.2008935148, 100%, 50%, 0.9), 0.3223935552em 2.3922796264em 7px hsla(108.7626310315, 100%, 50%, 0.9), -0.0827260278em 1.144716937em 7px hsla(113.2357834563, 100%, 50%, 0.9), 1.0943512909em 0.4878742277em 7px hsla(308.8751663086, 100%, 50%, 0.9), 1.2123480262em 0.1224335981em 7px hsla(318.8392612992, 100%, 50%, 0.9), 0.6887838955em 0.3510702169em 7px hsla(290.4215621719, 100%, 50%, 0.9), 2.0369593032em 1.2519769121em 7px hsla(339.5501405154, 100%, 50%, 0.9), 1.6475331164em 0.8902254783em 7px hsla(50.672116674, 100%, 50%, 0.9), 0.3710559956em 2.2277734968em 7px hsla(67.5057752261, 100%, 50%, 0.9), 1.7061903689em 1.7495684154em 7px hsla(169.1593902551, 100%, 50%, 0.9), -0.4574967267em 0.1309132477em 7px hsla(46.4896813647, 100%, 50%, 0.9), 1.5968085465em 0.5293087124em 7px hsla(127.1168266656, 100%, 50%, 0.9), 1.3088204599em 0.7141075092em 7px hsla(305.1490893808, 100%, 50%, 0.9), 1.2892428361em 2.358583015em 7px hsla(19.6713381381, 100%, 50%, 0.9), 0.004106104em 2.061131234em 7px hsla(64.1453015201, 100%, 50%, 0.9), 1.7273758478em 2.2011069515em 7px hsla(147.8434979119, 100%, 50%, 0.9), 1.795853722em 0.846406285em 7px hsla(285.308524881, 100%, 50%, 0.9), -0.0552852331em 2.3463792027em 7px hsla(289.6678922001, 100%, 50%, 0.9), 0.441719449em 0.5377580298em 7px hsla(87.3683544722, 100%, 50%, 0.9), 0.708967807em 0.8246962391em 7px hsla(259.3592983627, 100%, 50%, 0.9), 2.4400201564em 0.4069464429em 7px hsla(115.0101141767, 100%, 50%, 0.9), 1.9882390922em 1.7433038581em 7px hsla(102.7441034448, 100%, 50%, 0.9), 1.3917993331em 2.1093699506em 7px hsla(95.2027231492, 100%, 50%, 0.9), -0.3781341582em -0.4656733416em 7px hsla(4.4717808222, 100%, 50%, 0.9), 0.4489889087em 1.4324843761em 7px hsla(85.8398631558, 100%, 50%, 0.9), 2.4936815741em 1.9698950286em 7px hsla(244.7174769882, 100%, 50%, 0.9), 2.4428469648em 0.3750178065em 7px hsla(294.4378156864, 100%, 50%, 0.9), 0.8673443562em 0.809273049em 7px hsla(337.0704584168, 100%, 50%, 0.9), -0.2194046043em 0.9560269776em 7px hsla(170.9246093859, 100%, 50%, 0.9), 2.3277274216em 1.6455641684em 7px hsla(66.1394724975, 100%, 50%, 0.9), -0.4391526172em 1.4900286848em 7px hsla(83.2044236017, 100%, 50%, 0.9), 0.701962574em 1.3178148661em 7px hsla(333.3509902026, 100%, 50%, 0.9), 0.3891130357em 1.7182981161em 7px hsla(305.0452357985, 100%, 50%, 0.9), -0.488257506em 0.0669231101em 7px hsla(63.8185118896, 100%, 50%, 0.9), 0.2975642733em 1.9677598381em 7px hsla(211.6460028075, 100%, 50%, 0.9), 0.2421742015em 1.899912737em 7px hsla(343.3234418481, 100%, 50%, 0.9), 0.6074348927em 2.1433195926em 7px hsla(206.2409811375, 100%, 50%, 0.9);
   animation-duration: 43s;
   animation-delay: -32s;
 }
