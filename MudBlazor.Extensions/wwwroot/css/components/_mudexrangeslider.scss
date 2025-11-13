@@ -76,6 +76,7 @@
     opacity: var(--ex-selection-opacity);
     pointer-events: auto; /* to receive range-drag mousedown */
     border-radius: 3px;
+    cursor: move;
 }
 
 /* Thumbs (buttons) for H */
@@ -89,7 +90,7 @@
     border: 2px solid var(--ex-accent);
     border-radius: 50%;
     box-shadow: var(--ex-thumb-shadow);
-    cursor: grab;
+    cursor: ew-resize;
     outline: none;
 }
 
@@ -135,6 +136,7 @@
 .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb {
     left: 50%;
     top: auto; /* we set per-start/end below */
+    cursor: ns-resize;
     transform: translate(-50%, -50%);
 }
 

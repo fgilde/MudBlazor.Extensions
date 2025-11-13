@@ -9,6 +9,8 @@ public static partial class MudExCss
         /// </summary>
         public static class General
         {
+            public static readonly Classes MainClass = MainPrefix;
+
             /// <summary>
             /// Full height
             /// </summary>
@@ -17,12 +19,12 @@ public static partial class MudExCss
             /// <summary>
             /// Hidden
             /// </summary>
-            public static readonly Classes Hidden = new CssClasses("mud-ex-hidden");
+            public static readonly Classes Hidden = new CssClasses(true, "hidden");
 
             /// <summary>
             /// Hidden
             /// </summary>
-            public static readonly Classes Collapsed = new CssClasses("mud-ex-collapsed");
+            public static readonly Classes Collapsed = new CssClasses(true, "collapsed");
         }
     }
 }

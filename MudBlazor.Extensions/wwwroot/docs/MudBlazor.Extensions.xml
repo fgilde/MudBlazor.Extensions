@@ -20085,7 +20085,7 @@
             Css classes for dialogs
             </summary>
         </member>
-        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog._Initial">
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial">
             <summary>
             The mud ex initial class should always applied to dialogs if you use dialogServiceExt
             </summary>
@@ -20093,21 +20093,6 @@
         <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Glass">
             <summary>
             Glass dialog
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightContent">
-            <summary>
-            Class for full height content
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightWithMargin">
-            <summary>
-            Full height with margin
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightWithoutMargin">
-            <summary>
-            Full height without margin
             </summary>
         </member>
         <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.ColorfullGlass">
@@ -20123,6 +20108,26 @@
         <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.DialogActionsAbsolute">
             <summary>
             Class for absolute dialog actions
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightContent">
+            <summary>
+            Class for full height content
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.ObjectEdit">
+            <summary>
+            Dialog class for object edit dialogs
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightWithMargin">
+            <summary>
+            Full height with margin
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightWithoutMargin">
+            <summary>
+            Full height without margin
             </summary>
         </member>
         <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.PositionFixedNoMargin">

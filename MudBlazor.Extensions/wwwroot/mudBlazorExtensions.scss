@@ -42,33 +42,33 @@
     position: absolute;
 }
 
-.mud-ex-keep-input-label-visible .mud-input-label {
+.#{$prefix}-keep-input-label-visible .mud-input-label {
     visibility: visible !important;
 }
 
-.mud-ex-alert-message-w-100 > .mud-alert-position > .mud-alert-message {
+.#{$prefix}-alert-message-w-100 > .mud-alert-position > .mud-alert-message {
     width: 100%;
 }
 
 
-.mud-ex-collection-edit-label {
+.#{$prefix}-collection-edit-label {
     color: var(--mud-palette-text-secondary);
     font-size: 1rem;
 }
 
-.mud-ex-collection-edit-label-small {
+.#{$prefix}-collection-edit-label-small {
     transform: translate(0,1.5px) scale(.75);
     transform-origin: top left;
 }
 
-.mud-ex-collection-edit-outlined-border {
+.#{$prefix}-collection-edit-outlined-border {
     border-radius: var(--mud-default-borderradius);
     border-color: var(--mud-palette-lines-inputs);
     border-width: 1px;
     border-style: solid;
 }
 
-.dialog-content-full-height > .outline-none {
+.#{$prefix}-dialog-content-full-height > .outline-none {
     height: 100%;
 }
 
@@ -89,7 +89,7 @@
     width: 100%;
 }
 
-.mud-ex-alert-link {
+.#{$prefix}-alert-link {
     cursor: pointer;
 
     &:hover {
@@ -102,20 +102,20 @@
     margin-top: -5px;
 }
 
-.mud-ex-hide-inputlabel > div > div.mud-shrink ~ label.mud-input-label.mud-input-label-inputcontrol, .mud-ex-hide-inputlabel > .mud-input:focus-within ~ label.mud-input-label.mud-input-label-inputcontrol {
+.#{$prefix}-hide-inputlabel > div > div.mud-shrink ~ label.mud-input-label.mud-input-label-inputcontrol, .#{$prefix}-hide-inputlabel > .mud-input:focus-within ~ label.mud-input-label.mud-input-label-inputcontrol {
     visibility: hidden;
 }
 
 
 
-/*.mud-ex-mb-container ~ .mud-dialog {
+/*.#{$prefix}-mb-container ~ .mud-dialog {
     opacity: 0;
 }
-.mud-ex-mb-container ~ .mud-dialog[data-mud-extended="true"] {
+.#{$prefix}-mb-container ~ .mud-dialog[data-#{$prefix}tended="true"] {
     opacity: 1;
 }*/
 
-.mud-dialog-container-no-modal {
+.#{$prefix}-dialog-container-no-modal {
     display: none !important;
 }
 
@@ -124,13 +124,13 @@
 }
 
 
-.mud-ex-dialog-header-progress {
+.#{$prefix}-dialog-header-progress {
     position: absolute;
     left: 0;
     top: 0;
 }
 
-.mud-ex-scroll-to-top {
+.#{$prefix}-scroll-to-top {
     height: 56px;
     width: 56px;
 
@@ -197,21 +197,21 @@
     border: 3px dotted var(--mud-palette-primary);
 }
 
-.mud-ex-overflow {
+.#{$prefix}-overflow {
     overflow: auto;
 }
 
-.mud-ex-overflow-y {
+.#{$prefix}-overflow-y {
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.mud-ex-overflow-x {
+.#{$prefix}-overflow-x {
     overflow-x: auto;
     overflow-y: hidden;
 }
 
-.mud-ex-dialog-header-actions {
+.#{$prefix}-dialog-header-actions {
     top: 8px;
     right: 48px;
     position: absolute;
@@ -222,51 +222,51 @@
     height: 100%;
 }
 
-.mud-ex-content-center {
+.#{$prefix}-content-center {
     display: flex;
     padding: 80px;
     align-items: center;
     place-content: center;
 }
 
-.mud-ex-empty-indicator-bg {
+.#{$prefix}-empty-indicator-bg {
     background: repeating-linear-gradient(135deg, #ccc, #ccc 10px, #aaa 10px, #aaa 20px);
 }
 
-.mud-ex-transparent-indicator-bg {
+.#{$prefix}-transparent-indicator-bg {
     background-image: linear-gradient(45deg,var(--mud-palette-surface) 25%, transparent 25%, transparent 75%, var(--mud-palette-surface) 75%), linear-gradient(45deg, var(--mud-palette-surface) 25%, transparent 25%, transparent 75%, var(--mud-palette-surface) 75%);
     background-size: 20px 20px;
     background-position: 0 0, 10px 10px;
     background-color: var(--mud-palette-background-grey);
 }
 
-.mud-dialog-container:has(.mud-ex-dialog-no-margin) {
+.mud-dialog-container:has(.#{$prefix}-dialog-no-margin) {
     padding: 0px !important;
 }
 
-.mud-ex-draggable {
+.#{$prefix}-draggable {
     cursor: move;
 }
 
-.mud-ex-resizeable {
+.#{$prefix}-resizeable {
     resize: both;
     overflow: hidden;
 }
 
-.mud-ex-collapsed {
+.#{$prefix}-collapsed {
     visibility: collapse;
 }
 
-.mud-ex-hidden {
+.#{$prefix}-hidden {
     visibility: hidden;
 }
 
 /*WORKAROUND CURRENTLY input label content VARIANT text datalist BROKEN*/
-.mud-ex-select-variant-text .mud-input-label-inputcontrol {
+.#{$prefix}-select-variant-text .mud-input-label-inputcontrol {
     top: -15px;
 }
 
-.mud-ex-select-variant-text {
+.#{$prefix}-select-variant-text {
     /*margin-bottom: 15px;*/
     margin-top: 20px;
 }

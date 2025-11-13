@@ -1,4 +1,12 @@
-﻿@import 'mixins.scss';
+﻿$prefix: "mud-ex";
+
+.#{$prefix}-empty {    
+}
+:root {
+    --#{$prefix}-css-main: #{$prefix}
+}
+
+@import 'mixins.scss';
 @import 'animations/index.scss';
 @import 'misc/index.scss';
 @import 'components/index.scss';

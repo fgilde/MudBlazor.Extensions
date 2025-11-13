@@ -44,6 +44,12 @@
 
 
 @code {
+    protected override Task OnInitializedAsync()
+    {
+        string hcls = MudExCss.Classes.General.MainClass;
+        return base.OnInitializedAsync();
+    }
+
     private IRange<int> _nums = new MudExRange<int>(20, 60);
     private IRange<DateTime> _period = new MudExRange<DateTime>(new(2021, 1, 1), new(2021, 12, 31));
     private IRange<DateTime> _period2 = new RangeOf<DateTime>(new(2021, 1, 1), new(2021, 12, 31), null);
