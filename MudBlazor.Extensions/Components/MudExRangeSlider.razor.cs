@@ -50,10 +50,28 @@ namespace MudBlazor.Extensions.Components
         public MudExColor ThumbColor { get; set; } = MudExColor.Primary;
 
         [Parameter, SafeCategory("Appearance")]
-        public MudExColor TrackColor { get; set; } = "#0000001f";
+        public MudExColor TrackColor { get; set; } = new MudExColor("#0000001f");
 
         [Parameter, SafeCategory("Appearance")]
         public MudExColor SelectionColor { get; set; } = MudExColor.Primary;
+
+        // Templates
+        [Parameter, SafeCategory("Templates")]
+        public RenderFragment? TrackTemplate { get; set; }
+
+        [Parameter, SafeCategory("Templates")]
+        public RenderFragment? SelectionTemplate { get; set; }
+
+        [Parameter, SafeCategory("Templates")]
+        public RenderFragment? ThumbStartTemplate { get; set; }
+
+        [Parameter, SafeCategory("Templates")]
+        public RenderFragment? ThumbEndTemplate { get; set; }
+
+        private bool HasTrackTemplate => TrackTemplate != null;
+        private bool HasSelectionTemplate => SelectionTemplate != null;
+        private bool HasThumbStartTemplate => ThumbStartTemplate != null;
+        private bool HasThumbEndTemplate => ThumbEndTemplate != null;
 
         private double P(T v)
             => Math.Clamp(M.Percent(v, SizeRange), 0, 1);

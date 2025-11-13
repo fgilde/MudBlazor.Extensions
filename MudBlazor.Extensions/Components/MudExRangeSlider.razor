@@ -10,37 +10,93 @@
      aria-disabled="@Disabled"
      aria-readonly="@ReadOnly">
 
-    <div class="mud-ex-range-slider-track"
+    <div class="mud-ex-range-slider-track @(HasTrackTemplate ? "mud-ex-has-template" : "")"
          @ref="_trackRef"
          style="@TrackStyle"
          @onpointerdown="OnTrackPointerDown">
 
-        <div class="mud-ex-range-slider-selection"
-             @onpointerdown="OnRangeDragPointerDown"></div>
+        @if (HasTrackTemplate)
+        {
+            <div class="mud-ex-range-slider-track-template">
+                @TrackTemplate
+            </div>
+        }
 
-        <button class="mud-ex-range-slider-thumb start"
-                id="@_startId"
-                type="button"
-                @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
-                @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
-                role="slider"
-                aria-valuemin="@SizeRangeStringStart"
-                aria-valuemax="@SizeRangeStringEnd"
-                aria-valuenow="@StartString"
-                aria-labelledby="@AriaLabelledBy"
-                disabled="@Disabled" />
+        <div class="mud-ex-range-slider-selection @(HasSelectionTemplate ? "mud-ex-has-template" : "")"
+             @onpointerdown="OnRangeDragPointerDown">
+            @if (HasSelectionTemplate)
+            {
+                <div class="mud-ex-range-slider-selection-template">
+                    @SelectionTemplate
+                </div>
+            }
+        </div>
 
-        <button class="mud-ex-range-slider-thumb end"
-                id="@_endId"
-                type="button"
-                @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.End)"
-                @onkeydown="e => OnKeyDownAsync(e, Thumb.End)"
-                role="slider"
-                aria-valuemin="@SizeRangeStringStart"
-                aria-valuemax="@SizeRangeStringEnd"
-                aria-valuenow="@EndString"
-                aria-labelledby="@AriaLabelledBy"
-                disabled="@Disabled" />
+        @if (HasThumbStartTemplate)
+        {
+            <div class="mud-ex-range-slider-thumb start mud-ex-has-template"
+                 id="@_startId"
+                 tabindex="@(Disabled ? -1 : 0)"
+                 @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
+                 @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
+                 role="slider"
+                 aria-valuemin="@SizeRangeStringStart"
+                 aria-valuemax="@SizeRangeStringEnd"
+                 aria-valuenow="@StartString"
+                 aria-labelledby="@AriaLabelledBy"
+                 aria-disabled="@Disabled">
+                <div class="mud-ex-range-slider-thumb-template">
+                    @ThumbStartTemplate
+                </div>
+            </div>
+        }
+        else
+        {
+            <button class="mud-ex-range-slider-thumb start"
+                    id="@_startId"
+                    type="button"
+                    @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
+                    @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
+                    role="slider"
+                    aria-valuemin="@SizeRangeStringStart"
+                    aria-valuemax="@SizeRangeStringEnd"
+                    aria-valuenow="@StartString"
+                    aria-labelledby="@AriaLabelledBy"
+                    disabled="@Disabled" />
+        }
+
+        @if (HasThumbEndTemplate)
+        {
+            <div class="mud-ex-range-slider-thumb end mud-ex-has-template"
+                 id="@_endId"
+                 tabindex="@(Disabled ? -1 : 0)"
+                 @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.End)"
+                 @onkeydown="e => OnKeyDownAsync(e, Thumb.End)"
+                 role="slider"
+                 aria-valuemin="@SizeRangeStringStart"
+                 aria-valuemax="@SizeRangeStringEnd"
+                 aria-valuenow="@EndString"
+                 aria-labelledby="@AriaLabelledBy"
+                 aria-disabled="@Disabled">
+                <div class="mud-ex-range-slider-thumb-template">
+                    @ThumbEndTemplate
+                </div>
+            </div>
+        }
+        else
+        {
+            <button class="mud-ex-range-slider-thumb end"
+                    id="@_endId"
+                    type="button"
+                    @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.End)"
+                    @onkeydown="e => OnKeyDownAsync(e, Thumb.End)"
+                    role="slider"
+                    aria-valuemin="@SizeRangeStringStart"
+                    aria-valuemax="@SizeRangeStringEnd"
+                    aria-valuenow="@EndString"
+                    aria-labelledby="@AriaLabelledBy"
+                    disabled="@Disabled" />
+        }
     </div>
 
     @if (ShowInputs)

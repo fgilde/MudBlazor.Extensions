@@ -1,6 +1,7 @@
 ﻿/* _mudexrangeslider.scss
    Styles for MudExRangeSlider matching MudBlazor Slider design
    Uses CSS variables set by component for colors and sizes
+   Supports custom templates for Track, Selection, and Thumbs
 */
 
 /* ---------- Base ---------- */
@@ -54,7 +55,8 @@
         box-sizing: border-box;
     }
 
-        .mud-ex-range-slider .mud-ex-range-slider-track::before {
+        /* Default track line (only when no template) */
+        .mud-ex-range-slider .mud-ex-range-slider-track:not(.mud-ex-has-template)::before {
             content: '';
             position: absolute;
             left: 0;
@@ -64,6 +66,25 @@
             height: var(--ex-track-height);
             background: var(--ex-track-color);
             border-radius: 2px;
+            pointer-events: none;
+        }
+
+    /* Track template container */
+    .mud-ex-range-slider .mud-ex-range-slider-track-template {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: stretch;
+    }
+
+        .mud-ex-range-slider .mud-ex-range-slider-track-template > * {
+            width: 100%;
         }
 
     /* Selection overlay (H) */
@@ -73,51 +94,94 @@
         transform: translateY(-50%);
         left: calc(var(--p-start) * 100%);
         right: calc((1 - var(--p-end)) * 100%);
-        height: var(--ex-selection-height);
-        background: var(--ex-selection-color);
         pointer-events: auto;
-        border-radius: 2px;
         cursor: move;
         z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
+
+        /* Default selection bar (only when no template) */
+        .mud-ex-range-slider .mud-ex-range-slider-selection:not(.mud-ex-has-template) {
+            height: var(--ex-selection-height);
+            background: var(--ex-selection-color);
+            border-radius: 2px;
+        }
+
+    /* Selection template container */
+    .mud-ex-range-slider .mud-ex-range-slider-selection-template {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+
+        .mud-ex-range-slider .mud-ex-range-slider-selection-template > * {
+            width: 100%;
+        }
 
     /* Thumbs (buttons) for H */
     .mud-ex-range-slider .mud-ex-range-slider-thumb {
         position: absolute;
         top: 50%;
-        width: var(--ex-thumb-size);
-        height: var(--ex-thumb-size);
         transform: translate(-50%, -50%);
-        background: var(--ex-thumb-color);
-        border: none;
-        border-radius: 50%;
         cursor: pointer;
         outline: none;
         z-index: 2;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        transition: box-shadow 0.2s ease;
     }
 
-        .mud-ex-range-slider .mud-ex-range-slider-thumb.start {
-            left: calc(var(--p-start) * 100%);
+        /* Default thumb style (only when no template) */
+        .mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template) {
+            width: var(--ex-thumb-size);
+            height: var(--ex-thumb-size);
+            background: var(--ex-thumb-color);
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            transition: box-shadow 0.2s ease;
         }
 
-        .mud-ex-range-slider .mud-ex-range-slider-thumb.end {
-            left: calc(var(--p-end) * 100%);
+            .mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template):hover {
+                box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.04);
+            }
+
+            .mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template):active {
+                cursor: grabbing;
+                box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.08);
+            }
+
+            .mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template):focus-visible {
+                box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.12);
+            }
+
+        /* Template thumb container */
+        .mud-ex-range-slider .mud-ex-range-slider-thumb.mud-ex-has-template {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .mud-ex-range-slider .mud-ex-range-slider-thumb:hover {
-            box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.04);
-        }
+    .mud-ex-range-slider .mud-ex-range-slider-thumb-template {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
 
-        .mud-ex-range-slider .mud-ex-range-slider-thumb:active {
-            cursor: grabbing;
-            box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.08);
-        }
+    .mud-ex-range-slider .mud-ex-range-slider-thumb.start {
+        left: calc(var(--p-start) * 100%);
+    }
 
-        .mud-ex-range-slider .mud-ex-range-slider-thumb:focus-visible {
-            box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.12);
-        }
+    .mud-ex-range-slider .mud-ex-range-slider-thumb.end {
+        left: calc(var(--p-end) * 100%);
+    }
+
+    .mud-ex-range-slider .mud-ex-range-slider-thumb:active {
+        cursor: grabbing;
+    }
 
     /* Inputs block */
     .mud-ex-range-slider .mud-ex-range-slider-inputs {
@@ -143,7 +207,7 @@
             align-items: stretch;
         }
 
-            .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track::before {
+            .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track:not(.mud-ex-has-template)::before {
                 left: 50%;
                 top: 0;
                 bottom: 0;
@@ -153,14 +217,40 @@
                 height: auto;
             }
 
+        .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track-template {
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            right: auto;
+            transform: translateX(-50%);
+            width: auto;
+            height: 100%;
+            flex-direction: column;
+        }
+
+            .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track-template > * {
+                width: auto;
+                height: 100%;
+            }
+
         .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection {
             left: 50%;
             right: auto;
             transform: translateX(-50%);
-            width: var(--ex-selection-width);
             height: auto;
             top: calc(var(--p-start) * 100%);
             bottom: calc((1 - var(--p-end)) * 100%);
+            flex-direction: column;
+        }
+
+            .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection:not(.mud-ex-has-template) {
+                width: var(--ex-selection-width);
+                height: auto;
+            }
+
+        .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection-template > * {
+            width: auto;
+            height: 100%;
         }
 
         .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb {

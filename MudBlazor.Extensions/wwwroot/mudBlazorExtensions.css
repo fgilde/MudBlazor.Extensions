@@ -5278,6 +5278,7 @@
 /* _mudexrangeslider.scss
    Styles for MudExRangeSlider matching MudBlazor Slider design
    Uses CSS variables set by component for colors and sizes
+   Supports custom templates for Track, Selection, and Thumbs
 */
 /* ---------- Base ---------- */
 .mud-ex-range-slider {
@@ -5330,7 +5331,8 @@
   box-sizing: border-box;
 }
 
-.mud-ex-range-slider .mud-ex-range-slider-track::before {
+/* Default track line (only when no template) */
+.mud-ex-range-slider .mud-ex-range-slider-track:not(.mud-ex-has-template)::before {
   content: "";
   position: absolute;
   left: 0;
@@ -5340,6 +5342,25 @@
   height: var(--ex-track-height);
   background: var(--ex-track-color);
   border-radius: 2px;
+  pointer-events: none;
+}
+
+/* Track template container */
+.mud-ex-range-slider .mud-ex-range-slider-track-template {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-track-template > * {
+  width: 100%;
 }
 
 /* Selection overlay (H) */
@@ -5349,29 +5370,81 @@
   transform: translateY(-50%);
   left: calc(var(--p-start) * 100%);
   right: calc((1 - var(--p-end)) * 100%);
-  height: var(--ex-selection-height);
-  background: var(--ex-selection-color);
   pointer-events: auto;
-  border-radius: 2px;
   cursor: move;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Default selection bar (only when no template) */
+.mud-ex-range-slider .mud-ex-range-slider-selection:not(.mud-ex-has-template) {
+  height: var(--ex-selection-height);
+  background: var(--ex-selection-color);
+  border-radius: 2px;
+}
+
+/* Selection template container */
+.mud-ex-range-slider .mud-ex-range-slider-selection-template {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-selection-template > * {
+  width: 100%;
 }
 
 /* Thumbs (buttons) for H */
 .mud-ex-range-slider .mud-ex-range-slider-thumb {
   position: absolute;
   top: 50%;
-  width: var(--ex-thumb-size);
-  height: var(--ex-thumb-size);
   transform: translate(-50%, -50%);
-  background: var(--ex-thumb-color);
-  border: none;
-  border-radius: 50%;
   cursor: pointer;
   outline: none;
   z-index: 2;
+}
+
+/* Default thumb style (only when no template) */
+.mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template) {
+  width: var(--ex-thumb-size);
+  height: var(--ex-thumb-size);
+  background: var(--ex-thumb-color);
+  border: none;
+  border-radius: 50%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   transition: box-shadow 0.2s ease;
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template):hover {
+  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.04);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template):active {
+  cursor: grabbing;
+  box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template):focus-visible {
+  box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Template thumb container */
+.mud-ex-range-slider .mud-ex-range-slider-thumb.mud-ex-has-template {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-thumb-template {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 
 .mud-ex-range-slider .mud-ex-range-slider-thumb.start {
@@ -5382,17 +5455,8 @@
   left: calc(var(--p-end) * 100%);
 }
 
-.mud-ex-range-slider .mud-ex-range-slider-thumb:hover {
-  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.04);
-}
-
 .mud-ex-range-slider .mud-ex-range-slider-thumb:active {
   cursor: grabbing;
-  box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.08);
-}
-
-.mud-ex-range-slider .mud-ex-range-slider-thumb:focus-visible {
-  box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.12);
 }
 
 /* Inputs block */
@@ -5419,7 +5483,7 @@
   align-items: stretch;
 }
 
-.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track::before {
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track:not(.mud-ex-has-template)::before {
   left: 50%;
   top: 0;
   bottom: 0;
@@ -5429,14 +5493,40 @@
   height: auto;
 }
 
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track-template {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  right: auto;
+  transform: translateX(-50%);
+  width: auto;
+  height: 100%;
+  flex-direction: column;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track-template > * {
+  width: auto;
+  height: 100%;
+}
+
 .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection {
   left: 50%;
   right: auto;
   transform: translateX(-50%);
-  width: var(--ex-selection-width);
   height: auto;
   top: calc(var(--p-start) * 100%);
   bottom: calc((1 - var(--p-end)) * 100%);
+  flex-direction: column;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection:not(.mud-ex-has-template) {
+  width: var(--ex-selection-width);
+  height: auto;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection-template > * {
+  width: auto;
+  height: 100%;
 }
 
 .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb {
@@ -6090,12 +6180,12 @@
   animation: 44s -27s move infinite ease-in-out alternate;
 }
 .mud-ex-bg-dot::before {
-  text-shadow: 1.1972210417em 0.3536522018em 7px hsla(36.6415825872, 100%, 50%, 0.9), 0.210987603em 0.9301722152em 7px hsla(44.7779280912, 100%, 50%, 0.9), 2.3907881651em 0.5173095759em 7px hsla(236.3669457303, 100%, 50%, 0.9), 0.5845847014em 1.8581131366em 7px hsla(282.2423900107, 100%, 50%, 0.9), -0.040089434em 2.2496994806em 7px hsla(194.2086816486, 100%, 50%, 0.9), 0.2869869968em 1.01520465em 7px hsla(74.8479208702, 100%, 50%, 0.9), -0.3148911953em 1.2797160184em 7px hsla(104.2060441255, 100%, 50%, 0.9), 1.2380543783em 1.6504104423em 7px hsla(217.3926854786, 100%, 50%, 0.9), 0.156181373em 0.966537409em 7px hsla(210.1969044795, 100%, 50%, 0.9), 0.0728786635em 2.0750485037em 7px hsla(177.5087034802, 100%, 50%, 0.9), -0.1738263094em 2.2169345052em 7px hsla(255.5890397772, 100%, 50%, 0.9), 0.6915796581em 1.4022961067em 7px hsla(142.145904198, 100%, 50%, 0.9), 0.196187014em 0.17478564em 7px hsla(56.3249373897, 100%, 50%, 0.9), 0.2568408191em 0.120244513em 7px hsla(99.1184890667, 100%, 50%, 0.9), 2.0896605306em 2.440303818em 7px hsla(139.689714603, 100%, 50%, 0.9), 0.0712928755em -0.0461529048em 7px hsla(107.350087977, 100%, 50%, 0.9), -0.4067057177em 0.9896365256em 7px hsla(188.4153551902, 100%, 50%, 0.9), 0.4500890988em 1.562718294em 7px hsla(114.9522123853, 100%, 50%, 0.9), 2.0370887133em 1.1338697709em 7px hsla(193.9646468111, 100%, 50%, 0.9), 0.2028665153em 0.7672804122em 7px hsla(147.1484004599, 100%, 50%, 0.9), 2.4904388129em 1.4514373034em 7px hsla(50.6335612204, 100%, 50%, 0.9), -0.3497671285em 2.3096292416em 7px hsla(247.3690781882, 100%, 50%, 0.9), 1.584875683em 1.3448382068em 7px hsla(18.5462579019, 100%, 50%, 0.9), -0.4935346011em 1.8669535279em 7px hsla(290.5998815292, 100%, 50%, 0.9), 2.032690837em 0.5303374249em 7px hsla(35.7447733608, 100%, 50%, 0.9), 1.2122989398em 2.4985943277em 7px hsla(139.4711805387, 100%, 50%, 0.9), 2.2271630007em 0.2023377499em 7px hsla(126.713284614, 100%, 50%, 0.9), 0.8995859939em 2.4488849065em 7px hsla(270.6419405812, 100%, 50%, 0.9), 2.1021350257em 0.0753349728em 7px hsla(86.518442168, 100%, 50%, 0.9), 0.3208805172em 0.5635470617em 7px hsla(295.2817641004, 100%, 50%, 0.9), 0.0350168887em 0.0473232832em 7px hsla(202.2444627218, 100%, 50%, 0.9), 0.1301619699em 1.9095490457em 7px hsla(3.9991941788, 100%, 50%, 0.9), -0.2802867173em 1.9389601058em 7px hsla(240.6580672707, 100%, 50%, 0.9), 1.4008296184em 1.9368540443em 7px hsla(160.9740024373, 100%, 50%, 0.9), 2.0802390748em -0.3963309584em 7px hsla(264.1458077756, 100%, 50%, 0.9), 0.6203368631em 2.0234509228em 7px hsla(185.928113251, 100%, 50%, 0.9), 2.1787599511em 1.9830863596em 7px hsla(347.1274462173, 100%, 50%, 0.9), 0.9181999065em 0.2379384072em 7px hsla(144.4021558594, 100%, 50%, 0.9), 1.2532898678em -0.2193630122em 7px hsla(350.338532138, 100%, 50%, 0.9), -0.4592719334em 1.6715794547em 7px hsla(13.5131278835, 100%, 50%, 0.9), 0.4388238948em 0.4936622567em 7px hsla(92.6602479586, 100%, 50%, 0.9);
+  text-shadow: 0.2675318123em 2.3199397217em 7px hsla(253.0866769572, 100%, 50%, 0.9), 2.2937619722em 1.9910732038em 7px hsla(232.1367627224, 100%, 50%, 0.9), 1.0916575058em 1.6601190342em 7px hsla(246.4930586378, 100%, 50%, 0.9), 1.5135334984em 0.8516232257em 7px hsla(243.0054096612, 100%, 50%, 0.9), 0.7899139023em -0.3844930674em 7px hsla(339.4974770342, 100%, 50%, 0.9), 1.8196910283em 0.6406288153em 7px hsla(198.4109042439, 100%, 50%, 0.9), 1.9361596605em 2.4201408865em 7px hsla(164.3261686494, 100%, 50%, 0.9), 0.2578058728em 1.4582887306em 7px hsla(25.6864184637, 100%, 50%, 0.9), 0.3725315321em 1.2461745029em 7px hsla(296.7000840946, 100%, 50%, 0.9), 1.0468842145em 0.7712080104em 7px hsla(177.859193201, 100%, 50%, 0.9), 1.1565271458em 2.4267900142em 7px hsla(317.2459995209, 100%, 50%, 0.9), 2.2896658047em 2.2534438em 7px hsla(139.603031383, 100%, 50%, 0.9), 1.4534471692em 0.6680918872em 7px hsla(172.745579447, 100%, 50%, 0.9), 0.4220584666em 1.1801738969em 7px hsla(35.2194148451, 100%, 50%, 0.9), 2.3937328021em 0.8099910619em 7px hsla(95.3929076068, 100%, 50%, 0.9), 0.2958104982em 1.2478627857em 7px hsla(77.6200339546, 100%, 50%, 0.9), 1.744395655em 1.4143151658em 7px hsla(307.8052757711, 100%, 50%, 0.9), -0.0193287198em 1.7848866672em 7px hsla(235.1212964056, 100%, 50%, 0.9), 0.2727970391em 2.0579015862em 7px hsla(173.2208294682, 100%, 50%, 0.9), 1.1880447362em 1.4778338427em 7px hsla(241.4632949091, 100%, 50%, 0.9), -0.3783339135em 0.9111558857em 7px hsla(348.6004195617, 100%, 50%, 0.9), 1.7607690013em 0.3121569561em 7px hsla(73.5212242864, 100%, 50%, 0.9), 0.9072663911em 1.9532547999em 7px hsla(39.9903076736, 100%, 50%, 0.9), 1.4536063982em 1.0509720723em 7px hsla(86.1348777465, 100%, 50%, 0.9), 0.2896966857em 1.8207208107em 7px hsla(148.6784044536, 100%, 50%, 0.9), 0.4260662357em -0.3626980152em 7px hsla(301.8255287892, 100%, 50%, 0.9), 0.2869245832em 1.119027182em 7px hsla(275.929314923, 100%, 50%, 0.9), 0.8712644211em 0.6539452644em 7px hsla(222.2721521016, 100%, 50%, 0.9), -0.0541214275em 1.8974047144em 7px hsla(297.3195234299, 100%, 50%, 0.9), 0.0677777069em 0.1823929005em 7px hsla(147.3562453416, 100%, 50%, 0.9), 1.7696472081em 0.0511215418em 7px hsla(222.5490377899, 100%, 50%, 0.9), 1.8647425667em 0.0244049363em 7px hsla(333.2135311836, 100%, 50%, 0.9), 1.5168006741em -0.2767556926em 7px hsla(318.6590208492, 100%, 50%, 0.9), 0.8662777613em 0.7520830587em 7px hsla(293.324524269, 100%, 50%, 0.9), 2.4211370689em 2.448536213em 7px hsla(200.7006689832, 100%, 50%, 0.9), -0.0679407166em 1.0705425167em 7px hsla(274.9715014526, 100%, 50%, 0.9), 1.6921350935em 0.5977323574em 7px hsla(233.3617657029, 100%, 50%, 0.9), -0.2859218426em 0.522379712em 7px hsla(38.9802376338, 100%, 50%, 0.9), 0.8273362784em 0.119074357em 7px hsla(140.507890478, 100%, 50%, 0.9), 0.2381419229em 1.2580205655em 7px hsla(19.0877428793, 100%, 50%, 0.9), 0.9420038023em 0.5801191927em 7px hsla(187.152555952, 100%, 50%, 0.9);
   animation-duration: 44s;
   animation-delay: -27s;
 }
 .mud-ex-bg-dot::after {
-  text-shadow: 1.0910326865em 1.1134751669em 7px hsla(196.6445670206, 100%, 50%, 0.9), 1.2239338998em 1.1417585306em 7px hsla(152.6453927165, 100%, 50%, 0.9), 0.2189574956em 1.8118247677em 7px hsla(56.8103805978, 100%, 50%, 0.9), 0.7077660107em 2.0412620041em 7px hsla(239.0060700519, 100%, 50%, 0.9), -0.0076900639em 2.4360673933em 7px hsla(250.2008935148, 100%, 50%, 0.9), 0.3223935552em 2.3922796264em 7px hsla(108.7626310315, 100%, 50%, 0.9), -0.0827260278em 1.144716937em 7px hsla(113.2357834563, 100%, 50%, 0.9), 1.0943512909em 0.4878742277em 7px hsla(308.8751663086, 100%, 50%, 0.9), 1.2123480262em 0.1224335981em 7px hsla(318.8392612992, 100%, 50%, 0.9), 0.6887838955em 0.3510702169em 7px hsla(290.4215621719, 100%, 50%, 0.9), 2.0369593032em 1.2519769121em 7px hsla(339.5501405154, 100%, 50%, 0.9), 1.6475331164em 0.8902254783em 7px hsla(50.672116674, 100%, 50%, 0.9), 0.3710559956em 2.2277734968em 7px hsla(67.5057752261, 100%, 50%, 0.9), 1.7061903689em 1.7495684154em 7px hsla(169.1593902551, 100%, 50%, 0.9), -0.4574967267em 0.1309132477em 7px hsla(46.4896813647, 100%, 50%, 0.9), 1.5968085465em 0.5293087124em 7px hsla(127.1168266656, 100%, 50%, 0.9), 1.3088204599em 0.7141075092em 7px hsla(305.1490893808, 100%, 50%, 0.9), 1.2892428361em 2.358583015em 7px hsla(19.6713381381, 100%, 50%, 0.9), 0.004106104em 2.061131234em 7px hsla(64.1453015201, 100%, 50%, 0.9), 1.7273758478em 2.2011069515em 7px hsla(147.8434979119, 100%, 50%, 0.9), 1.795853722em 0.846406285em 7px hsla(285.308524881, 100%, 50%, 0.9), -0.0552852331em 2.3463792027em 7px hsla(289.6678922001, 100%, 50%, 0.9), 0.441719449em 0.5377580298em 7px hsla(87.3683544722, 100%, 50%, 0.9), 0.708967807em 0.8246962391em 7px hsla(259.3592983627, 100%, 50%, 0.9), 2.4400201564em 0.4069464429em 7px hsla(115.0101141767, 100%, 50%, 0.9), 1.9882390922em 1.7433038581em 7px hsla(102.7441034448, 100%, 50%, 0.9), 1.3917993331em 2.1093699506em 7px hsla(95.2027231492, 100%, 50%, 0.9), -0.3781341582em -0.4656733416em 7px hsla(4.4717808222, 100%, 50%, 0.9), 0.4489889087em 1.4324843761em 7px hsla(85.8398631558, 100%, 50%, 0.9), 2.4936815741em 1.9698950286em 7px hsla(244.7174769882, 100%, 50%, 0.9), 2.4428469648em 0.3750178065em 7px hsla(294.4378156864, 100%, 50%, 0.9), 0.8673443562em 0.809273049em 7px hsla(337.0704584168, 100%, 50%, 0.9), -0.2194046043em 0.9560269776em 7px hsla(170.9246093859, 100%, 50%, 0.9), 2.3277274216em 1.6455641684em 7px hsla(66.1394724975, 100%, 50%, 0.9), -0.4391526172em 1.4900286848em 7px hsla(83.2044236017, 100%, 50%, 0.9), 0.701962574em 1.3178148661em 7px hsla(333.3509902026, 100%, 50%, 0.9), 0.3891130357em 1.7182981161em 7px hsla(305.0452357985, 100%, 50%, 0.9), -0.488257506em 0.0669231101em 7px hsla(63.8185118896, 100%, 50%, 0.9), 0.2975642733em 1.9677598381em 7px hsla(211.6460028075, 100%, 50%, 0.9), 0.2421742015em 1.899912737em 7px hsla(343.3234418481, 100%, 50%, 0.9), 0.6074348927em 2.1433195926em 7px hsla(206.2409811375, 100%, 50%, 0.9);
+  text-shadow: -0.2791031628em -0.2439385714em 7px hsla(47.3025434414, 100%, 50%, 0.9), 0.4764322292em 0.3843161671em 7px hsla(54.9853383222, 100%, 50%, 0.9), 2.0127197719em -0.2776985566em 7px hsla(8.6478178272, 100%, 50%, 0.9), 1.3586769844em 0.6503733321em 7px hsla(25.2743451212, 100%, 50%, 0.9), 0.1084298793em 0.6032242126em 7px hsla(28.5172237044, 100%, 50%, 0.9), -0.0094202555em 2.3507836371em 7px hsla(296.6005196428, 100%, 50%, 0.9), 0.2745591603em 1.7588835883em 7px hsla(186.5081130395, 100%, 50%, 0.9), 0.5110036388em 0.1171877025em 7px hsla(302.9201335045, 100%, 50%, 0.9), 0.5764554927em 0.4443681695em 7px hsla(83.8045252369, 100%, 50%, 0.9), 0.3327522893em 1.1794086525em 7px hsla(220.7547854371, 100%, 50%, 0.9), 0.6177105785em 2.041549721em 7px hsla(325.5517405281, 100%, 50%, 0.9), 0.8531409373em 0.48497072em 7px hsla(129.9990526475, 100%, 50%, 0.9), -0.0913271308em 0.2104346485em 7px hsla(342.3787419307, 100%, 50%, 0.9), 0.482029537em 1.2134763708em 7px hsla(116.8654592693, 100%, 50%, 0.9), -0.1671189555em 0.1322469039em 7px hsla(152.7392836905, 100%, 50%, 0.9), 0.531882288em 0.6890237283em 7px hsla(78.9562949601, 100%, 50%, 0.9), 0.5720396128em 0.5113062408em 7px hsla(265.5445158668, 100%, 50%, 0.9), 1.9422651161em -0.257662963em 7px hsla(302.510908595, 100%, 50%, 0.9), 0.7741392912em 0.7612067986em 7px hsla(96.6020220578, 100%, 50%, 0.9), 2.1519536265em 0.7666856501em 7px hsla(328.5041887652, 100%, 50%, 0.9), 0.47741765em 1.1306472521em 7px hsla(353.0945837146, 100%, 50%, 0.9), 0.8489494368em 0.3848524441em 7px hsla(289.6044999518, 100%, 50%, 0.9), 0.2193905344em 2.3283886934em 7px hsla(85.3699038357, 100%, 50%, 0.9), 2.4389869745em 2.103412543em 7px hsla(166.8638415015, 100%, 50%, 0.9), 2.0872439578em 1.2472557716em 7px hsla(104.2822272268, 100%, 50%, 0.9), 2.3539108663em 0.9725391027em 7px hsla(314.0496962718, 100%, 50%, 0.9), 0.0060879725em 1.3506975457em 7px hsla(217.8396680484, 100%, 50%, 0.9), 1.5764910144em 1.6181950408em 7px hsla(242.7173707759, 100%, 50%, 0.9), 1.9392065226em 0.2594886671em 7px hsla(322.9093605491, 100%, 50%, 0.9), 1.5698954173em 0.75200662em 7px hsla(108.5411689435, 100%, 50%, 0.9), 1.9729225687em 1.0325012611em 7px hsla(192.2332699033, 100%, 50%, 0.9), 0.8156029501em 1.2968051605em 7px hsla(228.3472807515, 100%, 50%, 0.9), -0.2134874567em -0.221276398em 7px hsla(248.8353430028, 100%, 50%, 0.9), -0.1409023791em -0.1851627689em 7px hsla(299.2809168626, 100%, 50%, 0.9), 0.5368317083em 0.9303104747em 7px hsla(76.984895377, 100%, 50%, 0.9), 0.0432722758em 2.1006533276em 7px hsla(295.7317456949, 100%, 50%, 0.9), 0.7584146477em 1.0714927603em 7px hsla(90.3612045765, 100%, 50%, 0.9), 0.5797467006em 2.1092002729em 7px hsla(19.2680265179, 100%, 50%, 0.9), 1.3792598666em 1.6319012977em 7px hsla(217.4258090659, 100%, 50%, 0.9), 2.4854534218em -0.17129619em 7px hsla(143.1157433876, 100%, 50%, 0.9), 2.4971674169em 1.3903737896em 7px hsla(343.3109807978, 100%, 50%, 0.9);
   animation-duration: 43s;
   animation-delay: -32s;
 }

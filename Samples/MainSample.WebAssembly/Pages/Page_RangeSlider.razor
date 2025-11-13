@@ -1,0 +1,138 @@
+﻿@page "/range-slider"
+@inherits BasePage
+
+@using System.Globalization
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+
+@attribute [DemoNew(Name = "MudExRangeSlider", Icon = Icons.Material.Outlined.Radio, Documentation = "...", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
+
+
+<MudExRangeSlider @bind-Value="dateRange"
+                  SizeRange="fullRange"
+                  StepLength="monthStep"
+                  ShowInputs="false">
+
+    <TrackTemplate>
+        <div style="height: 40px; position: relative; width: 100%;">
+            @* Jahre als große Markierungen *@
+            @for (var year = startYear; year <= endYear; year++)
+            {
+                var yearStart = new DateTime(year, 1, 1);
+                var pct = GetPercent(yearStart);
+
+                <div style="position: absolute;
+                                left: @(pct)%;
+                                top: 0;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: flex-start;">
+                    <div style="width: 2px;
+                                    height: 20px;
+                                    background: #666;"></div>
+                    <span style="font-size: 11px;
+                                     color: #666;
+                                     margin-top: 2px;
+                                     font-weight: 600;">
+                        @year
+                    </span>
+                </div>
+            }
+
+            @* Monate als kleine Markierungen *@
+            @for (var date = new DateTime(startYear, 1, 1); date <= new DateTime(endYear, 12, 1); date = date.AddMonths(1))
+            {
+                if (date.Month != 1) // Skip January (already marked by year)
+                {
+                    var pct = GetPercent(date);
+
+                    <div style="position: absolute;
+                                        left: @(pct)%;
+                                        top: 0;
+                                        width: 1px;
+                                        height: 12px;
+                                        background: #bbb;">
+                    </div>
+                }
+            }
+
+            @* Baseline *@
+            <div style="position: absolute;
+                        bottom: 19px;
+                        left: 0;
+                        right: 0;
+                        height: 1px;
+                        background: #ddd;">
+            </div>
+        </div>
+    </TrackTemplate>
+
+    <SelectionTemplate>
+        <div style="height: 40px;
+                    background: linear-gradient(to bottom, #1976d220, #1976d240);
+                    border-left: 2px solid #1976d2;
+                    border-right: 2px solid #1976d2;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;">
+            <span style="color: #1976d2;
+                         font-weight: 600;
+                         font-size: 12px;
+                         white-space: nowrap;
+                         padding: 0 8px;
+                         text-shadow: 0 0 3px white, 0 0 5px white;">
+                @GetDateString(dateRange.Start) - @GetDateString(dateRange.End)
+            </span>
+        </div>
+    </SelectionTemplate>
+
+    <ThumbStartTemplate>
+        <div style="width: 16px;
+                    height: 16px;
+                    background: #1976d2;
+                    border: 2px solid white;
+                    border-radius: 50%;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+        </div>
+    </ThumbStartTemplate>
+
+    <ThumbEndTemplate>
+        <div style="width: 16px;
+                    height: 16px;
+                    background: #1976d2;
+                    border: 2px solid white;
+                    border-radius: 50%;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+        </div>
+    </ThumbEndTemplate>
+
+</MudExRangeSlider>
+
+@code
+{
+
+
+    private readonly int startYear = 2020;
+
+    private readonly int endYear = 2025;
+
+    private IRange<DateTime> dateRange = new MudExRange<DateTime>(new DateTime(2022, 3, 1), new DateTime(2024, 8, 1));
+    private IRange<DateTime> fullRange => new MudExRange<DateTime>(new DateTime(startYear, 1, 1), new DateTime(endYear, 12, 31));
+    private readonly RangeLength<DateTime> monthStep = new(TimeSpan.FromDays(30).Ticks);
+
+    private double GetPercent(DateTime date)
+    {
+        var totalTicks = (fullRange.End - fullRange.Start).Ticks;
+        var currentTicks = (date - fullRange.Start).Ticks;
+        return (double)currentTicks / totalTicks * 100;
+    }
+
+    private string GetDateString(DateTime date)
+    {
+        return date.ToString("MMM yyyy", CultureInfo.CurrentCulture);
+    }
+
+}
