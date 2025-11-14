@@ -9,10 +9,11 @@ using Nextended.Core.Extensions;
 using Nextended.Core.Types;
 using Nextended.Core.Types.Ranges.Math;
 using System.Globalization;
+using MudBlazor.Extensions.Core.Css;
 
 namespace MudBlazor.Extensions.Components
 {
-    public partial class MudExRangeSlider<T> where T : struct, IComparable<T>
+    public partial class MudExRangeSlider<T> where T : IComparable<T>
     {
 
         private ElementReference _trackRef;
@@ -24,10 +25,13 @@ namespace MudBlazor.Extensions.Components
 
         [Parameter] public Func<T, IRange<T>, RangeLength<T>, int, SnapPolicy, T>? StepResolver { get; set; }
 
+        [Parameter] public Cursor? ResizeCursor { get; set; }
+        [Parameter] public Cursor MoveCursor { get; set; } = Cursor.Pointer;
+        [Parameter] public Cursor MovingCursor { get; set; } = Cursor.Grabbing;
 
         [Parameter, SafeCategory("Appearance")]
         public SliderOrientation Orientation { get; set; } = SliderOrientation.Horizontal;
-        
+
         [Parameter, SafeCategory("Appearance")]
         public bool IsInverted { get; set; }
 
@@ -38,7 +42,7 @@ namespace MudBlazor.Extensions.Components
         public MudExColor ThumbColor { get; set; } = MudExColor.Primary;
 
         [Parameter, SafeCategory("Appearance")]
-        public MudExColor TrackColor { get; set; } = new MudExColor("#0000001f");
+        public MudExColor TrackColor { get; set; } = ("#0000001f");
 
         [Parameter, SafeCategory("Appearance")]
         public MudExColor SelectionColor { get; set; } = MudExColor.Primary;
@@ -105,9 +109,13 @@ namespace MudBlazor.Extensions.Components
 
 
         private T ResolveStep(T v, int steps = 0, SnapPolicy policy = SnapPolicy.Nearest)
-            => StepResolver?.Invoke(v, SizeRange, StepLength, steps, policy)
-               ?? (steps == 0 ? M.SnapToStep(v, SizeRange, StepLength, policy)
-                   : M.AddSteps(v, StepLength, steps));
+        {
+            if (StepResolver != null)
+                return StepResolver.Invoke(v, SizeRange, StepLength, steps, policy);
+            return (steps == 0
+                ? M.SnapToStep(v, SizeRange, StepLength, policy)
+                : M.AddSteps(v, StepLength, steps));
+        }
 
         private T Snap(T v, SnapPolicy policy = SnapPolicy.Nearest) => ResolveStep(v, 0, policy);
 
@@ -120,29 +128,16 @@ namespace MudBlazor.Extensions.Components
         private bool HasThumbStartTemplate => ThumbStartTemplate != null;
         private bool HasThumbEndTemplate => ThumbEndTemplate != null;
 
-        private MudExRangeSliderContext<T> GetContext()
-            => new MudExRangeSliderContext<T>
-            {
-                Value = Value,
-                SizeRange = SizeRange,
-                StartPercent = P(Value.Start),
-                EndPercent = P(Value.End),
-                Size = Size,
-                Disabled = Disabled,
-                ReadOnly = ReadOnly
-            };
+        private MudExRangeSliderContext<T> GetContext() => new(this) { StartPercent = P(Value.Start), EndPercent = P(Value.End) };
 
         private MudExRangeSliderThumbContext<T> GetThumbContext(Thumb thumb)
         {
             var value = thumb == Thumb.Start ? Value.Start : Value.End;
-            return new MudExRangeSliderThumbContext<T>
+            return new MudExRangeSliderThumbContext<T>(this)
             {
-                Value = value,
+                ThumbValue = value,
                 Thumb = thumb,
                 Percent = P(value),
-                Size = Size,
-                Disabled = Disabled,
-                ReadOnly = ReadOnly
             };
         }
 
@@ -173,12 +168,8 @@ namespace MudBlazor.Extensions.Components
                $"--ex-thumb-color:{ThumbColor.ToCssStringValue()}; " +
                $"--ex-selection-color:{SelectionColor.ToCssStringValue()};";
 
-    
 
-        private IRangeMath<T> M
-        {
-            get => MathAdapter ?? field;
-        } = RangeMathFactory.For<T>();
+        internal IRangeMath<T> M { get => MathAdapter ?? field;} = RangeMathFactory.For<T>();
 
         private DragMode _dragMode = DragMode.None;
         private double _trackStartCoord;
@@ -201,12 +192,14 @@ namespace MudBlazor.Extensions.Components
         public override object[] GetJsArguments()
             => new object[] { ElementReference, _trackRef, CreateDotNetObjectReference() };
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+
+        private string ThumbStyle()
         {
-            await base.OnAfterRenderAsync(firstRender);
-            if (firstRender)
-                await JsReference.InvokeVoidAsync("init");
+            return MudExStyleBuilder.Default
+                .WithCursor(ResizeCursor ?? (Orientation == SliderOrientation.Horizontal ? Cursor.ColResize : Cursor.RowResize))
+                .Style;
         }
+
 
         protected override void OnParametersSet()
         {
@@ -277,7 +270,7 @@ namespace MudBlazor.Extensions.Components
 
         private async Task OnTrackPointerDown(PointerEventArgs e)
         {
-            if (Disabled || ReadOnly) return;
+            if (Disabled || ReadOnly || _dragMode == DragMode.WholeRange) return;
 
             await MeasureAsync();
             var pct = PctFromClient(e.ClientX, e.ClientY);
@@ -291,6 +284,7 @@ namespace MudBlazor.Extensions.Components
             else
                 await SetEndAsync(target, true);
         }
+
 
         [JSInvokable]
         public async Task OnPointerMove(double clientX, double clientY)

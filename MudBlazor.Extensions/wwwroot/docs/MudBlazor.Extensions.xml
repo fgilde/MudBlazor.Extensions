@@ -6241,6 +6241,69 @@
             Method that determines if the input value is a valid entry.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.SliderOrientation">
+            <summary>
+            Orientation for the <see cref="T:MudBlazor.Extensions.Components.MudExRangeSlider`1"/> component.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SliderOrientation.Horizontal">
+            <summary>
+            Default horizontal orientation.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SliderOrientation.Vertical">
+            <summary>
+            Specifies that the layout or orientation is vertical.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.Thumb">
+            <summary>
+            Thumb identifier for the <see cref="T:MudBlazor.Extensions.Components.MudExRangeSlider`1"/> component.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.Thumb.Start">
+            <summary>
+            The start thumb.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.Thumb.End">
+            <summary>
+            The end thumb.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRangeContextBase`1">
+            <summary>
+            Template Context
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeContextBase`1.#ctor(MudBlazor.Extensions.Components.MudExRangeSlider{`0})">
+            <summary>
+            Creates a new instance of <see cref="T:MudBlazor.Extensions.Components.MudExRangeContextBase`1"/>
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRangeSliderContext`1">
+            <summary>
+            Template Context
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSliderContext`1.#ctor(MudBlazor.Extensions.Components.MudExRangeSlider{`0})">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSliderThumbContext`1.ThumbValue">
+            <summary>
+            The value on this thumb
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSliderThumbContext`1.Thumb">
+            <summary>
+            Type of thumb
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSliderThumbContext`1.Percent">
+            <summary>
+            Gets the percentage value represented by this property.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSelect`1">
             <summary>
             An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well

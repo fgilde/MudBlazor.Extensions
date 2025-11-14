@@ -1,4 +1,5 @@
 ﻿@inherits MudExJsRequiredBaseComponent<MudExRangeSlider<T>>
+@using MudBlazor.Extensions.Helper
 @using Nextended.Core.Helper
 @typeparam T
 
@@ -23,6 +24,7 @@
         }
 
         <div class="mud-ex-range-slider-selection @(HasSelectionTemplate ? "mud-ex-has-template" : "")"
+             style="@(MudExStyleBuilder.Default.WithCursor(_dragMode == DragMode.WholeRange ? MovingCursor :MoveCursor).Style)"
              @onpointerdown="OnRangeDragPointerDown">
             @if (HasSelectionTemplate)
             {
@@ -35,6 +37,7 @@
         @if (HasThumbStartTemplate)
         {
             <div class="mud-ex-range-slider-thumb start mud-ex-has-template"
+                 style="@ThumbStyle()"
                  id="@_startId"
                  tabindex="@(Disabled ? -1 : 0)"
                  @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
@@ -54,6 +57,7 @@
         {
             <button class="mud-ex-range-slider-thumb start"
                     id="@_startId"
+                    style="@ThumbStyle()"
                     type="button"
                     @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
                     @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
@@ -69,6 +73,7 @@
         {
             <div class="mud-ex-range-slider-thumb end mud-ex-has-template"
                  id="@_endId"
+                 style="@ThumbStyle()"
                  tabindex="@(Disabled ? -1 : 0)"
                  @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.End)"
                  @onkeydown="e => OnKeyDownAsync(e, Thumb.End)"
@@ -87,6 +92,7 @@
         {
             <button class="mud-ex-range-slider-thumb end"
                     id="@_endId"
+                    style="@ThumbStyle()"
                     type="button"
                     @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.End)"
                     @onkeydown="e => OnKeyDownAsync(e, Thumb.End)"
