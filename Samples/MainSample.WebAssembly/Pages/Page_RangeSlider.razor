@@ -2,6 +2,7 @@
 @inherits BasePage
 
 
+@using MainSample.WebAssembly.Examples
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
 @using Nextended.Core.Contracts
@@ -10,7 +11,11 @@
 @attribute [DemoNew(Name = "Overview", Order = 0, Group = "RangeSlider", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
 
 
-    <!-- Header / Intro -->
+<SimpleExample/>
+
+
+
+<!-- Header / Intro -->
     <MudPaper Class="pa-6 mb-6">
         <MudText Typo="Typo.h4" GutterBottom="true">
             @L["MudEx Range Slider – Interactive range selection"]

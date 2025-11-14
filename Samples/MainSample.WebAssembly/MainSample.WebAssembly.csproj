@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <Import Project="..\..\MudBlazor.Extensions\version.generated.props"
-          Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
-  <Import Condition="Exists('..\..\Shared.props')" Project="..\..\Shared.props"/>
+  <Import Project="..\..\MudBlazor.Extensions\version.generated.props" Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
+  <Import Condition="Exists('..\..\Shared.props')" Project="..\..\Shared.props" />
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -99,20 +98,7 @@
            Text="Template not found: $(IndexTemplate). Create wwwroot\index.template.html first." />-->
 
     <!-- Token-Replacement via PowerShell (rein .NET-String.Replace, kein Regex) -->
-    <Exec IgnoreExitCode="true" Command="powershell -NoProfile -ExecutionPolicy Bypass -Command ^
-    $ErrorActionPreference='Stop'; ^
-    $in='$(IndexTemplate)'; $out='$(IndexOutput)'; ^
-    $text=[System.IO.File]::ReadAllText($in); ^
-    $map=@{ ^
-      'PackageName'='$(PackageName)'; ^
-      'PackageVersion'='$(PackageVersion)'; ^
-      'MudBlazorVersion'='$(MudBlazorVersion)'; ^
-      'ComponentCount'='$(ComponentCount)'; ^
-      'DemoCount'='$(DemoCount)'; ^
-      'CACHE_TOKEN'='$(CACHE_TOKEN)'; ^
-    }; ^
-    foreach($k in $map.Keys){ $text = $text.Replace('#{'+$k+'}#', $map[$k]) }; ^
-    [System.IO.File]::WriteAllText($out, $text, [System.Text.Encoding]::UTF8)" />
+    <Exec IgnoreExitCode="true" Command="powershell -NoProfile -ExecutionPolicy Bypass -Command ^&#xD;&#xA;    $ErrorActionPreference='Stop'; ^&#xD;&#xA;    $in='$(IndexTemplate)'; $out='$(IndexOutput)'; ^&#xD;&#xA;    $text=[System.IO.File]::ReadAllText($in); ^&#xD;&#xA;    $map=@{ ^&#xD;&#xA;      'PackageName'='$(PackageName)'; ^&#xD;&#xA;      'PackageVersion'='$(PackageVersion)'; ^&#xD;&#xA;      'MudBlazorVersion'='$(MudBlazorVersion)'; ^&#xD;&#xA;      'ComponentCount'='$(ComponentCount)'; ^&#xD;&#xA;      'DemoCount'='$(DemoCount)'; ^&#xD;&#xA;      'CACHE_TOKEN'='$(CACHE_TOKEN)'; ^&#xD;&#xA;    }; ^&#xD;&#xA;    foreach($k in $map.Keys){ $text = $text.Replace('#{'+$k+'}#', $map[$k]) }; ^&#xD;&#xA;    [System.IO.File]::WriteAllText($out, $text, [System.Text.Encoding]::UTF8)" />
 
     <!-- sicherstellen, dass die generierte Datei veröffentlicht wird -->
     <ItemGroup>
