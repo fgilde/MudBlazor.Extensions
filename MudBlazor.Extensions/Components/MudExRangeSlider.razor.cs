@@ -14,32 +14,20 @@ namespace MudBlazor.Extensions.Components
 {
     public partial class MudExRangeSlider<T> where T : struct, IComparable<T>
     {
-        [Parameter] public IRangeMath<T>? MathAdapter { get; set; }
 
         private ElementReference _trackRef;
         private readonly string _startId = $"start_{Guid.NewGuid():N}";
         private readonly string _endId = $"end_{Guid.NewGuid():N}";
 
-        [Parameter]
-        public Func<T, IRange<T>, RangeLength<T>, int, SnapPolicy, T>? StepResolver { get; set; }
 
-        private T ResolveStep(T v, int steps = 0, SnapPolicy policy = SnapPolicy.Nearest)
-            => StepResolver?.Invoke(v, SizeRange, StepLength, steps, policy)
-               ?? (steps == 0 ? M.SnapToStep(v, SizeRange, StepLength, policy)
-                              : M.AddSteps(v, StepLength, steps));
+        [Parameter] public IRangeMath<T>? MathAdapter { get; set; }
 
-        private T Snap(T v, SnapPolicy policy = SnapPolicy.Nearest)
-            => ResolveStep(v, 0, policy);
+        [Parameter] public Func<T, IRange<T>, RangeLength<T>, int, SnapPolicy, T>? StepResolver { get; set; }
 
-        private T AddStepsLocal(T v, int steps)
-            => ResolveStep(v, steps);
 
         [Parameter, SafeCategory("Appearance")]
         public SliderOrientation Orientation { get; set; } = SliderOrientation.Horizontal;
-
-        private bool IsHorizontal
-            => Orientation is SliderOrientation.Horizontal;
-
+        
         [Parameter, SafeCategory("Appearance")]
         public bool IsInverted { get; set; }
 
@@ -67,6 +55,65 @@ namespace MudBlazor.Extensions.Components
 
         [Parameter, SafeCategory("Templates")]
         public RenderFragment<MudExRangeSliderThumbContext<T>>? ThumbEndTemplate { get; set; }
+
+        // ---------- Binding ----------
+        [Parameter, SafeCategory("Data")]
+        public IRange<T> Value { get; set; } = new MudExRange<T>(default, default);
+
+        [Parameter]
+        public EventCallback<IRange<T>> ValueChanged { get; set; }
+
+        [Parameter, SafeCategory("Data")]
+        public IRange<T> SizeRange { get; set; } = new MudExRange<T>(default, default);
+
+        [Parameter]
+        public EventCallback<IRange<T>> SizeRangeChanged { get; set; }
+
+        [Parameter, SafeCategory("Data")]
+        public RangeLength<T> StepLength { get; set; } = new RangeLength<T>(0);
+
+        [Parameter, SafeCategory("Data")]
+        public RangeLength<T>? MinLength { get; set; }
+
+        [Parameter, SafeCategory("Data")]
+        public RangeLength<T>? MaxLength { get; set; }
+
+        [Parameter, SafeCategory("Behavior")]
+        public bool Immediate { get; set; } = true;
+
+        [Parameter, SafeCategory("Behavior")]
+        public bool Disabled { get; set; }
+
+        [Parameter, SafeCategory("Behavior")]
+        public bool ReadOnly { get; set; }
+
+        [Parameter, SafeCategory("Behavior")]
+        public bool ShowInputs { get; set; } = true;
+
+        [Parameter, SafeCategory("Behavior")]
+        public bool AllowWholeRangeDrag { get; set; } = true;
+
+        [Parameter, SafeCategory("Appearance")]
+        public string? AriaLabelledBy { get; set; }
+
+
+        [Parameter]
+        public EventCallback<IRange<T>> OnChange { get; set; }
+
+        [Parameter]
+        public EventCallback<IRange<T>> OnInput { get; set; }
+
+
+        private T ResolveStep(T v, int steps = 0, SnapPolicy policy = SnapPolicy.Nearest)
+            => StepResolver?.Invoke(v, SizeRange, StepLength, steps, policy)
+               ?? (steps == 0 ? M.SnapToStep(v, SizeRange, StepLength, policy)
+                   : M.AddSteps(v, StepLength, steps));
+
+        private T Snap(T v, SnapPolicy policy = SnapPolicy.Nearest) => ResolveStep(v, 0, policy);
+
+        private T AddStepsLocal(T v, int steps) => ResolveStep(v, steps);
+        private bool IsHorizontal
+            => Orientation is SliderOrientation.Horizontal;
 
         private bool HasTrackTemplate => TrackTemplate != null;
         private bool HasSelectionTemplate => SelectionTemplate != null;
@@ -126,51 +173,7 @@ namespace MudBlazor.Extensions.Components
                $"--ex-thumb-color:{ThumbColor.ToCssStringValue()}; " +
                $"--ex-selection-color:{SelectionColor.ToCssStringValue()};";
 
-        // ---------- Binding ----------
-        [Parameter, SafeCategory("Data")]
-        public IRange<T> Value { get; set; } = new MudExRange<T>(default, default);
-
-        [Parameter]
-        public EventCallback<IRange<T>> ValueChanged { get; set; }
-
-        [Parameter, SafeCategory("Data")]
-        public IRange<T> SizeRange { get; set; } = new MudExRange<T>(default, default);
-
-        [Parameter]
-        public EventCallback<IRange<T>> SizeRangeChanged { get; set; }
-
-        [Parameter, SafeCategory("Data")]
-        public RangeLength<T> StepLength { get; set; } = new RangeLength<T>(0);
-
-        [Parameter, SafeCategory("Data")]
-        public RangeLength<T>? MinLength { get; set; }
-
-        [Parameter, SafeCategory("Data")]
-        public RangeLength<T>? MaxLength { get; set; }
-
-        [Parameter, SafeCategory("Behavior")]
-        public bool Immediate { get; set; } = true;
-
-        [Parameter, SafeCategory("Behavior")]
-        public bool Disabled { get; set; }
-
-        [Parameter, SafeCategory("Behavior")]
-        public bool ReadOnly { get; set; }
-
-        [Parameter, SafeCategory("Behavior")]
-        public bool ShowInputs { get; set; } = true;
-
-        [Parameter, SafeCategory("Behavior")]
-        public bool AllowWholeRangeDrag { get; set; } = true;
-
-        [Parameter, SafeCategory("Appearance")]
-        public string? AriaLabelledBy { get; set; }
-
-        [Parameter]
-        public EventCallback<IRange<T>> OnChange { get; set; }
-
-        [Parameter]
-        public EventCallback<IRange<T>> OnInput { get; set; }
+    
 
         private IRangeMath<T> M
         {
@@ -452,27 +455,4 @@ namespace MudBlazor.Extensions.Components
         }
     }
 
-    public class MudExRangeContextBase<T> where T: IComparable<T> { }
-
-    // Context classes
-    public class MudExRangeSliderContext<T> where T : struct, IComparable<T>
-    {
-        public IRange<T> Value { get; init; } = default!;
-        public IRange<T> SizeRange { get; init; } = default!;
-        public double StartPercent { get; init; }
-        public double EndPercent { get; init; }
-        public Size Size { get; init; }
-        public bool Disabled { get; init; }
-        public bool ReadOnly { get; init; }
-    }
-
-    public class MudExRangeSliderThumbContext<T> where T : struct, IComparable<T>
-    {
-        public T Value { get; init; } = default!;
-        public Thumb Thumb { get; init; }
-        public double Percent { get; init; }
-        public Size Size { get; init; }
-        public bool Disabled { get; init; }
-        public bool ReadOnly { get; init; }
-    }
 }

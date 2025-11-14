@@ -325,7 +325,7 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ShouldRender">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.CallStateHasChanged(MudBlazor.Extensions.Core.StateChangeMode)">
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.CallStateHasChanged(MudBlazor.Extensions.Core.StateChangeMode,System.String,System.String,System.Int32)">
             <summary>
             Calls StateHasChanged
             </summary>
@@ -1326,6 +1326,36 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExCaptureButton.DisposeAsync">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExCaptureChild">
+            <summary>
+            Component that captures component references from ChildContent
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureChild.OnComponentCaptured">
+            <summary>
+            Event fired for each captured component reference
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureChild.ComponentReferences">
+            <summary>
+            List of all captured component references
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureChild.ComponentReference">
+            <summary>
+            First captured component reference (for backwards compatibility)
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureChild.WrapChildWithCapture(Microsoft.AspNetCore.Components.RenderFragment,System.Action{System.Object})">
+            <summary>
+            Wraps a RenderFragment and captures all component references within it
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureChild.RenderRange(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder,Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame[],System.Int32,System.Int32,System.Int32@,System.Action{System.Object})">
+            <summary>
+            Single-pass renderer über den Frame-Baum, der Components mit Capture ersetzt
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit">
             <summary>
@@ -9645,6 +9675,107 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1">
+            <summary>
+            Dialog for editing objects with the MudExObjectEditForm
+            </summary>
+            <typeparam name="T">Type of object being edited</typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.OverwriteActionBar">
+            <summary>
+            If set to true, overwrite the standard action bar of the dialog with custom content.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.MudDialog">
+            <summary>
+            The MudDialog instance that represents the current dialog instance that is open.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.Gutters">
+            <summary>
+            If set to true, remove the side padding of the dialog content.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DialogClass">
+            <summary>
+            The CSS class to apply to the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.ContentClass">
+            <summary>
+            The CSS class to apply to the content area of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DialogFormClass">
+            <summary>
+            The CSS class to apply to the form element of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.ActionsClass">
+            <summary>
+            The CSS class to apply to the action buttons of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.TitleClass">
+            <summary>
+            The CSS class to apply to the title of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.ContentStyle">
+            <summary>
+            The CSS styles to apply to the content area of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DialogStyle">
+            <summary>
+            The CSS styles to apply to the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DefaultFocus">
+            <summary>
+            The default focus location for the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DialogIcon">
+            <summary>
+            The name of the icon to display in the dialog header area.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.ErrorAnimation">
+            <summary>
+            The type of animation to display when an error occurs.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DialogIconColor">
+            <summary>
+            The color of the dialog icon for when the dialog is used in relation to a particular color theme.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.CustomSubmit">
+            <summary>
+            An optional custom submit function.
+            If a string is returned that string will be treated as an error message and displayed in place of the default success message.
+            Dialog will only closed if result of this function is empty or null otherwise result will displayed as error message.
+            This can be useful to keep dialog open until server save is succeeded and not failed
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.OnPropertyChange(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+            <summary>
+            Customize what happens when a property changes.
+            </summary>
+            <param name="property">The property that has been changed.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.OnSubmit(Microsoft.AspNetCore.Components.Forms.EditContext)">
+            <summary>
+            Called when the form is submitted.
+            </summary>
+            <param name="ctx">The edit context that represents the current state of the form's data.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.Cancel">
+            <summary>
+            Called when the Cancel button is clicked.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle">
             <summary>
             Specifies the grouping style.
@@ -16102,36 +16233,6 @@
             Enum representing CSS 'cursor' property values.
             </summary>
         </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Pointer">
-            <summary>
-            Pointer cursor.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Default">
-            <summary>
-            Default cursor.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Auto">
-            <summary>
-            Auto cursor.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Crosshair">
-            <summary>
-            Crosshair cursor.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Move">
-            <summary>
-            Move cursor.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Text">
-            <summary>
-            Text cursor.
-            </summary>
-        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.Direction">
             <summary>
             Enum representing CSS 'direction' property values.
@@ -18710,6 +18811,33 @@
             <summary>
             Contains extensions for the IDialogService for displaying a file in different formats.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditComponentAsync``1(MudBlazor.IDialogService,``0,System.String,System.Func{``0,MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog{``0},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog for the given object.
+            </summary>
+            <typeparam name="TModel">The type of the object to edit.</typeparam>
+            <param name="dialogService">The dialog service to use.</param>
+            <param name="value">The object to edit.</param>
+            <param name="title">The dialog title.</param>
+            <param name="customSubmit">Custom submit</param>
+            <param name="options">The dialog options.</param>
+            <param name="metaConfig">The configuration of meta information.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <returns>A tuple indicating if edit was cancelled and the result.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditComponentAsync``1(MudBlazor.IDialogService,``0,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog for the given object.
+            </summary>
+            <typeparam name="TModel">The type of the object to edit.</typeparam>
+            <param name="dialogService">The dialog service to use.</param>
+            <param name="value">The object to edit.</param>
+            <param name="title">The dialog title.</param>
+            <param name="options">The dialog options.</param>
+            <param name="metaConfig">The configuration of meta information.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <returns>A tuple indicating if edit was cancelled and the result.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.InnerPickItemsAsync``2(MudBlazor.IDialogService,System.String,System.String,System.Action{``0},System.Func{``0,System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``1}}},MudBlazor.Extensions.MudExDialogResultAction[],MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
             <summary>

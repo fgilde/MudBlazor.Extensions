@@ -1,62 +1,26 @@
 ﻿@page "/test"
 @inherits BasePage
 
-@using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Helper
-@using Nextended.Core.Contracts
-@using Nextended.Core.Types
-@inject IMudExFileService FileService
-
-<MudExRangeSlider T="DateTime"
-                  SizeRange="@(new RangeOf<DateTime>(new(2015,1,1), new(2022,12,31),null))"
-                  StepLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(1).Ticks))"
-                  MinLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(60).Ticks))"
-                  MaxLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(240).Ticks))"
-                  @bind-Value="_period2"
-                  AllowWholeRangeDrag="true" />
-
-<MudExRangeSlider T="int"
-                  SizeRange="@(new MudExRange<int>(0, 100))"
-                  StepLength="@(new RangeLength<int>(5))"
-                  @bind-Value="_nums" />
+<MudExCaptureChild OnComponentCaptured="@OnComponentCaptured" >
+    <MudButton Color="Color.Secondary" Variant="Variant.Filled" > Hello </MudButton>
+</MudExCaptureChild>
 
 
-<MudExRangeSlider T="DateTime"
-                  SizeRange="@(new MudExRange<DateTime>(new(2019,1,1,2,22,12), new(2025,12,31,6,3,12)))"
-                  StepLength="@(new RangeLength<DateTime>(2))"
-                  StepResolver="@(StepResolvers.DateTime.Hourly(_ => 2))"
-                  MinLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(60).Ticks))"
-                  MaxLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(240).Ticks))"
-                  @bind-Value="_period"
-                  AllowWholeRangeDrag="true" />
+<DemoComponent PageType="@GetType()">
+
+
+</DemoComponent>
 
 
 
-<MudExRangeSlider T="DateTime"
-                  Orientation="SliderOrientation.Vertical"
-                  SizeRange="@(new MudExRange<DateTime>(new(2016, 1, 1), new(2024, 12, 31)))"
-                  StepResolver="@(StepResolvers.DateTime.Quarterly(_ => 1))"
-                  Size="Size.Large"
-                  ThumbColor="MudExColor.Tertiary"
-                  SelectionColor="MudExColor.Tertiary"
-                  @bind-Value="_period"
-                  AllowWholeRangeDrag="true">
-
-</MudExRangeSlider>
 
 
 @code {
-    protected override Task OnInitializedAsync()
+
+
+    private void OnComponentCaptured(object obj)
     {
-        string hcls = MudExCss.Classes.General.MainClass;
-        return base.OnInitializedAsync();
+        Console.WriteLine($"Captured component of type: {obj.GetType().FullName}");
     }
 
-    private IRange<int> _nums = new MudExRange<int>(20, 60);
-    private IRange<DateTime> _period = new MudExRange<DateTime>(new(2021, 1, 1), new(2021, 12, 31));
-    private IRange<DateTime> _period2 = new RangeOf<DateTime>(new(2021, 1, 1), new(2021, 12, 31), null);
 }
-
-
-
-

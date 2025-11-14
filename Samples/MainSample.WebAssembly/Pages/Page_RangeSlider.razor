@@ -1,149 +1,339 @@
 ﻿@page "/range-slider"
 @inherits BasePage
 
-@using System.Globalization
+
+@using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
 @using Nextended.Core.Contracts
 @using Nextended.Core.Types
 
-@attribute [DemoNew(Name = "MudExRangeSlider", Icon = Icons.Material.Outlined.Radio, Documentation = "...", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
+@attribute [DemoNew(Name = "MudExRangeSlider", Group = "RangeSlider", Documentation = "...", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
 
-@* Beispiel für eine Timeline mit Monats- und Jahresmarkierungen *@
-@using System.Globalization
 
-<MudExRangeSlider @bind-Value="dateRange"
-                  SizeRange="fullRange"
-                  StepLength="monthStep"
-                  ShowInputs="false">
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-6 mb-8">
 
-    <TrackTemplate Context="ctx">
-        <div style="height: 100%;
-                    position: relative;
-                    width: 100%;
-                    background: #f5f5f5;
-                    border-radius: 4px;
-                    overflow: hidden;">
+    <!-- Header / Intro -->
+    <MudPaper Class="pa-6 mb-6">
+        <MudText Typo="Typo.h4" GutterBottom="true">
+            @L["MudEx Range Slider – Interactive range selection"]
+        </MudText>
 
-            @* Jahresmarkierungen (dick, volle Höhe) mit Jahreszahl *@
-            @for (int year = startYear; year <= endYear; year++)
-            {
-                var yearStart = new DateTime(year, 1, 1);
-                var pctStart = GetPercentStatic(yearStart, ctx.SizeRange) * 100;
+        <MudText Typo="Typo.body1">
+            @L["On this page you can see several usage examples for the MudExRangeSlider: numeric ranges, date ranges and a vertical layout. Each example comes with a short explanation and can be tried out interactively."]
+        </MudText>
 
-                // Berechne die Mitte des Jahres für die Jahreszahl
-                var yearMid = new DateTime(year, 7, 1);
-                var pctMid = GetPercentStatic(yearMid, ctx.SizeRange) * 100;
+        <MudAlert Severity="Severity.Info" Class="mt-4">
+            @L["You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply."]
+        </MudAlert>
+    </MudPaper>
 
-                <div style="position: absolute;
-                                left: @(pctStart.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%;
-                                top: 0;
-                                bottom: 0;
-                                width: 2px;
-                                background: #999;">
-                </div>
+    <!-- Quick overview (Key Features) -->
+    <MudGrid Class="mb-6">
+        <MudItem xs="12" md="4">
+            <MudPaper Class="pa-4 h-100">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Flexible data types"]
+                </MudText>
+                <MudText Typo="Typo.body2">
+                    @L["Supports int and DateTime (other types via generics are possible)."]
+                </MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudPaper Class="pa-4 h-100">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Min/max length & step size"]
+                </MudText>
+                <MudText Typo="Typo.body2">
+                    @L["Define minimum and maximum duration for ranges as well as custom step sizes."]
+                </MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudPaper Class="pa-4 h-100">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Horizontal & vertical orientation"]
+                </MudText>
+                <MudText Typo="Typo.body2">
+                    @L["Use the slider horizontally or vertically – ideal for filters, dashboards and reports."]
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
 
-                @* Jahreszahl in der Mitte des Jahres *@
-                <div style="position: absolute;
-                                left: @(pctMid.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%;
-                                top: 50%;
-                                transform: translate(-50%, -50%);
-                                font-size: 11px;
-                                color: #666;
-                                font-weight: 600;
-                                pointer-events: none;
-                                white-space: nowrap;
-                                z-index: 0;">
-                    @year
-                </div>
-            }
+    <MudDivider Class="mb-6" />
 
-            @* Monatsmarkierungen (dünn, mit Margin) *@
-            @for (var date = new DateTime(startYear, 1, 1); date <= new DateTime(endYear, 12, 1); date = date.AddMonths(1))
-            {
-                if (date.Month != 1) // Skip January (already marked by year)
-                {
-                    var pct = GetPercentStatic(date, ctx.SizeRange) * 100;
+    <!-- Example 1: Simple numeric range slider -->
+    <MudGrid Class="mb-6">
+        <MudItem xs="12" md="7">
+            <MudCard Class="h-100">
+                <MudCardHeader>
+                    <MudText Typo="Typo.h6">
+                        @L["1. Simple numeric range"]
+                    </MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText Typo="Typo.body2" Class="mb-4">
+                        @L["In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals."]
+                    </MudText>
 
-                    <div style="position: absolute;
-                                        left: @(pct.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%;
-                                        top: 15%;
-                                        bottom: 15%;
-                                        width: 1px;
-                                        background: #ccc;">
-                    </div>
-                }
-            }
-        </div>
-    </TrackTemplate>
+                    <MudText Typo="Typo.caption" Class="mt-2">
+                        @L["Current range: {0} – {1}", _nums.Start, _nums.End]
+                    </MudText>
 
-    <SelectionTemplate Context="ctx">
-        <div style="height: 100%;
-                    width: 100%;
-                    background: #1976d2;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    position: relative;
-                    border-radius: 4px;">
-            <span style="color: white;
-                         font-weight: 600;
-                         font-size: 11px;
-                         white-space: nowrap;
-                         padding: 0 8px;
-                         text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
-                @GetDateString(ctx.Value.Start) - @GetDateString(ctx.Value.End)
-            </span>
-        </div>
-    </SelectionTemplate>
+                    <MudExCodeView Theme="@(MainLayout.Instance?.IsDark ?? false ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight)"
+                                   RenderChildContent="true">
 
-    <ThumbStartTemplate Context="ctx">
-        <div style="width: 14px;
-                    height: 14px;
-                    background: white;
-                    border: 3px solid #1976d2;
-                    border-radius: 50%;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-        </div>
-    </ThumbStartTemplate>
+                        <MudExEditConfiguration>
+                            <MudExRangeSlider T="int"
+                                              SizeRange="@(new MudExRange<int>(0, 100))"
+                                              StepLength="@(new RangeLength<int>(5))"
+                                              @bind-Value="_nums" />
+                        </MudExEditConfiguration>
 
-    <ThumbEndTemplate Context="ctx">
-        <div style="width: 14px;
-                    height: 14px;
-                    background: white;
-                    border: 3px solid #1976d2;
-                    border-radius: 50%;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-        </div>
-    </ThumbEndTemplate>
+                    </MudExCodeView>
 
-</MudExRangeSlider>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" md="5">
+            <MudPaper Class="pa-4 h-100">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Configuration"]
+                </MudText>
+                <MudList T="object" Dense="true" Class="mt-2">
+                    <MudListItem>
+                        <MudText>@L["T = int – numeric range"]</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText>@L["SizeRange = 0–100"]</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText>@L["StepLength = 5 – values in steps of 5"]</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText>@L["@bind-Value = _nums – binds the selected range to your view model"]</MudText>
+                    </MudListItem>
+                </MudList>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Example 2: Date range with daily steps -->
+    <MudGrid Class="mb-6">
+        <MudItem xs="12" md="7">
+            <MudCard Class="h-100">
+                <MudCardHeader>
+                    <MudText Typo="Typo.h6">
+                        @L["2. Date range with daily step size"]
+                    </MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText Typo="Typo.body2" Class="mb-4">
+                        @L["This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day."]
+                    </MudText>
+
+                    <MudText Typo="Typo.caption" Class="mt-2">
+                        @L["Current period: {0} – {1}", _period2.Start.ToShortDateString(), _period2.End.ToShortDateString()]
+                    </MudText>
+
+                    <MudExCodeView Theme="@(MainLayout.Instance?.IsDark ?? false ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight)"
+                                   RenderChildContent="true">
+
+                        <MudExRangeSlider T="DateTime"
+                                          SizeRange="@(new RangeOf<DateTime>(new(2015,1,1), new(2022,12,31), null))"
+                                          StepLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(1).Ticks))"
+                                          MinLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(60).Ticks))"
+                                          MaxLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(365*2).Ticks))"
+                                          @bind-Value="_period2"
+                                          AllowWholeRangeDrag="true" />
+
+                    </MudExCodeView>
+
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" md="5">
+            <MudPaper Class="pa-4 h-100">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Highlights"]
+                </MudText>
+                <MudList T="object" Dense="true" Class="mt-2">
+                    <MudListItem>
+                        <MudText>@L["MinLength = 60 days – shortest allowed period"]</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText>@L["MaxLength = 730 days – longest allowed period"]</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText>@L["AllowWholeRangeDrag = true – entire period can be moved"]</MudText>
+                    </MudListItem>
+                </MudList>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Example 3: DateTime with StepResolver -->
+    <MudGrid Class="mb-6">
+        <MudItem xs="12" md="7">
+            <MudCard Class="h-100">
+                <MudCardHeader>
+                    <MudText Typo="Typo.h6">
+                        @L["3. DateTime range with custom StepResolver"]
+                    </MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText Typo="Typo.body2" Class="mb-4">
+                        @L["This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours)."]
+                    </MudText>
+
+                    <MudText Typo="Typo.caption" Class="mt-2">
+                        @L["Current period: {0} – {1}", _period.Start.ToString("g"), _period.End.ToString("g")]
+                    </MudText>
+
+                    <MudExCodeView Theme="@(MainLayout.Instance?.IsDark ?? false ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight)"
+                                   RenderChildContent="true">
+
+                        <MudExRangeSlider T="DateTime"
+                                          SizeRange="@(new MudExRange<DateTime>(new(2019,1,1,2,22,12), new(2025,12,31,6,3,12)))"
+                                          StepResolver="@(StepResolvers.DateTime.Quarterly(_ => 1))"
+                                          @bind-Value="_period"
+                                          AllowWholeRangeDrag="true" />
+                    </MudExCodeView>
+
+
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" md="5">
+            <MudPaper Class="pa-4 h-100">
+                <MudText Typo="Typo.subtitle1">
+                    @L["StepResolver"]
+                </MudText>
+                <MudText Typo="Typo.body2" Class="mt-2">
+                    @L["With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters."]
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Example 4: Vertical range slider -->
+    <MudGrid Class="mb-8">
+        <MudItem xs="12" md="7">
+            <MudCard Class="h-100">
+                <MudCardHeader>
+                    <MudText Typo="Typo.h6">
+                        @L["4. Vertical range slider"]
+                    </MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText Typo="Typo.body2" Class="mb-4">
+                        @L["The range slider can also be used vertically – ideal for sidebars or compact filter areas."]
+                    </MudText>
+                    <MudText Typo="Typo.caption" Class="mt-2">
+                        @L["Current period (vertical): {0} – {1}", _period.Start.ToShortDateString(), _period.End.ToShortDateString()]
+                    </MudText>
+                    <MudExCodeView Theme="@(MainLayout.Instance?.IsDark ?? false ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight)"
+                                   RenderChildContent="true">
+
+                        <div style="height: 280px; display: flex; align-items: center;">
+                            <MudExRangeSlider T="DateTime"
+                                              Orientation="SliderOrientation.Vertical"
+                                              SizeRange="@(new MudExRange<DateTime>(new(2016, 1, 1), new(2024, 12, 31)))"
+                                              Size="Size.Large"
+                                              ThumbColor="MudExColor.Tertiary"
+                                              SelectionColor="MudExColor.Tertiary"
+                                              @bind-Value="_period"
+                                              AllowWholeRangeDrag="true">
+                            </MudExRangeSlider>
+                        </div>
+
+                    </MudExCodeView>
+
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" md="5">
+            <MudPaper Class="pa-4 h-100">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Use cases"]
+                </MudText>
+                <MudList T="object" Dense="true" Class="mt-2">
+                    <MudListItem>
+                        <MudText>@L["Filters in dashboards or reports"]</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText>@L["Side filter panels in search or analytics UIs"]</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText>@L["Mobile UIs with limited horizontal space"]</MudText>
+                    </MudListItem>
+                </MudList>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+
+    <MudPaper Class="pa-6">
+        <MudExCardList TData="object">
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="MudBlazor.Typo.h6">
+                            @L["Back"]
+                        </MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.ArrowBack" Color="MudBlazor.Color.Default" />
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText>
+                        @L["Back to {0}", L["Demo"]]
+                    </MudText>
+                    <MudText Typo="MudBlazor.Typo.body2">
+                        @L["Short description of the previous demo."]
+                    </MudText>
+                </MudCardContent>
+            </MudCard>
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="MudBlazor.Typo.h6">
+                            @L["Forward"]
+                        </MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.ArrowForward" Color="MudBlazor.Color.Default" />
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText>
+                        @L["Go to {0}", L["Demo"]]
+                    </MudText>
+                    <MudText Typo="MudBlazor.Typo.body2">
+                        @L["Short description of the next demo."]
+                    </MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudExCardList>
+    </MudPaper>
+
+</MudContainer>
 
 @code {
-    private int startYear = 2015;
-    private int endYear = 2022;
-
-    private IRange<DateTime> dateRange = new MudExRange<DateTime>(
-        new DateTime(2021, 1, 1),
-        new DateTime(2021, 12, 31)
-    );
-
-    private IRange<DateTime> fullRange => new MudExRange<DateTime>(
-        new DateTime(startYear, 1, 1),
-        new DateTime(endYear, 12, 31)
-    );
-
-    private RangeLength<DateTime> monthStep = new RangeLength<DateTime>(TimeSpan.FromDays(30).Ticks);
-
-    // Statische Methode die den Context benutzt
-    private static double GetPercentStatic(DateTime date, IRange<DateTime> range)
+    protected override Task OnInitializedAsync()
     {
-        var totalTicks = (range.End - range.Start).Ticks;
-        var currentTicks = (date - range.Start).Ticks;
-        return (double)currentTicks / totalTicks;
+        string hcls = MudExCss.Classes.General.MainClass;
+        return base.OnInitializedAsync();
     }
 
-    private string GetDateString(DateTime date)
-    {
-        return date.ToString("MMM yyyy", CultureInfo.CurrentCulture);
-    }
+    private IRange<int> _nums = new MudExRange<int>(20, 60);
+    private IRange<DateTime> _period = new MudExRange<DateTime>(new(2021, 1, 1), new(2021, 12, 31));
+    private IRange<DateTime> _period2 = new RangeOf<DateTime>(new(2021, 1, 1), new(2021, 12, 31), null);
+
 }

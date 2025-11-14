@@ -1,0 +1,23 @@
+﻿@using MudBlazor.Extensions.Helper
+@inherits MudExBaseComponent<MudExEditConfiguration>
+
+<style>
+    .@(MudExCss.Prefix("edit-config-button:hover")) {
+        color: @(ActiveColor.ToCssStringValue())
+    }
+</style>
+<div class="@(MudExCss.Prefix("edit-config-wrapper"))"
+     @onmouseenter="() => _showConfig = true"
+     @onmouseleave="() => _showConfig = false">
+    
+    <MudExCaptureChild OnComponentCaptured="@ChildCaptured" >
+        @ChildContent
+    </MudExCaptureChild>
+
+    @if (AllowConfiguration && _showConfig)
+    {
+        <div class="@(MudExCss.Prefix("edit-config-button"))">
+            <MudExIconButton OnClick="OnConfigClicked" Class="@(MudExCss.Prefix("edit-config-button"))" Icon="@Icon" Size="Size.Small" ToolTip="@Tooltip"></MudExIconButton>
+        </div>
+    }
+</div>

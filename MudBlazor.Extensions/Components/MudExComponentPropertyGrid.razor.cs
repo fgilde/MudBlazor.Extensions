@@ -5,6 +5,7 @@ using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 using System.Globalization;
+using Microsoft.AspNetCore.Components.Rendering;
 using MudBlazor.Extensions.Components.ObjectEdit;
 
 namespace MudBlazor.Extensions.Components;
@@ -26,6 +27,9 @@ public partial class MudExComponentPropertyGrid<T>
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
     bool _showInherited;
     bool _groupByTypes;
+
+    protected override void RenderActions(RenderTreeBuilder __builder)
+    {}
 
     protected override Task OnInitializedAsync()
     {
