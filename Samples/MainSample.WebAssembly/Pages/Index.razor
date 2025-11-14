@@ -200,7 +200,7 @@
                 <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Extension" Size="Size.Small" /> @L["More than {0} Components", _components.Count]
             </div>
             <div class="badge-item" @onclick="ScrollToDemos">
-                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Science" Size="Size.Small" /> @L["{0} Demos", _demos.Count]
+                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Science" Size="Size.Small" /> @L["{0} Demos", Demos.Count]
             </div>
             <div class="badge-item" @onclick="@(() => NavigationManager.NavigateTo("/dialogs"))">
                 <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Layers" Size="Size.Small" /> @L["Dialog Extensions"]
@@ -217,7 +217,7 @@
                 <MudText Typo="Typo.body2" Style="opacity: 0.7;">@L["Ready to use"]</MudText>
             </div>
             <div class="stat-card">
-                <div class="stat-number">@_demos.Count</div>
+                <div class="stat-number">@Demos.Count</div>
                 <MudText Typo="Typo.h6">@L["Demos"]</MudText>
                 <MudText Typo="Typo.body2" Style="opacity: 0.7;">@L["Live examples"]</MudText>
             </div>
@@ -382,7 +382,7 @@
     <MudExpansionPanels Style="background: transparent" MultiExpansion="true">
         <MudExpansionPanel Style="background: transparent" Expanded="true" Class="@($"mt-3 mud-ex-object-edit-group-flat scroll-fade-in")" Text="@L["DEMOS"]" id="demos-section">
             <MudExCardList TData="object">
-                @foreach (var nav in _demos.Where(n => !_selectedAttributeTypes.Any() || _selectedAttributeTypes.Contains(n?.Demo?.GetType())))
+                @foreach (var nav in Demos.Where(n => !_selectedAttributeTypes.Any() || _selectedAttributeTypes.Contains(n?.Demo?.GetType())))
                 {
                     <MudExVirtualItem>
                         <MudCard Style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Back, TimeSpan.FromMilliseconds(700)).Style" Class="index-card" Elevation="2" @onclick="@(() => { Open(nav); })">
@@ -448,7 +448,6 @@
 
 @code {
 
-    private readonly HashSet<NavigationEntry> _demos = DemoAttribute.AllEntries(true);
     private readonly HashSet<NavigationEntry> _components = Navigations.ReflectMudExComponents();
 
     private async Task ScrollToSection(string sectionId)

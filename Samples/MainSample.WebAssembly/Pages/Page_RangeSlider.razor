@@ -7,10 +7,8 @@
 @using Nextended.Core.Contracts
 @using Nextended.Core.Types
 
-@attribute [DemoNew(Name = "MudExRangeSlider", Group = "RangeSlider", Documentation = "...", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
+@attribute [DemoNew(Name = "Overview", Order = 0, Group = "RangeSlider", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
 
-
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-6 mb-8">
 
     <!-- Header / Intro -->
     <MudPaper Class="pa-6 mb-6">
@@ -276,54 +274,9 @@
             </MudPaper>
         </MudItem>
     </MudGrid>
+    
+    <DemoNavigation CurrentPage="@this" />
 
-
-    <MudPaper Class="pa-6">
-        <MudExCardList TData="object">
-            <MudCard>
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Typo="MudBlazor.Typo.h6">
-                            @L["Back"]
-                        </MudText>
-                    </CardHeaderContent>
-                    <CardHeaderActions>
-                        <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.ArrowBack" Color="MudBlazor.Color.Default" />
-                    </CardHeaderActions>
-                </MudCardHeader>
-                <MudCardContent>
-                    <MudText>
-                        @L["Back to {0}", L["Demo"]]
-                    </MudText>
-                    <MudText Typo="MudBlazor.Typo.body2">
-                        @L["Short description of the previous demo."]
-                    </MudText>
-                </MudCardContent>
-            </MudCard>
-            <MudCard>
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Typo="MudBlazor.Typo.h6">
-                            @L["Forward"]
-                        </MudText>
-                    </CardHeaderContent>
-                    <CardHeaderActions>
-                        <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.ArrowForward" Color="MudBlazor.Color.Default" />
-                    </CardHeaderActions>
-                </MudCardHeader>
-                <MudCardContent>
-                    <MudText>
-                        @L["Go to {0}", L["Demo"]]
-                    </MudText>
-                    <MudText Typo="MudBlazor.Typo.body2">
-                        @L["Short description of the next demo."]
-                    </MudText>
-                </MudCardContent>
-            </MudCard>
-        </MudExCardList>
-    </MudPaper>
-
-</MudContainer>
 
 @code {
     protected override Task OnInitializedAsync()

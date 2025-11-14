@@ -4,18 +4,20 @@
 {
     <div class="mud-ex-animate-all-properties" style="@GetStyle()">
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <img style="height: 25px; margin-right: 10px; margin-bottom: -5px;" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudExtension.png"/>
+            <img style="@ClientTheme.CurrentTheme.LogoStyle" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudExtension.png"/>
         </MudHidden>
-        <MudLink Class="mud-ex-animate-all-properties mud-ex-gradient-text animate" Href="@GetHomeLink()" Typo="Typo.h6">MudBlazor.Extensions</MudLink>
+        <MudLink Style="align-self: anchor-center;" Class="mud-ex-animate-all-properties mud-ex-gradient-text animate" Href="@GetHomeLink()" Typo="Typo.h6">
+            MudBlazor.Extensions
+        </MudLink>
     </div>
 }
 else
 {
     <div style="display: flex; margin-right: 20px;">
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <img style="height: 25px; margin-right: 10px;" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudExtension.png"/>
+            <img style="@ClientTheme.CurrentTheme.LogoStyle" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudExtension.png"/>
         </MudHidden>
-        <MudLink Href="@GetHomeLink()" Typo="Typo.h6">
+        <MudLink Style="align-self: anchor-center;"  Href="@GetHomeLink()" Typo="Typo.h6">
             <MudExGradientText AnimationDuration="TimeSpan.FromSeconds(30)" Palette="new[] { MudExColor.Primary, MudExColor.Secondary, MudExColor.Tertiary }" Animate="@Animate" Typo="Typo.h6">MudBlazor.Extensions</MudExGradientText>
         </MudLink>
     </div>
@@ -33,7 +35,10 @@ else
     {
         base.OnInitialized();
         if (MainLayout.Instance != null)
+        {
             MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+            MainLayout.Instance.ThemeChanged += (_, _) => InvokeAsync(StateHasChanged);
+        }
     }
     private string GetHomeLink()
     {

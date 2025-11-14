@@ -6,121 +6,198 @@
 @using Nextended.Core.Contracts
 @using Nextended.Core.Types
 
-@attribute [DemoNew(Name = "MudExRangeSlider Template", Group="RangeSlider", Documentation = "Custom Templates", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
+@attribute [DemoNew(Name = "MudExRangeSlider Template", Order = 1, Group="RangeSlider", Documentation = "Custom Templates", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
 
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="7">
+        <MudCard Class="h-100">
+            <MudCardHeader>
+                <MudText Typo="Typo.h6">
+                    @L["Custom templates for a timeline-style range slider"]
+                </MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    @L["This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers."]
+                </MudText>
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    @L["The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate."]
+                </MudText>
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    @L["You can use this technique to build rich time sliders and visual ranges that fit your domain exactly."]
+                </MudText>
+                <MudText Typo="Typo.body2" Class="mb-4">
+                    @L["If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.", (MarkupString)"<a href=\"/time-slider\">MudExTimeSlider</a>"]
+                </MudText>
 
+                <MudText Typo="Typo.caption" Class="mt-2 mb-2">
+                    @L["Current period: {0} – {1}", dateRange.Start.ToShortDateString(), dateRange.End.ToShortDateString()]
+                </MudText>
 
-<MudExRangeSlider @bind-Value="dateRange"
-                  SizeRange="fullRange"
-                  StepLength="monthStep"
-                  StepResolver="MonthStepResolver"
-                  ShowInputs="false">
+                <MudExCodeView Theme="@(MainLayout.Instance?.IsDark ?? false ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight)"
+                               RenderChildContent="true">
 
-    <TrackTemplate Context="ctx">
-        <div style="height: 100%;
-                    position: relative;
-                    width: 100%;
-                    background: #f5f5f5;
-                    border-radius: 4px;
-                    overflow: hidden;">
+                    <MudExRangeSlider @bind-Value="dateRange"
+                                      SizeRange="fullRange"
+                                      StepLength="monthStep"
+                                      StepResolver="MonthStepResolver"
+                                      ShowInputs="false">
 
-            @* Jahresmarkierungen (dick, volle Höhe) mit Jahreszahl *@
-            @for (int year = startYear; year <= endYear; year++)
-            {
-                var yearStart = new DateTime(year, 1, 1);
-                var pctStart = GetPercentStatic(yearStart, ctx.SizeRange) * 100;
+                        <TrackTemplate Context="ctx">
+                            <div style="height: 100%;
+                                        position: relative;
+                                        width: 100%;
+                                        background: #f5f5f5;
+                                        border-radius: 4px;
+                                        overflow: hidden;">
 
-                // Berechne die Mitte des Jahres für die Jahreszahl
-                var yearMid = new DateTime(year, 7, 1);
-                var pctMid = GetPercentStatic(yearMid, ctx.SizeRange) * 100;
+                                @* Year markers (full height, bold line) with year labels *@
+                                @for (var year = startYear; year <= endYear; year++)
+                                {
+                                    var yearStart = new DateTime(year, 1, 1);
+                                    var pctStart = GetPercentStatic(yearStart, ctx.SizeRange) * 100;
 
-                <div style="position: absolute;
-                                    left: @(pctStart.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%;
-                                    top: 0;
-                                    bottom: 0;
-                                    width: 2px;
-                                    background: #999;">
-                </div>
+                                    // Middle of the year for the label
+                                    var yearMid = new DateTime(year, 7, 1);
+                                    var pctMid = GetPercentStatic(yearMid, ctx.SizeRange) * 100;
 
-                @* Jahreszahl in der Mitte des Jahres *@
-                <div style="position: absolute;
-                                    left: @(pctMid.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%;
-                                    top: 50%;
-                                    transform: translate(-50%, -50%);
-                                    font-size: 11px;
-                                    color: #666;
-                                    font-weight: 600;
-                                    pointer-events: none;
-                                    white-space: nowrap;
-                                    z-index: 0;">
-                    @year
-                </div>
-            }
+                                    <div style="position: absolute;
+                                                    left: @pctStart.ToString("F2", CultureInfo.InvariantCulture)%;
+                                                    top: 0;
+                                                    bottom: 0;
+                                                    width: 2px;
+                                                    background: #999;">
+                                    </div>
 
-            @* Monatsmarkierungen (dünn, mit Margin) *@
-            @for (var date = new DateTime(startYear, 1, 1); date <= new DateTime(endYear, 12, 1); date = date.AddMonths(1))
-            {
-                if (date.Month != 1) // Skip January (already marked by year)
-                {
-                    var pct = GetPercentStatic(date, ctx.SizeRange) * 100;
+                                    @* Year label in the middle of the year *@
+                                    <div style="position: absolute;
+                                                    left: @pctMid.ToString("F2", CultureInfo.InvariantCulture)%;
+                                                    top: 50%;
+                                                    transform: translate(-50%, -50%);
+                                                    font-size: 11px;
+                                                    color: #666;
+                                                    font-weight: 600;
+                                                    pointer-events: none;
+                                                    white-space: nowrap;
+                                                    z-index: 0;">
+                                        @year
+                                    </div>
+                                }
 
-                    <div style="position: absolute;
-                                                left: @(pct.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%;
-                                                top: 15%;
-                                                bottom: 15%;
-                                                width: 1px;
-                                                background: #ccc;">
-                    </div>
-                }
-            }
-        </div>
-    </TrackTemplate>
+                                @* Month markers (small ticks, no labels) *@
+                                @for (var date = new DateTime(startYear, 1, 1); date <= new DateTime(endYear, 12, 1); date = date.AddMonths(1))
+                                {
+                                    if (date.Month != 1) // skip January (already covered by year marker)
+                                    {
+                                        var pct = GetPercentStatic(date, ctx.SizeRange) * 100;
 
-    <SelectionTemplate Context="ctx">
-        <div style="height: 100%;
-                    width: 100%;
-                    background: #1976d2;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    position: relative;
-                    border-radius: 4px;">
-            <span style="color: white;
-                         font-weight: 600;
-                         font-size: 11px;
-                         white-space: nowrap;
-                         padding: 0 8px;
-                         text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
-                @GetDateString(ctx.Value.Start) - @GetDateString(ctx.Value.End)
-            </span>
-        </div>
-    </SelectionTemplate>
+                                        <div style="position: absolute;
+                                                            left: @pct.ToString("F2", CultureInfo.InvariantCulture)%;
+                                                            top: 15%;
+                                                            bottom: 15%;
+                                                            width: 1px;
+                                                            background: #ccc;">
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </TrackTemplate>
 
-    <ThumbStartTemplate Context="ctx">
-        <div style="width: 14px;
-                    height: 14px;
-                    background: white;
-                    border: 3px solid #1976d2;
-                    border-radius: 50%;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-        </div>
-    </ThumbStartTemplate>
+                        <SelectionTemplate Context="ctx">
+                            <div style="height: 100%;
+                                        width: 100%;
+                                        background: #1976d2;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        position: relative;
+                                        border-radius: 4px;">
+                                <span style="color: white;
+                                             font-weight: 600;
+                                             font-size: 11px;
+                                             white-space: nowrap;
+                                             padding: 0 8px;
+                                             text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
+                                    @GetDateString(ctx.Value.Start) - @GetDateString(ctx.Value.End)
+                                </span>
+                            </div>
+                        </SelectionTemplate>
 
-    <ThumbEndTemplate Context="ctx">
-        <div style="width: 14px;
-                    height: 14px;
-                    background: white;
-                    border: 3px solid #1976d2;
-                    border-radius: 50%;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-        </div>
-    </ThumbEndTemplate>
+                        <ThumbStartTemplate Context="ctx">
+                            <div style="width: 14px;
+                                        height: 14px;
+                                        background: white;
+                                        border: 3px solid #1976d2;
+                                        border-radius: 50%;
+                                        box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                            </div>
+                        </ThumbStartTemplate>
 
-</MudExRangeSlider>
+                        <ThumbEndTemplate Context="ctx">
+                            <div style="width: 14px;
+                                        height: 14px;
+                                        background: white;
+                                        border: 3px solid #1976d2;
+                                        border-radius: 50%;
+                                        box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                            </div>
+                        </ThumbEndTemplate>
+
+                    </MudExRangeSlider>
+
+                </MudExCodeView>
+
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" md="5">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1" Class="mb-2">
+                @L["What are custom templates?"]
+            </MudText>
+            <MudList T="object" Dense="true" Class="mt-2">
+                <MudListItem>
+                    <MudText>
+                        @L["{0} lets you draw the background track yourself (e.g. years, months, grid lines).", "TrackTemplate"]
+                    </MudText>
+                </MudListItem>
+                <MudListItem>
+                    <MudText>
+                        @L["{0} controls how the selected range looks – here we show the formatted start and end date.", "SelectionTemplate"]
+                    </MudText>
+                </MudListItem>
+                <MudListItem>
+                    <MudText>
+                        @L["{0} and {1} define the UI of the start and end thumbs.", "ThumbStartTemplate", "ThumbEndTemplate"]
+                    </MudText>
+                </MudListItem>
+                <MudListItem>
+                    <MudText>
+                        @L["Together with a custom StepResolver you can build timeline-like sliders that perfectly match your data."]
+                    </MudText>
+                </MudListItem>
+            </MudList>
+
+            <MudDivider Class="my-3"/>
+
+            <MudText Typo="Typo.subtitle1" Class="mb-2">
+                @L["Do I always need custom templates?"]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-1">
+                @L["No. If you simply need a time slider without a custom track layout, use the dedicated MudExTimeSlider component."]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["You can find it on the next page: {0}.", "<a href=\"/time-slider\">MudExTimeSlider</a>"].ToMarkupString()
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 
 @code {
-    private int startYear = 2015;
-    private int endYear = 2022;
+
+    private readonly int startYear = 2015;
+    private readonly int endYear = 2022;
 
     private IRange<DateTime> dateRange = new MudExRange<DateTime>(
         new DateTime(2016, 1, 1),
@@ -132,9 +209,8 @@
         new DateTime(endYear, 12, 31)
     );
 
-    private RangeLength<DateTime> monthStep = new RangeLength<DateTime>(TimeSpan.FromDays(30).Ticks);
+    private readonly RangeLength<DateTime> monthStep = new(TimeSpan.FromDays(30).Ticks);
 
-    // Custom Step Resolver - snappt immer auf den 1. des Monats
     private DateTime MonthStepResolver(
         DateTime value,
         IRange<DateTime> sizeRange,
@@ -144,39 +220,29 @@
     {
         if (steps != 0)
         {
-            // Wenn steps angegeben: Monate addieren
             var current = new DateTime(value.Year, value.Month, 1);
             var result = current.AddMonths(steps);
 
-            // Clamp auf SizeRange
             if (result < sizeRange.Start) return sizeRange.Start;
             if (result > sizeRange.End) return sizeRange.End;
             return result;
         }
-        else
+
+        var snapped = new DateTime(value.Year, value.Month, 1);
+        if (policy == SnapPolicy.Nearest && value.Day > 15)
         {
-            // Snapping: Immer auf den 1. des Monats
-            var snapped = new DateTime(value.Year, value.Month, 1);
-
-            // Wenn nach dem 15. des Monats und policy ist Nearest, zum nächsten Monat
-            if (policy == SnapPolicy.Nearest && value.Day > 15)
-            {
-                snapped = snapped.AddMonths(1);
-            }
-            else if (policy == SnapPolicy.Ceiling && value.Day > 1)
-            {
-                snapped = snapped.AddMonths(1);
-            }
-            // SnapPolicy.Down bleibt beim aktuellen Monatsanfang
-
-            // Clamp auf SizeRange
-            if (snapped < sizeRange.Start) return sizeRange.Start;
-            if (snapped > sizeRange.End) return sizeRange.End;
-            return snapped;
+            snapped = snapped.AddMonths(1);
         }
+        else if (policy == SnapPolicy.Ceiling && value.Day > 1)
+        {
+            snapped = snapped.AddMonths(1);
+        }
+
+        if (snapped < sizeRange.Start) return sizeRange.Start;
+        if (snapped > sizeRange.End) return sizeRange.End;
+        return snapped;
     }
 
-    // Statische Methode die den Context benutzt
     private static double GetPercentStatic(DateTime date, IRange<DateTime> range)
     {
         var totalTicks = (range.End - range.Start).Ticks;
@@ -188,4 +254,5 @@
     {
         return date.ToString("MMM yyyy", CultureInfo.CurrentCulture);
     }
+
 }

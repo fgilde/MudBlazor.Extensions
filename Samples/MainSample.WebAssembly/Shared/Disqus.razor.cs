@@ -105,7 +105,7 @@ public partial class Disqus
             MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
     }
 
-    private async Task LoadDisqusIfNotLoadedAsync()
+    public async Task LoadDisqusIfNotLoadedAsync()
     {
         if (_loaded)
             return;

@@ -10,9 +10,11 @@ namespace MainSample.WebAssembly;
 
 public class ClientTheme : MudTheme
 {
+    public string LogoStyle { get; set; } = "height: 25px; margin-right: 10px; margin-bottom: -5px";
+    public bool FloatingCommentsButton { get; set; }
     public bool ShowFilterInDrawer { get; set; } = true;
     public bool ShowLogoInDrawer { get; set; }
-
+    public MaxWidth ContentMaxWidth { get; set; } = MaxWidth.ExtraExtraLarge;
     public TreeViewExpandBehaviour NavigationExpandMode { get; set; }
     public TreeViewMode NavigationViewMode { get; set; } = TreeViewMode.Default;
 
@@ -135,6 +137,40 @@ public class ClientTheme : MudTheme
 
     public static ClientTheme DefaultTheme = new ClientTheme()
     {
+        LogoStyle = "height: 50px; margin-right: 10px; margin-top: 5px",
+        NavigationExpandMode = TreeViewExpandBehaviour.SingleExpand,
+        FloatingCommentsButton = true,
+        ContentMaxWidth = MaxWidth.False,
+        PaletteLight = new PaletteLight()
+        {
+            Primary = "#594AE2",
+            Secondary = "#FF4081",
+            Tertiary = "#1EC8A5",
+            AppbarBackground = "#1f2226",
+            Background = Colors.Gray.Lighten5,
+            DrawerBackground = "#FFF",
+            DrawerText = "rgba(0,0,0, 0.7)",
+            Success = "#19635d"
+        },
+        DrawerClipMode = DrawerClipMode.Docked,
+        DrawerVariant = DrawerVariant.Responsive,
+        //   Typography = DefaultTypography, // TODO: MudBlazor 8
+        LayoutProperties = DefaultLayoutProperties.SetProperties(l =>
+        {
+            l.DrawerWidthLeft = l.DrawerWidthRight = "400px";
+            l.DefaultBorderRadius = "8px";
+        })
+    }.SetProperties(t => t.PaletteDark = t.PaletteLight.ToPaletteDark().SetProperties(dark =>
+    {
+        dark.AppbarBackground = "#121518";
+        dark.DrawerBackground = "#121518";
+        dark.Background = "#121518";
+        dark.Surface = "#222529";
+    }));
+
+
+    public static ClientTheme Version2 = new ClientTheme()
+    {
         PaletteLight = new PaletteLight()
         {
             Primary = "#199b90",
@@ -156,36 +192,8 @@ public class ClientTheme : MudTheme
         dark.Surface = "#222529";
     }));
     
-    public static ClientTheme New = new ClientTheme()
-    {
-        PaletteLight = new PaletteLight()
-        {
-            Primary = "#594AE2",
-            Secondary = "#FF4081",
-            Tertiary = "#1EC8A5",
-            AppbarBackground = "#1f2226",
-            Background = Colors.Gray.Lighten5,
-            DrawerBackground = "#FFF",
-            DrawerText = "rgba(0,0,0, 0.7)",
-            Success = "#19635d"
-        },
-        DrawerClipMode = DrawerClipMode.Docked,
-        DrawerVariant = DrawerVariant.Responsive,
-        //   Typography = DefaultTypography, // TODO: MudBlazor 8
-        LayoutProperties = DefaultLayoutProperties.SetProperties(l =>
-        {
-            l.DefaultBorderRadius = "8px";
-        })
-    }.SetProperties(t => t.PaletteDark = t.PaletteLight.ToPaletteDark().SetProperties(dark =>
-    {
-        dark.AppbarBackground = "#1f2226";
-        dark.DrawerBackground = "#1f2226";
-        dark.Background = "#121518";
-        dark.Surface = "#222529";
-    }));
 
-
-    public static ClientTheme Last = new ClientTheme()
+    public static ClientTheme InitialTheme = new ClientTheme()
     {
         PaletteLight = new PaletteLight()
         {
@@ -225,8 +233,14 @@ public class ClientTheme : MudTheme
     
     public static ClientTheme CurrentTheme = DefaultTheme;
 
-    public static ICollection<ThemePreset<ClientTheme>> All => ThemePreset.Create(() => DefaultTheme, () => New, () => Last, () => SimpleBlue);
-    
+    public static ICollection<ThemePreset<ClientTheme>> All =>
+    [
+        new("Default", DefaultTheme),
+        new("MudEx 2 (last)", Version2),
+        new("MudEx 1 (first)", InitialTheme),
+        new("Simple Blue", SimpleBlue)
+    ];
+
 
     public static async Task<ICollection<ThemePreset<ClientTheme>>> GetAllThemes(LocalStorageService storageService)
     {
@@ -238,9 +252,11 @@ public class ClientTheme : MudTheme
             result.Add(new ThemePreset<ClientTheme>(item.Key.Split("-").Last(), theme));
         }
         return result;
+
     }
 
     #endregion
+
 }
 
 public class StoredThemeItem<T>

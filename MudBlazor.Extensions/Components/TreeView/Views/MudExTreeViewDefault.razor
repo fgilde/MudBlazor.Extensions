@@ -40,7 +40,7 @@
                            <div style="@ContentFlexStyleStr()">
                                @if (ExpandBehaviour != Core.Enums.TreeViewExpandBehaviour.None)
                                {
-                                   <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Value, expanded))" Expanded="@context.Expanded" Visible="@(context.HasChildren)"/>
+                                   <MudTreeViewItemToggleButton Loading="@(context.NeedsLoadChildren && context.Expanded)" ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Value, expanded))" Expanded="@context.Expanded" Visible="@(context.HasChildren)"/>
                                }
                                @RenderItemContent(context, true)
                            </div>

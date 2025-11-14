@@ -1,0 +1,58 @@
+﻿@using MainSample.WebAssembly.Pages
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<DemoNavigation> L
+
+<MudPaper Class="pa-6">
+    <MudExCardList TData="object">
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.ArrowBack" Color="MudBlazor.Color.Default" />
+                    <MudText Typo="MudBlazor.Typo.h6">
+                        @L["Back"]
+                    </MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>
+                    @L["Back to {0}", L["Demo"]]
+                </MudText>
+                <MudText Typo="MudBlazor.Typo.body2">
+                    @L["Short description of the previous demo."]
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="MudBlazor.Typo.h6">
+                        @L["Forward"]
+                    </MudText>
+                    <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.ArrowForward" Color="MudBlazor.Color.Default" />
+                </CardHeaderContent>
+
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>
+                    @L["Go to {0}", L["Demo"]]
+                </MudText>
+                <MudText Typo="MudBlazor.Typo.body2">
+                    @L["Short description of the next demo."]
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudExCardList>
+</MudPaper>
+
+@code {
+    [Parameter] public BasePage CurrentPage { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+        }
+    }
+
+}

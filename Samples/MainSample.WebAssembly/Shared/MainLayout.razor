@@ -74,14 +74,18 @@
     </MudDrawer>
 
     <MudMainContent>
-        <MudContainer Style="max-height: 100vh" MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-sample-main-content-container my-4 pt-4">
+        <MudContainer Style="max-height: 100vh" 
+                      MaxWidth="@ClientTheme.CurrentTheme.ContentMaxWidth" 
+                      Class="my-sample-main-content-container my-4 pt-4">
             <div style="margin-top: -43px;margin-left: -44px;">
                 <NavMenu ViewMode="TreeViewMode.Breadcrumb"/>
             </div>
             @Body
         </MudContainer>
     </MudMainContent>
+    
 
-    <CommentsFooter @bind-Available="_commentsAvailable" />
+    <CommentsFooter AlwaysClose="@ClientTheme.CurrentTheme.FloatingCommentsButton" 
+                    SimpleMode="@ClientTheme.CurrentTheme.FloatingCommentsButton" @bind-Available="_commentsAvailable" />
 
 </MudLayout>
