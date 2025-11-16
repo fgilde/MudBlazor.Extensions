@@ -1,0 +1,42 @@
+﻿
+@using MudBlazor
+
+<MudGrid Class="mt-6 mb-8">
+    <MudItem xs="12" md="9">
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
+    </MudItem>
+
+    <MudItem xs="0" md="3" Class="d-none d-md-block">
+        @if (_sections.Count > 0)
+        {
+            <MudExContentsNav Items="_sections.OrderBy(s => s.Order).ToList()" />
+        }
+    </MudItem>
+</MudGrid>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private readonly List<MudExDemoSection> _sections = new();
+
+    void IMudExDemoRegistrar.Register(MudExDemoSection section)
+    {
+        if (_sections.Any(s => s.Id == section.Id))
+            return;
+
+        _sections.Add(section);
+        StateHasChanged();
+    }
+
+    void IMudExDemoRegistrar.Unregister(string id)
+    {
+        var s = _sections.FirstOrDefault(x => x.Id == id);
+        if (s is null) return;
+        _sections.Remove(s);
+        StateHasChanged();
+    }
+
+}
+
