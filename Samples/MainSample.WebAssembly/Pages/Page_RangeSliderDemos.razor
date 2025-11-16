@@ -1,5 +1,6 @@
 ﻿@page "/range-slider-demos"
 @inherits BasePage
+@using MainSample.WebAssembly.Examples
 @using MudBlazor
 @using MudBlazor.Extensions.Helper
 @using Nextended.Core.Contracts
@@ -13,14 +14,10 @@
     <MudExDemoBox
         Title="@L["Basic numeric range"]"
         Subtitle="@L["Simple range from 0 to 100 with steps of 5."]"
-        RunText="@L["Run"]"
-        ShowCodeText="@L["Show code"]"
-        HideCodeText="@L["Hide code"]"
-        EditInstanceText="@L["Edit instance"]"
         FeaturesTitle="@L["Key features"]"
         FeaturesDescription="@L["Good starting point for numeric ranges."]"
         Features="@(new[] { L["Range from 0–100"].Value, L["Step size: 5"], L["Two-way binding with @bind-Value"] })"
-        Code="@NumericRangeCode">
+        >
 
         <DemoContent>
             <MudExRangeSlider T="int"
@@ -36,10 +33,10 @@
         Subtitle="@L["Custom track and selection templates for a time-based range."]"
         FeaturesTitle="@L["Highlights"]"
         Features="@(new[] { L["Custom TrackTemplate for year and month markers"].Value, L["SelectionTemplate with formatted period"], L["Perfect basis for timeline sliders"] })"
-        Code="@TimelineCode">
+        >
 
         <DemoContent>
-            @* Dein Timeline-RangeSlider hier *@
+            <SimpleExample/>
         </DemoContent>
 
     </MudExDemoBox>
@@ -50,7 +47,7 @@
         Subtitle="@L["Custom track and selection templates for a time-based range."]"
         FeaturesTitle="@L["Highlights"]"
         Features="@(new[] { L["Custom TrackTemplate for year and month markers"].Value, L["SelectionTemplate with formatted period"], L["Perfect basis for timeline sliders"] })"
-        Code="@TimelineCode">
+        >
 
         <DemoContent>
             @* Dein Timeline-RangeSlider hier *@
@@ -65,7 +62,7 @@
         Subtitle="@L["Custom track and selection templates for a time-based range."]"
         FeaturesTitle="@L["Highlights"]"
         Features="@(new[] { L["Custom TrackTemplate for year and month markers"].Value, L["SelectionTemplate with formatted period"], L["Perfect basis for timeline sliders"] })"
-        Code="@TimelineCode">
+        >
 
         <DemoContent>
             @* Dein Timeline-RangeSlider hier *@
@@ -79,7 +76,7 @@
         Subtitle="@L["Custom track and selection templates for a time-based range."]"
         FeaturesTitle="@L["Highlights"]"
         Features="@(new[] { L["Custom TrackTemplate for year and month markers"].Value, L["SelectionTemplate with formatted period"], L["Perfect basis for timeline sliders"] })"
-        Code="@TimelineCode">
+        >
 
         <DemoContent>
             @* Dein Timeline-RangeSlider hier *@
@@ -93,8 +90,5 @@
 
 @code {
     private IRange<int> _nums = new MudExRange<int>(20, 60);
-
-    private string NumericRangeCode = "sdsdds";
-    private string TimelineCode = "ddasasassd";
-
+    
 }

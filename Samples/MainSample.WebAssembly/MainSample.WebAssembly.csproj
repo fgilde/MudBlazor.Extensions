@@ -48,6 +48,7 @@
 
   <ItemGroup>
     <PackageReference Include="Bromix.MudBlazor.MaterialDesignIcons" Version="7.4.47.56" />
+    <PackageReference Include="Nextended.CodeGen" Version="10.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.0" />
@@ -56,7 +57,9 @@
     <PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="6.0.1" />
 
   </ItemGroup>
-
+  <ItemGroup>
+    <AdditionalFiles Include="CodeGen.config.json" />
+  </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' != 'Release'">
     <ProjectReference Include="..\..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
   </ItemGroup>

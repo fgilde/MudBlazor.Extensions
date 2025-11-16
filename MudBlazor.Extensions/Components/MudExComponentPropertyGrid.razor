@@ -19,15 +19,21 @@ else
         return@<p></p>;
     }
 
+
     private RenderFragment RenderToolbarExtraContent()
     {
         return
             @<div>
                 @GetToolbarContent()
+
                 @if (!SearchActive)
                 {
+                    <MudTooltip Text="@L["Edit in TryMudEx"]">
+                        <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@EditCode"/>
+                    </MudTooltip>
+
                     <MudTooltip Text="@L["Show Markup"]">
-                        <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode"/>
+                        <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@(() => ShowCode())"/>
                     </MudTooltip>
                     @if (ShowInheritedToggle)
                     {

@@ -1,4 +1,5 @@
-﻿@inherits ExampleBase
+```razor
+@inherits ExampleBase
 
 <MudButton @ref="ComponentRef">
     Hello
@@ -13,3 +14,5 @@
     }
 
 }
+
+```

@@ -1,11 +1,17 @@
 ﻿@inherits MudBlazor.Extensions.Components.Base.MudExBaseComponent<MudExDemoBox>
+@implements IExampleHolder
+@using MainSample.WebAssembly.Examples
 @using MainSample.WebAssembly.Pages
 @using MudBlazor
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
+@using Nextended.Core.Extensions
 
 <MudPaper Class="mudex-demo-box mb-6" Elevation="3">
     <MudStack Spacing="0">
 
-        <!-- Header -->
+
         <MudPaper Class="mudex-demo-header px-4 py-3" Elevation="0">
             <MudGrid AlignItems="AlignItems.Center">
                 <MudItem xs="12" md="7">
@@ -42,6 +48,7 @@
                         }
 
                         <MudButton Variant="Variant.Text"
+                                   Disabled="@(_example?.ComponentRef == null)"
                                    Class="mudex-demo-action"
                                    Color="Color.Default"
                                    Size="Size.Small"
@@ -62,12 +69,14 @@
                 <MudPaper Class="mudex-demo-surface pa-4" Elevation="0">
                     @if (DemoContent is not null)
                     {
-                        @DemoContent
+                        <CascadingValue Value="this">
+                            @DemoContent
+                        </CascadingValue>
                     }
                     else
                     {
                         <MudText Typo="Typo.caption" Color="Color.Secondary">
-                        @TryLocalize("No demo content provided.")
+                            @TryLocalize("No demo content provided.")
                         </MudText>
                     }
                 </MudPaper>
@@ -114,20 +123,15 @@
             }
         </MudGrid>
 
-        <!-- Code: bündig unter der Demo, über ganze Breite -->
         @if (ShowCode && HasCode)
         {
             <MudDivider />
 
-            <div class="mudex-demo-code-container px-4 pb-4 pt-3">
-                <MudPaper Class="mudex-demo-code pa-3" Elevation="1">
-                    @if (CodeContent is not null)
+            <div class="mudex-demo-code-container">
+                <MudPaper Class="mudex-demo-code" Elevation="1">
+                    @if (!string.IsNullOrWhiteSpace(Code))
                     {
-                        @CodeContent
-                    }
-                    else if (!string.IsNullOrWhiteSpace(Code))
-                    {
-                        <MudCodeHighlight Text="@Code" />
+                        <MudExMarkdown Value="@Code" CodeBlockTheme="MainLayout.GetCodeBlockTheme()" />
                     }
                 </MudPaper>
             </div>
@@ -136,7 +140,8 @@
 </MudPaper>
 
 @code {
-    
+
+    private IExample? _example;
     [Parameter] public string Title { get; set; } = "Demo";
     [Parameter] public string? Subtitle { get; set; }
 
@@ -145,10 +150,9 @@
     [Parameter] public string HideCodeText { get; set; } = "Hide code";
     [Parameter] public string EditInstanceText { get; set; } = "Edit";
 
-    /* Demo / Code */
     [Parameter] public RenderFragment? DemoContent { get; set; }
     [Parameter] public string? Code { get; set; }
-    [Parameter] public RenderFragment? CodeContent { get; set; }
+
 
     /* Features (rechte Spalte) */
     [Parameter] public string? FeaturesTitle { get; set; }
@@ -162,39 +166,55 @@
         !string.IsNullOrWhiteSpace(FeaturesTitle) ||
         !string.IsNullOrWhiteSpace(FeaturesDescription);
 
-    /* Events */
-    [Parameter] public EventCallback OnRun { get; set; }
-    [Parameter] public EventCallback OnEditInstance { get; set; }
 
     private bool ShowCode { get; set; }
 
     private bool HasCode =>
-        !string.IsNullOrWhiteSpace(Code) || CodeContent is not null;
+        !string.IsNullOrWhiteSpace(Code) || _example != null || DemoContent is not null;
 
     private async Task RunClicked()
     {
-        if (OnRun.HasDelegate)
-            await OnRun.InvokeAsync();
+        await LoadCodeAsync();
+        await TryMudExHelper.EditCodeInTryMudexAsync(Code, JsRuntime);
     }
 
     private async Task EditInstanceClicked()
     {
-        if (OnEditInstance.HasDelegate)
-            await OnEditInstance.InvokeAsync();
+        if (_example?.ComponentRef != null)
+        {
+            await DialogService.EditComponentAsync(_example?.ComponentRef, options: DialogOptionsEx.SlideInFromRight.SetProperties(o =>
+            {
+                o.Resizeable = true;
+                o.DialogBackgroundAppearance = MudExAppearance.FromStyle(b =>
+                {
+                    b.WithBackgroundColor(Color.Transparent)
+                        .WithOpacity(0.0);
+                });
+            }));
+        }
     }
 
-    private void ToggleShowCode()
+    private async Task LoadCodeAsync()
+    {
+        Code ??= _example != null ?  await _example.GetSourceCodeAsync() :  MudExCodeView.CodeAsMarkup(MudExCodeView.CodeFromFragment(DemoContent), "razor");
+    }
+
+    private async Task ToggleShowCode()
     {
         ShowCode = !ShowCode;
+        if (ShowCode)
+        {
+            await LoadCodeAsync();
+        }
     }
 
     [CascadingParameter] private IMudExDemoRegistrar? Registrar { get; set; }
 
     [Parameter] public string? AnchorId { get; set; }
     [Parameter] public string? NavTitle { get; set; }
-    [Parameter] public int Order { get; set; }   // optional für Sortierung
+    [Parameter] public int Order { get; set; }  
 
-    
+
 
     protected override void OnInitialized()
     {
@@ -207,7 +227,7 @@
 
         Registrar?.Register(new MudExDemoSection
         {
-            Id    = AnchorId!,
+            Id = AnchorId!,
             Title = NavTitle ?? Title,
             Order = Order
         });
@@ -235,6 +255,12 @@
             .Replace(";", "");
 
         return id;
+    }
+
+    public async Task RegisterAsync(IExample example)
+    {
+        _example = example;
+        await InvokeAsync(StateHasChanged);
     }
 
 }

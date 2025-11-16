@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
+using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 using System.Globalization;
-using Microsoft.AspNetCore.Components.Rendering;
-using MudBlazor.Extensions.Components.ObjectEdit;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -18,8 +18,7 @@ public partial class MudExComponentPropertyGrid<T>
     [Parameter] public EventCallback<bool> GroupByTypesChanged { get; set; }
     [Parameter] public string GeneratedCodeComment { get; set; } = "This is generated and maybe not correct";
     [Parameter] public EventCallback<string> OnShowCode { get; set; }
-    [Parameter] public CodeBlockTheme CodeTheme { get; set; } = CodeBlockTheme.Default;
-
+    
     [Inject] private IJsApiService JsApiService { get; set; }
     [Inject] private MudExFileService FileService { get; set; }
 
@@ -122,9 +121,11 @@ public partial class MudExComponentPropertyGrid<T>
         return Task.CompletedTask;
     }
 
+    protected virtual CodeBlockTheme GetCodeTheme() => CodeBlockTheme.AtomOneDark;
 
     protected virtual async Task ShowCode()
     {
+        var theme = GetCodeTheme();
         var generateBlazorMarkupFromInstance = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, L[GeneratedCodeComment]);
         if (OnShowCode.HasDelegate)
         {
@@ -138,7 +139,7 @@ public partial class MudExComponentPropertyGrid<T>
             md =>
             {
                 md.Code = generateBlazorMarkupFromInstance;
-                md.Theme = CodeTheme;
+                md.Theme = theme;
             },
             dialog =>
             {
@@ -155,5 +156,11 @@ public partial class MudExComponentPropertyGrid<T>
                 CloseButton = true,
                 Resizeable = true,
             });
+    }
+
+    private async Task EditCode()
+    {
+        var code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, L[GeneratedCodeComment]);
+        await TryMudExHelper.EditCodeInTryMudexAsync(code, JsRuntime);
     }
 }
