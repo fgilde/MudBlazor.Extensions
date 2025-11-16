@@ -1,0 +1,96 @@
+﻿@using MainSample.WebAssembly.Pages
+@using MudBlazor
+@inject NavigationManager NavigationManager
+
+
+<style>
+    /* Smooth scrolling ohne JS */
+html {
+    scroll-behavior: smooth;
+}
+
+.mudex-contents-nav {
+    position: sticky;
+    top: 80px; /* an dein Layout anpassen */
+    font-size: 0.9rem;
+    color: var(--mud-palette-text-secondary);
+}
+
+.mudex-contents-list {
+    border-left: 1px solid var(--mud-palette-lines-default);
+    margin-left: 4px;
+    padding-left: 12px;
+}
+
+.mudex-contents-item {
+    padding: 4px 0;
+    position: relative;
+}
+
+.mudex-contents-link {
+    text-decoration: none;
+    color: var(--mud-palette-text-secondary);
+    display: inline-block;
+}
+
+.mudex-contents-link:hover {
+    color: var(--mud-palette-primary);
+}
+
+.mudex-contents-item.active .mudex-contents-link {
+    color: var(--mud-palette-primary);
+    font-weight: 500;
+}
+
+/* Der Strich links beim aktiven Anchor */
+.mudex-contents-item.active::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background-color: var(--mud-palette-primary);
+}
+
+</style>
+
+<div class="mudex-contents-nav">
+    <MudText Typo="Typo.subtitle2" Class="mb-2">Contents</MudText>
+
+    <div class="mudex-contents-list">
+        @foreach (var item in Items ?? Enumerable.Empty<MudExDemoSection>())
+        {
+            var isActive = string.Equals(_activeId, item.Id, StringComparison.OrdinalIgnoreCase);
+
+            <div class="mudex-contents-item @(isActive ? "active" : "")">
+                <a href="#@item.Id"
+                   @onclick="() => SetActive(item.Id)"
+                   class="mudex-contents-link">
+                    @item.Title
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public IEnumerable<MudExDemoSection>? Items { get; set; }
+
+    private string? _activeId;
+
+    protected override void OnInitialized()
+    {
+        // Wenn URL schon ein Fragment hat (#anchor), übernehmen
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        if (!string.IsNullOrEmpty(uri.Fragment))
+            _activeId = uri.Fragment.TrimStart('#');
+    }
+
+    private void SetActive(string id)
+    {
+        _activeId = id;
+        // Anchor selbst übernimmt das Scrollen
+        StateHasChanged();
+    }
+}

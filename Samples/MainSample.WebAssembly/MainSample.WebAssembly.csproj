@@ -3,7 +3,7 @@
   <Import Project="..\..\MudBlazor.Extensions\version.generated.props" Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
   <Import Condition="Exists('..\..\Shared.props')" Project="..\..\Shared.props" />
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
@@ -48,19 +48,17 @@
 
   <ItemGroup>
     <PackageReference Include="Bromix.MudBlazor.MaterialDesignIcons" Version="7.4.47.56" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.19" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.19" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.19" />
-    <PackageReference Include="BlazorMonaco" Version="3.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.0" />
+    <PackageReference Include="BlazorMonaco" Version="3.4.0" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
-    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudExObjectEdit.CodeGatorAdapter" Version="*-*" />
-    <PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="1.5.0" />
+    <PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="6.0.1" />
 
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' != 'Release'">
     <ProjectReference Include="..\..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
-    <ProjectReference Include="..\..\MudBlazor.Extensions.CodeGator.Adapter\MudBlazor.Extensions.CodeGator.Adapter.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -87,6 +85,12 @@
     <!-- Quelle/Ziel -->
     <IndexTemplate>$(ProjectDir)wwwroot\index.template.html</IndexTemplate>
     <IndexOutput>$(ProjectDir)wwwroot\index.html</IndexOutput>
+  </PropertyGroup>
+
+
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
   </PropertyGroup>
 
   <!-- Erzeugt index.html VOR Build/DevServer/StaticAssets -->

@@ -1,0 +1,240 @@
+﻿@inherits MudBlazor.Extensions.Components.Base.MudExBaseComponent<MudExDemoBox>
+@using MainSample.WebAssembly.Pages
+@using MudBlazor
+
+<MudPaper Class="mudex-demo-box mb-6" Elevation="3">
+    <MudStack Spacing="0">
+
+        <!-- Header -->
+        <MudPaper Class="mudex-demo-header px-4 py-3" Elevation="0">
+            <MudGrid AlignItems="AlignItems.Center">
+                <MudItem xs="12" md="7">
+                    <MudText Typo="Typo.h6">@Title</MudText>
+                    @if (!string.IsNullOrWhiteSpace(Subtitle))
+                    {
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">
+                            @TryLocalize(Subtitle)
+                        </MudText>
+                    }
+                </MudItem>
+
+                <MudItem xs="12" md="5" Class="d-flex justify-end">
+                    <div class="mudex-demo-actions">
+                        <MudButton Variant="Variant.Text"
+                                   Class="mudex-demo-action"
+                                   Color="Color.Success"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Filled.PlayArrow"
+                                   OnClick="@RunClicked">
+                            @TryLocalize(RunText)
+                        </MudButton>
+
+                        @if (HasCode)
+                        {
+                            <MudButton Variant="Variant.Text"
+                                       Class="mudex-demo-action"
+                                       Color="Color.Default"
+                                       Size="Size.Small"
+                                       StartIcon="@(ShowCode ? Icons.Material.Filled.CodeOff : Icons.Material.Filled.Code)"
+                                       OnClick="@ToggleShowCode">
+                                @TryLocalize(ShowCode ? HideCodeText : ShowCodeText)
+                            </MudButton>
+                        }
+
+                        <MudButton Variant="Variant.Text"
+                                   Class="mudex-demo-action"
+                                   Color="Color.Default"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Filled.Settings"
+                                   OnClick="@EditInstanceClicked">
+                            @TryLocalize(EditInstanceText)
+                        </MudButton>
+                    </div>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+
+        <MudDivider />
+
+        <!-- Demo + optionale Features -->
+        <MudGrid Class="mudex-demo-body px-4 py-4" GutterSize="3">
+            <MudItem xs="12" md="@((HasFeatures ? 8 : 12))">
+                <MudPaper Class="mudex-demo-surface pa-4" Elevation="0">
+                    @if (DemoContent is not null)
+                    {
+                        @DemoContent
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">
+                        @TryLocalize("No demo content provided.")
+                        </MudText>
+                    }
+                </MudPaper>
+            </MudItem>
+
+            @if (HasFeatures)
+            {
+                <MudItem xs="12" md="4">
+                    <MudPaper Class="mudex-demo-features pa-3 h-100" Elevation="0">
+                        @if (!string.IsNullOrWhiteSpace(FeaturesTitle))
+                        {
+                            <MudText Typo="Typo.subtitle2" Class="mb-1">
+                                @TryLocalize(FeaturesTitle)
+                            </MudText>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(FeaturesDescription))
+                        {
+                            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-2">
+                                @TryLocalize(FeaturesDescription)
+                            </MudText>
+                        }
+
+                        @if (FeaturesListTemplate is not null)
+                        {
+                            @FeaturesListTemplate
+                        }
+                        else if (Features is not null && Features.Any())
+                        {
+                            <MudList T="object" Dense="true" Class="mudex-feature-list">
+                                @foreach (var feature in Features)
+                                {
+                                    <MudListItem>
+                                        <MudIcon Icon="@Icons.Material.Filled.Check"
+                                                 Size="Size.Small"
+                                                 Class="mudex-feature-icon" />
+                                        <MudText Typo="Typo.body2">@TryLocalize(feature)</MudText>
+                                    </MudListItem>
+                                }
+                            </MudList>
+                        }
+                    </MudPaper>
+                </MudItem>
+            }
+        </MudGrid>
+
+        <!-- Code: bündig unter der Demo, über ganze Breite -->
+        @if (ShowCode && HasCode)
+        {
+            <MudDivider />
+
+            <div class="mudex-demo-code-container px-4 pb-4 pt-3">
+                <MudPaper Class="mudex-demo-code pa-3" Elevation="1">
+                    @if (CodeContent is not null)
+                    {
+                        @CodeContent
+                    }
+                    else if (!string.IsNullOrWhiteSpace(Code))
+                    {
+                        <MudCodeHighlight Text="@Code" />
+                    }
+                </MudPaper>
+            </div>
+        }
+    </MudStack>
+</MudPaper>
+
+@code {
+    
+    [Parameter] public string Title { get; set; } = "Demo";
+    [Parameter] public string? Subtitle { get; set; }
+
+    [Parameter] public string RunText { get; set; } = "Run";
+    [Parameter] public string ShowCodeText { get; set; } = "Show code";
+    [Parameter] public string HideCodeText { get; set; } = "Hide code";
+    [Parameter] public string EditInstanceText { get; set; } = "Edit";
+
+    /* Demo / Code */
+    [Parameter] public RenderFragment? DemoContent { get; set; }
+    [Parameter] public string? Code { get; set; }
+    [Parameter] public RenderFragment? CodeContent { get; set; }
+
+    /* Features (rechte Spalte) */
+    [Parameter] public string? FeaturesTitle { get; set; }
+    [Parameter] public string? FeaturesDescription { get; set; }
+    [Parameter] public IEnumerable<string>? Features { get; set; }
+    [Parameter] public RenderFragment? FeaturesListTemplate { get; set; }
+
+    private bool HasFeatures =>
+        (Features is not null && Features.Any()) ||
+        FeaturesListTemplate is not null ||
+        !string.IsNullOrWhiteSpace(FeaturesTitle) ||
+        !string.IsNullOrWhiteSpace(FeaturesDescription);
+
+    /* Events */
+    [Parameter] public EventCallback OnRun { get; set; }
+    [Parameter] public EventCallback OnEditInstance { get; set; }
+
+    private bool ShowCode { get; set; }
+
+    private bool HasCode =>
+        !string.IsNullOrWhiteSpace(Code) || CodeContent is not null;
+
+    private async Task RunClicked()
+    {
+        if (OnRun.HasDelegate)
+            await OnRun.InvokeAsync();
+    }
+
+    private async Task EditInstanceClicked()
+    {
+        if (OnEditInstance.HasDelegate)
+            await OnEditInstance.InvokeAsync();
+    }
+
+    private void ToggleShowCode()
+    {
+        ShowCode = !ShowCode;
+    }
+
+    [CascadingParameter] private IMudExDemoRegistrar? Registrar { get; set; }
+
+    [Parameter] public string? AnchorId { get; set; }
+    [Parameter] public string? NavTitle { get; set; }
+    [Parameter] public int Order { get; set; }   // optional für Sortierung
+
+    
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        if (string.IsNullOrWhiteSpace(AnchorId))
+        {
+            AnchorId = GenerateIdFromTitle(Title);
+        }
+
+        Registrar?.Register(new MudExDemoSection
+        {
+            Id    = AnchorId!,
+            Title = NavTitle ?? Title,
+            Order = Order
+        });
+    }
+
+    public void Dispose()
+    {
+        if (!string.IsNullOrWhiteSpace(AnchorId))
+        {
+            Registrar?.Unregister(AnchorId!);
+        }
+    }
+
+    private static string GenerateIdFromTitle(string title)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            return Guid.NewGuid().ToString("N");
+
+        var id = title
+            .ToLowerInvariant()
+            .Replace(" ", "-")
+            .Replace(".", "")
+            .Replace(",", "")
+            .Replace(":", "")
+            .Replace(";", "");
+
+        return id;
+    }
+
+}
