@@ -3,6 +3,7 @@
 @using MainSample.WebAssembly.Examples
 @using MainSample.WebAssembly.Pages
 @using MudBlazor
+@using MudBlazor.Extensions.Api
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
@@ -26,14 +27,16 @@
 
                 <MudItem xs="12" md="5" Class="d-flex justify-end">
                     <div class="mudex-demo-actions">
-                        <MudButton Variant="Variant.Text"
-                                   Class="mudex-demo-action"
-                                   Color="Color.Success"
-                                   Size="Size.Small"
-                                   StartIcon="@Icons.Material.Filled.PlayArrow"
-                                   OnClick="@RunClicked">
-                            @TryLocalize(RunText)
-                        </MudButton>
+                        <MudTooltip Text="@TryLocalize("Run this sample on try.mudex.org online")">
+                            <MudButton Variant="Variant.Text"
+                                       Class="mudex-demo-action"
+                                       Color="Color.Success"
+                                       Size="Size.Small"
+                                       StartIcon="@Icons.Material.Filled.PlayArrow"
+                                       OnClick="@RunClicked">
+                                @TryLocalize(RunText)
+                            </MudButton>
+                        </MudTooltip>
 
                         @if (HasCode)
                         {
@@ -46,16 +49,30 @@
                                 @TryLocalize(ShowCode ? HideCodeText : ShowCodeText)
                             </MudButton>
                         }
+                        
+                        <MudTooltip Text="@TryLocalize("Edit configuration for component in this sample")">
+                            <MudButton Variant="Variant.Text"
+                                       Disabled="@(_example?.ComponentRef == null)"
+                                       Class="mudex-demo-action"
+                                       Color="Color.Default"
+                                       Size="Size.Small"
+                                       StartIcon="@Icons.Material.Filled.Settings"
+                                       OnClick="@EditInstanceClicked">
+                                @TryLocalize(EditInstanceText)
+                            </MudButton>
+                        </MudTooltip>
 
-                        <MudButton Variant="Variant.Text"
-                                   Disabled="@(_example?.ComponentRef == null)"
-                                   Class="mudex-demo-action"
-                                   Color="Color.Default"
-                                   Size="Size.Small"
-                                   StartIcon="@Icons.Material.Filled.Settings"
-                                   OnClick="@EditInstanceClicked">
-                            @TryLocalize(EditInstanceText)
-                        </MudButton>
+                        <MudTooltip Text="@TryLocalize("Playground {0}", ApiMemberInfo.GetGenericFriendlyTypeName(_example?.ComponentRef?.GetType()))">
+                            <MudButton Variant="Variant.Text"
+                                       Href="@($"/c/{_example?.ComponentRef?.GetType().Name}")"
+                                       Disabled="@(_example?.ComponentRef == null)"
+                                       Class="mudex-demo-action"
+                                       Color="Color.Default"
+                                       Size="Size.Small"
+                                       StartIcon="@Icons.Material.Filled.SmartDisplay">
+                                @TryLocalize("Playground")
+                            </MudButton>
+                        </MudTooltip>
                     </div>
                 </MudItem>
             </MudGrid>

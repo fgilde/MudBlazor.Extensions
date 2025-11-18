@@ -1,4 +1,5 @@
-﻿@using System.Reflection
+﻿@inherits MudExBaseComponent<MudExApiView>
+@using System.Reflection
 @using System.Text.RegularExpressions
 @using Microsoft.AspNetCore.Components.Rendering
 @using MudBlazor.Extensions.Api
@@ -6,11 +7,27 @@
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @using Nextended.Core.Extensions
+@using Nextended.Core.Helper
 
 @if (ShowHeader)
 {
-   @*  <HeaderForType Type="@Type"></HeaderForType> *@
+
 }
+
+@if (Type != null && Type.Assembly == typeof(MudExApiView).Assembly && Type.IsAssignableTo(typeof(IComponent)))
+{
+    <MudToolBar>
+        <MudSpacer />
+        <MudButton Variant="Variant.Text"
+                   Href="@($"/c/{Type.Name}")"
+                   Color="Color.Default"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.SmartDisplay">
+            @TryLocalize("Playground {0}", ApiMemberInfo.GetGenericFriendlyTypeName(Type))
+        </MudButton>
+    </MudToolBar>
+}
+
 
 @if (ShowInheritance)
 {
@@ -30,8 +47,8 @@
 @if (ShowTools)
 {
     <MudToolBar>
-        <MudSwitch Color="Color.Primary" @bind-Value="ShowInherited">Show inherited</MudSwitch>
-        <MudSpacer/>
+        <MudSwitch Color="Color.Primary" @bind-Value="ShowInherited">@TryLocalize("Show inherited")</MudSwitch>
+        <MudSpacer />
         <MudExToggleableSearch AutoCloseOnBlur="false"
                                OnKeyUp="@(() => { _= _methodPanel.ExpandAsync(); _= _propertyPanel.ExpandAsync(); })"
                                @bind-Filter="_searchString"></MudExToggleableSearch>
@@ -43,7 +60,7 @@
     <p>Enum</p>
 
     var names = Enum.GetNames(Type).Where(s => string.IsNullOrEmpty(_searchString) || s.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
-    <MudExpansionPanel Expanded="@Expanded" Text="Enum Member">
+    <MudExpansionPanel Expanded="@Expanded" Text="@TryLocalize("Enum Member")">
         <MudTable Items="@names" Hover="true" Breakpoint="Breakpoint.Sm">
             <RowTemplate>
                 <MudTd DataLabel="Member">@context</MudTd>
@@ -61,19 +78,18 @@
                          DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
                          FixedHeader="true"
                          DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
-                
+
                 <ToolBarContent>
                     @if (ShowHeader)
                     {
                         <MudText Typo="Typo.h6">Properties</MudText>
                     }
                 </ToolBarContent>
-                
+
                 <Columns>
-                    <PropertyColumn
-                        Groupable="true"
-                        ShowColumnOptions="true"
-                        CellStyle="@CellStyleName()" Property="x => x.Name">
+                    <PropertyColumn Groupable="true"
+                                    ShowColumnOptions="true"
+                                    CellStyle="@CellStyleName()" Property="x => x.Name">
                         <CellTemplate>
                             @((MarkupString)(context.Item.IsStatic ? "static" : ""))
                             <a name="@context.Item.Name"></a>
@@ -82,18 +98,16 @@
                     </PropertyColumn>
                     @if (!Compact)
                     {
-                        <PropertyColumn 
-                            Groupable="true"
-                            ShowColumnOptions="true"
-                            Property="x => x.TypeName" Title="PropertyType">
+                        <PropertyColumn Groupable="true"
+                                        ShowColumnOptions="true"
+                                        Property="x => x.TypeName" Title="PropertyType">
                             <CellTemplate>
                                 @RenderLinks(context.Item.TypeName)
                             </CellTemplate>
                         </PropertyColumn>
-                        <PropertyColumn
-                            Groupable="true"
-                            ShowColumnOptions="true"
-                            Property="x => x.Default">
+                        <PropertyColumn Groupable="true"
+                                        ShowColumnOptions="true"
+                                        Property="x => x.Default">
                             <CellTemplate>
                                 @if (context?.Item?.Default?.StartsWith("@") == true)
                                 {
@@ -106,10 +120,9 @@
                             </CellTemplate>
                         </PropertyColumn>
 
-                        <PropertyColumn
-                            Groupable="true"
-                            ShowColumnOptions="true"
-                            Hidden="@(!ShowInherited)" Property="x => x.MemberInfo" Title="Declared on">
+                        <PropertyColumn Groupable="true"
+                                        ShowColumnOptions="true"
+                                        Hidden="@(!ShowInherited)" Property="x => x.MemberInfo" Title="Declared on">
                             <CellTemplate>
                                 <MudLink Typo="Typo.subtitle2" Href="@($"/{ApiLinkPath.EnsureEndsWith("/")}{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
                             </CellTemplate>
@@ -128,9 +141,9 @@
             if (!_loaded)
             {
                 <p>Please wait...</p>
-                <MudSkeleton/>
-                <MudSkeleton Animation="Animation.False"/>
-                <MudSkeleton Animation="Animation.Wave"/>
+                <MudSkeleton />
+                <MudSkeleton Animation="Animation.False" />
+                <MudSkeleton Animation="Animation.Wave" />
             }
             else
             {
@@ -154,7 +167,7 @@
                         <MudText Typo="Typo.h6">Methods</MudText>
                     }
                 </ToolBarContent>
-                    
+
                 <Columns>
                     @*<PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />*@
                     <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
@@ -175,7 +188,7 @@
                             <MudLink Typo="Typo.subtitle2" Href="@($"/{ApiLinkPath.EnsureEndsWith("/")}{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
                         </CellTemplate>
                     </PropertyColumn>
-                    <PropertyColumn Property="x => x.Description"/>
+                    <PropertyColumn Property="x => x.Description" />
                 </Columns>
             </MudDataGrid>
         }
@@ -184,9 +197,9 @@
             if (!_loaded)
             {
                 <p>Please wait...</p>
-                <MudSkeleton/>
-                <MudSkeleton Animation="Animation.False"/>
-                <MudSkeleton Animation="Animation.Wave"/>
+                <MudSkeleton />
+                <MudSkeleton Animation="Animation.False" />
+                <MudSkeleton Animation="Animation.Wave" />
             }
             else
             {
@@ -240,17 +253,17 @@
 
     private void RenderFunctionRecursive(RenderTreeBuilder builder, string function, int level)
     {
-    // Split the function into tokens based on space, preserving other characters for processing
+        // Split the function into tokens based on space, preserving other characters for processing
         var tokens = function.Split(' ');
 
-    // Flag to control whether the next token is a method name
+        // Flag to control whether the next token is a method name
         bool isMethodName = false;
 
         for (int i = 0; i < tokens.Length; i++)
         {
             var token = tokens[i];
 
-    // If the token is a method name, add it as plain text and set the flag to false
+            // If the token is a method name, add it as plain text and set the flag to false
             if (isMethodName)
             {
                 builder.AddContent(level, token);
@@ -271,7 +284,7 @@
                 builder.AddContent(level, token);
             }
 
-    // Add a space after each token, except the last one and those ending with a comma or parenthesis
+            // Add a space after each token, except the last one and those ending with a comma or parenthesis
             if (i < tokens.Length - 1 && !token.EndsWith(",") && !token.EndsWith("(") && !token.EndsWith(")"))
             {
                 builder.AddContent(level++, " ");
@@ -284,7 +297,7 @@
     {
         if (string.IsNullOrWhiteSpace(typeName)) return;
 
-    // Special case: nullable type
+        // Special case: nullable type
         if (typeName.EndsWith("?"))
         {
             RenderLinksRecursive(builder, typeName.Remove(typeName.Length - 1), level);
@@ -292,7 +305,7 @@
             return;
         }
 
-    // Special case: array type
+        // Special case: array type
         if (typeName.EndsWith("[]"))
         {
             RenderLinksRecursive(builder, typeName.Remove(typeName.Length - 2), level);
@@ -300,23 +313,23 @@
             return;
         }
 
-    // Use a regular expression to find generic types
+        // Use a regular expression to find generic types
         var match = Regex.Match(typeName, @"(.*?)(<(.*)>)?$");
         if (match.Success)
         {
-    // The type without generics
+            // The type without generics
             var mainType = match.Groups[1].Value;
             var linkUriForType = GetLinkUriForType(mainType);
             if (!string.IsNullOrEmpty(linkUriForType))
             {
                 builder.OpenElement(level++, "a");
                 builder.AddAttribute(level, "href", linkUriForType);
-    //builder.AddAttribute(level, "style", TypeLinkStyleFor(mainType));
+                //builder.AddAttribute(level, "style", TypeLinkStyleFor(mainType));
                 builder.AddAttribute(level, "class", "api-link");
                 builder.AddContent(level, mainType);
                 builder.CloseElement();
 
-    // The generic arguments (if any)
+                // The generic arguments (if any)
                 var genericArgs = match.Groups[3].Value;
                 var args = SplitTypes(genericArgs);
                 if (args.Count > 0)
@@ -327,7 +340,7 @@
                     if (args.IndexOf(arg) > 0)
                         builder.AddContent(level++, ", ");
 
-    // Recursive call to handle nested generic arguments
+                    // Recursive call to handle nested generic arguments
                     RenderLinksRecursive(builder, arg, level);
                 }
                 if (args.Count > 0)
@@ -365,7 +378,7 @@
                             // Here we render the link which is the trigger for the tooltip
                             tooltipBuilder.OpenElement(level++, "a");
                             tooltipBuilder.AddAttribute(level, "href", segment.linkHref);
-                            // Hack because click events don't work ... 
+                            // Hack because click events don't work ...
                             tooltipBuilder.AddAttribute(level, "onmousedown", EventCallback.Factory.Create<MouseEventArgs>(this, () => HandleLinkClicked(segment)));
                             tooltipBuilder.AddAttribute(level, "class", "api-link");
                             tooltipBuilder.AddContent(level, segment.text);
