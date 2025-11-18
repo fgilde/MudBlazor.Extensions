@@ -1,0 +1,20 @@
+﻿@using Microsoft.Extensions.Localization
+@if (Types is { Count: > 0 })
+{
+    <MudText>
+        @L["API"]
+    </MudText>
+    <MudChipSet T="string" Variant="Variant.Text" Color="Color.Info">
+        @foreach (var type in Types)
+        {
+            <a href="@($"/api/{type.Name}")">
+                <MudChip Value="@($"<{type.Name}>")" />
+            </a>
+        }
+    </MudChipSet>
+}
+
+@code {
+    [Parameter] public ICollection<Type>? Types { get; set; }
+    [Inject] private IStringLocalizer<ApiLink> L { get; set; }
+}

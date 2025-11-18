@@ -1,5 +1,4 @@
-﻿
-@using MudBlazor
+﻿<ApiLink Types="@_types"></ApiLink>
 
 <MudGrid Class="mt-6 mb-8">
     <MudItem xs="12" md="9">
@@ -19,6 +18,7 @@
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
+    private HashSet<Type> _types = new();
     private readonly List<MudExDemoSection> _sections = new();
 
     void IMudExDemoRegistrar.Register(MudExDemoSection section)
@@ -27,7 +27,13 @@
             return;
 
         _sections.Add(section);
-        StateHasChanged();
+        InvokeAsync(StateHasChanged);
+    }
+
+    void IMudExDemoRegistrar.RegisterComponentType(Type type)
+    {
+        _types.Add(type);
+        InvokeAsync(StateHasChanged);
     }
 
     void IMudExDemoRegistrar.Unregister(string id)
@@ -35,7 +41,7 @@
         var s = _sections.FirstOrDefault(x => x.Id == id);
         if (s is null) return;
         _sections.Remove(s);
-        StateHasChanged();
+        InvokeAsync(StateHasChanged);
     }
 
 }

@@ -1,14 +1,26 @@
 ﻿using MainSample.WebAssembly.Shared;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
 namespace MainSample.WebAssembly.Examples;
 
 public class ExampleBase : ComponentBase, IExample
 {
-    public IComponent? ComponentRef { get; set; }
+    public Action<IComponent>? ComponentRefSet { get; set; }
 
-    [Inject]
-    protected NavigationManager NavigationManager { get; set; }
+    public IComponent? ComponentRef
+    {
+        get => field;
+        set
+        {
+            field = value;
+            if(value != null)
+                ComponentRefSet?.Invoke(value);
+        }
+    }
+
+    [Inject] protected NavigationManager NavigationManager { get; set; }
+    [Inject] protected IStringLocalizer<ExampleBase> L { get; set; }
 
     [CascadingParameter] protected IExampleHolder? Registrar { get; set; }
 
@@ -44,6 +56,7 @@ public class ExampleBase : ComponentBase, IExample
 }
 
 public interface IExample {
+    public Action<IComponent>? ComponentRefSet { get; set; }
     public Task<string> GetSourceCodeAsync();
     public IComponent? ComponentRef { get; }
 }

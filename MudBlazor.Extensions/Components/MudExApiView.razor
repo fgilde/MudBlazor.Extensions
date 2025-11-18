@@ -59,6 +59,7 @@
         {
             <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@_properties.Where(p => (ShowInherited || !p.IsInherited) && (ShowOnly == null || ShowOnly.Contains(p.Name)))" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
                          DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
+                         FixedHeader="true"
                          DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
                 
                 <ToolBarContent>
@@ -69,7 +70,10 @@
                 </ToolBarContent>
                 
                 <Columns>
-                    <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
+                    <PropertyColumn
+                        Groupable="true"
+                        ShowColumnOptions="true"
+                        CellStyle="@CellStyleName()" Property="x => x.Name">
                         <CellTemplate>
                             @((MarkupString)(context.Item.IsStatic ? "static" : ""))
                             <a name="@context.Item.Name"></a>
@@ -78,12 +82,18 @@
                     </PropertyColumn>
                     @if (!Compact)
                     {
-                        <PropertyColumn Property="x => x.TypeName" Title="PropertyType">
+                        <PropertyColumn 
+                            Groupable="true"
+                            ShowColumnOptions="true"
+                            Property="x => x.TypeName" Title="PropertyType">
                             <CellTemplate>
                                 @RenderLinks(context.Item.TypeName)
                             </CellTemplate>
                         </PropertyColumn>
-                        <PropertyColumn Property="x => x.Default">
+                        <PropertyColumn
+                            Groupable="true"
+                            ShowColumnOptions="true"
+                            Property="x => x.Default">
                             <CellTemplate>
                                 @if (context?.Item?.Default?.StartsWith("@") == true)
                                 {
@@ -96,7 +106,10 @@
                             </CellTemplate>
                         </PropertyColumn>
 
-                        <PropertyColumn Hidden="@(!ShowInherited)" Property="x => x.MemberInfo" Title="Declared on">
+                        <PropertyColumn
+                            Groupable="true"
+                            ShowColumnOptions="true"
+                            Hidden="@(!ShowInherited)" Property="x => x.MemberInfo" Title="Declared on">
                             <CellTemplate>
                                 <MudLink Typo="Typo.subtitle2" Href="@($"/{ApiLinkPath.EnsureEndsWith("/")}{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
                             </CellTemplate>

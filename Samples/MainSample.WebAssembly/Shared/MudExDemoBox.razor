@@ -229,8 +229,28 @@
         {
             Id = AnchorId!,
             Title = NavTitle ?? Title,
-            Order = Order
+            Order = Order,
         });
+    }
+
+    public async Task RegisterAsync(IExample example)
+    {
+        _example = example;
+        if (_example != null)
+        {
+            if (_example.ComponentRef != null)
+                Registrar?.RegisterComponentType(_example.ComponentRef.GetType());
+            else
+            {
+                _example.ComponentRefSet += (r) =>
+                {
+                    Registrar?.RegisterComponentType(r.GetType());
+                };
+
+            }
+        }
+
+        await InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()
@@ -257,10 +277,6 @@
         return id;
     }
 
-    public async Task RegisterAsync(IExample example)
-    {
-        _example = example;
-        await InvokeAsync(StateHasChanged);
-    }
+
 
 }
