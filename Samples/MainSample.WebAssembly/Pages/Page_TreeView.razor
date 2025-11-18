@@ -3,7 +3,7 @@
 
 @using MudBlazor.Extensions.Core.Enums
 
-@attribute [Demo(Name = "MudExTreeView", Order = 0, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property", ForComponentType = typeof(MudExTreeView<>))]
+@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExTreeView", Order = 0, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property", ForComponentType = typeof(MudExTreeView<>))]
 
 <DemoComponent DocFiles="@(new [] {"Docs/MudExTreeView.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">
     <MudExEnumSelect Variant="Variant.Outlined" Class="mb-2 mt-4" TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />

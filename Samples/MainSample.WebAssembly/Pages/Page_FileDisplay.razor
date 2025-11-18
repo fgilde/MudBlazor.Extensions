@@ -4,7 +4,7 @@
 @using MudBlazor.Extensions.Options
 @inject SampleDataService sampleDataService
 
-@attribute [Demo(Group = "File Handling", Name = "File Display", Order = 0, Documentation = "See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
+@attribute [Demo(IsPlaygroundDemo = true, Group = "File Handling", Name = "File Display", Order = 0, Documentation = "See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor", "SampleDataService.cs"})">
 

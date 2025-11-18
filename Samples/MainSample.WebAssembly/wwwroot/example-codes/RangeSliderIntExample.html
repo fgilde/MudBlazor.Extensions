@@ -1,0 +1,21 @@
+<div class="html"><pre>
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@inherits ExampleBase
+
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Current range: {0} – {1}&quot;, _selectedRange.Start, _selectedRange.End]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;int&quot;
+                  @ref=&quot;ComponentRef&quot;
+                  SizeRange=&quot;@(new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span>(0, 100))&quot;
+                  StepLength=&quot;@(5)&quot;
+                  @bind-Value=&quot;_selectedRange&quot; /&gt;
+
+@code {
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span> _selectedRange = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span>(20, 60);
+}
+
+</pre></div>

@@ -4,8 +4,8 @@
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-@attribute [DemoNew(Group = "MudExObjectEdit", Name = "With DockLayout", Order = 1, Documentation = "Demo for using MudExObjectEdit GroupingStyle.Tabs ", Icon = Icons.Material.Outlined.Tab, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
-@attribute [DemoNew(Group = nameof(MudExDockLayout), Name = "DockLayout with ObjectEdit", Order = 1, Documentation = "Demo for using MudExObjectEdit GroupingStyle.Tabs ", Icon = Icons.Material.Outlined.Tab, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [DemoNew(IsPlaygroundDemo = true, Group = "MudExObjectEdit", Name = "With DockLayout", Order = 1, Documentation = "Demo for using MudExObjectEdit GroupingStyle.Tabs ", Icon = Icons.Material.Outlined.Tab, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [DemoNew(IsPlaygroundDemo = true, Group = nameof(MudExDockLayout), Name = "DockLayout with ObjectEdit", Order = 1, Documentation = "Demo for using MudExObjectEdit GroupingStyle.Tabs ", Icon = Icons.Material.Outlined.Tab, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <MudButton OnClick="@TestClck">Test</MudButton>
 <DemoComponent PageType="@GetType()" DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/MySimpleTypeRegistrations.cs", "Shared/ProgrammingSkillSelect.razor"})">

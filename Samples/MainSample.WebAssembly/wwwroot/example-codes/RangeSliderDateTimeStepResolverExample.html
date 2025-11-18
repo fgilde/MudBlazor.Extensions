@@ -1,0 +1,26 @@
+<div class="html"><pre>
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Current period: {0} – {1}&quot;, _selectedRange.Start.ToString(&quot;g&quot;), _selectedRange.End.ToString(&quot;g&quot;)]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;DateTime&quot;
+                  @ref=&quot;ComponentRef&quot;
+                  SizeRange=&quot;@(new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(new(2019, 1, 1, 2, 22, 12), new(2025, 12, 31, 6, 3, 12)))&quot;
+                  StepResolver=&quot;@(StepResolvers.DateTime.Quarterly(_ =&gt; 1))&quot;
+                  @bind-Value=&quot;_selectedRange&quot;
+                  AllowWholeRangeDrag=&quot;true&quot; /&gt;
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ =&gt; 1) makes the slider snap to quarters.&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span> _selectedRange = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(new(2021, 1, 1), new(2021, 12, 31));
+
+}
+
+</pre></div>

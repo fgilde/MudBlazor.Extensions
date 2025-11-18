@@ -1,13 +1,7 @@
 ﻿@page "/range-slider"
 @inherits BasePage
 
-@using MainSample.WebAssembly.Examples
 @using MainSample.WebAssembly.Examples.RangeSlider
-@using MudBlazor
-@using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Helper
-@using Nextended.Core.Contracts
-@using Nextended.Core.Types
 
 @attribute [DemoNew(Name = "Overview", Order = 0, Group = "RangeSlider", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
 
@@ -79,7 +73,10 @@
                                             })">
 
         <DemoContent>
-            <RangeSliderInt />
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals."]
+            </MudText>
+            <RangeSliderIntExample/>
         </DemoContent>
     </MudExDemoBox>
 
@@ -99,21 +96,7 @@
             <MudText Typo="Typo.body2" Class="mb-4">
                 @L["This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day."]
             </MudText>
-
-            <MudText Typo="Typo.caption" Class="mt-2 mb-2">
-                @L["Current period: {0} – {1}", _period2.Start.ToShortDateString(), _period2.End.ToShortDateString()]
-            </MudText>
-
-            <MudExCodeView Theme="@(MainLayout.Instance?.IsDark ?? false ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight)"
-                           RenderChildContent="true">
-                <MudExRangeSlider T="DateTime"
-                                  SizeRange="@(new RangeOf<DateTime>(new(2015, 1, 1), new(2022, 12, 31), null))"
-                                  StepLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(1).Ticks))"
-                                  MinLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(60).Ticks))"
-                                  MaxLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(365 * 2).Ticks))"
-                                  @bind-Value="_period2"
-                                  AllowWholeRangeDrag="true" />
-            </MudExCodeView>
+            <RangeSliderDateTimeExample1/>
         </DemoContent>
     </MudExDemoBox>
 
@@ -127,23 +110,7 @@
             <MudText Typo="Typo.body2" Class="mb-4">
                 @L["This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours)."]
             </MudText>
-
-            <MudText Typo="Typo.caption" Class="mt-2 mb-2">
-                @L["Current period: {0} – {1}", _period.Start.ToString("g"), _period.End.ToString("g")]
-            </MudText>
-
-            <MudExCodeView Theme="@(MainLayout.Instance?.IsDark ?? false ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight)"
-                           RenderChildContent="true">
-                <MudExRangeSlider T="DateTime"
-                                  SizeRange="@(new MudExRange<DateTime>(new(2019, 1, 1, 2, 22, 12), new(2025, 12, 31, 6, 3, 12)))"
-                                  StepResolver="@(StepResolvers.DateTime.Quarterly(_ => 1))"
-                                  @bind-Value="_period"
-                                  AllowWholeRangeDrag="true" />
-            </MudExCodeView>
-
-            <MudText Typo="Typo.body2" Class="mt-3">
-                @L["With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters."]
-            </MudText>
+            <RangeSliderDateTimeStepResolverExample/>
         </DemoContent>
     </MudExDemoBox>
 
@@ -164,39 +131,11 @@
                 @L["The range slider can also be used vertically – ideal for sidebars or compact filter areas."]
             </MudText>
 
-            <MudText Typo="Typo.caption" Class="mt-2 mb-2">
-                @L["Current period (vertical): {0} – {1}", _period.Start.ToShortDateString(), _period.End.ToShortDateString()]
-            </MudText>
-
-            <MudExCodeView Theme="@(MainLayout.Instance?.IsDark ?? false ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight)"
-                           RenderChildContent="true">
-                <div style="height: 280px; display: flex; align-items: center;">
-                    <MudExRangeSlider T="DateTime"
-                                      Orientation="SliderOrientation.Vertical"
-                                      SizeRange="@(new MudExRange<DateTime>(new(2016, 1, 1), new(2024, 12, 31)))"
-                                      Size="Size.Large"
-                                      ThumbColor="MudExColor.Tertiary"
-                                      SelectionColor="MudExColor.Tertiary"
-                                      @bind-Value="_period"
-                                      AllowWholeRangeDrag="true">
-                    </MudExRangeSlider>
-                </div>
-            </MudExCodeView>
+            <RangeSliderVerticalExample/>
         </DemoContent>
     </MudExDemoBox>
 </MudExDemoPage>
 
 
-
 <DemoNavigation CurrentPage="@this" />
 
-@code {
-    protected override Task OnInitializedAsync()
-    {
-        string hcls = MudExCss.Classes.General.MainClass;
-        return base.OnInitializedAsync();
-    }
-
-    private IRange<DateTime> _period = new MudExRange<DateTime>(new(2021, 1, 1), new(2021, 12, 31));
-    private IRange<DateTime> _period2 = new RangeOf<DateTime>(new(2021, 1, 1), new(2021, 12, 31), null);
-}

@@ -4,7 +4,7 @@
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Core.Enums
 
-@attribute [Demo(Name = "MudExTreeView with template", Order = 0, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "This sample demonstrate the usage of MudExTreeView with an Item template ", ForComponentType = typeof(MudExTreeView<>))]
+@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExTreeView with template", Order = 0, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "This sample demonstrate the usage of MudExTreeView with an Item template ", ForComponentType = typeof(MudExTreeView<>))]
 
 <MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
 <MudCheckBox @bind-Value="_reverseExpand">@L["Switch expand button position"]</MudCheckBox>

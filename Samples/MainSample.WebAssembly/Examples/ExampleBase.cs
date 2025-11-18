@@ -1,4 +1,5 @@
-﻿using MainSample.WebAssembly.Shared;
+﻿using System.Text.RegularExpressions;
+using MainSample.WebAssembly.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -6,6 +7,13 @@ namespace MainSample.WebAssembly.Examples;
 
 public class ExampleBase : ComponentBase, IExample
 {
+    private string code;
+    private static readonly Regex[] PatternsToRemove = new[]
+    {
+        new Regex(@"@inherits\s+ExampleBase\b", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        new Regex(@"@ref\s*=\s*""ComponentRef""", RegexOptions.IgnoreCase | RegexOptions.Compiled)
+    };
+
     public Action<IComponent>? ComponentRefSet { get; set; }
 
     public IComponent? ComponentRef
@@ -34,9 +42,6 @@ public class ExampleBase : ComponentBase, IExample
         }
     }
     
-
-
-    private string code;
     public async Task<string> GetSourceCodeAsync()
     {
         if (!string.IsNullOrEmpty(code))
@@ -45,8 +50,18 @@ public class ExampleBase : ComponentBase, IExample
         var client = new HttpClient();
         var url = NavigationManager.ToAbsoluteUri($"example-codes/{exampleName}.md");
         code = await client.GetStringAsync(url);
-        code = code.Replace("@inherits ExampleBase", "", StringComparison.InvariantCultureIgnoreCase);
-        return code;
+        
+        return CleanCode(code);
+    }
+
+    private string CleanCode(string code)
+    {
+        code = PatternsToRemove.Aggregate(code, (current, pattern) => pattern.Replace(current, string.Empty));
+
+        var lines = code.Split(["\r\n", "\r", "\n"], StringSplitOptions.None);
+        var cleanedLines = lines.Where(line => !string.IsNullOrWhiteSpace(line));
+
+        return string.Join(Environment.NewLine, cleanedLines);
     }
 
     public IComponent? GetComponent()

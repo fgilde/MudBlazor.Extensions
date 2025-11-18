@@ -2,7 +2,7 @@
 @inherits BasePage
 
 
-@attribute [Demo(Name = "Default", Order = 1, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "Displays a tree structure as simple tree", ForComponentType = typeof(MudExTreeViewDefault<>))]
+@attribute [Demo(IsPlaygroundDemo = true, Name = "Default", Order = 1, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "Displays a tree structure as simple tree", ForComponentType = typeof(MudExTreeViewDefault<>))]
 
 <DemoComponent DocFiles="@(new [] {"Docs/MudExTreeViewDefault.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">
     

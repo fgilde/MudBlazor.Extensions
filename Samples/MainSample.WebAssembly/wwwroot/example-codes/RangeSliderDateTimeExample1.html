@@ -1,0 +1,23 @@
+<div class="html"><pre>
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Current period: {0} – {1}&quot;, _selectedRange.Start.ToShortDateString(), _selectedRange.End.ToShortDateString()]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;DateTime&quot;
+                  @ref=&quot;ComponentRef&quot;
+                  SizeRange=&quot;@(new RangeOf<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(new(2015, 1, 1), new(2022, 12, 31), null))&quot;
+                  StepLength=&quot;@(new RangeLength<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(TimeSpan.FromDays(1).Ticks))&quot;
+                  MinLength=&quot;@(new RangeLength<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(TimeSpan.FromDays(60).Ticks))&quot;
+                  MaxLength=&quot;@(new RangeLength<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(TimeSpan.FromDays(365 * 2).Ticks))&quot;
+                  @bind-Value=&quot;_selectedRange&quot;
+                  AllowWholeRangeDrag=&quot;true&quot; /&gt;
+
+@code {
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span> _selectedRange = new RangeOf<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(new(2021, 1, 1), new(2021, 12, 31), null);
+}
+
+</pre></div>
