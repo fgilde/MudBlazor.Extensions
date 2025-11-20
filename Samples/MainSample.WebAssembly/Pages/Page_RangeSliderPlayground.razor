@@ -1,0 +1,29 @@
+﻿@page "/range-slider-pg"
+@inherits BasePage
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "Playground", Order = 100, Group = "RangeSlider", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
+
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudExRangeSlider T="DateTime"
+                              @ref="ComponentRef"
+                              SizeRange="@(new RangeOf<DateTime>(new(2015, 1, 1), new(2050, 12, 31), null))"
+                              StepLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(1).Ticks))"
+                              @bind-Value="_selectedRange"
+                              AllowWholeRangeDrag="true" />
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@ComponentRef"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExRangeSlider<DateTime> ComponentRef;
+    private IRange<DateTime> _selectedRange = new RangeOf<DateTime>(new(2021, 1, 1), new(2021, 12, 31), null);
+}

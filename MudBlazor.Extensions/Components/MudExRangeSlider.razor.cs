@@ -25,9 +25,26 @@ namespace MudBlazor.Extensions.Components
 
         [Parameter] public Func<T, IRange<T>, RangeLength<T>, int, SnapPolicy, T>? StepResolver { get; set; }
 
-        [Parameter] public Cursor? ResizeCursor { get; set; }
-        [Parameter] public Cursor MoveCursor { get; set; } = Cursor.Pointer;
-        [Parameter] public Cursor MovingCursor { get; set; } = Cursor.Grabbing;
+        [Parameter]
+        public Cursor? ResizeCursor
+        {
+            get => Disabled || ReadOnly ? Cursor.Default : field;
+            set;
+        }
+
+        [Parameter]
+        public Cursor MoveCursor
+        {
+            get => Disabled || ReadOnly || !AllowWholeRangeDrag ? Cursor.Default : field;
+            set;
+        } = Cursor.Pointer;
+
+        [Parameter]
+        public Cursor MovingCursor
+        {
+            get => Disabled || ReadOnly || !AllowWholeRangeDrag ? Cursor.Default : field;
+            set;
+        } = Cursor.Grabbing;
 
         [Parameter, SafeCategory("Appearance")]
         public SliderOrientation Orientation { get; set; } = SliderOrientation.Horizontal;

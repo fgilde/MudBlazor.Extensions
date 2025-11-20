@@ -1,0 +1,183 @@
+<div class="html"><pre>
+@using System.Globalization
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Current period: {0} – {1}&quot;, dateRange.Start.ToShortDateString(), dateRange.End.ToShortDateString()]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider @bind-Value=&quot;dateRange&quot;
+                  @ref=&quot;ComponentRef&quot;
+                  SizeRange=&quot;fullRange&quot;
+                  StepLength=&quot;monthStep&quot;
+                  StepResolver=&quot;MonthStepResolver&quot;
+                  ShowInputs=&quot;false&quot;&gt;
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TrackTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;height: 100%;
+                                        position: relative;
+                                        width: 100%;
+                                        background: #f5f5f5;
+                                        border-radius: 4px;
+                                        overflow: hidden;&quot;&gt;
+
+            @* Year markers (full height, bold line) with year labels *@
+            @for (var year = startYear; year &lt;= endYear; year++)
+            {
+                var yearStart = new DateTime(year, 1, 1);
+                var pctStart = GetPercentStatic(yearStart, ctx.SizeRange) * 100;
+
+                // Middle of the year for the label
+                var yearMid = new DateTime(year, 7, 1);
+                var pctMid = GetPercentStatic(yearMid, ctx.SizeRange) * 100;
+
+                &lt;div style=&quot;position: absolute;
+                                                        left: @pctStart.ToString(&quot;F2&quot;, CultureInfo.InvariantCulture)%;
+                                                        top: 0;
+                                                        bottom: 0;
+                                                        width: 2px;
+                                                        background: #999;&quot;&gt;
+                <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+                @* Year label in the middle of the year *@
+                &lt;div style=&quot;position: absolute;
+                                                        left: @pctMid.ToString(&quot;F2&quot;, CultureInfo.InvariantCulture)%;
+                                                        top: 50%;
+                                                        transform: translate(-50%, -50%);
+                                                        font-size: 11px;
+                                                        color: #666;
+                                                        font-weight: 600;
+                                                        pointer-events: none;
+                                                        white-space: nowrap;
+                                                        z-index: 0;&quot;&gt;
+                    @year
+                <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+            }
+
+            @* Month markers (small ticks, no labels) *@
+            @for (var date = new DateTime(startYear, 1, 1); date &lt;= new DateTime(endYear, 12, 1); date = date.AddMonths(1))
+            {
+                if (date.Month != 1) // skip January (already covered by year marker)
+                {
+                    var pct = GetPercentStatic(date, ctx.SizeRange) * 100;
+
+                    &lt;div style=&quot;position: absolute;
+                                                                    left: @pct.ToString(&quot;F2&quot;, CultureInfo.InvariantCulture)%;
+                                                                    top: 15%;
+                                                                    bottom: 15%;
+                                                                    width: 1px;
+                                                                    background: #ccc;&quot;&gt;
+                    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+                }
+            }
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">TrackTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SelectionTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;height: 100%;
+                                        width: 100%;
+                                        background: #1976d2;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        position: relative;
+                                        border-radius: 4px;&quot;&gt;
+            &lt;span style=&quot;color: white;
+                                             font-weight: 600;
+                                             font-size: 11px;
+                                             white-space: nowrap;
+                                             padding: 0 8px;
+                                             text-shadow: 0 1px 2px rgba(0,0,0,0.2);&quot;&gt;
+                @GetDateString(ctx.Value.Start) - @GetDateString(ctx.Value.End)
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">span</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">SelectionTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbStartTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;width: 14px;
+                                        height: 14px;
+                                        background: white;
+                                        border: 3px solid #1976d2;
+                                        border-radius: 50%;
+                                        box-shadow: 0 2px 4px rgba(0,0,0,0.2);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbStartTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbEndTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;width: 14px;
+                                        height: 14px;
+                                        background: white;
+                                        border: 3px solid #1976d2;
+                                        border-radius: 50%;
+                                        box-shadow: 0 2px 4px rgba(0,0,0,0.2);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbEndTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRangeSlider</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+
+    private readonly int startYear = 2015;
+    private readonly int endYear = 2022;
+
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span> dateRange = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(
+        new DateTime(2016, 1, 1),
+        new DateTime(2016, 12, 31)
+    );
+
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span> fullRange =&gt; new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(
+        new DateTime(startYear, 1, 1),
+        new DateTime(endYear, 12, 31)
+    );
+
+    private readonly RangeLength<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span> monthStep = new(TimeSpan.FromDays(30).Ticks);
+
+    private DateTime MonthStepResolver(
+        DateTime value,
+        IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span> sizeRange,
+        RangeLength<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span> stepLength,
+        int steps,
+        SnapPolicy policy)
+    {
+        if (steps != 0)
+        {
+            var current = new DateTime(value.Year, value.Month, 1);
+            var result = current.AddMonths(steps);
+
+            if (result &lt; sizeRange.Start) return sizeRange.Start;
+            if (result &gt; sizeRange.End) return sizeRange.End;
+            return result;
+        }
+
+        var snapped = new DateTime(value.Year, value.Month, 1);
+        if (policy == SnapPolicy.Nearest &amp;&amp; value.Day &gt; 15)
+        {
+            snapped = snapped.AddMonths(1);
+        }
+        else if (policy == SnapPolicy.Ceiling &amp;&amp; value.Day &gt; 1)
+        {
+            snapped = snapped.AddMonths(1);
+        }
+
+        if (snapped &lt; sizeRange.Start) return sizeRange.Start;
+        if (snapped &gt; sizeRange.End) return sizeRange.End;
+        return snapped;
+    }
+
+    private static double GetPercentStatic(DateTime date, IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span> range)
+    {
+        var totalTicks = (range.End - range.Start).Ticks;
+        var currentTicks = (date - range.Start).Ticks;
+        return (double)currentTicks / totalTicks;
+    }
+
+    private string GetDateString(DateTime date)
+    {
+        return date.ToString(&quot;MMM yyyy&quot;, CultureInfo.CurrentCulture);
+    }
+}
+
+</pre></div>
