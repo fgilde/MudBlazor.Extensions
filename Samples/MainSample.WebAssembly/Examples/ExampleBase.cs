@@ -51,17 +51,41 @@ public class ExampleBase : ComponentBase, IExample
         var url = NavigationManager.ToAbsoluteUri($"example-codes/{exampleName}.md");
         code = await client.GetStringAsync(url);
         
-        return CleanCode(code);
+        return code = CleanCode(code);
     }
 
-    private string CleanCode(string code)
+    private string CleanCode(string str)
     {
-        code = PatternsToRemove.Aggregate(code, (current, pattern) => pattern.Replace(current, string.Empty));
+        str = PatternsToRemove.Aggregate(str, (current, pattern) => pattern.Replace(current, string.Empty));
 
-        var lines = code.Split(["\r\n", "\r", "\n"], StringSplitOptions.None);
+        var lines = str.Split(["\r\n", "\r", "\n"], StringSplitOptions.None);
         var cleanedLines = lines.Where(line => !string.IsNullOrWhiteSpace(line));
 
-        return string.Join(Environment.NewLine, cleanedLines);
+        return WithoutLocalizer(string.Join(Environment.NewLine, cleanedLines));
+    }
+
+    private string WithoutLocalizer(string str)
+    {
+        var pattern =
+            @"@L\[\s*(?:(?:""((?:[^""\\]|\\.)*)"")|(?:'((?:[^'\\]|\\.)*)'))\s*(?:,(.*?))?\]";
+
+        return Regex.Replace(str, pattern, match =>
+        {
+            var content = match.Groups[1].Success
+                ? match.Groups[1].Value
+                : match.Groups[2].Value;
+
+            var args = match.Groups[3]?.Value?.Trim();
+
+            content = Regex.Unescape(content);
+
+            if (string.IsNullOrEmpty(args))
+            {
+                return @$"@(""{content}"")";
+            }
+
+            return @$"@(string.Format(""{content}"", {args}))";
+        });
     }
 
     public IComponent? GetComponent()

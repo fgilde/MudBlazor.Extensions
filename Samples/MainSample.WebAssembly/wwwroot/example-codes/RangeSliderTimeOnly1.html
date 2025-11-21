@@ -7,11 +7,44 @@
     @L[&quot;Current period : {0} – {1}&quot;, _selectedRange.Start.ToLongTimeString(), _selectedRange.End.ToLongTimeString()]
 <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
 
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudDivider</span> <span class="htmlAttributeName">Vertical</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;false&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.h6&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Default steps&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;TimeOnly&quot;
+                  @ref=&quot;ComponentRef&quot;
+                  ShowInputs=&quot;true&quot;
+                  SizeRange=&quot;@(new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span>(new TimeOnly(0, 0), new TimeOnly(23, 59, 59)))&quot;
+                  @bind-Value=&quot;_selectedRange&quot;
+                  AllowWholeRangeDrag=&quot;true&quot; /&gt;
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudDivider</span> <span class="htmlAttributeName">Vertical</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;false&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.h6&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Minutely steps&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;TimeOnly&quot;
+                  @ref=&quot;ComponentRef&quot;
+                  ShowInputs=&quot;true&quot;
+                  SizeRange=&quot;@(new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span>(new TimeOnly(0, 0), new TimeOnly(23, 59, 59)))&quot;
+                  StepResolver=&quot;@(StepResolvers.TimeOnly.Minutely())&quot;
+                  @bind-Value=&quot;_selectedRange&quot;
+                  AllowWholeRangeDrag=&quot;true&quot; /&gt;
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudDivider</span> <span class="htmlAttributeName">Vertical</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;false&quot;</span><span class="htmlTagDelimiter">/&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.h6&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;2 Hourly steps&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
 &lt;MudExRangeSlider T=&quot;TimeOnly&quot;
                   @ref=&quot;ComponentRef&quot;
                   ShowInputs=&quot;true&quot;
                   SizeRange=&quot;@(new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span>(new TimeOnly(0, 0), new TimeOnly(23, 59)))&quot;
-                  StepResolver=&quot;@(StepResolvers.TimeOnly.Minutely())&quot;
+                  StepResolver=&quot;@(StepResolvers.TimeOnly.Hourly(_ =&gt; 2))&quot;
                   @bind-Value=&quot;_selectedRange&quot;
                   AllowWholeRangeDrag=&quot;true&quot; /&gt;
 
