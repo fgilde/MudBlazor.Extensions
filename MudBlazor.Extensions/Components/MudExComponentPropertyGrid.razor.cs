@@ -32,13 +32,18 @@ public partial class MudExComponentPropertyGrid<T>
 
     protected override Task OnInitializedAsync()
     {
-        ToolBarContent = RenderToolbarExtraContent();
-        StickyToolbar = true;
-        ToolbarColor = Color.Surface;
-        StickyToolbarTop = "-8px";
-        StoreAndReadValueFromUrl = true;
-        MultiSearch = true;
-
+        if(!IsOverwritten(nameof(ToolBarContent)))
+            ToolBarContent = RenderToolbarExtraContent();
+        if (!IsOverwritten(nameof(StickyToolbar)))
+            StickyToolbar = true;
+        if (!IsOverwritten(nameof(ToolbarColor)))
+            ToolbarColor = Color.Surface;
+        if (!IsOverwritten(nameof(StickyToolbarTop)))
+            StickyToolbarTop = "-8px";
+        if (!IsOverwritten(nameof(StoreAndReadValueFromUrl)))
+            StoreAndReadValueFromUrl = true;
+        if (!IsOverwritten(nameof(MultiSearch)))
+            MultiSearch = true;
         return base.OnInitializedAsync();
     }
 

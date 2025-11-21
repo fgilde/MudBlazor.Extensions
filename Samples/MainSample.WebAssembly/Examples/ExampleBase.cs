@@ -1,7 +1,8 @@
-﻿using System.Text.RegularExpressions;
-using MainSample.WebAssembly.Shared;
+﻿using MainSample.WebAssembly.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using MudBlazor.Extensions.Components;
+using System.Text.RegularExpressions;
 
 namespace MainSample.WebAssembly.Examples;
 
@@ -11,10 +12,15 @@ public class ExampleBase : ComponentBase, IExample
     private static readonly Regex[] PatternsToRemove = new[]
     {
         new Regex(@"@inherits\s+ExampleBase\b", RegexOptions.IgnoreCase | RegexOptions.Compiled),
-        new Regex(@"@ref\s*=\s*""ComponentRef""", RegexOptions.IgnoreCase | RegexOptions.Compiled)
+        new Regex(@"@ref\s*=\s*""ComponentRef""", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        new Regex(@"</?MudExEditConfiguration\b[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled)
+//        new Regex(@"</?"+nameof(MudExEditConfiguration)+"\b[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled)
     };
 
     public Action<IComponent>? ComponentRefSet { get; set; }
+
+    private List<IComponent> _componentRefs = new ();
+    public IComponent[] ComponentRefs => _componentRefs.ToArray();
 
     public IComponent? ComponentRef
     {
@@ -22,8 +28,11 @@ public class ExampleBase : ComponentBase, IExample
         set
         {
             field = value;
-            if(value != null)
+            if (value != null)
+            {
+                _componentRefs.Add(value);
                 ComponentRefSet?.Invoke(value);
+            }
         }
     }
 
@@ -44,6 +53,7 @@ public class ExampleBase : ComponentBase, IExample
     
     public async Task<string> GetSourceCodeAsync()
     {
+
         if (!string.IsNullOrEmpty(code))
             return code;
         string exampleName = GetType().Name;
@@ -53,6 +63,7 @@ public class ExampleBase : ComponentBase, IExample
         
         return code = CleanCode(code);
     }
+
 
     private string CleanCode(string str)
     {
@@ -97,5 +108,5 @@ public class ExampleBase : ComponentBase, IExample
 public interface IExample {
     public Action<IComponent>? ComponentRefSet { get; set; }
     public Task<string> GetSourceCodeAsync();
-    public IComponent? ComponentRef { get; }
+    public IComponent[]? ComponentRefs { get; }
 }

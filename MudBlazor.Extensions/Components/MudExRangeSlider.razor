@@ -15,7 +15,7 @@
 
     <div class="mud-ex-range-slider-track @(HasTrackTemplate ? "mud-ex-has-template" : "")"
          @ref="_trackRef"
-         style="@TrackStyle"
+         style="@GetTrackStyle()"
          @onpointerdown="OnTrackPointerDown">
 
         @if (HasTrackTemplate)

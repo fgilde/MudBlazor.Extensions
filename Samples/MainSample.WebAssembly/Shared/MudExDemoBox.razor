@@ -16,7 +16,8 @@
 
 
         <MudPaper Class="mudex-demo-header px-4 py-3" Elevation="0">
-            <MudGrid AlignItems="AlignItems.Center">
+            <MudToolBar Dense="true">
+
                 <MudItem xs="12" md="7">
                     <MudText Typo="Typo.h6">@Title</MudText>
                     @if (!string.IsNullOrWhiteSpace(Subtitle))
@@ -27,8 +28,7 @@
                     }
                 </MudItem>
 
-                <MudItem xs="12" md="5" Class="d-flex justify-end">
-                    <div class="mudex-demo-actions">
+                    <MudSpacer/>
                         <MudTooltip Text="@TryLocalize("Run this sample on try.mudex.org online")">
                             <MudButton Variant="Variant.Text"
                                        Class="mudex-demo-action"
@@ -51,20 +51,52 @@
                                 @TryLocalize(ShowCode ? HideCodeText : ShowCodeText)
                             </MudButton>
                         }
-                        
-                        <MudTooltip Text="@TryLocalize("Edit configuration for component in this sample")">
-                            <MudButton Variant="Variant.Text"
-                                       Disabled="@(_example?.ComponentRef == null)"
-                                       Class="mudex-demo-action"
-                                       Color="Color.Default"
-                                       Size="Size.Small"
-                                       StartIcon="@Icons.Material.Filled.Settings"
-                                       OnClick="@EditInstanceClicked">
-                                @TryLocalize(EditInstanceText)
-                            </MudButton>
-                        </MudTooltip>
+                        @if (_example?.ComponentRefs?.Any() == true)
+                        {
+                            <MudTooltip Text="@TryLocalize("Edit configuration for component in this sample")">
+                                @if (_example?.ComponentRefs is { Length: > 1 })
+                                {
+                                    <MudMenu Icon="@Icons.Material.Filled.Settings"
+                                             Color="Color.Default"
+                                             Variant="Variant.Text"
+                                             Class="mudex-demo-action"
+                                             Disabled="@(_example?.ComponentRefs is not { Length: > 0 })">
+                                        <ActivatorContent>
+                                            <MudButton Variant="Variant.Text"
+                                                       Color="Color.Default"
+                                                       Size="Size.Small"
+                                                       StartIcon="@Icons.Material.Filled.Settings">
+                                                @TryLocalize(EditInstanceText)
+                                            </MudButton>
+                                        </ActivatorContent>
 
-                        <MudTooltip Text="@TryLocalize("Playground {0}", ApiMemberInfo.GetGenericFriendlyTypeName(_example?.ComponentRef?.GetType()))">
+                                        <ChildContent>
+                                            @for (var i = 0; i < _example.ComponentRefs.Length; i++)
+                                            {
+                                                var idx = i;
+                                                <MudMenuItem OnClick="@(() => EditInstanceClicked(_example.ComponentRefs[idx]))">
+                                                    @TryLocalize("Instance") @(@$" {idx + 1}")
+                                                </MudMenuItem>
+                                            }
+                                        </ChildContent>
+                                    </MudMenu>
+                                }
+                                else
+                                {
+                                    <MudButton Variant="Variant.Text"
+                                               Disabled="@(_example?.ComponentRefs is not { Length: > 0 })"
+                                               Class="mudex-demo-action"
+                                               Color="Color.Default"
+                                               Size="Size.Small"
+                                               StartIcon="@Icons.Material.Filled.Settings"
+                                               OnClick="@(() => EditInstanceClicked(_example?.ComponentRefs?[0]))">
+                                        @TryLocalize(EditInstanceText)
+                                    </MudButton>
+                                }
+                            </MudTooltip>
+                        }
+
+                        @*                <MudTooltip Text="@TryLocalize("Playground {0}", ApiMemberInfo.GetGenericFriendlyTypeName(_example?.ComponentRef?.GetType()))">
                             <MudButton Variant="Variant.Text"
                                        Href="@($"/c/{_example?.ComponentRef?.GetType().Name}")"
                                        Disabled="@(_example?.ComponentRef == null)"
@@ -74,10 +106,9 @@
                                        StartIcon="@Icons.Material.Filled.SmartDisplay">
                                 @TryLocalize("Playground")
                             </MudButton>
-                        </MudTooltip>
-                    </div>
-                </MudItem>
-            </MudGrid>
+                        </MudTooltip> *@
+                    
+                </MudToolBar>
         </MudPaper>
 
         <MudDivider />
@@ -200,11 +231,11 @@
         await TryMudExHelper.EditCodeInTryMudexAsync(Code, JsRuntime);
     }
 
-    private async Task EditInstanceClicked()
+    private async Task EditInstanceClicked(IComponent component)
     {
-        if (_example?.ComponentRef != null)
+        if (component != null)
         {
-            await DialogService.EditComponentAsync(_example?.ComponentRef, options: DialogOptionsEx.SlideInFromRight.SetProperties(o =>
+            await DialogService.EditComponentAsync(component, options: DialogOptionsEx.SlideInFromRight.SetProperties(o =>
             {
                 o.Resizeable = true;
                 o.DialogBackgroundAppearance = MudExAppearance.FromStyle(b =>
@@ -284,8 +315,13 @@
         _example = example;
         if (_example != null)
         {
-            if (_example.ComponentRef != null)
-                Registrar?.RegisterComponentType(_example.ComponentRef.GetType());
+            if (_example.ComponentRefs is { Length: > 0 })
+            {
+                foreach (var componentRef in _example.ComponentRefs)
+                {
+                    Registrar?.RegisterComponentType(componentRef.GetType());
+                }
+            }
             else
             {
                 _example.ComponentRefSet += (r) =>

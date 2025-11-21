@@ -1,0 +1,126 @@
+<div class="html"><pre>
+@* Day-of-Week Slider (0=Mon .. 6=Sun) *@
+@using System.Globalization
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Days: {0} – {1}&quot;, GetDayName(_range.Start), GetDayName(_range.End)]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;int&quot;
+                  @bind-Value=&quot;_range&quot;
+                  SizeRange=&quot;@_fullRange&quot;
+                  ShowInputs=&quot;true&quot;
+                  AllowWholeRangeDrag=&quot;true&quot;&gt;
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TrackTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            height:100%;
+            position:relative;
+            width:100%;
+            background:var(--mud-palette-surface);
+            border-radius:4px;
+            overflow:hidden;
+            border:1px solid var(--mud-palette-divider);&quot;&gt;
+
+            @* 7 Bl&#246;cke f&#252;r Mo–So *@
+            @{
+                for (var i = 0; i &lt; 7; i++)
+                {
+                    var left = i * (100.0 / 7);
+                    var width = 100.0 / 7;
+                    var isWeekend = i &gt;= 5;
+
+                    var bg = isWeekend
+                    ? &quot;color-mix(in srgb,var(--mud-palette-secondary) 18%,transparent)&quot;
+                    : &quot;color-mix(in srgb,var(--mud-palette-primary) 8%,transparent)&quot;;
+
+                    &lt;div style=&quot;
+                                position:absolute;
+                                left:@left%;
+                                width:@width%;
+                                top:0;
+                                bottom:0;
+                                background:@bg;&quot;&gt;
+                    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+                    ;
+
+                    var mid = left + width / 2;
+                    &lt;div style=&quot;
+                                position:absolute;
+                                left:@mid%;
+                                top:4px;
+                                transform:translateX(-50%);
+                                font-size:10px;
+                                color:var(--mud-palette-text-primary);
+                                font-weight:600;
+                                pointer-events:none;&quot;&gt;
+                        @GetDayShort(i)
+                    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+                    ;
+                }
+            }
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">TrackTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SelectionTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            height:100%;
+            width:100%;
+            background:linear-gradient(90deg,var(--mud-palette-primary),var(--mud-palette-secondary));
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:4px;&quot;&gt;
+            &lt;span style=&quot;
+                color:var(--mud-palette-primary-text);
+                font-weight:600;
+                font-size:11px;
+                white-space:nowrap;
+                padding:0 10px;&quot;&gt;
+                @($&quot;{GetDayName(ctx.Value.Start)} – {GetDayName(ctx.Value.End)}&quot;)
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">span</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">SelectionTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbStartTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:10px;
+            height:20px;
+            background:var(--mud-palette-surface);
+            border-radius:999px;
+            border:2px solid var(--mud-palette-primary);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbStartTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbEndTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:10px;
+            height:20px;
+            background:var(--mud-palette-surface);
+            border-radius:999px;
+            border:2px solid var(--mud-palette-secondary);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbEndTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRangeSlider</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span> _range = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span>(0, 4); // Mo–Fr
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span> _fullRange = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span>(0, 6);
+
+    private static string GetDayShort(int i)
+        =&gt; CultureInfo.GetCultureInfo(&quot;de-DE&quot;)
+            .DateTimeFormat.AbbreviatedDayNames[(i + 1) % 7];
+
+    private static string GetDayName(int i)
+        =&gt; CultureInfo.GetCultureInfo(&quot;de-DE&quot;)
+            .DateTimeFormat.DayNames[(i + 1) % 7];
+}
+
+</pre></div>

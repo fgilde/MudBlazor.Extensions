@@ -6489,6 +6489,11 @@
             Gets or sets the callback invoked while the value is changing during interaction.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.TrackStyle">
+            <summary>
+            Gets or sets the aria-labelledby attribute to improve accessibility.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.GetJsArguments">
             <summary>
             Gets the JavaScript interop arguments required by the component.

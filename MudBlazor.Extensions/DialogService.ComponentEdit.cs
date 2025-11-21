@@ -119,6 +119,7 @@ public static partial class DialogServiceExt
         var parameters = new DialogParameters
             {
                 {nameof(MudExComponentEditDialog<TModel>.ShowInherited), true},
+                {nameof(MudExComponentEditDialog<TModel>.StoreAndReadValueFromUrl), false},
                 {nameof(MudExComponentEditDialog<TModel>.Value), value},
                 {nameof(MudExComponentEditDialog<TModel>.ConfigureMetaInformationAlways), true},
                 {nameof(MudExComponentEditDialog<TModel>.MetaInformation), value.ObjectEditMeta(metaConfig)}

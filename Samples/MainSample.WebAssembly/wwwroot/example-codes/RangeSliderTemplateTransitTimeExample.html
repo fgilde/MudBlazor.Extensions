@@ -1,0 +1,112 @@
+<div class="html"><pre>
+@* Transit Time Slider (days) *@
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Transit time: {0} – {1} days&quot;, _range.Start, _range.End]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;int&quot;
+                  @bind-Value=&quot;_range&quot;
+                  SizeRange=&quot;@_fullRange&quot;
+                  ShowInputs=&quot;true&quot;
+                  AllowWholeRangeDrag=&quot;true&quot;&gt;
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TrackTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            height:100%;
+            position:relative;
+            width:100%;
+            background:var(--mud-palette-surface);
+            border-radius:4px;
+            overflow:hidden;&quot;&gt;
+
+            @* Express 0–3 *@
+            &lt;div style=&quot;
+                position:absolute;
+                left:0%;
+                width:@(3.0 / 60 * 100)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-success) 22%,transparent);&quot;&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+            @* Standard 4–10 *@
+            &lt;div style=&quot;
+                position:absolute;
+                left:@(4.0 / 60 * 100)%;
+                width:@(7.0 / 60 * 100)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-primary) 18%,transparent);&quot;&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+            @* Economy / Sea 11–60 *@
+            &lt;div style=&quot;
+                position:absolute;
+                left:@(11.0 / 60 * 100)%;
+                width:@((60.0 - 11) / 60 * 100)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-secondary) 18%,transparent);&quot;&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;position:absolute;left:5%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);&quot;</span><span class="htmlTagDelimiter">&gt;</span>Express<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;position:absolute;left:25%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);&quot;</span><span class="htmlTagDelimiter">&gt;</span>Standard<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;position:absolute;left:70%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);&quot;</span><span class="htmlTagDelimiter">&gt;</span>Economy/Sea<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">TrackTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SelectionTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            height:100%;
+            width:100%;
+            background:var(--mud-palette-primary);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:999px;&quot;&gt;
+            &lt;span style=&quot;
+                color:var(--mud-palette-primary-text);
+                font-weight:600;
+                font-size:11px;
+                white-space:nowrap;
+                padding:0 10px;&quot;&gt;
+                @($&quot;{ctx.Value.Start} – {ctx.Value.End} Tage&quot;)
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">span</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">SelectionTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbStartTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:12px;
+            height:12px;
+            background:var(--mud-palette-surface);
+            border-radius:50%;
+            border:2px solid var(--mud-palette-primary);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbStartTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbEndTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:12px;
+            height:12px;
+            background:var(--mud-palette-surface);
+            border-radius:50%;
+            border:2px solid var(--mud-palette-secondary);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbEndTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRangeSlider</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span> _range = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span>(4, 9);
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span> _fullRange = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span>(0, 60);
+}
+
+</pre></div>

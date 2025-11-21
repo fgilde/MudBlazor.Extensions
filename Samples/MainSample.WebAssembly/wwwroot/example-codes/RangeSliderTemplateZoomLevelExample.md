@@ -1,0 +1,121 @@
+```razor
+@* Zoom / Granularity Slider (0..4) *@
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<MudText Typo="Typo.caption" Class="mt-2 mb-2">
+    @L["View: {0} – {1}", GetLevelName(_range.Start), GetLevelName(_range.End)]
+</MudText>
+
+<MudExRangeSlider T="int"
+                  @bind-Value="_range"
+                  SizeRange="@_fullRange"
+                  AllowWholeRangeDrag="true">
+
+    <TrackTemplate Context="ctx">
+        <div style="
+            height:100%;
+            position:relative;
+            width:100%;
+            background:var(--mud-palette-surface);
+            border-radius:999px;
+            overflow:hidden;
+            border:1px solid var(--mud-palette-divider);">
+
+            @* 5 Stufen *@
+            @{
+                var labels = new[] { "Hour", "Day", "Week", "Month", "Year" };
+                for (var i = 0; i < labels.Length; i++)
+                {
+                    var left = i * (100.0 / labels.Length);
+                    var width = 100.0 / labels.Length;
+
+                    <div style="
+                                position:absolute;
+                                left:@left%;
+                                width:@width%;
+                                top:0;
+                                bottom:0;
+                                background:color-mix(in srgb,var(--mud-palette-primary) 6%,transparent);">
+                    </div>
+                    ;
+
+                    var mid = left + width / 2;
+                    <div style="
+                                position:absolute;
+                                left:@mid%;
+                                top:4px;
+                                transform:translateX(-50%);
+                                font-size:10px;
+                                color:var(--mud-palette-text-secondary);
+                                pointer-events:none;">
+                        @labels[i]
+                    </div>
+                    ;
+                }
+            }
+        </div>
+    </TrackTemplate>
+
+    <SelectionTemplate Context="ctx">
+        <div style="
+            height:100%;
+            width:100%;
+            background:linear-gradient(90deg,var(--mud-palette-primary),var(--mud-palette-secondary));
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:999px;">
+            <span style="
+                color:var(--mud-palette-primary-text);
+                font-weight:600;
+                font-size:11px;
+                white-space:nowrap;
+                padding:0 10px;">
+                @($"{GetLevelName(ctx.Value.Start)} – {GetLevelName(ctx.Value.End)}")
+            </span>
+        </div>
+    </SelectionTemplate>
+
+    <ThumbStartTemplate Context="ctx">
+        <div style="
+            width:12px;
+            height:12px;
+            background:var(--mud-palette-surface);
+            border-radius:50%;
+            border:2px solid var(--mud-palette-primary);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+        </div>
+    </ThumbStartTemplate>
+
+    <ThumbEndTemplate Context="ctx">
+        <div style="
+            width:12px;
+            height:12px;
+            background:var(--mud-palette-surface);
+            border-radius:50%;
+            border:2px solid var(--mud-palette-secondary);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+        </div>
+    </ThumbEndTemplate>
+
+</MudExRangeSlider>
+
+@code {
+    private IRange<int> _range = new MudExRange<int>(1, 3); // Day – Month
+    private IRange<int> _fullRange = new MudExRange<int>(0, 4);
+
+    private static string GetLevelName(int level) => level switch
+    {
+        0 => "Hour",
+        1 => "Day",
+        2 => "Week",
+        3 => "Month",
+        4 => "Year",
+        _ => "Unknown"
+    };
+}
+
+```

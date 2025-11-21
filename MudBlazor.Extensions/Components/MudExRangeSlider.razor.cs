@@ -247,6 +247,12 @@ namespace MudBlazor.Extensions.Components
         [Parameter]
         public EventCallback<IRange<T>> OnInput { get; set; }
 
+        /// <summary>
+        /// Gets or sets the aria-labelledby attribute to improve accessibility.
+        /// </summary>
+        [Parameter, SafeCategory("Appearance")]
+        public string TrackStyle { get; set; }
+
 
         private T ResolveStep(T v, int steps = 0, SnapPolicy policy = SnapPolicy.Nearest)
         {
@@ -302,11 +308,14 @@ namespace MudBlazor.Extensions.Components
         protected string SizeClass
             => $"mud-ex-size-{Size.ToString().ToLower()}";
 
-        protected string TrackStyle
+        protected string DefaultTrackStyle
             => $"--p-start:{_startPct}; --p-end:{_endPct}; --p-min:{_minPct}; --p-max:{_maxPct}; " +
                $"--ex-track-color:{TrackColor.ToCssStringValue()}; " +
                $"--ex-thumb-color:{ThumbColor.ToCssStringValue()}; " +
                $"--ex-selection-color:{SelectionColor.ToCssStringValue()};";
+
+        private string GetTrackStyle() => MudExStyleBuilder.FromStyle(TrackStyle)
+                                            .AddRaw(DefaultTrackStyle).Style;
 
 
         internal IRangeMath<T> M { get => MathAdapter ?? field; } = RangeMathFactory.For<T>();

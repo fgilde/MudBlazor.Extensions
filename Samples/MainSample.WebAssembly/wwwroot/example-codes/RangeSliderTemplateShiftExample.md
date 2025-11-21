@@ -1,0 +1,146 @@
+```razor
+@* Shift / Schicht Slider *@
+@using System.Globalization
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<MudText Typo="Typo.caption" Class="mt-2 mb-2">
+    @L["Shift window: {0} – {1}", _range.Start.ToString("HH\\:mm"), _range.End.ToString("HH\\:mm")]
+</MudText>
+
+<MudExRangeSlider T="TimeOnly"
+                  @bind-Value="_range"
+                  SizeRange="@_fullRange"
+                  ShowInputs="true"
+                  AllowWholeRangeDrag="true">
+
+    <TrackTemplate Context="ctx">
+        <div style="
+            height:100%;
+            position:relative;
+            width:100%;
+            background:var(--mud-palette-surface);
+            border-radius:4px;
+            overflow:hidden;
+            border:1px solid var(--mud-palette-divider);">
+
+            @* Frühschicht 06–14 *@
+            @{
+                double ToPct(TimeOnly t)
+                => t.ToTimeSpan().TotalMinutes / (24 * 60) * 100;
+
+                var earlyStart = ToPct(new TimeOnly(6, 0));
+                var earlyEnd = ToPct(new TimeOnly(14, 0));
+                var lateStart = ToPct(new TimeOnly(14, 0));
+                var lateEnd = ToPct(new TimeOnly(22, 0));
+            }
+
+            <div style="
+                position:absolute;
+                left:@earlyStart%;
+                width:@(earlyEnd - earlyStart)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-success) 18%,transparent);">
+            </div>
+
+            @* Spätschicht 14–22 *@
+            <div style="
+                position:absolute;
+                left:@lateStart%;
+                width:@(lateEnd - lateStart)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-secondary) 18%,transparent);">
+            </div>
+
+            @* Nacht 22–06 (wrap, als zwei Bereiche) *@
+            @{
+                var night1Start = ToPct(new TimeOnly(22, 0));
+                var night1End = 100.0;
+                var night2Start = 0.0;
+                var night2End = ToPct(new TimeOnly(6, 0));
+            }
+
+            <div style="
+                position:absolute;
+                left:@night1Start%;
+                width:@(night1End - night1Start)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-primary) 22%,transparent);">
+            </div>
+            <div style="
+                position:absolute;
+                left:@night2Start%;
+                width:@(night2End - night2Start)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-primary) 22%,transparent);">
+            </div>
+
+            @* Labels *@
+            <div style="position:absolute;left:@earlyStart%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);">
+                Früh
+            </div>
+            <div style="position:absolute;left:@lateStart%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);">
+                Spät
+            </div>
+            <div style="position:absolute;left:@night1Start%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);">
+                Nacht
+            </div>
+        </div>
+    </TrackTemplate>
+
+    <SelectionTemplate Context="ctx">
+        <div style="
+            height:100%;
+            width:100%;
+            background:linear-gradient(90deg,var(--mud-palette-primary),var(--mud-palette-secondary));
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:4px;">
+            <span style="
+                color:var(--mud-palette-primary-text);
+                font-weight:600;
+                font-size:11px;
+                white-space:nowrap;
+                padding:0 8px;">
+                @($"{ctx.Value.Start:HH\\:mm} – {ctx.Value.End:HH\\:mm}")
+            </span>
+        </div>
+    </SelectionTemplate>
+
+    <ThumbStartTemplate Context="ctx">
+        <div style="
+            width:6px;
+            height:22px;
+            background:var(--mud-palette-surface);
+            border-radius:999px;
+            border:2px solid var(--mud-palette-primary);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+        </div>
+    </ThumbStartTemplate>
+
+    <ThumbEndTemplate Context="ctx">
+        <div style="
+            width:6px;
+            height:22px;
+            background:var(--mud-palette-surface);
+            border-radius:999px;
+            border:2px solid var(--mud-palette-secondary);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+        </div>
+    </ThumbEndTemplate>
+
+</MudExRangeSlider>
+
+@code {
+    private IRange<TimeOnly> _range = new MudExRange<TimeOnly>(new(6, 0), new(14, 0));
+    private IRange<TimeOnly> _fullRange = new MudExRange<TimeOnly>(new(0, 0), new(23, 59));
+}
+
+```
