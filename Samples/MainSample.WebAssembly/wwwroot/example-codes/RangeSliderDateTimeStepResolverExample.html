@@ -9,6 +9,7 @@
 
 &lt;MudExRangeSlider T=&quot;DateTime&quot;
                   @ref=&quot;ComponentRef&quot;
+                  ShowInputs=&quot;true&quot;
                   SizeRange=&quot;@(new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(new(2019, 1, 1, 2, 22, 12), new(2025, 12, 31, 6, 3, 12)))&quot;
                   StepResolver=&quot;@(StepResolvers.DateTime.Quarterly(_ =&gt; 1))&quot;
                   @bind-Value=&quot;_selectedRange&quot;

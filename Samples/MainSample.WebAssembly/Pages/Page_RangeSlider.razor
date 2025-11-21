@@ -2,6 +2,8 @@
 @inherits BasePage
 
 @using MainSample.WebAssembly.Examples.RangeSlider
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
 
 @attribute [DemoNew(Name = "Overview", Order = 0, Group = "RangeSlider", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
 
@@ -62,7 +64,6 @@
     <!-- Demo 1: Simple numeric range slider -->
     <MudExDemoBox Title="1. Simple numeric range"
                   NavTitle="Simple numeric range"
-                  Order="10"
                   FeaturesTitle="Configuration"
                   Features="@(new[]
                                             {
@@ -83,7 +84,6 @@
     <!-- Demo 2: Date range with daily steps -->
     <MudExDemoBox Title="2. Date range with daily step size"
                   NavTitle="Date range with daily step size"
-                  Order="20"
                   FeaturesTitle="Highlights"
                   Features="@(new[]
                                             {
@@ -103,7 +103,6 @@
     <!-- Demo 3: DateTime with StepResolver -->
     <MudExDemoBox Title="3. DateTime range with custom StepResolver"
                   NavTitle="DateTime range with custom StepResolver"
-                  Order="30"
                   FeaturesTitle="StepResolver">
 
         <DemoContent>
@@ -117,7 +116,40 @@
     <!-- Demo 4: Vertical range slider -->
     <MudExDemoBox Title="4. Vertical range slider"
                   NavTitle="Vertical range slider"
-                  Order="40"
+                  FeaturesTitle="Use cases"
+                  Features="@(new[]
+                            {
+                                "Filters in dashboards or reports",
+                                "Side filter panels in search or analytics UIs",
+                                "Mobile UIs with limited horizontal space"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The range slider can also be used vertically – ideal for sidebars or compact filter areas."]
+            </MudText>
+
+            <RangeSliderVerticalExample/>
+        </DemoContent>
+    </MudExDemoBox>
+    
+    
+    <MudExDemoBox Title="5. TimeOnly slider"
+                  NavTitle="TimeOnly slider"
+                >
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example demonstrates a TimeOnly range slider configured with 1-minute increments, allowing precise selection of short time spans — ideal for fine-grained filtering."]
+            </MudText>
+
+            <RangeSliderTimeOnly1/>
+        </DemoContent>
+    </MudExDemoBox>
+    
+    
+    <MudExDemoBox Title="5. TimeOnly slider"
+                  NavTitle="TimeOnly slider"
                   FeaturesTitle="Use cases"
                   Features="@(new[]
                                               {
@@ -128,14 +160,20 @@
 
         <DemoContent>
             <MudText Typo="Typo.body2" Class="mb-4">
-                @L["The range slider can also be used vertically – ideal for sidebars or compact filter areas."]
+                @L["This example shows a TimeOnly range slider using 2-hour increments, making it easy to define broader time windows for high-level overviews or coarse time filtering."]
             </MudText>
 
-            <RangeSliderVerticalExample/>
+            <RangeSliderTimeOnly2 />
         </DemoContent>
     </MudExDemoBox>
+
+
 </MudExDemoPage>
 
 
 <DemoNavigation CurrentPage="@this" />
 
+@code {
+    private IRange<TimeOnly> _selectedRange = new MudExRange<TimeOnly>(new(1, 0), new(10, 00));
+
+}

@@ -11,6 +11,7 @@
 <div style="height: 280px; display: flex; align-items: center;">
     <MudExRangeSlider T="DateTime"
                       @ref="ComponentRef"
+                      ShowInputs="true"
                       Orientation="SliderOrientation.Vertical"
                       SizeRange="@(new MudExRange<DateTime>(new(2016, 1, 1), new(2024, 12, 31)))"
                       Size="Size.Large"

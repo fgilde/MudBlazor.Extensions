@@ -9,6 +9,7 @@
 
 <MudExRangeSlider T="DateTime"
                   @ref="ComponentRef"
+                  ShowInputs="true"
                   SizeRange="@(new MudExRange<DateTime>(new(2019, 1, 1, 2, 22, 12), new(2025, 12, 31, 6, 3, 12)))"
                   StepResolver="@(StepResolvers.DateTime.Quarterly(_ => 1))"
                   @bind-Value="_selectedRange"

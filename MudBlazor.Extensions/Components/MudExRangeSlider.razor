@@ -1,6 +1,5 @@
 ﻿@inherits MudExJsRequiredBaseComponent<MudExRangeSlider<T>>
 @using MudBlazor.Extensions.Components.ObjectEdit
-@using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Helper
 @using Nextended.Core.Extensions
 @using Nextended.Core.Helper
@@ -36,41 +35,42 @@
                 </div>
             }
         </div>
-
-        @if (HasThumbStartTemplate)
-        {
-            <div class="mud-ex-range-slider-thumb start mud-ex-has-template"
-                 style="@ThumbStyle()"
-                 id="@_startId"
-                 tabindex="@(Disabled ? -1 : 0)"
-                 @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
-                 @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
-                 role="slider"
-                 aria-valuemin="@SizeRangeStringStart"
-                 aria-valuemax="@SizeRangeStringEnd"
-                 aria-valuenow="@StartString"
-                 aria-labelledby="@AriaLabelledBy"
-                 aria-disabled="@Disabled">
-                <div class="mud-ex-range-slider-thumb-template">
-                    @ThumbStartTemplate(GetThumbContext(Thumb.Start))
+        
+        
+            @if (HasThumbStartTemplate)
+            {
+                <div class="mud-ex-range-slider-thumb start mud-ex-has-template"
+                     style="@ThumbStyle()"
+                     id="@_startId"
+                     tabindex="@(Disabled ? -1 : 0)"
+                     @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
+                     @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
+                     role="slider"
+                     aria-valuemin="@SizeRangeStringStart"
+                     aria-valuemax="@SizeRangeStringEnd"
+                     aria-valuenow="@StartString"
+                     aria-labelledby="@AriaLabelledBy"
+                     aria-disabled="@Disabled">
+                    <div class="mud-ex-range-slider-thumb-template">
+                        @ThumbStartTemplate(GetThumbContext(Thumb.Start))
+                    </div>
                 </div>
-            </div>
-        }
-        else
-        {
-            <button class="mud-ex-range-slider-thumb start"
-                    id="@_startId"
-                    style="@ThumbStyle()"
-                    type="button"
-                    @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
-                    @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
-                    role="slider"
-                    aria-valuemin="@SizeRangeStringStart"
-                    aria-valuemax="@SizeRangeStringEnd"
-                    aria-valuenow="@StartString"
-                    aria-labelledby="@AriaLabelledBy"
-                    disabled="@Disabled" />
-        }
+            }
+            else
+            {
+                <button class="mud-ex-range-slider-thumb start"
+                        id="@_startId"
+                        style="@ThumbStyle()"
+                        type="button"
+                        @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
+                        @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
+                        role="slider"
+                        aria-valuemin="@SizeRangeStringStart"
+                        aria-valuemax="@SizeRangeStringEnd"
+                        aria-valuenow="@StartString"
+                        aria-labelledby="@AriaLabelledBy"
+                        disabled="@Disabled" />
+            }
 
         @if (HasThumbEndTemplate)
         {
@@ -112,20 +112,10 @@
     {
         <div class="mud-ex-range-slider-inputs">
             
-            <MudExPropertyEdit PropertyMeta="@(Value.ObjectEditMeta().Property(m => m.Start).SetProperties(m => m.Settings.IsEditable = true).IsResettable(false))"
+            <MudExPropertyEdit PropertyMeta="@(Value.ObjectEditMeta().Property(m => m.Start).SetProperties(m => m.Settings.IsEditable = !Disabled).IsResettable(false))"
                                PropertyValueChanged="@(p => SetStartAsync(p.As<T>().Value, true))"/>
-            <MudExPropertyEdit PropertyMeta="@(Value.ObjectEditMeta().Property(m => m.End).SetProperties(m => m.Settings.IsEditable = true).IsResettable(false))"
+            <MudExPropertyEdit PropertyMeta="@(Value.ObjectEditMeta().Property(m => m.End).SetProperties(m => m.Settings.IsEditable = !Disabled).IsResettable(false))"
                                PropertyValueChanged="@(p => SetEndAsync(p.As<T>().Value, true))"/>
-            @*             <MudTextField T="T"
-                          Value="@Value.Start"
-                          ValueChanged="v => SetStartAsync(v, true)"
-                          Disabled="@Disabled"
-                          ReadOnly="@ReadOnly"/>
-            <MudTextField T="T"
-                          Value="@Value.End"
-                          ValueChanged="v => SetEndAsync(v, true)"
-                          Disabled="@Disabled"
-                          ReadOnly="@ReadOnly"/> *@
         </div>
     }
 </div>

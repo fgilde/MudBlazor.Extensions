@@ -9,6 +9,7 @@
 
 &lt;MudExRangeSlider T=&quot;DateTime&quot;
                   @ref=&quot;ComponentRef&quot;
+                  ShowInputs=&quot;true&quot;
                   SizeRange=&quot;@(new RangeOf<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(new(2015, 1, 1), new(2022, 12, 31), null))&quot;
                   StepLength=&quot;@(new RangeLength<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(TimeSpan.FromDays(1).Ticks))&quot;
                   MinLength=&quot;@(new RangeLength<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(TimeSpan.FromDays(60).Ticks))&quot;

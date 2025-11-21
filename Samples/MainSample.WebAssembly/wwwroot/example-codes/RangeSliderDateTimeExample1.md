@@ -9,6 +9,7 @@
 
 <MudExRangeSlider T="DateTime"
                   @ref="ComponentRef"
+                  ShowInputs="true"
                   SizeRange="@(new RangeOf<DateTime>(new(2015, 1, 1), new(2022, 12, 31), null))"
                   StepLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(1).Ticks))"
                   MinLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(60).Ticks))"

@@ -109,7 +109,7 @@ namespace MudBlazor.Extensions.Components
         public bool ReadOnly { get; set; }
 
         [Parameter, SafeCategory("Behavior")]
-        public bool ShowInputs { get; set; } = true;
+        public bool ShowInputs { get; set; }
 
         [Parameter, SafeCategory("Behavior")]
         public bool AllowWholeRangeDrag { get; set; } = true;

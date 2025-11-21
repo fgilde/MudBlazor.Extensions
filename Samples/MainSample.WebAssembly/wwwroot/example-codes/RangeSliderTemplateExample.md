@@ -14,7 +14,7 @@
                   SizeRange="fullRange"
                   StepLength="monthStep"
                   StepResolver="MonthStepResolver"
-                  ShowInputs="false">
+                  ShowInputs="true">
 
     <TrackTemplate Context="ctx">
         <div style="height: 100%;

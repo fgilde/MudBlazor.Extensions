@@ -69,21 +69,23 @@ public class YamlLocalizer<T> : IStringLocalizer<T>
 
     private (string value, bool found) CheckStore((string value, bool found) valueTuple)
     {
-        //if (!valueTuple.found)
-        //{
-        //    YamlLocalizerExtensions.Store(valueTuple.value);
-        //}
+        if (!valueTuple.found)
+        {
+            YamlLocalizerExtensions.Store(valueTuple.value);
+        }
         return valueTuple;
     }
 }
 
 public static class YamlLocalizerExtensions
 {
-    internal static readonly Dictionary<string, string> Keys = new();
+    const bool StoreNotFoundKeys = true;
+    internal static readonly HashSet<string> Keys = new();
 
     internal static void Store(string key)
     {
-        Keys.TryAdd(key, key);
+        if(StoreNotFoundKeys)
+            Keys.Add(key);
     }
     
     public static IServiceCollection AddYamlLocalizer(this IServiceCollection services)
