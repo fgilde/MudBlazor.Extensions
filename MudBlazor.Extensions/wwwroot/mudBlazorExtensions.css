@@ -1,4 +1,5 @@
-﻿:root {
+﻿@charset "UTF-8";
+:root {
   --mud-ex-css-main: mud-ex ;
 }
 
@@ -5464,6 +5465,195 @@
   left: calc(var(--p-end) * 100%);
 }
 
+/* ---------- Tooltip Styles ---------- */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip {
+  position: absolute;
+  background: var(--mud-palette-dark, #424242);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, visibility 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  z-index: 1500;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+
+/* Tooltip Arrow (wird durch Positions-Klassen konfiguriert) */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Sichtbar via "visible"-Klasse */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Optional zusätzlich über Hover/Focus (beibehalten) */
+.mud-ex-range-slider .mud-ex-range-slider-thumb:hover .mud-ex-range-slider-tooltip,
+.mud-ex-range-slider .mud-ex-range-slider-thumb:active .mud-ex-range-slider-tooltip,
+.mud-ex-range-slider .mud-ex-range-slider-thumb:focus-visible .mud-ex-range-slider-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ---------- Positions-Klassen ---------- */
+/* Default/Fallback: top, wenn keine Positionsklasse gesetzt ist */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip:not(.bottom):not(.left):not(.right):not(.center):not(.start):not(.end),
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.top {
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.top::after,
+.mud-ex-range-slider .mud-ex-range-slider-tooltip:not(.bottom):not(.left):not(.right):not(.center):not(.start):not(.end)::after {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* BOTTOM */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.bottom {
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.bottom::after {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* LEFT (Tooltip links vom Thumb, Pfeil zeigt nach rechts) */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.left {
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.left::after {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* RIGHT (Tooltip rechts vom Thumb, Pfeil zeigt nach links) */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.right {
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.right::after {
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* CENTER (direkt über dem Thumb zentriert, ohne Pfeil) */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.center::after {
+  border: none;
+}
+
+/* ---------- START / END (orientationsabhängig) ----------
+   Idee:
+   - Horizontal (default): start = left, end = right
+   - Vertical: start = top, end = bottom
+*/
+/* HORIZONTAL: START = LEFT */
+.mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.start {
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.start::after {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* HORIZONTAL: END = RIGHT */
+.mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.end {
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.end::after {
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* VERTICAL: START = TOP */
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.start {
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.start::after {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* VERTICAL: END = BOTTOM */
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.end {
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.end::after {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid var(--mud-palette-dark, #424242);
+}
+
 /* Inputs block */
 .mud-ex-range-slider .mud-ex-range-slider-inputs {
   margin-top: 16px;
@@ -6187,12 +6377,12 @@
   animation: 44s -27s move infinite ease-in-out alternate;
 }
 .mud-ex-bg-dot::before {
-  text-shadow: 1.2802728465em 1.1644400256em 7px hsla(311.7102284479, 100%, 50%, 0.9), 0.3750081412em -0.3044538987em 7px hsla(166.1743571912, 100%, 50%, 0.9), 0.18809546em 1.4368731666em 7px hsla(104.4698882765, 100%, 50%, 0.9), -0.0380882801em -0.2204464148em 7px hsla(237.0312135329, 100%, 50%, 0.9), 0.9761389829em -0.445075934em 7px hsla(69.0387417804, 100%, 50%, 0.9), 0.7366293765em 0.1110985606em 7px hsla(45.9229154399, 100%, 50%, 0.9), -0.1362492234em 0.7648087247em 7px hsla(288.4435011779, 100%, 50%, 0.9), 1.90001288em 0.8551916291em 7px hsla(205.9924153543, 100%, 50%, 0.9), 0.0064524863em 1.0892200155em 7px hsla(51.9570722267, 100%, 50%, 0.9), 1.0632937486em 0.2528638416em 7px hsla(259.4481678006, 100%, 50%, 0.9), 1.9012366077em 1.8397591233em 7px hsla(27.1437875942, 100%, 50%, 0.9), 2.0920968193em 0.3523025011em 7px hsla(203.6852797912, 100%, 50%, 0.9), 0.9061372349em 0.9018520946em 7px hsla(162.4996999522, 100%, 50%, 0.9), 1.5839539921em 1.3583242997em 7px hsla(334.7455539504, 100%, 50%, 0.9), 1.7274014259em 0.9375367761em 7px hsla(212.5228497462, 100%, 50%, 0.9), 1.4474072321em 0.736241345em 7px hsla(177.6603709385, 100%, 50%, 0.9), 0.0415058934em 2.2972660346em 7px hsla(347.6884983015, 100%, 50%, 0.9), 0.4383938149em 1.2867293051em 7px hsla(215.8662551838, 100%, 50%, 0.9), 1.4950569884em 0.687607529em 7px hsla(10.163803304, 100%, 50%, 0.9), 1.3925057991em -0.013242163em 7px hsla(7.8673504464, 100%, 50%, 0.9), -0.2738811085em 1.6950771848em 7px hsla(177.2357727339, 100%, 50%, 0.9), -0.1682612247em -0.3839234994em 7px hsla(36.6985013567, 100%, 50%, 0.9), 1.4875450354em 0.3561603947em 7px hsla(189.6287183596, 100%, 50%, 0.9), 2.0119867682em -0.4728909766em 7px hsla(297.3829949472, 100%, 50%, 0.9), 0.1260196775em 1.7954184347em 7px hsla(5.5149632764, 100%, 50%, 0.9), -0.0507053495em -0.2230403915em 7px hsla(142.7104424132, 100%, 50%, 0.9), 0.2946019858em 0.4950639415em 7px hsla(290.1369030243, 100%, 50%, 0.9), 1.5488483446em 1.2455110544em 7px hsla(37.7400569837, 100%, 50%, 0.9), 2.4417003837em 0.3485707031em 7px hsla(79.5061918183, 100%, 50%, 0.9), 1.0233452112em 1.4768002283em 7px hsla(303.365135012, 100%, 50%, 0.9), 2.0333398533em 2.1950664219em 7px hsla(76.6439742983, 100%, 50%, 0.9), -0.2506647917em 1.3954897558em 7px hsla(232.9813557122, 100%, 50%, 0.9), 2.3906091266em 0.5525181445em 7px hsla(169.5352582558, 100%, 50%, 0.9), 0.1722989418em 0.0019966667em 7px hsla(127.2477416991, 100%, 50%, 0.9), 0.4764664676em 2.4314559517em 7px hsla(152.184023554, 100%, 50%, 0.9), 1.4630999066em 2.4335703355em 7px hsla(150.4858394979, 100%, 50%, 0.9), 1.0653393559em -0.4276390401em 7px hsla(199.3630195099, 100%, 50%, 0.9), 0.5656873525em 2.3938374991em 7px hsla(245.2732090231, 100%, 50%, 0.9), 1.3893387229em 0.3927730073em 7px hsla(334.7141080291, 100%, 50%, 0.9), 1.6249897808em 2.0060102547em 7px hsla(93.6184558849, 100%, 50%, 0.9), 0.0094686992em 1.2778818584em 7px hsla(147.2923205795, 100%, 50%, 0.9);
+  text-shadow: 0.7885112163em 0.9033749535em 7px hsla(336.0115652323, 100%, 50%, 0.9), 2.2307321209em 1.0991611101em 7px hsla(325.155852896, 100%, 50%, 0.9), 1.7615473341em 1.3561825961em 7px hsla(277.9991457692, 100%, 50%, 0.9), -0.0482535995em 2.3034945894em 7px hsla(155.2845664081, 100%, 50%, 0.9), -0.143159048em 0.3136903794em 7px hsla(90.0110767048, 100%, 50%, 0.9), -0.4665921819em 1.1707647316em 7px hsla(343.2353126141, 100%, 50%, 0.9), -0.0136975069em 0.5524378484em 7px hsla(214.1445168975, 100%, 50%, 0.9), 0.7417435616em 2.0703817013em 7px hsla(281.4070049044, 100%, 50%, 0.9), 0.8820226434em -0.4165626537em 7px hsla(142.4057761828, 100%, 50%, 0.9), 1.7808495625em 0.1857352071em 7px hsla(245.6301071308, 100%, 50%, 0.9), -0.2268726182em 0.2649516957em 7px hsla(47.1575460496, 100%, 50%, 0.9), 0.6732719012em 1.6522302435em 7px hsla(43.2388315599, 100%, 50%, 0.9), 1.4765012283em 2.2498498775em 7px hsla(353.8827062943, 100%, 50%, 0.9), 0.4757322999em 2.4347934684em 7px hsla(306.0436294409, 100%, 50%, 0.9), 0.3084876787em 1.548075152em 7px hsla(36.7586633737, 100%, 50%, 0.9), -0.2404130808em 0.5906567514em 7px hsla(135.9653021463, 100%, 50%, 0.9), 2.121026355em 1.4484113808em 7px hsla(161.7706364767, 100%, 50%, 0.9), 2.3761992904em 0.0439693891em 7px hsla(309.9901927033, 100%, 50%, 0.9), -0.2078577575em -0.4720489585em 7px hsla(86.0326118156, 100%, 50%, 0.9), 1.7959576798em -0.4031554593em 7px hsla(252.3664915525, 100%, 50%, 0.9), 0.1007595776em 0.5355593605em 7px hsla(60.1292148395, 100%, 50%, 0.9), 0.3269555104em 0.2610475448em 7px hsla(192.9988672269, 100%, 50%, 0.9), 2.4473164784em -0.0981073441em 7px hsla(300.6099291985, 100%, 50%, 0.9), 1.2335429402em 0.600919524em 7px hsla(203.9217154696, 100%, 50%, 0.9), 0.7073587197em 1.9089985726em 7px hsla(32.3540814657, 100%, 50%, 0.9), -0.3969631833em -0.1609737829em 7px hsla(30.2508118532, 100%, 50%, 0.9), 0.1344473054em 0.1195659966em 7px hsla(102.7447112526, 100%, 50%, 0.9), 0.7640171359em 1.8225869755em 7px hsla(242.6345159977, 100%, 50%, 0.9), 0.5795498658em 0.5167888342em 7px hsla(266.5218708348, 100%, 50%, 0.9), 1.5071067512em 0.6043942994em 7px hsla(233.5579344417, 100%, 50%, 0.9), 0.8591799305em 0.9409505191em 7px hsla(144.4744821869, 100%, 50%, 0.9), -0.1967229764em 1.1017594225em 7px hsla(324.0514668848, 100%, 50%, 0.9), 1.2543849882em 2.1584577202em 7px hsla(294.1072504343, 100%, 50%, 0.9), 2.0579150604em 0.7832935546em 7px hsla(191.5525136155, 100%, 50%, 0.9), 0.0127209925em 1.9488877473em 7px hsla(244.6724941757, 100%, 50%, 0.9), 0.7891004351em 1.6126095537em 7px hsla(350.848523322, 100%, 50%, 0.9), 0.4286887674em 1.3985029742em 7px hsla(181.9208231473, 100%, 50%, 0.9), -0.2658656156em 2.3913345543em 7px hsla(306.6102753867, 100%, 50%, 0.9), 2.4575788316em 2.3610300379em 7px hsla(60.7015716825, 100%, 50%, 0.9), 1.4909849636em 0.7165780884em 7px hsla(271.4765478862, 100%, 50%, 0.9), 0.7417357478em 0.1219597877em 7px hsla(67.5037518894, 100%, 50%, 0.9);
   animation-duration: 44s;
   animation-delay: -27s;
 }
 .mud-ex-bg-dot::after {
-  text-shadow: 0.7979345369em 0.2614639396em 7px hsla(251.8306137377, 100%, 50%, 0.9), 0.1263271961em 2.4000946672em 7px hsla(353.5895300901, 100%, 50%, 0.9), 1.2283202253em -0.4424049525em 7px hsla(229.7255890673, 100%, 50%, 0.9), 1.8825155827em 0.1020240867em 7px hsla(312.2498623828, 100%, 50%, 0.9), 1.2690339623em 0.8177271679em 7px hsla(73.0980849522, 100%, 50%, 0.9), 1.9645300756em 0.0171612989em 7px hsla(65.475546567, 100%, 50%, 0.9), 1.7681130513em -0.3976970058em 7px hsla(342.4348452743, 100%, 50%, 0.9), 1.88511375em 1.6727450693em 7px hsla(86.6696109204, 100%, 50%, 0.9), 1.6402261961em 0.5823463826em 7px hsla(21.86278852, 100%, 50%, 0.9), -0.0132693727em 0.0535650383em 7px hsla(207.8294670849, 100%, 50%, 0.9), 1.0607678506em 0.6820264266em 7px hsla(353.153762546, 100%, 50%, 0.9), 1.0419862667em 0.4081989086em 7px hsla(316.3118868723, 100%, 50%, 0.9), 1.5994015169em 0.8727560587em 7px hsla(142.6603305146, 100%, 50%, 0.9), -0.1369193587em 0.2963668897em 7px hsla(359.3722186722, 100%, 50%, 0.9), 0.0154914588em 0.7557729772em 7px hsla(193.0090050076, 100%, 50%, 0.9), 0.5979095993em 0.2684362829em 7px hsla(303.8441462408, 100%, 50%, 0.9), -0.2079666237em 1.9548256642em 7px hsla(200.8087611625, 100%, 50%, 0.9), 0.9148163149em 1.3982148201em 7px hsla(279.5421462475, 100%, 50%, 0.9), 2.1391200507em 1.0139741844em 7px hsla(236.3335897095, 100%, 50%, 0.9), 0.5122569195em 1.076980283em 7px hsla(248.3003014964, 100%, 50%, 0.9), -0.4729285702em 0.8968003177em 7px hsla(153.0632443513, 100%, 50%, 0.9), 0.3014098548em 1.222794199em 7px hsla(341.0294500921, 100%, 50%, 0.9), -0.347862806em 1.6994379542em 7px hsla(261.2490487686, 100%, 50%, 0.9), 0.111693935em 1.1692302276em 7px hsla(308.3697672447, 100%, 50%, 0.9), -0.1420347825em 1.5288048063em 7px hsla(165.3332422338, 100%, 50%, 0.9), 0.9339223991em 1.4590481495em 7px hsla(270.2460815057, 100%, 50%, 0.9), 1.8380288936em 0.1628458191em 7px hsla(142.235381229, 100%, 50%, 0.9), 1.0928601693em 1.3101887005em 7px hsla(227.6952439627, 100%, 50%, 0.9), 1.364833585em 2.0993921139em 7px hsla(160.919257535, 100%, 50%, 0.9), -0.3430926909em 0.4250471097em 7px hsla(35.7477245135, 100%, 50%, 0.9), 0.4791117963em -0.0517283352em 7px hsla(331.4279774107, 100%, 50%, 0.9), 1.4109074236em 1.4617708696em 7px hsla(274.406752624, 100%, 50%, 0.9), 1.9934654317em -0.2885271228em 7px hsla(356.5884546631, 100%, 50%, 0.9), 0.8455235771em 0.06006907em 7px hsla(92.5469017672, 100%, 50%, 0.9), 1.9011376987em 1.5620912801em 7px hsla(31.6710287763, 100%, 50%, 0.9), 1.3648337661em 0.3163155784em 7px hsla(182.5569115226, 100%, 50%, 0.9), 0.7203205848em -0.4791424607em 7px hsla(171.5908274596, 100%, 50%, 0.9), 1.608299535em 0.1312106795em 7px hsla(119.3776054936, 100%, 50%, 0.9), 2.0623914239em -0.1092394529em 7px hsla(24.3539392885, 100%, 50%, 0.9), 1.6274057108em 2.3752523607em 7px hsla(159.1185605831, 100%, 50%, 0.9), -0.2456330409em 2.4970133088em 7px hsla(167.8337837742, 100%, 50%, 0.9);
+  text-shadow: 0.2473267727em -0.3351039575em 7px hsla(250.0115132532, 100%, 50%, 0.9), -0.2411766064em 0.2148593444em 7px hsla(246.6144640474, 100%, 50%, 0.9), 1.7401570717em -0.4164001616em 7px hsla(304.4635266976, 100%, 50%, 0.9), 2.3635539431em 1.8490664577em 7px hsla(208.6441751571, 100%, 50%, 0.9), 2.337132578em 1.3706422959em 7px hsla(253.3577663841, 100%, 50%, 0.9), 1.2249564129em 1.5403401382em 7px hsla(22.6764754457, 100%, 50%, 0.9), 2.0178584133em -0.2309659197em 7px hsla(119.5888673938, 100%, 50%, 0.9), -0.109380465em -0.2641417824em 7px hsla(26.011297095, 100%, 50%, 0.9), 2.3802132433em 2.2550789294em 7px hsla(314.453247997, 100%, 50%, 0.9), 2.0893737941em 2.2511524842em 7px hsla(184.9965352491, 100%, 50%, 0.9), 2.0607735046em 0.6765267515em 7px hsla(73.9918273388, 100%, 50%, 0.9), 0.1970333171em 0.6237233803em 7px hsla(317.0992265065, 100%, 50%, 0.9), 1.4840636586em 0.6791459946em 7px hsla(288.8124133312, 100%, 50%, 0.9), 0.3716682147em -0.1492172996em 7px hsla(110.5034107338, 100%, 50%, 0.9), -0.4096652277em 1.9094106621em 7px hsla(182.1991236829, 100%, 50%, 0.9), -0.1691894603em 0.7210423801em 7px hsla(102.88040709, 100%, 50%, 0.9), 1.31274333em 1.7293382032em 7px hsla(202.3456193313, 100%, 50%, 0.9), 1.5116830838em 2.2247412681em 7px hsla(93.9177850065, 100%, 50%, 0.9), -0.4587126982em 2.2348749603em 7px hsla(215.5549529398, 100%, 50%, 0.9), 2.0951840915em 0.1099080223em 7px hsla(354.1947586766, 100%, 50%, 0.9), 0.5971399205em 1.9997889219em 7px hsla(261.3771997695, 100%, 50%, 0.9), 0.8058785254em 1.6779188282em 7px hsla(290.1136535566, 100%, 50%, 0.9), 0.4930761352em 0.5413135618em 7px hsla(262.4770137087, 100%, 50%, 0.9), 1.1918045685em 0.1976876503em 7px hsla(70.0598402729, 100%, 50%, 0.9), 1.1960965174em 2.3731230483em 7px hsla(176.8277876349, 100%, 50%, 0.9), 1.7791052911em 0.9818156088em 7px hsla(278.1991256922, 100%, 50%, 0.9), 1.1509902057em 1.1887090856em 7px hsla(149.431677695, 100%, 50%, 0.9), 2.0623822672em -0.2767927741em 7px hsla(156.6074746621, 100%, 50%, 0.9), 1.1031688293em -0.0708523648em 7px hsla(15.9074157477, 100%, 50%, 0.9), 1.3918047753em 0.5735230247em 7px hsla(104.9040136456, 100%, 50%, 0.9), 0.151108438em 0.8790584925em 7px hsla(359.1589768121, 100%, 50%, 0.9), 0.213025109em -0.2809272468em 7px hsla(353.0896354, 100%, 50%, 0.9), -0.1081811961em 1.400137831em 7px hsla(151.1408432145, 100%, 50%, 0.9), 0.4161802038em -0.2614095718em 7px hsla(90.2741905372, 100%, 50%, 0.9), 2.3326178722em 1.9027301533em 7px hsla(304.6202752816, 100%, 50%, 0.9), 0.5767310762em -0.0533647611em 7px hsla(315.4593064477, 100%, 50%, 0.9), 1.590068264em 0.3849881052em 7px hsla(131.2398709541, 100%, 50%, 0.9), 1.7828419787em 1.7184629927em 7px hsla(176.499224045, 100%, 50%, 0.9), 0.143038855em 1.6204074617em 7px hsla(26.9335656115, 100%, 50%, 0.9), -0.4089312701em 1.4929684684em 7px hsla(2.4279215906, 100%, 50%, 0.9), 1.796479967em 2.0984265059em 7px hsla(10.9395117666, 100%, 50%, 0.9);
   animation-duration: 43s;
   animation-delay: -32s;
 }

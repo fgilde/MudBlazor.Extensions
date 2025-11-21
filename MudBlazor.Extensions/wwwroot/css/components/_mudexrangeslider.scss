@@ -96,7 +96,7 @@
         position: absolute;
         left: calc(var(--p-start) * 100%);
         right: calc((1 - var(--p-end)) * 100%);
-        pointer-events: auto;        
+        pointer-events: auto;
         z-index: 1;
         display: flex;
         align-items: stretch;
@@ -138,7 +138,7 @@
     .mud-ex-range-slider .mud-ex-range-slider-thumb {
         position: absolute;
         top: 50%;
-        transform: translate(-50%, -50%);        
+        transform: translate(-50%, -50%);
         outline: none;
         z-index: 2;
     }
@@ -158,7 +158,7 @@
                 box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.04);
             }
 
-            .mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template):active {                
+            .mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template):active {
                 box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.08);
             }
 
@@ -188,8 +188,196 @@
         left: calc(var(--p-end) * 100%);
     }
 
-    .mud-ex-range-slider .mud-ex-range-slider-thumb:active {        
+    /* ---------- Tooltip Styles ---------- */
+    .mud-ex-range-slider .mud-ex-range-slider-tooltip {
+        position: absolute;
+        background: var(--mud-palette-dark, #424242);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        line-height: 1.43;
+        letter-spacing: 0.01071em;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, visibility 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        z-index: 1500;
+        box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12);
     }
+
+        /* Tooltip Arrow (wird durch Positions-Klassen konfiguriert) */
+        .mud-ex-range-slider .mud-ex-range-slider-tooltip::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+
+        /* Sichtbar via "visible"-Klasse */
+        .mud-ex-range-slider .mud-ex-range-slider-tooltip.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+    /* Optional zusätzlich über Hover/Focus (beibehalten) */
+    .mud-ex-range-slider .mud-ex-range-slider-thumb:hover .mud-ex-range-slider-tooltip,
+    .mud-ex-range-slider .mud-ex-range-slider-thumb:active .mud-ex-range-slider-tooltip,
+    .mud-ex-range-slider .mud-ex-range-slider-thumb:focus-visible .mud-ex-range-slider-tooltip {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* ---------- Positions-Klassen ---------- */
+
+    /* Default/Fallback: top, wenn keine Positionsklasse gesetzt ist */
+    .mud-ex-range-slider .mud-ex-range-slider-tooltip:not(.bottom):not(.left):not(.right):not(.center):not(.start):not(.end),
+    .mud-ex-range-slider .mud-ex-range-slider-tooltip.top {
+        bottom: calc(100% + 12px);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+        .mud-ex-range-slider .mud-ex-range-slider-tooltip.top::after,
+        .mud-ex-range-slider .mud-ex-range-slider-tooltip:not(.bottom):not(.left):not(.right):not(.center):not(.start):not(.end)::after {
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid var(--mud-palette-dark, #424242);
+        }
+
+    /* BOTTOM */
+    .mud-ex-range-slider .mud-ex-range-slider-tooltip.bottom {
+        top: calc(100% + 12px);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+        .mud-ex-range-slider .mud-ex-range-slider-tooltip.bottom::after {
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid var(--mud-palette-dark, #424242);
+        }
+
+    /* LEFT (Tooltip links vom Thumb, Pfeil zeigt nach rechts) */
+    .mud-ex-range-slider .mud-ex-range-slider-tooltip.left {
+        right: calc(100% + 12px);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+        .mud-ex-range-slider .mud-ex-range-slider-tooltip.left::after {
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 5px solid var(--mud-palette-dark, #424242);
+        }
+
+    /* RIGHT (Tooltip rechts vom Thumb, Pfeil zeigt nach links) */
+    .mud-ex-range-slider .mud-ex-range-slider-tooltip.right {
+        left: calc(100% + 12px);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+        .mud-ex-range-slider .mud-ex-range-slider-tooltip.right::after {
+            top: 50%;
+            right: 100%;
+            transform: translateY(-50%);
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-right: 5px solid var(--mud-palette-dark, #424242);
+        }
+
+    /* CENTER (direkt über dem Thumb zentriert, ohne Pfeil) */
+    .mud-ex-range-slider .mud-ex-range-slider-tooltip.center {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+        .mud-ex-range-slider .mud-ex-range-slider-tooltip.center::after {
+            border: none;
+        }
+
+    /* ---------- START / END (orientationsabhängig) ----------
+   Idee:
+   - Horizontal (default): start = left, end = right
+   - Vertical: start = top, end = bottom
+*/
+
+    /* HORIZONTAL: START = LEFT */
+    .mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.start {
+        right: calc(100% + 12px);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+        .mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.start::after {
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 5px solid var(--mud-palette-dark, #424242);
+        }
+
+    /* HORIZONTAL: END = RIGHT */
+    .mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.end {
+        left: calc(100% + 12px);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+        .mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.end::after {
+            top: 50%;
+            right: 100%;
+            transform: translateY(-50%);
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-right: 5px solid var(--mud-palette-dark, #424242);
+        }
+
+    /* VERTICAL: START = TOP */
+    .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.start {
+        bottom: calc(100% + 12px);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+        .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.start::after {
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid var(--mud-palette-dark, #424242);
+        }
+
+    /* VERTICAL: END = BOTTOM */
+    .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.end {
+        top: calc(100% + 12px);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+        .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.end::after {
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid var(--mud-palette-dark, #424242);
+        }
 
     /* Inputs block */
     .mud-ex-range-slider .mud-ex-range-slider-inputs {
@@ -267,7 +455,7 @@
         .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb {
             left: 50%;
             top: auto;
-            transform: translate(-50%, -50%);            
+            transform: translate(-50%, -50%);
         }
 
             .mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb.start {

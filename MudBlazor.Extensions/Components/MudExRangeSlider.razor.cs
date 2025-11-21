@@ -23,6 +23,14 @@ namespace MudBlazor.Extensions.Components
 
         [Parameter] public IRangeMath<T>? MathAdapter { get; set; }
 
+        [Parameter] public bool ShowTooltip { get; set; } = true;
+
+        [Parameter] public Position? StartTooltipPosition { get; set; }
+        [Parameter] public Position? EndTooltipPosition { get; set; }
+
+        [Parameter] public Func<IRange<T>, string> ToStartStringFunc { get; set; } = s => s.Start.ToString();
+        [Parameter] public Func<IRange<T>, string> ToEndStringFunc { get; set; } = s => s.End.ToString();
+
         [Parameter] public Func<T, IRange<T>, RangeLength<T>, int, SnapPolicy, T>? StepResolver { get; set; }
 
         [Parameter]
@@ -76,6 +84,10 @@ namespace MudBlazor.Extensions.Components
 
         [Parameter, SafeCategory("Templates")]
         public RenderFragment<MudExRangeSliderThumbContext<T>>? ThumbEndTemplate { get; set; }
+
+        [Parameter] public RenderFragment<MudExRangeSliderThumbContext<T>>? TooltipTemplate { get; set; }
+
+
 
         // ---------- Binding ----------
         [Parameter, SafeCategory("Data")]
@@ -194,11 +206,9 @@ namespace MudBlazor.Extensions.Components
         private double _dragStartClientPrimary;
         private (double start, double end) _dragStartRange;
 
-        private string StartString
-            => Value.Start.ToString() ?? string.Empty;
+        private string StartString => (ToStartStringFunc != null ? ToStartStringFunc(Value) : Value.Start.ToString()) ?? string.Empty;
 
-        private string EndString
-            => Value.End.ToString() ?? string.Empty;
+        private string EndString => (ToEndStringFunc != null ? ToEndStringFunc(Value) : Value.End.ToString()) ?? string.Empty;
 
         private string SizeRangeStringStart
             => SizeRange.Start.ToString() ?? string.Empty;
@@ -245,6 +255,8 @@ namespace MudBlazor.Extensions.Components
 
             Value = bounded;
         }
+
+        private Position GetTooltipPosition(Thumb thumb) => (thumb == Thumb.Start ? StartTooltipPosition : EndTooltipPosition) ?? (IsHorizontal ? Position.Top : Position.Right);
 
         // ------------- Measuring -------------
         private async Task MeasureAsync()
