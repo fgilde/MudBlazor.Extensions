@@ -4,10 +4,6 @@
 
 
 <style>
-    /* Smooth scrolling ohne JS */
-html {
-    scroll-behavior: smooth;
-}
 
 .mudex-contents-nav {
     position: sticky;
@@ -64,9 +60,7 @@ html {
             var isActive = string.Equals(_activeId, item.Id, StringComparison.OrdinalIgnoreCase);
 
             <div class="mudex-contents-item @(isActive ? "active" : "")">
-                <a href="#@item.Id"
-                   
-                   class="mudex-contents-link">
+                <a style="cursor:pointer;" @onclick="@(() => JsRuntime.InvokeVoidAsync("scrollToElement", _activeId = item.Id))" class="mudex-contents-link">
                     @item.Title
                 </a>
             </div>
@@ -93,4 +87,11 @@ html {
         // Anchor selbst übernimmt das Scrollen
         StateHasChanged();
     }
+
+    public void SetAsActive(string anchorId)
+    {
+        _activeId = anchorId;
+        InvokeAsync(StateHasChanged);
+    }
+
 }

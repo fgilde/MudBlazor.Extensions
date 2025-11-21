@@ -1,58 +1,127 @@
 ﻿@using MainSample.WebAssembly.Pages
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<DemoNavigation> L
+@inject NavigationManager NavManager
 
-<MudPaper Class="pa-6">
-    <MudExCardList TData="object">
-        <MudCard>
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.ArrowBack" Color="MudBlazor.Color.Default" />
-                    <MudText Typo="MudBlazor.Typo.h6">
-                        @L["Back"]
-                    </MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText>
-                    @L["Back to {0}", L["Demo"]]
-                </MudText>
-                <MudText Typo="MudBlazor.Typo.body2">
-                    @L["Short description of the previous demo."]
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-        <MudCard>
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="MudBlazor.Typo.h6">
-                        @L["Forward"]
-                    </MudText>
-                    <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.ArrowForward" Color="MudBlazor.Color.Default" />
-                </CardHeaderContent>
+<style>
+    .demo-pager-nav {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 24px;
+        margin-bottom: 32px;
+    }
 
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText>
-                    @L["Go to {0}", L["Demo"]]
-                </MudText>
-                <MudText Typo="MudBlazor.Typo.body2">
-                    @L["Short description of the next demo."]
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudExCardList>
-</MudPaper>
+    .demo-pager-btn {
+        position: relative;
+        overflow: hidden;
+        border-radius: 999px;
+        text-transform: none;
+        font-weight: 500;
+        padding-inline: 16px;
+        transition: transform 160ms ease-out, box-shadow 160ms ease-out, background-color 160ms ease-out;
+    }
 
-@code {
-    [Parameter] public BasePage CurrentPage { get; set; }
+        .demo-pager-btn::before {
+            content: "";
+            position: absolute;
+            inset: -80%;
+            background: linear-gradient( 120deg, rgba(25, 118, 210, 0.3), rgba(156, 39, 176, 0.35), rgba(56, 142, 60, 0.3), rgba(25, 118, 210, 0.3) );
+            background-size: 220% 220%;
+            opacity: 0;
+            z-index: -1;
+            animation: demo-pager-wave 5s linear infinite;
+            pointer-events: none;
+        }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
-        {
+        .demo-pager-btn:hover::before {
+            opacity: 1;
+        }
+
+        .demo-pager-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--mud-elevation-4);
+        }
+
+    .demo-pager-icon {
+        font-size: 20px;
+    }
+
+    @@keyframes demo-pager-wave {
+        0% {
+            transform: translate3d(0, 0, 0);
+            background-position: 0% 50%;
+        }
+
+        50% {
+            transform: translate3d(2%, -1%, 0);
+            background-position: 100% 50%;
+        }
+
+        100% {
+            transform: translate3d(0, 0, 0);
+            background-position: 0% 50%;
         }
     }
 
+    @@media (max-width: 600px) {
+        .demo-pager-nav {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+
+@if (prevEntry is not null || nextEntry is not null)
+{
+    <nav class="demo-pager-nav">
+        @if (prevEntry is not null)
+        {
+            var prevDescription = prevEntry.Demo?.Documentation ?? prevEntry.Text;
+
+            <MudTooltip Text="@prevDescription">
+                <MudButton Class="demo-pager-btn"
+                           Color="Color.Primary"
+                           OnClick="@(() => Navigate(prevEntry))"
+                           StartIcon="@MudBlazor.Icons.Material.Filled.ArrowBack">
+                    @L["Back"]
+                </MudButton>
+            </MudTooltip>
+        }
+
+        @if (nextEntry is not null)
+        {
+            var nextDescription = nextEntry.Demo?.Documentation ?? nextEntry.Text;
+
+            <MudTooltip Text="@nextDescription">
+                <MudButton Class="demo-pager-btn"
+                           Color="Color.Secondary"
+                           OnClick="@(() => Navigate(nextEntry))"
+                           EndIcon="@MudBlazor.Icons.Material.Filled.ArrowForward">
+                    @L["Forward"]
+                </MudButton>
+            </MudTooltip>
+        }
+    </nav>
+}
+
+@code {
+    [Parameter] public BasePage CurrentPage { get; set; } = default!;
+
+    private NavigationEntry? nextEntry;
+    private NavigationEntry? prevEntry;
+
+    protected override void OnParametersSet()
+    {
+        nextEntry = CurrentPage.FindNextDemo();
+        prevEntry = CurrentPage.FindPreviousDemo();
+    }
+
+    private void Navigate(NavigationEntry? entry)
+    {
+        if (entry is null)
+            return;
+
+        NavManager.NavigateTo(entry.Href);
+    }
 }

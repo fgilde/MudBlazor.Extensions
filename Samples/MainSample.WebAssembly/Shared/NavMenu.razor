@@ -29,6 +29,7 @@
             {
                 <MudIcon Color="@(context.Focused || context.Selected ? Color.Primary : context.Value.GetIconColor())" Icon="@context.Value.Icon" Class="ml-0 mr-2"/>
             }
+
             @context.TreeView.RenderItemContent(context)
             @RenderChipIf(context.Value)
         </div>
@@ -40,16 +41,31 @@
     private TreeViewMode[] _toggleableViewModes = new[] { TreeViewMode.Default, TreeViewMode.List, TreeViewMode.FlatList };
     private RenderFragment RenderChipIf(NavigationEntry context)
     {
-        if (context.Demo is DemoNewAttribute or DemoUpdatedAttribute)
+        if (context?.HasChildren == true)
+        {
+            var attrNew = context.Children.FirstOrDefault(c => c.Demo is DemoNewAttribute);
+            var attrUpd = context.Children.FirstOrDefault(c => c.Demo is DemoUpdatedAttribute);
+            return @<RenderChild>
+                       @RenderChipIf(attrNew)
+                       @RenderChipIf(attrUpd)
+                   </RenderChild>;
+        }
+        return RenderChipIf(context?.Demo);
+    }
+
+    private RenderFragment RenderChipIf(DemoAttribute demo)
+    {
+        if (demo is DemoNewAttribute or DemoUpdatedAttribute)
         {
             return @<MudChip T="NavigationEntry"
                              Style="margin-left: 8px; margin-top: 0;"
                              Size="Size.Small"
                              Variant="Variant.Text"
-                             Color="@context.Demo.IconColor">
-                @L[(context?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))]
-            </MudChip>;
+                             Color="@demo.IconColor">
+                       @L[(demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))]
+                   </MudChip>;
         }
         return @<p></p>;
     }
+
 }

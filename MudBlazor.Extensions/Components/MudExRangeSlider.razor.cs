@@ -13,6 +13,9 @@ using MudBlazor.Extensions.Core.Css;
 
 namespace MudBlazor.Extensions.Components
 {
+    /// <summary>
+    /// A range slider component that allows selecting and manipulating a value range of type T.
+    /// </summary>
     public partial class MudExRangeSlider<T> where T : IComparable<T>
     {
 
@@ -20,19 +23,44 @@ namespace MudBlazor.Extensions.Components
         private readonly string _startId = $"start_{Guid.NewGuid():N}";
         private readonly string _endId = $"end_{Guid.NewGuid():N}";
 
-
+        /// <summary>
+        /// Gets or sets the math adapter used to perform range-related calculations for values of type T.
+        /// </summary>
         [Parameter] public IRangeMath<T>? MathAdapter { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the tooltip should be displayed.
+        /// </summary>
         [Parameter] public bool ShowTooltip { get; set; } = true;
 
+        /// <summary>
+        /// Gets or sets the tooltip position for the start thumb.
+        /// </summary>
         [Parameter] public Position? StartTooltipPosition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tooltip position for the end thumb.
+        /// </summary>
         [Parameter] public Position? EndTooltipPosition { get; set; }
 
+        /// <summary>
+        /// Gets or sets the function that converts the range to a display string for the start value.
+        /// </summary>
         [Parameter] public Func<IRange<T>, string> ToStartStringFunc { get; set; } = s => s.Start.ToString();
+
+        /// <summary>
+        /// Gets or sets the function that converts the range to a display string for the end value.
+        /// </summary>
         [Parameter] public Func<IRange<T>, string> ToEndStringFunc { get; set; } = s => s.End.ToString();
 
+        /// <summary>
+        /// Gets or sets the function used to resolve step behavior for the slider.
+        /// </summary>
         [Parameter] public Func<T, IRange<T>, RangeLength<T>, int, SnapPolicy, T>? StepResolver { get; set; }
 
+        /// <summary>
+        /// Gets or sets the cursor used when resizing the range via thumbs.
+        /// </summary>
         [Parameter]
         public Cursor? ResizeCursor
         {
@@ -40,6 +68,9 @@ namespace MudBlazor.Extensions.Components
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the cursor used when moving the whole range.
+        /// </summary>
         [Parameter]
         public Cursor MoveCursor
         {
@@ -47,6 +78,9 @@ namespace MudBlazor.Extensions.Components
             set;
         } = Cursor.Pointer;
 
+        /// <summary>
+        /// Gets or sets the cursor displayed while the whole range is being dragged.
+        /// </summary>
         [Parameter]
         public Cursor MovingCursor
         {
@@ -54,85 +88,162 @@ namespace MudBlazor.Extensions.Components
             set;
         } = Cursor.Grabbing;
 
+        /// <summary>
+        /// Gets or sets the slider orientation.
+        /// </summary>
         [Parameter, SafeCategory("Appearance")]
         public SliderOrientation Orientation { get; set; } = SliderOrientation.Horizontal;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the slider orientation is inverted.
+        /// </summary>
         [Parameter, SafeCategory("Appearance")]
         public bool IsInverted { get; set; }
 
+        /// <summary>
+        /// Gets or sets the size of the slider.
+        /// </summary>
         [Parameter, SafeCategory("Appearance")]
         public Size Size { get; set; } = Size.Medium;
 
+        /// <summary>
+        /// Gets or sets the color of the slider thumbs.
+        /// </summary>
         [Parameter, SafeCategory("Appearance")]
         public MudExColor ThumbColor { get; set; } = MudExColor.Primary;
 
+        /// <summary>
+        /// Gets or sets the color of the track.
+        /// </summary>
         [Parameter, SafeCategory("Appearance")]
         public MudExColor TrackColor { get; set; } = ("#0000001f");
 
+        /// <summary>
+        /// Gets or sets the color of the selected range on the track.
+        /// </summary>
         [Parameter, SafeCategory("Appearance")]
         public MudExColor SelectionColor { get; set; } = MudExColor.Primary;
 
-        // Templates with context
+        /// <summary>
+        /// Gets or sets the template used to render the track.
+        /// </summary>
         [Parameter, SafeCategory("Templates")]
         public RenderFragment<MudExRangeSliderContext<T>>? TrackTemplate { get; set; }
 
+        /// <summary>
+        /// Gets or sets the template used to render the selection segment.
+        /// </summary>
         [Parameter, SafeCategory("Templates")]
         public RenderFragment<MudExRangeSliderContext<T>>? SelectionTemplate { get; set; }
 
+        /// <summary>
+        /// Gets or sets the template used to render the start thumb.
+        /// </summary>
         [Parameter, SafeCategory("Templates")]
         public RenderFragment<MudExRangeSliderThumbContext<T>>? ThumbStartTemplate { get; set; }
 
+        /// <summary>
+        /// Gets or sets the template used to render the end thumb.
+        /// </summary>
         [Parameter, SafeCategory("Templates")]
         public RenderFragment<MudExRangeSliderThumbContext<T>>? ThumbEndTemplate { get; set; }
 
+        /// <summary>
+        /// Gets or sets the template used to render the tooltip.
+        /// </summary>
         [Parameter] public RenderFragment<MudExRangeSliderThumbContext<T>>? TooltipTemplate { get; set; }
 
 
 
         // ---------- Binding ----------
+
+        /// <summary>
+        /// Gets or sets the current range value of the slider.
+        /// </summary>
         [Parameter, SafeCategory("Data")]
         public IRange<T> Value { get; set; } = new MudExRange<T>(default, default);
 
+        /// <summary>
+        /// Gets or sets the callback invoked when the range value changes.
+        /// </summary>
         [Parameter]
         public EventCallback<IRange<T>> ValueChanged { get; set; }
 
+        /// <summary>
+        /// Gets or sets the allowed size range of the slider.
+        /// </summary>
         [Parameter, SafeCategory("Data")]
         public IRange<T> SizeRange { get; set; } = new MudExRange<T>(default, default);
 
+        /// <summary>
+        /// Gets or sets the callback invoked when the size range changes.
+        /// </summary>
         [Parameter]
         public EventCallback<IRange<T>> SizeRangeChanged { get; set; }
 
+        /// <summary>
+        /// Gets or sets the step length used for snapping and keyboard navigation.
+        /// </summary>
         [Parameter, SafeCategory("Data")]
         public RangeLength<T> StepLength { get; set; } = new RangeLength<T>(0);
 
+        /// <summary>
+        /// Gets or sets the minimum allowed length of the range.
+        /// </summary>
         [Parameter, SafeCategory("Data")]
         public RangeLength<T>? MinLength { get; set; }
 
+        /// <summary>
+        /// Gets or sets the maximum allowed length of the range.
+        /// </summary>
         [Parameter, SafeCategory("Data")]
         public RangeLength<T>? MaxLength { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether changes should be reported immediately while dragging.
+        /// </summary>
         [Parameter, SafeCategory("Behavior")]
         public bool Immediate { get; set; } = true;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the slider is disabled.
+        /// </summary>
         [Parameter, SafeCategory("Behavior")]
         public bool Disabled { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the slider is read-only.
+        /// </summary>
         [Parameter, SafeCategory("Behavior")]
         public bool ReadOnly { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether input fields should be shown for the range values.
+        /// </summary>
         [Parameter, SafeCategory("Behavior")]
         public bool ShowInputs { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether dragging the whole range is allowed.
+        /// </summary>
         [Parameter, SafeCategory("Behavior")]
         public bool AllowWholeRangeDrag { get; set; } = true;
 
+        /// <summary>
+        /// Gets or sets the aria-labelledby attribute to improve accessibility.
+        /// </summary>
         [Parameter, SafeCategory("Appearance")]
         public string? AriaLabelledBy { get; set; }
 
-
+        /// <summary>
+        /// Gets or sets the callback invoked when the value is committed after interaction.
+        /// </summary>
         [Parameter]
         public EventCallback<IRange<T>> OnChange { get; set; }
 
+        /// <summary>
+        /// Gets or sets the callback invoked while the value is changing during interaction.
+        /// </summary>
         [Parameter]
         public EventCallback<IRange<T>> OnInput { get; set; }
 
@@ -198,7 +309,7 @@ namespace MudBlazor.Extensions.Components
                $"--ex-selection-color:{SelectionColor.ToCssStringValue()};";
 
 
-        internal IRangeMath<T> M { get => MathAdapter ?? field;} = RangeMathFactory.For<T>();
+        internal IRangeMath<T> M { get => MathAdapter ?? field; } = RangeMathFactory.For<T>();
 
         private DragMode _dragMode = DragMode.None;
         private double _trackStartCoord;
@@ -216,6 +327,9 @@ namespace MudBlazor.Extensions.Components
         private string SizeRangeStringEnd
             => SizeRange.End.ToString() ?? string.Empty;
 
+        /// <summary>
+        /// Gets the JavaScript interop arguments required by the component.
+        /// </summary>
         public override object[] GetJsArguments()
             => new object[] { ElementReference, _trackRef, CreateDotNetObjectReference() };
 
@@ -315,6 +429,9 @@ namespace MudBlazor.Extensions.Components
         }
 
 
+        /// <summary>
+        /// Handles pointer move events from JavaScript to update the range or thumbs while dragging.
+        /// </summary>
         [JSInvokable]
         public async Task OnPointerMove(double clientX, double clientY)
         {
@@ -396,6 +513,9 @@ namespace MudBlazor.Extensions.Components
             await JsReference.InvokeVoidAsync("startCapture");
         }
 
+        /// <summary>
+        /// Handles pointer up events from JavaScript to finalize the current interaction.
+        /// </summary>
         [JSInvokable]
         public async Task OnPointerUp()
         {

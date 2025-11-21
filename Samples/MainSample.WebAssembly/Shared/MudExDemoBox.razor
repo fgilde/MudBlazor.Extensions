@@ -1,15 +1,17 @@
 ﻿@inherits MudBlazor.Extensions.Components.Base.MudExBaseComponent<MudExDemoBox>
 @implements IExampleHolder
+@implements IAsyncDisposable
 @using MainSample.WebAssembly.Examples
 @using MainSample.WebAssembly.Pages
-@using MudBlazor
 @using MudBlazor.Extensions.Api
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @using Nextended.Core.Extensions
 
-<MudPaper Class="mudex-demo-box mb-6" Elevation="3">
+
+<div @ref="_rootElement">
+<MudPaper id="@AnchorId" Class="mudex-demo-box mb-6" Elevation="3">
     <MudStack Spacing="0">
 
 
@@ -155,10 +157,13 @@
         }
     </MudStack>
 </MudPaper>
-
+</div>
 @code {
 
     private IExample? _example;
+    private ElementReference _rootElement;
+    private DotNetObjectReference<MudExDemoBox>? _dotNetRef;
+    private IJSObjectReference? _observerModule;
     [Parameter] public string Title { get; set; } = "Demo";
     [Parameter] public string? Subtitle { get; set; }
 
@@ -250,6 +255,30 @@
         });
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            _observerModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./sectionObserver.js");
+
+            await _observerModule.InvokeVoidAsync("observeSection", _rootElement, _dotNetRef);
+        }
+    }
+
+    [JSInvokable]
+    public void SectionBecameActive()
+    {
+        SetActive();
+    }
+
+    public void SetActive()
+    {
+        Registrar?.SetAsActive(AnchorId!);
+    }
+
     public async Task RegisterAsync(IExample example)
     {
         _example = example;
@@ -293,6 +322,31 @@
 
         return id;
     }
+
+    public async ValueTask DisposeAsync()
+    {
+        // Optional: falls du IAsyncDisposable implementierst
+        if (_observerModule is not null)
+        {
+            try
+            {
+                await _observerModule.InvokeVoidAsync("unobserveSection", _rootElement);
+                await _observerModule.DisposeAsync();
+            }
+            catch
+            {
+                // im Zweifel einfach schlucken, falls beim Dispose schon was weg ist
+            }
+        }
+
+        _dotNetRef?.Dispose();
+
+        if (!string.IsNullOrWhiteSpace(AnchorId))
+        {
+            Registrar?.Unregister(AnchorId!);
+        }
+    }
+
 
 
 

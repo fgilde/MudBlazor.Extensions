@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using MainSample.WebAssembly.Shared;
+using Microsoft.AspNetCore.Components;
 
 namespace MainSample.WebAssembly.Pages;
 
 public partial class MudExDemoPage : IMudExDemoRegistrar
 {
+    private MudExContentsNav? contentsNav;
     internal static MudExDemoPage? Instance { get; private set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -15,6 +17,11 @@ public partial class MudExDemoPage : IMudExDemoRegistrar
 
     private HashSet<Type> _types = new();
     private readonly List<MudExDemoSection> _sections = new();
+
+    void IMudExDemoRegistrar.SetAsActive(string anchorId)
+    {
+        contentsNav?.SetAsActive(anchorId);
+    }
 
     void IMudExDemoRegistrar.Register(MudExDemoSection section)
     {
@@ -47,6 +54,7 @@ public interface IMudExDemoRegistrar
     void RegisterComponentType(Type type);
     void Register(MudExDemoSection section);
     void Unregister(string id);
+    void SetAsActive(string anchorId);
 }
 
 public class MudExDemoSection

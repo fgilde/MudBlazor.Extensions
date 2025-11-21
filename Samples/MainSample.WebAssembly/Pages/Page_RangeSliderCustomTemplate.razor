@@ -10,7 +10,7 @@
 <MudExDemoPage>
 
     
-    <MudExDemoBox Title="Custom templates for a timeline-style range slider for a timeline-style range slider"
+    <MudExDemoBox Title="Custom templates for a timeline-style range slider"
                   NavTitle="Custom templates timeline"
                   Order="10"
                   FeaturesTitle="Configuration"
@@ -38,6 +38,60 @@
             <RangeSliderTemplateExample/>
         </DemoContent>
     </MudExDemoBox>
+
+    <MudExDemoBox Title="Custom templates for a timeonly-style range slider"
+                  NavTitle="Custom templates time only"
+                  Order="10"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate"
+                            })">
+
+        <DemoContent>
+            <RangeSliderTemplateTimeExample/>
+        </DemoContent>
+    </MudExDemoBox>
+    
+    
+    <MudExDemoBox Title="Week custom templates"
+                  NavTitle="Week template date only"
+                  Order="10"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate"
+                            })">
+
+        <DemoContent>
+            <RangeSliderTemplateWeekExample/>
+        </DemoContent>
+    </MudExDemoBox>
+    
+    <MudExDemoBox Title="Quarter with custom templates"
+                  NavTitle="Quarter template date only"
+                  Order="10"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate"
+                            })">
+
+        <DemoContent>
+            <RangeSliderTemplateQuarterlyExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <DemoNavigation CurrentPage="@this" />
 
 </MudExDemoPage>
 

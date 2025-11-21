@@ -1,7 +1,7 @@
 ﻿@page "/dock-layout"
 @inherits BasePage
 
-@attribute [DemoNew(IsPlaygroundDemo = true, Name = "MudExDockLayout", Group = nameof(MudExDockLayout), Order = -1, Icon = Icons.Material.Outlined.ArrowDropDown, Documentation = "Dock", ForComponentType = typeof(MudExDockLayout))]
+@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExDockLayout", Group = nameof(MudExDockLayout), Order = -1, Icon = Icons.Material.Outlined.ArrowDropDown, Documentation = "Dock", ForComponentType = typeof(MudExDockLayout))]
 
 <MudButton OnClick="@Save">@L["Save Current layout"]</MudButton>
 <MudButton Disabled="@(string.IsNullOrWhiteSpace(json))" OnClick="@Restore">@L["Restore saved layout"]</MudButton>

@@ -11,7 +11,7 @@
     <MudItem xs="0" md="3" Class="d-none d-md-block">
         @if (_sections.Count > 0)
         {
-            <MudExContentsNav Items="_sections.OrderBy(s => s.Order).ToList()" />
+            <MudExContentsNav @ref="contentsNav" Items="_sections.OrderBy(s => s.Order).ToList()" />
         }
     </MudItem>
 </MudGrid>

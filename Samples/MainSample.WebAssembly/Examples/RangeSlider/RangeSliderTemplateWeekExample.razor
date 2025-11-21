@@ -1,0 +1,206 @@
+﻿@using System.Globalization
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Extensions
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<MudText Typo="Typo.caption" Class="mt-2 mb-2">
+    @L["Current period: {0} – {1}", _dateRange.Start.ToShortDateString(), _dateRange.End.ToShortDateString()]
+</MudText>
+
+<MudExRangeSlider T="DateOnly"
+                  @bind-Value="_dateRange"
+                  @ref="ComponentRef"
+                  SizeRange="@FullDateRange"
+                  StepResolver="@(StepResolvers.DateOnly.Weekly())"
+                  ShowInputs="true"
+                  AllowWholeRangeDrag="true">
+
+    <TrackTemplate Context="ctx">
+        <div style="
+            height: 100%;
+            position: relative;
+            width: 100%;
+            background: var(--mud-palette-surface);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--mud-palette-divider);">
+
+            <div style="
+                position:absolute;
+                left:0;
+                right:0;
+                top:0;
+                height:35%;
+                background: linear-gradient(
+                    to bottom,
+                    var(--mud-palette-background-grey),
+                    transparent
+                );
+                pointer-events:none;">
+            </div>
+
+            @* Monthly markers as subtle labels below *@
+            @{
+                var monthStart = _startDate;
+                while (monthStart <= _endDate)
+                {
+                    var monthEnd = new DateOnly(monthStart.Year, monthStart.Month, 1)
+                    .AddMonths(1)
+                    .AddDays(-1);
+
+                    if (monthEnd > _endDate)
+                        monthEnd = _endDate;
+
+                    var mid = monthStart.AddDays((monthEnd.DayNumber - monthStart.DayNumber) / 2);
+                    var pctMid = ctx.Math.Percent(mid, ctx.SizeRange) * 100;
+
+                    <div style="
+                                    position:absolute;
+                                    left:@pctMid.ToString("F2", CultureInfo.InvariantCulture)%;
+                                    bottom:3px;
+                                    transform: translateX(-50%);
+                                    font-size:10px;
+                                    color:var(--mud-palette-text-secondary);
+                                    pointer-events:none;
+                                    white-space:nowrap;
+                                    z-index:1;">
+                        @monthStart.ToString("MMM", CultureInfo.CurrentCulture)
+                    </div>
+
+                    monthStart = monthStart.AddMonths(1).AddDays(1);
+                }
+            }
+
+            @* Weekly markers (every week a tick, every 2nd week as "Major" with KW label) *@
+            @{
+                var current = _startDate;
+                while (current <= _endDate)
+                {
+                    var pct = ctx.Math.Percent(current, ctx.SizeRange) * 100;
+                    var week = GetCalendarWeek(current);
+                    var isMajor = week % 2 == 0; // highlight every 2nd week
+
+                    var top = isMajor ? "10%" : "35%";
+                    var bottom = "55%";
+                    var width = isMajor ? "2px" : "1px";
+                    var color = isMajor
+                    ? "var(--mud-palette-lines-default)"
+                    : "var(--mud-palette-divider)";
+
+                    <div style="
+                                        position:absolute;
+                                        left:@pct.ToString("F2", CultureInfo.InvariantCulture)%;
+                                        top:@top;
+                                        bottom:@bottom;
+                                        width:@width;
+                                        background:@color;">
+                    </div>
+
+                    @if (isMajor)
+                    {
+                        <div style="
+                                                position:absolute;
+                                                left:@pct.ToString("F2", CultureInfo.InvariantCulture)%;
+                                                top:45%;
+                                                transform: translateX(-50%);
+                                                font-size:9px;
+                                                color:var(--mud-palette-text-secondary);
+                                                font-weight:500;
+                                                pointer-events:none;
+                                                white-space:nowrap;
+                                                z-index:1;">
+                            @($"KW {week}")
+                        </div>
+                    }
+
+                    current = current.AddDays(7);
+                }
+            }
+        </div>
+    </TrackTemplate>
+
+    <SelectionTemplate Context="ctx">
+        @{
+            var startKw = GetCalendarWeek(ctx.Value.Start);
+            var endKw = GetCalendarWeek(ctx.Value.End);
+        }
+        <div style="
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(
+                90deg,
+                var(--mud-palette-secondary),
+                var(--mud-palette-secondary-darken)
+            );
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;
+            border-radius:4px;
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+            <span style="
+                color:var(--mud-palette-secondary-text);
+                font-weight:600;
+                font-size:11px;
+                white-space:nowrap;
+                padding:0 8px;
+                text-shadow:0 1px 2px rgba(0,0,0,0.3);">
+                @($"KW {startKw} – KW {endKw}")
+            </span>
+        </div>
+    </SelectionTemplate>
+
+    <ThumbStartTemplate Context="ctx">
+        <div style="
+            width:14px;
+            height:14px;
+            background:var(--mud-palette-surface);
+            border:3px solid var(--mud-palette-secondary);
+            border-radius:4%;
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+        </div>
+    </ThumbStartTemplate>
+
+    <ThumbEndTemplate Context="ctx">
+        <div style="
+            width:14px;
+            height:14px;
+            background:var(--mud-palette-surface);
+            border:3px solid var(--mud-palette-secondary);
+            border-radius:4%;
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+        </div>
+    </ThumbEndTemplate>
+
+</MudExRangeSlider>
+
+@code {
+
+    private readonly DateOnly _startDate = new(2025, 1, 1);
+    private readonly DateOnly _endDate = new(2025, 12, 31);
+
+    private IRange<DateOnly> _dateRange = new MudExRange<DateOnly>(
+        new DateOnly(2025, 2, 1),
+        new DateOnly(2025, 5, 31)
+    );
+
+    private IRange<DateOnly> FullDateRange => new MudExRange<DateOnly>(
+        _startDate,
+        _endDate
+    );
+
+    private static readonly Calendar _calendar =
+        CultureInfo.GetCultureInfo("de-DE").Calendar;
+
+    private int GetCalendarWeek(DateOnly date)
+    {
+        var dt = date.ToDateTime(TimeOnly.MinValue);
+        return _calendar.GetWeekOfYear(
+            dt,
+            CalendarWeekRule.FirstFourDayWeek,
+            DayOfWeek.Monday
+        );
+    }
+}
