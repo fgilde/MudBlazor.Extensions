@@ -35,7 +35,7 @@ public partial class MudExObjectEditDialog<T>
     /// The CSS class to apply to the dialog.
     /// </summary>
     [Parameter]
-    public string DialogClass { get; set; } = "dialog-content-full-height overflow-hidden mud-ex-object-edit-dialog";
+    public string DialogClass { get; set; } = $"{MudExCss.Classes.Dialog.FullHeightContent} overflow-hidden {MudExCss.Classes.Dialog.ObjectEdit}";
 
     /// <summary>
     /// The CSS class to apply to the content area of the dialog.
@@ -47,7 +47,7 @@ public partial class MudExObjectEditDialog<T>
     /// The CSS class to apply to the form element of the dialog.
     /// </summary>
     [Parameter]
-    public string DialogFormClass { get; set; } = "mud-ex-object-edit-dialog-form";
+    public string DialogFormClass { get; set; } = MudExCss.Classes.Dialog.ObjectEditForm;
 
     /// <summary>
     /// The CSS class to apply to the action buttons of the dialog.

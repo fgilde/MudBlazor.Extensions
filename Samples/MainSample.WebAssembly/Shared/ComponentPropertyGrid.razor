@@ -1,62 +1,13 @@
-﻿@using System.Text
-@using System.IO.Compression
-@using Microsoft.Extensions.Localization
+﻿@using Microsoft.Extensions.Localization
 @inherits MudExComponentPropertyGrid<T>
 @typeparam T
 @inject IStringLocalizer<ComponentPropertyGrid<T>> L
 
-
 @Inherited()
-
 
 @code {
 
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
-
-
-    protected override RenderFragment GetToolbarContent()
-    {
-        return
-            @<RenderChild>
-                @if (!SearchActive)
-                {
-                    <MudTooltip Text="@L["Edit in TryMudEx"]">
-                        <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@EditCode"/>
-                    </MudTooltip>
-                }
-            </RenderChild>
-            ;
-    }
+    protected override CodeBlockTheme GetCodeTheme() => MainLayout.GetCodeBlockTheme();
     
-
-    protected override Task ShowCode()
-    {
-        CodeTheme = MainLayout.GetCodeBlockTheme();
-        return base.ShowCode();
-    }
-
-    private async Task EditCode()
-    {
-        var code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, L[GeneratedCodeComment]);
-        //var baseUrl = "https://localhost:44394";
-        var baseUrl = AppConstants.Urls.TryOnline;
-        var client = new HttpClient();
-
-        var memoryStream = new MemoryStream();
-        using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-        {
-            var byteArray = Encoding.UTF8.GetBytes(code);
-            var codeEntry = archive.CreateEntry("__Main.razor");
-            await using var entryStream = codeEntry.Open();
-            entryStream.Write(byteArray);
-        }
-        memoryStream.Position = 0;
-
-        var inputData = new StreamContent(memoryStream);
-        var response = await client.PostAsync($"{baseUrl}/api/snippets", inputData);
-        var snippetId = await response.Content.ReadAsStringAsync();
-        _ = JsRuntime.InvokeVoidAsync("window.open", $"{baseUrl}/snippet/{snippetId}{(MainLayout.Instance.IsDark ? "?dark" : "?light")}");
-    }
-
-
 }

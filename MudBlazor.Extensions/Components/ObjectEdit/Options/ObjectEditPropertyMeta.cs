@@ -94,8 +94,18 @@ public class ObjectEditPropertyMeta: IMudExStyleAppearance, IMudExClassAppearanc
     /// </summary>
     public object Value
     {
-        get => _value ??= PropertyInfo.GetValue(ReferenceHolder);
-        set => PropertyInfo.SetValue(ReferenceHolder, _value = value);
+        get => _value ??= PropertyInfo?.GetValue(ReferenceHolder);
+        set
+        {
+            try
+            {
+                PropertyInfo?.SetValue(ReferenceHolder, _value = value);
+            }
+            catch (Exception e)
+            {
+                
+            }
+        }
     }
 
     internal ObjectEditPropertyMeta SetReferenceHolder(object referenceHolder)

@@ -1,0 +1,81 @@
+﻿@page "/mud-ex-select-tpl"
+@inherits BasePage
+
+@using MudBlazor.Extensions.Options
+
+@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExSelect ItemTemplate", Icon = Icons.Material.Outlined.ArrowDropDownCircle, Documentation = "MudExSelect Item template.", ForComponentType = typeof(MudExSelect<>))]
+
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudGrid>
+                <MudItem xs="12" sm="8" Class="d-flex align-start justify-center">
+                    <MudExSelect @ref="component"
+                                 ItemCollection="_players" @bind-Value="_selected" ValuePresenter="ValuePresenter.ItemContent"
+                                 Placeholder="Template & ItemContent" Label="Select Player"
+                                 Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                        <ItemTemplate>
+                            <MudStack Class="mud-width-full" Justify="Justify.SpaceBetween">
+                                <MudText><b>@context.Name</b></MudText>
+                                <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                                    <MudStack Row="true">
+                                        <MudIcon Icon="@Icons.Material.Outlined.Person" />
+                                        <MudText>@(context.Retired == true ? "Retired" : "Active")</MudText>
+                                    </MudStack>
+                                    <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">Total Score: @context.Score</MudChip>
+                                </MudStack>
+                            </MudStack>
+                        </ItemTemplate>
+                    </MudExSelect>
+                </MudItem>
+            </MudGrid>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    
+    Player _selected = null;
+    protected override async Task OnInitializedAsync()
+    {
+        _players = await LoadData();
+        _selected = _players.FirstOrDefault();
+    }
+
+
+    MudExSelect<Player> component;
+    List<Player> _players = null;
+    private async Task<List<Player>> LoadData()
+    {
+        await Task.Delay(1000);
+        return new List<Player>
+        {
+            new Player("Kareem Abdul-Jabbar", "38.387", true),
+            new Player("LeBron James", "37.062", false),
+            new Player("Karl Malone", "36.928", true),
+            new Player("Kobe Bryant", "33.643", true),
+            new Player("Michael Jordan", "32.292", true),
+        };
+    }
+
+    private record Player
+    {
+
+        public Player(string name, string score, bool retired)
+        {
+            Name = name;
+            Score = score;
+            Retired = retired;
+        }
+
+        public string Name { get; set; }
+        public string Score { get; set; }
+        public bool Retired { get; set; }
+    }
+}
+

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
@@ -174,13 +175,24 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     /// <summary>
     /// Calls StateHasChanged
     /// </summary>
-    protected virtual void CallStateHasChanged(StateChangeMode mode = StateChangeMode.Auto)
+    protected virtual void CallStateHasChanged(StateChangeMode mode = StateChangeMode.Auto, 
+        [CallerMemberName] string memberName = "",
+        [CallerFilePath] string p = "", 
+        [CallerLineNumber] int l = 0)
     {
-        mode = mode == StateChangeMode.Auto ? (MudExResource.IsClientSide ? StateChangeMode.Synchronous : StateChangeMode.Asynchronous) : mode;
-        if (mode == StateChangeMode.Synchronous)
-            StateHasChanged();
-        else
-            StateHasChangedAsync();
+        try
+        {
+            mode = mode == StateChangeMode.Auto ? (MudExResource.IsClientSide ? StateChangeMode.Synchronous : StateChangeMode.Asynchronous) : mode;
+            if (mode == StateChangeMode.Synchronous)
+                StateHasChanged();
+            else
+                StateHasChangedAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error during StateHasChanged call in {GetType().FullName}::{memberName} at {p}:{l}");
+            throw e;
+        }
     }
 
     /// <summary>

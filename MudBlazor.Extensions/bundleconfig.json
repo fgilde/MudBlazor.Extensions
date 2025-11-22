@@ -74,6 +74,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExRangeSlider.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExRangeSlider.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExUploadEdit.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExUploadEdit.js"

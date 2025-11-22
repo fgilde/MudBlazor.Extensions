@@ -1,33 +1,37 @@
 ﻿@using Microsoft.Extensions.Localization
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Core.Enums
+@using MudBlazor.Extensions.Helper
 @using Nextended.Core.Extensions
 @inject IStringLocalizer<NavMenu> L
 
+<div style="height: 20px;"></div>
 <MudExTreeView SelectedItemBackgroundColor="@(SelectedNavEntry?.HasChildren == true || ViewMode != TreeViewMode.Default ? MudExColor.Default : MudExColor.HoverBackground)"
-               @bind-SelectedNode="SelectedNavEntry" 
-               AllowedToSelectFunc="@HasAction" 
-               ItemContentStyle="font-size:14px;" 
+               @bind-SelectedNode="SelectedNavEntry"
+               AllowedToSelectFunc="@HasAction"
+               ItemContentStyle="font-size:14px;"
                FilterChipsPlacedRight="true"
                ExpandOnFilter="true"
-               Parameters="@(new Dictionary<string, object>() {{nameof(ExpandBehaviour), ExpandBehaviour}})"
+               Parameters="@(new Dictionary<string, object>() { { nameof(ExpandBehaviour), ExpandBehaviour } })"
                FilterMode="@(ClientTheme.CurrentTheme?.ShowFilterInDrawer == true && ViewMode != TreeViewMode.Breadcrumb ? PropertyFilterMode.AlwaysVisible : PropertyFilterMode.Disabled)"
-               FilterBoxStyle="margin:10px;" 
-               Style="margin: 0 10px;" 
-               ExpandButtonDirection="LeftOrRight.Right" 
+               FilterBoxStyle="margin:10px;"
+               Style="@(MudExStyleBuilder.Default.WithMaxHeight(85, CssUnit.Percentage, ClientTheme.CurrentTheme?.FloatingCommentsButton ?? false).AddRaw("margin-left: 7px; margin-right: 0px;").Style)"
+               ExpandButtonDirection="LeftOrRight.Right"
                @bind-ViewMode="@ViewMode"
                TextFunc="@(e => L[e.Text])"
                TreeViewModeToggleComponent="@(_toggleableViewModes?.Contains(ViewMode) == true ? TreeViewModeToggleComponent.ToggleButton : TreeViewModeToggleComponent.None)"
                ToggleableViewModes="@_toggleableViewModes"
                Items="@Entries">
+ 
     <ItemContentTemplate>
-        <div style="display: flex; align-items: center; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" >
-        @if (!context.Value.Icon.IsNullOrWhiteSpace())
-        {
-            <MudIcon Color="@context.Value.GetIconColor()" Icon="@context.Value.Icon" Class="ml-0 mr-2"/>
-        }
-        @context.TreeView.RenderItemContent(context)
-        @RenderChipIf(context.Value)
+        <div style="display: flex; align-items: center; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            @if (!context.Value.Icon.IsNullOrWhiteSpace())
+            {
+                <MudIcon Color="@(context.Focused || context.Selected ? Color.Primary : context.Value.GetIconColor())" Icon="@context.Value.Icon" Class="ml-0 mr-2"/>
+            }
+
+            @context.TreeView.RenderItemContent(context)
+            @RenderChipIf(context.Value)
         </div>
     </ItemContentTemplate>
 </MudExTreeView>
@@ -37,16 +41,31 @@
     private TreeViewMode[] _toggleableViewModes = new[] { TreeViewMode.Default, TreeViewMode.List, TreeViewMode.FlatList };
     private RenderFragment RenderChipIf(NavigationEntry context)
     {
-        if (context.Demo is DemoNewAttribute or DemoUpdatedAttribute)
+        if (context?.HasChildren == true)
+        {
+            var attrNew = context.Children.FirstOrDefault(c => c.Demo is DemoNewAttribute);
+            var attrUpd = context.Children.FirstOrDefault(c => c.Demo is DemoUpdatedAttribute);
+            return @<RenderChild>
+                       @RenderChipIf(attrNew)
+                       @RenderChipIf(attrUpd)
+                   </RenderChild>;
+        }
+        return RenderChipIf(context?.Demo);
+    }
+
+    private RenderFragment RenderChipIf(DemoAttribute demo)
+    {
+        if (demo is DemoNewAttribute or DemoUpdatedAttribute)
         {
             return @<MudChip T="NavigationEntry"
                              Style="margin-left: 8px; margin-top: 0;"
                              Size="Size.Small"
                              Variant="Variant.Text"
-                             Color="@context.Demo.IconColor">
-                @L[(context?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))]
-            </MudChip>;
+                             Color="@demo.IconColor">
+                       @L[(demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))]
+                   </MudChip>;
         }
         return @<p></p>;
     }
+
 }

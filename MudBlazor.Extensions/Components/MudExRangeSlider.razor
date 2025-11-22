@@ -1,0 +1,175 @@
+﻿@inherits MudExJsRequiredBaseComponent<MudExRangeSlider<T>>
+@using MudBlazor.Extensions.Components.ObjectEdit
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Extensions
+@using Nextended.Core.Helper
+@typeparam T
+
+<div @ref="ElementReference"
+     class="mud-ex-range-slider @SizeClass @(Orientation.ToDescriptionString()) @Class"
+     style="@Style"
+     role="group"
+     aria-roledescription="range"
+     aria-disabled="@Disabled"
+     aria-readonly="@ReadOnly">
+
+    <div class="mud-ex-range-slider-track @(HasTrackTemplate ? "mud-ex-has-template" : "")"
+         @ref="_trackRef"
+         style="@GetTrackStyle()"
+         @onpointerdown="OnTrackPointerDown">
+
+        @if (HasTrackTemplate)
+        {
+            <div class="mud-ex-range-slider-track-template">
+                @TrackTemplate(GetContext())
+            </div>
+        }
+
+        <div class="mud-ex-range-slider-selection @(HasSelectionTemplate ? "mud-ex-has-template" : "")"
+             style="@(MudExStyleBuilder.Default.WithOpacity(.7, Disabled).WithCursor(_dragMode == DragMode.WholeRange ? MovingCursor : MoveCursor).Style)"
+             @onpointerdown="OnRangeDragPointerDown">
+            @if (HasSelectionTemplate)
+            {
+                <div class="mud-ex-range-slider-selection-template">
+                    @SelectionTemplate(GetContext())
+                </div>
+            }
+        </div>
+
+
+        @if (HasThumbStartTemplate)
+        {
+            <div class="mud-ex-range-slider-thumb start mud-ex-has-template"
+                 style="@ThumbStyle()"
+                 id="@_startId"
+                 tabindex="@(Disabled ? -1 : 0)"
+                 @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
+                 @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
+                 role="slider"
+                 aria-valuemin="@SizeRangeStringStart"
+                 aria-valuemax="@SizeRangeStringEnd"
+                 aria-valuenow="@StartString"
+                 aria-labelledby="@AriaLabelledBy"
+                 aria-disabled="@Disabled">
+                <div class="mud-ex-range-slider-thumb-template">
+                    @ThumbStartTemplate(GetThumbContext(Thumb.Start))
+                </div>
+                @if (ShowTooltip)
+                {
+                    <div class="mud-ex-range-slider-tooltip @(GetTooltipPosition(Thumb.Start).ToDescriptionString()) @(ShowTooltip && _dragMode == DragMode.StartThumb ? "visible" : "")">
+                        @if (TooltipTemplate != null)
+                        {
+                            @TooltipTemplate(GetThumbContext(Thumb.Start))
+                        }
+                        else
+                        {
+                            @StartString
+                        }
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <button class="mud-ex-range-slider-thumb start"
+                    id="@_startId"
+                    style="@ThumbStyle()"
+                    type="button"
+                    @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
+                    @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
+                    role="slider"
+                    aria-valuemin="@SizeRangeStringStart"
+                    aria-valuemax="@SizeRangeStringEnd"
+                    aria-valuenow="@StartString"
+                    aria-labelledby="@AriaLabelledBy"
+                    disabled="@Disabled">
+                @if (ShowTooltip)
+                {
+                    <div class="mud-ex-range-slider-tooltip @(GetTooltipPosition(Thumb.Start).ToDescriptionString()) @(ShowTooltip && _dragMode == DragMode.StartThumb ? "visible" : "")">
+                        @if (TooltipTemplate != null)
+                        {
+                            @TooltipTemplate(GetThumbContext(Thumb.Start))
+                        }
+                        else
+                        {
+                            @StartString
+                        }
+                    </div>
+                }
+            </button>
+        }
+
+        @if (HasThumbEndTemplate)
+        {
+            <div class="mud-ex-range-slider-thumb end mud-ex-has-template"
+                 id="@_endId"
+                 style="@ThumbStyle()"
+                 tabindex="@(Disabled ? -1 : 0)"
+                 @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.End)"
+                 @onkeydown="e => OnKeyDownAsync(e, Thumb.End)"
+                 role="slider"
+                 aria-valuemin="@SizeRangeStringStart"
+                 aria-valuemax="@SizeRangeStringEnd"
+                 aria-valuenow="@EndString"
+                 aria-labelledby="@AriaLabelledBy"
+                 aria-disabled="@Disabled">
+                <div class="mud-ex-range-slider-thumb-template">
+                    @ThumbEndTemplate(GetThumbContext(Thumb.End))
+                </div>
+                @if (ShowTooltip)
+                {
+                    <div class="mud-ex-range-slider-tooltip @(GetTooltipPosition(Thumb.End).ToDescriptionString()) @(ShowTooltip && _dragMode == DragMode.EndThumb ? "visible" : "")">
+                        @if (TooltipTemplate != null)
+                        {
+                            @TooltipTemplate(GetThumbContext(Thumb.End))
+                        }
+                        else
+                        {
+                            @EndString
+                        }
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <button class="mud-ex-range-slider-thumb end"
+                    id="@_endId"
+                    style="@ThumbStyle()"
+                    type="button"
+                    @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.End)"
+                    @onkeydown="e => OnKeyDownAsync(e, Thumb.End)"
+                    role="slider"
+                    aria-valuemin="@SizeRangeStringStart"
+                    aria-valuemax="@SizeRangeStringEnd"
+                    aria-valuenow="@EndString"
+                    aria-labelledby="@AriaLabelledBy"
+                    disabled="@Disabled">
+                @if (ShowTooltip)
+                {
+                    <div class="mud-ex-range-slider-tooltip @(GetTooltipPosition(Thumb.End).ToDescriptionString()) @(ShowTooltip && _dragMode == DragMode.EndThumb ? "visible" : "")">
+                        @if (TooltipTemplate != null)
+                        {
+                            @TooltipTemplate(GetThumbContext(Thumb.End))
+                        }
+                        else
+                        {
+                            @EndString
+                        }
+                    </div>
+                }
+            </button>
+        }
+    </div>
+
+    @if (ShowInputs)
+    {
+        <div class="mud-ex-range-slider-inputs">
+
+            <MudExPropertyEdit PropertyMeta="@(Value.ObjectEditMeta().Property(m => m.Start).SetProperties(m => m.Settings.IsEditable = !Disabled).IsResettable(false))"
+                               PropertyValueChanged="@(p => SetStartAsync(p.As<T>().Value, true))" />
+            <MudExPropertyEdit PropertyMeta="@(Value.ObjectEditMeta().Property(m => m.End).SetProperties(m => m.Settings.IsEditable = !Disabled).IsResettable(false))"
+                               PropertyValueChanged="@(p => SetEndAsync(p.As<T>().Value, true))" />
+        </div>
+    }
+</div>

@@ -39,6 +39,7 @@ public class TreeViewItemContext<T> : TreeItemData<T>
 
     public override bool HasChildren => Value?.HasChildren() ?? false;
 
+    
     /// <summary>
     /// Is true if the item is focused.
     /// </summary>

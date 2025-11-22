@@ -1,0 +1,18 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+&lt;MudButton @ref=&quot;ComponentRef&quot;&gt;
+    Hello
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var c = await GetSourceCodeAsync();
+        Console.WriteLine(c);
+        await base.OnInitializedAsync();
+    }
+
+}
+
+</pre></div>

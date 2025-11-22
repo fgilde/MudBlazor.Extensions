@@ -40,10 +40,23 @@ public static partial class MudExCss
 
     private class CssClasses : Classes
     {
+        public CssClasses(bool prefixAll, string description, params string[] other)
+            : this(prefixAll ? PrefixMode.All : PrefixMode.None, description, other) {}
+
+        public CssClasses(PrefixMode prefixMode, string description, params string[] other)
+            : this(
+                prefixMode is PrefixMode.First or PrefixMode.All ? Prefix(description): description, 
+                prefixMode is PrefixMode.Other or PrefixMode.All ? Prefix(other) : other
+            ) 
+        {}
+
         /// <summary>
         /// Constructor
         /// </summary>
-        public CssClasses(string description, params string[] other) : base(string.Join(" ", new[] { description }.Concat(other))) { }
+        public CssClasses(string description, params string[] other) 
+            : base(string.Join(" ", new[] { description }.Concat(other))) { }
     }
+
+    private enum PrefixMode { None, First, Other, All }
 
 }

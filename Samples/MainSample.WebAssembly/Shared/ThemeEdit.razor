@@ -26,7 +26,9 @@
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
-                <MudExThemeSelect SelectedThemeChanged="@OnThemeSelected" TTheme="ClientTheme" Available="@_themes" SelectionMode="ThemeSelectionMode.ItemList"></MudExThemeSelect>
+                <MudExGroupBox Style="max-height:300px; overflow: auto" Text="@L["Themes"]">
+                    <MudExThemeSelect Style="scale: .8; margin: -20px;" SelectedThemeChanged="@OnThemeSelected" TTheme="ClientTheme" Available="@_themes" SelectionMode="ThemeSelectionMode.ItemList"></MudExThemeSelect>
+                </MudExGroupBox>
             </MudCardContent>
         </MudCard>
     </MudItem>

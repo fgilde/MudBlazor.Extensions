@@ -30,7 +30,7 @@
                         }
                     </MudSelect>
                 }
-                <MudLink Href="@SelectedCodeFilePath" Target="_blank" Color="Color.Primary">@L["Show on github"]</MudLink>
+                <MudLink Href="@SelectedCodeFilePathInGithub" Target="_blank" Color="Color.Primary">@L["Show on github"]</MudLink>
             </MudCard>
             <DemoMarkdown Value="@SelectedCodeValue"></DemoMarkdown>
 
@@ -89,7 +89,7 @@
     private Type? _pageType;
     private Type? _selectedApiType;
     private string? _title;
-    
+
     #endregion
 
     #region Parameter
@@ -109,6 +109,7 @@
     }
 
     public string SelectedCodeFilePath { get; set; }
+    public string SelectedCodeFilePathInGithub => field ??= GH.RawContentUrlToGithubViewUri(SelectedCodeFilePath);
 
     [Parameter]
     public Type? PageType

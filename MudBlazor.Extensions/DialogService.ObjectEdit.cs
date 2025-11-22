@@ -185,6 +185,12 @@ public static partial class DialogServiceExt
     }
 
     public static async Task<(bool Cancelled, TModel Result)> EditObjectAsync<TModel>(this IDialogService dialogService,
+        TModel value, DialogOptionsEx options)
+    {
+        return await dialogService.EditObjectAsync(value, $"Edit {typeof(TModel).Name}", options);
+    }
+
+    public static async Task<(bool Cancelled, TModel Result)> EditObjectAsync<TModel>(this IDialogService dialogService,
         TModel value)
     {
         return await dialogService.EditObjectAsync(value, $"Edit {typeof(TModel).Name}", DialogOptionsEx.DefaultDialogOptions);

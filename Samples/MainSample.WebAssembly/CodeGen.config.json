@@ -1,0 +1,21 @@
+﻿{
+  "DtoGeneration": {    
+    "DisableGeneration": true,
+  },
+  "StructureGenerations": [],
+  "ExcelGenerations": [],
+
+  "CodeToDocs": [ 
+    {
+      "DisableGeneration": false,
+      "InputFolder": "./Examples",
+      "OutputPath": "./wwwroot/example-codes/",      
+      "FileIncludePattern": "*.razor",
+      "SourceExportTypes": [        
+        "Markdown",
+        "Html"
+      ]
+    }
+  ]
+
+}

@@ -325,7 +325,7 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ShouldRender">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.CallStateHasChanged(MudBlazor.Extensions.Core.StateChangeMode)">
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.CallStateHasChanged(MudBlazor.Extensions.Core.StateChangeMode,System.String,System.String,System.Int32)">
             <summary>
             Calls StateHasChanged
             </summary>
@@ -1326,6 +1326,36 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExCaptureButton.DisposeAsync">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExCaptureChild">
+            <summary>
+            Component that captures component references from ChildContent
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureChild.OnComponentCaptured">
+            <summary>
+            Event fired for each captured component reference
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureChild.ComponentReferences">
+            <summary>
+            List of all captured component references
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureChild.ComponentReference">
+            <summary>
+            First captured component reference (for backwards compatibility)
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureChild.WrapChildWithCapture(Microsoft.AspNetCore.Components.RenderFragment,System.Action{System.Object})">
+            <summary>
+            Wraps a RenderFragment and captures all component references within it
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureChild.RenderRange(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder,Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame[],System.Int32,System.Int32,System.Int32@,System.Action{System.Object})">
+            <summary>
+            Single-pass renderer über den Frame-Baum, der Components mit Capture ersetzt
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit">
             <summary>
@@ -6211,6 +6241,274 @@
             Method that determines if the input value is a valid entry.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.SliderOrientation">
+            <summary>
+            Orientation for the <see cref="T:MudBlazor.Extensions.Components.MudExRangeSlider`1"/> component.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SliderOrientation.Horizontal">
+            <summary>
+            Default horizontal orientation.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SliderOrientation.Vertical">
+            <summary>
+            Specifies that the layout or orientation is vertical.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.Thumb">
+            <summary>
+            Thumb identifier for the <see cref="T:MudBlazor.Extensions.Components.MudExRangeSlider`1"/> component.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.Thumb.Start">
+            <summary>
+            The start thumb.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.Thumb.End">
+            <summary>
+            The end thumb.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRangeContextBase`1">
+            <summary>
+            Template Context
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeContextBase`1.#ctor(MudBlazor.Extensions.Components.MudExRangeSlider{`0})">
+            <summary>
+            Creates a new instance of <see cref="T:MudBlazor.Extensions.Components.MudExRangeContextBase`1"/>
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRangeSliderContext`1">
+            <summary>
+            Template Context
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSliderContext`1.#ctor(MudBlazor.Extensions.Components.MudExRangeSlider{`0})">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSliderThumbContext`1.ThumbValue">
+            <summary>
+            The value on this thumb
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSliderThumbContext`1.Thumb">
+            <summary>
+            Type of thumb
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSliderThumbContext`1.Percent">
+            <summary>
+            Gets the percentage value represented by this property.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRangeSlider`1">
+            <summary>
+            A range slider component that allows selecting and manipulating a value range of type T.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.MathAdapter">
+            <summary>
+            Gets or sets the math adapter used to perform range-related calculations for values of type T.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.ShowTooltip">
+            <summary>
+            Gets or sets a value indicating whether the tooltip should be displayed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.StartTooltipPosition">
+            <summary>
+            Gets or sets the tooltip position for the start thumb.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.EndTooltipPosition">
+            <summary>
+            Gets or sets the tooltip position for the end thumb.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.ToStartStringFunc">
+            <summary>
+            Gets or sets the function that converts the range to a display string for the start value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.ToEndStringFunc">
+            <summary>
+            Gets or sets the function that converts the range to a display string for the end value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.StepResolver">
+            <summary>
+            Gets or sets the function used to resolve step behavior for the slider.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.ResizeCursor">
+            <summary>
+            Gets or sets the cursor used when resizing the range via thumbs.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.MoveCursor">
+            <summary>
+            Gets or sets the cursor used when moving the whole range.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.MovingCursor">
+            <summary>
+            Gets or sets the cursor displayed while the whole range is being dragged.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.Orientation">
+            <summary>
+            Gets or sets the slider orientation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.IsInverted">
+            <summary>
+            Gets or sets a value indicating whether the slider orientation is inverted.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.Size">
+            <summary>
+            Gets or sets the size of the slider.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.ThumbColor">
+            <summary>
+            Gets or sets the color of the slider thumbs.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.TrackColor">
+            <summary>
+            Gets or sets the color of the track.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SelectionColor">
+            <summary>
+            Gets or sets the color of the selected range on the track.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.TrackTemplate">
+            <summary>
+            Gets or sets the template used to render the track.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SelectionTemplate">
+            <summary>
+            Gets or sets the template used to render the selection segment.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.ThumbStartTemplate">
+            <summary>
+            Gets or sets the template used to render the start thumb.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.ThumbEndTemplate">
+            <summary>
+            Gets or sets the template used to render the end thumb.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.TooltipTemplate">
+            <summary>
+            Gets or sets the template used to render the tooltip.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.Value">
+            <summary>
+            Gets or sets the current range value of the slider.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.ValueChanged">
+            <summary>
+            Gets or sets the callback invoked when the range value changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SizeRange">
+            <summary>
+            Gets or sets the allowed size range of the slider.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SizeRangeChanged">
+            <summary>
+            Gets or sets the callback invoked when the size range changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.StepLength">
+            <summary>
+            Gets or sets the step length used for snapping and keyboard navigation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.MinLength">
+            <summary>
+            Gets or sets the minimum allowed length of the range.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.MaxLength">
+            <summary>
+            Gets or sets the maximum allowed length of the range.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.Immediate">
+            <summary>
+            Gets or sets a value indicating whether changes should be reported immediately while dragging.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.Disabled">
+            <summary>
+            Gets or sets a value indicating whether the slider is disabled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.ReadOnly">
+            <summary>
+            Gets or sets a value indicating whether the slider is read-only.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.ShowInputs">
+            <summary>
+            Gets or sets a value indicating whether input fields should be shown for the range values.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AllowWholeRangeDrag">
+            <summary>
+            Gets or sets a value indicating whether dragging the whole range is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AriaLabelledBy">
+            <summary>
+            Gets or sets the aria-labelledby attribute to improve accessibility.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.OnChange">
+            <summary>
+            Gets or sets the callback invoked when the value is committed after interaction.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.OnInput">
+            <summary>
+            Gets or sets the callback invoked while the value is changing during interaction.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.TrackStyle">
+            <summary>
+            Gets or sets the aria-labelledby attribute to improve accessibility.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.GetJsArguments">
+            <summary>
+            Gets the JavaScript interop arguments required by the component.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.OnPointerMove(System.Double,System.Double)">
+            <summary>
+            Handles pointer move events from JavaScript to update the range or thumbs while dragging.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.OnPointerUp">
+            <summary>
+            Handles pointer up events from JavaScript to finalize the current interaction.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSelect`1">
             <summary>
             An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well
@@ -9644,6 +9942,107 @@
             Opens the dialog to add an item to the collection.
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1">
+            <summary>
+            Dialog for editing objects with the MudExObjectEditForm
+            </summary>
+            <typeparam name="T">Type of object being edited</typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.OverwriteActionBar">
+            <summary>
+            If set to true, overwrite the standard action bar of the dialog with custom content.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.MudDialog">
+            <summary>
+            The MudDialog instance that represents the current dialog instance that is open.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.Gutters">
+            <summary>
+            If set to true, remove the side padding of the dialog content.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DialogClass">
+            <summary>
+            The CSS class to apply to the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.ContentClass">
+            <summary>
+            The CSS class to apply to the content area of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DialogFormClass">
+            <summary>
+            The CSS class to apply to the form element of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.ActionsClass">
+            <summary>
+            The CSS class to apply to the action buttons of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.TitleClass">
+            <summary>
+            The CSS class to apply to the title of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.ContentStyle">
+            <summary>
+            The CSS styles to apply to the content area of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DialogStyle">
+            <summary>
+            The CSS styles to apply to the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DefaultFocus">
+            <summary>
+            The default focus location for the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DialogIcon">
+            <summary>
+            The name of the icon to display in the dialog header area.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.ErrorAnimation">
+            <summary>
+            The type of animation to display when an error occurs.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.DialogIconColor">
+            <summary>
+            The color of the dialog icon for when the dialog is used in relation to a particular color theme.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.CustomSubmit">
+            <summary>
+            An optional custom submit function.
+            If a string is returned that string will be treated as an error message and displayed in place of the default success message.
+            Dialog will only closed if result of this function is empty or null otherwise result will displayed as error message.
+            This can be useful to keep dialog open until server save is succeeded and not failed
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.OnPropertyChange(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+            <summary>
+            Customize what happens when a property changes.
+            </summary>
+            <param name="property">The property that has been changed.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.OnSubmit(Microsoft.AspNetCore.Components.Forms.EditContext)">
+            <summary>
+            Called when the form is submitted.
+            </summary>
+            <param name="ctx">The edit context that represents the current state of the form's data.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog`1.Cancel">
+            <summary>
+            Called when the Cancel button is clicked.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle">
             <summary>
@@ -16102,36 +16501,6 @@
             Enum representing CSS 'cursor' property values.
             </summary>
         </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Pointer">
-            <summary>
-            Pointer cursor.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Default">
-            <summary>
-            Default cursor.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Auto">
-            <summary>
-            Auto cursor.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Crosshair">
-            <summary>
-            Crosshair cursor.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Move">
-            <summary>
-            Move cursor.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Core.Css.Cursor.Text">
-            <summary>
-            Text cursor.
-            </summary>
-        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.Direction">
             <summary>
             Enum representing CSS 'direction' property values.
@@ -18711,6 +19080,33 @@
             Contains extensions for the IDialogService for displaying a file in different formats.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditComponentAsync``1(MudBlazor.IDialogService,``0,System.String,System.Func{``0,MudBlazor.Extensions.Components.ObjectEdit.MudExComponentEditDialog{``0},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog for the given object.
+            </summary>
+            <typeparam name="TModel">The type of the object to edit.</typeparam>
+            <param name="dialogService">The dialog service to use.</param>
+            <param name="value">The object to edit.</param>
+            <param name="title">The dialog title.</param>
+            <param name="customSubmit">Custom submit</param>
+            <param name="options">The dialog options.</param>
+            <param name="metaConfig">The configuration of meta information.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <returns>A tuple indicating if edit was cancelled and the result.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditComponentAsync``1(MudBlazor.IDialogService,``0,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog for the given object.
+            </summary>
+            <typeparam name="TModel">The type of the object to edit.</typeparam>
+            <param name="dialogService">The dialog service to use.</param>
+            <param name="value">The object to edit.</param>
+            <param name="title">The dialog title.</param>
+            <param name="options">The dialog options.</param>
+            <param name="metaConfig">The configuration of meta information.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <returns>A tuple indicating if edit was cancelled and the result.</returns>
+        </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.InnerPickItemsAsync``2(MudBlazor.IDialogService,System.String,System.String,System.Action{``0},System.Func{``0,System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``1}}},MudBlazor.Extensions.MudExDialogResultAction[],MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
             <summary>
             Displays a dialog with a custom component and retrieves items from that component.
@@ -20085,7 +20481,7 @@
             Css classes for dialogs
             </summary>
         </member>
-        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog._Initial">
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial">
             <summary>
             The mud ex initial class should always applied to dialogs if you use dialogServiceExt
             </summary>
@@ -20093,21 +20489,6 @@
         <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Glass">
             <summary>
             Glass dialog
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightContent">
-            <summary>
-            Class for full height content
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightWithMargin">
-            <summary>
-            Full height with margin
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightWithoutMargin">
-            <summary>
-            Full height without margin
             </summary>
         </member>
         <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.ColorfullGlass">
@@ -20123,6 +20504,26 @@
         <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.DialogActionsAbsolute">
             <summary>
             Class for absolute dialog actions
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightContent">
+            <summary>
+            Class for full height content
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.ObjectEdit">
+            <summary>
+            Dialog class for object edit dialogs
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightWithMargin">
+            <summary>
+            Full height with margin
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightWithoutMargin">
+            <summary>
+            Full height without margin
             </summary>
         </member>
         <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.PositionFixedNoMargin">
@@ -20482,6 +20883,12 @@
             <summary>
             Removes given properties from given json.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExRange`1">
+            <summary>
+            Represents a IRange implementation
+            </summary>
+            <typeparam name="T"></typeparam>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.MudExResource">
             <summary>
@@ -22830,6 +23237,290 @@
         <member name="M:MudBlazor.Extensions.Helper.MudExThemeHelper.AsJson``1(``0)">
             <summary>
             Converts Theme to json
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.StepResolvers">
+            <summary>
+            Provides factory methods to create step resolvers for different temporal types.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.StepResolvers.DateTime">
+            <summary>
+            Step resolvers for <see cref="T:System.DateTime"/>.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToMonths">
+            <summary>Default mapping: ~30 days ≈ 1 month.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToYears">
+            <summary>Default mapping: ~365 days ≈ 1 year.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToWeeks">
+            <summary>Default mapping: 7 days = 1 week.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToDays">
+            <summary>Default mapping: 1 day = 1 unit.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToQuarters">
+            <summary>Default mapping: 3 months = 1 quarter (derived from months converter).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToHours">
+            <summary>Default mapping for hours.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToMinutes">
+            <summary>Default mapping for minutes.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.StepResolvers.DateTime.DefaultStepToSeconds">
+            <summary>Default mapping for seconds.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Monthly(System.Func{Nextended.Core.Types.RangeLength{System.DateTime},System.Int32},System.Boolean)">
+            <summary>
+            Creates a month-based step resolver using a converter from range length to months.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Monthly(System.Int32,System.Boolean)">
+            <summary>
+            Creates a month-based step resolver using a fixed number of months per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Monthly">
+            <summary>
+            Creates a month-based step resolver that moves by one month per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Quarterly(System.Func{Nextended.Core.Types.RangeLength{System.DateTime},System.Int32},System.Boolean)">
+            <summary>
+            Creates a quarter-based step resolver using a converter from range length to quarters.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Quarterly(System.Int32,System.Boolean)">
+            <summary>
+            Creates a quarter-based step resolver using a fixed number of quarters per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Quarterly">
+            <summary>
+            Creates a quarter-based step resolver that moves by one quarter per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Yearly(System.Func{Nextended.Core.Types.RangeLength{System.DateTime},System.Int32},System.Boolean)">
+            <summary>
+            Creates a year-based step resolver using a converter from range length to years.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Yearly(System.Int32,System.Boolean)">
+            <summary>
+            Creates a year-based step resolver using a fixed number of years per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Yearly">
+            <summary>
+            Creates a year-based step resolver that moves by one year per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Weekly(System.Func{Nextended.Core.Types.RangeLength{System.DateTime},System.Int32},System.Boolean)">
+            <summary>
+            Creates a week-based step resolver using a converter from range length to weeks.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Weekly(System.Int32,System.Boolean)">
+            <summary>
+            Creates a week-based step resolver using a fixed number of weeks per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Weekly">
+            <summary>
+            Creates a week-based step resolver that moves by one week per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Daily(System.Func{Nextended.Core.Types.RangeLength{System.DateTime},System.Int32},System.Boolean)">
+            <summary>
+            Creates a day-based step resolver using a converter from range length to days.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Daily(System.Int32,System.Boolean)">
+            <summary>
+            Creates a day-based step resolver using a fixed number of days per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Daily">
+            <summary>
+            Creates a day-based step resolver that moves by one day per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Hourly(System.Func{Nextended.Core.Types.RangeLength{System.DateTime},System.Int32})">
+            <summary>
+            Creates an hour-based step resolver using a converter from range length to hours.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Hourly(System.Int32)">
+            <summary>
+            Creates an hour-based step resolver using a fixed number of hours per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Hourly">
+            <summary>
+            Creates an hour-based step resolver that moves by one hour per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Minutely(System.Func{Nextended.Core.Types.RangeLength{System.DateTime},System.Int32})">
+            <summary>
+            Creates a minute-based step resolver using a converter from range length to minutes.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Minutely(System.Int32)">
+            <summary>
+            Creates a minute-based step resolver using a fixed number of minutes per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Minutely">
+            <summary>
+            Creates a minute-based step resolver that moves by one minute per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Secondly(System.Func{Nextended.Core.Types.RangeLength{System.DateTime},System.Int32})">
+            <summary>
+            Creates a second-based step resolver using a converter from range length to seconds.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Secondly(System.Int32)">
+            <summary>
+            Creates a second-based step resolver using a fixed number of seconds per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateTime.Secondly">
+            <summary>
+            Creates a second-based step resolver that moves by one second per step.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.StepResolvers.DateOnly">
+            <summary>
+            Step resolvers for <see cref="T:System.DateOnly"/>.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Monthly(System.Func{Nextended.Core.Types.RangeLength{System.DateOnly},System.Int32})">
+            <summary>
+            Creates a month-based step resolver using a converter from range length to months.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Monthly(System.Int32)">
+            <summary>
+            Creates a month-based step resolver using a fixed number of months per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Monthly">
+            <summary>
+            Creates a month-based step resolver that moves by one month per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Quarterly(System.Func{Nextended.Core.Types.RangeLength{System.DateOnly},System.Int32})">
+            <summary>
+            Creates a quarter-based step resolver using a converter from range length to quarters.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Quarterly(System.Int32)">
+            <summary>
+            Creates a quarter-based step resolver using a fixed number of quarters per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Quarterly">
+            <summary>
+            Creates a quarter-based step resolver that moves by one quarter per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Yearly(System.Func{Nextended.Core.Types.RangeLength{System.DateOnly},System.Int32})">
+            <summary>
+            Creates a year-based step resolver using a converter from range length to years.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Yearly(System.Int32)">
+            <summary>
+            Creates a year-based step resolver using a fixed number of years per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Yearly">
+            <summary>
+            Creates a year-based step resolver that moves by one year per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Weekly(System.Func{Nextended.Core.Types.RangeLength{System.DateOnly},System.Int32})">
+            <summary>
+            Creates a week-based step resolver using a converter from range length to weeks.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Weekly(System.Int32)">
+            <summary>
+            Creates a week-based step resolver using a fixed number of weeks per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Weekly">
+            <summary>
+            Creates a week-based step resolver that moves by one week per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Daily(System.Func{Nextended.Core.Types.RangeLength{System.DateOnly},System.Int32})">
+            <summary>
+            Creates a day-based step resolver using a converter from range length to days.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Daily(System.Int32)">
+            <summary>
+            Creates a day-based step resolver using a fixed number of days per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.DateOnly.Daily">
+            <summary>
+            Creates a day-based step resolver that moves by one day per step.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.StepResolvers.TimeOnly">
+            <summary>
+            Step resolvers for <see cref="T:System.TimeOnly"/>.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.TimeOnly.Hourly(System.Func{Nextended.Core.Types.RangeLength{System.TimeOnly},System.Int32})">
+            <summary>
+            Creates an hour-based step resolver using a converter from range length to hours.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.TimeOnly.Hourly(System.Int32)">
+            <summary>
+            Creates an hour-based step resolver using a fixed number of hours per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.TimeOnly.Hourly">
+            <summary>
+            Creates an hour-based step resolver that moves by one hour per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.TimeOnly.Minutely(System.Func{Nextended.Core.Types.RangeLength{System.TimeOnly},System.Int32})">
+            <summary>
+            Creates a minute-based step resolver using a converter from range length to minutes.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.TimeOnly.Minutely(System.Int32)">
+            <summary>
+            Creates a minute-based step resolver using a fixed number of minutes per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.TimeOnly.Minutely">
+            <summary>
+            Creates a minute-based step resolver that moves by one minute per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.TimeOnly.Secondly(System.Func{Nextended.Core.Types.RangeLength{System.TimeOnly},System.Int32})">
+            <summary>
+            Creates a second-based step resolver using a converter from range length to seconds.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.TimeOnly.Secondly(System.Int32)">
+            <summary>
+            Creates a second-based step resolver using a fixed number of seconds per step.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.StepResolvers.TimeOnly.Secondly">
+            <summary>
+            Creates a second-based step resolver that moves by one second per step.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.MudDialogButton">

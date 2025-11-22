@@ -1,0 +1,209 @@
+<div class="html"><pre>
+@using System.Globalization
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Extensions
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Current period: {0} – {1}&quot;, _dateRange.Start.ToShortDateString(), _dateRange.End.ToShortDateString()]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;DateOnly&quot;
+                  @bind-Value=&quot;_dateRange&quot;
+                  @ref=&quot;ComponentRef&quot;
+                  SizeRange=&quot;@FullDateRange&quot;
+                  StepResolver=&quot;@(StepResolvers.DateOnly.Weekly())&quot;
+                  ShowInputs=&quot;true&quot;
+                  AllowWholeRangeDrag=&quot;true&quot;&gt;
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TrackTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            height: 100%;
+            position: relative;
+            width: 100%;
+            background: var(--mud-palette-surface);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--mud-palette-divider);&quot;&gt;
+
+            &lt;div style=&quot;
+                position:absolute;
+                left:0;
+                right:0;
+                top:0;
+                height:35%;
+                background: linear-gradient(
+                    to bottom,
+                    var(--mud-palette-background-grey),
+                    transparent
+                );
+                pointer-events:none;&quot;&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+            @* Monthly markers as subtle labels below *@
+            @{
+                var monthStart = _startDate;
+                while (monthStart &lt;= _endDate)
+                {
+                    var monthEnd = new DateOnly(monthStart.Year, monthStart.Month, 1)
+                    .AddMonths(1)
+                    .AddDays(-1);
+
+                    if (monthEnd &gt; _endDate)
+                        monthEnd = _endDate;
+
+                    var mid = monthStart.AddDays((monthEnd.DayNumber - monthStart.DayNumber) / 2);
+                    var pctMid = ctx.Math.Percent(mid, ctx.SizeRange) * 100;
+
+                    &lt;div style=&quot;
+                                    position:absolute;
+                                    left:@pctMid.ToString(&quot;F2&quot;, CultureInfo.InvariantCulture)%;
+                                    bottom:3px;
+                                    transform: translateX(-50%);
+                                    font-size:10px;
+                                    color:var(--mud-palette-text-secondary);
+                                    pointer-events:none;
+                                    white-space:nowrap;
+                                    z-index:1;&quot;&gt;
+                        @monthStart.ToString(&quot;MMM&quot;, CultureInfo.CurrentCulture)
+                    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+                    monthStart = monthStart.AddMonths(1).AddDays(1);
+                }
+            }
+
+            @* Weekly markers (every week a tick, every 2nd week as &quot;Major&quot; with KW label) *@
+            @{
+                var current = _startDate;
+                while (current &lt;= _endDate)
+                {
+                    var pct = ctx.Math.Percent(current, ctx.SizeRange) * 100;
+                    var week = GetCalendarWeek(current);
+                    var isMajor = week % 2 == 0; // highlight every 2nd week
+
+                    var top = isMajor ? &quot;10%&quot; : &quot;35%&quot;;
+                    var bottom = &quot;55%&quot;;
+                    var width = isMajor ? &quot;2px&quot; : &quot;1px&quot;;
+                    var color = isMajor
+                    ? &quot;var(--mud-palette-lines-default)&quot;
+                    : &quot;var(--mud-palette-divider)&quot;;
+
+                    &lt;div style=&quot;
+                                        position:absolute;
+                                        left:@pct.ToString(&quot;F2&quot;, CultureInfo.InvariantCulture)%;
+                                        top:@top;
+                                        bottom:@bottom;
+                                        width:@width;
+                                        background:@color;&quot;&gt;
+                    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+                    @if (isMajor)
+                    {
+                        &lt;div style=&quot;
+                                                position:absolute;
+                                                left:@pct.ToString(&quot;F2&quot;, CultureInfo.InvariantCulture)%;
+                                                top:45%;
+                                                transform: translateX(-50%);
+                                                font-size:9px;
+                                                color:var(--mud-palette-text-secondary);
+                                                font-weight:500;
+                                                pointer-events:none;
+                                                white-space:nowrap;
+                                                z-index:1;&quot;&gt;
+                            @($&quot;KW {week}&quot;)
+                        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+                    }
+
+                    current = current.AddDays(7);
+                }
+            }
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">TrackTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SelectionTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @{
+            var startKw = GetCalendarWeek(ctx.Value.Start);
+            var endKw = GetCalendarWeek(ctx.Value.End);
+        }
+        &lt;div style=&quot;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(
+                90deg,
+                var(--mud-palette-secondary),
+                var(--mud-palette-secondary-darken)
+            );
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;
+            border-radius:4px;
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);&quot;&gt;
+            &lt;span style=&quot;
+                color:var(--mud-palette-secondary-text);
+                font-weight:600;
+                font-size:11px;
+                white-space:nowrap;
+                padding:0 8px;
+                text-shadow:0 1px 2px rgba(0,0,0,0.3);&quot;&gt;
+                @($&quot;KW {startKw} – KW {endKw}&quot;)
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">span</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">SelectionTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbStartTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:14px;
+            height:14px;
+            background:var(--mud-palette-surface);
+            border:3px solid var(--mud-palette-secondary);
+            border-radius:4%;
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbStartTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbEndTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:14px;
+            height:14px;
+            background:var(--mud-palette-surface);
+            border:3px solid var(--mud-palette-secondary);
+            border-radius:4%;
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbEndTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRangeSlider</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+
+    private readonly DateOnly _startDate = new(2025, 1, 1);
+    private readonly DateOnly _endDate = new(2025, 12, 31);
+
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateOnly</span><span class="htmlTagDelimiter">&gt;</span> _dateRange = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateOnly</span><span class="htmlTagDelimiter">&gt;</span>(
+        new DateOnly(2025, 2, 1),
+        new DateOnly(2025, 5, 31)
+    );
+
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateOnly</span><span class="htmlTagDelimiter">&gt;</span> FullDateRange =&gt; new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateOnly</span><span class="htmlTagDelimiter">&gt;</span>(
+        _startDate,
+        _endDate
+    );
+
+    private static readonly Calendar _calendar =
+        CultureInfo.GetCultureInfo(&quot;de-DE&quot;).Calendar;
+
+    private int GetCalendarWeek(DateOnly date)
+    {
+        var dt = date.ToDateTime(TimeOnly.MinValue);
+        return _calendar.GetWeekOfYear(
+            dt,
+            CalendarWeekRule.FirstFourDayWeek,
+            DayOfWeek.Monday
+        );
+    }
+}
+
+</pre></div>

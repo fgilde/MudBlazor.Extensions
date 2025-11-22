@@ -20,6 +20,8 @@ _{0} Demos: '{0} ukázky'
 --mud-palette-white: --bláto-paleta-bílá
 (currently the item is not visible): (v současné době není položka viditelná)
 (currently the item is visible): (v současné době je položka viditelná)
+2 Hourly steps (using StepLength): 2 hodinové kroky (pomocí StepLength)
+2 Hourly steps (using StepResolver): 2 hodinové kroky (pomocí StepResolveru)
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Komponenta, která umožňuje uživateli vybrat hodnotu ze seznamu možných hodnot a zobrazit ji jako Chips nebo defaultní Combobox.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Komponenta, kterou lze použít k posunutí ChildContent zespodu, shora, zleva nebo zprava najetím myší.
@@ -33,6 +35,7 @@ A maximum of {0} files are allowed: Je povoleno maximálně {0} souborů
 A Popover can be used to display some content on top of another.: Překryvné okno lze použít k zobrazení určitého obsahu přes jiný.
 A powerful component to edit an object and its properties.: Výkonná komponenta pro úpravu objektu a jeho vlastností.
 A powerful editor that can handle json, xml or yaml content: Výkonný editor, který si poradí s obsahem ve formátu json, xml nebo yaml
+A range slider component that allows selecting and manipulating a value range of type T.: Komponenta posuvníku rozsahu, která umožňuje výběr a manipulaci s hodnotovým rozsahem typu T.
 A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: Jednoduchá komponenta ColorPicker, která dědí komponentu MudColorPicker, ale přidává možnost odložit událost zavření a použít nativní komponentu výběru z prohlížeče
 A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Jednoduchá komponenta mřížky, která podporuje Columns, Rows a ColSpan a RowSpan pro obsahující sekce.
 A SplitPanel Component: Komponenta SplitPanel
@@ -100,6 +103,7 @@ Age: Věk
 agq-CM: Aghem (Kamerun)
 ak-GH: Akan (Ghana)
 Albertus: Albertus
+Alias: Alias
 Alice Johnson: Alice Johnsonová
 AliceBlue: AliceBlue
 Align: Zarovnat
@@ -132,6 +136,9 @@ AllowRubberBandSelection: Povolit výběr gumového pásma
 AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
 AllowSelectOnPreviewClick: Povolit VybratOnPreviewClick
 AllowVideoCapture: Povolit VideoCapture
+AllowWholeRangeDrag: DovolitWholeRangeDrag
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = pravda – celá perioda může být přesunuta
+AllScroll: AllScroll
 AlphaBars: AlphaBars
 Already have an account?: Už máte účet?
 Always: Vždy
@@ -226,6 +233,7 @@ AntiqueWhite: StarožitnostBílá
 ApathyBase16: 'ApathyBase16 řekl:'
 Api: Rozhraní api
 API: Rozhraní api
+Api view component to display the methods and properties of a type: API view komponenta pro zobrazení metod a vlastností typu
 API-Versions: Verze rozhraní API
 AppBar: AppBar
 AppbarBackground: AppbarBackground
@@ -285,6 +293,7 @@ Are you sure?: Opravdu?
 Arial: Arial
 Arial Black: Černá Arial
 Arial Narrow: Arial Narrow
+AriaLabelledBy: AriaLabelledBy
 arn-CL: Mapučové (Chile)
 Arta: Umění
 As Admin you can filter for users here: Jako správce zde můžete filtrovat uživatele
@@ -339,6 +348,7 @@ Aug: Srpen
 Austin: Austin
 Austin - 73301: Austin - 73301
 Austin - 73301ender: Austin - 73301ender
+Auto: Auto
 Auto Confirm Email?: Automaticky potvrdit e-mail?
 Auto Generated Editor for TestObject: Automaticky generovaný editor pro TestObject
 Auto Stop recording after: Automaticky zastavit nahrávání po
@@ -390,6 +400,7 @@ Basic: Základní
 Basic role with default permissions: Základní role s výchozími oprávněními
 Bauhaus 93: Bauhaus 93
 be-BY: Běloruština (Bělorusko)
+Because time values always having a fixed size you can also use step length instead of resolvers.: Protože časové hodnoty mají vždy pevnou velikost, můžete místo resolverů použít délku kroku.
 BeforeBegin: BeforeBegin
 BeforeEnd: BeforeEnd
 BeforeSearchBox: BeforeSearchBox
@@ -490,6 +501,7 @@ bs-Cyrl-BA: Bosenština (cyrilice, Bosna a Hercegovina)
 bs-Latn-BA: Bosenština (latinka, Bosna a Hercegovina)
 Build amazing UIs: Vytvářejte úžasná uživatelská rozhraní
 BurlyWood: BurlyWood
+But for sure resolvers are working as well.: Ale určitě fungují i resolvery.
 button: knoflík
 Button: Knoflík
 Button component for capturing audio and video.: Komponenta tlačítka pro zachycení zvuku a videa.
@@ -535,6 +547,7 @@ ccp-Cakm-BD: Chakma (Chakma, Bangladéš)
 ccp-Cakm-IN: Chakma (Chakma, Indie)
 ce-RU: Čečenština (Rusko)
 ceb-Latn-PH: Cebuano (latinka, Filipíny)
+Cell: Buňka
 Centaur: Kentaur
 Center: Střed
 CenterCenter: CenterCenter
@@ -627,6 +640,7 @@ ColorPickerView: ColorPickerView
 ColorsBase16: 'ColorsBase16 řekl:'
 ColorStops: Barevná zastavení
 ColorTemperature: Teplota barev
+ColResize: ColResize
 ColSpan: Sloupec ColSpan
 Column: Sloupec
 Columns Affected: Ovlivněné sloupce
@@ -640,6 +654,7 @@ Compact: Kompaktní
 Comparer: Porovnat
 Component edit capture options: Možnosti zachycení úprav komponenty
 Component in Dialog: Komponenta v dialogovém okně
+Component that captures component references from ChildContent: Komponenta, která zachycuje reference komponent z ChildContent
 Component to add additional adornment to a MudInput: Komponenta pro přidání dalších ozdob do MudInput
 Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Komponenta pro zobrazení souboru v tagu iframe nebo object nebo v registrovaném prohlížeči, který implementuje IMudExFileDisplay
 Component to display information about the current recording: Komponenta pro zobrazení informací o aktuálním záznamu
@@ -649,7 +664,9 @@ Component to move the ChildContent to a specific element that can defined by Ele
 Component to select a theme from a list of themes.: Komponenta pro výběr motivu ze seznamu motivů.
 ComponentBaseWithState: KomponentaBaseWithState
 ComponentInDialog: KomponentaInDialog
+Components: Součásti
 Conditional updates: Podmíněné aktualizace
+Configuration: Konfigurace
 Configure list values: Konfigurace hodnot seznamu
 Confirm: Potvrdit
 CONFIRM: POTVRDIT
@@ -670,6 +687,7 @@ Content-Type: Typ obsahu
 ContentAlignment: Zarovnání obsahu
 ContentStream: Obsahový stream
 ContentType: Typ obsahu
+ContextMenu: ContextMenu
 ContextMenuAction: Akce kontextové nabídky
 Continue to {0}: Pokračovat na {0}
 Continuous: Nepřetržitý
@@ -677,6 +695,7 @@ Contrast: Kontrast
 Cooper Black: Cooper Černá
 Copperplate Gothic Bold: Mědirytina gotická tučná
 Copperplate Gothic Light: Mědirytina gotická světlá
+Copy: Kopírovat
 Copy url: Kopírovat adresu URL
 Counter: Počitadlo
 Country: Země
@@ -689,6 +708,7 @@ Create powerful, flexible dock layouts — drag, drop, snap, and organize your d
 CreatedOn: Datum vytvoření
 Critical: Kritický
 CropAndScale: Nástroj CropAndScale
+Crosshair: Crosshair
 cs-CZ: Čeština (Česko)
 CSS Color Variables: Proměnné barev CSS
 CssVars: CssVars
@@ -701,6 +721,8 @@ Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can
 Cursor: Kurzor
 CursorPositionOrigin: Původní_poloha kurzoru
 Custom: Zvyk
+Custom fiscal year logic: Logika vlastního fiskálního roku
+Custom Templates: Vlastní šablony
 CustomContentErrorMessage: CustomContentErrorMessage
 Customize: Přizpůsobit
 cy-GB: Velština (Spojené království)
@@ -764,9 +786,11 @@ Decimal value is required using {0} type!: Při použití {0} typu je vyžadová
 DeepPink: DeepPink
 DeepSkyBlue: DeepSkyBlue
 Default: Výchozí
+Default steps: Výchozí kroky
 DefaultBorderRadius: DefaultBorderRadius
 DefaultDarkBase16: 'VýchozíDarkBase16 řekl:'
 DefaultLightBase16: DefaultLightBase16 – Výchozí světelná základna
+Define minimum and maximum duration for ranges as well as custom step sizes.: Definujte minimální a maximální dobu trvání pro rozsahy i vlastní velikosti kroků.
 Defined: Definovaný
 Delay: Zpoždění
 DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
@@ -807,6 +831,7 @@ Demo of using explicit the MudExFileDisplayZip to show and select content inside
 Demonstration for a simple but very useful Enum Selector: Ukázka jednoduchého, ale velmi užitečného nástroje pro výběr výčtu
 Demonstration of the MudExSplitter: Ukázka MudExSplitteru
 Demonstration of the quickly color select with MudExColorBubble: Ukázka rychlého výběru barev pomocí MudExColorBubble
+Demos: Svobodný lid
 DEMOS: SVOBODNÝ LID
 Dense: Hustý
 Dependent permissions required: Jsou vyžadována závislá oprávnění
@@ -888,7 +913,10 @@ Do you really want to restore the database from backup '{0}'? Note that any chan
 Do you want to delete the profile picture of {0}: Chcete smazat profilový obrázek {0}
 Do you want to delete the User {0}: Chcete smazat uživatelský {0}
 Docco: Dokument
+Dock: Nicméně
+Dock Control: Řízení doků
 Docked: Zakotvený
+DockLayout with ObjectEdit: DockLayout s ObjectEdit
 Document Deleted: Dokument odstraněn
 Document Extended Attributes: Rozšířené atributy dokumentu
 Document Management: Správa dokumentů
@@ -967,6 +995,8 @@ Edit: Upravit
 Edit {0}: Upravit {0}
 Edit a complex Model with included Collection of users: Upravit složitý model se zahrnutou Kolekcí uživatelů
 Edit Audio Constraints: Upravit zvuková omezení
+Edit Configuration: Edit Konfigurace
+Edit configuration for component in this sample: Upravit konfiguraci pro komponentu v tomto vzorku
 Edit Current Theme: Upravit aktuální téma
 Edit data in dialog: Upravit data v dialogovém okně
 Edit in TryMudEx: Upravit v TryMudEx
@@ -1113,6 +1143,7 @@ en-ZW: Angličtina (Zimbabwe)
 Enable Disqus: Povolit Disqus
 enables or disables virtualization.: Povolí nebo zakáže virtualizaci.
 End: Konec
+EndTooltipPosition: EndTooltipPosition
 English: Angličtina
 Engravers MT: Gravírky MT
 Enter email and your new password here: Zde zadejte e-mail a své nové heslo
@@ -1144,6 +1175,7 @@ Eras Bold ITC: Eras Bold ITC
 Eras Demi ITC: Eras Demi ITC
 Eras Light ITC: Eras Light ITC
 Eras Medium ITC: Éry Střední ITC
+EResize: EResize
 Error: Chyba
 ErrorAnimation: Animace chyby
 ErrorContrastText: ErrorContrastText
@@ -1186,6 +1218,7 @@ eu-ES: Baskičtina (Španělsko)
 EvaBase16: 'EvaBase16 řekl:'
 EvaDimBase16: 'EvaDimBase16 řekl:'
 ewo-CM: Ewondo (Kamerun)
+EwResize: EwResize
 ExcelSheet.xlsx: ExcelSheet.xlsx
 Expand &nbsp; <b>not</b> &nbsp; loaded nodes: Rozbalit &nbsp; <b>nenačtené</b> &nbsp; uzly
 Expand all nodes: Rozbalit všechny uzly
@@ -1230,6 +1263,7 @@ FallBackInIframe: FallBackInIframe
 False: Falešný
 FAQs: Nejčastější dotazy
 Far: Daleký
+Featured Components: Vybrané komponenty
 Features: Rysy
 Feb: Únor
 Felix Titling: Felix Titling
@@ -1297,6 +1331,7 @@ FilterMode: Režim filtru
 FilterMultiple: FiltrVícenásobný
 FilterPlaceholder: Zástupný symbol filtru
 Filters: Filtruje
+Filters in dashboards or reports: Filtry v dashboardech nebo reportech
 FilterVariant: Varianta filtru
 Fiona Gallagher: Fiona Gallagherová
 Firebrick: Žáruvzdorná cihla
@@ -1310,6 +1345,7 @@ Flat List: Plochý seznam
 FlatBase16: 'FlatBase16 řekl:'
 FlatList: Plochý seznam
 FlexEnd: FlexEnd
+Flexible data types: Flexibilní datové typy
 FlexStart: Funkce FlexStart
 Flip: Salto
 FlipAlways: FlipAlways
@@ -1339,6 +1375,7 @@ ForceShrink: ForceShrink – Síla
 ForestGreen: Lesní zelená
 Forgot password?: Zapomněli jste heslo?
 Format: Formát
+Forward: Vpřed
 Foundation: Nadace
 fr-029: Francouzština (Karibik)
 fr-BE: Francouzština (Belgie)
@@ -1442,6 +1479,8 @@ GoogleDriveClientId: ID klienta služby GoogleDriveClientId
 GoogleLightBase16: 'GoogleLightBase16 řekl:'
 Goudy Old Style: Goudy starý styl
 Goudy Stout: Goudy Stout
+Grab: Uchopit
+Grabbing: Uchopení
 Gradient: Spád
 GradientDark: GradientTmavý
 GradientForeground: GradientForeground
@@ -1529,6 +1568,7 @@ Hello from dialog 1: Dobrý den z dialogu 1
 Hello from dialog sample page: Pozdrav z ukázkové stránky dialogového okna
 Hello World: Ahoj světe
 Hello...: Dobrý den...
+Help: Pomoc
 HelperId: ID pomocníka
 HelperText: Pomocný text
 HelperTextOnFocus: HelperTextOnFocus
@@ -1550,6 +1590,7 @@ Hide: Schovat
 HideContentWhenCollapsed: Skrýt obsah při sbalení
 HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
 High Tower Text: Text vysoké věže
+Highlights: Zvýrazňuje
 HighlightSearch: ZvýrazněníVyhledávání
 Hinge: Závěs
 Home: Domov
@@ -1558,6 +1599,7 @@ HopscotchBase16: 'HopscotchBase16 řekl:'
 HorizonDarkBase16: 'HorizonDarkBase16 řekl:'
 HorizonLightBase16: 'HorizonLightBase16 řekl:'
 Horizontal: Horizontální
+Horizontal & vertical orientation: Horizontální a vertikální orientace
 HouseNumber: Číslo
 Houston: Houston
 Houston - 77001: Houston - 77001
@@ -1602,6 +1644,7 @@ Idea: Myšlenka
 Identifier: Identifikátor
 If this is set a photo will be taken instead of a video.: Pokud je toto nastaveno, bude místo videa pořízena fotografie.
 If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Pokud se vám tento balíček líbí, označte jej hvězdičkou ⭐ na Githubu a sdílejte jej se svými přáteli. Pokud ne, můžete mi dát hvězdičku i tak a dát mi vědět, co mohu zlepšit, aby to pro vás bylo lepší.
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: Pokud potřebujete jen časový posuvník a nechcete vytvářet vlastní šablony, můžete použít dedikovanou komponentu {0}.
 If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Pokud tyto volby nastavíte jako výchozí. Tyto možnosti budou použity pro všechna dialogová okna, ve kterých nejsou zadány žádné možnosti. Pokračovat?
 ig-NG: Igbo (Nigérie)
 Ignore: Ignorovat
@@ -1618,6 +1661,7 @@ Impact: Dopad
 Import: Dovoz
 ImportExportIcon: Ikona importuexportu
 In: V
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: V tomto příkladu ovládáte jednoduchý číselný rozsah od 0 do 100. Velikost kroku je nastavena na 5, aby umožnily hrubé intervaly.
 In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: V tomto příkladu se data načítají dynamicky, jakmile se položka poprvé objeví v zobrazení. Komponenta podporuje dva sloty pro obsah
 In this sample you are forced to pick an user: V této ukázce jste nuceni vybrat uživatele
 In this sample you are forced to pick some users: V této ukázce jste nuceni vybrat některé uživatele
@@ -1658,6 +1702,7 @@ InputMode: Režim vstupu
 InputStyle: Vstupní styl
 InputType: Typ vstupu
 Inset: Vložit
+Instance: Instance
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Průběžné výsledky
@@ -1672,6 +1717,7 @@ is-IS: Islandština (Island)
 IsActive: IsActive
 IsblEditorDark: IsblEditorDark
 IsblEditorLight: IsblEditorLight
+IsInverted: IsInverted
 IsMouseOverChip: IsMouseOverChip
 ISO: ISO
 IsOpen: Je otevřený
@@ -1811,6 +1857,7 @@ Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): 
 LegacyRender: LegacyRender
 Legend: Legenda
 LemonChiffon: CitronŠifon
+Length: Délka
 LetterSpacing: Mezery mezi písmeny
 lg-UG: Ganda (Uganda)
 Library: Knihovna
@@ -1958,6 +2005,7 @@ MaterialDarkerBase16: MateriálDarkerBase16
 MaterialLighterBase16: MateriálLehčíZákladna16
 MaterialPalenightBase16: MateriálPalenightBase16
 MaterialVividBase16: MateriálVividBase16
+MathAdapter: MathAdapter
 Matura MT Script Capitals: Hlavní písmena skriptů Matura MT
 MaxCaptureTime: MaxCaptureTime
 MaxChips: MaxChips
@@ -1970,6 +2018,7 @@ MaximizeButton: MaximalizovatTlačítko
 MaxItems: MaxItems
 MaxItemWidth: MaxItemWidth
 MaxLength: MaxLength
+MaxLength = 730 days – longest allowed period: MaxLength = 730 dní – nejdelší povolené období
 MaxLuminance: Maximální svítivost
 MaxMultipleFiles: MaxMultipleFiles
 MaxRecordingTime: MaxRecordingTime
@@ -2012,13 +2061,17 @@ Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod Virtual Audio
 Millimeters: Milimetry
 MimeRestrictionType: Typ mimeRestrictionType
 MimeTypes: MimeTypy
+Min/max length & step size: Minimální délka a velikost kroku
 MinDecibels: MinDecibely
 MinFrequency: Minimální frekvence
 MinHeight: MinHeight
 Mini: Mini
 MinimizeButton: Minimalizační tlačítko
+MinLength: MinLength
+MinLength = 60 days – shortest allowed period: MinLength = 60 dní – nejkratší povolené období
 MinLuminance: MinLuminance
 MintCream: Mátový krém
+Minutely steps: Nepatrné kroky
 MinZoomLevel: Úroveň MinZoomu
 Mirror: Zrcadlo
 Misc: Různé
@@ -2031,6 +2084,7 @@ mn-MN: Mongolština (Mongolsko)
 mn-Mong-CN: Mongolština (Mongolština, Čína)
 mn-Mong-MN: Mongolština (Mongolština, Mongolsko)
 mni-IN: Manipuri (Indie)
+Mobile UIs with limited horizontal space: Mobilní rozhraní s omezeným horizontálním prostorem
 Moccasin: Mokasín
 MochaBase16: 'MochaBase16 řekl:'
 Modal: Kapitál
@@ -2057,8 +2111,11 @@ MouseOverMessageClass: Třída MouseOverMessageClass
 MouseOverMessageStyle: Myš Přeskup zpráv
 MouseWheelDownAction: Akce MouseWheelDownAction
 MouseWheelUpAction: Akce MouseWheelUpAction
+Move: Pohnout
 Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Přesouvejte a měňte velikost položek mřížky přímo pomocí funkce drag & drop – navrhujte rozvržení dynamicky za běhu.
 MoveContent: Přesunout obsah
+MoveCursor: MoveCursor
+MovingCursor: Pohyblivý kurzor
 mr-IN: Maráthština (Indie)
 MS Outlook: MS Outlook
 MS Reference Sans Serif: MS Reference Bezpatková
@@ -2112,6 +2169,7 @@ MudDrawerHeader: Záhlaví šuplíku v bahně
 MudDynamicTabs: MudDynamicTabs
 MudElement: Bahenní element
 MudEx Components: Komponenty MudEx
+MudEx Range Slider – Interactive range selection: MudEx Range Slider – Interaktivní výběr range
 MudExAdditionalAdornment: MudExAdditionalOrnamentnment
 MudExAppearance: MudExAppearance
 MudExAppLoader: MudExAppLoader
@@ -2139,6 +2197,7 @@ MudExCultureSelect: MudExCultureSelect
 MudExDialog: MudExDialog
 MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog je komponenta, která se použije, když chcete zobrazit dialogové okno vložené na stránce se všemi DialogExtensions.
 MudExDivider: MudExDivider
+MudExDockLayout: MudExDockLayout
 MudExDropBoxFilePicker: MudExDropBoxFilePicker
 MudExEnumSelect: MudExEnumSelect
 MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
@@ -2157,6 +2216,8 @@ MudExGoogleFilePicker: MudExGoogleFilePicker
 MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar je MudAvatar, který automaticky používá profilový obrázek z gravatar pro e-mailovou adresu
+MudExGravatarCard: MudExGravatarCard
+MudExGravatarCard displays a Gravatar profile as card: MudExGravatarCard zobrazuje profil Gravatar jako kartu
 MudExGrid: MudExGrid
 MudExGrid — Now with Layout Editing: MudExGrid — Nyní s úpravami rozvržení
 MudExGrid Enhanced: Vylepšeno MudExGrid
@@ -2189,13 +2250,17 @@ MudExOneDriveFilePicker: MudExOneDriveFilePicker
 MudExpansionPanel: MudExpansionPanel
 MudExpansionPanels: MudExpansionPanels
 MudExPicker: MudExPicker
+MudExPicker Tree: MudExPicker strom
 MudExPickerBase<T>: MudExPickerBase<T>
 MudExPopover: MudExPopover
 MudExPromptDialog: MudExPromptDialog
 MudExPromptDialog Component: Komponenta MudExPromptDialog
 MudExPropertyEdit: MudExPropertyEdit
+MudExRangeSlider<T>: MudExRangeSlider<T>
 MudExSelect: MudExSelect
 MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect lze použít k výběru jedné nebo více položek z kolekce s možností svázání. Tato komponenta také podporuje všechny animace, jako jsou dialogy nebo MudExPopover.
+MudExSelect Item template.: Šablona položky MudExSelect.
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
 MudExSelect<T>: MudExSelect<T>
 MudExSelectItem is a select item for MudExSelect.: MudExSelectItem je položka výběru pro MudExSelect.
 MudExSelectItem<T>: MudExSelectItem<T>
@@ -2347,6 +2412,8 @@ nds-NL: Dolní němčina (Nizozemsko)
 ne-IN: Nepálština (Indie)
 ne-NP: Nepálština (Nepál)
 NebulaBase16: Základna mlhoviny16
+NeResize: NeResize
+NeswResize: NeswResize
 Never: Nikdy
 New: Nový
 NEW: NOVÝ
@@ -2887,6 +2954,7 @@ No space available: Není k dispozici žádné místo
 NoChips: Žádné žetony
 NodeBorderRadius: Uzel BorderRadius
 NodePadding: Odsazení uzlů
+NoDrop: NoDrop
 NoHeader: Metoda NoHeader
 NoIcon: Žádná ikona
 NoModalDialogs: NoModalDialogs
@@ -2900,6 +2968,7 @@ Not allowed to Delete this user: Není povoleno smazat tohoto uživatele
 Not Allowed.: Není povoleno.
 Not connected: Není připojeno
 Not Modal Dialogs: Ne modální dialogy
+NotAllowed: Zakázáno
 Note - Media options can't changed after a screen is selected: Poznámka – Po výběru obrazovky nelze změnit možnosti médií
 NoteLabels: Popisky poznámek
 NotFoundMessage: Stránka, kterou jste hledali, neexistuje.
@@ -2913,13 +2982,17 @@ NoWrap: Bez obalu
 npm-example-0.0.20.tgz: npm-example-0.0.20.tgz
 nqo-GN: N'Ko (Guinea)
 nr-ZA: South Ndebele (Jižní Afrika)
+NResize: NResize
 nso-ZA: Sesotho sa Leboa (Jihoafrická republika)
+NsResize: NsResize
 Nuget Package source: Zdroj balíčku NuGet
 Nullable enum: Výčet s možnou hodnotou null
 Nullable Flags Enum: Výčet příznaků s možnou hodnotou null
 Number: Číslo
 numeric: číselný
 nus-SS: Nuer (Jižní Súdán)
+NwResize: NwResize
+NwseResize: NwseResize
 nyn-UG: Nyankole (Uganda)
 Object Edit in Dialog: Dialogové okno Upravit objekt
 ObjectEdit: Upravit objekt
@@ -3021,6 +3094,7 @@ Overview: Přehled
 Owner: Vlastník
 pa-Arab-PK: Paňdžábština (arabština, Pákistán)
 pa-IN: Paňdžábština (Indie)
+Page_Test: Page_Test
 Palatino: Palatin
 Palatino Linotype: Palatino Linotyp
 PaleGreen: Bledě zelená
@@ -3106,6 +3180,7 @@ Placeholder: Zástupný
 Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Pohrajte si s MudBlazor a MudBlazor.Extensions v online editoru kódu
 Playbill: Divadelní plakát
 Player: Hráč
+Playground: Hřiště
 Please confirm your account by <a href='{0}'>clicking here</a>.: Potvrďte prosím svůj účet kliknutím <a href='{0}'>klikněte zde</a>.
 Please enter your name: Zadejte prosím své jméno
 Please reset your password by <a href='{0}'>clicking here</a>.: Obnovte prosím své heslo pomocí <a href='{0}'>klikněte zde</a>.
@@ -3114,6 +3189,7 @@ Please upload your personal qualifications and references that confirm your pers
 Please Wait: Počkejte prosím
 PleaseSelect: ProsímVyberte
 Plum: Švestka
+Pointer: Ukazatel
 Points: Výhybka
 PointsOfInterest: Body zájmu
 Pojoaque: Pojoaque
@@ -3131,6 +3207,7 @@ PorpleBase16: 'PorpleBase16 řekl:'
 Portrait: Portrét
 Position: Postavení
 Position/Size Sample: Ukázka pozice/velikosti
+Possibilities: Možnosti
 PostalCode: Poštovní směrovací číslo
 PowderBlue: Prášková modrá
 Powerful component to edit a set of items and their properties.: Výkonná komponenta pro úpravu sady položek a jejich vlastností.
@@ -3176,6 +3253,7 @@ Profile picture added.: Přidán profilový obrázek.
 Profile picture deleted.: Profilový obrázek smazán.
 Profile updated: Profil aktualizován
 ProgramingSkills: Programovací dovednosti
+Progress: Pokrok
 Property1: Vlastnost1
 Property10: Vlastnost10
 Property11: Vlastnost11
@@ -3261,6 +3339,7 @@ RailscastsBase16: 'RailscastsBase16 řekl:'
 Rainbow: Duha
 Random: Náhodný
 RandomColorUpdateDelay: RandomColorUpdateDelay
+RangeSlider: RangeSlider
 RarArchive.rar: RarArchive.rar
 Rate: Sazba
 Rate must be greater than 0: Sazba musí být větší než 0
@@ -3343,6 +3422,7 @@ Reset view: Obnovit zobrazení
 ResetButtonIcon: Ikona tlačítka ResetButton
 ResetToDefaultFirst: ResetToDefaultFirst
 Resizeable: Nastavitelná velikost
+ResizeCursor: ResizeCursor
 ResizeMode: ResizeMode
 Resources: Prostředky
 Responsive: Citlivý
@@ -3422,6 +3502,7 @@ RoundBars: Kulaté tyče
 Rounded: Zaokrouhlený
 Routeros: Routeros
 Row: Veslovat
+RowResize: RowResize
 RowSpan: Rozpětí řádků
 RowsPerPageString: Řádků na stránku
 RoyalBlue: Královská modrá
@@ -3434,6 +3515,8 @@ ru-UA: Ruština (Ukrajina)
 RubberBand: Gumička
 RubberBandColor: Barva gumového pásu
 RubberBandStyle: Styl gumového pásku
+Run: Běžet
+Run this sample on try.mudex.org online: Zkus si tento vzorek spustit try.mudex.org online
 Runic MT Condensed: Runový MT kondenzovaný
 Runtime: Runtime
 Russian: Ruština
@@ -3563,9 +3646,11 @@ SelectedItemColor: SelectedItemColor
 SelectedRequests: Vybrané požadavky
 SelectedValues: SelectedValues
 Selecting: Vybírání
+SelectionColor: SelectionColor
 SelectionList: Výběrový seznam
 SelectionMode: Režim výběru
 SelectionModeIcon: Ikona SelectionMode
+SelectionTemplate: Výběrová šablona
 SelectItemsMode: Režim SelectItemsMode
 SelectorsForIgnoreBlur: SelectorsForIgnoreBlur
 SelectorSize: Velikost selektoru
@@ -3576,6 +3661,7 @@ Send: Poslat
 Send confirmation email: Odeslat potvrzovací e-mail
 Sensitivity: Citlivost
 Sep: Září
+SeResize: SeResize
 Server restarted successfully: Server byl úspěšně restartován
 ses-ML: Koyraboro Senni (Mali)
 Set as Default options for all Dialogs: Nastavit jako výchozí volby pro všechna dialogová okna
@@ -3600,6 +3686,7 @@ shi-Tfng-MA: Tachelhit (Tifinagh, Maroko)
 Show: Ukázat
 Show As Dialog: Dialogové okno Zobrazit jako
 Show as Tree: Zobrazit jako strom
+Show code: Kód show
 Show Demo: Zobrazit ukázku
 Show flat: Zobrazit byt
 Show info: Zobrazit info
@@ -3657,6 +3744,7 @@ ShowSliders: Zobrazit posuvníky
 ShowSpectrumOnRecording: ShowSpectrumOnRecording
 ShowThemeColors: ZobrazitThemeColors
 ShowToolbar: Zobrazit panel nástrojů
+ShowTooltip: Nápověda k popisu
 ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
 ShowVisualiser: Zobrazit vizualizér
 ShowZoomInButton: Zobrazit tlačítko ZoomInButton
@@ -3664,6 +3752,7 @@ ShowZoomOutButton: ZobrazitTlačítko ZoomOut
 ShrinkLabel: Štítek smrštění
 si-LK: Sinhálština (Srí Lanka)
 Side: Bok
+Side filter panels in search or analytics UIs: Panely s bočními filtry v uživatelských úpravách vyhledávání nebo analytiky
 Sienna: Siena
 Sign In: Přihlásit se
 Sign Up: Registrace
@@ -3694,6 +3783,8 @@ SimulateWithRandomData: SimulateWithRandomData
 Single: Jednotlivý
 SingleExpand: SingleExpand
 Size: Velikost
+SizeRange: VelikostRozsah
+SizeRange = 0–100: VelikostRozsah = 0–100
 sk-SK: Slovenština (Slovensko)
 Skeleton: Kostra
 SkipSeparator: SkipSeparator
@@ -3763,6 +3854,7 @@ sr-Latn-RS: Srbština (latinka, Srbsko)
 sr-Latn-XK: Srbština (latinka, Kosovo)
 Src: Src
 Srcery: Srcery
+SResize: SResize
 ss-SZ: siSwati (Svazijsko)
 ss-ZA: siSwati (Jihoafrická republika)
 ssy-ER: Saho (Eritrea)
@@ -3778,6 +3870,7 @@ Start Recording: Spustit nahrávání
 Start recording after: Spustit nahrávání po
 Start/Stop selection: Výběr Start/Stop
 Starts in {0}: Začíná za {0}
+StartTooltipPosition: StartTooltipPosition
 State: Stát
 Static: Statický
 Static card.: Statická karta.
@@ -3785,6 +3878,13 @@ Static item: Statická položka
 Status: Stav
 SteelBlue: Ocelově modrá
 Stencil: Šablona
+Step size of 5: Velikost kroku 5
+StepLength: Délka kroku
+StepLength = 5 – values in steps of 5: StepLength = 5 – hodnoty v krocích po 5
+StepResolver: StepResolver
+StepResolvers.DateOnly.Quarterly: StepResolvers.DateOnly.Quarterly
+StepResolvers.DateOnly.Weekly: StepResolvers.DateOnly.Weekly
+StepResolvers.TimeOnly: StepResolvers.TimeOnly
 Stereo: Stereo
 Steve Rogers: Steve Rogers
 Store: Obchod
@@ -3876,7 +3976,9 @@ SummerfruitDarkBase16: 'SummerfruitDarkBase16 řekl:'
 SummerfruitLightBase16: 'SummerfruitLightBase16 řekl:'
 Sunburst: Ve tvaru slunce
 Super sample Content text.: Super ukázka textu obsahu.
+Supercharge your MudBlazor applications with powerful extensions: Vylepšete své aplikace MudBlazor silnými rozšířeními
 Support: Podpora
+Supports int and DateTime (other types via generics are possible).: Podporuje int a DateTime (jiné typy jsou možné přes generika).
 Surface: Povrch
 Surname: Příjmení
 sv-AX: Švédština (Ålandy)
@@ -3894,12 +3996,14 @@ Swing: Swing
 Switch: Vypínač
 Switch expand button position: Přepnutí polohy tlačítka pro rozbalení
 Switch overlay source: Přepnutí zdroje překrytí
+SwResize: SwResize
 Symbol: Symbol
 SynthMidnightTerminalDarkBase16: 'SynthMidnightTerminalDarkBase16 řekl:'
 SynthMidnightTerminalLightBase16: Syntetická půlnoční terminálová světelná základna16
 syr-SY: Syrština (Sýrie)
 System: Systém
 System Settings: Nastavení systému
+T = int – numeric range: T = int – číselný rozsah
 T3024Base16: 'T3024Base16 řekl:'
 ta-IN: Tamilština (Indie)
 ta-LK: Tamilština (Srí Lanka)
@@ -3929,6 +4033,7 @@ Teal: Modrozelený
 tel: Tel
 Telephone: Telefon
 TemplateClass: Třída šablony
+Templates: Šablony
 Temporary: Dočasný
 TenderBase16: 'TenderBase16 řekl:'
 teo-KE: Teso (Keňa)
@@ -3983,8 +4088,22 @@ The following permission is also required for permission {1}: Následující opr
 The maximum file size is 10 MB: Maximální velikost souboru je 10 MB
 The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit je robustní a všestranný nástroj navržený tak, aby efektivně usnadnil úpravy jednoho nebo více témat nebo předvoleb. Ze své podstaty se přizpůsobuje tmavému režimu, světlému režimu nebo kombinaci obou. Navíc podporuje odvozené třídy z MudTheme, stejně jako vlastní vlastnosti, které jsou s ním spojeny, a poskytuje tak komplexní a flexibilní řešení pro všechny vaše požadavky na úpravu motivů.
 The Plugin '{0}' may be able to help: Plugin '{0}' může být schopen pomoci
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: Posuvník rozsahu lze také použít vertikálně – ideální pro postranní panely nebo kompaktní filtrační oblasti.
 The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Ukázka je stejná jako v druhém příkladu FileDisplay, ale s tím rozdílem, že se nepoužívá žádná adresa URL; Místo toho se načítají a používají datové proudy.
 The server is just restarting. Please wait until the connection has been restored: Server se právě restartuje. Počkejte prosím, dokud nebude připojení obnoveno
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: Skladba tyto kapely zdůrazňuje a označuje je, zatímco výběrová šablona zobrazuje zvolený cenový interval podle aktuálního formátu měny.
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: Dráha je rozdělena do běžných věkových skupin jako "U18", "18–25", "26–35" a podobně, přičemž výběrová šablona zobrazuje přesné věkové rozmezí jako "18–35 let".
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: Stopa je rozdělena do tříd odpovědí jako Rychlé, OK, Pomalé a Velmi pomalé a štítek výběru ukazuje jak číselný rozsah, tak jeho klasifikaci, například "80 – 450 ms (Rychle → pomalé)".
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: Skladba je rozdělena do časových pásem, která představují různé směny, a výběrová šablona zobrazuje zvolené časové okno ve formátu 24 hodin.
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: Stopa je vykreslena pomocí vlastního TrackTemplate, vybraný rozsah pomocí SelectionTemplate a palce pomocí vlastních ThumbStartTemplate a ThumbEndTemplate.
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: Skladba je rozdělena na zelený, žlutý a červený segment a štítek výběru zobrazuje číselné rozmezí spolu s kvalitativní klasifikací jako "Nízký", "Střední" nebo "Vysoký".
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: Stopa zobrazuje bloky fiskálního roku a jejich čtvrtletí, přičemž štítek výběru ukazuje fiskální rozmezí jako "FY 2022 – FY 2024" nebo "FY 2023 Q2 – Q4" v závislosti na zvoleném tématu.
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: Skladba zobrazuje měsíční značky a týdenní ticky, zatímco výběrová šablona shrnuje výběr do rozsahu kalendářních týdnů, například "KW 2 – KW 22".
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: Stopa zobrazuje všechny úrovně vedle sebe a výběrová šablona zobrazuje štítek jako "Day – Month", který můžete použít k ovládání, jak jsou data agregována v grafech nebo reportech.
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: Stopa zobrazuje hodinové tiky a štítky každých pár hodin, zatímco výběrová šablona zobrazuje zvolené časové úseky jako kompaktní štítek.
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: Skladba vizualizuje všechny dny od pondělí do neděle, zdůrazňuje víkendy a výběrová značka uvádí přátelské názvy jako "pondělí – pátek".
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: Skladba vizualizuje roky a jejich čtvrtletí a výběrová značka se přizpůsobuje zvolenému rozsahu, například "Q2 2022 – Q3 2023" nebo jednoduše "Q1 – Q3", pokud je rok stejný.
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: Skladba vizuálně zvýrazňuje tato servisní pásma, zatímco výběrová šablona ukazuje přesné denní rozpětí, například "4 – 9 dní".
 The user "{0}" just changed some of this data: Uživatel "{0}" pouze změnil některé z těchto údajů
 The user {0} has been logged off: Uživatelský {0} byl odhlášen
 The User {0} has just edited, created or deleted entries here. You should reload the data: Uživatel zde {0} právě upravil, vytvořil nebo smazal záznamy. Měli byste data znovu načíst
@@ -4013,6 +4132,22 @@ This demo uses the IDialogEventService to check resize or dragged and stores the
 This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: To ukazuje komponentu MudExThemeEdit, která interně používá MudExObjectEdit a MudExThemeSelect pro úpravy motivu
 This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Tato ukázka ukazuje doporučený způsob použití MudExAdditionalAdornment s použitím RenderFragments "For" a "ChildContent"
 This dialog can confirmed when slider value is greater then 10: Toto dialogové okno může potvrdit, když je hodnota posuvníku větší než 10
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: Tento příklad ukazuje vlastní časovou osu fiskálního roku, kde finanční rok nezačíná 1. ledna.
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: Tento příklad ukazuje víceleté časové rozmezí s vlastním chováním kroků. Se StepResolverem definujete, jak se posuvník zachytí (například na měsíce, čtvrtletí nebo hodiny).
+This example demonstrates a TimeOnly range slider.: Tento příklad ukazuje posuvník rozsahu pouze pro TimeOnly.
+This example demonstrates a TimeOnly-based range slider with minute resolution.: Tento příklad ukazuje posuvník rozsahu založený pouze na TimeOnly, s minutovým rozlišením.
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: Tento příklad ilustruje posuvník cen nebo rozpočtového rozpětí se sémantickými segmenty jako Budget, Standard, Premium a High-End.
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: Tento příklad mapuje celočíselné hodnoty na dny v týdnu a mění posuvník rozsahu na volič dne v týdnu.
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: Tento příklad představuje abstraktní zoom nebo agregační úrovně, jako jsou Hodina, Den, Týden, Měsíc a Rok.
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: Tento příklad ukazuje časové období od roku 2015 do konce roku 2022. Uživatel si může zvolit období alespoň 60 dní a maximálně 2 roky. Velikost kroku je jeden den.
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: Tento příklad ukazuje posuvník rozsahu založený na procentech, který lze použít pro využití kapacity, kapacitu nebo úroveň rizika.
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: Tento příklad ukazuje posuvník rozsahu založený pouze na TimeOnly, přizpůsobený scénářům plánování směn, jako jsou ranní, pozdní a noční směny.
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: Tento příklad ukazuje, jak můžete použít vlastní šablony k přeměně MudExRangeSlideru na ovládání ve stylu časové osy s ročními a měsíčními značkami.
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: Tento příklad cílí na SLA a scénáře reakční doby pomocí posuvníku vzdálenosti založeného na milisekundách.
+This example turns the range slider into a quarter selector over multiple years.: Tento příklad promění posuvník rozsahu na čtvrtinový volič během několika let.
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: Tento příklad používá celočíselný posuvník rozsahu k reprezentaci časů přepravy v dnech, rozdělených do úrovní služeb jako Express, Standard a Economy/Sea.
+This example uses an integer-based range slider to represent age ranges and demographic bands.: Tento příklad používá posuvník rozsahu založený na celočíselných číslech k reprezentaci věkových skupin a demografických skupin.
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: Tento příklad používá DateOnly a týdenní kroky k vytvoření týdenního výběrového systému s čísly kalendářních týdnů ISO.
 This is a Json representation of the TestModel. This is ignored for Export and Import: Toto je reprezentace JSON TestModel. Tato možnost se ignoruje při exportu a importu
 This is a simple information dialog that closes after {0} seconds: Jedná se o jednoduchý informační dialog, který se zavře po {0} sekundách
 This is a simple information dialog that closes after 0 seconds: Jedná se o jednoduchý informační dialog, který se zavře po 0 sekundách
@@ -4024,8 +4159,14 @@ This is a simple information dialog that closes after 5 seconds: Jedná se o jed
 This is an Administrator Only View.: Toto je zobrazení pouze pro správce.
 This is the MudEx Default theme: Toto je MudEx Výchozí téma
 This is the sample Popover. In general it inherits the original MudPopover.: Toto je ukázkový překryvný překryv. Obecně zdědí původní MudPopover.
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: To je užitečné pro konfiguraci denních časových oken, jako jsou konzultační hodiny, údržbová okna nebo rezervace termínů.
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: To je užitečné pro produktové filtry, výběrové systémy rozpočtu nebo jakékoli uživatelské rozhraní, kde uživatelé vizuálně volí cenové rozpětí.
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: To je užitečné pro opakující se rozvrhy, okna dostupnosti nebo vzorce doručení, které jsou definovány na týdenní bázi.
 This one card is still added without an corresponding item.: Tato jedna karta je stále přidána bez odpovídající položky.
 This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: To se předává jako metoda do možností dialogu. Dialogové okno se nezavře, pokud metoda vrátí hodnotu false. Výsledkem musí být bool nebo Task&lt;bool&gt;
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: Tento vzor dobře sedí analytickým dashboardům, kde uživatelé mohou dynamicky měnit granularitu zobrazovaných dat.
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: Tento vzorec je užitečný pro obchodní a finanční aplikace, kde je vykazování sladěno s fiskálními roky, nikoli s kalendářními.
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: Tento vzorec je ideální, když uživatelé přemýšlejí v týdnech místo konkrétních termínů, například při plánování, reportování nebo přehledech sprintů.
 This photo was taken in a small village in Istra Croatia.: Tato fotografie byla pořízena v malé vesnici v Istrii v Chorvatsku.
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Tento výběr přináší animace, lepší chování a dialog, který podporuje všechny DialogOptions. Chcete-li vytvořit vlastní komponentu picker jus inherit z MudExPickerBase, nebo pouze použít jednoduchý obsah, použijte MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Tato ukázka ukazuje, jak používat službu MudExCaptureService
@@ -4034,13 +4175,20 @@ This sample just shows how easily you can combine the MudExPicker with MudExTree
 This sample uses the IDialogEventService to cancel the dialog close: Tato ukázka používá IDialogEventService ke zrušení zavření dialogového okna
 This sample uses the options for a can close callback: Tato ukázka používá možnosti pro zpětné volání může zavřít
 This section can be placed inside a MudExGrid component.: Tato část může být umístěna uvnitř komponenty MudExGrid.
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: Tato šablona je zvláště užitečná v logistických a přepravních scénářích, kde jsou dodací lhůty vyjádřeny v denních rozmezích.
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: Tato šablona je vhodná pro analytiku, cílení na publikum nebo jakékoli uživatelské rozhraní, kde uživatelé pracují s věkovými intervaly.
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: Tato šablona dobře funguje v monitorování, pozorovatelnosti nebo API dashboardech, kde je třeba latence rychle interpretovat.
 Thistle: Bodlák
 ThrottleInterval: Interval škrticí klapky
+ThumbColor: ThumbColor
+ThumbEndTemplate: ThumbEndTemplate
+ThumbStartTemplate: ThumbStartTemplate
 ti-ER: Tigrinya (Eritrea)
 ti-ET: Tigrinya (Etiopie)
 tig-ER: Tigre (Eritrea)
 Tilt: Naklonění
 Time: Čas
+TimeOnly: TimeOnly
 Times: Krát
 Times New Roman: Časy Nový Roman
 TimeSeries: Časová řada
@@ -4096,6 +4244,7 @@ Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
 tr-CY: Turečtina (Kypr)
 tr-TR: Turečtina (Turecko)
 Trace: Stopa
+TrackColor: TrackColor
 TrackInfoPosition: TrackInfoPosition
 TrackList: Seznam skladeb
 TrackListBehaviour: Chování v seznamu stop
@@ -4104,6 +4253,8 @@ TrackListCoverImage: TrackListCoverImage
 TrackListMode: Režim seznamu stop
 TrackListPosition: Pozice v seznamu stop
 TrackListToggleButtonPosition: TrackListToggleButtonPosition
+TrackStyle: TrackStyle
+TrackTemplate: TrackTemplate
 Trail Details: Podrobnosti o stezce
 TransformOrigin: Původ transformace
 Translations: Překlady
@@ -4113,6 +4264,7 @@ Transparent: Transparentní
 Trebuchet MS: Trebuchet MS
 TreeView: Pohled na strom
 TreeView component that renders a tree structure of items.: Komponenta TreeView, která vykresluje stromovou strukturu položek.
+Treeview in Picker: Výhled na stromy v Pickeru
 TreeViewBreadcrumb: TreeViewDrobečková navigace
 TreeViewCardGrid: TreeViewCardGrid
 TreeViewDefault: TreeViewDefault
@@ -4185,10 +4337,15 @@ ur-IN: Urdština (Indie)
 ur-PK: Urdština (Pákistán)
 url: Adresa URL
 Url: Adresa URL
+Use cases: Případy použití
 Use CodeGator Models: Použití modelů CodeGator
 Use MudExAdditionalAdornment ad ChildContent: Použití reklamy MudExAdditionalAdornment ChildContent
 Use MudExAdditionalAdornment as ChildContent of a MudInput: Použití souboru MudExAdditionalAdornment jako podřízeného obsahu souboru MudInput
 Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Místo toho použijte MudExSelect a nastavte MultiSelection na true a ValuePresenter na Chip.
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: Posuvník používejte horizontálně nebo vertikálně – ideální pro filtry, dashboardy a reporty.
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: Použijte tuto šablonu pro čtvrtletní reportování, KPI nebo finanční přehledy, kde jsou čtvrtletní rozmezí významnější než přesná data.
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: Použijte tuto šablonu pro sklady, výrobu, call centra nebo jakoukoli oblast, kde je práce organizována ve směnách během 24hodinového dne.
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: Použijte tuto šablonu vždy, když uživatelé potřebují na první pohled pochopit, zda vybraný areál spadá do bezpečné, varovné nebo kritické zóny.
 UseCanvas: PoužítPlátno
 UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
 UseItemTemplateForSelection: UseItemTemplateForSelection
@@ -4238,6 +4395,8 @@ Variant: Varianta
 ve-ZA: Venda (Jižní Afrika)
 Verdana: Verdana
 Version: Verze
+Vertical: Vertikální
+VerticalText: VerticalText
 vi-VN: Vietnamština (Vietnam)
 Video Content-Type: Typ obsahu videa
 Video device: Video zařízení
@@ -4267,6 +4426,7 @@ Vs2015: VS2015
 VulcanBase16: 'VulcanBase16 řekl:'
 vun-TZ: Vunjo (Tanzanie)
 wae-CH: Walser (Švýcarsko)
+Wait: Počkej
 wal-ET: Wolaytta (Etiopie)
 Warning: Varování
 WarningContrastText: WarningContrastText
@@ -4298,6 +4458,8 @@ WindowsNtLightBase16: 'WindowsNtLightBase16 řekl:'
 Wingdings: Wingdings
 With custom configuration: S vlastní konfigurací
 With default configuration: S výchozí konfigurací
+With DockLayout: S DockLayout
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: Se StepResolvery můžete snadno nastavit chování krokování. Pro časové rozmezí poskytujeme několik předdefinovaných resolverů. V tomto příkladu StepResolvers.DateTime.Quarterly(_ => 1) způsobí, že posuvník se rychle přemístí na čtvrtiny.
 With tabs: S oušky
 With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: S komponentou MudExAdditionalAdornment můžete mít v libovolném vstupním ovládacím prvku založeném na MudInput, jako je tento, tolik doplňků.
 With this component you can have an animation while loading the main blazor app: Pomocí této komponenty můžete mít animaci při načítání hlavní blazor aplikace
@@ -4314,6 +4476,8 @@ WoodlandBase16: 'WoodlandBase16 řekl:'
 WordDokument.doc: WordDokument.doc
 WrapChips: Obalové žetony
 WrapToolBarContent: WrapToolBarContent
+WResize: WResize
+Write comments or reactions for current component or page: Pište komentáře nebo reakce k aktuální komponentě nebo stránce
 Xcode: Xcode
 XcodeDuskBase16: 'XcodeDuskBase16 řekl:'
 xh-ZA: isiXhosa (Jižní Afrika)
@@ -4338,8 +4502,10 @@ You are logged out by an Administrator or profile change.: Jste odhlášeni spr�
 You are Logged Out.: Jste odhlášeni.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment můžete také použít jako ChildContent souboru MudInput
 You can move me: Můžete mě přesunout
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: Můžete posouvat jednotlivé palce nebo celý vybraný rozsah, abyste upravili počáteční a koncové hodnoty. V závislosti na konfiguraci platí minimální a maximální délka i různé velikosti kroků.
 You can now Login with your credentials: Nyní se můžete přihlásit pomocí svých přihlašovacích údajů
 You can resize me: Můžete změnit mou velikost
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: Tuto techniku můžete použít k vytvoření bohatých časových posuvníků a vizuálních rozsahů, které přesně odpovídají vaší doméně.
 You cannot delete yourself: Nemůžete smazat sami sebe
 You clicked: Klikli jste na
 You don't need an extra JsonEditor anymore: Už nepotřebujete další JsonEditor
@@ -4365,7 +4531,9 @@ ZipCode: PSČ
 Zoom: Zvětšení
 Zoom in: Přiblížit
 Zoom out: Oddálit
+ZoomIn: ZoomIn
 ZoomInButtonIcon: Ikona tlačítka ZoomInButton
 ZoomOnHover: ZoomOnHover
+ZoomOut: ZoomOut
 ZoomOutButtonIcon: Ikona tlačítka ZoomOut
 zu-ZA: isiZulu (Jižní Afrika)

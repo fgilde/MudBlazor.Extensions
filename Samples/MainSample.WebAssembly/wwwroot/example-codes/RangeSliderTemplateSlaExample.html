@@ -1,0 +1,132 @@
+<div class="html"><pre>
+@* SLA / Response Time Slider (ms) *@
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Response time: {0} – {1} ms&quot;, _range.Start.ToString(&quot;F0&quot;), _range.End.ToString(&quot;F0&quot;)]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;double&quot;
+                  @bind-Value=&quot;_range&quot;
+                  SizeRange=&quot;@_fullRange&quot;
+                  ShowInputs=&quot;true&quot;
+                  AllowWholeRangeDrag=&quot;true&quot;&gt;
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TrackTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            height:100%;
+            position:relative;
+            width:100%;
+            background:var(--mud-palette-surface);
+            border-radius:4px;
+            overflow:hidden;&quot;&gt;
+
+            @* 0–100 Fast *@
+            &lt;div style=&quot;
+                position:absolute;
+                left:0%;
+                width:@(100.0 / 2000 * 100)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-success) 25%,transparent);&quot;&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+            @* 100–300 OK *@
+            &lt;div style=&quot;
+                position:absolute;
+                left:@(100.0 / 2000 * 100)%;
+                width:@(200.0 / 2000 * 100)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-warning) 25%,transparent);&quot;&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+            @* 300–1000 Slow *@
+            &lt;div style=&quot;
+                position:absolute;
+                left:@(300.0 / 2000 * 100)%;
+                width:@(700.0 / 2000 * 100)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-error) 15%,transparent);&quot;&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+            @* 1000–2000 Very Slow *@
+            &lt;div style=&quot;
+                position:absolute;
+                left:@(1000.0 / 2000 * 100)%;
+                width:@(1000.0 / 2000 * 100)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-error) 30%,transparent);&quot;&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;position:absolute;left:5%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);&quot;</span><span class="htmlTagDelimiter">&gt;</span>Fast<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;position:absolute;left:20%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);&quot;</span><span class="htmlTagDelimiter">&gt;</span>OK<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;position:absolute;left:45%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);&quot;</span><span class="htmlTagDelimiter">&gt;</span>Slow<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;position:absolute;left:80%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);&quot;</span><span class="htmlTagDelimiter">&gt;</span>Very slow<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">TrackTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SelectionTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @{
+            string Classify(double v) =&gt; v switch
+            {
+                &lt;= 100 =&gt; &quot;Fast&quot;,
+                &lt;= 300 =&gt; &quot;OK&quot;,
+                &lt;= 1000 =&gt; &quot;Slow&quot;,
+                _ =&gt; &quot;Very slow&quot;
+            };
+        }
+        &lt;div style=&quot;
+            height:100%;
+            width:100%;
+            background:linear-gradient(90deg,var(--mud-palette-success),var(--mud-palette-warning),var(--mud-palette-error));
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:999px;&quot;&gt;
+            &lt;span style=&quot;
+                color:var(--mud-palette-primary-text);
+                font-weight:600;
+                font-size:11px;
+                white-space:nowrap;
+                padding:0 10px;&quot;&gt;
+                @($&quot;{ctx.Value.Start:F0} – {ctx.Value.End:F0} ms ({Classify(ctx.Value.Start)} → {Classify(ctx.Value.End)})&quot;)
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">span</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">SelectionTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbStartTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:12px;
+            height:12px;
+            background:var(--mud-palette-surface);
+            border-radius:50%;
+            border:2px solid var(--mud-palette-success);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbStartTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbEndTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:12px;
+            height:12px;
+            background:var(--mud-palette-surface);
+            border-radius:50%;
+            border:2px solid var(--mud-palette-error);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbEndTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRangeSlider</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span> _range = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span>(80, 450);
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span> _fullRange = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span>(0, 2000);
+}
+
+</pre></div>

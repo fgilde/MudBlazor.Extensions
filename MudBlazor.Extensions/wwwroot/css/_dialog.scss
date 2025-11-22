@@ -8,7 +8,7 @@
 }
 
 
-.mud-dialog-height-full {
+.#{$prefix}-dialog-height-full {
     height: calc(100vh - 64px);
 
     .mud-dialog-actions {
@@ -18,7 +18,7 @@
     }
 }
 
-.mud-dialog-height-full-no-margin {
+.#{$prefix}-dialog-height-full-no-margin {
     height: 100vh;
     max-height: unset;
 
@@ -34,11 +34,11 @@
 }
 
 
-.mud-dialog-position-fixed {
+.#{$prefix}-dialog-position-fixed {
     position: fixed;
 }
 
-.mud-dialog-actions-fixed-bottom {
+.#{$prefix}-dialog-actions-fixed-bottom {
     position: absolute;
     bottom: 0;
     right: 0;

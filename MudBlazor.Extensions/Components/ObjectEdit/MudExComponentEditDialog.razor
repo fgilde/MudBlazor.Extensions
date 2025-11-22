@@ -1,0 +1,35 @@
+﻿@inherits MudExComponentPropertyGrid<T>
+@using MudBlazor.Extensions.Helper
+@typeparam T
+
+<EditForm class="@($"{DialogFormClass}")" Model="@Value" OnValidSubmit="@OnSubmit">
+    <MudDialog Class="@($"mud-ex-dialog-initial {DialogClass}")" ContentClass="@ContentClass"
+               ActionsClass="@ActionsClass"
+               ContentStyle="@ContentStyle"
+               Style="@DialogStyle"
+               DefaultFocus="@DefaultFocus"
+               Gutters="@Gutters">
+        <TitleContent>
+            <MudText Class="@TitleClass" Typo="Typo.h6">
+                <MudExIcon Color="@DialogIconColor" Icon="@DialogIcon" Class="mr-3 mb-n1" />
+                @MudDialog.Title
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            @Inherited()
+        </DialogContent>
+        <DialogActions>
+            @if (!string.IsNullOrWhiteSpace(_errorMessage))
+            {
+                <MudAlert Variant="Variant.Filled" Style="@($"animation: {ErrorAnimation.GetAnimationCssStyle(TimeSpan.FromMilliseconds(300))}; z-index: 3;position: absolute;")" 
+                          ShowCloseIcon="true" CloseIconClicked="@(() => _errorMessage = null)" Severity="Severity.Error">
+                    @_errorMessage
+                </MudAlert>
+            }
+            @RenderActionBar
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+@code {
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+}

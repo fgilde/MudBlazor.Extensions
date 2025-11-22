@@ -1,4 +1,9 @@
-﻿@-webkit-keyframes backInDown {
+﻿@charset "UTF-8";
+:root {
+  --mud-ex-css-main: mud-ex ;
+}
+
+@-webkit-keyframes backInDown {
   0% {
     -webkit-transform: translateY(-1200px) scale(0.7);
     transform: translateY(-1200px) scale(0.7);
@@ -5271,6 +5276,494 @@
   margin-top: 27px;
 }
 
+/* _mudexrangeslider.scss
+   Styles for MudExRangeSlider matching MudBlazor Slider design
+   Uses CSS variables set by component for colors and sizes
+   Supports custom templates for Track, Selection, and Thumbs
+*/
+/* ---------- Base ---------- */
+.mud-ex-range-slider {
+  position: relative;
+  width: 100%;
+  touch-action: none;
+  user-select: none;
+  /* Size defaults (Medium) - overridden by size classes */
+  --ex-track-height: 2px;
+  --ex-track-width: 2px;
+  --ex-thumb-size: 12px;
+  --ex-selection-height: 2px;
+  --ex-selection-width: 2px;
+  /* Colors set via inline style from component */
+  /* --ex-track-color, --ex-thumb-color, --ex-selection-color */
+}
+
+/* ---------- Size Variants ---------- */
+.mud-ex-range-slider.mud-ex-size-small {
+  --ex-track-height: 1px;
+  --ex-track-width: 1px;
+  --ex-thumb-size: 8px;
+  --ex-selection-height: 1px;
+  --ex-selection-width: 1px;
+}
+
+.mud-ex-range-slider.mud-ex-size-medium {
+  --ex-track-height: 2px;
+  --ex-track-width: 2px;
+  --ex-thumb-size: 12px;
+  --ex-selection-height: 2px;
+  --ex-selection-width: 2px;
+}
+
+.mud-ex-range-slider.mud-ex-size-large {
+  --ex-track-height: 4px;
+  --ex-track-width: 4px;
+  --ex-thumb-size: 16px;
+  --ex-selection-height: 4px;
+  --ex-selection-width: 4px;
+}
+
+/* ---------- Track (Horizontal) ---------- */
+.mud-ex-range-slider .mud-ex-range-slider-track {
+  position: relative;
+  width: 100%;
+  height: 32px; /* Touch target area */
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Default track line (only when no template) */
+.mud-ex-range-slider .mud-ex-range-slider-track:not(.mud-ex-has-template)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--ex-track-height);
+  background: var(--ex-track-color);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Track template container - fills entire track */
+.mud-ex-range-slider .mud-ex-range-slider-track-template {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  z-index: 0;
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-track-template > * {
+  width: 100%;
+  height: 100%;
+}
+
+/* Selection overlay (H) - positioned within track */
+.mud-ex-range-slider .mud-ex-range-slider-selection {
+  position: absolute;
+  left: calc(var(--p-start) * 100%);
+  right: calc((1 - var(--p-end)) * 100%);
+  pointer-events: auto;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+/* Default selection bar (only when no template) - centered vertically */
+.mud-ex-range-slider .mud-ex-range-slider-selection:not(.mud-ex-has-template) {
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--ex-selection-height);
+  background: var(--ex-selection-color);
+  border-radius: 2px;
+}
+
+/* Selection with template - fills entire track height */
+.mud-ex-range-slider .mud-ex-range-slider-selection.mud-ex-has-template {
+  top: 0;
+  bottom: 0;
+  height: 100%;
+}
+
+/* Selection template container */
+.mud-ex-range-slider .mud-ex-range-slider-selection-template {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  pointer-events: none;
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-selection-template > * {
+  width: 100%;
+  height: 100%;
+}
+
+/* Thumbs (buttons) for H */
+.mud-ex-range-slider .mud-ex-range-slider-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  outline: none;
+  z-index: 2;
+}
+
+/* Default thumb style (only when no template) */
+.mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template) {
+  width: var(--ex-thumb-size);
+  height: var(--ex-thumb-size);
+  background: var(--ex-thumb-color);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.2s ease;
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template):hover {
+  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.04);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template):active {
+  box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-thumb:not(.mud-ex-has-template):focus-visible {
+  box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Template thumb container */
+.mud-ex-range-slider .mud-ex-range-slider-thumb.mud-ex-has-template {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-thumb-template {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-thumb.start {
+  left: calc(var(--p-start) * 100%);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-thumb.end {
+  left: calc(var(--p-end) * 100%);
+}
+
+/* ---------- Tooltip Styles ---------- */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip {
+  position: absolute;
+  background: var(--mud-palette-dark, #424242);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, visibility 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  z-index: 1500;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+
+/* Tooltip Arrow (wird durch Positions-Klassen konfiguriert) */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Sichtbar via "visible"-Klasse */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Optional zusätzlich über Hover/Focus (beibehalten) */
+.mud-ex-range-slider .mud-ex-range-slider-thumb:hover .mud-ex-range-slider-tooltip,
+.mud-ex-range-slider .mud-ex-range-slider-thumb:active .mud-ex-range-slider-tooltip,
+.mud-ex-range-slider .mud-ex-range-slider-thumb:focus-visible .mud-ex-range-slider-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ---------- Positions-Klassen ---------- */
+/* Default/Fallback: top, wenn keine Positionsklasse gesetzt ist */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip:not(.bottom):not(.left):not(.right):not(.center):not(.start):not(.end),
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.top {
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.top::after,
+.mud-ex-range-slider .mud-ex-range-slider-tooltip:not(.bottom):not(.left):not(.right):not(.center):not(.start):not(.end)::after {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* BOTTOM */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.bottom {
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.bottom::after {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* LEFT (Tooltip links vom Thumb, Pfeil zeigt nach rechts) */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.left {
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.left::after {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* RIGHT (Tooltip rechts vom Thumb, Pfeil zeigt nach links) */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.right {
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.right::after {
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* CENTER (direkt über dem Thumb zentriert, ohne Pfeil) */
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.mud-ex-range-slider .mud-ex-range-slider-tooltip.center::after {
+  border: none;
+}
+
+/* ---------- START / END (orientationsabhängig) ----------
+   Idee:
+   - Horizontal (default): start = left, end = right
+   - Vertical: start = top, end = bottom
+*/
+/* HORIZONTAL: START = LEFT */
+.mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.start {
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.start::after {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* HORIZONTAL: END = RIGHT */
+.mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.end {
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mud-ex-range-slider:not(.mud-ex-vertical) .mud-ex-range-slider-tooltip.end::after {
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* VERTICAL: START = TOP */
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.start {
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.start::after {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* VERTICAL: END = BOTTOM */
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.end {
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-tooltip.end::after {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid var(--mud-palette-dark, #424242);
+}
+
+/* Inputs block */
+.mud-ex-range-slider .mud-ex-range-slider-inputs {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+/* ---------- Vertical Orientation ---------- */
+.mud-ex-range-slider.mud-ex-vertical {
+  width: auto;
+  height: 220px;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track {
+  width: 32px; /* Touch target area */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track:not(.mud-ex-has-template)::before {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  right: auto;
+  transform: translateX(-50%);
+  width: var(--ex-track-width);
+  height: auto;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track-template {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-track-template > * {
+  width: 100%;
+  height: 100%;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection {
+  top: calc(var(--p-start) * 100%);
+  bottom: calc((1 - var(--p-end)) * 100%);
+  flex-direction: column;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection:not(.mud-ex-has-template) {
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--ex-selection-width);
+  height: auto;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection.mud-ex-has-template {
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-selection-template > * {
+  width: 100%;
+  height: 100%;
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb {
+  left: 50%;
+  top: auto;
+  transform: translate(-50%, -50%);
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb.start {
+  top: calc(var(--p-start) * 100%);
+}
+
+.mud-ex-range-slider.mud-ex-vertical .mud-ex-range-slider-thumb.end {
+  top: calc(var(--p-end) * 100%);
+}
+
+/* ---------- Disabled State ---------- */
+.mud-ex-range-slider[aria-disabled=true] {
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+.mud-ex-range-slider[aria-disabled=true] .mud-ex-range-slider-thumb {
+  cursor: not-allowed;
+}
+
+.mud-ex-range-slider[aria-disabled=true] .mud-ex-range-slider-selection {
+  cursor: not-allowed;
+}
+
+/* ---------- ReadOnly State ---------- */
+.mud-ex-range-slider[aria-readonly=true] .mud-ex-range-slider-thumb {
+  cursor: default;
+}
+
+.mud-ex-range-slider[aria-readonly=true] .mud-ex-range-slider-selection {
+  cursor: default;
+}
+
 .mud-ex-object-edit-group-flat .mud-expand-panel-text {
   font-weight: bold;
   display: flex;
@@ -5884,12 +6377,12 @@
   animation: 44s -27s move infinite ease-in-out alternate;
 }
 .mud-ex-bg-dot::before {
-  text-shadow: 0.8973147429em 0.4033532284em 7px hsla(171.01173582, 100%, 50%, 0.9), 2.0076193383em -0.2302950387em 7px hsla(13.5237748654, 100%, 50%, 0.9), 1.0964438636em -0.1576476294em 7px hsla(118.8661375246, 100%, 50%, 0.9), -0.1910526772em 1.2717645828em 7px hsla(230.0907547502, 100%, 50%, 0.9), 0.1433256897em 0.3754347113em 7px hsla(148.4014356979, 100%, 50%, 0.9), -0.0404277984em 0.2536231489em 7px hsla(123.3854852418, 100%, 50%, 0.9), 2.0508997939em 0.9709895676em 7px hsla(86.5402765326, 100%, 50%, 0.9), 0.7632049934em 0.7851040008em 7px hsla(350.2405785558, 100%, 50%, 0.9), -0.2205190014em 0.2962590491em 7px hsla(332.6209854717, 100%, 50%, 0.9), -0.4056528851em 1.2392342475em 7px hsla(49.5840774538, 100%, 50%, 0.9), 2.2498144026em -0.4646299627em 7px hsla(124.8656999451, 100%, 50%, 0.9), 1.580511182em 2.222413899em 7px hsla(20.7650759823, 100%, 50%, 0.9), 1.8194324274em 1.5812080428em 7px hsla(179.9964828769, 100%, 50%, 0.9), 1.4389561718em 2.4876004805em 7px hsla(266.8320643275, 100%, 50%, 0.9), 0.7823949505em 1.7176473484em 7px hsla(238.1087267594, 100%, 50%, 0.9), 1.3054415786em -0.2304501027em 7px hsla(118.0174056975, 100%, 50%, 0.9), 1.8084855677em 2.036973945em 7px hsla(294.2919646945, 100%, 50%, 0.9), 1.7618016418em 1.8743818479em 7px hsla(211.1084582217, 100%, 50%, 0.9), 0.1901082039em 1.3818307096em 7px hsla(291.6838931673, 100%, 50%, 0.9), 1.0390575854em -0.4652609917em 7px hsla(156.7936534764, 100%, 50%, 0.9), -0.2368962225em 0.6814998806em 7px hsla(134.7771482387, 100%, 50%, 0.9), 1.0661074202em 1.6067304896em 7px hsla(195.4777081404, 100%, 50%, 0.9), 0.5832835651em -0.1185226552em 7px hsla(104.8464866365, 100%, 50%, 0.9), 1.8883271094em 0.9840165375em 7px hsla(228.4936991274, 100%, 50%, 0.9), 1.9044945491em 0.5831129075em 7px hsla(303.8013819538, 100%, 50%, 0.9), 1.3631836547em 0.294965632em 7px hsla(345.3195258562, 100%, 50%, 0.9), 1.9293584131em -0.0185903034em 7px hsla(223.9904368234, 100%, 50%, 0.9), 2.0462208154em 2.0991476566em 7px hsla(255.0709402816, 100%, 50%, 0.9), 0.4624853952em 1.2042603952em 7px hsla(68.0028798376, 100%, 50%, 0.9), -0.1759130733em 0.9317525576em 7px hsla(25.3207162005, 100%, 50%, 0.9), 0.9946320387em -0.0366017977em 7px hsla(126.9937137659, 100%, 50%, 0.9), 1.8988199329em 0.9353780474em 7px hsla(201.5429116522, 100%, 50%, 0.9), 2.4810532489em 1.2421304811em 7px hsla(84.4349243643, 100%, 50%, 0.9), -0.012646733em 1.150412416em 7px hsla(169.9644984787, 100%, 50%, 0.9), -0.2261078758em 1.1862833058em 7px hsla(181.4827340301, 100%, 50%, 0.9), 1.2833871801em 0.0864357359em 7px hsla(97.4691983086, 100%, 50%, 0.9), 1.2474938217em 0.2330755948em 7px hsla(358.5514927038, 100%, 50%, 0.9), 1.5690787225em 0.6340366062em 7px hsla(139.5103040242, 100%, 50%, 0.9), 0.3224862598em 1.5648998914em 7px hsla(149.6080660862, 100%, 50%, 0.9), 2.0556530956em 0.5369516276em 7px hsla(193.7036438766, 100%, 50%, 0.9), -0.3498546373em 0.9294196319em 7px hsla(204.6152498268, 100%, 50%, 0.9);
+  text-shadow: 0.7885112163em 0.9033749535em 7px hsla(336.0115652323, 100%, 50%, 0.9), 2.2307321209em 1.0991611101em 7px hsla(325.155852896, 100%, 50%, 0.9), 1.7615473341em 1.3561825961em 7px hsla(277.9991457692, 100%, 50%, 0.9), -0.0482535995em 2.3034945894em 7px hsla(155.2845664081, 100%, 50%, 0.9), -0.143159048em 0.3136903794em 7px hsla(90.0110767048, 100%, 50%, 0.9), -0.4665921819em 1.1707647316em 7px hsla(343.2353126141, 100%, 50%, 0.9), -0.0136975069em 0.5524378484em 7px hsla(214.1445168975, 100%, 50%, 0.9), 0.7417435616em 2.0703817013em 7px hsla(281.4070049044, 100%, 50%, 0.9), 0.8820226434em -0.4165626537em 7px hsla(142.4057761828, 100%, 50%, 0.9), 1.7808495625em 0.1857352071em 7px hsla(245.6301071308, 100%, 50%, 0.9), -0.2268726182em 0.2649516957em 7px hsla(47.1575460496, 100%, 50%, 0.9), 0.6732719012em 1.6522302435em 7px hsla(43.2388315599, 100%, 50%, 0.9), 1.4765012283em 2.2498498775em 7px hsla(353.8827062943, 100%, 50%, 0.9), 0.4757322999em 2.4347934684em 7px hsla(306.0436294409, 100%, 50%, 0.9), 0.3084876787em 1.548075152em 7px hsla(36.7586633737, 100%, 50%, 0.9), -0.2404130808em 0.5906567514em 7px hsla(135.9653021463, 100%, 50%, 0.9), 2.121026355em 1.4484113808em 7px hsla(161.7706364767, 100%, 50%, 0.9), 2.3761992904em 0.0439693891em 7px hsla(309.9901927033, 100%, 50%, 0.9), -0.2078577575em -0.4720489585em 7px hsla(86.0326118156, 100%, 50%, 0.9), 1.7959576798em -0.4031554593em 7px hsla(252.3664915525, 100%, 50%, 0.9), 0.1007595776em 0.5355593605em 7px hsla(60.1292148395, 100%, 50%, 0.9), 0.3269555104em 0.2610475448em 7px hsla(192.9988672269, 100%, 50%, 0.9), 2.4473164784em -0.0981073441em 7px hsla(300.6099291985, 100%, 50%, 0.9), 1.2335429402em 0.600919524em 7px hsla(203.9217154696, 100%, 50%, 0.9), 0.7073587197em 1.9089985726em 7px hsla(32.3540814657, 100%, 50%, 0.9), -0.3969631833em -0.1609737829em 7px hsla(30.2508118532, 100%, 50%, 0.9), 0.1344473054em 0.1195659966em 7px hsla(102.7447112526, 100%, 50%, 0.9), 0.7640171359em 1.8225869755em 7px hsla(242.6345159977, 100%, 50%, 0.9), 0.5795498658em 0.5167888342em 7px hsla(266.5218708348, 100%, 50%, 0.9), 1.5071067512em 0.6043942994em 7px hsla(233.5579344417, 100%, 50%, 0.9), 0.8591799305em 0.9409505191em 7px hsla(144.4744821869, 100%, 50%, 0.9), -0.1967229764em 1.1017594225em 7px hsla(324.0514668848, 100%, 50%, 0.9), 1.2543849882em 2.1584577202em 7px hsla(294.1072504343, 100%, 50%, 0.9), 2.0579150604em 0.7832935546em 7px hsla(191.5525136155, 100%, 50%, 0.9), 0.0127209925em 1.9488877473em 7px hsla(244.6724941757, 100%, 50%, 0.9), 0.7891004351em 1.6126095537em 7px hsla(350.848523322, 100%, 50%, 0.9), 0.4286887674em 1.3985029742em 7px hsla(181.9208231473, 100%, 50%, 0.9), -0.2658656156em 2.3913345543em 7px hsla(306.6102753867, 100%, 50%, 0.9), 2.4575788316em 2.3610300379em 7px hsla(60.7015716825, 100%, 50%, 0.9), 1.4909849636em 0.7165780884em 7px hsla(271.4765478862, 100%, 50%, 0.9), 0.7417357478em 0.1219597877em 7px hsla(67.5037518894, 100%, 50%, 0.9);
   animation-duration: 44s;
   animation-delay: -27s;
 }
 .mud-ex-bg-dot::after {
-  text-shadow: -0.3584232464em 0.0499999254em 7px hsla(205.8351955899, 100%, 50%, 0.9), 1.7901882527em 0.613783737em 7px hsla(197.4398544441, 100%, 50%, 0.9), 1.1248383584em -0.4593140999em 7px hsla(359.1154917059, 100%, 50%, 0.9), 2.0309775488em 0.1338310671em 7px hsla(265.684920644, 100%, 50%, 0.9), 2.1552182703em 1.3233870648em 7px hsla(344.7167965324, 100%, 50%, 0.9), 1.4645917841em 0.3389935788em 7px hsla(185.6488348172, 100%, 50%, 0.9), 2.0359846744em 2.1613384776em 7px hsla(325.3501021343, 100%, 50%, 0.9), 0.9316113569em 1.160499477em 7px hsla(177.8132717538, 100%, 50%, 0.9), 0.5221185605em 1.569850183em 7px hsla(113.5918829278, 100%, 50%, 0.9), 0.4849206346em 1.8195860701em 7px hsla(61.6047503776, 100%, 50%, 0.9), 2.3070397401em 0.5219672594em 7px hsla(175.4224247508, 100%, 50%, 0.9), 1.3725555077em -0.1616951232em 7px hsla(13.1190722489, 100%, 50%, 0.9), 1.8218327141em 1.9532063428em 7px hsla(28.0169399349, 100%, 50%, 0.9), 0.1938670784em 1.7306940274em 7px hsla(152.0834789352, 100%, 50%, 0.9), 2.4640259201em 0.6698735232em 7px hsla(3.1699338166, 100%, 50%, 0.9), -0.167587939em -0.3772617294em 7px hsla(47.5133894262, 100%, 50%, 0.9), 0.1079942328em -0.0991209073em 7px hsla(51.7004245113, 100%, 50%, 0.9), 0.041248021em 0.8243548217em 7px hsla(215.7252548754, 100%, 50%, 0.9), 0.9551179097em 1.521425111em 7px hsla(103.0155200085, 100%, 50%, 0.9), 1.6827514313em 2.3514256482em 7px hsla(108.1301031562, 100%, 50%, 0.9), 2.2009778085em -0.1556716971em 7px hsla(198.3898885238, 100%, 50%, 0.9), -0.3426571082em 0.8123937615em 7px hsla(355.8451777035, 100%, 50%, 0.9), 1.4604098356em 1.4514890864em 7px hsla(312.1053969522, 100%, 50%, 0.9), 0.3724768847em 1.7637913246em 7px hsla(279.9326404699, 100%, 50%, 0.9), 1.0306138461em 1.3837782962em 7px hsla(321.5531205184, 100%, 50%, 0.9), 2.4225005174em 1.9927452041em 7px hsla(26.9099913291, 100%, 50%, 0.9), -0.2209920357em 1.4268451787em 7px hsla(209.570738595, 100%, 50%, 0.9), 1.7101862029em 2.2882624033em 7px hsla(41.810587408, 100%, 50%, 0.9), 1.0785670749em 1.6605415838em 7px hsla(301.3630875535, 100%, 50%, 0.9), 0.1914525028em 0.3877699318em 7px hsla(114.2243871422, 100%, 50%, 0.9), 2.4236220916em 2.072139901em 7px hsla(312.2299855213, 100%, 50%, 0.9), 1.4698599615em 0.0937328106em 7px hsla(115.5220034198, 100%, 50%, 0.9), 1.5222914686em 1.0002040249em 7px hsla(258.9875613659, 100%, 50%, 0.9), 0.5565641104em 1.5736931529em 7px hsla(339.1001033033, 100%, 50%, 0.9), 1.9422677407em -0.3572313151em 7px hsla(123.3486791598, 100%, 50%, 0.9), 0.4400388166em 2.1744409405em 7px hsla(14.1090994171, 100%, 50%, 0.9), -0.0438524834em -0.1500063447em 7px hsla(253.9380552769, 100%, 50%, 0.9), 0.5577723799em -0.4407307191em 7px hsla(154.4837464266, 100%, 50%, 0.9), 1.418144868em 0.8393305786em 7px hsla(287.3005964413, 100%, 50%, 0.9), 1.017089694em 0.446643156em 7px hsla(85.5261580736, 100%, 50%, 0.9), -0.3755013702em 0.0921237536em 7px hsla(44.6315784152, 100%, 50%, 0.9);
+  text-shadow: 0.2473267727em -0.3351039575em 7px hsla(250.0115132532, 100%, 50%, 0.9), -0.2411766064em 0.2148593444em 7px hsla(246.6144640474, 100%, 50%, 0.9), 1.7401570717em -0.4164001616em 7px hsla(304.4635266976, 100%, 50%, 0.9), 2.3635539431em 1.8490664577em 7px hsla(208.6441751571, 100%, 50%, 0.9), 2.337132578em 1.3706422959em 7px hsla(253.3577663841, 100%, 50%, 0.9), 1.2249564129em 1.5403401382em 7px hsla(22.6764754457, 100%, 50%, 0.9), 2.0178584133em -0.2309659197em 7px hsla(119.5888673938, 100%, 50%, 0.9), -0.109380465em -0.2641417824em 7px hsla(26.011297095, 100%, 50%, 0.9), 2.3802132433em 2.2550789294em 7px hsla(314.453247997, 100%, 50%, 0.9), 2.0893737941em 2.2511524842em 7px hsla(184.9965352491, 100%, 50%, 0.9), 2.0607735046em 0.6765267515em 7px hsla(73.9918273388, 100%, 50%, 0.9), 0.1970333171em 0.6237233803em 7px hsla(317.0992265065, 100%, 50%, 0.9), 1.4840636586em 0.6791459946em 7px hsla(288.8124133312, 100%, 50%, 0.9), 0.3716682147em -0.1492172996em 7px hsla(110.5034107338, 100%, 50%, 0.9), -0.4096652277em 1.9094106621em 7px hsla(182.1991236829, 100%, 50%, 0.9), -0.1691894603em 0.7210423801em 7px hsla(102.88040709, 100%, 50%, 0.9), 1.31274333em 1.7293382032em 7px hsla(202.3456193313, 100%, 50%, 0.9), 1.5116830838em 2.2247412681em 7px hsla(93.9177850065, 100%, 50%, 0.9), -0.4587126982em 2.2348749603em 7px hsla(215.5549529398, 100%, 50%, 0.9), 2.0951840915em 0.1099080223em 7px hsla(354.1947586766, 100%, 50%, 0.9), 0.5971399205em 1.9997889219em 7px hsla(261.3771997695, 100%, 50%, 0.9), 0.8058785254em 1.6779188282em 7px hsla(290.1136535566, 100%, 50%, 0.9), 0.4930761352em 0.5413135618em 7px hsla(262.4770137087, 100%, 50%, 0.9), 1.1918045685em 0.1976876503em 7px hsla(70.0598402729, 100%, 50%, 0.9), 1.1960965174em 2.3731230483em 7px hsla(176.8277876349, 100%, 50%, 0.9), 1.7791052911em 0.9818156088em 7px hsla(278.1991256922, 100%, 50%, 0.9), 1.1509902057em 1.1887090856em 7px hsla(149.431677695, 100%, 50%, 0.9), 2.0623822672em -0.2767927741em 7px hsla(156.6074746621, 100%, 50%, 0.9), 1.1031688293em -0.0708523648em 7px hsla(15.9074157477, 100%, 50%, 0.9), 1.3918047753em 0.5735230247em 7px hsla(104.9040136456, 100%, 50%, 0.9), 0.151108438em 0.8790584925em 7px hsla(359.1589768121, 100%, 50%, 0.9), 0.213025109em -0.2809272468em 7px hsla(353.0896354, 100%, 50%, 0.9), -0.1081811961em 1.400137831em 7px hsla(151.1408432145, 100%, 50%, 0.9), 0.4161802038em -0.2614095718em 7px hsla(90.2741905372, 100%, 50%, 0.9), 2.3326178722em 1.9027301533em 7px hsla(304.6202752816, 100%, 50%, 0.9), 0.5767310762em -0.0533647611em 7px hsla(315.4593064477, 100%, 50%, 0.9), 1.590068264em 0.3849881052em 7px hsla(131.2398709541, 100%, 50%, 0.9), 1.7828419787em 1.7184629927em 7px hsla(176.499224045, 100%, 50%, 0.9), 0.143038855em 1.6204074617em 7px hsla(26.9335656115, 100%, 50%, 0.9), -0.4089312701em 1.4929684684em 7px hsla(2.4279215906, 100%, 50%, 0.9), 1.796479967em 2.0984265059em 7px hsla(10.9395117666, 100%, 50%, 0.9);
   animation-duration: 43s;
   animation-delay: -32s;
 }
@@ -5911,20 +6404,20 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.mud-dialog-height-full {
+.mud-ex-dialog-height-full {
   height: calc(100vh - 64px);
 }
-.mud-dialog-height-full .mud-dialog-actions {
+.mud-ex-dialog-height-full .mud-dialog-actions {
   position: absolute;
   bottom: 0;
   right: 0;
 }
 
-.mud-dialog-height-full-no-margin {
+.mud-ex-dialog-height-full-no-margin {
   height: 100vh;
   max-height: unset;
 }
-.mud-dialog-height-full-no-margin .mud-dialog-actions {
+.mud-ex-dialog-height-full-no-margin .mud-dialog-actions {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -5934,11 +6427,11 @@
   width: 100%;
 }
 
-.mud-dialog-position-fixed {
+.mud-ex-dialog-position-fixed {
   position: fixed;
 }
 
-.mud-dialog-actions-fixed-bottom {
+.mud-ex-dialog-actions-fixed-bottom {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -5988,16 +6481,29 @@
   display: flex;
 }
 
+.mud-ex-edit-config-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.mud-ex-edit-config-button {
+  position: absolute;
+  z-index: 3;
+  top: 0px;
+  right: 0px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+
 .snap-preview {
   position: absolute;
-  /* milchiges Glas */
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px) saturate(180%);
   -webkit-backdrop-filter: blur(10px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
   border-radius: 8px;
-  /* nur transform animieren */
   transform: scale(0);
   transform-origin: center center;
   transition: transform 200ms ease-out;
@@ -6071,7 +6577,7 @@
   border-style: solid;
 }
 
-.dialog-content-full-height > .outline-none {
+.mud-ex-dialog-content-full-height > .outline-none {
   height: 100%;
 }
 
@@ -6113,7 +6619,7 @@
 .mud-ex-mb-container ~ .mud-dialog[data-mud-extended="true"] {
     opacity: 1;
 }*/
-.mud-dialog-container-no-modal {
+.mud-ex-dialog-container-no-modal {
   display: none !important;
 }
 

@@ -1,0 +1,19 @@
+﻿
+<ApiLink Types="@_types"></ApiLink>
+
+<MudGrid Class="mt-6 mb-8">
+    <MudItem xs="12" md="9">
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
+    </MudItem>
+
+    <MudItem xs="0" md="3" Class="d-none d-md-block">
+        @if (_sections.Count > 0)
+        {
+            <MudExContentsNav @ref="contentsNav" Items="_sections.OrderBy(s => s.Order).ToList()" />
+        }
+    </MudItem>
+</MudGrid>
+
+

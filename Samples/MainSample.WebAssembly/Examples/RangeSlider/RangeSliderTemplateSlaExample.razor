@@ -1,0 +1,129 @@
+﻿@* SLA / Response Time Slider (ms) *@
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<MudText Typo="Typo.caption" Class="mt-2 mb-2">
+    @L["Response time: {0} – {1} ms", _range.Start.ToString("F0"), _range.End.ToString("F0")]
+</MudText>
+
+<MudExRangeSlider T="double"
+                  @bind-Value="_range"
+                  SizeRange="@_fullRange"
+                  ShowInputs="true"
+                  AllowWholeRangeDrag="true">
+
+    <TrackTemplate Context="ctx">
+        <div style="
+            height:100%;
+            position:relative;
+            width:100%;
+            background:var(--mud-palette-surface);
+            border-radius:4px;
+            overflow:hidden;">
+
+            @* 0–100 Fast *@
+            <div style="
+                position:absolute;
+                left:0%;
+                width:@(100.0 / 2000 * 100)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-success) 25%,transparent);">
+            </div>
+
+            @* 100–300 OK *@
+            <div style="
+                position:absolute;
+                left:@(100.0 / 2000 * 100)%;
+                width:@(200.0 / 2000 * 100)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-warning) 25%,transparent);">
+            </div>
+
+            @* 300–1000 Slow *@
+            <div style="
+                position:absolute;
+                left:@(300.0 / 2000 * 100)%;
+                width:@(700.0 / 2000 * 100)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-error) 15%,transparent);">
+            </div>
+
+            @* 1000–2000 Very Slow *@
+            <div style="
+                position:absolute;
+                left:@(1000.0 / 2000 * 100)%;
+                width:@(1000.0 / 2000 * 100)%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb,var(--mud-palette-error) 30%,transparent);">
+            </div>
+
+            <div style="position:absolute;left:5%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);">Fast</div>
+            <div style="position:absolute;left:20%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);">OK</div>
+            <div style="position:absolute;left:45%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);">Slow</div>
+            <div style="position:absolute;left:80%;top:4px;font-size:9px;color:var(--mud-palette-text-secondary);">Very slow</div>
+        </div>
+    </TrackTemplate>
+
+    <SelectionTemplate Context="ctx">
+        @{
+            string Classify(double v) => v switch
+            {
+                <= 100 => "Fast",
+                <= 300 => "OK",
+                <= 1000 => "Slow",
+                _ => "Very slow"
+            };
+        }
+        <div style="
+            height:100%;
+            width:100%;
+            background:linear-gradient(90deg,var(--mud-palette-success),var(--mud-palette-warning),var(--mud-palette-error));
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:999px;">
+            <span style="
+                color:var(--mud-palette-primary-text);
+                font-weight:600;
+                font-size:11px;
+                white-space:nowrap;
+                padding:0 10px;">
+                @($"{ctx.Value.Start:F0} – {ctx.Value.End:F0} ms ({Classify(ctx.Value.Start)} → {Classify(ctx.Value.End)})")
+            </span>
+        </div>
+    </SelectionTemplate>
+
+    <ThumbStartTemplate Context="ctx">
+        <div style="
+            width:12px;
+            height:12px;
+            background:var(--mud-palette-surface);
+            border-radius:50%;
+            border:2px solid var(--mud-palette-success);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+        </div>
+    </ThumbStartTemplate>
+
+    <ThumbEndTemplate Context="ctx">
+        <div style="
+            width:12px;
+            height:12px;
+            background:var(--mud-palette-surface);
+            border-radius:50%;
+            border:2px solid var(--mud-palette-error);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+        </div>
+    </ThumbEndTemplate>
+
+</MudExRangeSlider>
+
+@code {
+    private IRange<double> _range = new MudExRange<double>(80, 450);
+    private IRange<double> _fullRange = new MudExRange<double>(0, 2000);
+}

@@ -20,6 +20,8 @@ _{0} Demos: '{0} démos'
 --mud-palette-white: --mud-palette-white
 (currently the item is not visible): (actuellement, l’élément n’est pas visible)
 (currently the item is visible): (actuellement, l’élément est visible)
+2 Hourly steps (using StepLength): 2 étapes horaires (en utilisant StepLength)
+2 Hourly steps (using StepResolver): 2 étapes horaires (en utilisant StepResolver)
 A: Un
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Composant qui permet à l’utilisateur de sélectionner une valeur dans une liste de valeurs possibles et de l’afficher sous forme de jetons ou de liste déroulante par défaut.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Un composant qui peut être utilisé pour glisser un ChildContent du bas, du haut, de la gauche ou de la droite au survol de la souris.
@@ -33,6 +35,7 @@ A maximum of {0} files are allowed: Un maximum de {0} fichiers est autorisé
 A Popover can be used to display some content on top of another.: Un Popover peut être utilisé pour afficher du contenu au-dessus d’un autre.
 A powerful component to edit an object and its properties.: Un composant puissant pour modifier un objet et ses propriétés.
 A powerful editor that can handle json, xml or yaml content: Un éditeur puissant capable de gérer du contenu json, xml ou yaml
+A range slider component that allows selecting and manipulating a value range of type T.: Un composant curseur de plage qui permet de sélectionner et manipuler une plage de valeurs de type T.
 A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: Un composant ColorPicker simple qui hérite du MudColorPicker mais ajoute la possibilité de retarder l’événement de fermeture et d’utiliser un composant de sélection natif à partir du navigateur
 A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Composant de grille simple qui prend en charge les colonnes, les lignes et ColSpan et RowSpan pour contenir des sections.
 A SplitPanel Component: Un composant SplitPanel
@@ -100,6 +103,7 @@ Age: Âge
 agq-CM: Aghem (Cameroun)
 ak-GH: Akan (Ghana)
 Albertus: Albertus
+Alias: Alias
 Alice Johnson: Alice Johnson
 AliceBlue: AliceBlue
 Align: Aligner
@@ -132,6 +136,9 @@ AllowRubberBandSelection: AllowRubberBandSelection
 AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
 AllowSelectOnPreviewClick: AutoriserSélectionnerSur PreviewClic
 AllowVideoCapture: AllowVideoCapture
+AllowWholeRangeDrag: PermettreTotalPlageDrag
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = vrai – toute la période peut être déplacée
+AllScroll: AllScroll
 AlphaBars: AlphaBars
 Already have an account?: Vous avez déjà un compte ?
 Always: Toujours
@@ -226,6 +233,7 @@ AntiqueWhite: AntiqueWhite
 ApathyBase16: ApathieBase16
 Api: API
 API: API
+Api view component to display the methods and properties of a type: composant de vue API pour afficher les méthodes et propriétés d’un type
 API-Versions: API-versions
 AppBar: AppBar
 AppbarBackground: AppbarBackground
@@ -285,6 +293,7 @@ Are you sure?: Es-tu sûr?
 Arial: Arial
 Arial Black: Noir Arial
 Arial Narrow: Arial étroit
+AriaLabelledBy: AriaLabelledBy
 arn-CL: Mapuche (Chili)
 Arta: Art
 As Admin you can filter for users here: En tant qu’administrateur, vous pouvez filtrer les utilisateurs ici
@@ -339,6 +348,7 @@ Aug: Août
 Austin: Austin
 Austin - 73301: Austin - 73301
 Austin - 73301ender: Austin - 73301ender
+Auto: Voiture
 Auto Confirm Email?: E-mail de confirmation automatique ?
 Auto Generated Editor for TestObject: Éditeur généré automatiquement pour TestObject
 Auto Stop recording after: Arrêt automatique de l’enregistrement après
@@ -390,6 +400,7 @@ Basic: Basique
 Basic role with default permissions: Rôle de base avec autorisations par défaut
 Bauhaus 93: Bauhaus 93
 be-BY: Biélorusse (Biélorussie)
+Because time values always having a fixed size you can also use step length instead of resolvers.: Comme les valeurs de temps ont toujours une taille fixe, on peut aussi utiliser la longueur d’un pas au lieu des résolveurs.
 BeforeBegin: AvantCommencer
 BeforeEnd: AvantFin
 BeforeSearchBox: BeforeSearchBox
@@ -490,6 +501,7 @@ bs-Cyrl-BA: Bosniaque (cyrillique, Bosnie-Herzégovine)
 bs-Latn-BA: Bosniaque (latin, Bosnie-Herzégovine)
 Build amazing UIs: Créez des interfaces utilisateur incroyables
 BurlyWood: Bois robuste
+But for sure resolvers are working as well.: Mais c’est sûr que les résolveurs fonctionnent aussi.
 button: bouton
 Button: Bouton
 Button component for capturing audio and video.: Composant de bouton pour la capture audio et vidéo.
@@ -535,6 +547,7 @@ ccp-Cakm-BD: Chakma (Chakma, Bangladesh)
 ccp-Cakm-IN: Chakma (Chakma, Inde)
 ce-RU: Tchétchène (Russie)
 ceb-Latn-PH: Cebuano (Latin, Philippines)
+Cell: Cellule
 Centaur: Centaure
 Center: Centre
 CenterCenter: Centre Centre
@@ -627,6 +640,7 @@ ColorPickerView: ColorPickerView
 ColorsBase16: ColorsBase16
 ColorStops: ColorStops
 ColorTemperature: CouleurTempérature
+ColResize: ColResize
 ColSpan: ColSpan
 Column: Colonne
 Columns Affected: Colonnes touchées
@@ -640,6 +654,7 @@ Compact: Compact
 Comparer: Comparer
 Component edit capture options: Options de capture de modification de composant
 Component in Dialog: Composant dans la boîte de dialogue
+Component that captures component references from ChildContent: Composant qui capture les références composantes à partir de ChildContent
 Component to add additional adornment to a MudInput: Composant permettant d’ajouter une ornementation supplémentaire à un MudInput
 Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Composant permettant d’afficher un fichier dans une balise iframe ou object ou dans une visionneuse enregistrée qui implémente IMudExFileDisplay
 Component to display information about the current recording: Composant permettant d’afficher des informations sur l’enregistrement en cours
@@ -649,7 +664,9 @@ Component to move the ChildContent to a specific element that can defined by Ele
 Component to select a theme from a list of themes.: Composant permettant de sélectionner un thème dans une liste de thèmes.
 ComponentBaseWithState: ComponentBaseWithState
 ComponentInDialog: ComponentInDialog
+Components: Composants
 Conditional updates: Mises à jour conditionnelles
+Configuration: Configuration
 Configure list values: Configurer les valeurs de liste
 Confirm: Confirmer
 CONFIRM: CONFIRMER
@@ -670,6 +687,7 @@ Content-Type: Type de contenu
 ContentAlignment: ContentAlignment
 ContentStream: ContentStream (en anglais)
 ContentType: ContentType
+ContextMenu: MenuContextuel
 ContextMenuAction: ContextMenuAction
 Continue to {0}: Continuer à {0}
 Continuous: Continu
@@ -677,6 +695,7 @@ Contrast: Contraste
 Cooper Black: Cooper Noir
 Copperplate Gothic Bold: Plaque de cuivre gothique gras
 Copperplate Gothic Light: Cuivre Gothique Lumière
+Copy: Copier
 Copy url: Copier l’URL
 Counter: Compteur
 Country: Pays
@@ -689,6 +708,7 @@ Create powerful, flexible dock layouts — drag, drop, snap, and organize your d
 CreatedOn: Date de création
 Critical: Critique
 CropAndScale: CropAndScale (en anglais)
+Crosshair: Croix
 cs-CZ: Tchèque (Tchéquie)
 CSS Color Variables: Variables de couleur CSS
 CssVars: CssVars
@@ -701,6 +721,8 @@ Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can
 Cursor: Curseur
 CursorPositionOrigin: CursorPositionOrigin
 Custom: Coutume
+Custom fiscal year logic: Logique de l’exercice fiscal personnalisé
+Custom Templates: Modèles personnalisés
 CustomContentErrorMessage: CustomContentErrorMessage
 Customize: Personnaliser
 cy-GB: Gallois (Royaume-Uni)
@@ -764,9 +786,11 @@ Decimal value is required using {0} type!: La valeur décimale est requise à l�
 DeepPink: Rose foncé
 DeepSkyBlue: DeepSkyBlue
 Default: Faire défaut
+Default steps: Étapes par défaut
 DefaultBorderRadius: DefaultBorderRadius
 DefaultDarkBase16: Par défautDarkBase16
 DefaultLightBase16: Par défautLightBase16
+Define minimum and maximum duration for ranges as well as custom step sizes.: Définissez la durée minimale et maximale des plages ainsi que des tailles d’étape personnalisées.
 Defined: Défini
 Delay: Retarder
 DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
@@ -807,6 +831,7 @@ Demo of using explicit the MudExFileDisplayZip to show and select content inside
 Demonstration for a simple but very useful Enum Selector: Démonstration d’un sélecteur d’énumération simple mais très utile
 Demonstration of the MudExSplitter: Démonstration du MudExSplitter
 Demonstration of the quickly color select with MudExColorBubble: Démonstration de la sélection rapide des couleurs avec MudExColorBubble
+Demos: Démos
 DEMOS: DÉMOS
 Dense: Dense
 Dependent permissions required: Autorisations dépendantes requises
@@ -888,7 +913,10 @@ Do you really want to restore the database from backup '{0}'? Note that any chan
 Do you want to delete the profile picture of {0}: Voulez-vous supprimer la photo de profil de {0}
 Do you want to delete the User {0}: Voulez-vous supprimer l'{0} utilisateur
 Docco: Docco
+Dock: Néanmoins
+Dock Control: Contrôle du quai
 Docked: Amarré
+DockLayout with ObjectEdit: DockLayout avec ObjectEdit
 Document Deleted: Document supprimé
 Document Extended Attributes: Attributs étendus du document
 Document Management: Gestion des documents
@@ -967,6 +995,8 @@ Edit: Éditer
 Edit {0}: Modifier {0}
 Edit a complex Model with included Collection of users: Modifier un modèle complexe avec la collection d’utilisateurs incluse
 Edit Audio Constraints: Modifier les contraintes audio
+Edit Configuration: Modifier la configuration
+Edit configuration for component in this sample: Modifier la configuration du composant dans cet exemple
 Edit Current Theme: Modifier le thème actuel
 Edit data in dialog: Modifier les données dans la boîte de dialogue
 Edit in TryMudEx: Modifier dans TryMudEx
@@ -1113,6 +1143,7 @@ en-ZW: Anglais (Zimbabwe)
 Enable Disqus: Activer Disqus
 enables or disables virtualization.: Active ou désactive la virtualisation.
 End: Fin
+EndTooltipPosition: FinTooltipPositionFin
 English: Anglais
 Engravers MT: Graveurs MT
 Enter email and your new password here: Entrez votre adresse e-mail et votre nouveau mot de passe ici
@@ -1144,6 +1175,7 @@ Eras Bold ITC: Époques Bold ITC
 Eras Demi ITC: Eras Demi ITC
 Eras Light ITC: Époques légères ITC
 Eras Medium ITC: Époques Medium ITC
+EResize: EResize
 Error: Erreur
 ErrorAnimation: ErrorAnimation
 ErrorContrastText: ErrorContrastText
@@ -1186,6 +1218,7 @@ eu-ES: Basque (Espagne)
 EvaBase16: EvaBase16
 EvaDimBase16: EvaDimBase16
 ewo-CM: Ewondo (Cameroun)
+EwResize: EwResize
 ExcelSheet.xlsx: ExcelSheet.xlsx
 Expand &nbsp; <b>not</b> &nbsp; loaded nodes: Développer &nbsp; les nœuds <b>non</b> &nbsp; chargés
 Expand all nodes: Développer tous les nœuds
@@ -1230,6 +1263,7 @@ FallBackInIframe: FallBackInIframe
 False: Faux
 FAQs: Foire aux questions
 Far: Loin
+Featured Components: Composants en vedette
 Features: Fonctionnalités
 Feb: Fév
 Felix Titling: Titre de Félix
@@ -1297,6 +1331,7 @@ FilterMode: Mode de filtre
 FilterMultiple: FiltreMultiple
 FilterPlaceholder: FilterPlaceholder
 Filters: Filtres
+Filters in dashboards or reports: Filtres dans les tableaux de bord ou rapports
 FilterVariant: FiltreVariante
 Fiona Gallagher: Fiona Gallagher
 Firebrick: Brique réfractaire
@@ -1310,6 +1345,7 @@ Flat List: Liste plate
 FlatBase16: Base Plate16
 FlatList: Liste plate
 FlexEnd: FlexEnd (en anglais)
+Flexible data types: Types de données flexibles
 FlexStart: FlexStart
 Flip: Chiquenaude
 FlipAlways: FlipAlways
@@ -1339,6 +1375,7 @@ ForceShrink: ForceShrink
 ForestGreen: Vert forêt
 Forgot password?: Mot de passe oublié ?
 Format: Format
+Forward: En avant
 Foundation: Fondation
 fr-029: Français (Caraïbes)
 fr-BE: Français (Belgique)
@@ -1442,6 +1479,8 @@ GoogleDriveClientId: GoogleDriveClientId
 GoogleLightBase16: Base GoogleLightBase16
 Goudy Old Style: Goudy à l’ancienne
 Goudy Stout: Goudy Stout
+Grab: Saisir
+Grabbing: Accaparement
 Gradient: Pente
 GradientDark: DégradéSombre
 GradientForeground: DégradéPremier plan
@@ -1529,6 +1568,7 @@ Hello from dialog 1: Bonjour à partir de la boîte de dialogue 1
 Hello from dialog sample page: Bonjour à partir de la page d’exemple de boîte de dialogue
 Hello World: Salut tout le monde
 Hello...: Bonjour...
+Help: Aide
 HelperId: HelperId
 HelperText: Texte d’aide
 HelperTextOnFocus: HelperTextOnFocus
@@ -1550,6 +1590,7 @@ Hide: Cacher
 HideContentWhenCollapsed: HideContentWhenCollapsed
 HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
 High Tower Text: Texte de la haute tour
+Highlights: Faits saillants
 HighlightSearch: HighlightSearch
 Hinge: Gond
 Home: Domicile
@@ -1558,6 +1599,7 @@ HopscotchBase16: MarelleBase16
 HorizonDarkBase16: HorizonDarkBase16
 HorizonLightBase16: HorizonLightBase16
 Horizontal: Horizontal
+Horizontal & vertical orientation: Orientation horizontale et verticale
 HouseNumber: Nombre
 Houston: Houston
 Houston - 77001: Houston - 77001
@@ -1602,6 +1644,7 @@ Idea: Idée
 Identifier: Identificateur
 If this is set a photo will be taken instead of a video.: Si cette option est définie, une photo sera prise à la place d’une vidéo.
 If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Si vous aimez ce package, s’il vous plaît mettez-le en vedette ⭐ sur Github et partagez-le avec vos amis. Si ce n’est pas le cas, vous pouvez quand même donner une étoile et me faire savoir ce que je peux améliorer pour le rendre meilleur pour vous.
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: Si vous n’avez besoin que d’un curseur temporel et que vous ne souhaitez pas créer vos propres modèles, vous pouvez aussi utiliser le composant dédié {0} à la place.
 If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Si vous définissez ces options par défaut. Cette option sera utilisée pour toutes les boîtes de dialogue où aucune option n’est spécifiée. Continuer?
 ig-NG: Igbo (Nigéria)
 Ignore: Ignorer
@@ -1618,6 +1661,7 @@ Impact: Impact
 Import: Importation
 ImportExportIcon: ImportExportIcon
 In: Dans
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: Dans cet exemple, vous contrôlez une plage numérique simple allant de 0 à 100. La taille du pas est fixée à 5 pour permettre des intervalles grossiers.
 In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: Dans cet exemple, les données sont chargées dynamiquement dès que l’élément apparaît pour la première fois dans la vue. Le composant prend en charge deux emplacements de contenu
 In this sample you are forced to pick an user: Dans cet exemple, vous êtes obligé de choisir un utilisateur
 In this sample you are forced to pick some users: Dans cet exemple, vous êtes obligé de choisir des utilisateurs
@@ -1658,6 +1702,7 @@ InputMode: Mode d’entrée
 InputStyle: Style d’entrée
 InputType: Type d’entrée
 Inset: Introduire
+Instance: Instance
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Résultats intermédiaires
@@ -1672,6 +1717,7 @@ is-IS: Islandais (Islande)
 IsActive: IsActive
 IsblEditorDark: IsblEditorDark
 IsblEditorLight: IsblEditorLight
+IsInverted: IsInverted
 IsMouseOverChip: IsMouseOverChip
 ISO: ISO
 IsOpen: IsOpen
@@ -1811,6 +1857,7 @@ Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): 
 LegacyRender: LegacyRender
 Legend: Légende
 LemonChiffon: Mousseline de soie au citron
+Length: Longueur
 LetterSpacing: Espacement des lettres
 lg-UG: Ganda (Ouganda)
 Library: Bibliothèque
@@ -1958,6 +2005,7 @@ MaterialDarkerBase16: MatérielDarkerBase16
 MaterialLighterBase16: MatérielBriquet16
 MaterialPalenightBase16: MatérielPalenightBase16
 MaterialVividBase16: MatérielVividBase16
+MathAdapter: MathAdapter
 Matura MT Script Capitals: Majuscules de l’écriture Majuscules de la maturité MT
 MaxCaptureTime: MaxCaptureTime
 MaxChips: MaxChips
@@ -1970,6 +2018,7 @@ MaximizeButton: MaximizeButton
 MaxItems: MaxItems
 MaxItemWidth: MaxItemWidth
 MaxLength: MaxLength
+MaxLength = 730 days – longest allowed period: MaxDurée = 730 jours – période la plus longue autorisée
 MaxLuminance: MaxLuminance
 MaxMultipleFiles: MaxMultipleFiles
 MaxRecordingTime: Temps d’enregistrement maximal
@@ -2012,13 +2061,17 @@ Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod Périphériqu
 Millimeters: Millimètres
 MimeRestrictionType: MimeRestrictionType
 MimeTypes: Types de mime
+Min/max length & step size: Longueur min/max & taille de pas
 MinDecibels: MinDécibels
 MinFrequency: MinFrequency
 MinHeight: MinHeight
 Mini: Mini
 MinimizeButton: MinimizeButton
+MinLength: MinLength
+MinLength = 60 days – shortest allowed period: Durée minimale = 60 jours – période la plus courte autorisée
 MinLuminance: MinLuminance
 MintCream: MentheCrème
+Minutely steps: Petits pas
 MinZoomLevel: MinZoomLevel
 Mirror: Miroir
 Misc: Divers
@@ -2031,6 +2084,7 @@ mn-MN: Mongol (Mongolie)
 mn-Mong-CN: Mongol (Mongol, Chine)
 mn-Mong-MN: Mongol (Mongol, Mongolie)
 mni-IN: Manipuri (Inde)
+Mobile UIs with limited horizontal space: Interfaces mobiles avec un espace horizontal limité
 Moccasin: Mocassin
 MochaBase16: MochaBase16
 Modal: Capital
@@ -2057,8 +2111,11 @@ MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move: Bouger
 Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Déplacez et redimensionnez les éléments de la grille directement par glisser-déposer - concevez votre mise en page de manière dynamique au moment de l’exécution.
 MoveContent: MoveContent (en anglais)
+MoveCursor: MoveCursor
+MovingCursor: MovingCursor
 mr-IN: Marathi (Inde)
 MS Outlook: MS Outlook
 MS Reference Sans Serif: MS Reference Sans Serif
@@ -2112,6 +2169,7 @@ MudDrawerHeader: MudDrawerHeader
 MudDynamicTabs: MudDynamicTabs
 MudElement: Élément Boue
 MudEx Components: Composants MudEx
+MudEx Range Slider – Interactive range selection: MudEx Range Slider – Sélection interactive de portée
 MudExAdditionalAdornment: MudExAdditionalOrnement
 MudExAppearance: MudExApparence
 MudExAppLoader: MudExAppLoader
@@ -2139,6 +2197,7 @@ MudExCultureSelect: MudExCultureSélectionner
 MudExDialog: MudExDialog
 MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog est le composant à utiliser lorsque vous souhaitez afficher une boîte de dialogue alignée dans votre page avec toutes les DialogExtensions.
 MudExDivider: MudExDivider (en anglais)
+MudExDockLayout: MudExDockLayout
 MudExDropBoxFilePicker: MudExDropBoxFilePicker
 MudExEnumSelect: MudExEnumSelect
 MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
@@ -2157,6 +2216,8 @@ MudExGoogleFilePicker: MudExGoogleFilePicker
 MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar est un MudAvatar qui utilise automatiquement l’image de profil de gravatar pour une adresse e-mail
+MudExGravatarCard: MudExGravatarCard
+MudExGravatarCard displays a Gravatar profile as card: MudExGravatarCard affiche un profil Gravatar en tant que carte
 MudExGrid: MudExGrid (en anglais)
 MudExGrid — Now with Layout Editing: MudExGrid — Maintenant avec l’édition de mise en page
 MudExGrid Enhanced: MudExGrid amélioré
@@ -2189,13 +2250,17 @@ MudExOneDriveFilePicker: MudExOneDriveFilePicker
 MudExpansionPanel: BoueExpansionPanel
 MudExpansionPanels: BoueExpansionPanneaux
 MudExPicker: MudExPicker
+MudExPicker Tree: MudExPicker Tree
 MudExPickerBase<T>: MudExPickerBase<T>
 MudExPopover: MudExPopover (en anglais)
 MudExPromptDialog: MudExPromptDialog
 MudExPromptDialog Component: MudExPromptDialog, composant
 MudExPropertyEdit: MudExPropertyModifier
+MudExRangeSlider<T>: MudExRangeSlider<T>
 MudExSelect: MudExSelect (en anglais)
 MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect peut être utilisé pour sélectionner un ou plusieurs éléments d’une collection pouvant être bindeable. De plus, ce composant prend en charge toutes les animations telles que les dialogues ou MudExPopover.
+MudExSelect Item template.: Modèle d’objet MudExSelect.
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
 MudExSelect<T>: MudExSelect (en anglais)<T>
 MudExSelectItem is a select item for MudExSelect.: MudExSelectItem est un élément de sélection pour MudExSelect.
 MudExSelectItem<T>: MudExSelectItem<T>
@@ -2347,6 +2412,8 @@ nds-NL: Bas allemand (Pays-Bas)
 ne-IN: Népalais (Inde)
 ne-NP: Népalais (Népal)
 NebulaBase16: NebulaBase16
+NeResize: NeResize
+NeswResize: NeswResize
 Never: Jamais
 New: Nouveau
 NEW: NOUVEAU
@@ -2887,6 +2954,7 @@ No space available: Pas d’espace disponible
 NoChips: NoChips
 NodeBorderRadius: NodeBorderRadius
 NodePadding: Remplissage des nœuds
+NoDrop: NoDrop
 NoHeader: NoHeader
 NoIcon: NoIcon
 NoModalDialogs: NoModalDialogs
@@ -2900,6 +2968,7 @@ Not allowed to Delete this user: Non autorisé à supprimer cet utilisateur
 Not Allowed.: Non autorisé.
 Not connected: Non connecté
 Not Modal Dialogs: Boîtes de dialogue non modales
+NotAllowed: Interdit
 Note - Media options can't changed after a screen is selected: Remarque - Les options multimédias ne peuvent pas être modifiées après la sélection d’un écran
 NoteLabels: RemarqueÉtiquettes
 NotFoundMessage: La page que vous cherchiez n’existe pas.
@@ -2913,13 +2982,17 @@ NoWrap: NoWrap
 npm-example-0.0.20.tgz: npm-exemple-0.0.20.tgz
 nqo-GN: N’Ko (Guinée)
 nr-ZA: Ndebele du Sud (Afrique du Sud)
+NResize: NResize
 nso-ZA: Sesotho sa Leboa (Afrique du Sud)
+NsResize: NsResize
 Nuget Package source: Source du package NuGet
 Nullable enum: Énumération nullable
 Nullable Flags Enum: Nullable Flags Enum
 Number: Nombre
 numeric: numérique
 nus-SS: Nuer (Soudan du Sud)
+NwResize: NwResize
+NwseResize: NwseResize
 nyn-UG: Nyankole (Ouganda)
 Object Edit in Dialog: Modifier l’objet dans la boîte de dialogue
 ObjectEdit: ObjetModifier
@@ -3021,6 +3094,7 @@ Overview: Aperçu
 Owner: Propriétaire
 pa-Arab-PK: Pendjabi (arabe, Pakistan)
 pa-IN: Pendjabi (Inde)
+Page_Test: Page_Test
 Palatino: Palatin
 Palatino Linotype: Palatino Linotype
 PaleGreen: Vert pâle
@@ -3106,6 +3180,7 @@ Placeholder: Espace réservé
 Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Jouez avec MudBlazor et MudBlazor.Extensions dans un éditeur de code en ligne
 Playbill: Playbill
 Player: Joueur
+Playground: Terrain de jeu
 Please confirm your account by <a href='{0}'>clicking here</a>.: Veuillez confirmer votre compte en <a href='{0}'>cliquant ici</a>.
 Please enter your name: Veuillez entrer votre nom
 Please reset your password by <a href='{0}'>clicking here</a>.: Veuillez réinitialiser votre mot de passe en <a href='{0}'>en cliquant ici</a>.
@@ -3114,6 +3189,7 @@ Please upload your personal qualifications and references that confirm your pers
 Please Wait: Veuillez patienter
 PleaseSelect: S’il vous plaîtSélectionnez
 Plum: Prune
+Pointer: Pointeur
 Points: Aiguillage
 PointsOfInterest: Points d’intérêt
 Pojoaque: Pojoaque
@@ -3131,6 +3207,7 @@ PorpleBase16: PorpleBase16
 Portrait: Portrait
 Position: Position
 Position/Size Sample: Position/Taille de l’échantillon
+Possibilities: Possibilités
 PostalCode: Code postal
 PowderBlue: Bleu poudré
 Powerful component to edit a set of items and their properties.: Composant puissant pour modifier un ensemble d’éléments et leurs propriétés.
@@ -3176,6 +3253,7 @@ Profile picture added.: Photo de profil ajoutée.
 Profile picture deleted.: Photo de profil supprimée.
 Profile updated: Profil mis à jour
 ProgramingSkills: ProgrammationCompétences
+Progress: Progrès
 Property1: Propriété1
 Property10: Propriété10
 Property11: Propriété11
@@ -3261,6 +3339,7 @@ RailscastsBase16: RailscastsBase16
 Rainbow: Arc-en-ciel
 Random: Aléatoire
 RandomColorUpdateDelay: RandomColorUpdateDelay
+RangeSlider: RangeSlider
 RarArchive.rar: RarArchive.rar
 Rate: Taux
 Rate must be greater than 0: Le taux doit être supérieur à 0
@@ -3343,6 +3422,7 @@ Reset view: Réinitialiser la vue
 ResetButtonIcon: ResetButtonIcon
 ResetToDefaultFirst: ResetToDefaultFirst
 Resizeable: Redimensionnable
+ResizeCursor: ResizeCursor
 ResizeMode: RedimensionMode
 Resources: Ressources
 Responsive: Sensible
@@ -3422,6 +3502,7 @@ RoundBars: Barres rondes
 Rounded: Arrondi
 Routeros: Routeurs
 Row: Ramer
+RowResize: RowResize
 RowSpan: RowSpan
 RowsPerPageString: Lignes par page
 RoyalBlue: Bleu royal
@@ -3434,6 +3515,8 @@ ru-UA: Russe (Ukraine)
 RubberBand: Élastique
 RubberBandColor: RubberBandColor
 RubberBandStyle: RubberBandStyle
+Run: Courir
+Run this sample on try.mudex.org online: Faites passer cet exemple en ligne try.mudex.org
 Runic MT Condensed: Runic MT Condensé
 Runtime: Duree
 Russian: Russe
@@ -3563,9 +3646,11 @@ SelectedItemColor: SelectedItemColor
 SelectedRequests: SelectedRequests
 SelectedValues: Valeurs sélectionnées
 Selecting: Sélection
+SelectionColor: SelectionColor
 SelectionList: Liste de sélection
 SelectionMode: Mode de sélection
 SelectionModeIcon: SelectionModeIcône
+SelectionTemplate: SelectionTemplate
 SelectItemsMode: SélectionnerItemsMode
 SelectorsForIgnoreBlur: SélecteursForIgnoreBlur
 SelectorSize: SélecteurTaille
@@ -3576,6 +3661,7 @@ Send: Envoyer
 Send confirmation email: Envoyer un e-mail de confirmation
 Sensitivity: Sensibilité
 Sep: sept.
+SeResize: SeResize
 Server restarted successfully: Le serveur a redémarré avec succès
 ses-ML: Koyraboro Senni (Mali)
 Set as Default options for all Dialogs: Définir comme options par défaut pour toutes les boîtes de dialogue
@@ -3600,6 +3686,7 @@ shi-Tfng-MA: Tachelhit (Tifinagh, Maroc)
 Show: Montrer
 Show As Dialog: Boîte de dialogue Afficher en tant que
 Show as Tree: Afficher en tant qu’arbre
+Show code: Code de l’émission
 Show Demo: Afficher la démo
 Show flat: Afficher l’appartement
 Show info: Afficher les infos
@@ -3657,6 +3744,7 @@ ShowSliders: AfficherDiaporamas
 ShowSpectrumOnRecording: ShowSpectrumOnRecording
 ShowThemeColors: ShowThemeColors
 ShowToolbar: AfficherBarre d’outils
+ShowTooltip: ShowTooltip
 ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
 ShowVisualiser: AfficherVisualiser
 ShowZoomInButton: AfficherZoomInButton
@@ -3664,6 +3752,7 @@ ShowZoomOutButton: AfficherZoomOutButton
 ShrinkLabel: Étiquette rétractable
 si-LK: Cinghalais (Sri Lanka)
 Side: Côté
+Side filter panels in search or analytics UIs: Panneaux de filtres latéraux dans les interfaces de recherche ou d’analyse
 Sienna: Sienna
 Sign In: Connexion
 Sign Up: S’enregistrer
@@ -3694,6 +3783,8 @@ SimulateWithRandomData: SimulateWithRandomData
 Single: Célibataire
 SingleExpand: SingleExpand
 Size: Taille
+SizeRange: TailleGamme
+SizeRange = 0–100: TaillePlage = 0–100
 sk-SK: Slovaque (Slovaquie)
 Skeleton: Squelette
 SkipSeparator: SkipSeparator
@@ -3763,6 +3854,7 @@ sr-Latn-RS: Serbe (latin, serbe)
 sr-Latn-XK: Serbe (latin, Kosovo)
 Src: Src
 Srcery: Srcery
+SResize: SResize
 ss-SZ: siSwati (Eswatini)
 ss-ZA: siSwati (Afrique du Sud)
 ssy-ER: Saho (Érythrée)
@@ -3778,6 +3870,7 @@ Start Recording: Démarrer l’enregistrement
 Start recording after: Démarrer l’enregistrement après
 Start/Stop selection: Sélection Start/Stop
 Starts in {0}: Commence dans {0}
+StartTooltipPosition: StartTooltipPosition
 State: État
 Static: Statique
 Static card.: Carte statique.
@@ -3785,6 +3878,13 @@ Static item: Objet statique
 Status: Statut
 SteelBlue: SteelBlue
 Stencil: Pochoir
+Step size of 5: Taille de pas de 5
+StepLength: Longueur du pas
+StepLength = 5 – values in steps of 5: StepLength = 5 – valeurs par étapes de 5
+StepResolver: StepResolver
+StepResolvers.DateOnly.Quarterly: StepResolvers.DateOnly.Trimestriel
+StepResolvers.DateOnly.Weekly: StepResolvers.DateOnly.Hebdomadaire
+StepResolvers.TimeOnly: StepResolvers.TimeOnly
 Stereo: Stéréo
 Steve Rogers: Steve Rogers
 Store: Boutique
@@ -3876,7 +3976,9 @@ SummerfruitDarkBase16: Fruit d’étéDarkBase16
 SummerfruitLightBase16: Fruit d’étéLightBase16
 Sunburst: Sunburst
 Super sample Content text.: Super exemple de texte de contenu.
+Supercharge your MudBlazor applications with powerful extensions: Boostez vos applications MudBlazor avec de puissantes extensions
 Support: Soutien
+Supports int and DateTime (other types via generics are possible).: Prend en charge l’int et le DateTime (d’autres types via génériques sont possibles).
 Surface: Surface
 Surname: Nom de famille
 sv-AX: Suédois (Îles Åland)
@@ -3894,12 +3996,14 @@ Swing: Balançoire
 Switch: Interrupteur
 Switch expand button position: Changer la position du bouton d’expansion
 Switch overlay source: Changer de source de superposition
+SwResize: SwResize
 Symbol: Symbole
 SynthMidnightTerminalDarkBase16: SynthéMidnightTerminalDarkBase16
 SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
 syr-SY: Syriaque (Syrie)
 System: Système
 System Settings: Paramètres système
+T = int – numeric range: T = int – plage numérique
 T3024Base16: Réf. T3024Base16
 ta-IN: Tamoul (Inde)
 ta-LK: Tamoul (Sri Lanka)
@@ -3929,6 +4033,7 @@ Teal: Sarcelle
 tel: Tél
 Telephone: Téléphone
 TemplateClass: Classe de modèle
+Templates: Modèles
 Temporary: Temporaire
 TenderBase16: TenderBase16 (en anglais)
 teo-KE: Teso (Kenya)
@@ -3983,8 +4088,22 @@ The following permission is also required for permission {1}: L’autorisation s
 The maximum file size is 10 MB: La taille maximale du fichier est de 10 Mo
 The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: Le MudExThemeEdit est un outil robuste et polyvalent conçu pour faciliter efficacement l’édition d’un ou plusieurs thèmes ou préréglages. Il s’adapte intrinsèquement au mode sombre, au mode clair ou à une combinaison des deux. De plus, il prend en charge les classes dérivées de MudTheme, ainsi que les propriétés personnalisées qui lui sont inhérentes, fournissant ainsi une solution complète et flexible pour tous vos besoins d’édition de thème.
 The Plugin '{0}' may be able to help: Le plugin '{0}' peut être en mesure de vous aider
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: Le curseur de plage peut aussi être utilisé verticalement – idéal pour les barres latérales ou les zones de filtres compactes.
 The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: L’exemple est le même que celui de l’autre exemple FileDisplay, à la différence qu’aucune URL n’est utilisée. Au lieu de cela, les flux sont chargés et utilisés.
 The server is just restarting. Please wait until the connection has been restored: Le serveur vient de redémarrer. Veuillez patienter jusqu’à ce que la connexion ait été rétablie
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: Le morceau met en avant ces groupes et les étiquette, tandis que le modèle de sélection affiche l’intervalle de prix choisi en utilisant le format de monnaie de la culture actuelle.
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: Le morceau est divisé en groupes d’âge courants tels que « U18 », « 18–25 », « 26–35 », etc., et le modèle de sélection affiche exactement la tranche d’âge comme « 18 – 35 ans ».
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: La piste est divisée en classes de réponse telles que Rapide, OK, Lent et Très lent, et l’étiquette de sélection affiche à la fois la plage numérique et sa classification, par exemple « 80 – 450 ms (Rapide → Lent) ».
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: La piste est divisée en bandes de temps représentant différents shifts, et le modèle de sélection affiche la fenêtre horaire choisie au format 24 heures.
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: La piste est rendue avec un TrackTemplate personnalisé, la plage sélectionnée avec un SelectionTemplate, et les thumbs avec des ThumbStartTemplate et ThumbEndTemplate personnalisés.
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: La piste est divisée en segments vert, jaune et rouge, et l’étiquette de sélection affiche la plage numérique ainsi qu’une classification qualitative telle que « Faible », « Moyen » ou « Élevé ».
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: La piste affiche les blocs de l’exercice et leurs trimestres, et l’étiquette de sélection affiche des plages fiscales telles que « FY 2022 – FY 2024 » ou « FY 2023 Q2 – Q4 » selon ce qui a été sélectionné.
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: Le morceau affiche des marqueurs mensuels et des ticks hebdomadaires, tandis que le modèle de sélection résume la sélection sous forme d’une plage de semaines calendaires telles que « KW 2 – KW 22 ».
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: La piste affiche tous les niveaux côte à côte et le modèle de sélection affiche une étiquette comme « Jour – Mois », que vous pouvez utiliser pour contrôler l’agrégation des données dans les graphiques ou rapports.
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: Le morceau affiche des ticks et des étiquettes horaires toutes les quelques heures, tandis que le modèle de sélection affiche la période choisie comme un label compact.
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: Le morceau visualise tous les jours du lundi au dimanche, met en avant les week-ends et l’étiquette de sélection affiche des noms amicaux tels que « du lundi au vendredi ».
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: Le morceau visualise les années et leurs trimestres, et l’étiquette de sélection s’adapte selon la plage choisie, par exemple « Q2 2022 – Q3 2023 » ou simplement « Q1 – Q3 » lorsque l’année est la même.
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: Le morceau met visuellement en valeur ces bandes de service, tandis que le modèle de sélection affiche la plage de jours exacte, par exemple « 4 – 9 jours ».
 The user "{0}" just changed some of this data: L’utilisateur « {0} » vient de modifier certaines de ces données
 The user {0} has been logged off: L’utilisateur {0} a été déconnecté
 The User {0} has just edited, created or deleted entries here. You should reload the data: L’utilisateur {0} vient de modifier, de créer ou de supprimer des entrées ici. Vous devez recharger les données
@@ -4013,6 +4132,22 @@ This demo uses the IDialogEventService to check resize or dragged and stores the
 This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Cette démonstration illustre le composant MudExThemeEdit qui utilise en interne MudExObjectEdit et MudExThemeSelect pour l’édition de thème
 This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Cette démo montre la manière recommandée d’utiliser MudExAdditionalAdornment avec l’utilisation des RenderFragments 'For' et 'ChildContent'
 This dialog can confirmed when slider value is greater then 10: Cette boîte de dialogue peut être confirmée lorsque la valeur du curseur est supérieure à 10
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: Cet exemple illustre une chronologie personnalisée de l’exercice financier où l’exercice ne commence pas le 1er janvier.
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: Cet exemple démontre une plage de temps sur plusieurs années avec un comportement d’étape personnalisé. Avec un StepResolver, vous définissez comment le curseur s’attache (par exemple à des mois, des trimestres ou des heures).
+This example demonstrates a TimeOnly range slider.: Cet exemple démontre un curseur de plage TimeOnly.
+This example demonstrates a TimeOnly-based range slider with minute resolution.: Cet exemple démontre un curseur de plage basé sur TimeOnly avec une résolution minute.
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: Cet exemple illustre un curseur de prix ou de gamme d’économie avec des segments sémantiques tels que Budget, Standard, Premium et High-End.
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: Cet exemple associe les valeurs entières aux jours de la semaine et transforme le curseur de plage en un sélecteur jour de semaine.
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: Cet exemple représente des niveaux de zoom ou d’agrégation abstraits tels que Heure, Jour, Semaine, Mois et Année.
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: Cet exemple montre une plage de dates allant de 2015 à la fin de 2022. L’utilisateur peut choisir une période d’au moins 60 jours et au maximum 2 ans. La taille des pas est d’un jour.
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: Cet exemple montre un curseur de plage basé sur des pourcentages pouvant être utilisé pour l’utilisation, la capacité ou les niveaux de risque.
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: Cet exemple montre un curseur de plage basé sur le temps seul, adapté aux scénarios de planification des shifts tels que les shifts tôt, tard et de nuit.
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: Cet exemple montre comment vous pouvez utiliser des modèles personnalisés pour transformer le MudExRangeSlider en un contrôle de type chronologie avec des marqueurs d’année et de mois.
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: Cet exemple vise les scénarios SLA et temps de réponse à l’aide d’un curseur de distance basé sur la milliseconde.
+This example turns the range slider into a quarter selector over multiple years.: Cet exemple transforme le curseur de la portée en un sélecteur de quarts sur plusieurs années.
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: Cet exemple utilise un curseur de plage entière pour représenter les temps de transit en jours, segmentés en niveaux de service tels qu’Express, Standard et Economy/Sea.
+This example uses an integer-based range slider to represent age ranges and demographic bands.: Cet exemple utilise un curseur de plage basé sur des entiers pour représenter les tranches d’âge et les bandes démographiques.
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: Cet exemple utilise DateOnly et des étapes hebdomadaires pour construire un sélecteur de plage basé sur la semaine avec les numéros de semaine du calendrier ISO.
 This is a Json representation of the TestModel. This is ignored for Export and Import: Il s’agit d’une représentation Json du TestModel. Ceci est ignoré pour l’exportation et l’importation
 This is a simple information dialog that closes after {0} seconds: Il s’agit d’une simple boîte de dialogue d’information qui se ferme au bout de {0} secondes
 This is a simple information dialog that closes after 0 seconds: Il s’agit d’une simple boîte de dialogue d’information qui se ferme au bout de 0 seconde
@@ -4024,8 +4159,14 @@ This is a simple information dialog that closes after 5 seconds: Il s’agit d�
 This is an Administrator Only View.: Il s’agit d’une vue réservée aux administrateurs.
 This is the MudEx Default theme: Il s’agit du thème par défaut de MudEx
 This is the sample Popover. In general it inherits the original MudPopover.: Il s’agit de l’échantillon Popover. En général, il hérite du MudPopover original.
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: Cela est utile pour configurer des créneaux horaires quotidiens tels que les heures de bureau, les fenêtres de maintenance ou les créneaux de réservation.
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: Cela est utile pour les filtres produits, les sélecteurs de budget ou toute interface utilisateur où les utilisateurs choisissent une fourchette de prix de manière guidée visuellement.
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: Cela est utile pour les plannings récurrents, les fenêtres de disponibilité ou les modes de livraison définis chaque semaine.
 This one card is still added without an corresponding item.: Cette carte est toujours ajoutée sans objet correspondant.
 This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Cela passe en tant que méthode aux options de la boîte de dialogue. La boîte de dialogue ne se fermera pas si la méthode renvoie false. Le résultat doit être un bool ou un Task&lt;bool&gt;
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: Ce schéma convient bien aux tableaux de bord analytiques où les utilisateurs peuvent modifier dynamiquement la granularité des données affichées.
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: Ce schéma est utile pour les applications commerciales et financières où la déclaration est alignée sur les exercices fiscaux plutôt que sur les années civiles.
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: Ce schéma est idéal lorsque les utilisateurs réfléchissent en semaines plutôt qu’en dates précises, par exemple dans la planification, le reporting ou les aperçus des sprints.
 This photo was taken in a small village in Istra Croatia.: Cette photo a été prise dans un petit village d’Istra, en Croatie.
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Ce sélecteur apporte des animations, de meilleurs comportements et une boîte de dialogue qui prend en charge toutes les DialogOptions. Pour créer votre propre composant de sélecteur, il faut l’hériter de MudExPickerBase, ou pour simplement utiliser du contenu simple, utilisez MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Cet exemple illustre l’utilisation de MudExCaptureService
@@ -4034,13 +4175,20 @@ This sample just shows how easily you can combine the MudExPicker with MudExTree
 This sample uses the IDialogEventService to cancel the dialog close: Cet exemple utilise IDialogEventService pour annuler la boîte de dialogue fermer
 This sample uses the options for a can close callback: Cet exemple utilise les options d’un rappel can close
 This section can be placed inside a MudExGrid component.: Cette section peut être placée à l’intérieur d’un composant MudExGrid.
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: Ce modèle est particulièrement utile dans les scénarios logistiques et d’expédition où les délais de livraison sont exprimés en plages de jours.
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: Ce modèle est parfaitement adapté à l’analytique, au ciblage d’audience ou à toute interface utilisateur où les utilisateurs travaillent avec des tranches d’âge.
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: Ce modèle fonctionne bien dans la surveillance, l’observabilité ou les tableaux de bord API où les plages de latence doivent être interprétées rapidement.
 Thistle: Chardon
 ThrottleInterval: ThrottleInterval
+ThumbColor: ThumbColor
+ThumbEndTemplate: ThumbEndTemplate
+ThumbStartTemplate: ThumbStartTemplate
 ti-ER: Tigrinya (Érythrée)
 ti-ET: Tigrinya (Ethiopie)
 tig-ER: Tigre (Érythrée)
 Tilt: Pencher
 Time: Heure
+TimeOnly: TimeOnly
 Times: Fois
 Times New Roman: Times New Roman
 TimeSeries: Séries temporelles
@@ -4096,6 +4244,7 @@ Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
 tr-CY: Turc (Chypre)
 tr-TR: Turc (Turquie)
 Trace: Trace
+TrackColor: TrackColor
 TrackInfoPosition: TrackInfoPosition
 TrackList: Liste des pistes
 TrackListBehaviour: TrackListBehaviour
@@ -4104,6 +4253,8 @@ TrackListCoverImage: TrackListCoverImage
 TrackListMode: TrackListMode
 TrackListPosition: TrackListPosition
 TrackListToggleButtonPosition: TrackListToggleButtonPosition
+TrackStyle: TrackStyle
+TrackTemplate: TrackTemplate
 Trail Details: Détails du sentier
 TransformOrigin: TransformOrigin
 Translations: Traductions
@@ -4113,6 +4264,7 @@ Transparent: Transparent
 Trebuchet MS: Trébuchet MS
 TreeView: Vue de l’arbre
 TreeView component that renders a tree structure of items.: TreeView qui affiche une structure arborescente d’éléments.
+Treeview in Picker: Treeview à Picker
 TreeViewBreadcrumb: TreeViewFil d’Ariane
 TreeViewCardGrid: TreeViewCardGrid
 TreeViewDefault: TreeViewPar défaut
@@ -4185,10 +4337,15 @@ ur-IN: Ourdou (Inde)
 ur-PK: Ourdou (Pakistan)
 url: URL
 Url: URL
+Use cases: Cas d’utilisation
 Use CodeGator Models: Utiliser les modèles CodeGator
 Use MudExAdditionalAdornment ad ChildContent: Utiliser MudExAdditionalAdornment ad ChildContent
 Use MudExAdditionalAdornment as ChildContent of a MudInput: Utiliser MudExAdditionalAdornment en tant que ChildContent d’un MudInput
 Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Utilisez plutôt MudExSelect et définissez MultiSelection sur true et ValuePresenter sur Chip.
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: Utilisez le curseur horizontalement ou verticalement – idéal pour les filtres, tableaux de bord et rapports.
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: Utilisez ce modèle pour les rapports trimestriels, les KPI ou les aperçus financiers où les fourchettes de trimestres sont plus significatives que les dates exactes.
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: Utilisez ce modèle pour les entrepôts, la production, les centres d’appels ou tout domaine où le travail est organisé en équipes sur une journée de 24 heures.
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: Utilisez ce modèle chaque fois que les utilisateurs doivent comprendre d’un coup d’œil si une plage sélectionnée se situe dans une zone sûre, d’avertissement ou critique.
 UseCanvas: UseCanvas
 UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
 UseItemTemplateForSelection: UseItemTemplateForSelection
@@ -4238,6 +4395,8 @@ Variant: Variante
 ve-ZA: Venda (Afrique du Sud)
 Verdana: Verdana
 Version: Version
+Vertical: Vertical
+VerticalText: VerticalText
 vi-VN: Vietnamien (Vietnam)
 Video Content-Type: Type de contenu vidéo
 Video device: Appareil vidéo
@@ -4267,6 +4426,7 @@ Vs2015: Vs2015
 VulcanBase16: VulcanBase16
 vun-TZ: Vunjo (Tanzanie)
 wae-CH: Walser (Suisse)
+Wait: Attendre
 wal-ET: Wolaytta (Ethiopie)
 Warning: Avertissement
 WarningContrastText: AvertissementContrastTexte
@@ -4298,6 +4458,8 @@ WindowsNtLightBase16: WindowsNtLégerBase16
 Wingdings: Wingdings
 With custom configuration: Avec configuration personnalisée
 With default configuration: Avec configuration par défaut
+With DockLayout: Avec DockLayout
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: Avec StepResolvers, vous pouvez facilement configurer le comportement de stepping. Pour les plages de dates, nous proposons plusieurs résolveurs prédéfinis. Dans cet exemple, StepResolvers.DateTime.Quarterly(_ => 1) fait que le curseur s’ajuste en quarts.
 With tabs: Avec languettes
 With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: Avec le composant MudExAdditionalAdornment, vous pouvez avoir autant d’ornements dans n’importe quel contrôle d’entrée basé sur MudInput que celui-ci.
 With this component you can have an animation while loading the main blazor app: Avec ce composant, vous pouvez avoir une animation lors du chargement de l’application principale Blazor
@@ -4314,6 +4476,8 @@ WoodlandBase16: WoodlandBase16
 WordDokument.doc: WordDokument.doc
 WrapChips: WrapChips
 WrapToolBarContent: WrapToolBarContent
+WResize: WResize
+Write comments or reactions for current component or page: Rédigez des commentaires ou des réactions pour le composant ou la page en cours
 Xcode: Xcode
 XcodeDuskBase16: XcodeDuskBase16
 xh-ZA: isiXhosa (Afrique du Sud)
@@ -4338,8 +4502,10 @@ You are logged out by an Administrator or profile change.: Vous êtes déconnect
 You are Logged Out.: Vous êtes déconnecté.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Vous pouvez également utiliser MudExAdditionalAdornment en tant que ChildContent d’un MudInput
 You can move me: Tu peux me déplacer
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: Vous pouvez déplacer les pouces individuels ou toute la plage sélectionnée pour ajuster les valeurs de début et de fin. Selon la configuration, la durée minimale et maximale ainsi que différentes tailles de pas s’appliquent.
 You can now Login with your credentials: Vous pouvez maintenant vous connecter avec vos identifiants
 You can resize me: Vous pouvez me redimensionner
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: Vous pouvez utiliser cette technique pour créer des curseurs temporels riches et des plages visuales qui correspondent exactement à votre domaine.
 You cannot delete yourself: Vous ne pouvez pas vous supprimer vous-même
 You clicked: Vous avez cliqué
 You don't need an extra JsonEditor anymore: Vous n’avez plus besoin d’un JsonEditor supplémentaire
@@ -4365,7 +4531,9 @@ ZipCode: Code postal
 Zoom: Zoom
 Zoom in: Zoom avant
 Zoom out: Zoom arrière
+ZoomIn: ZoomIn
 ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover
+ZoomOut: ZoomOut
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Afrique du Sud)

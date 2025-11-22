@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <Import Project="..\..\MudBlazor.Extensions\version.generated.props"
-          Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
-  <Import Condition="Exists('..\..\Shared.props')" Project="..\..\Shared.props"/>
+  <Import Project="..\..\MudBlazor.Extensions\version.generated.props" Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
+  <Import Condition="Exists('..\..\Shared.props')" Project="..\..\Shared.props" />
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
@@ -49,19 +48,20 @@
 
   <ItemGroup>
     <PackageReference Include="Bromix.MudBlazor.MaterialDesignIcons" Version="7.4.47.56" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.19" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.19" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.19" />
-    <PackageReference Include="BlazorMonaco" Version="3.3.0" />
+    <PackageReference Include="Nextended.CodeGen" Version="10.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.0" />
+    <PackageReference Include="BlazorMonaco" Version="3.4.0" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
-    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudExObjectEdit.CodeGatorAdapter" Version="*-*" />
-    <PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="1.5.0" />
+    <PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="6.0.1" />
 
   </ItemGroup>
-
+  <ItemGroup>
+    <AdditionalFiles Include="CodeGen.config.json" />
+  </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' != 'Release'">
     <ProjectReference Include="..\..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
-    <ProjectReference Include="..\..\MudBlazor.Extensions.CodeGator.Adapter\MudBlazor.Extensions.CodeGator.Adapter.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -90,6 +90,12 @@
     <IndexOutput>$(ProjectDir)wwwroot\index.html</IndexOutput>
   </PropertyGroup>
 
+
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
   <!-- Erzeugt index.html VOR Build/DevServer/StaticAssets -->
   <Target Name="GenerateIndexHtml" BeforeTargets="Build;ResolveStaticWebAssets">
     <Message Importance="High" Text="Generating $(IndexOutput) from $(IndexTemplate)" />
@@ -99,20 +105,7 @@
            Text="Template not found: $(IndexTemplate). Create wwwroot\index.template.html first." />-->
 
     <!-- Token-Replacement via PowerShell (rein .NET-String.Replace, kein Regex) -->
-    <Exec IgnoreExitCode="true" Command="powershell -NoProfile -ExecutionPolicy Bypass -Command ^
-    $ErrorActionPreference='Stop'; ^
-    $in='$(IndexTemplate)'; $out='$(IndexOutput)'; ^
-    $text=[System.IO.File]::ReadAllText($in); ^
-    $map=@{ ^
-      'PackageName'='$(PackageName)'; ^
-      'PackageVersion'='$(PackageVersion)'; ^
-      'MudBlazorVersion'='$(MudBlazorVersion)'; ^
-      'ComponentCount'='$(ComponentCount)'; ^
-      'DemoCount'='$(DemoCount)'; ^
-      'CACHE_TOKEN'='$(CACHE_TOKEN)'; ^
-    }; ^
-    foreach($k in $map.Keys){ $text = $text.Replace('#{'+$k+'}#', $map[$k]) }; ^
-    [System.IO.File]::WriteAllText($out, $text, [System.Text.Encoding]::UTF8)" />
+    <Exec IgnoreExitCode="true" Command="powershell -NoProfile -ExecutionPolicy Bypass -Command ^&#xD;&#xA;    $ErrorActionPreference='Stop'; ^&#xD;&#xA;    $in='$(IndexTemplate)'; $out='$(IndexOutput)'; ^&#xD;&#xA;    $text=[System.IO.File]::ReadAllText($in); ^&#xD;&#xA;    $map=@{ ^&#xD;&#xA;      'PackageName'='$(PackageName)'; ^&#xD;&#xA;      'PackageVersion'='$(PackageVersion)'; ^&#xD;&#xA;      'MudBlazorVersion'='$(MudBlazorVersion)'; ^&#xD;&#xA;      'ComponentCount'='$(ComponentCount)'; ^&#xD;&#xA;      'DemoCount'='$(DemoCount)'; ^&#xD;&#xA;      'CACHE_TOKEN'='$(CACHE_TOKEN)'; ^&#xD;&#xA;    }; ^&#xD;&#xA;    foreach($k in $map.Keys){ $text = $text.Replace('#{'+$k+'}#', $map[$k]) }; ^&#xD;&#xA;    [System.IO.File]::WriteAllText($out, $text, [System.Text.Encoding]::UTF8)" />
 
     <!-- sicherstellen, dass die generierte Datei veröffentlicht wird -->
     <ItemGroup>

@@ -1,0 +1,149 @@
+<div class="html"><pre>
+@* Utilization / Risk Slider (0–100%) *@
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Utilization: {0}% – {1}%&quot;, _range.Start.ToString(&quot;F0&quot;), _range.End.ToString(&quot;F0&quot;)]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;double&quot;
+                  @bind-Value=&quot;_range&quot;
+                  SizeRange=&quot;@_fullRange&quot;
+                  ShowInputs=&quot;true&quot;
+                  AllowWholeRangeDrag=&quot;true&quot;&gt;
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TrackTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            height:100%;
+            position:relative;
+            width:100%;
+            background:var(--mud-palette-surface);
+            border-radius:4px;
+            overflow:hidden;
+            border:1px solid var(--mud-palette-divider);&quot;&gt;
+
+            @* Gr&#252;n-Bereich: 0–60% *@
+            &lt;div style=&quot;
+                position:absolute;
+                left:0%;
+                width:60%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb, var(--mud-palette-success) 30%, transparent);&quot;&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+            @* Gelb-Bereich: 60–85% *@
+            &lt;div style=&quot;
+                position:absolute;
+                left:60%;
+                width:25%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb, var(--mud-palette-warning) 30%, transparent);&quot;&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+            @* Rot-Bereich: 85–100% *@
+            &lt;div style=&quot;
+                position:absolute;
+                left:85%;
+                width:15%;
+                top:0;
+                bottom:0;
+                background:color-mix(in srgb, var(--mud-palette-error) 30%, transparent);&quot;&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+            @* Tick-Lines bei 0/25/50/75/100 *@
+            @{
+                var ticks = new[] { 0, 25, 50, 75, 100 };
+                foreach (var t in ticks)
+                {
+                    &lt;div style=&quot;
+                                position:absolute;
+                                left:@t%;
+                                top:20%;
+                                bottom:20%;
+                                width:@(t == 0 || t == 100 ? &quot;2px&quot; : &quot;1px&quot;);
+                                background:var(--mud-palette-lines-default);&quot;&gt;
+                    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+                    &lt;div style=&quot;
+                                position:absolute;
+                                left:@t%;
+                                bottom:3px;
+                                transform:translateX(-50%);
+                                font-size:9px;
+                                color:var(--mud-palette-text-secondary);
+                                pointer-events:none;&quot;&gt;
+                        @t%
+                    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+                }
+            }
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">TrackTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SelectionTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @{
+            var start = ctx.Value.Start;
+            var end = ctx.Value.End;
+
+            string GetClass(double v)
+            =&gt; v &lt; 60 ? &quot;Low&quot;
+            : v &lt; 85 ? &quot;Medium&quot;
+            : &quot;High&quot;;
+
+            var clsStart = GetClass(start);
+            var clsEnd = GetClass(end);
+        }
+        &lt;div style=&quot;
+            height:100%;
+            width:100%;
+            background:linear-gradient(90deg,var(--mud-palette-success),var(--mud-palette-warning),var(--mud-palette-error));
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:999px;&quot;&gt;
+            &lt;span style=&quot;
+                color:var(--mud-palette-primary-text);
+                font-weight:600;
+                font-size:11px;
+                white-space:nowrap;
+                padding:0 10px;
+                text-shadow:0 1px 2px rgba(0,0,0,0.4);&quot;&gt;
+                @($&quot;{start:F0}% – {end:F0}% ({clsStart} → {clsEnd})&quot;)
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">span</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">SelectionTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbStartTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:12px;
+            height:20px;
+            background:var(--mud-palette-surface);
+            border-radius:999px;
+            border:2px solid var(--mud-palette-success);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbStartTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbEndTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:12px;
+            height:20px;
+            background:var(--mud-palette-surface);
+            border-radius:999px;
+            border:2px solid var(--mud-palette-error);
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbEndTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRangeSlider</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span> _range = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span>(20, 75);
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span> _fullRange = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span>(0, 100);
+}
+
+</pre></div>

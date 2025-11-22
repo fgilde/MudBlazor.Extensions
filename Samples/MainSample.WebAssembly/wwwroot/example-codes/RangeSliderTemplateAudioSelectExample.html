@@ -1,0 +1,260 @@
+<div class="html"><pre>
+@using System.Globalization
+@using AuralizeBlazor
+@using AuralizeBlazor.Options
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Extensions
+@using Nextended.Core.Types
+@inject IJSRuntime JS
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Select an audio range on top of the visualized spectrum.&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;The Auralizer control is used as the visual background of the track, while the range slider renders the selection on top of it.&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Use the button below to play back only the currently selected audio range.&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Start, end, and length of the selected audio range are displayed as formatted time values.&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-1&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Selected range: {0} – {1} (Length: {2})&quot;,
+        FormatTime(_selection.Start),
+        FormatTime(_selection.End),
+        FormatTime(_selection.End - _selection.Start)]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudButton</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Filled&quot;</span>
+           <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span>
+           <span class="htmlAttributeName">OnClick</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;PlaySelectionAsync&quot;</span>
+           <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Play selected range&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;double&quot;
+                  @bind-Value=&quot;_selection&quot;
+                  Style=&quot;height: 230px;&quot;
+                  TrackStyle=&quot;height: 100%;&quot;
+                  SizeRange=&quot;@_fullRange&quot;
+                  AllowWholeRangeDrag=&quot;true&quot;
+                  ShowInputs=&quot;false&quot;
+                  StepLength=&quot;@(new RangeLength<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span>(1))&quot;&gt;
+
+    @* Auralizer as track background *@
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TrackTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;z-index: 99;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">Auralizer</span> <span class="htmlAttributeName">InitialRender</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;InitialRender.WithFullSpectrumAudioDataPrefilledWithRandomData&quot;</span>
+                       <span class="htmlAttributeName">KeepState</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;false&quot;</span>
+                       <span class="htmlAttributeName">Style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;z-index: 99;&quot;</span>
+                       <span class="htmlAttributeName">ShowTrackInfosOnPlay</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;false&quot;</span>
+                       <span class="htmlAttributeName">ApplyBackgroundImageFromTrack</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;false&quot;</span>
+                       <span class="htmlAttributeName">Height</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;100%&quot;</span>
+                       <span class="htmlAttributeName">Presets</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@AuralizerPreset.All&quot;</span>
+                       <span class="htmlAttributeName">ContextMenuAction</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;VisualizerAction.None&quot;</span>
+                       <span class="htmlAttributeName">ClickAction</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;VisualizerAction.None&quot;</span>
+                       <span class="htmlAttributeName">Overlay</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+                <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">center</span><span class="htmlTagDelimiter">&gt;</span>
+                    &lt;audio @ref=&quot;_audioRef&quot;
+                           class=&quot;audio-main mud-ex-animate-all-properties&quot;
+                           preload=&quot;metadata&quot;
+                           loading=&quot;lazy&quot;
+                           controls=&quot;true&quot;
+                           src=&quot;@mp3Url&quot;&gt;
+                    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">audio</span><span class="htmlTagDelimiter">&gt;</span>
+                <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">center</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">Auralizer</span><span class="htmlTagDelimiter">&gt;</span>
+
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">TrackTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    @* selection overlay: full height, frosted glass *@
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SelectionTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @{
+            var start = ctx.Value.Start;
+            var end = ctx.Value.End;
+            var length = end - start;
+        }
+        &lt;div style=&quot;
+            height:100%;
+            width:100%;
+            background:rgba(255,255,255,0.18);
+            backdrop-filter:blur(6px);
+            -webkit-backdrop-filter:blur(6px);
+            border-radius:8px;
+            border:1px solid rgba(255,255,255,0.45);
+            box-shadow:0 0 0 1px rgba(0,0,0,0.25);
+            display:flex;
+            align-items:flex-end;
+            justify-content:center;
+            padding:6px 10px;
+            box-sizing:border-box;&quot;&gt;
+            &lt;span style=&quot;
+                color:white;
+                font-weight:600;
+                font-size:11px;
+                white-space:nowrap;
+                text-shadow:0 1px 2px rgba(0,0,0,0.9);&quot;&gt;
+                @($&quot;{FormatTime(start)} – {FormatTime(end)} ({FormatTime(length)})&quot;)
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">span</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">SelectionTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    @* slim handles *@
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbStartTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:8px;
+            height:28px;
+            background:rgba(255,255,255,0.95);
+            border-radius:999px;
+            border:2px solid var(--mud-palette-primary);
+            box-shadow:0 2px 6px rgba(0,0,0,0.8);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbStartTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ThumbEndTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ctx&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;div style=&quot;
+            width:8px;
+            height:28px;
+            background:rgba(255,255,255,0.95);
+            border-radius:999px;
+            border:2px solid var(--mud-palette-secondary);
+            box-shadow:0 2px 6px rgba(0,0,0,0.8);&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ThumbEndTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRangeSlider</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private string mp3Url = string.Empty;
+
+    // Fallback duration until wir die echte L&#228;nge per JS haben
+    private double _durationSeconds = 180;
+
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span> _selection = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span>(10, 30);
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span> _fullRange;
+
+    private ElementReference _audioRef;
+    private bool _durationInitialized;
+
+    protected override Task OnInitializedAsync()
+    {
+        mp3Url = &quot;https://www.mudex.org/sample-data/Unified-Voice.mp3&quot;;
+        _fullRange = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span>(0, _durationSeconds);
+        return base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender &amp;&amp; _audioRef.Id != null)
+        {
+            await InitDurationAsync();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task InitDurationAsync()
+    {
+        if (_durationInitialized)
+            return;
+
+        _durationInitialized = true;
+
+        try
+        {
+            var duration = await JS.InvokeAsync<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span>(&quot;audioRangePlayer.getAudioDuration&quot;, _audioRef);
+            if (duration &gt; 0)
+            {
+                _durationSeconds = duration;
+                _fullRange = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span>(0, _durationSeconds);
+
+                if (_selection.End &gt; _durationSeconds)
+                    _selection = new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">double</span><span class="htmlTagDelimiter">&gt;</span>(Math.Min(_selection.Start, _durationSeconds), _durationSeconds);
+
+                StateHasChanged();
+            }
+        }
+        catch
+        {
+            // Im Demo-Fall einfach ignorieren
+        }
+    }
+
+    private async Task PlaySelectionAsync()
+    {
+        try
+        {
+            await JS.InvokeAsync<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">object</span><span class="htmlTagDelimiter">&gt;</span>(&quot;audioRangePlayer.playSelection&quot;, _audioRef, _selection.Start, _selection.End);
+        }
+        catch
+        {
+            // Im Demo-Fall ignorieren
+        }
+    }
+
+    private static string FormatTime(double seconds)
+        =&gt; FormatTime(TimeSpan.FromSeconds(seconds));
+
+    private static string FormatTime(TimeSpan timeSpan)
+        =&gt; timeSpan.ToString(timeSpan.TotalHours &gt;= 1 ? @&quot;hh\:mm\:ss&quot; : @&quot;mm\:ss&quot;);
+}
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">script</span><span class="htmlTagDelimiter">&gt;</span>
+    window.audioRangePlayer = (<span class="keyword">function</span> () {
+
+        async <span class="keyword">function</span> getAudioDuration(audio) {
+            <span class="keyword">if</span> (!audio) <span class="keyword">return</span> 0;
+
+            <span class="keyword">if</span> (isNaN(audio.duration) || !isFinite(audio.duration)) {
+                await <span class="keyword">new</span> Promise(resolve =&gt; {
+                    <span class="keyword">const</span> cb = () =&gt; {
+                        audio.removeEventListener(<span class="string">&#39;loadedmetadata&#39;</span>, cb);
+                        resolve();
+                    };
+                    audio.addEventListener(<span class="string">&#39;loadedmetadata&#39;</span>, cb);
+                });
+            }
+
+            <span class="keyword">return</span> audio.duration || 0;
+        }
+
+        <span class="keyword">function</span> playSelection(audio, start, end) {
+            <span class="keyword">if</span> (!audio || isNaN(start) || isNaN(end) || end &lt;= start) {
+                <span class="keyword">return</span>;
+            }
+
+            <span class="keyword">try</span> {
+                audio.pause();
+                audio.currentTime = start;
+
+                <span class="keyword">const</span> handler = () =&gt; {
+                    <span class="keyword">if</span> (audio.currentTime &gt;= end) {
+                        audio.pause();
+                        audio.removeEventListener(<span class="string">&#39;timeupdate&#39;</span>, handler);
+                    }
+                };
+
+                audio.addEventListener(<span class="string">&#39;timeupdate&#39;</span>, handler);
+                audio.play();
+            } <span class="keyword">catch</span> (e) {
+                console.warn(<span class="string">&quot;playSelection failed&quot;</span>, e);
+            }
+        }
+
+        <span class="keyword">return</span> {
+            getAudioDuration,
+            playSelection
+        };
+    })();
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">script</span><span class="htmlTagDelimiter">&gt;</span>
+
+</pre></div>

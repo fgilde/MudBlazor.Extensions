@@ -3,7 +3,7 @@
 
 @using MudBlazor.Extensions.Options
 
-@attribute [Demo(Group = "Dialog Samples", Name = "Not Modal Dialogs", Documentation = "Demo for MudExTaskBar and not Modal dialogs", Order = 40, Icon = MaterialDesignIcons.Normal.WindowRestore, ForComponentTypes = new[] { typeof(MudExTaskBar) })]
+@attribute [Demo(IsPlaygroundDemo = true, Group = "Dialog Samples", Name = "Not Modal Dialogs", Documentation = "Demo for MudExTaskBar and not Modal dialogs", Order = 40, Icon = MaterialDesignIcons.Normal.WindowRestore, ForComponentTypes = new[] { typeof(MudExTaskBar) })]
 
 <DemoComponent PageType="@GetType()">
     <MudButton OnClick="@ShowSampleDialogs" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample Dialogs"]</MudButton>

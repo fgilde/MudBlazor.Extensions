@@ -1,11 +1,13 @@
 ﻿@using Microsoft.Extensions.Localization
 @using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Helper
+
 @inject IStringLocalizer<CommentsFooter> L
-@if (Available)
+
+
+@if (IsAvailable())
 {
     <footer @ref="_footer" class="@ClassStr()">
-        @if (_isExpanded)
+        @if (IsExpanded)
         {
             <MudExSplitter NextElement="@_footer" @bind-IsDragging="_dragging" Reverse="true" Vertical="false" Size="4"/>
         }
@@ -14,7 +16,7 @@
             <MudExDivider Style="opacity: .5;" Vertical="false" Color="MudExColor.Secondary" Size="2" />
 
         }
-        <MudExpansionPanel @bind-Expanded="_isExpanded" Style="margin: 0" Class="comment-footer" Dense="true" Icon="@Icons.Material.Filled.ExpandLess">
+        <MudExpansionPanel HideIcon="@AlwaysClose" @bind-Expanded="IsExpanded" Style="margin: 0" Class="comment-footer" Dense="true" Icon="@Icons.Material.Filled.ExpandLess">
             <TitleContent>
                 <div class="d-flex">
                     <MudText Class="comments-title"><strong>@L["Comments"]</strong></MudText>
@@ -22,8 +24,16 @@
                 </div>
             </TitleContent>
             <ChildContent>
-                <Disqus/>
+                <Disqus @ref="_disqus"/>
             </ChildContent>
         </MudExpansionPanel>
     </footer>
+}
+else if(SimpleMode)
+{
+    <div style=" position: fixed; left: 15px;  bottom: 30px; z-index: 1100;">
+        <MudTooltip Text="@L["Write comments or reactions for current component or page"]">
+            <MudFab OnClick="OpenComments"  StartIcon="@Icons.Material.Filled.Bookmark" Label="@L["Comments"]"/>
+        </MudTooltip>
+    </div>
 }

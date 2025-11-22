@@ -7,11 +7,30 @@ namespace MainSample.WebAssembly.Shared;
 
 public partial class CommentsFooter
 {
-    private bool _isExpanded;
+    private bool _selfActivated;
+    private bool IsExpanded
+    {
+        get => _isExpanded;
+        set
+        {
+            if (_isExpanded != value)
+            {
+                _isExpanded = value;
+                if (AlwaysClose && !_isExpanded)
+                    _ = Close();
+            }
+        }
+    }
+
     private bool _closing;
     private bool _available = true;
     private bool _dragging;
     private ElementReference _footer;
+    private Disqus _disqus;
+    private bool _isExpanded;
+
+    [Parameter] public bool SimpleMode { get; set; }
+    [Parameter] public bool AlwaysClose { get; set; }
 
     [Parameter]
     public bool Available
@@ -37,12 +56,15 @@ public partial class CommentsFooter
     private async Task Close()
     {
         _closing = true;
+        _selfActivated = false;
         await InvokeAsync(StateHasChanged);
         await Unload();
-        await Task.Delay(800);
-        Available = false;
+        await Task.Delay(400);
+
+        if(!SimpleMode)
+            Available = false;
         _closing = false;
-        _isExpanded = false;
+        IsExpanded = false;
     }
 
     private async Task Unload()
@@ -51,11 +73,34 @@ public partial class CommentsFooter
         await JsRuntime.InvokeVoidAsync("eval", $"delete window['{Disqus.DisqusNamespace}']");
         //await LocalStorageService.RemoveItemAsync(Disqus.DisqusAutoLoadStorageKey);
     }
-    
+
     private string ClassStr() => MudExCssBuilder.From("mud-appbar mud-appbar-fixed-bottom")
         .AddClass("mud-ex-fade-out-500ms", _closing)
         .AddClass("mud-ex-animate-all-properties", !_closing && !_dragging)
-        .AddClass("comment-footer-collapsed", !_isExpanded)
-        .AddClass("comment-footer-expanded", _isExpanded)
+        .AddClass("comment-footer-collapsed", !IsExpanded)
+        .AddClass("comment-footer-expanded", IsExpanded)
         .Build();
+
+    private async Task OpenComments()
+    {
+        try
+        {
+            _selfActivated = true;
+            Available = true;
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(100);
+            await _disqus.LoadDisqusIfNotLoadedAsync();
+        }
+        catch (Exception e)
+        {
+        }
+        IsExpanded = true;
+    }
+
+    private bool IsAvailable()
+    {
+        if (SimpleMode)
+            return _selfActivated;
+        return Available;
+    }
 }

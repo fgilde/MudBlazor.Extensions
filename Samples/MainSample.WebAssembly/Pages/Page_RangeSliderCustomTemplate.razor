@@ -1,0 +1,383 @@
+﻿@page "/range-slider-template"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.RangeSlider
+
+
+@attribute [DemoNew(Name = "Templates", Order = 10, Group="RangeSlider", Documentation = "Custom Templates", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
+
+
+<MudExDemoPage>
+    
+@*     <MudExDemoBox Title="Custom templates for a timeline-style range slider"
+                  NavTitle="Custom templates timeline"
+                  Order="10"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example shows how you can use custom templates to turn the MudExRangeSlider a slider for audio range selection."]
+            </MudText>
+            <RangeSliderTemplateAudioSelectExample />
+        </DemoContent>
+    </MudExDemoBox>
+ *@
+
+    <MudExDemoBox Title="Custom templates for a timeline-style range slider"
+                      NavTitle="Custom templates timeline"
+                      Order="10"
+                      FeaturesTitle="Configuration"
+                      Features="@(new[]
+                                {
+                                    "ThumbStartTemplate",
+                                    "ThumbEndTemplate",
+                                    "SelectionTemplate",
+                                    "TrackTemplate"
+                                })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["You can use this technique to build rich time sliders and visual ranges that fit your domain exactly."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.", (MarkupString)"<a href=\"/time-slider\">MudExTimeSlider</a>"]
+            </MudText>
+            <RangeSliderTemplateExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="Custom templates for a TimeOnly range slider"
+                  NavTitle="TimeOnly template"
+                  Order="10"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate",
+                                "StepResolvers.TimeOnly"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example demonstrates a TimeOnly-based range slider with minute resolution."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots."]
+            </MudText>
+            <RangeSliderTemplateTimeExample/>
+        </DemoContent>
+    </MudExDemoBox>
+    
+    
+    <MudExDemoBox Title="Week-based template with calendar weeks"
+                  NavTitle="Week template (DateOnly)"
+                  Order="10"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate",
+                                "StepResolvers.DateOnly.Weekly"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as \"KW 2 – KW 22\"."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews."]
+            </MudText>
+            <RangeSliderTemplateWeekExample/>
+        </DemoContent>
+    </MudExDemoBox>
+    
+    <MudExDemoBox Title="Quarter-based template"
+                  NavTitle="Quarter template (DateOnly)"
+                  Order="10"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate",
+                                "StepResolvers.DateOnly.Quarterly"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example turns the range slider into a quarter selector over multiple years."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example \"Q2 2022 – Q3 2023\" or just \"Q1 – Q3\" when the year is the same."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates."]
+            </MudText>
+            <RangeSliderTemplateQuarterlyExample/>
+        </DemoContent>
+    </MudExDemoBox>
+    
+    <MudExDemoBox Title="Custom fiscal year timeline"
+                  NavTitle="Fiscal year template"
+                  Order="10"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate",
+                                "Custom fiscal year logic"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as \"FY 2022 – FY 2024\" or \"FY 2023 Q2 – Q4\" depending on what was selected."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years."]
+            </MudText>
+            <RangeSliderTemplateFiscalExample/>
+        </DemoContent>
+    </MudExDemoBox>
+    
+    
+    <MudExDemoBox Title="Utilization / risk percentage"
+                  NavTitle="Utilization template"
+                  Order="20"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as \"Low\", \"Medium\", or \"High\"."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone."]
+            </MudText>
+            <RangeSliderTemplateRiskExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="Price / budget segments"
+                  NavTitle="Budget template"
+                  Order="21"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way."]
+            </MudText>
+            <RangeSliderTemplateBudgetExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="Age / audience segments"
+                  NavTitle="Age template"
+                  Order="22"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example uses an integer-based range slider to represent age ranges and demographic bands."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track is divided into common age groups such as \"U18\", \"18–25\", \"26–35\", and so on, and the selection template displays the exact age range like \"18 – 35 years\"."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This template is well suited for analytics, audience targeting, or any UI where users work with age intervals."]
+            </MudText>
+            <RangeSliderTemplateAgeExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="Day-of-week range"
+                  NavTitle="Day-of-week template"
+                  Order="23"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example maps integer values to days of the week and turns the range slider into a day-of-week selector."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as \"Monday – Friday\"."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis."]
+            </MudText>
+            <RangeSliderTemplateDayOfWeekExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="Shift planning (early / late / night)"
+                  NavTitle="Shift template"
+                  Order="24"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate",
+                                "TimeOnly"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day."]
+            </MudText>
+            <RangeSliderTemplateShiftExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="Transit time and service levels"
+                  NavTitle="Transit time template"
+                  Order="25"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track visually highlights these service bands, while the selection template shows the exact day range, for example \"4 – 9 days\"."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges."]
+            </MudText>
+            <RangeSliderTemplateTransitTimeExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="Zoom level / data granularity"
+                  NavTitle="Zoom level template"
+                  Order="26"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track shows all levels side by side and the selection template renders a label like \"Day – Month\", which you can use to control how data is aggregated in charts or reports."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data."]
+            </MudText>
+            <RangeSliderTemplateZoomLevelExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="SLA / response time classification"
+                  NavTitle="SLA template"
+                  Order="27"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ThumbStartTemplate",
+                                "ThumbEndTemplate",
+                                "SelectionTemplate",
+                                "TrackTemplate"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["This example targets SLA and response-time scenarios using a millisecond-based range slider."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example \"80 – 450 ms (Fast → Slow)\"."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly."]
+            </MudText>
+            <RangeSliderTemplateSlaExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <DemoNavigation CurrentPage="@this" />
+
+</MudExDemoPage>

@@ -85,8 +85,6 @@ else
         }
     }
 
-    NavigationEntry? _availableDemo;
-
     private void Open(NavigationEntry nav)
     {
         NavigationManager.NavigateTo(nav.Href);
@@ -96,8 +94,8 @@ else
     {
         get
         {
-            _availableDemo ??= DemoAttribute.AllEntries().Recursive(e => e?.Children ?? Enumerable.Empty<NavigationEntry>()).FirstOrDefault(entry => entry?.Demo?.RelatedComponents?.Any(IsMatchType) == true);
-            return _availableDemo;
+            field ??= DemoAttribute.FindPlaygroundEntryForType(Type);
+            return field;
         }
     }
 
@@ -108,11 +106,6 @@ else
             NavigationManager.NavigateTo(AvailableDemo.Href);
         }
         base.OnAfterRender(firstRender);
-    }
-
-    private bool IsMatchType(Type other)
-    {
-        return other == Type || (other.IsGenericType && Type is { IsGenericType: true } && Type.GetGenericTypeDefinition() == other.GetGenericTypeDefinition());
     }
 
     public Type? Type => type ??= GetTypeByName(TypeName);

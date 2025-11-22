@@ -1,0 +1,21 @@
+﻿@using Microsoft.Extensions.Localization
+@using MudBlazor.Extensions.Api
+@if (Types is { Count: > 0 })
+{
+    <MudText>
+        @L["API"]
+    </MudText>
+    <MudChipSet T="string" Variant="Variant.Text" Color="Color.Info">
+        @foreach (var type in Types.Distinct())
+        {
+            <a href="@($"/api/{type.Name}")">
+                <MudChip Size="Size.Small" Value="@($"<{ApiMemberInfo.GetGenericFriendlyTypeName(type)}>")" />
+            </a>
+        }
+    </MudChipSet>
+}
+
+@code {
+    [Parameter] public ICollection<Type>? Types { get; set; }
+    [Inject] private IStringLocalizer<ApiLink> L { get; set; }
+}

@@ -1,0 +1,40 @@
+```razor
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@inherits ExampleBase
+
+
+<MudText Typo="Typo.caption" Class="mt-2 mb-2">
+    @L["Current range: {0} – {1}", _selectedRange.Start, _selectedRange.End]
+</MudText>
+
+<MudStack Row="false">
+
+    <MudExEditConfiguration>
+        <MudExRangeSlider T="int"
+                          @ref="ComponentRef"
+                          ShowInputs="true"
+                          SizeRange="@(new MudExRange<int>(0, 100))"
+                          @bind-Value="_selectedRange" />
+    </MudExEditConfiguration>
+
+    <MudText Typo="Typo.caption" Class="mt-2 mb-2">
+        @L["Step size of 5"]
+    </MudText>
+
+    <MudExEditConfiguration>
+        <MudExRangeSlider T="int"
+                          @ref="ComponentRef"
+                          ShowInputs="true"
+                          SizeRange="@(new MudExRange<int>(0, 100))"
+                          StepLength="@(5)"
+                          @bind-Value="_selectedRange" />
+    </MudExEditConfiguration>
+
+</MudStack>
+
+@code {
+    private IRange<int> _selectedRange = new MudExRange<int>(20, 60);
+}
+
+```

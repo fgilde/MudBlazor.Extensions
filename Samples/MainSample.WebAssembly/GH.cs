@@ -36,4 +36,9 @@ internal static class GH
             return string.Empty;
         }
     }
+
+    internal static string RawContentUrlToGithubViewUri(string uri)
+    {
+        return uri.Replace("main/Samples/", "blob/main/Samples/").Replace("raw.githubusercontent.com", "github.com");
+    }
 }

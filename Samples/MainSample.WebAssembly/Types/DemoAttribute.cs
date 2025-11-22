@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Extensions.Helper;
+using Nextended.Core.Extensions;
 
 namespace MainSample.WebAssembly.Types;
 
@@ -67,6 +68,8 @@ public class DemoUpdatedAttribute : DemoAttribute
 public class DemoAttribute : Attribute
 {
     public Type PageType { get; private set; }
+
+    public bool IsPlaygroundDemo { get; set; }
     
     public DemoAttribute(Type pageType)
     {
@@ -112,6 +115,18 @@ public class DemoAttribute : Attribute
 
     public IEnumerable<Type> RelatedComponents => (ForComponentTypes ?? Array.Empty<Type>()).Union(ForComponentType != null ? new[] { ForComponentType } : Array.Empty<Type>());
 
+    public static NavigationEntry? FindPlaygroundEntryForType(Type? type)
+    {
+        if (type == null)
+            return null;
+        return AllEntries().Recursive(e => e?.Children ?? Enumerable.Empty<NavigationEntry>())
+            .FirstOrDefault(entry => entry?.Demo?.IsPlaygroundDemo == true && entry?.Demo?.RelatedComponents?.Any(t => IsMatchType(type, t)) == true);
+    }
+
+    private static bool IsMatchType(Type type, Type other)
+    {
+        return other == type || (other.IsGenericType && type is { IsGenericType: true } && type.GetGenericTypeDefinition() == other.GetGenericTypeDefinition());
+    }
 
     public static HashSet<NavigationEntry> AllEntries(bool flat = false, string ungrouppedName = AppConstants.UngroupedNavCategory)
     {

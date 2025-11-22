@@ -15,6 +15,13 @@ namespace MudBlazor.Extensions.Helper;
 [HasDocumentation("MudExCss.md")]
 public static partial class MudExCss
 {
+    public const string MainPrefix = "mud-ex";
+
+    public const string CssVariablePrefix = $"--{MainPrefix}";
+    
+    public static string Prefix(string name) => name.EnsureStartsWith($"{MainPrefix}-");
+    public static string[] Prefix(string[] names) => names.Select(Prefix).ToArray();
+
     internal static readonly AnimationType[] TypesWithoutPositionReplacement = { AnimationType.SlideIn };
 
     /// <summary>

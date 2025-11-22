@@ -1,0 +1,159 @@
+﻿@page "/range-slider"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.RangeSlider
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+
+@attribute [DemoNew(Name = "Overview", Documentation="MudEx Range Slider – Interactive range selection", Order = 0, Group = "RangeSlider", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
+
+
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Range Slider – Interactive range selection"]
+    </MudText>
+
+    <MudText Typo="Typo.body1">
+        @L["On this page you can see several usage examples for the MudExRangeSlider: numeric ranges, date ranges and a vertical layout. Each example comes with a short explanation and can be tried out interactively."]
+    </MudText>
+
+    <MudAlert Severity="Severity.Info" Class="mt-4">
+        @L["You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply."]
+    </MudAlert>
+</MudPaper>
+
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Flexible data types"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Supports int and DateTime (other types via generics are possible)."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Min/max length & step size"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Define minimum and maximum duration for ranges as well as custom step sizes."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Horizontal & vertical orientation"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Use the slider horizontally or vertically – ideal for filters, dashboards and reports."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="mb-6" />
+
+<MudExDemoPage>
+
+    <!-- Demo 1: Simple numeric range slider -->
+    <MudExDemoBox Title="1. Simple numeric range"
+                  NavTitle="Simple numeric range"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                                            {
+                                                "T = int – numeric range",
+                                                "SizeRange = 0–100",
+                                                "StepLength = 5 – values in steps of 5",
+                                                "@bind-Value = _nums – binds the selected range to your view model"
+                                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals."]
+            </MudText>
+            <RangeSliderIntExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo 2: Date range with daily steps -->
+    <MudExDemoBox Title="2. Date range with daily step size"
+                  NavTitle="Date range with daily step size"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                                            {
+                                                "MinLength = 60 days – shortest allowed period",
+                                                "MaxLength = 730 days – longest allowed period",
+                                                "AllowWholeRangeDrag = true – entire period can be moved"
+                                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day."]
+            </MudText>
+            <RangeSliderDateTimeExample1/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo 3: DateTime with StepResolver -->
+    <MudExDemoBox Title="3. DateTime range with custom StepResolver"
+                  NavTitle="DateTime range with custom StepResolver"
+                  FeaturesTitle="StepResolver">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours)."]
+            </MudText>
+            <RangeSliderDateTimeStepResolverExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo 4: Vertical range slider -->
+    <MudExDemoBox Title="4. Vertical range slider"
+                  NavTitle="Vertical range slider"
+                  FeaturesTitle="Use cases"
+                  Features="@(new[]
+                            {
+                                "Filters in dashboards or reports",
+                                "Side filter panels in search or analytics UIs",
+                                "Mobile UIs with limited horizontal space"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The range slider can also be used vertically – ideal for sidebars or compact filter areas."]
+            </MudText>
+
+            <RangeSliderVerticalExample/>
+        </DemoContent>
+    </MudExDemoBox>
+    
+    
+    <MudExDemoBox Title="5. TimeOnly slider"
+                  NavTitle="TimeOnly slider">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example demonstrates a TimeOnly range slider."]
+            </MudText>
+
+            <RangeSliderTimeOnly1/>
+        </DemoContent>
+    </MudExDemoBox>
+    
+    
+
+</MudExDemoPage>
+
+
+<DemoNavigation CurrentPage="@this" />
+
+@code {
+    private IRange<TimeOnly> _selectedRange = new MudExRange<TimeOnly>(new(1, 0), new(10, 00));
+
+}

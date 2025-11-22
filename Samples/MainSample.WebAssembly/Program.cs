@@ -4,7 +4,6 @@ using MainSample.WebAssembly.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Extensions;
-using MudBlazor.Extensions.CodeGator.Adapter;
 using System.Globalization;
 using AKSoftware.Localization.MultiLanguages;
 
@@ -20,8 +19,6 @@ builder.Services.AddMudServicesWithExtensions(AppConstants.MudExConfiguration);
 
 
 // CodeGator Adapter for MudExObjectEdit
-builder.Services.AddMudExObjectEditCGBlazorFormsAdapter();
-builder.Services.AddFormGeneration(); // CodeGator. Just to show a compare for models with CG Attributes
 builder.Services.AddYamlLocalizer();
 
 MySimpleTypeRegistrations.RegisterRenderDefaults();

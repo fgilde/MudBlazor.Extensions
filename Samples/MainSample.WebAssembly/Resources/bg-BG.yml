@@ -20,6 +20,8 @@ _{0} Demos: '{0} демонстрации'
 --mud-palette-white: --кална палитра-бяла
 (currently the item is not visible): (в момента елементът не се вижда)
 (currently the item is visible): (в момента елементът е видим)
+2 Hourly steps (using StepLength): 2 часови стъпки (с StepLength)
+2 Hourly steps (using StepResolver): 2 часови стъпки (с помощта на StepResolver)
 A: Една
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Компонент, който позволява на потребителя да избере стойност от списък с възможни стойности и да я покаже като чипове или разгъващ се списък по подразбиране.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Компонент, който може да се използва за плъзгане на ChildContent отдолу, отгоре, наляво или надясно с курсор на мишката
@@ -33,6 +35,7 @@ A maximum of {0} files are allowed: Допускат се максимум {0} �
 A Popover can be used to display some content on top of another.: Изскачащият прозорец може да се използва за показване на някакво съдържание върху друго.
 A powerful component to edit an object and its properties.: Мощен компонент за редактиране на обект и неговите свойства.
 A powerful editor that can handle json, xml or yaml content: Мощен редактор, който може да обработва json, xml или yaml съдържание
+A range slider component that allows selecting and manipulating a value range of type T.: Компонент за плъзгач на диапазона, който позволява избиране и манипулиране на стойностен диапазон от тип T.
 A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: Прост компонент ColorPicker, който наследява MudColorPicker, но добавя възможност за забавяне на събитието за затваряне и използване на собствен компонент за избор от браузъра
 A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Прост компонент на мрежата, който поддържа колони и редове и ColSpan и RowSpan за съдържащи секции.
 A SplitPanel Component: Компонент на SplitPanel
@@ -100,6 +103,7 @@ Age: Възраст
 agq-CM: Агем (Камерун)
 ak-GH: Акан (Гана)
 Albertus: Алберт
+Alias: Псевдоним
 Alice Johnson: Алис Джонсън
 AliceBlue: АлисБлу
 Align: Строявам
@@ -132,6 +136,9 @@ AllowRubberBandSelection: AllowRubberBandSelection
 AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
 AllowSelectOnPreviewClick: AllowSelectOnPreviewClick
 AllowVideoCapture: Разрешаване на видеозаснемане
+AllowWholeRangeDrag: Позволи Цял ДиапазонДраг
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = true – целият период може да бъде преместен
+AllScroll: AllScroll
 AlphaBars: Алфа Барове
 Already have an account?: Вече имате акаунт?
 Always: Винаги
@@ -226,6 +233,7 @@ AntiqueWhite: Античнобяло
 ApathyBase16: АпатияБаза16
 Api: Апи
 API: API
+Api view component to display the methods and properties of a type: API view компонент за показване на методите и свойствата на даден тип
 API-Versions: API версии
 AppBar: Лента за приложения
 AppbarBackground: AppbarФон
@@ -285,6 +293,7 @@ Are you sure?: Сигурни ли сте?
 Arial: Ариал
 Arial Black: Ариал Черен
 Arial Narrow: Arial Narrow
+AriaLabelledBy: AriaLabelledBy
 arn-CL: Мапуче (Чили)
 Arta: Изкуство
 As Admin you can filter for users here: Като администратор можете да филтрирате потребителите тук
@@ -339,6 +348,7 @@ Aug: Август
 Austin: Остин
 Austin - 73301: Остин - 73301
 Austin - 73301ender: Остин - 73301ender
+Auto: Кола
 Auto Confirm Email?: Автоматично потвърждение на имейл?
 Auto Generated Editor for TestObject: Автоматично генериран редактор за TestObject
 Auto Stop recording after: Автоматично спиране на записа след
@@ -390,6 +400,7 @@ Basic: Основен
 Basic role with default permissions: Основна роля с разрешения по подразбиране
 Bauhaus 93: Баухаус 93
 be-BY: Беларуски (Беларус)
+Because time values always having a fixed size you can also use step length instead of resolvers.: Тъй като стойностите на времето винаги имат фиксиран размер, можеш да използваш и дължина на стъпката вместо резолвери.
 BeforeBegin: ПредиНачало
 BeforeEnd: ПредиКрай
 BeforeSearchBox: BeforeSearchBox
@@ -490,6 +501,7 @@ bs-Cyrl-BA: Босненски (кирилица, Босна и Херцегов
 bs-Latn-BA: Босненски (латински, Босна и Херцеговина)
 Build amazing UIs: Създайте невероятни потребителски интерфейси
 BurlyWood: БърлиУуд
+But for sure resolvers are working as well.: Но със сигурност резолверите също работят.
 button: копче
 Button: Копче
 Button component for capturing audio and video.: Компонент на бутона за заснемане на аудио и видео.
@@ -535,6 +547,7 @@ ccp-Cakm-BD: Чакма (Чакма, Бангладеш)
 ccp-Cakm-IN: Чакма (Чакма, Индия)
 ce-RU: Чеченски (Русия)
 ceb-Latn-PH: Себуано (латински, Филипините)
+Cell: Клетка
 Centaur: Кентавър
 Center: Център
 CenterCenter: Център
@@ -627,6 +640,7 @@ ColorPickerView: Избор на цвятИзглед
 ColorsBase16: ЦветовеОснова16
 ColorStops: ColorStops
 ColorTemperature: Цветна температура
+ColResize: ColResize
 ColSpan: ColSpan
 Column: Колона
 Columns Affected: Засегнати колони
@@ -640,6 +654,7 @@ Compact: Компактен
 Comparer: Сравнявам
 Component edit capture options: Опции за заснемане на елементи за редактиране
 Component in Dialog: Компонент в диалогов прозорец
+Component that captures component references from ChildContent: Компонент, който улавя препратки към компоненти от ChildContent
 Component to add additional adornment to a MudInput: Компонент за добавяне на допълнително украшение към MudInput
 Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Компонент за показване на файл в iframe или обектен таг или в регистриран визуализатор, който реализира IMudExFileDisplay
 Component to display information about the current recording: Компонент за показване на информация за текущия запис
@@ -649,7 +664,9 @@ Component to move the ChildContent to a specific element that can defined by Ele
 Component to select a theme from a list of themes.: Компонент за избор на тема от списък с теми.
 ComponentBaseWithState: ComponentBaseWithState
 ComponentInDialog: ComponentInDialog
+Components: Компоненти
 Conditional updates: Условни актуализации
+Configuration: Конфигурация
 Configure list values: Конфигуриране на стойности на списъци
 Confirm: Потвърждавам
 CONFIRM: ПОТВЪРЖДАВАМ
@@ -670,6 +687,7 @@ Content-Type: Тип съдържание
 ContentAlignment: Подравняване на съдържанието
 ContentStream: СъдържаниеПоток
 ContentType: Съдържание Тип
+ContextMenu: Контекстно меню
 ContextMenuAction: ContextMenuAction
 Continue to {0}: Продължете да {0}
 Continuous: Непрекъснат
@@ -677,6 +695,7 @@ Contrast: Контраст
 Cooper Black: Купър Блек
 Copperplate Gothic Bold: Медна плоча готически удебелен
 Copperplate Gothic Light: Готическа светлина от медна плоча
+Copy: Копирам
 Copy url: Копиране на URL адрес
 Counter: Контра
 Country: Страна
@@ -689,6 +708,7 @@ Create powerful, flexible dock layouts — drag, drop, snap, and organize your d
 CreatedOn: Дата на създаване
 Critical: Критичен
 CropAndScale: CropAndScale
+Crosshair: Кросхеър
 cs-CZ: Чешки (Чехия)
 CSS Color Variables: CSS цветови променливи
 CssVars: CssVars
@@ -701,6 +721,8 @@ Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can
 Cursor: Курсор
 CursorPositionOrigin: КурсорПозицияПроизход
 Custom: Обичай
+Custom fiscal year logic: Персонализирана фискална логика
+Custom Templates: Персонализирани шаблони
 CustomContentErrorMessage: CustomContentErrorСъобщение
 Customize: Персонализирате
 cy-GB: Уелски (Обединеното кралство)
@@ -764,9 +786,11 @@ Decimal value is required using {0} type!: Необходима е десети�
 DeepPink: Наситено розово
 DeepSkyBlue: Дълбоко небесно синьо
 Default: По подразбиране
+Default steps: Стъпки по подразбиране
 DefaultBorderRadius: DefaultBorderRadius
 DefaultDarkBase16: По подразбиранеТъмна база16
 DefaultLightBase16: DefaultLightBase16
+Define minimum and maximum duration for ranges as well as custom step sizes.: Определете минимална и максимална продължителност за диапазоните, както и персонализирани размери на стъпките.
 Defined: Определени
 Delay: Забавяне
 DelayValueChangeToPickerClose: ЗакъснениеСтойностПромянаДоИзборЗатвори
@@ -807,6 +831,7 @@ Demo of using explicit the MudExFileDisplayZip to show and select content inside
 Demonstration for a simple but very useful Enum Selector: Демонстрация на прост, но много полезен селектор на Enum
 Demonstration of the MudExSplitter: Демонстрация на MudExSplitter
 Demonstration of the quickly color select with MudExColorBubble: Демонстрация на бързия избор на цвят с MudExColorBubble
+Demos: Демонстрации
 DEMOS: ДЕМОНСТРАЦИИ
 Dense: Гъст
 Dependent permissions required: Необходими са зависими разрешения
@@ -888,7 +913,10 @@ Do you really want to restore the database from backup '{0}'? Note that any chan
 Do you want to delete the profile picture of {0}: Искате ли да изтриете профилната снимка на {0}
 Do you want to delete the User {0}: Искате ли да изтриете потребителския {0}
 Docco: Docco
+Dock: Въпреки това
+Dock Control: Контрол на доковете
 Docked: Фиксирана
+DockLayout with ObjectEdit: DockLayout с ObjectEdit
 Document Deleted: Документът е изтрит
 Document Extended Attributes: Разширени атрибути на документа
 Document Management: Управление на документи
@@ -967,6 +995,8 @@ Edit: Редактирам
 Edit {0}: Редактиране {0}
 Edit a complex Model with included Collection of users: Редактиране на сложен модел с включена колекция от потребители
 Edit Audio Constraints: Редактиране на аудио ограничения
+Edit Configuration: Конфигурация на редактиране
+Edit configuration for component in this sample: Редакция на конфигурацията за компонент в този пример
 Edit Current Theme: Редактиране на текущата тема
 Edit data in dialog: Редактиране на данни в диалогов прозорец
 Edit in TryMudEx: Редактиране в TryMudEx
@@ -1113,6 +1143,7 @@ en-ZW: Английски (Зимбабве)
 Enable Disqus: Активиране на Disqus
 enables or disables virtualization.: Разрешава или деактивира виртуализацията.
 End: Край
+EndTooltipPosition: EndTooltipPosition
 English: Английски
 Engravers MT: Гравьори MT
 Enter email and your new password here: Въведете имейл и новата си парола тук
@@ -1144,6 +1175,7 @@ Eras Bold ITC: Eras Bold ITC
 Eras Demi ITC: Eras Demi ITC
 Eras Light ITC: Ерас Лайт ITC
 Eras Medium ITC: Ерас Среден ITC
+EResize: EResize
 Error: Грешка
 ErrorAnimation: ГрешкаАнимация
 ErrorContrastText: ГрешкаКонтрастТекст
@@ -1186,6 +1218,7 @@ eu-ES: Баски (Испания)
 EvaBase16: ЕваБаза16
 EvaDimBase16: EvaDimBase16
 ewo-CM: Евондо (Камерун)
+EwResize: EwResize
 ExcelSheet.xlsx: ExcelSheet.xlsx
 Expand &nbsp; <b>not</b> &nbsp; loaded nodes: Разгъване &nbsp; <b>на незаредени</b> &nbsp; възли
 Expand all nodes: Разгъване на всички възли
@@ -1230,6 +1263,7 @@ FallBackInIframe: FallBackInIframe
 False: Фалшиво
 FAQs: Често задавани въпроси
 Far: Далече
+Featured Components: Избрани компоненти
 Features: Функции
 Feb: Февруари
 Felix Titling: Феликс Титлинг
@@ -1297,6 +1331,7 @@ FilterMode: Режим на филтър
 FilterMultiple: ФилтърМножество
 FilterPlaceholder: ФилтърКонтейнер
 Filters: Филтри
+Filters in dashboards or reports: Филтри в табла или отчети
 FilterVariant: ФилтърВариант
 Fiona Gallagher: Фиона Галахър
 Firebrick: Огнеупорна тухла
@@ -1310,6 +1345,7 @@ Flat List: Плосък списък
 FlatBase16: Плоска база16
 FlatList: Плосък списък
 FlexEnd: FlexEnd
+Flexible data types: Гъвкави типове данни
 FlexStart: FlexStart
 Flip: Флип
 FlipAlways: Обръщане на винаги
@@ -1339,6 +1375,7 @@ ForceShrink: Принудително свиване
 ForestGreen: ФорестГрийн
 Forgot password?: Забравена парола?
 Format: Формат
+Forward: Напред
 Foundation: Фондация
 fr-029: Френски (Карибски басейн)
 fr-BE: Френски (Белгия)
@@ -1442,6 +1479,8 @@ GoogleDriveClientId: GoogleDriveClientId
 GoogleLightBase16: GoogleLightBase16
 Goudy Old Style: Гъди стар стил
 Goudy Stout: Гуди стаут
+Grab: Сграбчвам
+Grabbing: Вземете
 Gradient: Градиент
 GradientDark: ГрадиентТъмно
 GradientForeground: ГрадиентПреден план
@@ -1529,6 +1568,7 @@ Hello from dialog 1: Здравейте от диалогов прозорец 1
 Hello from dialog sample page: Здравейте от примерна страница на диалоговия прозорец
 Hello World: Здравей, свят
 Hello...: Здравейте...
+Help: Помощ
 HelperId: Помощен идентификатор
 HelperText: Помощен текст
 HelperTextOnFocus: ПомощникТекстНаФокус
@@ -1550,6 +1590,7 @@ Hide: Крия
 HideContentWhenCollapsed: СкриванеСъдържаниеКогатоСвито
 HideDropDownWhenReadOnly: HideDropDownКогатоReadOnly
 High Tower Text: Текст на високата кула
+Highlights: Акценти
 HighlightSearch: Търсене на акценти
 Hinge: Панта
 Home: Дом
@@ -1558,6 +1599,7 @@ HopscotchBase16: HopscotchBase16
 HorizonDarkBase16: ХоризонтТъмна база16
 HorizonLightBase16: HorizonLightBase16
 Horizontal: Хоризонтален
+Horizontal & vertical orientation: Хоризонтална и вертикална ориентация
 HouseNumber: Номер
 Houston: Хюстън
 Houston - 77001: Хюстън - 77001
@@ -1602,6 +1644,7 @@ Idea: Идея
 Identifier: Идентификатор
 If this is set a photo will be taken instead of a video.: Ако това е зададено, ще бъде направена снимка вместо видео.
 If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Ако харесвате този пакет, моля, поставете го в Github ⭐ и го споделете с приятелите си. Ако не, можете да дадете звезда така или иначе и да ми кажете какво мога да подобря, за да го направя по-добро за вас.
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: Ако ви трябва само времеви плъзгач и не искате да създавате собствени шаблони, можете да използвате и специалния компонент {0} вместо това.
 If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Ако зададете тези опции по подразбиране. Тези опции ще се използват за всички диалогови прозорци, където не са посочени опции. Продължавам?
 ig-NG: Игбо (Нигерия)
 Ignore: Игнорирам
@@ -1618,6 +1661,7 @@ Impact: Въздействие
 Import: Внос
 ImportExportIcon: ImportExportIcon
 In: В
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: В този пример контролирате прост числов диапазон от 0 до 100. Размерът на стъпката е зададен на 5, за да се осигурят груби интервали.
 In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: В този пример данните се зареждат динамично веднага щом елементът се появи за първи път в полезрението. Компонентът поддържа два слота за съдържание
 In this sample you are forced to pick an user: В тази извадка сте принудени да изберете потребител
 In this sample you are forced to pick some users: В тази извадка сте принудени да изберете някои потребители
@@ -1658,6 +1702,7 @@ InputMode: Входен режим
 InputStyle: InputStyle
 InputType: ВходТип
 Inset: Добавям
+Instance: Екземпляр
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Междинни резултати
@@ -1672,6 +1717,7 @@ is-IS: Исландски (Исландия)
 IsActive: ИсАктив
 IsblEditorDark: IsblEditorТъмен
 IsblEditorLight: IsblEditorLight
+IsInverted: IsInverted
 IsMouseOverChip: IsMouseOverChip
 ISO: ISO
 IsOpen: Отворено
@@ -1811,6 +1857,7 @@ Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): 
 LegacyRender: LegacyRender
 Legend: Легенда
 LemonChiffon: Лимон Шифон
+Length: Дължина
 LetterSpacing: Разстояние между буквите
 lg-UG: Ганда (Уганда)
 Library: Библиотека
@@ -1958,6 +2005,7 @@ MaterialDarkerBase16: МатериалПо-тъмна основа16
 MaterialLighterBase16: МатериалПо-лекаОснова16
 MaterialPalenightBase16: МатериалPalenightBase16
 MaterialVividBase16: МатериалЖива база16
+MathAdapter: MathAdapter
 Matura MT Script Capitals: Matura MT Script Capitals
 MaxCaptureTime: Максимално време за заснемане
 MaxChips: МаксЧипс
@@ -1970,6 +2018,7 @@ MaximizeButton: Бутон за максимизиране
 MaxItems: МаксЕлементи
 MaxItemWidth: Максимална ширина на предмета
 MaxLength: Максимална дължина
+MaxLength = 730 days – longest allowed period: MaxLength = 730 дни – най-дълъг позволен период
 MaxLuminance: Максимална яркост
 MaxMultipleFiles: МаксМножество файлове
 MaxRecordingTime: MaxRecordingTime
@@ -2012,13 +2061,17 @@ Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Виртуално а�
 Millimeters: Милиметра
 MimeRestrictionType: MIMERestrictionType
 MimeTypes: Типове MIME
+Min/max length & step size: Минимална/максимална дължина и размер на стъпката
 MinDecibels: МинДецибели
 MinFrequency: Минимална честота
 MinHeight: МинВисочина
 Mini: Мини
 MinimizeButton: Бутон за минимизиране
+MinLength: MinLength
+MinLength = 60 days – shortest allowed period: MinLength = 60 дни – най-кратък разрешен период
 MinLuminance: МинЯркост
 MintCream: МентаКрем
+Minutely steps: Малки стъпки
 MinZoomLevel: MinZoomLevel
 Mirror: Огледало
 Misc: Разни
@@ -2031,6 +2084,7 @@ mn-MN: Монголски (Монголия)
 mn-Mong-CN: Монголски (монголски, китайски)
 mn-Mong-MN: Монголски (монголски, монголски)
 mni-IN: Манипури (Индия)
+Mobile UIs with limited horizontal space: Мобилни потребителски интерфейси с ограничено хоризонтално пространство
 Moccasin: Мокасини
 MochaBase16: MochaBase16
 Modal: Столица
@@ -2057,8 +2111,11 @@ MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move: Движа
 Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Премествайте и преоразмерявайте елементите на мрежата директно с плъзгане и пускане – проектирайте оформлението си динамично по време на изпълнение.
 MoveContent: ПреместванеСъдържание
+MoveCursor: MoveCursor
+MovingCursor: MovingCursor
 mr-IN: Маратхи (Индия)
 MS Outlook: MS Outlook
 MS Reference Sans Serif: MS Reference Sans Serif
@@ -2112,6 +2169,7 @@ MudDrawerHeader: Header MudDrawerHeader
 MudDynamicTabs: MudDynamicTabs
 MudElement: Кален елемент
 MudEx Components: Компоненти на MudEx
+MudEx Range Slider – Interactive range selection: MudEx Range Slider – Интерактивен избор на диапазон
 MudExAdditionalAdornment: КалЕксДопълнителноУкрашение
 MudExAppearance: MudExВъншен вид
 MudExAppLoader: MudExAppLoader
@@ -2139,6 +2197,7 @@ MudExCultureSelect: MudExCultureSelect
 MudExDialog: MudExDialog
 MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog е компонентът, който трябва да използвате, когато искате да покажете диалогов прозорец, вграден във вашата страница с всички DialogExtensions.
 MudExDivider: Кален разделител
+MudExDockLayout: MudExDockLayout
 MudExDropBoxFilePicker: MudExDropBoxFilePicker
 MudExEnumSelect: КалЕксИзбери
 MudExEnumSelect<TEnum>: КалЕксИзбери<TEnum>
@@ -2157,6 +2216,8 @@ MudExGoogleFilePicker: MudExGoogleFilePicker
 MudExGradientText: Кален градиентТекст
 MudExGravatar: Кал ЕксГраватар
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar е MudAvatar, който автоматично използва изображението на профила от gravatar за имейл адрес
+MudExGravatarCard: MudExGravatarCard
+MudExGravatarCard displays a Gravatar profile as card: MudExGravatarCard показва профил на Граватар като карта
 MudExGrid: Кална мрежа
 MudExGrid — Now with Layout Editing: MudExGrid — вече с редактиране на оформление
 MudExGrid Enhanced: MudExGrid подобрен
@@ -2189,13 +2250,17 @@ MudExOneDriveFilePicker: MudExOneDriveFilePicker
 MudExpansionPanel: MudExpansionPanel
 MudExpansionPanels: КалниРазширенияПанели
 MudExPicker: Кален Пиккер
+MudExPicker Tree: Дървото MudExPicker
 MudExPickerBase<T>: Кална <T>база
 MudExPopover: Кал ЕксПоповер
 MudExPromptDialog: MudExPromptDialog
 MudExPromptDialog Component: Компонент MudExPromptDialog
 MudExPropertyEdit: MudExPropertyРедактиране
+MudExRangeSlider<T>: MudExRangeSlider<T>
 MudExSelect: Кал Ексселект
 MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect може да се използва за избор на един или още елементи от колекция с подвързване. Също така този компонент поддържа всички анимации като диалогови прозорци или MudExPopover.
+MudExSelect Item template.: MudExSelect шаблон за елемент.
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
 MudExSelect<T>: Кал Ексселект<T>
 MudExSelectItem is a select item for MudExSelect.: MudExSelectItem е избран елемент за MudExSelect.
 MudExSelectItem<T>: MudExSelectItem<T>
@@ -2347,6 +2412,8 @@ nds-NL: Долнонемски (Холандия)
 ne-IN: Непалски (Индия)
 ne-NP: Непалски (Непал)
 NebulaBase16: МъглявинаБаза16
+NeResize: NeResize
+NeswResize: NeswResize
 Never: Никога
 New: Нов
 NEW: НОВ
@@ -2887,6 +2954,7 @@ No space available: Няма свободно място
 NoChips: Без чипове
 NodeBorderRadius: NodeBorderRadius
 NodePadding: NodePadding
+NoDrop: NoDrop
 NoHeader: NoHeader
 NoIcon: NoIcon
 NoModalDialogs: NoModalDialogs
@@ -2900,6 +2968,7 @@ Not allowed to Delete this user: Не е позволено да изтриет�
 Not Allowed.: Не се допуска.
 Not connected: Не е свързан
 Not Modal Dialogs: Немодални диалогови прозорци
+NotAllowed: Не е позволено
 Note - Media options can't changed after a screen is selected: Забележка - Опциите за мултимедия не могат да се променят, след като е избран екран
 NoteLabels: ЗабележкаЕтикети
 NotFoundMessage: Страницата, която търсите, не съществува.
@@ -2913,13 +2982,17 @@ NoWrap: NoWrap
 npm-example-0.0.20.tgz: npm-example-0.0.20.tgz
 nqo-GN: N'Ko (Гвинея)
 nr-ZA: Южна Ндебеле (Южна Африка)
+NResize: NResize
 nso-ZA: Sesotho sa Leboa (Южна Африка)
+NsResize: NsResize
 Nuget Package source: Nuget Източник на пакета
 Nullable enum: Нулеви числа
 Nullable Flags Enum: Нулеви флагове Enum
 Number: Номер
 numeric: Цифров
 nus-SS: Нуер (Южен Судан)
+NwResize: NwResize
+NwseResize: NwseResize
 nyn-UG: Нянколе (Уганда)
 Object Edit in Dialog: Редактиране на обект в диалогов прозорец
 ObjectEdit: ОбектРедактиране
@@ -3021,6 +3094,7 @@ Overview: Преглед
 Owner: Собственик
 pa-Arab-PK: Пенджаби (арабски, Пакистан)
 pa-IN: Пенджаби (Индия)
+Page_Test: Page_Test
 Palatino: Палатин
 Palatino Linotype: Линотип Палатино
 PaleGreen: Бледозелено
@@ -3106,6 +3180,7 @@ Placeholder: Контейнер
 Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Играйте с MudBlazor и MudBlazor.Extensions в онлайн редактор на код
 Playbill: Афиш
 Player: Играч
+Playground: Площадка
 Please confirm your account by <a href='{0}'>clicking here</a>.: Моля, потвърдете акаунта си чрез <a href='{0}'>щракнете тук</a>.
 Please enter your name: Моля, въведете името си
 Please reset your password by <a href='{0}'>clicking here</a>.: Моля, нулирайте паролата си, като <a href='{0}'>щракнете тук</a>.
@@ -3114,6 +3189,7 @@ Please upload your personal qualifications and references that confirm your pers
 Please Wait: Моля, изчакайте
 PleaseSelect: Моля Изберете
 Plum: Слива
+Pointer: Показалеца
 Points: Точки
 PointsOfInterest: Интересни точки
 Pojoaque: Похоаке
@@ -3131,6 +3207,7 @@ PorpleBase16: ПорпълБаза16
 Portrait: Портрет
 Position: Положение
 Position/Size Sample: Извадка от позиция/размер
+Possibilities: Възможности
 PostalCode: Пощенски код
 PowderBlue: Прахообразно синьо
 Powerful component to edit a set of items and their properties.: Мощен компонент за редактиране на набор от елементи и техните свойства.
@@ -3176,6 +3253,7 @@ Profile picture added.: Добавена е профилна снимка.
 Profile picture deleted.: Профилната снимка е изтрита.
 Profile updated: Профилът е актуализиран
 ProgramingSkills: ПрограмиранеУмения
+Progress: Напредък
 Property1: Имот1
 Property10: Имоти10
 Property11: Имоти11
@@ -3261,6 +3339,7 @@ RailscastsBase16: РелсиBase16
 Rainbow: Дъга
 Random: Случаен
 RandomColorUpdateDelay: RandomColorUpdateDelay
+RangeSlider: RangeSlider
 RarArchive.rar: RarArchive.rar
 Rate: Ставка
 Rate must be greater than 0: Процентът трябва да е по-голям от 0
@@ -3343,6 +3422,7 @@ Reset view: Нулиране на изгледа
 ResetButtonIcon: ResetButtonIcon
 ResetToDefaultFirst: ResetToDefaultFirst
 Resizeable: С възможност за преоразмеряване
+ResizeCursor: ResizeCursor
 ResizeMode: Режим на преоразмеряване
 Resources: Ресурси
 Responsive: Отзивчив
@@ -3422,6 +3502,7 @@ RoundBars: Кръгли пръти
 Rounded: Заоблени
 Routeros: Роутери
 Row: Ред
+RowResize: Промяна на размера на реда
 RowSpan: RowSpan
 RowsPerPageString: Редове на страница
 RoyalBlue: Кралско синьо
@@ -3434,6 +3515,8 @@ ru-UA: Руски (Украйна)
 RubberBand: Гумена лента
 RubberBandColor: Гумена лентаЦвят
 RubberBandStyle: Гумена лентаСтил
+Run: Бягам
+Run this sample on try.mudex.org online: Пуснете този проби в try.mudex.org онлайн
 Runic MT Condensed: Руничен MT кондензиран
 Runtime: Времетраене
 Russian: Руски
@@ -3563,9 +3646,11 @@ SelectedItemColor: SelectedItemColor
 SelectedRequests: ИзбраниЗаявки
 SelectedValues: ИзбраниСтойности
 Selecting: Изберете
+SelectionColor: SelectionColor
 SelectionList: Списък с избори
 SelectionMode: Режим на избор
 SelectionModeIcon: SelectionModeIcon
+SelectionTemplate: SelectionTemplate
 SelectItemsMode: SelectItemsMode
 SelectorsForIgnoreBlur: SelectorsForIgnoreBlur
 SelectorSize: СелекторРазмер
@@ -3576,6 +3661,7 @@ Send: Изпращам
 Send confirmation email: Изпращане на имейл за потвърждение
 Sensitivity: Чувствителност
 Sep: Септември
+SeResize: SeResize
 Server restarted successfully: Сървърът се рестартира успешно
 ses-ML: Койраборо Сени (Мали)
 Set as Default options for all Dialogs: Задаване на опции по подразбиране за всички диалогови прозорци
@@ -3600,6 +3686,7 @@ shi-Tfng-MA: Tachelhit (Тифинах, Мароко)
 Show: Показвам
 Show As Dialog: Диалогов прозорец "Показване като"
 Show as Tree: Показване като дърво
+Show code: Код на шоуто
 Show Demo: Показване на демонстрация
 Show flat: Покажи апартамент
 Show info: Показване на информация
@@ -3657,6 +3744,7 @@ ShowSliders: Показване на плъзгачи
 ShowSpectrumOnRecording: ПоказванеСпектърНаЗапис
 ShowThemeColors: ПоказванеТемаЦветове
 ShowToolbar: Покажи лентата с инструменти
+ShowTooltip: ShowTooltip
 ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
 ShowVisualiser: Показване на визуализатор
 ShowZoomInButton: Покажи бутона ZoomInButton
@@ -3664,6 +3752,7 @@ ShowZoomOutButton: Покажи бутон за мащабиране
 ShrinkLabel: ShrinkLabel
 si-LK: Синхалски (Шри Ланка)
 Side: Страна
+Side filter panels in search or analytics UIs: Странични филтърни панели в потребителските интерфейси за търсене или анализ
 Sienna: Сиена
 Sign In: Влизане
 Sign Up: Регистрирайте се
@@ -3694,6 +3783,8 @@ SimulateWithRandomData: Симулиране сСлучайни данни
 Single: Единичен
 SingleExpand: Единично разширяване
 Size: Големина
+SizeRange: Размерен диапазон
+SizeRange = 0–100: РазмерОбхват = 0–100
 sk-SK: Словашки (Словакия)
 Skeleton: Скелет
 SkipSeparator: SkipSeparator
@@ -3763,6 +3854,7 @@ sr-Latn-RS: Сръбски (латински, Сърбия)
 sr-Latn-XK: Сръбски (латински, косовски)
 Src: Срц
 Srcery: Съри
+SResize: SResize
 ss-SZ: siSwati (Есватини)
 ss-ZA: siSwati (Южна Африка)
 ssy-ER: Сахо (Еритрея)
@@ -3778,6 +3870,7 @@ Start Recording: Започнете да записвате
 Start recording after: Започнете да записвате след
 Start/Stop selection: Избор на старт/стоп
 Starts in {0}: Започва в {0}
+StartTooltipPosition: StartTooltipPosition
 State: Държава
 Static: Статични
 Static card.: Статична карта.
@@ -3785,6 +3878,13 @@ Static item: Статичен елемент
 Status: Статус
 SteelBlue: Стоманено синьо
 Stencil: Шаблон
+Step size of 5: Размер на стъпка 5
+StepLength: StepLength
+StepLength = 5 – values in steps of 5: StepLength = 5 – стойности в стъпки от 5
+StepResolver: StepResolver
+StepResolvers.DateOnly.Quarterly: StepResolvers. Само дата. Тримесечно
+StepResolvers.DateOnly.Weekly: StepResolvers.Само дата.Седмично
+StepResolvers.TimeOnly: StepResolvers.TimeOnly
 Stereo: Стерео
 Steve Rogers: Стив Роджърс
 Store: Магазин
@@ -3876,7 +3976,9 @@ SummerfruitDarkBase16: SummerfruitDarkBase16
 SummerfruitLightBase16: SummerfruitLightBase16
 Sunburst: Слънчев изблъсък
 Super sample Content text.: Супер примерен текст на съдържанието.
+Supercharge your MudBlazor applications with powerful extensions: Заредете приложенията на MudBlazor с мощни разширения
 Support: Поддръжка
+Supports int and DateTime (other types via generics are possible).: Поддържа int и DateTime (възможни са и други типове чрез генерики).
 Surface: Повърхност
 Surname: Фамилно име
 sv-AX: Шведски (Оландски острови)
@@ -3894,12 +3996,14 @@ Swing: Люлка
 Switch: Комутатор
 Switch expand button position: Позиция на бутона за разширяване на превключвателя
 Switch overlay source: Превключване на източника на наслагване
+SwResize: SwResize
 Symbol: Символ
 SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
 SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
 syr-SY: Сирийски език (Сирия)
 System: Система
 System Settings: Системни настройки
+T = int – numeric range: T = int – числов обхват
 T3024Base16: Т3024База16
 ta-IN: Тамилски (Индия)
 ta-LK: Тамилски (Шри Ланка)
@@ -3929,6 +4033,7 @@ Teal: Тийл
 tel: Тел
 Telephone: Телефон
 TemplateClass: ШаблонКлас
+Templates: Шаблони
 Temporary: Временен
 TenderBase16: ТендерБаза16
 teo-KE: Teso (Кения)
@@ -3983,8 +4088,22 @@ The following permission is also required for permission {1}: Следното �
 The maximum file size is 10 MB: Максималният размер на файла е 10 MB
 The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit е стабилен и универсален инструмент, предназначен ефективно да улесни редактирането на една или повече теми или предварително зададени настройки. Той по своята същност побира тъмен режим, светъл режим или комбинация от двете. Освен това поддържа производни класове от MudTheme, както и персонализирани свойства, присъщи на него, като по този начин предоставя цялостно и гъвкаво решение за всички ваши изисквания за редактиране на теми.
 The Plugin '{0}' may be able to help: Плъгинът "{0}" може да помогне
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: Плъзгачът за диапазон може да се използва и вертикално – идеален за странични ленти или компактни филтърни зони.
 The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Примерът е същият като другия пример за FileDisplay, но с тази разлика, че не се използва URL адрес; вместо това се зареждат и използват потоци.
 The server is just restarting. Please wait until the connection has been restored: Сървърът току-що се рестартира. Моля, изчакайте, докато връзката бъде възстановена
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: Тракът подчертава тези банди и ги етикетира, докато шаблонът за избор показва избрания ценови интервал, използвайки формата на актуалната култура.
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: Пистата е разделена на общи възрастови групи като "U18", "18–25", "26–35" и други, а шаблонът за избор показва точния възрастов диапазон като "18 – 35 години".
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: Тракът е разделен на класове на отговор като Fast, OK, Slow и Very slow, а етикетът за избор показва както числовия диапазон, така и класификацията му, например "80 – 450 ms (Fast → Slow)".
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: Тракът е разделен на времеви ленти, представящи различни смени, а шаблонът за избор показва избрания времеви прозорец в 24-часов формат.
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: Тракът се рендерира с персонализиран TrackTemplate, избраният диапазон с SelectionTemplate, а палците с персонализирани ThumbStartTemplate и ThumbEndTemplate.
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: Тракът е разделен на зелени, жълти и червени сегменти, а етикетът за избор показва числовия диапазон заедно с качествена класификация като "Ниска", "Средна" или "Висока".
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: Тракът показва блоковете за фискални години и техните тримесечия, а етикетът за избор показва фискални диапазони като "FY 2022 – FY 2024" или "FY 2023 Q2 – Q4" в зависимост от избрания избор.
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: Тракът показва месечни маркери и седмични тикове, докато шаблонът за избор обобщава селекцията като диапазон от календарни седмици, като например "KW 2 – KW 22".
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: Тракът показва всички нива едно до друго, а шаблонът за избор представя етикет като "Ден – Месец", който можете да използвате за контрол на начина, по който данните се агрегират в графики или отчети.
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: Тракът показва часови тикове и етикети на всеки няколко часа, докато шаблонът за избор визуализира избрания времеви интервал като компактен етикет.
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: Тракът визуализира всички дни от понеделник до неделя, акцентира в уикендите, а етикетът за избор дава приятелски имена като "Monday – Friday".
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: Тракът визуализира годините и техните тримесечия, а етикетът за избор се адаптира според избрания диапазон, например "Q2 2022 – Q3 2023" или просто "Q1 – Q3", когато годината е същата.
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: Тракът визуално подчертава тези сервизни ленти, докато шаблонът за избор показва точния диапазон на деня, например "4 – 9 дни".
 The user "{0}" just changed some of this data: Потребителят "{0}" току-що промени някои от тези данни
 The user {0} has been logged off: Потребителят {0} е излязъл
 The User {0} has just edited, created or deleted entries here. You should reload the data: Потребителят {0} току-що е редактирал, създал или изтрил записи тук. Трябва да презаредите данните
@@ -4013,6 +4132,22 @@ This demo uses the IDialogEventService to check resize or dragged and stores the
 This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Това демонстрира компонента MudExThemeEdit, който вътрешно използва MudExObjectEdit и MudExThemeSelect за редактиране на теми
 This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Тази демонстрация показва препоръчителния начин за използване на MudExAdditionalAdornment с помощта на RenderFragments 'For' и 'ChildContent'
 This dialog can confirmed when slider value is greater then 10: Този диалогов прозорец може да потвърди, когато стойността на плъзгача е по-голяма от 10
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: Този пример показва персонализирана графика на финансовата година, при която финансовата година не започва на 1 януари.
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: Този пример демонстрира многогодишен времеви диапазон с персонализирано поведение на стъпка. С StepResolver определяш как плъзгачът се захваща (например към месеци, четвъртини или часове).
+This example demonstrates a TimeOnly range slider.: Този пример демонстрира плъзгач за диапазон TimeOnly.
+This example demonstrates a TimeOnly-based range slider with minute resolution.: Този пример демонстрира плъзгач за обхват, базиран на TimeOnly, с минутна резолюция.
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: Този пример илюстрира плъзгач за ценови или бюджетни диапазони със семантични сегменти като Бюджет, Стандартен, Премиум и Висок клас.
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: Този пример свързва цели числа с дни от седмицата и превръща плъзгача за диапазон в селектор за ден от седмицата.
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: Този пример представя абстрактно увеличение или нива на агрегиране като час, ден, седмица, месец и година.
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: Този пример показва диапазон от 2015 до края на 2022 г. Потребителят може да избере период от поне 60 дни и най-много 2 години. Размерът на стъпката е един ден.
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: Този пример показва плъзгач за диапазон, базиран на проценти, който може да се използва за нива на използване, капацитет или риск.
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: Този пример показва плъзгач за диапазон, базиран на TimeOnly, пригоден за сценарии за планиране на смени като ранни, късни и нощни смени.
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: Този пример показва как можете да използвате персонализирани шаблони, за да превърнете MudExRangeSlider в контрол в стил времева линия с маркери за година и месец.
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: Този пример таргетира SLA и сценарии с време на отговор, използвайки плъзгач за обхват, базиран на милисекунда.
+This example turns the range slider into a quarter selector over multiple years.: Този пример превръща плъзгача на диапазона в селектор за четвърт в продължение на няколко години.
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: Този пример използва плъзгач за цяло число, за да представи времената за транзит в дни, сегментирани на нива на обслужване като Експрес, Стандарт и Икономична/Морска.
+This example uses an integer-based range slider to represent age ranges and demographic bands.: Този пример използва плъзгач за диапазон, базиран на цяло число, за да представи възрастови групи и демографски групи.
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: Този пример използва DateOnly и седмични стъпки, за да изгради селектор на диапазон, базиран на седмица, с числа на ISO календарни седмици.
 This is a Json representation of the TestModel. This is ignored for Export and Import: Това е Json представяне на TestModel. Това се игнорира за експортиране и импортиране
 This is a simple information dialog that closes after {0} seconds: Това е прост информационен диалог, който се затваря след {0} секунди
 This is a simple information dialog that closes after 0 seconds: Това е прост информационен диалогов прозорец, който се затваря след 0 секунди
@@ -4024,8 +4159,14 @@ This is a simple information dialog that closes after 5 seconds: Това е п�
 This is an Administrator Only View.: Това е изглед само за администратор.
 This is the MudEx Default theme: Това е темата по подразбиране на MudEx
 This is the sample Popover. In general it inherits the original MudPopover.: Това е примерът Popover. Като цяло наследява оригиналния MudPopover.
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: Това е полезно за конфигуриране на дневни часове като работно време, прозорци за поддръжка или слотове за резервация.
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: Това е полезно за продуктови филтри, бюджетни селектори или всякакъв потребителски интерфейс, при който потребителите избират ценов диапазон по визуално насочен начин.
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: Това е полезно за повтарящи се графици, прозорци за наличност или модели на доставка, които се дефинират седмично.
 This one card is still added without an corresponding item.: Тази карта все още се добавя без съответния елемент.
 This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Това преминава като метод към опциите на диалоговия прозорец. Диалоговият прозорец няма да се затвори, ако методът върне false. Резултатът трябва да бъде бул&lt;бул&gt;
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: Този модел е подходящ за аналитични табла за управление, където потребителите могат динамично да променят детайлността на показаните данни.
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: Този модел е полезен за бизнес и финансови приложения, където отчетността е съобразена с фискалните години, а не с календарните години.
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: Този модел е идеален, когато потребителите мислят в седмици, вместо в конкретни дати, например при планиране, докладване или прегледи на спринтовете.
 This photo was taken in a small village in Istra Croatia.: Тази снимка е направена в малко селце в Истра, Хърватия.
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Този инструмент за избор носи анимации, по-добро поведение и диалогов прозорец, който поддържа всички DialogOptions. За да създадете свой собствен компонент за избор jus наследете от MudExPickerBase или просто да използвате просто съдържание, използвайте MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Този пример демонстрира как да използвате MudExCaptureService
@@ -4034,13 +4175,20 @@ This sample just shows how easily you can combine the MudExPicker with MudExTree
 This sample uses the IDialogEventService to cancel the dialog close: Този пример използва IDialogEventService, за да отмени затварянето на диалоговия прозорец
 This sample uses the options for a can close callback: Този пример използва опциите за обратно извикване може да затвори
 This section can be placed inside a MudExGrid component.: Тази секция може да бъде поставена вътре в компонент на MudExGrid.
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: Този шаблон е особено полезен в логистични и транспортни сценарии, където сроковете за доставка се изразяват в дневни диапазони.
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: Този шаблон е отличен за анализи, таргетиране на аудитория или всеки потребителски интерфейс, при който потребителите работят с възрастови интервали.
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: Този шаблон работи добре в мониторинг, наблюдаемост или API табла за управление, където латентните диапазони трябва да се интерпретират бързо.
 Thistle: Бодил
 ThrottleInterval: ДроселИнтервал
+ThumbColor: ThumbColor
+ThumbEndTemplate: ThumbEndTemplate
+ThumbStartTemplate: ThumbStartTemplate
 ti-ER: Тигриня (Еритрея)
 ti-ET: Тигриня (Етиопия)
 tig-ER: Тигре (Еритрея)
 Tilt: Наклон
 Time: Час
+TimeOnly: TimeOnly
 Times: Пъти
 Times New Roman: Таймс Ню Роман
 TimeSeries: Времеви серии
@@ -4096,6 +4244,7 @@ Toronto - M1B 1A1ender: Торонто - M1B 1A1ender
 tr-CY: Турски (Кипър)
 tr-TR: Турски (Турция)
 Trace: Проследи
+TrackColor: TrackColor
 TrackInfoPosition: TrackInfoPosition
 TrackList: Списък с песни
 TrackListBehaviour: TrackListПоведение
@@ -4104,6 +4253,8 @@ TrackListCoverImage: TrackListCoverImage
 TrackListMode: TrackListMode
 TrackListPosition: TrackListPosition
 TrackListToggleButtonPosition: TrackListToggleButtonPosition
+TrackStyle: TrackStyle
+TrackTemplate: TrackTemplate
 Trail Details: Подробности за пътеката
 TransformOrigin: TransformOrigin
 Translations: Преводи
@@ -4113,6 +4264,7 @@ Transparent: Прозрачен
 Trebuchet MS: Trebuchet MS
 TreeView: TreeView
 TreeView component that renders a tree structure of items.: TreeView компонент, който изобразява дървовидна структура от елементи.
+Treeview in Picker: Treeview в Пикър
 TreeViewBreadcrumb: TreeViewГалета
 TreeViewCardGrid: TreeViewCardGrid
 TreeViewDefault: TreeView по подразбиране
@@ -4185,10 +4337,15 @@ ur-IN: Урду (Индия)
 ur-PK: Урду (Пакистан)
 url: URL адрес
 Url: URL адрес
+Use cases: Случаи на употреба
 Use CodeGator Models: Използвайте модели на CodeGator
 Use MudExAdditionalAdornment ad ChildContent: Използване на MudExAdditionalDecoration ad ChildContent
 Use MudExAdditionalAdornment as ChildContent of a MudInput: Използване на MudExAdditionalУкрашение като детеСъдържание на калВход
 Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Вместо това използвайте MudExSelect и задайте MultiSelection на true и ValuePresenter на Chip.
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: Използвайте плъзгача хоризонтално или вертикално – идеално за филтри, табла и отчети.
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: Използвайте този шаблон за тримесечно отчитане, KPI или финансови прегледи, при които тримесечните диапазони са по-значими от точните дати.
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: Използвайте този шаблон за складове, производство, кол центрове или всяка област, където работата се организира на смени в рамките на 24-часов ден.
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: Използвайте този шаблон винаги, когато потребителите трябва да разберат с един поглед дали определен диапазон попада в безопасна, предупредителна или критична зона.
 UseCanvas: ИзползвайПлатно
 UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
 UseItemTemplateForSelection: ИзползвайItemTemplateForSelection
@@ -4238,6 +4395,8 @@ Variant: Версия
 ve-ZA: Venda (Южна Африка)
 Verdana: Вердана
 Version: Версия
+Vertical: Вертикален
+VerticalText: Вертикален текст
 vi-VN: Виетнамски (Виетнам)
 Video Content-Type: Тип видео съдържание
 Video device: Видео устройство
@@ -4267,6 +4426,7 @@ Vs2015: Срещу 2015 г.
 VulcanBase16: ВулканБаза16
 vun-TZ: Вунджо (Танзания)
 wae-CH: Walser (Швейцария)
+Wait: Изчакайте
 wal-ET: Wolaytta (Етиопия)
 Warning: Предупреждение
 WarningContrastText: ПредупреждениеКонтрастТекст
@@ -4298,6 +4458,8 @@ WindowsNtLightBase16: WindowsNtLightBase16
 Wingdings: крила
 With custom configuration: С персонализирана конфигурация
 With default configuration: С конфигурация по подразбиране
+With DockLayout: С DockLayout
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: С StepResolvers можете лесно да конфигурирате стъпковото поведение. За датовите диапазони предоставяме няколко предварително зададени резолвъра. В този пример StepResolvers.DateTime.Quarterly(_ => 1) кара плъзгача да се превърне в четвъртинки.
 With tabs: С раздели
 With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: С компонента MudExAdditionalAdornment можете да имате толкова украшения във всяка контрола, базирана на MudInput, като този.
 With this component you can have an animation while loading the main blazor app: С този компонент можете да имате анимация, докато зареждате основното приложение blazor
@@ -4314,6 +4476,8 @@ WoodlandBase16: Горска база16
 WordDokument.doc: WordDokument.doc
 WrapChips: Обвивки
 WrapToolBarContent: WrapToolBarСъдържание
+WResize: WResize
+Write comments or reactions for current component or page: Пишете коментари или реакции за текущия компонент или страница
 Xcode: Xcode
 XcodeDuskBase16: XcodeDuskBase16
 xh-ZA: isiXhosa (Южна Африка)
@@ -4338,8 +4502,10 @@ You are logged out by an Administrator or profile change.: Излизате от
 You are Logged Out.: Вие сте излезли.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Можете също да използвате MudExAdditionalDecoration като ChildContent на MudInput
 You can move me: Можеш да ме раздвижиш.
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: Можете да местите отделните палци или целия избран диапазон, за да нагласите началните и крайните стойности. В зависимост от конфигурацията се прилагат минимална и максимална продължителност, както и различни размери на стъпките.
 You can now Login with your credentials: Вече можете да влезете с вашите идентификационни данни
 You can resize me: Можеш да ме преоразмериш.
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: Можеш да използваш тази техника, за да изградиш богати времеви плъзгачи и визуални диапазони, които точно пасват на твоята област.
 You cannot delete yourself: Не можете да изтриете себе си
 You clicked: Щракнахте
 You don't need an extra JsonEditor anymore: Вече нямате нужда от допълнителен JsonEditor
@@ -4365,7 +4531,9 @@ ZipCode: Пощенски код
 Zoom: Увеличение
 Zoom in: Увеличаване
 Zoom out: Намаляване на мащаба
+ZoomIn: ZoomIn
 ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover
+ZoomOut: ZoomOut
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Южна Африка)
