@@ -4369,3 +4369,171 @@ ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (South Africa)
+Write comments or reactions for current component or page: Write comments or reactions for current component or page
+Supercharge your MudBlazor applications with powerful extensions: Supercharge your MudBlazor applications with powerful extensions
+Components: Components
+Demos: Demos
+Possibilities: Possibilities
+Featured Components: Featured Components
+MudExDockLayout: MudExDockLayout
+RangeSlider: RangeSlider
+Dock Control: Dock Control
+Dock: Dock
+MudEx Range Slider – Interactive range selection: MudEx Range Slider – Interactive range selection
+DockLayout with ObjectEdit: DockLayout with ObjectEdit
+With DockLayout: With DockLayout
+Templates: Templates
+Custom Templates: Custom Templates
+Playground: Playground
+MudExGravatarCard: MudExGravatarCard
+MudExGravatarCard displays a Gravatar profile as card: MudExGravatarCard displays a Gravatar profile as card
+MudExPicker Tree: MudExPicker Tree
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
+MudExSelect Item template.: MudExSelect Item template.
+Treeview in Picker: Treeview in Picker
+Api view component to display the methods and properties of a type: Api view component to display the methods and properties of a type
+Component that captures component references from ChildContent: Component that captures component references from ChildContent
+A range slider component that allows selecting and manipulating a value range of type T.: A range slider component that allows selecting and manipulating a value range of type T.
+MudExRangeSlider<T>: MudExRangeSlider<T>
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.
+Forward: Forward
+Flexible data types: Flexible data types
+Supports int and DateTime (other types via generics are possible).: Supports int and DateTime (other types via generics are possible).
+Min/max length & step size: Min/max length & step size
+Define minimum and maximum duration for ranges as well as custom step sizes.: Define minimum and maximum duration for ranges as well as custom step sizes.
+Horizontal & vertical orientation: Horizontal & vertical orientation
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: Use the slider horizontally or vertically – ideal for filters, dashboards and reports.
+Run this sample on try.mudex.org online: Run this sample on try.mudex.org online
+Show code: Show code
+Run: Run
+Configuration: Configuration
+Highlights: Highlights
+StepResolver: StepResolver
+Use cases: Use cases
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: The range slider can also be used vertically – ideal for sidebars or compact filter areas.
+This example demonstrates a TimeOnly range slider.: This example demonstrates a TimeOnly range slider.
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.
+Default steps: Default steps
+Minutely steps: Minutely steps
+2 Hourly steps (using StepLength): 2 Hourly steps (using StepLength)
+Because time values always having a fixed size you can also use step length instead of resolvers.: Because time values always having a fixed size you can also use step length instead of resolvers.
+2 Hourly steps (using StepResolver): 2 Hourly steps (using StepResolver)
+But for sure resolvers are working as well.: But for sure resolvers are working as well.
+Step size of 5: Step size of 5
+Edit configuration for component in this sample: Edit configuration for component in this sample
+T = int – numeric range: T = int – numeric range
+SizeRange = 0–100: SizeRange = 0–100
+StepLength = 5 – values in steps of 5: StepLength = 5 – values in steps of 5
+MinLength = 60 days – shortest allowed period: MinLength = 60 days – shortest allowed period
+MaxLength = 730 days – longest allowed period: MaxLength = 730 days – longest allowed period
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = true – entire period can be moved
+Filters in dashboards or reports: Filters in dashboards or reports
+Side filter panels in search or analytics UIs: Side filter panels in search or analytics UIs
+Mobile UIs with limited horizontal space: Mobile UIs with limited horizontal space
+Edit Configuration: Edit Configuration
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.
+This example demonstrates a TimeOnly-based range slider with minute resolution.: This example demonstrates a TimeOnly-based range slider with minute resolution.
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.
+This example turns the range slider into a quarter selector over multiple years.: This example turns the range slider into a quarter selector over multiple years.
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.
+This example uses an integer-based range slider to represent age ranges and demographic bands.: This example uses an integer-based range slider to represent age ranges and demographic bands.
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: This example maps integer values to days of the week and turns the range slider into a day-of-week selector.
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: This example targets SLA and response-time scenarios using a millisecond-based range slider.
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.
+ThumbStartTemplate: ThumbStartTemplate
+ThumbEndTemplate: ThumbEndTemplate
+SelectionTemplate: SelectionTemplate
+TrackTemplate: TrackTemplate
+StepResolvers.TimeOnly: StepResolvers.TimeOnly
+StepResolvers.DateOnly.Weekly: StepResolvers.DateOnly.Weekly
+StepResolvers.DateOnly.Quarterly: StepResolvers.DateOnly.Quarterly
+Custom fiscal year logic: Custom fiscal year logic
+TimeOnly: TimeOnly
+SizeRange: SizeRange
+MathAdapter: MathAdapter
+ShowTooltip: ShowTooltip
+StartTooltipPosition: StartTooltipPosition
+EndTooltipPosition: EndTooltipPosition
+ResizeCursor: ResizeCursor
+MoveCursor: MoveCursor
+MovingCursor: MovingCursor
+IsInverted: IsInverted
+ThumbColor: ThumbColor
+TrackColor: TrackColor
+SelectionColor: SelectionColor
+StepLength: StepLength
+MinLength: MinLength
+AllowWholeRangeDrag: AllowWholeRangeDrag
+AriaLabelledBy: AriaLabelledBy
+TrackStyle: TrackStyle
+Length: Length
+Pointer: Pointer
+Grabbing: Grabbing
+Auto: Auto
+ContextMenu: ContextMenu
+Help: Help
+Progress: Progress
+Wait: Wait
+Cell: Cell
+Crosshair: Crosshair
+VerticalText: VerticalText
+Alias: Alias
+Copy: Copy
+Move: Move
+NoDrop: NoDrop
+NotAllowed: NotAllowed
+Grab: Grab
+AllScroll: AllScroll
+ColResize: ColResize
+RowResize: RowResize
+NResize: NResize
+EResize: EResize
+SResize: SResize
+WResize: WResize
+NeResize: NeResize
+NwResize: NwResize
+SeResize: SeResize
+SwResize: SwResize
+NsResize: NsResize
+EwResize: EwResize
+NeswResize: NeswResize
+NwseResize: NwseResize
+ZoomIn: ZoomIn
+ZoomOut: ZoomOut
+Vertical: Vertical
+Instance: Instance
+Page_Test: Page_Test

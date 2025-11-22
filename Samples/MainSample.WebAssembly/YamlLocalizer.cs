@@ -80,12 +80,12 @@ public class YamlLocalizer<T> : IStringLocalizer<T>
 public static class YamlLocalizerExtensions
 {
     const bool StoreNotFoundKeys = true;
-    internal static readonly HashSet<string> Keys = new();
+    internal static readonly HashSet<string> NotFoundKeys = new();
 
     internal static void Store(string key)
     {
         if(StoreNotFoundKeys)
-            Keys.Add(key);
+            NotFoundKeys.Add(key);
     }
     
     public static IServiceCollection AddYamlLocalizer(this IServiceCollection services)
