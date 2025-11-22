@@ -389,6 +389,8 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2025-10-14 19:02:28 -->
+ - 8.14.1 > New Component [MudExRangeSlider](https://www.mudex.org/range-slider)
+ - 8.14.1 > New Component MudExEditConfiguration
  - 8.14.0 > Update to MudBlazor 8.14.0
  - 8.14.0 > Add support for .net 10
  - 8.14.0 > Add simple demo for MudExPicker combined with MudExTreeView [here](https://www.mudex.org/mud-ex-picker-tree-sample)
