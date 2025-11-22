@@ -20,6 +20,8 @@ _{0} Demos: '{0} Demoer'
 --mud-palette-white: --mudder-palet-hvid
 (currently the item is not visible): (i øjeblikket er varen ikke synlig)
 (currently the item is visible): (i øjeblikket er varen synlig)
+2 Hourly steps (using StepLength): 2 timetrin (ved brug af StepLength)
+2 Hourly steps (using StepResolver): 2 timetrin (ved brug af StepResolver)
 A: En
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: En komponent, der giver brugeren mulighed for at vælge en værdi fra en liste over mulige værdier og vise den som chips eller standard kombinationsboks.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: En komponent, der kan bruges til at glide ind i et ChildContent fra bunden, toppen, venstre eller højre ved at holde musen over.
@@ -33,6 +35,7 @@ A maximum of {0} files are allowed: Der er maksimalt {0} tilladte filer
 A Popover can be used to display some content on top of another.: En Popover kan bruges til at vise noget indhold oven på et andet.
 A powerful component to edit an object and its properties.: En kraftfuld komponent til at redigere et objekt og dets egenskaber.
 A powerful editor that can handle json, xml or yaml content: En kraftfuld editor, der kan håndtere json-, xml- eller yaml-indhold
+A range slider component that allows selecting and manipulating a value range of type T.: En interval-slider-komponent, der tillader valg og manipulation af et værdiområde af typen T.
 A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: En simpel ColorPicker-komponent, der arver MudColorPicker, men tilføjer muligheden for at forsinke lukningshændelsen og bruge en oprindelig vælgerkomponent fra browseren
 A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: En simpel gitterkomponent, der understøtter Kolonner og Rækker og Kolonnespan og Rækkespænd til at indeholde sektioner.
 A SplitPanel Component: En SplitPanel-komponent
@@ -100,6 +103,7 @@ Age: Alder
 agq-CM: Aghem (Cameroun)
 ak-GH: Akan (Ghana)
 Albertus: Albertus
+Alias: Alias
 Alice Johnson: Alice Johnson
 AliceBlue: AliceBlue
 Align: Justere
@@ -132,6 +136,9 @@ AllowRubberBandSelection: TilladGummibåndValg
 AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
 AllowSelectOnPreviewClick: AllowSelectOnPreviewKlik på
 AllowVideoCapture: Tillad VideoCapture
+AllowWholeRangeDrag: TilladFuldTrækDrag
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = sandt – hele perioden kan flyttes
+AllScroll: AllScroll
 AlphaBars: AlphaBars
 Already have an account?: Har du allerede en konto?
 Always: Altid
@@ -226,6 +233,7 @@ AntiqueWhite: AntikHvid
 ApathyBase16: ApathyBase16
 Api: Api
 API: API
+Api view component to display the methods and properties of a type: API-visningskomponent til at vise metoder og egenskaber for en type
 API-Versions: API-versioner
 AppBar: AppBar
 AppbarBackground: AppbarBaggrund
@@ -285,6 +293,7 @@ Are you sure?: Er du sikker?
 Arial: Arial
 Arial Black: Arial Sort
 Arial Narrow: Arial Smal
+AriaLabelledBy: AriaLabelledBy
 arn-CL: Mapuche (Chile)
 Arta: Kunst
 As Admin you can filter for users here: Som administrator kan du filtrere efter brugere her
@@ -339,6 +348,7 @@ Aug: Aug
 Austin: Austin
 Austin - 73301: Austin - 73301
 Austin - 73301ender: Austin - 73301ender
+Auto: Bil
 Auto Confirm Email?: Bekræft e-mail automatisk?
 Auto Generated Editor for TestObject: Automatisk genereret editor til TestObject
 Auto Stop recording after: Stop automatisk optagelse efter
@@ -390,6 +400,7 @@ Basic: Grundlæggende
 Basic role with default permissions: Grundlæggende rolle med standardtilladelser
 Bauhaus 93: Bauhaus 93
 be-BY: Hviderussisk (Hviderusland)
+Because time values always having a fixed size you can also use step length instead of resolvers.: Fordi tidsværdier altid har en fast størrelse, kan du også bruge trinlængde i stedet for resolvere.
 BeforeBegin: FørBegynde
 BeforeEnd: Før slut
 BeforeSearchBox: FørSøgeboks
@@ -490,6 +501,7 @@ bs-Cyrl-BA: Bosnisk (kyrillisk, Bosnien-Hercegovina)
 bs-Latn-BA: Bosnisk (latinsk, Bosnien-Hercegovina)
 Build amazing UIs: Byg fantastiske brugergrænseflader
 BurlyWood: BurlyWood
+But for sure resolvers are working as well.: Men helt sikkert virker resolvers også.
 button: knap
 Button: Knap
 Button component for capturing audio and video.: Knapkomponent til optagelse af lyd og video.
@@ -535,6 +547,7 @@ ccp-Cakm-BD: Chakma (Chakma, Bangladesh)
 ccp-Cakm-IN: Chakma (Chakma, Indien)
 ce-RU: Tjetjenien (Rusland)
 ceb-Latn-PH: Cebuano (Latin, Filippinerne)
+Cell: Celle
 Centaur: Kentaur
 Center: Midte
 CenterCenter: CenterCenter
@@ -627,6 +640,7 @@ ColorPickerView: ColorPickerView
 ColorsBase16: FarverBase16
 ColorStops: ColorStops
 ColorTemperature: Farvetemperatur
+ColResize: ColResize
 ColSpan: ColSpan
 Column: Kolonne
 Columns Affected: Berørte kolonner
@@ -640,6 +654,7 @@ Compact: Kompakt
 Comparer: Sammenligne
 Component edit capture options: Indstillinger for registrering af komponentredigering
 Component in Dialog: Komponent i dialogboks
+Component that captures component references from ChildContent: Komponent, der opfanger komponentreferencer fra ChildContent
 Component to add additional adornment to a MudInput: Komponent til at tilføje ekstra udsmykning til en MudInput
 Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Komponent til visning af en fil i en iframe- eller objektkode eller i en registreret fremviser, der implementerer IMudExFileDisplay
 Component to display information about the current recording: Komponent til visning af oplysninger om den aktuelle optagelse
@@ -649,7 +664,9 @@ Component to move the ChildContent to a specific element that can defined by Ele
 Component to select a theme from a list of themes.: Komponent for at vælge et tema fra en liste over temaer.
 ComponentBaseWithState: ComponentBaseWithState
 ComponentInDialog: ComponentInDialog
+Components: Komponenter
 Conditional updates: Betingede opdateringer
+Configuration: Konfiguration
 Configure list values: Konfigurere listeværdier
 Confirm: Bekræfte
 CONFIRM: BEKRÆFTE
@@ -670,6 +687,7 @@ Content-Type: Indhold-type
 ContentAlignment: Justering af indhold
 ContentStream: Indholdsstrøm
 ContentType: Indholdstype
+ContextMenu: ContextMenu
 ContextMenuAction: KontekstmenuHandling
 Continue to {0}: Fortsæt til {0}
 Continuous: Kontinuerlig
@@ -677,6 +695,7 @@ Contrast: Kontrast
 Cooper Black: Cooper Black
 Copperplate Gothic Bold: Kobberstik Gotisk Fed
 Copperplate Gothic Light: Kobberstik Gotisk Lys
+Copy: Eksemplar
 Copy url: Kopier url
 Counter: Skranke
 Country: Land
@@ -689,6 +708,7 @@ Create powerful, flexible dock layouts — drag, drop, snap, and organize your d
 CreatedOn: Oprettelsesdato
 Critical: Afgørende
 CropAndScale: Beskær og skaler
+Crosshair: Trådkors
 cs-CZ: Tjekkisk (Tjekkiet)
 CSS Color Variables: CSS-farvevariabler
 CssVars: CssVars
@@ -701,6 +721,8 @@ Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can
 Cursor: Markør
 CursorPositionOrigin: MarkørPositionOprindelse
 Custom: Sædvane
+Custom fiscal year logic: Brugerdefineret regnskabsår-logik
+Custom Templates: Brugerdefinerede skabeloner
 CustomContentErrorMessage: CustomContentErrorMessage
 Customize: Tilpasse
 cy-GB: Welsh (Storbritannien)
@@ -764,9 +786,11 @@ Decimal value is required using {0} type!: Decimalværdi er påkrævet ved hjæl
 DeepPink: Dyb Pink
 DeepSkyBlue: DeepSkyBlue
 Default: Standard
+Default steps: Standardtrin
 DefaultBorderRadius: StandardBorderRadius
 DefaultDarkBase16: StandardDarkBase16
 DefaultLightBase16: DefaultLightBase16
+Define minimum and maximum duration for ranges as well as custom step sizes.: Definér minimums- og maksimumsvarighed for intervaller samt brugerdefinerede skridtlængder.
 Defined: Defineret
 Delay: Forsinkelse
 DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
@@ -807,6 +831,7 @@ Demo of using explicit the MudExFileDisplayZip to show and select content inside
 Demonstration for a simple but very useful Enum Selector: Demonstration af en enkel, men meget nyttig Enum Selector
 Demonstration of the MudExSplitter: Demonstration af MudExSplitter
 Demonstration of the quickly color select with MudExColorBubble: Demonstration af det hurtige farvevalg med MudExColorBubble
+Demos: Demoer
 DEMOS: DEMOER
 Dense: Tæt
 Dependent permissions required: Kræver afhængige tilladelser
@@ -888,7 +913,10 @@ Do you really want to restore the database from backup '{0}'? Note that any chan
 Do you want to delete the profile picture of {0}: Vil du slette profilbilledet af {0}
 Do you want to delete the User {0}: Vil du slette brugerens {0}
 Docco: Docco
+Dock: Ikke desto mindre
+Dock Control: Dokkontrol
 Docked: Forankret
+DockLayout with ObjectEdit: DockLayout med ObjectEdit
 Document Deleted: Dokumentet er slettet
 Document Extended Attributes: Udvidede attributter for dokumenter
 Document Management: Dokumenthåndtering
@@ -967,6 +995,8 @@ Edit: Redigere
 Edit {0}: Rediger {0}
 Edit a complex Model with included Collection of users: Rediger en kompleks model med inkluderet Samling af brugere
 Edit Audio Constraints: Rediger lydbegrænsninger
+Edit Configuration: Rediger konfiguration
+Edit configuration for component in this sample: Rediger konfiguration for komponent i dette eksempel
 Edit Current Theme: Rediger aktuelt tema
 Edit data in dialog: Rediger data i dialogboks
 Edit in TryMudEx: Rediger i TryMudEx
@@ -1113,6 +1143,7 @@ en-ZW: Engelsk (Zimbabwe)
 Enable Disqus: Aktiver Disqus
 enables or disables virtualization.: aktiverer eller deaktiverer virtualisering.
 End: Ende
+EndTooltipPosition: EndTooltipPosition
 English: Engelsk
 Engravers MT: Gravører MT
 Enter email and your new password here: Indtast e-mail og din nye adgangskode her
@@ -1144,6 +1175,7 @@ Eras Bold ITC: Epoker Bold ITC
 Eras Demi ITC: Eras Demi ITC
 Eras Light ITC: Eras Light ITC
 Eras Medium ITC: Epoker Medium ITC
+EResize: EResize
 Error: Fejl
 ErrorAnimation: Fejl-animation
 ErrorContrastText: ErrorContrastText
@@ -1186,6 +1218,7 @@ eu-ES: Baskisk (Spanien)
 EvaBase16: EvaBase16
 EvaDimBase16: EvaDimBase16
 ewo-CM: Ewondo (Cameroun)
+EwResize: EwResize
 ExcelSheet.xlsx: ExcelSheet.xlsx
 Expand &nbsp; <b>not</b> &nbsp; loaded nodes: Udvid &nbsp; <b>noder, der ikke</b> &nbsp; er indlæst
 Expand all nodes: Udvid alle noder
@@ -1230,6 +1263,7 @@ FallBackInIframe: FallBackInIframe
 False: Falsk
 FAQs: Ofte stillede spørgsmål
 Far: Fjern
+Featured Components: Fremhævede komponenter
 Features: Funktioner
 Feb: Feb
 Felix Titling: Felix Titler
@@ -1297,6 +1331,7 @@ FilterMode: Filter-tilstand
 FilterMultiple: Filtrer flere
 FilterPlaceholder: FilterPladsholder
 Filters: Filtre
+Filters in dashboards or reports: Filtre i dashboards eller rapporter
 FilterVariant: Filtervariant
 Fiona Gallagher: Fiona Gallagher
 Firebrick: Ildsten
@@ -1310,6 +1345,7 @@ Flat List: Flad liste
 FlatBase16: FlatBase16
 FlatList: FlatList
 FlexEnd: FlexEnd
+Flexible data types: Fleksible datatyper
 FlexStart: FlexStart
 Flip: Flip
 FlipAlways: FlipAlways
@@ -1339,6 +1375,7 @@ ForceShrink: ForceShrink
 ForestGreen: Skovgrøn
 Forgot password?: Glemt adgangskode?
 Format: Format
+Forward: Fremad
 Foundation: Grund
 fr-029: Fransk (Caribien)
 fr-BE: Fransk (Belgien)
@@ -1442,6 +1479,8 @@ GoogleDriveClientId: GoogleDriveClientId
 GoogleLightBase16: GoogleLightBase16
 Goudy Old Style: Goudy gammel stil
 Goudy Stout: Goudy Stout
+Grab: Gribe
+Grabbing: Sensationsprægede
 Gradient: Stigning
 GradientDark: GradientDark
 GradientForeground: GradientForgrund
@@ -1529,6 +1568,7 @@ Hello from dialog 1: Hej fra dialog 1
 Hello from dialog sample page: Hej fra dialogeksempelsiden
 Hello World: Hej verden
 Hello...: Hej...
+Help: Hjælp
 HelperId: Hjælper-id
 HelperText: Hjælpertekst
 HelperTextOnFocus: HjælperTekstOnFocus
@@ -1550,6 +1590,7 @@ Hide: Skjule
 HideContentWhenCollapsed: Skjul indholdNårSkjult
 HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
 High Tower Text: Tekst med højt tårn
+Highlights: Højdepunkter
 HighlightSearch: FremhæveSøg
 Hinge: Hængsel
 Home: Hjem
@@ -1558,6 +1599,7 @@ HopscotchBase16: HopscotchBase16
 HorizonDarkBase16: HorizonDarkBase16
 HorizonLightBase16: HorizonLightBase16
 Horizontal: Horisontal
+Horizontal & vertical orientation: Horisontal og vertikal orientering
 HouseNumber: Tal
 Houston: Houston
 Houston - 77001: Houston - 77001
@@ -1602,6 +1644,7 @@ Idea: Idé
 Identifier: Identifikator
 If this is set a photo will be taken instead of a video.: Hvis dette er indstillet, vil der blive taget et billede i stedet for en video.
 If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Hvis du kan lide denne pakke, kan du stjernemarkere ⭐ den på Github og dele den med dine venner. Hvis ikke, kan du alligevel give en stjerne og fortælle mig, hvad jeg kan forbedre for at gøre det bedre for dig.
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: Hvis du kun har brug for en tids-skyder og ikke vil lave dine egne skabeloner, kan du også bruge den dedikerede {0}-komponent i stedet.
 If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Hvis du angiver denne indstilling som standard. Disse indstillinger vil blive brugt til alle dialoger, hvor der ikke er angivet nogen indstillinger. Fortsætte?
 ig-NG: Igbo (Nigeria)
 Ignore: Ignorere
@@ -1618,6 +1661,7 @@ Impact: Indvirkning
 Import: Import
 ImportExportIcon: ImportExportIcon
 In: I
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: I dette eksempel styrer du et simpelt numerisk interval fra 0 til 100. Skridtlængden sættes til 5 for at tillade grove intervaller.
 In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: I dette eksempel indlæses data dynamisk, så snart elementet først vises i visningen. Komponenten understøtter to indholdspladser
 In this sample you are forced to pick an user: I dette eksempel er du tvunget til at vælge en bruger
 In this sample you are forced to pick some users: I dette eksempel er du tvunget til at vælge nogle brugere
@@ -1658,6 +1702,7 @@ InputMode: Input-tilstand
 InputStyle: InputStyle
 InputType: Inputtype
 Inset: Indsat
+Instance: Eksempel
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Foreløbige resultater
@@ -1672,6 +1717,7 @@ is-IS: Islandsk (Island)
 IsActive: Eraktiv
 IsblEditorDark: IsblEditorDark
 IsblEditorLight: IsblEditorLight
+IsInverted: IsInverted
 IsMouseOverChip: IsMouseOverChip
 ISO: ISO
 IsOpen: IsÅben
@@ -1811,6 +1857,7 @@ Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): 
 LegacyRender: LegacyRender
 Legend: Sagn
 LemonChiffon: CitronChiffon
+Length: Længde
 LetterSpacing: Bogstavafstand
 lg-UG: Ganda (Uganda)
 Library: Bibliotek
@@ -1958,6 +2005,7 @@ MaterialDarkerBase16: MaterialeDarkerBase16
 MaterialLighterBase16: MaterialeLighterBase16
 MaterialPalenightBase16: MaterialePalenightBase16
 MaterialVividBase16: MaterialeVividBase16
+MathAdapter: MathAdapter
 Matura MT Script Capitals: Matura MT Script Capitals
 MaxCaptureTime: MaxCaptureTime
 MaxChips: MaxChips
@@ -1970,6 +2018,7 @@ MaximizeButton: Maksimer knappen
 MaxItems: MaxItems
 MaxItemWidth: MaxItemWidth
 MaxLength: Maks. længde
+MaxLength = 730 days – longest allowed period: MaxLength = 730 dage – længste tilladte periode
 MaxLuminance: MaxLuminance
 MaxMultipleFiles: MaxMultipleFiles
 MaxRecordingTime: Maks. Optagelsestid
@@ -2012,13 +2061,17 @@ Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod Virtual Audio
 Millimeters: Millimeter
 MimeRestrictionType: MimeRestrictionType
 MimeTypes: Mimetyper
+Min/max length & step size: Min/max længde og skridtlængde
 MinDecibels: MinDecibels
 MinFrequency: Min-frekvens
 MinHeight: MinHøjde
 Mini: Mini
 MinimizeButton: Minimer knap
+MinLength: MinLength
+MinLength = 60 days – shortest allowed period: MinLength = 60 dage – korteste tilladte periode
 MinLuminance: MinLuminans
 MintCream: Mintcreme
+Minutely steps: Små skridt
 MinZoomLevel: MinZoomLevel
 Mirror: Spejl
 Misc: Misc
@@ -2031,6 +2084,7 @@ mn-MN: Mongolsk (Mongoliet)
 mn-Mong-CN: Mongolsk (mongolsk, Kina)
 mn-Mong-MN: Mongolsk (mongolsk, Mongoliet)
 mni-IN: Manipuri (Indien)
+Mobile UIs with limited horizontal space: Mobile brugerflader med begrænset horisontal plads
 Moccasin: Moccasin
 MochaBase16: MochaBase16
 Modal: Kapital
@@ -2057,8 +2111,11 @@ MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move: Flytte
 Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Flyt og tilpas størrelsen på gitterelementer direkte med træk og slip – design dit layout dynamisk under kørsel.
 MoveContent: Flyt indhold
+MoveCursor: MoveCursor
+MovingCursor: MovingCursor
 mr-IN: Marathi (Indien)
 MS Outlook: MS Outlook
 MS Reference Sans Serif: MS Reference Sans Serif
@@ -2112,6 +2169,7 @@ MudDrawerHeader: MudDrawerHeader
 MudDynamicTabs: MudDynamicTabs
 MudElement: Mudderelement
 MudEx Components: MudEx-komponenter
+MudEx Range Slider – Interactive range selection: MudEx Range Slider – Interaktiv rækkeviddevalg
 MudExAdditionalAdornment: MudExAdditionalOrnament
 MudExAppearance: MudExAppearance
 MudExAppLoader: MudExAppLoader
@@ -2139,6 +2197,7 @@ MudExCultureSelect: MudExCultureSelect
 MudExDialog: MudExDialog
 MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog er den komponent, der skal bruges, når du vil vise en dialogboks indlejret på din side med alle DialogExtensions.
 MudExDivider: MudExDivider
+MudExDockLayout: MudExDockLayout
 MudExDropBoxFilePicker: MudExDropBoxFilePicker
 MudExEnumSelect: MudExEnumSelect
 MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
@@ -2157,6 +2216,8 @@ MudExGoogleFilePicker: MudExGoogleFilePicker
 MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar er en MudAvatar, der automatisk bruger profilbilledet fra gravatar til en e-mailadresse
+MudExGravatarCard: MudExGravatarCard
+MudExGravatarCard displays a Gravatar profile as card: MudExGravatarCard viser en Gravatar-profil som kort
 MudExGrid: MudExGrid
 MudExGrid — Now with Layout Editing: MudExGrid – nu med layoutredigering
 MudExGrid Enhanced: MudExGrid forbedret
@@ -2189,13 +2250,17 @@ MudExOneDriveFilePicker: MudExOneDriveFilePicker
 MudExpansionPanel: MudExpansionPanel
 MudExpansionPanels: MudExpansionPaneler
 MudExPicker: MudExPicker
+MudExPicker Tree: MudExPicker-træet
 MudExPickerBase<T>: MudExPickerBase<T>
 MudExPopover: MudExPopover
 MudExPromptDialog: MudExPromptDialog
 MudExPromptDialog Component: MudExPromptDialog-komponent
 MudExPropertyEdit: MudExPropertyRediger
+MudExRangeSlider<T>: MudExRangeSlider<T>
 MudExSelect: MudExSelect
 MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect kan bruges til at vælge en eller flere varer fra en bindbar samling. Denne komponent understøtter også alle animationer som dialoger eller MudExPopover.
+MudExSelect Item template.: MudExSelect Item-skabelon.
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
 MudExSelect<T>: MudExSelect<T>
 MudExSelectItem is a select item for MudExSelect.: MudExSelectItem er et udvalgt element til MudExSelect.
 MudExSelectItem<T>: MudExSelectItem<T>
@@ -2347,6 +2412,8 @@ nds-NL: Plattysk (Holland)
 ne-IN: Nepalesisk (Indien)
 ne-NP: Nepalesisk (Nepal)
 NebulaBase16: NebulaBase16
+NeResize: NeResize
+NeswResize: NeswResize
 Never: Aldrig
 New: Ny
 NEW: NY
@@ -2887,6 +2954,7 @@ No space available: Ingen ledig plads
 NoChips: Ingen chips
 NodeBorderRadius: NodeBorderRadius
 NodePadding: NodePadding
+NoDrop: NoDrop
 NoHeader: NoHeader
 NoIcon: Intet ikon
 NoModalDialogs: NoModalDialogs
@@ -2900,6 +2968,7 @@ Not allowed to Delete this user: Ikke tilladt at slette denne bruger
 Not Allowed.: Ikke tilladt.
 Not connected: Ikke tilsluttet
 Not Modal Dialogs: Ikke modale dialogbokse
+NotAllowed: IkkeTilladt
 Note - Media options can't changed after a screen is selected: Bemærk - Medieindstillinger kan ikke ændres, når en skærm er valgt
 NoteLabels: BemærkEtiketter
 NotFoundMessage: Den side, du ledte efter, findes ikke.
@@ -2913,13 +2982,17 @@ NoWrap: NoWrap
 npm-example-0.0.20.tgz: npm-eksempel-0.0.20.tgz
 nqo-GN: N'Ko (Guinea)
 nr-ZA: Sydndebele (Sydafrika)
+NResize: NResize
 nso-ZA: Sesotho sa Leboa (Sydafrika)
+NsResize: NsResize
 Nuget Package source: Nuget Package kilde
 Nullable enum: Nullable enum
 Nullable Flags Enum: Nullable Flags Enum
 Number: Tal
 numeric: numerisk
 nus-SS: Nuer (Sydsudan)
+NwResize: NwResize
+NwseResize: NwseResize
 nyn-UG: Nyankole (Uganda)
 Object Edit in Dialog: Objektredigering i dialogboks
 ObjectEdit: ObjectEdit
@@ -3021,6 +3094,7 @@ Overview: Overblik
 Owner: Ejer
 pa-Arab-PK: Punjabi (arabisk, Pakistan)
 pa-IN: Punjabi (Indien)
+Page_Test: Page_Test
 Palatino: Palatine
 Palatino Linotype: Palatino Linotype
 PaleGreen: Lysegrøn
@@ -3106,6 +3180,7 @@ Placeholder: Pladsholder
 Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Leg med MudBlazor og MudBlazor.Extensions i en online Code Editor
 Playbill: Spilleseddel
 Player: Spiller
+Playground: Legeplads
 Please confirm your account by <a href='{0}'>clicking here</a>.: Bekræft venligst din konto ved at <a href='{0}'>klik her</a>.
 Please enter your name: Indtast venligst dit navn
 Please reset your password by <a href='{0}'>clicking here</a>.: Nulstil din adgangskode ved at <a href='{0}'>klikke her</a>.
@@ -3114,6 +3189,7 @@ Please upload your personal qualifications and references that confirm your pers
 Please Wait: Vent venligst
 PleaseSelect: Vælg venligst
 Plum: Blomme
+Pointer: Markøren
 Points: Point
 PointsOfInterest: Interessepunkter
 Pojoaque: Pojoaque
@@ -3131,6 +3207,7 @@ PorpleBase16: PorpleBase16
 Portrait: Portræt
 Position: Position
 Position/Size Sample: Position/størrelse prøve
+Possibilities: Muligheder
 PostalCode: Postnummer
 PowderBlue: PowderBlue
 Powerful component to edit a set of items and their properties.: Kraftfuld komponent til at redigere et sæt elementer og deres egenskaber.
@@ -3176,6 +3253,7 @@ Profile picture added.: Profilbillede tilføjet.
 Profile picture deleted.: Profilbillede slettet.
 Profile updated: Profil opdateret
 ProgramingSkills: Programmering færdigheder
+Progress: Fremskridt
 Property1: Ejendom1
 Property10: Ejendom10
 Property11: Ejendom11
@@ -3261,6 +3339,7 @@ RailscastsBase16: RailscastsBase16
 Rainbow: Regnbue
 Random: Tilfældig
 RandomColorUpdateDelay: RandomColorUpdateDelay
+RangeSlider: RangeSlider
 RarArchive.rar: RarArchive.rar
 Rate: Tempo
 Rate must be greater than 0: Satsen skal være større end 0
@@ -3343,6 +3422,7 @@ Reset view: Nulstil visning
 ResetButtonIcon: NulstilKnapIkon
 ResetToDefaultFirst: ResetToDefaultFirst
 Resizeable: Kan tilpasses
+ResizeCursor: ResizeCursor
 ResizeMode: Tilpas størrelsestilstand
 Resources: Ressourcer
 Responsive: Lydhør
@@ -3422,6 +3502,7 @@ RoundBars: Rundstænger
 Rounded: Afrundet
 Routeros: Routeros
 Row: Række
+RowResize: RowResize
 RowSpan: RowSpan
 RowsPerPageString: Rækker pr. side
 RoyalBlue: RoyalBlue
@@ -3434,6 +3515,8 @@ ru-UA: Russisk (Ukraine)
 RubberBand: Gummibånd
 RubberBandColor: Gummibåndfarve
 RubberBandStyle: Gummibåndsstil
+Run: Løbe
+Run this sample on try.mudex.org online: Kør dette eksempel på try.mudex.org online
 Runic MT Condensed: Rune MT Kondenseret
 Runtime: Runtime
 Russian: Russisk
@@ -3563,9 +3646,11 @@ SelectedItemColor: SelectedItemColor
 SelectedRequests: SelectedRequests
 SelectedValues: ValgteVærdier
 Selecting: Vælge
+SelectionColor: SelectionColor
 SelectionList: SelectionList
 SelectionMode: SelectionMode
 SelectionModeIcon: ValgtilstandIkon
+SelectionTemplate: SelectionTemplate
 SelectItemsMode: VælgElementerTilstand
 SelectorsForIgnoreBlur: SelectorsForIgnoreBlur
 SelectorSize: SelectorSize
@@ -3576,6 +3661,7 @@ Send: Sende
 Send confirmation email: Send bekræftelses-e-mail
 Sensitivity: Følsomhed
 Sep: Sep
+SeResize: SeResize
 Server restarted successfully: Serveren genstartede korrekt
 ses-ML: Koyraboro Senni (Mali)
 Set as Default options for all Dialogs: Indstil som standardindstillinger for alle dialogbokse
@@ -3600,6 +3686,7 @@ shi-Tfng-MA: Tachelhit (Tifinagh, Marokko)
 Show: Vise
 Show As Dialog: Vis som dialogboks
 Show as Tree: Vis som træ
+Show code: Vis kode
 Show Demo: Vis demo
 Show flat: Vis lejlighed
 Show info: Vis info
@@ -3657,6 +3744,7 @@ ShowSliders: ShowSliders
 ShowSpectrumOnRecording: ShowSpectrumOnRecording
 ShowThemeColors: VisTemaFarver
 ShowToolbar: VisVærktøjslinje
+ShowTooltip: ShowTooltip
 ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
 ShowVisualiser: VisVisualiser
 ShowZoomInButton: VisZoomInKnap
@@ -3664,6 +3752,7 @@ ShowZoomOutButton: VisZoomUdKnap
 ShrinkLabel: Krympemærke
 si-LK: Singalesisk (Sri Lanka)
 Side: Side
+Side filter panels in search or analytics UIs: Sidefilterpaneler i søge- eller analysebrugerflader
 Sienna: Sienna
 Sign In: Log på
 Sign Up: Tilmeld dig
@@ -3694,6 +3783,8 @@ SimulateWithRandomData: SimulateWithRandomData
 Single: Enlig
 SingleExpand: SingleUdvid
 Size: Størrelse
+SizeRange: Størrelsesområde
+SizeRange = 0–100: SizeRange = 0–100
 sk-SK: Slovakisk (Slovakiet)
 Skeleton: Skelet
 SkipSeparator: SkipSeparator
@@ -3763,6 +3854,7 @@ sr-Latn-RS: Serbisk (latin, Serbien)
 sr-Latn-XK: Serbisk (latin, Kosovo)
 Src: Src
 Srcery: Trolddom
+SResize: SResize
 ss-SZ: siSwati (Eswatini)
 ss-ZA: siSwati (Sydafrika)
 ssy-ER: Saho (Eritrea)
@@ -3778,6 +3870,7 @@ Start Recording: Start optagelse
 Start recording after: Start optagelsen efter
 Start/Stop selection: Start/Stop valg
 Starts in {0}: Starter om {0}
+StartTooltipPosition: StartTooltipPosition
 State: Stat
 Static: Statisk
 Static card.: Statisk kort.
@@ -3785,6 +3878,13 @@ Static item: Statisk element
 Status: Status
 SteelBlue: Stålblå
 Stencil: Stencil
+Step size of 5: Skridtlængde på 5
+StepLength: StepLength
+StepLength = 5 – values in steps of 5: StepLength = 5 – værdier i trin af 5
+StepResolver: StepResolver
+StepResolvers.DateOnly.Quarterly: StepResolvers.DatoKun.Kvartalsvis
+StepResolvers.DateOnly.Weekly: StepResolvers.DateOnly.Ugentlig
+StepResolvers.TimeOnly: StepResolvers.TimeOnly
 Stereo: Stereoanlæg
 Steve Rogers: Steve Rogers
 Store: Butik
@@ -3876,7 +3976,9 @@ SummerfruitDarkBase16: SommerfrugtDarkBase16
 SummerfruitLightBase16: SommerfrugtLightBase16
 Sunburst: Sunburst
 Super sample Content text.: Super eksempel på indholdstekst.
+Supercharge your MudBlazor applications with powerful extensions: Giv dine MudBlazor-applikationer ekstra kraftfulde udvidelser
 Support: Støtte
+Supports int and DateTime (other types via generics are possible).: Understøtter int og DateTime (andre typer via generiske er mulige).
 Surface: Overflade
 Surname: Efternavn
 sv-AX: Svensk (Ålandsøerne)
@@ -3894,12 +3996,14 @@ Swing: Svinge
 Switch: Omskifter
 Switch expand button position: Skift placering af udvidelsesknap
 Switch overlay source: Skift overlejringskilde
+SwResize: SwResize
 Symbol: Symbol
 SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
 SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
 syr-SY: Syrisk (Syrien)
 System: System
 System Settings: Systemindstillinger
+T = int – numeric range: T = int – numerisk område
 T3024Base16: T3024Base16
 ta-IN: Tamil (Indien)
 ta-LK: Tamil (Sri Lanka)
@@ -3929,6 +4033,7 @@ Teal: Krikand
 tel: Tel
 Telephone: Telefon
 TemplateClass: Skabelonklasse
+Templates: Skabeloner
 Temporary: Midlertidig
 TenderBase16: TenderBase16
 teo-KE: Teso (Kenya)
@@ -3983,8 +4088,22 @@ The following permission is also required for permission {1}: Følgende tilladel
 The maximum file size is 10 MB: Den maksimale filstørrelse er 10 MB
 The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit er et robust og alsidigt værktøj designet til effektivt at lette redigeringen af et eller flere temaer eller forudindstillinger. Det rummer i sagens natur mørk tilstand, lys tilstand eller en kombination af begge. Derudover understøtter den afledte klasser fra MudTheme, såvel som brugerdefinerede egenskaber, der er forbundet med den, hvilket giver en omfattende og fleksibel løsning til alle dine temaredigeringskrav.
 The Plugin '{0}' may be able to help: Plugin'et '{0}' kan muligvis hjælpe
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: Rækkeviddeskyderen kan også bruges vertikalt – ideelt til sidebjælker eller kompakte filterområder.
 The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Eksemplet er det samme som det andet FileDisplay-eksempel, men med den forskel, at der ikke bruges nogen URL. i stedet indlæses og bruges streams.
 The server is just restarting. Please wait until the connection has been restored: Serveren genstarter bare. Vent venligst, indtil forbindelsen er genoprettet
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: Nummeret fremhæver disse bands og mærker dem, mens udvælgelsesskabelonen gengiver det valgte prisinterval ved hjælp af den aktuelle kulturs valutaformat.
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: Banen er opdelt i almindelige aldersgrupper som "U18", "18–25", "26–35" osv., og udvælgelsesskabelonen viser det præcise aldersinterval som "18–35 år".
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: Sporet er opdelt i responsklasser som Fast, OK, Slow og Very slow, og valgetiketten viser både det numeriske område og dets klassifikation, for eksempel "80 – 450 ms (Fast → Slow)".
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: Sporet er opdelt i tidsbånd, der repræsenterer forskellige skift, og udvælgelsesskabelonen viser det valgte tidsvindue i 24-timers format.
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: Sporet gengives med en brugerdefineret TrackTemplate, det valgte område med en SelectionTemplate, og tommelfingrene med brugerdefineret ThumbStartTemplate og ThumbEndTemplate.
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: Nummeret er opdelt i grønne, gule og røde segmenter, og valgmærket viser det numeriske interval sammen med en kvalitativ klassifikation som "Lav", "Mellem" eller "Høj".
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: Sporet viser regnskabsårsblokke og deres kvartaler, og udvælgelseslabelen viser regnskabsintervaller som "FY 2022 – FY 2024" eller "FY 2023 Q2 – Q4" afhængigt af, hvad der blev valgt.
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: Nummeret viser månedlige markører og ugentlige ticks, mens udvælgelsesskabelonen opsummerer udvælgelsen som et interval af kalenderuger såsom "KW 2 – KW 22".
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: Sporet viser alle niveauer side om side, og udvælgelsesskabelonen gengiver en label som "Dag – Måned", som du kan bruge til at styre, hvordan data aggregeres i diagrammer eller rapporter.
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: Nummeret viser timelige ticks og etiketter hver par timer, mens udvælgelsesskabelonen gengiver den valgte tidsperiode som en kompakt label.
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: Nummeret visualiserer alle dage fra mandag til søndag, fremhæver weekender, og udvalgsetiketten viser venlige navne som "Monday – Friday".
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: Sporet visualiserer år og deres kvartaler, og udvælgelsesetiketten tilpasses afhængigt af det valgte interval, for eksempel "Q2 2022 – Q3 2023" eller blot "Q1 – Q3", når året er det samme.
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: Sporet fremhæver visuelt disse servicebånd, mens udvælgelsesskabelonen viser det præcise dagsintervall, for eksempel "4 – 9 dage".
 The user "{0}" just changed some of this data: Brugeren "{0}" har lige ændret nogle af disse data
 The user {0} has been logged off: Brugeren {0} er logget af
 The User {0} has just edited, created or deleted entries here. You should reload the data: Brugeren {0} har lige redigeret, oprettet eller slettet poster her. Du bør genindlæse dataene
@@ -4013,6 +4132,22 @@ This demo uses the IDialogEventService to check resize or dragged and stores the
 This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Dette demonstrerer MudExThemeEdit-komponenten, der internt bruger MudExObjectEdit og MudExThemeSelect til temaredigering
 This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Denne demonstration viser den anbefalede måde at bruge MudExAdditionalAdornment på ved hjælp af RenderFragments 'For' og 'ChildContent'
 This dialog can confirmed when slider value is greater then 10: Denne dialog kan bekræftes, når skyderens værdi er større end 10
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: Dette eksempel demonstrerer en tilpasset regnskabsårstidslinje, hvor regnskabsåret ikke starter den 1. januar.
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: Dette eksempel demonstrerer et flerårigt tidsrum med en tilpasset trinadfærd. Med en StepResolver definerer du, hvordan skyderen snapper (for eksempel til måneder, kvartaler eller timer).
+This example demonstrates a TimeOnly range slider.: Dette eksempel demonstrerer en TimeOnly rækkevidde-skyder.
+This example demonstrates a TimeOnly-based range slider with minute resolution.: Dette eksempel demonstrerer en TimeOnly-baseret rækkeviddeskyder med minimal opløsning.
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: Dette eksempel illustrerer en pris- eller budget-rækkevidde-skyder med semantiske segmenter som Budget, Standard, Premium og High-End.
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: Dette eksempel kortlægger heltalsværdier til ugedage og omdanner intervalleskyderen til en ugedags-vælger.
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: Dette eksempel repræsenterer abstrakte zoom- eller aggregationsniveauer såsom Time, Dag, Uge, Måned og År.
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: Dette eksempel viser et tidsrum fra 2015 til slutningen af 2022. Brugeren kan vælge en periode på mindst 60 dage og højst 2 år. Skridtlængden er én dag.
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: Dette eksempel viser en procentbaseret interval-slider, der kan bruges til udnyttelse, kapacitet eller risikoniveauer.
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: Dette eksempel viser en TimeOnly-baseret rækkevidde-skyder, der er tilpasset vagtplanlægningsscenarier som tidlige, sene og natvagter.
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: Dette eksempel viser, hvordan du kan bruge brugerdefinerede skabeloner til at gøre MudExRangeSlider til en tidslinje-lignende kontrol med år- og månedsmarkører.
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: Dette eksempel retter sig mod SLA- og responstidsscenarier ved brug af en millisekundbaseret rækkevidde-slider.
+This example turns the range slider into a quarter selector over multiple years.: Dette eksempel forvandler range-skyderen til en kvartvælger over flere år.
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: Dette eksempel bruger en heltalsrækkevidde-skyder til at repræsentere transittider i dage, opdelt i serviceniveauer som Express, Standard og Economy/Sea.
+This example uses an integer-based range slider to represent age ranges and demographic bands.: Dette eksempel bruger en heltalsbaseret intervalskyder til at repræsentere aldersintervaller og demografiske bånd.
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: Dette eksempel bruger DateOnly og ugentlige trin til at bygge en ugebaseret intervalvælger med ISO kalenderugetal.
 This is a Json representation of the TestModel. This is ignored for Export and Import: Dette er en Json-repræsentation af TestModel. Dette ignoreres ved eksport og import
 This is a simple information dialog that closes after {0} seconds: Dette er en simpel informationsdialog, der lukkes efter {0} sekunder
 This is a simple information dialog that closes after 0 seconds: Dette er en simpel informationsdialog, der lukkes efter 0 sekunder
@@ -4024,8 +4159,14 @@ This is a simple information dialog that closes after 5 seconds: Dette er en sim
 This is an Administrator Only View.: Dette er en visning kun for administratorer.
 This is the MudEx Default theme: Dette er MudEx Default-temaet
 This is the sample Popover. In general it inherits the original MudPopover.: Dette er eksemplet på Popover. Generelt arver den den originale MudPopover.
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: Dette er nyttigt til at konfigurere daglige tidsvinduer såsom kontortider, vedligeholdelsesvinduer eller bookingtider.
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: Dette er nyttigt til produktfiltre, budgetvælgere eller enhver brugergrænseflade, hvor brugerne vælger et prisinterval på en visuelt styret måde.
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: Dette er nyttigt for tilbagevendende tidsplaner, tilgængelighedsvinduer eller leveringsmønstre, der defineres på ugentlig basis.
 This one card is still added without an corresponding item.: Dette ene kort tilføjes stadig uden et tilsvarende element.
 This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Dette overføres som metode til dialogindstillingerne. Dialogboksen lukkes ikke, hvis metoden returnerer falsk. Resultatet skal være en bool eller en Task&lt;bool&gt;
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: Dette mønster passer godt til analysedashboards, hvor brugere dynamisk kan ændre granulariteten af de viste data.
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: Dette mønster er nyttigt til forretnings- og finansielle anvendelser, hvor rapportering er tilpasset regnskabsår i stedet for kalenderår.
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: Dette mønster er ideelt, når brugere tænker i uger i stedet for konkrete datoer, for eksempel i planlægning, rapportering eller sprintoversigter.
 This photo was taken in a small village in Istra Croatia.: Dette billede blev taget i en lille landsby i Istra, Kroatien.
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Denne vælger giver animationer, bedre adfærd og en dialog, der understøtter alle DialogOptions. For at oprette din egen plukkerkomponent arver du fra MudExPickerBase, eller bare for at bruge simpelt indhold skal du bruge MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Dette eksempel viser, hvordan du bruger MudExCaptureService
@@ -4034,13 +4175,20 @@ This sample just shows how easily you can combine the MudExPicker with MudExTree
 This sample uses the IDialogEventService to cancel the dialog close: I dette eksempel bruges IDialogEventService til at annullere dialogen
 This sample uses the options for a can close callback: I dette eksempel bruges indstillingerne for et tilbagekald til kan lukke
 This section can be placed inside a MudExGrid component.: Denne sektion kan placeres inde i en MudExGrid-komponent.
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: Denne skabelon er særligt nyttig i logistik- og forsendelsesscenarier, hvor leveringstider angives i dagintervaller.
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: Denne skabelon egner sig godt til analyse, målgruppemålretning eller enhver brugergrænseflade, hvor brugere arbejder med aldersintervaller.
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: Denne skabelon fungerer godt i overvågnings-, observabilitets- eller API-dashboards, hvor latenstidsintervaller skal fortolkes hurtigt.
 Thistle: Tidsel
 ThrottleInterval: Gashåndtag
+ThumbColor: ThumbColor
+ThumbEndTemplate: ThumbEndTemplate
+ThumbStartTemplate: ThumbStartTemplate
 ti-ER: Tigrinja (Eritrea)
 ti-ET: Tigrinja (Etiopien)
 tig-ER: Tigre (Eritrea)
 Tilt: Vippe
 Time: Tidspunkt
+TimeOnly: TimeOnly
 Times: Gange
 Times New Roman: Times New Roman
 TimeSeries: TimeSeries
@@ -4096,6 +4244,7 @@ Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
 tr-CY: Tyrkisk (Cypern)
 tr-TR: Tyrkisk (Tyrkiet)
 Trace: Spore
+TrackColor: TrackColor
 TrackInfoPosition: TrackInfoPosition
 TrackList: Trackliste
 TrackListBehaviour: TrackListBehaviour
@@ -4104,6 +4253,8 @@ TrackListCoverImage: TrackListCoverImage
 TrackListMode: TrackList-tilstand
 TrackListPosition: TrackListPosition
 TrackListToggleButtonPosition: TrackListToggleButtonPosition
+TrackStyle: TrackStyle
+TrackTemplate: TrackTemplate
 Trail Details: Oplysninger om stien
 TransformOrigin: TransformOrigin
 Translations: Oversættelser
@@ -4113,6 +4264,7 @@ Transparent: Gennemsigtig
 Trebuchet MS: Trebuchet MS
 TreeView: TreeView
 TreeView component that renders a tree structure of items.: TreeView-komponent, der gengiver en træstruktur af elementer.
+Treeview in Picker: Træudsigt i Picker
 TreeViewBreadcrumb: TreeViewBrødkrumme
 TreeViewCardGrid: TreeViewCardGrid
 TreeViewDefault: TreeViewDefault
@@ -4185,10 +4337,15 @@ ur-IN: Urdu (Indien)
 ur-PK: Urdu (Pakistan)
 url: URL-adresse
 Url: URL-adresse
+Use cases: Brugsscenarier
 Use CodeGator Models: Brug CodeGator-modeller
 Use MudExAdditionalAdornment ad ChildContent: Brug MudExAdditionalAdornment-annonce ChildContent
 Use MudExAdditionalAdornment as ChildContent of a MudInput: Brug MudExAdditionalAdornment som underordnet indhold i et mudderinput
 Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Brug MudExSelect i stedet, og indstil MultiSelection til true og ValuePresenter til Chip.
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: Brug slideren horisontalt eller vertikalt – ideelt til filtre, dashboards og rapporter.
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: Brug denne skabelon til kvartalsrapportering, KPI'er eller finansielle oversigter, hvor kvartalsintervaller er mere meningsfulde end præcise datoer.
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: Brug denne skabelon til lagre, produktion, callcentre eller ethvert område, hvor arbejdet er organiseret i skift over en 24-timers dag.
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: Brug denne skabelon, når brugerne har brug for at forstå med et hurtigt blik, om et udvalgt område falder ind under en sikker, advarsels- eller kritisk zone.
 UseCanvas: BrugCanvas
 UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
 UseItemTemplateForSelection: UseItemTemplateForSelection
@@ -4238,6 +4395,8 @@ Variant: Variant
 ve-ZA: Venda (Sydafrika)
 Verdana: Verdana
 Version: Version
+Vertical: Lodret
+VerticalText: VerticalText
 vi-VN: Vietnamesisk (Vietnam)
 Video Content-Type: Video-indhold-type
 Video device: Videoenhed
@@ -4267,6 +4426,7 @@ Vs2015: Vs2015
 VulcanBase16: VulcanBase16
 vun-TZ: Vunjo (Tanzania)
 wae-CH: Walser (Schweiz)
+Wait: Vent
 wal-ET: Wolaytta (Etiopien)
 Warning: Advarsel
 WarningContrastText: AdvarselKontrasttekst
@@ -4298,6 +4458,8 @@ WindowsNtLightBase16: WindowsNtLightBase16
 Wingdings: Wingdings
 With custom configuration: Med brugerdefineret konfiguration
 With default configuration: Med standardkonfiguration
+With DockLayout: Med DockLayout
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: Med StepResolvers kan du nemt konfigurere stepping-adfærden. For datointervaller tilbyder vi flere foruddefinerede resolvere. I dette eksempel får StepResolvers.DateTime.Quarterly(_ => 1) skyderen til at snappe til kvart.
 With tabs: Med faner
 With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: Med MudExAdditionalAdornment-komponenten kan du have så mange udsmykninger i enhver MudInput-baseret inputkontrol som denne.
 With this component you can have an animation while loading the main blazor app: Med denne komponent kan du have en animation, mens du indlæser den primære blazor-app
@@ -4314,6 +4476,8 @@ WoodlandBase16: WoodlandBase16
 WordDokument.doc: WordDokument.doc
 WrapChips: WrapChips
 WrapToolBarContent: WrapToolBarContent
+WResize: WResize
+Write comments or reactions for current component or page: Skriv kommentarer eller reaktioner på nuværende komponent eller side
 Xcode: Xcode
 XcodeDuskBase16: XcodeDuskBase16
 xh-ZA: isiXhosa (Sydafrika)
@@ -4338,8 +4502,10 @@ You are logged out by an Administrator or profile change.: Du logges ud af en ad
 You are Logged Out.: Du er logget ud.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Du kan også bruge MudExAdditionalAdornment som ChildContent i et MudInput
 You can move me: Du kan bevæge mig
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: Du kan flytte de enkelte tommelfingre eller hele det valgte område for at justere start- og slutværdier. Afhængigt af konfigurationen gælder minimums- og maksimumsvarighed samt forskellige skridtlængder.
 You can now Login with your credentials: Du kan nu logge ind med dine legitimationsoplysninger
 You can resize me: Du kan ændre størrelsen på mig
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: Du kan bruge denne teknik til at bygge rige tidsskydere og visuelle områder, der passer præcist til dit domæne.
 You cannot delete yourself: Du kan ikke slette dig selv
 You clicked: Du klikkede på
 You don't need an extra JsonEditor anymore: Du behøver ikke længere en ekstra JsonEditor
@@ -4365,7 +4531,9 @@ ZipCode: Postnummer
 Zoom: Zoome
 Zoom in: Zoom ind
 Zoom out: Zoom ud
+ZoomIn: ZoomIn
 ZoomInButtonIcon: ZoomInButtonIkon
 ZoomOnHover: ZoomOnHover
+ZoomOut: ZoomOut
 ZoomOutButtonIcon: ZoomUdKnapIkon
 zu-ZA: isiZulu (Sydafrika)

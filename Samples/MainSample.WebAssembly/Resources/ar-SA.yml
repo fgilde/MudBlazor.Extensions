@@ -20,6 +20,8 @@ _{0} Demos: '{0} العروض التوضيحية'
 --mud-palette-white: '- لوحة الطين - أبيض'
 (currently the item is not visible): (العنصر غير مرئي حاليا)
 (currently the item is visible): (العنصر مرئي حاليا)
+2 Hourly steps (using StepLength): خطوتان كل ساعة (باستخدام StepLength)
+2 Hourly steps (using StepResolver): خطوتان كل ساعة (باستخدام StepResolver)
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: مكون يسمح للمستخدم بتحديد قيمة من قائمة القيم المحتملة وعرضها على أنها رقائق أو صندوق تحرير وسرد افتراضي.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: مكون يمكن استخدامه للتمرير في محتوى فرعي من الأسفل أو الأعلى أو اليسار أو اليمين عن طريق تمرير الماوس.
@@ -33,6 +35,7 @@ A maximum of {0} files are allowed: يسمح بحد أقصى {0} الملفات
 A Popover can be used to display some content on top of another.: يمكن استخدام Popover لعرض بعض المحتوى فوق آخر.
 A powerful component to edit an object and its properties.: مكون قوي لتحرير كائن وخصائصه.
 A powerful editor that can handle json, xml or yaml content: محرر قوي يمكنه التعامل مع محتوى json أو xml أو yaml
+A range slider component that allows selecting and manipulating a value range of type T.: مكون منزلق النطاق يسمح باختيار وتعديل نطاق قيم من النوع T.
 A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: مكون ColorPicker بسيط يرث MudColorPicker ولكنه يضيف إمكانية تأخير حدث الإغلاق واستخدام مكون منتقي أصلي من المتصفح
 A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: مكون شبكة بسيط يدعم الأعمدة والصفوف وColSpan وRowSpan لاحتواء الأقسام.
 A SplitPanel Component: مكون SplitPanel
@@ -100,6 +103,7 @@ Age: عمر
 agq-CM: أغيم (الكاميرون)
 ak-GH: أكان (غانا)
 Albertus: ألبرتوس
+Alias: اسم مستعار
 Alice Johnson: أليس جونسون
 AliceBlue: أليس بلو
 Align: محاذاه
@@ -132,6 +136,9 @@ AllowRubberBandSelection: AllowberRubberBandSelection
 AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
 AllowSelectOnPreviewClick: AllowSelectOnPreviewانقر
 AllowVideoCapture: AllowVideoCapture
+AllowWholeRangeDrag: السماح بسحب المدى الكامل
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = صحيح – يمكن نقل الفترة بأكملها
+AllScroll: أول سكرول
 AlphaBars: ألفا بارز
 Already have an account?: هل لديك حساب بالفعل؟
 Always: دوما
@@ -226,6 +233,7 @@ AntiqueWhite: أنتيكوايت
 ApathyBase16: اللامبالاة16
 Api: واجهة برمجة التطبيقات
 API: واجهة برمجة التطبيقات
+Api view component to display the methods and properties of a type: مكون عرض API لعرض الطرق والخصائص لنوع معين
 API-Versions: إصدارات واجهة برمجة التطبيقات
 AppBar: AppBar
 AppbarBackground: Appbarالخلفية
@@ -285,6 +293,7 @@ Are you sure?: هل أنت متأكد؟
 Arial: أريال
 Arial Black: أريال أسود
 Arial Narrow: أريال ضيق
+AriaLabelledBy: آريا ليبلد باي
 arn-CL: مابوتشي (تشيلي)
 Arta: فن
 As Admin you can filter for users here: بصفتك مسؤولا ، يمكنك التصفية للمستخدمين هنا
@@ -339,6 +348,7 @@ Aug: اغسطس
 Austin: اوستن
 Austin - 73301: أوستن - 73301
 Austin - 73301ender: أوستن - 73301ender
+Auto: سيارة
 Auto Confirm Email?: تأكيد تلقائي للبريد الإلكتروني؟
 Auto Generated Editor for TestObject: محرر تم إنشاؤه تلقائيا ل TestObject
 Auto Stop recording after: إيقاف التسجيل التلقائي بعد
@@ -390,6 +400,7 @@ Basic: أساسي
 Basic role with default permissions: الدور الأساسي مع الأذونات الافتراضية
 Bauhaus 93: باوهاوس 93
 be-BY: البيلاروسية (بيلاروسيا)
+Because time values always having a fixed size you can also use step length instead of resolvers.: لأن قيم الوقت دائما لها حجم ثابت، يمكنك أيضا استخدام طول الخطوة بدلا من المحولات.
 BeforeBegin: قبلالبدء
 BeforeEnd: قبل النهاية
 BeforeSearchBox: قبل SearchBox
@@ -490,6 +501,7 @@ bs-Cyrl-BA: البوسنية (السيريلية والبوسنة والهرسك
 bs-Latn-BA: البوسنية (اللاتينية والبوسنة والهرسك)
 Build amazing UIs: بناء واجهات مستخدم مذهلة
 BurlyWood: بورلي وود
+But for sure resolvers are working as well.: لكن بالتأكيد الحلولين يعملون أيضا.
 button: زر
 Button: زر
 Button component for capturing audio and video.: مكون زر لالتقاط الصوت والفيديو.
@@ -535,6 +547,7 @@ ccp-Cakm-BD: تشاكما (تشاكما ، بنغلاديش)
 ccp-Cakm-IN: تشاكما (تشاكما ، الهند)
 ce-RU: الشيشان (روسيا)
 ceb-Latn-PH: سيبوانو (اللاتينية ، الفلبين)
+Cell: خلية
 Centaur: قنطور
 Center: مركز
 CenterCenter: سنتر سنتر
@@ -627,6 +640,7 @@ ColorPickerView: ColorPickerView
 ColorsBase16: الألوان الأساسية16
 ColorStops: ColorStops
 ColorTemperature: درجة حرارة اللون
+ColResize: كول ريسايز
 ColSpan: كولسبان
 Column: عمود
 Columns Affected: الأعمدة المتأثرة
@@ -640,6 +654,7 @@ Compact: الاتفاق
 Comparer: قارن
 Component edit capture options: خيارات التقاط تحرير المكونات
 Component in Dialog: المكون في مربع الحوار
+Component that captures component references from ChildContent: المكون الذي يلتقط مراجع المكونات من ChildContent
 Component to add additional adornment to a MudInput: مكون لإضافة زينة إضافية إلى MudInput
 Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: مكون لعرض ملف في iframe أو علامة كائن أو في عارض مسجل ينفذ IMudExFileDisplay
 Component to display information about the current recording: مكون لعرض معلومات حول التسجيل الحالي
@@ -649,7 +664,9 @@ Component to move the ChildContent to a specific element that can defined by Ele
 Component to select a theme from a list of themes.: مكون لتحديد نسق من قائمة السمات.
 ComponentBaseWithState: ComponentBaseWithState
 ComponentInDialog: ComponentInDialog
+Components: مكونات
 Conditional updates: التحديثات الشرطية
+Configuration: تكوين
 Configure list values: تكوين قيم القائمة
 Confirm: أكد
 CONFIRM: أكد
@@ -670,6 +687,7 @@ Content-Type: نوع المحتوى
 ContentAlignment: محاذاة المحتوى
 ContentStream: المحتوى
 ContentType: نوع المحتوى
+ContextMenu: قائمة السياق
 ContextMenuAction: ContextMenuAction
 Continue to {0}: استمر في {0}
 Continuous: مستمر
@@ -677,6 +695,7 @@ Contrast: تباين
 Cooper Black: كوبر بلاك
 Copperplate Gothic Bold: صفيحة نحاسية قوطية غامقة
 Copperplate Gothic Light: النحاس القوطي الخفيفة
+Copy: نسخ
 Copy url: نسخ عنوان url
 Counter: عداد
 Country: بلد
@@ -689,6 +708,7 @@ Create powerful, flexible dock layouts — drag, drop, snap, and organize your d
 CreatedOn: تاريخ الإنشاء
 Critical: حرج
 CropAndScale: CropAndScale
+Crosshair: كروسهير
 cs-CZ: التشيكية (التشيكية)
 CSS Color Variables: متغيرات ألوان CSS
 CssVars: CssVars
@@ -701,6 +721,8 @@ Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can
 Cursor: المؤشر
 CursorPositionOrigin: المؤشرالموضعالأصل
 Custom: تقليد
+Custom fiscal year logic: منطق السنة المالية المخصصة
+Custom Templates: القوالب المخصصة
 CustomContentErrorMessage: CustomContentErrorMessage
 Customize: تخصيص
 cy-GB: الويلزية (المملكة المتحدة)
@@ -764,9 +786,11 @@ Decimal value is required using {0} type!: القيمة العشرية مطلو�
 DeepPink: ديب بينك
 DeepSkyBlue: ديب سكاي بلو
 Default: افتراضي
+Default steps: الخطوات الافتراضية
 DefaultBorderRadius: DefaultBorderRadius
 DefaultDarkBase16: الافتراضيDarkBase16
 DefaultLightBase16: DefaultLightBase16
+Define minimum and maximum duration for ranges as well as custom step sizes.: حدد الحد الأدنى وأقصى مدة للنطاقات بالإضافة إلى أحجام الخطوات المخصصة.
 Defined: تعريف
 Delay: تأخر
 DelayValueChangeToPickerClose: تأخيرالقيمةتغييرToPickerإغلاق
@@ -807,6 +831,7 @@ Demo of using explicit the MudExFileDisplayZip to show and select content inside
 Demonstration for a simple but very useful Enum Selector: عرض توضيحي لمحدد Enum بسيط ولكنه مفيد للغاية
 Demonstration of the MudExSplitter: عرض توضيحي ل MudExSplitter
 Demonstration of the quickly color select with MudExColorBubble: عرض توضيحي لاختيار اللون بسرعة باستخدام MudExColorBubble
+Demos: العروض
 DEMOS: العروض
 Dense: كثيف
 Dependent permissions required: الأذونات التابعة المطلوبة
@@ -888,7 +913,10 @@ Do you really want to restore the database from backup '{0}'? Note that any chan
 Do you want to delete the profile picture of {0}: هل تريد حذف صورة الملف الشخصي ل {0}
 Do you want to delete the User {0}: هل تريد حذف المستخدم {0}
 Docco: دوكو
+Dock: ذلك
+Dock Control: التحكم في الرصيف
 Docked: ارساء
+DockLayout with ObjectEdit: DockLayout مع ObjectEdit
 Document Deleted: المستند المحذوف
 Document Extended Attributes: سمات المستند الموسعة
 Document Management: إدارة المستندات
@@ -967,6 +995,8 @@ Edit: حرر
 Edit {0}: تحرير {0}
 Edit a complex Model with included Collection of users: تحرير نموذج معقد مع مجموعة من المستخدمين المضمنة
 Edit Audio Constraints: تحرير قيود الصوت
+Edit Configuration: تعديل الإعدادات
+Edit configuration for component in this sample: تعديل تكوين المكون في هذه العينة
 Edit Current Theme: تحرير القالب الحالي
 Edit data in dialog: تحرير البيانات في مربع الحوار
 Edit in TryMudEx: تحرير في TryMudEx
@@ -1113,6 +1143,7 @@ en-ZW: الإنجليزية (زيمبابوي)
 Enable Disqus: تمكين Disqus
 enables or disables virtualization.: تمكين أو تعطيل المحاكاة الافتراضية.
 End: انتهاء
+EndTooltipPosition: موقع EndTooltip
 English: الإنكليزية
 Engravers MT: النقاشات MT
 Enter email and your new password here: أدخل البريد الإلكتروني وكلمة المرور الجديدة هنا
@@ -1144,6 +1175,7 @@ Eras Bold ITC: إيراس بولد ITC
 Eras Demi ITC: إيراس ديمي ITC
 Eras Light ITC: إيراس لايت ITC
 Eras Medium ITC: إيراس ميديوم ITC
+EResize: EResize
 Error: خطأ
 ErrorAnimation: خطأالرسوم المتحركة
 ErrorContrastText: ErrorContrastText
@@ -1186,6 +1218,7 @@ eu-ES: الباسك (إسبانيا)
 EvaBase16: إيفا بيس 16
 EvaDimBase16: إيفاديم بيس16
 ewo-CM: Ewondo (الكاميرون)
+EwResize: EwResize
 ExcelSheet.xlsx: ExcelSheet.xlsx
 Expand &nbsp; <b>not</b> &nbsp; loaded nodes: توسيع &nbsp; العقد <b>غير</b> &nbsp; المحملة
 Expand all nodes: توسيع جميع العقد
@@ -1230,6 +1263,7 @@ FallBackInIframe: FallBackInIframe
 False: خطأ
 FAQs: الأسئلة الشائعة
 Far: بعيد
+Featured Components: المكونات المميزة
 Features: ملامح
 Feb: فبراير
 Felix Titling: فيليكس تيتلينج
@@ -1297,6 +1331,7 @@ FilterMode: وضع التصفية
 FilterMultiple: عامل تصفية متعدد
 FilterPlaceholder: العنصر النائب للمرشح
 Filters: مرشحات
+Filters in dashboards or reports: الفلاتر في لوحات المعلومات أو التقارير
 FilterVariant: FilterVariant
 Fiona Gallagher: فيونا غالاغر
 Firebrick: فايربريك
@@ -1310,6 +1345,7 @@ Flat List: قائمة مسطحة
 FlatBase16: قاعدة مسطحة16
 FlatList: قائمة فلات
 FlexEnd: فليكس اند
+Flexible data types: أنواع البيانات المرنة
 FlexStart: فليكس ستارت
 Flip: الوجه
 FlipAlways: فليب لاوس
@@ -1339,6 +1375,7 @@ ForceShrink: القوة المتقلصة
 ForestGreen: فورست جرين
 Forgot password?: هل نسيت كلمة المرور؟
 Format: تنسيق
+Forward: أمامي
 Foundation: أساس
 fr-029: الفرنسية (منطقة البحر الكاريبي)
 fr-BE: الفرنسية (بلجيكا)
@@ -1442,6 +1479,8 @@ GoogleDriveClientId: GoogleDriveClientId
 GoogleLightBase16: جوجل لايت بيس16
 Goudy Old Style: جودي النمط القديم
 Goudy Stout: جودي ستاوت
+Grab: خطف
+Grabbing: الاستيلاء
 Gradient: التدرج
 GradientDark: التدرج الظلام
 GradientForeground: التدرجالمقدمة
@@ -1529,6 +1568,7 @@ Hello from dialog 1: مرحبا من مربع الحوار 1
 Hello from dialog sample page: مرحبا من صفحة نموذج مربع الحوار
 Hello World: مرحبا بالعالم
 Hello...: مرحبا...
+Help: تعليمات
 HelperId: معرف المساعد
 HelperText: النص المساعد
 HelperTextOnFocus: HelperTextOnFocus
@@ -1550,6 +1590,7 @@ Hide: أخفى
 HideContentWhenCollapsed: إخفاء المحتوىمWhen Collapsed
 HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
 High Tower Text: نص برج عالي
+Highlights: يبرز
 HighlightSearch: تسليط الضوء على البحث
 Hinge: المفصلي
 Home: وطن
@@ -1558,6 +1599,7 @@ HopscotchBase16: الحجلةقاعدة 16
 HorizonDarkBase16: برنامج HorizonDarkBase16
 HorizonLightBase16: برنامج HorizonLightBase16
 Horizontal: أفقي
+Horizontal & vertical orientation: الاتجاه الأفقي والعمودي
 HouseNumber: رقم
 Houston: هيوستن
 Houston - 77001: هيوستن - 77001
@@ -1602,6 +1644,7 @@ Idea: فكرة
 Identifier: المعرف
 If this is set a photo will be taken instead of a video.: إذا تم تعيين هذا ، التقاط صورة بدلا من الفيديو.
 If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: إذا أعجبك هذه الحزمة ، فيرجى تمييزها بنجمة ⭐ على Github ومشاركتها مع أصدقائك. إذا لم يكن الأمر كذلك ، فيمكنك إعطاء نجمة على أي حال وإخباري بما يمكنني تحسينه لجعله أفضل لك.
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: إذا كنت تحتاج فقط إلى شريط زمن ولا تريد إنشاء قوالب خاصة بك، يمكنك أيضا استخدام مكون {0} المخصص بدلا من ذلك.
 If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: إذا قمت بتعيين هذه الخيارات كخيارات افتراضية. سيتم استخدام هذه الخيارات لجميع مربعات الحوار حيث لا يتم تحديد أي خيارات. استمر؟
 ig-NG: الإيغبو (نيجيريا)
 Ignore: تجاهل
@@ -1618,6 +1661,7 @@ Impact: تأثير
 Import: استورد
 ImportExportIcon: أيقونة الاستيراد
 In: في
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: في هذا المثال، تتحكم في نطاق رقمي بسيط من 0 إلى 100. يتم ضبط حجم الخطوة على 5 للسماح بفواصل خشنة.
 In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: في هذا المثال، يتم تحميل البيانات ديناميكيا بمجرد ظهور العنصر لأول مرة داخل طريقة العرض. يدعم المكون فتحتين للمحتوى
 In this sample you are forced to pick an user: في هذا النموذج ، تضطر إلى اختيار مستخدم
 In this sample you are forced to pick some users: في هذا العينة ، تضطر إلى اختيار بعض المستخدمين
@@ -1658,6 +1702,7 @@ InputMode: وضع الإدخال
 InputStyle: نمط الإدخال
 InputType: نوع الإدخال
 Inset: الداخلي
+Instance: مثيل
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: النتائج المؤقتة
@@ -1672,6 +1717,7 @@ is-IS: الأيسلندية (أيسلندا)
 IsActive: IsActive
 IsblEditorDark: IsblEditorDark
 IsblEditorLight: IsblEditorLight
+IsInverted: IsInverted
 IsMouseOverChip: IsMouseOverChip
 ISO: أيزو
 IsOpen: IsOpen
@@ -1811,6 +1857,7 @@ Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): 
 LegacyRender: LegacyRender
 Legend: أسطورة
 LemonChiffon: ليمونشيفون
+Length: طول
 LetterSpacing: تباعد الحروف
 lg-UG: غاندا (أوغندا)
 Library: مكتبة
@@ -1958,6 +2005,7 @@ MaterialDarkerBase16: المادةDarkerBase16
 MaterialLighterBase16: الموادLighterBase16
 MaterialPalenightBase16: المادةPalenightBase16
 MaterialVividBase16: المادةVividBase16
+MathAdapter: ماثمحول
 Matura MT Script Capitals: ماتورا MT سيناريو العواصم
 MaxCaptureTime: ماكس كاب تايم
 MaxChips: ماكس شيبس
@@ -1970,6 +2018,7 @@ MaximizeButton: زر التعظيم
 MaxItems: ماكس سبيد
 MaxItemWidth: MaxItemWidth
 MaxLength: الحد الأقصى للطول
+MaxLength = 730 days – longest allowed period: الحد الأقصى للطول = 730 يوما – أطول فترة مسموح بها
 MaxLuminance: ماكس لومينانس
 MaxMultipleFiles: ماكس مولتيبل
 MaxRecordingTime: MaxRecordingTime
@@ -2012,13 +2061,17 @@ Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (جهاز الصوت ا
 Millimeters: ملليمتر
 MimeRestrictionType: MimeRestrictionType
 MimeTypes: أنواع التمثيل الصامت
+Min/max length & step size: الحد الأدنى/الحد الأقصى للطول وحجم الخطوة
 MinDecibels: دقيقة ديسيبل
 MinFrequency: الحد الأدنى للتردد
 MinHeight: الحد الأدنى للارتفاع
 Mini: ميني
 MinimizeButton: زر التصغير
+MinLength: MinLength
+MinLength = 60 days – shortest allowed period: الحد الأدنى = 60 يوما – أقصر فترة مسموح بها
 MinLuminance: MinLuminance
 MintCream: كريم النعناع
+Minutely steps: خطوات دقيقة
 MinZoomLevel: MinZoomLevel
 Mirror: مرآة
 Misc: متفرقات
@@ -2031,6 +2084,7 @@ mn-MN: المنغولية (منغوليا)
 mn-Mong-CN: المنغولية (المنغولية ، الصين)
 mn-Mong-MN: المنغولية (المنغولية ، منغوليا)
 mni-IN: مانيبوري (الهند)
+Mobile UIs with limited horizontal space: واجهات مستخدم محمولة ذات مساحة أفقية محدودة
 Moccasin: موكاسين
 MochaBase16: موكا بيس16
 Modal: عاصمة
@@ -2057,8 +2111,11 @@ MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move: حرك
 Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: انقل عناصر الشبكة وقم بتغيير حجمها مباشرة باستخدام السحب والإفلات - صمم تخطيطك ديناميكيا في وقت التشغيل.
 MoveContent: المحتوى المتحرك
+MoveCursor: MoveCursor
+MovingCursor: المؤشر المتحرك
 mr-IN: الماراثية (الهند)
 MS Outlook: مايكروسوفت أوتلوك
 MS Reference Sans Serif: MS Reference Sans Serif
@@ -2112,6 +2169,7 @@ MudDrawerHeader: MudDrawerHeader
 MudDynamicTabs: علامات التبويب MudDynamicTabs
 MudElement: عنصر الطين
 MudEx Components: مكونات MudEx
+MudEx Range Slider – Interactive range selection: شريط تمرير النطاق MudEx – اختيار النطاق التفاعلي
 MudExAdditionalAdornment: الطينExإضافيةزينة
 MudExAppearance: MudExAppearance
 MudExAppLoader: MudExAppLoader
@@ -2139,6 +2197,7 @@ MudExCultureSelect: MudExCultureSelect
 MudExDialog: MudExDialog
 MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog هو المكون الذي يجب استخدامه عندما تريد إظهار مربع حوار مضمن في صفحتك مع جميع DialogExtensions.
 MudExDivider: MudExDivider
+MudExDockLayout: تصميم MudExDock
 MudExDropBoxFilePicker: MudExDropBoxFilePicker
 MudExEnumSelect: MudExEnumSelect
 MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
@@ -2157,6 +2216,8 @@ MudExGoogleFilePicker: الطين ExGoogleFilePicker
 MudExGradientText: MudExGradientText
 MudExGravatar: الطين ExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar هو MudAvatar يستخدم تلقائيا صورة الملف الشخصي من gravatar لعنوان بريد إلكتروني
+MudExGravatarCard: بطاقة MudExGravatarCard
+MudExGravatarCard displays a Gravatar profile as card: MudExGravatarCard تعرض ملف تعريف Gravatar كبطاقة
 MudExGrid: MudExGrid
 MudExGrid — Now with Layout Editing: MudExGrid - الآن مع تحرير التخطيط
 MudExGrid Enhanced: MudExGrid محسن
@@ -2189,13 +2250,17 @@ MudExOneDriveFilePicker: MudExOneDriveFilePicker
 MudExpansionPanel: لوحة MudExpansionPanel
 MudExpansionPanels: MudExpansionPanels
 MudExPicker: الطين إكسبيكر
+MudExPicker Tree: شجرة MudExPicker
 MudExPickerBase<T>: MudExPickerBase<T>
 MudExPopover: الطين إكسبوفر
 MudExPromptDialog: MudExPromptDialog
 MudExPromptDialog Component: مكون MudExPromptDialog
 MudExPropertyEdit: MudExPropertyEdit
+MudExRangeSlider<T>: MudExRangeSlider<T>
 MudExSelect: MudExSelect
 MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: يمكن استخدام MudExSelect لتحديد عنصر خام واحد أكثر من مجموعة قابلة للربط. كما يدعم هذا المكون جميع الرسوم المتحركة مثل مربعات الحوار أو MudExPopover.
+MudExSelect Item template.: قالب عنصر MudExSelect.
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
 MudExSelect<T>: MudExSelect<T>
 MudExSelectItem is a select item for MudExSelect.: MudExSelectItem هو عنصر محدد ل MudExSelect.
 MudExSelectItem<T>: MudExSelectItem<T>
@@ -2347,6 +2412,8 @@ nds-NL: اللغة الألمانية المنخفضة (هولندا)
 ne-IN: النيبالية (الهند)
 ne-NP: النيبالية (نيبال)
 NebulaBase16: قاعدة السديم 16
+NeResize: نيريسايز
+NeswResize: نيسو ريسايز
 Never: أبدا
 New: الجديد
 NEW: الجديد
@@ -2887,6 +2954,7 @@ No space available: لا توجد مساحة متاحة
 NoChips: نوشيبس
 NodeBorderRadius: NodeBorderRadius
 NodePadding: NodePadding
+NoDrop: نو دروب
 NoHeader: NoHeader
 NoIcon: NoIcon
 NoModalDialogs: NoModalDialogs
@@ -2900,6 +2968,7 @@ Not allowed to Delete this user: غير مسموح بحذف هذا المستخ�
 Not Allowed.: غير مسموح به.
 Not connected: غير متصل
 Not Modal Dialogs: ليست مربعات حوار مشروطة
+NotAllowed: غير مسموح به
 Note - Media options can't changed after a screen is selected: ملاحظة - لا يمكن تغيير خيارات الوسائط بعد تحديد الشاشة
 NoteLabels: ملاحظةالتسميات
 NotFoundMessage: الصفحة التي كنت تبحث عنها غير موجودة.
@@ -2913,13 +2982,17 @@ NoWrap: نوراب
 npm-example-0.0.20.tgz: npm-example-0.0.20.tgz
 nqo-GN: نكو (غينيا)
 nr-ZA: جنوب نديبيلي (جنوب أفريقيا)
+NResize: NResize
 nso-ZA: سيسوتو سا ليبوا (جنوب أفريقيا)
+NsResize: NsResize
 Nuget Package source: مصدر حزمة Nuget
 Nullable enum: التعداد القابل للإلغاء
 Nullable Flags Enum: مجموعة الأعلام الفارغة
 Number: رقم
 numeric: عددي
 nus-SS: النوير (جنوب السودان)
+NwResize: NwResize
+NwseResize: NwseResize
 nyn-UG: نيانكولي (أوغندا)
 Object Edit in Dialog: تحرير الكائن في مربع الحوار
 ObjectEdit: كائنتحرير
@@ -3021,6 +3094,7 @@ Overview: نظره عامه
 Owner: مالك
 pa-Arab-PK: البنجابية (العربية ، باكستان)
 pa-IN: البنجابية (الهند)
+Page_Test: Page_Test
 Palatino: بلاطي
 Palatino Linotype: بالاتينو لينوتايب
 PaleGreen: أخضر شاحب
@@ -3106,6 +3180,7 @@ Placeholder: عنصر نائب
 Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: العب مع MudBlazor و MudBlazor.Extensions في محرر التعليمات البرمجية عبر الإنترنت
 Playbill: بلاي بيل
 Player: لاعب
+Playground: ملعب
 Please confirm your account by <a href='{0}'>clicking here</a>.: يرجى تأكيد حسابك عن طريق النقر <a href='{0}'> هنا</a>.
 Please enter your name: الرجاء إدخال اسمك
 Please reset your password by <a href='{0}'>clicking here</a>.: يرجى إعادة تعيين كلمة المرور الخاصة بك عن طريق <a href='{0}'>انقر هنا</a>.
@@ -3114,6 +3189,7 @@ Please upload your personal qualifications and references that confirm your pers
 Please Wait: الرجاء الانتظار
 PleaseSelect: من فضلك حدد
 Plum: برقوق
+Pointer: مؤشر
 Points: النقاط
 PointsOfInterest: نقاط الاهتمام
 Pojoaque: بوجواك
@@ -3131,6 +3207,7 @@ PorpleBase16: بوربل بيس16
 Portrait: صوره
 Position: موضع
 Position/Size Sample: عينة الموضع / الحجم
+Possibilities: امكانيات
 PostalCode: الرمز البريدي
 PowderBlue: مسحوق أزرق
 Powerful component to edit a set of items and their properties.: مكون قوي لتحرير مجموعة من العناصر وخصائصها.
@@ -3176,6 +3253,7 @@ Profile picture added.: تمت إضافة صورة الملف الشخصي.
 Profile picture deleted.: تم حذف صورة الملف الشخصي.
 Profile updated: تحديث الملف الشخصي
 ProgramingSkills: مهارات البرمجة
+Progress: ترقى
 Property1: خاصية1
 Property10: خاصية10
 Property11: خاصية11
@@ -3261,6 +3339,7 @@ RailscastsBase16: القضبان الأساسية 16
 Rainbow: قوس قزح
 Random: عشوائي
 RandomColorUpdateDelay: RandomColorUpdateDelay
+RangeSlider: RangeSlider
 RarArchive.rar: RarArchive.rar
 Rate: معدل
 Rate must be greater than 0: يجب أن يكون المعدل أكبر من 0
@@ -3343,6 +3422,7 @@ Reset view: إعادة تعيين العرض
 ResetButtonIcon: ResetButtonIcon
 ResetToDefaultFirst: ResetToDefaultFirst
 Resizeable: قابل لتغيير الحجم
+ResizeCursor: مؤشر إعادة الحجم
 ResizeMode: تغيير الحجم
 Resources: موارد
 Responsive: متجاوب
@@ -3422,6 +3502,7 @@ RoundBars: القضبان المستديرة
 Rounded: تقريب
 Routeros: أجهزة التوجيه
 Row: صف
+RowResize: RowResize
 RowSpan: رو سبان
 RowsPerPageString: الصفوف في الصفحة
 RoyalBlue: رويال بلو
@@ -3434,6 +3515,8 @@ ru-UA: الروسية (أوكرانيا)
 RubberBand: الشريط المطاطي
 RubberBandColor: RubberBandColor
 RubberBandStyle: RubberBandStyle
+Run: ركض
+Run this sample on try.mudex.org online: شغل هذه العينة على try.mudex.org عبر الإنترنت
 Runic MT Condensed: رونيك MT مكثف
 Runtime: وقت التشغيل
 Russian: الروسية
@@ -3563,9 +3646,11 @@ SelectedItemColor: SelectedItemColor
 SelectedRequests: الطلبات المحددة
 SelectedValues: القيم المحددة
 Selecting: تحديد
+SelectionColor: SelectionColor
 SelectionList: قائمة الاختيار
 SelectionMode: وضع التحديد
 SelectionModeIcon: SelectionModeIcon
+SelectionTemplate: قالب الاختيار
 SelectItemsMode: وضع SelectItemsMode
 SelectorsForIgnoreBlur: محدداتForIgnoreBlur
 SelectorSize: حجم المحددات
@@ -3576,6 +3661,7 @@ Send: ارسل
 Send confirmation email: إرسال رسالة تأكيد بالبريد الإلكتروني
 Sensitivity: حساسية
 Sep: سبتمبر
+SeResize: سيريسایز
 Server restarted successfully: إعادة تشغيل الخادم بنجاح
 ses-ML: كورابورو سيني (مالي)
 Set as Default options for all Dialogs: تعيين كخيارات افتراضية لجميع مربعات الحوار
@@ -3600,6 +3686,7 @@ shi-Tfng-MA: Tachelhit (تيفيناغ ، المغرب)
 Show: عرض
 Show As Dialog: مربع الحوار إظهار باسم
 Show as Tree: إظهار كشجرة
+Show code: رمز العرض
 Show Demo: عرض توضيحي
 Show flat: عرض شقة
 Show info: عرض المعلومات
@@ -3657,6 +3744,7 @@ ShowSliders: عرض المتزلجون
 ShowSpectrumOnRecording: ShowSpectrumOnRecording
 ShowThemeColors: ShowThemeColors
 ShowToolbar: شريط الأدوات ShowBar
+ShowTooltip: ShowTooltip
 ShowTrackInfosOnPlay: عرض التراكمعلوماتOnPlay
 ShowVisualiser: ShowVisualiser
 ShowZoomInButton: ShowZoomInButton
@@ -3664,6 +3752,7 @@ ShowZoomOutButton: ShowZoomOutButton
 ShrinkLabel: ShrinkLabel
 si-LK: السنهالية (سريلانكا)
 Side: جنب
+Side filter panels in search or analytics UIs: لوحات التصفية الجانبية في واجهات البحث أو التحليلات
 Sienna: سيينا
 Sign In: تسجيل الدخول
 Sign Up: التسجيل
@@ -3694,6 +3783,8 @@ SimulateWithRandomData: SimulateWithRandomData
 Single: واحد
 SingleExpand: SingleExpand
 Size: حجم
+SizeRange: نطاق الأحجام
+SizeRange = 0–100: النطاق القياسي = 0–100
 sk-SK: السلوفاكية (سلوفاكيا)
 Skeleton: هيكل
 SkipSeparator: SkipSeparator
@@ -3763,6 +3854,7 @@ sr-Latn-RS: الصربية (اللاتينية ، صربيا)
 sr-Latn-XK: الصربية (اللاتينية ، كوسوفو)
 Src: إس آر سي
 Srcery: سكري
+SResize: SResize
 ss-SZ: سيسواتي (إسواتيني)
 ss-ZA: سيسواتي (جنوب أفريقيا)
 ssy-ER: ساهو (إريتريا)
@@ -3778,6 +3870,7 @@ Start Recording: ابدأ التسجيل
 Start recording after: ابدأ التسجيل بعد
 Start/Stop selection: اختيار البدء/الإيقاف
 Starts in {0}: يبدأ في {0}
+StartTooltipPosition: StartTooltipPosition
 State: حالة
 Static: ثابت
 Static card.: بطاقة ثابتة.
@@ -3785,6 +3878,13 @@ Static item: عنصر ثابت
 Status: حالة
 SteelBlue: ستيل بلو
 Stencil: استنسل
+Step size of 5: حجم الخطوة 5
+StepLength: ستيب لونغ
+StepLength = 5 – values in steps of 5: StepLength = 5 – القيم بخطوات 5
+StepResolver: StepResolver
+StepResolvers.DateOnly.Quarterly: StepResolvers.DateOnly.Quarterly
+StepResolvers.DateOnly.Weekly: StepResolvers.DateOnly.Weekly
+StepResolvers.TimeOnly: StepResolvers.TimeOnly
 Stereo: ستيريو
 Steve Rogers: ستيف روجرز
 Store: دكان
@@ -3876,7 +3976,9 @@ SummerfruitDarkBase16: SummerfruitDarkBase16
 SummerfruitLightBase16: SummerfruitLightBase16
 Sunburst: صن برست
 Super sample Content text.: عينة فائقة من نص المحتوى.
+Supercharge your MudBlazor applications with powerful extensions: عزز تطبيقات MudBlazor الخاصة بك بإضافة إضافات قوية
 Support: دعم
+Supports int and DateTime (other types via generics are possible).: يدعم int و DateTime (أنواع أخرى عبر الجنرات ممكنة).
 Surface: سطح
 Surname: اللقب
 sv-AX: السويدية (جزر أولاند)
@@ -3894,12 +3996,14 @@ Swing: سوينغ
 Switch: حول
 Switch expand button position: تبديل موضع زر التوسيع
 Switch overlay source: تبديل مصدر تراكب
+SwResize: SwResize
 Symbol: رمز
 SynthMidnightTerminalDarkBase16: سينثنيميدايتٽرمينالداركبيس16
 SynthMidnightTerminalLightBase16: سينثميدايتTerminalLightBase16
 syr-SY: السريانية (سوريا)
 System: نظام
 System Settings: إعدادات النظام
+T = int – numeric range: T = int – النطاق العددي
 T3024Base16: T3024Base16
 ta-IN: التاميل (الهند)
 ta-LK: التاميل (سريلانكا)
@@ -3929,6 +4033,7 @@ Teal: البط البري
 tel: تل
 Telephone: تلفون
 TemplateClass: فئة القالب
+Templates: قوالب
 Temporary: مؤقت
 TenderBase16: قاعدة المناقصة16
 teo-KE: تيسو (كينيا)
@@ -3983,8 +4088,22 @@ The following permission is also required for permission {1}: الإذن الت�
 The maximum file size is 10 MB: الحد الأقصى لحجم الملف هو 10 ميغابايت
 The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit هي أداة قوية ومتعددة الاستخدامات مصممة لتسهيل تحرير سمة واحدة أو أكثر أو إعدادات مسبقة بشكل فعال. إنه يستوعب بطبيعته الوضع المظلم أو الوضع الفاتح أو مزيج من الاثنين معا. بالإضافة إلى ذلك ، فهو يدعم الفئات المشتقة من MudTheme ، بالإضافة إلى الخصائص المخصصة المتأصلة فيه ، وبالتالي توفير حل شامل ومرن لجميع متطلبات تحرير السمات الخاصة بك.
 The Plugin '{0}' may be able to help: قد يكون المكون الإضافي "{0}" قادرا على المساعدة
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: يمكن أيضا استخدام منزلق النطاق بشكل عمودي – مثالي للشرائط الجانبية أو مناطق المرشح المدمجة.
 The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: العينة هي نفسها مثال FileDisplay الآخر ، ولكن مع اختلاف أنه لا يتم استخدام عنوان URL. بدلا من ذلك ، يتم تحميل التدفقات واستخدامها.
 The server is just restarting. Please wait until the connection has been restored: الخادم هو فقط إعادة التشغيل. يرجى الانتظار حتى تتم استعادة الاتصال
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: تسلط الأغنية الضوء على هذه الفرق وتسميتها، بينما يقوم قالب الاختيار بعرض الفترة السعرية المختارة باستخدام تنسيق العملة في الثقافة الحالية.
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: يتم تقسيم المضمار إلى فئات عمرية شائعة مثل "تحت 18"، "18–25"، "26–35"، وهكذا، ويعرض قالب الاختيار الفئة العمرية الدقيقة مثل "18 – 35 سنة".
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: تنقسم الأغنية إلى فئات استجابة مثل سريع، حسنا، بطيء، وبطيء جدا، ويظهر تسمية الاختيار النطاق الرقمي وتصنيفه، مثل "80 – 450 مللي ثانية (سريع → بطيء)".
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: يتم تقسيم المسار إلى نطاقات زمنية تمثل تحولات مختلفة، ويعرض قالب الاختيار نافذة الزمنية المختارة بصيغة 24 ساعة.
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: يتم عرض المسار باستخدام قالب مسار مخصص، والنطاق المختار باستخدام قالب انتخاب، والإبهام باستخدام ThumbStartTemplate وThumbEndTemplate مخصصين.
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: تنقسم الأغنية إلى أجزاء خضراء وصفراء وحمراء، وتظهر علامة الاختيار النطاق الرقمي مع تصنيف نوعي مثل "منخفض" أو "متوسط أو مرتفع".
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: يعرض المسار كتل السنة المالية وفصولها، ويعرض مسمية الاختيار نطاقات مالية مثل "السنة المالية 2022 – السنة المالية 2024" أو "السنة المالية 2023 الربع الثاني – الربع الرابع" حسب ما تم اختياره.
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: تعرض الأغنية علامات شهرية وعلامات أسبوعية، بينما يلخص قالب الاختيار ضمن نطاق الأسابيع التقويمية مثل "KW 2 – KW 22".
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: يعرض المسار جميع المستويات جنبا إلى جنب، ويقوم قالب الاختيار بعرض تسمية مثل "يوم – شهر"، والتي يمكنك استخدامها للتحكم في كيفية تجميع البيانات في الرسوم البيانية أو التقارير.
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: تعرض الأغنية نقاطا وتسميات كل ساعة كل بضع ساعات، بينما يعرض قالب الاختيار الفترة الزمنية المختارة كعلامة مدمجة.
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: تظهر الأغنية جميع الأيام من الاثنين إلى الأحد، وتبرز عطلات نهاية الأسبوع، وتضع علامة الاختيار أسماء ودية مثل "الاثنين – الجمعة".
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: يعرض المسار السنوات وأرباعها، ويتكيف تصنيف الاختيار حسب النطاق المختار، مثل "الربع الثاني 2022 – الربع الثالث 2023" أو ببساطة "الربع الأول – الثالث" عندما يكون السنة نفسها.
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: يبرز المسار هذه الأحزمة الخدمية بصريا، بينما يعرض قالب الاختيار النطاق الصحيح لليوم، مثل "4 – 9 أيام".
 The user "{0}" just changed some of this data: قام المستخدم "{0}" بتغيير بعض هذه البيانات
 The user {0} has been logged off: تم تسجيل خروج {0} المستخدم
 The User {0} has just edited, created or deleted entries here. You should reload the data: قام {0} المستخدم للتو بتحرير الإدخالات أو إنشائها أو حذفها هنا. يجب عليك إعادة تحميل البيانات
@@ -4013,6 +4132,22 @@ This demo uses the IDialogEventService to check resize or dragged and stores the
 This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: يوضح هذا مكون MudExThemeEdit الذي يستخدم داخليا MudExObjectEdit و MudExThemeSelect لتحرير السمات
 This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: يوضح هذا العرض التوضيحي الطريقة الموصى بها لاستخدام MudExAdditionalAdornment باستخدام RenderFragments "For" و "ChildContent"
 This dialog can confirmed when slider value is greater then 10: يمكن تأكيد مربع الحوار هذا عندما تكون قيمة شريط التمرير أكبر من 10
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: يوضح هذا المثال جدولا زمنيا مخصصا للسنة المالية حيث لا تبدأ السنة المالية في الأول من يناير.
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: يوضح هذا المثال مدى زمني متعدد السنوات مع سلوك خطوة مخصص. مع StepResolver تحدد كيف ينتقل شريط التمرير (مثلا إلى الأشهر أو الربع أو الساعات).
+This example demonstrates a TimeOnly range slider.: هذا المثال يوضح منزلق نطاق TimeOnly.
+This example demonstrates a TimeOnly-based range slider with minute resolution.: يوضح هذا المثال منزلق نطاق قائم على TimeOnly بدقة دقيقة.
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: يوضح هذا المثال شريط عرض للسعر أو نطاق الميزانية مع مقاطع دلالية مثل الميزانية، القياسي، المميز، والعالي الجودة.
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: يقوم هذا المثال بتعيين القيم الصحيحة لأيام الأسبوع ويحول شريط النطاق إلى محدد يوم من الأسبوع.
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: يمثل هذا المثال مستويات التكبير أو التجميع المجرد مثل الساعة، اليوم، الأسبوع، الشهر، والسنة.
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: يظهر هذا المثال فترة زمنية من 2015 حتى نهاية 2022. يمكن للمستخدم اختيار فترة لا تقل عن 60 يوما وعلى الأكثر سنتين. حجم الخطوة هو يوم واحد.
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: يظهر هذا المثال شريط تمرير مدى يعتمد على النسبة المئوية يمكن استخدامه للاستفادة أو السعة أو مستويات المخاطر.
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: يظهر هذا المثال شريط تمرير نطاق يعتمد على TimeOnly مخصص لسيناريوهات تخطيط الورديات مثل الورديات المبكرة والمتأخرة والليلية.
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: يوضح هذا المثال كيف يمكنك استخدام قوالب مخصصة لتحويل MudExRangeSlider إلى تحكم على نمط الجدول الزمني مع علامات السنة والشهر.
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: يستهدف هذا المثال سيناريوهات SLA ووقت الاستجابة باستخدام منزلق مدى يعتمد على الميلي ثانية.
+This example turns the range slider into a quarter selector over multiple years.: هذا المثال يحول منزلق النطاق إلى محدد ربع على مدى عدة سنوات.
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: يستخدم هذا المثال شريط نطاق صحيح لتمثيل أوقات العبور بالأيام، مقسمة إلى مستويات خدمة مثل السريع، القياسي، والاقتصاد/البحر.
+This example uses an integer-based range slider to represent age ranges and demographic bands.: يستخدم هذا المثال شريط تمرير نطاق قائم على الأعداد الصحيحة لتمثيل النطاقات العمرية والفئات الديموغرافية.
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: يستخدم هذا المثال DateOnly وخطوات أسبوعية لبناء محدد نطاق يعتمد على الأسبوع مع أرقام أسابيع تقويمية في ISO.
 This is a Json representation of the TestModel. This is ignored for Export and Import: هذا تمثيل Json ل TestModel. يتم تجاهل هذا للتصدير والاستيراد
 This is a simple information dialog that closes after {0} seconds: هذا مربع حوار معلومات بسيط يغلق بعد {0} ثانية
 This is a simple information dialog that closes after 0 seconds: هذا مربع حوار معلومات بسيط يغلق بعد 0 ثانية
@@ -4024,8 +4159,14 @@ This is a simple information dialog that closes after 5 seconds: هذا مربع
 This is an Administrator Only View.: هذه طريقة عرض للمسؤول فقط.
 This is the MudEx Default theme: هذا هو موضوع MudEx الافتراضي
 This is the sample Popover. In general it inherits the original MudPopover.: هذه هي عينة Popover. بشكل عام ، يرث MudPopover الأصلي.
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: هذا مفيد لضبط نوافذ الأوقات اليومية مثل ساعات المكتب، نوافذ الصيانة، أو فترات الحجز.
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: هذا مفيد لمرشحات المنتجات، أو محددات الميزانية، أو أي واجهة مستخدم يختار فيها المستخدمون نطاق سعر بطريقة موجهة بصريا.
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: هذا مفيد للجداول المتكررة، أو نوافذ التوفر، أو أنماط التسليم التي يتم تعريفها أسبوعيا.
 This one card is still added without an corresponding item.: لا تزال هذه البطاقة الواحدة مضافة بدون عنصر مقابل.
 This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: ينتقل هذا كطريقة إلى خيارات الحوار. لن يغلق مربع الحوار إذا قام الأسلوب بإرجاع خطأ. يجب أن تكون النتيجة هدية أو مهمة &lt;بول&gt;
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: هذا النمط مناسب جدا للوحات التحليلات حيث يمكن للمستخدمين تغيير دقة البيانات المعروضة ديناميكيا.
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: هذا النمط مفيد للتطبيقات التجارية والمالية حيث يتم تنسيق التقارير مع السنوات المالية بدلا من السنوات التقويمية.
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: هذا النمط مثالي عندما يفكر المستخدمون في أسابيع بدلا من تواريخ محددة، مثل التخطيط أو التقارير أو استعراض السباقات.
 This photo was taken in a small village in Istra Croatia.: التقطت هذه الصورة في قرية صغيرة في إيسترا ، كرواتيا.
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: يجلب هذا المنتقي الرسوم المتحركة والسلوكيات الأفضل والحوار الذي يدعم جميع خيارات الحوار. لإنشاء مكون المنتقي الخاص بك يرث من MudExPickerBase ، أو لمجرد استخدام محتوى بسيط ، استخدم MudExPicker
 This sample demonstrate how to use the MudExCaptureService: يوضح هذا النموذج كيفية استخدام MudExCaptureService
@@ -4034,13 +4175,20 @@ This sample just shows how easily you can combine the MudExPicker with MudExTree
 This sample uses the IDialogEventService to cancel the dialog close: يستخدم هذا النموذج IDialogEventService لإلغاء إغلاق مربع الحوار
 This sample uses the options for a can close callback: يستخدم هذا النموذج خيارات رد الاتصال بإمكانية إغلاق
 This section can be placed inside a MudExGrid component.: يمكن وضع هذا القسم داخل مكون MudExGrid.
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: هذا القالب مفيد بشكل خاص في سيناريوهات اللوجستيات والشحن حيث يتم التعبير عن أوقات التسليم بنطاقات أيامية.
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: هذا القالب مناسب جدا للتحليلات، استهداف الجمهور، أو أي واجهة مستخدم يعمل فيها المستخدمون بفترات زمنية مختلفة.
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: يعمل هذا القالب بشكل جيد في لوحات المراقبة أو الملاحظة أو واجهات برمجة التطبيقات حيث يجب تفسير نطاقات الكمون بسرعة.
 Thistle: الشوك
 ThrottleInterval: دواسة الوقود الفاصل الزمني
+ThumbColor: لون الإبهام
+ThumbEndTemplate: ThumbEndTemplate
+ThumbStartTemplate: ThumbStartTemplate
 ti-ER: تيغرينيا (إريتريا)
 ti-ET: تيغرينيا (إثيوبيا)
 tig-ER: تيغري (إريتريا)
 Tilt: اماله
 Time: الوقت
+TimeOnly: تايم أونلي
 Times: تايمز
 Times New Roman: تايمز نيو رومان
 TimeSeries: السلاسل الزمنية
@@ -4096,6 +4244,7 @@ Toronto - M1B 1A1ender: تورونتو - M1B 1A1ender
 tr-CY: التركية (قبرص)
 tr-TR: التركية (تركيا)
 Trace: أثر
+TrackColor: TrackColor
 TrackInfoPosition: TrackInfoPosition
 TrackList: قائمة المسارات
 TrackListBehaviour: TrackListBehavior
@@ -4104,6 +4253,8 @@ TrackListCoverImage: قائمة المساراتCoverImage
 TrackListMode: وضع قائمة المسارات
 TrackListPosition: قائمة المسارات
 TrackListToggleButtonPosition: TrackListToggleButtonPosition
+TrackStyle: TrackStyle
+TrackTemplate: قالب المسار
 Trail Details: تفاصيل المسار
 TransformOrigin: ترانسفورت أوريجين
 Translations: تراجم
@@ -4113,6 +4264,7 @@ Transparent: شفاف
 Trebuchet MS: المنجنيق MS
 TreeView: تريفيو
 TreeView component that renders a tree structure of items.: مكون TreeView الذي يعرض بنية شجرة للعناصر.
+Treeview in Picker: تريفيو في بيكر
 TreeViewBreadcrumb: TreeViewBreadcrumb
 TreeViewCardGrid: شجرة TreeViewCardGrid
 TreeViewDefault: TreeViewDefault
@@ -4185,10 +4337,15 @@ ur-IN: الأردية (الهند)
 ur-PK: الأردية (باكستان)
 url: الرابط
 Url: رابط
+Use cases: حالات الاستخدام
 Use CodeGator Models: استخدم نماذج CodeGator
 Use MudExAdditionalAdornment ad ChildContent: استخدم MudExAdditionalAdornment ad ChildContent
 Use MudExAdditionalAdornment as ChildContent of a MudInput: استخدم MudExAdditionalDecoration كمحتوى فرعي ل MudInput
 Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: استخدم MudExSelect بدلا من ذلك وقم بتعيين MultiSelection إلى true و ValuePresenter على رقاقة.
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: استخدم المنزلق أفقيا أو عموديا – مثالي للفلاتر ولوحات المعلومات والتقارير.
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: استخدم هذا القالب للتقارير الفصلية، أو مؤشرات الأداء الرئيسية، أو النظرة المالية حيث تكون نبات الربع أكثر أهمية من التواريخ الدقيقة.
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: استخدم هذا القالب للمخازن أو الإنتاج أو مراكز الاتصال أو أي مجال يتم فيه تنظيم العمل على فترات على مدار 24 ساعة.
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: استخدم هذا القالب كلما احتاج المستخدمون لفهم ما إذا كانت النطاق المختار يقع ضمن منطقة آمنة أو تحذيرية أو حرجة.
 UseCanvas: استخدم كانفاس
 UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
 UseItemTemplateForSelection: UseItemTemplateForSelection
@@ -4238,6 +4395,8 @@ Variant: متغير
 ve-ZA: Venda (جنوب أفريقيا)
 Verdana: فيردانا
 Version: الإصدار
+Vertical: عمودي
+VerticalText: النص العمودي
 vi-VN: الفيتنامية (فيتنام)
 Video Content-Type: نوع محتوى الفيديو
 Video device: جهاز فيديو
@@ -4267,6 +4426,7 @@ Vs2015: الخامس 2015
 VulcanBase16: فولكان بيس 16
 vun-TZ: فونجو (تنزانيا)
 wae-CH: والسر (سويسرا)
+Wait: انتظري
 wal-ET: ولايتا (إثيوبيا)
 Warning: تحذير
 WarningContrastText: تحذيرتبايننص
@@ -4298,6 +4458,8 @@ WindowsNtLightBase16: نظام التشغيل WindowsNtLightBase16
 Wingdings: أجنحة
 With custom configuration: مع التكوين المخصص
 With default configuration: مع التكوين الافتراضي
+With DockLayout: مع DockLayout
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: مع StepResolvers يمكنك بسهولة ضبط سلوك الخطوة. بالنسبة للنبات التاريخية، نوفر عدة محللات محددة مسبقا. في هذا المثال، StepResolvers.DateTime.Quarterly(_ => 1) يجعل المنزلق ينتقل إلى أرباع.
 With tabs: مع علامات التبويب
 With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: باستخدام مكون MudExAdditionalAdornment ، يمكنك الحصول على أكبر عدد ممكن من الزينة في أي عنصر تحكم في إدخال قائم على MudInput مثل هذا.
 With this component you can have an animation while loading the main blazor app: باستخدام هذا المكون ، يمكنك الحصول على رسوم متحركة أثناء تحميل تطبيق blazor الرئيسي
@@ -4314,6 +4476,8 @@ WoodlandBase16: قاعدة الغابات16
 WordDokument.doc: WordDokument.doc
 WrapChips: رابشيبس
 WrapToolBarContent: WrapToolBarالمحتوى
+WResize: WResize
+Write comments or reactions for current component or page: اكتب تعليقات أو ردود فعل للمكون الحالي أو الصفحة
 Xcode: اكس كود
 XcodeDuskBase16: XcodeDuskBase16
 xh-ZA: isiXhosa (جنوب أفريقيا)
@@ -4338,8 +4502,10 @@ You are logged out by an Administrator or profile change.: تم تسجيل خر�
 You are Logged Out.: لقد قمت بتسجيل الخروج.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: يمكنك أيضا استخدام MudExAdditionalAdornment كمحتوى فرعي ل MudInput
 You can move me: يمكنك تحريكي
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: يمكنك تحريك الإبهام الفردي أو النطاق الكامل المحدد لضبط قيم البداية والنهاية. اعتمادا على التكوين، تنطبق المدة الدنيا والحالى بالإضافة إلى أحجام الخطوات المختلفة.
 You can now Login with your credentials: يمكنك الآن تسجيل الدخول باستخدام بيانات الاعتماد الخاصة بك
 You can resize me: يمكنك تغيير حجمي
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: يمكنك استخدام هذه التقنية لبناء منزلقات زمنية غنية ونطاقات بصرية تناسب مجالك تماما.
 You cannot delete yourself: لا يمكنك حذف نفسك
 You clicked: لقد نقرت
 You don't need an extra JsonEditor anymore: لم تعد بحاجة إلى JsonEditor إضافي بعد الآن
@@ -4365,7 +4531,9 @@ ZipCode: الرمز البريدي
 Zoom: التكبير
 Zoom in: التكبير
 Zoom out: التصغير
+ZoomIn: تكبير
 ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover
+ZoomOut: ZoomOut
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: إيسيزولو (جنوب أفريقيا)

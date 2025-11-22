@@ -20,6 +20,8 @@ _{0} Demos: '{0} 데모'
 --mud-palette-white: --진흙 팔레트-화이트
 (currently the item is not visible): (현재 항목이 표시되지 않습니다)
 (currently the item is visible): (현재 항목이 표시됩니다)
+2 Hourly steps (using StepLength): 2시간 간격 (StepLength 사용)
+2 Hourly steps (using StepResolver): 2시간 단위 스텝 (StepResolver 사용)
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: 사용자가 가능한 값 목록에서 값을 선택하고 칩 또는 기본 콤보 상자로 표시할 수 있는 구성 요소입니다.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: 마우스를 올려 ChildContent를 아래쪽, 위쪽, 왼쪽 또는 오른쪽에서 슬라이드하는 데 사용할 수 있는 컴포넌트입니다.
@@ -33,6 +35,7 @@ A maximum of {0} files are allowed: 최대 {0}개의 파일이 허용됩니다.
 A Popover can be used to display some content on top of another.: 팝오버를 사용하여 일부 콘텐츠를 다른 콘텐츠 위에 표시할 수 있습니다.
 A powerful component to edit an object and its properties.: 개체와 해당 속성을 편집하는 강력한 구성 요소입니다.
 A powerful editor that can handle json, xml or yaml content: json, xml 또는 yaml 콘텐츠를 처리할 수 있는 강력한 편집기
+A range slider component that allows selecting and manipulating a value range of type T.: 타입 T의 값 범위를 선택하고 조작할 수 있는 범위 슬라이더 컴포넌트입니다.
 A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: MudColorPicker 를 상속하지만 닫기 이벤트를 지연시키고 브라우저에서 네이티브 피커 구성 요소를 사용할 수 있는 가능성을 추가하는 간단한 ColorPicker 구성 요소입니다
 A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: 섹션을 포함하기 위해 열, 행, ColSpan 및 RowSpan을 지원하는 간단한 그리드 구성 요소입니다.
 A SplitPanel Component: SplitPanel 컴포넌트
@@ -100,6 +103,7 @@ Age: 연령
 agq-CM: Aghem (카메룬)
 ak-GH: 아칸(가나)
 Albertus: 알베르투스
+Alias: 별명
 Alice Johnson: 앨리스 존슨
 AliceBlue: 앨리스블루
 Align: 정렬
@@ -132,6 +136,9 @@ AllowRubberBandSelection: AllowRubberBandSelection
 AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
 AllowSelectOnPreviewClick: AllowSelectOnPreview클릭
 AllowVideoCapture: AllowVideoCapture
+AllowWholeRangeDrag: 허용 전체 거리 드래그
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = true – 전체 기간을 이동할 수 있음
+AllScroll: 올스크롤
 AlphaBars: 알파바
 Already have an account?: 이미 계정이 있으신가요?
 Always: 늘
@@ -226,6 +233,7 @@ AntiqueWhite: 앤티크화이트
 ApathyBase16: 무관심베이스16
 Api: 아피
 API: API
+Api view component to display the methods and properties of a type: 타입의 메서드와 속성을 표시하는 API 뷰 컴포넌트
 API-Versions: API 버전
 AppBar: 앱바
 AppbarBackground: 앱바 배경
@@ -285,6 +293,7 @@ Are you sure?: 확실한가요?
 Arial: 아리알
 Arial Black: 아리얼 블랙
 Arial Narrow: 아리얼 내로우
+AriaLabelledBy: 아리아라벨드!
 arn-CL: 마푸체(칠레)
 Arta: 예술
 As Admin you can filter for users here: 관리자는 여기에서 사용자를 필터링할 수 있습니다.
@@ -339,6 +348,7 @@ Aug: 8월
 Austin: 오스틴
 Austin - 73301: 오스틴 - 73301
 Austin - 73301ender: 오스틴 - 73301ender
+Auto: 자동차
 Auto Confirm Email?: 이메일 자동 확인?
 Auto Generated Editor for TestObject: TestObject에 대한 자동 생성 편집기
 Auto Stop recording after: 자동 중지 후 녹화
@@ -390,6 +400,7 @@ Basic: 기초의
 Basic role with default permissions: 기본 권한이 있는 기본 역할
 Bauhaus 93: 바우하우스 93
 be-BY: 벨로루시어(벨로루시)
+Because time values always having a fixed size you can also use step length instead of resolvers.: 시간 값은 항상 고정된 크기이기 때문에 리졸버 대신 스텝 길이를 사용할 수도 있습니다.
 BeforeBegin: 전시작
 BeforeEnd: 비전엔드(BeforeEnd)
 BeforeSearchBox: BeforeSearchBox
@@ -490,6 +501,7 @@ bs-Cyrl-BA: 보스니아어(키릴 자모, 보스니아 헤르체고비나)
 bs-Latn-BA: 보스니아어(라틴어, 보스니아 헤르체고비나)
 Build amazing UIs: 놀라운 UI 구축
 BurlyWood: 벌리우드
+But for sure resolvers are working as well.: 하지만 분명히 리졸버도 작동하고 있습니다.
 button: 단추
 Button: 단추
 Button component for capturing audio and video.: 오디오 및 비디오를 캡처하기 위한 버튼 구성 요소입니다.
@@ -535,6 +547,7 @@ ccp-Cakm-BD: Chakma (Chakma, 방글라데시)
 ccp-Cakm-IN: Chakma (Chakma, 인도)
 ce-RU: 체첸(러시아)
 ceb-Latn-PH: 세부아노어(라틴어, 필리핀)
+Cell: 세포
 Centaur: 켄타우루스자리
 Center: 중
 CenterCenter: 센터센터
@@ -627,6 +640,7 @@ ColorPickerView: ColorPickerView
 ColorsBase16: 색상베이스16
 ColorStops: 컬러스톱
 ColorTemperature: 색온도
+ColResize: 콜리사이즈
 ColSpan: 콜스팬
 Column: 열
 Columns Affected: 영향을 받는 열
@@ -640,6 +654,7 @@ Compact: 콤팩트
 Comparer: 비교하다
 Component edit capture options: 구성 요소 편집 캡처 옵션
 Component in Dialog: 대화 상자의 구성 요소
+Component that captures component references from ChildContent: ChildContent에서 컴포넌트 참조를 캡처하는 컴포넌트
 Component to add additional adornment to a MudInput: MudInput에 장식을 추가하는 컴포넌트
 Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: iframe 또는 개체 태그 또는 IMudExFileDisplay를 구현하는 등록된 뷰어에 파일을 표시하는 구성 요소입니다
 Component to display information about the current recording: 현재 기록에 대한 정보를 표시하는 구성 요소
@@ -649,7 +664,9 @@ Component to move the ChildContent to a specific element that can defined by Ele
 Component to select a theme from a list of themes.: 구성 요소 테마 목록에서 테마를 선택합니다.
 ComponentBaseWithState: ComponentBaseWithState
 ComponentInDialog: ComponentInDialog
+Components: 구성 요소
 Conditional updates: 조건부 업데이트
+Configuration: 구성
 Configure list values: 목록 값 구성
 Confirm: 확인하다
 CONFIRM: 확인하다
@@ -670,6 +687,7 @@ Content-Type: 콘텐츠 유형
 ContentAlignment: 내용정렬
 ContentStream: 콘텐츠 스트림
 ContentType: 콘텐츠 유형
+ContextMenu: 컨텍스트 메뉴
 ContextMenuAction: 컨텍스트 메뉴 액션
 Continue to {0}: 계속 {0}
 Continuous: 지속적
@@ -677,6 +695,7 @@ Contrast: 대조
 Cooper Black: 쿠퍼 블랙
 Copperplate Gothic Bold: 동판 고딕 굵게
 Copperplate Gothic Light: 동판 고딕 빛
+Copy: 복사
 Copy url: URL 복사
 Counter: 카운터
 Country: 나라
@@ -689,6 +708,7 @@ Create powerful, flexible dock layouts — drag, drop, snap, and organize your d
 CreatedOn: 작성일
 Critical: 비판적인
 CropAndScale: 자르기 및 크기 조정
+Crosshair: 십자선
 cs-CZ: 체코어(체코)
 CSS Color Variables: CSS 색상 변수
 CssVars: CssVar
@@ -701,6 +721,8 @@ Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can
 Cursor: 커서
 CursorPositionOrigin: 커서위치원점
 Custom: 관습
+Custom fiscal year logic: 맞춤형 회계연도 논리
+Custom Templates: 커스텀 템플릿
 CustomContentErrorMessage: 사용자 지정 콘텐츠 오류 메시지
 Customize: 사용자 지정
 cy-GB: 웨일스어(영국)
@@ -764,9 +786,11 @@ Decimal value is required using {0} type!: '{0} 유형을 사용하여 10진수 
 DeepPink: 딥핑크
 DeepSkyBlue: 딥스카이블루
 Default: 기본값
+Default steps: 기본 단계
 DefaultBorderRadius: 기본 경계 반경
 DefaultDarkBase16: 기본값다크베이스16
 DefaultLightBase16: 기본 라이트베이스16
+Define minimum and maximum duration for ranges as well as custom step sizes.: 범위와 커스텀 스텝 크기에 대한 최소 및 최대 지속 시간을 정의하세요.
 Defined: 정의
 Delay: 지연
 DelayValueChangeToPickerClose: DelayValueChangeToPicker닫기
@@ -807,6 +831,7 @@ Demo of using explicit the MudExFileDisplayZip to show and select content inside
 Demonstration for a simple but very useful Enum Selector: 간단하지만 매우 유용한 열거형 선택기에 대한 데모
 Demonstration of the MudExSplitter: MudExSplitter 시연
 Demonstration of the quickly color select with MudExColorBubble: MudExColorBubble을 사용한 빠른 색상 선택 데모
+Demos: 데모
 DEMOS: 데모
 Dense: 빽빽한
 Dependent permissions required: 종속 권한 필요
@@ -888,7 +913,10 @@ Do you really want to restore the database from backup '{0}'? Note that any chan
 Do you want to delete the profile picture of {0}: '{0}의 프로필 사진을 삭제하시겠습니까?'
 Do you want to delete the User {0}: 사용자 {0} 삭제하시겠습니까?
 Docco: 닥코
+Dock: 그래도
+Dock Control: 도크 컨트롤
 Docked: 도킹
+DockLayout with ObjectEdit: ObjectEdit를 이용한 DockLayout
 Document Deleted: 문서 삭제됨
 Document Extended Attributes: 문서 확장 속성
 Document Management: 문서 관리
@@ -967,6 +995,8 @@ Edit: 편집하다
 Edit {0}: '{0} 편집'
 Edit a complex Model with included Collection of users: 포함된 사용자 컬렉션이 있는 복잡한 모델 편집
 Edit Audio Constraints: 오디오 제약 조건 편집
+Edit Configuration: 구성 편집
+Edit configuration for component in this sample: 이 샘플의 컴포넌트 구성 편집
 Edit Current Theme: 현재 테마 편집
 Edit data in dialog: 대화 상자에서 데이터 편집
 Edit in TryMudEx: TryMudEx에서 편집
@@ -1113,6 +1143,7 @@ en-ZW: 영어(짐바브웨)
 Enable Disqus: Disqus 활성화
 enables or disables virtualization.: 가상화를 사용하거나 사용하지 않도록 설정합니다.
 End: 끝
+EndTooltipPosition: EndTooltipPosition
 English: 영어
 Engravers MT: 조각사 MT
 Enter email and your new password here: 여기에 이메일과 새 비밀번호를 입력하세요.
@@ -1144,6 +1175,7 @@ Eras Bold ITC: 에라스 볼드 ITC
 Eras Demi ITC: 에라스 데미 ITC
 Eras Light ITC: 에라스 라이트 ITC
 Eras Medium ITC: 시대 중형 ITC
+EResize: 에레사이즈
 Error: 오류
 ErrorAnimation: ErrorAnimation
 ErrorContrastText: ErrorContrastText
@@ -1186,6 +1218,7 @@ eu-ES: 바스크어(스페인)
 EvaBase16: 에바베이스16
 EvaDimBase16: 에바딤베이스16
 ewo-CM: 이원도(카메룬)
+EwResize: EwResize
 ExcelSheet.xlsx: ExcelSheet.xlsx
 Expand &nbsp; <b>not</b> &nbsp; loaded nodes: 로드<b>되지 않은</b> &nbsp; 노드 확장 &nbsp;
 Expand all nodes: 모든 노드 확장
@@ -1230,6 +1263,7 @@ FallBackInIframe: Iframe에서 폴백
 False: 거짓
 FAQs: 자주 묻는 질문(FAQ)
 Far: 멀리
+Featured Components: 주요 구성 요소
 Features: 기능
 Feb: 2월
 Felix Titling: 펠릭스 타이틀링
@@ -1297,6 +1331,7 @@ FilterMode: 필터 모드
 FilterMultiple: 필터다중
 FilterPlaceholder: 필터자리 표시자
 Filters: 필터
+Filters in dashboards or reports: 대시보드나 보고서 내 필터
 FilterVariant: 필터 변형
 Fiona Gallagher: 피오나 갤러거
 Firebrick: 내화 벽돌
@@ -1310,6 +1345,7 @@ Flat List: 플랫 리스트
 FlatBase16: 플랫베이스16
 FlatList: 플랫리스트
 FlexEnd: 플렉스엔드
+Flexible data types: 유연한 데이터 타입
 FlexStart: 플렉스 스타트
 Flip: 플립
 FlipAlways: 뒤집기 항상
@@ -1339,6 +1375,7 @@ ForceShrink: 강제 축소
 ForestGreen: 포레스트그린
 Forgot password?: 비밀번호를 잊으셨나요?
 Format: 판
+Forward: 전달
 Foundation: 토대
 fr-029: 프랑스어(카리브해)
 fr-BE: 프랑스어(벨기에)
@@ -1442,6 +1479,8 @@ GoogleDriveClientId: GoogleDriveClientId
 GoogleLightBase16: 구글라이트베이스16
 Goudy Old Style: 구디 올드 스타일
 Goudy Stout: 구디 스타우트
+Grab: 잡다
+Grabbing: 잡는
 Gradient: 그라데이션
 GradientDark: 그라디언트어두움
 GradientForeground: 그라디언트 전경
@@ -1529,6 +1568,7 @@ Hello from dialog 1: 대화 상자 1에서 안녕하세요
 Hello from dialog sample page: 대화 상자 샘플 페이지에서 Hello
 Hello World: 전 세계 여러분 안녕하세요
 Hello...: 안녕하세요...
+Help: 도움말
 HelperId: 도우미 ID
 HelperText: 도우미 텍스트
 HelperTextOnFocus: 도우미 텍스트 포커스
@@ -1550,6 +1590,7 @@ Hide: 숨기다
 HideContentWhenCollapsed: HideContent언제 Collapsed
 HideDropDownWhenReadOnly: HideDropDownWhenReadOnly (숨김DropDownWhenReadOnly)
 High Tower Text: 하이 타워 텍스트
+Highlights: 하이라이트
 HighlightSearch: 하이라이트검색
 Hinge: 경첩
 Home: 집
@@ -1558,6 +1599,7 @@ HopscotchBase16: 홉스카치베이스16
 HorizonDarkBase16: 호라이즌다크베이스16
 HorizonLightBase16: 호라이즌라이트베이스16
 Horizontal: 가로
+Horizontal & vertical orientation: 수평 및 수직 방향
 HouseNumber: 수
 Houston: 휴스턴
 Houston - 77001: 휴스턴 - 77001
@@ -1602,6 +1644,7 @@ Idea: 생각
 Identifier: 식별자
 If this is set a photo will be taken instead of a video.: 이 설정이 설정되면 비디오 대신 사진이 촬영됩니다.
 If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: 이 패키지가 마음에 들면 Github에 별표를 표시⭐하고 친구들과 공유하십시오. 그렇지 않다면 어쨌든 별을 주고 더 나은 결과를 위해 개선할 수 있는 점을 알려줄 수 있습니다.
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: 시간 슬라이더만 필요하고 템플릿을 직접 만들고 싶지 않다면, 전용 {0} 컴포넌트를 사용할 수도 있습니다.
 If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: 이 옵션을 기본값으로 설정하는 경우. 이 옵션은 옵션이 지정되지 않은 모든 대화 상자에 사용됩니다. 계속하다?
 ig-NG: 이그보어(나이지리아)
 Ignore: 무시하다
@@ -1618,6 +1661,7 @@ Impact: 영향
 Import: 수입
 ImportExportIcon: 가져오기 내보내기 아이콘
 In: 안으로
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: 이 예시에서는 0에서 100까지의 간단한 숫자 범위를 제어합니다. 스텝 크기는 대략적인 간격을 허용하기 위해 5로 설정되어 있습니다.
 In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: 이 예제에서 데이터는 항목이 보기에 처음 표시되는 즉시 동적으로 로드됩니다. 구성 요소는 두 개의 콘텐츠 슬롯을 지원합니다
 In this sample you are forced to pick an user: 이 샘플에서는 사용자를 선택해야 합니다
 In this sample you are forced to pick some users: 이 샘플에서는 일부 사용자를 선택해야 합니다.
@@ -1658,6 +1702,7 @@ InputMode: 입력 모드
 InputStyle: 입력 스타일
 InputType: 입력 유형
 Inset: 삽입하다
+Instance: 인스턴스
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: 중간 결과
@@ -1672,6 +1717,7 @@ is-IS: 아이슬란드어(아이슬란드)
 IsActive: 활성 상태
 IsblEditorDark: IsblEditor다크
 IsblEditorLight: IsblEditorLight
+IsInverted: 이스인버티드
 IsMouseOverChip: IsMouseOverChip
 ISO: ISO
 IsOpen: 열려 있습니다.
@@ -1811,6 +1857,7 @@ Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): 
 LegacyRender: 레거시렌더
 Legend: 전설
 LemonChiffon: 레몬쉬폰
+Length: 길이
 LetterSpacing: 레터 스페이싱
 lg-UG: 간다(우간다)
 Library: 도서관
@@ -1958,6 +2005,7 @@ MaterialDarkerBase16: 재질DarkerBase16
 MaterialLighterBase16: 재료라이터베이스16
 MaterialPalenightBase16: 재료PalenightBase16
 MaterialVividBase16: 자료VividBase16
+MathAdapter: 매스어댑터
 Matura MT Script Capitals: Matura MT 스크립트 대문자
 MaxCaptureTime: 최대 캡처 시간
 MaxChips: 맥스칩
@@ -1970,6 +2018,7 @@ MaximizeButton: MaximizeButton
 MaxItems: 최대 항목
 MaxItemWidth: 최대 항목 너비
 MaxLength: 최대 길이
+MaxLength = 730 days – longest allowed period: 최대 길이 = 730일 – 가장 긴 허용 기간
 MaxLuminance: 최대 휘도
 MaxMultipleFiles: 최대 다중 파일
 MaxRecordingTime: 최대 녹화 시간
@@ -2012,13 +2061,17 @@ Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon(Voicemod 가상 오디�
 Millimeters: 밀리미터
 MimeRestrictionType: MimeRestrictionType
 MimeTypes: 마임 타입
+Min/max length & step size: 최소/최대 길이 및 걸음 크기
 MinDecibels: 최소 데시벨
 MinFrequency: 최소 주파수
 MinHeight: 최소 높이
 Mini: 미니
 MinimizeButton: 최소화 버튼
+MinLength: 최소 길이
+MinLength = 60 days – shortest allowed period: 최소 길이 = 60일 – 허용 기간 중 가장 짧은 기간
 MinLuminance: 최소 휘도
 MintCream: 민트크림
+Minutely steps: 미세한 걸음
 MinZoomLevel: MinZoomLevel (최소 줌레벨)
 Mirror: 거울
 Misc: 기타
@@ -2031,6 +2084,7 @@ mn-MN: 몽골어(몽골)
 mn-Mong-CN: 몽골어(몽골어, 중국)
 mn-Mong-MN: 몽골어(몽골어, 몽골어)
 mni-IN: 마니푸리(인도)
+Mobile UIs with limited horizontal space: 제한된 수평 공간을 가진 모바일 UI
 Moccasin: 모카신
 MochaBase16: 모카베이스16
 Modal: 수도
@@ -2057,8 +2111,11 @@ MouseOverMessageClass: MouseOverMessage클래스
 MouseOverMessageStyle: 마우스 오버 메시지 스타일
 MouseWheelDownAction: 마우스 휠 다운액션
 MouseWheelUpAction: 마우스 휠업 액션
+Move: 움직이다
 Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: 드래그 앤 드롭으로 그리드 항목을 직접 이동하고 크기를 조정하여 런타임에 레이아웃을 동적으로 디자인할 수 있습니다.
 MoveContent: 콘텐츠 이동
+MoveCursor: 무브커서
+MovingCursor: 무빙커서
 mr-IN: 마라티어(인도)
 MS Outlook: MS 아웃룩
 MS Reference Sans Serif: MS 참조 산세리프
@@ -2112,6 +2169,7 @@ MudDrawerHeader: 머드드로이어헤더
 MudDynamicTabs: 머드 다이내믹 탭
 MudElement: 머드 엘리먼트
 MudEx Components: MudEx 컴포넌트
+MudEx Range Slider – Interactive range selection: MudEx 범위 슬라이더 – 인터랙티브 범위 선택
 MudExAdditionalAdornment: MudEx추가 장식
 MudExAppearance: MudEx외관
 MudExAppLoader: MudExAppLoader (머드엑스앱로더)
@@ -2139,6 +2197,7 @@ MudExCultureSelect: MudExCultureSelect
 MudExDialog: MudEx대화 상자
 MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog 는 모든 DialogExtensions 와 함께 페이지에 인라인된 대화 상자를 표시하려는 경우 사용할 구성 요소입니다.
 MudExDivider: MudEx디바이더
+MudExDockLayout: MudExDock레이아웃
 MudExDropBoxFilePicker: MudExDropBoxFilePicker (MudExDropBox파일 선택기)
 MudExEnumSelect: MudExEnumSelect (MudExEnum 선택)
 MudExEnumSelect<TEnum>: MudExEnumSelect (MudExEnum 선택)<TEnum>
@@ -2157,6 +2216,8 @@ MudExGoogleFilePicker: MudExGoogle파일 선택기
 MudExGradientText: MudExGradientText (머드엑스그라디언트 텍스트)
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar는 gravatar의 프로필 이미지를 이메일 주소로 자동으로 사용하는 MudAvatar입니다
+MudExGravatarCard: 머드엑스그라바타카드
+MudExGravatarCard displays a Gravatar profile as card: MudExGravatarCard는 Gravatar 프로필을 카드로 표시합니다
 MudExGrid: 머덱스그리드
 MudExGrid — Now with Layout Editing: MudExGrid — 이제 레이아웃 편집 기능 포함
 MudExGrid Enhanced: MudExGrid 강화
@@ -2189,13 +2250,17 @@ MudExOneDriveFilePicker: MudExOneDriveFilePicker
 MudExpansionPanel: 머드 확장패널
 MudExpansionPanels: 진흙 확장 패널
 MudExPicker: MudExPicker(머드엑스피커)
+MudExPicker Tree: 머드엑스피커 트리
 MudExPickerBase<T>: MudExPickerBase<T>
 MudExPopover: MudEx팝오버
 MudExPromptDialog: MudExPromptDialog (MudExPromptDialog)
 MudExPromptDialog Component: MudExPromptDialog 컴포넌트
 MudExPropertyEdit: MudExPropertyEdit
+MudExRangeSlider<T>: MudExRangeSlider<T>
 MudExSelect: MudExSelect
 MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect 를 사용하여 바인딩 가능한 컬렉션에서 하나 이상의 항목을 선택할 수 있습니다. 또한 이 컴포넌트는 대화 상자나 MudExPopover 와 같은 모든 애니메이션을 지원합니다.
+MudExSelect Item template.: MudExSelect 아이템 템플릿.
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
 MudExSelect<T>: MudExSelect<T>
 MudExSelectItem is a select item for MudExSelect.: MudExSelectItem은 MudExSelect의 선택 항목입니다.
 MudExSelectItem<T>: MudEx항목 선택<T>
@@ -2347,6 +2412,8 @@ nds-NL: 저지 독일어(네덜란드)
 ne-IN: 네팔어(인도)
 ne-NP: 네팔어(네팔)
 NebulaBase16: 네뷸라베이스16
+NeResize: 네레사이즈
+NeswResize: 네스우 리사이즈
 Never: 결코
 New: 새로운
 NEW: 새로운
@@ -2887,6 +2954,7 @@ No space available: 사용 가능한 공간이 없습니다.
 NoChips: 노칩
 NodeBorderRadius: 노드 경계 반경
 NodePadding: 노드패딩
+NoDrop: 노드롭
 NoHeader: 헤더 없음
 NoIcon: 노아이콘
 NoModalDialogs: NoModalDialogs
@@ -2900,6 +2968,7 @@ Not allowed to Delete this user: 이 사용자를 삭제할 수 없음
 Not Allowed.: 허용되지 않습니다.
 Not connected: 연결되지 않음
 Not Modal Dialogs: 모달 대화 상자가 아님
+NotAllowed: 허용되지 않음
 Note - Media options can't changed after a screen is selected: 참고 - 화면을 선택한 후에는 미디어 옵션을 변경할 수 없습니다
 NoteLabels: 주레이블
 NotFoundMessage: 찾고 있던 페이지가 존재하지 않습니다.
@@ -2913,13 +2982,17 @@ NoWrap: 노랩
 npm-example-0.0.20.tgz: npm-예-0.0.20.tgz
 nqo-GN: N'Ko (기니)
 nr-ZA: 사우스 은데벨레(남아프리카 공화국)
+NResize: NResize
 nso-ZA: Sesotho sa Leboa (남아프리카 공화국)
+NsResize: NS크기 조정
 Nuget Package source: Nuget 패키지 원본
 Nullable enum: Nullable 열거형
 Nullable Flags Enum: Nullable 플래그 열거형
 Number: 수
 numeric: 숫자
 nus-SS: 누에르(남수단)
+NwResize: NwResize
+NwseResize: NWSE크기 조정
 nyn-UG: 냥콜레(우간다)
 Object Edit in Dialog: 대화상자에서 객체 편집
 ObjectEdit: 개체 편집
@@ -3021,6 +3094,7 @@ Overview: 개요
 Owner: 소유자
 pa-Arab-PK: 펀자브어(아랍어, 파키스탄)
 pa-IN: 펀자브어(인도)
+Page_Test: Page_Test
 Palatino: 팔 라틴
 Palatino Linotype: 팔라티노 리노타입
 PaleGreen: 옅은 녹색
@@ -3106,6 +3180,7 @@ Placeholder: 자리 표시자
 Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: 온라인 코드 편집기에서 MudBlazor 및 MudBlazor.Extensions를 가지고 놀아보세요.
 Playbill: 플레이빌
 Player: 배우
+Playground: 운동장
 Please confirm your account by <a href='{0}'>clicking here</a>.: 여기를 클릭하여 <a href='{0}'> 계정을 확인하십시오</a>.
 Please enter your name: 이름을 입력해 주세요
 Please reset your password by <a href='{0}'>clicking here</a>.: 여기를 클릭하여 <a href='{0}'> 비밀번호를 재설정하십시오</a>.
@@ -3114,6 +3189,7 @@ Please upload your personal qualifications and references that confirm your pers
 Please Wait: 기다리세요
 PleaseSelect: 선택하세요
 Plum: 자두
+Pointer: 포인터
 Points: 포인트
 PointsOfInterest: 관심 지점
 Pojoaque: 포호아케
@@ -3131,6 +3207,7 @@ PorpleBase16: 포플베이스16
 Portrait: 초상
 Position: 위치
 Position/Size Sample: 위치/크기 샘플
+Possibilities: 가능성
 PostalCode: 우편번호
 PowderBlue: 파우더블루
 Powerful component to edit a set of items and their properties.: 항목 세트와 해당 속성을 편집하는 강력한 구성 요소입니다.
@@ -3176,6 +3253,7 @@ Profile picture added.: 프로필 사진이 추가되었습니다.
 Profile picture deleted.: 프로필 사진이 삭제되었습니다.
 Profile updated: 프로필 업데이트
 ProgramingSkills: 프로그래밍 기술
+Progress: 진보
 Property1: 속성1
 Property10: 속성10
 Property11: 속성11
@@ -3261,6 +3339,7 @@ RailscastsBase16: 레일캐스트Base16
 Rainbow: 무지개
 Random: 임의의
 RandomColorUpdateDelay: 랜덤 컬러업데이트 지연
+RangeSlider: 레인지슬라이더
 RarArchive.rar: RarArchive.rar
 Rate: 율
 Rate must be greater than 0: 비율은 0보다 커야 합니다.
@@ -3343,6 +3422,7 @@ Reset view: 보기 재설정
 ResetButtonIcon: ResetButtonIcon 재설정
 ResetToDefaultFirst: ResetToDefaultFirst
 Resizeable: 크기 조정 가능
+ResizeCursor: ResizeCursor
 ResizeMode: 크기 조정 모드
 Resources: 리소스
 Responsive: 반응
@@ -3422,6 +3502,7 @@ RoundBars: 라운드바
 Rounded: 둥근
 Routeros: 라우터
 Row: 행
+RowResize: 로우 크기 변경
 RowSpan: 행 범위
 RowsPerPageString: 페이지당 행 수
 RoyalBlue: 로얄블루
@@ -3434,6 +3515,8 @@ ru-UA: 러시아어(우크라이나)
 RubberBand: 고무밴드
 RubberBandColor: 고무 밴드 색상
 RubberBandStyle: 고무밴드 스타일
+Run: 달리다
+Run this sample on try.mudex.org online: 이 샘플을 온라인에서 try.mudex.org 돌려보세요
 Runic MT Condensed: 룬 MT 압축
 Runtime: 런타임
 Russian: 러시아어
@@ -3563,9 +3646,11 @@ SelectedItemColor: 선택한 항목 색상
 SelectedRequests: 선택된 요청
 SelectedValues: 선택된 값
 Selecting: 선택
+SelectionColor: 셀렉션컬러
 SelectionList: 선택 목록
 SelectionMode: 선택 모드
 SelectionModeIcon: 선택 모드 아이콘
+SelectionTemplate: 선택템플릿
 SelectItemsMode: 항목 모드 선택
 SelectorsForIgnoreBlur: SelectorsForIgnoreBlur
 SelectorSize: 선택기 크기
@@ -3576,6 +3661,7 @@ Send: 보내기
 Send confirmation email: 확인 이메일 보내기
 Sensitivity: 민감
 Sep: 9월
+SeResize: 세레사이즈
 Server restarted successfully: 서버가 다시 시작되었습니다.
 ses-ML: Koyraboro Senni (말리)
 Set as Default options for all Dialogs: 모든 대화 상자에 대한 기본 옵션으로 설정
@@ -3600,6 +3686,7 @@ shi-Tfng-MA: Tachelhit(모로코 티피나)
 Show: 보이다
 Show As Dialog: 다른 이름으로 표시 대화상자
 Show as Tree: 트리로 표시
+Show code: 쇼 코드
 Show Demo: 데모 보기
 Show flat: 쇼 플랫
 Show info: 정보 보기
@@ -3657,6 +3744,7 @@ ShowSliders: 쇼슬라이더
 ShowSpectrumOnRecording: ShowSpectrumOnRecording
 ShowThemeColors: 테마 색상 표시
 ShowToolbar: 도구 모음 표시
+ShowTooltip: ShowTool팁
 ShowTrackInfosOnPlay: 트랙 인포스온플레이 표시
 ShowVisualiser: 쇼비주얼라이저
 ShowZoomInButton: ZoomInButton 표시
@@ -3664,6 +3752,7 @@ ShowZoomOutButton: 줌아웃 버튼 표시
 ShrinkLabel: ShrinkLabel
 si-LK: 싱할라어(스리랑카)
 Side: 쪽
+Side filter panels in search or analytics UIs: 검색 또는 분석 UI의 사이드 필터 패널
 Sienna: 시에나
 Sign In: 서명하세요
 Sign Up: 등록하세요
@@ -3694,6 +3783,8 @@ SimulateWithRandomData: SimulateWithRandomData
 Single: 싱글
 SingleExpand: 단일확장
 Size: 크기
+SizeRange: 사이즈 범위
+SizeRange = 0–100: 사이즈 범위 = 0–100
 sk-SK: 슬로바키아어(슬로바키아)
 Skeleton: 해골
 SkipSeparator: SkipSeparator
@@ -3763,6 +3854,7 @@ sr-Latn-RS: 세르비아어(라틴어, 세르비아)
 sr-Latn-XK: 세르비아어(라틴어, 코소보)
 Src: 출처
 Srcery: 마법
+SResize: SResize
 ss-SZ: siSwati (에스와티니)
 ss-ZA: siSwati(남아프리카 공화국)
 ssy-ER: 사호(에리트레아)
@@ -3778,6 +3870,7 @@ Start Recording: 녹음 시작
 Start recording after: 이후 녹화 시작
 Start/Stop selection: 시작/중지 선택
 Starts in {0}: '{0}에서 시작'
+StartTooltipPosition: StartTooltipPosition
 State: 상태
 Static: 정적인
 Static card.: 정적 카드.
@@ -3785,6 +3878,13 @@ Static item: 정적 항목
 Status: 상태
 SteelBlue: 스틸블루
 Stencil: 스텐실
+Step size of 5: 스텝 사이즈 5
+StepLength: 스텝길이
+StepLength = 5 – values in steps of 5: StepLength = 5 – 5 단계의 값
+StepResolver: StepResolver
+StepResolvers.DateOnly.Quarterly: StepResolvers.DateOnly.Quarterly
+StepResolvers.DateOnly.Weekly: StepResolvers.DateOnly.Weekly
+StepResolvers.TimeOnly: StepResolvers.TimeOnly
 Stereo: 스테레오
 Steve Rogers: 스티브 로저스
 Store: 가게
@@ -3876,7 +3976,9 @@ SummerfruitDarkBase16: 서머프루트다크베이스16
 SummerfruitLightBase16: 서머프루트 라이트베이스16
 Sunburst: 햇살
 Super sample Content text.: 슈퍼 샘플 콘텐츠 텍스트입니다.
+Supercharge your MudBlazor applications with powerful extensions: MudBlazor 애플리케이션을 강력한 확장으로 강화해 주세요
 Support: 지원
+Supports int and DateTime (other types via generics are possible).: 정수(int)와 DateTime을 지원합니다(다른 유형도 제네릭을 통해 가능합니다).
 Surface: 표면
 Surname: 성
 sv-AX: 스웨덴어(올란드 제도)
@@ -3894,12 +3996,14 @@ Swing: 그네
 Switch: 스위치
 Switch expand button position: 확장 버튼 위치 전환
 Switch overlay source: 스위치 오버레이 소스
+SwResize: 스우리사이즈
 Symbol: 상징
 SynthMidnightTerminalDarkBase16: 신디사이저미드나잇터미널다크베이스16
 SynthMidnightTerminalLightBase16: 신디사이저미드나잇터미널라이트베이스16
 syr-SY: 시리아어 (시리아)
 System: 체계
 System Settings: 시스템 설정
+T = int – numeric range: T = 정액 – 수치 범위
 T3024Base16: T3024베이스16
 ta-IN: 타밀어(인도)
 ta-LK: 타밀어(스리랑카)
@@ -3929,6 +4033,7 @@ Teal: 청록
 tel: 전화
 Telephone: 전화
 TemplateClass: 템플릿 클래스
+Templates: 템플릿
 Temporary: 일시적인
 TenderBase16: 텐더베이스16
 teo-KE: Teso(케냐)
@@ -3983,8 +4088,22 @@ The following permission is also required for permission {1}: 권한 {1}에도 �
 The maximum file size is 10 MB: 최대 파일 크기는 10MB입니다.
 The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit는 하나 이상의 테마 또는 사전 설정을 효과적으로 편집할 수 있도록 설계된 강력하고 다재다능한 도구입니다. 본질적으로 다크 모드, 라이트 모드 또는 이 둘의 조합을 수용합니다. 또한 MudTheme에서 파생된 클래스와 고유한 사용자 정의 속성을 지원하므로 모든 테마 편집 요구 사항에 대한 포괄적이고 유연한 솔루션을 제공합니다.
 The Plugin '{0}' may be able to help: 플러그인 '{0}'이 도움이 될 수 있습니다.
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: 레인지 슬라이더는 수직으로도 사용할 수 있어 사이드바나 컴팩트 필터 공간에 이상적입니다.
 The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: 샘플은 다른 FileDisplay 예제와 동일하지만 URL이 사용되지 않는다는 차이점이 있습니다. 대신 스트림이 로드되고 사용됩니다.
 The server is just restarting. Please wait until the connection has been restored: 서버가 이제 막 다시 시작되고 있습니다. 연결이 복원될 때까지 기다리십시오.
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: 트랙은 이 밴드들을 강조하고 라벨링하며, 셀렉션 템플릿은 현재 문화의 통화 형식을 사용해 선택한 가격 구간을 렌더링합니다.
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: 트랙은 "U18", "18–25세", "26–35세" 등 공통 연령대로 나뉘며, 선택 템플릿에는 "18세에서 35세"와 같은 정확한 연령대가 표시됩니다.
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: 트랙은 Fast, OK, Slow, 매우 느린 응답 등급으로 나뉘며, 선택 라벨에는 숫자 범위와 분류가 모두 표시되어 있습니다. 예를 들어 "80 – 450 ms (Fast → Slow)"가 있습니다.
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: 트랙은 다양한 교대 구간으로 나뉘며, 선택 템플릿은 24시간 형식으로 선택한 시간 창을 표시합니다.
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: 트랙은 커스텀 TrackTemplate으로, 선택한 범위는 SelectionTemplate으로, 엄지는 커스텀 ThumbStartTemplate과 ThumbEndTemplate로 렌더링됩니다.
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: 트랙은 녹색, 노란색, 빨간색 구간으로 나뉘며, 선택 라벨에는 숫자 범위와 함께 "낮음", "중간", "높음"과 같은 정성적 분류가 표시됩니다.
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: 트랙은 회계연도 블록과 그 분기를 렌더링하며, 선택 라벨에는 선택된 회계 범위에 따라 "FY 2022 – FY 2024" 또는 "FY 2023 Q2 – Q4"와 같은 회계 범위가 표시됩니다.
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: 트랙은 월간 마커와 주간 틱을 렌더링하며, 선택 템플릿은 "KW 2 – KW 22"와 같은 여러 달력 주들로 선택을 요약합니다.
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: 트랙은 모든 레벨을 나란히 표시하며, 선택 템플릿은 "일 – 월" 같은 라벨을 렌더링하여 차트나 보고서에서 데이터를 어떻게 집계할지 제어할 수 있습니다.
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: 트랙은 몇 시간마다 틱과 라벨을 표시하며, 선택 템플릿은 선택한 시간 범위를 압축된 라벨로 렌더링합니다.
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: 트랙은 월요일부터 일요일까지 모든 날을 시각화하고, 주말을 강조하며, 선택 라벨에는 "월요일부터 금요일까지"와 같은 친근한 이름이 표시됩니다.
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: 트랙은 연도와 그 분기를 시각화하며, 선택 라벨은 선택한 범위에 따라 변형됩니다. 예를 들어 "Q2 2 2 – Q3 2023", 또는 연도가 같을 경우 단순히 "Q1 – Q3"입니다.
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: 트랙은 이러한 서비스 밴드를 시각적으로 강조하고, 선택 템플릿은 예를 들어 "4일에서 9일"과 같은 정확한 날짜 범위를 보여줍니다.
 The user "{0}" just changed some of this data: 사용자 "{0}"이 데이터 중 일부를 변경했습니다.
 The user {0} has been logged off: 사용자 {0}이 로그오프되었습니다.
 The User {0} has just edited, created or deleted entries here. You should reload the data: 사용자 {0}이 방금 여기에서 항목을 편집, 생성 또는 삭제했습니다. 데이터를 다시 로드해야 합니다.
@@ -4013,6 +4132,22 @@ This demo uses the IDialogEventService to check resize or dragged and stores the
 This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: 테마 편집을 위해 내부적으로 MudExObjectEdit 및 MudExThemeSelect 를 사용하는 MudExThemeEdit 컴포넌트를 보여줍니다
 This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: 이 데모는 RenderFragments 'For' 및 'ChildContent' 를 사용하여 MudExAdditionalAdornment 를 사용하는 권장 방법을 보여줍니다.
 This dialog can confirmed when slider value is greater then 10: 이 대화 상자는 슬라이더 값이 10보다 클 때 확인할 수 있습니다.
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: 이 예시는 회계연도가 1월 1일에 시작되지 않는 맞춤형 회계연도 타임라인을 보여줍니다.
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: '이 예시는 맞춤형 단계 동작으로 다년간의 시간 범위를 보여줍니다. StepResolver를 사용하면 슬라이더가 어떻게 스냅되는지 정의할 수 있습니다(예: 월, 분기, 시간 단위).'
+This example demonstrates a TimeOnly range slider.: 이 예시는 TimeOnly 범위 슬라이더를 보여줍니다.
+This example demonstrates a TimeOnly-based range slider with minute resolution.: 이 예시는 미분 해상도의 TimeOnly 기반 범위 슬라이더를 보여줍니다.
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: 이 예시는 예산, 표준, 프리미엄, 고급과 같은 의미 구간을 가진 가격 또는 예산 범위 슬라이더를 보여줍니다.
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: 이 예시는 정수 값을 요일에 매핑하고, 범위 슬라이더를 요일 선택기로 변환합니다.
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: 이 예시는 시간, 일, 주, 월, 연도와 같은 추상적인 줌 또는 집계 수준을 나타냅니다.
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: 이 예시는 2015년부터 2022년 말까지의 날짜 범위를 보여줍니다. 사용자는 최소 60일에서 최대 2년의 기간을 선택할 수 있습니다. 스텝 사이즈는 하루입니다.
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: 이 예시는 활용도, 수용 능력 또는 위험 수준을 기준으로 사용할 수 있는 백분율 기반 거리 슬라이더를 보여줍니다.
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: 이 예시는 이른 근무, 늦은 근무, 야간 근무 등 교대 계획 시나리오에 맞춘 TimeOnly 기반 범위 슬라이더를 보여줍니다.
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: 이 예시는 MudExRangeSlider를 연도와 월 마커가 있는 타임라인 스타일의 컨트롤로 맞춤 템플릿을 사용하는 방법을 보여줍니다.
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: 이 예시는 밀리초 기반 거리 슬라이더를 사용하여 SLA와 응답 시간 시나리오를 대상으로 합니다.
+This example turns the range slider into a quarter selector over multiple years.: 이 예시는 레인지 슬라이더를 수년에 걸쳐 쿼터 셀렉터로 바꿉니다.
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: 이 예시는 정수 범위 슬라이더를 사용하여 일수 단위의 환승 시간을 나타내며, 익스프레스, 스탠다드, 이코노미/해상 등 서비스 수준으로 세분화합니다.
+This example uses an integer-based range slider to represent age ranges and demographic bands.: 이 예시는 연령대와 인구통계학적 구대를 나타내기 위해 정수 기반 범위 슬라이더를 사용합니다.
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: 이 예시는 DateOnly와 주간 단계를 사용하여 ISO 달력 주 번호를 사용하는 주 기반 범위 선택기를 만듭니다.
 This is a Json representation of the TestModel. This is ignored for Export and Import: 이것은 TestModel의 Json 표현입니다. 내보내기 및 가져오기에서는 무시됩니다.
 This is a simple information dialog that closes after {0} seconds: '{0}초 후에 닫히는 간단한 정보 대화 상자입니다'
 This is a simple information dialog that closes after 0 seconds: 0초 후에 닫히는 간단한 정보 대화 상자입니다
@@ -4024,8 +4159,14 @@ This is a simple information dialog that closes after 5 seconds: 이것은 5초 
 This is an Administrator Only View.: 관리자 전용 보기입니다.
 This is the MudEx Default theme: MudEx 디폴트 테마입니다.
 This is the sample Popover. In general it inherits the original MudPopover.: 이것은 샘플 팝오버입니다. 일반적으로 원래 MudPopover를 상속합니다.
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: 이는 근무 시간, 유지보수 시간대, 예약 시간대 등 일일 근무 시간 창을 설정할 때 유용합니다.
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: 이는 제품 필터, 예산 선택기, 또는 사용자가 시각적으로 가격대를 선택하는 UI에 유용합니다.
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: 이는 반복 일정, 가용성 시간대, 또는 주간 단위로 정의된 배송 패턴에 유용합니다.
 This one card is still added without an corresponding item.: 이 카드 한 장은 해당 아이템 없이 여전히 추가됩니다.
 This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: 이것은 대화 상자 옵션에 메서드로 전달됩니다. 메서드가 false를 반환하면 대화 상자가 닫히지 않습니다. 결과는 bool 또는 Task&lt;bool 이어야 합니다&gt;
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: 이 패턴은 사용자가 표시되는 데이터의 세분도를 동적으로 변경할 수 있는 분석 대시보드에 적합합니다.
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: 이 패턴은 보고가 달력 연도가 아닌 회계연도에 맞춰지는 비즈니스 및 금융 응용 분야에서 유용합니다.
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: 이 패턴은 사용자가 계획, 보고, 스프린트 개요 등 구체적인 날짜 대신 주 단위로 생각할 때 이상적입니다.
 This photo was taken in a small village in Istra Croatia.: 이 사진은 크로아티아 이스트라의 작은 마을에서 찍은 것입니다.
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: 이 선택기는 애니메이션, 더 나은 동작 및 모든 DialogOptions를 지원하는 대화 상자를 제공합니다. MudExPickerBase에서 상속되는 고유한 선택기 구성 요소를 만들거나 간단한 콘텐츠를 사용하려면 MudExPicker를 사용합니다.
 This sample demonstrate how to use the MudExCaptureService: 이 샘플에서는 MudExCaptureService 를 사용하는 방법을 보여줍니다.
@@ -4034,13 +4175,20 @@ This sample just shows how easily you can combine the MudExPicker with MudExTree
 This sample uses the IDialogEventService to cancel the dialog close: 이 샘플에서는 IDialogEventService를 사용하여 대화 상자 닫기를 취소합니다.
 This sample uses the options for a can close callback: 이 샘플에서는 can close 콜백에 대한 옵션을 사용합니다
 This section can be placed inside a MudExGrid component.: 이 섹션은 MudExGrid 컴포넌트 안에 배치할 수 있습니다.
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: 이 템플릿은 납기 기간이 일일 단위로 표현되는 물류 및 배송 시나리오에서 특히 유용합니다.
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: 이 템플릿은 분석, 타겟팅, 또는 사용자가 연령 구간을 다루는 모든 UI에 적합합니다.
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: 이 템플릿은 지연 범위를 빠르게 해석해야 하는 모니터링, 관측 가능성, API 대시보드에서 잘 작동합니다.
 Thistle: 엉겅퀴
 ThrottleInterval: 스로틀 간격
+ThumbColor: 엄지색
+ThumbEndTemplate: 썸벤드 템플릿
+ThumbStartTemplate: 썸스타트템플릿
 ti-ER: 티그리냐(에리트레아)
 ti-ET: 티그리냐(에티오피아)
 tig-ER: 티그레(에리트레아)
 Tilt: 기울다
 Time: 시간
+TimeOnly: TimeOnly
 Times: 배
 Times New Roman: 타임즈 뉴 로마
 TimeSeries: 시계열
@@ -4096,6 +4244,7 @@ Toronto - M1B 1A1ender: 토론토 - M1B 1A1ender
 tr-CY: 터키어(키프로스)
 tr-TR: 터키어(터키)
 Trace: 자취
+TrackColor: 트랙컬러
 TrackInfoPosition: TrackInfoPosition
 TrackList: 트랙리스트
 TrackListBehaviour: 트랙리스트 동작
@@ -4104,6 +4253,8 @@ TrackListCoverImage: 트랙리스트커버이미지
 TrackListMode: 트랙 리스트 모드
 TrackListPosition: 트랙 리스트 위치
 TrackListToggleButtonPosition: 트랙리스트토글버튼포지션
+TrackStyle: 트랙 스타일
+TrackTemplate: 트랙템플릿
 Trail Details: 트레일 세부 정보
 TransformOrigin: 원점 변환
 Translations: 번역
@@ -4113,6 +4264,7 @@ Transparent: 투명한
 Trebuchet MS: 투석기 MS
 TreeView: 트리뷰
 TreeView component that renders a tree structure of items.: 항목의 트리 구조를 렌더링하는 TreeView 구성 요소입니다.
+Treeview in Picker: 피커의 트리뷰
 TreeViewBreadcrumb: TreeView이동 경로
 TreeViewCardGrid: 트리뷰카드그리드
 TreeViewDefault: TreeView기본값
@@ -4185,10 +4337,15 @@ ur-IN: 우르두어(인도)
 ur-PK: 우르두어(파키스탄)
 url: URL
 Url: URL
+Use cases: 사용 사례
 Use CodeGator Models: CodeGator 모델 사용
 Use MudExAdditionalAdornment ad ChildContent: MudExAdditionalAdornment 광고 ChildContent 사용
 Use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment 를 MudInput 의 자식 콘텐츠로 사용
 Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: 대신 MudExSelect를 사용하고 MultiSelection을 true로, ValuePresenter를 Chip으로 설정합니다.
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: 슬라이더를 가로 또는 세로 방향으로 사용하여 필터, 대시보드, 보고서에 이상적입니다.
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: 분기별 보고, KPI, 또는 분기 범위가 정확한 날짜보다 더 의미 있는 재무 개요에 이 템플릿을 사용하세요.
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: 이 템플릿은 창고, 생산, 콜센터 또는 24시간 근무 교대 근무로 조직되는 모든 분야에 사용하세요.
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: 사용자가 선택한 범위가 안전, 경고, 또는 중요 구역에 속하는지 한눈에 파악해야 할 때 이 템플릿을 사용하세요.
 UseCanvas: 캔버스 사용
 UseColorPaletteInNativeBrowserControl: ColorPaletteInNativeBrowserControl 사용
 UseItemTemplateForSelection: UseItemTemplateForSelection
@@ -4238,6 +4395,8 @@ Variant: 변체
 ve-ZA: 벤다(남아프리카공화국)
 Verdana: 베르다나
 Version: 버전
+Vertical: 세로
+VerticalText: 수직 텍스트
 vi-VN: 베트남어(베트남)
 Video Content-Type: 비디오 콘텐츠 유형
 Video device: 비디오 장치
@@ -4267,6 +4426,7 @@ Vs2015: 2015년
 VulcanBase16: 벌칸베이스16
 vun-TZ: Vunjo (탄자니아)
 wae-CH: 발저(스위스)
+Wait: 기다림
 wal-ET: Wolaytta(에티오피아)
 Warning: 경고
 WarningContrastText: WarningContrastText
@@ -4298,6 +4458,8 @@ WindowsNtLightBase16: 윈도우NtLightBase16
 Wingdings: 윙딩스
 With custom configuration: 사용자 지정 구성 사용
 With default configuration: 기본 구성
+With DockLayout: DockLayout과 함께
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: StepResolver를 사용하면 스테핑 동작을 쉽게 설정할 수 있습니다. 날짜 범위에 대해서는 여러 미리 정의된 해석기를 제공합니다. 이 예시에서 StepResolvers.DateTime.Quarterly(_ => 1)는 슬라이더를 4분의 1로 스냅합니다.
 With tabs: 탭 포함
 With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: MudExAdditionalAdornment 컴포넌트를 사용하면 이와 같은 MudInput 기반 입력 컨트롤에 원하는 만큼 많은 장식을 가질 수 있습니다.
 With this component you can have an animation while loading the main blazor app: 이 구성 요소를 사용하면 기본 blazor 앱을 로드하는 동안 애니메이션을 만들 수 있습니다
@@ -4314,6 +4476,8 @@ WoodlandBase16: 우드랜드베이스16
 WordDokument.doc: WordDokument.doc
 WrapChips: 랩칩
 WrapToolBarContent: WrapToolBarContent
+WResize: WResize
+Write comments or reactions for current component or page: 현재 구성 요소나 페이지에 대한 댓글이나 반응을 작성하세요
 Xcode: 엑스 코드
 XcodeDuskBase16: 엑스코드더스크베이스16
 xh-ZA: isiXhosa(남아프리카 공화국)
@@ -4338,8 +4502,10 @@ You are logged out by an Administrator or profile change.: 관리자 또는 프�
 You are Logged Out.: 로그아웃되었습니다.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment 를 MudInput 의 ChildContent 로 사용할 수도 있습니다
 You can move me: 당신은 나를 움직일 수 있습니다
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: 개별 엄지손가락이나 선택한 전체 범위만 이동해 시작과 종료 값을 조정할 수 있습니다. 구성에 따라 최소 및 최대 소요 시간, 그리고 다양한 단계 크기가 적용됩니다.
 You can now Login with your credentials: 이제 자격 증명으로 로그인할 수 있습니다.
 You can resize me: 내 크기를 조정할 수 있습니다.
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: 이 기법을 사용하면 도메인에 정확히 맞는 풍부한 시간 슬라이더와 시각적 범위를 만들 수 있습니다.
 You cannot delete yourself: 자신을 삭제할 수 없습니다.
 You clicked: 클릭
 You don't need an extra JsonEditor anymore: 더 이상 추가 JsonEditor가 필요하지 않습니다.
@@ -4365,7 +4531,9 @@ ZipCode: 우편 번호
 Zoom: 급상승
 Zoom in: 확대
 Zoom out: 축소
+ZoomIn: 줌인
 ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: 줌온호버
+ZoomOut: 줌아웃
 ZoomOutButtonIcon: 줌아웃 버튼 아이콘
 zu-ZA: isiZulu (남아프리카 공화국)

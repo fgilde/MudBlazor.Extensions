@@ -20,6 +20,8 @@ _{0} Demos: '{0}デモ'
 --mud-palette-white: --泥パレット-白
 (currently the item is not visible): (現在、アイテムは表示されません)
 (currently the item is visible): (現在、アイテムは表示されています)
+2 Hourly steps (using StepLength): 2時間ごとにステップ(StepLengthを使用)
+2 Hourly steps (using StepResolver): 2時間ごとのステップ(StepResolver使用)
 A: ある
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: ユーザーが可能な値のリストから値を選択し、それを Chips またはデフォルトのコンボボックスとして表示できるようにするコンポーネント。
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: マウスオーバーで ChildContent を下、上、左、右からスライドさせるために使用できるコンポーネント。
@@ -33,6 +35,7 @@ A maximum of {0} files are allowed: 最大 {0} 個のファイルが許可され
 A Popover can be used to display some content on top of another.: ポップオーバーを使用して、一部のコンテンツを別のコンテンツの上に表示できます。
 A powerful component to edit an object and its properties.: オブジェクトとそのプロパティを編集するための強力なコンポーネント。
 A powerful editor that can handle json, xml or yaml content: json、xml、またはyamlコンテンツを処理できる強力なエディター
+A range slider component that allows selecting and manipulating a value range of type T.: タイプTの値範囲を選択・操作できる範囲スライダーコンポーネントです。
 A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: MudColorPicker を継承するが、閉じるイベントを遅らせ、ブラウザからネイティブ ピッカー コンポーネントを使用する可能性を追加する単純な ColorPicker コンポーネント
 A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: セクションを含むための列、行、ColSpan と RowSpan をサポートする単純なグリッド コンポーネント。
 A SplitPanel Component: SplitPanel コンポーネント
@@ -100,6 +103,7 @@ Age: 年齢
 agq-CM: アヘム (カメルーン)
 ak-GH: アカン(ガーナ)
 Albertus: アルベルトゥス
+Alias: 別名
 Alice Johnson: アリス・ジョンソン
 AliceBlue: アリスブルー
 Align: 並べる
@@ -132,6 +136,9 @@ AllowRubberBandSelection: AllowRubberBandSelection (ゴムバンド選択を許�
 AllowSelectionOfNonEmptyNodes: NonEmptyNodes の選択を許可します
 AllowSelectOnPreviewClick: AllowSelectオンプレビュークリック
 AllowVideoCapture: ビデオキャプチャの許可
+AllowWholeRangeDrag: AllowWholeRangeDrag
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = true – ピリオド全体を移動可能
+AllScroll: オールスクロール
 AlphaBars: アルファバー
 Already have an account?: すでにアカウントをお持ちですか?
 Always: いつも
@@ -226,6 +233,7 @@ AntiqueWhite: アンティークホワイト
 ApathyBase16: アパシーベース16
 Api: APIの
 API: API
+Api view component to display the methods and properties of a type: APIビューコンポーネント:型のメソッドやプロパティを表示するための
 API-Versions: API バージョン
 AppBar: AppBar (アプリバー)
 AppbarBackground: AppbarBackground (アプリバーの背景)
@@ -285,6 +293,7 @@ Are you sure?: 確かですか。
 Arial: アリアル
 Arial Black: アリアルブラック
 Arial Narrow: アリアルナロー
+AriaLabelledBy: アリアラベルド
 arn-CL: マプチェ(チリ)
 Arta: 芸術
 As Admin you can filter for users here: 管理者は、ここでユーザーをフィルタリングできます
@@ -339,6 +348,7 @@ Aug: 8 月
 Austin: オースティン
 Austin - 73301: オースティン - 73301
 Austin - 73301ender: オースティン - 73301ender
+Auto: 車
 Auto Confirm Email?: メールを自動確認しますか?
 Auto Generated Editor for TestObject: TestObject の自動生成エディタ
 Auto Stop recording after: 録画を自動停止する
@@ -390,6 +400,7 @@ Basic: 基本的な
 Basic role with default permissions: 既定のアクセス許可を持つ基本ロール
 Bauhaus 93: バウハウス 93
 be-BY: ベラルーシ語(ベラルーシ)
+Because time values always having a fixed size you can also use step length instead of resolvers.: 時間値は常に固定サイズなので、リゾルバーの代わりにステップ長を使うこともできます。
 BeforeBegin: ビフォービオン開始
 BeforeEnd: 終了前
 BeforeSearchBox: BeforeSearchBox (検索ボックスの前)
@@ -490,6 +501,7 @@ bs-Cyrl-BA: ボスニア語(キリル文字、ボスニア・ヘルツェゴビ�
 bs-Latn-BA: ボスニア語(ラテン語、ボスニア・ヘルツェゴビナ)
 Build amazing UIs: 素晴らしい UI を構築する
 BurlyWood: バーリーウッド
+But for sure resolvers are working as well.: しかし、リゾルバーも確実に動作しています。
 button: ボタン
 Button: ボタン
 Button component for capturing audio and video.: オーディオとビデオをキャプチャするためのボタンコンポーネント。
@@ -535,6 +547,7 @@ ccp-Cakm-BD: チャクマ (バングラデシュ チャクマ)
 ccp-Cakm-IN: チャクマ (チャクマ、インド)
 ce-RU: チェチェン(ロシア)
 ceb-Latn-PH: セブアノ語(ラテン語、フィリピン)
+Cell: セル
 Centaur: ケンタウロス
 Center: センター
 CenterCenter: センターセンター
@@ -627,6 +640,7 @@ ColorPickerView: カラーピッカービュー
 ColorsBase16: 色ベース16
 ColorStops: カラーストップ
 ColorTemperature: カラー温度
+ColResize: コルリサイズ
 ColSpan: コルスパン
 Column: コラム
 Columns Affected: 影響を受ける列
@@ -640,6 +654,7 @@ Compact: コンパクト
 Comparer: 比べる
 Component edit capture options: コンポーネント編集キャプチャオプション
 Component in Dialog: ダイアログ内のコンポーネント
+Component that captures component references from ChildContent: ChildContentからコンポーネント参照をキャプチャするコンポーネント
 Component to add additional adornment to a MudInput: MudInput に装飾を追加するコンポーネント
 Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: iframe またはオブジェクト タグ、または IMudExFileDisplay を実装する登録済みビューアーにファイルを表示するコンポーネント
 Component to display information about the current recording: 現在の記録に関する情報を表示するコンポーネント
@@ -649,7 +664,9 @@ Component to move the ChildContent to a specific element that can defined by Ele
 Component to select a theme from a list of themes.: テーマのリストからテーマを選択するためのコンポーネント。
 ComponentBaseWithState: ComponentBaseWithState (コンポーネントベースと状態)
 ComponentInDialog: コンポーネントインダイアログ
+Components: コンポーネント
 Conditional updates: 条件付き更新
+Configuration: 構成
 Configure list values: リスト値を構成する
 Confirm: 確認する
 CONFIRM: 確認する
@@ -670,6 +687,7 @@ Content-Type: コンテンツタイプ
 ContentAlignment: コンテンツ配置
 ContentStream: コンテンツストリーム
 ContentType: コンテンツタイプ
+ContextMenu: コンテキストメニュー
 ContextMenuAction: コンテキストメニューアクション
 Continue to {0}: 続きを読む{0}
 Continuous: 蟬
@@ -677,6 +695,7 @@ Contrast: 対照
 Cooper Black: クーパー ブラック
 Copperplate Gothic Bold: 銅版ゴシックボールド
 Copperplate Gothic Light: 銅版ゴシックライト
+Copy: 写し
 Copy url: URL をコピー
 Counter: カウンター
 Country: 国
@@ -689,6 +708,7 @@ Create powerful, flexible dock layouts — drag, drop, snap, and organize your d
 CreatedOn: 作成日
 Critical: 危うい
 CropAndScale: クロップとスケール
+Crosshair: 十字
 cs-CZ: チェコ語(チェコ)
 CSS Color Variables: CSS 色変数
 CssVars: CssVars
@@ -701,6 +721,8 @@ Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can
 Cursor: カーソル
 CursorPositionOrigin: カーソル位置原点
 Custom: 習慣
+Custom fiscal year logic: カスタム会計年度ロジック
+Custom Templates: カスタムテンプレート
 CustomContentErrorMessage: カスタムコンテンツエラーメッセージ
 Customize: カスタマイズ
 cy-GB: ウェールズ語 (イギリス)
@@ -764,9 +786,11 @@ Decimal value is required using {0} type!: 10進数は{0}型で必要です!
 DeepPink: ディープピンク
 DeepSkyBlue: ディープスカイブルー
 Default: デフォルト
+Default steps: デフォルトのステップ
 DefaultBorderRadius: デフォルト境界半径
 DefaultDarkBase16: デフォルトダークベース16
 DefaultLightBase16: デフォルトライトベース16
+Define minimum and maximum duration for ranges as well as custom step sizes.: 範囲の最小および最大持続時間、そしてカスタムステップサイズを定義してください。
 Defined: 定義
 Delay: 遅延
 DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
@@ -807,6 +831,7 @@ Demo of using explicit the MudExFileDisplayZip to show and select content inside
 Demonstration for a simple but very useful Enum Selector: シンプルだが非常に便利な列挙型セレクターのデモンストレーション
 Demonstration of the MudExSplitter: MudExSplitterのデモンストレーション
 Demonstration of the quickly color select with MudExColorBubble: MudExColorBubble を使用した素早く色を選択するデモンストレーション
+Demos: デモ
 DEMOS: デモ
 Dense: 濃い
 Dependent permissions required: 必要な依存アクセス許可
@@ -888,7 +913,10 @@ Do you really want to restore the database from backup '{0}'? Note that any chan
 Do you want to delete the profile picture of {0}: '{0}のプロフィール写真を削除しますか'
 Do you want to delete the User {0}: ユーザー{0}を削除しますか?
 Docco: ドッコ
+Dock: 其れでも
+Dock Control: ドックコントロール
 Docked: ドッキング
+DockLayout with ObjectEdit: ObjectEdit を用いた DockLayout
 Document Deleted: 削除されたドキュメント
 Document Extended Attributes: ドキュメント拡張属性
 Document Management: ドキュメント管理
@@ -967,6 +995,8 @@ Edit: 編集
 Edit {0}: 編集{0}
 Edit a complex Model with included Collection of users: ユーザーのコレクションを含む複雑なモデルの編集
 Edit Audio Constraints: オーディオコンストレイントの編集
+Edit Configuration: 編集:設定
+Edit configuration for component in this sample: このサンプルのコンポーネント設定を編集
 Edit Current Theme: 現在のテーマを編集
 Edit data in dialog: ダイアログでデータを編集する
 Edit in TryMudEx: TryMudExで編集
@@ -1113,6 +1143,7 @@ en-ZW: 英語(ジンバブエ)
 Enable Disqus: Disqus を有効にする
 enables or disables virtualization.: 仮想化を有効または無効にします。
 End: 終わり
+EndTooltipPosition: EndTooltipPosition
 English: 英語
 Engravers MT: 彫刻機 MT
 Enter email and your new password here: ここにメールアドレスと新しいパスワードを入力してください
@@ -1144,6 +1175,7 @@ Eras Bold ITC: エラス・ボールドITC
 Eras Demi ITC: エラスデミITC
 Eras Light ITC: エラスライトITC
 Eras Medium ITC: エラス・ミディアムITC
+EResize: エレシズ
 Error: エラー
 ErrorAnimation: エラーアニメーション
 ErrorContrastText: ErrorContrastText (エラー対比テキスト)
@@ -1186,6 +1218,7 @@ eu-ES: バスク語(スペイン)
 EvaBase16: エヴァベース16
 EvaDimBase16: EvaDimBase16
 ewo-CM: エウォンド(カメルーン)
+EwResize: EwResize
 ExcelSheet.xlsx: ExcelSheet.xlsx
 Expand &nbsp; <b>not</b> &nbsp; loaded nodes: ロード<b>されていない</b>&nbsp;ノードを展開&nbsp;します
 Expand all nodes: すべてのノードを展開
@@ -1230,6 +1263,7 @@ FallBackInIframe: フォールバックイン Iframe
 False: 偽
 FAQs: よくある質問(FAQ)
 Far: 遠い
+Featured Components: 特徴的な構成要素
 Features: 顔立ち
 Feb: 2月
 Felix Titling: フェリックス・タイトル
@@ -1297,6 +1331,7 @@ FilterMode: フィルターモード
 FilterMultiple: フィルターマルチプル
 FilterPlaceholder: フィルタープレースホルダー
 Filters: フィルター
+Filters in dashboards or reports: ダッシュボードやレポートのフィルター
 FilterVariant: フィルターバリアント
 Fiona Gallagher: フィオナ・ギャラガー
 Firebrick: 耐火れんが
@@ -1310,6 +1345,7 @@ Flat List: フラットリスト
 FlatBase16: フラットベース16
 FlatList: フラットリスト
 FlexEnd: フレックスエンド
+Flexible data types: 柔軟なデータ型
 FlexStart: フレックススタート
 Flip: 弾く
 FlipAlways: フリップオールウェイズ
@@ -1339,6 +1375,7 @@ ForceShrink: フォースシュリンク
 ForestGreen: フォレストグリーン
 Forgot password?: パスワードをお忘れですか?
 Format: 形式
+Forward: フォワード
 Foundation: 財団
 fr-029: フランス語(カリブ海)
 fr-BE: フランス語(ベルギー)
@@ -1442,6 +1479,8 @@ GoogleDriveClientId: GoogleDriveClientId
 GoogleLightBase16: グーグルライトベース16
 Goudy Old Style: グーディオールドスタイル
 Goudy Stout: グーディスタウト
+Grab: グラブ
+Grabbing: つかんで
 Gradient: 勾配
 GradientDark: グラデーションダーク
 GradientForeground: グラデーション前景
@@ -1529,6 +1568,7 @@ Hello from dialog 1: ダイアログ1からこんにちは
 Hello from dialog sample page: ダイアログからのこんにちはサンプルページ
 Hello World: ハローワールド
 Hello...: こんにちは。。。
+Help: ヘルプ
 HelperId: ヘルパー ID
 HelperText: ヘルパーテキスト
 HelperTextOnFocus: ヘルパーテキストオンフォーカス
@@ -1550,6 +1590,7 @@ Hide: 隠れる
 HideContentWhenCollapsed: HideContentWhenCollapsed (折りたたまれたときの非表示)
 HideDropDownWhenReadOnly: HideDropDownWhenReadOnly (HideDropDownWhenReadOnly )
 High Tower Text: ハイタワーテキスト
+Highlights: ハイライト
 HighlightSearch: ハイライトサーチ
 Hinge: 蝶番
 Home: 家
@@ -1558,6 +1599,7 @@ HopscotchBase16: 石けり遊びベース16
 HorizonDarkBase16: ホライゾンダークベース16
 HorizonLightBase16: ホライゾンライトベース16
 Horizontal: 水平な
+Horizontal & vertical orientation: 水平方向と垂直方向
 HouseNumber: 数
 Houston: ヒューストン
 Houston - 77001: ヒューストン - 77001
@@ -1602,6 +1644,7 @@ Idea: 着想
 Identifier: 識別子
 If this is set a photo will be taken instead of a video.: この設定をすると、動画ではなく写真が撮影されます。
 If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: このパッケージが気に入ったら、Githubにスターを付け⭐て友達と共有してください。そうでない場合は、とにかく星を付けて、より良いものにするために何を改善できるか教えてください。
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: タイムスライダーだけで十分で、自分でテンプレートを作りたくない場合は、専用の{0}コンポーネントを使うこともできます。
 If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: このオプションをデフォルトとして設定した場合。このオプションは、オプションが指定されていないすべてのダイアログで使用されます。続ける。
 ig-NG: イボ語(ナイジェリア)
 Ignore: 不問に付す
@@ -1618,6 +1661,7 @@ Impact: インパクト
 Import: 輸入
 ImportExportIcon: インポートエクスポートアイコン
 In: で
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: この例では、0から100までの単純な数値範囲をコントロールします。ステップサイズは粗い間隔を設けるために5に設定されています。
 In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: この例では、アイテムが最初にビューに表示されるとすぐに、データが動的に読み込まれます。コンポーネントは 2 つのコンテンツ スロットをサポートします
 In this sample you are forced to pick an user: このサンプルでは、ユーザーを選択する必要があります
 In this sample you are forced to pick some users: このサンプルでは、いくつかのユーザーを選択する必要があります
@@ -1658,6 +1702,7 @@ InputMode: 入力モード
 InputStyle: 入力スタイル
 InputType: 入力タイプ
 Inset: はめ込み
+Instance: 例
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: 中間結果
@@ -1672,6 +1717,7 @@ is-IS: アイスランド語(アイスランド)
 IsActive: アクティブ
 IsblEditorDark: IsblEditorDark
 IsblEditorLight: IsblEditorライト
+IsInverted: イズインバーテッド
 IsMouseOverChip: IsMouseOverChip です。
 ISO: 磯
 IsOpen: オープン
@@ -1811,6 +1857,7 @@ Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): 
 LegacyRender: レガシーレンダー
 Legend: 伝説
 LemonChiffon: レモンシフォン
+Length: 長さ
 LetterSpacing: レタースペーシング
 lg-UG: ガンダ(ウガンダ)
 Library: 図書館
@@ -1958,6 +2005,7 @@ MaterialDarkerBase16: 素材DarkerBase16
 MaterialLighterBase16: 素材ライターベース16
 MaterialPalenightBase16: 素材PalenightBase16
 MaterialVividBase16: 素材VividBase16
+MathAdapter: MathAdapter
 Matura MT Script Capitals: Matura MT スクリプトの大文字
 MaxCaptureTime: 最大キャプチャ時間
 MaxChips: マックスチップ
@@ -1970,6 +2018,7 @@ MaximizeButton: ボタンの最大化
 MaxItems: 最大アイテム数
 MaxItemWidth: 最大アイテム幅
 MaxLength: 最大長
+MaxLength = 730 days – longest allowed period: MaxLength = 730日 – 最長許容期間
 MaxLuminance: 最大輝度
 MaxMultipleFiles: 最大マルチプルファイル
 MaxRecordingTime: 最大記録時間
@@ -2012,13 +2061,17 @@ Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod 仮想オー�
 Millimeters: ミリメートル
 MimeRestrictionType: MimeRestrictionType (MimeRestrictionType)
 MimeTypes: Mimeタイプ
+Min/max length & step size: 最小/最大長さとステップサイズ
 MinDecibels: 最小デシベル
 MinFrequency: 最小周波数
 MinHeight: 最小高さ
 Mini: ミニ
 MinimizeButton: 最小化ボタン
+MinLength: 最小長さ
+MinLength = 60 days – shortest allowed period: 最小期間 = 60日 – 最短許可期間
 MinLuminance: 最小輝度
 MintCream: ミントクリーム
+Minutely steps: 細かいステップ
 MinZoomLevel: 最小ズームレベル
 Mirror: 鏡
 Misc: 雑貨
@@ -2031,6 +2084,7 @@ mn-MN: モンゴル語(モンゴル)
 mn-Mong-CN: モンゴル語(モンゴル語、中国)
 mn-Mong-MN: モンゴル語(モンゴル語、モンゴル語)
 mni-IN: マニプリ(インド)
+Mobile UIs with limited horizontal space: 横方向のスペースが限られたモバイルUI
 Moccasin: モカシン
 MochaBase16: モカベース16
 Modal: 資本
@@ -2057,8 +2111,11 @@ MouseOverMessageClass: MouseOverMessageクラス
 MouseOverMessageStyle: MouseOverMessageStyle (マウスオーバーメッセージスタイル)
 MouseWheelDownAction: マウスホイールダウンアクション
 MouseWheelUpAction: MouseWheelUpアクション
+Move: 動く
 Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: ドラッグ&ドロップでグリッドアイテムを直接移動およびサイズ変更し、実行時にレイアウトを動的にデザインします。
 MoveContent: コンテンツの移動
+MoveCursor: MoveCursor
+MovingCursor: ムービングカーソル
 mr-IN: マラーティー語(インド)
 MS Outlook: MSアウトルック
 MS Reference Sans Serif: MSリファレンスサンセリフ
@@ -2112,6 +2169,7 @@ MudDrawerHeader: MudDrawerヘッダー
 MudDynamicTabs: MudDynamicTabs (マッドダイナミック タブ)
 MudElement: マッドエレメント
 MudEx Components: MudEx コンポーネント
+MudEx Range Slider – Interactive range selection: MudEx レンジスライダー – インタラクティブレンジ選択
 MudExAdditionalAdornment: MudEx追加装飾
 MudExAppearance: MudEx外観
 MudExAppLoader: MudExAppLoader (MudExAppLoader)
@@ -2139,6 +2197,7 @@ MudExCultureSelect: MudExCultureセレクト
 MudExDialog: MudExダイアログ
 MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog は、すべての DialogExtensions を使用してページにインライン化されたダイアログを表示する場合に使用するコンポーネントです。
 MudExDivider: MudExディバイダ
+MudExDockLayout: MudExDockレイアウト
 MudExDropBoxFilePicker: MudExDropBoxFilePicker(MudExDropBoxファイルピッカー)
 MudExEnumSelect: MudExEnumSelect (MudExEnumSelect )
 MudExEnumSelect<TEnum>: MudExEnumSelect (MudExEnumSelect <TEnum>)
@@ -2157,6 +2216,8 @@ MudExGoogleFilePicker: MudExGoogleFilePicker(MudExGoogleファイルピッカー
 MudExGradientText: MudExGradientText (MudExグラデーションテキスト)
 MudExGravatar: MudExGravatar (ムードエックスグラバタール)
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatarは、gravatarのプロフィール画像をメールアドレスに自動で使用するMudAvatarです
+MudExGravatarCard: MudExGravatarCard
+MudExGravatarCard displays a Gravatar profile as card: MudExGravatarCardはカードとしてGravatarのプロファイルを表示します
 MudExGrid: MudExGrid (マッドエックスグリッド)
 MudExGrid — Now with Layout Editing: MudExGrid — レイアウト編集機能付き
 MudExGrid Enhanced: MudExGrid の強化
@@ -2189,13 +2250,17 @@ MudExOneDriveFilePicker: MudExOneDriveFilePicker (MudExOneDriveファイルピ�
 MudExpansionPanel: MudExpansionパネル
 MudExpansionPanels: MudExpansionパネル
 MudExPicker: MudExピッカー
+MudExPicker Tree: MudExPickerツリー
 MudExPickerBase<T>: MudExPickerBase (マッド エクスピッカーベース<T>)
 MudExPopover: MudExポップオーバー
 MudExPromptDialog: MudExプロンプトダイアログ
 MudExPromptDialog Component: MudExPromptDialog コンポーネント
 MudExPropertyEdit: MudExプロパティ編集
+MudExRangeSlider<T>: MudExRangeSlider<T>
 MudExSelect: MudExSelect (MudExセレクト)
 MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect を使用して、バインド可能なコレクションから 1 つまたは複数のアイテムを選択できます。また、このコンポーネントは、ダイアログや MudExPopover などのすべてのアニメーションをサポートしています。
+MudExSelect Item template.: MudExSelect アイテムテンプレート。
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
 MudExSelect<T>: MudExSelect (MudExセレクト)<T>
 MudExSelectItem is a select item for MudExSelect.: MudExSelectItem は、MudExSelect の選択項目です。
 MudExSelectItem<T>: MudExSelectアイテム<T>
@@ -2347,6 +2412,8 @@ nds-NL: 低地ドイツ語(オランダ)
 ne-IN: ネパール語(インド)
 ne-NP: ネパール語(ネパール)
 NebulaBase16: NebulaBase16 (星雲ベース16)
+NeResize: ネリサイズ
+NeswResize: ネズリューサイズ
 Never: 一度もない
 New: 新機能
 NEW: 新機能
@@ -2887,6 +2954,7 @@ No space available: 空き容量がありません
 NoChips: ノーチップス
 NodeBorderRadius: ノードボーダー半径
 NodePadding: ノードパディング
+NoDrop: ノードロップ
 NoHeader: ヘッダーなし
 NoIcon: ノーアイコン
 NoModalDialogs: ノーモーダルダイアログ
@@ -2900,6 +2968,7 @@ Not allowed to Delete this user: このユーザーを削除することはで�
 Not Allowed.: 禁じられた。
 Not connected: 接続されていません
 Not Modal Dialogs: モーダルではないダイアログ
+NotAllowed: 許されない
 Note - Media options can't changed after a screen is selected: 注 - 画面を選択した後は、メディアオプションを変更できません
 NoteLabels: 注:ラベル
 NotFoundMessage: 探していたページが存在しません。
@@ -2913,13 +2982,17 @@ NoWrap: ラップなし
 npm-example-0.0.20.tgz: npm-example-0.0.20.tgz
 nqo-GN: ンコ(ギニア)
 nr-ZA: 南ンデベレ(南アフリカ)
+NResize: NResize
 nso-ZA: セソト・サ・レボア(南アフリカ)
+NsResize: NSサイズ変更
 Nuget Package source: Nuget パッケージ ソース
 Nullable enum: Null 許容列挙型
 Nullable Flags Enum: Null 許容フラグ列挙型
 Number: 数
 numeric: 数値
 nus-SS: ヌエル(南スーダン)
+NwResize: NWRESIZE
+NwseResize: NWSEリサイズ
 nyn-UG: ニャンコレ(ウガンダ)
 Object Edit in Dialog: ダイアログでのオブジェクト編集
 ObjectEdit: オブジェクト編集
@@ -3021,6 +3094,7 @@ Overview: 概要
 Owner: 所有者
 pa-Arab-PK: パンジャブ語(アラビア語、パキスタン)
 pa-IN: パンジャブ語(インド)
+Page_Test: Page_Test
 Palatino: 口蓋
 Palatino Linotype: パラティーノリノタイプ
 PaleGreen: ペールグリーン
@@ -3106,6 +3180,7 @@ Placeholder: プレースホルダ
 Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: オンラインコードエディターでMudBlazorとMudBlazor.Extensionsをいじる
 Playbill: プレイビル
 Player: プレーヤー
+Playground: 遊び場
 Please confirm your account by <a href='{0}'>clicking here</a>.: <a href='{0}'>クリックしてアカウントを確認してください</a>。
 Please enter your name: お名前を入力してください
 Please reset your password by <a href='{0}'>clicking here</a>.: <a href='{0}'>クリックしてパスワードを再設定してください</a>。
@@ -3114,6 +3189,7 @@ Please upload your personal qualifications and references that confirm your pers
 Please Wait: お待ちください
 PleaseSelect: お選びください
 Plum: 李
+Pointer: ポインタ
 Points: ポイント
 PointsOfInterest: 興味のあるポイント
 Pojoaque: ポホアック
@@ -3131,6 +3207,7 @@ PorpleBase16: PorpleBase16
 Portrait: 肖像
 Position: 立場
 Position/Size Sample: 位置/サイズサンプル
+Possibilities: 可能性
 PostalCode: 郵便番号
 PowderBlue: パウダーブルー
 Powerful component to edit a set of items and their properties.: 一連のアイテムとそのプロパティを編集するための強力なコンポーネント。
@@ -3176,6 +3253,7 @@ Profile picture added.: プロフィール写真が追加されました。
 Profile picture deleted.: プロフィール写真が削除されました。
 Profile updated: プロファイルの更新
 ProgramingSkills: プログラミングスキル
+Progress: 経過
 Property1: プロパティ1
 Property10: プロパティ10
 Property11: プロパティ11
@@ -3261,6 +3339,7 @@ RailscastsBase16: RailsキャストBase16
 Rainbow: 虹
 Random: ランダム
 RandomColorUpdateDelay: ランダムカラー更新遅延
+RangeSlider: レンジスライダー
 RarArchive.rar: RarArchive.rar
 Rate: 率
 Rate must be greater than 0: レートは 0 より大きくなければなりません
@@ -3343,6 +3422,7 @@ Reset view: ビューをリセット
 ResetButtonIcon: リセットボタンアイコン
 ResetToDefaultFirst: ResetToDefaultFirst (リセット・トゥ・デフォルト・ファースト)
 Resizeable: サイズ変更可能
+ResizeCursor: ResizeCursor
 ResizeMode: サイズ変更モード
 Resources: リソース
 Responsive: 応答
@@ -3422,6 +3502,7 @@ RoundBars: 丸棒
 Rounded: 丸い
 Routeros: ルーターOS
 Row: 漕ぐ
+RowResize: 行のサイズ変更
 RowSpan: 行スパン
 RowsPerPageString: ページあたりの行数
 RoyalBlue: ロイヤルブルー
@@ -3434,6 +3515,8 @@ ru-UA: ロシア語(ウクライナ)
 RubberBand: ラバーバンド
 RubberBandColor: ラバーバンドカラー
 RubberBandStyle: ラバーバンドスタイル
+Run: 走る
+Run this sample on try.mudex.org online: このサンプルをオンラインで try.mudex.org に流してください
 Runic MT Condensed: ルーン文字 MT 凝縮
 Runtime: 実行中
 Russian: ロシア語
@@ -3563,9 +3646,11 @@ SelectedItemColor: 選択したアイテムカラー
 SelectedRequests: 選択された要求
 SelectedValues: 選択値
 Selecting: 選択
+SelectionColor: セレクションカラー
 SelectionList: 選択リスト
 SelectionMode: 選択モード
 SelectionModeIcon: 選択モードアイコン
+SelectionTemplate: SelectionTemplate
 SelectItemsMode: SelectItemsMode を選択します
 SelectorsForIgnoreBlur: SelectorsForIgnoreBlur (SelectorsForIgnoreBlur)
 SelectorSize: セレクターサイズ
@@ -3576,6 +3661,7 @@ Send: 送信
 Send confirmation email: 確認メールを送信する
 Sensitivity: 感度
 Sep: 9 月
+SeResize: セレサイズ
 Server restarted successfully: サーバーが正常に再起動されました
 ses-ML: コイラボロ・センニ(マリ)
 Set as Default options for all Dialogs: すべてのダイアログのデフォルトオプションとして設定
@@ -3600,6 +3686,7 @@ shi-Tfng-MA: タチェルヒット(モロッコ、ティフィナ)
 Show: 見せる
 Show As Dialog: '[表示形式]ダイアログ'
 Show as Tree: ツリーとして表示
+Show code: 番組コード
 Show Demo: デモを表示
 Show flat: フラットを表示
 Show info: 情報を表示
@@ -3657,6 +3744,7 @@ ShowSliders: ショースライダー
 ShowSpectrumOnRecording: ShowSpectrumOnRecording (録画時表示)
 ShowThemeColors: ShowThemeColors の
 ShowToolbar: ツールバーの表示
+ShowTooltip: ShowTooltip
 ShowTrackInfosOnPlay: ShowTrackInfosOnPlay を表示
 ShowVisualiser: ShowVisualiser (ビジュアルライザーの表示)
 ShowZoomInButton: ZoomInButton の表示
@@ -3664,6 +3752,7 @@ ShowZoomOutButton: ズームアウトボタンの表示
 ShrinkLabel: シュリンクラベル
 si-LK: シンハラ語(スリランカ)
 Side: 横
+Side filter panels in search or analytics UIs: 検索や分析UIのサイドフィルターパネル
 Sienna: シエーナ
 Sign In: サインイン
 Sign Up: サインアップ
@@ -3694,6 +3783,8 @@ SimulateWithRandomData: SimulateWithRandomData (ランダムデータでシミ�
 Single: 単
 SingleExpand: シングル展開
 Size: 大きさ
+SizeRange: サイズレンジ
+SizeRange = 0–100: サイズ範囲 = 0–100
 sk-SK: スロバキア語(スロバキア)
 Skeleton: 骸骨
 SkipSeparator: スキップセパレータ
@@ -3763,6 +3854,7 @@ sr-Latn-RS: セルビア語(ラテン語、セルビア語)
 sr-Latn-XK: セルビア語(ラテン語、コソボ)
 Src: 出典
 Srcery: 呪術
+SResize: SResize
 ss-SZ: siSwati (エスワティニ)
 ss-ZA: siSwati(南アフリカ)
 ssy-ER: サホ(エリトリア)
@@ -3778,6 +3870,7 @@ Start Recording: 録音を開始する
 Start recording after: 録画開始後
 Start/Stop selection: 選択の開始/停止
 Starts in {0}: で始まります {0}
+StartTooltipPosition: StartTooltipPosition
 State: 状態
 Static: 静的
 Static card.: 静的カード。
@@ -3785,6 +3878,13 @@ Static item: 静的アイテム
 Status: 地位
 SteelBlue: スチールブルー
 Stencil: 刷り込む
+Step size of 5: ステップサイズは5
+StepLength: ステップレングス
+StepLength = 5 – values in steps of 5: StepLength = 5 – ステップ5単位の値を
+StepResolver: ステップリゾルバー
+StepResolvers.DateOnly.Quarterly: ステップリゾルバーズ.DateOnly.Quarterly
+StepResolvers.DateOnly.Weekly: ステップリゾルバーズ.DateOnly.Weekly(StepResolvers.DateOnly.Weekly)
+StepResolvers.TimeOnly: ステップリゾルバーズ.タイムオンリー
 Stereo: ステレオ
 Steve Rogers: スティーブ・ロジャース
 Store: 店
@@ -3876,7 +3976,9 @@ SummerfruitDarkBase16: サマーフルーツダークベース16
 SummerfruitLightBase16: サマーフルーツライトベース16
 Sunburst: サンバースト
 Super sample Content text.: スーパーサンプルコンテンツテキスト。
+Supercharge your MudBlazor applications with powerful extensions: MudBlazorアプリケーションに強力な拡張機能を加えましょう
 Support: 支える
+Supports int and DateTime (other types via generics are possible).: 整数型とDateTimeをサポートしています(ジェネリックによる他のタイプも可能です)。
 Surface: 表面
 Surname: 名字
 sv-AX: スウェーデン語(オーランド諸島)
@@ -3894,12 +3996,14 @@ Swing: 振る
 Switch: スイッチ
 Switch expand button position: 展開ボタンの位置を切り替える
 Switch overlay source: スイッチオーバーレイソース
+SwResize: スウィリサイズ
 Symbol: 記号
 SynthMidnightTerminalDarkBase16: シンセミッドナイトターミナルダークベース16
 SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16 (シンセミッドナイトターミナルライトベース16)
 syr-SY: シリア語(シリア)
 System: 制
 System Settings: システム設定
+T = int – numeric range: T = int – 数値範囲
 T3024Base16: T3024ベース16
 ta-IN: タミル語 (インド)
 ta-LK: タミル語(スリランカ)
@@ -3929,6 +4033,7 @@ Teal: 小鴨
 tel: 電話
 Telephone: 電話
 TemplateClass: テンプレートクラス
+Templates: テンプレート
 Temporary: 一時的
 TenderBase16: テンダーベース16
 teo-KE: Teso (ケニア)
@@ -3983,8 +4088,22 @@ The following permission is also required for permission {1}: 権限{1}には、
 The maximum file size is 10 MB: 最大ファイルサイズは10MBです
 The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit は、1 つ以上のテーマまたはプリセットの編集を効果的に容易にするように設計された堅牢で多用途のツールです。本質的に、ダーク モード、ライト モード、またはその両方の組み合わせに対応します。さらに、MudTheme からの派生クラスとそれに固有のカスタム プロパティをサポートしているため、すべてのテーマ編集要件に対応する包括的で柔軟なソリューションを提供します。
 The Plugin '{0}' may be able to help: プラグイン「{0}」が役立つかもしれません
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: レンジスライダーは縦方向にも使用でき、サイドバーやコンパクトなフィルターエリアに最適です。
 The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: このサンプルは、他の FileDisplay の例と同じですが、URL が使用されていないという違いがあります。代わりに、ストリームがロードされて使用されます。
 The server is just restarting. Please wait until the connection has been restored: サーバーが再起動中です。接続が回復するまでお待ちください
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: トラックはこれらのバンドを強調し、ラベルを付け、選択テンプレートは現在の文化の通貨フォーマットを使って選択した価格区間を表示します。
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: トラックは「U18」「18–25歳」「26–35歳」などの共通年齢グループに分けられており、選択テンプレートには「18歳〜35歳」といった正確な年齢層が表示されます。
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: トラックはFast、OK、Slow、Very slowなどのレスポンスクラスに分かれており、選択ラベルには数値範囲とその分類(例えば「80 – 450 ms (Fast → Slow)」などが示されます。
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: トラックは異なるシフトを表すタイムバンドに分割されており、選択テンプレートは24時間形式で選択した時間帯を表示します。
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: トラックはカスタムTrackTemplateでレンダリングされ、選択した範囲はSelectionTemplateで、サムはカスタムThumbStartTemplateとThumbEndTemplateでレンダリングされます。
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: トラックは緑、黄、赤のセグメントに分かれており、選択ラベルには数値範囲と「低」「中」「高」などの定性的な分類が表示されます。
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: トラックは会計年度のブロックとその四半期を表示し、選択ラベルには選択したものに応じて「FY 2022 – FY 2024」や「FY 2023 Q2 – Q4」などの会計範囲が表示されます。
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: トラックは月次マーカーと週ごとのティックを表示し、選択テンプレートは「KW 2 – KW 22」などのカレンダー週の範囲で選択をまとめます。
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: トラックはすべてのレベルを並べて表示し、選択テンプレートには「Day – Month」のようなラベルが表示され、チャートやレポートでのデータの集計方法をコントロールできます。
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: トラックは数時間ごとにチェックとラベルを表示しますが、選択テンプレートは選択した時間帯をコンパクトなラベルとして表示します。
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: トラックは月曜から日曜までの全日を視覚化し、週末を強調し、選択ラベルには「Monday – Friday」などの親しみやすい名前が表示されます。
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: トラックは年とその四半期を可視化し、選択された範囲に応じて選択ラベルが変化します。例えば「Q2 2022 – Q3 2023」や、同じ年の場合は単に「Q1 – Q3」といった例です。
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: トラックはこれらのサービスバンドを視覚的にハイライトし、選択テンプレートには「4日〜9日」などの正確な日程が示されています。
 The user "{0}" just changed some of this data: ユーザー "{0}" は、このデータの一部を変更しただけです
 The user {0} has been logged off: ユーザー{0}ログオフされている
 The User {0} has just edited, created or deleted entries here. You should reload the data: ユーザー{0}は、ここでエントリを編集、作成、または削除しました。データをリロードする必要があります
@@ -4013,6 +4132,22 @@ This demo uses the IDialogEventService to check resize or dragged and stores the
 This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: これは、テーマ編集に MudExObjectEdit と MudExThemeSelect を内部的に使用する MudExThemeEdit コンポーネントを示しています
 This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: このデモでは、RenderFragments 'For' と 'ChildContent' を使用して MudExAdditionalAdornment を使用する推奨される方法を示します。
 This dialog can confirmed when slider value is greater then 10: このダイアログは、スライダーの値が10より大きい場合に確認できます
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: この例は、会計年度が1月1日から始まらないカスタム会計年度のタイムラインを示しています。
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: この例は、カスタムステップ挙動を用いた複数年にわたる時間範囲を示しています。StepResolverではスライダーのスナップ(例えば月単位、四分単位、時間単位)を定義できます。
+This example demonstrates a TimeOnly range slider.: この例はTimeOnlyの範囲スライダーを示しています。
+This example demonstrates a TimeOnly-based range slider with minute resolution.: この例は、ミニッツ分解能を持つTimeOnlyベースのレンジスライダーを示しています。
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: この例は、予算、標準、プレミアム、ハイエンドなどの意味区分を用いた価格または予算範囲のスライダーを示しています。
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: この例では整数値を曜日にマッピングし、レンジスライダーを曜日セレクターに変換します。
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: この例は、時間、日、週、月、年などの抽象的なズームレベルや集約レベルを表しています。
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: この例は2015年から2022年末までの日付範囲を示しています。ユーザーは少なくとも60日、最大2年の期間を選択できます。ステップサイズは1日です。
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: この例は、利用率、容量、リスクレベルに使えるパーセンテージベースのレンジスライダーを示しています。
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: この例は、早朝、深夜、夜勤などのシフト計画シナリオ向けにカスタマイズされたTimeOnlyベースの範囲スライダーを示しています。
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: この例は、カスタムテンプレートを使ってMudExRangeSliderを年と月のマーカー付きタイムラインスタイルのコントロールに変換する方法を示しています。
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: この例は、ミリ秒単位のレンジスライダーを用いてSLAおよび応答時間のシナリオを対象としています。
+This example turns the range slider into a quarter selector over multiple years.: この例はレンジスライダーを数年かけてクォーターセレクターに変換しています。
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: この例では、整数範囲スライダーを使って日単位のトランジット時間を、エクスプレス、スタンダード、エコノミー/シーなどのサービスレベルに区分しています。
+This example uses an integer-based range slider to represent age ranges and demographic bands.: この例では、年齢層と人口統計区分を表すために整数ベースの範囲スライダーを使用しています。
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: この例ではDateOnlyと週ごとのステップを用いて、ISOカレンダーの週番号を持つ週ベースの範囲選択器を構築します。
 This is a Json representation of the TestModel. This is ignored for Export and Import: これは、TestModel の Json 表現です。これは、エクスポートとインポートでは無視されます
 This is a simple information dialog that closes after {0} seconds: これは、{0} 秒後に閉じる単純な情報ダイアログです
 This is a simple information dialog that closes after 0 seconds: これは、0 秒後に閉じる単純な情報ダイアログです
@@ -4024,8 +4159,14 @@ This is a simple information dialog that closes after 5 seconds: これは、5 �
 This is an Administrator Only View.: これは管理者専用ビューです。
 This is the MudEx Default theme: これは MudEx の既定のテーマです
 This is the sample Popover. In general it inherits the original MudPopover.: これがサンプルのポップオーバーです。一般に、元の MudPopover を継承します。
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: これは、オフィスアワー、メンテナンスウィンドウ、予約枠などの日次時間枠の設定に役立ちます。
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: これは商品フィルター、予算セレクター、またはユーザーが視覚的に価格帯を選択するUIに便利です。
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: これは、毎週定められた定期的なスケジュール、利用可能時間、または配送パターンに有用です。
 This one card is still added without an corresponding item.: このカード1枚は、該当アイテムなしでまだ追加される。
 This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: これは、ダイアログ オプションにメソッドとして渡されます。メソッドが false を返した場合、ダイアログは閉じません。結果は bool または Task&lt;bool である必要があります&gt;
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: このパターンは、ユーザーが表示データの粒度を動的に変更できる分析ダッシュボードに適しています。
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: このパターンは、報告が暦年ではなく会計年度に連動するビジネスや金融アプリケーションに役立ちます。
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: このパターンは、ユーザーが具体的な日付ではなく週単位で考える場合、例えば計画、報告、スプリントの概要などで理想的です。
 This photo was taken in a small village in Istra Croatia.: この写真は、クロアチアのイストラの小さな村で撮影されました。
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: このピッカーは、アニメーション、より優れた動作、およびすべての DialogOptions をサポートするダイアログをもたらします。MudExPickerBase から継承する独自のピッカー コンポーネントを作成するか、単純なコンテンツを使用するには、MudExPicker を使用します。
 This sample demonstrate how to use the MudExCaptureService: このサンプルでは、MudExCaptureService の使用方法を示します。
@@ -4034,13 +4175,20 @@ This sample just shows how easily you can combine the MudExPicker with MudExTree
 This sample uses the IDialogEventService to cancel the dialog close: このサンプルでは、IDialogEventService を使用してダイアログの閉じを取り消します
 This sample uses the options for a can close callback: このサンプルでは、can close コールバックのオプションを使用します
 This section can be placed inside a MudExGrid component.: このセクションは、MudExGrid コンポーネント内に配置できます。
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: このテンプレートは、リードタイムが日単位で表される物流や出荷のシナリオで特に有用です。
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: このテンプレートは分析、オーディエンスターゲティング、またはユーザーが年齢区間を扱うUIに適しています。
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: このテンプレートは、遅延範囲を迅速に解釈する必要がある監視、観測可能性、APIダッシュボードでよく機能します。
 Thistle: 薊
 ThrottleInterval: スロットルインターバル
+ThumbColor: サムカラー
+ThumbEndTemplate: サムエンドテンプレート
+ThumbStartTemplate: ThumbStartTemplate
 ti-ER: ティグリニャ語(エリトリア)
 ti-ET: ティグリニャ語(エチオピア)
 tig-ER: ティグレ(エリトリア)
 Tilt: 傾く
 Time: 時間
+TimeOnly: タイムオンリー
 Times: 倍
 Times New Roman: タイムズ・ニュー・ローマン
 TimeSeries: 時系列
@@ -4096,6 +4244,7 @@ Toronto - M1B 1A1ender: トロント - M1B 1A1ender
 tr-CY: トルコ語(キプロス)
 tr-TR: トルコ語(トルコ)
 Trace: 跡
+TrackColor: トラックカラー
 TrackInfoPosition: TrackInfoPosition (トラック情報位置)
 TrackList: トラックリスト
 TrackListBehaviour: トラックリスト動作
@@ -4104,6 +4253,8 @@ TrackListCoverImage: トラックリストカバーイメージ
 TrackListMode: トラックリストモード
 TrackListPosition: トラックリストポジション
 TrackListToggleButtonPosition: トラックリストトグルボタンポジション
+TrackStyle: トラックスタイル
+TrackTemplate: トラックテンプレート
 Trail Details: トレイルの詳細
 TransformOrigin: 変換原点
 Translations: 翻訳
@@ -4113,6 +4264,7 @@ Transparent: 透明
 Trebuchet MS: トレビュシェットMS
 TreeView: ツリービュー
 TreeView component that renders a tree structure of items.: 項目のツリー構造をレンダリングする TreeView コンポーネント。
+Treeview in Picker: ピッカーのトリービュー
 TreeViewBreadcrumb: ツリービューパンくずリスト
 TreeViewCardGrid: ツリービューカードグリッド
 TreeViewDefault: ツリービューデフォルト
@@ -4185,10 +4337,15 @@ ur-IN: ウルドゥー語(インド)
 ur-PK: ウルドゥー語(パキスタン)
 url: URLアドレス
 Url: URLの
+Use cases: ユースケース
 Use CodeGator Models: CodeGator モデルの使用
 Use MudExAdditionalAdornment ad ChildContent: MudExAdditionalAdornment 広告を使用するChildContent
 Use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment を MudInput の子コンテンツとして使用する
 Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: 代わりに MudExSelect を使用し、MultiSelection を true に、ValuePresenter を Chip に設定します。
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: スライダーは横または縦に使え、フィルター、ダッシュボード、レポートに最適です。
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: このテンプレートは、四半期報告、KPI、財務概要など、正確な日付よりも四半期の範囲がより意味のある場合に活用してください。
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: このテンプレートは、倉庫、生産、コールセンター、または24時間体制でシフトごとに業務が組織されているあらゆる分野で使用してください。
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: ユーザーが選択された範囲が安全、警告、または重要なゾーンに該当するかどうかを一目で把握したい場合、このテンプレートを使用してください。
 UseCanvas: キャンバスを使用する
 UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
 UseItemTemplateForSelection: UseItemTemplateForSelection(選択用項目テンプレート)
@@ -4238,6 +4395,8 @@ Variant: バリアント
 ve-ZA: ヴェンダ(南アフリカ)
 Verdana: ヴェルダナ
 Version: バージョン
+Vertical: 垂直
+VerticalText: 縦文字
 vi-VN: ベトナム語(ベトナム)
 Video Content-Type: ビデオコンテンツタイプ
 Video device: ビデオデバイス
@@ -4267,6 +4426,7 @@ Vs2015: 対2015年
 VulcanBase16: バルカンベース16
 vun-TZ: ヴンジョ(タンザニア)
 wae-CH: ヴァルザー(スイス)
+Wait: 待つ
 wal-ET: ウォライッタ(エチオピア)
 Warning: 警告
 WarningContrastText: 警告コントラストテキスト
@@ -4298,6 +4458,8 @@ WindowsNtLightBase16: WindowsNtLightBase16
 Wingdings: ウィングディングス
 With custom configuration: カスタム構成の場合
 With default configuration: デフォルト設定の場合
+With DockLayout: DockLayoutと共に
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: StepResolverを使えば、ステップ動作を簡単に設定できます。日付範囲については、いくつかのあらかじめ定義されたリゾルバーを提供しています。この例では、StepResolvers.DateTime.Quarterly(_ => 1)がスライダーを四分の一にスナップします。
 With tabs: タブ付き
 With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: MudExAdditionalAdornment コンポーネントを使用すると、このような MudInput ベースの入力コントロールにいくつでも装飾を含めることができます。
 With this component you can have an animation while loading the main blazor app: このコンポーネントを使用すると、メインの blazor アプリの読み込み中にアニメーションを作成できます
@@ -4314,6 +4476,8 @@ WoodlandBase16: ウッドランドベース16
 WordDokument.doc: WordDokument.doc
 WrapChips: ラップチップス
 WrapToolBarContent: WrapToolBarコンテンツ
+WResize: WResize
+Write comments or reactions for current component or page: 現在のコンポーネントやページに対してコメントや反応を書きましょう
 Xcode: Xコード
 XcodeDuskBase16: XcodeDuskBase16
 xh-ZA: isiXhosa (南アフリカ)
@@ -4338,8 +4502,10 @@ You are logged out by an Administrator or profile change.: 管理者またはプ
 You are Logged Out.: ログアウトしています。
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment を MudInput の ChildContent として使用することもできます
 You can move me: あなたは私を動かすことができます
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: 個々の親指や選択した範囲全体を動かして開始・終了値を調整できます。構成によっては最小・最大持続時間、さらに異なるステップサイズが適用されます。
 You can now Login with your credentials: 資格情報を使用してログインできるようになりました
 You can resize me: サイズを変更できます
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: このテクニックを使って、自分の領域にぴったり合ったリッチな時間スライダーや視覚範囲を作成できます。
 You cannot delete yourself: 自分自身は削除できません
 You clicked: クリックした
 You don't need an extra JsonEditor anymore: 追加のJsonEditorはもう必要ありません
@@ -4365,7 +4531,9 @@ ZipCode: 郵便番号
 Zoom: ズーム
 Zoom in: ズームインする
 Zoom out: ズームアウト
+ZoomIn: ズームイン
 ZoomInButtonIcon: ズームインボタンアイコン
 ZoomOnHover: ズームオンホバー
+ZoomOut: ズームアウト
 ZoomOutButtonIcon: ズームアウトボタンアイコン
 zu-ZA: isiZulu (南アフリカ)

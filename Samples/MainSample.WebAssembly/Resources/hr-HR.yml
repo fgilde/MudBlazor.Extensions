@@ -20,6 +20,8 @@ _{0} Demos: '{0} demonstracije'
 --mud-palette-white: --paleta-blata-bijela
 (currently the item is not visible): (trenutno stavka nije vidljiva)
 (currently the item is visible): (trenutno je stavka vidljiva)
+2 Hourly steps (using StepLength): 2 satna koraka (koristeći StepLength)
+2 Hourly steps (using StepResolver): 2 satna koraka (koristeći StepResolver)
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Komponenta koja korisniku omogućuje odabir vrijednosti s popisa mogućih vrijednosti i prikaz kao Čipovi ili zadani Combobox.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Komponenta koja se može koristiti za klizanje ChildContent odozdo, odozgo, lijevo ili desno pokazivačem miša.
@@ -33,6 +35,7 @@ A maximum of {0} files are allowed: Dopušteno je najviše {0} datoteka
 A Popover can be used to display some content on top of another.: Popover se može koristiti za prikaz nekog sadržaja na drugom.
 A powerful component to edit an object and its properties.: Moćna komponenta za uređivanje objekta i njegovih svojstava.
 A powerful editor that can handle json, xml or yaml content: Moćan uređivač koji može rukovati json, xml ili yaml sadržajem
+A range slider component that allows selecting and manipulating a value range of type T.: Komponenta za klizač raspona koja omogućuje odabir i manipulaciju rasponom vrijednosti tipa T.
 A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: Jednostavna komponenta ColorPicker koja nasljeđuje MudColorPicker, ali dodaje mogućnost odgode događaja zatvaranja i korištenja izvorne komponente birača iz preglednika
 A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Jednostavna komponenta rešetke koja podržava stupce i retke te ColSpan i RowSpan za sadržavanje sekcija.
 A SplitPanel Component: Komponenta SplitPanel
@@ -100,6 +103,7 @@ Age: Starost
 agq-CM: Aghem (Kamerun)
 ak-GH: Akan (Gana)
 Albertus: Albertus
+Alias: Pseudonim
 Alice Johnson: Alice Johnson
 AliceBlue: AliceBlue
 Align: Poravnati
@@ -132,6 +136,9 @@ AllowRubberBandSelection: AllowRubberBandSelection
 AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
 AllowSelectOnPreviewClick: AllowSelectOnPreviewKliknite
 AllowVideoCapture: Dopusti snimanje videozapisa
+AllowWholeRangeDrag: AllowWholeRangeDrag
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = točno – cijela točka se može pomaknuti
+AllScroll: AllScroll
 AlphaBars: Alfa trake
 Already have an account?: Već imate račun?
 Always: Uvijek
@@ -226,6 +233,7 @@ AntiqueWhite: Starinska bijela
 ApathyBase16: Baza apatije16
 Api: Api
 API: API
+Api view component to display the methods and properties of a type: API view komponenta za prikaz metoda i svojstava tipa
 API-Versions: Verzije API-ja
 AppBar: AppBar
 AppbarBackground: AppbarPozadina
@@ -285,6 +293,7 @@ Are you sure?: Jesi siguran?
 Arial: Arial
 Arial Black: Arial Black
 Arial Narrow: Arial Narrow
+AriaLabelledBy: AriaLabelledBy
 arn-CL: Mapuche (Čile)
 Arta: Umjetnost
 As Admin you can filter for users here: Kao administrator ovdje možete filtrirati korisnike
@@ -339,6 +348,7 @@ Aug: Kolovoz
 Austin: Austin
 Austin - 73301: Austin - 73301
 Austin - 73301ender: Austin - 73301ender
+Auto: Automobil
 Auto Confirm Email?: Automatsko potvrđivanje e-pošte?
 Auto Generated Editor for TestObject: Automatski generirani uređivač za TestObject
 Auto Stop recording after: Automatsko zaustavljanje snimanja nakon
@@ -390,6 +400,7 @@ Basic: Osnovni
 Basic role with default permissions: Osnovna uloga sa zadanim dozvolama
 Bauhaus 93: Bauhaus 93
 be-BY: Bjeloruski (Bjelorusija)
+Because time values always having a fixed size you can also use step length instead of resolvers.: Budući da vremenske vrijednosti uvijek imaju fiksnu veličinu, možete koristiti i duljinu koraka umjesto resolvera.
 BeforeBegin: Prije početka
 BeforeEnd: Prije kraja
 BeforeSearchBox: BeforeSearchBox
@@ -490,6 +501,7 @@ bs-Cyrl-BA: bosanski (ćirilica, Bosna i Hercegovina)
 bs-Latn-BA: Bosanski (latinski, Bosna i Hercegovina)
 Build amazing UIs: Izradite nevjerojatna korisnička sučelja
 BurlyWood: Snažno drvo
+But for sure resolvers are working as well.: Ali sigurno rade i resolveri.
 button: dugme
 Button: Dugme
 Button component for capturing audio and video.: Komponenta gumba za snimanje zvuka i videa.
@@ -535,6 +547,7 @@ ccp-Cakm-BD: Chakma (Chakma, Bangladeš)
 ccp-Cakm-IN: Chakma (Chakma, Indija)
 ce-RU: Čečen (Rusija)
 ceb-Latn-PH: Cebuano (latinski, Filipini)
+Cell: Ćelija
 Centaur: Centaur
 Center: Središte
 CenterCenter: Središnji centar
@@ -627,6 +640,7 @@ ColorPickerView: ColorPickerView
 ColorsBase16: BojeBaza16
 ColorStops: Zaustavljanje boje
 ColorTemperature: Temperatura boje
+ColResize: ColResize
 ColSpan: ColSpan
 Column: Stupac
 Columns Affected: Zahvaćeni stupci
@@ -640,6 +654,7 @@ Compact: Kompaktan
 Comparer: Usporediti
 Component edit capture options: Opcije snimanja uređivanja komponenti
 Component in Dialog: Komponenta u dijaloškom okviru
+Component that captures component references from ChildContent: Komponenta koja bilježi reference komponenti iz ChildContenta
 Component to add additional adornment to a MudInput: Komponenta za dodavanje dodatnog ukrasa MudInputu
 Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Komponenta za prikaz datoteke u iframe ili objekt tagu ili u registriranom pregledniku koji implementira IMudExFileDisplay
 Component to display information about the current recording: Komponenta za prikaz informacija o trenutnoj snimci
@@ -649,7 +664,9 @@ Component to move the ChildContent to a specific element that can defined by Ele
 Component to select a theme from a list of themes.: Komponenta za odabir teme s popisa tema.
 ComponentBaseWithState: KomponentaBaseWithState
 ComponentInDialog: KomponentaUDijalog
+Components: Komponente
 Conditional updates: Uvjetna ažuriranja
+Configuration: Konfiguracija
 Configure list values: Konfiguriranje vrijednosti popisa
 Confirm: Potvrditi
 CONFIRM: POTVRDITI
@@ -670,6 +687,7 @@ Content-Type: Vrsta sadržaja
 ContentAlignment: Poravnanje sadržaja
 ContentStream: Tok sadržaja
 ContentType: Vrsta sadržaja
+ContextMenu: ContextMenu
 ContextMenuAction: ContextMenuAction
 Continue to {0}: Nastavite {0}
 Continuous: Kontinuiran
@@ -677,6 +695,7 @@ Contrast: Razlika
 Cooper Black: Cooper crna
 Copperplate Gothic Bold: Bakrena gotika podebljana
 Copperplate Gothic Light: Bakrena gotička svjetiljka
+Copy: Kopija
 Copy url: Kopiraj url
 Counter: Brojač
 Country: Zemlja
@@ -689,6 +708,7 @@ Create powerful, flexible dock layouts — drag, drop, snap, and organize your d
 CreatedOn: Datum stvaranja
 Critical: Kritičan
 CropAndScale: CropAndScale
+Crosshair: Crosshair
 cs-CZ: češki (Češka)
 CSS Color Variables: CSS varijable boja
 CssVars: CssVars
@@ -701,6 +721,8 @@ Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can
 Cursor: Kursor
 CursorPositionOrigin: CursorPositionOrigin
 Custom: Običaj
+Custom fiscal year logic: Prilagođena logika fiskalne godine
+Custom Templates: Prilagođeni predlošci
 CustomContentErrorMessage: PrilagođenaContentErrorMessage
 Customize: Prilagoditi
 cy-GB: velški (Ujedinjeno Kraljevstvo)
@@ -764,9 +786,11 @@ Decimal value is required using {0} type!: Decimalna vrijednost je potrebna pomo
 DeepPink: Duboko ružičasta
 DeepSkyBlue: DeepSkyBlue
 Default: Propust
+Default steps: Zadani koraci
 DefaultBorderRadius: DefaultBorderRadius
 DefaultDarkBase16: ZadanoDarkBase16
 DefaultLightBase16: ZadanoLightBase16
+Define minimum and maximum duration for ranges as well as custom step sizes.: Definirajte minimalno i maksimalno trajanje za raspon kao i prilagođene veličine koraka.
 Defined: Definiran
 Delay: Kašnjenje
 DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
@@ -807,6 +831,7 @@ Demo of using explicit the MudExFileDisplayZip to show and select content inside
 Demonstration for a simple but very useful Enum Selector: Demonstracija jednostavnog, ali vrlo korisnog Enum Selectora
 Demonstration of the MudExSplitter: Demonstracija MudExSplittera
 Demonstration of the quickly color select with MudExColorBubble: Demonstracija brzog odabira boja pomoću MudExColorBubble
+Demos: Demo
 DEMOS: DEMO
 Dense: Gust
 Dependent permissions required: Potrebne su ovisne dozvole
@@ -888,7 +913,10 @@ Do you really want to restore the database from backup '{0}'? Note that any chan
 Do you want to delete the profile picture of {0}: Želite li izbrisati profilnu sliku {0}
 Do you want to delete the User {0}: Želite li izbrisati korisnički {0}
 Docco: Docco
+Dock: Ipak
+Dock Control: Kontrola pristaništa
 Docked: Usidren
+DockLayout with ObjectEdit: DockLayout s ObjectEditom
 Document Deleted: Dokument izbrisan
 Document Extended Attributes: Prošireni atributi dokumenta
 Document Management: Upravljanje dokumentima
@@ -967,6 +995,8 @@ Edit: Urediti
 Edit {0}: Uredi {0}
 Edit a complex Model with included Collection of users: Uređivanje složenog modela s uključenom zbirkom korisnika
 Edit Audio Constraints: Uređivanje audio ograničenja
+Edit Configuration: Uredi konfiguraciju
+Edit configuration for component in this sample: Uredi konfiguraciju za komponentu u ovom uzorku
 Edit Current Theme: Uredi trenutnu temu
 Edit data in dialog: Uređivanje podataka u dijaloškom okviru
 Edit in TryMudEx: Uredite u TryMudExu
@@ -1113,6 +1143,7 @@ en-ZW: Hrvatski (Zimbabve)
 Enable Disqus: Omogućite Disqus
 enables or disables virtualization.: Omogućuje ili onemogućuje virtualizaciju.
 End: Kraj
+EndTooltipPosition: EndTooltipPosition
 English: Engleski
 Engravers MT: Graveri MT
 Enter email and your new password here: Ovdje unesite e-poštu i novu lozinku
@@ -1144,6 +1175,7 @@ Eras Bold ITC: Eras Bold ITC
 Eras Demi ITC: Eras Demi ITC
 Eras Light ITC: Eras Light ITC
 Eras Medium ITC: Eras Medium ITC
+EResize: EResize
 Error: Greška
 ErrorAnimation: Animacija pogreške
 ErrorContrastText: PogreškaKontrastTekst
@@ -1186,6 +1218,7 @@ eu-ES: Baskijski (Španjolska)
 EvaBase16: EvaBase16
 EvaDimBase16: EvaDimBase16
 ewo-CM: Ewondo (Kamerun)
+EwResize: EwResize
 ExcelSheet.xlsx: ExcelSheet.xlsx
 Expand &nbsp; <b>not</b> &nbsp; loaded nodes: <b>Proširi</b> &nbsp; &nbsp; neučitane čvorove
 Expand all nodes: Proširi sve čvorove
@@ -1230,6 +1263,7 @@ FallBackInIframe: FallBackInIframe
 False: Lažan
 FAQs: Često postavljana pitanja
 Far: Daleko
+Featured Components: Istaknute komponente
 Features: Značajkama
 Feb: Veljača
 Felix Titling: Felix Titling
@@ -1297,6 +1331,7 @@ FilterMode: Način filtriranja
 FilterMultiple: FiltrirajVišestruko
 FilterPlaceholder: Rezervirano mjesto za filtar
 Filters: Filteri
+Filters in dashboards or reports: Filteri u nadzornim pločama ili izvještajima
 FilterVariant: Varijanta filtra
 Fiona Gallagher: Fiona Gallagher
 Firebrick: Šamotna opeka
@@ -1310,6 +1345,7 @@ Flat List: Popis stanova
 FlatBase16: Ravna baza16
 FlatList: Popis stanova
 FlexEnd: FlexEnd
+Flexible data types: Fleksibilni tipovi podataka
 FlexStart: Fleksibilni početak
 Flip: Okrenuti
 FlipAlways: FlipAlways
@@ -1339,6 +1375,7 @@ ForceShrink: Prisilno smanjivanje
 ForestGreen: Šumsko zeleno
 Forgot password?: Zaboravili ste lozinku?
 Format: Oblik
+Forward: Naprijed
 Foundation: Zaklada
 fr-029: Francuski (Karibi)
 fr-BE: Francuski (Belgija)
@@ -1442,6 +1479,8 @@ GoogleDriveClientId: GoogleDriveClientId
 GoogleLightBase16: GoogleLightBase16
 Goudy Old Style: Goudy stari stil
 Goudy Stout: Goudy Stout
+Grab: Zgrabiti
+Grabbing: Grabbing
 Gradient: Gradijent
 GradientDark: GradijentDark
 GradientForeground: GradijentPrednji plan
@@ -1529,6 +1568,7 @@ Hello from dialog 1: Pozdrav iz dijaloga 1
 Hello from dialog sample page: Pozdrav s ogledne stranice dijaloškog okvira
 Hello World: Zdravo svijete
 Hello...: Pozdrav...
+Help: Pomoć
 HelperId: Pomoćno ID
 HelperText: Pomoćni tekst
 HelperTextOnFocus: HelperTextOnFocus
@@ -1550,6 +1590,7 @@ Hide: Sakriti
 HideContentWhenCollapsed: HideContentWhenCollapsed
 HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
 High Tower Text: Tekst visokog tornja
+Highlights: Pramenovi
 HighlightSearch: IstaknutoPretraživanje
 Hinge: Zglob
 Home: Dom
@@ -1558,6 +1599,7 @@ HopscotchBase16: Baza za viski16
 HorizonDarkBase16: HorizonDarkBase16
 HorizonLightBase16: HorizonLightBase16
 Horizontal: Vodoravan
+Horizontal & vertical orientation: Horizontalna i vertikalna orijentacija
 HouseNumber: Broj
 Houston: Houston
 Houston - 77001: Houston - 77001
@@ -1602,6 +1644,7 @@ Idea: Ideja
 Identifier: Identifikator
 If this is set a photo will be taken instead of a video.: Ako je ovo postavljeno, umjesto videozapisa snimit će se fotografija.
 If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Ako vam se sviđa ovaj paket, označite ga na ⭐ Githubu i podijelite ga sa svojim prijateljima. Ako ne, svejedno možete dati zvjezdicu i javiti mi što mogu poboljšati da vam bude bolje.
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: Ako vam treba samo klizač za vrijeme i ne želite stvarati vlastite predloške, možete koristiti i namjenski {0} komponentu.
 If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Ako ovu opciju postavite kao zadanu. Ova opcija će se koristiti za sve dijaloške okvire u kojima nisu navedene opcije. Nastaviti?
 ig-NG: Igbo (Nigerija)
 Ignore: Ignorirati
@@ -1618,6 +1661,7 @@ Impact: Utjecaj
 Import: Uvoz
 ImportExportIcon: ImportExportIcon
 In: U
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: U ovom primjeru kontrolirate jednostavan numerički raspon od 0 do 100. Veličina koraka postavljena je na 5 kako bi se omogućili grubi intervali.
 In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: U ovom primjeru podaci se dinamički učitavaju čim se stavka prvi put pojavi u prikazu. Komponenta podržava dva utora za sadržaj
 In this sample you are forced to pick an user: U ovom uzorku prisiljeni ste odabrati korisnika
 In this sample you are forced to pick some users: U ovom uzorku prisiljeni ste odabrati neke korisnike
@@ -1658,6 +1702,7 @@ InputMode: Način unosa
 InputStyle: Stil unosa
 InputType: Vrsta ulaza
 Inset: Dodatak
+Instance: Primjer
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Privremeni rezultati
@@ -1672,6 +1717,7 @@ is-IS: islandski (Island)
 IsActive: IsActive
 IsblEditorDark: IsblEditorDark
 IsblEditorLight: IsblEditorLight
+IsInverted: IsInverted
 IsMouseOverChip: IsMouseOverChip
 ISO: ISO
 IsOpen: IsOpen
@@ -1811,6 +1857,7 @@ Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): 
 LegacyRender: Naslijeđe Render
 Legend: Legenda
 LemonChiffon: LimunŠifon
+Length: Duljina
 LetterSpacing: Razmak između slova
 lg-UG: Ganda (Uganda)
 Library: Knjižnica
@@ -1958,6 +2005,7 @@ MaterialDarkerBase16: MaterijalTamnija baza16
 MaterialLighterBase16: MaterijalLakša baza16
 MaterialPalenightBase16: MaterijalPalenightBase16
 MaterialVividBase16: MaterijalŽivopisna baza16
+MathAdapter: MathAdapter
 Matura MT Script Capitals: Matura MT Skripta Velika slova
 MaxCaptureTime: Maksimalno vrijeme snimanja
 MaxChips: MaxChips
@@ -1970,6 +2018,7 @@ MaximizeButton: Gumb za maksimiziranje
 MaxItems: MaxItems
 MaxItemWidth: MaxItemWidth
 MaxLength: Maksimalna duljina
+MaxLength = 730 days – longest allowed period: MaxLength = 730 dana – najduže dopušteno razdoblje
 MaxLuminance: MaxLuminance
 MaxMultipleFiles: MaxMultipleFiles
 MaxRecordingTime: Maksimalno vrijeme snimanja
@@ -2012,13 +2061,17 @@ Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod virtualni aud
 Millimeters: Milimetara
 MimeRestrictionType: MimeRestrictionType
 MimeTypes: MimeTipovi
+Min/max length & step size: Minimalna/maksimalna duljina i veličina koraka
 MinDecibels: Minimalni decibeli
 MinFrequency: Minimalna frekvencija
 MinHeight: Minimalna visina
 Mini: Mini
 MinimizeButton: Minimizirati gumb
+MinLength: MinDuljina
+MinLength = 60 days – shortest allowed period: MinLength = 60 dana – najkraće dopušteno razdoblje
 MinLuminance: MinLuminance
 MintCream: Krema od mente
+Minutely steps: Sitni koraci
 MinZoomLevel: MinZoomLevel
 Mirror: Ogledalo
 Misc: Ostalo
@@ -2031,6 +2084,7 @@ mn-MN: Mongolski (Mongolija)
 mn-Mong-CN: Mongolski (Mongolski, Kina)
 mn-Mong-MN: Mongolski (mongolski, mongolski)
 mni-IN: Manipuri (Indija)
+Mobile UIs with limited horizontal space: Mobilna sučelja s ograničenim horizontalnim prostorom
 Moccasin: Mokasine
 MochaBase16: MochaBase16
 Modal: Kapital
@@ -2057,8 +2111,11 @@ MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move: Micati
 Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Premještajte i mijenjajte veličinu stavki mreže izravno povlačenjem i ispuštanjem — dizajnirajte svoj izgled dinamički tijekom izvođenja.
 MoveContent: Premjesti sadržaj
+MoveCursor: MoveCursor
+MovingCursor: MovingCursor
 mr-IN: Marathi (Indija)
 MS Outlook: MS Outlook
 MS Reference Sans Serif: MS Reference Sans Serif
@@ -2112,6 +2169,7 @@ MudDrawerHeader: Zaglavlje ladice za blato
 MudDynamicTabs: MudDynamicTabs
 MudElement: Element blata
 MudEx Components: MudEx komponente
+MudEx Range Slider – Interactive range selection: MudEx Range Slider – Interaktivni odabir range
 MudExAdditionalAdornment: MudExDodatniUkras
 MudExAppearance: MudExIzgled
 MudExAppLoader: MudExAppLoader
@@ -2139,6 +2197,7 @@ MudExCultureSelect: MudExCultureSelect
 MudExDialog: MudExDialog
 MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog je komponenta koju ćete koristiti kada želite prikazati dijaloški okvir na vašoj stranici sa svim DialogExtensions.
 MudExDivider: Blatni razdjelnik
+MudExDockLayout: MudExDockLayout
 MudExDropBoxFilePicker: MudExDropBoxFilePicker
 MudExEnumSelect: MudExEnumSelect
 MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
@@ -2157,6 +2216,8 @@ MudExGoogleFilePicker: MudExGoogleFilePicker
 MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar je MudAvatar koji automatski koristi profilnu sliku iz gravatara za adresu e-pošte
+MudExGravatarCard: MudExGravatarCard
+MudExGravatarCard displays a Gravatar profile as card: MudExGravatarCard prikazuje Gravatar profil kao karticu
 MudExGrid: Blatna mreža
 MudExGrid — Now with Layout Editing: MudExGrid — sada s uređivanjem izgleda
 MudExGrid Enhanced: MudExGrid poboljšan
@@ -2189,13 +2250,17 @@ MudExOneDriveFilePicker: MudExOneDriveFilePicker
 MudExpansionPanel: Ploča za proširenje blata
 MudExpansionPanels: Ploče za širenje blata
 MudExPicker: MudExPicker
+MudExPicker Tree: MudExPicker stablo
 MudExPickerBase<T>: MudExPickerBase<T>
 MudExPopover: MudExPopover
 MudExPromptDialog: MudExPromptDialog
 MudExPromptDialog Component: Komponenta MudExPromptDialog
 MudExPropertyEdit: MudExPropertyUredi
+MudExRangeSlider<T>: MudExRangeSlider<T>
 MudExSelect: MudExSelect
 MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect se može koristiti za odabir jedne ili više stavki iz zbirke koja se može povezati. Također, ova komponenta podržava sve animacije poput dijaloga ili MudExPopovera.
+MudExSelect Item template.: MudExSelect predložak predmeta.
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
 MudExSelect<T>: MudExSelect<T>
 MudExSelectItem is a select item for MudExSelect.: MudExSelectItem je odabrana stavka za MudExSelect.
 MudExSelectItem<T>: MudExSelectItem<T>
@@ -2347,6 +2412,8 @@ nds-NL: Niski njemački (Nizozemska)
 ne-IN: Nepalski (Indija)
 ne-NP: Nepalski (Nepal)
 NebulaBase16: Baza maglice16
+NeResize: NeResize
+NeswResize: NeswResize
 Never: Nikada
 New: Nov
 NEW: NOV
@@ -2887,6 +2954,7 @@ No space available: Nema slobodnog mjesta
 NoChips: Bez čipova
 NodeBorderRadius: NodeBorderRadius
 NodePadding: NodePadding
+NoDrop: NoDrop
 NoHeader: NoHeader
 NoIcon: NeIkona
 NoModalDialogs: NoModalDials
@@ -2900,6 +2968,7 @@ Not allowed to Delete this user: Nije dopušteno brisanje ovog korisnika
 Not Allowed.: Nije dopušteno.
 Not connected: Nije povezano
 Not Modal Dialogs: Ne modalni dijalozi
+NotAllowed: Zabranjeno
 Note - Media options can't changed after a screen is selected: Napomena - Mogućnosti medija ne mogu se promijeniti nakon odabira zaslona
 NoteLabels: NapomenaOznake
 NotFoundMessage: Stranica koju ste tražili ne postoji.
@@ -2913,13 +2982,17 @@ NoWrap: NoWrap
 npm-example-0.0.20.tgz: npm-primjer-0.0.20.tgz
 nqo-GN: N'Ko (Gvineja)
 nr-ZA: Južni Ndebele (Južnoafrička Republika)
+NResize: NResize
 nso-ZA: Sesotho sa Leboa (Južnoafrička Republika)
+NsResize: NsResize
 Nuget Package source: Izvor paketa NuGet
 Nullable enum: Nullable enum
 Nullable Flags Enum: Izbornik zastavica s mogućnošću nullable
 Number: Broj
 numeric: brojčani
 nus-SS: Nuer (Južni Sudan)
+NwResize: NwResize
+NwseResize: NwseResize
 nyn-UG: Nyankole (Uganda)
 Object Edit in Dialog: Uređivanje objekta u dijaloškom okviru
 ObjectEdit: ObjektUredi
@@ -3021,6 +3094,7 @@ Overview: Pregled
 Owner: Vlasnik
 pa-Arab-PK: Pandžapski (arapski, Pakistan)
 pa-IN: Pandžapski (Indija)
+Page_Test: Page_Test
 Palatino: Palatin
 Palatino Linotype: Palatinska linotipija
 PaleGreen: Blijedozelena
@@ -3106,6 +3180,7 @@ Placeholder: Rezerviranog mjesta
 Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Poigrajte se s MudBlazorom i MudBlazor.Extensions u mrežnom uređivaču koda
 Playbill: Pozor oglas
 Player: Igrač
+Playground: Igralište
 Please confirm your account by <a href='{0}'>clicking here</a>.: Potvrdite svoj račun <a href='{0}'>klikom ovdje</a>.
 Please enter your name: Molimo unesite svoje ime
 Please reset your password by <a href='{0}'>clicking here</a>.: Molimo poništite lozinku <a href='{0}'>klikom ovdje</a>.
@@ -3114,6 +3189,7 @@ Please upload your personal qualifications and references that confirm your pers
 Please Wait: Molim te čekaj
 PleaseSelect: Molimo odaberite
 Plum: Šljiva
+Pointer: Pokazivač
 Points: Bodova
 PointsOfInterest: Točke interesa
 Pojoaque: Pojoaque
@@ -3131,6 +3207,7 @@ PorpleBase16: PorpleBase16
 Portrait: Portret
 Position: Pozicija
 Position/Size Sample: Uzorak položaja/veličine
+Possibilities: Mogućnosti
 PostalCode: Poštanski broj
 PowderBlue: Praškasta plava
 Powerful component to edit a set of items and their properties.: Moćna komponenta za uređivanje skupa stavki i njihovih svojstava.
@@ -3176,6 +3253,7 @@ Profile picture added.: Dodana je profilna slika.
 Profile picture deleted.: Profilna slika je izbrisana.
 Profile updated: Profil ažuriran
 ProgramingSkills: Vještine programiranja
+Progress: Napredak
 Property1: Svojstvo1
 Property10: Svojstvo10
 Property11: Svojstvo11
@@ -3261,6 +3339,7 @@ RailscastsBase16: RailscastsBase16
 Rainbow: Duga
 Random: Slučajan
 RandomColorUpdateDelay: RandomColorUpdateDelay
+RangeSlider: RangeSlider
 RarArchive.rar: RarArchive.rar
 Rate: Stopa
 Rate must be greater than 0: Stopa mora biti veća od 0
@@ -3343,6 +3422,7 @@ Reset view: Ponovno postavljanje prikaza
 ResetButtonIcon: Ikona gumba za resetiranje
 ResetToDefaultFirst: ResetToDefaultFirst
 Resizeable: Mogućnost promjene veličine
+ResizeCursor: ResizeCursor
 ResizeMode: Način promjene veličine
 Resources: Resursi
 Responsive: Odgovarajući
@@ -3422,6 +3502,7 @@ RoundBars: Okrugle šipke
 Rounded: Zaobljen
 Routeros: Routeros
 Row: Red
+RowResize: RowResize
 RowSpan: Raspon redaka
 RowsPerPageString: Redovi po stranici
 RoyalBlue: Kraljevska plava
@@ -3434,6 +3515,8 @@ ru-UA: ruski (Ukrajina)
 RubberBand: Gumena traka
 RubberBandColor: Boja gumene trake
 RubberBandStyle: Stil gumene trake
+Run: Trčati
+Run this sample on try.mudex.org online: Pokreni ovaj uzorak na try.mudex.org online
 Runic MT Condensed: Runski MT kondenzirani
 Runtime: Runtime
 Russian: Ruski
@@ -3563,9 +3646,11 @@ SelectedItemColor: OdabranaItemColor
 SelectedRequests: OdabraniZahtjevi
 SelectedValues: Odabrane vrijednosti
 Selecting: Odabir
+SelectionColor: SelectionColor
 SelectionList: Popis odabira
 SelectionMode: Način odabira
 SelectionModeIcon: OdabirModeIkona
+SelectionTemplate: Predložak za odabir
 SelectItemsMode: SelectItemsMode
 SelectorsForIgnoreBlur: SelektoriForIgnoreBlur
 SelectorSize: Veličina selektora
@@ -3576,6 +3661,7 @@ Send: Slati
 Send confirmation email: Pošaljite e-poštu s potvrdom
 Sensitivity: Osjetljivost
 Sep: Rujan
+SeResize: SeResize
 Server restarted successfully: Poslužitelj se uspješno ponovno pokrenuo
 ses-ML: Koyraboro Senni (Mali)
 Set as Default options for all Dialogs: Postavi kao zadane opcije za sve dijaloške okvire
@@ -3600,6 +3686,7 @@ shi-Tfng-MA: Tachelhit (Tifinagh, Maroko)
 Show: Pokazati
 Show As Dialog: Dijaloški okvir Prikaži kao
 Show as Tree: Prikaži kao stablo
+Show code: Kod emisije
 Show Demo: Prikaži demo
 Show flat: Prikaži stan
 Show info: Prikaži informacije
@@ -3657,6 +3744,7 @@ ShowSliders: ShowSliders
 ShowSpectrumOnRecording: ShowSpectrumOnRecording
 ShowThemeColors: ShowThemeColors
 ShowToolbar: Prikazialatna traka
+ShowTooltip: ShowTooltip
 ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
 ShowVisualiser: ShowVisualizer
 ShowZoomInButton: Gumb ShowZoomInButton
@@ -3664,6 +3752,7 @@ ShowZoomOutButton: Gumb ShowZoomOutButton
 ShrinkLabel: SmanjitiOznaka
 si-LK: Sinhala (Šri Lanka)
 Side: Strana
+Side filter panels in search or analytics UIs: Bočni filter paneli u korisničkim sučeljima za pretraživanje ili analitiku
 Sienna: Sjena
 Sign In: Prijavi se
 Sign Up: Prijavi se
@@ -3694,6 +3783,8 @@ SimulateWithRandomData: SimulateWithRandomData
 Single: Neoženjen
 SingleExpand: SingleProširi
 Size: Veličina
+SizeRange: SizeRange
+SizeRange = 0–100: SizeRange = 0–100
 sk-SK: slovački (Slovačka)
 Skeleton: Kostur
 SkipSeparator: Preskoči separator
@@ -3763,6 +3854,7 @@ sr-Latn-RS: srpski (latinica, srbija)
 sr-Latn-XK: srpski (latinski, kosovski)
 Src: Src
 Srcery: Srcery
+SResize: SResize
 ss-SZ: siSwati (Eswatini)
 ss-ZA: siSwati (Južnoafrička Republika)
 ssy-ER: Saho (Eritreja)
@@ -3778,6 +3870,7 @@ Start Recording: Počnite snimati
 Start recording after: Počnite snimati nakon
 Start/Stop selection: Odabir Start/Stop
 Starts in {0}: Počinje u {0}
+StartTooltipPosition: StartTooltipPosition
 State: Država
 Static: Statički
 Static card.: Statička kartica.
@@ -3785,6 +3878,13 @@ Static item: Statički artikl
 Status: Status
 SteelBlue: Čelična plava
 Stencil: Matrica
+Step size of 5: Veličina koraka od 5
+StepLength: Duljina koraka
+StepLength = 5 – values in steps of 5: StepLength = 5 – vrijednosti u koracima od 5
+StepResolver: StepResolver
+StepResolvers.DateOnly.Quarterly: StepResolvers.DateOnly.Quarterly
+StepResolvers.DateOnly.Weekly: StepResolvers.DateOnly.Weekly
+StepResolvers.TimeOnly: StepResolvers.TimeOnly
 Stereo: Stereo
 Steve Rogers: Steve Rogers
 Store: Pohraniti
@@ -3876,7 +3976,9 @@ SummerfruitDarkBase16: SummerfruitTamna baza16
 SummerfruitLightBase16: SummerfruitLightBase16
 Sunburst: Sunburst
 Super sample Content text.: Super uzorak teksta sadržaja.
+Supercharge your MudBlazor applications with powerful extensions: Pojačajte svoje MudBlazor aplikacije snažnim proširenjima
 Support: Podrška
+Supports int and DateTime (other types via generics are possible).: Podržava int i DateTime (moguće su i druge vrste putem generika).
 Surface: Površina
 Surname: Prezime
 sv-AX: Švedski (Ålandski otoci)
@@ -3894,12 +3996,14 @@ Swing: Ljuljačka
 Switch: Skretnica
 Switch expand button position: Promijenite položaj gumba za proširenje
 Switch overlay source: Promjena izvora preklapanja
+SwResize: SwResize
 Symbol: Simbol
 SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
 SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
 syr-SY: Sirijski (Sirija)
 System: Sustav
 System Settings: Postavke sustava
+T = int – numeric range: T = int – numerički raspon
 T3024Base16: T3024Baza16
 ta-IN: Tamilski (Indija)
 ta-LK: Tamilski (Šri Lanka)
@@ -3929,6 +4033,7 @@ Teal: Teal
 tel: Tel
 Telephone: Telefon
 TemplateClass: Klasa predloška
+Templates: Predlošci
 Temporary: Privremen
 TenderBase16: TenderBase16
 teo-KE: Teso (Kenija)
@@ -3983,8 +4088,22 @@ The following permission is also required for permission {1}: Sljedeće dopušte
 The maximum file size is 10 MB: Maksimalna veličina datoteke je 10 MB
 The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit je robustan i svestran alat dizajniran za učinkovito olakšavanje uređivanja jedne ili više tema ili unaprijed postavljenih postavki. Inherentno se prilagođava tamnom načinu rada, svijetlom načinu rada ili kombinaciji oba. Osim toga, podržava izvedene klase iz MudThemea, kao i prilagođena svojstva koja su mu svojstvena, pružajući tako sveobuhvatno i fleksibilno rješenje za sve vaše zahtjeve za uređivanje tema.
 The Plugin '{0}' may be able to help: Dodatak '{0}' može vam pomoći
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: Klizač za raspon može se koristiti i vertikalno – idealno za bočne trake ili kompaktna područja filtra.
 The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Uzorak je isti kao i drugi primjer FileDisplaya, ali s tom razlikom što se ne koristi URL; umjesto toga, streamovi se učitavaju i koriste.
 The server is just restarting. Please wait until the connection has been restored: Poslužitelj se upravo ponovno pokreće. Pričekajte dok se veza ne uspostavi
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: Pjesma ističe te bendove i označava ih, dok predložak odabira prikazuje odabrani cjenovni interval koristeći aktualni format valute kulture.
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: Staza je podijeljena u uobičajene dobne skupine poput "U18", "18–25", "26–35" i slično, a predložak odabira prikazuje točan dobni raspon poput "18 – 35 godina".
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: Pjesma je podijeljena u klase odgovora kao što su Brzo, OK, Sporo i Vrlo sporo, a oznaka odabira prikazuje i numerički raspon i njegovu klasifikaciju, na primjer "80 – 450 ms (Brzo → Sporo)".
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: Pjesma je podijeljena u vremenske trake koje predstavljaju različite smjene, a predložak odabira prikazuje odabrani vremenski prozor u 24-satnom formatu.
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: Staza se renderira s prilagođenim TrackTemplateom, odabrani raspon s SelectionTemplateom, a palčevi s prilagođenim ThumbStartTemplate i ThumbEndTemplate.
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: Pjesma je podijeljena na zeleni, žuti i crveni segment, a oznaka odabira prikazuje numerički raspon zajedno s kvalitativnom klasifikacijom poput "Low", "Medium" ili "High".
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: Staza prikazuje blokove fiskalne godine i njihove kvartale, a oznaka odabira prikazuje fiskalne raspone poput "FY 2022 – FY 2024" ili "FY 2023 Q2 – Q4" ovisno o odabranom području.
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: Staza prikazuje mjesečne oznake i tjedne oznake, dok predložak za odabir sažima odabir u rasponu kalendarskih tjedana, poput "KW 2 – KW 22".
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: Traka prikazuje sve razine jednu pored druge, a predložak odabira prikazuje oznaku poput "Dan – Mjesec", koju možete koristiti za kontrolu kako se podaci agregiraju u grafikonima ili izvještajima.
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: Pjesma prikazuje satne oznake i oznake svakih nekoliko sati, dok predložak odabira prikazuje odabrani vremenski raspon kao kompaktnu oznaku.
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: Pjesma prikazuje sve dane od ponedjeljka do nedjelje, ističe vikende, a oznaka odabira prikazuje prijateljske nazive poput "Monday – Friday".
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: Pjesma vizualizira godine i njihove kvartale, a oznaka odabira prilagođava se ovisno o odabranom rasponu, na primjer "Q2 2022 – Q3 2023" ili jednostavno "Q1 – Q3" kada je godina ista.
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: Pjesma vizualno ističe te servisne pojaseve, dok predložak odabira prikazuje točan raspon dana, na primjer "4 – 9 dana".
 The user "{0}" just changed some of this data: Korisnik "{0}" upravo je promijenio neke od ovih podataka
 The user {0} has been logged off: Korisnički {0} je odjavljen
 The User {0} has just edited, created or deleted entries here. You should reload the data: Korisnički {0} je upravo uredio, stvorio ili izbrisao unose ovdje. Trebali biste ponovno učitati podatke
@@ -4013,6 +4132,22 @@ This demo uses the IDialogEventService to check resize or dragged and stores the
 This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Ovo demonstrira komponentu MudExThemeEdit koja interno koristi MudExObjectEdit i MudExThemeSelect za uređivanje teme
 This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Ovaj demo prikazuje preporučeni način korištenja MudExAdditionalAdornment pomoću RenderFragments 'For' i 'ChildContent'
 This dialog can confirmed when slider value is greater then 10: Ovaj dijaloški okvir može potvrditi kada je vrijednost klizača veća od 10
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: Ovaj primjer prikazuje prilagođeni vremenski okvir fiskalne godine gdje financijska godina ne počinje 1. siječnja.
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: Ovaj primjer prikazuje višegodišnje vremensko razdoblje s prilagođenim ponašanjem koraka. Sa StepResolverom definirate kako klizač klikće (na primjer na mjesece, kvartalne ili sate).
+This example demonstrates a TimeOnly range slider.: Ovaj primjer prikazuje TimeOnly range slider.
+This example demonstrates a TimeOnly-based range slider with minute resolution.: Ovaj primjer prikazuje klizač raspona temeljen na TimeOnlyu s minutnom rezolucijom.
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: Ovaj primjer ilustrira klizač cijena ili budžetskog raspona sa semantičkim segmentima poput Budget, Standard, Premium i High-End.
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: Ovaj primjer preslikava cijele vrijednosti na dane u tjednu i pretvara klizač raspona u selektor dana u tjednu.
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: Ovaj primjer predstavlja apstraktne razine zumiranja ili agregacije poput Sata, Dana, Tjedna, Mjeseca i Godine.
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: Ovaj primjer prikazuje vremenski raspon od 2015. do kraja 2022. Korisnik može odabrati razdoblje od najmanje 60 dana, a najviše 2 godine. Veličina koraka je jedan dan.
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: Ovaj primjer prikazuje klizač raspona temeljen na postotku koji se može koristiti za iskorištenost, kapacitet ili razine rizika.
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: Ovaj primjer prikazuje klizač raspona temeljen na TimeOnly, prilagođen scenarijima planiranja smjena poput ranih, kasnih i noćnih smjena.
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: Ovaj primjer pokazuje kako možete koristiti prilagođene predloške za pretvaranje MudExRangeSlidera u kontrolu u stilu vremenske crte s oznakama godine i mjeseca.
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: Ovaj primjer cilja SLA i scenarije vremena odziva koristeći klizač dometa temeljen na milisekundama.
+This example turns the range slider into a quarter selector over multiple years.: Ovaj primjer pretvara klizač raspona u selektor četvrtine tijekom više godina.
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: Ovaj primjer koristi klizač za cijeli raspon za prikaz vremena tranzita u danima, segmentiranog na razine usluge poput Express, Standard i Economy/Sea.
+This example uses an integer-based range slider to represent age ranges and demographic bands.: Ovaj primjer koristi klizač raspona temeljen na cijelim brojevima za predstavljanje dobnih skupina i demografskih skupina.
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: Ovaj primjer koristi DateOnly i tjedne korake za izradu selektora raspona temeljenog na tjednim podacima s ISO kalendarskim brojevima tjedna.
 This is a Json representation of the TestModel. This is ignored for Export and Import: Ovo je JSON prikaz TestModela. To se zanemaruje za izvoz i uvoz
 This is a simple information dialog that closes after {0} seconds: Ovo je jednostavan informativni dijaloški okvir koji se zatvara nakon {0} sekundi
 This is a simple information dialog that closes after 0 seconds: Ovo je jednostavan informativni dijaloški okvir koji se zatvara nakon 0 sekundi
@@ -4024,8 +4159,14 @@ This is a simple information dialog that closes after 5 seconds: Ovo je jednosta
 This is an Administrator Only View.: Ovo je prikaz samo za administratore.
 This is the MudEx Default theme: Ovo je MudEx zadana tema
 This is the sample Popover. In general it inherits the original MudPopover.: Ovo je uzorak Popover. Općenito, nasljeđuje originalni MudPopover.
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: Ovo je korisno za konfiguraciju dnevnih vremenskih okvira poput radnog vremena, održavanja ili rezervacijskih termina.
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: Ovo je korisno za filtere proizvoda, odabir budžeta ili bilo koje korisničko sučelje gdje korisnici biraju cjenovni raspon na vizualno vođen način.
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: Ovo je korisno za ponavljajuće rasporede, prozore dostupnosti ili obrasce isporuke koji se definiraju na tjednoj bazi.
 This one card is still added without an corresponding item.: Ova jedna kartica se i dalje dodaje bez odgovarajuće stavke.
 This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Ovo prolazi kao metoda na opcije dijaloškog okvira. Dijaloški okvir se neće zatvoriti ako metoda vrati false. Rezultat mora biti bool ili Task&lt;bool&gt;
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: Ovaj obrazac dobro odgovara analitičkim nadzornim pločama gdje korisnici mogu dinamički mijenjati granularnost prikazanih podataka.
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: Ovaj obrazac je koristan za poslovne i financijske primjene gdje je izvještavanje usklađeno s fiskalnim godinama umjesto kalendarskim.
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: Ovaj obrazac je idealan kada korisnici razmišljaju u tjednima umjesto u konkretnim datumima, primjerice u planiranju, izvještavanju ili pregledima sprinta.
 This photo was taken in a small village in Istra Croatia.: Ova fotografija snimljena je u malom selu u Istri.
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Ovaj birač donosi animacije, bolje ponašanje i dijaloški okvir koji podržava sve DialogOptions. Da biste stvorili vlastitu komponentu za odabir koju možete naslijediti od MudExPickerBase-a ili samo koristiti jednostavan sadržaj, koristite MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Ovaj uzorak pokazuje kako koristiti MudExCaptureService
@@ -4034,13 +4175,20 @@ This sample just shows how easily you can combine the MudExPicker with MudExTree
 This sample uses the IDialogEventService to cancel the dialog close: Ovaj uzorak koristi IDialogEventService za otkazivanje zatvaranja dijaloškog okvira
 This sample uses the options for a can close callback: Ovaj uzorak koristi opcije za može zatvoriti povratni poziv
 This section can be placed inside a MudExGrid component.: Ovaj se odjeljak može postaviti unutar MudExGrid komponente.
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: Ovaj predložak je posebno koristan u logističkim i otpremnim scenarijima gdje se rokovi isporuke izražavaju u dnevnim rasponima.
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: Ovaj predložak je vrlo prikladan za analitiku, ciljanje publike ili bilo koje korisničko sučelje gdje korisnici rade s dobnim intervalima.
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: Ovaj predložak dobro funkcionira u nadzoru, promatranju ili API nadzornim pločama gdje je potrebno brzo interpretirati raspon latencije.
 Thistle: Čičak
 ThrottleInterval: Interval gasa
+ThumbColor: ThumbColor
+ThumbEndTemplate: ThumbEndTemplate
+ThumbStartTemplate: ThumbStartTemplate
 ti-ER: Tigrinya (Eritreja)
 ti-ET: Tigrinya (Etiopija)
 tig-ER: Tigre (Eritreja)
 Tilt: Podrezivati
 Time: Vrijeme
+TimeOnly: TimeOnly
 Times: Puta
 Times New Roman: Times New Roman
 TimeSeries: Vremenska serija
@@ -4096,6 +4244,7 @@ Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
 tr-CY: Turski (Cipar)
 tr-TR: Turski (Turska)
 Trace: Trag
+TrackColor: TrackColor
 TrackInfoPosition: TrackInfoPosition
 TrackList: Popis pjesama
 TrackListBehaviour: TrackListBehavior
@@ -4104,6 +4253,8 @@ TrackListCoverImage: Popis pjesamaNaslovna slika
 TrackListMode: Način popisa pjesama
 TrackListPosition: TrackListPosition
 TrackListToggleButtonPosition: TrackListToggleButtonPosition
+TrackStyle: TrackStyle
+TrackTemplate: TrackTemplate
 Trail Details: Detalji staze
 TransformOrigin: TransformOrigin
 Translations: Prijevodi
@@ -4113,6 +4264,7 @@ Transparent: Proziran
 Trebuchet MS: Trebušet MS
 TreeView: Pogled na stablo
 TreeView component that renders a tree structure of items.: TreeView komponenta koja prikazuje stablu stavki.
+Treeview in Picker: Pogled na drvo u Pickeru
 TreeViewBreadcrumb: TreeViewKrušna mrvica
 TreeViewCardGrid: TreeViewCardGrid
 TreeViewDefault: StabloViewDefault
@@ -4185,10 +4337,15 @@ ur-IN: Urdu (Indija)
 ur-PK: Urdu (Pakistan)
 url: URL
 Url: URL
+Use cases: Primjeri upotrebe
 Use CodeGator Models: Koristite CodeGator modele
 Use MudExAdditionalAdornment ad ChildContent: Upotreba oglasa MudExAdditionalAdornment ChildContent
 Use MudExAdditionalAdornment as ChildContent of a MudInput: Koristite MudExAdditionalAdornment kao podređeni sadržaj MudInput
 Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Umjesto toga upotrijebite MudExSelect i postavite MultiSelection na true i ValuePresenter na Chip.
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: Koristite klizač horizontalno ili vertikalno – idealno za filtre, nadzorne ploče i izvještaje.
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: Koristite ovaj predložak za tromjesečno izvještavanje, KPI-jeve ili financijske preglede gdje su kvartalni rasponi značajniji od točnih datuma.
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: Koristite ovaj predložak za skladišta, proizvodnju, pozivne centre ili bilo koje područje gdje je rad organiziran u smjenama tijekom 24-satnog dana.
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: Koristite ovaj predložak kad god korisnici trebaju na prvi pogled razumjeti spada li odabrani raspon u sigurnu, upozoravajuću ili kritičnu zonu.
 UseCanvas: UpotrebaPlatno
 UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
 UseItemTemplateForSelection: UseItemTemplateForSelection
@@ -4238,6 +4395,8 @@ Variant: Varijanta
 ve-ZA: Venda (Južnoafrička Republika)
 Verdana: Verdana
 Version: Verzija
+Vertical: Okomit
+VerticalText: VerticalText
 vi-VN: Vijetnamski (Vijetnam)
 Video Content-Type: Vrsta video sadržaja
 Video device: Video uređaj
@@ -4267,6 +4426,7 @@ Vs2015: Vs2015
 VulcanBase16: Vulkanska baza16
 vun-TZ: Vunjo (Tanzanija)
 wae-CH: Walser (Švicarska)
+Wait: Čekati
 wal-ET: Wolaytta (Etiopija)
 Warning: Upozorenje
 WarningContrastText: WarningContrastText
@@ -4298,6 +4458,8 @@ WindowsNtLightBase16: WindowsNtLightBase16
 Wingdings: Wingdings
 With custom configuration: S prilagođenom konfiguracijom
 With default configuration: Sa zadanom konfiguracijom
+With DockLayout: S DockLayoutom
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: Sa StepResolverima lako možete konfigurirati ponašanje koraka. Za vremenske okvire nudimo nekoliko unaprijed definiranih resolvera. U ovom primjeru, StepResolvers.DateTime.Quarterly(_ => 1) uzrokuje da klizač preskoči na četvrtine.
 With tabs: S karticama
 With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: S komponentom MudExAdditionalAdornment možete imati što više ukrasa u bilo kojoj kontroli unosa temeljenoj na MudInputu poput ove.
 With this component you can have an animation while loading the main blazor app: Pomoću ove komponente možete imati animaciju tijekom učitavanja glavne aplikacije blazor
@@ -4314,6 +4476,8 @@ WoodlandBase16: Šumska baza16
 WordDokument.doc: WordDokument.doc
 WrapChips: WrapChips
 WrapToolBarContent: WrapToolBarSadržaj
+WResize: WResize
+Write comments or reactions for current component or page: Pišite komentare ili reakcije za trenutnu komponentu ili stranicu
 Xcode: Xcode
 XcodeDuskBase16: XcodeDuskBase16
 xh-ZA: isiXhosa (Južnoafrička Republika)
@@ -4338,8 +4502,10 @@ You are logged out by an Administrator or profile change.: Odjavljeni ste od str
 You are Logged Out.: Odjavljeni ste.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Također možete koristiti MudExAdditionalOrnamentnment kao ChildContent of a MudInput
 You can move me: Možeš me pomaknuti
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: Možete pomicati pojedinačne palce ili cijeli odabrani raspon kako biste prilagodili početne i završne vrijednosti. Ovisno o konfiguraciji, primjenjuju se minimalno i maksimalno trajanje te različite veličine koraka.
 You can now Login with your credentials: Sada se možete prijaviti sa svojim vjerodajnicama
 You can resize me: Možete mi promijeniti veličinu
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: Ovu tehniku možete koristiti za izradu bogatih vremenskih klizača i vizualnih raspona koji točno odgovaraju vašem području.
 You cannot delete yourself: Ne možete se izbrisati
 You clicked: Kliknuli ste
 You don't need an extra JsonEditor anymore: Više vam ne treba dodatni JsonEditor
@@ -4365,7 +4531,9 @@ ZipCode: Poštanski broj
 Zoom: Zumiranje
 Zoom in: Zumiranje
 Zoom out: Smanjivanje
+ZoomIn: ZoomIn
 ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover
+ZoomOut: ZoomOut
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Južna Afrika)

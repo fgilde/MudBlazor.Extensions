@@ -20,6 +20,8 @@ _{0} Demos: '{0} Demoları'
 --mud-palette-white: --çamur-palet-beyaz
 (currently the item is not visible): (şu anda öğe görünmüyor)
 (currently the item is visible): (şu anda öğe görünür durumda)
+2 Hourly steps (using StepLength): 2 saatlik adım (StepLength kullanılarak)
+2 Hourly steps (using StepResolver): 2 saatlik adım (StepResolver kullanarak)
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Kullanıcının olası değerler listesinden bir değer seçmesine ve bunu Çipler veya varsayılan Kombinasyon Kutusu olarak görüntülemesine olanak tanıyan bir bileşen.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Bir ChildContent'i fareyle üzerine gelerek alttan, üstten, soldan veya sağdan kaydırmak için kullanılabilecek bir Bileşen.
@@ -33,6 +35,7 @@ A maximum of {0} files are allowed: En fazla {0} dosyaya izin verilir
 A Popover can be used to display some content on top of another.: Popover, bazı içerikleri diğerinin üzerinde görüntülemek için kullanılabilir.
 A powerful component to edit an object and its properties.: Bir nesneyi ve özelliklerini düzenlemek için güçlü bir bileşen.
 A powerful editor that can handle json, xml or yaml content: Json, xml veya yaml içeriğini işleyebilen güçlü bir düzenleyici
+A range slider component that allows selecting and manipulating a value range of type T.: T tipi bir değer aralığının seçilip manipüle edilmesini sağlayan bir aralık kaydırıcı bileşeni.
 A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: MudColorPicker'ı devralan ancak kapatma olayını geciktirme ve tarayıcıdan yerel bir seçici bileşeni kullanma olanağı ekleyen basit bir ColorPicker bileşeni
 A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Bölümleri içermek için Sütunları ve Satırları ve ColSpan ve RowSpan'ı destekleyen basit bir kılavuz bileşeni.
 A SplitPanel Component: Bir SplitPanel Bileşeni
@@ -100,6 +103,7 @@ Age: Yaş
 agq-CM: Aghem (Kamerun)
 ak-GH: Akan (Gana)
 Albertus: Albertus Hakkında
+Alias: Takma ad
 Alice Johnson: Alice Johnson
 AliceBlue: Alice Mavi
 Align: Hizalamak
@@ -132,6 +136,9 @@ AllowRubberBandSelection: Lastik Bant Seçimine İzin Ver
 AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
 AllowSelectOnPreviewClick: İzin VerSeçÖnizlemedeTıkla
 AllowVideoCapture: Video Yakalamaya İzin Ver
+AllowWholeRangeDrag: AlpermitWholeRangeDrag
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = true – tüm periyot taşınabilir
+AllScroll: AllScroll
 AlphaBars: Alfa Çubukları
 Already have an account?: Zaten bir hesabınız var mı?
 Always: Her zaman
@@ -226,6 +233,7 @@ AntiqueWhite: Antika Beyaz
 ApathyBase16: İlgisizlikTabanı16
 Api: UPA
 API: UPA
+Api view component to display the methods and properties of a type: Bir türün yöntemlerini ve özelliklerini göstermek için API görünümü bileşeni
 API-Versions: API Sürümleri
 AppBar: Uygulama Çubuğu
 AppbarBackground: Uygulama ÇubuğuArka Planı
@@ -285,6 +293,7 @@ Are you sure?: Emin misiniz?
 Arial: Arial
 Arial Black: Arial Siyah
 Arial Narrow: Arial Dar
+AriaLabelledBy: AriaLabelledBy
 arn-CL: Mapuche (Şili)
 Arta: Sanat
 As Admin you can filter for users here: Yönetici olarak burada kullanıcılar için filtreleme yapabilirsiniz
@@ -339,6 +348,7 @@ Aug: Ağustos
 Austin: Austin
 Austin - 73301: Austin - 73301
 Austin - 73301ender: Austin - 73301ender
+Auto: Araba
 Auto Confirm Email?: E-postayı Otomatik Onayla?
 Auto Generated Editor for TestObject: TestObject için Otomatik Oluşturulan Düzenleyici
 Auto Stop recording after: Kaydı Otomatik Durdur
@@ -390,6 +400,7 @@ Basic: Temel
 Basic role with default permissions: Varsayılan izinlere sahip temel rol
 Bauhaus 93: Bauhaus 93
 be-BY: Beyaz Rusça (Beyaz Rusya)
+Because time values always having a fixed size you can also use step length instead of resolvers.: Zaman değerleri her zaman sabit bir boyutta olduğu için, çözümleyiciler yerine adım uzunluğu da kullanabilirsiniz.
 BeforeBegin: Başlamadan Önce
 BeforeEnd: Bitiş Öncesi
 BeforeSearchBox: Arama Kutusundan Önce
@@ -490,6 +501,7 @@ bs-Cyrl-BA: Boşnakça (Kiril, Bosna Hersek)
 bs-Latn-BA: Boşnakça (Latince, Bosna Hersek)
 Build amazing UIs: Harika kullanıcı arayüzleri oluşturun
 BurlyWood: İri Ağaç
+But for sure resolvers are working as well.: Ama kesinlikle çözücüler de çalışıyor.
 button: düğme
 Button: Düğme
 Button component for capturing audio and video.: Ses ve video yakalamak için düğme bileşeni.
@@ -535,6 +547,7 @@ ccp-Cakm-BD: Chakma (Chakma, Bangladeş)
 ccp-Cakm-IN: Chakma (Chakma, Hindistan)
 ce-RU: Çeçence (Rusya)
 ceb-Latn-PH: Cebuano (Latince, Filipinler)
+Cell: Hücre
 Centaur: Erboğa
 Center: Orta
 CenterCenter: Merkez Merkezi
@@ -627,6 +640,7 @@ ColorPickerView: Renk Seçici Görünümü
 ColorsBase16: RenklerTaban16
 ColorStops: Renk Durakları
 ColorTemperature: Renk Sıcaklığı
+ColResize: ColResize
 ColSpan: ColSpan
 Column: Sütun
 Columns Affected: Etkilenen Sütunlar
@@ -640,6 +654,7 @@ Compact: Kompakt
 Comparer: Karşılaştırmak
 Component edit capture options: Bileşen düzenleme yakalama seçenekleri
 Component in Dialog: İletişim Kutusundaki Bileşen
+Component that captures component references from ChildContent: ChildContent'ten bileşen referanslarını yakalayan bileşen
 Component to add additional adornment to a MudInput: MudInput'a ek süsleme eklemek için bileşen
 Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Bir dosyayı iframe veya nesne etiketinde ya da IMudExFileDisplay uygulayan kayıtlı bir görüntüleyicide görüntülemek için bileşen
 Component to display information about the current recording: Geçerli kayıtla ilgili bilgileri görüntülemek için bileşen
@@ -649,7 +664,9 @@ Component to move the ChildContent to a specific element that can defined by Ele
 Component to select a theme from a list of themes.: Tema listesinden bir tema seçmek için bileşen.
 ComponentBaseWithState: ComponentBaseWithState
 ComponentInDialog: ComponentInDialog
+Components: Bileşen
 Conditional updates: Koşullu güncelleştirmeler
+Configuration: Konfigürasyon
 Configure list values: Liste değerlerini yapılandırma
 Confirm: Onaylamak
 CONFIRM: ONAYLAMAK
@@ -670,6 +687,7 @@ Content-Type: İçerik Türü
 ContentAlignment: İçerikHizalama
 ContentStream: İçerik Akışı
 ContentType: İçerik Türü
+ContextMenu: ContextMenu
 ContextMenuAction: ContextMenuAction
 Continue to {0}: '{0} devam et'
 Continuous: Devamlı
@@ -677,6 +695,7 @@ Contrast: Karşıtlık
 Cooper Black: Bakır Siyahı
 Copperplate Gothic Bold: Bakır Levha Gotik Kalın
 Copperplate Gothic Light: Bakır Levha Gotik Işık
+Copy: Kopya etmek
 Copy url: URL'yi kopyala
 Counter: Sayaç
 Country: Ülke
@@ -689,6 +708,7 @@ Create powerful, flexible dock layouts — drag, drop, snap, and organize your d
 CreatedOn: Oluşturulma tarihi
 Critical: Kritik
 CropAndScale: Kırpma ve Ölçek
+Crosshair: Crosshair
 cs-CZ: Çekçe (Çekya)
 CSS Color Variables: CSS Renk Değişkenleri
 CssVars: CssVar'lar
@@ -701,6 +721,8 @@ Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can
 Cursor: İmleç
 CursorPositionOrigin: CursorPositionOrigin
 Custom: Töre
+Custom fiscal year logic: Özel mali yıl mantığı
+Custom Templates: Özel Şablonlar
 CustomContentErrorMessage: CustomContentErrorMessage
 Customize: Özelleştir
 cy-GB: Galce (Birleşik Krallık)
@@ -764,9 +786,11 @@ Decimal value is required using {0} type!: '{0} türü kullanıldığında ondal
 DeepPink: Derin Pembe
 DeepSkyBlue: Derin Gökyüzü Mavisi
 Default: Temerrüt
+Default steps: Varsayılan adımlar
 DefaultBorderRadius: DefaultBorderRadius
 DefaultDarkBase16: VarsayılanDarkBase16
 DefaultLightBase16: VarsayılanIşıkTabanı16
+Define minimum and maximum duration for ranges as well as custom step sizes.: Aralıklar için minimum ve maksimum süreyi ve özel adım boyutlarını tanımlayın.
 Defined: Tanımlanan
 Delay: Gecikme
 DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
@@ -807,6 +831,7 @@ Demo of using explicit the MudExFileDisplayZip to show and select content inside
 Demonstration for a simple but very useful Enum Selector: Basit ama çok kullanışlı bir Enum Seçici için gösteri
 Demonstration of the MudExSplitter: MudExSplitter'ın Gösterimi
 Demonstration of the quickly color select with MudExColorBubble: MudExColorBubble ile hızlı renk seçiminin gösterimi
+Demos: Demolar
 DEMOS: DEMOLAR
 Dense: Yoğun
 Dependent permissions required: Gerekli bağımlı izinler
@@ -888,7 +913,10 @@ Do you really want to restore the database from backup '{0}'? Note that any chan
 Do you want to delete the profile picture of {0}: "{0}'in profil resmini silmek istiyor musunuz?"
 Do you want to delete the User {0}: Kullanıcı {0} silmek istiyor musunuz?
 Docco: Belgesel
+Dock: Yine de
+Dock Control: İskele Kontrolü
 Docked: Yerleşik
+DockLayout with ObjectEdit: ObjectEdit ile DockLayout
 Document Deleted: Belge Silindi
 Document Extended Attributes: Belge Genişletilmiş Öznitelikleri
 Document Management: Doküman yönetimi
@@ -967,6 +995,8 @@ Edit: Düzenlemek
 Edit {0}: Düzenle {0}
 Edit a complex Model with included Collection of users: Dahil edilen Kullanıcı Koleksiyonu ile karmaşık bir Modeli düzenleyin
 Edit Audio Constraints: Ses Kısıtlamalarını Düzenle
+Edit Configuration: Yapılandırmayı Düzenle
+Edit configuration for component in this sample: Bu örnekte bileşen için yapılandırmayı düzenleyin
 Edit Current Theme: Geçerli Temayı Düzenle
 Edit data in dialog: İletişim kutusundaki verileri düzenle
 Edit in TryMudEx: TryMudEx'te düzenleyin
@@ -1113,6 +1143,7 @@ en-ZW: Türkçe (Zimbabve)
 Enable Disqus: Disqus'u Etkinleştir
 enables or disables virtualization.: sanallaştırmayı etkinleştirir veya devre dışı bırakır.
 End: Son
+EndTooltipPosition: EndTooltipPosition
 English: İngilizce
 Engravers MT: Gravürcüler MT
 Enter email and your new password here: E-postanızı ve yeni şifrenizi buraya girin
@@ -1144,6 +1175,7 @@ Eras Bold ITC: Dönemler Kalın ITC
 Eras Demi ITC: Dönemler Demi ITC
 Eras Light ITC: Dönemler Işık ITC
 Eras Medium ITC: Dönemler Orta ITC
+EResize: EResize
 Error: Hata
 ErrorAnimation: Hata Animasyonu
 ErrorContrastText: ErrorContrastText
@@ -1186,6 +1218,7 @@ eu-ES: Bask (İspanya)
 EvaBase16: EvaBase16
 EvaDimBase16: EvaDim Tabanı16
 ewo-CM: Ewondo (Kamerun)
+EwResize: EwResize
 ExcelSheet.xlsx: ExcelSheet.xlsx
 Expand &nbsp; <b>not</b> &nbsp; loaded nodes: <b>Yüklenmeyen</b> &nbsp; düğümleri genişlet &nbsp;
 Expand all nodes: Tüm düğümleri genişlet
@@ -1230,6 +1263,7 @@ FallBackInIframe: FallBackInIframe
 False: Yanlış
 FAQs: Yaygın sorular
 Far: Uzak
+Featured Components: Öne Çıkan Bileşenler
 Features: Özellik
 Feb: Şubat
 Felix Titling: Felix Başlık
@@ -1297,6 +1331,7 @@ FilterMode: Filtre Modu
 FilterMultiple: FiltreÇoklu
 FilterPlaceholder: FilterPlaceholder
 Filters: Filtre
+Filters in dashboards or reports: Dashboard veya raporlardaki filtreler
 FilterVariant: Filtre Varyantı
 Fiona Gallagher: Fiona Gallagher
 Firebrick: Ateş tuğlası
@@ -1310,6 +1345,7 @@ Flat List: Daire Listesi
 FlatBase16: Düz Taban16
 FlatList: Düz Liste
 FlexEnd: Esnek Uç
+Flexible data types: Esnek veri türleri
 FlexStart: Esnek Başlangıç
 Flip: Flip
 FlipAlways: Her Zaman Çevir
@@ -1339,6 +1375,7 @@ ForceShrink: Zorla Küçültme
 ForestGreen: Orman Yeşili
 Forgot password?: Şifrenizi mi unuttunuz?
 Format: Biçim
+Forward: İletmek
 Foundation: Vakıf
 fr-029: Fransızca (Karayipler)
 fr-BE: Fransızca (Belçika)
@@ -1442,6 +1479,8 @@ GoogleDriveClientId: GoogleDriveClientId
 GoogleLightBase16: GoogleIşık Tabanı16
 Goudy Old Style: Goudy Eski Tarz
 Goudy Stout: Goudy Yiğit
+Grab: Tutmak
+Grabbing: Kapma
 Gradient: Gradyan
 GradientDark: Degrade Koyu
 GradientForeground: GradientForeground
@@ -1529,6 +1568,7 @@ Hello from dialog 1: 1. iletişim kutusundan merhaba
 Hello from dialog sample page: Diyalog örnek sayfasından merhaba
 Hello World: Merhaba Dünya
 Hello...: Merhaba...
+Help: Yardım
 HelperId: Yardımcı Kimliği
 HelperText: Yardımcı Metin
 HelperTextOnFocus: HelperTextOnFocus
@@ -1550,6 +1590,7 @@ Hide: Gizlemek
 HideContentWhenCollapsed: HideContentWhenCollapsed
 HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
 High Tower Text: Yüksek Kule Metni
+Highlights: Vurgular
 HighlightSearch: Öne Çık Arama
 Hinge: Menteşe
 Home: Ev
@@ -1558,6 +1599,7 @@ HopscotchBase16: Seksek Tabanı16
 HorizonDarkBase16: UfukKaranlık Tabanı16
 HorizonLightBase16: Ufuk Işığı Tabanı16
 Horizontal: Yatay
+Horizontal & vertical orientation: Yatay ve dikey yönelim
 HouseNumber: Sayı
 Houston: Houston
 Houston - 77001: Houston - 77001
@@ -1602,6 +1644,7 @@ Idea: Fikir
 Identifier: Tanımlayıcı
 If this is set a photo will be taken instead of a video.: Bu ayarlanırsa, video yerine fotoğraf çekilecektir.
 If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Bu paketi beğendiyseniz, lütfen Github'a yıldız ekleyin ⭐ ve arkadaşlarınızla paylaşın. Değilse, yine de bir yıldız verebilir ve sizin için daha iyi hale getirmek için neleri geliştirebileceğimi bana bildirebilirsiniz.
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: Sadece bir zaman kaydırıcısına ihtiyacınız varsa ve kendi şablonlarınızı oluşturmak istemiyorsanız, bunun yerine özel {0} bileşenini de kullanabilirsiniz.
 If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Bu seçenekleri varsayılan olarak ayarlarsanız. Bu seçenekler, hiçbir seçeneğin belirtilmediği tüm iletişim kutuları için kullanılır. Devam etmek?
 ig-NG: Igbo (Nijerya)
 Ignore: Yok saymak
@@ -1618,6 +1661,7 @@ Impact: Etki
 Import: Ithalat
 ImportExportIcon: İçe AktarDışa AktarSimge
 In: İçinde
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: Bu örnekte 0'dan 100'e kadar basit bir sayısal aralık kontrol ediyorsunuz. Adım boyutu kaba aralıklara izin vermek için 5 olarak ayarlanmıştır.
 In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: Bu örnekte, öğe görünümde ilk göründüğü anda veriler dinamik olarak yüklenir. Bileşen iki içerik yuvasını destekler
 In this sample you are forced to pick an user: Bu örnekte bir kullanıcı seçmek zorunda kalırsınız
 In this sample you are forced to pick some users: Bu örnekte bazı kullanıcıları seçmek zorunda kalırsınız
@@ -1658,6 +1702,7 @@ InputMode: Giriş Modu
 InputStyle: Giriş Stili
 InputType: Giriş Türü
 Inset: Ankastre
+Instance: Örnek
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Ara Sonuçlar
@@ -1672,6 +1717,7 @@ is-IS: İzlandaca (İzlanda)
 IsActive: Aktif
 IsblEditorDark: IsblEditorDark
 IsblEditorLight: IsblEditorLight
+IsInverted: IsInverted
 IsMouseOverChip: IsMouseOverChip
 ISO: ISO
 IsOpen: Açık
@@ -1811,6 +1857,7 @@ Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): 
 LegacyRender: Miras Oluşturma
 Legend: Efsane
 LemonChiffon: LimonŞifon
+Length: Uzunluk
 LetterSpacing: Harf Aralığı
 lg-UG: Ganda (Uganda)
 Library: Kütüphane
@@ -1958,6 +2005,7 @@ MaterialDarkerBase16: MalzemeKoyuTaban16
 MaterialLighterBase16: MalzemeLighterBase16
 MaterialPalenightBase16: MalzemePalenightBase16
 MaterialVividBase16: MalzemeCanlı Taban16
+MathAdapter: MathAdapter
 Matura MT Script Capitals: Matura MT Yazı Başlıkları
 MaxCaptureTime: Maksimum Yakalama Süresi
 MaxChips: Maksimum Çipler
@@ -1970,6 +2018,7 @@ MaximizeButton: Büyütme Düğmesi
 MaxItems: Maksimum Öğe Sayısı
 MaxItemWidth: Maksimum Öğe Genişliği
 MaxLength: Maksimum Uzunluk
+MaxLength = 730 days – longest allowed period: MaxLength = 730 gün – izin verilen en uzun süre
 MaxLuminance: Maksimum Parlaklık
 MaxMultipleFiles: MaxÇoklu Dosyalar
 MaxRecordingTime: Maksimum Kayıt Süresi
@@ -2012,13 +2061,17 @@ Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod Sanal Ses Cih
 Millimeters: Milimetre
 MimeRestrictionType: MimeRestrictionType
 MimeTypes: Mime Türleri
+Min/max length & step size: Minimum/maksimum uzunluk ve adım boyutu
 MinDecibels: MinDesibel
 MinFrequency: MinFrekans
 MinHeight: MinYükseklik
 Mini: Mini
 MinimizeButton: Düğmeyi Küçült
+MinLength: MinLength
+MinLength = 60 days – shortest allowed period: MinLength = 60 gün – izin verilen en kısa süre
 MinLuminance: MinParlaklık
 MintCream: Nane Kreması
+Minutely steps: Ince adımlar
 MinZoomLevel: MinZoomDüzeyi
 Mirror: Ayna
 Misc: Misc
@@ -2031,6 +2084,7 @@ mn-MN: Moğolca (Moğolistan)
 mn-Mong-CN: Moğolca (Moğolca, Çin)
 mn-Mong-MN: Moğolca (Moğolca, Moğolistan)
 mni-IN: Manipuri (Hindistan)
+Mobile UIs with limited horizontal space: Sınırlı yatay alana sahip mobil arayüzler
 Moccasin: Moka -sen
 MochaBase16: MochaBase16
 Modal: Başkent
@@ -2057,8 +2111,11 @@ MouseOverMessageClass: MouseOverMessageSınıfı
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move: Hareket etmek
 Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Izgara öğelerini doğrudan sürükle ve bırak yöntemiyle taşıyın ve yeniden boyutlandırın — düzeninizi çalışma zamanında dinamik olarak tasarlayın.
 MoveContent: İçeriği Taşı
+MoveCursor: MoveCursor
+MovingCursor: MovingCursor
 mr-IN: Marathi (Hindistan)
 MS Outlook: MS Görünümü
 MS Reference Sans Serif: MS Referansı Sans Serif
@@ -2112,6 +2169,7 @@ MudDrawerHeader: MudDrawerBaşlığı
 MudDynamicTabs: MudDinamik Sekmeleri
 MudElement: Çamur Elemanı
 MudEx Components: MudEx Bileşenleri
+MudEx Range Slider – Interactive range selection: MudEx Menzil Kaydırıcısı – Etkileşimli menzil seçimi
 MudExAdditionalAdornment: MudExEk Süsleme
 MudExAppearance: MudExGörünüm
 MudExAppLoader: MudExAppLoader
@@ -2139,6 +2197,7 @@ MudExCultureSelect: MudExKültür Seçimi
 MudExDialog: MudExDialog
 MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog, sayfanızda tüm DialogExtensions ile satır içi bir iletişim kutusu göstermek istediğinizde kullanılacak bileşendir.
 MudExDivider: MudExBölücü
+MudExDockLayout: MudExDockLayout
 MudExDropBoxFilePicker: MudExDropBoxDosya Seçici
 MudExEnumSelect: MudExEnum Seçimi
 MudExEnumSelect<TEnum>: MudExEnum Seçimi<TEnum>
@@ -2157,6 +2216,8 @@ MudExGoogleFilePicker: MudExGoogleDosya Seçici
 MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar, bir e-posta adresi için gravatar'daki profil resmini otomatik olarak kullanan bir MudAvatar'dır
+MudExGravatarCard: MudExGravatarCard
+MudExGravatarCard displays a Gravatar profile as card: MudExGravatarCard kart olarak Gravatar profilini gösterir
 MudExGrid: MudExGrid
 MudExGrid — Now with Layout Editing: MudExGrid — Şimdi Düzen Düzenleme ile
 MudExGrid Enhanced: MudExGrid Gelişmiş
@@ -2189,13 +2250,17 @@ MudExOneDriveFilePicker: MudExOneDriveFilePicker
 MudExpansionPanel: Çamur Genişletme Paneli
 MudExpansionPanels: Çamur Genişletme Panelleri
 MudExPicker: MudExSeçici
+MudExPicker Tree: MudExPicker Ağacı
 MudExPickerBase<T>: MudExPickerBase<T>
 MudExPopover: MudExPopover
 MudExPromptDialog: MudExPromptDialog
 MudExPromptDialog Component: MudExPromptDialog Bileşeni
 MudExPropertyEdit: MudExPropertyDüzenle
+MudExRangeSlider<T>: MudExRangeSlider<T>
 MudExSelect: MudExSeç
 MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect, bağlanabilir bir koleksiyondan bir veya daha fazla öğe seçmek için kullanılabilir. Ayrıca bu bileşen, iletişim kutuları veya MudExPopover gibi tüm animasyonları destekler.
+MudExSelect Item template.: MudExSelect Öğe şablonu.
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
 MudExSelect<T>: MudExSeç<T>
 MudExSelectItem is a select item for MudExSelect.: MudExSelectItem, MudExSelect için bir seçim öğesidir.
 MudExSelectItem<T>: MudExSelectItem<T>
@@ -2347,6 +2412,8 @@ nds-NL: Aşağı Almanca (Hollanda)
 ne-IN: Nepalce (Hindistan)
 ne-NP: Nepalce (Nepal)
 NebulaBase16: BulutsuTabanı16
+NeResize: NeResize
+NeswResize: NeswResize
 Never: Hiç
 New: Yeni
 NEW: YENİ
@@ -2887,6 +2954,7 @@ No space available: Boş yer yok
 NoChips: Cips Yok
 NodeBorderRadius: NodeBorderRadius
 NodePadding: Düğüm Doldurma
+NoDrop: NoDrop
 NoHeader: Başlık Yok
 NoIcon: Simge Yok
 NoModalDialogs: NoModalDiyalogları
@@ -2900,6 +2968,7 @@ Not allowed to Delete this user: Bu kullanıcının silinmesine izin verilmiyor
 Not Allowed.: İzin verilmiyor.
 Not connected: Bağlı değil
 Not Modal Dialogs: Modal Olmayan İletişim Kutuları
+NotAllowed: Not Allowed
 Note - Media options can't changed after a screen is selected: Not - Bir ekran seçildikten sonra medya seçenekleri değiştirilemez
 NoteLabels: Not Etiketleri
 NotFoundMessage: Aradığınız sayfa mevcut değil.
@@ -2913,13 +2982,17 @@ NoWrap: Sarma Yok
 npm-example-0.0.20.tgz: npm-örnek-0.0.20.tgz
 nqo-GN: N'Ko (Gine)
 nr-ZA: Güney Ndebele (Güney Afrika)
+NResize: NResize
 nso-ZA: Sesotho sa Leboa (Güney Afrika)
+NsResize: NsResize
 Nuget Package source: Nuget Paket kaynağı
 Nullable enum: Null atanabilir sabit listesi
 Nullable Flags Enum: Null Atanabilir Bayraklar Sabit Listesi
 Number: Sayı
 numeric: Sayısal
 nus-SS: Nuer (Güney Sudan)
+NwResize: NwResize
+NwseResize: NwseResize
 nyn-UG: Nyankole (Uganda)
 Object Edit in Dialog: İletişim Kutusunda Nesne Düzenleme
 ObjectEdit: NesneDüzenle
@@ -3021,6 +3094,7 @@ Overview: Genel bakış
 Owner: Sahip
 pa-Arab-PK: Pencapça (Arapça, Pakistan)
 pa-IN: Pencap (Hindistan)
+Page_Test: Page_Test
 Palatino: Palatine
 Palatino Linotype: Palatino Linotipi
 PaleGreen: Soluk Yeşil
@@ -3106,6 +3180,7 @@ Placeholder: Yer tutucu
 Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Çevrimiçi bir Kod Düzenleyicide MudBlazor ve MudBlazor.Extensions ile oynayın
 Playbill: Playbill
 Player: Oyuncu
+Playground: Çocuk bahçesi
 Please confirm your account by <a href='{0}'>clicking here</a>.: "Lütfen hesabınızı şu şekilde onaylayın: <a href='{0}'>buraya tıklayın</a>."
 Please enter your name: Lütfen adınızı girin
 Please reset your password by <a href='{0}'>clicking here</a>.: Lütfen şifrenizi <a href='{0}' ile sıfırlayın>buraya tıklayın</a>.
@@ -3114,6 +3189,7 @@ Please upload your personal qualifications and references that confirm your pers
 Please Wait: Lütfen bekleyin
 PleaseSelect: Lütfen Seçiniz
 Plum: Erik
+Pointer: Işaretçi
 Points: Nokta
 PointsOfInterest: İlgi Çekici Noktalar
 Pojoaque: Pojoak
@@ -3131,6 +3207,7 @@ PorpleBase16: PorpleBase16
 Portrait: Portre
 Position: Konum
 Position/Size Sample: Pozisyon/Boyut Örneği
+Possibilities: Olasılık
 PostalCode: Posta kodu
 PowderBlue: Pudra Mavisi
 Powerful component to edit a set of items and their properties.: Bir dizi öğeyi ve özelliklerini düzenlemek için güçlü bileşen.
@@ -3176,6 +3253,7 @@ Profile picture added.: Profil resmi eklendi.
 Profile picture deleted.: Profil resmi silindi.
 Profile updated: Profil güncellendi
 ProgramingSkills: Programlama Becerileri
+Progress: İlerleme
 Property1: Özellik1
 Property10: Özellik10
 Property11: Özellik11
@@ -3261,6 +3339,7 @@ RailscastsBase16: RailscastsBase16
 Rainbow: Gökkuşağı
 Random: Rastgele
 RandomColorUpdateDelay: RandomColorUpdateDelay
+RangeSlider: RangeSlider
 RarArchive.rar: RarArchive.rar
 Rate: Oran
 Rate must be greater than 0: Oran 0'dan büyük olmalıdır
@@ -3343,6 +3422,7 @@ Reset view: Görünümü sıfırla
 ResetButtonIcon: ResetButtonIcon
 ResetToDefaultFirst: ResetToDefaultFirst
 Resizeable: Yeniden boyutlandırılabilir
+ResizeCursor: ResizeCursor
 ResizeMode: Yeniden Boyutlandırma Modu
 Resources: Kaynaklar
 Responsive: Duyarlı
@@ -3422,6 +3502,7 @@ RoundBars: Yuvarlak Çubuklar
 Rounded: Yuvarlak
 Routeros: Yönlendiriciler
 Row: Sıra
+RowResize: Sırayı Yeniden Boyutlandırma
 RowSpan: Satır Aralığı
 RowsPerPageString: Sayfa başına satır sayısı
 RoyalBlue: Kraliyet Mavisi
@@ -3434,6 +3515,8 @@ ru-UA: Rusça (Ukrayna)
 RubberBand: Lastik Bant
 RubberBandColor: Lastik Bant Rengi
 RubberBandStyle: Lastik Bant Stili
+Run: Koşmak
+Run this sample on try.mudex.org online: Bu örneği try.mudex.org çevrimiçi çalıştırın
 Runic MT Condensed: Runik MT Yoğunlaştırılmış
 Runtime: Çalışma zamanı
 Russian: Rusça
@@ -3563,9 +3646,11 @@ SelectedItemColor: SelectedItemColor
 SelectedRequests: Seçilen İstekler
 SelectedValues: SelectedValues
 Selecting: Seçme
+SelectionColor: SeçimRenk
 SelectionList: Seçim Listesi
 SelectionMode: Seçim Modu
 SelectionModeIcon: SelectionModeIcon
+SelectionTemplate: SelectionTemplate
 SelectItemsMode: SelectItemsMode
 SelectorsForIgnoreBlur: SeçicilerForIgnoreBlur
 SelectorSize: SeçiciBoyut
@@ -3576,6 +3661,7 @@ Send: Gönder
 Send confirmation email: Onay e-postası gönder
 Sensitivity: Duyarlılık
 Sep: Eylül
+SeResize: SeResize
 Server restarted successfully: Sunucu başarıyla yeniden başlatıldı
 ses-ML: Koyraboro Senni (Mali)
 Set as Default options for all Dialogs: Tüm İletişim Kutuları için Varsayılan seçenekler olarak ayarla
@@ -3600,6 +3686,7 @@ shi-Tfng-MA: Tachelhit (Tifinagh, Fas)
 Show: Göstermek
 Show As Dialog: İletişim Kutusu Olarak Göster
 Show as Tree: Ağaç Olarak Göster
+Show code: Kod göster
 Show Demo: Demoyu Göster
 Show flat: Daireyi göster
 Show info: Bilgileri göster
@@ -3657,6 +3744,7 @@ ShowSliders: Kaydırıcıları Göster
 ShowSpectrumOnRecording: ShowSpectrumOnRecording
 ShowThemeColors: ShowThemeColors
 ShowToolbar: Araç Çubuğunu Göster
+ShowTooltip: ShowTooltip
 ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
 ShowVisualiser: Görüntüleyiciyi Göster
 ShowZoomInButton: Yakınlaştırma Düğmesini Göster
@@ -3664,6 +3752,7 @@ ShowZoomOutButton: ZoomOutDüğmesini Göster
 ShrinkLabel: Shrink Etiket
 si-LK: Sinhala (Sri Lanka)
 Side: Yan
+Side filter panels in search or analytics UIs: Arama veya analitik arayüzlerdeki yan filtre panelleri
 Sienna: Sienna
 Sign In: Oturum Aç
 Sign Up: Kaydol
@@ -3694,6 +3783,8 @@ SimulateWithRandomData: SimulateWithRandomData
 Single: Tek
 SingleExpand: Tek Genişletme
 Size: Boyut
+SizeRange: SizeRange
+SizeRange = 0–100: SizeRange = 0–100
 sk-SK: Slovakça (Slovakya)
 Skeleton: İskelet
 SkipSeparator: Ayırıcıyı Atla
@@ -3763,6 +3854,7 @@ sr-Latn-RS: Sırpça (Latince, Sırbistan)
 sr-Latn-XK: Sırpça (Latince, Kosova)
 Src: Src
 Srcery: Srcery
+SResize: SResize
 ss-SZ: siSwati (Eswatini)
 ss-ZA: siSwati (Güney Afrika)
 ssy-ER: Saho (Eritre)
@@ -3778,6 +3870,7 @@ Start Recording: Kayda Başla
 Start recording after: Kayda şu süreden sonra başlayın
 Start/Stop selection: Başlat/Durdur seçimi
 Starts in {0}: içinde başlar '{0}'
+StartTooltipPosition: StartTooltipPosition
 State: Devlet
 Static: Duruk
 Static card.: Statik kart.
@@ -3785,6 +3878,13 @@ Static item: Statik öğe
 Status: Durum
 SteelBlue: Çelik Mavisi
 Stencil: Şablon
+Step size of 5: 5 basamak boyutu
+StepLength: StepLength
+StepLength = 5 – values in steps of 5: StepLength = 5 – değerler 5 adımlarla
+StepResolver: StepResolver
+StepResolvers.DateOnly.Quarterly: StepResolvers.DateOnly.Quarterly
+StepResolvers.DateOnly.Weekly: StepResolvers.DateOnly.Weekly.
+StepResolvers.TimeOnly: StepResolvers.TimeOnly
 Stereo: Stereo
 Steve Rogers: Steve Rogers
 Store: Mağaza
@@ -3876,7 +3976,9 @@ SummerfruitDarkBase16: Yaz MeyvesiKaranlıkTaban16
 SummerfruitLightBase16: Yaz MeyvesiIşık Tabanı16
 Sunburst: Sunburst
 Super sample Content text.: Süper örnek İçerik metni.
+Supercharge your MudBlazor applications with powerful extensions: MudBlazor uygulamalarınızı güçlü uzantılarla güçlendirin
 Support: Destek
+Supports int and DateTime (other types via generics are possible).: Int ve DateTime'ı destekler (generics aracılığıyla diğer türler de mümkündür).
 Surface: Yüzey
 Surname: Soyadı
 sv-AX: İsveççe (Åland Adaları)
@@ -3894,12 +3996,14 @@ Swing: Salıncak
 Switch: Şalter
 Switch expand button position: Genişletme düğmesinin konumunu değiştir
 Switch overlay source: Kaplama kaynağını değiştir
+SwResize: SwResize
 Symbol: Sembol
 SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
 SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
 syr-SY: Süryanice (Suriye)
 System: Sistem
 System Settings: Sistem ayarları
+T = int – numeric range: T = int – sayısal aralık
 T3024Base16: T3024Taban16
 ta-IN: Tamil (Hindistan)
 ta-LK: Tamilce (Sri Lanka)
@@ -3929,6 +4033,7 @@ Teal: Çamurcun
 tel: Tel
 Telephone: Telefon
 TemplateClass: Şablon Sınıfı
+Templates: Şablon
 Temporary: Geçici
 TenderBase16: İhale Tabanı16
 teo-KE: Teso (Kenya)
@@ -3983,8 +4088,22 @@ The following permission is also required for permission {1}: İzin için aşağ
 The maximum file size is 10 MB: Maksimum dosya boyutu 10 MB'tır
 The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit, bir veya daha fazla temanın veya ön ayarın düzenlenmesini etkili bir şekilde kolaylaştırmak için tasarlanmış sağlam ve çok yönlü bir araçtır. Doğası gereği Karanlık modu, Aydınlık modu veya her ikisinin bir kombinasyonunu barındırır. Ek olarak, MudTheme'den türetilmiş sınıfların yanı sıra ona özgü özel özellikleri de destekler, böylece tüm tema düzenleme gereksinimleriniz için kapsamlı ve esnek bir çözüm sunar.
 The Plugin '{0}' may be able to help: Eklenti '{0}' yardımcı olabilir
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: Menzil kaydırıcısı dikey olarak da kullanılabilir – yan paneller veya kompakt filtre alanları için idealdir.
 The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Örnek, diğer FileDisplay örneğiyle aynıdır, ancak URL kullanılmaması farkıyla; bunun yerine akışlar yüklenir ve kullanılır.
 The server is just restarting. Please wait until the connection has been restored: Sunucu yeni başlatılıyor. Lütfen bağlantı yeniden kurulana kadar bekleyin
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: Parça, bu grupları vurgular ve etiketler; seçim şablonu ise mevcut kültürün para birimi formatını kullanarak seçilen fiyat aralığını gösterir.
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: Pist, "U18", "18–25", "26–35" gibi yaygın yaş gruplarına ayrılmıştır ve seçim şablonu tam yaş aralığını "18 – 35 yaş" gibi gösterir.
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: Parça, Hızlı, OK, Yavaş ve Çok Yavaş gibi yanıt sınıflarına ayrılmıştır ve seçim etiketi hem sayısal aralığı hem de sınıflandırmasını gösterir, örneğin "80 – 450 ms (Hızlı → Yavaş)".
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: Parça, farklı vardiyaları temsil eden zaman bantlarına ayrılmıştır ve seçim şablonu seçilmiş zaman penceresini 24 saat formatında gösterir.
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: Parça, özel bir TrackTemplate ile, seçilen aralık SelectionTemplate ile, başparmaklar ise özel ThumbStartTemplate ve ThumbEndTemplate ile render edilir.
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: Parça yeşil, sarı ve kırmızı segmentlere ayrılmıştır ve seçim etiketi sayısal aralığı ile birlikte "Düşük", "Orta" veya "Yüksek" gibi niteliksel bir sınıflandırmayı gösterir.
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: İz, mali yıl bloklarını ve onların çeyreklerini gösterir ve seçim etiketi seçilen ürünlere bağlı olarak "FY 2022 – FY 2024" veya "FY 2 Q2 – Q4" gibi mali aralıkları gösterir.
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: Parça aylık işaretler ve haftalık tick işaretleri gösterirken, seçim şablonu seçimi "KW 2 – KW 22" gibi takvim haftaları aralığı olarak özetler.
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: Parça tüm seviyeleri yan yana gösteriyor ve seçim şablonu "Gün – Ay" gibi bir etiket oluşturuyor; bu etiketi verilerin grafiklerde veya raporlarda nasıl toplandığını kontrol etmek için kullanabiliyorsunuz.
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: Parça, her birkaç saatte bir saatlik tick ve etiketler gösterirken, seçim şablonu seçilen zaman dilimini kompakt bir etiket olarak gösteriyor.
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: Parça, Pazartesi'den Pazar'a kadar tüm günleri görselleştiriyor, hafta sonlarını öne çıkarıyor ve seçim etiketi "Pazartesi – Cuma" gibi dostça isimler veriyor.
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: Parça, yılları ve çeyreklerini görselleştirir ve seçim etiketi seçilen aralığa göre uyarlanır; örneğin "Q2 2022 – Q3 2023" veya sadece "Q1 – Q3" yıl aynıysa.
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: Parça bu hizmet bantlarını görsel olarak vurgularken, seçim şablonu tam gün aralığını gösterir, örneğin "4 – 9 gün".
 The user "{0}" just changed some of this data: '"{0}" kullanıcısı bu verilerin bir kısmını değiştirdi'
 The user {0} has been logged off: Kullanıcı {0} oturumu kapatıldı
 The User {0} has just edited, created or deleted entries here. You should reload the data: Kullanıcı {0} buradaki girişleri düzenledi, oluşturdu veya sildi. Verileri yeniden yüklemelisiniz
@@ -4013,6 +4132,22 @@ This demo uses the IDialogEventService to check resize or dragged and stores the
 This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Bu, tema düzenleme için dahili olarak MudExObjectEdit ve MudExThemeSelect kullanan MudExThemeEdit bileşenini gösterir
 This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Bu demolar, MudExAdditionalAdornment'ı RenderFragments 'For' ve 'ChildContent' kullanarak kullanmanın önerilen yolunu gösterir.
 This dialog can confirmed when slider value is greater then 10: Bu iletişim kutusu, kaydırıcı değeri 10'dan büyük olduğunda onaylanabilir
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: Bu örnek, mali yılın 1 Ocak'ta başlamadığı özel bir mali yıl zaman çizelgesini göstermektedir.
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: Bu örnek, özel bir adım davranışıyla çok yıllık bir zaman aralığı gösterir. StepResolver ile kaydırıcının nasıl bağlandığını (örneğin aylar, çeyrekler veya saatler) tanımlarsınız.
+This example demonstrates a TimeOnly range slider.: Bu örnek, TimeOnly aralığı kaydırıcısını gösterir.
+This example demonstrates a TimeOnly-based range slider with minute resolution.: Bu örnek, dakika çözünürlüğüne sahip TimeOnly tabanlı bir aralık kaydırıcısını göstermektedir.
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: Bu örnek, Bütçe, Standart, Premium ve Yüksek Seviye gibi anlamsal segmentlerle fiyat veya bütçe aralığı kaydırıcısını göstermektedir.
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: Bu örnek, tam sayı değerleri haftanın günlerine eşler ve aralık kaydırıcısını haftanın günü seçicisine dönüştürür.
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: Bu örnek, Saat, Gün, Hafta, Ay ve Yıl gibi soyut zoom veya toplama seviyelerini temsil eder.
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: Bu örnek, 2015'ten 2022 sonuna kadar olan bir tarih aralığını göstermektedir. Kullanıcı en az 60 gün ve en fazla 2 yıl süreyi seçebilir. Adım boyutu bir gün.
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: Bu örnek, kullanım, kapasite veya risk seviyeleri için kullanılabilecek yüzdeye dayalı bir aralık kaydırıcısını göstermektedir.
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: Bu örnek, erken saat, geç ve gece vardiyaları gibi vardiya planlama senaryolarına özel olarak TimeOnly tabanlı bir menzil kaydırıcısını gösteriyor.
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: Bu örnek, MudExRangeSlider'ı yıl ve ay işaretleriyle zaman çizelgesi tarzı bir kontrole dönüştürmek için özel şablonlar kullanabileceğinizi gösteriyor.
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: Bu örnek, milisaniye bazlı menzil kaydırıcısı kullanarak SLA ve tepki süresi senaryolarını hedefliyor.
+This example turns the range slider into a quarter selector over multiple years.: Bu örnek, aralık kaydırıcısını birkaç yıl boyunca çeyrek seçiciye dönüştürür.
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: Bu örnek, toplu taşıma zamanlarını gün cinsinden temsil etmek için bir tamsayı aralığı kaydırıcısı kullanır; bu süreler Express, Standard ve Ekonomi/Deniz gibi hizmet seviyelerine ayrılmıştır.
+This example uses an integer-based range slider to represent age ranges and demographic bands.: Bu örnek, yaş aralıklarını ve demografik bantları temsil etmek için tam sayı tabanlı bir aralık kaydırıcısı kullanır.
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: Bu örnek, ISO takvim haftası sayılarıyla haftaya dayalı bir aralık seçici oluşturmak için DateOnly ve haftalık adımlar kullanır.
 This is a Json representation of the TestModel. This is ignored for Export and Import: Bu, TestModel'in bir Json gösterimidir. Bu, Dışa Aktarma ve İçeri Aktarma için yoksayılır
 This is a simple information dialog that closes after {0} seconds: Bu, {0} saniye sonra kapanan basit bir bilgi iletişim kutusudur
 This is a simple information dialog that closes after 0 seconds: Bu, 0 saniye sonra kapanan basit bir bilgi iletişim kutusudur
@@ -4024,8 +4159,14 @@ This is a simple information dialog that closes after 5 seconds: Bu, 5 saniye so
 This is an Administrator Only View.: Bu, Yalnızca Yöneticilere Özel Bir Görünümdür.
 This is the MudEx Default theme: Bu, MudEx Varsayılan temasıdır
 This is the sample Popover. In general it inherits the original MudPopover.: Bu örnek Popover'dır. Genel olarak, orijinal MudPopover'ı devralır.
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: Bu, ofis saatleri, bakım aralıkları veya rezervasyon slotları gibi günlük zaman aralıklarını yapılandırmak için faydalıdır.
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: Bu, ürün filtreleri, bütçe seçicileri veya kullanıcıların görsel olarak yönlendirilmiş fiyat aralığı seçtiği herhangi bir kullanıcı arayüzü için faydalıdır.
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: Bu, haftalık olarak tanımlanan tekrarlayan takvimler, kullanılabilirlik pencereleri veya teslimat kalıpları için faydalıdır.
 This one card is still added without an corresponding item.: Bu tek kart, karşılık gelen bir öğe olmadan eklenir.
 This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Bu, diyalog seçeneklerine yöntem olarak geçer. Yöntem false döndürürse iletişim kutusu kapanmaz. Sonucun bir bool veya Task&lt;bool olması gerekir&gt;
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: Bu desen, kullanıcıların gösterilen verilerin granülerliğini dinamik olarak değiştirebildiği analitik dashboard'lar için iyi bir uyumdur.
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: Bu desen, raporlamanın takvim yılları yerine mali yıllara göre hizalandığı iş ve finansal uygulamalar için faydalıdır.
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: Bu desen, kullanıcıların somut tarihler yerine haftalar halinde düşündüklerinde idealdir; örneğin planlama, raporlama veya kısa bakışlarda.
 This photo was taken in a small village in Istra Croatia.: Bu fotoğraf Hırvatistan'ın Istra kentindeki küçük bir köyde çekildi.
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Bu seçici animasyonlar, daha iyi davranışlar ve tüm DialogOptions'ı destekleyen bir iletişim kutusu getirir. Kendi seçici bileşeninizi oluşturmak için jus MudExPickerBase'den devralın veya sadece basit içerik kullanmak için MudExPicker'ı kullanın
 This sample demonstrate how to use the MudExCaptureService: Bu örnekte MudExCaptureService'in nasıl kullanılacağı gösterilmektedir
@@ -4034,13 +4175,20 @@ This sample just shows how easily you can combine the MudExPicker with MudExTree
 This sample uses the IDialogEventService to cancel the dialog close: Bu örnek, iletişim kutusunu kapatmak için IDialogEventService'i kullanır
 This sample uses the options for a can close callback: Bu örnek, can close geri çağırma seçeneklerini kullanır
 This section can be placed inside a MudExGrid component.: Bu bölüm bir MudExGrid bileşeninin içine yerleştirilebilir.
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: Bu şablon, teslimat sürelerinin gün aralıklarıyla ifade edildiği lojistik ve nakliye senaryolarında özellikle faydalıdır.
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: Bu şablon, analitik, hedef kitle hedefleme veya kullanıcıların yaş aralıklarıyla çalıştığı herhangi bir kullanıcı arayüzü için çok uygundur.
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: Bu şablon, gecikme aralıklarının hızlı yorumlanması gereken izleme, gözlemlenebilirlik veya API dashboardlarında iyi çalışır.
 Thistle: Devedikeni
 ThrottleInterval: Gaz Kelebeği Aralığı
+ThumbColor: ThumbColor
+ThumbEndTemplate: ThumbEndTemplate
+ThumbStartTemplate: ThumbStartTemplate
 ti-ER: Tigrinya (Eritre)
 ti-ET: Tigrinya (Etiyopya)
 tig-ER: Tigre (Eritre)
 Tilt: Eğmek
 Time: Saat
+TimeOnly: TimeOnly
 Times: Kere
 Times New Roman: Times Yeni Roman
 TimeSeries: Zaman Serileri
@@ -4096,6 +4244,7 @@ Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
 tr-CY: Türkçe (Kıbrıs)
 tr-TR: Türkçe (Türkiye)
 Trace: İz
+TrackColor: TrackColor
 TrackInfoPosition: TrackInfoPosition
 TrackList: Parça listesi
 TrackListBehaviour: TrackListBehavior
@@ -4104,6 +4253,8 @@ TrackListCoverImage: TrackListCoverImage
 TrackListMode: Parça Listesi Modu
 TrackListPosition: Parça Listesi Konumu
 TrackListToggleButtonPosition: TrackListToggleButtonPosition
+TrackStyle: Pist Stili
+TrackTemplate: TrackTemplate
 Trail Details: Parkur Detayları
 TransformOrigin: Dönüşüm Kaynağı
 Translations: Çeviri -leri
@@ -4113,6 +4264,7 @@ Transparent: Saydam
 Trebuchet MS: Mancınık MS
 TreeView: Ağaç Görünümü
 TreeView component that renders a tree structure of items.: TreeView öğelerin ağaç yapısını işleyen bileşen.
+Treeview in Picker: Picker'daki Treeview
 TreeViewBreadcrumb: TreeViewBreadcrumb
 TreeViewCardGrid: TreeViewCardGrid
 TreeViewDefault: TreeViewDefault
@@ -4185,10 +4337,15 @@ ur-IN: Urduca (Hindistan)
 ur-PK: Urduca (Pakistan)
 url: URL
 Url: URL
+Use cases: Kullanım Durumları
 Use CodeGator Models: CodeGator Modellerini Kullanın
 Use MudExAdditionalAdornment ad ChildContent: MudExAdditionalSüsleme reklamını kullanın ChildContent
 Use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment'ı MudInput'un ChildContent Olarak Kullanın
 Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Bunun yerine MudExSelect'i kullanın ve MultiSelection'ı true ve ValuePresenter'ı Chip olarak ayarlayın.
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: Kaydırıcıyı yatay veya dikey kullanın – filtreler, dashboardlar ve raporlar için idealdir.
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: Bu şablonu, çeyrek aralıklarının kesin tarihlerden daha anlamlı olduğu üç aylık raporlama, KPI'lar veya finansal genel değerlendirmeler için kullanın.
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: Bu şablonu depolar, üretim, çağrı merkezleri veya işin 24 saat boyunca vardiyalı organize edildiği herhangi bir alan için kullanın.
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: Kullanıcıların belirli bir aralığın güvenli, uyarı veya kritik bir bölgeye girip girmediğini bir bakışta anlamak istediklerinde bu şablonu kullanın.
 UseCanvas: Tuvali Kullan
 UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
 UseItemTemplateForSelection: UseItemTemplateForSelection
@@ -4238,6 +4395,8 @@ Variant: Varyant
 ve-ZA: Venda (Güney Afrika)
 Verdana: Verdana
 Version: Sürüm
+Vertical: Dikey
+VerticalText: Dikey Metin
 vi-VN: Vietnamca (Vietnam)
 Video Content-Type: Video İçerik Türü
 Video device: Video cihazı
@@ -4267,6 +4426,7 @@ Vs2015: Vs2015
 VulcanBase16: Vulkan Tabanı16
 vun-TZ: Vunjo (Tanzanya)
 wae-CH: Walser (İsviçre)
+Wait: Beklemek
 wal-ET: Wolaytta (Etiyopya)
 Warning: Uyarı
 WarningContrastText: WarningContrastText
@@ -4298,6 +4458,8 @@ WindowsNtLightBase16: WindowsNtLightBase16
 Wingdings: Wingdings
 With custom configuration: Özel yapılandırma ile
 With default configuration: Varsayılan yapılandırma ile
+With DockLayout: DockLayout ile
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: StepResolvers ile adım davranışını kolayca yapılandırabilirsiniz. Tarih aralıkları için önceden tanımlanmış birkaç çözümleyici sunuyoruz. Bu örnekte StepResolvers.DateTime.Quarterly(_ => 1) kaydırıcıyı çeyreklere snap ettirir.
 With tabs: sekmeler ile
 With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: MudExAdditionalAdornment bileşeniyle, bunun gibi herhangi bir MudInput tabanlı giriş kontrolünde istediğiniz kadar süslemeye sahip olabilirsiniz.
 With this component you can have an animation while loading the main blazor app: Bu bileşenle, ana blazor uygulamasını yüklerken bir animasyona sahip olabilirsiniz
@@ -4314,6 +4476,8 @@ WoodlandBase16: Ormanlık Taban16
 WordDokument.doc: WordDokument.doc
 WrapChips: Sarma Cipsleri
 WrapToolBarContent: WrapToolBarContent
+WResize: WResize
+Write comments or reactions for current component or page: Mevcut bileşen veya sayfa için yorum veya tepkiler yaz
 Xcode: X kodu
 XcodeDuskBase16: XcodeAlacakaranlık Tabanı16
 xh-ZA: isiXhosa (Güney Afrika)
@@ -4338,8 +4502,10 @@ You are logged out by an Administrator or profile change.: Bir Yönetici veya pr
 You are Logged Out.: Oturumunuz Kapatıldı.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment'ı bir MudInput'un ChildContent olarak da kullanabilirsiniz
 You can move me: Beni hareket ettirebilirsin
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: Başparmak veya tüm seçilmiş aralıkları hareket ettirerek başlangıç ve bitiş değerlerini ayarlayabilirsiniz. Konfigürasyona bağlı olarak, minimum ve maksimum süre ile farklı basamak boyutları geçerlidir.
 You can now Login with your credentials: Artık kimlik bilgilerinizle giriş yapabilirsiniz
 You can resize me: Beni yeniden boyutlandırabilirsin
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: Bu tekniği, alanınıza tam olarak uyan zengin zaman kaydırmaları ve görsel aralıklar oluşturmak için kullanabilirsiniz.
 You cannot delete yourself: Kendinizi silemezsiniz
 You clicked: Tıkladınız
 You don't need an extra JsonEditor anymore: Artık fazladan bir JsonEditor'a ihtiyacınız yok
@@ -4365,7 +4531,9 @@ ZipCode: Posta kodu
 Zoom: Yakınlaştırmak
 Zoom in: Yakınlaştır
 Zoom out: Uzaklaştır
+ZoomIn: ZoomIn
 ZoomInButtonIcon: ZoomInButtonSimgesi
 ZoomOnHover: Yakınlaştırma Üzerine Bakış
+ZoomOut: ZoomOut
 ZoomOutButtonIcon: UzaklaştırDüğmeSimgesi
 zu-ZA: isiZulu (Güney Afrika)

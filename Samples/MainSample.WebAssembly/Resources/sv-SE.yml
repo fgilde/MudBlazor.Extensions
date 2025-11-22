@@ -20,6 +20,8 @@ _{0} Demos: '{0} Demos'
 --mud-palette-white: --lera- palett-vit
 (currently the item is not visible): (för närvarande är objektet inte synligt)
 (currently the item is visible): (för närvarande är objektet synligt)
+2 Hourly steps (using StepLength): 2 timvisa steg (med StepLength)
+2 Hourly steps (using StepResolver): 2 timsteg (med StepResolver)
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: En komponent som gör det möjligt för användaren att välja ett värde från en lista med möjliga värden och visa det som brickor eller standardkombinationsruta.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: En komponent som kan användas för att skjuta in ett underordnat innehåll från botten, toppen, vänster eller höger genom att föra muspekaren över det.
@@ -33,6 +35,7 @@ A maximum of {0} files are allowed: Högst {0} filer är tillåtna
 A Popover can be used to display some content on top of another.: Ett flytande fönster kan användas för att visa visst innehåll ovanpå ett annat.
 A powerful component to edit an object and its properties.: En kraftfull komponent för att redigera ett objekt och dess egenskaper.
 A powerful editor that can handle json, xml or yaml content: En kraftfull redigerare som kan hantera json-, xml- eller yaml-innehåll
+A range slider component that allows selecting and manipulating a value range of type T.: En intervallslider-komponent som tillåter att välja och manipulera ett värdeintervall av typ T.
 A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: En enkel ColorPicker-komponent som ärver MudColorPicker men lägger till möjligheten att fördröja stängningshändelsen och använda en inbyggd väljarkomponent från webbläsaren
 A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: En enkel rutnätskomponent som stöder Kolumner och Rader och ColSpan och RowSpan för att innehålla avsnitt.
 A SplitPanel Component: En SplitPanel-komponent
@@ -100,6 +103,7 @@ Age: Ålder
 agq-CM: Aghem (Kamerun)
 ak-GH: Akan (Ghana)
 Albertus: Albertus Albertus
+Alias: Alias
 Alice Johnson: Alice Johnson
 AliceBlue: AliceBlue
 Align: Justera
@@ -132,6 +136,9 @@ AllowRubberBandSelection: AllowRubberBandSelection (på engelska)
 AllowSelectionOfNonEmptyNodes: Tillåt SelectionOfNonEmptyNodes
 AllowSelectOnPreviewClick: AllowSelectOnPreviewClick
 AllowVideoCapture: AllowVideoCapture (på engelska)
+AllowWholeRangeDrag: TillåtaHela RäckviddeDrag
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = sant – hela perioden kan flyttas
+AllScroll: AllScroll
 AlphaBars: AlphaBars (AlphaBars)
 Already have an account?: Har du redan ett konto?
 Always: Alltid
@@ -226,6 +233,7 @@ AntiqueWhite: Antikvit
 ApathyBase16: ApatiBase16
 Api: Application Programming Interface
 API: Application Programming Interface
+Api view component to display the methods and properties of a type: API-vykomponent för att visa metoder och egenskaper hos en typ
 API-Versions: API-versioner
 AppBar: AppBar (AppBar)
 AppbarBackground: AppbarBakgrund
@@ -285,6 +293,7 @@ Are you sure?: Är du säker?
 Arial: Arial Arial
 Arial Black: Arial Svart
 Arial Narrow: Arial smal
+AriaLabelledBy: AriaLabelledAv
 arn-CL: Mapuche (Chile)
 Arta: Konst
 As Admin you can filter for users here: Som Admin kan du filtrera fram användare här
@@ -339,6 +348,7 @@ Aug: Aug
 Austin: Austin
 Austin - 73301: Austin - 73301
 Austin - 73301ender: Austin - 73301ender
+Auto: Bil
 Auto Confirm Email?: Bekräfta e-post automatiskt?
 Auto Generated Editor for TestObject: Automatiskt genererad redigerare för TestObject
 Auto Stop recording after: Stoppa inspelningen automatiskt efter
@@ -390,6 +400,7 @@ Basic: Grundläggande
 Basic role with default permissions: Grundläggande roll med standardbehörigheter
 Bauhaus 93: Bauhaus 93
 be-BY: Vitryska (Vitryssland)
+Because time values always having a fixed size you can also use step length instead of resolvers.: Eftersom tidsvärden alltid har en fast storlek kan du också använda steglängd istället för resolvers.
 BeforeBegin: FöreBörja
 BeforeEnd: FöreSlutet
 BeforeSearchBox: FöreSökBox
@@ -490,6 +501,7 @@ bs-Cyrl-BA: Bosniska (kyrilliska, Bosnien och Hercegovina)
 bs-Latn-BA: Bosniska (latinskt, Bosnien och Hercegovina)
 Build amazing UIs: Bygg fantastiska användargränssnitt
 BurlyWood: BurlyWood (på engelska)
+But for sure resolvers are working as well.: Men resolvers fungerar definitivt också.
 button: knapp
 Button: Knapp
 Button component for capturing audio and video.: Knappkomponent för att spela in ljud och video.
@@ -535,6 +547,7 @@ ccp-Cakm-BD: Chakma (Chakma, Bangladesh)
 ccp-Cakm-IN: Chakma (Chakma, Indien)
 ce-RU: Tjetjenska (Ryssland)
 ceb-Latn-PH: Cebuano (latin, Filippinerna)
+Cell: Cell
 Centaur: Kentaur
 Center: Centrum
 CenterCenter: CenterCenter (CenterCenter)
@@ -627,6 +640,7 @@ ColorPickerView: ColorPickerVisa
 ColorsBase16: FärgerBase16
 ColorStops: ColorStops (på engelska)
 ColorTemperature: FärgTemperatur
+ColResize: ColResize
 ColSpan: ColSpan
 Column: Spalt
 Columns Affected: Kolumner som påverkas
@@ -640,6 +654,7 @@ Compact: Kompakt
 Comparer: Jämföra
 Component edit capture options: Alternativ för infångning av komponentredigering
 Component in Dialog: Komponent i dialogruta
+Component that captures component references from ChildContent: Komponent som fångar komponentreferenser från ChildContent
 Component to add additional adornment to a MudInput: Komponent för att lägga till ytterligare utsmyckning till en MudInput
 Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Komponent för att visa en fil i en iframe- eller object-tagg eller i ett registrerat visningsprogram som implementerar IMudExFileDisplay
 Component to display information about the current recording: Komponent för att visa information om den aktuella inspelningen
@@ -649,7 +664,9 @@ Component to move the ChildContent to a specific element that can defined by Ele
 Component to select a theme from a list of themes.: Komponent för att välja ett tema från en lista med teman.
 ComponentBaseWithState: ComponentBaseWithState (på engelska)
 ComponentInDialog: ComponentInDialog (på engelska)
+Components: Komponenter
 Conditional updates: Villkorliga uppdateringar
+Configuration: Konfiguration
 Configure list values: Konfigurera listvärden
 Confirm: Bekräfta
 CONFIRM: BEKRÄFTA
@@ -670,6 +687,7 @@ Content-Type: Innehållstyp
 ContentAlignment: Innehållsjustering
 ContentStream: ContentStream (på engelska)
 ContentType: Innehållstyp
+ContextMenu: ContextMeny
 ContextMenuAction: KontextMenuAction
 Continue to {0}: Fortsätt att {0}
 Continuous: Kontinuerlig
@@ -677,6 +695,7 @@ Contrast: Kontrast
 Cooper Black: Cooper Svart
 Copperplate Gothic Bold: Kopparplåt Gothic Fet
 Copperplate Gothic Light: Kopparplåt Gothic Light
+Copy: Kopia
 Copy url: Kopiera url
 Counter: Räknare
 Country: Land
@@ -689,6 +708,7 @@ Create powerful, flexible dock layouts — drag, drop, snap, and organize your d
 CreatedOn: Skapad den
 Critical: Kritisk
 CropAndScale: BeskärOchSkala
+Crosshair: Hårkors
 cs-CZ: Tjeckiska (Tjeckien)
 CSS Color Variables: CSS-färgvariabler
 CssVars: CssVars
@@ -701,6 +721,8 @@ Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can
 Cursor: Markör
 CursorPositionOrigin: CursorPositionOrigin (MarkörpositionUrsprung)
 Custom: Sed
+Custom fiscal year logic: Anpassad logik för räkenskapsåret
+Custom Templates: Anpassade mallar
 CustomContentErrorMessage: CustomContentErrorMessage (CustomContentErrorMessage)
 Customize: Anpassa
 cy-GB: Walesiska (Storbritannien)
@@ -764,9 +786,11 @@ Decimal value is required using {0} type!: Decimalvärde krävs med {0} typ!
 DeepPink: Djuprosa
 DeepSkyBlue: DeepSkyBlue (på engelska)
 Default: Standard
+Default steps: Standardsteg
 DefaultBorderRadius: DefaultBorderRadius (på engelska)
 DefaultDarkBase16: StandardDarkBase16
 DefaultLightBase16: DefaultLightBase16 (på engelska)
+Define minimum and maximum duration for ranges as well as custom step sizes.: Definiera minsta och maximala längd för intervall samt anpassade steglängder.
 Defined: Definierad
 Delay: Försening
 DelayValueChangeToPickerClose: DelayValueChangeToPickerStäng
@@ -807,6 +831,7 @@ Demo of using explicit the MudExFileDisplayZip to show and select content inside
 Demonstration for a simple but very useful Enum Selector: Demonstration för en enkel men mycket användbar Enum Selector
 Demonstration of the MudExSplitter: Demonstration av MudExSplitter
 Demonstration of the quickly color select with MudExColorBubble: Demonstration av det snabba färgvalet med MudExColorBubble
+Demos: Demos
 DEMOS: DEMOS
 Dense: Tät
 Dependent permissions required: Beroende behörigheter som krävs
@@ -888,7 +913,10 @@ Do you really want to restore the database from backup '{0}'? Note that any chan
 Do you want to delete the profile picture of {0}: Vill du ta bort profilbilden på {0}
 Do you want to delete the User {0}: Vill du ta bort användar{0}
 Docco: Docco Docco (på engelska)
+Dock: Dock
+Dock Control: Dockkontroll
 Docked: Dockad
+DockLayout with ObjectEdit: DockLayout med ObjectEdit
 Document Deleted: Dokumentet har tagits bort
 Document Extended Attributes: Utökade attribut för dokument
 Document Management: Dokumenthantering
@@ -967,6 +995,8 @@ Edit: Redigera
 Edit {0}: Redigera {0}
 Edit a complex Model with included Collection of users: Redigera en komplex modell med en inkluderad samling användare
 Edit Audio Constraints: Redigera ljudbegränsningar
+Edit Configuration: Redigera konfiguration
+Edit configuration for component in this sample: Redigera konfiguration för komponent i detta exempel
 Edit Current Theme: Redigera aktuellt tema
 Edit data in dialog: Redigera data i dialogrutan
 Edit in TryMudEx: Redigera i TryMudEx
@@ -1113,6 +1143,7 @@ en-ZW: Engelska (Zimbabwe)
 Enable Disqus: Aktivera Disqus
 enables or disables virtualization.: Aktiverar eller inaktiverar virtualisering.
 End: Ände
+EndTooltipPosition: EndTooltipPosition
 English: Engelska
 Engravers MT: Gravörer MT
 Enter email and your new password here: Ange e-postadress och ditt nya lösenord här
@@ -1144,6 +1175,7 @@ Eras Bold ITC: Eras Bold ITC
 Eras Demi ITC: Eras Demi ITC
 Eras Light ITC: Eras Light ITC
 Eras Medium ITC: Eras Medium ITC
+EResize: EResize
 Error: Fel
 ErrorAnimation: ErrorAnimation (på engelska)
 ErrorContrastText: ErrorContrastText (ErrorContrastText)
@@ -1186,6 +1218,7 @@ eu-ES: Baskiska (Spanien)
 EvaBase16: EvaBase16 (på engelska)
 EvaDimBase16: EvaDimBase16 (på engelska)
 ewo-CM: Ewondo (Kamerun)
+EwResize: EwResize
 ExcelSheet.xlsx: ExcelSheet.xlsx
 Expand &nbsp; <b>not</b> &nbsp; loaded nodes: Expandera &nbsp; <b>noder som inte</b> &nbsp; har lästs in
 Expand all nodes: Expandera alla noder
@@ -1230,6 +1263,7 @@ FallBackInIframe: FallBackInIframe
 False: Falsk
 FAQs: Vanliga frågor
 Far: Fjärran
+Featured Components: Utvalda komponenter
 Features: Funktioner
 Feb: Feb
 Felix Titling: Felix Titling
@@ -1297,6 +1331,7 @@ FilterMode: FilterMode (Filtrera-läge)
 FilterMultiple: FiltreraMultipel
 FilterPlaceholder: FilterPlaceholder
 Filters: Filter
+Filters in dashboards or reports: Filter i instrumentpaneler eller rapporter
 FilterVariant: Filtrera Variant
 Fiona Gallagher: Fiona Gallagher
 Firebrick: Eldfast tegel
@@ -1310,6 +1345,7 @@ Flat List: Platt lista
 FlatBase16: FlatBase16 (på engelska)
 FlatList: Platt lista
 FlexEnd: FlexEnd (på engelska)
+Flexible data types: Flexibla datatyper
 FlexStart: FlexStart (på engelska)
 Flip: Flip
 FlipAlways: FlipAlltid
@@ -1339,6 +1375,7 @@ ForceShrink: ForceShrink (Tvinga krympning)
 ForestGreen: Skogsgrön
 Forgot password?: Glömt lösenordet?
 Format: Format
+Forward: Framåt
 Foundation: Stiftelse
 fr-029: Franska (Karibien)
 fr-BE: Franska (Belgien)
@@ -1442,6 +1479,8 @@ GoogleDriveClientId: GoogleDriveClientId
 GoogleLightBase16: GoogleLightBase16
 Goudy Old Style: Goudy gammal stil
 Goudy Stout: Goudy Stout
+Grab: Gripa
+Grabbing: Greppa
 Gradient: Gradient
 GradientDark: GradientDark (GradientMörk)
 GradientForeground: GradientFörgrund
@@ -1529,6 +1568,7 @@ Hello from dialog 1: Hej från dialogruta 1
 Hello from dialog sample page: Hej från exempelsidan för dialogrutan
 Hello World: Hej världen
 Hello...: Hej...
+Help: Hjälp
 HelperId: Hjälpar-ID (på engelska)
 HelperText: Hjälptext (Hjälpare)
 HelperTextOnFocus: HjälpareTextOnFocus
@@ -1550,6 +1590,7 @@ Hide: Gömma
 HideContentWhenCollapsed: HideContentWhenCollapsed (DöljaInnehållNärKomprimerade)
 HideDropDownWhenReadOnly: HideDropDownWhenReadOnly (Dölj DropDownNärLäsEn)
 High Tower Text: Text om det höga tornet
+Highlights: Höjdpunkter
 HighlightSearch: HöjdpunkterSök
 Hinge: Gångjärn
 Home: Hem
@@ -1558,6 +1599,7 @@ HopscotchBase16: Hoppa hageBase16
 HorizonDarkBase16: HorizonDarkBase16 (på engelska)
 HorizonLightBase16: HorizonLightBase16 (på engelska)
 Horizontal: Vågrät
+Horizontal & vertical orientation: Horisontell och vertikal orientering
 HouseNumber: Nummer
 Houston: Houston
 Houston - 77001: Houston - 77001
@@ -1602,6 +1644,7 @@ Idea: Idé
 Identifier: Identifierare
 If this is set a photo will be taken instead of a video.: Om detta är inställt kommer ett foto att tas istället för en video.
 If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Om du gillar det här paketet, vänligen stjärnmärk ⭐ det på Github och dela det med dina vänner. Om inte, kan du ge en stjärna ändå och låt mig veta vad jag kan förbättra för att göra det bättre för dig.
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: Om du bara behöver en tidsreglage och inte vill skapa egna mallar kan du också använda den dedikerade {0}-komponenten istället.
 If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Om du ställer in detta alternativ som standard. Det här alternativet kommer att användas för alla dialogrutor där inga alternativ har angetts. Fortsätta?
 ig-NG: Igbo (Nigeria)
 Ignore: Bortse från
@@ -1618,6 +1661,7 @@ Impact: Effekt
 Import: Import
 ImportExportIcon: ImporteraExporteraIkon
 In: I
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: I detta exempel kontrollerar du ett enkelt numeriskt intervall från 0 till 100. Steglängden är inställd på 5 för att tillåta grova intervall.
 In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: I det här exemplet läses data in dynamiskt så snart objektet först visas i vyn. Komponenten har stöd för två innehållsfack
 In this sample you are forced to pick an user: I det här exemplet tvingas du välja en användare
 In this sample you are forced to pick some users: I det här exemplet är du tvungen att välja några användare
@@ -1658,6 +1702,7 @@ InputMode: InputMode (InputLäge)
 InputStyle: InputStyle (på engelska)
 InputType: InputType (Inmatningstyp)
 Inset: Insats
+Instance: Instans
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons (IntegratedInDialogAsKnappar)
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: InterimResultat
@@ -1672,6 +1717,7 @@ is-IS: Isländska (Island)
 IsActive: Är Aktiv
 IsblEditorDark: IsblEditorDark
 IsblEditorLight: IsblEditorLight (på engelska)
+IsInverted: IsInverted
 IsMouseOverChip: IsMouseOverChip (på engelska)
 ISO: ISO
 IsOpen: Är öppen
@@ -1811,6 +1857,7 @@ Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): 
 LegacyRender: LegacyRender (ÄldreRender)
 Legend: Legend
 LemonChiffon: Citronchiffong
+Length: Längd
 LetterSpacing: Avstånd mellan bokstäver
 lg-UG: Ganda (Uganda)
 Library: Bibliotek
@@ -1958,6 +2005,7 @@ MaterialDarkerBase16: MaterialDarkerBase16
 MaterialLighterBase16: MaterialLighterBase16
 MaterialPalenightBase16: MaterialPalenightBase16
 MaterialVividBase16: MaterialVividBase16
+MathAdapter: MathAdapter
 Matura MT Script Capitals: Matura MT Script versaler
 MaxCaptureTime: MaxCaptureTime (på engelska)
 MaxChips: MaxChips
@@ -1970,6 +2018,7 @@ MaximizeButton: MaximizeButton (MaximeraKnapp)
 MaxItems: MaxItems (på engelska)
 MaxItemWidth: MaxItemWidth
 MaxLength: MaxLängd
+MaxLength = 730 days – longest allowed period: MaxLength = 730 dagar – längsta tillåtna period
 MaxLuminance: MaxLuminans
 MaxMultipleFiles: MaxMultipleFiles (på engelska)
 MaxRecordingTime: MaxRecordingTime (på engelska)
@@ -2012,13 +2061,17 @@ Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod Virtual Audio
 Millimeters: Millimeter
 MimeRestrictionType: MimeRestrictionType
 MimeTypes: Mime-typer
+Min/max length & step size: Min/maxlängd och steglängd
 MinDecibels: MinDecibel
 MinFrequency: Min-frekvens
 MinHeight: MinHöjd
 Mini: Mini
 MinimizeButton: MinimizeButton (Minimera knapp)
+MinLength: MinLength
+MinLength = 60 days – shortest allowed period: MinLength = 60 dagar – kortaste tillåtna period
 MinLuminance: MinLuminans (minluminans)
 MintCream: MintCream (på engelska)
+Minutely steps: Små steg
 MinZoomLevel: MinZoomLevel (på engelska)
 Mirror: Spegel
 Misc: Misc
@@ -2031,6 +2084,7 @@ mn-MN: Mongoliska (Mongoliet)
 mn-Mong-CN: Mongoliska (mongoliska, Kina)
 mn-Mong-MN: Mongoliska (mongoliska, mongoliska)
 mni-IN: Manipuri (Indien)
+Mobile UIs with limited horizontal space: Mobila gränssnitt med begränsat horisontellt utrymme
 Moccasin: Moccasin
 MochaBase16: MochaBase16
 Modal: Kapital
@@ -2057,8 +2111,11 @@ MouseOverMessageClass: MouseOverMessageClass (på engelska)
 MouseOverMessageStyle: MouseOverMessageStyle (på engelska)
 MouseWheelDownAction: MushjuletNedåtåtgärd
 MouseWheelUpAction: MouseWheelUpAction (mushjulupp)
+Move: Flytta
 Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Flytta och ändra storlek på rutnätsobjekt direkt genom att dra och släppa – designa din layout dynamiskt vid körning.
 MoveContent: Flytta innehåll
+MoveCursor: MoveCursor
+MovingCursor: MovingCursor
 mr-IN: Marathi (Indien)
 MS Outlook: MS Utsikter
 MS Reference Sans Serif: MS Reference Sans Serif
@@ -2112,6 +2169,7 @@ MudDrawerHeader: MudDrawerHeader
 MudDynamicTabs: MudDynamicTabs (på engelska)
 MudElement: MudElement (på engelska)
 MudEx Components: MudEx Komponenter
+MudEx Range Slider – Interactive range selection: MudEx Range Slider – Interaktivt val av skjutvapen
 MudExAdditionalAdornment: MudExAdditionalOrnament
 MudExAppearance: MudExUtseende
 MudExAppLoader: MudExAppLoader (på engelska)
@@ -2139,6 +2197,7 @@ MudExCultureSelect: MudExCultureSelect (på engelska)
 MudExDialog: MudExDialog (på engelska)
 MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog är den komponent som ska användas när du vill visa en dialogruta som är infogad på sidan med alla DialogExtensions.
 MudExDivider: MudExDivider (på engelska)
+MudExDockLayout: MudExDockLayout
 MudExDropBoxFilePicker: MudExDropBoxFilePicker (på engelska)
 MudExEnumSelect: MudExEnumSelect (på engelska)
 MudExEnumSelect<TEnum>: MudExEnumSelect (på engelska)<TEnum>
@@ -2157,6 +2216,8 @@ MudExGoogleFilePicker: MudExGoogleFilePicker (på engelska)
 MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar är en MudAvatar som automatiskt använder profilbilden från gravatar för en e-postadress
+MudExGravatarCard: MudExGravatarCard
+MudExGravatarCard displays a Gravatar profile as card: MudExGravatarCard visar en Gravatar-profil som kort
 MudExGrid: MudExGrid (på engelska)
 MudExGrid — Now with Layout Editing: MudExGrid — Nu med layoutredigering
 MudExGrid Enhanced: MudExGrid Förbättrad
@@ -2189,13 +2250,17 @@ MudExOneDriveFilePicker: MudExOneDriveFilePicker (på engelska)
 MudExpansionPanel: MudExpansionPanel (på engelska)
 MudExpansionPanels: MudExpansionPanels (på engelska)
 MudExPicker: MudExPicker (på engelska)
+MudExPicker Tree: MudExPicker-trädet
 MudExPickerBase<T>: MudExPickerBase <T>(på engelska)
 MudExPopover: MudExPopover (på engelska)
 MudExPromptDialog: MudExPromptDialog (på engelska)
 MudExPromptDialog Component: MudExPromptDialog-komponent
 MudExPropertyEdit: MudExPropertyRedigera
+MudExRangeSlider<T>: MudExRangeSlider<T>
 MudExSelect: MudExSelect (på engelska)
 MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect kan användas för att välja ett eller flera objekt från en bindningsbar samling. Den här komponenten stöder också alla animeringar som dialogrutor eller MudExPopover.
+MudExSelect Item template.: MudExSelect Itemmall.
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
 MudExSelect<T>: MudExSelect (på engelska)<T>
 MudExSelectItem is a select item for MudExSelect.: MudExSelectItem är ett select-objekt för MudExSelect.
 MudExSelectItem<T>: MudExSelectItem (på engelska)<T>
@@ -2347,6 +2412,8 @@ nds-NL: Lågtyska (Nederländerna)
 ne-IN: Nepali (Indien)
 ne-NP: Nepali (Nepal)
 NebulaBase16: NebulaBase16
+NeResize: NeResize
+NeswResize: NeswResize
 Never: Aldrig
 New: Ny
 NEW: NY
@@ -2887,6 +2954,7 @@ No space available: Inget ledigt utrymme
 NoChips: NoChips
 NodeBorderRadius: NodeBorderRadius (på engelska)
 NodePadding: NodePadding (NodePadding)
+NoDrop: NoDrop
 NoHeader: NoHeader (på engelska)
 NoIcon: NoIcon
 NoModalDialogs: NoModalDialogs
@@ -2900,6 +2968,7 @@ Not allowed to Delete this user: Får inte ta bort den här användaren
 Not Allowed.: Inte tillåtet.
 Not connected: Inte ansluten
 Not Modal Dialogs: Inte modala dialoger
+NotAllowed: InteTillåtet
 Note - Media options can't changed after a screen is selected: Mediealternativen kan inte ändras efter att en skärm har valts
 NoteLabels: Etiketter
 NotFoundMessage: Sidan du letade efter finns inte.
@@ -2913,13 +2982,17 @@ NoWrap: NoWrap (på engelska)
 npm-example-0.0.20.tgz: npm-exempel-0.0.20.tgz
 nqo-GN: N'Ko (Guinea)
 nr-ZA: Sydndebele (Sydafrika)
+NResize: NResize
 nso-ZA: Sesotho sa Leboa (Sydafrika)
+NsResize: NsResize
 Nuget Package source: Källa för Nuget-paket
 Nullable enum: Uppräkning som kan ha värdet null
 Nullable Flags Enum: Uppräkning av flaggor som kan ha värdet null
 Number: Nummer
 numeric: numerisk
 nus-SS: Nuer (Sydsudan)
+NwResize: NwResize
+NwseResize: NwseResize
 nyn-UG: Nyankole (Uganda)
 Object Edit in Dialog: Objektredigering i dialogruta
 ObjectEdit: ObjektRedigera
@@ -3021,6 +3094,7 @@ Overview: Överblick
 Owner: Ägare
 pa-Arab-PK: Punjabi (arabiska, Pakistan)
 pa-IN: Punjabi (Indien)
+Page_Test: Page_Test
 Palatino: Palatinen
 Palatino Linotype: Palatino linotyp
 PaleGreen: Blekgrön
@@ -3106,6 +3180,7 @@ Placeholder: Platshållare
 Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Lek med MudBlazor och MudBlazor.Extensions i en kodredigerare online
 Playbill: Spela på spelplanen
 Player: Spelare
+Playground: Lekplats
 Please confirm your account by <a href='{0}'>clicking here</a>.: Bekräfta ditt konto genom att <a href='{0}'>klicka här</a>.
 Please enter your name: Ange ditt namn
 Please reset your password by <a href='{0}'>clicking here</a>.: Återställ ditt lösenord genom att <a href='{0}'>klicka här</a>.
@@ -3114,6 +3189,7 @@ Please upload your personal qualifications and references that confirm your pers
 Please Wait: Snälla vänta
 PleaseSelect: VänligenVälj
 Plum: Plommon
+Pointer: Pekare
 Points: Poäng
 PointsOfInterest: Intressanta platser
 Pojoaque: Pojoaque Pojoaque
@@ -3131,6 +3207,7 @@ PorpleBase16: PorpleBase16
 Portrait: Porträtt
 Position: Position
 Position/Size Sample: Prov på position/storlek
+Possibilities: Möjligheter
 PostalCode: Postnummer
 PowderBlue: Puderblå
 Powerful component to edit a set of items and their properties.: Kraftfull komponent för att redigera en uppsättning objekt och deras egenskaper.
@@ -3176,6 +3253,7 @@ Profile picture added.: Profilbild har lagts till.
 Profile picture deleted.: Profilbild borttagen.
 Profile updated: Profilen uppdaterad
 ProgramingSkills: Programmering Färdigheter
+Progress: Framsteg
 Property1: Egenskap1
 Property10: Fastighet10
 Property11: Egendom11
@@ -3261,6 +3339,7 @@ RailscastsBase16: RailscastsBase16
 Rainbow: Regnbåge
 Random: Slumpmässig
 RandomColorUpdateDelay: RandomColorUpdateDelay (på engelska)
+RangeSlider: RangeSlider
 RarArchive.rar: RarArchive.rar
 Rate: Taxera
 Rate must be greater than 0: Hastigheten måste vara större än 0
@@ -3343,6 +3422,7 @@ Reset view: Återställ vy
 ResetButtonIcon: ResetButtonIcon
 ResetToDefaultFirst: ResetToDefaultFirst
 Resizeable: Kan ändras i storlek
+ResizeCursor: ResizeCursor
 ResizeMode: Ändra storlek på läge
 Resources: Resurser
 Responsive: Responsiv
@@ -3422,6 +3502,7 @@ RoundBars: Rundstänger
 Rounded: Rundad
 Routeros: RouterOS
 Row: Rad
+RowResize: RowResize
 RowSpan: RowSpan
 RowsPerPageString: Rader per sida
 RoyalBlue: RoyalBlue
@@ -3434,6 +3515,8 @@ ru-UA: Ryska (Ukraina)
 RubberBand: RubberBand (RubberBand)
 RubberBandColor: RubberBandColor (på engelska)
 RubberBandStyle: RubberBandStyle (på engelska)
+Run: Springa
+Run this sample on try.mudex.org online: Kör detta prov på try.mudex.org online
 Runic MT Condensed: Runic MT i förtätning
 Runtime: Runtime
 Russian: Ryska
@@ -3563,9 +3646,11 @@ SelectedItemColor: SelectedItemColor
 SelectedRequests: UtvaldaFörfrågningar
 SelectedValues: ValdaVärden
 Selecting: Välja
+SelectionColor: SelectionColor
 SelectionList: Urvalslista
 SelectionMode: SelectionMode (Urval)
 SelectionModeIcon: SelectionModeIcon (på engelska)
+SelectionTemplate: SelectionTemplate
 SelectItemsMode: SelectItemsMode (Välja ObjektLäge)
 SelectorsForIgnoreBlur: SelectorsForIgnoreBlur
 SelectorSize: Väljare Storlek
@@ -3576,6 +3661,7 @@ Send: Sända
 Send confirmation email: Skicka bekräftelse via e-post
 Sensitivity: Känslighet
 Sep: sep
+SeResize: SeResize
 Server restarted successfully: Servern har startats om
 ses-ML: Koyraboro Senni (Mali)
 Set as Default options for all Dialogs: Ange som standardalternativ för alla dialogrutor
@@ -3600,6 +3686,7 @@ shi-Tfng-MA: Tachelhit (Tifinagh, Marocko)
 Show: Visa
 Show As Dialog: Dialogrutan Visa som
 Show as Tree: Visa som träd
+Show code: Visa kod
 Show Demo: Visa demo
 Show flat: Visa platt
 Show info: Visa info
@@ -3657,6 +3744,7 @@ ShowSliders: ShowSliders
 ShowSpectrumOnRecording: ShowSpectrumOnRecording
 ShowThemeColors: ShowThemeColors
 ShowToolbar: ShowToolbar
+ShowTooltip: ShowTooltip
 ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
 ShowVisualiser: ShowVisualiser
 ShowZoomInButton: ShowZoomInButton
@@ -3664,6 +3752,7 @@ ShowZoomOutButton: ShowZoomOutButton
 ShrinkLabel: Krymp etikett
 si-LK: Singalesiska (Sri Lanka)
 Side: Sida
+Side filter panels in search or analytics UIs: Sidofilterpaneler i sök- eller analysgränssnitt
 Sienna: Sienna
 Sign In: Logga in
 Sign Up: Registrera sig
@@ -3694,6 +3783,8 @@ SimulateWithRandomData: SimulateWithRandomData (SimuleraWithRandomData)
 Single: Singel
 SingleExpand: SingleExpand (SingelExpandera)
 Size: Storlek
+SizeRange: Storleksområde
+SizeRange = 0–100: SizeRange = 0–100
 sk-SK: Slovakiska (Slovakien)
 Skeleton: Skelett
 SkipSeparator: Hoppa över Separator
@@ -3763,6 +3854,7 @@ sr-Latn-RS: Serbiska (latinsk, Serbien)
 sr-Latn-XK: Serbiska (latinsk, kosovo)
 Src: Src
 Srcery: Srcery
+SResize: SResize
 ss-SZ: siSwati (Eswatini)
 ss-ZA: siSwati (Sydafrika)
 ssy-ER: Saho (Eritrea)
@@ -3778,6 +3870,7 @@ Start Recording: Börja spela in
 Start recording after: Börja spela in efter
 Start/Stop selection: Val av start/stopp
 Starts in {0}: Startar om {0}
+StartTooltipPosition: StartTooltipPosition
 State: Stat
 Static: Statisk
 Static card.: Statiskt kort.
@@ -3785,6 +3878,13 @@ Static item: Statiskt objekt
 Status: Status
 SteelBlue: SteelBlue (StålBlå)
 Stencil: Schablon
+Step size of 5: Steglängd på 5
+StepLength: StepLength
+StepLength = 5 – values in steps of 5: StepLength = 5 – värden i steg om 5
+StepResolver: StepResolver
+StepResolvers.DateOnly.Quarterly: Stegresolvers.Endast datum.kvartalsvis
+StepResolvers.DateOnly.Weekly: StepResolvers.DateOnly.Weekly
+StepResolvers.TimeOnly: StepResolvers.TimeOnly
 Stereo: Stereo
 Steve Rogers: Steve Rogers
 Store: Butik
@@ -3876,7 +3976,9 @@ SummerfruitDarkBase16: SommarfruktDarkBase16
 SummerfruitLightBase16: SommarfruktLightBase16
 Sunburst: Sunburst
 Super sample Content text.: Super exempel på innehållstext.
+Supercharge your MudBlazor applications with powerful extensions: Ladda dina MudBlazor-applikationer med kraftfulla tillägg
 Support: Stöd
+Supports int and DateTime (other types via generics are possible).: Stöder int och DateTime (andra typer via generiska är möjliga).
 Surface: Yta
 Surname: Efternamn
 sv-AX: Svenska (Åland)
@@ -3894,12 +3996,14 @@ Swing: Svänga
 Switch: Strömbrytare
 Switch expand button position: Växla läge för expanderingsknapp
 Switch overlay source: Växla överläggskälla
+SwResize: SwResize
 Symbol: Symbol
 SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
 SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
 syr-SY: Syriska (Syrien)
 System: System
 System Settings: Systeminställningar
+T = int – numeric range: T = int – numeriskt intervall
 T3024Base16: T3024Base16
 ta-IN: Tamil (Indien)
 ta-LK: Tamil (Sri Lanka)
@@ -3929,6 +4033,7 @@ Teal: Kricka
 tel: Tel
 Telephone: Telefon
 TemplateClass: Mall-klass
+Templates: Mallar
 Temporary: Temporär
 TenderBase16: TenderBase16 (på engelska)
 teo-KE: Teso (Kenya)
@@ -3983,8 +4088,22 @@ The following permission is also required for permission {1}: Följande behörig
 The maximum file size is 10 MB: Den maximala filstorleken är 10 MB
 The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit är ett robust och mångsidigt verktyg som är utformat för att effektivt underlätta redigeringen av ett eller flera teman eller förinställningar. Det rymmer i sig mörkt läge, ljust läge eller en kombination av båda. Dessutom stöder den härledda klasser från MudTheme, såväl som anpassade egenskaper som är inneboende i den, vilket ger en omfattande och flexibel lösning för alla dina temaredigeringskrav.
 The Plugin '{0}' may be able to help: Plugin-programmet "{0}" kanske kan hjälpa till
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: Räckviddsreglaget kan också användas vertikalt – idealiskt för sidofält eller kompakta filterområden.
 The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Exemplet är detsamma som det andra FileDisplay-exemplet, men med skillnaden att ingen URL används. I stället läses strömmar in och används.
 The server is just restarting. Please wait until the connection has been restored: Servern startar bara om. Vänta tills anslutningen har återställts
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: Spåret lyfter fram dessa band och märker dem, medan urvalsmallen visar det valda prisintervallet med den aktuella kulturens valutaformat.
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: Banan är indelad i vanliga åldersgrupper som "U18", "18–25", "26–35" och så vidare, och urvalsmallen visar det exakta åldersintervallet som "18–35 år".
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: Spåret är indelat i responsklasser som Fast, OK, Slow och Very slow, och urvalsetiketten visar både det numeriska intervallet och dess klassificering, till exempel "80 – 450 ms (Fast → Slow)".
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: Spåret är uppdelat i tidsband som representerar olika skift, och urvalsmallen visar det valda tidsfönstret i 24-timmarsformat.
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: Spåret renderas med en egen TrackTemplate, det valda intervallet med en SelectionTemplate, och tummarna med en egen ThumbStartTemplate och ThumbEndTemplate.
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: Banan är uppdelad i gröna, gula och röda segment, och urvalsetiketten visar det numeriska intervallet tillsammans med en kvalitativ klassificering som "Låg", "Medel" eller "Hög".
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: Spåret visar räkenskapsårsblock och deras kvartal, och urvalsetiketten visar budgetintervall som "FY 2022 – FY 2024" eller "FY 2023 Q2 – Q4" beroende på vad som valts.
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: Spåret visar månatliga markörer och veckovisa ticks, medan urvalsmallen sammanfattar urvalet som ett intervall av kalenderveckor såsom "KW 2 – KW 22".
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: Spåret visar alla nivåer sida vid sida och urvalsmallen visar en etikett som "Dag – Månad", som du kan använda för att styra hur data aggregeras i diagram eller rapporter.
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: Spåret visar timvisa ticks och etiketter var några timmar, medan urvalsmallen renderar den valda tidsperioden som en kompakt etikett.
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: Spåret visualiserar alla dagar från måndag till söndag, lyfter fram helger, och urvalsetiketten visar vänliga namn som "Monday – Friday".
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: Spåret visualiserar år och deras kvartal, och urvalsetiketten anpassar sig beroende på det valda intervallet, till exempel "Q2 2022 – Q3 2023" eller bara "Q1 – Q3" när året är detsamma.
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: Spåret markerar visuellt dessa serviceband, medan urvalsmallen visar det exakta dagintervallet, till exempel "4–9 dagar".
 The user "{0}" just changed some of this data: Användaren "{0}" har precis ändrat en del av dessa data
 The user {0} has been logged off: Användaren {0} har loggats ut
 The User {0} has just edited, created or deleted entries here. You should reload the data: Användaren {0} just har redigerat, skapat eller tagit bort poster här. Du bör ladda om data
@@ -4013,6 +4132,22 @@ This demo uses the IDialogEventService to check resize or dragged and stores the
 This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Detta demonstrerar komponenten MudExThemeEdit som internt använder MudExObjectEdit och MudExThemeSelect för temaredigering
 This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Den här demonstrationen visar det rekommenderade sättet att använda MudExAdditionalAdornment med hjälp av RenderFragments "For" och "ChildContent"
 This dialog can confirmed when slider value is greater then 10: Den här dialogrutan kan bekräftas när skjutreglagets värde är större än 10
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: Detta exempel visar en anpassad räkenskapsårstidslinje där räkenskapsåret inte börjar den 1 januari.
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: Detta exempel visar ett flerårigt tidsintervall med ett anpassat stegbeteende. Med en StepResolver definierar du hur reglaget snappar (till exempel månader, kvartal eller timmar).
+This example demonstrates a TimeOnly range slider.: Detta exempel visar en TimeOnly-räckviddsreglag.
+This example demonstrates a TimeOnly-based range slider with minute resolution.: Detta exempel visar en TimeOnly-baserad räckviddsreglage med minimal upplösning.
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: Detta exempel illustrerar en pris- eller budgetintervallreglage med semantiska segment som Budget, Standard, Premium och High-End.
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: Detta exempel mappar heltalsvärden till veckodagar och förvandlar intervallreglaget till en veckodagsväljare.
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: Detta exempel representerar abstrakta zoom- eller aggregeringsnivåer såsom timme, dag, vecka, månad och år.
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: Detta exempel visar ett datumspann från 2015 till slutet av 2022. Användaren kan välja en period på minst 60 dagar och högst 2 år. Steglängden är en dag.
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: Detta exempel visar en procentuell-baserad räckviddsreglage som kan användas för användning, kapacitet eller risknivåer.
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: Detta exempel visar en TimeOnly-baserad räckviddsreglage anpassad för skiftplaneringsscenarier som tidiga, sena och nattskift.
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: Detta exempel visar hur du kan använda anpassade mallar för att göra MudExRangeSlider till en tidslinjeliknande kontroll med års- och månadsmarkörer.
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: Detta exempel riktar sig mot SLA- och responstidsscenarier med hjälp av en millisekundbaserad räckviddsreglag.
+This example turns the range slider into a quarter selector over multiple years.: Detta exempel förvandlar räckviddsreglaget till en kvartsväljare över flera år.
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: Detta exempel använder en heltalsintervallreglage för att representera transittider i dagar, uppdelade i servicenivåer som Express, Standard och Economy/Sea.
+This example uses an integer-based range slider to represent age ranges and demographic bands.: Detta exempel använder en heltalsbaserad räckviddsreglage för att representera åldersintervall och demografiska band.
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: Detta exempel använder DateOnly och veckovisa steg för att bygga en veckobaserad intervallväljare med ISO-kalenderveckonummer.
 This is a Json representation of the TestModel. This is ignored for Export and Import: Det här är en Json-representation av TestModel. Detta ignoreras för export och import
 This is a simple information dialog that closes after {0} seconds: Detta är en enkel informationsdialog som stängs efter {0} sekunder
 This is a simple information dialog that closes after 0 seconds: Detta är en enkel informationsdialog som stängs efter 0 sekunder
@@ -4024,8 +4159,14 @@ This is a simple information dialog that closes after 5 seconds: Detta är en en
 This is an Administrator Only View.: Det här är en vy endast för administratörer.
 This is the MudEx Default theme: Detta är MudEx standardtema
 This is the sample Popover. In general it inherits the original MudPopover.: Det här är exemplet på flytande fönster. I allmänhet ärver den den ursprungliga MudPopover.
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: Detta är användbart för att konfigurera dagliga tidsfönster såsom kontorstider, underhållsfönster eller bokningstider.
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: Detta är användbart för produktfilter, budgetväljare eller vilket gränssnitt som helst där användare väljer prisintervall på ett visuellt styrt sätt.
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: Detta är användbart för återkommande scheman, tillgänglighetsfönster eller leveransmönster som definieras på veckobasis.
 This one card is still added without an corresponding item.: Det här kortet läggs fortfarande till utan ett motsvarande objekt.
 This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Detta skickas som metod till dialogalternativen. Dialogrutan stängs inte om metoden returnerar false. Resultatet måste vara en bool eller en Task&lt;bool&gt;
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: Detta mönster passar bra för analysinstrumentpaneler där användare dynamiskt kan ändra detaljnivån på den visade datan.
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: Detta mönster är användbart för affärs- och finansiella tillämpningar där rapporteringen är anpassad efter räkenskapsår istället för kalenderår.
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: Detta mönster är idealiskt när användare tänker i veckor istället för konkreta datum, till exempel vid planering, rapportering eller sprintöversikter.
 This photo was taken in a small village in Istra Croatia.: Det här fotot togs i en liten by i Istra, Kroatien.
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Den här väljaren ger animeringar, bättre beteenden och en dialogruta som stöder alla DialogOptions. Om du vill skapa en egen väljarkomponent som du ärver från MudExPickerBase, eller bara använda enkelt innehåll, använder du MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Det här exemplet visar hur du använder MudExCaptureService
@@ -4034,13 +4175,20 @@ This sample just shows how easily you can combine the MudExPicker with MudExTree
 This sample uses the IDialogEventService to cancel the dialog close: I det här exemplet används IDialogEventService för att avbryta stängningen av dialogrutan
 This sample uses the options for a can close callback: I det här exemplet används alternativen för ett återanrop som kan stängas
 This section can be placed inside a MudExGrid component.: Den här sektionen kan placeras inuti en MudExGrid-komponent.
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: Denna mall är särskilt användbar i logistik- och fraktscenarier där ledtider anges i dagsintervall.
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: Denna mall är väl lämpad för analys, målgruppsmålsättning eller alla användargränssnitt där användare arbetar med åldersintervall.
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: Denna mall fungerar bra i övervaknings-, observabilitets- eller API-dashboards där latensintervall måste tolkas snabbt.
 Thistle: Tistel
 ThrottleInterval: ThrottleInterval
+ThumbColor: ThumbColor
+ThumbEndTemplate: ThumbEndTemplate
+ThumbStartTemplate: ThumbStartTemplate
 ti-ER: Tigrinja (Eritrea)
 ti-ET: Tigrinja (Etiopien)
 tig-ER: Tigre (Eritrea)
 Tilt: Luta
 Time: Tid
+TimeOnly: TimeOnly
 Times: Gånger
 Times New Roman: Tider Nya Roman
 TimeSeries: Tidsserier
@@ -4096,6 +4244,7 @@ Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
 tr-CY: Turkiska (Cypern)
 tr-TR: Turkiska (Turkiet)
 Trace: Spåra
+TrackColor: TrackColor
 TrackInfoPosition: TrackInfoPosition (på engelska)
 TrackList: Låtlista
 TrackListBehaviour: TrackListBehaviour (Låtlista)
@@ -4104,6 +4253,8 @@ TrackListCoverImage: TrackListCoverImage (på engelska)
 TrackListMode: TrackListMode (TrackListMode)
 TrackListPosition: TrackListPosition
 TrackListToggleButtonPosition: LåtlistaVäxlaKnappPosition
+TrackStyle: TrackStyle
+TrackTemplate: TrackTemplate
 Trail Details: Detaljer om leden
 TransformOrigin: OmvandlaUrsprung
 Translations: Översättningar
@@ -4113,6 +4264,7 @@ Transparent: Genomskinlig
 Trebuchet MS: Trebuchet MS
 TreeView: Träd utsikt
 TreeView component that renders a tree structure of items.: TreeView-komponent som återger en trädstruktur med objekt.
+Treeview in Picker: Trädvy i Picker
 TreeViewBreadcrumb: TreeViewBrödsmulor
 TreeViewCardGrid: TreeViewCardGrid (på engelska)
 TreeViewDefault: TreeViewDefault (Trädvy)
@@ -4185,10 +4337,15 @@ ur-IN: Urdu (Indien)
 ur-PK: Urdu (Pakistan)
 url: URL
 Url: URL
+Use cases: Användningsområden
 Use CodeGator Models: Använd CodeGator-modeller
 Use MudExAdditionalAdornment ad ChildContent: Använd MudExAdditionalAdornment ad ChildContent
 Use MudExAdditionalAdornment as ChildContent of a MudInput: Använd MudExAdditionalAdornment som ChildContent of a MudInput
 Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Använd MudExSelect i stället och ställ in MultiSelection på true och ValuePresenter på Chip.
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: Använd reglaget horisontellt eller vertikalt – idealiskt för filter, instrumentpaneler och rapporter.
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: Använd denna mall för kvartalsrapportering, KPI:er eller finansiella översikter där kvartalsintervall är mer meningsfulla än exakta datum.
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: Använd denna mall för lager, produktion, callcenter eller vilken domän som helst där arbetet organiseras i skift under en dygnet runt-dygn.
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: Använd denna mall när användare behöver förstå på en snabb blick om ett valt område tillhör en säker, varnings- eller kritisk zon.
 UseCanvas: UseCanvas (på engelska)
 UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
 UseItemTemplateForSelection: UseItemTemplateForSelection
@@ -4238,6 +4395,8 @@ Variant: Variant
 ve-ZA: Venda (Sydafrika)
 Verdana: Verdana (Verdana)
 Version: Version
+Vertical: Vertikal
+VerticalText: VerticalText
 vi-VN: Vietnamesiska (Vietnam)
 Video Content-Type: Typ av videoinnehåll
 Video device: Video-enhet
@@ -4267,6 +4426,7 @@ Vs2015: VS2015
 VulcanBase16: VulcanBase16 (på engelska)
 vun-TZ: Vunjo (Tanzania)
 wae-CH: Walser (Schweiz)
+Wait: Vänta
 wal-ET: Wolaytta (Etiopien)
 Warning: Varning
 WarningContrastText: VarningContrastText
@@ -4298,6 +4458,8 @@ WindowsNtLightBase16: WindowsNtLightBase16 (på engelska)
 Wingdings: Wingdings
 With custom configuration: Med anpassad konfiguration
 With default configuration: Med standardkonfiguration
+With DockLayout: Med DockLayout
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: Med StepResolvers kan du enkelt konfigurera stegbeteendet. För datumintervall tillhandahåller vi flera fördefinierade resolvers. I detta exempel gör StepResolvers.DateTime.Quarterly(_ => 1) att reglaget snappar till kvart.
 With tabs: Med flikar
 With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: Med komponenten MudExAdditionalAdornment kan du ha så många utsmyckningar som möjligt i en MudInput-baserad inmatningskontroll som denna.
 With this component you can have an animation while loading the main blazor app: Med den här komponenten kan du ha en animation medan du laddar huvudblazor-appen
@@ -4314,6 +4476,8 @@ WoodlandBase16: WoodlandBase16
 WordDokument.doc: WordDokument.doc
 WrapChips: WrapChips
 WrapToolBarContent: WrapToolBarInnehåll
+WResize: WResize
+Write comments or reactions for current component or page: Skriv kommentarer eller reaktioner för aktuell komponent eller sida
 Xcode: Xcode (på engelska)
 XcodeDuskBase16: XcodeDuskBase16
 xh-ZA: isiXhosa (Sydafrika)
@@ -4338,8 +4502,10 @@ You are logged out by an Administrator or profile change.: Du loggas ut av en ad
 You are Logged Out.: Du är utloggad.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Du kan också använda MudExAdditionalAdornment som ChildContent i en MudInput
 You can move me: Du kan röra mig
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: Du kan flytta de individuella tummarna eller hela det valda intervallet för att justera start- och slutvärden. Beroende på konfigurationen gäller minimi- och maxlängd samt olika steglängder.
 You can now Login with your credentials: Du kan nu logga in med dina uppgifter
 You can resize me: Du kan ändra storlek på mig
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: Du kan använda denna teknik för att bygga rika tidsreglage och visuella intervall som passar din domän exakt.
 You cannot delete yourself: Du kan inte ta bort dig själv
 You clicked: Du klickade
 You don't need an extra JsonEditor anymore: Du behöver inte en extra JsonEditor längre
@@ -4365,7 +4531,9 @@ ZipCode: Postnummer
 Zoom: Zooma
 Zoom in: Zooma in
 Zoom out: Zooma ut
+ZoomIn: ZoomIn
 ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomPåSväva
+ZoomOut: ZoomOut
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Sydafrika)
