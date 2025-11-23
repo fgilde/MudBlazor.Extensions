@@ -42,7 +42,7 @@ public interface IMudExFileService : IAsyncDisposable
     /// <summary>
     /// Returns the content of a file as string
     /// </summary>
-    string ReadAsStringFromStream(Stream stream);
+    Task<string> ReadAsStringFromStream(Stream stream);
 
     /// <summary>
     /// Returns the content of a file as string
@@ -64,7 +64,7 @@ public interface IMudExFileService : IAsyncDisposable
     /// <summary>
     /// Reads a stream from an url
     /// </summary>
-    Task<Stream> ReadStreamAsync(string url);
+    Task<Stream> ReadStreamAsync(string url, bool copyToMemoryStream = true);
 
     /// <summary>
     /// Reads a data url for a stream

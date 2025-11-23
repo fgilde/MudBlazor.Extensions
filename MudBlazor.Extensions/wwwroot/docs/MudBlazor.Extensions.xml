@@ -17512,7 +17512,7 @@
             <param name="fileDisplayInfos"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(System.String,System.Boolean)">
             <summary>
             Reads a stream from an url
             </summary>
@@ -24950,9 +24950,10 @@
             Reads bytes from an url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(System.String,System.Boolean)">
             <summary>
             Reads a stream from an url
+            Set copyToMemoryStream to false to get the http stream directly, this is better, but some libraries cant support new stream handling in blazor. Thats the reason why its default set to true
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadDataUrlForStreamAsync(System.IO.Stream,System.String,System.Boolean)">

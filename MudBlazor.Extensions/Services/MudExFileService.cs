@@ -42,10 +42,11 @@ public class MudExFileService : IMudExFileService
     /// <summary>
     /// Returns the content of a file as string
     /// </summary>
-    public string ReadAsStringFromStream(Stream stream)
+    public async Task<string> ReadAsStringFromStream(Stream stream)
     {
         using var reader = new StreamReader(stream);
-        return reader.ReadToEnd();
+        var text = await reader.ReadToEndAsync(); 
+        return text;
     }
 
     /// <summary>
@@ -83,10 +84,10 @@ public class MudExFileService : IMudExFileService
         if (fileDisplayInfos.ContentStream is { Length: > 0, CanRead: true })
         {
             var copy = await CopyStreamAsync(fileDisplayInfos.ContentStream);
-            return ReadAsStringFromStream(copy); // If we have already a valid stream we can use it
+            return await ReadAsStringFromStream(copy); // If we have already a valid stream we can use it
         }
         if (DataUrl.TryParse(fileDisplayInfos.Url, out var data)) // If not but given url is a data url we can use the bytes from it
-            return ReadAsStringFromStream(new MemoryStream(data.Bytes));
+            return await ReadAsStringFromStream(new MemoryStream(data.Bytes));
         if (!string.IsNullOrEmpty(fileDisplayInfos.Url)) // Otherwise we load the file        
         {
             if (MudExResource.IsServerSide && fileDisplayInfos.Url.StartsWith("blob:")) // If server side rendering we need to ensure client is reading the blob
@@ -144,7 +145,7 @@ public class MudExFileService : IMudExFileService
     /// <summary>
     /// Reads a string from an url
     /// </summary>
-    public async Task<string> ReadAsStringFromUrlAsync(string url) => ReadAsStringFromStream(await ReadStreamAsync(url));
+    public async Task<string> ReadAsStringFromUrlAsync(string url) => await ReadAsStringFromStream(await ReadStreamAsync(url, false));
 
     /// <summary>
     /// Reads bytes from an url
@@ -163,8 +164,9 @@ public class MudExFileService : IMudExFileService
 
     /// <summary>
     /// Reads a stream from an url
+    /// Set copyToMemoryStream to false to get the http stream directly, this is better, but some libraries cant support new stream handling in blazor. Thats the reason why its default set to true
     /// </summary>
-    public async Task<Stream> ReadStreamAsync(string url)
+    public async Task<Stream> ReadStreamAsync(string url, bool copyToMemoryStream = true)
     {
         if (string.IsNullOrWhiteSpace(url))
             return null;
@@ -176,7 +178,9 @@ public class MudExFileService : IMudExFileService
             return new MemoryStream(resultByteArray);
         }
 
-        return await (_httpClient ?? new HttpClient()).GetStreamAsync(url);
+        var httpStream = await (_httpClient ?? new HttpClient()).GetStreamAsync(url);
+
+        return !copyToMemoryStream ? httpStream : await httpStream.CopyStreamAsync();
     }
 
     /// <summary>
