@@ -59,8 +59,16 @@ public class ExampleBase : ComponentBase, IExample
         string exampleName = GetType().Name;
         var client = new HttpClient();
         var url = NavigationManager.ToAbsoluteUri($"example-codes/{exampleName}.md");
-        code = await client.GetStringAsync(url);
-        
+        try
+        {
+            code = await client.GetStringAsync(url);
+        }
+        catch (Exception e)
+        {
+            code = await client.GetStringAsync($"https://www.mudex.org/example-codes/{exampleName}.md");
+
+        }
+
         return code = CleanCode(code);
     }
 
