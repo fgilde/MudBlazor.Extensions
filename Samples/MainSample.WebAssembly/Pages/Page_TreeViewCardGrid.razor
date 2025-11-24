@@ -1,40 +1,35 @@
 ﻿@page "/MudExTreeViewCardGrid"
 @inherits BasePage
 
+@using MainSample.WebAssembly.Examples.Tree
 
-@attribute [Demo(IsPlaygroundDemo = true, Name = "Card Grid", Order = 5, Group = "TreeView", Icon = Icons.Material.Outlined.AddCard, Documentation = "Displays a tree structure as navigable card grid", ForComponentType = typeof(MudExTreeViewCardGrid<>))]
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "Card Grid", Order = 6, Group = "TreeView", Icon = Icons.Material.Outlined.AddCard, Documentation = "Displays a tree structure as navigable card grid", ForComponentTypes = new[] { typeof(MudExTreeViewCardGrid<>) })]
 
-<DemoComponent DocFiles="@(new [] {"Docs/MudExTreeViewBreadcrumb.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">
-    
-    <SplitContainer>
-        <Left>
-            <div style="width: 100%; max-height:100%;">
-                <p>@($"{L["Selected Node"]}: {_selectedNode?.Name}")</p>
-                <MudExTreeViewCardGrid @bind-SelectedNode="_selectedNode"
-                                       @ref="component"
-                                       HoverMode="MudExCardHoverMode.CardEffect3d | MudExCardHoverMode.LightBulb"
-                                         Items="@Entries">
+<MudExDemoPage>
 
-                </MudExTreeViewCardGrid>
-            </div>
-        </Left>
-        <Right>
-            <ComponentPropertyGrid ShowInherited="true" Value="@component"></ComponentPropertyGrid>
-        </Right>
-    </SplitContainer>
+    <MudExDemoBox Title="Card grid tree view"
+                  NavTitle="Card grid tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "Card-based grid display",
+                                "Visual and modern tree representation",
+                                "Hover effects and animations",
+                                "Navigate through levels by clicking cards"
+                            })">
 
-</DemoComponent>
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The MudExTreeViewCardGrid presents tree nodes as a grid of cards, providing a visually appealing way to navigate hierarchical data. This view supports hover effects and is great for showcasing content with visual hierarchy."]
+            </MudText>
+            <TreeViewCardGridExample/>
+        </DemoContent>
+    </MudExDemoBox>
 
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
 
 @code {
-    MudExTreeViewCardGrid<SampleTreeItem> component;
-    private SampleTreeItem _selectedNode;
-    public HashSet<SampleTreeItem> Entries { get; set; }
-
-    protected override void OnInitialized()
-    {
-        Entries = SampleTreeStructure.GetItems();
-    }
-
 
 }

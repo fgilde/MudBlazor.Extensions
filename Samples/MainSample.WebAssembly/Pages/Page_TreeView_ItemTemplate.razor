@@ -1,39 +1,35 @@
 ﻿@page "/tree-view-item-tpl"
 @inherits BasePage
 
-@using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Core.Enums
+@using MainSample.WebAssembly.Examples.Tree
 
-@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExTreeView with template", Order = 0, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "This sample demonstrate the usage of MudExTreeView with an Item template ", ForComponentType = typeof(MudExTreeView<>))]
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "MudExTreeView with template", Order = 7, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "This sample demonstrates the usage of MudExTreeView with a custom Item template", ForComponentTypes = new[] { typeof(MudExTreeView<>) })]
 
-<MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
-<MudCheckBox @bind-Value="_reverseExpand">@L["Switch expand button position"]</MudCheckBox>
+<MudExDemoPage>
 
-<p>@($"{L["Selected Node"]}: {_selectedNode}")</p>
-<MudExDivider Color="MudExColor.Primary" />
+    <MudExDemoBox Title="Tree view with custom item template"
+                  NavTitle="Custom item template"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ItemContentTemplate for custom rendering",
+                                "ExpandButtonDirection control",
+                                "View mode switching",
+                                "Full control over node appearance"
+                            })">
 
-<div style="height: 80vh">
-    <MudExTreeView @bind-SelectedNode="_selectedNode"
-                   Parameters="@(new Dictionary<string, object> { { nameof(MudExCardList<object>.HoverMode), MudExCardHoverMode.Simple } })"
-                   ViewMode="_treeViewMode" ExpandButtonDirection="@((_reverseExpand ? LeftOrRight.Right : LeftOrRight.Left ))" Items="@Entries">
-        <ItemContentTemplate>
-            <p style="text-decoration: underline">@context.Value.ToString()</p>
-        </ItemContentTemplate>
-    </MudExTreeView>
-</div>
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example demonstrates how to use a custom ItemContentTemplate to control how tree nodes are rendered. You can style nodes differently, add custom icons, or display additional information for each node."]
+            </MudText>
+            <TreeViewItemTemplateExample/>
+        </DemoContent>
+    </MudExDemoBox>
 
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
 
 @code {
-
-    private bool _reverseExpand;
-    private NavigationEntry _selectedNode;
-    private TreeViewMode _treeViewMode = TreeViewMode.Default;
-    public HashSet<NavigationEntry> Entries { get; set; }
-    private string _url;
-    protected override void OnInitialized()
-    {
-        Entries = Navigations.Default(NavigationManager);
-    }
-
 
 }

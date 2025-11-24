@@ -1,51 +1,36 @@
 ﻿@page "/mud-ex-picker-tree-sample"
 @inherits BasePage
 
+@using MainSample.WebAssembly.Examples.Tree
 
-@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExPicker Tree", Icon = Icons.Material.Outlined.ArrowDropDown, Documentation = "This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker", ForComponentTypes = new[] { typeof(MudExPicker), typeof(MudExTreeView<>) })]
-@attribute [Demo(IsPlaygroundDemo = true, Group = "TreeView", Name = "Treeview in Picker", Icon = Icons.Material.Outlined.ArrowDropDown, Documentation = "This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker", ForComponentTypes = new[] { typeof(MudExPicker), typeof(MudExTreeView<>) })]
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "MudExPicker Tree", Order = 8, Icon = Icons.Material.Outlined.ArrowDropDown, Documentation = "This sample shows how to combine the MudExPicker with MudExTreeView to build a tree picker", ForComponentTypes = new[] { typeof(MudExPicker), typeof(MudExTreeView<>) })]
+@attribute [DemoNew(IsPlaygroundDemo = true, Group = "TreeView", Name = "Treeview in Picker", Order = 8, Icon = Icons.Material.Outlined.ArrowDropDown, Documentation = "This sample shows how to combine the MudExPicker with MudExTreeView to build a tree picker", ForComponentTypes = new[] { typeof(MudExPicker), typeof(MudExTreeView<>) })]
 
-<DemoComponent PageType="@GetType()" >
-    <SplitContainer>
-        <Left>
-            <MudExPicker @ref="component" Text="@PathText" AdornmentIcon="@Icons.Material.Filled.AccountTree">
-                <MudExTreeViewDefault @ref="tree"
-                                      T="SampleTreeItem"
-                                      @bind-SelectedNode="_selectedNode"
-                                      AllowSelectionOfNonEmptyNodes="true"
-                                      AfterNodeSelected="@AfterNodeSelect"
-                                      Items="@Entries">
-                </MudExTreeViewDefault>
-            </MudExPicker>
-        </Left>
-        <Right>
-            <MudExpansionPanels MultiExpansion="true">
-                <MudExpansionPanel Expanded="true" Text="MudExPicker">
-                    <ChildContent>
-                        <ComponentPropertyGrid ShowInherited="true" AutoUpdateConditions="false" Value="@component"></ComponentPropertyGrid>
-                    </ChildContent>
-                </MudExpansionPanel>
-                <MudExpansionPanel Expanded="false" Text="MudExTreeView">
-                    <ChildContent>
-                        <ComponentPropertyGrid ShowInherited="true" AutoUpdateConditions="false" T="MudExTreeViewDefault<SampleTreeItem>" Value="tree"></ComponentPropertyGrid>
-                    </ChildContent>
-                </MudExpansionPanel>
-            </MudExpansionPanels>
-        </Right>
-    </SplitContainer>
-</DemoComponent>
+<MudExDemoPage>
 
+    <MudExDemoBox Title="Tree view in picker"
+                  NavTitle="Tree picker"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "Combine MudExPicker with MudExTreeView",
+                                "Dropdown tree selection",
+                                "AllowSelectionOfNonEmptyNodes support",
+                                "Auto-close on selection"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example demonstrates how to combine MudExPicker with MudExTreeView to create a powerful tree picker component. Users can select items from a hierarchical structure in a dropdown format."]
+            </MudText>
+            <TreeViewPickerExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
 
 @code {
-    MudExPicker component;
-    MudExTreeViewDefault<SampleTreeItem> tree;
-    private SampleTreeItem _selectedNode;
-    public HashSet<SampleTreeItem> Entries { get; set; } = SampleTreeStructure.GetItems();
-    private string PathText => _selectedNode != null ? _selectedNode.GetPathString(s => s.Name," -> ") : "Nothing selected";
-
-    private Task AfterNodeSelect(SampleTreeItem item)
-    {
-        return component.IsOpen ? component.CloseAsync() : Task.CompletedTask;
-    }
 
 }

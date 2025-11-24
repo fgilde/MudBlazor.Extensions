@@ -1,40 +1,89 @@
 ﻿@page "/tree-view"
 @inherits BasePage
 
-@using MudBlazor.Extensions.Core.Enums
+@using MainSample.WebAssembly.Examples.Tree
 
-@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExTreeView", Order = 0, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property", ForComponentType = typeof(MudExTreeView<>))]
+@attribute [DemoNew(Name = "Overview", Documentation="MudEx Tree View – Hierarchical data visualization", Order = 0, Group = "TreeView", ForComponentTypes = new[] { typeof(MudExTreeView<>) })]
 
-<DemoComponent DocFiles="@(new [] {"Docs/MudExTreeView.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">
-    <MudExEnumSelect Variant="Variant.Outlined" Class="mb-2 mt-4" TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
-    <p>Selected: @_selectedNode?.Name</p>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAll()">@L["Expand all nodes"]</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAllNotLoaded()">@L["Expand &nbsp; <b>not</b> &nbsp; loaded nodes"]</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAllLoaded()">@L["Expand loaded nodes"]</MudButton>
-    <MudExDivider/>
-    <MudExTreeView @bind-SelectedNode="_selectedNode"
-                   @ref="component"
-                   Style="max-height: 50vh; overflow: auto"
-                   Virtualize="false"
-                   Parameters="@(new Dictionary<string, object> { { nameof(MudExCardList<object>.HoverMode), MudExCardHoverMode.Simple } })"
-                   ViewMode="_treeViewMode"
-                   Items="@Entries">
 
-    </MudExTreeView>
-</DemoComponent>
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Tree View – Hierarchical data visualization"]
+    </MudText>
 
+    <MudText Typo="Typo.body1">
+        @L["The MudExTreeView component provides flexible ways to display hierarchical data structures. It supports multiple view modes, async loading, selection handling, and customizable templates."]
+    </MudText>
+
+    <MudAlert Severity="Severity.Info" Class="mt-4">
+        @L["You can switch between different view modes to display tree structures as traditional trees, lists, breadcrumbs, or card grids. The component supports expanding/collapsing nodes, selection, and lazy loading of child nodes."]
+    </MudAlert>
+</MudPaper>
+
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Multiple view modes"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Display trees as traditional tree view, list, breadcrumb navigation, horizontal tree, flat list, or card grid."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Async loading support"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Load child nodes on demand with async functions, ideal for large hierarchies or remote data sources."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Customizable templates"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Use custom item templates to control how nodes are displayed and styled."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="mb-6" />
+
+<MudExDemoPage>
+
+    <!-- Demo 1: Basic tree view with view mode selector -->
+    <MudExDemoBox Title="1. Basic tree view with multiple view modes"
+                  NavTitle="Basic tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ViewMode – Switch between different display modes",
+                                "@bind-SelectedNode – Track the selected node",
+                                "ExpandAll/ExpandAllLoaded/ExpandAllNotLoaded – Programmatic expansion control",
+                                "Virtualize – Optional virtualization for large trees"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example demonstrates the basic MudExTreeView with the ability to switch between different view modes. You can expand nodes, select items, and explore the tree structure."]
+            </MudText>
+            <TreeViewOverviewExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+
+<DemoNavigation CurrentPage="@this" />
 
 @code {
-    
-    private SampleTreeItem _selectedNode;
-    private TreeViewMode _treeViewMode = TreeViewMode.Default;
-    private MudExTreeView<SampleTreeItem> component;
-    public HashSet<SampleTreeItem> Entries { get; set; }
-
-    protected override void OnInitialized()
-    {
-        Entries = SampleTreeStructure.GetItems();
-    }
-
 
 }

@@ -1,39 +1,35 @@
 ﻿@page "/MudExTreeViewFlatList"
 @inherits BasePage
 
+@using MainSample.WebAssembly.Examples.Tree
 
-@attribute [Demo(IsPlaygroundDemo = true, Name = "Flat List", Order = 4, Group = "TreeView", Icon = Icons.Material.Outlined.List, Documentation = "Displays a tree structure as flat list", ForComponentType = typeof(MudExTreeViewFlatList<>))]
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "Flat List", Order = 5, Group = "TreeView", Icon = Icons.Material.Outlined.List, Documentation = "Displays a tree structure as flat list", ForComponentTypes = new[] { typeof(MudExTreeViewFlatList<>) })]
 
-<DemoComponent DocFiles="@(new [] {"Docs/MudExTreeViewFlatList.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">
-    
-    <SplitContainer>
-        <Left>
-            <div style="width: 100%; max-height: 100%">
-                <p>@($"{L["Selected Node"]}: {_selectedNode?.Name}")</p>
-                <MudExTreeViewFlatList @bind-SelectedNode="_selectedNode"
-                                         @ref="component"
-                                         Items="@Entries">
+<MudExDemoPage>
 
-                </MudExTreeViewFlatList>
-            </div>
-        </Left>
-        <Right>
-            <ComponentPropertyGrid ShowInherited="true" Value="@component"></ComponentPropertyGrid>
-        </Right>
-    </SplitContainer>
+    <MudExDemoBox Title="Flat list tree view"
+                  NavTitle="Flat list tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "Flattened tree display",
+                                "All nodes shown in a single list",
+                                "Indentation shows hierarchy level",
+                                "No expand/collapse - everything visible"
+                            })">
 
-</DemoComponent>
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The MudExTreeViewFlatList displays all tree nodes in a flat list with indentation to show the hierarchy. This view is useful when you want to see all nodes at once without having to expand/collapse."]
+            </MudText>
+            <TreeViewFlatListExample/>
+        </DemoContent>
+    </MudExDemoBox>
 
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
 
 @code {
-    MudExTreeViewFlatList<SampleTreeItem> component;
-    private SampleTreeItem _selectedNode;
-    public HashSet<SampleTreeItem> Entries { get; set; }
-
-    protected override void OnInitialized()
-    {
-        Entries = SampleTreeStructure.GetItems();
-    }
-
 
 }

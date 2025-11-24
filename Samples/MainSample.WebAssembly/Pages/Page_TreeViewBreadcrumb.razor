@@ -1,39 +1,35 @@
 ﻿@page "/MudExTreeViewBreadcrumb"
 @inherits BasePage
 
+@using MainSample.WebAssembly.Examples.Tree
 
-@attribute [Demo(IsPlaygroundDemo = true, Name = "Breadcrumb", Group = "TreeView", Icon = Icons.Material.Outlined.Menu, Documentation = "Displays a tree structure as navigable Breadcrumb", ForComponentType = typeof(MudExTreeViewBreadcrumb<>))]
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "Breadcrumb", Order = 4, Group = "TreeView", Icon = Icons.Material.Outlined.Menu, Documentation = "Displays a tree structure as navigable Breadcrumb", ForComponentTypes = new[] { typeof(MudExTreeViewBreadcrumb<>) })]
 
-<DemoComponent DocFiles="@(new [] {"Docs/MudExTreeViewBreadcrumb.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">
-    
-    <SplitContainer>
-        <Left>
-            <div style="width: 100%">
-                <p>@($"{L["Selected Node"]}: {_selectedNode?.Name}")</p>
-                <MudExTreeViewBreadcrumb @bind-SelectedNode="_selectedNode"
-                                         @ref="component"
-                                         Items="@Entries">
+<MudExDemoPage>
 
-                </MudExTreeViewBreadcrumb>
-            </div>
-        </Left>
-        <Right>
-            <ComponentPropertyGrid ShowInherited="true" Value="@component"></ComponentPropertyGrid>
-        </Right>
-    </SplitContainer>
+    <MudExDemoBox Title="Breadcrumb tree view"
+                  NavTitle="Breadcrumb tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "Breadcrumb-style navigation",
+                                "Shows path from root to current node",
+                                "Click breadcrumb items to navigate back",
+                                "Space-efficient horizontal layout"
+                            })">
 
-</DemoComponent>
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The MudExTreeViewBreadcrumb displays the tree hierarchy as a breadcrumb navigation, showing the path from root to the current node. Users can click on any breadcrumb item to navigate back in the hierarchy."]
+            </MudText>
+            <TreeViewBreadcrumbExample/>
+        </DemoContent>
+    </MudExDemoBox>
 
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
 
 @code {
-    MudExTreeViewBreadcrumb<SampleTreeItem> component;
-    private SampleTreeItem _selectedNode;
-    public HashSet<SampleTreeItem> Entries { get; set; }
-
-    protected override void OnInitialized()
-    {
-        Entries = SampleTreeStructure.GetItems();
-    }
-
 
 }

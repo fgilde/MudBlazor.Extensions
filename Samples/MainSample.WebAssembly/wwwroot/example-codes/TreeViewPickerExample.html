@@ -1,0 +1,26 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+&lt;MudExPicker @ref=&quot;ComponentRef&quot; Text=&quot;@PathText&quot; AdornmentIcon=&quot;@Icons.Material.Filled.AccountTree&quot;&gt;
+    &lt;MudExTreeViewDefault @ref=&quot;tree&quot;
+                          T=&quot;SampleTreeItem&quot;
+                          @bind-SelectedNode=&quot;_selectedNode&quot;
+                          AllowSelectionOfNonEmptyNodes=&quot;true&quot;
+                          AfterNodeSelected=&quot;@AfterNodeSelect&quot;
+                          Items=&quot;@Entries&quot;&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExTreeViewDefault</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExPicker</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    MudExTreeViewDefault<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> tree;
+    private SampleTreeItem _selectedNode;
+    public HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> Entries { get; set; } = SampleTreeStructure.GetItems();
+    private string PathText =&gt; _selectedNode != null ? _selectedNode.GetPathString(s =&gt; s.Name,&quot; -&gt; &quot;) : &quot;Nothing selected&quot;;
+
+    private Task AfterNodeSelect(SampleTreeItem item)
+    {
+        return ComponentRef is MudExPicker picker &amp;&amp; picker.IsOpen ? picker.CloseAsync() : Task.CompletedTask;
+    }
+}
+
+</pre></div>

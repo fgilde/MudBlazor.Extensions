@@ -1,39 +1,35 @@
 ﻿@page "/MudExTreeViewList"
 @inherits BasePage
 
+@using MainSample.WebAssembly.Examples.Tree
 
-@attribute [Demo(IsPlaygroundDemo = true, Name = "List", Order = 3, Group = "TreeView", Icon = Icons.Material.Outlined.List, Documentation = "Displays a tree structure as navigable List", ForComponentType = typeof(MudExTreeViewList<>))]
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "List", Order = 3, Group = "TreeView", Icon = Icons.Material.Outlined.List, Documentation = "Displays a tree structure as navigable List", ForComponentTypes = new[] { typeof(MudExTreeViewList<>) })]
 
-<DemoComponent DocFiles="@(new [] {"Docs/MudExTreeViewList.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">
-    
-    <SplitContainer>
-        <Left>
-            <div style="width: 100%; max-height: 100%">
-                <p>@($"{L["Selected Node"]}: {_selectedNode?.Name}")</p>
-                <MudExTreeViewList @bind-SelectedNode="_selectedNode"
-                                         @ref="component"
-                                         Items="@Entries">
+<MudExDemoPage>
 
-                </MudExTreeViewList>
-            </div>
-        </Left>
-        <Right>
-            <ComponentPropertyGrid ShowInherited="true" Value="@component"></ComponentPropertyGrid>
-        </Right>
-    </SplitContainer>
+    <MudExDemoBox Title="List tree view"
+                  NavTitle="List tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "List-style navigation through tree levels",
+                                "Click to drill down into child nodes",
+                                "Back navigation support",
+                                "Compact display for mobile-friendly UIs"
+                            })">
 
-</DemoComponent>
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The MudExTreeViewList presents the tree as a navigable list where clicking on a node with children displays those children. This view is excellent for mobile interfaces and situations where screen space is limited."]
+            </MudText>
+            <TreeViewListExample/>
+        </DemoContent>
+    </MudExDemoBox>
 
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
 
 @code {
-    MudExTreeViewList<SampleTreeItem> component;
-    private SampleTreeItem _selectedNode;
-    public HashSet<SampleTreeItem> Entries { get; set; }
-
-    protected override void OnInitialized()
-    {
-        Entries = SampleTreeStructure.GetItems();
-    }
-
 
 }
