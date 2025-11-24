@@ -1,7 +1,7 @@
 ```razor
 @inherits ExampleBase
 
-<div style="width: 100%; max-height: 100%">
+<div style="width: 100%; max-height: 300px; overflow: auto">
     <p>@($"{L["Selected Node"]}: {_selectedNode?.Name}")</p>
     <MudExTreeViewFlatList @bind-SelectedNode="_selectedNode"
                            @ref="ComponentRef"
