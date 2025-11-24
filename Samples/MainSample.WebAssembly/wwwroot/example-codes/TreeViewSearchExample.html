@@ -1,0 +1,70 @@
+<div class="html"><pre>
+@using MudBlazor.Extensions.Core.Enums
+@inherits ExampleBase
+
+&lt;MudTextField @bind-Value=&quot;_searchText&quot; 
+              Label=&quot;Search&quot; 
+              Variant=&quot;Variant.Outlined&quot; 
+              Adornment=&quot;Adornment.End&quot; 
+              AdornmentIcon=&quot;@Icons.Material.Filled.Search&quot;
+              Class=&quot;mb-3&quot;
+              Immediate=&quot;true&quot;
+              OnDebounceIntervalElapsed=&quot;FilterTree&quot; 
+              DebounceInterval=&quot;300&quot; /&gt;
+
+&lt;MudExTreeView @bind-SelectedNode=&quot;_selectedNode&quot;
+               @ref=&quot;ComponentRef&quot;
+               Style=&quot;max-height: 50vh; overflow: auto&quot;
+               Virtualize=&quot;false&quot;
+               ViewMode=&quot;TreeViewMode.Default&quot;
+               Items=&quot;@_filteredEntries&quot;&gt;
+
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExTreeView</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private SampleTreeItem _selectedNode;
+    private string _searchText = &quot;&quot;;
+    public HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> Entries { get; set; }
+    private HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> _filteredEntries = new();
+
+    protected override void OnInitialized()
+    {
+        Entries = SampleTreeStructure.GetItems();
+        _filteredEntries = Entries;
+    }
+
+    private void FilterTree()
+    {
+        if (string.IsNullOrWhiteSpace(_searchText))
+        {
+            _filteredEntries = Entries;
+        }
+        else
+        {
+            _filteredEntries = FilterNodes(Entries, _searchText.ToLower()).ToHashSet();
+        }
+        StateHasChanged();
+    }
+
+    private IEnumerable<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> FilterNodes(IEnumerable<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> nodes, string searchTerm)
+    {
+        foreach (var node in nodes)
+        {
+            var matchesSearch = node.Name?.ToLower().Contains(searchTerm) ?? false;
+            var filteredChildren = node.Children != null 
+                ? FilterNodes(node.Children, searchTerm).ToList() 
+                : new List<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>();
+
+            if (matchesSearch || filteredChildren.Any())
+            {
+                var newNode = new SampleTreeItem(node.Name)
+                {
+                    Children = filteredChildren.Any() ? filteredChildren.ToHashSet() : node.Children
+                };
+                yield return newNode;
+            }
+        }
+    }
+}
+
+</pre></div>

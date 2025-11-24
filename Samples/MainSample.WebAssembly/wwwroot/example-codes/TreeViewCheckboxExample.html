@@ -1,0 +1,54 @@
+<div class="html"><pre>
+@using MudBlazor.Extensions.Core.Enums
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Selected items&quot;]: @(_selectedNodes.Count) / @(GetTotalNodeCount())
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExTreeView @bind-SelectedNode=&quot;_selectedNode&quot;
+               @ref=&quot;ComponentRef&quot;
+               Style=&quot;max-height: 50vh; overflow: auto&quot;
+               Virtualize=&quot;false&quot;
+               ViewMode=&quot;TreeViewMode.Default&quot;
+               Items=&quot;@Entries&quot;
+               MultiSelection=&quot;true&quot;
+               @bind-SelectedNodes=&quot;_selectedNodes&quot;
+               AllowSelectionOfNonEmptyNodes=&quot;true&quot;&gt;
+
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExTreeView</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Selected items&quot;]: @string.Join(&quot;, &quot;, _selectedNodes.Select(n =&gt; n.Name))
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private SampleTreeItem _selectedNode;
+    private HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> _selectedNodes = new();
+    public HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> Entries { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Entries = SampleTreeStructure.GetItems();
+    }
+
+    private int GetTotalNodeCount()
+    {
+        int count = 0;
+        void CountNodes(IEnumerable<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                count++;
+                if (node.Children != null)
+                {
+                    CountNodes(node.Children);
+                }
+            }
+        }
+        CountNodes(Entries);
+        return count;
+    }
+}
+
+</pre></div>

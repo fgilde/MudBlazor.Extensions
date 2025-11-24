@@ -1,0 +1,54 @@
+```razor
+@using MudBlazor.Extensions.Core.Enums
+@inherits ExampleBase
+
+<MudText Typo="Typo.body2" Class="mb-2">
+    @L["Selected items"]: @(_selectedNodes.Count) / @(GetTotalNodeCount())
+</MudText>
+
+<MudExTreeView @bind-SelectedNode="_selectedNode"
+               @ref="ComponentRef"
+               Style="max-height: 50vh; overflow: auto"
+               Virtualize="false"
+               ViewMode="TreeViewMode.Default"
+               Items="@Entries"
+               MultiSelection="true"
+               @bind-SelectedNodes="_selectedNodes"
+               AllowSelectionOfNonEmptyNodes="true">
+
+</MudExTreeView>
+
+<MudText Typo="Typo.caption" Class="mt-2">
+    @L["Selected items"]: @string.Join(", ", _selectedNodes.Select(n => n.Name))
+</MudText>
+
+@code {
+    private SampleTreeItem _selectedNode;
+    private HashSet<SampleTreeItem> _selectedNodes = new();
+    public HashSet<SampleTreeItem> Entries { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Entries = SampleTreeStructure.GetItems();
+    }
+
+    private int GetTotalNodeCount()
+    {
+        int count = 0;
+        void CountNodes(IEnumerable<SampleTreeItem> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                count++;
+                if (node.Children != null)
+                {
+                    CountNodes(node.Children);
+                }
+            }
+        }
+        CountNodes(Entries);
+        return count;
+    }
+}
+
+```

@@ -1,0 +1,155 @@
+@page "/tree-view-advanced"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Tree
+
+@attribute [DemoNew(Name = "Advanced Examples", Documentation="MudEx Tree View – Advanced scenarios and use cases", Order = 10, Group = "TreeView", ForComponentTypes = new[] { typeof(MudExTreeView<>) })]
+
+
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Tree View – Advanced Examples"]
+    </MudText>
+
+    <MudText Typo="Typo.body1">
+        @L["This page demonstrates advanced use cases and practical scenarios for the MudExTreeView component, including multi-selection, search/filtering, lazy loading, and custom icons."]
+    </MudText>
+</MudPaper>
+
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Multi-selection"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Enable users to select multiple nodes with checkboxes for batch operations."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Search & Filter"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Filter tree nodes dynamically based on search criteria."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Lazy Loading"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Load child nodes asynchronously on demand for performance."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Custom Icons"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Display contextual icons based on node type or content."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="mb-6" />
+
+<MudExDemoPage>
+
+    <!-- Demo 1: Multi-selection with checkboxes -->
+    <MudExDemoBox Title="1. Multi-selection with checkboxes"
+                  NavTitle="Multi-selection"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "MultiSelection = true – Enable multi-select mode",
+                                "@bind-SelectedNodes – Track selected nodes collection",
+                                "AllowSelectionOfNonEmptyNodes – Allow parent node selection",
+                                "Checkbox-based selection UI"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Enable multi-selection to allow users to select multiple tree nodes. This is useful for batch operations, bulk actions, or when users need to work with multiple items simultaneously."]
+            </MudText>
+            <TreeViewCheckboxExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo 2: Search and filter -->
+    <MudExDemoBox Title="2. Tree search and filtering"
+                  NavTitle="Search & Filter"
+                  FeaturesTitle="Features"
+                  Features="@(new[]
+                            {
+                                "Real-time search with debouncing",
+                                "Hierarchical filtering",
+                                "Parent nodes shown when children match",
+                                "Case-insensitive search"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Implement search functionality to help users quickly find nodes in large tree structures. The filter shows matching nodes along with their parent hierarchy for context."]
+            </MudText>
+            <TreeViewSearchExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo 3: Async/Lazy loading -->
+    <MudExDemoBox Title="3. Async loading and lazy loading"
+                  NavTitle="Lazy Loading"
+                  FeaturesTitle="Benefits"
+                  Features="@(new[]
+                            {
+                                "Load children on demand",
+                                "Improved initial load performance",
+                                "Support for remote data sources",
+                                "Loading indicators for async operations"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Use lazy loading to defer loading of child nodes until they are needed. This significantly improves performance for large hierarchies and enables integration with APIs and databases."]
+            </MudText>
+            <TreeViewLazyLoadExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo 4: File browser with icons -->
+    <MudExDemoBox Title="4. File browser with custom icons"
+                  NavTitle="Custom Icons"
+                  FeaturesTitle="Use Cases"
+                  Features="@(new[]
+                            {
+                                "ItemContentTemplate for custom rendering",
+                                "File type detection",
+                                "Contextual icons (folders, files, documents)",
+                                "Visual hierarchy with icons"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Create a file browser-style interface with custom icons for different file types. This provides better visual context and helps users quickly identify content types in the tree."]
+            </MudText>
+            <TreeViewIconExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+
+<DemoNavigation CurrentPage="@this" />
+
+@code {
+
+}

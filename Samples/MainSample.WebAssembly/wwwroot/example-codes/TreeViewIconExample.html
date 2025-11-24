@@ -1,0 +1,102 @@
+<div class="html"><pre>
+@using MudBlazor.Extensions.Core.Enums
+@inherits ExampleBase
+
+&lt;MudExTreeView @bind-SelectedNode=&quot;_selectedNode&quot;
+               @ref=&quot;ComponentRef&quot;
+               Style=&quot;max-height: 50vh; overflow: auto&quot;
+               Virtualize=&quot;false&quot;
+               ViewMode=&quot;TreeViewMode.Default&quot;
+               Items=&quot;@Entries&quot;&gt;
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ItemContentTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;display: flex; align-items: center; gap: 8px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudIcon</span> <span class="htmlAttributeName">Icon</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@GetIconForNode(context.Value)&quot;</span> <span class="htmlAttributeName">Size</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Size.Small&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">span</span><span class="htmlTagDelimiter">&gt;</span>@context.Value.Name<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">span</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ItemContentTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExTreeView</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private SampleTreeItem _selectedNode;
+    public HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> Entries { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Entries = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+        {
+            new SampleTreeItem(&quot;Documents&quot;)
+            {
+                Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+                {
+                    new SampleTreeItem(&quot;Resume.pdf&quot;),
+                    new SampleTreeItem(&quot;CoverLetter.docx&quot;),
+                    new SampleTreeItem(&quot;Reports&quot;)
+                    {
+                        Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+                        {
+                            new SampleTreeItem(&quot;Q1_Report.xlsx&quot;),
+                            new SampleTreeItem(&quot;Q2_Report.xlsx&quot;)
+                        }
+                    }
+                }
+            },
+            new SampleTreeItem(&quot;Pictures&quot;)
+            {
+                Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+                {
+                    new SampleTreeItem(&quot;Vacation.jpg&quot;),
+                    new SampleTreeItem(&quot;Family.png&quot;),
+                    new SampleTreeItem(&quot;Work&quot;)
+                    {
+                        Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+                        {
+                            new SampleTreeItem(&quot;Meeting.jpg&quot;),
+                            new SampleTreeItem(&quot;Presentation.pptx&quot;)
+                        }
+                    }
+                }
+            },
+            new SampleTreeItem(&quot;Music&quot;)
+            {
+                Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+                {
+                    new SampleTreeItem(&quot;Favorites&quot;)
+                    {
+                        Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+                        {
+                            new SampleTreeItem(&quot;Song1.mp3&quot;),
+                            new SampleTreeItem(&quot;Song2.mp3&quot;)
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    private string GetIconForNode(SampleTreeItem node)
+    {
+        if (node.Children?.Any() == true)
+        {
+            return Icons.Material.Filled.Folder;
+        }
+        
+        var name = node.Name?.ToLower() ?? &quot;&quot;;
+        
+        if (name.EndsWith(&quot;.pdf&quot;))
+            return Icons.Material.Filled.PictureAsPdf;
+        if (name.EndsWith(&quot;.docx&quot;) || name.EndsWith(&quot;.doc&quot;))
+            return Icons.Material.Filled.Description;
+        if (name.EndsWith(&quot;.xlsx&quot;) || name.EndsWith(&quot;.xls&quot;))
+            return Icons.Material.Filled.TableChart;
+        if (name.EndsWith(&quot;.jpg&quot;) || name.EndsWith(&quot;.png&quot;) || name.EndsWith(&quot;.gif&quot;))
+            return Icons.Material.Filled.Image;
+        if (name.EndsWith(&quot;.mp3&quot;) || name.EndsWith(&quot;.wav&quot;))
+            return Icons.Material.Filled.AudioFile;
+        if (name.EndsWith(&quot;.pptx&quot;) || name.EndsWith(&quot;.ppt&quot;))
+            return Icons.Material.Filled.Slideshow;
+            
+        return Icons.Material.Filled.InsertDriveFile;
+    }
+}
+
+</pre></div>

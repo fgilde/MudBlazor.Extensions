@@ -1,0 +1,36 @@
+@page "/tree-view-playground"
+@inherits BasePage
+
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "Playground", Order = 100, Group = "TreeView", ForComponentTypes = new[] { typeof(MudExTreeView<>) })]
+
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudExTreeView @bind-SelectedNode="_selectedNode"
+                           @ref="ComponentRef"
+                           Style="max-height: 70vh; overflow: auto"
+                           Virtualize="false"
+                           ViewMode="_treeViewMode"
+                           Items="@Entries">
+
+            </MudExTreeView>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid ShowInherited="true" Value="@ComponentRef"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExTreeView<SampleTreeItem> ComponentRef;
+    private SampleTreeItem _selectedNode;
+    private TreeViewMode _treeViewMode = TreeViewMode.Default;
+    public HashSet<SampleTreeItem> Entries { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Entries = SampleTreeStructure.GetItems();
+    }
+}
