@@ -35,3 +35,6 @@ MudBlazor.Extensions.sln.DotSettings.user
 
 # MkDocs build output
 site/
+
+# Minified JavaScript files (build artifacts)
+MudBlazor.Extensions/wwwroot/**/*.min.js
