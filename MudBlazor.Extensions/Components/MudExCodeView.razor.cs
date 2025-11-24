@@ -358,7 +358,23 @@ public partial class MudExCodeView
 
         return markup;
     }
-    
+
+    private static readonly Regex CodeFenceRegex = new Regex(
+        @"^\s*```[a-zA-Z0-9]*\s*\r?\n(?<code>[\s\S]*?)\r?\n```(?:\s*)$",
+        RegexOptions.Compiled);
+
+    public static string StripMarkdownCodeFences(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            return input;
+
+        var match = CodeFenceRegex.Match(input);
+        if (!match.Success)
+            return input; // Kein Markdown-Fence -> unverändert zurück
+
+        return match.Groups["code"].Value;
+    }
+
 
     /// <summary>
     /// Returns the start and end tag for the given component name
@@ -720,5 +736,4 @@ public partial class MudExCodeView
 #pragma warning restore BL0006
 
     #endregion
-
 }
