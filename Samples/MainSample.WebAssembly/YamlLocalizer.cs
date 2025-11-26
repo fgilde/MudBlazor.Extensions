@@ -79,7 +79,7 @@ public class YamlLocalizer<T> : IStringLocalizer<T>
 
 public static class YamlLocalizerExtensions
 {
-    const bool StoreNotFoundKeys = true;
+    const bool StoreNotFoundKeys = false;
     internal static readonly HashSet<string> NotFoundKeys = new();
 
     internal static void Store(string key)
