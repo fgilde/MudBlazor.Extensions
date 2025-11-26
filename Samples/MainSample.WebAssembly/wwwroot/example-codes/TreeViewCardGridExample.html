@@ -1,0 +1,24 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; max-height:100%;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">p</span><span class="htmlTagDelimiter">&gt;</span>@($&quot;{L[&quot;Selected Node&quot;]}: {_selectedNode?.Name}&quot;)<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">p</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExTreeViewCardGrid @bind-SelectedNode=&quot;_selectedNode&quot;
+                           @ref=&quot;ComponentRef&quot;
+                           HoverMode=&quot;MudExCardHoverMode.CardEffect3d | MudExCardHoverMode.LightBulb&quot;
+                           Items=&quot;@Entries&quot;&gt;
+
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExTreeViewCardGrid</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private SampleTreeItem _selectedNode;
+    public HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> Entries { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Entries = SampleTreeStructure.GetItems();
+    }
+}
+
+</pre></div>

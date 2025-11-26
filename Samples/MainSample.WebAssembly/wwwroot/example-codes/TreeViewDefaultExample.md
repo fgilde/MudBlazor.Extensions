@@ -1,0 +1,23 @@
+```razor
+@inherits ExampleBase
+
+<div style="width: 100%">
+    <p>@($"{L["Selected Node"]}: {_selectedNode?.Name}")</p>
+    <MudExTreeViewDefault @bind-SelectedNode="_selectedNode"
+                          @ref="ComponentRef"
+                          Items="@Entries">
+
+    </MudExTreeViewDefault>
+</div>
+
+@code {
+    private SampleTreeItem _selectedNode;
+    public HashSet<SampleTreeItem> Entries { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Entries = SampleTreeStructure.GetItems();
+    }
+}
+
+```

@@ -1,10 +1,7 @@
-﻿@page "/tree-view-item-tpl"
-@inherits BasePage
-
+```razor
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Core.Enums
-
-@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExTreeView with template", Order = 0, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "This sample demonstrate the usage of MudExTreeView with an Item template ", ForComponentType = typeof(MudExTreeView<>))]
+@inherits ExampleBase
 
 <MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
 <MudCheckBox @bind-Value="_reverseExpand">@L["Switch expand button position"]</MudCheckBox>
@@ -12,8 +9,9 @@
 <p>@($"{L["Selected Node"]}: {_selectedNode}")</p>
 <MudExDivider Color="MudExColor.Primary" />
 
-<div style="height: 80vh">
+<div style="height: 60vh">
     <MudExTreeView @bind-SelectedNode="_selectedNode"
+                   @ref="ComponentRef"
                    Parameters="@(new Dictionary<string, object> { { nameof(MudExCardList<object>.HoverMode), MudExCardHoverMode.Simple } })"
                    ViewMode="_treeViewMode" ExpandButtonDirection="@((_reverseExpand ? LeftOrRight.Right : LeftOrRight.Left ))" Items="@Entries">
         <ItemContentTemplate>
@@ -29,11 +27,11 @@
     private NavigationEntry _selectedNode;
     private TreeViewMode _treeViewMode = TreeViewMode.Default;
     public HashSet<NavigationEntry> Entries { get; set; }
-    private string _url;
+
     protected override void OnInitialized()
     {
         Entries = Navigations.Default(NavigationManager);
     }
-
-
 }
+
+```

@@ -1,0 +1,58 @@
+<div class="html"><pre>
+@using MudBlazor.Extensions.Core.Enums
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Selected items&quot;]: @(_selectedNodes.Count)
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudToolBar</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSpacer</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExEnumSelect</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Outlined&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-2 mt-4&quot;</span> <span class="htmlAttributeName">TEnum</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;TreeViewMode&quot; @bind-Value=&quot;@_treeViewMode&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;TreeViewMode&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudToolBar</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudPaper</span> <span class="htmlAttributeName">Style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot; width: 100%; min-height:300px; max-height: 450px; overflow: auto;&quot;</span> <span class="htmlAttributeName">Square</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExTreeView @ref=&quot;ComponentRef&quot;
+                   Virtualize=&quot;false&quot;
+                   ViewMode=&quot;@_treeViewMode&quot;
+                   Items=&quot;@Entries&quot;
+                   AllowSelectionOfNonEmptyNodes=&quot;true&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ItemContentTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;display: flex; align-items: center; gap: 8px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+                <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudCheckBox</span> <span class="htmlAttributeName">Value</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(context?.Value != null &amp;&amp; _selectedNodes.Contains(context.Value))&quot;</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot;</span> <span class="htmlAttributeName">ValueChanged</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(value =&gt; OnNodeSelectionChanged(context, value))&quot;</span><span class="htmlTagDelimiter">&gt;</span><span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudCheckBox</span><span class="htmlTagDelimiter">&gt;</span>
+                @* Render item content with default template *@
+                @context.TreeView.RenderItemContent(context)
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ItemContentTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExTreeView</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudPaper</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Selected items&quot;]: @string.Join(&quot;, &quot;, _selectedNodes.Select(n =&gt; n.Name))
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private TreeViewMode _treeViewMode = TreeViewMode.Default;
+    private HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> _selectedNodes = new();
+    public HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> Entries { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Entries = SampleTreeStructure.GetItems();
+    }
+
+    private Task OnNodeSelectionChanged(TreeViewItemContext<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> context, bool value)
+    {
+        if (value &amp;&amp; context.Value != null)
+        {
+            _selectedNodes.Add(context.Value);
+        }
+        else if (context.Value != null &amp;&amp; _selectedNodes.Contains(context.Value))
+        {
+            _selectedNodes.Remove(context.Value);
+        }
+
+        return Task.CompletedTask;
+    }
+
+}
+
+</pre></div>

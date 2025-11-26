@@ -1,40 +1,240 @@
 ﻿@page "/tree-view"
 @inherits BasePage
 
-@using MudBlazor.Extensions.Core.Enums
+@using MainSample.WebAssembly.Examples.Tree
 
-@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExTreeView", Order = 0, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property", ForComponentType = typeof(MudExTreeView<>))]
+@attribute [DemoUpdated(Name = "Overview", Documentation="MudEx Tree View – Hierarchical data visualization", Order = 0, Group = "TreeView", ForComponentTypes = new[] { typeof(MudExTreeView<>) })]
 
-<DemoComponent DocFiles="@(new [] {"Docs/MudExTreeView.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">
-    <MudExEnumSelect Variant="Variant.Outlined" Class="mb-2 mt-4" TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
-    <p>Selected: @_selectedNode?.Name</p>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAll()">@L["Expand all nodes"]</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAllNotLoaded()">@L["Expand &nbsp; <b>not</b> &nbsp; loaded nodes"]</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAllLoaded()">@L["Expand loaded nodes"]</MudButton>
-    <MudExDivider/>
-    <MudExTreeView @bind-SelectedNode="_selectedNode"
-                   @ref="component"
-                   Style="max-height: 50vh; overflow: auto"
-                   Virtualize="false"
-                   Parameters="@(new Dictionary<string, object> { { nameof(MudExCardList<object>.HoverMode), MudExCardHoverMode.Simple } })"
-                   ViewMode="_treeViewMode"
-                   Items="@Entries">
 
-    </MudExTreeView>
-</DemoComponent>
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Tree View – Hierarchical data visualization"]
+    </MudText>
 
+    <MudText Typo="Typo.body1">
+        @L["The MudExTreeView component provides flexible ways to display hierarchical data structures. It supports multiple view modes, async loading, selection handling, and customizable templates."]
+    </MudText>
+
+    <MudAlert Severity="Severity.Info" Class="mt-4">
+        @L["You can switch between different view modes to display tree structures as traditional trees, lists, breadcrumbs, or card grids. The component supports expanding/collapsing nodes, selection, and lazy loading of child nodes."]
+    </MudAlert>
+</MudPaper>
+
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Multiple view modes"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Display trees as traditional tree view, list, breadcrumb navigation, horizontal tree, flat list, or card grid."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Async loading support"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Load child nodes on demand with async functions, ideal for large hierarchies or remote data sources."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Customizable templates"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Use custom item templates to control how nodes are displayed and styled."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="mb-6" />
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Basic tree view with multiple view modes"
+                  NavTitle="Basic tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ViewMode – Switch between different display modes",
+                                "@bind-SelectedNode – Track the selected node",
+                                "ExpandAll/ExpandAllLoaded/ExpandAllNotLoaded – Programmatic expansion control",
+                                "Virtualize – Optional virtualization for large trees"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example demonstrates the basic MudExTreeView with the ability to switch between different view modes. You can expand nodes, select items, and explore the tree structure."]
+            </MudText>
+            <TreeViewOverviewExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Default tree view"
+                  NavTitle="Default tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "Traditional tree structure display",
+                                "Expand/collapse nodes",
+                                "Node selection support",
+                                "@bind-SelectedNode for two-way binding"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The MudExTreeViewDefault displays hierarchical data in a traditional tree structure with expand/collapse functionality. This is the most common way to display tree data."]
+            </MudText>
+            <TreeViewDefaultExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. Horizontal tree view"
+                  NavTitle="Horizontal tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "Horizontal tree layout",
+                                "Navigate through tree levels horizontally",
+                                "Space-efficient for wide hierarchies",
+                                "Node selection and navigation"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The MudExTreeViewHorizontal displays the tree structure horizontally, allowing users to navigate through different levels side by side. This view is particularly useful when you need to show the path through the hierarchy clearly."]
+            </MudText>
+            <TreeViewHorizontalExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="4. List tree view"
+                  NavTitle="List tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "List-style navigation through tree levels",
+                                "Click to drill down into child nodes",
+                                "Back navigation support",
+                                "Compact display for mobile-friendly UIs"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The MudExTreeViewList presents the tree as a navigable list where clicking on a node with children displays those children. This view is excellent for mobile interfaces and situations where screen space is limited."]
+            </MudText>
+            <TreeViewListExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="5. Breadcrumb tree view"
+                  NavTitle="Breadcrumb tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "Breadcrumb-style navigation",
+                                "Shows path from root to current node",
+                                "Click breadcrumb items to navigate back",
+                                "Space-efficient horizontal layout"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The MudExTreeViewBreadcrumb displays the tree hierarchy as a breadcrumb navigation, showing the path from root to the current node. Users can click on any breadcrumb item to navigate back in the hierarchy."]
+            </MudText>
+            <TreeViewBreadcrumbExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="6. Flat list tree view"
+                  NavTitle="Flat list tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "Flattened tree display",
+                                "All nodes shown in a single list",
+                                "Indentation shows hierarchy level",
+                                "No expand/collapse - everything visible"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The MudExTreeViewFlatList displays all tree nodes in a flat list with indentation to show the hierarchy. This view is useful when you want to see all nodes at once without having to expand/collapse."]
+            </MudText>
+            <TreeViewFlatListExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="7. Card grid tree view"
+                  NavTitle="Card grid tree view"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "Card-based grid display",
+                                "Visual and modern tree representation",
+                                "Hover effects and animations",
+                                "Navigate through levels by clicking cards"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The MudExTreeViewCardGrid presents tree nodes as a grid of cards, providing a visually appealing way to navigate hierarchical data. This view supports hover effects and is great for showcasing content with visual hierarchy."]
+            </MudText>
+            <TreeViewCardGridExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="8. Tree view with custom item template"
+                  NavTitle="Custom item template"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "ItemContentTemplate for custom rendering",
+                                "ExpandButtonDirection control",
+                                "View mode switching",
+                                "Full control over node appearance"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example demonstrates how to use a custom ItemContentTemplate to control how tree nodes are rendered. You can style nodes differently, add custom icons, or display additional information for each node."]
+            </MudText>
+            <TreeViewItemTemplateExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="9. Tree view in picker"
+                  NavTitle="Tree picker"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "Combine MudExPicker with MudExTreeView",
+                                "Dropdown tree selection",
+                                "AllowSelectionOfNonEmptyNodes support",
+                                "Auto-close on selection"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example demonstrates how to combine MudExPicker with MudExTreeView to create a powerful tree picker component. Users can select items from a hierarchical structure in a dropdown format."]
+            </MudText>
+            <TreeViewPickerExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+
+<DemoNavigation CurrentPage="@this" />
 
 @code {
-    
-    private SampleTreeItem _selectedNode;
-    private TreeViewMode _treeViewMode = TreeViewMode.Default;
-    private MudExTreeView<SampleTreeItem> component;
-    public HashSet<SampleTreeItem> Entries { get; set; }
-
-    protected override void OnInitialized()
-    {
-        Entries = SampleTreeStructure.GetItems();
-    }
-
 
 }

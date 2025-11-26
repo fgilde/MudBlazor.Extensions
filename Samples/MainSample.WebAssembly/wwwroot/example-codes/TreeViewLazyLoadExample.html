@@ -1,0 +1,70 @@
+<div class="html"><pre>
+@using MudBlazor.Extensions.Core.Enums
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;This example demonstrates async/lazy loading of child nodes. Expand the &#39;Async load sample&#39; node to see the loading behavior.&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudToolBar</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSpacer</span><span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExEnumSelect</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Outlined&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-2 mt-4&quot;</span> <span class="htmlAttributeName">TEnum</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;TreeViewMode&quot; @bind-Value=&quot;@_treeViewMode&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;TreeViewMode&quot;</span><span class="htmlTagDelimiter">/&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudToolBar</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudPaper</span> <span class="htmlAttributeName">Style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot; width: 100%; min-height:300px; max-height: 450px; overflow: auto;&quot;</span> <span class="htmlAttributeName">Square</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExTreeView @ref=&quot;ComponentRef&quot;
+                   Virtualize=&quot;false&quot;
+                   ViewMode=&quot;@_treeViewMode&quot;
+                   Items=&quot;@Entries&quot;&gt;
+
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExTreeView</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudPaper</span><span class="htmlTagDelimiter">&gt;</span>
+@code {
+    private TreeViewMode _treeViewMode = TreeViewMode.Default;
+    public HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> Entries { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Entries = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+        {
+            new SampleTreeItem(&quot;Static Items&quot;)
+            {
+                Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+                {
+                    new SampleTreeItem(&quot;Item 1&quot;),
+                    new SampleTreeItem(&quot;Item 2&quot;),
+                    new SampleTreeItem(&quot;Item 3&quot;)
+                }
+            },
+            new SampleTreeItem(&quot;Async load sample 1&quot;, LoadChildrenAsync),
+            new SampleTreeItem(&quot;Async load sample 2&quot;, LoadChildrenAsync),
+            new SampleTreeItem(&quot;Mixed Content&quot;)
+            {
+                Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+                {
+                    new SampleTreeItem(&quot;Static child&quot;),
+                    new SampleTreeItem(&quot;Async child&quot;, LoadChildrenAsync)
+                }
+            }
+        };
+    }
+
+    private async Task&lt;HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>&gt; LoadChildrenAsync(SampleTreeItem parent, CancellationToken token)
+    {
+        await Task.Delay(1500, token);
+        
+        return new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+        {
+            new SampleTreeItem($&quot;{parent.Name} - Child 1&quot;),
+            new SampleTreeItem($&quot;{parent.Name} - Child 2&quot;),
+            new SampleTreeItem($&quot;{parent.Name} - Child 3&quot;)
+            {
+                Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+                {
+                    new SampleTreeItem($&quot;{parent.Name} - Grandchild 1&quot;),
+                    new SampleTreeItem($&quot;{parent.Name} - Grandchild 2&quot;)
+                }
+            }
+        };
+    }
+}
+
+</pre></div>

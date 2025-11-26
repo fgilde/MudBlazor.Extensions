@@ -1,0 +1,37 @@
+<div class="html"><pre>
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Core.Enums
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExEnumSelect</span> <span class="htmlAttributeName">TEnum</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;TreeViewMode&quot; @bind-Value=&quot;@_treeViewMode&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;TreeViewMode&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+&lt;MudCheckBox @bind-Value=&quot;_reverseExpand&quot;&gt;@L[&quot;Switch expand button position&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudCheckBox</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">p</span><span class="htmlTagDelimiter">&gt;</span>@($&quot;{L[&quot;Selected Node&quot;]}: {_selectedNode}&quot;)<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">p</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExDivider</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;MudExColor.Primary&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;height: 60vh&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExTreeView @bind-SelectedNode=&quot;_selectedNode&quot;
+                   @ref=&quot;ComponentRef&quot;
+                   Parameters=&quot;@(new Dictionary&lt;string, object&gt; { { nameof(MudExCardList<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">object</span><span class="htmlTagDelimiter">&gt;</span>.HoverMode), MudExCardHoverMode.Simple } })&quot;
+                   ViewMode=&quot;_treeViewMode&quot; ExpandButtonDirection=&quot;@((_reverseExpand ? LeftOrRight.Right : LeftOrRight.Left ))&quot; Items=&quot;@Entries&quot;&gt;
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ItemContentTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">p</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;text-decoration: underline&quot;</span><span class="htmlTagDelimiter">&gt;</span>@context.Value.ToString()<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">p</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ItemContentTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExTreeView</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+
+@code {
+
+    private bool _reverseExpand;
+    private NavigationEntry _selectedNode;
+    private TreeViewMode _treeViewMode = TreeViewMode.Default;
+    public HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">NavigationEntry</span><span class="htmlTagDelimiter">&gt;</span> Entries { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Entries = Navigations.Default(NavigationManager);
+    }
+}
+
+</pre></div>
