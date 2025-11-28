@@ -1,0 +1,18 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+&lt;MudExChipSelect @ref=&quot;ComponentRef&quot;
+                 AvailableItems=&quot;@_available&quot; 
+                 @bind-SelectedValues=&quot;_selected&quot;&gt;
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExChipSelect</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Selected&quot;]: @string.Join(&quot;, &quot;, _selected?.Select(x =&gt; x) ?? Array.Empty<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">string</span><span class="htmlTagDelimiter">&gt;</span>())
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private IEnumerable<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">string</span><span class="htmlTagDelimiter">&gt;</span> _selected = new List<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">string</span><span class="htmlTagDelimiter">&gt;</span>();
+    private List<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">string</span><span class="htmlTagDelimiter">&gt;</span> _available = new() { &quot;C#&quot;, &quot;JavaScript&quot;, &quot;Python&quot;, &quot;TypeScript&quot;, &quot;Go&quot; };
+}
+
+</pre></div>

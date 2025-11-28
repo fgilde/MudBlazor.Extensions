@@ -1,0 +1,38 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;height: 200px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExTreeViewDefault @ref=&quot;ComponentRef&quot;
+                          @bind-SelectedNode=&quot;_selectedNode&quot;
+                          Items=&quot;@_items&quot;&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExTreeViewDefault</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Selected&quot;]: @(_selectedNode?.Name ?? &quot;-&quot;)
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private TreeItem _selectedNode;
+    private HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TreeItem</span><span class="htmlTagDelimiter">&gt;</span> _items = new()
+    {
+        new TreeItem 
+        { 
+            Name = &quot;Root&quot;, 
+            Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+            {
+                new TreeItem { Name = &quot;Child 1&quot; },
+                new TreeItem { Name = &quot;Child 2&quot; },
+                new TreeItem { Name = &quot;Child 3&quot; }
+            }
+        }
+    };
+
+    public class TreeItem : Nextended.Core.Types.Hierarchical<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+    {
+        public string Name { get; set; }
+        public override string ToString() =&gt; Name;
+    }
+}
+
+</pre></div>
