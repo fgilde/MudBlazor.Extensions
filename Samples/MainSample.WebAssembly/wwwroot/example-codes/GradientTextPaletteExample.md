@@ -1,0 +1,14 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+
+<MudExGradientText @ref="ComponentRef" 
+                   Typo="Typo.h3" 
+                   Palette="@(new[] { MudExColor.Primary, MudExColor.Secondary, MudExColor.Tertiary })">
+    @L["Custom Palette Gradient"]
+</MudExGradientText>
+
+@code {
+}
+
+```

@@ -1,0 +1,18 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Utilities
+
+<MudExColorBubble @ref="ComponentRef" 
+                  @bind-Color="@_color" 
+                  ShowColorPreview="true" 
+                  AllowSelectOnPreviewClick="true" />
+
+<MudText Typo="Typo.body2" Class="mt-3">
+    @L["With color preview enabled - click preview to open picker"]
+</MudText>
+
+@code {
+    private MudColor _color = new("#4caf50");
+}
+
+```

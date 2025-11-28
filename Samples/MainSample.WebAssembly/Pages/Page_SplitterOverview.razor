@@ -1,0 +1,117 @@
+@page "/splitter-overview"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Splitter
+
+@attribute [Demo(Name = "Overview", Documentation = "MudExSplitter – Resizable split panels", Order = 0, Group = "Components/Layout", Icon = Icons.Material.Outlined.VerticalSplit, ForComponentTypes = new[] { typeof(MudExDivider), typeof(MudExSplitter), typeof(MudExSplitPanel) })]
+
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudExSplitter – Resizable split panels"]
+    </MudText>
+
+    <MudText Typo="Typo.body1">
+        @L["The MudExSplitter component creates resizable split panels for flexible layouts. Users can drag the divider to resize panels, and nested splitters allow for complex layouts."]
+    </MudText>
+
+    <MudAlert Severity="Severity.Info" Class="mt-4">
+        @L["Drag the divider between panels to resize them. You can nest splitters for complex multi-panel layouts."]
+    </MudAlert>
+</MudPaper>
+
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Draggable dividers"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Users can drag dividers to resize panels dynamically."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Horizontal & vertical"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Support for both horizontal and vertical splitting."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Nested layouts"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Nest splitters for complex multi-panel layouts."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="mb-6" />
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Basic horizontal splitter"
+                  NavTitle="Basic usage"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "MudExSplitter – Container for panels",
+                                "MudExSplitPanel – Individual panel content",
+                                "Draggable divider between panels"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["A simple horizontal splitter with two resizable panels."]
+            </MudText>
+            <SplitterBasicExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Vertical splitter"
+                  NavTitle="Vertical layout"
+                  FeaturesTitle="Vertical configuration"
+                  Features="@(new[]
+                            {
+                                "ColumnLayout = true – Vertical splitting",
+                                "Top and bottom panels",
+                                "Same resizing behavior"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["A vertical splitter with top and bottom panels."]
+            </MudText>
+            <SplitterVerticalExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. Nested splitters"
+                  NavTitle="Nested layouts"
+                  FeaturesTitle="Nesting options"
+                  Features="@(new[]
+                            {
+                                "Nest splitters for complex layouts",
+                                "Mix horizontal and vertical",
+                                "Create IDE-like layouts"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Nested splitters for complex multi-panel layouts."]
+            </MudText>
+            <SplitterNestedExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
+
+@code {
+}

@@ -1,0 +1,15 @@
+@inherits ExampleBase
+@using MudBlazor.Utilities
+
+<MudExColorBubble @ref="ComponentRef" 
+                  @bind-Color="@_color" 
+                  MinLuminance="20"
+                  MaxLuminance="80" />
+
+<MudText Typo="Typo.body2" Class="mt-3">
+    @L["Luminance constrained: 20-80% - prevents too dark or too bright colors"]
+</MudText>
+
+@code {
+    private MudColor _color = new("#ff9800");
+}

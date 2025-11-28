@@ -1,0 +1,18 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Utilities
+
+&lt;MudExColorBubble @ref=&quot;ComponentRef&quot; 
+                  @bind-Color=&quot;@_color&quot; 
+                  ShowColorPreview=&quot;true&quot; 
+                  AllowSelectOnPreviewClick=&quot;true&quot; /&gt;
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;With color preview enabled - click preview to open picker&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private MudColor _color = new(&quot;#4caf50&quot;);
+}
+
+</pre></div>

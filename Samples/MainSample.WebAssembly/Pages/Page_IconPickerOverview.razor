@@ -1,0 +1,117 @@
+@page "/icon-picker-overview"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.IconPicker
+
+@attribute [Demo(Name = "Overview", Documentation = "MudExIconPicker – Browse and select icons", Order = 0, Group = "Components/Selection", Icon = Icons.Material.Outlined.Info, ForComponentType = typeof(MudExIconPicker))]
+
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudExIconPicker – Browse and select icons"]
+    </MudText>
+
+    <MudText Typo="Typo.body1">
+        @L["The MudExIconPicker component provides an intuitive way to browse and select icons from the Material Design icon library. It supports searching, filtering, and various display modes."]
+    </MudText>
+
+    <MudAlert Severity="Severity.Info" Class="mt-4">
+        @L["Perfect for forms where users need to select icons, such as category editors, menu builders, or custom settings."]
+    </MudAlert>
+</MudPaper>
+
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Icon search"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Built-in search to quickly find icons by name."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Multiple variants"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Support for outlined, filled, and inline picker variants."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Material Design icons"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Access to the full Material Design icon set."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="mb-6" />
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Basic icon picker"
+                  NavTitle="Basic usage"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "@bind-Value – Two-way binding for selected icon",
+                                "Label – Field label text",
+                                "Returns icon SVG path string"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["A simple icon picker that opens a dialog to select icons."]
+            </MudText>
+            <IconPickerBasicExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Inline picker"
+                  NavTitle="Inline mode"
+                  FeaturesTitle="Inline configuration"
+                  Features="@(new[]
+                            {
+                                "PickerVariant.Inline – Always visible picker",
+                                "Good for settings panels",
+                                "No dialog needed"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Display the icon picker inline without a dialog."]
+            </MudText>
+            <IconPickerInlineExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. Variant styles"
+                  NavTitle="Variants"
+                  FeaturesTitle="Variant options"
+                  Features="@(new[]
+                            {
+                                "Variant.Outlined – Outlined input style",
+                                "Variant.Filled – Filled input style",
+                                "Variant.Text – Text only style"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Different visual styles for the icon picker input."]
+            </MudText>
+            <IconPickerVariantsExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
+
+@code {
+}

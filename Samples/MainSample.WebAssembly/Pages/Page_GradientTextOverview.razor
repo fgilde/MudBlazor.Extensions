@@ -1,0 +1,134 @@
+@page "/gradient-text-overview"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.GradientText
+
+@attribute [Demo(Name = "Overview", Documentation = "MudExGradientText – Stunning gradient text effects", Order = 0, Group = "Components/Data Display", Icon = Icons.Material.Outlined.Gradient, ForComponentTypes = new[] { typeof(MudExGradientText) })]
+
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudExGradientText – Stunning gradient text effects"]
+    </MudText>
+
+    <MudText Typo="Typo.body1">
+        @L["The MudExGradientText component creates beautiful gradient text effects for headers and highlights. It supports custom color palettes, animations, and all MudBlazor typography options."]
+    </MudText>
+
+    <MudAlert Severity="Severity.Info" Class="mt-4">
+        @L["Use gradient text to create eye-catching headers, titles, and highlighted text elements in your application."]
+    </MudAlert>
+</MudPaper>
+
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Animated gradients"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Enable smooth gradient animation for dynamic visual effects."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Custom palettes"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Define your own color palettes or use theme colors."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Typography support"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Works with all MudBlazor Typo options for flexible sizing."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="mb-6" />
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Basic gradient text"
+                  NavTitle="Basic usage"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "Simple gradient text with default colors",
+                                "Works with any text content",
+                                "Inherits from MudText"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["A simple gradient text using the default color scheme."]
+            </MudText>
+            <GradientTextBasicExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Animated gradient"
+                  NavTitle="Animation"
+                  FeaturesTitle="Animation options"
+                  Features="@(new[]
+                            {
+                                "Animate = true – Enable gradient animation",
+                                "AnimationDuration – Control animation speed",
+                                "Smooth color transitions"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Enable gradient animation for dynamic visual effects."]
+            </MudText>
+            <GradientTextAnimatedExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. Custom color palette"
+                  NavTitle="Custom palette"
+                  FeaturesTitle="Palette configuration"
+                  Features="@(new[]
+                            {
+                                "Palette – Array of colors for gradient",
+                                "Supports MudExColor values",
+                                "Use theme colors or custom hex values"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Define a custom color palette for your gradient."]
+            </MudText>
+            <GradientTextPaletteExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="4. Typography variants"
+                  NavTitle="Typography"
+                  FeaturesTitle="Typography options"
+                  Features="@(new[]
+                            {
+                                "Typo – All MudBlazor typography sizes",
+                                "From h1 to body2 and beyond",
+                                "Consistent styling across your app"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Gradient text works with all typography variants."]
+            </MudText>
+            <GradientTextTypographyExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
+
+@code {
+}
