@@ -5,7 +5,7 @@
 @using Newtonsoft.Json
 
 
-@attribute [Demo(IsPlaygroundDemo = true, Group = "MudExObjectEdit", Name = "Object Edit in Dialog", Order = 5, Documentation = "See how to use MudExObjectEdit in a dialog", Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>), typeof(MudExObjectEditDialog<>) })]
+@attribute [Demo(IsPlaygroundDemo = true, Group = "Components/Forms", Name = "Object Edit in Dialog", Order = 5, Documentation = "See how to use MudExObjectEdit in a dialog", Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>), typeof(MudExObjectEditDialog<>) })]
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "SampleDialogOptions.cs"})">
     <MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">@L["Edit Test Object"]</MudButton>

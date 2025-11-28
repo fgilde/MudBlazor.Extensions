@@ -1,9 +1,9 @@
-﻿@page "/demos/{Group?}"
+﻿@page "/demos/{**Group}"
 @inherits BasePage
 
 <MudExCardList TData="object">
 
-    @foreach (var nav in DemoAttribute.AllEntries(true).Where(n => string.IsNullOrEmpty(Group) || n?.Demo?.Group == Group || (Group == AppConstants.UngroupedNavCategory && string.IsNullOrEmpty(n?.Demo?.Group))))
+    @foreach (var nav in GetFilteredDemos())
     {
         <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
             <MudCardHeader Style="z-index: 5">
@@ -27,7 +27,26 @@
 
 @code
 {
-    [Parameter] public string Group { get; set; }
+    [Parameter] public string? Group { get; set; }
+
+    private IEnumerable<NavigationEntry> GetFilteredDemos()
+    {
+        var allEntries = DemoAttribute.AllEntries(true);
+        
+        if (string.IsNullOrEmpty(Group))
+            return allEntries;
+            
+        var decodedGroup = Uri.UnescapeDataString(Group);
+        
+        // Support ungrouped category
+        if (decodedGroup == AppConstants.UngroupedNavCategory)
+            return allEntries.Where(n => string.IsNullOrEmpty(n?.Demo?.Group));
+            
+        // Match exact group or groups starting with this path (hierarchical match)
+        return allEntries.Where(n => 
+            n?.Demo?.Group == decodedGroup || 
+            n?.Demo?.Group?.StartsWith(decodedGroup + "/", StringComparison.OrdinalIgnoreCase) == true);
+    }
 
     private void Open(NavigationEntry nav)
     {
