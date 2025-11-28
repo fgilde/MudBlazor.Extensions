@@ -1,0 +1,133 @@
+@page "/color-bubble-overview"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.ColorBubble
+
+@attribute [Demo(Name = "Overview", Documentation = "MudExColorBubble – Quick color selection", Order = 0, Group = "Components/Selection", Icon = Icons.Material.Outlined.ColorLens, ForComponentType = typeof(MudExColorBubble))]
+
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudExColorBubble – Quick color selection"]
+    </MudText>
+
+    <MudText Typo="Typo.body1">
+        @L["The MudExColorBubble component provides a compact and intuitive way to select colors. It displays a bubble that reveals a color picker on click, perfect for quick color selection in forms and settings."]
+    </MudText>
+
+    <MudAlert Severity="Severity.Info" Class="mt-4">
+        @L["Click the bubble to open the color picker. You can constrain luminance to prevent too dark or too bright colors, and optionally show a preview of the selected color."]
+    </MudAlert>
+</MudPaper>
+
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Compact design"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Small bubble interface that expands to show a color picker on interaction."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Luminance constraints"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Set minimum and maximum luminance to restrict color selection range."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Color preview"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Optionally display a preview of the selected color with click-to-select functionality."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="mb-6" />
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Basic color bubble"
+                  NavTitle="Basic usage"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "@bind-Color – Two-way binding for selected color",
+                                "Click bubble to open color picker",
+                                "Supports MudColor type"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["A simple color bubble that opens a color picker when clicked."]
+            </MudText>
+            <ColorBubbleBasicExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Different sizes"
+                  NavTitle="Sizes"
+                  FeaturesTitle="Size options"
+                  Features="@(new[]
+                            {
+                                "Size.Small – Compact bubble",
+                                "Size.Medium – Default size",
+                                "Size.Large – Larger bubble for touch interfaces"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Color bubbles in different sizes to fit various UI layouts."]
+            </MudText>
+            <ColorBubbleSizesExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. With color preview"
+                  NavTitle="Preview"
+                  FeaturesTitle="Preview features"
+                  Features="@(new[]
+                            {
+                                "ShowColorPreview – Display selected color",
+                                "AllowSelectOnPreviewClick – Click preview to open picker"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Show a preview of the selected color next to the bubble."]
+            </MudText>
+            <ColorBubblePreviewExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="4. Luminance constraints"
+                  NavTitle="Luminance"
+                  FeaturesTitle="Constraint options"
+                  Features="@(new[]
+                            {
+                                "MinLuminance – Minimum brightness (0-100)",
+                                "MaxLuminance – Maximum brightness (0-100)",
+                                "Prevents too dark or too bright colors"
+                            })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Restrict color selection to specific luminance ranges."]
+            </MudText>
+            <ColorBubbleLuminanceExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
+
+@code {
+}

@@ -1,0 +1,44 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExChipSelect @ref=&quot;ComponentRef&quot;
+                     AvailableItems=&quot;@AvailableItems&quot; 
+                     @bind-SelectedValues=&quot;SelectedItems&quot;
+                     MaxItems=&quot;@MaxItems&quot;&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExChipSelect</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-4&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Secondary&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @L[&quot;Maximum items allowed&quot;]: @MaxItems
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+    &lt;MudSlider @bind-Value=&quot;MaxItems&quot; Min=&quot;1&quot; Max=&quot;10&quot; Step=&quot;1&quot; Class=&quot;mt-2&quot;&gt;
+        @L[&quot;Max Items&quot;]: @MaxItems
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudSlider</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    public IEnumerable<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TagItem</span><span class="htmlTagDelimiter">&gt;</span> SelectedItems { get; set; } = new List<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TagItem</span><span class="htmlTagDelimiter">&gt;</span>();
+    public int MaxItems { get; set; } = 3;
+    
+    public List<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TagItem</span><span class="htmlTagDelimiter">&gt;</span> AvailableItems { get; set; } = new()
+    {
+        new TagItem { Id = 1, Name = &quot;JavaScript&quot; },
+        new TagItem { Id = 2, Name = &quot;TypeScript&quot; },
+        new TagItem { Id = 3, Name = &quot;C#&quot; },
+        new TagItem { Id = 4, Name = &quot;Python&quot; },
+        new TagItem { Id = 5, Name = &quot;Java&quot; },
+        new TagItem { Id = 6, Name = &quot;Go&quot; },
+        new TagItem { Id = 7, Name = &quot;Rust&quot; },
+        new TagItem { Id = 8, Name = &quot;Ruby&quot; }
+    };
+
+    public class TagItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public override string ToString() =&gt; Name;
+    }
+}
+
+</pre></div>

@@ -5,7 +5,7 @@
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using Newtonsoft.Json
 
-@attribute [Demo(IsPlaygroundDemo = true, Group = "MudExObjectEdit", Name = "Configure list values", Documentation = "This demo shows how you can use a selection with MudExSelect with a custom item provider", Icon = Icons.Material.Outlined.List, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [Demo(IsPlaygroundDemo = true, Group = "Components/Forms", Name = "Configure list values", Documentation = "This demo shows how you can use a selection with MudExSelect with a custom item provider", Icon = Icons.Material.Outlined.List, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <DemoComponent DocFiles="@(new [] {"https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions.CodeGator.Adapter/README.md", "Docs/ObjectEdit.md"})" PageType="@GetType()">    
     <MudExObjectEditForm AutoSkeletonOnLoad="true" MetaConfiguration="@Configure" OnValidSubmit="Callback" Value="@Model"></MudExObjectEditForm>

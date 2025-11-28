@@ -1,0 +1,35 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExChipSelect @ref=&quot;ComponentRef&quot;
+                     AvailableItems=&quot;@AvailableItems&quot; 
+                     @bind-SelectedValues=&quot;SelectedItems&quot;&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExChipSelect</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @L[&quot;Selected&quot;]: @string.Join(&quot;, &quot;, SelectedItems?.Select(x =&gt; x.Name) ?? Array.Empty<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">string</span><span class="htmlTagDelimiter">&gt;</span>())
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    public IEnumerable<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ChipItem</span><span class="htmlTagDelimiter">&gt;</span> SelectedItems { get; set; } = new List<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ChipItem</span><span class="htmlTagDelimiter">&gt;</span>();
+    
+    public List<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ChipItem</span><span class="htmlTagDelimiter">&gt;</span> AvailableItems { get; set; } = new()
+    {
+        new ChipItem { Id = 1, Name = &quot;Apple&quot; },
+        new ChipItem { Id = 2, Name = &quot;Banana&quot; },
+        new ChipItem { Id = 3, Name = &quot;Cherry&quot; },
+        new ChipItem { Id = 4, Name = &quot;Date&quot; },
+        new ChipItem { Id = 5, Name = &quot;Elderberry&quot; }
+    };
+
+    public class ChipItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public override string ToString() =&gt; Name;
+    }
+}
+
+</pre></div>

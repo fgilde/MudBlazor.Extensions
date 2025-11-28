@@ -1,0 +1,14 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+&lt;MudExIconPicker @ref=&quot;ComponentRef&quot; @bind-Value=&quot;_icon&quot; Label=&quot;@L[&quot;Select an icon&quot;]&quot; /&gt;
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudIcon</span> <span class="htmlAttributeName">Icon</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_icon&quot;</span> <span class="htmlTagDelimiter">/&gt;</span> @L[&quot;Selected icon&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private string _icon = Icons.Material.Filled.Star;
+}
+
+</pre></div>

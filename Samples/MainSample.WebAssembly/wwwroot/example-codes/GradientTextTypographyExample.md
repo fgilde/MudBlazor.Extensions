@@ -1,0 +1,14 @@
+```razor
+@inherits ExampleBase
+
+<MudStack Spacing="4">
+    <MudExGradientText Typo="Typo.h2">Heading 2</MudExGradientText>
+    <MudExGradientText Typo="Typo.h4">Heading 4</MudExGradientText>
+    <MudExGradientText Typo="Typo.h6">Heading 6</MudExGradientText>
+    <MudExGradientText Typo="Typo.body1">Body text with gradient</MudExGradientText>
+</MudStack>
+
+@code {
+}
+
+```

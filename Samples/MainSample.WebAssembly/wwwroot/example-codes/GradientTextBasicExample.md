@@ -1,0 +1,11 @@
+```razor
+@inherits ExampleBase
+
+<MudExGradientText @ref="ComponentRef" Typo="Typo.h3">
+    @L["Hello Gradient World!"]
+</MudExGradientText>
+
+@code {
+}
+
+```

@@ -1,0 +1,21 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Utilities
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Row</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExColorBubble @bind-Color=&quot;@_color1&quot; Size=&quot;Size.Small&quot; /&gt;
+    &lt;MudExColorBubble @bind-Color=&quot;@_color2&quot; Size=&quot;Size.Medium&quot; /&gt;
+    &lt;MudExColorBubble @bind-Color=&quot;@_color3&quot; Size=&quot;Size.Large&quot; /&gt;
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Different sizes: Small, Medium, Large&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private MudColor _color1 = new(&quot;#e91e63&quot;);
+    private MudColor _color2 = new(&quot;#9c27b0&quot;);
+    private MudColor _color3 = new(&quot;#673ab7&quot;);
+}
+
+</pre></div>

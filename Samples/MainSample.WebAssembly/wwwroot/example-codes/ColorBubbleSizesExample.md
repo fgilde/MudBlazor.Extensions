@@ -1,0 +1,21 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Utilities
+
+<MudStack Row="true" Spacing="4">
+    <MudExColorBubble @bind-Color="@_color1" Size="Size.Small" />
+    <MudExColorBubble @bind-Color="@_color2" Size="Size.Medium" />
+    <MudExColorBubble @bind-Color="@_color3" Size="Size.Large" />
+</MudStack>
+
+<MudText Typo="Typo.body2" Class="mt-3">
+    @L["Different sizes: Small, Medium, Large"]
+</MudText>
+
+@code {
+    private MudColor _color1 = new("#e91e63");
+    private MudColor _color2 = new("#9c27b0");
+    private MudColor _color3 = new("#673ab7");
+}
+
+```

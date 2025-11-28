@@ -1,0 +1,32 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;MudExEnumSelect @ref=&quot;ComponentRef&quot; TEnum=&quot;Priority?&quot; @bind-Value=&quot;@SelectedPriority&quot; Label=&quot;@L[&quot;Priority (nullable)&quot;]&quot; /&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @if (SelectedPriority.HasValue)
+        {
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body1&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Selected&quot;]: <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">strong</span><span class="htmlTagDelimiter">&gt;</span>@SelectedPriority<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">strong</span><span class="htmlTagDelimiter">&gt;</span><span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+        }
+        else
+        {
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body1&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Secondary&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;No priority selected&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+        }
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    public Priority? SelectedPriority { get; set; }
+
+    public enum Priority
+    {
+        Low,
+        Normal,
+        High,
+        Critical
+    }
+}
+
+</pre></div>

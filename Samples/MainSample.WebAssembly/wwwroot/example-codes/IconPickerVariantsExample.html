@@ -1,0 +1,19 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+&lt;MudExIconPicker @ref=&quot;ComponentRef&quot; 
+                 @bind-Value=&quot;_icon&quot; 
+                 Variant=&quot;Variant.Outlined&quot;
+                 Label=&quot;@L[&quot;Outlined variant&quot;]&quot; /&gt;
+
+&lt;MudExIconPicker @bind-Value=&quot;_icon2&quot; 
+                 Variant=&quot;Variant.Filled&quot;
+                 Label=&quot;@L[&quot;Filled variant&quot;]&quot;
+                 Class=&quot;mt-4&quot; /&gt;
+
+@code {
+    private string _icon = Icons.Material.Filled.Settings;
+    private string _icon2 = Icons.Material.Filled.Person;
+}
+
+</pre></div>
