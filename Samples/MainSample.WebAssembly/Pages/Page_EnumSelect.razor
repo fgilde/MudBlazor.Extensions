@@ -1,118 +1,120 @@
 ﻿@page "/enum-select"
 @inherits BasePage
-@attribute [Demo(IsPlaygroundDemo = true, Group = "Components/Selection", Name = "MudExEnumSelect", Icon = Icons.Material.Outlined.List, Documentation = "Demonstration for a simple but very useful Enum Selector", ForComponentType = typeof(MudExEnumSelect<>))]
 
-<DemoComponent PageType="@GetType()">
+@using MainSample.WebAssembly.Examples.EnumSelect
 
-    <MudCard Class="mb-10" Elevation="6">
-        <MudCardHeader>
-            <MudText Typo="Typo.h6">@L["Simple Enum"]</MudText>
-        </MudCardHeader>
-        <MudCardContent>
-            <MudGrid>
-                <MudItem md="6" Class="d-flex justify-center">
-                    <MudExEnumSelect TEnum="TestEnumState" @bind-Value="@State"></MudExEnumSelect>
-                </MudItem>
-                <MudItem md="3">
-                    <MudText>@L["Selected"]: @State</MudText>
-                </MudItem>
-            </MudGrid>
-        </MudCardContent>
-    </MudCard>
+@attribute [Demo(IsPlaygroundDemo = true, Group = "Components/Selection", Name = "MudExEnumSelect", Order = 1, Icon = Icons.Material.Outlined.List, Documentation = "MudExEnumSelect – Simple and powerful enum selection", ForComponentType = typeof(MudExEnumSelect<>))]
 
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudExEnumSelect – Simple and powerful enum selection"]
+    </MudText>
 
-    <MudCard Class="mb-10" Elevation="6">
-        <MudCardHeader>
-            <MudText Typo="Typo.h6">@L["Nullable enum"]</MudText>
-        </MudCardHeader>
-        <MudCardContent>
-            <MudGrid>
-                <MudItem md="6" Class="d-flex justify-center">
-                    <MudExEnumSelect TEnum="TestEnumState?" @bind-Value="@StateNullable"></MudExEnumSelect>
+    <MudText Typo="Typo.body1">
+        @L["The MudExEnumSelect component provides an easy way to select enum values. It automatically handles regular enums, nullable enums, and flag enums with multi-select support."]
+    </MudText>
 
-                </MudItem>
-                <MudItem md="3">
-                    @if (StateNullable.HasValue)
-                    {
-                        <MudText>@L["Selected"]: @StateNullable</MudText>
-                    }
-                    else
-                    {
-                        <MudText>@L["Selected"]: NULL</MudText>
-                    }
-                </MudItem>
-            </MudGrid>
-        </MudCardContent>
-    </MudCard>
-    
-    
+    <MudAlert Severity="Severity.Info" Class="mt-4">
+        @L["This component auto-detects the enum type and provides appropriate selection UI. Flag enums allow multiple selections, while regular enums provide single selection."]
+    </MudAlert>
+</MudPaper>
 
-    
-    <MudCard Class="mb-10" Elevation="6">
-        <MudCardHeader>
-            <MudText Typo="Typo.h6">@L["Flags Enum"]</MudText>
-        </MudCardHeader>
-        <MudCardContent>
-            <MudGrid>
-                <MudItem md="6" Class="d-flex justify-center">
-                    <MudExEnumSelect TEnum="DinnerItems" @bind-Value="@ChosenDinnerItems"></MudExEnumSelect>
-                </MudItem>
-                <MudItem md="3">
-                    <MudText>@L["Selected"]: @ChosenDinnerItems</MudText>
-                </MudItem>
-            </MudGrid>
-        </MudCardContent>
-    </MudCard>
-    
-    
-    <MudCard Class="mb-10" Elevation="6">
-        <MudCardHeader>
-            <MudText Typo="Typo.h6">@L["Nullable Flags Enum"]</MudText>
-        </MudCardHeader>
-        <MudCardContent>
-            <MudGrid>
-                <MudItem md="6" Class="d-flex justify-center">
-                    <MudExEnumSelect TEnum="DinnerItems?" @bind-Value="@ChosenDinnerItemsNullable"></MudExEnumSelect>
-                </MudItem>
-                <MudItem md="3">
-                    @if (ChosenDinnerItemsNullable.HasValue)
-                    {
-                        <MudText>@L["Selected"]: @ChosenDinnerItemsNullable</MudText>
-                    }
-                    else
-                    {
-                        <MudText>@L["Selected"]: NULL</MudText>
-                    }
-                </MudItem>
-            </MudGrid>
-        </MudCardContent>
-    </MudCard>
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Automatic enum detection"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Works with any enum type - regular, nullable, or flag enums."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Flag enum support"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Automatically provides multi-select for [Flags] decorated enums."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Nullable support"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Supports nullable enum types with proper null handling."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 
-</DemoComponent>
+<MudDivider Class="mb-6" />
 
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Basic enum select"
+                  NavTitle="Basic usage"
+                  FeaturesTitle="Key Properties"
+                  Features="@(new[]
+                            {
+                                "TEnum – The enum type to select from",
+                                "@bind-Value – Two-way binding for selected value",
+                                "Label – Optional label for the select"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example shows basic enum selection. The component automatically displays all enum values as options."]
+            </MudText>
+            <EnumSelectBasicExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Nullable enum select"
+                  NavTitle="Nullable enums"
+                  FeaturesTitle="Nullable Features"
+                  Features="@(new[]
+                            {
+                                "TEnum? – Use nullable type syntax",
+                                "Allows selection of null/no value",
+                                "HasValue property for null checking"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example demonstrates nullable enum support. Users can clear the selection to set a null value."]
+            </MudText>
+            <EnumSelectNullableExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. Flags enum select"
+                  NavTitle="Flag enums"
+                  FeaturesTitle="Flags Features"
+                  Features="@(new[]
+                            {
+                                "[Flags] attribute detection",
+                                "Multi-select support automatically enabled",
+                                "Bitwise OR combination of selected values"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["When using an enum with the [Flags] attribute, the component automatically enables multi-select mode."]
+            </MudText>
+            <EnumSelectFlagsExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
 
 @code {
-    public DinnerItems ChosenDinnerItems { get; set; } = DinnerItems.Appetizer | DinnerItems.Beverage;
-    public DinnerItems? ChosenDinnerItemsNullable { get; set; } = DinnerItems.Appetizer | DinnerItems.Beverage;
-    public TestEnumState State { get; set; } = TestEnumState.Closed;
-    public TestEnumState? StateNullable { get; set; }
-
-
-    public enum TestEnumState
-    {
-        Open,
-        Closed,
-        InProgress,
-        Cancelled,
-    }
-
-    [Flags] 
-    public enum DinnerItems {
-        Entree = 1,
-        Appetizer = 2,
-        Side = 4,
-        Dessert = 8,
-        Beverage = 16,
-        BarBeverage = 32
-    }
 }

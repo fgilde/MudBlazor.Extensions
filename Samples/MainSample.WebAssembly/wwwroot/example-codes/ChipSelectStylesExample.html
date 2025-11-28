@@ -1,0 +1,52 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExChipSelect @ref=&quot;ComponentRef&quot;
+                     AvailableItems=&quot;@AvailableItems&quot; 
+                     @bind-SelectedValues=&quot;SelectedItems&quot;
+                     ChipSize=&quot;SelectedSize&quot;
+                     ChipVariant=&quot;SelectedVariant&quot;
+                     ChipColor=&quot;SelectedColor&quot;&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExChipSelect</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudDivider</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;my-4&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+            &lt;MudExEnumSelect @bind-Value=&quot;SelectedSize&quot; Label=&quot;@L[&quot;Size&quot;]&quot; /&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+            &lt;MudExEnumSelect @bind-Value=&quot;SelectedVariant&quot; Label=&quot;@L[&quot;Variant&quot;]&quot; /&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+            &lt;MudExEnumSelect @bind-Value=&quot;SelectedColor&quot; Label=&quot;@L[&quot;Color&quot;]&quot; /&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    public IEnumerable<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ColorItem</span><span class="htmlTagDelimiter">&gt;</span> SelectedItems { get; set; } = new List<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ColorItem</span><span class="htmlTagDelimiter">&gt;</span>();
+    public Size SelectedSize { get; set; } = Size.Medium;
+    public Variant SelectedVariant { get; set; } = Variant.Filled;
+    public Color SelectedColor { get; set; } = Color.Primary;
+    
+    public List<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ColorItem</span><span class="htmlTagDelimiter">&gt;</span> AvailableItems { get; set; } = new()
+    {
+        new ColorItem { Id = 1, Name = &quot;Red&quot;, Hex = &quot;#F44336&quot; },
+        new ColorItem { Id = 2, Name = &quot;Green&quot;, Hex = &quot;#4CAF50&quot; },
+        new ColorItem { Id = 3, Name = &quot;Blue&quot;, Hex = &quot;#2196F3&quot; },
+        new ColorItem { Id = 4, Name = &quot;Yellow&quot;, Hex = &quot;#FFEB3B&quot; },
+        new ColorItem { Id = 5, Name = &quot;Purple&quot;, Hex = &quot;#9C27B0&quot; }
+    };
+
+    public class ColorItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Hex { get; set; }
+        public override string ToString() =&gt; Name;
+    }
+}
+
+</pre></div>

@@ -1,55 +1,120 @@
 ﻿@page "/chip-select"
 @inherits BasePage
-@using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-@attribute [Demo(IsPlaygroundDemo = true, Group = "Components/Selection", Name = "MudExChipSelect", Icon = Icons.Material.Outlined.BubbleChart, Documentation = "MudExChipSelect can used to select items from a collection as chips", ForComponentType = typeof(MudExChipSelect<>))]
+@using MainSample.WebAssembly.Examples.ChipSelect
 
+@attribute [Demo(IsPlaygroundDemo = true, Group = "Components/Selection", Name = "MudExChipSelect", Order = 0, Icon = Icons.Material.Outlined.BubbleChart, Documentation = "MudExChipSelect – Multi-select with chip display", ForComponentType = typeof(MudExChipSelect<>))]
 
-<DemoComponent PageType="@GetType()">
-    <SplitContainer>
-        <Left>
-            <MudExChipSelect AvailableItems="@Available" @bind-SelectedValues="Selected" @ref="component"></MudExChipSelect>
-            <MudButton Class="mt-5" OnClick="@OnShowClick">@L["Show selected"]</MudButton>
-        </Left>
-        <Right>
-            <ComponentPropertyGrid ShowInherited="true" MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
-        </Right>
-    </SplitContainer>
-</DemoComponent>
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudExChipSelect – Multi-select with chip display"]
+    </MudText>
+
+    <MudText Typo="Typo.body1">
+        @L["The MudExChipSelect component allows users to select items from a collection and displays them as chips. It supports various customization options for chip appearance, selection limits, and more."]
+    </MudText>
+
+    <MudAlert Severity="Severity.Info" Class="mt-4">
+        @L["Perfect for tag selection, multi-select filters, or any scenario where users need to select multiple items from a predefined list."]
+    </MudAlert>
+</MudPaper>
+
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Chip-based display"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Selected items are displayed as removable chips with customizable appearance."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Flexible item source"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Bind to any collection of items and customize how they are displayed."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">
+                @L["Selection limits"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["Control maximum number of selections allowed with MaxItems property."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="mb-6" />
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Basic chip select"
+                  NavTitle="Basic usage"
+                  FeaturesTitle="Key Properties"
+                  Features="@(new[]
+                            {
+                                "AvailableItems – Collection of items to choose from",
+                                "@bind-SelectedValues – Two-way binding for selected items",
+                                "ToString() – Items displayed using their ToString() method"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This example demonstrates the basic MudExChipSelect with a simple collection of items. Click on available items to add them as chips."]
+            </MudText>
+            <ChipSelectBasicExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Chip styles and variants"
+                  NavTitle="Chip styles"
+                  FeaturesTitle="Appearance Options"
+                  Features="@(new[]
+                            {
+                                "ChipSize – Small, Medium, Large",
+                                "ChipVariant – Text, Filled, Outlined",
+                                "ChipColor – Any MudBlazor color"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Customize the appearance of chips with different sizes, variants, and colors. Use the controls below to see how they affect the display."]
+            </MudText>
+            <ChipSelectStylesExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. Maximum selection limit"
+                  NavTitle="Selection limits"
+                  FeaturesTitle="Selection Control"
+                  Features="@(new[]
+                            {
+                                "MaxItems – Limit the number of selections",
+                                "Prevents over-selection automatically",
+                                "Useful for constrained input scenarios"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Use the MaxItems property to limit how many items can be selected. Try adjusting the slider and selecting items."]
+            </MudText>
+            <ChipSelectMaxItemsExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
 
 @code {
-    
-    public IEnumerable<MyChipItem> Selected { get; set; }
-    public List<MyChipItem> Available { get; set; } = new()
-    {
-        new MyChipItem {Id = 1, Name = "Item 1"},
-        new MyChipItem {Id = 2, Name = "Item 2"},
-        new MyChipItem {Id = 3, Name = "Item 3"},
-        new MyChipItem {Id = 4, Name = "Item 4"},
-        new MyChipItem {Id = 5, Name = "Item 5"}
-    };
-
-    MudExChipSelect<MyChipItem> component;
-    private Action<ObjectEditMeta<MudExChipSelect<MyChipItem>>> Configure()
-    {
-        return meta =>
-        {
-            meta.Properties(m => m.AvailableItemsLoadFunc, m => m.SelectedValues, m => m.Value, m => m.ItemTemplate, m => m.Localizer).Ignore();
-            meta.IgnoreAllReadOnlyFields();
-        };
-    }
-
-    public class MyChipItem
-    {
-        public string Name { get; set; }  
-        public int Id { get; set; }  
-        public override string ToString() => Name;
-    }
-
-    private async Task OnShowClick()
-    {
-        string str = $"{string.Join(", ", Selected.Select(s => s.Name))}";
-        await DialogService.ShowInformationAsync("Selected", str);
-    }
-
 }

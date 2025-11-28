@@ -1,0 +1,32 @@
+<div class="html"><pre>
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;MudExEnumSelect @ref=&quot;ComponentRef&quot; TEnum=&quot;FilePermissions&quot; @bind-Value=&quot;@Permissions&quot; Label=&quot;@L[&quot;File Permissions&quot;]&quot; /&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body1&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Selected&quot;]: <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">strong</span><span class="htmlTagDelimiter">&gt;</span>@Permissions<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">strong</span><span class="htmlTagDelimiter">&gt;</span><span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Secondary&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+            @L[&quot;Numeric value&quot;]: @((int)Permissions)
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    public FilePermissions Permissions { get; set; } = FilePermissions.Read | FilePermissions.Write;
+
+    [Flags]
+    public enum FilePermissions
+    {
+        None = 0,
+        Read = 1,
+        Write = 2,
+        Execute = 4,
+        Delete = 8,
+        Share = 16,
+        Admin = 32
+    }
+}
+
+</pre></div>

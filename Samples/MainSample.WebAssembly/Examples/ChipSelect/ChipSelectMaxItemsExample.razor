@@ -1,0 +1,41 @@
+@inherits ExampleBase
+
+<div style="width: 100%">
+    <MudExChipSelect @ref="ComponentRef"
+                     AvailableItems="@AvailableItems" 
+                     @bind-SelectedValues="SelectedItems"
+                     MaxItems="@MaxItems">
+    </MudExChipSelect>
+
+    <MudText Typo="Typo.body2" Class="mt-4" Color="Color.Secondary">
+        @L["Maximum items allowed"]: @MaxItems
+    </MudText>
+
+    <MudSlider @bind-Value="MaxItems" Min="1" Max="10" Step="1" Class="mt-2">
+        @L["Max Items"]: @MaxItems
+    </MudSlider>
+</div>
+
+@code {
+    public IEnumerable<TagItem> SelectedItems { get; set; } = new List<TagItem>();
+    public int MaxItems { get; set; } = 3;
+    
+    public List<TagItem> AvailableItems { get; set; } = new()
+    {
+        new TagItem { Id = 1, Name = "JavaScript" },
+        new TagItem { Id = 2, Name = "TypeScript" },
+        new TagItem { Id = 3, Name = "C#" },
+        new TagItem { Id = 4, Name = "Python" },
+        new TagItem { Id = 5, Name = "Java" },
+        new TagItem { Id = 6, Name = "Go" },
+        new TagItem { Id = 7, Name = "Rust" },
+        new TagItem { Id = 8, Name = "Ruby" }
+    };
+
+    public class TagItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public override string ToString() => Name;
+    }
+}
