@@ -33,16 +33,12 @@ namespace TryMudEx.Server
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins("https://mudex.org", "https://www.mudex.org", "https://mudex.azurewebsites.net");
+                        builder.AllowAnyOrigin()
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader();
+                        //builder.WithOrigins("https://mudex.org", "https://www.mudex.org", "https://mudex.azurewebsites.net");
                     });
 
-                //options.AddDefaultPolicy(
-                //    builder =>
-                //    {
-                //        builder.AllowAnyOrigin()   
-                //            .AllowAnyMethod()  
-                //            .AllowAnyHeader(); 
-                //    });
             });
 
             services.AddControllers();
