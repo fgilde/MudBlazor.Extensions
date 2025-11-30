@@ -61,7 +61,8 @@ public partial class Repl : IDisposable
 
     [Inject] public IDialogService DialogService { get; set; }
 
-    [Inject] public IJSUnmarshalledRuntime UnmarshalledJsRuntime { get; set; }
+    //[Inject] public IJSUnmarshalledRuntime UnmarshalledJsRuntime { get; set; }
+    [Inject] public IJSRuntime UnmarshalledJsRuntime { get; set; }
 
 
     [Parameter] public bool ShowHiddenFiles { get; set; }
