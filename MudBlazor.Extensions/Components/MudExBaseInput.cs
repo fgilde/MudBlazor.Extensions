@@ -111,11 +111,6 @@ public abstract class MudExBaseInput<T> : MudBaseInput<T>
     [SafeCategory(CategoryTypes.FormComponent.Validation)]
     [Parameter] public EventCallback<bool> ErrorChanged { get; set; }
 
-    /// <summary>
-    /// Callback when the error text changes
-    /// </summary>
-    [SafeCategory(CategoryTypes.FormComponent.Validation)]
-    [Parameter] public EventCallback<string> ErrorTextChanged { get; set; }
 
     /// <summary>
     /// Callback when the validation errors change

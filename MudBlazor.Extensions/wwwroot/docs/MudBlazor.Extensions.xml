@@ -1203,11 +1203,6 @@
             Callback when the error changes
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.ErrorTextChanged">
-            <summary>
-            Callback when the error text changes
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.ValidationErrorsChanged">
             <summary>
             Callback when the validation errors change

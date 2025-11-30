@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
 
 namespace MainSample.WebAssembly.Types;
@@ -22,16 +21,6 @@ public class DemoNewAttribute : DemoAttribute
         set { }
     }
 
-    //public override string? Icon
-    //{
-    //    get
-    //    {
-    //        var newIcon = Icons.Material.Filled.Star;
-    //        var result = string.IsNullOrEmpty(_icon) ? newIcon : MudExSvg.CombineIconsHorizontal(_icon, newIcon);
-    //        return result;
-    //    }
-    //    set => _icon = value;
-    //}
 }
 
 public class DemoUpdatedAttribute : DemoAttribute
@@ -51,16 +40,7 @@ public class DemoUpdatedAttribute : DemoAttribute
         set { }
     }
 
-    //public override string? Icon
-    //{
-    //    get
-    //    {
-    //        var newIcon = Icons.Material.Filled.Update;
-    //        var result = string.IsNullOrEmpty(_icon) ? newIcon : MudExSvg.CombineIconsHorizontal(_icon, newIcon);
-    //        return result;
-    //    }
-    //    set => _icon = value;
-    //}
+
 }
 
 
@@ -70,7 +50,7 @@ public class DemoAttribute : Attribute
     public Type PageType { get; private set; }
 
     public bool IsPlaygroundDemo { get; set; }
-    
+
     public DemoAttribute(Type pageType)
     {
         UpdateType(pageType);
@@ -132,56 +112,109 @@ public class DemoAttribute : Attribute
     {
         var attrType = typeof(DemoAttribute);
 
-        // Alle Typen + alle Vorkommen von DemoAttribute flach auflösen
         var allTypeAttributes =
             attrType.Assembly.GetTypes()
                 .SelectMany(t =>
                     t.GetCustomAttributes<DemoAttribute>(inherit: false)
-                     .Select(a => new { Type = t, Attribute = a }));
+                        .Select(a => new { Type = t, Attribute = a }));
 
         if (!flat)
         {
-            // Leere/whitespace Gruppen wie "ungrouped" behandeln
-            var grouped = allTypeAttributes
-                .GroupBy(x => string.IsNullOrWhiteSpace(x.Attribute.Group) ? null : x.Attribute.Group);
+            var navigationEntries = new List<NavigationEntry>();
+            var groupCache = new Dictionary<string, NavigationEntry>();
 
-            var navigationEntries = new HashSet<NavigationEntry>();
-
-            foreach (var g in grouped
-                         .OrderBy(g => g.Key == null ? 1 : 0)
-                         .ThenBy(g => g.Key))
+            foreach (var item in allTypeAttributes
+                         .OrderBy(r => r.Attribute.Order)
+                         .ThenBy(r => r.Attribute.Name)) // oder Text/Url, je nach Geschmack
             {
-                var groupName = g.Key ?? ungrouppedName;
+                var groupPath = string.IsNullOrWhiteSpace(item.Attribute.Group)
+                    ? ungrouppedName
+                    : item.Attribute.Group;
 
-                var groupNavigationEntry = new NavigationEntry
-                {
-                    Text = groupName,
-                    Href = $"/demos/{groupName}",
-                    Children = new HashSet<NavigationEntry>(),
-                    // IsExpanded = g.Key == null
-                };
-
-                foreach (var r in g
-                             .OrderBy(r => r.Attribute.Order)
-                             .ThenBy(r => r.Attribute?.ToNavigationEntry(r.Type)?.Text)) // optional: stabilere Sortierung
-                {
-                    var navigationEntry = r.Attribute.ToNavigationEntry(r.Type);
-                    navigationEntry.Parent = groupNavigationEntry;
-                    groupNavigationEntry.Children.Add(navigationEntry);
-                }
-
-                navigationEntries.Add(groupNavigationEntry);
+                var parentEntry = GetOrCreateGroupHierarchy(groupPath, groupCache, navigationEntries);
+                var navigationEntry = item.Attribute.ToNavigationEntry(item.Type);
+                navigationEntry.Parent = parentEntry;
+                parentEntry.Children.Add(navigationEntry);
             }
 
-            return navigationEntries;
+            SortEntriesRecursively(navigationEntries);
+            return navigationEntries.ToHashSet();
         }
 
-        // Flache Liste aller Attribute über alle Typen
+        // flat
         return allTypeAttributes
             .OrderBy(r => r.Attribute.Order)
-            .ThenBy(r => r.Attribute?.ToNavigationEntry(r.Type)?.Text) // optional
+            .ThenBy(r => r.Attribute.Name)
             .Select(r => r.Attribute.ToNavigationEntry(r.Type))
             .ToHashSet();
     }
+
+    /// <summary>
+    /// Creates or retrieves the navigation hierarchy for a group path.
+    /// Supports multi-level paths separated by '/' (e.g., "Components/Forms/Inputs").
+    /// </summary>
+    private static NavigationEntry GetOrCreateGroupHierarchy(
+        string groupPath,
+        Dictionary<string, NavigationEntry> groupCache,
+        List<NavigationEntry> rootEntries)
+    {
+        if (groupCache.TryGetValue(groupPath, out var existing))
+            return existing;
+
+        var pathParts = groupPath.Split('/');
+        NavigationEntry? parent = null;
+        var currentPath = "";
+
+        for (int i = 0; i < pathParts.Length; i++)
+        {
+            var part = pathParts[i].Trim();
+            currentPath = i == 0 ? part : $"{currentPath}/{part}";
+
+            if (!groupCache.TryGetValue(currentPath, out var entry))
+            {
+                entry = new NavigationEntry
+                {
+                    Text = part,
+                    Href = $"/demos/{Uri.EscapeDataString(currentPath)}",
+                    Children = new HashSet<NavigationEntry>()
+                };
+                groupCache[currentPath] = entry;
+
+                if (parent == null)
+                {
+                    rootEntries.Add(entry);
+                }
+                else
+                {
+                    entry.Parent = parent;
+                    parent.Children.Add(entry);
+                }
+            }
+            parent = entry;
+        }
+
+        return parent!;
+    }
+
+    private static void SortEntriesRecursively(IList<NavigationEntry> entries)
+    {
+        // Erst sortieren
+        var ordered = entries
+            .OrderBy(e => e.Demo?.Order ?? 999)
+            .ThenBy(e => e.Text)
+            .ToList();
+
+        entries.Clear();
+        foreach (var e in ordered)
+        {
+            entries.Add(e);
+            if (e.Children is IList<NavigationEntry> childList && childList.Count > 0)
+            {
+                SortEntriesRecursively(childList);
+            }
+        }
+    }
+
+
 
 }

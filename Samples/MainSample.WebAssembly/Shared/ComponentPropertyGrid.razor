@@ -3,10 +3,13 @@
 @typeparam T
 @inject IStringLocalizer<ComponentPropertyGrid<T>> L
 
-@Inherited()
+@if (render)
+{
+    @Inherited()
+}
 
 @code {
-
+    bool render = true;
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
     protected override CodeBlockTheme GetCodeTheme() => MainLayout.GetCodeBlockTheme();
     

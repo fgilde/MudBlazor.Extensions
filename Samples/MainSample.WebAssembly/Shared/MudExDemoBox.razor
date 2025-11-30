@@ -7,174 +7,206 @@
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @using Nextended.Core.Extensions
-
+<style>
+    .mudex-demo-action .mud-button-label {
+        text-transform: none !important;
+    }
+    .no-text-transform {
+        text-transform: none !important;
+    }
+</style>
 
 <div @ref="_rootElement">
-<MudPaper id="@AnchorId" Class="mudex-demo-box mb-6" Elevation="3">
-    <MudStack Spacing="0">
+    <MudPaper id="@AnchorId" Class="mudex-demo-box mb-6" Elevation="3">
+        <MudStack Spacing="0">
 
 
-        <MudPaper Class="mudex-demo-header px-4 py-3" Elevation="0">
-            <MudToolBar Dense="true">
+            <MudPaper Class="mudex-demo-header px-4 py-3" Elevation="0">
+                <MudToolBar Dense="true">
 
-                <MudItem xs="12" md="7">
-                    <MudText Typo="Typo.h6">@Title</MudText>
-                    @if (!string.IsNullOrWhiteSpace(Subtitle))
+                    <MudItem xs="12" md="7">
+                        <MudText Typo="Typo.h6">@Title</MudText>
+                        @if (!string.IsNullOrWhiteSpace(Subtitle))
+                        {
+                            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                                @TryLocalize(Subtitle)
+                            </MudText>
+                        }
+                    </MudItem>
+
+                    <MudSpacer />
+                    <MudTooltip Text="@TryLocalize("Run this sample on try.mudex.org online")">
+                        <MudButton Variant="Variant.Text"
+                                   Class="mudex-demo-action no-text-transform"
+                                   Color="Color.Success"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Filled.PlayArrow"
+                                   OnClick="@RunClicked">
+                            @TryLocalize(RunText)
+                        </MudButton>
+                    </MudTooltip>
+
+                    @if (HasCode)
                     {
-                        <MudText Typo="Typo.body2" Color="Color.Secondary">
-                            @TryLocalize(Subtitle)
-                        </MudText>
+                        <MudButton Variant="Variant.Text"
+                                   Class="mudex-demo-action no-text-transform"
+                                   Color="Color.Default"
+                                   Size="Size.Small"
+                                   StartIcon="@(ShowCode ? Icons.Material.Filled.CodeOff : Icons.Material.Filled.Code)"
+                                   OnClick="@ToggleShowCode">
+                            @TryLocalize(ShowCode ? HideCodeText : ShowCodeText)
+                        </MudButton>
                     }
-                </MudItem>
+                    @if (_example?.ComponentRefs?.Any() == true)
+                    {
+                        <MudTooltip Text="@TryLocalize("Edit configuration for component in this sample")">
+                            @if (_example?.ComponentRefs is { Length: > 1 })
+                            {
+                                <MudMenu Icon="@Icons.Material.Filled.Settings"
+                                         Class="mudex-demo-action no-text-transform"
+                                         Color="Color.Default"
+                                         Variant="Variant.Text"
+                                         Disabled="@(_example?.ComponentRefs is not { Length: > 0 })">
+                                    <ActivatorContent>
+                                        <MudButton Variant="Variant.Text"
+                                                   Color="Color.Default"
+                                                   Size="Size.Small"
+                                                   StartIcon="@Icons.Material.Filled.Settings">
+                                            @TryLocalize(EditInstanceText)
+                                        </MudButton>
+                                    </ActivatorContent>
 
-                    <MudSpacer/>
-                        <MudTooltip Text="@TryLocalize("Run this sample on try.mudex.org online")">
-                            <MudButton Variant="Variant.Text"
-                                       Class="mudex-demo-action"
-                                       Color="Color.Success"
-                                       Size="Size.Small"
-                                       StartIcon="@Icons.Material.Filled.PlayArrow"
-                                       OnClick="@RunClicked">
-                                @TryLocalize(RunText)
-                            </MudButton>
+                                    <ChildContent>
+                                        @for (var i = 0; i < _example.ComponentRefs.Length; i++)
+                                        {
+                                            var idx = i;
+                                            <MudMenuItem OnClick="@(() => EditInstanceClicked(_example.ComponentRefs[idx]))">
+                                                @TryLocalize("Instance") @(@$" {idx + 1}")
+                                            </MudMenuItem>
+                                        }
+                                    </ChildContent>
+                                </MudMenu>
+                            }
+                            else
+                            {
+                                <MudButton Variant="Variant.Text"
+                                           Disabled="@(_example?.ComponentRefs is not { Length: > 0 })"
+                                           Class="mudex-demo-action no-text-transform"
+                                           Color="Color.Default"
+                                           Size="Size.Small"
+                                           StartIcon="@Icons.Material.Filled.Settings"
+                                           OnClick="@(() => EditInstanceClicked(_example?.ComponentRefs?[0]))">
+                                    @TryLocalize(EditInstanceText)
+                                </MudButton>
+                            }
                         </MudTooltip>
+                    }
 
-                        @if (HasCode)
-                        {
-                            <MudButton Variant="Variant.Text"
-                                       Class="mudex-demo-action"
-                                       Color="Color.Default"
-                                       Size="Size.Small"
-                                       StartIcon="@(ShowCode ? Icons.Material.Filled.CodeOff : Icons.Material.Filled.Code)"
-                                       OnClick="@ToggleShowCode">
-                                @TryLocalize(ShowCode ? HideCodeText : ShowCodeText)
-                            </MudButton>
-                        }
-                        @if (_example?.ComponentRefs?.Any() == true)
-                        {
-                            <MudTooltip Text="@TryLocalize("Edit configuration for component in this sample")">
-                                @if (_example?.ComponentRefs is { Length: > 1 })
-                                {
-                                    <MudMenu Icon="@Icons.Material.Filled.Settings"
-                                             Color="Color.Default"
-                                             Variant="Variant.Text"
-                                             Class="mudex-demo-action"
-                                             Disabled="@(_example?.ComponentRefs is not { Length: > 0 })">
-                                        <ActivatorContent>
-                                            <MudButton Variant="Variant.Text"
-                                                       Color="Color.Default"
-                                                       Size="Size.Small"
-                                                       StartIcon="@Icons.Material.Filled.Settings">
-                                                @TryLocalize(EditInstanceText)
-                                            </MudButton>
-                                        </ActivatorContent>
-
-                                        <ChildContent>
-                                            @for (var i = 0; i < _example.ComponentRefs.Length; i++)
-                                            {
-                                                var idx = i;
-                                                <MudMenuItem OnClick="@(() => EditInstanceClicked(_example.ComponentRefs[idx]))">
-                                                    @TryLocalize("Instance") @(@$" {idx + 1}")
-                                                </MudMenuItem>
-                                            }
-                                        </ChildContent>
-                                    </MudMenu>
-                                }
-                                else
-                                {
-                                    <MudButton Variant="Variant.Text"
-                                               Disabled="@(_example?.ComponentRefs is not { Length: > 0 })"
-                                               Class="mudex-demo-action"
-                                               Color="Color.Default"
-                                               Size="Size.Small"
-                                               StartIcon="@Icons.Material.Filled.Settings"
-                                               OnClick="@(() => EditInstanceClicked(_example?.ComponentRefs?[0]))">
-                                        @TryLocalize(EditInstanceText)
-                                    </MudButton>
-                                }
-                            </MudTooltip>
-                        }
-                    
                 </MudToolBar>
-        </MudPaper>
+            </MudPaper>
 
-        <MudDivider />
+            <MudDivider />
 
-        <!-- Demo + optionale Features -->
-        <MudGrid Class="mudex-demo-body px-4 py-4" GutterSize="3">
-            <MudItem xs="12" md="@((HasFeatures ? 8 : 12))">
-                <MudPaper Class="mudex-demo-surface pa-4" Elevation="0">
-                    @if (DemoContent is not null)
-                    {
-                        <CascadingValue Value="this">
-                            @DemoContent
-                        </CascadingValue>
-                    }
-                    else
-                    {
-                        <MudText Typo="Typo.caption" Color="Color.Secondary">
-                            @TryLocalize("No demo content provided.")
-                        </MudText>
-                    }
-                </MudPaper>
-            </MudItem>
-
-            @if (HasFeatures)
-            {
-                <MudItem xs="12" md="4">
-                    <MudPaper Class="mudex-demo-features pa-3 h-100" Elevation="0">
-                        @if (!string.IsNullOrWhiteSpace(FeaturesTitle))
+            
+            <MudGrid Class="mudex-demo-body px-4 py-4" GutterSize="3">
+                <MudItem xs="12" md="@((HasFeatures ? 8 : 12))">
+                    <MudPaper Class="mudex-demo-surface pa-4" Elevation="0">
+                        @if (DemoContent is not null)
                         {
-                            <MudText Typo="Typo.subtitle2" Class="mb-1">
-                                @TryLocalize(FeaturesTitle)
+                            <CascadingValue Value="this">
+                                @DemoContent
+                            </CascadingValue>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                @TryLocalize("No demo content provided.")
                             </MudText>
-                        }
-
-                        @if (!string.IsNullOrWhiteSpace(FeaturesDescription))
-                        {
-                            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-2">
-                                @TryLocalize(FeaturesDescription)
-                            </MudText>
-                        }
-
-                        @if (FeaturesListTemplate is not null)
-                        {
-                            @FeaturesListTemplate
-                        }
-                        else if (Features is not null && Features.Any())
-                        {
-                            <MudList T="object" Dense="true" Class="mudex-feature-list">
-                                @foreach (var feature in Features)
-                                {
-                                    <MudListItem>
-                                        <MudIcon Icon="@Icons.Material.Filled.Check"
-                                                 Size="Size.Small"
-                                                 Class="mudex-feature-icon" />
-                                        <MudText Typo="Typo.body2">@TryLocalize(feature)</MudText>
-                                    </MudListItem>
-                                }
-                            </MudList>
                         }
                     </MudPaper>
                 </MudItem>
+
+                @if (HasFeatures)
+                {
+                    <MudItem xs="12" md="4">
+                        <MudPaper Class="mudex-demo-features pa-3 h-100" Elevation="0">
+                            @if (!string.IsNullOrWhiteSpace(FeaturesTitle))
+                            {
+                                <MudText Typo="Typo.subtitle2" Class="mb-1">
+                                    @TryLocalize(FeaturesTitle)
+                                </MudText>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(FeaturesDescription))
+                            {
+                                <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-2">
+                                    @TryLocalize(FeaturesDescription)
+                                </MudText>
+                            }
+
+                            @if (FeaturesListTemplate is not null)
+                            {
+                                @FeaturesListTemplate
+                            }
+                            else if (Features is not null && Features.Any())
+                            {
+                                <MudList T="object" Dense="true" Class="mudex-feature-list">
+                                    @foreach (var feature in Features)
+                                    {
+                                        <MudListItem>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check"
+                                                     Size="Size.Small"
+                                                     Class="mudex-feature-icon" />
+                                            <MudText Typo="Typo.body2">@TryLocalize(feature)</MudText>
+                                        </MudListItem>
+                                    }
+                                </MudList>
+                            }
+                        </MudPaper>
+                    </MudItem>
+                }
+            </MudGrid>
+
+            @if (ShowCode && HasCode)
+            {
+                <MudDivider />
+
+                <div class="mudex-demo-code-container">
+                    <MudPaper Class="mudex-demo-code" Elevation="1">
+                        @if (_additionalCode?.Any() == true)
+                        {
+                            <MudTabs TabPanelClass="no-text-transform" ApplyEffectsToContainer="true">
+                                @if (!string.IsNullOrWhiteSpace(Code))
+                                {
+                                    <MudTabPanel Text="Main">
+                                        <div style="@CodeViewerStyle">
+                                            <MudExMarkdown Value="@Code" CodeBlockTheme="MainLayout.GetCodeBlockTheme()" />
+                                        </div>
+                                    </MudTabPanel>
+                                }
+                                @foreach (var cf in _additionalCode)
+                                {
+                                    <MudTabPanel Text="@cf.Key">
+                                        <div style="@CodeViewerStyle">
+                                            <MudExMarkdown Value="@cf.Value" CodeBlockTheme="MainLayout.GetCodeBlockTheme()" />
+                                        </div>
+
+                                    </MudTabPanel>
+                                }
+                            </MudTabs>
+                        }
+                        else if (!string.IsNullOrWhiteSpace(Code))
+                        {
+                            <div style="@CodeViewerStyle">
+                                <MudExMarkdown Value="@Code" CodeBlockTheme="MainLayout.GetCodeBlockTheme()" />
+                            </div>
+
+                        }
+                    </MudPaper>
+                </div>
             }
-        </MudGrid>
-
-        @if (ShowCode && HasCode)
-        {
-            <MudDivider />
-
-            <div class="mudex-demo-code-container">
-                <MudPaper Class="mudex-demo-code" Elevation="1">
-                    @if (!string.IsNullOrWhiteSpace(Code))
-                    {
-                        <MudExMarkdown Value="@Code" CodeBlockTheme="MainLayout.GetCodeBlockTheme()" />
-                    }
-                </MudPaper>
-            </div>
-        }
-    </MudStack>
-</MudPaper>
+        </MudStack>
+    </MudPaper>
 </div>
 @code {
 
@@ -192,13 +224,15 @@
 
     [Parameter] public RenderFragment? DemoContent { get; set; }
     [Parameter] public string? Code { get; set; }
-
+    private IDictionary<string, string>? _additionalCode;
 
     /* Features (rechte Spalte) */
     [Parameter] public string? FeaturesTitle { get; set; }
     [Parameter] public string? FeaturesDescription { get; set; }
     [Parameter] public IEnumerable<string>? Features { get; set; }
     [Parameter] public RenderFragment? FeaturesListTemplate { get; set; }
+
+    private string CodeViewerStyle => "max-height: 400px; overflow: auto;";
 
     private bool HasFeatures =>
         (Features is not null && Features.Any()) ||
@@ -210,7 +244,7 @@
     private bool ShowCode { get; set; }
 
     private bool HasCode =>
-        !string.IsNullOrWhiteSpace(Code) || _example != null || DemoContent is not null;
+        !string.IsNullOrWhiteSpace(Code) || _example != null || DemoContent is not null || _additionalCode?.Any() == true;
 
     private async Task RunClicked()
     {
@@ -236,7 +270,11 @@
 
     private async Task LoadCodeAsync()
     {
-        Code ??= _example != null ?  await _example.GetSourceCodeAsync() :  MudExCodeView.CodeAsMarkup(MudExCodeView.CodeFromFragment(DemoContent), "razor");
+        Code ??= _example != null ? await _example.GetSourceCodeAsync() : MudExCodeView.CodeAsMarkup(MudExCodeView.CodeFromFragment(DemoContent), "razor");
+        if (_additionalCode == null && _example is { HasAdditionalCodeFiles: true })
+        {
+            _additionalCode = await _example.GetAdditionalCodeFilesAsync();
+        }
     }
 
     private async Task ToggleShowCode()
@@ -252,7 +290,7 @@
 
     [Parameter] public string? AnchorId { get; set; }
     [Parameter] public string? NavTitle { get; set; }
-    [Parameter] public int Order { get; set; }  
+    [Parameter] public int Order { get; set; }
 
 
 

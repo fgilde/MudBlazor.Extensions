@@ -5,7 +5,7 @@
 @attribute [DemoNew(IsPlaygroundDemo = true, Name = "Playground", Order = 100, Group = "TreeView", ForComponentTypes = new[] { typeof(MudExTreeView<>) })]
 
 
-<DemoComponent PageType="@GetType()">
+<DemoComponent DocFiles="@(new [] {"Docs/MudExTreeView.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">
     <SplitContainer>
         <Left>
             <MudPaper Class="pa-16 ma-2" Style=" width: 100%; max-height: 750px; overflow: auto;" Square="true">

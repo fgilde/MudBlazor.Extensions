@@ -31,7 +31,10 @@
             }
 
             @context.TreeView.RenderItemContent(context)
-            @RenderChipIf(context.Value)
+            @if (ViewMode != TreeViewMode.Breadcrumb)
+            {
+                @RenderChipIf(context.Value)
+            }
         </div>
     </ItemContentTemplate>
 </MudExTreeView>

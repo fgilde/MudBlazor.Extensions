@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Extensions.Components;
 using System.Text.RegularExpressions;
+using YamlDotNet.Core.Tokens;
+using static System.Net.WebRequestMethods;
 
 namespace MainSample.WebAssembly.Examples;
 
@@ -21,6 +23,11 @@ public class ExampleBase : ComponentBase, IExample
 
     private List<IComponent> _componentRefs = new ();
     public IComponent[] ComponentRefs => _componentRefs.ToArray();
+    public bool HasAdditionalCodeFiles => AdditionalCodeFiles?.Any() ?? false;
+
+
+    [Parameter]
+    public string[] AdditionalCodeFiles { get; set; }
 
     public IComponent? ComponentRef
     {
@@ -72,6 +79,19 @@ public class ExampleBase : ComponentBase, IExample
         return code = CleanCode(code);
     }
 
+    public async Task<IDictionary<string, string>> GetAdditionalCodeFilesAsync()
+    {
+        var client = new HttpClient();
+        var result = new Dictionary<string, string>();
+        foreach (var file in AdditionalCodeFiles)
+        {
+            var fileUrl = file.StartsWith("http") ? file : GH.Path(file);
+            var code = await client.GetStringAsync(fileUrl);
+            result[file] = MudExCodeView.CodeAsMarkup(code);
+        }
+        return result;
+    }
+
 
     private string CleanCode(string str)
     {
@@ -117,4 +137,6 @@ public interface IExample {
     public Action<IComponent>? ComponentRefSet { get; set; }
     public Task<string> GetSourceCodeAsync();
     public IComponent[]? ComponentRefs { get; }
+    public bool HasAdditionalCodeFiles { get; }
+    public Task<IDictionary<string, string>> GetAdditionalCodeFilesAsync();
 }
