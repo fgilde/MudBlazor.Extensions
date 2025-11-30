@@ -135,7 +135,7 @@ namespace MudBlazor.Extensions.Helper
                 return null;
             }
 
-            var instanceField = defaultJsRuntimeType.GetField(instanceFieldName, BindingFlags.Static | BindingFlags.NonPublic);
+            var instanceField = defaultJsRuntimeType.GetField(instanceFieldName, BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             if (instanceField == null)
             {
                 return null;
