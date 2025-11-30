@@ -94,15 +94,23 @@ window.Try = {
         const iFrame = document.getElementById(id);
         if (!iFrame) { return; }
 
+        // Standard-URL, wenn keine übergeben wurde
         if (!newSrc) {
-            iFrame.contentWindow.location.reload();
-        } else if (iFrame.src !== `${window.location.origin}${newSrc}`) {
-            iFrame.src = newSrc;
-        } else {
-            // There needs to be some change so the iFrame is actually reloaded
-            iFrame.src = '';
-            setTimeout(() => iFrame.src = newSrc);
+            newSrc = iFrame.getAttribute('data-base-src') || iFrame.getAttribute('src') || '/user-page';
         }
+
+        // Basis-URL merken (ohne alten Querystring)
+        const url = new URL(newSrc, window.location.origin);
+        url.searchParams.set('_cb', Date.now().toString()); // Cache-Buster
+
+        const bustedSrc = url.pathname + url.search;
+
+        // Immer komplett neu setzen, damit der Frame wirklich neu lädt
+        iFrame.src = '';
+        setTimeout(() => {
+            iFrame.setAttribute('data-base-src', url.pathname); // Basis-URL merken
+            iFrame.src = bustedSrc;
+        }, 0);
     },
     dispose: function () {
         _dotNetInstance = null;
