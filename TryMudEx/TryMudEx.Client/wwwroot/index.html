@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿﻿
+<!DOCTYPE html>
 <html class="mud-height-full">
 <head prefix="og: http://ogp.me/ns#">
 
@@ -10,7 +11,7 @@
     <base href="/" />
 
     <meta name="description" content="TryMudEx is a fiddle-like platform for writing, compiling, executing and sharing Blazor components entirely in the browser. Perfect for code playground and testing.">
-    <meta name="keywords" content="blazor, asp.net core, wasm, web assembly, browser, fiddle, online, compile, execute, share, component, write, front-end, playground, testing, code, single page application, dotnet, csharp, html, open-source, platform">
+    <meta name="keywords" content="blazor, asp.net core, wasm, web assembly, webassembly, asp.net, playground, fiddle, application, single page application, spa, single page application, dotnet, csharp, html, open-source, platform">
     <meta name="author" content="Florian Gilde">
     <meta name="author" content="MudBlazor">
 
@@ -57,9 +58,41 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
-    <script src="_framework/blazor.webassembly.js"></script>
-    <script src="_content/MudBlazor/MudBlazor.min.js?v=#{CACHE_TOKEN}#"></script>
-    <script src="editor/main.js?v=#{CACHE_TOKEN}#"></script>
+
+    <!-- WICHTIG: autostart="false", damit unser eigenes Blazor.start(...) genutzt wird -->
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+
+    <script>
+        Blazor.start({
+            loadBootResource: function (type, name, defaultUri, integrity) {
+                // wir interessieren uns nur für die UserComponents-Assembly
+                if (type === 'assembly' && name === 'Try.UserComponents.dll') {
+
+                    const dllBytes =
+                        window.Try &&
+                        window.Try.CodeExecution &&
+                        window.Try.CodeExecution.getUserComponentsDllBytes &&
+                        window.Try.CodeExecution.getUserComponentsDllBytes();
+
+                    if (dllBytes && dllBytes.length) {
+                        const blob = new Blob([dllBytes], { type: 'application/octet-stream' });
+                        const url = URL.createObjectURL(blob);
+
+                        return fetch(url).finally(() => URL.revokeObjectURL(url));
+                    }
+
+                    // noch keine Bytes hinterlegt: normale DLL laden
+                    return defaultUri;
+                }
+
+                // alle anderen Ressourcen normal laden
+                return defaultUri;
+            }
+        });
+    </script>
+
+    <script src="_content/MudBlazor/MudBlazor.min.js?v=815#{CACHE_TOKEN}#"></script>
+    <script src="editor/main.js?v=815#{CACHE_TOKEN}#"></script>
 </body>
 
 </html>
