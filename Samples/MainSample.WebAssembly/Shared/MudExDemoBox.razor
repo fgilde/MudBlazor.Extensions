@@ -249,7 +249,19 @@
     private async Task RunClicked()
     {
         await LoadCodeAsync();
-        await TryMudExHelper.EditCodeInTryMudexAsync(Code, JsRuntime);
+        if (_example?.HasAdditionalCodeFiles == true)
+        {
+            var files = new Dictionary<string, string>
+            {
+                { "__Main.razor", Code }
+            };
+            files.AddRange(await _example.GetAdditionalCodeFilesAsync(false));
+            await TryMudExHelper.EditCodeInTryMudexAsync(files, JsRuntime);
+        }
+        else
+        {
+            await TryMudExHelper.EditCodeInTryMudexAsync(Code, JsRuntime);
+        }
     }
 
     private async Task EditInstanceClicked(IComponent component)
