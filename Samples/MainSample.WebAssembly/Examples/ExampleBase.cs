@@ -79,7 +79,7 @@ public class ExampleBase : ComponentBase, IExample
         return code = CleanCode(code);
     }
 
-    public async Task<IDictionary<string, string>> GetAdditionalCodeFilesAsync()
+    public async Task<IDictionary<string, string>> GetAdditionalCodeFilesAsync(bool asMarkDown = true)
     {
         var client = new HttpClient();
         var result = new Dictionary<string, string>();
@@ -87,7 +87,7 @@ public class ExampleBase : ComponentBase, IExample
         {
             var fileUrl = file.StartsWith("http") ? file : GH.Path(file);
             var code = await client.GetStringAsync(fileUrl);
-            result[file] = MudExCodeView.CodeAsMarkup(code);
+            result[file] = asMarkDown ? MudExCodeView.CodeAsMarkup(code) : code;
         }
         return result;
     }
@@ -138,5 +138,5 @@ public interface IExample {
     public Task<string> GetSourceCodeAsync();
     public IComponent[]? ComponentRefs { get; }
     public bool HasAdditionalCodeFiles { get; }
-    public Task<IDictionary<string, string>> GetAdditionalCodeFilesAsync();
+    public Task<IDictionary<string, string>> GetAdditionalCodeFilesAsync(bool asMarkDown = true);
 }
