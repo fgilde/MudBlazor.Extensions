@@ -219,6 +219,7 @@ public partial class Repl : IDisposable
             catch (Exception e)
             {
                 errorMessage = "Unable to get snippet content. Please try again later.";
+                Console.WriteLine(e.Message);
             }
 
             return isSnippet ? LoadedSample.Snippet : LoadedSample.Sample;

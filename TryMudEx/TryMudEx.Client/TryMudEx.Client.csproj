@@ -5,6 +5,7 @@
     <PublishTrimmed>false</PublishTrimmed>
     <WasmEnableWebcil>false</WasmEnableWebcil>
     <WasmFingerprintAssets>false</WasmFingerprintAssets>
+    <WasmEnableStreamingResponse>false</WasmEnableStreamingResponse>
   </PropertyGroup>
 
   <ItemGroup>
