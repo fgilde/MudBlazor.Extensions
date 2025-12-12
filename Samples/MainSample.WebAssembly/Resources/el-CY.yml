@@ -20,6 +20,8 @@ _{0} Demos: '{0} Επιδείξεις'
 --mud-palette-white: --παλέτα λάσπης-λευκό
 (currently the item is not visible): (προς το παρόν το στοιχείο δεν είναι ορατό)
 (currently the item is visible): (προς το παρόν το στοιχείο είναι ορατό)
+2 Hourly steps (using StepLength): 2 ωριαία βήματα (χρησιμοποιώντας το StepLength)
+2 Hourly steps (using StepResolver): 2 ωριαία βήματα (με χρήση του StepResolver)
 A: Ένας
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Ένα συστατικό που επιτρέπει στο χρήστη να επιλέξει μια τιμή από μια λίστα πιθανών τιμών και να την εμφανίσει ως Chips ή προεπιλεγμένο Combobox.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Ένα στοιχείο που μπορεί να χρησιμοποιηθεί για να σύρετε σε ένα ChildContent από κάτω, πάνω, αριστερά ή δεξιά με το ποντίκι.
@@ -33,6 +35,7 @@ A maximum of {0} files are allowed: Επιτρέπονται έως και {0} �
 A Popover can be used to display some content on top of another.: Ένα Popover μπορεί να χρησιμοποιηθεί για την εμφάνιση κάποιου περιεχομένου πάνω σε ένα άλλο.
 A powerful component to edit an object and its properties.: Ένα ισχυρό στοιχείο για την επεξεργασία ενός αντικειμένου και των ιδιοτήτων του.
 A powerful editor that can handle json, xml or yaml content: Ένας ισχυρός επεξεργαστής που μπορεί να χειριστεί περιεχόμενο json, xml ή yaml
+A range slider component that allows selecting and manipulating a value range of type T.: Ένα στοιχείο ρυθμιστικού εύρους που επιτρέπει την επιλογή και τον χειρισμό ενός εύρους τιμών τύπου T.
 A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: Ένα απλό στοιχείο ColorPicker που κληρονομεί το MudColorPicker αλλά προσθέτει τη δυνατότητα καθυστέρησης του συμβάντος κλεισίματος και χρήσης ενός εγγενούς στοιχείου επιλογής από το πρόγραμμα περιήγησης
 A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Ένα απλό στοιχείο πλέγματος που υποστηρίζει στήλες και γραμμές και ColSpan και RowSpan για να περιέχει ενότητες.
 A SplitPanel Component: Ένα στοιχείο SplitPanel
@@ -100,6 +103,7 @@ Age: Ηλικία
 agq-CM: Aghem (Καμερούν)
 ak-GH: Akan (Γκάνα)
 Albertus: Αλβέρτος
+Alias: Ψευδώνυμο
 Alice Johnson: Άλις Τζόνσον
 AliceBlue: ΑλίκηΜπλε
 Align: Ευθυγραμμίζω
@@ -132,6 +136,9 @@ AllowRubberBandSelection: AllowRubberBandSelection
 AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
 AllowSelectOnPreviewClick: AllowSelectOnPreviewClick
 AllowVideoCapture: AllowVideoCapture
+AllowWholeRangeDrag: AllowWholeRangeDrag
+AllowWholeRangeDrag = true – entire period can be moved: AllowWholeRangeDrag = true – μπορεί να μετακινηθεί ολόκληρη η περίοδος
+AllScroll: ΌλαΚύλιση
 AlphaBars: Άλφα Μπαρ
 Already have an account?: Έχετε ήδη λογαριασμό;
 Always: Πάντα
@@ -226,6 +233,7 @@ AntiqueWhite: ΑντίκαΛευκό
 ApathyBase16: ΑπάθειαΒάση16
 Api: Διεπαφή προγραμματισμού εφαρμογών
 API: Διεπαφή προγραμματισμού εφαρμογών
+Api view component to display the methods and properties of a type: Στοιχείο προβολής API για την εμφάνιση των μεθόδων και των ιδιοτήτων ενός τύπου
 API-Versions: Εκδόσεις API
 AppBar: AppBar
 AppbarBackground: AppbarΦόντο
@@ -285,6 +293,7 @@ Are you sure?: Είσαι σίγουρος?
 Arial: Άριαλ
 Arial Black: Arial Μαύρο
 Arial Narrow: Arial Στενό
+AriaLabelledBy: AriaLabeledBy
 arn-CL: Μαπούτσε (Χιλή)
 Arta: Τέχνη
 As Admin you can filter for users here: Ως διαχειριστής μπορείτε να φιλτράρετε τους χρήστες εδώ
@@ -339,6 +348,7 @@ Aug: Αυγ
 Austin: Ώστιν
 Austin - 73301: Όστιν - 73301
 Austin - 73301ender: Όστιν - 73301ender
+Auto: Αυτοκίνητο
 Auto Confirm Email?: Αυτόματη επιβεβαίωση email;
 Auto Generated Editor for TestObject: Επεξεργαστής αυτόματης δημιουργίας για TestObject
 Auto Stop recording after: Αυτόματη διακοπή εγγραφής μετά από
@@ -390,6 +400,7 @@ Basic: Βασικός
 Basic role with default permissions: Βασικός ρόλος με προεπιλεγμένα δικαιώματα
 Bauhaus 93: Μπάουχαους 93
 be-BY: Λευκορωσικά (Λευκορωσία)
+Because time values always having a fixed size you can also use step length instead of resolvers.: Επειδή οι τιμές χρόνου έχουν πάντα σταθερό μέγεθος, μπορείτε επίσης να χρησιμοποιήσετε μήκος βήματος αντί για αναλυτές.
 BeforeBegin: ΠρινΈναρξη
 BeforeEnd: ΠρινΤέλος
 BeforeSearchBox: Πριν από το SearchBox
@@ -490,6 +501,7 @@ bs-Cyrl-BA: Βοσνιακά (Κυριλλικά, Βοσνία & Ερζεγοβ�
 bs-Latn-BA: Βοσνιακά (Λατινικά, Βοσνία & Ερζεγοβίνη)
 Build amazing UIs: Δημιουργήστε εκπληκτικές διεπαφές χρήστη
 BurlyWood: Εύσωμο ξύλο
+But for sure resolvers are working as well.: Αλλά σίγουρα λειτουργούν και οι αναλυτές.
 button: κουμπί
 Button: Κουμπί
 Button component for capturing audio and video.: Στοιχείο κουμπιού για λήψη ήχου και βίντεο.
@@ -535,6 +547,7 @@ ccp-Cakm-BD: Chakma (Chakma, Μπαγκλαντές)
 ccp-Cakm-IN: Chakma (Chakma, Ινδία)
 ce-RU: Τσετσενία (Ρωσία)
 ceb-Latn-PH: Σεμπουάνο (Λατινικά, Φιλιππίνες)
+Cell: Κύτταρο
 Centaur: Κένταυρος
 Center: Κέντρο
 CenterCenter: Κέντρο
@@ -627,6 +640,7 @@ ColorPickerView: ColorPickerΠροβολή
 ColorsBase16: ΧρώματαΒάση16
 ColorStops: ΧρώμαΣταματά
 ColorTemperature: ΧρώμαΘερμοκρασία
+ColResize: ColResize
 ColSpan: ΚολΣπαν
 Column: Στήλη
 Columns Affected: Στήλες που επηρεάζονται
@@ -640,6 +654,7 @@ Compact: Συμπαγής
 Comparer: Συγκρίνω
 Component edit capture options: Επιλογές καταγραφής επεξεργασίας στοιχείων
 Component in Dialog: Συστατικό στο παράθυρο διαλόγου
+Component that captures component references from ChildContent: Στοιχείο που καταγράφει αναφορές στοιχείων από το ChildContent
 Component to add additional adornment to a MudInput: Συστατικό για να προσθέσετε επιπλέον στολισμό σε ένα MudInput
 Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Στοιχείο για την εμφάνιση ενός αρχείου σε ένα iframe ή ένα tag αντικειμένου ή σε ένα καταχωρημένο πρόγραμμα προβολής που υλοποιεί το IMudExFileDisplay
 Component to display information about the current recording: Στοιχείο για την εμφάνιση πληροφοριών σχετικά με την τρέχουσα εγγραφή
@@ -649,7 +664,9 @@ Component to move the ChildContent to a specific element that can defined by Ele
 Component to select a theme from a list of themes.: Component για να επιλέξετε ένα θέμα από μια λίστα θεμάτων.
 ComponentBaseWithState: ΣυστατικόΒάσηΜεΚατάσταση
 ComponentInDialog: ComponentInDialog
+Components: Στοιχεία
 Conditional updates: Ενημερώσεις υπό όρους
+Configuration: Διαμόρφωση
 Configure list values: Ρύθμιση παραμέτρων τιμών λίστας
 Confirm: Επιβεβαιώνω
 CONFIRM: ΕΠΙΒΕΒΑΙΏΝΩ
@@ -670,6 +687,7 @@ Content-Type: Περιεχόμενο-Τύπος
 ContentAlignment: ΣτοίχισηΠεριεχομένου
 ContentStream: Ροή περιεχομένου
 ContentType: ContentType (Περιεχόμενο)
+ContextMenu: Μενού περιβάλλοντος
 ContextMenuAction: ContextMenuAction
 Continue to {0}: Συνεχίστε να {0}
 Continuous: Συνεχής
@@ -677,6 +695,7 @@ Contrast: Αντιπαραβάλλω
 Cooper Black: Κούπερ Μπλακ
 Copperplate Gothic Bold: Χαλκογραφία Gothic Bold
 Copperplate Gothic Light: Χαλκογραφικό γοτθικό φως
+Copy: Αντίγραφο
 Copy url: Αντιγραφή url
 Counter: Μετρητής
 Country: Χώρα
@@ -689,6 +708,7 @@ Create powerful, flexible dock layouts — drag, drop, snap, and organize your d
 CreatedOn: Ημερομηνία δημιουργίας
 Critical: Κρίσιμος
 CropAndScale: Περικοπή και κλίμακα
+Crosshair: Σταυρόνημα
 cs-CZ: Τσεχικά (Τσεχίας)
 CSS Color Variables: Μεταβλητές χρώματος CSS
 CssVars: CssVars
@@ -701,6 +721,8 @@ Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can
 Cursor: Δρομέας
 CursorPositionOrigin: ΔρομέαςΘέσηΠροέλευση
 Custom: Συνήθεια
+Custom fiscal year logic: Λογική προσαρμοσμένου οικονομικού έτους
+Custom Templates: Προσαρμοσμένα πρότυπα
 CustomContentErrorMessage: ΠροσαρμοσμένοContentErrorMessage
 Customize: Προσαρμογή
 cy-GB: Ουαλικά (Ηνωμένο Βασίλειο)
@@ -764,9 +786,11 @@ Decimal value is required using {0} type!: Απαιτείται δεκαδική
 DeepPink: Βαθύ ροζ
 DeepSkyBlue: Βαθύ SkyBlue
 Default: Προεπιλογή
+Default steps: Προεπιλεγμένα βήματα
 DefaultBorderRadius: ΠροεπιλεγμένηΑκτίνα Περιγράμματος
 DefaultDarkBase16: ΠροεπιλεγμένηΣκοτεινήΒάση16
 DefaultLightBase16: ΠροεπιλεγμένηΒάσηΦωτός16
+Define minimum and maximum duration for ranges as well as custom step sizes.: Καθορίστε την ελάχιστη και τη μέγιστη διάρκεια για εύρη καθώς και προσαρμοσμένα μεγέθη βημάτων.
 Defined: Ορίζεται
 Delay: Καθυστέρηση
 DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
@@ -807,6 +831,7 @@ Demo of using explicit the MudExFileDisplayZip to show and select content inside
 Demonstration for a simple but very useful Enum Selector: Επίδειξη για έναν απλό αλλά πολύ χρήσιμο επιλογέα απαρίθμησης
 Demonstration of the MudExSplitter: Επίδειξη του MudExSplitter
 Demonstration of the quickly color select with MudExColorBubble: Επίδειξη της γρήγορης επιλογής χρώματος με το MudExColorBubble
+Demos: Επιδείξεις
 DEMOS: ΕΠΙΔΕΙΞΕΙΣ
 Dense: Πυκνός
 Dependent permissions required: Απαιτούνται εξαρτώμενα δικαιώματα
@@ -888,7 +913,10 @@ Do you really want to restore the database from backup '{0}'? Note that any chan
 Do you want to delete the profile picture of {0}: Θέλετε να διαγράψετε την εικόνα προφίλ του {0}
 Do you want to delete the User {0}: Θέλετε να διαγράψετε το User {0}
 Docco: Ντοκκο
+Dock: Όμως
+Dock Control: Έλεγχος αποβάθρας
 Docked: Συνδεδεμένος
+DockLayout with ObjectEdit: DockLayout με ObjectEdit
 Document Deleted: Το έγγραφο διαγράφηκε
 Document Extended Attributes: Χαρακτηριστικά Επέκτασης Εγγράφου
 Document Management: Διαχείρηση αρχείων
@@ -967,6 +995,8 @@ Edit: Επεξεργασία
 Edit {0}: Επεξεργασία {0}
 Edit a complex Model with included Collection of users: Επεξεργαστείτε ένα σύνθετο μοντέλο με τη συλλογή χρηστών που περιλαμβάνεται
 Edit Audio Constraints: Επεξεργασία περιορισμών ήχου
+Edit Configuration: Επεξεργασία διαμόρφωσης
+Edit configuration for component in this sample: Επεξεργασία ρύθμισης παραμέτρων για στοιχείο σε αυτό το δείγμα
 Edit Current Theme: Επεξεργασία τρέχοντος θέματος
 Edit data in dialog: Επεξεργασία δεδομένων στο παράθυρο διαλόγου
 Edit in TryMudEx: Επεξεργασία στο TryMudEx
@@ -1113,6 +1143,7 @@ en-ZW: Αγγλικά (Ζιμπάμπουε)
 Enable Disqus: Ενεργοποίηση Disqus
 enables or disables virtualization.: ενεργοποιεί ή απενεργοποιεί την εικονικοποίηση.
 End: Τέλος
+EndTooltipPosition: EndTooltipPosition
 English: Αγγλικά
 Engravers MT: Χαράκτες ΜΤ
 Enter email and your new password here: Εισάγετε το email και τον νέο σας κωδικό πρόσβασης εδώ
@@ -1144,6 +1175,7 @@ Eras Bold ITC: Εποχές Bold ITC
 Eras Demi ITC: Εποχές Demi ITC
 Eras Light ITC: Eras Light ITC
 Eras Medium ITC: Εποχές Medium ITC
+EResize: EResize
 Error: Λάθος
 ErrorAnimation: Κινούμενα σχέδια σφαλμάτων
 ErrorContrastText: ΚείμενοΣφάλματοςΑντίθεσης
@@ -1186,6 +1218,7 @@ eu-ES: Βασκικά (Ισπανία)
 EvaBase16: EvaBase16
 EvaDimBase16: Εύα DimBase16
 ewo-CM: Ewondo (Καμερούν)
+EwResize: Αλλαγή μεγέθους
 ExcelSheet.xlsx: ExcelSheet.xlsx
 Expand &nbsp; <b>not</b> &nbsp; loaded nodes: Αναπτύξτε &nbsp; τους κόμβους <b>που δεν</b> &nbsp; έχουν φορτωθεί
 Expand all nodes: Ανάπτυξη όλων των κόμβων
@@ -1209,7 +1242,7 @@ Extended Attribute Not Found!: Το εκτεταμένο χαρακτηριστ�
 Extended Attribute Saved: Αποθηκευμένο εκτεταμένο χαρακτηριστικό
 Extended Attribute Updated: Ενημερώθηκε το εκτεταμένο χαρακτηριστικό
 Extended Attribute with this Key already exists.: Εκτεταμένο χαρακτηριστικό με αυτό το κλειδί υπάρχει ήδη.
-Extended Attributes: '\{0}\ Εκτεταμένα χαρακτηριστικά'
+Extended Attributes: \{0}\ Εκτεταμένα χαρακτηριστικά
 Extended Attributes exported: Εξαγωγή εκτεταμένων χαρακτηριστικών
 ExtensionRestrictionType: ExtensionRestrictionType
 Extensions: Επεκτάσεις
@@ -1230,6 +1263,7 @@ FallBackInIframe: FallBackInIframe
 False: Ψεύτικος
 FAQs: Συχνές ερωτήσεις
 Far: Μακριά
+Featured Components: Προτεινόμενα εξαρτήματα
 Features: Χαρακτηριστικά
 Feb: Φεβ
 Felix Titling: Φέλιξ Τίτλινγκ
@@ -1297,6 +1331,7 @@ FilterMode: Λειτουργία φίλτρου
 FilterMultiple: ΦίλτροΠολλαπλό
 FilterPlaceholder: Σύμβολο κράτησης θέσης φίλτρου
 Filters: Φίλτρα
+Filters in dashboards or reports: Φίλτρα σε πίνακες εργαλείων ή αναφορές
 FilterVariant: ΦίλτροΠαραλλαγή
 Fiona Gallagher: Φιόνα Γκάλαχερ
 Firebrick: Πυρότουβλο
@@ -1310,6 +1345,7 @@ Flat List: Επίπεδη λίστα
 FlatBase16: ΕπίπεδηΒάση16
 FlatList: Επίπεδη λίστα
 FlexEnd: FlexEnd
+Flexible data types: Ευέλικτοι τύποι δεδομένων
 FlexStart: FlexStart
 Flip: Αναστροφή
 FlipAlways: ΑναστροφήΠάντα
@@ -1339,6 +1375,7 @@ ForceShrink: Αναγκαστική συρρίκνωση
 ForestGreen: ΔάσοςΠράσινο
 Forgot password?: Ξεχάσατε τον κωδικό πρόσβασης;
 Format: Μορφή
+Forward: Διαβιβάζω
 Foundation: Ίδρυμα
 fr-029: Γαλλικά (Καραϊβικής)
 fr-BE: Γαλλικά (Βέλγιο)
@@ -1442,6 +1479,8 @@ GoogleDriveClientId: GoogleDriveClientId
 GoogleLightBase16: Βάση GoogleLight16
 Goudy Old Style: Goudy Παλαιό Στυλ
 Goudy Stout: Goudy Stout
+Grab: Αρπάζω
+Grabbing: Αρπάζοντας
 Gradient: Διαβάθμισης
 GradientDark: ΔιαβάθμισηΣκούρο
 GradientForeground: GradientForeground
@@ -1529,6 +1568,7 @@ Hello from dialog 1: Γεια σας από το διάλογο 1
 Hello from dialog sample page: Γεια σας από τη σελίδα δείγματος διαλόγου
 Hello World: Γεια σου κόσμε
 Hello...: Γεια σας...
+Help: Βοήθεια
 HelperId: Αναγνωριστικό βοηθού
 HelperText: Βοηθητικό κείμενο
 HelperTextOnFocus: HelperTextOnFocus
@@ -1550,6 +1590,7 @@ Hide: Κρύβω
 HideContentWhenCollapsed: ΑπόκρυψηΠεριεχομένουΌτανΣυμπτύσσεται
 HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
 High Tower Text: Κείμενο High Tower
+Highlights: Ανταύγειες
 HighlightSearch: HighlightSearch
 Hinge: Μεντεσές
 Home: Σπίτι
@@ -1558,6 +1599,7 @@ HopscotchBase16: ΚουτσόΒάση16
 HorizonDarkBase16: HorizonDarkBase16
 HorizonLightBase16: HorizonLightBase16
 Horizontal: Οριζόντιος
+Horizontal & vertical orientation: Οριζόντιος & κατακόρυφος προσανατολισμός
 HouseNumber: Αριθμός
 Houston: Χιούστον
 Houston - 77001: Χιούστον - 77001
@@ -1602,6 +1644,7 @@ Idea: Ιδέα
 Identifier: Αναγνωριστικό
 If this is set a photo will be taken instead of a video.: Εάν οριστεί αυτό, θα ληφθεί μια φωτογραφία αντί για ένα βίντεο.
 If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Αν σας αρέσει αυτό το πακέτο, παρακαλούμε να το επισημάνετε με αστέρι ⭐ στο Github και να το μοιραστείτε με τους φίλους σας. Αν όχι, μπορείτε να δώσετε ένα αστέρι ούτως ή άλλως και να μου πείτε τι μπορώ να βελτιώσω για να το κάνω καλύτερο για εσάς.
+If you only need a time slider and do not want to create your own templates, you can also use the dedicated {0} component instead.: Εάν χρειάζεστε μόνο ένα ρυθμιστικό χρόνου και δεν θέλετε να δημιουργήσετε τα δικά σας πρότυπα, μπορείτε επίσης να χρησιμοποιήσετε το ειδικό στοιχείο {0}.
 If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Εάν ορίσετε αυτές τις επιλογές ως προεπιλογή. Αυτές οι επιλογές θα χρησιμοποιηθούν για όλους τους διαλόγους όπου δεν έχουν καθοριστεί επιλογές. Συνεχίζω?
 ig-NG: Igbo (Νιγηρία)
 Ignore: Αγνοώ
@@ -1618,6 +1661,7 @@ Impact: Αντίκτυπος
 Import: Εισαγωγή
 ImportExportIcon: ΕισαγωγήΕξαγωγήΕικονίδιο
 In: Μέσα
+In this example you control a simple numeric range from 0 to 100. The step size is set to 5 to allow coarse intervals.: Σε αυτό το παράδειγμα ελέγχετε μια απλή αριθμητική περιοχή από το 0 έως το 100. Το μέγεθος του βήματος έχει οριστεί σε 5 για να επιτρέπονται χονδροειδή διαστήματα.
 In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: Σε αυτό το παράδειγμα, τα δεδομένα φορτώνονται δυναμικά μόλις το στοιχείο εμφανιστεί για πρώτη φορά στην προβολή. Το στοιχείο υποστηρίζει δύο υποδοχές περιεχομένου
 In this sample you are forced to pick an user: Σε αυτό το δείγμα αναγκάζεστε να επιλέξετε έναν χρήστη
 In this sample you are forced to pick some users: Σε αυτό το δείγμα αναγκάζεστε να επιλέξετε ορισμένους χρήστες
@@ -1658,6 +1702,7 @@ InputMode: Λειτουργία εισόδου
 InputStyle: InputStyle
 InputType: Τύπος εισόδου
 Inset: Ένθετο
+Instance: Παράδειγμα
 IntegratedInDialogAsButtons: ΕνσωματωμέναInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: ΕνδιάμεσαΑποτελέσματα
@@ -1672,6 +1717,7 @@ is-IS: Ισλανδικά (Ισλανδίας)
 IsActive: Το IsActive
 IsblEditorDark: IsblEditorDark
 IsblEditorLight: IsblEditorLight
+IsInverted: ΕίναιΑντεστραμμένο
 IsMouseOverChip: IsMouseOverChip
 ISO: Το ISO
 IsOpen: Είναι ανοιχτό
@@ -1811,6 +1857,7 @@ Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): 
 LegacyRender: Παλαιού τύπου
 Legend: Θρύλος
 LemonChiffon: ΛεμόνιΣιφόν
+Length: Μήκος
 LetterSpacing: Διάστιχο γραμμάτων
 lg-UG: Γκάντα (Ουγκάντα)
 Library: Βιβλιοθήκη
@@ -1958,6 +2005,7 @@ MaterialDarkerBase16: ΥλικόDarkerBase16
 MaterialLighterBase16: ΥλικόΑναπτήραςΒάση16
 MaterialPalenightBase16: ΥλικόPalenightBase16
 MaterialVividBase16: ΥλικόVividBase16
+MathAdapter: MathAdapter
 Matura MT Script Capitals: Matura MT Κεφαλαία Σεναρίου
 MaxCaptureTime: ΜέγιστοςΧρόνος Λήψης
 MaxChips: Μέγιστα τσιπ
@@ -1970,6 +2018,7 @@ MaximizeButton: Κουμπί MaximizeButton
 MaxItems: Μέγιστα αντικείμενα
 MaxItemWidth: ΜέγιστοΠλάτος Αντικειμένου
 MaxLength: Μέγιστο μήκος
+MaxLength = 730 days – longest allowed period: MaxLength = 730 ημέρες – η μεγαλύτερη επιτρεπόμενη περίοδος
 MaxLuminance: Μέγιστη φωτεινότητα
 MaxMultipleFiles: MaxMultipleFiles
 MaxRecordingTime: ΜέγιστοςΧρόνος Εγγραφής
@@ -2012,13 +2061,17 @@ Mikrofon (Voicemod Virtual Audio Device (WDM)): Μικρόφων (Voicemod Virtu
 Millimeters: Χιλιοστόμετρα
 MimeRestrictionType: MimeRestrictionType
 MimeTypes: MimeΤύποι
+Min/max length & step size: Ελάχιστο/μέγιστο μήκος & μέγεθος βήματος
 MinDecibels: MinDecibels
 MinFrequency: Ελάχιστη συχνότητα
 MinHeight: Ελάχιστο ύψος
 Mini: Μίνι
 MinimizeButton: Κουμπί ελαχιστοποίησης
+MinLength: Ελάχιστο μήκος
+MinLength = 60 days – shortest allowed period: MinLength = 60 ημέρες – η συντομότερη επιτρεπόμενη περίοδος
 MinLuminance: Ελάχιστη φωτεινότητα
 MintCream: Κρέμα μέντας
+Minutely steps: Λεπτά βήματα
 MinZoomLevel: MinZoomLevel
 Mirror: Καθρέφτης
 Misc: Διάφορα
@@ -2031,6 +2084,7 @@ mn-MN: Μογγολικά (Μογγολία)
 mn-Mong-CN: Μογγολικά (Μογγολικά, Κίνα)
 mn-Mong-MN: Μογγολικά (Μογγολικά, Μογγολία)
 mni-IN: Μανιπούρι (Ινδία)
+Mobile UIs with limited horizontal space: Κινητές διεπαφές χρήστη με περιορισμένο οριζόντιο χώρο
 Moccasin: Μοκασίνι
 MochaBase16: ΜόκαΒάση16
 Modal: Πρωτεύουσα
@@ -2057,8 +2111,11 @@ MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: ΠοντίκιΤροχόςΚάτωΔράση
 MouseWheelUpAction: ΠοντίκιWheelUpAction
+Move: Κινώ
 Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Μετακινήστε και αλλάξτε το μέγεθος των στοιχείων πλέγματος απευθείας με μεταφορά και απόθεση — σχεδιάστε τη διάταξή σας δυναμικά κατά το χρόνο εκτέλεσης.
 MoveContent: Μετακίνηση Περιεχομένου
+MoveCursor: Μετακίνησηδρομέας
+MovingCursor: ΚινούμενοςΔρομέας
 mr-IN: Μαράθι (Ινδία)
 MS Outlook: MS Outlook
 MS Reference Sans Serif: Αναφορά MS Sans Serif
@@ -2112,6 +2169,7 @@ MudDrawerHeader: MudDrawerΚεφαλίδα
 MudDynamicTabs: MudDynamicTabs
 MudElement: Στοιχείο λάσπης
 MudEx Components: Εξαρτήματα MudEx
+MudEx Range Slider – Interactive range selection: MudEx Range Slider – Διαδραστική επιλογή εύρους
 MudExAdditionalAdornment: MudExΠρόσθετοςΣτολισμός
 MudExAppearance: MudExΕμφάνιση
 MudExAppLoader: MudExAppLoader
@@ -2139,6 +2197,7 @@ MudExCultureSelect: MudExCultureSelect
 MudExDialog: MudExDialog
 MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: Το MudExDialog είναι το στοιχείο που πρέπει να χρησιμοποιήσετε όταν θέλετε να εμφανίσετε ένα παράθυρο διαλόγου ενσωματωμένο στη σελίδα σας με όλα τα DialogExtensions.
 MudExDivider: MudExΔιαχωριστικό
+MudExDockLayout: MudExDockΔιάταξη
 MudExDropBoxFilePicker: MudExDropBoxFilePicker
 MudExEnumSelect: MudExEnumSelect
 MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
@@ -2157,6 +2216,8 @@ MudExGoogleFilePicker: MudExGoogleFilePicker
 MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: Το MudExGravatar είναι ένα MudAvatar που χρησιμοποιεί αυτόματα την εικόνα προφίλ από το gravatar για μια διεύθυνση email
+MudExGravatarCard: Κάρτα MudExGravatarCard
+MudExGravatarCard displays a Gravatar profile as card: Το MudExGravatarCard εμφανίζει ένα προφίλ Gravatar ως κάρτα
 MudExGrid: MudExGrid
 MudExGrid — Now with Layout Editing: MudExGrid — Τώρα με Επεξεργασία Διάταξης
 MudExGrid Enhanced: Βελτιωμένο MudExGrid
@@ -2189,13 +2250,17 @@ MudExOneDriveFilePicker: MudExOneDriveFilePicker
 MudExpansionPanel: Πίνακας επέκτασης λάσπης
 MudExpansionPanels: Πάνελ επέκτασης λάσπης
 MudExPicker: MudExPicker
+MudExPicker Tree: Δέντρο MudExPicker
 MudExPickerBase<T>: MudExPickerBase<T>
 MudExPopover: MudExPopover
 MudExPromptDialog: MudExPromptDialog
 MudExPromptDialog Component: Στοιχείο MudExPromptDialog
 MudExPropertyEdit: MudExPropertyΕπεξεργασία
+MudExRangeSlider<T>: Ρυθμιστικό MudExRangeSlider<T>
 MudExSelect: Επιλογή MudExSelect
 MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: Το MudExSelect μπορεί να χρησιμοποιηθεί για την επιλογή ενός ή περισσότερων αντικειμένων από μια συλλογή με δυνατότητα βιβλιοδεσίας. Επίσης, αυτό το στοιχείο υποστηρίζει όλα τα κινούμενα σχέδια όπως διαλόγους ή MudExPopover.
+MudExSelect Item template.: Πρότυπο MudExSelect Item.
+MudExSelect ItemTemplate: MudExSelect ItemTemplate
 MudExSelect<T>: Επιλογή MudExSelect<T>
 MudExSelectItem is a select item for MudExSelect.: Το MudExSelectItem είναι ένα επιλεγμένο στοιχείο για το MudExSelect.
 MudExSelectItem<T>: MudExSelectItem<T>
@@ -2347,6 +2412,8 @@ nds-NL: Κάτω Γερμανικά (Ολλανδία)
 ne-IN: Νεπάλ (Ινδία)
 ne-NP: Νεπάλ (Νεπάλ)
 NebulaBase16: ΝεφέλωμαΒάση16
+NeResize: NeResize
+NeswResize: NeswResize
 Never: Ποτέ
 New: Νέος
 NEW: ΝΈΟΣ
@@ -2887,6 +2954,7 @@ No space available: Δεν υπάρχει διαθέσιμος χώρος
 NoChips: Όχι Τσιπς
 NodeBorderRadius: Ακτίνα περιγράμματος κόμβου
 NodePadding: NodePadding
+NoDrop: Όχι Drop
 NoHeader: Όχικεφαλίδα
 NoIcon: Όχι εικονίδιο
 NoModalDialogs: NoModalDialogs
@@ -2900,6 +2968,7 @@ Not allowed to Delete this user: Δεν επιτρέπεται η διαγραφ
 Not Allowed.: Δεν επιτρέπεται.
 Not connected: Μη συνδεδεμένο
 Not Modal Dialogs: Όχι Modal Dialogs
+NotAllowed: ΔενΕπιτρέπεται
 Note - Media options can't changed after a screen is selected: Σημείωση - Οι επιλογές πολυμέσων δεν μπορούν να αλλάξουν μετά την επιλογή μιας οθόνης
 NoteLabels: ΣημείωσηΕτικέτες
 NotFoundMessage: Η σελίδα που αναζητούσατε δεν υπάρχει.
@@ -2913,13 +2982,17 @@ NoWrap: Χωρίς αναδίπλωση
 npm-example-0.0.20.tgz: npm-παράδειγμα-0.0.20.tgz
 nqo-GN: N'Ko (Γουινέα)
 nr-ZA: South Ndebele (Νότια Αφρική)
+NResize: NResize
 nso-ZA: Sesotho sa Leboa (Νότια Αφρική)
+NsResize: NsΑλλαγή μεγέθους
 Nuget Package source: Πηγή πακέτου Nuget
 Nullable enum: Nullable απαρίθμηση
 Nullable Flags Enum: Nullable Flags Απαρίθμηση
 Number: Αριθμός
 numeric: αριθμητικός
 nus-SS: Nuer (Νότιο Σουδάν)
+NwResize: NwResize
+NwseResize: NwseΑλλαγή μεγέθους
 nyn-UG: Nyankole (Ουγκάντα)
 Object Edit in Dialog: Επεξεργασία αντικειμένου στο διάλογο
 ObjectEdit: ΑντικείμενοΕπεξεργασία
@@ -3021,6 +3094,7 @@ Overview: Επισκόπηση
 Owner: Ιδιοκτήτης
 pa-Arab-PK: Παντζάμπι (Αραβικά, Πακιστάν)
 pa-IN: Παντζάμπι (Ινδία)
+Page_Test: Page_Test
 Palatino: Παλατίνος
 Palatino Linotype: Λινοτυπία Palatino
 PaleGreen: Χλωμό Πράσινο
@@ -3106,6 +3180,7 @@ Placeholder: Σύμβολο κράτησης θέσης
 Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Παίξτε με το MudBlazor και το MudBlazor.Επεκτάσεις σε ένα διαδικτυακό πρόγραμμα επεξεργασίας κώδικα
 Playbill: Διαφημιστικό παιχνίδι
 Player: Παίκτης
+Playground: Παιδική χαρά
 Please confirm your account by <a href='{0}'>clicking here</a>.: Επιβεβαιώστε τον λογαριασμό σας με <a href='{0}'>κάνοντας κλικ εδώ</a>.
 Please enter your name: Παρακαλώ εισάγετε το όνομά σας
 Please reset your password by <a href='{0}'>clicking here</a>.: Επαναφέρετε τον κωδικό πρόσβασής σας με <a href='{0}'>κάνοντας κλικ εδώ</a>.
@@ -3114,6 +3189,7 @@ Please upload your personal qualifications and references that confirm your pers
 Please Wait: Παρακαλώ περίμενε
 PleaseSelect: ΠαρακαλώΕπιλέξτε
 Plum: Δαμάσκηνο
+Pointer: Δείκτης
 Points: Σημεία
 PointsOfInterest: Σημεία Ενδιαφέροντος
 Pojoaque: Ποζοάκ
@@ -3131,6 +3207,7 @@ PorpleBase16: ΠορφυρήΒάση16
 Portrait: Προσωπογραφία
 Position: Θέση
 Position/Size Sample: Δείγμα θέσης/μεγέθους
+Possibilities: Δυνατότητες
 PostalCode: Ταχυδρομικός κώδικας
 PowderBlue: ΠούδραΜπλε
 Powerful component to edit a set of items and their properties.: Ισχυρό στοιχείο για την επεξεργασία ενός συνόλου στοιχείων και των ιδιοτήτων τους.
@@ -3176,6 +3253,7 @@ Profile picture added.: Προστέθηκε φωτογραφία προφίλ.
 Profile picture deleted.: Η εικόνα προφίλ διαγράφηκε.
 Profile updated: Το προφίλ ενημερώθηκε
 ProgramingSkills: Δεξιότητες προγραμματισμού
+Progress: Πρόοδος
 Property1: Ιδιοκτησία1
 Property10: Ακίνητα10
 Property11: Ακίνητα11
@@ -3261,6 +3339,7 @@ RailscastsBase16: RailscastsΒάση16
 Rainbow: Ουράνιο τόξο
 Random: Τυχαίος
 RandomColorUpdateDelay: ΤυχαίαΧρωματικήΕνημέρωσηΚαθυστέρηση
+RangeSlider: Ρυθμιστικό εύρους
 RarArchive.rar: RarArchive.rar
 Rate: Ρυθμός
 Rate must be greater than 0: Η τιμή πρέπει να είναι μεγαλύτερη από 0
@@ -3343,6 +3422,7 @@ Reset view: Επαναφορά προβολής
 ResetButtonIcon: Εικονίδιο κουμπιού επαναφοράς
 ResetToDefaultFirst: ResetToDefaultFirst
 Resizeable: Με δυνατότητα αλλαγής μεγέθους
+ResizeCursor: ResizeCursor
 ResizeMode: Αλλαγή μεγέθουςΛειτουργία
 Resources: Πόροι
 Responsive: Απαντητικός
@@ -3422,6 +3502,7 @@ RoundBars: Στρογγυλές μπάρες
 Rounded: Στρογγυλεμένες
 Routeros: Δρομολογητής
 Row: Σειρά
+RowResize: Αλλαγή μεγέθους σειράς
 RowSpan: Εύρος σειρών
 RowsPerPageString: Σειρές ανά σελίδα
 RoyalBlue: Βασιλικό Μπλε
@@ -3434,6 +3515,8 @@ ru-UA: Ρωσικά (Ουκρανία)
 RubberBand: Λάστιχο
 RubberBandColor: ΛάστιχοΧρώμα
 RubberBandStyle: Στυλ RubberBandStyle
+Run: Τρέχω
+Run this sample on try.mudex.org online: Εκτελέστε αυτό το δείγμα στο try.mudex.org online
 Runic MT Condensed: Ρουνικό MT Συμπυκνωμένο
 Runtime: Χρόνου εκτέλεσης
 Russian: Ρωσικά
@@ -3563,9 +3646,11 @@ SelectedItemColor: ΕπιλεγμένοΣτοιχείοΧρώμα
 SelectedRequests: ΕπιλεγμέναΑιτήματα
 SelectedValues: ΕπιλεγμένεςΤιμές
 Selecting: Επιλογή
+SelectionColor: ΕπιλογήΧρώμα
 SelectionList: Λίστα επιλογής
 SelectionMode: Λειτουργία επιλογής
 SelectionModeIcon: Εικονίδιο SelectionModeIcon
+SelectionTemplate: Πρότυπο επιλογής
 SelectItemsMode: SelectItemsMode
 SelectorsForIgnoreBlur: SelectorsForIgnoreBlur
 SelectorSize: SelectorSize
@@ -3576,6 +3661,7 @@ Send: Αποστέλλω
 Send confirmation email: Αποστολή email επιβεβαίωσης
 Sensitivity: Ευαισθησία
 Sep: Σεπ
+SeResize: SeResize
 Server restarted successfully: Επιτυχής επανεκκίνηση διακομιστή
 ses-ML: Koyraboro Senni (Μάλι)
 Set as Default options for all Dialogs: Ορισμός ως προεπιλεγμένων επιλογών για όλους τους διαλόγους
@@ -3600,6 +3686,7 @@ shi-Tfng-MA: Tachelhit (Tifinagh, Μαρόκο)
 Show: Δείχνω
 Show As Dialog: Παράθυρο διαλόγου "Εμφάνιση ως"
 Show as Tree: Εμφάνιση ως δέντρο
+Show code: Εμφάνιση κωδικού
 Show Demo: Εμφάνιση επίδειξης
 Show flat: Εμφάνιση επίπεδης
 Show info: Εμφάνιση πληροφοριών
@@ -3657,6 +3744,7 @@ ShowSliders: Εμφάνιση ρυθμιστικών
 ShowSpectrumOnRecording: ShowSpectrumOnRecording
 ShowThemeColors: ΕμφάνισηΘέμαΧρώματα
 ShowToolbar: ShowToolbar
+ShowTooltip: ShowTooltip
 ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
 ShowVisualiser: ShowVisualiser
 ShowZoomInButton: ShowZoomInButton
@@ -3664,6 +3752,7 @@ ShowZoomOutButton: ShowZoomOutButton
 ShrinkLabel: Συρρίκνωση ετικέτας
 si-LK: Σινχάλα (Σρι Λάνκα)
 Side: Πλευρά
+Side filter panels in search or analytics UIs: Πλαϊνοί πίνακες φίλτρων σε διεπαφές αναζήτησης ή ανάλυσης
 Sienna: Σιένα
 Sign In: Είσοδος
 Sign Up: Εγγραφή
@@ -3694,6 +3783,8 @@ SimulateWithRandomData: Προσομοίωση με τυχαία δεδομέν�
 Single: Άγαμος
 SingleExpand: SingleExpand
 Size: Μέγεθος
+SizeRange: Εύρος μεγέθους
+SizeRange = 0–100: Εύρος μεγέθους = 0–100
 sk-SK: Σλοβακικά (Σλοβακία)
 Skeleton: Σκελετός
 SkipSeparator: SkipSeparator
@@ -3763,6 +3854,7 @@ sr-Latn-RS: Σερβικά (Λατινικά, Σερβία)
 sr-Latn-XK: Σερβικά (Λατινικά, Κόσοβο)
 Src: Πηγή
 Srcery: Srcery
+SResize: SRαλλαγή μεγέθους
 ss-SZ: siSwati (Εσουατίνι)
 ss-ZA: siSwati (Νότια Αφρική)
 ssy-ER: Saho (Ερυθραία)
@@ -3778,6 +3870,7 @@ Start Recording: Ξεκινήστε την εγγραφή
 Start recording after: Ξεκινήστε την εγγραφή μετά από
 Start/Stop selection: Επιλογή έναρξης/διακοπής
 Starts in {0}: Ξεκινά σε {0}
+StartTooltipPosition: StartTooltipPosition
 State: Κράτος
 Static: Στατικός
 Static card.: Στατική κάρτα.
@@ -3785,6 +3878,13 @@ Static item: Στατικό στοιχείο
 Status: Κατάσταση
 SteelBlue: Ατσάλινο Μπλε
 Stencil: Στάμπο
+Step size of 5: Μέγεθος βήματος 5
+StepLength: Μήκος βήματος
+StepLength = 5 – values in steps of 5: StepLength = 5 – τιμές σε βήματα των 5
+StepResolver: Επίλυση βημάτων
+StepResolvers.DateOnly.Quarterly: StepResolvers.DateOnly.Quarterly
+StepResolvers.DateOnly.Weekly: StepResolvers.DateOnly.Weekly
+StepResolvers.TimeOnly: StepResolvers.TimeOnly
 Stereo: Στέρεο
 Steve Rogers: Στιβ Ρότζερς
 Store: Κατάστημα
@@ -3876,7 +3976,9 @@ SummerfruitDarkBase16: SummerfruitDarkBase16
 SummerfruitLightBase16: SummerfruitLightBase16
 Sunburst: Ηλιοφάνεια
 Super sample Content text.: Σούπερ δείγμα κειμένου περιεχομένου.
+Supercharge your MudBlazor applications with powerful extensions: Φορτίστε τις εφαρμογές σας MudBlazor με ισχυρές επεκτάσεις
 Support: Υποστηρίζω
+Supports int and DateTime (other types via generics are possible).: Υποστηρίζει int και DateTime (άλλοι τύποι μέσω γενόσημων είναι δυνατοί).
 Surface: Επιφάνεια
 Surname: Επώνυμο
 sv-AX: Σουηδικά (Νήσοι Ώλαντ)
@@ -3894,12 +3996,14 @@ Swing: Κούνια
 Switch: Διακόπτης
 Switch expand button position: Εναλλαγή θέσης κουμπιού επέκτασης
 Switch overlay source: Εναλλαγή πηγής υπέρθεσης
+SwResize: SwResize
 Symbol: Σύμβολο
 SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
 SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
 syr-SY: Συριακά (Συρία)
 System: Σύστημα
 System Settings: Ρυθμίσεις συστήματος
+T = int – numeric range: T = int – αριθμητικό εύρος
 T3024Base16: Τ3024Βάση16
 ta-IN: Ταμίλ (Ινδία)
 ta-LK: Ταμίλ (Σρι Λάνκα)
@@ -3929,6 +4033,7 @@ Teal: Αγριόπαπια
 tel: Τηλ
 Telephone: Τηλέφωνο
 TemplateClass: TemplateΚλάση
+Templates: Πρότυπα
 Temporary: Προσωρινός
 TenderBase16: Βάση προσφοράς16
 teo-KE: Teso (Κένυα)
@@ -3983,8 +4088,22 @@ The following permission is also required for permission {1}: Το ακόλου�
 The maximum file size is 10 MB: Το μέγιστο μέγεθος αρχείου είναι 10 MB
 The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: Το MudExThemeEdit είναι ένα ισχυρό και ευέλικτο εργαλείο που έχει σχεδιαστεί για να διευκολύνει αποτελεσματικά την επεξεργασία ενός ή περισσότερων θεμάτων ή προεπιλογών. Φιλοξενεί εγγενώς τη σκοτεινή λειτουργία, τη λειτουργία φωτός ή συνδυασμό και των δύο. Επιπλέον, υποστηρίζει παράγωγες από το MudTheme, καθώς και προσαρμοσμένες ιδιότητες που είναι εγγενείς σε αυτό, παρέχοντας έτσι μια ολοκληρωμένη και ευέλικτη λύση για όλες τις απαιτήσεις επεξεργασίας θεμάτων σας.
 The Plugin '{0}' may be able to help: Το πρόσθετο '{0}' μπορεί να βοηθήσει
+The range slider can also be used vertically – ideal for sidebars or compact filter areas.: Το ρυθμιστικό εύρους μπορεί επίσης να χρησιμοποιηθεί κάθετα – ιδανικό για πλευρικές γραμμές ή συμπαγείς περιοχές φίλτρου.
 The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Το δείγμα είναι το ίδιο με το άλλο παράδειγμα FileDisplay, αλλά με τη διαφορά ότι δεν χρησιμοποιείται διεύθυνση URL. Αντίθετα, οι ροές φορτώνονται και χρησιμοποιούνται.
 The server is just restarting. Please wait until the connection has been restored: Ο διακομιστής μόλις επανεκκινείται. Περιμένετε μέχρι να αποκατασταθεί η σύνδεση
+The track highlights these bands and labels them, while the selection template renders the chosen price interval using the current culture's currency formatting.: Το κομμάτι επισημαίνει αυτές τις μπάντες και τις επισημαίνει, ενώ το πρότυπο επιλογής αποδίδει το επιλεγμένο διάστημα τιμών χρησιμοποιώντας τη μορφοποίηση νομίσματος της τρέχουσας κουλτούρας.
+The track is divided into common age groups such as "U18", "18–25", "26–35", and so on, and the selection template displays the exact age range like "18 – 35 years".: Το κομμάτι χωρίζεται σε κοινές ηλικιακές ομάδες όπως "U18", "18–25", "26–35" και ούτω καθεξής, και το πρότυπο επιλογής εμφανίζει το ακριβές ηλικιακό εύρος όπως "18 – 35 ετών".
+The track is divided into response classes such as Fast, OK, Slow, and Very slow, and the selection label shows both the numeric range and its classification, for example "80 – 450 ms (Fast → Slow)".: Το κομμάτι χωρίζεται σε κατηγορίες απόκρισης όπως Γρήγορη, ΟΚ, Αργή και Πολύ αργή και η ετικέτα επιλογής εμφανίζει τόσο το αριθμητικό εύρος όσο και την ταξινόμησή του, για παράδειγμα "80 – 450 ms (Γρήγορη → Αργή)".
+The track is divided into time bands representing different shifts, and the selection template displays the chosen time window in 24-hour format.: Το κομμάτι χωρίζεται σε χρονικές ζώνες που αντιπροσωπεύουν διαφορετικές βάρδιες και το πρότυπο επιλογής εμφανίζει το επιλεγμένο χρονικό παράθυρο σε 24ωρη μορφή.
+The track is rendered with a custom TrackTemplate, the selected range with a SelectionTemplate, and the thumbs with custom ThumbStartTemplate and ThumbEndTemplate.: Το κομμάτι αποδίδεται με ένα προσαρμοσμένο TrackTemplate, το επιλεγμένο εύρος με ένα SelectionTemplate και οι αντίχειρες με προσαρμοσμένα ThumbStartTemplate και ThumbEndTemplate.
+The track is split into green, yellow, and red segments, and the selection label displays the numeric range together with a qualitative classification such as "Low", "Medium", or "High".: Η διαδρομή χωρίζεται σε πράσινα, κίτρινα και κόκκινα τμήματα και η ετικέτα επιλογής εμφανίζει το αριθμητικό εύρος μαζί με μια ποιοτική ταξινόμηση όπως "Χαμηλή", "Μεσαία" ή "Υψηλή".
+The track renders fiscal year blocks and their quarters, and the selection label shows fiscal ranges such as "FY 2022 – FY 2024" or "FY 2023 Q2 – Q4" depending on what was selected.: Το κομμάτι αποδίδει τα μπλοκ οικονομικού έτους και τα τρίμηνα τους και η ετικέτα επιλογής εμφανίζει δημοσιονομικά εύρη όπως "FY 2022 – FY 2024" ή "FY 2023 Q2 – Q4" ανάλογα με το τι επιλέχθηκε.
+The track renders monthly markers and weekly ticks, while the selection template summarizes the selection as a range of calendar weeks such as "KW 2 – KW 22".: Το κομμάτι αποδίδει μηνιαίους δείκτες και εβδομαδιαία τικ, ενώ το πρότυπο επιλογής συνοψίζει την επιλογή ως ένα εύρος ημερολογιακών εβδομάδων όπως "KW 2 – KW 22".
+The track shows all levels side by side and the selection template renders a label like "Day – Month", which you can use to control how data is aggregated in charts or reports.: Το κανάλι εμφανίζει όλα τα επίπεδα δίπλα-δίπλα και το πρότυπο επιλογής αποδίδει μια ετικέτα όπως "Ημέρα - Μήνας", την οποία μπορείτε να χρησιμοποιήσετε για να ελέγξετε τον τρόπο συγκέντρωσης των δεδομένων σε γραφήματα ή αναφορές.
+The track shows hourly ticks and labels every few hours, while the selection template renders the chosen time span as a compact label.: Το κομμάτι εμφανίζει ωριαία τικ και ετικέτες κάθε λίγες ώρες, ενώ το πρότυπο επιλογής αποδίδει το επιλεγμένο χρονικό διάστημα ως συμπαγή ετικέτα.
+The track visualizes all days from Monday to Sunday, highlights weekends, and the selection label renders friendly names such as "Monday – Friday".: Το κομμάτι απεικονίζει όλες τις ημέρες από Δευτέρα έως Κυριακή, επισημαίνει τα Σαββατοκύριακα και η ετικέτα επιλογής αποδίδει φιλικά ονόματα όπως "Δευτέρα – Παρασκευή".
+The track visualizes years and their quarters, and the selection label adapts depending on the chosen range, for example "Q2 2022 – Q3 2023" or just "Q1 – Q3" when the year is the same.: Το κομμάτι απεικονίζει τα έτη και τα τρίμηνα τους και η ετικέτα επιλογής προσαρμόζεται ανάλογα με το επιλεγμένο εύρος, για παράδειγμα "Q2 2022 – Q3 2023" ή απλώς "Q1 – Q3" όταν το έτος είναι το ίδιο.
+The track visually highlights these service bands, while the selection template shows the exact day range, for example "4 – 9 days".: Το κομμάτι επισημαίνει οπτικά αυτές τις ζώνες εξυπηρέτησης, ενώ το πρότυπο επιλογής δείχνει το ακριβές εύρος ημερών, για παράδειγμα "4 – 9 ημέρες".
 The user "{0}" just changed some of this data: Ο χρήστης "{0}" μόλις άλλαξε ορισμένα από αυτά τα δεδομένα
 The user {0} has been logged off: Ο χρήστης {0} έχει αποσυνδεθεί
 The User {0} has just edited, created or deleted entries here. You should reload the data: Ο χρήστης {0} μόλις επεξεργάστηκε, δημιούργησε ή διέγραψε καταχωρήσεις εδώ. Θα πρέπει να φορτώσετε ξανά τα δεδομένα
@@ -4013,6 +4132,22 @@ This demo uses the IDialogEventService to check resize or dragged and stores the
 This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Αυτό δείχνει το στοιχείο MudExThemeEdit που χρησιμοποιεί εσωτερικά το MudExObjectEdit και το MudExThemeSelect για επεξεργασία θέματος
 This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Αυτή η επίδειξη δείχνει τον προτεινόμενο τρόπο χρήσης του MudExAdditionalAdornment με τη χρήση των RenderFragments "For" και "ChildContent"
 This dialog can confirmed when slider value is greater then 10: Αυτός ο διάλογος μπορεί να επιβεβαιωθεί όταν η τιμή του ρυθμιστικού είναι μεγαλύτερη από 10
+This example demonstrates a custom fiscal year timeline where the financial year does not start on January 1st.: Αυτό το παράδειγμα δείχνει ένα προσαρμοσμένο χρονοδιάγραμμα οικονομικού έτους όπου το οικονομικό έτος δεν ξεκινά την 1η Ιανουαρίου.
+This example demonstrates a multi-year time range with a custom step behavior. With a StepResolver you define how the slider snaps (for example to months, quarters or hours).: Αυτό το παράδειγμα δείχνει ένα πολυετές χρονικό εύρος με προσαρμοσμένη συμπεριφορά βήματος. Με ένα StepResolver ορίζετε τον τρόπο με τον οποίο κουμπώνει το ρυθμιστικό (για παράδειγμα σε μήνες, τρίμηνα ή ώρες).
+This example demonstrates a TimeOnly range slider.: Αυτό το παράδειγμα δείχνει ένα ρυθμιστικό εύρους TimeOnly.
+This example demonstrates a TimeOnly-based range slider with minute resolution.: Αυτό το παράδειγμα δείχνει ένα ρυθμιστικό εύρους που βασίζεται σε TimeOnly με ανάλυση λεπτών.
+This example illustrates a price or budget range slider with semantic segments such as Budget, Standard, Premium, and High-End.: Αυτό το παράδειγμα απεικονίζει ένα ρυθμιστικό τιμής ή εύρους προϋπολογισμού με σημασιολογικά τμήματα όπως Προϋπολογισμός, Τυπικό, Premium και Υψηλό επίπεδο.
+This example maps integer values to days of the week and turns the range slider into a day-of-week selector.: Αυτό το παράδειγμα αντιστοιχίζει ακέραιες τιμές σε ημέρες της εβδομάδας και μετατρέπει το ρυθμιστικό εύρους σε επιλογέα ημέρας της εβδομάδας.
+This example represents abstract zoom or aggregation levels such as Hour, Day, Week, Month, and Year.: Αυτό το παράδειγμα αντιπροσωπεύει αφηρημένα επίπεδα ζουμ ή συνάθροισης όπως Ώρα, Ημέρα, Εβδομάδα, Μήνας και Έτος.
+This example shows a date range from 2015 until the end of 2022. The user can select a period of at least 60 days and at most 2 years. The step size is one day.: Αυτό το παράδειγμα δείχνει ένα εύρος ημερομηνιών από το 2015 έως το τέλος του 2022. Ο χρήστης μπορεί να επιλέξει περίοδο τουλάχιστον 60 ημερών και το πολύ 2 ετών. Το μέγεθος του βήματος είναι μία ημέρα.
+This example shows a percentage-based range slider that can be used for utilization, capacity, or risk levels.: Αυτό το παράδειγμα εμφανίζει ένα ρυθμιστικό εύρους βάσει ποσοστού που μπορεί να χρησιμοποιηθεί για τη χρήση, τη χωρητικότητα ή τα επίπεδα κινδύνου.
+This example shows a TimeOnly-based range slider tailored for shift planning scenarios such as early, late, and night shifts.: Αυτό το παράδειγμα δείχνει ένα ρυθμιστικό εύρους που βασίζεται σε TimeOnly, προσαρμοσμένο για σενάρια προγραμματισμού βάρδιων, όπως πρωινές, αργά και νυχτερινές βάρδιες.
+This example shows how you can use custom templates to turn the MudExRangeSlider into a timeline-style control with year and month markers.: Αυτό το παράδειγμα δείχνει πώς μπορείτε να χρησιμοποιήσετε προσαρμοσμένα πρότυπα για να μετατρέψετε το MudExRangeSlider σε στοιχείο ελέγχου στυλ γραμμής χρόνου με δείκτες έτους και μήνα.
+This example targets SLA and response-time scenarios using a millisecond-based range slider.: Αυτό το παράδειγμα στοχεύει σενάρια SLA και χρόνου απόκρισης χρησιμοποιώντας ένα ρυθμιστικό εύρους που βασίζεται σε χιλιοστά του δευτερολέπτου.
+This example turns the range slider into a quarter selector over multiple years.: Αυτό το παράδειγμα μετατρέπει το ρυθμιστικό εύρους σε επιλογέα τριμήνου για πολλά χρόνια.
+This example uses an integer range slider to represent transit times in days, segmented into service levels such as Express, Standard, and Economy/Sea.: Αυτό το παράδειγμα χρησιμοποιεί ένα ρυθμιστικό ακέραιου εύρους για να αναπαραστήσει τους χρόνους διέλευσης σε ημέρες, τμηματοποιημένους σε επίπεδα υπηρεσιών όπως Express, Standard και Economy/Sea.
+This example uses an integer-based range slider to represent age ranges and demographic bands.: Αυτό το παράδειγμα χρησιμοποιεί ένα ρυθμιστικό εύρους που βασίζεται σε ακέραιους αριθμούς για να αναπαραστήσει εύρη ηλικιών και δημογραφικές ζώνες.
+This example uses DateOnly and weekly steps to build a week-based range selector with ISO calendar week numbers.: Αυτό το παράδειγμα χρησιμοποιεί DateOnly και εβδομαδιαία βήματα για τη δημιουργία ενός επιλογέα εύρους βάσει εβδομάδας με αριθμούς ημερολογιακών εβδομάδων ISO.
 This is a Json representation of the TestModel. This is ignored for Export and Import: Αυτή είναι μια αναπαράσταση Json του TestModel. Αυτό παραβλέπεται για την Εξαγωγή και την Εισαγωγή
 This is a simple information dialog that closes after {0} seconds: Αυτός είναι ένας απλός διάλογος πληροφοριών που κλείνει μετά από {0} δευτερόλεπτα
 This is a simple information dialog that closes after 0 seconds: Αυτός είναι ένας απλός διάλογος πληροφοριών που κλείνει μετά από 0 δευτερόλεπτα
@@ -4024,8 +4159,14 @@ This is a simple information dialog that closes after 5 seconds: Αυτός εί
 This is an Administrator Only View.: Αυτή είναι μια προβολή μόνο διαχειριστή.
 This is the MudEx Default theme: Αυτό είναι το προεπιλεγμένο θέμα MudEx
 This is the sample Popover. In general it inherits the original MudPopover.: Αυτό είναι το δείγμα Popover. Γενικά κληρονομεί το αρχικό MudPopover.
+This is useful for configuring daily time windows such as office hours, maintenance windows, or booking slots.: Αυτό είναι χρήσιμο για τη διαμόρφωση ημερήσιων χρονικών παραθύρων, όπως ώρες γραφείου, παράθυρα συντήρησης ή κρατήσεις θέσεων.
+This is useful for product filters, budget selectors, or any UI where users choose a price range in a visually guided way.: Αυτό είναι χρήσιμο για φίλτρα προϊόντων, επιλογείς προϋπολογισμού ή οποιαδήποτε διεπαφή χρήστη όπου οι χρήστες επιλέγουν ένα εύρος τιμών με οπτικά καθοδηγούμενο τρόπο.
+This is useful for recurring schedules, availability windows, or delivery patterns that are defined on a weekly basis.: Αυτό είναι χρήσιμο για περιοδικά χρονοδιαγράμματα, παράθυρα διαθεσιμότητας ή μοτίβα παράδοσης που ορίζονται σε εβδομαδιαία βάση.
 This one card is still added without an corresponding item.: Αυτή η μία κάρτα εξακολουθεί να προστίθεται χωρίς αντίστοιχο στοιχείο.
 This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Αυτό περνά ως μέθοδος στις επιλογές διαλόγου. Ο διάλογος δεν θα κλείσει εάν η μέθοδος επιστρέψει false. Το αποτέλεσμα πρέπει να είναι ένα bool ή ένα Task&lt;bool&gt;
+This pattern is a good fit for analytics dashboards where users can dynamically change the granularity of the displayed data.: Αυτό το μοτίβο είναι κατάλληλο για πίνακες εργαλείων αναλυτικών στοιχείων όπου οι χρήστες μπορούν να αλλάξουν δυναμικά την ευαισθησία των εμφανιζόμενων δεδομένων.
+This pattern is helpful for business and financial applications where reporting is aligned to fiscal years instead of calendar years.: Αυτό το μοτίβο είναι χρήσιμο για επιχειρηματικές και οικονομικές εφαρμογές όπου η αναφορά ευθυγραμμίζεται με τα οικονομικά έτη αντί για τα ημερολογιακά έτη.
+This pattern is ideal when users think in weeks instead of concrete dates, for example in planning, reporting, or sprint overviews.: Αυτό το μοτίβο είναι ιδανικό όταν οι χρήστες σκέφτονται σε εβδομάδες αντί για συγκεκριμένες ημερομηνίες, για παράδειγμα στον προγραμματισμό, την αναφορά ή τις επισκοπήσεις σπριντ.
 This photo was taken in a small village in Istra Croatia.: Αυτή η φωτογραφία τραβήχτηκε σε ένα μικρό χωριό στην Ίστρα της Κροατίας.
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Αυτός ο επιλογέας φέρνει κινούμενα σχέδια, καλύτερες συμπεριφορές και ένα παράθυρο διαλόγου που υποστηρίζει όλα τα DialogOptions. Για να δημιουργήσετε το δικό σας στοιχείο επιλογής jus κληρονομήστε από το MudExPickerBase ή απλώς για να χρησιμοποιήσετε απλό περιεχόμενο χρησιμοποιήστε το MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Αυτό το δείγμα δείχνει πώς να χρησιμοποιήσετε το MudExCaptureService
@@ -4034,13 +4175,20 @@ This sample just shows how easily you can combine the MudExPicker with MudExTree
 This sample uses the IDialogEventService to cancel the dialog close: Αυτό το δείγμα χρησιμοποιεί το IDialogEventService για να ακυρώσει το παράθυρο διαλόγου κλείσιμο
 This sample uses the options for a can close callback: Αυτό το δείγμα χρησιμοποιεί τις επιλογές για μια δυνατότητα κλεισίματος κλήσης
 This section can be placed inside a MudExGrid component.: Αυτό το τμήμα μπορεί να τοποθετηθεί μέσα σε ένα στοιχείο MudExGrid.
+This template is particularly useful in logistics and shipping scenarios where lead times are expressed in day ranges.: Αυτό το πρότυπο είναι ιδιαίτερα χρήσιμο σε σενάρια logistics και αποστολής όπου οι χρόνοι παράδοσης εκφράζονται σε εύρη ημερών.
+This template is well suited for analytics, audience targeting, or any UI where users work with age intervals.: Αυτό το πρότυπο είναι κατάλληλο για αναλυτικά στοιχεία, στόχευση κοινού ή οποιαδήποτε διεπαφή χρήστη όπου οι χρήστες εργάζονται με ηλικιακά διαστήματα.
+This template works well in monitoring, observability, or API dashboards where latency ranges need to be interpreted quickly.: Αυτό το πρότυπο λειτουργεί καλά σε πίνακες εργαλείων παρακολούθησης, παρατηρησιμότητας ή API όπου τα εύρη καθυστέρησης πρέπει να ερμηνεύονται γρήγορα.
 Thistle: Γαϊδουράγκαθο
 ThrottleInterval: Διάστημα γκαζιού
+ThumbColor: ThumbΧρώμα
+ThumbEndTemplate: ThumbEndTemplate
+ThumbStartTemplate: ThumbStartTemplate
 ti-ER: Tigrinya (Ερυθραία)
 ti-ET: Τιγκρίνια (Αιθιοπία)
 tig-ER: Τίγκρε (Ερυθραία)
 Tilt: Κλίση
 Time: Ώρα
+TimeOnly: Μόνο χρόνος
 Times: Φορές
 Times New Roman: Times New Roman
 TimeSeries: Χρονοσειρές
@@ -4096,6 +4244,7 @@ Toronto - M1B 1A1ender: Τορόντο - M1B 1A1ender
 tr-CY: Τουρκικά (Κύπρος)
 tr-TR: Τουρκικά (Τουρκίας)
 Trace: Ίχνος
+TrackColor: Χρώμα κομματιού
 TrackInfoPosition: TrackInfoPosition
 TrackList: Λίστα κομματιών
 TrackListBehaviour: Συμπεριφορά λίστας κομματιών
@@ -4104,6 +4253,8 @@ TrackListCoverImage: TrackListCoverImage
 TrackListMode: TrackListMode (Λειτουργία λίστας κομματιών)
 TrackListPosition: TrackListPosition
 TrackListToggleButtonPosition: TrackListToggleButtonPosition
+TrackStyle: Στυλ κομματιού
+TrackTemplate: Πρότυπο κομματιού
 Trail Details: Λεπτομέρειες μονοπατιού
 TransformOrigin: TransformOrigin
 Translations: Μεταφράσεις
@@ -4113,6 +4264,7 @@ Transparent: Διαφανής
 Trebuchet MS: Trebuchet MS
 TreeView: Προβολή δέντρου
 TreeView component that renders a tree structure of items.: TreeView που αποδίδει μια δενδροειδή δομή στοιχείων.
+Treeview in Picker: Προβολή δέντρου στο Picker
 TreeViewBreadcrumb: TreeViewBreadcrumb
 TreeViewCardGrid: TreeViewCardGrid
 TreeViewDefault: TreeViewDefault
@@ -4185,10 +4337,15 @@ ur-IN: Ουρντού (Ινδία)
 ur-PK: Ουρντού (Πακιστάν)
 url: Διεύθυνση URL
 Url: Διεύθυνση URL
+Use cases: Περιπτώσεις χρήσης
 Use CodeGator Models: Χρησιμοποιήστε μοντέλα CodeGator
 Use MudExAdditionalAdornment ad ChildContent: Χρήση διαφήμισης MudExAdditionalAdornment ChildContent
 Use MudExAdditionalAdornment as ChildContent of a MudInput: Χρησιμοποιήστε το MudExAdditionalAdornment ως θυγατρικό περιεχόμενο ενός MudInput
 Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Χρησιμοποιήστε το MudExSelect και ορίστε το MultiSelection σε true και το ValuePresenter σε Chip.
+Use the slider horizontally or vertically – ideal for filters, dashboards and reports.: Χρησιμοποιήστε το ρυθμιστικό οριζόντια ή κάθετα – ιδανικό για φίλτρα, πίνακες εργαλείων και αναφορές.
+Use this template for quarterly reporting, KPIs, or financial overviews where quarter ranges are more meaningful than exact dates.: Χρησιμοποιήστε αυτό το πρότυπο για τριμηνιαίες αναφορές, KPI ή οικονομικές επισκοπήσεις όπου τα εύρη τριμήνων έχουν μεγαλύτερη σημασία από τις ακριβείς ημερομηνίες.
+Use this template for warehouses, production, call centers, or any domain where work is organized in shifts over a 24-hour day.: Χρησιμοποιήστε αυτό το πρότυπο για αποθήκες, παραγωγή, τηλεφωνικά κέντρα ή οποιονδήποτε τομέα όπου η εργασία οργανώνεται σε βάρδιες κατά τη διάρκεια μιας 24ωρης ημέρας.
+Use this template whenever users need to understand at a glance whether a selected range falls into a safe, warning, or critical zone.: Χρησιμοποιήστε αυτό το πρότυπο κάθε φορά που οι χρήστες πρέπει να κατανοήσουν με μια ματιά εάν μια επιλεγμένη περιοχή εμπίπτει σε μια ασφαλή, προειδοποιητική ή κρίσιμη ζώνη.
 UseCanvas: ΧρήσηΚαμβάς
 UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
 UseItemTemplateForSelection: UseItemTemplateForSelection
@@ -4238,6 +4395,8 @@ Variant: Παραλλαγή
 ve-ZA: Venda (Νότια Αφρική)
 Verdana: Βερντάνα
 Version: Εκδοχή
+Vertical: Κάθετος
+VerticalText: ΚάθετοΚείμενο
 vi-VN: Βιετναμέζικα (Βιετνάμ)
 Video Content-Type: Τύπος περιεχομένου βίντεο
 Video device: Συσκευή βίντεο
@@ -4267,6 +4426,7 @@ Vs2015: Vs2015
 VulcanBase16: VulcanBase16
 vun-TZ: Vunjo (Τανζανία)
 wae-CH: Walser (Ελβετία)
+Wait: Περίμενε
 wal-ET: Wolaytta (Αιθιοπία)
 Warning: Προειδοποίηση
 WarningContrastText: ΠροειδοποίησηΑντίθεσηΚείμενο
@@ -4298,6 +4458,8 @@ WindowsNtLightBase16: WindowsNtLightBase16
 Wingdings: Φτερά
 With custom configuration: Με προσαρμοσμένη διαμόρφωση
 With default configuration: Με προεπιλεγμένη διαμόρφωση
+With DockLayout: Με το DockLayout
+With StepResolvers you can easily configure the stepping behavior. For date ranges we provide several predefined resolvers. In this example StepResolvers.DateTime.Quarterly(_ => 1) makes the slider snap to quarters.: Με το StepResolvers μπορείτε εύκολα να διαμορφώσετε τη συμπεριφορά βηματισμού. Για εύρη ημερομηνιών παρέχουμε αρκετούς προκαθορισμένους αναλυτές. Σε αυτό το παράδειγμα, το StepResolvers.DateTime.Quarterly(_ => 1) κάνει το ρυθμιστικό να προσκολλάται στα τέταρτα.
 With tabs: Με καρτέλες
 With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: Με το στοιχείο MudExAdditionalAdornment μπορείτε να έχετε τόσα στολίδια σε οποιοδήποτε στοιχείο ελέγχου εισόδου που βασίζεται στο MudInput όπως αυτό.
 With this component you can have an animation while loading the main blazor app: Με αυτό το στοιχείο μπορείτε να έχετε μια κινούμενη εικόνα κατά τη φόρτωση της κύριας εφαρμογής blazor
@@ -4314,6 +4476,8 @@ WoodlandBase16: Δασική Βάση16
 WordDokument.doc: WordDokument.doc
 WrapChips: WrapChips
 WrapToolBarContent: WrapToolBarΠεριεχόμενο
+WResize: Μέγεθος WResize
+Write comments or reactions for current component or page: Γράψτε σχόλια ή αντιδράσεις για το τρέχον στοιχείο ή τη σελίδα
 Xcode: Κωδικός Χ
 XcodeDuskBase16: XcodeDuskΒάση16
 xh-ZA: isiXhosa (Νότια Αφρική)
@@ -4338,8 +4502,10 @@ You are logged out by an Administrator or profile change.: Έχετε αποσυ
 You are Logged Out.: Έχετε αποσυνδεθεί.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Μπορείτε επίσης να χρησιμοποιήσετε το MudExAdditionalAdornment ως ChildContent ενός MudInput
 You can move me: Μπορείς να με συγκινήσεις
+You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply.: Μπορείτε να μετακινήσετε τους μεμονωμένους αντίχειρες ή ολόκληρο το επιλεγμένο εύρος για να προσαρμόσετε τις τιμές έναρξης και λήξης. Ανάλογα με τη διαμόρφωση, ισχύουν ελάχιστη και μέγιστη διάρκεια καθώς και διαφορετικά μεγέθη βημάτων.
 You can now Login with your credentials: Τώρα μπορείτε να συνδεθείτε με τα διαπιστευτήριά σας
 You can resize me: Μπορείτε να αλλάξετε το μέγεθός μου
+You can use this technique to build rich time sliders and visual ranges that fit your domain exactly.: Μπορείτε να χρησιμοποιήσετε αυτήν την τεχνική για να δημιουργήσετε πλούσια χρονικά ρυθμιστικά και οπτικά εύρη που ταιριάζουν ακριβώς στον τομέα σας.
 You cannot delete yourself: Δεν μπορείτε να διαγράψετε τον εαυτό σας
 You clicked: Κάνατε κλικ
 You don't need an extra JsonEditor anymore: Δεν χρειάζεστε πλέον ένα επιπλέον JsonEditor
@@ -4365,7 +4531,9 @@ ZipCode: Ταχυδρομικός κώδικας
 Zoom: Μεγένθυνση
 Zoom in: Μεγέθυνση
 Zoom out: Σμίκρυνση
+ZoomIn: Μεγέθυνση
 ZoomInButtonIcon: Εικονίδιο κουμπιού ζουμ
 ZoomOnHover: ZoomOnHover
+ZoomOut: Σμίκρυνση
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Νότια Αφρική)

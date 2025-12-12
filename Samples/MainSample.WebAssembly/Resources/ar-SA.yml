@@ -1242,7 +1242,7 @@ Extended Attribute Not Found!: لم يتم العثور على السمة الم
 Extended Attribute Saved: تم حفظ السمة الموسعة
 Extended Attribute Updated: تم تحديث السمة الموسعة
 Extended Attribute with this Key already exists.: السمة الموسعة مع هذا المفتاح موجودة بالفعل.
-Extended Attributes: '\{0}\ السمات الموسعة'
+Extended Attributes: \{0}\ السمات الموسعة
 Extended Attributes exported: تم تصدير السمات الموسعة
 ExtensionRestrictionType: ExtensionRestrictionType
 Extensions: ملحقات

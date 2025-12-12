@@ -1242,7 +1242,7 @@ Extended Attribute Not Found!: Attribut étendu introuvable !
 Extended Attribute Saved: Attribut étendu enregistré
 Extended Attribute Updated: Attribut étendu mis à jour
 Extended Attribute with this Key already exists.: L’attribut étendu avec cette clé existe déjà.
-Extended Attributes: '\{0}\ Attributs étendus'
+Extended Attributes: \{0}\ Attributs étendus
 Extended Attributes exported: Attributs étendus exportés
 ExtensionRestrictionType: ExtensionRestrictionType
 Extensions: Extensions

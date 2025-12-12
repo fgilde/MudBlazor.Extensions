@@ -1242,7 +1242,7 @@ Extended Attribute Not Found!: Det gick inte att hitta det utökade attributet!
 Extended Attribute Saved: Utökat attribut sparat
 Extended Attribute Updated: Utökat attribut uppdaterat
 Extended Attribute with this Key already exists.: Det utökade attributet med den här nyckeln finns redan.
-Extended Attributes: '\{0}\ Utökade attribut'
+Extended Attributes: \{0}\ Utökade attribut
 Extended Attributes exported: Exporterade utökade attribut
 ExtensionRestrictionType: ExtensionRestrictionType (Förlängningsbegränsningstyp)
 Extensions: Tillägg

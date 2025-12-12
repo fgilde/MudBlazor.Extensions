@@ -1242,7 +1242,7 @@ Extended Attribute Not Found!: 확장 속성을 찾을 수 없습니다!
 Extended Attribute Saved: 저장된 확장 속성
 Extended Attribute Updated: 확장 속성 업데이트
 Extended Attribute with this Key already exists.: 이 키가 있는 확장 속성이 이미 존재합니다.
-Extended Attributes: '\{0}\ 확장 속성'
+Extended Attributes: \{0}\ 확장 속성
 Extended Attributes exported: 내보낸 확장 속성
 ExtensionRestrictionType: ExtensionRestrictionType
 Extensions: 확장
