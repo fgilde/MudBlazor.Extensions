@@ -19,7 +19,6 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     private HashSet<TItem> _expanded = new();
     private TItem _selectedNode;
     private IReadOnlyCollection<TreeViewItemContext<TItem>> _cachedFilteredItems;
-    private int _filterVersion = 0;
 
     /// <summary>
     /// Filter manager
@@ -195,7 +194,6 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             {
                 FilterManager.Items = value;
                 _cachedFilteredItems = null;
-                _filterVersion++;
             }
         }
     }
@@ -316,7 +314,6 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             {
                 FilterManager.Filter = value;
                 _cachedFilteredItems = null;
-                _filterVersion++;
                 if (ExpandOnFilter)
                     SetAllExpanded(FilterManager.HasFilters, _ => true);
                 FilterChanged.InvokeAsync(value);
@@ -340,7 +337,6 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             {
                 FilterManager.Filters = value;
                 _cachedFilteredItems = null;
-                _filterVersion++;
                 if(_highlight != null && value?.Contains(_highlight) != true)
                     _highlight = null;
                 

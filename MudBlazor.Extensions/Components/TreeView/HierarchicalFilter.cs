@@ -154,7 +154,11 @@ public class HierarchicalFilter<T>
             return cachedResult;
 
         var result = ComputeMatchedSearch(node);
-        _matchCache[node] = result;
+        
+        // Cache the result before returning
+        if (!_matchCache.ContainsKey(node))
+            _matchCache[node] = result;
+            
         return result;
     }
 
@@ -174,9 +178,13 @@ public class HierarchicalFilter<T>
                 return (true, filter);
         }
 
-        // Check children recursively
-        if ((node?.GetLoadedChildren() ?? Enumerable.Empty<T>()).Recursive(n => n.GetLoadedChildren()).Any(n => GetMatchedSearch(n).Found))
-            return (true, string.Empty);
+        // Check children recursively - GetMatchedSearch will handle caching for children
+        var children = node?.GetLoadedChildren() ?? Enumerable.Empty<T>();
+        foreach (var child in children.Recursive(n => n.GetLoadedChildren()))
+        {
+            if (GetMatchedSearch(child).Found)
+                return (true, string.Empty);
+        }
 
         return (false, string.Empty);
     }
