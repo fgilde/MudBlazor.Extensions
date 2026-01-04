@@ -10,25 +10,77 @@ namespace MudBlazor.Extensions.Components;
 public class HierarchicalFilter<T> 
     where T : IHierarchical<T>
 {
+    private IReadOnlyCollection<T> _items;
+    private List<string> _filters;
+    private string _filter;
+    private HierarchicalFilterBehaviour _filterBehaviour;
+    private IReadOnlyCollection<T> _cachedFilteredItems;
+    private Dictionary<T, (bool Found, string Term)> _matchCache = new();
+    private string _cacheKey;
+
     /// <summary>
     /// Items to filter
     /// </summary>
-    public IReadOnlyCollection<T> Items { get; set; }
+    public IReadOnlyCollection<T> Items
+    {
+        get => _items;
+        set
+        {
+            if (_items != value)
+            {
+                _items = value;
+                InvalidateCache();
+            }
+        }
+    }
 
     /// <summary>
     /// Filters to apply
     /// </summary>
-    public List<string> Filters { get; set; }
+    public List<string> Filters
+    {
+        get => _filters;
+        set
+        {
+            if (_filters != value)
+            {
+                _filters = value;
+                InvalidateCache();
+            }
+        }
+    }
 
     /// <summary>
     /// Filter to apply
     /// </summary>
-    public string Filter { get; set; }
+    public string Filter
+    {
+        get => _filter;
+        set
+        {
+            if (_filter != value)
+            {
+                _filter = value;
+                InvalidateCache();
+            }
+        }
+    }
 
     /// <summary>
     /// Filter behaviour
     /// </summary>
-    public HierarchicalFilterBehaviour FilterBehaviour { get; set; }
+    public HierarchicalFilterBehaviour FilterBehaviour
+    {
+        get => _filterBehaviour;
+        set
+        {
+            if (_filterBehaviour != value)
+            {
+                _filterBehaviour = value;
+                InvalidateCache();
+            }
+        }
+    }
 
     /// <summary>
     /// Text function
@@ -45,6 +97,23 @@ public class HierarchicalFilter<T>
     /// </summary>
     public bool HasFilters => Filters?.Any(s => !string.IsNullOrWhiteSpace(s)) == true || !string.IsNullOrEmpty(Filter);
 
+    private void InvalidateCache()
+    {
+        _cachedFilteredItems = null;
+        _matchCache.Clear();
+        _cacheKey = null;
+    }
+
+    private string GetCacheKey()
+    {
+        if (_cacheKey == null)
+        {
+            var filtersStr = string.Join("|", Filters?.Where(f => !string.IsNullOrEmpty(f)) ?? Enumerable.Empty<string>());
+            _cacheKey = $"{FilterBehaviour}:{Filter}:{filtersStr}";
+        }
+        return _cacheKey;
+    }
+
     private bool MatchesFilter(T node, string text)
     {
         var textFn = TextFunc ?? (n => n?.ToString());
@@ -60,10 +129,14 @@ public class HierarchicalFilter<T>
     {
         if (FilterBehaviour == HierarchicalFilterBehaviour.Flat && HasFilters)
         {
-            var filters = Filters.EmptyIfNull().Concat(new []{Filter}).Where(f => !string.IsNullOrEmpty(f)).Distinct();
-            return Items.Recursive(e => e.GetLoadedChildren()).Where(e =>
+            if (_cachedFilteredItems != null)
+                return _cachedFilteredItems;
+
+            var filters = Filters.EmptyIfNull().Concat(new []{Filter}).Where(f => !string.IsNullOrEmpty(f)).Distinct().ToList();
+            _cachedFilteredItems = Items.Recursive(e => e.GetLoadedChildren()).Where(e =>
                     filters.Any(filter => e is IAsyncHierarchical<T> { IsLoading: true }  || MatchesFilter(e, filter)))
                 .ToHashSet();
+            return _cachedFilteredItems;
         }
         return Items;
     }
@@ -73,23 +146,39 @@ public class HierarchicalFilter<T>
     /// </summary>
     public (bool Found, string Term) GetMatchedSearch(T node)
     {
+        if (node == null)
+            return (false, string.Empty);
+
+        // Check cache first
+        if (_matchCache.TryGetValue(node, out var cachedResult))
+            return cachedResult;
+
+        var result = ComputeMatchedSearch(node);
+        _matchCache[node] = result;
+        return result;
+    }
+
+    private (bool Found, string Term) ComputeMatchedSearch(T node)
+    {
         if (FilterBehaviour == HierarchicalFilterBehaviour.Flat || !HasFilters)
             return (true, string.Empty);
-
-        if ((node?.GetLoadedChildren() ?? Enumerable.Empty<T>()).Recursive(n => n.GetLoadedChildren()).Any(n => GetMatchedSearch(n).Found))
-            return (true, string.Empty);
-
 
         var filters = Filters.EmptyIfNull().ToList();
         if (!string.IsNullOrEmpty(Filter))
             filters.Add(Filter);
+
+        // Check direct match first (more common case)
         foreach (var filter in filters)
         {
             if (node is IAsyncHierarchical<T> { IsLoading: true } || MatchesFilter(node, filter))
                 return (true, filter);
         }
 
-        return (false, string.Empty); 
+        // Check children recursively
+        if ((node?.GetLoadedChildren() ?? Enumerable.Empty<T>()).Recursive(n => n.GetLoadedChildren()).Any(n => GetMatchedSearch(n).Found))
+            return (true, string.Empty);
+
+        return (false, string.Empty);
     }
 }
 

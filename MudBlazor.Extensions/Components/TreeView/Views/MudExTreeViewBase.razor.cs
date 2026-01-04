@@ -18,6 +18,8 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     private string _highlight;
     private HashSet<TItem> _expanded = new();
     private TItem _selectedNode;
+    private IReadOnlyCollection<TreeViewItemContext<TItem>> _cachedFilteredItems;
+    private int _filterVersion = 0;
 
     /// <summary>
     /// Filter manager
@@ -31,8 +33,19 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
 
     public IList<(string Term, TItem Item)> GetFilteredItems(IEnumerable<TItem> nodes)
     {
-        var result =  from item in nodes.EmptyIfNull() let search = FilterManager.GetMatchedSearch(item) where search.Found select (search.Term, item);
-        return result.ToList();
+        if (nodes == null)
+            return new List<(string Term, TItem Item)>();
+        
+        var result = new List<(string Term, TItem Item)>();
+        foreach (var item in nodes)
+        {
+            var search = FilterManager.GetMatchedSearch(item);
+            if (search.Found)
+            {
+                result.Add((search.Term, item));
+            }
+        }
+        return result;
     }
 
     /// <summary>
@@ -42,11 +55,23 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     {
         get
         {
-            return FilterManager.FilteredItems().Select(n => new
+            if (_cachedFilteredItems != null)
+                return _cachedFilteredItems;
+
+            var items = FilterManager.FilteredItems();
+            var result = new List<TreeViewItemContext<TItem>>();
+            
+            foreach (var item in items)
             {
-                Item = n,
-                Search = FilterManager.GetMatchedSearch(n)
-            }).Where(r => r.Search.Found).Select(res => CreateContext(res.Item, res.Search.Term)).ToHashSet();
+                var search = FilterManager.GetMatchedSearch(item);
+                if (search.Found)
+                {
+                    result.Add(CreateContext(item, search.Term));
+                }
+            }
+            
+            _cachedFilteredItems = result;
+            return _cachedFilteredItems;
         }
     }
 
@@ -164,7 +189,15 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     public IReadOnlyCollection<TItem> Items
     {
         get => FilterManager.Items;
-        set => FilterManager.Items = value;
+        set
+        {
+            if (FilterManager.Items != value)
+            {
+                FilterManager.Items = value;
+                _cachedFilteredItems = null;
+                _filterVersion++;
+            }
+        }
     }
 
     /// <summary>
@@ -282,6 +315,8 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             if (FilterManager.Filter != value)
             {
                 FilterManager.Filter = value;
+                _cachedFilteredItems = null;
+                _filterVersion++;
                 if (ExpandOnFilter)
                     SetAllExpanded(FilterManager.HasFilters, _ => true);
                 FilterChanged.InvokeAsync(value);
@@ -304,6 +339,8 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             if (FilterManager.Filters != value)
             {
                 FilterManager.Filters = value;
+                _cachedFilteredItems = null;
+                _filterVersion++;
                 if(_highlight != null && value?.Contains(_highlight) != true)
                     _highlight = null;
                 
