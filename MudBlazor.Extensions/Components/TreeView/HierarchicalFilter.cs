@@ -156,8 +156,7 @@ public class HierarchicalFilter<T>
         var result = ComputeMatchedSearch(node);
         
         // Cache the result before returning
-        if (!_matchCache.ContainsKey(node))
-            _matchCache[node] = result;
+        _matchCache[node] = result;
             
         return result;
     }
