@@ -8,7 +8,7 @@ namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 public class MudExRangeSliderTests
 {
     /// <summary>
-    /// Test for the issue: https://github.com/fgilde/MudBlazor.Extensions/issues/XXX
+    /// Test for the issue where MinLength constraint is not properly enforced when dragging thumbs.
     /// When dragging the start thumb towards the end with MinLength constraint,
     /// it should not allow the start to violate the minimum span.
     /// 
