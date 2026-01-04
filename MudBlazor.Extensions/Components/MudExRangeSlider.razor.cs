@@ -266,6 +266,31 @@ namespace MudBlazor.Extensions.Components
         private T Snap(T v, SnapPolicy policy = SnapPolicy.Nearest) => ResolveStep(v, 0, policy);
 
         private T AddStepsLocal(T v, int steps) => ResolveStep(v, steps);
+
+        /// <summary>
+        /// Calculates the maximum allowed start position given the current end position and MinLength constraint.
+        /// </summary>
+        private T CalculateMaxStart(T end)
+        {
+            if (!MinLength.HasValue)
+                return end;
+            
+            var minLengthValue = Math.Abs(MinLength.Value.Delta);
+            return M.Clamp(M.Add(end, -minLengthValue), SizeRange);
+        }
+
+        /// <summary>
+        /// Calculates the minimum allowed end position given the current start position and MinLength constraint.
+        /// </summary>
+        private T CalculateMinEnd(T start)
+        {
+            if (!MinLength.HasValue)
+                return start;
+            
+            var minLengthValue = Math.Abs(MinLength.Value.Delta);
+            return M.Clamp(M.Add(start, minLengthValue), SizeRange);
+        }
+
         private bool IsHorizontal
             => Orientation is SliderOrientation.Horizontal;
 
@@ -489,7 +514,10 @@ namespace MudBlazor.Extensions.Components
 
             if (_dragMode == DragMode.StartThumb)
             {
-                var clampedStart = M.Clamp(snapped, new MudExRange<T>(SizeRange.Start, Value.End));
+                // Calculate the valid range for start thumb considering min/max length constraints
+                var maxStart = CalculateMaxStart(Value.End);
+                
+                var clampedStart = M.Clamp(snapped, new MudExRange<T>(SizeRange.Start, maxStart));
                 var r = M.EnforceMinMaxLength(new MudExRange<T>(clampedStart, Value.End), SizeRange, MinLength, MaxLength, Thumb.Start);
 
                 if (!Equals(r.Start, Value.Start) || !Equals(r.End, Value.End))
@@ -501,7 +529,10 @@ namespace MudBlazor.Extensions.Components
             }
             else if (_dragMode == DragMode.EndThumb)
             {
-                var clampedEnd = M.Clamp(snapped, new MudExRange<T>(Value.Start, SizeRange.End));
+                // Calculate the valid range for end thumb considering min/max length constraints
+                var minEnd = CalculateMinEnd(Value.Start);
+                
+                var clampedEnd = M.Clamp(snapped, new MudExRange<T>(minEnd, SizeRange.End));
                 var r = M.EnforceMinMaxLength(new MudExRange<T>(Value.Start, clampedEnd), SizeRange, MinLength, MaxLength, Thumb.End);
 
                 if (!Equals(r.Start, Value.Start) || !Equals(r.End, Value.End))
@@ -538,7 +569,10 @@ namespace MudBlazor.Extensions.Components
 
         private async Task SetStartAsync(T v, bool commit)
         {
-            var s = M.Clamp(Snap(v), new MudExRange<T>(SizeRange.Start, Value.End));
+            // Calculate the valid range for start thumb considering min/max length constraints
+            var maxStart = CalculateMaxStart(Value.End);
+            
+            var s = M.Clamp(Snap(v), new MudExRange<T>(SizeRange.Start, maxStart));
             var r = M.EnforceMinMaxLength(new MudExRange<T>(s, Value.End), SizeRange, MinLength, MaxLength, Thumb.Start);
 
             if (!Equals(r.Start, Value.Start) || !Equals(r.End, Value.End))
@@ -556,7 +590,10 @@ namespace MudBlazor.Extensions.Components
 
         private async Task SetEndAsync(T v, bool commit)
         {
-            var e = M.Clamp(Snap(v), new MudExRange<T>(Value.Start, SizeRange.End));
+            // Calculate the valid range for end thumb considering min/max length constraints
+            var minEnd = CalculateMinEnd(Value.Start);
+            
+            var e = M.Clamp(Snap(v), new MudExRange<T>(minEnd, SizeRange.End));
             var r = M.EnforceMinMaxLength(new MudExRange<T>(Value.Start, e), SizeRange, MinLength, MaxLength, Thumb.End);
 
             if (!Equals(r.Start, Value.Start) || !Equals(r.End, Value.End))
