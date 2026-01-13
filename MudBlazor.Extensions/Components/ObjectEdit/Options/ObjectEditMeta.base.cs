@@ -94,7 +94,7 @@ public abstract class ObjectEditMeta
         if (typeof(T) == typeof(MudChip<>) && p.Name == nameof(MudChip<T>.Value))
             return false; // TODO: find out why its so hard crashing without this
 
-        var forbiddenTypes = new[] { typeof(EventCallback), typeof(EventCallback<>), typeof(Expression<>), typeof(Func<>), typeof(Converter<>), typeof(Converter<,>), typeof(CultureInfo), typeof(RenderFragment), typeof(RenderFragment<>), typeof(IStringLocalizer<>), typeof(IStringLocalizer) };
+        var forbiddenTypes = new[] { typeof(EventCallback), typeof(EventCallback<>), typeof(Expression<>), typeof(Func<>), typeof(Converter<,>), typeof(Converter<,>), typeof(CultureInfo), typeof(RenderFragment), typeof(RenderFragment<>), typeof(IStringLocalizer<>), typeof(IStringLocalizer) };
         var isIComponent = typeof(ComponentBase).IsAssignableFrom(p.DeclaringType);
         return (!isIComponent || p.GetCustomAttribute<ParameterAttribute>() != null || p.GetCustomAttribute<CascadingParameterAttribute>() != null)
                && !p.PropertyType.IsFunc() && !p.PropertyType.IsExpression() //&& !p.PropertyType.IsAction()

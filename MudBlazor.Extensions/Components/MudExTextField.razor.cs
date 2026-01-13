@@ -153,29 +153,28 @@ public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
         return base.UpdateValuePropertyAsync(false);
     }
 
-    /// <inheritdoc />
-    protected override Task SetValueAsync(T value, bool updateText = true, bool force = false)
+    protected override Task SetValueAndUpdateTextAsync(T value, bool updateText = true, bool force = false)
     {
         if (_mask != null)
         {
-            var textValue = Converter.Set(value);
+            var textValue = ConvertSet(value);
             _mask.SetText(textValue);
             textValue = Mask.GetCleanText();
-            value = Converter.Get(textValue);
+            value = ConvertGet(textValue);
         }
-        return base.SetValueAsync(value, updateText, force);
+        return base.SetValueAndUpdateTextAsync(value, updateText, force);
     }
 
-    /// <inheritdoc />
-    protected override Task SetTextAsync(string text, bool updateValue = true)
+    protected override Task SetTextAndUpdateValueAsync(string text, bool updateValue = true)
     {
         if (_mask != null)
         {
             _mask.SetText(text);
             text = _mask.Text;
         }
-        return base.SetTextAsync(text, updateValue);
+        return base.SetTextAndUpdateValueAsync(text, updateValue);
     }
+
 
     private async Task OnMaskedValueChanged(string s) => await SetTextAsync(s);
 

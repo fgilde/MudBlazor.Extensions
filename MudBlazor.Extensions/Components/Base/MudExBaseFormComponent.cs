@@ -251,8 +251,4 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
         else
             _renderFinishTimer?.Dispose();
     }
-
-    /// <inheritdoc />
-    protected MudExBaseFormComponent(Converter<TData, U> converter = null) : base(converter ?? new Converter<TData, U>())
-    {}
 }

@@ -175,7 +175,7 @@
     {
         await base.ValidateValue();
         if (_validationComponent is not null) {
-            await _validationComponent.Validate();            
+            await _validationComponent.ValidateAsync();            
         }
     }
 

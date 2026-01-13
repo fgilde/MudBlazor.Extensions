@@ -218,7 +218,7 @@ public partial class MudExTagField<T>
         if (((Delimiters?.Contains(args.Key[0]) == true && args.Key.Length == 1) || (SetChipsOnEnter && args.Key == "Enter")) && Value != null)        
             await ApplyChips();        
 
-        if (args.Key == "Backspace" && string.IsNullOrEmpty(Converter.Set(Value)) && Values?.Any() == true)
+        if (args.Key == "Backspace" && string.IsNullOrEmpty(ConvertSet(Value)) && Values?.Any() == true)
         {
             Values.RemoveAt(Values.Count - 1);
             await InvokeValuesChanged();

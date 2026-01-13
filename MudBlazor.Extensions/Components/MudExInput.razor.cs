@@ -16,7 +16,7 @@ namespace MudBlazor.Extensions.Components
         /// Classname for the component.
         /// </summary>
         protected string Classname => MudExCss.GetClassname(this,
-            () => HasNativeHtmlPlaceholder() || ForceShrink || !string.IsNullOrEmpty(Text) || AdornmentStart != null || !string.IsNullOrWhiteSpace(Placeholder) || !string.IsNullOrEmpty(Converter.Set(Value)));
+            () => HasNativeHtmlPlaceholder() || ForceShrink || !string.IsNullOrEmpty(Text) || AdornmentStart != null || !string.IsNullOrWhiteSpace(Placeholder) || !string.IsNullOrEmpty(ConvertSet(Value)));
         
         /// <summary>
         /// Classname for the input element.
@@ -135,8 +135,8 @@ namespace MudBlazor.Extensions.Components
         protected async Task OnChangeHandler(ChangeEventArgs args)
         {
             _internalText = args?.Value as string;
-            await OnInternalInputChanged.InvokeAsync(args);
-            await Validate();
+            await OnInternalInputChanged.InvokeAsync(_internalText);
+            await ValidateAsync();
 
             if (!Immediate)
             {
@@ -317,7 +317,7 @@ namespace MudBlazor.Extensions.Components
         /// </summary>
         protected virtual async Task ClearButtonClickHandlerAsync(MouseEventArgs e)
         {
-            await SetTextAsync(string.Empty, updateValue: true);
+            await SetTextAndUpdateValueAsync(string.Empty, updateValue: true);
             await ElementReference.FocusAsync();
             await OnClearButtonClick.InvokeAsync(e);
         }
@@ -330,7 +330,7 @@ namespace MudBlazor.Extensions.Components
             await base.SetParametersAsync(parameters);
             //if (!_isFocused || _forceTextUpdate)
             //    _internalText = Text;
-            if (RuntimeLocation.IsServerSide && TextUpdateSuppression)
+            if (RuntimeLocation.IsServerSide /*&& TextUpdateSuppression*/)
             {
                 // Text update suppression, only in BSS (not in WASM).
                 // This is a fix for #1012

@@ -36,7 +36,7 @@
                          @onmouseout="@(args =>HandleOnChipMouseOut(args, value))"
                          Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
                          Ripple="false"
-                         Text="@Converter.Set(value)"
+                         Text="@ConvertSet(value)"
                          Value="@value"
                          Variant="@ChipVariant"
                          Size="@ChipSize"

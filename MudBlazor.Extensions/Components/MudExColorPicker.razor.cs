@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Components
@@ -53,11 +54,7 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Converter for string and MudColor
         /// </summary>
-        public MudBlazor.Converter<MudColor, string> ColorConverter { get; set; } = new()
-        {
-            GetFunc = s => new MudColor(s),
-            SetFunc = c => c.ToString(MudColorOutputFormats.Hex)
-        };
+        public IReversibleConverter<MudColor?, string?> ColorConverter { get; set; } = StringMudColorConverter.Instance;
 
         /// <inheritdoc />
         protected override void OnInitialized()

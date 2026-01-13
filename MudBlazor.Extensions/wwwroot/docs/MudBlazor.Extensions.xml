@@ -504,9 +504,6 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.DisposeAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.#ctor(MudBlazor.Converter{`1,`2})">
-            <inheritdoc />
-        </member>
         <member name="T:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1">
             <summary>
             Base class for components that require a JS module to be imported and a JS object to be created.
@@ -1196,11 +1193,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.ErrorStateChanged">
             <summary>
             Callback when the error state changes
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.ErrorChanged">
-            <summary>
-            Callback when the error changes
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.ValidationErrorsChanged">
@@ -6489,6 +6481,16 @@
             Gets or sets the aria-labelledby attribute to improve accessibility.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.CalculateMaxStart(`0)">
+            <summary>
+            Calculates the maximum allowed start position given the current end position and MinLength constraint.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.CalculateMinEnd(`0)">
+            <summary>
+            Calculates the minimum allowed end position given the current start position and MinLength constraint.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.GetJsArguments">
             <summary>
             Gets the JavaScript interop arguments required by the component.
@@ -8061,12 +8063,6 @@
             <summary>
             On change event on the input element
             </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.SetValueAsync(`0,System.Boolean,System.Boolean)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.SetTextAsync(System.String,System.Boolean)">
-            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.ThemePreset`1">
             <summary>

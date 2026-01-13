@@ -126,7 +126,7 @@ namespace MudBlazor.Extensions
         /// <param name="options">The options.</param>
         /// <returns>The interface <see cref="IMudExDialogReference{T}"/>.</returns>
         public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
-            => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? DefaultOptions()).AsMudExDialogReference<TDialog>();
+            => dialogService.Show<TDialog>(title, dialogParameters, options ?? DefaultOptions()).AsMudExDialogReference<TDialog>();
 
         /// <summary>
         /// Shows the dialog and injects dependencies immediately.
@@ -138,7 +138,7 @@ namespace MudBlazor.Extensions
         /// <param name="options">The options.</param>
         /// <returns>The interface <see cref="IMudExDialogReference{T}"/>.</returns>
         public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
-            => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? DefaultOptions()).AsMudExDialogReference<TDialog>();
+            => dialogService.Show<TDialog>(title, dialogParameters, options ?? DefaultOptions()).AsMudExDialogReference<TDialog>();
 
         /// <summary>
         /// Shows the dialog and injects dependencies asynchronously.

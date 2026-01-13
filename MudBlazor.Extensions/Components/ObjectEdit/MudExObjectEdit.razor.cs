@@ -968,7 +968,7 @@ public partial class MudExObjectEdit<T>
         };
         return JsRuntime != null
             ? await DialogService.ShowConfirmationDialogAsync(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions)
-            : (await DialogService.ShowMessageBox(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions) ?? false);
+            : (await DialogService.ShowMessageBoxAsync(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions) ?? false);
     }
 
     private string GetStyle()
