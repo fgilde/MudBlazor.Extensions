@@ -220,7 +220,7 @@ public partial class MudExMessageDialog
     /// <summary>
     /// Cancels the dialog
     /// </summary>
-    void Cancel() => MudDialog.CloseAnimatedIf(JsRuntime);
+    void Cancel() => _ = MudDialog.CloseAnimatedIfAsync(JsRuntime);
 
     public override ValueTask DisposeAsync()
     {
