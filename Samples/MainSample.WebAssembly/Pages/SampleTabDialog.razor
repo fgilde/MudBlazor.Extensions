@@ -32,6 +32,6 @@
 @code {
     [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
     
-    void Submit() => _ = MudDialog.CloseAnimatedIfAsync(DialogResult.Ok(true));
-    void Cancel() => _ = MudDialog.CancelAnimatedIfAsync();
+    async Task Submit() => await MudDialog.CloseAnimatedIfAsync(DialogResult.Ok(true));
+    async Task Cancel() => await MudDialog.CancelAnimatedIfAsync();
 }
