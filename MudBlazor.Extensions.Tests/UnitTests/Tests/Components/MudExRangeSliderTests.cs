@@ -40,7 +40,7 @@ public class MudExRangeSliderTests
         var minLength = new RangeLength<int>(minSpan);
         var initialValue = new MudExRange<int>(initialStart, initialEnd);
 
-        var cut = context.RenderComponent<MudExRangeSlider<int>>(parameters => parameters
+        var cut = context.Render<MudExRangeSlider<int>>(parameters => parameters
             .Add(p => p.SizeRange, sizeRange)
             .Add(p => p.StepLength, stepLength)
             .Add(p => p.MinLength, minLength)
@@ -93,7 +93,7 @@ public class MudExRangeSliderTests
         var minLength = new RangeLength<int>(minSpan);
         var initialValue = new MudExRange<int>(initialStart, initialEnd);
 
-        var cut = context.RenderComponent<MudExRangeSlider<int>>(parameters => parameters
+        var cut = context.Render<MudExRangeSlider<int>>(parameters => parameters
             .Add(p => p.SizeRange, sizeRange)
             .Add(p => p.StepLength, stepLength)
             .Add(p => p.MinLength, minLength)
@@ -142,7 +142,7 @@ public class MudExRangeSliderTests
         var stepLength = new RangeLength<int>(stepSize);
         var initialValue = new MudExRange<int>(initialStart, initialEnd);
 
-        var cut = context.RenderComponent<MudExRangeSlider<int>>(parameters => parameters
+        var cut = context.Render<MudExRangeSlider<int>>(parameters => parameters
             .Add(p => p.SizeRange, sizeRange)
             .Add(p => p.StepLength, stepLength)
             .Add(p => p.Value, initialValue)

@@ -42,7 +42,7 @@
 			}
 			else
 			{
-				var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
+				var defaultDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
 				await LayoutService.ApplyUserPreferences(defaultDarkMode);
 			}
         }

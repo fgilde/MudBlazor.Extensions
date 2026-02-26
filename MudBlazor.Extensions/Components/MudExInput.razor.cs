@@ -126,7 +126,7 @@ namespace MudBlazor.Extensions.Components
             {
                 JsRuntime.InvokeVoidAsync("auto_size", ElementReference);
             }
-            return SetTextAsync(args?.Value as string);
+            return SetTextAndUpdateValueAsync(args?.Value as string, true);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace MudBlazor.Extensions.Components
 
             if (!Immediate)
             {
-                await SetTextAsync(args?.Value as string);
+                await SetTextAndUpdateValueAsync(args?.Value as string, true);
                 if (AutoSize)
                 {
                     await JsRuntime.InvokeVoidAsync("auto_size", ElementReference);
@@ -352,7 +352,7 @@ namespace MudBlazor.Extensions.Components
         public Task SetText(string text)
         {
             _internalText = text;
-            return SetTextAsync(text);
+            return SetTextAndUpdateValueAsync(text, true);
         }
 
 

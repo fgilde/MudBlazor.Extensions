@@ -721,7 +721,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
                 if (NeedsValueUpdateForNonMultiSelection()) // No binding so we need to update the value manually
                 {
-                    _ = SetValueAsync(_selectedValues.LastOrDefault());
+                    _ = SetValueAndUpdateTextAsync(_selectedValues.LastOrDefault(), true, false);
                     //Value = _selectedValues.LastOrDefault();
                 }
 
@@ -914,7 +914,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         else if (MultiSelection && SelectedValues != null)
         {
             // TODO: Check this line again
-            _ = SetValueAsync(SelectedValues.FirstOrDefault());
+            _ = SetValueAndUpdateTextAsync(SelectedValues.FirstOrDefault(), true, false);
         }
     }
 
@@ -1222,9 +1222,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// Force the component to update.
     /// </summary>
     /// <returns></returns>
-    public override async Task ForceUpdate()
+    public async Task ForceUpdate()
     {
-        await base.ForceUpdate();
+        ForceRender(forceTextUpdate: true);
         if (!MultiSelection)
         {
             SelectedValues = new HashSet<T>(_comparer) { Value };
