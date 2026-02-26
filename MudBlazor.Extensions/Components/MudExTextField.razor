@@ -34,7 +34,7 @@
                                 Style="@Style"
                                 Variant="@Variant"
                                 Value="@Text"
-                                ValueChanged="(s) => SetTextAsync(s)"
+                                ValueChanged="(s) => SetTextAndUpdateValueAsync(s, true)"
                                 Placeholder="@Placeholder"
                                 Disabled=@Disabled
                                 Underline="@Underline"

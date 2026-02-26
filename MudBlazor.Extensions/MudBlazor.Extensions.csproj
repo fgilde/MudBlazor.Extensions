@@ -69,12 +69,12 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="9.0.0-preview.1" />
+    <PackageReference Include="MudBlazor" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.1" />
     <PackageReference Include="ExcelDataReader" Version="3.8.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.8.0" />
     <PackageReference Include="AuralizeBlazor" Version="3.0.4" />
-    <PackageReference Include="MudBlazor.Markdown" Version="8.11.0" />
+    <PackageReference Include="MudBlazor.Markdown" Version="9.0.0" />
     <PackageReference Include="Nextended.Blazor" Version="10.0.4" />
     <PackageReference Include="Nextended.Core" Version="10.0.4" />
     <PackageReference Include="BlazorJS" Version="2.2.0" />

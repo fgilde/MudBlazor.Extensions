@@ -321,6 +321,9 @@ public partial class MudExPickerBase<T>
         RaiseChanged();
     }
 
+    /// <inheritdoc />
+    protected override IConverter<T, string> GetDefaultConverter() => new DefaultConverter<T>();
+
     private string GetPopOverStyle()
     {
         return MudExStyleBuilder.Default

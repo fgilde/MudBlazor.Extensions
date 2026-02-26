@@ -176,7 +176,7 @@ public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
     }
 
 
-    private async Task OnMaskedValueChanged(string s) => await SetTextAsync(s);
+    private async Task OnMaskedValueChanged(string s) => await SetTextAndUpdateValueAsync(s, true);
 
     private string DataVisualiserStyleStr()
     {
