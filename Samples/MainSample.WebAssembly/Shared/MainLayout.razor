@@ -31,7 +31,7 @@
 
         <MudSpacer />
         
-        <MudExIconButton ToolTip="@L["Try MudEx online"]" Target="_blank" Link="@AppConstants.Urls.GetTryOnline(IsDark)" Icon="@Icons.Material.Rounded.PlayArrow" Color="@(IsDark? Color.Success: Color.Inherit)" />
+        <MudExIconButton ToolTip="@L["Try MudEx online"]" Target="_blank" Href="@AppConstants.Urls.GetTryOnline(IsDark)" Icon="@Icons.Material.Rounded.PlayArrow" Color="@(IsDark? Color.Success: Color.Inherit)" />
 
         <MudExDivider Size="2" Vertical="true" />
         
@@ -52,7 +52,7 @@
                 <MudExDivider Color="Color.Primary"/>
             }
 
-            <MudMenuItem Target="_blank" Href="@AppConstants.Urls.GetTryOnline(IsDark)" Icon="@Icons.Material.Rounded.PlayArrow" Color="@(IsDark ? Color.Success : Color.Inherit)">@L["Try MudEx online"]</MudMenuItem>
+            <MudMenuItem Target="_blank" Href="@AppConstants.Urls.GetTryOnline(IsDark)" Icon="@Icons.Material.Rounded.PlayArrow">@L["Try MudEx online"]</MudMenuItem>
             <MudExDivider Color="Color.Primary"/>
             <MudMenuItem Icon="@Icons.Custom.Brands.MudBlazor" Href="https://www.mudblazor.com" Target="_blank">@L["Official MudBlazor website"]</MudMenuItem>
             <MudMenuItem Icon="@Icons.Custom.Brands.Microsoft" Href="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank">Nuget</MudMenuItem>

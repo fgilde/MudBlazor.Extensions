@@ -23,7 +23,7 @@
             <MudCard>
                 @if (CodeFiles is { Length: > 1 })
                 {
-                    <MudSelect Label="File" @bind-Value="@SelectedCodeFile" Variant="Variant.Outlined" Color="Color.Primary">
+                    <MudSelect Label="File" @bind-Value="@SelectedCodeFile" Variant="Variant.Outlined">
                         @foreach (var file in CodeFiles)
                         {
                             <MudSelectItem Value="@file">@System.IO.Path.GetFileName(file)</MudSelectItem>
@@ -43,7 +43,7 @@
                 <MudCard>
                 @if (_docFiles.Count > 1)
                     {
-                        <MudSelect Label="File" @bind-Value="@_selectedDoc" Variant="Variant.Outlined" Color="Color.Primary">
+                        <MudSelect Label="File" @bind-Value="@_selectedDoc" Variant="Variant.Outlined">
                         @foreach (var doc in _docFiles)
                             {
                                 <MudSelectItem Value="@doc.Value">@Path.GetFileNameWithoutExtension(doc.Key)</MudSelectItem>
@@ -63,7 +63,7 @@
             <MudCard>
                 @if (DemoAttribute.RelatedComponents.Count() > 1)
                 {
-                    <MudSelect Label="Type" @bind-Value="@_selectedApiType" Variant="Variant.Outlined" Color="Color.Primary">
+                    <MudSelect Label="Type" @bind-Value="@_selectedApiType" Variant="Variant.Outlined">
                         @foreach (var type in DemoAttribute?.RelatedComponents ?? Array.Empty<Type>())
                         {
                             <MudSelectItem Value="@type">@ApiMemberInfo.GetGenericFriendlyTypeName(type)</MudSelectItem>

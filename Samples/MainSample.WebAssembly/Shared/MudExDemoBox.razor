@@ -109,7 +109,7 @@
             <MudDivider />
 
             
-            <MudGrid Class="mudex-demo-body px-4 py-4" GutterSize="3">
+            <MudGrid Class="mudex-demo-body px-4 py-4" Spacing="3">
                 <MudItem xs="12" md="@((HasFeatures ? 8 : 12))">
                     <MudPaper Class="mudex-demo-surface pa-4" Elevation="0">
                         @if (DemoContent is not null)
@@ -176,7 +176,7 @@
                     <MudPaper Class="mudex-demo-code" Elevation="1">
                         @if (_additionalCode?.Any() == true)
                         {
-                            <MudTabs TabPanelClass="no-text-transform" ApplyEffectsToContainer="true">
+                            <MudTabs ApplyEffectsToContainer="true">
                                 @if (!string.IsNullOrWhiteSpace(Code))
                                 {
                                     <MudTabPanel Text="Main">

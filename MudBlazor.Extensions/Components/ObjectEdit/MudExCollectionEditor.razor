@@ -94,7 +94,7 @@
 
             @if (ShowClearButton && AllowRemove && Items?.Any() == true && !ReadOnly)
             {
-                <MudIconButton Title="@TryLocalize(TextRemoveAll)" OnClick="@RemoveAll" Style="float: right; margin-right: 15px;" Icon="@RemoveAllIcon" Color="Color.Primary" Size="Size.Small"/>
+                <MudIconButton title="@TryLocalize(TextRemoveAll)" OnClick="@RemoveAll" Style="float: right; margin-right: 15px;" Icon="@RemoveAllIcon" Color="Color.Primary" Size="Size.Small"/>
             }
         </MudToolBar>
     }

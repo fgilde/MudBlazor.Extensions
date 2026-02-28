@@ -7986,6 +7986,11 @@
             MudTextField with additional features
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTextField`1.ChildContent">
+            <summary>
+            Optional child content (e.g. for MudExAdditionalAdornment).
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTextField`1.Classname">
             <summary>
             Classname for the input element

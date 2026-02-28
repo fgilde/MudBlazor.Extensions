@@ -12,6 +12,11 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
 {
     /// <summary>
+    /// Optional child content (e.g. for MudExAdditionalAdornment).
+    /// </summary>
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
     /// Classname for the input element
     /// </summary>
     protected string Classname =>

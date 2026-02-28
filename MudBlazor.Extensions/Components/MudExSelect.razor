@@ -22,7 +22,6 @@
                                       AdornmentColor="@AdornmentColor"
                                       Adornment="@Adornment"
                                       Color="@Color"
-                                      TextUpdateSuppression="false"
                                       Value="@(Strict && !IsValueInList ? null : Text)" Underline="@Underline"
                                       Disabled="@Disabled" ReadOnly="true" Error="@Error" ErrorId="@ErrorId"
                                       Clearable="@(Clearable && !ReadOnly)" OnClearButtonClick="(async (e) => await SelectClearButtonClickHandlerAsync(e))"
