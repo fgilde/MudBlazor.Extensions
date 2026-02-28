@@ -42,3 +42,4 @@ MudBlazor.Extensions/wwwroot/**/*.min.js
 # Generated files
 MudBlazor.Extensions/version.generated.props
 MudBlazor.Extensions/*Undefined*/
+/.claude
