@@ -71,7 +71,8 @@
                                         <MudButton Variant="Variant.Text"
                                                    Color="Color.Default"
                                                    Size="Size.Small"
-                                                   StartIcon="@Icons.Material.Filled.Settings">
+                                                   StartIcon="@Icons.Material.Filled.Settings"
+                                                   OnClick="@context.ToggleAsync">
                                             @TryLocalize(EditInstanceText)
                                         </MudButton>
                                     </ActivatorContent>
