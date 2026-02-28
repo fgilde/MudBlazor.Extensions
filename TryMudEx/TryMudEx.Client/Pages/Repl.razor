@@ -100,7 +100,7 @@
         {
             <MudMenu Style="align-self: end;" MaxHeight="400" Dense="true">
                 <ActivatorContent>
-                    <MudIconButton Style="transform: scale(.8);" Class="rounded-0 py-0 px-2" Icon="@Icons.Material.Filled.MoreHoriz"></MudIconButton>
+                    <MudIconButton Style="transform: scale(.8);" Class="rounded-0 py-0 px-2" Icon="@Icons.Material.Filled.MoreHoriz" OnClick="@context.ToggleAsync"></MudIconButton>
                 </ActivatorContent>
                 <ChildContent>
                     @foreach (var package in _installedPackages)
