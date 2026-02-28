@@ -7,10 +7,10 @@
 
   <ItemGroup>    
     <PackageReference Include="FluentValidation" Version="12.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.36" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-    <PackageReference Include="System.Net.Http.Json" Version="10.0.1" />
+    <PackageReference Include="System.Net.Http.Json" Version="10.0.3" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
     <!-- WICHTIG: aktueller Roslyn-Compiler für neue C#-Features -->
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
