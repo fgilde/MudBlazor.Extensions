@@ -32,11 +32,13 @@ public class MudExDefaultConverter<T, T2>(Func<T, T2> convertFn, Func<T2, T> con
 {
     public T2 Convert(T input)
     {
+        if (input is null) return default;
         return convertFn(input);
     }
 
     public T ConvertBack(T2 input)
     {
+        if (input is null || convertBackFn is null) return default;
         return convertBackFn(input);
     }
 }

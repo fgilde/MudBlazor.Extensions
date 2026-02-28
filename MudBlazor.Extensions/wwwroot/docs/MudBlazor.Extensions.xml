@@ -495,6 +495,9 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.OnAfterRender(System.Boolean)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.GetDefaultConverter">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.Refresh">
             <summary>
             Refreshes this component and forces render
@@ -764,6 +767,9 @@
             <summary>
             Calls the <see cref="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.RaiseChanged"/> method if picker is closed or <see cref="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.DelayValueChangeToPickerClose"/> is false.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.GetDefaultConverter">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.CaptureInfoComponent">
             <summary>
@@ -16054,6 +16060,9 @@
             Is false control isn't rendered at all
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExValidationWrapper`1.GetDefaultConverter">
+            <inheritdoc />
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExValidationWrapper`1.Value">
             <summary>
             The value of the ValidationWrapper component. This will be passed to the set validation function.
@@ -19445,49 +19454,49 @@
             <param name="optionsEx">The options.</param>
             <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,System.Action{``0},System.Action{MudBlazor.DialogOptions})">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowAsync``1(MudBlazor.IDialogService,System.String,System.Action{``0},System.Action{MudBlazor.DialogOptions})">
             <summary>
-            Shows the dialog and injects dependencies immediately.
+            Shows the dialog asynchronously.
             </summary>
             <typeparam name="TDialog">The dialog type.</typeparam>
             <param name="dialogService">The dialog service.</param>
             <param name="title">The title.</param>
             <param name="dialogParameters">The dialog parameters.</param>
             <param name="options">The options.</param>
-            <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+            <returns>A <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,``0,System.Action{MudBlazor.DialogOptions})">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowAsync``1(MudBlazor.IDialogService,System.String,``0,System.Action{MudBlazor.DialogOptions})">
             <summary>
-            Shows the dialog and injects dependencies immediately.
+            Shows the dialog asynchronously.
             </summary>
             <typeparam name="TDialog">The dialog type.</typeparam>
             <param name="dialogService">The dialog service.</param>
             <param name="title">The title.</param>
             <param name="dialogParameters">The dialog parameters.</param>
             <param name="options">The options.</param>
-            <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+            <returns>A <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,``0,MudBlazor.DialogOptions)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowAsync``1(MudBlazor.IDialogService,System.String,``0,MudBlazor.DialogOptions)">
             <summary>
-            Shows the dialog and injects dependencies immediately.
+            Shows the dialog asynchronously.
             </summary>
             <typeparam name="TDialog">The dialog type.</typeparam>
             <param name="dialogService">The dialog service.</param>
             <param name="title">The title.</param>
             <param name="dialogParameters">The dialog parameters.</param>
             <param name="options">The options.</param>
-            <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+            <returns>A <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,System.Action{``0},MudBlazor.DialogOptions)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowAsync``1(MudBlazor.IDialogService,System.String,System.Action{``0},MudBlazor.DialogOptions)">
             <summary>
-            Shows the dialog and injects dependencies immediately.
+            Shows the dialog asynchronously.
             </summary>
             <typeparam name="TDialog">The dialog type.</typeparam>
             <param name="dialogService">The dialog service.</param>
             <param name="title">The title.</param>
             <param name="dialogParameters">The dialog parameters.</param>
             <param name="options">The options.</param>
-            <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+            <returns>A <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowExAsync``1(MudBlazor.IDialogService,System.String,MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
