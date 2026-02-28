@@ -17,7 +17,11 @@ class MudExRangeSlider {
         window.addEventListener('pointerup', this._onUp, true);
     }
     _onMove(evt) {
-        this.dotnet.invokeMethodAsync('OnPointerMove', evt.clientX, evt.clientY);
+        if (this._movePending) return;
+        this._movePending = true;
+        this.dotnet.invokeMethodAsync('OnPointerMove', evt.clientX, evt.clientY)
+            .then(() => { this._movePending = false; })
+            .catch(() => { this._movePending = false; });
     }
     _onUp() {
         window.removeEventListener('pointermove', this._onMove, true);

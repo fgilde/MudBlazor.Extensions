@@ -73,7 +73,7 @@ public class ArchiveConverter
     /// </summary>
     public static Stream ConvertToSystemCompressionZip(Stream unknownArchiveStream)
     {
-        using var archive = ArchiveFactory.Open(unknownArchiveStream);
+        using var archive = ArchiveFactory.OpenArchive(unknownArchiveStream);
         return archive.Type == SharpCompress.Common.ArchiveType.Zip ? unknownArchiveStream : ConvertArchiveToZip(archive);
     }
     

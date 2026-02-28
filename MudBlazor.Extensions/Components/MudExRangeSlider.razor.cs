@@ -396,7 +396,8 @@ namespace MudBlazor.Extensions.Components
             var s = Snap(Value.Start);
             var e = Snap(Value.End);
             var snapped = new MudExRange<T>(s, e).Normalize();
-            var bounded = M.EnforceMinMaxLength(snapped, SizeRange, MinLength, MaxLength, Thumb.End);
+            var activeBias = _dragMode == DragMode.StartThumb ? Thumb.Start : Thumb.End;
+            var bounded = M.EnforceMinMaxLength(snapped, SizeRange, MinLength, MaxLength, activeBias);
 
             if (bounded.Start.CompareTo(bounded.End) > 0)
                 bounded = new MudExRange<T>(bounded.End, bounded.Start);
