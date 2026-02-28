@@ -39,9 +39,9 @@ public class MudExIconPickerTest
         context.JSInterop.SetupVoid("mudPopover.initialize", _ => true);
         context.JSInterop.SetupVoid("mudKeyInterceptor.connect", _ => true);
 
-        var cut = context.RenderComponent<MudExIconPicker>();
+        var cut = context.Render<MudExIconPicker>();
 
         cut.Find("button.mud-button-root").Click();
-        Assert.NotEmpty(cut.Find(".mud-icon-root")?.ToMarkup() ?? string.Empty);
+        Assert.NotEmpty(cut.Find(".mud-icon-root")?.OuterHtml ?? string.Empty);
     }
 }

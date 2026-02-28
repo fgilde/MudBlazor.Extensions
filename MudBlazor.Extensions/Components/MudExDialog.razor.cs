@@ -161,18 +161,16 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
         return result;
     }
 
-    public new Task CloseAsync(DialogResult? result = null)
+    public new async Task CloseAsync(DialogResult? result = null)
     {
         if (_reference is null)
         {
             Visible = false;
-            return Task.CompletedTask;
+            return;
         }
                 
-        _reference.CloseAnimatedIf(result);
+        await _reference.CloseAnimatedIfAsync(result);
         _reference = null;
-        
-        return Task.CompletedTask;
     }
 
     private string EnsureInitialClass()

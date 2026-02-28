@@ -74,7 +74,7 @@ public class MudExDialogService : DialogService, IMudExDialogService
             MethodInfo removeMethod =
                 dialogs.FieldType.GetMethod("Remove", BindingFlags.Public | BindingFlags.Instance);
             removeMethod?.Invoke(dialogs.GetValue(provider), new object[] { dialogRef });
-            dialogRef.CloseAnimatedIf();
+            _ = dialogRef.CloseAnimatedIfAsync();
         }
     }
 

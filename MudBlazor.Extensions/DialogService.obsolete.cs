@@ -54,7 +54,25 @@ public static partial class DialogServiceExt
     public static Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogOptionsEx options = null)
         => ShowExAsync(dialogService, type, title, options);
 
+    [Obsolete("Use ShowAsync instead.")]
+    public static Task<IMudExDialogReference<TDialog>> Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, Action<DialogOptions> options)
+        where TDialog : ComponentBase, new()
+        => ShowAsync(dialogService, title, dialogParameters, options);
 
+    [Obsolete("Use ShowAsync instead.")]
+    public static Task<IMudExDialogReference<TDialog>> Show<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, Action<DialogOptions> options)
+        where TDialog : ComponentBase, new()
+        => ShowAsync(dialogService, title, dialogParameters, options);
+
+    [Obsolete("Use ShowAsync instead.")]
+    public static Task<IMudExDialogReference<TDialog>> Show<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptions options = null)
+        where TDialog : ComponentBase, new()
+        => ShowAsync(dialogService, title, dialogParameters, options);
+
+    [Obsolete("Use ShowAsync instead.")]
+    public static Task<IMudExDialogReference<TDialog>> Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptions options = null)
+        where TDialog : ComponentBase, new()
+        => ShowAsync(dialogService, title, dialogParameters, options);
 
     [Obsolete("Use ShowFileDisplayDialogAsync instead.")]
     public static Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, string url, DialogOptionsEx options = null, DialogParameters dialogParameters = null)
