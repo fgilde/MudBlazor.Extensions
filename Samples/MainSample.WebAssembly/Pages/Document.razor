@@ -50,7 +50,7 @@ else
     private RenderFragment RenderTypeApiDoc(Type type, int activePanel, bool forSingleType, string documentationValue)
     {
         //<MudTabs ActivePanelIndex="@activePanel" Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
-        return @<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+        return @<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true">
                        @if (!string.IsNullOrEmpty(documentationValue))
                        {
                            <MudTabPanel Text="Documentation">

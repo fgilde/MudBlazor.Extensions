@@ -229,6 +229,9 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
         });
     }
 
+    /// <inheritdoc />
+    protected override IConverter<TData, U> GetDefaultConverter() => new DefaultConverter<TData>() as IConverter<TData, U>;
+
     /// <summary>
     /// Refreshes this component and forces render
     /// </summary>
@@ -251,8 +254,4 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
         else
             _renderFinishTimer?.Dispose();
     }
-
-    /// <inheritdoc />
-    protected MudExBaseFormComponent(Converter<TData, U> converter = null) : base(converter ?? new Converter<TData, U>())
-    {}
 }

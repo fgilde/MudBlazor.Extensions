@@ -135,7 +135,8 @@ public class ObjectEditPropertyMeta: IMudExStyleAppearance, IMudExClassAppearanc
     public void UpdateConditionalSettings<TModel>(TModel model)
     {
         Settings?.UpdateConditionalSettings(model);
-        RenderData?.UpdateConditionalSettings(model);
+        if (_renderData != null)
+            _renderData.UpdateConditionalSettings(model);
     }
 
     /// <summary>

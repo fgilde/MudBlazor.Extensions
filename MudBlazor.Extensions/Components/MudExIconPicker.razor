@@ -39,8 +39,8 @@
                             @foreach (var icon in context)
                             {
                                 <button style="@MudExStyleBuilder.Default.WithOutline(2, BorderStyle.Solid, Color.Primary, icon.Value == Value)" class="mud-ex-icon-picker-icon-pane" @onclick="@(() => Select(icon.Value))">
-                                    <MudIcon Icon="@icon.Value" Size="Size.Large" Title="@icon.Key"/>
-                                    <MudText Typo="Typo.caption" Title="@icon.Key">
+                                    <MudIcon Icon="@icon.Value" Size="Size.Large" title="@icon.Key"/>
+                                    <MudText Typo="Typo.caption" title="@icon.Key">
                                         @icon.Key
                                     </MudText>
                                 </button>

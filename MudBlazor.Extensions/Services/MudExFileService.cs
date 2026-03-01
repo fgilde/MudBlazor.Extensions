@@ -244,7 +244,7 @@ public class MudExFileService : IMudExFileService
     public async Task<(HashSet<MudExArchiveStructure> Structure, List<IArchivedBrowserFile> List)> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
     {
         var contentStream = await CopyStreamAsync(stream);
-        var archive = ArchiveFactory.Open(contentStream);
+        var archive = ArchiveFactory.OpenArchive(contentStream);
         if (archive.Entries.Count() == 1 && archive.Entries.First().CompressionType == SharpCompress.Common.CompressionType.GZip)
         {
             using var memoryStream = new MemoryStream();

@@ -221,6 +221,7 @@ public partial class MudExObjectEditForm<T>
 
     private FluentValidationValidator _fluentValidationValidator;
     private DataAnnotationsValidator _dataAnnotationValidator;
+    private CancellationTokenSource _validationCts;
 
     /// <summary>
     /// Returns a list of validation results produced by DataAnnotation validation
@@ -320,7 +321,19 @@ public partial class MudExObjectEditForm<T>
     protected override async Task OnPropertyChange(ObjectEditPropertyMeta property)
     {
         await base.OnPropertyChange(property);
-        Validate();
+        DebouncedValidate();
+    }
+
+    private void DebouncedValidate(int delayMs = 100)
+    {
+        _validationCts?.Cancel();
+        _validationCts = new CancellationTokenSource();
+        var token = _validationCts.Token;
+        _ = Task.Delay(delayMs, token).ContinueWith(_ =>
+        {
+            if (!token.IsCancellationRequested)
+                InvokeAsync(Validate);
+        }, token, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Current);
     }
 
     /// <summary>

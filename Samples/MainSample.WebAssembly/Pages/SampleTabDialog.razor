@@ -9,8 +9,8 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTabs Elevation="1" Rounded="true" PanelClass="pa-6">
-            <MudTabPanel Height="200" Text="Item One" ToolTip="ToolTip One">
+        <MudTabs Elevation="1" Rounded="true">
+            <MudTabPanel Text="Item One" ToolTip="ToolTip One">
                 <div style="height: 100px">
                     <MudText>@L["Item One"]</MudText>
                 </div>
@@ -32,6 +32,6 @@
 @code {
     [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
     
-    void Submit() => MudDialog.CloseAnimatedIf(DialogResult.Ok(true));
-    void Cancel() => MudDialog.CancelAnimatedIf();
+    async Task Submit() => await MudDialog.CloseAnimatedIfAsync(DialogResult.Ok(true));
+    async Task Cancel() => await MudDialog.CancelAnimatedIfAsync();
 }

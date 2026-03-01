@@ -39,7 +39,7 @@
                            {
                                <span>@(Localizer != null ? Localizer.TryLocalize(reset.ResetText) : reset.ResetText)</span>
                            }
-                           <MudIconButton OnClick="@(ResetAsync)" Title="@(string.Format(Localizer != null ? Localizer.TryLocalize(reset.ResetText) : reset.ResetText, PropertyMeta.Settings.LabelFor(Localizer)))" Icon="@reset.ResetIcon" Size="Size.Small"></MudIconButton>
+                           <MudIconButton OnClick="@(ResetAsync)" title="@(string.Format(Localizer != null ? Localizer.TryLocalize(reset.ResetText) : reset.ResetText, PropertyMeta.Settings.LabelFor(Localizer)))" Icon="@reset.ResetIcon" Size="Size.Small"></MudIconButton>
                        </div>
                 </div>;
     }

@@ -16,7 +16,7 @@ namespace MudBlazor.Extensions.Components
         /// Classname for the component.
         /// </summary>
         protected string Classname => MudExCss.GetClassname(this,
-            () => HasNativeHtmlPlaceholder() || ForceShrink || !string.IsNullOrEmpty(Text) || AdornmentStart != null || !string.IsNullOrWhiteSpace(Placeholder) || !string.IsNullOrEmpty(Converter.Set(Value)));
+            () => HasNativeHtmlPlaceholder() || ForceShrink || !string.IsNullOrEmpty(Text) || AdornmentStart != null || !string.IsNullOrWhiteSpace(Placeholder) || !string.IsNullOrEmpty(ConvertSet(Value)));
         
         /// <summary>
         /// Classname for the input element.
@@ -126,7 +126,7 @@ namespace MudBlazor.Extensions.Components
             {
                 JsRuntime.InvokeVoidAsync("auto_size", ElementReference);
             }
-            return SetTextAsync(args?.Value as string);
+            return SetTextAndUpdateValueAsync(args?.Value as string, true);
         }
 
         /// <summary>
@@ -135,12 +135,12 @@ namespace MudBlazor.Extensions.Components
         protected async Task OnChangeHandler(ChangeEventArgs args)
         {
             _internalText = args?.Value as string;
-            await OnInternalInputChanged.InvokeAsync(args);
-            await Validate();
+            await OnInternalInputChanged.InvokeAsync(_internalText);
+            await ValidateAsync();
 
             if (!Immediate)
             {
-                await SetTextAsync(args?.Value as string);
+                await SetTextAndUpdateValueAsync(args?.Value as string, true);
                 if (AutoSize)
                 {
                     await JsRuntime.InvokeVoidAsync("auto_size", ElementReference);
@@ -287,29 +287,12 @@ namespace MudBlazor.Extensions.Components
 
         private Size GetButtonSize() => Margin == Margin.Dense ? Size.Small : Size.Medium;
         
-        private void UpdateClearable(object value)
-        {
-            var showClearable = HasValue((T)value);
-            if (Clearable != showClearable)
-                Clearable = showClearable;
-        }
-
         private bool GetClearable() => Clearable && ((Value is string stringValue && !string.IsNullOrWhiteSpace(stringValue)) || (Value is not string && Value is not null));
-
-        /// <inheritdoc />
-        protected override async Task UpdateTextPropertyAsync(bool updateValue)
-        {
-            await base.UpdateTextPropertyAsync(updateValue);
-            if (Clearable)
-                UpdateClearable(Text);
-        }
 
         /// <inheritdoc />
         protected override async Task UpdateValuePropertyAsync(bool updateText)
         {
             await base.UpdateValuePropertyAsync(updateText);
-            if (Clearable)
-                UpdateClearable(Value);
         }
 
         /// <summary>
@@ -317,7 +300,7 @@ namespace MudBlazor.Extensions.Components
         /// </summary>
         protected virtual async Task ClearButtonClickHandlerAsync(MouseEventArgs e)
         {
-            await SetTextAsync(string.Empty, updateValue: true);
+            await SetTextAndUpdateValueAsync(string.Empty, updateValue: true);
             await ElementReference.FocusAsync();
             await OnClearButtonClick.InvokeAsync(e);
         }
@@ -330,7 +313,7 @@ namespace MudBlazor.Extensions.Components
             await base.SetParametersAsync(parameters);
             //if (!_isFocused || _forceTextUpdate)
             //    _internalText = Text;
-            if (RuntimeLocation.IsServerSide && TextUpdateSuppression)
+            if (RuntimeLocation.IsServerSide /*&& TextUpdateSuppression*/)
             {
                 // Text update suppression, only in BSS (not in WASM).
                 // This is a fix for #1012
@@ -352,7 +335,7 @@ namespace MudBlazor.Extensions.Components
         public Task SetText(string text)
         {
             _internalText = text;
-            return SetTextAsync(text);
+            return SetTextAndUpdateValueAsync(text, true);
         }
 
 

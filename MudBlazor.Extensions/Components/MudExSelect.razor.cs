@@ -40,7 +40,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// </summary>
     public virtual string ItemNameRender(T item)
     {
-        var res = ToStringFunc != null && item != null ? ToStringFunc(item) : Converter.Set(item);
+        var res = ToStringFunc != null && item != null ? ToStringFunc(item) : ConvertSet(item);
         if (!string.IsNullOrWhiteSpace(res) && !string.IsNullOrWhiteSpace(LocalizerPattern))
         {
             return LocalizerToUse != null ? LocalizerToUse[string.Format(LocalizerPattern, item)] : string.Format(LocalizerPattern, res);
@@ -685,10 +685,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
             if (_toStringFunc == value)
                 return;
             _toStringFunc = value;
-            Converter = new Converter<T>
-            {
-                SetFunc = _toStringFunc ?? (x => x?.ToString()),
-            };
+            Converter = new MudExDefaultConverter<T>(_toStringFunc ?? (x => x?.ToString()), null);
         }
     }
 
@@ -724,7 +721,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
                 if (NeedsValueUpdateForNonMultiSelection()) // No binding so we need to update the value manually
                 {
-                    _ = SetValueAsync(_selectedValues.LastOrDefault());
+                    _ = SetValueAndUpdateTextAsync(_selectedValues.LastOrDefault(), true, false);
                     //Value = _selectedValues.LastOrDefault();
                 }
 
@@ -871,7 +868,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
                     multiSelectionTextFunc: MultiSelectionTextFunc, updateValue: updateValue);
             }
 
-            return SetTextAsync(string.Join(Delimiter, textList), updateValue: updateValue);
+            return SetTextAndUpdateValueAsync(string.Join(Delimiter, textList), updateValue: updateValue);
         }
 
 
@@ -882,7 +879,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
             _initialSet = true;
             _selectedValues = new HashSet<T>(_comparer) { Value };
         }
-        return resultItem == null ? SetTextAsync(ItemNameRender(Value), false) : SetTextAsync((!string.IsNullOrEmpty(resultItem.Text) && resultItem.Value is null ? resultItem.Text : ItemNameRender(resultItem.Value)), updateValue: updateValue);
+        return resultItem == null ? SetTextAndUpdateValueAsync(ItemNameRender(Value), false) : SetTextAndUpdateValueAsync((!string.IsNullOrEmpty(resultItem.Text) && resultItem.Value is null ? resultItem.Text : ItemNameRender(resultItem.Value)), updateValue: updateValue);
     }
     
     bool _initialSet = false;
@@ -917,7 +914,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         else if (MultiSelection && SelectedValues != null)
         {
             // TODO: Check this line again
-            _ = SetValueAsync(SelectedValues.FirstOrDefault());
+            _ = SetValueAndUpdateTextAsync(SelectedValues.FirstOrDefault(), true, false);
         }
     }
 
@@ -1207,8 +1204,8 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
             // CloseMenu(true) doesn't close popover in BSS
             await CloseMenu();
 
-            await SetValueAsync(value, force: force);
-
+            await SetValueAndUpdateTextAsync(value, force: force);
+            
             _ = _elementReference.SetText(Text);
             //_selectedValues.Clear();
             //_selectedValues.Add(value);
@@ -1225,9 +1222,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// Force the component to update.
     /// </summary>
     /// <returns></returns>
-    public override async Task ForceUpdate()
+    public async Task ForceUpdate()
     {
-        await base.ForceUpdate();
+        ForceRender(forceTextUpdate: true);
         if (!MultiSelection)
         {
             SelectedValues = new HashSet<T>(_comparer) { Value };
@@ -1310,8 +1307,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// </summary>
     protected async ValueTask SelectClearButtonClickHandlerAsync(MouseEventArgs e)
     {
-        await SetValueAsync(default, false);
-        await SetTextAsync(default, false);
+        await SetValueAndUpdateTextAsync(default, false, false);
         _selectedValues.Clear();
         SelectedListItem = null;
         SelectedListItems = null;
@@ -1334,8 +1330,8 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// </summary>
     public async Task Clear()
     {
-        await SetValueAsync(default, false);
-        await SetTextAsync(default, false);
+        await SetValueAndUpdateTextAsync(default, false, false);
+
         _selectedValues.Clear();
         await BeginValidateAsync();
         StateHasChanged();

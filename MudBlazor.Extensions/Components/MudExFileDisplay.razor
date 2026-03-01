@@ -111,11 +111,11 @@
                 </div>
                 @foreach (var c in _possibleRenderControls.Where(c => c.GetType() != _componentForFile.ControlType))
                 {
-                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(c))" IconSize="Size.Small" Icon="@Icons.Material.Filled.Extension">@($"{TryLocalize("Render with {0}", c.Name ?? c.GetType().Name)}")</MudMenuItem>
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(c))" Icon="@Icons.Material.Filled.Extension">@($"{TryLocalize("Render with {0}", c.Name ?? c.GetType().Name)}")</MudMenuItem>
                 }
                 @if (!_isNativeRendered)
                 {
-                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(null))" IconSize="Size.Small" Icon="@Icons.Material.Filled.ExtensionOff">@($"{TryLocalize("Render with native control")}")</MudMenuItem>
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(null))" Icon="@Icons.Material.Filled.ExtensionOff">@($"{TryLocalize("Render with native control")}")</MudMenuItem>
                 }
                 @if (AllowCopyUrl)
                 {

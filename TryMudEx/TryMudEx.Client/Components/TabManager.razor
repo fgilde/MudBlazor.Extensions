@@ -42,7 +42,7 @@
                     {
                         <MudMenu Dense="true">
                             <ActivatorContent>
-                                <MudIconButton Icon="@Icons.Material.Filled.ArrowDropDown" Class="rounded-0 py-1 px-2" />
+                                <MudIconButton Icon="@Icons.Material.Filled.ArrowDropDown" Class="rounded-0 py-1 px-2" OnClick="@context.ToggleAsync" />
                             </ActivatorContent>
                             <ChildContent>
                                 @foreach (var file in CodeFileTemplates.All().Where(f => !Tabs.Contains(f.Path)))

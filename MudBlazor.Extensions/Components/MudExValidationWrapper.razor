@@ -8,6 +8,9 @@
 </MudInputControl>
 
 @code {
+    /// <inheritdoc />
+    protected override IConverter<T, string> GetDefaultConverter() => new DefaultConverter<T>();
+
     /// <summary>
     /// The value of the ValidationWrapper component. This will be passed to the set validation function.
     /// </summary>
@@ -22,8 +25,7 @@
                 _value = value;
         }
     }
-    public MudExValidationWrapper() : base(new DefaultConverter<T>()) { }
-
+    
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 }

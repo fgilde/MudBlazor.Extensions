@@ -26,6 +26,14 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExCodeView
 {
+    private static readonly Regex LambdaStartRegex = new(@"^\s*(?:async\s+)?\([^)]*\)\s*=>\s*{?", RegexOptions.Compiled | RegexOptions.Singleline);
+    private static readonly Regex LambdaEndRegex = new(@"\s*}\s*$", RegexOptions.Compiled | RegexOptions.Singleline);
+    private static readonly Regex GenericTypeRegex = new(@"^(?<class>\w+)<(?<type>.+)>$", RegexOptions.Compiled);
+    private static readonly Regex EmptyTagRegex = new(@"<(\w+)([^>]*)>\s*</\1>", RegexOptions.Compiled);
+    private static readonly Regex HtmlTagRegex = new(@"(\<[^/][^>]*\>)|(\<\/[^>]*\>)", RegexOptions.Compiled);
+    private static readonly Regex MultiNewlineRegex = new(@"[\r\n]+", RegexOptions.Compiled);
+    private static readonly Regex BeforeTagRegex = new(@"([^\r\n])<", RegexOptions.Compiled);
+    private static readonly Regex AfterTagRegex = new(@">([^\r\n])", RegexOptions.Compiled);
     private ElementReference _element;
     private string _markdownCode;
     private string _code;
@@ -319,10 +327,8 @@ public partial class MudExCodeView
     /// </summary>
     public static string ReplaceLambdaInFuncString(string caller)
     {
-        //caller = Regex.Replace(caller, @"^\s*\([^)]*\)\s*=>\s*{?", "", RegexOptions.Singleline);
-        //caller = Regex.Replace(caller, @"\s*}\s*$", "", RegexOptions.Singleline);
-        caller = Regex.Replace(caller, @"^\s*(?:async\s+)?\([^)]*\)\s*=>\s*{?", "", RegexOptions.Singleline);
-        caller = Regex.Replace(caller, @"\s*}\s*$", "", RegexOptions.Singleline);
+        caller = LambdaStartRegex.Replace(caller, "");
+        caller = LambdaEndRegex.Replace(caller, "");
 
         return caller;
     }
@@ -332,8 +338,9 @@ public partial class MudExCodeView
     public static string GenerateBlazorMarkupFromInstance<TComponent>(TComponent componentInstance, string comment = "", bool hideDefaults = true)
     {
         // TODO: Move to central place with ApiMemberInfo
-        var componentName = componentInstance?.GetType().FullName?.Replace(componentInstance.GetType().Namespace + ".", string.Empty);
-        var properties = componentInstance?.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+        var componentType = componentInstance?.GetType();
+        var componentName = componentType?.FullName?.Replace(componentType.Namespace + ".", string.Empty);
+        var properties = componentType?.GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => ObjectEditMeta.IsAllowedAsPropertyToEdit(p) && ObjectEditMeta.IsAllowedAsPropertyToEditOnAComponent<TComponent>(p));
 
         var props = properties?.ToDictionary(info => info, info => info.GetValue(componentInstance))
@@ -386,7 +393,7 @@ public partial class MudExCodeView
             return (input, input);
         }
         input = ApiMemberInfo.GetGenericFriendlyTypeName(input);
-        var match = Regex.Match(input, @"^(?<class>\w+)<(?<type>.+)>$");
+        var match = GenericTypeRegex.Match(input);
 
 
         var className = match.Groups["class"].Value;
@@ -404,7 +411,8 @@ public partial class MudExCodeView
         if (value == null || string.IsNullOrEmpty(value.ToString()))
             return null;
 
-        if (value is EventCallback || (value.GetType().IsGenericType && value.GetType().GetGenericTypeDefinition() == typeof(EventCallback<>)))
+        var valueType = value.GetType();
+        if (value is EventCallback || (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(EventCallback<>)))
         {
             return $"@Your{propName}EventHandler";
         }
@@ -412,8 +420,8 @@ public partial class MudExCodeView
         if (value is bool)
             return value.ToString()?.ToLower();
 
-        if (value.GetType().IsEnum)
-            return $"{value.GetType().FullName}.{value}";
+        if (valueType.IsEnum)
+            return $"{valueType.FullName}.{value}";
 
         if (value is DateTime dt)
             return $"@(System.DateTime.Parse(\"{dt}\"))";
@@ -435,7 +443,7 @@ public partial class MudExCodeView
             return name != null ? $"@{name}" : value.ToString()?.Replace("\"", "\\\"");
         }
 
-        if (value is string || MudExObjectEditHelper.HandleAsPrimitive(value.GetType()))
+        if (value is string || MudExObjectEditHelper.HandleAsPrimitive(valueType))
         {
             return value.ToString();
         }
@@ -443,10 +451,8 @@ public partial class MudExCodeView
         if (ignoreComplexTypes)
             return null;
 
-        //return $"{p.Value?.GetType().FullName}.{p.Value}";
-
         // Create a json string from the object and deserialize it in the markup
-        var fullName = value.GetType().FullName;
+        var fullName = valueType.FullName;
         var friendlyTypeName = ApiMemberInfo.GetGenericFriendlyTypeName(fullName);
         var json = JsonConvert.SerializeObject(value);
         return $"@(Newtonsoft.Json.JsonConvert.DeserializeObject<{friendlyTypeName}>(\"{json.Replace("\"", "\\\"")}\"))";
@@ -464,7 +470,7 @@ public partial class MudExCodeView
         string replacement = @"<$1$2 />";
 
         // Replace empty tags with self-closing tags
-        return RemoveEmptyLines(Regex.Replace(markup, pattern, replacement));
+        return RemoveEmptyLines(EmptyTagRegex.Replace(markup, replacement));
     }
 
     /// <summary>
@@ -489,15 +495,12 @@ public partial class MudExCodeView
             html = html.Replace(">>", ">");
         }
 
-        string pattern = @"(\<[^/][^>]*\>)|(\<\/[^>]*\>)";
         string replacement = "$1\r\n$2";
 
-        Regex rgx = new Regex(pattern);
-
-        string result = rgx.Replace(html, replacement);
-        result = Regex.Replace(result, @"[\r\n]+", "\r\n");
-        result = Regex.Replace(result, @"([^\r\n])<", "$1\r\n<");
-        result = Regex.Replace(result, @">([^\r\n])", ">\r\n$1");
+        string result = HtmlTagRegex.Replace(html, replacement);
+        result = MultiNewlineRegex.Replace(result, "\r\n");
+        result = BeforeTagRegex.Replace(result, "$1\r\n<");
+        result = AfterTagRegex.Replace(result, ">\r\n$1");
 
         int indentLevel = 0;
         var lines = result.Split('\n');

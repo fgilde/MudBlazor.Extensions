@@ -124,6 +124,9 @@ internal class MudExDialogRef<T> : IMudExDialogReference<T> where T : ComponentB
 
     public TaskCompletionSource<bool> RenderCompleteTaskCompletionSource => DialogReference.RenderCompleteTaskCompletionSource;
 
+    public DialogOptions Options => DialogReference.Options;
+    public void InjectOptions(DialogOptions options) => DialogReference.InjectOptions(options);
+
     public object Dialog => DialogReference.Dialog;
     public T DialogComponent => Dialog as T;
 

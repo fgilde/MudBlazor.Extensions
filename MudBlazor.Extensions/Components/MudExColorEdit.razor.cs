@@ -164,9 +164,7 @@ public sealed partial class MudExColorEdit
     {
         AdornmentIcon = Icons.Material.Filled.ColorLens;
         Editable = true;
-        Converter = new DefaultConverter<MudExColor>();
-        Converter.GetFunc = OnGet;
-        Converter.SetFunc = OnSet;
+        Converter = new MudExDefaultConverter<MudExColor>(OnSet, OnGet);
         Class = string.IsNullOrEmpty(Class) || !Class.Contains("mud-ex-color-edit") ? $"{Class} mud-ex-color-edit" : Class;
         base.OnInitialized();
     }
@@ -210,7 +208,7 @@ public sealed partial class MudExColorEdit
         if (!Rendered)
             return;
         Touched = true;
-        Value = Converter.Get(value);
+        Value = ConvertGet(value);
         if (ForceSelectOfMudColor)
             await SetTextAsync(ValueString, false);
 

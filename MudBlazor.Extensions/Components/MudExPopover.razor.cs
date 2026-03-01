@@ -74,7 +74,7 @@ namespace MudBlazor.Extensions.Components
         private string _classId = $"mud-ex-popover-{Guid.NewGuid()}";
 
         private string AnimationStyle() => Open && Animation != AnimationType.Default            
-            ? MudExStyleBuilder.Default.WithAnimation(Animation, TimeSpan.FromMilliseconds(Duration), AnimationDirection.In, AnimationTimingFunction, AnimationPosition).Build()
+            ? MudExStyleBuilder.Default.WithAnimation(Animation, TimeSpan.FromMilliseconds(Duration ?? 0), AnimationDirection.In, AnimationTimingFunction, AnimationPosition).Build()
             : string.Empty;
 
 

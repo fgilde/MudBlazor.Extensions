@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using System.Reflection;
 using Nextended.Core;
 using Nextended.Core.Extensions;
@@ -11,6 +12,7 @@ namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 /// </summary>
 public sealed class ObjectEditMeta<T> : ObjectEditMeta
 {
+    private static readonly ConcurrentDictionary<(Type, BindingFlags), PropertyInfo[]> _propertyInfoCache = new();
     /// <summary>
     /// Value of the object to be edited.
     /// </summary>
@@ -22,6 +24,7 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
     public List<Func<PropertyInfo, bool>> PropertyResolverFunctions { get; set; } = new();
 
     private List<ObjectEditPropertyMeta> _properties;
+    private List<ObjectEditPropertyMeta> _allPropertiesCache;
     internal Func<ObjectEditPropertyMeta, object> OrderFn { get; set; } = meta => meta.Settings.Order;
     internal bool OrderAscending { get; set; } = true;
 
@@ -38,13 +41,22 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
     {
         AllProperties.Apply(pm => pm.SetReferenceHolder(pm.ReferenceHolder == (object)Value ? value : pm.ReferenceHolder));
         Value = value;
+        InvalidateCache();
         return this;
     }
     
     /// <summary>
     /// All properties of the object to be edited.
     /// </summary>
-    public override IList<ObjectEditPropertyMeta> AllProperties => Ordered((_properties ??= ReadProperties()).Recursive(m => m.Children)).ToList();
+    public override IList<ObjectEditPropertyMeta> AllProperties => _allPropertiesCache ??= Ordered((_properties ??= ReadProperties()).Recursive(m => m.Children)).ToList();
+
+    /// <summary>
+    /// Invalidates the cached AllProperties list, forcing recalculation on next access.
+    /// </summary>
+    public void InvalidateCache()
+    {
+        _allPropertiesCache = null;
+    }
     
     internal IEnumerable<ObjectEditPropertyMeta> Ordered(IEnumerable<ObjectEditPropertyMeta> entries)
         => OrderAscending ? entries.OrderBy(OrderFn) : entries.OrderByDescending(OrderFn);
@@ -80,10 +92,16 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
         return (ObjectEditPropertyMetaOf<T>) (Property(name) ?? Property(infos));
     }
     
+    private PropertyInfo[] GetCachedPropertyInfos(Type type)
+    {
+        return _propertyInfoCache.GetOrAdd((type, BindingFlags), key => key.Item1.GetProperties(key.Item2));
+    }
+
     private IEnumerable<ObjectEditPropertyMeta> GetProperties(Type type, object value, ObjectEditMeta owner = null)
     {
         var res = new List<ObjectEditPropertyMeta>();
-        foreach (var propertyInfo in (value?.GetType() ?? type).GetProperties(BindingFlags).Where(ShouldResolve))
+        var actualType = value?.GetType() ?? type;
+        foreach (var propertyInfo in GetCachedPropertyInfos(actualType).Where(ShouldResolve))
         {
             try
             {

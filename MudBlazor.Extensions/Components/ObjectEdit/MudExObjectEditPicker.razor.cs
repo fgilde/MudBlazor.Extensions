@@ -2,6 +2,7 @@
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Options;
+using YamlDotNet.Core.Tokens;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
@@ -403,10 +404,15 @@ public partial class MudExObjectEditPicker<T>
         return base.OnPickerClosedAsync();
     }
 
-    protected override Task WriteValueAsync(T value)
+    protected override Task WriteTextAsync(string value)
     {
-        Text = ToStringFunc(value);
-        return base.WriteValueAsync(value);
+        value = ToStringFunc(Value);
+        return base.WriteTextAsync(value);
+    }
+
+    protected override string ConvertSet(T input)
+    {
+        return ToStringFunc(Value);
     }
 
     /// <inheritdoc />

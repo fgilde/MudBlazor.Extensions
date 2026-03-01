@@ -83,62 +83,62 @@ namespace MudBlazor.Extensions
             => dialogService.ShowExAsync<TDialog>(title, dialogParameters.ConvertToDialogParameters(), optionsEx ?? DefaultOptions());
 
         /// <summary>
-        /// Shows the dialog and injects dependencies immediately.
+        /// Shows the dialog asynchronously.
         /// </summary>
         /// <typeparam name="TDialog">The dialog type.</typeparam>
         /// <param name="dialogService">The dialog service.</param>
         /// <param name="title">The title.</param>
         /// <param name="dialogParameters">The dialog parameters.</param>
         /// <param name="options">The options.</param>
-        /// <returns>The interface <see cref="IMudExDialogReference{T}"/>.</returns>
-        public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, Action<DialogOptions> options)
+        /// <returns>A <see cref="IMudExDialogReference{T}"/>.</returns>
+        public static async Task<IMudExDialogReference<TDialog>> ShowAsync<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, Action<DialogOptions> options)
             where TDialog : ComponentBase, new()
         {
             var dlgOptions = DefaultOptions();
             options(dlgOptions);
-            return Show(dialogService, title, dialogParameters, dlgOptions);
+            return await ShowAsync(dialogService, title, dialogParameters, dlgOptions);
         }
 
         /// <summary>
-        /// Shows the dialog and injects dependencies immediately.
+        /// Shows the dialog asynchronously.
         /// </summary>
         /// <typeparam name="TDialog">The dialog type.</typeparam>
         /// <param name="dialogService">The dialog service.</param>
         /// <param name="title">The title.</param>
         /// <param name="dialogParameters">The dialog parameters.</param>
         /// <param name="options">The options.</param>
-        /// <returns>The interface <see cref="IMudExDialogReference{T}"/>.</returns>
-        public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, Action<DialogOptions> options)
+        /// <returns>A <see cref="IMudExDialogReference{T}"/>.</returns>
+        public static async Task<IMudExDialogReference<TDialog>> ShowAsync<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, Action<DialogOptions> options)
             where TDialog : ComponentBase, new()
         {
             var dlgOptions = DefaultOptions();
             options(dlgOptions);
-            return dialogService.Show(title, dialogParameters, dlgOptions).AsMudExDialogReference<TDialog>();
+            return (await dialogService.ShowAsync<TDialog>(title, dialogParameters.ConvertToDialogParameters(), dlgOptions)).AsMudExDialogReference<TDialog>();
         }
 
         /// <summary>
-        /// Shows the dialog and injects dependencies immediately.
+        /// Shows the dialog asynchronously.
         /// </summary>
         /// <typeparam name="TDialog">The dialog type.</typeparam>
         /// <param name="dialogService">The dialog service.</param>
         /// <param name="title">The title.</param>
         /// <param name="dialogParameters">The dialog parameters.</param>
         /// <param name="options">The options.</param>
-        /// <returns>The interface <see cref="IMudExDialogReference{T}"/>.</returns>
-        public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
-            => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? DefaultOptions()).AsMudExDialogReference<TDialog>();
+        /// <returns>A <see cref="IMudExDialogReference{T}"/>.</returns>
+        public static async Task<IMudExDialogReference<TDialog>> ShowAsync<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
+            => (await dialogService.ShowAsync<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? DefaultOptions())).AsMudExDialogReference<TDialog>();
 
         /// <summary>
-        /// Shows the dialog and injects dependencies immediately.
+        /// Shows the dialog asynchronously.
         /// </summary>
         /// <typeparam name="TDialog">The dialog type.</typeparam>
         /// <param name="dialogService">The dialog service.</param>
         /// <param name="title">The title.</param>
         /// <param name="dialogParameters">The dialog parameters.</param>
         /// <param name="options">The options.</param>
-        /// <returns>The interface <see cref="IMudExDialogReference{T}"/>.</returns>
-        public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
-            => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? DefaultOptions()).AsMudExDialogReference<TDialog>();
+        /// <returns>A <see cref="IMudExDialogReference{T}"/>.</returns>
+        public static async Task<IMudExDialogReference<TDialog>> ShowAsync<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
+            => (await dialogService.ShowAsync<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? DefaultOptions())).AsMudExDialogReference<TDialog>();
 
         /// <summary>
         /// Shows the dialog and injects dependencies asynchronously.
@@ -208,7 +208,7 @@ namespace MudBlazor.Extensions
             await Task.Run(() =>
             {
                 while (dialogReference.Dialog == null)
-                    Thread.Sleep(10);
+                        Thread.Sleep(10);
             });
             return dialogReference.Dialog as T;
         }
@@ -299,7 +299,6 @@ namespace MudBlazor.Extensions
         internal static DialogOptionsEx PrepareOptionsAfterShow(DialogOptionsEx options)
         {
             options ??= DefaultOptions();
-            options = options.CloneOptions();
 
             (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(options.DisableSizeMarginY ?? false ? MudExCss.Classes.Dialog.FullHeightWithoutMargin : MudExCss.Classes.Dialog.FullHeightWithMargin, options.FullHeight ?? false);
             (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(options.MaxHeight != null ? $"mud-ex-dialog-max-height-{options.MaxHeight.GetDescription()}" : string.Empty);

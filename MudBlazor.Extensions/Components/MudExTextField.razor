@@ -33,9 +33,8 @@
                                 Adornment="@Adornment"
                                 Style="@Style"
                                 Variant="@Variant"
-                                TextUpdateSuppression="@TextUpdateSuppression"
                                 Value="@Text"
-                                ValueChanged="(s) => SetTextAsync(s)"
+                                ValueChanged="(s) => SetTextAndUpdateValueAsync(s, true)"
                                 Placeholder="@Placeholder"
                                 Disabled=@Disabled
                                 Underline="@Underline"
@@ -79,7 +78,6 @@
                              Lines="@Lines"
                              Style="@Style"
                              Variant="@Variant"
-                             TextUpdateSuppression="@TextUpdateSuppression"
                              Value="@Text"
                              ValueChanged="OnMaskedValueChanged"
                              Placeholder="@Placeholder"
@@ -97,4 +95,5 @@
             </CascadingValue>
         </InputContent>
     </MudInputControl>
+    @ChildContent
 </CascadingValue>

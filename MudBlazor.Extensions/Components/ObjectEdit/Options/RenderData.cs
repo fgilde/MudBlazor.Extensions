@@ -14,6 +14,8 @@ public sealed class RenderData<TPropertyType, TFieldType> : RenderData
     internal override Type FieldType => typeof(TFieldType);
     internal override Type PropertyType => typeof(TPropertyType);
     private bool _bindingInitialized = false;
+    private object _cachedEventTarget;
+    private Func<Task> _cachedValueChanged;
 
     /// <summary>
     /// Converter function to convert the property type to the field type.
@@ -40,9 +42,11 @@ public sealed class RenderData<TPropertyType, TFieldType> : RenderData
     public override void UpdateConditionalSettings<TModel>(TModel model)
     {
         base.UpdateConditionalSettings(model);
+        if (Conditions == null || Conditions.Count == 0)
+            return;
         // fallback if condition not match model, we try property value instead
-        Conditions?.Where(c => c.modelType == typeof(TPropertyType)).Apply(condition => (condition.condition(ValueWrapper.Value) ? condition.trueFn : condition.falseFn)(this));
-        Conditions?.Where(c => c.modelType == typeof(TFieldType)).Apply(condition => (condition.condition(ToFieldTypeConverterFn(ValueWrapper.Value)) ? condition.trueFn : condition.falseFn)(this));
+        Conditions.Where(c => c.modelType == typeof(TPropertyType)).Apply(condition => (condition.condition(ValueWrapper.Value) ? condition.trueFn : condition.falseFn)(this));
+        Conditions.Where(c => c.modelType == typeof(TFieldType)).Apply(condition => (condition.condition(ToFieldTypeConverterFn(ValueWrapper.Value)) ? condition.trueFn : condition.falseFn)(this));
     }
 
     /// <summary>
@@ -104,6 +108,15 @@ public sealed class RenderData<TPropertyType, TFieldType> : RenderData
         var eventKeyName = $"{ValueField}Changed";
         if (DisableValueBinding || !IsValidParameterAttribute(eventKeyName, null))
             return false;
+        // Only recreate the EventCallback if the target or delegate changed
+        if (_cachedEventTarget == eventTarget && _cachedValueChanged == valueChanged && Attributes.ContainsKey(eventKeyName))
+        {
+            // Update value binding without recreating the callback
+            Attributes.AddOrUpdate(ValueField, ToFieldTypeConverterFn(ValueWrapper.Value));
+            return true;
+        }
+        _cachedEventTarget = eventTarget;
+        _cachedValueChanged = valueChanged;
         Attributes.AddOrUpdate(eventKeyName, RuntimeHelpers.TypeCheck(
             EventCallback.Factory.Create(
                 eventTarget,

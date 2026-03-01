@@ -42,6 +42,9 @@ public partial class MudExPickerBase<T>
     [Parameter]
     public AnimationType PopverAnimation { get; set; } = AnimationType.Pulse;
 
+    [Parameter]
+    public OverflowBehavior? OverflowBehavior { get; set; }
+
     /// <summary>
     /// Contains all parameters before init
     /// </summary>
@@ -317,6 +320,9 @@ public partial class MudExPickerBase<T>
             return;
         RaiseChanged();
     }
+
+    /// <inheritdoc />
+    protected override IConverter<T, string> GetDefaultConverter() => new DefaultConverter<T>();
 
     private string GetPopOverStyle()
     {

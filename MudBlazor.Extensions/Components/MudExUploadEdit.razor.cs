@@ -1134,13 +1134,13 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     private async Task RaiseDataLoadedAsync(T request)
     {
         await UploadRequestDataLoaded.InvokeAsync(request);
-        await Validate();
+        await ValidateAsync();
     }
 
     private async Task RaiseChangedAsync()
     {
         await (AllowMultiple ? UploadRequestsChanged.InvokeAsync(UploadRequests) : UploadRequestChanged.InvokeAsync(UploadRequest));
-        await Validate();
+        await ValidateAsync();
     }
 
     /// <summary>

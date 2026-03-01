@@ -241,7 +241,16 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// <summary>
     /// Media Type for current file
     /// </summary>
-    public string MediaType => ContentType?.Split("/").FirstOrDefault()?.ToLower();
+    public string MediaType
+    {
+        get
+        {
+            var ct = ContentType;
+            if (ct == null) return null;
+            var idx = ct.IndexOf('/');
+            return idx >= 0 ? ct[..idx].ToLowerInvariant() : ct.ToLowerInvariant();
+        }
+    }
 
     /// <summary>
     /// Returns a plugin that is useful to show the content if the content cant displayed 
@@ -402,7 +411,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         string fileName, string contentType, bool viewDependsOnContentType = true, 
         bool imageAsBackgroundImage = false, bool fallBackInIframe = false, bool sandBoxIframes = true, string onErrorMethod = "")
     {
-        var mediaType = contentType?.Split("/").FirstOrDefault()?.ToLower();
+        string mediaType = null;
+        if (contentType != null)
+        {
+            var idx = contentType.IndexOf('/');
+            mediaType = idx >= 0 ? contentType[..idx].ToLowerInvariant() : contentType.ToLowerInvariant();
+        }
         if (viewDependsOnContentType && !string.IsNullOrEmpty(mediaType))
         {
             switch (mediaType)

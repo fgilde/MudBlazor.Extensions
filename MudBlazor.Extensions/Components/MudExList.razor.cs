@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Services;
 using MudBlazor.Utilities;
@@ -27,7 +28,7 @@ public partial class MudExList<T> : IDisposable
     /// </summary>
     public virtual string ItemNameRender(T item)
     {
-        var res = ToStringFunc != null ? ToStringFunc(item) : Converter.Set(item);
+        var res = ToStringFunc != null ? ToStringFunc(item) : Converter.Convert(item);
         if (!string.IsNullOrWhiteSpace(res) && !string.IsNullOrWhiteSpace(LocalizerPattern))
         {
             res = LocalizerToUse != null ? LocalizerToUse[string.Format(LocalizerPattern, res)] : string.Format(LocalizerPattern, res);
@@ -171,7 +172,7 @@ public partial class MudExList<T> : IDisposable
     /// </summary>
     [Parameter, IgnoreOnObjectEdit]
     [SafeCategory(CategoryTypes.List.Behavior)]
-    public DefaultConverter<T> Converter { get; set; } = new();
+    public IReversibleConverter<T?, string?> Converter { get; set; } = new DefaultConverter<T>();
 
     private IEqualityComparer<T> _comparer;
 
@@ -212,10 +213,7 @@ public partial class MudExList<T> : IDisposable
             if (_toStringFunc == value)
                 return;
             _toStringFunc = value;
-            Converter = new DefaultConverter<T>
-            {
-                SetFunc = _toStringFunc ?? (x => x?.ToString()),
-            };
+            Converter = new MudExDefaultConverter<T>(_toStringFunc ?? (x => x?.ToString()), null);
         }
     }
 
@@ -575,7 +573,7 @@ public partial class MudExList<T> : IDisposable
         get => _selectedValue;
         set
         {
-            if (Converter.Set(_selectedValue) != Converter.Set(default(T)) && !_firstRendered)
+            if (Converter.Convert(_selectedValue) != Converter.Convert(default(T)) && !_firstRendered)
             {
                 return;
             }
@@ -1384,7 +1382,7 @@ public partial class MudExList<T> : IDisposable
         }
 
         // find first item that starts with the letter
-        var possibleItems = items.Where(x => (x.Text ?? Converter.Set(x.Value) ?? "").StartsWith(startChar, StringComparison.CurrentCultureIgnoreCase)).ToList();
+        var possibleItems = items.Where(x => (x.Text ?? Converter.Convert(x.Value) ?? "").StartsWith(startChar, StringComparison.CurrentCultureIgnoreCase)).ToList();
         if (!possibleItems.Any())
         {
             if (LastActivatedItem == null)
@@ -1568,7 +1566,7 @@ public partial class MudExList<T> : IDisposable
         !SearchBox || ItemCollection == null || SearchString == null ? ItemCollection :
         SearchFunc != null ? ItemCollection.Where(x => SearchFunc.Invoke(x, SearchString)).ToList() :
         ItemCollection
-            .Where(x => Converter.Set(x).Contains(SearchString, StringComparison.InvariantCultureIgnoreCase))
+            .Where(x => Converter.Convert(x).Contains(SearchString, StringComparison.InvariantCultureIgnoreCase))
             .ToList();
 
     /// <summary>

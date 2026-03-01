@@ -154,25 +154,23 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
         var cls = Class;
         OptionsEx.JsRuntime ??= Js;
         await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
-        var appliedOptions = DialogServiceExt.PrepareOptionsAfterShow(OptionsEx);
+        var appliedOptions = DialogServiceExt.PrepareOptionsAfterShow(OptionsEx.CloneOptions());
         Class = $"{EnsureInitialClass()} {appliedOptions?.DialogAppearance?.Class}";
         var result = await ShowAsync();
         Class = cls;
         return result;
     }
 
-    public new Task CloseAsync(DialogResult? result = null)
+    public new async Task CloseAsync(DialogResult? result = null)
     {
         if (_reference is null)
         {
             Visible = false;
-            return Task.CompletedTask;
+            return;
         }
                 
-        _reference.CloseAnimatedIf(result);
+        await _reference.CloseAnimatedIfAsync(result);
         _reference = null;
-        
-        return Task.CompletedTask;
     }
 
     private string EnsureInitialClass()

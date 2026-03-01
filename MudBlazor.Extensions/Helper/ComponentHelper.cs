@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using Nextended.Core.Extensions;
 using Microsoft.AspNetCore.Components;
 using Nextended.Core.Helper;
@@ -7,17 +8,21 @@ namespace MudBlazor.Extensions.Helper;
 
 public static class ComponentHelper
 {
+    private static readonly FieldInfo RenderHandleField = typeof(ComponentBase)
+        .GetField("_renderHandle", BindingFlags.NonPublic | BindingFlags.Instance);
+
+    private static readonly ConcurrentDictionary<Type, MethodInfo> StateHasChangedMethodCache = new();
+    private static readonly ConcurrentDictionary<Type, MethodInfo> InvokeAsyncMethodCache = new();
+    private static readonly ConcurrentDictionary<Type, MethodInfo> GetDialogReferenceMethodCache = new();
+
     public static bool IsRenderHandleAssigned(this IComponent component)
     {
         try
         {
             if (component is ComponentBase baseComponent)
-            {            
-                var fieldInfo = typeof(ComponentBase)
-                    .GetField("_renderHandle", BindingFlags.NonPublic | BindingFlags.Instance);
-
-                var value = fieldInfo?.GetValue(baseComponent);
-                var handleValue = value as RenderHandle? ?? default;                            
+            {
+                var value = RenderHandleField?.GetValue(baseComponent);
+                var handleValue = value as RenderHandle? ?? default;
                 return handleValue.IsInitialized;
             }
         }
@@ -29,9 +34,12 @@ public static class ComponentHelper
 
     internal static Task CallReflectionStateHasChanged(this IComponent cmp)
     {
-        var stateHasChangedMethod = cmp.GetType().GetMethod("StateHasChanged", BindingFlags.Instance | BindingFlags.NonPublic);
-        var invokeAsyncMethod = cmp.GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
-            .FirstOrDefault(m => m.Name == "InvokeAsync" && m.GetParameters()?.FirstOrDefault()?.ParameterType == typeof(Action));
+        var type = cmp.GetType();
+        var stateHasChangedMethod = StateHasChangedMethodCache.GetOrAdd(type,
+            t => t.GetMethod("StateHasChanged", BindingFlags.Instance | BindingFlags.NonPublic));
+        var invokeAsyncMethod = InvokeAsyncMethodCache.GetOrAdd(type,
+            t => t.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
+                .FirstOrDefault(m => m.Name == "InvokeAsync" && m.GetParameters()?.FirstOrDefault()?.ParameterType == typeof(Action)));
 
         if (stateHasChangedMethod == null)
             return Task.CompletedTask;
@@ -78,10 +86,9 @@ public static class ComponentHelper
     internal static IDialogReference GetDialogReference(this IMudDialogInstance dlgInstance)
     {
         var provider = dlgInstance.FindMudDialogProvider();
-
-        //ComponentHelper.FindMudDialogProvider
-        MethodInfo getDialog = provider.GetType().GetMethod("GetDialogReference",
-            BindingFlags.NonPublic | BindingFlags.Instance);
+        var providerType = provider.GetType();
+        var getDialog = GetDialogReferenceMethodCache.GetOrAdd(providerType,
+            t => t.GetMethod("GetDialogReference", BindingFlags.NonPublic | BindingFlags.Instance));
         IDialogReference? dialogRef = (IDialogReference)getDialog.Invoke(provider, new object[] { dlgInstance.Id });
         return dialogRef;
     }

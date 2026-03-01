@@ -109,6 +109,8 @@ public class ObjectEditPropertyMetaSettings
 
     internal void UpdateConditionalSettings<TModel>(TModel model)
     {
+        if (_conditions.Count == 0)
+            return;
         _conditions.Where(c => c.modelType == typeof(TModel)).Apply(condition => (condition.condition(model) ? condition.trueFn : condition.falseFn)(this));
         _conditions.Where(c => c.modelType == typeof(ObjectEditPropertyMeta)).Apply(condition => (condition.condition(Owner) ? condition.trueFn : condition.falseFn)(this));
         _conditions.Where(c => c.modelType == typeof(PropertyInfo)).Apply(condition => (condition.condition(Owner.PropertyInfo) ? condition.trueFn : condition.falseFn)(this));

@@ -40,7 +40,7 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
     /// <summary>
     /// Indicates whether the Splitter is currently dragging
     /// </summary>
-    public bool IsDragging { get; private set; } = false;
+    [Parameter] public bool IsDragging { get; set; }
     
     /// <summary>
     /// Callback when dragging starts or ends

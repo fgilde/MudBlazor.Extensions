@@ -495,6 +495,9 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.OnAfterRender(System.Boolean)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.GetDefaultConverter">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.Refresh">
             <summary>
             Refreshes this component and forces render
@@ -502,9 +505,6 @@
             <returns></returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.DisposeAsync">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.#ctor(MudBlazor.Converter{`1,`2})">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1">
@@ -767,6 +767,9 @@
             <summary>
             Calls the <see cref="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.RaiseChanged"/> method if picker is closed or <see cref="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.DelayValueChangeToPickerClose"/> is false.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.GetDefaultConverter">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.CaptureInfoComponent">
             <summary>
@@ -1198,11 +1201,6 @@
             Callback when the error state changes
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.ErrorChanged">
-            <summary>
-            Callback when the error changes
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.ValidationErrorsChanged">
             <summary>
             Callback when the validation errors change
@@ -1484,7 +1482,7 @@
             Gets or Sets Light Bulb Size Unit Property.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.AllAppliedHoverModes">
+        <member name="F:MudBlazor.Extensions.Components.MudExCardList`1.AllHoverModeValues">
             <summary>
             Methods returns List of MudExCardHoverMode, where hover modes are applied.
             </summary>
@@ -4999,9 +4997,6 @@
             Custom numeric down icon.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExInput`1.UpdateTextPropertyAsync(System.Boolean)">
-            <inheritdoc />
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExInput`1.UpdateValuePropertyAsync(System.Boolean)">
             <inheritdoc />
         </member>
@@ -6489,6 +6484,16 @@
             Gets or sets the aria-labelledby attribute to improve accessibility.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.CalculateMaxStart(`0)">
+            <summary>
+            Calculates the maximum allowed start position given the current end position and MinLength constraint.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.CalculateMinEnd(`0)">
+            <summary>
+            Calculates the minimum allowed end position given the current start position and MinLength constraint.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.GetJsArguments">
             <summary>
             Gets the JavaScript interop arguments required by the component.
@@ -7912,6 +7917,12 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.SetTextAndUpdateValueAsync(System.String,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.UpdateValuePropertyAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.InvokeKeyDownAsync(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs)">
             <inheritdoc />
         </member>
@@ -7976,6 +7987,11 @@
         <member name="T:MudBlazor.Extensions.Components.MudExTextField`1">
             <summary>
             MudTextField with additional features
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTextField`1.ChildContent">
+            <summary>
+            Optional child content (e.g. for MudExAdditionalAdornment).
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTextField`1.Classname">
@@ -8061,12 +8077,6 @@
             <summary>
             On change event on the input element
             </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.SetValueAsync(`0,System.Boolean,System.Boolean)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.SetTextAsync(System.String,System.Boolean)">
-            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.ThemePreset`1">
             <summary>
@@ -14353,6 +14363,11 @@
             All properties of the object to be edited.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta`1.InvalidateCache">
+            <summary>
+            Invalidates the cached AllProperties list, forcing recalculation on next access.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta`1.PropertiesExcept(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])">
             <summary>
             All properties of the object to be edited with excepting the given.
@@ -16057,6 +16072,9 @@
             <summary>
             Is false control isn't rendered at all
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExValidationWrapper`1.GetDefaultConverter">
+            <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExValidationWrapper`1.Value">
             <summary>
@@ -19449,49 +19467,49 @@
             <param name="optionsEx">The options.</param>
             <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,System.Action{``0},System.Action{MudBlazor.DialogOptions})">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowAsync``1(MudBlazor.IDialogService,System.String,System.Action{``0},System.Action{MudBlazor.DialogOptions})">
             <summary>
-            Shows the dialog and injects dependencies immediately.
+            Shows the dialog asynchronously.
             </summary>
             <typeparam name="TDialog">The dialog type.</typeparam>
             <param name="dialogService">The dialog service.</param>
             <param name="title">The title.</param>
             <param name="dialogParameters">The dialog parameters.</param>
             <param name="options">The options.</param>
-            <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+            <returns>A <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,``0,System.Action{MudBlazor.DialogOptions})">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowAsync``1(MudBlazor.IDialogService,System.String,``0,System.Action{MudBlazor.DialogOptions})">
             <summary>
-            Shows the dialog and injects dependencies immediately.
+            Shows the dialog asynchronously.
             </summary>
             <typeparam name="TDialog">The dialog type.</typeparam>
             <param name="dialogService">The dialog service.</param>
             <param name="title">The title.</param>
             <param name="dialogParameters">The dialog parameters.</param>
             <param name="options">The options.</param>
-            <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+            <returns>A <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,``0,MudBlazor.DialogOptions)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowAsync``1(MudBlazor.IDialogService,System.String,``0,MudBlazor.DialogOptions)">
             <summary>
-            Shows the dialog and injects dependencies immediately.
+            Shows the dialog asynchronously.
             </summary>
             <typeparam name="TDialog">The dialog type.</typeparam>
             <param name="dialogService">The dialog service.</param>
             <param name="title">The title.</param>
             <param name="dialogParameters">The dialog parameters.</param>
             <param name="options">The options.</param>
-            <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+            <returns>A <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,System.Action{``0},MudBlazor.DialogOptions)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowAsync``1(MudBlazor.IDialogService,System.String,System.Action{``0},MudBlazor.DialogOptions)">
             <summary>
-            Shows the dialog and injects dependencies immediately.
+            Shows the dialog asynchronously.
             </summary>
             <typeparam name="TDialog">The dialog type.</typeparam>
             <param name="dialogService">The dialog service.</param>
             <param name="title">The title.</param>
             <param name="dialogParameters">The dialog parameters.</param>
             <param name="options">The options.</param>
-            <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+            <returns>A <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowExAsync``1(MudBlazor.IDialogService,System.String,MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
@@ -20726,7 +20744,7 @@
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(System.String,System.String[])">
             <summary>
-            Adds one or more css classes to this builder 
+            Adds one or more css classes to this builder
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(System.String,System.Boolean)">

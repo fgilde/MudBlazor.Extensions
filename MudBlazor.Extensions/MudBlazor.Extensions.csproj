@@ -24,9 +24,9 @@
 
   <!--Versioning-->
   <PropertyGroup>
-    <MajorVersion>8</MajorVersion>
-    <MinorVersion>15</MinorVersion>
-    <PatchVersion>2</PatchVersion>
+    <MajorVersion>9</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <PatchVersion>0</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -69,20 +69,20 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="8.15.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.1" />
+    <PackageReference Include="MudBlazor" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.3" />
     <PackageReference Include="ExcelDataReader" Version="3.8.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.8.0" />
     <PackageReference Include="AuralizeBlazor" Version="3.0.4" />
-    <PackageReference Include="MudBlazor.Markdown" Version="8.11.0" />
-    <PackageReference Include="Nextended.Blazor" Version="10.0.4" />
-    <PackageReference Include="Nextended.Core" Version="10.0.4" />
+    <PackageReference Include="MudBlazor.Markdown" Version="9.0.0" />
+    <PackageReference Include="Nextended.Blazor" Version="10.0.8" />
+    <PackageReference Include="Nextended.Core" Version="10.0.8" />
     <PackageReference Include="BlazorJS" Version="2.2.0" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />    
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.25121215" />
-    <PackageReference Include="SharpCompress" Version="0.42.1" />
+    <PackageReference Include="SharpCompress" Version="0.46.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
     <PackageReference Include="MetadataExtractor" Version="2.9.0" />
   </ItemGroup>

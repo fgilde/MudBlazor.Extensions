@@ -18,7 +18,8 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="TTheme"></typeparam>
 public partial class MudExThemeEdit<TTheme>
 {
-    private const int ExtraDelay = 200; // Currently needed because of timing issues in MudExObjectEdit. But will fixed later
+    private const int ExtraDelay = 50; // Reduced from 200ms thanks to batched StateHasChanged in MudExObjectEdit
+    private bool _isUpdating;
 
     private KeyValuePair<string, MudColor>[] _cssVars;
     private bool _isLoading = true;
@@ -245,12 +246,20 @@ public partial class MudExThemeEdit<TTheme>
 
     private async Task SetTheme(TTheme theme)
     {
-        Theme = null;
-        using var _ = Loading();
-        Theme = theme;
-        await OnThemeChanged(Theme);
-        StateHasChanged();
-        await Task.Delay(ExtraDelay);
+        if (_isUpdating)
+            return;
+        _isUpdating = true;
+        try
+        {
+            using var _ = Loading();
+            Theme = theme;
+            await OnThemeChanged(Theme);
+            await Task.Delay(ExtraDelay);
+        }
+        finally
+        {
+            _isUpdating = false;
+        }
     }
 
     private void UpdateInitialTheme()
@@ -290,6 +299,8 @@ public partial class MudExThemeEdit<TTheme>
 
     private Task OnPropertyChanged(ObjectEditPropertyMeta arg)
     {
+        if (_isUpdating)
+            return Task.CompletedTask;
         if(EditMode == ThemeEditMode.Simple && !arg.Settings.Ignored) {
             if (arg.PropertyInfo.Name == nameof(DefaultTypography.FontFamily)) {
                 SetIfIgnored(

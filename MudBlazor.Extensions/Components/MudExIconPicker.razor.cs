@@ -132,9 +132,7 @@ public partial class MudExIconPicker
     protected override void OnInitialized()
     {
         Editable = true;
-        Converter = new DefaultConverter<string>();
-        Converter.GetFunc = OnGetValueFromName;
-        Converter.SetFunc = OnSet;
+        Converter = new MudExDefaultConverter<string>(OnSet, OnGetValueFromName);
         Class = string.IsNullOrEmpty(Class) || !Class.Contains("mud-ex-icon-picker") ? $"{Class} mud-ex-icon-picker" : Class;
         base.OnInitialized();
     }
@@ -237,7 +235,7 @@ public partial class MudExIconPicker
         if (!_rendered)
             return;
         Touched = true;
-        Value = IsValueName(value) ? Converter.Get(value) : value;
+        Value = IsValueName(value) ? ConvertGet(value) : value;
 
         await SetTextAsync(AlwaysShowValue ? Value : PropertyName, false);
 

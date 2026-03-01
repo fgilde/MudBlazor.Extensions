@@ -130,7 +130,7 @@ public partial class MudExObjectEditDialog<T>
             await base.OnSubmit(ctx);
             if (CustomSubmit == null || string.IsNullOrWhiteSpace(_errorMessage = await CustomSubmit.Invoke(Value, this)))
             {
-                MudDialog.CloseAnimatedIf(DialogResult.Ok(Value), JsRuntime);
+                await MudDialog.CloseAnimatedIfAsync(DialogResult.Ok(Value), JsRuntime);
             }
         }
         finally
@@ -146,6 +146,6 @@ public partial class MudExObjectEditDialog<T>
     protected override async Task Cancel()
     {
         await base.Cancel();
-        MudDialog.CancelAnimatedIf(JsRuntime);
+        await MudDialog.CancelAnimatedIfAsync(JsRuntime);
     }
 }

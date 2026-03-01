@@ -16,7 +16,7 @@
     {
         @if (_taskbarItems?.Any() == true || !OnlyVisibleWithWindows)
         {
-            <MudDynamicTabs Class="mud-ex-task-bar" Elevation="2" AddIconStyle="display:none;" Square="true" CloseTabIcon="@CloseIcon" Rounded="false" Position="@Position" Centered="false" Color="Color.Dark" CloseTab="@(CloseWindow)">
+            <MudDynamicTabs Class="mud-ex-task-bar" Elevation="2" AddIconStyle="display:none;" CloseTabIcon="@CloseIcon" Rounded="false" Position="@Position" Centered="false" Color="Color.Dark" CloseTab="@(CloseWindow)">
                 @foreach (var taskBarItem in _taskbarItems)
                 {
                     <MudTabPanel 

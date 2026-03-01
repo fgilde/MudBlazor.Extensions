@@ -22,12 +22,17 @@ namespace MudBlazor.Extensions.Helper;
 [RegisterAs(typeof(MudExStyleBuilder), ServiceLifetime = ServiceLifetime.Scoped)]
 public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
 {
-    private static readonly string[] PropertiesToAddUnits = { "height", "width", "min-height", "min-width", "max-height", "max-width",
+    private static readonly HashSet<string> PropertiesToAddUnits = new() { "height", "width", "min-height", "min-width", "max-height", "max-width",
         "padding", "padding-top", "padding-right", "padding-bottom", "padding-left", "margin", "margin-top", "margin-right", "margin-bottom",
         "margin-left", "border-width", "border-top-width", "border-right-width", "border-bottom-width", "border-left-width", "font-size", "letter-spacing",
         "line-height", "word-spacing", "text-indent", "column-gap", "column-width", "top", "right", "bottom", "left", "transform", "translate", "translateX",
         "translateY", "translateZ", "translate3d", "rotate", "rotateX", "rotateY", "rotateZ", "scale", "scaleX", "scaleY", "scaleZ", "scale3d",
         "skew", "skewX", "skewY", "perspective"};
+    private static readonly Regex CamelToKebabRegex = new("(?<!^)([A-Z])", RegexOptions.Compiled);
+    private static readonly Regex KebabToCamelRegex = new("-([a-z])", RegexOptions.Compiled);
+    private static readonly Regex CssPropertyRegex = new(@"([\w-]+)\s*:\s*([^;]+)", RegexOptions.Compiled);
+    private static readonly ConcurrentDictionary<Type, System.Reflection.PropertyInfo[]> StylePropertyCache = new();
+    private static readonly ConcurrentDictionary<string, string> CamelToKebabCache = new();
 
     private Dictionary<string, string> _additionalStyles = new();
     private readonly List<string> _rawStyles = new();
@@ -90,20 +95,22 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     {
         string unit = cssUnit.GetDescription();
         var cssBuilder = new StringBuilder();
-        var properties = obj.GetType().GetProperties();
+        var objType = obj.GetType();
+        var properties = StylePropertyCache.GetOrAdd(objType, t => t.GetProperties());
 
         foreach (var property in properties)
         {
-            var cssPropertyName = Regex.Replace(property.Name, "(?<!^)([A-Z])", "-$1").ToLower();
+            var cssPropertyName = CamelToKebabCache.GetOrAdd(property.Name,
+                name => CamelToKebabRegex.Replace(name, "-$1").ToLower());
             object propertyValue = property.GetValue(obj, null);
             if (propertyValue != null)
             {
                 if (propertyValue is Color color)
                     propertyValue = color.CssVarDeclaration();
-                var formattedPropertyValue = propertyValue is string ? $"{propertyValue}" : propertyValue.ToString();
+                var formattedPropertyValue = propertyValue is string s ? s : propertyValue.ToString();
                 if (int.TryParse(formattedPropertyValue, out _) && PropertiesToAddUnits.Contains(cssPropertyName))
                     formattedPropertyValue += unit;
-                cssBuilder.Append(cssPropertyName + ": " + formattedPropertyValue + ";");
+                cssBuilder.Append(cssPropertyName).Append(": ").Append(formattedPropertyValue).Append(';');
             }
         }
 
@@ -119,17 +126,16 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     public static string CombineStyleStrings(string cssString, string leadingCssString)
     {
         var cssProperties = new Dictionary<string, string>();
-        var cssRegex = new Regex(@"([\w-]+)\s*:\s*([^;]+)");
-        var cssProperties1 = cssRegex.Matches(cssString);
-        foreach (var property in cssProperties1.Cast<Match>())
-            cssProperties.TryAdd(property.Groups[1].Value.Trim(), property.Groups[2].Value.Trim());
+        foreach (Match match in CssPropertyRegex.Matches(cssString))
+            cssProperties.TryAdd(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim());
 
+        foreach (Match match in CssPropertyRegex.Matches(leadingCssString))
+            cssProperties[match.Groups[1].Value.Trim()] = match.Groups[2].Value.Trim();
 
-        var cssProperties2 = cssRegex.Matches(leadingCssString);
-        foreach (var property in cssProperties2.Cast<Match>())
-            cssProperties[property.Groups[1].Value.Trim()] = property.Groups[2].Value.Trim();
-
-        return cssProperties.Aggregate("", (current, property) => current + (property.Key + ": " + property.Value + "; "));
+        var sb = new StringBuilder();
+        foreach (var property in cssProperties)
+            sb.Append(property.Key).Append(": ").Append(property.Value).Append("; ");
+        return sb.ToString();
     }
 
     /// <summary>
@@ -141,6 +147,8 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     public static T StyleStringToObject<T>(string css) where T : new()
     {
         var obj = new T();
+        var objType = typeof(T);
+        var typeProperties = StylePropertyCache.GetOrAdd(objType, t => t.GetProperties());
 
         // Split the CSS string into individual properties
         var properties = css.Split(';');
@@ -156,13 +164,14 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
             var propertyName = propertyParts[0].Trim();
             var propertyValue = propertyParts[1].Trim();
 
-            // Convert the property name to camelCase
-            propertyName = Regex.Replace(propertyName, "-([a-z])", m => m.Groups[1].Value.ToUpperInvariant()).ToUpper(true);
+            // Convert the property name to PascalCase
+            propertyName = KebabToCamelRegex.Replace(propertyName, m => m.Groups[1].Value.ToUpperInvariant()).ToUpper(true);
 
             // Try to set the property value on the object
             try
             {
-                obj.GetType().GetProperty(propertyName)?.SetValue(obj, propertyValue);
+                var prop = Array.Find(typeProperties, p => p.Name == propertyName);
+                prop?.SetValue(obj, propertyValue);
             }
             catch (Exception)
             {
