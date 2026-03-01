@@ -89,9 +89,16 @@ public partial class MudExStructuredDataEditor
 
             ErrorMessage = null;
             MetaInformation = null;
-            Value = DataType.HasValue
-                        ? ReflectionHelper.CreateTypeAndDeserialize(Prepare(Data), DataType.Value, nameof(MudExStructuredDataEditor), true)
-                        : ReflectionHelper.CreateTypeAndDeserialize(Prepare(Data), nameof(MudExStructuredDataEditor), true);
+            try
+            {
+                Value = DataType.HasValue
+                            ? ReflectionHelper.CreateTypeAndDeserialize(Prepare(Data), DataType.Value, nameof(MudExStructuredDataEditor), true)
+                            : ReflectionHelper.CreateTypeAndDeserialize(Prepare(Data), nameof(MudExStructuredDataEditor), true);
+            }
+            catch (MissingMethodException)
+            {
+                ErrorMessage = "Structured data editing is not supported in this runtime. Please update the Nextended.Core package or check Newtonsoft.Json compatibility.";
+            }
         }
     }
 

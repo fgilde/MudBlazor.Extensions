@@ -36,6 +36,12 @@ public partial class MudExObjectEdit<T>
     private T _value;
     private List<DynamicComponent> _groups = new();
     private Type? _registeredEditorType;
+    private List<IGrouping<string, ObjectEditPropertyMeta>> _groupedMetaCache;
+    private bool _groupedMetaCacheDirty = true;
+    private CancellationTokenSource _stateChangeCts;
+    private bool _stateChangePending;
+    private List<string> _cachedFilterValues;
+    private string _lastFilterKey;
 
     /// <summary>
     /// If this is set all properties will be readonly depending on the value otherwise the property settings for meta configuration will be used
@@ -403,6 +409,7 @@ public partial class MudExObjectEdit<T>
         {
             var oldValue = _filter;
             _filter = value;
+            InvalidateGroupedMetaCache();
             _= CheckReinitAsync(oldValue, _filter);
         }
     }
@@ -419,6 +426,7 @@ public partial class MudExObjectEdit<T>
         {
             var oldValue = _filters;
             _filters = value;
+            InvalidateGroupedMetaCache();
             _= CheckReinitAsync(oldValue, _filters);
         }
     }
@@ -595,6 +603,7 @@ public partial class MudExObjectEdit<T>
         if (AutoUpdateConditions)
         {
             UpdateAllConditions();
+            InvalidateGroupedMetaCache();
             return true;
         }
         return false;
@@ -724,6 +733,7 @@ public partial class MudExObjectEdit<T>
     /// <param name="useRefresh"></param>
     public void Invalidate(bool useRefresh = false)
     {
+        InvalidateGroupedMetaCache();
         if (useRefresh)
             Refresh();
         else
@@ -804,6 +814,7 @@ public partial class MudExObjectEdit<T>
             UpdateConditions();
         await PropertyChanged.InvokeAsync(property);
         await ValueChanged.InvokeAsync(Value);
+        DebouncedStateHasChanged();
         if (Value is IComponent c)
         {
             try
@@ -823,25 +834,44 @@ public partial class MudExObjectEdit<T>
         _value = value;
         MetaInformation?.SetValue(value);
         await CreateMetaIfNotExists();
+        InvalidateGroupedMetaCache();
         Invalidate();
+    }
+
+    private List<string> GetEffectiveFilters()
+    {
+        var filterKey = $"{Filter}|{string.Join(",", Filters ?? Enumerable.Empty<string>())}";
+        if (_cachedFilterValues != null && _lastFilterKey == filterKey)
+            return _cachedFilterValues;
+
+        _lastFilterKey = filterKey;
+        _cachedFilterValues = (!string.IsNullOrEmpty(Filter) ? new[] { Filter } : Enumerable.Empty<string>())
+            .Concat(Filters ?? Enumerable.Empty<string>())
+            .Where(f => !string.IsNullOrWhiteSpace(f))
+            .Distinct()
+            .ToList();
+        return _cachedFilterValues;
     }
 
     private bool IsInFilter(ObjectEditPropertyMeta propertyMeta)
     {
-        var allFilters = (!string.IsNullOrEmpty(Filter) ? new[] { Filter } : Enumerable.Empty<string>()).Concat(Filters ?? Enumerable.Empty<string>()).Distinct().ToList();
+        var allFilters = GetEffectiveFilters();
 
         // No filters, nothing to filter against, so return true
-        return !allFilters.Any() ||
-               // Loop through each filter in allFilters
-               (from filter in allFilters
-                where !string.IsNullOrWhiteSpace(filter)
-                select propertyMeta.Settings.LabelFor(LocalizerToUse).Contains(filter, StringComparison.InvariantCultureIgnoreCase)
-                || propertyMeta.Settings.DescriptionFor(LocalizerToUse).Contains(filter, StringComparison.InvariantCultureIgnoreCase)
-                || propertyMeta.PropertyInfo.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase)
-                || (propertyMeta.Value?.ToString()?.Contains(filter, StringComparison.InvariantCultureIgnoreCase) == true)
-                || (propertyMeta.GroupInfo?.Name?.Contains(filter, StringComparison.InvariantCultureIgnoreCase) == true)
-                || (propertyMeta.RenderData?.Attributes.Values.OfType<string>().Any(x => x.Contains(filter, StringComparison.InvariantCultureIgnoreCase)) == true))
-                .Any(matchesCurrentFilter => matchesCurrentFilter);
+        if (allFilters.Count == 0)
+            return true;
+
+        foreach (var filter in allFilters)
+        {
+            if (propertyMeta.Settings.LabelFor(LocalizerToUse).Contains(filter, StringComparison.OrdinalIgnoreCase)
+                || propertyMeta.Settings.DescriptionFor(LocalizerToUse).Contains(filter, StringComparison.OrdinalIgnoreCase)
+                || propertyMeta.PropertyInfo.Name.Contains(filter, StringComparison.OrdinalIgnoreCase)
+                || (propertyMeta.Value?.ToString()?.Contains(filter, StringComparison.OrdinalIgnoreCase) == true)
+                || (propertyMeta.GroupInfo?.Name?.Contains(filter, StringComparison.OrdinalIgnoreCase) == true)
+                || (propertyMeta.RenderData?.Attributes.Values.OfType<string>().Any(x => x.Contains(filter, StringComparison.OrdinalIgnoreCase)) == true))
+                return true;
+        }
+        return false;
     }
 
 
@@ -882,7 +912,19 @@ public partial class MudExObjectEdit<T>
 
 
     private List<IGrouping<string, ObjectEditPropertyMeta>> GroupedMetaPropertyInfos()
-        => !RenderIgnoredReferences ? DefaultGroupedMetaPropertyInfos() : AllGroupedMetaPropertyInfos();
+    {
+        if (_groupedMetaCacheDirty || _groupedMetaCache == null)
+        {
+            _groupedMetaCache = !RenderIgnoredReferences ? DefaultGroupedMetaPropertyInfos() : AllGroupedMetaPropertyInfos();
+            _groupedMetaCacheDirty = false;
+        }
+        return _groupedMetaCache;
+    }
+
+    private void InvalidateGroupedMetaCache()
+    {
+        _groupedMetaCacheDirty = true;
+    }
 
 
     private bool ContainsRenderWrapperType(IEnumerable<ObjectEditPropertyMeta> meta, Type type)
@@ -943,7 +985,23 @@ public partial class MudExObjectEdit<T>
 
     private void OnMetaUpdateRequired(ObjectEditPropertyMeta meta)
     {
-        CallStateHasChanged();
+        DebouncedStateHasChanged();
+    }
+
+    private void DebouncedStateHasChanged(int delayMs = 50)
+    {
+        _stateChangePending = true;
+        _stateChangeCts?.Cancel();
+        _stateChangeCts = new CancellationTokenSource();
+        var token = _stateChangeCts.Token;
+        _ = Task.Delay(delayMs, token).ContinueWith(_ =>
+        {
+            if (!token.IsCancellationRequested && _stateChangePending)
+            {
+                _stateChangePending = false;
+                InvokeAsync(StateHasChanged);
+            }
+        }, token, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Current);
     }
 
     private async Task OnResetClick(MouseEventArgs arg)
@@ -980,7 +1038,7 @@ public partial class MudExObjectEdit<T>
         }, SizeUnit, Style);
     }
 
-    private bool HasFixedHeight() => Height != null || MaxHeight != null || Style?.ToLower().Contains("height") == true;
+    private bool HasFixedHeight() => Height != null || MaxHeight != null || (Style != null && Style.Contains("height", StringComparison.OrdinalIgnoreCase));
 
     private string GetToolbarStickyTop()
     {
@@ -1266,12 +1324,16 @@ public partial class MudExObjectEdit<T>
         }
     }
 
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, PropertyInfo[]> _typePropertiesCache = new();
+
     private IDictionary<string, object> GetPropertiesWithPaths(object obj, string currentPath = "")
     {
         if (obj == null) return new Dictionary<string, object>();
 
         var result = new Dictionary<string, object>();
-        foreach (var prop in obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        var objType = obj.GetType();
+        var properties = _typePropertiesCache.GetOrAdd(objType, t => t.GetProperties(BindingFlags.Public | BindingFlags.Instance));
+        foreach (var prop in properties)
         {
             var propValue = prop.GetValue(obj);
             var newPath = string.IsNullOrEmpty(currentPath) ? prop.Name : $"{currentPath}.{prop.Name}";

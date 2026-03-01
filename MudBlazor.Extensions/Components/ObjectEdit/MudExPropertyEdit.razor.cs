@@ -98,6 +98,8 @@ public partial class MudExPropertyEdit
     private bool _urlSetDone;
 
     private DynamicComponent _editor;
+    private static MethodInfo _createFieldForExpressionMethod;
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, MethodInfo> _genericMethodCache = new();
 
     //private Expression<Func<TPropertyType>> CreateFieldForExpression<TPropertyType>()
     //    => Check.TryCatch<Expression<Func<TPropertyType>>, Exception>(() => Expression.Lambda<Func<TPropertyType>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ReferenceHolder.GetType()), PropertyMeta.PropertyInfo)));
@@ -118,8 +120,9 @@ public partial class MudExPropertyEdit
 
     private object CreateFieldForExpressionPropertyType()
     {
-        MethodInfo createFieldForExpression = GetType().GetMethod(nameof(CreateFieldForExpression), BindingFlags.NonPublic | BindingFlags.Instance);
-        MethodInfo genericMethod = createFieldForExpression?.MakeGenericMethod(PropertyMeta.ComponentFieldType);
+        _createFieldForExpressionMethod ??= GetType().GetMethod(nameof(CreateFieldForExpression), BindingFlags.NonPublic | BindingFlags.Instance);
+        var genericMethod = _genericMethodCache.GetOrAdd(PropertyMeta.ComponentFieldType,
+            type => _createFieldForExpressionMethod?.MakeGenericMethod(type));
         return genericMethod?.Invoke(this, Array.Empty<object>()) ?? CreateFieldForExpression<string>();
     }
 
@@ -322,11 +325,19 @@ public partial class MudExPropertyEdit
             CallStateHasChanged();
     }
 
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<(Type, string), PropertyInfo> _valueFieldPropertyCache = new();
+
     /// <summary>
     /// Returns the current Value independent of the PropertyMeta for example if binding is disabled
     /// </summary>
     public object GetCurrentValue()
-        => Editor.Instance?.GetType().GetProperty(PropertyMeta.RenderData.ValueField)?.GetValue(Editor.Instance);
+    {
+        var instance = Editor.Instance;
+        if (instance == null) return null;
+        var prop = _valueFieldPropertyCache.GetOrAdd((instance.GetType(), PropertyMeta.RenderData.ValueField),
+            key => key.Item1.GetProperty(key.Item2));
+        return prop?.GetValue(instance);
+    }
 
     /// <summary>
     /// Sets a Value independent of the PropertyMeta for example if binding is disabled

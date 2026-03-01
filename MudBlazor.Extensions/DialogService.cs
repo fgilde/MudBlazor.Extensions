@@ -208,7 +208,7 @@ namespace MudBlazor.Extensions
             await Task.Run(() =>
             {
                 while (dialogReference.Dialog == null)
-                    Thread.Sleep(10);
+                        Thread.Sleep(10);
             });
             return dialogReference.Dialog as T;
         }
@@ -299,7 +299,6 @@ namespace MudBlazor.Extensions
         internal static DialogOptionsEx PrepareOptionsAfterShow(DialogOptionsEx options)
         {
             options ??= DefaultOptions();
-            options = options.CloneOptions();
 
             (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(options.DisableSizeMarginY ?? false ? MudExCss.Classes.Dialog.FullHeightWithoutMargin : MudExCss.Classes.Dialog.FullHeightWithMargin, options.FullHeight ?? false);
             (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(options.MaxHeight != null ? $"mud-ex-dialog-max-height-{options.MaxHeight.GetDescription()}" : string.Empty);

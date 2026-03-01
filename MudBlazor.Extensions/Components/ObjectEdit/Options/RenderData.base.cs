@@ -1,4 +1,5 @@
-﻿using Nextended.Blazor.Helper;
+﻿using System.Collections.Concurrent;
+using Nextended.Blazor.Helper;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 using System.Reflection;
@@ -111,10 +112,17 @@ public partial class RenderData : IRenderData
     }
 
 
+    private static readonly ConcurrentDictionary<(Type componentType, string key, Type valueType), bool> _validParameterCache = new();
+
     /// <summary>
     /// Returns whether the given key and value are valid parameters for the current component type.
     /// </summary>
-    public bool IsValidParameterAttribute(string key, object value) => ComponentRenderHelper.IsValidParameter(ComponentType, key, value);
+    public bool IsValidParameterAttribute(string key, object value)
+    {
+        if (ComponentType == null) return false;
+        return _validParameterCache.GetOrAdd((ComponentType, key, value?.GetType()),
+            k => ComponentRenderHelper.IsValidParameter(k.componentType, k.key, value));
+    }
 
     /// <summary>
     /// Set of valid attributes for the current component type.
@@ -236,15 +244,20 @@ public partial class RenderData : IRenderData
     /// </summary>
     public virtual void UpdateConditionalSettings<TModel>(TModel model)
     {
-        Conditions?.Where(c => c.modelType == typeof(TModel)).Apply(condition => (condition.condition(model) ? condition.trueFn : condition.falseFn)(this));
-        Conditions?.Where(c => c.modelType == ComponentType).Apply(condition =>
+        if (Conditions == null || Conditions.Count == 0)
+        {
+            Wrapper?.UpdateConditionalSettings(model);
+            return;
+        }
+        Conditions.Where(c => c.modelType == typeof(TModel)).Apply(condition => (condition.condition(model) ? condition.trueFn : condition.falseFn)(this));
+        Conditions.Where(c => c.modelType == ComponentType).Apply(condition =>
         {
             var componentInstanceClone = Attributes.ToObject(ComponentType);
             (condition.condition(componentInstanceClone) ? condition.trueFn : condition.falseFn)(this);
         });
         if (PropertyMeta != null) {
-            Conditions?.Where(c => c.modelType == typeof(ObjectEditPropertyMeta)).Apply(condition => (condition.condition(PropertyMeta) ? condition.trueFn : condition.falseFn)(this));
-            Conditions?.Where(c => c.modelType == typeof(PropertyInfo)).Apply(condition => (condition.condition(PropertyMeta.PropertyInfo) ? condition.trueFn : condition.falseFn)(this));
+            Conditions.Where(c => c.modelType == typeof(ObjectEditPropertyMeta)).Apply(condition => (condition.condition(PropertyMeta) ? condition.trueFn : condition.falseFn)(this));
+            Conditions.Where(c => c.modelType == typeof(PropertyInfo)).Apply(condition => (condition.condition(PropertyMeta.PropertyInfo) ? condition.trueFn : condition.falseFn)(this));
         }
         // Notice if you want to allow more types as condition you need to do it here, and in ObjectEditPropertyMetaSettings.cs as well
         Wrapper?.UpdateConditionalSettings(model);

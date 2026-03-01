@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Concurrent;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -81,36 +82,46 @@ public abstract class ObjectEditMeta
     }
 
 
+    private static readonly ConcurrentDictionary<PropertyInfo, bool> _allowedPropertyCache = new();
+    private static readonly Type[] ForbiddenAttributes = { typeof(InjectAttribute), typeof(IgnoreDataMemberAttribute), typeof(IgnoreOnObjectEditAttribute) };
+
     internal static bool IsAllowedAsPropertyToEdit(PropertyInfo p)
     {
-        var forbiddenAttributes = new[] { typeof(InjectAttribute), typeof(IgnoreDataMemberAttribute), typeof(IgnoreOnObjectEditAttribute) };
-        return forbiddenAttributes.All(a => p.GetCustomAttribute(a) == null);
+        return _allowedPropertyCache.GetOrAdd(p, prop => ForbiddenAttributes.All(a => prop.GetCustomAttribute(a) == null));
     }
+
+    private static readonly ConcurrentDictionary<(Type, PropertyInfo), bool> _componentPropertyAllowedCache = new();
+    private static readonly Type[] ForbiddenComponentTypes = { typeof(EventCallback), typeof(EventCallback<>), typeof(Expression<>), typeof(Func<>), typeof(Converter<,>), typeof(Converter<,>), typeof(CultureInfo), typeof(RenderFragment), typeof(RenderFragment<>), typeof(IStringLocalizer<>), typeof(IStringLocalizer) };
 
     internal static bool IsAllowedAsPropertyToEditOnAComponent<T>(PropertyInfo p)
     {
-        if (p.PropertyType.IsNullableOf<DateTime>() && p.Name == nameof(MudBaseDatePicker.PickerMonth))
-            return false; // TODO: find out why its so hard crashing without this
-        if (typeof(T) == typeof(MudChip<>) && p.Name == nameof(MudChip<T>.Value))
-            return false; // TODO: find out why its so hard crashing without this
+        return _componentPropertyAllowedCache.GetOrAdd((typeof(T), p), key =>
+        {
+            var (ownerType, prop) = key;
+            if (prop.PropertyType.IsNullableOf<DateTime>() && prop.Name == nameof(MudBaseDatePicker.PickerMonth))
+                return false;
+            if (ownerType == typeof(MudChip<>) && prop.Name == nameof(MudChip<T>.Value))
+                return false;
 
-        var forbiddenTypes = new[] { typeof(EventCallback), typeof(EventCallback<>), typeof(Expression<>), typeof(Func<>), typeof(Converter<,>), typeof(Converter<,>), typeof(CultureInfo), typeof(RenderFragment), typeof(RenderFragment<>), typeof(IStringLocalizer<>), typeof(IStringLocalizer) };
-        var isIComponent = typeof(ComponentBase).IsAssignableFrom(p.DeclaringType);
-        return (!isIComponent || p.GetCustomAttribute<ParameterAttribute>() != null || p.GetCustomAttribute<CascadingParameterAttribute>() != null)
-               && !p.PropertyType.IsFunc() && !p.PropertyType.IsExpression() //&& !p.PropertyType.IsAction()
-           //    && p.PropertyType is {IsInterface: false, IsAbstract: false} // Bad idea
-               && forbiddenTypes.All(t => t != p.PropertyType && (!p.PropertyType.IsGenericType || t != p.PropertyType.GetGenericTypeDefinition()));
+            var isIComponent = typeof(ComponentBase).IsAssignableFrom(prop.DeclaringType);
+            return (!isIComponent || prop.GetCustomAttribute<ParameterAttribute>() != null || prop.GetCustomAttribute<CascadingParameterAttribute>() != null)
+                   && !prop.PropertyType.IsFunc() && !prop.PropertyType.IsExpression()
+                   && ForbiddenComponentTypes.All(t => t != prop.PropertyType && (!prop.PropertyType.IsGenericType || t != prop.PropertyType.GetGenericTypeDefinition()));
+        });
     }
 
+
+    private static readonly ConcurrentDictionary<PropertyInfo, bool> _editableComponentParamCache = new();
 
     /// <summary>
     /// Returns whether the given property is editable.
     /// </summary>
     public static bool IsEditableComponentParameter(PropertyInfo p)
     {
-        return (p.GetCustomAttribute<ParameterAttribute>() != null || p.GetCustomAttribute<CascadingParameterAttribute>() != null)
-               && !p.PropertyType.IsEventCallback()
-               && !p.PropertyType.IsExpression();
+        return _editableComponentParamCache.GetOrAdd(p, prop =>
+            (prop.GetCustomAttribute<ParameterAttribute>() != null || prop.GetCustomAttribute<CascadingParameterAttribute>() != null)
+            && !prop.PropertyType.IsEventCallback()
+            && !prop.PropertyType.IsExpression());
     }
 
     

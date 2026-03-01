@@ -154,7 +154,7 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
         var cls = Class;
         OptionsEx.JsRuntime ??= Js;
         await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
-        var appliedOptions = DialogServiceExt.PrepareOptionsAfterShow(OptionsEx);
+        var appliedOptions = DialogServiceExt.PrepareOptionsAfterShow(OptionsEx.CloneOptions());
         Class = $"{EnsureInitialClass()} {appliedOptions?.DialogAppearance?.Class}";
         var result = await ShowAsync();
         Class = cls;

@@ -1482,7 +1482,7 @@
             Gets or Sets Light Bulb Size Unit Property.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.AllAppliedHoverModes">
+        <member name="F:MudBlazor.Extensions.Components.MudExCardList`1.AllHoverModeValues">
             <summary>
             Methods returns List of MudExCardHoverMode, where hover modes are applied.
             </summary>
@@ -4997,9 +4997,6 @@
             Custom numeric down icon.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExInput`1.UpdateTextPropertyAsync(System.Boolean)">
-            <inheritdoc />
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExInput`1.UpdateValuePropertyAsync(System.Boolean)">
             <inheritdoc />
         </member>
@@ -7918,6 +7915,12 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.SetTextAndUpdateValueAsync(System.String,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.UpdateValuePropertyAsync(System.Boolean)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.InvokeKeyDownAsync(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs)">
@@ -14360,6 +14363,11 @@
             All properties of the object to be edited.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta`1.InvalidateCache">
+            <summary>
+            Invalidates the cached AllProperties list, forcing recalculation on next access.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta`1.PropertiesExcept(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])">
             <summary>
             All properties of the object to be edited with excepting the given.
@@ -20736,7 +20744,7 @@
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(System.String,System.String[])">
             <summary>
-            Adds one or more css classes to this builder 
+            Adds one or more css classes to this builder
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(System.String,System.Boolean)">

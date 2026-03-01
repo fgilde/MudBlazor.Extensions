@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Concurrent;
+using System.Globalization;
 using System.Linq.Expressions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
@@ -407,24 +408,38 @@ public static class RenderDataDefaults
         => RegisterDefault(typeof(TPropertyType), Options.RenderData.For(valueField).AddAttributes(false, options?.ToArray())) as RenderData<TPropertyType, TPropertyType>;
 
 
+    private static readonly ConcurrentDictionary<Type, (Type controlType, Type renderDataType)?> _enumTypeCache = new();
+    private static readonly ConcurrentDictionary<Type, (Type renderDataType, Type editorType)?> _collectionTypeCache = new();
+
     private static IRenderData TryFindDynamicRenderData(ObjectEditPropertyMeta propertyMeta)
     {
         var propertyType = propertyMeta.PropertyInfo.PropertyType;
         if (propertyType.IsEnum || propertyType.IsNullableEnum()) // Enum support
         {
-            var controlType = typeof(MudExEnumSelect<>).MakeGenericType(propertyType);
-            var renderDataType = typeof(RenderData<,>).MakeGenericType(propertyType, propertyType);
-            return renderDataType.CreateInstance<IRenderData>(nameof(MudExEnumSelect<object>.Value), controlType, null);
+            var cached = _enumTypeCache.GetOrAdd(propertyType, pt =>
+            {
+                var controlType = typeof(MudExEnumSelect<>).MakeGenericType(pt);
+                var renderDataType = typeof(RenderData<,>).MakeGenericType(pt, pt);
+                return (controlType, renderDataType);
+            });
+            return cached?.renderDataType.CreateInstance<IRenderData>(nameof(MudExEnumSelect<object>.Value), cached?.controlType, null);
         }
-        
+
         if (propertyMeta.PropertyInfo.PropertyType.IsCollection() || propertyMeta.PropertyInfo.PropertyType.IsEnumerable()) // Collection support
         { // TODO: When IEnumerable maybe disable add button
             try
             {
                 var collectionType = propertyType.GetGenericArguments().FirstOrDefault() ?? propertyType.GetElementType();
-                var renderDataType = typeof(RenderData<,>).MakeGenericType(propertyMeta.PropertyInfo.PropertyType, typeof(ICollection<>).MakeGenericType(collectionType));
-                var type = typeof(MudExCollectionEditor<>).MakeGenericType(collectionType);
-                return Activator.CreateInstance(renderDataType, nameof(MudExCollectionEditor<object>.Items), type, new Dictionary<string, object>()
+                var cached = _collectionTypeCache.GetOrAdd(propertyType, pt =>
+                {
+                    var ct = pt.GetGenericArguments().FirstOrDefault() ?? pt.GetElementType();
+                    if (ct == null) return null;
+                    var rdt = typeof(RenderData<,>).MakeGenericType(pt, typeof(ICollection<>).MakeGenericType(ct));
+                    var edt = typeof(MudExCollectionEditor<>).MakeGenericType(ct);
+                    return (rdt, edt);
+                });
+                if (cached == null) return null;
+                return Activator.CreateInstance(cached.Value.renderDataType, nameof(MudExCollectionEditor<object>.Items), cached.Value.editorType, new Dictionary<string, object>()
                 {
                     //{nameof(MudExCollectionEditor<object>.MaxHeight), 400} // TODO: Make this configurable or think about default setting max height to have the advantages of virtualization
                 }) as IRenderData;
@@ -451,10 +466,14 @@ public static class RenderDataDefaults
             .FirstOrDefault(renderData => renderData != null);
     }
 
+    private static readonly ConcurrentDictionary<(Type providerType, Type propertyType), bool> _providerValidityCache = new();
+
     private static bool ProviderIsValidFor(IDefaultRenderDataProvider defaultRenderDataProvider, ObjectEditPropertyMeta propertyMeta)
     {
         var providerType = defaultRenderDataProvider.GetType();
-        return providerType.ImplementsInterface(typeof(IDefaultRenderDataProviderFor<>).MakeGenericType(propertyMeta.PropertyInfo.PropertyType)) 
-               || !providerType.GetInterfaces().Any(p => p.IsGenericType && p.GetGenericTypeDefinition() == typeof(IDefaultRenderDataProviderFor<>));
+        var propertyType = propertyMeta.PropertyInfo.PropertyType;
+        return _providerValidityCache.GetOrAdd((providerType, propertyType), key =>
+            key.providerType.ImplementsInterface(typeof(IDefaultRenderDataProviderFor<>).MakeGenericType(key.propertyType))
+            || !key.providerType.GetInterfaces().Any(p => p.IsGenericType && p.GetGenericTypeDefinition() == typeof(IDefaultRenderDataProviderFor<>)));
     }
 }

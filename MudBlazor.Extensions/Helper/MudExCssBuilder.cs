@@ -106,13 +106,21 @@ public sealed class MudExCssBuilder: IAsyncDisposable, IMudExClassAppearance
     /// Adds one or more css classes to this builder
     /// </summary>
     public MudExCssBuilder AddClass(MudExCss.Classes cssClass, params MudExCss.Classes[] other)
-        => new[] { cssClass }.Concat(other).Aggregate(this, (acc, f) => acc.AddClass(f, true));
-  
+    {
+        AddClass(cssClass, true);
+        foreach (var c in other) AddClass(c, true);
+        return this;
+    }
+
     /// <summary>
-    /// Adds one or more css classes to this builder 
+    /// Adds one or more css classes to this builder
     /// </summary>
     public MudExCssBuilder AddClass(string value, params string[] other)
-        => new[] { value }.Concat(other).Aggregate(this, (acc, f) => acc.AddClass(f, true));
+    {
+        AddClass(value, true);
+        foreach (var v in other) AddClass(v, true);
+        return this;
+    }
     
     /// <summary>
     /// Adds one or more css classes to this builder if given condition is true
@@ -207,7 +215,17 @@ public sealed class MudExCssBuilder: IAsyncDisposable, IMudExClassAppearance
     /// <summary>
     /// Builds and returns an applicable css string
     /// </summary>
-    public string Build() => string.Join(" ", _cssClasses.Select(c => $"{c.Key}"));
+    public string Build()
+    {
+        if (_cssClasses.Count == 0) return string.Empty;
+        var sb = new System.Text.StringBuilder();
+        foreach (var key in _cssClasses.Keys)
+        {
+            if (sb.Length > 0) sb.Append(' ');
+            sb.Append(key);
+        }
+        return sb.ToString();
+    }
 
     /// <inheritdoc />
     public override string ToString() => Build();

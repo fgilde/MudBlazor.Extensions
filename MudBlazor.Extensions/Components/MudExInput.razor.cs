@@ -287,29 +287,12 @@ namespace MudBlazor.Extensions.Components
 
         private Size GetButtonSize() => Margin == Margin.Dense ? Size.Small : Size.Medium;
         
-        private void UpdateClearable(object value)
-        {
-            var showClearable = HasValue((T)value);
-            if (Clearable != showClearable)
-                Clearable = showClearable;
-        }
-
         private bool GetClearable() => Clearable && ((Value is string stringValue && !string.IsNullOrWhiteSpace(stringValue)) || (Value is not string && Value is not null));
-
-        /// <inheritdoc />
-        protected override async Task UpdateTextPropertyAsync(bool updateValue)
-        {
-            await base.UpdateTextPropertyAsync(updateValue);
-            if (Clearable)
-                UpdateClearable(Text);
-        }
 
         /// <inheritdoc />
         protected override async Task UpdateValuePropertyAsync(bool updateText)
         {
             await base.UpdateValuePropertyAsync(updateText);
-            if (Clearable)
-                UpdateClearable(Value);
         }
 
         /// <summary>

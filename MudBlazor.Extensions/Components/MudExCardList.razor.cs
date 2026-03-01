@@ -130,7 +130,8 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     /// <summary>
     /// Methods returns List of MudExCardHoverMode, where hover modes are applied.
     /// </summary>
-    public List<MudExCardHoverMode> AllAppliedHoverModes => Enum.GetValues(typeof(MudExCardHoverMode)).Cast<MudExCardHoverMode>().Where(HoverModeMatches).ToList();
+    private static readonly MudExCardHoverMode[] AllHoverModeValues = (MudExCardHoverMode[])Enum.GetValues(typeof(MudExCardHoverMode));
+    public List<MudExCardHoverMode> AllAppliedHoverModes => AllHoverModeValues.Where(HoverModeMatches).ToList();
 
     private string GetCss()
     {
@@ -138,7 +139,7 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
             .AddClass($"mud-ex-card-list-{_id}");
 
         foreach (var mode in AllAppliedHoverModes)
-            res.AddClass($"mud-ex-card-list-{mode.ToString().ToLower()}");
+            res.AddClass($"mud-ex-card-list-{mode.ToString().ToLowerInvariant()}");
 
         res.AddClass(Class);
         return res.Build();

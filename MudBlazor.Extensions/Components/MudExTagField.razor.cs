@@ -17,6 +17,9 @@ public partial class MudExTagField<T>
 {
     private Adornment _renderChipsAdditional = Adornment.None;
     private List<T> _values;
+    private string _trackedText;
+    private T _trackedValue;
+    private bool _swallowNextInput;
 
     /// <summary>
     /// Set to true to allow duplicates
@@ -209,16 +212,46 @@ public partial class MudExTagField<T>
         base.OnInitialized();
     }
 
+    /// <inheritdoc />
+    protected override async Task SetTextAndUpdateValueAsync(string text, bool updateValue = true)
+    {
+        if (_swallowNextInput)
+        {
+            _swallowNextInput = false;
+            _trackedText = string.Empty;
+            _trackedValue = default;
+            if (InputReference != null)
+                await InputReference.SetText(string.Empty);
+            return;
+        }
+
+        _trackedText = text;
+        await base.SetTextAndUpdateValueAsync(text, updateValue);
+        _trackedValue = ReadValue;
+    }
+
+    /// <inheritdoc />
+    protected override async Task UpdateValuePropertyAsync(bool updateText)
+    {
+        await base.UpdateValuePropertyAsync(updateText);
+        _trackedValue = ReadValue;
+    }
+
     private bool ShouldShowVisualiser() => Values?.Any() == true && RenderChipsAdditional == Adornment.None;
 
     /// <inheritdoc />
     protected override async Task InvokeKeyDownAsync(KeyboardEventArgs args)
     {
         await base.InvokeKeyDownAsync(args);
-        if (((Delimiters?.Contains(args.Key[0]) == true && args.Key.Length == 1) || (SetChipsOnEnter && args.Key == "Enter")) && Value != null)        
-            await ApplyChips();        
+        var isDelimiter = Delimiters?.Length > 0 && args.Key.Length == 1 && Delimiters.Contains(args.Key[0]);
+        if ((isDelimiter || (SetChipsOnEnter && args.Key == "Enter")) && !string.IsNullOrEmpty(_trackedText))
+        {
+            await ApplyChips();
+            if (isDelimiter)
+                _swallowNextInput = true;
+        }
 
-        if (args.Key == "Backspace" && string.IsNullOrEmpty(ConvertSet(Value)) && Values?.Any() == true)
+        if (args.Key == "Backspace" && string.IsNullOrEmpty(_trackedText) && Values?.Any() == true)
         {
             Values.RemoveAt(Values.Count - 1);
             await InvokeValuesChanged();
@@ -228,20 +261,23 @@ public partial class MudExTagField<T>
     private async Task ApplyChips()
     {
         Values ??= new();
-        if (Value == null || (Values.Contains(Value) && !AllowDuplicates))
+        var currentValue = _trackedValue;
+        if (currentValue == null || (Values.Contains(currentValue) && !AllowDuplicates))
         {
             await SetErrorWithStyle(DuplicateErrorText);
             return;
         }
         SetError();
-        Values.Add(Value);
+        Values.Add(currentValue);
         await InvokeValuesChanged();
         if (AutoClear)
         {
             if (RuntimeLocation.IsServerSide)
                 await BlurAsync();
-            
+
             await Clear();
+            _trackedText = null;
+            _trackedValue = default;
 
             if (RuntimeLocation.IsServerSide)
                 await FocusAsync();

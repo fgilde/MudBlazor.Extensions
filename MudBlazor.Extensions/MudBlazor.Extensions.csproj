@@ -75,8 +75,8 @@
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.8.0" />
     <PackageReference Include="AuralizeBlazor" Version="3.0.4" />
     <PackageReference Include="MudBlazor.Markdown" Version="9.0.0" />
-    <PackageReference Include="Nextended.Blazor" Version="10.0.7" />
-    <PackageReference Include="Nextended.Core" Version="10.0.7" />
+    <PackageReference Include="Nextended.Blazor" Version="10.0.8" />
+    <PackageReference Include="Nextended.Core" Version="10.0.8" />
     <PackageReference Include="BlazorJS" Version="2.2.0" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
