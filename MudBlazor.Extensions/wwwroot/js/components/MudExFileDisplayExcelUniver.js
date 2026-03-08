@@ -1,9 +1,4 @@
 class MudExFileDisplayExcelUniver {
-    elementRef;
-    dotnet;
-    containerId;
-    univerAPI;
-
     constructor(elementRef, dotNet, containerId) {
         this.elementRef = elementRef;
         this.dotnet = dotNet;
