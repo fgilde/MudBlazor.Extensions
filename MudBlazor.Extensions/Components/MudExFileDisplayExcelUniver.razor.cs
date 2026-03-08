@@ -70,30 +70,39 @@ public partial class MudExFileDisplayExcelUniver : IMudExFileDisplay
 
         try
         {
-            // Step 1: Load React, ReactDOM, RxJS (no interdependencies, can load in parallel)
+            // Step 1: Load React first (must be available before ReactDOM)
             await JsRuntime.LoadFilesAsync(
-                "https://unpkg.com/react@18.3.1/umd/react.production.min.js",
-                "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js",
-                "https://unpkg.com/rxjs/dist/bundles/rxjs.umd.min.js"
+                "https://unpkg.com/react@18.3.1/umd/react.production.min.js"
             );
             await JsRuntime.WaitForNamespaceAsync("React", TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(200));
 
-            // Step 2: Load Univer presets (registers UniverCore, UniverPresets)
+            // Step 2: Load ReactDOM (depends on React being initialized)
             await JsRuntime.LoadFilesAsync(
-                "https://unpkg.com/@univerjs/presets/lib/umd/index.js"
+                "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"
+            );
+            await JsRuntime.WaitForNamespaceAsync("ReactDOM", TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(200));
+
+            // Step 3: Load RxJS (independent, but sequential to avoid contention)
+            await JsRuntime.LoadFilesAsync(
+                "https://unpkg.com/rxjs@7.8.2/dist/bundles/rxjs.umd.min.js"
+            );
+
+            // Step 4: Load Univer presets (registers UniverCore, UniverPresets)
+            await JsRuntime.LoadFilesAsync(
+                "https://unpkg.com/@univerjs/presets@0.16.1/lib/umd/index.js"
             );
             await JsRuntime.WaitForNamespaceAsync("UniverPresets", TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(200));
 
-            // Step 3: Load preset-sheets-core (depends on UniverCore from step 2)
+            // Step 5: Load preset-sheets-core (depends on UniverCore from step 4)
             await JsRuntime.LoadFilesAsync(
-                "https://unpkg.com/@univerjs/preset-sheets-core/lib/umd/index.js",
-                "https://unpkg.com/@univerjs/preset-sheets-core/lib/index.css"
+                "https://unpkg.com/@univerjs/preset-sheets-core@0.16.1/lib/umd/index.js",
+                "https://unpkg.com/@univerjs/preset-sheets-core@0.16.1/lib/index.css"
             );
             await JsRuntime.WaitForNamespaceAsync("UniverPresetSheetsCore", TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(200));
 
-            // Step 4: Load locale (depends on UniverCore)
+            // Step 6: Load locale (depends on UniverCore)
             await JsRuntime.LoadFilesAsync(
-                "https://unpkg.com/@univerjs/preset-sheets-core/lib/umd/locales/en-US.js"
+                "https://unpkg.com/@univerjs/preset-sheets-core@0.16.1/lib/umd/locales/en-US.js"
             );
 
             // Step 5: Load LuckyExcel for XLSX parsing
@@ -169,8 +178,7 @@ public partial class MudExFileDisplayExcelUniver : IMudExFileDisplay
     {
         try
         {
-            var themeColors = await GetThemeColorsAsync();
-            await JsReference.InvokeVoidAsync("loadWorkbook", bytes, themeColors);
+            await JsReference.InvokeVoidAsync("loadWorkbook", bytes);
         }
         catch (Exception e)
         {
@@ -180,30 +188,6 @@ public partial class MudExFileDisplayExcelUniver : IMudExFileDisplay
             Console.WriteLine(e);
             StateHasChanged();
         }
-    }
-
-    private async Task<object> GetThemeColorsAsync()
-    {
-        try
-        {
-            var primary = await GetCssVariableAsync("--mud-palette-primary");
-            var surface = await GetCssVariableAsync("--mud-palette-surface");
-            var background = await GetCssVariableAsync("--mud-palette-background");
-            var textPrimary = await GetCssVariableAsync("--mud-palette-text-primary");
-            var lines = await GetCssVariableAsync("--mud-palette-lines-default");
-
-            return new { primary, surface, background, textPrimary, lines };
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    private async Task<string> GetCssVariableAsync(string variableName)
-    {
-        return await JsRuntime.InvokeAsync<string>("eval",
-            new object[] { $"getComputedStyle(document.documentElement).getPropertyValue('{variableName}').trim()" });
     }
 
     /// <summary>

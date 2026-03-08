@@ -5,13 +5,9 @@ class MudExFileDisplayExcelUniver {
         this.containerId = containerId;
     }
 
-    loadWorkbook(fileBytes, themeColors) {
+    loadWorkbook(fileBytes) {
         var self = this;
         try {
-            if (themeColors) {
-                this.applyTheme(themeColors);
-            }
-
             var blob = new Blob([new Uint8Array(fileBytes)], {
                 type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             });
@@ -72,17 +68,6 @@ class MudExFileDisplayExcelUniver {
             console.error('Failed to load workbook:', e);
             this.dotnet.invokeMethodAsync('OnError', e.message || 'Failed to load workbook');
         }
-    }
-
-    applyTheme(colors) {
-        var container = document.getElementById(this.containerId);
-        if (!container || !colors) return;
-
-        if (colors.primary) container.style.setProperty('--univer-color-primary', colors.primary);
-        if (colors.surface) container.style.setProperty('--univer-bg-color-secondary', colors.surface);
-        if (colors.background) container.style.setProperty('--univer-bg-color', colors.background);
-        if (colors.textPrimary) container.style.setProperty('--univer-text-color', colors.textPrimary);
-        if (colors.lines) container.style.setProperty('--univer-border-color', colors.lines);
     }
 
     disposeUniver() {
