@@ -1,0 +1,23 @@
+@using Gotho.BlazorPdf
+@using Gotho.BlazorPdf.MudBlazor
+@inherits MudExBaseComponent<MudExFileDisplayPdf>
+
+<style>
+    .mud-ex-file-display-pdf {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .mud-ex-file-display-pdf .blazorpdf__scroll {
+        height: 100% !important;
+    }
+</style>
+
+<div class="mud-ex-file-display-pdf">
+    <MudPdfViewer @ref="_pdfViewer"
+                  Height="100%"
+                  Colors="@_colors"
+                  OnDocumentLoaded="@OnDocumentLoaded"
+                  OnPageChanged="@OnPageChanged" />
+</div>

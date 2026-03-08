@@ -3206,6 +3206,56 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcel.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver">
+            <summary>
+            Excel file viewer using Univer spreadsheet library
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.StartsActive">
+            <summary>
+            Not the default viewer for Excel files
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.GetJsArguments">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.ImportModuleAndCreateJsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.OnWorkbookLoaded">
+            <summary>
+            Called from JS when the workbook is loaded
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.OnError(System.String)">
+            <summary>
+            Called from JS when an error occurs
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayFont">
             <summary>
             Simple component to display markdown files with MudExFileDisplay
@@ -3354,6 +3404,43 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayPdf">
+            <summary>
+            PDF file viewer using Gotho.BlazorPdf with MudBlazor integration
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPdf.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPdf.WrapInMudExFileDisplayDiv">
+            <summary>
+            Do not wrap in the default file display div to avoid layout conflicts
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPdf.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPdf.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPdf.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPdf.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPdf.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPdf.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData">

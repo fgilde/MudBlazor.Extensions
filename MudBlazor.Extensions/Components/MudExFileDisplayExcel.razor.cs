@@ -24,6 +24,8 @@ namespace MudBlazor.Extensions.Components
             set => _selectedSheet = _excelFile?.Sheets.ElementAtOrDefault(value);
         }
 
+        public bool StartsActive => false;
+
         /// <summary>
         /// The Current code string provided from file
         /// </summary>

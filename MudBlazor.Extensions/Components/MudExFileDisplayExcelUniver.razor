@@ -1,0 +1,17 @@
+@inherits MudExJsRequiredBaseComponent<MudExFileDisplayExcelUniver>
+@namespace MudBlazor.Extensions.Components
+
+<div @ref="ElementReference" style="width: 100%; height: 100%; position: relative;">
+    @if (_isLoading)
+    {
+        <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+            <MudText Class="ml-3">@TryLocalize("Loading Excel file...")</MudText>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Class="ma-2">@_errorMessage</MudAlert>
+    }
+    <div id="@_containerId" style="width: 100%; height: 100%;"></div>
+</div>

@@ -102,5 +102,11 @@
     "inputFiles": [
       "wwwroot/js/components/MudExImageViewer.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExFileDisplayExcelUniver.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExFileDisplayExcelUniver.js"
+    ]
   }
 ]

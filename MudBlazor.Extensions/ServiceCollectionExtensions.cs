@@ -54,6 +54,7 @@ public static class ServiceCollectionExtensions
 
         #endregion
        
+        services.AddBlazorPdfViewer();
         services.AddMudMarkdownServices();
 
         return services.AddMudExObjectEdit(assembliesArray);
