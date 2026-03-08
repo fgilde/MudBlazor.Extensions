@@ -132,7 +132,7 @@
       <BaseDir ParameterType="System.String" Required="true" />
     </ParameterGroup>
     <Task>
-      <Reference Include="$(NuGetPackageRoot)nuglify\1.21.17\lib\netstandard2.0\NUglify.dll" />
+      <Reference Include="$(NuGetPackageRoot)nuglify/1.21.17/lib/netstandard2.0/NUglify.dll" />
       <Using Namespace="System" />
       <Using Namespace="System.IO" />
       <Using Namespace="System.Linq" />
