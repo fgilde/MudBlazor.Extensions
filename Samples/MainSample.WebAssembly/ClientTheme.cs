@@ -134,7 +134,7 @@ public class ClientTheme : MudTheme
 
     #endregion
 
-
+    public static ClientTheme LeptonTheme = MudLeptonTheme.Create();
     public static ClientTheme DefaultTheme = new ClientTheme()
     {
         LogoStyle = "height: 50px; margin-right: 10px; margin-top: 5px",
@@ -236,6 +236,7 @@ public class ClientTheme : MudTheme
     public static ICollection<ThemePreset<ClientTheme>> All =>
     [
         new("Default", DefaultTheme),
+        new("Lepton", LeptonTheme),
         new("MudEx 2 (last)", Version2),
         new("MudEx 1 (first)", InitialTheme),
         new("Simple Blue", SimpleBlue)
@@ -263,4 +264,115 @@ public class StoredThemeItem<T>
 {
     public string Key { get; set; }
     public T Value { get; set; }
+}
+
+
+public static class MudLeptonTheme
+{
+    // ── LeptonX semantic colors (shared across all themes) ──
+    private const string Primary = "#355dff";
+    private const string Secondary = "#6c5dd3";
+    private const string Success = "#4fbf67";
+    private const string Info = "#438aa7";
+    private const string Warning = "#ff9f38";
+    private const string Danger = "#c00d49";
+
+    public static ClientTheme Create() => new()
+    {
+        PaletteLight = BuildLightPalette(),
+        PaletteDark = BuildDarkPalette(),
+        LayoutProperties = new LayoutProperties
+        {
+            DefaultBorderRadius = "0.5rem",    // --lpx-radius
+        },
+        Typography = new Typography
+        {
+            Default = new DefaultTypography
+            {
+                FontFamily = ["Inter", "sans-serif"],  // --bs-body-font-family
+                FontSize = "0.875rem",                 // --bs-body-font-size
+            },
+        },
+    };
+
+    private static PaletteLight BuildLightPalette() => new()
+    {
+        // ── Semantic ──
+        Primary = Primary,
+        Secondary = Secondary,
+        Success = Success,
+        Info = Info,
+        Warning = Warning,
+        Error = Danger,
+
+        // ── Backgrounds & Surfaces ──
+        Background = "#f0f4f7",       // --lpx-content-bg (light)
+        BackgroundGray = "#e8eef3",   // --lpx-border-color (light)
+        Surface = "#fff",             // --lpx-card-bg (light)
+        AppbarBackground = "#fff",    // --lpx-navbar-color (light)
+        AppbarText = "#445f72",       // --lpx-navbar-text-color (light)
+        DrawerBackground = "#fff",
+        DrawerText = "#445f72",       // --lpx-navbar-text-color (light)
+
+        // ── Text ──
+        TextPrimary = "#325168",      // --lpx-content-text (light)
+        TextSecondary = "#445f72",    // --lpx-dark (light)
+        TextDisabled = "#c6d2dc",     // --lpx-light (light)
+
+        // ── Lines & Dividers ──
+        Divider = "#e8eef3",          // --lpx-border-color (light)
+        DividerLight = "#f0f4f7",     // --lpx-content-bg (light)
+        LinesDefault = "#e8eef3",     // --lpx-border-color (light)
+        LinesInputs = "#c6d2dc",      // --lpx-light (light)
+
+        // ── Table ──
+        TableHover = "rgba(53,93,255,0.04)",
+        TableStriped = "rgba(0,0,0,0.02)",
+
+        // ── Actions ──
+        ActionDefault = "#445f72",    // --lpx-dark (light)
+        ActionDisabled = "rgba(50,81,104,0.3)",
+        ActionDisabledBackground = "rgba(50,81,104,0.12)",
+    };
+
+    private static PaletteDark BuildDarkPalette() => new()
+    {
+        // ── Semantic ──
+        Primary = Primary,
+        Secondary = Secondary,
+        Success = Success,
+        Info = Info,
+        Warning = Warning,
+        Error = Danger,
+
+        // ── Backgrounds & Surfaces ──
+        // Works for both "dark" (bg #121212, card #1b1b1b) and "dim" (navbar #161616)
+        Background = "#121212",       // --lpx-content-bg (dark)
+        BackgroundGray = "#222",      // --lpx-border-color (dark)
+        Surface = "#1b1b1b",          // --lpx-card-bg (dark)
+        AppbarBackground = "#161616", // --lpx-navbar-color (dark)
+        AppbarText = "#fff",          // --lpx-navbar-active-text-color (dark)
+        DrawerBackground = "#161616",
+        DrawerText = "#777d87",       // --lpx-navbar-text-color (dark)
+
+        // ── Text ──
+        TextPrimary = "#eee",         // --lpx-card-title-text-color (dark)
+        TextSecondary = "#9ca5b4",    // --lpx-content-text (dark)
+        TextDisabled = "#444",        // --lpx-light (dark)
+
+        // ── Lines & Dividers ──
+        Divider = "#222",             // --lpx-border-color (dark)
+        DividerLight = "#1b1b1b",     // --lpx-card-bg (dark)
+        LinesDefault = "#222",        // --lpx-border-color (dark)
+        LinesInputs = "#444",         // --lpx-light (dark)
+
+        // ── Table ──
+        TableHover = "rgba(53,93,255,0.08)",
+        TableStriped = "rgba(255,255,255,0.02)",
+
+        // ── Actions ──
+        ActionDefault = "#bbb",       // --lpx-dark (dark)
+        ActionDisabled = "rgba(156,165,180,0.3)",
+        ActionDisabledBackground = "rgba(156,165,180,0.12)",
+    };
 }

@@ -87,6 +87,8 @@
     <PackageReference Include="MetadataExtractor" Version="2.9.0" />
     <PackageReference Include="Gotho.BlazorPdf" Version="2.2.0" />
     <PackageReference Include="Gotho.BlazorPdf.MudBlazor" Version="2.2.0" />
+    <PackageReference Include="RtfPipe" Version="2.0.*" />
+    <PackageReference Include="MsgReader" Version="6.0.*" />
   </ItemGroup>
 
   <ItemGroup>

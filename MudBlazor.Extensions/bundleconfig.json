@@ -108,5 +108,11 @@
     "inputFiles": [
       "wwwroot/js/components/MudExFileDisplayExcelUniver.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExFileDisplayDocument.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExFileDisplayDocument.js"
+    ]
   }
 ]

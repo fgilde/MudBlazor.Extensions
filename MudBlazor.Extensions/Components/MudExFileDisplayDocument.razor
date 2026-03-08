@@ -1,0 +1,27 @@
+@inherits MudExJsRequiredBaseComponent<MudExFileDisplayDocument>
+@namespace MudBlazor.Extensions.Components
+
+<div @ref="ElementReference" style="width: 100%; height: 100%; position: relative;">
+    @if (_isLoading)
+    {
+        <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+            <MudText Class="ml-3">@TryLocalize("Loading document...")</MudText>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Class="ma-2">@_errorMessage</MudAlert>
+    }
+    @if (_isUnsupported)
+    {
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; gap: 16px;">
+            <MudIcon Icon="@Icons.Material.Filled.Description" Size="Size.Large" />
+            <MudText Typo="Typo.h6">@TryLocalize("Unsupported Format")</MudText>
+            <MudText Typo="Typo.body2" Align="Align.Center">
+                @TryLocalize("Legacy .doc binary format cannot be rendered locally. Use the viewer menu to try OfficeLive for public URLs.")
+            </MudText>
+        </div>
+    }
+    <div id="@_containerId" style="width: 100%; height: 100%; @(_isUnsupported ? "display:none;" : "")"></div>
+</div>

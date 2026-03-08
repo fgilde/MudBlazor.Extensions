@@ -3170,6 +3170,57 @@
             Closes the dialog.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDocument">
+            <summary>
+            Document file viewer for DOCX, RTF and MSG files.
+            Uses docx-preview (CDN) for DOCX, RtfPipe for RTF, and MsgReader for MSG files.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDocument.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDocument.StartsActive">
+            <summary>
+            This viewer starts active by default
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDocument.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDocument.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDocument.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDocument.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDocument.GetJsArguments">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDocument.ImportModuleAndCreateJsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDocument.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDocument.OnDocumentRendered">
+            <summary>
+            Called from JS when the document is rendered successfully
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDocument.OnError(System.String)">
+            <summary>
+            Called from JS when an error occurs
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayExcel">
             <summary>
             Simple Excel file viewer
