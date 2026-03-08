@@ -10187,6 +10187,18 @@
             Called when the Cancel button is clicked.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExFluentValidationValidator">
+            <summary>
+            A minimal FluentValidation integration component for Blazor EditContext.
+            Resolves IValidator&lt;T&gt; from DI and feeds validation errors into the EditContext.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExFluentValidationValidator.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExFluentValidationValidator.Dispose">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle">
             <summary>
             Specifies the grouping style.
@@ -13767,18 +13779,6 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.GetErrors">
             <summary>
             Returns a list of all errors in the form fields
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.GetFluentValidationErrors">
-            <summary>
-            Returns a list of validation errors produced by FluentValidation validation
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.GetDataAnnotationErrors">
-            <summary>
-            Returns a list of validation errors produced by DataAnnotation validation
             </summary>
             <returns></returns>
         </member>

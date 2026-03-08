@@ -79,8 +79,8 @@
     <PackageReference Include="Nextended.Core" Version="10.0.8" />
     <PackageReference Include="BlazorJS" Version="2.2.0" />
     <PackageReference Include="OneOf" Version="3.0.271" />
-    <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
-    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />    
+    <PackageReference Include="FluentValidation" Version="11.9.1" />
+    <PackageReference Include="NUglify" Version="1.21.17" PrivateAssets="all" />
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.25121215" />
     <PackageReference Include="SharpCompress" Version="0.46.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
@@ -121,6 +121,126 @@
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="$(UpdateReadMeAndDeployments)">
     <Exec Command="cd &quot;$(ProjectDir)\.scripts&quot;&#xD;&#xA;powershell -ExecutionPolicy Bypass -File &quot;copyMarkdown.ps1&quot;" />
+  </Target>
+
+  <!-- Bundle & Minify: replaces deprecated BuildBundlerMinifier -->
+  <UsingTask TaskName="BundleAndMinify"
+             TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <ConfigFile ParameterType="System.String" Required="true" />
+      <BaseDir ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="$(NuGetPackageRoot)nuglify\1.21.17\lib\netstandard2.0\NUglify.dll" />
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Linq" />
+      <Using Namespace="System.Text" />
+      <Using Namespace="NUglify" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+try
+{
+    // Retry helper for parallel multi-target builds writing to the same files
+    Action<string, string> writeFile = (path, content) => {
+        for (int i = 0; i < 5; i++) {
+            try { File.WriteAllText(path, content); return; }
+            catch (IOException) when (i < 4) { System.Threading.Thread.Sleep(200 * (i + 1)); }
+        }
+    };
+
+    var json = File.ReadAllText(ConfigFile);
+    int pos = 0;
+    while (pos < json.Length)
+    {
+        int outIdx = json.IndexOf("\"outputFileName\"", pos);
+        if (outIdx < 0) break;
+        int c1 = json.IndexOf(':', outIdx + 16);
+        int q1 = json.IndexOf('"', c1 + 1);
+        int q2 = json.IndexOf('"', q1 + 1);
+        string outputFileName = json.Substring(q1 + 1, q2 - q1 - 1);
+
+        int inIdx = json.IndexOf("\"inputFiles\"", q2);
+        int bo = json.IndexOf('[', inIdx);
+        int bc = json.IndexOf(']', bo);
+        string arr = json.Substring(bo + 1, bc - bo - 1);
+
+        var inputs = new System.Collections.Generic.List<string>();
+        int ai = 0;
+        while (ai < arr.Length)
+        {
+            int qs = arr.IndexOf('"', ai);
+            if (qs < 0) break;
+            int qe = arr.IndexOf('"', qs + 1);
+            inputs.Add(arr.Substring(qs + 1, qe - qs - 1));
+            ai = qe + 1;
+        }
+
+        // Resolve inputs (with glob expansion) and concatenate
+        var sb = new StringBuilder();
+        foreach (var pattern in inputs)
+        {
+            string full = Path.Combine(BaseDir, pattern.Replace('/', Path.DirectorySeparatorChar));
+            string dir = Path.GetDirectoryName(full);
+            string file = Path.GetFileName(full);
+            if (file.Contains("*") || file.Contains("?"))
+            {
+                if (Directory.Exists(dir))
+                    foreach (var f in Directory.GetFiles(dir, file).OrderBy(x => x))
+                        sb.AppendLine(File.ReadAllText(f));
+            }
+            else if (File.Exists(full))
+            {
+                sb.AppendLine(File.ReadAllText(full));
+            }
+        }
+
+        string bundled = sb.ToString();
+        if (string.IsNullOrWhiteSpace(bundled)) { pos = bc + 1; continue; }
+
+        string outputPath = Path.Combine(BaseDir, outputFileName.Replace('/', Path.DirectorySeparatorChar));
+        string outputDir = Path.GetDirectoryName(outputPath);
+        if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
+
+        string ext = Path.GetExtension(outputPath).ToLowerInvariant();
+        bool isMin = Path.GetFileNameWithoutExtension(outputPath)
+                         .EndsWith(".min", StringComparison.OrdinalIgnoreCase);
+
+        // Minify
+        string minified = bundled;
+        if (ext == ".js")      { var r = Uglify.Js(bundled);  minified = r.Code ?? bundled; }
+        else if (ext == ".css") { var r = Uglify.Css(bundled); minified = r.Code ?? bundled; }
+
+        if (isMin)
+        {
+            writeFile(outputPath, minified);
+        }
+        else
+        {
+            writeFile(outputPath, bundled);
+            int ei = outputPath.LastIndexOf('.');
+            string minPath = outputPath.Substring(0, ei) + ".min" + ext;
+            writeFile(minPath, minified);
+        }
+
+        Log.LogMessage(Microsoft.Build.Framework.MessageImportance.Normal,
+            "BundleAndMinify: " + outputFileName);
+        pos = bc + 1;
+    }
+    return true;
+}
+catch (Exception ex)
+{
+    Log.LogError("BundleAndMinify failed: " + ex.ToString());
+    return false;
+}
+]]></Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="BundleAndMinify" BeforeTargets="Build">
+    <BundleAndMinify ConfigFile="$(MSBuildProjectDirectory)\bundleconfig.json"
+                     BaseDir="$(MSBuildProjectDirectory)" />
   </Target>
 
   <!-- Versions-Props generieren, damit andere Projekte sie importieren können -->

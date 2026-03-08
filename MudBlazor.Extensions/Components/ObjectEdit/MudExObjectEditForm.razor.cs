@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using Blazored.FluentValidation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
@@ -219,7 +218,6 @@ public partial class MudExObjectEditForm<T>
     /// </summary>
     private ButtonType SubmitButtonType => UseFormSubmit ? ButtonType.Submit : ButtonType.Button;
 
-    private FluentValidationValidator _fluentValidationValidator;
     private DataAnnotationsValidator _dataAnnotationValidator;
     private CancellationTokenSource _validationCts;
 
@@ -270,25 +268,6 @@ public partial class MudExObjectEditForm<T>
     /// </summary>
     /// <returns></returns>
     private IEnumerable<string> GetErrors()
-        => GetFluentValidationErrors().Union(GetDataAnnotationErrors());
-
-    /// <summary>
-    /// Returns a list of validation errors produced by FluentValidation validation
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerable<string> GetFluentValidationErrors()
-    {
-        if (_fluentValidationValidator == null)
-            return Enumerable.Empty<string>();
-        var editContext = _fluentValidationValidator.ExposeField<EditContext>("CurrentEditContext");
-        return editContext == null ? Enumerable.Empty<string>() : editContext.GetValidationMessages().Select(s => LocalizerToUse.TryLocalize(s).ToString());
-    }
-
-    /// <summary>
-    /// Returns a list of validation errors produced by DataAnnotation validation
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerable<string> GetDataAnnotationErrors()
         => _dataValidations.Where(v => !string.IsNullOrEmpty(v)).Select(v => LocalizerToUse.TryLocalize(v).ToString());
 
     /// <summary>
