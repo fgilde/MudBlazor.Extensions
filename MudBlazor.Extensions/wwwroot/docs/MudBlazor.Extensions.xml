@@ -3173,7 +3173,7 @@
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDocument">
             <summary>
             Document file viewer for DOCX, RTF and MSG files.
-            Uses docx-preview (CDN) for DOCX, RtfPipe for RTF, and MsgReader for MSG files.
+            Uses docx-preview for DOCX, RtfPipe for RTF, and MsgReader for MSG files.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDocument.Name">

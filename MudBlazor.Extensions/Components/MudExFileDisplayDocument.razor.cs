@@ -12,11 +12,11 @@ namespace MudBlazor.Extensions.Components;
 
 /// <summary>
 /// Document file viewer for DOCX, RTF and MSG files.
-/// Uses docx-preview (CDN) for DOCX, RtfPipe for RTF, and MsgReader for MSG files.
+/// Uses docx-preview for DOCX, RtfPipe for RTF, and MsgReader for MSG files.
 /// </summary>
 public partial class MudExFileDisplayDocument : IMudExFileDisplay
 {
-    private enum DocumentFormat
+    private enum DocFormat
     {
         Docx,
         Rtf,
@@ -30,7 +30,6 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
     private bool _isUnsupported;
     private byte[] _pendingDocxBytes;
     private string _pendingHtmlContent;
-    private bool _pendingHtmlApplyTheme;
 
     [Inject] private MudExFileService FileService { get; set; }
 
@@ -63,14 +62,12 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
 
         var mimeMatch = MimeType.Matches(contentType,
             "application/vnd.openxmlformats-officedocument.wordprocessingml*",
-            "application/msword",
             "text/rtf",
             "application/rtf",
             "application/vnd.ms-outlook");
 
         var extensionMatch = !string.IsNullOrEmpty(fileName) && (
             fileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase) ||
-            fileName.EndsWith(".doc", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".rtf", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".msg", StringComparison.OrdinalIgnoreCase));
 
@@ -115,7 +112,7 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         }
         else if (_pendingHtmlContent != null)
         {
-            await RenderHtmlInternalAsync(_pendingHtmlContent, _pendingHtmlApplyTheme);
+            await RenderHtmlInternalAsync(_pendingHtmlContent);
             _pendingHtmlContent = null;
         }
     }
@@ -146,13 +143,13 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
 
                 switch (format)
                 {
-                    case DocumentFormat.Docx:
+                    case DocFormat.Docx:
                         await HandleDocxAsync(bytes);
                         break;
-                    case DocumentFormat.Rtf:
+                    case DocFormat.Rtf:
                         await HandleRtfAsync(bytes);
                         break;
-                    case DocumentFormat.Msg:
+                    case DocFormat.Msg:
                         await HandleMsgAsync(bytes);
                         break;
                     default:
@@ -173,7 +170,7 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         }
     }
 
-    private static DocumentFormat DetectFormat(IMudExFileDisplayInfos fileInfos, byte[] bytes)
+    private static DocFormat DetectFormat(IMudExFileDisplayInfos fileInfos, byte[] bytes)
     {
         var contentType = fileInfos?.ContentType ?? string.Empty;
         var fileName = fileInfos?.FileName ?? string.Empty;
@@ -181,27 +178,23 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         // MSG detection (MIME or extension)
         if (contentType.Contains("vnd.ms-outlook", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".msg", StringComparison.OrdinalIgnoreCase))
-            return DocumentFormat.Msg;
+            return DocFormat.Msg;
 
         // RTF detection (MIME or extension)
         if (contentType.Contains("rtf", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".rtf", StringComparison.OrdinalIgnoreCase))
-            return DocumentFormat.Rtf;
+            return DocFormat.Rtf;
 
-        // Magic bytes: ZIP/PK header → DOCX (even if extension is .doc)
+        // Magic bytes: ZIP/PK header → DOCX
         if (bytes.Length >= 2 && bytes[0] == 0x50 && bytes[1] == 0x4B)
-            return DocumentFormat.Docx;
-
-        // Magic bytes: OLE2 compound document → unsupported legacy .doc
-        if (bytes.Length >= 4 && bytes[0] == 0xD0 && bytes[1] == 0xCF && bytes[2] == 0x11 && bytes[3] == 0xE0)
-            return DocumentFormat.Unsupported;
+            return DocFormat.Docx;
 
         // MIME/Extension fallback for docx
         if (contentType.Contains("wordprocessingml", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
-            return DocumentFormat.Docx;
+            return DocFormat.Docx;
 
-        return DocumentFormat.Unsupported;
+        return DocFormat.Unsupported;
     }
 
     private async Task HandleDocxAsync(byte[] bytes)
@@ -232,12 +225,11 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
 
         if (JsReference != null)
         {
-            await RenderHtmlInternalAsync(html, false);
+            await RenderHtmlInternalAsync(html);
         }
         else
         {
             _pendingHtmlContent = html;
-            _pendingHtmlApplyTheme = false;
         }
     }
 
@@ -252,22 +244,19 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
 
         if (JsReference != null)
         {
-            await RenderHtmlInternalAsync(html, true);
+            await RenderHtmlInternalAsync(html);
         }
         else
         {
             _pendingHtmlContent = html;
-            _pendingHtmlApplyTheme = true;
         }
     }
 
     private static string ExtractMsgHtml(MsgReader.Outlook.Storage.Message msg)
     {
-        // Prefer HTML body
         if (!string.IsNullOrWhiteSpace(msg.BodyHtml))
             return msg.BodyHtml;
 
-        // Fall back to RTF body converted to HTML
         if (!string.IsNullOrWhiteSpace(msg.BodyRtf))
         {
             try
@@ -281,7 +270,6 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
             }
         }
 
-        // Fall back to plain text
         if (!string.IsNullOrWhiteSpace(msg.BodyText))
             return $"<pre>{System.Net.WebUtility.HtmlEncode(msg.BodyText)}</pre>";
 
@@ -351,12 +339,11 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         }
     }
 
-    private async Task RenderHtmlInternalAsync(string html, bool applyTheme)
+    private async Task RenderHtmlInternalAsync(string html)
     {
         try
         {
-            var themeColors = applyTheme ? await GetThemeColorsAsync() : null;
-            await JsReference.InvokeVoidAsync("renderHtml", html, themeColors);
+            await JsReference.InvokeVoidAsync("renderHtml", html);
         }
         catch (Exception e)
         {
@@ -366,30 +353,6 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
             Console.WriteLine(e);
             StateHasChanged();
         }
-    }
-
-    private async Task<object> GetThemeColorsAsync()
-    {
-        try
-        {
-            var primary = await GetCssVariableAsync("--mud-palette-primary");
-            var surface = await GetCssVariableAsync("--mud-palette-surface");
-            var background = await GetCssVariableAsync("--mud-palette-background");
-            var textPrimary = await GetCssVariableAsync("--mud-palette-text-primary");
-            var lines = await GetCssVariableAsync("--mud-palette-lines-default");
-
-            return new { primary, surface, background, textPrimary, lines };
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    private async Task<string> GetCssVariableAsync(string variableName)
-    {
-        return await JsRuntime.InvokeAsync<string>("eval",
-            new object[] { $"getComputedStyle(document.documentElement).getPropertyValue('{variableName}').trim()" });
     }
 
     /// <summary>

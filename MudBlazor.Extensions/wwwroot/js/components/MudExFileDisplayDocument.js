@@ -42,7 +42,7 @@ class MudExFileDisplayDocument {
         }
     }
 
-    renderHtml(htmlString, themeColors) {
+    renderHtml(htmlString) {
         var self = this;
         try {
             var container = document.getElementById(this.containerId);
@@ -60,25 +60,9 @@ class MudExFileDisplayDocument {
             iframe.setAttribute('sandbox', 'allow-same-origin');
             container.appendChild(iframe);
 
-            var themeStyle = '';
-            if (themeColors) {
-                themeStyle = '<style>' +
-                    'body { ' +
-                    'background-color: ' + (themeColors.background || '#fff') + '; ' +
-                    'color: ' + (themeColors.textPrimary || '#000') + '; ' +
-                    'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; ' +
-                    'padding: 16px; ' +
-                    'margin: 0; ' +
-                    '} ' +
-                    'a { color: ' + (themeColors.primary || '#1976d2') + '; } ' +
-                    'table { border-collapse: collapse; } ' +
-                    'td, th { border: 1px solid ' + (themeColors.lines || '#ddd') + '; padding: 4px 8px; } ' +
-                    '</style>';
-            }
-
             var doc = iframe.contentDocument || iframe.contentWindow.document;
             doc.open();
-            doc.write('<!DOCTYPE html><html><head><meta charset="utf-8">' + themeStyle + '</head><body>' + htmlString + '</body></html>');
+            doc.write('<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{margin:0;padding:16px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}</style></head><body>' + htmlString + '</body></html>');
             doc.close();
 
             self.dotnet.invokeMethodAsync('OnDocumentRendered');
