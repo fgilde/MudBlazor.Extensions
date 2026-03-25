@@ -2863,6 +2863,16 @@
             Specify types of IMudExFileDisplay that should be ignored
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ShowRenderer">
+            <summary>
+            When true the name of current render control is displayed on the top right
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ShowFileName">
+            <summary>
+            When true the Filename is displayed on the top right
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.StreamUrlHandling">
             <summary>
             How to handle the stream url

@@ -70,7 +70,8 @@ public partial class DialogOptionsEx
         BackdropClick = true,
         MaxWidth = MudBlazor.MaxWidth.ExtraSmall,
         FullWidth = true,
-        Animations = new[] { AnimationType.FlipX }
+        Position = DialogPosition.TopCenter,
+        Animations = new[] { AnimationType.SlideIn },
     };
 
     /// <summary>

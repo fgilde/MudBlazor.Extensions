@@ -25,8 +25,8 @@
   <!--Versioning-->
   <PropertyGroup>
     <MajorVersion>9</MajorVersion>
-    <MinorVersion>0</MinorVersion>
-    <PatchVersion>2</PatchVersion>
+    <MinorVersion>2</MinorVersion>
+    <PatchVersion>0</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -69,7 +69,7 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="9.0.0" />
+    <PackageReference Include="MudBlazor" Version="9.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.3" />
     <PackageReference Include="ExcelDataReader" Version="3.8.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.8.0" />

@@ -62,6 +62,18 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     public Type[] IgnoredRenderControls { get; set; }
 
     /// <summary>
+    /// When true the name of current render control is displayed on the top right
+    /// </summary>
+    [Parameter]
+    public bool ShowRenderer { get; set; }
+
+    /// <summary>
+    /// When true the Filename is displayed on the top right
+    /// </summary>
+    [Parameter]
+    public bool ShowFileName { get; set; }
+
+    /// <summary>
     /// How to handle the stream url
     /// </summary>
     [Parameter, SafeCategory("Behaviour")]
