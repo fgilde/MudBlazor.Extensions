@@ -80,6 +80,42 @@ window.MudBlazorExtensions = {
             });
     },
 
+    async saveFileAs(options) {
+        var fileUrl = options.url || "data:" + options.mimeType + ";base64," + options.base64String;
+        var response = await fetch(fileUrl);
+        var blob = await response.blob();
+
+        if (window.showSaveFilePicker) {
+            try {
+                var ext = options.fileName ? options.fileName.split('.').pop() : '';
+                var pickerOpts = {
+                    suggestedName: options.fileName || 'download',
+                    types: []
+                };
+                if (ext && options.mimeType) {
+                    pickerOpts.types.push({
+                        description: ext.toUpperCase() + ' file',
+                        accept: { [options.mimeType]: ['.' + ext] }
+                    });
+                }
+                var handle = await window.showSaveFilePicker(pickerOpts);
+                var writable = await handle.createWritable();
+                await writable.write(blob);
+                await writable.close();
+                return true;
+            } catch (e) {
+                if (e.name === 'AbortError') {
+                    return false;
+                }
+                throw e;
+            }
+        } else {
+            // Fallback to regular download if File System Access API is not supported
+            this.downloadFile(options);
+            return true;
+        }
+    },
+
     attachDialog(dialogId) {
         if (dialogId) {
             let dialog = document.getElementById(dialogId);            

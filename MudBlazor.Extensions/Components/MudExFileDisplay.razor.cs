@@ -171,6 +171,13 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     public bool AllowDownload { get; set; } = true;
 
     /// <summary>
+    /// Set to true to allow user to download the loaded file and specify directly a folder to save file in
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool AllowSaveAs { get; set; } = true;
+
+    /// <summary>
     /// Set to true to allow user to copy the file url to clipboard
     /// </summary>
     [Parameter]
@@ -555,6 +562,22 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         await EnsureUrlAsync(true);
 
         await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+        {
+            Url,
+            FileName = $"{FileName}",
+            MimeType = ContentType
+        });
+    }
+
+    /// <summary>
+    /// Opens a save file dialog using the File System Access API (showSaveFilePicker) and saves the file to the selected location.
+    /// Falls back to a regular download if the API is not supported by the browser.
+    /// </summary>
+    public async Task SaveFileAsAsync()
+    {
+        await EnsureUrlAsync(true);
+
+        await JsRuntime.InvokeAsync<bool>("MudBlazorExtensions.saveFileAs", new
         {
             Url,
             FileName = $"{FileName}",

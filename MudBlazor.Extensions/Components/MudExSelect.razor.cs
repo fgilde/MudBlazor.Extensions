@@ -889,7 +889,11 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         if (ToStringFunc != null) // TODO: this is a workaround for the TODO #2 in this file
         {
             if (MultiSelection && SelectedValues?.Any() == true)
+            {
+                if (MultiSelectionTextFunc != null)
+                    return MultiSelectionTextFunc(SelectedValues.ToList());
                 return string.Join(Delimiter, SelectedValues.Select(x => ToStringFunc(x)));
+            }
             if (Value != null)
                 return ToStringFunc(Value);
         }

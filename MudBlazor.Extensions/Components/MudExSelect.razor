@@ -164,9 +164,11 @@
 
     private void OnValidationStateChanged()
     {
+        if (_validationComponent is null)
+            return;
         ErrorText ??= _validationComponent.GetErrorText();
         Error = HasErrors || _validationComponent.HasErrors;
-        StateHasChanged();        
+        StateHasChanged();
     }
 
     /// <inheritdoc />

@@ -25,7 +25,7 @@
   <!--Versioning-->
   <PropertyGroup>
     <MajorVersion>9</MajorVersion>
-    <MinorVersion>2</MinorVersion>
+    <MinorVersion>3</MinorVersion>
     <PatchVersion>0</PatchVersion>
   </PropertyGroup>
 
@@ -69,14 +69,14 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="9.2.0" />
+    <PackageReference Include="MudBlazor" Version="9.3.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.3" />
     <PackageReference Include="ExcelDataReader" Version="3.8.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.8.0" />
     <PackageReference Include="AuralizeBlazor" Version="3.0.4" />
     <PackageReference Include="MudBlazor.Markdown" Version="9.0.0" />
-    <PackageReference Include="Nextended.Blazor" Version="10.0.8" />
-    <PackageReference Include="Nextended.Core" Version="10.0.8" />
+    <PackageReference Include="Nextended.Blazor" Version="10.1.2" />
+    <PackageReference Include="Nextended.Core" Version="10.1.2" />
     <PackageReference Include="BlazorJS" Version="2.2.0" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="FluentValidation" Version="11.9.1" />

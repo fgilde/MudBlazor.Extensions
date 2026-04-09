@@ -139,6 +139,10 @@
                 {
                     <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(DownloadFileAsync)" Icon="@Icons.Material.Filled.Download">@($"{TryLocalize("Download")}")</MudMenuItem>
                 }
+                @if (AllowSaveAs)
+                {
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(SaveFileAsAsync)" Icon="@Icons.Material.Filled.Download">@($"{TryLocalize("Save as")}")</MudMenuItem>
+                }
                 <MudDivider/>
                 <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(ShowInfoFileInfoAsync)" Icon="@Icons.Material.Filled.Info">@($"{TryLocalize("Info")}")</MudMenuItem>
 
