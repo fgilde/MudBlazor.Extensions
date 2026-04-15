@@ -3,10 +3,21 @@ param(
     [string]$ProjectSlug   = "mudblazor-extensions",
     [string]$ApiToken      = "bRYQm7GE2ckRCglJ1Q5bhJIpQ7tyZF9sAksfZqEp",
     [int]   $PerPage       = 25,
-    [string]$OutputFile    = "deployments.json",
+    [string]$OutputFile    = "",  # Will be set to wwwroot/deployments.json relative to script
     # Path relative to the git repo root for git show
     [string]$CsprojPath    = "MudBlazor.Extensions/MudBlazor.Extensions.csproj"
 )
+
+# Determine output file path relative to script location
+if ([string]::IsNullOrWhiteSpace($OutputFile)) {
+    # Script is in .scripts folder, go up one level and into wwwroot
+    $scriptDir = Split-Path -Parent $PSScriptRoot
+    $OutputFile = Join-Path $scriptDir "wwwroot\deployments.json"
+} elseif (-not [System.IO.Path]::IsPathRooted($OutputFile)) {
+    # If relative path provided, make it relative to script's parent folder wwwroot
+    $scriptDir = Split-Path -Parent $PSScriptRoot
+    $OutputFile = Join-Path (Join-Path $scriptDir "wwwroot") $OutputFile
+}
 
 # Store initial working directory
 $initialDir = Get-Location
@@ -48,16 +59,33 @@ function Get-VersionsFromCommit {
 
     # Use repoRoot context for git show
     if ($repoRoot) { Push-Location $repoRoot }
-    try { $xmlText = git show "$CommitHash`:$CsprojPath" 2>$null } catch { $xmlText = $null }
+    try { 
+        $rawOutput = git show "$CommitHash`:$CsprojPath" 2>$null
+    } catch { 
+        $rawOutput = $null 
+    }
     if ($repoRoot) { Pop-Location }
 
-    if (-not $xmlText) {
+    if (-not $rawOutput) {
         Write-Warning ("Commit {0}: '{1}' not found" -f $CommitHash, $CsprojPath)
         $obj = [pscustomobject]@{ AssemblyVersion = $null; MudBlazorVersion = $null }
         $versionCache[$CommitHash] = $obj; return $obj
     }
 
-    [xml]$xml = $xmlText
+    # Remove BOM and parse XML
+    try {
+        $xmlString = $rawOutput | Out-String
+        # Skip first 3 characters if they look like UTF-8 BOM (EF BB BF becomes weird high-value chars)
+        if ($xmlString.Length -gt 3 -and [int][char]$xmlString[0] -gt 127) {
+            $xmlString = $xmlString.Substring(3)
+        }
+        $xmlString = $xmlString.Trim()
+        [xml]$xml = $xmlString
+    } catch {
+        Write-Warning ("Commit {0}: Failed to parse XML: {1}" -f $CommitHash, $_.Exception.Message)
+        $obj = [pscustomobject]@{ AssemblyVersion = $null; MudBlazorVersion = $null }
+        $versionCache[$CommitHash] = $obj; return $obj
+    }
     # Read version variables
     $versionProps = $xml.Project.PropertyGroup |
         Where-Object { $_.MajorVersion -and $_.MinorVersion -and $_.PatchVersion } |
@@ -88,7 +116,13 @@ function Get-VersionsFromCommit {
         if ($repoRoot) { Pop-Location }
         if ($verText) {
             try {
-                $verJson = $verText | ConvertFrom-Json
+                # Remove BOM from version.json
+                $verString = $verText | Out-String
+                if ($verString.Length -gt 3 -and [int][char]$verString[0] -gt 127) {
+                    $verString = $verString.Substring(3)
+                }
+                $verString = $verString.Trim()
+                $verJson = $verString | ConvertFrom-Json
                 $assemblyVersion = $verJson.version
                 Write-Host ("[Info] Commit {0}: using nerdbank version.json '{1}'" -f $CommitHash, $assemblyVersion) -ForegroundColor DarkYellow
             } catch {
@@ -122,6 +156,12 @@ function Get-VersionsFromCommit {
 $augmented = $allResults | ForEach-Object {
     $hash = $_.deployment_trigger.metadata.commit_hash
     $versions = Get-VersionsFromCommit -CommitHash $hash
+    
+    # Clear sensitive env_vars
+    if ($_.env_vars) {
+        $_.env_vars = @{}
+    }
+    
     $_ | Add-Member -NotePropertyName AssemblyVersion   -NotePropertyValue $versions.AssemblyVersion   -PassThru |
          Add-Member -NotePropertyName MudBlazorVersion  -NotePropertyValue $versions.MudBlazorVersion  -PassThru
 }
