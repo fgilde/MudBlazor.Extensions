@@ -73,6 +73,18 @@
                     </CellTemplate>
                 </PropertyColumn>
                 <PropertyColumn Property="context => context.Environment" Title="@L["Environment"]" />
+                
+                <TemplateColumn Title="Changes" Filterable="false" Sortable="false">
+                    <CellTemplate Context="context">
+                        @if (!string.IsNullOrWhiteSpace(context.Item.DeploymentTrigger?.Metadata?.CommitMessage))
+                        {
+                            <MudExIconButton Icon="@Icons.Material.Filled.Info"
+                                             Color="Color.Info"
+                                             Size="Size.Small"
+                                             ToolTip="@context.Item.DeploymentTrigger.Metadata.CommitMessage" />
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
 
                 <TemplateColumn Title="Link" Filterable="false" Sortable="false">
                     <CellTemplate Context="context">

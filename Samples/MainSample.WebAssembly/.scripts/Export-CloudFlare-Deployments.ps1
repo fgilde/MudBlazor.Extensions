@@ -52,6 +52,36 @@ if ($allResults.Count -eq 0) { Write-Warning "No deployments found."; return }
 
 # Cache for version lookups
 $versionCache = @{}
+$changelogCache = @{}
+
+function Get-ChangelogBetweenCommits {
+    param([string]$CurrentCommit, [string]$PreviousCommit)
+    
+    $cacheKey = "$CurrentCommit-$PreviousCommit"
+    if ($changelogCache.ContainsKey($cacheKey)) { return $changelogCache[$cacheKey] }
+    
+    if (-not $PreviousCommit) {
+        $changelogCache[$cacheKey] = ""
+        return ""
+    }
+    
+    if ($repoRoot) { Push-Location $repoRoot }
+    try {
+        # Get commit messages between previous and current
+        $commits = git log --pretty=format:"%s" "$PreviousCommit..$CurrentCommit" 2>$null
+        if ($commits) {
+            $changelog = ($commits | ForEach-Object { "• $_" }) -join "`n"
+        } else {
+            $changelog = ""
+        }
+    } catch {
+        $changelog = ""
+    }
+    if ($repoRoot) { Pop-Location }
+    
+    $changelogCache[$cacheKey] = $changelog
+    return $changelog
+}
 
 function Get-VersionsFromCommit {
     param([string]$CommitHash)
@@ -153,7 +183,7 @@ function Get-VersionsFromCommit {
 }
 
 # Augment deployments
-$augmented = $allResults | ForEach-Object {
+$augmented = $allResults | ForEach-Object -Begin { $previousHash = $null } -Process {
     $hash = $_.deployment_trigger.metadata.commit_hash
     $versions = Get-VersionsFromCommit -CommitHash $hash
     
@@ -161,6 +191,17 @@ $augmented = $allResults | ForEach-Object {
     if ($_.env_vars) {
         $_.env_vars = @{}
     }
+    
+    # Add changelog to commit_message
+    if ($previousHash) {
+        $changelog = Get-ChangelogBetweenCommits -CurrentCommit $hash -PreviousCommit $previousHash
+        if ($changelog) {
+            $originalMessage = $_.deployment_trigger.metadata.commit_message
+            $_.deployment_trigger.metadata.commit_message = "$originalMessage`n`nChanges:`n$changelog"
+        }
+    }
+    
+    $previousHash = $hash
     
     $_ | Add-Member -NotePropertyName AssemblyVersion   -NotePropertyValue $versions.AssemblyVersion   -PassThru |
          Add-Member -NotePropertyName MudBlazorVersion  -NotePropertyValue $versions.MudBlazorVersion  -PassThru
