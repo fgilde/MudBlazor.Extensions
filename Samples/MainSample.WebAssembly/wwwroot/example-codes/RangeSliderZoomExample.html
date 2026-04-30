@@ -1,0 +1,60 @@
+<div class="html"><pre>
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Visible window: {0} – {1}&quot;, _sizeRange.Start.ToShortDateString(), _sizeRange.End.ToShortDateString()]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Selected period: {0} – {1}&quot;, _selectedRange.Start.ToShortDateString(), _selectedRange.End.ToShortDateString()]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Row</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-4&quot;</span> <span class="htmlAttributeName">AlignItems</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;AlignItems.Center&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudButton</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Filled&quot;</span>
+               <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span>
+               <span class="htmlAttributeName">StartIcon</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@Icons.Material.Filled.ZoomIn&quot;</span>
+               <span class="htmlAttributeName">OnClick</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(async () =&gt; { if (_slider != null) await _slider.ZoomInAsync(); })&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @L[&quot;Zoom In&quot;]
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudButton</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Filled&quot;</span>
+               <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Secondary&quot;</span>
+               <span class="htmlAttributeName">StartIcon</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@Icons.Material.Filled.ZoomOut&quot;</span>
+               <span class="htmlAttributeName">OnClick</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(async () =&gt; { if (_slider != null) await _slider.ZoomOutAsync(); })&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @L[&quot;Zoom Out&quot;]
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_wheelZoom&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Mouse wheel zoom&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;ml-4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @L[&quot;Hint: hover the track and scroll to zoom around the cursor.&quot;]
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExRangeSlider T=&quot;DateTime&quot;
+                  @ref=&quot;_slider&quot;
+                  ShowInputs=&quot;true&quot;
+                  AbsoluteSizeRange=&quot;@_absoluteSizeRange&quot;
+                  EnableMouseWheelZoom=&quot;@_wheelZoom&quot;
+                  @bind-SizeRange=&quot;_sizeRange&quot;
+                  StepLength=&quot;@(new RangeLength<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(TimeSpan.FromDays(1).Ticks))&quot;
+                  MinLength=&quot;@(new RangeLength<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(TimeSpan.FromDays(7).Ticks))&quot;
+                  @bind-Value=&quot;_selectedRange&quot;
+                  AllowWholeRangeDrag=&quot;true&quot; /&gt;
+
+@code {
+    private MudExRangeSlider<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>? _slider;
+    private bool _wheelZoom = true;
+
+    // Absolute outer bounds the user can zoom out to: 10 years.
+    private readonly IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span> _absoluteSizeRange =
+        new RangeOf<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(new DateTime(2018, 1, 1), new DateTime(2028, 12, 31), null);
+
+    // Initially visible window: 3 years.
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span> _sizeRange =
+        new RangeOf<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(new DateTime(2023, 1, 1), new DateTime(2025, 12, 31), null);
+
+    // Pre-selected period inside the visible window.
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span> _selectedRange =
+        new RangeOf<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateTime</span><span class="htmlTagDelimiter">&gt;</span>(new DateTime(2023, 6, 1), new DateTime(2024, 5, 31), null);
+}
+
+</pre></div>

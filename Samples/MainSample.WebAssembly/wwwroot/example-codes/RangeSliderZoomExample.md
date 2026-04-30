@@ -1,0 +1,60 @@
+```razor
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<MudText Typo="Typo.caption" Class="mt-2 mb-2">
+    @L["Visible window: {0} – {1}", _sizeRange.Start.ToShortDateString(), _sizeRange.End.ToShortDateString()]
+</MudText>
+<MudText Typo="Typo.caption" Class="mb-4">
+    @L["Selected period: {0} – {1}", _selectedRange.Start.ToShortDateString(), _selectedRange.End.ToShortDateString()]
+</MudText>
+
+<MudStack Row="true" Spacing="2" Class="mb-4" AlignItems="AlignItems.Center">
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               StartIcon="@Icons.Material.Filled.ZoomIn"
+               OnClick="@(async () => { if (_slider != null) await _slider.ZoomInAsync(); })">
+        @L["Zoom In"]
+    </MudButton>
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Secondary"
+               StartIcon="@Icons.Material.Filled.ZoomOut"
+               OnClick="@(async () => { if (_slider != null) await _slider.ZoomOutAsync(); })">
+        @L["Zoom Out"]
+    </MudButton>
+    <MudSwitch T="bool" @bind-Value="_wheelZoom" Color="Color.Primary" Label="@L["Mouse wheel zoom"]" />
+    <MudText Typo="Typo.caption" Class="ml-4">
+        @L["Hint: hover the track and scroll to zoom around the cursor."]
+    </MudText>
+</MudStack>
+
+<MudExRangeSlider T="DateTime"
+                  @ref="_slider"
+                  ShowInputs="true"
+                  AbsoluteSizeRange="@_absoluteSizeRange"
+                  EnableMouseWheelZoom="@_wheelZoom"
+                  @bind-SizeRange="_sizeRange"
+                  StepLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(1).Ticks))"
+                  MinLength="@(new RangeLength<DateTime>(TimeSpan.FromDays(7).Ticks))"
+                  @bind-Value="_selectedRange"
+                  AllowWholeRangeDrag="true" />
+
+@code {
+    private MudExRangeSlider<DateTime>? _slider;
+    private bool _wheelZoom = true;
+
+    // Absolute outer bounds the user can zoom out to: 10 years.
+    private readonly IRange<DateTime> _absoluteSizeRange =
+        new RangeOf<DateTime>(new DateTime(2018, 1, 1), new DateTime(2028, 12, 31), null);
+
+    // Initially visible window: 3 years.
+    private IRange<DateTime> _sizeRange =
+        new RangeOf<DateTime>(new DateTime(2023, 1, 1), new DateTime(2025, 12, 31), null);
+
+    // Pre-selected period inside the visible window.
+    private IRange<DateTime> _selectedRange =
+        new RangeOf<DateTime>(new DateTime(2023, 6, 1), new DateTime(2024, 5, 31), null);
+}
+
+```

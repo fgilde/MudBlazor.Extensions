@@ -1,0 +1,209 @@
+```razor
+@using System.Globalization
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+@using Nextended.Core.Extensions
+@inherits ExampleBase
+
+<MudText Typo="Typo.caption" Class="mt-2 mb-1">
+    @L["Selected period: {0} – {1}", _timeRange.Start.ToString("HH\\:mm"), _timeRange.End.ToString("HH\\:mm")]
+</MudText>
+<MudText Typo="Typo.caption" Class="mb-3">
+    @L["Visible window: {0} – {1}", _sizeRange.Start.ToString("HH\\:mm"), _sizeRange.End.ToString("HH\\:mm")]
+</MudText>
+
+<MudStack Row="true" Spacing="2" Class="mb-3" AlignItems="AlignItems.Center">
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               StartIcon="@Icons.Material.Filled.ZoomIn"
+               OnClick="@(async () => { if (_slider != null) await _slider.ZoomInAsync(); })">
+        @L["Zoom In"]
+    </MudButton>
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Secondary"
+               StartIcon="@Icons.Material.Filled.ZoomOut"
+               OnClick="@(async () => { if (_slider != null) await _slider.ZoomOutAsync(); })">
+        @L["Zoom Out"]
+    </MudButton>
+    <MudButton Variant="Variant.Outlined"
+               StartIcon="@Icons.Material.Filled.Restore"
+               OnClick="ResetZoom">
+        @L["Reset"]
+    </MudButton>
+    <MudSwitch T="bool" @bind-Value="_wheelZoom" Color="Color.Primary" Label="@L["Mouse wheel zoom"]" />
+</MudStack>
+
+<MudExRangeSlider T="TimeOnly"
+                  @ref="_slider"
+                  @bind-Value="_timeRange"
+                  @bind-SizeRange="_sizeRange"
+                  AbsoluteSizeRange="@FullDay"
+                  EnableMouseWheelZoom="@_wheelZoom"
+                  StepResolver="@(StepResolvers.TimeOnly.Minutely())"
+                  ShowInputs="true"
+                  AllowWholeRangeDrag="true">
+
+    <TrackTemplate Context="ctx">
+        <div style="
+            height: 100%;
+            position: relative;
+            width: 100%;
+            background: var(--mud-palette-surface);
+            border-radius: 4px;
+            overflow: hidden;">
+
+            <div style="
+                position:absolute;
+                left:0;
+                right:0;
+                top:40%;
+                height:20%;
+                background: linear-gradient(
+                    to right,
+                    var(--mud-palette-background-grey),
+                    var(--mud-palette-surface)
+                );
+                pointer-events:none;">
+            </div>
+
+            @{
+                var startMin = (int)ctx.SizeRange.Start.ToTimeSpan().TotalMinutes;
+                var endMin = (int)ctx.SizeRange.End.ToTimeSpan().TotalMinutes;
+                var spanMin = Math.Max(1, endMin - startMin);
+
+                // Pick tick granularity based on visible span – more detail when zoomed in.
+                int minorMin, majorMin;
+                string labelFormat;
+                if (spanMin > 720)      { minorMin = 60; majorMin = 180; labelFormat = "HH\\:mm"; }
+                else if (spanMin > 240) { minorMin = 30; majorMin = 60;  labelFormat = "HH\\:mm"; }
+                else if (spanMin > 60)  { minorMin = 15; majorMin = 60;  labelFormat = "HH\\:mm"; }
+                else if (spanMin > 15)  { minorMin = 5;  majorMin = 15;  labelFormat = "HH\\:mm"; }
+                else                    { minorMin = 1;  majorMin = 5;   labelFormat = "HH\\:mm"; }
+
+                var firstTick = ((startMin + minorMin - 1) / minorMin) * minorMin;
+
+                for (var totalMin = firstTick; totalMin <= endMin; totalMin += minorMin)
+                {
+                    var time = new TimeOnly(totalMin / 60, totalMin % 60);
+                    var pct = ctx.Math.Percent(time, ctx.SizeRange) * 100;
+                    if (pct < 0 || pct > 100) continue;
+
+                    var isMajor = totalMin % majorMin == 0;
+                    var top = isMajor ? "10%" : "30%";
+                    var bottom = isMajor ? "10%" : "30%";
+                    var width = isMajor ? "2px" : "1px";
+                    var color = isMajor
+                        ? "var(--mud-palette-lines-default)"
+                        : "var(--mud-palette-divider)";
+
+                    <div style="
+                            position:absolute;
+                            left:@pct.ToString("F2", CultureInfo.InvariantCulture)%;
+                            top:@top;
+                            bottom:@bottom;
+                            width:@width;
+                            background:@color;
+                            pointer-events:none;">
+                    </div>
+
+                    if (isMajor)
+                    {
+                        <div style="
+                                position:absolute;
+                                left:@pct.ToString("F2", CultureInfo.InvariantCulture)%;
+                                bottom:4px;
+                                transform: translateX(-50%);
+                                font-size:10px;
+                                color:var(--mud-palette-text-secondary);
+                                font-weight:500;
+                                pointer-events:none;
+                                white-space:nowrap;
+                                z-index:1;">
+                            @time.ToString(labelFormat, CultureInfo.CurrentCulture)
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </TrackTemplate>
+
+    <SelectionTemplate Context="ctx">
+        <div style="
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(
+                90deg,
+                var(--mud-palette-primary),
+                var(--mud-palette-primary-darken)
+            );
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;
+            border-radius:4px;
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+            <span style="
+                color:var(--mud-palette-primary-text);
+                font-weight:600;
+                font-size:11px;
+                white-space:nowrap;
+                padding:0 8px;
+                text-shadow:0 1px 2px rgba(0,0,0,0.3);">
+                @ctx.Value.Start.ToString("HH\\:mm") – @ctx.Value.End.ToString("HH\\:mm")
+            </span>
+        </div>
+    </SelectionTemplate>
+
+    <ThumbStartTemplate Context="ctx">
+        <div style="
+            width:14px;
+            height:14px;
+            background:var(--mud-palette-surface);
+            border:3px solid var(--mud-palette-primary);
+            border-radius:50%;
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+        </div>
+    </ThumbStartTemplate>
+
+    <ThumbEndTemplate Context="ctx">
+        <div style="
+            width:14px;
+            height:14px;
+            background:var(--mud-palette-surface);
+            border:3px solid var(--mud-palette-primary);
+            border-radius:50%;
+            box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+        </div>
+    </ThumbEndTemplate>
+
+</MudExRangeSlider>
+
+@code {
+    private MudExRangeSlider<TimeOnly>? _slider;
+    private bool _wheelZoom = true;
+
+    // Outer bounds: full day. The user can zoom out to this.
+    private readonly IRange<TimeOnly> FullDay = new MudExRange<TimeOnly>(
+        new TimeOnly(0, 0),
+        new TimeOnly(23, 59)
+    );
+
+    // Visible window starts as office hours (10 hours).
+    private IRange<TimeOnly> _sizeRange = new MudExRange<TimeOnly>(
+        new TimeOnly(8, 0),
+        new TimeOnly(18, 0)
+    );
+
+    // Pre-selected meeting slot inside the visible window.
+    private IRange<TimeOnly> _timeRange = new MudExRange<TimeOnly>(
+        new TimeOnly(9, 30),
+        new TimeOnly(11, 0)
+    );
+
+    private void ResetZoom()
+    {
+        _sizeRange = new MudExRange<TimeOnly>(new TimeOnly(8, 0), new TimeOnly(18, 0));
+    }
+}
+
+```

@@ -6583,6 +6583,25 @@
             Gets or sets the callback invoked when the size range changes.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AbsoluteSizeRange">
+            <summary>
+            Gets or sets the absolute outer bounds the visible <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SizeRange"/> may grow to or shrink from when zooming.
+            When null, zooming has no effect (<see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SizeRange"/> stays fixed).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.EnableMouseWheelZoom">
+            <summary>
+            Gets or sets a value indicating whether the user can zoom the visible <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SizeRange"/> in/out by scrolling the mouse wheel over the track.
+            Requires <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AbsoluteSizeRange"/> to be set in order to have an effect.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.ZoomFactor">
+            <summary>
+            Gets or sets the relative span change applied per zoom step.
+            A value of 0.2 means each <see cref="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.ZoomInAsync(System.Int32)"/> step shrinks the visible span to 80% of the current span,
+            and each <see cref="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.ZoomOutAsync(System.Int32)"/> step expands it to 125%. Must be in the range (0,1).
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.StepLength">
             <summary>
             Gets or sets the step length used for snapping and keyboard navigation.
@@ -6658,6 +6677,9 @@
             Gets the JavaScript interop arguments required by the component.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.OnPointerMove(System.Double,System.Double)">
             <summary>
             Handles pointer move events from JavaScript to update the range or thumbs while dragging.
@@ -6666,6 +6688,31 @@
         <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.OnPointerUp">
             <summary>
             Handles pointer up events from JavaScript to finalize the current interaction.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.ZoomInAsync(System.Int32)">
+            <summary>
+            Zooms the visible <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SizeRange"/> in by <paramref name="steps"/> step(s),
+            keeping the center of the currently selected <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.Value"/> as the zoom anchor.
+            Requires <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AbsoluteSizeRange"/> to be set; the new span is also limited so it cannot become smaller than the current selection.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.ZoomOutAsync(System.Int32)">
+            <summary>
+            Zooms the visible <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SizeRange"/> out by <paramref name="steps"/> step(s),
+            keeping the center of the currently selected <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.Value"/> as the zoom anchor.
+            Requires <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AbsoluteSizeRange"/> to be set; the new span will not exceed <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AbsoluteSizeRange"/>.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.ZoomAtAsync(System.Int32,System.Double)">
+            <summary>
+            Zooms the visible <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SizeRange"/> by <paramref name="steps"/> step(s) using the given anchor on the track (0 = start, 1 = end).
+            Positive <paramref name="steps"/> zoom in, negative <paramref name="steps"/> zoom out.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.OnWheel(System.Double,System.Double,System.Double)">
+            <summary>
+            Handles mouse wheel events forwarded from JavaScript to zoom the visible range.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSelect`1">

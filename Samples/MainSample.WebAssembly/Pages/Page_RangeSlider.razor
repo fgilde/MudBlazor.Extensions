@@ -5,7 +5,7 @@
 @using MudBlazor.Extensions.Helper
 @using Nextended.Core.Contracts
 
-@attribute [DemoNew(Name = "Overview", Documentation="MudEx Range Slider – Interactive range selection", Order = 0, Group = "RangeSlider", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
+@attribute [DemoUpdated(Name = "Overview", Documentation="MudEx Range Slider – Interactive range selection", Order = 0, Group = "RangeSlider", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
 
 
 <!-- Header / Intro -->
@@ -145,8 +145,26 @@
             <RangeSliderTimeOnly1/>
         </DemoContent>
     </MudExDemoBox>
-    
-    
+
+    <!-- Demo 6: Zoomable date range -->
+    <MudExDemoBox Title="6. Zoomable date range"
+                  NavTitle="Zoomable date range"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                                            {
+                                                "AbsoluteSizeRange – outer bounds the visible window can grow to (here 10 years)",
+                                                "ZoomInAsync(steps) / ZoomOutAsync(steps) – public API for programmatic zoom",
+                                                "EnableMouseWheelZoom – scroll the track to zoom around the cursor",
+                                                "ZoomFactor – relative span change per step (default 0.2 = 20%)"
+                                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The slider initially shows a 3-year window. Use the buttons or the mouse wheel over the track to zoom in/out up to a 10-year span. The selected range stays valid – the visible window will not shrink below it, and zooming with the wheel keeps the value under the cursor anchored."]
+            </MudText>
+            <RangeSliderZoomExample/>
+        </DemoContent>
+    </MudExDemoBox>
 
 </MudExDemoPage>
 

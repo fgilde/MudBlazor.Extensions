@@ -182,6 +182,28 @@ namespace MudBlazor.Extensions.Components
         public EventCallback<IRange<T>> SizeRangeChanged { get; set; }
 
         /// <summary>
+        /// Gets or sets the absolute outer bounds the visible <see cref="SizeRange"/> may grow to or shrink from when zooming.
+        /// When null, zooming has no effect (<see cref="SizeRange"/> stays fixed).
+        /// </summary>
+        [Parameter, SafeCategory("Data")]
+        public IRange<T>? AbsoluteSizeRange { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the user can zoom the visible <see cref="SizeRange"/> in/out by scrolling the mouse wheel over the track.
+        /// Requires <see cref="AbsoluteSizeRange"/> to be set in order to have an effect.
+        /// </summary>
+        [Parameter, SafeCategory("Behavior")]
+        public bool EnableMouseWheelZoom { get; set; }
+
+        /// <summary>
+        /// Gets or sets the relative span change applied per zoom step.
+        /// A value of 0.2 means each <see cref="ZoomInAsync"/> step shrinks the visible span to 80% of the current span,
+        /// and each <see cref="ZoomOutAsync"/> step expands it to 125%. Must be in the range (0,1).
+        /// </summary>
+        [Parameter, SafeCategory("Behavior")]
+        public double ZoomFactor { get; set; } = 0.2;
+
+        /// <summary>
         /// Gets or sets the step length used for snapping and keyboard navigation.
         /// </summary>
         [Parameter, SafeCategory("Data")]
@@ -375,6 +397,23 @@ namespace MudBlazor.Extensions.Components
                 .Style;
         }
 
+
+        private bool? _lastWheelZoomSent;
+
+        /// <inheritdoc />
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+            if (JsReference is null) return;
+
+            if (_lastWheelZoomSent != EnableMouseWheelZoom)
+            {
+                _lastWheelZoomSent = EnableMouseWheelZoom;
+                try { await JsReference.InvokeVoidAsync("setMouseWheelZoom", EnableMouseWheelZoom); }
+                catch (JSDisconnectedException) { }
+                catch (ObjectDisposedException) { }
+            }
+        }
 
         protected override void OnParametersSet()
         {
@@ -608,6 +647,94 @@ namespace MudBlazor.Extensions.Components
                 else if (Immediate)
                     await OnInput.InvokeAsync(Value);
             }
+        }
+
+        // ------------- Zoom -------------
+
+        /// <summary>
+        /// Zooms the visible <see cref="SizeRange"/> in by <paramref name="steps"/> step(s),
+        /// keeping the center of the currently selected <see cref="Value"/> as the zoom anchor.
+        /// Requires <see cref="AbsoluteSizeRange"/> to be set; the new span is also limited so it cannot become smaller than the current selection.
+        /// </summary>
+        public Task ZoomInAsync(int steps = 1) => ZoomAtAsync(steps, 0.5);
+
+        /// <summary>
+        /// Zooms the visible <see cref="SizeRange"/> out by <paramref name="steps"/> step(s),
+        /// keeping the center of the currently selected <see cref="Value"/> as the zoom anchor.
+        /// Requires <see cref="AbsoluteSizeRange"/> to be set; the new span will not exceed <see cref="AbsoluteSizeRange"/>.
+        /// </summary>
+        public Task ZoomOutAsync(int steps = 1) => ZoomAtAsync(-steps, 0.5);
+
+        /// <summary>
+        /// Zooms the visible <see cref="SizeRange"/> by <paramref name="steps"/> step(s) using the given anchor on the track (0 = start, 1 = end).
+        /// Positive <paramref name="steps"/> zoom in, negative <paramref name="steps"/> zoom out.
+        /// </summary>
+        public async Task ZoomAtAsync(int steps, double anchorPercent)
+        {
+            if (steps == 0 || AbsoluteSizeRange == null || ZoomFactor is <= 0 or >= 1) return;
+
+            var absStart = M.ToDouble(AbsoluteSizeRange.Start);
+            var absEnd = M.ToDouble(AbsoluteSizeRange.End);
+            var absSpan = absEnd - absStart;
+            if (absSpan <= 0) return;
+
+            var curStart = M.ToDouble(SizeRange.Start);
+            var curEnd = M.ToDouble(SizeRange.End);
+            var curSpan = curEnd - curStart;
+            if (curSpan <= 0) return;
+
+            var factor = Math.Pow(1.0 - ZoomFactor, steps);
+            var newSpan = curSpan * factor;
+
+            // Lower bound: visible span must be able to contain the current selection.
+            var valSpan = M.ToDouble(Value.End) - M.ToDouble(Value.Start);
+            if (newSpan < valSpan) newSpan = valSpan;
+
+            // Upper bound: cannot exceed absolute range.
+            if (newSpan > absSpan) newSpan = absSpan;
+
+            // Preserve the value under the anchor: anchorWorld stays at anchorPercent of the new span.
+            var clampedAnchor = Math.Clamp(anchorPercent, 0.0, 1.0);
+            var anchorWorld = curStart + clampedAnchor * curSpan;
+            var newStart = anchorWorld - clampedAnchor * newSpan;
+            var newEnd = newStart + newSpan;
+
+            // Clamp into absolute bounds while keeping the new span.
+            if (newStart < absStart) { newStart = absStart; newEnd = newStart + newSpan; }
+            if (newEnd > absEnd) { newEnd = absEnd; newStart = newEnd - newSpan; }
+
+            // Ensure current selection stays inside the new viewport.
+            var valStart = M.ToDouble(Value.Start);
+            var valEnd = M.ToDouble(Value.End);
+            if (valStart < newStart) { newStart = valStart; newEnd = newStart + newSpan; }
+            if (valEnd > newEnd) { newEnd = valEnd; newStart = newEnd - newSpan; }
+
+            // No-op guard (avoid pointless re-renders / event spam).
+            if (Math.Abs(newStart - curStart) < 1e-9 && Math.Abs(newEnd - curEnd) < 1e-9)
+                return;
+
+            var newRange = new MudExRange<T>(M.FromDouble(newStart), M.FromDouble(newEnd));
+            SizeRange = newRange;
+            await SizeRangeChanged.InvokeAsync(newRange);
+
+            // Keep cached track measurement in sync (track length stays the same; coords might have if scrolled).
+            if (_dragMode == DragMode.None)
+                StateHasChanged();
+        }
+
+        /// <summary>
+        /// Handles mouse wheel events forwarded from JavaScript to zoom the visible range.
+        /// </summary>
+        [JSInvokable]
+        public async Task OnWheel(double clientX, double clientY, double deltaY)
+        {
+            if (!EnableMouseWheelZoom || Disabled || ReadOnly || AbsoluteSizeRange == null) return;
+            if (deltaY == 0) return;
+
+            await MeasureAsync();
+            var anchorPct = PctFromClient(clientX, clientY);
+            var steps = deltaY < 0 ? 1 : -1; // wheel up = zoom in, wheel down = zoom out
+            await ZoomAtAsync(steps, anchorPct);
         }
 
         private async Task OnKeyDownAsync(KeyboardEventArgs e, Thumb thumb)

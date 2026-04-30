@@ -85,8 +85,34 @@
             <RangeSliderTemplateTimeExample/>
         </DemoContent>
     </MudExDemoBox>
-    
-    
+
+    <MudExDemoBox Title="Zoomable TimeOnly slider with adaptive ticks"
+                  NavTitle="TimeOnly with zoom"
+                  Order="10"
+                  FeaturesTitle="Configuration"
+                  Features="@(new[]
+                            {
+                                "AbsoluteSizeRange – outer bounds (full day) the visible window can zoom out to",
+                                "EnableMouseWheelZoom – scroll the track to zoom around the cursor",
+                                "ZoomInAsync / ZoomOutAsync – public API for programmatic zoom",
+                                "Adaptive TrackTemplate – tick granularity adjusts to the visible span"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The slider starts focused on office hours (08:00 – 18:00) and can be zoomed out to the entire day, or in to inspect a single hour or even a few minutes."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["The TrackTemplate reads the visible window from the context and switches between hour, 30-minute, 15-minute and 5-minute ticks – so the track stays readable at every zoom level."]
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["This is exactly the use case zoom was designed for: keep a wide outer range available, while letting users home in on the part they care about without losing context."]
+            </MudText>
+            <RangeSliderTemplateTimeZoomExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+
     <MudExDemoBox Title="Week-based template with calendar weeks"
                   NavTitle="Week template (DateOnly)"
                   Order="10"
