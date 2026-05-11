@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.CompilerServices;
 using Nextended.Core.Extensions;
 
@@ -30,7 +31,7 @@ public sealed class RenderData<TPropertyType, TFieldType> : RenderData
     /// <summary>
     /// Constructor for the RenderData class.
     /// </summary>
-    public RenderData(string valueField, Type componentType, IDictionary<string, object> attributes = null)
+    public RenderData(string valueField, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type componentType, IDictionary<string, object> attributes = null)
         : base(componentType, attributes)
     {
         ValueField = valueField;

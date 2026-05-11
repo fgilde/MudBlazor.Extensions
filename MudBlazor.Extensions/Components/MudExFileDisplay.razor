@@ -32,7 +32,7 @@
     </MoveContent>
 
 
-    @if (_componentForFile.ControlType != null)
+    @if (_componentForFile?.ControlType != null)
     {
         _isNativeRendered = false;
         @if (_componentForFile.ShouldAddDiv)
@@ -110,7 +110,7 @@
             }
             @if (ShowRenderer)
             {
-                <MudText Color="Color.Primary" Typo="Typo.subtitle2">@(_componentForFile.ControlType?.Name)</MudText>
+                <MudText Color="Color.Primary" Typo="Typo.subtitle2">@(_componentForFile?.ControlType?.Name)</MudText>
             }
 
             <MudMenu
@@ -119,7 +119,7 @@
                     <MudExIcon Color="@(ColorizeIcons ? BrowserFileExt.GetPreferredColor(ContentType) : IconColor)" Icon="@BrowserFileExt.IconForFile(ContentType)"></MudExIcon>
                     <MudText Class="mud-ex-file-display-toolbar-text">@FileName</MudText>
                 </div>
-                @foreach (var c in _possibleRenderControls.Where(c => c.GetType() != _componentForFile.ControlType))
+                @foreach (var c in _possibleRenderControls.Where(c => c.GetType() != _componentForFile?.ControlType))
                 {
                     <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(c))" Icon="@Icons.Material.Filled.Extension">@($"{TryLocalize("Render with {0}", c.Name ?? c.GetType().Name)}")</MudMenuItem>
                 }

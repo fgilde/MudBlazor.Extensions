@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Components;
 using Nextended.Core.Types;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core.Enums;
@@ -100,6 +101,9 @@ public partial class MudExTreeView<T>
     #endregion
 
 
+    // Default fallback type used when no [RenderWith(...)] is set on the enum value.
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(MudExTreeViewDefault<>))]
+    [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     private Type GetComponentForViewMode()
         => (RenderWithAttribute.GetRenderWithFromEnumValue(ViewMode)?.ComponentType ?? typeof(MudExTreeViewDefault<>)).MakeGenericType(typeof(T));
 

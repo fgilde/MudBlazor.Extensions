@@ -10510,7 +10510,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.RenderWithType">
             <summary>
-            Returns the type of the registered editor if available
+            Returns the type of the registered editor if available. The Trimmer must preserve all
+            members so that the value can be passed to <see cref="T:Microsoft.AspNetCore.Components.DynamicComponent"/> and reflected
+            over for parameter binding / activation.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.MultiSearch">
@@ -14902,7 +14904,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.ComponentType">
             <summary>
-            Type of the component to be rendered.
+            Type of the component to be rendered. The Trimmer must preserve all members so that
+            the value can be passed to <see cref="T:Microsoft.AspNetCore.Components.DynamicComponent"/> and reflected over for
+            parameter binding / activation.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.Attributes">
@@ -15038,37 +15042,37 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``3(System.Linq.Expressions.Expression{System.Func{``0,``2}},``0,System.Func{``1,``2},System.Func{``2,``1})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``3(System.Linq.Expressions.Expression{System.Func{``0,``2}},System.Func{``1,``2},System.Func{``2,``1})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Action{``0})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},``0)">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``2(System.Linq.Expressions.Expression{System.Func{``0,``1}})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``1(System.Action{``0})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``1(System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For(System.Type,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
@@ -15303,7 +15307,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData.ComponentType">
             <summary>
-            Component type to be rendered.
+            Component type to be rendered. The Trimmer must preserve all members so that
+            the value can be passed to <see cref="T:Microsoft.AspNetCore.Components.DynamicComponent"/> and reflected over
+            for parameter binding / activation.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData.OneTimeBinding">
@@ -15409,6 +15415,13 @@
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderWithAttribute">
             <summary>
             Attribute to specify how the property should be rendered inside a mud ex object edit.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderWithAttribute.ComponentType">
+            <summary>
+            Component type to render the property with. The Trimmer must preserve all members so that
+            the value can be passed to <see cref="T:Microsoft.AspNetCore.Components.DynamicComponent"/>
+            and reflected over for parameter binding / activation.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderWithAttribute.Apply(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">

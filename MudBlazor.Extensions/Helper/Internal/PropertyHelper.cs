@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Nextended.Blazor.Helper;
 using Nextended.Core.Helper;
 
@@ -18,33 +19,33 @@ internal static class PropertyHelper
         return pathParts.Length >= subPathParts.Length && !subPathParts.Where((t, i) => pathParts[i] != t).Any();
     }
     
-    public static IDictionary<string, object> ValidValuesDictionary<T>(Action<T> componentOptions, bool removeDefaults) where T : new()
+    public static IDictionary<string, object> ValidValuesDictionary<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(Action<T> componentOptions, bool removeDefaults) where T : new()
     {
         return ValuesDictionary(componentOptions, removeDefaults)
             .Where(kvp => ComponentRenderHelper.IsValidParameter(typeof(T), kvp.Key, kvp.Value))
             .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
     }
 
-    public static IDictionary<string, object> ValidValuesDictionary<T>(T dialog, bool removeDefaults) where T : new()
+    public static IDictionary<string, object> ValidValuesDictionary<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(T dialog, bool removeDefaults) where T : new()
     {
         return ValuesDictionary(dialog, removeDefaults)
             .Where(kvp => ComponentRenderHelper.IsValidParameter(typeof(T), kvp.Key, kvp.Value))
-            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value); 
+            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
     }
-    
-    public static IDictionary<string, object> ValuesDictionary<T>(Action<T> options, bool removeDefaults,
+
+    public static IDictionary<string, object> ValuesDictionary<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(Action<T> options, bool removeDefaults,
         BindingFlags flags = BindingFlags.Instance | BindingFlags.Public) where T : new()
     {
         return DictionaryHelper.GetValuesDictionary<T>(options, removeDefaults, flags);
     }
 
-    public static IDictionary<string, object> ValuesDictionary<T>(bool removeDefaults, params Action<T>[] options)
+    public static IDictionary<string, object> ValuesDictionary<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(bool removeDefaults, params Action<T>[] options)
         where T : new()
     {
         return DictionaryHelper.GetValuesDictionary<T>(removeDefaults, options);
     }
 
-    public static IDictionary<string, object> ValuesDictionary<T>(T o, bool removeDefaults, BindingFlags flags = BindingFlags.Instance | BindingFlags.Public)
+    public static IDictionary<string, object> ValuesDictionary<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(T o, bool removeDefaults, BindingFlags flags = BindingFlags.Instance | BindingFlags.Public)
         where T : new()
     {
         return DictionaryHelper.GetValuesDictionary<T>(o, removeDefaults, flags);
