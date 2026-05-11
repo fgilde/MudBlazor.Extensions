@@ -156,9 +156,42 @@ public class MudExRangeSliderTests
         
         // Should be able to set start all the way to end
         setStartMethod?.Invoke(instance, new object[] { 8, true });
-        
+
         // Assert
         Assert.Equal(8, instance.Value.Start);
         Assert.Equal(8, instance.Value.End);
+    }
+
+    /// <summary>
+    /// Regression: AutoZoomRangeMultiplier must not crash when the derived bounds exceed the natural T-domain
+    /// (e.g. TimeOnly, which is limited to 0..23:59:59). The auto-range should be clamped to the largest valid extent.
+    /// </summary>
+    [Fact]
+    public void AutoZoomRangeMultiplier_ShouldClamp_ForTimeOnly()
+    {
+        // Arrange
+        using var context = new TestContext();
+        context.Services.AddMudServicesWithExtensions();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
+
+        // 8h..18h with multiplier=3 would normally extend to -7h..33h, both invalid for TimeOnly.
+        var sizeRange = new MudExRange<TimeOnly>(new TimeOnly(8, 0), new TimeOnly(18, 0));
+        var initial = new MudExRange<TimeOnly>(new TimeOnly(9, 0), new TimeOnly(17, 0));
+
+        // Act – render must not throw.
+        var cut = context.Render<MudExRangeSlider<TimeOnly>>(parameters => parameters
+            .Add(p => p.SizeRange, sizeRange)
+            .Add(p => p.Value, initial)
+            .Add(p => p.EnableMouseWheelZoom, true)
+            .Add(p => p.AutoZoomRangeMultiplier, 3.0)
+        );
+
+        // Assert – auto-derived range got clamped to the TimeOnly domain.
+        var effective = cut.Instance.EffectiveAbsoluteSizeRange;
+        Assert.NotNull(effective);
+        Assert.True(effective!.Start <= sizeRange.Start, "auto-zoom left bound should be at or before SizeRange.Start");
+        Assert.True(effective.End >= sizeRange.End, "auto-zoom right bound should be at or after SizeRange.End");
+        Assert.True(effective.Start >= TimeOnly.MinValue, "left bound must be a valid TimeOnly");
+        Assert.True(effective.End <= TimeOnly.MaxValue, "right bound must be a valid TimeOnly");
     }
 }

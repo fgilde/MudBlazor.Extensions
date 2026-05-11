@@ -1,0 +1,89 @@
+@using System.Globalization
+@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Contracts
+
+@* Helper component that exposes shared, theme-aware default templates for the typed range sliders.
+   Uses inline styles (matching the Template demos) so styling is self-contained and does not depend
+   on extra CSS classes being shipped. *@
+
+@code {
+    // -------------------- TimeOnly --------------------
+
+    /// <summary>Default theme-aware track template for <see cref="MudExTimeRangeSlider"/>.</summary>
+    public static RenderFragment<MudExRangeSliderContext<TimeOnly>> TimeTrack(TimeRangeSliderMode mode) => ctx =>
+        @<text>@RenderTrack(RangeSliderTicks.ForTime(ctx.SizeRange, mode).Select(t => (t.Percent, t.IsMajor, t.Label)))</text>;
+
+    /// <summary>Default selection chip for <see cref="MudExTimeRangeSlider"/>.</summary>
+    public static RenderFragment<MudExRangeSliderContext<TimeOnly>> TimeSelection() => ctx =>
+        @<text>@RenderSelection($"{ctx.Value.Start.ToString("HH\\:mm")} – {ctx.Value.End.ToString("HH\\:mm")}")</text>;
+
+    // -------------------- DateOnly --------------------
+
+    /// <summary>Default theme-aware track template for <see cref="MudExDateRangeSlider"/>.</summary>
+    public static RenderFragment<MudExRangeSliderContext<DateOnly>> DateTrack(DateRangeSliderMode mode) => ctx =>
+        @<text>@RenderTrack(RangeSliderTicks.ForDate(ctx.SizeRange, mode).Select(t => (t.Percent, t.IsMajor, t.Label)))</text>;
+
+    /// <summary>Default selection chip for <see cref="MudExDateRangeSlider"/>.</summary>
+    public static RenderFragment<MudExRangeSliderContext<DateOnly>> DateSelection(DateRangeSliderMode mode) => ctx =>
+        @<text>@RenderSelection($"{FormatDate(ctx.Value.Start, mode)} – {FormatDate(ctx.Value.End, mode)}")</text>;
+
+    // -------------------- DateTime --------------------
+
+    /// <summary>Default theme-aware track template for <see cref="MudExDateTimeRangeSlider"/>.</summary>
+    public static RenderFragment<MudExRangeSliderContext<DateTime>> DateTimeTrack(DateTimeRangeSliderMode mode) => ctx =>
+        @<text>@RenderTrack(RangeSliderTicks.ForDateTime(ctx.SizeRange, mode).Select(t => (t.Percent, t.IsMajor, t.Label)))</text>;
+
+    /// <summary>Default selection chip for <see cref="MudExDateTimeRangeSlider"/>.</summary>
+    public static RenderFragment<MudExRangeSliderContext<DateTime>> DateTimeSelection(DateTimeRangeSliderMode mode) => ctx =>
+        @<text>@RenderSelection($"{FormatDateTime(ctx.Value.Start, mode)} – {FormatDateTime(ctx.Value.End, mode)}")</text>;
+
+    // -------------------- Shared thumb --------------------
+
+    /// <summary>Default thumb appearance for typed range sliders.</summary>
+    public static RenderFragment<MudExRangeSliderThumbContext<T>> Thumb<T>() where T : IComparable<T> => _ =>
+        @<div style="width:14px;height:14px;background:var(--mud-palette-surface);border:3px solid var(--mud-palette-primary);border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,0.25);"></div>;
+
+    // -------------------- internal renderers --------------------
+
+    private static RenderFragment RenderTrack(IEnumerable<(double Percent, bool IsMajor, string Label)> ticks) =>
+        @<div style="height:100%;position:relative;width:100%;background:var(--mud-palette-surface);border-radius:4px;overflow:hidden;">
+            <div style="position:absolute;left:0;right:0;top:40%;height:20%;background:linear-gradient(to right,var(--mud-palette-background-grey),var(--mud-palette-surface));pointer-events:none;"></div>
+            @foreach (var tick in ticks)
+            {
+                if (tick.Percent < 0 || tick.Percent > 100) { continue; }
+                var pct = tick.Percent.ToString("F2", CultureInfo.InvariantCulture);
+                var top = tick.IsMajor ? "18%" : "32%";
+                var bottom = tick.IsMajor ? "18%" : "32%";
+                var width = tick.IsMajor ? "2px" : "1px";
+                var color = tick.IsMajor ? "var(--mud-palette-lines-default)" : "var(--mud-palette-divider)";
+                <div style="position:absolute;left:@(pct)%;top:@top;bottom:@bottom;width:@width;background:@color;transform:translateX(-50%);pointer-events:none;"></div>
+                if (tick.IsMajor && !string.IsNullOrEmpty(tick.Label))
+                {
+                    <div style="position:absolute;left:@(pct)%;bottom:4px;transform:translateX(-50%);font-size:10px;color:var(--mud-palette-text-secondary);font-weight:500;pointer-events:none;white-space:nowrap;z-index:1;">@tick.Label</div>
+                }
+            }
+        </div>;
+
+    private static RenderFragment RenderSelection(string label) =>
+        @<div style="height:100%;width:100%;background:linear-gradient(90deg,var(--mud-palette-primary),var(--mud-palette-primary-darken));display:flex;align-items:center;justify-content:center;border-radius:4px;box-shadow:0 2px 4px rgba(0,0,0,0.25);">
+            <span style="color:var(--mud-palette-primary-text);font-weight:600;font-size:11px;white-space:nowrap;padding:0 8px;text-shadow:0 1px 2px rgba(0,0,0,0.3);">@label</span>
+        </div>;
+
+    private static string FormatDate(DateOnly d, DateRangeSliderMode mode) => mode switch
+    {
+        DateRangeSliderMode.Year    => d.ToString("yyyy", CultureInfo.CurrentCulture),
+        DateRangeSliderMode.Quarter => $"Q{((d.Month - 1) / 3) + 1} {d.Year}",
+        DateRangeSliderMode.Month   => d.ToString("MMM yyyy", CultureInfo.CurrentCulture),
+        DateRangeSliderMode.Week    => $"KW{ISOWeek.GetWeekOfYear(d.ToDateTime(TimeOnly.MinValue))} / {d.Year}",
+        _                           => d.ToString("d", CultureInfo.CurrentCulture)
+    };
+
+    private static string FormatDateTime(DateTime d, DateTimeRangeSliderMode mode) => mode switch
+    {
+        DateTimeRangeSliderMode.Month  => d.ToString("MMM yyyy", CultureInfo.CurrentCulture),
+        DateTimeRangeSliderMode.Week   => $"KW{ISOWeek.GetWeekOfYear(d)} / {d.Year}",
+        DateTimeRangeSliderMode.Day    => d.ToString("d", CultureInfo.CurrentCulture),
+        DateTimeRangeSliderMode.Hour   => d.ToString("dd.MM HH:00", CultureInfo.CurrentCulture),
+        _                              => d.ToString("g", CultureInfo.CurrentCulture)
+    };
+}

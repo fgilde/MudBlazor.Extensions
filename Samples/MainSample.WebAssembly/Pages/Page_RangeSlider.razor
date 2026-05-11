@@ -166,6 +166,67 @@
         </DemoContent>
     </MudExDemoBox>
 
+    <!-- Demo 7: Typed date range slider -->
+    <MudExDemoBox Title="7. MudExDateRangeSlider"
+                  NavTitle="MudExDateRangeSlider"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                                            {
+                                                "Inherits MudExRangeSlider<DateOnly> – any base property still works",
+                                                "Mode: Day / Week / Month / Quarter / Year – snap behavior",
+                                                "Theme-aware default Track / Selection / Thumb templates",
+                                                "Adaptive ticks – granularity changes with zoom level",
+                                                "AutoZoomRangeMultiplier (3×) – zoom out without setting AbsoluteSizeRange"
+                                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Drop-in component for date ranges. Mode controls snapping; the Track template adapts to the visible span, and zoom (mouse wheel by default) lets you switch between coarse overview and fine selection without leaving the component."]
+            </MudText>
+            <TypedDateRangeSliderExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo 8: Typed time range slider -->
+    <MudExDemoBox Title="8. MudExTimeRangeSlider"
+                  NavTitle="MudExTimeRangeSlider"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                                            {
+                                                "Inherits MudExRangeSlider<TimeOnly>",
+                                                "Mode: Minute / FiveMinute / QuarterHour / HalfHour / Hour",
+                                                "Defaults to office hours (08–18); zoom out to full day",
+                                                "Adaptive ticks down to 1-minute precision when zoomed in"
+                                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Drop-in component for time-of-day ranges – ideal for meeting slots, opening hours, or maintenance windows. Mode controls snapping while the visible span follows the user's zoom."]
+            </MudText>
+            <TypedTimeRangeSliderExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo 9: Typed date-time range slider -->
+    <MudExDemoBox Title="9. MudExDateTimeRangeSlider"
+                  NavTitle="MudExDateTimeRangeSlider"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                                            {
+                                                "Inherits MudExRangeSlider<DateTime>",
+                                                "Mode: Minute / Hour / Day / Week / Month",
+                                                "Combines date and time precision in one slider",
+                                                "Tick engine switches automatically between sub-day and multi-day rendering"
+                                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The most flexible of the typed sliders – goes from minute-level resolution all the way to multi-month overviews depending on Mode and zoom. Useful for incident timelines, log filters or scheduling UIs."]
+            </MudText>
+            <TypedDateTimeRangeSliderExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
 </MudExDemoPage>
 
 

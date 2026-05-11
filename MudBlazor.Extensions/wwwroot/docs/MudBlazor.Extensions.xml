@@ -2179,6 +2179,42 @@
             Ignore neutral cultures
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDateRangeSlider">
+            <summary>
+            Range slider specialized for <see cref="T:System.DateOnly"/> with theme-aware defaults and a <see cref="T:MudBlazor.Extensions.Components.DateRangeSliderMode"/>
+            that controls snap behavior (Day, Week, Month, Quarter, Year). Inherits everything from <see cref="T:MudBlazor.Extensions.Components.MudExRangeSlider`1"/> –
+            any property of the base class (SizeRange, Value, MinLength, …) can be set on this component as well.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDateRangeSlider.Mode">
+            <summary>
+            Snap resolution for start/end values. Switching this also adjusts the default labels and step resolver.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDateRangeSlider.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDateRangeSlider.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDateTimeRangeSlider">
+            <summary>
+            Range slider specialized for <see cref="T:System.DateTime"/> with theme-aware defaults and a <see cref="T:MudBlazor.Extensions.Components.DateTimeRangeSliderMode"/>
+            that controls snap behavior (Minute, Hour, Day, Week, Month). Inherits everything from <see cref="T:MudBlazor.Extensions.Components.MudExRangeSlider`1"/> –
+            any property of the base class can be set on this component as well.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDateTimeRangeSlider.Mode">
+            <summary>
+            Snap resolution for start/end values. Switching this also adjusts the default labels and step resolver.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDateTimeRangeSlider.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDateTimeRangeSlider.OnParametersSet">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDialog">
             <summary>
             MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.
@@ -6602,6 +6638,18 @@
             and each <see cref="M:MudBlazor.Extensions.Components.MudExRangeSlider`1.ZoomOutAsync(System.Int32)"/> step expands it to 125%. Must be in the range (0,1).
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AutoZoomRangeMultiplier">
+            <summary>
+            When <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AbsoluteSizeRange"/> is not provided, this multiplier is used to derive an effective absolute zoom range from the initial <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SizeRange"/>.
+            A value of 3.0 means the user can zoom out to 3× the initial visible span (one full span as padding on each side, centered on the initial midpoint).
+            Set to 1.0 (or lower) to disable auto-derivation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.EffectiveAbsoluteSizeRange">
+            <summary>
+            Gets the absolute zoom bounds actually used by the slider, either user-provided via <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AbsoluteSizeRange"/> or auto-derived from the initial <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.SizeRange"/> via <see cref="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AutoZoomRangeMultiplier"/>.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.StepLength">
             <summary>
             Gets or sets the step length used for snapping and keyboard navigation.
@@ -8710,6 +8758,24 @@
             <summary>
             ItemList
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExTimeRangeSlider">
+            <summary>
+            Range slider specialized for <see cref="T:System.TimeOnly"/> with theme-aware defaults and a <see cref="T:MudBlazor.Extensions.Components.TimeRangeSliderMode"/>
+            that controls snap behavior (Minute, FiveMinute, QuarterHour, HalfHour, Hour). Inherits everything from
+            <see cref="T:MudBlazor.Extensions.Components.MudExRangeSlider`1"/> – any property of the base class can be set on this component as well.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTimeRangeSlider.Mode">
+            <summary>
+            Snap resolution for start/end values. Switching this also adjusts the default tick density and step resolver.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTimeRangeSlider.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTimeRangeSlider.OnParametersSet">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExToggleableSearch">
             <summary>
@@ -15487,6 +15553,78 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection.ConfirmationCallback">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.DateRangeSliderMode">
+            <summary>
+            Snap behavior of a <see cref="T:MudBlazor.Extensions.Components.MudExDateRangeSlider"/>. Controls the resolution at which the start/end values snap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DateRangeSliderMode.Day">
+            <summary>Snap to whole days (default).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DateRangeSliderMode.Week">
+            <summary>Snap to ISO weeks (start = Monday).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DateRangeSliderMode.Month">
+            <summary>Snap to month boundaries (start = 1st of month).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DateRangeSliderMode.Quarter">
+            <summary>Snap to quarter boundaries (Jan/Apr/Jul/Oct 1st).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DateRangeSliderMode.Year">
+            <summary>Snap to year boundaries (Jan 1st).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.TimeRangeSliderMode">
+            <summary>
+            Snap behavior of a <see cref="T:MudBlazor.Extensions.Components.MudExTimeRangeSlider"/>.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TimeRangeSliderMode.Minute">
+            <summary>Snap to whole minutes (default).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TimeRangeSliderMode.FiveMinute">
+            <summary>Snap to 5-minute steps.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TimeRangeSliderMode.QuarterHour">
+            <summary>Snap to quarter hours (00, 15, 30, 45).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TimeRangeSliderMode.HalfHour">
+            <summary>Snap to half hours (00, 30).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TimeRangeSliderMode.Hour">
+            <summary>Snap to whole hours.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.DateTimeRangeSliderMode">
+            <summary>
+            Snap behavior of a <see cref="T:MudBlazor.Extensions.Components.MudExDateTimeRangeSlider"/>.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DateTimeRangeSliderMode.Minute">
+            <summary>Snap to whole minutes.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DateTimeRangeSliderMode.Hour">
+            <summary>Snap to whole hours (default).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DateTimeRangeSliderMode.Day">
+            <summary>Snap to whole days.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DateTimeRangeSliderMode.Week">
+            <summary>Snap to ISO weeks.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DateTimeRangeSliderMode.Month">
+            <summary>Snap to month boundaries.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.RangeTick`1">
+            <summary>
+            One tick on a range slider track, produced by the adaptive tick engine.
+            </summary>
+            <typeparam name="T">Slider value type.</typeparam>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.RangeTick`1.#ctor(`0,System.Double,System.Boolean,System.String)">
+            <summary>
+            One tick on a range slider track, produced by the adaptive tick engine.
+            </summary>
+            <typeparam name="T">Slider value type.</typeparam>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.FilterHighlighting">
             <summary>
             Controls how the highlighting of the filter is displayed
@@ -16278,6 +16416,27 @@
             <summary>
             Is false control isn't rendered at all
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSliderDefaults.TimeTrack(MudBlazor.Extensions.Components.TimeRangeSliderMode)">
+            <summary>Default theme-aware track template for <see cref="T:MudBlazor.Extensions.Components.MudExTimeRangeSlider"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSliderDefaults.TimeSelection">
+            <summary>Default selection chip for <see cref="T:MudBlazor.Extensions.Components.MudExTimeRangeSlider"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSliderDefaults.DateTrack(MudBlazor.Extensions.Components.DateRangeSliderMode)">
+            <summary>Default theme-aware track template for <see cref="T:MudBlazor.Extensions.Components.MudExDateRangeSlider"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSliderDefaults.DateSelection(MudBlazor.Extensions.Components.DateRangeSliderMode)">
+            <summary>Default selection chip for <see cref="T:MudBlazor.Extensions.Components.MudExDateRangeSlider"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSliderDefaults.DateTimeTrack(MudBlazor.Extensions.Components.DateTimeRangeSliderMode)">
+            <summary>Default theme-aware track template for <see cref="T:MudBlazor.Extensions.Components.MudExDateTimeRangeSlider"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSliderDefaults.DateTimeSelection(MudBlazor.Extensions.Components.DateTimeRangeSliderMode)">
+            <summary>Default selection chip for <see cref="T:MudBlazor.Extensions.Components.MudExDateTimeRangeSlider"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRangeSliderDefaults.Thumb``1">
+            <summary>Default thumb appearance for typed range sliders.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExValidationWrapper`1.GetDefaultConverter">
             <inheritdoc />
@@ -23456,6 +23615,30 @@
         <member name="M:MudBlazor.Extensions.Helper.MudExThemeHelper.AsJson``1(``0)">
             <summary>
             Converts Theme to json
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.RangeSliderTicks">
+            <summary>
+            Adaptive tick generation for the typed range sliders (<see cref="T:MudBlazor.Extensions.Components.MudExDateRangeSlider"/>,
+            <see cref="T:MudBlazor.Extensions.Components.MudExTimeRangeSlider"/>, <see cref="T:MudBlazor.Extensions.Components.MudExDateTimeRangeSlider"/>).
+            Granularity is chosen based on the visible span so the track stays readable at any zoom level.
+            All percent calculations are delegated to <see cref="T:Nextended.Core.Types.IRangeMath`1"/>; this class only owns
+            calendar alignment, major/minor heuristics and labels.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.RangeSliderTicks.ForTime(Nextended.Core.Contracts.IRange{System.TimeOnly},MudBlazor.Extensions.Components.TimeRangeSliderMode)">
+            <summary>
+            Generates ticks for a <see cref="T:System.TimeOnly"/> range slider given the currently visible span.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.RangeSliderTicks.ForDate(Nextended.Core.Contracts.IRange{System.DateOnly},MudBlazor.Extensions.Components.DateRangeSliderMode)">
+            <summary>
+            Generates ticks for a <see cref="T:System.DateOnly"/> range slider given the currently visible span.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.RangeSliderTicks.ForDateTime(Nextended.Core.Contracts.IRange{System.DateTime},MudBlazor.Extensions.Components.DateTimeRangeSliderMode)">
+            <summary>
+            Generates ticks for a <see cref="T:System.DateTime"/> range slider given the currently visible span.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.StepResolvers">
