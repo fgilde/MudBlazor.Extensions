@@ -29,6 +29,13 @@ public class MudExFluentValidationValidator : ComponentBase, IDisposable
         CurrentEditContext.OnFieldChanged += OnFieldChanged;
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+            ValidateModel();
+    }
+
     private void OnValidationRequested(object sender, ValidationRequestedEventArgs e) => ValidateModel();
 
     private void OnFieldChanged(object sender, FieldChangedEventArgs e) => ValidateModel();
