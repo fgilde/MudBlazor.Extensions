@@ -3,7 +3,7 @@
 internal static class StreamHelper
 {
 
-    public static async Task ReadStreamInChunksAsync(this Stream stream, byte[] buffer, int chunkSize = 4096, Action<int> bytesReadCallback = null, Func<bool> breakCondition = null)
+    public static async Task ReadStreamInChunksAsync(this Stream stream, byte[] buffer, int chunkSize = 4096, Action<int> bytesReadCallback = null, Func<bool> breakCondition = null, CancellationToken ct = default)
     {
         int bytesRead;
         int totalBytesRead = 0;
@@ -12,7 +12,7 @@ internal static class StreamHelper
         {
             if (breakCondition != null && breakCondition()) return;
 
-            bytesRead = await stream.ReadAsync(buffer, totalBytesRead, Math.Min(chunkSize, buffer.Length - totalBytesRead));
+            bytesRead = await stream.ReadAsync(buffer, totalBytesRead, Math.Min(chunkSize, buffer.Length - totalBytesRead), ct);
             totalBytesRead += bytesRead;
             bytesReadCallback?.Invoke(totalBytesRead);
         }
@@ -20,7 +20,7 @@ internal static class StreamHelper
     }
 
     // TODO instead of copy we should read chunked as buffer byte[]
-    public static async Task<Stream> CopyStreamAsync(this Stream input)
+    public static async Task<Stream> CopyStreamAsync(this Stream input, CancellationToken ct = default)
     {
         if (input == null)
             return null;
@@ -35,7 +35,7 @@ internal static class StreamHelper
         }
 
         MemoryStream memoryStream = new MemoryStream();
-        await input.CopyToAsync(memoryStream);
+        await input.CopyToAsync(memoryStream, ct);
 
         // Reset the memory stream's position to the beginning before returning
         memoryStream.Position = 0;

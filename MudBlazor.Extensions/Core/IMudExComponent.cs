@@ -43,7 +43,7 @@ internal interface IJsMudExComponent<T> : IMudExComponent, IAsyncDisposable
     /// </summary>
     public virtual object[] GetJsArguments()
     {
-        return new object[] { ElementReference, CreateDotNetObjectReference() };
+        return [ElementReference, CreateDotNetObjectReference()];
     }
 
     /// <summary>

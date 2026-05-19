@@ -40,6 +40,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     private ConcurrentDictionary<(string FormatName, string Url), string> _convertedUrlMapping = new();
     private ElementReference _selectionToolBar;
     private ElementReference _rubberBand;
+    private CancellationTokenSource _componentCts = new();
     private ElementReference ContainerElement;
     private Stack<Action> _undoStack = new();
     private bool _allowInteractingUnderRubberBand = true;
@@ -442,7 +443,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
         {
             try
             {
-                Src = fileDisplayInfos?.Url ?? await FileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
+                Src = fileDisplayInfos?.Url ?? await FileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl, _componentCts?.Token ?? CancellationToken.None);
             }
             catch (Exception e)
             {
@@ -491,6 +492,11 @@ public partial class MudExImageViewer : IMudExFileDisplay
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        try { _componentCts?.Cancel(); }
+        catch { /* token may already be disposed */ }
+        _componentCts?.Dispose();
+        _componentCts = null;
+
         _convertedUrlMapping.Clear();
         await FileService.DisposeAsync();
         await base.DisposeAsync();
@@ -584,7 +590,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
         await image.SaveAsync(resultStream, format);
 
         resultStream.Position = 0;
-        var resultUrl = await FileService.CreateDataUrlAsync(resultStream.ToArray(), "image/png", true);
+        var resultUrl = await FileService.CreateDataUrlAsync(resultStream.ToArray(), "image/png", true, _componentCts?.Token ?? CancellationToken.None);
         await RemoveStatusTextAsync();
         return resultUrl;
     }
@@ -600,7 +606,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
             return convertedUrl;
         }
 
-        await using var stream = await FileService.ReadStreamAsync(url);
+        await using var stream = await FileService.ReadStreamAsync(url, ct: _componentCts?.Token ?? CancellationToken.None);
         var result = await ConvertImageToAsync(stream, format);
         _convertedUrlMapping.TryAdd(cacheKey, result);
         return result;

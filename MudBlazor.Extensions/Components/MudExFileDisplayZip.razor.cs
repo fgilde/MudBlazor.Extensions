@@ -26,9 +26,10 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private IBrowserFile _innerPreview;
     private string _innerPreviewUrl;
     private Stream _innerPreviewStream;
-    private IList<IArchivedBrowserFile> _zipEntries;    
+    private IList<IArchivedBrowserFile> _zipEntries;
     private HashSet<MudExArchiveStructure> _zipStructure;
     private string _contentType;
+    private CancellationTokenSource _componentCts = new();
 
     private MudExTreeView<MudExArchiveStructure> _treeView;
 
@@ -304,23 +305,21 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     
     private async Task CreateStructure()
     {
-        var archive = await FileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url), RootFolderName, ContentType);
+        var ct = _componentCts?.Token ?? CancellationToken.None;
+        var archive = await FileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url, ct), RootFolderName, ContentType, ct);
         _zipStructure = archive.Structure;
         _zipEntries = archive.List;
     }
-    
+
     private async Task Preview(IArchivedBrowserFile file)
     {
+        var ct = _componentCts?.Token ?? CancellationToken.None;
         _innerPreview = file;
-        
-        //_innerPreviewStream = new MemoryStream(await file.GetBytesAsync());
-        //if(!MimeType.IsArchive(file.ContentType))
-        //    _innerPreviewUrl = await fileService.CreateDataUrlAsync(file, StreamUrlHandling == StreamUrlHandling.BlobUrl);
-        
+
         if (MimeType.IsArchive(file.ContentType))
-            _innerPreviewStream = new MemoryStream(await file.GetBytesAsync());
+            _innerPreviewStream = new MemoryStream(await file.GetBytesAsync(cancellationToken: ct));
         else
-            _innerPreviewUrl = await FileService.CreateDataUrlAsync(file, StreamUrlHandling == StreamUrlHandling.BlobUrl);
+            _innerPreviewUrl = await FileService.CreateDataUrlAsync(file, StreamUrlHandling == StreamUrlHandling.BlobUrl, ct);
     }
 
     private void ClosePreview()
@@ -350,9 +349,10 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 
         if (asZip)
         {
-            await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+            var ct = _componentCts?.Token ?? CancellationToken.None;
+            await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", ct, new
             {
-                Url = await FileService.CreateDataUrlAsync(await zip.ToArchiveBytesAsync(), "application/zip", StreamUrlHandling == StreamUrlHandling.BlobUrl),
+                Url = await FileService.CreateDataUrlAsync(await zip.ToArchiveBytesAsync(ct), "application/zip", StreamUrlHandling == StreamUrlHandling.BlobUrl, ct),
                 FileName = $"{Path.ChangeExtension(zip.Name, "zip")}",
                 MimeType = "application/zip"
             });
@@ -425,7 +425,12 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
-        await base.DisposeAsync();        
+        try { _componentCts?.Cancel(); }
+        catch { /* token may already be disposed */ }
+        _componentCts?.Dispose();
+        _componentCts = null;
+
+        await base.DisposeAsync();
         _zipStructure = null;
         _zipEntries?.Clear();
         _zipEntries = null;

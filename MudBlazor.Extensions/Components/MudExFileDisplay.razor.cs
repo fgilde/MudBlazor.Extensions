@@ -53,6 +53,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private ComponentForFileInfo _componentForFile;
     private Stream _contentStream;
     private bool _errorClosed;
+    private CancellationTokenSource _componentCts = new();
 
     [Inject] private IJsApiService JsApiService { get; set; }
 
@@ -611,7 +612,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private async Task EnsureUrlAsync(bool force = false)
     {
         if ((_componentForFile?.ControlType == null || force) && string.IsNullOrWhiteSpace(Url) && ContentStream != null)
-            Url = await FileService.ReadDataUrlForStreamAsync(ContentStream, ContentType, StreamUrlHandling == StreamUrlHandling.BlobUrl);
+            Url = await FileService.ReadDataUrlForStreamAsync(ContentStream, ContentType, StreamUrlHandling == StreamUrlHandling.BlobUrl, _componentCts?.Token ?? CancellationToken.None);
     }
 
     private async Task<string> GetUrlAsync()
@@ -773,6 +774,11 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        try { _componentCts?.Cancel(); }
+        catch { /* token may already be disposed */ }
+        _componentCts?.Dispose();
+        _componentCts = null;
+
         await base.DisposeAsync();
         Url = null;
         if (_componentForFile != null)

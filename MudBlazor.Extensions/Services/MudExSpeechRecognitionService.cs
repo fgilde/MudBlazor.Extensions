@@ -22,10 +22,10 @@ namespace MudBlazor.Extensions.Services
 
         public async ValueTask DisposeAsync()
         {
-            await Task.WhenAll(_recordings.Select(StopRecordingAsync));
+            await Task.WhenAll(_recordings.Select(r => StopRecordingAsync(r)));
         }
 
-        public async Task<string> StartRecordingAsync(SpeechRecognitionOptions options, Action<SpeechRecognitionResult> callback, Action<string> stoppedCallback = null)
+        public async Task<string> StartRecordingAsync(SpeechRecognitionOptions options, Action<SpeechRecognitionResult> callback, Action<string> stoppedCallback = null, CancellationToken ct = default)
         {
             var callbackReference = DotNetObjectReference.Create(new JsRecordingCallbackWrapper<SpeechRecognitionResult>(callback, s =>
             {
@@ -33,22 +33,25 @@ namespace MudBlazor.Extensions.Services
                 _captureNotifier.RemoveRecordingInfo(s);
                 stoppedCallback?.Invoke(s);
             }));
-            var result = await _jsRuntime.InvokeAsync<string>("MudExSpeechRecognition.startRecording", options, callbackReference);
+            var result = await _jsRuntime.InvokeAsync<string>("MudExSpeechRecognition.startRecording", ct, options, callbackReference);
             _recordings.Add(result);
             if (options.MaxCaptureTime is { TotalSeconds: > 0 })
-                _ = Task.Delay(options.MaxCaptureTime.Value).ContinueWith(_ => StopRecordingAsync(result));
+                _ = Task.Delay(options.MaxCaptureTime.Value, ct).ContinueWith(_ => StopRecordingAsync(result), TaskScheduler.Default);
             if (options.ShowNotificationWhileRecording)
                 _captureNotifier.ShowRecordingInfo(result, options.MaxCaptureTime, (s, _) => StopRecordingAsync(s));
             return result;
         }
 
-        public Task<string> StartRecordingAsync(Action<SpeechRecognitionResult> callback, Action<string> stoppedCallback = null) => StartRecordingAsync(null, callback, stoppedCallback);
+        public Task<string> StartRecordingAsync(Action<SpeechRecognitionResult> callback, Action<string> stoppedCallback = null, CancellationToken ct = default)
+            => StartRecordingAsync(null, callback, stoppedCallback, ct);
 
-        public Task StopRecordingAsync(string recordingId) => _jsRuntime.InvokeVoidAsync("MudExSpeechRecognition.stopRecording", recordingId).AsTask();
+        public Task StopRecordingAsync(string recordingId, CancellationToken ct = default)
+            => _jsRuntime.InvokeVoidAsync("MudExSpeechRecognition.stopRecording", ct, recordingId).AsTask();
 
-        public Task StopAllRecordingsAsync() => _jsRuntime.InvokeVoidAsync("MudExSpeechRecognition.stopAllRecordings").AsTask();
-        public Task<IEnumerable<AudioDevice>> GetAudioDevicesAsync() => _jsRuntime.InvokeAsync<IEnumerable<AudioDevice>>("MudExSpeechRecognition.getAvailableAudioDevices").AsTask();
+        public Task StopAllRecordingsAsync(CancellationToken ct = default)
+            => _jsRuntime.InvokeVoidAsync("MudExSpeechRecognition.stopAllRecordings", ct).AsTask();
 
-
+        public Task<IEnumerable<AudioDevice>> GetAudioDevicesAsync(CancellationToken ct = default)
+            => _jsRuntime.InvokeAsync<IEnumerable<AudioDevice>>("MudExSpeechRecognition.getAvailableAudioDevices", ct).AsTask();
     }
 }

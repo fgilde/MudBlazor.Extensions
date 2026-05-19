@@ -17398,53 +17398,55 @@
             Service for capturing the screen or camera and audio.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.EditCaptureOptionsAsync(MudBlazor.Extensions.Core.Capture.CaptureOptionsEditMode,MudBlazor.Extensions.Core.Capture.CaptureOptions)">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.EditCaptureOptionsAsync(MudBlazor.Extensions.Core.Capture.CaptureOptionsEditMode,MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Threading.CancellationToken)">
             <summary>
             Shows a dialog where the user can specify or edit the capture options.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Action{MudBlazor.Extensions.Core.Capture.CaptureResult},System.Action{MudBlazor.Extensions.Core.Capture.CaptureId})">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Action{MudBlazor.Extensions.Core.Capture.CaptureResult},System.Action{MudBlazor.Extensions.Core.Capture.CaptureId},System.Threading.CancellationToken)">
             <summary>
             Starts capturing the screen or camera and audio.
             </summary>
             <returns>Id to stop recording</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.W3C.MediaStreamTrack)">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.W3C.MediaStreamTrack,System.Threading.CancellationToken)">
             <summary>
             Stops the preview capture for the specified track.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureId)">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureId,System.Threading.CancellationToken)">
             <summary>
             Stops the capture with the specified ID.
             </summary>
             <param name="captureId">The id for the capture recording to stop</param>
+            <param name="ct">Token to cancel the stop request.</param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopAllCapturesAsync">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopAllCapturesAsync(System.Threading.CancellationToken)">
             <summary>
             Stops all captures.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.GetAudioDevicesAsync">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.GetAudioDevicesAsync(System.Threading.CancellationToken)">
             <summary>
             Gets the available audio devices.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.GetVideoDevicesAsync">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.GetVideoDevicesAsync(System.Threading.CancellationToken)">
             <summary>
             Gets the available video devices.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.W3C.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String})">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.W3C.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String},System.Threading.CancellationToken)">
             <summary>
             Selects the capture source.
             </summary>
             <param name="displayMediaOptions">The media options for capturing</param>
             <param name="elementForPreview">Specify an element to show preview. This should be a ElementReference of a videoElement or a selector for a videoElement</param>
+            <param name="ct">Token to cancel the selection request.</param>
             <returns></returns>
         </member>
         <member name="T:MudBlazor.Extensions.Core.IDialogEventService">
@@ -17699,14 +17701,14 @@
             Reads a stream as excel file
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToAbsoluteUrlAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToAbsoluteUrlAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Converts a url to an absolute url
             </summary>
             <param name="url"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToBlobUrlAsync(System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToBlobUrlAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Converts a url to a blob url
             </summary>
@@ -17714,7 +17716,7 @@
             <param name="mimeType"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToDataUrlAsync(System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToDataUrlAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Converts a url to a data url
             </summary>
@@ -17722,71 +17724,71 @@
             <param name="mimeType"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromStream(System.IO.Stream)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromStream(System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
             Returns the content of a file as string
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromFileDisplayInfosAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromFileDisplayInfosAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.CancellationToken)">
             <summary>
             Returns the content of a file as string
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromUrlAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromUrlAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Reads a string from an url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.CancellationToken)">
             <summary>
             Reads filedisplay info as stream. this stream is a copy and needs to be disposed and closed.
             </summary>
             <param name="fileDisplayInfos"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Reads a stream from an url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadDataUrlForStreamAsync(System.IO.Stream,System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadDataUrlForStreamAsync(System.IO.Stream,System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Reads a data url for a stream
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.CreateDataUrlAsync(System.Byte[],System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.CreateDataUrlAsync(System.Byte[],System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Creates a data url from bytes this can be a blob url or a data url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.CreateDataUrlAsync(Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.CreateDataUrlAsync(Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Creates an url from a file this can be a blob url or a data url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadBytesAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadBytesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Read bytes from a file
             </summary>
             <param name="url"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveAsync(System.Byte[],System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveAsync(System.Byte[],System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with SharpCompress
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with SharpCompress
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveWithSystemCompressionAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveWithSystemCompressionAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with system compression
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.String,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Initiates the download of the specified content as a file with the given MIME type and file name.
             </summary>
@@ -17795,7 +17797,7 @@
             <param name="fileName">The name of the file to be downloaded.</param>
             <returns>A <see cref="T:System.Threading.Tasks.ValueTask"/> representing the asynchronous operation.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             
             </summary>
@@ -17804,7 +17806,7 @@
             <param name="fileName"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.Byte[],System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.Byte[],System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Initiates the download of content represented as a byte array.
             </summary>
@@ -17813,7 +17815,7 @@
             <param name="fileName">The name of the file to be downloaded.</param>
             <returns>A <see cref="T:System.Threading.Tasks.ValueTask"/> representing the asynchronous operation.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadAsync(System.String,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Initiates the download of a file from the specified URL.
             </summary>
@@ -17842,40 +17844,45 @@
             Defines a service interface for speech recognition functionalities, allowing for asynchronous recording and processing of speech input.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StartRecordingAsync(MudBlazor.Extensions.Core.SpeechRecognitionOptions,System.Action{MudBlazor.Extensions.Core.SpeechRecognitionResult},System.Action{System.String})">
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StartRecordingAsync(MudBlazor.Extensions.Core.SpeechRecognitionOptions,System.Action{MudBlazor.Extensions.Core.SpeechRecognitionResult},System.Action{System.String},System.Threading.CancellationToken)">
             <summary>
             Starts recording speech asynchronously with specified options, registering callbacks for recognition results and stop events.
             </summary>
             <param name="options">Configuration options for speech recognition.</param>
             <param name="callback">Callback invoked with the speech recognition result.</param>
             <param name="stoppedCallback">Optional callback invoked when recording is stopped.</param>
+            <param name="ct">Token to cancel the start request.</param>
             <returns>A Task representing the asynchronous operation, containing the recording ID.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StartRecordingAsync(System.Action{MudBlazor.Extensions.Core.SpeechRecognitionResult},System.Action{System.String})">
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StartRecordingAsync(System.Action{MudBlazor.Extensions.Core.SpeechRecognitionResult},System.Action{System.String},System.Threading.CancellationToken)">
             <summary>
             Starts recording speech asynchronously, registering callbacks for recognition results and stop events.
             </summary>
             <param name="callback">Callback invoked with the speech recognition result.</param>
             <param name="stoppedCallback">Optional callback invoked when recording is stopped.</param>
+            <param name="ct">Token to cancel the start request.</param>
             <returns>A Task representing the asynchronous operation, containing the recording ID.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StopRecordingAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StopRecordingAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Stops the recording asynchronously using the specified recording ID.
             </summary>
             <param name="recordingId">The ID of the recording to be stopped.</param>
+            <param name="ct">Token to cancel the stop request.</param>
             <returns>A Task representing the asynchronous operation.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StopAllRecordingsAsync">
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StopAllRecordingsAsync(System.Threading.CancellationToken)">
             <summary>
             Stops all ongoing recordings asynchronously.
             </summary>
+            <param name="ct">Token to cancel the stop request.</param>
             <returns>A Task representing the asynchronous operation.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.GetAudioDevicesAsync">
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.GetAudioDevicesAsync(System.Threading.CancellationToken)">
             <summary>
             Returns a collection of available audio devices for input.
             </summary>
+            <param name="ct">Token to cancel the device query.</param>
         </member>
         <member name="T:MudBlazor.Extensions.Core.MudExAppearance">
             <summary>
@@ -20498,22 +20505,22 @@
             Contains extension methods for IJSRuntime to call MudBlazor extensions JavaScript functions.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.IsWithin(Microsoft.JSInterop.IJSRuntime,Microsoft.AspNetCore.Components.Web.MouseEventArgs,Microsoft.AspNetCore.Components.ElementReference)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.IsWithin(Microsoft.JSInterop.IJSRuntime,Microsoft.AspNetCore.Components.Web.MouseEventArgs,Microsoft.AspNetCore.Components.ElementReference,System.Threading.CancellationToken)">
             <summary>
             Checks if given mouse args are within given element.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.GetCssVariablesAsync(Microsoft.JSInterop.IJSRuntime)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.GetCssVariablesAsync(Microsoft.JSInterop.IJSRuntime,System.Threading.CancellationToken)">
             <summary>
             Returns all current CssVariables
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.FindCssVariablesByValueAsync(Microsoft.JSInterop.IJSRuntime,System.String)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.FindCssVariablesByValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.Threading.CancellationToken)">
             <summary>
             Returns css variables by value
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,MudBlazor.Extensions.Core.CssVariable)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,MudBlazor.Extensions.Core.CssVariable,System.Threading.CancellationToken)">
             <summary>
             Updates or creates a new css variable
             </summary>
@@ -20523,27 +20530,27 @@
             Updates or creates a new css variable
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.Object)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.Object,System.Threading.CancellationToken)">
             <summary>
             Updates or creates a new css variable
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,MudBlazor.Color)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,MudBlazor.Color,System.Threading.CancellationToken)">
             <summary>
             Updates or creates a new css variable
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,MudBlazor.Utilities.MudColor)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,MudBlazor.Utilities.MudColor,System.Threading.CancellationToken)">
             <summary>
             Updates or creates a new css variable
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Updates or creates a new css variable
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.GetCssColorVariablesAsync(Microsoft.JSInterop.IJSRuntime)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.GetCssColorVariablesAsync(Microsoft.JSInterop.IJSRuntime,System.Threading.CancellationToken)">
             <summary>
             Returns all CSS variables that containing color values
             </summary>
@@ -24944,61 +24951,62 @@
             Creates a new instance of the service.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.MudComponentBase,System.Func{System.Boolean},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.MudComponentBase,System.Func{System.Boolean},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a MudBlazor component temporarily.
             </summary>
             <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Func{System.Boolean},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Func{System.Boolean},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a ElementReference temporarily.
             </summary>
-            <returns>The applied appearance.</returns>    
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,System.String,System.Func{System.Boolean},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,System.String,System.Func{System.Boolean},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a element that will searched by a selector temporarily.
             </summary>
-            <returns>The applied appearance.</returns>  
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.IDialogReference,System.Func{System.Boolean},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.IDialogReference,System.Func{System.Boolean},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a dialog reference temporarily.
             </summary>
-            <returns>The applied appearance.</returns>  
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.MudComponentBase,System.Nullable{System.TimeSpan},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.MudComponentBase,System.Nullable{System.TimeSpan},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a MudBlazor component temporarily.
             </summary>
             <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Nullable{System.TimeSpan},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Nullable{System.TimeSpan},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a ElementReference temporarily.
             </summary>
-            <returns>The applied appearance.</returns>    
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,System.String,System.Nullable{System.TimeSpan},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,System.String,System.Nullable{System.TimeSpan},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a element that will searched by a selector temporarily.
             </summary>
-            <returns>The applied appearance.</returns>  
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.IDialogReference,System.Nullable{System.TimeSpan},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.IDialogReference,System.Nullable{System.TimeSpan},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a dialog reference temporarily.
             </summary>
-            <returns>The applied appearance.</returns>  
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyAsClassOnlyToAsync``2(``0,``1,System.Action{``1,System.String})">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyAsClassOnlyToAsync``2(``0,``1,System.Action{``1,System.String},System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a component, updating only its class attribute.
             </summary>
             <param name="appearance">The appearance to apply.</param>
             <param name="component">The component to which the appearance will be applied.</param>
             <param name="updateFunc">Function to update the class of the component.</param>
+            <param name="ct">Token to cancel the JS-side class rule build.</param>
             <returns>The applied appearance.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,MudBlazor.MudComponentBase,System.Boolean)">
@@ -25010,25 +25018,27 @@
             <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
             <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to an HTML element using its selector.
             </summary>
             <param name="appearance">The appearance to apply.</param>
             <param name="elementSelector">The selector of the element to which the appearance will be applied.</param>
             <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
+            <param name="ct">Token to cancel the JS call.</param>
             <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to an HTML element using its reference.
             </summary>
             <param name="appearance">The appearance to apply.</param>
             <param name="elementRef">Reference to element</param>
             <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
-            <returns>The applied appearance.</returns>    
+            <param name="ct">Token to cancel the JS call.</param>
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,MudBlazor.IDialogReference,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,MudBlazor.IDialogReference,System.Boolean,System.Threading.CancellationToken)">
             <summary>
              Applies the specified appearance to a dialog
             </summary>
@@ -25041,28 +25051,31 @@
             <param name="component">The component from which the appearance will be removed.</param>
             <returns>The removed appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,System.String,System.Threading.CancellationToken)">
             <summary>
             Removes the specified appearance from an HTML element using its selector.
             </summary>
             <param name="appearance">The appearance to remove.</param>
             <param name="elementSelector">The selector of the element from which the appearance will be removed.</param>
+            <param name="ct">Token to cancel the JS call.</param>
             <returns>The removed appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Threading.CancellationToken)">
             <summary>
             Removes the specified appearance from an HTML element using its ElementReference.
             </summary>
             <param name="appearance">The appearance to remove.</param>
             <param name="elementRef">The ElementReference of the HTML element from which the appearance will be removed.</param>
+            <param name="ct">Token to cancel the JS call.</param>
             <returns>The removed appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,MudBlazor.IDialogReference)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,MudBlazor.IDialogReference,System.Threading.CancellationToken)">
             <summary>
             Removes the specified appearance from a dialog.
             </summary>
             <param name="appearance">The appearance to remove.</param>
             <param name="dialogReference">The reference to the dialog from which the appearance will be removed.</param>
+            <param name="ct">Token to cancel the JS call.</param>
             <returns>The removed appearance.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExCaptureNotificationService">
@@ -25081,25 +25094,25 @@
         <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.DisposeAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.EditCaptureOptionsAsync(MudBlazor.Extensions.Core.Capture.CaptureOptionsEditMode,MudBlazor.Extensions.Core.Capture.CaptureOptions)">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.EditCaptureOptionsAsync(MudBlazor.Extensions.Core.Capture.CaptureOptionsEditMode,MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Action{MudBlazor.Extensions.Core.Capture.CaptureResult},System.Action{MudBlazor.Extensions.Core.Capture.CaptureId})">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Action{MudBlazor.Extensions.Core.Capture.CaptureResult},System.Action{MudBlazor.Extensions.Core.Capture.CaptureId},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureId)">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureId,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StopAllCapturesAsync">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StopAllCapturesAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetAudioDevicesAsync">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetAudioDevicesAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetVideoDevicesAsync">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetVideoDevicesAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.W3C.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String})">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.W3C.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExDialogService">
@@ -25143,82 +25156,86 @@
             Creates a new instance of MudExFileService
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromStream(System.IO.Stream)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromStream(System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
             Returns the content of a file as string
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.CancellationToken)">
             <summary>
-            Reads filedisplay info as stream. this stream is a copy and needs to be disposed and closed.
+            Reads file display info as stream. this stream is a copy and needs to be disposed and closed.
             </summary>
-            <param name="fileDisplayInfos"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromFileDisplayInfosAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromFileDisplayInfosAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.CancellationToken)">
             <summary>
             Returns the content of a file as string
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToBlobUrlAsync(System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToAbsoluteUrlAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Ensures a Url is absolute
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToBlobUrlAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Converts a url to a blob url
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToDataUrlAsync(System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToDataUrlAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Converts a url to a data url
             </summary>    
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromUrlAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromUrlAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Reads a string from an url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadBytesAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadBytesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Reads bytes from an url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Reads a stream from an url
-            Set copyToMemoryStream to false to get the http stream directly, this is better, but some libraries cant support new stream handling in blazor. Thats the reason why its default set to true
+            Set copyToMemoryStream to false to get the http stream directly, this is better, but some libraries cant support new stream handling in blazor. That's the reason why its default set to true
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadDataUrlForStreamAsync(System.IO.Stream,System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadDataUrlForStreamAsync(System.IO.Stream,System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Reads a data url for a stream
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.CreateDataUrlAsync(System.Byte[],System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.CreateDataUrlAsync(System.Byte[],System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Creates a data url from bytes this can be a blob url or a data url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.CreateDataUrlAsync(Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.CreateDataUrlAsync(Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Creates an url from a file this can be a blob url or a data url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.RevokeBlobUrlAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.RevokeBlobUrlAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Revokes a blob url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveAsync(System.Byte[],System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveAsync(System.Byte[],System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with SharpCompress
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with SharpCompress
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveWithSystemCompressionAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveWithSystemCompressionAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with system compression
             </summary>
@@ -25226,16 +25243,16 @@
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.DisposeAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.String,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.Byte[],System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.Byte[],System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadAsync(System.String,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadExcelFile(System.IO.Stream,System.String)">

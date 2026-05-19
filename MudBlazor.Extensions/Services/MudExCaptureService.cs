@@ -46,7 +46,7 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
         await StopAllCapturesAsync();
     }
 
-    public async Task<CaptureOptions> QuickEditCaptureOptionsAsync(CaptureOptions? options = null)
+    public async Task<CaptureOptions> QuickEditCaptureOptionsAsync(CaptureOptions? options = null, CancellationToken ct = default)
     {
         var simple = SimpleCaptureOptions.From(options);
 
@@ -85,10 +85,10 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public async Task<CaptureOptions> EditCaptureOptionsAsync(CaptureOptionsEditMode mode, CaptureOptions? options = null)
+    public async Task<CaptureOptions> EditCaptureOptionsAsync(CaptureOptionsEditMode mode, CaptureOptions? options = null, CancellationToken ct = default)
     {
         if (mode == CaptureOptionsEditMode.Simple)
-            return await QuickEditCaptureOptionsAsync(options);
+            return await QuickEditCaptureOptionsAsync(options, ct);
         options ??= new CaptureOptions();
         var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o =>
         {
@@ -115,14 +115,14 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public async Task<CaptureId> StartCaptureAsync(CaptureOptions options, Action<CaptureResult> callback, Action<CaptureId> stoppedCallback = null)
+    public async Task<CaptureId> StartCaptureAsync(CaptureOptions options, Action<CaptureResult> callback, Action<CaptureId> stoppedCallback = null, CancellationToken ct = default)
     {
         if (!options.Valid())
         {
             return null;
         }
 
-        await WaitForStartAsync(options);
+        await WaitForStartAsync(options, ct);
 
         var callbackReference = DotNetObjectReference.Create(new JsRecordingCallbackWrapper<CaptureResult>(
             captureResult => callback?.Invoke(Prepare(captureResult, options)), s =>
@@ -132,27 +132,27 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
                 stoppedCallback?.Invoke(new CaptureId(s));
             }));
 
-        var result = new CaptureId(await _jsRuntime.InvokeAsync<string>("MudExCapture.startCapture", options, callbackReference));
+        var result = new CaptureId(await _jsRuntime.InvokeAsync<string>("MudExCapture.startCapture", ct, options, callbackReference));
         _captures.TryAdd(result, callbackReference);
-        
+
         if (options.TakePhoto)
         {
             return null;
         }
 
         if (options.MaxCaptureTime is { TotalSeconds: > 0 })
-            _ = Task.Delay(options.MaxCaptureTime.Value).ContinueWith(_ => StopCaptureAsync(result));
+            _ = Task.Delay(options.MaxCaptureTime.Value, ct).ContinueWith(_ => StopCaptureAsync(result), TaskScheduler.Default);
         if (options.ShowNotificationWhileRecording)
             _captureNotifier.ShowRecordingInfo(result, options.MaxCaptureTime, (s, _) => StopCaptureAsync(new CaptureId(s)));
         return result;
     }
 
-    private async Task WaitForStartAsync(CaptureOptions options)
+    private async Task WaitForStartAsync(CaptureOptions options, CancellationToken ct = default)
     {
         if (options.StartDelay is { TotalSeconds: > 0 })
         {
             string toastId = null;
-            var cancel = new CancellationTokenSource();
+            var cancel = CancellationTokenSource.CreateLinkedTokenSource(ct);
             if (options.ShowNotificationWhileRecording)
             {
                 toastId = _captureNotifier.ShowRecordingInfo(null, options.StartDelay, (s, _) =>
@@ -170,9 +170,9 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
         }
     }
 
-    public Task StopCaptureAsync(MediaStreamTrack track)
+    public Task StopCaptureAsync(MediaStreamTrack track, CancellationToken ct = default)
     {
-         return _jsRuntime.InvokeAsync<string>("MudExCapture.stopPreviewCapture", track.Id).AsTask();
+         return _jsRuntime.InvokeAsync<string>("MudExCapture.stopPreviewCapture", ct, track.Id).AsTask();
     }
 
     private CaptureResult Prepare(CaptureResult captureResult, CaptureOptions options)
@@ -182,28 +182,28 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public Task StopCaptureAsync(CaptureId captureId)
+    public Task StopCaptureAsync(CaptureId captureId, CancellationToken ct = default)
     {
         string id = captureId;
         var callback = _captures.GetOrAdd(id, _ => null);
-        return _jsRuntime.InvokeVoidAsync("MudExCapture.stopCapture", id, callback).AsTask();
+        return _jsRuntime.InvokeVoidAsync("MudExCapture.stopCapture", ct, id, callback).AsTask();
     }
 
     /// <inheritdoc />
-    public Task StopAllCapturesAsync() =>
-        Task.WhenAll(_captures.Select(pair => StopCaptureAsync(new CaptureId(pair.Key))));
+    public Task StopAllCapturesAsync(CancellationToken ct = default) =>
+        Task.WhenAll(_captures.Select(pair => StopCaptureAsync(new CaptureId(pair.Key), ct)));
         //_jsRuntime.InvokeVoidAsync("MudExCapture.stopAllCaptures").AsTask();
 
     /// <inheritdoc />
-    public Task<IEnumerable<AudioDevice>> GetAudioDevicesAsync() =>
-        _jsRuntime.InvokeAsync<IEnumerable<AudioDevice>>("MudExCapture.getAvailableAudioDevices").AsTask();
+    public Task<IEnumerable<AudioDevice>> GetAudioDevicesAsync(CancellationToken ct = default) =>
+        _jsRuntime.InvokeAsync<IEnumerable<AudioDevice>>("MudExCapture.getAvailableAudioDevices", ct).AsTask();
 
     /// <inheritdoc />
-    public Task<IEnumerable<VideoDevice>> GetVideoDevicesAsync() =>
-        _jsRuntime.InvokeAsync<IEnumerable<VideoDevice>>("MudExCapture.getAvailableVideoDevices").AsTask();
+    public Task<IEnumerable<VideoDevice>> GetVideoDevicesAsync(CancellationToken ct = default) =>
+        _jsRuntime.InvokeAsync<IEnumerable<VideoDevice>>("MudExCapture.getAvailableVideoDevices", ct).AsTask();
 
     /// <inheritdoc />
-    public async Task<MediaStreamTrack> SelectCaptureSourceAsync(DisplayMediaOptions? displayMediaOptions = null, OneOf<ElementReference, string> elementForPreview = default)
+    public async Task<MediaStreamTrack> SelectCaptureSourceAsync(DisplayMediaOptions? displayMediaOptions = null, OneOf<ElementReference, string> elementForPreview = default, CancellationToken ct = default)
     {
         object toPass = null;
         if (elementForPreview is { IsT0: true, AsT0: { Context: not null, Id: not null } })
@@ -213,6 +213,6 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
         else if (elementForPreview.IsT1 && !string.IsNullOrWhiteSpace(elementForPreview.AsT1))
             toPass = elementForPreview.AsT1;
 
-        return await _jsRuntime.InvokeAsync<MediaStreamTrack>("MudExCapture.selectCaptureSource", displayMediaOptions, toPass);
+        return await _jsRuntime.InvokeAsync<MediaStreamTrack>("MudExCapture.selectCaptureSource", ct, displayMediaOptions, toPass);
     }
 }
