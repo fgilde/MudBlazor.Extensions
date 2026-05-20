@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
@@ -124,7 +125,7 @@ public static partial class MudExObjectEditExtensions
     /// <param name="attributes">An optional dictionary of attributes to apply to the component.</param>
     /// <returns>A modified IEnumerable of ObjectEditPropertyMetaOf for rendering with a specified non-generic component and attributes.</returns>
     /// </summary>
-    public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> RenderWith<TModel>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas, Type componentType, IDictionary<string, object> attributes = null)
+    public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> RenderWith<TModel>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type componentType, IDictionary<string, object> attributes = null)
         => metas.Apply(m => m.RenderWith(componentType, attributes));
 
     /// <summary>

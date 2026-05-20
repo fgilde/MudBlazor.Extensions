@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Components;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
@@ -28,8 +29,11 @@ public interface IRenderData : ICloneable
     public bool IsValidParameterAttribute(string key, object value);
     
     /// <summary>
-    /// Component type to be rendered.
+    /// Component type to be rendered. The Trimmer must preserve all members so that
+    /// the value can be passed to <see cref="DynamicComponent"/> and reflected over
+    /// for parameter binding / activation.
     /// </summary>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public Type ComponentType { get; }
 
     /// <summary>

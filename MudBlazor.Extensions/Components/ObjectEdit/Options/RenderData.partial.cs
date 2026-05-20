@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using MudBlazor.Extensions.Helper.Internal;
 using Nextended.Core.Extensions;
 
@@ -8,12 +9,12 @@ public partial class RenderData
 {
     #region Static Factory Methods
 
-    public static IRenderData For(string valueField, Type propertyType, Type controlType)
+    public static IRenderData For(string valueField, Type propertyType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type controlType)
     {
         return For(valueField, propertyType, propertyType, controlType);
     }
 
-    public static IRenderData For(string valueField, Type propertyType, Type fieldType, Type controlType)
+    public static IRenderData For(string valueField, Type propertyType, Type fieldType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type controlType)
     {
         return typeof(RenderData<,>).MakeGenericType(propertyType, fieldType).CreateInstance<IRenderData>(valueField, controlType, null);
     }
@@ -22,7 +23,7 @@ public partial class RenderData
     /// <summary>
     /// Returns a new RenderData instance for the given component type, with the specified options.
     /// </summary>
-    public static RenderData<TPropertyType, TFieldType> For<TComponent, TPropertyType, TFieldType>(
+    public static RenderData<TPropertyType, TFieldType> For<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent, TPropertyType, TFieldType>(
         Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options,
         Func<TPropertyType, TFieldType> toFieldTypeConverter = null,
         Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
@@ -34,8 +35,8 @@ public partial class RenderData
 
     /// <summary>
     /// Returns a new RenderData instance for the given component type, with the specified options.
-    /// </summary>    
-    public static RenderData<TPropertyType, TFieldType> For<TComponent, TPropertyType, TFieldType>(
+    /// </summary>
+    public static RenderData<TPropertyType, TFieldType> For<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent, TPropertyType, TFieldType>(
         Expression<Func<TComponent, TFieldType>> valueField, TComponent instanceForAttributes,
         Func<TPropertyType, TFieldType> toFieldTypeConverter = null,
         Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
@@ -48,8 +49,8 @@ public partial class RenderData
 
     /// <summary>
     /// Returns a new RenderData instance for the given component type, with the specified options.
-    /// </summary>    
-    public static RenderData<TPropertyType, TFieldType> For<TComponent, TPropertyType, TFieldType>(
+    /// </summary>
+    public static RenderData<TPropertyType, TFieldType> For<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent, TPropertyType, TFieldType>(
         Expression<Func<TComponent, TFieldType>> valueField,
         Func<TPropertyType, TFieldType> toFieldTypeConverter = null,
         Func<TFieldType, TPropertyType> toPropertyTypeConverter = null)
@@ -61,15 +62,15 @@ public partial class RenderData
 
     /// <summary>
     /// Returns a new RenderData instance for the given component type, with the specified options.
-    /// </summary>    
-    public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
+    /// </summary>
+    public static RenderData<TPropertyType, TPropertyType> For<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent, TPropertyType>(
         Expression<Func<TComponent, TPropertyType>> valueField, Action<TComponent> options) where TComponent : new()
         => new(valueField.GetMemberName(), typeof(TComponent), PropertyHelper.ValuesDictionary(options, true));
 
     /// <summary>
     /// Returns a new RenderData instance for the given component type, with the specified options.
-    /// </summary>    
-    public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
+    /// </summary>
+    public static RenderData<TPropertyType, TPropertyType> For<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent, TPropertyType>(
         Expression<Func<TComponent, TPropertyType>> valueField, TComponent instanceForAttributes)
         where TComponent : new()
         => new(valueField.GetMemberName(), typeof(TComponent),
@@ -77,27 +78,27 @@ public partial class RenderData
 
     /// <summary>
     /// Returns a new RenderData instance for the given component type, with the specified options.
-    /// </summary>    
-    public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
+    /// </summary>
+    public static RenderData<TPropertyType, TPropertyType> For<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent, TPropertyType>(
         Expression<Func<TComponent, TPropertyType>> valueField)
         => new(valueField.GetMemberName(), typeof(TComponent));
 
     /// <summary>
     /// Returns a new RenderData instance for the given component type, with the specified options.
-    /// </summary>    
-    public static RenderData For<TComponent>(Action<TComponent> options) where TComponent : new()
+    /// </summary>
+    public static RenderData For<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent>(Action<TComponent> options) where TComponent : new()
         => For(typeof(TComponent), PropertyHelper.ValuesDictionary(options, true));
 
     /// <summary>
     /// Returns a new RenderData instance for the given component type, with the specified options.
-    /// </summary>    
-    public static RenderData For<TComponent>(IDictionary<string, object> attributes = null)
+    /// </summary>
+    public static RenderData For<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent>(IDictionary<string, object> attributes = null)
         => For(typeof(TComponent), attributes);
 
     /// <summary>
     /// Returns a new RenderData instance for the given component type, with the specified options.
     /// </summary>    
-    public static RenderData For(Type componentType,
+    public static RenderData For([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type componentType,
         IDictionary<string, object> attributes = null) => new(componentType, attributes);
 
     /// <summary>

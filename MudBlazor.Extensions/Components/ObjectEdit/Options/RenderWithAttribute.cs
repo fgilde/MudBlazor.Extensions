@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
 
@@ -10,10 +11,20 @@ namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Enum | AttributeTargets.Field)]
 public class RenderWithAttribute : System.Attribute
 {
-    public Type ComponentType { get; }
+    /// <summary>
+    /// Component type to render the property with. The Trimmer must preserve all members so that
+    /// the value can be passed to <see cref="Microsoft.AspNetCore.Components.DynamicComponent"/>
+    /// and reflected over for parameter binding / activation.
+    /// </summary>
+    [field: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+    public Type ComponentType
+    {
+        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+        get;
+    }
     public string TypeName { get; }
 
-    public RenderWithAttribute(Type type)
+    public RenderWithAttribute([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type)
     {
         ComponentType = type;
         TypeName = type.FullName;
@@ -44,7 +55,7 @@ public class RenderWithAttribute : System.Attribute
     }
 }
 
-public class RenderWithAttribute<TComponent> : RenderWithAttribute where TComponent : new()
+public class RenderWithAttribute<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent> : RenderWithAttribute where TComponent : new()
 {
     private readonly IDictionary<string, object> _attributes;
     private string _valueFieldName;
@@ -75,7 +86,7 @@ public class RenderWithAttribute<TComponent> : RenderWithAttribute where TCompon
 
 
 [AttributeUsage(AttributeTargets.Property)]
-public class RenderWithAttribute<TComponent, TPropertyType, TFieldType> : RenderWithAttribute where TComponent : new()
+public class RenderWithAttribute<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent, TPropertyType, TFieldType> : RenderWithAttribute where TComponent : new()
 {
     private readonly Expression<Func<TComponent, TFieldType>> _valueField;
     private readonly object _instanceOrOptions;

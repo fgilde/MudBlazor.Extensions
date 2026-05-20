@@ -13,6 +13,7 @@ using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 using MudBlazor.Interop;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace MudBlazor.Extensions.Components;
@@ -34,9 +35,25 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private BrowserInfo _info;
     private bool _internalOverwrite;
     private List<IMudExFileDisplay> _possibleRenderControls;
-    private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
+
+    // Replacement for the original (Type, bool, IDictionary<...>) ValueTuple — ValueTuple
+    // elements cannot carry [DynamicallyAccessedMembers] so the trimmer would drop the
+    // members needed when the Type is rendered via DynamicComponent. The mutable record
+    // class allows ControlType to be cleared without re-allocating.
+    private sealed class ComponentForFileInfo
+    {
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+        public Type ControlType { get; set; }
+
+        public bool ShouldAddDiv { get; init; }
+
+        public IDictionary<string, object> Parameters { get; init; }
+    }
+
+    private ComponentForFileInfo _componentForFile;
     private Stream _contentStream;
     private bool _errorClosed;
+    private CancellationTokenSource _componentCts = new();
 
     [Inject] private IJsApiService JsApiService { get; set; }
 
@@ -340,7 +357,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     private void UpdateRenderInfos()
     {
-        if (_componentForFile.ControlType != null) return;
+        if (_componentForFile?.ControlType != null) return;
         renderInfos = null;
         StateHasChanged();
 
@@ -355,7 +372,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
                              || (parameters.TryGetValue<string>(nameof(Url), out var url) && Url != url);
 
         if(updateRequired)
-            _componentForFile = default;
+            _componentForFile = null;
 
         await base.SetParametersAsync(parameters);
 
@@ -385,7 +402,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
                 _possibleRenderControls.Add(possibleRenderControl);
         }
 
-        if (ViewDependsOnContentType && _componentForFile == default)
+        if (ViewDependsOnContentType && _componentForFile == null)
             _componentForFile = GetComponentForFile(_possibleRenderControls.FirstOrDefault(c => c.StartsActive && !ForceNativeRender));
         if (!_internalOverwrite)
             renderInfos = GetRenderInfos();
@@ -400,13 +417,15 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     }
 
 
-    private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) GetComponentForFile(IMudExFileDisplay fileComponent)
+    [UnconditionalSuppressMessage("Trimming", "IL2072",
+        Justification = "IMudExFileDisplay implementations are Blazor components resolved from DI; their public members are kept by the Razor compiler + DI roots.")]
+    private ComponentForFileInfo GetComponentForFile(IMudExFileDisplay fileComponent)
     {
         var type = fileComponent?.GetType();
         if (type == null)
-            return default;
+            return null;
         var parameters = ComponentRenderHelper.GetCompatibleParameters(this, type);
-        
+
         parameters.Add(nameof(IMudExFileDisplay.FileDisplayInfos), this);
 
         if (ParametersForSubControls != null)
@@ -418,7 +437,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         }
 
 
-        return (type, fileComponent.WrapInMudExFileDisplayDiv, parameters);
+        return new ComponentForFileInfo
+        {
+            ControlType = type,
+            ShouldAddDiv = fileComponent.WrapInMudExFileDisplayDiv,
+            Parameters = parameters,
+        };
     }
 
     /// <summary>
@@ -587,8 +611,8 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     private async Task EnsureUrlAsync(bool force = false)
     {
-        if ((_componentForFile.ControlType == null || force) && string.IsNullOrWhiteSpace(Url) && ContentStream != null)
-            Url = await FileService.ReadDataUrlForStreamAsync(ContentStream, ContentType, StreamUrlHandling == StreamUrlHandling.BlobUrl);
+        if ((_componentForFile?.ControlType == null || force) && string.IsNullOrWhiteSpace(Url) && ContentStream != null)
+            Url = await FileService.ReadDataUrlForStreamAsync(ContentStream, ContentType, StreamUrlHandling == StreamUrlHandling.BlobUrl, _componentCts?.Token ?? CancellationToken.None);
     }
 
     private async Task<string> GetUrlAsync()
@@ -750,9 +774,15 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        try { _componentCts?.Cancel(); }
+        catch { /* token may already be disposed */ }
+        _componentCts?.Dispose();
+        _componentCts = null;
+
         await base.DisposeAsync();
         Url = null;
-        _componentForFile.ControlType = null;
+        if (_componentForFile != null)
+            _componentForFile.ControlType = null;
         await FileService.DisposeAsync();
     }
 

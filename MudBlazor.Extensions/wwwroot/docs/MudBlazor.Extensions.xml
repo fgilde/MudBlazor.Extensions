@@ -1607,6 +1607,165 @@
             No chips, just work as listbox
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExClassEditor">
+            <summary>
+            Picker / browser for the CSS classes available on the current page.
+            Bindable class string with live scan, search, multi-select, per-class style preview and
+            three view modes (List, Compact, Grid) for embedding in dialogs or popovers.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.Value">
+            <summary>The class string this editor binds to. Two-way bindable via <c>@bind-Value</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.ValueChanged">
+            <summary>Raised whenever <see cref="P:MudBlazor.Extensions.Components.MudExClassEditor.Value"/> changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.ViewMode">
+            <summary>Active view mode.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.ViewModeChanged">
+            <summary>Raised when the user toggles the view mode through the toolbar.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.ShowToolbar">
+            <summary>Shows or hides the toolbar (view mode, search, refresh).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.AllowViewModeSwitch">
+            <summary>Allow switching the view mode in the toolbar.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.ShowFilter">
+            <summary>Show the filter / search field.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.ShowSelectedBar">
+            <summary>Show the row of currently selected classes above the list.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.ShowStyles">
+            <summary>Show inline style snippet for every class (next to / under the name).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.GroupBySource">
+            <summary>Group the list view by source stylesheet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.MaxHeight">
+            <summary>Maximum height of the scroll area (any CSS size).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.Prefix">
+            <summary>
+            Only include classes whose name starts with this prefix.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.SourceFilter">
+            <summary>
+            Only include classes from stylesheets whose source label contains this substring.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.AvailableClasses">
+            <summary>
+            Restrict the result to an explicit allow-list. When set, only classes whose name appears
+            in this list are shown — useful for limiting the picker to a curated set.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.AutoScan">
+            <summary>
+            When true the editor will start a stylesheet scan on first render.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.ShowPreview">
+            <summary>
+            Render an optional live preview area below the editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.PreviewContent">
+            <summary>Optional custom preview. Receives the current class string.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.PreviewLabel">
+            <summary>Heading shown above the preview block. Set to null to hide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.AvailableGroups">
+            <summary>Snapshot of all scanned classes.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExClassEditor.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExClassEditor.ScanAsync">
+            <summary>
+            Re-scans the document's stylesheets for available classes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditor.StylePreviewMaxLength">
+            <summary>
+            Maximum characters of the inline style snippet shown next to a class.
+            Long values (e.g. base64 data: URLs) are truncated with an ellipsis.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExClassEditorPicker">
+            <summary>
+            Picker wrapper around <see cref="T:MudBlazor.Extensions.Components.MudExClassEditor"/> that fits the MudBlazor picker pattern
+            (MudTextField input + popover/dialog). Use this in property grids or wherever a single-line
+            picker is the expected control for selecting CSS class names.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.Title">
+            <summary> Title </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.ViewMode">
+            <summary>The view mode used by the inner editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.ViewModeChanged">
+            <summary>Raised when the editor's view mode changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.EditorShowToolbar">
+            <summary>Shows or hides the editor's toolbar.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.AllowViewModeSwitch">
+            <summary>Allows the user to switch view modes through the editor's toolbar.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.ShowFilter">
+            <summary>Shows the editor's filter / search box.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.ShowSelectedBar">
+            <summary>Shows the row of currently selected classes above the list.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.ShowStyles">
+            <summary>Shows the inline style snippet under every class name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.GroupBySource">
+            <summary>Group the list view by source stylesheet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.MaxHeight">
+            <summary>Maximum height of the editor's scroll area.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.Prefix">
+            <summary>Only include classes whose name starts with this prefix.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.SourceFilter">
+            <summary>Only include classes from stylesheets whose source label contains this substring.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.AvailableClasses">
+            <summary>Restrict the result to an explicit allow-list.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.AutoScan">
+            <summary>When true the editor will start a stylesheet scan on first render.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.ShowPreview">
+            <summary>Render the integrated live preview area below the editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.PreviewContent">
+            <summary>Optional custom preview. Receives the current class string.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.PreviewLabel">
+            <summary>Preview heading label inside the editor. Null to hide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExClassEditorPicker.StylePreviewMaxLength">
+            <summary>Maximum characters of the inline style snippet shown next to a class.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExClassEditorPicker.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExClassEditorPicker.OnPickerClosedAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExClassEditorPicker.StringValueChangedAsync(System.String)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.CodeViewModeWithRenderFragment">
             <summary>
             Render behavior of the child fragment inside the code view
@@ -8031,6 +8190,148 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSplitter.DisposeAsync">
             <inheritdoc/>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExStyleEditor">
+            <summary>
+            Cool style-string editor. Bindable Style string, three view modes (DevTools, Categorized, Raw),
+            smart per-property value pickers and an optional live preview area.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.Value">
+            <summary>
+            The style string this editor binds to. Two-way bindable via <c>@bind-Value</c>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.ValueChanged">
+            <summary>
+            Raised whenever <see cref="P:MudBlazor.Extensions.Components.MudExStyleEditor.Value"/> changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.ViewMode">
+            <summary>
+            Active view mode.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.ViewModeChanged">
+            <summary>Raised when the view mode changes via the toolbar.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.ShowToolbar">
+            <summary>Shows or hides the toolbar (view mode buttons, search, dense toggle).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.AllowViewModeSwitch">
+            <summary>Allows the user to switch view modes through the toolbar.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.ShowFilter">
+            <summary>Shows the property filter / search box.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.Dense">
+            <summary>Compact rendering (smaller paddings, dense controls).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.MaxHeight">
+            <summary>Maximum height of the scroll area. Use any css size string.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.ShowPreview">
+            <summary>
+            Whether to render the integrated live preview area below the editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.PreviewContent">
+            <summary>
+            Optional custom preview content. Receives the current style string.
+            If not set the editor renders a default preview block.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.PreviewLabel">
+            <summary>
+            Heading shown above the preview block. Set to null to hide the heading.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.AllowedProperties">
+            <summary>
+            Restricts the editable property catalog. When provided, only these properties show up
+            in the autocomplete and the categorized view.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.ShowCatalogSuggestions">
+            <summary>
+            When true, properties from the catalog that are not yet set are shown as suggestions
+            in the categorized view (with empty value).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.AllowDisableDeclarations">
+            <summary>
+            Whether the user can disable / enable single declarations (Chrome-style checkbox).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.Entries">
+            <summary>Returns all entries (read-only snapshot).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditor.AllowedCatalogNames">
+            <summary>All property names from the catalog filtered by <see cref="P:MudBlazor.Extensions.Components.MudExStyleEditor.AllowedProperties"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExStyleEditor.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExStyleEditor.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExStyleEditorPicker">
+            <summary>
+            Picker wrapper around <see cref="T:MudBlazor.Extensions.Components.MudExStyleEditor"/> that fits the MudBlazor picker pattern
+            (MudTextField input + popover/dialog). Use this when you want to embed the style editor in a
+            property grid, an object edit, or anywhere a single-line picker is expected.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.Title">
+            <summary> Title </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.ViewMode">
+            <summary>The view mode used by the inner editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.ViewModeChanged">
+            <summary>Raised when the editor's view mode changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.EditorShowToolbar">
+            <summary>Shows or hides the editor's toolbar (view mode buttons, search).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.AllowViewModeSwitch">
+            <summary>Allows the user to switch view modes through the editor's toolbar.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.ShowFilter">
+            <summary>Shows the property filter / search box in the editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.Dense">
+            <summary>Compact rendering (smaller paddings, dense controls).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.MaxHeight">
+            <summary>Maximum height of the editor's scroll area.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.ShowPreview">
+            <summary>Whether the editor renders its integrated live preview area below the editor body.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.PreviewContent">
+            <summary>Optional custom preview content for the editor. Receives the current style string.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.PreviewLabel">
+            <summary>Preview heading label inside the editor. Null to hide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.AllowedProperties">
+            <summary>Restricts the editable property catalog of the editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.ShowCatalogSuggestions">
+            <summary>Whether to show catalog suggestions in the categorized view.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExStyleEditorPicker.AllowDisableDeclarations">
+            <summary>Whether the user can disable / enable single declarations via checkbox.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExStyleEditorPicker.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExStyleEditorPicker.OnPickerClosedAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExStyleEditorPicker.StringValueChangedAsync(System.String)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExTagField`1">
             <summary>
             MudExTagField is a component that allows the user to enter a list of values as chips.
@@ -10576,7 +10877,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.RenderWithType">
             <summary>
-            Returns the type of the registered editor if available
+            Returns the type of the registered editor if available. The Trimmer must preserve all
+            members so that the value can be passed to <see cref="T:Microsoft.AspNetCore.Components.DynamicComponent"/> and reflected
+            over for parameter binding / activation.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.MultiSearch">
@@ -14968,7 +15271,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.ComponentType">
             <summary>
-            Type of the component to be rendered.
+            Type of the component to be rendered. The Trimmer must preserve all members so that
+            the value can be passed to <see cref="T:Microsoft.AspNetCore.Components.DynamicComponent"/> and reflected over for
+            parameter binding / activation.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.Attributes">
@@ -15104,37 +15409,37 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``3(System.Linq.Expressions.Expression{System.Func{``0,``2}},``0,System.Func{``1,``2},System.Func{``2,``1})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``3(System.Linq.Expressions.Expression{System.Func{``0,``2}},System.Func{``1,``2},System.Func{``2,``1})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Action{``0})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},``0)">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``2(System.Linq.Expressions.Expression{System.Func{``0,``1}})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``1(System.Action{``0})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For``1(System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Returns a new RenderData instance for the given component type, with the specified options.
-            </summary>    
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.For(System.Type,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
@@ -15369,7 +15674,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData.ComponentType">
             <summary>
-            Component type to be rendered.
+            Component type to be rendered. The Trimmer must preserve all members so that
+            the value can be passed to <see cref="T:Microsoft.AspNetCore.Components.DynamicComponent"/> and reflected over
+            for parameter binding / activation.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData.OneTimeBinding">
@@ -15475,6 +15782,13 @@
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderWithAttribute">
             <summary>
             Attribute to specify how the property should be rendered inside a mud ex object edit.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderWithAttribute.ComponentType">
+            <summary>
+            Component type to render the property with. The Trimmer must preserve all members so that
+            the value can be passed to <see cref="T:Microsoft.AspNetCore.Components.DynamicComponent"/>
+            and reflected over for parameter binding / activation.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderWithAttribute.Apply(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
@@ -16769,6 +17083,43 @@
             Inherit the value from the parent element.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.BackgroundAttachment">
+            <summary>
+            Values for the CSS <c>background-attachment</c> property.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BackgroundAttachment.Scroll">
+            <summary>The background scrolls with the page (default).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BackgroundAttachment.Fixed">
+            <summary>The background is fixed relative to the viewport.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BackgroundAttachment.Local">
+            <summary>The background is fixed relative to the element's content.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.BackgroundRepeat">
+            <summary>
+            Values for the CSS <c>background-repeat</c> property.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BackgroundRepeat.Repeat">
+            <summary>The background image is repeated both vertically and horizontally.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BackgroundRepeat.RepeatX">
+            <summary>The background image is repeated only horizontally.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BackgroundRepeat.RepeatY">
+            <summary>The background image is repeated only vertically.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BackgroundRepeat.NoRepeat">
+            <summary>The background image is not repeated.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BackgroundRepeat.Round">
+            <summary>The image is rescaled to fit and is repeated as often as it can without being clipped.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BackgroundRepeat.Space">
+            <summary>The image is repeated as many times as possible without clipping; spaces are inserted between images.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.BorderStyle">
             <summary>
             Specifies various styles for the border of an element in CSS.
@@ -16844,6 +17195,17 @@
             Can be used on any CSS property, including 'border-style', and takes the same values as inherit. It acts like inherit if the property is inherited and like initial if not.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.BoxSizing">
+            <summary>
+            Values for the CSS <c>box-sizing</c> property.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BoxSizing.ContentBox">
+            <summary>The width and height only include the content. Padding and border are added outside the box.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BoxSizing.BorderBox">
+            <summary>The width and height include content, padding and border.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.Clear">
             <summary>
             Enum representing CSS 'clear' property values.
@@ -16872,6 +17234,175 @@
         <member name="F:MudBlazor.Extensions.Core.Css.Clear.Inherit">
             <summary>
             Inherit the value from the parent element.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.CssClassInfo">
+            <summary>
+            One CSS class harvested from the document's stylesheets, used by
+            <see cref="T:MudBlazor.Extensions.Components.MudExClassEditor"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Css.CssClassInfo.Name">
+            <summary>
+            Bare class name without leading dot.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Css.CssClassInfo.Selectors">
+            <summary>
+            All selectors the class was found in.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Css.CssClassInfo.Source">
+            <summary>
+            Origin label (stylesheet filename or "inline").
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Css.CssClassInfo.Styles">
+            <summary>
+            Inline cssText of the first rule that declared the class. Empty if not scanned.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.CssClassInfoGroup">
+            <summary>
+            Group container as returned by the JS scan: one entry per stylesheet source.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Css.CssClassInfoGroup.Source">
+            <summary>
+            Source label (filename of the stylesheet or "inline").
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Css.CssClassInfoGroup.Classes">
+            <summary>
+            Classes harvested from this source.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.MudExStyleEditViewMode">
+            <summary>
+            View mode for <see cref="T:MudBlazor.Extensions.Components.MudExStyleEditor"/>.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MudExStyleEditViewMode.DevTools">
+            <summary>
+            Inline editable list of "property: value;" rows like Chrome DevTools.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MudExStyleEditViewMode.Categorized">
+            <summary>
+            Grouped form with one panel per category (Layout, Spacing, Typography, ...).
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MudExStyleEditViewMode.Raw">
+            <summary>
+            Plain multiline text edit of the full style string.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.MudExClassEditViewMode">
+            <summary>
+            View mode for <see cref="T:MudBlazor.Extensions.Components.MudExClassEditor"/>.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MudExClassEditViewMode.List">
+            <summary>
+            Standard list grouped by source stylesheet.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MudExClassEditViewMode.Compact">
+            <summary>
+            Dense chip cloud, ideal for small popovers.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MudExClassEditViewMode.Grid">
+            <summary>
+            Card-like grid layout with style preview snippets.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.CssPropertyCategory">
+            <summary>
+            Category bucket used to group CSS properties in the categorized view.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssPropertyCategory.Layout">
+            <summary>Layout related (display, position, float, ...).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssPropertyCategory.Spacing">
+            <summary>Box model spacing (padding, margin).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssPropertyCategory.Sizing">
+            <summary>Sizing (width, height, min/max).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssPropertyCategory.Typography">
+            <summary>Typography (font, text, line-height).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssPropertyCategory.Background">
+            <summary>Background and color.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssPropertyCategory.Border">
+            <summary>Border and outline.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssPropertyCategory.Effects">
+            <summary>Visual effects (opacity, filter, shadow).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssPropertyCategory.Transform">
+            <summary>Transform / animation.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssPropertyCategory.FlexGrid">
+            <summary>Flex / grid layout details.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssPropertyCategory.Other">
+            <summary>Anything that does not fit a known category.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.CssEditorPropertyKind">
+            <summary>
+            Editor kind used to pick the right control for a given CSS property value.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssEditorPropertyKind.Text">
+            <summary>Free text input.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssEditorPropertyKind.Size">
+            <summary>Numeric size with a unit (px, %, em, rem, ...).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssEditorPropertyKind.Color">
+            <summary>Color picker.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssEditorPropertyKind.Number">
+            <summary>Single numeric value (no unit).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssEditorPropertyKind.Slider">
+            <summary>Slider in a known range (e.g. opacity 0-1).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssEditorPropertyKind.Select">
+            <summary>Predefined value list (Select).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.CssEditorPropertyKind.Shorthand">
+            <summary>Multiple shorthand values (e.g. border, transform). Edited as text with suggestions.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.CssPropertyEntry">
+            <summary>
+            One declaration in a parsed style string. Mutable working model used by
+            <see cref="T:MudBlazor.Extensions.Components.MudExStyleEditor"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Css.CssPropertyEntry.Property">
+            <summary>
+            CSS property name in kebab-case (e.g. "background-color").
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Css.CssPropertyEntry.Value">
+            <summary>
+            Raw value of the declaration (without trailing semicolon).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Css.CssPropertyEntry.Enabled">
+            <summary>
+            When false, the declaration is preserved in the style string as a CSS comment.
+            Lets the user temporarily disable a rule, matching the DevTools toggle behavior.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Css.CssPropertyEntry.Id">
+            <summary>
+            Stable id used as @key in the Razor render loop while editing.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Css.Cursor">
@@ -16933,6 +17464,23 @@
             <summary>
             Inherit display value from parent element.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.FlexDirection">
+            <summary>
+            Values for the CSS <c>flex-direction</c> property.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexDirection.Row">
+            <summary>Items are placed in a row from start to end (text direction).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexDirection.RowReverse">
+            <summary>Items are placed in a row from end to start.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexDirection.Column">
+            <summary>Items are placed in a column from top to bottom.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexDirection.ColumnReverse">
+            <summary>Items are placed in a column from bottom to top.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Css.FlexFlow">
             <summary>
@@ -17058,6 +17606,20 @@
             <summary>
             Unset the value.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.FlexWrap">
+            <summary>
+            Values for the CSS <c>flex-wrap</c> property.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexWrap.NoWrap">
+            <summary>All flex items are placed on one line.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexWrap.Wrap">
+            <summary>Items wrap onto multiple lines, top to bottom.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexWrap.WrapReverse">
+            <summary>Items wrap onto multiple lines, bottom to top.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Css.Float">
             <summary>
@@ -17224,6 +17786,79 @@
             Inherit the value from the parent element.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.MixBlendMode">
+            <summary>
+            Values for the CSS <c>mix-blend-mode</c> property.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Normal">
+            <summary>The final color is the top color.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Multiply">
+            <summary>Multiplies the top and bottom colors.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Screen">
+            <summary>Multiplies the complements of the colors.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Overlay">
+            <summary>Multiplies or screens, depending on the bottom color.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Darken">
+            <summary>Replaces with the darker color.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Lighten">
+            <summary>Replaces with the lighter color.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.ColorDodge">
+            <summary>Brightens the bottom color to reflect the top.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.ColorBurn">
+            <summary>Darkens the bottom color to reflect the top.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.HardLight">
+            <summary>Multiplies or screens, depending on the top color.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.SoftLight">
+            <summary>Darkens or lightens, depending on the top color.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Difference">
+            <summary>Subtracts the darker color from the lighter.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Exclusion">
+            <summary>Like difference, but with lower contrast.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Hue">
+            <summary>Hue of top, saturation and luminosity of bottom.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Saturation">
+            <summary>Saturation of top, hue and luminosity of bottom.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Color">
+            <summary>Hue and saturation of top, luminosity of bottom.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.MixBlendMode.Luminosity">
+            <summary>Luminosity of top, hue and saturation of bottom.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.ObjectFit">
+            <summary>
+            Values for the CSS <c>object-fit</c> property.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.ObjectFit.Fill">
+            <summary>Content is sized to fill the element's box, stretched if necessary.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.ObjectFit.Contain">
+            <summary>Content is scaled to maintain aspect ratio while fitting inside the box.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.ObjectFit.Cover">
+            <summary>Content is scaled to maintain aspect ratio while filling the box, cropping if needed.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.ObjectFit.None">
+            <summary>Content is not resized.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.ObjectFit.ScaleDown">
+            <summary>Content is sized as if "none" or "contain" were specified, whichever is smaller.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.Overflow">
             <summary>
             Enum representing CSS 'overflow' property values.
@@ -17253,6 +17888,17 @@
             <summary>
             Use the parent's overflow value.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.PointerEvents">
+            <summary>
+            Values for the CSS <c>pointer-events</c> property.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.PointerEvents.Auto">
+            <summary>Element behaves normally with respect to pointer events.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.PointerEvents.None">
+            <summary>Element is not a target of pointer events. Events pass through to elements below.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Css.Position">
             <summary>
@@ -17288,6 +17934,29 @@
             <summary>
             Use the value of the 'position' property from the parent element.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.TextAlign">
+            <summary>
+            Values for the CSS <c>text-align</c> property.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextAlign.Left">
+            <summary>Text is aligned to the left edge.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextAlign.Right">
+            <summary>Text is aligned to the right edge.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextAlign.Center">
+            <summary>Text is centered.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextAlign.Justify">
+            <summary>Text is justified — both edges align with the container.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextAlign.Start">
+            <summary>Same as left if direction is ltr, right if rtl.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextAlign.End">
+            <summary>Same as right if direction is ltr, left if rtl.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Css.TextDecoration">
             <summary>
@@ -17354,6 +18023,26 @@
             Text will inherit the text-transform value from the parent element.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.UserSelect">
+            <summary>
+            Values for the CSS <c>user-select</c> property.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.UserSelect.Auto">
+            <summary>Default: text in editable elements is selectable, otherwise behavior depends on user agent.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.UserSelect.None">
+            <summary>Text cannot be selected.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.UserSelect.Text">
+            <summary>The user can select text in the element.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.UserSelect.All">
+            <summary>Selecting the element selects all of its contents as a single unit.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.UserSelect.Contain">
+            <summary>Selection is contained to the element, will not extend to ancestors.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.Visibility">
             <summary>
             Enum representing CSS 'visibility' property values.
@@ -17413,6 +18102,23 @@
             <summary>
             Inherit the 'white-space' property from the parent element.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.WordBreak">
+            <summary>
+            Values for the CSS <c>word-break</c> property.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.WordBreak.Normal">
+            <summary>Default behavior.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.WordBreak.BreakAll">
+            <summary>Word breaks may occur between any two characters.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.WordBreak.KeepAll">
+            <summary>Word breaks should not occur for Chinese/Japanese/Korean text.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.WordBreak.BreakWord">
+            <summary>Same as overflow-wrap: anywhere; preserves intra-word soft wrap opportunities.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.CssUnit">
             <summary>
@@ -17544,53 +18250,55 @@
             Service for capturing the screen or camera and audio.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.EditCaptureOptionsAsync(MudBlazor.Extensions.Core.Capture.CaptureOptionsEditMode,MudBlazor.Extensions.Core.Capture.CaptureOptions)">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.EditCaptureOptionsAsync(MudBlazor.Extensions.Core.Capture.CaptureOptionsEditMode,MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Threading.CancellationToken)">
             <summary>
             Shows a dialog where the user can specify or edit the capture options.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Action{MudBlazor.Extensions.Core.Capture.CaptureResult},System.Action{MudBlazor.Extensions.Core.Capture.CaptureId})">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Action{MudBlazor.Extensions.Core.Capture.CaptureResult},System.Action{MudBlazor.Extensions.Core.Capture.CaptureId},System.Threading.CancellationToken)">
             <summary>
             Starts capturing the screen or camera and audio.
             </summary>
             <returns>Id to stop recording</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.W3C.MediaStreamTrack)">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.W3C.MediaStreamTrack,System.Threading.CancellationToken)">
             <summary>
             Stops the preview capture for the specified track.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureId)">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureId,System.Threading.CancellationToken)">
             <summary>
             Stops the capture with the specified ID.
             </summary>
             <param name="captureId">The id for the capture recording to stop</param>
+            <param name="ct">Token to cancel the stop request.</param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopAllCapturesAsync">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopAllCapturesAsync(System.Threading.CancellationToken)">
             <summary>
             Stops all captures.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.GetAudioDevicesAsync">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.GetAudioDevicesAsync(System.Threading.CancellationToken)">
             <summary>
             Gets the available audio devices.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.GetVideoDevicesAsync">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.GetVideoDevicesAsync(System.Threading.CancellationToken)">
             <summary>
             Gets the available video devices.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ICaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.W3C.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String})">
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.W3C.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String},System.Threading.CancellationToken)">
             <summary>
             Selects the capture source.
             </summary>
             <param name="displayMediaOptions">The media options for capturing</param>
             <param name="elementForPreview">Specify an element to show preview. This should be a ElementReference of a videoElement or a selector for a videoElement</param>
+            <param name="ct">Token to cancel the selection request.</param>
             <returns></returns>
         </member>
         <member name="T:MudBlazor.Extensions.Core.IDialogEventService">
@@ -17845,14 +18553,14 @@
             Reads a stream as excel file
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToAbsoluteUrlAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToAbsoluteUrlAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Converts a url to an absolute url
             </summary>
             <param name="url"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToBlobUrlAsync(System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToBlobUrlAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Converts a url to a blob url
             </summary>
@@ -17860,7 +18568,7 @@
             <param name="mimeType"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToDataUrlAsync(System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToDataUrlAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Converts a url to a data url
             </summary>
@@ -17868,71 +18576,71 @@
             <param name="mimeType"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromStream(System.IO.Stream)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromStream(System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
             Returns the content of a file as string
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromFileDisplayInfosAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromFileDisplayInfosAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.CancellationToken)">
             <summary>
             Returns the content of a file as string
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromUrlAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromUrlAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Reads a string from an url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.CancellationToken)">
             <summary>
             Reads filedisplay info as stream. this stream is a copy and needs to be disposed and closed.
             </summary>
             <param name="fileDisplayInfos"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Reads a stream from an url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadDataUrlForStreamAsync(System.IO.Stream,System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadDataUrlForStreamAsync(System.IO.Stream,System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Reads a data url for a stream
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.CreateDataUrlAsync(System.Byte[],System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.CreateDataUrlAsync(System.Byte[],System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Creates a data url from bytes this can be a blob url or a data url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.CreateDataUrlAsync(Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.CreateDataUrlAsync(Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Creates an url from a file this can be a blob url or a data url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadBytesAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadBytesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Read bytes from a file
             </summary>
             <param name="url"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveAsync(System.Byte[],System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveAsync(System.Byte[],System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with SharpCompress
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with SharpCompress
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveWithSystemCompressionAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveWithSystemCompressionAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with system compression
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.String,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Initiates the download of the specified content as a file with the given MIME type and file name.
             </summary>
@@ -17941,7 +18649,7 @@
             <param name="fileName">The name of the file to be downloaded.</param>
             <returns>A <see cref="T:System.Threading.Tasks.ValueTask"/> representing the asynchronous operation.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             
             </summary>
@@ -17950,7 +18658,7 @@
             <param name="fileName"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.Byte[],System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadContentAsync(System.Byte[],System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Initiates the download of content represented as a byte array.
             </summary>
@@ -17959,7 +18667,7 @@
             <param name="fileName">The name of the file to be downloaded.</param>
             <returns>A <see cref="T:System.Threading.Tasks.ValueTask"/> representing the asynchronous operation.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadAsync(System.String,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.DownloadAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Initiates the download of a file from the specified URL.
             </summary>
@@ -17988,40 +18696,45 @@
             Defines a service interface for speech recognition functionalities, allowing for asynchronous recording and processing of speech input.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StartRecordingAsync(MudBlazor.Extensions.Core.SpeechRecognitionOptions,System.Action{MudBlazor.Extensions.Core.SpeechRecognitionResult},System.Action{System.String})">
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StartRecordingAsync(MudBlazor.Extensions.Core.SpeechRecognitionOptions,System.Action{MudBlazor.Extensions.Core.SpeechRecognitionResult},System.Action{System.String},System.Threading.CancellationToken)">
             <summary>
             Starts recording speech asynchronously with specified options, registering callbacks for recognition results and stop events.
             </summary>
             <param name="options">Configuration options for speech recognition.</param>
             <param name="callback">Callback invoked with the speech recognition result.</param>
             <param name="stoppedCallback">Optional callback invoked when recording is stopped.</param>
+            <param name="ct">Token to cancel the start request.</param>
             <returns>A Task representing the asynchronous operation, containing the recording ID.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StartRecordingAsync(System.Action{MudBlazor.Extensions.Core.SpeechRecognitionResult},System.Action{System.String})">
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StartRecordingAsync(System.Action{MudBlazor.Extensions.Core.SpeechRecognitionResult},System.Action{System.String},System.Threading.CancellationToken)">
             <summary>
             Starts recording speech asynchronously, registering callbacks for recognition results and stop events.
             </summary>
             <param name="callback">Callback invoked with the speech recognition result.</param>
             <param name="stoppedCallback">Optional callback invoked when recording is stopped.</param>
+            <param name="ct">Token to cancel the start request.</param>
             <returns>A Task representing the asynchronous operation, containing the recording ID.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StopRecordingAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StopRecordingAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Stops the recording asynchronously using the specified recording ID.
             </summary>
             <param name="recordingId">The ID of the recording to be stopped.</param>
+            <param name="ct">Token to cancel the stop request.</param>
             <returns>A Task representing the asynchronous operation.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StopAllRecordingsAsync">
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StopAllRecordingsAsync(System.Threading.CancellationToken)">
             <summary>
             Stops all ongoing recordings asynchronously.
             </summary>
+            <param name="ct">Token to cancel the stop request.</param>
             <returns>A Task representing the asynchronous operation.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.GetAudioDevicesAsync">
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.GetAudioDevicesAsync(System.Threading.CancellationToken)">
             <summary>
             Returns a collection of available audio devices for input.
             </summary>
+            <param name="ct">Token to cancel the device query.</param>
         </member>
         <member name="T:MudBlazor.Extensions.Core.MudExAppearance">
             <summary>
@@ -20537,6 +21250,65 @@
             Returns Icon for an extension
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Helper.CssPropertyDescriptor">
+            <summary>
+            One entry of the CSS property catalog. Drives autocomplete, categorization and
+            the smart value editor selection in <see cref="T:MudBlazor.Extensions.Components.MudExStyleEditor"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.Name">
+            <summary>Property name in kebab-case.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.Category">
+            <summary>Display category bucket.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.Kind">
+            <summary>Editor kind hint.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.EnumType">
+            <summary>
+            Optional enum type. When set, the editor automatically renders a Select picker
+            whose options come from <see cref="!:EnumExtensions.ToDescriptionString(Enum)"/> of each enum value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.Suggestions">
+            <summary>Suggested values (for Select / Shorthand / autocomplete). Used as fallback when <see cref="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.EnumType"/> is not set.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.Min">
+            <summary>Optional inclusive minimum for slider/number kinds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.Max">
+            <summary>Optional inclusive maximum for slider/number kinds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.Step">
+            <summary>Optional step for slider/number kinds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.Description">
+            <summary>Short description shown as tooltip.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.CssPropertyDescriptor.EffectiveSuggestions">
+            <summary>
+            Returns the suggestion list, deriving it from <see cref="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.EnumType"/> when set, otherwise <see cref="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.Suggestions"/>.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.CssPropertyCatalog">
+            <summary>
+            Static catalog of CSS properties this library knows how to edit. Not exhaustive but covers
+            the common cases that benefit from a typed editor. Where possible, the descriptor points at a
+            strongly-typed enum (<see cref="P:MudBlazor.Extensions.Helper.CssPropertyDescriptor.EnumType"/>) so the editor and the
+            <see cref="T:MudBlazor.Extensions.Helper.MudExStyleBuilder"/> stay in sync.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.CssPropertyCatalog.All">
+            <summary>
+            All known descriptors, keyed by property name.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.CssPropertyCatalog.Get(System.String)">
+            <summary>
+            Returns the catalog descriptor for the property or a fallback Text descriptor in the Other category.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.DialogParametersExtensions">
             <summary>
             Static extensions for DialogParameters and relevant types.
@@ -20644,22 +21416,22 @@
             Contains extension methods for IJSRuntime to call MudBlazor extensions JavaScript functions.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.IsWithin(Microsoft.JSInterop.IJSRuntime,Microsoft.AspNetCore.Components.Web.MouseEventArgs,Microsoft.AspNetCore.Components.ElementReference)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.IsWithin(Microsoft.JSInterop.IJSRuntime,Microsoft.AspNetCore.Components.Web.MouseEventArgs,Microsoft.AspNetCore.Components.ElementReference,System.Threading.CancellationToken)">
             <summary>
             Checks if given mouse args are within given element.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.GetCssVariablesAsync(Microsoft.JSInterop.IJSRuntime)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.GetCssVariablesAsync(Microsoft.JSInterop.IJSRuntime,System.Threading.CancellationToken)">
             <summary>
             Returns all current CssVariables
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.FindCssVariablesByValueAsync(Microsoft.JSInterop.IJSRuntime,System.String)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.FindCssVariablesByValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.Threading.CancellationToken)">
             <summary>
             Returns css variables by value
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,MudBlazor.Extensions.Core.CssVariable)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,MudBlazor.Extensions.Core.CssVariable,System.Threading.CancellationToken)">
             <summary>
             Updates or creates a new css variable
             </summary>
@@ -20669,27 +21441,27 @@
             Updates or creates a new css variable
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.Object)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.Object,System.Threading.CancellationToken)">
             <summary>
             Updates or creates a new css variable
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,MudBlazor.Color)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,MudBlazor.Color,System.Threading.CancellationToken)">
             <summary>
             Updates or creates a new css variable
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,MudBlazor.Utilities.MudColor)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,MudBlazor.Utilities.MudColor,System.Threading.CancellationToken)">
             <summary>
             Updates or creates a new css variable
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Updates or creates a new css variable
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.GetCssColorVariablesAsync(Microsoft.JSInterop.IJSRuntime)">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.GetCssColorVariablesAsync(Microsoft.JSInterop.IJSRuntime,System.Threading.CancellationToken)">
             <summary>
             Returns all CSS variables that containing color values
             </summary>
@@ -23320,6 +24092,54 @@
             The css style string
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBoxSizing(MudBlazor.Extensions.Core.Css.BoxSizing,System.Boolean)">
+            <summary>Sets the <c>box-sizing</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBoxSizing(System.String,System.Boolean)">
+            <summary>Sets the <c>box-sizing</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPointerEvents(MudBlazor.Extensions.Core.Css.PointerEvents,System.Boolean)">
+            <summary>Sets the <c>pointer-events</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPointerEvents(System.String,System.Boolean)">
+            <summary>Sets the <c>pointer-events</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithUserSelect(MudBlazor.Extensions.Core.Css.UserSelect,System.Boolean)">
+            <summary>Sets the <c>user-select</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithUserSelect(System.String,System.Boolean)">
+            <summary>Sets the <c>user-select</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithObjectFit(MudBlazor.ObjectFit,System.Boolean)">
+            <summary>Sets the <c>object-fit</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFlexDirection(MudBlazor.Extensions.Core.Css.FlexDirection,System.Boolean)">
+            <summary>Sets the <c>flex-direction</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFlexWrap(MudBlazor.Extensions.Core.Css.FlexWrap,System.Boolean)">
+            <summary>Sets the <c>flex-wrap</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithWordBreak(MudBlazor.Extensions.Core.Css.WordBreak,System.Boolean)">
+            <summary>Sets the <c>word-break</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextAlign(MudBlazor.Extensions.Core.Css.TextAlign,System.Boolean)">
+            <summary>Sets the <c>text-align</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMixBlendMode(MudBlazor.Extensions.Core.Css.MixBlendMode,System.Boolean)">
+            <summary>Sets the <c>mix-blend-mode</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMixBlendMode(System.String,System.Boolean)">
+            <summary>Sets the <c>mix-blend-mode</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundRepeat(MudBlazor.Extensions.Core.Css.BackgroundRepeat,System.Boolean)">
+            <summary>Sets the <c>background-repeat</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundAttachment(MudBlazor.Extensions.Core.Css.BackgroundAttachment,System.Boolean)">
+            <summary>Sets the <c>background-attachment</c> property.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundAttachment(System.String,System.Boolean)">
+            <summary>Sets the <c>background-attachment</c> property.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.MudExSvg">
             <summary>
             Static Utility class for SVG
@@ -25114,61 +25934,62 @@
             Creates a new instance of the service.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.MudComponentBase,System.Func{System.Boolean},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.MudComponentBase,System.Func{System.Boolean},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a MudBlazor component temporarily.
             </summary>
             <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Func{System.Boolean},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Func{System.Boolean},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a ElementReference temporarily.
             </summary>
-            <returns>The applied appearance.</returns>    
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,System.String,System.Func{System.Boolean},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,System.String,System.Func{System.Boolean},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a element that will searched by a selector temporarily.
             </summary>
-            <returns>The applied appearance.</returns>  
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.IDialogReference,System.Func{System.Boolean},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.IDialogReference,System.Func{System.Boolean},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a dialog reference temporarily.
             </summary>
-            <returns>The applied appearance.</returns>  
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.MudComponentBase,System.Nullable{System.TimeSpan},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.MudComponentBase,System.Nullable{System.TimeSpan},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a MudBlazor component temporarily.
             </summary>
             <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Nullable{System.TimeSpan},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Nullable{System.TimeSpan},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a ElementReference temporarily.
             </summary>
-            <returns>The applied appearance.</returns>    
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,System.String,System.Nullable{System.TimeSpan},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,System.String,System.Nullable{System.TimeSpan},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a element that will searched by a selector temporarily.
             </summary>
-            <returns>The applied appearance.</returns>  
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.IDialogReference,System.Nullable{System.TimeSpan},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.IDialogReference,System.Nullable{System.TimeSpan},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a dialog reference temporarily.
             </summary>
-            <returns>The applied appearance.</returns>  
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyAsClassOnlyToAsync``2(``0,``1,System.Action{``1,System.String})">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyAsClassOnlyToAsync``2(``0,``1,System.Action{``1,System.String},System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to a component, updating only its class attribute.
             </summary>
             <param name="appearance">The appearance to apply.</param>
             <param name="component">The component to which the appearance will be applied.</param>
             <param name="updateFunc">Function to update the class of the component.</param>
+            <param name="ct">Token to cancel the JS-side class rule build.</param>
             <returns>The applied appearance.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,MudBlazor.MudComponentBase,System.Boolean)">
@@ -25180,25 +26001,27 @@
             <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
             <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to an HTML element using its selector.
             </summary>
             <param name="appearance">The appearance to apply.</param>
             <param name="elementSelector">The selector of the element to which the appearance will be applied.</param>
             <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
+            <param name="ct">Token to cancel the JS call.</param>
             <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Applies the specified appearance to an HTML element using its reference.
             </summary>
             <param name="appearance">The appearance to apply.</param>
             <param name="elementRef">Reference to element</param>
             <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
-            <returns>The applied appearance.</returns>    
+            <param name="ct">Token to cancel the JS call.</param>
+            <returns>The applied appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,MudBlazor.IDialogReference,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,MudBlazor.IDialogReference,System.Boolean,System.Threading.CancellationToken)">
             <summary>
              Applies the specified appearance to a dialog
             </summary>
@@ -25211,28 +26034,31 @@
             <param name="component">The component from which the appearance will be removed.</param>
             <returns>The removed appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,System.String,System.Threading.CancellationToken)">
             <summary>
             Removes the specified appearance from an HTML element using its selector.
             </summary>
             <param name="appearance">The appearance to remove.</param>
             <param name="elementSelector">The selector of the element from which the appearance will be removed.</param>
+            <param name="ct">Token to cancel the JS call.</param>
             <returns>The removed appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Threading.CancellationToken)">
             <summary>
             Removes the specified appearance from an HTML element using its ElementReference.
             </summary>
             <param name="appearance">The appearance to remove.</param>
             <param name="elementRef">The ElementReference of the HTML element from which the appearance will be removed.</param>
+            <param name="ct">Token to cancel the JS call.</param>
             <returns>The removed appearance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,MudBlazor.IDialogReference)">
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,MudBlazor.IDialogReference,System.Threading.CancellationToken)">
             <summary>
             Removes the specified appearance from a dialog.
             </summary>
             <param name="appearance">The appearance to remove.</param>
             <param name="dialogReference">The reference to the dialog from which the appearance will be removed.</param>
+            <param name="ct">Token to cancel the JS call.</param>
             <returns>The removed appearance.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExCaptureNotificationService">
@@ -25251,25 +26077,25 @@
         <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.DisposeAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.EditCaptureOptionsAsync(MudBlazor.Extensions.Core.Capture.CaptureOptionsEditMode,MudBlazor.Extensions.Core.Capture.CaptureOptions)">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.EditCaptureOptionsAsync(MudBlazor.Extensions.Core.Capture.CaptureOptionsEditMode,MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Action{MudBlazor.Extensions.Core.Capture.CaptureResult},System.Action{MudBlazor.Extensions.Core.Capture.CaptureId})">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureOptions,System.Action{MudBlazor.Extensions.Core.Capture.CaptureResult},System.Action{MudBlazor.Extensions.Core.Capture.CaptureId},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureId)">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.Capture.CaptureId,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StopAllCapturesAsync">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StopAllCapturesAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetAudioDevicesAsync">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetAudioDevicesAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetVideoDevicesAsync">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetVideoDevicesAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.W3C.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String})">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.W3C.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExDialogService">
@@ -25313,82 +26139,86 @@
             Creates a new instance of MudExFileService
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromStream(System.IO.Stream)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromStream(System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
             Returns the content of a file as string
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.CancellationToken)">
             <summary>
-            Reads filedisplay info as stream. this stream is a copy and needs to be disposed and closed.
+            Reads file display info as stream. this stream is a copy and needs to be disposed and closed.
             </summary>
-            <param name="fileDisplayInfos"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromFileDisplayInfosAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromFileDisplayInfosAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.CancellationToken)">
             <summary>
             Returns the content of a file as string
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToBlobUrlAsync(System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToAbsoluteUrlAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Ensures a Url is absolute
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToBlobUrlAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Converts a url to a blob url
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToDataUrlAsync(System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToDataUrlAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Converts a url to a data url
             </summary>    
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromUrlAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromUrlAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Reads a string from an url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadBytesAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadBytesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Reads bytes from an url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Reads a stream from an url
-            Set copyToMemoryStream to false to get the http stream directly, this is better, but some libraries cant support new stream handling in blazor. Thats the reason why its default set to true
+            Set copyToMemoryStream to false to get the http stream directly, this is better, but some libraries cant support new stream handling in blazor. That's the reason why its default set to true
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadDataUrlForStreamAsync(System.IO.Stream,System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadDataUrlForStreamAsync(System.IO.Stream,System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Reads a data url for a stream
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.CreateDataUrlAsync(System.Byte[],System.String,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.CreateDataUrlAsync(System.Byte[],System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Creates a data url from bytes this can be a blob url or a data url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.CreateDataUrlAsync(Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.CreateDataUrlAsync(Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Creates an url from a file this can be a blob url or a data url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.RevokeBlobUrlAsync(System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.RevokeBlobUrlAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Revokes a blob url
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveAsync(System.Byte[],System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveAsync(System.Byte[],System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with SharpCompress
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with SharpCompress
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveWithSystemCompressionAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadArchiveWithSystemCompressionAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Reads an archive with system compression
             </summary>
@@ -25396,16 +26226,16 @@
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.DisposeAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.String,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.IO.Stream,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.Byte[],System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadContentAsync(System.Byte[],System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadAsync(System.String,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadExcelFile(System.IO.Stream,System.String)">

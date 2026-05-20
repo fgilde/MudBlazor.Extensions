@@ -1,4 +1,4 @@
-﻿using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core.W3C;
 
 namespace MudBlazor.Extensions.Core;
@@ -15,32 +15,37 @@ public interface ISpeechRecognitionService : IAsyncDisposable
     /// <param name="options">Configuration options for speech recognition.</param>
     /// <param name="callback">Callback invoked with the speech recognition result.</param>
     /// <param name="stoppedCallback">Optional callback invoked when recording is stopped.</param>
+    /// <param name="ct">Token to cancel the start request.</param>
     /// <returns>A Task representing the asynchronous operation, containing the recording ID.</returns>
-    Task<string> StartRecordingAsync(SpeechRecognitionOptions options, Action<SpeechRecognitionResult> callback, Action<string> stoppedCallback = null);
+    Task<string> StartRecordingAsync(SpeechRecognitionOptions options, Action<SpeechRecognitionResult> callback, Action<string> stoppedCallback = null, CancellationToken ct = default);
 
     /// <summary>
     /// Starts recording speech asynchronously, registering callbacks for recognition results and stop events.
     /// </summary>
     /// <param name="callback">Callback invoked with the speech recognition result.</param>
     /// <param name="stoppedCallback">Optional callback invoked when recording is stopped.</param>
+    /// <param name="ct">Token to cancel the start request.</param>
     /// <returns>A Task representing the asynchronous operation, containing the recording ID.</returns>
-    Task<string> StartRecordingAsync(Action<SpeechRecognitionResult> callback, Action<string> stoppedCallback = null);
+    Task<string> StartRecordingAsync(Action<SpeechRecognitionResult> callback, Action<string> stoppedCallback = null, CancellationToken ct = default);
 
     /// <summary>
     /// Stops the recording asynchronously using the specified recording ID.
     /// </summary>
     /// <param name="recordingId">The ID of the recording to be stopped.</param>
+    /// <param name="ct">Token to cancel the stop request.</param>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    Task StopRecordingAsync(string recordingId);
+    Task StopRecordingAsync(string recordingId, CancellationToken ct = default);
 
     /// <summary>
     /// Stops all ongoing recordings asynchronously.
     /// </summary>
+    /// <param name="ct">Token to cancel the stop request.</param>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    Task StopAllRecordingsAsync();
-    
+    Task StopAllRecordingsAsync(CancellationToken ct = default);
+
     /// <summary>
     /// Returns a collection of available audio devices for input.
     /// </summary>
-    Task<IEnumerable<AudioDevice>> GetAudioDevicesAsync();
+    /// <param name="ct">Token to cancel the device query.</param>
+    Task<IEnumerable<AudioDevice>> GetAudioDevicesAsync(CancellationToken ct = default);
 }

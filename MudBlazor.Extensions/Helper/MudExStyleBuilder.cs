@@ -2316,4 +2316,57 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
 
     private string DoubleToString(double value) => value.ToString(CultureInfo.InvariantCulture);
 
+
+    #region Additional enum-typed setters (kept in sync with CssPropertyCatalog)
+
+    /// <summary>Sets the <c>box-sizing</c> property.</summary>
+    public MudExStyleBuilder WithBoxSizing(BoxSizing boxSizing, bool when = true) => With("box-sizing", boxSizing.GetDescription(), when);
+
+    /// <summary>Sets the <c>box-sizing</c> property.</summary>
+    public MudExStyleBuilder WithBoxSizing(string boxSizing, bool when = true) => With("box-sizing", boxSizing, when);
+
+    /// <summary>Sets the <c>pointer-events</c> property.</summary>
+    public MudExStyleBuilder WithPointerEvents(PointerEvents pointerEvents, bool when = true) => With("pointer-events", pointerEvents.GetDescription(), when);
+
+    /// <summary>Sets the <c>pointer-events</c> property.</summary>
+    public MudExStyleBuilder WithPointerEvents(string pointerEvents, bool when = true) => With("pointer-events", pointerEvents, when);
+
+    /// <summary>Sets the <c>user-select</c> property.</summary>
+    public MudExStyleBuilder WithUserSelect(UserSelect userSelect, bool when = true) => With("user-select", userSelect.GetDescription(), when);
+
+    /// <summary>Sets the <c>user-select</c> property.</summary>
+    public MudExStyleBuilder WithUserSelect(string userSelect, bool when = true) => With("user-select", userSelect, when);
+
+    /// <summary>Sets the <c>object-fit</c> property.</summary>
+    public MudExStyleBuilder WithObjectFit(ObjectFit objectFit, bool when = true) => With("object-fit", objectFit.GetDescription(), when);
+
+    /// <summary>Sets the <c>flex-direction</c> property.</summary>
+    public MudExStyleBuilder WithFlexDirection(FlexDirection flexDirection, bool when = true) => With("flex-direction", flexDirection.GetDescription(), when);
+
+    /// <summary>Sets the <c>flex-wrap</c> property.</summary>
+    public MudExStyleBuilder WithFlexWrap(FlexWrap flexWrap, bool when = true) => With("flex-wrap", flexWrap.GetDescription(), when);
+
+    /// <summary>Sets the <c>word-break</c> property.</summary>
+    public MudExStyleBuilder WithWordBreak(WordBreak wordBreak, bool when = true) => With("word-break", wordBreak.GetDescription(), when);
+
+    /// <summary>Sets the <c>text-align</c> property.</summary>
+    public MudExStyleBuilder WithTextAlign(TextAlign textAlign, bool when = true) => With("text-align", textAlign.GetDescription(), when);
+
+    /// <summary>Sets the <c>mix-blend-mode</c> property.</summary>
+    public MudExStyleBuilder WithMixBlendMode(MixBlendMode mixBlendMode, bool when = true) => With("mix-blend-mode", mixBlendMode.GetDescription(), when);
+
+    /// <summary>Sets the <c>mix-blend-mode</c> property.</summary>
+    public MudExStyleBuilder WithMixBlendMode(string mixBlendMode, bool when = true) => With("mix-blend-mode", mixBlendMode, when);
+
+    /// <summary>Sets the <c>background-repeat</c> property.</summary>
+    public MudExStyleBuilder WithBackgroundRepeat(BackgroundRepeat backgroundRepeat, bool when = true) => With("background-repeat", backgroundRepeat.GetDescription(), when);
+
+    /// <summary>Sets the <c>background-attachment</c> property.</summary>
+    public MudExStyleBuilder WithBackgroundAttachment(BackgroundAttachment backgroundAttachment, bool when = true) => With("background-attachment", backgroundAttachment.GetDescription(), when);
+
+    /// <summary>Sets the <c>background-attachment</c> property.</summary>
+    public MudExStyleBuilder WithBackgroundAttachment(string backgroundAttachment, bool when = true) => With("background-attachment", backgroundAttachment, when);
+
+    #endregion
+
 }

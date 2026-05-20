@@ -1,0 +1,39 @@
+@page "/class-editor"
+@inherits BasePage
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using MudBlazor.Extensions.Core.Css
+
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "MudExClassEditor", Icon = Icons.Material.Outlined.FormatPaint, Documentation = "MudExClassEditor scans the current page's stylesheets and lets the user pick CSS class names with full search, source grouping and three view modes (List, Compact, Grid). Perfect for letting users compose className strings without typing them by hand.", ForComponentType = typeof(MudExClassEditor))]
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudPaper Class="pa-4" Elevation="0">
+                <MudExClassEditor @bind-Value="@_class" @ref="component" />
+            </MudPaper>
+            <MudPaper Class="pa-4 mt-4" Elevation="0">
+                <MudText Typo="Typo.subtitle2">Resulting class string</MudText>
+                <pre style="white-space: pre-wrap; word-break: break-all; padding: 8px; background: var(--mud-palette-background-grey); border-radius: 4px;">@_class</pre>
+            </MudPaper>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    private MudExClassEditor component;
+    private string _class = "mud-elevation-3 mud-paper";
+
+    private Action<ObjectEditMeta<MudExClassEditor>> Configure()
+    {
+        return meta =>
+        {
+            meta.Property(m => m.Localizer).Ignore();
+            meta.Property(m => m.PreviewContent).Ignore();
+            meta.Property(m => m.AvailableClasses).Ignore();
+            meta.IgnoreAllReadOnlyFields();
+        };
+    }
+}

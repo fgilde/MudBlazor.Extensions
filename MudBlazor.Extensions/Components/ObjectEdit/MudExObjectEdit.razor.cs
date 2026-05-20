@@ -17,6 +17,7 @@ using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 using Nextended.Core.Scopes;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 using IComponent = Microsoft.AspNetCore.Components.IComponent;
@@ -35,6 +36,7 @@ public partial class MudExObjectEdit<T>
     private bool _restoreCalled;
     private T _value;
     private List<DynamicComponent> _groups = new();
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     private Type? _registeredEditorType;
     private List<IGrouping<string, ObjectEditPropertyMeta>> _groupedMetaCache;
     private bool _groupedMetaCacheDirty = true;
@@ -84,10 +86,14 @@ public partial class MudExObjectEdit<T>
     protected bool Primitive => IsPrimitive();
 
     /// <summary>
-    /// Returns the type of the registered editor if available
+    /// Returns the type of the registered editor if available. The Trimmer must preserve all
+    /// members so that the value can be passed to <see cref="DynamicComponent"/> and reflected
+    /// over for parameter binding / activation.
     /// </summary>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     protected Type? RenderWithType
     {
+        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         get
         {
             if (_registeredEditorType != null)
@@ -1106,7 +1112,7 @@ public partial class MudExObjectEdit<T>
         return res;
     }
 
-    private IDictionary<string, object> GetCompatibleParameters(Type componentType)
+    private IDictionary<string, object> GetCompatibleParameters([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type componentType)
     {
         var res = ComponentRenderHelper.GetCompatibleParameters(this, componentType)
             .Where(p => IsOverwritten(p.Key)).ToDictionary(p => p.Key, p => p.Value);
@@ -1367,6 +1373,9 @@ public partial class MudExObjectEdit<T>
         return res;
     }
 
+    // Tuple-element types cannot carry [DynamicallyAccessedMembers]; declare static dependencies
+    // so the trimmer keeps the constructors + parameter properties of the components yielded below.
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(MudExpansionPanels))]
     private IEnumerable<(Type, IDictionary<string, object?>?)> GetGroupStyleOuterCmp()
     {
         var attrInfo = RenderWithAttribute.GetRenderWithAndAttributesFromEnumValue(GroupingStyle);
@@ -1407,6 +1416,9 @@ public partial class MudExObjectEdit<T>
         }
     }
 
+    // Tuple-element types cannot carry [DynamicallyAccessedMembers]; declare static dependencies
+    // so the trimmer keeps the constructors + parameter properties of the components yielded below.
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(MudExpansionPanel))]
     private IEnumerable<(Type, IDictionary<string, object?>?)> GetGroupStyleInnerCmp(
         string displayText, string groupId, string cssClass)
     {

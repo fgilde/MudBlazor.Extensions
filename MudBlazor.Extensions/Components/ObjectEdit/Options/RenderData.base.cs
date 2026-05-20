@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using Nextended.Blazor.Helper;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
@@ -33,9 +34,18 @@ public partial class RenderData : IRenderData
     public IList<IRenderData> RenderDataAfterComponent { get; set; } = new List<IRenderData>();
     
     /// <summary>
-    /// Type of the component to be rendered.
+    /// Type of the component to be rendered. The Trimmer must preserve all members so that
+    /// the value can be passed to <see cref="DynamicComponent"/> and reflected over for
+    /// parameter binding / activation.
     /// </summary>
-    public Type ComponentType { get; set; }
+    [field: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+    public Type ComponentType
+    {
+        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+        get;
+        [param: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+        set;
+    }
     
     /// <summary>
     /// Attributes to be passed to the component to be rendered.
@@ -117,11 +127,15 @@ public partial class RenderData : IRenderData
     /// <summary>
     /// Returns whether the given key and value are valid parameters for the current component type.
     /// </summary>
+    [UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode",
+        Justification = "ComponentType is annotated DynamicallyAccessedMembers.All; the tuple cache key is only used for equality lookups, not for reflection.")]
+    [UnconditionalSuppressMessage("Trimming", "IL2067",
+        Justification = "ComponentType carries DynamicallyAccessedMembers.All; tuple element loses the annotation but the underlying member is preserved.")]
     public bool IsValidParameterAttribute(string key, object value)
     {
         if (ComponentType == null) return false;
         return _validParameterCache.GetOrAdd((ComponentType, key, value?.GetType()),
-            k => ComponentRenderHelper.IsValidParameter(k.componentType, k.key, value));
+            _ => ComponentRenderHelper.IsValidParameter(ComponentType, key, value));
     }
 
     /// <summary>
@@ -163,7 +177,7 @@ public partial class RenderData : IRenderData
     /// <summary>
     /// Create a new render data for the given component type with the given attributes.
     /// </summary>
-    public RenderData(Type componentType, IDictionary<string, object> attributes = null)
+    public RenderData([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type componentType, IDictionary<string, object> attributes = null)
     {
         ComponentType = componentType;
         SetAttributes(attributes);

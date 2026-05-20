@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components;
@@ -36,12 +36,12 @@ public class MudExAppearanceService
     /// Applies the specified appearance to a MudBlazor component temporarily.
     /// </summary>
     /// <returns>The applied appearance.</returns>
-    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, MudComponentBase component, Func<bool> expression, bool keepExisting = true)
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, MudComponentBase component, Func<bool> expression, bool keepExisting = true, CancellationToken ct = default)
         where TAppearance : IMudExAppearance
     {
 
         await ApplyToAsync(appearance, component, keepExisting);
-        await expression.WaitForTrueAsync();
+        await expression.WaitForTrueAsync(ct);
         await RemoveFromAsync(appearance, component);
 
         return appearance;
@@ -50,13 +50,13 @@ public class MudExAppearanceService
     /// <summary>
     /// Applies the specified appearance to a ElementReference temporarily.
     /// </summary>
-    /// <returns>The applied appearance.</returns>    
-    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, ElementReference elementRef, Func<bool> expression, bool keepExisting = true)
+    /// <returns>The applied appearance.</returns>
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, ElementReference elementRef, Func<bool> expression, bool keepExisting = true, CancellationToken ct = default)
         where TAppearance : IMudExAppearance
     {
-        await ApplyToAsync(appearance, elementRef, keepExisting);
-        await expression.WaitForTrueAsync();
-        await RemoveFromAsync(appearance, elementRef);
+        await ApplyToAsync(appearance, elementRef, keepExisting, ct);
+        await expression.WaitForTrueAsync(ct);
+        await RemoveFromAsync(appearance, elementRef, ct);
 
         return appearance;
     }
@@ -64,13 +64,13 @@ public class MudExAppearanceService
     /// <summary>
     /// Applies the specified appearance to a element that will searched by a selector temporarily.
     /// </summary>
-    /// <returns>The applied appearance.</returns>  
-    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, string elementSelector, Func<bool> expression, bool keepExisting = true)
+    /// <returns>The applied appearance.</returns>
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, string elementSelector, Func<bool> expression, bool keepExisting = true, CancellationToken ct = default)
         where TAppearance : IMudExAppearance
     {
-        await ApplyToAsync(appearance, elementSelector, keepExisting);
-        await expression.WaitForTrueAsync();
-        await RemoveFromAsync(appearance, elementSelector);
+        await ApplyToAsync(appearance, elementSelector, keepExisting, ct);
+        await expression.WaitForTrueAsync(ct);
+        await RemoveFromAsync(appearance, elementSelector, ct);
 
         return appearance;
     }
@@ -78,13 +78,13 @@ public class MudExAppearanceService
     /// <summary>
     /// Applies the specified appearance to a dialog reference temporarily.
     /// </summary>
-    /// <returns>The applied appearance.</returns>  
-    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, IDialogReference dlg, Func<bool> expression, bool keepExisting = true)
+    /// <returns>The applied appearance.</returns>
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, IDialogReference dlg, Func<bool> expression, bool keepExisting = true, CancellationToken ct = default)
         where TAppearance : IMudExAppearance
     {
-        await ApplyToAsync(appearance, dlg, keepExisting);
-        await expression.WaitForTrueAsync();
-        await RemoveFromAsync(appearance, dlg);
+        await ApplyToAsync(appearance, dlg, keepExisting, ct);
+        await expression.WaitForTrueAsync(ct);
+        await RemoveFromAsync(appearance, dlg, ct);
 
         return appearance;
     }
@@ -93,11 +93,11 @@ public class MudExAppearanceService
     /// Applies the specified appearance to a MudBlazor component temporarily.
     /// </summary>
     /// <returns>The applied appearance.</returns>
-    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, MudComponentBase component, TimeSpan? duration = null, bool keepExisting = true)
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, MudComponentBase component, TimeSpan? duration = null, bool keepExisting = true, CancellationToken ct = default)
         where TAppearance : IMudExAppearance
     {
         await ApplyToAsync(appearance, component, keepExisting);
-        await Task.Delay(duration ?? TimeSpan.FromSeconds(1));
+        await Task.Delay(duration ?? TimeSpan.FromSeconds(1), ct);
         await RemoveFromAsync(appearance, component);
 
         return appearance;
@@ -106,13 +106,13 @@ public class MudExAppearanceService
     /// <summary>
     /// Applies the specified appearance to a ElementReference temporarily.
     /// </summary>
-    /// <returns>The applied appearance.</returns>    
-    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, ElementReference elementRef, TimeSpan? duration = null, bool keepExisting = true)
+    /// <returns>The applied appearance.</returns>
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, ElementReference elementRef, TimeSpan? duration = null, bool keepExisting = true, CancellationToken ct = default)
         where TAppearance : IMudExAppearance
     {
-        await ApplyToAsync(appearance, elementRef, keepExisting);
-        await Task.Delay(duration ?? TimeSpan.FromSeconds(1));
-        await RemoveFromAsync(appearance, elementRef);
+        await ApplyToAsync(appearance, elementRef, keepExisting, ct);
+        await Task.Delay(duration ?? TimeSpan.FromSeconds(1), ct);
+        await RemoveFromAsync(appearance, elementRef, ct);
 
         return appearance;
     }
@@ -120,13 +120,13 @@ public class MudExAppearanceService
     /// <summary>
     /// Applies the specified appearance to a element that will searched by a selector temporarily.
     /// </summary>
-    /// <returns>The applied appearance.</returns>  
-    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, string elementSelector, TimeSpan? duration = null, bool keepExisting = true)
+    /// <returns>The applied appearance.</returns>
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, string elementSelector, TimeSpan? duration = null, bool keepExisting = true, CancellationToken ct = default)
         where TAppearance : IMudExAppearance
     {
-        await ApplyToAsync(appearance, elementSelector, keepExisting);
-        await Task.Delay(duration ?? TimeSpan.FromSeconds(1));
-        await RemoveFromAsync(appearance, elementSelector);
+        await ApplyToAsync(appearance, elementSelector, keepExisting, ct);
+        await Task.Delay(duration ?? TimeSpan.FromSeconds(1), ct);
+        await RemoveFromAsync(appearance, elementSelector, ct);
 
         return appearance;
     }
@@ -134,13 +134,13 @@ public class MudExAppearanceService
     /// <summary>
     /// Applies the specified appearance to a dialog reference temporarily.
     /// </summary>
-    /// <returns>The applied appearance.</returns>  
-    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, IDialogReference dlg, TimeSpan? duration = null, bool keepExisting = true)
+    /// <returns>The applied appearance.</returns>
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, IDialogReference dlg, TimeSpan? duration = null, bool keepExisting = true, CancellationToken ct = default)
         where TAppearance : IMudExAppearance
     {
-        await ApplyToAsync(appearance, dlg, keepExisting);
-        await Task.Delay(duration ?? TimeSpan.FromSeconds(1));
-        await RemoveFromAsync(appearance, dlg);
+        await ApplyToAsync(appearance, dlg, keepExisting, ct);
+        await Task.Delay(duration ?? TimeSpan.FromSeconds(1), ct);
+        await RemoveFromAsync(appearance, dlg, ct);
 
         return appearance;
     }
@@ -152,8 +152,9 @@ public class MudExAppearanceService
     /// <param name="appearance">The appearance to apply.</param>
     /// <param name="component">The component to which the appearance will be applied.</param>
     /// <param name="updateFunc">Function to update the class of the component.</param>
+    /// <param name="ct">Token to cancel the JS-side class rule build.</param>
     /// <returns>The applied appearance.</returns>
-    public async Task<TAppearance> ApplyAsClassOnlyToAsync<TAppearance, TComponent>(TAppearance appearance, TComponent component, Action<TComponent, string> updateFunc)
+    public async Task<TAppearance> ApplyAsClassOnlyToAsync<TAppearance, TComponent>(TAppearance appearance, TComponent component, Action<TComponent, string> updateFunc, CancellationToken ct = default)
         where TAppearance : IMudExAppearance
     {
         if (appearance != null)
@@ -201,13 +202,14 @@ public class MudExAppearanceService
     /// <param name="appearance">The appearance to apply.</param>
     /// <param name="elementSelector">The selector of the element to which the appearance will be applied.</param>
     /// <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
+    /// <param name="ct">Token to cancel the JS call.</param>
     /// <returns>The applied appearance.</returns>
-    public async Task<TAppearance> ApplyToAsync<TAppearance>(TAppearance appearance, string elementSelector, bool keepExisting = true) where TAppearance : IMudExAppearance
+    public async Task<TAppearance> ApplyToAsync<TAppearance>(TAppearance appearance, string elementSelector, bool keepExisting = true, CancellationToken ct = default) where TAppearance : IMudExAppearance
     {
         if (string.IsNullOrEmpty(elementSelector))
             return appearance;
 
-        await GetRuntime().InvokeVoidAsync("MudExCssHelper.setElementAppearance", elementSelector, GetClass(appearance), GetStyle(appearance), keepExisting);
+        await GetRuntime().InvokeVoidAsync("MudExCssHelper.setElementAppearance", ct, elementSelector, GetClass(appearance), GetStyle(appearance), keepExisting);
         return appearance;
     }
 
@@ -217,10 +219,11 @@ public class MudExAppearanceService
     /// <param name="appearance">The appearance to apply.</param>
     /// <param name="elementRef">Reference to element</param>
     /// <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
-    /// <returns>The applied appearance.</returns>    
-    public async Task<TAppearance> ApplyToAsync<TAppearance>(TAppearance appearance, ElementReference elementRef, bool keepExisting = true) where TAppearance : IMudExAppearance
+    /// <param name="ct">Token to cancel the JS call.</param>
+    /// <returns>The applied appearance.</returns>
+    public async Task<TAppearance> ApplyToAsync<TAppearance>(TAppearance appearance, ElementReference elementRef, bool keepExisting = true, CancellationToken ct = default) where TAppearance : IMudExAppearance
     {
-        await GetRuntime().InvokeVoidAsync("MudExCssHelper.setElementAppearanceOnElement", elementRef, GetClass(appearance), GetStyle(appearance), keepExisting);
+        await GetRuntime().InvokeVoidAsync("MudExCssHelper.setElementAppearanceOnElement", ct, elementRef, GetClass(appearance), GetStyle(appearance), keepExisting);
         return appearance;
     }
 
@@ -228,7 +231,7 @@ public class MudExAppearanceService
     /// <summary>
     ///  Applies the specified appearance to a dialog
     /// </summary>
-    public async Task<TAppearance> ApplyToAsync<TAppearance>(TAppearance appearance, IDialogReference dialogReference, bool keepExisting = true) where TAppearance : IMudExAppearance
+    public async Task<TAppearance> ApplyToAsync<TAppearance>(TAppearance appearance, IDialogReference dialogReference, bool keepExisting = true, CancellationToken ct = default) where TAppearance : IMudExAppearance
     {
         //if (dialogReference.Dialog is MudComponentBase componentBase)
         //    return await ApplyToAsync(appearance, componentBase, keepExisting);
@@ -240,7 +243,7 @@ public class MudExAppearanceService
         }
 
         var id = dialogReference?.GetDialogId();
-        return await ApplyToAsync(appearance, $"#{id}", keepExisting);
+        return await ApplyToAsync(appearance, $"#{id}", keepExisting, ct);
     }
 
     /// <summary>
@@ -269,13 +272,14 @@ public class MudExAppearanceService
     /// </summary>
     /// <param name="appearance">The appearance to remove.</param>
     /// <param name="elementSelector">The selector of the element from which the appearance will be removed.</param>
+    /// <param name="ct">Token to cancel the JS call.</param>
     /// <returns>The removed appearance.</returns>
-    public async Task<TAppearance> RemoveFromAsync<TAppearance>(TAppearance appearance, string elementSelector) where TAppearance : IMudExAppearance
+    public async Task<TAppearance> RemoveFromAsync<TAppearance>(TAppearance appearance, string elementSelector, CancellationToken ct = default) where TAppearance : IMudExAppearance
     {
         if (string.IsNullOrEmpty(elementSelector))
             return appearance;
 
-        await GetRuntime().InvokeVoidAsync("MudExCssHelper.removeElementAppearance", elementSelector, GetClass(appearance), GetStyle(appearance));
+        await GetRuntime().InvokeVoidAsync("MudExCssHelper.removeElementAppearance", ct, elementSelector, GetClass(appearance), GetStyle(appearance));
         return appearance;
     }
 
@@ -284,10 +288,11 @@ public class MudExAppearanceService
     /// </summary>
     /// <param name="appearance">The appearance to remove.</param>
     /// <param name="elementRef">The ElementReference of the HTML element from which the appearance will be removed.</param>
+    /// <param name="ct">Token to cancel the JS call.</param>
     /// <returns>The removed appearance.</returns>
-    public async Task<TAppearance> RemoveFromAsync<TAppearance>(TAppearance appearance, ElementReference elementRef) where TAppearance : IMudExAppearance
+    public async Task<TAppearance> RemoveFromAsync<TAppearance>(TAppearance appearance, ElementReference elementRef, CancellationToken ct = default) where TAppearance : IMudExAppearance
     {
-        await GetRuntime().InvokeVoidAsync("MudExCssHelper.removeElementAppearanceOnElement", elementRef, GetClass(appearance), GetStyle(appearance));
+        await GetRuntime().InvokeVoidAsync("MudExCssHelper.removeElementAppearanceOnElement", ct, elementRef, GetClass(appearance), GetStyle(appearance));
         return appearance;
     }
 
@@ -296,14 +301,15 @@ public class MudExAppearanceService
     /// </summary>
     /// <param name="appearance">The appearance to remove.</param>
     /// <param name="dialogReference">The reference to the dialog from which the appearance will be removed.</param>
+    /// <param name="ct">Token to cancel the JS call.</param>
     /// <returns>The removed appearance.</returns>
-    public async Task<TAppearance> RemoveFromAsync<TAppearance>(TAppearance appearance, IDialogReference dialogReference) where TAppearance : IMudExAppearance
+    public async Task<TAppearance> RemoveFromAsync<TAppearance>(TAppearance appearance, IDialogReference dialogReference, CancellationToken ct = default) where TAppearance : IMudExAppearance
     {
         if (dialogReference.Dialog is MudComponentBase componentBase)
             return await RemoveFromAsync(appearance, componentBase);
 
         var id = dialogReference.GetDialogId();
-        return await RemoveFromAsync(appearance, $"#{id}");
+        return await RemoveFromAsync(appearance, $"#{id}", ct);
     }
 
 }

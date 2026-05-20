@@ -2,7 +2,10 @@
 @inherits BasePage
 
 @using System.ComponentModel.DataAnnotations
+@using FluentValidation
+@using Microsoft.Extensions.Localization
 @using Newtonsoft.Json
+@using Nextended.Core.Attributes
 
 
 @attribute [Demo(IsPlaygroundDemo = true, Group = "MudExObjectEdit", Name = "Object Edit in Dialog", Order = 5, Documentation = "See how to use MudExObjectEdit in a dialog", Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>), typeof(MudExObjectEditDialog<>) })]
@@ -15,9 +18,7 @@
 
     public class TestObject
     {
-        [Required]
         public string Value { get; set; } = "Test";
-        [Range(1, 100)]
         public int Number { get; set; }
         public double ADblNumber { get; set; }
         public decimal DNumber { get; set; }
@@ -71,4 +72,19 @@
         return null;
     }
 
+    [RegisterAs(typeof(IValidator<TestObject>))]
+    public class TestObjectValidator : AbstractValidator<TestObject>
+    {
+        public TestObjectValidator(IStringLocalizer<BasePage> l)
+        {
+            RuleFor(x => x.Value)
+                .NotEmpty() 
+                .Length(1, 100);
+            RuleFor(x => x.Number)
+                .NotEmpty().GreaterThan(0).LessThan(100);
+          
+        }
+    }
+
 }
+

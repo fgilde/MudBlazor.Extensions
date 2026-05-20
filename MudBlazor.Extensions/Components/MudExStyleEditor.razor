@@ -1,0 +1,339 @@
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Core.Css
+@using MudBlazor.Extensions.Helper
+@inherits MudExBaseComponent<MudExStyleEditor>
+
+<div class="mud-ex-style-editor @(Dense ? "mud-ex-style-editor-dense" : null) @Class"
+     style="display:flex; flex-direction:column; gap:8px; min-width:280px; max-width:100%; @Style">
+
+    @if (ShowToolbar)
+    {
+        <div class="mud-ex-style-editor-toolbar" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+            @if (AllowViewModeSwitch)
+            {
+                <MudButtonGroup OverrideStyles="false" Variant="Variant.Outlined" Size="Size.Small">
+                    <MudButton StartIcon="@Icons.Material.Filled.Code"
+                               Color="@(ViewMode == MudExStyleEditViewMode.DevTools ? Color.Primary : Color.Default)"
+                               OnClick="@(() => OnViewModeButtonAsync(MudExStyleEditViewMode.DevTools))">@TryLocalize("DevTools")</MudButton>
+                    <MudButton StartIcon="@Icons.Material.Filled.Category"
+                               Color="@(ViewMode == MudExStyleEditViewMode.Categorized ? Color.Primary : Color.Default)"
+                               OnClick="@(() => OnViewModeButtonAsync(MudExStyleEditViewMode.Categorized))">@TryLocalize("Categorized")</MudButton>
+                    <MudButton StartIcon="@Icons.Material.Filled.Edit"
+                               Color="@(ViewMode == MudExStyleEditViewMode.Raw ? Color.Primary : Color.Default)"
+                               OnClick="@(() => OnViewModeButtonAsync(MudExStyleEditViewMode.Raw))">@TryLocalize("Raw")</MudButton>
+                </MudButtonGroup>
+            }
+
+            @if (ShowFilter && ViewMode != MudExStyleEditViewMode.Raw)
+            {
+                <div style="position:relative; display:inline-flex; align-items:center; height:28px; padding:0 8px; border:1px solid var(--mud-palette-lines-default); border-radius:4px; background:var(--mud-palette-surface); max-width:240px;">
+                    <MudIcon Icon="@Icons.Material.Filled.Search" Size="Size.Small" Style="color:var(--mud-palette-text-secondary); margin-right:4px;" />
+                    <input type="text"
+                           value="@_filter"
+                           @oninput="@(e => { _filter = e.Value?.ToString() ?? string.Empty; StateHasChanged(); })"
+                           placeholder="@TryLocalize("Filter properties...")"
+                           style="background:transparent; border:none; outline:none; flex:1; padding:0; font-size:0.85rem; color:var(--mud-palette-text-primary); width:160px;" />
+                    @if (!string.IsNullOrEmpty(_filter))
+                    {
+                        <button type="button"
+                                @onclick="@(() => { _filter = string.Empty; StateHasChanged(); })"
+                                style="background:transparent; border:none; color:var(--mud-palette-text-secondary); cursor:pointer; width:18px; height:18px; padding:0; line-height:18px; border-radius:3px;">×</button>
+                    }
+                </div>
+            }
+        </div>
+    }
+
+    <div class="mud-ex-style-editor-body"
+         style="@($"overflow:visible; border:1px solid var(--mud-palette-lines-default); border-radius:var(--mud-default-borderradius); padding:6px; background:var(--mud-palette-surface);")">
+        @switch (ViewMode)
+        {
+            case MudExStyleEditViewMode.DevTools:
+                @RenderDevTools();
+                break;
+            case MudExStyleEditViewMode.Categorized:
+                @RenderCategorized();
+                break;
+            case MudExStyleEditViewMode.Raw:
+                @RenderRaw();
+                break;
+        }
+    </div>
+
+    @if (ShowPreview)
+    {
+        <div class="mud-ex-style-editor-preview" style="display:flex; flex-direction:column; gap:4px; border-top:1px dashed var(--mud-palette-lines-default); padding-top:8px;">
+            @if (!string.IsNullOrWhiteSpace(PreviewLabel))
+            {
+                <MudText Typo="Typo.caption" Style="color:var(--mud-palette-text-secondary); text-transform:uppercase; letter-spacing:0.5px;">@TryLocalize(PreviewLabel)</MudText>
+            }
+            @if (PreviewContent != null)
+            {
+                @PreviewContent(_internalValue)
+            }
+            else
+            {
+                <div class="mud-ex-style-editor-preview-box"
+                     style="@($"min-height:48px; padding:12px; border:1px dashed var(--mud-palette-lines-default); border-radius:var(--mud-default-borderradius); {_internalValue}")">
+                    <span>@TryLocalize("Preview text — Aa Bb Cc 123")</span>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private static string GetRowStyle(bool enabled) =>
+        "display:flex; align-items:center; gap:4px; padding:1px 2px; border-radius:3px; min-height:24px; font-family:'JetBrains Mono','Fira Code',Menlo,Consolas,monospace; font-size:0.82rem;"
+        + (enabled ? string.Empty : " opacity:0.5;");
+
+    private static string InputStyle(string extra = "") =>
+        "background:transparent; border:none; outline:none; padding:1px 4px; font-family:inherit; font-size:inherit; color:var(--mud-palette-text-primary); border-radius:3px; " + extra;
+
+    private static string PropInputStyle(bool enabled) =>
+        InputStyle($"flex:0 0 160px; min-width:90px; color:var(--mud-palette-primary); {(enabled ? "" : "text-decoration:line-through;")}");
+
+    private static string ValInputStyle() =>
+        InputStyle("flex:1 1 auto; min-width:60px;");
+
+    private RenderFragment RenderDevTools() => __builder =>
+    {
+        var filtered = _entries.Where(MatchesFilter).ToList();
+        <div style="display:flex; flex-direction:column; gap:1px;">
+            @if (filtered.Count == 0)
+            {
+                <div style="color:var(--mud-palette-text-disabled); padding:8px; text-align:center; font-style:italic;">
+                    @TryLocalize("No declarations yet. Click + to add one.")
+                </div>
+            }
+            else
+            {
+                foreach (var entry in filtered)
+                {
+                    @RenderDevToolsRow(entry)
+                }
+            }
+
+            <div style="display:flex; align-items:center; padding:2px;">
+                <button type="button"
+                        @onclick="@(() => AddEntryAsync())"
+                        style="background:transparent; border:1px dashed var(--mud-palette-lines-default); color:var(--mud-palette-text-secondary); border-radius:3px; padding:2px 8px; cursor:pointer; font-size:0.78rem;">
+                    + @TryLocalize("Add property")
+                </button>
+            </div>
+        </div>
+    };
+
+    private RenderFragment RenderDevToolsRow(CssPropertyEntry entry) => __builder =>
+    {
+        var localEntry = entry;
+        var desc = CssPropertyCatalog.Get(localEntry.Property);
+
+        <div @key="localEntry.Id" class="mud-ex-style-editor-row" style="@GetRowStyle(localEntry.Enabled)">
+            @if (AllowDisableDeclarations)
+            {
+                <input type="checkbox"
+                       checked="@localEntry.Enabled"
+                       @onchange="@(e => ToggleEnabledAsync(localEntry, e.Value is bool b && b))"
+                       style="margin:0; cursor:pointer;" />
+            }
+
+            <div style="flex:0 0 160px; min-width:90px; display:inline-flex; align-items:center;">
+                <input id="@($"mes-prop-input-{localEntry.Id:N}")"
+                       type="text"
+                       value="@localEntry.Property"
+                       @onfocus="@(() => OpenPropertyDropdown(localEntry))"
+                       @oninput="@(e => OnPropertyTyping(localEntry, e.Value?.ToString() ?? string.Empty))"
+                       @onchange="@(e => OnPropertyCommitAsync(localEntry, e.Value?.ToString() ?? string.Empty))"
+                       @onblur="@(() => SchedulePropertyCloseAsync(localEntry.Id))"
+                       @onkeydown="@(e => OnPropertyKeyDownAsync(e, localEntry))"
+                       placeholder="property"
+                       spellcheck="false"
+                       style="@PropInputStyle(localEntry.Enabled) width:100%;" />
+
+                @if (_openPropertyDropdownFor == localEntry.Id)
+                {
+                    <div id="@($"mes-prop-dd-{localEntry.Id:N}")"
+                         @onmousedown:preventDefault="true"
+                         @onclick:stopPropagation="true"
+                         style="position:fixed; z-index:10000; max-height:240px; min-width:200px; overflow-y:auto; background:var(--mud-palette-surface); border:1px solid var(--mud-palette-lines-default); border-radius:4px; box-shadow:0 4px 12px rgba(0,0,0,0.2); padding:4px 0;">
+                        @{ var suggestions = FilteredPropertySuggestions(localEntry).ToList(); }
+                        @if (suggestions.Count == 0)
+                        {
+                            <div style="padding:6px 10px; color:var(--mud-palette-text-secondary); font-size:0.8rem;">@TryLocalize("No matching properties")</div>
+                        }
+                        else
+                        {
+                            for (var i = 0; i < suggestions.Count; i++)
+                            {
+                                var localS = suggestions[i];
+                                var isHighlighted = i == _highlightedPropertyIndex;
+                                var hoverBg = isHighlighted ? "rgba(var(--mud-palette-primary-rgb), 0.16)" : "transparent";
+                                <div @onmousedown="@(() => SelectPropertySuggestionAsync(localEntry, localS))"
+                                     style="@($"padding:4px 10px; cursor:pointer; font-family:monospace; font-size:0.82rem; user-select:none; color:var(--mud-palette-text-primary); background:{hoverBg};")"
+                                     onmouseover="this.style.background='var(--mud-palette-action-default-hover)'"
+                                     onmouseout="this.style.background='@hoverBg'">
+                                    @localS
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+
+            <span style="color:var(--mud-palette-text-secondary); user-select:none;">:</span>
+
+            @if (desc.Kind == CssEditorPropertyKind.Color)
+            {
+                <span style="display:inline-block; width:14px; height:14px; border:1px solid var(--mud-palette-lines-default); border-radius:2px; background-color:@(string.IsNullOrWhiteSpace(localEntry.Value) ? "transparent" : localEntry.Value); flex:0 0 14px;"></span>
+                <input type="color"
+                       value="@ToHexOrFallback(localEntry.Value)"
+                       @oninput="@(e => SetValueAsync(localEntry, e.Value?.ToString() ?? string.Empty))"
+                       style="width:18px; height:18px; padding:0; border:none; background:transparent; cursor:pointer; flex:0 0 18px;" />
+            }
+
+            @{ var valueSuggestions = desc.EffectiveSuggestions(); var hasSuggestions = valueSuggestions.Length > 0; }
+            <div style="flex:1 1 auto; min-width:60px; display:inline-flex; align-items:center;">
+                <input id="@($"mes-val-input-{localEntry.Id:N}")"
+                       type="text"
+                       value="@localEntry.Value"
+                       @onfocus="@(() => OpenValueDropdown(localEntry))"
+                       @oninput="@(e => OnValueTyping(localEntry, e.Value?.ToString() ?? string.Empty))"
+                       @onchange="@(e => OnValueCommitAsync(localEntry, e.Value?.ToString() ?? string.Empty))"
+                       @onblur="@(() => ScheduleValueCloseAsync(localEntry.Id))"
+                       @onkeydown="@(e => OnValueKeyDownAsync(e, localEntry))"
+                       placeholder="value"
+                       spellcheck="false"
+                       style="@ValInputStyle() flex:1 1 auto; width:100%;" />
+
+                @if (hasSuggestions)
+                {
+                    <span @onmousedown:preventDefault="true"
+                          @onmousedown="@(() => OpenValueDropdown(localEntry))"
+                          aria-hidden="true"
+                          style="color:var(--mud-palette-text-secondary); font-size:0.7rem; padding:0 4px; cursor:pointer; user-select:none;">▾</span>
+
+                    @if (_openValueDropdownFor == localEntry.Id)
+                    {
+                        <div id="@($"mes-val-dd-{localEntry.Id:N}")"
+                             @onmousedown:preventDefault="true"
+                             @onclick:stopPropagation="true"
+                             style="position:fixed; z-index:10000; max-height:240px; min-width:180px; overflow-y:auto; background:var(--mud-palette-surface); border:1px solid var(--mud-palette-lines-default); border-radius:4px; box-shadow:0 4px 12px rgba(0,0,0,0.2); padding:4px 0;">
+                            @{ var values = FilteredValueSuggestions(localEntry).ToList(); }
+                            @if (values.Count == 0)
+                            {
+                                <div style="padding:6px 10px; color:var(--mud-palette-text-secondary); font-size:0.8rem;">@TryLocalize("No matching values")</div>
+                            }
+                            else
+                            {
+                                for (var i = 0; i < values.Count; i++)
+                                {
+                                    var localV = values[i];
+                                    var isCurrent = string.Equals(localV, localEntry.Value, StringComparison.OrdinalIgnoreCase);
+                                    var isHighlighted = i == _highlightedValueIndex;
+                                    string restingBg = isHighlighted
+                                        ? "rgba(var(--mud-palette-primary-rgb), 0.16)"
+                                        : (isCurrent ? "rgba(var(--mud-palette-primary-rgb), 0.08)" : "transparent");
+                                    <div @onmousedown="@(() => SelectValueSuggestionAsync(localEntry, localV))"
+                                         style="@($"padding:4px 10px; cursor:pointer; font-family:monospace; font-size:0.82rem; user-select:none; color:var(--mud-palette-text-primary); background:{restingBg};")"
+                                         onmouseover="this.style.background='var(--mud-palette-action-default-hover)'"
+                                         onmouseout="this.style.background='@restingBg'">
+                                        @localV
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                }
+            </div>
+
+            @if (desc.Kind == CssEditorPropertyKind.Slider)
+            {
+                var min = desc.Min ?? 0;
+                var max = desc.Max ?? 1;
+                var step = desc.Step ?? 0.01;
+                <input type="range"
+                       min="@min" max="@max" step="@step"
+                       value="@localEntry.Value"
+                       @oninput="@(e => SetValueAsync(localEntry, e.Value?.ToString() ?? string.Empty))"
+                       style="flex:0 0 80px;" />
+            }
+
+            <button type="button"
+                    @onclick="@(() => RemoveEntryAsync(localEntry))"
+                    title="@TryLocalize("Remove")"
+                    style="background:transparent; border:none; color:var(--mud-palette-text-secondary); cursor:pointer; width:18px; height:18px; padding:0; line-height:18px; border-radius:3px;">×</button>
+        </div>
+    };
+
+    private RenderFragment RenderCategorized() => __builder =>
+    {
+        var groups = GroupedByCategory().ToList();
+        var allCats = Enum.GetValues<CssPropertyCategory>();
+
+        <div style="display:flex; flex-direction:column; gap:4px;">
+            <MudExpansionPanels MultiExpansion="true">
+            @foreach (var cat in allCats)
+            {
+                var existing = groups.FirstOrDefault(g => g.Key == cat)?.ToList() ?? new List<CssPropertyEntry>();
+                var suggestions = SuggestedPropertiesFor(cat).ToList();
+                if (existing.Count == 0 && suggestions.Count == 0) continue;
+
+                <MudExpansionPanel Expanded="@(existing.Count > 0)" Text="@($"{TryLocalize(cat.ToString())} ({existing.Count})")">
+                    <div style="display:flex; flex-direction:column; gap:4px; padding:4px 0;">
+                        @foreach (var entry in existing)
+                        {
+                            @RenderDevToolsRow(entry)
+                        }
+
+                        @if (suggestions.Count > 0)
+                        {
+                            <div style="display:flex; flex-wrap:wrap; align-items:center; gap:4px; padding:6px 0 2px 0;">
+                                <span style="color:var(--mud-palette-text-secondary); font-size:0.78rem; margin-right:4px;">@TryLocalize("Add"):</span>
+                                @foreach (var name in suggestions)
+                                {
+                                    var localName = name;
+                                    <button type="button"
+                                            @onclick="@(() => AddEntryAsync(localName))"
+                                            style="background:transparent; border:1px solid var(--mud-palette-lines-default); color:var(--mud-palette-text-primary); border-radius:12px; padding:1px 8px; cursor:pointer; font-size:0.72rem; font-family:monospace;">
+                                        @localName
+                                    </button>
+                                }
+                            </div>
+                        }
+                    </div>
+                </MudExpansionPanel>
+            }
+            </MudExpansionPanels>
+        </div>
+    };
+
+    private RenderFragment RenderRaw() => __builder =>
+    {
+        <MudTextField T="string"
+                      Value="@_rawDraft"
+                      ValueChanged="@OnRawChanged"
+                      Lines="@(Dense ? 6 : 12)"
+                      Variant="Variant.Outlined"
+                      Immediate="false"
+                      Placeholder="background-color: red; padding: 8px;"
+                      DebounceInterval="300"
+                      Style="font-family:monospace; width:100%;" />
+    };
+
+    private static string ToHexOrFallback(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return "#000000";
+        value = value.Trim();
+        if (value.StartsWith("#"))
+        {
+            // Normalize to #rrggbb (input type=color requires 7 chars)
+            if (value.Length == 4)
+                return "#" + value[1] + value[1] + value[2] + value[2] + value[3] + value[3];
+            if (value.Length >= 7)
+                return value.Substring(0, 7);
+            return "#000000";
+        }
+        return "#000000";
+    }
+}

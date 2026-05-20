@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -216,7 +217,7 @@ public static partial class MudExObjectEditExtensions
     /// <param name="attributes">A dictionary of attributes to apply to the component.</param>
     /// <returns>The modified ObjectEditPropertyMeta instance.</returns>
     ///</summary>
-    public static ObjectEditPropertyMeta RenderWith(this ObjectEditPropertyMeta meta, Type componentType, IDictionary<string, object> attributes = null)
+    public static ObjectEditPropertyMeta RenderWith(this ObjectEditPropertyMeta meta, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type componentType, IDictionary<string, object> attributes = null)
         => meta?.SetProperties(p => p.RenderData = RenderData.For(componentType, attributes));
 
     ///<summary>
