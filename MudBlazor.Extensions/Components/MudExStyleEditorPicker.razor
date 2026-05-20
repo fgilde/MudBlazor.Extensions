@@ -1,0 +1,31 @@
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Core.Css
+@inherits MudExPickerBase<string>
+
+@Render
+
+@code
+{
+    protected override RenderFragment PickerContent
+    {
+        get
+        {
+            return @<MudExGroupBox Text="@Title">
+                    <MudExStyleEditor @bind-Value="Value"
+                                      ViewMode="@ViewMode"
+                                      ViewModeChanged="@ViewModeChanged"
+                                      ShowToolbar="@EditorShowToolbar"
+                                      AllowViewModeSwitch="@AllowViewModeSwitch"
+                                      ShowFilter="@ShowFilter"
+                                      Dense="@Dense"
+                                      MaxHeight="@MaxHeight"
+                                      ShowPreview="@ShowPreview"
+                                      PreviewContent="@PreviewContent"
+                                      PreviewLabel="@PreviewLabel"
+                                      AllowedProperties="@AllowedProperties"
+                                      ShowCatalogSuggestions="@ShowCatalogSuggestions"
+                                      AllowDisableDeclarations="@AllowDisableDeclarations" />
+            </MudExGroupBox>;
+        }
+    }
+}

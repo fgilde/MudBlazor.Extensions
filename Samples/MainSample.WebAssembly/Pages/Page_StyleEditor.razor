@@ -1,0 +1,39 @@
+@page "/style-editor"
+@inherits BasePage
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using MudBlazor.Extensions.Core.Css
+
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "MudExStyleEditor", Icon = Icons.Material.Outlined.Style, Documentation = "MudExStyleEditor lets you build a CSS style string with DevTools-like editing, a categorized form view and a raw text mode. Smart per-property pickers (color, slider, select, autocomplete) make it fast to compose styles inside dialogs, popovers or settings panels.", ForComponentType = typeof(MudExStyleEditor))]
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudPaper Class="pa-4" Elevation="0">
+                <MudExStyleEditor @bind-Value="@_style" @ref="component" />
+            </MudPaper>
+            <MudPaper Class="pa-4 mt-4" Elevation="0">
+                <MudText Typo="Typo.subtitle2">Resulting style string</MudText>
+                <pre style="white-space: pre-wrap; word-break: break-all; padding: 8px; background: var(--mud-palette-background-grey); border-radius: 4px;">@_style</pre>
+            </MudPaper>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    private MudExStyleEditor component;
+    private string _style = "background-color: #1976d2; color: #fff; padding: 16px; border-radius: 8px; font-weight: 500;";
+
+    private Action<ObjectEditMeta<MudExStyleEditor>> Configure()
+    {
+        return meta =>
+        {
+            meta.Property(m => m.Localizer).Ignore();
+            meta.Property(m => m.PreviewContent).Ignore();
+            meta.Property(m => m.AllowedProperties).Ignore();
+            meta.IgnoreAllReadOnlyFields();
+        };
+    }
+}

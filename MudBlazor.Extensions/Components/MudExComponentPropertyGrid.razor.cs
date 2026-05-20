@@ -79,6 +79,23 @@ public partial class MudExComponentPropertyGrid<T>
         .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
 
         meta.Properties<string>()
+            .Where(p => p?.PropertyName == nameof(Style))
+            .RenderWith<MudExStyleEditorPicker, string, string>(edit => edit.Value,
+                o => { 
+                    o.AllowViewModeSwitch = true;
+                    o.Title = nameof(Style);
+                });
+
+        meta.Properties<string>()
+            .Where(p => p?.PropertyName == nameof(Class))
+            .RenderWith<MudExClassEditorPicker, string, string>(edit => edit.Value,
+                o =>
+                {
+                    o.AllowViewModeSwitch = true;
+                    o.Title = nameof(Class);
+                });
+
+        meta.Properties<string>()
             .Where(p => IsValidCultureString(p.Value?.ToString()))
         .RenderWith<MudExCultureSelect, string, CultureInfo>(edit => edit.Value, edit => edit.CultureHandling = NeutralCultureHandling.IgnoreNeutralCultures,
                 s => !string.IsNullOrWhiteSpace(s) ? CultureInfo.GetCultureInfo(s) : null,

@@ -1,0 +1,208 @@
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Core.Css
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@inherits MudExBaseComponent<MudExClassEditor>
+
+<div class="mud-ex-class-editor @($"mud-ex-class-editor-{ViewMode.ToString().ToLower()}") @Class"
+     style="display:flex; flex-direction:column; gap:8px; min-width:280px; max-width:100%; overflow:hidden; @Style">
+    @if (ShowToolbar)
+    {
+        <div class="mud-ex-class-editor-toolbar" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+            @if (AllowViewModeSwitch)
+            {
+                <MudButtonGroup OverrideStyles="false" Variant="Variant.Outlined" Size="Size.Small">
+                    <MudButton StartIcon="@Icons.Material.Filled.List"
+                               Color="@(ViewMode == MudExClassEditViewMode.List ? Color.Primary : Color.Default)"
+                               OnClick="@(() => OnViewModeButtonAsync(MudExClassEditViewMode.List))">@TryLocalize("List")</MudButton>
+                    <MudButton StartIcon="@Icons.Material.Filled.ViewCompact"
+                               Color="@(ViewMode == MudExClassEditViewMode.Compact ? Color.Primary : Color.Default)"
+                               OnClick="@(() => OnViewModeButtonAsync(MudExClassEditViewMode.Compact))">@TryLocalize("Compact")</MudButton>
+                    <MudButton StartIcon="@Icons.Material.Filled.GridView"
+                               Color="@(ViewMode == MudExClassEditViewMode.Grid ? Color.Primary : Color.Default)"
+                               OnClick="@(() => OnViewModeButtonAsync(MudExClassEditViewMode.Grid))">@TryLocalize("Grid")</MudButton>
+                </MudButtonGroup>
+            }
+
+            @if (ShowFilter)
+            {
+                <div style="position:relative; display:inline-flex; align-items:center; height:28px; padding:0 8px; border:1px solid var(--mud-palette-lines-default); border-radius:4px; background:var(--mud-palette-surface); max-width:240px;">
+                    <MudIcon Icon="@Icons.Material.Filled.Search" Size="Size.Small" Style="color:var(--mud-palette-text-secondary); margin-right:4px;" />
+                    <input type="text"
+                           value="@_filter"
+                           @oninput="@(e => { _filter = e.Value?.ToString() ?? string.Empty; StateHasChanged(); })"
+                           placeholder="@TryLocalize("Filter classes...")"
+                           style="background:transparent; border:none; outline:none; flex:1; padding:0; font-size:0.85rem; color:var(--mud-palette-text-primary); width:160px;" />
+                    @if (!string.IsNullOrEmpty(_filter))
+                    {
+                        <button type="button"
+                                @onclick="@(() => { _filter = string.Empty; StateHasChanged(); })"
+                                style="background:transparent; border:none; color:var(--mud-palette-text-secondary); cursor:pointer; width:18px; height:18px; padding:0; line-height:18px; border-radius:3px;">×</button>
+                    }
+                </div>
+            }
+
+            <MudTooltip Text="@TryLocalize("Rescan stylesheets")">
+                <MudIconButton Icon="@Icons.Material.Filled.Refresh"
+                               Size="Size.Small"
+                               Disabled="@_isScanning"
+                               OnClick="@(() => ScanAsync())" />
+            </MudTooltip>
+        </div>
+    }
+
+    @if (ShowSelectedBar && _selected.Count > 0)
+    {
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:4px; padding:6px; border:1px solid var(--mud-palette-lines-default); border-radius:4px; background:var(--mud-palette-background-grey);">
+            <MudText Typo="Typo.caption" Style="margin-right:4px;">@TryLocalize("Selected"):</MudText>
+            @foreach (var name in _selected)
+            {
+                var localName = name;
+                <MudChip T="string"
+                         Size="Size.Small"
+                         Color="Color.Primary"
+                         Variant="Variant.Filled"
+                         OnClose="@(() => RemoveClassAsync(localName))">@localName</MudChip>
+            }
+            <MudButton Size="Size.Small" Variant="Variant.Text" StartIcon="@Icons.Material.Filled.ClearAll"
+                       OnClick="@(() => ClearAllAsync())">@TryLocalize("Clear")</MudButton>
+        </div>
+    }
+
+    <div class="mud-ex-class-editor-body"
+         style="@($"max-height:{MaxHeight}; overflow-y:auto; overflow-x:hidden; border:1px solid var(--mud-palette-lines-default); border-radius:4px; padding:4px; background:var(--mud-palette-surface);")">
+        @if (_isScanning && _groups.Length == 0)
+        {
+            <div style="color:var(--mud-palette-text-disabled); padding:12px; text-align:center;">
+                <MudProgressCircular Indeterminate="true" Size="Size.Small" />
+                <span style="margin-left:8px;">@TryLocalize("Scanning stylesheets...")</span>
+            </div>
+        }
+        else if (_groups.Length == 0)
+        {
+            <div style="color:var(--mud-palette-text-disabled); padding:12px; text-align:center; font-style:italic;">
+                @TryLocalize("No CSS classes found.")
+            </div>
+        }
+        else
+        {
+            switch (ViewMode)
+            {
+                case MudExClassEditViewMode.List: @RenderListView(); break;
+                case MudExClassEditViewMode.Compact: @RenderCompactView(); break;
+                case MudExClassEditViewMode.Grid: @RenderGridView(); break;
+            }
+        }
+    </div>
+
+    @if (ShowPreview)
+    {
+        <div class="mud-ex-class-editor-preview" style="display:flex; flex-direction:column; gap:4px; border-top:1px dashed var(--mud-palette-lines-default); padding-top:8px;">
+            @if (!string.IsNullOrWhiteSpace(PreviewLabel))
+            {
+                <MudText Typo="Typo.caption" Style="color:var(--mud-palette-text-secondary); text-transform:uppercase; letter-spacing:0.5px;">@TryLocalize(PreviewLabel)</MudText>
+            }
+            @if (PreviewContent != null)
+            {
+                @PreviewContent(_internalValue)
+            }
+            else
+            {
+                <div class="@_internalValue" style="min-height:48px; padding:12px; border:1px dashed var(--mud-palette-lines-default); border-radius:4px;">
+                    <span>@TryLocalize("Preview text — Aa Bb Cc 123")</span>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private RenderFragment RenderListView() => __builder =>
+    {
+        if (GroupBySource)
+        {
+            foreach (var group in FilteredGroups())
+            {
+                var localGroup = group;
+                var expanded = _expandedGroup == null || string.Equals(_expandedGroup, group.Source, StringComparison.Ordinal);
+                <div style="margin-bottom:4px;">
+                    <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--mud-palette-text-secondary); padding:4px 8px; display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; border-radius:3px;"
+                         @onclick="@(() => { _expandedGroup = expanded ? null : localGroup.Source; })">
+                        <MudIcon Icon="@(expanded ? Icons.Material.Filled.ExpandMore : Icons.Material.Filled.ChevronRight)" Size="Size.Small" />
+                        <span style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">@group.Source</span>
+                        <span style="background:var(--mud-palette-action-default); font-size:0.7rem; padding:0 6px; border-radius:8px;">@group.Classes.Length</span>
+                    </div>
+                    @if (expanded)
+                    {
+                        <Virtualize Items="@localGroup.Classes" Context="info" ItemSize="36" OverscanCount="6">
+                            @RenderListRow(info)
+                        </Virtualize>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <Virtualize Items="@FlatFiltered().ToList()" Context="info" ItemSize="36" OverscanCount="6">
+                @RenderListRow(info)
+            </Virtualize>
+        }
+    };
+
+    private RenderFragment RenderListRow(CssClassInfo info) => __builder =>
+    {
+        var localInfo = info;
+        var selected = IsSelected(localInfo.Name);
+        <div style="@($"display:flex; flex-direction:column; padding:3px 8px; border-radius:3px; cursor:pointer; gap:1px; overflow:hidden; max-width:100%; {(selected ? "background: rgba(var(--mud-palette-primary-rgb), 0.12);" : null)}")"
+             @onclick="@(() => ToggleClassAsync(localInfo.Name))"
+             title="@string.Join("\n", localInfo.Selectors)">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" checked="@selected" readonly disabled style="pointer-events:none; accent-color:var(--mud-palette-primary); margin:0;" />
+                <span style="font-family:monospace; font-size:0.85rem; color:var(--mud-palette-primary); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">.@localInfo.Name</span>
+            </div>
+            @if (ShowStyles && !string.IsNullOrWhiteSpace(localInfo.Styles))
+            {
+                <div style="padding-left:24px; font-family:monospace; font-size:0.7rem; color:var(--mud-palette-text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">@localInfo.Styles</div>
+            }
+        </div>
+    };
+
+    private RenderFragment RenderCompactView() => __builder =>
+    {
+        <div style="display:flex; flex-wrap:wrap; gap:4px;">
+            @foreach (var info in FlatFiltered())
+            {
+                var localInfo = info;
+                var selected = IsSelected(localInfo.Name);
+                <span @onclick="@(() => ToggleClassAsync(localInfo.Name))"
+                      title="@(string.IsNullOrWhiteSpace(localInfo.Styles) ? string.Join(", ", localInfo.Selectors) : localInfo.Styles)"
+                      style="@($"display:inline-flex; align-items:center; padding:2px 8px; border-radius:11px; font-family:monospace; font-size:0.75rem; cursor:pointer; user-select:none; border:1px solid {(selected ? "var(--mud-palette-primary)" : "var(--mud-palette-lines-default)")}; background:{(selected ? "var(--mud-palette-primary)" : "transparent")}; color:{(selected ? "var(--mud-palette-primary-text)" : "var(--mud-palette-text-primary)")};")">
+                    @localInfo.Name
+                </span>
+            }
+        </div>
+    };
+
+    private RenderFragment RenderGridView() => __builder =>
+    {
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:6px;">
+            @foreach (var info in FlatFiltered())
+            {
+                var localInfo = info;
+                var selected = IsSelected(localInfo.Name);
+                <div @onclick="@(() => ToggleClassAsync(localInfo.Name))"
+                     title="@string.Join("\n", localInfo.Selectors)"
+                     style="@($"border:1px solid {(selected ? "var(--mud-palette-primary)" : "var(--mud-palette-lines-default)")}; border-radius:4px; padding:8px; cursor:pointer; display:flex; flex-direction:column; gap:4px; background:{(selected ? "rgba(var(--mud-palette-primary-rgb), 0.06)" : "var(--mud-palette-background)")}; overflow:hidden;")">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <input type="checkbox" checked="@selected" readonly disabled style="pointer-events:none; accent-color:var(--mud-palette-primary); margin:0;" />
+                        <span style="font-size:0.65rem; color:var(--mud-palette-text-disabled); text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1;">@localInfo.Source</span>
+                    </div>
+                    <div style="font-family:monospace; font-size:0.85rem; color:var(--mud-palette-primary); font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">.@localInfo.Name</div>
+                    @if (ShowStyles && !string.IsNullOrWhiteSpace(localInfo.Styles))
+                    {
+                        <div style="font-family:monospace; font-size:0.7rem; color:var(--mud-palette-text-secondary); max-height:40px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">@localInfo.Styles</div>
+                    }
+                </div>
+            }
+        </div>
+    };
+}
