@@ -70,7 +70,7 @@
 
   <ItemGroup>
     <PackageReference Include="MudBlazor" Version="9.5.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.9" />
     <PackageReference Include="ExcelDataReader" Version="3.8.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.8.0" />
     <PackageReference Include="AuralizeBlazor" Version="3.0.4" />
