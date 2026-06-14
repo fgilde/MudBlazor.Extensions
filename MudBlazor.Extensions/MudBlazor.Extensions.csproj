@@ -50,6 +50,13 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
+  <!-- libman.json is a LibMan dev-tooling config, not a runtime asset. Keep it out of the build
+       output / publish so it does not collide with a consumer's own libman.json (NETSDK1152). -->
+  <ItemGroup>
+    <Content Remove="libman.json" />
+    <None Include="libman.json" />
+  </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\docs\MudBlazor.Extensions.xml" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.css" />

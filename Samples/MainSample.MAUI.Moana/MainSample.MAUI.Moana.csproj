@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <!-- This MAUI sample targets EOL net8.0 workloads and keeps its own package versions
-             (Central Package Management is opted out here). -->
+        <!-- MAUI sample. Maui workload packages are supplied at the workload's version, so Central
+             Package Management is opted out here. -->
         <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
-        <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+        <TargetFrameworks>net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
         <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
         <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
         <OutputType>Exe</OutputType>
@@ -53,24 +53,23 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.9" />
     </ItemGroup>
 
     <ItemGroup>
+      <!-- NOTE: this references the full Blazor WebAssembly *app* to reuse its components. That
+           works for the Windows target but its browser-wasm/webcil pipeline breaks the mobile
+           (android/ios/maccatalyst) cross-builds. Proper fix: move the shared components into a
+           Razor Class Library referenced by both the WASM app and this MAUI app. -->
       <ProjectReference Include="..\MainSample.WebAssembly\MainSample.WebAssembly.csproj" />
     </ItemGroup>
 
+    <!-- Since .NET 8, UseMaui no longer auto-references these; pin them to the workload version. -->
     <ItemGroup>
-      <PackageReference Update="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.92" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.92" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.92" />
+      <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />
+      <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.20" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.20" />
     </ItemGroup>
 
 </Project>
