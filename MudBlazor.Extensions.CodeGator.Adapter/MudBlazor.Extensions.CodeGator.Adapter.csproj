@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
@@ -29,8 +29,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
-    <PackageReference Include="CG.Blazor.Forms._MudBlazor" Version="*" />
+    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" />
+    <PackageReference Include="CG.Blazor.Forms._MudBlazor" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' != 'Release'">

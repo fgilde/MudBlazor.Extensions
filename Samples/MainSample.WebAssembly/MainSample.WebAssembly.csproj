@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <Import Project="..\..\MudBlazor.Extensions\version.generated.props" Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
   <Import Condition="Exists('..\..\Shared.props')" Project="..\..\Shared.props" />
@@ -47,14 +47,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bromix.MudBlazor.MaterialDesignIcons" Version="7.4.47.56" />
-    <PackageReference Include="Nextended.CodeGen" Version="10.1.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.8" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.8" />
-    <PackageReference Include="BlazorMonaco" Version="3.4.0" />
-    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
-    <PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="6.0.1" />
+    <PackageReference Include="Bromix.MudBlazor.MaterialDesignIcons" />
+    <PackageReference Include="Nextended.CodeGen" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Localization" />
+    <PackageReference Include="BlazorMonaco" />
+    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" />
+    <PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" />
 
   </ItemGroup>
   <ItemGroup>

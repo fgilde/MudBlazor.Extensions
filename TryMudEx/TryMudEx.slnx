@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="MudBlazor.Examples.Data/MudBlazor.Examples.Data.csproj" />
+  <Project Path="Try.Core/Try.Core.csproj" />
+  <Project Path="Try.Tests/Try.Tests.csproj" />
+  <Project Path="TryMudEx.Client/TryMudEx.Client.csproj" />
+  <Project Path="TryMudEx.Server/TryMudEx.Server.csproj" />
+  <Project Path="UserComponents/Try.UserComponents.csproj" />
+</Solution>

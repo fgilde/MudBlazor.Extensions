@@ -1,0 +1,88 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <!-- Some packages are referenced with floating versions (e.g. RtfPipe 2.0.*, MsgReader 6.0.*,
+         the locally built MudBlazor.Extensions *-* prerelease). Allow them centrally. -->
+    <CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- MudBlazor / UI -->
+    <PackageVersion Include="MudBlazor" Version="9.5.0" />
+    <PackageVersion Include="MudBlazor.Markdown" Version="9.0.0" />
+    <PackageVersion Include="AuralizeBlazor" Version="3.0.4" />
+    <PackageVersion Include="Bromix.MudBlazor.MaterialDesignIcons" Version="7.4.47.56" />
+    <PackageVersion Include="BlazorMonaco" Version="3.4.0" />
+    <PackageVersion Include="BlazorJS" Version="2.2.0" />
+    <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
+
+    <!-- Nextended -->
+    <PackageVersion Include="Nextended.Blazor" Version="10.1.9" />
+    <PackageVersion Include="Nextended.Core" Version="10.1.9" />
+    <PackageVersion Include="Nextended.CodeGen" Version="10.1.9" />
+
+    <!-- Microsoft.AspNetCore / Extensions -->
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.36" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.9" />
+    <PackageVersion Include="System.Net.Http.Json" Version="10.0.9" />
+    <PackageVersion Include="System.Runtime.Loader" Version="4.3.0" />
+
+    <!-- Roslyn (for the Try compiler) -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="5.3.0" />
+
+    <!-- Localization -->
+    <PackageVersion Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="6.1.0" />
+
+    <!-- Validation / utilities -->
+    <PackageVersion Include="FluentValidation" Version="12.1.1" />
+    <PackageVersion Include="OneOf" Version="3.0.271" />
+    <PackageVersion Include="NUglify" Version="1.21.17" />
+    <PackageVersion Include="BlazorParameterCastingMagic" Version="1.2.25121215" />
+
+    <!-- File / document handling -->
+    <PackageVersion Include="ExcelDataReader" Version="3.8.0" />
+    <PackageVersion Include="ExcelDataReader.DataSet" Version="3.8.0" />
+    <PackageVersion Include="SharpCompress" Version="0.49.1" />
+    <!-- ImageSharp pinned to 3.x: v4 requires a commercial Six Labors license (build-time license check) -->
+    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.12" />
+    <PackageVersion Include="MetadataExtractor" Version="2.9.3" />
+    <PackageVersion Include="Gotho.BlazorPdf" Version="2.2.0" />
+    <PackageVersion Include="Gotho.BlazorPdf.MudBlazor" Version="2.2.0" />
+    <PackageVersion Include="RtfPipe" Version="2.0.*" />
+    <PackageVersion Include="MsgReader" Version="6.0.*" />
+
+    <!-- Azure (Try server) -->
+    <PackageVersion Include="Azure.Identity" Version="1.21.0" />
+    <PackageVersion Include="Azure.Storage.Blobs" Version="12.29.0" />
+
+    <!-- Test stack -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageVersion Include="bunit" Version="2.7.2" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+    <PackageVersion Include="FluentAssertions" Version="8.10.0" />
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="Microsoft.Playwright" Version="1.60.0" />
+    <PackageVersion Include="NUnit" Version="4.6.1" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="6.2.0" />
+
+    <!-- CodeGator adapter (optional project) -->
+    <PackageVersion Include="CG.Blazor.Forms._MudBlazor" Version="*" />
+
+    <!-- Locally built package, consumed by samples in Release config -->
+    <PackageVersion Include="MudBlazor.Extensions" Version="*-*" />
+  </ItemGroup>
+
+</Project>

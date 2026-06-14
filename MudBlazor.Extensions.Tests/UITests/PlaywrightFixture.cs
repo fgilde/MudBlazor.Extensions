@@ -78,14 +78,20 @@ public class PlaywrightFixture : IAsyncLifetime
     /// </summary>
     private static void InstallPlaywright()
     {
-        var exitCode = Microsoft.Playwright.Program.Main(
-            new[] { "install-deps" });
-        if (exitCode != 0)
+        // "install-deps" installs the OS-level libraries the browsers need. It is only meaningful
+        // on Linux (and there usually requires root). On Windows/macOS it is a no-op that can even
+        // return a non-zero exit code, so treat it as best-effort and never fail the test run on it.
+        try
         {
-            throw new Exception(
-                $"Playwright exited with code {exitCode} on install-deps");
+            Microsoft.Playwright.Program.Main(new[] { "install-deps" });
         }
-        exitCode = Microsoft.Playwright.Program.Main(new[] { "install" });
+        catch
+        {
+            // ignore – browser binaries are installed below; OS deps are environment specific.
+        }
+
+        // "install" downloads the actual browser binaries. This is what the tests really need.
+        var exitCode = Microsoft.Playwright.Program.Main(new[] { "install" });
         if (exitCode != 0)
         {
             throw new Exception(
