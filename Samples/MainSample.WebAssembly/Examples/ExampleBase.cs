@@ -15,6 +15,10 @@ public class ExampleBase : ComponentBase, IExample
     {
         new Regex(@"@inherits\s+ExampleBase\b", RegexOptions.IgnoreCase | RegexOptions.Compiled),
         new Regex(@"@ref\s*=\s*""ComponentRef""", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        // Examples that need their own typed @ref expose the instance to the demo editor via
+        // "if (firstRender) ComponentRef = _slider;" inside OnAfterRender. Strip that single line so the
+        // exported sample (which has @inherits ExampleBase removed) still compiles standalone.
+        new Regex(@"^[ \t]*if \(firstRender\) ComponentRef = _slider;[ \t]*\r?$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Multiline),
         new Regex(@"</?MudExEditConfiguration\b[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled)
 //        new Regex(@"</?"+nameof(MudExEditConfiguration)+"\b[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled)
     };

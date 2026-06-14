@@ -21,6 +21,11 @@
                       AllowWholeRangeDrag="true" />
 
 @code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) ComponentRef = _slider;
+    }
+
     private MudExTimeRangeSlider? _slider;
     private TimeRangeSliderMode _mode = TimeRangeSliderMode.QuarterHour;
     private bool _zoom = true;

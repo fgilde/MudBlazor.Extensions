@@ -21,6 +21,11 @@
                       AllowWholeRangeDrag="true" />
 
 @code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) ComponentRef = _slider;
+    }
+
     private MudExDateRangeSlider? _slider;
     private DateRangeSliderMode _mode = DateRangeSliderMode.Month;
     private bool _zoom = true;

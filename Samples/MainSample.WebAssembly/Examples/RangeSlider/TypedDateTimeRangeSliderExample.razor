@@ -20,6 +20,11 @@
                           AllowWholeRangeDrag="true" />
 
 @code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) ComponentRef = _slider;
+    }
+
     private MudExDateTimeRangeSlider? _slider;
     private DateTimeRangeSliderMode _mode = DateTimeRangeSliderMode.Hour;
     private bool _zoom = true;
