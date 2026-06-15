@@ -389,26 +389,30 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2025-10-14 19:02:28 -->
- - 8.14.1 > New Component [MudExRangeSlider](https://www.mudex.org/range-slider)
- - 8.14.1 > New Component MudExEditConfiguration
- - 8.14.0 > Update to MudBlazor 8.14.0
- - 8.14.0 > Add support for .net 10
- - 8.14.0 > Add simple demo for MudExPicker combined with MudExTreeView [here](https://www.mudex.org/mud-ex-picker-tree-sample)
- - 8.13.0 > Move MudExComponentPropertyGrid to MudEx, to have the easy possibility to add and component grid
- - 8.13.0 > Drag and Drop in MudExGrid [here](https://www.mudex.org/mud-ex-grid-enhanced)
- - 8.13.0 > New GroupMode DockPanel for MudExObjectEdit sample [here](https://www.mudex.org/mudex-object-edit-dock)
- - 8.13.0 > New Component MudExDockLayout sample [here](https://www.mudex.org/dock-layout)
- - 8.13.0 > New Component MudExGravatarCard sample [here](https://www.mudex.org/gravatar-card)
- - 8.11.0 > MudExObject edit now supports grouping by tabs and accordions. See sample [here](https://www.mudex.org/mudex-object-edit-tabs)
- - 8.11.0 > Small bug fixes
- - 8.9.0 > Support touch events for dialog dragging
- - 8.9.0 > Fixes bug with icon picker if no value is specified
- - 8.9.0 > Fixes bug with custom size in non modal dialogs
- - 8.9.0 > Update MudBlazor to 8.9.0 and other Packages to latest version 
- - 8.8.0 > Update MudBlazor to 8.8.0 and other Packages to latest version 
- - 8.8.0 > Fix Bug in MudExOneDriveFilePicker where the file couldnt be loaded when AutoLoadDataBytes is true
- - 8.7.0 > Update MudBlazor to 8.7.0
- - 8.7.0 > Fix bug in SnapDrag Mode for dialog
+ - 9.5.0 > Add date, time and typed range sliders with zoom and custom templates for [MudExRangeSlider](https://www.mudex.org/range-slider)
+ - 9.5.0 > New Style editor and Class editor components, now used in MudExComponentPropertyGrid
+ - 9.5.0 > More correct cancellation support for long running operations
+ - 9.5.0 > Update MudBlazor to 9.5.0 and other packages to latest versions (ImageSharp stays on 3.x because v4 requires a paid license)
+ - 9.5.0 > Switch to central package management (Directory.Packages.props) and migrate the solution to the new .slnx format
+ - 9.4.1 > Initial FluentValidation support with samples
+ - 9.4.1 > Update some nuget packages and improve dynamic dependency handling
+ - 9.4.0 > Add zoom support for [MudExRangeSlider](https://www.mudex.org/range-slider)
+ - 9.4.0 > Add change view option to the deployment page
+ - 9.3.0 > Update to MudBlazor 9.3.0
+ - 9.3.0 > New "Save file as" feature in [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 9.3.0 > Bugfix #206
+ - 9.2.0 > New DocumentViewer for rtf, docx and msg files in [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 9.2.0 > Update MudBlazor and replace obsolete packages
+ - 9.2.0 > Add simple display options
+ - 9.0.1 > [MudExFileDisplayPDF] and Excel file display are now powered by Univer
+ - 9.0.0 > Update to MudBlazor 9.0.0 (#202)
+ - 9.0.0 > **_Breaking:_** Many MudBlazor 9 related changes. See migration notes [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/BREAKING_CHANGES.md)
+ - 8.15.1 > Fix [MudExRangeSlider](https://www.mudex.org/range-slider) constraint violation during thumb drag #198
+ - 8.15.1 > Optimize [MudExTreeView](https://www.mudex.org/demos/TreeView) performance with result caching #197
+ - 8.15.1 > Update packages and fix samples for .net 10 in TryMudEx #192
+ - 8.15.0 > Update to MudBlazor 8.15.0
+ - 8.15.0 > Add [MudExTreeView](https://www.mudex.org/demos/TreeView) playground and advanced examples, consolidated into a single overview page
+ - 8.14.2 > Support .net 10 stream handling changes 
 <!-- CHANGELOG:END -->
 Full change log can be found [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
 
