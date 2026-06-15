@@ -15,6 +15,7 @@
 </MudText>
 
 <MudExRangeSlider T="TimeOnly"
+                  @ref="ComponentRef"
                   ShowInputs="true"
                   SizeRange="@(new MudExRange<TimeOnly>(new TimeOnly(0, 0), new TimeOnly(23, 59, 59)))"
                   @bind-Value="_selectedRange"
@@ -28,6 +29,7 @@
 </MudText>
 
 <MudExRangeSlider T="TimeOnly"
+                  @ref="ComponentRef"
                   ShowInputs="true"
                   SizeRange="@(new MudExRange<TimeOnly>(new TimeOnly(0, 0), new TimeOnly(23, 59, 59)))"
                   StepResolver="@(StepResolvers.TimeOnly.Minutely())"
@@ -44,6 +46,7 @@
 </MudText>
 
 <MudExRangeSlider T="TimeOnly"
+                  @ref="ComponentRef"
                   StepLength="@(new RangeLength<TimeOnly>(TimeSpan.FromHours(2).Ticks))"
                   ShowInputs="true"
                   SizeRange="@(new MudExRange<TimeOnly>(new TimeOnly(0, 0), new TimeOnly(23, 59, 59)))"
@@ -61,6 +64,7 @@
 </MudText>
 
 <MudExRangeSlider T="TimeOnly"
+                  @ref="ComponentRef"
                   ShowInputs="true"
                   SizeRange="@(new MudExRange<TimeOnly>(new TimeOnly(0, 0), new TimeOnly(23, 59)))"
                   StepResolver="@(StepResolvers.TimeOnly.Hourly(2))"

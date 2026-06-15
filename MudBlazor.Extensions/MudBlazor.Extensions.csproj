@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
   <Import Project="..\Shared.props" />
 
   <PropertyGroup>
@@ -25,8 +25,8 @@
   <!--Versioning-->
   <PropertyGroup>
     <MajorVersion>9</MajorVersion>
-    <MinorVersion>4</MinorVersion>
-    <PatchVersion>2</PatchVersion>
+    <MinorVersion>5</MinorVersion>
+    <PatchVersion>0</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -50,6 +50,13 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
+  <!-- libman.json is a LibMan dev-tooling config, not a runtime asset. Keep it out of the build
+       output / publish so it does not collide with a consumer's own libman.json (NETSDK1152). -->
+  <ItemGroup>
+    <Content Remove="libman.json" />
+    <None Include="libman.json" />
+  </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\docs\MudBlazor.Extensions.xml" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.css" />
@@ -69,26 +76,26 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="9.4.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.3" />
-    <PackageReference Include="ExcelDataReader" Version="3.8.0" />
-    <PackageReference Include="ExcelDataReader.DataSet" Version="3.8.0" />
-    <PackageReference Include="AuralizeBlazor" Version="3.0.4" />
-    <PackageReference Include="MudBlazor.Markdown" Version="9.0.0" />
-    <PackageReference Include="Nextended.Blazor" Version="10.1.8" />
-    <PackageReference Include="Nextended.Core" Version="10.1.8" />
-    <PackageReference Include="BlazorJS" Version="2.2.0" />
-    <PackageReference Include="OneOf" Version="3.0.271" />
-    <PackageReference Include="FluentValidation" Version="11.9.1" />
-    <PackageReference Include="NUglify" Version="1.21.17" PrivateAssets="all" />
-    <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.25121215" />
-    <PackageReference Include="SharpCompress" Version="0.48.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
-    <PackageReference Include="MetadataExtractor" Version="2.9.0" />
-    <PackageReference Include="Gotho.BlazorPdf" Version="2.2.0" />
-    <PackageReference Include="Gotho.BlazorPdf.MudBlazor" Version="2.2.0" />
-    <PackageReference Include="RtfPipe" Version="2.0.*" />
-    <PackageReference Include="MsgReader" Version="6.0.*" />
+    <PackageReference Include="MudBlazor" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    <PackageReference Include="ExcelDataReader" />
+    <PackageReference Include="ExcelDataReader.DataSet" />
+    <PackageReference Include="AuralizeBlazor" />
+    <PackageReference Include="MudBlazor.Markdown" />
+    <PackageReference Include="Nextended.Blazor" />
+    <PackageReference Include="Nextended.Core" />
+    <PackageReference Include="BlazorJS" />
+    <PackageReference Include="OneOf" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="NUglify" PrivateAssets="all" />
+    <PackageReference Include="BlazorParameterCastingMagic" />
+    <PackageReference Include="SharpCompress" />
+    <PackageReference Include="SixLabors.ImageSharp" />
+    <PackageReference Include="MetadataExtractor" />
+    <PackageReference Include="Gotho.BlazorPdf" />
+    <PackageReference Include="Gotho.BlazorPdf.MudBlazor" />
+    <PackageReference Include="RtfPipe" />
+    <PackageReference Include="MsgReader" />
   </ItemGroup>
 
   <ItemGroup>

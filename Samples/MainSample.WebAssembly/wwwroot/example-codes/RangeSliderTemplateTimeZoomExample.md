@@ -179,6 +179,11 @@
 </MudExRangeSlider>
 
 @code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) ComponentRef = _slider;
+    }
+
     private MudExRangeSlider<TimeOnly>? _slider;
     private bool _wheelZoom = true;
 

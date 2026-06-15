@@ -11,6 +11,7 @@
 </MudText>
 
 <MudExRangeSlider T="int"
+                  @ref="ComponentRef"
                   @bind-Value="_range"
                   SizeRange="@_fullRange"
                   ShowInputs="true"

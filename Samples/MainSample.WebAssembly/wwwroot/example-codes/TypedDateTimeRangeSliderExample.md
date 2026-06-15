@@ -1,0 +1,39 @@
+```razor
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<MudText Typo="Typo.caption" Class="mt-2 mb-2">
+    @L["Selected window: {0} – {1}", _value.Start, _value.End]
+</MudText>
+
+<MudStack Row="true" Spacing="2" Class="mb-3" AlignItems="AlignItems.Center">
+    <MudText>@L["Mode:"]</MudText>
+    <MudExEnumSelect T="DateTimeRangeSliderMode" @bind-Value="_mode" Style="min-width: 140px;" />
+    <MudSwitch T="bool" @bind-Value="_zoom" Color="Color.Primary" Label="@L["Mouse wheel zoom"]" />
+</MudStack>
+
+<MudExDateTimeRangeSlider @ref="_slider"
+                          Mode="_mode"
+                          EnableMouseWheelZoom="_zoom"
+                          SizeRange="@_sizeRange"
+                          @bind-Value="_value"
+                          AllowWholeRangeDrag="true" />
+
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) ComponentRef = _slider;
+    }
+
+    private MudExDateTimeRangeSlider? _slider;
+    private DateTimeRangeSliderMode _mode = DateTimeRangeSliderMode.Hour;
+    private bool _zoom = true;
+
+    private static readonly DateTime Today = DateTime.Today;
+
+    private IRange<DateTime> _sizeRange = new RangeOf<DateTime>(Today.AddDays(-7), Today.AddDays(7), null);
+    private IRange<DateTime> _value = new RangeOf<DateTime>(Today.AddHours(-12), Today.AddHours(12), null);
+}
+
+```

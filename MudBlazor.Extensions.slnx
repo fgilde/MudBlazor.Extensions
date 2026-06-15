@@ -1,0 +1,44 @@
+<Solution>
+  <Folder Name="/.scripts/">
+    <File Path="build.sh" />
+    <File Path="update-packages.ps1" />
+  </Folder>
+  <Folder Name="/Samples/">
+    <Project Path="Samples/MainSample.MAUI.Moana/MainSample.MAUI.Moana.csproj">
+      <Build Solution="Release|*" Project="false" />
+      <Deploy Solution="Debug|*" />
+    </Project>
+    <Project Path="Samples/MainSample.ServerSide/MainSample.ServerSide.csproj" />
+    <Project Path="Samples/MainSample.WebAssembly/MainSample.WebAssembly.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".github/workflows/MudEx.yml" />
+    <File Path="Shared.props" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/">
+    <File Path=".github/FUNDING.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/issue_template/">
+    <File Path=".github/ISSUE_TEMPLATE/bug_report.yml" />
+    <File Path=".github/ISSUE_TEMPLATE/config.yml" />
+    <File Path=".github/ISSUE_TEMPLATE/feature_request.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/workflows/">
+    <File Path=".github/workflows/docs.yml" />
+    <File Path=".github/workflows/nuget_preview_publish_and_app_deploy.yml" />
+    <File Path=".github/workflows/nuget_release_publish.yml" />
+    <File Path=".github/workflows/TryMudEx.yml" />
+  </Folder>
+  <Folder Name="/TryMudEx/">
+    <Project Path="TryMudEx/MudBlazor.Examples.Data/MudBlazor.Examples.Data.csproj" />
+    <Project Path="TryMudEx/Try.Core/Try.Core.csproj" />
+    <Project Path="TryMudEx/Try.Tests/Try.Tests.csproj" />
+    <Project Path="TryMudEx/TryMudEx.Client/TryMudEx.Client.csproj" />
+    <Project Path="TryMudEx/TryMudEx.Server/TryMudEx.Server.csproj" />
+    <Project Path="TryMudEx/UserComponents/Try.UserComponents.csproj" />
+  </Folder>
+  <Project Path="MudBlazor.Extensions.CodeGator.Adapter/MudBlazor.Extensions.CodeGator.Adapter.csproj" />
+  <Project Path="MudBlazor.Extensions.Tests/MudBlazor.Extensions.Tests.csproj" />
+  <Project Path="MudBlazor.Extensions/MudBlazor.Extensions.csproj" />
+</Solution>

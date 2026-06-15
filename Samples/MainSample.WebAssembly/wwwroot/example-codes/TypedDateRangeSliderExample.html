@@ -1,0 +1,39 @@
+<div class="html"><pre>
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Selected: {0} – {1}&quot;, _value.Start, _value.End]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Row</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span> <span class="htmlAttributeName">AlignItems</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;AlignItems.Center&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Mode:&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExEnumSelect</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;DateRangeSliderMode&quot; @bind-Value=&quot;_mode&quot;</span> <span class="htmlAttributeName">Style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;min-width: 140px;&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_zoom&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Mouse wheel zoom&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExDateRangeSlider @ref=&quot;_slider&quot;
+                      Mode=&quot;_mode&quot;
+                      EnableMouseWheelZoom=&quot;_zoom&quot;
+                      SizeRange=&quot;@_sizeRange&quot;
+                      @bind-Value=&quot;_value&quot;
+                      AllowWholeRangeDrag=&quot;true&quot; /&gt;
+
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) ComponentRef = _slider;
+    }
+
+    private MudExDateRangeSlider? _slider;
+    private DateRangeSliderMode _mode = DateRangeSliderMode.Month;
+    private bool _zoom = true;
+
+    private static readonly DateOnly Today = DateOnly.FromDateTime(DateTime.Today);
+
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateOnly</span><span class="htmlTagDelimiter">&gt;</span> _sizeRange = new RangeOf<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateOnly</span><span class="htmlTagDelimiter">&gt;</span>(Today.AddYears(-2), Today.AddYears(2), null);
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateOnly</span><span class="htmlTagDelimiter">&gt;</span> _value = new RangeOf<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">DateOnly</span><span class="htmlTagDelimiter">&gt;</span>(Today.AddMonths(-3), Today.AddMonths(3), null);
+}
+
+</pre></div>

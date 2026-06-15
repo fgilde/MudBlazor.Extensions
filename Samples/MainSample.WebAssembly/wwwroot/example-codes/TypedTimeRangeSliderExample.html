@@ -1,0 +1,38 @@
+<div class="html"><pre>
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2 mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Selected slot: {0} – {1}&quot;, _value.Start.ToString(&quot;HH\\:mm&quot;), _value.End.ToString(&quot;HH\\:mm&quot;)]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Row</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span> <span class="htmlAttributeName">AlignItems</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;AlignItems.Center&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Mode:&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExEnumSelect</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;TimeRangeSliderMode&quot; @bind-Value=&quot;_mode&quot;</span> <span class="htmlAttributeName">Style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;min-width: 160px;&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_zoom&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Mouse wheel zoom&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+&lt;MudExTimeRangeSlider @ref=&quot;_slider&quot;
+                      Mode=&quot;_mode&quot;
+                      EnableMouseWheelZoom=&quot;_zoom&quot;
+                      SizeRange=&quot;@_sizeRange&quot;
+                      @bind-Value=&quot;_value&quot;
+                      AllowWholeRangeDrag=&quot;true&quot; /&gt;
+
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) ComponentRef = _slider;
+    }
+
+    private MudExTimeRangeSlider? _slider;
+    private TimeRangeSliderMode _mode = TimeRangeSliderMode.QuarterHour;
+    private bool _zoom = true;
+
+    // Visible window: full day (zoom-in via mouse wheel works without an explicit AbsoluteSizeRange).
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span> _sizeRange = new RangeOf<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span>(new TimeOnly(0, 0), new TimeOnly(23, 59), null);
+    private IRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span> _value = new RangeOf<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span>(new TimeOnly(9, 30), new TimeOnly(11, 0), null);
+}
+
+</pre></div>

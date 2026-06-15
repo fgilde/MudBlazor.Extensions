@@ -40,6 +40,11 @@
                   AllowWholeRangeDrag="true" />
 
 @code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) ComponentRef = _slider;
+    }
+
     private MudExRangeSlider<DateTime>? _slider;
     private bool _wheelZoom = true;
 

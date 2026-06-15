@@ -204,6 +204,22 @@ namespace MudBlazor.Extensions.Components
         public double ZoomFactor { get; set; } = 0.2;
 
         /// <summary>
+        /// When <see cref="AbsoluteSizeRange"/> is not provided, this multiplier is used to derive an effective absolute zoom range from the initial <see cref="SizeRange"/>.
+        /// A value of 3.0 means the user can zoom out to 3× the initial visible span (one full span as padding on each side, centered on the initial midpoint).
+        /// Set to 1.0 (or lower) to disable auto-derivation.
+        /// </summary>
+        [Parameter, SafeCategory("Behavior")]
+        public double AutoZoomRangeMultiplier { get; set; } = 3.0;
+
+        // Captured once on first parameter set so the auto-derived absolute range stays stable when SizeRange changes via zoom.
+        private IRange<T>? _autoAbsoluteSizeRange;
+
+        /// <summary>
+        /// Gets the absolute zoom bounds actually used by the slider, either user-provided via <see cref="AbsoluteSizeRange"/> or auto-derived from the initial <see cref="SizeRange"/> via <see cref="AutoZoomRangeMultiplier"/>.
+        /// </summary>
+        public IRange<T>? EffectiveAbsoluteSizeRange => AbsoluteSizeRange ?? _autoAbsoluteSizeRange;
+
+        /// <summary>
         /// Gets or sets the step length used for snapping and keyboard navigation.
         /// </summary>
         [Parameter, SafeCategory("Data")]
@@ -400,6 +416,28 @@ namespace MudBlazor.Extensions.Components
 
         private bool? _lastWheelZoomSent;
 
+        // Binary-search the closest valid T-value to `target` along the line from `fallback` to `target`.
+        // Lets us derive an auto-zoom range without knowing the natural bounds of T (e.g. TimeOnly is 0..23:59:59).
+        private T ClampFromDouble(double target, T fallback)
+        {
+            try { return M.FromDouble(target); }
+            catch (ArgumentException) { /* out of T-domain – fall through */ }
+            catch (OverflowException) { /* same */ }
+
+            var validD = M.ToDouble(fallback);
+            var invalidD = target;
+            for (var i = 0; i < 60; i++) // 60 iterations covers double precision
+            {
+                var mid = (validD + invalidD) / 2.0;
+                if (mid == validD || mid == invalidD) break; // converged
+                try { _ = M.FromDouble(mid); validD = mid; }
+                catch (ArgumentException) { invalidD = mid; }
+                catch (OverflowException) { invalidD = mid; }
+            }
+            return M.FromDouble(validD);
+        }
+
+
         /// <inheritdoc />
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -419,6 +457,21 @@ namespace MudBlazor.Extensions.Components
         {
             var sizeSpan = M.Span(SizeRange);
             if (sizeSpan <= 0) return;
+
+            // Capture the auto-derived absolute zoom range exactly once, from the *initial* SizeRange.
+            // Otherwise the bounds would shrink/expand with every zoom step.
+            if (_autoAbsoluteSizeRange is null && AbsoluteSizeRange is null && AutoZoomRangeMultiplier > 1.0)
+            {
+                var startD = M.ToDouble(SizeRange.Start);
+                var endD = M.ToDouble(SizeRange.End);
+                var center = (startD + endD) / 2.0;
+                var halfNew = ((endD - startD) * AutoZoomRangeMultiplier) / 2.0;
+                // ClampFromDouble handles narrow value domains (e.g. TimeOnly's 0..23:59:59).
+                var leftBound = ClampFromDouble(center - halfNew, SizeRange.Start);
+                var rightBound = ClampFromDouble(center + halfNew, SizeRange.End);
+                if (leftBound.CompareTo(rightBound) < 0)
+                    _autoAbsoluteSizeRange = new MudExRange<T>(leftBound, rightBound);
+            }
 
             if (StepLength.Delta <= 0 || StepLength.Delta > sizeSpan)
             {
@@ -671,10 +724,11 @@ namespace MudBlazor.Extensions.Components
         /// </summary>
         public async Task ZoomAtAsync(int steps, double anchorPercent)
         {
-            if (steps == 0 || AbsoluteSizeRange == null || ZoomFactor is <= 0 or >= 1) return;
+            var bounds = EffectiveAbsoluteSizeRange;
+            if (steps == 0 || bounds == null || ZoomFactor is <= 0 or >= 1) return;
 
-            var absStart = M.ToDouble(AbsoluteSizeRange.Start);
-            var absEnd = M.ToDouble(AbsoluteSizeRange.End);
+            var absStart = M.ToDouble(bounds.Start);
+            var absEnd = M.ToDouble(bounds.End);
             var absSpan = absEnd - absStart;
             if (absSpan <= 0) return;
 
@@ -728,7 +782,7 @@ namespace MudBlazor.Extensions.Components
         [JSInvokable]
         public async Task OnWheel(double clientX, double clientY, double deltaY)
         {
-            if (!EnableMouseWheelZoom || Disabled || ReadOnly || AbsoluteSizeRange == null) return;
+            if (!EnableMouseWheelZoom || Disabled || ReadOnly || EffectiveAbsoluteSizeRange == null) return;
             if (deltaY == 0) return;
 
             await MeasureAsync();

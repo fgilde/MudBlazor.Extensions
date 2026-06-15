@@ -488,3 +488,90 @@
     .mud-ex-range-slider[aria-readonly="true"] .mud-ex-range-slider-selection {
         cursor: default;
     }
+
+/* ---------- Typed sliders (Date/Time/DateTime) – default templates ---------- */
+.mud-ex-typed-slider-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--mud-palette-surface);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.mud-ex-typed-slider-track-rail {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 4px;
+    background: linear-gradient(to right,
+        var(--mud-palette-background-grey),
+        var(--mud-palette-surface));
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+.mud-ex-typed-slider-tick {
+    position: absolute;
+    background: var(--mud-palette-divider);
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+    .mud-ex-typed-slider-tick.minor {
+        top: 38%;
+        bottom: 38%;
+        width: 1px;
+    }
+
+    .mud-ex-typed-slider-tick.major {
+        top: 18%;
+        bottom: 18%;
+        width: 2px;
+        background: var(--mud-palette-lines-default);
+    }
+
+.mud-ex-typed-slider-tick-label {
+    position: absolute;
+    bottom: 2px;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--mud-palette-text-secondary);
+    font-weight: 500;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 1;
+}
+
+.mud-ex-typed-slider-selection {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        var(--mud-palette-primary),
+        var(--mud-palette-primary-darken));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.mud-ex-typed-slider-selection-label {
+    color: var(--mud-palette-primary-text);
+    font-weight: 600;
+    font-size: 11px;
+    white-space: nowrap;
+    padding: 0 8px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.mud-ex-typed-slider-thumb {
+    width: 14px;
+    height: 14px;
+    background: var(--mud-palette-surface);
+    border: 3px solid var(--mud-palette-primary);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}

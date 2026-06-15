@@ -1,0 +1,35 @@
+@using Nextended.Core.Contracts
+@using Nextended.Core.Types
+@inherits ExampleBase
+
+<MudText Typo="Typo.caption" Class="mt-2 mb-2">
+    @L["Selected slot: {0} – {1}", _value.Start.ToString("HH\\:mm"), _value.End.ToString("HH\\:mm")]
+</MudText>
+
+<MudStack Row="true" Spacing="2" Class="mb-3" AlignItems="AlignItems.Center">
+    <MudText>@L["Mode:"]</MudText>
+    <MudExEnumSelect T="TimeRangeSliderMode" @bind-Value="_mode" Style="min-width: 160px;" />
+    <MudSwitch T="bool" @bind-Value="_zoom" Color="Color.Primary" Label="@L["Mouse wheel zoom"]" />
+</MudStack>
+
+<MudExTimeRangeSlider @ref="_slider"
+                      Mode="_mode"
+                      EnableMouseWheelZoom="_zoom"
+                      SizeRange="@_sizeRange"
+                      @bind-Value="_value"
+                      AllowWholeRangeDrag="true" />
+
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) ComponentRef = _slider;
+    }
+
+    private MudExTimeRangeSlider? _slider;
+    private TimeRangeSliderMode _mode = TimeRangeSliderMode.QuarterHour;
+    private bool _zoom = true;
+
+    // Visible window: full day (zoom-in via mouse wheel works without an explicit AbsoluteSizeRange).
+    private IRange<TimeOnly> _sizeRange = new RangeOf<TimeOnly>(new TimeOnly(0, 0), new TimeOnly(23, 59), null);
+    private IRange<TimeOnly> _value = new RangeOf<TimeOnly>(new TimeOnly(9, 30), new TimeOnly(11, 0), null);
+}

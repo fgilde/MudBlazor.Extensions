@@ -15,6 +15,7 @@
 <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
 
 &lt;MudExRangeSlider T=&quot;TimeOnly&quot;
+                  @ref=&quot;ComponentRef&quot;
                   ShowInputs=&quot;true&quot;
                   SizeRange=&quot;@(new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span>(new TimeOnly(0, 0), new TimeOnly(23, 59, 59)))&quot;
                   @bind-Value=&quot;_selectedRange&quot;
@@ -28,6 +29,7 @@
 <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
 
 &lt;MudExRangeSlider T=&quot;TimeOnly&quot;
+                  @ref=&quot;ComponentRef&quot;
                   ShowInputs=&quot;true&quot;
                   SizeRange=&quot;@(new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span>(new TimeOnly(0, 0), new TimeOnly(23, 59, 59)))&quot;
                   StepResolver=&quot;@(StepResolvers.TimeOnly.Minutely())&quot;
@@ -44,6 +46,7 @@
 <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
 
 &lt;MudExRangeSlider T=&quot;TimeOnly&quot;
+                  @ref=&quot;ComponentRef&quot;
                   StepLength=&quot;@(new RangeLength<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span>(TimeSpan.FromHours(2).Ticks))&quot;
                   ShowInputs=&quot;true&quot;
                   SizeRange=&quot;@(new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span>(new TimeOnly(0, 0), new TimeOnly(23, 59, 59)))&quot;
@@ -61,6 +64,7 @@
 <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
 
 &lt;MudExRangeSlider T=&quot;TimeOnly&quot;
+                  @ref=&quot;ComponentRef&quot;
                   ShowInputs=&quot;true&quot;
                   SizeRange=&quot;@(new MudExRange<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">TimeOnly</span><span class="htmlTagDelimiter">&gt;</span>(new TimeOnly(0, 0), new TimeOnly(23, 59)))&quot;
                   StepResolver=&quot;@(StepResolvers.TimeOnly.Hourly(2))&quot;

@@ -11,6 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+// Register the YAML localizer (ILanguageContainerService) just like the WebAssembly host does.
+// The shared pages (BasePage / YamlLocalizer<T>) and their validators depend on it, so without
+// this the server host fails to build any localized page (and DI ValidateOnBuild rejects it).
+builder.Services.AddYamlLocalizer();
 builder.Services.AddScoped<LocalStorageService>();
 builder.Services.AddMudServicesWithExtensions(AppConstants.MudExConfiguration ,typeof(LocalStorageService).Assembly);
 
