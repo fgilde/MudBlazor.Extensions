@@ -14,6 +14,7 @@
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path=".github/workflows/MudEx.yml" />
+    <File Path="Directory.Packages.props" />
     <File Path="Shared.props" />
   </Folder>
   <Folder Name="/Solution Items/.github/">
