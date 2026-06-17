@@ -4,6 +4,87 @@
     <title>MudBlazor.Extensions Sample Application</title>
     <base href="/" />
     <meta charset="utf-8" />
+    <script>
+        // For the standalone file preview route we want a lean, dark boot splash
+        // instead of the full marketing loader. Detected before anything renders.
+        (function () {
+            var p = location.pathname.toLowerCase().replace(/\/+$/, '');
+            if (p.endsWith('/preview-file')) {
+                document.documentElement.classList.add('preview-boot');
+            }
+        })();
+    </script>
+    <style>
+        /* Hidden unless we are on the preview-file route */
+        #previewLoader { display: none; }
+
+        html.preview-boot,
+        html.preview-boot body { background: #121518; }
+
+        /* Suppress the regular loaders on the preview route */
+        html.preview-boot mud-ex-app-loader,
+        html.preview-boot #modernLoader { display: none !important; }
+
+        html.preview-boot #previewLoader {
+            display: flex;
+            position: fixed;
+            inset: 0;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #121518;
+            color: #e0e0e0;
+            font-family: 'Roboto', 'Segoe UI', sans-serif;
+        }
+
+        #previewLoader .preview-loading-ring {
+            position: relative;
+            width: 6.5rem;
+            height: 6.5rem;
+        }
+
+        #previewLoader .preview-loading-progress {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #previewLoader .preview-loading-progress circle {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.12);
+            stroke-width: 0.4rem;
+            transform-origin: 50% 50%;
+            transform: rotate(-90deg);
+        }
+
+        #previewLoader .preview-loading-progress circle:last-child {
+            stroke: #ff4081;
+            /* Driven by Blazor's built-in boot progress variable */
+            stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+            transition: stroke-dasharray 0.1s ease-in-out;
+        }
+
+        #previewLoader .preview-loading-percentage {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        #previewLoader .preview-loading-percentage:after {
+            content: var(--blazor-load-percentage-text, "0%");
+        }
+
+        #previewLoader .preview-loading-text {
+            margin-top: 1.1rem;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+            opacity: 0.8;
+        }
+    </style>
     <link rel="icon" type="image/png" href="logo.png">
     <meta name="description" content="MudBlazor.Extensions is blazor component and extension library for mudblazor.">
     <meta name="keywords" content="blazor, asp.net core, wasm, web assembly, browser, components, extensions, online, single page application, dotnet, csharp, html, open-source, platform">
@@ -21,17 +102,17 @@
     <meta name="twitter:description" content="MudEx is blazor component and extension library for mudblazor.">
     <meta name="twitter:image" content="https://www.mudex.org/sample-data/logo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <script src="/script.js?v=9.5.1-prev-2606171347"></script>
+    <script src="/script.js?v=9.5.1-prev-2606171559"></script>
     <script src="_content/MudBlazor.Extensions/js/components/MudExAppLoader.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <link href="css/app.css?v=9.5.1-prev-2606171347" rel="stylesheet" />
-    <link href="_content/MudBlazor/MudBlazor.min.css?v=9.5.1-prev-2606171347" rel="stylesheet" />
-    <link href="MainSample.WebAssembly.styles.css?v=9.5.1-prev-2606171347" rel="stylesheet">
-    <link id="mudex-styles" href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css?v=9.5.1-prev-2606171347" rel="stylesheet">
+    <link href="css/app.css?v=9.5.1-prev-2606171559" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css?v=9.5.1-prev-2606171559" rel="stylesheet" />
+    <link href="MainSample.WebAssembly.styles.css?v=9.5.1-prev-2606171559" rel="stylesheet">
+    <link id="mudex-styles" href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css?v=9.5.1-prev-2606171559" rel="stylesheet">
     <script type="text/javascript" src="https://js.live.net/v7.2/OneDrive.js"></script>
-    <script src="/lib/monaco-editor/min/vs/loader.js?v=9.5.1-prev-2606171347"></script>
-    <script src="./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js?v=9.5.1-prev-2606171347"></script>
-    <link href="./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css?v=9.5.1-prev-2606171347" rel="stylesheet" />
+    <script src="/lib/monaco-editor/min/vs/loader.js?v=9.5.1-prev-2606171559"></script>
+    <script src="./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js?v=9.5.1-prev-2606171559"></script>
+    <link href="./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css?v=9.5.1-prev-2606171559" rel="stylesheet" />
 
 </head>
 <body>
@@ -40,6 +121,16 @@
 </mud-ex-app-loader>
 
     <div id="app">
+        <div id="previewLoader">
+            <div class="preview-loading-ring">
+                <svg class="preview-loading-progress">
+                    <circle r="40%" cx="50%" cy="50%" />
+                    <circle r="40%" cx="50%" cy="50%" />
+                </svg>
+                <span class="preview-loading-percentage"></span>
+            </div>
+            <div class="preview-loading-text">Loading preview…</div>
+        </div>
         <div class="modern-loader-container" id="modernLoader">
             <div class="logo-container">
                 <div class="logo-wrapper">
@@ -48,7 +139,7 @@
                 </div>
             </div>
 
-            <h1 class="app-title">MudBlazor.Extensions v9.5.1-prev-2606171347</h1>
+            <h1 class="app-title">MudBlazor.Extensions v9.5.1-prev-2606171559</h1>
             <p class="app-subtitle">for MudBlazor </p>
 
             <div class="loading-spinner-container">
@@ -83,8 +174,8 @@
     </div>
 
 
-    <script src="_framework/blazor.webassembly.js?cb=9.5.1-prev-2606171347"></script>
-    <script src="_content/MudBlazor/MudBlazor.min.js?cb=9.5.1-prev-2606171347"></script>
+    <script src="_framework/blazor.webassembly.js?cb=9.5.1-prev-2606171559"></script>
+    <script src="_content/MudBlazor/MudBlazor.min.js?cb=9.5.1-prev-2606171559"></script>
 </body>
 </html>
 
