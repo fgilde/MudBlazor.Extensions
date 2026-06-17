@@ -6,17 +6,6 @@
 @using Nextended.Core
 @inject NavigationManager NavigationManager
 
-@*
-    Standalone file preview page without the main layout.
-    It listens on the route "preview-file" and shows nothing but a full screen MudExFileDisplay.
-
-    Usage:
-      - GET:  /preview-file?url=https://example.com/doc.pdf&name=doc.pdf&contentType=application/pdf
-      - Local file: open /preview-file and pick / drop a file (handled completely client side, no upload).
-
-    Note: A real HTTP POST with a file body cannot be received here because this is a pure
-    Blazor WebAssembly app (static hosting, no server endpoint). See the project notes / readme.
-*@
 
 <PageTitle>@(string.IsNullOrEmpty(_fileName) ? "File Preview" : _fileName)</PageTitle>
 
