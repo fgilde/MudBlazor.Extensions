@@ -139,7 +139,7 @@ namespace MudBlazor.Extensions.Helper
         /// </summary>
         public static MudExColor GetPreferredColor(string contentType)
         {
-            return ColorMap.TryGetValue(contentType, out string color) ? color :
+            return !string.IsNullOrWhiteSpace(contentType) && ColorMap.TryGetValue(contentType, out string color) ? color :
                 MudBlazor.Color.Default;
         }
 
