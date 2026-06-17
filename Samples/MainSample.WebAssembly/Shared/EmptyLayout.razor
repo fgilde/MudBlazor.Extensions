@@ -2,7 +2,7 @@
 @inherits LayoutComponentBase
 
 
-<MudThemeProvider Theme="@ClientTheme.CurrentTheme" />
+<MudThemeProvider @bind-IsDarkMode="@_isDark" Theme="@ClientTheme.CurrentTheme" />
 <MudPopoverProvider/>
 <MudDialogProvider />
 <MudExTaskBar BorderColor="MudExColor.Warning" HideContentWhenCollapsed="true"/>
@@ -11,3 +11,8 @@
 <MudLayout>
     @Body
 </MudLayout>
+
+@code {
+    // Fall back to the main layout's mode when navigated from within the app, otherwise default to dark.
+    private bool _isDark = MainLayout.Instance?.IsDark ?? true;
+}

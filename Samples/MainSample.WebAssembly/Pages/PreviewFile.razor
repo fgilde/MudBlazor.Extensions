@@ -1,0 +1,134 @@
+@page "/preview-file"
+@layout EmptyLayout
+@using System.Web
+@using MudBlazor.Extensions.Options
+@using Microsoft.AspNetCore.Components.Forms
+@using Nextended.Core
+@inject NavigationManager NavigationManager
+
+@*
+    Standalone file preview page without the main layout.
+    It listens on the route "preview-file" and shows nothing but a full screen MudExFileDisplay.
+
+    Usage:
+      - GET:  /preview-file?url=https://example.com/doc.pdf&name=doc.pdf&contentType=application/pdf
+      - Local file: open /preview-file and pick / drop a file (handled completely client side, no upload).
+
+    Note: A real HTTP POST with a file body cannot be received here because this is a pure
+    Blazor WebAssembly app (static hosting, no server endpoint). See the project notes / readme.
+*@
+
+<PageTitle>@(string.IsNullOrEmpty(_fileName) ? "File Preview" : _fileName)</PageTitle>
+
+<style>
+    .preview-file-root {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+</style>
+
+<div class="preview-file-root">
+    @if (!_ready)
+    {
+        <div class="d-flex align-center justify-center" style="width:100%; height:100%;">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(_url) || _contentStream != null)
+    {
+        <MudExFileDisplay FileName="@_fileName"
+                          Url="@_url"
+                          ContentStream="@_contentStream"
+                          ContentType="@_contentType"
+                          StreamUrlHandling="StreamUrlHandling.BlobUrl"
+                          ColorizeIcons="true"
+                          Dense="true" />
+    }
+    else
+    {
+        <div class="d-flex align-center justify-center" style="width:100%; height:100%;">
+            <MudPaper Class="pa-8 d-flex flex-column align-center" Style="max-width:480px;" Elevation="3">
+                <MudExIcon Icon="@Icons.Material.Outlined.FilePresent" Size="Size.Large" Color="Color.Primary" Class="mb-4" />
+                <MudText Typo="Typo.h6" Class="mb-2">No file provided</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center" Class="mb-6">
+                    Provide a file via the <code>?url=</code> query parameter or pick a local file below.
+                </MudText>
+                <MudButton HtmlTag="label"
+                           for="preview-file-input"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.UploadFile">
+                    Choose file
+                </MudButton>
+                <InputFile id="preview-file-input" hidden OnChange="OnFilePicked" />
+            </MudPaper>
+        </div>
+    }
+</div>
+
+@code {
+    private string? _url;
+    private string? _fileName;
+    private string? _contentType;
+    private Stream? _contentStream;
+    private bool _ready;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        var query = HttpUtility.ParseQueryString(uri.Query);
+
+        _url = query["url"] ?? query["fileUrl"] ?? query["file"];
+        _fileName = query["name"] ?? query["fileName"];
+        _contentType = query["contentType"] ?? query["content-type"] ?? query["mime"];
+
+        if (string.IsNullOrEmpty(_fileName) && !string.IsNullOrEmpty(_url)
+            && Uri.TryCreate(_url, UriKind.Absolute, out var parsed))
+        {
+            _fileName = Path.GetFileName(parsed.LocalPath);
+        }
+
+        // 1st fallback: derive the content type from the file name (offline, cheap).
+        if (NeedsContentType() && !string.IsNullOrWhiteSpace(_fileName))
+            _contentType = MimeType.GetMimeType(_fileName);
+
+        // 2nd fallback: ask the server for the real content type (request + Content-Type response header).
+        if (NeedsContentType() && !string.IsNullOrEmpty(_url))
+        {
+            try
+            {
+                var detected = await MimeType.ReadMimeTypeFromUrlAsync(_url, Http, CancellationToken.None);
+                if (!string.IsNullOrWhiteSpace(detected))
+                    _contentType = detected;
+            }
+            catch
+            {
+                // CORS / network / method not allowed - keep the best guess and let MudExFileDisplay fall back natively.
+            }
+        }
+
+        _ready = true;
+    }
+
+    // True while the content type is still unusable for picking a specialized viewer.
+    private bool NeedsContentType()
+        => string.IsNullOrWhiteSpace(_contentType)
+           || _contentType.Equals("application/octet-stream", StringComparison.OrdinalIgnoreCase);
+
+    private async Task OnFilePicked(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        // Copy into a seekable MemoryStream; MudExFileDisplay keeps a reference to the stream.
+        var ms = new MemoryStream();
+        await file.OpenReadStream(maxAllowedSize: 1024L * 1024L * 1024L).CopyToAsync(ms);
+        ms.Position = 0;
+
+        _url = null;
+        _contentStream = ms;
+        _fileName = file.Name;
+        _contentType = string.IsNullOrWhiteSpace(file.ContentType) ? MimeType.GetMimeType(file.Name) : file.ContentType;
+    }
+}
