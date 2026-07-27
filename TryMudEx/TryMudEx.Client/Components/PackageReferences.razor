@@ -21,7 +21,7 @@
     {
         @if (!IsVirtualized)
         {            
-            @foreach (var package in _packages ?? InstalledPackages)
+            @foreach (var package in _packages ?? SelectedPackages)
             {
                 @RenderItem(package)
             }

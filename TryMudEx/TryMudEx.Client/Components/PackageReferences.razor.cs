@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -14,8 +15,19 @@ namespace TryMudEx.Client.Components;
 
 public partial class PackageReferences
 {
+    // Selection lives in a private field: a [Parameter] property gets reset by SetParametersAsync
+    // on every external re-render (e.g. when the dialog closes), silently dropping installs.
+    private List<NugetPackage> _installed;
+
     [Parameter]
     public NugetPackage[] InstalledPackages { get; set; }
+
+    public NugetPackage[] SelectedPackages => _installed?.ToArray() ?? InstalledPackages ?? Array.Empty<NugetPackage>();
+
+    protected override void OnInitialized()
+    {
+        _installed = (InstalledPackages ?? Array.Empty<NugetPackage>()).ToList();
+    }
 
     [Parameter]
     public bool InfiniteScroll { get; set; } = true;
@@ -47,7 +59,7 @@ public partial class PackageReferences
 
     private bool IsInstalled(NugetPackage package)
     {
-        return InstalledPackages.Any(x => x.Id == package.Id);
+        return _installed.Any(x => x.Id == package.Id);
     }
 
     private void SetLoading(bool loading)
@@ -67,7 +79,7 @@ public partial class PackageReferences
 
     private string GetInstalledVersion(NugetPackage package)
     {
-        var installedPackage = InstalledPackages.FirstOrDefault(x => x.Id == package.Id);
+        var installedPackage = _installed.FirstOrDefault(x => x.Id == package.Id);
         if (string.IsNullOrEmpty(installedPackage?.Version) || (installedPackage.Version.Contains("*") && installedPackage.Version != "*"))
             return package.Versions.FirstOrDefault()?.Version ?? package.Version;
         return installedPackage.Version == "*" ? package.Version : installedPackage.Version;
@@ -76,11 +88,9 @@ public partial class PackageReferences
     private void Install(NugetPackage package, PackageVersion version)
     {
         UnInstall(package);
-        var installedPackages = InstalledPackages.ToList();
         package.Version = version.Version;
         package.Id = version.Id ?? package.Id;
-        installedPackages.Add(package);
-        InstalledPackages = installedPackages.ToArray();
+        _installed.Add(package);
 
         StateHasChanged();
     }
@@ -88,7 +98,7 @@ public partial class PackageReferences
     private string PackageVersionStyle(NugetPackage package, PackageVersion version)
     {
         version.Id ??= package.Id;
-        var when = InstalledPackages.Any(p => p.Id == version.Id && p.Version == version.Version);
+        var when = _installed.Any(p => p.Id == version.Id && p.Version == version.Version);
         return MudExStyleBuilder.Default.WithFontWeight(MudBlazor.Extensions.Core.Css.FontWeight.Bold, when)
                 .WithCursor(MudBlazor.Extensions.Core.Css.Cursor.Default, when)
                 .Build();
@@ -96,13 +106,7 @@ public partial class PackageReferences
 
     private void UnInstall(NugetPackage package)
     {
-        var installedPackages = InstalledPackages.ToList();
-        if (IsInstalled(package))
-        {
-            var installed = InstalledPackages.FirstOrDefault(x => x.Id == package.Id);
-            installedPackages.Remove(installed);
-        }
-        InstalledPackages = installedPackages.ToArray();
+        _installed.RemoveAll(x => x.Id == package.Id);
 
         StateHasChanged();
     }

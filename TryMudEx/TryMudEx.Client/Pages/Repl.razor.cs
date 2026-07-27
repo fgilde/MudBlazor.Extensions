@@ -588,7 +588,7 @@ public partial class Repl : IDisposable
             }));
 
 
-        EnsureReferenceFile().Content = JsonConvert.SerializeObject(_installedPackages = dialog.Component.InstalledPackages, CoreConstants.PackageSerializerSettings);
+        EnsureReferenceFile().Content = JsonConvert.SerializeObject(_installedPackages = dialog.Component.SelectedPackages, CoreConstants.PackageSerializerSettings);
     }
 
     private CodeFile EnsureReferenceFile()
