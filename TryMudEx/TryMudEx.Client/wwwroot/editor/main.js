@@ -230,6 +230,37 @@ window.Try.Editor = window.Try.Editor || (function () {
                 monaco.editor.setTheme(theme); // monaco themes are global — one call covers all editors
             }
         },
+        // markers: [{ line, column, endLine, endColumn, message, severity: 'error'|'warning'|'info' }]
+        setMarkers: function (id, markers) {
+            const editor = _get(id);
+            if (!editor || !window.monaco) { return; }
+            const model = editor.getModel();
+            if (!model) { return; }
+
+            const severityOf = function (s) {
+                if (s === 'error') { return monaco.MarkerSeverity.Error; }
+                if (s === 'warning') { return monaco.MarkerSeverity.Warning; }
+                return monaco.MarkerSeverity.Info;
+            };
+
+            monaco.editor.setModelMarkers(model, 'try-compiler', (markers || []).map(function (m) {
+                const line = Math.max(1, Math.min(m.line || 1, model.getLineCount()));
+                const endLine = Math.max(line, Math.min(m.endLine || line, model.getLineCount()));
+                return {
+                    startLineNumber: line,
+                    startColumn: m.column > 0 ? m.column : 1,
+                    endLineNumber: endLine,
+                    endColumn: m.endColumn > 0 ? m.endColumn : model.getLineMaxColumn(endLine),
+                    message: m.message || '',
+                    severity: severityOf(m.severity)
+                };
+            }));
+        },
+        clearMarkers: function (id) {
+            const editor = _get(id);
+            const model = editor?.getModel();
+            if (model && window.monaco) { monaco.editor.setModelMarkers(model, 'try-compiler', []); }
+        },
         dispose: function (id) {
             _disposeEditor(id);
         }

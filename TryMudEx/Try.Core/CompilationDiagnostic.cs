@@ -35,6 +35,9 @@ namespace Try.Core
 
         public CompilationDiagnosticKind Kind { get; set; }
 
+        /// <summary>Lines the compiler sees before the user's first line of __Main.razor.</summary>
+        internal const int MainComponentInjectedLineCount = 3;
+
         internal static CompilationDiagnostic FromCSharpDiagnostic(Diagnostic diagnostic)
         {
             if (diagnostic == null)
@@ -44,17 +47,14 @@ namespace Try.Core
 
             var mappedLineSpan = diagnostic.Location.GetMappedLineSpan();
             var file = Path.GetFileName(mappedLineSpan.Path);
-            var line = mappedLineSpan.StartLinePosition.Line;
+            var line = mappedLineSpan.StartLinePosition.Line + 1; // roslyn is 0-based
 
-            if (file != CoreConstants.MainComponentFilePath)
+            if (file == CoreConstants.MainComponentFilePath)
             {
-                // Make it 1-based. Skip the main component where we add @page directive line
-                line++;
-            }
-            else
-            {
-                // Offset for MudProviders
-                line -= 4;
+                // the main component is compiled with injected lines in front of the user code:
+                // the two MudBlazor provider tags and the @page directive (the leading newline of
+                // the provider block is eaten by TrimStart in CreateRazorProjectItem)
+                line -= MainComponentInjectedLineCount;
             }
 
             return new CompilationDiagnostic

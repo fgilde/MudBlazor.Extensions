@@ -1,33 +1,35 @@
-﻿
-@if (Show && Diagnostics != null && Diagnostics.Any())
-{
-    <div class="try-diagnostics ml-3">
-        <MudSimpleTable Elevation="0" Square="true">
-            <thead>
-                <tr>
-                    <th>Severity</th>
-                    <th>Code</th>
-                    <th>Description</th>
-                    <th>File</th>
-                    <th>Line</th>
-                    <th>
-                        <MudIconButton Class="rounded-0 pa-2" OnClick="@ToggleDiagnosticsAsync" Icon="@Icons.Material.Outlined.ExpandMore" />
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var diagnostic in Diagnostics)
-                {
-                    <tr @onclick="@(() => Goto(diagnostic))" style="cursor: pointer">
-                        <td>@diagnostic.Severity</td>
-                        <td>@diagnostic.Code</td>
-                        <td>@diagnostic.Description</td>
-                        <td>@diagnostic.File</td>
-                        <td colspan="2">@diagnostic.Line</td>
-                    </tr>
-                }
-            </tbody>
-        </MudSimpleTable>
-    </div>
-}
+@using Microsoft.CodeAnalysis
 
+<div class="diagnostics-panel d-flex flex-column" style="height:100%; min-height:0;">
+    <div class="d-flex align-center px-2 py-1" style="gap:4px;">
+        <MudChipSet T="string" SelectedValues="@_levels" SelectedValuesChanged="@(v => _levels = v?.ToHashSet() ?? new())"
+                    SelectionMode="SelectionMode.MultiSelection" Size="Size.Small" Variant="Variant.Text" CheckMark="true">
+            <MudChip T="string" Value="@("error")" Color="Color.Error">@ErrorCount Errors</MudChip>
+            <MudChip T="string" Value="@("warning")" Color="Color.Warning">@WarningCount Warnings</MudChip>
+        </MudChipSet>
+        <MudSpacer />
+        <MudTooltip Text="Copy all">
+            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@CopyAsync" />
+        </MudTooltip>
+    </div>
+    <MudDivider />
+    <div class="diagnostics-list">
+        @foreach (var diagnostic in Filtered)
+        {
+            <div class="diag-row" @onclick="@(() => Goto(diagnostic))" title="@diagnostic.Description">
+                <MudIcon Size="Size.Small"
+                         Color="@(diagnostic.Severity == DiagnosticSeverity.Error ? Color.Error : Color.Warning)"
+                         Icon="@(diagnostic.Severity == DiagnosticSeverity.Error ? Icons.Material.Outlined.ErrorOutline : Icons.Material.Outlined.WarningAmber)" />
+                <span class="diag-code">@diagnostic.Code</span>
+                <span class="diag-message">@diagnostic.Description</span>
+                <span class="diag-location">@Location(diagnostic)</span>
+            </div>
+        }
+        @if (!Filtered.Any())
+        {
+            <MudText Typo="Typo.caption" Class="mud-text-secondary pa-3">
+                @(Diagnostics?.Any() == true ? "Nothing matches the current filter." : "No errors or warnings.")
+            </MudText>
+        }
+    </div>
+</div>

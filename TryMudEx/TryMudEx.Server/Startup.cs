@@ -27,6 +27,7 @@ namespace TryMudEx.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache();
+            services.AddSingleton<IndexHtmlService>();
             services.AddScoped<IPeriodicTableService, PeriodicTableService>();
             services.AddCors(options =>
             {
@@ -73,8 +74,13 @@ namespace TryMudEx.Server
             {
                 endpoints.MapControllers();
 
-                // Serve the wasm project if no other matches
-                endpoints.MapFallbackToFile("index.html");
+                // Serve the wasm project if no other matches — rendered so placeholders
+                // (asset version, later brand tokens) get replaced per request
+                endpoints.MapFallback(async context =>
+                {
+                    var indexHtml = context.RequestServices.GetRequiredService<IndexHtmlService>();
+                    await indexHtml.WriteResponseAsync(context);
+                });
             });
 
 

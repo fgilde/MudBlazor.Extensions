@@ -1,0 +1,144 @@
+/*
+ * Repl shell layout (dock based). Loaded after TryMudEx.min.css and deliberately
+ * overrides its pre-dock rules (.try-editor{height:100%}, .try-errorlist{position:absolute}).
+ */
+
+.try-layout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.try-editor {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: block;
+    position: relative;
+}
+
+.repl-toolbar,
+.repl-statusbar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 8px;
+    background-color: var(--mud-palette-surface);
+    border-bottom: 1px solid var(--mud-palette-lines-default);
+}
+
+.repl-toolbar {
+    height: 44px;
+}
+
+.repl-statusbar {
+    height: 26px;
+    font-size: 12px;
+    border-bottom: none;
+    border-top: 1px solid var(--mud-palette-lines-default);
+}
+
+.repl-statusbar.has-errors {
+    background-color: var(--mud-palette-error);
+    color: var(--mud-palette-error-text);
+}
+
+.repl-statusbar.has-warnings {
+    background-color: var(--mud-palette-warning);
+    color: var(--mud-palette-warning-text);
+}
+
+.repl-statusbar a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.repl-statusbar a:hover {
+    text-decoration: underline;
+}
+
+.try-errorlist-button {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 6px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.try-errorlist-button:hover {
+    background-color: rgba(128, 128, 128, .25);
+}
+
+/* colors come from the library's dockview-theme-mud-ex (MudExDockLayout Theme parameter) */
+.mudex-dock-host {
+    height: 100%;
+}
+
+/* dividers must not stretch inside the flex column panels */
+.file-tree > hr,
+.console-panel > hr,
+.diagnostics-panel > hr {
+    flex: 0 0 auto;
+    height: 1px;
+    margin: 0;
+}
+
+.file-tree > .mud-treeview {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+}
+
+/* file tree */
+.file-tree .mud-treeview-item-content {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.file-tree .mud-treeview-item-arrow {
+    min-width: 20px;
+}
+
+/* diagnostics list */
+.diagnostics-list {
+    height: 100%;
+    overflow: auto;
+    font-size: 12px;
+}
+
+.diagnostics-list .diag-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--mud-palette-lines-default);
+}
+
+.diagnostics-list .diag-row:hover {
+    background-color: rgba(128, 128, 128, .15);
+}
+
+.diagnostics-list .diag-code {
+    font-family: monospace;
+    opacity: .75;
+    flex: 0 0 auto;
+}
+
+.diagnostics-list .diag-message {
+    flex: 1 1 auto;
+    word-break: break-word;
+}
+
+.diagnostics-list .diag-location {
+    flex: 0 0 auto;
+    font-family: monospace;
+    opacity: .75;
+    white-space: nowrap;
+}
+
+.console-output .console-line {
+    padding: 1px 0;
+}

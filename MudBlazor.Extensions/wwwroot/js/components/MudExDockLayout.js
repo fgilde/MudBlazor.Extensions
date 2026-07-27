@@ -232,6 +232,10 @@
             o.position = { direction: (o.direction || 'right').toLowerCase() };
         }
         const panel = this.api.addPanel(o);
+        if (o.canClose === false) {
+            // dockview has no per-panel close flag — hide the action on the tab element
+            try { panel.view?.tab?.element?.classList.add('dv-tab-no-close'); } catch { /* noop */ }
+        }
         if (o.hideHeader === true && !this.containerRef.classList.contains('dv-hide-tabs')) {
             panel.group.header.hidden = true;
         }
@@ -297,6 +301,9 @@
         for (const p of plan) {
             const panel = this.api.addPanel(p);
             panel.isVisible = p.isVisible;
+            if (p.canClose === false) {
+                try { panel.view?.tab?.element?.classList.add('dv-tab-no-close'); } catch { /* noop */ }
+            }
             if (p.hideHeader === true && !this.containerRef.classList.contains('dv-hide-tabs')) {
                 panel.group.header.hidden = true;
             }

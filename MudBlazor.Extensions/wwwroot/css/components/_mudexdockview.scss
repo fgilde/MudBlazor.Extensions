@@ -44,6 +44,8 @@
     --dv-tab-height: 0px;
 }
 
-.dv-hide-close {
-    background: yellow !important;
+/* panels with CanClose="false": the class sits on the content node, the tab gets
+   dv-tab-no-close from the js side when the panel is created */
+.dv-tab-no-close .dv-default-tab-action {
+    display: none !important;
 }

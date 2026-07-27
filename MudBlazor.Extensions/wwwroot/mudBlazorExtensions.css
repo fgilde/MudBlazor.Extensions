@@ -6316,8 +6316,8 @@
   --dv-tab-height: 0px;
 }
 
-.dv-hide-close {
-  background: yellow !important;
+.dv-tab-no-close .dv-default-tab-action {
+  display: none !important;
 }
 
 .mud-ex-blur {

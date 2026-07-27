@@ -6,8 +6,8 @@
 
 @layout MainLayout
 
-<div class="try-layout d-flex flex-column" style="height:100%">
-    <MudAppBar Dense="true" Fixed="false" Elevation="1" Class="repl-toolbar" Style="position:relative;">
+<div class="try-layout">
+    <div class="repl-toolbar">
         <MudTooltip Text="Run (Ctrl + S)">
             <MudIconButton OnClick="@CompileAsync" Disabled="@Loading" Icon="@Icons.Material.Rounded.PlayArrow" Color="Color.Success" />
         </MudTooltip>
@@ -49,15 +49,15 @@
             <MudIconButton OnClick="@UpdateTheme" Icon="@(LayoutService.IsDarkMode ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" />
         </MudTooltip>
         <div class="brand ml-2"><MudExGradientText Typo="Typo.h6">MudEx</MudExGradientText></div>
-    </MudAppBar>
+    </div>
 
-    <div class="try-editor flex-grow-1" style="position:relative; min-height:0;">
+    <div class="try-editor">
         <MudOverlay Visible="Loading" Absolute="true" DarkBackground="true">
             <MudText Typo="Typo.h4" Class="white-text"> @LoaderText</MudText>
         </MudOverlay>
 
         <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="false">
-            <MudExDockLayout @ref="_dock" Id="try-dock" ContainerStyle="height:100%;width:100%;min-height:300px;"
+            <MudExDockLayout @ref="_dock" Id="try-dock" Class="mudex-dock-host" ContainerStyle="height:100%;width:100%;"
                              InitialLayoutJson="@_initialLayoutJson"
                              OnPanelRemoved="HandlePanelRemoved" OnPanelMoved="HandlePanelMoved" OnActiveChanged="HandleActivePanelChanged">
                 @* first panel becomes the grid base (center). __Main.razor always exists and is never closable. *@
@@ -74,7 +74,7 @@
                     <iframe style="height:100%; width:100%; border:none;" id="user-page-window" data-base-src="/user-page" src="/user-page"></iframe>
                 </MudExDockItem>
                 <MudExDockItem Id="errors" Title="Errors" Direction="DockDirection.Below" InitialHeight="170" Renderer="DockRendererMode.Always">
-                    <ErrorList OnDiagnosticClick="OpenDiagnostic" Show="true" Diagnostics="@Diagnostics" />
+                    <ErrorList OnDiagnosticClick="OpenDiagnostic" Diagnostics="@Diagnostics" />
                 </MudExDockItem>
                 <MudExDockItem Id="console" Title="Console" StackWith="errors" Renderer="DockRendererMode.Always">
                     <ConsolePanel />
@@ -113,46 +113,39 @@
         </MudHidden>
     </div>
 
-    <MudAppBar Bottom="true" Fixed="false" Color="@GetBottomAppBarColor()" Elevation="0" Class="try-errorlist repl-navbar">
-        <div class="try-errorlist-button d-flex align-center" @onclick="@ShowErrorsPanel">
-            <MudIcon Icon="@Icons.Material.Outlined.ErrorOutline" />
-            <MudText>@ErrorsCount</MudText>
-            <MudIcon Icon="@Icons.Material.Outlined.WarningAmber" />
-            <MudText>@WarningsCount</MudText>
+    <div class="repl-statusbar @StatusBarClass">
+        <div class="try-errorlist-button" @onclick="@ShowErrorsPanel" title="Show errors">
+            <MudIcon Icon="@Icons.Material.Outlined.ErrorOutline" Size="Size.Small" />
+            <span>@ErrorsCount</span>
+            <MudIcon Icon="@Icons.Material.Outlined.WarningAmber" Size="Size.Small" Class="ml-2" />
+            <span>@WarningsCount</span>
+        </div>
+        <div class="try-errorlist-button ml-2" @onclick="@ReloadIframe" title="Reload preview">
+            <MudIcon Icon="@Icons.Material.Outlined.Refresh" Size="Size.Small" />
+            <span>Reload</span>
         </div>
         <MudSpacer />
-        <MudButton DropShadow="false" Ripple="false" OnClick="@ReloadIframe">Reload</MudButton>
-        <MudDivider Vertical="true" Class="mr-1" />
         @foreach (var package in _installedPackages.Take(_maxPackagesInStatusBar))
         {
-            <MudText Typo="Typo.body2" Class="mr-3 try-mudblazor-version">
-                <a href="@package.ProjectUrl" target="_blank">@TrimmedPackageText(package)</a>
-            </MudText>
+            <span class="mr-3"><a href="@package.ProjectUrl" target="_blank">@TrimmedPackageText(package)</a></span>
         }
         @if (_installedPackages.Length > _maxPackagesInStatusBar)
         {
-            <MudMenu Style="align-self: end;" MaxHeight="400" Dense="true">
-                <ActivatorContent>
-                    <MudIconButton Style="transform: scale(.8);" Class="rounded-0 py-0 px-2" Icon="@Icons.Material.Filled.MoreHoriz" OnClick="@context.ToggleAsync"></MudIconButton>
-                </ActivatorContent>
-                <ChildContent>
-                    @foreach (var package in _installedPackages)
-                    {
-                        <MudText Typo="Typo.body2" Class="py-1 px-1 mb-1">
-                            <a href="@package.ProjectUrl" target="_blank">@TrimmedPackageText(package, 70)</a>
-                        </MudText>
-                    }
-                </ChildContent>
+            <MudMenu MaxHeight="400" Dense="true" Icon="@Icons.Material.Filled.MoreHoriz" Size="Size.Small">
+                @foreach (var package in _installedPackages)
+                {
+                    <MudMenuItem Href="@package.ProjectUrl" Target="_blank">@TrimmedPackageText(package, 70)</MudMenuItem>
+                }
             </MudMenu>
         }
-        <MudTooltip Text="Manage Nuget packages" Placement="Placement.Left">
-            <MudIconButton Style="transform: scale(.8);" Icon="@MudExIcons.Custom.Brands.Nuget" Class="rounded-0 py-0 px-0" OnClick="@(() => EditPackageReferences(true))"></MudIconButton>
-        </MudTooltip>
-    </MudAppBar>
+        <div class="try-errorlist-button" @onclick="@(() => EditPackageReferences(true))" title="Manage Nuget packages">
+            <MudIcon Icon="@MudExIcons.Custom.Brands.Nuget" Size="Size.Small" />
+        </div>
+    </div>
 </div>
 @code {
     int _maxPackagesInStatusBar = 4;
-    public Color GetBottomAppBarColor() => ErrorsCount != 0 ? Color.Error : WarningsCount != 0 ? Color.Warning : Color.Inherit;
+    private string StatusBarClass => ErrorsCount != 0 ? "has-errors" : WarningsCount != 0 ? "has-warnings" : string.Empty;
 
     private string TrimmedPackageText(NugetPackage package, int maxChars = 35)
     {

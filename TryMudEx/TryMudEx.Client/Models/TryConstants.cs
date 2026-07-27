@@ -20,6 +20,7 @@
             public static string Dispose = "Try.Editor.dispose";
             public static string SetSelection = "Try.Editor.setSelection";
             public static string SetPosition = "Try.Editor.setPosition";
+            public static string SetMarkers = "Try.Editor.setMarkers";
         }
 
         public static class CodeExecution

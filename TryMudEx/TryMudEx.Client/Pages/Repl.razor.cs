@@ -339,6 +339,8 @@ public partial class Repl : IDisposable
             StateHasChanged();
         }
 
+        PublishDiagnosticMarkers();
+
         if (compilationResult?.AssemblyBytes?.Length > 0)
         {
             // Make sure the DLL is updated before reloading the user page
@@ -350,6 +352,33 @@ public partial class Repl : IDisposable
 
         if (ErrorsCount > 0)
             await ShowErrorsPanel();
+    }
+
+    /// <summary>Pushes the compiler diagnostics into the monaco editors as inline squiggles.</summary>
+    private void PublishDiagnosticMarkers()
+    {
+        var byFile = Diagnostics
+            .Where(d => !string.IsNullOrEmpty(d.File))
+            .GroupBy(d => d.File)
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        foreach (var (path, domId) in _editorDomIds)
+        {
+            var markers = byFile.TryGetValue(path, out var list)
+                ? list.Select(d => new
+                {
+                    line = d.Line ?? 1,
+                    column = 0,
+                    endLine = d.Line ?? 1,
+                    endColumn = 0,
+                    message = $"{d.Code}: {d.Description}",
+                    severity = d.Severity == DiagnosticSeverity.Error ? "error"
+                        : d.Severity == DiagnosticSeverity.Warning ? "warning" : "info",
+                }).ToArray()
+                : Array.Empty<object>();
+
+            JsRuntime.InvokeVoid(Models.Try.Editor.SetMarkers, domId, markers);
+        }
     }
 
     private DialogOptionsEx GetSamplesDialogOptions()
@@ -632,7 +661,8 @@ public partial class Repl : IDisposable
     private void ReloadIframe()
     {
         var packageParam = JsonConvert.SerializeObject(_installedPackages, CoreConstants.PackageSerializerSettings);
-        var url = $"{MainUserPagePath}?packages={packageParam}";
+        // the user page reads dark/light from its url, so the preview follows the repl theme
+        var url = $"{MainUserPagePath}?packages={packageParam}&{(LayoutService.IsDarkMode ? "dark" : "light")}=true";
         JsRuntime.InvokeVoid(Models.Try.ReloadIframe, "user-page-window", url);
     }
 
