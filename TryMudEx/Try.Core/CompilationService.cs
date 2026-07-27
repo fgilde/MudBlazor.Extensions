@@ -50,6 +50,7 @@ namespace Try.Core
         // so making sure it doesn't happen for each run.
         private CSharpCompilation baseCompilation;
         private CSharpParseOptions cSharpParseOptions;
+        private Task<List<PortableExecutableReference>> _frameworkReferencesTask;
 
         private readonly RazorProjectFileSystem fileSystem = new VirtualRazorProjectFileSystem();
         private readonly RazorConfiguration configuration = RazorConfiguration.Create(
@@ -58,6 +59,46 @@ namespace Try.Core
             extensions: Array.Empty<RazorExtension>());
 
         private async Task InitCompileAsync(PortableExecutableReference[] additionalReferences)
+        {
+            // framework references never change — load them exactly once per app lifetime
+            var frameworkReferencesTask = _frameworkReferencesTask ??= LoadFrameworkReferencesAsync();
+            List<PortableExecutableReference> frameworkReferences;
+            try
+            {
+                frameworkReferences = await frameworkReferencesTask;
+            }
+            catch
+            {
+                // don't cache a failed load (e.g. transient network error) — retry next compile
+                _frameworkReferencesTask = null;
+                throw;
+            }
+
+            var references = new List<PortableExecutableReference>(frameworkReferences);
+            if (additionalReferences?.Any() == true)
+            {
+                references.AddRange(additionalReferences);
+            }
+
+            baseCompilation = CSharpCompilation.Create(
+                DefaultRootNamespace,
+                Array.Empty<SyntaxTree>(),
+                references,
+                new CSharpCompilationOptions(
+                    OutputKind.DynamicallyLinkedLibrary,
+                    optimizationLevel: OptimizationLevel.Release,
+                    concurrentBuild: false,
+                    //// Warnings CS1701 and CS1702 are disabled when compiling in VS too
+                    specificDiagnosticOptions: new[]
+                    {
+                        new KeyValuePair<string, ReportDiagnostic>("CS1701", ReportDiagnostic.Suppress),
+                        new KeyValuePair<string, ReportDiagnostic>("CS1702", ReportDiagnostic.Suppress),
+                    }));
+
+            cSharpParseOptions ??= new CSharpParseOptions(LanguageVersion.Preview);
+        }
+
+        private async Task<List<PortableExecutableReference>> LoadFrameworkReferencesAsync()
         {
             var basicReferenceAssemblyRoots = new[]
             {
@@ -77,7 +118,6 @@ namespace Try.Core
                 typeof(FluentValidation.AbstractValidator<>).Assembly,
             };
 
-            
             var assemblyNames = basicReferenceAssemblyRoots
                 .SelectMany(assembly => assembly.GetReferencedAssemblies().Concat(new[] { assembly.GetName() }))
                 .Select(x => x.Name)
@@ -88,37 +128,13 @@ namespace Try.Core
 
             Dictionary<string, PortableExecutableReference> allReferenceAssemblies = assemblyStreams.ToDictionary(a => a.Key, a => MetadataReference.CreateFromStream(a.Value));
 
-            
-            var basicReferenceAssemblies = allReferenceAssemblies
+            return allReferenceAssemblies
                 .Where(a => basicReferenceAssemblyRoots
                     .Select(x => x.GetName().Name)
                     .Union(basicReferenceAssemblyRoots.SelectMany(y => y.GetReferencedAssemblies().Select(z => z.Name)))
                     .Any(n => n == a.Key))
                 .Select(a => a.Value)
                 .ToList();
-
-            if (additionalReferences?.Any() == true)
-            {
-                basicReferenceAssemblies.AddRange(additionalReferences);
-            }
-
-
-            baseCompilation = CSharpCompilation.Create(
-                DefaultRootNamespace,
-                Array.Empty<SyntaxTree>(),
-                basicReferenceAssemblies,
-                new CSharpCompilationOptions(
-                    OutputKind.DynamicallyLinkedLibrary,
-                    optimizationLevel: OptimizationLevel.Release,
-                    concurrentBuild: false,
-                    //// Warnings CS1701 and CS1702 are disabled when compiling in VS too
-                    specificDiagnosticOptions: new[]
-                    {
-                        new KeyValuePair<string, ReportDiagnostic>("CS1701", ReportDiagnostic.Suppress),
-                        new KeyValuePair<string, ReportDiagnostic>("CS1702", ReportDiagnostic.Suppress),
-                    }));
-
-            cSharpParseOptions = new CSharpParseOptions(LanguageVersion.Preview);
         }
 
         
