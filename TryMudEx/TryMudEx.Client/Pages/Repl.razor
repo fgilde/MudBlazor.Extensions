@@ -41,6 +41,7 @@
             <ChildContent>
                 <MudMenuItem OnClick="@(() => TogglePanel("files"))">Files</MudMenuItem>
                 <MudMenuItem OnClick="@(() => TogglePanel("errors"))">Errors</MudMenuItem>
+                <MudMenuItem OnClick="@(() => TogglePanel("console"))">Console</MudMenuItem>
                 <MudMenuItem OnClick="@ResetLayout">Reset layout</MudMenuItem>
             </ChildContent>
         </MudMenu>
@@ -74,6 +75,9 @@
                 </MudExDockItem>
                 <MudExDockItem Id="errors" Title="Errors" Direction="DockDirection.Below" InitialHeight="170" Renderer="DockRendererMode.Always">
                     <ErrorList OnDiagnosticClick="OpenDiagnostic" Show="true" Diagnostics="@Diagnostics" />
+                </MudExDockItem>
+                <MudExDockItem Id="console" Title="Console" StackWith="errors" Renderer="DockRendererMode.Always">
+                    <ConsolePanel />
                 </MudExDockItem>
                 @* editor items MUST stay last & append-only (tombstones keep positions stable):
                    dockview adopts the nodes, positional re-diffing must never touch existing ones *@

@@ -233,6 +233,64 @@ window.Try.Editor = window.Try.Editor || (function () {
     }
 }());
 
+window.Try.Console = window.Try.Console || (function () {
+    const MAX_ENTRIES = 2000;
+    const FLUSH_MS = 250;
+
+    let _entries = [];
+    let _pending = [];
+    let _dotNetRef = null;
+    let _flushTimer = null;
+    let _listening = false;
+
+    function flush() {
+        _flushTimer = null;
+        if (!_pending.length || !_dotNetRef) { return; }
+        const batch = _pending;
+        _pending = [];
+        _dotNetRef.invokeMethodAsync('OnConsoleBatch', batch).catch(() => { });
+    }
+
+    function onMessage(event) {
+        if (event.origin !== location.origin) { return; }
+        const data = event.data;
+        if (!data || data.__try !== 'log') { return; }
+
+        const entry = { level: data.level || 'log', text: String(data.text ?? ''), ts: data.ts || Date.now() };
+        _entries.push(entry);
+        if (_entries.length > MAX_ENTRIES) { _entries = _entries.slice(-MAX_ENTRIES); }
+
+        _pending.push(entry);
+        if (!_flushTimer) { _flushTimer = setTimeout(flush, FLUSH_MS); }
+    }
+
+    return {
+        init: function (dotNetRef) {
+            _dotNetRef = dotNetRef;
+            if (!_listening) {
+                window.addEventListener('message', onMessage);
+                _listening = true;
+            }
+            return _entries;
+        },
+        getAll: function () { return _entries; },
+        clear: function () { _entries = []; _pending = []; },
+        dispose: function () {
+            _dotNetRef = null;
+            if (_flushTimer) { clearTimeout(_flushTimer); _flushTimer = null; }
+        },
+        isScrollAtBottom: function (selector, threshold) {
+            const el = document.querySelector(selector);
+            if (!el) { return true; }
+            return el.scrollHeight - el.scrollTop - el.clientHeight <= (threshold || 40);
+        },
+        scrollToBottom: function (selector) {
+            const el = document.querySelector(selector);
+            if (el) { el.scrollTop = el.scrollHeight; }
+        }
+    };
+}());
+
 window.Try.CodeExecution = window.Try.CodeExecution || (function () {
     const UNEXPECTED_ERROR_MESSAGE = 'An unexpected error has occurred. Please try again later or contact the team.';
 

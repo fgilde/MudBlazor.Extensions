@@ -497,15 +497,23 @@ public partial class Repl : IDisposable
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
+    private static readonly Dictionary<string, (string Title, string Direction)> StaticPanels = new()
+    {
+        ["files"] = ("Files", "left"),
+        ["errors"] = ("Errors", "below"),
+        ["console"] = ("Console", "below"),
+    };
+
     private async Task TogglePanel(string id)
     {
-        if (_dock == null) return;
+        if (_dock == null || !StaticPanels.TryGetValue(id, out var meta)) return;
         // re-add is a no-op when the panel is already there; otherwise restore it
         await _dock.AddPanelAsync(JsonConvert.SerializeObject(new
         {
             id,
-            title = id == "files" ? "Files" : "Errors",
-            direction = id == "files" ? "left" : "down",
+            title = meta.Title,
+            direction = meta.Direction,
+            stackWith = id == "console" ? "errors" : null,
         }));
         await _dock.ActivatePanelAsync(id);
     }

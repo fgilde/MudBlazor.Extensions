@@ -42,9 +42,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400" rel="stylesheet">
-    <link href="_content/MudBlazor/MudBlazor.min.css?v=#{CACHE_TOKEN}#" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link id="mudex-styles" href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css" rel="stylesheet">
-    <link href="css/TryMudEx.min.css?v=#{CACHE_TOKEN}#" rel="stylesheet" />
+    <link href="css/TryMudEx.min.css" rel="stylesheet" />
 
     <script type="text/javascript" src="https://js.live.net/v7.2/OneDrive.js"></script>
     <script src="lib/monaco-editor/min/vs/loader.js"></script>
@@ -65,6 +65,42 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+
+    <script>
+        // Inside the preview iframe: forward console output and unhandled errors to the
+        // hosting repl so they show up in its console panel. Installed before blazor starts
+        // so early startup errors are captured too.
+        (function () {
+            if (window.self === window.top) { return; }
+
+            var post = function (level, text) {
+                try { parent.postMessage({ __try: 'log', level: level, text: text, ts: Date.now() }, location.origin); } catch (e) { }
+            };
+            var stringify = function (args) {
+                return Array.prototype.map.call(args, function (a) {
+                    if (a instanceof Error) { return a.stack || (a.name + ': ' + a.message); }
+                    if (typeof a === 'object' && a !== null) { try { return JSON.stringify(a); } catch (e) { return String(a); } }
+                    return String(a);
+                }).join(' ');
+            };
+
+            ['log', 'info', 'warn', 'error', 'debug'].forEach(function (level) {
+                var original = console[level];
+                console[level] = function () {
+                    post(level, stringify(arguments));
+                    if (original) { original.apply(console, arguments); }
+                };
+            });
+
+            window.addEventListener('error', function (e) {
+                post('error', e.error ? (e.error.stack || e.error.message) : (e.message + ' (' + e.filename + ':' + e.lineno + ')'));
+            });
+            window.addEventListener('unhandledrejection', function (e) {
+                var r = e.reason;
+                post('error', 'Unhandled rejection: ' + (r && (r.stack || r.message) ? (r.stack || r.message) : String(r)));
+            });
+        })();
+    </script>
 
     <!-- WICHTIG: autostart="false", damit unser eigenes Blazor.start(...) genutzt wird -->
     <script src="_framework/blazor.webassembly.js" autostart="false"></script>
@@ -98,8 +134,8 @@
         });
     </script>
 
-    <script src="_content/MudBlazor/MudBlazor.min.js?v=815#{CACHE_TOKEN}#"></script>
-    <script src="editor/main.js?v=815#{CACHE_TOKEN}#"></script>
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="editor/main.js"></script>
 </body>
 
 </html>
