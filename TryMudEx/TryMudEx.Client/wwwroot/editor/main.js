@@ -158,9 +158,12 @@ window.Try.Editor = window.Try.Editor || (function () {
                 const host = document.getElementById(id);
                 if (!host) { return; } // panel was closed before monaco finished loading
 
+                // read before dispose: a setValue that arrived while monaco was still
+                // loading (late-loaded sample/snippet) lives in _pending, and _disposeEditor clears it
+                const pendingValue = _pending.get(id);
                 _disposeEditor(id);
 
-                const model = monaco.editor.createModel(_pending.get(id) ?? value ?? '', language || 'razor');
+                const model = monaco.editor.createModel(pendingValue ?? value ?? '', language || 'razor');
                 const editor = monaco.editor.create(host, {
                     model: model,
                     theme: theme,
