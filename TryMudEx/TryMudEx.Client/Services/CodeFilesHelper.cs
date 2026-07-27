@@ -20,6 +20,10 @@
             CodeFile.RefFileExtension
         };
 
+        /// <summary>
+        /// Normalizes a code file path. Supports relative folder paths ("Components/Header.razor"):
+        /// every folder segment must be a valid C# identifier, the file part follows the classic rules.
+        /// </summary>
         public static string NormalizeCodeFilePath(string path, out string error)
         {
             if (string.IsNullOrWhiteSpace(path))
@@ -28,9 +32,31 @@
                 return null;
             }
 
-            var trimmedPath = path.Trim();
+            var trimmedPath = path.Trim().Replace('\\', '/');
 
-            var extension = Path.GetExtension(trimmedPath).ToLowerInvariant();
+            var segments = trimmedPath.Split('/');
+            var folderSegments = new List<string>();
+            for (var i = 0; i < segments.Length - 1; i++)
+            {
+                var segment = segments[i].Trim();
+                if (segment.Length == 0)
+                {
+                    error = "Path cannot contain empty segments or start with '/'.";
+                    return null;
+                }
+
+                if (!SyntaxFacts.IsValidIdentifier(segment))
+                {
+                    error = $"'{segment}' is not a valid folder name. It must be a valid C# identifier.";
+                    return null;
+                }
+
+                folderSegments.Add(segment);
+            }
+
+            var filePart = segments[^1].Trim();
+
+            var extension = Path.GetExtension(filePart).ToLowerInvariant();
             if (string.IsNullOrEmpty(extension))
             {
                 // Razor files are the default
@@ -43,7 +69,7 @@
                 return null;
             }
 
-            var fileName = Path.GetFileNameWithoutExtension(trimmedPath);
+            var fileName = Path.GetFileNameWithoutExtension(filePart);
             if (!SyntaxFacts.IsValidIdentifier(fileName))
             {
                 error = $"'{fileName}' is not a valid file name. It must be a valid C# identifier.";
@@ -57,7 +83,8 @@
             }
 
             error = null;
-            return fileName + extension;
+            var normalizedFile = fileName + extension;
+            return folderSegments.Count == 0 ? normalizedFile : string.Join("/", folderSegments) + "/" + normalizedFile;
         }
 
         public static string ValidateCodeFilesForSnippetCreation(IEnumerable<CodeFile> codeFiles)
