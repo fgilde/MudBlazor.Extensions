@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,9 +20,7 @@ using Nextended.Blazor.Models;
 using Nextended.Core.Encode;
 using Nextended.Core.Extensions;
 using Try.Core;
-using Try.Core.Json;
 using TryMudEx.Client.Components;
-using TryMudEx.Client.Enums;
 using TryMudEx.Client.Models;
 using TryMudEx.Client.Services;
 
@@ -34,73 +32,48 @@ public partial class Repl : IDisposable
 
     private const string MainComponentCodePrefix = "@page \"/__main\"\n";
     private const string MainUserPagePath = "/__main";
+    private const string LayoutStorageKey = ReplStorageKeys.Layout;
+    private const string OpenFilesStorageKey = ReplStorageKeys.OpenFiles;
+    private const string MobileEditorId = "mobile-editor";
 
-    private int _activeTabIndex;
     private DotNetObjectReference<Repl> dotNetInstance;
     private string errorMessage;
     private CodeFile activeCodeFile;
-    private bool _compiledSuccessfully;
-    private bool _wasCompiledSuccessfullyAlready;
-    private CodeViewMode _mode;
     private string[] _samples;
     private NugetPackage[] _installedPackages = Array.Empty<NugetPackage>();
+
+    private MudExDockLayout _dock;
+    private string _initialLayoutJson;
+
+    // additionally opened files (never __Main.razor). Entries are append-only; closed
+    // files become null tombstones so positional blazor diffing never re-maps a
+    // dockview-adopted node to a different file.
+    private readonly List<string> _openFiles = new();
+    private readonly Dictionary<string, string> _editorDomIds = new();
+    private int _editorDomIdCounter;
 
     [Inject] public NuGetPackageSearcher PackageSearch { get; set; }
     [Inject] public ISnackbar Snackbar { get; set; }
     [Inject] public ILocalStorageService Storage { get; set; }
     [Inject] public NavigationManager NavigationManager { get; set; }
-
     [Inject] public SnippetsService SnippetsService { get; set; }
-
     [Inject] public CompilationService CompilationService { get; set; }
-
     [Inject] public MudExFileService FileService { get; set; }
-
     [Inject] public IJSInProcessRuntime JsRuntime { get; set; }
-
-
     [Inject] public IDialogService DialogService { get; set; }
 
-    //[Inject] public IJSUnmarshalledRuntime UnmarshalledJsRuntime { get; set; }
-    [Inject] public IJSRuntime UnmarshalledJsRuntime { get; set; }
-
-
     [Parameter] public bool ShowHiddenFiles { get; set; }
-
-    [Parameter] public string MinWidthLeft { get; set; } = "350px";
-    [Parameter] public string MinWidthRight { get; set; } = "350px;";
-    [Parameter] public string MinHeightLeft { get; set; } = "150px";
-    [Parameter] public string MinHeightRight { get; set; } = "150px;";
-
-    [Parameter]
-    public CodeViewMode Mode
-    {
-        get => _mode;
-        set
-        {
-            if (_mode != value)
-            {
-                _mode = value;
-                if (_wasCompiledSuccessfullyAlready && value == CodeViewMode.Window)
-                    Task.Delay(500).ContinueWith(_ => ReloadIframe());
-            }
-        }
-    }
-
     [Parameter] public string SnippetId { get; set; }
-
     [Parameter] public string Sample { get; set; }
     [Parameter] public string SnippetFileUrl { get; set; }
-
-    public CodeEditor CodeEditorComponent { get; set; }
 
     public IDictionary<string, CodeFile> CodeFiles { get; set; } = new Dictionary<string, CodeFile>();
 
     private IList<string> CodeFileNames { get; set; } = new List<string>();
 
-    private string CodeEditorContent => activeCodeFile?.Content;
+    private string EditorTheme => LayoutService.IsDarkMode ? "vs-dark" : "default";
 
-    private CodeFileType CodeFileType => activeCodeFile?.Type ?? CodeFileType.Razor;
+    private static string MainEditorPanelId => EditorPanelId(CoreConstants.MainComponentFilePath);
 
     private bool SaveSnippetPopupVisible { get; set; }
 
@@ -110,23 +83,24 @@ public partial class Repl : IDisposable
 
     private int WarningsCount => Diagnostics.Count(d => d.Severity == DiagnosticSeverity.Warning);
 
-    private bool AreDiagnosticsShown { get; set; }
-
     private string LoaderText { get; set; }
 
     private bool Loading { get; set; }
 
-    private bool ShowDiagnostics { get; set; }
+    private static string EditorPanelId(string path) => "ed:" + path;
 
-    private string CodeContainerStyle => MudExStyleBuilder.Default
-        .WithWidth(100, CssUnit.Percentage, true || Mode == CodeViewMode.Window)
-        .WithHeight(100, CssUnit.Percentage)
-        .Build();
+    private CodeFile GetFile(string path) => path != null && CodeFiles.TryGetValue(path, out var f) ? f : null;
 
-    private void ToggleDiagnostics()
+    private static string FileTitle(string path) => path.Contains('/') ? path[(path.LastIndexOf('/') + 1)..] : path;
+
+    private string EditorDomId(string path)
     {
-        ShowDiagnostics = !ShowDiagnostics;
-        AreDiagnosticsShown = ShowDiagnostics;
+        if (!_editorDomIds.TryGetValue(path, out var id))
+        {
+            id = $"edd-{++_editorDomIdCounter}";
+            _editorDomIds[path] = id;
+        }
+        return id;
     }
 
     [JSInvokable]
@@ -173,6 +147,7 @@ public partial class Repl : IDisposable
     private async ValueTask SaveState(bool showNotification)
     {
         await Storage.SetItemAsync("__temp_code", CodeFiles);
+        await Storage.SetItemAsync(OpenFilesStorageKey, _openFiles.Where(f => f != null).ToList());
         if (showNotification)
         {
             Snackbar.Add("Save code state for reload.", Severity.Info, options =>
@@ -244,7 +219,7 @@ public partial class Repl : IDisposable
             StateHasChanged();
         });
 
-        await LoadDataAsync();
+        var loaded = await LoadDataAsync();
 
         if (!CodeFiles.Any())
         {
@@ -255,6 +230,34 @@ public partial class Repl : IDisposable
             };
             CodeFiles.Add(CoreConstants.MainComponentFilePath, activeCodeFile);
         }
+        else if (!CodeFiles.ContainsKey(CoreConstants.MainComponentFilePath))
+        {
+            // dock layout requires the main editor panel — ensure the file exists
+            CodeFiles.Add(CoreConstants.MainComponentFilePath, new CodeFile
+            {
+                Path = CoreConstants.MainComponentFilePath,
+                Content = CoreConstants.MainComponentDefaultFileContent
+            });
+        }
+
+        // restore open editor panels + dock layout only for plain reloads (samples/snippets start fresh)
+        if (loaded == LoadedSample.None)
+        {
+            try
+            {
+                var openFiles = await Storage.GetItemAsync<List<string>>(OpenFilesStorageKey);
+                if (openFiles != null)
+                    _openFiles.AddRange(openFiles.Where(f => f != null && f != CoreConstants.MainComponentFilePath && CodeFiles.ContainsKey(f)).Distinct());
+
+                _initialLayoutJson = await Storage.GetItemAsStringAsync(LayoutStorageKey);
+                if (string.IsNullOrWhiteSpace(_initialLayoutJson) || _initialLayoutJson == "{}")
+                    _initialLayoutJson = null;
+            }
+            catch
+            {
+                _initialLayoutJson = null;
+            }
+        }
 
         CodeFileNames = GetCodeFileNames();
 
@@ -262,9 +265,38 @@ public partial class Repl : IDisposable
         await base.OnInitializedAsync();
     }
 
+    /// <summary>Pulls the current text of every live monaco instance back into CodeFiles.</summary>
+    private void CollectAllEditorContent()
+    {
+        Dictionary<string, string> values;
+        try
+        {
+            values = JsRuntime.Invoke<Dictionary<string, string>>(Models.Try.Editor.GetValues);
+        }
+        catch
+        {
+            return;
+        }
+
+        if (values == null) return;
+
+        foreach (var (domId, content) in values)
+        {
+            if (domId == MobileEditorId)
+            {
+                if (activeCodeFile != null) activeCodeFile.Content = content;
+                continue;
+            }
+
+            var path = _editorDomIds.FirstOrDefault(kv => kv.Value == domId).Key;
+            if (path != null && CodeFiles.TryGetValue(path, out var file))
+                file.Content = content;
+        }
+    }
 
     private async Task CompileAsync()
     {
+        CollectAllEditorContent();
         await SaveState(true);
         Loading = true;
         LoaderText = "Processing";
@@ -276,8 +308,6 @@ public partial class Repl : IDisposable
         string originalMainComponentContent = null;
         try
         {
-            UpdateActiveCodeFileContent();
-
             // Add the necessary main component code prefix and store the original content so we can revert right after compilation.
             if (CodeFiles.TryGetValue(CoreConstants.MainComponentFilePath, out mainComponent))
             {
@@ -292,7 +322,6 @@ public partial class Repl : IDisposable
                 UpdateLoaderTextAsync);
 
             Diagnostics = compilationResult.Diagnostics.OrderByDescending(x => x.Severity).ThenBy(x => x.Code).ToList();
-            AreDiagnosticsShown = true;
         }
         catch (Exception e)
         {
@@ -304,13 +333,9 @@ public partial class Repl : IDisposable
             if (mainComponent != null)
             {
                 mainComponent.Content = originalMainComponentContent;
-                StateHasChanged();
             }
 
             Loading = false;
-            _compiledSuccessfully = ErrorsCount == 0;
-            if (!_wasCompiledSuccessfullyAlready && _compiledSuccessfully)
-                _wasCompiledSuccessfullyAlready = true;
             StateHasChanged();
         }
 
@@ -320,43 +345,28 @@ public partial class Repl : IDisposable
             await JsRuntime.InvokeVoidAsync(Models.Try.CodeExecution.UpdateUserComponentsDLL,
                 compilationResult.AssemblyBytes);
 
-
-            // TODO: Add error page in iframe
             ReloadIframe();
         }
-    }
 
-    private DialogOptionsEx GetResultDialogOptions()
-    {
-        return new DialogOptionsEx
-        {
-            CloseButton = true,
-            MaxWidth = MaxWidth.ExtraExtraLarge,
-            FullWidth = true,
-            BackdropClick = true,
-            MaximizeButton = true,
-            DragMode = MudDialogDragMode.Simple,
-            Position = DialogPosition.BottomCenter,
-            Animations = new[] { AnimationType.FadeIn, AnimationType.SlideIn },
-            AnimationDuration = TimeSpan.FromSeconds(1),
-            DisablePositionMargin = true,
-            DisableSizeMarginX = false,
-            DisableSizeMarginY = false,
-            FullHeight = true,
-            Resizeable = true
-        };
+        if (ErrorsCount > 0)
+            await ShowErrorsPanel();
     }
 
     private DialogOptionsEx GetSamplesDialogOptions()
     {
-        return GetResultDialogOptions().SetProperties(o =>
+        return new DialogOptionsEx
         {
-            o.Position = DialogPosition.CenterLeft;
-            o.DisableSizeMarginX = true;
-            o.DisableSizeMarginY = true;
-            o.MaxWidth = MaxWidth.Small;
-            o.AnimationDuration = TimeSpan.FromMilliseconds(500);
-        });
+            CloseButton = true,
+            BackdropClick = true,
+            DragMode = MudDialogDragMode.Simple,
+            Position = DialogPosition.CenterLeft,
+            Animations = new[] { AnimationType.FadeIn, AnimationType.SlideIn },
+            AnimationDuration = TimeSpan.FromMilliseconds(500),
+            DisablePositionMargin = true,
+            MaxWidth = MaxWidth.Small,
+            FullHeight = true,
+            Resizeable = true
+        };
     }
 
     private void ShowSaveSnippetPopup()
@@ -364,50 +374,145 @@ public partial class Repl : IDisposable
         SaveSnippetPopupVisible = true;
     }
 
-    private void HandleTabActivate(string name)
+    // ---------- dock / editor panel handling ----------
+
+    private async Task OpenFile(string path)
     {
-        ActivateTab(name);
+        if (string.IsNullOrWhiteSpace(path) || !CodeFiles.TryGetValue(path, out var file)) return;
+
+        activeCodeFile = file;
+
+        if (path != CoreConstants.MainComponentFilePath && !_openFiles.Contains(path))
+        {
+            _openFiles.Add(path);
+            StateHasChanged();
+            await Task.Delay(60); // let blazor render + observer pick up the panel
+        }
+
+        if (_dock != null)
+            await _dock.ActivatePanelAsync(EditorPanelId(path));
+        _ = SaveState(false);
+        _ = PersistLayoutAsync();
     }
 
-    private void ActivateTab(string name)
+    private void OpenFileMobile(string path)
     {
-        if (string.IsNullOrWhiteSpace(name)) return;
+        if (string.IsNullOrWhiteSpace(path) || !CodeFiles.TryGetValue(path, out var file)) return;
+        CollectAllEditorContent();
+        activeCodeFile = file;
+    }
 
-        UpdateActiveCodeFileContent();
+    private async Task HandleCreateFile(string path)
+    {
+        AddCodeFile(CodeFile.Create(path));
+        CodeFileNames = GetCodeFileNames();
+        await OpenFile(path);
+    }
 
-        if (CodeFiles.TryGetValue(name, out var codeFile))
+    private async Task HandleCreateFromTemplate(CodeFile file)
+    {
+        if (file.Content == null)
+            AddCodeFile(CodeFile.Create(file.Path));
+        else
+            AddCodeFile(file);
+        CodeFileNames = GetCodeFileNames();
+        await OpenFile(file.Path);
+    }
+
+    private async Task HandleRenameFile((string OldPath, string NewPath) rename)
+    {
+        if (!CodeFiles.TryGetValue(rename.OldPath, out var oldFile)) return;
+
+        CollectAllEditorContent();
+        CodeFiles.Remove(rename.OldPath);
+        CodeFiles[rename.NewPath] = new CodeFile { Path = rename.NewPath, Content = oldFile.Content };
+
+        // close the old panel (tombstone) and open the renamed file
+        var idx = _openFiles.IndexOf(rename.OldPath);
+        if (idx >= 0) _openFiles[idx] = null;
+        if (activeCodeFile?.Path == rename.OldPath) activeCodeFile = CodeFiles[rename.NewPath];
+
+        CodeFileNames = GetCodeFileNames();
+        StateHasChanged();
+        await Task.Delay(60);
+        await OpenFile(rename.NewPath);
+    }
+
+    private async Task HandleDeleteFile(string path)
+    {
+        if (path == CoreConstants.MainComponentFilePath) return;
+
+        CodeFiles.Remove(path);
+        var idx = _openFiles.IndexOf(path);
+        if (idx >= 0) _openFiles[idx] = null;
+        if (activeCodeFile?.Path == path) activeCodeFile = GetFile(CoreConstants.MainComponentFilePath);
+
+        CodeFileNames = GetCodeFileNames();
+        await SaveState(false);
+    }
+
+    private void HandlePanelRemoved(string panelId)
+    {
+        if (panelId?.StartsWith("ed:") != true) return;
+
+        var path = panelId[3..];
+        var idx = _openFiles.IndexOf(path);
+        if (idx >= 0)
         {
-            activeCodeFile = codeFile;
-            var idx = CodeFiles.Values.ToArray().IndexOf(codeFile);
-            if (idx >= 0 && idx != _activeTabIndex)
-                _activeTabIndex = idx;
-
-            CodeEditorComponent.Focus();
+            _openFiles[idx] = null; // tombstone — component dispose signals removePanelById (idempotent here)
+            CollectAllEditorContent();
+            _ = SaveState(false);
+            _ = PersistLayoutAsync();
+            StateHasChanged();
         }
     }
 
-    private void HandleTabClose(string name)
+    private async Task HandlePanelMoved(DockviewMovePanelEvent _)
     {
-        if (string.IsNullOrWhiteSpace(name)) return;
-
-        CodeFiles.Remove(name);
-        SaveState(false);
+        await PersistLayoutAsync();
     }
 
-    private void HandleCreateFromTemplate(CodeFile file)
+    private void HandleActivePanelChanged(string panelId)
     {
-        if (file.Content == null)
-            HandleTabCreate(file.Path);
-        else
-            AddCodeFile(file);
-        ActivateTab(file.Path);
+        if (panelId?.StartsWith("ed:") == true && CodeFiles.TryGetValue(panelId[3..], out var file))
+            activeCodeFile = file;
     }
 
-    private void HandleTabCreate(string name)
+    private async Task PersistLayoutAsync()
     {
-        if (string.IsNullOrWhiteSpace(name)) return;
+        if (_dock == null) return;
+        try
+        {
+            var json = await _dock.SaveLayoutAsync();
+            if (!string.IsNullOrWhiteSpace(json) && json != "{}")
+                await Storage.SetItemAsStringAsync(LayoutStorageKey, json);
+        }
+        catch { /* layout persistence is best effort */ }
+    }
 
-        AddCodeFile(CodeFile.Create(name));
+    private async Task ResetLayout()
+    {
+        await Storage.RemoveItemAsync(LayoutStorageKey);
+        await Storage.RemoveItemAsync(OpenFilesStorageKey);
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
+
+    private async Task TogglePanel(string id)
+    {
+        if (_dock == null) return;
+        // re-add is a no-op when the panel is already there; otherwise restore it
+        await _dock.AddPanelAsync(JsonConvert.SerializeObject(new
+        {
+            id,
+            title = id == "files" ? "Files" : "Errors",
+            direction = id == "files" ? "left" : "down",
+        }));
+        await _dock.ActivatePanelAsync(id);
+    }
+
+    private async Task ShowErrorsPanel()
+    {
+        await TogglePanel("errors");
     }
 
     private CodeFile AddCodeFile(CodeFile codefile)
@@ -416,17 +521,6 @@ public partial class Repl : IDisposable
         CodeFileNames = GetCodeFileNames();
         SaveState(false);
         return codefile;
-    }
-
-    private void UpdateActiveCodeFileContent()
-    {
-        if (activeCodeFile == null)
-        {
-            Snackbar.Add("No active file to update.", Severity.Error);
-            return;
-        }
-
-        activeCodeFile.Content = CodeEditorComponent.GetCode();
     }
 
     private Task UpdateLoaderTextAsync(string loaderText)
@@ -441,8 +535,6 @@ public partial class Repl : IDisposable
     private async void UpdateTheme()
     {
         await LayoutService.ToggleDarkMode();
-        //string theme = LayoutService.IsDarkMode ? "vs-dark" : "default";
-        //this.JsRuntime.InvokeVoid(Try.Editor.SetTheme, theme);
     }
 
     private async Task Upload()
@@ -464,31 +556,56 @@ public partial class Repl : IDisposable
                 uploadEdit.Style = "margin-bottom: 20px; height: 400px; overflow-y:auto; overflow-x: hidden";
                 uploadEdit.AutoExtractArchive = true;
                 uploadEdit.Extensions = allowedExtensions.ToArray();
-                //uploadEdit.MimeTypes = MimeType.ArchiveTypes.Concat(new[] { "text/plain", ""}).ToArray();
             }, parameters, options =>
             {
                 options.Resizeable = true;
                 options.FullWidth = true;
                 options.MaxWidth = MaxWidth.Medium;
-                //options.FullHeight = true;
             });
         if (!res.DialogResult.Canceled)
         {
-            CodeFiles = res.Component.UploadRequests.Select(f => new KeyValuePair<string, CodeFile>(f.FileName,
+            var files = res.Component.UploadRequests.Select(f => new KeyValuePair<string, CodeFile>(f.FileName.Replace('\\', '/'),
                 new CodeFile
                 {
-                    Path = f.FileName,
+                    Path = f.FileName.Replace('\\', '/'),
                     Content = Encoding.UTF8.GetString(f.Data)
                 })).ToDictionary(pair => pair.Key, pair => pair.Value);
+            await ResetOpenEditorsAsync();
+            CodeFiles = files;
+            EnsureMainComponent();
             CodeFileNames = GetCodeFileNames();
-            HandleTabActivate(CodeFileNames.FirstOrDefault());
+            activeCodeFile = GetFile(CoreConstants.MainComponentFilePath) ?? CodeFiles.Values.FirstOrDefault();
             _installedPackages = await GetInstalledAsync();
             StateHasChanged();
         }
     }
 
+    /// <summary>Disposes all dynamic editor panels and clears tombstones (before a full content swap).</summary>
+    private async Task ResetOpenEditorsAsync()
+    {
+        if (_openFiles.Count == 0) return;
+        _openFiles.Clear();
+        _editorDomIds.Clear();
+        _editorDomIdCounter = 0;
+        StateHasChanged();
+        await Task.Delay(60); // let dispose-signals reach the dock before new content renders
+    }
+
+    private void EnsureMainComponent()
+    {
+        if (!CodeFiles.ContainsKey(CoreConstants.MainComponentFilePath))
+        {
+            CodeFiles[CoreConstants.MainComponentFilePath] = new CodeFile
+            {
+                Path = CoreConstants.MainComponentFilePath,
+                Content = CoreConstants.MainComponentDefaultFileContent
+            };
+        }
+    }
+
     private async Task Download()
     {
+        CollectAllEditorContent();
         var id = SnippetId ?? Guid.NewGuid().ToFormattedId();
         var fileName = Path.ChangeExtension($"TryMudEx_{id}", "zip");
         fileName = await DialogService.PromptAsync("Filename", "Enter file name", fileName, icon: Icons.Material.Filled.Archive, canConfirm: s => !string.IsNullOrEmpty(s));
@@ -548,9 +665,12 @@ public partial class Repl : IDisposable
     {
         value = value.Replace(" ", "_");
         await Storage.RemoveItemAsync("__temp_code");
+        await Storage.RemoveItemAsync(OpenFilesStorageKey);
         NavigationManager.NavigateTo($"/snippet/samples/{value}", false);
         Sample = value;
+        await ResetOpenEditorsAsync();
         await LoadDataAsync();
+        EnsureMainComponent();
         CodeFileNames = GetCodeFileNames();
         _installedPackages = await GetInstalledAsync();
         StateHasChanged();
@@ -559,9 +679,12 @@ public partial class Repl : IDisposable
 
     private async Task OpenDiagnostic(CompilationDiagnostic obj)
     {
-        ActivateTab(obj.File);
+        if (string.IsNullOrEmpty(obj?.File)) return;
+
+        await OpenFile(obj.File);
         await Task.Delay(100);
-        await CodeEditorComponent.SelectLineAsync(obj.Line);
+        if (obj.Line.HasValue)
+            await JsRuntime.InvokeVoidAsync(Models.Try.Editor.SetSelection, EditorDomId(obj.File), obj.Line.Value);
     }
 
     private List<string> GetCodeFileNames() => !ShowHiddenFiles ? CodeFiles.Where(c => c.Value.Type != CodeFileType.Hidden).Select(c => c.Key).ToList() : CodeFiles.Keys.ToList();

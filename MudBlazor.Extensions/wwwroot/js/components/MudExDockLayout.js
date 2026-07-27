@@ -207,6 +207,9 @@
         for (const node of nodes) {
             const hasChildNodes = Array.from(node.children).some(n => n.classList?.contains('dv-node'));
             if (hasChildNodes) continue;
+            // stashed nodes belong to a panel that was just closed — blazor is about to
+            // remove them; re-adding here would resurrect the panel the user closed
+            if (node.closest('.dv-stash')) continue;
             let opts;
             try { opts = JSON.parse(node.dataset.options || '{}'); } catch { continue; }
             const id = opts.id;

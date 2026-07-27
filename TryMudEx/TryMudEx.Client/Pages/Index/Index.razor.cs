@@ -6,6 +6,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Services;
 using Nextended.Core.Encode;
+using TryMudEx.Client.Models;
 using TryMudEx.Client.Services;
 
 namespace TryMudEx.Client.Pages.Index;
@@ -27,8 +28,14 @@ public partial class Index
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
+        {
+            // dropping the code must drop the editor session with it, otherwise the
+            // restored dock layout points at panels for files that no longer exist
             await Storage.RemoveItemAsync("__temp_code");
+            await Storage.RemoveItemAsync(ReplStorageKeys.OpenFiles);
+            await Storage.RemoveItemAsync(ReplStorageKeys.Layout);
+        }
     }
 
     private async Task UseCodeClick()

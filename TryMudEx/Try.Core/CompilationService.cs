@@ -220,6 +220,27 @@ namespace Try.Core
             return result;
         }
 
+        /// <summary>
+        /// Razor puts files in subfolders into a sub namespace (RootNamespace.Folder), exactly like a real
+        /// blazor project. Add a using per folder so components can be referenced by their short name.
+        /// </summary>
+        private static string BuildImports(ICollection<CodeFile> codeFiles)
+        {
+            var imports = codeFiles?.FirstOrDefault(f => f.Path == CoreConstants.ImportsFileName)?.Content
+                          ?? CoreConstants.DefaultImports;
+
+            var folderUsings = (codeFiles ?? Array.Empty<CodeFile>())
+                .Where(f => f.Type == CodeFileType.Razor && f.Path.Contains('/'))
+                .Select(f => f.Path[..f.Path.LastIndexOf('/')].Replace('/', '.'))
+                .Distinct()
+                .Select(ns => $"@using {DefaultRootNamespace}.{ns}")
+                .ToList();
+
+            return folderUsings.Count == 0
+                ? imports
+                : imports + Environment.NewLine + string.Join(Environment.NewLine, folderUsings);
+        }
+
         private RazorProjectItem CreateRazorProjectItem(string fileName, string fileContent)
         {
             var fullPath = WorkingDirectory + fileName;
@@ -252,9 +273,10 @@ namespace Try.Core
 
             await InitCompileAsync(nugetReferences);
 
+            var imports = BuildImports(codeFiles);
+
             // The first phase won't include any metadata references for component discovery. This mirrors what the build does.
-            var projectEngine = CreateRazorProjectEngine(nugetReferences ?? Array.Empty<MetadataReference>(), codeFiles?.FirstOrDefault(f => f.Path == CoreConstants.ImportsFileName)?.Content);
-            //var projectEngine = CreateRazorProjectEngine(Array.Empty<MetadataReference>(), codeFiles?.FirstOrDefault(f => f.Path == CoreConstants.ImportsFileName)?.Content);
+            var projectEngine = CreateRazorProjectEngine(nugetReferences ?? Array.Empty<MetadataReference>(), imports);
 
             codeFiles = codeFiles.Where(f => f.Path != CoreConstants.ImportsFileName && f.Type != CodeFileType.Hidden).ToList();
             // Result of generating declarations
@@ -305,7 +327,7 @@ namespace Try.Core
             var references = new List<MetadataReference>(baseCompilation.References) { tempAssembly.Compilation.ToMetadataReference() };
             references.AddRange(nugetReferences);
 
-            projectEngine = this.CreateRazorProjectEngine(references);
+            projectEngine = this.CreateRazorProjectEngine(references, imports);
 
             await (updateStatusFunc?.Invoke("Preparing Project") ?? Task.CompletedTask);
 

@@ -1,91 +1,120 @@
-﻿@page "/snippet/{snippetId?}"
+@page "/snippet/{snippetId?}"
 @page "/snippet/samples/{sample?}"
 @page "/snippet/from/{snippetFileUrl?}"
-@using TryMudEx.Client.Enums
 @using MudBlazor.Extensions.Core
 @using Try.Core
 
 @layout MainLayout
 
-<div class="try-layout">
-    <MudDrawer Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" Class="try-drawer">
-        <MudIconButton title="Run (Ctrl + S)" OnClick="@CompileAsync" Disabled="@Loading" Icon="@Icons.Material.Rounded.PlayArrow" Color="@(LayoutService.IsDarkMode ? Color.Success : Color.Inherit)" />
-        <MudTooltip Text="@(LayoutService.IsDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme")" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
-            <MudIconButton OnClick="@UpdateTheme" Icon="@(LayoutService.IsDarkMode ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="@(LayoutService.IsDarkMode ? Color.Warning : Color.Inherit)" />
+<div class="try-layout d-flex flex-column" style="height:100%">
+    <MudAppBar Dense="true" Fixed="false" Elevation="1" Class="repl-toolbar" Style="position:relative;">
+        <MudTooltip Text="Run (Ctrl + S)">
+            <MudIconButton OnClick="@CompileAsync" Disabled="@Loading" Icon="@Icons.Material.Rounded.PlayArrow" Color="Color.Success" />
         </MudTooltip>
-        <MudExDivider Style="flex-grow: 0;" UseBorder="true" Color="MudExColor.Primary" />
-        <MudTooltip Text="Save or Share" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
-            <SaveSnippetPopup @bind-Visible="SaveSnippetPopupVisible" CodeFiles="@CodeFiles.Values" UpdateActiveCodeFileContentAction="UpdateActiveCodeFileContent" />
-            <MudIconButton OnClick="ShowSaveSnippetPopup" Icon="@Icons.Material.Outlined.Save" Color="@(LayoutService.IsDarkMode ? Color.Info : Color.Inherit)" />
+        <MudDivider Vertical="true" FlexItem="true" Class="mx-1" />
+        <MudTooltip Text="Save or Share">
+            <MudIconButton OnClick="ShowSaveSnippetPopup" Icon="@Icons.Material.Outlined.Save" />
         </MudTooltip>
-        <MudTooltip Text="Download" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
-            <MudIconButton OnClick="Download" Icon="@Icons.Material.Outlined.Download" Color="@(LayoutService.IsDarkMode ? Color.Info : Color.Inherit)" />
+        <SaveSnippetPopup @bind-Visible="SaveSnippetPopupVisible" CodeFiles="@CodeFiles.Values" UpdateActiveCodeFileContentAction="CollectAllEditorContent" />
+        <MudTooltip Text="Download">
+            <MudIconButton OnClick="Download" Icon="@Icons.Material.Outlined.Download" />
         </MudTooltip>
-        <MudTooltip Text="Upload" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
-            <MudIconButton OnClick="Upload" Icon="@Icons.Material.Outlined.UploadFile" Color="@(LayoutService.IsDarkMode ? Color.Info : Color.Inherit)" />
+        <MudTooltip Text="Upload">
+            <MudIconButton OnClick="Upload" Icon="@Icons.Material.Outlined.UploadFile" />
         </MudTooltip>
-
-
         @if (_samples?.Any() == true)
         {
-            <MudExDivider Style="flex-grow: 0;" UseBorder="true" Color="MudExColor.Primary" />
-            <MudTooltip Text="Show samples" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
-                <MudIconButton OnClick="@ShowSamples" Icon="@Icons.Material.Outlined.Folder" Color="@(LayoutService.IsDarkMode ? Color.Primary : Color.Inherit)" />
+            <MudTooltip Text="Samples">
+                <MudIconButton OnClick="@ShowSamples" Icon="@Icons.Material.Outlined.Folder" />
             </MudTooltip>
         }
-
-
+        <MudTooltip Text="Manage Nuget packages">
+            <MudIconButton Icon="@MudExIcons.Custom.Brands.Nuget" OnClick="@(() => EditPackageReferences(false))" />
+        </MudTooltip>
         <MudSpacer />
-        <div class="d-flex justify-center">
-            <div class="brand" style="margin-bottom: 35px;"><MudExGradientText Typo="Typo.h5">MudEx </MudExGradientText></div>
-        </div>
-    </MudDrawer>
-    <div class="try-editor">
+        <MudMenu Dense="true" CloseOnClickOutside="true">
+            <ActivatorContent>
+                <MudTooltip Text="Panels">
+                    <MudIconButton Icon="@Icons.Material.Outlined.GridView" />
+                </MudTooltip>
+            </ActivatorContent>
+            <ChildContent>
+                <MudMenuItem OnClick="@(() => TogglePanel("files"))">Files</MudMenuItem>
+                <MudMenuItem OnClick="@(() => TogglePanel("errors"))">Errors</MudMenuItem>
+                <MudMenuItem OnClick="@ResetLayout">Reset layout</MudMenuItem>
+            </ChildContent>
+        </MudMenu>
+        <MudTooltip Text="@(LayoutService.IsDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme")">
+            <MudIconButton OnClick="@UpdateTheme" Icon="@(LayoutService.IsDarkMode ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" />
+        </MudTooltip>
+        <div class="brand ml-2"><MudExGradientText Typo="Typo.h6">MudEx</MudExGradientText></div>
+    </MudAppBar>
+
+    <div class="try-editor flex-grow-1" style="position:relative; min-height:0;">
         <MudOverlay Visible="Loading" Absolute="true" DarkBackground="true">
             <MudText Typo="Typo.h4" Class="white-text"> @LoaderText</MudText>
         </MudOverlay>
 
-        @if (Mode != CodeViewMode.Window)
-        {
-            <MudExSplitPanel Splittable="true" IsCollapsible="false" Reverse="@(Mode == CodeViewMode.DockedTop || Mode == CodeViewMode.DockedLeft)" ColumnLayout="@(Mode == CodeViewMode.DockedRight || Mode == CodeViewMode.DockedLeft)">
-                <Left>
-                    <MudExSplitPanelItem Class="mt-3" Style="@($"overflow-y:hidden; width: 100%; min-width: {MinWidthLeft}; height:auto; min-height: {MinHeightLeft};")">
-                        @RenderEditor()
-                    </MudExSplitPanelItem>
-                </Left>
-                <Right>
-                    <MudExSplitPanelItem Class="mt-3" Style="@($"overflow-y:hidden; min-width: {MinWidthRight}; min-height: {MinHeightRight}; width: 65%;")">
-                        @RenderIFrame()
-                    </MudExSplitPanelItem>
-                </Right>
-            </MudExSplitPanel>
-        }
-        else
-        {
-            @RenderEditor()
-            <MudExDialog Class="compile-result-dlg full-height" ContentClass="full-height" @bind-Visible="_compiledSuccessfully" OptionsEx="@GetResultDialogOptions()">
-                <TitleContent>
-                    <MudText Typo="Typo.h6">
-                        <MudIcon Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" Class="mr-3" /> Compilation Result
-                    </MudText>
-                </TitleContent>
-                <DialogContent>
-                    @RenderIFrame()
-                </DialogContent>
-            </MudExDialog>
-        }
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="false">
+            <MudExDockLayout @ref="_dock" Id="try-dock" ContainerStyle="height:100%;width:100%;min-height:300px;"
+                             InitialLayoutJson="@_initialLayoutJson"
+                             OnPanelRemoved="HandlePanelRemoved" OnPanelMoved="HandlePanelMoved" OnActiveChanged="HandleActivePanelChanged">
+                @* first panel becomes the grid base (center). __Main.razor always exists and is never closable. *@
+                <MudExDockItem Id="@MainEditorPanelId" Title="@CoreConstants.MainComponentFilePath" CanClose="false" Renderer="DockRendererMode.Always">
+                    <CodeEditor Id="@EditorDomId(CoreConstants.MainComponentFilePath)" Theme="@EditorTheme"
+                                Code="@GetFile(CoreConstants.MainComponentFilePath)?.Content" CodeFileType="CodeFileType.Razor" />
+                </MudExDockItem>
+                <MudExDockItem Id="files" Title="Files" Direction="DockDirection.Left" InitialWidth="230" Renderer="DockRendererMode.Always">
+                    <FileTree Files="@CodeFiles.Values" ActivePath="@activeCodeFile?.Path" ShowHiddenFiles="@ShowHiddenFiles"
+                              OnOpen="OpenFile" OnCreate="HandleCreateFile" OnCreateFromTemplate="HandleCreateFromTemplate"
+                              OnRename="HandleRenameFile" OnDelete="HandleDeleteFile" />
+                </MudExDockItem>
+                <MudExDockItem Id="preview" Title="Preview" Direction="DockDirection.Right" CanClose="false" Renderer="DockRendererMode.Always">
+                    <iframe style="height:100%; width:100%; border:none;" id="user-page-window" data-base-src="/user-page" src="/user-page"></iframe>
+                </MudExDockItem>
+                <MudExDockItem Id="errors" Title="Errors" Direction="DockDirection.Below" InitialHeight="170" Renderer="DockRendererMode.Always">
+                    <ErrorList OnDiagnosticClick="OpenDiagnostic" Show="true" Diagnostics="@Diagnostics" />
+                </MudExDockItem>
+                @* editor items MUST stay last & append-only (tombstones keep positions stable):
+                   dockview adopts the nodes, positional re-diffing must never touch existing ones *@
+                @foreach (var path in _openFiles)
+                {
+                    @if (path != null)
+                    {
+                        <MudExDockItem Id="@EditorPanelId(path)" Title="@FileTitle(path)" StackWith="@MainEditorPanelId" Renderer="DockRendererMode.Always">
+                            <CodeEditor Id="@EditorDomId(path)" Theme="@EditorTheme" Code="@GetFile(path)?.Content" CodeFileType="@(GetFile(path)?.Type ?? CodeFileType.Razor)" />
+                        </MudExDockItem>
+                    }
+                    else
+                    {
+                        <div style="display:none"></div>
+                    }
+                }
+            </MudExDockLayout>
+        </MudHidden>
 
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+            <div class="d-flex flex-column" style="height:100%">
+                <MudSelect T="string" Value="@activeCodeFile?.Path" ValueChanged="@OpenFileMobile" Dense="true" Class="px-2">
+                    @foreach (var name in CodeFileNames)
+                    {
+                        <MudSelectItem Value="@name">@name</MudSelectItem>
+                    }
+                </MudSelect>
+                <div style="flex:1; min-height:150px;">
+                    <CodeEditor Id="@MobileEditorId" Theme="@EditorTheme" Code="@activeCodeFile?.Content" CodeFileType="@(activeCodeFile?.Type ?? CodeFileType.Razor)" />
+                </div>
+                <iframe style="flex:1; border:none;" id="user-page-window" data-base-src="/user-page" src="/user-page"></iframe>
+            </div>
+        </MudHidden>
     </div>
+
     <MudAppBar Bottom="true" Fixed="false" Color="@GetBottomAppBarColor()" Elevation="0" Class="try-errorlist repl-navbar">
-        <div class="try-errorlist-button d-flex align-center" @onclick="@ToggleDiagnostics">
+        <div class="try-errorlist-button d-flex align-center" @onclick="@ShowErrorsPanel">
             <MudIcon Icon="@Icons.Material.Outlined.ErrorOutline" />
             <MudText>@ErrorsCount</MudText>
             <MudIcon Icon="@Icons.Material.Outlined.WarningAmber" />
             <MudText>@WarningsCount</MudText>
-            @if (ErrorsCount != 0 || WarningsCount != 0)
-            {
-                <MudIcon Icon="@(ShowDiagnostics ? $"{Icons.Material.Outlined.ExpandMore}" : $"{Icons.Material.Outlined.ExpandLess}")" />
-            }
         </div>
         <MudSpacer />
         <MudButton DropShadow="false" Ripple="false" OnClick="@ReloadIframe">Reload</MudButton>
@@ -111,37 +140,15 @@
                     }
                 </ChildContent>
             </MudMenu>
-
         }
-
         <MudTooltip Text="Manage Nuget packages" Placement="Placement.Left">
             <MudIconButton Style="transform: scale(.8);" Icon="@MudExIcons.Custom.Brands.Nuget" Class="rounded-0 py-0 px-0" OnClick="@(() => EditPackageReferences(true))"></MudIconButton>
         </MudTooltip>
-
     </MudAppBar>
 </div>
 @code {
     int _maxPackagesInStatusBar = 4;
     public Color GetBottomAppBarColor() => ErrorsCount != 0 ? Color.Error : WarningsCount != 0 ? Color.Warning : Color.Inherit;
-
-    protected RenderFragment RenderIFrame()
-    {
-        return @<iframe class="mb-3 pr-5" style="max-height:97%" id="user-page-window" src="/user-page"></iframe>;
-    }
-    protected RenderFragment RenderEditor()
-    {
-        return @<div style="height: 100%; width: 100%">
-        <TabManager @bind-ViewMode="Mode" @bind-ActiveIndex="_activeTabIndex" Tabs="@CodeFileNames" OnTabActivate="@HandleTabActivate" OnTemplateCreate="@HandleCreateFromTemplate" OnTabClose="@HandleTabClose" OnTabCreate="@HandleTabCreate">
-            <Tools>
-                <MudTooltip Text="Manage Nuget packages">
-                    <MudIconButton Icon="@MudExIcons.Custom.Brands.ColorFull.Nuget" Class="view_mode_toggle rounded-0 py-1 px-2" OnClick="@(() => EditPackageReferences(Mode == CodeViewMode.DockedTop))"></MudIconButton>
-                </MudTooltip>
-            </Tools>
-        </TabManager>
-        <CodeEditor @ref="@CodeEditorComponent" Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" Code="@CodeEditorContent" CodeFileType="@CodeFileType" />
-        <ErrorList OnDiagnosticClick="OpenDiagnostic" @bind-Show="@ShowDiagnostics" Diagnostics="@Diagnostics" />
-    </div>;
-    }
 
     private string TrimmedPackageText(NugetPackage package, int maxChars = 35)
     {
@@ -154,6 +161,4 @@
 
         return text;
     }
-
 }
-

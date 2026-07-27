@@ -11,6 +11,7 @@
         {
             public static string Create = "Try.Editor.create";
             public static string GetValue = "Try.Editor.getValue";
+            public static string GetValues = "Try.Editor.getValues";
             public static string SetValue = "Try.Editor.setValue";
             public static string SetReadOnly = "Try.Editor.setReadOnly";
             public static string SetLangugage = "Try.Editor.setLanguage";
