@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
@@ -9,13 +9,14 @@ namespace TryMudEx.Client.Components;
 
 public partial class CodeEditor : IDisposable
 {
-    private const string EditorId = "user-code-editor";
-
     private bool hasCodeChanged;
     private bool hasReadOnlyChanged;
     private bool hasThemeChanged;
 
     [Inject] public IJSInProcessRuntime JsRuntime { get; set; }
+
+    /// <summary>Unique DOM/editor instance id — one monaco instance per CodeEditor.</summary>
+    [Parameter] public string Id { get; set; } = "user-code-editor";
 
     [Parameter] public string Code { get; set; }
 
@@ -37,17 +38,17 @@ public partial class CodeEditor : IDisposable
 
     public void Dispose()
     {
-        JsRuntime.InvokeVoid(Models.Try.Editor.Dispose);
+        JsRuntime.InvokeVoid(Models.Try.Editor.Dispose, Id);
     }
 
     internal void Focus()
     {
-        JsRuntime.InvokeVoid(Models.Try.Editor.Focus);
+        JsRuntime.InvokeVoid(Models.Try.Editor.Focus, Id);
     }
 
     internal string GetCode()
     {
-        return JsRuntime.Invoke<string>(Models.Try.Editor.GetValue);
+        return JsRuntime.Invoke<string>(Models.Try.Editor.GetValue, Id);
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -57,7 +58,7 @@ public partial class CodeEditor : IDisposable
 
         if (firstRender)
         {
-            JsRuntime.InvokeVoid(Models.Try.Editor.Create, EditorId,
+            JsRuntime.InvokeVoid(Models.Try.Editor.Create, Id,
                 Code ?? CoreConstants.MainComponentDefaultFileContent, GetLanguage(), ReadOnly, Theme);
         }
         else
@@ -65,16 +66,16 @@ public partial class CodeEditor : IDisposable
 	        if (hasCodeChanged)
 	        {
 		        var language = GetLanguage();
-		        JsRuntime.InvokeVoid(Models.Try.Editor.SetValue, Code);
-		        JsRuntime.InvokeVoid(Models.Try.Editor.SetLangugage, language);
+		        JsRuntime.InvokeVoid(Models.Try.Editor.SetValue, Id, Code);
+		        JsRuntime.InvokeVoid(Models.Try.Editor.SetLangugage, Id, language);
 	        }
 	        if (hasReadOnlyChanged)
 	        {
-		        JsRuntime.InvokeVoid(Models.Try.Editor.SetReadOnly, ReadOnly);
+		        JsRuntime.InvokeVoid(Models.Try.Editor.SetReadOnly, Id, ReadOnly);
 	        }
 	        if (hasThemeChanged)
 	        {
-		        JsRuntime.InvokeVoid(Models.Try.Editor.SetTheme, Theme);
+		        JsRuntime.InvokeVoid(Models.Try.Editor.SetTheme, Theme); // monaco theme is global
 	        }
 		}
 
@@ -89,6 +90,6 @@ public partial class CodeEditor : IDisposable
     public async Task SelectLineAsync(int? line)
     {
         if(line.HasValue)
-            await JsRuntime.InvokeVoidAsync(Models.Try.Editor.SetSelection, line.Value);
+            await JsRuntime.InvokeVoidAsync(Models.Try.Editor.SetSelection, Id, line.Value);
     }
 }

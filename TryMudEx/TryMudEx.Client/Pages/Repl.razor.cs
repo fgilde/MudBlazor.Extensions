@@ -414,8 +414,6 @@ public partial class Repl : IDisposable
     {
         CodeFiles.TryAdd(codefile.Path, codefile);
         CodeFileNames = GetCodeFileNames();
-        JsRuntime.InvokeVoid(Models.Try.Editor.SetLangugage,
-            codefile.Type == CodeFileType.CSharp ? "csharp" : "razor");
         SaveState(false);
         return codefile;
     }

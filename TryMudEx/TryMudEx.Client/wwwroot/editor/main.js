@@ -120,17 +120,49 @@ window.Try = {
 
 window.Try.__providerRegistered = false;
 window.Try.Editor = window.Try.Editor || (function () {
-    let _editor;
-    let _overrideValue;
+    // one monaco editor + model per id (dock panel); model per file keeps undo/scroll state
+    const _editors = new Map();
+    const _pending = new Map(); // value set before async create completed
+
+    function _get(id) { return _editors.get(id); }
+
+    function _registerGlobalsOnce() {
+        if (window.Try.__providerRegistered) { return; }
+        monaco.languages.html.razorDefaults.setModeConfiguration({
+            completionItems: true,
+            diagnostics: true,
+            documentFormattingEdits: true,
+            documentHighlights: true,
+            documentRangeFormattingEdits: true,
+        });
+        registerLangugageProvider('razor');
+        registerLangugageProvider('csharp');
+        window.Try.__providerRegistered = true;
+    }
+
+    function _disposeEditor(id) {
+        const ed = _editors.get(id);
+        if (ed) {
+            try { ed.getModel()?.dispose(); } catch (e) { }
+            try { ed.dispose(); } catch (e) { }
+            _editors.delete(id);
+        }
+        _pending.delete(id);
+    }
 
     return {
         create: function (id, value, language, readOnly, theme) {
             if (!id) { return; }
 
             require(['vs/editor/editor.main'], () => {
-                _editor = monaco.editor.create(document.getElementById(id), {
-                    value: _overrideValue || value || '',
-                    language: language || 'razor',
+                const host = document.getElementById(id);
+                if (!host) { return; } // panel was closed before monaco finished loading
+
+                _disposeEditor(id);
+
+                const model = monaco.editor.createModel(_pending.get(id) ?? value ?? '', language || 'razor');
+                const editor = monaco.editor.create(host, {
+                    model: model,
                     theme: theme,
                     readOnly: readOnly,
                     automaticLayout: true,
@@ -142,69 +174,61 @@ window.Try.Editor = window.Try.Editor || (function () {
                         enabled: false
                     }
                 });
+                _pending.delete(id);
+                _editors.set(id, editor);
 
-                _overrideValue = null;
-
-                monaco.languages.html.razorDefaults.setModeConfiguration({
-                    completionItems: true,
-                    diagnostics: true,
-                    documentFormattingEdits: true,
-                    documentHighlights: true,
-                    documentRangeFormattingEdits: true,
-                });
-
-                if (!window.Try.__providerRegistered) {
-                    registerLangugageProvider('razor');
-                    registerLangugageProvider('csharp');
-                    window.Try.__providerRegistered = true;
-                }
+                _registerGlobalsOnce();
             })
         },
-        getValue: function () {
-            return _editor.getValue();
+        getValue: function (id) {
+            return _get(id)?.getValue() ?? _pending.get(id) ?? '';
         },
-        setValue: function (value) {
-            if (_editor) {
-                _editor.setValue(value);
+        getValues: function () {
+            const result = {};
+            for (const [id, editor] of _editors) { result[id] = editor.getValue(); }
+            return result;
+        },
+        setValue: function (id, value) {
+            const editor = _get(id);
+            if (editor) {
+                editor.setValue(value);
             } else {
-                _overrideValue = value;
+                _pending.set(id, value);
             }
         },
-        setReadOnly: function (readOnly) {
-            if (_editor) {
-                _editor.updateOptions({ readOnly: readOnly });
+        setReadOnly: function (id, readOnly) {
+            _get(id)?.updateOptions({ readOnly: readOnly });
+        },
+        focus: function (id) {
+            return _get(id)?.focus();
+        },
+        setLanguage: function (id, language) {
+            const editor = _get(id);
+            if (editor) {
+                monaco.editor.setModelLanguage(editor.getModel(), language);
             }
         },
-        focus: function () {
-            return _editor.focus();
+        setPosition: function (id, line, column) {
+            _get(id)?.setPosition({ lineNumber: line, column: column });
         },
-        setLanguage: function (language) {
-            if (_editor) {
-                monaco.editor.setModelLanguage(_editor.getModel(), language);
-            }
-        },
-        setPosition: function (line, column) {
-            if (_editor) {
-                _editor.setPosition({ lineNumber: line, column: column });
-            }
-        },
-        setSelection: function (startLineNumber, startColumn, endLineNumber, endColumn) {
-            if (_editor) {
-                _editor.setSelection({
-                    startLineNumber: startLineNumber,
-                    startColumn: startColumn || 0,
-                    endLineNumber: endLineNumber || startLineNumber,
-                    endColumn: endColumn || _editor.getModel().getLineMaxColumn(endLineNumber || startLineNumber)
-                });
-            }
+        setSelection: function (id, startLineNumber, startColumn, endLineNumber, endColumn) {
+            const editor = _get(id);
+            if (!editor) { return; }
+            editor.setSelection({
+                startLineNumber: startLineNumber,
+                startColumn: startColumn || 0,
+                endLineNumber: endLineNumber || startLineNumber,
+                endColumn: endColumn || editor.getModel().getLineMaxColumn(endLineNumber || startLineNumber)
+            });
+            editor.revealLineInCenter(startLineNumber);
         },
         setTheme: function (theme) {
-            if (_editor) {
-                monaco.editor.setTheme(theme);
+            if (window.monaco) {
+                monaco.editor.setTheme(theme); // monaco themes are global — one call covers all editors
             }
         },
-        dispose: function () {
-            _editor = null;
+        dispose: function (id) {
+            _disposeEditor(id);
         }
     }
 }());

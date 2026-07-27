@@ -185,19 +185,11 @@
 }
 
 /* Editor */
-.#user-code-editor-container {
-    overflow: hidden;
-}
-
-#user-code-editor {
-    /*padding-top: 10px;*/
-    background-color: #FFF;
-}
-
 .code-editor {
     height: 100%;
     border: 1px solid #ccc;
     border-top: none;
+    background-color: #FFF;
 }
 
 /* Save Snippet Popup */
