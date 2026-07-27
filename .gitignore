@@ -43,3 +43,6 @@ MudBlazor.Extensions/wwwroot/**/*.min.js
 MudBlazor.Extensions/version.generated.props
 MudBlazor.Extensions/*Undefined*/
 /.claude
+
+# stray build output from the MSB3021 doc-copy target
+TryMudEx/MudBlazor.Extensions/
