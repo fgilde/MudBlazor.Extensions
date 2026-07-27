@@ -42,6 +42,16 @@ namespace MudBlazor.Extensions.Components
             RootItems.Remove(item);
         }
 
+        internal async void NotifyItemDisposed(string id)
+        {
+            try
+            {
+                if (JsReference != null && !string.IsNullOrEmpty(id))
+                    await JsReference.InvokeVoidAsync("removePanelById", id);
+            }
+            catch { /* layout itself may be tearing down */ }
+        }
+
         private string ClassName => MudExCssBuilder.Default.AddClass(Theme.GetDescription).AddClass(Class).ToString();
 
         protected override Task OnJsOptionsChanged()
@@ -90,6 +100,25 @@ namespace MudBlazor.Extensions.Components
 
         public Task RestoreLayoutAsync(string json)
             => JsReference!.InvokeVoidAsync("fromJSON", json).AsTask();
+
+        /// <summary>Adds a panel at runtime. Options JSON uses the same shape as MudExDockItem's data-options (id, title, direction, stackWith, ...).</summary>
+        public Task AddPanelAsync(string optionsJson)
+            => JsReference!.InvokeVoidAsync("addPanelByOptions", optionsJson).AsTask();
+
+        public Task RemovePanelAsync(string id)
+            => JsReference!.InvokeVoidAsync("removePanelById", id).AsTask();
+
+        public Task ActivatePanelAsync(string id)
+            => JsReference!.InvokeVoidAsync("activatePanel", id).AsTask();
+
+        public Task FloatPanelAsync(string id)
+            => JsReference!.InvokeVoidAsync("floatPanel", id).AsTask();
+
+        public Task MaximizePanelAsync(string id)
+            => JsReference!.InvokeVoidAsync("maximizePanel", id).AsTask();
+
+        public Task ExitMaximizedAsync()
+            => JsReference!.InvokeVoidAsync("exitMaximized").AsTask();
 
         public async Task ReinitializeAsync()
         {

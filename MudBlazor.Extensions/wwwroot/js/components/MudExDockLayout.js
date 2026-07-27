@@ -27,13 +27,11 @@
         // 1) DOM-Leaves indexieren (für Restore/InitialLayout)
         this.indexDomLeaves();
 
-        // 2) Initiales Layout anwenden, falls vorhanden
+        // 2) Initiales Layout anwenden, falls vorhanden — Events/Observer laufen danach trotzdem
         if (this.options.initialLayoutJson) {
             try {
                 this.api.fromJSON(JSON.parse(this.options.initialLayoutJson));
                 this.bootstrapped = true;
-                this.dotnet?.invokeMethodAsync('OnJsReady');
-                return;
             } catch (e) { console.warn('fromJSON failed', e); }
         }
 
@@ -173,18 +171,106 @@
     }
 
     observeAndBootstrap() {
-        const tryBootstrap = () => {
-            if (this.bootstrapped) return;
-            const roots = this._rootNodes();
-            if (roots.length === 0) return;
-            this.bootstrapFromDom(roots);
-            this.bootstrapped = true;
-            this.observer?.disconnect();
-        };
-
-        tryBootstrap();
-        this.observer = new MutationObserver(() => tryBootstrap());
+        this._tryBootstrap();
+        if (this.observer) return;
+        this.observer = new MutationObserver(() => {
+            if (!this.bootstrapped) { this._tryBootstrap(); return; }
+            // debounce: dockview's own dom mutations (drag, addPanel) fire this too
+            if (this._syncScheduled) return;
+            this._syncScheduled = true;
+            requestAnimationFrame(() => {
+                this._syncScheduled = false;
+                this.syncDomPanels();
+            });
+        });
         this.observer.observe(this.containerRef, { childList: true, subtree: true });
+    }
+
+    _tryBootstrap() {
+        if (this.bootstrapped) return;
+        const roots = this._rootNodes();
+        if (roots.length === 0) return;
+        this.bootstrapFromDom(roots);
+        this.bootstrapped = true;
+    }
+
+    // Runtime-Sync: nach dem Bootstrap von Blazor gerenderte/entfernte .dv-node-Leaves
+    // in dockview-Panels übersetzen (deklaratives @foreach über MudExDockItems).
+    // Runtime-ADD sync only. Removals are NOT inferred from the DOM: dockview's
+    // 'onlyWhenVisible' renderer legally detaches inactive panel elements, which is
+    // indistinguishable from a blazor removal. Removals arrive explicitly via
+    // removePanelById (called from MudExDockItem.Dispose on the .NET side).
+    syncDomPanels() {
+        if (!this.api || this._isReinitializing) return;
+
+        const nodes = this.containerRef.querySelectorAll('.dv-node');
+        for (const node of nodes) {
+            const hasChildNodes = Array.from(node.children).some(n => n.classList?.contains('dv-node'));
+            if (hasChildNodes) continue;
+            let opts;
+            try { opts = JSON.parse(node.dataset.options || '{}'); } catch { continue; }
+            const id = opts.id;
+            if (!id || this.elementStore.has(id)) continue;
+
+            node.dataset.dvId = id;
+            node.style.display = 'none';
+            this.elementStore.set(id, node);
+            this._addPanelFromOptions(opts);
+        }
+    }
+
+    _addPanelFromOptions(opts) {
+        const o = { ...opts };
+        if (o.stackWith && this.api.getPanel(o.stackWith)) {
+            o.position = { referencePanel: o.stackWith, direction: 'within' };
+        } else if (this.api.activePanel && !o.direction) {
+            o.position = { referencePanel: this.api.activePanel.id, direction: 'within' };
+        } else {
+            o.position = { direction: (o.direction || 'right').toLowerCase() };
+        }
+        const panel = this.api.addPanel(o);
+        if (o.hideHeader === true && !this.containerRef.classList.contains('dv-hide-tabs')) {
+            panel.group.header.hidden = true;
+        }
+        if (o.float === true) {
+            this.api.addFloatingGroup(panel, o.floatBounds || undefined);
+        }
+        if (o.locked != null) {
+            panel.group.locked = o.locked;
+        }
+        return panel;
+    }
+
+    // ---------------- Explizite Panel-API (für Blazor-Wrapper) ----------------
+
+    addPanelByOptions(optionsJson) {
+        const opts = typeof optionsJson === 'string' ? JSON.parse(optionsJson) : optionsJson;
+        if (!opts?.id || !this.api || this.api.getPanel(opts.id)) return;
+        return this._addPanelFromOptions(opts);
+    }
+
+    removePanelById(id) {
+        const p = this.api?.getPanel(id);
+        if (p) this.api.removePanel(p); // panel dispose stashes the element — blazor removes it from there
+        this.elementStore.delete(id);
+    }
+
+    activatePanel(id) {
+        this.api?.getPanel(id)?.api?.setActive?.();
+    }
+
+    floatPanel(id) {
+        const p = this.api?.getPanel(id);
+        if (p) this.api.addFloatingGroup(p);
+    }
+
+    maximizePanel(id) {
+        const p = this.api?.getPanel(id);
+        if (p) { p.api?.setActive?.(); p.api?.maximize?.(); }
+    }
+
+    exitMaximized() {
+        try { this.api?.exitMaximizedGroup?.(); } catch { /* noop */ }
     }
 
     setOptions(options) {

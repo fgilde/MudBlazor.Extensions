@@ -24,6 +24,12 @@ public partial class MudExDockItem
 
     [ForJs, Parameter] public string Title { get; set; } = "Panel";
     [ForJs, Parameter] public DockDirection Direction { get; set; } = DockDirection.Right;
+
+    /// <summary>
+    /// Id of another panel this item should be stacked with as a tab (instead of splitting by <see cref="Direction"/>).
+    /// Only used for panels added at runtime after the initial bootstrap.
+    /// </summary>
+    [ForJs, Parameter] public string StackWith { get; set; }
     [ForJs, Parameter] public bool HideHeader { get; set; }
     [ForJs, Parameter] public bool Float { get; set; }
     [ForJs, Parameter] public bool Locked { get; set; }
@@ -100,6 +106,9 @@ public partial class MudExDockItem
             ParentItem.Children.Remove(this);
         else
             Layout?.UnregisterRoot(this);
+        // authoritative removal signal for runtime panels — dom diffing can't tell a
+        // blazor removal apart from dockview's onlyWhenVisible detach
+        Layout?.NotifyItemDisposed(Id);
         return base.DisposeAsync();
     }
 }

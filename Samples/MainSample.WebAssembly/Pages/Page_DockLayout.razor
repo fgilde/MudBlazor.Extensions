@@ -5,6 +5,8 @@
 
 <MudButton OnClick="@Save">@L["Save Current layout"]</MudButton>
 <MudButton Disabled="@(string.IsNullOrWhiteSpace(json))" OnClick="@Restore">@L["Restore saved layout"]</MudButton>
+<MudButton OnClick="@AddDynamicPanel" Color="Color.Success">Add dynamic panel</MudButton>
+<MudButton OnClick="@RemoveLastDynamicPanel" Disabled="@(!_dynamicPanels.Any())" Color="Color.Error">Remove last dynamic panel</MudButton>
 
 <MudExDockLayout @ref="_layout">
     <MudExDockItem Title="LeftArea" Direction="DockDirection.Below">
@@ -31,6 +33,14 @@
     <MudExDockItem Direction="DockDirection.Right" Title="Super Right">
         <MudText Class="mb-5" Typo="Typo.h4" Color="Color.Secondary">@L["Sample Headline"]</MudText>
     </MudExDockItem>
+    @* dynamic items MUST come last and WITHOUT @key: dockview adopts the rendered nodes,
+       so blazor must only ever append at the end (positional diff) — keyed moves detach nodes *@
+    @foreach (var name in _dynamicPanels)
+    {
+        <MudExDockItem Id="@name" Title="@name" StackWith="@(_dynamicPanels.IndexOf(name) > 0 ? _dynamicPanels[0] : null)">
+            <MudText Class="pa-4" Typo="Typo.h6">Dynamic content of @name</MudText>
+        </MudExDockItem>
+    }
 </MudExDockLayout>
 
 
@@ -38,7 +48,12 @@
     int cc = 0;
     private MudExDockLayout? _layout;
     private string json;
+    private List<string> _dynamicPanels = new();
+    private int _panelCounter;
 
+    private void AddDynamicPanel() => _dynamicPanels.Add($"dyn-{++_panelCounter}");
+
+    private void RemoveLastDynamicPanel() => _dynamicPanels.RemoveAt(_dynamicPanels.Count - 1);
 
     private async Task Save()
     {
