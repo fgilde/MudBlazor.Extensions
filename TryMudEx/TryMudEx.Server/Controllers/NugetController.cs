@@ -25,21 +25,22 @@ namespace TryMudEx.Server.Controllers
         }
 
         [HttpGet("package/{packageId}/{version}")]
-        public async Task<IActionResult> GetSamples(string packageId, string version)
+        public async Task<IActionResult> GetPackage(string packageId, string version)
         {
             var packageUrl = $"https://www.nuget.org/api/v2/package/{packageId}/{version}";
             var responseMessage = await _httpClient.GetAsync(packageUrl);
 
             if (!responseMessage.IsSuccessStatusCode)
             {
-                // Handle the error appropriately. For example, you can return a 500 status code
-                return StatusCode((int)HttpStatusCode.InternalServerError);
+                return StatusCode((int)responseMessage.StatusCode);
             }
 
             var stream = await responseMessage.Content.ReadAsStreamAsync();
             var contentDisposition = responseMessage.Content.Headers.ContentDisposition?.ToString();
 
-            // Return the stream from the other server directly to your client
+            // id+version is immutable on nuget.org — let the browser cache the nupkg (both wasm instances profit)
+            Response.Headers.CacheControl = "public, max-age=31536000, immutable";
+
             return File(stream, "application/octet-stream", contentDisposition ?? "package.zip");
         }
 
