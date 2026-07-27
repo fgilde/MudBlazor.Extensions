@@ -389,6 +389,7 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2025-10-14 19:02:28 -->
+ - 9.7.0 > Update to MudBlazor 9.7.0
  - 9.5.0 > Add date, time and typed range sliders with zoom and custom templates for [MudExRangeSlider](https://www.mudex.org/range-slider)
  - 9.5.0 > New Style editor and Class editor components, now used in MudExComponentPropertyGrid
  - 9.5.0 > More correct cancellation support for long running operations
