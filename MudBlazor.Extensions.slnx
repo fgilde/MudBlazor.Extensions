@@ -42,5 +42,7 @@
   <Project Path="MudBlazor.Extensions.CodeGator.Adapter/MudBlazor.Extensions.CodeGator.Adapter.csproj" />
   <Project Path="MudBlazor.Extensions.Tests/MudBlazor.Extensions.Tests.csproj" />
   <Project Path="MudBlazor.Extensions/MudBlazor.Extensions.csproj" />
-  <Project Path="Playzor.Blazor/Playzor.Blazor.csproj" />
+  <Project Path="Playzor.Blazor/Playzor.Blazor.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
 </Solution>
