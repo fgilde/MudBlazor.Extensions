@@ -85,13 +85,17 @@
         <MudTooltip Text="@(LayoutService.IsDarkMode ? L["Switch to Light Theme"] : L["Switch to Dark Theme"])">
             <MudIconButton OnClick="@UpdateTheme" Icon="@(LayoutService.IsDarkMode ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" />
         </MudTooltip>
-        <div class="brand ml-2 d-flex align-center" style="gap:6px;">
+        <a class="brand ml-2 d-flex align-center" href="/" title="@Branding.Current.Name">
             @if (Branding.IsPlayzor)
             {
-                <img src="@Branding.Current.LogoUrl" alt="@Branding.Current.Name" style="height:24px;width:24px;border-radius:6px;" />
+                @* the wordmark already contains the name, so no extra text next to it *@
+                <img class="repl-brand-logo" src="images/playzor-logo.png" alt="@Branding.Current.Name" />
             }
-            <MudExGradientText Typo="Typo.h6">@Branding.Current.Name</MudExGradientText>
-        </div>
+            else
+            {
+                <MudExGradientText Typo="Typo.h6">@Branding.Current.Name</MudExGradientText>
+            }
+        </a>
     </div>
 
     <div class="try-editor">

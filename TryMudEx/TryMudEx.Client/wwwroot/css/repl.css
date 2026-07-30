@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Repl shell layout (dock based). Loaded after TryMudEx.min.css and deliberately
  * overrides its pre-dock rules (.try-editor{height:100%}, .try-errorlist{position:absolute}).
  */
@@ -29,7 +29,7 @@
 }
 
 .repl-toolbar {
-    height: 44px;
+    height: 48px;
 }
 
 .repl-statusbar {
@@ -150,4 +150,16 @@
 
 .panel-menu-row .mud-list-item {
     flex-grow: 1;
+}
+
+/* brand wordmark in the toolbar — the image carries the name, so no label beside it */
+.repl-toolbar .repl-brand-logo {
+    height: 36px;
+    width: auto;
+    display: block;
+}
+
+.repl-toolbar a.brand {
+    text-decoration: none;
+    flex: 0 0 auto;
 }
