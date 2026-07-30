@@ -28,6 +28,19 @@ public class BrandingService
 
     public bool IsPlayzor => Current.Key.StartsWith("playzor", StringComparison.OrdinalIgnoreCase);
 
+    /// <summary>
+    /// The forced brand while developing, or null. Embeds append it so an iframe on localhost
+    /// shows the same brand as the page around it; on real domains the host decides and this is null.
+    /// </summary>
+    public string DevBrandOverride
+    {
+        get
+        {
+            _ = Current; // make sure the query was read
+            return _brandOverride;
+        }
+    }
+
     private Brand Resolve()
     {
         var uri = new Uri(_navigation.Uri);

@@ -2,7 +2,13 @@
 @using Try.Core
 @using MudBlazor.Extensions.Options
 @using TryMudEx.Client.Services
+@using TryMudEx.Client.Components
 
+@if (Branding.IsPlayzor)
+{
+    <PlayzorHome />
+    return;
+}
 
 <MudLayout Class="try-mudblazor-index">
     <MudAppBar Color="Color.Transparent" Fixed="false" Elevation="0">
@@ -240,7 +246,8 @@
                     </ul>
                 </MudItem>
             </MudGrid>
-            <MudText Align="Align.Center" Typo="Typo.body2" Class="mb-8 mt-16"><MudLink Typo="Typo.body2" Href="https://github.com/MudBlazor/TryMudEx/blob/main/LICENSE" Target="_blank">GNU General Public License v2.0.</MudLink></MudText>
+            <MudText Align="Align.Center" Typo="Typo.body2" Class="mb-4 mt-16"><MudLink Typo="Typo.body2" Href="https://github.com/MudBlazor/TryMudEx/blob/main/LICENSE" Target="_blank">GNU General Public License v2.0.</MudLink></MudText>
+            <SiteFooter />
         </MudContainer>
     </MudMainContent>
 </MudLayout>

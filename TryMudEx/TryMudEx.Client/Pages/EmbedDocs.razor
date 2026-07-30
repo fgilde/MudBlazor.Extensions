@@ -1,59 +1,112 @@
-@page "/embed-docs"
+﻿@page "/embed-docs"
 @using Microsoft.JSInterop
 @using Playzor.Blazor
 @using Try.Core
-@layout MainLayout
+@using TryMudEx.Client.Components
+@layout EmptyLayout
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="py-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">Embed a playground</MudText>
-    <MudText Class="mb-6">
-        Every snippet can be embedded into any website. Either drop in an iframe or — in Blazor apps —
-        use the <code>Playzor.Blazor</code> package.
-    </MudText>
+<div class="pz-page">
+    <header class="pz-nav">
+        <a class="pz-logo" href="/">
+            <img class="pz-logo-mark" src="@Brand.LogoUrl" alt="@Brand.Name" />
+            <span class="pz-logo-text">@Brand.Name</span>
+        </a>
+        <nav class="pz-nav-links">
+            <a href="/embed-docs">@L["Embedding"]</a>
+            <a href="/snippet" class="pz-btn pz-btn-primary">@L["Open the editor"]</a>
+        </nav>
+    </header>
 
-    <MudText Typo="Typo.h6" GutterBottom="true">1. Plain iframe</MudText>
-    <MudTextField T="string" Value="@IframeSnippet" Lines="3" ReadOnly="true" Variant="Variant.Outlined"
-                  Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Outlined.ContentCopy"
-                  OnAdornmentClick="@(() => CopyAsync(IframeSnippet))" Class="mb-4" />
+    <main class="pz-docs">
+        <h1>@L["Embed a playground"]</h1>
+        <p class="pz-lead">
+            @L["Every snippet is embeddable. Readers edit the code and run it right on your page — the code lives in the url, so there is nothing to store and no API key to manage."]
+        </p>
 
-    <MudText Typo="Typo.h6" GutterBottom="true">2. Blazor component</MudText>
-    <MudTextField T="string" Value="@ComponentSnippet" Lines="3" ReadOnly="true" Variant="Variant.Outlined"
-                  Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Outlined.ContentCopy"
-                  OnAdornmentClick="@(() => CopyAsync(ComponentSnippet))" Class="mb-6" />
+        <section>
+            <h2>@L["Live example"]</h2>
+            <p>@L["This is a real embed. Change the code and press Run."]</p>
+            <MudPaper Outlined="true" Class="mb-3" Style="overflow:hidden; border-radius:12px;">
+                <PlayzorPlayground Host="@Host" Code="@DemoCode" Height="380px" View="@_view" ReadOnly="@_readOnly" />
+            </MudPaper>
+            <div class="d-flex align-center flex-wrap" style="gap:20px;">
+                <MudSelect T="PlayzorView" Value="@_view" ValueChanged="@(v => _view = v)" Label="@L["View"]"
+                           Dense="true" Variant="Variant.Outlined" Style="max-width:170px;">
+                    @foreach (var view in Enum.GetValues<PlayzorView>())
+                    {
+                        <MudSelectItem Value="@view">@view</MudSelectItem>
+                    }
+                </MudSelect>
+                <MudSwitch T="bool" Value="@_readOnly" ValueChanged="@(v => _readOnly = v)" Label="@L["Read only"]" Color="Color.Primary" />
+            </div>
+        </section>
 
-    <MudText Typo="Typo.h6" GutterBottom="true">Live example</MudText>
-    <MudPaper Outlined="true" Class="mb-2">
-        <PlayzorPlayground Host="@Host" Code="@DemoCode" Height="420px" View="@_view" ReadOnly="@_readOnly" />
-    </MudPaper>
-    <div class="d-flex align-center flex-wrap" style="gap:16px;">
-        <MudSelect T="PlayzorView" Value="@_view" ValueChanged="@(v => _view = v)" Label="View" Dense="true" Style="max-width:160px;">
-            @foreach (var view in Enum.GetValues<PlayzorView>())
-            {
-                <MudSelectItem Value="@view">@view</MudSelectItem>
-            }
-        </MudSelect>
-        <MudSwitch T="bool" Value="@_readOnly" ValueChanged="@(v => _readOnly = v)" Label="Read only" Color="Color.Primary" />
-    </div>
-</MudContainer>
+        <section>
+            <h2>1. @L["Plain iframe"]</h2>
+            <p>@L["Works on any website — a blog, docs, a CMS page."]</p>
+            @RenderSnippet(IframeSnippet)
+        </section>
+
+        <section>
+            <h2>2. @L["Blazor component"]</h2>
+            <p>@L["In a Blazor app install the package and pass the code as a parameter."]</p>
+            <pre class="pz-code"><code>dotnet add package Playzor.Blazor</code></pre>
+            @RenderSnippet(ComponentSnippet)
+            <p class="mt-4">@L["Several files work too — folders become sub namespaces, exactly like in a real project:"]</p>
+            @RenderSnippet(MultiFileSnippet)
+        </section>
+
+        <section>
+            <h2>@L["Options"]</h2>
+            <p>@L["Append them to the embed url as query parameters, or set them as parameters on the component."]</p>
+            <table class="pz-table">
+                <thead>
+                    <tr>
+                        <th>@L["Url"]</th>
+                        <th>@L["Component"]</th>
+                        <th>@L["Default"]</th>
+                        <th>@L["Meaning"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var option in Options)
+                    {
+                        <tr>
+                            <td><code>@option.Query</code></td>
+                            <td><code>@option.Parameter</code></td>
+                            <td><code>@option.Default</code></td>
+                            <td>@option.Meaning</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>@L["Sizing"]</h2>
+            <p>
+                @L["The iframe keeps the height you give it. If you would rather have it follow its content, use the component with"]
+                <code>AutoHeight</code> @L["— it listens for the size message the embed posts to the hosting page."]
+            </p>
+        </section>
+
+        <section>
+            <h2>@L["Where does the code live?"]</h2>
+            <p>
+                @L["Snippet code is deflated and base64url encoded into the url, so an embed is self contained and works offline in your page. Saved snippets can be embedded by their id instead, which keeps the url short."]
+            </p>
+        </section>
+    </main>
+
+    <SiteFooter />
+</div>
 
 @code {
-    [Inject] private NavigationManager Navigation { get; set; }
-    [Inject] private IJSRuntime Js { get; set; }
-
-    private PlayzorView _view = PlayzorView.Split;
-    private bool _readOnly;
-
-    private const string DemoCode = "<MudAlert Severity=\"Severity.Success\">Edit me and hit Run</MudAlert>";
-
-    private string Host => Navigation.BaseUri.TrimEnd('/');
-
-    private string IframeSnippet =>
-        $"<iframe src=\"{Host}/embed/{InlineCode.Encode(new[] { new CodeFile { Path = CoreConstants.MainComponentFilePath, Content = DemoCode } })}\"\n" +
-        "        style=\"width:100%;height:420px;border:0\" title=\"Playground\"></iframe>";
-
-    private const string ComponentSnippet =
-        "@* dotnet add package Playzor.Blazor *@\n" +
-        "<PlayzorPlayground Code=\"@(\"<MudAlert>Hi</MudAlert>\")\" Height=\"420px\" />";
-
-    private async Task CopyAsync(string text) => await Js.InvokeVoidAsync("navigator.clipboard.writeText", text);
+    private RenderFragment RenderSnippet(string snippet) =>
+        @<div class="d-flex align-start" style="gap:8px;">
+            <pre class="pz-code flex-grow-1" style="margin-bottom:0;"><code>@snippet</code></pre>
+            <MudTooltip Text="@L["Copy"]">
+                <MudIconButton Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@(() => CopyAsync(snippet))" />
+            </MudTooltip>
+        </div>;
 }

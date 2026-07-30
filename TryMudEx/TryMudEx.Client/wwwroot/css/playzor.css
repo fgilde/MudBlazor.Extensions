@@ -1,0 +1,405 @@
+﻿/*
+ * Playzor product pages (landing, embedding guide) and the shared site footer.
+ * Standalone on purpose: these pages are marketing surface, not MudBlazor demos, so they
+ * only borrow the palette variables and bring their own layout.
+ */
+
+.pz-page {
+    --pz-bg: var(--mud-palette-background);
+    --pz-surface: var(--mud-palette-surface);
+    --pz-text: var(--mud-palette-text-primary);
+    --pz-muted: var(--mud-palette-text-secondary);
+    --pz-line: var(--mud-palette-lines-default);
+    --pz-accent: #4c7dfd;
+    --pz-accent-2: #8b5cf6;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--pz-bg);
+    color: var(--pz-text);
+    font-family: Inter, Roboto, system-ui, sans-serif;
+}
+
+/* ---------- nav ---------- */
+
+.pz-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px clamp(16px, 5vw, 64px);
+    border-bottom: 1px solid var(--pz-line);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    background: color-mix(in srgb, var(--pz-bg) 88%, transparent);
+}
+
+.pz-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -.01em;
+}
+
+.pz-logo-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    display: block;
+    object-fit: contain;
+}
+
+.pz-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pz-nav-links > a:not(.pz-btn) {
+    color: var(--pz-muted);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.pz-nav-links > a:not(.pz-btn):hover {
+    color: var(--pz-text);
+    background: color-mix(in srgb, var(--pz-muted) 12%, transparent);
+}
+
+/* ---------- buttons ---------- */
+
+.pz-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+
+.pz-btn-lg {
+    padding: 14px 26px;
+    font-size: 16px;
+}
+
+.pz-btn-primary {
+    color: #fff;
+    background: linear-gradient(135deg, var(--pz-accent), var(--pz-accent-2));
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--pz-accent) 35%, transparent);
+}
+
+.pz-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px color-mix(in srgb, var(--pz-accent) 45%, transparent);
+}
+
+.pz-btn-ghost {
+    color: var(--pz-text);
+    border-color: var(--pz-line);
+    background: transparent;
+}
+
+.pz-btn-ghost:hover {
+    background: color-mix(in srgb, var(--pz-muted) 12%, transparent);
+}
+
+/* ---------- hero ---------- */
+
+.pz-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+    padding: clamp(40px, 7vw, 96px) clamp(16px, 5vw, 64px);
+}
+
+@media (max-width: 1100px) {
+    .pz-hero {
+        grid-template-columns: 1fr;
+    }
+}
+
+.pz-hero h1 {
+    margin: 0 0 18px;
+    font-size: clamp(34px, 4.6vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -.03em;
+    font-weight: 800;
+}
+
+.pz-hero-copy > p {
+    margin: 0 0 28px;
+    max-width: 44ch;
+    font-size: clamp(16px, 1.4vw, 19px);
+    line-height: 1.6;
+    color: var(--pz-muted);
+}
+
+.pz-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.pz-hero-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    color: var(--pz-muted);
+}
+
+.pz-hero-facts li::before {
+    content: "✓";
+    margin-right: 7px;
+    color: var(--pz-accent);
+    font-weight: 700;
+}
+
+/* ---------- fake browser window ---------- */
+
+.pz-window {
+    border: 1px solid var(--pz-line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--pz-surface);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .28);
+}
+
+.pz-window-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--pz-line);
+    background: color-mix(in srgb, var(--pz-muted) 10%, transparent);
+}
+
+.pz-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.pz-dot-red { background: #ff5f57; }
+.pz-dot-yellow { background: #febc2e; }
+.pz-dot-green { background: #28c840; }
+
+.pz-window-title {
+    margin-left: 10px;
+    font-size: 12px;
+    color: var(--pz-muted);
+    font-family: monospace;
+}
+
+/* ---------- features ---------- */
+
+.pz-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    padding: clamp(24px, 4vw, 56px) clamp(16px, 5vw, 64px);
+}
+
+.pz-feature {
+    padding: 24px;
+    border: 1px solid var(--pz-line);
+    border-radius: 14px;
+    background: var(--pz-surface);
+}
+
+.pz-feature-icon {
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+.pz-feature h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.pz-feature p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--pz-muted);
+}
+
+/* ---------- embed teaser ---------- */
+
+.pz-embed-teaser {
+    padding: clamp(24px, 4vw, 72px) clamp(16px, 5vw, 64px);
+}
+
+.pz-embed-copy {
+    padding: clamp(24px, 3vw, 44px);
+    border: 1px solid var(--pz-line);
+    border-radius: 18px;
+    background:
+        radial-gradient(120% 140% at 100% 0%, color-mix(in srgb, var(--pz-accent) 16%, transparent), transparent 60%),
+        var(--pz-surface);
+}
+
+.pz-embed-copy h2 {
+    margin: 0 0 12px;
+    font-size: clamp(24px, 2.6vw, 34px);
+    letter-spacing: -.02em;
+    font-weight: 800;
+}
+
+.pz-embed-copy > p {
+    margin: 0 0 20px;
+    max-width: 60ch;
+    color: var(--pz-muted);
+    line-height: 1.6;
+}
+
+.pz-code {
+    margin: 0 0 22px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--pz-line);
+    background: var(--pz-bg);
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.pz-code code {
+    white-space: pre;
+}
+
+/* ---------- docs layout ---------- */
+
+.pz-docs {
+    padding: clamp(28px, 5vw, 64px) clamp(16px, 5vw, 64px);
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    flex: 1 1 auto;
+}
+
+.pz-docs h1 {
+    margin: 0 0 10px;
+    font-size: clamp(30px, 3.6vw, 44px);
+    letter-spacing: -.025em;
+    font-weight: 800;
+}
+
+.pz-docs > p.pz-lead {
+    margin: 0 0 40px;
+    max-width: 66ch;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--pz-muted);
+}
+
+.pz-docs section {
+    margin-bottom: 44px;
+}
+
+.pz-docs h2 {
+    margin: 0 0 14px;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.pz-docs p {
+    line-height: 1.65;
+    color: var(--pz-muted);
+}
+
+.pz-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+    display: block;
+    overflow-x: auto;
+}
+
+.pz-table th,
+.pz-table td {
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--pz-line);
+    white-space: nowrap;
+}
+
+.pz-table td:last-child {
+    white-space: normal;
+    color: var(--pz-muted);
+}
+
+.pz-table th {
+    font-weight: 600;
+    color: var(--pz-muted);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.pz-table code,
+.pz-docs p code {
+    font-family: monospace;
+    font-size: 13px;
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: color-mix(in srgb, var(--pz-muted) 15%, transparent);
+}
+
+/* ---------- footer ---------- */
+
+.site-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 26px 16px;
+    margin-top: auto;
+    border-top: 1px solid var(--mud-palette-lines-default);
+    font-size: 14px;
+    color: var(--mud-palette-text-secondary);
+}
+
+.site-footer a {
+    color: var(--mud-palette-text-primary);
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    text-decoration: underline;
+}
+
+.site-footer-sep {
+    opacity: .5;
+}
+
+/* the badge is cropped to its own edges, so no frame or shadow of ours */
+.pz-hero-logo {
+    display: block;
+    width: min(340px, 78%);
+    height: auto;
+    margin: 0 0 26px -4px;
+}

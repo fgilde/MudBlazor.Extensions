@@ -16,6 +16,9 @@
             <MudIconButton OnClick="ShowSaveSnippetPopup" Icon="@Icons.Material.Outlined.Save" />
         </MudTooltip>
         <SaveSnippetPopup @bind-Visible="SaveSnippetPopupVisible" CodeFiles="@CodeFiles.Values" UpdateActiveCodeFileContentAction="CollectAllEditorContent" />
+        <MudTooltip Text="@L["Embed this snippet"]">
+            <MudIconButton OnClick="@ShowEmbedDialog" Icon="@Icons.Material.Outlined.Code" />
+        </MudTooltip>
         <MudTooltip Text="@L["Download"]">
             <MudIconButton OnClick="Download" Icon="@Icons.Material.Outlined.Download" />
         </MudTooltip>
@@ -82,7 +85,13 @@
         <MudTooltip Text="@(LayoutService.IsDarkMode ? L["Switch to Light Theme"] : L["Switch to Dark Theme"])">
             <MudIconButton OnClick="@UpdateTheme" Icon="@(LayoutService.IsDarkMode ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" />
         </MudTooltip>
-        <div class="brand ml-2"><MudExGradientText Typo="Typo.h6">@Branding.Current.Name</MudExGradientText></div>
+        <div class="brand ml-2 d-flex align-center" style="gap:6px;">
+            @if (Branding.IsPlayzor)
+            {
+                <img src="@Branding.Current.LogoUrl" alt="@Branding.Current.Name" style="height:24px;width:24px;border-radius:6px;" />
+            }
+            <MudExGradientText Typo="Typo.h6">@Branding.Current.Name</MudExGradientText>
+        </div>
     </div>
 
     <div class="try-editor">

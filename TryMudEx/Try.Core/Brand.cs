@@ -15,7 +15,16 @@ namespace Try.Core
         public string Title { get; init; } = "TryMudEx - A playground for testing MudBlazor.Extensions and MudBlazor";
         public string Description { get; init; } = "Write, compile, execute and share Blazor components entirely in the browser.";
         public string CanonicalHost { get; init; } = "https://try.mudex.org";
+
+        /// <summary>Square mark, used in the app loader and as the base for the favicon.</summary>
         public string LogoUrl { get; init; } = "images/Logo.png";
+
+        /// <summary>Favicon (32px) — falls back to the logo when the brand has no dedicated icon.</summary>
+        public string FaviconUrl { get; init; } = "images/logo.png";
+
+        /// <summary>Wide image for social previews (og:image / twitter:image).</summary>
+        public string SocialImageUrl { get; init; } = "sample-data/logo.png";
+
         public string AccentColor { get; init; } = "#ab68ff";
         public string Culture { get; init; } = "en";
 
@@ -34,7 +43,10 @@ namespace Try.Core
             Title = "Playzor - The Blazor playground",
             Description = "Write, compile and share Blazor components right in your browser. No setup, no install.",
             CanonicalHost = "https://playzor.net",
-            AccentColor = "#2f7cf6",
+            LogoUrl = "images/playzor-icon-192.png",
+            FaviconUrl = "images/playzor-icon-32.png",
+            SocialImageUrl = "images/playzor-social.png",
+            AccentColor = "#7c3aed",
             DefaultSnippet = PlayzorDefaultSnippet,
         };
 

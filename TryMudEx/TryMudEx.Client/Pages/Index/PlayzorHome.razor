@@ -1,0 +1,65 @@
+﻿@using Playzor.Blazor
+@using TryMudEx.Client.Components
+
+<div class="pz-page">
+    <header class="pz-nav">
+        <a class="pz-logo" href="/">
+            <img class="pz-logo-mark" src="@Brand.LogoUrl" alt="@Brand.Name" />
+            <span class="pz-logo-text">@Brand.Name</span>
+        </a>
+        <nav class="pz-nav-links">
+            <a href="/embed-docs">@L["Embedding"]</a>
+            <a href="/snippet" class="pz-btn pz-btn-primary">@L["Open the editor"]</a>
+        </nav>
+    </header>
+
+    <section class="pz-hero">
+        <div class="pz-hero-copy">
+            <img class="pz-hero-logo" src="images/playzor-logo.png" alt="@Brand.Name" />
+            <h1>@L["Blazor, straight in your browser."]</h1>
+            <p>@L["Write a component, hit run, share the link. No SDK, no project file, no build server — the compiler runs in your browser tab."]</p>
+            <div class="pz-hero-actions">
+                <a href="/snippet" class="pz-btn pz-btn-primary pz-btn-lg">@L["Start coding"]</a>
+                <a href="/embed-docs" class="pz-btn pz-btn-ghost pz-btn-lg">@L["Embed it anywhere"]</a>
+            </div>
+            <ul class="pz-hero-facts">
+                <li>@L["Runs offline in the browser"]</li>
+                <li>@L["Multiple files and folders"]</li>
+                <li>@L["NuGet packages"]</li>
+            </ul>
+        </div>
+        <div class="pz-hero-demo">
+            <div class="pz-window">
+                <div class="pz-window-bar">
+                    <span class="pz-dot pz-dot-red"></span>
+                    <span class="pz-dot pz-dot-yellow"></span>
+                    <span class="pz-dot pz-dot-green"></span>
+                    <span class="pz-window-title">@Brand.CanonicalHost.Replace("https://", string.Empty)</span>
+                </div>
+                <PlayzorPlayground Host="@Host" Code="@HeroSnippet" Height="340px" View="PlayzorView.Split" />
+            </div>
+        </div>
+    </section>
+
+    <section class="pz-features">
+        @foreach (var feature in Features)
+        {
+            <article class="pz-feature">
+                <div class="pz-feature-icon">@feature.Icon</div>
+                <h3>@feature.Title</h3>
+                <p>@feature.Text</p>
+            </article>
+        }
+    </section>
+
+    <section class="pz-embed-teaser">
+        <div class="pz-embed-copy">
+            <h2>@L["Put a live playground on your own page"]</h2>
+            <p>@L["One iframe, or one component in a Blazor app. Readers edit the code and run it without leaving your site."]</p>
+            <pre class="pz-code"><code>@EmbedTeaserSnippet</code></pre>
+            <a href="/embed-docs" class="pz-btn pz-btn-primary">@L["Read the embedding guide"]</a>
+        </div>
+    </section>
+
+    <SiteFooter />
+</div>

@@ -405,6 +405,28 @@ public partial class Repl : IDisposable
         SaveSnippetPopupVisible = true;
     }
 
+    private async Task ShowEmbedDialog()
+    {
+        CollectAllEditorContent();
+
+        await DialogService.ShowComponentInDialogAsync<EmbedDialog>(L["Embed this snippet"],
+            L["Paste the snippet into any page — the code travels inside the url, nothing needs to be saved."],
+            cmp =>
+            {
+                cmp.Files = CodeFiles.Values.ToList();
+                cmp.SnippetId = SnippetId;
+            },
+            new DialogParameters { { nameof(MudExMessageDialog.Icon), Icons.Material.Outlined.Code } },
+            options =>
+            {
+                options.Resizeable = true;
+                options.FullWidth = true;
+                options.MaxWidth = MaxWidth.Large;
+                options.CloseButton = true;
+                options.DragMode = MudDialogDragMode.Simple;
+            });
+    }
+
     // ---------- dock / editor panel handling ----------
 
     private async Task OpenFile(string path)

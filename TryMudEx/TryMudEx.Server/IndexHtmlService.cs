@@ -79,6 +79,8 @@ namespace TryMudEx.Server
                 .Replace("{{BRAND_DESCRIPTION}}", brand.Description, StringComparison.Ordinal)
                 .Replace("{{BRAND_CANONICAL}}", brand.CanonicalHost, StringComparison.Ordinal)
                 .Replace("{{BRAND_LOGO}}", brand.LogoUrl, StringComparison.Ordinal)
+                .Replace("{{BRAND_FAVICON}}", brand.FaviconUrl, StringComparison.Ordinal)
+                .Replace("{{BRAND_SOCIAL}}", brand.SocialImageUrl, StringComparison.Ordinal)
                 .Replace("{{BRAND_ACCENT}}", brand.AccentColor, StringComparison.Ordinal)
                 .Replace("{{BRAND_CULTURE}}", brand.Culture, StringComparison.Ordinal);
 

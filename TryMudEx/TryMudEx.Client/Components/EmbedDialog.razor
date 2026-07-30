@@ -1,0 +1,75 @@
+@using TryMudEx.Client.Models
+
+<div class="embed-dialog">
+    <MudGrid Spacing="4">
+        <MudItem xs="12" md="5">
+            <MudText Typo="Typo.subtitle2" Class="mb-2">@L["Options"]</MudText>
+
+            <MudSelect T="EmbedView" Value="@_options.View" ValueChanged="@(v => Update(_options with { View = v }))"
+                       Label="@L["View"]" Dense="true" Variant="Variant.Outlined" Class="mb-3">
+                @foreach (var view in Enum.GetValues<EmbedView>())
+                {
+                    <MudSelectItem Value="@view">@L[view.ToString()]</MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudSelect T="string" Value="@_options.Theme" ValueChanged="@(v => Update(_options with { Theme = v }))"
+                       Label="@L["Theme"]" Dense="true" Variant="Variant.Outlined" Class="mb-3">
+                <MudSelectItem Value="@("auto")">@L["Auto"]</MudSelectItem>
+                <MudSelectItem Value="@("light")">@L["Light"]</MudSelectItem>
+                <MudSelectItem Value="@("dark")">@L["Dark"]</MudSelectItem>
+            </MudSelect>
+
+            @if (Files.Count() > 1)
+            {
+                <MudSelect T="string" Value="@_options.File" ValueChanged="@(v => Update(_options with { File = v }))"
+                           Label="@L["Start file"]" Dense="true" Variant="Variant.Outlined" Class="mb-3" Clearable="true">
+                    @foreach (var file in Files)
+                    {
+                        <MudSelectItem Value="@file.Path">@file.Path</MudSelectItem>
+                    }
+                </MudSelect>
+            }
+
+            <MudTextField T="string" Value="@_height" ValueChanged="@(v => { _height = v; StateHasChanged(); })"
+                          Label="@L["Height"]" Dense="true" Variant="Variant.Outlined" Class="mb-3" Immediate="true" />
+
+            <MudSwitch T="bool" Value="@(!_options.ReadOnly)" ValueChanged="@(v => Update(_options with { ReadOnly = !v }))"
+                       Label="@L["Editable"]" Color="Color.Primary" />
+            <MudSwitch T="bool" Value="@_options.AutoRun" ValueChanged="@(v => Update(_options with { AutoRun = v }))"
+                       Label="@L["Run on load"]" Color="Color.Primary" />
+            <MudSwitch T="bool" Value="@(!_options.HideHeader)" ValueChanged="@(v => Update(_options with { HideHeader = !v }))"
+                       Label="@L["Show toolbar"]" Color="Color.Primary" />
+        </MudItem>
+
+        <MudItem xs="12" md="7">
+            <MudText Typo="Typo.subtitle2" Class="mb-2">@L["Live preview"]</MudText>
+            <MudPaper Outlined="true" Class="mb-4" Style="overflow:hidden;">
+                <iframe src="@EmbedUrl" style="@($"width:100%;height:{_height};border:0;display:block;")" title="Embed preview"></iframe>
+            </MudPaper>
+
+            <MudTabs Elevation="0" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pt-3">
+                <MudTabPanel Text="HTML">
+                    @RenderSnippet(IframeSnippet)
+                </MudTabPanel>
+                <MudTabPanel Text="Blazor">
+                    @RenderSnippet(ComponentSnippet)
+                </MudTabPanel>
+                <MudTabPanel Text="@L["Link"]">
+                    @RenderSnippet(EmbedUrl)
+                </MudTabPanel>
+            </MudTabs>
+        </MudItem>
+    </MudGrid>
+</div>
+
+@code {
+    private RenderFragment RenderSnippet(string snippet) =>
+        @<div class="d-flex align-start" style="gap:8px;">
+            <MudTextField T="string" Value="@snippet" ReadOnly="true" Lines="@(snippet.Contains('\n') ? 3 : 1)"
+                          Variant="Variant.Outlined" Class="flex-grow-1 embed-snippet" />
+            <MudTooltip Text="@L["Copy"]">
+                <MudIconButton Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@(() => CopyAsync(snippet))" />
+            </MudTooltip>
+        </div>;
+}
