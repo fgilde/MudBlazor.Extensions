@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -11,7 +11,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" />
     <PackageReference Include="System.Runtime.Loader" />
     <PackageReference Include="System.Net.Http.Json" />
-    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" />
     <!-- WICHTIG: aktueller Roslyn-Compiler für neue C#-Features -->
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" />
@@ -21,7 +20,9 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)' != 'Release'">
+  <!-- the library lives in this repo, so build against the sources in every configuration:
+       referencing the published package in Release made the playground lag one release behind -->
+  <ItemGroup>
     <ProjectReference Include="..\..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
   </ItemGroup>
   
