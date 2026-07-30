@@ -6,4 +6,7 @@ public static class ReplStorageKeys
     public const string TempCode = "__temp_code";
     public const string Layout = "trymudex.layout.v1";
     public const string OpenFiles = "trymudex.openfiles.v1";
+
+    /// <summary>User saved layouts: name → dockview json.</summary>
+    public const string NamedLayouts = "trymudex.layouts.v1";
 }

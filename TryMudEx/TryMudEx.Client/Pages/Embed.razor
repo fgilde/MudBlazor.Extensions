@@ -25,6 +25,8 @@
                 </button>
             }
             <button type="button" class="embed-action" title="@ViewToggleTitle" @onclick="@CycleView">@ViewToggleLabel</button>
+            <a class="embed-action embed-open" href="@EditUrl" target="_blank" rel="noopener"
+               title="@($"{L["Open in"]} {BrandName}")">↗ @BrandName</a>
         </div>
     }
 

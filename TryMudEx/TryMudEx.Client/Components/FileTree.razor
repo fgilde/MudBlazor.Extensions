@@ -13,7 +13,8 @@
             <MudMenu Dense="true" Size="Size.Small">
                 <ActivatorContent>
                     <MudTooltip Text="@L["Add from template"]">
-                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.PostAdd" />
+                        @* without an explicit toggle the icon swallows the click and the menu never opens *@
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.PostAdd" OnClick="@context.ToggleAsync" />
                     </MudTooltip>
                 </ActivatorContent>
                 <ChildContent>

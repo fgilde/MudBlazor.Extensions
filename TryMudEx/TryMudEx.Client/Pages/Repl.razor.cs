@@ -484,6 +484,9 @@ public partial class Repl : IDisposable
 
     private void HandlePanelRemoved(string panelId)
     {
+        // a layout restore tears every panel down before rebuilding — those removals are
+        // not the user closing a file, so they must not tombstone the open files
+        if (_restoringLayout) return;
         if (panelId?.StartsWith("ed:") != true) return;
 
         var path = panelId[3..];
@@ -528,30 +531,135 @@ public partial class Repl : IDisposable
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
+    // ---------------- panels ----------------
+
     private static readonly Dictionary<string, (string Title, string Direction)> StaticPanels = new()
     {
         ["files"] = ("Files", "left"),
+        ["preview"] = ("Preview", "right"),
         ["errors"] = ("Errors", "below"),
         ["console"] = ("Console", "below"),
     };
 
+    /// <summary>Panel ids dockview currently holds — refreshed when the panels menu opens.</summary>
+    private HashSet<string> _openPanels = new();
+
+    private bool IsPanelOpen(string id) => _openPanels.Contains(id);
+
+    private async Task RefreshOpenPanelsAsync()
+    {
+        if (_dock == null) return;
+        try
+        {
+            var ids = await _dock.GetPanelIdsAsync();
+            _openPanels = ids?.ToHashSet() ?? new HashSet<string>();
+            StateHasChanged();
+        }
+        catch { /* dock not ready yet */ }
+    }
+
     private async Task TogglePanel(string id)
     {
         if (_dock == null || !StaticPanels.TryGetValue(id, out var meta)) return;
-        // re-add is a no-op when the panel is already there; otherwise restore it
-        await _dock.AddPanelAsync(JsonConvert.SerializeObject(new
+
+        if (_openPanels.Contains(id))
         {
-            id,
-            title = meta.Title,
-            direction = meta.Direction,
-            stackWith = id == "console" ? "errors" : null,
-        }));
-        await _dock.ActivatePanelAsync(id);
+            await _dock.RemovePanelAsync(id);
+        }
+        else
+        {
+            await _dock.AddPanelAsync(JsonConvert.SerializeObject(new
+            {
+                id,
+                title = L[meta.Title],
+                direction = meta.Direction,
+                stackWith = id == "console" ? "errors" : null,
+                canClose = id != "preview",
+            }));
+            await _dock.ActivatePanelAsync(id);
+        }
+
+        await RefreshOpenPanelsAsync();
+        await PersistLayoutAsync();
+    }
+
+    private async Task PopoutPanel(string id)
+    {
+        if (_dock == null) return;
+        if (!_openPanels.Contains(id)) await TogglePanel(id);
+
+        var ok = await _dock.PopoutPanelAsync(id, "/popout.html");
+        if (!ok)
+            Snackbar.Add(L["Could not open a window — check your popup blocker."], Severity.Warning);
     }
 
     private async Task ShowErrorsPanel()
     {
-        await TogglePanel("errors");
+        if (_dock == null) return;
+        await RefreshOpenPanelsAsync();
+        if (!_openPanels.Contains("errors")) await TogglePanel("errors");
+        else await _dock.ActivatePanelAsync("errors");
+    }
+
+    // ---------------- named layouts ----------------
+
+    private Dictionary<string, string> _namedLayouts = new();
+
+    private async Task LoadNamedLayoutsAsync()
+    {
+        try
+        {
+            _namedLayouts = await Storage.GetItemAsync<Dictionary<string, string>>(ReplStorageKeys.NamedLayouts)
+                            ?? new Dictionary<string, string>();
+        }
+        catch
+        {
+            _namedLayouts = new Dictionary<string, string>();
+        }
+    }
+
+    private async Task SaveNamedLayoutAsync()
+    {
+        if (_dock == null) return;
+
+        var name = await DialogService.PromptAsync(L["Save layout"], L["Name for this layout"], string.Empty,
+            icon: Icons.Material.Outlined.Bookmark, canConfirm: s => !string.IsNullOrWhiteSpace(s));
+        if (string.IsNullOrWhiteSpace(name)) return;
+
+        var json = await _dock.SaveLayoutAsync();
+        if (string.IsNullOrWhiteSpace(json) || json == "{}") return;
+
+        _namedLayouts[name.Trim()] = json;
+        await Storage.SetItemAsync(ReplStorageKeys.NamedLayouts, _namedLayouts);
+        Snackbar.Add($"{L["Layout saved"]}: {name}", Severity.Success);
+    }
+
+    private bool _restoringLayout;
+
+    private async Task ApplyNamedLayoutAsync(string name)
+    {
+        if (_dock == null || !_namedLayouts.TryGetValue(name, out var json)) return;
+
+        _restoringLayout = true;
+        try
+        {
+            await _dock.RestoreLayoutAsync(json);
+            await Task.Delay(100); // let the teardown events pass while the guard is up
+        }
+        finally
+        {
+            _restoringLayout = false;
+        }
+
+        await Storage.SetItemAsStringAsync(LayoutStorageKey, json);
+        await RefreshOpenPanelsAsync();
+    }
+
+    private async Task DeleteNamedLayoutAsync(string name)
+    {
+        if (!_namedLayouts.Remove(name)) return;
+        await Storage.SetItemAsync(ReplStorageKeys.NamedLayouts, _namedLayouts);
+        StateHasChanged();
     }
 
     private CodeFile AddCodeFile(CodeFile codefile)

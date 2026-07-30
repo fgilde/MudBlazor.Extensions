@@ -142,3 +142,12 @@
 .console-output .console-line {
     padding: 1px 0;
 }
+
+/* menu rows that carry a trailing icon button (panel popout, layout delete) */
+.panel-menu-row {
+    padding-right: 4px;
+}
+
+.panel-menu-row .mud-list-item {
+    flex-grow: 1;
+}

@@ -35,14 +35,48 @@
         <MudMenu Dense="true" CloseOnClickOutside="true">
             <ActivatorContent>
                 <MudTooltip Text="@L["Panels"]">
-                    <MudIconButton Icon="@Icons.Material.Outlined.GridView" />
+                    <MudIconButton Icon="@Icons.Material.Outlined.GridView" OnClick="@(async () => { await RefreshOpenPanelsAsync(); await context.ToggleAsync(); })" />
                 </MudTooltip>
             </ActivatorContent>
             <ChildContent>
-                <MudMenuItem OnClick="@(() => TogglePanel("files"))">@L["Files"]</MudMenuItem>
-                <MudMenuItem OnClick="@(() => TogglePanel("errors"))">@L["Errors"]</MudMenuItem>
-                <MudMenuItem OnClick="@(() => TogglePanel("console"))">@L["Console"]</MudMenuItem>
-                <MudMenuItem OnClick="@ResetLayout">@L["Reset layout"]</MudMenuItem>
+                @foreach (var (id, meta) in StaticPanels)
+                {
+                    <div class="d-flex align-center panel-menu-row">
+                        <MudMenuItem OnClick="@(() => TogglePanel(id))" Class="flex-grow-1"
+                                     Icon="@(IsPanelOpen(id) ? Icons.Material.Outlined.CheckBox : Icons.Material.Outlined.CheckBoxOutlineBlank)">
+                            @L[meta.Title]
+                        </MudMenuItem>
+                        <MudTooltip Text="@L["Open in new window"]">
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.OpenInNew"
+                                           OnClick="@(() => PopoutPanel(id))" />
+                        </MudTooltip>
+                    </div>
+                }
+            </ChildContent>
+        </MudMenu>
+        <MudMenu Dense="true" CloseOnClickOutside="true">
+            <ActivatorContent>
+                <MudTooltip Text="@L["Layout"]">
+                    <MudIconButton Icon="@Icons.Material.Outlined.Dashboard" OnClick="@(async () => { await LoadNamedLayoutsAsync(); await context.ToggleAsync(); })" />
+                </MudTooltip>
+            </ActivatorContent>
+            <ChildContent>
+                <MudMenuItem OnClick="@SaveNamedLayoutAsync" Icon="@Icons.Material.Outlined.Bookmark">@L["Save layout"]</MudMenuItem>
+                <MudMenuItem OnClick="@ResetLayout" Icon="@Icons.Material.Outlined.RestartAlt">@L["Reset layout"]</MudMenuItem>
+                @if (_namedLayouts.Any())
+                {
+                    <MudDivider />
+                    @foreach (var name in _namedLayouts.Keys.OrderBy(k => k))
+                    {
+                        <div class="d-flex align-center panel-menu-row">
+                            <MudMenuItem OnClick="@(() => ApplyNamedLayoutAsync(name))" Class="flex-grow-1">@name</MudMenuItem>
+                            <MudTooltip Text="@L["Delete"]">
+                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete"
+                                               OnClick="@(() => DeleteNamedLayoutAsync(name))" />
+                            </MudTooltip>
+                        </div>
+                    }
+                }
             </ChildContent>
         </MudMenu>
         <MudTooltip Text="@(LayoutService.IsDarkMode ? L["Switch to Light Theme"] : L["Switch to Dark Theme"])">

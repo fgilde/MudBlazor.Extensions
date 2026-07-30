@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 
 namespace TryMudEx.Client.Services;
@@ -58,6 +58,12 @@ public class PlaygroundLocalizer
             ["Manage Nuget packages"] = "NuGet-Pakete verwalten",
             ["Panels"] = "Bereiche",
             ["Reset layout"] = "Layout zurücksetzen",
+            ["Layout"] = "Layout",
+            ["Save layout"] = "Layout speichern",
+            ["Layout saved"] = "Layout gespeichert",
+            ["Name for this layout"] = "Name für dieses Layout",
+            ["Open in new window"] = "In neuem Fenster öffnen",
+            ["Could not open a window — check your popup blocker."] = "Fenster konnte nicht geöffnet werden — Popup-Blocker prüfen.",
             ["Switch to Light Theme"] = "Zu hellem Design wechseln",
             ["Switch to Dark Theme"] = "Zu dunklem Design wechseln",
 

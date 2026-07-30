@@ -124,3 +124,11 @@
 .embed-error a:hover {
     text-decoration: underline;
 }
+
+/* "open in playground" sits in the header next to the actions, not only in the footer */
+.embed-action.embed-open {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: var(--mud-palette-primary);
+}

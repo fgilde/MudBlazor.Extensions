@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Playground panel</title>
+    <base href="/" />
+    <!--
+        Host page for dockview popout groups. Intentionally almost empty: dockview clones the
+        stylesheets of the opener into this document and moves the panel's dom node in here.
+        Blazor is NOT started again — the node keeps belonging to the opener's renderer.
+    -->
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #1e1e1e;
+        }
+
+        body > .dv-popout-window {
+            height: 100%;
+        }
+    </style>
+</head>
+<body></body>
+</html>

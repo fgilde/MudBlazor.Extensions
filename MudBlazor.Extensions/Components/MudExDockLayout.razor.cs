@@ -114,6 +114,20 @@ namespace MudBlazor.Extensions.Components
         public Task FloatPanelAsync(string id)
             => JsReference!.InvokeVoidAsync("floatPanel", id).AsTask();
 
+        /// <summary>Ids of all panels dockview currently holds (open panels).</summary>
+        public Task<string[]> GetPanelIdsAsync()
+            => JsReference!.InvokeAsync<string[]>("getPanelIds").AsTask();
+
+        /// <summary>
+        /// Moves the panel into a real browser window. Needs a host page (default /popout.html)
+        /// that is served from the same origin; dockview copies the stylesheets into it.
+        /// </summary>
+        public Task<bool> PopoutPanelAsync(string id, string popoutUrl = null)
+            => JsReference!.InvokeAsync<bool>("popoutPanel", id, popoutUrl).AsTask();
+
+        public Task<bool> IsPopoutAsync(string id)
+            => JsReference!.InvokeAsync<bool>("isPopout", id).AsTask();
+
         public Task MaximizePanelAsync(string id)
             => JsReference!.InvokeVoidAsync("maximizePanel", id).AsTask();
 

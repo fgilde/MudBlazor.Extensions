@@ -266,9 +266,36 @@
         this.api?.getPanel(id)?.api?.setActive?.();
     }
 
+    /// ids of all panels currently held by dockview
+    getPanelIds() {
+        return (this.api?.panels ?? []).map(p => p.id);
+    }
+
     floatPanel(id) {
         const p = this.api?.getPanel(id);
         if (p) this.api.addFloatingGroup(p);
+    }
+
+    /// moves a panel into a real browser window (dockview copies the stylesheets over)
+    async popoutPanel(id, popoutUrl) {
+        const panel = this.api?.getPanel(id);
+        if (!panel) return false;
+        try {
+            await this.api.addPopoutGroup(panel, {
+                popoutUrl: popoutUrl || '/popout.html',
+                onDidOpen: ({ id: groupId, window: w }) => { try { w.document.title = panel.title || groupId; } catch { /* noop */ } },
+            });
+            return true;
+        } catch (e) {
+            console.warn('popout failed', e);
+            return false;
+        }
+    }
+
+    /// true when the panel currently lives in a popout window
+    isPopout(id) {
+        const group = this.api?.getPanel(id)?.group;
+        return group?.api?.location?.type === 'popout';
     }
 
     maximizePanel(id) {
