@@ -2478,6 +2478,12 @@
             Style for divider
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDockItem.StackWith">
+            <summary>
+            Id of another panel this item should be stacked with as a tab (instead of splitting by <see cref="P:MudBlazor.Extensions.Components.MudExDockItem.Direction"/>).
+            Only used for panels added at runtime after the initial bootstrap.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDockItem.OnInitialized">
             <inheritdoc />
         </member>
@@ -2537,6 +2543,18 @@
         <member name="F:MudBlazor.Extensions.Components.DockDirection.Within">
             <summary>
             Dock within the target panel
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.AddPanelAsync(System.String)">
+            <summary>Adds a panel at runtime. Options JSON uses the same shape as MudExDockItem's data-options (id, title, direction, stackWith, ...).</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.GetPanelIdsAsync">
+            <summary>Ids of all panels dockview currently holds (open panels).</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.PopoutPanelAsync(System.String,System.String)">
+            <summary>
+            Moves the panel into a real browser window. Needs a host page (default /popout.html)
+            that is served from the same origin; dockview copies the stylesheets into it.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.DropBoxFileInfo">
@@ -15486,6 +15504,13 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData`2.InitValueBinding(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta,System.Func{System.Threading.Tasks.Task})">
             <summary>
             Initializes the value binding for the current render data.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData`2.ToFieldType(`0)">
+            <summary>
+            Runs the configured converter, falling back to the field types default when it cannot handle
+            the current value. A converter like int.Parse throws on null and on an empty string, and a
+            property that simply has no value yet is normal - it must not take the whole render tree down.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData`2.AddAttributesIf(System.Func{`0,System.Boolean},System.Boolean,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
