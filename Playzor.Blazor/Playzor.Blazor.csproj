@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <PackageId>Playzor.Blazor</PackageId>
+    <Authors>Florian Gilde</Authors>
+    <Description>Embed a live, editable Blazor playground (playzor.net / try.mudex.org) into any Blazor app with a single component.</Description>
+    <PackageProjectUrl>https://playzor.net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/fgilde/MudBlazor.Extensions</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>Blazor, Playground, Embed, Playzor, MudBlazor, Snippet, Live Code</PackageTags>
+    <Copyright>Copyright © $(Authors) 2026-$([System.DateTime]::Now.Year)</Copyright>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <!-- central package management pins 10.x, so older target frameworks need their own floor -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" VersionOverride="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" VersionOverride="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Condition="'$(TargetFramework)' == 'net10.0'" />
+  </ItemGroup>
+
+</Project>

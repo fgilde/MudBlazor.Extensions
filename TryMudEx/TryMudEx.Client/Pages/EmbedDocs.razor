@@ -1,0 +1,59 @@
+@page "/embed-docs"
+@using Microsoft.JSInterop
+@using Playzor.Blazor
+@using Try.Core
+@layout MainLayout
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="py-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">Embed a playground</MudText>
+    <MudText Class="mb-6">
+        Every snippet can be embedded into any website. Either drop in an iframe or — in Blazor apps —
+        use the <code>Playzor.Blazor</code> package.
+    </MudText>
+
+    <MudText Typo="Typo.h6" GutterBottom="true">1. Plain iframe</MudText>
+    <MudTextField T="string" Value="@IframeSnippet" Lines="3" ReadOnly="true" Variant="Variant.Outlined"
+                  Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Outlined.ContentCopy"
+                  OnAdornmentClick="@(() => CopyAsync(IframeSnippet))" Class="mb-4" />
+
+    <MudText Typo="Typo.h6" GutterBottom="true">2. Blazor component</MudText>
+    <MudTextField T="string" Value="@ComponentSnippet" Lines="3" ReadOnly="true" Variant="Variant.Outlined"
+                  Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Outlined.ContentCopy"
+                  OnAdornmentClick="@(() => CopyAsync(ComponentSnippet))" Class="mb-6" />
+
+    <MudText Typo="Typo.h6" GutterBottom="true">Live example</MudText>
+    <MudPaper Outlined="true" Class="mb-2">
+        <PlayzorPlayground Host="@Host" Code="@DemoCode" Height="420px" View="@_view" ReadOnly="@_readOnly" />
+    </MudPaper>
+    <div class="d-flex align-center flex-wrap" style="gap:16px;">
+        <MudSelect T="PlayzorView" Value="@_view" ValueChanged="@(v => _view = v)" Label="View" Dense="true" Style="max-width:160px;">
+            @foreach (var view in Enum.GetValues<PlayzorView>())
+            {
+                <MudSelectItem Value="@view">@view</MudSelectItem>
+            }
+        </MudSelect>
+        <MudSwitch T="bool" Value="@_readOnly" ValueChanged="@(v => _readOnly = v)" Label="Read only" Color="Color.Primary" />
+    </div>
+</MudContainer>
+
+@code {
+    [Inject] private NavigationManager Navigation { get; set; }
+    [Inject] private IJSRuntime Js { get; set; }
+
+    private PlayzorView _view = PlayzorView.Split;
+    private bool _readOnly;
+
+    private const string DemoCode = "<MudAlert Severity=\"Severity.Success\">Edit me and hit Run</MudAlert>";
+
+    private string Host => Navigation.BaseUri.TrimEnd('/');
+
+    private string IframeSnippet =>
+        $"<iframe src=\"{Host}/embed/{InlineCode.Encode(new[] { new CodeFile { Path = CoreConstants.MainComponentFilePath, Content = DemoCode } })}\"\n" +
+        "        style=\"width:100%;height:420px;border:0\" title=\"Playground\"></iframe>";
+
+    private const string ComponentSnippet =
+        "@* dotnet add package Playzor.Blazor *@\n" +
+        "<PlayzorPlayground Code=\"@(\"<MudAlert>Hi</MudAlert>\")\" Height=\"420px\" />";
+
+    private async Task CopyAsync(string text) => await Js.InvokeVoidAsync("navigator.clipboard.writeText", text);
+}

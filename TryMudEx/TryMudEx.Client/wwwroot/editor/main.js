@@ -112,6 +112,9 @@ window.Try = {
             iFrame.src = bustedSrc;
         }, 0);
     },
+    prefersDark: function () {
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    },
     dispose: function () {
         _dotNetInstance = null;
         window.removeEventListener('keydown', onKeyDown);

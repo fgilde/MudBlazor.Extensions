@@ -46,3 +46,7 @@ MudBlazor.Extensions/*Undefined*/
 
 # stray build output from the MSB3021 doc-copy target
 TryMudEx/MudBlazor.Extensions/
+
+# build output (global — new projects must not check these in)
+bin/
+obj/

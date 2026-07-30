@@ -25,6 +25,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Try.Core\Try.Core.csproj" />
+    <!-- the playground dogfoods its own embed package on the embed docs page -->
+    <ProjectReference Include="..\..\Playzor.Blazor\Playzor.Blazor.csproj" />
   </ItemGroup>
 
   <ItemGroup>

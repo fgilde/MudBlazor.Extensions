@@ -29,7 +29,6 @@ public partial class Embed : IDisposable
     [Inject] public NuGetPackageSearcher PackageSearch { get; set; }
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public IJSInProcessRuntime JsRuntime { get; set; }
-    [Inject] private LayoutService LayoutService { get; set; }
 
     [Parameter] public string SnippetId { get; set; }
     [Parameter] public string Sample { get; set; }
@@ -48,11 +47,13 @@ public partial class Embed : IDisposable
 
     private string MonacoTheme => IsDark ? "vs-dark" : "default";
 
+    private bool _prefersDark;
+
     private bool IsDark => _options.Theme switch
     {
         "dark" => true,
         "light" => false,
-        _ => LayoutService.IsDarkMode,
+        _ => _prefersDark, // "auto" follows the visitor's browser, not the playground's own setting
     };
 
     private string BrandName => "MudEx";
@@ -87,6 +88,11 @@ public partial class Embed : IDisposable
     protected override async Task OnInitializedAsync()
     {
         _options = EmbedOptions.Parse(NavigationManager.Uri);
+
+        if (_options.Theme == "auto")
+        {
+            try { _prefersDark = JsRuntime.Invoke<bool>("Try.prefersDark"); } catch { /* keep light */ }
+        }
 
         try
         {
