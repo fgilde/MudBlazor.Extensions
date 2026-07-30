@@ -23,6 +23,13 @@
             public static string SetMarkers = "Try.Editor.setMarkers";
         }
 
+        public static class Preview
+        {
+            public static string PushTheme = "Try.Preview.pushTheme";
+            public static string RequestRun = "Try.Preview.requestRun";
+            public static string Listen = "Try.Preview.listen";
+        }
+
         public static class CodeExecution
         {
             public static string UpdateUserComponentsDLL = "Try.CodeExecution.updateUserComponentsDll";

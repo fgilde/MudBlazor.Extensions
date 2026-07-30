@@ -163,3 +163,31 @@
     text-decoration: none;
     flex: 0 0 auto;
 }
+
+/* empty preview inside the iframe — centered, so it reads as a start screen and not as docs */
+.preview-placeholder {
+    /* fixed: the placeholder owns the whole iframe, and the layout wrapper around it has no height */
+    position: fixed;
+    inset: 0;
+    overflow: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 6px;
+    padding: 24px;
+}
+
+.preview-placeholder-logo {
+    width: min(260px, 60%);
+    height: auto;
+    margin-bottom: 12px;
+    opacity: .95;
+}
+
+.preview-placeholder-text {
+    max-width: 42ch;
+    color: var(--mud-palette-text-secondary);
+}

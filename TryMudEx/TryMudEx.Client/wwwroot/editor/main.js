@@ -69,6 +69,16 @@ function onKeyDown(e) {
     }
 }
 
+// the preview iframe is a second wasm instance and cannot call our services directly,
+// so its run button arrives as a message
+function onWindowMessage(e) {
+    if (e.origin !== window.location.origin || !e.data || e.data.__playzor !== 'run') { return; }
+
+    if (_dotNetInstance && _dotNetInstance.invokeMethodAsync) {
+        throttle(() => _dotNetInstance.invokeMethodAsync('TriggerCompileAsync'), 1000, 'compile');
+    }
+}
+
 function throttle(func, timeFrame, id) {
     const now = new Date();
     if (now - throttleLastTimeFuncNameMappings[id] >= timeFrame) {
@@ -85,6 +95,7 @@ window.Try = {
         throttleLastTimeFuncNameMappings['compile'] = new Date();
 
         window.addEventListener('keydown', onKeyDown);
+        window.addEventListener('message', onWindowMessage);
     },
     changeDisplayUrl: function (url) {
         if (!url) { return; }
@@ -118,6 +129,7 @@ window.Try = {
     dispose: function () {
         _dotNetInstance = null;
         window.removeEventListener('keydown', onKeyDown);
+        window.removeEventListener('message', onWindowMessage);
     }
 }
 
@@ -286,6 +298,37 @@ window.Try.Embed = window.Try.Embed || (function () {
             _observer = new ResizeObserver(post);
             _observer.observe(document.documentElement);
             post();
+        }
+    };
+}());
+
+window.Try.Preview = window.Try.Preview || (function () {
+    let _dotNetRef = null;
+    let _listening = false;
+
+    return {
+        // repl -> preview: the iframe reads dark/light from its url on load, so a live
+        // toggle has to be pushed in
+        pushTheme: function (isDark) {
+            document.querySelectorAll('iframe#user-page-window').forEach(function (frame) {
+                try { frame.contentWindow.postMessage({ __playzor: 'theme', dark: !!isDark }, window.location.origin); } catch (e) { }
+            });
+        },
+
+        // preview -> repl: run button of the empty preview
+        requestRun: function () {
+            try { parent.postMessage({ __playzor: 'run' }, window.location.origin); } catch (e) { }
+        },
+
+        // called inside the iframe
+        listen: function (dotNetRef) {
+            _dotNetRef = dotNetRef;
+            if (_listening) { return; }
+            _listening = true;
+            window.addEventListener('message', function (e) {
+                if (e.origin !== window.location.origin || !e.data || e.data.__playzor !== 'theme') { return; }
+                try { _dotNetRef?.invokeMethodAsync('SetDarkMode', !!e.data.dark); } catch (err) { }
+            });
         }
     };
 }());

@@ -1,5 +1,7 @@
-﻿@using TryMudEx.Client.Services
+@using TryMudEx.Client.Services
+@using Microsoft.JSInterop
 @inherits LayoutComponentBase
+@implements IDisposable
 
 <MudThemeProvider Theme="@LayoutService.Theme" IsDarkMode="@LayoutService.IsDarkMode" />
 <MudPopoverProvider />
@@ -12,6 +14,9 @@
 @code {
 	[Inject] private LayoutService LayoutService { get; set; }
 	[Inject] private NavigationManager NavigationManager { get; set; }
+	[Inject] private IJSRuntime JsRuntime { get; set; }
+
+	private DotNetObjectReference<EmptyLayout> _selfRef;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -25,4 +30,30 @@
 	    }
 	    await base.OnInitializedAsync();
 	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		// this layout carries the preview iframe, which is its own wasm instance: theme changes
+		// in the repl around it can only arrive as a message
+		if (firstRender)
+		{
+			try
+			{
+				_selfRef = DotNetObjectReference.Create(this);
+				await JsRuntime.InvokeVoidAsync(Models.Try.Preview.Listen, _selfRef);
+			}
+			catch { /* without the listener the preview simply keeps the theme it loaded with */ }
+		}
+		await base.OnAfterRenderAsync(firstRender);
+	}
+
+	[JSInvokable]
+	public void SetDarkMode(bool dark)
+	{
+		if (LayoutService.IsDarkMode == dark) return;
+		LayoutService.SetDarkMode(dark);
+		StateHasChanged();
+	}
+
+	public void Dispose() => _selfRef?.Dispose();
 }

@@ -261,6 +261,14 @@ public partial class Repl : IDisposable
             }
         }
 
+        // the default layout knows the fixed panels only, so restored editor tabs would end up
+        // without a dock panel — they belong to a stored layout
+        if (_initialLayoutJson == null)
+        {
+            _openFiles.Clear();
+            _initialLayoutJson = BuildDefaultLayoutJson();
+        }
+
         CodeFileNames = GetCodeFileNames();
 
         _installedPackages = await GetInstalledAsync();
@@ -546,11 +554,57 @@ public partial class Repl : IDisposable
         catch { /* layout persistence is best effort */ }
     }
 
+    /// <summary>
+    /// Files and editor side by side, errors/console under them, preview full height on the right.
+    /// Written out as a dockview layout instead of relying on the declarative panel order, because
+    /// that order can only place panels relative to the whole grid — never below a single panel.
+    /// dockview flips the orientation per level (root horizontal, its branches vertical, …) and
+    /// scales the sizes to the container, so they are ratios rather than pixels.
+    /// </summary>
+    private string BuildDefaultLayoutJson()
+    {
+        object Leaf(string groupId, int size, params string[] views) => new
+        {
+            type = "leaf",
+            size,
+            data = new { id = groupId, views, activeView = views[0] }
+        };
+
+        object Branch(int size, params object[] children) => new { type = "branch", size, data = children };
+
+        object Panel(string id, string title) => new { id, title, renderer = "always" };
+
+        var root = Branch(800,
+            Branch(820,
+                Branch(500,
+                    Leaf("2", 250, "files"),
+                    Leaf("1", 570, MainEditorPanelId)),
+                Leaf("3", 300, "errors", "console")),
+            Leaf("4", 580, "preview"));
+
+        return JsonConvert.SerializeObject(new
+        {
+            grid = new { width = 1400, height = 800, orientation = "HORIZONTAL", root },
+            panels = new Dictionary<string, object>
+            {
+                [MainEditorPanelId] = Panel(MainEditorPanelId, CoreConstants.MainComponentFilePath),
+                ["files"] = Panel("files", L["Files"]),
+                ["errors"] = Panel("errors", L["Errors"]),
+                ["console"] = Panel("console", L["Console"]),
+                ["preview"] = Panel("preview", L["Preview"]),
+            },
+            activeGroup = "1",
+        });
+    }
+
     private async Task ResetLayout()
     {
         await Storage.RemoveItemAsync(LayoutStorageKey);
         await Storage.RemoveItemAsync(OpenFilesStorageKey);
-        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+
+        // extra editor tabs have to go before the restore: the default layout has no panel for them
+        await ResetOpenEditorsAsync();
+        await ApplyLayoutAsync(BuildDefaultLayoutJson(), persist: false);
     }
 
     // ---------------- panels ----------------
@@ -658,9 +712,12 @@ public partial class Repl : IDisposable
 
     private bool _restoringLayout;
 
-    private async Task ApplyNamedLayoutAsync(string name)
+    private Task ApplyNamedLayoutAsync(string name)
+        => _namedLayouts.TryGetValue(name, out var json) ? ApplyLayoutAsync(json) : Task.CompletedTask;
+
+    private async Task ApplyLayoutAsync(string json, bool persist = true)
     {
-        if (_dock == null || !_namedLayouts.TryGetValue(name, out var json)) return;
+        if (_dock == null || string.IsNullOrWhiteSpace(json)) return;
 
         _restoringLayout = true;
         try
@@ -673,7 +730,7 @@ public partial class Repl : IDisposable
             _restoringLayout = false;
         }
 
-        await Storage.SetItemAsStringAsync(LayoutStorageKey, json);
+        if (persist) await Storage.SetItemAsStringAsync(LayoutStorageKey, json);
         await RefreshOpenPanelsAsync();
     }
 
@@ -704,6 +761,8 @@ public partial class Repl : IDisposable
     private async void UpdateTheme()
     {
         await LayoutService.ToggleDarkMode();
+        // the preview is a separate wasm instance and only reads the theme from its url on load
+        JsRuntime.InvokeVoid(Models.Try.Preview.PushTheme, LayoutService.IsDarkMode);
     }
 
     private async Task Upload()
@@ -794,9 +853,16 @@ public partial class Repl : IDisposable
     {
         var packageParam = JsonConvert.SerializeObject(_installedPackages, CoreConstants.PackageSerializerSettings);
         // the user page reads dark/light from its url, so the preview follows the repl theme
-        var url = $"{MainUserPagePath}?packages={packageParam}&{(LayoutService.IsDarkMode ? "dark" : "light")}=true";
+        var url = $"{MainUserPagePath}?packages={packageParam}&{(LayoutService.IsDarkMode ? "dark" : "light")}=true{BrandQuery("&")}";
         JsRuntime.InvokeVoid(Models.Try.ReloadIframe, "user-page-window", url);
     }
+
+    // the preview is its own app instance and resolves its brand from its own url. On a real
+    // domain the host answers that; while developing with ?brand= it has to be passed on.
+    private string BrandQuery(string separator)
+        => string.IsNullOrEmpty(Branding.DevBrandOverride) ? string.Empty : $"{separator}brand={Branding.DevBrandOverride}";
+
+    private string UserPageInitialSrc => "/user-page" + BrandQuery("?");
 
     private async Task ShowSamples()
     {

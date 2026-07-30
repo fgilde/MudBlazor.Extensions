@@ -1,19 +1,44 @@
-﻿@page "/user-page"
+@page "/user-page"
 @using Try.Core
+@using TryMudEx.Client.Services
+@using Microsoft.JSInterop
+@inject BrandingService Branding
+@inject PlaygroundLocalizer L
+@inject IJSRuntime JsRuntime
 
-<MudContainer Class="mt-8">    
-    <MudText>This snippet hasn't been compiled yet.</MudText>
-    <MudText>Run the code on the left to see the result here.</MudText>
-    <MudText Typo="@Typo.h6" Class="mt-12">How to load your own service</MudText>
-    <MudText Class="mt-3">
-        To install a service which your snippet can use create a new *.cs file, <br/>
-        define a <code class="mud-primary-text">class UserStartup</code> with a <code class="mud-primary-text">public static void Configure(WebAssemblyHostBuilder builder)</code>. 
-    </MudText>
-    <br/>
-    <MudText>Here is an example. Note the required usings!</MudText>
-    <pre class="mt-6">
+@if (Branding.IsPlayzor)
+{
+    <div class="preview-placeholder">
+        <img class="preview-placeholder-logo" src="images/playzor-logo.png" alt="@Branding.Current.Name" />
+        <MudText Typo="Typo.h6">@L["Your preview shows up here."]</MudText>
+        <MudText Typo="Typo.body2" Class="preview-placeholder-text">
+            @L["Write your component on the left and run it — everything compiles in this browser tab."]
+        </MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-6"
+                   StartIcon="@Icons.Material.Rounded.PlayArrow" OnClick="@RequestRun">
+            @L["Run code"]
+        </MudButton>
+    </div>
+}
+else
+{
+    <MudContainer Class="mt-8">
+        <MudText>This snippet hasn't been compiled yet.</MudText>
+        <MudText>Run the code on the left to see the result here.</MudText>
+        <MudText Typo="@Typo.h6" Class="mt-12">How to load your own service</MudText>
+        <MudText Class="mt-3">
+            To install a service which your snippet can use create a new *.cs file, <br/>
+            define a <code class="mud-primary-text">class UserStartup</code> with a <code class="mud-primary-text">public static void Configure(WebAssemblyHostBuilder builder)</code>.
+        </MudText>
+        <br/>
+        <MudText>Here is an example. Note the required usings!</MudText>
+        <pre class="mt-6">
         @CoreConstants.StartupContent
     </pre>
-</MudContainer>
+    </MudContainer>
+}
 
-
+@code {
+    // the compile lives in the repl around this iframe, so the click travels back as a message
+    private Task RequestRun() => JsRuntime.InvokeVoidAsync(Models.Try.Preview.RequestRun).AsTask();
+}

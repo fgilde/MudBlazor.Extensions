@@ -118,7 +118,7 @@
                               OnRename="HandleRenameFile" OnDelete="HandleDeleteFile" />
                 </MudExDockItem>
                 <MudExDockItem Id="preview" Title="@L["Preview"]" Direction="DockDirection.Right" CanClose="false" Renderer="DockRendererMode.Always">
-                    <iframe style="height:100%; width:100%; border:none;" id="user-page-window" data-base-src="/user-page" src="/user-page"></iframe>
+                    <iframe style="height:100%; width:100%; border:none;" id="user-page-window" data-base-src="@UserPageInitialSrc" src="@UserPageInitialSrc"></iframe>
                 </MudExDockItem>
                 <MudExDockItem Id="errors" Title="@L["Errors"]" Direction="DockDirection.Below" InitialHeight="170" Renderer="DockRendererMode.Always">
                     <ErrorList OnDiagnosticClick="OpenDiagnostic" Diagnostics="@Diagnostics" />
@@ -155,7 +155,7 @@
                 <div style="flex:1; min-height:150px;">
                     <CodeEditor Id="@MobileEditorId" Theme="@EditorTheme" Code="@activeCodeFile?.Content" CodeFileType="@(activeCodeFile?.Type ?? CodeFileType.Razor)" />
                 </div>
-                <iframe style="flex:1; border:none;" id="user-page-window" data-base-src="/user-page" src="/user-page"></iframe>
+                <iframe style="flex:1; border:none;" id="user-page-window" data-base-src="@UserPageInitialSrc" src="@UserPageInitialSrc"></iframe>
             </div>
         </MudHidden>
     </div>

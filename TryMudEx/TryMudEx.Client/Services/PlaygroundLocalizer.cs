@@ -83,6 +83,12 @@ public class PlaygroundLocalizer
             ["No output yet. Run your code — Console.WriteLine and JS console output show up here."] =
                 "Noch keine Ausgabe. Führe deinen Code aus — Console.WriteLine und JS-Konsolenausgaben erscheinen hier.",
 
+            // empty preview
+            ["Your preview shows up here."] = "Hier erscheint deine Vorschau.",
+            ["Write your component on the left and run it — everything compiles in this browser tab."] =
+                "Schreib deine Komponente links und führe sie aus — kompiliert wird direkt in diesem Browser-Tab.",
+            ["Run code"] = "Code ausführen",
+
             // file tree
             ["New file"] = "Neue Datei",
             ["New folder (creates folder/File.razor)"] = "Neuer Ordner (erzeugt Ordner/Datei.razor)",
