@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
@@ -331,6 +332,10 @@ public partial class MudExTagField<T>
 
 public class ChipMouseEventArgs<T> : MouseEventArgs
 {
+    // the copy runs over reflection, and blazor only ever writes MouseEventArgs (it deserializes
+    // the browser event into it). A trimmed application therefore drops the getters nobody calls -
+    // ScreenX/ScreenY/MovementX/MovementY at the time of writing - and reading them throws.
+    [DynamicDependency(DynamicallyAccessedMemberTypes.PublicProperties, typeof(MouseEventArgs))]
     public static ChipMouseEventArgs<T> Create(MouseEventArgs args, T value) => args.MapTo<ChipMouseEventArgs<T>>().SetProperties(a => a.Value = value);
 
     public T Value { get; set; }

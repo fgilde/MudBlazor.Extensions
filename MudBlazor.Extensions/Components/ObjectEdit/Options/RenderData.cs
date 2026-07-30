@@ -47,7 +47,7 @@ public sealed class RenderData<TPropertyType, TFieldType> : RenderData
             return;
         // fallback if condition not match model, we try property value instead
         Conditions.Where(c => c.modelType == typeof(TPropertyType)).Apply(condition => (condition.condition(ValueWrapper.Value) ? condition.trueFn : condition.falseFn)(this));
-        Conditions.Where(c => c.modelType == typeof(TFieldType)).Apply(condition => (condition.condition(ToFieldTypeConverterFn(ValueWrapper.Value)) ? condition.trueFn : condition.falseFn)(this));
+        Conditions.Where(c => c.modelType == typeof(TFieldType)).Apply(condition => (condition.condition(ToFieldType(ValueWrapper.Value)) ? condition.trueFn : condition.falseFn)(this));
     }
 
     /// <summary>
@@ -78,11 +78,28 @@ public sealed class RenderData<TPropertyType, TFieldType> : RenderData
         };
 
         ValueWrapper = propertyMeta.As<TPropertyType>();
-        
-        Attributes.AddOrUpdate(ValueField, ToFieldTypeConverterFn(ValueWrapper.Value));
+
+        Attributes.AddOrUpdate(ValueField, ToFieldType(ValueWrapper.Value));
         AttachValueChanged(propertyMeta.ReferenceHolder, valueChanged);
         _bindingInitialized = true;
         return this;
+    }
+
+    /// <summary>
+    /// Runs the configured converter, falling back to the field types default when it cannot handle
+    /// the current value. A converter like int.Parse throws on null and on an empty string, and a
+    /// property that simply has no value yet is normal - it must not take the whole render tree down.
+    /// </summary>
+    private TFieldType ToFieldType(TPropertyType value)
+    {
+        try
+        {
+            return ToFieldTypeConverterFn(value);
+        }
+        catch (Exception)
+        {
+            return default;
+        }
     }
 
     /// <summary>
@@ -113,7 +130,7 @@ public sealed class RenderData<TPropertyType, TFieldType> : RenderData
         if (_cachedEventTarget == eventTarget && _cachedValueChanged == valueChanged && Attributes.ContainsKey(eventKeyName))
         {
             // Update value binding without recreating the callback
-            Attributes.AddOrUpdate(ValueField, ToFieldTypeConverterFn(ValueWrapper.Value));
+            Attributes.AddOrUpdate(ValueField, ToFieldType(ValueWrapper.Value));
             return true;
         }
         _cachedEventTarget = eventTarget;
@@ -128,7 +145,7 @@ public sealed class RenderData<TPropertyType, TFieldType> : RenderData
                         if (valueChanged != null)
                             await valueChanged.Invoke();
                     },
-                    ToFieldTypeConverterFn(ValueWrapper.Value)
+                    ToFieldType(ValueWrapper.Value)
                 )
             )
         ));

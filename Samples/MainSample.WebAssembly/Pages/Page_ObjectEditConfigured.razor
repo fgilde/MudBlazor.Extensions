@@ -107,8 +107,8 @@
             .IgnoreOnExportAndImport()
             .WrapInMudItem(i => i.xs = 12);
 
-        meta.Property(m => m.MainAddress.HouseNumber)
-            .RenderWith<MudNumericField<int>, string, int>(f => f.Value, tf => tf.Variant = Variant.Outlined, int.Parse, i => i.ToString())
+        meta.Property(m => m.MainAddress.HouseNumber)            
+            .RenderWith<MudNumericField<int>, string, int>(f => f.Value, tf => tf.Variant = Variant.Outlined, s => int.TryParse(s, out var n) ? n : 0, i => i.ToString())
             .WithDescription("Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import")
             .IgnoreOnImport()
             .WrapInMudItem(i => i.xs = 6);
