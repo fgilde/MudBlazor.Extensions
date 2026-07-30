@@ -1,3 +1,4 @@
+﻿@using Playzor.Blazor.Core
 @using TryMudEx.Client.Services
 @using Microsoft.JSInterop
 @inherits LayoutComponentBase
@@ -40,7 +41,7 @@
 			try
 			{
 				_selfRef = DotNetObjectReference.Create(this);
-				await JsRuntime.InvokeVoidAsync(Models.Try.Preview.Listen, _selfRef);
+				await JsRuntime.InvokeVoidAsync(PlayzorJs.Preview.Listen, _selfRef);
 			}
 			catch { /* without the listener the preview simply keeps the theme it loaded with */ }
 		}

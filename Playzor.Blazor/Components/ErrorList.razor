@@ -1,6 +1,6 @@
 ﻿@using Microsoft.CodeAnalysis
 
-<div class="diagnostics-panel d-flex flex-column" style="height:100%; min-height:0;">
+<div class="playzor-diagnostics d-flex flex-column" style="height:100%; min-height:0;">
     <div class="d-flex align-center px-2 py-1" style="gap:4px;">
         <MudChipSet T="string" SelectedValues="@_levels" SelectedValuesChanged="@(v => _levels = v?.ToHashSet() ?? new())"
                     SelectionMode="SelectionMode.MultiSelection" Size="Size.Small" Variant="Variant.Text" CheckMark="true">
@@ -13,16 +13,16 @@
         </MudTooltip>
     </div>
     <MudDivider />
-    <div class="diagnostics-list">
+    <div class="playzor-diagnostics-list">
         @foreach (var diagnostic in Filtered)
         {
-            <div class="diag-row" @onclick="@(() => Goto(diagnostic))" title="@diagnostic.Description">
+            <div class="playzor-diag-row" @onclick="@(() => Goto(diagnostic))" title="@diagnostic.Description">
                 <MudIcon Size="Size.Small"
                          Color="@(diagnostic.Severity == DiagnosticSeverity.Error ? Color.Error : Color.Warning)"
                          Icon="@(diagnostic.Severity == DiagnosticSeverity.Error ? Icons.Material.Outlined.ErrorOutline : Icons.Material.Outlined.WarningAmber)" />
-                <span class="diag-code">@diagnostic.Code</span>
-                <span class="diag-message">@diagnostic.Description</span>
-                <span class="diag-location">@Location(diagnostic)</span>
+                <span class="playzor-diag-code">@diagnostic.Code</span>
+                <span class="playzor-diag-message">@diagnostic.Description</span>
+                <span class="playzor-diag-location">@Location(diagnostic)</span>
             </div>
         }
         @if (!Filtered.Any())

@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Extensions;
 using Try.Core;
-using TryMudEx.Client.Services;
+using Playzor.Blazor.Services;
 
-namespace TryMudEx.Client.Components;
+namespace Playzor.Blazor.Components;
 
 public partial class FileTree
 {
     [Inject] private IDialogService DialogService { get; set; }
     [Inject] private ISnackbar Snackbar { get; set; }
-    [Inject] private PlaygroundLocalizer L { get; set; }
+    [Inject] private PlayzorLocalizer L { get; set; }
 
     [Parameter] public IEnumerable<CodeFile> Files { get; set; } = Array.Empty<CodeFile>();
     [Parameter] public string ActivePath { get; set; }

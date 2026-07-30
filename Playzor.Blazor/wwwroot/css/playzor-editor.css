@@ -1,0 +1,139 @@
+/*
+ * Structural rules of the PlayzorEditor shell. Everything that can be expressed on a single
+ * element is built with MudExStyleBuilder in the component itself, so only descendant selectors
+ * (panel internals, mud component overrides) live here.
+ */
+
+.playzor-editor {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.playzor-editor-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: block;
+    position: relative;
+}
+
+.playzor-editor-toolbar,
+.playzor-editor-statusbar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 8px;
+    background-color: var(--mud-palette-surface);
+    border-bottom: 1px solid var(--mud-palette-lines-default);
+}
+
+.playzor-editor-statusbar {
+    border-bottom: none;
+    border-top: 1px solid var(--mud-palette-lines-default);
+}
+
+.playzor-editor-statusbar.has-errors {
+    background-color: var(--mud-palette-error);
+    color: var(--mud-palette-error-text);
+}
+
+.playzor-editor-statusbar.has-warnings {
+    background-color: var(--mud-palette-warning);
+    color: var(--mud-palette-warning-text);
+}
+
+.playzor-editor-statusbar a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.playzor-editor-statusbar a:hover {
+    text-decoration: underline;
+}
+
+.playzor-status-button {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 6px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.playzor-status-button:hover {
+    background-color: rgba(128, 128, 128, .25);
+}
+
+/* dividers must not stretch inside the flex column panels */
+.playzor-file-tree > hr,
+.playzor-console > hr,
+.playzor-diagnostics > hr {
+    flex: 0 0 auto;
+    height: 1px;
+    margin: 0;
+}
+
+.playzor-file-tree > .mud-treeview {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+}
+
+.playzor-file-tree .mud-treeview-item-content {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.playzor-file-tree .mud-treeview-item-arrow {
+    min-width: 20px;
+}
+
+.playzor-diagnostics-list {
+    height: 100%;
+    overflow: auto;
+    font-size: 12px;
+}
+
+.playzor-diagnostics-list .playzor-diag-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--mud-palette-lines-default);
+}
+
+.playzor-diagnostics-list .playzor-diag-row:hover {
+    background-color: rgba(128, 128, 128, .15);
+}
+
+.playzor-diagnostics-list .playzor-diag-code,
+.playzor-diagnostics-list .playzor-diag-location {
+    flex: 0 0 auto;
+    font-family: monospace;
+    opacity: .75;
+}
+
+.playzor-diagnostics-list .playzor-diag-location {
+    white-space: nowrap;
+}
+
+.playzor-diagnostics-list .playzor-diag-message {
+    flex: 1 1 auto;
+    word-break: break-word;
+}
+
+.playzor-console-output .playzor-console-line {
+    padding: 1px 0;
+}
+
+/* menu rows that carry a trailing icon button (panel popout, layout delete) */
+.playzor-panel-menu-row {
+    padding-right: 4px;
+}
+
+.playzor-panel-menu-row .mud-list-item {
+    flex-grow: 1;
+}

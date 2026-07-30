@@ -1,4 +1,4 @@
-﻿namespace TryMudEx.Client.Components
+﻿namespace Playzor.Blazor.Components
 {
     using System;
     using System.Collections.Generic;
@@ -8,13 +8,13 @@
     using Microsoft.AspNetCore.Components;
     using Microsoft.CodeAnalysis;
     using Microsoft.JSInterop;
-    using TryMudEx.Client.Services;
+    using Playzor.Blazor.Services;
 
     public partial class ErrorList
     {
         [Inject] private IJSRuntime JsRuntime { get; set; }
 
-        [Inject] private PlaygroundLocalizer L { get; set; }
+        [Inject] private PlayzorLocalizer L { get; set; }
 
         [Parameter]
         public IReadOnlyCollection<CompilationDiagnostic> Diagnostics { get; set; } = Array.Empty<CompilationDiagnostic>();

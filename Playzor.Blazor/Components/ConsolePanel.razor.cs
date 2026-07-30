@@ -4,19 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using TryMudEx.Client.Services;
+using Playzor.Blazor.Services;
 
-namespace TryMudEx.Client.Components;
+namespace Playzor.Blazor.Components;
 
 public record ConsoleEntry(string Level, string Text, long Ts);
 
 public partial class ConsolePanel : IDisposable
 {
     private const int MaxEntries = 2000;
-    private const string ScrollContainerId = "try-console-output";
+    private const string ScrollContainerId = "playzor-console-output-container";
 
     [Inject] public IJSRuntime JsRuntime { get; set; }
-    [Inject] private PlaygroundLocalizer L { get; set; }
+    [Inject] private PlayzorLocalizer L { get; set; }
 
     private readonly List<ConsoleEntry> _entries = new();
     private DotNetObjectReference<ConsolePanel> _ref;
@@ -48,7 +48,7 @@ public partial class ConsolePanel : IDisposable
         if (firstRender)
         {
             _ref = DotNetObjectReference.Create(this);
-            var existing = await JsRuntime.InvokeAsync<ConsoleEntry[]>("Try.Console.init", _ref);
+            var existing = await JsRuntime.InvokeAsync<ConsoleEntry[]>(PlayzorJs.Console.Init, _ref);
             if (existing?.Length > 0)
             {
                 _entries.AddRange(existing);
@@ -71,14 +71,14 @@ public partial class ConsolePanel : IDisposable
         if (_follow)
         {
             await Task.Yield(); // render first, then scroll
-            await JsRuntime.InvokeVoidAsync("Try.Console.scrollToBottom", "#" + ScrollContainerId);
+            await JsRuntime.InvokeVoidAsync(PlayzorJs.Console.ScrollToBottom, "#" + ScrollContainerId);
         }
     }
 
     private void Clear()
     {
         _entries.Clear();
-        JsRuntime.InvokeVoidAsync("Try.Console.clear");
+        JsRuntime.InvokeVoidAsync(PlayzorJs.Console.Clear);
     }
 
     private async Task CopyAsync()
@@ -89,7 +89,7 @@ public partial class ConsolePanel : IDisposable
 
     public void Dispose()
     {
-        JsRuntime.InvokeVoidAsync("Try.Console.dispose");
+        JsRuntime.InvokeVoidAsync(PlayzorJs.Console.Dispose);
         _ref?.Dispose();
     }
 }

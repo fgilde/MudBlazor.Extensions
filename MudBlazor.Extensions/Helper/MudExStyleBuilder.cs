@@ -195,7 +195,8 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithStyle(string styleString, bool when = true)
     {
-        if (!when)
+        // an empty style is the normal case for an unset Style parameter, not a reason to throw
+        if (!when || string.IsNullOrEmpty(styleString))
             return this;
         styleString.Split(';')
             .Select(p => p.Split(':'))

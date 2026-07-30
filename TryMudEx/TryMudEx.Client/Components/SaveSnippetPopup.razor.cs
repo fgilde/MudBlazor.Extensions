@@ -1,11 +1,11 @@
-namespace TryMudEx.Client.Components
+﻿namespace TryMudEx.Client.Components
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using TryMudEx.Client.Services;
-    using TryMudEx.Client.Models;
+    using Playzor.Blazor.Core;
     using Try.Core;
     using Microsoft.AspNetCore.Components;
     using Microsoft.JSInterop;
@@ -59,7 +59,7 @@ namespace TryMudEx.Client.Components
                 var snippetId = await this.SnippetsService.SaveSnippetAsync(this.CodeFiles);
                 var urlBuilder = new UriBuilder(this.NavigationManager.BaseUri) { Path = $"snippet/{snippetId}" };
                 this.SnippetLink = urlBuilder.Uri.ToString();
-                this.JsRuntime.InvokeVoid(Try.ChangeDisplayUrl, SnippetLink);
+                this.JsRuntime.InvokeVoid(PlayzorJs.ChangeDisplayUrl, SnippetLink);
             }
             catch (InvalidOperationException ex)
             {

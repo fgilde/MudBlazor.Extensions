@@ -1,7 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Try.Core;
 using TryMudEx.Client.Services;
+using Playzor.Blazor.Services;
 
 namespace TryMudEx.Client.Pages.Index;
 
@@ -10,7 +11,7 @@ public partial class PlayzorHome
 {
     [Inject] private NavigationManager Navigation { get; set; }
     [Inject] private BrandingService Branding { get; set; }
-    [Inject] private PlaygroundLocalizer L { get; set; }
+    [Inject] private PlayzorLocalizer L { get; set; }
 
     private Brand Brand => Branding.Current;
 

@@ -1,4 +1,4 @@
-using MudBlazor.Extensions;
+﻿using MudBlazor.Extensions;
 
 namespace TryMudEx.Client
 {
@@ -8,6 +8,8 @@ namespace TryMudEx.Client
     using System.Reflection;
     using System.Threading.Tasks;
     using Blazored.LocalStorage;
+    using Playzor.Blazor;
+    using Playzor.Blazor.Core;
     using TryMudEx.Client.Models;
     using TryMudEx.Client.Services;
     using Try.Core;
@@ -42,9 +44,6 @@ namespace TryMudEx.Client
             builder.Services.AddScoped<SnippetsService>();
             //builder.Services.AddSingleton(new CompilationService());
             
-            builder.Services.AddScoped<NuGetPackageSearcher>();
-            builder.Services.AddScoped<NugetReferenceService>();
-            builder.Services.AddScoped<CompilationService>();
 
             builder.Services
                 .AddOptions<SnippetsOptions>()
@@ -57,10 +56,11 @@ namespace TryMudEx.Client
                 .EnableOneDriveIntegration(AppIds.OneDrive));
 
             builder.Services.AddBlazoredLocalStorage();
+            // editor, monaco interop, compilation and the localizer come from the playzor package
+            builder.Services.AddPlayzor();
             builder.Services.AddScoped<IUserPreferencesService, UserPreferencesService>();
             builder.Services.AddScoped<LayoutService>();
             builder.Services.AddScoped<BrandingService>();
-            builder.Services.AddScoped<PlaygroundLocalizer>();
 
             var jsRuntime = GetJsRuntime();
             try
@@ -74,7 +74,7 @@ namespace TryMudEx.Client
                 var actualException = exception is TargetInvocationException tie ? tie.InnerException : exception;
                 await Console.Error.WriteLineAsync($"Error on app startup: {actualException}");
 
-                jsRuntime.InvokeVoid(Try.CodeExecution.UpdateUserComponentsDLL, CoreConstants.DefaultUserComponentsAssemblyBytes);
+                jsRuntime.InvokeVoid(PlayzorJs.CodeExecution.UpdateUserComponentsDll, CoreConstants.DefaultUserComponentsAssemblyBytes);
             }
 
             await builder.Build().RunAsync();

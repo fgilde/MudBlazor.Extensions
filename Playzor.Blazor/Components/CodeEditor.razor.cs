@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Try.Core;
 
-namespace TryMudEx.Client.Components;
+namespace Playzor.Blazor.Components;
 
 public partial class CodeEditor : IDisposable
 {
@@ -38,17 +38,17 @@ public partial class CodeEditor : IDisposable
 
     public void Dispose()
     {
-        JsRuntime.InvokeVoid(Models.Try.Editor.Dispose, Id);
+        JsRuntime.InvokeVoid(PlayzorJs.Editor.Dispose, Id);
     }
 
     internal void Focus()
     {
-        JsRuntime.InvokeVoid(Models.Try.Editor.Focus, Id);
+        JsRuntime.InvokeVoid(PlayzorJs.Editor.Focus, Id);
     }
 
     internal string GetCode()
     {
-        return JsRuntime.Invoke<string>(Models.Try.Editor.GetValue, Id);
+        return JsRuntime.Invoke<string>(PlayzorJs.Editor.GetValue, Id);
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -58,7 +58,7 @@ public partial class CodeEditor : IDisposable
 
         if (firstRender)
         {
-            JsRuntime.InvokeVoid(Models.Try.Editor.Create, Id,
+            JsRuntime.InvokeVoid(PlayzorJs.Editor.Create, Id,
                 Code ?? CoreConstants.MainComponentDefaultFileContent, GetLanguage(), ReadOnly, Theme);
         }
         else
@@ -66,16 +66,16 @@ public partial class CodeEditor : IDisposable
 	        if (hasCodeChanged)
 	        {
 		        var language = GetLanguage();
-		        JsRuntime.InvokeVoid(Models.Try.Editor.SetValue, Id, Code);
-		        JsRuntime.InvokeVoid(Models.Try.Editor.SetLangugage, Id, language);
+		        JsRuntime.InvokeVoid(PlayzorJs.Editor.SetValue, Id, Code);
+		        JsRuntime.InvokeVoid(PlayzorJs.Editor.SetLanguage, Id, language);
 	        }
 	        if (hasReadOnlyChanged)
 	        {
-		        JsRuntime.InvokeVoid(Models.Try.Editor.SetReadOnly, Id, ReadOnly);
+		        JsRuntime.InvokeVoid(PlayzorJs.Editor.SetReadOnly, Id, ReadOnly);
 	        }
 	        if (hasThemeChanged)
 	        {
-		        JsRuntime.InvokeVoid(Models.Try.Editor.SetTheme, Theme); // monaco theme is global
+		        JsRuntime.InvokeVoid(PlayzorJs.Editor.SetTheme, Theme); // monaco theme is global
 	        }
 		}
 
@@ -90,6 +90,6 @@ public partial class CodeEditor : IDisposable
     public async Task SelectLineAsync(int? line)
     {
         if(line.HasValue)
-            await JsRuntime.InvokeVoidAsync(Models.Try.Editor.SetSelection, Id, line.Value);
+            await JsRuntime.InvokeVoidAsync(PlayzorJs.Editor.SetSelection, Id, line.Value);
     }
 }

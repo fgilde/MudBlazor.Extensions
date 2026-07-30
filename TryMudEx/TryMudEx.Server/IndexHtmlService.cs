@@ -19,9 +19,10 @@ namespace TryMudEx.Server
         // every file whose url carries {{ASSET_VERSION}} — the token must change when any of them does
         private static readonly string[] VersionedAssets =
         {
-            "editor/main.js",
-            "css/repl.css",
+            "_content/Playzor.Blazor/js/playzor-editor.js",
+            "_content/Playzor.Blazor/css/playzor-editor.css",
             "css/embed.css",
+            "css/playzor.css",
             "css/TryMudEx.min.css",
         };
 

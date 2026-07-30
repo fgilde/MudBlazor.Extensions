@@ -1,0 +1,242 @@
+@namespace Playzor.Blazor.Components
+@inherits MudBlazor.Extensions.Components.Base.MudExBaseComponent<PlayzorEditor>
+
+<div class="@ClassStr()" style="@StyleStr()" @attributes="UserAttributes">
+
+    <div class="@ToolBarClassStr()" style="@ToolBarStyleStr()">
+        @ToolBarStartContent
+
+        @if (HasButton(PlayzorToolButtons.Run))
+        {
+            <MudTooltip Text="@L["Run (Ctrl + S)"]">
+                <MudIconButton OnClick="@CompileAsync" Disabled="@Loading" Icon="@Icons.Material.Rounded.PlayArrow" Color="Color.Success" />
+            </MudTooltip>
+            <MudDivider Vertical="true" FlexItem="true" Class="mx-1" />
+        }
+        @if (HasButton(PlayzorToolButtons.Save) && OnSaveRequested.HasDelegate)
+        {
+            <MudTooltip Text="@L["Save or Share"]">
+                <MudIconButton OnClick="@RequestSaveAsync" Icon="@Icons.Material.Outlined.Save" />
+            </MudTooltip>
+        }
+        @if (HasButton(PlayzorToolButtons.Embed) && OnEmbedRequested.HasDelegate)
+        {
+            <MudTooltip Text="@L["Embed this snippet"]">
+                <MudIconButton OnClick="@RequestEmbedAsync" Icon="@Icons.Material.Outlined.Code" />
+            </MudTooltip>
+        }
+        @if (HasButton(PlayzorToolButtons.Download))
+        {
+            <MudTooltip Text="@L["Download"]">
+                <MudIconButton OnClick="@DownloadAsync" Icon="@Icons.Material.Outlined.Download" />
+            </MudTooltip>
+        }
+        @if (HasButton(PlayzorToolButtons.Upload))
+        {
+            <MudTooltip Text="@L["Upload"]">
+                <MudIconButton OnClick="@UploadAsync" Icon="@Icons.Material.Outlined.UploadFile" />
+            </MudTooltip>
+        }
+        @if (HasButton(PlayzorToolButtons.Samples) && Samples?.Any() == true)
+        {
+            <MudTooltip Text="@L["Samples"]">
+                <MudIconButton OnClick="@ShowSamplesAsync" Icon="@Icons.Material.Outlined.Folder" />
+            </MudTooltip>
+        }
+        @if (HasButton(PlayzorToolButtons.Packages))
+        {
+            <MudTooltip Text="@L["Manage Nuget packages"]">
+                <MudIconButton Icon="@MudExIcons.Custom.Brands.Nuget" OnClick="@(() => EditPackageReferencesAsync(false))" />
+            </MudTooltip>
+        }
+
+        @ToolBarContent
+
+        <MudSpacer />
+
+        @if (HasButton(PlayzorToolButtons.Panels))
+        {
+            <MudMenu Dense="true" CloseOnClickOutside="true">
+                <ActivatorContent>
+                    <MudTooltip Text="@L["Panels"]">
+                        <MudIconButton Icon="@Icons.Material.Outlined.GridView" OnClick="@(async () => { await RefreshOpenPanelsAsync(); await context.ToggleAsync(); })" />
+                    </MudTooltip>
+                </ActivatorContent>
+                <ChildContent>
+                    @foreach (var (id, meta) in AvailablePanels)
+                    {
+                        <div class="d-flex align-center playzor-panel-menu-row">
+                            <MudMenuItem OnClick="@(() => TogglePanelAsync(id))" Class="flex-grow-1"
+                                         Icon="@(IsPanelOpen(id) ? Icons.Material.Outlined.CheckBox : Icons.Material.Outlined.CheckBoxOutlineBlank)">
+                                @L[meta.Title]
+                            </MudMenuItem>
+                            <MudTooltip Text="@L["Open in new window"]">
+                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.OpenInNew"
+                                               OnClick="@(() => PopoutPanelAsync(id))" />
+                            </MudTooltip>
+                        </div>
+                    }
+                </ChildContent>
+            </MudMenu>
+        }
+        @if (HasButton(PlayzorToolButtons.Layout))
+        {
+            <MudMenu Dense="true" CloseOnClickOutside="true">
+                <ActivatorContent>
+                    <MudTooltip Text="@L["Layout"]">
+                        <MudIconButton Icon="@Icons.Material.Outlined.Dashboard" OnClick="@(async () => { await LoadNamedLayoutsAsync(); await context.ToggleAsync(); })" />
+                    </MudTooltip>
+                </ActivatorContent>
+                <ChildContent>
+                    <MudMenuItem OnClick="@SaveNamedLayoutAsync" Icon="@Icons.Material.Outlined.Bookmark">@L["Save layout"]</MudMenuItem>
+                    <MudMenuItem OnClick="@ResetLayoutAsync" Icon="@Icons.Material.Outlined.RestartAlt">@L["Reset layout"]</MudMenuItem>
+                    @if (_namedLayouts.Any())
+                    {
+                        <MudDivider />
+                        @foreach (var name in _namedLayouts.Keys.OrderBy(k => k))
+                        {
+                            <div class="d-flex align-center playzor-panel-menu-row">
+                                <MudMenuItem OnClick="@(() => ApplyNamedLayoutAsync(name))" Class="flex-grow-1">@name</MudMenuItem>
+                                <MudTooltip Text="@L["Delete"]">
+                                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete"
+                                                   OnClick="@(() => DeleteNamedLayoutAsync(name))" />
+                                </MudTooltip>
+                            </div>
+                        }
+                    }
+                </ChildContent>
+            </MudMenu>
+        }
+        @if (HasButton(PlayzorToolButtons.Theme) && DarkModeChanged.HasDelegate)
+        {
+            <MudTooltip Text="@(DarkMode ? L["Switch to Light Theme"] : L["Switch to Dark Theme"])">
+                <MudIconButton OnClick="@ToggleDarkModeAsync" Icon="@(DarkMode ? Icons.Material.Rounded.LightMode : Icons.Material.Outlined.DarkMode)" />
+            </MudTooltip>
+        }
+
+        @HeaderContent
+    </div>
+
+    <div class="playzor-editor-body">
+        <MudOverlay Visible="Loading" Absolute="true" DarkBackground="true">
+            <MudText Typo="Typo.h4" Class="white-text">@LoaderText</MudText>
+        </MudOverlay>
+
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="false">
+            <MudExDockLayout @ref="_dock" Id="@DockId" Class="playzor-dock-host" ContainerStyle="@DockContainerStyleStr()"
+                             InitialLayoutJson="@_initialLayoutJson"
+                             OnPanelRemoved="HandlePanelRemoved" OnPanelMoved="HandlePanelMovedAsync" OnActiveChanged="HandleActivePanelChanged">
+                @* first panel becomes the grid base (center). The main file always exists and is never closable. *@
+                <MudExDockItem Id="@MainEditorPanelId" Title="@CoreConstants.MainComponentFilePath" CanClose="false" Renderer="DockRendererMode.Always">
+                    <CodeEditor Id="@EditorDomId(CoreConstants.MainComponentFilePath)" Theme="@EditorTheme"
+                                Code="@GetFile(CoreConstants.MainComponentFilePath)?.Content" CodeFileType="CodeFileType.Razor" />
+                </MudExDockItem>
+                @if (HasPanel(PlayzorPanels.Files))
+                {
+                    <MudExDockItem Id="files" Title="@L["Files"]" Direction="DockDirection.Left" InitialWidth="230" Renderer="DockRendererMode.Always">
+                        <FileTree Files="@CodeFiles.Values" ActivePath="@_activeCodeFile?.Path" ShowHiddenFiles="@ShowHiddenFiles"
+                                  OnOpen="OpenFileAsync" OnCreate="HandleCreateFileAsync" OnCreateFromTemplate="HandleCreateFromTemplateAsync"
+                                  OnRename="HandleRenameFileAsync" OnDelete="HandleDeleteFileAsync" />
+                    </MudExDockItem>
+                }
+                @if (HasPanel(PlayzorPanels.Preview))
+                {
+                    <MudExDockItem Id="preview" Title="@L["Preview"]" Direction="DockDirection.Right" CanClose="false" Renderer="DockRendererMode.Always">
+                        <iframe class="playzor-preview-frame" style="height:100%; width:100%; border:none;" id="@PreviewFrameId"
+                                data-base-src="@PreviewUrl" src="@PreviewUrl"></iframe>
+                    </MudExDockItem>
+                }
+                @if (HasPanel(PlayzorPanels.Errors))
+                {
+                    <MudExDockItem Id="errors" Title="@L["Errors"]" Direction="DockDirection.Below" InitialHeight="170" Renderer="DockRendererMode.Always">
+                        <ErrorList OnDiagnosticClick="OpenDiagnosticAsync" Diagnostics="@Diagnostics" />
+                    </MudExDockItem>
+                }
+                @if (HasPanel(PlayzorPanels.Console))
+                {
+                    <MudExDockItem Id="console" Title="@L["Console"]" StackWith="@(HasPanel(PlayzorPanels.Errors) ? "errors" : null)"
+                                   Direction="DockDirection.Below" Renderer="DockRendererMode.Always">
+                        <ConsolePanel />
+                    </MudExDockItem>
+                }
+
+                @ChildContent
+
+                @* editor items MUST stay last & append-only (tombstones keep positions stable):
+                   dockview adopts the nodes, positional re-diffing must never touch existing ones *@
+                @foreach (var path in _openFiles)
+                {
+                    @if (path != null)
+                    {
+                        <MudExDockItem Id="@EditorPanelId(path)" Title="@FileTitle(path)" StackWith="@MainEditorPanelId" Renderer="DockRendererMode.Always">
+                            <CodeEditor Id="@EditorDomId(path)" Theme="@EditorTheme" Code="@GetFile(path)?.Content" CodeFileType="@(GetFile(path)?.Type ?? CodeFileType.Razor)" />
+                        </MudExDockItem>
+                    }
+                    else
+                    {
+                        <div style="display:none"></div>
+                    }
+                }
+            </MudExDockLayout>
+        </MudHidden>
+
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+            <div class="d-flex flex-column" style="height:100%">
+                <MudSelect T="string" Value="@_activeCodeFile?.Path" ValueChanged="@OpenFileMobile" Dense="true" Class="px-2">
+                    @foreach (var name in CodeFileNames)
+                    {
+                        <MudSelectItem Value="@name">@name</MudSelectItem>
+                    }
+                </MudSelect>
+                <div style="flex:1; min-height:150px;">
+                    <CodeEditor Id="@MobileEditorId" Theme="@EditorTheme" Code="@_activeCodeFile?.Content" CodeFileType="@(_activeCodeFile?.Type ?? CodeFileType.Razor)" />
+                </div>
+                @if (HasPanel(PlayzorPanels.Preview))
+                {
+                    <iframe class="playzor-preview-frame" style="flex:1; border:none;" id="@PreviewFrameId"
+                            data-base-src="@PreviewUrl" src="@PreviewUrl"></iframe>
+                }
+            </div>
+        </MudHidden>
+    </div>
+
+    @if (ShowStatusBar)
+    {
+        <div class="@StatusBarClassStr()" style="@StatusBarStyleStr()">
+            <div class="playzor-status-button" @onclick="@ShowErrorsPanelAsync" title="@L["Show errors"]">
+                <MudIcon Icon="@Icons.Material.Outlined.ErrorOutline" Size="Size.Small" />
+                <span>@ErrorsCount</span>
+                <MudIcon Icon="@Icons.Material.Outlined.WarningAmber" Size="Size.Small" Class="ml-2" />
+                <span>@WarningsCount</span>
+            </div>
+            @if (HasPanel(PlayzorPanels.Preview))
+            {
+                <div class="playzor-status-button ml-2" @onclick="@ReloadPreview" title="@L["Reload preview"]">
+                    <MudIcon Icon="@Icons.Material.Outlined.Refresh" Size="Size.Small" />
+                    <span>@L["Reload"]</span>
+                </div>
+            }
+            <MudSpacer />
+            @StatusBarContent
+            @foreach (var package in _installedPackages.Take(MaxPackagesInStatusBar))
+            {
+                <span class="mr-3"><a href="@package.ProjectUrl" target="_blank">@TrimmedPackageText(package)</a></span>
+            }
+            @if (_installedPackages.Length > MaxPackagesInStatusBar)
+            {
+                <MudMenu MaxHeight="400" Dense="true" Icon="@Icons.Material.Filled.MoreHoriz" Size="Size.Small">
+                    @foreach (var package in _installedPackages)
+                    {
+                        <MudMenuItem Href="@package.ProjectUrl" Target="_blank">@TrimmedPackageText(package, 70)</MudMenuItem>
+                    }
+                </MudMenu>
+            }
+            @if (HasButton(PlayzorToolButtons.Packages))
+            {
+                <div class="playzor-status-button" @onclick="@(() => EditPackageReferencesAsync(true))" title="@L["Manage Nuget packages"]">
+                    <MudIcon Icon="@MudExIcons.Custom.Brands.Nuget" Size="Size.Small" />
+                </div>
+            }
+        </div>
+    }
+</div>

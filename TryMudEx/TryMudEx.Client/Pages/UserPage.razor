@@ -1,9 +1,11 @@
+﻿@using Playzor.Blazor.Core
 @page "/user-page"
 @using Try.Core
 @using TryMudEx.Client.Services
+@using Playzor.Blazor.Services
 @using Microsoft.JSInterop
 @inject BrandingService Branding
-@inject PlaygroundLocalizer L
+@inject PlayzorLocalizer L
 @inject IJSRuntime JsRuntime
 
 @if (Branding.IsPlayzor)
@@ -40,5 +42,5 @@ else
 
 @code {
     // the compile lives in the repl around this iframe, so the click travels back as a message
-    private Task RequestRun() => JsRuntime.InvokeVoidAsync(Models.Try.Preview.RequestRun).AsTask();
+    private Task RequestRun() => JsRuntime.InvokeVoidAsync(PlayzorJs.Preview.RequestRun).AsTask();
 }

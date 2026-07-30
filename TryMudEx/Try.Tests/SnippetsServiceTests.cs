@@ -1,8 +1,9 @@
-namespace Tests
+﻿namespace Tests
 {
     using NUnit.Framework;
     using TryMudEx.Client.Services;
     using TryMudEx.Client.Models;
+    using Playzor.Blazor.Services;
     using Try.Core;
     using Microsoft.Extensions.Options;
     using System.Threading.Tasks;

@@ -1,10 +1,11 @@
-﻿namespace TryMudEx.Client.Services
+﻿namespace Playzor.Blazor.Services
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.IO.Compression;
     using System.Text;
+    using System.Threading.Tasks;
     using Try.Core;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.CodeAnalysis.CSharp;
@@ -160,5 +161,38 @@
 
         public static IEnumerable<CodeFile> ToCodeFiles(this string urlEncodedBase64compressedCode)
             => InlineCode.Decode(urlEncodedBase64compressedCode);
+
+        /// <summary>Packs the given files into a zip archive, one entry per file path.</summary>
+        public static MemoryStream ToZipArchive(this IEnumerable<CodeFile> codeFiles)
+        {
+            var memoryStream = new MemoryStream();
+            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+            {
+                foreach (var codeFile in codeFiles)
+                {
+                    var entry = archive.CreateEntry(codeFile.Path);
+                    using var entryStream = entry.Open();
+                    entryStream.Write(Encoding.UTF8.GetBytes(codeFile.Content ?? string.Empty));
+                }
+            }
+
+            memoryStream.Position = 0;
+            return memoryStream;
+        }
+
+        /// <summary>Reads every entry of a zip archive as a code file.</summary>
+        public static async Task<IEnumerable<CodeFile>> FromZipArchiveAsync(Stream zipStream)
+        {
+            var result = new List<CodeFile>();
+
+            using var zipArchive = new ZipArchive(zipStream, ZipArchiveMode.Read);
+            foreach (var entry in zipArchive.Entries)
+            {
+                using var reader = new StreamReader(entry.Open());
+                result.Add(new CodeFile { Path = entry.FullName, Content = await reader.ReadToEndAsync() });
+            }
+
+            return result;
+        }
     }
 }

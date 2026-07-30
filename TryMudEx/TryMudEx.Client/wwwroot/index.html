@@ -49,12 +49,12 @@
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link id="mudex-styles" href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css" rel="stylesheet">
     <link href="css/TryMudEx.min.css?v={{ASSET_VERSION}}" rel="stylesheet" />
-    <link href="css/repl.css?v={{ASSET_VERSION}}" rel="stylesheet" />
+    <link href="_content/Playzor.Blazor/css/playzor-editor.css?v={{ASSET_VERSION}}" rel="stylesheet" />
     <link href="css/embed.css?v={{ASSET_VERSION}}" rel="stylesheet" />
     <link href="css/playzor.css?v={{ASSET_VERSION}}" rel="stylesheet" />
 
     <script type="text/javascript" src="https://js.live.net/v7.2/OneDrive.js"></script>
-    <script src="lib/monaco-editor/min/vs/loader.js"></script>
+    <script src="_content/Playzor.Blazor/lib/monaco-editor/min/vs/loader.js"></script>
 </head>
 
 <body class="mud-height-full">
@@ -73,41 +73,8 @@
         <a class="dismiss">🗙</a>
     </div>
 
-    <script>
-        // Inside the preview iframe: forward console output and unhandled errors to the
-        // hosting repl so they show up in its console panel. Installed before blazor starts
-        // so early startup errors are captured too.
-        (function () {
-            if (window.self === window.top) { return; }
-
-            var post = function (level, text) {
-                try { parent.postMessage({ __try: 'log', level: level, text: text, ts: Date.now() }, location.origin); } catch (e) { }
-            };
-            var stringify = function (args) {
-                return Array.prototype.map.call(args, function (a) {
-                    if (a instanceof Error) { return a.stack || (a.name + ': ' + a.message); }
-                    if (typeof a === 'object' && a !== null) { try { return JSON.stringify(a); } catch (e) { return String(a); } }
-                    return String(a);
-                }).join(' ');
-            };
-
-            ['log', 'info', 'warn', 'error', 'debug'].forEach(function (level) {
-                var original = console[level];
-                console[level] = function () {
-                    post(level, stringify(arguments));
-                    if (original) { original.apply(console, arguments); }
-                };
-            });
-
-            window.addEventListener('error', function (e) {
-                post('error', e.error ? (e.error.stack || e.error.message) : (e.message + ' (' + e.filename + ':' + e.lineno + ')'));
-            });
-            window.addEventListener('unhandledrejection', function (e) {
-                var r = e.reason;
-                post('error', 'Unhandled rejection: ' + (r && (r.stack || r.message) ? (r.stack || r.message) : String(r)));
-            });
-        })();
-    </script>
+    <!-- forwards console output of the preview iframe to the editor around it -->
+    <script src="_content/Playzor.Blazor/js/playzor-preview.js"></script>
 
     <!-- WICHTIG: autostart="false", damit unser eigenes Blazor.start(...) genutzt wird -->
     <script src="_framework/blazor.webassembly.js" autostart="false"></script>
@@ -119,10 +86,10 @@
                 if (type === 'assembly' && name === 'Try.UserComponents.dll') {
 
                     const dllBytes =
-                        window.Try &&
-                        window.Try.CodeExecution &&
-                        window.Try.CodeExecution.getUserComponentsDllBytes &&
-                        window.Try.CodeExecution.getUserComponentsDllBytes();
+                        window.Playzor &&
+                        window.Playzor.CodeExecution &&
+                        window.Playzor.CodeExecution.getUserComponentsDllBytes &&
+                        window.Playzor.CodeExecution.getUserComponentsDllBytes();
 
                     if (dllBytes && dllBytes.length) {
                         const blob = new Blob([dllBytes], { type: 'application/octet-stream' });
@@ -142,7 +109,12 @@
     </script>
 
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-    <script src="editor/main.js?v={{ASSET_VERSION}}"></script>
+    <script>
+        // this site serves its own razor completion snippets from the api
+        window.Playzor = window.Playzor || {};
+        window.Playzor.snippetUrls = { markup: 'api/snippets/mudex.json' };
+    </script>
+    <script src="_content/Playzor.Blazor/js/playzor-editor.js?v={{ASSET_VERSION}}"></script>
 </body>
 
 </html>

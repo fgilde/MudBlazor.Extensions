@@ -1,4 +1,12 @@
-﻿require.config({ paths: { 'vs': 'lib/monaco-editor/min/vs' } });
+﻿// the assets ship with the package, so every url is resolved below the static web asset root.
+// A host that serves monaco from somewhere else can override the paths before this script runs.
+window.Playzor = window.Playzor || {};
+window.Playzor.assetRoot = window.Playzor.assetRoot || '_content/Playzor.Blazor';
+window.Playzor.snippetUrls = window.Playzor.snippetUrls || {};
+window.Playzor.snippetUrls.csharp = window.Playzor.snippetUrls.csharp || `${window.Playzor.assetRoot}/editor/snippets/csharp.json`;
+window.Playzor.snippetUrls.markup = window.Playzor.snippetUrls.markup || `${window.Playzor.assetRoot}/editor/snippets/mudblazor.json`;
+
+require.config({ paths: { 'vs': `${window.Playzor.assetRoot}/lib/monaco-editor/min/vs` } });
 
 let _dotNetInstance;
 
@@ -22,16 +30,11 @@ function registerLangugageProvider(language) {
                 endColumn: position.column,
             });
 
-            if (language == 'razor') {
-                if ((textUntilPosition.match(/{/g) || []).length !== (textUntilPosition.match(/}/g) || []).length) {
-                    var data = await fetch("editor/snippets/csharp.json").then((response) => response.json());
-                } else {
-                    //var data = await fetch("editor/snippets/mudblazor.json").then((response) => response.json());
-                    var data = await fetch("api/snippets/mudex.json").then((response) => response.json());
-                }
-            } else {
-                var data = await fetch("editor/snippets/csharp.json").then((response) => response.json());
-            }
+            const urls = window.Playzor.snippetUrls;
+            // inside a razor code block the c# snippets apply, outside them the markup ones
+            const inCodeBlock = (textUntilPosition.match(/{/g) || []).length !== (textUntilPosition.match(/}/g) || []).length;
+            const url = language !== 'razor' || inCodeBlock ? urls.csharp : urls.markup;
+            var data = await fetch(url).then((response) => response.json());
 
             var word = model.getWordUntilPosition(position);
             var range = {
@@ -88,7 +91,7 @@ function throttle(func, timeFrame, id) {
     }
 }
 
-window.Try = {
+Object.assign(window.Playzor, {
 
     initialize: function (dotNetInstance) {
         _dotNetInstance = dotNetInstance;
@@ -131,10 +134,10 @@ window.Try = {
         window.removeEventListener('keydown', onKeyDown);
         window.removeEventListener('message', onWindowMessage);
     }
-}
+});
 
-window.Try.__providerRegistered = false;
-window.Try.Editor = window.Try.Editor || (function () {
+window.Playzor.__providerRegistered = false;
+window.Playzor.Editor = window.Playzor.Editor || (function () {
     // one monaco editor + model per id (dock panel); model per file keeps undo/scroll state
     const _editors = new Map();
     const _pending = new Map(); // value set before async create completed
@@ -142,7 +145,7 @@ window.Try.Editor = window.Try.Editor || (function () {
     function _get(id) { return _editors.get(id); }
 
     function _registerGlobalsOnce() {
-        if (window.Try.__providerRegistered) { return; }
+        if (window.Playzor.__providerRegistered) { return; }
         monaco.languages.html.razorDefaults.setModeConfiguration({
             completionItems: true,
             diagnostics: true,
@@ -152,7 +155,7 @@ window.Try.Editor = window.Try.Editor || (function () {
         });
         registerLangugageProvider('razor');
         registerLangugageProvider('csharp');
-        window.Try.__providerRegistered = true;
+        window.Playzor.__providerRegistered = true;
     }
 
     function _disposeEditor(id) {
@@ -282,7 +285,7 @@ window.Try.Editor = window.Try.Editor || (function () {
     }
 }());
 
-window.Try.Embed = window.Try.Embed || (function () {
+window.Playzor.Embed = window.Playzor.Embed || (function () {
     let _observer = null;
 
     return {
@@ -302,7 +305,7 @@ window.Try.Embed = window.Try.Embed || (function () {
     };
 }());
 
-window.Try.Preview = window.Try.Preview || (function () {
+window.Playzor.Preview = window.Playzor.Preview || (function () {
     let _dotNetRef = null;
     let _listening = false;
 
@@ -310,7 +313,7 @@ window.Try.Preview = window.Try.Preview || (function () {
         // repl -> preview: the iframe reads dark/light from its url on load, so a live
         // toggle has to be pushed in
         pushTheme: function (isDark) {
-            document.querySelectorAll('iframe#user-page-window').forEach(function (frame) {
+            document.querySelectorAll('iframe.playzor-preview-frame').forEach(function (frame) {
                 try { frame.contentWindow.postMessage({ __playzor: 'theme', dark: !!isDark }, window.location.origin); } catch (e) { }
             });
         },
@@ -333,7 +336,7 @@ window.Try.Preview = window.Try.Preview || (function () {
     };
 }());
 
-window.Try.Console = window.Try.Console || (function () {
+window.Playzor.Console = window.Playzor.Console || (function () {
     const MAX_ENTRIES = 2000;
     const FLUSH_MS = 250;
 
@@ -354,7 +357,7 @@ window.Try.Console = window.Try.Console || (function () {
     function onMessage(event) {
         if (event.origin !== location.origin) { return; }
         const data = event.data;
-        if (!data || data.__try !== 'log') { return; }
+        if (!data || data.__playzor !== 'log') { return; }
 
         const entry = { level: data.level || 'log', text: String(data.text ?? ''), ts: data.ts || Date.now() };
         _entries.push(entry);
@@ -391,7 +394,7 @@ window.Try.Console = window.Try.Console || (function () {
     };
 }());
 
-window.Try.CodeExecution = window.Try.CodeExecution || (function () {
+window.Playzor.CodeExecution = window.Playzor.CodeExecution || (function () {
     const UNEXPECTED_ERROR_MESSAGE = 'An unexpected error has occurred. Please try again later or contact the team.';
 
     // Hier halten wir die aktuellen UserComponents in Memory

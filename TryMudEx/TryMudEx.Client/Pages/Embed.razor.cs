@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Playzor.Blazor.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using Nextended.Core.Encode;
 using Try.Core;
 using TryMudEx.Client.Models;
 using TryMudEx.Client.Services;
+using Playzor.Blazor.Services;
 
 namespace TryMudEx.Client.Pages;
 
@@ -30,7 +32,7 @@ public partial class Embed : IDisposable
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public IJSInProcessRuntime JsRuntime { get; set; }
     [Inject] private BrandingService Branding { get; set; }
-    [Inject] private PlaygroundLocalizer L { get; set; }
+    [Inject] private PlayzorLocalizer L { get; set; }
 
     [Parameter] public string SnippetId { get; set; }
     [Parameter] public string Sample { get; set; }
@@ -145,7 +147,7 @@ public partial class Embed : IDisposable
             try
             {
                 _dotNetRef = DotNetObjectReference.Create(this);
-                JsRuntime.InvokeVoid(Models.Try.Initialize, _dotNetRef);
+                JsRuntime.InvokeVoid(PlayzorJs.Initialize, _dotNetRef);
                 await JsRuntime.InvokeVoidAsync("Try.Embed.initAutoHeight");
             }
             catch (Exception e)
@@ -195,7 +197,7 @@ public partial class Embed : IDisposable
         if (_activeFile == null || _options.ReadOnly || _options.View == EmbedView.Preview) return;
         try
         {
-            _activeFile.Content = JsRuntime.Invoke<string>(Models.Try.Editor.GetValue, EditorDomId);
+            _activeFile.Content = JsRuntime.Invoke<string>(PlayzorJs.Editor.GetValue, EditorDomId);
         }
         catch { /* editor not created yet */ }
     }
@@ -238,10 +240,10 @@ public partial class Embed : IDisposable
 
         if (result?.AssemblyBytes?.Length > 0)
         {
-            await JsRuntime.InvokeVoidAsync(Models.Try.CodeExecution.UpdateUserComponentsDLL, result.AssemblyBytes);
+            await JsRuntime.InvokeVoidAsync(PlayzorJs.CodeExecution.UpdateUserComponentsDll, result.AssemblyBytes);
             var packageParam = JsonConvert.SerializeObject(_installedPackages, CoreConstants.PackageSerializerSettings);
             var url = $"{MainUserPagePath}?packages={packageParam}&{(IsDark ? "dark" : "light")}=true";
-            JsRuntime.InvokeVoid(Models.Try.ReloadIframe, "user-page-window", url);
+            JsRuntime.InvokeVoid(PlayzorJs.ReloadIframe, "user-page-window", url);
         }
     }
 
@@ -257,6 +259,6 @@ public partial class Embed : IDisposable
     public void Dispose()
     {
         _dotNetRef?.Dispose();
-        JsRuntime.InvokeVoid(Models.Try.Dispose);
+        JsRuntime.InvokeVoid(PlayzorJs.Dispose);
     }
 }

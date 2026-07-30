@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Playzor.Blazor.Core;
+using System.Text;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
@@ -8,6 +9,7 @@ using MudBlazor.Extensions.Services;
 using Nextended.Core.Encode;
 using TryMudEx.Client.Models;
 using TryMudEx.Client.Services;
+using Playzor.Blazor.Services;
 
 namespace TryMudEx.Client.Pages.Index;
 
@@ -18,7 +20,7 @@ public partial class Index
     [Inject] private IJSRuntime JsRuntime { get; set; }
     [Inject] private LayoutService LayoutService { get; set; }
     [Inject] private BrandingService Branding { get; set; }
-    [Inject] private PlaygroundLocalizer L { get; set; }
+    [Inject] private PlayzorLocalizer L { get; set; }
     [Inject] public ILocalStorageService Storage { get; set; }
     private MudExCodeView _codeView;
 
@@ -35,8 +37,8 @@ public partial class Index
             // dropping the code must drop the editor session with it, otherwise the
             // restored dock layout points at panels for files that no longer exist
             await Storage.RemoveItemAsync("__temp_code");
-            await Storage.RemoveItemAsync(ReplStorageKeys.OpenFiles);
-            await Storage.RemoveItemAsync(ReplStorageKeys.Layout);
+            await Storage.RemoveItemAsync(new PlayzorStorageKeys("playzor").OpenFiles);
+            await Storage.RemoveItemAsync(new PlayzorStorageKeys("playzor").Layout);
         }
     }
 
@@ -47,6 +49,6 @@ public partial class Index
         var blobUrl = await FileService.CreateDataUrlAsync(Encoding.UTF8.GetBytes(code), "text/plain", true);
         
         NavigationManager.NavigateTo($"/snippet/from/{blobUrl.EncodeDecode().Base64.Encode()}");
-        _= JsRuntime.InvokeVoidAsync(Models.Try.ChangeDisplayUrl, "/snippet");
+        _= JsRuntime.InvokeVoidAsync(PlayzorJs.ChangeDisplayUrl, "/snippet");
     }
 }

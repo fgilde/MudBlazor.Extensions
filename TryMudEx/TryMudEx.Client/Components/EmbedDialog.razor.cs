@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +8,7 @@ using MudBlazor;
 using Try.Core;
 using TryMudEx.Client.Models;
 using TryMudEx.Client.Services;
+using Playzor.Blazor.Services;
 
 namespace TryMudEx.Client.Components;
 
@@ -21,7 +22,7 @@ public partial class EmbedDialog
     [Inject] private ISnackbar Snackbar { get; set; }
     [Inject] private NavigationManager Navigation { get; set; }
     [Inject] private BrandingService Branding { get; set; }
-    [Inject] private PlaygroundLocalizer L { get; set; }
+    [Inject] private PlayzorLocalizer L { get; set; }
 
     /// <summary>Files of the current snippet. Hidden files (package list) are included so packages survive.</summary>
     [Parameter] public IEnumerable<CodeFile> Files { get; set; } = Array.Empty<CodeFile>();

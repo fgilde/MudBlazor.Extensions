@@ -11,7 +11,7 @@ using MudBlazor.Extensions.Helper;
 using Microsoft.JSInterop;
 
 
-namespace TryMudEx.Client.Components;
+namespace Playzor.Blazor.Components;
 
 public partial class PackageReferences
 {

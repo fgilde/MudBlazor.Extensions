@@ -1,5 +1,6 @@
 ﻿namespace TryMudEx.Client.Services
 {
+using Playzor.Blazor.Core;
     using System;
     using Try.Core;
     using Microsoft.Extensions.Logging;
@@ -28,7 +29,7 @@
         {
             if (exception?.ToString()?.Contains(CompilationService.DefaultRootNamespace) ?? false)
             {
-                _jsRuntime.InvokeVoid(Try.CodeExecution.UpdateUserComponentsDLL, CoreConstants.DefaultUserComponentsAssemblyBytes);
+                _jsRuntime.InvokeVoid(PlayzorJs.CodeExecution.UpdateUserComponentsDll, CoreConstants.DefaultUserComponentsAssemblyBytes);
             }
         }
 

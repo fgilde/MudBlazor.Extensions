@@ -1,47 +1,96 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Localization;
 
-namespace TryMudEx.Client.Services;
+namespace Playzor.Blazor.Services;
 
 /// <summary>
-/// Ui strings of the playground shell in the brand's culture. Deliberately a plain dictionary:
-/// a handful of strings does not justify resx satellite assemblies in a wasm download, and the
-/// lookup falls back to english (and then to the key) so a missing translation is never fatal.
+/// Ui strings of the editor. Deliberately a plain dictionary: a handful of strings does not justify
+/// resx satellite assemblies in a wasm download, and the lookup falls back to english (the keys are
+/// the english text) so a missing translation is never fatal.
+/// <para>
+/// Being an <see cref="IStringLocalizer"/> it can be handed to any MudEx component, and a host that
+/// wants different wording registers its own implementation or passes one to the editor.
+/// </para>
 /// </summary>
-public class PlaygroundLocalizer
+public class PlayzorLocalizer : IStringLocalizer
 {
-    private readonly BrandingService _branding;
     private readonly NavigationManager _navigation;
     private string _culture;
 
-    public PlaygroundLocalizer(BrandingService branding, NavigationManager navigation)
+    /// <summary>Creates the localizer. The culture is resolved from <c>?lang=</c> or the current ui culture.</summary>
+    public PlayzorLocalizer(NavigationManager navigation = null)
     {
-        _branding = branding;
         _navigation = navigation;
     }
 
-    public string Culture => _culture ??= ResolveCulture();
+    /// <summary>
+    /// Two letter culture of the returned strings. Assigning an unknown culture falls back to english.
+    /// </summary>
+    public string Culture
+    {
+        get => _culture ??= ResolveCulture();
+        set => _culture = value != null && Translations.ContainsKey(value.ToLowerInvariant())
+            ? value.ToLowerInvariant()
+            : "en";
+    }
 
-    public string this[string key] => Translate(key);
+    /// <summary>Cultures this localizer has translations for.</summary>
+    public static IEnumerable<string> SupportedCultures => Translations.Keys;
+
+    /// <inheritdoc />
+    public LocalizedString this[string name] => Localize(name);
+
+    /// <inheritdoc />
+    public LocalizedString this[string name, params object[] arguments]
+    {
+        get
+        {
+            var localized = Localize(name);
+            return arguments?.Length > 0
+                ? new LocalizedString(name, string.Format(localized.Value, arguments), localized.ResourceNotFound)
+                : localized;
+        }
+    }
+
+    /// <inheritdoc />
+    public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
+        => Translations.TryGetValue(Culture, out var table)
+            ? table.Select(pair => new LocalizedString(pair.Key, pair.Value, false))
+            : Enumerable.Empty<LocalizedString>();
+
+    private LocalizedString Localize(string key)
+    {
+        if (key != null && Translations.TryGetValue(Culture, out var table) && table.TryGetValue(key, out var value))
+            return new LocalizedString(key, value, false);
+        return new LocalizedString(key, key ?? string.Empty, true);
+    }
 
     private string ResolveCulture()
     {
-        var uri = new System.Uri(_navigation.Uri);
-        var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
-        if (query.TryGetValue("lang", out var lang))
+        if (_navigation != null)
         {
-            var requested = lang.ToString().ToLowerInvariant();
-            if (Translations.ContainsKey(requested)) return requested;
+            try
+            {
+                var query = QueryHelpers.ParseQuery(new Uri(_navigation.Uri).Query);
+                if (query.TryGetValue("lang", out var lang))
+                {
+                    var requested = lang.ToString().ToLowerInvariant();
+                    if (Translations.ContainsKey(requested)) return requested;
+                }
+            }
+            catch
+            {
+                // a relative or not yet initialized uri simply means no override
+            }
         }
 
-        return Translations.ContainsKey(_branding.Current.Culture) ? _branding.Current.Culture : "en";
-    }
-
-    private string Translate(string key)
-    {
-        if (Translations.TryGetValue(Culture, out var table) && table.TryGetValue(key, out var value))
-            return value;
-        return key; // english strings are used as keys
+        var current = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToLowerInvariant();
+        return Translations.ContainsKey(current) ? current : "en";
     }
 
     private static readonly Dictionary<string, Dictionary<string, string>> Translations = new()

@@ -1,427 +1,158 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
-using Microsoft.CodeAnalysis;
-using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Extensions;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
-using MudBlazor.Extensions.Services;
-using Newtonsoft.Json;
 using Nextended.Blazor.Models;
 using Nextended.Core.Encode;
 using Nextended.Core.Extensions;
+using Playzor.Blazor.Components;
+using Playzor.Blazor.Core;
 using Try.Core;
 using TryMudEx.Client.Components;
-using TryMudEx.Client.Models;
 using TryMudEx.Client.Services;
+using Playzor.Blazor.Services;
 
 namespace TryMudEx.Client.Pages;
 
-public partial class Repl : IDisposable
+/// <summary>
+/// The playground page. Everything the editor itself does lives in
+/// <see cref="PlayzorEditor"/>; this page only brings the parts that belong to this site:
+/// brand, snippet storage, samples and the app theme.
+/// </summary>
+public partial class Repl
 {
     [Inject] private LayoutService LayoutService { get; set; }
     [Inject] private BrandingService Branding { get; set; }
-    [Inject] private PlaygroundLocalizer L { get; set; }
+    [Inject] private SnippetsService SnippetsService { get; set; }
+    [Inject] private ILocalStorageService Storage { get; set; }
+    [Inject] private NavigationManager NavigationManager { get; set; }
+    [Inject] private IDialogService DialogService { get; set; }
+    [Inject] private ISnackbar Snackbar { get; set; }
+    [Inject] private PlayzorLocalizer L { get; set; }
 
-    private const string MainComponentCodePrefix = "@page \"/__main\"\n";
-    private const string MainUserPagePath = "/__main";
-    private const string LayoutStorageKey = ReplStorageKeys.Layout;
-    private const string OpenFilesStorageKey = ReplStorageKeys.OpenFiles;
-    private const string MobileEditorId = "mobile-editor";
-
-    private DotNetObjectReference<Repl> dotNetInstance;
-    private string errorMessage;
-    private CodeFile activeCodeFile;
-    private string[] _samples;
-    private NugetPackage[] _installedPackages = Array.Empty<NugetPackage>();
-
-    private MudExDockLayout _dock;
-    private string _initialLayoutJson;
-
-    // additionally opened files (never __Main.razor). Entries are append-only; closed
-    // files become null tombstones so positional blazor diffing never re-maps a
-    // dockview-adopted node to a different file.
-    private readonly List<string> _openFiles = new();
-    private readonly Dictionary<string, string> _editorDomIds = new();
-    private int _editorDomIdCounter;
-
-    [Inject] public NuGetPackageSearcher PackageSearch { get; set; }
-    [Inject] public ISnackbar Snackbar { get; set; }
-    [Inject] public ILocalStorageService Storage { get; set; }
-    [Inject] public NavigationManager NavigationManager { get; set; }
-    [Inject] public SnippetsService SnippetsService { get; set; }
-    [Inject] public CompilationService CompilationService { get; set; }
-    [Inject] public MudExFileService FileService { get; set; }
-    [Inject] public IJSInProcessRuntime JsRuntime { get; set; }
-    [Inject] public IDialogService DialogService { get; set; }
-
-    [Parameter] public bool ShowHiddenFiles { get; set; }
     [Parameter] public string SnippetId { get; set; }
     [Parameter] public string Sample { get; set; }
     [Parameter] public string SnippetFileUrl { get; set; }
 
-    public IDictionary<string, CodeFile> CodeFiles { get; set; } = new Dictionary<string, CodeFile>();
-
-    private IList<string> CodeFileNames { get; set; } = new List<string>();
-
-    private string EditorTheme => LayoutService.IsDarkMode ? "vs-dark" : "default";
-
-    private static string MainEditorPanelId => EditorPanelId(CoreConstants.MainComponentFilePath);
+    private PlayzorEditor _editor;
+    private IEnumerable<CodeFile> _files;
+    private IEnumerable<CodeFile> _snippetFiles = Array.Empty<CodeFile>();
+    private string[] _samples = Array.Empty<string>();
 
     private bool SaveSnippetPopupVisible { get; set; }
 
-    private IReadOnlyCollection<CompilationDiagnostic> Diagnostics { get; set; } = Array.Empty<CompilationDiagnostic>();
+    // the preview is its own app instance and resolves its brand from its own url. On a real
+    // domain the host answers that; while developing with ?brand= it has to be passed on.
+    private string BrandQuery(string separator)
+        => string.IsNullOrEmpty(Branding.DevBrandOverride) ? string.Empty : $"{separator}brand={Branding.DevBrandOverride}";
 
-    private int ErrorsCount => Diagnostics.Count(d => d.Severity == DiagnosticSeverity.Error);
+    private string UserPageUrl => "/user-page" + BrandQuery("?");
 
-    private int WarningsCount => Diagnostics.Count(d => d.Severity == DiagnosticSeverity.Warning);
-
-    private string LoaderText { get; set; }
-
-    private bool Loading { get; set; }
-
-    private static string EditorPanelId(string path) => "ed:" + path;
-
-    private CodeFile GetFile(string path) => path != null && CodeFiles.TryGetValue(path, out var f) ? f : null;
-
-    private static string FileTitle(string path) => path.Contains('/') ? path[(path.LastIndexOf('/') + 1)..] : path;
-
-    private string EditorDomId(string path)
-    {
-        if (!_editorDomIds.TryGetValue(path, out var id))
-        {
-            id = $"edd-{++_editorDomIdCounter}";
-            _editorDomIds[path] = id;
-        }
-        return id;
-    }
-
-    [JSInvokable]
-    public async Task TriggerCompileAsync()
-    {
-        await CompileAsync();
-
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        dotNetInstance?.Dispose();
-        JsRuntime.InvokeVoid(Models.Try.Dispose);
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            dotNetInstance = DotNetObjectReference.Create(this);
-            JsRuntime.InvokeVoid(Models.Try.Initialize, dotNetInstance);
-        }
-
-        if (!string.IsNullOrWhiteSpace(errorMessage))
-        {
-            Snackbar.Add(errorMessage, Severity.Error);
-            errorMessage = null;
-        }
-
-        base.OnAfterRender(firstRender);
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender && NavigationManager.Uri.Contains("compile"))
-        {
-            await Task.Delay(1000);
-            await TriggerCompileAsync();
-        }
-    }
-
-    private async ValueTask SaveState(bool showNotification)
-    {
-        await Storage.SetItemAsync("__temp_code", CodeFiles);
-        await Storage.SetItemAsync(OpenFilesStorageKey, _openFiles.Where(f => f != null).ToList());
-        if (showNotification)
-        {
-            Snackbar.Add("Save code state for reload.", Severity.Info, options =>
-            {
-                options.HideTransitionDuration = 100;
-                options.ShowTransitionDuration = 100;
-                options.VisibleStateDuration = 1000;
-            });
-        }
-    }
-
-    private async Task<LoadedSample> LoadDataAsync()
-    {
-        var isSnippet = !string.IsNullOrWhiteSpace(SnippetId) && string.IsNullOrWhiteSpace(Sample);
-        var isSample = !isSnippet && !string.IsNullOrWhiteSpace(Sample);
-        var isFromUrl = !isSnippet && !isSample && !string.IsNullOrWhiteSpace(SnippetFileUrl);
-
-        if (isSnippet || isSample || isFromUrl)
-        {
-            try
-            {
-                if (isFromUrl)
-                {
-                    SnippetFileUrl = SnippetFileUrl.StartsWith("http") || SnippetFileUrl.StartsWith("blob") || DataUrl.IsDataUrl(SnippetFileUrl) ? SnippetFileUrl : SnippetFileUrl.EncodeDecode().Base64.Decode();
-                    CodeFiles = (await SnippetsService.GetSnippetContentFromUrlAsync(SnippetFileUrl)).ToDictionary(f => f.Path, f => f);
-                }
-                else
-                {
-
-                    CodeFiles = isSnippet
-                        ? (await SnippetsService.GetSnippetContentAsync(SnippetId)).ToDictionary(f => f.Path, f => f)
-                        : (await SnippetsService.LoadSampleAsync(Sample)).ToDictionary(f => f.Path, f => f);
-                }
-
-                if (!CodeFiles.Any())
-                    errorMessage = "No files in snippet or sample.";
-                else
-                    activeCodeFile = CodeFiles.First().Value;
-            }
-            catch (ArgumentException)
-            {
-                errorMessage = "Invalid Snippet ID.";
-            }
-            catch (Exception e)
-            {
-                errorMessage = "Unable to get snippet content. Please try again later.";
-                Console.WriteLine(e.Message);
-            }
-
-            return isSnippet ? LoadedSample.Snippet : LoadedSample.Sample;
-        }
-
-        if (await Storage.ContainKeyAsync("__temp_code"))
-        {
-            CodeFiles = await Storage.GetItemAsync<IDictionary<string, CodeFile>>("__temp_code");
-            if (CodeFiles.Any())
-                activeCodeFile = CodeFiles.First().Value;
-        }
-
-        return LoadedSample.None;
-    }
+    private string CompiledPageUrl => "/__main" + BrandQuery("?");
 
     protected override async Task OnInitializedAsync()
     {
         Snackbar.Clear();
+
         _ = SnippetsService.GetSamplesAsync().ContinueWith(t =>
         {
             _samples = t.Result;
             StateHasChanged();
         });
 
-        var loaded = await LoadDataAsync();
-
-        if (!CodeFiles.Any())
-        {
-            activeCodeFile = new CodeFile
-            {
-                Path = CoreConstants.MainComponentFilePath,
-                Content = Branding.Current.DefaultSnippet
-            };
-            CodeFiles.Add(CoreConstants.MainComponentFilePath, activeCodeFile);
-        }
-        else if (!CodeFiles.ContainsKey(CoreConstants.MainComponentFilePath))
-        {
-            // dock layout requires the main editor panel — ensure the file exists
-            CodeFiles.Add(CoreConstants.MainComponentFilePath, new CodeFile
-            {
-                Path = CoreConstants.MainComponentFilePath,
-                Content = Branding.Current.DefaultSnippet
-            });
-        }
-
-        // restore open editor panels + dock layout only for plain reloads (samples/snippets start fresh)
-        if (loaded == LoadedSample.None)
-        {
-            try
-            {
-                var openFiles = await Storage.GetItemAsync<List<string>>(OpenFilesStorageKey);
-                if (openFiles != null)
-                    _openFiles.AddRange(openFiles.Where(f => f != null && f != CoreConstants.MainComponentFilePath && CodeFiles.ContainsKey(f)).Distinct());
-
-                _initialLayoutJson = await Storage.GetItemAsStringAsync(LayoutStorageKey);
-                if (string.IsNullOrWhiteSpace(_initialLayoutJson) || _initialLayoutJson == "{}")
-                    _initialLayoutJson = null;
-            }
-            catch
-            {
-                _initialLayoutJson = null;
-            }
-        }
-
-        // the default layout knows the fixed panels only, so restored editor tabs would end up
-        // without a dock panel — they belong to a stored layout
-        if (_initialLayoutJson == null)
-        {
-            _openFiles.Clear();
-            _initialLayoutJson = BuildDefaultLayoutJson();
-        }
-
-        CodeFileNames = GetCodeFileNames();
-
-        _installedPackages = await GetInstalledAsync();
+        await LoadFilesAsync();
         await base.OnInitializedAsync();
     }
 
-    /// <summary>Pulls the current text of every live monaco instance back into CodeFiles.</summary>
-    private void CollectAllEditorContent()
+    /// <summary>
+    /// Loads what the route asks for. Only a plain /snippet url keeps the last session, everything
+    /// else replaces it, so opening a sample never mixes with what was there before.
+    /// </summary>
+    private async Task LoadFilesAsync()
     {
-        Dictionary<string, string> values;
+        var isSnippet = !string.IsNullOrWhiteSpace(SnippetId) && string.IsNullOrWhiteSpace(Sample);
+        var isSample = !isSnippet && !string.IsNullOrWhiteSpace(Sample);
+        var isFromUrl = !isSnippet && !isSample && !string.IsNullOrWhiteSpace(SnippetFileUrl);
+
+        if (!isSnippet && !isSample && !isFromUrl)
+            return; // no route content: the editor restores its own session
+
         try
         {
-            values = JsRuntime.Invoke<Dictionary<string, string>>(Models.Try.Editor.GetValues);
-        }
-        catch
-        {
-            return;
-        }
-
-        if (values == null) return;
-
-        foreach (var (domId, content) in values)
-        {
-            if (domId == MobileEditorId)
+            if (isFromUrl)
             {
-                if (activeCodeFile != null) activeCodeFile.Content = content;
-                continue;
+                var url = SnippetFileUrl.StartsWith("http") || SnippetFileUrl.StartsWith("blob") || DataUrl.IsDataUrl(SnippetFileUrl)
+                    ? SnippetFileUrl
+                    : SnippetFileUrl.EncodeDecode().Base64.Decode();
+                _files = (await SnippetsService.GetSnippetContentFromUrlAsync(url)).ToList();
+            }
+            else
+            {
+                _files = isSnippet
+                    ? (await SnippetsService.GetSnippetContentAsync(SnippetId)).ToList()
+                    : (await SnippetsService.LoadSampleAsync(Sample)).ToList();
             }
 
-            var path = _editorDomIds.FirstOrDefault(kv => kv.Value == domId).Key;
-            if (path != null && CodeFiles.TryGetValue(path, out var file))
-                file.Content = content;
+            if (!_files.Any())
+                Snackbar.Add("No files in snippet or sample.", Severity.Error);
         }
-    }
-
-    private async Task CompileAsync()
-    {
-        CollectAllEditorContent();
-        await SaveState(true);
-        Loading = true;
-        LoaderText = "Processing";
-
-        await Task.Delay(10); // Ensure rendering has time to be called
-
-        CompileToAssemblyResult compilationResult = null;
-        CodeFile mainComponent = null;
-        string originalMainComponentContent = null;
-        try
+        catch (ArgumentException)
         {
-            // Add the necessary main component code prefix and store the original content so we can revert right after compilation.
-            if (CodeFiles.TryGetValue(CoreConstants.MainComponentFilePath, out mainComponent))
-            {
-                originalMainComponentContent = mainComponent.Content;
-                mainComponent.Content = MainComponentCodePrefix +
-                                        originalMainComponentContent.Replace(MainComponentCodePrefix, "");
-            }
-
-            compilationResult = await CompilationService.CompileToAssemblyAsync(
-                CodeFiles.Values,
-                _installedPackages,
-                UpdateLoaderTextAsync);
-
-            Diagnostics = compilationResult.Diagnostics.OrderByDescending(x => x.Severity).ThenBy(x => x.Code).ToList();
+            Snackbar.Add("Invalid Snippet ID.", Severity.Error);
         }
         catch (Exception e)
         {
+            Snackbar.Add("Unable to get snippet content. Please try again later.", Severity.Error);
             Console.WriteLine(e.Message);
-            Snackbar.Add("Error while compiling the code.", Severity.Error);
-        }
-        finally
-        {
-            if (mainComponent != null)
-            {
-                mainComponent.Content = originalMainComponentContent;
-            }
-
-            Loading = false;
-            StateHasChanged();
-        }
-
-        PublishDiagnosticMarkers();
-
-        if (compilationResult?.AssemblyBytes?.Length > 0)
-        {
-            // Make sure the DLL is updated before reloading the user page
-            await JsRuntime.InvokeVoidAsync(Models.Try.CodeExecution.UpdateUserComponentsDLL,
-                compilationResult.AssemblyBytes);
-
-            ReloadIframe();
-        }
-
-        if (ErrorsCount > 0)
-            await ShowErrorsPanel();
-    }
-
-    /// <summary>Pushes the compiler diagnostics into the monaco editors as inline squiggles.</summary>
-    private void PublishDiagnosticMarkers()
-    {
-        var byFile = Diagnostics
-            .Where(d => !string.IsNullOrEmpty(d.File))
-            .GroupBy(d => d.File)
-            .ToDictionary(g => g.Key, g => g.ToList());
-
-        foreach (var (path, domId) in _editorDomIds)
-        {
-            var markers = byFile.TryGetValue(path, out var list)
-                ? list.Select(d => new
-                {
-                    line = d.Line ?? 1,
-                    column = 0,
-                    endLine = d.Line ?? 1,
-                    endColumn = 0,
-                    message = $"{d.Code}: {d.Description}",
-                    severity = d.Severity == DiagnosticSeverity.Error ? "error"
-                        : d.Severity == DiagnosticSeverity.Warning ? "warning" : "info",
-                }).ToArray()
-                : Array.Empty<object>();
-
-            JsRuntime.InvokeVoid(Models.Try.Editor.SetMarkers, domId, markers);
         }
     }
 
-    private DialogOptionsEx GetSamplesDialogOptions()
+    private async Task OpenSampleAsync(string sample)
     {
-        return new DialogOptionsEx
-        {
-            CloseButton = true,
-            BackdropClick = true,
-            DragMode = MudDialogDragMode.Simple,
-            Position = DialogPosition.CenterLeft,
-            Animations = new[] { AnimationType.FadeIn, AnimationType.SlideIn },
-            AnimationDuration = TimeSpan.FromMilliseconds(500),
-            DisablePositionMargin = true,
-            MaxWidth = MaxWidth.Small,
-            FullHeight = true,
-            Resizeable = true
-        };
+        if (string.IsNullOrWhiteSpace(sample)) return;
+
+        // the editor keeps its session in local storage — drop it so the sample wins on a reload too
+        var keys = new PlayzorStorageKeys("playzor");
+        await Storage.RemoveItemAsync(keys.Code);
+        await Storage.RemoveItemAsync(keys.OpenFiles);
+
+        Sample = sample;
+        SnippetId = null;
+        SnippetFileUrl = null;
+        NavigationManager.NavigateTo($"/snippet/samples/{sample}", false);
+
+        await LoadFilesAsync();
+        StateHasChanged();
+
+        if (_editor != null)
+            await _editor.TriggerCompileAsync();
     }
 
-    private void ShowSaveSnippetPopup()
+    private async Task UpdateThemeAsync(bool dark)
     {
+        await LayoutService.ToggleDarkMode(dark);
+    }
+
+    private void ShowSaveSnippetPopup(IEnumerable<CodeFile> files)
+    {
+        _snippetFiles = files.ToList();
         SaveSnippetPopupVisible = true;
     }
 
-    private async Task ShowEmbedDialog()
+    private async Task ShowEmbedDialogAsync(IEnumerable<CodeFile> files)
     {
-        CollectAllEditorContent();
-
         await DialogService.ShowComponentInDialogAsync<EmbedDialog>(L["Embed this snippet"],
             L["Paste the snippet into any page — the code travels inside the url, nothing needs to be saved."],
             cmp =>
             {
-                cmp.Files = CodeFiles.Values.ToList();
+                cmp.Files = files.ToList();
                 cmp.SnippetId = SnippetId;
             },
             new DialogParameters { { nameof(MudExMessageDialog.Icon), Icons.Material.Outlined.Code } },
@@ -435,536 +166,9 @@ public partial class Repl : IDisposable
             });
     }
 
-    // ---------- dock / editor panel handling ----------
-
-    private async Task OpenFile(string path)
-    {
-        if (string.IsNullOrWhiteSpace(path) || !CodeFiles.TryGetValue(path, out var file)) return;
-
-        activeCodeFile = file;
-
-        if (path != CoreConstants.MainComponentFilePath && !_openFiles.Contains(path))
-        {
-            _openFiles.Add(path);
-            StateHasChanged();
-            await Task.Delay(60); // let blazor render + observer pick up the panel
-        }
-
-        if (_dock != null)
-            await _dock.ActivatePanelAsync(EditorPanelId(path));
-        _ = SaveState(false);
-        _ = PersistLayoutAsync();
-    }
-
-    private void OpenFileMobile(string path)
-    {
-        if (string.IsNullOrWhiteSpace(path) || !CodeFiles.TryGetValue(path, out var file)) return;
-        CollectAllEditorContent();
-        activeCodeFile = file;
-    }
-
-    private async Task HandleCreateFile(string path)
-    {
-        AddCodeFile(CodeFile.Create(path));
-        CodeFileNames = GetCodeFileNames();
-        await OpenFile(path);
-    }
-
-    private async Task HandleCreateFromTemplate(CodeFile file)
-    {
-        if (file.Content == null)
-            AddCodeFile(CodeFile.Create(file.Path));
-        else
-            AddCodeFile(file);
-        CodeFileNames = GetCodeFileNames();
-        await OpenFile(file.Path);
-    }
-
-    private async Task HandleRenameFile((string OldPath, string NewPath) rename)
-    {
-        if (!CodeFiles.TryGetValue(rename.OldPath, out var oldFile)) return;
-
-        CollectAllEditorContent();
-        CodeFiles.Remove(rename.OldPath);
-        CodeFiles[rename.NewPath] = new CodeFile { Path = rename.NewPath, Content = oldFile.Content };
-
-        // close the old panel (tombstone) and open the renamed file
-        var idx = _openFiles.IndexOf(rename.OldPath);
-        if (idx >= 0) _openFiles[idx] = null;
-        if (activeCodeFile?.Path == rename.OldPath) activeCodeFile = CodeFiles[rename.NewPath];
-
-        CodeFileNames = GetCodeFileNames();
-        StateHasChanged();
-        await Task.Delay(60);
-        await OpenFile(rename.NewPath);
-    }
-
-    private async Task HandleDeleteFile(string path)
-    {
-        if (path == CoreConstants.MainComponentFilePath) return;
-
-        CodeFiles.Remove(path);
-        var idx = _openFiles.IndexOf(path);
-        if (idx >= 0) _openFiles[idx] = null;
-        if (activeCodeFile?.Path == path) activeCodeFile = GetFile(CoreConstants.MainComponentFilePath);
-
-        CodeFileNames = GetCodeFileNames();
-        await SaveState(false);
-    }
-
-    private void HandlePanelRemoved(string panelId)
-    {
-        // a layout restore tears every panel down before rebuilding — those removals are
-        // not the user closing a file, so they must not tombstone the open files
-        if (_restoringLayout) return;
-        if (panelId?.StartsWith("ed:") != true) return;
-
-        var path = panelId[3..];
-        var idx = _openFiles.IndexOf(path);
-        if (idx >= 0)
-        {
-            _openFiles[idx] = null; // tombstone — component dispose signals removePanelById (idempotent here)
-            CollectAllEditorContent();
-            _ = SaveState(false);
-            _ = PersistLayoutAsync();
-            StateHasChanged();
-        }
-    }
-
-    private async Task HandlePanelMoved(DockviewMovePanelEvent _)
-    {
-        await PersistLayoutAsync();
-    }
-
-    private void HandleActivePanelChanged(string panelId)
-    {
-        if (panelId?.StartsWith("ed:") == true && CodeFiles.TryGetValue(panelId[3..], out var file))
-            activeCodeFile = file;
-    }
-
-    private async Task PersistLayoutAsync()
-    {
-        if (_dock == null) return;
-        try
-        {
-            var json = await _dock.SaveLayoutAsync();
-            if (!string.IsNullOrWhiteSpace(json) && json != "{}")
-                await Storage.SetItemAsStringAsync(LayoutStorageKey, json);
-        }
-        catch { /* layout persistence is best effort */ }
-    }
-
-    /// <summary>
-    /// Files and editor side by side, errors/console under them, preview full height on the right.
-    /// Written out as a dockview layout instead of relying on the declarative panel order, because
-    /// that order can only place panels relative to the whole grid — never below a single panel.
-    /// dockview flips the orientation per level (root horizontal, its branches vertical, …) and
-    /// scales the sizes to the container, so they are ratios rather than pixels.
-    /// </summary>
-    private string BuildDefaultLayoutJson()
-    {
-        object Leaf(string groupId, int size, params string[] views) => new
-        {
-            type = "leaf",
-            size,
-            data = new { id = groupId, views, activeView = views[0] }
-        };
-
-        object Branch(int size, params object[] children) => new { type = "branch", size, data = children };
-
-        object Panel(string id, string title) => new { id, title, renderer = "always" };
-
-        var root = Branch(800,
-            Branch(820,
-                Branch(500,
-                    Leaf("2", 250, "files"),
-                    Leaf("1", 570, MainEditorPanelId)),
-                Leaf("3", 300, "errors", "console")),
-            Leaf("4", 580, "preview"));
-
-        return JsonConvert.SerializeObject(new
-        {
-            grid = new { width = 1400, height = 800, orientation = "HORIZONTAL", root },
-            panels = new Dictionary<string, object>
-            {
-                [MainEditorPanelId] = Panel(MainEditorPanelId, CoreConstants.MainComponentFilePath),
-                ["files"] = Panel("files", L["Files"]),
-                ["errors"] = Panel("errors", L["Errors"]),
-                ["console"] = Panel("console", L["Console"]),
-                ["preview"] = Panel("preview", L["Preview"]),
-            },
-            activeGroup = "1",
-        });
-    }
-
-    private async Task ResetLayout()
-    {
-        await Storage.RemoveItemAsync(LayoutStorageKey);
-        await Storage.RemoveItemAsync(OpenFilesStorageKey);
-
-        // extra editor tabs have to go before the restore: the default layout has no panel for them
-        await ResetOpenEditorsAsync();
-        await ApplyLayoutAsync(BuildDefaultLayoutJson(), persist: false);
-    }
-
-    // ---------------- panels ----------------
-
-    private static readonly Dictionary<string, (string Title, string Direction)> StaticPanels = new()
-    {
-        ["files"] = ("Files", "left"),
-        ["preview"] = ("Preview", "right"),
-        ["errors"] = ("Errors", "below"),
-        ["console"] = ("Console", "below"),
-    };
-
-    /// <summary>Panel ids dockview currently holds — refreshed when the panels menu opens.</summary>
-    private HashSet<string> _openPanels = new();
-
-    private bool IsPanelOpen(string id) => _openPanels.Contains(id);
-
-    private async Task RefreshOpenPanelsAsync()
-    {
-        if (_dock == null) return;
-        try
-        {
-            var ids = await _dock.GetPanelIdsAsync();
-            _openPanels = ids?.ToHashSet() ?? new HashSet<string>();
-            StateHasChanged();
-        }
-        catch { /* dock not ready yet */ }
-    }
-
-    private async Task TogglePanel(string id)
-    {
-        if (_dock == null || !StaticPanels.TryGetValue(id, out var meta)) return;
-
-        if (_openPanels.Contains(id))
-        {
-            await _dock.RemovePanelAsync(id);
-        }
-        else
-        {
-            await _dock.AddPanelAsync(JsonConvert.SerializeObject(new
-            {
-                id,
-                title = L[meta.Title],
-                direction = meta.Direction,
-                stackWith = id == "console" ? "errors" : null,
-                canClose = id != "preview",
-            }));
-            await _dock.ActivatePanelAsync(id);
-        }
-
-        await RefreshOpenPanelsAsync();
-        await PersistLayoutAsync();
-    }
-
-    private async Task PopoutPanel(string id)
-    {
-        if (_dock == null) return;
-        if (!_openPanels.Contains(id)) await TogglePanel(id);
-
-        var ok = await _dock.PopoutPanelAsync(id, "/popout.html");
-        if (!ok)
-            Snackbar.Add(L["Could not open a window — check your popup blocker."], Severity.Warning);
-    }
-
-    private async Task ShowErrorsPanel()
-    {
-        if (_dock == null) return;
-        await RefreshOpenPanelsAsync();
-        if (!_openPanels.Contains("errors")) await TogglePanel("errors");
-        else await _dock.ActivatePanelAsync("errors");
-    }
-
-    // ---------------- named layouts ----------------
-
-    private Dictionary<string, string> _namedLayouts = new();
-
-    private async Task LoadNamedLayoutsAsync()
-    {
-        try
-        {
-            _namedLayouts = await Storage.GetItemAsync<Dictionary<string, string>>(ReplStorageKeys.NamedLayouts)
-                            ?? new Dictionary<string, string>();
-        }
-        catch
-        {
-            _namedLayouts = new Dictionary<string, string>();
-        }
-    }
-
-    private async Task SaveNamedLayoutAsync()
-    {
-        if (_dock == null) return;
-
-        var name = await DialogService.PromptAsync(L["Save layout"], L["Name for this layout"], string.Empty,
-            icon: Icons.Material.Outlined.Bookmark, canConfirm: s => !string.IsNullOrWhiteSpace(s));
-        if (string.IsNullOrWhiteSpace(name)) return;
-
-        var json = await _dock.SaveLayoutAsync();
-        if (string.IsNullOrWhiteSpace(json) || json == "{}") return;
-
-        _namedLayouts[name.Trim()] = json;
-        await Storage.SetItemAsync(ReplStorageKeys.NamedLayouts, _namedLayouts);
-        Snackbar.Add($"{L["Layout saved"]}: {name}", Severity.Success);
-    }
-
-    private bool _restoringLayout;
-
-    private Task ApplyNamedLayoutAsync(string name)
-        => _namedLayouts.TryGetValue(name, out var json) ? ApplyLayoutAsync(json) : Task.CompletedTask;
-
-    private async Task ApplyLayoutAsync(string json, bool persist = true)
-    {
-        if (_dock == null || string.IsNullOrWhiteSpace(json)) return;
-
-        _restoringLayout = true;
-        try
-        {
-            await _dock.RestoreLayoutAsync(json);
-            await Task.Delay(100); // let the teardown events pass while the guard is up
-        }
-        finally
-        {
-            _restoringLayout = false;
-        }
-
-        if (persist) await Storage.SetItemAsStringAsync(LayoutStorageKey, json);
-        await RefreshOpenPanelsAsync();
-    }
-
-    private async Task DeleteNamedLayoutAsync(string name)
-    {
-        if (!_namedLayouts.Remove(name)) return;
-        await Storage.SetItemAsync(ReplStorageKeys.NamedLayouts, _namedLayouts);
-        StateHasChanged();
-    }
-
-    private CodeFile AddCodeFile(CodeFile codefile)
-    {
-        CodeFiles.TryAdd(codefile.Path, codefile);
-        CodeFileNames = GetCodeFileNames();
-        SaveState(false);
-        return codefile;
-    }
-
-    private Task UpdateLoaderTextAsync(string loaderText)
-    {
-        LoaderText = loaderText;
-
-        StateHasChanged();
-
-        return Task.Delay(10); // Ensure rendering has time to be called
-    }
-
-    private async void UpdateTheme()
-    {
-        await LayoutService.ToggleDarkMode();
-        // the preview is a separate wasm instance and only reads the theme from its url on load
-        JsRuntime.InvokeVoid(Models.Try.Preview.PushTheme, LayoutService.IsDarkMode);
-    }
-
-    private async Task Upload()
-    {
-        var allowedExtensions = new List<string> { "zip", "rar" }.Concat(CodeFilesHelper.ValidCodeFileExtensions.Select(e => e.Split('.').Last())).ToList();
-        var parameters = new DialogParameters
-        {
-            { nameof(MudExMessageDialog.Buttons), MudExDialogResultAction.OkCancel("Upload") },
-            { nameof(MudExMessageDialog.Icon), Icons.Material.Filled.FileUpload }
-        };
-        var res = await DialogService.ShowComponentInDialogAsync<MudExUploadEdit<UploadableFile>>("Upload content",
-            "Upload content files as zip or separate",
-            uploadEdit =>
-            {
-                uploadEdit.MinHeight = 250;
-                uploadEdit.MaxHeight = 250;
-                uploadEdit.ExternalProviderRendering = ExternalProviderRendering.ActionButtonsNewLine;
-                uploadEdit.ItemIsVisibleFunc = f => ShowHiddenFiles || new CodeFile() { Path = f.FileName }.Type != CodeFileType.Hidden;
-                uploadEdit.Style = "margin-bottom: 20px; height: 400px; overflow-y:auto; overflow-x: hidden";
-                uploadEdit.AutoExtractArchive = true;
-                uploadEdit.Extensions = allowedExtensions.ToArray();
-            }, parameters, options =>
-            {
-                options.Resizeable = true;
-                options.FullWidth = true;
-                options.MaxWidth = MaxWidth.Medium;
-            });
-        if (!res.DialogResult.Canceled)
-        {
-            var files = res.Component.UploadRequests.Select(f => new KeyValuePair<string, CodeFile>(f.FileName.Replace('\\', '/'),
-                new CodeFile
-                {
-                    Path = f.FileName.Replace('\\', '/'),
-                    Content = Encoding.UTF8.GetString(f.Data)
-                })).ToDictionary(pair => pair.Key, pair => pair.Value);
-            await ResetOpenEditorsAsync();
-            CodeFiles = files;
-            EnsureMainComponent();
-            CodeFileNames = GetCodeFileNames();
-            activeCodeFile = GetFile(CoreConstants.MainComponentFilePath) ?? CodeFiles.Values.FirstOrDefault();
-            _installedPackages = await GetInstalledAsync();
-            StateHasChanged();
-        }
-    }
-
-    /// <summary>Disposes all dynamic editor panels and clears tombstones (before a full content swap).</summary>
-    private async Task ResetOpenEditorsAsync()
-    {
-        if (_openFiles.Count == 0) return;
-        _openFiles.Clear();
-        _editorDomIds.Clear();
-        _editorDomIdCounter = 0;
-        StateHasChanged();
-        await Task.Delay(60); // let dispose-signals reach the dock before new content renders
-    }
-
-    private void EnsureMainComponent()
-    {
-        if (!CodeFiles.ContainsKey(CoreConstants.MainComponentFilePath))
-        {
-            CodeFiles[CoreConstants.MainComponentFilePath] = new CodeFile
-            {
-                Path = CoreConstants.MainComponentFilePath,
-                Content = CoreConstants.MainComponentDefaultFileContent
-            };
-        }
-    }
-
-    private async Task Download()
-    {
-        CollectAllEditorContent();
-        var id = SnippetId ?? Guid.NewGuid().ToFormattedId();
-        var fileName = Path.ChangeExtension($"TryMudEx_{id}", "zip");
-        fileName = await DialogService.PromptAsync("Filename", "Enter file name", fileName, icon: Icons.Material.Filled.Archive, canConfirm: s => !string.IsNullOrEmpty(s));
-        if (!string.IsNullOrEmpty(fileName))
-        {
-            var stream = SnippetsService.DownloadZipAsync(CodeFiles.Values);
-            await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
-            {
-                Url = await FileService.CreateDataUrlAsync(stream.ToArray(), "application/zip", true),
-                FileName = $"{fileName}",
-                MimeType = "application/zip"
-            });
-        }
-    }
-
-    private void ReloadIframe()
-    {
-        var packageParam = JsonConvert.SerializeObject(_installedPackages, CoreConstants.PackageSerializerSettings);
-        // the user page reads dark/light from its url, so the preview follows the repl theme
-        var url = $"{MainUserPagePath}?packages={packageParam}&{(LayoutService.IsDarkMode ? "dark" : "light")}=true{BrandQuery("&")}";
-        JsRuntime.InvokeVoid(Models.Try.ReloadIframe, "user-page-window", url);
-    }
-
-    // the preview is its own app instance and resolves its brand from its own url. On a real
-    // domain the host answers that; while developing with ?brand= it has to be passed on.
-    private string BrandQuery(string separator)
-        => string.IsNullOrEmpty(Branding.DevBrandOverride) ? string.Empty : $"{separator}brand={Branding.DevBrandOverride}";
-
-    private string UserPageInitialSrc => "/user-page" + BrandQuery("?");
-
-    private async Task ShowSamples()
-    {
-        var buttons = MudExDialogResultAction.OkCancel("Open sample");
-        buttons.Last().Color = Color.Primary;
-        var res = await DialogService.ShowComponentInDialogAsync<MudExList<string>>("Select sample", "Select sample to open",
-            list =>
-            {
-                list.Style = MudExStyleBuilder.Default.WithMaxHeight(85, CssUnit.ViewportHeight).WithOverflow("auto").ToString();
-                list.MultiSelection = false;
-                list.ItemCollection = _samples.Select(s => s.Replace("_", " ")).ToArray();
-                list.Clickable = true;
-                list.SearchBox = true;
-                list.SearchBoxVariant = Variant.Outlined;
-                list.OnDoubleClick = EventCallback.Factory.Create<ListItemClickEventArgs<string>>(this, HandleItemDblClick);
-                list.SearchBoxBackgroundColor = "var(--mud-palette-surface)";
-            }, dlg =>
-            {
-                dlg.Icon = Icons.Material.Filled.Folder;
-                dlg.Buttons = buttons;
-
-            }, GetSamplesDialogOptions());
-        var value = res.Component.SelectedValue;
-        if (!res.DialogResult.Canceled && !string.IsNullOrEmpty(value))
-        {
-            await OpenAndCompileSampleAsync(value);
-        }
-    }
-
-    private async Task HandleItemDblClick(ListItemClickEventArgs<string> arg)
-    {
-        await OpenAndCompileSampleAsync(arg.ItemValue);
-    }
-
-    private async Task OpenAndCompileSampleAsync(string value)
-    {
-        value = value.Replace(" ", "_");
-        await Storage.RemoveItemAsync("__temp_code");
-        await Storage.RemoveItemAsync(OpenFilesStorageKey);
-        NavigationManager.NavigateTo($"/snippet/samples/{value}", false);
-        Sample = value;
-        await ResetOpenEditorsAsync();
-        await LoadDataAsync();
-        EnsureMainComponent();
-        CodeFileNames = GetCodeFileNames();
-        _installedPackages = await GetInstalledAsync();
-        StateHasChanged();
-        await CompileAsync();
-    }
-
-    private async Task OpenDiagnostic(CompilationDiagnostic obj)
-    {
-        if (string.IsNullOrEmpty(obj?.File)) return;
-
-        await OpenFile(obj.File);
-        await Task.Delay(100);
-        if (obj.Line.HasValue)
-            await JsRuntime.InvokeVoidAsync(Models.Try.Editor.SetSelection, EditorDomId(obj.File), obj.Line.Value);
-    }
-
-    private List<string> GetCodeFileNames() => !ShowHiddenFiles ? CodeFiles.Where(c => c.Value.Type != CodeFileType.Hidden).Select(c => c.Key).ToList() : CodeFiles.Keys.ToList();
-
-
-    private async Task EditPackageReferences(bool fromBottom)
-    {
-        _installedPackages = await GetInstalledAsync();
-        var dialog = await DialogService.ShowComponentInDialogAsync<PackageReferences>("Packages", "",
-            cmp =>
-            {
-                cmp.InstalledPackages = _installedPackages;
-            },
-            new DialogParameters() { { nameof(MudExMessageDialog.Icon), MudExIcons.Custom.Brands.ColorFull.Nuget } },
-            (fromBottom ? DialogOptionsEx.SlideInFromBottom : DialogOptionsEx.SlideInFromTop).SetProperties(o =>
-            {
-                o.Resizeable = true;
-                o.FullHeight = true;
-                o.FullWidth = true;
-                o.MaxWidth = MaxWidth.ExtraLarge;
-                o.MaxHeight = MaxHeight.Medium;
-            }));
-
-
-        EnsureReferenceFile().Content = JsonConvert.SerializeObject(_installedPackages = dialog.Component.SelectedPackages, CoreConstants.PackageSerializerSettings);
-    }
-
-    private CodeFile EnsureReferenceFile()
-        => CodeFiles.Values.FirstOrDefault(c => c.Path == CoreConstants.PackageRef)
-        ?? AddCodeFile(new CodeFile() { Path = CoreConstants.PackageRef, Content = JsonConvert.SerializeObject(BrandDefaultPackages(), CoreConstants.PackageSerializerSettings) });
-
     /// <summary>Packages a fresh snippet starts with — MudEx ships its own, other brands may not.</summary>
     private List<INugetPackageReference> BrandDefaultPackages()
         => CoreConstants.DefaultPackages
             .Where(p => Branding.Current.DefaultPackages.Contains(p.Id))
             .ToList();
-
-
-    private async Task<NugetPackage[]> GetInstalledAsync()
-    {
-        var refFile = EnsureReferenceFile();
-        var tasks = JsonConvert.DeserializeObject<List<NugetPackage>>(refFile.Content).Select(x => PackageSearch.SearchForPackagesAsync(x.Id, 1));
-        var results = await Task.WhenAll(tasks);
-        return results.SelectMany(r => r.Data).ToArray();
-    }
-
 }

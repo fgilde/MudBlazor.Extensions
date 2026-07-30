@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -6,6 +6,7 @@ using MudBlazor;
 using Playzor.Blazor;
 using Try.Core;
 using TryMudEx.Client.Services;
+using Playzor.Blazor.Services;
 
 namespace TryMudEx.Client.Pages;
 
@@ -15,7 +16,7 @@ public partial class EmbedDocs
     [Inject] private IJSRuntime Js { get; set; }
     [Inject] private ISnackbar Snackbar { get; set; }
     [Inject] private BrandingService Branding { get; set; }
-    [Inject] private PlaygroundLocalizer L { get; set; }
+    [Inject] private PlayzorLocalizer L { get; set; }
 
     private PlayzorView _view = PlayzorView.Split;
     private bool _readOnly;

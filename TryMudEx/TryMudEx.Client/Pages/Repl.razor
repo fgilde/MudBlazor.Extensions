@@ -1,90 +1,26 @@
-﻿@page "/snippet/{snippetId?}"
+@page "/snippet/{snippetId?}"
 @page "/snippet/samples/{sample?}"
 @page "/snippet/from/{snippetFileUrl?}"
-@using MudBlazor.Extensions.Core
-@using Try.Core
+@using Playzor.Blazor.Components
+@using Playzor.Blazor.Core
 
 @layout MainLayout
 
-<div class="try-layout">
-    <div class="repl-toolbar">
-        <MudTooltip Text="@L["Run (Ctrl + S)"]">
-            <MudIconButton OnClick="@CompileAsync" Disabled="@Loading" Icon="@Icons.Material.Rounded.PlayArrow" Color="Color.Success" />
-        </MudTooltip>
-        <MudDivider Vertical="true" FlexItem="true" Class="mx-1" />
-        <MudTooltip Text="@L["Save or Share"]">
-            <MudIconButton OnClick="ShowSaveSnippetPopup" Icon="@Icons.Material.Outlined.Save" />
-        </MudTooltip>
-        <SaveSnippetPopup @bind-Visible="SaveSnippetPopupVisible" CodeFiles="@CodeFiles.Values" UpdateActiveCodeFileContentAction="CollectAllEditorContent" />
-        <MudTooltip Text="@L["Embed this snippet"]">
-            <MudIconButton OnClick="@ShowEmbedDialog" Icon="@Icons.Material.Outlined.Code" />
-        </MudTooltip>
-        <MudTooltip Text="@L["Download"]">
-            <MudIconButton OnClick="Download" Icon="@Icons.Material.Outlined.Download" />
-        </MudTooltip>
-        <MudTooltip Text="@L["Upload"]">
-            <MudIconButton OnClick="Upload" Icon="@Icons.Material.Outlined.UploadFile" />
-        </MudTooltip>
-        @if (_samples?.Any() == true)
-        {
-            <MudTooltip Text="@L["Samples"]">
-                <MudIconButton OnClick="@ShowSamples" Icon="@Icons.Material.Outlined.Folder" />
-            </MudTooltip>
-        }
-        <MudTooltip Text="@L["Manage Nuget packages"]">
-            <MudIconButton Icon="@MudExIcons.Custom.Brands.Nuget" OnClick="@(() => EditPackageReferences(false))" />
-        </MudTooltip>
-        <MudSpacer />
-        <MudMenu Dense="true" CloseOnClickOutside="true">
-            <ActivatorContent>
-                <MudTooltip Text="@L["Panels"]">
-                    <MudIconButton Icon="@Icons.Material.Outlined.GridView" OnClick="@(async () => { await RefreshOpenPanelsAsync(); await context.ToggleAsync(); })" />
-                </MudTooltip>
-            </ActivatorContent>
-            <ChildContent>
-                @foreach (var (id, meta) in StaticPanels)
-                {
-                    <div class="d-flex align-center panel-menu-row">
-                        <MudMenuItem OnClick="@(() => TogglePanel(id))" Class="flex-grow-1"
-                                     Icon="@(IsPanelOpen(id) ? Icons.Material.Outlined.CheckBox : Icons.Material.Outlined.CheckBoxOutlineBlank)">
-                            @L[meta.Title]
-                        </MudMenuItem>
-                        <MudTooltip Text="@L["Open in new window"]">
-                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.OpenInNew"
-                                           OnClick="@(() => PopoutPanel(id))" />
-                        </MudTooltip>
-                    </div>
-                }
-            </ChildContent>
-        </MudMenu>
-        <MudMenu Dense="true" CloseOnClickOutside="true">
-            <ActivatorContent>
-                <MudTooltip Text="@L["Layout"]">
-                    <MudIconButton Icon="@Icons.Material.Outlined.Dashboard" OnClick="@(async () => { await LoadNamedLayoutsAsync(); await context.ToggleAsync(); })" />
-                </MudTooltip>
-            </ActivatorContent>
-            <ChildContent>
-                <MudMenuItem OnClick="@SaveNamedLayoutAsync" Icon="@Icons.Material.Outlined.Bookmark">@L["Save layout"]</MudMenuItem>
-                <MudMenuItem OnClick="@ResetLayout" Icon="@Icons.Material.Outlined.RestartAlt">@L["Reset layout"]</MudMenuItem>
-                @if (_namedLayouts.Any())
-                {
-                    <MudDivider />
-                    @foreach (var name in _namedLayouts.Keys.OrderBy(k => k))
-                    {
-                        <div class="d-flex align-center panel-menu-row">
-                            <MudMenuItem OnClick="@(() => ApplyNamedLayoutAsync(name))" Class="flex-grow-1">@name</MudMenuItem>
-                            <MudTooltip Text="@L["Delete"]">
-                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete"
-                                               OnClick="@(() => DeleteNamedLayoutAsync(name))" />
-                            </MudTooltip>
-                        </div>
-                    }
-                }
-            </ChildContent>
-        </MudMenu>
-        <MudTooltip Text="@(LayoutService.IsDarkMode ? L["Switch to Light Theme"] : L["Switch to Dark Theme"])">
-            <MudIconButton OnClick="@UpdateTheme" Icon="@(LayoutService.IsDarkMode ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" />
-        </MudTooltip>
+<PlayzorEditor @ref="_editor"
+               Id="playzor"
+               Files="@_files"
+               DefaultSnippet="@Branding.Current.DefaultSnippet"
+               DefaultPackages="@BrandDefaultPackages()"
+               Culture="@Branding.Current.Culture"
+               PreviewUrl="@UserPageUrl"
+               CompiledPreviewUrl="@CompiledPageUrl"
+               Samples="@_samples"
+               OnSampleSelected="OpenSampleAsync"
+               DarkMode="@LayoutService.IsDarkMode"
+               DarkModeChanged="@UpdateThemeAsync"
+               OnSaveRequested="@ShowSaveSnippetPopup"
+               OnEmbedRequested="@ShowEmbedDialogAsync">
+    <HeaderContent>
         <a class="brand ml-2 d-flex align-center" href="/" title="@Branding.Current.Name">
             @if (Branding.IsPlayzor)
             {
@@ -96,113 +32,7 @@
                 <MudExGradientText Typo="Typo.h6">@Branding.Current.Name</MudExGradientText>
             }
         </a>
-    </div>
+    </HeaderContent>
+</PlayzorEditor>
 
-    <div class="try-editor">
-        <MudOverlay Visible="Loading" Absolute="true" DarkBackground="true">
-            <MudText Typo="Typo.h4" Class="white-text"> @LoaderText</MudText>
-        </MudOverlay>
-
-        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="false">
-            <MudExDockLayout @ref="_dock" Id="try-dock" Class="mudex-dock-host" ContainerStyle="height:100%;width:100%;"
-                             InitialLayoutJson="@_initialLayoutJson"
-                             OnPanelRemoved="HandlePanelRemoved" OnPanelMoved="HandlePanelMoved" OnActiveChanged="HandleActivePanelChanged">
-                @* first panel becomes the grid base (center). __Main.razor always exists and is never closable. *@
-                <MudExDockItem Id="@MainEditorPanelId" Title="@CoreConstants.MainComponentFilePath" CanClose="false" Renderer="DockRendererMode.Always">
-                    <CodeEditor Id="@EditorDomId(CoreConstants.MainComponentFilePath)" Theme="@EditorTheme"
-                                Code="@GetFile(CoreConstants.MainComponentFilePath)?.Content" CodeFileType="CodeFileType.Razor" />
-                </MudExDockItem>
-                <MudExDockItem Id="files" Title="@L["Files"]" Direction="DockDirection.Left" InitialWidth="230" Renderer="DockRendererMode.Always">
-                    <FileTree Files="@CodeFiles.Values" ActivePath="@activeCodeFile?.Path" ShowHiddenFiles="@ShowHiddenFiles"
-                              OnOpen="OpenFile" OnCreate="HandleCreateFile" OnCreateFromTemplate="HandleCreateFromTemplate"
-                              OnRename="HandleRenameFile" OnDelete="HandleDeleteFile" />
-                </MudExDockItem>
-                <MudExDockItem Id="preview" Title="@L["Preview"]" Direction="DockDirection.Right" CanClose="false" Renderer="DockRendererMode.Always">
-                    <iframe style="height:100%; width:100%; border:none;" id="user-page-window" data-base-src="@UserPageInitialSrc" src="@UserPageInitialSrc"></iframe>
-                </MudExDockItem>
-                <MudExDockItem Id="errors" Title="@L["Errors"]" Direction="DockDirection.Below" InitialHeight="170" Renderer="DockRendererMode.Always">
-                    <ErrorList OnDiagnosticClick="OpenDiagnostic" Diagnostics="@Diagnostics" />
-                </MudExDockItem>
-                <MudExDockItem Id="console" Title="@L["Console"]" StackWith="errors" Renderer="DockRendererMode.Always">
-                    <ConsolePanel />
-                </MudExDockItem>
-                @* editor items MUST stay last & append-only (tombstones keep positions stable):
-                   dockview adopts the nodes, positional re-diffing must never touch existing ones *@
-                @foreach (var path in _openFiles)
-                {
-                    @if (path != null)
-                    {
-                        <MudExDockItem Id="@EditorPanelId(path)" Title="@FileTitle(path)" StackWith="@MainEditorPanelId" Renderer="DockRendererMode.Always">
-                            <CodeEditor Id="@EditorDomId(path)" Theme="@EditorTheme" Code="@GetFile(path)?.Content" CodeFileType="@(GetFile(path)?.Type ?? CodeFileType.Razor)" />
-                        </MudExDockItem>
-                    }
-                    else
-                    {
-                        <div style="display:none"></div>
-                    }
-                }
-            </MudExDockLayout>
-        </MudHidden>
-
-        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-            <div class="d-flex flex-column" style="height:100%">
-                <MudSelect T="string" Value="@activeCodeFile?.Path" ValueChanged="@OpenFileMobile" Dense="true" Class="px-2">
-                    @foreach (var name in CodeFileNames)
-                    {
-                        <MudSelectItem Value="@name">@name</MudSelectItem>
-                    }
-                </MudSelect>
-                <div style="flex:1; min-height:150px;">
-                    <CodeEditor Id="@MobileEditorId" Theme="@EditorTheme" Code="@activeCodeFile?.Content" CodeFileType="@(activeCodeFile?.Type ?? CodeFileType.Razor)" />
-                </div>
-                <iframe style="flex:1; border:none;" id="user-page-window" data-base-src="@UserPageInitialSrc" src="@UserPageInitialSrc"></iframe>
-            </div>
-        </MudHidden>
-    </div>
-
-    <div class="repl-statusbar @StatusBarClass">
-        <div class="try-errorlist-button" @onclick="@ShowErrorsPanel" title="@L["Show errors"]">
-            <MudIcon Icon="@Icons.Material.Outlined.ErrorOutline" Size="Size.Small" />
-            <span>@ErrorsCount</span>
-            <MudIcon Icon="@Icons.Material.Outlined.WarningAmber" Size="Size.Small" Class="ml-2" />
-            <span>@WarningsCount</span>
-        </div>
-        <div class="try-errorlist-button ml-2" @onclick="@ReloadIframe" title="@L["Reload preview"]">
-            <MudIcon Icon="@Icons.Material.Outlined.Refresh" Size="Size.Small" />
-            <span>@L["Reload"]</span>
-        </div>
-        <MudSpacer />
-        @foreach (var package in _installedPackages.Take(_maxPackagesInStatusBar))
-        {
-            <span class="mr-3"><a href="@package.ProjectUrl" target="_blank">@TrimmedPackageText(package)</a></span>
-        }
-        @if (_installedPackages.Length > _maxPackagesInStatusBar)
-        {
-            <MudMenu MaxHeight="400" Dense="true" Icon="@Icons.Material.Filled.MoreHoriz" Size="Size.Small">
-                @foreach (var package in _installedPackages)
-                {
-                    <MudMenuItem Href="@package.ProjectUrl" Target="_blank">@TrimmedPackageText(package, 70)</MudMenuItem>
-                }
-            </MudMenu>
-        }
-        <div class="try-errorlist-button" @onclick="@(() => EditPackageReferences(true))" title="Manage Nuget packages">
-            <MudIcon Icon="@MudExIcons.Custom.Brands.Nuget" Size="Size.Small" />
-        </div>
-    </div>
-</div>
-@code {
-    int _maxPackagesInStatusBar = 4;
-    private string StatusBarClass => ErrorsCount != 0 ? "has-errors" : WarningsCount != 0 ? "has-warnings" : string.Empty;
-
-    private string TrimmedPackageText(NugetPackage package, int maxChars = 35)
-    {
-        var text = $"{package.Id} {package.Version}";
-
-        if (text.Length > maxChars)
-        {
-            return text.Substring(0, maxChars - 3) + "...";
-        }
-
-        return text;
-    }
-}
+<SaveSnippetPopup @bind-Visible="SaveSnippetPopupVisible" CodeFiles="@_snippetFiles" />

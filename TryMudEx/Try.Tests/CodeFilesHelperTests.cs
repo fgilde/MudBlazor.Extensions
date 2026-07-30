@@ -1,5 +1,5 @@
-using NUnit.Framework;
-using TryMudEx.Client.Services;
+﻿using NUnit.Framework;
+using Playzor.Blazor.Services;
 
 namespace Try.Tests;
 
