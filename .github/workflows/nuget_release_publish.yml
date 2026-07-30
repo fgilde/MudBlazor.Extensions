@@ -8,8 +8,11 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # required so nuget.org can trade the OIDC token for a short lived key
 
-    steps:        
+    steps:
      
     - name: Checkout code
       uses: actions/checkout@v2
@@ -31,11 +34,20 @@ jobs:
     - name: Second Build
       run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Release --no-restore      
 
+    # the key this returns lives for one hour and the OIDC token behind it can only be
+    # traded once, so this step has to stay directly in front of the push
+    - name: NuGet trusted publishing login
+      uses: NuGet/login@v1
+      id: nuget_login
+      with:
+        user: fgilde   # nuget.org account name, not the mail address
+
     - name: Publish Package
       env:
-        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        NUGET_API_KEY: ${{ steps.nuget_login.outputs.NUGET_API_KEY }}
       shell: pwsh
       run: |
         Get-ChildItem -Path MudBlazor.Extensions/bin/Release -Filter *.nupkg | ForEach-Object {
           dotnet nuget push $_.FullName -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json
-        }      
+        }
+
