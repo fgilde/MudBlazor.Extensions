@@ -1,0 +1,61 @@
+@page "/embed/{snippetId?}"
+@page "/embed/samples/{sample?}"
+@page "/embed/from/{snippetFileUrl?}"
+@using Try.Core
+@using TryMudEx.Client.Models
+
+@layout EmptyLayout
+
+<div class="embed-layout @(_options.HideHeader ? "no-header" : null)">
+    @if (!_options.HideHeader)
+    {
+        <div class="embed-header">
+            @foreach (var file in VisibleFiles)
+            {
+                <button type="button" class="embed-tab @(file.Path == _activeFile?.Path ? "active" : null)"
+                        @onclick="@(() => SelectFile(file))">
+                    @FileName(file.Path)
+                </button>
+            }
+            <span class="embed-spacer"></span>
+            @if (_options.View != EmbedView.Preview)
+            {
+                <button type="button" class="embed-action" title="Run (Ctrl + S)" @onclick="@(() => CompileAsync())" disabled="@_loading">
+                    @(_loading ? "Running…" : "▶ Run")
+                </button>
+            }
+            <button type="button" class="embed-action" title="@ViewToggleTitle" @onclick="@CycleView">@ViewToggleLabel</button>
+        </div>
+    }
+
+    @if (_error != null)
+    {
+        <div class="embed-error">
+            <span>@_error</span>
+            <a href="@EditUrl" target="_blank" rel="noopener">Open in @BrandName</a>
+        </div>
+    }
+    else
+    {
+        <div class="embed-body view-@_options.View.ToString().ToLowerInvariant()">
+            @if (_options.View != EmbedView.Preview)
+            {
+                <div class="embed-code">
+                    <CodeEditor Id="@EditorDomId" Code="@_activeFile?.Content"
+                                CodeFileType="@(_activeFile?.Type ?? CodeFileType.Razor)"
+                                ReadOnly="@_options.ReadOnly" Theme="@MonacoTheme" />
+                </div>
+            }
+            @if (_options.View != EmbedView.Code)
+            {
+                <div class="embed-preview">
+                    <iframe id="user-page-window" data-base-src="/user-page" src="/user-page"></iframe>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="embed-footer">
+        <a href="@EditUrl" target="_blank" rel="noopener">Edit on @BrandName</a>
+    </div>
+</div>

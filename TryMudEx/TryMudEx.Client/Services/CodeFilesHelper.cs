@@ -159,26 +159,6 @@
         }
 
         public static IEnumerable<CodeFile> ToCodeFiles(this string urlEncodedBase64compressedCode)
-        {
-            // uncompress
-            var bytes = WebEncoders.Base64UrlDecode(urlEncodedBase64compressedCode);
-            using (var uncompressed = new MemoryStream())
-            using (var compressedStream = new MemoryStream(bytes))
-            using (var uncompressor = new DeflateStream(compressedStream, CompressionMode.Decompress))
-            {
-                uncompressor.CopyTo(uncompressed);
-                uncompressor.Close();
-                var codeString = Encoding.UTF8.GetString(uncompressed.ToArray());
-                var codeFiles = new List<CodeFile>();
-                var codeElements = codeString.Split((char)31);
-                for (int i = 0; i < codeElements.Length; i += 2)
-                {
-                    var codeFile = new CodeFile() { Path = codeElements[i], Content = codeElements[i + 1] };
-                    codeFiles.Add(codeFile);
-                }
-
-                return codeFiles;
-            }
-        }
+            => InlineCode.Decode(urlEncodedBase64compressedCode);
     }
 }

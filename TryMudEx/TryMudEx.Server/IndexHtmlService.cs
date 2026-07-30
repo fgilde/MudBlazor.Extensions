@@ -3,7 +3,7 @@ namespace TryMudEx.Server
     using System;
     using System.Collections.Concurrent;
     using System.IO;
-    using System.Reflection;
+    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -14,6 +14,15 @@ namespace TryMudEx.Server
     /// </summary>
     public class IndexHtmlService
     {
+        // every file whose url carries {{ASSET_VERSION}} — the token must change when any of them does
+        private static readonly string[] VersionedAssets =
+        {
+            "editor/main.js",
+            "css/repl.css",
+            "css/embed.css",
+            "css/TryMudEx.min.css",
+        };
+
         private readonly IWebHostEnvironment _env;
         private readonly ConcurrentDictionary<string, string> _cache = new();
 
@@ -22,15 +31,23 @@ namespace TryMudEx.Server
             _env = env;
         }
 
-        /// <summary>Changes with every deployment, so browsers refetch scripts and styles.</summary>
-        public static string AssetVersion { get; } =
-            Assembly.GetExecutingAssembly().GetName().Version?.ToString()
-            + "-" + File.GetLastWriteTimeUtc(Assembly.GetExecutingAssembly().Location).Ticks.ToString("x");
+        /// <summary>Newest write time of the versioned assets, so a redeploy (or a rebuild) busts the browser cache.</summary>
+        private string GetAssetVersion()
+        {
+            var ticks = VersionedAssets
+                .Select(a => _env.WebRootFileProvider.GetFileInfo(a))
+                .Where(f => f.Exists)
+                .Select(f => f.LastModified.UtcTicks)
+                .DefaultIfEmpty(0)
+                .Max();
+
+            return ticks.ToString("x");
+        }
 
         public async Task<string> RenderAsync()
         {
-            const string cacheKey = "index";
-            if (_cache.TryGetValue(cacheKey, out var cached))
+            var version = GetAssetVersion();
+            if (_cache.TryGetValue(version, out var cached))
                 return cached;
 
             var file = _env.WebRootFileProvider.GetFileInfo("index.html");
@@ -41,9 +58,10 @@ namespace TryMudEx.Server
             using var reader = new StreamReader(stream);
             var html = await reader.ReadToEndAsync();
 
-            html = html.Replace("{{ASSET_VERSION}}", AssetVersion, StringComparison.Ordinal);
+            html = html.Replace("{{ASSET_VERSION}}", version, StringComparison.Ordinal);
 
-            _cache[cacheKey] = html;
+            _cache.Clear(); // only the current version is worth keeping
+            _cache[version] = html;
             return html;
         }
 

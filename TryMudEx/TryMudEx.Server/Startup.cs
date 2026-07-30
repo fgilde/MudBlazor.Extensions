@@ -66,6 +66,20 @@ namespace TryMudEx.Server
 
             app.UseCors();
 
+            if (env.IsDevelopment())
+            {
+                // rebuilt assemblies and edited wwwroot files must never come from the browser cache
+                app.Use(async (context, next) =>
+                {
+                    context.Response.OnStarting(() =>
+                    {
+                        context.Response.Headers.CacheControl = "no-cache, no-store, must-revalidate";
+                        return Task.CompletedTask;
+                    });
+                    await next();
+                });
+            }
+
             // Needed for wasm project
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();

@@ -1,0 +1,126 @@
+/* Embeddable playground (/embed). Deliberately independent of the repl shell styles. */
+
+/* the empty layout has no height chain of its own, so anchor to the viewport */
+.embed-layout {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--mud-palette-surface);
+    color: var(--mud-palette-text-primary);
+    font-family: var(--mud-typography-default-family, Roboto, sans-serif);
+}
+
+.embed-header {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    padding: 0 4px;
+    background-color: var(--mud-palette-background-gray);
+    border-bottom: 1px solid var(--mud-palette-lines-default);
+}
+
+.embed-spacer {
+    flex: 1 1 auto;
+}
+
+.embed-tab,
+.embed-action {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    font-size: 13px;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.embed-tab:hover,
+.embed-action:hover {
+    background-color: rgba(128, 128, 128, .18);
+}
+
+.embed-tab.active {
+    border-bottom-color: var(--mud-palette-primary);
+    color: var(--mud-palette-primary);
+}
+
+.embed-action[disabled] {
+    opacity: .5;
+    cursor: default;
+}
+
+.embed-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+}
+
+.embed-body.view-split > * {
+    flex: 1 1 50%;
+    min-width: 0;
+}
+
+.embed-body.view-code > *,
+.embed-body.view-preview > * {
+    flex: 1 1 100%;
+    min-width: 0;
+}
+
+.embed-code {
+    min-height: 0;
+    overflow: hidden;
+    border-right: 1px solid var(--mud-palette-lines-default);
+}
+
+.embed-code .code-editor {
+    border: none;
+    background-color: transparent;
+}
+
+.embed-preview {
+    min-height: 0;
+    background-color: var(--mud-palette-background);
+}
+
+.embed-preview iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+.embed-error {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.embed-footer {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    padding: 3px 8px;
+    font-size: 11px;
+    background-color: var(--mud-palette-background-gray);
+    border-top: 1px solid var(--mud-palette-lines-default);
+}
+
+.embed-footer a,
+.embed-error a {
+    color: var(--mud-palette-primary);
+    text-decoration: none;
+}
+
+.embed-footer a:hover,
+.embed-error a:hover {
+    text-decoration: underline;
+}

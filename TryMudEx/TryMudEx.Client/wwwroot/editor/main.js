@@ -267,6 +267,26 @@ window.Try.Editor = window.Try.Editor || (function () {
     }
 }());
 
+window.Try.Embed = window.Try.Embed || (function () {
+    let _observer = null;
+
+    return {
+        // lets the hosting page size the iframe to its content (opt-in on the host side)
+        initAutoHeight: function () {
+            if (window.self === window.top || _observer) { return; }
+
+            const post = function () {
+                const height = Math.ceil(document.documentElement.scrollHeight);
+                try { parent.postMessage({ __playzor: 'resize', height: height }, '*'); } catch (e) { }
+            };
+
+            _observer = new ResizeObserver(post);
+            _observer.observe(document.documentElement);
+            post();
+        }
+    };
+}());
+
 window.Try.Console = window.Try.Console || (function () {
     const MAX_ENTRIES = 2000;
     const FLUSH_MS = 250;
