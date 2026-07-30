@@ -1,18 +1,18 @@
-@using Try.Core
+﻿@using Try.Core
 
 <div class="file-tree d-flex flex-column" style="height:100%; overflow:auto;">
     <div class="d-flex align-center px-1">
-        <MudTooltip Text="New file">
+        <MudTooltip Text="@L["New file"]">
             <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.NoteAdd" OnClick="@(() => PromptCreate(null))" />
         </MudTooltip>
-        <MudTooltip Text="New folder (creates folder/File.razor)">
+        <MudTooltip Text="@L["New folder (creates folder/File.razor)"]">
             <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.CreateNewFolder" OnClick="@PromptCreateFolder" />
         </MudTooltip>
         @if (AvailableTemplates.Any())
         {
             <MudMenu Dense="true" Size="Size.Small">
                 <ActivatorContent>
-                    <MudTooltip Text="Add from template">
+                    <MudTooltip Text="@L["Add from template"]">
                         <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.PostAdd" />
                     </MudTooltip>
                 </ActivatorContent>
@@ -35,8 +35,8 @@
                         <MudSpacer />
                         @if (context.Value != null && context.Value != CoreConstants.MainComponentFilePath)
                         {
-                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.DriveFileRenameOutline" OnClick="@(() => PromptRename(context.Value))" title="Rename" />
-                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => ConfirmDelete(context.Value))" title="Delete" />
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.DriveFileRenameOutline" OnClick="@(() => PromptRename(context.Value))" title="@L["Rename"]" />
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => ConfirmDelete(context.Value))" title="@L["Delete"]" />
                         }
                     </div>
                 </BodyContent>

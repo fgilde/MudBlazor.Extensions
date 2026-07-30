@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,6 +29,8 @@ namespace TryMudEx.Client.Pages;
 public partial class Repl : IDisposable
 {
     [Inject] private LayoutService LayoutService { get; set; }
+    [Inject] private BrandingService Branding { get; set; }
+    [Inject] private PlaygroundLocalizer L { get; set; }
 
     private const string MainComponentCodePrefix = "@page \"/__main\"\n";
     private const string MainUserPagePath = "/__main";
@@ -226,7 +228,7 @@ public partial class Repl : IDisposable
             activeCodeFile = new CodeFile
             {
                 Path = CoreConstants.MainComponentFilePath,
-                Content = CoreConstants.MainComponentDefaultFileContent
+                Content = Branding.Current.DefaultSnippet
             };
             CodeFiles.Add(CoreConstants.MainComponentFilePath, activeCodeFile);
         }
@@ -236,7 +238,7 @@ public partial class Repl : IDisposable
             CodeFiles.Add(CoreConstants.MainComponentFilePath, new CodeFile
             {
                 Path = CoreConstants.MainComponentFilePath,
-                Content = CoreConstants.MainComponentDefaultFileContent
+                Content = Branding.Current.DefaultSnippet
             });
         }
 
@@ -752,7 +754,13 @@ public partial class Repl : IDisposable
 
     private CodeFile EnsureReferenceFile()
         => CodeFiles.Values.FirstOrDefault(c => c.Path == CoreConstants.PackageRef)
-        ?? AddCodeFile(new CodeFile() { Path = CoreConstants.PackageRef, Content = JsonConvert.SerializeObject(CoreConstants.DefaultPackages, CoreConstants.PackageSerializerSettings) });
+        ?? AddCodeFile(new CodeFile() { Path = CoreConstants.PackageRef, Content = JsonConvert.SerializeObject(BrandDefaultPackages(), CoreConstants.PackageSerializerSettings) });
+
+    /// <summary>Packages a fresh snippet starts with — MudEx ships its own, other brands may not.</summary>
+    private List<INugetPackageReference> BrandDefaultPackages()
+        => CoreConstants.DefaultPackages
+            .Where(p => Branding.Current.DefaultPackages.Contains(p.Id))
+            .ToList();
 
 
     private async Task<NugetPackage[]> GetInstalledAsync()

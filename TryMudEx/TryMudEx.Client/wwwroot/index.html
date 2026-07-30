@@ -14,27 +14,29 @@
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>TryMudEx - A playground for testing MudBlazor.Extensions and MudBlazor</title>
+    <title>{{BRAND_TITLE}}</title>
     <base href="/" />
 
-    <meta name="description" content="TryMudEx is a fiddle-like platform for writing, compiling, executing and sharing Blazor components entirely in the browser. Perfect for code playground and testing.">
+    <!-- brand tokens are replaced per request by IndexHtmlService (see Brand.FromHost) -->
+    <meta name="brand" content="{{BRAND_KEY}}">
+    <meta name="description" content="{{BRAND_DESCRIPTION}}">
     <meta name="keywords" content="blazor, asp.net core, wasm, web assembly, webassembly, asp.net, playground, fiddle, application, single page application, spa, single page application, dotnet, csharp, html, open-source, platform">
     <meta name="author" content="Florian Gilde">
-    <meta name="author" content="MudBlazor">
+    <link rel="canonical" href="{{BRAND_CANONICAL}}/">
 
-    <meta property="og:title" content="TryMudEx - Write, compile, execute and share Blazor components in the browser" />
+    <meta property="og:title" content="{{BRAND_TITLE}}" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.mudex.org/" />
-    <meta property="og:image" content="https://www.mudex.org/sample-data/logo.png" />
+    <meta property="og:url" content="{{BRAND_CANONICAL}}/" />
+    <meta property="og:image" content="{{BRAND_CANONICAL}}/{{BRAND_LOGO}}" />
     <meta property="og:image:width" content="300" />
     <meta property="og:image:height" content="300" />
-    <meta property="og:description" content="TryMudEx is a fiddle-like platform for writing, compiling, executing and sharing Blazor components entirely in the browser. Perfect for code playground and testing." />
+    <meta property="og:description" content="{{BRAND_DESCRIPTION}}" />
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://www.mudex.org/">
-    <meta name="twitter:title" content="TryMudEx - Write, compile, execute and share Blazor components in the browser">
-    <meta name="twitter:description" content="TryMudEx is a fiddle-like platform for writing, compiling, executing and sharing Blazor components entirely in the browser. Perfect for code playground and testing.">
-    <meta name="twitter:image" content="https://www.mudex.org/sample-data/logo.png">
+    <meta name="twitter:url" content="{{BRAND_CANONICAL}}/">
+    <meta name="twitter:title" content="{{BRAND_TITLE}}">
+    <meta name="twitter:description" content="{{BRAND_DESCRIPTION}}">
+    <meta name="twitter:image" content="{{BRAND_CANONICAL}}/{{BRAND_LOGO}}">
 
 
     <link rel="icon" type="image/png" sizes="32x32" href="images/logo.png">
@@ -53,7 +55,7 @@
 </head>
 
 <body class="mud-height-full">
-    <mud-ex-app-loader AppName="TryMudEx" AccentColor="#ab68ff" MainAppId="app" Logo="images/Logo.png">
+    <mud-ex-app-loader AppName="{{BRAND_NAME}}" AccentColor="{{BRAND_ACCENT}}" MainAppId="app" Logo="{{BRAND_LOGO}}">
     </mud-ex-app-loader>
     <div id="app" class="mud-height-full">
         <div class="d-flex justify-content-center app-loader">

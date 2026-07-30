@@ -59,6 +59,8 @@ namespace TryMudEx.Client
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddScoped<IUserPreferencesService, UserPreferencesService>();
             builder.Services.AddScoped<LayoutService>();
+            builder.Services.AddScoped<BrandingService>();
+            builder.Services.AddScoped<PlaygroundLocalizer>();
 
             var jsRuntime = GetJsRuntime();
             try

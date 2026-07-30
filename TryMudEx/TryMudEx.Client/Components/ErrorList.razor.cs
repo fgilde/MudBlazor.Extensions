@@ -1,4 +1,4 @@
-namespace TryMudEx.Client.Components
+﻿namespace TryMudEx.Client.Components
 {
     using System;
     using System.Collections.Generic;
@@ -8,10 +8,13 @@ namespace TryMudEx.Client.Components
     using Microsoft.AspNetCore.Components;
     using Microsoft.CodeAnalysis;
     using Microsoft.JSInterop;
+    using TryMudEx.Client.Services;
 
     public partial class ErrorList
     {
         [Inject] private IJSRuntime JsRuntime { get; set; }
+
+        [Inject] private PlaygroundLocalizer L { get; set; }
 
         [Parameter]
         public IReadOnlyCollection<CompilationDiagnostic> Diagnostics { get; set; } = Array.Empty<CompilationDiagnostic>();

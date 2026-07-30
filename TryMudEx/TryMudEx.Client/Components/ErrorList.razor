@@ -1,14 +1,14 @@
-@using Microsoft.CodeAnalysis
+﻿@using Microsoft.CodeAnalysis
 
 <div class="diagnostics-panel d-flex flex-column" style="height:100%; min-height:0;">
     <div class="d-flex align-center px-2 py-1" style="gap:4px;">
         <MudChipSet T="string" SelectedValues="@_levels" SelectedValuesChanged="@(v => _levels = v?.ToHashSet() ?? new())"
                     SelectionMode="SelectionMode.MultiSelection" Size="Size.Small" Variant="Variant.Text" CheckMark="true">
-            <MudChip T="string" Value="@("error")" Color="Color.Error">@ErrorCount Errors</MudChip>
-            <MudChip T="string" Value="@("warning")" Color="Color.Warning">@WarningCount Warnings</MudChip>
+            <MudChip T="string" Value="@("error")" Color="Color.Error">@ErrorCount @L["Errors"]</MudChip>
+            <MudChip T="string" Value="@("warning")" Color="Color.Warning">@WarningCount @L["Warnings"]</MudChip>
         </MudChipSet>
         <MudSpacer />
-        <MudTooltip Text="Copy all">
+        <MudTooltip Text="@L["Copy all"]">
             <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@CopyAsync" />
         </MudTooltip>
     </div>
@@ -28,7 +28,7 @@
         @if (!Filtered.Any())
         {
             <MudText Typo="Typo.caption" Class="mud-text-secondary pa-3">
-                @(Diagnostics?.Any() == true ? "Nothing matches the current filter." : "No errors or warnings.")
+                @(Diagnostics?.Any() == true ? L["Nothing matches the current filter."] : L["No errors or warnings."])
             </MudText>
         }
     </div>

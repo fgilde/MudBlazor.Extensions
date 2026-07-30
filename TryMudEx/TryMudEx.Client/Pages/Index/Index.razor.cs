@@ -17,6 +17,8 @@ public partial class Index
     [Inject] private MudExFileService FileService { get; set; }
     [Inject] private IJSRuntime JsRuntime { get; set; }
     [Inject] private LayoutService LayoutService { get; set; }
+    [Inject] private BrandingService Branding { get; set; }
+    [Inject] private PlaygroundLocalizer L { get; set; }
     [Inject] public ILocalStorageService Storage { get; set; }
     private MudExCodeView _codeView;
 

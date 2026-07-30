@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using TryMudEx.Client.Services;
 
 namespace TryMudEx.Client.Components;
 
@@ -15,6 +16,7 @@ public partial class ConsolePanel : IDisposable
     private const string ScrollContainerId = "try-console-output";
 
     [Inject] public IJSRuntime JsRuntime { get; set; }
+    [Inject] private PlaygroundLocalizer L { get; set; }
 
     private readonly List<ConsoleEntry> _entries = new();
     private DotNetObjectReference<ConsolePanel> _ref;

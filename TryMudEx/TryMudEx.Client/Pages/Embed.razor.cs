@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +29,8 @@ public partial class Embed : IDisposable
     [Inject] public NuGetPackageSearcher PackageSearch { get; set; }
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public IJSInProcessRuntime JsRuntime { get; set; }
+    [Inject] private BrandingService Branding { get; set; }
+    [Inject] private PlaygroundLocalizer L { get; set; }
 
     [Parameter] public string SnippetId { get; set; }
     [Parameter] public string Sample { get; set; }
@@ -56,7 +58,7 @@ public partial class Embed : IDisposable
         _ => _prefersDark, // "auto" follows the visitor's browser, not the playground's own setting
     };
 
-    private string BrandName => "MudEx";
+    private string BrandName => Branding.Current.Name;
 
     /// <summary>Full playground on the same host the embed is served from, carrying the current code.</summary>
     private string EditUrl
@@ -76,12 +78,12 @@ public partial class Embed : IDisposable
 
     private string ViewToggleLabel => _options.View switch
     {
-        EmbedView.Code => "Preview",
-        EmbedView.Preview => "Code",
-        _ => "Split",
+        EmbedView.Code => L["Preview"],
+        EmbedView.Preview => L["Code"],
+        _ => L["Split"],
     };
 
-    private string ViewToggleTitle => "Switch view";
+    private string ViewToggleTitle => L["Switch view"];
 
     private static string FileName(string path) => path?.Contains('/') == true ? path[(path.LastIndexOf('/') + 1)..] : path;
 
@@ -113,12 +115,12 @@ public partial class Embed : IDisposable
             }
             else
             {
-                _error = "Nothing to show — this embed has no snippet.";
+                _error = L["Nothing to show — this embed has no snippet."];
             }
         }
         catch (Exception e)
         {
-            _error = "Could not load this snippet.";
+            _error = L["Could not load this snippet."];
             Console.WriteLine(e.Message);
         }
 
@@ -224,7 +226,7 @@ public partial class Embed : IDisposable
         }
         catch (Exception e)
         {
-            _error = "Compilation failed.";
+            _error = L["Compilation failed."];
             Console.WriteLine(e.Message);
         }
         finally

@@ -1,4 +1,4 @@
-@page "/embed/{snippetId?}"
+﻿@page "/embed/{snippetId?}"
 @page "/embed/samples/{sample?}"
 @page "/embed/from/{snippetFileUrl?}"
 @using Try.Core
@@ -20,8 +20,8 @@
             <span class="embed-spacer"></span>
             @if (_options.View != EmbedView.Preview)
             {
-                <button type="button" class="embed-action" title="Run (Ctrl + S)" @onclick="@(() => CompileAsync())" disabled="@_loading">
-                    @(_loading ? "Running…" : "▶ Run")
+                <button type="button" class="embed-action" title="@L["Run (Ctrl + S)"]" @onclick="@(() => CompileAsync())" disabled="@_loading">
+                    @(_loading ? L["Running…"] : "▶ " + L["Run"])
                 </button>
             }
             <button type="button" class="embed-action" title="@ViewToggleTitle" @onclick="@CycleView">@ViewToggleLabel</button>
@@ -32,7 +32,7 @@
     {
         <div class="embed-error">
             <span>@_error</span>
-            <a href="@EditUrl" target="_blank" rel="noopener">Open in @BrandName</a>
+            <a href="@EditUrl" target="_blank" rel="noopener">@L["Open in"] @BrandName</a>
         </div>
     }
     else
@@ -56,6 +56,6 @@
     }
 
     <div class="embed-footer">
-        <a href="@EditUrl" target="_blank" rel="noopener">Edit on @BrandName</a>
+        <a href="@EditUrl" target="_blank" rel="noopener">@L["Edit on"] @BrandName</a>
     </div>
 </div>

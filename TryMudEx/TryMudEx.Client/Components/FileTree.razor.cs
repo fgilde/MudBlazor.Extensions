@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +14,7 @@ public partial class FileTree
 {
     [Inject] private IDialogService DialogService { get; set; }
     [Inject] private ISnackbar Snackbar { get; set; }
+    [Inject] private PlaygroundLocalizer L { get; set; }
 
     [Parameter] public IEnumerable<CodeFile> Files { get; set; } = Array.Empty<CodeFile>();
     [Parameter] public string ActivePath { get; set; }
@@ -84,7 +85,7 @@ public partial class FileTree
     private async Task PromptCreate(string folderPrefix)
     {
         var suggestion = string.IsNullOrEmpty(folderPrefix) ? "MyComponent.razor" : $"{folderPrefix}/MyComponent.razor";
-        var name = await DialogService.PromptAsync("New file", "Enter file name (folders with '/', e.g. Components/Card.razor)", suggestion,
+        var name = await DialogService.PromptAsync(L["New file"], L["Enter file name (folders with '/', e.g. Components/Card.razor)"], suggestion,
             icon: Icons.Material.Outlined.NoteAdd, canConfirm: s => !string.IsNullOrWhiteSpace(s));
         if (string.IsNullOrWhiteSpace(name)) return;
 
@@ -107,7 +108,7 @@ public partial class FileTree
 
     private async Task PromptRename(string oldPath)
     {
-        var name = await DialogService.PromptAsync("Rename", $"New name for {oldPath}", oldPath,
+        var name = await DialogService.PromptAsync(L["Rename"], $"{L["Rename"]}: {oldPath}", oldPath,
             icon: Icons.Material.Outlined.DriveFileRenameOutline, canConfirm: s => !string.IsNullOrWhiteSpace(s) && s != oldPath);
         if (string.IsNullOrWhiteSpace(name) || name == oldPath) return;
 
@@ -128,7 +129,7 @@ public partial class FileTree
 
     private async Task ConfirmDelete(string path)
     {
-        var confirmed = await DialogService.ShowConfirmationDialogAsync("Delete file", $"Delete '{path}'? This cannot be undone.");
+        var confirmed = await DialogService.ShowConfirmationDialogAsync(L["Delete file"], $"Delete '{path}'? This cannot be undone.");
         if (confirmed)
             await OnDelete.InvokeAsync(path);
     }

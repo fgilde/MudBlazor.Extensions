@@ -8,16 +8,19 @@
     <MudAppBar Color="Color.Transparent" Fixed="false" Elevation="0">
         <div style="display: flex;">
             <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                <MudText Typo="Typo.h5">Try</MudText>
-                <MudExGradientText Typo="Typo.h5">MudBlazor.Extensions</MudExGradientText>
+                <MudText Typo="Typo.h5">@HeadlinePrefix</MudText>
+                <MudExGradientText Typo="Typo.h5">@HeadlineBrand</MudExGradientText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-                <MudText Typo="Typo.h6">Try</MudText>
-                <MudExGradientText Typo="Typo.h6">MudBlazor.Extensions</MudExGradientText>
+                <MudText Typo="Typo.h6">@HeadlinePrefix</MudText>
+                <MudExGradientText Typo="Typo.h6">@HeadlineBrand</MudExGradientText>
             </MudHidden>
         </div>
         <MudSpacer />
-        <MudButton Href="https://www.mudex.org/" Target="_blank" Color="Color.Default" Size="Size.Large">MudEx</MudButton>
+        @if (!Branding.IsPlayzor)
+        {
+            <MudButton Href="https://www.mudex.org/" Target="_blank" Color="Color.Default" Size="Size.Large">MudEx</MudButton>
+        }
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
             <MudButton Href="https://mudblazor.com/" Target="_blank" Color="Color.Default" Size="Size.Large">MudBlazor</MudButton>
             <MudButton Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" Color="Color.Primary" Size="Size.Large">Source Code</MudButton>
@@ -31,28 +34,22 @@
                     <div>
                         <div style="display: flex;">
                             <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                                <MudText Typo="Typo.h1">Try</MudText>
-                                <MudExGradientText Typo="Typo.h1">MudBlazor.Extensions</MudExGradientText>
+                                <MudText Typo="Typo.h1">@HeadlinePrefix</MudText>
+                                <MudExGradientText Typo="Typo.h1">@HeadlineBrand</MudExGradientText>
                             </MudHidden>
                             <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-                                <MudText Typo="Typo.h4">Try</MudText>
-                                <MudExGradientText Typo="Typo.h4">MudBlazor.Extensions</MudExGradientText>
+                                <MudText Typo="Typo.h4">@HeadlinePrefix</MudText>
+                                <MudExGradientText Typo="Typo.h4">@HeadlineBrand</MudExGradientText>
                             </MudHidden>
                         </div>
                         <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                            <MudText Typo="Typo.h4" Class="mud-text-secondary ml-2 my-5">
-                                A playground for <MudLink Typo="Typo.h4" Href="https://www.mudex.org" Target="_blank">MudBlazor.Extensions</MudLink> @MudExVersion
-                                and <MudLink Typo="Typo.h4" Href="https://mudblazor.com" Target="_blank">MudBlazor</MudLink> @MudVersion
-                            </MudText>
+                            <MudText Typo="Typo.h4" Class="mud-text-secondary ml-2 my-5">@Subtitle</MudText>
                         </MudHidden>
                         <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-                            <MudText Typo="Typo.h6" Class="mud-text-secondary ml-2 my-5">
-                                A playground for <MudLink Typo="Typo.h6" Href="https://www.mudex.org" Target="_blank">MudBlazor.Extensions</MudLink> @MudExVersion
-                                and <MudLink Typo="Typo.h6" Href="https://mudblazor.com" Target="_blank">MudBlazor</MudLink> @MudVersion
-                            </MudText>
+                            <MudText Typo="Typo.h6" Class="mud-text-secondary ml-2 my-5">@Subtitle</MudText>
                         </MudHidden>
                         <div class="px-2 mt-8">
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DropShadow="false" Class="px-6" Href="/snippet">Play now</MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DropShadow="false" Class="px-6" Href="/snippet">@L["Play now"]</MudButton>
                         </div>
                     </div>
                 </MudItem>
@@ -253,4 +250,12 @@
 @code {
     string MudVersion { get { var v = typeof(MudText).Assembly.GetName().Version; return $"v{v.Major}.{v.Minor}.{v.Build}"; } }
     string MudExVersion { get { var v = typeof(MudExIcon).Assembly.GetName().Version; return $"v{v.Major}.{v.Minor}.{v.Build}"; } }
+
+    // "Try" + "MudBlazor.Extensions" on mudex.org, just the brand name on the playzor domains
+    string HeadlinePrefix => Branding.IsPlayzor ? string.Empty : "Try";
+    string HeadlineBrand => Branding.IsPlayzor ? Branding.Current.Name : "MudBlazor.Extensions";
+
+    string Subtitle => Branding.IsPlayzor
+        ? Branding.Current.Description
+        : $"A playground for MudBlazor.Extensions {MudExVersion} and MudBlazor {MudVersion}";
 }

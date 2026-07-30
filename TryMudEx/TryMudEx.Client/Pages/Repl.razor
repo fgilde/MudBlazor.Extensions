@@ -1,4 +1,4 @@
-@page "/snippet/{snippetId?}"
+﻿@page "/snippet/{snippetId?}"
 @page "/snippet/samples/{sample?}"
 @page "/snippet/from/{snippetFileUrl?}"
 @using MudBlazor.Extensions.Core
@@ -8,47 +8,47 @@
 
 <div class="try-layout">
     <div class="repl-toolbar">
-        <MudTooltip Text="Run (Ctrl + S)">
+        <MudTooltip Text="@L["Run (Ctrl + S)"]">
             <MudIconButton OnClick="@CompileAsync" Disabled="@Loading" Icon="@Icons.Material.Rounded.PlayArrow" Color="Color.Success" />
         </MudTooltip>
         <MudDivider Vertical="true" FlexItem="true" Class="mx-1" />
-        <MudTooltip Text="Save or Share">
+        <MudTooltip Text="@L["Save or Share"]">
             <MudIconButton OnClick="ShowSaveSnippetPopup" Icon="@Icons.Material.Outlined.Save" />
         </MudTooltip>
         <SaveSnippetPopup @bind-Visible="SaveSnippetPopupVisible" CodeFiles="@CodeFiles.Values" UpdateActiveCodeFileContentAction="CollectAllEditorContent" />
-        <MudTooltip Text="Download">
+        <MudTooltip Text="@L["Download"]">
             <MudIconButton OnClick="Download" Icon="@Icons.Material.Outlined.Download" />
         </MudTooltip>
-        <MudTooltip Text="Upload">
+        <MudTooltip Text="@L["Upload"]">
             <MudIconButton OnClick="Upload" Icon="@Icons.Material.Outlined.UploadFile" />
         </MudTooltip>
         @if (_samples?.Any() == true)
         {
-            <MudTooltip Text="Samples">
+            <MudTooltip Text="@L["Samples"]">
                 <MudIconButton OnClick="@ShowSamples" Icon="@Icons.Material.Outlined.Folder" />
             </MudTooltip>
         }
-        <MudTooltip Text="Manage Nuget packages">
+        <MudTooltip Text="@L["Manage Nuget packages"]">
             <MudIconButton Icon="@MudExIcons.Custom.Brands.Nuget" OnClick="@(() => EditPackageReferences(false))" />
         </MudTooltip>
         <MudSpacer />
         <MudMenu Dense="true" CloseOnClickOutside="true">
             <ActivatorContent>
-                <MudTooltip Text="Panels">
+                <MudTooltip Text="@L["Panels"]">
                     <MudIconButton Icon="@Icons.Material.Outlined.GridView" />
                 </MudTooltip>
             </ActivatorContent>
             <ChildContent>
-                <MudMenuItem OnClick="@(() => TogglePanel("files"))">Files</MudMenuItem>
-                <MudMenuItem OnClick="@(() => TogglePanel("errors"))">Errors</MudMenuItem>
-                <MudMenuItem OnClick="@(() => TogglePanel("console"))">Console</MudMenuItem>
-                <MudMenuItem OnClick="@ResetLayout">Reset layout</MudMenuItem>
+                <MudMenuItem OnClick="@(() => TogglePanel("files"))">@L["Files"]</MudMenuItem>
+                <MudMenuItem OnClick="@(() => TogglePanel("errors"))">@L["Errors"]</MudMenuItem>
+                <MudMenuItem OnClick="@(() => TogglePanel("console"))">@L["Console"]</MudMenuItem>
+                <MudMenuItem OnClick="@ResetLayout">@L["Reset layout"]</MudMenuItem>
             </ChildContent>
         </MudMenu>
-        <MudTooltip Text="@(LayoutService.IsDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme")">
+        <MudTooltip Text="@(LayoutService.IsDarkMode ? L["Switch to Light Theme"] : L["Switch to Dark Theme"])">
             <MudIconButton OnClick="@UpdateTheme" Icon="@(LayoutService.IsDarkMode ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" />
         </MudTooltip>
-        <div class="brand ml-2"><MudExGradientText Typo="Typo.h6">MudEx</MudExGradientText></div>
+        <div class="brand ml-2"><MudExGradientText Typo="Typo.h6">@Branding.Current.Name</MudExGradientText></div>
     </div>
 
     <div class="try-editor">
@@ -65,18 +65,18 @@
                     <CodeEditor Id="@EditorDomId(CoreConstants.MainComponentFilePath)" Theme="@EditorTheme"
                                 Code="@GetFile(CoreConstants.MainComponentFilePath)?.Content" CodeFileType="CodeFileType.Razor" />
                 </MudExDockItem>
-                <MudExDockItem Id="files" Title="Files" Direction="DockDirection.Left" InitialWidth="230" Renderer="DockRendererMode.Always">
+                <MudExDockItem Id="files" Title="@L["Files"]" Direction="DockDirection.Left" InitialWidth="230" Renderer="DockRendererMode.Always">
                     <FileTree Files="@CodeFiles.Values" ActivePath="@activeCodeFile?.Path" ShowHiddenFiles="@ShowHiddenFiles"
                               OnOpen="OpenFile" OnCreate="HandleCreateFile" OnCreateFromTemplate="HandleCreateFromTemplate"
                               OnRename="HandleRenameFile" OnDelete="HandleDeleteFile" />
                 </MudExDockItem>
-                <MudExDockItem Id="preview" Title="Preview" Direction="DockDirection.Right" CanClose="false" Renderer="DockRendererMode.Always">
+                <MudExDockItem Id="preview" Title="@L["Preview"]" Direction="DockDirection.Right" CanClose="false" Renderer="DockRendererMode.Always">
                     <iframe style="height:100%; width:100%; border:none;" id="user-page-window" data-base-src="/user-page" src="/user-page"></iframe>
                 </MudExDockItem>
-                <MudExDockItem Id="errors" Title="Errors" Direction="DockDirection.Below" InitialHeight="170" Renderer="DockRendererMode.Always">
+                <MudExDockItem Id="errors" Title="@L["Errors"]" Direction="DockDirection.Below" InitialHeight="170" Renderer="DockRendererMode.Always">
                     <ErrorList OnDiagnosticClick="OpenDiagnostic" Diagnostics="@Diagnostics" />
                 </MudExDockItem>
-                <MudExDockItem Id="console" Title="Console" StackWith="errors" Renderer="DockRendererMode.Always">
+                <MudExDockItem Id="console" Title="@L["Console"]" StackWith="errors" Renderer="DockRendererMode.Always">
                     <ConsolePanel />
                 </MudExDockItem>
                 @* editor items MUST stay last & append-only (tombstones keep positions stable):
@@ -114,15 +114,15 @@
     </div>
 
     <div class="repl-statusbar @StatusBarClass">
-        <div class="try-errorlist-button" @onclick="@ShowErrorsPanel" title="Show errors">
+        <div class="try-errorlist-button" @onclick="@ShowErrorsPanel" title="@L["Show errors"]">
             <MudIcon Icon="@Icons.Material.Outlined.ErrorOutline" Size="Size.Small" />
             <span>@ErrorsCount</span>
             <MudIcon Icon="@Icons.Material.Outlined.WarningAmber" Size="Size.Small" Class="ml-2" />
             <span>@WarningsCount</span>
         </div>
-        <div class="try-errorlist-button ml-2" @onclick="@ReloadIframe" title="Reload preview">
+        <div class="try-errorlist-button ml-2" @onclick="@ReloadIframe" title="@L["Reload preview"]">
             <MudIcon Icon="@Icons.Material.Outlined.Refresh" Size="Size.Small" />
-            <span>Reload</span>
+            <span>@L["Reload"]</span>
         </div>
         <MudSpacer />
         @foreach (var package in _installedPackages.Take(_maxPackagesInStatusBar))
