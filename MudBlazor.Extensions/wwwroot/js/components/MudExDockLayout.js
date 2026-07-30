@@ -31,6 +31,7 @@
         if (this.options.initialLayoutJson) {
             try {
                 this.api.fromJSON(JSON.parse(this.options.initialLayoutJson));
+                this._stashUnadoptedNodes();
                 this.bootstrapped = true;
             } catch (e) { console.warn('fromJSON failed', e); }
         }
@@ -60,6 +61,23 @@
             node.style.display = 'none';
             this._ensureStash().appendChild(node);
         } catch { /* noop */ }
+    }
+
+    /**
+     * A restored layout only creates the components it shows right away — the inactive panel of a
+     * stack is built when it is first activated. Until then its blazor node is still a child of the
+     * container and, being in the flow, pushes the whole grid down by its own height. Parking it in
+     * the stash keeps the grid intact; _createComponent picks it up from there and un-hides it.
+     */
+    _stashUnadoptedNodes() {
+        for (const node of Array.from(this.containerRef.children)) {
+            if (!node.classList?.contains('dv-node')) continue;
+            let id = node.dataset.dvId;
+            if (!id) {
+                try { id = JSON.parse(node.dataset.options || '{}').id; } catch { id = null; }
+            }
+            if (id) this._hideAndStash(node, id);
+        }
     }
 
     _hideAndStashDuplicates(id, exceptEl = null) {
@@ -371,7 +389,10 @@
     }
 
     fromJSON(json) {
-        try { this.api?.fromJSON(typeof json === 'string' ? JSON.parse(json) : json); } catch (e) { }
+        try {
+            this.api?.fromJSON(typeof json === 'string' ? JSON.parse(json) : json);
+            this._stashUnadoptedNodes();
+        } catch (e) { }
     }
 
     // ---------------- Reinitialize ----------------
@@ -426,6 +447,7 @@
             const parsed = JSON.parse(layoutJson || '{}');
             if (parsed && Object.keys(parsed).length > 0) {
                 this.api.fromJSON(parsed);
+                this._stashUnadoptedNodes();
                 this.bootstrapped = true;
             } else {
                 const roots = this._rootNodes();
