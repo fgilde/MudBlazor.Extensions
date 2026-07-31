@@ -67,7 +67,9 @@
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <PropertyGroup>
-      <DocumentationDestination>$(SolutionDir)MudBlazor.Extensions/wwwroot/docs/</DocumentationDestination>
+      <!-- anchored to this project, not to $(SolutionDir): built from another solution the xml
+           landed in a stray MudBlazor.Extensions/wwwroot/docs next to whatever was building -->
+      <DocumentationDestination>$(MSBuildThisFileDirectory)wwwroot/docs/</DocumentationDestination>
     </PropertyGroup>
     <ItemGroup>
       <DocumentationFile Include="$(TargetDir)$(TargetName).xml" />
