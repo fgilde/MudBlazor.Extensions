@@ -1,13 +1,18 @@
-﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 @using TryMudEx.Client.Components
-@using TryMudEx.Client.Shared
 @using TryMudEx.Client.Shared
 
 @using MudBlazor
-
 @using MudBlazor.Extensions
 @using MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Components.ObjectEdit
-@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+@* the editor and its panels live in the package now — without this the razor compiler treats
+   <CodeEditor> and friends as plain html elements, and they silently render nothing *@
+@using Playzor.Blazor.Editor
+@using Playzor.Blazor.Editor.Components
+@using Playzor.Blazor.Editor.Core
+@using Playzor.Blazor.Editor.Services
