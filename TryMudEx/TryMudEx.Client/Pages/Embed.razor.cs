@@ -95,7 +95,9 @@ public partial class Embed : IDisposable
 
         if (_options.Theme == "auto")
         {
-            try { _prefersDark = JsRuntime.Invoke<bool>("Try.prefersDark"); } catch { /* keep light */ }
+            // a swallowed exception here silently turned the embed light once already, so it is logged
+            try { _prefersDark = JsRuntime.Invoke<bool>(PlayzorJs.PrefersDark); }
+            catch (Exception e) { Console.WriteLine($"Could not read the color scheme preference: {e.Message}"); }
         }
 
         try
@@ -148,7 +150,7 @@ public partial class Embed : IDisposable
             {
                 _dotNetRef = DotNetObjectReference.Create(this);
                 JsRuntime.InvokeVoid(PlayzorJs.Initialize, _dotNetRef);
-                await JsRuntime.InvokeVoidAsync("Try.Embed.initAutoHeight");
+                await JsRuntime.InvokeVoidAsync(PlayzorJs.Embed.InitAutoHeight);
             }
             catch (Exception e)
             {
