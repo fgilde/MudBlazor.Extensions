@@ -65,6 +65,13 @@
     opacity: 1 !important;
 }
 
+/* in a popout window the same button brings the panel back — always visible, it is the way out.
+   dockview hides the actions of an inactive tab, that must not swallow the way home */
+.dv-tab-popout.dv-tab-popout-back {
+    opacity: .9;
+    visibility: visible !important;
+}
+
 /* ActivatePanelAsync(id, highlight: true): the user did not click this panel, so say where it went.
    An overlay is used because a box-shadow would be clipped by the neighbouring panes. */
 .dv-groupview.dv-attention {

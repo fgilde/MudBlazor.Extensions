@@ -92,7 +92,8 @@ namespace MudBlazor.Extensions.Components
                 className = ClassName,
                 //mode = Mode.ToString().ToLowerInvariant(),
                 initialLayoutJson = InitialLayoutJson,
-                popoutTitle = TryLocalize("Open in new window")
+                popoutTitle = TryLocalize("Open in new window"),
+                popoutBackTitle = TryLocalize("Move back into the layout")
             });
         }
 
@@ -142,6 +143,10 @@ namespace MudBlazor.Extensions.Components
 
         public Task<bool> IsPopoutAsync(string id)
             => JsReference!.InvokeAsync<bool>("isPopout", id).AsTask();
+
+        /// <summary>Brings a popped out panel back into the layout.</summary>
+        public Task<bool> ReturnPanelAsync(string id)
+            => JsReference!.InvokeAsync<bool>("returnPanel", id).AsTask();
 
         public Task MaximizePanelAsync(string id)
             => JsReference!.InvokeVoidAsync("maximizePanel", id).AsTask();

@@ -285,23 +285,46 @@
         // dockview has no per-panel close flag — hide the action on the tab element
         tab.classList.toggle('dv-tab-no-close', o.canClose === false);
 
-        if (o.canPopout !== true || tab.querySelector('.dv-tab-popout')) return;
+        if (o.canPopout !== true) return;
 
-        const button = document.createElement('div');
-        button.className = 'dv-default-tab-action dv-tab-popout';
-        button.title = this.options?.popoutTitle || 'Open in new window';
-        button.innerHTML = '<svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true">'
-            + '<path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>';
-        // dockview starts a drag on mousedown, that must not happen on the button
-        button.addEventListener('mousedown', e => e.stopPropagation());
-        button.addEventListener('click', e => {
-            e.stopPropagation();
-            e.preventDefault();
-            this.popoutPanel(panel.id);
-        });
+        if (!tab.querySelector('.dv-tab-popout')) {
+            const button = document.createElement('div');
+            button.className = 'dv-default-tab-action dv-tab-popout';
+            // dockview starts a drag on mousedown, that must not happen on the button
+            button.addEventListener('mousedown', e => e.stopPropagation());
+            button.addEventListener('click', e => {
+                e.stopPropagation();
+                e.preventDefault();
+                if (this.isPopout(panel.id)) this.returnPanel(panel.id);
+                else this.popoutPanel(panel.id);
+            });
 
-        const closeAction = tab.querySelector('.dv-default-tab-action');
-        closeAction ? tab.insertBefore(button, closeAction) : tab.appendChild(button);
+            const closeAction = tab.querySelector('.dv-default-tab-action');
+            closeAction ? tab.insertBefore(button, closeAction) : tab.appendChild(button);
+        }
+
+        // the tab element travels into the popout window, so wiring it once is enough
+        if (!tab.dataset.dvPopoutWired) {
+            tab.dataset.dvPopoutWired = '1';
+            try { this.disposables.push(panel.api.onDidLocationChange(() => this._updatePopoutAction(panel))); } catch { /* noop */ }
+        }
+        this._updatePopoutAction(panel);
+    }
+
+    /** the same button pops a panel out and brings it back, only the icon says which */
+    _updatePopoutAction(panel) {
+        const button = panel?.view?.tab?.element?.querySelector('.dv-tab-popout');
+        if (!button) return;
+        const isOut = this.isPopout(panel.id);
+        button.classList.toggle('dv-tab-popout-back', isOut);
+        button.title = isOut
+            ? (this.options?.popoutBackTitle || 'Move back into the layout')
+            : (this.options?.popoutTitle || 'Open in new window');
+        button.innerHTML = '<svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true"><path d="'
+            + (isOut
+                ? 'M6 13v-2h8.17l-3.58-3.59L12 6l6 6-6 6-1.41-1.41L14.17 13H6zM3 5h2v14H3V5z'
+                : 'M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z')
+            + '"/></svg>';
     }
 
     /** fromJSON creates panels without going through _addPanelFromOptions */
@@ -371,6 +394,28 @@
     isPopout(id) {
         const group = this.api?.getPanel(id)?.group;
         return group?.api?.location?.type === 'popout';
+    }
+
+    /// brings a popped out panel back. dockview restores the group itself once its window is gone
+    returnPanel(id) {
+        const panel = this.api?.getPanel(id);
+        if (!panel || !this.isPopout(id)) return false;
+        try {
+            const popoutWindow = panel.api.getWindow?.();
+            if (popoutWindow && popoutWindow !== window) {
+                popoutWindow.close();
+                return true;
+            }
+            // no window to close (blocked, or already gone) — move the panel by hand
+            const gridGroup = (this.api.groups ?? []).find(g => g.api?.location?.type === 'grid');
+            if (gridGroup) {
+                panel.api.moveTo({ group: gridGroup });
+                return true;
+            }
+        } catch (e) {
+            console.warn('return from popout failed', e);
+        }
+        return false;
     }
 
     maximizePanel(id) {

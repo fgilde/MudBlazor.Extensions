@@ -6334,6 +6334,11 @@
   opacity: 1 !important;
 }
 
+.dv-tab-popout.dv-tab-popout-back {
+  opacity: 0.9;
+  visibility: visible !important;
+}
+
 .dv-groupview.dv-attention {
   position: relative;
 }

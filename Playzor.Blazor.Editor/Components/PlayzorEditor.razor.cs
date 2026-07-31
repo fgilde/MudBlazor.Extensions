@@ -113,6 +113,13 @@ public partial class PlayzorEditor : MudExBaseComponent<PlayzorEditor>
     [Parameter]
     public string PopoutUrl { get; set; } = "_content/Playzor.Blazor.Editor/popout.html";
 
+    /// <summary>
+    /// Opens the nuget management in a dialog instead of the dock panel. Also the fallback when
+    /// <see cref="PlayzorPanels.Packages"/> is not among the <see cref="Panels"/>.
+    /// </summary>
+    [Parameter]
+    public bool PackagesInDialog { get; set; }
+
     /// <summary>Compiles once as soon as the editor is up.</summary>
     [Parameter]
     public bool AutoRun { get; set; }
@@ -965,6 +972,12 @@ public partial class PlayzorEditor : MudExBaseComponent<PlayzorEditor>
     #endregion
 
     #region Packages
+
+    /// <summary>Both nuget buttons end up here — see <see cref="PackagesInDialog"/>.</summary>
+    private Task EditPackagesAsync(bool fromBottom = false)
+        => PackagesInDialog || !HasPanel(PlayzorPanels.Packages)
+            ? EditPackageReferencesAsync(fromBottom)
+            : ShowPackagesPanelAsync();
 
     private async Task EditPackageReferencesAsync(bool fromBottom)
     {

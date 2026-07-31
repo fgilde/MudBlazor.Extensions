@@ -46,7 +46,7 @@
         @if (HasButton(PlayzorToolButtons.Packages))
         {
             <MudTooltip Text="@L["Manage Nuget packages"]">
-                <MudIconButton Icon="@MudExIcons.Custom.Brands.Nuget" OnClick="@(() => EditPackageReferencesAsync(false))" />
+                <MudIconButton Icon="@MudExIcons.Custom.Brands.Nuget" OnClick="@(() => EditPackagesAsync())" />
             </MudTooltip>
         }
 
@@ -254,15 +254,9 @@
                     }
                 </MudMenu>
             }
-            @if (HasPanel(PlayzorPanels.Packages))
+            @if (HasButton(PlayzorToolButtons.Packages))
             {
-                <div class="playzor-status-button" @onclick="@ShowPackagesPanelAsync" title="@L["Manage Nuget packages"]">
-                    <MudIcon Icon="@MudExIcons.Custom.Brands.Nuget" Size="Size.Small" />
-                </div>
-            }
-            else if (HasButton(PlayzorToolButtons.Packages))
-            {
-                <div class="playzor-status-button" @onclick="@(() => EditPackageReferencesAsync(true))" title="@L["Manage Nuget packages"]">
+                <div class="playzor-status-button" @onclick="@(() => EditPackagesAsync(true))" title="@L["Manage Nuget packages"]">
                     <MudIcon Icon="@MudExIcons.Custom.Brands.Nuget" Size="Size.Small" />
                 </div>
             }
