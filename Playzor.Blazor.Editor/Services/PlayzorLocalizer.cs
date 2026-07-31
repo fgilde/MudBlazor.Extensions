@@ -236,6 +236,7 @@ public class PlayzorLocalizer : IStringLocalizer
             ["One iframe, or one component in a Blazor app. Readers edit the code and run it without leaving your site."] =
                 "Ein iframe oder eine Komponente in einer Blazor-App. Leser bearbeiten den Code und führen ihn aus, ohne deine Seite zu verlassen.",
             ["Read the embedding guide"] = "Zur Einbettungs-Anleitung",
+            ["Playzor is built with MudBlazor.Extensions"] = "Playzor ist mit MudBlazor.Extensions gebaut",
 
             // embedding guide
             ["Embed a playground"] = "Einen Playground einbetten",

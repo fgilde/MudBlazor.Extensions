@@ -1,3 +1,20 @@
+@using Playzor.Blazor.Editor.Services
+@using TryMudEx.Client.Services
+@inject BrandingService Branding
+@inject PlayzorLocalizer L
+
+@* the mudex brand is the playground of that library, it does not need to credit itself *@
+@if (Branding.IsPlayzor)
+{
+    <aside class="site-credit">
+        <a href="https://www.mudex.org" target="_blank" rel="noopener">
+            <img src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/refs/heads/main/docs/MudExtension.png"
+                 alt="MudBlazor.Extensions" loading="lazy" width="28" height="28" />
+            <span>@L["Playzor is built with MudBlazor.Extensions"]</span>
+        </a>
+    </aside>
+}
+
 <footer class="site-footer">
     <span>by</span>
     <a href="https://www.gilde.org" target="_blank" rel="noopener">gilde.org</a>

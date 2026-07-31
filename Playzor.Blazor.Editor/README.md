@@ -1,3 +1,5 @@
+[![Playzor](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/refs/heads/main/docs/playzor_logo.png)](https://playzor.net)
+
 # Playzor.Blazor.Editor
 
 The [Playzor](https://playzor.net) playground as a Blazor component: monaco editors for any number

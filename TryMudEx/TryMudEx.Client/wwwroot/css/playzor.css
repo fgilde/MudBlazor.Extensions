@@ -370,6 +370,40 @@
 
 /* ---------- footer ---------- */
 
+.site-credit {
+    display: flex;
+    justify-content: center;
+    padding: 18px 16px 0;
+    margin-top: auto; /* pushes both credit and footer down on a short page */
+    font-size: 13px;
+}
+
+.site-credit + .site-footer {
+    margin-top: 0;
+}
+
+.site-credit a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--mud-palette-lines-default);
+    color: var(--mud-palette-text-secondary);
+    text-decoration: none;
+    transition: color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+.site-credit a:hover {
+    color: var(--mud-palette-text-primary);
+    border-color: var(--mud-palette-primary);
+}
+
+.site-credit img {
+    display: block;
+    border-radius: 4px;
+}
+
 .site-footer {
     display: flex;
     align-items: center;

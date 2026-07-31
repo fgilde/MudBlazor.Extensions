@@ -1,3 +1,5 @@
+[![Playzor](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/refs/heads/main/docs/playzor_logo.png)](https://playzor.net)
+
 # Playzor.Blazor
 
 Embed a live, editable Blazor playground into any page. Readers change the code and run it without

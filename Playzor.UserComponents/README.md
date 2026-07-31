@@ -1,3 +1,5 @@
+[![Playzor](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/refs/heads/main/docs/playzor_logo.png)](https://playzor.net)
+
 # Playzor.UserComponents
 
 The placeholder assembly a [Playzor](https://playzor.net) preview runs.

@@ -1,3 +1,5 @@
+[![Playzor](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/refs/heads/main/docs/playzor_logo.png)](https://playzor.net)
+
 # Playzor.Core
 
 Compiles Blazor components in the browser. This is the engine under

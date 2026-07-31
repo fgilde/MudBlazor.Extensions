@@ -1,3 +1,5 @@
+[![Playzor](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/refs/heads/main/docs/playzor_logo.png)](https://playzor.net)
+
 # Playzor.Server
 
 The server half of a self hosted [Playzor](https://playzor.net) playground.
