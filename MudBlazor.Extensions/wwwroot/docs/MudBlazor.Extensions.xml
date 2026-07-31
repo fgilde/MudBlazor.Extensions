@@ -2484,6 +2484,12 @@
             Only used for panels added at runtime after the initial bootstrap.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDockItem.CanPopout">
+            <summary>
+            Shows a button on the tab that moves this panel into its own browser window.
+            Uses <see cref="P:MudBlazor.Extensions.Components.MudExDockLayout.PopoutUrl"/> as the window document.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDockItem.OnInitialized">
             <inheritdoc />
         </member>
@@ -2545,8 +2551,23 @@
             Dock within the target panel
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDockLayout.PopoutUrl">
+            <summary>
+            Document a popped out panel is hosted in. Must be served from the same origin, dockview
+            copies the stylesheets into it. Used by <see cref="P:MudBlazor.Extensions.Components.MudExDockItem.CanPopout"/>.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.AddPanelAsync(System.String)">
             <summary>Adds a panel at runtime. Options JSON uses the same shape as MudExDockItem's data-options (id, title, direction, stackWith, ...).</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.ActivatePanelAsync(System.String,System.Boolean)">
+            <summary>
+            Activates a panel. <paramref name="highlight"/> glows its border for a moment, which is
+            worth it whenever something other than the user's click caused the activation.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.HighlightPanelAsync(System.String)">
+            <summary>Glows the panel border for a moment without changing the active panel.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.GetPanelIdsAsync">
             <summary>Ids of all panels dockview currently holds (open panels).</summary>
@@ -2556,6 +2577,9 @@
             Moves the panel into a real browser window. Needs a host page (default /popout.html)
             that is served from the same origin; dockview copies the stylesheets into it.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.ReturnPanelAsync(System.String)">
+            <summary>Brings a popped out panel back into the layout.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.DropBoxFileInfo">
             <summary>
