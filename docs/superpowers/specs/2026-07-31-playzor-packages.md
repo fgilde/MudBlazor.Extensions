@@ -8,7 +8,7 @@ Branch `feat/extract-source-edit-cmp`, **nicht gepusht**.
 | Paket | TFM | Inhalt | Abhängig von |
 |---|---|---|---|
 | `Playzor.Blazor` | net8/9/10 | `<PlayzorPlayground>` (iframe-Embed) und die Web-Component `<playzor-playground>` | nur Blazor |
-| `Playzor.Core` | net10 | Compiler, CodeFiles, NuGet-Auflösung, `IPlayzorApi`, `IPlayzorSnippetStore` | MudBlazor.Extensions, Playzor.UserComponents |
+| `Playzor.Core` | net10 | Compiler, CodeFiles, NuGet-Auflösung, `IPlayzorApi`, `IPlayzorSnippetStore` | MudBlazor.Extensions |
 | `Playzor.Blazor.Editor` | net10 | `<PlayzorEditor>` samt Monaco, Panels, Assets | MudBlazor.Extensions, Playzor.Core |
 | `Playzor.UserComponents` | net10 | Stub-Assembly der Vorschau | – |
 | `Playzor.Server` | net10 | `MapPlayzorApi()`: NuGet-Proxy, optionale Snippet-Endpunkte | ASP.NET Core |
@@ -21,6 +21,8 @@ die Version, das nutzt der Workflow.
 - **Assembly `Try.UserComponents`** bleibt so, obwohl das Paket `Playzor.UserComponents` heißt:
   jedes gespeicherte Snippet deklariert `namespace Try.UserComponents` in seinen `.cs`-Dateien, und
   der Boot-Hook tauscht genau unter diesem Namen. Umbenennen bräche geteilte Links.
+  Das Paket hängt bewusst an **keinem** anderen Playzor-Paket: `Playzor.Core` kennt den Namen nur
+  als Zeichenkette, gebraucht wird das Stub allein von der App, die die Vorschau ausliefert.
 - **Das URL-Format** (Unit-Separator, Deflate, Base64Url) hat jetzt drei Implementierungen:
   `Playzor.Core.InlineCode`, `Playzor.Blazor.PlayzorCode` und `playzor-embed.js`.
   `PlayzorCodeCompatibilityTests` nagelt alle drei gegeneinander fest.

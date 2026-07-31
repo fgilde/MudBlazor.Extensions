@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\build\Playzor.props" />
 
@@ -28,10 +28,11 @@
   </ItemGroup>
 
   <!-- the compiler hands MudBlazor and MudBlazor.Extensions to the user code as ambient
-       references and usings, so the playground can render mud components out of the box -->
+       references and usings, so the playground can render mud components out of the box.
+       Playzor.UserComponents is deliberately NOT referenced here: this library only knows the
+       assembly name as a string, the stub belongs to the app that renders the preview. -->
   <ItemGroup>
     <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
-    <ProjectReference Include="..\Playzor.UserComponents\Playzor.UserComponents.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -24,6 +24,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Playzor.Blazor.Editor\Playzor.Blazor.Editor.csproj" />
+    <!-- this app renders the preview, so it needs the assembly the compiled snippet replaces -->
+    <ProjectReference Include="..\..\Playzor.UserComponents\Playzor.UserComponents.csproj" />
     <!-- the playground dogfoods its own embed package on the embed docs page -->
     <ProjectReference Include="..\..\Playzor.Blazor\Playzor.Blazor.csproj" />
   </ItemGroup>

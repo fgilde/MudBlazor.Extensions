@@ -21,7 +21,6 @@ namespace Playzor.Core
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.Razor;
     using Microsoft.JSInterop;
-    using Try;
 
     public class CompilationService
     {
