@@ -15,9 +15,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TryMudEx.Client\TryMudEx.Client.csproj" />
-    <ProjectReference Include="..\..\Playzor.Core\Playzor.Core.csproj" />
-    <ProjectReference Include="..\..\Playzor.Server\Playzor.Server.csproj" />
     <ProjectReference Include="..\MudBlazor.Examples.Data\MudBlazor.Examples.Data.csproj" />
+  </ItemGroup>
+
+  <!-- source or package, see ..\Directory.Build.props -->
+  <ItemGroup Condition="'$(UsePlayzorSource)' == 'true'">
+    <ProjectReference Include="$(PlayzorRepo)\Playzor.Core\Playzor.Core.csproj" />
+    <ProjectReference Include="$(PlayzorRepo)\Playzor.Server\Playzor.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UsePlayzorSource)' != 'true'">
+    <PackageReference Include="Playzor.Core" />
+    <PackageReference Include="Playzor.Server" />
   </ItemGroup>
 
   <ItemGroup>

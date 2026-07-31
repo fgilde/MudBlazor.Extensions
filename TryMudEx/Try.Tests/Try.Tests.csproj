@@ -11,11 +11,10 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
   </ItemGroup>
 
+  <!-- the playzor tests moved to github.com/fgilde/Playzor, what is left tests this app -->
   <ItemGroup>
     <ProjectReference Include="..\TryMudEx.Client\TryMudEx.Client.csproj" />
     <ProjectReference Include="..\TryMudEx.Server\TryMudEx.Server.csproj" />
-    <!-- referenced to keep the embed url encoder of the package and the playground in sync -->
-    <ProjectReference Include="..\..\Playzor.Blazor\Playzor.Blazor.csproj" />
   </ItemGroup>
 
 </Project>

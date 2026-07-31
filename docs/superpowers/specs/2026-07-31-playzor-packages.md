@@ -3,6 +3,15 @@
 Nachfolger von [2026-07-27-trymudex-codepen-redesign-status.md](2026-07-27-trymudex-codepen-redesign-status.md).
 Branch `feat/extract-source-edit-cmp`, **nicht gepusht**.
 
+## Die Pakete liegen jetzt woanders
+
+Seit dem 31.07.2026 leben die fünf Projekte samt Tests, `build/Playzor.props` und dem
+Publish-Workflow in `C:\dev\privat\github\Playzor` (Ziel: `github.com/fgilde/Playzor`).
+Hier bleiben MudBlazor.Extensions, MainSample und die Playground-Seite; die referenziert
+die Pakete über `TryMudEx/Directory.Build.props`, das auf Quellcode umschaltet, sobald das
+Playzor-Repo daneben liegt. Alles unterhalb beschreibt weiterhin den Schnitt der Pakete,
+die Dateipfade zeigen aber ins andere Repo.
+
 ## Schnitt
 
 | Paket | TFM | Inhalt | Abhängig von |

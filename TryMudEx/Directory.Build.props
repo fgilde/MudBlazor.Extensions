@@ -1,0 +1,20 @@
+<!--
+  The playground libraries live in their own repository (github.com/fgilde/Playzor) and reach this
+  app as packages. That would turn a change spanning both into "release Playzor, bump, build", so
+  the reference follows the working copy instead: with the Playzor repository cloned next to
+  MudBlazor.Extensions the app compiles against its source, otherwise against the packages.
+  A build server only checks out this repository and therefore always takes the packages.
+  Force either side with -p:UsePlayzorSource=true|false.
+
+  Playzor does the same with MudBlazor.Extensions, so with both repositories side by side the whole
+  chain is one build.
+-->
+<Project>
+
+  <PropertyGroup>
+    <PlayzorRepo>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\Playzor'))</PlayzorRepo>
+    <UsePlayzorSource Condition="'$(UsePlayzorSource)' == '' And Exists('$(PlayzorRepo)\Playzor.Core\Playzor.Core.csproj')">true</UsePlayzorSource>
+    <UsePlayzorSource Condition="'$(UsePlayzorSource)' == ''">false</UsePlayzorSource>
+  </PropertyGroup>
+
+</Project>

@@ -83,6 +83,14 @@
 
     <!-- Locally built package, consumed by samples in Release config -->
     <PackageVersion Include="MudBlazor.Extensions" Version="*-*" />
+
+    <!-- the playground libraries live in github.com/fgilde/Playzor and are only used when the
+         repository is not checked out next to this one, see TryMudEx/Directory.Build.props -->
+    <PackageVersion Include="Playzor.Core" Version="1.0.0" />
+    <PackageVersion Include="Playzor.Blazor" Version="1.0.0" />
+    <PackageVersion Include="Playzor.Blazor.Editor" Version="1.0.0" />
+    <PackageVersion Include="Playzor.Server" Version="1.0.0" />
+    <PackageVersion Include="Playzor.UserComponents" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

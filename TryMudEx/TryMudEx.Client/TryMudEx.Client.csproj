@@ -22,12 +22,19 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Playzor.Blazor.Editor\Playzor.Blazor.Editor.csproj" />
-    <!-- this app renders the preview, so it needs the assembly the compiled snippet replaces -->
-    <ProjectReference Include="..\..\Playzor.UserComponents\Playzor.UserComponents.csproj" />
-    <!-- the playground dogfoods its own embed package on the embed docs page -->
-    <ProjectReference Include="..\..\Playzor.Blazor\Playzor.Blazor.csproj" />
+  <!-- source or package, see ..\Directory.Build.props.
+       UserComponents: this app renders the preview, so it needs the assembly the compiled snippet
+       replaces. Playzor.Blazor: the playground dogfoods its own embed package on the docs page. -->
+  <ItemGroup Condition="'$(UsePlayzorSource)' == 'true'">
+    <ProjectReference Include="$(PlayzorRepo)\Playzor.Blazor.Editor\Playzor.Blazor.Editor.csproj" />
+    <ProjectReference Include="$(PlayzorRepo)\Playzor.UserComponents\Playzor.UserComponents.csproj" />
+    <ProjectReference Include="$(PlayzorRepo)\Playzor.Blazor\Playzor.Blazor.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UsePlayzorSource)' != 'true'">
+    <PackageReference Include="Playzor.Blazor.Editor" />
+    <PackageReference Include="Playzor.UserComponents" />
+    <PackageReference Include="Playzor.Blazor" />
   </ItemGroup>
 
   <ItemGroup>

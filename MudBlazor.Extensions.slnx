@@ -30,17 +30,9 @@
     <File Path=".github/workflows/nuget_preview_publish_and_app_deploy.yml" />
     <File Path=".github/workflows/nuget_release_publish.yml" />
     <File Path=".github/workflows/TryMudEx.yml" />
-    <File Path=".github/workflows/playzor_publish.yml" />
-  </Folder>
-  <Folder Name="/Playzor/">
-    <File Path="build/Playzor.props" />
-    <Project Path="Playzor.Blazor/Playzor.Blazor.csproj" />
-    <Project Path="Playzor.Blazor.Editor/Playzor.Blazor.Editor.csproj" />
-    <Project Path="Playzor.Core/Playzor.Core.csproj" />
-    <Project Path="Playzor.Server/Playzor.Server.csproj" />
-    <Project Path="Playzor.UserComponents/Playzor.UserComponents.csproj" />
   </Folder>
   <Folder Name="/TryMudEx/">
+    <File Path="TryMudEx/Directory.Build.props" />
     <Project Path="TryMudEx/MudBlazor.Examples.Data/MudBlazor.Examples.Data.csproj" />
     <Project Path="TryMudEx/Try.Tests/Try.Tests.csproj" />
     <Project Path="TryMudEx/TryMudEx.Client/TryMudEx.Client.csproj" />
