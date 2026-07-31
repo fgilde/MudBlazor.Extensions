@@ -313,9 +313,18 @@
 
     /** the same button pops a panel out and brings it back, only the icon says which */
     _updatePopoutAction(panel) {
+        const isOut = this.isPopout(panel.id);
+        if (isOut) {
+            // a restored layout reopens its popout windows itself, so popoutPanel never saw them
+            try {
+                window.MudExPopoutEvents?.attach(panel.api.getWindow?.(), popoutWindow => {
+                    try { popoutWindow.document.title = panel.title || panel.id; } catch { /* noop */ }
+                });
+            } catch { /* noop */ }
+        }
+
         const button = panel?.view?.tab?.element?.querySelector('.dv-tab-popout');
         if (!button) return;
-        const isOut = this.isPopout(panel.id);
         button.classList.toggle('dv-tab-popout-back', isOut);
         button.title = isOut
             ? (this.options?.popoutBackTitle || 'Move back into the layout')

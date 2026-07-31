@@ -60,6 +60,15 @@
         return attachToMainDocument(type, listener, options);
     };
 
+    // A popout that outlives the page it belongs to is a trap: its dom still hangs in the old
+    // blazor renderer, so it reacts to nothing and the reloaded page cannot adopt it either.
+    window.addEventListener('pagehide', function () {
+        for (const win of popouts) {
+            try { win.close(); } catch { /* already gone */ }
+        }
+        popouts.clear();
+    });
+
     window.MudExPopoutEvents = {
         /**
          * Replays the listeners of the main document into a popout window, and keeps doing so
@@ -69,6 +78,9 @@
          */
         attach: function (win, onNewDocument) {
             if (!win || win === window) return false;
+            // callers may not know whether a window was seen before (a layout restore reopens
+            // popouts on its own), so calling again must not start a second watcher
+            if (popouts.has(win) && alive(win) && boundDocuments.has(win.document)) return true;
             popouts.add(win);
             watch(win, 100, onNewDocument); // ten seconds is more than a local page needs
             return true;
