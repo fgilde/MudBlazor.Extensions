@@ -55,6 +55,8 @@ Das erkennt eine fehlende oder falsche Route, **nicht** ein Snippet, das absicht
 
 ## Bewusst offen
 
+- Die Nuget-Verwaltung gibt es doppelt: als Dock-Panel (Nuget-Icon in der Statusleiste) und als
+  Dialog (Nuget-Button in der Toolbar). Absicht, bis entschieden ist, ob der Dialog weg kann.
 - `Samples/MainSample.WebAssembly` referenziert MudBlazor.Extensions in Release als **Paket**
   (`Version="*-*"`). Seit 9.7.0 stabil auf nuget.org liegt, gewinnt die veröffentlichte Version
   gegen die neuere Quelle und der Release-Build der Sample-App bricht. Gleiche Ursache wie bei
