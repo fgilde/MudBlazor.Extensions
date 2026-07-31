@@ -1,6 +1,6 @@
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
-using Try.Core;
+using Playzor.Core;
 
 namespace Try.Tests;
 

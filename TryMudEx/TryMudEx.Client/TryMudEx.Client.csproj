@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Try.Core\Try.Core.csproj" />
+    <ProjectReference Include="..\..\Playzor.Blazor.Editor\Playzor.Blazor.Editor.csproj" />
     <!-- the playground dogfoods its own embed package on the embed docs page -->
     <ProjectReference Include="..\..\Playzor.Blazor\Playzor.Blazor.csproj" />
   </ItemGroup>

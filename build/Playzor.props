@@ -1,0 +1,36 @@
+<!--
+  Shared metadata of every Playzor package. Imported by the Playzor.* projects so version,
+  icon, license and links stay in one place.
+-->
+<Project>
+
+  <PropertyGroup>
+    <PlayzorVersion Condition="'$(PlayzorVersion)' == ''">1.0.0</PlayzorVersion>
+    <Version>$(PlayzorVersion)</Version>
+
+    <Authors>Florian Gilde</Authors>
+    <Company>gilde.org</Company>
+    <Copyright>Copyright © $(Authors) 2026-$([System.DateTime]::Now.Year)</Copyright>
+    <PackageProjectUrl>https://playzor.net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/fgilde/MudBlazor.Extensions</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>playzor-icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)playzor-icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="README.md" Pack="true" PackagePath="\" Condition="Exists('README.md')" />
+  </ItemGroup>
+
+</Project>

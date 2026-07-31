@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
-using Try.Core;
+using Playzor.Core;
 
 namespace TryMudEx.Client.Services;
 

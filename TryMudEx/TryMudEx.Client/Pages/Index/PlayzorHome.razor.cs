@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
-using Try.Core;
+using Playzor.Core;
 using TryMudEx.Client.Services;
-using Playzor.Blazor.Services;
+using Playzor.Blazor.Editor.Services;
 
 namespace TryMudEx.Client.Pages.Index;
 

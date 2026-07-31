@@ -1,4 +1,4 @@
-﻿using Playzor.Blazor.Core;
+﻿using Playzor.Blazor.Editor.Core;
 using System.Text;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
@@ -9,7 +9,7 @@ using MudBlazor.Extensions.Services;
 using Nextended.Core.Encode;
 using TryMudEx.Client.Models;
 using TryMudEx.Client.Services;
-using Playzor.Blazor.Services;
+using Playzor.Blazor.Editor.Services;
 
 namespace TryMudEx.Client.Pages.Index;
 

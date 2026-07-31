@@ -1,4 +1,4 @@
-# TryMudEx → Playzor — Umsetzungsstand
+﻿# TryMudEx → Playzor — Umsetzungsstand
 
 Ergänzt [2026-07-27-trymudex-codepen-redesign-design.md](2026-07-27-trymudex-codepen-redesign-design.md).
 Branch `feat/try-adapt`, **nicht gepusht**.
@@ -25,13 +25,13 @@ Branch `feat/try-adapt`, **nicht gepusht**.
 
 ### Phase 3 — Embed + Paket
 - `/embed/{id}`, `/embed/samples/{name}`, `/embed/from/{url}`; Optionen `view`, `file`, `readonly`, `autorun`, `theme`, `hideheader`.
-- Inline-Code-Encoder in `Try.Core.InlineCode` (Encode war vorher nicht vorhanden).
+- Inline-Code-Encoder in `Playzor.Core.InlineCode` (Encode war vorher nicht vorhanden).
 - Neues Paket `Playzor.Blazor` (net8/9/10, nur `Microsoft.AspNetCore.Components.Web`): `<PlayzorPlayground>` mit `Code`/`Files`/`SnippetId`, `View`, `Theme`, `ReadOnly`, `AutoRun`, `Height`, `AutoHeight`, `Host`.
 - Kompatibilität der beiden Encoder ist per Test festgenagelt (`PlayzorCodeCompatibilityTests`).
 - Doku-/Testseite `/embed-docs` nutzt das Paket selbst.
 
 ### Phase 4 — Branding
-- `Try.Core.Brand`: MudEx / Playzor / Playzor-DE, Auflösung per Host (`Brand.FromHost`), `?brand=` als Dev-Override.
+- `Playzor.Core.Brand`: MudEx / Playzor / Playzor-DE, Auflösung per Host (`Brand.FromHost`), `?brand=` als Dev-Override.
 - `IndexHtmlService` rendert index.html pro Request: Brand-Tokens (Titel, Description, Canonical, OG/Twitter, Loader) plus Asset-Version als Cache-Buster.
 - Playzor: neutrales Blazor-Template ohne MudBlazor-Markup, eigene Beschreibung, eigener Akzent, `.de` mit deutscher UI.
 - `PlaygroundLocalizer`: Dictionary statt resx (keine Satellite-Assemblies im WASM-Download), Fallback auf Englisch, `?lang=` übersteuert.

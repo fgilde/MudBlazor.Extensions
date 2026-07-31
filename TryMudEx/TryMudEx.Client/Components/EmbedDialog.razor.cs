@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
-using Try.Core;
+using Playzor.Core;
 using TryMudEx.Client.Models;
 using TryMudEx.Client.Services;
-using Playzor.Blazor.Services;
+using Playzor.Blazor.Editor.Services;
 
 namespace TryMudEx.Client.Components;
 
@@ -72,6 +72,35 @@ public partial class EmbedDialog
             attributes.Add($"Host=\"{Host}\"");
 
             return $"@* dotnet add package Playzor.Blazor *@\n<PlayzorPlayground {string.Join(" ", attributes)} />";
+        }
+    }
+
+    /// <summary>
+    /// The same embed as a custom element — for pages that are not Blazor apps. The element builds
+    /// the url itself, so the code stays readable instead of being an encoded blob.
+    /// </summary>
+    private string WebComponentSnippet
+    {
+        get
+        {
+            var attributes = new List<string>();
+            if (!string.IsNullOrWhiteSpace(SnippetId)) attributes.Add($"snippet-id=\"{SnippetId}\"");
+            if (_options.View != EmbedView.Split) attributes.Add($"view=\"{_options.View.ToString().ToLowerInvariant()}\"");
+            if (_options.Theme != "auto") attributes.Add($"theme=\"{_options.Theme}\"");
+            if (!string.IsNullOrEmpty(_options.File)) attributes.Add($"file=\"{_options.File}\"");
+            if (_options.ReadOnly) attributes.Add("readonly");
+            if (!_options.AutoRun) attributes.Add("autorun=\"false\"");
+            if (_options.HideHeader) attributes.Add("hide-header");
+            attributes.Add($"height=\"{_height}\"");
+            attributes.Add($"host=\"{Host}\"");
+
+            var tag = $"<playzor-playground {string.Join(" ", attributes)}>";
+            var body = string.IsNullOrWhiteSpace(SnippetId)
+                ? "\n" + (Files?.FirstOrDefault(f => f.Path == CoreConstants.MainComponentFilePath)?.Content ?? string.Empty).Trim() + "\n"
+                : string.Empty;
+
+            return $"<script type=\"module\" src=\"{Host}/_content/Playzor.Blazor/playzor-embed.js\"></script>\n\n" +
+                   $"{tag}{body}</playzor-playground>";
         }
     }
 

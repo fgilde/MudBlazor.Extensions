@@ -3,7 +3,7 @@
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Try.Core;
+    using Playzor.Core;
     using Microsoft.AspNetCore.Components;
     using Services;
     using MudBlazor;
@@ -14,11 +14,15 @@
         [Inject] public HttpClient HttpClient { get; set; }
         [Inject] private LayoutService LayoutService { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
+        [Inject] private BrandingService Branding { get; set; }
+        [Inject] private Playzor.Blazor.Editor.Services.PlayzorLocalizer Localizer { get; set; }
 
         private MudThemeProvider _mudThemeProvider;
 
         protected override void OnInitialized()
         {
+            // the brand decides the language, not the browser
+            Localizer.Culture = Branding.Current.Culture;
             LayoutService.MajorUpdateOccured += LayoutServiceOnMajorUpdateOccured;
             base.OnInitialized();
         }

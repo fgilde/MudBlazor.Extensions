@@ -1,4 +1,4 @@
-﻿using Playzor.Blazor.Core;
+﻿using Playzor.Blazor.Editor.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using Nextended.Blazor.Models;
 using Nextended.Core.Encode;
-using Try.Core;
+using Playzor.Core;
 using TryMudEx.Client.Models;
 using TryMudEx.Client.Services;
-using Playzor.Blazor.Services;
+using Playzor.Blazor.Editor.Services;
 
 namespace TryMudEx.Client.Pages;
 

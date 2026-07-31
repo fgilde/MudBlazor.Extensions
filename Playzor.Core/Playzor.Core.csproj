@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\build\Playzor.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+
+    <PackageId>Playzor.Core</PackageId>
+    <Title>Playzor Core</Title>
+    <Description>Compiles blazor components in the browser with roslyn: code files, razor pipeline, nuget resolution and the server seam (IPlayzorApi, IPlayzorSnippetStore) the Playzor editor is built on.</Description>
+    <PackageTags>Blazor;Roslyn;Compiler;WebAssembly;Playzor;Playground;NuGet</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" />
+    <PackageReference Include="System.Runtime.Loader" />
+    <PackageReference Include="System.Net.Http.Json" />
+    <!-- WICHTIG: aktueller Roslyn-Compiler für neue C#-Features -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <!-- the compiler hands MudBlazor and MudBlazor.Extensions to the user code as ambient
+       references and usings, so the playground can render mud components out of the box -->
+  <ItemGroup>
+    <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
+    <ProjectReference Include="..\Playzor.UserComponents\Playzor.UserComponents.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+</Project>

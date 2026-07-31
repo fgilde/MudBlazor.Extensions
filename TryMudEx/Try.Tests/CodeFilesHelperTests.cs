@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Playzor.Blazor.Services;
+using Playzor.Blazor.Editor.Services;
 
 namespace Try.Tests;
 
@@ -39,8 +39,8 @@ public class CodeFilesHelperTests
     {
         var files = new[]
         {
-            new Try.Core.CodeFile { Path = "__Main.razor", Content = "<h1>hello world</h1>" },
-            new Try.Core.CodeFile { Path = "Components/Card.razor", Content = "<div/>" },
+            new Playzor.Core.CodeFile { Path = "__Main.razor", Content = "<h1>hello world</h1>" },
+            new Playzor.Core.CodeFile { Path = "Components/Card.razor", Content = "<div/>" },
         };
         Assert.That(CodeFilesHelper.ValidateCodeFilesForSnippetCreation(files), Is.Null);
     }

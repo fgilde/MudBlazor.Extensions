@@ -1,4 +1,4 @@
-# Phase 1: NuGet-Fix + Compile-Perf Implementation Plan
+﻿# Phase 1: NuGet-Fix + Compile-Perf Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -37,7 +37,7 @@
 ```csharp
 using System.Linq;
 using NUnit.Framework;
-using Try.Core;
+using Playzor.Core;
 
 namespace Try.Tests;
 
@@ -114,7 +114,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Try.Core
+namespace Playzor.Core
 {
     /// <summary>
     /// Pure helper logic for picking assemblies and dependencies out of nupkg content.
@@ -450,7 +450,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
-using Try.Core;
+using Playzor.Core;
 using Nextended.Core.Extensions;
 using MudBlazor.Extensions.Services;
 

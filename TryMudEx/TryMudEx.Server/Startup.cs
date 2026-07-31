@@ -1,4 +1,4 @@
-namespace TryMudEx.Server
+﻿namespace TryMudEx.Server
 {
     using System;
     using System.Collections.Generic;
@@ -13,6 +13,7 @@ namespace TryMudEx.Server
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using MudBlazor.Examples.Data;
+    using Playzor.Server;
 
     public class Startup
     {
@@ -41,6 +42,10 @@ namespace TryMudEx.Server
                     });
 
             });
+
+            // the nuget proxy the playground browser needs comes from the Playzor.Server package;
+            // foreign origins may use it so an app can point its editor here without hosting one
+            services.AddPlayzorServer(o => o.AllowedOrigins.Add("*"));
 
             services.AddControllers();
         }
@@ -87,6 +92,7 @@ namespace TryMudEx.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapPlayzorApi();
 
                 // Serve the wasm project if no other matches — rendered so placeholders
                 // (asset version, later brand tokens) get replaced per request

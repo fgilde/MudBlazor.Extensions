@@ -1,8 +1,10 @@
-﻿using Playzor.Blazor.Services;
+﻿using Playzor.Blazor.Editor.Services;
 using System.Linq;
 using System.Net.Http.Json;
 using Microsoft.JSInterop;
 using Nextended.Core;
+using Playzor.Core.Api;
+using System.Threading;
 
 namespace TryMudEx.Client.Services
 {
@@ -14,11 +16,15 @@ namespace TryMudEx.Client.Services
     using System.Text;
     using System.Threading.Tasks;
     using TryMudEx.Client.Models;
-    using Try.Core;
+    using Playzor.Core;
     using Microsoft.AspNetCore.Components;
     using Microsoft.Extensions.Options;
 
-    public class SnippetsService
+    /// <summary>
+    /// Snippet storage of this site (azure blob through the server) — also the
+    /// <see cref="IPlayzorSnippetStore"/> the editor falls back to when the page wires nothing.
+    /// </summary>
+    public class SnippetsService : IPlayzorSnippetStore
     {
         private const int SnippetIdLength = 16;
 
@@ -149,6 +155,18 @@ namespace TryMudEx.Client.Services
 
             return result;
         }
+
+        Task<string> IPlayzorSnippetStore.SaveAsync(IEnumerable<CodeFile> files, CancellationToken cancellationToken)
+            => SaveSnippetAsync(files);
+
+        Task<IEnumerable<CodeFile>> IPlayzorSnippetStore.LoadAsync(string snippetId, CancellationToken cancellationToken)
+            => GetSnippetContentAsync(snippetId);
+
+        async Task<IReadOnlyList<string>> IPlayzorSnippetStore.GetSampleNamesAsync(CancellationToken cancellationToken)
+            => await GetSamplesAsync();
+
+        Task<IEnumerable<CodeFile>> IPlayzorSnippetStore.LoadSampleAsync(string sampleName, CancellationToken cancellationToken)
+            => LoadSampleAsync(sampleName);
 
         public async Task<IEnumerable<CodeFile>> GetSnippetContentFromUrlAsync(string snippetFileUrl)
         {

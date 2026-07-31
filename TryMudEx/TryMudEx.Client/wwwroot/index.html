@@ -49,12 +49,12 @@
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link id="mudex-styles" href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css" rel="stylesheet">
     <link href="css/TryMudEx.min.css?v={{ASSET_VERSION}}" rel="stylesheet" />
-    <link href="_content/Playzor.Blazor/css/playzor-editor.css?v={{ASSET_VERSION}}" rel="stylesheet" />
+    <link href="_content/Playzor.Blazor.Editor/css/playzor-editor.css?v={{ASSET_VERSION}}" rel="stylesheet" />
     <link href="css/embed.css?v={{ASSET_VERSION}}" rel="stylesheet" />
     <link href="css/playzor.css?v={{ASSET_VERSION}}" rel="stylesheet" />
 
     <script type="text/javascript" src="https://js.live.net/v7.2/OneDrive.js"></script>
-    <script src="_content/Playzor.Blazor/lib/monaco-editor/min/vs/loader.js"></script>
+    <script src="_content/Playzor.Blazor.Editor/lib/monaco-editor/min/vs/loader.js"></script>
 </head>
 
 <body class="mud-height-full">
@@ -74,7 +74,7 @@
     </div>
 
     <!-- forwards console output of the preview iframe to the editor around it -->
-    <script src="_content/Playzor.Blazor/js/playzor-preview.js"></script>
+    <script src="_content/Playzor.Blazor.Editor/js/playzor-preview.js"></script>
 
     <!-- WICHTIG: autostart="false", damit unser eigenes Blazor.start(...) genutzt wird -->
     <script src="_framework/blazor.webassembly.js" autostart="false"></script>
@@ -114,7 +114,7 @@
         window.Playzor = window.Playzor || {};
         window.Playzor.snippetUrls = { markup: 'api/snippets/mudex.json' };
     </script>
-    <script src="_content/Playzor.Blazor/js/playzor-editor.js?v={{ASSET_VERSION}}"></script>
+    <script src="_content/Playzor.Blazor.Editor/js/playzor-editor.js?v={{ASSET_VERSION}}"></script>
 </body>
 
 </html>

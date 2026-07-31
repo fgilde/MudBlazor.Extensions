@@ -8,11 +8,12 @@ namespace TryMudEx.Client
     using System.Reflection;
     using System.Threading.Tasks;
     using Blazored.LocalStorage;
-    using Playzor.Blazor;
-    using Playzor.Blazor.Core;
+    using Playzor.Blazor.Editor;
+    using Playzor.Blazor.Editor.Core;
     using TryMudEx.Client.Models;
     using TryMudEx.Client.Services;
-    using Try.Core;
+    using Playzor.Core;
+    using Playzor.Core.Api;
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -42,6 +43,7 @@ namespace TryMudEx.Client
             //builder.Services.AddSingleton(serviceProvider => (IJSUnmarshalledRuntime)serviceProvider.GetRequiredService<IJSRuntime>());
             builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<SnippetsService>();
+            builder.Services.AddScoped<IPlayzorSnippetStore>(sp => sp.GetRequiredService<SnippetsService>());
             //builder.Services.AddSingleton(new CompilationService());
             
 

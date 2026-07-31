@@ -1,7 +1,7 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Try.Core;
+using Playzor.Core;
 
 namespace Try.Tests;
 
@@ -46,5 +46,23 @@ public class PlayzorCodeCompatibilityTests
         var pairs = codeFiles.Select(f => new KeyValuePair<string, string>(f.Path, f.Content));
 
         Assert.That(Playzor.Blazor.PlayzorCode.Encode(pairs), Is.EqualTo(InlineCode.Encode(codeFiles)));
+    }
+
+    /// <summary>
+    /// The web component (playzor-embed.js) is a third implementation of the same format, built on
+    /// CompressionStream('deflate-raw'). This string was produced by raw deflate in javascript —
+    /// if the playground can no longer read it, embeds written in plain html break.
+    /// </summary>
+    [Test]
+    public void WebComponentEncoded_IsReadableByPlayground()
+    {
+        const string fromJavaScript = "i4_3TczM0ytKrMovkrfJMLbzSM3JyVcIyEmsrMovstHPMLaTd87PLcjPS80rKdZ3TixKgSlOsktOLEqx0U-yAwA";
+
+        var decoded = InlineCode.Decode(fromJavaScript).ToArray();
+
+        Assert.That(decoded.Select(f => f.Path),
+            Is.EqualTo(new[] { "__Main.razor", "Components/Card.razor" }));
+        Assert.That(decoded.Select(f => f.Content),
+            Is.EqualTo(new[] { "<h3>Hello Playzor</h3>", "<b>card</b>" }));
     }
 }

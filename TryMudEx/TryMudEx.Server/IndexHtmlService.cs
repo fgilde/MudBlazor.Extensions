@@ -1,4 +1,4 @@
-namespace TryMudEx.Server
+﻿namespace TryMudEx.Server
 {
     using System;
     using System.Collections.Concurrent;
@@ -7,7 +7,7 @@ namespace TryMudEx.Server
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Try.Core;
+    using Playzor.Core;
 
     /// <summary>
     /// Serves index.html with its placeholders replaced: the asset version (cache buster for
@@ -19,8 +19,8 @@ namespace TryMudEx.Server
         // every file whose url carries {{ASSET_VERSION}} — the token must change when any of them does
         private static readonly string[] VersionedAssets =
         {
-            "_content/Playzor.Blazor/js/playzor-editor.js",
-            "_content/Playzor.Blazor/css/playzor-editor.css",
+            "_content/Playzor.Blazor.Editor/js/playzor-editor.js",
+            "_content/Playzor.Blazor.Editor/css/playzor-editor.css",
             "css/embed.css",
             "css/playzor.css",
             "css/TryMudEx.min.css",

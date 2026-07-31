@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\build\Playzor.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+
+    <PackageId>Playzor.Server</PackageId>
+    <Title>Playzor Server</Title>
+    <Description>The server half of a self hosted Playzor playground: MapPlayzorApi() adds the nuget package proxy the browser needs (nuget.org answers without CORS headers) and optional snippet endpoints.</Description>
+    <PackageTags>Blazor;Playzor;Playground;NuGet;Proxy;AspNetCore;Snippets</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+</Project>

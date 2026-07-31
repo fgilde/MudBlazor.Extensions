@@ -1,0 +1,47 @@
+﻿@using Playzor.Core
+
+<div class="playzor-file-tree d-flex flex-column" style="height:100%; overflow:auto;">
+    <div class="d-flex align-center px-1">
+        <MudTooltip Text="@L["New file"]">
+            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.NoteAdd" OnClick="@(() => PromptCreate(null))" />
+        </MudTooltip>
+        <MudTooltip Text="@L["New folder (creates folder/File.razor)"]">
+            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.CreateNewFolder" OnClick="@PromptCreateFolder" />
+        </MudTooltip>
+        @if (AvailableTemplates.Any())
+        {
+            <MudMenu Dense="true" Size="Size.Small">
+                <ActivatorContent>
+                    <MudTooltip Text="@L["Add from template"]">
+                        @* without an explicit toggle the icon swallows the click and the menu never opens *@
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.PostAdd" OnClick="@context.ToggleAsync" />
+                    </MudTooltip>
+                </ActivatorContent>
+                <ChildContent>
+                    @foreach (var template in AvailableTemplates)
+                    {
+                        <MudMenuItem OnClick="@(() => OnCreateFromTemplate.InvokeAsync(template))">@template.Path</MudMenuItem>
+                    }
+                </ChildContent>
+            </MudMenu>
+        }
+    </div>
+    <MudDivider />
+    <MudTreeView T="string" Dense="true" Hover="true" SelectedValue="@ActivePath" SelectedValueChanged="@HandleSelected" Items="@_items">
+        <ItemTemplate>
+            <MudTreeViewItem Value="@context.Value" Icon="@context.Icon" Items="@context.Children" Expanded="true">
+                <BodyContent Context="item">
+                    <div class="d-flex align-center flex-grow-1" style="min-width:0">
+                        <MudText Typo="Typo.body2" Style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">@context.Text</MudText>
+                        <MudSpacer />
+                        @if (context.Value != null && context.Value != CoreConstants.MainComponentFilePath)
+                        {
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.DriveFileRenameOutline" OnClick="@(() => PromptRename(context.Value))" title="@L["Rename"]" />
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => ConfirmDelete(context.Value))" title="@L["Delete"]" />
+                        }
+                    </div>
+                </BodyContent>
+            </MudTreeViewItem>
+        </ItemTemplate>
+    </MudTreeView>
+</div>

@@ -1,8 +1,8 @@
 ﻿namespace TryMudEx.Client.Services
 {
-using Playzor.Blazor.Core;
+using Playzor.Blazor.Editor.Core;
     using System;
-    using Try.Core;
+    using Playzor.Core;
     using Microsoft.Extensions.Logging;
     using Microsoft.JSInterop;
     using TryMudEx.Client.Models;

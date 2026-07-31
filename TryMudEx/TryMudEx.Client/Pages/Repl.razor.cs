@@ -12,12 +12,12 @@ using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Models;
 using Nextended.Core.Encode;
 using Nextended.Core.Extensions;
-using Playzor.Blazor.Components;
-using Playzor.Blazor.Core;
-using Try.Core;
+using Playzor.Blazor.Editor.Components;
+using Playzor.Blazor.Editor.Core;
+using Playzor.Core;
 using TryMudEx.Client.Components;
 using TryMudEx.Client.Services;
-using Playzor.Blazor.Services;
+using Playzor.Blazor.Editor.Services;
 
 namespace TryMudEx.Client.Pages;
 
@@ -119,7 +119,7 @@ public partial class Repl
         if (string.IsNullOrWhiteSpace(sample)) return;
 
         // the editor keeps its session in local storage — drop it so the sample wins on a reload too
-        var keys = new PlayzorStorageKeys("playzor");
+        var keys = PlayzorStorageKeys.Default;
         await Storage.RemoveItemAsync(keys.Code);
         await Storage.RemoveItemAsync(keys.OpenFiles);
 

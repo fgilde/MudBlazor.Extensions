@@ -1,5 +1,6 @@
-﻿@using Playzor.Blazor.Core
+﻿@using Playzor.Blazor.Editor.Core
 @using TryMudEx.Client.Services
+@using Playzor.Blazor.Editor.Services
 @using Microsoft.JSInterop
 @inherits LayoutComponentBase
 @implements IDisposable
@@ -16,11 +17,16 @@
 	[Inject] private LayoutService LayoutService { get; set; }
 	[Inject] private NavigationManager NavigationManager { get; set; }
 	[Inject] private IJSRuntime JsRuntime { get; set; }
+	[Inject] private BrandingService Branding { get; set; }
+	[Inject] private PlayzorLocalizer Localizer { get; set; }
 
 	private DotNetObjectReference<EmptyLayout> _selfRef;
 
 	protected override async Task OnInitializedAsync()
 	{
+		// the brand decides the language, not the browser
+		Localizer.Culture = Branding.Current.Culture;
+
 	    if (NavigationManager.Uri.Contains("?dark") || NavigationManager.Uri.Contains("?light"))
 	    {
 			await LayoutService.ApplyUserPreferences(NavigationManager.Uri.Contains("?dark"), true);

@@ -1,45 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
+  <Import Project="..\build\Playzor.props" />
+
   <PropertyGroup>
-    <!-- single target framework: the editor compiles user code with the roslyn version Try.Core pins -->
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <IsPackable>true</IsPackable>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <PackageId>Playzor.Blazor</PackageId>
-    <Authors>Florian Gilde</Authors>
-    <Description>The Playzor playground as a Blazor component: an in browser code editor with roslyn compilation, dockable panels and live preview, plus a lightweight embed component for the hosted playground.</Description>
-    <PackageProjectUrl>https://playzor.net</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/fgilde/MudBlazor.Extensions</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
-    <PackageTags>Blazor, Playground, Editor, Embed, Playzor, MudBlazor, Snippet, Live Code, Monaco, Roslyn</PackageTags>
-    <Copyright>Copyright © $(Authors) 2026-$([System.DateTime]::Now.Year)</Copyright>
-    <Version>1.0.0</Version>
+    <Title>Playzor Embed</Title>
+    <Description>Embed a live, editable Blazor playground (playzor.net / try.mudex.org) into any page: as a Blazor component, or as the playzor-playground web component in plain html. No dependencies beyond Blazor itself.</Description>
+    <PackageTags>Blazor;Playground;Embed;Playzor;WebComponent;Snippet;Live Code;MudBlazor</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
-    <!-- the js function names and storage keys are used all over the package -->
-    <Using Include="Playzor.Blazor.Core" />
   </ItemGroup>
 
+  <!-- central package management pins 10.x, so older target frameworks need their own floor -->
   <ItemGroup>
-    <PackageReference Include="Blazored.LocalStorage" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
-    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
-    <ProjectReference Include="..\TryMudEx\Try.Core\Try.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" VersionOverride="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" VersionOverride="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Condition="'$(TargetFramework)' == 'net10.0'" />
   </ItemGroup>
 
 </Project>

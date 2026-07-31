@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
 using Playzor.Blazor;
-using Try.Core;
+using Playzor.Blazor.Editor;
+using Playzor.Core;
 using TryMudEx.Client.Services;
-using Playzor.Blazor.Services;
+using Playzor.Blazor.Editor.Services;
 
 namespace TryMudEx.Client.Pages;
 
@@ -54,6 +55,22 @@ public partial class EmbedDocs
                                                 };
                                             }
                                             """;
+
+    private string WebComponentScriptSnippet =>
+        $"<script type=\"module\" src=\"{Host}/_content/Playzor.Blazor/playzor-embed.js\"></script>";
+
+    private string WebComponentSnippet =>
+        $"""
+         <playzor-playground height="420px" host="{Host}">
+           {DemoCode}
+         </playzor-playground>
+         """;
+
+    private string WebComponentFilesSnippet =>
+        $$"""
+          <playzor-playground host="{{Host}}" view="split" theme="dark" file="Components/Card.razor"
+            files='{"__Main.razor":"<Card />","Components/Card.razor":"<h4>A card</h4>"}'></playzor-playground>
+          """;
 
     private record EmbedOption(string Query, string Parameter, string Default, string Meaning);
 

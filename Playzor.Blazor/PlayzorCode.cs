@@ -1,11 +1,11 @@
-using System.IO.Compression;
+﻿using System.IO.Compression;
 using System.Text;
 
 namespace Playzor.Blazor;
 
 /// <summary>
 /// Encodes snippets for playzor urls: all files joined with a unit separator, deflated,
-/// base64url encoded. Mirrors Try.Core.InlineCode on the playground side — the format is
+/// base64url encoded. Mirrors Playzor.Core.InlineCode on the playground side — the format is
 /// part of the public url contract, so do not change it without changing both sides.
 /// </summary>
 public static class PlayzorCode

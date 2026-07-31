@@ -1,5 +1,5 @@
-using NUnit.Framework;
-using Try.Core;
+﻿using NUnit.Framework;
+using Playzor.Core;
 
 namespace Try.Tests;
 

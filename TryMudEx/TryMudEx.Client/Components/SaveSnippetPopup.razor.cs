@@ -5,8 +5,8 @@
     using System.Linq;
     using System.Threading.Tasks;
     using TryMudEx.Client.Services;
-    using Playzor.Blazor.Core;
-    using Try.Core;
+    using Playzor.Blazor.Editor.Core;
+    using Playzor.Core;
     using Microsoft.AspNetCore.Components;
     using Microsoft.JSInterop;
     using MudBlazor;

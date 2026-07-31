@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -15,7 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TryMudEx.Client\TryMudEx.Client.csproj" />
-    <ProjectReference Include="..\Try.Core\Try.Core.csproj" />
+    <ProjectReference Include="..\..\Playzor.Core\Playzor.Core.csproj" />
+    <ProjectReference Include="..\..\Playzor.Server\Playzor.Server.csproj" />
     <ProjectReference Include="..\MudBlazor.Examples.Data\MudBlazor.Examples.Data.csproj" />
   </ItemGroup>
 
