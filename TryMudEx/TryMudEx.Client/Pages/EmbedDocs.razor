@@ -1,6 +1,7 @@
 ﻿@page "/embed-docs"
 @using Microsoft.JSInterop
 @using Playzor.Blazor
+@using MudBlazor.Extensions.Options
 @using Playzor.Core
 @using TryMudEx.Client.Components
 @layout EmptyLayout
@@ -44,25 +45,25 @@
         <section>
             <h2>1. @L["Plain iframe"]</h2>
             <p>@L["Works on any website — a blog, docs, a CMS page."]</p>
-            @RenderSnippet(IframeSnippet)
+            @RenderSnippet(IframeSnippet, canOpen: true)
         </section>
 
         <section>
             <h2>2. @L["Web component"]</h2>
             <p>@L["One script tag, then a custom element — the code stays readable in your html instead of being encoded into an url."]</p>
             @RenderSnippet(WebComponentScriptSnippet)
-            @RenderSnippet(WebComponentSnippet)
+            @RenderSnippet(WebComponentSnippet, canOpen: true)
             <p class="mt-4">@L["Every option is an attribute; several files go in as json:"]</p>
-            @RenderSnippet(WebComponentFilesSnippet)
+            @RenderSnippet(WebComponentFilesSnippet, canOpen: true)
         </section>
 
         <section>
             <h2>3. @L["Blazor component"]</h2>
             <p>@L["In a Blazor app install the package and pass the code as a parameter."]</p>
             <pre class="pz-code"><code>dotnet add package Playzor.Blazor</code></pre>
-            @RenderSnippet(ComponentSnippet)
+            @RenderSnippet(ComponentSnippet, MudExCodeLanguage.Razor)
             <p class="mt-4">@L["Several files work too — folders become sub namespaces, exactly like in a real project:"]</p>
-            @RenderSnippet(MultiFileSnippet)
+            @RenderSnippet(MultiFileSnippet, MudExCodeLanguage.Razor)
         </section>
 
         <section>
@@ -111,11 +112,21 @@
 </div>
 
 @code {
-    private RenderFragment RenderSnippet(string snippet) =>
+    private RenderFragment RenderSnippet(string snippet, MudExCodeLanguage language = MudExCodeLanguage.Html, bool canOpen = false) =>
         @<div class="d-flex align-start" style="gap:8px;">
-            <pre class="pz-code flex-grow-1" style="margin-bottom:0;"><code>@snippet</code></pre>
-            <MudTooltip Text="@L["Copy"]">
-                <MudIconButton Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@(() => CopyAsync(snippet))" />
-            </MudTooltip>
+            <div class="flex-grow-1" style="min-width:0;">
+                <MudExCodeView Code="@snippet" Language="@language" Theme="CodeBlockTheme.AtomOneDark" />
+            </div>
+            <div class="d-flex flex-column">
+                <MudTooltip Text="@L["Copy"]">
+                    <MudIconButton Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@(() => CopyAsync(snippet))" />
+                </MudTooltip>
+                @if (canOpen)
+                {
+                    <MudTooltip Text="@L["Open in new tab"]">
+                        <MudIconButton Icon="@Icons.Material.Outlined.OpenInNew" OnClick="@(() => OpenPreviewAsync(snippet))" />
+                    </MudTooltip>
+                }
+            </div>
         </div>;
 }

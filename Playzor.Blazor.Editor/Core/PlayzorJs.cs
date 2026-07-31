@@ -21,6 +21,9 @@ public static class PlayzorJs
     /// <summary>Releases the dotnet reference and the window handlers.</summary>
     public const string Dispose = "Playzor.dispose";
 
+    /// <summary>Opens generated html in a new browser tab.</summary>
+    public const string OpenHtmlInNewTab = "Playzor.openHtmlInNewTab";
+
     /// <summary>Monaco instances, one per dock panel.</summary>
     public static class Editor
     {

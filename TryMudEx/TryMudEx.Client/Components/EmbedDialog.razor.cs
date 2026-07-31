@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
+using Playzor.Blazor.Editor.Core;
 using Playzor.Core;
 using TryMudEx.Client.Models;
 using TryMudEx.Client.Services;
@@ -23,6 +25,9 @@ public partial class EmbedDialog
     [Inject] private NavigationManager Navigation { get; set; }
     [Inject] private BrandingService Branding { get; set; }
     [Inject] private PlayzorLocalizer L { get; set; }
+    [Inject] private LayoutService LayoutService { get; set; }
+
+    private CodeBlockTheme CodeTheme => LayoutService.IsDarkMode ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight;
 
     /// <summary>Files of the current snippet. Hidden files (package list) are included so packages survive.</summary>
     [Parameter] public IEnumerable<CodeFile> Files { get; set; } = Array.Empty<CodeFile>();
@@ -76,8 +81,9 @@ public partial class EmbedDialog
     }
 
     /// <summary>
-    /// The same embed as a custom element — for pages that are not Blazor apps. The element builds
-    /// the url itself, so the code stays readable instead of being an encoded blob.
+    /// The same embed as a custom element — for pages that are not Blazor apps. The files go in as
+    /// script children: the html parser leaves their content alone, so markup, generics and
+    /// @code blocks survive where plain element content would lose them.
     /// </summary>
     private string WebComponentSnippet
     {
@@ -94,14 +100,65 @@ public partial class EmbedDialog
             attributes.Add($"height=\"{_height}\"");
             attributes.Add($"host=\"{Host}\"");
 
-            var tag = $"<playzor-playground {string.Join(" ", attributes)}>";
-            var body = string.IsNullOrWhiteSpace(SnippetId)
-                ? "\n" + (Files?.FirstOrDefault(f => f.Path == CoreConstants.MainComponentFilePath)?.Content ?? string.Empty).Trim() + "\n"
-                : string.Empty;
+            var body = string.IsNullOrWhiteSpace(SnippetId) ? BuildFileScripts() : string.Empty;
 
-            return $"<script type=\"module\" src=\"{Host}/_content/Playzor.Blazor/playzor-embed.js\"></script>\n\n" +
-                   $"{tag}{body}</playzor-playground>";
+            return $"<script type=\"module\" src=\"{ScriptUrl}\"></script>\n\n" +
+                   $"<playzor-playground {string.Join(" ", attributes)}>{body}</playzor-playground>";
         }
+    }
+
+    private string ScriptUrl => $"{Host}/_content/Playzor.Blazor/playzor-embed.js";
+
+    private string BuildFileScripts()
+    {
+        var files = (Files ?? Array.Empty<CodeFile>())
+            .Where(f => f.Type != CodeFileType.Hidden)
+            .OrderByDescending(f => f.Path == CoreConstants.MainComponentFilePath)
+            .ToList();
+
+        if (files.Count == 0) return string.Empty;
+
+        var builder = new StringBuilder();
+        foreach (var file in files)
+        {
+            builder.Append($"\n  <script type=\"text/plain\" data-playzor-file=\"{file.Path}\">\n");
+            // "</script>" inside the snippet would end the element, the split is the usual escape
+            builder.Append(Indent(file.Content?.Replace("</script>", "<\\/script>") ?? string.Empty, "    "));
+            builder.Append("\n  </script>");
+        }
+
+        return builder.Append('\n').ToString();
+    }
+
+    private static string Indent(string text, string indent)
+        => string.Join("\n", text.Replace("\r\n", "\n").TrimEnd().Split('\n').Select(l => l.Length == 0 ? l : indent + l));
+
+    /// <summary>A complete page around a snippet, so it can be opened and tried out right away.</summary>
+    private string BuildPreviewPage(string body) =>
+        $$"""
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>{{BrandName}} embed</title>
+            <style>
+              body { font-family: system-ui, sans-serif; margin: 0; padding: 24px; background: #14151a; color: #e8e8ea; }
+              h1 { font-size: 15px; font-weight: 500; margin: 0 0 16px; opacity: .7; }
+            </style>
+          </head>
+          <body>
+            <h1>{{BrandName}} embed preview</h1>
+          {{body}}
+          </body>
+          </html>
+          """;
+
+    private async Task OpenPreviewAsync(string body)
+    {
+        var opened = await JsRuntime.InvokeAsync<bool>(PlayzorJs.OpenHtmlInNewTab, BuildPreviewPage(body));
+        if (!opened)
+            Snackbar.Add(L["Could not open a window — check your popup blocker."], Severity.Warning);
     }
 
     private void Update(EmbedOptions options)

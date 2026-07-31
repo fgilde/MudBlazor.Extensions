@@ -167,6 +167,7 @@ public class PlayzorLocalizer : IStringLocalizer
 
             // embed dialog
             ["Web component"] = "Web-Component",
+            ["Open in new tab"] = "In neuem Tab öffnen",
             ["One script tag, then a custom element — the code stays readable in your html instead of being encoded into an url."] =
                 "Ein Script-Tag, dann ein eigenes Element — der Code bleibt im HTML lesbar statt in einer URL kodiert.",
             ["Every option is an attribute; several files go in as json:"] =

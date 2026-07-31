@@ -129,6 +129,14 @@ Object.assign(window.Playzor, {
     prefersDark: function () {
         return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     },
+    // opens a generated html page in a new tab, so an embed snippet can be tried out as it is
+    openHtmlInNewTab: function (html) {
+        const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+        const win = window.open(url, '_blank');
+        // the tab keeps the document, the object url can go once it has loaded
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+        return !!win;
+    },
     dispose: function () {
         _dotNetInstance = null;
         window.removeEventListener('keydown', onKeyDown);

@@ -1,4 +1,5 @@
-@using TryMudEx.Client.Models
+﻿@using TryMudEx.Client.Models
+@using MudBlazor.Extensions.Options
 
 <div class="embed-dialog">
     <MudGrid Spacing="4">
@@ -50,16 +51,24 @@
 
             <MudTabs Elevation="0" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pt-3">
                 <MudTabPanel Text="HTML">
-                    @RenderSnippet(IframeSnippet)
+                    @RenderSnippet(IframeSnippet, MudExCodeLanguage.Html, () => OpenPreviewAsync(IframeSnippet))
                 </MudTabPanel>
                 <MudTabPanel Text="@L["Web component"]">
-                    @RenderSnippet(WebComponentSnippet)
+                    @RenderSnippet(WebComponentSnippet, MudExCodeLanguage.Html, () => OpenPreviewAsync(WebComponentSnippet))
                 </MudTabPanel>
                 <MudTabPanel Text="Blazor">
-                    @RenderSnippet(ComponentSnippet)
+                    @RenderSnippet(ComponentSnippet, MudExCodeLanguage.Razor)
                 </MudTabPanel>
                 <MudTabPanel Text="@L["Link"]">
-                    @RenderSnippet(EmbedUrl)
+                    <div class="d-flex align-start" style="gap:8px;">
+                        <MudTextField T="string" Value="@EmbedUrl" ReadOnly="true" Variant="Variant.Outlined" Class="flex-grow-1 embed-snippet" />
+                        <MudTooltip Text="@L["Copy"]">
+                            <MudIconButton Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@(() => CopyAsync(EmbedUrl))" />
+                        </MudTooltip>
+                        <MudTooltip Text="@L["Open in new tab"]">
+                            <MudIconButton Icon="@Icons.Material.Outlined.OpenInNew" Href="@EmbedUrl" Target="_blank" />
+                        </MudTooltip>
+                    </div>
                 </MudTabPanel>
             </MudTabs>
         </MudItem>
@@ -67,12 +76,21 @@
 </div>
 
 @code {
-    private RenderFragment RenderSnippet(string snippet) =>
+    private RenderFragment RenderSnippet(string snippet, MudExCodeLanguage language, Func<Task> open = null) =>
         @<div class="d-flex align-start" style="gap:8px;">
-            <MudTextField T="string" Value="@snippet" ReadOnly="true" Lines="@(snippet.Contains('\n') ? 3 : 1)"
-                          Variant="Variant.Outlined" Class="flex-grow-1 embed-snippet" />
-            <MudTooltip Text="@L["Copy"]">
-                <MudIconButton Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@(() => CopyAsync(snippet))" />
-            </MudTooltip>
+            <div class="flex-grow-1 embed-snippet" style="min-width:0;">
+                <MudExCodeView Code="@snippet" Language="@language" Theme="@CodeTheme" />
+            </div>
+            <div class="d-flex flex-column">
+                <MudTooltip Text="@L["Copy"]">
+                    <MudIconButton Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@(() => CopyAsync(snippet))" />
+                </MudTooltip>
+                @if (open != null)
+                {
+                    <MudTooltip Text="@L["Open in new tab"]">
+                        <MudIconButton Icon="@Icons.Material.Outlined.OpenInNew" OnClick="@(() => open())" />
+                    </MudTooltip>
+                }
+            </div>
         </div>;
 }

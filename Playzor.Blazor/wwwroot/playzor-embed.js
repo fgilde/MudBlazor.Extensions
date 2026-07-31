@@ -3,17 +3,31 @@
  * Blazor apps.
  *
  *   <script type="module" src="https://playzor.net/_content/Playzor.Blazor/playzor-embed.js"></script>
+ *
  *   <playzor-playground height="420px" view="split">
- *     <h3>Hello Playzor</h3>
+ *     <script type="text/plain" data-playzor-file="__Main.razor">
+ *       <h3>Hello Playzor</h3>
+ *     </script>
  *   </playzor-playground>
  *
- * The code can come from the element's own text content, from the code attribute, from a files
- * attribute (json: path to content) or from snippet-id. It is deflated and base64url encoded into
- * the url, exactly like Playzor.Blazor and Playzor.Core do — nothing is uploaded.
+ * A script child per file is the reliable way to pass razor: the browser does not parse its
+ * content, so markup, generics and @code blocks survive verbatim. Plain text content works for
+ * one liners without markup, and code, files (json) and snippet-id attributes work as well.
+ * The snippet is deflated and base64url encoded into the url — nothing is uploaded.
  */
 
 const SEPARATOR = String.fromCharCode(31);
 const DEFAULT_HOST = 'https://playzor.net';
+
+/** Removes the indentation the snippet carries from the surrounding html. */
+function dedent(text) {
+    const lines = (text ?? '').replace(/\t/g, '    ').split('\n');
+    while (lines.length && !lines[0].trim()) lines.shift();
+    while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
+
+    const indent = Math.min(...lines.filter(l => l.trim()).map(l => l.length - l.trimStart().length), Infinity);
+    return Number.isFinite(indent) && indent > 0 ? lines.map(l => l.slice(indent)).join('\n') : lines.join('\n');
+}
 
 function base64Url(bytes) {
     let binary = '';
@@ -67,10 +81,13 @@ class PlayzorPlaygroundElement extends HTMLElement {
     #iframe = null;
     #onMessage = null;
     #initialCode = null;
+    #inlineFiles = null;
 
     connectedCallback() {
-        // text content is the most convenient source, but it is only readable once
-        if (this.#initialCode === null) this.#initialCode = this.textContent.trim();
+        // the light dom is read once: rendering moves nothing out of it, but attribute changes
+        // must not re-read a tree the page may have replaced meanwhile
+        if (this.#inlineFiles === null) this.#inlineFiles = this.#readInlineFiles();
+        if (this.#initialCode === null) this.#initialCode = dedent(this.textContent);
 
         if (!this.#iframe) {
             const shadow = this.attachShadow({ mode: 'open' });
@@ -113,6 +130,16 @@ class PlayzorPlaygroundElement extends HTMLElement {
         return value !== null && value !== 'false';
     }
 
+    /** One script child per file — the only way markup and @code survive the html parser. */
+    #readInlineFiles() {
+        const scripts = this.querySelectorAll('script[type="text/plain"][data-playzor-file]');
+        if (!scripts.length) return null;
+
+        const files = {};
+        for (const script of scripts) files[script.dataset.playzorFile] = dedent(script.textContent);
+        return files;
+    }
+
     #applyHeight() {
         this.#iframe.style.height = this.#bool('auto-height') ? '' : (this.getAttribute('height') || '500px');
     }
@@ -133,7 +160,7 @@ class PlayzorPlaygroundElement extends HTMLElement {
     }
 
     async #render() {
-        let files = null;
+        let files = this.#inlineFiles;
         const raw = this.getAttribute('files');
         if (raw) {
             try {

@@ -45,6 +45,7 @@ public partial class Repl
     private IEnumerable<CodeFile> _files;
     private IEnumerable<CodeFile> _snippetFiles = Array.Empty<CodeFile>();
     private string[] _samples = Array.Empty<string>();
+    private string _loadedRoute;
 
     private bool SaveSnippetPopupVisible { get; set; }
 
@@ -69,6 +70,19 @@ public partial class Repl
 
         await LoadFilesAsync();
         await base.OnInitializedAsync();
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnParametersSetAsync()
+    {
+        // navigating from /snippet to /snippet/samples/x keeps this page alive and only swaps the
+        // route parameters, so the content has to be reloaded here as well
+        var route = $"{SnippetId}|{Sample}|{SnippetFileUrl}";
+        if (_loadedRoute != null && _loadedRoute != route)
+            await LoadFilesAsync();
+
+        _loadedRoute = route;
+        await base.OnParametersSetAsync();
     }
 
     /// <summary>
@@ -129,6 +143,7 @@ public partial class Repl
         NavigationManager.NavigateTo($"/snippet/samples/{sample}", false);
 
         await LoadFilesAsync();
+        _loadedRoute = $"{SnippetId}|{Sample}|{SnippetFileUrl}";
         StateHasChanged();
 
         if (_editor != null)
@@ -162,7 +177,7 @@ public partial class Repl
                 options.FullWidth = true;
                 options.MaxWidth = MaxWidth.Large;
                 options.CloseButton = true;
-                options.DragMode = MudDialogDragMode.Simple;
+                options.DragMode = MudDialogDragMode.SnapDrag;
             });
     }
 
