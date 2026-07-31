@@ -1,6 +1,7 @@
 ﻿class MudExDockLayout {
     elementRef; dotnet; options; containerRef; api;
     elementStore = new Map();
+    _createCounter = 0;
     bootstrapped = false;
     observer = null;
     disposables = [];
@@ -92,8 +93,15 @@
     // ---------------- Component-Erzeugung ----------------
 
     _createComponent(opts) {
+        // 0) a node blazor rendered but nobody adopted yet beats everything we remember: when the
+        //    blazor component behind a panel is re-created, the node we hold is an orphan of the
+        //    render before — parked in dockviews overlay, where blazor can no longer reach it, so
+        //    it never gets content again. dv-token marks the ones that were adopted before.
+        let el = this.containerRef.querySelector(
+            `.dv-node[data-options*='"id":"${CSS.escape(opts.id)}"']:not([data-dv-token]):not(.dv-stash *)`);
+
         // 1) bevorzugt: bereits gestashte/indizierte Instanz
-        let el = this.elementStore.get(opts.id);
+        if (!el) el = this.elementStore.get(opts.id);
 
         // 2) Stash prüfen
         if (!el) {
@@ -114,6 +122,7 @@
         }
 
         if (el) {
+            this.elementStore.set(opts.id, el); // whatever we picked is the one that counts now
             el.dataset.dvId = opts.id;
             el.style.display = '';
             el.style.height = '100%';
@@ -123,11 +132,23 @@
             // andere Kopien derselben id verstecken & stashen
             this._hideAndStashDuplicates(opts.id, el);
 
+            // dockview builds a second component for the same element while restoring a layout,
+            // and disposes the first one afterwards. Without this marker that late dispose would
+            // stash an element that is on screen — a panel with tab, without content.
+            const token = String(++this._createCounter);
+            el.dataset.dvToken = token;
+
             return {
                 element: el,
-                init() { },
+                // a restored layout only builds the panels it shows; the inactive tab of a stack is
+                // built when it is first activated, and its render overlay keeps the placeholder
+                // size it was created with until something re-measures the grid
+                init: () => this._scheduleRelayout(),
                 update() { },
-                dispose: () => this._hideAndStash(el, opts.id)
+                dispose: () => {
+                    if (el.dataset.dvToken !== token) return; // someone newer owns it now
+                    this._hideAndStash(el, opts.id);
+                }
             };
         }
 
@@ -137,6 +158,37 @@
         return { element: div, init() { }, update() { }, dispose() { } };
     }
 
+    /**
+     * Re-measures the grid once per turn, no matter how many panels ask for it. A timeout, not an
+     * animation frame: a window in the background does not paint, and a panel that was fixed only
+     * once the user looks at it would be fixed too late.
+     */
+    _scheduleRelayout() {
+        if (this._relayoutPending) return;
+        this._relayoutPending = true;
+        setTimeout(() => {
+            this._relayoutPending = false;
+            this._unhideRenderedPanels();
+            try {
+                const box = this.containerRef.getBoundingClientRect();
+                if (box.width && box.height) this.api?.layout(Math.round(box.width), Math.round(box.height), true);
+            } catch { /* layout is a nicety, never worth throwing over */ }
+        });
+    }
+
+    /**
+     * dockview names the element it renders for a panel, and that one must not be hidden. It can
+     * end up hidden anyway: blazor re-creates the component behind a panel, we stash what looks
+     * like the duplicate, and the replacement disappears with the next render — leaving a tab whose
+     * content is invisible. Rather than chase every order these can happen in, this puts it right.
+     */
+    _unhideRenderedPanels() {
+        for (const panel of this.api?.panels ?? []) {
+            const el = panel.view?.content?.element;
+            if (el && el.style.display === 'none' && !el.closest('.dv-stash')) el.style.display = '';
+        }
+    }
+
     // ---------------- Events ----------------
 
     wireEvents() {
@@ -144,7 +196,12 @@
         const push = (d) => this.disposables.push(d).length && d;
         try { push(this.api.onDidAddPanel?.(p => { this._decorateTab(p); this.dotnet?.invokeMethodAsync('OnJsPanelAdded', p.id); })); } catch (e) { }
         try { push(this.api.onDidRemovePanel?.(p => this.dotnet?.invokeMethodAsync('OnJsPanelRemoved', p.id))); } catch (e) { }
-        try { push(this.api.onDidActivePanelChange?.(e => this.dotnet?.invokeMethodAsync('OnJsActiveChanged', e?.id ?? null))); } catch (e) { }
+        try {
+            push(this.api.onDidActivePanelChange?.(e => {
+                this._scheduleRelayout(); // the tab a user clicks may be one that was built just now
+                this.dotnet?.invokeMethodAsync('OnJsActiveChanged', e?.id ?? null);
+            }));
+        } catch (e) { }
         try {
             push(this.api.onDidMovePanel?.(e => {
                 const payload = { PanelId: e.panel?.id ?? null, FromGroupId: e.from?.id ?? e.fromGroup?.id ?? null, ToGroupId: e.to?.id ?? e.toGroup?.id ?? null, ToIndex: e.index ?? 0 };
@@ -359,6 +416,8 @@
         const panel = this.api?.getPanel(id);
         if (!panel) return;
         panel.api?.setActive?.();
+        // a panel a restored layout built lazily comes up hidden and mis-sized
+        this._scheduleRelayout();
         if (highlight) this.highlightPanel(id);
     }
 
