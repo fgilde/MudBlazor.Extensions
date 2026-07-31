@@ -381,7 +381,14 @@
         try {
             await this.api.addPopoutGroup(panel, {
                 popoutUrl: popoutUrl || this.options?.popoutUrl || '/popout.html',
-                onDidOpen: ({ id: groupId, window: w }) => { try { w.document.title = panel.title || groupId; } catch { /* noop */ } },
+                onDidOpen: ({ id: groupId, window: w }) => {
+                    try { w.document.title = panel.title || groupId; } catch { /* noop */ }
+                    // blazor listens on the document of the main window only, so a moved panel is
+                    // dead without this — see js/mudExPopoutEvents.js
+                    if (!window.MudExPopoutEvents?.attach(w)) {
+                        console.warn('MudExDockLayout: mudExPopoutEvents.js is not loaded, the popped out panel will not react to input');
+                    }
+                },
             });
             return true;
         } catch (e) {

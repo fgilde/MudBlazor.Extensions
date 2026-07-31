@@ -11,6 +11,8 @@
 <head prefix="og: http://ogp.me/ns#">
 
     <script src="_content/MudBlazor.Extensions/js/components/MudExAppLoader.min.js"></script>
+    <!-- has to run before blazor: it records the document listeners so panels stay alive in a popout window -->
+    <script src="_content/MudBlazor.Extensions/js/mudExPopoutEvents.js"></script>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
