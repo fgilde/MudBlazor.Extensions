@@ -16,25 +16,61 @@
     const popouts = new Set();
     const attachToMainDocument = document.addEventListener.bind(document);
 
+    const boundDocuments = new WeakSet();
+
+    function alive(win) {
+        try { return !!win && !win.closed && !!win.document; } catch { return false; }
+    }
+
     function attachTo(win, type, listener, options) {
         try { win.document.addEventListener(type, listener, options); } catch { /* window already gone */ }
+    }
+
+    /** Binds the recorded listeners to the window's current document, once per document. */
+    function replay(win, onNewDocument) {
+        if (!alive(win)) return false;
+        const doc = win.document;
+        if (boundDocuments.has(doc)) return true;
+        boundDocuments.add(doc);
+        for (const entry of recorded) attachTo(win, entry.type, entry.listener, entry.options);
+        try { onNewDocument?.(win); } catch { /* caller's problem, not ours */ }
+        return true;
+    }
+
+    /**
+     * A window opens on about:blank and gets its real document a moment later, which throws away
+     * everything registered on the first one. Neither its load event nor anything else registered
+     * on that window survives the swap, so the only reliable way is to watch for the new document.
+     */
+    function watch(win, attemptsLeft, onNewDocument) {
+        if (!alive(win)) { popouts.delete(win); return; }
+        replay(win, onNewDocument);
+        let settled = false;
+        try { settled = win.document.readyState === 'complete' && win.location.href !== 'about:blank'; } catch { settled = true; }
+        if (!settled && attemptsLeft > 0) setTimeout(() => watch(win, attemptsLeft - 1, onNewDocument), 100);
     }
 
     // blazor registers a listener per event name lazily, the first time a component needs it, so
     // recording has to keep running and feed windows that are already open
     document.addEventListener = function (type, listener, options) {
         recorded.push({ type, listener, options });
-        for (const win of popouts) attachTo(win, type, listener, options);
+        for (const win of popouts) {
+            if (alive(win)) attachTo(win, type, listener, options); else popouts.delete(win);
+        }
         return attachToMainDocument(type, listener, options);
     };
 
     window.MudExPopoutEvents = {
-        /** Replays the listeners of the main document into a popout window. */
-        attach: function (win) {
-            if (!win || win === window || popouts.has(win)) return false;
+        /**
+         * Replays the listeners of the main document into a popout window, and keeps doing so
+         * until its real document is there. Safe to call again, per document it binds once.
+         * <paramref name="onNewDocument"/> runs whenever a document of that window was bound —
+         * the place for anything else the popout page needs, like its title.
+         */
+        attach: function (win, onNewDocument) {
+            if (!win || win === window) return false;
             popouts.add(win);
-            for (const entry of recorded) attachTo(win, entry.type, entry.listener, entry.options);
-            win.addEventListener('pagehide', () => popouts.delete(win), { once: true });
+            watch(win, 100, onNewDocument); // ten seconds is more than a local page needs
             return true;
         },
 
@@ -42,7 +78,7 @@
         documents: function () {
             const documents = [document];
             for (const win of popouts) {
-                try { if (win.document) documents.push(win.document); } catch { /* window already gone */ }
+                if (alive(win)) documents.push(win.document); else popouts.delete(win);
             }
             return documents;
         },

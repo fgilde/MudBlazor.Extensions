@@ -381,11 +381,15 @@
         try {
             await this.api.addPopoutGroup(panel, {
                 popoutUrl: popoutUrl || this.options?.popoutUrl || '/popout.html',
+                // dockview raises this right after window.open, so the popout page has not loaded
+                // yet and its document is still the empty one. Blazor listens on the document of
+                // the main window only, so without the replay the moved panel is dead — and the
+                // callback is also the first moment the real document exists, title included.
                 onDidOpen: ({ id: groupId, window: w }) => {
-                    try { w.document.title = panel.title || groupId; } catch { /* noop */ }
-                    // blazor listens on the document of the main window only, so a moved panel is
-                    // dead without this — see js/mudExPopoutEvents.js
-                    if (!window.MudExPopoutEvents?.attach(w)) {
+                    const attached = window.MudExPopoutEvents?.attach(w, popoutWindow => {
+                        try { popoutWindow.document.title = panel.title || groupId; } catch { /* noop */ }
+                    });
+                    if (!attached) {
                         console.warn('MudExDockLayout: mudExPopoutEvents.js is not loaded, the popped out panel will not react to input');
                     }
                 },
