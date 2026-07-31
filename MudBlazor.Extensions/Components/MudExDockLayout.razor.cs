@@ -24,6 +24,12 @@ namespace MudBlazor.Extensions.Components
         [ForJs, Parameter] public string InitialLayoutJson { get; set; }
         [Parameter] public bool HideTabHeaders { get; set; }
 
+        /// <summary>
+        /// Document a popped out panel is hosted in. Must be served from the same origin, dockview
+        /// copies the stylesheets into it. Used by <see cref="MudExDockItem.CanPopout"/>.
+        /// </summary>
+        [ForJs, Parameter] public string PopoutUrl { get; set; } = "/popout.html";
+
         [Parameter] public EventCallback<string> OnPanelAdded { get; set; }
         [Parameter] public EventCallback<string?> OnActiveChanged { get; set; }
         [Parameter] public EventCallback<string> OnPanelRemoved { get; set; }
@@ -85,7 +91,8 @@ namespace MudBlazor.Extensions.Components
                 module = DockViewFile("/dockview-core.esm.js", false),
                 className = ClassName,
                 //mode = Mode.ToString().ToLowerInvariant(),
-                initialLayoutJson = InitialLayoutJson
+                initialLayoutJson = InitialLayoutJson,
+                popoutTitle = TryLocalize("Open in new window")
             });
         }
 
@@ -108,8 +115,16 @@ namespace MudBlazor.Extensions.Components
         public Task RemovePanelAsync(string id)
             => JsReference!.InvokeVoidAsync("removePanelById", id).AsTask();
 
-        public Task ActivatePanelAsync(string id)
-            => JsReference!.InvokeVoidAsync("activatePanel", id).AsTask();
+        /// <summary>
+        /// Activates a panel. <paramref name="highlight"/> glows its border for a moment, which is
+        /// worth it whenever something other than the user's click caused the activation.
+        /// </summary>
+        public Task ActivatePanelAsync(string id, bool highlight = false)
+            => JsReference!.InvokeVoidAsync("activatePanel", id, highlight).AsTask();
+
+        /// <summary>Glows the panel border for a moment without changing the active panel.</summary>
+        public Task HighlightPanelAsync(string id)
+            => JsReference!.InvokeVoidAsync("highlightPanel", id).AsTask();
 
         public Task FloatPanelAsync(string id)
             => JsReference!.InvokeVoidAsync("floatPanel", id).AsTask();

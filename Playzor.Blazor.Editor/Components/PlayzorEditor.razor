@@ -128,16 +128,16 @@
             @if (_ready)
             {
             <MudExDockLayout @ref="_dock" Id="@DockId" Class="playzor-dock-host" ContainerStyle="@DockContainerStyleStr()"
-                             InitialLayoutJson="@_initialLayoutJson"
+                             InitialLayoutJson="@_initialLayoutJson" PopoutUrl="@PopoutUrl"
                              OnPanelRemoved="HandlePanelRemoved" OnPanelMoved="HandlePanelMovedAsync" OnActiveChanged="HandleActivePanelChanged">
                 @* first panel becomes the grid base (center). The main file always exists and is never closable. *@
-                <MudExDockItem Id="@MainEditorPanelId" Title="@CoreConstants.MainComponentFilePath" CanClose="false" Renderer="DockRendererMode.Always">
+                <MudExDockItem Id="@MainEditorPanelId" Title="@CoreConstants.MainComponentFilePath" CanClose="false" CanPopout="true" Renderer="DockRendererMode.Always">
                     <CodeEditor Id="@EditorDomId(CoreConstants.MainComponentFilePath)" Theme="@EditorTheme"
                                 Code="@GetFile(CoreConstants.MainComponentFilePath)?.Content" CodeFileType="CodeFileType.Razor" />
                 </MudExDockItem>
                 @if (HasPanel(PlayzorPanels.Files))
                 {
-                    <MudExDockItem Id="files" Title="@L["Files"]" Direction="DockDirection.Left" InitialWidth="230" Renderer="DockRendererMode.Always">
+                    <MudExDockItem Id="files" Title="@L["Files"]" Direction="DockDirection.Left" InitialWidth="230" CanPopout="true" Renderer="DockRendererMode.Always">
                         <FileTree Files="@CodeFiles.Values" ActivePath="@_activeCodeFile?.Path" ShowHiddenFiles="@ShowHiddenFiles"
                                   OnOpen="OpenFileAsync" OnCreate="HandleCreateFileAsync" OnCreateFromTemplate="HandleCreateFromTemplateAsync"
                                   OnRename="HandleRenameFileAsync" OnDelete="HandleDeleteFileAsync" />
@@ -145,7 +145,7 @@
                 }
                 @if (HasPanel(PlayzorPanels.Preview))
                 {
-                    <MudExDockItem Id="preview" Title="@L["Preview"]" Direction="DockDirection.Right" CanClose="false" Renderer="DockRendererMode.Always">
+                    <MudExDockItem Id="preview" Title="@L["Preview"]" Direction="DockDirection.Right" CanClose="false" CanPopout="true" Renderer="DockRendererMode.Always">
                         <div class="playzor-preview d-flex flex-column" style="height:100%;">
                             @if (_previewError != null)
                             {
@@ -161,15 +161,24 @@
                 }
                 @if (HasPanel(PlayzorPanels.Errors))
                 {
-                    <MudExDockItem Id="errors" Title="@L["Errors"]" Direction="DockDirection.Below" InitialHeight="170" Renderer="DockRendererMode.Always">
+                    <MudExDockItem Id="errors" Title="@L["Errors"]" Direction="DockDirection.Below" InitialHeight="170" CanPopout="true" Renderer="DockRendererMode.Always">
                         <ErrorList OnDiagnosticClick="OpenDiagnosticAsync" Diagnostics="@Diagnostics" />
                     </MudExDockItem>
                 }
                 @if (HasPanel(PlayzorPanels.Console))
                 {
                     <MudExDockItem Id="console" Title="@L["Console"]" StackWith="@(HasPanel(PlayzorPanels.Errors) ? "errors" : null)"
-                                   Direction="DockDirection.Below" Renderer="DockRendererMode.Always">
+                                   Direction="DockDirection.Below" CanPopout="true" Renderer="DockRendererMode.Always">
                         <ConsolePanel />
+                    </MudExDockItem>
+                }
+                @* not part of the default layout — opened from the nuget button in the status bar *@
+                @if (HasPanel(PlayzorPanels.Packages))
+                {
+                    <MudExDockItem Id="packages" Title="@L["Packages"]" StackWith="@(HasPanel(PlayzorPanels.Errors) ? "errors" : null)"
+                                   Direction="DockDirection.Below" CanPopout="true" Renderer="DockRendererMode.Always">
+                        <PackageReferences InstalledPackages="@_installedPackages" MaxHeight="none"
+                                           SelectedPackagesChanged="HandlePackagesChangedAsync" />
                     </MudExDockItem>
                 }
 
@@ -181,7 +190,7 @@
                 {
                     @if (path != null)
                     {
-                        <MudExDockItem Id="@EditorPanelId(path)" Title="@FileTitle(path)" StackWith="@MainEditorPanelId" Renderer="DockRendererMode.Always">
+                        <MudExDockItem Id="@EditorPanelId(path)" Title="@FileTitle(path)" StackWith="@MainEditorPanelId" CanPopout="true" Renderer="DockRendererMode.Always">
                             <CodeEditor Id="@EditorDomId(path)" Theme="@EditorTheme" Code="@GetFile(path)?.Content" CodeFileType="@(GetFile(path)?.Type ?? CodeFileType.Razor)" />
                         </MudExDockItem>
                     }
@@ -245,7 +254,13 @@
                     }
                 </MudMenu>
             }
-            @if (HasButton(PlayzorToolButtons.Packages))
+            @if (HasPanel(PlayzorPanels.Packages))
+            {
+                <div class="playzor-status-button" @onclick="@ShowPackagesPanelAsync" title="@L["Manage Nuget packages"]">
+                    <MudIcon Icon="@MudExIcons.Custom.Brands.Nuget" Size="Size.Small" />
+                </div>
+            }
+            else if (HasButton(PlayzorToolButtons.Packages))
             {
                 <div class="playzor-status-button" @onclick="@(() => EditPackageReferencesAsync(true))" title="@L["Manage Nuget packages"]">
                     <MudIcon Icon="@MudExIcons.Custom.Brands.Nuget" Size="Size.Small" />

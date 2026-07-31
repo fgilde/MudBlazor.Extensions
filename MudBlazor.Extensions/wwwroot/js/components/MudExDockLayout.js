@@ -142,7 +142,7 @@
     wireEvents() {
         this.disposeEvents();
         const push = (d) => this.disposables.push(d).length && d;
-        try { push(this.api.onDidAddPanel?.(p => this.dotnet?.invokeMethodAsync('OnJsPanelAdded', p.id))); } catch (e) { }
+        try { push(this.api.onDidAddPanel?.(p => { this._decorateTab(p); this.dotnet?.invokeMethodAsync('OnJsPanelAdded', p.id); })); } catch (e) { }
         try { push(this.api.onDidRemovePanel?.(p => this.dotnet?.invokeMethodAsync('OnJsPanelRemoved', p.id))); } catch (e) { }
         try { push(this.api.onDidActivePanelChange?.(e => this.dotnet?.invokeMethodAsync('OnJsActiveChanged', e?.id ?? null))); } catch (e) { }
         try {
@@ -151,6 +151,8 @@
                 this.dotnet?.invokeMethodAsync('OnJsPanelMoved', payload);
             }));
         } catch (e) { }
+        // panels of a restored layout exist before this handler does
+        this._decorateAllTabs();
     }
 
     disposeEvents() {
@@ -250,10 +252,7 @@
             o.position = { direction: (o.direction || 'right').toLowerCase() };
         }
         const panel = this.api.addPanel(o);
-        if (o.canClose === false) {
-            // dockview has no per-panel close flag — hide the action on the tab element
-            try { panel.view?.tab?.element?.classList.add('dv-tab-no-close'); } catch { /* noop */ }
-        }
+        this._decorateTab(panel, o);
         if (o.hideHeader === true && !this.containerRef.classList.contains('dv-hide-tabs')) {
             panel.group.header.hidden = true;
         }
@@ -264,6 +263,50 @@
             panel.group.locked = o.locked;
         }
         return panel;
+    }
+
+    // ---------------- Tab-Dekoration ----------------
+
+    /** options of a panel, no matter how it was created — the blazor node carries them along */
+    _panelOptions(id) {
+        const el = this.elementStore.get(id);
+        try { return JSON.parse(el?.dataset?.options || '{}'); } catch { return {}; }
+    }
+
+    /**
+     * Tab flags dockview has no api for. Runs for every creation path (addPanel, fromJSON, popout),
+     * so it must stay idempotent.
+     */
+    _decorateTab(panel, opts = null) {
+        const tab = panel?.view?.tab?.element;
+        if (!tab) return;
+        const o = opts ?? this._panelOptions(panel.id);
+
+        // dockview has no per-panel close flag — hide the action on the tab element
+        tab.classList.toggle('dv-tab-no-close', o.canClose === false);
+
+        if (o.canPopout !== true || tab.querySelector('.dv-tab-popout')) return;
+
+        const button = document.createElement('div');
+        button.className = 'dv-default-tab-action dv-tab-popout';
+        button.title = this.options?.popoutTitle || 'Open in new window';
+        button.innerHTML = '<svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true">'
+            + '<path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>';
+        // dockview starts a drag on mousedown, that must not happen on the button
+        button.addEventListener('mousedown', e => e.stopPropagation());
+        button.addEventListener('click', e => {
+            e.stopPropagation();
+            e.preventDefault();
+            this.popoutPanel(panel.id);
+        });
+
+        const closeAction = tab.querySelector('.dv-default-tab-action');
+        closeAction ? tab.insertBefore(button, closeAction) : tab.appendChild(button);
+    }
+
+    /** fromJSON creates panels without going through _addPanelFromOptions */
+    _decorateAllTabs() {
+        for (const panel of this.api?.panels ?? []) this._decorateTab(panel);
     }
 
     // ---------------- Explizite Panel-API (für Blazor-Wrapper) ----------------
@@ -280,8 +323,22 @@
         this.elementStore.delete(id);
     }
 
-    activatePanel(id) {
-        this.api?.getPanel(id)?.api?.setActive?.();
+    activatePanel(id, highlight) {
+        const panel = this.api?.getPanel(id);
+        if (!panel) return;
+        panel.api?.setActive?.();
+        if (highlight) this.highlightPanel(id);
+    }
+
+    /** short glow on the panel border, so an activation the user did not trigger by hand is noticed */
+    highlightPanel(id) {
+        const element = this.api?.getPanel(id)?.group?.element;
+        if (!element) return;
+        element.classList.remove('dv-attention');
+        void element.offsetWidth; // restart the animation when it is already running
+        element.classList.add('dv-attention');
+        clearTimeout(this._attentionTimers?.get(id));
+        (this._attentionTimers ??= new Map()).set(id, setTimeout(() => element.classList.remove('dv-attention'), 1400));
     }
 
     /// ids of all panels currently held by dockview
@@ -300,7 +357,7 @@
         if (!panel) return false;
         try {
             await this.api.addPopoutGroup(panel, {
-                popoutUrl: popoutUrl || '/popout.html',
+                popoutUrl: popoutUrl || this.options?.popoutUrl || '/popout.html',
                 onDidOpen: ({ id: groupId, window: w }) => { try { w.document.title = panel.title || groupId; } catch { /* noop */ } },
             });
             return true;
@@ -392,6 +449,7 @@
         try {
             this.api?.fromJSON(typeof json === 'string' ? JSON.parse(json) : json);
             this._stashUnadoptedNodes();
+            this._decorateAllTabs();
         } catch (e) { }
     }
 

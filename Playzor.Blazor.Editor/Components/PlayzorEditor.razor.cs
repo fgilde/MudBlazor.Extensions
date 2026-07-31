@@ -711,7 +711,7 @@ public partial class PlayzorEditor : MudExBaseComponent<PlayzorEditor>
         }
 
         if (_dock != null)
-            await _dock.ActivatePanelAsync(EditorPanelId(path));
+            await _dock.ActivatePanelAsync(EditorPanelId(path), highlight: true);
 
         await SaveStateAsync(false);
         await PersistLayoutAsync();
@@ -985,6 +985,18 @@ public partial class PlayzorEditor : MudExBaseComponent<PlayzorEditor>
             _installedPackages = dialog.Component.SelectedPackages, CoreConstants.PackageSerializerSettings);
     }
 
+    /// <summary>
+    /// The packages panel has no ok button, so every install and uninstall is written through right
+    /// away. The compiler picks the file up on the next run.
+    /// </summary>
+    private async Task HandlePackagesChangedAsync(NugetPackage[] packages)
+    {
+        _installedPackages = packages ?? Array.Empty<NugetPackage>();
+        EnsureReferenceFile().Content = JsonConvert.SerializeObject(_installedPackages, CoreConstants.PackageSerializerSettings);
+        await SaveStateAsync(false);
+        StateHasChanged();
+    }
+
     private CodeFile EnsureReferenceFile()
         => CodeFiles.Values.FirstOrDefault(c => c.Path == CoreConstants.PackageRef)
            ?? AddCodeFile(new CodeFile
@@ -1018,7 +1030,11 @@ public partial class PlayzorEditor : MudExBaseComponent<PlayzorEditor>
         ["preview"] = ("Preview", "right", PlayzorPanels.Preview),
         ["errors"] = ("Errors", "below", PlayzorPanels.Errors),
         ["console"] = ("Console", "below", PlayzorPanels.Console),
+        ["packages"] = ("Packages", "below", PlayzorPanels.Packages),
     };
+
+    /// <summary>Panels that share the bottom stack with the errors panel.</summary>
+    private static bool StacksWithErrors(string id) => id is "console" or "packages";
 
     private IEnumerable<KeyValuePair<string, (string Title, string Direction, PlayzorPanels Panel)>> AvailablePanels
         => StaticPanels.Where(p => HasPanel(p.Value.Panel));
@@ -1058,10 +1074,11 @@ public partial class PlayzorEditor : MudExBaseComponent<PlayzorEditor>
                 id,
                 title = L[meta.Title].Value,
                 direction = meta.Direction,
-                stackWith = id == "console" && HasPanel(PlayzorPanels.Errors) ? "errors" : null,
+                stackWith = StacksWithErrors(id) && HasPanel(PlayzorPanels.Errors) ? "errors" : null,
                 canClose = id != "preview",
+                canPopout = true,
             }));
-            await _dock.ActivatePanelAsync(id);
+            await _dock.ActivatePanelAsync(id, highlight: true);
         }
 
         await RefreshOpenPanelsAsync();
@@ -1078,12 +1095,17 @@ public partial class PlayzorEditor : MudExBaseComponent<PlayzorEditor>
             Snackbar.Add(L["Could not open a window — check your popup blocker."], Severity.Warning);
     }
 
-    private async Task ShowErrorsPanelAsync()
+    private Task ShowErrorsPanelAsync() => ShowPanelAsync("errors", PlayzorPanels.Errors);
+
+    private Task ShowPackagesPanelAsync() => ShowPanelAsync("packages", PlayzorPanels.Packages);
+
+    /// <summary>Brings a panel to the front, opening it when the user closed it before.</summary>
+    private async Task ShowPanelAsync(string id, PlayzorPanels panel)
     {
-        if (_dock == null || !HasPanel(PlayzorPanels.Errors)) return;
+        if (_dock == null || !HasPanel(panel)) return;
         await RefreshOpenPanelsAsync();
-        if (!_openPanels.Contains("errors")) await TogglePanelAsync("errors");
-        else await _dock.ActivatePanelAsync("errors");
+        if (!_openPanels.Contains(id)) await TogglePanelAsync(id);
+        else await _dock.ActivatePanelAsync(id, highlight: true);
     }
 
     private void HandlePanelRemoved(string panelId)

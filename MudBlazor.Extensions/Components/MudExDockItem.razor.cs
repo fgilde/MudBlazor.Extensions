@@ -35,6 +35,12 @@ public partial class MudExDockItem
     [ForJs, Parameter] public bool Locked { get; set; }
     [ForJs, Parameter] public bool CanClose { get; set; } = true;
 
+    /// <summary>
+    /// Shows a button on the tab that moves this panel into its own browser window.
+    /// Uses <see cref="MudExDockLayout.PopoutUrl"/> as the window document.
+    /// </summary>
+    [ForJs, Parameter] public bool CanPopout { get; set; }
+
     [ForJs, Parameter] public bool Inactive { get; set; }
     [ForJs, Parameter] public bool IsGroupActive { get; set; }
     [ForJs, Parameter] public bool IsActive { get; set; }

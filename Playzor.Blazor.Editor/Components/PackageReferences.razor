@@ -12,7 +12,7 @@
               AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Warning" Class="mr-10 ml-10 mb-10" T="string" Placeholder="Search for packages to use..." Variant="Variant.Outlined"></MudTextField>
 
 
-<MudGrid Class="package-result-grid" id="package-result-grid" @onscroll="@OnGridScroll" Style="max-height: 600px; overflow-y: auto; overflow-x:hidden" Spacing="3" Justify="Justify.Center">
+<MudGrid Class="package-result-grid" id="package-result-grid" @onscroll="@OnGridScroll" Style="@($"max-height: {MaxHeight}; overflow-y: auto; overflow-x:hidden")" Spacing="3" Justify="Justify.Center">
     @if (_loading && !_isLoadingMore)
     {
         <MudProgressCircular Class="mt-5" Indeterminate="true" Size="Size.Large" Color="Color.Info" />

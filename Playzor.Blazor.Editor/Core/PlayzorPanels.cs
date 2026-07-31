@@ -22,6 +22,9 @@ public enum PlayzorPanels
     /// <summary>Console output of the running component.</summary>
     Console = 1 << 3,
 
+    /// <summary>Nuget package management. Not part of the default layout, opened on demand.</summary>
+    Packages = 1 << 4,
+
     /// <summary>Everything (the default).</summary>
-    All = Files | Preview | Errors | Console
+    All = Files | Preview | Errors | Console | Packages
 }

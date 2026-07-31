@@ -46,6 +46,55 @@
 
 /* panels with CanClose="false": the class sits on the content node, the tab gets
    dv-tab-no-close from the js side when the panel is created */
-.dv-tab-no-close .dv-default-tab-action {
+.dv-tab-no-close .dv-default-tab-action:not(.dv-tab-popout) {
     display: none !important;
+}
+
+/* CanPopout="true": js appends this action to the tab */
+.dv-tab-popout {
+    opacity: 0;
+    transition: opacity .15s ease-in-out;
+}
+
+.dv-tab:hover .dv-tab-popout,
+.dv-tab.dv-active-tab .dv-tab-popout {
+    opacity: .75;
+}
+
+.dv-tab-popout:hover {
+    opacity: 1 !important;
+}
+
+/* ActivatePanelAsync(id, highlight: true): the user did not click this panel, so say where it went.
+   An overlay is used because a box-shadow would be clipped by the neighbouring panes. */
+.dv-groupview.dv-attention {
+    position: relative;
+}
+
+.dv-groupview.dv-attention::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 12;
+    pointer-events: none;
+    border: 2px solid var(--mud-palette-primary);
+    border-radius: 2px;
+    animation: mudex-dock-attention 1.3s ease-out forwards;
+}
+
+@keyframes mudex-dock-attention {
+    0% {
+        opacity: 0;
+        box-shadow: none;
+    }
+
+    15% {
+        opacity: 1;
+        box-shadow: 0 0 12px 1px var(--mud-palette-primary);
+    }
+
+    100% {
+        opacity: 0;
+        box-shadow: none;
+    }
 }
