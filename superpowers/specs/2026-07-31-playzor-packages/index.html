@@ -12,7 +12,7 @@
         <meta name="author" content="fgilde">
       
       
-        <link rel="canonical" href="https://fgilde.github.io/MudBlazor.Extensions/superpowers/specs/2026-07-27-trymudex-codepen-redesign-status/">
+        <link rel="canonical" href="https://fgilde.github.io/MudBlazor.Extensions/superpowers/specs/2026-07-31-playzor-packages/">
       
       
       
@@ -25,7 +25,7 @@
     
     
       
-        <title>TryMudEx → Playzor — Umsetzungsstand - MudBlazor.Extensions Documentation</title>
+        <title>Playzor als Pakete - MudBlazor.Extensions Documentation</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#trymudex-playzor-umsetzungsstand" class="md-skip">
+        <a href="#playzor-als-pakete" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TryMudEx → Playzor — Umsetzungsstand
+              Playzor als Pakete
             
           </span>
         </div>
@@ -1772,68 +1772,103 @@
   
 
 
-<h1 id="trymudex-playzor-umsetzungsstand">TryMudEx → Playzor — Umsetzungsstand<a class="headerlink" href="#trymudex-playzor-umsetzungsstand" title="Permanent link">&para;</a></h1>
-<p>Ergänzt <a href="../2026-07-27-trymudex-codepen-redesign-design/">2026-07-27-trymudex-codepen-redesign-design.md</a>.
-Branch <code>feat/try-adapt</code>, <strong>nicht gepusht</strong>.</p>
-<h2 id="alle-vier-phasen-umgesetzt">Alle vier Phasen umgesetzt<a class="headerlink" href="#alle-vier-phasen-umgesetzt" title="Permanent link">&para;</a></h2>
-<h3 id="phase-1-nuget-compile">Phase 1 — NuGet + Compile<a class="headerlink" href="#phase-1-nuget-compile" title="Permanent link">&para;</a></h3>
+<h1 id="playzor-als-pakete">Playzor als Pakete<a class="headerlink" href="#playzor-als-pakete" title="Permanent link">&para;</a></h1>
+<p>Nachfolger von <a href="../2026-07-27-trymudex-codepen-redesign-status/">2026-07-27-trymudex-codepen-redesign-status.md</a>.
+Branch <code>feat/extract-source-edit-cmp</code>, <strong>nicht gepusht</strong>.</p>
+<h2 id="die-pakete-liegen-jetzt-woanders">Die Pakete liegen jetzt woanders<a class="headerlink" href="#die-pakete-liegen-jetzt-woanders" title="Permanent link">&para;</a></h2>
+<p>Seit dem 31.07.2026 leben die fünf Projekte samt Tests, <code>build/Playzor.props</code> und dem
+Publish-Workflow in <code>C:\dev\privat\github\Playzor</code> (Ziel: <code>github.com/fgilde/Playzor</code>).
+Hier bleiben MudBlazor.Extensions, MainSample und die Playground-Seite; die referenziert
+die Pakete über <code>TryMudEx/Directory.Build.props</code>, das auf Quellcode umschaltet, sobald das
+Playzor-Repo daneben liegt. Alles unterhalb beschreibt weiterhin den Schnitt der Pakete,
+die Dateipfade zeigen aber ins andere Repo.</p>
+<h2 id="schnitt">Schnitt<a class="headerlink" href="#schnitt" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Paket</th>
+<th>TFM</th>
+<th>Inhalt</th>
+<th>Abhängig von</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Playzor.Blazor</code></td>
+<td>net8/9/10</td>
+<td><code>&lt;PlayzorPlayground&gt;</code> (iframe-Embed) und die Web-Component <code>&lt;playzor-playground&gt;</code></td>
+<td>nur Blazor</td>
+</tr>
+<tr>
+<td><code>Playzor.Core</code></td>
+<td>net10</td>
+<td>Compiler, CodeFiles, NuGet-Auflösung, <code>IPlayzorApi</code>, <code>IPlayzorSnippetStore</code></td>
+<td>MudBlazor.Extensions</td>
+</tr>
+<tr>
+<td><code>Playzor.Blazor.Editor</code></td>
+<td>net10</td>
+<td><code>&lt;PlayzorEditor&gt;</code> samt Monaco, Panels, Assets</td>
+<td>MudBlazor.Extensions, Playzor.Core</td>
+</tr>
+<tr>
+<td><code>Playzor.UserComponents</code></td>
+<td>net10</td>
+<td>Stub-Assembly der Vorschau</td>
+<td>–</td>
+</tr>
+<tr>
+<td><code>Playzor.Server</code></td>
+<td>net10</td>
+<td><code>MapPlayzorApi()</code>: NuGet-Proxy, optionale Snippet-Endpunkte</td>
+<td>ASP.NET Core</td>
+</tr>
+</tbody>
+</table>
+<p><code>build/Playzor.props</code> hält Version, Icon, Lizenz und Links zentral; <code>-p:PlayzorVersion=</code> übersteuert
+die Version, das nutzt der Workflow.</p>
+<h2 id="namensregeln-die-nicht-verhandelbar-sind">Namensregeln, die nicht verhandelbar sind<a class="headerlink" href="#namensregeln-die-nicht-verhandelbar-sind" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Transitive Dependencies aus der eingebetteten nuspec, Framework-Pakete werden übersprungen, Zyklenschutz.</li>
-<li>TFM-Auswahl statt „alle DLLs": bestes <code>lib/&lt;tfm&gt;</code> (net10 → … → netstandard2.0).</li>
-<li>Proxy-Antworten mit <code>Cache-Control: immutable</code>, NuGet-Fehlerstatus wird durchgereicht.</li>
-<li>Framework-Referenzen (~40 DLLs) laden einmal pro App-Lifetime.</li>
-<li>Bugfix: Paket-Installationen gingen beim Dialog-Schließen verloren (Parameter-Mutation in <code>PackageReferences</code>).</li>
+<li><strong>Assembly <code>Try.UserComponents</code></strong> bleibt so, obwohl das Paket <code>Playzor.UserComponents</code> heißt:
+  jedes gespeicherte Snippet deklariert <code>namespace Try.UserComponents</code> in seinen <code>.cs</code>-Dateien, und
+  der Boot-Hook tauscht genau unter diesem Namen. Umbenennen bräche geteilte Links.
+  Das Paket hängt bewusst an <strong>keinem</strong> anderen Playzor-Paket: <code>Playzor.Core</code> kennt den Namen nur
+  als Zeichenkette, gebraucht wird das Stub allein von der App, die die Vorschau ausliefert.</li>
+<li><strong>Das URL-Format</strong> (Unit-Separator, Deflate, Base64Url) hat jetzt drei Implementierungen:
+  <code>Playzor.Core.InlineCode</code>, <code>Playzor.Blazor.PlayzorCode</code> und <code>playzor-embed.js</code>.
+  <code>PlayzorCodeCompatibilityTests</code> nagelt alle drei gegeneinander fest.</li>
 </ul>
-<h3 id="phase-2-dock-ui">Phase 2 — Dock-UI<a class="headerlink" href="#phase-2-dock-ui" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>MudExDockLayout</code> kann jetzt Panels zur Laufzeit: Hinzufügen über den (nicht mehr abgeschalteten) MutationObserver, Entfernen über <code>MudExDockItem.Dispose</code> → <code>removePanelById</code>.
-  <strong>Warum nicht per DOM-Diff entfernen:</strong> dockview hängt inaktive Panels mit <code>onlyWhenVisible</code> selbst aus dem DOM — ununterscheidbar von einer Blazor-Entfernung.</li>
-<li>Neue public API: <code>AddPanelAsync</code>, <code>RemovePanelAsync</code>, <code>ActivatePanelAsync</code>, <code>FloatPanelAsync</code>, <code>MaximizePanelAsync</code>, <code>ExitMaximizedAsync</code>; neuer <code>MudExDockItem.StackWith</code>.</li>
-<li>Monaco: Instanz + Model pro Datei (Undo/Scroll pro Datei), echtes Dispose.</li>
-<li>FileTree mit Ordnern, Anlegen/Umbenennen/Löschen, Templates.</li>
-<li>Console-Panel: iframe hookt <code>console.*</code> + <code>onerror</code> + <code>unhandledrejection</code> → <code>postMessage</code> → Ring-Buffer 2000, Filter, Follow, Copy.</li>
-<li>Compiler-Diagnostics als Monaco-Marker (Wellenlinien) mit korrigierter Zeilenzuordnung.</li>
-<li>Layout + offene Dateien in localStorage (versionierte Keys).</li>
-<li>Ordner erzeugen Sub-Namespaces — die Pipeline ergänzt <code>@using &lt;Root&gt;.&lt;Ordner&gt;</code> automatisch. Nebenbei behoben: User-<code>_Imports.razor</code> wirkte nur im ersten Compile-Pass.</li>
-</ul>
-<h3 id="phase-3-embed-paket">Phase 3 — Embed + Paket<a class="headerlink" href="#phase-3-embed-paket" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>/embed/{id}</code>, <code>/embed/samples/{name}</code>, <code>/embed/from/{url}</code>; Optionen <code>view</code>, <code>file</code>, <code>readonly</code>, <code>autorun</code>, <code>theme</code>, <code>hideheader</code>.</li>
-<li>Inline-Code-Encoder in <code>Playzor.Core.InlineCode</code> (Encode war vorher nicht vorhanden).</li>
-<li>Neues Paket <code>Playzor.Blazor</code> (net8/9/10, nur <code>Microsoft.AspNetCore.Components.Web</code>): <code>&lt;PlayzorPlayground&gt;</code> mit <code>Code</code>/<code>Files</code>/<code>SnippetId</code>, <code>View</code>, <code>Theme</code>, <code>ReadOnly</code>, <code>AutoRun</code>, <code>Height</code>, <code>AutoHeight</code>, <code>Host</code>.</li>
-<li>Kompatibilität der beiden Encoder ist per Test festgenagelt (<code>PlayzorCodeCompatibilityTests</code>).</li>
-<li>Doku-/Testseite <code>/embed-docs</code> nutzt das Paket selbst.</li>
-</ul>
-<h3 id="phase-4-branding">Phase 4 — Branding<a class="headerlink" href="#phase-4-branding" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>Playzor.Core.Brand</code>: MudEx / Playzor / Playzor-DE, Auflösung per Host (<code>Brand.FromHost</code>), <code>?brand=</code> als Dev-Override.</li>
-<li><code>IndexHtmlService</code> rendert index.html pro Request: Brand-Tokens (Titel, Description, Canonical, OG/Twitter, Loader) plus Asset-Version als Cache-Buster.</li>
-<li>Playzor: neutrales Blazor-Template ohne MudBlazor-Markup, eigene Beschreibung, eigener Akzent, <code>.de</code> mit deutscher UI.</li>
-<li><code>PlaygroundLocalizer</code>: Dictionary statt resx (keine Satellite-Assemblies im WASM-Download), Fallback auf Englisch, <code>?lang=</code> übersteuert.</li>
-</ul>
-<h2 id="zusatzlich-behoben-nicht-geplant">Zusätzlich behoben (nicht geplant)<a class="headerlink" href="#zusatzlich-behoben-nicht-geplant" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>.dv-hide-close { background: yellow !important }</code> — Debug-Rest im Library-CSS; jetzt versteckt korrekt den Close-Button des Tabs.</li>
-<li>Editor-Wert ging verloren, wenn er gesetzt wurde während Monaco noch lud (betraf jedes spät geladene Snippet/Sample).</li>
-<li><code>#{CACHE_TOKEN}#</code>-Platzhalter (nie ersetzt) durch echten Asset-Versions-Token abgelöst.</li>
-<li>Repl-Shell auf Flex-Layout; <code>.try-editor{height:100%}</code> und <code>.try-errorlist{position:absolute}</code> aus der generierten CSS werden gezielt überschrieben.</li>
-<li>Development liefert <code>no-cache</code> für alle Antworten — sonst laufen Tests gegen alte DLLs.</li>
-<li>Landingpage räumt jetzt auch Layout- und Open-Files-Keys, nicht nur <code>__temp_code</code>.</li>
-</ul>
+<h2 id="server-naht">Server-Naht<a class="headerlink" href="#server-naht" title="Permanent link">&para;</a></h2>
+<p><code>IPlayzorApi</code> ist alles, was der Browser nicht allein kann — praktisch nur der NuGet-Download,
+weil nuget.org keine CORS-Header schickt. Drei Wege:</p>
+<div class="language-csharp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">services</span><span class="p">.</span><span class="n">AddPlayzor</span><span class="p">();</span><span class="w">                                              </span><span class="c1">// eigener Server</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">services</span><span class="p">.</span><span class="n">AddPlayzor</span><span class="p">(</span><span class="n">o</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">BaseAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PlayzorApiOptions</span><span class="p">.</span><span class="n">PlayzorNet</span><span class="p">);</span><span class="w">  </span><span class="c1">// fremder Server</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">services</span><span class="p">.</span><span class="n">AddScoped</span><span class="o">&lt;</span><span class="n">IPlayzorApi</span><span class="p">,</span><span class="w"> </span><span class="n">MyApi</span><span class="o">&gt;</span><span class="p">();</span><span class="w">                           </span><span class="c1">// eigene Implementierung</span>
+</span></code></pre></div>
+<p><code>IPlayzorSnippetStore</code> ist optional: registriert, speichern und laden Save- und Samples-Button von
+selbst; sonst antwortet der Host über <code>OnSaveRequested</code> / <code>OnSampleSelected</code>. In TryMudEx
+implementiert <code>SnippetsService</code> das Interface, die Seite verdrahtet die Events trotzdem selbst,
+weil sie zusätzlich die URL umschreibt und den Share-Dialog zeigt.</p>
+<p>playzor.net erlaubt fremde Origins (<code>AllowedOrigins = ["*"]</code>), damit eine App ohne eigenen Server
+darauf zeigen kann. Das kostet Traffic — die Zeile in <code>TryMudEx.Server/Startup.cs</code> ist der Schalter.</p>
+<h2 id="vorschau">Vorschau<a class="headerlink" href="#vorschau" title="Permanent link">&para;</a></h2>
+<p>Der kompilierte Code läuft in einer zweiten WASM-Instanz. Der Host muss die Route ausliefern und
+<code>playzor-preview.js</code> einbinden; das Script meldet sich beim Laden, und bleibt die Meldung nach
+einem Run aus, zeigt der Editor eine Warnung im Vorschau-Panel mit der erwarteten Route.
+Das erkennt eine fehlende oder falsche Route, <strong>nicht</strong> ein Snippet, das absichtlich nichts rendert.</p>
 <h2 id="bewusst-offen">Bewusst offen<a class="headerlink" href="#bewusst-offen" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>CI</strong>: <code>.github/workflows/TryMudEx.yml</code> deployt bei Push auf <strong>jedem</strong> Branch nach Produktion. Vor dem ersten Push auf <code>main</code> einschränken.</li>
-<li><strong>Custom Domains</strong> playzor.net / playzor.de + Zertifikate müssen im Azure-Portal eingerichtet werden.</li>
-<li>Marketing-Copy der Landingpage („Smooth Coding" etc.) ist weiter englisch und MudBlazor-lastig; nur Headline, Untertitel, Play-Button und Navigation sind brand-/sprachabhängig.</li>
-<li>Snippet-Speicherung bleibt der Proxy auf try.mudblazor.com (so entschieden).</li>
-<li>NuGet-Verwaltung ist weiter ein Dialog, kein Dock-Panel.</li>
-<li>Kein Panel-Pop-out, keine benannten Layouts, kein <code>SaveAsSnippet</code> in der Komponente.</li>
-<li>SCSS wird nicht beim Build kompiliert (VS-Plugin) — Änderungen an <code>_mudexdockview.scss</code> müssen in <code>mudBlazorExtensions.css</code> und <code>.min.css</code> gespiegelt werden.</li>
-</ul>
-<h2 id="prufstand">Prüfstand<a class="headerlink" href="#prufstand" title="Permanent link">&para;</a></h2>
-<ul>
-<li>75 Unit-Tests grün (<code>dotnet test TryMudEx/Try.Tests --filter "FullyQualifiedName!~SnippetsService"</code>; der ausgenommene Test braucht Azure).</li>
-<li>E2E im Browser geprüft: Humanizer-Sample läuft, Multi-File mit Ordner kompiliert, Panel öffnen/schließen/wiederherstellen, Layout-Restore, Console-Ausgabe, Fehlerklick springt zur richtigen Zeile, Light/Dark, Embed mit AutoRun, <code>&lt;PlayzorPlayground&gt;</code> im laufenden Playground, Branding für alle drei Domains.</li>
+<li>Die Nuget-Verwaltung gibt es doppelt: als Dock-Panel (Nuget-Icon in der Statusleiste) und als
+  Dialog (Nuget-Button in der Toolbar). Absicht, bis entschieden ist, ob der Dialog weg kann.</li>
+<li><code>Samples/MainSample.WebAssembly</code> referenziert MudBlazor.Extensions in Release als <strong>Paket</strong>
+  (<code>Version="*-*"</code>). Seit 9.7.0 stabil auf nuget.org liegt, gewinnt die veröffentlichte Version
+  gegen die neuere Quelle und der Release-Build der Sample-App bricht. Gleiche Ursache wie bei
+  TryMudEx, dort ist die ProjectReference inzwischen bedingungslos.</li>
+<li>Der Compiler reicht MudBlazor und MudEx als Ambient-Referenzen an den Nutzercode — deshalb hängt
+  <code>Playzor.Core</code> daran. Für einen wirklich generischen Playground müsste das konfigurierbar werden.</li>
+<li>Publish läuft über <code>.github/workflows/playzor_publish.yml</code>, per Tag <code>playzor-v1.2.3</code> oder manuell
+  mit Dry-Run. Auf nuget.org braucht jedes der fünf Pakete eine Trusted-Publishing-Policy mit
+  Workflow-Datei <code>playzor_publish.yml</code>.</li>
 </ul>
 
 
