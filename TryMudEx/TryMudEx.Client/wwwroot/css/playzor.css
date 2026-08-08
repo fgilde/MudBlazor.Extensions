@@ -330,6 +330,42 @@
     color: var(--pz-muted);
 }
 
+.pz-docs h3 {
+    margin: 26px 0 10px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* one card per nuget package */
+.pz-package-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+}
+
+.pz-package {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    border: 1px solid var(--pz-line);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color .15s ease-in-out, transform .15s ease-in-out;
+}
+
+.pz-package:hover {
+    border-color: var(--mud-palette-primary);
+    transform: translateY(-1px);
+}
+
+.pz-package span {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--pz-muted);
+}
+
 .pz-table {
     width: 100%;
     border-collapse: collapse;
@@ -368,7 +404,33 @@
     background: color-mix(in srgb, var(--pz-muted) 15%, transparent);
 }
 
-/* ---------- footer ---------- */
+/* ---------- credits ---------- */
+
+/* the other direction of .site-credit: the mudex page saying which playground it runs on.
+   Lives here because both are the same kind of badge, and the mudex stylesheet is generated. */
+.try-powered-by {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px 5px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--mud-palette-lines-default);
+    color: var(--mud-palette-text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+.try-powered-by:hover {
+    color: var(--mud-palette-text-primary);
+    border-color: var(--mud-palette-primary);
+}
+
+.try-powered-by img {
+    display: block;
+    border-radius: 6px;
+}
 
 .site-credit {
     display: flex;

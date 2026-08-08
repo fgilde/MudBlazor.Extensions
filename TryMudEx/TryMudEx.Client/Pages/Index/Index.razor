@@ -23,6 +23,13 @@
             </MudHidden>
         </div>
         <MudSpacer />
+        @* the playground itself is Playzor, this page only wears the mudex colors *@
+        <MudTooltip Text="@L["This playground runs on Playzor"]">
+            <a class="try-powered-by mr-2" href="https://playzor.net" target="_blank" rel="noopener">
+                <img src="images/playzor-icon-64.png" alt="Playzor" width="24" height="24" />
+                <span>powered by <b>Playzor</b></span>
+            </a>
+        </MudTooltip>
         @if (!Branding.IsPlayzor)
         {
             <MudButton Href="https://www.mudex.org/" Target="_blank" Color="Color.Default" Size="Size.Large">MudEx</MudButton>

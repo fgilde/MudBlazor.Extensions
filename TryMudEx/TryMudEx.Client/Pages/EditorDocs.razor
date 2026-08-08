@@ -1,0 +1,107 @@
+@page "/editor-docs"
+@using MudBlazor.Extensions.Options
+@using TryMudEx.Client.Components
+@layout EmptyLayout
+
+<div class="pz-page">
+    <header class="pz-nav">
+        <a class="pz-logo" href="/">
+            <img class="pz-logo-mark" src="@Brand.LogoUrl" alt="@Brand.Name" />
+            <span class="pz-logo-text">@Brand.Name</span>
+        </a>
+        <nav class="pz-nav-links">
+            <a href="/editor-docs">@L["The editor"]</a>
+            <a href="/embed-docs">@L["Embedding"]</a>
+            <a href="/snippet" class="pz-btn pz-btn-primary">@L["Open the editor"]</a>
+        </nav>
+    </header>
+
+    <main class="pz-docs">
+        <h1>@L["The editor in your own app"]</h1>
+        <p class="pz-lead">
+            @L["This page you are on is one Blazor component. Install the package and your app has the whole playground: monaco editors for any number of files, roslyn compiling in the browser, dockable panels and a tool bar you decide about."]
+        </p>
+
+        <section>
+            <h2>1. @L["Install"]</h2>
+            @RenderSnippet(InstallSnippet, MudExCodeLanguage.Bash)
+            <p>@L["The package brings monaco and every script and stylesheet it needs — nothing has to be downloaded separately."]</p>
+        </section>
+
+        <section>
+            <h2>2. @L["Register and render"]</h2>
+            @RenderSnippet(ProgramSnippet, MudExCodeLanguage.CSharp)
+            <p>@L["AddPlayzor also adds MudBlazor and MudBlazor.Extensions when your app has not done that already."]</p>
+            @RenderSnippet(ComponentSnippet)
+        </section>
+
+        <section>
+            <h2>3. @L["Scripts and styles"]</h2>
+            @RenderSnippet(IndexHtmlSnippet)
+            <p>
+                @L["The last one is only needed if you want panels in their own browser window. Blazor delivers events through the document of the page it started in, so a panel over there would not react to anything without it — and it has to run before blazor starts."]
+            </p>
+        </section>
+
+        <section>
+            <h2>4. @L["Two things the editor cannot do alone"]</h2>
+            <p>@L["It says so itself when one of them is missing."]</p>
+
+            <h3>@L["A package proxy"]</h3>
+            <p>
+                @L["nuget.org answers without CORS headers, so a browser cannot fetch a package by itself. Either host the small server half yourself"]
+            </p>
+            @RenderSnippet(ServerSnippet, MudExCodeLanguage.CSharp)
+            <p>@L["or point the editor at this instance, which is open for it:"]</p>
+            @RenderSnippet(RemoteApiSnippet, MudExCodeLanguage.CSharp)
+
+            <h3>@L["A preview page"]</h3>
+            <p>
+                @L["The compiled component runs in a second WebAssembly instance, so a snippet can never take your app down with it. Reference the stub assembly it replaces and let blazor boot the compiled bytes instead:"]
+            </p>
+            @RenderSnippet(PreviewSnippet)
+            <p>@L["A saved snippet declares @page \"/__main\", so the compiled component simply becomes a route of that app. Point CompiledPreviewUrl at it."]</p>
+        </section>
+
+        <section>
+            <h2>5. @L["Make it yours"]</h2>
+            <p>@L["Every built in button and panel can be left out, and there is room for your own in both places."]</p>
+            @RenderSnippet(TailorSnippet)
+            <p>
+                <code>ToolButtons</code> @L["and"] <code>Panels</code>
+                @L["are flags. Save, embed, samples and the theme switch show up once somebody answers them — wire the matching event, or register an IPlayzorSnippetStore and save and samples work by themselves."]
+            </p>
+        </section>
+
+        <section>
+            <h2>@L["The packages"]</h2>
+            <div class="pz-package-list">
+                @foreach (var (id, text) in Packages)
+                {
+                    <a class="pz-package" href="@($"https://www.nuget.org/packages/{id}")" target="_blank" rel="noopener">
+                        <strong>@id</strong>
+                        <span>@L[text]</span>
+                    </a>
+                }
+            </div>
+            <p class="mt-4">
+                @L["Source, issues and the full readme:"]
+                <a href="https://github.com/fgilde/Playzor" target="_blank" rel="noopener">github.com/fgilde/Playzor</a>
+            </p>
+        </section>
+    </main>
+
+    <SiteFooter />
+</div>
+
+@code {
+    private RenderFragment RenderSnippet(string snippet, MudExCodeLanguage language = MudExCodeLanguage.Html) =>
+        @<div class="d-flex align-start" style="gap:8px;">
+            <div class="flex-grow-1" style="min-width:0;">
+                <MudExCodeView Code="@snippet" Language="@language" Theme="CodeBlockTheme.AtomOneDark" />
+            </div>
+            <MudTooltip Text="@L["Copy"]">
+                <MudIconButton Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@(() => CopyAsync(snippet))" />
+            </MudTooltip>
+        </div>;
+}

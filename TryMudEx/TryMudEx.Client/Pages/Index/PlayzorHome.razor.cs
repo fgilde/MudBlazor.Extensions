@@ -32,6 +32,12 @@ public partial class PlayzorHome
                                                       style="width:100%;height:420px;border:0"></iframe>
                                               """;
 
+    private const string EditorTeaserSnippet = """
+                                               dotnet add package Playzor.Blazor.Editor
+
+                                               <PlayzorEditor Height="100%" />
+                                               """;
+
     private record Feature(string Icon, string Title, string Text);
 
     private IEnumerable<Feature> Features => new[]

@@ -8,6 +8,7 @@
             <span class="pz-logo-text">@Brand.Name</span>
         </a>
         <nav class="pz-nav-links">
+            <a href="/editor-docs">@L["The editor"]</a>
             <a href="/embed-docs">@L["Embedding"]</a>
             <a href="/snippet" class="pz-btn pz-btn-primary">@L["Open the editor"]</a>
         </nav>
@@ -58,6 +59,15 @@
             <p>@L["One iframe, or one component in a Blazor app. Readers edit the code and run it without leaving your site."]</p>
             <pre class="pz-code"><code>@EmbedTeaserSnippet</code></pre>
             <a href="/embed-docs" class="pz-btn pz-btn-primary">@L["Read the embedding guide"]</a>
+        </div>
+    </section>
+
+    <section class="pz-embed-teaser">
+        <div class="pz-embed-copy">
+            <h2>@L["Or host the whole editor yourself"]</h2>
+            <p>@L["This page is one Blazor component. Install the package and your app has the playground — with the panels, the tool bar and the buttons you pick."]</p>
+            <pre class="pz-code"><code>@EditorTeaserSnippet</code></pre>
+            <a href="/editor-docs" class="pz-btn pz-btn-primary">@L["Read the editor guide"]</a>
         </div>
     </section>
 
