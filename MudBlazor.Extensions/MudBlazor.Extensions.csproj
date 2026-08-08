@@ -25,7 +25,7 @@
   <!--Versioning-->
   <PropertyGroup>
     <MajorVersion>9</MajorVersion>
-    <MinorVersion>7</MinorVersion>
+    <MinorVersion>8</MinorVersion>
     <PatchVersion>0</PatchVersion>
   </PropertyGroup>
 
