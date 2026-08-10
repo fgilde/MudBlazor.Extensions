@@ -4,17 +4,7 @@
 @layout EmptyLayout
 
 <div class="pz-page">
-    <header class="pz-nav">
-        <a class="pz-logo" href="/">
-            <img class="pz-logo-mark" src="@Brand.LogoUrl" alt="@Brand.Name" />
-            <span class="pz-logo-text">@Brand.Name</span>
-        </a>
-        <nav class="pz-nav-links">
-            <a href="/editor-docs">@L["The editor"]</a>
-            <a href="/embed-docs">@L["Embedding"]</a>
-            <a href="/snippet" class="pz-btn pz-btn-primary">@L["Open the editor"]</a>
-        </nav>
-    </header>
+    <SiteNav />
 
     <main class="pz-docs">
         <h1>@L["The editor in your own app"]</h1>

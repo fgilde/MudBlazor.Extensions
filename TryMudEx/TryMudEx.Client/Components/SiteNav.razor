@@ -1,0 +1,33 @@
+@using Playzor.Blazor.Editor.Services
+@using TryMudEx.Client.Services
+@using Playzor.Core
+@using MudBlazor.Extensions.Core
+@inject BrandingService Branding
+@inject PlayzorLocalizer L
+
+@* the header of every playzor page — one place, so a link lands everywhere *@
+<header class="pz-nav">
+    <a class="pz-logo" href="/">
+        <img class="pz-logo-mark" src="@Brand.LogoUrl" alt="@Brand.Name" />
+        <span class="pz-logo-text">@Brand.Name</span>
+    </a>
+    <nav class="pz-nav-links">
+        <a href="/editor-docs">@L["The editor"]</a>
+        <a href="/embed-docs">@L["Embedding"]</a>
+        <MudTooltip Text="@L["Source on GitHub"]">
+            <a class="pz-nav-icon" href="https://github.com/fgilde/Playzor" target="_blank" rel="noopener" aria-label="GitHub">
+                <MudIcon Icon="@Icons.Custom.Brands.GitHub" Size="Size.Medium" />
+            </a>
+        </MudTooltip>
+        <MudTooltip Text="@L["The packages on nuget.org"]">
+            <a class="pz-nav-icon" href="https://www.nuget.org/packages?q=Playzor" target="_blank" rel="noopener" aria-label="NuGet">
+                <MudIcon Icon="@MudExIcons.Custom.Brands.Nuget" Size="Size.Medium" />
+            </a>
+        </MudTooltip>
+        <a href="/snippet" class="pz-btn pz-btn-primary">@L["Open the editor"]</a>
+    </nav>
+</header>
+
+@code {
+    private Brand Brand => Branding.Current;
+}

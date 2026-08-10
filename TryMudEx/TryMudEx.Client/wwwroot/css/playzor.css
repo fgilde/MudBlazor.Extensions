@@ -74,6 +74,23 @@
     background: color-mix(in srgb, var(--pz-muted) 12%, transparent);
 }
 
+/* github and nuget: square, so they read as marks and not as another menu entry */
+.pz-nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: 8px;
+    color: var(--pz-muted);
+}
+
+.pz-nav-icon:hover {
+    color: var(--pz-text);
+    background: color-mix(in srgb, var(--pz-muted) 12%, transparent);
+}
+
 /* ---------- buttons ---------- */
 
 .pz-btn {
