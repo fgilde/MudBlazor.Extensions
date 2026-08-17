@@ -1,4 +1,4 @@
-﻿using Playzor.Blazor.Editor.Core;
+using Playzor.Blazor.Editor.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +46,7 @@ public partial class Embed : IDisposable
     private string _error;
     private bool _loading;
     private bool _compiledOnce;
+    private bool _loaded; // set at the very end of initialization, see the autorun below
 
     private IEnumerable<CodeFile> VisibleFiles => _codeFiles.Values.Where(f => f.Type != CodeFileType.Hidden);
 
@@ -138,6 +139,7 @@ public partial class Embed : IDisposable
             _installedPackages = await GetInstalledAsync();
         }
 
+        _loaded = true;
         await base.OnInitializedAsync();
     }
 
@@ -158,9 +160,10 @@ public partial class Embed : IDisposable
             }
         }
 
-        // blazor renders once before OnInitializedAsync finished, so the snippet is
-        // usually not loaded on the first render — autorun on the first render that has files
-        if (_options.AutoRun && !_compiledOnce && _codeFiles.Any())
+        // blazor renders once before OnInitializedAsync finished, so the snippet is usually not
+        // loaded on the first render. Waiting for _loaded and not merely for files matters: the
+        // packages are resolved last, and a compile without them fails on every snippet with one
+        if (_options.AutoRun && !_compiledOnce && _loaded && _codeFiles.Any())
         {
             _compiledOnce = true;
             // monaco may still be loading, so the snippet — not the editor — is the source of truth here

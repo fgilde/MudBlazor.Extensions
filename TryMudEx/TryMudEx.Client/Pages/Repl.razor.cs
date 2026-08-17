@@ -86,8 +86,8 @@ public partial class Repl
     }
 
     /// <summary>
-    /// Loads what the route asks for. Only a plain /snippet url keeps the last session, everything
-    /// else replaces it, so opening a sample never mixes with what was there before.
+    /// Loads what the route asks for. A plain /snippet url leaves it to the editor, which opens its
+    /// default snippet and offers a stored session instead of loading it behind the visitor's back.
     /// </summary>
     private async Task LoadFilesAsync()
     {
@@ -96,7 +96,7 @@ public partial class Repl
         var isFromUrl = !isSnippet && !isSample && !string.IsNullOrWhiteSpace(SnippetFileUrl);
 
         if (!isSnippet && !isSample && !isFromUrl)
-            return; // no route content: the editor restores its own session
+            return; // no route content: the editor starts with its default and offers the session
 
         try
         {

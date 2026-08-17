@@ -449,6 +449,42 @@
     border-radius: 6px;
 }
 
+/* a neighbouring project of ours, one line above the credits */
+.site-promo {
+    display: flex;
+    justify-content: center;
+    padding: 26px 16px 0;
+    margin-top: auto; /* promo, credit and footer all sit at the bottom of a short page */
+    font-size: 13.5px;
+}
+
+.site-promo a {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    border-radius: 14px;
+    border: 1px solid var(--pz-line);
+    color: var(--pz-muted);
+    text-decoration: none;
+    transition: color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+.site-promo a:hover {
+    color: var(--pz-text);
+    border-color: var(--mud-palette-primary);
+}
+
+.site-promo img {
+    display: block;
+    height: 26px;
+}
+
+.site-promo + .site-credit {
+    padding-top: 12px;
+    margin-top: 0;
+}
+
 .site-credit {
     display: flex;
     justify-content: center;
