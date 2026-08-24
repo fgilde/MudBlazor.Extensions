@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <!-- MudBlazor / UI -->
-    <PackageVersion Include="MudBlazor" Version="9.8.0" />
+    <PackageVersion Include="MudBlazor" Version="9.9.0" />
     <PackageVersion Include="MudBlazor.Markdown" Version="9.0.0" />
     <PackageVersion Include="AuralizeBlazor" Version="3.0.5" />
     <PackageVersion Include="Bromix.MudBlazor.MaterialDesignIcons" Version="7.4.47.56" />
@@ -18,9 +18,9 @@
     <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
 
     <!-- Nextended -->
-    <PackageVersion Include="Nextended.Blazor" Version="10.1.21" />
-    <PackageVersion Include="Nextended.Core" Version="10.1.21" />
-    <PackageVersion Include="Nextended.CodeGen" Version="10.1.21" />
+    <PackageVersion Include="Nextended.Blazor" Version="10.1.33" />
+    <PackageVersion Include="Nextended.Core" Version="10.1.33" />
+    <PackageVersion Include="Nextended.CodeGen" Version="10.1.33" />
 
     <!-- Microsoft.AspNetCore / Extensions -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.9" />
