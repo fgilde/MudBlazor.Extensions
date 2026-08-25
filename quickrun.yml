@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://fgilde.github.io/QuickRun/quickrun.schema.json
+name: MudBlazor.Extensions — server sample
+description: "The Blazor Server sample, which exercises every component in the library."
+
+requires:
+  - tool: dotnet
+    version: ">=10.0"
+    install: https://dotnet.microsoft.com/download
+
+setup:
+  - run: dotnet restore
+
+tasks:
+  - name: app
+    run: dotnet run --project Samples/MainSample.ServerSide --urls http://localhost:5082
+    readyWhen: {http: "http://localhost:5082"}
+    open: true
