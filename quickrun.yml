@@ -10,8 +10,17 @@ requires:
 setup:
   - run: dotnet restore
 
+inputs:
+  - id: Mode
+    label: Mode
+    type: select
+    description: >-
+      Wich app mode to start.
+    options: [WebAssembly, ServerSide]
+    default: WebAssembly     
+
 tasks:
   - name: app
-    run: dotnet run --project Samples/MainSample.ServerSide --urls http://localhost:5082
-    readyWhen: {http: "http://localhost:5082"}
+    run: dotnet run --project Samples/MainSample.${inputs.Mode} --urls http://localhost:5085
+    readyWhen: {http: "http://localhost:5085"}
     open: true
