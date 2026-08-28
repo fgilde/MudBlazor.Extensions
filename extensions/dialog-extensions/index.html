@@ -1943,12 +1943,12 @@
 <h3 id="resizable-or-draggable-dialogs">Resizable or Draggable Dialogs<a class="headerlink" href="#resizable-or-draggable-dialogs" title="Permanent link">&para;</a></h3>
 <p>You can make your dialogs resizable or draggable using the following code snippet:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>var options = new DialogOptionsEx { Resizeable = true, DragMode = MudDialogDragMode.Simple, CloseButton = true, FullWidth = true };
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>var dialog = await _dialogService.ShowEx&lt;YourMudDialog&gt;(&quot;Your Dialog Title&quot;, parameters, options);
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>var dialog = await _dialogService.ShowEx&lt;YourMudDialog&gt;("Your Dialog Title", parameters, options);
 </span></code></pre></div>
 <h3 id="adding-a-maximize-button">Adding a Maximize Button<a class="headerlink" href="#adding-a-maximize-button" title="Permanent link">&para;</a></h3>
 <p>You can add a maximize button to your dialogs with the following code:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>var options = new DialogOptionsEx { MaximizeButton = true, CloseButton = true };
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>var dialog = await _dialogService.ShowEx&lt;YourMudDialog&gt;(&quot;Your Dialog Title&quot;, parameters, options);
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>var dialog = await _dialogService.ShowEx&lt;YourMudDialog&gt;("Your Dialog Title", parameters, options);
 </span></code></pre></div>
 <h3 id="adding-custom-buttons">Adding Custom Buttons<a class="headerlink" href="#adding-custom-buttons" title="Permanent link">&para;</a></h3>
 <p>To add custom buttons to your dialog, first define the callback methods as <code>JSInvokable</code> in your component code:</p>
@@ -1973,7 +1973,7 @@
 </span></code></pre></div>
 <p>Finally, add your custom buttons to the dialog:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>var options = new DialogOptionsEx { MaximizeButton = true, CloseButton = true, Buttons = buttons };
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>var dialog = await _dialogService.ShowEx&lt;YourMudDialog&gt;(&quot;Your Dialog Title&quot;, parameters, options);
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>var dialog = await _dialogService.ShowEx&lt;YourMudDialog&gt;("Your Dialog Title", parameters, options);
 </span></code></pre></div>
 <p>Your dialog can now look like this:</p>
 <p><img alt="SAMPLE" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png" /></p>
@@ -1988,18 +1988,18 @@
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    AnimationDuration = TimeSpan.FromMilliseconds(500),
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    FullHeight = true
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>};
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>var dialog = await _dialogService.ShowEx&lt;YourMudDialog&gt;(&quot;Your Dialog Title&quot;, parameters, options);
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>var dialog = await _dialogService.ShowEx&lt;YourMudDialog&gt;("Your Dialog Title", parameters, options);
 </span></code></pre></div>
 <p><img alt="SAMPLE" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/slideIn.gif" /></p>
 <p>When you animate a dialog with dialogServiceEx, it's recommended to add the class <code>mud-ex-dialog-initial</code> to your dialog to ensure no visibility before animation.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&lt;MudDialog Class=&quot;mud-ex-dialog-initial&quot;&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&lt;MudDialog Class="mud-ex-dialog-initial"&gt;
 </span></code></pre></div>
 <blockquote>
 <p><strong><em>NOTE:</em></strong> All animations can be used on other components as well. Currently, the following animations are supported: <code>SlideIn,FadeIn,Scale,Slide,Fade,Zoom,Roll,JackInTheBox,Hinge,Rotate,Bounce,Back,Jello,Wobble,Tada,Swing,HeadShake,Shake,RubberBand,Pulse,Flip,FlipX,FlipY</code>.</p>
 </blockquote>
 <h3 id="using-extension-method-with-an-actionyourdialog">Using Extension Method with an <code>Action&lt;YourDialog&gt;</code><a class="headerlink" href="#using-extension-method-with-an-actionyourdialog" title="Permanent link">&para;</a></h3>
 <p>Instead of using <code>DialogParameters</code>, you can call the extension method with an <code>Action&lt;YourDialog&gt;</code></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>await dialogService.ShowEx&lt;SampleDialog&gt;(&quot;Simple Dialog&quot;, dialog =&gt; { dialog.ContentMessage = &quot;Hello&quot;; },options);
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>await dialogService.ShowEx&lt;SampleDialog&gt;("Simple Dialog", dialog =&gt; { dialog.ContentMessage = "Hello"; },options);
 </span></code></pre></div>
 <!-- DIALOG_EXT:END -->
 

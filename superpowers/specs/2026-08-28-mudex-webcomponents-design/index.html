@@ -12,7 +12,7 @@
         <meta name="author" content="fgilde">
       
       
-        <link rel="canonical" href="https://fgilde.github.io/MudBlazor.Extensions/superpowers/specs/2026-07-27-trymudex-codepen-redesign-design/">
+        <link rel="canonical" href="https://fgilde.github.io/MudBlazor.Extensions/superpowers/specs/2026-08-28-mudex-webcomponents-design/">
       
       
       
@@ -25,7 +25,7 @@
     
     
       
-        <title>TryMudEx → CodePen-Style Playground ("Playzor") — Design - MudBlazor.Extensions Documentation</title>
+        <title>MudEx WebComponents — Design - MudBlazor.Extensions Documentation</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#trymudex-codepen-style-playground-playzor-design" class="md-skip">
+        <a href="#mudex-webcomponents-design" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TryMudEx → CodePen-Style Playground ("Playzor") — Design
+              MudEx WebComponents — Design
             
           </span>
         </div>
@@ -1772,22 +1772,24 @@
   
 
 
-<h1 id="trymudex-codepen-style-playground-playzor-design">TryMudEx → CodePen-Style Playground ("Playzor") — Design<a class="headerlink" href="#trymudex-codepen-style-playground-playzor-design" title="Permanent link">&para;</a></h1>
-<p><strong>Datum:</strong> 2026-07-27
-<strong>Branch:</strong> <code>feat/try-adapt</code>
-<strong>Status:</strong> Approved (Design), Spec in Review</p>
+<h1 id="mudex-webcomponents-design">MudEx WebComponents — Design<a class="headerlink" href="#mudex-webcomponents-design" title="Permanent link">&para;</a></h1>
+<p><strong>Datum:</strong> 2026-08-28
+<strong>Branch:</strong> offen (noch nichts committet/gepusht — explizite Vorgabe)
+<strong>Status:</strong> Umgesetzt (siehe Abschnitt „Umsetzung“ am Ende)</p>
 <h2 id="ziel">Ziel<a class="headerlink" href="#ziel" title="Permanent link">&para;</a></h2>
-<p>TryMudEx wird ein vollwertiger CodePen-artiger Blazor-Playground:</p>
+<p>MudEx-Komponenten als Standard Custom Elements ausliefern, so dass eine beliebige HTML-Seite mit <strong>einem</strong> Script-Tag</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"https://www.mudex.org/wc/mudex.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p">&lt;</span><span class="nt">mudex-file-display</span> <span class="na">url</span><span class="o">=</span><span class="s">"https://example.org/demo.pdf"</span><span class="p">&gt;&lt;/</span><span class="nt">mudex-file-display</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<p>MudEx-Komponenten nutzen kann — ohne Blazor-Projekt, ohne .NET beim Konsumenten.</p>
 <ol>
-<li>Dockbare Panel-UI (DockLayout) statt fixem 2-Panel-Split</li>
-<li>Multi-File-Projekte mit Ordnerstruktur, File-Tree, ein Editor-Panel pro Datei</li>
-<li>Bessere Logs/Outputs (Console-Panel mit iframe-Log-Capture, verbessertes Errors-Panel)</li>
-<li>NuGet-Support repariert (transitive Dependencies, TFM-Filter, Caching)</li>
-<li>Embed-Mode wie CodePen (<code>/embed/…</code>)</li>
-<li>Neues NuGet-Paket <code>Playzor.Blazor</code> mit <code>&lt;PlayzorPlayground&gt;</code>-Komponente</li>
-<li>Domainbasiertes Branding: <code>try.mudex.org</code> (MudEx-Showcase) vs. <code>playzor.net</code>/<code>playzor.de</code> (generischer Blazor-Playground, <code>.de</code> deutsch)</li>
+<li>Wichtigste Komponente: <code>MudExFileDisplay</code>. Muss nachweislich funktionieren (PDF, Bild, ZIP, Markdown).</li>
+<li>So viele weitere Komponenten wie technisch möglich, ohne Pflegeliste.</li>
+<li>Auslieferung über <code>mudex.org/wc/</code> <strong>und</strong> npm/jsDelivr.</li>
+<li>Native HTML-Demoseite (kein Blazor) als Beweis und Beispiel.</li>
+<li>Doku-Seite in der Demo-App mit Code-Snippets und Link auf die HTML-Seite.</li>
+<li>Automatisierter Test, der das absichert (Playwright).</li>
 </ol>
-<p>Funktionale Parität mit heute bleibt erhalten (Samples, Snippets, Upload/Download, Theme-Toggle, Auto-Compile).</p>
 <h2 id="entschiedene-grundsatzfragen">Entschiedene Grundsatzfragen<a class="headerlink" href="#entschiedene-grundsatzfragen" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1798,285 +1800,219 @@
 </thead>
 <tbody>
 <tr>
-<td>Dock-Komponente</td>
-<td>Bestehendes <code>MudExDockLayout</code> (MudBlazor.Extensions/Components/MudExDockLayout.razor.cs) verwenden; Lücken (dynamische Panels zur Laufzeit, ggf. Pop-out) in der Library nachrüsten. Nur bei fundamentalem Blocker: neue Komponente.</td>
+<td>Auslieferung</td>
+<td>Eigenes schlankes WASM-Projekt <code>Samples/MudEx.WebComponents</code>. Publish-Output nach <code>mudex.org/wc/</code> <strong>und</strong> als npm-Paket <code>mudex-webcomponents</code> (jsDelivr/unpkg). Kein Mitschleppen des Demo-Bundles (Monaco, Localization, Beispieldaten).</td>
 </tr>
 <tr>
-<td>Snippet-Storage</td>
-<td>Bleibt Proxy auf <code>try.mudblazor.com/api/snippets</code> (TryMudEx.Server/Controllers/SnippetsController.cs). Embed + Playzor-Komponente funktionieren primär über Inline-Code-URLs (base64url+deflate, existiert schon: <code>SnippetsService.cs:97-119</code>) — storage-los.</td>
+<td>Komponenten-Umfang</td>
+<td>Auto-Registrierung per Reflection über die <code>MudBlazor.Extensions</code>-Assembly. Keine Whitelist, keine Pflege bei neuen Komponenten.</td>
 </tr>
 <tr>
-<td>Playzor-Komponente</td>
-<td>Eigenes NuGet-Paket <code>Playzor.Blazor</code>, keine MudBlazor-Dependency.</td>
+<td>Bridge-Technik</td>
+<td>Natives Blazor-Feature <code>Microsoft.AspNetCore.Components.CustomElements</code> (10.0.11 auf nuget.org verfügbar). Keine Eigenbau-Bridge.</td>
 </tr>
 <tr>
-<td>Reihenfolge</td>
-<td>Phase 1 NuGet/Perf → Phase 2 UI → Phase 3 Embed+Paket → Phase 4 Branding. Jede Phase einzeln testbar.</td>
+<td>Provider</td>
+<td>Ein einziger Provider-Root (<code>#mudex-wc-root</code>), vom Loader in die Seite gehängt. Alle Custom-Element-Instanzen teilen sich einen WASM-Host, einen Renderer und die DI-Registrierungen.</td>
 </tr>
 <tr>
-<td>Playzor-Positionierung</td>
-<td>Generischer Blazor-Playground: neutrale Default-Templates ohne MudEx-Zwang, eigene Samples-Liste, pro Brand konfigurierbare DefaultPackages. <code>playzor.de</code> zusätzlich deutsche UI.</td>
+<td>Tag-Schema</td>
+<td>PascalCase → kebab-case, Präfix <code>mudex-</code> erzwungen: <code>MudExFileDisplay</code> → <code>mudex-file-display</code>, <code>MoveContent</code> → <code>mudex-move-content</code>.</td>
+</tr>
+<tr>
+<td>Tests</td>
+<td>Playwright gegen die native HTML-Seite (echter Browser, echter Render) + billiger Reflection-Smoke-Test auf die Registrierungsliste.</td>
+</tr>
+<tr>
+<td>MudBlazor-Basis-Komponenten</td>
+<td>Nicht registriert. Nur MudEx-Assembly. Kann später ergänzt werden, ist aber nicht Teil dieses Specs.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="ist-zustand-kurzreferenz">Ist-Zustand (Kurzreferenz)<a class="headerlink" href="#ist-zustand-kurzreferenz" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Blazor WASM (<code>TryMudEx.Client</code>), Roslyn kompiliert im Browser (<code>Try.Core/CompilationService.cs</code>), Ergebnis läuft als zweite WASM-Instanz im iframe <code>/user-page</code> (index.html hookt <code>loadBootResource</code>, ersetzt <code>Try.UserComponents.dll</code> durch kompilierte Bytes).</li>
-<li>Ein Monaco-Singleton für alle Tabs (<code>wwwroot/editor/main.js:123</code>), Tabwechsel = <code>setValue</code> — kein Undo/Scroll pro Datei.</li>
-<li><code>InitCompileAsync</code> lädt bei jedem Compile ~40 DLLs per HTTP neu (<code>CompilationService.cs:60,237</code>) — Kommentar behauptet Caching, existiert aber nicht.</li>
-<li>NuGet: keine transitiven Dependencies, kein TFM-Filter (<code>NugetReferenceService.cs:94-105</code> nimmt alle <code>.dll</code> im Archiv), Cache nur RAM pro WASM-Instanz.</li>
-<li>Kein Embed-Modus, kein Branding, Query-Flags via <code>Uri.Contains</code> (<code>MainLayout.razor.cs:39-42</code>, <code>Repl.razor.cs:166-170</code>).</li>
-<li>CI: <code>.github/workflows/TryMudEx.yml</code> → Azure WebApp <code>TryMudEx</code> bei jedem Push (jeder Branch!).</li>
-</ul>
-<hr />
-<h2 id="phase-1-basis-reparieren">Phase 1 — Basis reparieren<a class="headerlink" href="#phase-1-basis-reparieren" title="Permanent link">&para;</a></h2>
-<h3 id="11-nuget-transitive-dependencies-tfm-filter">1.1 NuGet: transitive Dependencies + TFM-Filter<a class="headerlink" href="#11-nuget-transitive-dependencies-tfm-filter" title="Permanent link">&para;</a></h3>
-<p><strong>Problem:</strong> Humanizer ist Meta-Paket (leeres <code>lib/</code>, alles in Dependencies) → 0 DLLs geladen → Demo tot. Andere Pakete liefern <code>net472/</code>/<code>ref/</code>/<code>analyzers/</code>-DLLs → Compile-Crash.</p>
-<p><strong>Änderungen in <code>Try.Core/NugetReferenceService.cs</code>:</strong></p>
-<ul>
-<li>Nach nupkg-Download die <code>.nuspec</code> aus dem Archiv lesen (kein Extra-Request), <code>&lt;dependencies&gt;</code>-Group per TFM wählen, Dependencies rekursiv laden.</li>
-<li>Skip-Liste: bereits installierte Pakete, <code>DefaultPackages</code> (MudBlazor, MudBlazor.Extensions), Framework-Pakete (<code>Microsoft.NETCore.*</code>, <code>System.*</code>, <code>NETStandard.Library</code>, <code>Microsoft.AspNetCore.*</code> — sind in der WASM-Runtime schon da).</li>
-<li>Zyklen-Schutz: besuchte <code>id/version</code>-Menge.</li>
-<li>TFM-Auswahl statt „alle DLLs": bestes <code>lib/&lt;tfm&gt;/</code> in Präferenzreihenfolge <code>net10.0 → net9.0 → … → net6.0 → netstandard2.1 → netstandard2.0</code>. Kein kompatibles TFM → Fehler an UI („Paket X unterstützt kein .NET 10/netstandard2.0").</li>
-<li>Versionskonflikt bei transitiven Paketen: höchste angeforderte Version gewinnt (naive Resolution reicht hier).</li>
-</ul>
-<h3 id="12-nuget-caching-uber-http-cache">1.2 NuGet-Caching über HTTP-Cache<a class="headerlink" href="#12-nuget-caching-uber-http-cache" title="Permanent link">&para;</a></h3>
-<p><code>TryMudEx.Server/Controllers/NugetController.cs</code> (Proxy <code>api/nuget/package/{id}/{version}</code>): Response-Header <code>Cache-Control: public, max-age=31536000, immutable</code> (id+version sind unveränderlich). Browser-Cache bedient dann Editor- und iframe-Instanz. RAM-Cache (<code>_packageCache</code>) bleibt als L1.</p>
-<h3 id="13-compile-referenzen-einmalig-laden">1.3 Compile-Referenzen einmalig laden<a class="headerlink" href="#13-compile-referenzen-einmalig-laden" title="Permanent link">&para;</a></h3>
-<p><code>CompilationService</code>: <code>InitCompileAsync</code> idempotent machen — <code>_baseCompilation</code>/Referenzliste nach erstem Aufruf wiederverwenden (Task-Cache, damit parallele Compiles nicht doppelt laden). NuGet-MetadataReferences pro installierter Paketmenge gecacht.</p>
-<p><strong>Akzeptanz Phase 1:</strong> Humanizer-Sample kompiliert und läuft. Zweiter Compile deutlich schneller (keine <code>_framework</code>-Downloads im Netzwerk-Tab). Bestehende Samples laufen unverändert.</p>
-<hr />
-<h2 id="phase-2-ui-umbau-docklayout-multi-file-logs">Phase 2 — UI-Umbau (DockLayout, Multi-File, Logs)<a class="headerlink" href="#phase-2-ui-umbau-docklayout-multi-file-logs" title="Permanent link">&para;</a></h2>
-<h3 id="21-panel-layout">2.1 Panel-Layout<a class="headerlink" href="#21-panel-layout" title="Permanent link">&para;</a></h3>
-<p><code>Pages/Repl.razor</code> wird DockLayout-Host. Panels (ids stabil, für Layout-Persistenz):</p>
-<table>
-<thead>
-<tr>
-<th>Panel</th>
-<th>Inhalt</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>files</code></td>
-<td>File-Tree (MudTreeView): Dateien/Ordner, Kontextmenü (neu, umbenennen, löschen, Ordner anlegen), Doppelklick öffnet Editor-Panel</td>
-<td>links, schmal</td>
-</tr>
-<tr>
-<td><code>editor:&lt;pfad&gt;</code></td>
-<td>Ein Monaco pro geöffneter Datei</td>
-<td>Mitte, als Tabs in einer Group</td>
-</tr>
-<tr>
-<td><code>preview</code></td>
-<td>bestehendes iframe <code>/user-page</code></td>
-<td>rechts</td>
-</tr>
-<tr>
-<td><code>errors</code></td>
-<td>Diagnostics-Tabelle (heute <code>Components/ErrorList.razor</code>), Klick öffnet Datei-Panel + springt zur Zeile</td>
-<td>unten</td>
-</tr>
-<tr>
-<td><code>console</code></td>
-<td>NEU: Log-Ausgaben aus dem iframe</td>
-<td>unten, Tab neben errors</td>
-</tr>
-<tr>
-<td><code>nuget</code></td>
-<td>Paket-Suche/Install/Uninstall (heute Dialog <code>PackageReferences.razor</code>)</td>
-<td>links, Tab neben files, default zu</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Toolbar (<code>MudAppBar</code> oben, ersetzt Mini-Drawer): Run, Save/Share, Download/Upload, Samples-Menü, Theme-Toggle, Panels-Menü (Checkmark = offen, Klick togglet), Layout speichern/zurücksetzen. Statusleiste unten bleibt (Fehler-/Warn-Counter, installierte Pakete).</li>
-<li>Layout-Persistenz: <code>SaveLayoutAsync</code> → localStorage, versionierter Key (<code>trymudex.layout.v1</code>); Restore mit Fallback auf Default bei kaputtem/altem JSON (Pattern AspireUI <code>DockLayout.tsx:249-265</code>).</li>
-<li>Alte ViewModes (<code>CodeViewMode</code>, <code>MudExSplitPanel</code>-Markup, <code>Window</code>-Dialog-Modus) entfallen ersatzlos — Dock ersetzt sie. Responsive: unter <code>md</code> erzwungenes einfaches Layout (Editor/Preview gestapelt, Dock deaktiviert).</li>
-</ul>
-<h3 id="22-mudexdocklayout-erweiterungen-library">2.2 MudExDockLayout-Erweiterungen (Library)<a class="headerlink" href="#22-mudexdocklayout-erweiterungen-library" title="Permanent link">&para;</a></h3>
-<p>Benötigt, Stand heute nicht vorhanden:</p>
-<ul>
-<li><strong>Dynamische Panels zur Laufzeit:</strong> deklarative <code>MudExDockItem</code>-Kinder kommen/gehen per <code>@foreach</code> über offene Dateien. JS-Seite muss Panel-Add/Remove nach Erst-Init diffen. Falls das JS-Modul (<code>wwwroot/js/components/…dockLayout…</code>) das nicht kann: nachrüsten (<code>addPanel</code>/<code>removePanel</code> auf der JS-Referenz).</li>
-<li><code>FloatPanelAsync(id)</code> / <code>MaximizePanelAsync(id)</code> public API (dockview-core kann beides).</li>
-<li>Optional (nur wenn trivial): Panel-Flash beim programmatischen Öffnen.</li>
-</ul>
-<p>Diese Erweiterungen sind eigenständig testbar über die bestehende Sample-Page <code>Samples/MainSample.WebAssembly/Pages/Page_DockLayout.razor</code>.</p>
-<h3 id="23-multi-file-editor-instanzen">2.3 Multi-File &amp; Editor-Instanzen<a class="headerlink" href="#23-multi-file-editor-instanzen" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>Try.Core</code>-Modell: <code>CodeFile.Path</code> erlaubt relative Pfade mit <code>/</code> (<code>Components/Header.razor</code>). Validierung in <code>Services/CodeFilesHelper.cs</code> erweitert (Segmente einzeln validieren, keine <code>..</code>, keine führenden <code>/</code>). ZIP-Format trägt Pfade bereits — Snippets bleiben kompatibel (flache Alt-Snippets = Root-Dateien).</li>
-<li><code>__Main.razor</code> bleibt Einstiegspunkt (Root, nicht löschbar/verschiebbar). <code>__Packages.ref</code> bleibt versteckte Datei.</li>
-<li>Namespace bleibt für alle Dateien <code>Try.UserComponents</code> (Razor-Kompilat unabhängig vom Ordner) — Ordner sind reine Organisation. Dokumentiert im UI-Tooltip.</li>
-<li><code>wwwroot/editor/main.js</code>: Umbau von Singleton auf <code>Map&lt;panelId, {editor, model}&gt;</code>. API wird instanzbasiert (<code>create(panelId, el, …)</code>, <code>getValue(panelId)</code>, …). Monaco-Model pro Datei → Undo-Stack, Scrollposition, Marker pro Datei. Sprache aus Dateiendung. Ctrl+S weiterhin global → Compile.</li>
-<li><code>Components/CodeEditor.razor(.cs)</code> wird instanzfähig (Parameter <code>PanelId</code>, <code>Path</code>); <code>TabManager</code> entfällt zugunsten Dock-Groups + File-Tree.</li>
-<li>Diagnostics-Mapping: Compile liefert Fehler pro Datei (heute schon, <code>CompilationService</code> nutzt Dateinamen) — Errors-Panel gruppiert nach Datei.</li>
-</ul>
-<h3 id="24-console-panel">2.4 Console-Panel<a class="headerlink" href="#24-console-panel" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>/user-page</code> (iframe): kleines JS hookt <code>console.log/info/warn/error</code> + <code>window.onerror</code> + <code>unhandledrejection</code>, sendet <code>postMessage({type:'try-log', level, text, ts})</code> an Parent. Same-origin, Origin-Check auf beiden Seiten.</li>
-<li>Parent: JS sammelt in Ring-Buffer (2000 Zeilen), Blazor-Panel rendert virtualisiert oder chunked; Features: Follow-Toggle (Smart-Autoscroll: nur wenn &lt;40px vom Boden), Level-Filter, Textfilter, Clear, Copy. Error-Zeilen rot. (Patterns aus AspireUI <code>ResourceLogDrawer.tsx</code>.)</li>
-<li>.NET-seitige Logs des User-Codes (<code>ILogger</code>/<code>Console.WriteLine</code>) landen in WASM sowieso in der Browser-Console → werden vom Hook miterfasst. Kein eigener Log-Provider nötig.</li>
-</ul>
-<p><strong>Akzeptanz Phase 2:</strong> Alle heutigen Funktionen erreichbar (Run, Save, Samples, Upload/Download, NuGet, Theme). Datei in Ordner anlegen, in zwei Editor-Panels nebeneinander arbeiten, Layout überlebt Reload, <code>console.log</code> aus User-Code erscheint im Console-Panel, Fehlerklick springt in richtige Datei/Zeile.</p>
-<hr />
-<h2 id="phase-3-embed-mode-playzorblazor">Phase 3 — Embed-Mode + Playzor.Blazor<a class="headerlink" href="#phase-3-embed-mode-playzorblazor" title="Permanent link">&para;</a></h2>
-<h3 id="31-embed-routen">3.1 Embed-Routen<a class="headerlink" href="#31-embed-routen" title="Permanent link">&para;</a></h3>
-<p>Neue Seite <code>Pages/Embed.razor</code> (EmptyLayout, kein Drawer/AppBar):</p>
-<ul>
-<li><code>/embed/{snippetId}</code> — gespeichertes Snippet (16-stellige ID) oder Inline-Code (andere Länge, wie Repl)</li>
-<li><code>/embed/samples/{sample}</code> und <code>/embed/from/{urlBase64}</code> — gleiche Lade-Semantik wie <code>Repl.razor:1-3</code> (gemeinsamer Loader-Service, kein Copy-Paste)</li>
-</ul>
-<p>Layout: oben schmale Tab-Leiste (Dateien) + View-Switcher (Code/Preview/Split), Inhalt, unten Footer: Brand-Logo + „Edit on {BrandName}"-Link. Kein Dock — Embed ist bewusst einfach (fixe Splits).</p>
-<h3 id="32-embed-query-optionen">3.2 Embed-Query-Optionen<a class="headerlink" href="#32-embed-query-optionen" title="Permanent link">&para;</a></h3>
-<p>Echtes Query-Parsing (ersetzt <code>Uri.Contains</code>-Hacks, gemeinsamer <code>QueryOptions</code>-Helper auch für Repl):</p>
-<table>
-<thead>
-<tr>
-<th>Param</th>
-<th>Werte</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>view</code></td>
-<td><code>preview</code> | <code>code</code> | <code>split</code></td>
-<td><code>split</code></td>
-</tr>
-<tr>
-<td><code>file</code></td>
-<td>Startdatei-Pfad</td>
-<td><code>__Main.razor</code></td>
-</tr>
-<tr>
-<td><code>readonly</code></td>
-<td>flag</td>
-<td>aus (editierbar)</td>
-</tr>
-<tr>
-<td><code>autorun</code></td>
-<td><code>true</code>/<code>false</code></td>
-<td><code>true</code></td>
-</tr>
-<tr>
-<td><code>theme</code></td>
-<td><code>dark</code> | <code>light</code> | <code>auto</code></td>
-<td><code>auto</code> (prefers-color-scheme)</td>
-</tr>
-<tr>
-<td><code>hideheader</code></td>
-<td>flag</td>
-<td>aus</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Editierbar heißt: User tippt, Ctrl+S/Run-Button kompiliert im Embed. „Edit on {Brand}"-Link nimmt den <em>aktuellen</em> (ggf. geänderten) Code als Inline-URL mit.</li>
-<li>„Edit on"-Ziel = eigener Origin des Embeds (relative URL <code>/snippet/…</code>) → Domain-Branding kommt automatisch: Embed von playzor.de verlinkt auf playzor.de.</li>
-<li>Auto-Height: Embed sendet <code>postMessage({type:'playzor-resize', height})</code> bei Größenänderung; <code>Playzor.Blazor</code>-Komponente und dokumentiertes Script-Snippet konsumieren das. Reine Option — ohne Script fixe Höhe.</li>
-</ul>
-<h3 id="33-server-anpassungen">3.3 Server-Anpassungen<a class="headerlink" href="#33-server-anpassungen" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>frame-ancestors</code>: für <code>/embed*</code> explizit erlauben (<code>Content-Security-Policy: frame-ancestors *</code>), übrige Seiten unangetastet (heute kein X-Frame-Options gesetzt — bleibt so, nur Embed bekommt explizite Freigabe, damit künftige Hardening-Änderungen Embed nicht brechen).</li>
-<li>iframe <code>/user-page</code> bleibt same-origin, unverändert.</li>
-</ul>
-<h3 id="34-playzorblazor-neues-projekt">3.4 Playzor.Blazor (neues Projekt)<a class="headerlink" href="#34-playzorblazor-neues-projekt" title="Permanent link">&para;</a></h3>
-<p><code>Playzor.Blazor/Playzor.Blazor.csproj</code> — Razor-Class-Library, net10.0, Dependencies: nur <code>Microsoft.AspNetCore.Components.Web</code>. Im Repo-Root neben <code>MudBlazor.Extensions</code>, Teil der Haupt-Solution.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&lt;PlayzorPlayground Code="@myCode" /&gt;
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&lt;PlayzorPlayground Files="@myFilesDict" View="PlaygroundView.Split"
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                   Height="600px" Theme="PlaygroundTheme.Auto"
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>                   ReadOnly AutoRun="false" Host="https://playzor.net" /&gt;
+<h2 id="architektur">Architektur<a class="headerlink" href="#architektur" title="Permanent link">&para;</a></h2>
+<h3 id="1-projekt-samplesmudexwebcomponents">1. Projekt <code>Samples/MudEx.WebComponents</code><a class="headerlink" href="#1-projekt-samplesmudexwebcomponents" title="Permanent link">&para;</a></h3>
+<p><code>Microsoft.NET.Sdk.BlazorWebAssembly</code>, <code>net10.0</code>, Referenz auf <code>MudBlazor.Extensions</code> (ProjectReference in Debug, PackageReference in Release — gleiches Muster wie <code>MainSample.WebAssembly</code>).</p>
+<p>Neue Zeile in <code>Directory.Packages.props</code>:</p>
+<div class="language-xml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">&lt;PackageVersion</span><span class="w"> </span><span class="na">Include=</span><span class="s">"Microsoft.AspNetCore.Components.CustomElements"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"10.0.11"</span><span class="w"> </span><span class="nt">/&gt;</span>
 </span></code></pre></div>
-<ul>
-<li>Parameter: <code>Code</code> (string, eine Datei) XOR <code>Files</code> (<code>IDictionary&lt;string,string&gt;</code> Pfad→Inhalt), <code>View</code>, <code>Height</code> (CSS-Wert, default <code>500px</code>), <code>Theme</code>, <code>ReadOnly</code>, <code>AutoRun</code>, <code>File</code> (Start-Tab), <code>HideHeader</code>, <code>Host</code> (default <code>https://playzor.net</code>), <code>SnippetId</code> (statt Code — bettet gespeichertes Snippet ein).</li>
-<li>Rendert <code>&lt;iframe src="{Host}/embed/{inlineCode}?{options}" …&gt;</code> + optional Auto-Height-Listener (kleines eingebettetes JS via <code>IJSRuntime</code>, collocated <code>PlayzorPlayground.razor.js</code>).</li>
-<li>URL-Encoding: gleiche base64url+deflate-Logik wie <code>SnippetsService</code> — kleiner interner Encoder (Code-Duplikation bewusst: kein Paket-Dependency auf Try.Core; Format ist stabil und dokumentiert; Roundtrip-Test sichert Kompatibilität).</li>
-<li>URL-Längen-Schutz: encodierte URL &gt; ~8 KB → Warnung im Debug-Log, Render trotzdem (Browser-Limits liegen höher).</li>
-<li><code>SaveAsSnippet</code>: <strong>nicht</strong> in v1 (bräuchte API-Call beim Rendern, Fehlerpfade, Rate-Limits — YAGNI; SnippetId-Parameter deckt den Fall „kurze URL" ab: einmal manuell speichern).</li>
-</ul>
-<p><strong>Akzeptanz Phase 3:</strong> Testseite (lokales HTML + Sample im MainSample) bindet Embed via iframe und via <code>&lt;PlayzorPlayground&gt;</code> ein; alle View-Modi funktionieren; „Edit on"-Link öffnet vollen Playground mit identischem Code; readonly verhindert Edits; Auto-Height funktioniert mit Listener-Script.</p>
-<hr />
-<h2 id="phase-4-domain-branding">Phase 4 — Domain-Branding<a class="headerlink" href="#phase-4-domain-branding" title="Permanent link">&para;</a></h2>
-<h3 id="41-brand-modell-client">4.1 Brand-Modell (Client)<a class="headerlink" href="#41-brand-modell-client" title="Permanent link">&para;</a></h3>
-<p><code>TryMudEx.Client/Services/BrandingService.cs</code>:</p>
-<div class="language-csharp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">record</span><span class="w"> </span><span class="nf">Brand</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">Key</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">LogoUrl</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">PrimaryColor</span><span class="p">,</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">             </span><span class="kt">string</span><span class="w"> </span><span class="n">CanonicalHost</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">DefaultCulture</span><span class="p">,</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">             </span><span class="kt">string</span><span class="p">[]</span><span class="w"> </span><span class="n">DefaultPackages</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">SamplesSet</span><span class="p">,</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">             </span><span class="n">MudTheme</span><span class="w"> </span><span class="n">Theme</span><span class="w"> </span><span class="cm">/* Light+Dark Paletten */</span><span class="p">);</span>
+<p>Das Projekt wird in <code>MudBlazor.Extensions.slnx</code> unter <code>/Samples/</code> aufgenommen, damit ein Solution-Build es mitbaut und Breaking Changes an der Library sofort auffallen.</p>
+<h3 id="2-registrierung-programcs">2. Registrierung (Program.cs)<a class="headerlink" href="#2-registrierung-programcs" title="Permanent link">&para;</a></h3>
+<div class="language-csharp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">var</span><span class="w"> </span><span class="n">builder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WebAssemblyHostBuilder</span><span class="p">.</span><span class="n">CreateDefault</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">builder</span><span class="p">.</span><span class="n">Services</span><span class="p">.</span><span class="n">AddMudServicesWithExtensions</span><span class="p">();</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">builder</span><span class="p">.</span><span class="n">RootComponents</span><span class="p">.</span><span class="n">Add</span><span class="o">&lt;</span><span class="n">MudExWcRoot</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"#mudex-wc-root"</span><span class="p">);</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">RegistrableComponents</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">MudExFileDisplay</span><span class="p">).</span><span class="n">Assembly</span><span class="p">))</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="n">RegisterCustomElementGeneric</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">RootComponents</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">TagName</span><span class="p">(</span><span class="n">type</span><span class="p">));</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="k">await</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="n">Build</span><span class="p">().</span><span class="n">RunAsync</span><span class="p">();</span>
 </span></code></pre></div>
+<p><code>RegistrableComponents</code>: public, class, nicht abstrakt, <code>IComponent</code> zuweisbar, <strong>kein</strong> offener Generic (<code>IsGenericTypeDefinition</code>), öffentlicher parameterloser Konstruktor, nicht <code>[Obsolete]</code>. Sortiert und dedupliziert nach Tag-Name (bei Kollision gewinnt der erste, die weiteren werden in <code>tags.json</code> als <code>skipped</code> vermerkt).</p>
+<p><code>RegisterCustomElementGeneric</code> ruft die Extension <code>RegisterCustomElement&lt;T&gt;</code> per <code>MakeGenericMethod</code> auf — die generische Signatur ist der einzige Grund für Reflection.</p>
+<p>Registrierung ist rein deklarativ (Tag → Typ). Eine Komponente, die zur Laufzeit ein fehlendes Cascading-Value braucht, scheitert erst bei Benutzung ihres Tags, nicht beim Start. Damit reißt eine problematische Komponente nicht das gesamte Bundle mit.</p>
+<h3 id="3-provider-root-mudexwcrootrazor">3. Provider-Root <code>MudExWcRoot.razor</code><a class="headerlink" href="#3-provider-root-mudexwcrootrazor" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&lt;MudThemeProvider Theme="@_theme" IsDarkMode="@_dark" /&gt;
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&lt;MudPopoverProvider /&gt;
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>&lt;MudDialogProvider /&gt;
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>&lt;MudSnackbarProvider /&gt;
+</span></code></pre></div>
+<p>Dark-Mode-Default aus <code>prefers-color-scheme</code>, per <code>window.MudEx.setDarkMode(bool)</code> umschaltbar. Theme später über <code>window.MudEx.setTheme({...})</code> überschreibbar — <strong>nicht</strong> Teil dieses Specs, nur die Dark-Mode-Umschaltung.</p>
+<h3 id="4-loader-wwwrootmudexjs">4. Loader <code>wwwroot/mudex.js</code><a class="headerlink" href="#4-loader-wwwrootmudexjs" title="Permanent link">&para;</a></h3>
+<p>Handgeschrieben, ca. 50 Zeilen, keine Build-Kette:</p>
+<ol>
+<li>Basis-URL aus <code>document.currentScript.src</code> ableiten (<code>new URL('.', src)</code>).</li>
+<li><code>window.MudEx = { base, ready: &lt;Promise&gt;, assetBase: base }</code> setzen — <strong>vor</strong> dem Blazor-Start, damit die Library <code>assetBase</code> sieht (siehe Cross-Origin unten).</li>
+<li>Stylesheets injizieren (absolute URLs auf die Basis):</li>
+<li><code>https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap</code></li>
+<li><code>_content/MudBlazor/MudBlazor.min.css</code></li>
+<li><code>_content/MudBlazor.Extensions/mudBlazorExtensions.min.css</code></li>
+<li><code>_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css</code></li>
+<li>Scripts injizieren: <code>_content/MudBlazor/MudBlazor.min.js</code>, <code>_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js</code>.</li>
+<li><code>&lt;div id="mudex-wc-root"&gt;</code> an <code>document.body</code> hängen (versteckt, dient nur den Providern).</li>
+<li><code>_framework/blazor.webassembly.js</code> mit <code>autostart="false"</code> laden, danach</li>
+</ol>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nx">Blazor</span><span class="p">.</span><span class="nx">start</span><span class="p">({</span><span class="w"> </span><span class="nx">loadBootResource</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">type</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">defaultUri</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">URL</span><span class="p">(</span><span class="s1">'_framework/'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">base</span><span class="p">).</span><span class="nx">href</span><span class="w"> </span><span class="p">});</span>
+</span></code></pre></div>
+<ol>
+<li><code>window.MudEx.ready</code> auflösen, wenn <code>Blazor.start()</code> durch ist.</li>
+</ol>
+<p>Mehrfaches Einbinden ist idempotent (Guard über <code>window.MudEx</code>).</p>
+<h3 id="5-cross-origin-assets-der-eigentliche-knackpunkt">5. Cross-Origin-Assets (der eigentliche Knackpunkt)<a class="headerlink" href="#5-cross-origin-assets-der-eigentliche-knackpunkt" title="Permanent link">&para;</a></h3>
+<p>Die Library lädt ihre JS-Module über dokumentrelative Pfade:</p>
 <ul>
-<li>Auflösung: <code>window.location.hostname</code> → Mapping (<code>*.mudex.org</code> → MudEx-Brand, <code>playzor.net</code>/<code>www.playzor.net</code> → Playzor en, <code>playzor.de</code> → Playzor de, unbekannt/localhost → via <code>?brand=</code>-Query übersteuerbar, sonst MudEx).</li>
-<li>Wirkung: Landingpage-Inhalte, Logo/Name in Toolbar+Embed-Footer, MudTheme-Paletten, Default-Template für „New" (MudEx: heutiges Template; Playzor: neutrales Blazor-Template ohne MudBlazor-Provider-Zwang), Samples-Liste (<code>api/Snippets/samples?set=&lt;brand&gt;</code> — Server filtert nach Unterordner in <code>wwwroot/data/</code>), DefaultPackages (<code>CoreConstants.DefaultPackages</code> wird brand-abhängig).</li>
+<li><code>MudBlazor.Extensions/Helper/JsImportHelper.cs:85</code></li>
+<li><code>MudBlazor.Extensions/MudBlazorExtensionJsInterop.cs:20</code></li>
+<li><code>MudBlazor.Extensions/Components/MudExExternalFilePickerBase.razor.cs:239,241</code></li>
 </ul>
-<p><strong>Achtung Compile-Pipeline:</strong> <code>CompilationService.cs:37-40</code> injiziert MudBlazor-Provider fix in Datei 0. Wird brand-/paketabhängig: Provider nur einfügen, wenn MudBlazor in den Paketen ist (Playzor-Neutral-Template läuft sonst ohne).</p>
-<h3 id="42-indexhtml-meta-tags-server">4.2 index.html / Meta-Tags (Server)<a class="headerlink" href="#42-indexhtml-meta-tags-server" title="Permanent link">&para;</a></h3>
-<p>Middleware in <code>TryMudEx.Server</code>: liefert <code>index.html</code> mit Token-Ersetzung pro Request (<code>{{BRAND_TITLE}}</code>, <code>{{BRAND_DESCRIPTION}}</code>, <code>{{BRAND_LOGO}}</code>, <code>{{BRAND_OG_*}}</code>, Loader-<code>AppName</code>/<code>AccentColor</code>) anhand Host-Header. Gecacht pro Brand (3 Varianten im RAM). Ersetzt tote <code>#{CACHE_TOKEN}#</code>-Platzhalter.</p>
-<h3 id="43-lokalisierung">4.3 Lokalisierung<a class="headerlink" href="#43-lokalisierung" title="Permanent link">&para;</a></h3>
+<p>Auf einer fremden Seite zeigt <code>./_content/MudBlazor.Extensions/...</code> auf den fremden Origin → 404, die Komponente rendert nicht.</p>
+<p><strong>Lösung:</strong> ein zentraler Helper in der Library, der einen Asset-Base voranstellt:</p>
+<div class="language-csharp highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// MudBlazor.Extensions/Helper/MudExAssets.cs</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">Resolve</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">relativePath</span><span class="p">);</span><span class="w"> </span><span class="c1">// "./_content/..." oder "&lt;base&gt;_content/..."</span>
+</span></code></pre></div>
+<p>Der Base kommt aus <code>window.MudEx.assetBase</code> (einmalig beim ersten Zugriff über JS-Interop gelesen, gecacht). Ist er nicht gesetzt — also in jeder normalen Blazor-App — bleibt exakt das heutige Verhalten. Alle vier Fundstellen gehen über den Helper. CSS-interne <code>url(...)</code>-Referenzen brauchen nichts, die lösen relativ zur CSS-Datei auf und die liegt bereits auf der CDN-Basis.</p>
+<p>Die Änderung ist der einzige Eingriff in die Library selbst und muss vor Phase 3 (Fremd-Origin) stehen.</p>
+<h2 id="hosting-deployment">Hosting &amp; Deployment<a class="headerlink" href="#hosting-deployment" title="Permanent link">&para;</a></h2>
+<h3 id="mudexorgwc">mudex.org/wc/<a class="headerlink" href="#mudexorgwc" title="Permanent link">&para;</a></h3>
+<p>Schritt im Job <code>deploy_application_to_azure</code> (<code>.github/workflows/nuget_preview_publish_and_app_deploy.yml</code>), <strong>vor</strong> dem Azure-Deploy:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Publish WebComponents</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dotnet publish Samples/MudEx.WebComponents -c Release -o wcpublish</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Copy WebComponents into app</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cp -r wcpublish/wwwroot/. "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/wwwroot/wc/"</span>
+</span></code></pre></div>
+<p>Lokal: MSBuild-Target im WC-Projekt, das nach <code>Publish</code> denselben Kopiervorgang nach <code>Samples/MainSample.WebAssembly/wwwroot/wc</code> macht. Dieses Verzeichnis kommt in <code>.gitignore</code> — es ist Build-Output, kein Quellcode.</p>
+<h3 id="cors-mime">CORS + MIME<a class="headerlink" href="#cors-mime" title="Permanent link">&para;</a></h3>
+<p><code>wwwroot/web.config</code> im WC-Projekt, landet damit unter <code>/wc/web.config</code> (IIS erbt nach unten):</p>
 <ul>
-<li><code>Microsoft.Extensions.Localization</code> + resx (<code>Resources/</code>) für Repl-/Embed-UI-Strings (Toolbar, Panels, Dialoge, Fehlermeldungen der UI — nicht Compiler-Output). Sprachen: <code>en</code> (default), <code>de</code>.</li>
-<li>Culture-Wahl: Brand-<code>DefaultCulture</code>, übersteuerbar per <code>?lang=</code> + localStorage. <code>playzor.de</code> → <code>de</code>.</li>
-<li><code>BlazorWebAssemblyLoadAllGlobalizationData</code> nicht nötig (nur UI-Strings, keine Kultur-Formatierung).</li>
+<li><code>Access-Control-Allow-Origin: *</code> (öffentliche, statische, nicht-authentifizierte Assets — kein Credential-Risiko)</li>
+<li>MIME-Typen für <code>.wasm</code>, <code>.dat</code>, <code>.blat</code>, <code>.dll</code>, <code>.br</code></li>
+<li><code>Cache-Control</code> für <code>_framework/*</code> lang, für <code>mudex.js</code> kurz</li>
 </ul>
-<h3 id="44-domainsdeployment">4.4 Domains/Deployment<a class="headerlink" href="#44-domainsdeployment" title="Permanent link">&para;</a></h3>
+<h3 id="npm-jsdelivr">npm / jsDelivr<a class="headerlink" href="#npm-jsdelivr" title="Permanent link">&para;</a></h3>
+<p><code>package.json</code> (Name <code>mudex-webcomponents</code>, Version = MudEx-<code>PackageVersion</code>) wird beim Publish in den Output geschrieben, Inhalt = <code>wwwroot</code>. Publish-Step im Release-Workflow (<code>nuget_release_publish.yml</code>), nur auf Tag/Release.</p>
+<p>Ergebnis: <code>https://cdn.jsdelivr.net/npm/mudex-webcomponents@9/mudex.js</code>.</p>
+<p><strong>Blocker für dich:</strong> Secret <code>NPM_TOKEN</code> in den Repo-Settings. Ohne das läuft Phase 3b nicht — der Rest ist davon unabhängig. Der Paketname ist unskopiert, damit keine npm-Org nötig ist.</p>
+<h2 id="demo-doku">Demo &amp; Doku<a class="headerlink" href="#demo-doku" title="Permanent link">&para;</a></h2>
+<h3 id="native-html-seite">Native HTML-Seite<a class="headerlink" href="#native-html-seite" title="Permanent link">&para;</a></h3>
+<p><code>Samples/MainSample.WebAssembly/wwwroot/webcomponents.html</code> — reines HTML, kein Blazor, kein Framework:</p>
 <ul>
-<li>Azure WebApp: Custom Domains <code>playzor.net</code>, <code>www.playzor.net</code>, <code>playzor.de</code> + Zertifikate — manuell im Portal (nicht Teil des Codes; dokumentiert in README).</li>
-<li>Hinweis: CI (<code>.github/workflows/TryMudEx.yml</code>) triggert auf <code>branches: '**'</code> und deployed nach Prod. Wir pushen diesen Branch nicht — kein Handlungsbedarf jetzt; vor dem ersten Push den Trigger auf <code>main</code> einschränken.</li>
+<li>ein <code>&lt;script src="/wc/mudex.js"&gt;</code></li>
+<li><code>&lt;mudex-file-display&gt;</code> mit Umschalter (PDF / Bild / ZIP / Markdown / Excel) per plain <code>el.setAttribute('url', ...)</code></li>
+<li>zwei bis drei weitere Komponenten (Kandidaten: <code>mudex-gravatar</code>, <code>mudex-audio-player</code>, <code>mudex-color-edit</code>) als Beleg für die Breite</li>
+<li>ein Bereich, der komplexe Parameter per JS-Property setzt</li>
+<li>ein Bereich, der zeigt wie man ein Event abgreift</li>
 </ul>
-<p><strong>Akzeptanz Phase 4:</strong> <code>localhost?brand=playzor</code> zeigt Playzor-Branding (Name, Logo, Theme, neutrales Template, eigene Samples), <code>?brand=playzor&amp;lang=de</code> deutsch; mudex.org-Verhalten unverändert; OG-Tags pro Host korrekt (curl-Check).</p>
-<hr />
+<p>Die Seite liegt im Demo-Projekt, wird also mitdeployed und ist unter <code>https://www.mudex.org/webcomponents.html</code> erreichbar. Sie ist gleichzeitig das Testziel für Playwright, deshalb bekommen alle interaktiven Elemente stabile <code>id</code>s.</p>
+<h3 id="doku-seite">Doku-Seite<a class="headerlink" href="#doku-seite" title="Permanent link">&para;</a></h3>
+<p><code>Samples/MainSample.WebAssembly/Pages/Page_WebComponents.razor</code> im Muster der übrigen Demo-Pages (<code>MudExDemoPage</code>, <code>MudExCodeView</code> für Snippets), Eintrag in <code>Shared/NavMenu.razor</code>:</p>
+<ul>
+<li>Script-Tag-Snippet für mudex.org und für jsDelivr</li>
+<li>Tag-Namensschema und ein vollständiges <code>MudExFileDisplay</code>-Beispiel</li>
+<li>Attribute vs. JS-Properties vs. Events, jeweils mit Snippet</li>
+<li><strong>generierte</strong> Tabelle aller registrierten Tags — die Seite ruft dieselbe Reflection-Logik (<code>MudExWebComponents.GetRegistrableComponents</code>) direkt auf, keine Handpflege, kann nicht veralten</li>
+<li>prominenter Link auf <code>webcomponents.html</code></li>
+<li>Abschnitt „Grenzen" (siehe unten)</li>
+</ul>
+<h2 id="grenzen-dokumentiert-nicht-wegdesignt">Grenzen — dokumentiert, nicht wegdesignt<a class="headerlink" href="#grenzen-dokumentiert-nicht-wegdesignt" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Kein <code>ChildContent</code>/<code>RenderFragment</code>.</strong> HTML zwischen den Tags wird ignoriert. Komponenten, die ohne ChildContent sinnlos sind, sind als Custom Element sinnlos — sie werden trotzdem registriert, kosten nichts.</li>
+<li><strong>Komplexe Parameter nur als JS-Property</strong>, nicht als Attribut: <code>el.parametersForSubControls = {...}</code>. Attribute können nur Strings, Zahlen, Bools, Enums.</li>
+<li><strong>Offene Generics</strong> (<code>MudExSelect&lt;T&gt;</code> usw.) sind nicht registrierbar. Landen in <code>tags.json</code> unter <code>skipped</code>.</li>
+<li><strong>Bundle-Größe:</strong> erster Load mehrere MB (Brotli), danach Browser-Cache. Das ist der Preis für „echtes MudEx im DOM"; wird auf der Doku-Seite offen genannt.</li>
+<li><strong>Ein WASM-Host pro Seite.</strong> Zwei verschiedene mudex.js-Versionen auf derselben Seite werden nicht unterstützt.</li>
+</ul>
 <h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Try.Tests (NUnit), neue Unit-Tests ohne Netz:</strong> <code>CodeFilesHelper</code>-Pfadvalidierung (gültig/ungültig/<code>..</code>), <code>NugetReferenceService</code>-TFM-Auswahl + transitive Resolution + Zyklen (in-memory-nupkg-Streams), Inline-Code-Encoder-Roundtrip Try.Core ↔ Playzor.Blazor (Kompatibilitätsgarantie), <code>QueryOptions</code>-Parsing, Brand-Auflösung (Host→Brand).</li>
-<li>Bestehender <code>SnippetsServiceTests</code> (braucht Azure) bleibt unangetastet.</li>
-<li>E2E manuell pro Phase gemäß Akzeptanzkriterien.</li>
-</ul>
-<h2 id="fehlerbehandlung">Fehlerbehandlung<a class="headerlink" href="#fehlerbehandlung" title="Permanent link">&para;</a></h2>
-<ul>
-<li>NuGet: Paket nicht gefunden / kein kompatibles TFM / Dependency-Fehler → Snackbar + Eintrag im Console-Panel mit Paketname und Grund. Compile läuft mit geladenen Referenzen weiter (Fehler zeigt dann fehlende Typen).</li>
-<li>Compile-Fehler: wie heute Errors-Panel; zusätzlich Datei-Zuordnung für Sprung.</li>
-<li>Embed: Snippet nicht ladbar → Fehlerkarte im Embed mit Link zur Vollseite.</li>
-<li>Layout-Restore-Fehler: still auf Default zurückfallen, kaputten Key löschen.</li>
-</ul>
-<h2 id="nicht-ziele-v1">Nicht-Ziele (v1)<a class="headerlink" href="#nicht-ziele-v1" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Kein Account-System/eigene Snippet-Verwaltung, kein Fork/Like/Kommentar (CodePen-Social-Features).</li>
-<li>Kein <code>SaveAsSnippet</code> in <code>PlayzorPlayground</code> (SnippetId-Parameter deckt Kurz-URL ab).</li>
-<li>Kein serverseitiges Compile, keine IntelliSense-Server-API (Roslyn-LSP wie AspireUI wäre Kandidat für v2 — Browser-Roslyn bleibt).</li>
-<li>Keine Layout-Galerie/benannte Layouts (nur ein persistiertes Layout + Reset).</li>
-<li>Kein Pop-out von Panels in eigene Fenster (v2-Kandidat, dockview kann es).</li>
-</ul>
-<h2 id="risiken">Risiken<a class="headerlink" href="#risiken" title="Permanent link">&para;</a></h2>
+<p><code>MudBlazor.Extensions.Tests/UITests/Tests/WebComponentsTests.cs</code>, auf der vorhandenen <code>PlaywrightFixture</code>:</p>
+<ol>
+<li>Publish-Output des WC-Projekts + <code>webcomponents.html</code> werden statisch bereitgestellt (bevorzugt über die bestehende <code>WebTestingHostFactory</code>; falls das mit dem WASM-Standalone-Output nicht trägt, ein minimaler <code>WebApplication</code> mit <code>UseStaticFiles</code> im Test-Setup).</li>
+<li>Seite laden, auf <code>window.MudEx.ready</code> warten.</li>
+<li><code>mudex-file-display</code> rendert echten Inhalt (Assertion auf ein Kindelement im Shadow-freien DOM, nicht nur auf die Existenz des Tags).</li>
+<li><code>url</code>-Attribut umschalten → Inhalt wechselt.</li>
+<li>Keine Console-Errors während des Ablaufs.</li>
+</ol>
+<p>Dazu ein billiger xUnit-Test ohne Browser: die Registrierungsliste enthält <code>mudex-file-display</code>, alle Tags enthalten einen Bindestrich, keine Duplikate, kein Wurf beim Aufbau der Liste.</p>
+<h2 id="risiken-fallbacks">Risiken &amp; Fallbacks<a class="headerlink" href="#risiken-fallbacks" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Risiko</th>
-<th>Mitigation</th>
+<th>Fallback</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>MudExDockLayout kann dynamische Panels nicht sauber (JS-Diff)</td>
-<td>Früh in Phase 2 mit Spike verifizieren; Fallback: <code>addPanel</code>/<code>removePanel</code>-API in JS-Modul nachrüsten; letzter Ausweg lt. User: neue Komponente</td>
+<td><code>loadBootResource</code> löst <code>dotnet.js</code> als ES-Modul relativ zum Dokument auf statt zur CDN-Basis</td>
+<td>Konsument bindet zwei Zeilen statt einer ein (<code>&lt;script src=".../blazor.webassembly.js" autostart="false"&gt;</code> + <code>mudex.js</code>). Wird in Phase 2 empirisch geklärt, bevor irgendwas anderes darauf aufbaut.</td>
 </tr>
 <tr>
-<td>Monaco-Multi-Instanz-Umbau bricht bestehende Editor-Features (Completion, Ctrl+S, Theme)</td>
-<td>Feature-Liste aus <code>main.js</code> vor Umbau extrahieren, nach Umbau einzeln durchtesten</td>
+<td>Library-JS-Module trotz <code>assetBase</code> nicht auffindbar</td>
+<td>Import-Map im Loader als zweite Verteidigungslinie.</td>
 </tr>
 <tr>
-<td>Alte Snippets (flach, ohne Pfade) müssen laden</td>
-<td>Pfadlose Namen bleiben gültig (Root); Roundtrip-Test mit bestehendem Sample-ZIP</td>
+<td>Einzelne Komponenten werfen als Custom Element</td>
+<td>Kein Blocker: pro Tag isoliert. In <code>tags.json</code> als <code>unsupported</code> markieren, sobald bekannt.</td>
 </tr>
 <tr>
-<td>try.mudblazor.com-Proxy fällt aus</td>
-<td>Bewusst akzeptiert (User-Entscheidung); Inline-URLs funktionieren weiter</td>
-</tr>
-<tr>
-<td>CI deployed jeden gepushten Branch nach Prod</td>
-<td>Branch wird nicht gepusht; vor erstem Push Trigger auf <code>main</code> einschränken</td>
+<td>Azure/IIS liefert <code>.wasm</code> oder Brotli falsch aus</td>
+<td><code>web.config</code> mit expliziten MIME-Typen; wird beim ersten Deploy verifiziert.</td>
 </tr>
 </tbody>
 </table>
+<h2 id="phasen">Phasen<a class="headerlink" href="#phasen" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Projekt + Registrierung.</strong> WC-Projekt, Reflection-Registrierung, Provider-Root, lokale <code>index.html</code>. Beweis: <code>mudex-file-display</code> rendert lokal ein PDF.</li>
+<li><strong>Loader + HTML-Demo, same-origin.</strong> <code>mudex.js</code>, <code>webcomponents.html</code>, <code>tags.json</code>. Beweis: die HTML-Seite funktioniert gegen <code>/wc/</code>. Hier wird Risiko 1 geklärt.</li>
+<li><strong>Cross-Origin.</strong> <code>MudExAssets</code>-Helper in der Library, <code>web.config</code> mit CORS, Deploy-Step. (3b: npm/jsDelivr, blockiert auf <code>NPM_TOKEN</code>.)</li>
+<li><strong>Doku-Seite</strong> + Nav-Eintrag.</li>
+<li><strong>Tests.</strong> Playwright + Reflection-Smoke.</li>
+</ol>
+<p>Jede Phase ist einzeln lauffähig und einzeln überprüfbar.</p>
+<hr />
+<h2 id="umsetzung">Umsetzung<a class="headerlink" href="#umsetzung" title="Permanent link">&para;</a></h2>
+<p>Umgesetzt am 2026-08-29. Was im Bauen anders lief als im Entwurf gedacht:</p>
+<h3 id="der-eigentliche-cross-origin-blocker-war-ein-anderer">Der eigentliche Cross-Origin-Blocker war ein anderer<a class="headerlink" href="#der-eigentliche-cross-origin-blocker-war-ein-anderer" title="Permanent link">&para;</a></h3>
+<p>Nicht <code>loadBootResource</code> (Risiko 1) war das Problem — das ließ sich sauber umbiegen —, sondern <strong>Blazor JS Initializers</strong>. Die Runtime lädt <code>_content/**/*.lib.module.js</code> mit <code>new URL(name, document.baseURI)</code>, hart verdrahtet, ohne Hook. Auf einer fremden Seite zeigt das auf den falschen Origin.</p>
+<p>Lösung: der Loader injiziert eine <strong>Import Map</strong>, die <code>&lt;seite&gt;/_content/</code> auf <code>&lt;bundle&gt;/_content/</code> umschreibt. Deklariert die Hostseite bereits eine eigene Import Map, überspringt der Loader das und schreibt eine Konsolenwarnung mit dem exakt fehlenden Mapping.</p>
+<p>Zusätzlich musste <code>locateFile</code> über <code>configureRuntime</code>/<code>withModuleConfig</code> umgebogen werden, und Satellite-Assemblies (<code>_framework/de/*.wasm</code>) verlangen, dass <code>loadBootResource</code> die <code>defaultUri</code> umschreibt statt den Namen neu zusammenzusetzen.</p>
+<h3 id="asset-base-vorhandener-mechanismus-statt-neuem-helper">Asset-Base: vorhandener Mechanismus statt neuem Helper<a class="headerlink" href="#asset-base-vorhandener-mechanismus-statt-neuem-helper" title="Permanent link">&para;</a></h3>
+<p>Der geplante <code>MudExAssets.Resolve</code> war überflüssig — <code>MudExConfiguration.WithJsBasePath</code> und <code>JsImportHelper.BasePath</code> gab es bereits. Vier Stellen umgingen den Mechanismus mit fest verdrahteten <code>./_content/...</code>-Pfaden; die gehen jetzt über <code>JsImportHelper.JsPath</code>. Neu ist nur <code>MudExWebComponents.SetAssetBase(string)</code> als öffentlicher Einstieg, den <code>Program.cs</code> mit <code>window.MudEx.getAssetBase()</code> füttert.</p>
+<h3 id="httpclient">HttpClient<a class="headerlink" href="#httpclient" title="Permanent link">&para;</a></h3>
+<p>MudExFileDisplay lädt Dateiinhalte selbst. Ohne registrierten <code>HttpClient</code> scheitern relative URLs mit <code>net_http_client_invalid_requesturi</code> — Markdown, Zip und Excel blieben leer. Der Host registriert jetzt einen <code>HttpClient</code> mit <code>HostEnvironment.BaseAddress</code>, also der Adresse der <strong>einbettenden Seite</strong>. Relative URLs im Markup verhalten sich damit so, wie ein Seitenautor es erwartet.</p>
+<p><code>content-type</code> sollte man mitgeben. Ohne den Wert fällt die Komponente auf den nativen Browser-Viewer zurück statt den passenden MudEx-Viewer zu wählen; die Demo-Seite und die Doku sagen das jetzt explizit.</p>
+<h3 id="keine-vorkomprimierten-dateien-im-kopiervorgang">Keine vorkomprimierten Dateien im Kopiervorgang<a class="headerlink" href="#keine-vorkomprimierten-dateien-im-kopiervorgang" title="Permanent link">&para;</a></h3>
+<p><code>.gz</code>/<code>.br</code> werden <strong>nicht</strong> mitkopiert. IIS/Azure komprimiert dynamisch (<code>httpCompression</code> in der web.config), und die Kopien haben die Static-Web-Assets-Pipeline der Host-App durcheinandergebracht (<code>Content-Encoding: gzip</code> auf unkomprimiertem Inhalt, <code>ERR_CONTENT_DECODING_FAILED</code>).</p>
+<h3 id="trimming-aus">Trimming aus<a class="headerlink" href="#trimming-aus" title="Permanent link">&para;</a></h3>
+<p><code>PublishTrimmed=false</code>. Die Registrierung läuft per Reflection über die ganze Assembly; der Trimmer würde genau die Komponenten entfernen, die niemand statisch referenziert. Kostet Bundle-Größe, ist aber die Bedingung dafür, dass „alle Komponenten" auch wirklich alle sind.</p>
+<h3 id="ergebnis">Ergebnis<a class="headerlink" href="#ergebnis" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>73 Komponenten</strong> registriert, 35 übersprungen (Generics, fehlender parameterloser Konstruktor) — beide Listen stehen auf der Doku-Seite.</li>
+<li>Tests: <code>MudExWebComponentsTests</code> (5 Unit-Tests) und <code>WebComponentsTests</code> (Playwright: gleiche Origin <strong>und</strong> fremder Origin). Alle grün.</li>
+<li>Die Playwright-Tests brauchen ein vorher publiziertes Bundle: <code>dotnet publish Samples/MudEx.WebComponents -c Debug</code>.</li>
+</ul>
+<h3 id="offen">Offen<a class="headerlink" href="#offen" title="Permanent link">&para;</a></h3>
+<ul>
+<li>npm/jsDelivr: Workflow-Schritt existiert, läuft aber nur mit dem Secret <code>NPM_TOKEN</code>. Paketname ist unskopiert (<code>mudex-webcomponents</code>), damit keine npm-Org nötig ist.</li>
+<li>Ob Azure/IIS die MIME-Typen und CORS-Header aus <code>/wc/web.config</code> wie erwartet ausliefert, zeigt erst das erste Deployment.</li>
+</ul>
 
 
 

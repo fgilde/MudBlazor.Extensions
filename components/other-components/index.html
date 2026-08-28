@@ -2490,8 +2490,8 @@
 <h2 id="mudexcardlist">MudExCardList<a class="headerlink" href="#mudexcardlist" title="Permanent link">&para;</a></h2>
 <p>Card-based list component for displaying items as cards.</p>
 <h3 id="basic-usage_1">Basic Usage<a class="headerlink" href="#basic-usage_1" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&lt;MudExCardList Items=&quot;@items&quot; T=&quot;MyItem&quot;&gt;
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    &lt;ItemTemplate Context=&quot;item&quot;&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&lt;MudExCardList Items="@items" T="MyItem"&gt;
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    &lt;ItemTemplate Context="item"&gt;
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        &lt;MudCard&gt;
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>            &lt;MudCardContent&gt;@item.Name&lt;/MudCardContent&gt;
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        &lt;/MudCard&gt;
@@ -2508,7 +2508,7 @@
 <h2 id="mudexgroupbox">MudExGroupBox<a class="headerlink" href="#mudexgroupbox" title="Permanent link">&para;</a></h2>
 <p>Group box component for organizing related content.</p>
 <h3 id="basic-usage_2">Basic Usage<a class="headerlink" href="#basic-usage_2" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&lt;MudExGroupBox Title=&quot;Settings&quot;&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&lt;MudExGroupBox Title="Settings"&gt;
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    &lt;!-- Content --&gt;
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>&lt;/MudExGroupBox&gt;
 </span></code></pre></div>
@@ -2541,7 +2541,7 @@
 <h2 id="mudextoggleablesearch">MudExToggleableSearch<a class="headerlink" href="#mudextoggleablesearch" title="Permanent link">&para;</a></h2>
 <p>Toggleable search component for space-efficient search functionality.</p>
 <h3 id="basic-usage_4">Basic Usage<a class="headerlink" href="#basic-usage_4" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&lt;MudExToggleableSearch @bind-Value=&quot;@searchText&quot; OnSearch=&quot;@HandleSearch&quot; /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&lt;MudExToggleableSearch @bind-Value="@searchText" OnSearch="@HandleSearch" /&gt;
 </span></code></pre></div>
 <h3 id="features_4">Features<a class="headerlink" href="#features_4" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2553,7 +2553,7 @@
 <h2 id="mudexslidebar">MudExSlideBar<a class="headerlink" href="#mudexslidebar" title="Permanent link">&para;</a></h2>
 <p>Slide-in panel component for navigation or additional content.</p>
 <h3 id="basic-usage_5">Basic Usage<a class="headerlink" href="#basic-usage_5" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&lt;MudExSlideBar @bind-Open=&quot;@isOpen&quot; Position=&quot;SlideBarPosition.Left&quot;&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&lt;MudExSlideBar @bind-Open="@isOpen" Position="SlideBarPosition.Left"&gt;
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    &lt;MudText&gt;Slide bar content&lt;/MudText&gt;
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>&lt;/MudExSlideBar&gt;
 </span></code></pre></div>
@@ -2568,8 +2568,8 @@
 <p>Task bar component for application-level navigation.</p>
 <h3 id="basic-usage_6">Basic Usage<a class="headerlink" href="#basic-usage_6" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&lt;MudExTaskBar&gt;
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    &lt;MudExTaskBarItem Icon=&quot;@Icons.Material.Filled.Home&quot; Text=&quot;Home&quot; /&gt;
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    &lt;MudExTaskBarItem Icon=&quot;@Icons.Material.Filled.Settings&quot; Text=&quot;Settings&quot; /&gt;
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    &lt;MudExTaskBarItem Icon="@Icons.Material.Filled.Home" Text="Home" /&gt;
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    &lt;MudExTaskBarItem Icon="@Icons.Material.Filled.Settings" Text="Settings" /&gt;
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>&lt;/MudExTaskBar&gt;
 </span></code></pre></div>
 <h3 id="features_6">Features<a class="headerlink" href="#features_6" title="Permanent link">&para;</a></h3>
@@ -2582,7 +2582,7 @@
 <h2 id="mudexvirtualize">MudExVirtualize<a class="headerlink" href="#mudexvirtualize" title="Permanent link">&para;</a></h2>
 <p>Virtualization component for efficient rendering of large lists.</p>
 <h3 id="basic-usage_7">Basic Usage<a class="headerlink" href="#basic-usage_7" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&lt;MudExVirtualize Items=&quot;@largeList&quot; Context=&quot;item&quot;&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&lt;MudExVirtualize Items="@largeList" Context="item"&gt;
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    &lt;MudExVirtualItem&gt;
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        &lt;MudText&gt;@item.Name&lt;/MudText&gt;
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    &lt;/MudExVirtualItem&gt;
@@ -2598,7 +2598,7 @@
 <h2 id="mudexcomponentpropertygrid">MudExComponentPropertyGrid<a class="headerlink" href="#mudexcomponentpropertygrid" title="Permanent link">&para;</a></h2>
 <p>Property grid component for editing component properties.</p>
 <h3 id="basic-usage_8">Basic Usage<a class="headerlink" href="#basic-usage_8" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>&lt;MudExComponentPropertyGrid Component=&quot;@myComponent&quot; /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>&lt;MudExComponentPropertyGrid Component="@myComponent" /&gt;
 </span></code></pre></div>
 <h3 id="features_8">Features<a class="headerlink" href="#features_8" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2610,7 +2610,7 @@
 <h2 id="mudexapiview">MudExApiView<a class="headerlink" href="#mudexapiview" title="Permanent link">&para;</a></h2>
 <p>API documentation viewer component.</p>
 <h3 id="basic-usage_9">Basic Usage<a class="headerlink" href="#basic-usage_9" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>&lt;MudExApiView ApiUrl=&quot;https://api.example.com/swagger.json&quot; /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>&lt;MudExApiView ApiUrl="https://api.example.com/swagger.json" /&gt;
 </span></code></pre></div>
 <h3 id="features_9">Features<a class="headerlink" href="#features_9" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2622,7 +2622,7 @@
 <h2 id="mudexspeechtotextbutton">MudExSpeechToTextButton<a class="headerlink" href="#mudexspeechtotextbutton" title="Permanent link">&para;</a></h2>
 <p>Speech recognition button for voice input.</p>
 <h3 id="basic-usage_10">Basic Usage<a class="headerlink" href="#basic-usage_10" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>&lt;MudExSpeechToTextButton OnTextRecognized=&quot;@HandleText&quot; /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>&lt;MudExSpeechToTextButton OnTextRecognized="@HandleText" /&gt;
 </span></code></pre></div>
 <h3 id="features_10">Features<a class="headerlink" href="#features_10" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2634,7 +2634,7 @@
 <h2 id="mudexcapturebutton">MudExCaptureButton<a class="headerlink" href="#mudexcapturebutton" title="Permanent link">&para;</a></h2>
 <p>Button component for capturing photos/videos from camera.</p>
 <h3 id="basic-usage_11">Basic Usage<a class="headerlink" href="#basic-usage_11" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&lt;MudExCaptureButton OnCapture=&quot;@HandleCapture&quot; /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&lt;MudExCaptureButton OnCapture="@HandleCapture" /&gt;
 </span></code></pre></div>
 <h3 id="features_11">Features<a class="headerlink" href="#features_11" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2646,7 +2646,7 @@
 <h2 id="mudexcolorbubble">MudExColorBubble<a class="headerlink" href="#mudexcolorbubble" title="Permanent link">&para;</a></h2>
 <p>Color bubble display component.</p>
 <h3 id="basic-usage_12">Basic Usage<a class="headerlink" href="#basic-usage_12" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>&lt;MudExColorBubble Color=&quot;@color&quot; Size=&quot;Size.Large&quot; /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>&lt;MudExColorBubble Color="@color" Size="Size.Large" /&gt;
 </span></code></pre></div>
 <h3 id="features_12">Features<a class="headerlink" href="#features_12" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2658,13 +2658,13 @@
 <h2 id="cloud-file-pickers">Cloud File Pickers<a class="headerlink" href="#cloud-file-pickers" title="Permanent link">&para;</a></h2>
 <p>Components for integrating cloud storage providers.</p>
 <h3 id="mudexdropboxfilepicker">MudExDropBoxFilePicker<a class="headerlink" href="#mudexdropboxfilepicker" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>&lt;MudExDropBoxFilePicker OnFileSelected=&quot;@HandleFile&quot; AppKey=&quot;@appKey&quot; /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>&lt;MudExDropBoxFilePicker OnFileSelected="@HandleFile" AppKey="@appKey" /&gt;
 </span></code></pre></div>
 <h3 id="mudexgooglefilepicker">MudExGoogleFilePicker<a class="headerlink" href="#mudexgooglefilepicker" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>&lt;MudExGoogleFilePicker OnFileSelected=&quot;@HandleFile&quot; ClientId=&quot;@clientId&quot; /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>&lt;MudExGoogleFilePicker OnFileSelected="@HandleFile" ClientId="@clientId" /&gt;
 </span></code></pre></div>
 <h3 id="mudexonedrivefilepicker">MudExOneDriveFilePicker<a class="headerlink" href="#mudexonedrivefilepicker" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>&lt;MudExOneDriveFilePicker OnFileSelected=&quot;@HandleFile&quot; ClientId=&quot;@clientId&quot; /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>&lt;MudExOneDriveFilePicker OnFileSelected="@HandleFile" ClientId="@clientId" /&gt;
 </span></code></pre></div>
 <h3 id="features_13">Features<a class="headerlink" href="#features_13" title="Permanent link">&para;</a></h3>
 <ul>
