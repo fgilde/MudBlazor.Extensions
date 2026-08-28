@@ -24486,6 +24486,46 @@
             Converts Theme to json
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExWebComponents">
+            <summary>
+            Helper to enumerate all MudEx components that can be exposed as browser custom elements (web components).
+            </summary>
+            <remarks>
+            This class only computes the type/tag mapping. Registering the tags requires the
+            Microsoft.AspNetCore.Components.CustomElements package and happens in the hosting application.
+            </remarks>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExWebComponents.TagPrefix">
+            <summary>
+            Prefix used for all generated custom element tag names.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExWebComponents.GetRegistrableComponents(System.Reflection.Assembly)">
+            <summary>
+            Returns all components of the given assembly (MudBlazor.Extensions by default) that can be registered
+            as a custom element, together with the tag name they should be registered with.
+            Ordered by tag name, duplicates removed.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExWebComponents.GetSkippedComponents(System.Reflection.Assembly)">
+            <summary>
+            Returns all components that can not be registered as custom element, with the reason why.
+            Used for documentation purposes.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExWebComponents.TagName(System.Type)">
+            <summary>
+            Builds the custom element tag name for a component type. MudExFileDisplay becomes mudex-file-display.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExWebComponents.SetAssetBase(System.String)">
+            <summary>
+            Sets the base url all MudEx javascript and css assets are resolved against.
+            Only needed when MudEx is hosted on a different origin than the page using it (CDN / web components).
+            Pass null or empty to restore the default behaviour (relative to the current document).
+            </summary>
+            <param name="baseUrl">Base url of the hosted MudEx assets, e.g. https://www.mudex.org/wc/ </param>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.RangeSliderTicks">
             <summary>
             Adaptive tick generation for the typed range sliders (<see cref="T:MudBlazor.Extensions.Components.MudExDateRangeSlider"/>,

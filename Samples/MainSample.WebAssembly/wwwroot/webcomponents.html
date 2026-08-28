@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MudEx Web Components — plain HTML demo</title>
+    <meta name="description" content="MudBlazor.Extensions components used as native custom elements in a plain HTML page - no Blazor, no build step." />
+    <style>
+        :root {
+            color-scheme: light dark;
+            --page-fg: #16161a;
+            --page-bg: #ffffff;
+            --page-muted: #5b5b66;
+            --page-border: #d9d9e3;
+            --page-code-bg: #f4f4f8;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --page-fg: #ececf1;
+                --page-bg: #16161a;
+                --page-muted: #a1a1ad;
+                --page-border: #33333d;
+                --page-code-bg: #1e1e25;
+            }
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0 20px 80px;
+            font-family: Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
+            color: var(--page-fg);
+            background: var(--page-bg);
+            line-height: 1.55;
+        }
+
+        main { max-width: 1080px; margin: 0 auto; }
+        header { padding: 48px 0 24px; border-bottom: 1px solid var(--page-border); }
+        h1 { font-size: 2.2rem; margin: 0 0 8px; }
+        h2 { font-size: 1.35rem; margin: 48px 0 8px; }
+        p.lead { color: var(--page-muted); margin: 0; }
+        .muted { color: var(--page-muted); font-size: .92rem; }
+
+        pre {
+            background: var(--page-code-bg);
+            border: 1px solid var(--page-border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            overflow-x: auto;
+            font-size: .88rem;
+        }
+
+        code { font-family: "Cascadia Code", Consolas, monospace; }
+
+        .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+
+        .toolbar button {
+            font: inherit;
+            font-size: .9rem;
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--page-border);
+            background: transparent;
+            color: var(--page-fg);
+            cursor: pointer;
+        }
+
+        .toolbar button:hover { border-color: #7e6fff; }
+        .toolbar button[aria-pressed="true"] { background: #7e6fff; border-color: #7e6fff; color: #fff; }
+
+        /* custom elements are inline by default, give them a box */
+        mudex-gravatar, mudex-icon-button { display: inline-block; vertical-align: middle; }
+        mudex-icon-picker, mudex-color-edit, mudex-audio-player { display: block; }
+
+        mudex-file-display {
+            display: block;
+            height: 65vh;
+            min-height: 420px;
+            border: 1px solid var(--page-border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); align-items: start; }
+        .card { border: 1px solid var(--page-border); border-radius: 10px; padding: 16px; }
+        .card h3 { margin: 0 0 12px; font-size: 1rem; }
+        #boot-state { font-size: .9rem; color: var(--page-muted); }
+        a { color: #7e6fff; }
+    </style>
+</head>
+<body>
+<main>
+    <header>
+        <h1>MudEx Web Components</h1>
+        <p class="lead">
+            This page contains no Blazor, no framework and no build step — just HTML and one script tag.
+            Every element below is a real
+            <a href="https://www.mudex.org">MudBlazor.Extensions</a> component running as a browser custom element.
+        </p>
+        <p id="boot-state">Loading the MudEx runtime…</p>
+    </header>
+
+    <h2>The whole setup</h2>
+<pre><code>&lt;script src="https://www.mudex.org/wc/mudex.js"&gt;&lt;/script&gt;
+
+&lt;mudex-file-display url="https://example.org/report.pdf"&gt;&lt;/mudex-file-display&gt;</code></pre>
+    <p class="muted">
+        The same bundle is on npm: <code>https://cdn.jsdelivr.net/npm/mudex-webcomponents/mudex.js</code>.
+        The <a href="/web-components">documentation page</a> lists every attribute, property and event.
+    </p>
+
+    <h2>MudExFileDisplay</h2>
+    <p>One component for pdf, images, archives, office documents, markdown, audio and more. Pick a file:</p>
+    <div class="toolbar" id="file-buttons">
+        <button id="btn-pdf" data-url="/sample-data/sample.pdf" data-content-type="application/pdf" aria-pressed="true">PDF</button>
+        <button id="btn-image" data-url="/sample-data/logo.png" data-content-type="image/png">Image</button>
+        <button id="btn-zip" data-url="/sample-data/Archive.zip" data-content-type="application/zip">Zip archive</button>
+        <button id="btn-markdown" data-url="/sample-data/readme.md" data-content-type="text/markdown">Markdown</button>
+        <button id="btn-excel" data-url="/sample-data/ExcelSheet.xlsx" data-content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">Excel</button>
+        <button id="btn-audio" data-url="/sample-data/Unified-Voice.mp3" data-content-type="audio/mpeg">Audio</button>
+    </div>
+
+    <mudex-file-display id="file-display"
+                        url="/sample-data/sample.pdf"
+                        content-type="application/pdf"
+                        show-file-name="true"
+                        colorize-icons="true"></mudex-file-display>
+
+<pre><code>&lt;mudex-file-display url="/sample-data/sample.pdf"
+                    content-type="application/pdf"
+                    show-file-name="true"&gt;&lt;/mudex-file-display&gt;
+
+&lt;script&gt;
+    const display = document.getElementById('file-display');
+    display.setAttribute('content-type', 'image/png');
+    display.setAttribute('url', '/sample-data/logo.png');
+&lt;/script&gt;</code></pre>
+    <p class="muted">
+        Pass <code>content-type</code> whenever you know it. Without it the component falls back to the
+        browser's native viewer instead of picking the matching MudEx viewer.
+    </p>
+
+    <h2>More components</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>mudex-icon-picker</h3>
+            <mudex-icon-picker id="icon-picker" label="Pick an icon"></mudex-icon-picker>
+        </div>
+        <div class="card">
+            <h3>mudex-gravatar</h3>
+            <mudex-gravatar id="gravatar" email="florian.gilde@cargonerds.com"></mudex-gravatar>
+        </div>
+        <div class="card">
+            <h3>mudex-color-edit</h3>
+            <mudex-color-edit id="color-edit" label="Pick a color"></mudex-color-edit>
+        </div>
+        <div class="card">
+            <h3>mudex-audio-player</h3>
+            <mudex-audio-player id="audio-player" src="/sample-data/Unified-Voice.mp3"></mudex-audio-player>
+        </div>
+    </div>
+
+    <h2>Attributes, properties and events</h2>
+    <p>
+        Simple values go in as kebab-case attributes. Everything else — objects, arrays and callbacks —
+        is set as a camelCase property on the element.
+    </p>
+    <div class="card">
+        <mudex-icon-button id="event-demo" icon="M12 2 L22 22 H2 Z"></mudex-icon-button>
+        <span id="event-count">clicked 0 times</span>
+    </div>
+<pre><code>const button = document.getElementById('event-demo');
+
+// attribute -&gt; strings, numbers, booleans
+button.setAttribute('icon', 'M12 2 L22 22 H2 Z');
+
+// property -&gt; everything else: objects, sizes, colors, callbacks
+button.size = 'Large';
+button.onClick = () =&gt; console.log('clicked from plain javascript');</code></pre>
+
+    <h2>Theme</h2>
+    <p>The runtime follows the operating system by default. You can override it at any time:</p>
+    <div class="toolbar">
+        <button id="btn-dark">Dark</button>
+        <button id="btn-light">Light</button>
+    </div>
+<pre><code>MudEx.setDarkMode(true);</code></pre>
+
+    <h2>Good to know</h2>
+    <ul class="muted">
+        <li>Child content between the tags is ignored — a custom element cannot receive a Blazor <code>RenderFragment</code>.
+            Components that exist only to wrap content (<code>MudExGradientText</code> for example) therefore render empty.</li>
+        <li>Generic components (<code>MudExObjectEdit&lt;T&gt;</code>, <code>MudExSelect&lt;T&gt;</code>) cannot be exposed as custom elements.</li>
+        <li>Custom elements are <code>display: inline</code> by default. Give them a <code>display</code> and a size in your css, otherwise they collapse.</li>
+        <li>The first visit downloads the .NET runtime (a few MB, compressed). After that the browser cache handles it.</li>
+        <li><code>MudEx.ready</code> is a promise that resolves once the runtime is up, <code>MudEx.tags</code> lists every registered tag.</li>
+    </ul>
+</main>
+
+<script src="/wc/mudex.js"></script>
+<script>
+    (function () {
+        var buttons = document.querySelectorAll('#file-buttons button');
+        var display = document.getElementById('file-display');
+        buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                buttons.forEach(function (other) { other.setAttribute('aria-pressed', String(other === button)); });
+                display.setAttribute('content-type', button.dataset.contentType);
+                display.setAttribute('url', button.dataset.url);
+            });
+        });
+
+        document.getElementById('btn-dark').addEventListener('click', function () { MudEx.setDarkMode(true); });
+        document.getElementById('btn-light').addEventListener('click', function () { MudEx.setDarkMode(false); });
+
+        MudEx.ready.then(function () {
+            document.getElementById('boot-state').textContent =
+                'MudEx runtime ready — ' + MudEx.tags.length + ' components registered as custom elements.';
+
+            document.getElementById('gravatar').size = 80;
+            document.getElementById('color-edit').value = '#7e6fff';
+            document.getElementById('event-demo').size = 'Large';
+
+            var clicks = 0;
+            document.getElementById('event-demo').onClick = function () {
+                clicks++;
+                document.getElementById('event-count').textContent = 'clicked ' + clicks + (clicks === 1 ? ' time' : ' times');
+            };
+        });
+    })();
+</script>
+</body>
+</html>

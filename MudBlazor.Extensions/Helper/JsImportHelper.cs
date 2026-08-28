@@ -60,8 +60,8 @@ namespace MudBlazor.Extensions.Helper
         internal static async Task LoadMudMarkdownAsync(this IJSRuntime runtime)
         {
             await runtime.LoadFilesAsync(
-                "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js",
-                "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css"
+                JsPath("/MudBlazor.Markdown.min.js", "MudBlazor.Markdown"),
+                JsPath("/MudBlazor.Markdown.min.css", "MudBlazor.Markdown")
             );
             await runtime.WaitForNamespaceAsync("highlightCodeElement", TimeSpan.FromSeconds(2), TimeSpan.FromMilliseconds(200) );
             await Task.Delay(200);
@@ -82,7 +82,7 @@ namespace MudBlazor.Extensions.Helper
         }
 
         internal static Task<IJSObjectReference> ImportModuleMudEx(this IJSRuntime runtime) 
-            => runtime.InvokeAsync<IJSObjectReference>("import", $"./_content/MudBlazor.Extensions/MudBlazor.Extensions.lib.module.js{Cb()}").AsTask();
+            => runtime.InvokeAsync<IJSObjectReference>("import", JsPath($"/MudBlazor.Extensions.lib.module.js{Cb()}", "MudBlazor.Extensions")).AsTask();
 
         internal static string ComponentJs<TComponent>(string name = null) 
             => ComponentJs(GetJsComponentName<TComponent>(name), typeof(TComponent).Assembly.GetName().Name);

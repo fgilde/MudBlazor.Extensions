@@ -235,10 +235,7 @@ public abstract partial class MudExExternalFilePickerBase<T, TFile> : MudExJsReq
     /// <inheritdoc />
     public override async Task ImportModuleAndCreateJsAsync()
     {
-        if(JsImportHelper.UseMinified)
-            await JsRuntime.InvokeAsync<IJSObjectReference>("import", $"./_content/MudBlazor.Extensions/js/components/MudExExternalFilePickerBase.min.js");
-        else
-            await JsRuntime.InvokeAsync<IJSObjectReference>("import", $"./_content/MudBlazor.Extensions/js/components/MudExExternalFilePickerBase.js");
+        await JsRuntime.InvokeAsync<IJSObjectReference>("import", JsImportHelper.ComponentJs("MudExExternalFilePickerBase", "MudBlazor.Extensions"));
         await base.ImportModuleAndCreateJsAsync();
     }
 

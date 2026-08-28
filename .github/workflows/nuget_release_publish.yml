@@ -8,6 +8,9 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    env:
+      # job level so the step condition below can read it, secrets are not available in "if"
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     permissions:
       contents: read
       id-token: write   # required so nuget.org can trade the OIDC token for a short lived key
@@ -51,3 +54,12 @@ jobs:
           dotnet nuget push $_.FullName -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json
         }
 
+    # same bundle that is served from www.mudex.org/wc, published to npm so it is available
+    # on jsdelivr/unpkg. Skipped silently when no NPM_TOKEN secret is configured.
+    - name: Publish web components to npm
+      if: ${{ env.NPM_TOKEN != '' }}
+      run: |
+        dotnet publish Samples/MudEx.WebComponents/MudEx.WebComponents.csproj --configuration Release
+        cd Samples/MudEx.WebComponents/bin/Release/net10.0/publish/wwwroot
+        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+        npm publish

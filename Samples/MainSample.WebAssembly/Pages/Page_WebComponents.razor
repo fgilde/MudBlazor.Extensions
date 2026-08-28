@@ -1,0 +1,169 @@
+@page "/web-components"
+@inherits BasePage
+@using MudBlazor.Extensions.Helper
+@using MainSample.WebAssembly.Shared
+
+@attribute [DemoNew(Name = "Web Components", Icon = Icons.Material.Filled.Code, Order = 1, Documentation = "Use every MudEx component as a native custom element in any html page - without Blazor.")]
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="p-4">
+
+    <MudText Typo="Typo.h4" GutterBottom="true">@L["MudEx as Web Components"]</MudText>
+    <MudText Typo="Typo.subtitle1" GutterBottom="true">
+        @L["Every non generic MudEx component is also published as a browser custom element. One script tag is enough to use them in a plain html page, in WordPress, in React, Vue, Angular or anywhere else."]
+    </MudText>
+
+    <MudButton Class="mb-6" Href="/webcomponents.html" Target="_blank" Variant="Variant.Filled" Color="Color.Primary"
+               StartIcon="@Icons.Material.Filled.OpenInNew">
+        @L["Open the plain html demo page"]
+    </MudButton>
+
+    <MudDivider Class="mb-6" />
+
+    <MudText Typo="Typo.h5" GutterBottom="true">@L["Getting started"]</MudText>
+    <MudText Class="mb-2">@L["Add the loader script and use the tags. That is the whole integration:"]</MudText>
+    <MudExCodeView Theme="@(MainLayout.GetCodeBlockTheme())" Code="@GettingStartedCode" />
+
+    <MudText Class="mt-4 mb-2">@L["The same bundle is published to npm and therefore available on every npm cdn:"]</MudText>
+    <MudExCodeView Theme="@(MainLayout.GetCodeBlockTheme())" Code="@CdnCode" />
+
+    <MudAlert Severity="Severity.Info" Class="my-4" Dense="true">
+        @L["The first visit loads the .NET runtime. It is a few megabytes compressed and cached by the browser afterwards, so it is paid once per visitor and version."]
+    </MudAlert>
+
+    <MudText Typo="Typo.h5" GutterBottom="true" Class="mt-8">@L["Attributes, properties and events"]</MudText>
+    <MudText Class="mb-2">
+        @L["Strings, numbers, booleans and enums work as kebab-case attributes. Everything else - objects, colors, sizes, callbacks - is assigned as a camelCase property on the element."]
+    </MudText>
+    <MudExCodeView Theme="@(MainLayout.GetCodeBlockTheme())" Code="@ParametersCode" />
+
+    <MudText Typo="Typo.h5" GutterBottom="true" Class="mt-8">@L["Javascript api"]</MudText>
+    <MudExCodeView Theme="@(MainLayout.GetCodeBlockTheme())" Code="@JsApiCode" />
+
+    <MudText Typo="Typo.h5" GutterBottom="true" Class="mt-8">@L["Limitations"]</MudText>
+    <MudList T="string" Dense="true">
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Block">
+            @L["Child content is ignored. A custom element cannot pass a Blazor RenderFragment, so components that require child content are not usable this way."]
+        </MudListItem>
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Block">
+            @L["Generic components cannot be registered as custom elements. They are listed below for reference."]
+        </MudListItem>
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Info">
+            @L["Custom elements are display inline by default. Give them a display and a size in css, otherwise they collapse."]
+        </MudListItem>
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Info">
+            @L["Pass content-type whenever you know it. Without it MudExFileDisplay falls back to the native browser viewer instead of the matching MudEx viewer."]
+        </MudListItem>
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Info">
+            @L["One page runs one MudEx runtime. Loading two different versions of mudex.js on the same page is not supported."]
+        </MudListItem>
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Info">
+            @L["If the page already declares an import map, add the _content mapping shown in the browser console to it, otherwise the component scripts are searched on the wrong origin."]
+        </MudListItem>
+    </MudList>
+
+    <MudText Typo="Typo.h5" GutterBottom="true" Class="mt-8">
+        @L["Available tags"] (@_tags.Count)
+    </MudText>
+    <MudTextField T="string" @bind-Value="_filter" Immediate="true" Clearable="true"
+                  Placeholder="@L["Filter"]" Adornment="Adornment.Start"
+                  AdornmentIcon="@Icons.Material.Filled.Search" Class="mb-2" />
+
+    <MudSimpleTable Dense="true" Hover="true" Striped="true" Style="max-height: 460px; overflow-y: auto;">
+        <thead>
+        <tr>
+            <th>@L["Tag"]</th>
+            <th>@L["Component"]</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var (type, tag) in FilteredTags)
+        {
+            <tr>
+                <td><code>&lt;@tag&gt;</code></td>
+                <td>@type.Name</td>
+            </tr>
+        }
+        </tbody>
+    </MudSimpleTable>
+
+    @if (_skipped.Any())
+    {
+        <MudExpansionPanels Class="mt-4">
+            <MudExpansionPanel Text="@($"{L["Not available as custom element"]} ({_skipped.Count})")">
+                <MudSimpleTable Dense="true" Hover="true" Style="max-height: 320px; overflow-y: auto;">
+                    <thead>
+                    <tr>
+                        <th>@L["Component"]</th>
+                        <th>@L["Reason"]</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var (type, reason) in _skipped)
+                    {
+                        <tr>
+                            <td>@type.Name</td>
+                            <td>@reason</td>
+                        </tr>
+                    }
+                    </tbody>
+                </MudSimpleTable>
+            </MudExpansionPanel>
+        </MudExpansionPanels>
+    }
+
+</MudContainer>
+
+@code {
+    private string _filter = string.Empty;
+
+    private readonly IReadOnlyList<(Type Type, string Tag)> _tags =
+        MudExWebComponents.GetRegistrableComponents(typeof(MudExFileDisplay).Assembly);
+
+    private readonly IReadOnlyList<(Type Type, string Reason)> _skipped =
+        MudExWebComponents.GetSkippedComponents(typeof(MudExFileDisplay).Assembly);
+
+    private IEnumerable<(Type Type, string Tag)> FilteredTags => string.IsNullOrWhiteSpace(_filter)
+        ? _tags
+        : _tags.Where(t => t.Tag.Contains(_filter, StringComparison.OrdinalIgnoreCase)
+                           || t.Type.Name.Contains(_filter, StringComparison.OrdinalIgnoreCase));
+
+    private const string GettingStartedCode = """
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://www.mudex.org/wc/mudex.js"></script>
+</head>
+<body>
+    <mudex-file-display url="https://example.org/report.pdf"
+                        content-type="application/pdf"
+                        show-file-name="true"
+                        style="display:block;height:600px"></mudex-file-display>
+</body>
+</html>
+""";
+
+    private const string CdnCode = """
+<script src="https://cdn.jsdelivr.net/npm/mudex-webcomponents/mudex.js"></script>
+""";
+
+    private const string ParametersCode = """
+const display = document.querySelector('mudex-file-display');
+
+// attribute: string, number, bool, enum - kebab-case
+display.setAttribute('url', '/files/invoice.pdf');
+display.setAttribute('show-file-name', 'true');
+
+// property: everything else - camelCase
+display.parametersForSubControls = { ShowContentError: false };
+display.onCloseClick = () => console.log('closed');
+""";
+
+    private const string JsApiCode = """
+// resolves once the runtime is up and all tags are registered
+await MudEx.ready;
+
+MudEx.tags;               // every registered tag name
+MudEx.base;               // where the bundle was loaded from
+MudEx.setDarkMode(true);  // theme override, defaults to the os setting
+""";
+}

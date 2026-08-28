@@ -1,4 +1,4 @@
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions
@@ -17,7 +17,7 @@ namespace MudBlazor.Extensions
         public MudBlazorExtensionJsInterop(IJSRuntime jsRuntime)
         {
             _ = jsRuntime.InitializeMudBlazorExtensionsCoreAsync();
-            moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/MudBlazor.Extensions/MudBlazor.Extensions.lib.module.js").AsTask());
+            moduleTask = new(() => jsRuntime.ImportModuleMudEx());
         }
 
         public async ValueTask<string> Prompt(string message)

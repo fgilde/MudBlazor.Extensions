@@ -88,6 +88,10 @@ jobs:
       
     - name: Restore
       run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+    # publishing this project drops the web component bundle into the sample app wwwroot/wc,
+    # so www.mudex.org/wc/mudex.js is deployed together with the app
+    - name: Publish Web Components
+      run: dotnet publish Samples/MudEx.WebComponents/MudEx.WebComponents.csproj --configuration ${{ env.CONFIGURATION }}
     - name: Build
       run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
     - name: Test

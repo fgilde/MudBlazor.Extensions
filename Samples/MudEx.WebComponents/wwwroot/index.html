@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MudEx Web Components</title>
+    <style>
+        body { font-family: Roboto, system-ui, sans-serif; margin: 0; padding: 24px; }
+        mudex-file-display { display: block; height: 70vh; border: 1px solid #ccc; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>MudEx Web Components</h1>
+    <p>This page is the smoke test of the bundle itself. The documented demo lives at
+       <a href="https://www.mudex.org/webcomponents.html">mudex.org/webcomponents.html</a>.</p>
+
+    <mudex-file-display id="display"
+                        url="sample-data/sample.pdf"
+                        show-file-name="true"></mudex-file-display>
+
+    <script src="mudex.js"></script>
+</body>
+</html>

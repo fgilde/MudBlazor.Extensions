@@ -21,6 +21,14 @@
     <CACHE_TOKEN>$(PackageVersion)</CACHE_TOKEN>
   </PropertyGroup>
 
+  <!-- The web component bundle is copied in from Samples/MudEx.WebComponents already built, and
+       webcomponents.html is plain static. Compressing them again only produces .gz copies that go
+       stale whenever the bundle is republished - which makes dotnet watch fail while inflating the
+       response to inject its reload script. Azure compresses these dynamically anyway (wc/web.config). -->
+  <PropertyGroup>
+    <CompressionExcludePatterns>$(CompressionExcludePatterns);**/wc/**;**/webcomponents.html</CompressionExcludePatterns>
+  </PropertyGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="Resources\ar-SA.yml" />
     <EmbeddedResource Include="Resources\bg-BG.yml" />

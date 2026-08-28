@@ -10,6 +10,7 @@
     </Project>
     <Project Path="Samples/MainSample.ServerSide/MainSample.ServerSide.csproj" />
     <Project Path="Samples/MainSample.WebAssembly/MainSample.WebAssembly.csproj" />
+    <Project Path="Samples/MudEx.WebComponents/MudEx.WebComponents.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />

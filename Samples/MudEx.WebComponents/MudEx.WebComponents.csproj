@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <Import Project="..\..\MudBlazor.Extensions\version.generated.props" Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
+  <Import Project="..\..\Shared.props" Condition="Exists('..\..\Shared.props')" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <!-- The custom elements are registered by reflection over the whole MudBlazor.Extensions assembly,
+         so the trimmer must not remove component types or their parameters. -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <BlazorWebAssemblyLoadAllGlobalizationData>false</BlazorWebAssemblyLoadAllGlobalizationData>
+    <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.CustomElements" />
+    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' != 'Release'">
+    <ProjectReference Include="..\..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
+  </ItemGroup>
+
+  <!-- The published bundle is served from the main sample app at /wc/, so publishing this project
+       is all it takes to have it available locally and on www.mudex.org. -->
+  <PropertyGroup>
+    <WebComponentsTargetDir>$(MSBuildThisFileDirectory)..\MainSample.WebAssembly\wwwroot\wc\</WebComponentsTargetDir>
+  </PropertyGroup>
+
+  <!-- package.json so the very same output can be published to npm and consumed via jsDelivr/unpkg -->
+  <Target Name="WriteNpmPackageJson" AfterTargets="Publish">
+    <PropertyGroup>
+      <NpmPackageVersion Condition="'$(MudEx_PackageVersion)' != ''">$(MudEx_PackageVersion)</NpmPackageVersion>
+      <NpmPackageVersion Condition="'$(NpmPackageVersion)' == ''">0.0.0</NpmPackageVersion>
+      <NpmPackageJson>$(PublishDir)wwwroot\package.json</NpmPackageJson>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(NpmPackageJson)" Overwrite="true" Lines="{&quot;name&quot;:&quot;mudex-webcomponents&quot;,&quot;version&quot;:&quot;$(NpmPackageVersion)&quot;,&quot;description&quot;:&quot;MudBlazor.Extensions components as browser custom elements&quot;,&quot;main&quot;:&quot;mudex.js&quot;,&quot;homepage&quot;:&quot;https://www.mudex.org&quot;,&quot;license&quot;:&quot;MIT&quot;,&quot;repository&quot;:{&quot;type&quot;:&quot;git&quot;,&quot;url&quot;:&quot;git+https://github.com/fgilde/MudBlazor.Extensions.git&quot;},&quot;keywords&quot;:[&quot;mudblazor&quot;,&quot;blazor&quot;,&quot;web-components&quot;,&quot;custom-elements&quot;,&quot;file-viewer&quot;]}" />
+  </Target>
+
+  <Target Name="CopyWebComponentsToMainSample" AfterTargets="Publish">
+    <ItemGroup>
+      <!-- IIS compresses dynamically (see wwwroot\web.config), the pre-compressed copies are dead
+           weight and confuse the static web asset pipeline of the app hosting this folder. -->
+      <PublishedWebComponentFiles Include="$(PublishDir)wwwroot\**\*" Exclude="$(PublishDir)wwwroot\**\*.gz;$(PublishDir)wwwroot\**\*.br" />
+    </ItemGroup>
+    <RemoveDir Directories="$(WebComponentsTargetDir)" ContinueOnError="true" />
+    <Copy SourceFiles="@(PublishedWebComponentFiles)"
+          DestinationFiles="@(PublishedWebComponentFiles->'$(WebComponentsTargetDir)%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+    <Message Importance="High" Text="Web components copied to $(WebComponentsTargetDir)" />
+  </Target>
+
+</Project>
