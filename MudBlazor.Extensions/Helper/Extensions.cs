@@ -44,7 +44,18 @@ namespace MudBlazor.Extensions.Helper
             bool hasArgs = args is {Length: > 0};
             if (text is null)
                 return null;
-            return localizer != null ? (hasArgs ? localizer[text, args.Where(a => a != null).ToArray()] : localizer[text]) : string.Format(text, args);
+            if (localizer != null)
+                return hasArgs ? localizer[text, args.Where(a => a != null).ToArray()] : localizer[text];
+            if (!hasArgs)
+                return text; // without args there is nothing to substitute, and "{0}" in the text would throw
+            try
+            {
+                return string.Format(text, args);
+            }
+            catch (FormatException)
+            {
+                return text; // a text that is not a valid format string is still better than an exception
+            }
         }
 
         /// <summary>

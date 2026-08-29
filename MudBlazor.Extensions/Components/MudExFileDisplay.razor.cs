@@ -539,19 +539,22 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     private string GetJsOnError() =>
         @$"
-            var displayMessage = !window.__mudExFileDisplay || !window.__mudExFileDisplay['{_id}'];
-            var elementToShow = document.getElementById('content-type-display-error');
-            if(displayMessage && elementToShow)
+            var mudExErrorElement = function() {{ return document.getElementById('content-type-display-error'); }};
+            var entry = window.__mudExFileDisplay && window.__mudExFileDisplay['{_id}'];
+            if(!entry)
             {{
-                elementToShow.classList.add('visible');
+                var element = mudExErrorElement();
+                if(element) {{ element.classList.add('visible'); }}
             }}
-            else {{
+            else
+            {{
                 setTimeout(function(){{
-                    window.__mudExFileDisplay['{_id}'].callBackReference.invokeMethodAsync('{nameof(HandleContentError)}').then(function(isHandled){{
-                        if(!isHandled && elementToShow)
+                    entry.callBackReference.invokeMethodAsync('{nameof(HandleContentError)}').then(function(isHandled){{
+                        var element = mudExErrorElement();
+                        if(!isHandled && element)
                         {{
-                            document.getElementById('content-type-display-error').classList.add('visible');
-                        }}                            
+                            element.classList.add('visible');
+                        }}
                     }});
                 }}, 0)
             }}

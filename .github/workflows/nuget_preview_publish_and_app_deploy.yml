@@ -129,7 +129,9 @@ jobs:
         if (-not ($initializers | Where-Object { $_.Name -like 'MudBlazor.Extensions.*' })) {
           throw "The MudBlazor.Extensions js initializer is missing from the bundle."
         }
-        $mangled = $initializers | Where-Object { $_.Name -match '\.[a-z0-9]{10}\.[a-z0-9]{10}\.lib\.module\.js$' }
+        # -cmatch, not -match: case insensitive matching treats "Extensions" as a 10 char fingerprint
+        # and flags the perfectly fine MudBlazor.Extensions.<hash>.lib.module.js
+        $mangled = $initializers | Where-Object { $_.Name -cmatch '\.[a-z0-9]{10}\.[a-z0-9]{10}\.lib\.module\.js$' }
         if ($mangled) {
           throw "Double fingerprinted js initializer in the bundle: $($mangled.Name -join ', ')"
         }
