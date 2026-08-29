@@ -65,6 +65,10 @@
     // scoped component css of every razor library, bundled under the host project name. Without it
     // the audio visualizer and other components with their own .razor.css render unstyled.
     addCss(base + 'MudEx.WebComponents.styles.css');
+    // the pdf viewer loads these itself with a document relative path, which points at the hosting
+    // page rather than at the bundle - linking them here keeps the viewer styled on any origin
+    addCss(base + '_content/Gotho.BlazorPdf/blazorpdf.min.css');
+    addCss(base + '_content/Gotho.BlazorPdf.MudBlazor/blazorpdf_mudblazor.min.css');
 
     // everything the runtime needs lives next to this script, not next to the page.
     // defaultUri keeps the relative path including culture folders of satellite assemblies.

@@ -4,7 +4,6 @@ using Gotho.BlazorPdf.Config;
 using Gotho.BlazorPdf.MudBlazor;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Services;
 using Nextended.Core;
 using Nextended.Core.Extensions;
@@ -129,11 +128,13 @@ public partial class MudExFileDisplayPdf : IMudExFileDisplay
         if (_cssLoaded) return;
         try
         {
-            // through JsPath, so it honours the configured base path - a document relative path
-            // points at the hosting page, which has these files only by coincidence
+            // Keep these relative. BlazorJS decides script vs stylesheet with
+            // filename.includes('.js'), so an absolute url on a cdn whose host contains ".js"
+            // (cdn.jsdelivr.net) makes it inject the css as a script. The web component bundle
+            // links both files up front in mudex.js instead.
             await JsRuntime.LoadFilesAsync(
-                JsImportHelper.JsPath("/blazorpdf.min.css", "Gotho.BlazorPdf"),
-                JsImportHelper.JsPath("/blazorpdf_mudblazor.min.css", "Gotho.BlazorPdf.MudBlazor")
+                "_content/Gotho.BlazorPdf/blazorpdf.min.css",
+                "_content/Gotho.BlazorPdf.MudBlazor/blazorpdf_mudblazor.min.css"
             );
             _cssLoaded = true;
         }
