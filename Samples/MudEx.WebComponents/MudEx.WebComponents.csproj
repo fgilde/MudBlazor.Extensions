@@ -55,6 +55,9 @@
       <NpmPackageJson>$(PublishDir)wwwroot\package.json</NpmPackageJson>
     </PropertyGroup>
     <WriteLinesToFile File="$(NpmPackageJson)" Overwrite="true" Lines="{&quot;name&quot;:&quot;mudex-webcomponents&quot;,&quot;version&quot;:&quot;$(NpmPackageVersion)&quot;,&quot;description&quot;:&quot;MudBlazor.Extensions components as browser custom elements&quot;,&quot;main&quot;:&quot;mudex.js&quot;,&quot;homepage&quot;:&quot;https://www.mudex.org&quot;,&quot;license&quot;:&quot;MIT&quot;,&quot;repository&quot;:{&quot;type&quot;:&quot;git&quot;,&quot;url&quot;:&quot;git+https://github.com/fgilde/MudBlazor.Extensions.git&quot;},&quot;keywords&quot;:[&quot;mudblazor&quot;,&quot;blazor&quot;,&quot;web-components&quot;,&quot;custom-elements&quot;,&quot;file-viewer&quot;]}" />
+    <!-- the cdn only needs the loader and the assets it pulls. Pre-compressed copies, the iis
+         config and the demo file are dead weight in a npm package. -->
+    <WriteLinesToFile File="$(PublishDir)wwwroot\.npmignore" Overwrite="true" Lines="*.br;*.gz;web.config;sample-data/;index.html" />
   </Target>
 
   <Target Name="CopyWebComponentsToMainSample" AfterTargets="Publish">

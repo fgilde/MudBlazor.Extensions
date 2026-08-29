@@ -36,8 +36,21 @@ jobs:
         node-version: '20'
         registry-url: 'https://registry.npmjs.org'
 
+    # version.generated.props only exists after the library was built, so a fresh clone would
+    # publish 0.0.0. Read the version straight from the library project instead.
+    - name: Read version
+      id: version
+      shell: pwsh
+      run: |
+        [xml]$project = Get-Content MudBlazor.Extensions/MudBlazor.Extensions.csproj
+        $group = $project.Project.PropertyGroup | Where-Object { $_.MajorVersion } | Select-Object -First 1
+        $version = "$($group.MajorVersion).$($group.MinorVersion).$($group.PatchVersion)"
+        if ($version -notmatch '^\d+\.\d+\.\d+$') { throw "could not read the version from the library project (got '$version')" }
+        Write-Host "version: $version"
+        "version=$version" >> $env:GITHUB_OUTPUT
+
     - name: Publish web components
-      run: dotnet publish Samples/MudEx.WebComponents/MudEx.WebComponents.csproj --configuration Release
+      run: dotnet publish Samples/MudEx.WebComponents/MudEx.WebComponents.csproj --configuration Release -p:MudEx_PackageVersion=${{ steps.version.outputs.version }}
 
     - name: Show package contents
       shell: pwsh
