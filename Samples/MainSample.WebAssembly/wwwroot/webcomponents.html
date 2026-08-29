@@ -198,10 +198,10 @@ button.onClick = () =&gt; console.log('clicked from plain javascript');</code></
             Components that exist only to wrap content (<code>MudExGradientText</code> for example) therefore render empty.</li>
         <li>Generic components (<code>MudExObjectEdit&lt;T&gt;</code>, <code>MudExSelect&lt;T&gt;</code>) cannot be exposed as custom elements.</li>
         <li>Custom elements are <code>display: inline</code> by default. Give them a <code>display</code> and a size in your css, otherwise they collapse.</li>
+        <li><code>mudex-audio-player</code> works best inside <code>mudex-file-display</code> (the Audio button above) — its
+            visualizer takes its size from the surrounding box, so standalone it needs an explicit width and height.</li>
         <li><code>style</code> and <code>class</code> on a MudEx element are <em>component parameters</em>, not the dom ones —
             they land on the component's own root element. Style the custom element itself through a css selector.</li>
-        <li><code>mudex-audio-player</code> is not part of this demo: its visualizer derives its size from the parent box
-            and grows without bounds in a plain page. Use it inside a container with a fixed height, or stay with Blazor for it.</li>
         <li>The first visit downloads the .NET runtime (a few MB, compressed). After that the browser cache handles it.</li>
         <li><code>MudEx.ready</code> is a promise that resolves once the runtime is up, <code>MudEx.tags</code> lists every registered tag.</li>
     </ul>
