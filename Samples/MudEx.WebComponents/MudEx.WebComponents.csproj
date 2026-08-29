@@ -13,6 +13,10 @@
     <PublishTrimmed Condition="'$(Configuration)' != 'Release'">false</PublishTrimmed>
     <BlazorWebAssemblyLoadAllGlobalizationData>false</BlazorWebAssemblyLoadAllGlobalizationData>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <!-- The bundle is served by plain static hosts (iis, cloudflare pages), which have no static
+         web asset endpoint manifest. Fingerprinted _content urls only exist in that manifest, not
+         on disk, so the runtime would ask for files that are not there and boot would fail. -->
+    <StaticWebAssetsFingerprintContent>false</StaticWebAssetsFingerprintContent>
     <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
   </PropertyGroup>
 

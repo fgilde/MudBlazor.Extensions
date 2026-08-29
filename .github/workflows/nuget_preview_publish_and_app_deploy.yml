@@ -102,6 +102,20 @@ jobs:
       run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
     - name: Publish
       run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+    # The bundle is a finished artifact and must land verbatim. Going through the sample wwwroot
+    # means going through its static web asset pipeline, which fingerprints the already fingerprinted
+    # files a second time - the runtime then asks for a name that does not exist and every /wc/
+    # request falls through to the spa.
+    - name: Copy the web component bundle into the package
+      shell: pwsh
+      run: |
+        $source = "Samples/MudEx.WebComponents/bin/Release/net10.0/publish/wwwroot"
+        $target = Join-Path "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}" "wwwroot/wc"
+        if (Test-Path $target) { Remove-Item -Recurse -Force $target }
+        New-Item -ItemType Directory -Force -Path $target | Out-Null
+        Copy-Item -Recurse -Force "$source/*" $target
+        Get-ChildItem -Recurse $target -Include *.gz, *.br, *.map -File | Remove-Item -Force
+
     - name: Verify the web component bundle is in the package
       shell: pwsh
       run: |
@@ -109,8 +123,18 @@ jobs:
         if (-not (Test-Path $loader)) {
           throw "Web component bundle missing from the package ($loader). www.mudex.org/wc would serve the spa fallback."
         }
+        # the runtime loads these by their fingerprinted name; a mangled name means boot dies with
+        # "Failed to load config file" and nothing renders
+        $initializers = Get-ChildItem -Recurse (Split-Path $loader) -Filter *.lib.module.js -File
+        if (-not ($initializers | Where-Object { $_.Name -like 'MudBlazor.Extensions.*' })) {
+          throw "The MudBlazor.Extensions js initializer is missing from the bundle."
+        }
+        $mangled = $initializers | Where-Object { $_.Name -match '\.[a-z0-9]{10}\.[a-z0-9]{10}\.lib\.module\.js$' }
+        if ($mangled) {
+          throw "Double fingerprinted js initializer in the bundle: $($mangled.Name -join ', ')"
+        }
         $size = [math]::Round((Get-ChildItem -Recurse (Split-Path $loader) | Measure-Object -Sum Length).Sum / 1MB, 1)
-        Write-Host "Web component bundle in package: $size MB"
+        Write-Host "Web component bundle in package: $size MB, $($initializers.Count) js initializers"
 
     # Read only. The zip deploy needs room for the package plus its extraction, and the action only
     # reports "Internal Server Error" when that fails - the numbers live on the app service.
