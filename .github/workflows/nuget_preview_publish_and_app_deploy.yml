@@ -6,6 +6,9 @@ on:
       - '**'
 
 env:
+  # a reused msbuild node keeps the file globs of its first evaluation, which silently dropped
+  # the web component bundle from the package
+  MSBUILDDISABLENODEREUSE: 1
   AZURE_WEBAPP_NAME: MudEx
   AZURE_WEBAPP_PACKAGE_PATH: SampleApplication/publish
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.MudEx_016e }}
@@ -86,18 +89,29 @@ jobs:
     - name: Delay
       run: sleep 300
       
-    - name: Restore
-      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
-    # publishing this project drops the web component bundle into the sample app wwwroot/wc,
-    # so www.mudex.org/wc/mudex.js is deployed together with the app
+    # Must run before the restore of the sample: it drops the bundle into the sample wwwroot/wc, and
+    # the sample only picks those files up if they already exist when its project is first evaluated.
+    # MSBuild reuses its nodes across steps, so a later build keeps the file globs from that first pass.
     - name: Publish Web Components
       run: dotnet publish Samples/MudEx.WebComponents/MudEx.WebComponents.csproj --configuration ${{ env.CONFIGURATION }}
+    - name: Restore
+      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
     - name: Build
       run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
     - name: Test
       run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
     - name: Publish
       run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+    - name: Verify the web component bundle is in the package
+      shell: pwsh
+      run: |
+        $loader = Join-Path "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}" "wwwroot/wc/mudex.js"
+        if (-not (Test-Path $loader)) {
+          throw "Web component bundle missing from the package ($loader). www.mudex.org/wc would serve the spa fallback."
+        }
+        $size = [math]::Round((Get-ChildItem -Recurse (Split-Path $loader) | Measure-Object -Sum Length).Sum / 1MB, 1)
+        Write-Host "Web component bundle in package: $size MB"
+
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v2
       with:
