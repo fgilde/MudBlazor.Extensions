@@ -306,7 +306,10 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private async Task CreateStructure()
     {
         var ct = _componentCts?.Token ?? CancellationToken.None;
-        var archive = await FileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url, ct), RootFolderName, ContentType, ct);
+        // FileService uses the HttpClient from DI, which knows the base address.
+        // new HttpClient() has none, so every relative Url ended in net_http_client_invalid_requesturi.
+        var stream = ContentStream ?? await FileService.ReadStreamAsync(Url, ct: ct);
+        var archive = await FileService.ReadArchiveAsync(stream, RootFolderName, ContentType, ct);
         _zipStructure = archive.Structure;
         _zipEntries = archive.List;
     }

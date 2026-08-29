@@ -77,6 +77,8 @@ public class WebComponentsTests : IAsyncLifetime
             var display = page.Locator("mudex-file-display");
             await display.Locator(".mud-ex-file-display-container").WaitForAsync(new() { Timeout = 60000 });
             (await display.Locator(".mud-ex-file-display-toolbar").CountAsync()).Should().Be(1);
+            // the toolbar menu only renders when file-name is set - it silently disappears otherwise
+            (await display.Locator(".mud-ex-file-display-toolbar button").CountAsync()).Should().BeGreaterThan(0);
 
             // switching the attribute must pick another renderer and show the real content
             await page.ClickAsync("#btn-markdown");

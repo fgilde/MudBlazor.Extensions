@@ -381,6 +381,9 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
         _errorClosed = false;
         ErrorMessage = null;
+        // the banner is made visible by inline js on the native object tag - resetting the flags
+        // is not enough, otherwise the next file keeps showing the error of the previous one
+        CloseContentError();
 
         await EnsureUrlAsync();
 

@@ -8,12 +8,21 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
-    <!-- The custom elements are registered by reflection over the whole MudBlazor.Extensions assembly,
-         so the trimmer must not remove component types or their parameters. -->
-    <PublishTrimmed>false</PublishTrimmed>
+    <!-- Debug publishes are for local testing, trimming would only slow them down. -->
+    <PublishTrimmed Condition="'$(Configuration)' == 'Release'">true</PublishTrimmed>
+    <PublishTrimmed Condition="'$(Configuration)' != 'Release'">false</PublishTrimmed>
     <BlazorWebAssemblyLoadAllGlobalizationData>false</BlazorWebAssemblyLoadAllGlobalizationData>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
   </PropertyGroup>
+
+  <!-- The custom elements are registered by reflection over the whole MudBlazor.Extensions assembly,
+       so the trimmer must keep every component type and every [Parameter] of it. Rooting the assemblies
+       does that while the framework itself still gets trimmed - which is where the megabytes are. -->
+  <ItemGroup>
+    <TrimmerRootAssembly Include="MudBlazor.Extensions" />
+    <TrimmerRootAssembly Include="MudBlazor" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
@@ -32,6 +41,12 @@
     <WebComponentsTargetDir>$(MSBuildThisFileDirectory)..\MainSample.WebAssembly\wwwroot\wc\</WebComponentsTargetDir>
   </PropertyGroup>
 
+  <!-- publish does not clean its output, so fingerprinted assemblies of every previous run pile up
+       (50 MB of dead weight after a day of iterating, and the wrong one can end up being served). -->
+  <Target Name="CleanPublishDirBeforePublish" BeforeTargets="PrepareForPublish">
+    <RemoveDir Directories="$(PublishDir)" ContinueOnError="true" />
+  </Target>
+
   <!-- package.json so the very same output can be published to npm and consumed via jsDelivr/unpkg -->
   <Target Name="WriteNpmPackageJson" AfterTargets="Publish">
     <PropertyGroup>
@@ -45,10 +60,13 @@
   <Target Name="CopyWebComponentsToMainSample" AfterTargets="Publish">
     <ItemGroup>
       <!-- IIS compresses dynamically (see wwwroot\web.config), the pre-compressed copies are dead
-           weight and confuse the static web asset pipeline of the app hosting this folder. -->
-      <PublishedWebComponentFiles Include="$(PublishDir)wwwroot\**\*" Exclude="$(PublishDir)wwwroot\**\*.gz;$(PublishDir)wwwroot\**\*.br" />
+           weight and confuse the static web asset pipeline of the app hosting this folder.
+           Source maps are dev artifacts - they alone are ~15 MB of the bundle. -->
+      <PublishedWebComponentFiles Include="$(PublishDir)wwwroot\**\*" Exclude="$(PublishDir)wwwroot\**\*.gz;$(PublishDir)wwwroot\**\*.br;$(PublishDir)wwwroot\**\*.map" />
     </ItemGroup>
-    <RemoveDir Directories="$(WebComponentsTargetDir)" ContinueOnError="true" />
+    <!-- Not ContinueOnError: if the target app is running it holds the files, the delete fails and
+         stale fingerprinted assemblies stay behind next to the new ones. Better to fail loudly. -->
+    <RemoveDir Directories="$(WebComponentsTargetDir)" />
     <Copy SourceFiles="@(PublishedWebComponentFiles)"
           DestinationFiles="@(PublishedWebComponentFiles->'$(WebComponentsTargetDir)%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />

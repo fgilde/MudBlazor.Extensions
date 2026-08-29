@@ -72,7 +72,7 @@
 
         /* custom elements are inline by default, give them a box */
         mudex-gravatar, mudex-icon-button { display: inline-block; vertical-align: middle; }
-        mudex-icon-picker, mudex-color-edit, mudex-audio-player { display: block; }
+        mudex-icon-picker, mudex-color-edit, mudex-culture-select { display: block; }
 
         mudex-file-display {
             display: block;
@@ -114,22 +114,24 @@
     <h2>MudExFileDisplay</h2>
     <p>One component for pdf, images, archives, office documents, markdown, audio and more. Pick a file:</p>
     <div class="toolbar" id="file-buttons">
-        <button id="btn-pdf" data-url="/sample-data/sample.pdf" data-content-type="application/pdf" aria-pressed="true">PDF</button>
-        <button id="btn-image" data-url="/sample-data/logo.png" data-content-type="image/png">Image</button>
-        <button id="btn-zip" data-url="/sample-data/Archive.zip" data-content-type="application/zip">Zip archive</button>
-        <button id="btn-markdown" data-url="/sample-data/readme.md" data-content-type="text/markdown">Markdown</button>
-        <button id="btn-excel" data-url="/sample-data/ExcelSheet.xlsx" data-content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">Excel</button>
-        <button id="btn-audio" data-url="/sample-data/Unified-Voice.mp3" data-content-type="audio/mpeg">Audio</button>
+        <button id="btn-pdf" data-url="/sample-data/sample.pdf" data-content-type="application/pdf" data-file-name="sample.pdf" aria-pressed="true">PDF</button>
+        <button id="btn-image" data-url="/sample-data/logo.png" data-content-type="image/png" data-file-name="logo.png">Image</button>
+        <button id="btn-zip" data-url="/sample-data/Archive.zip" data-content-type="application/zip" data-file-name="Archive.zip">Zip archive</button>
+        <button id="btn-markdown" data-url="/sample-data/readme.md" data-content-type="text/markdown" data-file-name="readme.md">Markdown</button>
+        <button id="btn-excel" data-url="/sample-data/ExcelSheet.xlsx" data-content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" data-file-name="ExcelSheet.xlsx">Excel</button>
+        <button id="btn-audio" data-url="/sample-data/Unified-Voice.mp3" data-content-type="audio/mpeg" data-file-name="Unified-Voice.mp3">Audio</button>
     </div>
 
     <mudex-file-display id="file-display"
                         url="/sample-data/sample.pdf"
                         content-type="application/pdf"
+                        file-name="sample.pdf"
                         show-file-name="true"
                         colorize-icons="true"></mudex-file-display>
 
 <pre><code>&lt;mudex-file-display url="/sample-data/sample.pdf"
                     content-type="application/pdf"
+                    file-name="sample.pdf"
                     show-file-name="true"&gt;&lt;/mudex-file-display&gt;
 
 &lt;script&gt;
@@ -138,8 +140,10 @@
     display.setAttribute('url', '/sample-data/logo.png');
 &lt;/script&gt;</code></pre>
     <p class="muted">
-        Pass <code>content-type</code> whenever you know it. Without it the component falls back to the
-        browser's native viewer instead of picking the matching MudEx viewer.
+        Pass <code>content-type</code> whenever you know it — without it the component falls back to the
+        browser's native viewer instead of picking the matching MudEx viewer. And pass
+        <code>file-name</code>: the toolbar menu (viewer choice, download, file info dialog) only renders
+        when the component knows a file name.
     </p>
 
     <h2>More components</h2>
@@ -157,8 +161,8 @@
             <mudex-color-edit id="color-edit" label="Pick a color"></mudex-color-edit>
         </div>
         <div class="card">
-            <h3>mudex-audio-player</h3>
-            <mudex-audio-player id="audio-player" src="/sample-data/Unified-Voice.mp3"></mudex-audio-player>
+            <h3>mudex-culture-select</h3>
+            <mudex-culture-select id="culture-select" label="Culture"></mudex-culture-select>
         </div>
     </div>
 
@@ -194,6 +198,10 @@ button.onClick = () =&gt; console.log('clicked from plain javascript');</code></
             Components that exist only to wrap content (<code>MudExGradientText</code> for example) therefore render empty.</li>
         <li>Generic components (<code>MudExObjectEdit&lt;T&gt;</code>, <code>MudExSelect&lt;T&gt;</code>) cannot be exposed as custom elements.</li>
         <li>Custom elements are <code>display: inline</code> by default. Give them a <code>display</code> and a size in your css, otherwise they collapse.</li>
+        <li><code>style</code> and <code>class</code> on a MudEx element are <em>component parameters</em>, not the dom ones —
+            they land on the component's own root element. Style the custom element itself through a css selector.</li>
+        <li><code>mudex-audio-player</code> is not part of this demo: its visualizer derives its size from the parent box
+            and grows without bounds in a plain page. Use it inside a container with a fixed height, or stay with Blazor for it.</li>
         <li>The first visit downloads the .NET runtime (a few MB, compressed). After that the browser cache handles it.</li>
         <li><code>MudEx.ready</code> is a promise that resolves once the runtime is up, <code>MudEx.tags</code> lists every registered tag.</li>
     </ul>
@@ -208,6 +216,7 @@ button.onClick = () =&gt; console.log('clicked from plain javascript');</code></
             button.addEventListener('click', function () {
                 buttons.forEach(function (other) { other.setAttribute('aria-pressed', String(other === button)); });
                 display.setAttribute('content-type', button.dataset.contentType);
+                display.setAttribute('file-name', button.dataset.fileName);
                 display.setAttribute('url', button.dataset.url);
             });
         });

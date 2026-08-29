@@ -64,7 +64,7 @@
         </div>
     }
 
-    @if (ShowContentError)
+    @if (ShowContentError && _isNativeRendered)
     {
         <div id="content-type-display-error">
             <MudAlert Class="mud-alert-close-no-flex" Severity="Severity.Error" Variant="Variant.Outlined" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="CloseContentError">

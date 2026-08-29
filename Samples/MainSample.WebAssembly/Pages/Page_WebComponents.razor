@@ -54,6 +54,15 @@
             @L["Pass content-type whenever you know it. Without it MudExFileDisplay falls back to the native browser viewer instead of the matching MudEx viewer."]
         </MudListItem>
         <MudListItem T="string" Icon="@Icons.Material.Filled.Info">
+            @L["Pass file-name as well. The toolbar menu of MudExFileDisplay - viewer choice, download, file info dialog - is only rendered when the component knows a file name."]
+        </MudListItem>
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Warning">
+            @L["style and class are component parameters, not the dom attributes. They are applied to the component root inside the element. Style the custom element itself with a css selector."]
+        </MudListItem>
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Warning">
+            @L["MudExAudioPlayer does not lay out correctly as a custom element. Its visualizer derives the size from the parent box and grows without bounds in a plain html page."]
+        </MudListItem>
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Info">
             @L["One page runs one MudEx runtime. Loading two different versions of mudex.js on the same page is not supported."]
         </MudListItem>
         <MudListItem T="string" Icon="@Icons.Material.Filled.Info">
@@ -132,12 +141,16 @@
 <html>
 <head>
     <script src="https://www.mudex.org/wc/mudex.js"></script>
+    <style>
+        /* custom elements are inline by default - give them a box */
+        mudex-file-display { display: block; height: 600px; }
+    </style>
 </head>
 <body>
     <mudex-file-display url="https://example.org/report.pdf"
                         content-type="application/pdf"
-                        show-file-name="true"
-                        style="display:block;height:600px"></mudex-file-display>
+                        file-name="report.pdf"
+                        show-file-name="true"></mudex-file-display>
 </body>
 </html>
 """;
