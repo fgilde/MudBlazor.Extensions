@@ -62,6 +62,9 @@
     addCss(base + '_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css');
     // same id MudEx itself uses, so it does not inject its embedded copy a second time
     addCss(base + '_content/MudBlazor.Extensions/mudBlazorExtensions.min.css', 'mudex-styles');
+    // scoped component css of every razor library, bundled under the host project name. Without it
+    // the audio visualizer and other components with their own .razor.css render unstyled.
+    addCss(base + 'MudEx.WebComponents.styles.css');
 
     // everything the runtime needs lives next to this script, not next to the page.
     // defaultUri keeps the relative path including culture folders of satellite assemblies.
