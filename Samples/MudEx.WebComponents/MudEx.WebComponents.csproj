@@ -67,12 +67,18 @@
            Source maps are dev artifacts - they alone are ~15 MB of the bundle. -->
       <PublishedWebComponentFiles Include="$(PublishDir)wwwroot\**\*" Exclude="$(PublishDir)wwwroot\**\*.gz;$(PublishDir)wwwroot\**\*.br;$(PublishDir)wwwroot\**\*.map" />
     </ItemGroup>
-    <!-- Not ContinueOnError: if the target app is running it holds the files, the delete fails and
-         stale fingerprinted assemblies stay behind next to the new ones. Better to fail loudly. -->
-    <RemoveDir Directories="$(WebComponentsTargetDir)" />
+    <RemoveDir Directories="$(WebComponentsTargetDir)" ContinueOnError="WarnAndContinue" />
     <Copy SourceFiles="@(PublishedWebComponentFiles)"
           DestinationFiles="@(PublishedWebComponentFiles->'$(WebComponentsTargetDir)%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
+    <!-- A failed RemoveDir (the consuming app is running and holds the files) leaves the previous
+         fingerprinted assemblies next to the new ones, and the wrong one ends up being served.
+         That is worth stopping for - unlike the delete itself, which may just need a retry. -->
+    <ItemGroup>
+      <_StaleLibraryCopies Include="$(WebComponentsTargetDir)_framework\MudBlazor.Extensions.*.wasm" />
+    </ItemGroup>
+    <Error Condition="@(_StaleLibraryCopies->Count()) &gt; 1"
+           Text="$(WebComponentsTargetDir) holds @(_StaleLibraryCopies->Count()) copies of MudBlazor.Extensions. The old ones could not be deleted - stop the app that serves this folder and publish again." />
     <Message Importance="High" Text="Web components copied to $(WebComponentsTargetDir)" />
   </Target>
 
