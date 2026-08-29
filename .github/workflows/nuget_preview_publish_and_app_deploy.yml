@@ -140,7 +140,7 @@ jobs:
 
     # Read only. The zip deploy needs room for the package plus its extraction, and the action only
     # reports "Internal Server Error" when that fails - the numbers live on the app service.
-    - name: App service disk report
+    - name: App service disk report and deployment temp cleanup
       shell: pwsh
       continue-on-error: true
       env:
@@ -154,8 +154,13 @@ jobs:
         $headers = @{ Authorization = "Basic " + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($pair)) }
         $scm = "https://$($env:AZURE_WEBAPP_NAME.ToLower()).scm.azurewebsites.net"
 
+        # Zip deploy needs room for the package and its extraction. A deploy that dies half way
+        # leaves its extracted copy behind (446 MB after the failures on 2026-08-29) and every
+        # following deploy answers with a bare "Internal Server Error". Only the scratch directory
+        # that the deploy engine creates itself is removed here - nothing under C:\home is touched.
         $commands = @(
           'powershell -command "Get-PSDrive C | ForEach-Object { \"C: used {0:N0} MB, free {1:N0} MB\" -f ($_.Used/1MB), ($_.Free/1MB) }"',
+          'powershell -command "if (Test-Path C:\local\Temp\zipdeploy) { $before = (Get-ChildItem -Recurse C:\local\Temp\zipdeploy -ErrorAction SilentlyContinue | Measure-Object -Sum Length).Sum/1MB; Remove-Item -Recurse -Force C:\local\Temp\zipdeploy -ErrorAction SilentlyContinue; \"removed {0:N0} MB of leftover deployment temp\" -f $before } else { \"no leftover deployment temp\" }"',
           'powershell -command "if (Test-Path C:\local\Temp\zipdeploy) { \"zipdeploy temp: {0:N0} MB\" -f ((Get-ChildItem -Recurse C:\local\Temp\zipdeploy -ErrorAction SilentlyContinue | Measure-Object -Sum Length).Sum/1MB) } else { \"zipdeploy temp: empty\" }"',
           'powershell -command "if (Test-Path C:\home\site\wwwroot) { \"site content: {0:N0} MB\" -f ((Get-ChildItem -Recurse C:\home\site\wwwroot -ErrorAction SilentlyContinue | Measure-Object -Sum Length).Sum/1MB) }"'
         )
