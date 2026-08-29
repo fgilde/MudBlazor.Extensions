@@ -1,0 +1,66 @@
+name: Publish Web Components to npm
+
+# Runs on every release, and can be started by hand from the Actions tab so the
+# package does not have to wait for the next release.
+on:
+  release:
+    types:
+      - created
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Only pack and show what would be published'
+        type: boolean
+        default: true
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    env:
+      # job level so the step conditions can read it, secrets are not available in "if"
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      MSBUILDDISABLENODEREUSE: 1
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Publish web components
+      run: dotnet publish Samples/MudEx.WebComponents/MudEx.WebComponents.csproj --configuration Release
+
+    - name: Show package contents
+      shell: pwsh
+      working-directory: Samples/MudEx.WebComponents/bin/Release/net10.0/publish/wwwroot
+      run: |
+        Get-Content package.json
+        $size = [math]::Round((Get-ChildItem -Recurse | Measure-Object -Sum Length).Sum / 1MB, 1)
+        Write-Host "Package size: $size MB"
+
+    - name: Publish to npm
+      if: ${{ env.NPM_TOKEN != '' && inputs.dry_run != true }}
+      working-directory: Samples/MudEx.WebComponents/bin/Release/net10.0/publish/wwwroot
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: npm publish
+
+    - name: Dry run only
+      if: ${{ inputs.dry_run == true }}
+      working-directory: Samples/MudEx.WebComponents/bin/Release/net10.0/publish/wwwroot
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: npm publish --dry-run
+
+    - name: No token configured
+      if: ${{ env.NPM_TOKEN == '' }}
+      run: echo "::warning::NPM_TOKEN secret is not set, nothing was published."

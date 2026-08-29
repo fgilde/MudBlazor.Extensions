@@ -112,12 +112,73 @@ jobs:
         $size = [math]::Round((Get-ChildItem -Recurse (Split-Path $loader) | Measure-Object -Sum Length).Sum / 1MB, 1)
         Write-Host "Web component bundle in package: $size MB"
 
+    # Read only. The zip deploy needs room for the package plus its extraction, and the action only
+    # reports "Internal Server Error" when that fails - the numbers live on the app service.
+    - name: App service disk report
+      shell: pwsh
+      continue-on-error: true
+      env:
+        PUBLISH_PROFILE: ${{ secrets.MudEx_016e }}
+      run: |
+        [xml]$profileXml = $env:PUBLISH_PROFILE
+        $msdeploy = $profileXml.publishData.publishProfile | Where-Object { $_.publishMethod -eq 'MSDeploy' } | Select-Object -First 1
+        $password = $msdeploy.userPWD
+        Write-Host "::add-mask::$password"
+        $pair = "$($msdeploy.userName):$password"
+        $headers = @{ Authorization = "Basic " + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($pair)) }
+        $scm = "https://$($env:AZURE_WEBAPP_NAME.ToLower()).scm.azurewebsites.net"
+
+        $commands = @(
+          'powershell -command "Get-PSDrive C | ForEach-Object { \"C: used {0:N0} MB, free {1:N0} MB\" -f ($_.Used/1MB), ($_.Free/1MB) }"',
+          'powershell -command "if (Test-Path C:\local\Temp\zipdeploy) { \"zipdeploy temp: {0:N0} MB\" -f ((Get-ChildItem -Recurse C:\local\Temp\zipdeploy -ErrorAction SilentlyContinue | Measure-Object -Sum Length).Sum/1MB) } else { \"zipdeploy temp: empty\" }"',
+          'powershell -command "if (Test-Path C:\home\site\wwwroot) { \"site content: {0:N0} MB\" -f ((Get-ChildItem -Recurse C:\home\site\wwwroot -ErrorAction SilentlyContinue | Measure-Object -Sum Length).Sum/1MB) }"'
+        )
+        foreach ($command in $commands) {
+          try {
+            $body = @{ command = $command; dir = 'C:' } | ConvertTo-Json
+            $result = Invoke-RestMethod -Method Post -Uri "$scm/api/command" -Headers $headers -ContentType 'application/json' -Body $body
+            Write-Host $result.Output.Trim()
+            if ($result.Error) { Write-Host "stderr: $($result.Error.Trim())" }
+          }
+          catch {
+            Write-Host "could not query the app service: $($_.Exception.Message)"
+          }
+        }
+
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
         publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
+    - name: Azure deployment log on failure
+      if: failure()
+      continue-on-error: true
+      shell: pwsh
+      env:
+        PUBLISH_PROFILE: ${{ secrets.MudEx_016e }}
+      run: |
+        [xml]$profileXml = $env:PUBLISH_PROFILE
+        $msdeploy = $profileXml.publishData.publishProfile | Where-Object { $_.publishMethod -eq 'MSDeploy' } | Select-Object -First 1
+        $password = $msdeploy.userPWD
+        Write-Host "::add-mask::$password"
+        $pair = "$($msdeploy.userName):$password"
+        $headers = @{ Authorization = "Basic " + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($pair)) }
+        $scm = "https://$($env:AZURE_WEBAPP_NAME.ToLower()).scm.azurewebsites.net"
+        try {
+          $latest = Invoke-RestMethod -Uri "$scm/api/deployments/latest" -Headers $headers
+          Write-Host "status: $($latest.status_text) - $($latest.message)"
+          Invoke-RestMethod -Uri "$scm/api/deployments/latest/log" -Headers $headers | ForEach-Object {
+            Write-Host $_.message
+            if ($_.details_url) {
+              Invoke-RestMethod -Uri $_.details_url -Headers $headers | ForEach-Object { Write-Host "  $($_.message)" }
+            }
+          }
+        }
+        catch {
+          Write-Host "could not read the deployment log: $($_.Exception.Message)"
+        }
+
     - name: Publish Artifacts
       uses: actions/upload-artifact@v4.0.0
       with:
