@@ -4,6 +4,7 @@ using Gotho.BlazorPdf.Config;
 using Gotho.BlazorPdf.MudBlazor;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Services;
 using Nextended.Core;
 using Nextended.Core.Extensions;
@@ -128,9 +129,11 @@ public partial class MudExFileDisplayPdf : IMudExFileDisplay
         if (_cssLoaded) return;
         try
         {
+            // through JsPath, so it honours the configured base path - a document relative path
+            // points at the hosting page, which has these files only by coincidence
             await JsRuntime.LoadFilesAsync(
-                "_content/Gotho.BlazorPdf/blazorpdf.min.css",
-                "_content/Gotho.BlazorPdf.MudBlazor/blazorpdf_mudblazor.min.css"
+                JsImportHelper.JsPath("/blazorpdf.min.css", "Gotho.BlazorPdf"),
+                JsImportHelper.JsPath("/blazorpdf_mudblazor.min.css", "Gotho.BlazorPdf.MudBlazor")
             );
             _cssLoaded = true;
         }
