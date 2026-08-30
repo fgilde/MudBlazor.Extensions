@@ -24500,6 +24500,14 @@
             Prefix used for all generated custom element tag names.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Helper.MudExWebComponents.ClosedGenericComponents">
+            <summary>
+            Generic components cannot be registered as a custom element, but a closed version of them can.
+            These are the type arguments that make sense from plain html, where everything arrives as a
+            string, a number, a bool or json. They are registered under the plain tag name, so
+            MudExCheckBox&lt;bool&gt; becomes &lt;mudex-check-box&gt;.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExWebComponents.GetRegistrableComponents(System.Reflection.Assembly)">
             <summary>
             Returns all components of the given assembly (MudBlazor.Extensions by default) that can be registered

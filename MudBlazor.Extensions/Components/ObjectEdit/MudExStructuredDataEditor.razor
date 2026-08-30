@@ -1,6 +1,15 @@
 ﻿@inherits MudExObjectEditForm<Nextended.Core.Helper.IStructuredDataObject>
 
-@Inherited()
+@* Without a value the inherited form renders an EditForm without a model, which throws.
+   As a custom element that is the normal initial state: the tag exists before data arrives. *@
+@if (Value is not null)
+{
+    @Inherited()
+}
+else if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <MudAlert Severity="Severity.Error" Variant="Variant.Outlined">@ErrorMessage</MudAlert>
+}
 
 @code {
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);

@@ -3,7 +3,7 @@
 @using MudBlazor.Extensions.Helper
 @using MainSample.WebAssembly.Shared
 
-@attribute [DemoNew(Name = "Web Components", Icon = Icons.Material.Filled.Code, Order = 1, Documentation = "Use every MudEx component as a native custom element in any html page - without Blazor.")]
+@attribute [DemoNew(Name = "Overview", Group = "Web Components", Icon = Icons.Material.Filled.Code, Order = 0, Documentation = "Use every MudEx component as a native custom element in any html page - without Blazor.")]
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="p-4">
 
@@ -35,6 +35,18 @@
         @L["Strings, numbers, booleans and enums work as kebab-case attributes. Everything else - objects, colors, sizes, callbacks - is assigned as a camelCase property on the element."]
     </MudText>
     <MudExCodeView Theme="@(MainLayout.GetCodeBlockTheme())" Code="@ParametersCode" />
+
+    <MudText Typo="Typo.h5" GutterBottom="true" Class="mt-8">@L["Dialogs"]</MudText>
+    <MudText Class="mb-2">
+        @L["A custom element cannot take a RenderFragment, so mudex-dialog is the one element that reads the markup between its tags and opens it through the MudEx dialog service - with the animations, drag modes and appearance options of DialogOptionsEx."]
+    </MudText>
+    <MudExCodeView Theme="@(MainLayout.GetCodeBlockTheme())" Code="@DialogCode" />
+
+    <MudText Typo="Typo.h5" GutterBottom="true" Class="mt-8">@L["Generic components"]</MudText>
+    <MudText Class="mb-2">
+        @L["Generic components cannot be registered as such, but their useful closed versions are - under the plain tag name. MudExCheckBox of bool becomes mudex-check-box, MudExSelect of string becomes mudex-select. The table below marks which ones."]
+    </MudText>
+    <MudExCodeView Theme="@(MainLayout.GetCodeBlockTheme())" Code="@GenericsCode" />
 
     <MudText Typo="Typo.h5" GutterBottom="true" Class="mt-8">@L["Javascript api"]</MudText>
     <MudExCodeView Theme="@(MainLayout.GetCodeBlockTheme())" Code="@JsApiCode" />
@@ -166,6 +178,34 @@ display.setAttribute('show-file-name', 'true');
 // property: everything else - camelCase
 display.parametersForSubControls = { ShowContentError: false };
 display.onCloseClick = () => console.log('closed');
+""";
+
+    private const string DialogCode = """
+<mudex-dialog id="dialog" title="Straight from HTML"
+              animation="SlideIn" drag-mode="WithoutIds"
+              max-width="Medium" position="Center"&gt;
+    <h3>This markup stood between the tags</h3>
+    <p>Anything goes here.</p>
+</mudex-dialog>
+
+<script>
+    const dialog = document.getElementById('dialog');
+    dialog.open = true;                       // and false to close it again
+    dialog.onClosed = ok => console.log(ok);  // fires when it closed
+</script>
+""";
+
+    private const string GenericsCode = """
+<mudex-check-box label="Ship it"></mudex-check-box>
+<mudex-select label="Pick one"></mudex-select>
+<mudex-tag-field label="Tags"></mudex-tag-field>
+<mudex-structured-data-editor data='{"name":"MudEx"}'></mudex-structured-data-editor>
+
+<script>
+    // collections are properties, not attributes
+    document.querySelector('mudex-select').itemCollection = ['Blazor', 'React', 'Vue'];
+    document.querySelector('mudex-tag-field').values = ['blazor', 'webcomponents'];
+</script>
 """;
 
     private const string JsApiCode = """

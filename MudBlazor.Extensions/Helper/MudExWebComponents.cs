@@ -1,6 +1,8 @@
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Components;
+using MudBlazor.Extensions.Components.ObjectEdit;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -19,6 +21,27 @@ public static class MudExWebComponents
     public const string TagPrefix = "mudex-";
 
     /// <summary>
+    /// Generic components cannot be registered as a custom element, but a closed version of them can.
+    /// These are the type arguments that make sense from plain html, where everything arrives as a
+    /// string, a number, a bool or json. They are registered under the plain tag name, so
+    /// MudExCheckBox&lt;bool&gt; becomes &lt;mudex-check-box&gt;.
+    /// </summary>
+    public static IReadOnlyList<Type> ClosedGenericComponents { get; } = new[]
+    {
+        typeof(MudExCardList<string>),
+        typeof(MudExCheckBox<bool>),
+        typeof(MudExChipSelect<string>),
+        typeof(MudExCollectionEditor<string>),
+        typeof(MudExInput<string>),
+        typeof(MudExTextField<string>),
+        typeof(MudExList<string>),
+        typeof(MudExSelect<string>),
+        typeof(MudExTagField<string>),
+        typeof(MudExRangeSlider<double>),
+        typeof(MudExUploadEdit<UploadableFile>)
+    };
+
+    /// <summary>
     /// Returns all components of the given assembly (MudBlazor.Extensions by default) that can be registered
     /// as a custom element, together with the tag name they should be registered with.
     /// Ordered by tag name, duplicates removed.
@@ -28,6 +51,7 @@ public static class MudExWebComponents
         assembly ??= typeof(MudExWebComponents).Assembly;
         return assembly.GetExportedTypes()
             .Where(IsRegistrable)
+            .Concat(ClosedGenericComponents.Where(t => t.Assembly == assembly))
             .Select(type => (Type: type, Tag: TagName(type)))
             .GroupBy(x => x.Tag)
             .Select(g => g.OrderBy(x => x.Type.FullName, StringComparer.Ordinal).First())
@@ -86,10 +110,22 @@ public static class MudExWebComponents
            && type.GetCustomAttribute<ObsoleteAttribute>() == null;
 
     private static string SkipReason(Type type)
-        => type.IsGenericTypeDefinition ? "generic component"
+        => type.IsGenericTypeDefinition
+            ? ClosedGenericComponents.FirstOrDefault(c => c.GetGenericTypeDefinition() == type) is { } closed
+                ? $"generic, registered as <{TagName(closed)}> for {FriendlyArguments(closed)}"
+                : "generic component"
             : type.GetConstructor(Type.EmptyTypes) == null ? "no parameterless constructor"
             : type.GetCustomAttribute<ObsoleteAttribute>() != null ? "obsolete"
             : "not public";
+
+    private static string FriendlyArguments(Type closedGeneric)
+        => string.Join(", ", closedGeneric.GetGenericArguments().Select(a => a.Name switch
+        {
+            "String" => "string",
+            "Boolean" => "bool",
+            "Double" => "double",
+            _ => a.Name
+        }));
 
     private static string ToKebabCase(string value)
     {

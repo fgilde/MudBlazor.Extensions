@@ -1,0 +1,15 @@
+@* Content of <mudex-dialog>: whatever markup stood between the tags, rendered inside a MudDialog. *@
+<MudDialog>
+    <DialogContent>
+        @((MarkupString)(Html ?? string.Empty))
+    </DialogContent>
+</MudDialog>
+
+@code {
+
+    /// <summary>
+    /// Raw html that was written between the custom element tags.
+    /// </summary>
+    [Parameter] public string Html { get; set; }
+
+}

@@ -104,6 +104,19 @@
         document.head.appendChild(map);
     }
 
+    // A custom element cannot receive a RenderFragment, so the markup written between
+    // <mudex-dialog> tags is moved into the content attribute before the runtime starts and
+    // rendered as raw html inside the dialog.
+    function captureDialogContent() {
+        document.querySelectorAll('mudex-dialog').forEach(function (element) {
+            if (element.hasAttribute('content')) return;
+            var markup = element.innerHTML.trim();
+            if (!markup) return;
+            element.setAttribute('content', markup);
+            element.innerHTML = '';
+        });
+    }
+
     function ensureProviderRoot() {
         var root = document.getElementById('mudex-wc-root');
         if (!root) {
@@ -115,6 +128,7 @@
     }
 
     function boot() {
+        captureDialogContent();
         ensureImportMap();
         ensureProviderRoot();
         // blazor.webassembly.js first: the MudBlazor/MudEx scripts expect Blazor to exist when they run

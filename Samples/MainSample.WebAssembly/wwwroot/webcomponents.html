@@ -13,6 +13,7 @@
             --page-muted: #5b5b66;
             --page-border: #d9d9e3;
             --page-code-bg: #f4f4f8;
+            --page-accent: #7e6fff;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -29,19 +30,21 @@
 
         body {
             margin: 0;
-            padding: 0 20px 80px;
+            padding: 0 20px 96px;
             font-family: Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
             color: var(--page-fg);
             background: var(--page-bg);
             line-height: 1.55;
         }
 
-        main { max-width: 1080px; margin: 0 auto; }
+        main { max-width: 1100px; margin: 0 auto; }
         header { padding: 48px 0 24px; border-bottom: 1px solid var(--page-border); }
-        h1 { font-size: 2.2rem; margin: 0 0 8px; }
-        h2 { font-size: 1.35rem; margin: 48px 0 8px; }
+        h1 { font-size: 2.3rem; margin: 0 0 8px; }
+        h2 { font-size: 1.4rem; margin: 56px 0 6px; }
+        h3 { font-size: 1rem; margin: 0 0 10px; }
         p.lead { color: var(--page-muted); margin: 0; }
         .muted { color: var(--page-muted); font-size: .92rem; }
+        a { color: var(--page-accent); }
 
         pre {
             background: var(--page-code-bg);
@@ -49,7 +52,8 @@
             border-radius: 8px;
             padding: 14px 16px;
             overflow-x: auto;
-            font-size: .88rem;
+            font-size: .84rem;
+            margin: 12px 0 0;
         }
 
         code { font-family: "Cascadia Code", Consolas, monospace; }
@@ -67,13 +71,10 @@
             cursor: pointer;
         }
 
-        .toolbar button:hover { border-color: #7e6fff; }
-        .toolbar button[aria-pressed="true"] { background: #7e6fff; border-color: #7e6fff; color: #fff; }
+        .toolbar button:hover { border-color: var(--page-accent); }
+        .toolbar button[aria-pressed="true"] { background: var(--page-accent); border-color: var(--page-accent); color: #fff; }
 
         /* custom elements are inline by default, give them a box */
-        mudex-gravatar, mudex-icon-button { display: inline-block; vertical-align: middle; }
-        mudex-icon-picker, mudex-color-edit, mudex-culture-select { display: block; }
-
         mudex-file-display {
             display: block;
             height: 65vh;
@@ -83,11 +84,20 @@
             overflow: hidden;
         }
 
-        .grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); align-items: start; }
+        mudex-gravatar, mudex-icon-button { display: inline-block; vertical-align: middle; }
+
+        mudex-icon-picker, mudex-color-edit, mudex-culture-select, mudex-text-field, mudex-check-box,
+        mudex-chip-select, mudex-select, mudex-tag-field, mudex-range-slider, mudex-collection-editor,
+        mudex-list, mudex-card-list, mudex-upload-edit, mudex-structured-data-editor { display: block; }
+
+        mudex-list, mudex-card-list { min-height: 140px; }
+        mudex-structured-data-editor { min-height: 320px; }
+
+        .grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); align-items: start; }
         .card { border: 1px solid var(--page-border); border-radius: 10px; padding: 16px; }
-        .card h3 { margin: 0 0 12px; font-size: 1rem; }
+        .card pre { font-size: .78rem; }
         #boot-state { font-size: .9rem; color: var(--page-muted); }
-        a { color: #7e6fff; }
+        .tag { font-family: "Cascadia Code", Consolas, monospace; font-size: .82rem; color: var(--page-accent); }
     </style>
 </head>
 <body>
@@ -105,14 +115,16 @@
     <h2>The whole setup</h2>
 <pre><code>&lt;script src="https://www.mudex.org/wc/mudex.js"&gt;&lt;/script&gt;
 
-&lt;mudex-file-display url="https://example.org/report.pdf"&gt;&lt;/mudex-file-display&gt;</code></pre>
+&lt;mudex-file-display url="https://example.org/report.pdf"
+                    content-type="application/pdf"
+                    file-name="report.pdf"&gt;&lt;/mudex-file-display&gt;</code></pre>
     <p class="muted">
         The same bundle is on npm: <code>https://cdn.jsdelivr.net/npm/mudex-webcomponents/mudex.js</code>.
-        The <a href="/web-components">documentation page</a> lists every attribute, property and event.
+        The <a href="/web-components">documentation page</a> lists every available tag.
     </p>
 
     <h2>MudExFileDisplay</h2>
-    <p>One component for pdf, images, archives, office documents, markdown, audio and more. Pick a file:</p>
+    <p>One component for pdf, images, archives, office documents, markdown and audio. Pick a file:</p>
     <div class="toolbar" id="file-buttons">
         <button id="btn-pdf" data-url="/sample-data/sample.pdf" data-content-type="application/pdf" data-file-name="sample.pdf" aria-pressed="true">PDF</button>
         <button id="btn-image" data-url="/sample-data/logo.png" data-content-type="image/png" data-file-name="logo.png">Image</button>
@@ -137,14 +149,144 @@
 &lt;script&gt;
     const display = document.getElementById('file-display');
     display.setAttribute('content-type', 'image/png');
+    display.setAttribute('file-name', 'logo.png');
     display.setAttribute('url', '/sample-data/logo.png');
 &lt;/script&gt;</code></pre>
     <p class="muted">
-        Pass <code>content-type</code> whenever you know it — without it the component falls back to the
-        browser's native viewer instead of picking the matching MudEx viewer. And pass
-        <code>file-name</code>: the toolbar menu (viewer choice, download, file info dialog) only renders
-        when the component knows a file name.
+        Pass <code>content-type</code> and <code>file-name</code> whenever you know them. Without the content type
+        the component falls back to the browser's native viewer, and the toolbar menu — viewer choice, download,
+        file info dialog — only renders once it knows a file name.
     </p>
+
+    <h2>Dialogs</h2>
+    <p>
+        <span class="tag">&lt;mudex-dialog&gt;</span> takes the markup between its tags and opens it through the MudEx
+        dialog service, so the animations, drag modes and appearance options are available from plain HTML.
+    </p>
+    <div class="toolbar">
+        <button id="btn-dialog-slide">Open (SlideIn, draggable)</button>
+        <button id="btn-dialog-jelly">Open (JackInTheBox, top)</button>
+    </div>
+    <p id="dialog-result" class="muted"></p>
+
+    <mudex-dialog id="dialog-slide" title="Straight from HTML" animation="SlideIn" drag-mode="WithoutIds" max-width="Medium">
+        <h3>This markup stood between the tags</h3>
+        <p>Anything goes here — <b>bold</b>, <i>italic</i>, lists, images.</p>
+        <ul><li>Dragged by its header</li><li>Resizable at the corner</li></ul>
+    </mudex-dialog>
+
+    <mudex-dialog id="dialog-jelly" title="Another one" animation="JackInTheBox" drag-mode="Simple" position="TopCenter">
+        <p>Different animation, different position.</p>
+    </mudex-dialog>
+
+<pre><code>&lt;mudex-dialog id="dialog" title="Straight from HTML"
+              animation="SlideIn" drag-mode="WithoutIds" max-width="Medium"&gt;
+    &lt;h3&gt;This markup stood between the tags&lt;/h3&gt;
+    &lt;p&gt;Anything goes here.&lt;/p&gt;
+&lt;/mudex-dialog&gt;
+
+&lt;script&gt;
+    const dialog = document.getElementById('dialog');
+    dialog.open = true;                       // and false to close it again
+    dialog.onClosed = ok =&gt; console.log(ok);  // fires when it closed
+&lt;/script&gt;</code></pre>
+
+    <h2>Inputs and data</h2>
+    <p>
+        Generic components cannot be custom elements as such, so the useful closed versions are registered under
+        the plain tag name — <span class="tag">MudExCheckBox&lt;bool&gt;</span> becomes
+        <span class="tag">&lt;mudex-check-box&gt;</span>. Collections arrive as a javascript property, everything
+        simple as an attribute.
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <h3>mudex-text-field</h3>
+            <mudex-text-field id="text-field" label="Your name" helper-text="A plain string field"></mudex-text-field>
+<pre><code>&lt;mudex-text-field label="Your name"&gt;&lt;/mudex-text-field&gt;</code></pre>
+        </div>
+
+        <div class="card">
+            <h3>mudex-check-box</h3>
+            <mudex-check-box id="check-box" label="Ship it"></mudex-check-box>
+<pre><code>&lt;mudex-check-box label="Ship it"&gt;&lt;/mudex-check-box&gt;
+
+element.value = true;</code></pre>
+        </div>
+
+        <div class="card">
+            <h3>mudex-select</h3>
+            <mudex-select id="select" label="Pick one"></mudex-select>
+<pre><code>&lt;mudex-select label="Pick one"&gt;&lt;/mudex-select&gt;
+
+element.itemCollection = ['Blazor', 'React', 'Vue'];</code></pre>
+        </div>
+
+        <div class="card">
+            <h3>mudex-chip-select</h3>
+            <mudex-chip-select id="chip-select" label="Tech"></mudex-chip-select>
+<pre><code>&lt;mudex-chip-select label="Tech"&gt;&lt;/mudex-chip-select&gt;
+
+element.availableItems = ['wasm', 'cdn', 'html'];</code></pre>
+        </div>
+
+        <div class="card">
+            <h3>mudex-tag-field</h3>
+            <mudex-tag-field id="tag-field" label="Tags"></mudex-tag-field>
+<pre><code>&lt;mudex-tag-field label="Tags"&gt;&lt;/mudex-tag-field&gt;
+
+element.values = ['blazor', 'webcomponents'];</code></pre>
+        </div>
+
+        <div class="card">
+            <h3>mudex-range-slider</h3>
+            <mudex-range-slider id="range-slider"></mudex-range-slider>
+<pre><code>&lt;mudex-range-slider&gt;&lt;/mudex-range-slider&gt;
+
+element.min = 0; element.max = 100;</code></pre>
+        </div>
+
+        <div class="card">
+            <h3>mudex-collection-editor</h3>
+            <mudex-collection-editor id="collection-editor" label="Recipients"></mudex-collection-editor>
+<pre><code>&lt;mudex-collection-editor label="Recipients"&gt;&lt;/mudex-collection-editor&gt;
+
+element.items = ['first@example.org'];</code></pre>
+        </div>
+
+        <div class="card">
+            <h3>mudex-card-list</h3>
+            <mudex-card-list id="card-list"></mudex-card-list>
+<pre><code>&lt;mudex-card-list&gt;&lt;/mudex-card-list&gt;
+
+element.itemsSource = ['Alpha', 'Beta', 'Gamma'];</code></pre>
+        </div>
+
+        <div class="card">
+            <h3>mudex-list</h3>
+            <mudex-list id="list"></mudex-list>
+<pre><code>&lt;mudex-list&gt;&lt;/mudex-list&gt;
+
+element.itemCollection = ['One', 'Two', 'Three'];</code></pre>
+        </div>
+
+        <div class="card">
+            <h3>mudex-upload-edit</h3>
+            <mudex-upload-edit id="upload-edit" label="Attachments"></mudex-upload-edit>
+<pre><code>&lt;mudex-upload-edit label="Attachments"&gt;&lt;/mudex-upload-edit&gt;</code></pre>
+        </div>
+    </div>
+
+    <h2>Editing json</h2>
+    <p>
+        <span class="tag">&lt;mudex-structured-data-editor&gt;</span> takes json, xml or yaml as a string and builds
+        an editor for it — that is what an object editor looks like when the type is only known at runtime.
+    </p>
+    <mudex-structured-data-editor id="json-editor"
+                                  data='{"name":"MudEx","version":9,"tags":["blazor","webcomponents"],"cdn":{"jsdelivr":true}}'></mudex-structured-data-editor>
+<pre><code>&lt;mudex-structured-data-editor
+    data='{"name":"MudEx","tags":["blazor","webcomponents"]}'&gt;
+&lt;/mudex-structured-data-editor&gt;</code></pre>
 
     <h2>More components</h2>
     <div class="grid">
@@ -168,8 +310,8 @@
 
     <h2>Attributes, properties and events</h2>
     <p>
-        Simple values go in as kebab-case attributes. Everything else — objects, arrays and callbacks —
-        is set as a camelCase property on the element.
+        Simple values go in as kebab-case attributes. Everything else — objects, arrays, sizes, colors and
+        callbacks — is set as a camelCase property on the element.
     </p>
     <div class="card">
         <mudex-icon-button id="event-demo" icon="M12 2 L22 22 H2 Z"></mudex-icon-button>
@@ -195,13 +337,12 @@ button.onClick = () =&gt; console.log('clicked from plain javascript');</code></
     <h2>Good to know</h2>
     <ul class="muted">
         <li>Child content between the tags is ignored — a custom element cannot receive a Blazor <code>RenderFragment</code>.
-            Components that exist only to wrap content (<code>MudExGradientText</code> for example) therefore render empty.</li>
-        <li>Generic components (<code>MudExObjectEdit&lt;T&gt;</code>, <code>MudExSelect&lt;T&gt;</code>) cannot be exposed as custom elements.</li>
+            <code>&lt;mudex-dialog&gt;</code> is the exception: its markup is captured and rendered as raw html.</li>
         <li>Custom elements are <code>display: inline</code> by default. Give them a <code>display</code> and a size in your css, otherwise they collapse.</li>
-        <li><code>mudex-audio-player</code> works best inside <code>mudex-file-display</code> (the Audio button above) — its
-            visualizer takes its size from the surrounding box, so standalone it needs an explicit width and height.</li>
         <li><code>style</code> and <code>class</code> on a MudEx element are <em>component parameters</em>, not the dom ones —
             they land on the component's own root element. Style the custom element itself through a css selector.</li>
+        <li><code>mudex-audio-player</code> works best inside <code>mudex-file-display</code> (the Audio button above) — its
+            visualizer takes its size from the surrounding box, so standalone it needs an explicit width and height.</li>
         <li>The first visit downloads the .NET runtime (a few MB, compressed). After that the browser cache handles it.</li>
         <li><code>MudEx.ready</code> is a promise that resolves once the runtime is up, <code>MudEx.tags</code> lists every registered tag.</li>
     </ul>
@@ -228,9 +369,27 @@ button.onClick = () =&gt; console.log('clicked from plain javascript');</code></
             document.getElementById('boot-state').textContent =
                 'MudEx runtime ready — ' + MudEx.tags.length + ' components registered as custom elements.';
 
+            // collections and callbacks are properties, not attributes
+            document.getElementById('select').itemCollection = ['Blazor', 'React', 'Vue', 'Angular'];
+            document.getElementById('chip-select').availableItems = ['wasm', 'cdn', 'html', 'blazor'];
+            document.getElementById('tag-field').values = ['blazor', 'webcomponents'];
+            document.getElementById('collection-editor').items = ['first@example.org', 'second@example.org'];
+            document.getElementById('card-list').itemsSource = ['Alpha', 'Beta', 'Gamma'];
+            document.getElementById('list').itemCollection = ['One', 'Two', 'Three'];
+            document.getElementById('check-box').value = true;
+            document.getElementById('range-slider').min = 0;
+            document.getElementById('range-slider').max = 100;
             document.getElementById('gravatar').size = 80;
             document.getElementById('color-edit').value = '#7e6fff';
             document.getElementById('event-demo').size = 'Large';
+
+            var slide = document.getElementById('dialog-slide');
+            var jelly = document.getElementById('dialog-jelly');
+            document.getElementById('btn-dialog-slide').onclick = function () { slide.open = true; };
+            document.getElementById('btn-dialog-jelly').onclick = function () { jelly.open = true; };
+            slide.onClosed = function (confirmed) {
+                document.getElementById('dialog-result').textContent = 'dialog closed, confirmed = ' + confirmed;
+            };
 
             var clicks = 0;
             document.getElementById('event-demo').onClick = function () {

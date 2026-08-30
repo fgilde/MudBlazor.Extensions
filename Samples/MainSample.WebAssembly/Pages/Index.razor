@@ -7,6 +7,34 @@
 @using MudBlazor.Extensions.Options
 
 <style>
+    .wc-promo {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 32px;
+        border-radius: 24px;
+        border: 1px solid rgba(var(--mud-palette-primary-rgb), .35);
+        background: linear-gradient(135deg, rgba(var(--mud-palette-primary-rgb), .10), rgba(var(--mud-palette-tertiary-rgb), .10));
+    }
+
+    .wc-promo-text { flex: 1 1 320px; }
+
+    .wc-promo-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+
+    .wc-promo-code {
+        flex: 1 1 360px;
+        margin: 0;
+        padding: 20px;
+        border-radius: 14px;
+        overflow-x: auto;
+        font-size: .82rem;
+        line-height: 1.6;
+        background: rgba(0,0,0,.35);
+        border: 1px solid rgba(var(--mud-palette-primary-rgb), .25);
+    }
+
     .hero-section {
         position: relative;
         padding: 60px 0;
@@ -210,6 +238,9 @@
             <div class="badge-item" @onclick="@(() => NavigationManager.NavigateTo("/theme-edit"))">
                 <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Palette" Size="Size.Small" /> @L["Theme Editor"]
             </div>
+            <div class="badge-item" @onclick="@(() => NavigationManager.NavigateTo("/web-components"))">
+                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Code" Size="Size.Small" /> @L["Web Components"]
+            </div>
         </div>
 
         <div class="stats-container">
@@ -231,6 +262,28 @@
         </div>
     </MudContainer>
 </div>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-8">
+    <MudPaper Class="wc-promo" Elevation="0">
+        <div class="wc-promo-text">
+            <MudText Typo="Typo.h4" GutterBottom="true">@L["MudEx without Blazor"]</MudText>
+            <MudText Typo="Typo.body1" Style="opacity: .85;">
+                @L["Every non generic component also ships as a browser custom element. One script tag and the components work in plain html, WordPress, React, Vue or Angular."]
+            </MudText>
+            <div class="wc-promo-actions">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Code"
+                           Href="/web-components">@L["How it works"]</MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.OpenInNew"
+                           Href="/webcomponents.html" Target="_blank">@L["Live demo in plain html"]</MudButton>
+            </div>
+        </div>
+        <pre class="wc-promo-code"><code>&lt;script src="https://www.mudex.org/wc/mudex.js"&gt;&lt;/script&gt;
+
+&lt;mudex-file-display url="report.pdf"
+                    content-type="application/pdf"&gt;
+&lt;/mudex-file-display&gt;</code></pre>
+    </MudPaper>
+</MudContainer>
 
 <Support />
 

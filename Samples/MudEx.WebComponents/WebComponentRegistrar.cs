@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Helper;
+using System.Linq;
 
 namespace MudEx.WebComponents;
 
@@ -22,7 +23,12 @@ public static class WebComponentRegistrar
         var register = typeof(WebComponentRegistrar).GetMethod(nameof(Register),
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
-        foreach (var (type, tag) in MudExWebComponents.GetRegistrableComponents(typeof(MudExFileDisplay).Assembly))
+        // our own elements win over the library component of the same name
+        var ownElements = new Dictionary<string, Type> { ["mudex-dialog"] = typeof(MudExDialogElement) };
+
+        foreach (var (type, tag) in MudExWebComponents.GetRegistrableComponents(typeof(MudExFileDisplay).Assembly)
+                     .Where(x => !ownElements.ContainsKey(x.Tag))
+                     .Concat(ownElements.Select(x => (Type: x.Value, Tag: x.Key))))
         {
             try
             {
