@@ -3370,6 +3370,63 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDataBase">
+            <summary>
+            A viewer for embedded database files (SQLite/.db/.db3/.sqlite/.sqlite3/...).
+            Shows tables/views on the left side and lets you browse their data page by page, search, sort, and (when a native
+            SQLite engine is available) run own raw SQL queries against the database.
+            <para>
+            This component always tries to use a real, native SQLite engine (Microsoft.Data.Sqlite) first, which gives full SQL
+            power (raw queries, server-side WHERE/ORDER BY/LIMIT). When that is not available - most notably in Blazor
+            WebAssembly, where no native SQLite binary can be loaded - it automatically falls back to a dependency-free, pure
+            C# reader that parses the SQLite file format directly (<see cref="T:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader"/>). Browsing, searching
+            and sorting keep working fully client-side in that mode too; only free-form raw SQL execution requires the native
+            engine and is disabled with an explanation in that case.
+            </para>
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDataBase.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDataBase.StartsActive">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDataBase.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDataBase.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDataBase.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDataBase.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDataBase.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDataBase.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDataBaseTable">
+            <summary>
+            Represents a table or view inside a database file, shown in the left navigation of <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplayDataBase"/>
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDataBaseColumn">
+            <summary>
+            Represents a column of a table or view inside a database file
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDataBaseRow">
+            <summary>
+            A single row of data shown in <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplayDataBase"/>, works uniformly for both the native
+            SQLite engine and the pure client-side reader.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDialog">
             <summary>
             Dialog to display a file using <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> component.
@@ -21434,6 +21491,59 @@
         <member name="T:MudBlazor.Extensions.Helper.Internal.Features">
             <summary>
             Feature toggles
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader">
+            <summary>
+            A minimal, dependency-free, read-only parser for the SQLite file format (https://www.sqlite.org/fileformat2.html).
+            This does NOT use any native library and therefore works in every hosting model, including Blazor WebAssembly,
+            where a native SQLite engine (Microsoft.Data.Sqlite/SQLitePCLRaw) is typically not available.
+            It only supports reading (no SQL engine, no writes) and does not support "WITHOUT ROWID" tables or virtual tables.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader.MaxRowsPerTable">
+            <summary>
+            Safety cap to avoid materializing an unbounded amount of rows into browser/process memory for huge tables.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader._schema">
+            <summary>
+            Schema entries found in sqlite_master, keyed by table/view name (case-insensitive)
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader.LooksLikeSqliteFile(System.Byte[])">
+            <summary>
+            Returns true if the given bytes start with the SQLite file format magic header.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader.Tables">
+            <summary>
+            All tables and views found in the database (excluding internal sqlite_% tables)
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader.GetColumns(System.String)">
+            <summary>
+            Returns the (best effort) column definitions for a table/view, parsed from its CREATE statement.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader.CountRows(System.String)">
+            <summary>
+            Returns the number of rows for a table without fully materializing every row (fast path).
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader.CanBrowse(System.String)">
+            <summary>
+            Returns true if the given table can be browsed by this reader (i.e. it's a normal rowid table with data)
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader.GetRows(System.String,System.Boolean@)">
+            <summary>
+            Loads and decodes all rows of a table (up to <see cref="F:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader.MaxRowsPerTable"/>). Result rows are keyed by column name.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader.ReadVarint(System.Byte[],System.Int32@)">
+            <summary>
+            Reads a SQLite varint (big-endian, 1-9 bytes, last byte uses all 8 bits) starting at pos and advances pos.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.Internal.SizeParser.ParseMudExSize``1(System.String)">

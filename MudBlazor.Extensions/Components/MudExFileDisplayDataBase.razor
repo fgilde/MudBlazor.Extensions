@@ -1,0 +1,149 @@
+@inherits MudExBaseComponent<MudExFileDisplayDataBase>
+
+<style>
+    .mud-ex-file-display-db {
+        width: 100%;
+        height: 100%;
+    }
+
+    .mud-ex-file-display-db-tables {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .mud-ex-file-display-db-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mud-ex-file-display-db-grid {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    .mud-ex-file-display-db-grid > .mud-table-container {
+        width: 100% !important;
+    }
+</style>
+
+@if (_loading)
+{
+    <MudProgressCircular Style="margin-top: 20%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+}
+else if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <MudAlert Severity="Severity.Error" Class="ma-4">@_errorMessage</MudAlert>
+}
+else
+{
+    <MudExSplitPanel Class="mud-ex-file-display-db" ColumnLayout="true" IsCollapsible="true" SplitterSize="3">
+        <Left>
+            <MudList T="MudExFileDisplayDataBaseTable" Class="mud-ex-file-display-db-tables" Dense="true" SelectedValue="_selectedTable" SelectedValueChanged="SelectTableAsync">
+                @foreach (var table in _tables)
+                {
+                    <MudListItem T="MudExFileDisplayDataBaseTable" Value="@table" Icon="@(table.IsView ? Icons.Material.Filled.Visibility : Icons.Material.Filled.TableChart)">
+                        <div style="display:flex; align-items:center; justify-content: space-between; width:100%;">
+                            <MudText>@table.Name</MudText>
+                            <MudChip T="string" Size="Size.Small" Class="ml-2">@table.RowCount</MudChip>
+                        </div>
+                    </MudListItem>
+                }
+            </MudList>
+        </Left>
+        <Right>
+            <div class="mud-ex-file-display-db-content">
+                @if (!_nativeMode)
+                {
+                    <MudAlert Severity="Severity.Info" Dense="true" Class="ma-1">
+                        @TryLocalize("Client-side mode: browsing, searching and sorting works fully in the browser. Raw SQL queries and views require a native SQLite engine and are not available here.")
+                    </MudAlert>
+                }
+                @if (!string.IsNullOrEmpty(_tableMessage))
+                {
+                    <MudAlert Severity="Severity.Warning" Dense="true" Class="ma-1">@_tableMessage</MudAlert>
+                }
+                <MudDataGrid @ref="_grid"
+                             T="MudExFileDisplayDataBaseRow"
+                             Class="mud-ex-file-display-db-grid"
+                             Height="100%"
+                             Dense="true"
+                             ServerData="ServerReload"
+                             SortMode="SortMode.None"
+                             ColumnResizeMode="ResizeMode.Container"
+                             FixedHeader="true"
+                             FixedFooter="true"
+                             Filterable="false">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">@(_selectedTable?.Name ?? TryLocalize("Data"))</MudText>
+                        <MudSpacer />
+                        <MudTextField T="string" Value="_searchString" ValueChanged="OnSearchChangedAsync" Placeholder="@TryLocalize("Search")" Adornment="Adornment.Start" Immediate="false"
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                        <MudTooltip Text="@TryLocalize("Refresh")">
+                            <MudIconButton Icon="@Icons.Material.Filled.Refresh" OnClick="RefreshAsync"></MudIconButton>
+                        </MudTooltip>
+                        <MudTooltip Text="@TryLocalize("SQL query")">
+                            <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@(() => _showQuery = !_showQuery)"></MudIconButton>
+                        </MudTooltip>
+                    </ToolBarContent>
+                    <Columns>
+                        @foreach (var column in _columns)
+                        {
+                            <PropertyColumn Property="@(row => row[column.Name])" Sortable="false">
+                                <HeaderTemplate>
+                                    <div style="cursor:pointer; display:flex; align-items:center; gap:4px;" @onclick="@(() => OnSortChangedAsync(column.Name))">
+                                        <span>@(column.IsPrimaryKey ? $"🔑 {column.Name}" : column.Name)</span>
+                                        @if (_sortColumn == column.Name)
+                                        {
+                                            <MudIcon Size="Size.Small" Icon="@(_sortDescending ? Icons.Material.Filled.ArrowDownward : Icons.Material.Filled.ArrowUpward)" />
+                                        }
+                                    </div>
+                                </HeaderTemplate>
+                            </PropertyColumn>
+                        }
+                    </Columns>
+                </MudDataGrid>
+
+                @if (_showQuery)
+                {
+                    <MudPaper Class="pa-2" Elevation="0">
+                        <MudStack Row="true" AlignItems="AlignItems.Start" Spacing="2">
+                            <MudTextField @bind-Value="_customQuery" Label="@TryLocalize("SQL query")" Variant="Variant.Outlined" Lines="2" Class="flex-grow-1" Disabled="@(!_nativeMode)" />
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.PlayArrow" OnClick="RunCustomQueryAsync">@TryLocalize("Run")</MudButton>
+                        </MudStack>
+                        @if (!string.IsNullOrEmpty(_customQueryError))
+                        {
+                            <MudAlert Severity="Severity.Error" Class="mt-2" Dense="true">@_customQueryError</MudAlert>
+                        }
+                        else if (_customQueryResult != null && _customQueryColumns != null)
+                        {
+                            <MudSimpleTable Dense="true" Striped="true" Bordered="true" Class="mt-2" Style="max-height: 300px; overflow-y: auto;">
+                                <thead>
+                                    <tr>
+                                        @foreach (var col in _customQueryColumns)
+                                        {
+                                            <th>@col</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var row in _customQueryResult)
+                                    {
+                                        <tr>
+                                            @foreach (var col in _customQueryColumns)
+                                            {
+                                                <td>@row[col]</td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </MudSimpleTable>
+                        }
+                    </MudPaper>
+                }
+            </div>
+        </Right>
+    </MudExSplitPanel>
+}
