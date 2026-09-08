@@ -1,0 +1,19 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Ada Lovelace
+ORG:Analytical Engines Ltd.
+TITLE:Chief Mathematician
+EMAIL:ada@example.com
+TEL:+1-555-0100
+ADR:;;1 Babbage Street;London;;;UK
+NOTE:Pioneer of computer programming.
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+FN:Grace Hopper
+ORG:US Navy
+TITLE:Rear Admiral
+EMAIL:grace@example.com
+TEL:+1-555-0101
+NOTE:Invented the compiler.
+END:VCARD

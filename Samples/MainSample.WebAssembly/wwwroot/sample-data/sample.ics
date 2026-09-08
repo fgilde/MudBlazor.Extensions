@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MudBlazor.Extensions//Demo//EN
+BEGIN:VEVENT
+UID:1@mudex.demo
+SUMMARY:Sprint Planning
+LOCATION:Room 42
+DESCRIPTION:Plan the next sprint backlog.
+ORGANIZER:mailto:scrum-master@example.com
+DTSTART:20240610T090000Z
+DTEND:20240610T100000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:2@mudex.demo
+SUMMARY:MudBlazor.Extensions Release
+LOCATION:Online
+DESCRIPTION:Publish the new NuGet package.
+ORGANIZER:mailto:release-manager@example.com
+DTSTART:20240615T130000Z
+DTEND:20240615T140000Z
+END:VEVENT
+END:VCALENDAR

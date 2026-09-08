@@ -1,0 +1,42 @@
+diff --git a/src/Calculator.cs b/src/Calculator.cs
+index 3f8a1b2..9c4d5e6 100644
+--- a/src/Calculator.cs
++++ b/src/Calculator.cs
+@@ -12,9 +12,13 @@ public class Calculator
+ 
+     public int Divide(int a, int b)
+     {
+-        return a / b;
++        if (b == 0)
++            throw new DivideByZeroException();
++
++        return a / b;
+     }
+ 
+-    public int Add(int a, int b) => a + b;
++    public int Add(int a, int b) => checked(a + b);
++
++    public int Subtract(int a, int b) => checked(a - b);
+ }
+diff --git a/src/Program.cs b/src/Program.cs
+index 1a2b3c4..5d6e7f8 100644
+--- a/src/Program.cs
++++ b/src/Program.cs
+@@ -1,6 +1,7 @@
+ using System;
++using System.Globalization;
+ 
+ var calculator = new Calculator();
+-Console.WriteLine(calculator.Divide(10, 0));
++Console.WriteLine(calculator.Divide(10, 2).ToString(CultureInfo.InvariantCulture));
+ Console.WriteLine(calculator.Add(2, 3));
+diff --git a/docs/CHANGELOG.md b/docs/CHANGELOG.md
+new file mode 100644
+index 0000000..2e1f9a3
+--- /dev/null
++++ b/docs/CHANGELOG.md
+@@ -0,0 +1,4 @@
++# Changelog
++
++- Guard against division by zero
++- Add Subtract

@@ -1,0 +1,24 @@
+From: "Jane Doe" <jane.doe@example.com>
+To: "John Smith" <john.smith@example.com>
+Cc: team@example.com
+Subject: Welcome to MudBlazor.Extensions
+Date: Mon, 01 Jul 2024 09:30:00 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="BOUNDARY123"
+
+--BOUNDARY123
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hi John,
+
+This is a plain text sample e-mail used to demo MudExFileDisplayDocument's .eml support.
+
+Best,
+Jane
+--BOUNDARY123
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html><body><p>Hi John,</p><p>This is an <strong>HTML</strong> sample e-mail used to demo <code>MudExFileDisplayDocument</code>'s .eml support.</p><p>Best,<br/>Jane</p></body></html>
+--BOUNDARY123--

@@ -3327,6 +3327,44 @@
             Shows an error message
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayCertificate">
+            <summary>
+            Viewer for X.509 certificate files (.pem, .crt, .cer, .der, .pfx, .p12, .p7b, .p7c). Shows subject, issuer,
+            validity, fingerprints, key details and subject alternative names of every certificate in the file - a PEM
+            bundle or a PKCS#7 container may hold a whole chain.
+            </summary>
+            <remarks>
+            Decoding is done by <see cref="T:MudBlazor.Extensions.Helper.Internal.X509CertificateReader"/> rather than <c>X509Certificate2</c>, because the
+            platform certificate stack is unavailable in Blazor WebAssembly. Only password protected PKCS#12 containers
+            still need it, since those are encrypted rather than merely encoded.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.ReadPkcs12(System.Byte[],System.String)">
+            <summary>
+            PKCS#12 is the one format that cannot be decoded from its bytes alone, so it goes through the platform.
+            The certificates that come out are re-read from their DER so the display stays on one code path.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayCode">
             <summary>
             Simple component to display markdown files with MudExFileDisplay
@@ -3373,16 +3411,6 @@
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDataBase">
             <summary>
             A viewer for embedded database files (SQLite/.db/.db3/.sqlite/.sqlite3/...).
-            Shows tables/views on the left side and lets you browse their data page by page, search, sort, and (when a native
-            SQLite engine is available) run own raw SQL queries against the database.
-            <para>
-            This component always tries to use a real, native SQLite engine (Microsoft.Data.Sqlite) first, which gives full SQL
-            power (raw queries, server-side WHERE/ORDER BY/LIMIT). When that is not available - most notably in Blazor
-            WebAssembly, where no native SQLite binary can be loaded - it automatically falls back to a dependency-free, pure
-            C# reader that parses the SQLite file format directly (<see cref="T:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader"/>). Browsing, searching
-            and sorting keep working fully client-side in that mode too; only free-form raw SQL execution requires the native
-            engine and is disabled with an explanation in that case.
-            </para>
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDataBase.Name">
@@ -3485,10 +3513,103 @@
             Closes the dialog.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDiff">
+            <summary>
+            Viewer for unified diff files (.diff, .patch) as produced by <c>git diff</c>, <c>git format-patch</c> or
+            <c>diff -u</c>. Splits the patch into files and hunks, keeps the original and new line numbers and colorizes
+            added, removed and context lines. Fully client-side, no external dependency.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDiff.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDiff.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDiff.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDiff.Parse(System.String)">
+            <summary>
+            Walks the patch line by line. A file starts either at a "diff --git" line (git) or at the "---" header of a
+            plain unified diff; everything before the first hunk of a file is treated as its metadata and skipped.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffLineKind">
+            <summary>The kind of a single diff line.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffLineKind.Context">
+            <summary>Unchanged line shown for context.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffLineKind.Added">
+            <summary>Line only present in the new file.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffLineKind.Removed">
+            <summary>Line only present in the old file.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffLineKind.Meta">
+            <summary>Diff metadata such as "\ No newline at end of file".</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffLine">
+            <summary>One line inside a hunk together with its position in the old and new file.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffLine.#ctor(MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffLineKind,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>One line inside a hunk together with its position in the old and new file.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffHunk">
+            <summary>One "@@" section of a file diff.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffHunk.Header">
+            <summary>The raw "@@ ... @@" line.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffHunk.Heading">
+            <summary>The optional section name git puts behind the closing "@@".</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffHunk.Lines">
+            <summary>All lines of this hunk.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffFile">
+            <summary>All hunks belonging to one file of the patch.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffFile.Path">
+            <summary>Display path, the new path where available.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffFile.OldPath">
+            <summary>Path taken from the "---" header.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffFile.NewPath">
+            <summary>Path taken from the "+++" header.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffFile.Additions">
+            <summary>Number of added lines.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffFile.Deletions">
+            <summary>Number of removed lines.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffFile.Hunks">
+            <summary>The hunks of this file.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffFile.IsNew">
+            <summary>True when the file is created by this patch.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDiff.DiffFile.IsDeleted">
+            <summary>True when the file is deleted by this patch.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDocument">
             <summary>
-            Document file viewer for DOCX, RTF and MSG files.
-            Uses docx-preview for DOCX, RtfPipe for RTF, and MsgReader for MSG files.
+            Document file viewer for DOCX, RTF, MSG and EML files.
+            Uses docx-preview for DOCX, RtfPipe for RTF, MsgReader for MSG (Outlook) and a lightweight MIME parser for EML files.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDocument.Name">
@@ -3535,6 +3656,36 @@
             <summary>
             Called from JS when an error occurs
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayEpub">
+            <summary>
+            Viewer for EPUB e-books (.epub). Reads the package document with <see cref="T:MudBlazor.Extensions.Helper.Internal.EpubBook"/>, lists the chapters in
+            spine order next to the content and renders the selected chapter in a sandboxed iframe with its stylesheets and
+            images inlined. Works client-side, the archive is opened with the BCL <see cref="T:System.IO.Compression.ZipArchive"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayEpub.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayEpub.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayEpub.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayEpub.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayEpub.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayEpub.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayEpub.DisposeAsync">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayExcel">
             <summary>
@@ -3675,6 +3826,97 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayFont.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayHar">
+            <summary>
+            Viewer for HTTP Archive files (.har) as exported by the network tab of every browser. Lists all requests with
+            method, status, type, size and duration, draws a waterfall relative to the first request and shows headers,
+            query string, post data and timing breakdown of the selected entry. Read with
+            <see cref="T:System.Text.Json.JsonDocument"/> instead of a serializer so it stays trimming friendly in Blazor WebAssembly.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayHar.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayHar.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayHar.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayHar.WaterfallOffset(MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry)">
+            <summary>Left offset of the waterfall bar in percent of the whole capture.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayHar.WaterfallWidth(MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry)">
+            <summary>Width of the waterfall bar in percent, never below a hairline so short requests stay visible.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry">
+            <summary>One request/response pair of the archive.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.Started">
+            <summary>Wall clock time the request started.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.OffsetMilliseconds">
+            <summary>Milliseconds between the first request of the capture and this one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.Duration">
+            <summary>Total duration in milliseconds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.Method">
+            <summary>HTTP method.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.Url">
+            <summary>Full request url.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.ShortUrl">
+            <summary>Path and query only, used for the table column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.HttpVersion">
+            <summary>HTTP version of the request.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.Status">
+            <summary>Response status code, 0 when the request never completed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.StatusText">
+            <summary>Response status text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.MimeType">
+            <summary>Mime type of the response body.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.ResourceType">
+            <summary>Resource type the browser assigned (document, script, xhr, ...).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.ServerAddress">
+            <summary>Server ip address if the capture recorded one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.Size">
+            <summary>Transferred size in bytes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.RequestHeaders">
+            <summary>Request headers.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.ResponseHeaders">
+            <summary>Response headers.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.QueryString">
+            <summary>Parsed query string parameters.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.PostData">
+            <summary>Raw request body, if any.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHar.HarEntry.Timings">
+            <summary>Timing phases that apply to this request.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayHtml">
             <summary>
             Simple component to display Html files with MudExFileDisplay
@@ -3708,6 +3950,82 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayHtml.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayLog">
+            <summary>
+            Viewer for plain text log files (.log, .out, .err). Splits the file into lines, detects the log level of each
+            line (ERROR/WARN/INFO/DEBUG/TRACE/FATAL), colorizes it accordingly and offers a search box plus level filter
+            chips. Fully client-side, no native dependencies.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayLog.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayLog.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayLog.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayLog.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayLog.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayLog.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayLog.ChipColorForLevel(System.String)">
+            <summary>
+            A theme color for the filter chips. The css classes above only set a text color, which is invisible on a
+            filled chip - the chip needs the palette color itself to make its on/off state readable.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayMap">
+            <summary>
+            Viewer for geographic files (.geojson, .gpx, .kml). GPX and KML are converted to GeoJSON in C# by
+            <see cref="T:MudBlazor.Extensions.Helper.Internal.GeoJsonConverter"/>, so the browser side only has to render one format with Leaflet. The map fits
+            the bounds of the data, shows names and descriptions in a popup and uses OpenStreetMap tiles.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMap.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMap.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMap.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMap.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMap.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMap.GetJsArguments">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMap.ImportModuleAndCreateJsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMap.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMap.OnMapRendered">
+            <summary>
+            Called from JS once the map has drawn the data.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMap.OnError(System.String)">
+            <summary>
+            Called from JS when Leaflet could not render the file.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown">
             <summary>
             Simple component to display markdown files with MudExFileDisplay
@@ -3734,6 +4052,91 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayModel3d">
+            <summary>
+            Viewer for 3D model files (.stl, .obj, .ply, .glb, .gltf, .3mf). Renders the mesh with three.js in a WebGL
+            canvas, fits the camera to the model's bounding box and offers orbit/zoom/pan plus a wireframe and an
+            auto rotate toggle. three.js and its loaders come from a CDN, nothing is bundled into the package.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.Wireframe">
+            <summary>
+            Renders the model as a wireframe instead of a shaded surface
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.AutoRotate">
+            <summary>
+            Rotates the model continuously
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.GetJsArguments">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.ImportModuleAndCreateJsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.OnModelLoaded(System.Int32)">
+            <summary>
+            Called from JS when the model is on screen.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayModel3d.OnError(System.String)">
+            <summary>
+            Called from JS when three.js could not load or render the file.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayNotebook">
+            <summary>
+            A viewer for Jupyter Notebook files (.ipynb). Renders markdown cells, code cells (with syntax highlighting for the
+            notebook's kernel language) and their outputs (text/stream, images, html and errors) sequentially, just like
+            Jupyter itself does. Works fully client-side (including Blazor WebAssembly) since .ipynb is just a JSON document.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayNotebook.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayNotebook.Theme">
+            <summary>
+            The theme used to render code cells
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayNotebook.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayNotebook.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayNotebook.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayNotebook.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayNotebook.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive">
@@ -3809,6 +4212,41 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPdf.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayPresentation">
+            <summary>
+            Viewer for PowerPoint presentations (.pptx). Reads the OOXML package with <see cref="T:MudBlazor.Extensions.Helper.Internal.PptxPresentation"/> and
+            renders the slides as scalable html - text, pictures, solid fills, groups and speaker notes. Runs fully
+            client-side and needs neither Office nor an online service, unlike <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.ShowNotes">
+            <summary>
+            Shows the speaker notes below the slide
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData">
             <summary>
             Simple component to display markdown files with MudExFileDisplay
@@ -3841,6 +4279,134 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplaySubtitle">
+            <summary>
+            Viewer for subtitle and lyric files (.srt, .vtt, .lrc, .ttml, .dfxp, .itt, .ass, .ssa). Shows every cue with its
+            timecode and offers a full text search. SubRip, LRC and TTML are parsed by <see cref="T:AuralizeBlazor.Types.LyricData"/> from
+            AuralizeBlazor (the same model the audio player uses for its lyrics overlay); WebVTT and SubStation Alpha are
+            converted into that model here because they have no index line respectively a completely different layout.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplaySubtitle.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplaySubtitle.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplaySubtitle.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplaySubtitle.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplaySubtitle.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplaySubtitle.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplaySubtitle.ParseWebVtt(System.String)">
+            <summary>
+            WebVTT looks like SubRip but has no index line, uses a dot before the milliseconds and may carry cue
+            settings behind the end timecode plus NOTE/STYLE/REGION blocks, so it gets its own small parser.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayVCard">
+            <summary>
+            Viewer for vCard (.vcf) contact files and iCalendar (.ics) calendar files. Both formats share the same simple
+            "KEY:VALUE" line based structure (RFC 6350 / RFC 5545), so a single lightweight parser handles both. Renders
+            contacts as cards and calendar events as a chronological list. Fully client-side, no external dependency.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayVCard.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayVCard.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayVCard.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayVCard.SplitComponents(System.String,System.String)">
+            <summary>
+            Extracts all "BEGIN:&lt;name&gt; ... END:&lt;name&gt;" blocks (vCard/vEvent components), unfolding
+            RFC-required line continuations (a line starting with a space/tab continues the previous line) first.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayVCard.GetRawValues(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.String)">
+            <summary>Values as they appear in the file - needed where the escapes still carry meaning, e.g. ADR.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayVCard.Unescape(System.String)">
+            <summary>
+            Un-escapes a property value as defined by RFC 5545 / RFC 6350: "\n" and "\N" are line breaks, every other
+            backslash escape yields the escaped character itself. Scanned character by character instead of chained
+            Replace calls so an escaped backslash followed by an "n" is not mistaken for a line break.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayVCard.FormatAddress(System.String)">
+            <summary>
+            ADR values are seven ";" separated components (post office box, extended address, street, locality, region,
+            postal code, country). Joins the non empty ones so a raw ";;Street;City;;12345;Country" becomes readable.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayVCard.VCardContact">
+            <summary>A single parsed vCard contact.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.VCardContact.FullName">
+            <summary>Formatted full name (FN).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.VCardContact.Organization">
+            <summary>Organization (ORG).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.VCardContact.Title">
+            <summary>Job title (TITLE).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.VCardContact.Emails">
+            <summary>All email addresses (EMAIL).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.VCardContact.Phones">
+            <summary>All phone numbers (TEL).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.VCardContact.Addresses">
+            <summary>All addresses (ADR).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.VCardContact.Note">
+            <summary>Free text note (NOTE).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayVCard.CalendarEvent">
+            <summary>A single parsed calendar event (VEVENT).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.CalendarEvent.Summary">
+            <summary>Event title (SUMMARY).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.CalendarEvent.Location">
+            <summary>Event location (LOCATION).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.CalendarEvent.Description">
+            <summary>Event description (DESCRIPTION).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.CalendarEvent.Start">
+            <summary>Start date/time (DTSTART).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.CalendarEvent.End">
+            <summary>End date/time (DTEND).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.CalendarEvent.Organizer">
+            <summary>Organizer (ORGANIZER).</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayZip">
             <summary>
@@ -21488,10 +22054,119 @@
             Converts the given data to an HTML string.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.EpubBook">
+            <summary>
+            A minimal EPUB (2 and 3) reader built on <see cref="T:System.IO.Compression.ZipArchive"/> from the BCL. Resolves the OPF package from
+            META-INF/container.xml, reads metadata, spine order and the navigation document, and can render a single
+            chapter into a self contained html document with its stylesheets and images inlined - which is what an iframe
+            needs, since it cannot resolve relative urls back into the zip.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.EpubBook.Title">
+            <summary>Book title from the OPF metadata.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.EpubBook.Author">
+            <summary>Author(s) from the OPF metadata.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.EpubBook.Language">
+            <summary>Language code from the OPF metadata.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.EpubBook.CoverDataUrl">
+            <summary>Cover image as data uri, if the book declares one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.EpubBook.Chapters">
+            <summary>The chapters in reading order as defined by the spine.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.EpubBook.ApplyNavigationTitles(System.Xml.Linq.XDocument)">
+            <summary>
+            The spine has no titles, so prefer the labels of the EPUB 3 nav document or the EPUB 2 ncx if present.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.EpubBook.RenderChapter(MudBlazor.Extensions.Helper.Internal.EpubChapter)">
+            <summary>
+            Returns the chapter as a standalone html document: stylesheets are inlined, images and fonts referenced
+            from the markup or from the css are replaced by data uris, so the result renders inside an iframe srcdoc.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.EpubBook.Combine(System.String,System.String)">
+            <summary>Resolves a href relative to a directory inside the archive, including "../" segments.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.EpubChapter">
+            <summary>One entry of the EPUB spine.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.EpubChapter.Id">
+            <summary>Manifest id of the chapter.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.EpubChapter.Path">
+            <summary>Path of the chapter document inside the archive.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.EpubChapter.Title">
+            <summary>Display title, taken from the navigation document or the document itself.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.Internal.Features">
             <summary>
             Feature toggles
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.GeoJsonConverter">
+            <summary>
+            Converts GPX and KML documents into a GeoJSON FeatureCollection so a single renderer can display all three
+            formats. Elements are matched by their local name, which keeps the conversion working across the different
+            GPX (1.0/1.1) and KML (2.0-2.3, including the google extension namespace) schema versions.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.GeoJsonConverter.ToGeoJson(System.String,System.String)">
+            <summary>
+            Converts the content of a .gpx, .kml or .geojson file into a GeoJSON string. GeoJSON input is returned
+            unchanged, so the caller can hand any of the three straight to the map.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.GeoJsonConverter.KmlCoordinates(System.Xml.Linq.XElement)">
+            <summary>
+            KML packs all positions of a geometry into one whitespace separated list of "lon,lat[,altitude]" tuples.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.GeoJsonConverter.ReadLatLon(System.Xml.Linq.XElement)">
+            <summary>GPX carries the position in attributes and, unlike GeoJSON, latitude first.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.LineEndings">
+            <summary>
+            Line ending normalization for the text based file viewers.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.LineEndings.NormalizeLineEndings(System.String)">
+            <summary>
+            Turns every line break variant into "\n". A plain <c>Replace("\r\n", "\n")</c> is not enough: on a file
+            with doubled carriage returns ("\r\r\n") it leaves a "\r" behind, and every subsequent line comparison,
+            regex anchor or empty line check then silently fails on that invisible character.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.LineEndings.SplitLines(System.String)">
+            <summary>
+            Normalizes the line endings and splits into lines.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.MimeMessage">
+            <summary>
+            A minimal, dependency-free RFC 822 / MIME (.eml) parser: reads headers, walks multipart/* bodies, decodes
+            quoted-printable and base64 encoded parts and exposes the text/plain body, text/html body and inline
+            (Content-ID referenced) attachments needed to render an email similarly to <c>MsgReader</c> for .msg files.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.MimeMessage.GetEncoding(System.String)">
+            <summary>
+            Resolves the charset named in a Content-Type header. Unknown or missing charsets fall back to UTF-8;
+            anything but the built in code pages would need System.Text.Encoding.CodePages, which we do not pull in.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.MimeMessage.ResolveCidImages(System.String)">
+            <summary>Replaces cid: references in the html with inline data-URIs.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.MimeMessage.PrependHeaders(System.String)">
+            <summary>Prepends a small From/To/Subject/Date header block to the rendered html body.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.MimeMessage.DecodeHeaderValue(System.String)">
+            <summary>Decodes RFC 2047 encoded-words (e.g. "=?UTF-8?B?...?=") that may appear in header values.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.Internal.MudExSqlitePureReader">
             <summary>
@@ -21546,6 +22221,61 @@
             Reads a SQLite varint (big-endian, 1-9 bytes, last byte uses all 8 bits) starting at pos and advances pos.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.PptxPresentation">
+            <summary>
+            A minimal OOXML PowerPoint (.pptx) reader that turns every slide into a block of html. Positions and sizes are
+            emitted as container query units (cqw) relative to the slide width, so the whole slide scales with its
+            container without any JavaScript. Placeholders without their own transform inherit it from the slide layout and
+            then from the slide master, the way PowerPoint resolves them.
+            </summary>
+            <remarks>
+            Deliberately covers the common case only: text shapes, pictures, solid fills, groups and speaker notes. Charts,
+            SmartArt, tables, theme colors, gradients and animations are ignored - a slide using them renders without those
+            parts rather than failing.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxPresentation.SlideWidth">
+            <summary>Slide width in EMU, the reference for every emitted cqw value.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxPresentation.SlideHeight">
+            <summary>Slide height in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxPresentation.Slides">
+            <summary>All slides in presentation order.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.PptxPresentation.ReadLayoutPlaceholders(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Collects the placeholder transforms of the slide layout and, behind it, the slide master. Keys are
+            "type:idx" plus the bare type, because a slide may reference a placeholder by either.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.PptxPresentation.Cqw(System.Int64)">
+            <summary>EMU expressed as a percentage of the slide width, which is what one cqw unit is.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.PptxPresentation.Transform">
+            <summary>Position and size of a shape in EMU, plus the mapping a surrounding group applies to it.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.PptxPresentation.Transform.Apply(MudBlazor.Extensions.Helper.Internal.PptxPresentation.Transform)">
+            <summary>Maps a child transform through this group mapping.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.PptxPresentation.Transform.Combine(MudBlazor.Extensions.Helper.Internal.PptxPresentation.Transform)">
+            <summary>Chains this mapping with a nested one so nested groups keep working.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.PptxSlide">
+            <summary>One rendered slide of a presentation.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxSlide.Number">
+            <summary>One based slide number.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxSlide.Title">
+            <summary>Text of the title placeholder, if the slide has one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxSlide.Html">
+            <summary>The slide content as html, positioned in container query units.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxSlide.Notes">
+            <summary>Speaker notes of the slide.</summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.Internal.SizeParser.ParseMudExSize``1(System.String)">
             <summary>
             Parses a string to a tuple of value and unit.
@@ -21554,6 +22284,90 @@
             <param name="value"></param>
             <returns></returns>
             <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.X509CertificateReader">
+            <summary>
+            Reads X.509 certificates with <see cref="T:System.Formats.Asn1.AsnReader"/> instead of <c>X509Certificate2</c>.
+            </summary>
+            <remarks>
+            The whole <c>System.Security.Cryptography.X509Certificates</c> namespace throws
+            <see cref="T:System.PlatformNotSupportedException"/> on browser-wasm, so a Blazor WebAssembly app cannot open a
+            certificate through it at all. <c>System.Formats.Asn1</c> is pure managed code and works everywhere, so the
+            viewer decodes the DER structure itself. Only PKCS#12 still needs the platform, because that container is
+            encrypted rather than merely encoded.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.Read(System.Byte[])">
+            <summary>
+            Reads every certificate found in the data: one or more PEM blocks, a bare DER certificate or a PKCS#7
+            certificate chain (.p7b), in DER or PEM form.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.ExtractDerBlocks(System.Byte[])">
+            <summary>
+            Yields the DER payloads: the base64 body of every PEM block, or the input itself when it is not text.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.ReadName(System.Formats.Asn1.AsnReader)">
+            <summary>
+            Formats an RDNSequence the way certificate tools display it: most specific component first.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.ReadSubjectAlternativeNames(System.Formats.Asn1.AsnReader)">
+            <summary>
+            Walks the optional trailing fields of the TBSCertificate up to the "[3] extensions" block and reads the
+            subject alternative names out of it.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails">
+            <summary>
+            The decoded, display ready contents of one certificate.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.RawData">
+            <summary>The DER bytes the values were decoded from.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.Version">
+            <summary>X.509 version (1, 2 or 3).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.SerialNumber">
+            <summary>Serial number as upper case hex.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.SignatureAlgorithm">
+            <summary>Signature algorithm, friendly name where known.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.PublicKeyAlgorithm">
+            <summary>Public key algorithm, friendly name where known.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.PublicKeyDescription">
+            <summary>Public key algorithm including key size or curve.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.Issuer">
+            <summary>Issuer distinguished name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.Subject">
+            <summary>Subject distinguished name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.NotBefore">
+            <summary>Start of the validity period.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.NotAfter">
+            <summary>End of the validity period.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.Thumbprint">
+            <summary>SHA-1 fingerprint, the value certificate tools call "thumbprint".</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.Sha256Fingerprint">
+            <summary>SHA-256 fingerprint.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.SubjectAlternativeNames">
+            <summary>Subject alternative names, prefixed with their kind.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.DisplayName">
+            <summary>Common name of the subject, used as a short display label.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.X509CertificateReader.CertificateDetails.IsExpired">
+            <summary>Whether the certificate is expired or not yet valid.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.JsImportHelper">
             <summary>

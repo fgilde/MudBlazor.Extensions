@@ -1,0 +1,114 @@
+@inherits MudExBaseComponent<MudExFileDisplayNotebook>
+
+<style>
+    .mud-ex-notebook-viewer {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        padding: 12px;
+        box-sizing: border-box;
+    }
+
+    .mud-ex-notebook-cell-code-row {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .mud-ex-notebook-exec-count {
+        min-width: 64px;
+        opacity: .6;
+        font-family: monospace;
+        padding-top: 4px;
+    }
+
+    .mud-ex-notebook-code-container {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .mud-ex-notebook-output {
+        margin-top: 8px;
+        margin-left: 72px;
+    }
+
+    .mud-ex-notebook-output pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+        margin: 0;
+        font-family: monospace;
+    }
+
+    .mud-ex-notebook-output img {
+        max-width: 100%;
+    }
+
+    .mud-ex-notebook-html-output {
+        width: 100%;
+        height: 300px;
+        border: none;
+    }
+</style>
+
+<div class="mud-ex-notebook-viewer">
+    @if (_cells != null)
+    {
+        @foreach (var cell in _cells)
+        {
+            <MudPaper Class="pa-3 mb-3" Elevation="1">
+                @if (cell.CellType == "markdown")
+                {
+                    <MudExMarkdown Value="@cell.Source" CodeBlockTheme="Theme" />
+                }
+                else if (cell.CellType == "code")
+                {
+                    <div class="mud-ex-notebook-cell-code-row">
+                        <MudText Typo="Typo.caption" Class="mud-ex-notebook-exec-count">In [@(cell.ExecutionCount?.ToString() ?? " ")]:</MudText>
+                        <div class="mud-ex-notebook-code-container">
+                            <MudExCodeView FullWidth="true" FullHeight="false" Code="@cell.Source" Theme="@Theme" Language="@_language"></MudExCodeView>
+                        </div>
+                    </div>
+                    @foreach (var output in cell.Outputs)
+                    {
+                        <div class="mud-ex-notebook-output">
+                            @if (output.Kind == "error")
+                            {
+                                <MudAlert Severity="Severity.Error" Dense="true">
+                                    <pre>@($"{output.ErrorName}: {output.ErrorValue}\n{output.Traceback}")</pre>
+                                </MudAlert>
+                            }
+                            else if (output.Kind == "image")
+                            {
+                                <img src="@($"data:{output.MimeType};base64,{output.Base64Data}")" alt="output" />
+                            }
+                            else if (output.Kind == "html")
+                            {
+                                <iframe sandbox="allow-same-origin" class="mud-ex-notebook-html-output" srcdoc="@((MarkupString)output.Text)"></iframe>
+                            }
+                            else if (output.Kind == "text" && !string.IsNullOrEmpty(output.Text))
+                            {
+                                <pre>@output.Text</pre>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <pre style="white-space: pre-wrap; margin: 0;">@cell.Source</pre>
+                }
+            </MudPaper>
+        }
+        @if (_cells.Count == 0)
+        {
+            <MudAlert Severity="Severity.Info">@TryLocalize("This notebook does not contain any cells.")</MudAlert>
+        }
+    }
+    else if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+    }
+    else
+    {
+        <MudProgressCircular Style="margin-top: 20%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+    }
+</div>

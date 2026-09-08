@@ -1,0 +1,14 @@
+WEBVTT
+
+NOTE
+A WebVTT cue needs no index line, and it separates
+the milliseconds with a dot instead of a comma.
+
+00:00.000 --> 00:03.500 line:90%
+<v Narrator>WebVTT is parsed without the index line.</v>
+
+00:03.700 --> 00:07.000
+Cue settings behind the end timecode are ignored.
+
+00:07.200 --> 00:11.000
+Inline tags such as <b>bold</b> are stripped.

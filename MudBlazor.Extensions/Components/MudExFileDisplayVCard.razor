@@ -1,0 +1,92 @@
+@inherits MudExBaseComponent<MudExFileDisplayVCard>
+
+<style>
+    .mud-ex-vcard-viewer {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        padding: 12px;
+        box-sizing: border-box;
+    }
+</style>
+
+<div class="mud-ex-vcard-viewer">
+    @if (_contacts != null)
+    {
+        <MudGrid>
+            @foreach (var contact in _contacts)
+            {
+                <MudItem xs="12" sm="6" md="4">
+                    <MudPaper Class="pa-3" Elevation="2">
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-2">
+                            <MudAvatar Color="Color.Primary">@(contact.FullName?.FirstOrDefault().ToString().ToUpper())</MudAvatar>
+                            <div>
+                                <MudText Typo="Typo.subtitle1">@contact.FullName</MudText>
+                                @if (!string.IsNullOrEmpty(contact.Title) || !string.IsNullOrEmpty(contact.Organization))
+                                {
+                                    <MudText Typo="Typo.caption">@contact.Title @(!string.IsNullOrEmpty(contact.Title) && !string.IsNullOrEmpty(contact.Organization) ? "@" : "") @contact.Organization</MudText>
+                                }
+                            </div>
+                        </MudStack>
+                        @foreach (var email in contact.Emails)
+                        {
+                            <MudText Typo="Typo.body2"><MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Email" /> @email</MudText>
+                        }
+                        @foreach (var phone in contact.Phones)
+                        {
+                            <MudText Typo="Typo.body2"><MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Phone" /> @phone</MudText>
+                        }
+                        @foreach (var address in contact.Addresses)
+                        {
+                            <MudText Typo="Typo.body2"><MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Home" /> @address</MudText>
+                        }
+                        @if (!string.IsNullOrEmpty(contact.Note))
+                        {
+                            <MudText Typo="Typo.body2" Class="mt-2">@contact.Note</MudText>
+                        }
+                    </MudPaper>
+                </MudItem>
+            }
+        </MudGrid>
+        @if (_contacts.Count == 0)
+        {
+            <MudAlert Severity="Severity.Info">@TryLocalize("This file does not contain any contacts.")</MudAlert>
+        }
+    }
+    else if (_events != null)
+    {
+        <MudTimeline TimelinePosition="TimelinePosition.Start">
+            @foreach (var ev in _events)
+            {
+                <MudTimelineItem Color="Color.Primary">
+                    <MudText Typo="Typo.subtitle1">@ev.Summary</MudText>
+                    <MudText Typo="Typo.caption">@ev.Start @(ev.End != null ? $"- {ev.End}" : "")</MudText>
+                    @if (!string.IsNullOrEmpty(ev.Location))
+                    {
+                        <MudText Typo="Typo.body2"><MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Place" /> @ev.Location</MudText>
+                    }
+                    @if (!string.IsNullOrEmpty(ev.Organizer))
+                    {
+                        <MudText Typo="Typo.body2"><MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Person" /> @ev.Organizer</MudText>
+                    }
+                    @if (!string.IsNullOrEmpty(ev.Description))
+                    {
+                        <MudText Typo="Typo.body2" Class="mt-1">@ev.Description</MudText>
+                    }
+                </MudTimelineItem>
+            }
+        </MudTimeline>
+        @if (_events.Count == 0)
+        {
+            <MudAlert Severity="Severity.Info">@TryLocalize("This calendar does not contain any events.")</MudAlert>
+        }
+    }
+    else if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+    }
+    else
+    {
+        <MudProgressCircular Style="margin-top: 20%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+    }
+</div>

@@ -1,0 +1,18 @@
+1
+00:00:01,000 --> 00:00:04,200
+Willkommen bei MudBlazor.Extensions.
+
+2
+00:00:04,400 --> 00:00:08,000
+Dieser Untertitel wird von
+MudExFileDisplaySubtitle gerendert.
+
+3
+00:00:08,200 --> 00:00:12,500
+SubRip, WebVTT, LRC, TTML und
+SubStation Alpha teilen sich einen Viewer.
+
+4
+00:00:12,700 --> 00:00:16,000
+Die Zeitstempel kommen aus LyricData,
+demselben Modell wie im Audio Player.

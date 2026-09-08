@@ -1,0 +1,31 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Cologne", "description": "Head office" },
+      "geometry": { "type": "Point", "coordinates": [6.9603, 50.9375] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Hamburg", "description": "Port terminal" },
+      "geometry": { "type": "Point", "coordinates": [9.9937, 53.5511] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Cologne to Hamburg", "description": "Inland leg" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[6.9603, 50.9375], [7.4653, 51.5136], [8.6821, 52.0302], [9.7320, 52.3759], [9.9937, 53.5511]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Ruhr area", "description": "Pickup zone" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[6.7500, 51.3000], [7.5500, 51.3000], [7.5500, 51.6000], [6.7500, 51.6000], [6.7500, 51.3000]]]
+      }
+    }
+  ]
+}

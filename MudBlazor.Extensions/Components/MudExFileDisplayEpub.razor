@@ -1,0 +1,111 @@
+@inherits MudExBaseComponent<MudExFileDisplayEpub>
+
+<style>
+    .mud-ex-epub-viewer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        box-sizing: border-box;
+    }
+
+    .mud-ex-epub-toc {
+        width: 280px;
+        min-width: 220px;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid rgba(128, 128, 128, 0.2);
+    }
+
+    .mud-ex-epub-book-info {
+        padding: 12px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+    }
+
+    .mud-ex-epub-cover {
+        width: 64px;
+        height: auto;
+        border-radius: 2px;
+        flex: 0 0 auto;
+    }
+
+    .mud-ex-epub-chapters {
+        flex: 1 1 auto;
+        overflow-y: auto;
+    }
+
+    .mud-ex-epub-content {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .mud-ex-epub-nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 8px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+    }
+
+    .mud-ex-epub-frame {
+        flex: 1 1 auto;
+        width: 100%;
+        border: none;
+        background: #ffffff;
+    }
+</style>
+
+<div class="mud-ex-epub-viewer">
+    @if (_book != null)
+    {
+        <div class="mud-ex-epub-toc">
+            <div class="mud-ex-epub-book-info">
+                @if (!string.IsNullOrEmpty(_book.CoverDataUrl))
+                {
+                    <img class="mud-ex-epub-cover" src="@_book.CoverDataUrl" alt="@_book.Title" />
+                }
+                <div>
+                    <MudText Typo="Typo.subtitle2">@_book.Title</MudText>
+                    @if (!string.IsNullOrEmpty(_book.Author))
+                    {
+                        <MudText Typo="Typo.caption">@_book.Author</MudText>
+                    }
+                </div>
+            </div>
+            <MudList T="object" Class="mud-ex-epub-chapters" Dense="true">
+                @foreach (var chapter in _book.Chapters)
+                {
+                    <MudListItem T="object" OnClick="@(() => SelectChapter(chapter))"
+                                 Icon="@(chapter == _selected ? Icons.Material.Filled.MenuBook : Icons.Material.Outlined.Article)"
+                                 IconColor="@(chapter == _selected ? Color.Primary : Color.Default)">
+                        @chapter.Title
+                    </MudListItem>
+                }
+            </MudList>
+        </div>
+
+        <div class="mud-ex-epub-content">
+            <div class="mud-ex-epub-nav">
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ChevronLeft" Disabled="@(!CanGoBack)" OnClick="@(() => Move(-1))" />
+                <MudText Typo="Typo.caption">@(SelectedIndex + 1) / @_book.Chapters.Count</MudText>
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ChevronRight" Disabled="@(!CanGoForward)" OnClick="@(() => Move(1))" />
+                <MudSpacer />
+                <MudText Typo="Typo.caption">@_selected?.Title</MudText>
+            </div>
+            @* srcdoc keeps the book's own css from leaking into the app; the html is already self contained *@
+            <iframe class="mud-ex-epub-frame" sandbox="allow-same-origin" srcdoc="@_chapterHtml"></iframe>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+    }
+    else
+    {
+        <MudProgressCircular Style="margin-top: 20%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+    }
+</div>

@@ -1,0 +1,10 @@
+2024-06-01 08:00:01 INFO  Startup sequence initiated
+2024-06-01 08:00:02 DEBUG Loaded configuration from appsettings.json
+2024-06-01 08:00:03 INFO  Connected to database
+2024-06-01 08:00:15 WARN  Slow query detected (1240ms) for GetOrders
+2024-06-01 08:01:00 ERROR Failed to send email notification: SMTP timeout
+2024-06-01 08:01:01 INFO  Retrying email notification (attempt 2)
+2024-06-01 08:01:02 INFO  Email notification sent successfully
+2024-06-01 08:02:30 FATAL Unhandled exception in background worker: OutOfMemoryException
+2024-06-01 08:02:31 INFO  Background worker restarted
+2024-06-01 08:05:00 TRACE Health check ping received

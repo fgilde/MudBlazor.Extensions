@@ -1,0 +1,148 @@
+@inherits MudExBaseComponent<MudExFileDisplayLog>
+
+<style>
+    .mud-ex-log-viewer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .mud-ex-log-toolbar {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 8px 12px;
+        background-color: var(--mud-palette-background-grey);
+        border-bottom: 1px solid var(--mud-palette-divider);
+    }
+
+    .mud-ex-log-search {
+        flex: 0 1 260px;
+        max-width: 260px;
+        margin: 0;
+    }
+
+    .mud-ex-log-levels {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    /* The chip carries three redundant signals for its state: fill, opacity and the leading icon */
+    .mud-ex-log-chip {
+        margin: 0;
+        font-family: monospace;
+        letter-spacing: .4px;
+    }
+
+    .mud-ex-log-chip-off {
+        opacity: .45;
+    }
+
+    .mud-ex-log-chip-count {
+        margin-left: 6px;
+        opacity: .75;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .mud-ex-log-count {
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .mud-ex-log-lines {
+        flex: 1 1 auto;
+        overflow: auto;
+        font-family: monospace;
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+
+    .mud-ex-log-line {
+        white-space: pre-wrap;
+        word-break: break-word;
+        padding: 1px 4px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.08);
+    }
+
+    .mud-ex-log-fatal, .mud-ex-log-error {
+        color: var(--mud-palette-error);
+    }
+
+    .mud-ex-log-warn {
+        color: var(--mud-palette-warning);
+    }
+
+    .mud-ex-log-info {
+        color: var(--mud-palette-info);
+    }
+
+    .mud-ex-log-debug, .mud-ex-log-trace {
+        opacity: .6;
+    }
+</style>
+
+<div class="mud-ex-log-viewer">
+    @if (_lines != null)
+    {
+        <div class="mud-ex-log-toolbar">
+            <MudTextField T="string" @bind-Value="_search" @bind-Value:after="ApplyFilter" DebounceInterval="200"
+                          Class="mud-ex-log-search" Margin="Margin.Dense" Variant="Variant.Outlined"
+                          Placeholder="@TryLocalize("Search")" Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search" Clearable="true"></MudTextField>
+
+            <div class="mud-ex-log-levels">
+                @foreach (var level in _levels)
+                {
+                    var visible = IsLevelVisible(level.Level);
+                    <MudTooltip Text="@TryLocalize(visible ? "Hide {0} lines" : "Show {0} lines", level.Level)">
+                        <MudChip T="string" Size="Size.Small"
+                                 Color="@ChipColorForLevel(level.Level)"
+                                 Variant="@(visible ? Variant.Filled : Variant.Outlined)"
+                                 Class="@($"mud-ex-log-chip {(visible ? "" : "mud-ex-log-chip-off")}")"
+                                 Icon="@(visible ? Icons.Material.Filled.Check : Icons.Material.Filled.VisibilityOff)"
+                                 OnClick="@(() => ToggleLevel(level.Level))">
+                            @level.Level<span class="mud-ex-log-chip-count">@level.Count.ToString("N0")</span>
+                        </MudChip>
+                    </MudTooltip>
+                }
+            </div>
+
+            <MudSpacer />
+
+            <MudText Typo="Typo.caption" Class="mud-ex-log-count">
+                @(IsFiltered
+                    ? TryLocalize("{0} of {1} lines", _visibleLines.Count.ToString("N0"), _lines.Count.ToString("N0"))
+                    : TryLocalize("{0} lines", _lines.Count.ToString("N0")))
+            </MudText>
+
+            <MudTooltip Text="@TryLocalize("Reset filter")">
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.FilterAltOff"
+                               Disabled="@(!IsFiltered)" OnClick="@ResetFilter" />
+            </MudTooltip>
+        </div>
+
+        <div class="mud-ex-log-lines">
+            @* Virtualized: log files are the one file type that routinely has millions of lines. *@
+            <Virtualize Items="@_visibleLines" Context="line" ItemSize="19" OverscanCount="20">
+                <div class="mud-ex-log-line @CssForLevel(line.Level)">@line.Text</div>
+            </Virtualize>
+            @if (_visibleLines.Count == 0)
+            {
+                <MudAlert Severity="Severity.Info" Dense="true" Class="mt-2">@TryLocalize("No line matches the current filter.")</MudAlert>
+            }
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+    }
+    else
+    {
+        <MudProgressCircular Style="margin-top: 20%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+    }
+</div>

@@ -57,12 +57,23 @@ class MudExFileDisplayDocument {
             iframe.style.width = '100%';
             iframe.style.height = '100%';
             iframe.style.border = 'none';
+            iframe.style.backgroundColor = '#ffffff';
             iframe.setAttribute('sandbox', 'allow-same-origin');
             container.appendChild(iframe);
 
+            // Mail, MSG and RTF content is authored for a light page and hardcodes dark text, so the frame gets
+            // its own white canvas. Without it the iframe stays transparent, the app's dark theme shows through
+            // and the message renders black on black.
+            var style = 'html,body{background:#ffffff;color:#1a1a1a;}'
+                + 'body{margin:0;padding:16px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}'
+                + 'pre{white-space:pre-wrap;word-break:break-word;font-family:Consolas,monospace;}'
+                + 'img{max-width:100%;height:auto;}'
+                + 'a{color:#0b57d0;}'
+                + 'table{border-collapse:collapse;max-width:100%;}';
+
             var doc = iframe.contentDocument || iframe.contentWindow.document;
             doc.open();
-            doc.write('<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{margin:0;padding:16px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}</style></head><body>' + htmlString + '</body></html>');
+            doc.write('<!DOCTYPE html><html><head><meta charset="utf-8"><style>' + style + '</style></head><body>' + htmlString + '</body></html>');
             doc.close();
 
             self.dotnet.invokeMethodAsync('OnDocumentRendered');

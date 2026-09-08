@@ -1,0 +1,188 @@
+@inherits MudExBaseComponent<MudExFileDisplayHar>
+
+<style>
+    .mud-ex-har-viewer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .mud-ex-har-toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .mud-ex-har-list {
+        flex: 1 1 auto;
+        overflow: auto;
+        padding: 0 8px;
+    }
+
+    .mud-ex-har-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.12);
+        font-size: 0.8rem;
+    }
+
+    .mud-ex-har-row:hover, .mud-ex-har-row.selected {
+        background-color: rgba(128, 128, 128, 0.12);
+    }
+
+    .mud-ex-har-method {
+        flex: 0 0 auto;
+        width: 56px;
+        font-family: monospace;
+    }
+
+    .mud-ex-har-url {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-family: monospace;
+    }
+
+    .mud-ex-har-type, .mud-ex-har-size, .mud-ex-har-time {
+        flex: 0 0 auto;
+        width: 82px;
+        text-align: right;
+        opacity: .7;
+    }
+
+    .mud-ex-har-waterfall {
+        flex: 0 0 auto;
+        width: 160px;
+        height: 10px;
+        position: relative;
+        background-color: rgba(128, 128, 128, 0.12);
+        border-radius: 2px;
+    }
+
+    .mud-ex-har-waterfall > div {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        background-color: var(--mud-palette-primary);
+        border-radius: 2px;
+    }
+
+    .mud-ex-har-details {
+        flex: 0 0 auto;
+        max-height: 45%;
+        overflow: auto;
+        border-top: 1px solid rgba(128, 128, 128, 0.25);
+        padding: 8px;
+    }
+
+    .mud-ex-har-kv {
+        display: flex;
+        gap: 8px;
+        font-size: 0.78rem;
+    }
+
+    .mud-ex-har-kv > span:first-child {
+        min-width: 200px;
+        opacity: .7;
+        word-break: break-all;
+    }
+
+    .mud-ex-har-kv > span:last-child {
+        font-family: monospace;
+        word-break: break-all;
+    }
+</style>
+
+<div class="mud-ex-har-viewer">
+    @if (_entries != null)
+    {
+        <div class="mud-ex-har-toolbar">
+            <MudTextField T="string" @bind-Value="_search" @bind-Value:after="ApplyFilter" DebounceInterval="200"
+                          Placeholder="@TryLocalize("Filter url, method or status")" Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search" Clearable="true"></MudTextField>
+            <MudSpacer />
+            <MudText Typo="Typo.caption">@_visibleEntries.Count / @_entries.Count @TryLocalize("requests")</MudText>
+        </div>
+
+        <div class="mud-ex-har-list">
+            <Virtualize Items="@_visibleEntries" Context="entry" ItemSize="27" OverscanCount="10">
+                <div class="mud-ex-har-row @(_selected == entry ? "selected" : "")" @onclick="@(() => _selected = entry)">
+                    <MudChip T="string" Size="Size.Small" Color="@ColorForStatus(entry.Status)" Variant="Variant.Text">@(entry.Status == 0 ? "---" : entry.Status.ToString())</MudChip>
+                    <span class="mud-ex-har-method">@entry.Method</span>
+                    <span class="mud-ex-har-url" title="@entry.Url">@entry.ShortUrl</span>
+                    <span class="mud-ex-har-type">@(entry.ResourceType ?? entry.MimeType)</span>
+                    <span class="mud-ex-har-size">@Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(entry.Size)</span>
+                    <span class="mud-ex-har-time">@entry.Duration.ToString("F0") ms</span>
+                    <span class="mud-ex-har-waterfall">
+                        <div style="left: @(WaterfallOffset(entry).ToString("F3", System.Globalization.CultureInfo.InvariantCulture))%; width: @(WaterfallWidth(entry).ToString("F3", System.Globalization.CultureInfo.InvariantCulture))%;"></div>
+                    </span>
+                </div>
+            </Virtualize>
+            @if (_entries.Count == 0)
+            {
+                <MudAlert Severity="Severity.Info">@TryLocalize("This archive does not contain any requests.")</MudAlert>
+            }
+        </div>
+
+        @if (_selected != null)
+        {
+            <div class="mud-ex-har-details">
+                <MudText Typo="Typo.subtitle2" Class="mb-1">@_selected.Method @_selected.Url</MudText>
+                <MudText Typo="Typo.caption" Class="mb-2">
+                    @_selected.Status @_selected.StatusText @(_selected.HttpVersion) @(_selected.ServerAddress != null ? $"- {_selected.ServerAddress}" : "")
+                </MudText>
+                <MudTabs Elevation="0" Rounded="true" ApplyEffectsToContainer="true" Dense="true">
+                    <MudTabPanel Text="@TryLocalize("Response headers")">
+                        @foreach (var (name, value) in _selected.ResponseHeaders)
+                        {
+                            <div class="mud-ex-har-kv"><span>@name</span><span>@value</span></div>
+                        }
+                    </MudTabPanel>
+                    <MudTabPanel Text="@TryLocalize("Request headers")">
+                        @foreach (var (name, value) in _selected.RequestHeaders)
+                        {
+                            <div class="mud-ex-har-kv"><span>@name</span><span>@value</span></div>
+                        }
+                    </MudTabPanel>
+                    @if (_selected.QueryString.Count > 0)
+                    {
+                        <MudTabPanel Text="@TryLocalize("Query")">
+                            @foreach (var (name, value) in _selected.QueryString)
+                            {
+                                <div class="mud-ex-har-kv"><span>@name</span><span>@value</span></div>
+                            }
+                        </MudTabPanel>
+                    }
+                    @if (!string.IsNullOrEmpty(_selected.PostData))
+                    {
+                        <MudTabPanel Text="@TryLocalize("Payload")">
+                            <pre style="white-space: pre-wrap; word-break: break-all; font-size: 0.78rem;">@_selected.PostData</pre>
+                        </MudTabPanel>
+                    }
+                    <MudTabPanel Text="@TryLocalize("Timings")">
+                        @foreach (var (name, value) in _selected.Timings)
+                        {
+                            <div class="mud-ex-har-kv"><span>@name</span><span>@value.ToString("F2") ms</span></div>
+                        }
+                    </MudTabPanel>
+                </MudTabs>
+            </div>
+        }
+    }
+    else if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+    }
+    else
+    {
+        <MudProgressCircular Style="margin-top: 20%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+    }
+</div>

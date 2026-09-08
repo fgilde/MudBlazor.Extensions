@@ -1,0 +1,43 @@
+@inherits MudExJsRequiredBaseComponent<MudExFileDisplayMap>
+@namespace MudBlazor.Extensions.Components
+
+<style>
+    .mud-ex-map-viewer {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    .mud-ex-map-canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    .mud-ex-map-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        pointer-events: none;
+        z-index: 500;
+    }
+</style>
+
+<div @ref="ElementReference" class="mud-ex-map-viewer">
+    <div id="@_containerId" class="mud-ex-map-canvas"></div>
+
+    @if (_isLoading)
+    {
+        <div class="mud-ex-map-overlay">
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+            <MudText>@TryLocalize("Loading map...")</MudText>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Class="ma-2">@_errorMessage</MudAlert>
+    }
+</div>

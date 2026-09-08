@@ -1,9 +1,10 @@
-using System.Text;
+﻿using System.Text;
 using BlazorJS;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Services;
 using Nextended.Core;
 using Nextended.Core.Extensions;
@@ -11,8 +12,8 @@ using Nextended.Core.Extensions;
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
-/// Document file viewer for DOCX, RTF and MSG files.
-/// Uses docx-preview for DOCX, RtfPipe for RTF, and MsgReader for MSG files.
+/// Document file viewer for DOCX, RTF, MSG and EML files.
+/// Uses docx-preview for DOCX, RtfPipe for RTF, MsgReader for MSG (Outlook) and a lightweight MIME parser for EML files.
 /// </summary>
 public partial class MudExFileDisplayDocument : IMudExFileDisplay
 {
@@ -21,6 +22,7 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         Docx,
         Rtf,
         Msg,
+        Eml,
         Unsupported
     }
 
@@ -64,12 +66,14 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
             "application/vnd.openxmlformats-officedocument.wordprocessingml*",
             "text/rtf",
             "application/rtf",
-            "application/vnd.ms-outlook");
+            "application/vnd.ms-outlook",
+            "message/rfc822");
 
         var extensionMatch = !string.IsNullOrEmpty(fileName) && (
             fileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".rtf", StringComparison.OrdinalIgnoreCase) ||
-            fileName.EndsWith(".msg", StringComparison.OrdinalIgnoreCase));
+            fileName.EndsWith(".msg", StringComparison.OrdinalIgnoreCase) ||
+            fileName.EndsWith(".eml", StringComparison.OrdinalIgnoreCase));
 
         return Task.FromResult(mimeMatch || extensionMatch);
     }
@@ -152,6 +156,9 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
                     case DocFormat.Msg:
                         await HandleMsgAsync(bytes);
                         break;
+                    case DocFormat.Eml:
+                        await HandleEmlAsync(bytes);
+                        break;
                     default:
                         _isLoading = false;
                         _isUnsupported = true;
@@ -179,6 +186,11 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         if (contentType.Contains("vnd.ms-outlook", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".msg", StringComparison.OrdinalIgnoreCase))
             return DocFormat.Msg;
+
+        // EML detection (MIME or extension)
+        if (contentType.Contains("rfc822", StringComparison.OrdinalIgnoreCase) ||
+            fileName.EndsWith(".eml", StringComparison.OrdinalIgnoreCase))
+            return DocFormat.Eml;
 
         // RTF detection (MIME or extension)
         if (contentType.Contains("rtf", StringComparison.OrdinalIgnoreCase) ||
@@ -222,6 +234,27 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         {
             html = RtfPipe.Rtf.ToHtml(new RtfPipe.RtfSource(reader));
         }
+
+        if (JsReference != null)
+        {
+            await RenderHtmlInternalAsync(html);
+        }
+        else
+        {
+            _pendingHtmlContent = html;
+        }
+    }
+
+    private async Task HandleEmlAsync(byte[] bytes)
+    {
+        // Latin1 keeps every byte intact through the string, so MimeMessage can decode each part with the
+        // charset that part declares (a UTF-8 read here would already have destroyed non ASCII bytes).
+        var text = Encoding.Latin1.GetString(bytes);
+        var message = MimeMessage.Parse(text);
+
+        var html = message.HtmlBody ?? (message.TextBody != null ? $"<pre>{System.Net.WebUtility.HtmlEncode(message.TextBody)}</pre>" : "<p>No message body available.</p>");
+        html = message.ResolveCidImages(html);
+        html = message.PrependHeaders(html);
 
         if (JsReference != null)
         {

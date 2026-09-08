@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "outputFileName": "wwwroot/js/mudBlazorExtensions.all.js",
     "inputFiles": [
@@ -113,6 +113,18 @@
     "outputFileName": "wwwroot/js/components/MudExFileDisplayDocument.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExFileDisplayDocument.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExFileDisplayModel3d.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExFileDisplayModel3d.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExFileDisplayMap.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExFileDisplayMap.js"
     ]
   }
 ]

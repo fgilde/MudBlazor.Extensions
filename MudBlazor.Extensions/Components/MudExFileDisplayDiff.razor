@@ -1,0 +1,134 @@
+@inherits MudExBaseComponent<MudExFileDisplayDiff>
+
+<style>
+    .mud-ex-diff-viewer {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        box-sizing: border-box;
+        padding: 8px;
+    }
+
+    .mud-ex-diff-file-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .mud-ex-diff-path {
+        font-family: monospace;
+        word-break: break-all;
+    }
+
+    .mud-ex-diff-hunk {
+        font-family: monospace;
+        font-size: 0.8rem;
+        overflow-x: auto;
+    }
+
+    .mud-ex-diff-hunk-header {
+        color: var(--mud-palette-info);
+        padding: 4px 0;
+        opacity: .85;
+    }
+
+    .mud-ex-diff-line {
+        display: flex;
+        white-space: pre;
+    }
+
+    .mud-ex-diff-gutter {
+        flex: 0 0 auto;
+        width: 44px;
+        text-align: right;
+        padding-right: 8px;
+        opacity: .45;
+        user-select: none;
+    }
+
+    .mud-ex-diff-marker {
+        flex: 0 0 auto;
+        width: 12px;
+        user-select: none;
+    }
+
+    .mud-ex-diff-text {
+        flex: 1 1 auto;
+    }
+
+    .mud-ex-diff-added {
+        background-color: rgba(76, 175, 80, 0.14);
+        color: var(--mud-palette-success);
+    }
+
+    .mud-ex-diff-removed {
+        background-color: rgba(244, 67, 54, 0.14);
+        color: var(--mud-palette-error);
+    }
+
+    .mud-ex-diff-meta {
+        opacity: .5;
+    }
+</style>
+
+<div class="mud-ex-diff-viewer">
+    @if (_files != null)
+    {
+        <MudExpansionPanels MultiExpansion="true">
+            @foreach (var file in _files)
+            {
+                <MudExpansionPanel Expanded="@(_files.Count <= 5)">
+                    <TitleContent>
+                        <div class="mud-ex-diff-file-head">
+                            @if (file.IsNew)
+                            {
+                                <MudIcon Size="Size.Small" Color="Color.Success" Icon="@Icons.Material.Filled.NoteAdd" />
+                            }
+                            else if (file.IsDeleted)
+                            {
+                                <MudIcon Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Filled.DeleteForever" />
+                            }
+                            else
+                            {
+                                <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Description" />
+                            }
+                            <span class="mud-ex-diff-path">@file.Path</span>
+                            <MudSpacer />
+                            <MudText Typo="Typo.caption" Color="Color.Success">+@file.Additions</MudText>
+                            <MudText Typo="Typo.caption" Color="Color.Error">-@file.Deletions</MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        @foreach (var hunk in file.Hunks)
+                        {
+                            <div class="mud-ex-diff-hunk">
+                                <div class="mud-ex-diff-hunk-header">@hunk.Header</div>
+                                @foreach (var line in hunk.Lines)
+                                {
+                                    <div class="mud-ex-diff-line @CssForKind(line.Kind)">
+                                        <span class="mud-ex-diff-gutter">@line.OldNumber</span>
+                                        <span class="mud-ex-diff-gutter">@line.NewNumber</span>
+                                        <span class="mud-ex-diff-marker">@MarkerForKind(line.Kind)</span>
+                                        <span class="mud-ex-diff-text">@line.Text</span>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </ChildContent>
+                </MudExpansionPanel>
+            }
+        </MudExpansionPanels>
+        @if (_files.Count == 0)
+        {
+            <MudAlert Severity="Severity.Info">@TryLocalize("This patch does not contain any changes.")</MudAlert>
+        }
+    }
+    else if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+    }
+    else
+    {
+        <MudProgressCircular Style="margin-top: 20%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+    }
+</div>

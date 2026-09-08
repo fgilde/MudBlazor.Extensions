@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <Import Project="..\Shared.props" />
 
   <PropertyGroup>
@@ -48,6 +48,10 @@
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="MudBlazor.Extensions.Tests" />
   </ItemGroup>
 
   <!-- libman.json is a LibMan dev-tooling config, not a runtime asset. Keep it out of the build

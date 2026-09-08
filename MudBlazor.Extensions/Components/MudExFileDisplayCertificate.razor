@@ -1,0 +1,104 @@
+﻿@inherits MudExBaseComponent<MudExFileDisplayCertificate>
+@using MudBlazor.Extensions.Helper.Internal
+
+<style>
+    .mud-ex-cert-viewer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        box-sizing: border-box;
+    }
+
+    .mud-ex-cert-list {
+        width: 260px;
+        min-width: 220px;
+        overflow-y: auto;
+        border-right: 1px solid rgba(128, 128, 128, 0.2);
+    }
+
+    .mud-ex-cert-details {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding: 16px;
+    }
+
+    .mud-ex-cert-details .mud-ex-cert-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+
+    .mud-ex-cert-details .mud-ex-cert-label {
+        min-width: 190px;
+        flex: 0 0 auto;
+        opacity: .7;
+    }
+
+    .mud-ex-cert-details .mud-ex-cert-value {
+        font-family: monospace;
+        word-break: break-all;
+    }
+</style>
+
+<div class="mud-ex-cert-viewer">
+    @if (_requiresPassword)
+    {
+        <MudPaper Class="pa-4" Style="margin: auto; max-width: 460px;">
+            <MudText Typo="Typo.subtitle1" Class="mb-2">@TryLocalize("This file is password protected")</MudText>
+            <MudTextField T="string" @bind-Value="_password" Label="@TryLocalize("Password")" InputType="InputType.Password" Immediate="true"></MudTextField>
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error" Class="mt-2" Dense="true">@_errorMessage</MudAlert>
+            }
+            <MudButton Class="mt-3" Variant="Variant.Filled" Color="Color.Primary" OnClick="@TryWithPasswordAsync">@TryLocalize("Unlock")</MudButton>
+        </MudPaper>
+    }
+    else if (_certificates != null)
+    {
+        <MudList T="X509CertificateReader.CertificateDetails" Class="mud-ex-cert-list" Dense="true">
+            @foreach (var cert in _certificates)
+            {
+                <MudListItem T="X509CertificateReader.CertificateDetails" Value="@cert" OnClick="@(() => _selected = cert)"
+                             Icon="@(cert.IsExpired ? Icons.Material.Filled.GppBad : Icons.Material.Filled.VerifiedUser)"
+                             IconColor="@(cert.IsExpired ? Color.Error : Color.Success)">
+                    @cert.DisplayName
+                </MudListItem>
+            }
+        </MudList>
+        @if (_selected != null)
+        {
+            <div class="mud-ex-cert-details">
+                @if (_selected.IsExpired)
+                {
+                    <MudAlert Severity="Severity.Error" Dense="true" Class="mb-3">@TryLocalize("This certificate is expired or not yet valid.")</MudAlert>
+                }
+                <div class="mud-ex-cert-row"><span class="mud-ex-cert-label">@TryLocalize("Subject")</span><span class="mud-ex-cert-value">@_selected.Subject</span></div>
+                <div class="mud-ex-cert-row"><span class="mud-ex-cert-label">@TryLocalize("Issuer")</span><span class="mud-ex-cert-value">@_selected.Issuer</span></div>
+                <div class="mud-ex-cert-row"><span class="mud-ex-cert-label">@TryLocalize("Valid from")</span><span class="mud-ex-cert-value">@_selected.NotBefore.LocalDateTime</span></div>
+                <div class="mud-ex-cert-row"><span class="mud-ex-cert-label">@TryLocalize("Valid to")</span><span class="mud-ex-cert-value">@_selected.NotAfter.LocalDateTime</span></div>
+                <div class="mud-ex-cert-row"><span class="mud-ex-cert-label">@TryLocalize("Serial number")</span><span class="mud-ex-cert-value">@_selected.SerialNumber</span></div>
+                <div class="mud-ex-cert-row"><span class="mud-ex-cert-label">@TryLocalize("Signature algorithm")</span><span class="mud-ex-cert-value">@_selected.SignatureAlgorithm</span></div>
+                <div class="mud-ex-cert-row"><span class="mud-ex-cert-label">@TryLocalize("Public key")</span><span class="mud-ex-cert-value">@_selected.PublicKeyDescription</span></div>
+                <div class="mud-ex-cert-row"><span class="mud-ex-cert-label">@TryLocalize("Version")</span><span class="mud-ex-cert-value">V@(_selected.Version)</span></div>
+                <div class="mud-ex-cert-row"><span class="mud-ex-cert-label">@TryLocalize("Thumbprint (SHA-1)")</span><span class="mud-ex-cert-value">@_selected.Thumbprint</span></div>
+                <div class="mud-ex-cert-row"><span class="mud-ex-cert-label">@TryLocalize("Fingerprint (SHA-256)")</span><span class="mud-ex-cert-value">@_selected.Sha256Fingerprint</span></div>
+                @if (_selected.SubjectAlternativeNames.Count > 0)
+                {
+                    <div class="mud-ex-cert-row"><span class="mud-ex-cert-label">@TryLocalize("Subject alternative names")</span></div>
+                    @foreach (var san in _selected.SubjectAlternativeNames)
+                    {
+                        <div class="mud-ex-cert-row"><span class="mud-ex-cert-label"></span><span class="mud-ex-cert-value">@san</span></div>
+                    }
+                }
+            </div>
+        }
+    }
+    else if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Class="ma-2">@_errorMessage</MudAlert>
+    }
+    else
+    {
+        <MudProgressCircular Style="margin-top: 20%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+    }
+</div>

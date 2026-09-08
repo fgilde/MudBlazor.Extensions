@@ -1,0 +1,75 @@
+@inherits MudExBaseComponent<MudExFileDisplaySubtitle>
+
+<style>
+    .mud-ex-subtitle-viewer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .mud-ex-subtitle-toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .mud-ex-subtitle-cues {
+        flex: 1 1 auto;
+        overflow: auto;
+        padding: 0 8px 8px 8px;
+    }
+
+    .mud-ex-subtitle-cue {
+        display: flex;
+        gap: 12px;
+        padding: 6px 4px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.12);
+    }
+
+    .mud-ex-subtitle-time {
+        font-family: monospace;
+        opacity: .7;
+        min-width: 86px;
+        flex: 0 0 auto;
+    }
+
+    .mud-ex-subtitle-text {
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+</style>
+
+<div class="mud-ex-subtitle-viewer">
+    @if (_lyrics != null)
+    {
+        <div class="mud-ex-subtitle-toolbar">
+            <MudTextField T="string" @bind-Value="_search" @bind-Value:after="ApplyFilter" DebounceInterval="200"
+                          Placeholder="@TryLocalize("Search")" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Clearable="true"></MudTextField>
+            <MudSpacer />
+            <MudText Typo="Typo.caption">@_visibleLines.Count / @_lyrics.Lines.Count @TryLocalize("cues")</MudText>
+        </div>
+        <div class="mud-ex-subtitle-cues">
+            <Virtualize Items="@_visibleLines" Context="cue" ItemSize="34" OverscanCount="10">
+                <div class="mud-ex-subtitle-cue">
+                    <span class="mud-ex-subtitle-time">@cue.TimeStamp.ToString(@"hh\:mm\:ss\.ff")</span>
+                    <span class="mud-ex-subtitle-text">@cue.Text</span>
+                </div>
+            </Virtualize>
+            @if (_lyrics.Lines.Count == 0)
+            {
+                <MudAlert Severity="Severity.Info">@TryLocalize("This file does not contain any cues.")</MudAlert>
+            }
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+    }
+    else
+    {
+        <MudProgressCircular Style="margin-top: 20%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+    }
+</div>

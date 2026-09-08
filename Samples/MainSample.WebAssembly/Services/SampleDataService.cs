@@ -36,6 +36,22 @@ public class SampleDataService
         yield return CreateSampleFile("Unified-Voice.mp3", "audio/mpeg3");
         yield return CreateSampleFile("WordDokument.doc", "application/msword");
         yield return CreateSampleFile("ExcelSheet.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        yield return CreateSampleFile("sample.sqlite3", "application/vnd.sqlite3");
+        yield return CreateSampleFile("sample.ipynb", "application/x-ipynb+json");
+        yield return CreateSampleFile("sample.log", "text/plain");
+        yield return CreateSampleFile("sample.pem", "application/x-pem-file");
+        yield return CreateSampleFile("sample.vcf", "text/vcard");
+        yield return CreateSampleFile("sample.ics", "text/calendar");
+        yield return CreateSampleFile("sample.eml", "message/rfc822");
+        yield return CreateSampleFile("sample.srt", "application/x-subrip");
+        yield return CreateSampleFile("sample.vtt", "text/vtt");
+        yield return CreateSampleFile("sample.patch", "text/x-patch");
+        yield return CreateSampleFile("sample.har", "application/har+json");
+        yield return CreateSampleFile("sample.stl", "model/stl");
+        yield return CreateSampleFile("sample.gpx", "application/gpx+xml");
+        yield return CreateSampleFile("sample.geojson", "application/geo+json");
+        yield return CreateSampleFile("sample.epub", "application/epub+zip");
+        yield return CreateSampleFile("sample.pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
         yield return CreateSampleFile("https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc", "application/msword");
         yield return CreateSampleFile("https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     }
