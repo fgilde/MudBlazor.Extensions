@@ -10305,6 +10305,12 @@
             The error text displayed when a file's MIME type is forbidden.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextErrorArchiveContentNotAllowed">
+            <summary>
+            The error text displayed when <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.RestrictArchiveContent"/> is enabled and an archive contains
+            files that violate the restrictions. {0} is the archive name, {1} the offending files inside it.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddUrlTitle">
             <summary>
             The title text displayed in the add URL dialog.
@@ -10394,6 +10400,21 @@
             <summary>
             The type of the restriction for extensions.
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.RestrictArchiveContent">
+            <summary>
+            Defines whether the files inside an archive are subject to the <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MimeTypes"/> and
+            <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Extensions"/> restrictions as well.
+            When false (the default) only the archive itself is checked, so an allowed zip may contain anything.
+            When true an allowed archive is opened and rejected as a whole as soon as one file inside it violates
+            the restrictions - useful when zip is allowed as a container but its payload still has to be controlled.
+            </summary>
+            <remarks>
+            Only applies to archives that are kept as they are. With <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AutoExtractArchive"/> the archive is
+            replaced by its entries and every entry runs through the restrictions on its own anyway.
+            Turning this on means the archive has to be read before it can be accepted, so a file that would
+            otherwise be loaded in the background is loaded up front.
+            </remarks>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ExternalPickerImageSize">
             <summary>
@@ -10633,6 +10654,20 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.IsArchiveContentAllowed(System.Collections.Generic.IEnumerable{Nextended.Blazor.Models.IArchivedBrowserFile},System.String)">
+            <summary>
+            Applies the extension and mime type restrictions to the files inside an archive. Reuses the same two
+            predicates the archive itself was checked with, so there is only one definition of "allowed".
+            </summary>
+            <remarks>
+            An archive nested inside the archive is only checked as a file, its own content is not opened.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.TryReadArchiveAsync(System.Byte[],System.String,System.String)">
+            <summary>
+            Reads the archive once and returns its entries, or null when it cannot be opened.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Remove(`0,System.Boolean)">
             <summary>

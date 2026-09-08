@@ -287,6 +287,13 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     public string TextErrorMimeTypeForbidden { get; set; } = "Files of this type ({0}) are not allowed. Following types are forbidden '{1}' ({2})";
 
     /// <summary>
+    /// The error text displayed when <see cref="RestrictArchiveContent"/> is enabled and an archive contains
+    /// files that violate the restrictions. {0} is the archive name, {1} the offending files inside it.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextErrorArchiveContentNotAllowed { get; set; } = "The archive ({0}) contains files that are not allowed: {1}";
+
+    /// <summary>
     /// The title text displayed in the add URL dialog.
     /// </summary>
     [Parameter, SafeCategory("Data")]
@@ -437,6 +444,22 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             }
         }
     }
+
+    /// <summary>
+    /// Defines whether the files inside an archive are subject to the <see cref="MimeTypes"/> and
+    /// <see cref="Extensions"/> restrictions as well.
+    /// When false (the default) only the archive itself is checked, so an allowed zip may contain anything.
+    /// When true an allowed archive is opened and rejected as a whole as soon as one file inside it violates
+    /// the restrictions - useful when zip is allowed as a container but its payload still has to be controlled.
+    /// </summary>
+    /// <remarks>
+    /// Only applies to archives that are kept as they are. With <see cref="AutoExtractArchive"/> the archive is
+    /// replaced by its entries and every entry runs through the restrictions on its own anyway.
+    /// Turning this on means the archive has to be read before it can be accepted, so a file that would
+    /// otherwise be loaded in the background is loaded up front.
+    /// </remarks>
+    [Parameter, SafeCategory("Validation")]
+    public bool RestrictArchiveContent { get; set; } = false;
 
     /// <summary>
     /// The size for external file picker images that is used if <see cref="ExternalProviderRendering"/> is set to Image
@@ -1098,6 +1121,50 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         return true;
     }
 
+    /// <summary>
+    /// Applies the extension and mime type restrictions to the files inside an archive. Reuses the same two
+    /// predicates the archive itself was checked with, so there is only one definition of "allowed".
+    /// </summary>
+    /// <remarks>
+    /// An archive nested inside the archive is only checked as a file, its own content is not opened.
+    /// </remarks>
+    private bool IsArchiveContentAllowed(IEnumerable<IArchivedBrowserFile> entries, string archiveName)
+    {
+        // ponytail: no recursion into nested archives - unbounded extraction is how zip bombs get in.
+        var forbidden = (entries ?? Enumerable.Empty<IArchivedBrowserFile>())
+            .Where(entry => entry != null)
+            .Where(entry => !ExtensionAllowed(Path.GetExtension(entry.Name)) || !MimeTypeAllowed(entry.ContentType))
+            .Select(entry => string.IsNullOrWhiteSpace(entry.FullName) ? entry.Name : entry.FullName)
+            .Distinct()
+            .ToList();
+
+        if (forbidden.Count == 0)
+            return true;
+
+        const int maxNamed = 5;
+        var named = string.Join(", ", forbidden.Take(maxNamed));
+        if (forbidden.Count > maxNamed)
+            named += $", ... (+{forbidden.Count - maxNamed})";
+
+        return !SetError(TryLocalize(TextErrorArchiveContentNotAllowed, archiveName, named));
+    }
+
+    /// <summary>
+    /// Reads the archive once and returns its entries, or null when it cannot be opened.
+    /// </summary>
+    private async Task<IList<IArchivedBrowserFile>> TryReadArchiveAsync(byte[] data, string fileName, string contentType)
+    {
+        try
+        {
+            return (await FileService.ReadArchiveAsync(data, fileName, contentType)).List;
+        }
+        catch (Exception e)
+        {
+            SetError(e.Message);
+            return null;
+        }
+    }
+
     private bool ExtensionAllowed(string extension)
     {
         if (Extensions?.Any() != true) return true;
@@ -1382,6 +1449,24 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             await Add(data.List);
             SetLoading(false);
             return;
+        }
+
+        // Only relevant for an archive that stays intact. With AutoExtractArchive the entries are added
+        // individually above and each one already runs through the normal extension and mime type checks.
+        if (RestrictArchiveContent && MimeType.IsArchive(request.ContentType))
+        {
+            SetLoading(true);
+            try
+            {
+                await request.EnsureDataLoadedAsync();
+                var entries = await TryReadArchiveAsync(request.Data, request.FileName, request.ContentType);
+                if (entries == null || !IsArchiveContentAllowed(entries, request.FileName))
+                    return;
+            }
+            finally
+            {
+                SetLoading(false);
+            }
         }
 
         if (!AllowMultiple)
