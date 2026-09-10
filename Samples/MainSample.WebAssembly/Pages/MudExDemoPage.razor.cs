@@ -9,6 +9,12 @@ public partial class MudExDemoPage : IMudExDemoRegistrar
     internal static MudExDemoPage? Instance { get; private set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
+    /// <summary>
+    /// Shows the section navigation beside the demos. Off gives the demos the full page width - worth it when
+    /// the demos themselves need the room.
+    /// </summary>
+    [Parameter] public bool ShowNav { get; set; } = true;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();

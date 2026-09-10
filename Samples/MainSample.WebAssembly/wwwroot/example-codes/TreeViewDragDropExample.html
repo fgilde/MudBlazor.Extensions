@@ -1,0 +1,142 @@
+<div class="html"><pre>
+@using MudBlazor.Extensions.Core.Enums
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Drag a node onto a folder to move it - inside one tree, or from one tree into the other. Both trees share the same DragScope, which is what makes the second direction work. Files dragged in from your desktop are reported too.&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudToolBar</span> <span class="htmlAttributeName">Dense</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_foldersOnly&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Only folders accept a drop&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSpacer</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExEnumSelect</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Outlined&quot;</span> <span class="htmlAttributeName">Margin</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Margin.Dense&quot;</span> <span class="htmlAttributeName">TEnum</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;TreeViewMode&quot; @bind-Value=&quot;@_treeViewMode&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;TreeViewMode&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudToolBar</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.subtitle2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-1&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Tree A&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudPaper</span> <span class="htmlAttributeName">Style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; min-height: 320px; max-height: 450px; overflow: auto;&quot;</span> <span class="htmlAttributeName">Outlined</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+            &lt;MudExTreeView @ref=&quot;ComponentRef&quot;
+                           T=&quot;SampleTreeItem&quot;
+                           Items=&quot;@_left&quot;
+                           ViewMode=&quot;@_treeViewMode&quot;
+                           TextFunc=&quot;@(item =&gt; item.Name)&quot;
+                           AllowDrag=&quot;true&quot;
+                           AllowDrop=&quot;true&quot;
+                           DragScope=&quot;tree-demo&quot;
+                           CanDropFunc=&quot;@CanDrop&quot;
+                           OnNodeDropped=&quot;@(info =&gt; Move(info, _left))&quot;
+                           OnExternalFilesDropped=&quot;@(info =&gt; Dropped(info))&quot; /&gt;
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudPaper</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.subtitle2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-1&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Tree B&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudPaper</span> <span class="htmlAttributeName">Style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; min-height: 320px; max-height: 450px; overflow: auto;&quot;</span> <span class="htmlAttributeName">Outlined</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExTreeView</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;SampleTreeItem&quot;</span>
+                           <span class="htmlAttributeName">Items</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_right&quot;</span>
+                           <span class="htmlAttributeName">ViewMode</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_treeViewMode&quot;</span>
+                           <span class="htmlAttributeName">TextFunc</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(item =&gt; item.Name)&quot;</span>
+                           <span class="htmlAttributeName">AllowDrag</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span>
+                           <span class="htmlAttributeName">AllowDrop</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span>
+                           <span class="htmlAttributeName">DragScope</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;tree-demo&quot;</span>
+                           <span class="htmlAttributeName">CanDropFunc</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@CanDrop&quot;</span>
+                           <span class="htmlAttributeName">OnNodeDropped</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(info =&gt; Move(info, _right))&quot;</span>
+                           <span class="htmlAttributeName">OnExternalFilesDropped</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(info =&gt; Dropped(info))&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudPaper</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
+
+@if (_log.Count &gt; 0)
+{
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudPaper</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;pa-2 mt-3&quot;</span> <span class="htmlAttributeName">Outlined</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @foreach (var line in _log)
+        {
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;d-block&quot;</span><span class="htmlTagDelimiter">&gt;</span>@line<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+        }
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudPaper</span><span class="htmlTagDelimiter">&gt;</span>
+}
+
+@code {
+    private TreeViewMode _treeViewMode = TreeViewMode.Default;
+    private bool _foldersOnly = true;
+    private readonly List<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">string</span><span class="htmlTagDelimiter">&gt;</span> _log = new();
+
+    private HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> _left;
+    private HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> _right;
+
+    protected override void OnInitialized()
+    {
+        _left = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+        {
+            new SampleTreeItem(&quot;Inbox&quot;)
+            {
+                Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+                {
+                    new SampleTreeItem(&quot;invoice.pdf&quot;),
+                    new SampleTreeItem(&quot;photo.png&quot;)
+                }
+            },
+            new SampleTreeItem(&quot;Archive&quot;)
+            {
+                Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> { new SampleTreeItem(&quot;2025&quot;) }
+            },
+            new SampleTreeItem(&quot;loose-note.txt&quot;)
+        };
+
+        _right = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+        {
+            new SampleTreeItem(&quot;Projects&quot;)
+            {
+                Children = new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>
+                {
+                    new SampleTreeItem(&quot;mudex&quot;),
+                    new SampleTreeItem(&quot;playzor&quot;)
+                }
+            },
+            new SampleTreeItem(&quot;Trash&quot;)
+        };
+    }
+
+    // A node may never land on itself or inside its own subtree - the tree view checks that before asking, so
+    // this only adds what the demo itself wants.
+    private bool CanDrop(MudExTreeViewDropInfo<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> info)
+        =&gt; !_foldersOnly || info.TargetNode == null || info.TargetNode.HasChildren;
+
+    private void Move(MudExTreeViewDropInfo<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> info, HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> root)
+    {
+        var node = info.DraggedNode;
+
+        // Detach from wherever it is now. It may come from the other tree, so both roots are candidates.
+        if (node.Parent != null)
+            node.Parent.Children?.Remove(node);
+        else if (!_left.Remove(node))
+            _right.Remove(node);
+
+        if (info.TargetNode != null)
+        {
+            info.TargetNode.Children ??= new HashSet<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span>();
+            info.TargetNode.Children.Add(node);
+            node.Parent = info.TargetNode;
+        }
+        else
+        {
+            // Dropped on the tree itself: the node becomes a root of the tree that received it.
+            root.Add(node);
+            node.Parent = null;
+        }
+
+        _log.Insert(0, $&quot;{node.Name} -&gt; {info.TargetNode?.Name ?? &quot;root&quot;}&quot; +
+                       (info.IsSameTreeView ? string.Empty : &quot; (across trees)&quot;));
+        StateHasChanged();
+    }
+
+    private void Dropped(MudExTreeViewExternalDropInfo<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">SampleTreeItem</span><span class="htmlTagDelimiter">&gt;</span> info)
+    {
+        var names = string.Join(&quot;, &quot;, info.Files.Select(f =&gt; f.Name));
+        _log.Insert(0, $&quot;from the desktop onto {info.TargetNode?.Name ?? &quot;root&quot;}: {names}&quot;);
+        StateHasChanged();
+    }
+}
+
+</pre></div>

@@ -209,6 +209,35 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     }
 
     /// <summary>
+    /// Decides per node whether it appears in the tree at all. This is not a search: a node it rejects is
+    /// gone, and its ancestors are not kept visible for it - use <see cref="Filter"/> for searching.
+    /// </summary>
+    /// <remarks>
+    /// A rejected node's children are gone with it, so this filters a branch, not just a row. It is checked
+    /// on the node itself only, never on its children, so it does not force a lazy node to load.
+    /// </remarks>
+    [Parameter]
+    public Func<TItem, bool> ItemFilter
+    {
+        get => FilterManager.ItemFilter;
+        set
+        {
+            if (FilterManager.ItemFilter == value)
+                return;
+            FilterManager.ItemFilter = value;
+            _cachedFilteredItems = null;
+        }
+    }
+
+    /// <summary>
+    /// The children of the given node that are actually rendered: loaded, and not rejected by
+    /// <see cref="ItemFilter"/> or filtered away by the current search.
+    /// </summary>
+    public IEnumerable<TItem> VisibleChildren(TItem node)
+        => (node?.GetLoadedChildren() ?? Enumerable.Empty<TItem>())
+            .Where(n => FilterManager.GetMatchedSearch(n).Found);
+
+    /// <summary>
     /// This function controls how a separator will be detected. Default is if the item ToString() equals '-'
     /// </summary>
     [Parameter] public Func<TItem, bool> IsSeparatorDetectFunc { get; set; } = n => n?.ToString() == "-";
@@ -351,7 +380,10 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// <summary>
     /// All items flatted
     /// </summary>
-    public IReadOnlyCollection<TItem> FlattedItems() => FilterManager.FilteredItems().Recursive(n => n.Children ?? Enumerable.Empty<TItem>()).ToHashSet();
+    public IReadOnlyCollection<TItem> FlattedItems() => FilterManager.FilteredItems()
+        .Recursive(n => n.Children ?? Enumerable.Empty<TItem>())
+        .Where(FilterManager.IsVisible)
+        .ToHashSet();
 
     /// <summary>
     /// Returns true if the given node is expanded

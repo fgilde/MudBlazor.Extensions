@@ -198,10 +198,26 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
             }
 
             await InvokeAsync(StateHasChanged);
-            _= Task.Delay(400).ContinueWith(_ => UpdateMetaInfos());
+            _ = RefreshMetaInfosAsync();
         }
     }
     
+    /// <summary>
+    /// Reads the tags shortly after the source was set, then tells the host about them.
+    /// </summary>
+    /// <remarks>
+    /// The host renders the metadata but cannot know when it appears - its own render loop is not driven by
+    /// this component - so it has to be told, or the values only show up when something else causes a render.
+    /// </remarks>
+    private async Task RefreshMetaInfosAsync()
+    {
+        await Task.Delay(400);
+        await UpdateMetaInfos();
+
+        if (MudExFileDisplay != null)
+            await MudExFileDisplay.RefreshMetaInformationAsync();
+    }
+
     /// <inheritdoc />
     protected override void HandleIsPlayingChanged(bool value)
     {

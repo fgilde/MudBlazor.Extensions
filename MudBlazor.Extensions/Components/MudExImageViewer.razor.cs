@@ -498,7 +498,12 @@ public partial class MudExImageViewer : IMudExFileDisplay
         _componentCts = null;
 
         _convertedUrlMapping.Clear();
-        await FileService.DisposeAsync();
+
+        // Null when the instance is disposed before it ever rendered - the injected service is only there
+        // after initialization, and disposing an uninitialized component must not throw.
+        if (FileService != null)
+            await FileService.DisposeAsync();
+
         await base.DisposeAsync();
     }
 

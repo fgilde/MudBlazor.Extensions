@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <Import Project="..\..\MudBlazor.Extensions\version.generated.props" Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
   <Import Condition="Exists('..\..\Shared.props')" Project="..\..\Shared.props" />
@@ -83,7 +83,9 @@
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
 
-  <Target Name="Translate" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+  <!-- resourceTranslator rewrites the Resources folder in place, and a failed run can leave en-US.yml or a
+       target language missing - which then breaks the next build. Set SkipTranslate=true to build without it. -->
+  <Target Name="Translate" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug' AND '$(SkipTranslate)' != 'true'">
     <Exec IgnoreExitCode="true" Command="dotnet tool install --global ResourceTranslator.CLI" />
     <Exec IgnoreExitCode="true" Command="resourceTranslator --optionsfile $(ProjectDir)resourceTranslationOptions.json -f $(ProjectDir)Resources/en-US.yml" />
   </Target>

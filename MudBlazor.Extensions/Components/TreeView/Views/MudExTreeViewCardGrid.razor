@@ -53,9 +53,14 @@
 
                 </CardHeaderActions>
             </MudCardHeader>
-            <MudCardContent>
-                @RenderItemContent(context, true, true)
-            </MudCardContent>
+            @* The path only. Rendering the item content again here would render it - and a custom
+               ItemContentTemplate with it - a second time in the same card. *@
+            @if (ShowPath)
+            {
+                <MudCardContent>
+                    @RenderPath(context)
+                </MudCardContent>
+            }
         </MudCard>;
     }
 

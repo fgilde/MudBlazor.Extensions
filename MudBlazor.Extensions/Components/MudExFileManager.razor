@@ -1,0 +1,429 @@
+﻿@inherits MudExBaseComponent<MudExFileManager>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Core.FileManager
+@using MudBlazor.Extensions.Core.Enums
+@using MudBlazor.Extensions.Components.ObjectEdit
+
+<style>
+    .mud-ex-fm {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .mud-ex-fm-panel {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .mud-ex-fm-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 8px;
+        flex: 0 0 auto;
+        border-bottom: 1px solid var(--mud-palette-divider);
+        background-color: var(--mud-palette-background-grey);
+    }
+
+    .mud-ex-fm-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: auto;
+    }
+
+    .mud-ex-fm-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 100%;
+        opacity: .6;
+        padding: 16px;
+        text-align: center;
+    }
+
+    .mud-ex-fm-entry {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .mud-ex-fm-entry-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .mud-ex-fm-entry-info {
+        opacity: .6;
+        white-space: nowrap;
+    }
+
+    .mud-ex-fm-content-preview {
+        width: 100%;
+        height: 120px;
+        overflow: hidden;
+        pointer-events: none;
+        border-radius: 4px;
+    }
+
+    .mud-ex-fm-preview {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .mud-ex-fm-crumbs {
+        flex: 0 0 auto;
+        padding: 0 4px;
+        border-bottom: 1px solid var(--mud-palette-divider);
+        overflow-x: auto;
+    }
+
+    .mud-ex-fm-dock-host,
+    .mud-ex-fm-dock-host .dv-dockview,
+    .mud-ex-fm-dock-host .dv-node {
+        height: 100%;
+    }
+
+    /* The viewer reserves 60px for a toolbar this panel does not have. */
+    .mud-ex-fm-preview .mud-ex-file-display-container {
+        height: 100%;
+    }
+</style>
+
+<div class="mud-ex-fm" style="@($"height:{Height};")">
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Class="ma-2">@_errorMessage</MudAlert>
+    }
+    else
+    {
+        @* The dock adopts the rendered nodes, so panels are declared in a fixed order and only appended. *@
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="false">
+            @if (_ready)
+            {
+                <MudExDockLayout @ref="_dock" Id="@DockId" Class="mud-ex-fm-dock-host"
+                                 InitialLayoutJson="@_layoutJson" PopoutUrl="@PopoutUrl"
+                                 ContainerStyle="@($"height:{Height};width:100%;")">
+
+                    @if (HasPanel(MudExFileManagerPanels.Tree))
+                    {
+                        <MudExDockItem Id="@TreePanelId" Title="@TryLocalize("Structure")" Direction="DockDirection.Left"
+                                       InitialWidth="@TreePanelWidth" CanClose="@AllowClosePanels"
+                                       CanPopout="@AllowPopout" Renderer="DockRendererMode.Always">
+                            @TreePanel()
+                        </MudExDockItem>
+                    }
+
+                    @if (HasPanel(MudExFileManagerPanels.Files))
+                    {
+                        <MudExDockItem Id="@FilesPanelId" Title="@TryLocalize("Files")" CanClose="@AllowClosePanels"
+                                       CanPopout="@AllowPopout" Renderer="DockRendererMode.Always">
+                            @FileArea()
+                        </MudExDockItem>
+                    }
+
+                    @if (HasPanel(MudExFileManagerPanels.Preview))
+                    {
+                        <MudExDockItem Id="@PreviewPanelId" Title="@TryLocalize("Preview")" Direction="DockDirection.Right"
+                                       InitialWidth="@SidePanelWidth" CanClose="@AllowClosePanels"
+                                       CanPopout="@AllowPopout" Renderer="DockRendererMode.Always">
+                            @PreviewPanel()
+                        </MudExDockItem>
+                    }
+
+                    @if (HasPanel(MudExFileManagerPanels.Meta))
+                    {
+                        <MudExDockItem Id="@MetaPanelId" Title="@TryLocalize("Details")" Direction="DockDirection.Right"
+                                       StackWith="@(HasPanel(MudExFileManagerPanels.Preview) ? PreviewPanelId : null)"
+                                       InitialWidth="@SidePanelWidth" CanClose="@AllowClosePanels"
+                                       CanPopout="@AllowPopout" Renderer="DockRendererMode.Always">
+                            @MetaPanel()
+                        </MudExDockItem>
+                    }
+
+                    @ChildContent
+                </MudExDockLayout>
+            }
+            else
+            {
+                <MudProgressCircular Style="margin-top: 10%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+            }
+        </MudHidden>
+
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+            @if (_ready)
+            {
+                <div class="mud-ex-fm-panel" style="@($"height:{Height};")">
+                    @if (HasPanel(MudExFileManagerPanels.Files))
+                    {
+                        @FileArea()
+                    }
+                    else if (HasPanel(MudExFileManagerPanels.Tree))
+                    {
+                        @TreePanel()
+                    }
+
+                    @if (HasPanel(MudExFileManagerPanels.Preview) && SelectedNode is { IsDirectory: false })
+                    {
+                        <div style="flex: 1 1 auto; min-height: 0; border-top: 1px solid var(--mud-palette-divider);">
+                            @PreviewPanel()
+                        </div>
+                    }
+
+                    @if (HasPanel(MudExFileManagerPanels.Meta) && SelectedNode != null)
+                    {
+                        <div style="flex: 0 0 auto; max-height: 40%; overflow: auto; border-top: 1px solid var(--mud-palette-divider);">
+                            @MetaPanel()
+                        </div>
+                    }
+                </div>
+            }
+        </MudHidden>
+    }
+</div>
+
+@* ---------- panels ---------- *@
+
+@code {
+
+    private RenderFragment TreePanel() =>
+    @<div class="mud-ex-fm-panel">
+        @if (ShowTreeViewModeSwitcher)
+        {
+            <div class="mud-ex-fm-bar">
+                <MudSpacer />
+                @ViewModeSwitcher(ToggleableTreeViewModes, TreePanelViewMode, SetTreePanelViewMode)
+            </div>
+        }
+        <div class="mud-ex-fm-scroll">
+            <MudExTreeView T="MudExFileStructureNode"
+                           Items="@TreeItems"
+                           ViewMode="@TreePanelViewMode"
+                           Dense="true"
+                           ItemFilter="@TreeItemFilter"
+                           SelectedNode="@TreeSelectedNode"
+                           SelectedNodeChanged="@NavigateToAsync"
+                           ExpandOnClick="true"
+                           AllowSelectionOfNonEmptyNodes="true"
+                           TextFunc="@(node => node.Name)"
+                           AllowDrag="@DragEnabled"
+                           AllowDrop="@DropEnabled"
+                           CanDropFunc="@(info => info.TargetNode is null or { IsDirectory: true })"
+                           OnNodeDropped="@HandleNodeDroppedAsync"
+                           OnExternalFilesDropped="@HandleExternalFilesDroppedAsync"
+                           FilterMode="PropertyFilterMode.Toggleable"
+                           FilterPlaceholder="@TryLocalize("Filter")">
+                <ItemContentTemplate>
+                    <div class="mud-ex-fm-entry">
+                        <MudExIcon Icon="@context.Value.Icon" Color="@context.Value.Color" Size="Size.Small" />
+                        <span class="mud-ex-fm-entry-name">@context.Value.Name</span>
+                    </div>
+                </ItemContentTemplate>
+            </MudExTreeView>
+        </div>
+    </div>;
+
+    private RenderFragment FileArea() =>
+    @<div class="mud-ex-fm-panel">
+        <div class="mud-ex-fm-bar">
+            <MudTooltip Text="@TryLocalize("Up one level")">
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowUpward"
+                               Disabled="@(CurrentDirectory == null)"
+                               OnClick="@NavigateUpAsync" />
+            </MudTooltip>
+            <MudTooltip Text="@TryLocalize("Refresh")">
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Refresh" OnClick="@RefreshAsync" />
+            </MudTooltip>
+
+            @if (ShowActions)
+            {
+                @if (CanCreateDirectory)
+                {
+                    <MudTooltip Text="@TryLocalize("New folder")">
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.CreateNewFolder"
+                                       Disabled="@_busy" OnClick="@CreateDirectoryAsync" />
+                    </MudTooltip>
+                }
+                @if (CanUpload)
+                {
+                    <MudTooltip Text="@TryLocalize("Upload")">
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.UploadFile"
+                                       Disabled="@_busy" OnClick="@ShowUploadDialogAsync" />
+                    </MudTooltip>
+                }
+                @if (CanRename)
+                {
+                    <MudTooltip Text="@TryLocalize("Rename")">
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.DriveFileRenameOutline"
+                                       Disabled="@_busy" OnClick="@RenameSelectedAsync" />
+                    </MudTooltip>
+                }
+                @if (CanDelete)
+                {
+                    <MudTooltip Text="@TryLocalize("Delete")">
+                        <MudIconButton Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Filled.Delete"
+                                       Disabled="@_busy" OnClick="@DeleteSelectedAsync" />
+                    </MudTooltip>
+                }
+                @if (CanDownload)
+                {
+                    <MudTooltip Text="@TryLocalize("Download")">
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Download"
+                                       Disabled="@_busy" OnClick="@DownloadSelectedAsync" />
+                    </MudTooltip>
+                }
+            }
+
+            <MudSpacer />
+
+            @if (ShowViewModeSwitcher)
+            {
+                <MudTooltip Text="@TryLocalize(FileGridView == MudExFileGridView.Tiles ? "Details" : "Tiles")">
+                    <MudIconButton Size="Size.Small"
+                                   Icon="@(FileGridView == MudExFileGridView.Tiles ? Icons.Material.Filled.ViewList : Icons.Material.Filled.ViewModule)"
+                                   OnClick="@ToggleFileGridView" />
+                </MudTooltip>
+            }
+            <MudText Typo="Typo.caption">
+                @(SelectedNodes.Count > 1
+                    ? TryLocalize("{0} of {1} selected", SelectedNodes.Count, CurrentEntries.Count)
+                    : $"{CurrentEntries.Count} {TryLocalize("entries")}")
+            </MudText>
+        </div>
+
+        @* A tree view in breadcrumb mode over the same nodes, so every level carries its siblings. *@
+        @if (ShowBreadcrumb)
+        {
+            <div class="mud-ex-fm-crumbs">
+                <MudExTreeView T="MudExFileStructureNode"
+                               Items="@TreeItems"
+                               ViewMode="TreeViewMode.Breadcrumb"
+                               Dense="true"
+                               ItemFilter="@IsDirectoryFilter"
+                               SelectedNode="@CurrentDirectory"
+                               SelectedNodeChanged="@NavigateToAsync"
+                               AllowSelectionOfNonEmptyNodes="true"
+                               TextFunc="@(node => node.Name)"
+                               FilterMode="PropertyFilterMode.Disabled" />
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(_actionError))
+        {
+            <MudAlert Severity="Severity.Warning" Dense="true" Class="ma-1"
+                      ShowCloseIcon="true" CloseIconClicked="@(() => _actionError = null)">@_actionError</MudAlert>
+        }
+
+        @if (FileAreaTemplate != null)
+        {
+            <div class="mud-ex-fm-scroll">
+                @FileAreaTemplate(CurrentEntries)
+            </div>
+        }
+        else
+        {
+            <MudExFileGrid @ref="_grid"
+                           Items="@CurrentEntries"
+                           View="@FileGridView"
+                           ViewChanged="@(view => { FileGridView = view; StateHasChanged(); })"
+                           SelectedItems="@SelectedNodes"
+                           SelectedItemsChanged="@SelectAsync"
+                           AllowMultiSelect="@AllowMultiSelect"
+                           AllowRubberBand="@AllowMultiSelect"
+                           AllowRename="@CanDo(MudExFileManagerCapabilities.Rename)"
+                           AllowDragDrop="@AllowDragDrop"
+                           Virtualize="@VirtualizeFileArea"
+                           OnOpened="@OpenAsync"
+                           OnRenamed="@(request => RenameAsync(request.Node, request.NewName))"
+                           OnDeleteRequested="@DeleteAsync"
+                           OnMoveRequested="@(request => MoveAsync(request.Nodes, request.Target ?? CurrentDirectory))"
+                           OnExternalFilesDropped="@(request => UploadFilesAsync(request.Target ?? CurrentDirectory, request.Files))"
+                           ItemTemplate="@FileItemTemplate" />
+        }
+    </div>;
+
+    private RenderFragment PreviewPanel() =>
+    @<div class="mud-ex-fm-panel">
+        @if (SelectedNode == null)
+        {
+            <div class="mud-ex-fm-placeholder">
+                <MudIcon Icon="@Icons.Material.Filled.Preview" Size="Size.Large" />
+                <MudText Typo="Typo.body2">@TryLocalize("Select a file to preview it.")</MudText>
+            </div>
+        }
+        else if (SelectedNode.IsDirectory)
+        {
+            <div class="mud-ex-fm-placeholder">
+                <MudIcon Icon="@Icons.Material.Filled.Folder" Size="Size.Large" />
+                <MudText Typo="Typo.body2">@TryLocalize("A folder has no preview.")</MudText>
+            </div>
+        }
+        else if (_previewStream == null)
+        {
+            <div class="mud-ex-fm-placeholder">
+                <MudIcon Icon="@Icons.Material.Filled.Block" Size="Size.Large" />
+                <MudText Typo="Typo.body2">@TryLocalize("This file could not be read.")</MudText>
+            </div>
+        }
+        else if (_previewLength == 0)
+        {
+            @* A viewer needs content to work on, so an empty file would leave it loading forever. *@
+            <div class="mud-ex-fm-placeholder">
+                <MudIcon Icon="@Icons.Material.Filled.HourglassEmpty" Size="Size.Large" />
+                <MudText Typo="Typo.body2">@TryLocalize("This file is empty.")</MudText>
+            </div>
+        }
+        else
+        {
+            <div class="mud-ex-fm-preview">
+                <MudExFileDisplay FileName="@SelectedNode.Name"
+                                  ContentType="@SelectedNode.ContentType"
+                                  ContentStream="@_previewStream"
+                                  FileMetaInformationChanged="@OnPreviewMetaChanged"
+                                  ColorizeIcons="true" Dense="true" />
+            </div>
+        }
+    </div>;
+
+    private RenderFragment MetaPanel() =>
+    @<div class="mud-ex-fm-panel">
+        @if (SelectedNode == null)
+        {
+            <div class="mud-ex-fm-placeholder">
+                <MudIcon Icon="@Icons.Material.Filled.Info" Size="Size.Large" />
+                <MudText Typo="Typo.body2">@TryLocalize("Select an entry to see its details.")</MudText>
+            </div>
+        }
+        else
+        {
+            <div class="mud-ex-fm-scroll">
+                <MudExFileMetaView FileName="@SelectedNode.Name"
+                                   ContentType="@SelectedNode.ContentType"
+                                   Size="@(SelectedNode.IsDirectory ? null : SelectedNode.Size)"
+                                   LastModified="@SelectedNode.LastModified"
+                                   Path="@SelectedNode.FullPath"
+                                   MetaInformation="@_selectedMeta"
+                                   Class="pa-3" />
+            </div>
+        }
+    </div>;
+
+    @* A plain select over the allowed modes - an enum select would offer every mode, Breadcrumb included. *@
+    private RenderFragment ViewModeSwitcher(TreeViewMode[] modes, TreeViewMode current, Action<TreeViewMode> changed) =>
+    @<MudSelect T="TreeViewMode" Value="@current" ValueChanged="@(mode => changed(mode))"
+                Dense="true" Margin="Margin.Dense" Variant="Variant.Outlined"
+                Style="max-width: 170px;">
+        @foreach (var mode in modes)
+        {
+            <MudSelectItem Value="@mode">@TryLocalize(mode.ToString())</MudSelectItem>
+        }
+    </MudSelect>;
+
+}

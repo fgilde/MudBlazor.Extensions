@@ -110,7 +110,7 @@
 
             
             <MudGrid Class="mudex-demo-body px-4 py-4" Spacing="3">
-                <MudItem xs="12" md="@((HasFeatures ? 8 : 12))">
+                <MudItem xs="12" md="@(ShowFeaturesBeside ? 8 : 12)">
                     <MudPaper Class="mudex-demo-surface pa-4" Elevation="0">
                         @if (DemoContent is not null)
                         {
@@ -127,9 +127,9 @@
                     </MudPaper>
                 </MudItem>
 
-                @if (HasFeatures)
+                @if (ShowFeaturesBeside || ShowFeaturesBelow)
                 {
-                    <MudItem xs="12" md="4">
+                    <MudItem xs="12" md="@(ShowFeaturesBeside ? 4 : 12)">
                         <MudPaper Class="mudex-demo-features pa-3 h-100" Elevation="0">
                             @if (!string.IsNullOrWhiteSpace(FeaturesTitle))
                             {
@@ -227,7 +227,15 @@
     [Parameter] public string? Code { get; set; }
     private IDictionary<string, string>? _additionalCode;
 
-    /* Features (rechte Spalte) */
+    /* Features (rechte Spalte, darunter, oder aus) */
+
+    /// <summary>
+    /// Where the feature list goes. <see cref="DemoFeaturesPlacement.Below"/> gives the demo the full width,
+    /// which is what a demo you actually want to click around in needs; <see cref="DemoFeaturesPlacement.None"/>
+    /// drops the list entirely.
+    /// </summary>
+    [Parameter] public DemoFeaturesPlacement FeaturesPlacement { get; set; } = DemoFeaturesPlacement.Beside;
+
     [Parameter] public string? FeaturesTitle { get; set; }
     [Parameter] public string? FeaturesDescription { get; set; }
     [Parameter] public IEnumerable<string>? Features { get; set; }
@@ -240,6 +248,9 @@
         FeaturesListTemplate is not null ||
         !string.IsNullOrWhiteSpace(FeaturesTitle) ||
         !string.IsNullOrWhiteSpace(FeaturesDescription);
+
+    private bool ShowFeaturesBeside => HasFeatures && FeaturesPlacement == DemoFeaturesPlacement.Beside;
+    private bool ShowFeaturesBelow => HasFeatures && FeaturesPlacement == DemoFeaturesPlacement.Below;
 
 
     private bool ShowCode { get; set; }

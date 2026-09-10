@@ -28,7 +28,7 @@ namespace MudBlazor.Extensions.Components
         /// Document a popped out panel is hosted in. Must be served from the same origin, dockview
         /// copies the stylesheets into it. Used by <see cref="MudExDockItem.CanPopout"/>.
         /// </summary>
-        [ForJs, Parameter] public string PopoutUrl { get; set; } = "/popout.html";
+        [ForJs, Parameter] public string PopoutUrl { get; set; } = "_content/MudBlazor.Extensions/popout.html";
 
         [Parameter] public EventCallback<string> OnPanelAdded { get; set; }
         [Parameter] public EventCallback<string?> OnActiveChanged { get; set; }

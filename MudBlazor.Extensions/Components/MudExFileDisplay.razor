@@ -1,15 +1,36 @@
-@using System.IO
+﻿@using System.IO
 @using Microsoft.AspNetCore.Components.Rendering
 @using MudBlazor.Extensions.Helper
 @using BlazorJS
 @using MudBlazor.Extensions.Options
 @namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Core.Enums
 @inherits MudExJsRequiredBaseComponent<MudExFileDisplay>
+
+<style>
+    .mud-ex-file-display-content-row {
+        display: flex;
+        gap: 16px;
+        height: 100%;
+        min-height: 0;
+    }
+
+    .mud-ex-file-display-content-main {
+        flex: 1 1 auto;
+        min-width: 0;
+        min-height: 0;
+    }
+
+    .mud-ex-file-meta-view-right {
+        flex: 0 0 280px;
+        max-width: 280px;
+    }
+</style>
 
 <BrowserDetect @bind-BrowserInfo="@Info" />
 
 <div @ref=ElementReference style="@Style" class="@($"mud-ex-file-display-container {Class?.Replace(MudExCss.Classes.Dialog._Initial, "")}")">
-    
+
     @if (!string.IsNullOrWhiteSpace(ErrorMessage) && !_errorClosed)
     {
         <MudAlert Class="@($"mud-alert-message-w-100")"
@@ -32,73 +53,99 @@
     </MoveContent>
 
 
-    @if (_componentForFile?.ControlType != null)
+    @if (ShowFileMeta && FileMetaPlacement == MudExFileMetaPlacement.Above)
     {
-        _isNativeRendered = false;
-        @if (_componentForFile.ShouldAddDiv)
-        {
-            <CascadingValue Value="@this" IsFixed="true">
-  
-                <MudOverlay Class="mud-ex-loading-overlay" Visible="@(!string.IsNullOrEmpty(StatusText))" Absolute="true">
-                    <MudText Typo="Typo.h3">@TryLocalize(StatusText)</MudText>
-                </MudOverlay>
-                
-                <div class="mud-ex-file-display">
-                    <DynamicComponent @ref="_currentFileDisplay" Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters"/>
-                </div>
-            </CascadingValue>
-        }
-        else
-        {
-            <DynamicComponent @ref="_currentFileDisplay"  Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters" />
-        }
+        <MudExFileMetaView FileName="@FileName" ContentType="@ContentType" Size="@_fileMetaSize" MetaInformation="@_fileMetaInformation" Dense="@Dense" Class="mud-ex-file-meta-view-above" />
+    }
+
+    @if (ShowFileMeta && FileMetaPlacement == MudExFileMetaPlacement.Right)
+    {
+        <div class="mud-ex-file-display-content-row">
+            <div class="mud-ex-file-display-content-main">
+                @ViewerContent()
+            </div>
+            <MudExFileMetaView FileName="@FileName" ContentType="@ContentType" Size="@_fileMetaSize" MetaInformation="@_fileMetaInformation" Dense="@Dense" Class="mud-ex-file-meta-view-right" />
+        </div>
     }
     else
     {
-        _isNativeRendered = true;
-        <div class="mud-ex-file-display">
-            @if (renderInfos != null)
-            {
-                <MudElement UserAttributes="@renderInfos.Value.attributes" HtmlTag="@renderInfos.Value.tag" />
-            }
-        </div>
+        @ViewerContent()
     }
 
-    @if (ShowContentError && _isNativeRendered)
+    @if (ShowFileMeta && FileMetaPlacement == MudExFileMetaPlacement.Below)
     {
-        <div id="content-type-display-error">
-            <MudAlert Class="mud-alert-close-no-flex" Severity="Severity.Error" Variant="Variant.Outlined" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="CloseContentError">
-                <p>
-                    @if (!string.IsNullOrWhiteSpace(CustomContentErrorMessage))
-                    {
-                        @CustomContentErrorMessage
-                    }
-                    else
-                    {
-                        @TryLocalize("The content type {0} cannot be displayed without a suitable plugin", ContentType)
-                    }
-                </p>
-
-                @if (PossiblePlugin != null)
-                {
-                    <MudButton HtmlTag="label"
-                       Class="w-100 my-4"
-                       Variant="Variant.Text"
-                       Color="Color.Primary"
-                       Size="Size.Small"
-                       Href="@PossiblePlugin.Url"
-                       Target="_blank"
-                       StartIcon="@(Icons.Material.Filled.Shop)">
-                        @(TryLocalize("The Plugin '{0}' may be able to help", PossiblePlugin.Name))
-                    </MudButton>
-                }
-            </MudAlert>
-        </div>
+        <MudExFileMetaView FileName="@FileName" ContentType="@ContentType" Size="@_fileMetaSize" MetaInformation="@_fileMetaInformation" Dense="@Dense" Class="mud-ex-file-meta-view-below" />
     }
 </div>
 
 @code {
-    
+
+    private RenderFragment ViewerContent() =>
+    @<RenderChild>
+        @if (_componentForFile?.ControlType != null)
+        {
+            _isNativeRendered = false;
+            @if (_componentForFile.ShouldAddDiv)
+            {
+                <CascadingValue Value="@this" IsFixed="true">
+                    <MudOverlay Class="mud-ex-loading-overlay" Visible="@(!string.IsNullOrEmpty(StatusText))" Absolute="true">
+                        <MudText Typo="Typo.h3">@TryLocalize(StatusText)</MudText>
+                    </MudOverlay>
+
+                    <div class="mud-ex-file-display">
+                        <DynamicComponent @ref="_currentFileDisplay" Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters"/>
+                    </div>
+                </CascadingValue>
+            }
+            else
+            {
+                <DynamicComponent @ref="_currentFileDisplay" Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters" />
+            }
+        }
+        else
+        {
+            _isNativeRendered = true;
+            <div class="mud-ex-file-display">
+                @if (renderInfos != null)
+                {
+                    <MudElement UserAttributes="@renderInfos.Value.attributes" HtmlTag="@renderInfos.Value.tag" />
+                }
+            </div>
+        }
+
+        @if (ShowContentError && _isNativeRendered)
+        {
+            <div id="content-type-display-error">
+                <MudAlert Class="mud-alert-close-no-flex" Severity="Severity.Error" Variant="Variant.Outlined" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="CloseContentError">
+                    <p>
+                        @if (!string.IsNullOrWhiteSpace(CustomContentErrorMessage))
+                        {
+                            @CustomContentErrorMessage
+                        }
+                        else
+                        {
+                            @TryLocalize("The content type {0} cannot be displayed without a suitable plugin", ContentType)
+                        }
+                    </p>
+
+                    @if (PossiblePlugin != null)
+                    {
+                        <MudButton HtmlTag="label"
+                                   Class="w-100 my-4"
+                                   Variant="Variant.Text"
+                                   Color="Color.Primary"
+                                   Size="Size.Small"
+                                   Href="@PossiblePlugin.Url"
+                                   Target="_blank"
+                                   StartIcon="@(Icons.Material.Filled.Shop)">
+                            @(TryLocalize("The Plugin '{0}' may be able to help", PossiblePlugin.Name))
+                        </MudButton>
+                    }
+                </MudAlert>
+            </div>
+        }
+    </RenderChild>;
+
     private void RenderMenu(RenderTreeBuilder __builder)
     {
         @if (!string.IsNullOrEmpty(FileName))

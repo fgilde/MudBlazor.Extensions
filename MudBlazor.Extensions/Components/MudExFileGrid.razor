@@ -1,0 +1,314 @@
+﻿@inherits MudExBaseComponent<MudExFileGrid>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Core.Enums
+@using MudBlazor.Extensions.Core.FileManager
+
+<style>
+    .mud-ex-file-grid {
+        position: relative;
+        height: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        outline: none;
+        user-select: none;
+    }
+
+    .mud-ex-file-grid-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: auto;
+    }
+
+    .mud-ex-file-grid-tiles {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(var(--mud-ex-file-grid-tile, 116px), 1fr));
+        gap: 4px;
+        padding: 8px;
+        align-content: start;
+    }
+
+    .mud-ex-file-grid-tile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 4px;
+        border-radius: 6px;
+        cursor: default;
+        text-align: center;
+        border: 1px solid transparent;
+    }
+
+    .mud-ex-file-grid-rows {
+        display: table;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .mud-ex-file-grid-row {
+        display: table-row;
+        cursor: default;
+    }
+
+    .mud-ex-file-grid-row > div {
+        display: table-cell;
+        padding: 3px 8px;
+        vertical-align: middle;
+        white-space: nowrap;
+        border-bottom: 1px solid var(--mud-palette-divider);
+    }
+
+    .mud-ex-file-grid-head {
+        display: table-row;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background-color: var(--mud-palette-background-grey);
+    }
+
+    .mud-ex-file-grid-head > div {
+        display: table-cell;
+        padding: 4px 8px;
+        white-space: nowrap;
+        cursor: pointer;
+        border-bottom: 1px solid var(--mud-palette-divider);
+        font-weight: 500;
+    }
+
+    .mud-ex-file-grid-name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+    }
+
+    .mud-ex-file-grid-tile .mud-ex-file-grid-label {
+        overflow-wrap: anywhere;
+        line-height: 1.2;
+        max-height: 2.4em;
+        overflow: hidden;
+    }
+
+    .mud-ex-file-grid-row .mud-ex-file-grid-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mud-ex-file-grid-item:hover {
+        background-color: var(--mud-palette-action-default-hover);
+    }
+
+    .mud-ex-file-grid-selected,
+    .mud-ex-file-grid-selected:hover {
+        background-color: var(--mud-palette-primary-hover);
+        border-color: var(--mud-palette-primary);
+    }
+
+    .mud-ex-file-grid-drop {
+        outline: 2px dashed var(--mud-palette-primary);
+        outline-offset: -2px;
+    }
+
+    .mud-ex-file-grid-info {
+        opacity: .7;
+    }
+
+    .mud-ex-file-grid-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 100%;
+        opacity: .6;
+        padding: 16px;
+        text-align: center;
+    }
+
+    /* Drawn by the browser during the drag, see fileGridSelection.js */
+    .mud-ex-file-grid-band {
+        background-color: var(--mud-palette-primary-hover);
+        border: 1px solid var(--mud-palette-primary);
+        border-radius: 2px;
+    }
+</style>
+
+@{
+    var items = OrderedItems.ToList();
+}
+
+<div @ref="_container"
+     class="@($"mud-ex-file-grid {Class}")"
+     style="@Style"
+     tabindex="0"
+     @onkeydown="@KeyDownAsync"
+     @ondragover="@(() => DragOverAsync(null))"
+     @ondragover:preventDefault="@AllowDragDrop"
+     @ondrop="@(() => DropAsync(null))"
+     @ondrop:preventDefault="@AllowDragDrop">
+
+    @if (ListensForExternalFiles)
+    {
+        @* Files dropped from the desktop become IBrowserFile only through a real file input, so javascript
+           puts them on this one and dispatches its change event. *@
+        <InputFile @ref="_externalDropInput" id="@($"{ElementId}-drop")" hidden multiple OnChange="@ExternalFilesDroppedAsync" />
+    }
+
+    @if (AllowContextMenu)
+    {
+        @* One menu for the whole grid, opened at the cursor - a menu per entry would cost one component each. *@
+        <MudMenu @ref="_contextMenu" PositionAtCursor="true" Dense="true">
+            <MudMenuItem Icon="@Icons.Material.Filled.OpenInNew" Disabled="@(_selected.Count != 1)"
+                         OnClick="@(() => OnOpened.InvokeAsync(_selected.FirstOrDefault()))">
+                @TryLocalize("Open")
+            </MudMenuItem>
+            @if (AllowRename)
+            {
+                <MudMenuItem Icon="@Icons.Material.Filled.DriveFileRenameOutline" Disabled="@(_selected.Count != 1)"
+                             OnClick="@(() => StartRename(_selected.FirstOrDefault()))">
+                    @TryLocalize("Rename")
+                </MudMenuItem>
+            }
+            <MudMenuItem Icon="@Icons.Material.Filled.Delete" IconColor="Color.Error" Disabled="@(_selected.Count == 0)"
+                         OnClick="@(() => OnDeleteRequested.InvokeAsync(_selected.ToList()))">
+                @TryLocalize("Delete")
+            </MudMenuItem>
+
+            @if (ContextMenuContent != null)
+            {
+                <MudDivider />
+                @ContextMenuContent(_selected.ToList())
+            }
+        </MudMenu>
+    }
+
+    @if (items.Count == 0)
+    {
+        @if (EmptyContent != null)
+        {
+            @EmptyContent
+        }
+        else
+        {
+            <div class="mud-ex-file-grid-empty">
+                <MudIcon Icon="@Icons.Material.Filled.FolderOff" Size="Size.Large" />
+                <MudText Typo="Typo.body2">@TryLocalize("This folder is empty.")</MudText>
+            </div>
+        }
+    }
+    else if (View == MudExFileGridView.Details)
+    {
+        <div class="mud-ex-file-grid-scroll">
+            <div class="mud-ex-file-grid-rows">
+                <div class="mud-ex-file-grid-head">
+                    <div @onclick="@(() => SortAsync(MudExFileGridSort.Name))">
+                        @TryLocalize("Name") <MudIcon Icon="@SortIcon(MudExFileGridSort.Name)" Size="Size.Small" />
+                    </div>
+                    <div @onclick="@(() => SortAsync(MudExFileGridSort.Size))">
+                        @TryLocalize("Size") <MudIcon Icon="@SortIcon(MudExFileGridSort.Size)" Size="Size.Small" />
+                    </div>
+                    <div @onclick="@(() => SortAsync(MudExFileGridSort.Type))">
+                        @TryLocalize("Type") <MudIcon Icon="@SortIcon(MudExFileGridSort.Type)" Size="Size.Small" />
+                    </div>
+                    <div @onclick="@(() => SortAsync(MudExFileGridSort.Modified))">
+                        @TryLocalize("Modified") <MudIcon Icon="@SortIcon(MudExFileGridSort.Modified)" Size="Size.Small" />
+                    </div>
+                </div>
+
+                <MudExVirtualize T="MudExFileStructureNode" IsEnabled="@Virtualize" Items="@items">
+                    @Row(context)
+                </MudExVirtualize>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="mud-ex-file-grid-scroll">
+            <div class="mud-ex-file-grid-tiles">
+                <MudExVirtualize T="MudExFileStructureNode" IsEnabled="@Virtualize" Items="@items">
+                    @Tile(context)
+                </MudExVirtualize>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+
+    private RenderFragment Row(MudExFileStructureNode node) =>
+    @<div class="@ItemClass(node, "mud-ex-file-grid-row")"
+          data-file-grid-key="@Key(node)"
+          data-mudex-drop-zone="@ElementId"
+          data-mudex-drop-target="@Key(node)"
+          draggable="@Draggable(node)"
+          @onclick="@(args => ItemClickAsync(node, args))"
+          @ondblclick="@(() => ItemDoubleClickAsync(node))"
+          @oncontextmenu="@(args => ContextMenuAsync(node, args))"
+          @oncontextmenu:preventDefault="@AllowContextMenu"
+          @ondragstart="@(() => DragStartAsync(node))"
+          @ondragend="@DragEnd"
+          @ondragover="@(() => DragOverAsync(node))"
+          @ondragover:preventDefault="@AllowDragDrop"
+          @ondragleave="@(() => DragLeave(node))"
+          @ondrop="@(() => DropAsync(node))"
+          @ondrop:preventDefault="@AllowDragDrop"
+          @ondrop:stopPropagation="@AllowDragDrop">
+        <div>
+            <div class="mud-ex-file-grid-name">
+                <MudExIcon Icon="@node.Icon" Color="@node.Color" Size="Size.Small" />
+                @Label(node)
+            </div>
+        </div>
+        <div class="mud-ex-file-grid-info">@(node.IsDirectory ? null : ReadableSize(node.Size))</div>
+        <div class="mud-ex-file-grid-info">@(node.IsDirectory ? TryLocalize("Folder") : node.ContentType)</div>
+        <div class="mud-ex-file-grid-info">@node.LastModified?.LocalDateTime.ToString("g")</div>
+    </div>;
+
+    private RenderFragment Tile(MudExFileStructureNode node) =>
+    @<div class="@ItemClass(node, "mud-ex-file-grid-tile")"
+          data-file-grid-key="@Key(node)"
+          data-mudex-drop-zone="@ElementId"
+          data-mudex-drop-target="@Key(node)"
+          draggable="@Draggable(node)"
+          title="@node.Name"
+          @onclick="@(args => ItemClickAsync(node, args))"
+          @ondblclick="@(() => ItemDoubleClickAsync(node))"
+          @oncontextmenu="@(args => ContextMenuAsync(node, args))"
+          @oncontextmenu:preventDefault="@AllowContextMenu"
+          @ondragstart="@(() => DragStartAsync(node))"
+          @ondragend="@DragEnd"
+          @ondragover="@(() => DragOverAsync(node))"
+          @ondragover:preventDefault="@AllowDragDrop"
+          @ondragleave="@(() => DragLeave(node))"
+          @ondrop="@(() => DropAsync(node))"
+          @ondrop:preventDefault="@AllowDragDrop"
+          @ondrop:stopPropagation="@AllowDragDrop">
+        <MudExIcon Icon="@node.Icon" Color="@node.Color" Size="Size.Large" />
+        @Label(node)
+        @if (!node.IsDirectory)
+        {
+            <MudText Typo="Typo.caption" Class="mud-ex-file-grid-info">@ReadableSize(node.Size)</MudText>
+        }
+    </div>;
+
+    @* The name, or the rename box while the user is editing it. *@
+    private RenderFragment Label(MudExFileStructureNode node) =>
+    @<RenderChild>
+        @if (ReferenceEquals(_renaming, node))
+        {
+            <MudTextField T="string" @bind-Value="_renameValue" Immediate="true" AutoFocus="true"
+                          Margin="Margin.Dense" Variant="Variant.Outlined" Class="my-0"
+                          @onkeydown="@RenameKeyDownAsync" @onblur="@CommitRenameAsync"
+                          @onclick:stopPropagation="true" @ondblclick:stopPropagation="true" />
+        }
+        else if (ItemTemplate != null)
+        {
+            @ItemTemplate(node)
+        }
+        else
+        {
+            <MudText Typo="Typo.body2" Class="mud-ex-file-grid-label">@node.Name</MudText>
+        }
+    </RenderChild>;
+}

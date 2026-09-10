@@ -1,4 +1,4 @@
-@page "/tree-view-advanced"
+﻿@page "/tree-view-advanced"
 @inherits BasePage
 
 @using MainSample.WebAssembly.Examples.Tree
@@ -103,6 +103,27 @@
                 @L["Use lazy loading to defer loading of child nodes until they are needed. This significantly improves performance for large hierarchies and enables integration with APIs and databases."]
             </MudText>
             <TreeViewLazyLoadExample/>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo: drag and drop -->
+    <MudExDemoBox Title="Drag and drop"
+                  NavTitle="Drag & Drop"
+                  FeaturesTitle="Parameters"
+                  Features="@(new[]
+                            {
+                                "AllowDrag / AllowDragFunc - which nodes can be picked up",
+                                "AllowDrop / CanDropFunc - which nodes accept a drop",
+                                "DragScope - two trees exchange nodes only when it matches",
+                                "OnNodeDropped - MudExTreeViewDropInfo, including the source tree view",
+                                "OnExternalFilesDropped - files dragged in from the operating system"
+                            })">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Drag and drop works in every view mode: the handlers sit on the wrapper around each node's content, so a mode does not opt in. Moving the node is the consumer's job - the tree view reports the drop and never touches the structure itself."]
+            </MudText>
+            <TreeViewDragDropExample/>
         </DemoContent>
     </MudExDemoBox>
 

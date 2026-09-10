@@ -1,0 +1,222 @@
+﻿@inherits MudExBaseComponent<MudExFileMetaView>
+@using System.Collections
+@using MudBlazor.Extensions.Helper
+
+<style>
+    .mud-ex-file-meta-view {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .mud-ex-file-meta-group {
+        margin-bottom: 12px;
+    }
+
+    .mud-ex-file-meta-group-title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        opacity: .6;
+    }
+
+    .mud-ex-file-meta-group-title::after {
+        content: "";
+        flex: 1 1 auto;
+        border-top: 1px solid var(--mud-palette-divider);
+    }
+
+    .mud-ex-file-meta-row {
+        display: grid;
+        grid-template-columns: minmax(90px, 34%) 1fr auto;
+        align-items: start;
+        gap: 8px;
+        padding: 4px 2px;
+        border-radius: 4px;
+        min-width: 0;
+    }
+
+    .mud-ex-file-meta-row-dense {
+        padding: 1px 2px;
+    }
+
+    .mud-ex-file-meta-row:hover {
+        background-color: var(--mud-palette-action-default-hover);
+    }
+
+    .mud-ex-file-meta-label {
+        opacity: .7;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mud-ex-file-meta-value {
+        font-family: var(--mud-typography-caption-family, monospace);
+        word-break: break-word;
+        white-space: pre-wrap;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+        min-width: 0;
+    }
+
+    .mud-ex-file-meta-copy {
+        visibility: hidden;
+    }
+
+    .mud-ex-file-meta-row:hover .mud-ex-file-meta-copy {
+        visibility: visible;
+    }
+
+    .mud-ex-file-meta-swatch {
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+        border: 1px solid var(--mud-palette-divider);
+        flex: 0 0 auto;
+    }
+
+    /* On a narrow panel - the details dock panel is often narrow - stack label over value. */
+    @@container (max-width: 320px) {
+        .mud-ex-file-meta-row {
+            grid-template-columns: 1fr auto;
+        }
+
+        .mud-ex-file-meta-label {
+            grid-column: 1 / -1;
+        }
+    }
+</style>
+
+<div class="@($"mud-ex-file-meta-view {Class}")" style="@($"container-type: inline-size; {Style}")">
+
+    @if (ShowFilter || AllowCopy)
+    {
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            @if (ShowFilter)
+            {
+                <MudTextField T="string" @bind-Value="_filter" DebounceInterval="150" Immediate="true"
+                              Placeholder="@TryLocalize("Filter")" Variant="Variant.Outlined" Margin="Margin.Dense"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                              Clearable="true" Class="mt-0" />
+            }
+            else
+            {
+                <MudSpacer />
+            }
+
+            @if (AllowCopy)
+            {
+                <MudTooltip Text="@TryLocalize("Copy all metadata")">
+                    <MudIconButton Size="MudBlazor.Size.Small" Icon="@Icons.Material.Filled.ContentCopy" OnClick="@CopyAllAsync" />
+                </MudTooltip>
+            }
+        </div>
+    }
+
+    @{
+        var groups = Groups;
+    }
+
+    @if (groups.Count == 0)
+    {
+        <MudText Typo="Typo.caption" Style="opacity: .6;">
+            @TryLocalize(string.IsNullOrWhiteSpace(_filter) ? "No metadata available." : "Nothing matches the filter.")
+        </MudText>
+    }
+
+    @foreach (var group in groups)
+    {
+        <div class="mud-ex-file-meta-group">
+            @if (ShowGroups)
+            {
+                <MudText Typo="Typo.caption" Class="mud-ex-file-meta-group-title">@TryLocalize(group.Key)</MudText>
+            }
+
+            @foreach (var row in group)
+            {
+                <div class="@RowClass">
+                    <MudText Typo="Typo.body2" Class="mud-ex-file-meta-label">@row.Label</MudText>
+                    <div class="mud-ex-file-meta-value">
+                        @if (!string.IsNullOrEmpty(row.Icon))
+                        {
+                            <MudExIcon Icon="@row.Icon" Size="MudBlazor.Size.Small" />
+                        }
+                        @RenderValue(row.Value)
+                    </div>
+                    @if (AllowCopy)
+                    {
+                        <MudIconButton Class="mud-ex-file-meta-copy" Size="MudBlazor.Size.Small" Icon="@Icons.Material.Filled.ContentCopy"
+                                       OnClick="@(() => CopyAsync(AsText(row.Value)))" />
+                    }
+                    else
+                    {
+                        <span></span>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+
+    @* A value is rendered by its type, not stringified: that is the whole difference between a metadata view
+       and a dump. Every branch falls back to the plain text form, so an unknown type still shows up. *@
+    private RenderFragment RenderValue(object value) =>
+    @<RenderChild>
+        @switch (value)
+        {
+            case null:
+                break;
+
+            case bool flag:
+                <MudExIcon Size="MudBlazor.Size.Small"
+                           Color="@(flag ? Color.Success : Color.Default)"
+                           Icon="@(flag ? Icons.Material.Filled.Check : Icons.Material.Filled.Close)" />
+                <span>@TryLocalize(flag ? "yes" : "no")</span>
+                break;
+
+            case string text when IsUrl(text):
+                <MudLink Href="@text" Target="_blank" Typo="Typo.body2">@text</MudLink>
+                break;
+
+            case string mail when IsMail(mail):
+                <MudLink Href="@($"mailto:{mail}")" Typo="Typo.body2">@mail</MudLink>
+                break;
+
+            case string color when IsColor(color):
+                <span class="mud-ex-file-meta-swatch" style="@($"background-color:{color};")"></span>
+                <span>@color</span>
+                break;
+
+            case string s:
+                <span>@s</span>
+                break;
+
+            @* A collection becomes chips - subject alternative names, tags, tracks. *@
+            case IEnumerable list when value is not string:
+                @foreach (var item in list.Cast<object>().Take(50))
+                {
+                    <MudChip T="string" Size="MudBlazor.Size.Small" Variant="Variant.Outlined" Class="ma-0">@AsText(item)</MudChip>
+                }
+                @if (list.Cast<object>().Skip(50).Any())
+                {
+                    <MudText Typo="Typo.caption" Style="opacity:.6;">
+                        @TryLocalize("and {0} more", list.Cast<object>().Skip(50).Count())
+                    </MudText>
+                }
+                break;
+
+            default:
+                <span>@AsText(value)</span>
+                break;
+        }
+    </RenderChild>;
+}

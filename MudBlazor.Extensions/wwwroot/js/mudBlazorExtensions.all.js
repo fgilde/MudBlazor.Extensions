@@ -1576,6 +1576,477 @@ class MudExEventHelper {
 }
 
 window.MudExEventHelper = MudExEventHelper;
+/**
+ * External file drops for any component that renders drop targets.
+ *
+ * Blazor's DragEventArgs only carries file names, never the files, so the only way to turn a drop from the
+ * operating system into an IBrowserFile is to put the dropped files on a real file input and dispatch its
+ * change event. That is what this does, and it is the same trick MudExUploadEdit uses.
+ *
+ * The listeners sit on the document in the capture phase, so they run before the target's own Blazor drop
+ * handler and can claim the event. Targets are found by their data attributes, so no element reference per
+ * target is needed - which is what lets one zone serve any number of them.
+ */
+window.MudExExternalFileDrop = {
+    attach: function (zoneId, inputElement, dotnet) {
+        const selector = '[data-mudex-drop-zone="' + zoneId + '"][data-mudex-drop-target]';
+
+        function targetKey(e) {
+            const el = e.target instanceof Element ? e.target.closest(selector) : null;
+            return el ? el.getAttribute('data-mudex-drop-target') : null;
+        }
+
+        function hasFiles(e) {
+            return !!e.dataTransfer && Array.from(e.dataTransfer.types || []).indexOf('Files') >= 0;
+        }
+
+        function onDragOver(e) {
+            if (!hasFiles(e) || targetKey(e) === null) {
+                return;
+            }
+            e.preventDefault();
+        }
+
+        async function onDrop(e) {
+            if (!hasFiles(e)) {
+                return;
+            }
+            const key = targetKey(e);
+            if (key === null) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Tell .NET which target was hit before the change event fires, otherwise the files arrive
+            // without one.
+            await dotnet.invokeMethodAsync('SetExternalDropTargetKey', key);
+
+            const container = new DataTransfer();
+            Array.from(e.dataTransfer.files).forEach(f => container.items.add(f));
+            inputElement.files = container.files;
+            inputElement.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        document.addEventListener('dragover', onDragOver, true);
+        document.addEventListener('drop', onDrop, true);
+
+        return {
+            dispose: () => {
+                document.removeEventListener('dragover', onDragOver, true);
+                document.removeEventListener('drop', onDrop, true);
+            }
+        };
+    }
+};
+
+/**
+ * Rubber band selection and drag auto scrolling for MudExFileGrid.
+ *
+ * Pointer moves happen per frame, so drawing the rectangle, hit testing and the scrolling stay in the
+ * browser - going through interop for every move would make the drag stutter. .NET only hears the result:
+ * the keys of the entries the rectangle touched, once, when the drag ends.
+ */
+window.MudExFileGridSelection = {
+    attach: function (container, dotnet, rubberBand) {
+        if (!container) {
+            return null;
+        }
+
+        const EDGE = 48;
+        const SPEED = 18;
+        let autoY = null;
+        let frame = null;
+
+        function scroller() {
+            return container.querySelector('.mud-ex-file-grid-scroll') || container;
+        }
+
+        function step() {
+            frame = null;
+            if (autoY === null) {
+                return;
+            }
+
+            const element = scroller();
+            const box = element.getBoundingClientRect();
+            const fromTop = autoY - box.top;
+            const fromBottom = box.bottom - autoY;
+
+            // The closer to the edge, the faster - the same feel as a file explorer.
+            if (fromTop < EDGE) {
+                element.scrollTop -= SPEED * (1 - Math.max(fromTop, 0) / EDGE);
+            } else if (fromBottom < EDGE) {
+                element.scrollTop += SPEED * (1 - Math.max(fromBottom, 0) / EDGE);
+            }
+
+            frame = requestAnimationFrame(step);
+        }
+
+        function autoScroll(y) {
+            autoY = y;
+            if (frame === null) {
+                frame = requestAnimationFrame(step);
+            }
+        }
+
+        function stopAutoScroll() {
+            autoY = null;
+            if (frame !== null) {
+                cancelAnimationFrame(frame);
+                frame = null;
+            }
+        }
+
+        function onDragOver(e) {
+            autoScroll(e.clientY);
+        }
+
+        function onDragLeave(e) {
+            // Fires between children too, so only a target outside the grid ends the scrolling.
+            if (!container.contains(e.relatedTarget)) {
+                stopAutoScroll();
+            }
+        }
+
+        container.addEventListener('dragover', onDragOver);
+        container.addEventListener('dragleave', onDragLeave);
+        document.addEventListener('dragend', stopAutoScroll);
+        document.addEventListener('drop', stopAutoScroll);
+
+        let band = null;
+        let startX = 0;
+        let startY = 0;
+        let additive = false;
+
+        function itemRects() {
+            return Array.from(container.querySelectorAll('[data-file-grid-key]')).map(el => ({
+                key: el.getAttribute('data-file-grid-key'),
+                rect: el.getBoundingClientRect()
+            }));
+        }
+
+        function intersects(a, b) {
+            return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+        }
+
+        function bandRect() {
+            const box = band.getBoundingClientRect();
+            return { left: box.left, top: box.top, right: box.right, bottom: box.bottom };
+        }
+
+        function onPointerDown(e) {
+            // Only a drag that starts on the free space is a rubber band - one that starts on an entry is a
+            // drag of that entry.
+            if (e.button !== 0 || (e.target instanceof Element && e.target.closest('[data-file-grid-key]'))) {
+                return;
+            }
+
+            additive = e.ctrlKey || e.metaKey || e.shiftKey;
+            startX = e.clientX;
+            startY = e.clientY;
+
+            band = document.createElement('div');
+            band.className = 'mud-ex-file-grid-band';
+            band.style.position = 'fixed';
+            band.style.left = startX + 'px';
+            band.style.top = startY + 'px';
+            band.style.width = '0';
+            band.style.height = '0';
+            band.style.pointerEvents = 'none';
+            band.style.zIndex = '10';
+            document.body.appendChild(band);
+
+            container.setPointerCapture?.(e.pointerId);
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
+        }
+
+        function onPointerMove(e) {
+            if (!band) {
+                return;
+            }
+            autoScroll(e.clientY);
+            band.style.left = Math.min(startX, e.clientX) + 'px';
+            band.style.top = Math.min(startY, e.clientY) + 'px';
+            band.style.width = Math.abs(e.clientX - startX) + 'px';
+            band.style.height = Math.abs(e.clientY - startY) + 'px';
+        }
+
+        async function onPointerUp() {
+            window.removeEventListener('pointermove', onPointerMove);
+            window.removeEventListener('pointerup', onPointerUp);
+            stopAutoScroll();
+            if (!band) {
+                return;
+            }
+
+            const box = bandRect();
+            const touched = itemRects().filter(i => intersects(box, i.rect)).map(i => i.key);
+
+            band.remove();
+            band = null;
+
+            // A click without movement is not a band - let the normal click handling deal with it.
+            const moved = box.right - box.left > 3 || box.bottom - box.top > 3;
+            if (moved) {
+                await dotnet.invokeMethodAsync('RubberBandSelected', touched, additive);
+            }
+        }
+
+        if (rubberBand) {
+            container.addEventListener('pointerdown', onPointerDown);
+        }
+
+        return {
+            dispose: () => {
+                container.removeEventListener('pointerdown', onPointerDown);
+                container.removeEventListener('dragover', onDragOver);
+                container.removeEventListener('dragleave', onDragLeave);
+                document.removeEventListener('dragend', stopAutoScroll);
+                document.removeEventListener('drop', stopAutoScroll);
+                window.removeEventListener('pointermove', onPointerMove);
+                window.removeEventListener('pointerup', onPointerUp);
+                stopAutoScroll();
+                band?.remove();
+            }
+        };
+    }
+};
+
+class MudExFileSystemAccess {
+
+    // Handles cannot cross the interop boundary, so they stay here and .NET refers to them by id. The id is
+    // the path from the picked root ("/", "/docs", "/docs/a.txt"), not an incrementing counter: re-listing a
+    // directory the user already visited overwrites the same key instead of minting a new one, so the map
+    // stays bounded to the distinct paths of the current tree instead of growing for the page's whole
+    // lifetime. Picking a new root clears it outright, so switching folders doesn't pile the old tree on top.
+    static _handles = {};
+
+    static isSupported() {
+        return typeof window.showDirectoryPicker === 'function';
+    }
+
+    /** Opens the picker. Returns the root entry, or null when the user cancelled. */
+    static async pickDirectory(writable) {
+        if (!MudExFileSystemAccess.isSupported()) {
+            return null;
+        }
+        try {
+            const handle = await window.showDirectoryPicker({ mode: writable ? 'readwrite' : 'read' });
+            MudExFileSystemAccess._handles = { '/': handle };
+            return { id: '/', name: handle.name, writable: await MudExFileSystemAccess.canWrite(handle) };
+        } catch (e) {
+            // AbortError is the user closing the dialog - not an error worth reporting
+            if (e && e.name === 'AbortError') {
+                return null;
+            }
+            throw e;
+        }
+    }
+
+    static async canWrite(handle) {
+        if (!handle.queryPermission) {
+            return false;
+        }
+        return (await handle.queryPermission({ mode: 'readwrite' })) === 'granted';
+    }
+
+    static async listDirectory(handleId) {
+        const handle = MudExFileSystemAccess._handles[handleId];
+        if (!handle) {
+            return [];
+        }
+
+        const entries = [];
+        for await (const [name, child] of handle.entries()) {
+            const id = handleId === '/' ? '/' + name : handleId + '/' + name;
+            MudExFileSystemAccess._handles[id] = child;
+
+            const isDirectory = child.kind === 'directory';
+            let size = 0;
+            let lastModified = null;
+            let contentType = null;
+            if (!isDirectory) {
+                const file = await child.getFile();
+                size = file.size;
+                lastModified = new Date(file.lastModified).toISOString();
+                contentType = file.type || null;
+            }
+            entries.push({ id, name, isDirectory, size, lastModified, contentType });
+        }
+        return entries;
+    }
+
+    /** Returns a blob url for a file handle. The caller revokes it. */
+    static async createFileUrl(handleId) {
+        const handle = MudExFileSystemAccess._handles[handleId];
+        if (!handle || handle.kind !== 'file') {
+            return null;
+        }
+        return URL.createObjectURL(await handle.getFile());
+    }
+
+    static revokeUrl(url) {
+        URL.revokeObjectURL(url);
+    }
+
+    static _join(parentHandleId, name) {
+        return parentHandleId === '/' ? '/' + name : parentHandleId + '/' + name;
+    }
+
+    // Drops a handle and everything below it from the map. Ids are paths, so a moved or deleted directory
+    // takes its whole subtree's keys with it - leaving them would let a later lookup resolve a path that no
+    // longer exists.
+    static _forget(handleId) {
+        const prefix = handleId === '/' ? '/' : handleId + '/';
+        Object.keys(MudExFileSystemAccess._handles).forEach(key => {
+            if (key === handleId || key.startsWith(prefix)) {
+                delete MudExFileSystemAccess._handles[key];
+            }
+        });
+    }
+
+    static async _entry(id, name, handle) {
+        MudExFileSystemAccess._handles[id] = handle;
+        if (handle.kind === 'directory') {
+            return { id, name, isDirectory: true, size: 0, lastModified: null, contentType: null };
+        }
+        const file = await handle.getFile();
+        return {
+            id,
+            name,
+            isDirectory: false,
+            size: file.size,
+            lastModified: new Date(file.lastModified).toISOString(),
+            contentType: file.type || null
+        };
+    }
+
+    /** True when the directory already holds an entry of that name, whatever kind it is. */
+    static async entryExists(parentHandleId, name) {
+        const parent = MudExFileSystemAccess._handles[parentHandleId];
+        if (!parent || parent.kind !== 'directory') {
+            return false;
+        }
+        try {
+            await parent.getFileHandle(name);
+            return true;
+        } catch (e) {
+            // not a file - fall through and try a directory
+        }
+        try {
+            await parent.getDirectoryHandle(name);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    static async createDirectory(parentHandleId, name) {
+        const parent = MudExFileSystemAccess._handles[parentHandleId];
+        if (!parent || parent.kind !== 'directory') {
+            return null;
+        }
+        const handle = await parent.getDirectoryHandle(name, { create: true });
+        return await MudExFileSystemAccess._entry(MudExFileSystemAccess._join(parentHandleId, name), name, handle);
+    }
+
+    /**
+     * Writes a file into the directory. The content arrives as a DotNetStreamReference so the bytes are
+     * transferred as a binary stream instead of being base64'd through the JSON interop channel.
+     */
+    static async writeFile(parentHandleId, name, streamRef) {
+        const parent = MudExFileSystemAccess._handles[parentHandleId];
+        if (!parent || parent.kind !== 'directory') {
+            return null;
+        }
+        const buffer = await streamRef.arrayBuffer();
+        const handle = await parent.getFileHandle(name, { create: true });
+        const writable = await handle.createWritable();
+        await writable.write(buffer);
+        await writable.close();
+        return await MudExFileSystemAccess._entry(MudExFileSystemAccess._join(parentHandleId, name), name, handle);
+    }
+
+    static async remove(handleId) {
+        const handle = MudExFileSystemAccess._handles[handleId];
+        if (!handle) {
+            return false;
+        }
+        if (typeof handle.remove === 'function') {
+            await handle.remove({ recursive: true });
+        } else {
+            const cut = handleId.lastIndexOf('/');
+            const parent = MudExFileSystemAccess._handles[cut <= 0 ? '/' : handleId.substring(0, cut)];
+            if (!parent) {
+                return false;
+            }
+            await parent.removeEntry(handle.name, { recursive: true });
+        }
+        MudExFileSystemAccess._forget(handleId);
+        return true;
+    }
+
+    /**
+     * Moves or renames an entry. Files use the browser's own move(), which is atomic. Directories have no
+     * move(), so they are copied and only then removed - a failed copy leaves the original untouched.
+     */
+    static async moveEntry(handleId, targetDirHandleId, newName) {
+        const handle = MudExFileSystemAccess._handles[handleId];
+        const target = MudExFileSystemAccess._handles[targetDirHandleId];
+        if (!handle || !target || target.kind !== 'directory') {
+            return null;
+        }
+
+        const name = newName || handle.name;
+        if (handle.kind === 'file' && typeof handle.move === 'function') {
+            await handle.move(target, name);
+            MudExFileSystemAccess._forget(handleId);
+        } else {
+            await MudExFileSystemAccess._copyInto(handle, target, name);
+            await MudExFileSystemAccess.remove(handleId);
+        }
+
+        const id = MudExFileSystemAccess._join(targetDirHandleId, name);
+        const moved = handle.kind === 'directory'
+            ? await target.getDirectoryHandle(name)
+            : await target.getFileHandle(name);
+        return await MudExFileSystemAccess._entry(id, name, moved);
+    }
+
+    static async _copyInto(handle, targetDir, name) {
+        if (handle.kind === 'file') {
+            const file = await handle.getFile();
+            const dest = await targetDir.getFileHandle(name, { create: true });
+            const writable = await dest.createWritable();
+            await writable.write(file);
+            await writable.close();
+            return dest;
+        }
+
+        const dest = await targetDir.getDirectoryHandle(name, { create: true });
+        for await (const [childName, child] of handle.entries()) {
+            await MudExFileSystemAccess._copyInto(child, dest, childName);
+        }
+        return dest;
+    }
+
+    /** Relative paths of the files an <input webkitdirectory> collected, in the order of input.files. */
+    static relativePaths(inputElement) {
+        const files = inputElement && inputElement.files ? inputElement.files : [];
+        return Array.from(files).map(f => ({
+            relativePath: f.webkitRelativePath || f.name,
+            size: f.size,
+            lastModified: new Date(f.lastModified).toISOString(),
+            contentType: f.type || null
+        }));
+    }
+}
+
+window.MudExFileSystemAccess = MudExFileSystemAccess;
+
 class MudExNumber {
     static constrain(number, min, max) {
         var x = parseFloat(number);

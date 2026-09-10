@@ -2,9 +2,67 @@
 @inherits BasePage
 @using MainSample.WebAssembly.Services
 @using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Core.Enums
 @inject SampleDataService sampleDataService
 
 @attribute [Demo(IsPlaygroundDemo = true, Group = "File Handling", Name = "File Display with Stream", Order = 0, Documentation = "The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
+
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx File Display from a stream"]
+    </MudText>
+
+    <MudText Typo="Typo.body1">
+        @L["The same component, without a url. The content arrives as a Stream, which is what a file from a database, an archive or an api actually is - StreamUrlHandling decides whether it becomes a blob url or a data url."]
+    </MudText>
+
+    <MudText Typo="Typo.subtitle2" Class="mt-4 mb-2">@L["Viewers that ship with it"]</MudText>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+        @foreach (var viewer in ViewerKinds)
+        {
+            <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Icon="@viewer.Icon">@viewer.Label</MudChip>
+        }
+    </div>
+</MudPaper>
+
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">@L["One component, any file"]</MudText>
+            <MudText Typo="Typo.body2">
+                @L["MudExFileDisplay picks the viewer from the content type and falls back to an iframe for anything it has no viewer for."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">@L["Your own viewers"]</MudText>
+            <MudText Typo="Typo.body2">
+                @L["Implement IMudExFileDisplay and it is picked up automatically - weather.json in the list below is rendered by one."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">@L["Content errors are yours"]</MudText>
+            <MudText Typo="Typo.body2">
+                @L["HandleContentErrorFunc turns a file the browser refuses into whatever you want to show instead."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">@L["No url anywhere"]</MudText>
+            <MudText Typo="Typo.body2">
+                @L["StreamUrlHandling = BlobUrl keeps the bytes in the browser instead of putting them into the markup, which is what makes a large file practical."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="mb-6" />
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor", "SampleDataService.cs"})">
     
@@ -24,22 +82,69 @@
 
     @if (SampleFile?.Stream != null)
     {
-        <div style="width: 100%; height: 800px; margin-top: 20px">
-            <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
-                              StreamUrlHandling="StreamUrlHandling.BlobUrl"
-                              ParametersForSubControls="@GetParams()"
-                              Dense="true"
-                          FileName="@SampleFile.Name" ContentStream="@SampleFile.Stream" ContentType="@SampleFile.ContentType"></MudExFileDisplay>
-        </div>
-        <MudButton OnClick="@OpenAsDialog" Variant="Variant.Filled" Color="Color.Primary">Show As Dialog</MudButton>
+        <MudPaper Class="mt-4" Outlined="true">
+            <MudToolBar Dense="true" Class="mud-ex-file-demo-bar">
+                <MudExIcon Class="mr-2" Color="@SampleFile.Color" Icon="@SampleFile.Icon" />
+                <MudText Typo="Typo.subtitle2">@SampleFile.Name</MudText>
+                <MudChip T="string" Class="ml-3" Size="Size.Small" Variant="Variant.Text">@SampleFile.ContentType</MudChip>
+                <MudChip T="string" Size="Size.Small" Variant="Variant.Text">@SampleFile.ReadableSize</MudChip>
+                <MudSpacer />
+                <MudTooltip Text="@L["Show the file metadata beside the viewer"]">
+                    <MudSwitch T="bool" @bind-Value="_showMeta" Color="Color.Primary" Label="@L["Metadata"]" />
+                </MudTooltip>
+                <MudTooltip Text="@L["Open the same stream in a dialog"]">
+                    <MudIconButton Icon="@Icons.Material.Filled.OpenInNew" OnClick="@OpenAsDialog" />
+                </MudTooltip>
+            </MudToolBar>
+
+            <div style="width: 100%; height: 800px;">
+                <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
+                                  StreamUrlHandling="StreamUrlHandling.BlobUrl"
+                                  ParametersForSubControls="@GetParams()"
+                                  ShowFileMeta="@_showMeta"
+                                  FileMetaPlacement="MudExFileMetaPlacement.Right"
+                                  ColorizeIcons="true"
+                                  Dense="true"
+                                  FileName="@SampleFile.Name" ContentStream="@SampleFile.Stream" ContentType="@SampleFile.ContentType"></MudExFileDisplay>
+            </div>
+        </MudPaper>
     }
 </DemoComponent>
 
 
 @code {
+    // The kinds of file the library has a dedicated viewer for. Kept as a plain list on purpose: it is a
+    // showcase of what exists, not something the page derives from the DI container.
+    private static readonly (string Label, string Icon)[] ViewerKinds =
+    {
+        ("Images", Icons.Material.Filled.Image),
+        ("PDF", Icons.Custom.FileFormats.FilePdf),
+        ("Office", Icons.Custom.FileFormats.FileWord),
+        ("PowerPoint", Icons.Material.Filled.Slideshow),
+        ("Code", Icons.Material.Filled.Code),
+        ("Markdown", Icons.Material.Filled.Article),
+        ("Xml & Json", Icons.Material.Filled.DataObject),
+        ("Csv & Tables", Icons.Material.Filled.TableChart),
+        ("Archives", Icons.Material.Filled.FolderZip),
+        ("Audio", Icons.Material.Filled.Audiotrack),
+        ("Video", Icons.Material.Filled.Movie),
+        ("Subtitles", Icons.Material.Filled.Subtitles),
+        ("Diff & Patch", Icons.Material.Filled.Difference),
+        ("HAR", Icons.Material.Filled.NetworkCheck),
+        ("3D models", Icons.Material.Filled.ViewInAr),
+        ("Maps & GPX", Icons.Material.Filled.Map),
+        ("EPUB", Icons.Material.Filled.MenuBook),
+        ("E-Mail", Icons.Material.Filled.Email),
+        ("Contacts & Calendar", Icons.Material.Filled.ContactPage),
+        ("Certificates", Icons.Material.Filled.VerifiedUser),
+        ("SQLite", Icons.Material.Filled.Storage),
+        ("Logs", Icons.Material.Filled.Terminal)
+    };
+
 
     private List<SampleFileWithStream> _samples = new ();
     private bool _loading;
+    private bool _showMeta;
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();

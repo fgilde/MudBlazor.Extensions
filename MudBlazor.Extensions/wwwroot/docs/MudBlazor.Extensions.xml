@@ -1106,6 +1106,15 @@
         <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.RefreshMetaInfosAsync">
+            <summary>
+            Reads the tags shortly after the source was set, then tells the host about them.
+            </summary>
+            <remarks>
+            The host renders the metadata but cannot know when it appears - its own render loop is not driven by
+            this component - so it has to be told, or the values only show up when something else causes a render.
+            </remarks>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.HandleIsPlayingChanged(System.Boolean)">
             <inheritdoc />
         </member>
@@ -3214,6 +3223,31 @@
             If true icons are colored
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ShowFileMeta">
+            <summary>
+            Set to true to render a <see cref="T:MudBlazor.Extensions.Components.MudExFileMetaView"/> with the file metadata inline, at the
+            position given by <see cref="P:MudBlazor.Extensions.Components.MudExFileDisplay.FileMetaPlacement"/>. Fed from the same data the info dialog uses.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.FileMetaPlacement">
+            <summary>
+            Where the inline <see cref="T:MudBlazor.Extensions.Components.MudExFileMetaView"/> is rendered relative to the viewer content when
+            <see cref="P:MudBlazor.Extensions.Components.MudExFileDisplay.ShowFileMeta"/> is true.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.FileMetaInformationChanged">
+            <summary>
+            Raised whenever the metadata of the displayed file changes: the same set the info dialog shows, which
+            is the file's own properties plus whatever the active <see cref="T:MudBlazor.Extensions.Components.IMudExFileDisplay"/> contributes.
+            </summary>
+            <remarks>
+            A viewer can only report what it has parsed, and parsing happens after the first render - a csv reports
+            its column and row counts, a pdf its page count, an mp3 its bitrate. So this fires again when the
+            viewer's contribution actually arrives, not just once. Consumers that render their own
+            <see cref="T:MudBlazor.Extensions.Components.MudExFileMetaView"/> somewhere else - a separate panel, a sidebar - bind to this instead of
+            collecting anything themselves.
+            </remarks>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.HandleContentErrorFunc">
             <summary>
             A function to handle content error.
@@ -3305,6 +3339,37 @@
             </summary>
             <param name="withEmptyValues"></param>
             <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.GetActiveDisplayMetaInformationAsync">
+            <summary>
+            Gathers the extra meta information the currently active <see cref="T:MudBlazor.Extensions.Components.IMudExFileDisplay"/> contributes,
+            via <see cref="M:MudBlazor.Extensions.Components.IMudExFileDisplay.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)"/>. Shared by <see cref="M:MudBlazor.Extensions.Components.MudExFileDisplay.GetFileFinfosAsync(System.Boolean)"/>
+            (used by the info dialog) and by the inline <see cref="T:MudBlazor.Extensions.Components.MudExFileMetaView"/> rendering.
+            </summary>
+            <remarks>
+            Public because a consumer that renders its own <see cref="T:MudBlazor.Extensions.Components.MudExFileMetaView"/> beside this component -
+            <see cref="T:MudBlazor.Extensions.Components.MudExFileManager"/> does - needs the viewer's contribution without the intrinsic file
+            properties <see cref="M:MudBlazor.Extensions.Components.MudExFileDisplay.GetFileFinfosAsync(System.Boolean)"/> adds, which it already has.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.RefreshFileMetaViewDataAsync">
+            <summary>
+            Gathers the data for the inline <see cref="T:MudBlazor.Extensions.Components.MudExFileMetaView"/> shown when <see cref="P:MudBlazor.Extensions.Components.MudExFileDisplay.ShowFileMeta"/>
+            is true: the raw file size plus the same extra meta information the info dialog shows.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.RefreshMetaInformationAsync">
+            <summary>
+            Re-reads the active viewer's metadata and publishes it when it changed.
+            </summary>
+            <remarks>
+            A viewer calls this - through <c>FileDisplayInfos.NotifyMetaChangedAsync()</c> - once it has parsed the
+            file, because that is the only moment it knows its row count, bitrate or page count. Without it the
+            value would only surface when something else happens to trigger a render here.
+            </remarks>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.ShowInfoFileInfoAsync">
             <summary>
@@ -4623,6 +4688,745 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.DisposeAsync">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileGrid">
+            <summary>
+            The file area of an explorer: one directory's entries, with multi selection, rubber band, inline rename,
+            keyboard handling and drag and drop.
+            </summary>
+            <remarks>
+            Flat on purpose. A tree ties the shown level to the selected node, which stops working the moment more
+            than one entry is selected - three marked files are not a place. This shows the entries it is given and
+            reports what the user wants done; navigating and changing the structure stay with the consumer.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.Key(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode)">
+            <summary>Stable key per entry, so the rubber band can report what it touched.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.DropTargetFor(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode)">
+            <summary>
+            Only a directory takes a drop; dropping on a file, or on the free space, means this level.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.RubberBandSelected(System.String[],System.Boolean)">
+            <summary>
+            Called from JavaScript when a rubber band drag ended, with the keys it touched.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.SetExternalDropTargetKey(System.String)">
+            <summary>
+            Called from JavaScript right before the dropped files reach the hidden input, so the change event that
+            follows knows which entry they landed on.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.Items">
+            <summary>The entries to show.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.View">
+            <summary>How the entries are presented.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.ViewChanged">
+            <summary>Raised when the user switches the view.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.SortBy">
+            <summary>The column the entries are sorted by.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.SortByChanged">
+            <summary>Raised when the user sorts by another column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.SortDescending">
+            <summary>Sorts descending.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.SortDescendingChanged">
+            <summary>Raised when the sort direction changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.DirectoriesFirst">
+            <summary>Directories are listed before files, whatever the sort is.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.SelectedItems">
+            <summary>The selected entries.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.SelectedItemsChanged">
+            <summary>Raised whenever the selection changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.AllowMultiSelect">
+            <summary>Lets the user select more than one entry, with ctrl, shift and the rubber band.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.AllowRubberBand">
+            <summary>Lets the user drag a rectangle over the free space to select what it touches.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.AllowRename">
+            <summary>Lets the user rename an entry in place, with F2 or a second click on the name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.AllowDragDrop">
+            <summary>Lets the user drag entries out, and drop entries and files from outside on a directory.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.AllowContextMenu">
+            <summary>Shows the context menu on right click.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.Virtualize">
+            <summary>Virtualizes the entries. Worth it from a few hundred on.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.ItemTemplate">
+            <summary>Renders an entry. The default renders an icon, the name and, in details view, its columns.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.ContextMenuContent">
+            <summary>Additional entries for the context menu, rendered below the built-in ones.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.EmptyContent">
+            <summary>Shown when there is nothing to list.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.OnOpened">
+            <summary>Raised when an entry is opened: a double click, or enter.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.OnRenamed">
+            <summary>Raised when the user finished an inline rename. Renaming is the consumer's job.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.OnDeleteRequested">
+            <summary>Raised when the user asks for the selection to be deleted, with delete or the menu.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.OnMoveRequested">
+            <summary>Raised when the user dropped a selection on a directory of this grid.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.OnExternalFilesDropped">
+            <summary>Raised when files from outside the browser were dropped.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.OrderedItems">
+            <summary>The entries in the order they are rendered.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.IsRenaming">
+            <summary>True while an inline rename is open.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.SelectAllAsync">
+            <summary>Selects every entry.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.ClearSelectionAsync">
+            <summary>Clears the selection.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.SelectAsync(System.Collections.Generic.IEnumerable{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode})">
+            <summary>Sets the selection to exactly the given entries.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.StartRename(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode)">
+            <summary>Starts an inline rename of the given entry.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.ItemClickAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <summary>
+            A click on an entry. Plain replaces the selection, ctrl toggles one, shift takes the range from the
+            last anchor - the three gestures every file manager has.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileGrid.KeyDownAsync(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs)">
+            <summary>
+            Keyboard handling on the grid itself: arrows move, enter opens, F2 renames, delete asks for a delete,
+            ctrl+a takes everything and escape drops the selection.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileGridRenameRequest">
+            <summary>An inline rename the user finished in a <see cref="T:MudBlazor.Extensions.Components.MudExFileGrid"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGridRenameRequest.Node">
+            <summary>The entry to rename.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGridRenameRequest.NewName">
+            <summary>The name the user typed, trimmed.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileGridMoveRequest">
+            <summary>Entries the user dropped on a directory of a <see cref="T:MudBlazor.Extensions.Components.MudExFileGrid"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGridMoveRequest.Nodes">
+            <summary>The entries that were dragged.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGridMoveRequest.Target">
+            <summary>The directory they were dropped on. <c>null</c> means the grid's own level.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileGridExternalDropRequest">
+            <summary>Files from outside the browser, dropped on a <see cref="T:MudBlazor.Extensions.Components.MudExFileGrid"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGridExternalDropRequest.Files">
+            <summary>The dropped files.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGridExternalDropRequest.Target">
+            <summary>The directory they were dropped on. <c>null</c> means the grid's own level.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileManager">
+            <summary>
+            An explorer style file manager: a structure tree beside a file area, with breadcrumb navigation and
+            optional preview and metadata panels, laid out with <see cref="T:MudBlazor.Extensions.Components.MudExDockLayout"/> so every panel can be
+            resized, stacked, floated or popped out.
+            </summary>
+            <remarks>
+            The structure comes from an <see cref="T:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager"/>, so the same component browses an
+            in-memory tree, a folder on the user's machine or a server directory.
+            <para>
+            <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.SelectedNode"/> is the only navigation state. The structure tree, the file area and the
+            breadcrumb are three <see cref="T:MudBlazor.Extensions.Components.MudExTreeView`1"/> instances over the same root items and the same
+            selection, which is what keeps them in sync, and each of them lists its own level.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.AllowDragDrop">
+            <summary>
+            Lets the user move entries by dragging, and add files dragged in from outside the browser.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.ShowActions">
+            <summary>
+            Shows the write actions in the toolbar. Each is still gated on the provider's capabilities.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.OnStructureChanged">
+            <summary>Raised after any operation that changed the structure.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.Writer">
+            <summary>The provider's writer half, or null when it cannot change anything.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.CreateDirectoryAsync">
+            <summary>Creates a directory in the current directory, asking the user for its name.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.RenameSelectedAsync">
+            <summary>Renames the selected entry, asking the user for the new name.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.RenameAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.String)">
+            <summary>Renames one entry. Used by the toolbar and by the file area's inline rename.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.DeleteSelectedAsync">
+            <summary>Deletes the selection after asking for confirmation.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.DeleteAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode})">
+            <summary>Deletes the given entries after asking for confirmation.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.DownloadSelectedAsync">
+            <summary>Downloads the selected file through the browser.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.UploadEditConfigure">
+            <summary>
+            Applied to the <see cref="T:MudBlazor.Extensions.Components.MudExUploadEdit`1"/> of the upload dialog, so every one of its options -
+            restrictions, archive content inspection, folder upload, the external providers - is yours to set.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.UploadDialogOptions">
+            <summary>Options for the upload dialog itself.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.ShowUploadDialogAsync">
+            <summary>Opens the upload dialog for the current directory.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.Restrictions">
+            <summary>
+            What an incoming file has to satisfy. Applied on every path that adds one - the upload dialog and a
+            file dropped straight onto a folder alike - and handed to the dialog's upload edit as well.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.UploadFilesAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Collections.Generic.IReadOnlyCollection{Microsoft.AspNetCore.Components.Forms.IBrowserFile})">
+            <summary>
+            Adds the given files to the target directory, skipping any that <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.Restrictions"/> refuses.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.MoveAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode},MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode)">
+            <summary>Moves the given entries into a directory. <c>null</c> is the root.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.RunWriteAsync(System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Runs a write and reloads from the root - a write invalidates its nodes, and a lazy node cannot be
+            re-loaded in place.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.PopoutUrl">
+            <summary>Url of the page a popped out panel is hosted in.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.DockId">
+            <summary>Id of the dock layout, so a stored arrangement can be matched back to it.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.BuildDefaultLayoutJson">
+            <summary>Tree left, files in the middle, preview and details stacked right.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.Manager">
+            <summary>
+            Provides the structure to browse. Required.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.Panels">
+            <summary>
+            Which panels exist. Decided once, not at runtime - see <see cref="T:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPanels"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.FileGridView">
+            <summary>
+            How the file area presents its entries.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.FileGridViewChanged">
+            <summary>Raised when the user switches the file area between tiles and details.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.ShowFileViewSwitcher">
+            <summary>Shows the button that switches the file area between tiles and details.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.AllowMultiSelect">
+            <summary>Lets the user select more than one entry in the file area.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.VirtualizeFileArea">
+            <summary>Virtualizes the file area. Worth it for directories with hundreds of entries.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.FileAreaTemplate">
+            <summary>
+            Replaces the whole file area, and is handed the entries of the current directory. The default is a
+            <see cref="T:MudBlazor.Extensions.Components.MudExFileGrid"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.FileItemTemplate">
+            <summary>Renders the name of one entry in the file area.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.TreePanelViewMode">
+            <summary>
+            How the structure panel renders. Any tree view mode works, so the left panel can be a list or a card
+            grid just as well as a tree.
+            </summary>
+            <remarks>Named apart from the <c>TreeViewMode</c> type so markup does not have to qualify it.</remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.TreePanelViewModeChanged">
+            <summary>Raised when the user switches the structure panel's view mode.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.ToggleableTreeViewModes">
+            <summary>
+            The view modes the user may switch the structure panel between. One or none hides the switcher.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.ShowBreadcrumb">
+            <summary>
+            Shows the address bar above the file area: the structure as a breadcrumb, with a dropdown per level,
+            the way an explorer does it. Always above the content, whatever the file area is showing.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.FilePreviewContent">
+            <summary>
+            Whether the file area shows an icon per entry or renders the real content. Content is expensive.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.MaxContentPreviews">
+            <summary>
+            Upper bound on how many entries render real content when <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.FilePreviewContent"/> is
+            <see cref="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPreviewContent.Content"/>. Beyond it, entries fall back to an icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.TreeShowsFiles">
+            <summary>
+            The structure panel also lists files, not only directories.
+            </summary>
+            <remarks>
+            Off by default: the left side navigates, the file area shows the contents. Turn it on for a manager
+            without a file area, for example <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.Panels"/> of <c>Tree | Preview</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.AllowPopout">
+            <summary>Allows the user to pop a panel out into its own window.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.AllowClosePanels">
+            <summary>Lets the user close a panel. Off by default - there is no way to bring one back.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.TreePanelWidth">
+            <summary>Width of the tree panel in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.SidePanelWidth">
+            <summary>Width of the preview and metadata panels in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.Height">
+            <summary>Height of the whole component.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.InitialLayoutJson">
+            <summary>A previously saved dock layout to restore.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.ChildContent">
+            <summary>
+            Additional dock panels. They are rendered last, which is what keeps the dock's append-only rule intact.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.SelectedNode">
+            <summary>
+            The selected entry, or the first of them. Selecting is not navigating - see
+            <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.CurrentDirectory"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.SelectedNodeChanged">
+            <summary>Raised when the selection changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.SelectedNodes">
+            <summary>Every selected entry. The file area allows more than one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.SelectedNodesChanged">
+            <summary>Raised when the selection changes, with all of it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.CurrentDirectoryChanged">
+            <summary>Raised when the current directory changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.OnFileOpened">
+            <summary>Raised when a file is activated, by double click or by pressing enter.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.CurrentDirectory">
+            <summary>
+            The directory whose contents the file area shows. <c>null</c> is the root.
+            </summary>
+            <remarks>
+            Its own state, not derived from the selection: with more than one entry selected there would be
+            nothing to derive it from - three marked files are not a place.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.SelectedFileMetaInformation">
+            <summary>
+            The metadata the preview's viewer reported - the same set the info dialog shows.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.Dock">
+            <summary>The dock layout, for saving and restoring the arrangement.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.SaveLayoutAsync">
+            <summary>Saves the current panel arrangement.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.RestoreLayoutAsync(System.String)">
+            <summary>Restores a previously saved panel arrangement.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.RefreshAsync">
+            <summary>Reloads the structure from the manager, discarding every loaded node.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.FileGrid">
+            <summary>The file area, for a consumer that wants its selection or wants to start a rename.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.OnInitializedAsync">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.RootItems">
+            <summary>The root items every panel works on.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.CurrentEntries">
+            <summary>
+            The entries of the current directory, for the entry count and the content preview budget. The file
+            area gets the root items and lists the level itself.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.TreeItemFilter">
+            <summary>Hides files in the structure panel when <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.TreeShowsFiles"/> is off.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.IsDirectoryNode(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode)">
+            <summary>The address bar shows where you are, so it lists directories only.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.NavigateToAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode)">
+            <summary>
+            The one place navigation happens: every panel reports here and reads the result back.
+            </summary>
+            <remarks>
+            A directory is entered, which clears the selection because the old one belonged to the level you just
+            left. A file is selected, and the directory it lives in stays open.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.SelectAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode})">
+            <summary>Sets the selection without leaving the current directory.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.EnsureChildrenLoadedAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode)">
+            <summary>
+            Makes sure a directory's children are there before the panels render it. A load this starts is
+            awaited; one the tree view already started while expanding is one-shot, so it can only be watched.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.NavigateUpAsync">
+            <summary>Goes up one level.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.OpenAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode)">
+            <summary>
+            Opening an entry - the double click. A directory is entered, a file raises <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.OnFileOpened"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.TreeSelectedNode">
+            <summary>What the structure panel highlights: the current directory, or a file when it lists files.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.OnPreviewMetaChanged(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Shows what the preview's <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> reports - a handover, not a second collection.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileManagerClient">
+            <summary>
+            A <see cref="T:MudBlazor.Extensions.Components.MudExFileManager"/> on a folder of the user's own machine.
+            </summary>
+            <remarks>
+            Feature detection picks the acquisition mode: with the File System Access API the folder is enumerated
+            lazily and can be written to, without it an <c>input webkitdirectory</c> selection is read once and stays
+            read-only. Every parameter is a primitive, so
+            <c>&lt;mudex-file-manager-client&gt;</c> works as a web component with no Blazor project.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.ShowPicker">
+            <summary>Shows the toolbar that lets the user pick the folder. Off when the host does it instead.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.AllowWrite">
+            <summary>
+            Asks the browser for write access when picking. Only the File System Access API can grant it; the
+            fallback stays read-only no matter what this says.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.Panels">
+            <summary>Which panels the file manager shows.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.FileGridView">
+            <summary>How the file area presents its entries.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.AllowMultiSelect">
+            <summary>Lets the user select more than one entry in the file area.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.TreePanelViewMode">
+            <summary>How the structure panel renders.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.TreeShowsFiles">
+            <summary>The structure panel also lists files, not only directories.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.AllowClosePanels">
+            <summary>Lets the user close a panel.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.FilePreviewContent">
+            <summary>Whether the file area shows icons or the real content.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.ShowBreadcrumb">
+            <summary>Shows the breadcrumb bar above the file area.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.ShowActions">
+            <summary>Shows the toolbar buttons that change the structure.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.AllowDragDrop">
+            <summary>Allows moving entries by dragging them.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.AllowPopout">
+            <summary>Allows the user to pop a panel out into its own window.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.Height">
+            <summary>Height of the whole component.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.OnFolderPicked">
+            <summary>Raised after a folder was picked, with the folder's name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.Manager">
+            <summary>The provider this component built, for a consumer that wants to call it directly.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.SupportsFileSystemAccess">
+            <summary>True when the browser has the File System Access API.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManagerClient.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManagerClient.PickFolderAsync">
+            <summary>Opens the folder picker. Only works where <see cref="P:MudBlazor.Extensions.Components.MudExFileManagerClient.SupportsFileSystemAccess"/> is true.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileManagerServer">
+            <summary>
+            A <see cref="T:MudBlazor.Extensions.Components.MudExFileManager"/> on a server directory, configured with nothing but a base url.
+            </summary>
+            <remarks>
+            This is the web component friendly half of the file manager: every parameter is a string, a number, a bool
+            or an enum, so <c>&lt;mudex-file-manager-server base-url="/api/files"&gt;</c> is a working file browser
+            without a Blazor project. <see cref="T:MudBlazor.Extensions.Components.MudExFileManager"/> itself takes an
+            <see cref="T:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager"/> instance, which html cannot pass.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.BaseUrl">
+            <summary>Base url every route is resolved against, for example <c>/api/files</c>. Required.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.ListRoute">
+            <summary>Route of the directory listing, appended to <see cref="P:MudBlazor.Extensions.Components.MudExFileManagerServer.BaseUrl"/>. Receives <c>?path=</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.ContentRoute">
+            <summary>Route of the file content, appended to <see cref="P:MudBlazor.Extensions.Components.MudExFileManagerServer.BaseUrl"/>. Receives <c>?path=</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.CreateFolderRoute">
+            <summary>Route that creates a directory.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.RenameRoute">
+            <summary>Route that renames an entry.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.MoveRoute">
+            <summary>Route that moves entries.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.DeleteRoute">
+            <summary>Route that deletes entries.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.UploadRoute">
+            <summary>Route that accepts a new file.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.AllowWrite">
+            <summary>
+            Whether the endpoints can change the structure. False keeps the manager read-only, which is the safe
+            default for a browser that was handed a base url and nothing else.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.Panels">
+            <summary>Which panels the file manager shows.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.FileGridView">
+            <summary>How the file area presents its entries.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.AllowMultiSelect">
+            <summary>Lets the user select more than one entry in the file area.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.TreePanelViewMode">
+            <summary>How the structure panel renders.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.TreeShowsFiles">
+            <summary>The structure panel also lists files, not only directories.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.AllowClosePanels">
+            <summary>Lets the user close a panel.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.FilePreviewContent">
+            <summary>Whether the file area shows icons or the real content.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.ShowBreadcrumb">
+            <summary>Shows the breadcrumb bar above the file area.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.ShowActions">
+            <summary>Shows the toolbar buttons that change the structure.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.AllowDragDrop">
+            <summary>Allows moving entries by dragging them.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.AllowPopout">
+            <summary>Allows the user to pop a panel out into its own window.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.Height">
+            <summary>Height of the whole component.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.Manager">
+            <summary>The provider this component built, for a consumer that wants to call it directly.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManagerServer.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileManagerUploadDialog">
+            <summary>
+            The upload dialog of <see cref="T:MudBlazor.Extensions.Components.MudExFileManager"/>: a <see cref="T:MudBlazor.Extensions.Components.MudExUploadEdit`1"/> plus an ok button.
+            </summary>
+            <remarks>
+            Reusing the upload edit rather than building a picker means restrictions, archive content inspection,
+            folder upload, the drop zone and the external providers are all there and all configurable - see
+            <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.UploadEditConfigure"/>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerUploadDialog.Restrictions">
+            <summary>The rules the file manager applies, put on the upload edit before <see cref="P:MudBlazor.Extensions.Components.MudExFileManagerUploadDialog.Configure"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerUploadDialog.Configure">
+            <summary>Applied to the upload edit, so the host controls every one of its options.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerUploadDialog.TargetName">
+            <summary>The directory the files are meant for. Shown in the title, not used for anything else.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManagerUploadDialog.OnAfterRender(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileMetaView">
+            <summary>
+            Renders file metadata as label/value rows, grouped and typed.
+            </summary>
+            <remarks>
+            Renders whatever <see cref="M:MudBlazor.Extensions.Components.IMudExFileDisplay.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)"/> returned, since the metadata of
+            a file has no fixed shape - an mp3 reports a bitrate, a csv its rows and columns.
+            <para>
+            Values are rendered by type: a bool as a yes/no icon, a date in local time, a url as a link, a byte count
+            as a readable size, a collection as chips. A key of the form <c>Group.Field</c>, or a nested dictionary,
+            opens a group.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.FileName">
+            <summary>
+            Name of the file.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.ContentType">
+            <summary>
+            Content type (mime type) of the file.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.Size">
+            <summary>
+            Size of the file in bytes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.LastModified">
+            <summary>
+            Last modified date of the file.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.Path">
+            <summary>
+            Path of the file.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.MetaInformation">
+            <summary>The metadata to render, in whatever shape the viewer reported it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.ShowEmptyValues">
+            <summary>Renders null, empty and whitespace values instead of skipping them.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.Dense">
+            <summary>Compact vertical spacing.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.ShowGroups">
+            <summary>Shows a heading per group. Off renders one flat list.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.AllowCopy">
+            <summary>Shows a copy button per row and one for the whole set.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.FilterThreshold">
+            <summary>Shows a filter box from this many rows on. Zero never shows it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.FileGroupName">
+            <summary>
+            Name of the group the file's own properties go into.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.DetailsGroupName">
+            <summary>
+            Name of the group metadata without a group of its own goes into.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileMetaView.MetaRow">
+            <summary>One label/value pair, already assigned to a group.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileMetaView.MetaRow.#ctor(System.String,System.String,System.Object,System.String)">
+            <summary>One label/value pair, already assigned to a group.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileMetaView.Groups">
+            <summary>The rows to render: the file's own properties first, then what the viewer reported.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileMetaView.IsAlreadyShown(System.String)">
+            <summary>
+            The reported metadata carries the file's own properties too, so those keys are skipped when the
+            intrinsic parameters already cover them.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileMetaView.AddMeta(System.Collections.Generic.List{MudBlazor.Extensions.Components.MudExFileMetaView.MetaRow},System.String,System.Object)">
+            <summary>Places one entry. A nested dictionary or a dotted key opens a group of its own.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileMetaView.Humanize(System.String)">
+            <summary>
+            Turns a key into a label: localized when possible, otherwise split on the casing.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileMetaView.ByteSize">
+            <summary>A size in bytes, so it is not rendered as a plain number.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileMetaView.ByteSize.#ctor(System.Int64)">
+            <summary>A size in bytes, so it is not rendered as a plain number.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileMetaView.AsText(System.Object)">
+            <summary>A value's plain text form, used for the filter and for copying.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileMetaView.CopyAllAsync">
+            <summary>Copies every visible row as <c>label: value</c> lines, grouped.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFontSelect">
             <summary>
@@ -10669,6 +11473,12 @@
             Reads the archive once and returns its entries, or null when it cannot be opened.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Restrictions">
+            <summary>
+            The restrictions as configured here, so every path that accepts a file applies the same rules - see
+            <see cref="T:MudBlazor.Extensions.Core.MudExFileRestrictions"/>.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Remove(`0,System.Boolean)">
             <summary>
             Removes the given request from the list of requests.
@@ -16701,6 +17511,15 @@
             Match function for filter
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.HierarchicalFilter`1.ItemFilter">
+            <summary>
+            Decides per node whether it belongs in the tree at all. Unlike <see cref="P:MudBlazor.Extensions.Components.HierarchicalFilter`1.Filter"/> this is not a
+            search: a node it rejects is gone, and no ancestor is kept alive for it.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.HierarchicalFilter`1.IsVisible(`0)">
+            <summary>Returns true when the node passes <see cref="P:MudBlazor.Extensions.Components.HierarchicalFilter`1.ItemFilter"/>.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.HierarchicalFilter`1.HasFilters">
             <summary>
             Returns true if a filter is present
@@ -16785,6 +17604,55 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTreeView`1.Update">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExTreeViewDropInfo`1">
+            <summary>
+            Describes a node that was dragged onto another node inside a <see cref="T:MudBlazor.Extensions.Components.MudExTreeView`1"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewDropInfo`1.DraggedNode">
+            <summary>The node the user dragged.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewDropInfo`1.TargetNode">
+            <summary>
+            The node it was dropped on. <c>null</c> means the drop happened on the tree itself, so the item is
+            meant to move to the root.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewDropInfo`1.SourceTreeView">
+            <summary>The tree view the drag started in.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewDropInfo`1.TargetTreeView">
+            <summary>The tree view the drop happened in. Can be the same instance as <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewDropInfo`1.SourceTreeView"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewDropInfo`1.DragScope">
+            <summary>The <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.DragScope"/> both tree views agreed on.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewDropInfo`1.IsSameTreeView">
+            <summary>True when the drag started and ended in the same tree view instance.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExTreeViewExternalDropInfo`1">
+            <summary>
+            Describes files dragged in from outside the browser and dropped on a node of a <see cref="T:MudBlazor.Extensions.Components.MudExTreeView`1"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewExternalDropInfo`1.TargetNode">
+            <summary>
+            The node the files were dropped on. <c>null</c> means they were dropped on the tree itself, so they
+            belong to the root.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewExternalDropInfo`1.Files">
+            <summary>The dropped files.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewExternalDropInfo`1.TreeView">
+            <summary>The tree view that received the drop.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExTreeViewDragState`1">
+            <summary>
+            The drag that is currently in progress. A browser only ever has one, so one slot per node type is enough -
+            which is also what makes dragging between two tree view instances work without any shared state to set up.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.TreeViewItemContext`1">
             <summary>
             Context for the tree view item.
@@ -16814,6 +17682,109 @@
             <summary>
             The owning tree view.
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AllowDrag">
+            <summary>
+            Lets the user drag nodes out of this tree view.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AllowDragFunc">
+            <summary>
+            Decides per node whether it may be dragged. Only consulted when <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AllowDrag"/> is set.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AllowDrop">
+            <summary>
+            Lets the user drop nodes, and files from outside the browser, onto this tree view.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.CanDropFunc">
+            <summary>
+            Decides whether a specific drop is allowed. Runs after the built-in checks, which already refuse a drop
+            on the dragged node itself and a drop into the dragged node's own subtree.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.DragScope">
+            <summary>
+            Two tree views accept each other's nodes only when their scope matches. Change it to keep unrelated
+            trees on the same page from exchanging nodes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.OnNodeDropped">
+            <summary>
+            Raised when a node was dropped on this tree view and every check allowed it. Moving the node is the
+            consumer's job: the tree view does not touch the structure.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.OnExternalFilesDropped">
+            <summary>
+            Raised when files from outside the browser were dropped on a node.
+            </summary>
+            <remarks>Files only - a dropped folder arrives as nothing. Use <see cref="!:MudExUploadEdit"/> for those.</remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.DragOverClass">
+            <summary>
+            Css class put on the wrapper of the node the pointer currently hovers during a drag.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.DragOverNode">
+            <summary>The node the pointer currently hovers during a drag, if any.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsDragging">
+            <summary>True while a drag started from any tree view of this node type is in progress.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.CanDrag(`0)">
+            <summary>Returns true when the given node may be dragged.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.CanDrop(`0)">
+            <summary>
+            Returns true when the drag in progress may be dropped on the given node. <c>null</c> asks for the tree
+            itself, which means the root.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.OnNodeDragStart(`0)">
+            <summary>Starts a drag for the given node.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.OnNodeDragEnd">
+            <summary>Ends the current drag, whether it was dropped or cancelled.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.OnNodeDragOver(`0)">
+            <summary>Marks the given node as the current drop candidate.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.OnNodeDragLeave(`0)">
+            <summary>Clears the drop candidate when the pointer leaves the node.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.OnNodeDrop(`0)">
+            <summary>Completes a node drop.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.DragDropKey(`0)">
+            <summary>
+            Stable per-node key for a data attribute, so a drop from JavaScript maps back to its node.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.HasDragDrop">
+            <summary>Whether the drag and drop wrapper is needed at all.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.DragDropClassStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0})">
+            <summary>Css class of a node's drag and drop wrapper.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.DragDropStyleStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0})">
+            <summary>
+            Inline style of the wrapper. Inline so it works without a stylesheet; override with
+            <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.DragOverClass"/>.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.SetExternalDropTargetKey(System.String)">
+            <summary>
+            Called from JavaScript right before the dropped files reach the hidden file input, so the change event
+            that follows knows which node they belong to.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.DisposeAsync">
+            <inheritdoc />
         </member>
         <member name="F:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterManager">
             <summary>
@@ -16938,6 +17909,22 @@
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.TextFunc">
             <summary>
             Function to get the text of an item this is used for the filter and the item content if <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate"/> are not set
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemFilter">
+            <summary>
+            Decides per node whether it appears in the tree at all. This is not a search: a node it rejects is
+            gone, and its ancestors are not kept visible for it - use <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.Filter"/> for searching.
+            </summary>
+            <remarks>
+            A rejected node's children are gone with it, so this filters a branch, not just a row. It is checked
+            on the node itself only, never on its children, so it does not force a lazy node to load.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.VisibleChildren(`0)">
+            <summary>
+            The children of the given node that are actually rendered: loaded, and not rejected by
+            <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemFilter"/> or filtered away by the current search.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsSeparatorDetectFunc">
@@ -18897,6 +19884,55 @@
             Represents picas in CSS. One pica is equal to 12 points.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.Enums.MudExFileGridView">
+            <summary>
+            How <see cref="T:MudBlazor.Extensions.Components.MudExFileGrid"/> presents its entries.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.MudExFileGridView.Tiles">
+            <summary>A grid of tiles, each with a large icon and the name below it.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.MudExFileGridView.Details">
+            <summary>One row per entry with sortable columns for name, size, type and date.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Enums.MudExFileGridSort">
+            <summary>
+            The column <see cref="T:MudBlazor.Extensions.Components.MudExFileGrid"/> sorts by.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.MudExFileGridSort.Name">
+            <summary>By name. Directories still come first.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.MudExFileGridSort.Size">
+            <summary>By size. Directories have none, so they keep their name order.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.MudExFileGridSort.Type">
+            <summary>By content type.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.MudExFileGridSort.Modified">
+            <summary>By last modification date.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Enums.MudExFileMetaPlacement">
+            <summary>
+            Where <see cref="T:MudBlazor.Extensions.Components.MudExFileMetaView"/> is rendered relative to the viewer content of
+            <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> when <c>ShowFileMeta</c> is enabled.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.MudExFileMetaPlacement.Below">
+            <summary>
+            The meta view is rendered below the viewer content.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.MudExFileMetaPlacement.Above">
+            <summary>
+            The meta view is rendered above the viewer content.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.MudExFileMetaPlacement.Right">
+            <summary>
+            The meta view is rendered to the right of the viewer content.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Enums.TreeViewExpandBehaviour">
             <summary>
             Controls how the tree view will expand.
@@ -18951,6 +19987,253 @@
             <summary>
             Render tree view as flat list.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager">
+            <summary>
+            Provides a file structure to browse. This is the only contract a provider must implement.
+            </summary>
+            <remarks>
+            A provider that loads on demand sets <c>LoadChildrenFunc</c> on every directory node it returns, pointing
+            at <see cref="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager.GetChildrenAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)"/>. A provider that already knows the whole tree returns it from
+            <see cref="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager.GetRootAsync(System.Threading.CancellationToken)"/> and sets no func. Both are then the same code path for every consumer.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager.Capabilities">
+            <summary>What this provider is allowed to do right now.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager.GetRootAsync(System.Threading.CancellationToken)">
+            <summary>The top level entries.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager.GetChildrenAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <summary>The direct children of a directory node.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager.OpenReadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <summary>Opens the content of a file node. The caller owns and disposes the stream.</summary>
+            <remarks>
+            An empty stream means the file is genuinely empty. A node that cannot be resolved to content is never
+            answered with an empty stream - it throws - so "this is gone" can never be mistaken for "this is an
+            empty file". A node is unresolvable when it is null, when it is a directory, when the provider does not
+            know it, or when it belongs to a state the provider has since replaced, for example a folder the user
+            picked before picking another one.
+            </remarks>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the given node cannot be resolved to readable content. A provider that reads through a
+            transport of its own may surface that transport's own failure instead - the http provider lets the
+            server's 404 come out as an <c>HttpRequestException</c> - so callers handle "could not be read" rather
+            than one exact exception type.
+            </exception>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureWriter">
+            <summary>
+            Optional companion to <see cref="T:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager"/> for providers that can change the structure.
+            A read-only provider does not implement it, so it never carries methods it cannot fulfil.
+            </summary>
+            <remarks>
+            Implementing this interface is not permission to use it: the caller checks
+            <see cref="P:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager.Capabilities"/> before offering an action.
+            The collection based operations exist so multi select and multi drag cause one call, not one per node.
+            <para>
+            Two exceptions carry two different meanings here, and callers should tell them apart: a provider that
+            cannot support an operation at all - because its storage has no such concept, or because it was never
+            granted the access - throws <see cref="T:System.NotSupportedException"/> for "this can never work here"; a provider
+            that does support the operation in general throws <see cref="T:System.InvalidOperationException"/> for "this
+            particular request was refused", for example a name collision. Do not gate UI on catching either - check
+            <see cref="P:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager.Capabilities"/> up front instead.
+            </para>
+            <para>
+            Every operation here invalidates the nodes it was given. An operation that returns a node returns a
+            <em>new</em> node describing the result; the node passed in - and every descendant already loaded below it
+            - is stale afterwards, keeps its old name and path, and must not be reused. The collection based
+            operations return nothing at all for the same reason. A caller refreshes by re-listing the parent through
+            <see cref="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager.GetChildrenAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)"/>, or
+            <see cref="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager.GetRootAsync(System.Threading.CancellationToken)"/> at the top level.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureWriter.CreateDirectoryAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.String,System.Threading.CancellationToken)">
+            <summary>Creates a directory below <paramref name="parent"/> and returns the new node.</summary>
+            <returns>A new node for the created directory. See the remarks on invalidation.</returns>
+            <exception cref="T:System.NotSupportedException">Thrown when this provider cannot support the operation at all - see the remarks above.</exception>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the operation cannot be carried out as requested, for example because another entry already
+            occupies the resulting location. A provider may throw it for other reasons of its own; callers should
+            treat it as "this request was refused", not as a promise about which case applies.
+            </exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureWriter.RenameAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.String,System.Threading.CancellationToken)">
+            <summary>Renames a node and returns a new node carrying the new name and path.</summary>
+            <returns>
+            A new node for the renamed entry. <paramref name="node"/> itself is left untouched and is stale from
+            here on - it still reports the old name and path. See the remarks on invalidation.
+            </returns>
+            <exception cref="T:System.NotSupportedException">Thrown when this provider cannot support the operation at all - see the remarks above.</exception>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the operation cannot be carried out as requested, for example because <paramref name="newName"/>
+            does not describe a plain name (a rename changes what a node is called, not where it lives), or because
+            another entry already occupies the resulting location. A provider may throw it for other reasons of its
+            own; callers should treat it as "this request was refused", not as a promise about which case applies.
+            </exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureWriter.MoveAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode},MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <summary>Moves all given nodes into the target directory. Every given node is stale afterwards.</summary>
+            <exception cref="T:System.NotSupportedException">Thrown when this provider cannot support the operation at all - see the remarks above.</exception>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when any of the given nodes cannot be moved as requested, for example because the resulting
+            location is already occupied, or because a node would end up inside itself. When thrown, none of the
+            given nodes have been moved. A provider may throw it for other reasons of its own; callers should treat
+            it as "this request was refused", not as a promise about which case applies.
+            </exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureWriter.DeleteAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode},System.Threading.CancellationToken)">
+            <summary>Deletes all given nodes, directories including their content.</summary>
+            <exception cref="T:System.NotSupportedException">Thrown when this provider cannot support the operation at all - see the remarks above.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureWriter.UploadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Threading.CancellationToken)">
+            <summary>Adds a file to the target directory and returns the new node.</summary>
+            <returns>A new node for the added file. See the remarks on invalidation.</returns>
+            <exception cref="T:System.NotSupportedException">Thrown when this provider cannot support the operation at all - see the remarks above.</exception>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the operation cannot be carried out as requested, for example because the target location is
+            already occupied by an entry of a different kind. Replacing an existing file of the same kind is not
+            guaranteed to be refused - a provider may treat that as a normal re-upload instead. A provider may throw
+            it for other reasons of its own; callers should treat it as "this request was refused", not as a promise
+            about which case applies.
+            </exception>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.FileManager.MudExFileManagerCapabilities">
+            <summary>
+            What a <see cref="T:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager"/> is allowed to do right now.
+            </summary>
+            <remarks>
+            Separate from <see cref="T:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureWriter"/> on purpose. The interface says what the
+            implementation is able to do, these flags say what is permitted at runtime - a local folder that the user
+            only granted read access to implements writing but must not offer it.
+            </remarks>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerCapabilities.None">
+            <summary>Nothing, not even reading.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerCapabilities.Read">
+            <summary>Enumerate the structure and read file content.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerCapabilities.CreateDirectory">
+            <summary>Create a new directory.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerCapabilities.Rename">
+            <summary>Rename a file or directory.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerCapabilities.Move">
+            <summary>Move files or directories into another directory.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerCapabilities.Delete">
+            <summary>Delete files or directories.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerCapabilities.Upload">
+            <summary>Add new files to a directory.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerCapabilities.Download">
+            <summary>
+            Offer a download of a file. Has no method of its own, it is served by
+            <see cref="M:MudBlazor.Extensions.Core.FileManager.IMudExFileStructureManager.OpenReadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)"/> and only decides whether the action is shown.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerCapabilities.All">
+            <summary>Everything.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPanels">
+            <summary>
+            The panels a <see cref="T:MudBlazor.Extensions.Components.MudExFileManager"/> shows.
+            </summary>
+            <remarks>
+            Which panels exist is decided up front by this flag set, not at runtime. That is deliberate: the dock
+            layout adopts the rendered DOM nodes, so panels must be declared in a stable order and may only ever be
+            appended. A panel whose flag is set but which has nothing to show renders a placeholder instead of
+            disappearing - see <see cref="T:MudBlazor.Extensions.Components.MudExFileManager"/> for why.
+            </remarks>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPanels.None">
+            <summary>Only the file area.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPanels.Tree">
+            <summary>The structure tree beside the file area.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPanels.Files">
+            <summary>The file area itself. Included in <see cref="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPanels.All"/> for symmetry; it always renders.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPanels.Preview">
+            <summary>A preview of the selected file, rendered with <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPanels.Meta">
+            <summary>Metadata of the selected entry, rendered with <see cref="T:MudBlazor.Extensions.Components.MudExFileMetaView"/>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPanels.All">
+            <summary>Everything.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPreviewContent">
+            <summary>
+            How the file area presents an entry.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPreviewContent.Icon">
+            <summary>An icon plus the entry's metadata. Cheap, and always usable.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPreviewContent.Content">
+            <summary>
+            The real file content, rendered with <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> per entry. Expensive:
+            every entry costs a viewer and a stream, and some viewers start WebGL or fetch a library from a CDN.
+            Capped by <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.MaxContentPreviews"/>.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode">
+            <summary>
+            One file or directory in a file structure.
+            </summary>
+            <remarks>
+            Derives from <see cref="T:Nextended.Core.Types.Hierarchical`1"/>, which is what lets <c>MudExTreeView</c> render it and drive
+            lazy loading through <see cref="P:Nextended.Core.Types.Hierarchical`1.LoadChildrenFunc"/>. A manager that loads on demand sets
+            that func on every directory node it creates; a manager that already knows the whole tree leaves it unset.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode.Name">
+            <summary>
+            Display name, the last path segment. Setting it drops the derived content type, icon and color, so a
+            rename from <c>a.txt</c> to <c>a.pdf</c> shows the pdf icon instead of the cached text one.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode.FullPath">
+            <summary>
+            Identity of this node, defined and interpreted by the manager that created it. Treated as opaque
+            everywhere else, so a manager is free to use posix paths, urls or ids.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode.IsDirectory">
+            <summary>True for a directory.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode.Size">
+            <summary>Size in bytes, 0 for a directory.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode.LastModified">
+            <summary>Last write time, when the manager knows one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode.Handle">
+            <summary>
+            The manager's own handle for this node, for example the id of a browser file system handle. Not used
+            by the components.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode.ContentType">
+            <summary>
+            Mime type. Derived from <see cref="P:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode.Name"/> when not set explicitly, and always null for a directory.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode.Icon">
+            <summary>Icon for this node, matching what the archive viewer shows for the same file type.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode.Color">
+            <summary>Preferred color for this node.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode.ToString">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Core.ICaptureService">
             <summary>
@@ -19907,6 +21190,55 @@
         </member>
         <member name="M:MudBlazor.Extensions.Core.MudExDimension.ToString">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExFileRestrictions">
+            <summary>
+            What a file has to satisfy to be accepted: its extension, its mime type and its size.
+            </summary>
+            <remarks>
+            One place for the rules, so every path that accepts a file applies the same ones - the upload dialog and a
+            file dropped straight onto a folder alike. A rule left empty allows everything.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileRestrictions.MimeTypes">
+            <summary>Mime types, allowed or forbidden depending on <see cref="P:MudBlazor.Extensions.Core.MudExFileRestrictions.MimeRestrictionType"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileRestrictions.MimeRestrictionType">
+            <summary>Whether <see cref="P:MudBlazor.Extensions.Core.MudExFileRestrictions.MimeTypes"/> is what is allowed, or what is not.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileRestrictions.Extensions">
+            <summary>Extensions, allowed or forbidden depending on <see cref="P:MudBlazor.Extensions.Core.MudExFileRestrictions.ExtensionRestrictionType"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileRestrictions.ExtensionRestrictionType">
+            <summary>Whether <see cref="P:MudBlazor.Extensions.Core.MudExFileRestrictions.Extensions"/> is what is allowed, or what is not.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileRestrictions.MaxFileSize">
+            <summary>Largest accepted file in bytes. Null or zero means no limit.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileRestrictions.IsEmpty">
+            <summary>True when nothing is restricted at all.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExFileRestrictions.IsExtensionAllowed(System.String)">
+            <summary>
+            Whether the extension passes.
+            </summary>
+            <remarks>
+            Compared against the configured list directly: a white list allows exactly what it names, a black list
+            forbids exactly what it names. Deriving an allowed set from mime types instead used to make black
+            lists useless, because the derived extensions carry no leading dot and never matched the configured
+            ones - and because a mime type maps back to only one of its extensions.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExFileRestrictions.IsMimeTypeAllowed(System.String)">
+            <summary>Whether the mime type passes.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExFileRestrictions.IsSizeAllowed(System.Int64)">
+            <summary>Whether the size passes.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExFileRestrictions.Validate(System.String,System.String,System.Int64)">
+            <summary>
+            Checks a file against every rule and returns why it was refused, or null when it passes.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.MudExIcons">
             <summary>
@@ -22320,6 +23652,17 @@
             <returns></returns>
             <exception cref="T:System.ArgumentException"></exception>
         </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.UploadableBrowserFile">
+            <summary>
+            Presents an <see cref="T:Nextended.Core.Contracts.IUploadableFile"/> as an <see cref="T:Microsoft.AspNetCore.Components.Forms.IBrowserFile"/>.
+            </summary>
+            <remarks>
+            <see cref="T:MudBlazor.Extensions.Components.MudExUploadEdit`1"/> collects files from everywhere - the disk, a url, Google Drive,
+            a recording - and hands them over as bytes. The file structure writers take an
+            <see cref="T:Microsoft.AspNetCore.Components.Forms.IBrowserFile"/>, so this adapter is what lets all of those sources go through one upload path
+            without widening the writer contract.
+            </remarks>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.Internal.X509CertificateReader">
             <summary>
             Reads X.509 certificates with <see cref="T:System.Formats.Asn1.AsnReader"/> instead of <c>X509Certificate2</c>.
@@ -22988,6 +24331,37 @@
         <member name="P:MudBlazor.Extensions.Helper.MudExCssBuilder.Class">
             <summary>
             Builds and returns an applicable css string
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExFileDisplayInfosExtensions">
+            <summary>
+            Helpers for <see cref="T:MudBlazor.Extensions.Components.IMudExFileDisplay"/> implementations to tell whether they have a file to load, and
+            whether it is still the same one.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExFileDisplayInfosExtensions.HasSource(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>True when the infos carry something that can actually be read.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExFileDisplayInfosExtensions.SourceKey(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Identifies the file the infos point at.
+            </summary>
+            <remarks>
+            It has to be the values, not the instance: <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> passes itself as the infos,
+            so a viewer sees the very same object for every file it is asked to show.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExFileDisplayInfosExtensions.NotifyMetaChangedAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Tells the hosting <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> that the viewer's metadata is available now. Called at
+            the end of a viewer's load, since that is when values like a row count or a bitrate first exist.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExFileDisplayInfosExtensions.SourceChanged(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Object@)">
+            <summary>
+            True when the infos describe a different file than <paramref name="loadedSource"/> stands for, which is
+            updated to the new one. Two files of the same kind share a viewer instance, so this is what tells the
+            viewer to load again instead of keeping the first file on screen.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.MudExFonts">
@@ -27154,6 +28528,88 @@
         <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.W3C.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Services.MudExClientFolderStructureManager">
+            <summary>
+            Serves a folder from the user's own machine.
+            </summary>
+            <remarks>
+            Two acquisition modes behind one provider. <c>showDirectoryPicker()</c> enumerates lazily and can write,
+            but only Chromium has it. The fallback reads an <c>input webkitdirectory</c> selection: the whole tree at
+            once and strictly read-only. Which mode was used is visible in <see cref="P:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.Capabilities"/>.
+            The fallback needs JavaScript too, because Blazor's IBrowserFile does not expose webkitRelativePath and
+            without the relative paths there is no structure to build.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.#ctor(Microsoft.JSInterop.IJSRuntime)">
+            <summary>Creates the provider.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.Capabilities">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.RootName">
+            <summary>Name of the picked folder, null while nothing is picked.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.IsFileSystemAccessSupportedAsync">
+            <summary>True when this browser has the File System Access API.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.PickFolderAsync(System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Opens the folder picker. Returns false when the browser cannot do it or the user cancelled, in which
+            case the caller falls back to an input with webkitdirectory and <see cref="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.UseFlatFileListAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Services.MudExClientFolderStructureManager.FlatEntry})"/>.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.UseFlatFileListAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Services.MudExClientFolderStructureManager.FlatEntry})">
+            <summary>
+            Takes the flat file list of an <c>input webkitdirectory</c> selection and builds the structure from the
+            relative paths. Read-only, because the browser gives no write access on this path.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.GetRootAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.GetChildrenAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.OpenReadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.CreateDirectoryAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.RenameAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.MoveAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode},MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.DeleteAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.UploadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.FlatEntry">
+            <summary>One file of an <c>input webkitdirectory</c> selection.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.FlatEntry.RelativePath">
+            <summary>Path relative to the picked folder, including the folder name itself.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.FlatEntry.Size">
+            <summary>Size in bytes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.FlatEntry.LastModified">
+            <summary>Last write time.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.FlatEntry.ContentType">
+            <summary>Mime type the browser reported.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExClientFolderStructureManager.FlatEntry.File">
+            <summary>
+            The browser file this entry came from. Without it the structure still builds, but the entry has no
+            content and reading it throws instead of yielding an empty stream - so the caller pairs the relative
+            paths from JS with the files Blazor handed it.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Services.MudExDialogService">
             <summary>
             Overriden DialogService to provide additional functionality
@@ -27298,6 +28754,141 @@
             <summary>
             Reads a stream as excel file
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Services.MudExHttpFileStructureManager">
+            <summary>
+            Serves a file structure from http endpoints. One <see cref="P:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.BaseUrl"/> plus conventional routes is enough,
+            which is what makes the provider configurable from a single html attribute in the web component.
+            </summary>
+            <remarks>
+            Not registered for dependency injection: it needs a base url that only the consumer knows.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.#ctor(System.Net.Http.HttpClient)">
+            <summary>Creates the provider for the given client.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.BaseUrl">
+            <summary>Base url every route is resolved against, for example <c>/api/files</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.Capabilities">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.ListRoute">
+            <summary>Route of the directory listing. Receives <c>?path=</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.ContentRoute">
+            <summary>Route of the file content. Receives <c>?path=</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.CreateFolderRoute">
+            <summary>Route that creates a directory.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.RenameRoute">
+            <summary>Route that renames an entry.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.MoveRoute">
+            <summary>Route that moves entries.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.DeleteRoute">
+            <summary>Route that deletes entries.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.UploadRoute">
+            <summary>Route that accepts a new file.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.ResolveRoute(System.String)">
+            <summary>Combines <see cref="P:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.BaseUrl"/> with a route. Public so tests and consumers can verify it.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.GetRootAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.GetChildrenAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.OpenReadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.CreateDirectoryAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.RenameAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.MoveAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode},MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.DeleteAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.UploadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.FileEntry">
+            <summary>One entry as the list endpoint returns it.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.ResponseOwningStream">
+            <summary>
+            Wraps a content stream so disposing it also disposes the <see cref="T:System.Net.Http.HttpResponseMessage"/> it came
+            from. Lets <see cref="M:MudBlazor.Extensions.Services.MudExHttpFileStructureManager.OpenReadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)"/> read the body lazily (<see cref="F:System.Net.Http.HttpCompletionOption.ResponseHeadersRead"/>)
+            while still honouring "the caller owns and disposes the stream" - without this, the response would leak.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager">
+            <summary>
+            A file structure that lives entirely in memory, described by a list of paths. Used by the demos and as the
+            reference implementation in tests.
+            </summary>
+            <remarks>
+            Deliberately keeps only a flat set of paths as its state and derives nodes from it on every call. That
+            keeps rename and move trivially correct for whole subtrees, which is exactly the part a provider gets wrong.
+            Not registered for dependency injection - it is constructed with the structure it should serve.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.#ctor(System.String[])">
+            <summary>
+            Creates the structure from file paths separated by "/". Every directory in a path is created implicitly.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.Capabilities">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.ContentProvider">
+            <summary>
+            Where <see cref="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.OpenReadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)"/> gets its bytes when the content was not stored with
+            <see cref="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.SetContent(System.String,System.Byte[])"/>. Lets another provider reuse this structure logic while serving content from
+            somewhere else - the local folder provider does exactly that for its read-only fallback.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.AddFile(System.String,System.Int64,System.Nullable{System.DateTimeOffset})">
+            <summary>
+            Adds a file and every directory above it. Size and timestamp are kept separately from the content, so a
+            caller that knows the metadata but not the bytes still gets correct values.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.SetContent(System.String,System.Byte[])">
+            <summary>Sets the content a file returns from <see cref="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.OpenReadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)"/> and its size with it.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.GetRootAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.GetChildrenAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.OpenReadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.CreateDirectoryAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.RenameAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.MoveAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode},MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.DeleteAsync(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.UploadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Threading.CancellationToken)">
+            <inheritdoc />
         </member>
     </members>
 </doc>

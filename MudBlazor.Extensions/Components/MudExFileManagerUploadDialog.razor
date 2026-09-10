@@ -1,0 +1,27 @@
+@inherits MudExBaseComponent<MudExFileManagerUploadDialog>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Components.ObjectEdit
+
+<MudDialog>
+    <DialogContent>
+        @* The whole point of reusing MudExUploadEdit: restrictions, archive inspection, folder upload, drop
+           zone and the external providers all come with it. Configure is where the host sets those. *@
+        <MudExUploadEdit T="UploadableFile" @ref="_uploadEdit"
+                         AllowMultiple="true"
+                         AutoExtractArchive="false"
+                         @bind-UploadRequests="_requests" />
+
+        @if (!string.IsNullOrEmpty(_error))
+        {
+            <MudAlert Severity="Severity.Warning" Dense="true" Class="mt-2">@_error</MudAlert>
+        }
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="@Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(_requests?.Any() != true)"
+                   OnClick="@Confirm">
+            @TryLocalize("Upload")
+        </MudButton>
+    </DialogActions>
+</MudDialog>

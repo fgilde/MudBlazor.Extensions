@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using MudBlazor.Extensions.Helper;
+using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
@@ -15,6 +16,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFileDisplayMap : IMudExFileDisplay
 {
+    private object _loadedSource;
     private static readonly string[] SupportedExtensions = { ".geojson", ".gpx", ".kml" };
 
     private readonly string _containerId = $"map-{Guid.NewGuid().ToFormattedId()}";
@@ -73,15 +75,22 @@ public partial class MudExFileDisplayMap : IMudExFileDisplay
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
-        // See MudExFileDisplayDataBase for the rationale of checking for a usable source instead of reference equality.
+        // The same viewer instance serves every file of its kind, and FileDisplayInfos is always
+        // the same object - so only the values tell one file from the next.
         parameters.TryGetValue<IMudExFileDisplayInfos>(nameof(FileDisplayInfos), out var infos);
-        var hasSource = infos != null && (!string.IsNullOrEmpty(infos.Url) || infos.ContentStream is { Length: > 0 });
-        var notYetLoaded = _pendingGeoJson == null && _features == 0 && _errorMessage == null;
+        var sourceChanged = infos.SourceChanged(ref _loadedSource);
 
         await base.SetParametersAsync(parameters);
 
-        if (hasSource && notYetLoaded)
+        if (sourceChanged)
+        {
+            _pendingGeoJson = null;
+            _features = 0;
+            _errorMessage = null;
             await LoadMapAsync();
+            // A viewer knows its own values only now, and its renders do not reach the host.
+            await FileDisplayInfos.NotifyMetaChangedAsync();
+        }
     }
 
     private async Task LoadMapAsync()

@@ -1,3 +1,4 @@
+﻿using MudBlazor.Extensions.Helper;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Components;
@@ -19,6 +20,7 @@ namespace MudBlazor.Extensions.Components;
 /// </remarks>
 public partial class MudExFileDisplayCertificate : IMudExFileDisplay
 {
+    private object _loadedSource;
     private static readonly string[] Pkcs12Extensions = { ".pfx", ".p12" };
 
     [Inject] private MudExFileService FileService { get; set; }
@@ -63,15 +65,22 @@ public partial class MudExFileDisplayCertificate : IMudExFileDisplay
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
-        // See MudExFileDisplayDataBase for the rationale of checking for a usable source instead of reference equality.
+        // The same viewer instance serves every file of its kind, and FileDisplayInfos is always
+        // the same object - so only the values tell one file from the next.
         parameters.TryGetValue<IMudExFileDisplayInfos>(nameof(FileDisplayInfos), out var infos);
-        var hasSource = infos != null && (!string.IsNullOrEmpty(infos.Url) || infos.ContentStream is { Length: > 0 });
-        var notYetLoaded = _certificates == null && _errorMessage == null && !_requiresPassword;
+        var sourceChanged = infos.SourceChanged(ref _loadedSource);
 
         await base.SetParametersAsync(parameters);
 
-        if (hasSource && notYetLoaded)
+        if (sourceChanged)
+        {
+            _certificates = null;
+            _errorMessage = null;
+            _requiresPassword = false;
             await LoadCertificatesAsync();
+            // A viewer knows its own values only now, and its renders do not reach the host.
+            await FileDisplayInfos.NotifyMetaChangedAsync();
+        }
     }
 
     private async Task LoadCertificatesAsync()

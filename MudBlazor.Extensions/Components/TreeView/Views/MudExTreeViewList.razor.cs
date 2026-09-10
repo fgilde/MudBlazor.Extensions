@@ -88,7 +88,11 @@ public partial class MudExTreeViewList<T>
     /// <returns></returns>
     protected (string Label, TreeViewItemContext<T> Context) GetBackNodeTarget()
     {
-        var ctx = CreateContext(LastSelectedNode.Children?.Any() == true ? LastSelectedNode.Parent : LastSelectedNode.Parent.Parent, "");
+        // Every step is optional: a node at root level has no parent, and a level can turn empty between
+        // rendering it and asking for the back target - a lazy load finishing is enough.
+        var parent = LastSelectedNode == null ? default : LastSelectedNode.Parent;
+        var target = parent == null || VisibleChildren(LastSelectedNode).Any() ? parent : parent.Parent;
+        var ctx = CreateContext(target, "");
         var label = TryLocalize(BackLinkLabel, ctx != null && ctx.Value != null ? TryLocalize(TextFunc(ctx.Value)) : TryLocalize(RootName));
         return (label, ctx);
     }
@@ -100,8 +104,16 @@ public partial class MudExTreeViewList<T>
     protected (bool IsRoot, IReadOnlyCollection<T> Nodes) LevelNodes()
     {
         var root = false;
-        IReadOnlyCollection<T> nodes = (LastSelectedNode != null ? (LastSelectedNode.Children?.Any() == true ? LastSelectedNode.Children : LastSelectedNode?.Parent?.Children) : null);
-        if (nodes == null)
+        // VisibleChildren rather than Children: this level is rendered as is, so a node the filter rejects
+        // would show up here even though every other view mode hides it.
+        IReadOnlyCollection<T> nodes = null;
+        if (LastSelectedNode != null)
+        {
+            var own = VisibleChildren(LastSelectedNode).ToList();
+            nodes = own.Count > 0 ? own : VisibleChildren(LastSelectedNode.Parent).ToList();
+        }
+
+        if (nodes is not { Count: > 0 })
         {
             nodes = FilterManager.FilteredItems();
             root = true;

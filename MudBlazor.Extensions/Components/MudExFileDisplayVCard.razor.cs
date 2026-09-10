@@ -1,4 +1,5 @@
-﻿using MudBlazor.Extensions.Helper.Internal;
+﻿using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using System.Text;
 using AuralizeBlazor.Types;
 using Microsoft.AspNetCore.Components;
@@ -28,6 +29,7 @@ public partial class MudExFileDisplayVCard : IMudExFileDisplay
     /// </summary>
     [CascadingParameter] public MudExFileDisplay MudExFileDisplay { get; set; }
 
+    private object _loadedSource;
     private List<VCardContact> _contacts;
     private List<CalendarEvent> _events;
     private string _errorMessage;
@@ -54,15 +56,22 @@ public partial class MudExFileDisplayVCard : IMudExFileDisplay
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
-        // See MudExFileDisplayDataBase for the rationale of checking for a usable source instead of reference equality.
+        // The same viewer instance serves every file of its kind, and FileDisplayInfos is always
+        // the same object - so only the values tell one file from the next.
         parameters.TryGetValue<IMudExFileDisplayInfos>(nameof(FileDisplayInfos), out var infos);
-        var hasSource = infos != null && (!string.IsNullOrEmpty(infos.Url) || infos.ContentStream is { Length: > 0 });
-        var notYetLoaded = _contacts == null && _events == null && _errorMessage == null;
+        var sourceChanged = infos.SourceChanged(ref _loadedSource);
 
         await base.SetParametersAsync(parameters);
 
-        if (hasSource && notYetLoaded)
+        if (sourceChanged)
+        {
+            _contacts = null;
+            _events = null;
+            _errorMessage = null;
             await LoadAsync();
+            // A viewer knows its own values only now, and its renders do not reach the host.
+            await FileDisplayInfos.NotifyMetaChangedAsync();
+        }
     }
 
     private async Task LoadAsync()

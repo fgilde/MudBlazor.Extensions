@@ -7,6 +7,7 @@ using Nextended.Blazor.Helper;
 using MudBlazor.Extensions.Services;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Core.Enums;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
@@ -54,6 +55,10 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private Stream _contentStream;
     private bool _errorClosed;
     private CancellationTokenSource _componentCts = new();
+    private long? _fileMetaSize;
+    private IDictionary<string, object> _fileMetaInformation;
+    private object _fileMetaSourceKey;
+    private int _metaProbes;
 
     [Inject] private IJsApiService JsApiService { get; set; }
 
@@ -246,6 +251,34 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     public MudExColor IconColor { get; set; } = Color.Inherit;
 
     /// <summary>
+    /// Set to true to render a <see cref="MudExFileMetaView"/> with the file metadata inline, at the
+    /// position given by <see cref="FileMetaPlacement"/>. Fed from the same data the info dialog uses.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public bool ShowFileMeta { get; set; }
+
+    /// <summary>
+    /// Where the inline <see cref="MudExFileMetaView"/> is rendered relative to the viewer content when
+    /// <see cref="ShowFileMeta"/> is true.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public MudExFileMetaPlacement FileMetaPlacement { get; set; } = MudExFileMetaPlacement.Below;
+
+    /// <summary>
+    /// Raised whenever the metadata of the displayed file changes: the same set the info dialog shows, which
+    /// is the file's own properties plus whatever the active <see cref="IMudExFileDisplay"/> contributes.
+    /// </summary>
+    /// <remarks>
+    /// A viewer can only report what it has parsed, and parsing happens after the first render - a csv reports
+    /// its column and row counts, a pdf its page count, an mp3 its bitrate. So this fires again when the
+    /// viewer's contribution actually arrives, not just once. Consumers that render their own
+    /// <see cref="MudExFileMetaView"/> somewhere else - a separate panel, a sidebar - bind to this instead of
+    /// collecting anything themselves.
+    /// </remarks>
+    [Parameter, SafeCategory("Behavior")]
+    public EventCallback<IDictionary<string, object>> FileMetaInformationChanged { get; set; }
+
+    /// <summary>
     /// A function to handle content error.
     /// Return true if you have handled the error and false if you want to show the error message
     /// For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
@@ -302,7 +335,10 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         set
         {
             _info = value;
-            PossiblePlugin = BrowserContentTypePlugin.Find(Info.BrowserName, ContentType);
+
+            // Null when browser detection has not answered - no javascript at all during prerendering and
+            // under test. Then there is no plugin to look up either.
+            PossiblePlugin = value == null ? null : BrowserContentTypePlugin.Find(value.BrowserName, ContentType);
             StateHasChanged();
         }
     }
@@ -685,19 +721,9 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             { "Size", size }
         };
 
-        if (_currentFileDisplay is { Instance: IMudExFileDisplay fileDisplay })
-        {
-            try
-            {
-                var meta = await fileDisplay.FileMetaInformationAsync(this);
-                if (meta != null)
-                    dict.MergeWith(meta);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
+        var meta = await GetActiveDisplayMetaInformationAsync();
+        if (meta != null)
+            dict.MergeWith(meta);
 
         if (withEmptyValues)
         {
@@ -710,6 +736,135 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         }
 
         return dict;
+    }
+
+    /// <summary>
+    /// Gathers the extra meta information the currently active <see cref="IMudExFileDisplay"/> contributes,
+    /// via <see cref="IMudExFileDisplay.FileMetaInformationAsync"/>. Shared by <see cref="GetFileFinfosAsync"/>
+    /// (used by the info dialog) and by the inline <see cref="MudExFileMetaView"/> rendering.
+    /// </summary>
+    /// <remarks>
+    /// Public because a consumer that renders its own <see cref="MudExFileMetaView"/> beside this component -
+    /// <see cref="MudExFileManager"/> does - needs the viewer's contribution without the intrinsic file
+    /// properties <see cref="GetFileFinfosAsync"/> adds, which it already has.
+    /// </remarks>
+    public async Task<IDictionary<string, object>> GetActiveDisplayMetaInformationAsync()
+    {
+        if (_currentFileDisplay is not { Instance: IMudExFileDisplay fileDisplay })
+            return null;
+        try
+        {
+            return await fileDisplay.FileMetaInformationAsync(this);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Gathers the data for the inline <see cref="MudExFileMetaView"/> shown when <see cref="ShowFileMeta"/>
+    /// is true: the raw file size plus the same extra meta information the info dialog shows.
+    /// </summary>
+    private async Task RefreshFileMetaViewDataAsync()
+    {
+        long? size = null;
+        if (ContentStream != null)
+        {
+            try
+            {
+                if (ContentStream.Length > 0)
+                    size = ContentStream.Length;
+            }
+            catch (NotSupportedException)
+            {
+                size = (await ContentStream.CopyStreamAsync()).Length;
+            }
+        }
+
+        _fileMetaSize = size;
+        _fileMetaInformation = await GetActiveDisplayMetaInformationAsync();
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (!ShowFileMeta && !FileMetaInformationChanged.HasDelegate)
+            return;
+
+        // The size is read from the source and can cost a stream copy, so it is only re-read when the source
+        // itself changed.
+        var key = (Url, ContentStream, _currentFileDisplay?.Instance);
+        if (!Equals(_fileMetaSourceKey, key))
+        {
+            _fileMetaSourceKey = key;
+            _metaProbes = 0;
+            await RefreshFileMetaViewDataAsync();
+            await ReportFileMetaInformationAsync();
+            StateHasChanged();
+            return;
+        }
+
+        // The viewer's own contribution only exists once it has parsed the file - a csv counts its columns, an
+        // mp3 reads its tags. Asking again and comparing is what makes those values appear at all.
+        var meta = await GetActiveDisplayMetaInformationAsync();
+        if (!SameMetaInformation(_fileMetaInformation, meta))
+        {
+            _fileMetaInformation = meta;
+            await ReportFileMetaInformationAsync();
+            StateHasChanged();
+            return;
+        }
+
+        // Still nothing, and a viewer is supposed to be there. Its reference is only assigned after it has
+        // rendered, and its own renders do not bring us back here - so without asking again the first, empty
+        // answer would stay the last one, and the metadata would only appear once something else triggers a
+        // render (pressing info, for instance). Bounded, so a viewer that never reports anything stops it.
+        if (meta is not { Count: > 0 } && _componentForFile?.ControlType != null && _metaProbes++ < MetaProbeLimit)
+            StateHasChanged();
+    }
+
+    // How often to come back for a viewer's metadata before accepting that it has none.
+    private const int MetaProbeLimit = 5;
+
+    /// <summary>
+    /// Re-reads the active viewer's metadata and publishes it when it changed.
+    /// </summary>
+    /// <remarks>
+    /// A viewer calls this - through <c>FileDisplayInfos.NotifyMetaChangedAsync()</c> - once it has parsed the
+    /// file, because that is the only moment it knows its row count, bitrate or page count. Without it the
+    /// value would only surface when something else happens to trigger a render here.
+    /// </remarks>
+    public async Task RefreshMetaInformationAsync()
+    {
+        if (!ShowFileMeta && !FileMetaInformationChanged.HasDelegate)
+            return;
+
+        var meta = await GetActiveDisplayMetaInformationAsync();
+        if (SameMetaInformation(_fileMetaInformation, meta))
+            return;
+
+        _fileMetaInformation = meta;
+        await ReportFileMetaInformationAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task ReportFileMetaInformationAsync()
+    {
+        if (FileMetaInformationChanged.HasDelegate)
+            await FileMetaInformationChanged.InvokeAsync(await GetFileFinfosAsync(false));
+    }
+
+    private static bool SameMetaInformation(IDictionary<string, object> left, IDictionary<string, object> right)
+    {
+        if (ReferenceEquals(left, right))
+            return true;
+        if (left == null || right == null || left.Count != right.Count)
+            return false;
+
+        return left.All(entry => right.TryGetValue(entry.Key, out var value) && Equals(entry.Value, value));
     }
 
     /// <summary>

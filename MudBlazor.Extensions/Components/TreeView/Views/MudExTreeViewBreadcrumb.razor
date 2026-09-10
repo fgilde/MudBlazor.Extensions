@@ -10,10 +10,12 @@
         @ToolBarContent
     }
     @MenuFor(FilterManager.FilteredItems())
-    @foreach (var item in Path())
+    @* Path() is the raw ancestor chain, so it has to be filtered here too - otherwise a node the ItemFilter
+       rejects still shows up as a crumb. MenuFor already filters what it renders. *@
+    @foreach (var item in Path().Where(FilterManager.IsVisible))
     {
         <p>@ItemRender(item)</p>
-        @MenuFor(item.Children)
+        @MenuFor(VisibleChildren(item))
     }
     <MudSpacer/>
     @RenderSearchBox()

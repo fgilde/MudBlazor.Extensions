@@ -12,16 +12,28 @@
     protected virtual RenderFragment RenderSearchBar()
     {
         return
-        @<RenderChild Condition="@(FilterMode != PropertyFilterMode.Disabled)">
-        <MudToolBar WrapContent="@WrapToolBarContent" Dense="@Dense" Class="@ToolBarClassStr()" Style="@ToolBarStyleStr()">
-                @if (ToolBarContent != null)
-                {
-                    @ToolBarContent
-                }
-                <MudSpacer/>
-                @RenderSearchBox()
-            </MudToolBar>
+        @<RenderChild>
+            @RenderExternalDropInput()
+            <RenderChild Condition="@(FilterMode != PropertyFilterMode.Disabled)">
+                <MudToolBar WrapContent="@WrapToolBarContent" Dense="@Dense" Class="@ToolBarClassStr()" Style="@ToolBarStyleStr()">
+                    @if (ToolBarContent != null)
+                    {
+                        @ToolBarContent
+                    }
+                    <MudSpacer/>
+                    @RenderSearchBox()
+                </MudToolBar>
+            </RenderChild>
         </RenderChild>;
+    }
+
+    @* The hidden input is how files dragged in from the operating system become IBrowserFile: JavaScript puts
+       the dropped files on it and dispatches a change event, which is the only path Blazor offers. *@
+    protected RenderFragment RenderExternalDropInput()
+    {
+        return @<RenderChild Condition="@ListensForExternalFiles">
+                   <InputFile @ref="_externalDropInput" id="@($"{ElementId}-drop")" hidden multiple OnChange="@OnExternalFilesSelected"/>
+               </RenderChild>;
     }
 
     protected virtual RenderFragment RenderSearchBox()
@@ -36,6 +48,33 @@
     public virtual RenderFragment RenderItem(TreeViewItemContext<TItem> context) => null;
     
     protected virtual RenderFragment RenderItemContent(TreeViewItemContext<TItem> context, bool checkTemplate)
+        => WithDragDrop(context, RenderItemContentCore(context, checkTemplate));
+
+    @* Every view mode funnels its node content through RenderItemContent, so wrapping it here is what gives all
+       six modes drag and drop without any of them knowing about it. *@
+    protected RenderFragment WithDragDrop(TreeViewItemContext<TItem> context, RenderFragment content)
+    {
+        if (!HasDragDrop)
+            return content;
+
+        return @<div class="@DragDropClassStr(context)"
+                     style="@DragDropStyleStr(context)"
+                     data-mudex-drop-zone="@ElementId"
+                     data-mudex-drop-target="@DragDropKey(context.Value)"
+                     draggable="@(CanDrag(context.Value) ? "true" : "false")"
+                     @ondragstart="@(() => OnNodeDragStart(context.Value))"
+                     @ondragend="@OnNodeDragEnd"
+                     @ondragover="@(() => OnNodeDragOver(context.Value))"
+                     @ondragover:preventDefault="@AllowDrop"
+                     @ondragleave="@(() => OnNodeDragLeave(context.Value))"
+                     @ondrop="@(() => OnNodeDrop(context.Value))"
+                     @ondrop:preventDefault="@AllowDrop"
+                     @ondrop:stopPropagation="@AllowDrop">
+                   @content
+               </div>;
+    }
+
+    protected virtual RenderFragment RenderItemContentCore(TreeViewItemContext<TItem> context, bool checkTemplate)
     {
         if (checkTemplate && ItemContentTemplate != null)
             return ItemContentTemplate(context);

@@ -1165,17 +1165,22 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         }
     }
 
-    private bool ExtensionAllowed(string extension)
+    /// <summary>
+    /// The restrictions as configured here, so every path that accepts a file applies the same rules - see
+    /// <see cref="MudExFileRestrictions"/>.
+    /// </summary>
+    public MudExFileRestrictions Restrictions => new()
     {
-        if (Extensions?.Any() != true) return true;
-        return _allowedExtensions.Any(e => string.Equals(e.EnsureStartsWith('.'), extension.EnsureStartsWith('.'), StringComparison.CurrentCultureIgnoreCase));
-    }
+        MimeTypes = MimeTypes,
+        MimeRestrictionType = MimeRestrictionType,
+        Extensions = Extensions,
+        ExtensionRestrictionType = ExtensionRestrictionType,
+        MaxFileSize = MaxFileSize
+    };
 
-    private bool MimeTypeAllowed(string mimeType)
-    {
-        if (MimeTypes?.Any() != true) return true;
-        return MimeType.Matches(mimeType, _allowedMimeTypes) || (MimeRestrictionType == RestrictionType.WhiteList && MimeType.Matches(mimeType, MimeTypes));
-    }
+    private bool ExtensionAllowed(string extension) => Restrictions.IsExtensionAllowed(extension);
+
+    private bool MimeTypeAllowed(string mimeType) => Restrictions.IsMimeTypeAllowed(mimeType);
 
     private bool SetError(string message = default)
     {

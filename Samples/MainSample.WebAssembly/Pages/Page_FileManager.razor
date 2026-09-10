@@ -1,0 +1,274 @@
+﻿@page "/file-manager"
+@inherits BasePage
+
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Core.FileManager
+@using MudBlazor.Extensions.Core.Enums
+@using MudBlazor.Extensions.Services
+@using MudBlazor.Extensions.Options
+
+@attribute [Demo(Group = "File Handling", Name = "File Manager", Order = 1, Icon = Icons.Material.Outlined.FolderCopy, Documentation = "MudExFileManager is an explorer style component: a structure tree beside a file area, with breadcrumb navigation, preview and metadata panels, all laid out with MudExDockLayout so every panel can be resized, stacked, floated or popped out.", ForComponentTypes = new[] { typeof(MudExFileManager) })]
+
+<!-- Header / Intro -->
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx File Manager"]
+    </MudText>
+
+    <MudText Typo="Typo.body1">
+        @L["An explorer for any file structure. Where the files live is behind one interface, so the same component browses an in-memory tree, a folder on your own machine or a server directory - and the panels come from MudExDockLayout, so the user arranges them."]
+    </MudText>
+
+    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary"
+               StartIcon="@Icons.Material.Filled.Api" Href="/file-manager-server-api">
+        @L["Server API documentation"]
+    </MudButton>
+</MudPaper>
+
+<!-- Quick overview (Key Features) -->
+<MudGrid Class="mb-6">
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">@L["Dockable panels"]</MudText>
+            <MudText Typo="Typo.body2">
+                @L["Tree, files, preview and details are dock panels: resize, stack, float or pop them out into their own window."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">@L["Any provider"]</MudText>
+            <MudText Typo="Typo.body2">
+                @L["IMudExFileStructureManager is the whole contract. In-memory, a picked folder and http endpoints ship with it."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">@L["A real file area"]</MudText>
+            <MudText Typo="Typo.body2">
+                @L["MudExFileGrid: rubber band and ctrl/shift selection, inline rename, sortable columns, context menu, keyboard, and dragging a whole selection onto a folder."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 h-100">
+            <MudText Typo="Typo.subtitle1">@L["Real previews"]</MudText>
+            <MudText Typo="Typo.body2">
+                @L["The preview panel is a MudExFileDisplay, so every viewer the library has is available here too."]
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="mb-6" />
+
+@* No section nav and the feature lists under the demos: the demos here are full explorers and want the width. *@
+<MudExDemoPage ShowNav="false">
+
+    <!-- Demo 1: the full component -->
+    <MudExDemoBox Title="Explorer with every panel"
+                  NavTitle="Full explorer">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The default arrangement. Everything below the toolbar is dockable - drag the 'Structure' tab onto the right hand group and it stacks with the preview. In the file area: drag a rectangle to select, ctrl and shift click, F2 renames, delete removes, and a selection can be dragged onto a folder."]
+            </MudText>
+            <MudExFileManager Manager="@_demoStructure" Height="@("70vh")"
+                              OnFileOpened="@(node => _lastOpened = node.Name)" />
+
+            @if (!string.IsNullOrEmpty(_lastOpened))
+            {
+                <MudAlert Severity="Severity.Info" Dense="true" Class="mt-2">@L["Opened: {0}", _lastOpened]</MudAlert>
+            }
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo 2: every combination, live -->
+    <MudExDemoBox Title="Panels and view modes"
+                  NavTitle="Combinations">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Every combination in one place. Tree plus preview without a file area gives a single list beside a viewer; files only gives a plain browser. Changing the panel set rebuilds the dock, because a dock layout is read once."]
+            </MudText>
+
+            <MudGrid Class="mb-3">
+                <MudItem xs="12" md="4">
+                    <MudSelect T="MudExFileManagerPanels" Label="@L["Panels"]" Value="_panels" ValueChanged="@SetPanels"
+                               Variant="Variant.Outlined" Margin="Margin.Dense">
+                        @foreach (var preset in PanelPresets)
+                        {
+                            <MudSelectItem Value="@preset.Value">@preset.Label</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6" md="2">
+                    <MudExEnumSelect TEnum="TreeViewMode" Label="@L["Tree view mode"]" Value="_treePanelViewMode"
+                                     ValueChanged="@((TreeViewMode m) => Rebuild(() => _treePanelViewMode = m))"
+                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="2">
+                    <MudExEnumSelect TEnum="MudExFileGridView" Label="@L["File view"]" @bind-Value="_fileGridView"
+                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="2">
+                    <MudExEnumSelect TEnum="MudExFileManagerPreviewContent" Label="@L["Entry rendering"]"
+                                     @bind-Value="_previewContent" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="2">
+                    <MudSwitch T="bool" Value="_treeShowsFiles" ValueChanged="@((bool v) => Rebuild(() => _treeShowsFiles = v))"
+                               Color="Color.Primary" Label="@L["Files in the tree"]" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="2">
+                    <MudSwitch T="bool" @bind-Value="_restrictUploads"
+                               Color="Color.Primary" Label="@L["Restrict uploads"]" />
+                </MudItem>
+            </MudGrid>
+
+            @* The key forces a fresh component when the panel set changes: the dock adopts the rendered nodes
+               and reads its layout once, so a changed panel set needs a new instance rather than a re-render. *@
+            <MudExFileManager @key="@($"{_panels}-{_treeShowsFiles}-{_treePanelViewMode}")"
+                              Manager="@_demoStructure"
+                              Panels="@_panels"
+                              TreeShowsFiles="@_treeShowsFiles"
+                              TreePanelViewMode="@_treePanelViewMode"
+                              FileGridView="@_fileGridView"
+                              FilePreviewContent="@_previewContent"
+                              Restrictions="@(_restrictUploads ? UploadRestrictions : null)"
+                              Height="@("65vh")" />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo 3: a folder from the user's own machine -->
+    <MudExDemoBox Title="A folder from your own machine"
+                  NavTitle="Local folder">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Pick a folder and browse it. Chromium browsers enumerate it lazily through the File System Access API and can write to it; everywhere else the fallback reads the whole folder in one go, read-only."]
+            </MudText>
+            <MudExFileManagerClient Height="@("65vh")" />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <!-- Demo 4: web components -->
+    <MudExDemoBox Title="As a web component"
+                  NavTitle="Web component">
+
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["MudExFileManager itself takes a provider instance, which html cannot pass. These two wrappers build the provider from plain attributes instead, which is what makes the file manager usable as a custom element. The server variant takes one route per operation - all of them documented on the server api page."]
+            </MudText>
+
+            <MudExCodeView Theme="@MainLayout.GetCodeBlockTheme()" Language="MudExCodeLanguage.Html" Code="@WebComponentSample" />
+
+            <MudButton Class="mt-3" Variant="Variant.Outlined" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.Api" Href="/file-manager-server-api">
+                @L["Server API documentation"]
+            </MudButton>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+@code {
+    private MudExInMemoryFileStructureManager _demoStructure;
+    private MudExFileManagerPanels _panels = MudExFileManagerPanels.All;
+    private bool _restrictUploads;
+
+    // The same rules for the upload dialog and for a file dropped straight onto a folder.
+    private static readonly MudExFileRestrictions UploadRestrictions = new()
+    {
+        Extensions = new[] { "exe", "bat", "dll" },
+        ExtensionRestrictionType = RestrictionType.BlackList,
+        MaxFileSize = 5 * 1024 * 1024
+    };
+    private TreeViewMode _treePanelViewMode = TreeViewMode.Default;
+    private MudExFileGridView _fileGridView = MudExFileGridView.Tiles;
+    private MudExFileManagerPreviewContent _previewContent = MudExFileManagerPreviewContent.Icon;
+    private bool _treeShowsFiles;
+    private string _lastOpened;
+
+    private record PanelPreset(string Label, MudExFileManagerPanels Value);
+
+    private static readonly PanelPreset[] PanelPresets =
+    {
+        new("All - tree, files, preview, details", MudExFileManagerPanels.All),
+        new("Tree and files", MudExFileManagerPanels.Tree | MudExFileManagerPanels.Files),
+        new("Tree and preview - no file area", MudExFileManagerPanels.Tree | MudExFileManagerPanels.Preview),
+        new("Files and preview - no tree", MudExFileManagerPanels.Files | MudExFileManagerPanels.Preview),
+        new("Files only", MudExFileManagerPanels.Files),
+        new("Tree only", MudExFileManagerPanels.Tree)
+    };
+
+    private void SetPanels(MudExFileManagerPanels panels) => Rebuild(() =>
+    {
+        _panels = panels;
+
+        // A tree with no file area beside it has to list the files too, otherwise there is nothing to select.
+        if (!panels.HasFlag(MudExFileManagerPanels.Files))
+            _treeShowsFiles = true;
+    });
+
+    private void Rebuild(Action change)
+    {
+        change();
+        StateHasChanged();
+    }
+
+    private const string WebComponentSample = """
+                                              <!-- a folder the user picks, nothing leaves the machine -->
+                                              <mudex-file-manager-client height="70vh"
+                                                                         file-view-mode="CardGrid"
+                                                                         tree-shows-files="false"
+                                                                         allow-write="true"></mudex-file-manager-client>
+
+                                              <!-- a server directory behind one base url -->
+                                              <mudex-file-manager-server base-url="/api/files"
+                                                                         allow-write="false"
+                                                                         panels="Tree, Files, Preview, Meta"
+                                                                         height="70vh"></mudex-file-manager-server>
+                                              """;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _demoStructure = BuildDemoStructure();
+    }
+
+    // A structure with real content, so the preview panel and the content previews have something to render.
+    private static MudExInMemoryFileStructureManager BuildDemoStructure()
+    {
+        var manager = new MudExInMemoryFileStructureManager
+        {
+            Capabilities = MudExFileManagerCapabilities.All
+        };
+
+        var files = new (string Path, string Content)[]
+        {
+            ("readme.md", "# Demo structure\n\nEverything here lives in memory. Rename it, move it, delete it - a reload brings it back.\n"),
+            ("documents/notes.txt", "The tree and the file area share the same node instances, so a folder loaded on one side is already loaded on the other.\n"),
+            ("documents/report.md", "## Report\n\n| Panel | Comes from |\n|---|---|\n| Preview | MudExFileDisplay |\n| Details | MudExFileMetaView |\n"),
+            ("documents/invoices/2026-01.csv", "date;customer;amount\n2026-01-04;Contoso;1240.00\n2026-01-17;Fabrikam;880.50\n"),
+            ("documents/invoices/2026-02.csv", "date;customer;amount\n2026-02-02;Contoso;1310.00\n"),
+            ("source/Program.cs", "var builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddMudServicesWithExtensions();\n\nvar app = builder.Build();\napp.Run();\n"),
+            ("source/appsettings.json", "{\n  \"Files\": {\n    \"Root\": \"/srv/files\",\n    \"AllowWrite\": true\n  }\n}\n"),
+            ("source/styles/site.css", ".mud-ex-fm {\n    width: 100%;\n}\n"),
+            ("data/points.geojson", "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[13.405,52.52]},\"properties\":{\"name\":\"Berlin\"}}]}"),
+            ("data/empty.log", "")
+        };
+
+        foreach (var (path, content) in files)
+        {
+            var bytes = System.Text.Encoding.UTF8.GetBytes(content);
+            manager.AddFile(path, bytes.Length, DateTimeOffset.Now.AddDays(-Random.Shared.Next(1, 90)));
+            manager.SetContent(path, bytes);
+        }
+
+        // A folder with no files of its own, so "this folder is empty" has somewhere to show up.
+        manager.AddFile("archive/.keep", 0, DateTimeOffset.Now);
+
+        return manager;
+    }
+}

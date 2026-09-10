@@ -66,7 +66,9 @@ public partial class MudExTreeViewDefault<T>
         {
             return asyncHierarchical.GetLoadingIndicatorItems().Select(i => CreateContext(i, "")).ToHashSet();
         }
-        return context.Value?.GetLoadedChildren()?.Select(i => CreateContext(i, "")).ToHashSet();
+        // VisibleChildren, not GetLoadedChildren: MudTreeView renders one row per item it is given, so a
+        // child the filter rejects would leave an empty row behind.
+        return VisibleChildren(context.Value).Select(i => CreateContext(i, "")).ToHashSet();
     }
 }
 

@@ -86,7 +86,12 @@ public partial class MudExVirtualItem
     private async Task UpdateStyle()
     {
         var size = await JsRuntime.DInvokeAsync<BoundingClientRect>((w, e) => e?.getBoundingClientRect(), _container);
-        _style = MudExStyleBuilder.Default.WithSize(size.ToDimension(CssUnit.Pixels)).AddRaw(Style).ToString();
+
+        // No rect means the element has no layout yet - or there is no javascript at all, which is the case
+        // during prerendering and under test. Then there is no size to pin and Style alone is what applies.
+        _style = size == null
+            ? MudExStyleBuilder.Default.AddRaw(Style).ToString()
+            : MudExStyleBuilder.Default.WithSize(size.ToDimension(CssUnit.Pixels)).AddRaw(Style).ToString();
     }
 
 

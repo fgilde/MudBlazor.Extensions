@@ -17,6 +17,7 @@ public class HierarchicalFilter<T>
     private IReadOnlyCollection<T> _cachedFilteredItems;
     private Dictionary<T, (bool Found, string Term)> _matchCache = new();
     private string _cacheKey;
+    private Func<T, bool> _itemFilter;
 
     /// <summary>
     /// Items to filter
@@ -93,6 +94,26 @@ public class HierarchicalFilter<T>
     public Func<T, string, bool> MatchFunc { get; set; }
 
     /// <summary>
+    /// Decides per node whether it belongs in the tree at all. Unlike <see cref="Filter"/> this is not a
+    /// search: a node it rejects is gone, and no ancestor is kept alive for it.
+    /// </summary>
+    public Func<T, bool> ItemFilter
+    {
+        get => _itemFilter;
+        set
+        {
+            if (_itemFilter != value)
+            {
+                _itemFilter = value;
+                InvalidateCache();
+            }
+        }
+    }
+
+    /// <summary>Returns true when the node passes <see cref="ItemFilter"/>.</summary>
+    public bool IsVisible(T node) => node != null && (ItemFilter?.Invoke(node) ?? true);
+
+    /// <summary>
     /// Returns true if a filter is present
     /// </summary>
     public bool HasFilters => Filters?.Any(s => !string.IsNullOrWhiteSpace(s)) == true || !string.IsNullOrEmpty(Filter);
@@ -133,12 +154,12 @@ public class HierarchicalFilter<T>
                 return _cachedFilteredItems;
 
             var filters = Filters.EmptyIfNull().Concat(new []{Filter}).Where(f => !string.IsNullOrEmpty(f)).Distinct().ToList();
-            _cachedFilteredItems = Items.Recursive(e => e.GetLoadedChildren()).Where(e =>
+            _cachedFilteredItems = Items.Recursive(e => e.GetLoadedChildren()).Where(IsVisible).Where(e =>
                     filters.Any(filter => e is IAsyncHierarchical<T> { IsLoading: true }  || MatchesFilter(e, filter)))
                 .ToHashSet();
             return _cachedFilteredItems;
         }
-        return Items;
+        return ItemFilter == null ? Items : Items.Where(IsVisible).ToList();
     }
 
     /// <summary>
@@ -163,6 +184,11 @@ public class HierarchicalFilter<T>
 
     private (bool Found, string Term) ComputeMatchedSearch(T node)
     {
+        // The visibility gate comes first and is absolute: every view already asks GetMatchedSearch before
+        // rendering a child, so one check here hides a rejected node in all view modes at once.
+        if (!IsVisible(node))
+            return (false, string.Empty);
+
         if (FilterBehaviour == HierarchicalFilterBehaviour.Flat || !HasFilters)
             return (true, string.Empty);
 
@@ -184,6 +210,7 @@ public class HierarchicalFilter<T>
             if (GetMatchedSearch(child).Found)
                 return (true, string.Empty);
         }
+
 
         return (false, string.Empty);
     }

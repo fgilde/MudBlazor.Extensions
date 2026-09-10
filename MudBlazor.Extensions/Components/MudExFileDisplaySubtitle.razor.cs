@@ -1,4 +1,5 @@
-﻿using MudBlazor.Extensions.Helper.Internal;
+﻿using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using System.Text;
 using System.Text.RegularExpressions;
 using AuralizeBlazor.Types;
@@ -40,6 +41,7 @@ public partial class MudExFileDisplaySubtitle : IMudExFileDisplay
     /// </summary>
     [CascadingParameter] public MudExFileDisplay MudExFileDisplay { get; set; }
 
+    private object _loadedSource;
     private static readonly string[] SupportedExtensions = { ".srt", ".vtt", ".lrc", ".ttml", ".dfxp", ".itt", ".ass", ".ssa" };
 
     private LyricData _lyrics;
@@ -67,15 +69,21 @@ public partial class MudExFileDisplaySubtitle : IMudExFileDisplay
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
-        // See MudExFileDisplayDataBase for the rationale of checking for a usable source instead of reference equality.
+        // The same viewer instance serves every file of its kind, and FileDisplayInfos is always
+        // the same object - so only the values tell one file from the next.
         parameters.TryGetValue<IMudExFileDisplayInfos>(nameof(FileDisplayInfos), out var infos);
-        var hasSource = infos != null && (!string.IsNullOrEmpty(infos.Url) || infos.ContentStream is { Length: > 0 });
-        var notYetLoaded = _lyrics == null && _errorMessage == null;
+        var sourceChanged = infos.SourceChanged(ref _loadedSource);
 
         await base.SetParametersAsync(parameters);
 
-        if (hasSource && notYetLoaded)
+        if (sourceChanged)
+        {
+            _lyrics = null;
+            _errorMessage = null;
             await LoadSubtitlesAsync();
+            // A viewer knows its own values only now, and its renders do not reach the host.
+            await FileDisplayInfos.NotifyMetaChangedAsync();
+        }
     }
 
     private async Task LoadSubtitlesAsync()

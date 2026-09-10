@@ -15,6 +15,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFileDisplayDataBase : IMudExFileDisplay
 {
+    private object _loadedSource;
     private static readonly string[] SupportedExtensions = { ".sqlite", ".sqlite3", ".db", ".db3", ".s3db", ".sl3", ".db2" };
 
     [Inject] private MudExFileService FileService { get; set; }
@@ -88,14 +89,21 @@ public partial class MudExFileDisplayDataBase : IMudExFileDisplay
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
+        // The same viewer instance serves every file of its kind, and FileDisplayInfos is always
+        // the same object - so only the values tell one file from the next.
         parameters.TryGetValue<IMudExFileDisplayInfos>(nameof(FileDisplayInfos), out var infos);
-        var hasSource = infos != null && (!string.IsNullOrEmpty(infos.Url) || infos.ContentStream is { Length: > 0 });
-        var notYetLoaded = _connection == null && _pureReader == null;
+        var sourceChanged = infos.SourceChanged(ref _loadedSource);
 
         await base.SetParametersAsync(parameters);
 
-        if (hasSource && notYetLoaded)
+        if (sourceChanged)
+        {
+            _connection = null;
+            _pureReader = null;
             await LoadDatabaseAsync();
+            // A viewer knows its own values only now, and its renders do not reach the host.
+            await FileDisplayInfos.NotifyMetaChangedAsync();
+        }
     }
 
     private async Task LoadDatabaseAsync()

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using MudBlazor.Extensions.Helper;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Core;
@@ -15,6 +16,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFileDisplayNotebook : IMudExFileDisplay
 {
+    private object _loadedSource;
     private static readonly Regex AnsiEscapeRegex = new(@"\x1B\[[0-9;]*[a-zA-Z]", RegexOptions.Compiled);
 
     private static readonly Dictionary<string, string> KernelLanguageToExtension = new(StringComparer.OrdinalIgnoreCase)
@@ -88,14 +90,21 @@ public partial class MudExFileDisplayNotebook : IMudExFileDisplay
         // See MudExFileDisplayDataBase for why we detect a usable source (Url/ContentStream) instead of just
         // comparing the FileDisplayInfos reference: when nested inside e.g. MudExFileDisplayZip the host object is
         // reused and only its Url/ContentStream get populated a moment later, so reference equality never changes.
+        // The same viewer instance serves every file of its kind, and FileDisplayInfos is always
+        // the same object - so only the values tell one file from the next.
         parameters.TryGetValue<IMudExFileDisplayInfos>(nameof(FileDisplayInfos), out var infos);
-        var hasSource = infos != null && (!string.IsNullOrEmpty(infos.Url) || infos.ContentStream is { Length: > 0 });
-        var notYetLoaded = _cells == null && _errorMessage == null;
+        var sourceChanged = infos.SourceChanged(ref _loadedSource);
 
         await base.SetParametersAsync(parameters);
 
-        if (hasSource && notYetLoaded)
+        if (sourceChanged)
+        {
+            _cells = null;
+            _errorMessage = null;
             await LoadNotebookAsync();
+            // A viewer knows its own values only now, and its renders do not reach the host.
+            await FileDisplayInfos.NotifyMetaChangedAsync();
+        }
     }
 
     private async Task LoadNotebookAsync()

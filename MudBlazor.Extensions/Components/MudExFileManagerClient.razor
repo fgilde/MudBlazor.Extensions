@@ -1,0 +1,94 @@
+﻿@inherits MudExBaseComponent<MudExFileManagerClient>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Core.FileManager
+@using MudBlazor.Extensions.Core.Enums
+
+<div class="mud-ex-fm-client" style="@($"height:{Height};display:flex;flex-direction:column;")">
+
+    @if (ShowPicker)
+    {
+        <MudToolBar Dense="true">
+            @if (_supportsFileSystemAccess)
+            {
+                <MudButton StartIcon="@Icons.Material.Filled.FolderOpen" Variant="Variant.Filled"
+                           Color="Color.Primary" Disabled="@_busy" OnClick="@PickFolderAsync">
+                    @(TryLocalize(_picked ? "Pick another folder" : "Pick a folder"))
+                </MudButton>
+            }
+            else
+            {
+                @* No File System Access API: an input with webkitdirectory still yields the whole tree, but
+                   read-only, and the relative paths have to come from javascript. *@
+                <MudButton StartIcon="@Icons.Material.Filled.DriveFolderUpload" Variant="Variant.Filled"
+                           Color="Color.Primary" HtmlTag="label" for="@($"{ElementId}-folder")">
+                    @(TryLocalize(_picked ? "Select another folder" : "Select a folder"))
+                </MudButton>
+                <InputFile id="@($"{ElementId}-folder")" @ref="_folderInput" hidden multiple
+                           webkitdirectory="" directory="" OnChange="@FolderSelectedAsync" />
+            }
+
+            @if (!string.IsNullOrEmpty(_manager?.RootName))
+            {
+                <MudChip T="string" Class="ml-3" Icon="@Icons.Material.Filled.Folder" Size="Size.Small">@_manager.RootName</MudChip>
+            }
+
+            <MudSpacer />
+
+            @if (_busy)
+            {
+                <MudProgressCircular Size="Size.Small" Color="Color.Primary" Indeterminate="true" />
+            }
+        </MudToolBar>
+    }
+
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Warning" Dense="true" Class="ma-1"
+                  ShowCloseIcon="true" CloseIconClicked="@(() => _errorMessage = null)">@_errorMessage</MudAlert>
+    }
+
+    <div style="flex: 1 1 auto; min-height: 0;">
+        @if (!_picked)
+        {
+            <div class="mud-ex-fm-client-empty">
+                <MudIcon Icon="@Icons.Material.Filled.FolderOpen" Size="Size.Large" />
+                <MudText Typo="Typo.body2">
+                    @(TryLocalize(_supportsFileSystemAccess
+                        ? "Pick a folder from your machine to browse it."
+                        : "This browser can only read a folder in one go, and only for reading. Select a folder to browse it."))
+                </MudText>
+            </div>
+        }
+        else
+        {
+            <MudExFileManager @ref="_fileManager"
+                              Manager="@_manager"
+                              Panels="@Panels"
+                              FileGridView="@FileGridView"
+                  AllowMultiSelect="@AllowMultiSelect"
+                              TreePanelViewMode="@TreePanelViewMode"
+                              TreeShowsFiles="@TreeShowsFiles"
+                              AllowClosePanels="@AllowClosePanels"
+                              FilePreviewContent="@FilePreviewContent"
+                              ShowBreadcrumb="@ShowBreadcrumb"
+                              ShowActions="@ShowActions"
+                              AllowDragDrop="@AllowDragDrop"
+                              AllowPopout="@AllowPopout"
+                              Height="@("100%")" />
+        }
+    </div>
+</div>
+
+<style>
+    .mud-ex-fm-client-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 100%;
+        opacity: .6;
+        padding: 16px;
+        text-align: center;
+    }
+</style>

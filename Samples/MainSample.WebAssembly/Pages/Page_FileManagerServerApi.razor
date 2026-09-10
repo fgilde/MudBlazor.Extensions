@@ -1,0 +1,341 @@
+@page "/file-manager-server-api"
+@inherits BasePage
+
+@using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Services
+
+@attribute [Demo(Group = "File Handling", Name = "File Manager Server API", Order = 2, Icon = Icons.Material.Outlined.Api, Documentation = "The http contract MudExFileManagerServer and MudExHttpFileStructureManager speak: one route per operation, the request and response shape of each, and a complete controller to copy.", ForComponentTypes = new[] { typeof(MudExFileManagerServer) })]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">@L["File Manager Server API"]</MudText>
+
+    <MudText Typo="Typo.body1">
+        @L["MudExFileManagerServer browses a server directory over plain http. One base url plus one route per operation is the whole configuration, which is what lets it work as a web component with no Blazor project. This page is the contract: what each route receives, what it must answer, and a controller that implements all of it."]
+    </MudText>
+
+    <MudAlert Severity="Severity.Info" Dense="true" Class="mt-4">
+        @L["Routes are appended to the base url, so they are yours to choose - nothing is derived from the api. A route set to an empty string means \"the base url itself\", which is how listing and deleting differ only by http method by default."]
+    </MudAlert>
+</MudPaper>
+
+<MudExDemoPage ShowNav="false">
+
+    <MudExDemoBox Title="The routes"
+                  NavTitle="Routes"
+                  FeaturesPlacement="DemoFeaturesPlacement.None">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Every route is a parameter, so an existing api rarely has to change: point each one at the endpoint you already have. Read only? Implement the first two and leave AllowWrite off."]
+            </MudText>
+
+            <MudSimpleTable Dense="true" Hover="true" Striped="true" Style="overflow-x: auto;">
+                <thead>
+                    <tr>
+                        <th>@L["Parameter"]</th>
+                        <th>@L["Default"]</th>
+                        <th>@L["Method"]</th>
+                        <th>@L["Sends"]</th>
+                        <th>@L["Must answer"]</th>
+                        <th>@L["Needed for"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var route in Routes)
+                    {
+                        <tr>
+                            <td><code>@route.Parameter</code></td>
+                            <td><code>@(route.Default.Length == 0 ? "\"\"" : route.Default)</code></td>
+                            <td><MudChip T="string" Size="Size.Small" Variant="Variant.Text" Color="@route.Color">@route.Method</MudChip></td>
+                            <td><code>@route.Sends</code></td>
+                            <td><code>@route.Answers</code></td>
+                            <td>@L[route.Capability]</td>
+                        </tr>
+                    }
+                </tbody>
+            </MudSimpleTable>
+
+            <MudText Typo="Typo.subtitle2" Class="mt-6 mb-2">@L["The entry every route returns"]</MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["Only name is required. Set fullPath when your api addresses entries by id instead of by path - it wins over the path the client would otherwise build from the parent. isDirectory decides whether the entry can be opened; contentType decides which viewer the preview panel picks."]
+            </MudText>
+            <MudExCodeView Theme="@MainLayout.GetCodeBlockTheme()" Language="MudExCodeLanguage.Json" Code="@EntryShape" />
+
+            <MudText Typo="Typo.subtitle2" Class="mt-6 mb-2">@L["Answering a write"]</MudText>
+            <MudText Typo="Typo.body2">
+                @L["A write may answer 204 with no body - the client then synthesizes the new entry from what it sent. If you do answer with a body it must be a valid entry: a body that fails to parse surfaces as an error rather than being silently replaced by a guess."]
+            </MudText>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="A controller that implements it"
+                  NavTitle="Controller"
+                  FeaturesPlacement="DemoFeaturesPlacement.None">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Copy this, point Root at the directory you want to serve, and the component works against it unchanged. Note the two guards: every incoming path is resolved and checked against the root, because a path from the browser is user input."]
+            </MudText>
+            <MudExCodeView Theme="@MainLayout.GetCodeBlockTheme()" Language="MudExCodeLanguage.CSharp" Code="@ControllerSample" />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="Using it"
+                  NavTitle="Usage"
+                  FeaturesPlacement="DemoFeaturesPlacement.None">
+        <DemoContent>
+            <MudText Typo="Typo.subtitle2" Class="mb-2">@L["In Blazor"]</MudText>
+            <MudExCodeView Theme="@MainLayout.GetCodeBlockTheme()" Language="MudExCodeLanguage.Razor" Code="@BlazorUsage" />
+
+            <MudText Typo="Typo.subtitle2" Class="mt-6 mb-2">@L["As a web component"]</MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["Every parameter becomes a kebab-case attribute. Enums are passed by name, flags enums as a comma separated list."]
+            </MudText>
+            <MudExCodeView Theme="@MainLayout.GetCodeBlockTheme()" Language="MudExCodeLanguage.Html" Code="@WebComponentUsage" />
+
+            <MudText Typo="Typo.subtitle2" Class="mt-6 mb-2">@L["Or the provider on its own"]</MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["MudExHttpFileStructureManager is a plain class. Use it directly when you want the same endpoints behind your own ui, or to give the manager capabilities the wrapper's AllowWrite flag cannot express - only delete but no rename, for instance."]
+            </MudText>
+            <MudExCodeView Theme="@MainLayout.GetCodeBlockTheme()" Language="MudExCodeLanguage.CSharp" Code="@ProviderUsage" />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+@code {
+    private record RouteDoc(string Parameter, string Default, string Method, string Sends, string Answers, string Capability, Color Color);
+
+    private static readonly RouteDoc[] Routes =
+    {
+        new("ListRoute", "", "GET", "?path=<folder>", "FileEntry[]", "Read - always", Color.Info),
+        new("ContentRoute", "/content", "GET", "?path=<file>", "the file bytes", "Read, Download - always", Color.Info),
+        new("CreateFolderRoute", "/folder", "POST", "{ path, name }", "FileEntry or 204", "CreateDirectory", Color.Success),
+        new("RenameRoute", "/rename", "PATCH", "{ path, newName }", "FileEntry or 204", "Rename", Color.Warning),
+        new("MoveRoute", "/move", "POST", "{ paths[], target }", "204", "Move, and drag and drop", Color.Success),
+        new("DeleteRoute", "", "DELETE", "{ paths[] }", "204", "Delete", Color.Error),
+        new("UploadRoute", "/upload", "POST", "multipart: file, path", "FileEntry or 204", "Upload, and dropping files in", Color.Success)
+    };
+
+    private const string EntryShape = """
+                                      [
+                                        {
+                                          "name": "invoices",          // required
+                                          "fullPath": "docs/invoices", // optional, wins over the built path
+                                          "isDirectory": true,
+                                          "size": 0,
+                                          "lastModified": "2026-02-11T09:14:00+01:00",
+                                          "contentType": null
+                                        },
+                                        {
+                                          "name": "2026-01.csv",
+                                          "isDirectory": false,
+                                          "size": 8124,
+                                          "lastModified": "2026-01-31T18:02:11+01:00",
+                                          "contentType": "text/csv"
+                                        }
+                                      ]
+                                      """;
+
+    private const string ControllerSample = """
+                                            [ApiController]
+                                            [Route("api/files")]
+                                            public class FilesController : ControllerBase
+                                            {
+                                                // The one directory this api serves. Everything below is reachable, nothing above it.
+                                                private static readonly string Root = Path.GetFullPath("/srv/files");
+
+                                                // A path arrives from the browser, so it is user input: resolve it and prove it stayed
+                                                // inside Root. Without this, "../../etc/passwd" is a valid request.
+                                                private static string Resolve(string path)
+                                                {
+                                                    var full = Path.GetFullPath(Path.Combine(Root, path ?? string.Empty));
+                                                    if (full != Root && !full.StartsWith(Root + Path.DirectorySeparatorChar, StringComparison.Ordinal))
+                                                        throw new UnauthorizedAccessException("Outside of the served directory.");
+                                                    return full;
+                                                }
+
+                                                private static string Relative(string full) =>
+                                                    Path.GetRelativePath(Root, full).Replace(Path.DirectorySeparatorChar, '/');
+
+                                                private static object Entry(FileSystemInfo info) => new
+                                                {
+                                                    name = info.Name,
+                                                    fullPath = Relative(info.FullName),
+                                                    isDirectory = info is DirectoryInfo,
+                                                    size = info is FileInfo file ? file.Length : 0,
+                                                    lastModified = new DateTimeOffset(info.LastWriteTimeUtc, TimeSpan.Zero),
+                                                    contentType = info is FileInfo f ? MimeTypes.GetMimeType(f.Name) : null
+                                                };
+
+                                                // ListRoute: "" -> GET api/files?path=
+                                                [HttpGet]
+                                                public IActionResult List([FromQuery] string path)
+                                                {
+                                                    var dir = new DirectoryInfo(Resolve(path));
+                                                    if (!dir.Exists)
+                                                        return Ok(Array.Empty<object>());
+
+                                                    return Ok(dir.EnumerateFileSystemInfos()
+                                                        .OrderByDescending(e => e is DirectoryInfo)
+                                                        .ThenBy(e => e.Name, StringComparer.OrdinalIgnoreCase)
+                                                        .Select(Entry));
+                                                }
+
+                                                // ContentRoute: "/content" -> GET api/files/content?path=
+                                                [HttpGet("content")]
+                                                public IActionResult Content([FromQuery] string path)
+                                                {
+                                                    var file = Resolve(path);
+                                                    if (!File.Exists(file))
+                                                        return NotFound();
+
+                                                    // enableRangeProcessing lets the audio and video viewers seek instead of
+                                                    // downloading the whole file first.
+                                                    return PhysicalFile(file, MimeTypes.GetMimeType(file), enableRangeProcessing: true);
+                                                }
+
+                                                // CreateFolderRoute: "/folder"
+                                                public record CreateFolderRequest(string Path, string Name);
+
+                                                [HttpPost("folder")]
+                                                public IActionResult CreateFolder(CreateFolderRequest request)
+                                                {
+                                                    var target = Resolve(Path.Combine(request.Path ?? string.Empty, request.Name));
+                                                    if (Directory.Exists(target) || File.Exists(target))
+                                                        return Conflict();
+
+                                                    var created = Directory.CreateDirectory(target);
+                                                    return Ok(Entry(created));
+                                                }
+
+                                                // RenameRoute: "/rename"
+                                                public record RenameRequest(string Path, string NewName);
+
+                                                [HttpPatch("rename")]
+                                                public IActionResult Rename(RenameRequest request)
+                                                {
+                                                    var source = Resolve(request.Path);
+                                                    var target = Resolve(Path.Combine(Path.GetDirectoryName(request.Path) ?? string.Empty, request.NewName));
+                                                    if (Directory.Exists(target) || File.Exists(target))
+                                                        return Conflict();
+
+                                                    if (Directory.Exists(source))
+                                                    {
+                                                        Directory.Move(source, target);
+                                                        return Ok(Entry(new DirectoryInfo(target)));
+                                                    }
+
+                                                    File.Move(source, target);
+                                                    return Ok(Entry(new FileInfo(target)));
+                                                }
+
+                                                // MoveRoute: "/move" - all or nothing, the client treats a failure as "nothing moved"
+                                                public record MoveRequest(string[] Paths, string Target);
+
+                                                [HttpPost("move")]
+                                                public IActionResult Move(MoveRequest request)
+                                                {
+                                                    var targetDir = Resolve(request.Target);
+                                                    var moves = new List<(string From, string To)>();
+
+                                                    foreach (var path in request.Paths ?? Array.Empty<string>())
+                                                    {
+                                                        var source = Resolve(path);
+                                                        var destination = Path.Combine(targetDir, Path.GetFileName(source));
+                                                        if (Directory.Exists(destination) || File.Exists(destination))
+                                                            return Conflict();
+                                                        if (destination.StartsWith(source + Path.DirectorySeparatorChar, StringComparison.Ordinal))
+                                                            return BadRequest("A folder cannot move into itself.");
+                                                        moves.Add((source, destination));
+                                                    }
+
+                                                    foreach (var (from, to) in moves)
+                                                    {
+                                                        if (Directory.Exists(from))
+                                                            Directory.Move(from, to);
+                                                        else
+                                                            File.Move(from, to);
+                                                    }
+
+                                                    return NoContent();
+                                                }
+
+                                                // DeleteRoute: "" -> DELETE api/files
+                                                public record DeleteRequest(string[] Paths);
+
+                                                [HttpDelete]
+                                                public IActionResult Delete(DeleteRequest request)
+                                                {
+                                                    foreach (var path in request.Paths ?? Array.Empty<string>())
+                                                    {
+                                                        var full = Resolve(path);
+                                                        if (Directory.Exists(full))
+                                                            Directory.Delete(full, recursive: true);
+                                                        else if (File.Exists(full))
+                                                            File.Delete(full);
+                                                    }
+
+                                                    return NoContent();
+                                                }
+
+                                                // UploadRoute: "/upload" - multipart, the file under "file" and the folder under "path"
+                                                [HttpPost("upload")]
+                                                public async Task<IActionResult> Upload([FromForm] IFormFile file, [FromForm] string path)
+                                                {
+                                                    if (file == null || file.Length == 0)
+                                                        return BadRequest();
+
+                                                    var target = Resolve(Path.Combine(path ?? string.Empty, Path.GetFileName(file.FileName)));
+                                                    await using var stream = File.Create(target);
+                                                    await file.CopyToAsync(stream);
+
+                                                    return Ok(Entry(new FileInfo(target)));
+                                                }
+                                            }
+                                            """;
+
+    private const string BlazorUsage = """
+                                       @* the wrapper, when a base url is all you have *@
+                                       <MudExFileManagerServer BaseUrl="/api/files" AllowWrite="true" Height="70vh" />
+                                       """;
+
+    private const string WebComponentUsage = """
+                                             <!-- read only, the defaults -->
+                                             <mudex-file-manager-server base-url="/api/files"></mudex-file-manager-server>
+
+                                             <!-- writable, custom routes, folders only in the tree -->
+                                             <mudex-file-manager-server base-url="/api/files"
+                                                                        allow-write="true"
+                                                                        list-route="/entries"
+                                                                        content-route="/download"
+                                                                        create-folder-route="/directories"
+                                                                        rename-route="/rename"
+                                                                        move-route="/move"
+                                                                        delete-route="/entries"
+                                                                        upload-route="/files"
+                                                                        panels="Tree, Files, Preview, Meta"
+                                                                        file-view-mode="CardGrid"
+                                                                        tree-view-mode="Default"
+                                                                        tree-shows-files="false"
+                                                                        show-actions="true"
+                                                                        allow-drag-drop="true"
+                                                                        height="70vh"></mudex-file-manager-server>
+                                             """;
+
+    private const string ProviderUsage = """
+                                         var provider = new MudExHttpFileStructureManager(httpClient)
+                                         {
+                                             BaseUrl = "/api/files",
+                                             ListRoute = "/entries",
+                                             ContentRoute = "/download",
+
+                                             // Exactly what your endpoints support. The component renders a control only for
+                                             // what is reported here, so an operation you leave out is never offered.
+                                             Capabilities = MudExFileManagerCapabilities.Read
+                                                            | MudExFileManagerCapabilities.Download
+                                                            | MudExFileManagerCapabilities.Upload
+                                                            | MudExFileManagerCapabilities.Delete
+                                         };
+
+                                         // <MudExFileManager Manager="@provider" />
+                                         """;
+}
