@@ -83,12 +83,6 @@ public partial class MudExFileManagerClient
     [Parameter, SafeCategory("Behavior")]
     public bool AllowPopout { get; set; } = true;
 
-    /// <summary>
-    /// The page a popped out panel opens. Hosts that do not serve the library's static assets point this at
-    /// their own copy of it.
-    /// </summary>
-    [Parameter, SafeCategory("Behavior")]
-    public string PopoutUrl { get; set; } = "_content/MudBlazor.Extensions/popout.html";
 
     /// <summary>Height of the whole component.</summary>
     [Parameter, SafeCategory("Appearance")]

@@ -4942,7 +4942,11 @@
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileManager.PopoutUrl">
-            <summary>Url of the page a popped out panel is hosted in.</summary>
+            <summary>
+            Url of the page a popped out panel is hosted in. The library ships that page, so this only needs a
+            value when the host serves its own - to give the window a title, extra styles, or a bridge back to the
+            opener.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileManager.DockId">
             <summary>Id of the dock layout, so a stored arrangement can be matched back to it.</summary>
@@ -5224,12 +5228,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.AllowPopout">
             <summary>Allows the user to pop a panel out into its own window.</summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.PopoutUrl">
-            <summary>
-            The page a popped out panel opens. Hosts that do not serve the library's static assets point this at
-            their own copy of it.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.Height">
             <summary>Height of the whole component.</summary>
         </member>
@@ -5321,12 +5319,6 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.AllowPopout">
             <summary>Allows the user to pop a panel out into its own window.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.PopoutUrl">
-            <summary>
-            The page a popped out panel opens. Hosts that do not serve the library's static assets point this at
-            their own copy of it.
-            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.Height">
             <summary>Height of the whole component.</summary>

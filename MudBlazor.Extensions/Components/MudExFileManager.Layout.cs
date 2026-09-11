@@ -16,7 +16,11 @@ public partial class MudExFileManager
 
     private string _layoutJson;
 
-    /// <summary>Url of the page a popped out panel is hosted in.</summary>
+    /// <summary>
+    /// Url of the page a popped out panel is hosted in. The library ships that page, so this only needs a
+    /// value when the host serves its own - to give the window a title, extra styles, or a bridge back to the
+    /// opener.
+    /// </summary>
     [Parameter, SafeCategory("Behavior")]
     public string PopoutUrl { get; set; } = "_content/MudBlazor.Extensions/popout.html";
 

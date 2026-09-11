@@ -1,6 +1,6 @@
 ```razor
 @inherits ExampleBase
 
-<MudExFileManagerClient @ref="ComponentRef" PopoutUrl="/popout.html" Height="@("65vh")" />
+<MudExFileManagerClient @ref="ComponentRef" Height="@("65vh")" />
 
 ```

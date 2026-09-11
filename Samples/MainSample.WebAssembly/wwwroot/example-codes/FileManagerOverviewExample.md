@@ -4,7 +4,6 @@
 
 <MudExFileManager @ref="ComponentRef"
                   Manager="@_structure"
-                  PopoutUrl="/popout.html"
                   Height="@("70vh")"
                   OnFileOpened="@(node => _lastOpened = node.Name)" />
 

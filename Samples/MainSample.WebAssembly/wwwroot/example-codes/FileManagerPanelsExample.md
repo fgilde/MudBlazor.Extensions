@@ -43,7 +43,6 @@
 <MudExFileManager @key="@($"{_panels}-{_treeShowsFiles}-{_treePanelViewMode}")"
                   @ref="ComponentRef"
                   Manager="@_structure"
-                  PopoutUrl="/popout.html"
                   Panels="@_panels"
                   TreeShowsFiles="@_treeShowsFiles"
                   TreePanelViewMode="@_treePanelViewMode"
