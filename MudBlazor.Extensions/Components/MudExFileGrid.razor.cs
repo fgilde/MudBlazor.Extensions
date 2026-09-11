@@ -97,7 +97,13 @@ public partial class MudExFileGrid : MudExBaseComponent<MudExFileGrid>
     [Parameter, SafeCategory("Behavior")]
     public bool Virtualize { get; set; }
 
-    /// <summary>Renders an entry. The default renders an icon, the name and, in details view, its columns.</summary>
+        /// <summary>
+    /// Rendered instead of the icon of a tile, for a real preview of the entry rather than a symbol.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public RenderFragment<MudExFileStructureNode> PreviewTemplate { get; set; }
+
+/// <summary>Renders an entry. The default renders an icon, the name and, in details view, its columns.</summary>
     [Parameter] public RenderFragment<MudExFileStructureNode> ItemTemplate { get; set; }
 
     /// <summary>Additional entries for the context menu, rendered below the built-in ones.</summary>

@@ -33,6 +33,12 @@ public class ExampleBase : ComponentBase, IExample
     [Parameter]
     public string[] AdditionalCodeFiles { get; set; }
 
+    /// <summary>
+    /// Set by examples that replace their component instead of re-rendering it (a keyed rebuild), so the
+    /// instance editor offers the live one rather than a growing list of disposed ones.
+    /// </summary>
+    protected bool ReplacesComponentRef { get; set; }
+
     public IComponent? ComponentRef
     {
         get => field;
@@ -41,6 +47,8 @@ public class ExampleBase : ComponentBase, IExample
             field = value;
             if (value != null)
             {
+                if (ReplacesComponentRef)
+                    _componentRefs.Clear();
                 _componentRefs.Add(value);
                 ComponentRefSet?.Invoke(value);
             }

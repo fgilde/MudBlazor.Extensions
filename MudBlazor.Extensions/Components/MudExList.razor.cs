@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
@@ -40,7 +41,6 @@ public partial class MudExList<T> : IDisposable
     #region Parameters, Fields, Injected Services
 
     [Inject] IKeyInterceptorService KeyInterceptorService { get; set; }
-    [Inject] IScrollManager ScrollManagerExtended { get; set; }
 
     // Fields used in more than one place (or protected and internal ones) are shown here.
     // Others are next to the relevant parameters. (Like _selectedValue)
@@ -1556,7 +1556,9 @@ public partial class MudExList<T> : IDisposable
     /// </summary>
     protected internal ValueTask ScrollToMiddleAsync(MudExListItem<T> item)
     {
-        return ScrollManagerExtended.ScrollIntoViewAsync($"#{item.ItemId}", ScrollBehavior.Auto);
+        // Only the list itself scrolls. The shared scroll manager uses scrollIntoView, which walks every
+        // scrollable ancestor up to the document - a list inside a popover then takes the whole page with it.
+        return JsRuntime.InvokeVoidAsync("MudExDomHelper.scrollIntoContainer", $"#{item.ItemId}");
     }
 
     /// <summary>

@@ -4773,6 +4773,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.Virtualize">
             <summary>Virtualizes the entries. Worth it from a few hundred on.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.PreviewTemplate">
+            <summary>
+            Rendered instead of the icon of a tile, for a real preview of the entry rather than a symbol.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileGrid.ItemTemplate">
             <summary>Renders an entry. The default renders an icon, the name and, in details view, its columns.</summary>
         </member>
@@ -5147,6 +5152,22 @@
             Shows what the preview's <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> reports - a handover, not a second collection.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManager.ShowsContentPreviews">
+            <summary>Whether the file area renders real content instead of icons for the level it shows.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.ContentPreviewOf(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode)">
+            <summary>What a tile renders for an entry, or null when there is nothing to show but an icon.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileManager.EnsureContentPreviewsAsync">
+            <summary>
+            Reads the head of every file of the current level, so the tiles can show the file itself: the picture
+            for an image, the first lines for anything textual, an icon for the rest.
+            </summary>
+            <remarks>
+            Only the head is read and nothing is kept open - a thumbnail is a glance, not a viewer, and a level of
+            entries must not cost a stream each. <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.MaxContentPreviews"/> caps how many are read at all.
+            </remarks>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileManager.DisposeAsync">
             <inheritdoc />
         </member>
@@ -5202,6 +5223,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.AllowPopout">
             <summary>Allows the user to pop a panel out into its own window.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.PopoutUrl">
+            <summary>
+            The page a popped out panel opens. Hosts that do not serve the library's static assets point this at
+            their own copy of it.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileManagerClient.Height">
             <summary>Height of the whole component.</summary>
@@ -5294,6 +5321,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.AllowPopout">
             <summary>Allows the user to pop a panel out into its own window.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.PopoutUrl">
+            <summary>
+            The page a popped out panel opens. Hosts that do not serve the library's static assets point this at
+            their own copy of it.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileManagerServer.Height">
             <summary>Height of the whole component.</summary>
@@ -20179,10 +20212,28 @@
         </member>
         <member name="F:MudBlazor.Extensions.Core.FileManager.MudExFileManagerPreviewContent.Content">
             <summary>
-            The real file content, rendered with <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> per entry. Expensive:
-            every entry costs a viewer and a stream, and some viewers start WebGL or fetch a library from a CDN.
-            Capped by <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.MaxContentPreviews"/>.
+            The file itself: the picture for an image, the first lines for anything textual, an icon for the rest.
+            Costs one read per entry, so it is capped by
+            <see cref="P:MudBlazor.Extensions.Components.MudExFileManager.MaxContentPreviews"/>.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.FileManager.MudExFileManagerThumbnail">
+            <summary>
+            What a file area tile shows of a file: the picture itself, or the first lines of its text.
+            </summary>
+            <remarks>
+            A thumbnail is a glance at the file, not a viewer. Reading only the head keeps a level of entries cheap,
+            and anything that is neither an image nor text simply keeps its icon.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.MudExFileManagerThumbnail.DataUrl">
+            <summary>The image itself, ready for an img tag.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.FileManager.MudExFileManagerThumbnail.Text">
+            <summary>The beginning of the file's text.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.FileManager.MudExFileManagerThumbnail.ReadAsync(System.IO.Stream,System.String,System.String)">
+            <summary>Reads the head of a file and turns it into what a tile can show, or null for neither.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode">
             <summary>

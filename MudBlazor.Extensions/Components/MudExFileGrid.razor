@@ -40,6 +40,23 @@
         border: 1px solid transparent;
     }
 
+    .mud-ex-file-grid-preview {
+        width: 100%;
+        height: 72px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        border-radius: 4px;
+        background-color: var(--mud-palette-background-grey);
+    }
+
+    .mud-ex-file-grid-preview > * {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
     .mud-ex-file-grid-rows {
         display: table;
         width: 100%;
@@ -101,6 +118,13 @@
 
     .mud-ex-file-grid-selected,
     .mud-ex-file-grid-selected:hover {
+        background-color: var(--mud-palette-primary-hover);
+        border-color: var(--mud-palette-primary);
+    }
+
+    /* What the rubber band currently covers - set from the browser while dragging, so the user sees the
+       selection grow instead of finding out when they let go. */
+    .mud-ex-file-grid-band-hit {
         background-color: var(--mud-palette-primary-hover);
         border-color: var(--mud-palette-primary);
     }
@@ -284,7 +308,15 @@
           @ondrop="@(() => DropAsync(node))"
           @ondrop:preventDefault="@AllowDragDrop"
           @ondrop:stopPropagation="@AllowDragDrop">
-        <MudExIcon Icon="@node.Icon" Color="@node.Color" Size="Size.Large" />
+        @if (PreviewTemplate != null)
+        {
+            @* pointer-events off: the preview is a picture of the file, the tile stays the click target *@
+            <div class="mud-ex-file-grid-preview">@PreviewTemplate(node)</div>
+        }
+        else
+        {
+            <MudExIcon Icon="@node.Icon" Color="@node.Color" Size="Size.Large" />
+        }
         @Label(node)
         @if (!node.IsDirectory)
         {

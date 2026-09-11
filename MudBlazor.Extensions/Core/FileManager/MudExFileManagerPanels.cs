@@ -1,4 +1,4 @@
-namespace MudBlazor.Extensions.Core.FileManager;
+﻿namespace MudBlazor.Extensions.Core.FileManager;
 
 /// <summary>
 /// The panels a <see cref="Components.MudExFileManager"/> shows.
@@ -40,9 +40,9 @@ public enum MudExFileManagerPreviewContent
     Icon,
 
     /// <summary>
-    /// The real file content, rendered with <see cref="Components.MudExFileDisplay"/> per entry. Expensive:
-    /// every entry costs a viewer and a stream, and some viewers start WebGL or fetch a library from a CDN.
-    /// Capped by <see cref="Components.MudExFileManager.MaxContentPreviews"/>.
+    /// The file itself: the picture for an image, the first lines for anything textual, an icon for the rest.
+    /// Costs one read per entry, so it is capped by
+    /// <see cref="Components.MudExFileManager.MaxContentPreviews"/>.
     /// </summary>
     Content
 }

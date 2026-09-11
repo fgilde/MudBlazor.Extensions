@@ -1,0 +1,107 @@
+<div class="html"><pre>
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Core.Enums
+@using MudBlazor.Extensions.Core.FileManager
+@using MudBlazor.Extensions.Services
+@inherits ExampleBase
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudGrid</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSelect</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;MudExFileManagerPanels&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Panels&quot;]&quot;</span> <span class="htmlAttributeName">Value</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;_panels&quot;</span> <span class="htmlAttributeName">ValueChanged</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@SetPanels&quot;</span>
+                   <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Outlined&quot;</span> <span class="htmlAttributeName">Margin</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Margin.Dense&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+            @foreach (var preset in PanelPresets)
+            {
+                <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSelectItem</span> <span class="htmlAttributeName">Value</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@preset.Value&quot;</span><span class="htmlTagDelimiter">&gt;</span>@preset.Label<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudSelectItem</span><span class="htmlTagDelimiter">&gt;</span>
+            }
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudSelect</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">sm</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExEnumSelect</span> <span class="htmlAttributeName">TEnum</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;TreeViewMode&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Tree view mode&quot;]&quot;</span> <span class="htmlAttributeName">Value</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;_treePanelViewMode&quot;</span>
+                         <span class="htmlAttributeName">ValueChanged</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@((TreeViewMode m) =&gt; Rebuild(() =&gt; _treePanelViewMode = m))&quot;</span>
+                         <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Outlined&quot;</span> <span class="htmlAttributeName">Margin</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Margin.Dense&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">sm</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExEnumSelect</span> <span class="htmlAttributeName">TEnum</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;MudExFileGridView&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;File view&quot;]&quot; @bind-Value=&quot;_fileGridView&quot;</span>
+                         <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Outlined&quot;</span> <span class="htmlAttributeName">Margin</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Margin.Dense&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">sm</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;MudExEnumSelect TEnum=&quot;MudExFileManagerPreviewContent&quot; Label=&quot;@L[&quot;Entry rendering&quot;]&quot;
+                         @bind-Value=&quot;_previewContent&quot; Variant=&quot;Variant.Outlined&quot; Margin=&quot;Margin.Dense&quot; /&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">sm</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot;</span> <span class="htmlAttributeName">Value</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;_treeShowsFiles&quot;</span> <span class="htmlAttributeName">ValueChanged</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@((bool v) =&gt; Rebuild(() =&gt; _treeShowsFiles = v))&quot;</span>
+                   <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Files in the tree&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">sm</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;2&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_restrictUploads&quot;</span>
+                   <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Restrict uploads&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
+
+@* The key forces a fresh component when the panel set changes: the dock adopts the rendered nodes and reads
+   its layout once, so a changed panel set needs a new instance rather than a re-render. *@
+&lt;MudExFileManager @key=&quot;@($&quot;{_panels}-{_treeShowsFiles}-{_treePanelViewMode}&quot;)&quot;
+                  @ref=&quot;ComponentRef&quot;
+                  Manager=&quot;@_structure&quot;
+                  PopoutUrl=&quot;/popout.html&quot;
+                  Panels=&quot;@_panels&quot;
+                  TreeShowsFiles=&quot;@_treeShowsFiles&quot;
+                  TreePanelViewMode=&quot;@_treePanelViewMode&quot;
+                  FileGridView=&quot;@_fileGridView&quot;
+                  FilePreviewContent=&quot;@_previewContent&quot;
+                  Restrictions=&quot;@(_restrictUploads ? UploadRestrictions : null)&quot;
+                  Height=&quot;@(&quot;65vh&quot;)&quot; /&gt;
+
+@code {
+    private MudExInMemoryFileStructureManager _structure;
+    private MudExFileManagerPanels _panels = MudExFileManagerPanels.All;
+    private TreeViewMode _treePanelViewMode = TreeViewMode.Default;
+    private MudExFileGridView _fileGridView = MudExFileGridView.Tiles;
+    private MudExFileManagerPreviewContent _previewContent = MudExFileManagerPreviewContent.Icon;
+    private bool _treeShowsFiles;
+    private bool _restrictUploads;
+
+    // The same rules for the upload dialog and for a file dropped straight onto a folder.
+    private static readonly MudExFileRestrictions UploadRestrictions = new()
+    {
+        Extensions = new[] { &quot;exe&quot;, &quot;bat&quot;, &quot;dll&quot; },
+        ExtensionRestrictionType = RestrictionType.BlackList,
+        MaxFileSize = 5 * 1024 * 1024
+    };
+
+    private record PanelPreset(string Label, MudExFileManagerPanels Value);
+
+    private static readonly PanelPreset[] PanelPresets =
+    {
+        new(&quot;All - tree, files, preview, details&quot;, MudExFileManagerPanels.All),
+        new(&quot;Tree and files&quot;, MudExFileManagerPanels.Tree | MudExFileManagerPanels.Files),
+        new(&quot;Tree and preview - no file area&quot;, MudExFileManagerPanels.Tree | MudExFileManagerPanels.Preview),
+        new(&quot;Files and preview - no tree&quot;, MudExFileManagerPanels.Files | MudExFileManagerPanels.Preview),
+        new(&quot;Files only&quot;, MudExFileManagerPanels.Files),
+        new(&quot;Tree only&quot;, MudExFileManagerPanels.Tree)
+    };
+
+    protected override void OnInitialized()
+    {
+        // A keyed rebuild replaces the component, so the instance editor must not keep the dead ones.
+        ReplacesComponentRef = true;
+        _structure = DemoFileStructure.Build();
+    }
+
+    private void SetPanels(MudExFileManagerPanels panels) =&gt; Rebuild(() =&gt;
+    {
+        _panels = panels;
+
+        // A tree with no file area beside it has to list the files too, otherwise there is nothing to select.
+        if (!panels.HasFlag(MudExFileManagerPanels.Files))
+            _treeShowsFiles = true;
+    });
+
+    private void Rebuild(Action change)
+    {
+        change();
+        StateHasChanged();
+    }
+}
+
+</pre></div>

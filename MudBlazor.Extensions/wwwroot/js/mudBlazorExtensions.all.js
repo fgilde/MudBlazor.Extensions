@@ -1315,6 +1315,36 @@ class MudExDomHelper {
         return result ? result.focusDelayed(delay) : null;
     }
 
+    /** The scrollable ancestor of an element, the document excluded. */
+    static scrollParent(element) {
+        for (let parent = element?.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
+            const overflow = getComputedStyle(parent).overflowY;
+            if (/(auto|scroll|overlay)/.test(overflow) && parent.scrollHeight > parent.clientHeight) {
+                return parent;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Brings an element into view INSIDE its own scroll container. scrollIntoView walks every scrollable
+     * ancestor including the document, so an element in a popover - rendered far outside the viewport until
+     * it is positioned - drags the whole page along. Without a scrollable container this does nothing.
+     */
+    static scrollIntoContainer(selectorOrElement, center = true) {
+        const element = MudExDomHelper.ensureElement(selectorOrElement);
+        const container = MudExDomHelper.scrollParent(element);
+        if (!element || !container) {
+            return false;
+        }
+
+        const offset = element.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop;
+        container.scrollTop = center
+            ? offset - Math.max(0, (container.clientHeight - element.offsetHeight) / 2)
+            : offset;
+        return true;
+    }
+
     static ensureElement(selectorOrElement) {
         return typeof selectorOrElement === 'string' ?
             document.querySelector(selectorOrElement) : selectorOrElement;
@@ -1719,10 +1749,16 @@ window.MudExFileGridSelection = {
         let startX = 0;
         let startY = 0;
         let additive = false;
+        let started = false;
+        let hit = [];
+
+        // Below this a drag is a click, and a band flashing up on every click looks broken.
+        const THRESHOLD = 4;
 
         function itemRects() {
             return Array.from(container.querySelectorAll('[data-file-grid-key]')).map(el => ({
                 key: el.getAttribute('data-file-grid-key'),
+                element: el,
                 rect: el.getBoundingClientRect()
             }));
         }
@@ -1756,42 +1792,90 @@ window.MudExFileGridSelection = {
             band.style.height = '0';
             band.style.pointerEvents = 'none';
             band.style.zIndex = '10';
+            band.style.visibility = 'hidden';
             document.body.appendChild(band);
 
+            started = false;
+            hit = [];
             container.setPointerCapture?.(e.pointerId);
             window.addEventListener('pointermove', onPointerMove);
             window.addEventListener('pointerup', onPointerUp);
+            window.addEventListener('pointercancel', cancel);
+            window.addEventListener('keydown', onKeyDown);
+        }
+
+        function markTouched() {
+            const box = bandRect();
+            hit = [];
+            for (const item of itemRects()) {
+                const touched = intersects(box, item.rect);
+                if (touched) {
+                    hit.push(item.key);
+                }
+                item.element.classList.toggle('mud-ex-file-grid-band-hit', touched);
+            }
+        }
+
+        function clearMarks() {
+            for (const element of container.querySelectorAll('.mud-ex-file-grid-band-hit')) {
+                element.classList.remove('mud-ex-file-grid-band-hit');
+            }
         }
 
         function onPointerMove(e) {
             if (!band) {
                 return;
             }
+
+            if (!started && Math.abs(e.clientX - startX) < THRESHOLD && Math.abs(e.clientY - startY) < THRESHOLD) {
+                return;
+            }
+
+            // Showing the band only once the pointer really moved keeps a plain click quiet.
+            started = true;
+            band.style.visibility = 'visible';
             autoScroll(e.clientY);
             band.style.left = Math.min(startX, e.clientX) + 'px';
             band.style.top = Math.min(startY, e.clientY) + 'px';
             band.style.width = Math.abs(e.clientX - startX) + 'px';
             band.style.height = Math.abs(e.clientY - startY) + 'px';
+
+            // The user sees what the rectangle covers while dragging, the way a file explorer does. Marking
+            // happens here in the browser; .NET only hears the result once, at the end.
+            markTouched();
+        }
+
+        function onKeyDown(e) {
+            if (e.key === 'Escape' && band) {
+                cancel();
+            }
+        }
+
+        function cancel() {
+            window.removeEventListener('pointermove', onPointerMove);
+            window.removeEventListener('pointerup', onPointerUp);
+            window.removeEventListener('pointercancel', cancel);
+            window.removeEventListener('keydown', onKeyDown);
+            stopAutoScroll();
+            clearMarks();
+            band?.remove();
+            band = null;
+            started = false;
+            hit = [];
         }
 
         async function onPointerUp() {
-            window.removeEventListener('pointermove', onPointerMove);
-            window.removeEventListener('pointerup', onPointerUp);
-            stopAutoScroll();
-            if (!band) {
-                return;
-            }
+            const moved = started;
+            const touched = hit.slice();
+            cancel();
 
-            const box = bandRect();
-            const touched = itemRects().filter(i => intersects(box, i.rect)).map(i => i.key);
-
-            band.remove();
-            band = null;
-
-            // A click without movement is not a band - let the normal click handling deal with it.
-            const moved = box.right - box.left > 3 || box.bottom - box.top > 3;
             if (moved) {
                 await dotnet.invokeMethodAsync('RubberBandSelected', touched, additive);
+            } else if (!additive) {
+                // A press on the free space that did not turn into a drag drops the selection, the way a file
+                // explorer behaves. The dock renders an overlay over the panel, so a plain click handler in
+                // .NET never sees this - the pointer does.
+                await dotnet.invokeMethodAsync('RubberBandSelected', [], false);
             }
         }
 
@@ -1801,6 +1885,7 @@ window.MudExFileGridSelection = {
 
         return {
             dispose: () => {
+                cancel();
                 container.removeEventListener('pointerdown', onPointerDown);
                 container.removeEventListener('dragover', onDragOver);
                 container.removeEventListener('dragleave', onDragLeave);

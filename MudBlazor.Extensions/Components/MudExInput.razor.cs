@@ -189,7 +189,10 @@ namespace MudBlazor.Extensions.Components
         /// </summary>
         public override async ValueTask FocusAsync()
         {
-            await ElementReference.FocusAsync();
+            // preventScroll, because focusing an element the browser thinks is off screen scrolls the page to
+            // it. A popover is rendered far outside the viewport until it is positioned, so an autofocused
+            // search box inside one made the whole page jump to the top when the dropdown opened.
+            await ElementReference.FocusAsync(preventScroll: true);
             return; // TODO: #136
             try
             {

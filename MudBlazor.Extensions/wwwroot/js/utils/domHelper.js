@@ -123,6 +123,36 @@
         return result ? result.focusDelayed(delay) : null;
     }
 
+    /** The scrollable ancestor of an element, the document excluded. */
+    static scrollParent(element) {
+        for (let parent = element?.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
+            const overflow = getComputedStyle(parent).overflowY;
+            if (/(auto|scroll|overlay)/.test(overflow) && parent.scrollHeight > parent.clientHeight) {
+                return parent;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Brings an element into view INSIDE its own scroll container. scrollIntoView walks every scrollable
+     * ancestor including the document, so an element in a popover - rendered far outside the viewport until
+     * it is positioned - drags the whole page along. Without a scrollable container this does nothing.
+     */
+    static scrollIntoContainer(selectorOrElement, center = true) {
+        const element = MudExDomHelper.ensureElement(selectorOrElement);
+        const container = MudExDomHelper.scrollParent(element);
+        if (!element || !container) {
+            return false;
+        }
+
+        const offset = element.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop;
+        container.scrollTop = center
+            ? offset - Math.max(0, (container.clientHeight - element.offsetHeight) / 2)
+            : offset;
+        return true;
+    }
+
     static ensureElement(selectorOrElement) {
         return typeof selectorOrElement === 'string' ?
             document.querySelector(selectorOrElement) : selectorOrElement;

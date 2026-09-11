@@ -1,0 +1,23 @@
+<div class="html"><pre>
+@using MudBlazor.Extensions.Services
+@inherits ExampleBase
+
+&lt;MudExFileManager @ref=&quot;ComponentRef&quot;
+                  Manager=&quot;@_structure&quot;
+                  PopoutUrl=&quot;/popout.html&quot;
+                  Height=&quot;@(&quot;70vh&quot;)&quot;
+                  OnFileOpened=&quot;@(node =&gt; _lastOpened = node.Name)&quot; /&gt;
+
+@if (!string.IsNullOrEmpty(_lastOpened))
+{
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudAlert</span> <span class="htmlAttributeName">Severity</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Severity.Info&quot;</span> <span class="htmlAttributeName">Dense</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mt-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Opened: {0}&quot;, _lastOpened]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudAlert</span><span class="htmlTagDelimiter">&gt;</span>
+}
+
+@code {
+    private MudExInMemoryFileStructureManager _structure;
+    private string _lastOpened;
+
+    protected override void OnInitialized() =&gt; _structure = DemoFileStructure.Build();
+}
+
+</pre></div>

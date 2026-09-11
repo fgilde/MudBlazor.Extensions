@@ -72,6 +72,27 @@
         border-radius: 4px;
     }
 
+    .mud-ex-fm-thumb-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .mud-ex-fm-thumb-text {
+        margin: 0;
+        padding: 4px 6px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-size: 8px;
+        line-height: 1.25;
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: var(--mud-palette-text-secondary);
+        text-align: left;
+    }
+
     .mud-ex-fm-preview {
         flex: 1 1 auto;
         min-height: 0;
@@ -345,9 +366,31 @@
                            OnDeleteRequested="@DeleteAsync"
                            OnMoveRequested="@(request => MoveAsync(request.Nodes, request.Target ?? CurrentDirectory))"
                            OnExternalFilesDropped="@(request => UploadFilesAsync(request.Target ?? CurrentDirectory, request.Files))"
-                           ItemTemplate="@FileItemTemplate" />
+                           ItemTemplate="@FileItemTemplate"
+                           PreviewTemplate="@(ShowsContentPreviews ? ContentPreview : null)" />
         }
     </div>;
+
+    @* A tile that shows the file itself: the picture for an image, the first lines for text, an icon for
+       anything else. *@
+    private RenderFragment ContentPreview(MudExFileStructureNode node) =>
+    @<RenderChild>
+        @{
+            var thumbnail = ContentPreviewOf(node);
+        }
+        @if (thumbnail?.DataUrl is { Length: > 0 } url)
+        {
+            <img src="@url" alt="@node.Name" class="mud-ex-fm-thumb-image" />
+        }
+        else if (thumbnail?.Text is { Length: > 0 } text)
+        {
+            <pre class="mud-ex-fm-thumb-text">@text</pre>
+        }
+        else
+        {
+            <MudExIcon Icon="@node.Icon" Color="@node.Color" Size="Size.Large" />
+        }
+    </RenderChild>;
 
     private RenderFragment PreviewPanel() =>
     @<div class="mud-ex-fm-panel">

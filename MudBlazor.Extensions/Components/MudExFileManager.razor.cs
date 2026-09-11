@@ -31,6 +31,7 @@ public partial class MudExFileManager
     private readonly List<MudExFileStructureNode> _selectedNodes = new();
     private IDictionary<string, object> _selectedMeta;
     private Stream _previewStream;
+    private readonly Dictionary<string, MudExFileManagerThumbnail> _contentPreviews = new(StringComparer.Ordinal);
     private long? _previewLength;
     private MudExDockLayout _dock;
     private MudExFileGrid _grid;
@@ -213,6 +214,7 @@ public partial class MudExFileManager
         _selectedMeta = null;
         DisposePreviewStream();
         await LoadRootAsync();
+        await EnsureContentPreviewsAsync();
         StateHasChanged();
     }
 
@@ -249,6 +251,7 @@ public partial class MudExFileManager
     {
         await base.OnInitializedAsync();
         await LoadRootAsync();
+        await EnsureContentPreviewsAsync();
     }
 
     private async Task LoadRootAsync()
@@ -334,6 +337,7 @@ public partial class MudExFileManager
         if (node != null)
             await EnsureChildrenLoadedAsync(node);
 
+        await EnsureContentPreviewsAsync();
         await CurrentDirectoryChanged.InvokeAsync(node);
         await RaiseSelectionChangedAsync();
         StateHasChanged();
@@ -434,10 +438,52 @@ public partial class MudExFileManager
         StateHasChanged();
     }
 
-    private bool ShouldRenderContentPreview(MudExFileStructureNode node)
+    /// <summary>Whether the file area renders real content instead of icons for the level it shows.</summary>
+    private bool ShowsContentPreviews
         => FilePreviewContent == MudExFileManagerPreviewContent.Content
-           && !node.IsDirectory
            && CurrentEntries.Count <= MaxContentPreviews;
+
+    /// <summary>What a tile renders for an entry, or null when there is nothing to show but an icon.</summary>
+    private MudExFileManagerThumbnail ContentPreviewOf(MudExFileStructureNode node)
+        => node is { IsDirectory: false } && _contentPreviews.TryGetValue(node.FullPath ?? string.Empty, out var preview)
+            ? preview
+            : null;
+
+    /// <summary>
+    /// Reads the head of every file of the current level, so the tiles can show the file itself: the picture
+    /// for an image, the first lines for anything textual, an icon for the rest.
+    /// </summary>
+    /// <remarks>
+    /// Only the head is read and nothing is kept open - a thumbnail is a glance, not a viewer, and a level of
+    /// entries must not cost a stream each. <see cref="MaxContentPreviews"/> caps how many are read at all.
+    /// </remarks>
+    private async Task EnsureContentPreviewsAsync()
+    {
+        DisposeContentPreviews();
+
+        if (!ShowsContentPreviews || Manager == null)
+            return;
+
+        foreach (var node in CurrentEntries.Where(n => n is { IsDirectory: false, Size: > 0 }))
+        {
+            try
+            {
+                await using var stream = await Manager.OpenReadAsync(node);
+                if (stream == null)
+                    continue;
+
+                var thumbnail = await MudExFileManagerThumbnail.ReadAsync(stream, node.ContentType, node.Name);
+                if (thumbnail != null)
+                    _contentPreviews[node.FullPath ?? string.Empty] = thumbnail;
+            }
+            catch (Exception)
+            {
+                // An entry a provider refuses simply keeps its icon.
+            }
+        }
+    }
+
+    private void DisposeContentPreviews() => _contentPreviews.Clear();
 
     private void DisposePreviewStream()
     {
@@ -449,6 +495,7 @@ public partial class MudExFileManager
     /// <inheritdoc />
     public override ValueTask DisposeAsync()
     {
+        DisposeContentPreviews();
         DisposePreviewStream();
         return base.DisposeAsync();
     }

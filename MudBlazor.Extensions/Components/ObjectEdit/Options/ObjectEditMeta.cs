@@ -97,17 +97,20 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
         return _propertyInfoCache.GetOrAdd((type, BindingFlags), key => key.Item1.GetProperties(key.Item2));
     }
 
-    private IEnumerable<ObjectEditPropertyMeta> GetProperties(Type type, object value, ObjectEditMeta owner = null)
+    private IEnumerable<ObjectEditPropertyMeta> GetProperties(Type type, object value, ObjectEditMeta owner = null, IReadOnlyCollection<Type> ancestors = null)
     {
         var res = new List<ObjectEditPropertyMeta>();
         var actualType = value?.GetType() ?? type;
+        // A type that already sits on this path leads back to itself - a node with a Parent of its own type is
+        // the common case - and descending into it again never ends.
+        var path = ancestors == null ? new List<Type> { actualType } : new List<Type>(ancestors) { actualType };
         foreach (var propertyInfo in GetCachedPropertyInfos(actualType).Where(ShouldResolve))
         {
             try
             {
                 var t = propertyInfo.PropertyType;
                 var editPropertyMeta = new ObjectEditPropertyMetaOf<T>(owner ?? this, propertyInfo, value);
-                if (IsEditableSubObject(t)) // object in object
+                if (IsEditableSubObject(t) && !path.Contains(t)) // object in object
                 {
                     var reference = Check.TryCatch<object, Exception>(() => propertyInfo.GetValue(value));
                     reference ??= Check.TryCatch<object, Exception>(() =>
@@ -119,7 +122,7 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
                     if(reference != null) {
                         var instance = ((ObjectEditMeta)Activator.CreateInstance(typeof(ObjectEditMeta<>).MakeGenericType(t), reference)).SetProperties(m => m.Parent = owner ?? this);
                         var groupName = editPropertyMeta.Settings.LabelFor(null);
-                        editPropertyMeta.Children.AddRange(GetProperties(t, reference, instance).Apply(meta => meta.WithGroup(groupName).Parent = editPropertyMeta));
+                        editPropertyMeta.Children.AddRange(GetProperties(t, reference, instance, path).Apply(meta => meta.WithGroup(groupName).Parent = editPropertyMeta));
                     }
                 }
                 res.Add(editPropertyMeta);

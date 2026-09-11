@@ -1,0 +1,107 @@
+```razor
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Core.Enums
+@using MudBlazor.Extensions.Core.FileManager
+@using MudBlazor.Extensions.Services
+@inherits ExampleBase
+
+<MudGrid Class="mb-3">
+    <MudItem xs="12" md="4">
+        <MudSelect T="MudExFileManagerPanels" Label="@L["Panels"]" Value="_panels" ValueChanged="@SetPanels"
+                   Variant="Variant.Outlined" Margin="Margin.Dense">
+            @foreach (var preset in PanelPresets)
+            {
+                <MudSelectItem Value="@preset.Value">@preset.Label</MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="2">
+        <MudExEnumSelect TEnum="TreeViewMode" Label="@L["Tree view mode"]" Value="_treePanelViewMode"
+                         ValueChanged="@((TreeViewMode m) => Rebuild(() => _treePanelViewMode = m))"
+                         Variant="Variant.Outlined" Margin="Margin.Dense" />
+    </MudItem>
+    <MudItem xs="12" sm="6" md="2">
+        <MudExEnumSelect TEnum="MudExFileGridView" Label="@L["File view"]" @bind-Value="_fileGridView"
+                         Variant="Variant.Outlined" Margin="Margin.Dense" />
+    </MudItem>
+    <MudItem xs="12" sm="6" md="2">
+        <MudExEnumSelect TEnum="MudExFileManagerPreviewContent" Label="@L["Entry rendering"]"
+                         @bind-Value="_previewContent" Variant="Variant.Outlined" Margin="Margin.Dense" />
+    </MudItem>
+    <MudItem xs="12" sm="6" md="2">
+        <MudSwitch T="bool" Value="_treeShowsFiles" ValueChanged="@((bool v) => Rebuild(() => _treeShowsFiles = v))"
+                   Color="Color.Primary" Label="@L["Files in the tree"]" />
+    </MudItem>
+    <MudItem xs="12" sm="6" md="2">
+        <MudSwitch T="bool" @bind-Value="_restrictUploads"
+                   Color="Color.Primary" Label="@L["Restrict uploads"]" />
+    </MudItem>
+</MudGrid>
+
+@* The key forces a fresh component when the panel set changes: the dock adopts the rendered nodes and reads
+   its layout once, so a changed panel set needs a new instance rather than a re-render. *@
+<MudExFileManager @key="@($"{_panels}-{_treeShowsFiles}-{_treePanelViewMode}")"
+                  @ref="ComponentRef"
+                  Manager="@_structure"
+                  PopoutUrl="/popout.html"
+                  Panels="@_panels"
+                  TreeShowsFiles="@_treeShowsFiles"
+                  TreePanelViewMode="@_treePanelViewMode"
+                  FileGridView="@_fileGridView"
+                  FilePreviewContent="@_previewContent"
+                  Restrictions="@(_restrictUploads ? UploadRestrictions : null)"
+                  Height="@("65vh")" />
+
+@code {
+    private MudExInMemoryFileStructureManager _structure;
+    private MudExFileManagerPanels _panels = MudExFileManagerPanels.All;
+    private TreeViewMode _treePanelViewMode = TreeViewMode.Default;
+    private MudExFileGridView _fileGridView = MudExFileGridView.Tiles;
+    private MudExFileManagerPreviewContent _previewContent = MudExFileManagerPreviewContent.Icon;
+    private bool _treeShowsFiles;
+    private bool _restrictUploads;
+
+    // The same rules for the upload dialog and for a file dropped straight onto a folder.
+    private static readonly MudExFileRestrictions UploadRestrictions = new()
+    {
+        Extensions = new[] { "exe", "bat", "dll" },
+        ExtensionRestrictionType = RestrictionType.BlackList,
+        MaxFileSize = 5 * 1024 * 1024
+    };
+
+    private record PanelPreset(string Label, MudExFileManagerPanels Value);
+
+    private static readonly PanelPreset[] PanelPresets =
+    {
+        new("All - tree, files, preview, details", MudExFileManagerPanels.All),
+        new("Tree and files", MudExFileManagerPanels.Tree | MudExFileManagerPanels.Files),
+        new("Tree and preview - no file area", MudExFileManagerPanels.Tree | MudExFileManagerPanels.Preview),
+        new("Files and preview - no tree", MudExFileManagerPanels.Files | MudExFileManagerPanels.Preview),
+        new("Files only", MudExFileManagerPanels.Files),
+        new("Tree only", MudExFileManagerPanels.Tree)
+    };
+
+    protected override void OnInitialized()
+    {
+        // A keyed rebuild replaces the component, so the instance editor must not keep the dead ones.
+        ReplacesComponentRef = true;
+        _structure = DemoFileStructure.Build();
+    }
+
+    private void SetPanels(MudExFileManagerPanels panels) => Rebuild(() =>
+    {
+        _panels = panels;
+
+        // A tree with no file area beside it has to list the files too, otherwise there is nothing to select.
+        if (!panels.HasFlag(MudExFileManagerPanels.Files))
+            _treeShowsFiles = true;
+    });
+
+    private void Rebuild(Action change)
+    {
+        change();
+        StateHasChanged();
+    }
+}
+
+```
