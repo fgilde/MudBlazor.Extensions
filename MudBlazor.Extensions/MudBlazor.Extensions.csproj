@@ -273,4 +273,12 @@ catch (Exception ex)
     <WriteLinesToFile File="$(_OutProps)" Overwrite="true" Lines="&#xD;&#xA;&lt;Project&gt;&#xD;&#xA;  &lt;PropertyGroup&gt;&#xD;&#xA;    &lt;MudEx_PackageVersion&gt;$(PackageVersion)&lt;/MudEx_PackageVersion&gt;&#xD;&#xA;    &lt;MudEx_MajorVersion&gt;$(MajorVersion)&lt;/MudEx_MajorVersion&gt;&#xD;&#xA;    &lt;MudEx_MinorVersion&gt;$(MinorVersion)&lt;/MudEx_MinorVersion&gt;&#xD;&#xA;    &lt;MudBlazor_Version&gt;$(_MudBlazorVersion)&lt;/MudBlazor_Version&gt;&#xD;&#xA;  &lt;/PropertyGroup&gt;&#xD;&#xA;&lt;/Project&gt;" />
   </Target>
   
+
+  <PropertyGroup>
+    <!-- popout.html stays uncompressed for the same reason the sample excludes its static html: dotnet watch
+         and the debugger's browser refresh inflate an html response to inject their reload script and fail on
+         a compressed one - which leaves a popped out dock panel showing an error page instead of the panel. -->
+    <CompressionExcludePatterns>$(CompressionExcludePatterns);**/popout.html</CompressionExcludePatterns>
+  </PropertyGroup>
+
 </Project>

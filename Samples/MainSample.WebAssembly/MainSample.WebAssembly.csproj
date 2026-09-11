@@ -26,7 +26,7 @@
        stale whenever the bundle is republished - which makes dotnet watch fail while inflating the
        response to inject its reload script. Azure compresses these dynamically anyway (wc/web.config). -->
   <PropertyGroup>
-    <CompressionExcludePatterns>$(CompressionExcludePatterns);**/wc/**;**/webcomponents.html</CompressionExcludePatterns>
+    <CompressionExcludePatterns>$(CompressionExcludePatterns);**/wc/**;**/webcomponents.html;**/popout.html</CompressionExcludePatterns>
   </PropertyGroup>
 
   <ItemGroup>
