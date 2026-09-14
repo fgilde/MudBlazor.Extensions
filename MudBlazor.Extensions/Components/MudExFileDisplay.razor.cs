@@ -933,7 +933,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     }
 
     private Task Store(BoundingClientRect argRect)
-    {
+    { 
         if (argRect is { Left: > 0, Top: > 0, Width: > 0, Height: > 0 })
         {
             _lastInfoDialogLocation = (argRect.ToDimension(CssUnit.Percentage), argRect.ToPosition(CssUnit.Percentage));
