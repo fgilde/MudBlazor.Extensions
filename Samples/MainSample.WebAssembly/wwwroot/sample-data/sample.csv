@@ -1,0 +1,6 @@
+date;customer;country;quantity;unit price;total
+2026-01-04;Contoso;DE;16;115.00;1840.00
+2026-01-17;Fabrikam;AT;8;95.00;760.00
+2026-02-02;Nordwind;CH;5;120.00;600.00
+2026-02-11;Adventure Works;DE;3;450.00;1350.00
+2026-02-28;Tailspin Toys;NL;12;42.50;510.00

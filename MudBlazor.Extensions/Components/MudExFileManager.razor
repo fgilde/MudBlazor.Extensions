@@ -3,6 +3,7 @@
 @using MudBlazor.Extensions.Core.FileManager
 @using MudBlazor.Extensions.Core.Enums
 @using MudBlazor.Extensions.Components.ObjectEdit
+@using MudBlazor.Extensions.Core.Css
 
 <style>
     .mud-ex-fm {
@@ -428,6 +429,7 @@
             <div class="mud-ex-fm-preview">
                 <MudExFileDisplay FileName="@SelectedNode.Name"
                                   ContentType="@SelectedNode.ContentType"
+                                  Border="BorderStyle.None"
                                   ContentStream="@_previewStream"
                                   FileMetaInformationChanged="@OnPreviewMetaChanged"
                                   ColorizeIcons="true" Dense="true" />

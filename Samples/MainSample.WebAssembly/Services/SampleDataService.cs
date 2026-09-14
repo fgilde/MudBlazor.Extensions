@@ -51,6 +51,8 @@ public class SampleDataService
         yield return CreateSampleFile("sample.gpx", "application/gpx+xml");
         yield return CreateSampleFile("sample.geojson", "application/geo+json");
         yield return CreateSampleFile("sample.epub", "application/epub+zip");
+        yield return CreateSampleFile("sample.cs", "text/plain");
+        yield return CreateSampleFile("sample.csv", "text/csv");
         yield return CreateSampleFile("sample-xrechnung.xml", "application/xml");
         yield return CreateSampleFile("sample-factur-x.xml", "application/xml");
         yield return CreateSampleFile("sample-zugferd.pdf", "application/pdf");

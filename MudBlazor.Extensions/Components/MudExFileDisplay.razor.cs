@@ -16,6 +16,7 @@ using Nextended.Core.Helper;
 using MudBlazor.Interop;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using MudBlazor.Extensions.Core.Css;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -249,6 +250,13 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     [Parameter]
     [SafeCategory("Appearance")]
     public MudExColor IconColor { get; set; } = Color.Inherit;
+
+    /// <summary>
+    /// The frame drawn around the rendered file. 
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public BorderStyle Border { get; set; } = BorderStyle.Dashed;
+    
 
     /// <summary>
     /// Set to true to render a <see cref="MudExFileMetaView"/> with the file metadata inline, at the
@@ -960,5 +968,10 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             ErrorMessage = $"{message}";
             StateHasChanged();
         }
+    }
+
+    private string ViewerContentStyleStr()
+    {
+        return MudExStyleBuilder.Default.WithBorderStyle(Border).Style;
     }
 }

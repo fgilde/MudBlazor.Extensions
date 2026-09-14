@@ -3233,6 +3233,11 @@
             If true icons are colored
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.Border">
+            <summary>
+            The frame drawn around the rendered file. 
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ShowFileMeta">
             <summary>
             Set to true to render a <see cref="T:MudBlazor.Extensions.Components.MudExFileMetaView"/> with the file metadata inline, at the

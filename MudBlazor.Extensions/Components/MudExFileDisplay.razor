@@ -92,7 +92,7 @@
                         <MudText Typo="Typo.h3">@TryLocalize(StatusText)</MudText>
                     </MudOverlay>
 
-                    <div class="mud-ex-file-display">
+                    <div class="mud-ex-file-display" style="@ViewerContentStyleStr()">
                         <DynamicComponent @ref="_currentFileDisplay" Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters"/>
                     </div>
                 </CascadingValue>
@@ -105,7 +105,7 @@
         else
         {
             _isNativeRendered = true;
-            <div class="mud-ex-file-display">
+            <div class="mud-ex-file-display" style="@ViewerContentStyleStr()">
                 @if (renderInfos != null)
                 {
                     <MudElement UserAttributes="@renderInfos.Value.attributes" HtmlTag="@renderInfos.Value.tag" />
