@@ -442,7 +442,9 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         }
 
         if (ViewDependsOnContentType && _componentForFile == null)
-            _componentForFile = GetComponentForFile(_possibleRenderControls.FirstOrDefault(c => c.StartsActive && !ForceNativeRender));
+            _componentForFile = GetComponentForFile(_possibleRenderControls
+                .OrderByDescending(c => c.RenderPriority)
+                .FirstOrDefault(c => c.StartsActive && !ForceNativeRender));
         if (!_internalOverwrite)
             renderInfos = GetRenderInfos();
         await base.OnParametersSetAsync();

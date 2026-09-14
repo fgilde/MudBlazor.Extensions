@@ -9,6 +9,32 @@ namespace MainSample.WebAssembly.Examples.FileManager;
 /// </summary>
 public static class DemoFileStructure
 {
+    /// <summary>
+    /// Builds the structure and, when a http client is given, adds the sample invoices from wwwroot so the
+    /// file area has an XRechnung and a ZUGFeRD pdf to open.
+    /// </summary>
+    public static async Task<MudExInMemoryFileStructureManager> BuildAsync(HttpClient client, string baseUri)
+    {
+        var manager = Build();
+
+        foreach (var name in new[] { "sample-xrechnung.xml", "sample-factur-x.xml", "sample-zugferd.pdf" })
+        {
+            try
+            {
+                var bytes = await client.GetByteArrayAsync($"{baseUri.TrimEnd('/')}/sample-data/{name}");
+                var path = $"invoices/{name}";
+                manager.AddFile(path, bytes.Length, DateTimeOffset.Now.AddDays(-7));
+                manager.SetContent(path, bytes);
+            }
+            catch (Exception)
+            {
+                // A sample that cannot be fetched simply is not in the tree.
+            }
+        }
+
+        return manager;
+    }
+
     public static MudExInMemoryFileStructureManager Build()
     {
         var manager = new MudExInMemoryFileStructureManager

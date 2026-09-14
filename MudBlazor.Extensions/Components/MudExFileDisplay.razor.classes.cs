@@ -118,6 +118,16 @@ public interface IMudExFileDisplay
     bool StartsActive => true;
 
     /// <summary>
+    /// Decides which control wins when several can handle the same file, highest first.
+    /// </summary>
+    /// <remarks>
+    /// A specialised viewer says what it is worth here. An electronic invoice is xml, and a plain code view
+    /// can show it too - but the one that understands the document belongs in front of the one that only
+    /// colours its tags.
+    /// </remarks>
+    int RenderPriority => 0;
+
+    /// <summary>
     /// This method will be called to get extra meta infos to display in the info dialog
     /// </summary>
     /// <param name="fileDisplayInfos"></param>

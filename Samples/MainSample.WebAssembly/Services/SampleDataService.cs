@@ -51,6 +51,9 @@ public class SampleDataService
         yield return CreateSampleFile("sample.gpx", "application/gpx+xml");
         yield return CreateSampleFile("sample.geojson", "application/geo+json");
         yield return CreateSampleFile("sample.epub", "application/epub+zip");
+        yield return CreateSampleFile("sample-xrechnung.xml", "application/xml");
+        yield return CreateSampleFile("sample-factur-x.xml", "application/xml");
+        yield return CreateSampleFile("sample-zugferd.pdf", "application/pdf");
         yield return CreateSampleFile("sample.pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
         yield return CreateSampleFile("https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc", "application/msword");
         yield return CreateSampleFile("https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

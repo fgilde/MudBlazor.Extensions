@@ -1,0 +1,265 @@
+﻿@inherits MudExBaseComponent<MudExFileDisplayEInvoice>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Core.EInvoice
+
+<style>
+    .mud-ex-einvoice {
+        height: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mud-ex-einvoice .mud-tabs-panels {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: auto;
+    }
+
+    .mud-ex-einvoice-sheet {
+        padding: 16px;
+    }
+
+    /* The party card stacks its lines, whatever width the panel has. */
+    .mud-ex-einvoice-party > * {
+        display: block;
+    }
+
+    .mud-ex-einvoice-parties {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .mud-ex-einvoice-totals {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 12px;
+    }
+
+    .mud-ex-einvoice-totals table {
+        min-width: 260px;
+    }
+
+    .mud-ex-einvoice-totals td {
+        padding: 2px 8px;
+    }
+
+    .mud-ex-einvoice-totals td:last-child {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .mud-ex-einvoice-grand {
+        font-weight: 600;
+        border-top: 1px solid var(--mud-palette-divider);
+    }
+
+    .mud-ex-einvoice-raw {
+        margin: 0;
+        padding: 12px;
+        font-size: 12px;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+</style>
+
+@if (_invoice == null)
+{
+    <div class="mud-ex-einvoice-sheet">
+        <MudAlert Severity="Severity.Warning" Dense="true">
+            @TryLocalize("This file does not contain an electronic invoice.")
+        </MudAlert>
+    </div>
+}
+else
+{
+    <div class="mud-ex-einvoice">
+        <MudTabs Elevation="0" ApplyEffectsToContainer="true" PanelClass="pa-0" Class="mud-ex-einvoice-tabs"
+                 ActivePanelIndex="@_activeTab" ActivePanelIndexChanged="@(index => _activeTab = index)">
+            <MudTabPanel Text="@TryLocalize("Invoice")" Icon="@Icons.Material.Outlined.ReceiptLong">
+                @InvoiceSheet()
+            </MudTabPanel>
+
+            @if (_validation is { Violations.Count: > 0 })
+            {
+                <MudTabPanel Icon="@(_validation.IsValid ? Icons.Material.Outlined.Warning : Icons.Material.Outlined.ErrorOutline)"
+                             Text="@TryLocalize("Check")" BadgeData="@_validation.Violations.Count"
+                             BadgeColor="@(_validation.IsValid ? Color.Warning : Color.Error)">
+                    @ValidationList()
+                </MudTabPanel>
+            }
+
+            @if (_xmlInfos != null)
+            {
+                <MudTabPanel Text="@TryLocalize("XML")" Icon="@Icons.Material.Outlined.Code">
+                    <MudExFileDisplayCode FileDisplayInfos="@_xmlInfos" />
+                </MudTabPanel>
+            }
+
+            @if (_pdfInfos != null)
+            {
+                <MudTabPanel Text="@TryLocalize("PDF")" Icon="@Icons.Material.Outlined.PictureAsPdf">
+                    <MudExFileDisplayPdf FileDisplayInfos="@_pdfInfos" />
+                </MudTabPanel>
+            }
+        </MudTabs>
+    </div>
+}
+
+@code {
+
+    private RenderFragment InvoiceSheet() =>
+    @<div class="mud-ex-einvoice-sheet">
+        <div class="d-flex align-center justify-space-between flex-wrap mb-3">
+            <div>
+                <MudText Typo="Typo.h6">
+                    @(_invoice.IsCreditNote ? TryLocalize("Credit note") : TryLocalize("Invoice")) @_invoice.Number
+                </MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    @string.Join(" · ", Facts())
+                </MudText>
+            </div>
+            <div class="d-flex gap-2">
+                @if (_validation != null)
+                {
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Filled"
+                             Color="@(_validation.ErrorCount > 0 ? Color.Error : _validation.WarningCount > 0 ? Color.Warning : Color.Success)"
+                             Icon="@(_validation.IsValid ? Icons.Material.Outlined.CheckCircle : Icons.Material.Outlined.ErrorOutline)">
+                        @ValidationSummary()
+                    </MudChip>
+                }
+                <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined">@_invoice.Syntax.ToString().ToUpperInvariant()</MudChip>
+                @if (!string.IsNullOrEmpty(_invoice.EmbeddedFileName))
+                {
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Icon="@Icons.Material.Outlined.AttachFile">@_invoice.EmbeddedFileName</MudChip>
+                }
+            </div>
+        </div>
+
+        <div class="mud-ex-einvoice-parties">
+            @PartyCard(TryLocalize("Seller"), _invoice.Seller)
+            @PartyCard(TryLocalize("Buyer"), _invoice.Buyer)
+        </div>
+
+        @if (_invoice.Lines.Any())
+        {
+            <MudSimpleTable Dense="true" Striped="true" Elevation="0">
+                <thead>
+                    <tr>
+                        <th>@TryLocalize("Pos")</th>
+                        <th>@TryLocalize("Description")</th>
+                        <th style="text-align:right">@TryLocalize("Quantity")</th>
+                        <th style="text-align:right">@TryLocalize("Unit price")</th>
+                        <th style="text-align:right">@TryLocalize("VAT")</th>
+                        <th style="text-align:right">@TryLocalize("Amount")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var line in _invoice.Lines)
+                    {
+                        <tr>
+                            <td>@line.Id</td>
+                            <td>
+                                <MudText Typo="Typo.body2">@line.Name</MudText>
+                                @if (!string.IsNullOrWhiteSpace(line.Description))
+                                {
+                                    <MudText Typo="Typo.caption" Color="Color.Secondary">@line.Description</MudText>
+                                }
+                            </td>
+                            <td style="text-align:right">@Number(line.Quantity) @line.Unit</td>
+                            <td style="text-align:right">@Money(line.UnitPrice)</td>
+                            <td style="text-align:right">@Percent(line.TaxPercent)</td>
+                            <td style="text-align:right">@Money(line.LineTotal)</td>
+                        </tr>
+                    }
+                </tbody>
+            </MudSimpleTable>
+        }
+
+        <div class="mud-ex-einvoice-totals">
+            <table>
+                <tbody>
+                    @foreach (var (label, amount) in Totals())
+                    {
+                        <tr>
+                            <td>@label</td>
+                            <td>@Money(amount)</td>
+                        </tr>
+                    }
+                    <tr class="mud-ex-einvoice-grand">
+                        <td>@TryLocalize("Amount due")</td>
+                        <td>@Money(_invoice.DuePayable ?? _invoice.GrandTotal)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_invoice.PaymentTerms) || !string.IsNullOrWhiteSpace(_invoice.Iban))
+        {
+            <MudAlert Severity="Severity.Normal" Dense="true" Class="mt-3" Icon="@Icons.Material.Outlined.Payments">
+                @if (!string.IsNullOrWhiteSpace(_invoice.PaymentTerms))
+                {
+                    <MudText Typo="Typo.body2">@_invoice.PaymentTerms</MudText>
+                }
+                @if (!string.IsNullOrWhiteSpace(_invoice.Iban))
+                {
+                    <MudText Typo="Typo.caption">IBAN @_invoice.Iban @(string.IsNullOrWhiteSpace(_invoice.Bic) ? null : $"· BIC {_invoice.Bic}")</MudText>
+                }
+            </MudAlert>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(_invoice.Note))
+        {
+            <MudText Typo="Typo.body2" Class="mt-3">@_invoice.Note</MudText>
+        }
+    </div>;
+
+    @* What the core rule check found. It says which rule, so the finding can be looked up. *@
+    private RenderFragment ValidationList() =>
+    @<div class="mud-ex-einvoice-sheet">
+        <MudAlert Severity="@(_validation.ErrorCount > 0 ? Severity.Error : Severity.Warning)" Dense="true" Class="mb-3">
+            @ValidationSummary()
+        </MudAlert>
+
+        <MudSimpleTable Dense="true" Striped="true" Elevation="0">
+            <tbody>
+                @foreach (var violation in _validation.Violations.OrderByDescending(v => v.Severity))
+                {
+                    <tr>
+                        <td style="width: 32px">
+                            <MudIcon Size="Size.Small"
+                                     Color="@(violation.Severity == MudExEInvoiceSeverity.Error ? Color.Error : Color.Warning)"
+                                     Icon="@(violation.Severity == MudExEInvoiceSeverity.Error ? Icons.Material.Outlined.ErrorOutline : Icons.Material.Outlined.Warning)" />
+                        </td>
+                        <td style="width: 110px"><MudText Typo="Typo.caption">@violation.Rule</MudText></td>
+                        <td><MudText Typo="Typo.body2">@violation.Message</MudText></td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+
+        <MudText Typo="Typo.caption" Color="Color.Secondary" Class="mt-3">
+            @TryLocalize("Core rules only - content and arithmetic. This is not a conformance check.")
+        </MudText>
+    </div>;
+
+    private RenderFragment PartyCard(string title, MudExEInvoiceParty party) =>
+    @<MudPaper Class="pa-3 mud-ex-einvoice-party" Elevation="0" Outlined="true">
+        <MudText Typo="Typo.overline" Color="Color.Secondary">@title</MudText>
+        <MudText Typo="Typo.body1">@party.Name</MudText>
+        @if (!string.IsNullOrWhiteSpace(party.AddressLine))
+        {
+            <MudText Typo="Typo.body2" Color="Color.Secondary">@party.AddressLine</MudText>
+        }
+        @if (!string.IsNullOrWhiteSpace(party.VatId))
+        {
+            <MudText Typo="Typo.caption">@TryLocalize("VAT ID"): @party.VatId</MudText>
+        }
+        @if (!string.IsNullOrWhiteSpace(party.Email))
+        {
+            <MudText Typo="Typo.caption">@party.Email</MudText>
+        }
+    </MudPaper>;
+}

@@ -40,16 +40,19 @@
 
 @* The key forces a fresh component when the panel set changes: the dock adopts the rendered nodes and reads
    its layout once, so a changed panel set needs a new instance rather than a re-render. *@
-&lt;MudExFileManager @key=&quot;@($&quot;{_panels}-{_treeShowsFiles}-{_treePanelViewMode}&quot;)&quot;
-                  @ref=&quot;ComponentRef&quot;
-                  Manager=&quot;@_structure&quot;
-                  Panels=&quot;@_panels&quot;
-                  TreeShowsFiles=&quot;@_treeShowsFiles&quot;
-                  TreePanelViewMode=&quot;@_treePanelViewMode&quot;
-                  FileGridView=&quot;@_fileGridView&quot;
-                  FilePreviewContent=&quot;@_previewContent&quot;
-                  Restrictions=&quot;@(_restrictUploads ? UploadRestrictions : null)&quot;
-                  Height=&quot;@(&quot;65vh&quot;)&quot; /&gt;
+@if (_structure != null)
+{
+    &lt;MudExFileManager @key=&quot;@($&quot;{_panels}-{_treeShowsFiles}-{_treePanelViewMode}&quot;)&quot;
+                      @ref=&quot;ComponentRef&quot;
+                      Manager=&quot;@_structure&quot;
+                      Panels=&quot;@_panels&quot;
+                      TreeShowsFiles=&quot;@_treeShowsFiles&quot;
+                      TreePanelViewMode=&quot;@_treePanelViewMode&quot;
+                      FileGridView=&quot;@_fileGridView&quot;
+                      FilePreviewContent=&quot;@_previewContent&quot;
+                      Restrictions=&quot;@(_restrictUploads ? UploadRestrictions : null)&quot;
+                      Height=&quot;@(&quot;65vh&quot;)&quot; /&gt;
+}
 
 @code {
     private MudExInMemoryFileStructureManager _structure;
@@ -84,7 +87,13 @@
     {
         // A keyed rebuild replaces the component, so the instance editor must not keep the dead ones.
         ReplacesComponentRef = true;
-        _structure = DemoFileStructure.Build();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // base registers the example with the demo box - without it the box has nothing to show.
+        await base.OnInitializedAsync();
+        _structure = await DemoFileStructure.BuildAsync(Http, NavigationManager.BaseUri);
     }
 
     private void SetPanels(MudExFileManagerPanels panels) =&gt; Rebuild(() =&gt;

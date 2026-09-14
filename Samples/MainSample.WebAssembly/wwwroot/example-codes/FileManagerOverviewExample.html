@@ -2,10 +2,13 @@
 @using MudBlazor.Extensions.Services
 @inherits ExampleBase
 
-&lt;MudExFileManager @ref=&quot;ComponentRef&quot;
-                  Manager=&quot;@_structure&quot;
-                  Height=&quot;@(&quot;70vh&quot;)&quot;
-                  OnFileOpened=&quot;@(node =&gt; _lastOpened = node.Name)&quot; /&gt;
+@if (_structure != null)
+{
+    &lt;MudExFileManager @ref=&quot;ComponentRef&quot;
+                      Manager=&quot;@_structure&quot;
+                      Height=&quot;@(&quot;70vh&quot;)&quot;
+                      OnFileOpened=&quot;@(node =&gt; _lastOpened = node.Name)&quot; /&gt;
+}
 
 @if (!string.IsNullOrEmpty(_lastOpened))
 {
@@ -16,7 +19,12 @@
     private MudExInMemoryFileStructureManager _structure;
     private string _lastOpened;
 
-    protected override void OnInitialized() =&gt; _structure = DemoFileStructure.Build();
+    protected override async Task OnInitializedAsync()
+    {
+        // base registers the example with the demo box - without it the box has nothing to show.
+        await base.OnInitializedAsync();
+        _structure = await DemoFileStructure.BuildAsync(Http, NavigationManager.BaseUri);
+    }
 }
 
 </pre></div>

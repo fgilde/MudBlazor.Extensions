@@ -39,16 +39,19 @@
 
 @* The key forces a fresh component when the panel set changes: the dock adopts the rendered nodes and reads
    its layout once, so a changed panel set needs a new instance rather than a re-render. *@
-<MudExFileManager @key="@($"{_panels}-{_treeShowsFiles}-{_treePanelViewMode}")"
-                  @ref="ComponentRef"
-                  Manager="@_structure"
-                  Panels="@_panels"
-                  TreeShowsFiles="@_treeShowsFiles"
-                  TreePanelViewMode="@_treePanelViewMode"
-                  FileGridView="@_fileGridView"
-                  FilePreviewContent="@_previewContent"
-                  Restrictions="@(_restrictUploads ? UploadRestrictions : null)"
-                  Height="@("65vh")" />
+@if (_structure != null)
+{
+    <MudExFileManager @key="@($"{_panels}-{_treeShowsFiles}-{_treePanelViewMode}")"
+                      @ref="ComponentRef"
+                      Manager="@_structure"
+                      Panels="@_panels"
+                      TreeShowsFiles="@_treeShowsFiles"
+                      TreePanelViewMode="@_treePanelViewMode"
+                      FileGridView="@_fileGridView"
+                      FilePreviewContent="@_previewContent"
+                      Restrictions="@(_restrictUploads ? UploadRestrictions : null)"
+                      Height="@("65vh")" />
+}
 
 @code {
     private MudExInMemoryFileStructureManager _structure;
@@ -83,7 +86,13 @@
     {
         // A keyed rebuild replaces the component, so the instance editor must not keep the dead ones.
         ReplacesComponentRef = true;
-        _structure = DemoFileStructure.Build();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // base registers the example with the demo box - without it the box has nothing to show.
+        await base.OnInitializedAsync();
+        _structure = await DemoFileStructure.BuildAsync(Http, NavigationManager.BaseUri);
     }
 
     private void SetPanels(MudExFileManagerPanels panels) => Rebuild(() =>

@@ -2957,6 +2957,16 @@
             If true, the control will be used initially; otherwise, it can be selected afterwards.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileDisplay.RenderPriority">
+            <summary>
+            Decides which control wins when several can handle the same file, highest first.
+            </summary>
+            <remarks>
+            A specialised viewer says what it is worth here. An electronic invoice is xml, and a plain code view
+            can show it too - but the one that understands the document belongs in front of the one that only
+            colours its tags.
+            </remarks>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.IMudExFileDisplay.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
             <summary>
             This method will be called to get extra meta infos to display in the info dialog
@@ -3721,6 +3731,44 @@
             <summary>
             Called from JS when an error occurs
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayEInvoice">
+            <summary>
+            Renders an electronic invoice - XRechnung, ZUGFeRD or Factur-X - as the document it describes.
+            </summary>
+            <remarks>
+            Reading, not checking: the viewer shows what the file says and never claims it is a valid invoice.
+            Validating against the EN 16931 rule set is a job for a validator, not for a file display.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayEInvoice.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayEInvoice.RenderPriority">
+            <summary>
+            Ahead of the code and pdf views: those can show the file too, but only this one shows the invoice.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayEInvoice.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayEInvoice.MudExFileDisplay">
+            <summary>Reference to the parent MudExFileDisplay when the component is used inside one.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayEInvoice.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayEInvoice.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayEInvoice.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayEInvoice.FileSource">
+            <summary>Points another viewer at one part of this file, without handing it this viewer's infos.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayEInvoice.FileSource.#ctor(System.String,System.String,System.String)">
+            <summary>Points another viewer at one part of this file, without handing it this viewer's infos.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayEpub">
             <summary>
@@ -19907,6 +19955,293 @@
         <member name="F:MudBlazor.Extensions.Core.CssUnit.Picas">
             <summary>
             Represents picas in CSS. One pica is equal to 12 points.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice">
+            <summary>
+            An electronic invoice, as far as a reader needs it: who, what, how much, until when.
+            </summary>
+            <remarks>
+            EN 16931 knows hundreds of fields. This is the subset that belongs on a rendered invoice, filled from
+            either of the two syntaxes the standard allows - UN/CEFACT CII and OASIS UBL - so the rest of the library
+            never has to know which one a file used.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Syntax">
+            <summary>Which syntax the data came from.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Profile">
+            <summary>The specification the document claims to follow, like XRechnung or an EN 16931 profile.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Number">
+            <summary>Invoice number (BT-1).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.IssueDate">
+            <summary>Invoice date (BT-2).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.DueDate">
+            <summary>Due date (BT-9).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.TypeCode">
+            <summary>Document type code (BT-3), 380 for an invoice, 381 for a credit note.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Currency">
+            <summary>Currency of every amount (BT-5).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.BuyerReference">
+            <summary>Buyer reference (BT-10) - the Leitweg-ID for German public authorities.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.OrderReference">
+            <summary>Order reference (BT-13).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Note">
+            <summary>Free text of the document (BT-22).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Seller">
+            <summary>Who issues the invoice.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Buyer">
+            <summary>Who has to pay it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.PaymentTerms">
+            <summary>Payment terms as text (BT-20).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Iban">
+            <summary>Account the money goes to (BT-84).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Bic">
+            <summary>Bank identifier (BT-86).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.LineTotal">
+            <summary>Sum of all line amounts (BT-106).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.TaxBasisTotal">
+            <summary>Amount without tax (BT-109).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.TaxTotal">
+            <summary>Tax (BT-110).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.GrandTotal">
+            <summary>Amount including tax (BT-112).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.PrepaidAmount">
+            <summary>Already paid (BT-113).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.DuePayable">
+            <summary>What is left to pay (BT-115).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Lines">
+            <summary>The invoiced items.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Taxes">
+            <summary>Tax per rate (BG-23).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.EmbeddedFileName">
+            <summary>The document the invoice was read from, when it came inside a pdf.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.Xml">
+            <summary>The xml itself, for the raw view.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoice.IsCreditNote">
+            <summary>A credit note rather than an invoice.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceSyntax">
+            <summary>The syntax an invoice was written in.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceSyntax.Cii">
+            <summary>UN/CEFACT Cross Industry Invoice, what ZUGFeRD and Factur-X carry.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceSyntax.Ubl">
+            <summary>OASIS UBL Invoice or CreditNote, what XRechnung uses by default.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceParty">
+            <summary>A party of an invoice.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceParty.Name">
+            <summary>Registered name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceParty.VatId">
+            <summary>Vat identifier.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceParty.Street">
+            <summary>Street and number.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceParty.PostalCode">
+            <summary>Postal code.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceParty.City">
+            <summary>City.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceParty.Country">
+            <summary>Country code.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceParty.Email">
+            <summary>Contact mail address.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceParty.AddressLine">
+            <summary>Everything of the address on one line.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceParty.IsEmpty">
+            <summary>True when nothing at all was found.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceLine">
+            <summary>One invoiced item.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceLine.Id">
+            <summary>Position number.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceLine.Name">
+            <summary>What was sold.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceLine.Description">
+            <summary>Further description.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceLine.Quantity">
+            <summary>How much of it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceLine.Unit">
+            <summary>Unit of the quantity.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceLine.UnitPrice">
+            <summary>Price of one unit without tax.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceLine.TaxPercent">
+            <summary>Tax rate in percent.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceLine.LineTotal">
+            <summary>Line amount without tax.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceTax">
+            <summary>Tax for one rate.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceTax.Category">
+            <summary>Category code, S for the standard rate.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceTax.Percent">
+            <summary>Rate in percent.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceTax.BasisAmount">
+            <summary>Amount the rate applies to.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceTax.TaxAmount">
+            <summary>The tax itself.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceReader">
+            <summary>
+            Reads an electronic invoice out of xml, or out of the xml a pdf carries inside it.
+            </summary>
+            <remarks>
+            Elements are matched by local name. The standard allows several namespace versions per syntax and every
+            profile adds its own, so binding to one of them would reject documents that are perfectly valid.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceReader.Read(System.Byte[])">
+            <summary>Reads an invoice from a file's bytes, whatever of the two syntaxes - or a pdf - it is.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceReader.ReadXml(System.String)">
+            <summary>Reads an invoice from xml, or returns null when the xml is not one.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceReader.LooksLikeEInvoice(System.String,System.String)">
+            <summary>Whether a file of that name and content type is worth handing to <see cref="M:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceReader.Read(System.Byte[])"/>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceValidationResult">
+            <summary>
+            What checking an invoice found.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceValidationResult.Violations">
+            <summary>Everything the check found, errors and warnings together.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceValidationResult.IsValid">
+            <summary>True when nothing was found that makes the invoice unusable.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceValidationResult.ErrorCount">
+            <summary>How many rules were broken outright.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceValidationResult.WarningCount">
+            <summary>How many things are worth a look without being wrong.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceValidationResult.Add(System.String,System.String,MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceSeverity)">
+            <summary>Adds one finding.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceValidationResult.ToString">
+            <summary>A short sentence for a chip or a log line.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceViolation">
+            <summary>One broken rule.</summary>
+            <param name="Rule">Identifier of the rule, like BR-CO-15.</param>
+            <param name="Message">What is wrong, in words.</param>
+            <param name="Severity">Whether it makes the invoice unusable.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceViolation.#ctor(System.String,System.String,MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceSeverity)">
+            <summary>One broken rule.</summary>
+            <param name="Rule">Identifier of the rule, like BR-CO-15.</param>
+            <param name="Message">What is wrong, in words.</param>
+            <param name="Severity">Whether it makes the invoice unusable.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceViolation.Rule">
+            <summary>Identifier of the rule, like BR-CO-15.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceViolation.Message">
+            <summary>What is wrong, in words.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceViolation.Severity">
+            <summary>Whether it makes the invoice unusable.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceSeverity">
+            <summary>How bad a finding is.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceSeverity.Warning">
+            <summary>Worth knowing, but the invoice can be processed.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceSeverity.Error">
+            <summary>A rule of the standard is broken.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceValidator">
+            <summary>
+            Checks an electronic invoice against the core rules of EN 16931: what has to be there, and whether the
+            numbers add up.
+            </summary>
+            <remarks>
+            This is not a conformance check and does not pretend to be one. The full rule set is published as
+            schematron, which needs an XSLT 2.0 engine, and a formal test report is what the KoSIT tool is for. What
+            is implemented here are the rules that can be decided from the document alone - missing content and
+            arithmetic - which is where real invoices actually fail.
+            </remarks>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceValidator.Tolerance">
+            <summary>Amounts are compared to the cent; anything below that is rounding, not an error.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceValidator.Validate(MudBlazor.Extensions.Core.EInvoice.MudExEInvoice)">
+            <summary>Checks an invoice and returns what is wrong with it.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.EInvoice.MudExEInvoiceValidator.HasValidIbanChecksum(System.String)">
+            <summary>The mod 97 check of ISO 13616 - the one thing about an IBAN that can be decided offline.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.EInvoice.MudExPdfAttachments">
+            <summary>
+            Reads the files a pdf carries inside it, which is where ZUGFeRD and Factur-X keep the invoice xml.
+            </summary>
+            <remarks>
+            No pdf library: an embedded file is always a stream object of its own - the pdf format does not allow
+            streams inside object streams - so walking the raw bytes from one "stream" keyword to the next finds every
+            one of them. Deflate is what those streams use in practice, and ZLibStream is in the framework.
+            This reads attachments; it is not a pdf parser and does not try to be one.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.EInvoice.MudExPdfAttachments.IsPdf(System.Byte[])">
+            <summary>True when the bytes start with the pdf signature.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.EInvoice.MudExPdfAttachments.ReadXmlAttachments(System.Byte[])">
+            <summary>
+            Returns the decoded content of every stream of the document that turns out to be xml, together with
+            the file name the pdf announced for it when there is one.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.EInvoice.MudExPdfAttachments.ReadEmbeddedFileNames(System.Byte[])">
+            <summary>
+            The /F and /UF entries of the file specifications, in the order they appear. Only a hint for the ui -
+            matching them to a stream exactly would need the cross reference table.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Enums.MudExFileGridView">
