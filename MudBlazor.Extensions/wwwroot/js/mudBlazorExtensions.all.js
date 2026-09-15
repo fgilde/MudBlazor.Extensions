@@ -3678,6 +3678,12 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
 
     changeCls() {
         this.dialog.classList.add('mudex-dialog-no-modal');
+        // MudBlazor gives every .mud-dialog z-index 1402, which is meant to be read inside its
+        // container (1400) and is harmless there. A non-modal dialog is moved into the body, where
+        // that value competes with the containers themselves and would cover a modal dialog opened
+        // later (#204). At container level document order decides instead, and non-modal dialogs are
+        // inserted in front of every container.
+        this.dialog.style.setProperty('z-index', 'var(--mud-zindex-dialog)');
         this.dialogContainerReference.classList.add('mudex-dialog-ref-no-modal');
         this.dialogContainerReference.setAttribute('data-modal', false);
         this.dialogContainerReference.setAttribute('data-dialog-id', this.dialog.id);

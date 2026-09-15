@@ -1563,6 +1563,7 @@ HeetchLightBase16: HeetchLightBase16
 Height: Höhe
 HeliosBase16: HeliosBase16
 Hello: Hallo
+Hello from a modal dialog: Hallo aus einem modalen Dialog
 Hello from dialog: Hallo aus Dialog
 Hello from dialog 1: Hallo aus Dialog 1
 Hello from dialog sample page: Hallo von der Beispielseite des Dialogfelds
@@ -3692,6 +3693,7 @@ Show flat: Wohnung anzeigen
 Show info: Infos anzeigen
 Show info for: Infos anzeigen für
 Show Markup: Markup anzeigen
+Show Modal Dialog: Modalen Dialog anzeigen
 Show notification: Benachrichtigung anzeigen
 Show notification while recording: Benachrichtigung während der Aufnahme anzeigen
 Show on github: Auf github anzeigen

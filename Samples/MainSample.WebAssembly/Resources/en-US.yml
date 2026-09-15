@@ -1563,6 +1563,7 @@ HeetchLightBase16: HeetchLightBase16
 Height: Height
 HeliosBase16: HeliosBase16
 Hello: Hello
+Hello from a modal dialog: Hello from a modal dialog
 Hello from dialog: Hello from dialog
 Hello from dialog 1: Hello from dialog 1
 Hello from dialog sample page: Hello from dialog sample page
@@ -3692,6 +3693,7 @@ Show flat: Show flat
 Show info: Show info
 Show info for: Show info for
 Show Markup: Show Markup
+Show Modal Dialog: Show Modal Dialog
 Show notification: Show notification
 Show notification while recording: Show notification while recording
 Show on github: Show on github

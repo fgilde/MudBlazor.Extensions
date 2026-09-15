@@ -6,18 +6,31 @@
 @attribute [Demo(IsPlaygroundDemo = true, Group = "Dialog Samples", Name = "Not Modal Dialogs", Documentation = "Demo for MudExTaskBar and not Modal dialogs", Order = 40, Icon = MaterialDesignIcons.Normal.WindowRestore, ForComponentTypes = new[] { typeof(MudExTaskBar) })]
 
 <DemoComponent PageType="@GetType()">
-    <MudButton OnClick="@ShowSampleDialogs" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample Dialogs"]</MudButton>
+    <MudButton data-testid="open-non-modal" OnClick="@ShowSampleDialogs" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample Dialogs"]</MudButton>
+    <MudButton data-testid="open-modal" OnClick="@ShowModalDialog" Variant="Variant.Filled" Color="Color.Secondary" Class="ml-2">@L["Show Modal Dialog"]</MudButton>
 </DemoComponent>
 
 @code {
     
+    private int _opened;
+
+    private Task ShowModalDialog()
+    {
+        return DialogService.ShowExAsync<SampleDialog>("Modal Dialog", dialog => { dialog.ContentMessage = L["Hello from a modal dialog"]; dialog.Marker = "modal"; }, new DialogOptionsEx
+        {
+            CloseButton = true,
+            Modal = true
+        });
+    }
+
     private Task ShowSampleDialogs()
     {
         int count = 1;
         var rnd = new Random();
         foreach (var i in Enumerable.Range(1, count))
         {
-            _ = DialogService.ShowExAsync<SampleDialog>($"Simple Dialog {i}", dialog => { dialog.ContentMessage = $"{L["Hello from dialog"]} {i}"; }, new DialogOptionsEx()
+            var number = ++_opened;
+            _ = DialogService.ShowExAsync<SampleDialog>($"Simple Dialog {number}", dialog => { dialog.ContentMessage = $"{L["Hello from dialog"]} {number}"; dialog.Marker = $"non-modal-{number}"; }, new DialogOptionsEx()
             {
                 Position = (DialogPosition)rnd.Next(0, 9),
                 Animation = (AnimationType)rnd.Next(1, 25),

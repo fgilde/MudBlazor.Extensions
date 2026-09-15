@@ -11,6 +11,7 @@
         </MudText>
     </TitleContent>
     <DialogContent>
+        <span data-marker="@Marker" hidden></span>
         @L["Dialog Content"]
         <br/>
         @L[ContentMessage]
@@ -23,6 +24,12 @@
 @code {
     [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
     [Parameter] public string ContentMessage { get; set; }
+
+    /// <summary>
+    /// Rendered as data-marker on the dialog root. The title is random, so this is what the UI tests
+    /// use to tell two sample dialogs apart, independent of the display language.
+    /// </summary>
+    [Parameter] public string Marker { get; set; }
 
     async Task Submit() => await MudDialog.CloseAnimatedIfAsync(DialogResult.Ok(true));
     async Task Cancel() => await MudDialog.CancelAnimatedIfAsync();
