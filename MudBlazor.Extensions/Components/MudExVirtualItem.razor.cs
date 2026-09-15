@@ -106,7 +106,14 @@ public partial class MudExVirtualItem
 
     public override async ValueTask DisposeAsync()
     {
-        await JsRuntime.InvokeVoidAsync("MudExObserver.unObserveVisibility", _container);
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("MudExObserver.unObserveVisibility", _container);
+        }
+        catch (Exception)
+        {
+            // Issue #172: disposed during prerendering or after the circuit is gone, nothing to unobserve
+        }
         await base.DisposeAsync();
     }
 

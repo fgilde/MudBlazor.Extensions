@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using BlazorJS;
 using Microsoft.JSInterop;
 using Nextended.Core.Extensions;
@@ -67,7 +68,31 @@ namespace MudBlazor.Extensions.Helper
             await Task.Delay(200);
         }
 
-        internal static async Task LoadCssAsync(this IJSRuntime runtime, bool force = false) 
+        // Issue #155: the stylesheet is sent as a string through JS interop. Doing that on every
+        // component's first render flooded SignalR (megabytes for one select). One transfer per JS
+        // runtime (= per circuit) is enough, the JS side keeps the <style id="mudex-styles"> anyway.
+        // Storing the task lets components rendering at the same time share the first transfer.
+        private static readonly ConditionalWeakTable<IJSRuntime, Task> CssLoads = new();
+
+        internal static Task LoadCssAsync(this IJSRuntime runtime, bool force = false)
+        {
+            if (force)
+            {
+                var forced = SendCssAsync(runtime, true);
+                CssLoads.AddOrUpdate(runtime, forced);
+                return forced;
+            }
+            var load = CssLoads.GetValue(runtime, r => SendCssAsync(r, false));
+            if (load.IsFaulted || load.IsCanceled)
+            {
+                // e.g. no browser attached yet; forget the attempt so the next render retries
+                CssLoads.Remove(runtime);
+                load = CssLoads.GetValue(runtime, r => SendCssAsync(r, false));
+            }
+            return load;
+        }
+
+        private static async Task SendCssAsync(IJSRuntime runtime, bool force)
             => await runtime.AddCss(await MudExResource.GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"), "mudex-styles", !force);
 
         private static Task ImportMainMudEx(IJSRuntime runtime) 
