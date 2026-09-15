@@ -1,13 +1,9 @@
-﻿<Solution>
+<Solution>
   <Folder Name="/.scripts/">
     <File Path="build.sh" />
     <File Path="update-packages.ps1" />
   </Folder>
   <Folder Name="/Samples/">
-    <Project Path="Samples/MainSample.MAUI.Moana/MainSample.MAUI.Moana.csproj">
-      <Build Solution="Release|*" Project="false" />
-      <Deploy Solution="Debug|*" />
-    </Project>
     <Project Path="Samples/MainSample.ServerSide/MainSample.ServerSide.csproj" />
     <Project Path="Samples/MainSample.WebAssembly/MainSample.WebAssembly.csproj" />
     <Project Path="Samples/MudEx.WebComponents/MudEx.WebComponents.csproj" />
