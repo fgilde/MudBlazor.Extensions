@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://www.mudex.org</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/fgilde/MudBlazor.Extensions</RepositoryUrl>
     <Copyright>Copyright © $(Authors) 2020-$([System.DateTime]::Now.Year)</Copyright>
     <PackageIcon>MudExtension.png</PackageIcon>
