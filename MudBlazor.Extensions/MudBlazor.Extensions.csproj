@@ -139,6 +139,13 @@
   </Target>
 
   <!-- Bundle & Minify: replaces deprecated BuildBundlerMinifier -->
+  <!-- Keep the assembly path out of the task body: on Linux MSBuild treats the literal text that
+       follows a property expansion as a path when it starts with an existing directory (here "/lib"),
+       converts its backslashes and collapses double slashes, turning every "//" comment in the
+       inline C# into "/" and breaking the compile. -->
+  <PropertyGroup>
+    <NUglifyAssembly>$(NuGetPackageRoot)nuglify/$(NUglifyVersion)/lib/netstandard2.0/NUglify.dll</NUglifyAssembly>
+  </PropertyGroup>
   <UsingTask TaskName="BundleAndMinify"
              TaskFactory="RoslynCodeTaskFactory"
              AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
@@ -147,7 +154,7 @@
       <BaseDir ParameterType="System.String" Required="true" />
     </ParameterGroup>
     <Task>
-      <Reference Include="$(NuGetPackageRoot)nuglify/$(NUglifyVersion)/lib/netstandard2.0/NUglify.dll" />
+      <Reference Include="$(NUglifyAssembly)" />
       <Using Namespace="System" />
       <Using Namespace="System.IO" />
       <Using Namespace="System.Linq" />
