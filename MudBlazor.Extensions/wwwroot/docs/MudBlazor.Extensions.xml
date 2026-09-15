@@ -18579,6 +18579,20 @@
             The video device to record.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.VideoSource">
+            <summary>
+            A camera stream that is already open, as returned by <see cref="M:MudBlazor.Extensions.Core.ICaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.W3C.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String},System.Threading.CancellationToken)"/>.
+            The capture then records that stream instead of opening the camera a second time, so a preview
+            showing the same track keeps running. Takes precedence over <see cref="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.VideoDevice"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.KeepSourceStreamsAlive">
+            <summary>
+            Keeps the tracks of <see cref="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.VideoSource"/> and <see cref="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.ScreenCapture"/> sources running when the
+            capture stops, so a preview using the same tracks survives. The caller then owns those streams and
+            stops them with <see cref="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.W3C.MediaStreamTrack,System.Threading.CancellationToken)"/>.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.AudioDevices">
             <summary>
             The audio devices to record audio.

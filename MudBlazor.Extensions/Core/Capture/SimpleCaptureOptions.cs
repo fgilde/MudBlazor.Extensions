@@ -52,7 +52,7 @@ public class SimpleCaptureOptions
         var result = new SimpleCaptureOptions
         {
             RecordScreen = options != null && (options.CaptureScreen || options.ScreenSource != null || options.CaptureMediaOptions != null),
-            RecordCamera = options is { VideoDevice.DeviceId: not null },
+            RecordCamera = options is { VideoDevice.DeviceId: not null } or { VideoSource: not null },
             RecordAudio = options != null && options.AudioDevices.EmptyIfNull().Any(d => !string.IsNullOrEmpty(d.DeviceId))
         };
         return result;

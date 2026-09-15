@@ -141,9 +141,14 @@
                     recorder.stop();
                 } catch (e) { }
             });
+            const borrowed = recording.borrowedTracks || [];
             recording.streams.forEach(stream => {
                 if (stream && typeof stream.getTracks === 'function') {
                     stream.getTracks().forEach(track => {
+                        // a borrowed track belongs to the caller's preview, stopping it would kill that too
+                        if (borrowed.indexOf(track) !== -1) {
+                            return;
+                        }
                         try {
                             track.stop();
                         } catch (e) { }
@@ -196,7 +201,7 @@
         var captureMediaOptionsWithoutNullProperties = this.removeOptionsWithoutNullProperties(options.captureMediaOptions);
         options.contentType = options.contentType || 'video/webm; codecs=vp9';
         const audioContentType = options.audioContentType || 'audio/webm';
-        if (!options.captureScreen && !options.videoDevice && !options.videoConstraints?.deviceId) {
+        if (!options.captureScreen && !options.videoDevice && !options.videoSource && !options.videoConstraints?.deviceId) {
             // if only audio is captured, set content type to audio
             options.contentType = audioContentType;
         }
@@ -209,11 +214,21 @@
             audioContext: null
         };
 
+        // Streams that were opened by selectCaptureSource and are only borrowed for this capture.
+        // With keepSourceStreamsAlive their tracks survive stopCapture, so a preview keeps running.
+        const borrowedTracks = [];
+        const borrow = stream => {
+            if (stream && options.keepSourceStreamsAlive) {
+                stream.getTracks().forEach(track => borrowedTracks.push(track));
+            }
+            return stream;
+        };
+
         if (options.captureScreen) {
             try {
                 let screenStream;
                 if (options.screenSource && this._preselected[options.screenSource.id]) {
-                    screenStream = this._preselected[id] = this._preselected[options.screenSource.id];
+                    screenStream = this._preselected[id] = borrow(this._preselected[options.screenSource.id]);
                     delete this._preselected[options.screenSource.id];
                 }
                 else {
@@ -230,8 +245,19 @@
             }
         }
 
+        // Camera Stream from an already opened source (selectCaptureSource), same idea as screenSource
+        if (options.videoSource && this._preselected[options.videoSource.id]) {
+            const cameraStream = borrow(this._preselected[options.videoSource.id]);
+            delete this._preselected[options.videoSource.id];
+            streams.camera = new MediaStream(cameraStream.getVideoTracks());
+
+            const cameraAudioTracks = cameraStream.getAudioTracks();
+            if (cameraAudioTracks.length > 0 && !streams.systemAudio) {
+                streams.systemAudio = new MediaStream(cameraAudioTracks);
+            }
+        }
         // Camera Stream
-        if (options.videoDevice) {
+        else if (options.videoDevice) {
             let videoDeviceId = typeof options.videoDevice === 'string'
                 ? options.videoDevice
                 : options.videoDevice?.deviceId;
@@ -311,6 +337,7 @@
         }
         const result = {
             streams: Object.values(streams).filter(stream => stream !== null),
+            borrowedTracks,
             recorders,
             screenStream: streams.screen,
             cameraStream: streams.camera,

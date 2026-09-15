@@ -67,6 +67,20 @@ public class CaptureOptions
     public VideoConstraints VideoDevice { get; set; }
 
     /// <summary>
+    /// A camera stream that is already open, as returned by <see cref="ICaptureService.SelectCaptureSourceAsync"/>.
+    /// The capture then records that stream instead of opening the camera a second time, so a preview
+    /// showing the same track keeps running. Takes precedence over <see cref="VideoDevice"/>.
+    /// </summary>
+    public MediaStreamTrack VideoSource { get; set; }
+
+    /// <summary>
+    /// Keeps the tracks of <see cref="VideoSource"/> and <see cref="ScreenCapture"/> sources running when the
+    /// capture stops, so a preview using the same tracks survives. The caller then owns those streams and
+    /// stops them with <see cref="ICaptureService.StopCaptureAsync(MediaStreamTrack, CancellationToken)"/>.
+    /// </summary>
+    public bool KeepSourceStreamsAlive { get; set; }
+
+    /// <summary>
     /// The audio devices to record audio.
     /// </summary>
     public List<AudioConstraints> AudioDevices
@@ -112,7 +126,7 @@ public class CaptureOptions
     /// </summary>
     public bool Valid()
     {
-        return AudioDevices.EmptyIfNull().Any(d => !string.IsNullOrEmpty(d.DeviceId)) || VideoDevice?.DeviceId != null || CaptureScreen;
+        return AudioDevices.EmptyIfNull().Any(d => !string.IsNullOrEmpty(d.DeviceId)) || VideoDevice?.DeviceId != null || VideoSource != null || CaptureScreen;
     }
 
     /// <summary>
