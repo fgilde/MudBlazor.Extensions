@@ -48,6 +48,7 @@ public class SampleDataService
         yield return CreateSampleFile("sample.patch", "text/x-patch");
         yield return CreateSampleFile("sample.har", "application/har+json");
         yield return CreateSampleFile("sample.stl", "model/stl");
+        yield return CreateSampleFile("sample.glb", "model/gltf-binary");
         yield return CreateSampleFile("sample.gpx", "application/gpx+xml");
         yield return CreateSampleFile("sample.geojson", "application/geo+json");
         yield return CreateSampleFile("sample.epub", "application/epub+zip");
