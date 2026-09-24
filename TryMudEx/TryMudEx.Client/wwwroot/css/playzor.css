@@ -433,7 +433,7 @@
 .site-contact {
     display: flex;
     justify-content: center;
-    padding: 20px 16px 0;
+    padding: 20px 16px 26px;
 }
 
 /* whichever of the three sits above the footer carries the gap to the page */
