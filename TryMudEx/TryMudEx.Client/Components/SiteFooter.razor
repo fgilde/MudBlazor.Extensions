@@ -1,5 +1,6 @@
 @using Playzor.Blazor.Editor.Services
 @using TryMudEx.Client.Services
+@using TryMudEx.Client.Components
 @inject BrandingService Branding
 @inject PlayzorLocalizer L
 
@@ -21,6 +22,10 @@
         </a>
     </aside>
 }
+
+<div class="site-contact">
+    <GildeConnect Widget="GildeConnectWidget.Contact" />
+</div>
 
 <footer class="site-footer">
     <span>by</span>

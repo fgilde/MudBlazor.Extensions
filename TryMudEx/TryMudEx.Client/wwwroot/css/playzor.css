@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Playzor product pages (landing, embedding guide) and the shared site footer.
  * Standalone on purpose: these pages are marketing surface, not MudBlazor demos, so they
  * only borrow the palette variables and bring their own layout.
@@ -419,6 +419,32 @@
     padding: 1px 5px;
     border-radius: 5px;
     background: color-mix(in srgb, var(--pz-muted) 15%, transparent);
+}
+
+/* ---------- connect widgets ---------- */
+
+/* the widget brings its own button inside a shadow root, we only place the host element */
+.gilde-connect {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+}
+
+.site-contact {
+    display: flex;
+    justify-content: center;
+    padding: 20px 16px 0;
+}
+
+/* whichever of the three sits above the footer carries the gap to the page */
+.site-promo,
+.site-promo ~ .site-contact,
+.site-credit + .site-contact {
+    margin-top: 0;
+}
+
+.site-contact:first-child {
+    margin-top: auto;
 }
 
 /* ---------- credits ---------- */

@@ -1,5 +1,6 @@
 @using Playzor.Blazor.Editor.Services
 @using TryMudEx.Client.Services
+@using TryMudEx.Client.Components
 @using Playzor.Core
 @using MudBlazor.Extensions.Core
 @inject BrandingService Branding
@@ -24,6 +25,7 @@
                 <MudIcon Icon="@MudExIcons.Custom.Brands.Nuget" Size="Size.Medium" />
             </a>
         </MudTooltip>
+        <GildeConnect Widget="GildeConnectWidget.Support" />
         <a href="/snippet" class="pz-btn pz-btn-primary">@L["Open the editor"]</a>
     </nav>
 </header>

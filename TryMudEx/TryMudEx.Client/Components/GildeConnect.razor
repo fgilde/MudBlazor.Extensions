@@ -1,0 +1,71 @@
+@using Playzor.Core
+@using TryMudEx.Client.Services
+@inject BrandingService Branding
+@inject LayoutService LayoutService
+@implements IDisposable
+
+@*
+    A connect.gilde.org widget as a button that opens its own dialog. Everything that identifies the
+    site comes from the brand, so the mudex pages ask for MudBlazor.Extensions and the playzor pages
+    for Playzor, each in its own accent. The widget script is loaded in index.html.
+
+    The label is the element content: the widget only falls back to trigger-label when it is empty.
+
+    show-description is off although this is the button variant: the widget prints the repository
+    description on top of its own intro line, both start at the same y and the dialog head becomes
+    unreadable. Measured in both widgets — turn it back on once that is fixed upstream.
+*@
+@if (IsSupport)
+{
+    <gilde-support class="gilde-connect" project="@Project" widget="support"
+                   theme="@Theme" accent="@Brand.AccentColor" language="@Language"
+                   title="@DialogTitle" width="560" radius="18" padding="28"
+                   show-logo="true" show-description="false" show-homepage="true"
+                   show-preview-notice="false" show-footer="true"
+                   footer-brand="@Brand.Name" footer-tagline="gilde.org"
+                   show-support-hint="false" support-layout="rows"
+                   show-support-icons="true" show-support-qr="true">@Label</gilde-support>
+}
+else
+{
+    <gilde-contact class="gilde-connect" project="@Project" widget="contact"
+                   theme="@Theme" accent="@Brand.AccentColor" language="@Language"
+                   title="@DialogTitle" width="560" radius="18" padding="28"
+                   show-logo="true" show-description="false" show-homepage="true"
+                   show-preview-notice="false" show-footer="true"
+                   footer-brand="@Brand.Name" footer-tagline="gilde.org">@Label</gilde-contact>
+}
+
+@code {
+    /// <summary>Which widget to render: support or contact.</summary>
+    [Parameter] public GildeConnectWidget Widget { get; set; } = GildeConnectWidget.Contact;
+
+    // the service starts on dark and learns the stored preference a moment later, so without
+    // listening the widget would keep the theme the page had before the user's choice arrived
+    protected override void OnInitialized() => LayoutService.DarkChanged += OnDarkChanged;
+
+    public void Dispose() => LayoutService.DarkChanged -= OnDarkChanged;
+
+    private void OnDarkChanged(object sender, bool isDark) => InvokeAsync(StateHasChanged);
+
+    private Brand Brand => Branding.Current;
+
+    private bool IsSupport => Widget == GildeConnectWidget.Support;
+
+    private bool German => string.Equals(Brand.Culture, "de", StringComparison.OrdinalIgnoreCase);
+
+    private string Language => German ? "de" : "en";
+
+    private string Theme => LayoutService.IsDarkMode ? "dark" : "light";
+
+    /// <summary>The repository the widget collects for — the brand decides which project this is.</summary>
+    private string Project => Branding.IsPlayzor ? "fgilde/Playzor" : "fgilde/MudBlazor.Extensions";
+
+    private string Label => IsSupport
+        ? (German ? $"{Brand.Name} unterstützen" : $"Support {Brand.Name}")
+        : (German ? "Kontakt" : "Contact");
+
+    private string DialogTitle => IsSupport
+        ? (German ? $"{Brand.Name} unterstützen" : $"Support {Brand.Name}")
+        : (German ? $"Kontakt {Brand.Name}" : $"Contact {Brand.Name}");
+}

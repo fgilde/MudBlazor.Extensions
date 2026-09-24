@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @using Playzor.Core
 @using MudBlazor.Extensions.Options
 @using TryMudEx.Client.Services
@@ -30,6 +30,7 @@
                 <span>powered by <b>Playzor</b></span>
             </a>
         </MudTooltip>
+        <GildeConnect Widget="GildeConnectWidget.Support" />
         @if (!Branding.IsPlayzor)
         {
             <MudButton Href="https://www.mudex.org/" Target="_blank" Color="Color.Default" Size="Size.Large">MudEx</MudButton>
