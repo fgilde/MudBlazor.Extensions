@@ -116,7 +116,7 @@ public partial class MudExFileDisplayCertificate : IMudExFileDisplay
         _errorMessage = null;
         try
         {
-            _certificates = ReadPkcs12(_pendingBytes, _password);
+            _certificates = await ReadPkcs12Async(_pendingBytes, _password);
             _selected = _certificates.FirstOrDefault();
             _requiresPassword = false;
         }
@@ -128,18 +128,26 @@ public partial class MudExFileDisplayCertificate : IMudExFileDisplay
     }
 
     /// <summary>
-    /// PKCS#12 is the one format that cannot be decoded from its bytes alone, so it goes through the platform.
-    /// The certificates that come out are re-read from their DER so the display stays on one code path.
+    /// PKCS#12 is the one format that needs the password before anything can be read. The certificates that
+    /// come out of the container are re-read from their DER, so the display stays on one code path.
     /// </summary>
-    private static List<X509CertificateReader.CertificateDetails> ReadPkcs12(byte[] bytes, string password)
-    {
-        var collection = new X509Certificate2Collection();
-        collection.Import(bytes, string.IsNullOrEmpty(password) ? null : password, X509KeyStorageFlags.EphemeralKeySet);
-
-        return collection.Cast<X509Certificate2>()
-            .Select(c => X509CertificateReader.Read(c.RawData).First())
+    private async Task<List<X509CertificateReader.CertificateDetails>> ReadPkcs12Async(byte[] bytes, string password)
+        => (await Pkcs12CertificateReader.ReadCertificatesAsync(bytes, password, JsRuntime))
+            .Select(der => X509CertificateReader.Read(der).First())
             .ToList();
+
+    /// <summary>The oid the runtime named in its refusal, turned into something readable.</summary>
+    private static string AlgorithmOf(Exception exception)
+    {
+        var oid = System.Text.RegularExpressions.Regex.Match(exception.Message ?? string.Empty, @"[\d]+(\.[\d]+){3,}").Value;
+        return string.IsNullOrEmpty(oid) ? exception.Message : Pkcs12CertificateReader.SchemeName(oid);
     }
+
+    /// <summary>An algorithm nobody here implements, rather than a wrong password.</summary>
+    private static bool IsUnsupportedAlgorithm(Exception exception)
+        => exception is PlatformNotSupportedException
+           || exception.Message.Contains("algorithm", StringComparison.OrdinalIgnoreCase)
+           || exception.Message.Contains("AlgorithmIdentifier", StringComparison.OrdinalIgnoreCase);
 
     private static bool IsPkcs12(string fileName) =>
         fileName != null && Pkcs12Extensions.Any(ext => fileName.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
@@ -148,7 +156,10 @@ public partial class MudExFileDisplayCertificate : IMudExFileDisplay
     {
         _errorMessage = exception switch
         {
-            PlatformNotSupportedException => TryLocalize("Password protected PKCS#12 containers cannot be opened in the browser, because the platform certificate stack is not available in WebAssembly. Use a .pem, .cer or .p7b file instead."),
+            Pkcs12CertificateReader.UnsupportedCipherException cipher
+                => TryLocalize("This container is encrypted with {0}, which is not available in the browser. Export it again with AES - openssl pkcs12 -export -keypbe AES-256-CBC -certpbe AES-256-CBC -macalg sha256.", cipher.Scheme),
+            PlatformNotSupportedException or CryptographicException when IsUnsupportedAlgorithm(exception)
+                => TryLocalize("This container is encrypted with an algorithm that is not available here: {0}. A pfx in the legacy format uses RC2 or 3DES, which no current .NET carries - export it again with AES.", AlgorithmOf(exception)),
             CryptographicException => TryLocalize("The container could not be decrypted. Check the password."),
             _ => $"{exception.GetType().Name}: {exception.Message}"
         };

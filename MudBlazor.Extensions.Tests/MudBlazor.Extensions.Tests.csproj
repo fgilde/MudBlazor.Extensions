@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -33,6 +33,12 @@
     <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
     <ProjectReference Include="..\Samples\MainSample.ServerSide\MainSample.ServerSide.csproj" />
     <ProjectReference Include="..\Samples\MainSample.WebAssembly\MainSample.WebAssembly.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <!-- Containers written by openssl with one legacy cipher each, read by the pkcs12 tests. -->
+    <None Include="TestData\**\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

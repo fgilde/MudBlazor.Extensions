@@ -1563,6 +1563,7 @@ HeetchLightBase16: HeetchLightBase16
 Height: Yükseklik
 HeliosBase16: HeliosBase16
 Hello: Merhaba
+Hello from a modal dialog: Modal bir diyalogdan merhaba
 Hello from dialog: İletişim kutusundan merhaba
 Hello from dialog 1: 1. iletişim kutusundan merhaba
 Hello from dialog sample page: Diyalog örnek sayfasından merhaba
@@ -3692,6 +3693,7 @@ Show flat: Daireyi göster
 Show info: Bilgileri göster
 Show info for: Şunun için bilgi göster
 Show Markup: İşaretlemeyi Göster
+Show Modal Dialog: Modal Diyalogu Göster
 Show notification: Bildirimi göster
 Show notification while recording: Kayıt sırasında bildirimi göster
 Show on github: Github'da göster

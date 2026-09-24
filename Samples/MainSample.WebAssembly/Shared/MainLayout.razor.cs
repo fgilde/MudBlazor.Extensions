@@ -1,11 +1,13 @@
 ﻿using System.Globalization;
 using AKSoftware.Localization.MultiLanguages;
+using MainSample.WebAssembly.Types;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Extensions;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
+using MudBlazor.Utilities;
 using Nextended.Core.Types;
 
 namespace MainSample.WebAssembly.Shared;
@@ -23,6 +25,46 @@ public partial class MainLayout
     [Inject] private ILanguageContainerService LanguageContainerService { get; set; }
 
     
+    private async Task ShowConnectAsync(GildeConnectWidget widget)
+    {
+        var title = widget == GildeConnectWidget.Support
+            ? L["Support {0}", GildeConnectDialog.ProjectName].ToString()
+            : L["Contact {0}", GildeConnectDialog.ProjectName].ToString();
+
+        var options = new DialogOptionsEx
+        {
+            CloseButton = true,
+            MaxWidth = MaxWidth.Small,
+            MaxHeight = MaxHeight.Small,
+            FullWidth = true,
+            DragMode = MudDialogDragMode.Simple,
+            Animation = AnimationType.SlideIn,
+            Position = DialogPosition.Center,
+            DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.ColorfullGlass).WithStyle(s => s.WithWidth(560))
+        };
+
+        var parameters = new DialogParameters<GildeConnectDialog>
+        {
+            { x => x.Widget, widget },
+            { x => x.IsDark, IsDark },
+            { x => x.Accent, AccentColor() },
+            { x => x.Language, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName },
+            { x => x.Title, title }
+        };
+
+        await DialogService.ShowExAsync<GildeConnectDialog>(title, parameters, options);
+    }
+
+    /// <summary>The primary colour of the theme in use, as the widget wants it: a plain hex string.</summary>
+    private string AccentColor()
+    {
+        var palette = IsDark
+            ? (Palette)ClientTheme.CurrentTheme.PaletteDark
+            : ClientTheme.CurrentTheme.PaletteLight;
+
+        return palette.Primary.ToString(MudColorOutputFormats.Hex);
+    }
+
     private async void ShowAbout()
     {
         var op = new DialogOptionsEx

@@ -58,6 +58,9 @@
             <MudMenuItem Icon="@Icons.Custom.Brands.Microsoft" Href="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank">Nuget</MudMenuItem>
             <MudMenuItem Icon="@Icons.Custom.Brands.GitHub" Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank">GitHub</MudMenuItem>
             <MudExDivider Color="Color.Primary"/>
+            <MudMenuItem Icon="@Icons.Material.Outlined.AlternateEmail" OnClick="@(() => ShowConnectAsync(GildeConnectWidget.Contact))">@L["Contact"]</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Outlined.Favorite" OnClick="@(() => ShowConnectAsync(GildeConnectWidget.Support))">@L["Support the project"]</MudMenuItem>
+            <MudExDivider Color="Color.Primary"/>
             <MudMenuItem Icon="@Icons.Material.Outlined.Help" Href="https://fgilde.github.io/MudBlazor.Extensions/" Target="_blank">@L["Documentation"]</MudMenuItem>
             <MudMenuItem Icon="@Icons.Material.Outlined.Info" OnClick="ShowAbout">@L["Info"]</MudMenuItem>
         </MudMenu>

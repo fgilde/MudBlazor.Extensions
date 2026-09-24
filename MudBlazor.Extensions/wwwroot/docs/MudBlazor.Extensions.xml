@@ -3439,11 +3439,17 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.ReadPkcs12(System.Byte[],System.String)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.ReadPkcs12Async(System.Byte[],System.String)">
             <summary>
-            PKCS#12 is the one format that cannot be decoded from its bytes alone, so it goes through the platform.
-            The certificates that come out are re-read from their DER so the display stays on one code path.
+            PKCS#12 is the one format that needs the password before anything can be read. The certificates that
+            come out of the container are re-read from their DER, so the display stays on one code path.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.AlgorithmOf(System.Exception)">
+            <summary>The oid the runtime named in its refusal, turned into something readable.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCertificate.IsUnsupportedAlgorithm(System.Exception)">
+            <summary>An algorithm nobody here implements, rather than a wrong password.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayCode">
             <summary>
@@ -23818,6 +23824,97 @@
             Converts the given data to an HTML string.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation">
+            <summary>
+            The key derivation of PKCS#12, RFC 7292 appendix B.2.
+            </summary>
+            <remarks>
+            The older pfx encryption schemes - the ones named pbeWithSHAAnd... - derive their key and their
+            initialisation vector with this, not with PBKDF2. It is only ever used to read such a container; nothing
+            here writes one.
+            </remarks>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation.Purpose">
+            <summary>What the derived bytes are for. The id goes into the diversifier of the derivation.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation.Purpose.Key">
+            <summary>The encryption key.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation.Purpose.InitialisationVector">
+            <summary>The initialisation vector.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation.Purpose.Mac">
+            <summary>The mac key.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation.Derive(System.String,System.Byte[],System.Int32,MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation.Purpose,System.Int32)">
+            <summary>
+            Derives <paramref name="length"/> bytes from the password.
+            </summary>
+            <param name="password">The password as typed; it is used as a BMPString, which is what the standard says.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation.ToBmpString(System.String)">
+            <summary>The password as a BMPString: utf-16 big endian with a terminating null character.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation.Expand(System.Byte[],System.Int32)">
+            <summary>Repeats the data until it fills a whole number of blocks.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation.AddOne(System.Byte[],System.Int32,System.Byte[],System.Int32)">
+            <summary>block = block + b + 1, as one big endian number of that size.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.Crypto.Rc2Cipher">
+            <summary>
+            RC2 in CBC mode, decryption only, as described in RFC 2268.
+            </summary>
+            <remarks>
+            .NET dropped RC2 with .NET Core, so a pfx written by an older tool - those use pbeWithSHAAnd40BitRC2-CBC
+            for the certificates - cannot be opened anywhere on a current runtime, browser or not. This reads such a
+            container. RC2 with 40 bits is long broken and has no business protecting anything; it is implemented here
+            to look at old files, not to write new ones.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Crypto.Rc2Cipher.DecryptCbc(System.Byte[],System.Int32,System.Byte[],System.Byte[])">
+            <summary>
+            Decrypts data encrypted with RC2 in CBC mode and strips the padding.
+            </summary>
+            <param name="key">The key, as long as the scheme says - five bytes for the 40 bit variant.</param>
+            <param name="effectiveBits">Effective key length in bits, 40 or 128 for the pfx schemes.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Crypto.Rc2Cipher.DecryptBlockRaw(System.Byte[],System.Int32,System.Byte[])">
+            <summary>One block through the cipher, for the known answer tests of RFC 2268.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Crypto.Rc2Cipher.ExpandKey(System.Byte[],System.Int32)">
+            <summary>The key schedule of RFC 2268, section 2.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.Crypto.TripleDesCipher">
+            <summary>
+            DES and three key triple DES in CBC mode, decryption only.
+            </summary>
+            <remarks>
+            The browser runtime of .NET has no symmetric ciphers at all, and SubtleCrypto never had DES, so a pfx
+            encrypted with pbeWithSHAAnd3-KeyTripleDES-CBC could not be opened in a Blazor WebAssembly app. This is
+            the plain FIPS 46-3 algorithm, used to read such a container - nothing here encrypts anything, and neither
+            DES nor triple DES should be used for that any more.
+            </remarks>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Crypto.TripleDesCipher.DecryptCbc(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Decrypts data that was encrypted with three key triple DES in CBC mode and strips the padding.
+            </summary>
+            <param name="key">24 bytes: the three DES keys.</param>
+            <param name="iv">8 bytes.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Crypto.TripleDesCipher.DecryptCbcRaw(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Decrypts without touching the padding. Only the known answer tests use this; a container always ends
+            on padding and goes through <see cref="M:MudBlazor.Extensions.Helper.Internal.Crypto.TripleDesCipher.DecryptCbc(System.Byte[],System.Byte[],System.Byte[])"/>.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Crypto.TripleDesCipher.RemovePadding(System.Byte[])">
+            <summary>Strips PKCS#7 padding, or returns null when it is not valid - which is how a wrong key shows.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Crypto.TripleDesCipher.Permute(System.UInt64,System.Int32[],System.Int32,System.Int32)">
+            <summary>Applies a permutation table, counting bits from the most significant one as the standard does.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.Internal.EpubBook">
             <summary>
             A minimal EPUB (2 and 3) reader built on <see cref="T:System.IO.Compression.ZipArchive"/> from the BCL. Resolves the OPF package from
@@ -23984,6 +24081,76 @@
             <summary>
             Reads a SQLite varint (big-endian, 1-9 bytes, last byte uses all 8 bits) starting at pos and advances pos.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader">
+            <summary>
+            Takes the certificates out of a password protected PKCS#12 container (.pfx, .p12) without the platform
+            certificate stack.
+            </summary>
+            <remarks>
+            Two ways, in that order. On a normal runtime <see cref="T:System.Security.Cryptography.Pkcs.Pkcs12Info"/> does all of it in managed code.
+            The browser runtime has no symmetric ciphers, so that path stops at "unknown algorithm identifier
+            1.2.840.113549.1.5.13" - PBES2 - and the container is then walked here with <see cref="T:System.Formats.Asn1.AsnReader"/> while
+            the key derivation and the AES step are handed to the browser, which has both in SubtleCrypto.
+            <para>
+            Private keys are deliberately left alone. A viewer shows what a certificate says; importing a key needs the
+            platform stack and has no business in a file display.
+            </para>
+            </remarks>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.LegacySchemes">
+            <summary>
+            The older schemes, with the key size and the effective key bits each one uses. They all derive key and
+            iv the pkcs12 way and differ only in the cipher.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.Schemes">
+            <summary>Names for the encryption schemes a pfx can use, so a refusal can say which one it was.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.SchemeName(System.String)">
+            <summary>Names the scheme behind an oid, for a message a human can act on.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.ReadCertificatesAsync(System.Byte[],System.String,Microsoft.JSInterop.IJSRuntime)">
+            <summary>
+            Returns the encoded certificates of the container.
+            </summary>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">The password is wrong, or neither way can read the container -
+            a pfx in the legacy format encrypts with RC2, which no current .NET carries.</exception>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.UnsupportedCipherException">
+            <summary>The container is fine, but nothing here can decrypt it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.UnsupportedCipherException.Scheme">
+            <summary>Name and oid of the scheme the container uses.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.ReadWithRuntime(System.Byte[],System.String)">
+            <summary>The managed path, which is all a normal runtime needs.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.ReadManuallyAsync(System.Byte[],System.String,Microsoft.JSInterop.IJSRuntime)">
+            <summary>
+            Walks the container by hand: the legacy schemes are decrypted here, PBES2 in the browser.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.DecryptAsync(System.Formats.Asn1.AsnReader,System.String,Microsoft.JSInterop.IJSRuntime)">
+            <summary>
+            EncryptedData ::= SEQUENCE { version, encryptedContentInfo }. Only PBES2 is handled: the legacy pfx
+            ciphers are RC2 and 3DES with the pkcs12 key derivation, and the browser has neither.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.ReadSafeContents(System.Byte[])">
+            <summary>SafeContents ::= SEQUENCE OF SafeBag - the certificates of one safe.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.ReadContentInfo(System.Formats.Asn1.AsnReader,System.String@)">
+            <summary>ContentInfo ::= SEQUENCE { contentType OID, content [0] EXPLICIT ANY }.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.Unwrap(System.ReadOnlyMemory{System.Byte})">
+            <summary>
+            A cert bag carries the certificate inside an octet string, so the der of the certificate itself is one
+            layer further in.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.IsPkcs12(System.Byte[])">
+            <summary>Whether the bytes look like a PKCS#12 container rather than a certificate.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.Internal.PptxPresentation">
             <summary>

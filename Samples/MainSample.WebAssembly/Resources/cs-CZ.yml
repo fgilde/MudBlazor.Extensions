@@ -1563,6 +1563,7 @@ HeetchLightBase16: 'HeetchLightBase16 řekl:'
 Height: Výška
 HeliosBase16: 'HeliosBase16 řekl:'
 Hello: Dobrý den
+Hello from a modal dialog: Ahoj z modálního dialogu
 Hello from dialog: Dobrý den z dialogu
 Hello from dialog 1: Dobrý den z dialogu 1
 Hello from dialog sample page: Pozdrav z ukázkové stránky dialogového okna
@@ -3692,6 +3693,7 @@ Show flat: Zobrazit byt
 Show info: Zobrazit info
 Show info for: Zobrazit informace pro
 Show Markup: Zobrazit označení
+Show Modal Dialog: Zobrazit modální dialog
 Show notification: Zobrazit oznámení
 Show notification while recording: Zobrazit upozornění během nahrávání
 Show on github: Zobrazit na GitHubu

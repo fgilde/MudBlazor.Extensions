@@ -40,6 +40,9 @@ public class SampleDataService
         yield return CreateSampleFile("sample.ipynb", "application/x-ipynb+json");
         yield return CreateSampleFile("sample.log", "text/plain");
         yield return CreateSampleFile("sample.pem", "application/x-pem-file");
+        yield return CreateSampleFile("sample.pfx", "application/x-pkcs12");
+        yield return CreateSampleFile("sample-3des.pfx", "application/x-pkcs12");
+        yield return CreateSampleFile("sample-rc2.pfx", "application/x-pkcs12");
         yield return CreateSampleFile("sample.vcf", "text/vcard");
         yield return CreateSampleFile("sample.ics", "text/calendar");
         yield return CreateSampleFile("sample.eml", "message/rfc822");

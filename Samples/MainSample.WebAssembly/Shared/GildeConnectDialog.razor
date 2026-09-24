@@ -1,0 +1,76 @@
+@using System.Globalization
+@inherits ComponentBase
+
+@* The widget is a custom element of connect.gilde.org, loaded once in index.html. Inline means it renders
+   its content right here instead of a button with its own dialog - this already is the dialog. *@
+@if (Widget == GildeConnectWidget.Support)
+{
+    <gilde-support project="@Project"
+                   widget="support"
+                   inline
+                   theme="@Theme"
+                   accent="@Accent"
+                   language="@Language"
+                   title="@Title"
+                   width="560"
+                   radius="18"
+                   padding="28"
+                   show-logo="true"
+                   show-description="false"
+                   show-homepage="false"
+                   show-preview-notice="false"
+                   show-footer="false"
+                   footer-brand="@ProjectName"
+                   footer-tagline="gilde.org"
+                   show-support-hint="false"
+                   support-layout="rows"
+                   show-support-icons="true"
+                   show-support-qr="true">@Title</gilde-support>
+}
+else
+{
+    <gilde-contact project="@Project"
+                   widget="contact"
+                   inline
+                   theme="@Theme"
+                   accent="@Accent"
+                   language="@Language"
+                   title="@Title"
+                   width="560"
+                   radius="18"
+                   padding="28"
+                   show-logo="true"
+                   show-description="false"
+                   show-homepage="false"
+                   show-preview-notice="false"
+                   show-footer="false"
+                   footer-brand="@ProjectName"
+                   footer-tagline="gilde.org">@Title</gilde-contact>
+}
+
+@code {
+
+    /// <summary>The repository the widget posts to.</summary>
+    public const string Project = "fgilde/MudBlazor.Extensions";
+
+    /// <summary>Name shown to the user.</summary>
+    public const string ProjectName = "MudBlazor.Extensions";
+
+    [Parameter] public GildeConnectWidget Widget { get; set; }
+
+    /// <summary>Dark or light, taken from the app so the widget does not clash with it.</summary>
+    [Parameter] public bool IsDark { get; set; } = true;
+
+    /// <summary>The accent of the widget - the primary colour the app currently uses.</summary>
+    [Parameter] public string Accent { get; set; }
+
+    [Parameter] public string Title { get; set; }
+
+    /// <summary>
+    /// The language the widget speaks. Passed in rather than read from the current culture here: the dialog
+    /// renders in its own context and the app is the one that knows which language it switched to.
+    /// </summary>
+    [Parameter] public string Language { get; set; } = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+
+    private string Theme => IsDark ? "dark" : "light";
+}

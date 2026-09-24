@@ -1563,6 +1563,7 @@ HeetchLightBase16: هيتشلايت بيس16
 Height: ارتفاع
 HeliosBase16: هيليوس بيس16
 Hello: مرحبا
+Hello from a modal dialog: مرحبا من حوار مودالي
 Hello from dialog: مرحبا من مربع الحوار
 Hello from dialog 1: مرحبا من مربع الحوار 1
 Hello from dialog sample page: مرحبا من صفحة نموذج مربع الحوار
@@ -3692,6 +3693,7 @@ Show flat: عرض شقة
 Show info: عرض المعلومات
 Show info for: إظهار معلومات عن
 Show Markup: إظهار الترميز
+Show Modal Dialog: عرض الحوار المودي
 Show notification: إظهار الإشعار
 Show notification while recording: إظهار الإشعار أثناء التسجيل
 Show on github: عرض على github

@@ -1563,6 +1563,7 @@ HeetchLightBase16: HeetchLightBase16
 Height: Височина
 HeliosBase16: ХелиосБаза16
 Hello: Здравейте
+Hello from a modal dialog: Здравейте от модален диалог
 Hello from dialog: Здравейте от диалоговия прозорец
 Hello from dialog 1: Здравейте от диалогов прозорец 1
 Hello from dialog sample page: Здравейте от примерна страница на диалоговия прозорец
@@ -3692,6 +3693,7 @@ Show flat: Покажи апартамент
 Show info: Показване на информация
 Show info for: Покажи информация за
 Show Markup: Показване на маркиране
+Show Modal Dialog: Покажи модален диалог
 Show notification: Показване на известие
 Show notification while recording: Показване на известие по време на запис
 Show on github: Показване в github
