@@ -913,6 +913,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Supported File Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adobe-illustrator-and-postscript" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adobe Illustrator and PostScript
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2098,8 +2115,13 @@
 </span></code></pre></div>
 <h2 id="supported-file-types">Supported File Types<a class="headerlink" href="#supported-file-types" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Documents</strong>: PDF, DOC, DOCX</li>
-<li><strong>Images</strong>: JPG, PNG, GIF, SVG, BMP, WEBP</li>
+<li><strong>Documents</strong>: PDF, DOC, DOCX, RTF, EML, MHT/MHTML, XPS/OXPS</li>
+<li><strong>Adobe artwork</strong>: AI/AIT (PDF-compatible files), EPS/EPSF/EPSI/EPI/PS (embedded TIFF or EPSI previews)</li>
+<li><strong>Images</strong>: JPG, PNG, GIF, SVG/SVGZ, BMP, WEBP, TIFF, TGA, QOI, PBM, PGM, PPM, AVIF, HEIC/HEIF, PSD/PSB</li>
+<li><strong>OpenDocument</strong>: ODT/ODS/ODP/ODG and their template variants</li>
+<li><strong>Comic books</strong>: CBZ and CBR</li>
+<li><strong>Columnar data</strong>: Apache Parquet, Arrow IPC and Feather</li>
+<li><strong>Medical images</strong>: uncompressed little-endian DICOM</li>
 <li><strong>Videos</strong>: MP4, WEBM, OGG</li>
 <li><strong>Audio</strong>: MP3, WAV, OGG</li>
 <li><strong>Text</strong>: TXT, CSV, JSON, XML</li>
@@ -2107,6 +2129,22 @@
 <li><strong>Archives</strong>: ZIP (with file browser)</li>
 <li><strong>Markdown</strong>: MD (rendered as HTML)</li>
 </ul>
+<p><code>MudExImageViewer</code> uses the browser's native AVIF support and loads pinned browser decoders for PSD/PSB and
+HEIC/HEIF only when one of those formats is opened. Photoshop files expose a layer panel whose entries can be
+shown and hidden. Common groups, opacity values and blend modes are recomposited in the browser; complex clipping,
+adjustment-layer and effect combinations can only be approximated without Photoshop's rendering engine.</p>
+<p>The columnar-data viewer loads Arrow plus LZ4 and Zstandard codecs on demand so that compressed Arrow IPC and
+Feather record batches can be read. DICOM intentionally supports the common uncompressed little-endian transfer
+syntaxes; compressed clinical images show an explicit compatibility message instead of being interpreted
+incorrectly. XPS and OpenDocument rendering focuses on safe preview content and does not execute embedded scripts
+or macros.</p>
+<h3 id="adobe-illustrator-and-postscript">Adobe Illustrator and PostScript<a class="headerlink" href="#adobe-illustrator-and-postscript" title="Permanent link">&para;</a></h3>
+<p><code>MudExFileDisplayAdobe</code> uses the browser's native PDF preview for AI and AIT files saved with Illustrator's
+<strong>Create PDF Compatible File</strong> option. Keeping this path isolated from the optional PDF component also avoids
+collisions with AMD loaders used by code editors. For EPS, EPSF, EPSI, EPI, PS, and older Illustrator files it extracts
+an embedded TIFF or device-independent EPSI preview and opens that preview in <code>MudExImageViewer</code>.</p>
+<p>The component does not execute PostScript in the browser. Files without a PDF-compatible section or an
+embedded preview therefore show an explanatory fallback instead of attempting an unsafe or incomplete render.</p>
 <h2 id="mudexfiledisplayzip">MudExFileDisplayZip<a class="headerlink" href="#mudexfiledisplayzip" title="Permanent link">&para;</a></h2>
 <p>Display ZIP archive contents with a file browser:</p>
 <p><img alt="File Display ZIP" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/FileDisplayZip.png" /></p>
