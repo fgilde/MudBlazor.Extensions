@@ -1,4 +1,11 @@
 ## Change Log    
+ - 9.11.0 > Package: [MudBlazor.Extensions 9.11.0 on NuGet](https://www.nuget.org/packages/MudBlazor.Extensions/9.11.0)
+ - 9.11.0 > Add dedicated file viewers for Adobe Illustrator and PostScript, OpenDocument, XPS and OpenXPS, DICOM, Parquet, Arrow, Feather, and CBZ/CBR comic books
+ - 9.11.0 > Extend MudExImageViewer with HEIC and HEIF decoding, PSD and PSB layer controls, and support for SVGZ, TGA, QOI, PBM, PGM, and PPM images
+ - 9.11.0 > Add MHTML document support
+ - 9.11.0 > Fix Monaco AMD loader conflicts affecting HEIC, HEIF, Illustrator, and PDF previews
+ - 9.11.0 > Fix regular and archived PDF loading, viewer reloads, and transient archive source errors
+ - 9.11.0 > Add demo files and regression coverage for the new formats
  - 9.7.0 > Update to MudBlazor 9.7.0
  - 9.5.0 > Add date, time and typed range sliders with zoom and custom templates for [MudExRangeSlider](https://www.mudex.org/range-slider)
  - 9.5.0 > New Style editor and Class editor components, now used in MudExComponentPropertyGrid
