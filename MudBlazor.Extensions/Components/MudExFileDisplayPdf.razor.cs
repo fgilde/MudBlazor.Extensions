@@ -3,7 +3,9 @@ using Gotho.BlazorPdf;
 using Gotho.BlazorPdf.Config;
 using Gotho.BlazorPdf.MudBlazor;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Services;
 using Nextended.Core;
 using Nextended.Core.Extensions;
@@ -20,6 +22,13 @@ public partial class MudExFileDisplayPdf : IMudExFileDisplay
     private int _totalPages;
     private int _currentPage;
     private bool _cssLoaded;
+    private bool _pdfModuleReady;
+    private bool _pdfModuleLoading;
+    private bool _pdfViewerRendered;
+    private string _initialPdfUrl;
+    private string _initialPdfFileName;
+    private object _loadedPdfSource;
+    private IJSObjectReference _moduleLoader;
 
     [Inject] private MudExFileService FileService { get; set; }
 
@@ -62,26 +71,6 @@ public partial class MudExFileDisplayPdf : IMudExFileDisplay
         });
     }
 
-    /// <inheritdoc />
-    public override async Task SetParametersAsync(ParameterView parameters)
-    {
-        var fileInfosUpdated = parameters.TryGetValue<IMudExFileDisplayInfos>(nameof(FileDisplayInfos), out var fileDisplayInfos) && FileDisplayInfos != fileDisplayInfos;
-        await base.SetParametersAsync(parameters);
-
-        if (fileInfosUpdated)
-        {
-            try
-            {
-                await LoadPdfAsync(fileDisplayInfos);
-            }
-            catch (Exception e)
-            {
-                MudExFileDisplay?.ShowError(e.Message);
-                Console.WriteLine(e);
-            }
-        }
-    }
-
     private async Task LoadPdfAsync(IMudExFileDisplayInfos fileDisplayInfos)
     {
         if (_pdfViewer == null || fileDisplayInfos == null)
@@ -104,21 +93,67 @@ public partial class MudExFileDisplayPdf : IMudExFileDisplay
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
+
+        if (!_pdfModuleReady && !_pdfModuleLoading)
         {
-            await EnsureCssLoadedAsync();
-            await ApplyThemeBackgroundAsync();
-            if (FileDisplayInfos != null && _pdfViewer != null)
+            _pdfModuleLoading = true;
+            try
             {
-                try
+                await EnsureCssLoadedAsync();
+                await ApplyThemeBackgroundAsync();
+                _moduleLoader = await JsRuntime.InvokeAsync<IJSObjectReference>(
+                    "import",
+                    JsImportHelper.JsPath("/js/components/MudExModuleLoader.min.js"));
+                await _moduleLoader.InvokeVoidAsync(
+                    "preloadModuleWithoutAmd",
+                    "./_content/Gotho.BlazorPdf/blazorpdf.min.js?v=2.1.0");
+
+                // Let Gotho initialize URL-based PDFs in its own first-render lifecycle. Calling
+                // LoadPdfAsync while that lifecycle is still pending can render the same canvas twice.
+                if (FileDisplayInfos?.ContentStream == null && !string.IsNullOrEmpty(FileDisplayInfos?.Url))
                 {
-                    await LoadPdfAsync(FileDisplayInfos);
+                    _initialPdfUrl = FileDisplayInfos.Url;
+                    _initialPdfFileName = FileDisplayInfos.FileName ?? "document.pdf";
+                    _loadedPdfSource = FileDisplayInfos.SourceKey();
                 }
-                catch (Exception e)
-                {
-                    MudExFileDisplay?.ShowError(e.Message);
-                    Console.WriteLine(e);
-                }
+
+                _pdfModuleReady = true;
+                StateHasChanged();
+            }
+            catch (Exception e)
+            {
+                MudExFileDisplay?.ShowError(e.Message);
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                _pdfModuleLoading = false;
+            }
+        }
+
+        if (_pdfModuleReady && _pdfViewer != null && !_pdfViewerRendered)
+        {
+            _pdfViewerRendered = true;
+            StateHasChanged();
+            return;
+        }
+
+        if (_pdfModuleReady && _pdfViewer != null && FileDisplayInfos.HasSource())
+        {
+            var source = FileDisplayInfos.SourceKey();
+            if (Equals(_loadedPdfSource, source))
+                return;
+
+            _loadedPdfSource = source;
+            try
+            {
+                await LoadPdfAsync(FileDisplayInfos);
+            }
+            catch (Exception e)
+            {
+                _loadedPdfSource = null;
+                MudExFileDisplay?.ShowError(e.Message);
+                Console.WriteLine(e);
             }
         }
     }
@@ -179,5 +214,13 @@ public partial class MudExFileDisplayPdf : IMudExFileDisplay
     {
         _currentPage = args.CurrentPage;
         _totalPages = args.TotalPages;
+    }
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        if (_moduleLoader != null)
+            await _moduleLoader.DisposeAsync();
+        await base.DisposeAsync();
     }
 }

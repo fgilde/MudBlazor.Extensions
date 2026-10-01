@@ -53,14 +53,40 @@ The `MudExFileDisplay` component is designed to display file contents with autom
 
 ## Supported File Types
 
-- **Documents**: PDF, DOC, DOCX
-- **Images**: JPG, PNG, GIF, SVG, BMP, WEBP
+- **Documents**: PDF, DOC, DOCX, RTF, EML, MHT/MHTML, XPS/OXPS
+- **Adobe artwork**: AI/AIT (PDF-compatible files), EPS/EPSF/EPSI/EPI/PS (embedded TIFF or EPSI previews)
+- **Images**: JPG, PNG, GIF, SVG/SVGZ, BMP, WEBP, TIFF, TGA, QOI, PBM, PGM, PPM, AVIF, HEIC/HEIF, PSD/PSB
+- **OpenDocument**: ODT/ODS/ODP/ODG and their template variants
+- **Comic books**: CBZ and CBR
+- **Columnar data**: Apache Parquet, Arrow IPC and Feather
+- **Medical images**: uncompressed little-endian DICOM
 - **Videos**: MP4, WEBM, OGG
 - **Audio**: MP3, WAV, OGG
 - **Text**: TXT, CSV, JSON, XML
 - **Code**: JS, CS, HTML, CSS (with syntax highlighting)
 - **Archives**: ZIP (with file browser)
 - **Markdown**: MD (rendered as HTML)
+
+`MudExImageViewer` uses the browser's native AVIF support and loads pinned browser decoders for PSD/PSB and
+HEIC/HEIF only when one of those formats is opened. Photoshop files expose a layer panel whose entries can be
+shown and hidden. Common groups, opacity values and blend modes are recomposited in the browser; complex clipping,
+adjustment-layer and effect combinations can only be approximated without Photoshop's rendering engine.
+
+The columnar-data viewer loads Arrow plus LZ4 and Zstandard codecs on demand so that compressed Arrow IPC and
+Feather record batches can be read. DICOM intentionally supports the common uncompressed little-endian transfer
+syntaxes; compressed clinical images show an explicit compatibility message instead of being interpreted
+incorrectly. XPS and OpenDocument rendering focuses on safe preview content and does not execute embedded scripts
+or macros.
+
+### Adobe Illustrator and PostScript
+
+`MudExFileDisplayAdobe` uses the browser's native PDF preview for AI and AIT files saved with Illustrator's
+**Create PDF Compatible File** option. Keeping this path isolated from the optional PDF component also avoids
+collisions with AMD loaders used by code editors. For EPS, EPSF, EPSI, EPI, PS, and older Illustrator files it extracts
+an embedded TIFF or device-independent EPSI preview and opens that preview in `MudExImageViewer`.
+
+The component does not execute PostScript in the browser. Files without a PDF-compatible section or an
+embedded preview therefore show an explanatory fallback instead of attempting an unsafe or incomplete render.
 
 ## MudExFileDisplayZip
 

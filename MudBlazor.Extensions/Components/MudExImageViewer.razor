@@ -17,6 +17,31 @@
 
     <div @ref=ElementReference id="@_id" style="@InnerViewerStyle()">
     </div>
+    @if (ShowLayerPanel && _layerPanelOpen && _layers.Count > 0 && string.IsNullOrEmpty(StatusText))
+    {
+        <MudPaper Class="pa-2" Style="position: absolute; top: 48px; right: 8px; z-index: 3; max-height: calc(100% - 64px); min-width: 220px; max-width: 320px; overflow: auto;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <MudIcon Icon="@Icons.Material.Filled.Layers" Size="MudBlazor.Size.Small" />
+                <MudText Typo="Typo.subtitle2">@TryLocalize("Layers")</MudText>
+                <MudSpacer />
+                <MudExIconButton Size="MudBlazor.Size.Small" Icon="@Icons.Material.Filled.Close" OnClick="@ToggleLayerPanel" />
+            </div>
+            @foreach (var layer in _layers)
+            {
+                <div style="margin-left: @(layer.Depth * 16)px; display: flex; align-items: center;">
+                    @if (layer.IsGroup)
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Folder" Size="MudBlazor.Size.Small" Class="mr-1" />
+                    }
+                    <MudCheckBox T="bool"
+                                 Dense="true"
+                                 Value="@layer.Visible"
+                                 ValueChanged="@(visible => SetLayerVisibilityAsync(layer, visible))"
+                                 Label="@layer.Name" />
+                </div>
+            }
+        </MudPaper>
+    }
     @if (ShowTools() && string.IsNullOrEmpty(StatusText) && (ToolbarAlign().ToolbarPosition == "bottom" || ToolbarAlign().ToolbarPosition == "center"))
     {
         @RenderToolBar()
@@ -51,6 +76,7 @@
                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Fullscreen")" Visible="@ShowFullScreenButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@FullscreenClick" Icon="@FullScreenButtonIcon"/>
                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Print")" Visible="@ShowPrintButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@PrintClick" Icon="@PrintButtonIcon"/>
                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Save as")" Visible="@ShowSaveButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@SaveAsClick" Icon="@SaveButtonIcon"/>
+                       <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Layers")" Visible="@(ShowLayerPanel && _layers.Count > 0)" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@ToggleLayerPanel" Icon="@Icons.Material.Filled.Layers"/>
                        @if (AllowRubberBandSelection)
                        {
                             <MudTooltip RootClass="ml-1" Class="ml-1" Text="@TryLocalize("Start/Stop selection")">

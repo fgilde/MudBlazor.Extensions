@@ -104,6 +104,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExModuleLoader.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExModuleLoader.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExFileDisplayExcelUniver.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExFileDisplayExcelUniver.js"
@@ -119,6 +125,12 @@
     "outputFileName": "wwwroot/js/components/MudExFileDisplayModel3d.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExFileDisplayModel3d.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExFileDisplayColumnarData.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExFileDisplayColumnarData.js"
     ]
   },
   {

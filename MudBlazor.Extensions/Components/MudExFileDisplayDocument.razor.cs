@@ -12,8 +12,8 @@ using Nextended.Core.Extensions;
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
-/// Document file viewer for DOCX, RTF, MSG and EML files.
-/// Uses docx-preview for DOCX, RtfPipe for RTF, MsgReader for MSG (Outlook) and a lightweight MIME parser for EML files.
+/// Document file viewer for DOCX, RTF, MSG, EML and MHTML files.
+/// Uses docx-preview for DOCX, RtfPipe for RTF, MsgReader for MSG (Outlook) and a lightweight MIME parser for EML/MHTML files.
 /// </summary>
 public partial class MudExFileDisplayDocument : IMudExFileDisplay
 {
@@ -23,6 +23,7 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         Rtf,
         Msg,
         Eml,
+        Mhtml,
         Unsupported
     }
 
@@ -67,13 +68,17 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
             "text/rtf",
             "application/rtf",
             "application/vnd.ms-outlook",
-            "message/rfc822");
+            "message/rfc822",
+            "application/x-mimearchive",
+            "multipart/related");
 
         var extensionMatch = !string.IsNullOrEmpty(fileName) && (
             fileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".rtf", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".msg", StringComparison.OrdinalIgnoreCase) ||
-            fileName.EndsWith(".eml", StringComparison.OrdinalIgnoreCase));
+            fileName.EndsWith(".eml", StringComparison.OrdinalIgnoreCase) ||
+            fileName.EndsWith(".mht", StringComparison.OrdinalIgnoreCase) ||
+            fileName.EndsWith(".mhtml", StringComparison.OrdinalIgnoreCase));
 
         return Task.FromResult(mimeMatch || extensionMatch);
     }
@@ -159,6 +164,9 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
                     case DocFormat.Eml:
                         await HandleEmlAsync(bytes);
                         break;
+                    case DocFormat.Mhtml:
+                        await HandleMhtmlAsync(bytes);
+                        break;
                     default:
                         _isLoading = false;
                         _isUnsupported = true;
@@ -181,6 +189,11 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
     {
         var contentType = fileInfos?.ContentType ?? string.Empty;
         var fileName = fileInfos?.FileName ?? string.Empty;
+
+        if (contentType.Contains("x-mimearchive", StringComparison.OrdinalIgnoreCase) ||
+            fileName.EndsWith(".mht", StringComparison.OrdinalIgnoreCase) ||
+            fileName.EndsWith(".mhtml", StringComparison.OrdinalIgnoreCase))
+            return DocFormat.Mhtml;
 
         // MSG detection (MIME or extension)
         if (contentType.Contains("vnd.ms-outlook", StringComparison.OrdinalIgnoreCase) ||
@@ -264,6 +277,22 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         {
             _pendingHtmlContent = html;
         }
+    }
+
+    private async Task HandleMhtmlAsync(byte[] bytes)
+    {
+        // MHTML is a multipart/related MIME message. Reusing the mail parser also gives us charset,
+        // quoted-printable/base64 and Content-Location/CID handling without executing document scripts.
+        var message = MimeMessage.Parse(Encoding.Latin1.GetString(bytes));
+        var html = message.HtmlBody ?? (message.TextBody != null
+            ? $"<pre>{System.Net.WebUtility.HtmlEncode(message.TextBody)}</pre>"
+            : "<p>No document body available.</p>");
+        html = message.ResolveCidImages(html);
+
+        if (JsReference != null)
+            await RenderHtmlInternalAsync(html);
+        else
+            _pendingHtmlContent = html;
     }
 
     private async Task HandleMsgAsync(byte[] bytes)

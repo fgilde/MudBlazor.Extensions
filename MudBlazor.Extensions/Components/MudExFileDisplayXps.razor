@@ -1,0 +1,31 @@
+@inherits MudExBaseComponent<MudExFileDisplayXps>
+
+<style>
+    .mud-ex-xps { width:100%; height:100%; display:flex; flex-direction:column; min-height:0; }
+    .mud-ex-xps-page { flex:1; min-height:0; overflow:auto; padding:18px; background:#777; }
+    .mud-ex-xps-paper { margin:auto; max-width:100%; background:#fff; box-shadow:0 2px 10px #333; }
+    .mud-ex-xps-paper svg { display:block; width:100%; height:auto; }
+</style>
+<div class="mud-ex-xps">
+    @if (_loading)
+    {
+        <MudProgressCircular Style="margin:auto" Color="Color.Primary" Indeterminate="true" />
+    }
+    else if (!string.IsNullOrWhiteSpace(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Class="ma-3">@_errorMessage</MudAlert>
+    }
+    else if (_selected != null)
+    {
+        <MudToolBar Dense="true">
+            <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" Disabled="@(!CanGoBack)" OnClick="@(() => Move(-1))" />
+            <MudText Typo="Typo.caption">@_selected.Number / @_document.Pages.Count</MudText>
+            <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" Disabled="@(!CanGoForward)" OnClick="@(() => Move(1))" />
+        </MudToolBar>
+        <div class="mud-ex-xps-page">
+            <div class="mud-ex-xps-paper" style="aspect-ratio:@(_selected.Width.ToString(System.Globalization.CultureInfo.InvariantCulture))/@(_selected.Height.ToString(System.Globalization.CultureInfo.InvariantCulture))">
+                @((MarkupString)_selected.Svg)
+            </div>
+        </div>
+    }
+</div>

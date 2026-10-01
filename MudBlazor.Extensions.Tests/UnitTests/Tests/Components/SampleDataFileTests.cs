@@ -1,8 +1,10 @@
 using System.Text;
+using System.IO.Compression;
 using Bunit;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
+using SixLabors.ImageSharp;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
@@ -137,5 +139,78 @@ public class SampleDataFileTests
         Assert.Equal(1, meta["Certificates"]);
         Assert.Contains("mudex.demo.local", cut.Markup);
         Assert.Contains("DNS-Name=localhost", cut.Markup);
+    }
+
+    [Fact]
+    public void NewImageSamples_AreValidAndSvgzInflates()
+    {
+        foreach (var name in new[] { "sample.tga", "sample.qoi", "sample.pbm", "sample.pgm", "sample.ppm" })
+        {
+            using var image = Image.Load(Path.Combine(SampleDirectory, name));
+            Assert.True(image.Width > 0, name);
+            Assert.True(image.Height > 0, name);
+        }
+
+        using var compressed = File.OpenRead(Path.Combine(SampleDirectory, "sample.svgz"));
+        using var gzip = new GZipStream(compressed, CompressionMode.Decompress);
+        using var reader = new StreamReader(gzip);
+        Assert.Contains("<svg", reader.ReadToEnd());
+    }
+
+    [Fact]
+    public void SampleMhtml_ResolvesItsEmbeddedImage()
+    {
+        var raw = Encoding.Latin1.GetString(File.ReadAllBytes(Path.Combine(SampleDirectory, "sample.mhtml")));
+        var message = MimeMessage.Parse(raw);
+        var html = message.ResolveCidImages(message.HtmlBody);
+
+        Assert.Contains("MHTML sample", html);
+        Assert.Contains("data:image/png;base64,", html);
+        Assert.DoesNotContain("cid:mudex-logo", html);
+    }
+
+    [Fact]
+    public void ComicAndPackageSamples_ContainRenderableContent()
+    {
+        using (var comic = new ZipArchive(Load("sample.cbz"), ZipArchiveMode.Read))
+            Assert.Equal(3, comic.Entries.Count(e => e.FullName.EndsWith(".png", StringComparison.OrdinalIgnoreCase)));
+
+        var cbrBytes = File.ReadAllBytes(Path.Combine(SampleDirectory, "sample.cbr"));
+        Assert.Equal("Rar!", Encoding.ASCII.GetString(cbrBytes, 0, 4));
+
+        foreach (var name in new[] { "sample.odt", "sample.ods", "sample.odp", "sample.odg" })
+        {
+            using var document = OpenDocumentFile.Open(File.ReadAllBytes(Path.Combine(SampleDirectory, name)));
+            Assert.NotEmpty(document.Pages);
+            Assert.Contains('<', string.Join(' ', document.Pages.Select(p => p.Html)));
+        }
+
+        foreach (var name in new[] { "sample.xps", "sample.oxps" })
+        {
+            using var document = XpsFile.Open(File.ReadAllBytes(Path.Combine(SampleDirectory, name)));
+            Assert.Single(document.Pages);
+            Assert.Contains("MudEx XPS sample", document.Pages[0].Svg);
+        }
+    }
+
+    [Fact]
+    public void DicomAndBinaryDataSamples_HaveValidStructure()
+    {
+        var dicom = DicomFile.Read(File.ReadAllBytes(Path.Combine(SampleDirectory, "sample.dcm")));
+        Assert.Equal(128, dicom.Columns);
+        Assert.Equal(96, dicom.Rows);
+        using (var image = Image.Load(dicom.RenderPng()))
+        {
+            Assert.Equal(128, image.Width);
+            Assert.Equal(96, image.Height);
+        }
+
+        foreach (var name in new[] { "sample.psd", "sample.psb" })
+            Assert.Equal("8BPS", Encoding.ASCII.GetString(File.ReadAllBytes(Path.Combine(SampleDirectory, name)), 0, 4));
+        Assert.Contains("ftypavif", Encoding.ASCII.GetString(File.ReadAllBytes(Path.Combine(SampleDirectory, "sample.avif")), 0, 32));
+        foreach (var name in new[] { "sample.heic", "sample.heif" })
+            Assert.Contains("heic", Encoding.ASCII.GetString(File.ReadAllBytes(Path.Combine(SampleDirectory, name)), 0, 32));
+        foreach (var name in new[] { "sample.parquet", "sample.arrow", "sample.feather" })
+            Assert.True(new FileInfo(Path.Combine(SampleDirectory, name)).Length > 100, name);
     }
 }

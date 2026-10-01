@@ -3407,6 +3407,39 @@
             Shows an error message
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayAdobe">
+            <summary>
+            Viewer for Adobe Illustrator and PostScript artwork. PDF-compatible Illustrator files are shown with the
+            browser's native PDF preview; EPS, EPSI and legacy Illustrator files use their embedded TIFF or EPSI preview when available.
+            PostScript is never executed in the browser.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayAdobe.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayAdobe.RenderPriority">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayAdobe.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayAdobe.MudExFileDisplay">
+            <summary>
+            Reference to the parent <see cref="P:MudBlazor.Extensions.Components.MudExFileDisplayAdobe.MudExFileDisplay"/> when this viewer is selected automatically.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayAdobe.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayAdobe.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayAdobe.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayAdobe.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayCertificate">
             <summary>
             Viewer for X.509 certificate files (.pem, .crt, .cer, .der, .pfx, .p12, .p7b, .p7c). Shows subject, issuer,
@@ -3492,6 +3525,74 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData">
+            <summary>Client-side tabular viewer for Apache Parquet, Arrow IPC and Feather files.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.RenderPriority">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.MaxRows">
+            <summary>Maximum number of rows rendered into the browser DOM.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.MudExFileDisplay">
+            <summary>Reference to the parent file display.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.GetJsArguments">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.ImportModuleAndCreateJsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.OnRendered(System.Int32,System.Int32)">
+            <summary>Called when data has been parsed and rendered.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData.OnError(System.String)">
+            <summary>Called when parsing fails.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayComic">
+            <summary>
+            Comic book viewer for CBZ and CBR files. Pages are sorted naturally and displayed with the image viewer.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayComic.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayComic.RenderPriority">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayComic.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayComic.MudExFileDisplay">
+            <summary>Reference to the parent file display.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayComic.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayComic.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayComic.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayComic.DisposeAsync">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDataBase">
@@ -3599,6 +3700,33 @@
             Closes the dialog.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDicom">
+            <summary>Viewer for uncompressed little-endian DICOM images with common patient and study metadata.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDicom.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDicom.RenderPriority">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDicom.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDicom.MudExFileDisplay">
+            <summary>Reference to the parent file display.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDicom.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDicom.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDicom.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDicom.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDiff">
             <summary>
             Viewer for unified diff files (.diff, .patch) as produced by <c>git diff</c>, <c>git format-patch</c> or
@@ -3694,8 +3822,8 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDocument">
             <summary>
-            Document file viewer for DOCX, RTF, MSG and EML files.
-            Uses docx-preview for DOCX, RtfPipe for RTF, MsgReader for MSG (Outlook) and a lightweight MIME parser for EML files.
+            Document file viewer for DOCX, RTF, MSG, EML and MHTML files.
+            Uses docx-preview for DOCX, RtfPipe for RTF, MsgReader for MSG (Outlook) and a lightweight MIME parser for EML/MHTML files.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDocument.Name">
@@ -4299,6 +4427,33 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayOpenDocument">
+            <summary>Client-side viewer for OpenDocument text, spreadsheet, presentation and drawing files.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayOpenDocument.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayOpenDocument.RenderPriority">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayOpenDocument.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayOpenDocument.MudExFileDisplay">
+            <summary>Reference to the parent file display.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayOpenDocument.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayOpenDocument.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayOpenDocument.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayOpenDocument.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayPdf">
             <summary>
             PDF file viewer using Gotho.BlazorPdf with MudBlazor integration
@@ -4330,10 +4485,10 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPdf.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPdf.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPdf.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPdf.OnAfterRenderAsync(System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPdf.DisposeAsync">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayPresentation">
@@ -4531,6 +4686,33 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayVCard.CalendarEvent.Organizer">
             <summary>Organizer (ORGANIZER).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayXps">
+            <summary>Client-side XPS and OpenXPS viewer for fixed pages, paths, text and embedded raster images.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayXps.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayXps.RenderPriority">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayXps.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayXps.MudExFileDisplay">
+            <summary>Reference to the parent file display.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayXps.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayXps.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayXps.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayXps.DisposeAsync">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayZip">
             <summary>
@@ -6410,6 +6592,11 @@
             Extra additional toolbar content for the selected area toolbar for <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.AllowRubberBandSelection"/>
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowLayerPanel">
+            <summary>
+            Shows the layer panel for image formats that expose editable layers, such as PSD and PSB.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ImageAreaSelected">
             <summary>
             Callback when the error state changes
@@ -6635,6 +6822,14 @@
             Called when the viewer is created
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.OnImagePrepared(System.Int32,System.Int32,MudBlazor.Extensions.Components.MudExImageViewerLayerInfo[])">
+            <summary>
+            Receives decoded image dimensions and the optional layer tree from the browser decoder.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.OnImageLoadError(System.String)">
+            <summary>Reports browser-side decoding errors to the hosting file display.</summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.ImportModuleAndCreateJsAsync">
             <inheritdoc />
         </member>
@@ -6723,6 +6918,24 @@
             <summary>
             Prints the image
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExImageViewerLayerInfo">
+            <summary>Describes a Photoshop layer exposed by <see cref="T:MudBlazor.Extensions.Components.MudExImageViewer"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewerLayerInfo.Id">
+            <summary>Stable path used to address the decoded layer in JavaScript.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewerLayerInfo.Name">
+            <summary>Layer name stored in the document.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewerLayerInfo.Visible">
+            <summary>Whether the layer itself is visible.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewerLayerInfo.Depth">
+            <summary>Nesting depth in the Photoshop layer tree.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewerLayerInfo.IsGroup">
+            <summary>Whether this entry represents a layer group.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExInput`1">
             <summary>
@@ -23824,6 +24037,13 @@
             Converts the given data to an HTML string.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.AdobeGraphicsFile">
+            <summary>
+            Reads the browser-friendly representation embedded in Illustrator and PostScript files.
+            It deliberately does not execute PostScript: PDF-compatible Illustrator data and the two
+            preview formats defined by the EPS specification are safe to hand to the existing viewers.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation">
             <summary>
             The key derivation of PKCS#12, RFC 7292 appendix B.2.
@@ -24021,7 +24241,7 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.Internal.MimeMessage.ResolveCidImages(System.String)">
-            <summary>Replaces cid: references in the html with inline data-URIs.</summary>
+            <summary>Replaces CID and MHTML Content-Location references in the html with inline data-URIs.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.Internal.MimeMessage.PrependHeaders(System.String)">
             <summary>Prepends a small From/To/Subject/Date header block to the rendered html body.</summary>

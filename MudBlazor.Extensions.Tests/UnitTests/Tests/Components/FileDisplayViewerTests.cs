@@ -1,5 +1,6 @@
 ﻿using System.IO.Compression;
 using System.Security.Cryptography;
+using System.Buffers.Binary;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
@@ -7,6 +8,8 @@ using Bunit;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
@@ -538,6 +541,151 @@ public class FileDisplayViewerTests
         // 1219200 EMU is exactly a tenth of the slide width, so it has to become 10 cqw
         Assert.Contains("left:10.000cqw", html);
         Assert.Contains("width:50.000cqw", html);
+    }
+
+    [Theory]
+    [InlineData("art.ai", "application/octet-stream")]
+    [InlineData("template.ait", "application/octet-stream")]
+    [InlineData("art.eps", "application/postscript")]
+    [InlineData("art.epsi", "application/octet-stream")]
+    [InlineData("print.ps", "application/postscript")]
+    [InlineData("download", "application/vnd.adobe.illustrator")]
+    public async Task AdobeViewer_ClaimsIllustratorAndPostScriptFiles(string fileName, string contentType)
+    {
+        var viewer = new MudExFileDisplayAdobe();
+
+        var canHandle = await viewer.CanHandleFileAsync(
+            new FileInfos(fileName, contentType, new MemoryStream(new byte[] { 1 })), null);
+
+        Assert.True(canHandle);
+        Assert.Equal(100, viewer.RenderPriority);
+    }
+
+    [Fact]
+    public async Task NewViewers_ClaimTheirDedicatedFormats()
+    {
+        var cases = new (IMudExFileDisplay Viewer, string FileName, string ContentType)[]
+        {
+            (new MudExFileDisplayDocument(), "saved-page.mhtml", "application/x-mimearchive"),
+            (new MudExFileDisplayComic(), "issue.cbz", "application/vnd.comicbook+zip"),
+            (new MudExFileDisplayComic(), "issue.cbr", "application/vnd.comicbook-rar"),
+            (new MudExFileDisplayOpenDocument(), "letter.odt", "application/vnd.oasis.opendocument.text"),
+            (new MudExFileDisplayOpenDocument(), "sheet.ods", "application/vnd.oasis.opendocument.spreadsheet"),
+            (new MudExFileDisplayOpenDocument(), "slides.odp", "application/vnd.oasis.opendocument.presentation"),
+            (new MudExFileDisplayOpenDocument(), "drawing.odg", "application/vnd.oasis.opendocument.graphics"),
+            (new MudExFileDisplayXps(), "fixed.xps", "application/vnd.ms-xpsdocument"),
+            (new MudExFileDisplayXps(), "fixed.oxps", "application/oxps"),
+            (new MudExFileDisplayColumnarData(), "data.parquet", "application/vnd.apache.parquet"),
+            (new MudExFileDisplayColumnarData(), "data.arrow", "application/vnd.apache.arrow.file"),
+            (new MudExFileDisplayColumnarData(), "data.feather", "application/x-feather"),
+            (new MudExFileDisplayDicom(), "scan.dcm", "application/dicom"),
+            (new MudExImageViewer(), "layers.psd", "image/vnd.adobe.photoshop"),
+            (new MudExImageViewer(), "large.psb", "image/vnd.adobe.photoshop"),
+            (new MudExImageViewer(), "photo.heic", "image/heic"),
+            (new MudExImageViewer(), "photo.heif", "image/heif"),
+            (new MudExImageViewer(), "photo.avif", "image/avif")
+        };
+
+        foreach (var (viewer, fileName, contentType) in cases)
+        {
+            var canHandle = await viewer.CanHandleFileAsync(new FileInfos(fileName, contentType, Stream.Null), null);
+            Assert.True(canHandle, $"{viewer.Name} should handle {fileName}");
+        }
+    }
+
+    [Theory]
+    [InlineData("compressed.svgz", "image/svg+xml-compressed")]
+    [InlineData("texture.tga", "application/octet-stream")]
+    [InlineData("fast.qoi", "application/octet-stream")]
+    [InlineData("bitmap.pbm", "application/octet-stream")]
+    [InlineData("gray.pgm", "application/octet-stream")]
+    [InlineData("portable.ppm", "application/octet-stream")]
+    public async Task ImageViewer_ClaimsPortableAndCompressedFormats(string fileName, string contentType)
+    {
+        var viewer = new MudExImageViewer();
+        Assert.True(await viewer.CanHandleFileAsync(new FileInfos(fileName, contentType, Stream.Null), null));
+    }
+
+    [Fact]
+    public async Task ImageViewer_DoesNotReportTheTransientArchiveEntryStateAsAnError()
+    {
+        await using var context = CreateContext();
+        var parent = new MudExFileDisplay();
+
+        context.Render<MudExImageViewer>(parameters => parameters
+            .AddCascadingValue(parent)
+            .Add(component => component.FileDisplayInfos, new FileInfos("inside-archive.svg", "image/svg+xml", null)));
+
+        Assert.Null(parent.ErrorMessage);
+    }
+
+    [Fact]
+    public void AdobeReader_UsesPdfCompatibleIllustratorContent()
+    {
+        var bytes = Encoding.ASCII.GetBytes("%PDF-1.7\n1 0 obj\n<<>>\nendobj\n%%EOF");
+
+        var document = AdobeGraphicsFile.Read(bytes, "drawing.ai");
+
+        Assert.Equal(AdobeGraphicsRepresentation.Pdf, document.Representation);
+        Assert.Equal("application/pdf", document.PreviewContentType);
+        Assert.Equal("PDF-1.7", document.Version);
+        Assert.Same(bytes, document.PreviewData);
+    }
+
+    [Fact]
+    public void AdobeReader_ExtractsTheTiffPreviewFromBinaryEps()
+    {
+        var postScript = Encoding.ASCII.GetBytes("%!PS-Adobe-3.0 EPSF-3.0\n%%Title: (Logo)\n%%BoundingBox: 0 0 40 20\n");
+        var tiff = new byte[] { 0x49, 0x49, 0x2A, 0x00, 1, 2, 3, 4 };
+        var bytes = new byte[30 + postScript.Length + tiff.Length];
+        bytes[0] = 0xC5;
+        bytes[1] = 0xD0;
+        bytes[2] = 0xD3;
+        bytes[3] = 0xC6;
+        BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(4, 4), 30);
+        BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(8, 4), (uint)postScript.Length);
+        BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(20, 4), (uint)(30 + postScript.Length));
+        BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(24, 4), (uint)tiff.Length);
+        bytes[28] = 0xFF;
+        bytes[29] = 0xFF;
+        postScript.CopyTo(bytes, 30);
+        tiff.CopyTo(bytes, 30 + postScript.Length);
+
+        var document = AdobeGraphicsFile.Read(bytes, "logo.eps");
+
+        Assert.Equal(AdobeGraphicsRepresentation.TiffPreview, document.Representation);
+        Assert.Equal("image/tiff", document.PreviewContentType);
+        Assert.Equal(tiff, document.PreviewData);
+        Assert.Equal("Logo", document.Title);
+        Assert.Equal("0 0 40 20", document.BoundingBox);
+    }
+
+    [Fact]
+    public void AdobeReader_DecodesEpsiPreviewAndFlipsItsBottomUpRows()
+    {
+        const string epsi = """
+                            %!PS-Adobe-3.0 EPSF-3.0
+                            %%Creator: MudEx Test
+                            %%BoundingBox: 0 0 8 2
+                            %%EndComments
+                            %%BeginPreview: 8 2 1 2
+                            %FF
+                            %00
+                            %%EndPreview
+                            %%EOF
+                            """;
+
+        var document = AdobeGraphicsFile.Read(Encoding.ASCII.GetBytes(epsi), "preview.epsi");
+
+        Assert.Equal(AdobeGraphicsRepresentation.EpsiPreview, document.Representation);
+        Assert.Equal("image/png", document.PreviewContentType);
+        Assert.Equal(8, document.PreviewWidth);
+        Assert.Equal(2, document.PreviewHeight);
+        Assert.Equal("MudEx Test", document.Creator);
+
+        using var image = Image.Load<L8>(document.PreviewData);
+        Assert.Equal(255, image[0, 0].PackedValue); // source row two is the white top row
+        Assert.Equal(0, image[0, 1].PackedValue);   // source row one is the black bottom row
     }
 
     private static MemoryStream BuildEpub()

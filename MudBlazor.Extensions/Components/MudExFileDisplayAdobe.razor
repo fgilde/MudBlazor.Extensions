@@ -1,0 +1,62 @@
+@inherits MudExBaseComponent<MudExFileDisplayAdobe>
+@using MudBlazor.Extensions.Helper.Internal
+
+<style>
+    .mud-ex-adobe-viewer {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mud-ex-adobe-viewer-content {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    .mud-ex-adobe-viewer-message {
+        margin: 12px;
+    }
+
+    .mud-ex-adobe-pdf-preview {
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+</style>
+
+<div class="mud-ex-adobe-viewer">
+    @if (_loading)
+    {
+        <MudProgressCircular Style="margin: auto;" Color="Color.Primary" Indeterminate="true" />
+    }
+    else if (_previewInfos != null)
+    {
+        @if (_document?.Representation is AdobeGraphicsRepresentation.TiffPreview or AdobeGraphicsRepresentation.EpsiPreview)
+        {
+            <MudAlert Class="ma-2" Dense="true" Severity="Severity.Info" Variant="Variant.Text">
+                @TryLocalize("Showing the preview embedded in the PostScript file. The artwork itself is not executed in the browser.")
+            </MudAlert>
+        }
+        <div class="mud-ex-adobe-viewer-content">
+            @if (_document?.Representation == AdobeGraphicsRepresentation.Pdf)
+            {
+                <iframe class="mud-ex-adobe-pdf-preview"
+                        src="@_previewUrl"
+                        title="@TryLocalize("PDF-compatible Illustrator preview")">
+                </iframe>
+            }
+            else
+            {
+                <MudExImageViewer FileDisplayInfos="@_previewInfos" />
+            }
+        </div>
+    }
+    else if (!string.IsNullOrWhiteSpace(_message))
+    {
+        <MudAlert Class="mud-ex-adobe-viewer-message" Severity="Severity.Warning" Variant="Variant.Outlined">
+            @_message
+        </MudAlert>
+    }
+</div>

@@ -16,7 +16,7 @@ internal class MimeMessage
     public string Date { get; private set; }
     public string TextBody { get; private set; }
     public string HtmlBody { get; private set; }
-    public List<(string ContentId, string MimeType, byte[] Data)> InlineParts { get; } = new();
+    public List<(string ContentId, string ContentLocation, string MimeType, byte[] Data)> InlineParts { get; } = new();
 
     public static MimeMessage Parse(string rawText)
     {
@@ -71,12 +71,13 @@ internal class MimeMessage
         var contentType = contentTypeHeader.Split(';')[0].Trim().ToLowerInvariant();
         var encoding = GetHeader(headers, "Content-Transfer-Encoding")?.Trim().ToLowerInvariant();
         var contentId = GetHeader(headers, "Content-ID")?.Trim('<', '>', ' ');
+        var contentLocation = GetHeader(headers, "Content-Location")?.Trim();
 
         var decodedBytes = DecodeBody(body, encoding);
 
-        if (contentId != null && (contentType.StartsWith("image/") || !contentType.StartsWith("text/")))
+        if ((contentId != null || contentLocation != null) && contentType is not ("text/html" or "text/plain"))
         {
-            InlineParts.Add((contentId, contentType, decodedBytes));
+            InlineParts.Add((contentId, contentLocation, contentType, decodedBytes));
             return;
         }
 
@@ -148,11 +149,24 @@ internal class MimeMessage
         return sb.ToString();
     }
 
-    /// <summary>Replaces cid: references in the html with inline data-URIs.</summary>
+    /// <summary>Replaces CID and MHTML Content-Location references in the html with inline data-URIs.</summary>
     public string ResolveCidImages(string html)
     {
-        foreach (var (contentId, mimeType, data) in InlineParts)
-            html = html.Replace($"cid:{contentId}", $"data:{mimeType};base64,{Convert.ToBase64String(data)}", StringComparison.OrdinalIgnoreCase);
+        foreach (var (contentId, contentLocation, mimeType, data) in InlineParts)
+        {
+            var dataUri = $"data:{mimeType};base64,{Convert.ToBase64String(data)}";
+            if (!string.IsNullOrWhiteSpace(contentId))
+                html = html.Replace($"cid:{contentId}", dataUri, StringComparison.OrdinalIgnoreCase);
+            if (!string.IsNullOrWhiteSpace(contentLocation))
+            {
+                html = html.Replace(contentLocation, dataUri, StringComparison.OrdinalIgnoreCase);
+                if (Uri.TryCreate(contentLocation, UriKind.Absolute, out var uri))
+                {
+                    var relativePath = Uri.UnescapeDataString(uri.AbsolutePath.TrimStart('/'));
+                    html = html.Replace(relativePath, dataUri, StringComparison.OrdinalIgnoreCase);
+                }
+            }
+        }
         return html;
     }
 

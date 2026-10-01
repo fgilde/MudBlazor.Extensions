@@ -5,6 +5,18 @@
     endPoint;
     _isSelecting;
     _selectionMode;
+    _loadVersion = 0;
+    _decodedObjectUrl = null;
+    _psd = null;
+    _psdLayers = new Map();
+
+    static AG_PSD_URL = 'https://esm.sh/ag-psd@31.0.2?bundle';
+    static HEIC2ANY_URL = 'https://esm.sh/heic2any@0.0.4?bundle';
+
+    static async importModuleWithoutAmd(url) {
+        const loader = await import('./MudExModuleLoader.js');
+        return await loader.importModuleWithoutAmd(url);
+    }
 
     constructor(elementRef, dotNet, options) {
         this.elementRef = elementRef;
@@ -15,15 +27,20 @@
         }
     }
 
-    createViewer(options, container, rubberBand, selectionToolBar) {
+    async createViewer(options, container, rubberBand, selectionToolBar) {
+        const loadVersion = ++this._loadVersion;
         this.container = container;
         this.buttonContainer = selectionToolBar;
         this.selectionDiv = rubberBand;
         this.options = options;
         this.destroyViewer();
+        this.clearDecodedImage();
         document.removeEventListener('keyup', this._onKeyUp);
         if (window.MudExImageView) {
             try {
+                const prepared = await this.prepareSource(options.src, options.format);
+                if (loadVersion !== this._loadVersion) return;
+                this.dotnet.invokeMethodAsync('OnImagePrepared', prepared.width || 0, prepared.height || 0, prepared.layers || []);
                 this.viewer = window.MudExImageView({
                     id: options.id,
                     prefixUrl: "",
@@ -32,7 +49,7 @@
                     animationTime: options.animationTime,
                     tileSources: {
                         type: 'image',
-                        url: options.src
+                        url: prepared.src
                     },
                     showNavigator: options.showNavigator,
                     navigatorPosition: options.navigatorPosition,
@@ -66,8 +83,173 @@
                 this.dotnet.invokeMethodAsync('OnViewerCreated');
             } catch (e) {
                 console.error(e);
+                this.dotnet.invokeMethodAsync('OnImageLoadError', e && e.message ? e.message : 'Unable to decode image');
             }
         }
+    }
+
+    async prepareSource(src, format) {
+        const normalizedFormat = (format || '').toLowerCase();
+        if (normalizedFormat === 'psd' || normalizedFormat === 'psb')
+            return await this.preparePhotoshop(src);
+        if (normalizedFormat === 'heic' || normalizedFormat === 'heif')
+            return await this.prepareHeif(src, normalizedFormat);
+        return { src, width: 0, height: 0, layers: [] };
+    }
+
+    async preparePhotoshop(src) {
+        const module = await MudExImageViewer.importModuleWithoutAmd(MudExImageViewer.AG_PSD_URL);
+        if (module.initializeCanvas) {
+            module.initializeCanvas((width, height) => {
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                return canvas;
+            });
+        }
+
+        const bytes = await this.readSourceBytes(src);
+        this._psd = module.readPsd(bytes.buffer, {
+            skipLayerImageData: false,
+            skipCompositeImageData: false,
+            skipThumbnail: true
+        });
+        this._psdLayers.clear();
+        const layers = this.collectLayers(this._psd.children || []);
+        const canvas = this._psd.canvas || this.renderPsdComposite();
+        return {
+            src: await this.canvasToObjectUrl(canvas),
+            width: this._psd.width || canvas.width,
+            height: this._psd.height || canvas.height,
+            layers
+        };
+    }
+
+    async prepareHeif(src, format) {
+        const bytes = await this.readSourceBytes(src);
+        const module = await MudExImageViewer.importModuleWithoutAmd(MudExImageViewer.HEIC2ANY_URL);
+        const heic2any = module.default || module.heic2any || module;
+        const converted = await heic2any({
+            blob: new Blob([bytes], { type: format === 'heif' ? 'image/heif' : 'image/heic' }),
+            toType: 'image/png'
+        });
+        const blob = Array.isArray(converted) ? converted[0] : converted;
+        const dimensions = await this.readImageDimensions(blob);
+        return {
+            src: this.setDecodedObjectUrl(URL.createObjectURL(blob)),
+            width: dimensions.width,
+            height: dimensions.height,
+            layers: []
+        };
+    }
+
+    async readSourceBytes(src) {
+        const response = await fetch(src);
+        if (!response.ok) throw new Error(`Unable to load image source (${response.status})`);
+        return new Uint8Array(await response.arrayBuffer());
+    }
+
+    readImageDimensions(blob) {
+        return new Promise((resolve, reject) => {
+            const url = URL.createObjectURL(blob);
+            const image = new Image();
+            image.onload = () => {
+                URL.revokeObjectURL(url);
+                resolve({ width: image.naturalWidth, height: image.naturalHeight });
+            };
+            image.onerror = () => {
+                URL.revokeObjectURL(url);
+                reject(new Error('The decoded image could not be loaded.'));
+            };
+            image.src = url;
+        });
+    }
+
+    collectLayers(layers, depth = 0, prefix = '') {
+        const result = [];
+        layers.forEach((layer, index) => {
+            const id = prefix ? `${prefix}/${index}` : `${index}`;
+            this._psdLayers.set(id, layer);
+            result.push({
+                id,
+                name: layer.name || `Layer ${index + 1}`,
+                visible: layer.hidden !== true,
+                depth,
+                isGroup: Array.isArray(layer.children)
+            });
+            if (Array.isArray(layer.children))
+                result.push(...this.collectLayers(layer.children, depth + 1, id));
+        });
+        return result;
+    }
+
+    async setLayerVisibility(id, visible) {
+        const layer = this._psdLayers.get(id);
+        if (!layer || !this._psd || !this.viewer) return;
+        layer.hidden = !visible;
+        const nextUrl = await this.canvasToObjectUrl(this.renderPsdComposite());
+        this.viewer.open({ type: 'image', url: nextUrl });
+    }
+
+    renderPsdComposite() {
+        const canvas = document.createElement('canvas');
+        canvas.width = this._psd.width;
+        canvas.height = this._psd.height;
+        this.drawPsdLayers(canvas.getContext('2d'), this._psd.children || []);
+        return canvas;
+    }
+
+    drawPsdLayers(context, layers) {
+        for (let index = layers.length - 1; index >= 0; index--) {
+            const layer = layers[index];
+            if (!layer || layer.hidden) continue;
+
+            context.save();
+            context.globalAlpha = layer.opacity == null ? 1 : layer.opacity;
+            context.globalCompositeOperation = this.canvasBlendMode(layer.blendMode);
+            if (Array.isArray(layer.children)) {
+                const groupCanvas = document.createElement('canvas');
+                groupCanvas.width = this._psd.width;
+                groupCanvas.height = this._psd.height;
+                this.drawPsdLayers(groupCanvas.getContext('2d'), layer.children);
+                context.drawImage(groupCanvas, 0, 0);
+            } else if (layer.canvas) {
+                context.drawImage(layer.canvas, layer.left || 0, layer.top || 0);
+            }
+            context.restore();
+        }
+    }
+
+    canvasBlendMode(mode) {
+        const modes = {
+            'normal': 'source-over', 'pass through': 'source-over', 'multiply': 'multiply', 'screen': 'screen',
+            'overlay': 'overlay', 'darken': 'darken', 'lighten': 'lighten', 'color dodge': 'color-dodge',
+            'color burn': 'color-burn', 'hard light': 'hard-light', 'soft light': 'soft-light',
+            'difference': 'difference', 'exclusion': 'exclusion', 'hue': 'hue', 'saturation': 'saturation',
+            'color': 'color', 'luminosity': 'luminosity', 'linear dodge': 'lighter', 'lighter color': 'lighter'
+        };
+        return modes[mode] || 'source-over';
+    }
+
+    canvasToObjectUrl(canvas) {
+        return new Promise((resolve, reject) => canvas.toBlob(blob => {
+            if (!blob) reject(new Error('Unable to render the Photoshop composite.'));
+            else resolve(this.setDecodedObjectUrl(URL.createObjectURL(blob)));
+        }, 'image/png'));
+    }
+
+    setDecodedObjectUrl(url) {
+        const previous = this._decodedObjectUrl;
+        this._decodedObjectUrl = url;
+        if (previous) setTimeout(() => URL.revokeObjectURL(previous), 10000);
+        return url;
+    }
+
+    clearDecodedImage() {
+        if (this._decodedObjectUrl) URL.revokeObjectURL(this._decodedObjectUrl);
+        this._decodedObjectUrl = null;
+        this._psd = null;
+        this._psdLayers.clear();
     }
 
     _onKeyUp = (event) => {
@@ -284,10 +466,12 @@
     }
 
     dispose() {
+        this._loadVersion++;
         this.hideRubberBand();
         this.selectionDiv?.remove();
         this.buttonContainer?.remove();
         this.destroyViewer();
+        this.clearDecodedImage();
     }
 }
 

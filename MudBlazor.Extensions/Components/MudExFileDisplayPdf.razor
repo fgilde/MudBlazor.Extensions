@@ -15,9 +15,18 @@
 </style>
 
 <div class="mud-ex-file-display-pdf">
-    <MudPdfViewer @ref="_pdfViewer"
-                  Height="100%"
-                  Colors="@_colors"
-                  OnDocumentLoaded="@OnDocumentLoaded"
-                  OnPageChanged="@OnPageChanged" />
+    @if (_pdfModuleReady)
+    {
+        <MudPdfViewer @ref="_pdfViewer"
+                      Height="100%"
+                      Url="@_initialPdfUrl"
+                      Filename="@_initialPdfFileName"
+                      Colors="@_colors"
+                      OnDocumentLoaded="@OnDocumentLoaded"
+                      OnPageChanged="@OnPageChanged" />
+    }
+    else
+    {
+        <MudProgressCircular Style="position: absolute; inset: 0; margin: auto;" Color="Color.Primary" Indeterminate="true" />
+    }
 </div>

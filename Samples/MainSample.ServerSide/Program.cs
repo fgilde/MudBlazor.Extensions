@@ -2,6 +2,7 @@ using MainSample.WebAssembly;
 using MainSample.WebAssembly.ObjectEditMetaConfig;
 using MainSample.WebAssembly.Services;
 using Microsoft.JSInterop;
+using Microsoft.AspNetCore.StaticFiles;
 using MudBlazor;
 using MudBlazor.Extensions;
 using MudBlazor.Extensions.Helper;
@@ -38,7 +39,24 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+var sampleContentTypes = new FileExtensionContentTypeProvider();
+foreach (var (extension, contentType) in new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+{
+    [".ai"] = "application/vnd.adobe.illustrator", [".eps"] = "application/postscript",
+    [".psd"] = "image/vnd.adobe.photoshop", [".psb"] = "image/vnd.adobe.photoshop",
+    [".svgz"] = "image/svg+xml", [".tga"] = "image/x-tga", [".qoi"] = "image/qoi",
+    [".pbm"] = "image/x-portable-bitmap", [".pgm"] = "image/x-portable-graymap", [".ppm"] = "image/x-portable-pixmap",
+    [".avif"] = "image/avif", [".heic"] = "image/heic", [".heif"] = "image/heif",
+    [".mht"] = "application/x-mimearchive", [".mhtml"] = "application/x-mimearchive",
+    [".cbz"] = "application/vnd.comicbook+zip", [".cbr"] = "application/vnd.comicbook-rar",
+    [".odt"] = "application/vnd.oasis.opendocument.text", [".ods"] = "application/vnd.oasis.opendocument.spreadsheet",
+    [".odp"] = "application/vnd.oasis.opendocument.presentation", [".odg"] = "application/vnd.oasis.opendocument.graphics",
+    [".xps"] = "application/vnd.ms-xpsdocument", [".oxps"] = "application/oxps",
+    [".parquet"] = "application/vnd.apache.parquet", [".arrow"] = "application/vnd.apache.arrow.file",
+    [".feather"] = "application/x-feather", [".dcm"] = "application/dicom"
+})
+    sampleContentTypes.Mappings[extension] = contentType;
+app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = sampleContentTypes });
 
 app.UseRouting();
 

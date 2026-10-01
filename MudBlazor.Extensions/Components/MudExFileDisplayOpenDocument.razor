@@ -1,0 +1,39 @@
+@inherits MudExBaseComponent<MudExFileDisplayOpenDocument>
+@using MudBlazor.Extensions.Helper.Internal
+
+<style>
+    .mud-ex-odf { width:100%; height:100%; display:flex; min-height:0; }
+    .mud-ex-odf-pages { width:190px; overflow:auto; border-right:1px solid rgba(128,128,128,.2); }
+    .mud-ex-odf-main { flex:1; display:flex; flex-direction:column; min-width:0; }
+    .mud-ex-odf-content { flex:1; overflow:auto; padding:24px; background:#fff; color:#222; }
+    .mud-ex-odf-content img { max-width:100%; height:auto; }
+    .mud-ex-odf-content .odf-table { border-collapse:collapse; min-width:100%; }
+    .mud-ex-odf-content .odf-table td { border:1px solid #bbb; padding:4px 7px; }
+</style>
+
+<div class="mud-ex-odf">
+    @if (_loading)
+    {
+        <MudProgressCircular Style="margin:auto" Color="Color.Primary" Indeterminate="true" />
+    }
+    else if (!string.IsNullOrWhiteSpace(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Class="ma-3">@_errorMessage</MudAlert>
+    }
+    else if (_document != null)
+    {
+        @if (_document.Pages.Count > 1)
+        {
+            <MudList T="OpenDocumentPage" Dense="true" Class="mud-ex-odf-pages" SelectedValue="@_selected" SelectedValueChanged="@(p => _selected = p)">
+                @foreach (var documentPage in _document.Pages)
+                {
+                    <MudListItem T="OpenDocumentPage" Value="@documentPage" Icon="@Icons.Material.Filled.Description">@documentPage.Name</MudListItem>
+                }
+            </MudList>
+        }
+        <div class="mud-ex-odf-main">
+            <MudToolBar Dense="true"><MudText Typo="Typo.subtitle2">@(_selected?.Name ?? _document.Title)</MudText></MudToolBar>
+            <div class="mud-ex-odf-content">@((MarkupString)(_selected?.Html ?? string.Empty))</div>
+        </div>
+    }
+</div>

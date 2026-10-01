@@ -19,6 +19,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using MudBlazor.Interop;
 using MetadataExtractor;
+using System.IO.Compression;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -45,6 +46,10 @@ public partial class MudExImageViewer : IMudExFileDisplay
     private Stack<Action> _undoStack = new();
     private bool _allowInteractingUnderRubberBand = true;
     private bool _allowRubberBandSelection = true;
+    private readonly List<MudExImageViewerLayerInfo> _layers = new();
+    private bool _layerPanelOpen = true;
+    private int _imageWidth;
+    private int _imageHeight;
     [Inject] private MudExFileService FileService { get; set; }
 
     /// <summary>
@@ -67,6 +72,12 @@ public partial class MudExImageViewer : IMudExFileDisplay
     [Parameter]
     [SafeCategory("Common")]
     public RenderFragment SelectedAreaToolbarContent { get; set; }
+
+    /// <summary>
+    /// Shows the layer panel for image formats that expose editable layers, such as PSD and PSB.
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.FormComponent.Behavior)]
+    public bool ShowLayerPanel { get; set; } = true;
 
     /// <summary>
     /// Callback when the error state changes
@@ -220,7 +231,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     /// <summary>
     /// This method returns true when at least one button is used
     /// </summary>
-    public bool ShowTools() => ShowZoomInButton || ShowZoomOutButton || ShowPrintButton || ShowResetButton || ShowFullScreenButton || ToolbarContent != null;
+    public bool ShowTools() => ShowZoomInButton || ShowZoomOutButton || ShowPrintButton || ShowResetButton || ShowFullScreenButton || (ShowLayerPanel && _layers.Count > 0) || ToolbarContent != null;
 
     /// <summary>
     /// Style for toolbar only if <see cref="ShowTools"/> is true
@@ -401,6 +412,29 @@ public partial class MudExImageViewer : IMudExFileDisplay
     {
     }
 
+    /// <summary>
+    /// Receives decoded image dimensions and the optional layer tree from the browser decoder.
+    /// </summary>
+    [JSInvokable]
+    public async Task OnImagePrepared(int width, int height, MudExImageViewerLayerInfo[] layers)
+    {
+        _imageWidth = width;
+        _imageHeight = height;
+        _layers.Clear();
+        if (layers is { Length: > 0 })
+            _layers.AddRange(layers);
+        _layerPanelOpen = _layers.Count > 0;
+        await FileDisplayInfos.NotifyMetaChangedAsync();
+        StateHasChanged();
+    }
+
+    /// <summary>Reports browser-side decoding errors to the hosting file display.</summary>
+    [JSInvokable]
+    public void OnImageLoadError(string message)
+    {
+        MudExFileDisplay?.ShowError(message);
+    }
+
     /// <inheritdoc />
     public override async Task ImportModuleAndCreateJsAsync()
     {
@@ -414,12 +448,11 @@ public partial class MudExImageViewer : IMudExFileDisplay
     /// </summary>
     public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService)
     {
-        var canHandle = fileDisplayInfos?.FileName?.EndsWith(".png") == true
-               || fileDisplayInfos?.FileName?.EndsWith(".jpg") == true
-               || fileDisplayInfos?.FileName?.EndsWith(".jpeg") == true
-               || fileDisplayInfos?.FileName?.EndsWith(".webp") == true
-               || fileDisplayInfos?.FileName?.EndsWith(".bmp") == true
-               || fileDisplayInfos?.FileName?.EndsWith(".gif") == true
+        var extension = Path.GetExtension(fileDisplayInfos?.FileName ?? string.Empty);
+        var canHandle = new[] { ".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif", ".tif", ".tiff",
+                               ".svg", ".svgz", ".tga", ".qoi", ".pbm", ".pgm", ".ppm", ".avif",
+                               ".heic", ".heif", ".psd", ".psb" }
+               .Contains(extension, StringComparer.OrdinalIgnoreCase)
                || MimeType.Matches(fileDisplayInfos?.ContentType, "image/*");
         return Task.FromResult(canHandle);
     }
@@ -434,6 +467,17 @@ public partial class MudExImageViewer : IMudExFileDisplay
 
     private bool IsTiff(string mime) => mime == "image/tiff";
 
+    private static bool NeedsRasterConversion(IMudExFileDisplayInfos infos)
+    {
+        var extension = Path.GetExtension(infos?.FileName ?? string.Empty);
+        return new[] { ".tif", ".tiff", ".tga", ".qoi", ".pbm", ".pgm", ".ppm" }
+            .Contains(extension, StringComparer.OrdinalIgnoreCase);
+    }
+
+    private static bool IsSvgz(IMudExFileDisplayInfos infos)
+        => Path.GetExtension(infos?.FileName ?? string.Empty).Equals(".svgz", StringComparison.OrdinalIgnoreCase)
+           || string.Equals(infos?.ContentType, "image/svg+xml-compressed", StringComparison.OrdinalIgnoreCase);
+
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
@@ -441,9 +485,16 @@ public partial class MudExImageViewer : IMudExFileDisplay
         await base.SetParametersAsync(parameters);
         if (updateRequired || Src == null)
         {
+            // A nested MudExFileDisplay can render once before it has converted an archive entry to a blob URL.
+            // This is a transient state, not a content error; the same infos object renders again as soon as Url is set.
+            if (fileDisplayInfos != null && string.IsNullOrEmpty(fileDisplayInfos.Url) && fileDisplayInfos.ContentStream == null)
+                return;
+
             try
             {
                 Src = fileDisplayInfos?.Url ?? await FileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl, _componentCts?.Token ?? CancellationToken.None);
+                _layers.Clear();
+                _imageWidth = _imageHeight = 0;
             }
             catch (Exception e)
             {
@@ -569,15 +620,28 @@ public partial class MudExImageViewer : IMudExFileDisplay
 
     public async Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)
     {
-        var stream = fileDisplayInfos?.ContentStream ?? await Get<MudExFileService>().ReadStreamAsync(Src);
-        var meta = ImageMetadataReader.ReadMetadata(stream);
-        var result = new Dictionary<string, object>();
-        foreach (var directory in meta)
+        var result = new Dictionary<string, object>
         {
-            foreach (var tag in directory.Tags)
+            ["Format"] = Path.GetExtension(fileDisplayInfos?.FileName ?? Src ?? string.Empty).TrimStart('.').ToUpperInvariant(),
+            ["Dimensions"] = _imageWidth > 0 ? $"{_imageWidth} × {_imageHeight}" : null,
+            ["Layers"] = _layers.Count > 0 ? _layers.Count : null
+        };
+
+        try
+        {
+            var stream = fileDisplayInfos?.ContentStream ?? await Get<MudExFileService>().ReadStreamAsync(Src);
+            if (stream == null)
+                return result;
+            var meta = ImageMetadataReader.ReadMetadata(stream);
+            foreach (var directory in meta)
             {
-                result.Add($"{directory.Name} - {tag.Name}", tag.Description);
+                foreach (var tag in directory.Tags)
+                    result.TryAdd($"{directory.Name} - {tag.Name}", tag.Description);
             }
+        }
+        catch
+        {
+            // Browser-decoded formats such as HEIF and PSD do not necessarily have a MetadataExtractor reader.
         }
 
         return result;
@@ -620,7 +684,16 @@ public partial class MudExImageViewer : IMudExFileDisplay
 
     private async Task<string> ConvertUrlIfNeededAsync(string url)
     {
-        if (IsTiff(FileDisplayInfos) || IsTiff(await MimeType.ReadMimeTypeFromUrlAsync(url)))
+        if (IsSvgz(FileDisplayInfos))
+        {
+            await using var source = await FileService.ReadStreamAsync(FileDisplayInfos);
+            await using var gzip = new GZipStream(source, CompressionMode.Decompress);
+            using var svg = new MemoryStream();
+            await gzip.CopyToAsync(svg, _componentCts?.Token ?? CancellationToken.None);
+            return await FileService.CreateDataUrlAsync(svg.ToArray(), "image/svg+xml", true, _componentCts?.Token ?? CancellationToken.None);
+        }
+
+        if (NeedsRasterConversion(FileDisplayInfos) || IsTiff(FileDisplayInfos) || IsTiff(await MimeType.ReadMimeTypeFromUrlAsync(url)))
             url = await ConvertImageToAsync(url);
         return url;
     }
@@ -633,6 +706,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
         {
             id = _id,
             Src = url,
+            Format = Path.GetExtension(FileDisplayInfos?.FileName ?? Src ?? string.Empty).TrimStart('.').ToLowerInvariant(),
             AllowInteractingUnderRubberBand,
             AllowRubberBandSelection,
             NavigatorClass,
@@ -760,6 +834,15 @@ public partial class MudExImageViewer : IMudExFileDisplay
 
     private Task PrintSelectionClick() => Print(SaveImageMode.SelectedArea);
 
+    private void ToggleLayerPanel() => _layerPanelOpen = !_layerPanelOpen;
+
+    private async Task SetLayerVisibilityAsync(MudExImageViewerLayerInfo layer, bool visible)
+    {
+        layer.Visible = visible;
+        if (JsReference != null)
+            await JsReference.InvokeVoidAsync("setLayerVisibility", layer.Id, visible);
+    }
+
     private string RubberBandStyleStr() => MudExStyleBuilder.Default
         .WithPosition(Core.Css.Position.Absolute)
         .WithBorder(2, BorderStyle.Dashed, RubberBandColor)
@@ -769,4 +852,23 @@ public partial class MudExImageViewer : IMudExFileDisplay
         .With("box-sizing", "border-box")
         .AddRaw(RubberBandStyle)
         .Build();
+}
+
+/// <summary>Describes a Photoshop layer exposed by <see cref="MudExImageViewer"/>.</summary>
+public sealed class MudExImageViewerLayerInfo
+{
+    /// <summary>Stable path used to address the decoded layer in JavaScript.</summary>
+    public string Id { get; set; }
+
+    /// <summary>Layer name stored in the document.</summary>
+    public string Name { get; set; }
+
+    /// <summary>Whether the layer itself is visible.</summary>
+    public bool Visible { get; set; }
+
+    /// <summary>Nesting depth in the Photoshop layer tree.</summary>
+    public int Depth { get; set; }
+
+    /// <summary>Whether this entry represents a layer group.</summary>
+    public bool IsGroup { get; set; }
 }
