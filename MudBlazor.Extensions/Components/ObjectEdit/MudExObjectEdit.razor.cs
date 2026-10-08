@@ -35,6 +35,7 @@ public partial class MudExObjectEdit<T>
     private Color _importButtonColor;
     private bool _restoreCalled;
     private T _value;
+    private bool _settingParameters;
     private List<DynamicComponent> _groups = new();
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     private Type? _registeredEditorType;
@@ -582,12 +583,20 @@ public partial class MudExObjectEdit<T>
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         bool valueUpdate = parameters.TryGetValue<T>(nameof(Value), out var value) && !Equals(Value, value);
-        await base.SetParametersAsync(parameters);
-        if (valueUpdate)
+        _settingParameters = true;
+        try
         {
-            await CreateMetaIfNotExists();
-            if (Value is IEditableObject editable)
-                editable.BeginEdit();
+            await base.SetParametersAsync(parameters);
+            if (valueUpdate || MetaInformation == null)
+            {
+                await CreateMetaIfNotExists();
+                if (valueUpdate && Value is IEditableObject editable)
+                    editable.BeginEdit();
+            }
+        }
+        finally
+        {
+            _settingParameters = false;
         }
     }
 
@@ -839,7 +848,8 @@ public partial class MudExObjectEdit<T>
     {
         _value = value;
         MetaInformation?.SetValue(value);
-        await CreateMetaIfNotExists();
+        if (!_settingParameters) // SetParametersAsync creates the meta once MetaConfiguration is assigned too
+            await CreateMetaIfNotExists();
         InvalidateGroupedMetaCache();
         Invalidate();
     }
@@ -1460,4 +1470,4 @@ public partial class MudExObjectEdit<T>
                 break;
         }
     }
-}
+}
