@@ -1,10 +1,10 @@
+using System.Buffers.Binary;
 using System.Text;
 using System.IO.Compression;
 using Bunit;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
-using SixLabors.ImageSharp;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
@@ -144,12 +144,11 @@ public class SampleDataFileTests
     [Fact]
     public void NewImageSamples_AreValidAndSvgzInflates()
     {
-        foreach (var name in new[] { "sample.tga", "sample.qoi", "sample.pbm", "sample.pgm", "sample.ppm" })
-        {
-            using var image = Image.Load(Path.Combine(SampleDirectory, name));
-            Assert.True(image.Width > 0, name);
-            Assert.True(image.Height > 0, name);
-        }
+        // decoding happens in the browser (MudExImageCodecs.js), so only the headers are checked here
+        Assert.Equal(96, BinaryPrimitives.ReadUInt16LittleEndian(File.ReadAllBytes(Path.Combine(SampleDirectory, "sample.tga")).AsSpan(12)));
+        Assert.Equal("qoif", Encoding.ASCII.GetString(File.ReadAllBytes(Path.Combine(SampleDirectory, "sample.qoi")), 0, 4));
+        foreach (var (name, magic) in new[] { ("sample.pbm", "P1"), ("sample.pgm", "P5"), ("sample.ppm", "P6") })
+            Assert.Equal(magic, Encoding.ASCII.GetString(File.ReadAllBytes(Path.Combine(SampleDirectory, name)), 0, 2));
 
         using var compressed = File.OpenRead(Path.Combine(SampleDirectory, "sample.svgz"));
         using var gzip = new GZipStream(compressed, CompressionMode.Decompress);
@@ -199,11 +198,9 @@ public class SampleDataFileTests
         var dicom = DicomFile.Read(File.ReadAllBytes(Path.Combine(SampleDirectory, "sample.dcm")));
         Assert.Equal(128, dicom.Columns);
         Assert.Equal(96, dicom.Rows);
-        using (var image = Image.Load(dicom.RenderPng()))
-        {
-            Assert.Equal(128, image.Width);
-            Assert.Equal(96, image.Height);
-        }
+        var png = dicom.RenderPng();
+        Assert.Equal(128, BinaryPrimitives.ReadInt32BigEndian(png.AsSpan(16)));
+        Assert.Equal(96, BinaryPrimitives.ReadInt32BigEndian(png.AsSpan(20)));
 
         foreach (var name in new[] { "sample.psd", "sample.psb" })
             Assert.Equal("8BPS", Encoding.ASCII.GetString(File.ReadAllBytes(Path.Combine(SampleDirectory, name)), 0, 4));

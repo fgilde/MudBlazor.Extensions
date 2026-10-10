@@ -1,6 +1,7 @@
 ﻿using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Buffers.Binary;
+using System.IO.Compression;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
@@ -8,8 +9,6 @@ using Bunit;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
@@ -683,9 +682,18 @@ public class FileDisplayViewerTests
         Assert.Equal(2, document.PreviewHeight);
         Assert.Equal("MudEx Test", document.Creator);
 
-        using var image = Image.Load<L8>(document.PreviewData);
-        Assert.Equal(255, image[0, 0].PackedValue); // source row two is the white top row
-        Assert.Equal(0, image[0, 1].PackedValue);   // source row one is the black bottom row
+        // PngWriter writes one zlib stream of unfiltered rows: filter byte + 8 gray bytes per row
+        var data = document.PreviewData;
+        Assert.Equal(8, BinaryPrimitives.ReadInt32BigEndian(data.AsSpan(16)));
+        Assert.Equal(2, BinaryPrimitives.ReadInt32BigEndian(data.AsSpan(20)));
+        var idatLength = BinaryPrimitives.ReadInt32BigEndian(data.AsSpan(33));
+        using var rows = new MemoryStream();
+        using (var zlib = new ZLibStream(new MemoryStream(data, 41, idatLength), CompressionMode.Decompress))
+            zlib.CopyTo(rows);
+        var pixels = rows.ToArray();
+        Assert.Equal(18, pixels.Length);
+        Assert.Equal(255, pixels[1]); // source row two is the white top row
+        Assert.Equal(0, pixels[10]);  // source row one is the black bottom row
     }
 
     private static MemoryStream BuildEpub()

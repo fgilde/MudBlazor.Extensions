@@ -6512,14 +6512,9 @@
             Format in which to save the image.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExImageViewerSaveOptions.GetImageFormat">
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewerSaveOptions.GetFileType(MudBlazor.Extensions.Components.ImageViewerExportFormat)">
             <summary>
-            Gets the image format for the current options as IImageFormat.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExImageViewerSaveOptions.GetImageFormat(MudBlazor.Extensions.Components.ImageViewerExportFormat)">
-            <summary>
-            Gets the image format for the given format as IImageFormat.
+            Gets the file extension (without dot) and mime type for the given format.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ImageViewerExportFormat">
@@ -6564,12 +6559,12 @@
         </member>
         <member name="F:MudBlazor.Extensions.Components.ImageViewerExportFormat.Qoi">
             <summary>
-            QuickTime Image format.
+            Quite OK Image format.
             </summary>
         </member>
         <member name="F:MudBlazor.Extensions.Components.ImageViewerExportFormat.Pbm">
             <summary>
-            Portable Bitmap format.
+            Portable Bitmap format family, written as binary color pixmap (.ppm).
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExImageViewer">
@@ -24371,6 +24366,12 @@
         </member>
         <member name="M:MudBlazor.Extensions.Helper.Internal.Pkcs12CertificateReader.IsPkcs12(System.Byte[])">
             <summary>Whether the bytes look like a PKCS#12 container rather than a certificate.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.PngWriter">
+            <summary>
+            Writes 8-bit grayscale or RGB pixels as PNG, so viewers that decode pixels themselves (DICOM, EPSI previews)
+            can hand them to the browser. Everything else is decoded and encoded by the browser.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.Internal.PptxPresentation">
             <summary>

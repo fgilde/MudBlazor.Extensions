@@ -2928,6 +2928,7 @@ class MudExDialogAnimationHandler extends MudExDialogHandlerBase {
         const n = dialog.style.animationName;
         dialog.style.animationName = '';
         dialog.style.animationDirection = 'reverse';
+        dialog.style.animationFillMode = 'forwards';
         dialog.style['animation-play-state'] = 'paused';
         requestAnimationFrame(() => {
             dialog.style.animationName = n;

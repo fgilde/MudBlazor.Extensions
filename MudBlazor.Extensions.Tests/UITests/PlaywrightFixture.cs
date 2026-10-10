@@ -131,12 +131,7 @@ public class PlaywrightFixture : IAsyncLifetime
         {
             // Navigate to the given URL and wait until loading
             // network activity is done.
-            var gotoResult = await page.GotoAsync(
-                url,
-                new PageGotoOptions
-                {
-                    WaitUntil = WaitUntilState.NetworkIdle
-                });
+            var gotoResult = await GotoWhenListeningAsync(page, url);
             gotoResult.Should().NotBeNull();
             await gotoResult.FinishedAsync();
             gotoResult.Ok.Should().BeTrue();
@@ -149,6 +144,22 @@ public class PlaywrightFixture : IAsyncLifetime
             await page.CloseAsync();
         }
     }
+    // The sample app uses minimal hosting, so the factory returns before Kestrel accepts connections.
+    private static async Task<IResponse?> GotoWhenListeningAsync(IPage page, string url)
+    {
+        for (var attempt = 1; ; attempt++)
+        {
+            try
+            {
+                return await page.GotoAsync(url, new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
+            }
+            catch (PlaywrightException e) when (attempt < 20 && e.Message.Contains("ERR_CONNECTION_REFUSED"))
+            {
+                await Task.Delay(500);
+            }
+        }
+    }
+
     /// <summary>
     /// Select the IBrowser instance depending on the given browser
     /// enumeration value.

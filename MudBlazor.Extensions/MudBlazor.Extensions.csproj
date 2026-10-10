@@ -26,7 +26,7 @@
   <PropertyGroup>
     <MajorVersion>9</MajorVersion>
     <MinorVersion>11</MinorVersion>
-    <PatchVersion>1</PatchVersion>
+    <PatchVersion>2</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -98,7 +98,6 @@
     <PackageReference Include="NUglify" PrivateAssets="all" />
     <PackageReference Include="BlazorParameterCastingMagic" />
     <PackageReference Include="SharpCompress" />
-    <PackageReference Include="SixLabors.ImageSharp" />
     <PackageReference Include="MetadataExtractor" />
     <PackageReference Include="Gotho.BlazorPdf" />
     <PackageReference Include="Gotho.BlazorPdf.MudBlazor" />

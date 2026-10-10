@@ -2,16 +2,6 @@
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Interop;
-using SixLabors.ImageSharp.Formats;
-using SixLabors.ImageSharp.Formats.Bmp;
-using SixLabors.ImageSharp.Formats.Gif;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using SixLabors.ImageSharp.Formats.Pbm;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Formats.Qoi;
-using SixLabors.ImageSharp.Formats.Tga;
-using SixLabors.ImageSharp.Formats.Tiff;
-using SixLabors.ImageSharp.Formats.Webp;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -37,29 +27,20 @@ public class MudExImageViewerSaveOptions
     public ImageViewerExportFormat Format { get; set; } = ImageViewerExportFormat.Png;
 
     /// <summary>
-    /// Gets the image format for the current options as IImageFormat.
+    /// Gets the file extension (without dot) and mime type for the given format.
     /// </summary>
-    public IImageFormat GetImageFormat() => GetImageFormat(Format);
-
-    /// <summary>
-    /// Gets the image format for the given format as IImageFormat.
-    /// </summary>
-    public static IImageFormat GetImageFormat(ImageViewerExportFormat format)
+    public static (string Extension, string MimeType) GetFileType(ImageViewerExportFormat format) => format switch
     {
-        return format switch
-            {
-                ImageViewerExportFormat.Png => PngFormat.Instance,
-                ImageViewerExportFormat.Jpeg => JpegFormat.Instance,
-                ImageViewerExportFormat.Webp => WebpFormat.Instance,
-                ImageViewerExportFormat.Bmp => BmpFormat.Instance,
-                ImageViewerExportFormat.Gif => GifFormat.Instance,
-                ImageViewerExportFormat.Tiff => TiffFormat.Instance,
-                ImageViewerExportFormat.Tga => TgaFormat.Instance,
-                ImageViewerExportFormat.Qoi => QoiFormat.Instance,
-                ImageViewerExportFormat.Pbm => PbmFormat.Instance,
-                _ => null
-            };
-    }
+        ImageViewerExportFormat.Jpeg => ("jpg", "image/jpeg"),
+        ImageViewerExportFormat.Webp => ("webp", "image/webp"),
+        ImageViewerExportFormat.Bmp => ("bmp", "image/bmp"),
+        ImageViewerExportFormat.Gif => ("gif", "image/gif"),
+        ImageViewerExportFormat.Tiff => ("tiff", "image/tiff"),
+        ImageViewerExportFormat.Tga => ("tga", "image/x-tga"),
+        ImageViewerExportFormat.Qoi => ("qoi", "image/qoi"),
+        ImageViewerExportFormat.Pbm => ("ppm", "image/x-portable-pixmap"),
+        _ => ("png", "image/png")
+    };
 
 }
 
@@ -104,12 +85,12 @@ public enum ImageViewerExportFormat
     Tga,
     
     /// <summary>
-    /// QuickTime Image format.
+    /// Quite OK Image format.
     /// </summary>
     Qoi,
     
     /// <summary>
-    /// Portable Bitmap format.
+    /// Portable Bitmap format family, written as binary color pixmap (.ppm).
     /// </summary>
     Pbm
 }

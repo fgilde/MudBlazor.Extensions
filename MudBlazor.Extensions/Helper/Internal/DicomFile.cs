@@ -1,9 +1,6 @@
 using System.Buffers.Binary;
 using System.Globalization;
 using System.Text;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.PixelFormats;
 
 namespace MudBlazor.Extensions.Helper.Internal;
 
@@ -100,8 +97,7 @@ internal sealed class DicomFile
             }
             if (PhotometricInterpretation?.StartsWith("MONOCHROME1", StringComparison.OrdinalIgnoreCase) == true)
                 for (var i = 0; i < pixels.Length; i++) pixels[i] = (byte)(255 - pixels[i]);
-            using var image = Image.LoadPixelData<L8>(pixels, Columns, Rows);
-            return Encode(image);
+            return PngWriter.Write(pixels, Columns, Rows, 1);
         }
 
         if (SamplesPerPixel == 3 && BitsAllocated == 8)
@@ -114,8 +110,7 @@ internal sealed class DicomFile
                 for (var i = 0; i < plane && i + plane * 2 < PixelData.Length; i++)
                 { rgb[i * 3] = PixelData[i]; rgb[i * 3 + 1] = PixelData[i + plane]; rgb[i * 3 + 2] = PixelData[i + plane * 2]; }
             }
-            using var image = Image.LoadPixelData<Rgb24>(rgb, Columns, Rows);
-            return Encode(image);
+            return PngWriter.Write(rgb, Columns, Rows, 3);
         }
         throw new NotSupportedException($"DICOM samples/pixel={SamplesPerPixel}, bits={BitsAllocated} is not supported.");
     }
@@ -143,6 +138,5 @@ internal sealed class DicomFile
     private static int U16(byte[] value, int fallback) => value.Length >= 2 ? BinaryPrimitives.ReadUInt16LittleEndian(value) : fallback;
     private static string Text(byte[] value) => Encoding.UTF8.GetString(value).Trim('\0', ' ');
     private static double? Number(string value) => double.TryParse(value?.Split('\\')[0], NumberStyles.Float, CultureInfo.InvariantCulture, out var n) ? n : null;
-    private static byte[] Encode(Image image) { using var stream = new MemoryStream(); image.Save(stream, new PngEncoder()); return stream.ToArray(); }
     private readonly record struct Element(ushort Group, ushort ElementNumber, byte[] Value);
 }

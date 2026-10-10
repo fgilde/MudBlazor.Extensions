@@ -1,4 +1,6 @@
 ## Change Log    
+ - 9.11.2 > Remove the SixLabors.ImageSharp dependency: 3.x has unpatched security advisories and fixed versions need a paid license. TIFF, TGA, QOI and PBM/PGM/PPM are now decoded and all export formats encoded in the browser
+ - 9.11.2 > Update NuGet packages (Nextended 10.1.42, AuralizeBlazor 3.0.7, MudBlazor.Markdown 9.10.0, SharpCompress 0.50.5, NUglify 1.23.4 and others)
  - 9.11.0 > Package: [MudBlazor.Extensions 9.11.0 on NuGet](https://www.nuget.org/packages/MudBlazor.Extensions/9.11.0)
  - 9.11.0 > Add dedicated file viewers for Adobe Illustrator and PostScript, OpenDocument, XPS and OpenXPS, DICOM, Parquet, Arrow, Feather, and CBZ/CBR comic books
  - 9.11.0 > Extend MudExImageViewer with HEIC and HEIF decoding, PSD and PSB layer controls, and support for SVGZ, TGA, QOI, PBM, PGM, and PPM images

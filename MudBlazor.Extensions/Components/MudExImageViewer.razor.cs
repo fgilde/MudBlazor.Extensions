@@ -15,8 +15,6 @@ using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
 using Nextended.Core;
 using Nextended.Core.Extensions;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats;
 using MudBlazor.Interop;
 using MetadataExtractor;
 using System.IO.Compression;
@@ -38,7 +36,6 @@ public partial class MudExImageViewer : IMudExFileDisplay
     private double _navigatorSizeRatio = 0.15;
     private Origin _navigatorPosition = Origin.BottomRight;
     private MudExColor _navigatorRectangleColor = MudExColor.Primary;
-    private ConcurrentDictionary<(string FormatName, string Url), string> _convertedUrlMapping = new();
     private ElementReference _selectionToolBar;
     private ElementReference _rubberBand;
     private CancellationTokenSource _componentCts = new();
@@ -467,13 +464,6 @@ public partial class MudExImageViewer : IMudExFileDisplay
 
     private bool IsTiff(string mime) => mime == "image/tiff";
 
-    private static bool NeedsRasterConversion(IMudExFileDisplayInfos infos)
-    {
-        var extension = Path.GetExtension(infos?.FileName ?? string.Empty);
-        return new[] { ".tif", ".tiff", ".tga", ".qoi", ".pbm", ".pgm", ".ppm" }
-            .Contains(extension, StringComparer.OrdinalIgnoreCase);
-    }
-
     private static bool IsSvgz(IMudExFileDisplayInfos infos)
         => Path.GetExtension(infos?.FileName ?? string.Empty).Equals(".svgz", StringComparison.OrdinalIgnoreCase)
            || string.Equals(infos?.ContentType, "image/svg+xml-compressed", StringComparison.OrdinalIgnoreCase);
@@ -548,8 +538,6 @@ public partial class MudExImageViewer : IMudExFileDisplay
         _componentCts?.Dispose();
         _componentCts = null;
 
-        _convertedUrlMapping.Clear();
-
         // Null when the instance is disposed before it ever rendered - the injected service is only there
         // after initialization, and disposing an uninitialized component must not throw.
         if (FileService != null)
@@ -604,18 +592,28 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public async Task SaveImageAsync(MudExImageViewerSaveOptions options)
     {
         var url = await GetUrlForArea(options.AreaToSave);
+        var (extension, mimeType) = MudExImageViewerSaveOptions.GetFileType(options.Format);
+        var name = !string.IsNullOrEmpty(options.FileName) ? Path.ChangeExtension(options.FileName, extension) : $"{Guid.NewGuid().ToFormattedId()}.{extension}";
 
-        var format = options.GetImageFormat();
-        var extension = format?.FileExtensions.FirstOrDefault() ?? MimeType.GetExtension(FileDisplayInfos.ContentType);
-        string name = !string.IsNullOrEmpty(options.FileName) ? Path.ChangeExtension(options.FileName, extension) : $"{Guid.NewGuid().ToFormattedId()}{extension.EnsureStartsWith(".")}";
-
-        var result = await ConvertImageToAsync(url, format);
-        await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+        await SetStatusTextAsync("Please wait while the image is being converted");
+        try
         {
-            Url = result,
-            FileName = name,
-            MimeType = format?.DefaultMimeType
-        });
+            var result = await JsReference.InvokeAsync<string>("exportImage", url, options.Format.ToString().ToLowerInvariant());
+            await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+            {
+                Url = result,
+                FileName = name,
+                MimeType = mimeType
+            });
+        }
+        catch (JSException e) when (MudExFileDisplay != null)
+        {
+            MudExFileDisplay.ShowError(e.Message);
+        }
+        finally
+        {
+            await RemoveStatusTextAsync();
+        }
     }
 
     public async Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)
@@ -647,41 +645,6 @@ public partial class MudExImageViewer : IMudExFileDisplay
         return result;
     }
 
-    private Task<string> ConvertImageToAsync(Stream stream, ImageViewerExportFormat format = ImageViewerExportFormat.Png) => ConvertImageToAsync(stream, MudExImageViewerSaveOptions.GetImageFormat(format));
-
-    private async Task<string> ConvertImageToAsync(Stream stream, IImageFormat format)
-    {
-        await SetStatusTextAsync("Please wait while the image is being converted");
-
-        using var image = await Image.LoadAsync(stream);
-        using var resultStream = new MemoryStream();
-
-        await image.SaveAsync(resultStream, format);
-
-        resultStream.Position = 0;
-        var resultUrl = await FileService.CreateDataUrlAsync(resultStream.ToArray(), "image/png", true, _componentCts?.Token ?? CancellationToken.None);
-        await RemoveStatusTextAsync();
-        return resultUrl;
-    }
-
-    private Task<string> ConvertImageToAsync(string url, ImageViewerExportFormat format = ImageViewerExportFormat.Png) => ConvertImageToAsync(url, MudExImageViewerSaveOptions.GetImageFormat(format));
-
-    private async Task<string> ConvertImageToAsync(string url, IImageFormat format)
-    {
-        var cacheKey = (format.Name, url);
-
-        if (_convertedUrlMapping.TryGetValue(cacheKey, out var convertedUrl))
-        {
-            return convertedUrl;
-        }
-
-        await using var stream = await FileService.ReadStreamAsync(url, ct: _componentCts?.Token ?? CancellationToken.None);
-        var result = await ConvertImageToAsync(stream, format);
-        _convertedUrlMapping.TryAdd(cacheKey, result);
-        return result;
-    }
-
-
     private async Task<string> ConvertUrlIfNeededAsync(string url)
     {
         if (IsSvgz(FileDisplayInfos))
@@ -693,10 +656,14 @@ public partial class MudExImageViewer : IMudExFileDisplay
             return await FileService.CreateDataUrlAsync(svg.ToArray(), "image/svg+xml", true, _componentCts?.Token ?? CancellationToken.None);
         }
 
-        if (NeedsRasterConversion(FileDisplayInfos) || IsTiff(FileDisplayInfos) || IsTiff(await MimeType.ReadMimeTypeFromUrlAsync(url)))
-            url = await ConvertImageToAsync(url);
         return url;
     }
+
+    // Formats the browser cannot decode natively are decoded by MudExImageViewer.js based on this.
+    private async Task<string> SourceFormatAsync(string url)
+        => IsTiff(FileDisplayInfos) || IsTiff(await MimeType.ReadMimeTypeFromUrlAsync(url))
+            ? "tiff"
+            : Path.GetExtension(FileDisplayInfos?.FileName ?? Src ?? string.Empty).TrimStart('.').ToLowerInvariant();
 
     private async Task<object> Options()
     {
@@ -706,7 +673,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
         {
             id = _id,
             Src = url,
-            Format = Path.GetExtension(FileDisplayInfos?.FileName ?? Src ?? string.Empty).TrimStart('.').ToLowerInvariant(),
+            Format = await SourceFormatAsync(url),
             AllowInteractingUnderRubberBand,
             AllowRubberBandSelection,
             NavigatorClass,

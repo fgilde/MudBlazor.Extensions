@@ -7,11 +7,16 @@
     _selectionMode;
     _loadVersion = 0;
     _decodedObjectUrl = null;
+    _preparedSrc = null;
     _psd = null;
     _psdLayers = new Map();
 
     static AG_PSD_URL = 'https://esm.sh/ag-psd@31.0.2?bundle';
     static HEIC2ANY_URL = 'https://esm.sh/heic2any@0.0.4?bundle';
+    static UTIF_URL = 'https://esm.sh/utif2@4.1.0?bundle';
+    static GIFENC_URL = 'https://cdn.jsdelivr.net/npm/gifenc@1.0.3/dist/gifenc.esm.js';
+    static RASTER_FORMATS = ['tif', 'tiff', 'tga', 'qoi', 'pbm', 'pgm', 'ppm', 'pnm'];
+    static NATIVE_EXPORT_TYPES = { png: 'image/png', jpeg: 'image/jpeg', webp: 'image/webp' };
 
     static async importModuleWithoutAmd(url) {
         const loader = await import('./MudExModuleLoader.js');
@@ -40,6 +45,7 @@
             try {
                 const prepared = await this.prepareSource(options.src, options.format);
                 if (loadVersion !== this._loadVersion) return;
+                this._preparedSrc = prepared.src;
                 this.dotnet.invokeMethodAsync('OnImagePrepared', prepared.width || 0, prepared.height || 0, prepared.layers || []);
                 this.viewer = window.MudExImageView({
                     id: options.id,
@@ -94,6 +100,8 @@
             return await this.preparePhotoshop(src);
         if (normalizedFormat === 'heic' || normalizedFormat === 'heif')
             return await this.prepareHeif(src, normalizedFormat);
+        if (MudExImageViewer.RASTER_FORMATS.includes(normalizedFormat))
+            return await this.prepareRaster(src, normalizedFormat);
         return { src, width: 0, height: 0, layers: [] };
     }
 
@@ -141,6 +149,63 @@
             height: dimensions.height,
             layers: []
         };
+    }
+
+    async prepareRaster(src, format) {
+        const bytes = await this.readSourceBytes(src);
+        const codecs = await import('./MudExImageCodecs.js');
+        const image = format === 'tif' || format === 'tiff'
+            ? codecs.decodeTiff(await MudExImageViewer.importLibrary(MudExImageViewer.UTIF_URL), bytes)
+            : codecs.decode(format, bytes);
+        const canvas = document.createElement('canvas');
+        canvas.width = image.width;
+        canvas.height = image.height;
+        canvas.getContext('2d').putImageData(new ImageData(image.data, image.width, image.height), 0, 0);
+        return { src: await this.canvasToObjectUrl(canvas), width: image.width, height: image.height, layers: [] };
+    }
+
+    static async importLibrary(url) {
+        const module = await MudExImageViewer.importModuleWithoutAmd(url);
+        return module.default || module;
+    }
+
+    /** Encodes the image at url (the displayed image when url is the viewer source) and returns an object URL. */
+    async exportImage(url, format) {
+        const source = !url || url === this.options?.src ? this._preparedSrc || url : url;
+        const image = await new Promise((resolve, reject) => {
+            const element = new Image();
+            element.crossOrigin = 'anonymous';
+            element.onload = () => resolve(element);
+            element.onerror = () => reject(new Error('The image could not be loaded for export.'));
+            element.src = source;
+        });
+        const canvas = document.createElement('canvas');
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        const context = canvas.getContext('2d');
+        if (format === 'jpeg') {
+            // JPEG has no alpha, transparent areas would turn black
+            context.fillStyle = '#fff';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        context.drawImage(image, 0, 0);
+
+        let blob;
+        const nativeType = MudExImageViewer.NATIVE_EXPORT_TYPES[format];
+        if (nativeType) {
+            blob = await new Promise(resolve => canvas.toBlob(resolve, nativeType, 0.92));
+            if (!blob || blob.type !== nativeType) throw new Error(`This browser cannot encode ${format} images.`);
+        } else {
+            const codecs = await import('./MudExImageCodecs.js');
+            const pixels = context.getImageData(0, 0, canvas.width, canvas.height);
+            const bytes = format === 'tiff' ? codecs.encodeTiff(await MudExImageViewer.importLibrary(MudExImageViewer.UTIF_URL), pixels)
+                : format === 'gif' ? codecs.encodeGif(await MudExImageViewer.importModuleWithoutAmd(MudExImageViewer.GIFENC_URL), pixels)
+                : codecs.encode(format, pixels);
+            blob = new Blob([bytes]);
+        }
+        const result = URL.createObjectURL(blob);
+        setTimeout(() => URL.revokeObjectURL(result), 60000);
+        return result;
     }
 
     async readSourceBytes(src) {
@@ -233,7 +298,7 @@
 
     canvasToObjectUrl(canvas) {
         return new Promise((resolve, reject) => canvas.toBlob(blob => {
-            if (!blob) reject(new Error('Unable to render the Photoshop composite.'));
+            if (!blob) reject(new Error('Unable to render the decoded image.'));
             else resolve(this.setDecodedObjectUrl(URL.createObjectURL(blob)));
         }, 'image/png'));
     }
@@ -248,6 +313,7 @@
     clearDecodedImage() {
         if (this._decodedObjectUrl) URL.revokeObjectURL(this._decodedObjectUrl);
         this._decodedObjectUrl = null;
+        this._preparedSrc = null;
         this._psd = null;
         this._psdLayers.clear();
     }

@@ -93,6 +93,19 @@ await MudDialog.CancelAnimatedIfAsync(JsRuntime);
 
 ---
 
+## Image Viewer Without ImageSharp (9.11.2)
+
+`SixLabors.ImageSharp` is no longer referenced. `MudExImageViewerSaveOptions.GetImageFormat()` and the static
+`GetImageFormat(ImageViewerExportFormat)` returned ImageSharp's `IImageFormat` and were removed. Use
+`MudExImageViewerSaveOptions.GetFileType(format)`, which returns the file extension and mime type.
+
+**Reason:** ImageSharp 3.x has unpatched security advisories (TIFF decoding among them) and the fixed 4.x versions
+require a commercial license. Decoding and encoding now run in the browser, see `MudExImageCodecs.js`.
+
+`ImageViewerExportFormat.Pbm` still writes a binary color pixmap (`.ppm`), as before.
+
+---
+
 ## Previously Deprecated Methods (Reminder)
 
 The following methods were already deprecated in earlier versions and continue to point to their async replacements:

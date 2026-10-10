@@ -2,8 +2,6 @@ using System.Buffers.Binary;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 
 namespace MudBlazor.Extensions.Helper.Internal;
 
@@ -162,7 +160,7 @@ internal static class AdobeGraphicsFile
         for (var i = 0; i < bitmap.Length; i++)
             bitmap[i] = (byte)((HexValue(hex[i * 2]) << 4) | HexValue(hex[i * 2 + 1]));
 
-        using var image = new Image<L8>(width, height);
+        var gray = new byte[width * height];
         var maximumSample = (1 << depth) - 1;
         for (var sourceY = 0; sourceY < height; sourceY++)
         {
@@ -174,14 +172,11 @@ internal static class AdobeGraphicsFile
                 var shift = 8 - depth - bitOffset % 8;
                 var sample = (sourceByte >> shift) & maximumSample;
                 // EPSI defines zero as white and the maximum value as black.
-                var gray = (byte)(255 - sample * 255 / maximumSample);
-                image[x, targetY] = new L8(gray);
+                gray[targetY * width + x] = (byte)(255 - sample * 255 / maximumSample);
             }
         }
 
-        using var output = new MemoryStream();
-        image.SaveAsPng(output);
-        png = output.ToArray();
+        png = PngWriter.Write(gray, width, height, 1);
         return true;
     }
 

@@ -104,6 +104,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExImageCodecs.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExImageCodecs.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExModuleLoader.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExModuleLoader.js"
