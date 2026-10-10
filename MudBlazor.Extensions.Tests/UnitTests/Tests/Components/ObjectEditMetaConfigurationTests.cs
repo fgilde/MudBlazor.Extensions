@@ -1,6 +1,8 @@
 using Bunit;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
@@ -66,5 +68,48 @@ public class ObjectEditMetaConfigurationTests
             .Add(c => c.MetaInformation, meta));
 
         Assert.DoesNotContain("Given name", cut.Markup);
+    }
+
+    [Fact]
+    public async Task FormAppliesTheConditionsOfAPassedMetaInformation()
+    {
+        await using var context = CreateContext();
+        var person = new Person { FirstName = "Ada" };
+        var meta = person.ObjectEditMeta(m => m.Property(p => p.FirstName).WithLabel("Given name").IgnoreIf<Person>(p => p.FirstName == "Ada"));
+        var cut = context.Render<MudExObjectEditForm<Person>>(p => p
+            .Add(c => c.Value, person)
+            .Add(c => c.MetaInformation, meta));
+
+        Assert.DoesNotContain("Given name", cut.Markup);
+    }
+
+    [Fact]
+    public async Task DialogAppliesTheConditionsOfAPassedMetaInformation()
+    {
+        await using var context = CreateContext();
+        var person = new Person { FirstName = "Ada" };
+        var meta = person.ObjectEditMeta(m => m.Property(p => p.FirstName).WithLabel("Given name").IgnoreIf<Person>(p => p.FirstName == "Ada"));
+        var provider = context.Render<MudDialogProvider>();
+        var dialogs = context.Services.GetRequiredService<IDialogService>();
+        var parameters = new DialogParameters { { nameof(MudExObjectEditDialog<Person>.MetaInformation), meta } };
+
+        _ = provider.InvokeAsync(() => dialogs.EditObjectAsync(person, "Edit", DialogOptionsEx.DefaultDialogOptions, null, parameters));
+
+        provider.WaitForAssertion(() => Assert.Contains("mud-dialog", provider.Markup));
+        Assert.DoesNotContain("Given name", provider.Markup);
+    }
+
+    [Fact]
+    public async Task ReconfiguredPassedMetaKeepsItsConditions()
+    {
+        await using var context = CreateContext();
+        var person = new Person { FirstName = "Ada" };
+        var meta = person.ObjectEditMeta(m => m.Property(p => p.FirstName).WithLabel("Given name").IgnoreIf<Person>(p => p.FirstName == "Ada"));
+        var cut = context.Render<MudExObjectEditForm<Person>>(p => p
+            .Add(c => c.Value, person)
+            .Add(c => c.ConfigureMetaInformationAlways, true)
+            .Add(c => c.MetaInformation, meta));
+
+        cut.WaitForAssertion(() => Assert.DoesNotContain("Given name", cut.Markup));
     }
 }

@@ -590,6 +590,8 @@ public partial class MudExObjectEdit<T>
             if (valueUpdate || MetaInformation == null)
             {
                 await CreateMetaIfNotExists();
+                // configuring the meta awaits, so the first render can show it before its conditions saw the value
+                StateHasChanged();
                 if (valueUpdate && Value is IEditableObject editable)
                     editable.BeginEdit();
             }
