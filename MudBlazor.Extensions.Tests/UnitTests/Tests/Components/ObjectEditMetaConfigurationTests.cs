@@ -54,4 +54,17 @@ public class ObjectEditMetaConfigurationTests
 
         Assert.Contains("Given name", cut.Markup);
     }
+
+    [Fact]
+    public async Task PassedMetaInformationHasItsConditionsApplied()
+    {
+        await using var context = CreateContext();
+        var person = new Person { FirstName = "Ada" };
+        var meta = person.ObjectEditMeta(m => m.Property(p => p.FirstName).WithLabel("Given name").IgnoreIf<Person>(p => p.FirstName == "Ada"));
+        var cut = context.Render<MudExObjectEdit<Person>>(p => p
+            .Add(c => c.Value, person)
+            .Add(c => c.MetaInformation, meta));
+
+        Assert.DoesNotContain("Given name", cut.Markup);
+    }
 }

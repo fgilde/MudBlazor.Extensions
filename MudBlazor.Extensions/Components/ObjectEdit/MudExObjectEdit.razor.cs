@@ -987,9 +987,10 @@ public partial class MudExObjectEdit<T>
 
             if (ConfigService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedAfter)
                 await ConfigService.ConfigureAsync(MetaInformation);
-
-            UpdateConditions();
         }
+
+        // a meta passed in as MetaInformation is already configured but its conditions still have to see the value
+        UpdateConditions();
 
         foreach (var item in MetaInformation.AllProperties)
         {
