@@ -20,9 +20,9 @@
     <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
 
     <!-- Nextended -->
-    <PackageVersion Include="Nextended.Blazor" Version="10.1.42" />
-    <PackageVersion Include="Nextended.Core" Version="10.1.42" />
-    <PackageVersion Include="Nextended.CodeGen" Version="10.1.42" />
+    <PackageVersion Include="Nextended.Blazor" Version="10.1.43" />
+    <PackageVersion Include="Nextended.Core" Version="10.1.43" />
+    <PackageVersion Include="Nextended.CodeGen" Version="10.1.43" />
 
     <!-- Microsoft.AspNetCore / Extensions -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.12" />
