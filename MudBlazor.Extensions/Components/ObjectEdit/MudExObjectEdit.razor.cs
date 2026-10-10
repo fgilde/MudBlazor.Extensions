@@ -590,6 +590,7 @@ public partial class MudExObjectEdit<T>
             if (valueUpdate || MetaInformation == null)
             {
                 await CreateMetaIfNotExists();
+                StateHasChanged();
                 if (valueUpdate && Value is IEditableObject editable)
                     editable.BeginEdit();
             }
