@@ -200,6 +200,30 @@ Tag field component for entering and managing tags.
                AutoCompleteSource="@GetTagSuggestions" />
 ```
 
+## MudExCronEdit
+
+Cron expression editor bound to a string.
+
+### Basic Usage
+
+```razor
+<MudExCronEdit @bind-Value="@cron" Label="Schedule" />
+
+@code {
+    private string cron = "0 6 * * 1-5";
+}
+```
+
+### Features
+
+- Presets: every few minutes, hourly, daily, weekly (weekday chips), monthly
+- Free text expression (5 fields, or 6 with seconds) with strict validation (numbers in range, JAN-DEC / SUN-SAT, ranges, lists, steps; `L`/`nW` for the day and `nL`/`n#k` for the weekday) and a description in words
+- An empty value means no schedule: no error, clearing the field emits `null`
+- Expressions the presets can't show stay unchanged and are shown as "Custom"
+- An invalid typed expression shows an error and never overwrites the bound value
+- `ReadOnly`, `Disabled`, `Variant`, `Margin`, `Dense`, `TimeIsUtc`
+- Use it for a string property in `MudExObjectEdit` via `meta.Property(m => m.Schedule).RenderWith<MudExCronEdit, string>(e => e.Value)`
+
 ## MudExColorEdit
 
 Color editing component with visual color picker integration.

@@ -2298,6 +2298,65 @@
         <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnPickerClosedAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExCronEdit">
+            <summary>
+            A cron expression built from presets (every n minutes, hourly, daily, weekly, monthly) or typed; says in words when it runs.
+            The bound string only changes to valid expressions, an invalid one stays in the text field with an error.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCronEdit.Value">
+            <summary>
+            The cron expression (five fields, or six with seconds first).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCronEdit.ValueChanged">
+            <summary>
+            Called with every valid expression the user builds or types.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCronEdit.Label">
+            <summary>
+            Caption above the editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCronEdit.HelperText">
+            <summary>
+            Text below the editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCronEdit.ReadOnly">
+            <summary>
+            Set to true to show the value without allowing changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCronEdit.Disabled">
+            <summary>
+            Set to true to disable the editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCronEdit.Variant">
+            <summary>
+            The variant of the input fields.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCronEdit.Margin">
+            <summary>
+            The margin of the input fields.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCronEdit.Dense">
+            <summary>
+            Set to true for compact input fields.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCronEdit.TimeIsUtc">
+            <summary>
+            Set to true (default) to say UTC in the time label and the description, as cron servers mostly run on it. Set to false if the schedule runs in another zone.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCronEdit.OnParametersSet">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCultureSelect">
             <summary>
             Drop down component to select a culture
@@ -21754,6 +21813,68 @@
             </summary>
             <param name="str"></param>
             <returns></returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExCronFrequency">
+            <summary>
+            The frequencies <see cref="T:MudBlazor.Extensions.Components.MudExCronEdit"/> can build an expression for.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.MudExCronFrequency.Minutes">
+            <summary>Every n minutes</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.MudExCronFrequency.Hourly">
+            <summary>Every hour at a given minute</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.MudExCronFrequency.Daily">
+            <summary>Every day at a given time</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.MudExCronFrequency.Weekly">
+            <summary>On selected weekdays at a given time</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.MudExCronFrequency.Monthly">
+            <summary>On a day of the month at a given time</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.MudExCronFrequency.Custom">
+            <summary>Anything else; the expression stays as written</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExCronSchedule">
+            <summary>
+            The common cron patterns as fields; anything else is <see cref="F:MudBlazor.Extensions.Core.MudExCronFrequency.Custom"/> and stays as written.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExCronSchedule.#ctor(MudBlazor.Extensions.Core.MudExCronFrequency,System.Int32,System.Int32,System.Int32,System.Collections.Generic.IReadOnlyList{System.DayOfWeek},System.Int32)">
+            <summary>
+            The common cron patterns as fields; anything else is <see cref="F:MudBlazor.Extensions.Core.MudExCronFrequency.Custom"/> and stays as written.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExCronSchedule.Weekdays">
+            <summary>
+            The selected weekdays; Monday if none are set.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExCronSchedule.Parse(System.String)">
+            <summary>
+            Reads an expression; everything the fields can't express, or that is not valid, is <see cref="F:MudBlazor.Extensions.Core.MudExCronFrequency.Custom"/>.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExCronSchedule.IsValid(System.String)">
+            <summary>
+            Five fields (minute hour day month weekday) or six with seconds first. Every field is a comma separated list of
+            <c>*</c>, a value, or a range <c>a-b</c> (a &lt;= b), each optionally followed by <c>/step</c> (1 up to the field's maximum).
+            Values are numbers within the field's range, or names: JAN-DEC for the month, SUN-SAT for the weekday (Sunday is 0 or 7).
+            Day and weekday also allow <c>?</c>. Quartz/Jenkins style extensions are accepted where cron allows them:
+            <c>L</c> and <c>nW</c> for the day of the month, <c>nL</c> and <c>n#k</c> (k = 1-5) for the weekday. Nothing else, so typos like <c>FUNDAY</c> or <c>1-</c> are invalid.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExCronSchedule.ToExpression">
+            <summary>
+            The expression of the fields; null for <see cref="F:MudBlazor.Extensions.Core.MudExCronFrequency.Custom"/>, which keeps what was typed.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExCronSchedule.Describe(System.Func{System.String,System.Object[],System.String},System.Globalization.CultureInfo,System.Boolean)">
+            <summary>
+            The schedule in words through <paramref name="text"/> (the localizer). With <paramref name="utc"/> the times say UTC, like most job servers.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.MudExDimension">
             <summary>
