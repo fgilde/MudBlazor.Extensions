@@ -1329,15 +1329,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mudexcoloredit" class="md-nav__link">
+  <a href="#mudexcronedit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        MudExColorEdit
+        MudExCronEdit
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="MudExColorEdit">
+    <nav class="md-nav" aria-label="MudExCronEdit">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1353,6 +1353,45 @@
         
           <li class="md-nav__item">
   <a href="#features_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Features
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mudexcoloredit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MudExColorEdit
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MudExColorEdit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-usage_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         Features
@@ -1391,7 +1430,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#basic-usage_6" class="md-nav__link">
+  <a href="#basic-usage_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         Basic Usage
@@ -1402,7 +1441,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#features_7" class="md-nav__link">
+  <a href="#features_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         Features
@@ -1441,7 +1480,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#basic-usage_7" class="md-nav__link">
+  <a href="#basic-usage_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         Basic Usage
@@ -1452,7 +1491,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#features_8" class="md-nav__link">
+  <a href="#features_9" class="md-nav__link">
     <span class="md-ellipsis">
       
         Features
@@ -1480,7 +1519,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#basic-usage_8" class="md-nav__link">
+  <a href="#basic-usage_9" class="md-nav__link">
     <span class="md-ellipsis">
       
         Basic Usage
@@ -1491,7 +1530,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#features_9" class="md-nav__link">
+  <a href="#features_10" class="md-nav__link">
     <span class="md-ellipsis">
       
         Features
@@ -1530,7 +1569,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#features_10" class="md-nav__link">
+  <a href="#features_11" class="md-nav__link">
     <span class="md-ellipsis">
       
         Features
@@ -2562,12 +2601,31 @@
 </span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>               MaxTags="5"
 </span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>               AutoCompleteSource="@GetTagSuggestions" /&gt;
 </span></code></pre></div>
-<h2 id="mudexcoloredit">MudExColorEdit<a class="headerlink" href="#mudexcoloredit" title="Permanent link">&para;</a></h2>
-<p>Color editing component with visual color picker integration.</p>
+<h2 id="mudexcronedit">MudExCronEdit<a class="headerlink" href="#mudexcronedit" title="Permanent link">&para;</a></h2>
+<p>Cron expression editor bound to a string.</p>
 <h3 id="basic-usage_5">Basic Usage<a class="headerlink" href="#basic-usage_5" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&lt;MudExColorEdit @bind-Value="@color" /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&lt;MudExCronEdit @bind-Value="@cron" Label="Schedule" /&gt;
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>@code {
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    private string cron = "0 6 * * 1-5";
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>}
 </span></code></pre></div>
 <h3 id="features_6">Features<a class="headerlink" href="#features_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Presets: every few minutes, hourly, daily, weekly (weekday chips), monthly</li>
+<li>Free text expression (5 fields, or 6 with seconds) with strict validation (numbers in range, JAN-DEC / SUN-SAT, ranges, lists, steps; <code>L</code>/<code>nW</code> for the day and <code>nL</code>/<code>n#k</code> for the weekday) and a description in words</li>
+<li>An empty value means no schedule: no error, clearing the field emits <code>null</code></li>
+<li>Expressions the presets can't show stay unchanged and are shown as "Custom"</li>
+<li>An invalid typed expression shows an error and never overwrites the bound value</li>
+<li><code>ReadOnly</code>, <code>Disabled</code>, <code>Variant</code>, <code>Margin</code>, <code>Dense</code>, <code>TimeIsUtc</code></li>
+<li>Use it for a string property in <code>MudExObjectEdit</code> via <code>meta.Property(m =&gt; m.Schedule).RenderWith&lt;MudExCronEdit, string&gt;(e =&gt; e.Value)</code></li>
+</ul>
+<h2 id="mudexcoloredit">MudExColorEdit<a class="headerlink" href="#mudexcoloredit" title="Permanent link">&para;</a></h2>
+<p>Color editing component with visual color picker integration.</p>
+<h3 id="basic-usage_6">Basic Usage<a class="headerlink" href="#basic-usage_6" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>&lt;MudExColorEdit @bind-Value="@color" /&gt;
+</span></code></pre></div>
+<h3 id="features_7">Features<a class="headerlink" href="#features_7" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Visual color picker</li>
 <li>HEX, RGB, HSL input</li>
@@ -2577,21 +2635,21 @@
 <li>Format conversion</li>
 </ul>
 <h3 id="example_5">Example<a class="headerlink" href="#example_5" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>@code {
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    private MudExColor color = MudExColor.Primary;
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>}
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>&lt;MudExColorEdit @bind-Value="@color"
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>                Label="Theme Color"
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>                ShowAlpha="true"
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>                ShowPresets="true" /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>@code {
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    private MudExColor color = MudExColor.Primary;
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>}
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>&lt;MudExColorEdit @bind-Value="@color"
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>                Label="Theme Color"
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>                ShowAlpha="true"
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>                ShowPresets="true" /&gt;
 </span></code></pre></div>
 <h2 id="mudexthemeedit">MudExThemeEdit<a class="headerlink" href="#mudexthemeedit" title="Permanent link">&para;</a></h2>
 <p>Theme editing component for customizing application themes.</p>
-<h3 id="basic-usage_6">Basic Usage<a class="headerlink" href="#basic-usage_6" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>&lt;MudExThemeEdit @bind-Theme="@theme" /&gt;
+<h3 id="basic-usage_7">Basic Usage<a class="headerlink" href="#basic-usage_7" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>&lt;MudExThemeEdit @bind-Theme="@theme" /&gt;
 </span></code></pre></div>
-<h3 id="features_7">Features<a class="headerlink" href="#features_7" title="Permanent link">&para;</a></h3>
+<h3 id="features_8">Features<a class="headerlink" href="#features_8" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Visual theme editor</li>
 <li>Primary, secondary, tertiary color selection</li>
@@ -2601,20 +2659,20 @@
 <li>Export/import theme</li>
 </ul>
 <h3 id="example_6">Example<a class="headerlink" href="#example_6" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>@code {
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    private MudTheme theme = new MudTheme();
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>}
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>&lt;MudExThemeEdit @bind-Theme="@theme"
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>                ShowPreview="true"
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>                AllowExport="true" /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>@code {
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    private MudTheme theme = new MudTheme();
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>}
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>&lt;MudExThemeEdit @bind-Theme="@theme"
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>                ShowPreview="true"
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>                AllowExport="true" /&gt;
 </span></code></pre></div>
 <h2 id="mudexthemeselect">MudExThemeSelect<a class="headerlink" href="#mudexthemeselect" title="Permanent link">&para;</a></h2>
 <p>Theme selection component with predefined themes.</p>
-<h3 id="basic-usage_7">Basic Usage<a class="headerlink" href="#basic-usage_7" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>&lt;MudExThemeSelect @bind-SelectedTheme="@selectedTheme" /&gt;
+<h3 id="basic-usage_8">Basic Usage<a class="headerlink" href="#basic-usage_8" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>&lt;MudExThemeSelect @bind-SelectedTheme="@selectedTheme" /&gt;
 </span></code></pre></div>
-<h3 id="features_8">Features<a class="headerlink" href="#features_8" title="Permanent link">&para;</a></h3>
+<h3 id="features_9">Features<a class="headerlink" href="#features_9" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Browse predefined themes</li>
 <li>Theme preview</li>
@@ -2624,10 +2682,10 @@
 </ul>
 <h2 id="mudexhtmledit">MudExHtmlEdit<a class="headerlink" href="#mudexhtmledit" title="Permanent link">&para;</a></h2>
 <p>Rich HTML editor component.</p>
-<h3 id="basic-usage_8">Basic Usage<a class="headerlink" href="#basic-usage_8" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>&lt;MudExHtmlEdit @bind-Value="@htmlContent" /&gt;
+<h3 id="basic-usage_9">Basic Usage<a class="headerlink" href="#basic-usage_9" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>&lt;MudExHtmlEdit @bind-Value="@htmlContent" /&gt;
 </span></code></pre></div>
-<h3 id="features_9">Features<a class="headerlink" href="#features_9" title="Permanent link">&para;</a></h3>
+<h3 id="features_10">Features<a class="headerlink" href="#features_10" title="Permanent link">&para;</a></h3>
 <ul>
 <li>WYSIWYG editing</li>
 <li>Toolbar with formatting options</li>
@@ -2638,18 +2696,18 @@
 <li>Markdown import/export</li>
 </ul>
 <h3 id="example_7">Example<a class="headerlink" href="#example_7" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>@code {
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    private string htmlContent = "&lt;p&gt;Hello World&lt;/p&gt;";
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>}
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>&lt;MudExHtmlEdit @bind-Value="@htmlContent"
-</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>               Height="400px"
-</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>               ShowToolbar="true"
-</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>               AllowImageUpload="true" /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>@code {
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    private string htmlContent = "&lt;p&gt;Hello World&lt;/p&gt;";
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>}
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>&lt;MudExHtmlEdit @bind-Value="@htmlContent"
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>               Height="400px"
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>               ShowToolbar="true"
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>               AllowImageUpload="true" /&gt;
 </span></code></pre></div>
 <h2 id="mudexvalidationwrapper">MudExValidationWrapper<a class="headerlink" href="#mudexvalidationwrapper" title="Permanent link">&para;</a></h2>
 <p>Validation wrapper component for custom validation logic.</p>
-<h3 id="features_10">Features<a class="headerlink" href="#features_10" title="Permanent link">&para;</a></h3>
+<h3 id="features_11">Features<a class="headerlink" href="#features_11" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Custom validation rules</li>
 <li>Multiple validators</li>
@@ -2658,9 +2716,9 @@
 <li>Error message customization</li>
 </ul>
 <h3 id="example_8">Example<a class="headerlink" href="#example_8" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>&lt;MudExValidationWrapper Validation="@(value =&gt; ValidateCustom(value))"&gt;
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    &lt;MudExTextField @bind-Value="@value" Label="Custom Validation" /&gt;
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>&lt;/MudExValidationWrapper&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>&lt;MudExValidationWrapper Validation="@(value =&gt; ValidateCustom(value))"&gt;
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    &lt;MudExTextField @bind-Value="@value" Label="Custom Validation" /&gt;
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>&lt;/MudExValidationWrapper&gt;
 </span></code></pre></div>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
 <ul>
