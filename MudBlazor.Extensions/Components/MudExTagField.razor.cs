@@ -19,8 +19,12 @@ public partial class MudExTagField<T>
     private Adornment _renderChipsAdditional = Adornment.None;
     private List<T> _values;
     private string _trackedText;
-    private T _trackedValue;
-    private bool _swallowNextInput;
+    private bool _committing;
+    private bool _chipError;
+    private List<T> _suggestions = [];
+    private bool _suggestionsOpen;
+    private int _activeSuggestion = -1;
+    private CancellationTokenSource _searchCts;
 
     /// <summary>
     /// Set to true to allow duplicates
@@ -172,6 +176,37 @@ public partial class MudExTagField<T>
     public AnimationType ErrorAnimation { get; set; } = AnimationType.HeadShake;
 
     /// <summary>
+    /// Returns the suggestions for the typed text, shown in a dropdown below the field. Values that are already chips are not offered (unless <see cref="AllowDuplicates"/>).
+    /// Arrow keys move the highlight, Enter or a click picks the highlighted suggestion.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public Func<string, CancellationToken, Task<IEnumerable<T>>> SearchFunc { get; set; }
+
+    /// <summary>
+    /// Maximum number of suggestions shown. 0 shows all returned by <see cref="SearchFunc"/>.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public int MaxSuggestions { get; set; }
+
+    /// <summary>
+    /// Returns the error text for an invalid value, null for a valid one.
+    /// Invalid typed text is not added, stays in the field and shows the error; invalid values already in <see cref="Values"/> are shown as error colored chips.
+    /// </summary>
+    [Parameter, SafeCategory("Validation")]
+    public Func<T, string> ValidateChip { get; set; }
+
+    /// <summary>
+    /// Decides per value whether its chip can be removed. A fixed chip has no close icon and Backspace does not remove it. Default is every chip.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public Func<T, bool> IsChipClosable { get; set; }
+
+    /// <summary>
+    /// If true, the typed text is added as chip(s) when the field loses focus. Default is false.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool CommitOnBlur { get; set; }
+    /// <summary>
     /// Appearance service for applying styles.
     /// </summary>
     [Inject] protected MudExAppearanceService AppearanceService { get; set; }
@@ -197,6 +232,11 @@ public partial class MudExTagField<T>
             .Build();
 
     /// <summary>
+    /// Style for chips with an invalid value (the chip color is the error color).
+    /// </summary>
+    protected string ChipInvalidStyleName => new MudExStyleBuilder().AddRaw(StyleChip).Build();
+
+    /// <summary>
     /// Class name for the chip elements.
     /// </summary>
     protected string ChipClassname =>
@@ -216,84 +256,236 @@ public partial class MudExTagField<T>
     /// <inheritdoc />
     protected override async Task SetTextAndUpdateValueAsync(string text, bool updateValue = true)
     {
-        if (_swallowNextInput)
+        _trackedText = text;
+        if (_committing)
         {
-            _swallowNextInput = false;
-            _trackedText = string.Empty;
-            _trackedValue = default;
-            if (InputReference != null)
-                await InputReference.SetText(string.Empty);
+            await base.SetTextAndUpdateValueAsync(text, updateValue);
             return;
         }
 
-        _trackedText = text;
-        await base.SetTextAndUpdateValueAsync(text, updateValue);
-        _trackedValue = ReadValue;
-    }
+        if (_chipError)
+            await SetErrorAsync();
 
-    /// <inheritdoc />
-    protected override async Task UpdateValuePropertyAsync(bool updateText)
-    {
-        await base.UpdateValuePropertyAsync(updateText);
-        _trackedValue = ReadValue;
+        if (HasSeparator(text))
+        {
+            await CommitAsync(text);
+            return;
+        }
+
+        await base.SetTextAndUpdateValueAsync(text, updateValue);
+        await SearchAsync(text);
     }
 
     private bool ShouldShowVisualiser() => Values?.Any() == true && RenderChipsAdditional == Adornment.None;
+
+    private char[] Separators => Delimiters == null ? [] : Delimiters.Contains(' ') ? [.. Delimiters, '\n', '\r', '\t'] : Delimiters;
+
+    private bool HasSeparator(string text) => text != null && Separators.Length > 0 && text.IndexOfAny(Separators) >= 0;
 
     /// <inheritdoc />
     protected override async Task InvokeKeyDownAsync(KeyboardEventArgs args)
     {
         await base.InvokeKeyDownAsync(args);
-        var isDelimiter = Delimiters?.Length > 0 && args.Key.Length == 1 && Delimiters.Contains(args.Key[0]);
-        if ((isDelimiter || (SetChipsOnEnter && args.Key == "Enter")) && !string.IsNullOrEmpty(_trackedText))
+        var pickable = _suggestionsOpen && _activeSuggestion >= 0 && _activeSuggestion < _suggestions.Count;
+        switch (args.Key)
         {
-            await ApplyChips();
-            if (isDelimiter)
-                _swallowNextInput = true;
-        }
-
-        if (args.Key == "Backspace" && string.IsNullOrEmpty(_trackedText) && Values?.Any() == true)
-        {
-            Values.RemoveAt(Values.Count - 1);
-            await InvokeValuesChanged();
+            case "ArrowDown" or "ArrowUp" when SearchFunc != null:
+                await MoveSuggestionAsync(args.Key == "ArrowDown");
+                break;
+            case "Enter" when pickable:
+                await PickAsync(_suggestions[_activeSuggestion]);
+                break;
+            case "Enter" when SetChipsOnEnter:
+                await CommitAsync(_trackedText);
+                break;
+            case "Escape" when _suggestionsOpen || !string.IsNullOrEmpty(_trackedText):
+                CloseSuggestions();
+                await SetErrorAsync();
+                await SetTextCoreAsync(string.Empty);
+                break;
+            case "Backspace" when string.IsNullOrEmpty(_trackedText) && Values?.Count > 0 && IsClosable(Values[^1]):
+                Values.RemoveAt(Values.Count - 1);
+                await InvokeValuesChanged();
+                break;
         }
     }
 
-    private async Task ApplyChips()
+    /// <inheritdoc />
+    protected override async Task OnBlurredAsync(FocusEventArgs obj)
     {
-        Values ??= new();
-        var currentValue = _trackedValue;
-        if (currentValue == null || (Values.Contains(currentValue) && !AllowDuplicates))
+        await base.OnBlurredAsync(obj);
+        // the suggestion list keeps the focus in the input while it is clicked (mousedown is prevented), so a blur is the field really being left
+        CloseSuggestions();
+        if (CommitOnBlur && !_committing)
+            await CommitAsync(_trackedText, focusAfter: false);
+    }
+
+    private async Task SearchAsync(string text)
+    {
+        if (SearchFunc == null || Disabled || ReadOnly)
+            return;
+        _searchCts?.Cancel();
+        var cts = _searchCts = new CancellationTokenSource();
+        IEnumerable<T> found;
+        try
         {
-            await SetErrorWithStyle(DuplicateErrorText);
+            found = await SearchFunc(text ?? string.Empty, cts.Token) ?? [];
+        }
+        catch (OperationCanceledException)
+        {
             return;
         }
-        SetError();
-        Values.Add(currentValue);
-        await InvokeValuesChanged();
-        if (AutoClear)
+
+        if (cts.IsCancellationRequested)
+            return;
+        var items = found.Where(s => AllowDuplicates || Values?.Contains(s) != true);
+        _suggestions = (MaxSuggestions > 0 ? items.Take(MaxSuggestions) : items).ToList();
+        _activeSuggestion = _suggestions.Count > 0 ? 0 : -1;
+        _suggestionsOpen = _suggestions.Count > 0;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task MoveSuggestionAsync(bool down)
+    {
+        if (!_suggestionsOpen || _suggestions.Count == 0)
         {
-            if (RuntimeLocation.IsServerSide)
-                await BlurAsync();
-
-            await Clear();
-            _trackedText = null;
-            _trackedValue = default;
-
-            if (RuntimeLocation.IsServerSide)
-                await FocusAsync();
+            await SearchAsync(_trackedText);
+            return;
         }
+
+        _activeSuggestion = (_activeSuggestion + (down ? 1 : -1) + _suggestions.Count) % _suggestions.Count;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void CloseSuggestions()
+    {
+        _searchCts?.Cancel();
+        _suggestionsOpen = false;
+    }
+
+    private async Task PickAsync(T item)
+    {
+        CloseSuggestions();
+        await ApplyAsync([new Entry(ConvertSet(item), item, null)], clearText: true);
+    }
+
+    private Task CommitAsync(string text, bool focusAfter = true)
+    {
+        string[] tokens = Separators.Length > 0 ? text?.Split(Separators, StringSplitOptions.RemoveEmptyEntries) ?? [] : string.IsNullOrWhiteSpace(text) ? [] : [text];
+        var entries = tokens.Select(token =>
+        {
+            var value = ConvertGet(token);
+            return new Entry(token, value, ConversionError ? ConversionErrorMessage : null);
+        }).ToList();
+        return ApplyAsync(entries, clearText: AutoClear, focusAfter);
+    }
+
+    private async Task ApplyAsync(List<Entry> entries, bool clearText, bool focusAfter = true)
+    {
+        CloseSuggestions();
+        var added = new List<T>();
+        var rejected = new List<string>();
+        var duplicates = new List<string>();
+        string error = null;
+        foreach (var entry in entries)
+        {
+            var entryError = entry.ConversionError ?? (entry.Value is null ? null : ValidateChip?.Invoke(entry.Value));
+            if (entryError != null)
+            {
+                if (!rejected.Contains(entry.Text))
+                    rejected.Add(entry.Text);
+                error ??= entryError;
+            }
+            else if (!AllowDuplicates && (Values?.Contains(entry.Value) == true || added.Contains(entry.Value)))
+            {
+                duplicates.Add(entry.Text);
+            }
+            else
+            {
+                added.Add(entry.Value);
+            }
+        }
+
+        // a single repeated entry keeps its text and says why; inside a longer paste duplicates are dropped silently
+        if (added.Count == 0 && rejected.Count == 0 && duplicates.Count > 0)
+        {
+            rejected = duplicates.Distinct().ToList();
+            error = DuplicateErrorText;
+        }
+
+        if (added.Count > 0)
+        {
+            Values ??= new();
+            Values.AddRange(added);
+            await InvokeValuesChanged();
+        }
+
+        if (clearText)
+        {
+            await SetTextCoreAsync(string.Join(Separators.FirstOrDefault(' '), rejected));
+            if (RuntimeLocation.IsServerSide && focusAfter && added.Count > 0)
+            {
+                // the blur/focus round trip refreshes the input on the server; its blur event must not commit again
+                _committing = true;
+                try
+                {
+                    await BlurAsync();
+                    await FocusAsync();
+                }
+                finally
+                {
+                    _committing = false;
+                }
+            }
+        }
+
+        // after the text update, which validates the field and would reset the error
+        if (error == null)
+            await SetErrorAsync();
+        else
+            await SetErrorWithStyle(error);
+        _chipError = error != null;
 
         await InvokeAsync(StateHasChanged);
     }
 
+    private async Task SetTextCoreAsync(string text)
+    {
+        _committing = true;
+        _trackedText = text;
+        try
+        {
+            await SetText(text);
+            await base.SetTextAndUpdateValueAsync(text);
+        }
+        finally
+        {
+            _committing = false;
+        }
+    }
+
     private async Task SetErrorWithStyle(string text)
     {
-        SetError(text);        
+        await SetErrorAsync(text);
         await AppearanceService.ApplyTemporarilyToAsync(StyleBuilder.Clear().WithAnimation(ErrorAnimation), this);    
     }
 
-    private void SetError(string error = null) => Error = !string.IsNullOrEmpty(ErrorText = TryLocalize(error));
+    private async Task SetErrorAsync(string error = null)
+    {
+        _chipError = false;
+        var text = TryLocalize(error);
+        await ErrorTextState.SetValueAsync(text);
+        await ErrorState.SetValueAsync(!string.IsNullOrEmpty(text));
+    }
+
+    private string ChipError(T value) => ValidateChip?.Invoke(value);
+
+    private bool IsClosable(T value) => IsChipClosable?.Invoke(value) ?? true;
+
+    private EventCallback<MudChip<T>> CloseOf(T value) =>
+        Disabled || ReadOnly || !Closeable || !IsClosable(value) ? default : EventCallback.Factory.Create<MudChip<T>>(this, Remove);
+
+    private sealed record Entry(string Text, T Value, string ConversionError);
 
     private async Task Remove(MudChip<T> chip)
     {        
