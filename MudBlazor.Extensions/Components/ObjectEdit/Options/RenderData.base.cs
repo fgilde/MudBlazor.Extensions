@@ -297,10 +297,45 @@ public partial class RenderData : IRenderData
         AddCondition(condition, rd => rd.AddAttributes(overwriteExisting, attributes), rd =>
         {
             rd.AddAttributes(overwriteExisting, existing);
-            if (toRemove.Any())
-                rd.Attributes.RemoveRange(toRemove);
+            toRemove.Apply(a => ResetToParameterDefault(rd, a.Key));
         });
         return this;
+    }
+
+    private static readonly ConcurrentDictionary<(Type componentType, string key), (bool exists, object value)> _parameterDefaultCache = new();
+
+    // Removing the attribute is not enough: Blazor keeps the last value of a parameter that is no longer passed,
+    // so the parameter gets its default value passed explicitly.
+    [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "ComponentType carries DynamicallyAccessedMembers.All on RenderData; the IRenderData interface just does not repeat the annotation.")]
+    [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "ComponentType carries DynamicallyAccessedMembers.All on RenderData; the IRenderData interface just does not repeat the annotation.")]
+    private static void ResetToParameterDefault(IRenderData renderData, string key)
+    {
+        var componentType = renderData.ComponentType;
+        if (componentType == null)
+        {
+            renderData.Attributes.Remove(key);
+            return;
+        }
+
+        var (exists, value) = _parameterDefaultCache.GetOrAdd((componentType, key), k =>
+        {
+            var property = k.componentType.GetProperty(k.key);
+            if (property == null)
+                return (false, null);
+            try
+            {
+                return (true, property.GetValue(Activator.CreateInstance(k.componentType)));
+            }
+            catch (Exception)
+            {
+                return (true, property.PropertyType.IsValueType ? Activator.CreateInstance(property.PropertyType) : null);
+            }
+        });
+
+        if (exists)
+            renderData.Attributes[key] = value;
+        else
+            renderData.Attributes.Remove(key);
     }
 
     /// <summary>

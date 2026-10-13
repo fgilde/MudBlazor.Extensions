@@ -121,7 +121,13 @@ public class ObjectEditPropertyMeta: IMudExStyleAppearance, IMudExClassAppearanc
     public IRenderData RenderData
     {
         get => _renderData ??= RenderDataDefaults.GetRenderData(this);
-        set => _renderData = value;
+        set
+        {
+            // replacing the render data (RenderWith) must not drop a wrapper that was set before
+            if (value != null && value.Wrapper == null && _renderData?.Wrapper != null)
+                value.Wrapper = _renderData.Wrapper;
+            _renderData = value;
+        }
     }
     
     /// <summary>
