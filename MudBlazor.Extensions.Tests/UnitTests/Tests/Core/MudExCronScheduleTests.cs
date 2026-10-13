@@ -46,6 +46,42 @@ public class MudExCronScheduleTests
     [InlineData("0 0 6 * * *", true)]
     [InlineData("*/5 9-17 * JAN-MAR MON-FRI", true)]
     [InlineData("0 12 ? * 5#3", true)]
+    [InlineData("0 12 ? * FRI#3", true)]
+    [InlineData("0 0 L * *", true)]
+    [InlineData("0 0 15W * *", true)]
+    [InlineData("0 0 * * 5L", true)]
+    [InlineData("0 0 * * SUN,sat", true)]
+    [InlineData("0 0 * * 5-7", true)]
+    [InlineData("0 0 1 JAN,jun-dec/2 *", true)]
+    [InlineData("10/15 * * * *", true)]
+    [InlineData("0 0/5 * * * ?", true)]
+    [InlineData("foo bar baz qux quux", false)]
+    [InlineData("0 6 * * FUNDAY", false)]
+    [InlineData("1- * * * *", false)]
+    [InlineData("*/ * * * *", false)]
+    [InlineData("1, * * * *", false)]
+    [InlineData(",1 * * * *", false)]
+    [InlineData("* * * * 1-", false)]
+    [InlineData("5-1 * * * *", false)]
+    [InlineData("*/0 * * * *", false)]
+    [InlineData("*/60 * * * *", false)]
+    [InlineData("*/5/2 * * * *", false)]
+    [InlineData("1-2-3 * * * *", false)]
+    [InlineData("? * * * *", false)]
+    [InlineData("0 0 ?/2 * *", false)]
+    [InlineData("0 0 * FOO *", false)]
+    [InlineData("0 0 * MON *", false)]
+    [InlineData("0 0 JAN * *", false)]
+    [InlineData("0 0 L * 1", true)]
+    [InlineData("L * * * *", false)]
+    [InlineData("0 0 5L * *", false)]
+    [InlineData("0 0 32W * *", false)]
+    [InlineData("0 0 * * 5#6", false)]
+    [InlineData("0 0 * * 5#0", false)]
+    [InlineData("0 0 * * L", false)]
+    [InlineData("0 0 * * 8", false)]
+    [InlineData("0 0 * * 99999999999", false)]
+    [InlineData("0 6 * * MON-", false)]
     [InlineData("60 * * * *", false)]
     [InlineData("0 24 * * *", false)]
     [InlineData("0 6 0 * *", false)]
@@ -54,4 +90,13 @@ public class MudExCronScheduleTests
     [InlineData("", false)]
     [InlineData(null, false)]
     public void Validates_expressions(string expression, bool valid) => Assert.Equal(valid, MudExCronSchedule.IsValid(expression));
+
+    [Fact]
+    public void Describes_without_UTC_when_the_time_zone_is_not_utc()
+    {
+        var schedule = MudExCronSchedule.Parse("5 18 * * 1");
+        Assert.DoesNotContain("UTC", schedule.Describe((key, args) => string.Format(English, key, args), English, utc: false));
+        Assert.Equal("Every day at 06:00", MudExCronSchedule.Parse("0 6 * * *").Describe((key, args) => string.Format(English, key, args), English, utc: false));
+        Assert.Equal("Every month on day 15 at 03:00", MudExCronSchedule.Parse("0 3 15 * *").Describe((key, args) => string.Format(English, key, args), English, utc: false));
+    }
 }

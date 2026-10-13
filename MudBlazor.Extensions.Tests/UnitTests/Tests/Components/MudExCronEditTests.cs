@@ -1,7 +1,9 @@
+using AngleSharp.Dom;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
@@ -82,8 +84,88 @@ public class MudExCronEditTests
         await using var context = CreateContext();
         var cut = context.Render<MudExCronEdit>(p => p.Add(c => c.Value, "0 6 * * *"));
 
-        Assert.Contains("max-width", cut.Find(".mud-ex-cron-time").GetAttribute("style"));
-        Assert.DoesNotContain("max-width", cut.Find(".mud-ex-cron-time .mud-picker").GetAttribute("style") ?? string.Empty);
+        Assert.Null(cut.Find(".mud-ex-cron-edit-time").GetAttribute("style"));
+        Assert.DoesNotContain("max-width", cut.Find(".mud-ex-cron-edit-time .mud-picker").GetAttribute("style") ?? string.Empty);
+    }
+
+    [Fact]
+    public async Task AnEmptyValueIsNoScheduleAndShowsNoError()
+    {
+        await using var context = CreateContext();
+        var cut = context.Render<MudExCronEdit>(p => p.Add(c => c.Value, (string)null));
+
+        Assert.Empty(cut.FindAll(".mud-input-error"));
+        Assert.DoesNotContain("Custom schedule", cut.Markup);
+    }
+
+    [Fact]
+    public async Task ClearingTheTextFieldEmitsNullAndShowsNoError()
+    {
+        await using var context = CreateContext();
+        var emitted = "unset";
+        var cut = context.Render<MudExCronEdit>(p => p
+            .Add(c => c.Value, "0 6 * * *")
+            .Add(c => c.ValueChanged, v => emitted = v));
+
+        await cut.InvokeAsync(() => cut.FindAll("input").Last().Change("  "));
+
+        Assert.Null(emitted);
+        Assert.Empty(cut.FindAll(".mud-input-error"));
+    }
+
+    [Fact]
+    public async Task TimeIsUtcFalseTakesUtcOutOfTheLabelAndTheDescription()
+    {
+        await using var context = CreateContext();
+        var utc = context.Render<MudExCronEdit>(p => p.Add(c => c.Value, "0 6 * * *"));
+        var local = context.Render<MudExCronEdit>(p => p.Add(c => c.Value, "0 6 * * *").Add(c => c.TimeIsUtc, false));
+
+        Assert.Contains("UTC", utc.Markup);
+        Assert.DoesNotContain("UTC", local.Markup);
+        Assert.Contains("06:00", local.Markup);
+    }
+
+    [Fact]
+    public async Task SelectingAWeekdayEmitsTheExpressionAndTheLastWeekdayCannotBeDeselected()
+    {
+        await using var context = CreateContext();
+        var value = "0 6 * * 1";
+        var emitted = new List<string>();
+        var cut = context.Render<MudExCronEdit>(p => p
+            .Add(c => c.Value, value)
+            .Add(c => c.ValueChanged, v => { value = v; emitted.Add(v); }));
+        var tuesday = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.GetAbbreviatedDayName(DayOfWeek.Tuesday);
+        var monday = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.GetAbbreviatedDayName(DayOfWeek.Monday);
+        IElement Chip(string text) => cut.FindAll(".mud-chip").Single(c => c.TextContent.Trim() == text);
+
+        await cut.InvokeAsync(() => Chip(tuesday).Click());
+        Assert.Equal(["0 6 * * 1,2"], emitted);
+
+        await cut.InvokeAsync(() => Chip(monday).Click());
+        Assert.Equal(["0 6 * * 1,2", "0 6 * * 2"], emitted);
+
+        await cut.InvokeAsync(() => Chip(tuesday).Click());
+        Assert.Equal(2, emitted.Count);
+        Assert.Equal("0 6 * * 2", ExpressionField(cut));
+        cut.WaitForAssertion(() => Assert.Equal(tuesday, Assert.Single(cut.FindAll(".mud-chip-selected")).TextContent.Trim()));
+    }
+
+    [Fact]
+    public async Task ChangingTheFrequencyEmitsTheMatchingExpressionAndCustomEmitsNothing()
+    {
+        await using var context = CreateContext();
+        var emitted = new List<string>();
+        var cut = context.Render<MudExCronEdit>(p => p
+            .Add(c => c.Value, "30 6 * * *")
+            .Add(c => c.ValueChanged, v => emitted.Add(v)));
+        var select = cut.FindComponent<MudSelect<MudExCronFrequency>>();
+
+        await cut.InvokeAsync(() => select.Instance.ValueChanged.InvokeAsync(MudExCronFrequency.Hourly));
+        Assert.Equal(["30 * * * *"], emitted);
+
+        await cut.InvokeAsync(() => select.Instance.ValueChanged.InvokeAsync(MudExCronFrequency.Custom));
+        Assert.Equal(["30 * * * *"], emitted);
+        Assert.Equal("30 * * * *", ExpressionField(cut));
     }
 
     [Fact]

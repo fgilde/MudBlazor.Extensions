@@ -1,0 +1,16 @@
+.mud-ex-cron-edit {
+    margin: 0.5rem 0;
+
+    .mud-ex-cron-edit-frequency {
+        min-width: 200px;
+    }
+
+    .mud-ex-cron-edit-number {
+        max-width: 120px;
+    }
+
+    .mud-ex-cron-edit-day,
+    .mud-ex-cron-edit-time {
+        max-width: 140px;
+    }
+}

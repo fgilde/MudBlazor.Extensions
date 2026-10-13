@@ -8,7 +8,7 @@
     }
     <MudStack Row="true" Wrap="Wrap.Wrap" AlignItems="AlignItems.Start" Spacing="2">
         <MudSelect T="MudExCronFrequency" Value="_schedule.Frequency" ValueChanged="SetFrequencyAsync" Label="@TryLocalize("Repeats")" ReadOnly="ReadOnly" Disabled="Disabled"
-                   Variant="Variant" Margin="Margin" Dense="Dense" Style="min-width:200px">
+                   Variant="Variant" Margin="Margin" Dense="Dense" Class="mud-ex-cron-edit-frequency">
             @foreach (var frequency in Enum.GetValues<MudExCronFrequency>())
             {
                 <MudSelectItem Value="frequency">@TryLocalize(FrequencyNames[frequency])</MudSelectItem>
@@ -18,20 +18,20 @@
         {
             case MudExCronFrequency.Minutes:
                 <MudNumericField T="int" Value="_schedule.Interval" ValueChanged="i => UpdateAsync(_schedule with { Interval = i })" Min="1" Max="59" Label="@TryLocalize("Minutes")"
-                                 ReadOnly="ReadOnly" Disabled="Disabled" Variant="Variant" Margin="Margin" Style="max-width:120px" />
+                                 ReadOnly="ReadOnly" Disabled="Disabled" Variant="Variant" Margin="Margin" Class="mud-ex-cron-edit-number" />
                 break;
             case MudExCronFrequency.Hourly:
                 <MudNumericField T="int" Value="_schedule.Minute" ValueChanged="m => UpdateAsync(_schedule with { Minute = m })" Min="0" Max="59" Label="@TryLocalize("At minute")"
-                                 ReadOnly="ReadOnly" Disabled="Disabled" Variant="Variant" Margin="Margin" Style="max-width:120px" />
+                                 ReadOnly="ReadOnly" Disabled="Disabled" Variant="Variant" Margin="Margin" Class="mud-ex-cron-edit-number" />
                 break;
             case MudExCronFrequency.Daily or MudExCronFrequency.Weekly or MudExCronFrequency.Monthly:
                 @if (_schedule.Frequency == MudExCronFrequency.Monthly)
                 {
                     <MudNumericField T="int" Value="_schedule.DayOfMonth" ValueChanged="d => UpdateAsync(_schedule with { DayOfMonth = d })" Min="1" Max="31" Label="@TryLocalize("Day of the month")"
-                                     ReadOnly="ReadOnly" Disabled="Disabled" Variant="Variant" Margin="Margin" Style="max-width:140px" />
+                                     ReadOnly="ReadOnly" Disabled="Disabled" Variant="Variant" Margin="Margin" Class="mud-ex-cron-edit-day" />
                 }
-                @* the width limit sits on the wrapper: a Style on the picker is passed on to its popover, which would clip the clock *@
-                <div class="mud-ex-cron-time" style="max-width:140px">
+                @* the width limit is a class on the wrapper: a Style on the picker is passed on to its popover, which would clip the clock *@
+                <div class="mud-ex-cron-edit-time">
                     <MudTimePicker Time="new TimeSpan(_schedule.Hour, _schedule.Minute, 0)" TimeChanged="SetTimeAsync" AmPm="false" Label="@TimeLabel"
                                    ReadOnly="ReadOnly" Disabled="Disabled" Variant="Variant" Margin="Margin" />
                 </div>
@@ -40,7 +40,7 @@
     </MudStack>
     @if (_schedule.Frequency == MudExCronFrequency.Weekly)
     {
-        <MudChipSet T="DayOfWeek" SelectionMode="SelectionMode.MultiSelection" SelectedValues="_schedule.Weekdays" SelectedValuesChanged="SetDaysAsync" CheckMark="true"
+        <MudChipSet @key="_daysKey" T="DayOfWeek" SelectionMode="SelectionMode.MultiSelection" SelectedValues="_schedule.Weekdays" SelectedValuesChanged="SetDaysAsync" CheckMark="true"
                     ReadOnly="ReadOnly || Disabled" Size="Dense ? Size.Small : Size.Medium">
             @foreach (var day in Week)
             {

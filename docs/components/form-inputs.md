@@ -217,7 +217,8 @@ Cron expression editor bound to a string.
 ### Features
 
 - Presets: every few minutes, hourly, daily, weekly (weekday chips), monthly
-- Free text expression (5 fields, or 6 with seconds) with validation and a description in words
+- Free text expression (5 fields, or 6 with seconds) with strict validation (numbers in range, JAN-DEC / SUN-SAT, ranges, lists, steps; `L`/`nW` for the day and `nL`/`n#k` for the weekday) and a description in words
+- An empty value means no schedule: no error, clearing the field emits `null`
 - Expressions the presets can't show stay unchanged and are shown as "Custom"
 - An invalid typed expression shows an error and never overwrites the bound value
 - `ReadOnly`, `Disabled`, `Variant`, `Margin`, `Dense`, `TimeIsUtc`

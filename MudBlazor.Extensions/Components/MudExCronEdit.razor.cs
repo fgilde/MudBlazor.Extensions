@@ -27,6 +27,7 @@ public partial class MudExCronEdit : MudExBaseComponent<MudExCronEdit>
     private string _text;
     private bool _valid = true;
     private string _shown;
+    private int _daysKey;
 
     /// <summary>
     /// The cron expression (five fields, or six with seconds first).
@@ -83,7 +84,7 @@ public partial class MudExCronEdit : MudExBaseComponent<MudExCronEdit>
     public bool Dense { get; set; }
 
     /// <summary>
-    /// Set to true to mark the time as UTC in its label. The descriptions always say UTC, as cron servers mostly run on it.
+    /// Set to true (default) to say UTC in the time label and the description, as cron servers mostly run on it. Set to false if the schedule runs in another zone.
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
     public bool TimeIsUtc { get; set; } = true;
@@ -93,13 +94,13 @@ public partial class MudExCronEdit : MudExBaseComponent<MudExCronEdit>
     private static IEnumerable<DayOfWeek> Week =>
         Enumerable.Range(0, 7).Select(i => (DayOfWeek)(((int)Culture.DateTimeFormat.FirstDayOfWeek + i) % 7));
 
-    private string Classname => new MudExCssBuilder("mud-ex-cron-edit my-2").AddClass(Class).Build();
+    private string Classname => new MudExCssBuilder("mud-ex-cron-edit").AddClass(Class).Build();
 
     private string LabelText => TryLocalize(Label);
 
     private string TimeLabel => TryLocalize(TimeIsUtc ? "Time (UTC)" : "Time");
 
-    private string Description => _valid ? _schedule.Describe((key, args) => TryLocalize(key, args), Culture) : null;
+    private string Description => _valid && _text is not null ? _schedule.Describe((key, args) => TryLocalize(key, args), Culture, TimeIsUtc) : null;
 
     /// <inheritdoc />
     protected override void OnParametersSet()
@@ -114,12 +115,12 @@ public partial class MudExCronEdit : MudExBaseComponent<MudExCronEdit>
 
     private void Show(string text)
     {
-        _text = text;
-        _valid = MudExCronSchedule.IsValid(text);
+        _text = string.IsNullOrWhiteSpace(text) ? null : text;
+        _valid = _text is null || MudExCronSchedule.IsValid(_text);
         _schedule = MudExCronSchedule.Parse(text);
     }
 
-    // an invalid expression stays in the field only; the bound value keeps the last valid one
+    // an invalid expression stays in the field only; the bound value keeps the last valid one. An empty field means no schedule (null).
     private async Task SetTextAsync(string text)
     {
         Show(text?.Trim());
@@ -132,8 +133,14 @@ public partial class MudExCronEdit : MudExBaseComponent<MudExCronEdit>
     private Task SetTimeAsync(TimeSpan? time) =>
         time is { } t ? UpdateAsync(_schedule with { Hour = t.Hours, Minute = t.Minutes }) : Task.CompletedTask;
 
-    private Task SetDaysAsync(IReadOnlyCollection<DayOfWeek> days) =>
-        days is { Count: > 0 } ? UpdateAsync(_schedule with { Days = [.. days] }) : Task.CompletedTask;
+    private Task SetDaysAsync(IReadOnlyCollection<DayOfWeek> days)
+    {
+        if (days is { Count: > 0 })
+            return UpdateAsync(_schedule with { Days = [.. days] });
+
+        _daysKey++; // at least one weekday stays selected: recreate the chips so they show it again
+        return Task.CompletedTask;
+    }
 
     private async Task UpdateAsync(MudExCronSchedule schedule)
     {
