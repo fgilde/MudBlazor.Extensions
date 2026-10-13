@@ -1,0 +1,22 @@
+@page "/cron-edit"
+@inherits BasePage
+
+@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExCronEdit", Icon = Icons.Material.Outlined.Schedule, Documentation = "MudExCronEdit edits a cron expression bound to a string, from presets like daily or weekly or typed, and says in words when it runs.", ForComponentType = typeof(MudExCronEdit))]
+
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudExCronEdit @ref="component" @bind-Value="cron" Label="Schedule" HelperText="Times are UTC." Variant="Variant.Outlined" />
+            <MudText Class="mt-4">@L["Value"]: <code>@cron</code></MudText>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    string cron = "0 6 * * 1-5";
+    MudExCronEdit component;
+}
