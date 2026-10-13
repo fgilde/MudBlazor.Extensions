@@ -26,7 +26,8 @@ else
                     TransformOrigin="Origin.TopLeft"
                     RelativeWidth="DropdownWidth.Relative"
                     MaxHeight="300">
-                <MudList T="T" Dense="true" @onmousedown:preventDefault="true">
+            <div @onmousedown:preventDefault="true">
+                <MudList T="T" Dense="true">
                     @for (var i = 0; i < _suggestions.Count; i++)
                     {
                         var index = i;
@@ -37,6 +38,7 @@ else
                                      OnClick="@(() => PickAsync(suggestion))" />
                     }
                 </MudList>
+            </div>
         </MudPopover>
     </div>
 }

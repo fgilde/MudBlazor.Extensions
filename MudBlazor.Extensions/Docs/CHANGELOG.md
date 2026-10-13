@@ -1,4 +1,7 @@
 ## Change Log    
+ - 9.11.3 > MudExTagField: new `SearchFunc` (suggestion dropdown), `MaxSuggestions`, `ValidateChip` (per chip validation, invalid stored values render as error chips), `IsChipClosable` (fixed chips) and `CommitOnBlur`; pasting a list splits it at the delimiters. See sample [here](https://www.mudex.org/tag-field)
+ - 9.11.3 > MudExTagField: the chips are no longer rendered inside a MudChipSet (a chip in a set can not decide on its own whether it is closable), they are plain MudChips in a `mud-chipset` div. Custom CSS targeting MudChipSet specific markup may need an update
+ - 9.11.3 > Fix MudExTagField error text (e.g. duplicate values) not being displayed with MudBlazor 9
  - 9.11.2 > Remove the SixLabors.ImageSharp dependency: 3.x has unpatched security advisories and fixed versions need a paid license. TIFF, TGA, QOI and PBM/PGM/PPM are now decoded and all export formats encoded in the browser
  - 9.11.2 > Update NuGet packages (Nextended 10.1.42, AuralizeBlazor 3.0.7, MudBlazor.Markdown 9.10.0, SharpCompress 0.50.5, NUglify 1.23.4 and others)
  - 9.11.0 > Package: [MudBlazor.Extensions 9.11.0 on NuGet](https://www.nuget.org/packages/MudBlazor.Extensions/9.11.0)

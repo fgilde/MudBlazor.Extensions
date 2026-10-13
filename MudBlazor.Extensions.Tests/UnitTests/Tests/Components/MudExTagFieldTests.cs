@@ -36,10 +36,14 @@ public sealed class MudExTagFieldTests : IAsyncDisposable
         Func<string, bool> closable = null,
         bool commitOnBlur = true,
         bool allowDuplicates = false,
-        int maxSuggestions = 0)
+        int maxSuggestions = 0,
+        bool autoClear = true,
+        bool readOnly = false,
+        bool closeable = true,
+        bool disabled = false)
     {
         _values = values ?? [];
-        _popovers = _context.Render<MudPopoverProvider>();
+        _popovers ??= _context.Render<MudPopoverProvider>();
         return _context.Render<MudExTagField<string>>(p => p
             .Add(c => c.Values, _values)
             .Add(c => c.ValuesChanged, v => { _values = v; _changes++; })
@@ -49,10 +53,14 @@ public sealed class MudExTagFieldTests : IAsyncDisposable
             .Add(c => c.IsChipClosable, closable)
             .Add(c => c.CommitOnBlur, commitOnBlur)
             .Add(c => c.AllowDuplicates, allowDuplicates)
-            .Add(c => c.MaxSuggestions, maxSuggestions));
+            .Add(c => c.MaxSuggestions, maxSuggestions)
+            .Add(c => c.AutoClear, autoClear)
+            .Add(c => c.ReadOnly, readOnly)
+            .Add(c => c.Closeable, closeable)
+            .Add(c => c.Disabled, disabled));
     }
 
-    private static IElement Input(IRenderedComponent<MudExTagField<string>> field) => field.Find("input");
+    private static IElement Input<T>(IRenderedComponent<MudExTagField<T>> field) => field.Find("input");
 
     private static string Text(IRenderedComponent<MudExTagField<string>> field) => Input(field).GetAttribute("value");
 
@@ -423,5 +431,148 @@ public sealed class MudExTagFieldTests : IAsyncDisposable
         await KeyAsync(field, "Enter");
 
         Assert.Equal(["prxy"], _values);
+    }
+
+    [Fact]
+    public async Task EnterAndBlurOnAnEmptyFieldKeepTheErrorSetFromOutside()
+    {
+        _popovers ??= _context.Render<MudPopoverProvider>();
+        var field = _context.Render<MudExTagField<string>>(p => p
+            .Add(c => c.Values, [])
+            .Add(c => c.Error, true)
+            .Add(c => c.ErrorText, "Form error")
+            .Add(c => c.CommitOnBlur, true));
+        Assert.True(field.Instance.HasErrors);
+
+        await KeyAsync(field, "Enter");
+        await BlurAsync(field);
+
+        Assert.True(field.Instance.HasErrors);
+        Assert.Equal("Form error", field.Instance.ErrorText);
+        Assert.Empty(field.FindAll("[data-chip]"));
+    }
+    [Fact]
+    public async Task DelimitersTypedAloneAreDropped()
+    {
+        var field = Open();
+
+        await TypeAsync(field, ",");
+
+        Assert.Equal(0, _changes);
+        Assert.True(string.IsNullOrEmpty(Text(field)));
+    }
+
+    [Fact]
+    public async Task ADelimiterResetsTheTextEvenWithoutAutoClear()
+    {
+        var field = Open(autoClear: false);
+
+        await TypeAsync(field, "a,");
+        Assert.Equal(["a"], _values);
+        Assert.True(string.IsNullOrEmpty(Text(field)));
+
+        await TypeAsync(field, "b,");
+        Assert.Equal(["a", "b"], _values);
+        Assert.True(string.IsNullOrEmpty(Text(field)));
+    }
+
+    [Fact]
+    public async Task WithoutAutoClearEnterKeepsTheText()
+    {
+        var field = Open(autoClear: false);
+
+        await TypeAsync(field, "abc");
+        await KeyAsync(field, "Enter");
+
+        Assert.Equal(["abc"], _values);
+        await KeyAsync(field, "Enter");
+        Assert.Equal(1, _changes);
+        Assert.Contains("Duplicate values", field.Markup);
+    }
+
+    [Fact]
+    public async Task BackspaceKeepsChipsWhenReadOnlyNotCloseableOrDisabled()
+    {
+        foreach (var (readOnly, closeable, disabled) in new[] { (true, true, false), (false, false, false), (false, true, true) })
+        {
+            var field = Open(["a", "b"], readOnly: readOnly, closeable: closeable, disabled: disabled);
+
+            await KeyAsync(field, "Backspace");
+
+            Assert.Equal(["a", "b"], _values);
+        }
+    }
+
+    [Fact]
+    public void ReadOnlyAndDisabledChipsHaveNoCloseIcon()
+    {
+        Assert.Empty(Open(["a"], readOnly: true).FindAll(".mud-chip-close-button"));
+        Assert.Empty(Open(["a"], disabled: true).FindAll(".mud-chip-close-button"));
+    }
+
+    [Fact]
+    public async Task EscapeWithoutASearchFuncKeepsTheOldBehaviourAndTheText()
+    {
+        var field = Open(commitOnBlur: false);
+        await TypeAsync(field, "pro");
+
+        await KeyAsync(field, "Escape");
+        await KeyAsync(field, "Enter");
+
+        Assert.Equal(["pro"], _values);
+    }
+
+    [Fact]
+    public async Task AFailingSearchShowsNoSuggestionsAndKeepsTheText()
+    {
+        var field = Open(search: (_, _) => throw new InvalidOperationException("backend down"));
+
+        await TypeAsync(field, "pro");
+        Assert.Empty(Suggestions());
+        await KeyAsync(field, "Enter");
+
+        Assert.Equal(["pro"], _values);
+    }
+
+    [Fact]
+    public async Task AnAsyncFailingSearchShowsNoSuggestions()
+    {
+        var field = Open(search: async (_, _) => { await Task.Yield(); throw new InvalidOperationException("backend down"); });
+
+        await TypeAsync(field, "pro");
+
+        Assert.Empty(Suggestions());
+    }
+
+    [Fact]
+    public async Task ANonStringValueTypeIsConvertedAndAnUnparsableTokenStaysInTheField()
+    {
+        var values = new List<int>();
+        _popovers ??= _context.Render<MudPopoverProvider>();
+        var field = _context.Render<MudExTagField<int>>(p => p
+            .Add(c => c.Values, values)
+            .Add(c => c.Delimiters, Separators)
+            .Add(c => c.ValidateChip, v => v > 100 ? "Too big" : null));
+
+        await Input(field).InputAsync(new ChangeEventArgs { Value = "7 abc 8 500" });
+
+        Assert.Equal([7, 8], values);
+        Assert.Equal("abc 500", Input(field).GetAttribute("value"));
+        Assert.Equal(2, field.FindAll("[data-chip]").Count);
+    }
+
+    [Fact]
+    public async Task ANonStringValueTypeOffersAndPicksSuggestions()
+    {
+        var values = new List<int>();
+        _popovers ??= _context.Render<MudPopoverProvider>();
+        var field = _context.Render<MudExTagField<int>>(p => p
+            .Add(c => c.Values, values)
+            .Add(c => c.SearchFunc, (text, _) => Task.FromResult(new[] { 1, 12, 20 }.Where(i => i.ToString().Contains(text)))));
+
+        await Input(field).InputAsync(new ChangeEventArgs { Value = "1" });
+        await _popovers.Find("[data-suggestion='12']").ClickAsync(new());
+
+        Assert.Equal([12], values);
     }
 }

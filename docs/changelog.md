@@ -1,4 +1,7 @@
 ## Change Log    
+ - 9.11.3 > MudExTagField: new `SearchFunc` (suggestion dropdown), `MaxSuggestions`, `ValidateChip` (per chip validation, invalid stored values render as error chips), `IsChipClosable` (fixed chips) and `CommitOnBlur`; pasting a list splits it at the delimiters. See sample [here](https://www.mudex.org/tag-field)
+ - 9.11.3 > MudExTagField: the chips are no longer rendered inside a MudChipSet (a chip in a set can not decide on its own whether it is closable), they are plain MudChips in a `mud-chipset` div. Custom CSS targeting MudChipSet specific markup may need an update
+ - 9.11.3 > Fix MudExTagField error text (e.g. duplicate values) not being displayed with MudBlazor 9
  - 9.11.0 > Package: [MudBlazor.Extensions 9.11.0 on NuGet](https://www.nuget.org/packages/MudBlazor.Extensions/9.11.0)
  - 9.11.0 > Add dedicated file viewers for Adobe Illustrator and PostScript, OpenDocument, XPS and OpenXPS, DICOM, Parquet, Arrow, Feather, and CBZ/CBR comic books
  - 9.11.0 > Extend MudExImageViewer with HEIC and HEIF decoding, PSD and PSB layer controls, and support for SVGZ, TGA, QOI, PBM, PGM, and PPM images

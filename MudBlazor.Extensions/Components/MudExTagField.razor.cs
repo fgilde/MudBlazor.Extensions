@@ -268,7 +268,7 @@ public partial class MudExTagField<T>
 
         if (HasSeparator(text))
         {
-            await CommitAsync(text);
+            await CommitAsync(text, fromInput: true);
             return;
         }
 
@@ -278,7 +278,23 @@ public partial class MudExTagField<T>
 
     private bool ShouldShowVisualiser() => Values?.Any() == true && RenderChipsAdditional == Adornment.None;
 
-    private char[] Separators => Delimiters == null ? [] : Delimiters.Contains(' ') ? [.. Delimiters, '\n', '\r', '\t'] : Delimiters;
+    private char[] _separators;
+    private char[] _separatorsFor;
+
+    // whitespace separates as well when the space is a delimiter; cached per Delimiters instance since it is read on every keystroke
+    private char[] Separators
+    {
+        get
+        {
+            if (_separators == null || !ReferenceEquals(_separatorsFor, Delimiters))
+            {
+                _separatorsFor = Delimiters;
+                _separators = Delimiters == null ? [] : Delimiters.Contains(' ') ? [.. Delimiters, '\n', '\r', '\t'] : Delimiters;
+            }
+
+            return _separators;
+        }
+    }
 
     private bool HasSeparator(string text) => text != null && Separators.Length > 0 && text.IndexOfAny(Separators) >= 0;
 
@@ -298,12 +314,12 @@ public partial class MudExTagField<T>
             case "Enter" when SetChipsOnEnter:
                 await CommitAsync(_trackedText);
                 break;
-            case "Escape" when _suggestionsOpen || !string.IsNullOrEmpty(_trackedText):
+            case "Escape" when SearchFunc != null && (_suggestionsOpen || !string.IsNullOrEmpty(_trackedText)):
                 CloseSuggestions();
                 await SetErrorAsync();
-                await SetTextCoreAsync(string.Empty);
+                await SetFieldTextAsync(string.Empty);
                 break;
-            case "Backspace" when string.IsNullOrEmpty(_trackedText) && Values?.Count > 0 && IsClosable(Values[^1]):
+            case "Backspace" when string.IsNullOrEmpty(_trackedText) && Values?.Count > 0 && !Disabled && !ReadOnly && Closeable && IsClosable(Values[^1]):
                 Values.RemoveAt(Values.Count - 1);
                 await InvokeValuesChanged();
                 break;
@@ -324,7 +340,7 @@ public partial class MudExTagField<T>
     {
         if (SearchFunc == null || Disabled || ReadOnly)
             return;
-        _searchCts?.Cancel();
+        CancelSearch();
         var cts = _searchCts = new CancellationTokenSource();
         IEnumerable<T> found;
         try
@@ -333,6 +349,17 @@ public partial class MudExTagField<T>
         }
         catch (OperationCanceledException)
         {
+            return;
+        }
+        catch (Exception)
+        {
+            // a failing search only means no suggestions, the typed text stays
+            if (cts == _searchCts)
+            {
+                _suggestionsOpen = false;
+                await InvokeAsync(StateHasChanged);
+            }
+
             return;
         }
 
@@ -357,10 +384,24 @@ public partial class MudExTagField<T>
         await InvokeAsync(StateHasChanged);
     }
 
-    private void CloseSuggestions()
+    private void CancelSearch()
     {
         _searchCts?.Cancel();
+        _searchCts?.Dispose();
+        _searchCts = null;
+    }
+
+    private void CloseSuggestions()
+    {
+        CancelSearch();
         _suggestionsOpen = false;
+    }
+
+    /// <inheritdoc />
+    protected override async ValueTask DisposeAsyncCore()
+    {
+        CancelSearch();
+        await base.DisposeAsyncCore();
     }
 
     private async Task PickAsync(T item)
@@ -369,15 +410,23 @@ public partial class MudExTagField<T>
         await ApplyAsync([new Entry(ConvertSet(item), item, null)], clearText: true);
     }
 
-    private Task CommitAsync(string text, bool focusAfter = true)
+    private async Task CommitAsync(string text, bool focusAfter = true, bool fromInput = false)
     {
         string[] tokens = Separators.Length > 0 ? text?.Split(Separators, StringSplitOptions.RemoveEmptyEntries) ?? [] : string.IsNullOrWhiteSpace(text) ? [] : [text];
+        if (tokens.Length == 0)
+        {
+            // Enter or blur on an empty field must not touch text or errors; separators typed on their own are dropped
+            if (fromInput && !string.IsNullOrEmpty(text))
+                await SetFieldTextAsync(string.Empty);
+            return;
+        }
+
         var entries = tokens.Select(token =>
         {
             var value = ConvertGet(token);
             return new Entry(token, value, ConversionError ? ConversionErrorMessage : null);
         }).ToList();
-        return ApplyAsync(entries, clearText: AutoClear, focusAfter);
+        await ApplyAsync(entries, clearText: fromInput || AutoClear, focusAfter);
     }
 
     private async Task ApplyAsync(List<Entry> entries, bool clearText, bool focusAfter = true)
@@ -422,7 +471,7 @@ public partial class MudExTagField<T>
 
         if (clearText)
         {
-            await SetTextCoreAsync(string.Join(Separators.FirstOrDefault(' '), rejected));
+            await SetFieldTextAsync(string.Join(Separators.FirstOrDefault(' '), rejected));
             if (RuntimeLocation.IsServerSide && focusAfter && added.Count > 0)
             {
                 // the blur/focus round trip refreshes the input on the server; its blur event must not commit again
@@ -449,7 +498,7 @@ public partial class MudExTagField<T>
         await InvokeAsync(StateHasChanged);
     }
 
-    private async Task SetTextCoreAsync(string text)
+    private async Task SetFieldTextAsync(string text)
     {
         _committing = true;
         _trackedText = text;
