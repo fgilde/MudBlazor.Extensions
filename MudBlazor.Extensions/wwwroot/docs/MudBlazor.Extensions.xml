@@ -10264,6 +10264,33 @@
             The animation type for errors.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.SearchFunc">
+            <summary>
+            Returns the suggestions for the typed text, shown in a dropdown below the field. Values that are already chips are not offered (unless <see cref="P:MudBlazor.Extensions.Components.MudExTagField`1.AllowDuplicates"/>).
+            Arrow keys move the highlight, Enter or a click picks the highlighted suggestion.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.MaxSuggestions">
+            <summary>
+            Maximum number of suggestions shown. 0 shows all returned by <see cref="P:MudBlazor.Extensions.Components.MudExTagField`1.SearchFunc"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.ValidateChip">
+            <summary>
+            Returns the error text for an invalid value, null for a valid one.
+            Invalid typed text is not added, stays in the field and shows the error; invalid values already in <see cref="P:MudBlazor.Extensions.Components.MudExTagField`1.Values"/> are shown as error colored chips.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.IsChipClosable">
+            <summary>
+            Decides per value whether its chip can be removed. A fixed chip has no close icon and Backspace does not remove it. Default is every chip.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.CommitOnBlur">
+            <summary>
+            If true, the typed text is added as chip(s) when the field loses focus. Default is false.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.AppearanceService">
             <summary>
             Appearance service for applying styles.
@@ -10284,6 +10311,11 @@
             Style for the chips.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.ChipInvalidStyleName">
+            <summary>
+            Style for chips with an invalid value (the chip color is the error color).
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.ChipClassname">
             <summary>
             Class name for the chip elements.
@@ -10295,10 +10327,13 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.SetTextAndUpdateValueAsync(System.String,System.Boolean)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.UpdateValuePropertyAsync(System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.InvokeKeyDownAsync(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.InvokeKeyDownAsync(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs)">
+        <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.OnBlurredAsync(Microsoft.AspNetCore.Components.Web.FocusEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.DisposeAsyncCore">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExTaskBar">
