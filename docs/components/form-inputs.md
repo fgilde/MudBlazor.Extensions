@@ -169,37 +169,46 @@ Chip-based selection component for multiple selections.
 
 ## MudExTagField
 
-Tag field component for entering and managing tags.
+Tag field component for entering and managing a list of values as chips.
 
 ### Basic Usage
 
 ```razor
-<MudExTagField @bind-Values="@tags" />
+<MudExTagField @bind-Values="@tags" Delimiters="@(new[] { ',', ' ' })" />
 ```
 
 ### Features
 
-- Add tags by typing and pressing Enter
-- Remove tags with backspace or delete
-- Auto-complete suggestions
-- Validation per tag
-- Maximum tag count
-- Custom tag rendering
+- Add tags by typing and pressing Enter, typing a delimiter, pasting a list or picking a suggestion
+- Remove tags with the close icon or with Backspace on an empty field
+- Suggestions in a dropdown below the field (`SearchFunc`, `MaxSuggestions`), already chosen values are hidden; arrow keys move the highlight, Enter or a click picks it
+- Validation per tag (`ValidateChip`): invalid typed text is not added, stays in the field and shows the error; invalid values already in `Values` are shown as error colored chips
+- Fixed tags (`IsChipClosable`): no close icon, Backspace does not remove them
+- `CommitOnBlur` adds the typed text when the field loses focus (a suggestion list closing for lack of matches does not add anything); Escape discards the typed text while suggestions are used
+- Duplicates are ignored unless `AllowDuplicates` is set
 
 ### Example
 
 ```razor
 @code {
-    private List<string> tags = new();
+    private List<string> scopes = new() { "openid", "profile" };
+    private static readonly string[] Known = { "openid", "profile", "email", "offline_access" };
+
+    private Task<IEnumerable<string>> Search(string text, CancellationToken token)
+        => Task.FromResult(Known.Where(s => s.Contains(text, StringComparison.OrdinalIgnoreCase)));
+
+    private string Validate(string scope) => scope.Any(char.IsWhiteSpace) ? "No whitespace allowed" : null;
 }
 
-<MudExTagField @bind-Values="@tags"
-               Label="Tags"
-               Placeholder="Add tags..."
-               MaxTags="5"
-               AutoCompleteSource="@GetTagSuggestions" />
+<MudExTagField @bind-Values="@scopes"
+               Label="OAuth scopes"
+               Delimiters="@(new[] { ' ', ',' })"
+               SearchFunc="@Search"
+               MaxSuggestions="5"
+               ValidateChip="@Validate"
+               IsChipClosable="@(scope => scope != "openid")"
+               CommitOnBlur="true" />
 ```
-
 ## MudExCronEdit
 
 Cron expression editor bound to a string.

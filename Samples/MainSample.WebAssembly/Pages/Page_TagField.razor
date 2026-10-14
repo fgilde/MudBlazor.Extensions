@@ -14,6 +14,20 @@
                             ChipVariant="Variant.Filled"
                             Label="Tags" />
 
+            <MudText Typo="Typo.subtitle2" Class="mt-8 mb-2">Suggestions, validation and a fixed chip</MudText>
+            <MudExTagField T="string" @bind-Values="scopes" FullWidth="true"
+                           Label="OAuth scopes"
+                           Delimiters="@(new []{ ' ', ',' })"
+                           SearchFunc="SearchScopes"
+                           MaxSuggestions="5"
+                           ValidateChip="ValidateScope"
+                           IsChipClosable="@(scope => scope != "openid")"
+                           CommitOnBlur="true"
+                           ChipColor="Color.Primary"
+                           Variant="Variant.Outlined"
+                           ChipVariant="Variant.Filled" />
+            <MudText Typo="Typo.caption">Pick a suggestion with the arrow keys and Enter, or type a scope. <b>openid</b> is fixed. Current: @string.Join(" ", scopes)</MudText>
+
         </Left>
         <Right>
             <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
@@ -23,4 +37,14 @@
 
 @code {    
     MudExTagField<string> component;
+
+    private static readonly string[] KnownScopes = ["openid", "profile", "email", "offline_access", "address", "phone"];
+    private List<string> scopes = ["openid", "profile"];
+
+    private static Task<IEnumerable<string>> SearchScopes(string text, CancellationToken token) =>
+        Task.FromResult(KnownScopes.Where(s => s.Contains(text, StringComparison.OrdinalIgnoreCase)));
+
+    // RFC 6749 scope-token: printable ASCII without space, double quote and backslash
+    private static string ValidateScope(string scope) =>
+        scope.All(c => c is '!' or (>= '#' and <= '[') or (>= ']' and <= '~')) ? null : "Not a valid scope";
 }

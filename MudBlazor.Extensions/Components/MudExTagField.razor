@@ -10,7 +10,38 @@
     </div>
 }
 
-@Inherited()
+@if (SearchFunc == null)
+{
+    @Inherited()
+}
+else
+{
+    @* the popover anchors to its parent element, so it needs the wrapper around the input *@
+    <div class="mud-ex-tag-field-suggestions-anchor">
+        @Inherited()
+        <MudPopover Open="@(_suggestionsOpen && _suggestions.Count > 0)"
+                    Fixed="true"
+                    Paper="true"
+                    AnchorOrigin="Origin.BottomLeft"
+                    TransformOrigin="Origin.TopLeft"
+                    RelativeWidth="DropdownWidth.Relative"
+                    MaxHeight="300">
+            <div @onmousedown:preventDefault="true">
+                <MudList T="T" Dense="true">
+                    @for (var i = 0; i < _suggestions.Count; i++)
+                    {
+                        var index = i;
+                        var suggestion = _suggestions[i];
+                        <MudListItem T="T" Text="@ConvertSet(suggestion)"
+                                     Class="@(index == _activeSuggestion ? "mud-selected-item" : null)"
+                                     data-suggestion="@ConvertSet(suggestion)"
+                                     OnClick="@(() => PickAsync(suggestion))" />
+                    }
+                </MudList>
+            </div>
+        </MudPopover>
+    </div>
+}
 
 @if (RenderChipsAdditional == Adornment.End)
 {
@@ -25,16 +56,19 @@
 
     private void RenderDataVisualizer(RenderTreeBuilder __builder)
     {
-        <MudChipSet Class="@ChipClassname" Style="@($"max-width: {ChipsMaxWidth}")" AllClosable="@Closeable" T="T" OnClose="Remove">
+        <div class="mud-chipset @ChipClassname" style="@($"max-width: {ChipsMaxWidth}")">
             @for (int i = 0; i < Math.Min(Values?.Count ?? 0, MaxChips == 0 ? int.MaxValue : MaxChips); i++)
             {
 
                 var value = Values[i];
+                var invalid = ChipError(value) != null;
                 <MudChip Class="@ClassChip"
-                         Style="@ChipStyleName"
+                         Style="@(invalid ? ChipInvalidStyleName : ChipStyleName)"
+                         data-chip="@ConvertSet(value)"
+                         OnClose="@CloseOf(value)"
                          @onmouseover="@(args => HandleOnChipMouseOver(args, value))"
                          @onmouseout="@(args =>HandleOnChipMouseOut(args, value))"
-                         Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
+                         Color="@(invalid ? MudBlazor.Color.Error : ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
                          Ripple="false"
                          Text="@ConvertSet(value)"
                          Value="@value"
@@ -42,7 +76,7 @@
                          Size="@ChipSize"
                          Disabled="@Disabled" />
             }
-        </MudChipSet>
+        </div>
 
         @if (Values != null && MaxChips != 0 && MaxChips < Values.Count)
         {
