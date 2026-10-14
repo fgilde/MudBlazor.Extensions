@@ -2577,29 +2577,39 @@
 </span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>                 MultiSelection="true" /&gt;
 </span></code></pre></div>
 <h2 id="mudextagfield">MudExTagField<a class="headerlink" href="#mudextagfield" title="Permanent link">&para;</a></h2>
-<p>Tag field component for entering and managing tags.</p>
+<p>Tag field component for entering and managing a list of values as chips.</p>
 <h3 id="basic-usage_4">Basic Usage<a class="headerlink" href="#basic-usage_4" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>&lt;MudExTagField @bind-Values="@tags" /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>&lt;MudExTagField @bind-Values="@tags" Delimiters="@(new[] { ',', ' ' })" /&gt;
 </span></code></pre></div>
 <h3 id="features_5">Features<a class="headerlink" href="#features_5" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Add tags by typing and pressing Enter</li>
-<li>Remove tags with backspace or delete</li>
-<li>Auto-complete suggestions</li>
-<li>Validation per tag</li>
-<li>Maximum tag count</li>
-<li>Custom tag rendering</li>
+<li>Add tags by typing and pressing Enter, typing a delimiter, pasting a list or picking a suggestion</li>
+<li>Remove tags with the close icon or with Backspace on an empty field</li>
+<li>Suggestions in a dropdown below the field (<code>SearchFunc</code>, <code>MaxSuggestions</code>), already chosen values are hidden; arrow keys move the highlight, Enter or a click picks it</li>
+<li>Validation per tag (<code>ValidateChip</code>): invalid typed text is not added, stays in the field and shows the error; invalid values already in <code>Values</code> are shown as error colored chips</li>
+<li>Fixed tags (<code>IsChipClosable</code>): no close icon, Backspace does not remove them</li>
+<li><code>CommitOnBlur</code> adds the typed text when the field loses focus (a suggestion list closing for lack of matches does not add anything); Escape discards the typed text while suggestions are used</li>
+<li>Duplicates are ignored unless <code>AllowDuplicates</code> is set</li>
 </ul>
 <h3 id="example_4">Example<a class="headerlink" href="#example_4" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>@code {
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    private List&lt;string&gt; tags = new();
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>}
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    private List&lt;string&gt; scopes = new() { "openid", "profile" };
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    private static readonly string[] Known = { "openid", "profile", "email", "offline_access" };
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>&lt;MudExTagField @bind-Values="@tags"
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>               Label="Tags"
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>               Placeholder="Add tags..."
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>               MaxTags="5"
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>               AutoCompleteSource="@GetTagSuggestions" /&gt;
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    private Task&lt;IEnumerable&lt;string&gt;&gt; Search(string text, CancellationToken token)
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>        =&gt; Task.FromResult(Known.Where(s =&gt; s.Contains(text, StringComparison.OrdinalIgnoreCase)));
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    private string Validate(string scope) =&gt; scope.Any(char.IsWhiteSpace) ? "No whitespace allowed" : null;
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>}
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>&lt;MudExTagField @bind-Values="@scopes"
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>               Label="OAuth scopes"
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>               Delimiters="@(new[] { ' ', ',' })"
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>               SearchFunc="@Search"
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>               MaxSuggestions="5"
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>               ValidateChip="@Validate"
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>               IsChipClosable="@(scope =&gt; scope != "openid")"
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>               CommitOnBlur="true" /&gt;
 </span></code></pre></div>
 <h2 id="mudexcronedit">MudExCronEdit<a class="headerlink" href="#mudexcronedit" title="Permanent link">&para;</a></h2>
 <p>Cron expression editor bound to a string.</p>
