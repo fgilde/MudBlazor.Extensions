@@ -231,4 +231,24 @@ public class MudExRangeSliderTests
 
         Assert.Equal(new DateOnly(2026, 5, 31), cut.Instance.Value.End);
     }
+
+    [Fact]
+    public void Thumbs_GetSeparateAriaLabels_AndRootGetsUserAttributes()
+    {
+        using var context = new TestContext();
+        context.Services.AddMudServicesWithExtensions();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
+
+        var cut = context.Render<MudExDateRangeSlider>(parameters => parameters
+            .Add(p => p.SizeRange, new MudExRange<DateOnly>(new(2026, 1, 1), new(2026, 12, 31)))
+            .Add(p => p.Value, new MudExRange<DateOnly>(new(2026, 3, 1), new(2026, 6, 1)))
+            .Add(p => p.AriaLabelStart, "From")
+            .Add(p => p.AriaLabelEnd, "To")
+            .AddUnmatched("data-testid", "period-slider")
+        );
+
+        Assert.Equal("From", cut.Find(".mud-ex-range-slider-thumb.start").GetAttribute("aria-label"));
+        Assert.Equal("To", cut.Find(".mud-ex-range-slider-thumb.end").GetAttribute("aria-label"));
+        Assert.Equal("period-slider", cut.Find(".mud-ex-range-slider").GetAttribute("data-testid"));
+    }
 }

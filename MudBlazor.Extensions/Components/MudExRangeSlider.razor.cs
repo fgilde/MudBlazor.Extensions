@@ -274,6 +274,18 @@ namespace MudBlazor.Extensions.Components
         public string? AriaLabelledBy { get; set; }
 
         /// <summary>
+        /// Gets or sets the aria-label of the start thumb, so screen readers can tell both thumbs apart.
+        /// </summary>
+        [Parameter, SafeCategory("Appearance")]
+        public string? AriaLabelStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets the aria-label of the end thumb, so screen readers can tell both thumbs apart.
+        /// </summary>
+        [Parameter, SafeCategory("Appearance")]
+        public string? AriaLabelEnd { get; set; }
+
+        /// <summary>
         /// Gets or sets the callback invoked when the value is committed after interaction.
         /// </summary>
         [Parameter]
