@@ -1,4 +1,5 @@
 using Bunit;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Types;
@@ -193,5 +194,41 @@ public class MudExRangeSliderTests
         Assert.True(effective.End >= sizeRange.End, "auto-zoom right bound should be at or after SizeRange.End");
         Assert.True(effective.Start >= TimeOnly.MinValue, "left bound must be a valid TimeOnly");
         Assert.True(effective.End <= TimeOnly.MaxValue, "right bound must be a valid TimeOnly");
+    }
+
+    [Fact]
+    public void DateRangeSlider_ArrowKeys_MoveThumbsByOneDay_InDayMode()
+    {
+        using var context = new TestContext();
+        context.Services.AddMudServicesWithExtensions();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
+
+        var cut = context.Render<MudExDateRangeSlider>(parameters => parameters
+            .Add(p => p.SizeRange, new MudExRange<DateOnly>(new(2026, 1, 1), new(2026, 12, 31)))
+            .Add(p => p.Value, new MudExRange<DateOnly>(new(2026, 3, 1), new(2026, 6, 1)))
+        );
+
+        cut.Find(".mud-ex-range-slider-thumb.start").KeyDown(new KeyboardEventArgs { Key = "ArrowRight" });
+        Assert.Equal(new DateOnly(2026, 3, 2), cut.Instance.Value.Start);
+
+        cut.Find(".mud-ex-range-slider-thumb.end").KeyDown(new KeyboardEventArgs { Key = "PageDown" });
+        Assert.Equal(new DateOnly(2026, 5, 22), cut.Instance.Value.End);
+    }
+
+    [Fact]
+    public void GenericDateOnlySlider_WithoutStepLength_ArrowKeyStillMovesThumb()
+    {
+        using var context = new TestContext();
+        context.Services.AddMudServicesWithExtensions();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
+
+        var cut = context.Render<MudExRangeSlider<DateOnly>>(parameters => parameters
+            .Add(p => p.SizeRange, new MudExRange<DateOnly>(new(2026, 1, 1), new(2026, 12, 31)))
+            .Add(p => p.Value, new MudExRange<DateOnly>(new(2026, 3, 1), new(2026, 6, 1)))
+        );
+
+        cut.Find(".mud-ex-range-slider-thumb.end").KeyDown(new KeyboardEventArgs { Key = "ArrowLeft" });
+
+        Assert.Equal(new DateOnly(2026, 5, 31), cut.Instance.Value.End);
     }
 }

@@ -1,4 +1,5 @@
 ## Change Log    
+ - 9.11.4 > Fix MudExDateRangeSlider in Day mode: arrow and Page keys did not move the thumbs without an explicit step. Day mode now steps by one day, and keyboard steps below the type's resolution move by at least one unit
  - 9.11.3 > MudExTagField: new `SearchFunc` (suggestion dropdown), `MaxSuggestions`, `ValidateChip` (per chip validation, invalid stored values render as error chips), `IsChipClosable` (fixed chips) and `CommitOnBlur`; pasting a list splits it at the delimiters. See sample [here](https://www.mudex.org/tag-field)
  - 9.11.3 > MudExTagField: the chips are no longer rendered inside a MudChipSet (a chip in a set can not decide on its own whether it is closable), they are plain MudChips in a `mud-chipset` div. Custom CSS targeting MudChipSet specific markup may need an update
  - 9.11.3 > Fix MudExTagField error text (e.g. duplicate values) not being displayed with MudBlazor 9

@@ -82,13 +82,13 @@ public class MudExDateRangeSlider : MudExRangeSlider<DateOnly>
         _cachedThumbTemplate = MudExRangeSliderDefaults.Thumb<DateOnly>();
     }
 
-    private static Func<DateOnly, IRange<DateOnly>, RangeLength<DateOnly>, int, SnapPolicy, DateOnly>? ResolverFor(DateRangeSliderMode mode) => mode switch
+    private static Func<DateOnly, IRange<DateOnly>, RangeLength<DateOnly>, int, SnapPolicy, DateOnly> ResolverFor(DateRangeSliderMode mode) => mode switch
     {
         DateRangeSliderMode.Week    => StepResolvers.DateOnly.Weekly(),
         DateRangeSliderMode.Month   => StepResolvers.DateOnly.Monthly(),
         DateRangeSliderMode.Quarter => StepResolvers.DateOnly.Quarterly(),
         DateRangeSliderMode.Year    => StepResolvers.DateOnly.Yearly(),
-        _                           => null
+        _                           => StepResolvers.DateOnly.Daily()
     };
 
     private static string Format(DateOnly d, DateRangeSliderMode mode) => mode switch

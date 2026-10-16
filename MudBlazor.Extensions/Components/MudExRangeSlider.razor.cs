@@ -303,7 +303,14 @@ namespace MudBlazor.Extensions.Components
 
         private T Snap(T v, SnapPolicy policy = SnapPolicy.Nearest) => ResolveStep(v, 0, policy);
 
-        private T AddStepsLocal(T v, int steps) => ResolveStep(v, steps);
+        private T AddStepsLocal(T v, int steps)
+        {
+            var next = ResolveStep(v, steps);
+            if (steps == 0 || next.CompareTo(v) != 0)
+                return next;
+            // A step below the type's resolution (e.g. the fallback step on DateOnly) would never move the thumb.
+            return M.Add(v, Math.Sign(steps) * Math.Max(Math.Abs(StepLength.Delta * steps), 1));
+        }
 
         /// <summary>
         /// Calculates the maximum allowed start position given the current end position and MinLength constraint.
