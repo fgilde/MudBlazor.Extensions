@@ -20,25 +20,27 @@
     <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
 
     <!-- Nextended -->
-    <PackageVersion Include="Nextended.Blazor" Version="10.1.45" />
-    <PackageVersion Include="Nextended.Core" Version="10.1.45" />
-    <PackageVersion Include="Nextended.CodeGen" Version="10.1.45" />
+    <PackageVersion Include="Nextended.Blazor" Version="10.1.46" />
+    <PackageVersion Include="Nextended.Core" Version="10.1.46" />
+    <PackageVersion Include="Nextended.CodeGen" Version="10.1.46" />
 
     <!-- Microsoft.AspNetCore / Extensions -->
-    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.CustomElements" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.CustomElements" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.13" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.36" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Extensions.FileProviders.Embedded" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.12" />
-    <PackageVersion Include="System.Net.Http.Json" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Embedded" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.13" />
+    <PackageVersion Include="System.Net.Http.Json" Version="10.0.13" />
+    <!-- pinned: MsgReader pulls 10.0.12, which carries GHSA-846f-f764-76mx -->
+    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
     <PackageVersion Include="System.Runtime.Loader" Version="4.3.0" />
 
     <!-- Roslyn (for the Try compiler) -->
@@ -58,7 +60,7 @@
     <PackageVersion Include="ExcelDataReader" Version="3.9.0" />
     <PackageVersion Include="ExcelDataReader.DataSet" Version="3.9.0" />
     <PackageVersion Include="SharpCompress" Version="0.50.5" />
-    <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.13" />
     <PackageVersion Include="MetadataExtractor" Version="2.9.3" />
     <PackageVersion Include="Gotho.BlazorPdf" Version="2.2.0" />
     <PackageVersion Include="Gotho.BlazorPdf.MudBlazor" Version="2.2.0" />

@@ -103,6 +103,7 @@
     <PackageReference Include="Gotho.BlazorPdf.MudBlazor" />
     <PackageReference Include="RtfPipe" />
     <PackageReference Include="MsgReader" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" />
   </ItemGroup>
 
   <ItemGroup>
