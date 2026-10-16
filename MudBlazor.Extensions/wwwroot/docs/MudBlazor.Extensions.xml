@@ -8674,6 +8674,16 @@
             Gets or sets the aria-labelledby attribute to improve accessibility.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AriaLabelStart">
+            <summary>
+            Gets or sets the aria-label of the start thumb, so screen readers can tell both thumbs apart.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.AriaLabelEnd">
+            <summary>
+            Gets or sets the aria-label of the end thumb, so screen readers can tell both thumbs apart.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRangeSlider`1.OnChange">
             <summary>
             Gets or sets the callback invoked when the value is committed after interaction.

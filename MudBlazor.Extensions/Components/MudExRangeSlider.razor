@@ -6,6 +6,7 @@
 @typeparam T
 
 <div @ref="ElementReference"
+     @attributes="UserAttributes"
      class="mud-ex-range-slider @SizeClass @(Orientation.ToDescriptionString()) @Class"
      style="@Style"
      role="group"
@@ -49,6 +50,7 @@
                  aria-valuemin="@SizeRangeStringStart"
                  aria-valuemax="@SizeRangeStringEnd"
                  aria-valuenow="@StartString"
+                 aria-label="@AriaLabelStart"
                  aria-labelledby="@AriaLabelledBy"
                  aria-disabled="@Disabled">
                 <div class="mud-ex-range-slider-thumb-template">
@@ -81,6 +83,7 @@
                     aria-valuemin="@SizeRangeStringStart"
                     aria-valuemax="@SizeRangeStringEnd"
                     aria-valuenow="@StartString"
+                    aria-label="@AriaLabelStart"
                     aria-labelledby="@AriaLabelledBy"
                     disabled="@Disabled">
                 @if (ShowTooltip)
@@ -111,6 +114,7 @@
                  aria-valuemin="@SizeRangeStringStart"
                  aria-valuemax="@SizeRangeStringEnd"
                  aria-valuenow="@EndString"
+                 aria-label="@AriaLabelEnd"
                  aria-labelledby="@AriaLabelledBy"
                  aria-disabled="@Disabled">
                 <div class="mud-ex-range-slider-thumb-template">
@@ -143,6 +147,7 @@
                     aria-valuemin="@SizeRangeStringStart"
                     aria-valuemax="@SizeRangeStringEnd"
                     aria-valuenow="@EndString"
+                    aria-label="@AriaLabelEnd"
                     aria-labelledby="@AriaLabelledBy"
                     disabled="@Disabled">
                 @if (ShowTooltip)
