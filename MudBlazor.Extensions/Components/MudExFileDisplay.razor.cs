@@ -558,53 +558,35 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
         if (!fallBackInIframe) // if binary
         {
-            return ("object", new()
+            return ("object", WithOnError(new()
             {
                 {"data-id", id},
                 {"data", url},
-                {"onerror", $"{onErrorMethod}"},
                 {"loading", "lazy"},
                 {"type", contentType}
-            });
+            }, onErrorMethod));
         }
 
-        return ("iframe", new()
+        return ("iframe", WithOnError(new()
         {
             {"data-id", id},
             {"src", url},
-            {"onerror", $"{onErrorMethod}"},
             {"loading", "lazy"},
             {"sandbox", sandBoxIframes}
-        });
+        }, onErrorMethod));
     }
 
     private (string tag, Dictionary<string, object> attributes) GetRenderInfos()
     {
-        return GetFileRenderInfos(_id, Url, FileName, ContentType, ViewDependsOnContentType, ImageAsBackgroundImage, FallBackInIframe, SandBoxIframes, GetJsOnError());
+        return GetFileRenderInfos(_id, Url, FileName, ContentType, ViewDependsOnContentType, ImageAsBackgroundImage, FallBackInIframe, SandBoxIframes);
     }
 
-    private string GetJsOnError() =>
-        @$"
-            var mudExErrorElement = function() {{ return document.getElementById('content-type-display-error'); }};
-            var entry = window.__mudExFileDisplay && window.__mudExFileDisplay['{_id}'];
-            if(!entry)
-            {{
-                var element = mudExErrorElement();
-                if(element) {{ element.classList.add('visible'); }}
-            }}
-            else
-            {{
-                setTimeout(function(){{
-                    entry.callBackReference.invokeMethodAsync('{nameof(HandleContentError)}').then(function(isHandled){{
-                        var element = mudExErrorElement();
-                        if(!isHandled && element)
-                        {{
-                            element.classList.add('visible');
-                        }}
-                    }});
-                }}, 0)
-            }}
-        ";
+    private static Dictionary<string, object> WithOnError(Dictionary<string, object> attributes, string onErrorMethod)
+    {
+        if (!string.IsNullOrEmpty(onErrorMethod))
+            attributes["onerror"] = onErrorMethod;
+        return attributes;
+    }
 
     private void UpdateChangedFields(MudExFileDisplayContentErrorResult result)
     {

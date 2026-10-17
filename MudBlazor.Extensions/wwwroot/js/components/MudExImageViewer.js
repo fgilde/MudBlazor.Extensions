@@ -319,6 +319,8 @@
     }
 
     _onKeyUp = (event) => {
+        if (!this.viewer)
+            return;
         if ((this._isSelecting && event.key === 'Control') || event.key === 'Escape') {
             if (this.selectionDiv.style.display !== 'none') {
                 this.hideRubberBand();
@@ -532,6 +534,7 @@
     }
 
     dispose() {
+        document.removeEventListener('keyup', this._onKeyUp);
         this._loadVersion++;
         this.hideRubberBand();
         this.selectionDiv?.remove();
