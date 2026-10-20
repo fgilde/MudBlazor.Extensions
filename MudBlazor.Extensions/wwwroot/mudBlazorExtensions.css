@@ -6842,6 +6842,22 @@
 .mud-ex-org-chart-search {
   max-width: 320px;
 }
+.mud-ex-org-chart-root-drop {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border: 1px dashed var(--mud-palette-lines-inputs);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--mud-palette-text-secondary);
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+.mud-ex-org-chart-root-drop.mud-ex-org-chart-drop {
+  border-color: var(--mud-palette-primary);
+  color: var(--mud-palette-primary);
+  background: color-mix(in srgb, var(--mud-palette-primary) 8%, transparent);
+}
 .mud-ex-org-chart-viewport {
   position: relative;
   overflow: hidden;

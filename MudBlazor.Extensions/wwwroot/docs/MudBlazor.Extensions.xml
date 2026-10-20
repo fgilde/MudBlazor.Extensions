@@ -8213,7 +8213,7 @@
             </summary>
             <param name="Item">The dragged item.</param>
             <param name="OldParent">The parent before the drop, default for a root.</param>
-            <param name="NewParent">The node it was dropped onto, default when dropped onto the empty canvas.</param>
+            <param name="NewParent">The node it was dropped onto, default when dropped onto the empty canvas or the root drop zone.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Components.OrgChartReparentArgs`1.#ctor(`0,`0,`0)">
             <summary>
@@ -8221,7 +8221,7 @@
             </summary>
             <param name="Item">The dragged item.</param>
             <param name="OldParent">The parent before the drop, default for a root.</param>
-            <param name="NewParent">The node it was dropped onto, default when dropped onto the empty canvas.</param>
+            <param name="NewParent">The node it was dropped onto, default when dropped onto the empty canvas or the root drop zone.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Components.OrgChartReparentArgs`1.Item">
             <summary>The dragged item.</summary>
@@ -8230,7 +8230,21 @@
             <summary>The parent before the drop, default for a root.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.OrgChartReparentArgs`1.NewParent">
-            <summary>The node it was dropped onto, default when dropped onto the empty canvas.</summary>
+            <summary>The node it was dropped onto, default when dropped onto the empty canvas or the root drop zone.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OrgChartReparentArgs`1.Refusal">
+            <summary>Why the drop was refused, only set for <c>OnReparentRefused</c>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.OrgChartReparentRefusal">
+            <summary>
+            Why <see cref="T:MudBlazor.Extensions.Components.MudExOrgChart`1"/> refused a drop.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.OrgChartReparentRefusal.Cycle">
+            <summary>The new parent is below the dragged item.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.OrgChartReparentRefusal.NotAllowed">
+            <summary><c>CanReparent</c> returned false.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.OrgChartBox">
             <summary>
@@ -8272,6 +8286,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.TextFunc">
             <summary>The text of an item for the default card and the default search.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.CountFunc">
+            <summary>The number on the collapse button of a card; a null result falls back to <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.CountDescendants"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.CountDescendants">
+            <summary>The collapse button counts everyone below a card instead of only its children.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.NodeTemplate">
             <summary>The content of a card. A card with <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.TextFunc"/> by default.</summary>
@@ -8321,6 +8341,9 @@
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ZoomStep">
             <summary>The factor of one zoom step.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ZoomOnWheel">
+            <summary>The mouse wheel zooms around the pointer and pans with Ctrl, instead of the other way round.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.SearchText">
             <summary>The search text; matches are highlighted and the current one is centered.</summary>
         </member>
@@ -8329,6 +8352,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.SearchFunc">
             <summary>Whether an item matches a search text; by default <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.TextFunc"/> contains the text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.SearchPlaceholder">
+            <summary>The placeholder of the search field, "Search" by default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.SearchItemTemplate">
+            <summary>When set, the search field is an autocomplete that lists the matches with this template; picking one centers it.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.AllowReparent">
             <summary>Lets the user drag a node onto another to change its parent.</summary>
@@ -8342,6 +8371,12 @@
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.OnReparent">
             <summary>Raised when a node is dropped onto a valid new parent; the consumer changes the data.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.OnReparentRefused">
+            <summary>Raised when a node is dropped onto a parent below it or one <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.CanReparent"/> refuses; <see cref="P:MudBlazor.Extensions.Components.OrgChartReparentArgs`1.Refusal"/> says why.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.RootDropZone">
+            <summary>With <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.AllowDropToRoot"/>: the toolbar shows this content as a drop zone that makes the dropped node a root. It lights up while a node is dragged.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.SelectedItem">
             <summary>The selected item.</summary>
         </member>
@@ -8353,6 +8388,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.Zoom">
             <summary>The current zoom factor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.IsDragging">
+            <summary>Whether a node is being dragged.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.DraggedItem">
+            <summary>The item being dragged, default while none is.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.GetJsArguments">
             <inheritdoc />
@@ -8388,7 +8429,7 @@
             <summary>Expands the way to an item and moves it into the middle of the view.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.OnWheel(System.Double,System.Double,System.Double,System.Double,System.Boolean)">
-            <summary>Called by the JS module for the mouse wheel: Ctrl zooms around the pointer, otherwise it pans.</summary>
+            <summary>Called by the JS module for the mouse wheel: Ctrl zooms around the pointer, otherwise it pans (the other way round with <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ZoomOnWheel"/>).</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExOrgChartMinimap">
             <summary>

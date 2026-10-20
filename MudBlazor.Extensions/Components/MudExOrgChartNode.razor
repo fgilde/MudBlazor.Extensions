@@ -7,7 +7,7 @@
 <li>
     <div class="@NodeClass(key)" id="@Chart.DomId(key)" data-org-key="@key" draggable="@(Chart.CanDrag ? "true" : "false")"
          @onpointerdown:stopPropagation="Chart.CanDrag" @onclick="() => Chart.ClickAsync(Item)"
-         @ondragstart="() => Chart.DragStart(Item)" @ondragover:preventDefault="true" @ondragenter="() => _over = true" @ondragleave="() => _over = false"
+         @ondragstart="() => Chart.DragStart(Item)" @ondragend="Chart.DragEnd" @ondragover:preventDefault="true" @ondragenter="() => _over = true" @ondragleave="() => _over = false"
          @ondrop="DropAsync" @ondrop:stopPropagation="true">
         @if (Chart.NodeTemplate is { } template)
         {
@@ -21,7 +21,7 @@
         {
             <button type="button" class="mud-ex-org-chart-toggle" @onclick="() => Chart.Toggle(Item)" @onclick:stopPropagation="true"
                     title="@Chart.TryLocalize(collapsed ? "Expand" : "Collapse")">
-                @children.Count
+                @Chart.CountOf(Item, key)
                 <MudIcon Icon="@(collapsed ? Icons.Material.Outlined.ExpandMore : Icons.Material.Outlined.ExpandLess)" Size="Size.Small" />
             </button>
         }

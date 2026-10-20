@@ -11,6 +11,7 @@ internal sealed class OrgChartIndex<TItem>
     private Dictionary<int, TItem> _items = [];
     private Dictionary<int, List<TItem>> _children = [];
     private Dictionary<int, int> _parents = [];
+    private Dictionary<int, int> _below = [];
 
     public List<TItem> Roots { get; private set; } = [];
 
@@ -34,7 +35,7 @@ internal sealed class OrgChartIndex<TItem>
         }
     }
 
-    public int Descendants(int key) => Children(key).Sum(c => 1 + Descendants(KeyOf(c)));
+    public int Descendants(int key) => _below.TryGetValue(key, out var below) ? below : _below[key] = Children(key).Sum(c => 1 + Descendants(KeyOf(c)));
 
     /// <summary>Rebuilds the tree and returns the items seen for the first time with their depth.</summary>
     public List<(int Key, int Depth)> Build(IEnumerable<TItem> items, Func<TItem, object> id, Func<TItem, object> parentId, Func<TItem, IEnumerable<TItem>> children)
@@ -43,6 +44,7 @@ internal sealed class OrgChartIndex<TItem>
         _items = [];
         _children = [];
         _parents = [];
+        _below = [];
         Roots = [];
         var all = items.ToList();
         if (children is not null)

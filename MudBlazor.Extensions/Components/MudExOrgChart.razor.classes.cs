@@ -25,8 +25,24 @@ public enum OrgChartOrientation
 /// </summary>
 /// <param name="Item">The dragged item.</param>
 /// <param name="OldParent">The parent before the drop, default for a root.</param>
-/// <param name="NewParent">The node it was dropped onto, default when dropped onto the empty canvas.</param>
-public record OrgChartReparentArgs<TItem>(TItem Item, TItem OldParent, TItem NewParent);
+/// <param name="NewParent">The node it was dropped onto, default when dropped onto the empty canvas or the root drop zone.</param>
+public record OrgChartReparentArgs<TItem>(TItem Item, TItem OldParent, TItem NewParent)
+{
+    /// <summary>Why the drop was refused, only set for <c>OnReparentRefused</c>.</summary>
+    public OrgChartReparentRefusal? Refusal { get; init; }
+}
+
+/// <summary>
+/// Why <see cref="MudExOrgChart{TItem}"/> refused a drop.
+/// </summary>
+public enum OrgChartReparentRefusal
+{
+    /// <summary>The new parent is below the dragged item.</summary>
+    Cycle,
+
+    /// <summary><c>CanReparent</c> returned false.</summary>
+    NotAllowed
+}
 
 /// <summary>
 /// A measured node in stage coordinates, used by the minimap.

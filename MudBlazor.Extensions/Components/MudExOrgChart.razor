@@ -6,10 +6,16 @@
     @if (ShowToolbar)
     {
         <div class="mud-ex-org-chart-toolbar">
-            @if (ShowSearch)
+            @if (ShowSearch && SearchItemTemplate is { } searchItem)
+            {
+                <MudAutocomplete T="TItem" SearchFunc="FindAsync" ValueChanged="Pick" ToStringFunc="TextFunc" ItemTemplate="searchItem" DebounceInterval="250" CoerceText="false"
+                                 OnClearButtonClick="() => SetSearchAsync(null)" Placeholder="@(SearchPlaceholder ?? TryLocalize("Search"))" Clearable="true"
+                                 Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Search" Margin="Margin.Dense" Variant="Variant.Outlined" Class="mud-ex-org-chart-search" />
+            }
+            else if (ShowSearch)
             {
                 <MudTextField T="string" Value="@_searchText" ValueChanged="SetSearchAsync" Immediate="true" DebounceInterval="250" OnKeyDown="NextMatch"
-                              Placeholder="@TryLocalize("Search")" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Search"
+                              Placeholder="@(SearchPlaceholder ?? TryLocalize("Search"))" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Search"
                               Margin="Margin.Dense" Variant="Variant.Outlined" Class="mud-ex-org-chart-search"
                               HelperText="@(_matches.Count > 1 ? TryLocalize("{0} of {1}, Enter for the next", _match + 1, _matches.Count) : null)" />
             }
@@ -19,6 +25,13 @@
             </MudButtonGroup>
             @ToolbarContent
             <MudSpacer />
+            @if (RootDropZone is not null && AllowReparent && AllowDropToRoot)
+            {
+                <div class="@("mud-ex-org-chart-root-drop" + (CanDropOn(null) ? " mud-ex-org-chart-drop" : string.Empty))"
+                     @ondragover:preventDefault="true" @ondrop="() => DropAsync(null)">
+                    @RootDropZone
+                </div>
+            }
             <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined">
                 <MudIconButton Icon="@Icons.Material.Outlined.ZoomOut" OnClick="ZoomOut" aria-label="@TryLocalize("Zoom out")" />
                 <MudButton OnClick="ResetZoom" title="@TryLocalize("Reset zoom")">@($"{_zoom * 100:0} %")</MudButton>

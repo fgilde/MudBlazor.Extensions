@@ -32,17 +32,27 @@ public sealed class MudExOrgChartTests : IAsyncDisposable
 
     public ValueTask DisposeAsync() => _context.DisposeAsync();
 
-    private IRenderedComponent<MudExOrgChart<Node>> Open(int? expandedDepth = null, string search = null, Func<Node, Node, bool> canReparent = null) =>
-        _context.Render<MudExOrgChart<Node>>(p => p
-            .Add(c => c.Items, People)
-            .Add(c => c.IdFunc, n => n.Id)
-            .Add(c => c.ParentIdFunc, n => n.Parent)
-            .Add(c => c.TextFunc, n => n.Name)
-            .Add(c => c.InitiallyExpandedDepth, expandedDepth)
-            .Add(c => c.SearchText, search)
-            .Add(c => c.AllowReparent, true)
-            .Add(c => c.CanReparent, canReparent)
-            .Add(c => c.OnReparent, a => _reparented.Add(a)));
+    private readonly List<OrgChartReparentArgs<Node>> _refused = [];
+
+    private IRenderedComponent<MudExOrgChart<Node>> Open(int? expandedDepth = null, string search = null, Func<Node, Node, bool> canReparent = null,
+        Action<ComponentParameterCollectionBuilder<MudExOrgChart<Node>>> more = null) =>
+        _context.Render<MudExOrgChart<Node>>(p =>
+        {
+            p.Add(c => c.Items, People)
+                .Add(c => c.IdFunc, n => n.Id)
+                .Add(c => c.ParentIdFunc, n => n.Parent)
+                .Add(c => c.TextFunc, n => n.Name)
+                .Add(c => c.InitiallyExpandedDepth, expandedDepth)
+                .Add(c => c.SearchText, search)
+                .Add(c => c.AllowReparent, true)
+                .Add(c => c.CanReparent, canReparent)
+                .Add(c => c.OnReparent, a => _reparented.Add(a))
+                .Add(c => c.OnReparentRefused, a => _refused.Add(a));
+            more?.Invoke(p);
+        });
+
+    private static string Count(IRenderedComponent<MudExOrgChart<Node>> chart, string name) =>
+        Card(chart, name).QuerySelector(".mud-ex-org-chart-toggle")!.TextContent.Trim();
 
     private static List<string> Cards(IRenderedComponent<MudExOrgChart<Node>> chart) =>
         chart.FindAll(".mud-ex-org-chart-node .mud-ex-org-chart-text").Select(e => e.TextContent).ToList();
@@ -132,5 +142,69 @@ public sealed class MudExOrgChartTests : IAsyncDisposable
 
         Assert.Equal("Cfo", selected?.Name);
         Assert.Contains("mud-ex-org-chart-selected", Card(chart, "Cfo").ClassName);
+    }
+
+    [Fact]
+    public void TheCountIsTheChildrenEveryoneBelowOrTheCountFunc()
+    {
+        Assert.Equal("2", Count(Open(), "Ceo"));
+        Assert.Equal("3", Count(Open(more: p => p.Add(c => c.CountDescendants, true)), "Ceo"));
+        Assert.Equal("42", Count(Open(more: p => p.Add(c => c.CountFunc, n => n.Name == "Ceo" ? 42 : null)), "Ceo"));
+    }
+
+    [Fact]
+    public async Task ARefusedDropRaisesOnReparentRefusedWithTheReason()
+    {
+        var chart = Open(canReparent: (_, parent) => parent?.Name != "Cfo");
+
+        await Card(chart, "Cto").TriggerEventAsync("ondragstart", new DragEventArgs());
+        await Card(chart, "Dev").TriggerEventAsync("ondrop", new DragEventArgs());
+        await Card(chart, "Dev").TriggerEventAsync("ondragstart", new DragEventArgs());
+        await Card(chart, "Cfo").TriggerEventAsync("ondrop", new DragEventArgs());
+        await Card(chart, "Dev").TriggerEventAsync("ondragstart", new DragEventArgs());
+        await Card(chart, "Cto").TriggerEventAsync("ondrop", new DragEventArgs());
+
+        Assert.Empty(_reparented);
+        Assert.Equal([("Cto", "Dev", OrgChartReparentRefusal.Cycle), ("Dev", "Cfo", OrgChartReparentRefusal.NotAllowed)],
+            _refused.Select(a => (a.Item.Name, a.NewParent.Name, a.Refusal!.Value)));
+    }
+
+    [Fact]
+    public async Task TheRootDropZoneLightsUpWhileDraggingAndMakesARoot()
+    {
+        var chart = Open(more: p => p.Add(c => c.AllowDropToRoot, true).Add(c => c.RootDropZone, "No manager"));
+        var zone = chart.Find(".mud-ex-org-chart-root-drop");
+        Assert.DoesNotContain("mud-ex-org-chart-drop", zone.ClassName);
+
+        await Card(chart, "Cto").TriggerEventAsync("ondragstart", new DragEventArgs());
+        Assert.True(chart.Instance.IsDragging);
+        Assert.Equal("Cto", chart.Instance.DraggedItem.Name);
+        Assert.Contains("mud-ex-org-chart-drop", chart.Find(".mud-ex-org-chart-root-drop").ClassName);
+
+        await chart.Find(".mud-ex-org-chart-root-drop").TriggerEventAsync("ondrop", new DragEventArgs());
+        var args = Assert.Single(_reparented);
+        Assert.Equal(("Cto", "Ceo", null), (args.Item.Name, args.OldParent.Name, args.NewParent));
+        Assert.False(chart.Instance.IsDragging);
+    }
+
+    [Fact]
+    public async Task ADragEndedWithoutADropClearsTheDragState()
+    {
+        var chart = Open();
+
+        await Card(chart, "Cto").TriggerEventAsync("ondragstart", new DragEventArgs());
+        await Card(chart, "Cto").TriggerEventAsync("ondragend", new DragEventArgs());
+
+        Assert.False(chart.Instance.IsDragging);
+    }
+
+    [Fact]
+    public async Task ZoomOnWheelZoomsWithoutCtrl()
+    {
+        var chart = Open(more: p => p.Add(c => c.ZoomOnWheel, true));
+
+        await chart.InvokeAsync(() => chart.Instance.OnWheel(0, 0, 0, -100, false));
+
+        Assert.True(chart.Instance.Zoom > 1);
     }
 }

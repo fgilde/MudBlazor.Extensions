@@ -50,6 +50,12 @@ public partial class MudExOrgChart<TItem>
     /// <summary>The text of an item for the default card and the default search.</summary>
     [Parameter, SafeCategory("Data")] public Func<TItem, string> TextFunc { get; set; } = item => item?.ToString();
 
+    /// <summary>The number on the collapse button of a card; a null result falls back to <see cref="CountDescendants"/>.</summary>
+    [Parameter, SafeCategory("Data")] public Func<TItem, int?> CountFunc { get; set; }
+
+    /// <summary>The collapse button counts everyone below a card instead of only its children.</summary>
+    [Parameter, SafeCategory("Data")] public bool CountDescendants { get; set; }
+
     /// <summary>The content of a card. A card with <see cref="TextFunc"/> by default.</summary>
     [Parameter, SafeCategory("Appearance")] public RenderFragment<TItem> NodeTemplate { get; set; }
 
@@ -98,6 +104,9 @@ public partial class MudExOrgChart<TItem>
     /// <summary>The factor of one zoom step.</summary>
     [Parameter, SafeCategory("Behavior")] public double ZoomStep { get; set; } = 1.2;
 
+    /// <summary>The mouse wheel zooms around the pointer and pans with Ctrl, instead of the other way round.</summary>
+    [Parameter, SafeCategory("Behavior")] public bool ZoomOnWheel { get; set; }
+
     /// <summary>The search text; matches are highlighted and the current one is centered.</summary>
     [Parameter, SafeCategory("Search")] public string SearchText { get; set; }
 
@@ -106,6 +115,12 @@ public partial class MudExOrgChart<TItem>
 
     /// <summary>Whether an item matches a search text; by default <see cref="TextFunc"/> contains the text.</summary>
     [Parameter, SafeCategory("Search")] public Func<TItem, string, bool> SearchFunc { get; set; }
+
+    /// <summary>The placeholder of the search field, "Search" by default.</summary>
+    [Parameter, SafeCategory("Search")] public string SearchPlaceholder { get; set; }
+
+    /// <summary>When set, the search field is an autocomplete that lists the matches with this template; picking one centers it.</summary>
+    [Parameter, SafeCategory("Search")] public RenderFragment<TItem> SearchItemTemplate { get; set; }
 
     /// <summary>Lets the user drag a node onto another to change its parent.</summary>
     [Parameter, SafeCategory("Reparent")] public bool AllowReparent { get; set; }
@@ -119,6 +134,12 @@ public partial class MudExOrgChart<TItem>
     /// <summary>Raised when a node is dropped onto a valid new parent; the consumer changes the data.</summary>
     [Parameter, SafeCategory("Reparent")] public EventCallback<OrgChartReparentArgs<TItem>> OnReparent { get; set; }
 
+    /// <summary>Raised when a node is dropped onto a parent below it or one <see cref="CanReparent"/> refuses; <see cref="OrgChartReparentArgs{TItem}.Refusal"/> says why.</summary>
+    [Parameter, SafeCategory("Reparent")] public EventCallback<OrgChartReparentArgs<TItem>> OnReparentRefused { get; set; }
+
+    /// <summary>With <see cref="AllowDropToRoot"/>: the toolbar shows this content as a drop zone that makes the dropped node a root. It lights up while a node is dragged.</summary>
+    [Parameter, SafeCategory("Reparent")] public RenderFragment RootDropZone { get; set; }
+
     /// <summary>The selected item.</summary>
     [Parameter, SafeCategory("Selection")] public TItem SelectedItem { get; set; }
 
@@ -130,6 +151,12 @@ public partial class MudExOrgChart<TItem>
 
     /// <summary>The current zoom factor.</summary>
     public double Zoom => _zoom;
+
+    /// <summary>Whether a node is being dragged.</summary>
+    public bool IsDragging => _dragged is not null;
+
+    /// <summary>The item being dragged, default while none is.</summary>
+    public TItem DraggedItem => _dragged is { } key ? _index.Item(key) : default;
 
     internal int Version { get; private set; }
 
@@ -150,6 +177,8 @@ public partial class MudExOrgChart<TItem>
     internal bool IsMatch(int key) => _matchSet.Contains(key);
 
     internal bool IsCurrentMatch(int key) => _matches.Count > 0 && _matches[_match] == key;
+
+    internal int CountOf(TItem item, int key) => CountFunc?.Invoke(item) ?? (CountDescendants ? _index.Descendants(key) : _index.Children(key).Count);
 
     private string StageStyle => Invariant($"transform:translate({_x:0.#}px,{_y:0.#}px) scale({_zoom:0.###})");
 
@@ -285,32 +314,87 @@ public partial class MudExOrgChart<TItem>
         }
     }
 
-    internal void DragStart(TItem item) => _dragged = KeyOf(item);
+    internal void DragStart(TItem item)
+    {
+        _dragged = KeyOf(item);
+        StateHasChanged();
+    }
 
-    internal bool CanDropOn(int? target) =>
-        _dragged is { } dragged && dragged != target && _index.ParentKey(dragged) != target
-        && (target is null ? AllowDropToRoot : !_index.Ancestors(target.Value).Contains(dragged))
-        && (CanReparent?.Invoke(_index.Item(dragged), target is { } t ? _index.Item(t) : default) ?? true);
+    // also after a drop outside the chart or Escape
+    internal void DragEnd()
+    {
+        if (_dragged is not null)
+        {
+            _dragged = null;
+            StateHasChanged();
+        }
+    }
+
+    internal bool CanDropOn(int? target) => _dragged is { } dragged && IsTarget(dragged, target) && RefusalOf(dragged, target) is null;
 
     internal async Task DropAsync(int? target)
     {
-        var allowed = CanDropOn(target);
         var dragged = _dragged;
-        _dragged = null;
-        if (!allowed || dragged is not { } key)
+        DragEnd();
+        if (dragged is not { } key || !IsTarget(key, target))
         {
             return;
         }
 
         var parent = _index.ParentKey(key);
-        await OnReparent.InvokeAsync(new(_index.Item(key), parent is { } p ? _index.Item(p) : default, target is { } t ? _index.Item(t) : default));
+        var args = new OrgChartReparentArgs<TItem>(_index.Item(key), parent is { } p ? _index.Item(p) : default, target is { } t ? _index.Item(t) : default);
+        if (RefusalOf(key, target) is { } refusal)
+        {
+            await OnReparentRefused.InvokeAsync(args with { Refusal = refusal });
+            return;
+        }
+
+        await OnReparent.InvokeAsync(args);
     }
+
+    // no target at all, nothing to refuse: the node itself, its current parent, the canvas without AllowDropToRoot
+    private bool IsTarget(int dragged, int? target) => dragged != target && _index.ParentKey(dragged) != target && (target is not null || AllowDropToRoot);
+
+    private OrgChartReparentRefusal? RefusalOf(int dragged, int? target) =>
+        target is { } t && _index.Ancestors(t).Contains(dragged) ? OrgChartReparentRefusal.Cycle
+        : CanReparent?.Invoke(_index.Item(dragged), target is { } p ? _index.Item(p) : default) == false ? OrgChartReparentRefusal.NotAllowed
+        : null;
 
     private void Changed()
     {
         Version++;
         _layoutDirty = true;
         StateHasChanged();
+    }
+
+    // the autocomplete calls this debounced with the typed text: the matches are highlighted and listed
+    private async Task<IEnumerable<TItem>> FindAsync(string text, CancellationToken cancellationToken)
+    {
+        if (text != _searchText)
+        {
+            await SetSearchAsync(text);
+        }
+
+        return _matches.Select(_index.Item);
+    }
+
+    // a picked match becomes the current one
+    private void Pick(TItem item)
+    {
+        if (item is null || !_index.TryKeyOf(item, out var key))
+        {
+            return;
+        }
+
+        if (_matches.IndexOf(key) is var match and >= 0)
+        {
+            _match = match;
+            FocusMatch();
+            Changed();
+            return;
+        }
+
+        CenterOn(item);
     }
 
     private async Task SetSearchAsync(string text)
@@ -386,11 +470,11 @@ public partial class MudExOrgChart<TItem>
         StateHasChanged();
     }
 
-    /// <summary>Called by the JS module for the mouse wheel: Ctrl zooms around the pointer, otherwise it pans.</summary>
+    /// <summary>Called by the JS module for the mouse wheel: Ctrl zooms around the pointer, otherwise it pans (the other way round with <see cref="ZoomOnWheel"/>).</summary>
     [JSInvokable]
     public void OnWheel(double x, double y, double deltaX, double deltaY, bool zoom)
     {
-        if (zoom)
+        if (zoom != ZoomOnWheel)
         {
             ZoomTo(_zoom * (deltaY < 0 ? 1.1 : 1 / 1.1), x, y);
             return;
