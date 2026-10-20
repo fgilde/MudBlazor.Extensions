@@ -1,0 +1,68 @@
+@page "/org-chart"
+@inherits BasePage
+
+@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExOrgChart", Icon = Icons.Material.Outlined.AccountTree, Documentation = "MudExOrgChart draws a tree of cards from a flat list with parent ids or a children function, with pan, zoom, search, collapse, a minimap and drag and drop re-parenting.", ForComponentType = typeof(MudExOrgChart<>))]
+
+<DemoComponent PageType="@GetType()">
+    <div class="d-flex flex-wrap gap-4 align-center mb-2">
+        <MudExEnumSelect TEnum="OrgChartOrientation" @bind-Value="orientation" Label="Orientation" Variant="Variant.Outlined" Margin="Margin.Dense" Style="max-width:220px" />
+        <MudSwitch @bind-Value="allowReparent" Color="Color.Primary" Label="Drag a card onto another to change the manager" />
+        <MudSwitch @bind-Value="showMinimap" Color="Color.Primary" Label="Minimap" />
+        <MudText Typo="Typo.body2">Selected: <b>@(selected?.Name ?? "–")</b></MudText>
+    </div>
+    <MudExOrgChart @ref="chart" TItem="Person" Items="people" IdFunc="p => p.Id" ParentIdFunc="p => p.ManagerId" TextFunc="p => p.Name"
+                   SearchFunc="@((p, text) => $"{p.Name} {p.Role}".Contains(text, StringComparison.OrdinalIgnoreCase))"
+                   Orientation="orientation" AllowReparent="allowReparent" AllowDropToRoot="allowReparent" ShowMinimap="showMinimap"
+                   InitiallyExpandedDepth="3" FitMinZoom="0.6" Height="65vh" @bind-SelectedItem="selected" OnReparent="Reparent">
+        <ToolbarContent>
+            <MudButton Size="Size.Small" Variant="Variant.Text" StartIcon="@Icons.Material.Outlined.CenterFocusStrong" OnClick="() => chart.CenterOn(people[0])">Center on the CEO</MudButton>
+        </ToolbarContent>
+        <NodeTemplate Context="person">
+            <div class="d-flex align-center gap-2" style="@($"border-left:4px solid {person.Color};padding-left:8px;min-width:190px")">
+                <MudAvatar Size="Size.Small" Style="@($"background:{person.Color};color:#fff")">@(person.Name[..1])</MudAvatar>
+                <div class="d-flex flex-column">
+                    <b>@person.Name</b>
+                    <MudText Typo="Typo.caption" Class="mud-text-secondary">@person.Role</MudText>
+                </div>
+            </div>
+        </NodeTemplate>
+    </MudExOrgChart>
+</DemoComponent>
+
+@code {
+    private record Person(int Id, int? ManagerId, string Name, string Role, string Color)
+    {
+        public int? ManagerId { get; set; } = ManagerId;
+    }
+
+    private static readonly string[] Teams = ["Engineering", "Sales", "Marketing", "Finance", "Support"];
+    private static readonly string[] Colors = ["#5c6bc0", "#26a69a", "#ef6c00", "#8d6e63", "#ab47bc"];
+
+    private MudExOrgChart<Person> chart = null!;
+    private OrgChartOrientation orientation;
+    private bool allowReparent = true;
+    private bool showMinimap = true;
+    private Person? selected;
+    private readonly List<Person> people = Build();
+
+    private static List<Person> Build()
+    {
+        var list = new List<Person> { new(1, null, "Ada King", "CEO", "#455a64") };
+        var id = 2;
+        for (var t = 0; t < Teams.Length; t++)
+        {
+            var head = new Person(id++, 1, $"{Teams[t]} Lead", $"Head of {Teams[t]}", Colors[t]);
+            list.Add(head);
+            for (var m = 0; m < 3; m++)
+            {
+                var manager = new Person(id++, head.Id, $"{Teams[t]} Manager {m + 1}", $"{Teams[t]} manager", Colors[t]);
+                list.Add(manager);
+                list.AddRange(Enumerable.Range(1, 2 + ((t + m) % 3)).Select(i => new Person(id++, manager.Id, $"{Teams[t]} Member {m + 1}.{i}", $"{Teams[t]} specialist", Colors[t])));
+            }
+        }
+
+        return list;
+    }
+
+    private void Reparent(OrgChartReparentArgs<Person> args) => args.Item.ManagerId = args.NewParent?.Id;
+}
