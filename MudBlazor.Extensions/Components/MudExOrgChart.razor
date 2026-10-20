@@ -8,7 +8,7 @@
         <div class="mud-ex-org-chart-toolbar">
             @if (ShowSearch && SearchItemTemplate is { } searchItem)
             {
-                <MudAutocomplete T="TItem" SearchFunc="FindAsync" ValueChanged="Pick" ToStringFunc="TextFunc" ItemTemplate="searchItem" DebounceInterval="250" CoerceText="false"
+                <MudAutocomplete T="TItem" SearchFunc="FindAsync" ValueChanged="Pick" ToStringFunc="@(item => item is null ? null : TextFunc(item))" ItemTemplate="searchItem" DebounceInterval="250" CoerceText="false"
                                  OnClearButtonClick="() => SetSearchAsync(null)" Placeholder="@(SearchPlaceholder ?? TryLocalize("Search"))" Clearable="true"
                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Search" Margin="Margin.Dense" Variant="Variant.Outlined" Class="mud-ex-org-chart-search" />
             }
