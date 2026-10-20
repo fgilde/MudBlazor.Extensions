@@ -3,7 +3,20 @@ class MudExOrgChart {
         this.viewport = viewport;
         this.dotnet = dotnet;
         this._onWheel = this.onWheel.bind(this);
+        this._onDown = evt => this._down = { x: evt.clientX, y: evt.clientY };
+        this._onClick = this.onClick.bind(this);
         viewport.addEventListener('wheel', this._onWheel, { passive: false });
+        viewport.addEventListener('pointerdown', this._onDown, true);
+        viewport.addEventListener('click', this._onClick, true);
+    }
+
+    // a press that panned the chart is no click: no selection, no link opened on a card
+    onClick(evt) {
+        const d = this._down;
+        if (d && Math.hypot(evt.clientX - d.x, evt.clientY - d.y) > 5) {
+            evt.preventDefault();
+            evt.stopPropagation();
+        }
     }
 
     // the wheel pans, with Ctrl (or a pinch on a touchpad) it zooms around the pointer
@@ -30,6 +43,8 @@ class MudExOrgChart {
 
     dispose() {
         this.viewport.removeEventListener('wheel', this._onWheel, { passive: false });
+        this.viewport.removeEventListener('pointerdown', this._onDown, true);
+        this.viewport.removeEventListener('click', this._onClick, true);
     }
 }
 
