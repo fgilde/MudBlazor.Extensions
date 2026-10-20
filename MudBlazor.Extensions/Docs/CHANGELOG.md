@@ -1,4 +1,5 @@
 ## Change Log    
+ - 9.11.5 > Fix MudExTextField / MudExInput (and with it MudExTagField, the MudExToggleableSearch and MudExTreeView filter): text typed but not committed was emptied when the parent re-rendered after the field lost focus
  - 9.11.5 > New [MudExOrgChart](https://www.mudex.org/org-chart): a pannable, zoomable org chart from a flat list with parent ids or a children function, with search, collapse, a minimap, fit and center, and drag and drop re-parenting with cycle prevention
  - 9.11.4 > Fix MudExDateRangeSlider in Day mode: arrow and Page keys did not move the thumbs without an explicit step. Day mode now steps by one day, and keyboard steps below the type's resolution move by at least one unit
  - 9.11.4 > MudExRangeSlider: new `AriaLabelStart` and `AriaLabelEnd` to label both thumbs separately; additional attributes (e.g. `data-testid`) are now rendered on the root element
