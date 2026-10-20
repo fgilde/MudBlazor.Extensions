@@ -8,12 +8,28 @@
         <MudExEnumSelect TEnum="OrgChartOrientation" @bind-Value="orientation" Label="Orientation" Variant="Variant.Outlined" Margin="Margin.Dense" Style="max-width:220px" />
         <MudSwitch @bind-Value="allowReparent" Color="Color.Primary" Label="Drag a card onto another to change the manager" />
         <MudSwitch @bind-Value="showMinimap" Color="Color.Primary" Label="Minimap" />
+        <MudSwitch @bind-Value="countAll" Color="Color.Primary" Label="Count everyone below" />
+        <MudSwitch @bind-Value="zoomOnWheel" Color="Color.Primary" Label="Wheel zooms" />
         <MudText Typo="Typo.body2">Selected: <b>@(selected?.Name ?? "–")</b></MudText>
+        @if (refused is not null)
+        {
+            <MudAlert Severity="Severity.Warning" Dense="true" ShowCloseIcon="true" CloseIconClicked="() => refused = null">@refused</MudAlert>
+        }
     </div>
     <MudExOrgChart @ref="chart" TItem="Person" Items="people" IdFunc="p => p.Id" ParentIdFunc="p => p.ManagerId" TextFunc="p => p.Name"
                    SearchFunc="@((p, text) => $"{p.Name} {p.Role}".Contains(text, StringComparison.OrdinalIgnoreCase))"
                    Orientation="orientation" AllowReparent="allowReparent" AllowDropToRoot="allowReparent" ShowMinimap="showMinimap"
-                   InitiallyExpandedDepth="3" FitMinZoom="0.6" Height="65vh" @bind-SelectedItem="selected" OnReparent="Reparent">
+                   InitiallyExpandedDepth="3" FitMinZoom="0.6" Height="65vh" @bind-SelectedItem="selected" OnReparent="Reparent" OnReparentRefused="Refused"
+                   CountDescendants="countAll" ZoomOnWheel="zoomOnWheel" SearchPlaceholder="Find a person">
+        <SearchItemTemplate Context="person">
+            <div class="d-flex align-center gap-2">
+                <MudAvatar Size="Size.Small" Style="@($"background:{person.Color};color:#fff")">@(person.Name[..1])</MudAvatar>
+                <span>@person.Name <span class="mud-text-secondary">· @person.Role</span></span>
+            </div>
+        </SearchItemTemplate>
+        <RootDropZone>
+            <MudIcon Icon="@Icons.Material.Outlined.VerticalAlignTop" Size="Size.Small" /> Drop here: no manager
+        </RootDropZone>
         <ToolbarContent>
             <MudButton Size="Size.Small" Variant="Variant.Text" StartIcon="@Icons.Material.Outlined.CenterFocusStrong" OnClick="() => chart.CenterOn(people[0])">Center on the CEO</MudButton>
         </ToolbarContent>
@@ -42,6 +58,9 @@
     private OrgChartOrientation orientation;
     private bool allowReparent = true;
     private bool showMinimap = true;
+    private bool countAll = true;
+    private bool zoomOnWheel;
+    private string? refused;
     private Person? selected;
     private readonly List<Person> people = Build();
 
@@ -64,5 +83,13 @@
         return list;
     }
 
-    private void Reparent(OrgChartReparentArgs<Person> args) => args.Item.ManagerId = args.NewParent?.Id;
+    private void Reparent(OrgChartReparentArgs<Person> args)
+    {
+        args.Item.ManagerId = args.NewParent?.Id;
+        refused = null;
+    }
+
+    private void Refused(OrgChartReparentArgs<Person> args) => refused = args.Refusal == OrgChartReparentRefusal.Cycle
+        ? $"{args.Item.Name} cannot report to someone who reports to {args.Item.Name}."
+        : $"{args.Item.Name} cannot report to {args.NewParent?.Name}.";
 }

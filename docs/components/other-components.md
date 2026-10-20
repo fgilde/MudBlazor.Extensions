@@ -52,10 +52,14 @@ A pannable, zoomable org chart drawn from a flat list with parent ids (or a chil
 - Forest from `ParentIdFunc` (missing parents and cycles become roots) or `ChildrenFunc`
 - Top down or left to right (`Orientation`)
 - Collapse and expand per card, `ExpandAll`, `CollapseAll`, `InitiallyExpandedDepth`
-- Search with highlight; the match is opened and centered, Enter jumps to the next
-- Zoom buttons, Ctrl + mouse wheel, pan by dragging or the wheel, fit on open, `CenterOn(item)`
+- Search with highlight; the match is opened and centered, Enter jumps to the next (`SearchFunc`, `SearchPlaceholder`)
+- `SearchItemTemplate` turns the search into an autocomplete that lists the matches (e.g. with avatars); picking one centers it
+- Collapse button count: direct children, everyone below (`CountDescendants`) or your own number (`CountFunc`)
+- Zoom buttons, Ctrl + mouse wheel, pan by dragging or the wheel (`ZoomOnWheel` swaps both), fit on open, `CenterOn(item)`; a press that panned does not click the card
 - Minimap with the visible area; click or drag in it to move the view (`ShowMinimap`, `MinimapPosition`)
 - Drag a card onto another to change its parent (`AllowReparent`, `CanReparent`, `OnReparent`), cycles are refused
+- Refused drops raise `OnReparentRefused` with the reason (`OrgChartReparentRefusal.Cycle` or `NotAllowed`), e.g. for a warning
+- `RootDropZone` (with `AllowDropToRoot`): a drop zone in the toolbar that lights up while a card is dragged and makes it a root; `IsDragging` and `DraggedItem` tell the drag state
 - Themed by the MudBlazor palette, works in dark mode
 
 ## MudExCardList

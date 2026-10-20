@@ -1,4 +1,6 @@
 ## Change Log    
+ - 9.11.6 > MudExOrgChart: `CountDescendants` and `CountFunc` for the number on the collapse button (everyone below instead of the direct children), `RootDropZone` (a toolbar drop zone that lights up while dragging and makes the card a root), `OnReparentRefused` with the reason (`Cycle`, `NotAllowed`), `IsDragging` / `DraggedItem`, `SearchItemTemplate` (the search becomes an autocomplete of the matches), `SearchPlaceholder` and `ZoomOnWheel`
+ - 9.11.6 > Fix MudExOrgChart: a press on a card that panned the chart no longer clicks it (selected it or opened a link in the card); a drag ended outside the chart no longer leaves the drag state behind
  - 9.11.5 > Fix MudExTextField / MudExInput (and with it MudExTagField, the MudExToggleableSearch and MudExTreeView filter): text typed but not committed was emptied when the parent re-rendered after the field lost focus
  - 9.11.5 > New [MudExOrgChart](https://www.mudex.org/org-chart): a pannable, zoomable org chart from a flat list with parent ids or a children function, with search, collapse, a minimap, fit and center, and drag and drop re-parenting with cycle prevention
  - 9.11.4 > Fix MudExDateRangeSlider in Day mode: arrow and Page keys did not move the thumbs without an explicit step. Day mode now steps by one day, and keyboard steps below the type's resolution move by at least one unit
