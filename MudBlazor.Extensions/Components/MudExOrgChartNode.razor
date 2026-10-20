@@ -1,0 +1,38 @@
+@typeparam TItem
+@{
+    var key = Chart.KeyOf(Item);
+    var children = Chart.ChildrenOf(Item);
+    var collapsed = Chart.IsCollapsed(key);
+}
+<li>
+    <div class="@NodeClass(key)" id="@Chart.DomId(key)" data-org-key="@key" draggable="@(Chart.CanDrag ? "true" : "false")"
+         @onpointerdown:stopPropagation="Chart.CanDrag" @onclick="() => Chart.ClickAsync(Item)"
+         @ondragstart="() => Chart.DragStart(Item)" @ondragover:preventDefault="true" @ondragenter="() => _over = true" @ondragleave="() => _over = false"
+         @ondrop="DropAsync" @ondrop:stopPropagation="true">
+        @if (Chart.NodeTemplate is { } template)
+        {
+            @template(Item)
+        }
+        else
+        {
+            <span class="mud-ex-org-chart-text">@Chart.TextFunc(Item)</span>
+        }
+        @if (children.Count > 0)
+        {
+            <button type="button" class="mud-ex-org-chart-toggle" @onclick="() => Chart.Toggle(Item)" @onclick:stopPropagation="true"
+                    title="@Chart.TryLocalize(collapsed ? "Expand" : "Collapse")">
+                @children.Count
+                <MudIcon Icon="@(collapsed ? Icons.Material.Outlined.ExpandMore : Icons.Material.Outlined.ExpandLess)" Size="Size.Small" />
+            </button>
+        }
+    </div>
+    @if (children.Count > 0 && !collapsed)
+    {
+        <ul>
+            @foreach (var child in children)
+            {
+                <MudExOrgChartNode TItem="TItem" Item="child" Version="Version" />
+            }
+        </ul>
+    }
+</li>

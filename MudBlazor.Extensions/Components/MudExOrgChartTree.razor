@@ -1,0 +1,10 @@
+@typeparam TItem
+
+<CascadingValue Value="Chart" IsFixed="true">
+    <ul class="mud-ex-org-chart-tree">
+        @foreach (var root in Chart.Roots)
+        {
+            <MudExOrgChartNode TItem="TItem" Item="root" Version="Version" />
+        }
+    </ul>
+</CascadingValue>

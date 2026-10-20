@@ -1,0 +1,44 @@
+@inherits MudExJsRequiredBaseComponent<MudExOrgChart<TItem>>
+@using Nextended.Core.Extensions
+@typeparam TItem
+
+<div class="@($"mud-ex-org-chart {Orientation.ToDescriptionString()} {Class}")" style="@Style" @attributes="UserAttributes">
+    @if (ShowToolbar)
+    {
+        <div class="mud-ex-org-chart-toolbar">
+            @if (ShowSearch)
+            {
+                <MudTextField T="string" Value="@_searchText" ValueChanged="SetSearchAsync" Immediate="true" DebounceInterval="250" OnKeyDown="NextMatch"
+                              Placeholder="@TryLocalize("Search")" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Search"
+                              Margin="Margin.Dense" Variant="Variant.Outlined" Class="mud-ex-org-chart-search"
+                              HelperText="@(_matches.Count > 1 ? TryLocalize("{0} of {1}, Enter for the next", _match + 1, _matches.Count) : null)" />
+            }
+            <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined">
+                <MudButton StartIcon="@Icons.Material.Outlined.UnfoldMore" OnClick="ExpandAll">@TryLocalize("Expand all")</MudButton>
+                <MudButton StartIcon="@Icons.Material.Outlined.UnfoldLess" OnClick="CollapseAll">@TryLocalize("Collapse all")</MudButton>
+            </MudButtonGroup>
+            @ToolbarContent
+            <MudSpacer />
+            <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined">
+                <MudIconButton Icon="@Icons.Material.Outlined.ZoomOut" OnClick="ZoomOut" aria-label="@TryLocalize("Zoom out")" />
+                <MudButton OnClick="ResetZoom" title="@TryLocalize("Reset zoom")">@($"{_zoom * 100:0} %")</MudButton>
+                <MudIconButton Icon="@Icons.Material.Outlined.ZoomIn" OnClick="ZoomIn" aria-label="@TryLocalize("Zoom in")" />
+                <MudIconButton Icon="@Icons.Material.Outlined.FitScreen" OnClick="FitToView" aria-label="@TryLocalize("Fit")" />
+            </MudButtonGroup>
+        </div>
+    }
+
+    <div class="@ViewportClass" style="@($"height:{Height}")" @ref="ElementReference"
+         @onpointerdown="StartPan" @onpointermove="Pan" @onpointerup="EndPan" @onpointerleave="EndPan"
+         @ondragover:preventDefault="true" @ondrop="() => DropAsync(null)">
+        <div class="mud-ex-org-chart-stage" @ref="_stage" style="@StageStyle">
+            <MudExOrgChartTree TItem="TItem" Chart="this" Version="Version" />
+        </div>
+        @if (ShowMinimap)
+        {
+            <MudExOrgChartMinimap Open="_minimapOpen" OpenChanged="v => _minimapOpen = v" Position="MinimapPosition" MaxWidth="MinimapWidth" MaxHeight="MinimapHeight"
+                                  StageWidth="_layout.StageWidth" StageHeight="_layout.StageHeight" Boxes="_layout.Boxes" Lines="Lines()" Marked="Marked()" View="View"
+                                  OnNavigate="p => CenterOnPoint(p.X, p.Y)" ToggleTitle="@TryLocalize("Map")" />
+        }
+    </div>
+</div>
