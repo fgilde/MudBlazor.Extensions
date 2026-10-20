@@ -26,7 +26,7 @@
   <PropertyGroup>
     <MajorVersion>9</MajorVersion>
     <MinorVersion>11</MinorVersion>
-    <PatchVersion>5</PatchVersion>
+    <PatchVersion>6</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
