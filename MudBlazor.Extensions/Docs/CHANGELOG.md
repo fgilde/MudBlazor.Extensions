@@ -1,4 +1,5 @@
 ## Change Log    
+ - 9.11.5 > New [MudExOrgChart](https://www.mudex.org/org-chart): a pannable, zoomable org chart from a flat list with parent ids or a children function, with search, collapse, a minimap, fit and center, and drag and drop re-parenting with cycle prevention
  - 9.11.4 > Fix MudExDateRangeSlider in Day mode: arrow and Page keys did not move the thumbs without an explicit step. Day mode now steps by one day, and keyboard steps below the type's resolution move by at least one unit
  - 9.11.4 > MudExRangeSlider: new `AriaLabelStart` and `AriaLabelEnd` to label both thumbs separately; additional attributes (e.g. `data-testid`) are now rendered on the root element
  - 9.11.3 > MudExTagField: new `SearchFunc` (suggestion dropdown), `MaxSuggestions`, `ValidateChip` (per chip validation, invalid stored values render as error chips), `IsChipClosable` (fixed chips) and `CommitOnBlur`; pasting a list splits it at the delimiters. See sample [here](https://www.mudex.org/tag-field)

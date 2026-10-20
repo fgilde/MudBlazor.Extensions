@@ -1,0 +1,20 @@
+<div class="@($"mud-ex-org-chart-minimap {PositionClass}")" @onpointerdown:stopPropagation="true" @onpointermove:stopPropagation="true" @onclick:stopPropagation="true">
+    @if (Open && Scale > 0)
+    {
+        <svg width="@N(Width)" height="@N(Height)" viewBox="@($"0 0 {N(StageWidth)} {N(StageHeight)}")"
+             @onpointerdown="Down" @onpointermove="Move" @onpointerup="() => _dragging = false" @onpointerleave="() => _dragging = false">
+            @foreach (var line in Lines)
+            {
+                <line x1="@N(line.X1)" y1="@N(line.Y1)" x2="@N(line.X2)" y2="@N(line.Y2)" />
+            }
+            @foreach (var box in Boxes)
+            {
+                <rect class="@(Marked.Contains(box.Key) ? "mud-ex-org-chart-minimap-box marked" : "mud-ex-org-chart-minimap-box")"
+                      x="@N(box.X)" y="@N(box.Y)" width="@N(box.Width)" height="@N(box.Height)" rx="@N(box.Height / 8)" />
+            }
+            <rect class="mud-ex-org-chart-minimap-view" x="@N(View.X)" y="@N(View.Y)" width="@N(View.Width)" height="@N(View.Height)" />
+        </svg>
+    }
+    <MudIconButton Icon="@(Open ? Icons.Material.Outlined.Close : Icons.Material.Outlined.Map)" Size="Size.Small" Variant="Variant.Filled" Color="Color.Default"
+                   OnClick="() => OpenChanged.InvokeAsync(!Open)" title="@ToggleTitle" aria-label="@ToggleTitle" aria-pressed="@(Open ? "true" : "false")" />
+</div>

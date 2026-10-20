@@ -62,6 +62,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExOrgChart.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExOrgChart.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExSplitter.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExSplitter.js"

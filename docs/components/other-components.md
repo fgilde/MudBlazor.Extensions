@@ -32,6 +32,32 @@ Enhanced list component with additional features.
 - Selection support
 - Virtualization for large lists
 
+## MudExOrgChart
+
+A pannable, zoomable org chart drawn from a flat list with parent ids (or a children function). Sample [here](https://www.mudex.org/org-chart).
+
+### Basic Usage
+
+```razor
+<MudExOrgChart TItem="Person" Items="@people" IdFunc="p => p.Id" ParentIdFunc="p => p.ManagerId" TextFunc="p => p.Name"
+               AllowReparent="true" OnReparent="@(a => a.Item.ManagerId = a.NewParent?.Id)" @bind-SelectedItem="@selected">
+    <NodeTemplate Context="person">
+        <b>@person.Name</b> <span>@person.Role</span>
+    </NodeTemplate>
+</MudExOrgChart>
+```
+
+### Features
+
+- Forest from `ParentIdFunc` (missing parents and cycles become roots) or `ChildrenFunc`
+- Top down or left to right (`Orientation`)
+- Collapse and expand per card, `ExpandAll`, `CollapseAll`, `InitiallyExpandedDepth`
+- Search with highlight; the match is opened and centered, Enter jumps to the next
+- Zoom buttons, Ctrl + mouse wheel, pan by dragging or the wheel, fit on open, `CenterOn(item)`
+- Minimap with the visible area; click or drag in it to move the view (`ShowMinimap`, `MinimapPosition`)
+- Drag a card onto another to change its parent (`AllowReparent`, `CanReparent`, `OnReparent`), cycles are refused
+- Themed by the MudBlazor palette, works in dark mode
+
 ## MudExCardList
 
 Card-based list component for displaying items as cards.

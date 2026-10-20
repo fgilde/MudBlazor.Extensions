@@ -8192,6 +8192,276 @@
         <member name="M:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.OrgChartOrientation">
+            <summary>
+            Direction in which <see cref="T:MudBlazor.Extensions.Components.MudExOrgChart`1"/> draws its tree.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.OrgChartOrientation.TopDown">
+            <summary>
+            The roots at the top, children below.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.OrgChartOrientation.LeftRight">
+            <summary>
+            The roots at the left, children to the right.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.OrgChartReparentArgs`1">
+            <summary>
+            Raised when a node of <see cref="T:MudBlazor.Extensions.Components.MudExOrgChart`1"/> is dropped onto another node.
+            </summary>
+            <param name="Item">The dragged item.</param>
+            <param name="OldParent">The parent before the drop, default for a root.</param>
+            <param name="NewParent">The node it was dropped onto, default when dropped onto the empty canvas.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.OrgChartReparentArgs`1.#ctor(`0,`0,`0)">
+            <summary>
+            Raised when a node of <see cref="T:MudBlazor.Extensions.Components.MudExOrgChart`1"/> is dropped onto another node.
+            </summary>
+            <param name="Item">The dragged item.</param>
+            <param name="OldParent">The parent before the drop, default for a root.</param>
+            <param name="NewParent">The node it was dropped onto, default when dropped onto the empty canvas.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OrgChartReparentArgs`1.Item">
+            <summary>The dragged item.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OrgChartReparentArgs`1.OldParent">
+            <summary>The parent before the drop, default for a root.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OrgChartReparentArgs`1.NewParent">
+            <summary>The node it was dropped onto, default when dropped onto the empty canvas.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.OrgChartBox">
+            <summary>
+            A measured node in stage coordinates, used by the minimap.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.OrgChartBox.#ctor(System.Int32,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            A measured node in stage coordinates, used by the minimap.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.OrgChartLine">
+            <summary>
+            A connector line in stage coordinates, used by the minimap.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.OrgChartLine.#ctor(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            A connector line in stage coordinates, used by the minimap.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExOrgChart`1">
+            <summary>
+            An org chart: a pannable, zoomable tree of cards with search, collapse, minimap and drag and drop re-parenting.
+            The tree is plain nested lists drawn by CSS; pan and zoom are a CSS transform of the stage.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.Items">
+            <summary>The items. With <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ParentIdFunc"/> all items, with <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ChildrenFunc"/> the roots.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.IdFunc">
+            <summary>The id of an item, the item itself by default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ParentIdFunc">
+            <summary>The id of the parent of an item; an item whose parent is null or missing is a root.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ChildrenFunc">
+            <summary>Alternative to <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ParentIdFunc"/>: the children of an item, <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.Items"/> are then the roots.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.TextFunc">
+            <summary>The text of an item for the default card and the default search.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.NodeTemplate">
+            <summary>The content of a card. A card with <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.TextFunc"/> by default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ToolbarContent">
+            <summary>Additional content at the end of the toolbar.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.Orientation">
+            <summary>Top down or left to right.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.Height">
+            <summary>The height of the chart area.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ShowToolbar">
+            <summary>Shows the toolbar with search, expand, collapse and zoom.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ShowSearch">
+            <summary>Shows the search field in the toolbar.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ShowMinimap">
+            <summary>Shows the minimap; it can still be hidden with its toggle button.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.MinimapPosition">
+            <summary>The corner of the minimap. Only the corners are supported, center origins fall back to bottom or right.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.MinimapWidth">
+            <summary>The width of the minimap box in pixels; the tree is fitted in with its aspect ratio kept.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.MinimapHeight">
+            <summary>The height of the minimap box in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.InitiallyExpandedDepth">
+            <summary>Nodes at this depth and deeper start collapsed (0 = only the roots are visible); null expands everything.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.FitOnOpen">
+            <summary>Fits the whole tree into view when it first shows.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.FitMinZoom">
+            <summary>The smallest zoom of a fit, so a wide tree stays readable; <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.MinZoom"/> by default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.MinZoom">
+            <summary>The smallest zoom.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.MaxZoom">
+            <summary>The largest zoom.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.ZoomStep">
+            <summary>The factor of one zoom step.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.SearchText">
+            <summary>The search text; matches are highlighted and the current one is centered.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.SearchTextChanged">
+            <summary>Raised when the search text changes in the toolbar.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.SearchFunc">
+            <summary>Whether an item matches a search text; by default <see cref="P:MudBlazor.Extensions.Components.MudExOrgChart`1.TextFunc"/> contains the text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.AllowReparent">
+            <summary>Lets the user drag a node onto another to change its parent.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.AllowDropToRoot">
+            <summary>Lets the user drop a node onto the empty canvas to make it a root.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.CanReparent">
+            <summary>Whether an item may get a new parent (default for a root). Cycles are always refused.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.OnReparent">
+            <summary>Raised when a node is dropped onto a valid new parent; the consumer changes the data.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.SelectedItem">
+            <summary>The selected item.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.SelectedItemChanged">
+            <summary>Raised when a click selects an item.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.OnNodeClick">
+            <summary>Raised when a node is clicked.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.Zoom">
+            <summary>The current zoom factor.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.GetJsArguments">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.ExpandAll">
+            <summary>Expands every node.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.CollapseAll">
+            <summary>Collapses every node below the roots.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.Toggle(`0)">
+            <summary>Collapses or expands a node.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.ZoomIn">
+            <summary>Zooms in one step around the middle of the view.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.ZoomOut">
+            <summary>Zooms out one step around the middle of the view.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.ResetZoom">
+            <summary>Back to 100 %.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.FitToView">
+            <summary>Fits the whole tree into view.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.CenterOn(`0)">
+            <summary>Expands the way to an item and moves it into the middle of the view.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChart`1.OnWheel(System.Double,System.Double,System.Double,System.Double,System.Boolean)">
+            <summary>Called by the JS module for the mouse wheel: Ctrl zooms around the pointer, otherwise it pans.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExOrgChartMinimap">
+            <summary>
+            The overview of a <see cref="T:MudBlazor.Extensions.Components.MudExOrgChart`1"/>: every card as a box, the visible area as a rectangle; click or drag to move the view.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.Open">
+            <summary>Shows the map, otherwise only the toggle button.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.OpenChanged">
+            <summary>Raised by the toggle button.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.Position">
+            <summary>The corner of the chart.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.Width">
+            <summary>The width of the map box in pixels; the tree is fitted in with its aspect ratio kept.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.Height">
+            <summary>The height of the map box in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.StageWidth">
+            <summary>The unscaled width of the whole tree.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.StageHeight">
+            <summary>The unscaled height of the whole tree.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.Boxes">
+            <summary>The cards in stage coordinates.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.Lines">
+            <summary>The connectors in stage coordinates.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.Marked">
+            <summary>Keys of highlighted cards (selection, search matches).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.View">
+            <summary>The visible area in stage coordinates.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.OnNavigate">
+            <summary>Raised with the stage point the view should center on.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.ToggleTitle">
+            <summary>The tooltip of the toggle button.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExOrgChartNode`1">
+            <summary>
+            A card of a <see cref="T:MudBlazor.Extensions.Components.MudExOrgChart`1"/> and, unless collapsed, its children.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartNode`1.Item">
+            <summary>The item of this card.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartNode`1.Version">
+            <summary>The tree version of the chart, so a card renders again when the tree changed.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExOrgChartTree`1">
+            <summary>
+            The roots of a <see cref="T:MudBlazor.Extensions.Components.MudExOrgChart`1"/>. Renders only when the tree changed, not on every pan or zoom.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartTree`1.Chart">
+            <summary>The chart.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartTree`1.Version">
+            <summary>Changes whenever the tree has to render again.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChartTree`1.ShouldRender">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOrgChartTree`1.OnAfterRender(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExPicker.ChildContent">
             <summary>
             Child content of the picker
@@ -17779,6 +18049,14 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection.ConfirmationCallback">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.OrgChartIndex`1">
+            <summary>
+            The forest of <see cref="T:MudBlazor.Extensions.Components.MudExOrgChart`1"/>: every id gets a stable int key, cycles are broken so every item is reachable exactly once.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.OrgChartIndex`1.Build(System.Collections.Generic.IEnumerable{`0},System.Func{`0,System.Object},System.Func{`0,System.Object},System.Func{`0,System.Collections.Generic.IEnumerable{`0}})">
+            <summary>Rebuilds the tree and returns the items seen for the first time with their depth.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.DateRangeSliderMode">
             <summary>

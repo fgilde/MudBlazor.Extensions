@@ -6826,3 +6826,258 @@
 .mud-ex-cron-edit .mud-ex-cron-edit-time {
   max-width: 140px;
 }
+
+.mud-ex-org-chart {
+  --mud-ex-org-chart-line: var(--mud-palette-lines-inputs);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mud-ex-org-chart-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.mud-ex-org-chart-search {
+  max-width: 320px;
+}
+.mud-ex-org-chart-viewport {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--mud-palette-lines-default);
+  background: radial-gradient(circle, color-mix(in srgb, var(--mud-palette-text-primary) 9%, transparent) 1px, transparent 1px) 0 0/22px 22px, var(--mud-palette-background);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.mud-ex-org-chart-viewport.mud-ex-org-chart-panning {
+  cursor: grabbing;
+}
+.mud-ex-org-chart-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: max-content;
+  transform-origin: 0 0;
+  padding: 8px;
+}
+/* the tree: every list item draws the lines to its siblings and its parent */
+.mud-ex-org-chart-tree, .mud-ex-org-chart-tree ul {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 24px 0 0;
+  position: relative;
+}
+.mud-ex-org-chart .mud-ex-org-chart-tree {
+  padding: 0;
+  gap: 32px;
+}
+.mud-ex-org-chart-tree li {
+  list-style: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 8px 0;
+}
+.mud-ex-org-chart-tree > li {
+  padding-top: 0;
+}
+.mud-ex-org-chart-tree ul li::before, .mud-ex-org-chart-tree ul li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 50%;
+  width: 50%;
+  height: 24px;
+  border-top: 2px solid var(--mud-ex-org-chart-line);
+}
+.mud-ex-org-chart-tree ul li::after {
+  right: auto;
+  left: 50%;
+  border-left: 2px solid var(--mud-ex-org-chart-line);
+}
+.mud-ex-org-chart-tree ul li:only-child::before, .mud-ex-org-chart-tree ul li:only-child::after {
+  display: none;
+}
+.mud-ex-org-chart-tree ul li:only-child {
+  padding-top: 0;
+}
+.mud-ex-org-chart-tree ul li:first-child::before, .mud-ex-org-chart-tree ul li:last-child::after {
+  border: 0 none;
+}
+.mud-ex-org-chart-tree ul li:last-child::before {
+  border-right: 2px solid var(--mud-ex-org-chart-line);
+  border-radius: 0 10px 0 0;
+}
+.mud-ex-org-chart-tree ul li:first-child::after {
+  border-radius: 10px 0 0 0;
+}
+.mud-ex-org-chart-tree ul::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 24px;
+  border-left: 2px solid var(--mud-ex-org-chart-line);
+}
+/* left to right: the same lines turned by 90 degrees */
+.mud-ex-org-chart-lr .mud-ex-org-chart-tree, .mud-ex-org-chart-lr .mud-ex-org-chart-tree ul {
+  flex-direction: column;
+  padding: 0 0 0 24px;
+}
+.mud-ex-org-chart-lr .mud-ex-org-chart-tree li {
+  flex-direction: row;
+  padding: 4px 0 4px 24px;
+}
+.mud-ex-org-chart-lr .mud-ex-org-chart-tree > li {
+  padding-left: 0;
+}
+.mud-ex-org-chart-lr .mud-ex-org-chart-tree ul li::before, .mud-ex-org-chart-lr .mud-ex-org-chart-tree ul li::after {
+  top: 0;
+  left: 0;
+  right: auto;
+  width: 24px;
+  height: 50%;
+  border-top: 0;
+  border-left: 2px solid var(--mud-ex-org-chart-line);
+}
+.mud-ex-org-chart-lr .mud-ex-org-chart-tree ul li::after {
+  top: 50%;
+  border-top: 2px solid var(--mud-ex-org-chart-line);
+}
+.mud-ex-org-chart-lr .mud-ex-org-chart-tree ul li:first-child::before, .mud-ex-org-chart-lr .mud-ex-org-chart-tree ul li:last-child::after {
+  border: 0 none;
+}
+.mud-ex-org-chart-lr .mud-ex-org-chart-tree ul li:last-child::before {
+  border-right: 0;
+  border-bottom: 2px solid var(--mud-ex-org-chart-line);
+  border-radius: 0 0 0 10px;
+}
+.mud-ex-org-chart-lr .mud-ex-org-chart-tree ul li:only-child {
+  padding-left: 0;
+}
+.mud-ex-org-chart-lr .mud-ex-org-chart-tree ul::before {
+  top: 50%;
+  left: 0;
+  width: 24px;
+  height: 0;
+  border-left: 0;
+  border-top: 2px solid var(--mud-ex-org-chart-line);
+}
+/* the cards */
+.mud-ex-org-chart-node {
+  position: relative;
+  min-width: 160px;
+  max-width: 320px;
+  padding: 10px 12px 18px;
+  border-radius: 12px;
+  background: var(--mud-palette-surface);
+  color: var(--mud-palette-text-primary);
+  border: 1px solid var(--mud-palette-lines-default);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.mud-ex-org-chart-node:hover {
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+}
+.mud-ex-org-chart-node[draggable=true] {
+  cursor: grab;
+}
+.mud-ex-org-chart-node.mud-ex-org-chart-selected {
+  outline: 2px solid var(--mud-palette-primary);
+}
+.mud-ex-org-chart-node.mud-ex-org-chart-match {
+  outline: 3px solid var(--mud-palette-warning);
+}
+.mud-ex-org-chart-node.mud-ex-org-chart-current {
+  animation: mud-ex-org-chart-pulse 1.2s ease 3;
+}
+.mud-ex-org-chart-node.mud-ex-org-chart-drop {
+  outline: 3px dashed var(--mud-palette-primary);
+  transform: scale(1.03);
+}
+@keyframes mud-ex-org-chart-pulse {
+  50% {
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--mud-palette-warning) 30%, transparent);
+  }
+}
+.mud-ex-org-chart-text {
+  font-weight: 600;
+  white-space: nowrap;
+}
+.mud-ex-org-chart-toggle {
+  position: absolute;
+  bottom: -1px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 2px 0 8px;
+  border: 1px solid var(--mud-palette-lines-default);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: var(--mud-palette-background-gray);
+  color: var(--mud-palette-text-primary);
+  cursor: pointer;
+}
+/* the minimap */
+.mud-ex-org-chart-minimap {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  cursor: default;
+}
+.mud-ex-org-chart-minimap.top {
+  top: 8px;
+  flex-direction: column-reverse;
+}
+.mud-ex-org-chart-minimap.bottom {
+  bottom: 8px;
+}
+.mud-ex-org-chart-minimap.right {
+  right: 8px;
+}
+.mud-ex-org-chart-minimap.left {
+  left: 8px;
+  align-items: flex-start;
+}
+.mud-ex-org-chart-minimap svg {
+  display: block;
+  background: color-mix(in srgb, var(--mud-palette-surface) 92%, transparent);
+  border: 1px solid var(--mud-palette-lines-default);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+  touch-action: none;
+}
+.mud-ex-org-chart-minimap svg * {
+  pointer-events: none;
+}
+.mud-ex-org-chart-minimap line {
+  stroke: var(--mud-ex-org-chart-line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.mud-ex-org-chart-minimap-box {
+  fill: color-mix(in srgb, var(--mud-palette-text-primary) 28%, transparent);
+}
+.mud-ex-org-chart-minimap-box.marked {
+  fill: var(--mud-palette-warning);
+}
+.mud-ex-org-chart-minimap-view {
+  fill: color-mix(in srgb, var(--mud-palette-primary) 20%, transparent);
+  stroke: var(--mud-palette-primary);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
