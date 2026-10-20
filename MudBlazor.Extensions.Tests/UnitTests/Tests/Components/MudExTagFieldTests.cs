@@ -477,6 +477,21 @@ public sealed class MudExTagFieldTests : IAsyncDisposable
     }
 
     [Fact]
+    public async Task TheTypedTextSurvivesARenderOfTheParentAfterLeavingTheField()
+    {
+        var field = Open(commitOnBlur: false);
+
+        await TypeAsync(field, "a");
+        await KeyAsync(field, "Enter");
+        await TypeAsync(field, "rol");
+        await BlurAsync(field);
+        field.Render();
+
+        field.WaitForAssertion(() => Assert.Equal("rol", Text(field)));
+        Assert.Equal(["a"], _values);
+    }
+
+    [Fact]
     public async Task WithoutAutoClearEnterKeepsTheText()
     {
         var field = Open(autoClear: false);

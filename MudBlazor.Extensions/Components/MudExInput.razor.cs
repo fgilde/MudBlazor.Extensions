@@ -16,7 +16,7 @@ namespace MudBlazor.Extensions.Components
         /// Classname for the component.
         /// </summary>
         protected string Classname => MudExCss.GetClassname(this,
-            () => HasNativeHtmlPlaceholder() || ForceShrink || !string.IsNullOrEmpty(Text) || AdornmentStart != null || !string.IsNullOrWhiteSpace(Placeholder) || !string.IsNullOrEmpty(ConvertSet(Value)));
+            () => HasNativeHtmlPlaceholder() || ForceShrink || !string.IsNullOrEmpty(ReadText) || AdornmentStart != null || !string.IsNullOrWhiteSpace(Placeholder) || !string.IsNullOrEmpty(ConvertSet(Value)));
         
         /// <summary>
         /// Classname for the input element.
@@ -314,20 +314,10 @@ namespace MudBlazor.Extensions.Components
         public override async Task SetParametersAsync(ParameterView parameters)
         {
             await base.SetParametersAsync(parameters);
-            //if (!_isFocused || _forceTextUpdate)
-            //    _internalText = Text;
-            if (RuntimeLocation.IsServerSide /*&& TextUpdateSuppression*/)
-            {
-                // Text update suppression, only in BSS (not in WASM).
-                // This is a fix for #1012
-                if (!_isFocused || _forceTextUpdate)
-                    _internalText = Text;
-            }
-            else
-            {
-                // in WASM (or in BSS with TextUpdateSuppression==false) we always update
-                _internalText = Text;
-            }
+            // Text update suppression while focused is only needed in BSS (fix for #1012), WASM always updates.
+            // ReadText, not Text: Text is the stale parameter, the typed text lives in the parameter state.
+            if (!RuntimeLocation.IsServerSide || !_isFocused || _forceTextUpdate)
+                _internalText = ReadText;
         }
 
         /// <summary>
