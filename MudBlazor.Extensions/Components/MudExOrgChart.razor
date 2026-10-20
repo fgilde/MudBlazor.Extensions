@@ -36,7 +36,7 @@
         </div>
         @if (ShowMinimap)
         {
-            <MudExOrgChartMinimap Open="_minimapOpen" OpenChanged="v => _minimapOpen = v" Position="MinimapPosition" MaxWidth="MinimapWidth" MaxHeight="MinimapHeight"
+            <MudExOrgChartMinimap Open="_minimapOpen" OpenChanged="v => _minimapOpen = v" Position="MinimapPosition" Width="MinimapWidth" Height="MinimapHeight"
                                   StageWidth="_layout.StageWidth" StageHeight="_layout.StageHeight" Boxes="_layout.Boxes" Lines="Lines()" Marked="Marked()" View="View"
                                   OnNavigate="p => CenterOnPoint(p.X, p.Y)" ToggleTitle="@TryLocalize("Map")" />
         }

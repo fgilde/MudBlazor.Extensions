@@ -1,7 +1,7 @@
 <div class="@($"mud-ex-org-chart-minimap {PositionClass}")" @onpointerdown:stopPropagation="true" @onpointermove:stopPropagation="true" @onclick:stopPropagation="true">
     @if (Open && Scale > 0)
     {
-        <svg width="@N(StageWidth * Scale)" height="@N(StageHeight * Scale)" viewBox="@($"0 0 {N(StageWidth)} {N(StageHeight)}")"
+        <svg width="@N(Width)" height="@N(Height)" viewBox="@($"0 0 {N(StageWidth)} {N(StageHeight)}")"
              @onpointerdown="Down" @onpointermove="Move" @onpointerup="() => _dragging = false" @onpointerleave="() => _dragging = false">
             @foreach (var line in Lines)
             {

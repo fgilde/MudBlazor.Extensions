@@ -74,10 +74,10 @@ public partial class MudExOrgChart<TItem>
     /// <summary>The corner of the minimap. Only the corners are supported, center origins fall back to bottom or right.</summary>
     [Parameter, SafeCategory("Minimap")] public Origin MinimapPosition { get; set; } = Origin.BottomRight;
 
-    /// <summary>The largest width of the minimap in pixels.</summary>
-    [Parameter, SafeCategory("Minimap")] public double MinimapWidth { get; set; } = 200;
+    /// <summary>The width of the minimap box in pixels; the tree is fitted in with its aspect ratio kept.</summary>
+    [Parameter, SafeCategory("Minimap")] public double MinimapWidth { get; set; } = 220;
 
-    /// <summary>The largest height of the minimap in pixels.</summary>
+    /// <summary>The height of the minimap box in pixels.</summary>
     [Parameter, SafeCategory("Minimap")] public double MinimapHeight { get; set; } = 140;
 
     /// <summary>Nodes at this depth and deeper start collapsed (0 = only the roots are visible); null expands everything.</summary>

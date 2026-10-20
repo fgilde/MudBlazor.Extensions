@@ -8298,10 +8298,10 @@
             <summary>The corner of the minimap. Only the corners are supported, center origins fall back to bottom or right.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.MinimapWidth">
-            <summary>The largest width of the minimap in pixels.</summary>
+            <summary>The width of the minimap box in pixels; the tree is fitted in with its aspect ratio kept.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.MinimapHeight">
-            <summary>The largest height of the minimap in pixels.</summary>
+            <summary>The height of the minimap box in pixels.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChart`1.InitiallyExpandedDepth">
             <summary>Nodes at this depth and deeper start collapsed (0 = only the roots are visible); null expands everything.</summary>
@@ -8404,11 +8404,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.Position">
             <summary>The corner of the chart.</summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.MaxWidth">
-            <summary>The largest width in pixels.</summary>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.Width">
+            <summary>The width of the map box in pixels; the tree is fitted in with its aspect ratio kept.</summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.MaxHeight">
-            <summary>The largest height in pixels.</summary>
+        <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.Height">
+            <summary>The height of the map box in pixels.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOrgChartMinimap.StageWidth">
             <summary>The unscaled width of the whole tree.</summary>

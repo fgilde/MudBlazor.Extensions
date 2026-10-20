@@ -20,11 +20,11 @@ public partial class MudExOrgChartMinimap
     /// <summary>The corner of the chart.</summary>
     [Parameter] public Origin Position { get; set; } = Origin.BottomRight;
 
-    /// <summary>The largest width in pixels.</summary>
-    [Parameter] public double MaxWidth { get; set; } = 200;
+    /// <summary>The width of the map box in pixels; the tree is fitted in with its aspect ratio kept.</summary>
+    [Parameter] public double Width { get; set; } = 220;
 
-    /// <summary>The largest height in pixels.</summary>
-    [Parameter] public double MaxHeight { get; set; } = 140;
+    /// <summary>The height of the map box in pixels.</summary>
+    [Parameter] public double Height { get; set; } = 140;
 
     /// <summary>The unscaled width of the whole tree.</summary>
     [Parameter] public double StageWidth { get; set; }
@@ -50,7 +50,7 @@ public partial class MudExOrgChartMinimap
     /// <summary>The tooltip of the toggle button.</summary>
     [Parameter] public string ToggleTitle { get; set; } = "Map";
 
-    private double Scale => StageWidth > 0 && StageHeight > 0 ? Math.Min(MaxWidth / StageWidth, MaxHeight / StageHeight) : 0;
+    private double Scale => StageWidth > 0 && StageHeight > 0 ? Math.Min(Width / StageWidth, Height / StageHeight) : 0;
 
     private string PositionClass => (Position.ToString().StartsWith("Top") ? "top" : "bottom") + (Position.ToString().EndsWith("Left") ? " left" : " right");
 
@@ -62,6 +62,8 @@ public partial class MudExOrgChartMinimap
         return Move(e);
     }
 
-    // the children ignore the pointer (CSS), so the offset is always relative to the svg
-    private Task Move(PointerEventArgs e) => _dragging ? OnNavigate.InvokeAsync((e.OffsetX / Scale, e.OffsetY / Scale)) : Task.CompletedTask;
+    // the children ignore the pointer (CSS), so the offset is relative to the svg; the tree is centered in the box (letterboxed)
+    private Task Move(PointerEventArgs e) => _dragging
+        ? OnNavigate.InvokeAsync(((e.OffsetX - ((Width - (StageWidth * Scale)) / 2)) / Scale, (e.OffsetY - ((Height - (StageHeight * Scale)) / 2)) / Scale))
+        : Task.CompletedTask;
 }
