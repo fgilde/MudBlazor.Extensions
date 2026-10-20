@@ -2541,10 +2541,14 @@
 <li>Forest from <code>ParentIdFunc</code> (missing parents and cycles become roots) or <code>ChildrenFunc</code></li>
 <li>Top down or left to right (<code>Orientation</code>)</li>
 <li>Collapse and expand per card, <code>ExpandAll</code>, <code>CollapseAll</code>, <code>InitiallyExpandedDepth</code></li>
-<li>Search with highlight; the match is opened and centered, Enter jumps to the next</li>
-<li>Zoom buttons, Ctrl + mouse wheel, pan by dragging or the wheel, fit on open, <code>CenterOn(item)</code></li>
+<li>Search with highlight; the match is opened and centered, Enter jumps to the next (<code>SearchFunc</code>, <code>SearchPlaceholder</code>)</li>
+<li><code>SearchItemTemplate</code> turns the search into an autocomplete that lists the matches (e.g. with avatars); picking one centers it</li>
+<li>Collapse button count: direct children, everyone below (<code>CountDescendants</code>) or your own number (<code>CountFunc</code>)</li>
+<li>Zoom buttons, Ctrl + mouse wheel, pan by dragging or the wheel (<code>ZoomOnWheel</code> swaps both), fit on open, <code>CenterOn(item)</code>; a press that panned does not click the card</li>
 <li>Minimap with the visible area; click or drag in it to move the view (<code>ShowMinimap</code>, <code>MinimapPosition</code>)</li>
 <li>Drag a card onto another to change its parent (<code>AllowReparent</code>, <code>CanReparent</code>, <code>OnReparent</code>), cycles are refused</li>
+<li>Refused drops raise <code>OnReparentRefused</code> with the reason (<code>OrgChartReparentRefusal.Cycle</code> or <code>NotAllowed</code>), e.g. for a warning</li>
+<li><code>RootDropZone</code> (with <code>AllowDropToRoot</code>): a drop zone in the toolbar that lights up while a card is dragged and makes it a root; <code>IsDragging</code> and <code>DraggedItem</code> tell the drag state</li>
 <li>Themed by the MudBlazor palette, works in dark mode</li>
 </ul>
 <h2 id="mudexcardlist">MudExCardList<a class="headerlink" href="#mudexcardlist" title="Permanent link">&para;</a></h2>
