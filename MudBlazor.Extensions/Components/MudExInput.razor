@@ -52,7 +52,7 @@
               @onwheel="@OnMouseWheel"
               aria-invalid="@Error.ToString().ToLower()"
               aria-describedby="@ErrorId"> 
-            @Text
+            @ReadText
             </textarea>
         @*Note: double mouse wheel handlers needed for Firefox because it doesn't know onmousewheel*@
         @*note: the value="@_internalText" is absolutely essential here. the inner html @Text is needed by tests checking it*@

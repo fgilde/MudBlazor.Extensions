@@ -68,8 +68,8 @@ public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
     private string GetCounterText() => Counter switch
     {
         null => string.Empty,
-        0 => (string.IsNullOrEmpty(Text) ? "0" : $"{Text.Length}"),
-        _ => (string.IsNullOrEmpty(Text) ? "0" : $"{Text.Length}") + $" / {Counter}"
+        0 => (string.IsNullOrEmpty(ReadText) ? "0" : $"{ReadText.Length}"),
+        _ => (string.IsNullOrEmpty(ReadText) ? "0" : $"{ReadText.Length}") + $" / {Counter}"
     };
     /// <summary>
     /// Show clear button.
