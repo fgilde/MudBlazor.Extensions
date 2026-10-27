@@ -11370,6 +11370,228 @@
             Returns true if the search is active
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.TurntableMode">
+            <summary>Single turntable or DJ mode with opened mixer.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TurntableMode.Single">
+            <summary>One turntable, the mixer can be opened with a button.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TurntableMode.Dj">
+            <summary>The mixer with the second deck is open.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.TurntableDeck">
+            <summary>A deck of the turntable. Deck B is only playable while the mixer is open.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TurntableDeck.A">
+            <summary>The left deck, the only one without the mixer.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TurntableDeck.B">
+            <summary>The right deck of the mixer.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.TurntableDeckState">
+            <summary>What a deck is doing right now, see <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.DeckChanged"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableDeckState.Deck">
+            <summary>The deck.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableDeckState.IsPlaying">
+            <summary>The needle is on the record and the record turns.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableDeckState.IsLoading">
+            <summary>The track is still loading.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableDeckState.HasFailed">
+            <summary>The track could not be loaded.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableDeckState.RecordIndex">
+            <summary>The index of the record in the record list, own songs follow behind; -1 without record.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableDeckState.IsUploaded">
+            <summary>The record comes from the own songs of the visitor (<see cref="P:MudBlazor.Extensions.Components.MudExTurntable.AllowUploads"/>).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableDeckState.Record">
+            <summary>
+            The record on the deck. The instance of <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.Records"/> (or the one built from <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.TrackList"/>),
+            for records from <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.RecordsUrl"/> and own songs a new instance without tracks.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableDeckState.TrackIndex">
+            <summary>The index of the track on the record.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableDeckState.Track">
+            <summary>The track: the instance of the record when it comes from C#, otherwise a new <see cref="T:MudBlazor.Extensions.Components.TurntableTrack"/>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.TurntableLanguage">
+            <summary>The language of the turntable labels.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TurntableLanguage.Auto">
+            <summary>The current UI culture if it is German or English, otherwise the browser language.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TurntableLanguage.German">
+            <summary>German.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TurntableLanguage.English">
+            <summary>English.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.TurntableTrack">
+            <summary>
+            A track of a <see cref="T:MudBlazor.Extensions.Components.TurntableRecord"/>. Any <see cref="T:AuralizeBlazor.IAuralizerTrack"/> works as track,
+            this one adds the optional <see cref="P:MudBlazor.Extensions.Components.TurntableTrack.Duration"/> which is otherwise read when the track loads.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.TurntableTrack.#ctor">
+            <summary>Creates an empty track.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.TurntableTrack.#ctor(System.String,System.String,System.Nullable{System.TimeSpan})">
+            <summary>Creates a track with url, label and optional duration.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableTrack.Duration">
+            <summary>The length of the track.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.TurntableRecord">
+            <summary>A record (album) on the turntable.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableRecord.Title">
+            <summary>The title of the record.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableRecord.Artist">
+            <summary>The artist.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableRecord.Cover">
+            <summary>Url of the cover image. Missing colors are computed from it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableRecord.Link">
+            <summary>Optional link of the record, e.g. the homepage of the artist.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableRecord.Accent">
+            <summary>Color of the label and the visuals. Computed from the cover if not set.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableRecord.Gradient">
+            <summary>Exactly three colors for the label gradient. Computed from the cover or the accent if not set.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TurntableRecord.Tracks">
+            <summary>The tracks, e.g. <see cref="T:AuralizeBlazor.AuralizerTrack"/> or <see cref="T:MudBlazor.Extensions.Components.TurntableTrack"/>. A record without tracks is skipped.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.TurntableRecord.FromTracks(System.Collections.Generic.IEnumerable{AuralizeBlazor.IAuralizerTrack},System.String)">
+            <summary>
+            Builds records from plain tracks: tracks with the same <see cref="P:AuralizeBlazor.IAuralizerTrack.Image"/> become one record with that image as cover.
+            A record of a single track is named after the track, others after <paramref name="title"/>.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExTurntable">
+            <summary>
+            A turntable with scratching, tone arm, a second deck and a DJ mixer (EQ, filter, crossfader, hot cues).
+            Wraps the free <c>&lt;audiola-turntable&gt;</c> web component, see https://audiola.de/turntable.html.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExTurntable.DefaultScriptUrl">
+            <summary>The default url of the web component script.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.Records">
+            <summary>The records (albums) to play. Takes precedence over <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.TrackList"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.RecordsUrl"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.TrackList">
+            <summary>
+            Plain tracks, e.g. the same <see cref="T:AuralizeBlazor.IAuralizerTrack"/> list as for <see cref="!:MudExAudioPlayer.TrackList"/>.
+            Tracks with the same <see cref="P:AuralizeBlazor.IAuralizerTrack.Image"/> become one record with that image as cover.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.TrackListTitle">
+            <summary>The title of the records built from <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.TrackList"/> that contain more than one track.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.RecordsUrl">
+            <summary>Url of a records JSON file in the format of https://audiola.de/turntable.html. Relative paths in it are relative to the file.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.AllowUploads">
+            <summary>The visitor can add own songs per button and drag and drop; cover, title and track list come from the ID3 tags.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.EnableMixer">
+            <summary>Shows the button that opens the mixer with the second deck.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.Mode">
+            <summary>Single turntable or DJ mode with opened mixer. Needs <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.EnableMixer"/> for <see cref="F:MudBlazor.Extensions.Components.TurntableMode.Dj"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.ModeChanged">
+            <summary>Raised when the mixer is opened or closed, also from the turntable itself.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.DeckChanged">
+            <summary>Raised when a deck starts, stops, loads, fails or changes the record or track.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.DeckA">
+            <summary>The current state of deck A.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.DeckB">
+            <summary>The current state of deck B.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.Language">
+            <summary>The language of the labels. <see cref="F:MudBlazor.Extensions.Components.TurntableLanguage.Auto"/> follows the current UI culture and falls back to the browser language.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.Logo">
+            <summary>Image on the empty platter before a record is picked.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.AccentColor">
+            <summary>Accent color for buttons and faders.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.TextColor">
+            <summary>The text color.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.MutedColor">
+            <summary>The color of secondary texts.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.MinHeight">
+            <summary>The minimum height, e.g. 100vh to use it as page header. Null keeps the default of the web component (780px).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.Padding">
+            <summary>The inner padding as CSS value. Null keeps the default of the web component (48px 5%).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.ChildContent">
+            <summary>Content left of the turntable that slides out when the mixer opens, e.g. a header.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTurntable.ScriptUrl">
+            <summary>The url of the web component script, change it to host the script yourself.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.GetJsArguments">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.ImportModuleAndCreateJsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.RefreshRecordsAsync">
+            <summary>
+            Sends <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.Records"/> or <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.TrackList"/> to the turntable again.
+            Only needed after changing these collections in place, a new collection is sent automatically.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.PlayAsync(MudBlazor.Extensions.Components.TurntableDeck)">
+            <summary>Plays on, or starts the first record if none is on the deck.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.PlayAsync(System.Int32,System.Int32,MudBlazor.Extensions.Components.TurntableDeck)">
+            <summary>Puts the record with the given index on the deck, starting at the given track. Own songs follow behind the records.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.PlayAsync(MudBlazor.Extensions.Components.TurntableRecord,System.Int32,MudBlazor.Extensions.Components.TurntableDeck)">
+            <summary>Puts the record on the deck, starting at the given track. The record has to be one of <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.Records"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.PlayAsync(AuralizeBlazor.IAuralizerTrack,MudBlazor.Extensions.Components.TurntableDeck)">
+            <summary>Plays the track, e.g. one of <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.TrackList"/> or of the tracks of <see cref="P:MudBlazor.Extensions.Components.MudExTurntable.Records"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.PauseAsync(MudBlazor.Extensions.Components.TurntableDeck)">
+            <summary>Lifts the needle, the record runs out audibly.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.NextAsync(MudBlazor.Extensions.Components.TurntableDeck)">
+            <summary>Plays the next track of the record on the deck.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.PreviousAsync(MudBlazor.Extensions.Components.TurntableDeck)">
+            <summary>Plays the previous track of the record on the deck.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.OnDeckChanged(System.Text.Json.JsonElement)">
+            <summary>Called by the web component when a deck changes.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTurntable.OnModeChanged(System.String)">
+            <summary>Called by the web component when the mixer is opened or closed.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.UploadableFile">
             <summary>
             Represents a file that can be uploaded. Implements the IUploadableFile interface.

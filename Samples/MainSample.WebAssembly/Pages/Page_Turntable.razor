@@ -1,0 +1,98 @@
+@page "/turntable"
+@inherits BasePage
+@using AuralizeBlazor
+
+@attribute [DemoNew(IsPlaygroundDemo = true, Group = "File Handling", Name = "MudExTurntable", Order = 4, Icon = Icons.Material.Outlined.Album, Documentation = "MudExTurntable wraps the free audiola turntable web component: scratching, tone arm, a second deck and a DJ mixer. Records come typed from C#, from the same track list as the MudExAudioPlayer or from a JSON file. The cover is printed on the label of the record.", ForComponentType = typeof(MudExTurntable))]
+
+<DemoComponent PageType="@GetType()">
+    <div class="d-flex flex-wrap gap-4 align-center mb-2">
+        <MudSelect T="string" @bind-Value="source" Label="Records from" Variant="Variant.Outlined" Margin="Margin.Dense" Style="max-width:260px">
+            <MudSelectItem Value="@("typed")">Typed TurntableRecord list</MudSelectItem>
+            <MudSelectItem Value="@("tracks")">AudioPlayer track list</MudSelectItem>
+            <MudSelectItem Value="@("url")">Records JSON url</MudSelectItem>
+        </MudSelect>
+        <MudExEnumSelect TEnum="TurntableMode" @bind-Value="mode" Label="Mode" Variant="Variant.Outlined" Margin="Margin.Dense" Style="max-width:180px" />
+        <MudExEnumSelect TEnum="TurntableLanguage" @bind-Value="language" Label="Language" Variant="Variant.Outlined" Margin="Margin.Dense" Style="max-width:180px" />
+        <MudSwitch @bind-Value="uploads" Color="Color.Primary" Label="Own songs per drag and drop" />
+        <MudSwitch @bind-Value="hero" Color="Color.Primary" Label="Header content" />
+    </div>
+    <div class="d-flex flex-wrap gap-2 align-center mb-2">
+        <MudIconButton Icon="@Icons.Material.Filled.SkipPrevious" OnClick="() => turntable.PreviousAsync()" />
+        <MudIconButton Icon="@(turntable?.DeckA.IsPlaying == true ? Icons.Material.Filled.Pause : Icons.Material.Filled.PlayArrow)" Color="Color.Primary" Variant="Variant.Filled"
+                       OnClick="@(() => turntable.DeckA.IsPlaying ? turntable.PauseAsync() : turntable.PlayAsync())" />
+        <MudIconButton Icon="@Icons.Material.Filled.SkipNext" OnClick="() => turntable.NextAsync()" />
+        @if (source == "typed")
+        {
+            @foreach (var record in records)
+            {
+                <MudButton Size="Size.Small" Variant="Variant.Outlined" OnClick="() => turntable.PlayAsync(record)"
+                           StartIcon="@Icons.Material.Outlined.Album">@record.Title</MudButton>
+            }
+        }
+        else if (source == "tracks")
+        {
+            @foreach (var track in tracks)
+            {
+                <MudButton Size="Size.Small" Variant="Variant.Outlined" OnClick="() => turntable.PlayAsync(track)"
+                           StartIcon="@Icons.Material.Outlined.MusicNote">@track.Label</MudButton>
+            }
+        }
+        <MudSpacer />
+        @foreach (var deck in new[] { turntable?.DeckA, turntable?.DeckB }.Where(d => d?.Record != null))
+        {
+            <MudChip T="string" Size="Size.Small" Color="@(deck.IsPlaying ? Color.Primary : Color.Default)">
+                <AvatarContent>
+                    @if (deck.Record.Cover != null)
+                    {
+                        <MudAvatar><MudImage Src="@deck.Record.Cover" /></MudAvatar>
+                    }
+                </AvatarContent>
+                <ChildContent>
+                    Deck @deck.Deck · @(deck.IsLoading ? "loading" : deck.IsPlaying ? "playing" : "stopped") · @deck.Record.Title · @(deck.TrackIndex + 1). @deck.Track?.Label
+                </ChildContent>
+            </MudChip>
+        }
+    </div>
+    <MudExTurntable @ref="turntable" Records="@(source == "typed" ? records : null)" TrackList="@(source == "tracks" ? tracks : null)" TrackListTitle="MudEx samples"
+                    RecordsUrl="https://drunkenrecords.de/albums/albums.json" @bind-Mode="mode" Language="language" AllowUploads="uploads"
+                    Logo="sample-data/logo.png" DeckChanged="@(_ => StateHasChanged())"
+                    MinHeight="@("620px")" Style="border-radius:8px;background:var(--mud-palette-background-gray)">
+        @if (hero)
+        {
+            <MudText Typo="Typo.h3">MudExTurntable</MudText>
+            <MudText Typo="Typo.body1" Class="mud-text-secondary">Drop the needle, scratch the record, open the mixer.</MudText>
+        }
+    </MudExTurntable>
+</DemoComponent>
+
+@code {
+    private MudExTurntable turntable;
+    private string source = "typed";
+    private TurntableMode mode;
+    private TurntableLanguage language;
+    private bool uploads = true;
+    private bool hero = true;
+
+    // the same tracks work for the MudExAudioPlayer (TrackList="tracks"), the image becomes the cover of the record
+    private readonly IAuralizerTrack[] tracks =
+    [
+        new AuralizerTrack("sample-data/Unified-Voice.mp3", "Unified Voice", "sample-data/turntable-cover-voice.svg"),
+        new AuralizerTrack("sample-data/Leben wie im Film.mp3", "Leben wie im Film", "sample-data/turntable-cover-film.svg")
+    ];
+
+    private readonly TurntableRecord[] records =
+    [
+        new()
+        {
+            Title = "Unified Voice", Artist = "MudBlazor.Extensions", Cover = "sample-data/turntable-cover-voice.svg", Link = "https://www.mudex.org",
+            Accent = "#ff5fa2", Gradient = ["#ff9cc6", "#7e3dff", "#1b1446"],
+            Tracks = [new TurntableTrack("sample-data/Unified-Voice.mp3", "Unified Voice")]
+        },
+        new()
+        {
+            // no colors: the turntable computes them from the cover
+            Title = "Leben wie im Film", Artist = "MudBlazor.Extensions", Cover = "sample-data/turntable-cover-film.svg",
+            Tracks = [new TurntableTrack("sample-data/Leben wie im Film.mp3", "Leben wie im Film")]
+        }
+    ];
+}

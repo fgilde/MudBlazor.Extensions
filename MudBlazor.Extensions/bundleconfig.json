@@ -68,6 +68,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExTurntable.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExTurntable.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExSplitter.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExSplitter.js"

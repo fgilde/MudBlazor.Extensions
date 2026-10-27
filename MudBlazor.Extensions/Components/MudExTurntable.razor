@@ -1,0 +1,7 @@
+@inherits MudExJsRequiredBaseComponent<MudExTurntable>
+
+<audiola-turntable @ref="ElementReference" class="@($"mud-ex-turntable {Class}")" style="@CssStyle"
+                   records="@(HasTypedRecords ? null : RecordsUrl)" decks="@(EnableMixer ? "2" : "1")" mode="@(Mode == TurntableMode.Dj ? "dj" : "single")"
+                   uploads="@AllowUploads" logo="@Logo" lang="@Lang" @attributes="UserAttributes">
+    @ChildContent
+</audiola-turntable>

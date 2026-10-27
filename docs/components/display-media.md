@@ -263,6 +263,42 @@ Audio playback component with controls.
                   Loop="false" />
 ```
 
+## MudExTurntable
+
+A turntable with scratching, tone arm, a second deck and a DJ mixer (EQ, filter, crossfader, hot cues), wrapping the free [`<audiola-turntable>`](https://audiola.de/turntable.html) web component. Sample [here](https://www.mudex.org/turntable).
+
+### Basic Usage
+
+```razor
+@* the same IAuralizerTrack list as for MudExAudioPlayer.TrackList *@
+<MudExTurntable TrackList="@tracks" @bind-Mode="@mode" AllowUploads="true" />
+
+@* typed records *@
+<MudExTurntable Records="@records">
+    <MudText Typo="Typo.h3">My label</MudText>
+</MudExTurntable>
+
+@code {
+    TurntableRecord[] records =
+    [
+        new() { Title = "Album", Artist = "Band", Cover = "covers/album.webp", Accent = "#3de0ff",
+                Tracks = [new TurntableTrack("music/01.mp3", "First song", TimeSpan.FromSeconds(202))] }
+    ];
+}
+```
+
+### Features
+
+- Records from `Records` (typed), `TrackList` (any `IAuralizerTrack`, grouped into records by `Image`) or `RecordsUrl` (a records JSON file)
+- `TurntableTrack` is an `AuralizerTrack`, so the tracks of a record also work as `MudExAudioPlayer.TrackList`
+- `Mode` (`Single` or `Dj`) with two-way binding, `EnableMixer`, `AllowUploads` (own songs per drag and drop, tags from ID3)
+- Themed by the MudBlazor palette (`AccentColor`, `TextColor`, `MutedColor`), `MinHeight`, `Padding`
+- `Language` follows the current UI culture, `ChildContent` stands left of the turntable and slides out when the mixer opens
+- `Cover` (or the `Image` of the tracks) is printed on the label of the record; without `Accent` and `Gradient` the colors are computed from the cover (also SVG)
+- Control from C#: `PlayAsync()` (play on), `PlayAsync(record, track)`, `PlayAsync(track)` for an `IAuralizerTrack` of the list, `PauseAsync`, `NextAsync`, `PreviousAsync`, each with an optional `TurntableDeck`
+- `DeckChanged` with a `TurntableDeckState` (playing, loading, failed, record, track; the record and track instances from C#), the current state in `DeckA` and `DeckB`
+- `ScriptUrl` to host the web component script yourself; records changed in place are sent again with `RefreshRecordsAsync()`
+
 ## MudExIcon
 
 Enhanced icon component with additional features.

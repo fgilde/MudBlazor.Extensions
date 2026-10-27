@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5fa2"/><stop offset=".55" stop-color="#7e3dff"/><stop offset="1" stop-color="#1b1446"/></linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#g)"/>
+  <g fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="10" stroke-linecap="round">
+    <path d="M60 200h30M110 160v80M140 120v160M170 170v60M200 90v220M230 140v120M260 180v40M290 130v140M320 170v60M350 200h-10"/>
+  </g>
+  <text x="200" y="370" fill="#fff" font-family="Arial,sans-serif" font-size="30" font-weight="700" text-anchor="middle" letter-spacing="6">UNIFIED VOICE</text>
+</svg>
