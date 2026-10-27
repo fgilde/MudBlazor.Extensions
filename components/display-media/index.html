@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../MudExtension.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -1362,15 +1362,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mudexicon" class="md-nav__link">
+  <a href="#mudexturntable" class="md-nav__link">
     <span class="md-ellipsis">
       
-        MudExIcon
+        MudExTurntable
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="MudExIcon">
+    <nav class="md-nav" aria-label="MudExTurntable">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1386,6 +1386,45 @@
         
           <li class="md-nav__item">
   <a href="#features_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Features
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mudexicon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MudExIcon
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MudExIcon">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-usage_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         Features
@@ -2496,12 +2535,43 @@
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>                  ShowVolume="true"
 </span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>                  Loop="false" /&gt;
 </span></code></pre></div>
-<h2 id="mudexicon">MudExIcon<a class="headerlink" href="#mudexicon" title="Permanent link">&para;</a></h2>
-<p>Enhanced icon component with additional features.</p>
+<h2 id="mudexturntable">MudExTurntable<a class="headerlink" href="#mudexturntable" title="Permanent link">&para;</a></h2>
+<p>A turntable with scratching, tone arm, a second deck and a DJ mixer (EQ, filter, crossfader, hot cues), wrapping the free <a href="https://audiola.de/turntable.html"><code>&lt;audiola-turntable&gt;</code></a> web component. Sample <a href="https://www.mudex.org/turntable">here</a>.</p>
 <h3 id="basic-usage_6">Basic Usage<a class="headerlink" href="#basic-usage_6" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>&lt;MudExIcon Icon="@Icons.Material.Filled.Home" /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>@* the same IAuralizerTrack list as for MudExAudioPlayer.TrackList *@
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>&lt;MudExTurntable TrackList="@tracks" @bind-Mode="@mode" AllowUploads="true" /&gt;
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>@* typed records *@
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>&lt;MudExTurntable Records="@records"&gt;
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    &lt;MudText Typo="Typo.h3"&gt;My label&lt;/MudText&gt;
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>&lt;/MudExTurntable&gt;
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>@code {
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    TurntableRecord[] records =
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>    [
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>        new() { Title = "Album", Artist = "Band", Cover = "covers/album.webp", Accent = "#3de0ff",
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>                Tracks = [new TurntableTrack("music/01.mp3", "First song", TimeSpan.FromSeconds(202))] }
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>    ];
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>}
 </span></code></pre></div>
 <h3 id="features_7">Features<a class="headerlink" href="#features_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Records from <code>Records</code> (typed), <code>TrackList</code> (any <code>IAuralizerTrack</code>, grouped into records by <code>Image</code>) or <code>RecordsUrl</code> (a records JSON file)</li>
+<li><code>TurntableTrack</code> is an <code>AuralizerTrack</code>, so the tracks of a record also work as <code>MudExAudioPlayer.TrackList</code></li>
+<li><code>Mode</code> (<code>Single</code> or <code>Dj</code>) with two-way binding, <code>EnableMixer</code>, <code>AllowUploads</code> (own songs per drag and drop, tags from ID3)</li>
+<li>Themed by the MudBlazor palette (<code>AccentColor</code>, <code>TextColor</code>, <code>MutedColor</code>), <code>MinHeight</code>, <code>Padding</code></li>
+<li><code>Language</code> follows the current UI culture, <code>ChildContent</code> stands left of the turntable and slides out when the mixer opens</li>
+<li><code>Cover</code> (or the <code>Image</code> of the tracks) is printed on the label of the record; without <code>Accent</code> and <code>Gradient</code> the colors are computed from the cover (also SVG)</li>
+<li>Control from C#: <code>PlayAsync()</code> (play on), <code>PlayAsync(record, track)</code>, <code>PlayAsync(track)</code> for an <code>IAuralizerTrack</code> of the list, <code>PauseAsync</code>, <code>NextAsync</code>, <code>PreviousAsync</code>, each with an optional <code>TurntableDeck</code></li>
+<li><code>DeckChanged</code> with a <code>TurntableDeckState</code> (playing, loading, failed, record, track; the record and track instances from C#), the current state in <code>DeckA</code> and <code>DeckB</code></li>
+<li><code>ScriptUrl</code> to host the web component script yourself; records changed in place are sent again with <code>RefreshRecordsAsync()</code></li>
+</ul>
+<h2 id="mudexicon">MudExIcon<a class="headerlink" href="#mudexicon" title="Permanent link">&para;</a></h2>
+<p>Enhanced icon component with additional features.</p>
+<h3 id="basic-usage_7">Basic Usage<a class="headerlink" href="#basic-usage_7" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>&lt;MudExIcon Icon="@Icons.Material.Filled.Home" /&gt;
+</span></code></pre></div>
+<h3 id="features_8">Features<a class="headerlink" href="#features_8" title="Permanent link">&para;</a></h3>
 <ul>
 <li>All MudBlazor icons support</li>
 <li>Custom SVG icons</li>
@@ -2510,10 +2580,10 @@
 <li>Tooltip integration</li>
 </ul>
 <h3 id="example_7">Example<a class="headerlink" href="#example_7" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>&lt;MudExIcon Icon="@Icons.Material.Filled.Star" 
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>           Color="Color.Warning"
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>           Size="Size.Large"
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>           Title="Favorite" /&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>&lt;MudExIcon Icon="@Icons.Material.Filled.Star" 
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>           Color="Color.Warning"
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>           Size="Size.Large"
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>           Title="Favorite" /&gt;
 </span></code></pre></div>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2667,10 +2737,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.tracking", "navigation.indexes", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "toc.follow", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.tracking", "navigation.indexes", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "toc.follow", "toc.integrate"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
         <script src="../../javascripts/extra.js"></script>
       
