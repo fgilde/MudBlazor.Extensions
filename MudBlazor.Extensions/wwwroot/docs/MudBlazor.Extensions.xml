@@ -4008,6 +4008,9 @@
             The name of the component
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcel.RenderPriority">
+            <inheritdoc />
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcel.Value">
             <summary>
             The Current code string provided from file
@@ -24550,6 +24553,12 @@
         <member name="M:MudBlazor.Extensions.Helper.ArchiveConverter.ConvertToSystemCompressionZip(System.IO.Stream)">
             <summary>
             Converts the given stream to a zip archive stream using the SharpCompress library.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.ArchiveConverter.OpenArchive(System.IO.Stream)">
+            <summary>
+            Opens an archive with SharpCompress. Gzip is unpacked first, because SharpCompress 0.50 no longer detects tar.gz (.tgz) streams.
+            A gzip that does not hold an archive opens as gzip archive with its single file.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.BrowserFileExt">

@@ -1,5 +1,13 @@
-## Change Log    
- - 9.11.7 > New [MudExTurntable](https://www.mudex.org/turntable): a turntable with scratching, a second deck and a DJ mixer, wrapping the free audiola turntable web component. Records come typed (`TurntableRecord`), from the same `IAuralizerTrack` list as the MudExAudioPlayer or from a JSON url, the cover is printed on the record. Controllable from C# (`PlayAsync`, `PauseAsync`, `NextAsync`, `PreviousAsync`) with `DeckChanged` events
+﻿## Change Log    
+ - 9.12.0 > Update to MudBlazor 9.12.0 and Nextended 10.1.49
+ - 9.12.0 > Fix MudExFileDisplay: a viewer kept showing the previous file when the next one used the same viewer (e.g. .mhtml to .eml), and after a `HandleContentErrorFunc` redirect every later natively rendered file stayed on the redirect target
+ - 9.12.0 > Fix .tgz / .tar.gz archives not opening ("Cannot determine compressed stream type", SharpCompress 0.50 no longer detects them)
+ - 9.12.0 > Fix MudExStructuredDataEditor and the Json/Xml/Yaml file display: "Cyclic dependency detected while creating an instance of type IStructuredDataObject"
+ - 9.12.0 > Fix code highlighting colours in MudExCodeView, MudExMarkdown and the code file display: MudBlazor.Markdown 9.10 ignores `CodeBlockTheme`, it is now mapped to the new `--mud-markdown-codehightlight-*` variables (`CodeBlockTheme.Default` leaves them to `MudMarkdownThemeProvider`)
+ - 9.12.0 > CSV files open in MudExFileDisplayExcel by default instead of the native browser control
+ - 9.12.0 > Fix MudExObjectEdit `WithAttributesIf<TModel, TComponent>`: when the condition turned false the field threw "cannot be set explicitly when also used to capture unmatched values"
+ - 9.12.0 > Fix MudExThemeSelect not showing the theme descriptions in the open dropdown
+ - 9.12.0 > New [MudExTurntable](https://www.mudex.org/turntable): a turntable with scratching, a second deck and a DJ mixer, wrapping the free audiola turntable web component. Records come typed (`TurntableRecord`), from the same `IAuralizerTrack` list as the MudExAudioPlayer or from a JSON url, the cover is printed on the record. Controllable from C# (`PlayAsync`, `PauseAsync`, `NextAsync`, `PreviousAsync`) with `DeckChanged` events
  - 9.11.6 > MudExOrgChart: `CountDescendants` and `CountFunc` for the number on the collapse button (everyone below instead of the direct children), `RootDropZone` (a toolbar drop zone that lights up while dragging and makes the card a root), `OnReparentRefused` with the reason (`Cycle`, `NotAllowed`), `IsDragging` / `DraggedItem`, `SearchItemTemplate` (the search becomes an autocomplete of the matches), `SearchPlaceholder` and `ZoomOnWheel`
  - 9.11.6 > Fix MudExOrgChart: a press on a card that panned the chart no longer clicks it (selected it or opened a link in the card); a drag ended outside the chart no longer leaves the drag state behind
  - 9.11.5 > Fix MudExTextField / MudExInput (and with it MudExTagField, the MudExToggleableSearch and MudExTreeView filter): text typed but not committed was emptied when the parent re-rendered after the field lost focus
