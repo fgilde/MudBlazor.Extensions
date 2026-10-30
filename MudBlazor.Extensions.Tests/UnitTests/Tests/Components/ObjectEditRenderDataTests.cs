@@ -89,4 +89,39 @@ public class ObjectEditRenderDataTests
         Assert.True(renderData.Attributes.ContainsKey(nameof(MudTextField<string>.Mask)));
         Assert.All(renderData.Attributes.Keys, key => Assert.True(Nextended.Blazor.Helper.ComponentRenderHelper.IsValidParameter(typeof(MudTextField<string>), key, null), key));
     }
+
+    // UpdateAllConditions re-evaluated IgnoreIf but rendered the cached grouping, so the property grid's
+    // "show inherited" toggle only showed up after some other change
+    [Fact]
+    public async Task UpdateAllConditionsShowsAPropertyWhoseIgnoreConditionTurnedFalse()
+    {
+        await using var context = CreateContext();
+        var person = new Person { FirstName = "Ada", Locked = true };
+        var cut = context.Render<MudExObjectEdit<Person>>(p => p
+            .Add(c => c.Value, person)
+            .Add(c => c.MetaConfiguration, meta => meta.Property(m => m.FirstName).IgnoreIf<Person>(x => x.Locked)));
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-property-container-for-FirstName")));
+
+        person.Locked = false;
+        await cut.InvokeAsync(() => cut.Instance.UpdateAllConditions());
+        cut.Render();
+
+        cut.WaitForAssertion(() => Assert.NotEmpty(cut.FindAll(".mud-ex-property-container-for-FirstName")));
+    }
+
+    // The property grid of the demos gets the same component instance again when the component changed itself;
+    // the editors have to show the changed value after that render
+    [Fact]
+    public async Task ParentRenderWithTheSameValueShowsChangedPropertyValues()
+    {
+        await using var context = CreateContext();
+        var person = new Person { FirstName = "Ada" };
+        var cut = context.Render<MudExObjectEdit<Person>>(p => p.Add(c => c.Value, person));
+        cut.WaitForAssertion(() => Assert.Equal("Ada", FirstNameInput(cut).GetAttribute("value")));
+
+        person.FirstName = "Grace";
+        cut.Render(p => p.Add(c => c.Value, person));
+
+        cut.WaitForAssertion(() => Assert.Equal("Grace", FirstNameInput(cut).GetAttribute("value")));
+    }
 }

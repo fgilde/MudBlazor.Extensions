@@ -609,6 +609,8 @@ public partial class MudExObjectEdit<T>
         if (BulkActionRunning)
             return;
         MetaInformation?.UpdateAllConditionalSettings(Value);
+        // IgnoreIf conditions change which properties are listed, so the cached grouping is stale now
+        InvalidateGroupedMetaCache();
     }
 
     /// <summary>
@@ -619,7 +621,6 @@ public partial class MudExObjectEdit<T>
         if (AutoUpdateConditions)
         {
             UpdateAllConditions();
-            InvalidateGroupedMetaCache();
             return true;
         }
         return false;
