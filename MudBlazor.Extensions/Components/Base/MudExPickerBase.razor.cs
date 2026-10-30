@@ -210,7 +210,7 @@ public partial class MudExPickerBase<T>
     private string GetElementId()
     {
         return typeof(MudPicker<T>)
-            .GetField("_elementId", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(this)?.ToString();      
+            .GetProperty("ElementId", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(this)?.ToString();
     }
 
     protected internal async Task ToggleStateExtAsync()

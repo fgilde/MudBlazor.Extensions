@@ -176,8 +176,7 @@ public partial class MudExThemeSelect<TTheme>
     /// </summary>
     private bool IsOpen()
     {
-        // TODO: MudSelect should expose a property for this
-        return _mudSelector is null || _mudSelector.ExposeField<bool>("_isOpen");
+        return _mudSelector is null || _mudSelector.GetState(x => x.Open);
     }
 
     /// <summary>
