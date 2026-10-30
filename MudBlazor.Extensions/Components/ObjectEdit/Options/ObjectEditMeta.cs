@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using MudBlazor.Extensions.Helper.Internal;
+using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
 using Nextended.Core;
@@ -115,7 +116,10 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
                     var reference = Check.TryCatch<object, Exception>(() => propertyInfo.GetValue(value));
                     reference ??= Check.TryCatch<object, Exception>(() =>
                     {
-                        propertyInfo.SetValue(value, ReflectionHelper.CreateInstance(propertyInfo.PropertyType));
+                        var created = PropertyHelper.CreateDefaultInstance(propertyInfo.PropertyType);
+                        if (created == null)
+                            return null;
+                        propertyInfo.SetValue(value, created);
                         return propertyInfo.GetValue(value);
                     });
                     

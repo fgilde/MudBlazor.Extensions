@@ -7,6 +7,23 @@ namespace MudBlazor.Extensions.Helper.Internal;
 
 internal static class PropertyHelper
 {
+    // Nextended's CreateInstance also builds interfaces and constructor arguments. For a generic interface like
+    // IEqualityComparer<T> or IConverter<T, U> it picks an implementation whose constructor needs ever larger generic
+    // types, which ended in a StackOverflow that took down the trimmed WebAssembly app on /mud-ex-select. Collections
+    // still go through Nextended (it creates a List or Dictionary there), everything else needs a parameterless constructor.
+    public static object CreateDefaultInstance(Type type)
+    {
+        if (!CanCreateInstance(type))
+            return null;
+        return IsCollection(type) ? ReflectionHelper.CreateInstance(type) : Activator.CreateInstance(type);
+    }
+
+    public static bool CanCreateInstance(Type type)
+        => type.IsValueType || IsCollection(type) || (!type.IsAbstract && type.GetConstructor(Type.EmptyTypes) != null);
+
+    private static bool IsCollection(Type type)
+        => type != typeof(string) && typeof(System.Collections.IEnumerable).IsAssignableFrom(type);
+
     public static string GetDescription(this Enum value)
         => Nextended.Core.Helper.EnumExtensions.ToDescriptionString(value);
 

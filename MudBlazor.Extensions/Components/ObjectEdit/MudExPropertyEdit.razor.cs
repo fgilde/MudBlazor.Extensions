@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using MudBlazor.Extensions.Helper.Internal;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Web;
 using Microsoft.AspNetCore.Components;
@@ -266,8 +267,11 @@ public partial class MudExPropertyEdit
                 return value;
             if (t == typeof(MudColor))
                 return new MudColor(value.ToString());
-            
-            return await value.MapToAsync(t);
+
+            // the copy is a new instance of the runtime type, so only types PropertyHelper can create are copied (an
+            // IConverter<T, U> mapped to its interface type overflowed the stack), anything else is kept as reference
+            var runtimeType = value.GetType();
+            return PropertyHelper.CanCreateInstance(runtimeType) ? await value.MapToAsync(runtimeType) : value;
         }
         catch
         {
@@ -281,7 +285,7 @@ public partial class MudExPropertyEdit
             return string.Empty;
         if (type == typeof(MudColor))
             return new MudColor(0, 0, 0, 0);
-        return type.CreateInstance();
+        return PropertyHelper.CreateDefaultInstance(type);
     }
 
     /// <summary>
