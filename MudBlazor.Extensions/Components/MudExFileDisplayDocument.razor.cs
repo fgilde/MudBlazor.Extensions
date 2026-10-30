@@ -434,6 +434,9 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
     [JSInvokable]
     public void OnError(string message)
     {
+        // the js init can fail after another file replaced this viewer; its error must not land on the next file
+        if (IsDisposed)
+            return;
         _isLoading = false;
         _errorMessage = message;
         MudExFileDisplay?.ShowError(message);
