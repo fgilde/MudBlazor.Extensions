@@ -73,4 +73,20 @@ public class ObjectEditRenderDataTests
 
         cut.WaitForAssertion(() => Assert.False(FirstNameInput(cut).HasAttribute("disabled")));
     }
+
+    // WithAttributesIf<TModel, TComponent> takes every changed property of a component instance, also non-parameters like
+    // ValidationErrors; resetting those passed them to MudTextField, which then threw because UserAttributes captures unmatched values
+    [Fact]
+    public void WithAttributesIfResetsOnlyParametersWhenTheConditionIsFalse()
+    {
+        var person = new Person { FirstName = "Ada" };
+        var meta = person.ObjectEditMeta(m => m.Property(p => p.FirstName)
+            .WithAttributesIf<Person, MudTextField<string>>(x => x.Locked, f => f.Mask = new PatternMask("###")));
+
+        var renderData = meta.Property(p => p.FirstName).RenderData;
+        renderData.UpdateConditionalSettings(person);
+
+        Assert.True(renderData.Attributes.ContainsKey(nameof(MudTextField<string>.Mask)));
+        Assert.All(renderData.Attributes.Keys, key => Assert.True(Nextended.Blazor.Helper.ComponentRenderHelper.IsValidParameter(typeof(MudTextField<string>), key, null), key));
+    }
 }

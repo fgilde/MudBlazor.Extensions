@@ -964,6 +964,9 @@ public partial class MudExObjectEdit<T>
     /// </summary>
     protected virtual async Task CreateMetaIfNotExists(bool? reconfigure = null)
     {
+        // An interface or abstract T has no instance to build a meta for until a Value arrives (e.g. MudExStructuredDataEditor sets it after its parameters)
+        if (Value == null && MetaInformation == null && (typeof(T).IsInterface || typeof(T).IsAbstract))
+            return;
         RenderDataDefaults.AddRenderDataProvider(ServiceProvider);
         Action<ObjectEditMeta<T>> c = MetaConfigurationAsync != null ? await MetaConfigurationAsync : MetaConfiguration;
         bool metaNeedsConfig = MetaInformation == null || (reconfigure ?? false); // If not configured or not manually bypassed wer configure the Meta

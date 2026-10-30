@@ -311,7 +311,9 @@ public partial class RenderData : IRenderData
     private static void ResetToParameterDefault(IRenderData renderData, string key)
     {
         var componentType = renderData.ComponentType;
-        if (componentType == null)
+        // Keys from WithAttributesIf<TModel, TComponent> are all changed properties of a component instance, also non-parameters
+        // like ValidationErrors or FieldId; passing those throws because UserAttributes captures unmatched values
+        if (componentType == null || !ComponentRenderHelper.IsValidParameter(componentType, key, null))
         {
             renderData.Attributes.Remove(key);
             return;
