@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
@@ -14,6 +14,7 @@ namespace MudBlazor.Extensions.Components
         private string presetId = $"preset-{Guid.NewGuid()}";
         private bool ShouldDelay => DelayValueChangeToPickerClose && PickerVariant != PickerVariant.Static;
         private EventCallback<MudColor> _originalValueChanged;
+        private bool _delaying;
 
         /// <summary>
         /// Set to true to delay value change event to picker close event
@@ -68,23 +69,26 @@ namespace MudBlazor.Extensions.Components
         {
 
             await base.OnPickerOpenedAsync();
-            if (!ShouldDelay) return;
+            if (!ShouldDelay || _delaying) return;
 
+            // without a callback the picker only changes its own state while open, the parent hears about it on close
+            _delaying = true;
             _originalValueChanged = ValueChanged;
-            ValueChanged = EventCallback.Factory.Create(this,
-                EventCallback.Factory.CreateInferred(this, x =>
-                    null,
-                    Value
-                    )
-                );
+            ValueChanged = default;
         }
 
         /// <inheritdoc />
-        protected override Task OnPickerClosedAsync()
+        protected override async Task OnPickerClosedAsync()
         {
-            if (ShouldDelay)
-                _originalValueChanged.InvokeAsync(Value);
-            return base.OnPickerClosedAsync();
+            if (_delaying)
+            {
+                // the callback is restored, otherwise the next open saves the empty one as original and no change arrives anymore;
+                // the picked color is in the parameter state, the Value property still holds what the parent passed
+                _delaying = false;
+                ValueChanged = _originalValueChanged;
+                await ValueChanged.InvokeAsync(this.GetState(x => x.Value));
+            }
+            await base.OnPickerClosedAsync();
         }
 
         private Task NativeColorChange(ChangeEventArgs arg)
@@ -97,22 +101,16 @@ namespace MudBlazor.Extensions.Components
         {
             if (InitialColor != null)
             {
-                try
-                {
-                    var c = _value;
-                    _value = InitialColor;
-                    typeof(MudColorPicker).GetMethod("UpdateBaseColor", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { });
-                    typeof(MudColorPicker).GetMethod("UpdateColorSelectorBasedOnRgb", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { });
-                    typeof(MudColorPicker).GetMethod("UpdateBaseColorSlider", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { InitialColor.H });
-                    typeof(MudColorPicker).GetMethod("SelectPaletteColor", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { InitialColor });
-                    _ = SetTextAsync(InitialColor.ToString(ShowAlpha ? MudColorOutputFormats.HexA : MudColorOutputFormats.Hex), false);
-                    FieldChanged(InitialColor);
-                    StateHasChanged();
-                    _value = c;
-                }
-                catch { /* ignore */ }
+                // MudColorPicker initializes spectrum, selector and sliders from Value ?? _lastColor in OnInitializedAsync,
+                // which runs after this, so a null Value starts at InitialColor
+                LastColor(this) = InitialColor;
+                _ = SetTextAsync(InitialColor.ToString(ShowAlpha ? MudColorOutputFormats.HexA : MudColorOutputFormats.Hex), false);
+                FieldChanged(InitialColor);
             }
         }
+
+        [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_lastColor")]
+        private static extern ref MudColor LastColor(MudColorPicker picker);
         
         private Task NativeSelectionChange(EventArgs arg)
         {
