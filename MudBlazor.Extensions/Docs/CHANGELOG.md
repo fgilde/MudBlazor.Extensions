@@ -1,4 +1,10 @@
 ﻿## Change Log    
+ - 9.12.1 > Update Nextended to 10.1.50 (CreateInstance for interfaces and constructor chains with ever growing generic types)
+ - 9.12.1 > Fix MudExComponentPropertyGrid / MudExObjectEdit: a StackOverflow took down the whole WebAssembly app when a component with interface typed properties (e.g. MudExSelect with `IConverter<T, U>` and `IEqualityComparer<T>`) was edited; defaults and value backups only create instances of value types, collections and classes with a parameterless constructor now
+ - 9.12.1 > Fix MudExObjectEdit `UpdateAllConditions`: properties whose `IgnoreIf` changed showed only after another change (e.g. the "show inherited" toggle of the property grid)
+ - 9.12.1 > Fix MudExColorPicker `DelayValueChangeToPickerClose`: the picked color was not reported on close, and after the first close no change reached the binding anymore
+ - 9.12.1 > Fix MudExColorPicker `InitialColor` not being applied
+ - 9.12.1 > Fix MudExFileDisplay: a viewer that was still loading (e.g. Univer for xlsx) reported "Container element not found" on the next file
  - 9.12.0 > Update to MudBlazor 9.12.0 and Nextended 10.1.49
  - 9.12.0 > Fix MudExFileDisplay: a viewer kept showing the previous file when the next one used the same viewer (e.g. .mhtml to .eml), and after a `HandleContentErrorFunc` redirect every later natively rendered file stayed on the redirect target
  - 9.12.0 > Fix .tgz / .tar.gz archives not opening ("Cannot determine compressed stream type", SharpCompress 0.50 no longer detects them)
