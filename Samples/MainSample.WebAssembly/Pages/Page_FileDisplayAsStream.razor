@@ -174,8 +174,8 @@
         if (arg.ContentType.Contains("word"))
         {
             return Task.FromResult(MudExFileDisplayContentErrorResult
-                .RedirectTo("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiZiqnBKWS8NHcKbRH04UkYjrCgxUMz6sVNw&usqp=CAU", "image/png")
-                .WithMessage(L["No word plugin found we display a sheep"]));
+                .RedirectTo("sample-data/logo.png", "image/png")
+                .WithMessage(L["No word plugin found, we display an image instead"]));
         }
         return Task.FromResult(MudExFileDisplayContentErrorResult.Unhandled);
     }

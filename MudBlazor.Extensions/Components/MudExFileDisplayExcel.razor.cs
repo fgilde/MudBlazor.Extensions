@@ -24,7 +24,11 @@ namespace MudBlazor.Extensions.Components
             set => _selectedSheet = _excelFile?.Sheets.ElementAtOrDefault(value);
         }
 
-        public bool StartsActive => false;
+        // Starts active for csv, which nothing else reads; for xlsx MudExFileDisplayExcelUniver wins on priority
+        public bool StartsActive => true;
+
+        /// <inheritdoc />
+        public int RenderPriority => -1;
 
         /// <summary>
         /// The Current code string provided from file

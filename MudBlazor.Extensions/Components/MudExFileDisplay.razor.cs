@@ -36,6 +36,9 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private (string tag, Dictionary<string, object> attributes)? renderInfos;
     private BrowserInfo _info;
     private bool _internalOverwrite;
+    // Viewers get this component as FileDisplayInfos, so they can't tell a new file by reference; the key gives them a fresh instance per file
+    private int _fileVersion;
+    private (string Url, Stream Stream, bool FallBackInIframe, bool SandBoxIframes, string Message)? _redirectedFrom;
     private List<IMudExFileDisplay> _possibleRenderControls;
 
     // Replacement for the original (Type, bool, IDictionary<...>) ValueTuple — ValueTuple
@@ -367,6 +370,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         {
             _internalCall = true;
             _internalOverwrite = true;
+            _redirectedFrom ??= (Url, ContentStream, FallBackInIframe, SandBoxIframes, CustomContentErrorMessage);
             UpdateChangedFields(result);
             StateHasChanged();
         }
@@ -412,11 +416,15 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
+        EndRedirectOnNewFile(parameters);
         var updateRequired = (parameters.TryGetValue<Stream>(nameof(ContentStream), out var stream) && ContentStream != stream)
                              || (parameters.TryGetValue<string>(nameof(Url), out var url) && Url != url);
 
-        if(updateRequired)
+        if (updateRequired)
+        {
             _componentForFile = null;
+            _fileVersion++;
+        }
 
         await base.SetParametersAsync(parameters);
 
@@ -435,6 +443,21 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             return;
 
         UpdateRenderInfos();
+    }
+
+    // A redirect from HandleContentErrorFunc holds for the file that failed: parent renders pass that file again and
+    // must not undo it, but another file ends it - otherwise every later file stays on the redirect target.
+    private void EndRedirectOnNewFile(ParameterView parameters)
+    {
+        if (_redirectedFrom is not { } from)
+            return;
+        var url = parameters.TryGetValue<string>(nameof(Url), out var u) ? u : from.Url;
+        var stream = parameters.TryGetValue<Stream>(nameof(ContentStream), out var s) ? s : from.Stream;
+        if (url == from.Url && stream == from.Stream)
+            return;
+        (FallBackInIframe, SandBoxIframes, CustomContentErrorMessage) = (from.FallBackInIframe, from.SandBoxIframes, from.Message);
+        _redirectedFrom = null;
+        _internalOverwrite = _internalCall = false;
     }
 
     /// <inheritdoc/>

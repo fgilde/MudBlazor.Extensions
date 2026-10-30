@@ -1,4 +1,4 @@
-using System.Buffers.Binary;
+﻿using System.Buffers.Binary;
 using System.Text;
 using System.IO.Compression;
 using Bunit;
@@ -64,6 +64,44 @@ public class SampleDataFileTests
         // it now, but a sample shipping it means the file was written through a broken pipeline.
         for (var i = 0; i < bytes.Length - 1; i++)
             Assert.False(bytes[i] == 13 && bytes[i + 1] == 13, $"{name} contains a doubled carriage return at byte {i}");
+    }
+
+    // SharpCompress 0.50 throws "Cannot determine compressed stream type" for tar.gz, ArchiveConverter unpacks gzip itself
+    [Theory]
+    [InlineData("npm-example-0.0.20.tgz", "package/package.json")]
+    [InlineData("TarArchive.tar", null)]
+    public void ArchiveSamples_Open(string name, string expectedEntry)
+    {
+        using var archive = ArchiveConverter.OpenArchive(Load(name));
+
+        Assert.NotEmpty(archive.Entries);
+        if (expectedEntry != null)
+            Assert.Contains(archive.Entries, e => e.Key == expectedEntry);
+    }
+
+    // ObjectEdit built the meta before the editor had a Value and tried to instantiate the IStructuredDataObject interface
+    [Fact]
+    public async Task StructuredDataEditor_RendersJsonWithoutValue()
+    {
+        await using var context = CreateContext();
+        context.JSInterop.Setup<MudBlazor.Extensions.Core.CssVariable[]>("MudExCssHelper.getCssVariables").SetResult([]);
+        var cut = context.Render<MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor>(parameters => parameters
+            .Add(c => c.ReadOnly, true)
+            .Add(c => c.Data, File.ReadAllText(Path.Combine(SampleDirectory, "weather.json"))));
+
+        Assert.NotNull(cut.Instance.Value);
+    }
+
+    [Fact]
+    public void PlainGzip_OpensAsSingleFile()
+    {
+        var gz = new MemoryStream();
+        using (var gzip = new GZipStream(gz, CompressionLevel.Fastest, leaveOpen: true))
+            gzip.Write(Encoding.UTF8.GetBytes("hello world"));
+
+        using var archive = ArchiveConverter.OpenArchive(gz);
+
+        Assert.Single(archive.Entries);
     }
 
     [Fact]

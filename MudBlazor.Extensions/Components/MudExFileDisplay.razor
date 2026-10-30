@@ -93,13 +93,13 @@
                     </MudOverlay>
 
                     <div class="mud-ex-file-display" style="@ViewerContentStyleStr()">
-                        <DynamicComponent @ref="_currentFileDisplay" Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters"/>
+                        <DynamicComponent @key="_fileVersion" @ref="_currentFileDisplay" Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters"/>
                     </div>
                 </CascadingValue>
             }
             else
             {
-                <DynamicComponent @ref="_currentFileDisplay" Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters" />
+                <DynamicComponent @key="_fileVersion" @ref="_currentFileDisplay" Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters" />
             }
         }
         else
@@ -108,7 +108,7 @@
             <div class="mud-ex-file-display" style="@ViewerContentStyleStr()">
                 @if (renderInfos != null)
                 {
-                    <MudElement UserAttributes="@renderInfos.Value.attributes" HtmlTag="@renderInfos.Value.tag" />
+                    <MudElement @key="_fileVersion" UserAttributes="@renderInfos.Value.attributes" HtmlTag="@renderInfos.Value.tag" />
                 }
             </div>
         }

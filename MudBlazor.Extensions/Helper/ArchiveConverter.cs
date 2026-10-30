@@ -73,8 +73,34 @@ public class ArchiveConverter
     /// </summary>
     public static Stream ConvertToSystemCompressionZip(Stream unknownArchiveStream)
     {
-        using var archive = ArchiveFactory.OpenArchive(unknownArchiveStream);
+        using var archive = OpenArchive(unknownArchiveStream);
         return archive.Type == SharpCompress.Common.ArchiveType.Zip ? unknownArchiveStream : ConvertArchiveToZip(archive);
     }
-    
+
+    /// <summary>
+    /// Opens an archive with SharpCompress. Gzip is unpacked first, because SharpCompress 0.50 no longer detects tar.gz (.tgz) streams.
+    /// A gzip that does not hold an archive opens as gzip archive with its single file.
+    /// </summary>
+    public static IArchive OpenArchive(Stream stream)
+    {
+        stream.Position = 0;
+        if (stream.ReadByte() == 0x1f && stream.ReadByte() == 0x8b)
+        {
+            stream.Position = 0;
+            var unpacked = new MemoryStream();
+            using (var gzip = new GZipStream(stream, CompressionMode.Decompress, leaveOpen: true))
+                gzip.CopyTo(unpacked);
+            unpacked.Position = 0;
+            try
+            {
+                return ArchiveFactory.OpenArchive(unpacked);
+            }
+            catch
+            {
+                unpacked.Dispose(); // no archive inside, e.g. a plain file.txt.gz
+            }
+        }
+        stream.Position = 0;
+        return ArchiveFactory.OpenArchive(stream);
+    }
 }
