@@ -187,7 +187,8 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
     /// </summary>
     protected virtual Task OnFinishedRenderAsync()
     {
-        _renderedCompletionSource.SetResult();
+        // Runs again whenever the component re-renders and settles, so the first completion must win.
+        _renderedCompletionSource.TrySetResult();
         return Task.CompletedTask;
     }
 
@@ -220,12 +221,22 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
 
     private void OnRenderFinishTimerElapsed(object sender, ElapsedEventArgs e)
     {
-        InvokeAsync(async () =>
+        _ = InvokeAsync(async () =>
         {
-            _renderFinishTimer?.Dispose();
+            // A newer render may have re-armed the timer while this tick was queued; let that one finish instead.
+            if (IsDisposed || !ReferenceEquals(sender, _renderFinishTimer))
+                return;
+            _renderFinishTimer.Dispose();
             _renderFinishTimer = null;
             IsFullyRendered = true;
-            await OnFinishedRenderAsync();
+            try
+            {
+                await OnFinishedRenderAsync();
+            }
+            catch (Exception ex)
+            {
+                await DispatchExceptionAsync(ex);
+            }
         });
     }
 
