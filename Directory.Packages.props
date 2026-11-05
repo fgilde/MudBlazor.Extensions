@@ -1,10 +1,10 @@
-﻿<Project>
+<Project>
 
   <PropertyGroup>
     <!-- also used by the BundleAndMinify inline task in MudBlazor.Extensions.csproj to locate NUglify.dll -->
-    <NUglifyVersion>1.23.4</NUglifyVersion>
+    <NUglifyVersion>1.23.6</NUglifyVersion>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <!-- Some packages are referenced with floating versions (e.g. RtfPipe 2.0.*, MsgReader 6.0.*,
+    <!-- Some packages are referenced with floating versions (e.g. RtfPipe, MsgReader,
          the locally built MudBlazor.Extensions *-* prerelease). Allow them centrally. -->
     <CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
   </PropertyGroup>
@@ -12,7 +12,7 @@
   <ItemGroup>
     <!-- MudBlazor / UI -->
     <PackageVersion Include="MudBlazor" Version="9.12.0" />
-    <PackageVersion Include="MudBlazor.Markdown" Version="9.10.0" />
+    <PackageVersion Include="MudBlazor.Markdown" Version="9.12.0" />
     <PackageVersion Include="AuralizeBlazor" Version="3.0.7" />
     <PackageVersion Include="Bromix.MudBlazor.MaterialDesignIcons" Version="7.4.47.56" />
     <PackageVersion Include="BlazorMonaco" Version="3.5.0" />
@@ -20,9 +20,9 @@
     <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
 
     <!-- Nextended -->
-    <PackageVersion Include="Nextended.Blazor" Version="10.1.50" />
-    <PackageVersion Include="Nextended.Core" Version="10.1.50" />
-    <PackageVersion Include="Nextended.CodeGen" Version="10.1.50" />
+    <PackageVersion Include="Nextended.Blazor" Version="10.1.51" />
+    <PackageVersion Include="Nextended.Core" Version="10.1.51" />
+    <PackageVersion Include="Nextended.CodeGen" Version="10.1.51" />
 
     <!-- Microsoft.AspNetCore / Extensions -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.14" />
@@ -51,7 +51,7 @@
     <PackageVersion Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="6.1.0" />
 
     <!-- Validation / utilities -->
-    <PackageVersion Include="FluentValidation" Version="12.1.1" />
+    <PackageVersion Include="FluentValidation" Version="12.2.0" />
     <PackageVersion Include="OneOf" Version="3.0.271" />
     <PackageVersion Include="NUglify" Version="$(NUglifyVersion)" />
     <PackageVersion Include="BlazorParameterCastingMagic" Version="1.2.26091510" />
@@ -59,27 +59,27 @@
     <!-- File / document handling -->
     <PackageVersion Include="ExcelDataReader" Version="3.9.0" />
     <PackageVersion Include="ExcelDataReader.DataSet" Version="3.9.0" />
-    <PackageVersion Include="SharpCompress" Version="0.50.5" />
+    <PackageVersion Include="SharpCompress" Version="0.50.8" />
     <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.14" />
     <PackageVersion Include="MetadataExtractor" Version="2.9.3" />
     <PackageVersion Include="Gotho.BlazorPdf" Version="2.2.0" />
     <PackageVersion Include="Gotho.BlazorPdf.MudBlazor" Version="2.2.0" />
     <PackageVersion Include="RtfPipe" Version="2.0.*" />
-    <PackageVersion Include="MsgReader" Version="6.1.*" />
+    <PackageVersion Include="MsgReader" Version="6.2.*" />
 
     <!-- Azure (Try server) -->
     <PackageVersion Include="Azure.Identity" Version="1.21.0" />
     <PackageVersion Include="Azure.Storage.Blobs" Version="12.30.1" />
 
     <!-- Test stack -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
-    <PackageVersion Include="bunit" Version="2.11.3" />
+    <PackageVersion Include="bunit" Version="2.13.3" />
     <PackageVersion Include="coverlet.collector" Version="10.1.0" />
     <PackageVersion Include="FluentAssertions" Version="8.11.0" />
     <PackageVersion Include="Moq" Version="4.21.0" />
-    <PackageVersion Include="Microsoft.Playwright" Version="1.63.0" />
+    <PackageVersion Include="Microsoft.Playwright" Version="1.64.1" />
     <PackageVersion Include="NUnit" Version="5.0.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="6.3.1" />
 
