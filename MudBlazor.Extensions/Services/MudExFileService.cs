@@ -56,10 +56,10 @@ public class MudExFileService : IMudExFileService
     public async Task<Stream> ReadStreamAsync(IMudExFileDisplayInfos fileDisplayInfos, CancellationToken ct = default)
     {
         Stream ms = null;
-        if (fileDisplayInfos.ContentStream is { Length: > 0, CanRead: true })
+        if (ReadableContent(fileDisplayInfos) is { } content)
         {
             ms = new MemoryStream();
-            await fileDisplayInfos.ContentStream.CopyToAsync(ms, ct);
+            await content.CopyToAsync(ms, ct);
         }
         else if (Nextended.Core.Types.DataUrl.TryParse(fileDisplayInfos.Url, out var data))
         {
@@ -74,15 +74,25 @@ public class MudExFileService : IMudExFileService
         return ms;
     }
 
+    private static Stream ReadableContent(IMudExFileDisplayInfos fileDisplayInfos)
+    {
+        var stream = fileDisplayInfos.ContentStream;
+        if (stream is not { CanRead: true } || (stream.CanSeek && stream.Length == 0))
+            return null;
+        if (stream.CanSeek)
+            stream.Position = 0;
+        return stream;
+    }
+
     /// <summary>
     /// Returns the content of a file as string
     /// </summary>
     public async Task<string> ReadAsStringFromFileDisplayInfosAsync(IMudExFileDisplayInfos fileDisplayInfos, CancellationToken ct = default)
     {
         // Here we load the json string for given file
-        if (fileDisplayInfos.ContentStream is { Length: > 0, CanRead: true })
+        if (ReadableContent(fileDisplayInfos) is { } content)
         {
-            var copy = await CopyStreamAsync(fileDisplayInfos.ContentStream, ct);
+            var copy = await CopyStreamAsync(content, ct);
             return await ReadAsStringFromStream(copy, ct); // If we have already a valid stream we can use it
         }
         if (Nextended.Core.Types.DataUrl.TryParse(fileDisplayInfos.Url, out var data)) // If not but given url is a data url we can use the bytes from it

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Office.Spreadsheet;
+using MudBlazor.Extensions.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
@@ -14,6 +16,7 @@ public class SpreadsheetEditorTests : IAsyncLifetime
     private const string XlsxType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     private readonly List<BunitContext> _contexts = [];
     private readonly List<IRenderedComponent<MudPopoverProvider>> _popovers = [];
+    private readonly List<IRenderedComponent<MudDialogProvider>> _dialogs = [];
     private CultureInfo _culture;
 
     public Task InitializeAsync()
@@ -47,7 +50,7 @@ public class SpreadsheetEditorTests : IAsyncLifetime
         context.JSInterop.Setup<CssVariable[]>("MudExCssHelper.getCssVariables", _ => true).SetResult([]);
         popovers = context.Render<MudPopoverProvider>();
         _popovers.Add(popovers);
-        context.Render<MudDialogProvider>();
+        _dialogs.Add(context.Render<MudDialogProvider>());
         return context;
     }
 
@@ -95,6 +98,52 @@ public class SpreadsheetEditorTests : IAsyncLifetime
         cut.WaitForAssertion(() => Assert.Equal(CellRange.Parse(range), cut.FindComponent<MudExSpreadsheetGrid>().Instance.Selection.Range));
     }
 
+
+    private sealed record ConsumedInfos(string FileName, string ContentType, byte[] Bytes) : IMudExFileDisplayInfos
+    {
+        public string Url => null;
+        public Stream ContentStream { get; } = new MemoryStream(Bytes) { Position = Bytes.Length };
+    }
+
+    [Fact]
+    public void OpensXlsx_WhenContentStreamWasAlreadyRead()
+    {
+        var bytes = Xlsx(Book(("Data", "A1", 42d)));
+
+        var cut = Render(p => p.Add(x => x.FileDisplayInfos, new ConsumedInfos("book.xlsx", XlsxType, bytes)));
+
+        cut.WaitForAssertion(() => Assert.Equal(42, cut.Instance.CurrentWorkbook.Sheets[0][CellRef.Parse("A1")].Value.NumberValue));
+    }
+
+    [Fact]
+    public async Task FileService_ReadsConsumedContentStreamFromStart()
+    {
+        var service = new MudExFileService(null, new ServiceCollection().BuildServiceProvider());
+        var infos = new ConsumedInfos("a.txt", "text/plain", "hello"u8.ToArray());
+
+        Assert.Equal("hello", await service.ReadAsStringFromFileDisplayInfosAsync(infos));
+        infos.ContentStream.Position = infos.ContentStream.Length;
+        await using var stream = await service.ReadStreamAsync(infos);
+        Assert.Equal(5, stream.Length);
+    }
+
+    [Fact]
+    public async Task EmptyXlsx_IsLoadError_NotNewWorkbook()
+    {
+        var cut = Render(p => p.Add(x => x.FileDisplayInfos, new Infos("book.xlsx", XlsxType, [])));
+
+        cut.WaitForAssertion(() => Assert.Contains("The file is empty.", _dialogs[^1].Markup));
+        Assert.Null(cut.Instance.CurrentWorkbook);
+        Assert.False(await cut.InvokeAsync(() => cut.Instance.SaveAsync()));
+    }
+
+    [Fact]
+    public void EmptyCsv_OpensEmptySheet()
+    {
+        var cut = Render(p => p.Add(x => x.FileDisplayInfos, new Infos("data.csv", "text/csv", [])));
+
+        cut.WaitForAssertion(() => Assert.Equal("data", cut.Instance.CurrentWorkbook.Sheets[0].Name));
+    }
     [Fact]
     public void OpensXlsxFromFileDisplayInfos_ShowsSheetsAndValues()
     {

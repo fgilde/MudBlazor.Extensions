@@ -166,7 +166,13 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
     }
 
     /// <inheritdoc />
-    protected override MudExFileContent CreateNew() => new() { FileName = "Book1.xlsx", ContentType = XlsxContentType, Stream = new MemoryStream() };
+    protected override MudExFileContent CreateNew()
+    {
+        var stream = new MemoryStream();
+        XlsxWriter.Write(Office.Spreadsheet.Workbook.Create(), stream);
+        stream.Position = 0;
+        return new() { FileName = "Book1.xlsx", ContentType = XlsxContentType, Stream = stream };
+    }
 
     /// <inheritdoc />
     protected override async Task LoadContentAsync(MudExFileContent content)
@@ -178,15 +184,15 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
         var format = FormatOf(content.FileName, content.ContentType) ?? Xlsx;
         var delimiter = format == Tsv ? '\t' : ',';
         Workbook wb;
-        if (buffer.Length == 0)
-            wb = Office.Spreadsheet.Workbook.Create();
-        else if (format == Xls)
-            wb = XlsReader.Read(buffer);
-        else if (format == Csv || format == Tsv)
+        if (format == Csv || format == Tsv)
         {
             wb = CsvFormat.Read(buffer, format == Tsv ? '\t' : null, out delimiter);
             NameAfterFile(wb.Sheets[0], content.FileName);
         }
+        else if (buffer.Length == 0)
+            throw new InvalidDataException(TryLocalize("The file is empty."));
+        else if (format == Xls)
+            wb = XlsReader.Read(buffer);
         else
             wb = XlsxReader.Read(buffer);
 
