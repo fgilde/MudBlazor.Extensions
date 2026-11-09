@@ -90,4 +90,41 @@ public class CodeFileEditorTests : IAsyncLifetime
         cut.Find("textarea").Input("ab");
         Assert.Equal("ab"u8.ToArray(), await Export(cut));
     }
+
+    [Fact]
+    public async Task Export_InvalidUtf8_RoundTripsBytesUnchanged()
+    {
+        byte[] bytes = [0x48, 0xE4, 0x0D, 0x0A, 0xFC];
+        var cut = Create(bytes);
+        Assert.Equal(bytes, await Export(cut));
+    }
+
+    private sealed class FailingStream : MemoryStream
+    {
+        public FailingStream() : base([1, 2, 3]) { }
+        public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken) => throw new IOException("boom");
+    }
+
+    private sealed record FailingInfos : IMudExFileDisplayInfos
+    {
+        public string FileName => "a.cs";
+        public string Url => null;
+        public string ContentType => "text/plain";
+        public Stream ContentStream { get; } = new FailingStream();
+    }
+
+    [Fact]
+    public async Task LoadFailure_IsNotEditable()
+    {
+        var context = new TestContext();
+        _contexts.Add(context);
+        context.Services.AddMudServicesWithExtensions();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
+        var host = context.Render<MudExFileDisplay>();
+        var cut = context.Render<MudExFileDisplayCode>(p => p
+            .AddCascadingValue(host.Instance)
+            .Add(c => c.FileDisplayInfos, new FailingInfos()));
+        Assert.Empty(cut.FindAll("textarea"));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => cut.Instance.ExportAsync());
+    }
 }

@@ -15,7 +15,7 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
     private int _editVersion;
     private bool _saving;
 
-    [Inject] private MudExFileService FileService { get; set; }
+    [Inject] protected MudExFileService FileService { get; set; }
 
     /// <summary>
     /// Infos of the file to edit

@@ -1,6 +1,6 @@
 @inherits MudExFileEditorBase<MudExFileDisplayCode>
 
-@if (ReadOnly)
+@if (ReadOnly || _loadFailed)
 {
     @if (!string.IsNullOrEmpty(Value))
     {

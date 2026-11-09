@@ -16,9 +16,8 @@ public partial class MudExFileDisplayCode
 {
     private Encoding _encoding = new UTF8Encoding(false);
     private bool _hadBom;
+    private bool _loadFailed;
     private string _lineEnding = "\n";
-
-    [Inject] private MudExFileService CodeFileService { get; set; }
 
     /// <summary>
     /// The name of the component
@@ -69,31 +68,47 @@ public partial class MudExFileDisplayCode
     {
         Language = MudExCodeLanguageExtensionsMapping.GetCodeLanguageForFile(fileDisplayInfos.FileName);
         Value = string.Empty;
+        _loadFailed = false;
         try
         {
-            await using var stream = await CodeFileService.ReadStreamAsync(fileDisplayInfos);
+            await using var stream = await FileService.ReadStreamAsync(fileDisplayInfos);
             if (stream == null)
                 return;
             using var buffer = new MemoryStream();
             await stream.CopyToAsync(buffer);
             var bytes = buffer.ToArray();
-            using var reader = new StreamReader(new MemoryStream(bytes), new UTF8Encoding(false), true);
-            var text = await reader.ReadToEndAsync();
-            _encoding = reader.CurrentEncoding;
+            string text;
+            using (var reader = new StreamReader(new MemoryStream(bytes), new UTF8Encoding(false, true), true))
+            {
+                try
+                {
+                    text = await reader.ReadToEndAsync();
+                    _encoding = reader.CurrentEncoding;
+                }
+                catch (DecoderFallbackException)
+                {
+                    _encoding = Encoding.Latin1;
+                    text = _encoding.GetString(bytes);
+                }
+            }
+
             var preamble = _encoding.GetPreamble();
             _hadBom = preamble.Length > 0 && bytes.AsSpan().StartsWith(preamble);
             _lineEnding = text.DetectLineEnding();
             Value = text.NormalizeLineEndings();
         }
-        catch (Exception e) when (MudExFileDisplay != null)
+        catch
         {
-            MudExFileDisplay.ShowError(e.Message);
+            _loadFailed = true;
+            throw;
         }
     }
 
     /// <inheritdoc />
     public override Task<MudExFileContent> ExportAsync(MudExFileFormat format = null, CancellationToken cancellationToken = default)
     {
+        if (_loadFailed)
+            throw new InvalidOperationException("The file could not be loaded and cannot be saved.");
         var text = (Value ?? string.Empty).NormalizeLineEndings().Replace("\n", _lineEnding);
         var body = _encoding.GetBytes(text);
         var bytes = _hadBom ? _encoding.GetPreamble().Concat(body).ToArray() : body;
