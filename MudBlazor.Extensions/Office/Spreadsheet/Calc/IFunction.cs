@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
 /// <summary>A worksheet function.</summary>
@@ -21,7 +23,8 @@ public interface IFunction
 /// <param name="Category">Category such as Math, Logical or Text.</param>
 /// <param name="Signature">Signature shown while typing, for example <c>SUM(number1, [number2], ...)</c>.</param>
 /// <param name="Description">Short English description.</param>
-public sealed record FunctionInfo(string Name, string Category, string Signature, string Description);
+/// <param name="IsVolatile">True if the result can change without any precedent changing (RAND, NOW, OFFSET, ...); formulas calling it recalculate on every calculation.</param>
+public sealed record FunctionInfo(string Name, string Category, string Signature, string Description, bool IsVolatile = false);
 
 /// <summary>Thrown by function implementations to return an error value.</summary>
 /// <param name="error">The error.</param>
@@ -75,6 +78,14 @@ public sealed class FunctionContext
 
     /// <summary>The cell of the formula being evaluated.</summary>
     public CellRef Cell => _scope.Cell;
+
+    /// <summary>The culture for TEXT, VALUE, NUMBERVALUE, DATEVALUE and TIMEVALUE (<see cref="CalcEngine.Culture"/>, by default the current culture).</summary>
+    public CultureInfo Culture => _evaluator.Culture ?? CultureInfo.CurrentCulture;
+
+    internal LetBinding Locals => _scope.Locals;
+
+    internal CalcValue Evaluate(FormulaNode node, LetBinding locals = null) =>
+        _evaluator.Evaluate(node, locals == null ? _scope : _scope with { Locals = locals });
 
     /// <summary>Reads a cell value; unstored cells are blank.</summary>
     /// <param name="sheet">The sheet.</param>

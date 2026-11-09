@@ -30,44 +30,16 @@ public sealed class FunctionRegistry
     private static FunctionRegistry CreateDefault()
     {
         var registry = new FunctionRegistry();
-        registry.Register(new DelegateFunction(
-            new FunctionInfo("SUM", "Math", "SUM(number1, [number2], ...)", "Adds all numbers in the arguments."), 1, 255, Sum));
-        registry.Register(new DelegateFunction(
-            new FunctionInfo("IF", "Logical", "IF(logical_test, [value_if_true], [value_if_false])",
-                "Returns one value if a condition is true and another if it is false."), 1, 3, If));
+        MathFunctions.Register(registry);
+        StatisticalFunctions.Register(registry);
+        LogicalFunctions.Register(registry);
+        TextFunctions.Register(registry);
+        DateTimeFunctions.Register(registry);
+        LookupFunctions.Register(registry);
+        ConditionalFunctions.Register(registry);
+        InformationFunctions.Register(registry);
+        FinancialFunctions.Register(registry);
+        DynamicArrayFunctions.Register(registry);
         return registry;
-    }
-
-    private static CalcValue Sum(FunctionContext ctx, IReadOnlyList<CalcArg> args)
-    {
-        double sum = 0;
-        foreach (var arg in args)
-        {
-            if (arg.IsMissing) continue;
-            var value = arg.Value;
-            if (value.Kind == CalcValueKind.Scalar)
-            {
-                if (!Coercion.TryToNumber(value.Scalar, out var n, out var error)) return CalcValue.Error(error);
-                sum += n;
-                continue;
-            }
-
-            foreach (var v in ctx.Values(value))
-            {
-                if (v.Kind == CellValueKind.Error) return v;
-                if (v.Kind == CellValueKind.Number) sum += v.NumberValue;
-            }
-        }
-
-        return double.IsFinite(sum) ? CalcValue.Number(sum) : CalcValue.Error(CellError.Num);
-    }
-
-    private static CalcValue If(FunctionContext ctx, IReadOnlyList<CalcArg> args)
-    {
-        var condition = ctx.ToScalar(args[0].Value);
-        if (!Coercion.TryToBoolean(condition, out var result, out var error)) return CalcValue.Error(error);
-        var index = result ? 1 : 2;
-        if (index >= args.Count) return CalcValue.Boolean(result);
-        return args[index].IsMissing ? CalcValue.Number(0) : args[index].Value;
     }
 }

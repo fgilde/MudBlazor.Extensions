@@ -192,6 +192,7 @@ public sealed class Worksheet
         cell.Value = state.Value;
         cell.Formula = state.Formula;
         cell.StyleId = state.StyleId;
+        cell.SpillAnchor = state.SpillAnchor;
     }
 
     internal List<CellRef> ExistingIn(CellRange range)

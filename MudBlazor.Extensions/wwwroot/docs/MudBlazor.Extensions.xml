@@ -29966,20 +29966,25 @@
             <summary>The error.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RefNode">
-            <summary>A single cell reference.</summary>
+            <summary>A single cell reference, or with <paramref name="Spill"/> the spill range of a formula cell (<c>A1#</c>).</summary>
             <param name="Cell">The cell, including absolute markers.</param>
             <param name="Sheet">The sheet name, or null for the sheet the formula lives on.</param>
+            <param name="Spill">True for <c>A1#</c>: the whole range the array result of the formula in the cell spills into.</param>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RefNode.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellRef,System.String)">
-            <summary>A single cell reference.</summary>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RefNode.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellRef,System.String,System.Boolean)">
+            <summary>A single cell reference, or with <paramref name="Spill"/> the spill range of a formula cell (<c>A1#</c>).</summary>
             <param name="Cell">The cell, including absolute markers.</param>
             <param name="Sheet">The sheet name, or null for the sheet the formula lives on.</param>
+            <param name="Spill">True for <c>A1#</c>: the whole range the array result of the formula in the cell spills into.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RefNode.Cell">
             <summary>The cell, including absolute markers.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RefNode.Sheet">
             <summary>The sheet name, or null for the sheet the formula lives on.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RefNode.Spill">
+            <summary>True for <c>A1#</c>: the whole range the array result of the formula in the cell spills into.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RangeNode">
             <summary>A rectangular range reference, including whole columns (<c>A:A</c>) and rows (<c>1:1</c>).</summary>
@@ -30145,11 +30150,24 @@
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.MissingArgNode">
             <summary>An empty argument position, as in <c>IF(A1,,1)</c>.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CalculatedEventArgs">
+            <summary>Cells whose calculated value changed during one calculation.</summary>
+            <param name="cells">The formula cells that were evaluated and the spill cells that were filled or cleared.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalculatedEventArgs.#ctor(System.Collections.Generic.IReadOnlyCollection{MudBlazor.Extensions.Office.Spreadsheet.CellChange})">
+            <summary>Cells whose calculated value changed during one calculation.</summary>
+            <param name="cells">The formula cells that were evaluated and the spill cells that were filled or cleared.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalculatedEventArgs.Cells">
+            <summary>The formula cells that were evaluated and the spill cells that were filled or cleared.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine">
             <summary>
             Calculates the formulas of a workbook and keeps their results in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.Value"/>. Cell edits recalculate only
             the dependent cells in dependency order; structural changes and defined-name changes rebuild the graph. Cells on a
-            circular reference get <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Circ"/>.
+            circular reference get <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Circ"/>. Array results spill into the cells below and to the right, which
+            then hold computed values with <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.SpillAnchor"/> set; a non-empty cell in the way yields <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Spill"/>.
+            Formulas calling volatile functions recalculate on every calculation.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Workbook,MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry)">
@@ -30157,11 +30175,26 @@
             <param name="wb">The workbook.</param>
             <param name="functions">The functions to use, or null for <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.Default"/>.</param>
         </member>
+        <member name="E:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.Calculated">
+            <summary>Raised after each calculation with the cells whose calculated value may have changed.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.Functions">
             <summary>The functions available to formulas.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.Culture">
+            <summary>
+            Culture used by TEXT, VALUE, NUMBERVALUE, DATEVALUE and TIMEVALUE; null (the default) uses
+            <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>. Takes effect on the next calculation.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.EvaluationCount">
             <summary>Number of formula evaluations performed so far.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.SpillRange(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>The range filled by the array result of a formula cell, or null if the cell does not spill (or is blocked).</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="anchor">The formula cell.</param>
+            <returns>The spill range including the formula cell.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.RecalculateAll">
             <summary>Rebuilds the dependency graph from all formulas and calculates every formula.</summary>
@@ -30303,6 +30336,42 @@
             <param name="b">Right value.</param>
             <returns>Negative, zero or positive.</returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ExcelDate">
+            <summary>
+            Converts between Excel date serials (1900 date system) and dates. Serial 1 is 1 January 1900 and the fraction is the
+            time of day. Like Excel, the calendar contains the fictitious 29 February 1900 (serial 60), so serials from 61 on match
+            the real calendar shifted by one day.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ExcelDate.MaxSerial">
+            <summary>The largest valid serial, 31 December 9999.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ExcelDate.ToSerial(System.DateTime)">
+            <summary>Converts a date and time to its serial.</summary>
+            <param name="value">The date and time.</param>
+            <returns>The serial, for example 45292.5 for 1 January 2024 12:00.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ExcelDate.ToDateTime(System.Double)">
+            <summary>Converts a serial to a date and time. Serial 60, the fictitious 29 February 1900, gives 28 February 1900.</summary>
+            <param name="serial">The serial (0 to <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ExcelDate.MaxSerial"/>).</param>
+            <returns>The date and time.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">The serial is negative or beyond <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ExcelDate.MaxSerial"/>.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ExcelDate.ToDate(System.Double)">
+            <summary>Splits the day part of a serial into year, month and day, including 29 February 1900 for serial 60.</summary>
+            <param name="serial">The serial (0 to <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ExcelDate.MaxSerial"/>); serial 0 gives 1900-01-00 as in Excel.</param>
+            <returns>Year, month and day.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ExcelDate.FromDate(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Computes the serial of a date like Excel's DATE function: months and days outside their range roll over into the
+            neighbouring months and years, and February 1900 has 29 days.
+            </summary>
+            <param name="year">The year (1900 to 9999).</param>
+            <param name="month">The month; values outside 1 to 12 roll over.</param>
+            <param name="day">The day; values outside the month roll over.</param>
+            <returns>The serial; may be negative or beyond <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ExcelDate.MaxSerial"/> for out-of-range input.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind">
             <summary>Kinds of formula tokens.</summary>
         </member>
@@ -30319,7 +30388,7 @@
             <summary>An error literal, optionally sheet-qualified.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Reference">
-            <summary>A cell or range reference, optionally sheet-qualified.</summary>
+            <summary>A cell or range reference, optionally sheet-qualified, or a spill range reference such as <c>A1#</c>.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Function">
             <summary>A function name (the next character is the opening parenthesis).</summary>
@@ -30450,13 +30519,15 @@
             <param name="Category">Category such as Math, Logical or Text.</param>
             <param name="Signature">Signature shown while typing, for example <c>SUM(number1, [number2], ...)</c>.</param>
             <param name="Description">Short English description.</param>
+            <param name="IsVolatile">True if the result can change without any precedent changing (RAND, NOW, OFFSET, ...); formulas calling it recalculate on every calculation.</param>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo.#ctor(System.String,System.String,System.String,System.String)">
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo.#ctor(System.String,System.String,System.String,System.String,System.Boolean)">
             <summary>Catalog information about a function.</summary>
             <param name="Name">The function name.</param>
             <param name="Category">Category such as Math, Logical or Text.</param>
             <param name="Signature">Signature shown while typing, for example <c>SUM(number1, [number2], ...)</c>.</param>
             <param name="Description">Short English description.</param>
+            <param name="IsVolatile">True if the result can change without any precedent changing (RAND, NOW, OFFSET, ...); formulas calling it recalculate on every calculation.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo.Name">
             <summary>The function name.</summary>
@@ -30469,6 +30540,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo.Description">
             <summary>Short English description.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo.IsVolatile">
+            <summary>True if the result can change without any precedent changing (RAND, NOW, OFFSET, ...); formulas calling it recalculate on every calculation.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CalcErrorException">
             <summary>Thrown by function implementations to return an error value.</summary>
@@ -30504,6 +30578,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.Cell">
             <summary>The cell of the formula being evaluated.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.Culture">
+            <summary>The culture for TEXT, VALUE, NUMBERVALUE, DATEVALUE and TIMEVALUE (<see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.Culture"/>, by default the current culture).</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.GetValue(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
             <summary>Reads a cell value; unstored cells are blank.</summary>
@@ -30595,6 +30672,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.StyleId">
             <summary>Index into <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.StyleTable"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.SpillAnchor">
+            <summary>
+            For a cell filled by a spilling formula: the formula cell (on the same sheet) whose array result this value belongs to.
+            Such cells have no formula of their own; null for all other cells.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellRange">
             <summary>

@@ -18,6 +18,7 @@ public sealed class SetValueCommand(Worksheet sheet, CellRef cell, CellValue val
         var target = sheet.Ensure(cell);
         target.Value = value;
         target.Formula = null;
+        target.SpillAnchor = null;
         sheet.Prune(cell);
         wb.Notify(sheet, cell);
     }
@@ -47,7 +48,9 @@ public sealed class SetFormulaCommand(Worksheet sheet, CellRef cell, string form
         _before = sheet.Capture(cell);
         var text = formula?.TrimStart();
         if (text != null && text.StartsWith('=')) text = text[1..];
-        sheet.Ensure(cell).Formula = string.IsNullOrEmpty(text) ? null : text;
+        var target = sheet.Ensure(cell);
+        target.Formula = string.IsNullOrEmpty(text) ? null : text;
+        target.SpillAnchor = null;
         sheet.Prune(cell);
         wb.Notify(sheet, cell);
     }

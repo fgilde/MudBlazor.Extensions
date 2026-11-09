@@ -1,16 +1,36 @@
+using System.Globalization;
+
 namespace MudBlazor.Extensions.Office.Spreadsheet;
+
+/// <summary>Cells whose calculated value changed during one calculation.</summary>
+/// <param name="cells">The formula cells that were evaluated and the spill cells that were filled or cleared.</param>
+public sealed class CalculatedEventArgs(IReadOnlyCollection<CellChange> cells) : EventArgs
+{
+    /// <summary>The formula cells that were evaluated and the spill cells that were filled or cleared.</summary>
+    public IReadOnlyCollection<CellChange> Cells { get; } = cells;
+}
 
 /// <summary>
 /// Calculates the formulas of a workbook and keeps their results in <see cref="Cell.Value"/>. Cell edits recalculate only
 /// the dependent cells in dependency order; structural changes and defined-name changes rebuild the graph. Cells on a
-/// circular reference get <see cref="CellError.Circ"/>.
+/// circular reference get <see cref="CellError.Circ"/>. Array results spill into the cells below and to the right, which
+/// then hold computed values with <see cref="Cell.SpillAnchor"/> set; a non-empty cell in the way yields <see cref="CellError.Spill"/>.
+/// Formulas calling volatile functions recalculate on every calculation.
 /// </summary>
 public sealed class CalcEngine
 {
+    private const int MaxSpillCells = 1_000_000;
+    private const int MaxSpillPasses = 16;
+
     private readonly Workbook _wb;
     private readonly FormulaEvaluator _evaluator;
     private readonly DependencyGraph _graph = new();
     private readonly Dictionary<CellNode, FormulaNode> _formulas = new();
+    private readonly HashSet<CellNode> _volatile = new();
+    private readonly Dictionary<CellNode, SpillState> _spills = new();
+    private readonly HashSet<CellChange> _changed = new();
+    private readonly List<CellNode> _grown = new();
+    private readonly List<CellNode> _freed = new();
 
     /// <summary>Attaches an engine to a workbook, calculates all formulas and follows <see cref="Workbook.Changed"/> from then on.</summary>
     /// <param name="wb">The workbook.</param>
@@ -18,26 +38,51 @@ public sealed class CalcEngine
     public CalcEngine(Workbook wb, FunctionRegistry functions = null)
     {
         _wb = wb;
-        _evaluator = new FormulaEvaluator(functions ?? FunctionRegistry.Default);
+        _evaluator = new FormulaEvaluator(functions ?? FunctionRegistry.Default) { SpillRange = SpillRange };
         wb.Changed += OnWorkbookChanged;
         RecalculateAll();
     }
 
+    /// <summary>Raised after each calculation with the cells whose calculated value may have changed.</summary>
+    public event EventHandler<CalculatedEventArgs> Calculated;
+
     /// <summary>The functions available to formulas.</summary>
     public FunctionRegistry Functions => _evaluator.Functions;
 
+    /// <summary>
+    /// Culture used by TEXT, VALUE, NUMBERVALUE, DATEVALUE and TIMEVALUE; null (the default) uses
+    /// <see cref="CultureInfo.CurrentCulture"/>. Takes effect on the next calculation.
+    /// </summary>
+    public CultureInfo Culture
+    {
+        get => _evaluator.Culture;
+        set => _evaluator.Culture = value;
+    }
+
     /// <summary>Number of formula evaluations performed so far.</summary>
     public long EvaluationCount { get; private set; }
+
+    /// <summary>The range filled by the array result of a formula cell, or null if the cell does not spill (or is blocked).</summary>
+    /// <param name="sheet">The sheet.</param>
+    /// <param name="anchor">The formula cell.</param>
+    /// <returns>The spill range including the formula cell.</returns>
+    public CellRange? SpillRange(Worksheet sheet, CellRef anchor) =>
+        _spills.TryGetValue(new CellNode(sheet, anchor.Relative.Key), out var s) && s.Active ? s.Range : null;
 
     /// <summary>Rebuilds the dependency graph from all formulas and calculates every formula.</summary>
     public void RecalculateAll()
     {
         _graph.Clear();
         _formulas.Clear();
+        _volatile.Clear();
+        _spills.Clear();
         foreach (var sheet in _wb.Sheets)
-            foreach (var (r, cell) in sheet.UsedCells())
-                if (cell.Formula != null)
-                    Register(new CellNode(sheet, r.Key), cell.Formula);
+            foreach (var (r, cell) in sheet.UsedCells().ToList())
+            {
+                if (cell.SpillAnchor != null) ClearSpillCell(sheet, r);
+                if (cell.Formula != null) Register(new CellNode(sheet, r.Key), cell.Formula);
+            }
+
         Recalculate([.. _formulas.Keys]);
     }
 
@@ -45,13 +90,14 @@ public sealed class CalcEngine
     /// <param name="changed">The changed cells.</param>
     public void OnCellsChanged(IEnumerable<(Worksheet Sheet, CellRef Cell)> changed)
     {
-        var queue = new Queue<CellNode>();
+        var starts = new List<CellNode>();
         var affected = new HashSet<CellNode>();
         foreach (var (sheet, cell) in changed)
         {
             if (!_wb.Sheets.Contains(sheet)) continue;
             var node = new CellNode(sheet, cell.Relative.Key);
-            if (sheet[cell]?.Formula is { } formula)
+            var stored = sheet[cell];
+            if (stored?.Formula is { } formula)
             {
                 Register(node, formula);
                 affected.Add(node);
@@ -60,15 +106,20 @@ public sealed class CalcEngine
             {
                 _formulas.Remove(node);
                 _graph.Remove(node);
+                _volatile.Remove(node);
+                ClearSpill(node);
+                if (stored?.SpillAnchor is { } anchor && !SpillCovers(new CellNode(sheet, anchor.Key), node.Cell))
+                    ClearSpillCell(sheet, node.Cell);
             }
 
-            queue.Enqueue(node);
+            starts.Add(node);
+            AddAnchorsOver(node, affected, starts);
         }
 
-        while (queue.Count > 0)
-            foreach (var dependent in _graph.Dependents(queue.Dequeue()))
-                if (affected.Add(dependent))
-                    queue.Enqueue(dependent);
+        foreach (var node in _volatile)
+            if (affected.Add(node))
+                starts.Add(node);
+        Close(affected, starts);
         Recalculate(affected);
     }
 
@@ -85,13 +136,19 @@ public sealed class CalcEngine
         var ast = FormulaParser.TryParse(formula, out var parsed, out _) ? parsed : new ErrorNode(CellError.Name);
         _formulas[node] = ast;
         var precedents = new List<RefArea>();
-        Collect(ast, node.Sheet, 0, precedents);
+        if (Collect(ast, node.Sheet, precedents)) _volatile.Add(node);
+        else _volatile.Remove(node);
         _graph.Set(node, precedents);
     }
 
-    private void Collect(FormulaNode ast, Worksheet host, int depth, List<RefArea> into) =>
-        ast.Rewrite(n =>
+    private bool Collect(FormulaNode ast, Worksheet host, List<RefArea> into)
+    {
+        var isVolatile = false;
+        var stack = new Stack<(FormulaNode Node, int Depth)>();
+        stack.Push((ast, 0));
+        while (stack.Count > 0)
         {
+            var (n, depth) = stack.Pop();
             switch (n)
             {
                 case RefNode r when Resolve(r.Sheet, host) is { } sheet:
@@ -101,36 +158,189 @@ public sealed class CalcEngine
                     into.Add(new RefArea(sheet, r.Range.Normalized));
                     break;
                 case NameNode name when depth < FormulaEvaluator.MaxNameDepth && _evaluator.ParseName(name.Name, _wb) is { } target:
-                    Collect(target, host, depth + 1, into);
+                    stack.Push((target, depth + 1));
+                    break;
+                case CallNode call:
+                    if (_evaluator.Functions.TryGet(call.Name, out var f) && f.Info.IsVolatile) isVolatile = true;
+                    foreach (var arg in call.Args) stack.Push((arg, depth));
+                    break;
+                case BinaryNode b:
+                    stack.Push((b.Left, depth));
+                    stack.Push((b.Right, depth));
+                    break;
+                case UnaryNode u:
+                    stack.Push((u.Operand, depth));
+                    break;
+                case PercentNode p:
+                    stack.Push((p.Operand, depth));
+                    break;
+                case ParenNode p:
+                    stack.Push((p.Inner, depth));
                     break;
             }
+        }
 
-            return n;
-        });
+        return isVolatile;
+    }
 
     private Worksheet Resolve(string sheet, Worksheet host) => sheet == null ? host : _wb.FindSheet(sheet);
 
+    private IEnumerable<CellNode> Next(CellNode node)
+    {
+        foreach (var d in _graph.Dependents(node)) yield return d;
+        if (!_spills.TryGetValue(node, out var spill) || !spill.Active) yield break;
+        foreach (var c in spill.Range.Cells())
+            if (c != node.Cell)
+                foreach (var d in _graph.Dependents(new CellNode(node.Sheet, c.Key)))
+                    yield return d;
+    }
+
+    private void Close(HashSet<CellNode> affected, IEnumerable<CellNode> starts)
+    {
+        var queue = new Queue<CellNode>(starts);
+        while (queue.Count > 0)
+            foreach (var dependent in Next(queue.Dequeue()))
+                if (affected.Add(dependent))
+                    queue.Enqueue(dependent);
+    }
+
+    private void AddAnchorsOver(CellNode cell, HashSet<CellNode> affected, List<CellNode> starts)
+    {
+        foreach (var (anchor, spill) in _spills)
+            if (anchor.Sheet == cell.Sheet && anchor != cell && spill.Range.Contains(cell.Cell) && affected.Add(anchor))
+                starts.Add(anchor);
+    }
+
+    private bool SpillCovers(CellNode anchor, CellRef cell) => _spills.TryGetValue(anchor, out var s) && s.Range.Contains(cell);
+
     private void Recalculate(HashSet<CellNode> affected)
     {
-        foreach (var component in Components(affected))
+        for (var pass = 0; pass < MaxSpillPasses; pass++)
         {
-            if (component.Count == 1 && !_graph.Dependents(component[0]).Contains(component[0]))
+            var starts = new List<CellNode>(_grown);
+            foreach (var freed in _freed) AddAnchorsOver(freed, affected, starts);
+            _grown.Clear();
+            _freed.Clear();
+            Close(affected, starts);
+            if (affected.Count == 0) break;
+            foreach (var component in Components(affected))
             {
-                Evaluate(component[0]);
-                continue;
+                if (component.Count == 1 && !Next(component[0]).Contains(component[0]))
+                {
+                    Evaluate(component[0]);
+                    continue;
+                }
+
+                foreach (var node in component)
+                {
+                    ClearSpill(node);
+                    node.Sheet[node.Cell].Value = CellValue.Error(CellError.Circ);
+                    _changed.Add(new CellChange(node.Sheet, node.Cell));
+                }
             }
 
-            foreach (var node in component)
-                node.Sheet[node.Cell].Value = CellValue.Error(CellError.Circ);
+            affected = new HashSet<CellNode>();
         }
+
+        _grown.Clear();
+        _freed.Clear();
+        if (_changed.Count == 0) return;
+        var args = new CalculatedEventArgs(_changed.ToList());
+        _changed.Clear();
+        Calculated?.Invoke(this, args);
     }
 
     private void Evaluate(CellNode node)
     {
         var scope = new EvalScope(_wb, node.Sheet, node.Cell);
-        var value = _evaluator.ToScalar(_evaluator.Evaluate(_formulas[node], scope), scope);
+        var result = _evaluator.Evaluate(_formulas[node], scope);
+        var array = result.Kind switch
+        {
+            CalcValueKind.Array when result.Array.Rows > 1 || result.Array.Columns > 1 => result.Array,
+            CalcValueKind.Reference when result.Areas.Count == 1 && !result.Areas[0].Range.IsSingleCell =>
+                result.Areas[0].Range.Area > MaxSpillCells ? null : FormulaEvaluator.ToArray(result),
+            _ => null
+        };
+        CellValue value;
+        if (array != null) value = Spill(node, array);
+        else if (result.Kind == CalcValueKind.Reference && result.Areas.Count == 1 && !result.Areas[0].Range.IsSingleCell)
+            value = SpillBlocked(node, null);
+        else
+        {
+            ClearSpill(node);
+            value = _evaluator.ToScalar(result, scope);
+        }
+
         node.Sheet[node.Cell].Value = value.Kind == CellValueKind.Empty ? CellValue.Number(0) : value;
+        _changed.Add(new CellChange(node.Sheet, node.Cell));
         EvaluationCount++;
+    }
+
+    private CellValue Spill(CellNode node, CalcArray array)
+    {
+        var anchor = node.Cell;
+        if ((long)array.Rows * array.Columns > MaxSpillCells || anchor.Row + array.Rows > CellRef.MaxRows
+                                                               || anchor.Column + array.Columns > CellRef.MaxColumns)
+            return SpillBlocked(node, null);
+        var range = CellRange.FromBounds(anchor.Row, anchor.Column, anchor.Row + array.Rows - 1, anchor.Column + array.Columns - 1);
+        var sheet = node.Sheet;
+        foreach (var c in sheet.ExistingIn(range))
+            if (c != anchor && sheet[c] is { HasContent: true } blocker && blocker.SpillAnchor != anchor)
+                return SpillBlocked(node, range);
+
+        var old = _spills.TryGetValue(node, out var previous) && previous.Active ? previous.Range : (CellRange?)null;
+        if (old is { } oldRange)
+            foreach (var c in sheet.ExistingIn(oldRange))
+                if (!range.Contains(c) && sheet[c].SpillAnchor == anchor)
+                    ClearSpillCell(sheet, c);
+
+        for (var r = 0; r < array.Rows; r++)
+            for (var col = 0; col < array.Columns; col++)
+            {
+                if (r == 0 && col == 0) continue;
+                var target = new CellRef(anchor.Row + r, anchor.Column + col);
+                var v = array[r, col];
+                if (v.Kind == CellValueKind.Empty) v = CellValue.Number(0);
+                var cell = sheet.Ensure(target);
+                if (cell.SpillAnchor == anchor && cell.Value == v && old?.Contains(target) == true) continue;
+                cell.Value = v;
+                cell.SpillAnchor = anchor;
+                _changed.Add(new CellChange(sheet, target));
+                if (old?.Contains(target) != true) _grown.Add(new CellNode(sheet, target.Key));
+            }
+
+        _spills[node] = new SpillState(range, true);
+        return array[0, 0];
+    }
+
+    private CellValue SpillBlocked(CellNode node, CellRange? intended)
+    {
+        ClearSpill(node);
+        if (intended is { } range)
+        {
+            foreach (var c in node.Sheet.ExistingIn(range))
+                if (node.Sheet[c].SpillAnchor == node.Cell)
+                    ClearSpillCell(node.Sheet, c);
+            _spills[node] = new SpillState(range, false);
+        }
+
+        return CellValue.Error(CellError.Spill);
+    }
+
+    private void ClearSpill(CellNode node)
+    {
+        if (!_spills.Remove(node, out var spill) || !spill.Active) return;
+        foreach (var c in node.Sheet.ExistingIn(spill.Range))
+            if (node.Sheet[c].SpillAnchor == node.Cell)
+                ClearSpillCell(node.Sheet, c);
+    }
+
+    private void ClearSpillCell(Worksheet sheet, CellRef c)
+    {
+        var cell = sheet[c];
+        sheet.Restore(c, new CellState(default, cell.Formula, cell.StyleId));
+        _changed.Add(new CellChange(sheet, c));
+        _freed.Add(new CellNode(sheet, c.Key));
     }
 
     private List<List<CellNode>> Components(HashSet<CellNode> nodes)
@@ -147,7 +357,7 @@ public sealed class CalcEngine
             index[n] = low[n] = index.Count;
             stack.Push(n);
             onStack.Add(n);
-            calls.Push((n, _graph.Dependents(n).GetEnumerator()));
+            calls.Push((n, Next(n).GetEnumerator()));
         }
 
         foreach (var root in nodes)
@@ -190,4 +400,6 @@ public sealed class CalcEngine
         result.Reverse();
         return result;
     }
+
+    private readonly record struct SpillState(CellRange Range, bool Active);
 }

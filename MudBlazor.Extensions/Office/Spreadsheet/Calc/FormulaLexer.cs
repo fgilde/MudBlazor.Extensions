@@ -17,7 +17,7 @@ public enum FormulaTokenKind
     /// <summary>An error literal, optionally sheet-qualified.</summary>
     Error,
 
-    /// <summary>A cell or range reference, optionally sheet-qualified.</summary>
+    /// <summary>A cell or range reference, optionally sheet-qualified, or a spill range reference such as <c>A1#</c>.</summary>
     Reference,
 
     /// <summary>A function name (the next character is the opening parenthesis).</summary>
@@ -174,6 +174,7 @@ public static class FormulaLexer
         var end = i + m.Length;
         if (end < s.Length && (IsNameChar(s[end]) || s[end] is '(' or '$')) return false;
         if (!CellRange.TryParse(m.Value, out _)) return false;
+        if (end < s.Length && s[end] == '#' && !m.Value.Contains(':')) end++;
         i = end;
         return true;
     }

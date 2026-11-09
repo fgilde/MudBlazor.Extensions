@@ -1,6 +1,10 @@
+using System.Globalization;
+
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
-internal readonly record struct EvalScope(Workbook Workbook, Worksheet Sheet, CellRef Cell, int NameDepth = 0);
+internal readonly record struct EvalScope(Workbook Workbook, Worksheet Sheet, CellRef Cell, int NameDepth = 0, LetBinding Locals = null);
+
+internal sealed record LetBinding(string Name, CalcValue Value, LetBinding Next);
 
 internal sealed class FormulaEvaluator(FunctionRegistry functions)
 {
@@ -10,12 +14,17 @@ internal sealed class FormulaEvaluator(FunctionRegistry functions)
 
     public FunctionRegistry Functions => functions;
 
+    public CultureInfo Culture { get; set; }
+
+    public Func<Worksheet, CellRef, CellRange?> SpillRange { get; set; }
+
     public CalcValue Evaluate(FormulaNode node, EvalScope scope) => node switch
     {
         NumberNode n => CalcValue.Number(n.Value),
         TextNode t => CalcValue.Text(t.Value),
         BoolNode b => CalcValue.Boolean(b.Value),
         ErrorNode e => CalcValue.Error(e.Error),
+        RefNode { Spill: true } r => SpillReference(scope, r),
         RefNode r => Reference(scope, r.Sheet, new CellRange(r.Cell, r.Cell)),
         RangeNode r => Reference(scope, r.Sheet, r.Range),
         NameNode n => EvaluateName(n.Name, scope),
@@ -79,6 +88,14 @@ internal sealed class FormulaEvaluator(FunctionRegistry functions)
         return sheet == null ? CalcValue.Error(CellError.Ref) : CalcValue.FromReference([new RefArea(sheet, range.Normalized)]);
     }
 
+    private CalcValue SpillReference(EvalScope scope, RefNode r)
+    {
+        var sheet = r.Sheet == null ? scope.Sheet : scope.Workbook.FindSheet(r.Sheet);
+        if (sheet == null) return CalcValue.Error(CellError.Ref);
+        if (SpillRange?.Invoke(sheet, r.Cell.Relative) is { } range) return CalcValue.FromReference([new RefArea(sheet, range)]);
+        return GetValue(sheet, r.Cell) is { Kind: CellValueKind.Error } error ? error : CalcValue.Error(CellError.Ref);
+    }
+
     internal FormulaNode ParseName(string name, Workbook wb)
     {
         if (!wb.DefinedNames.TryGetValue(name, out var text)) return null;
@@ -88,6 +105,9 @@ internal sealed class FormulaEvaluator(FunctionRegistry functions)
 
     private CalcValue EvaluateName(string name, EvalScope scope)
     {
+        for (var local = scope.Locals; local != null; local = local.Next)
+            if (string.Equals(local.Name, name, StringComparison.OrdinalIgnoreCase))
+                return local.Value;
         if (scope.NameDepth >= MaxNameDepth) return CalcValue.Error(CellError.Circ);
         var node = ParseName(name, scope.Workbook);
         return node == null ? CalcValue.Error(CellError.Name) : Evaluate(node, scope with { NameDepth = scope.NameDepth + 1 });

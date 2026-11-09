@@ -84,6 +84,7 @@ public static class FormulaParser
                 break;
             case RefNode r:
                 WriteSheet(sb, r.Sheet).Append(r.Cell.ToA1());
+                if (r.Spill) sb.Append('#');
                 break;
             case RangeNode r:
                 WriteSheet(sb, r.Sheet).Append(r.Range.ToA1());
@@ -368,8 +369,9 @@ public static class FormulaParser
             var sheet = bang < 0 ? null : text[..bang];
             if (sheet is ['\'', .., '\''])
                 sheet = sheet[1..^1].Replace("''", "'");
-            var range = CellRange.Parse(text[(bang + 1)..]);
-            return text.IndexOf(':', bang + 1) < 0 ? new RefNode(range.Start, sheet) : new RangeNode(range, sheet);
+            var spill = text.EndsWith('#');
+            var range = CellRange.Parse(text[(bang + 1)..(spill ? ^1 : ^0)]);
+            return text.IndexOf(':', bang + 1) < 0 ? new RefNode(range.Start, sheet, spill) : new RangeNode(range, sheet);
         }
     }
 }

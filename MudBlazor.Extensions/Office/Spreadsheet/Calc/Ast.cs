@@ -19,10 +19,11 @@ public sealed record BoolNode(bool Value) : FormulaNode;
 /// <param name="Error">The error.</param>
 public sealed record ErrorNode(CellError Error) : FormulaNode;
 
-/// <summary>A single cell reference.</summary>
+/// <summary>A single cell reference, or with <paramref name="Spill"/> the spill range of a formula cell (<c>A1#</c>).</summary>
 /// <param name="Cell">The cell, including absolute markers.</param>
 /// <param name="Sheet">The sheet name, or null for the sheet the formula lives on.</param>
-public sealed record RefNode(CellRef Cell, string Sheet) : FormulaNode;
+/// <param name="Spill">True for <c>A1#</c>: the whole range the array result of the formula in the cell spills into.</param>
+public sealed record RefNode(CellRef Cell, string Sheet, bool Spill = false) : FormulaNode;
 
 /// <summary>A rectangular range reference, including whole columns (<c>A:A</c>) and rows (<c>1:1</c>).</summary>
 /// <param name="Range">The range, including absolute markers.</param>
