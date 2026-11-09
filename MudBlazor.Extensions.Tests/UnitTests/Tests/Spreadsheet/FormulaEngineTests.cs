@@ -378,7 +378,8 @@ public class FormulaEngineTests
         string[] formulas =
         [
             "=SUM(A1:A8)", "=A3*2", "=$A$2+B1", "=ROW()", "=COLUMN()+A1", "=SEQUENCE(3,2)", "=Data!A1:A6", "=COUNTIF(Data!A1:A9,Data!B1:B9)",
-            "=Data!A4+1", "=COUNTBLANK(A1:D6)", "=Rng*2", "=SUM(B:B)", "=INDEX(A1:A9,3)", "=A1:A9*1", "=IFERROR(C2+1,0)", "=SUM(2:2)"
+            "=Data!A4+1", "=COUNTBLANK(A1:D6)", "=Rng*2", "=SUM(B:B)", "=INDEX(A1:A9,3)", "=A1:A9*1", "=IFERROR(C2+1,0)", "=SUM(2:2)",
+            "=ROW(A5)", "=COLUMN(D1)", "=SUMPRODUCT(ROW(A5:A9))", "=COUNTIF(Data!A1:A9,Data!A1:A9)"
         ];
         for (var r = 1; r <= 9; r++)
         {
@@ -387,6 +388,7 @@ public class FormulaEngineTests
         }
 
         wb.Execute(new DefineNameCommand("Rng", "Sheet1!$A$4"));
+        for (var r = 3; r <= 7; r++) wb.Execute(new SetFormulaCommand(data, R("D" + r), "=COUNTIF(Sheet1!A1:A9,Sheet1!A1:A9)+ROW(Sheet1!C4)"));
         for (var i = 0; i < 40; i++)
         {
             var at = new CellRef(rnd.Next(0, 12), rnd.Next(0, 6));
@@ -458,6 +460,50 @@ public class FormulaEngineTests
         Assert.Equal(CellValue.Number(14), ValueAt(ws, right));
         Assert.Equal(CellValue.Number(10), ValueAt(ws, below));
         Assert.Equal(CellValue.Number(3), ws[new CellRef(rows, columns - 1)].Value);
+    }
+
+    [Fact]
+    public void Shift_RecalculatesRowAndColumnOfMovedReferences()
+    {
+        var (wb, ws, _) = Create();
+        wb.Execute(new AddSheetCommand("Other"));
+        var other = wb.Sheets[1];
+        for (var r = 5; r <= 8; r++)
+        {
+            wb.Execute(new SetValueCommand(ws, R("A" + r), CellValue.Number(r)));
+            wb.Execute(new SetValueCommand(ws, R("B" + r), CellValue.Text("<=" + r)));
+        }
+
+        wb.Execute(new SetFormulaCommand(ws, R("A1"), "=COLUMN(D1)"));
+        wb.Execute(new SetFormulaCommand(ws, R("B1"), "=ROW(A5)"));
+        wb.Execute(new SetFormulaCommand(ws, R("E1"), "=SUMPRODUCT(ROW(A5:A9))"));
+        wb.Execute(new SetFormulaCommand(other, R("B6"), "=COUNTIF(Sheet1!A5:A8,Sheet1!B5:B8)"));
+
+        void Expect(double column, double row, double rows, double count)
+        {
+            Assert.Equal(CellValue.Number(column), ValueAt(ws, "A1"));
+            Assert.Equal(CellValue.Number(row), ValueAt(ws, "B1"));
+            Assert.Equal(CellValue.Number(rows), ValueAt(ws, "E1"));
+            Assert.Equal(CellValue.Number(count), ValueAt(other, "B6"));
+        }
+
+        Expect(4, 5, 35, 2);
+        wb.Execute(new InsertRowsCommand(ws, 1, 1));
+        Expect(4, 6, 40, 1);
+        wb.Execute(new InsertColumnsCommand(ws, 1, 1));
+        Assert.Equal(CellValue.Number(5), ValueAt(ws, "A1"));
+        wb.Undo.Undo();
+        Expect(4, 6, 40, 1);
+        wb.Undo.Undo();
+        Expect(4, 5, 35, 2);
+
+        wb.Execute(new DeleteRowsCommand(ws, 1, 1));
+        Expect(4, 4, 30, 3);
+        wb.Execute(new DeleteColumnsCommand(ws, 1, 1));
+        Assert.Equal(CellValue.Number(3), ValueAt(ws, "A1"));
+        wb.Undo.Undo();
+        wb.Undo.Undo();
+        Expect(4, 5, 35, 2);
     }
 
     [Fact]

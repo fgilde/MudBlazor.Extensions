@@ -241,6 +241,8 @@ public sealed class CalcEngine : IDisposable
 
         bool MovesAlong(RefArea a) => a.Sheet == sheet && Span(a.Range).Start >= (insert ? index : end);
 
+        bool Shifted(RefArea a) => a.Sheet == sheet && Span(a.Range).End >= index;
+
         CellNode? MapNode(CellNode n)
         {
             if (n.Sheet != sheet) return n;
@@ -280,7 +282,8 @@ public sealed class CalcEngine : IDisposable
             }
 
             var moved = target != node;
-            if (areas.Any(Touches) || moved && (entry.Positional || areas.Any(a => !a.Range.IsSingleCell && !MovesAlong(a)))
+            if (areas.Any(Touches) || moved && entry.Positional
+                                   || areas.Any(a => entry.Positional && Shifted(a) || !a.Range.IsSingleCell && (moved ? !MovesAlong(a) : Shifted(a)))
                                    || spilled && node.Sheet == sheet && Touches(new RefArea(sheet, spill.Range)))
                 dirty.Add(target);
             formulas[target] = entry;
