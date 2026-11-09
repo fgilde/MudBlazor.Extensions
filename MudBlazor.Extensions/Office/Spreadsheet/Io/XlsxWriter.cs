@@ -78,8 +78,9 @@ public static class XlsxWriter
             var stylesDoc = package?.StylesPart is { } stylesPart && Find(source, stylesPart) != null ? Load(stylesPart) : null;
             var styles = new StylesXmlWriter(stylesDoc, wb.Styles, package?.CanonicalXf ?? [0], CultureInfo.CurrentCulture);
             var stylesPartName = stylesDoc != null ? package.StylesPart : AddPart("styles", typeBase, "styles.xml");
-            var strings = new SharedStringsWriter();
-            var sstPart = package?.SharedStringsPart is { } existingSst && Find(source, existingSst) != null ? existingSst
+            var sourceSst = package?.SharedStringsPart is { } existingSst ? Find(source, existingSst) : null;
+            var strings = sourceSst == null ? new SharedStringsWriter() : Read(sourceSst, s => new SharedStringsWriter(s));
+            var sstPart = sourceSst != null ? package.SharedStringsPart
                 : wb.Sheets.Any(s => s.UsedCells().Any(c => c.Cell.Formula == null && c.Cell.Value.Kind == CellValueKind.Text))
                     ? AddPart("sharedStrings", typeBase, "sharedStrings.xml")
                     : null;
@@ -87,7 +88,7 @@ public static class XlsxWriter
             var sheets = Sheets(typeBase);
             UpdateWorkbook(doc, ns, typeBase, sheets);
             _parts[_workbookPart] = s => SheetXmlWriter.Save(doc, s);
-            foreach (var sheet in sheets.Where(x => x.Worksheet != null))
+            foreach (var sheet in sheets.Where(x => x.Worksheet != null && (x.Original == null || x.Worksheet.Modified || Find(source, x.PartName) == null)))
                 _parts[sheet.PartName] = s => SheetXmlWriter.Write(s, sheet.Worksheet, sheet.Original, package, styles, strings, theme);
 
             var relsPart = RelsPartOf(_workbookPart);
@@ -111,7 +112,11 @@ public static class XlsxWriter
                     if (styles.Changed) Put(zip, name, styles.Save);
                     else Copy(zip, name);
                 }
-                else if (name.Equals(sstPart, StringComparison.OrdinalIgnoreCase)) Put(zip, name, s => strings.Write(s, ns));
+                else if (name.Equals(sstPart, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (strings.Unchanged) Copy(zip, name);
+                    else Put(zip, name, s => strings.Write(s, ns));
+                }
                 else if (_parts.TryGetValue(name, out var write)) Put(zip, name, write);
                 else Copy(zip, name);
             }
@@ -160,8 +165,6 @@ public static class XlsxWriter
             if (sheetsElement.Parent == null) root.Add(sheetsElement);
             var originalElements = sheetsElement.Elements().Where(e => e.Name.LocalName == "sheet").ToList();
             var map = new Dictionary<int, int>();
-            var renames = new List<(string Old, string New)>();
-            var deleted = new List<string>();
             sheetsElement.RemoveNodes();
             for (var i = 0; i < sheets.Count; i++)
             {
@@ -174,21 +177,9 @@ public static class XlsxWriter
                 {
                     element.SetAttributeValue("name", ws.Name);
                     element.SetAttributeValue("state", ws.Hidden ? entry.Original?.State is "hidden" or "veryHidden" ? entry.Original.State : "hidden" : null);
-                    if (entry.Original != null && entry.Original.Name != ws.Name) renames.Add((entry.Original.Name, ws.Name));
                 }
 
                 sheetsElement.Add(element);
-            }
-
-            foreach (var o in package?.Sheets ?? [])
-                if (o.Worksheet != null && !wb.Sheets.Contains(o.Worksheet))
-                    deleted.Add(o.Name);
-
-            string Rewrite(string formula)
-            {
-                foreach (var name in deleted) formula = ReferenceShifter.RemoveSheet(formula, name);
-                foreach (var (old, name) in renames) formula = ReferenceShifter.RenameSheet(formula, old, name);
-                return formula;
             }
 
             var names = new List<XElement>();
@@ -200,7 +191,6 @@ public static class XlsxWriter
                 {
                     if (!int.TryParse(local.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var old) || !map.TryGetValue(old, out var now)) continue;
                     local.Value = now.ToString(CultureInfo.InvariantCulture);
-                    copy.Value = Rewrite(copy.Value);
                 }
                 else
                 {

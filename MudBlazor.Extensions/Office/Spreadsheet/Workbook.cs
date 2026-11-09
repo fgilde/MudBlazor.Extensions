@@ -1,3 +1,5 @@
+using System.Xml.Linq;
+
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
 /// <summary>A changed cell value or formula.</summary>
@@ -151,12 +153,26 @@ public sealed class Workbook
         Changed?.Invoke(this, args);
     }
 
-    internal void Notify(Worksheet sheet, CellRef cell) => _cells.Add(new CellChange(sheet, cell.Relative));
+    internal void Notify(Worksheet sheet, CellRef cell)
+    {
+        sheet.Modified = true;
+        Package?.Sheets.Find(p => p.Worksheet == sheet)?.ArrayFormulas.Remove(cell.Relative.Key);
+        _cells.Add(new CellChange(sheet, cell.Relative));
+    }
 
-    internal void NotifyFormatted(Worksheet sheet, CellRange range) => _ranges.Add(new RangeChange(sheet, range));
+    internal void NotifyFormatted(Worksheet sheet, CellRange range)
+    {
+        sheet.Modified = true;
+        _ranges.Add(new RangeChange(sheet, range));
+    }
 
-    internal void Notify(StructureChangeKind kind, Worksheet sheet, int index = 0, int count = 0, string oldName = null) =>
+    internal void Notify(StructureChangeKind kind, Worksheet sheet, int index = 0, int count = 0, string oldName = null)
+    {
+        if (sheet != null && kind is not (StructureChangeKind.SheetMoved or StructureChangeKind.SheetRenamed or StructureChangeKind.SheetRemoved
+                or StructureChangeKind.DefinedNamesChanged))
+            sheet.Modified = true;
         _structure.Add(new StructureChange(kind, sheet, index, count, oldName));
+    }
 
     internal static void ValidateSheetName(string name, Worksheet ignore, Workbook wb)
     {
@@ -183,7 +199,20 @@ public sealed class Workbook
                 if (text == cell.Formula) continue;
                 cells.Add((sheet, r, cell.Formula));
                 cell.Formula = text;
+                sheet.Modified = true;
             }
+
+        List<(XElement, string)> localNames = null;
+        foreach (var name in Package?.DefinedNames?.Elements().Where(e => e.Name.LocalName == "definedName" && e.Attribute("localSheetId") != null) ?? [])
+        {
+            var host = int.TryParse((string)name.Attribute("localSheetId"), out var id) && id >= 0 && id < Package.Sheets.Count
+                ? Package.Sheets[id].Worksheet?.Name ?? Package.Sheets[id].Name
+                : null;
+            var text = rewrite(name.Value, host);
+            if (text == name.Value) continue;
+            (localNames ??= []).Add((name, name.Value));
+            name.Value = text;
+        }
 
         Dictionary<string, string> names = null;
         foreach (var (key, value) in _definedNames.ToList())
@@ -194,16 +223,25 @@ public sealed class Workbook
             _definedNames[key] = text;
         }
 
-        return new FormulaSnapshot(cells, names);
+        return new FormulaSnapshot(cells, names, localNames);
     }
 
     internal void RestoreFormulas(FormulaSnapshot snapshot)
     {
-        foreach (var (sheet, r, formula) in snapshot.Cells) sheet[r].Formula = formula;
+        foreach (var (sheet, r, formula) in snapshot.Cells)
+        {
+            sheet[r].Formula = formula;
+            sheet.Modified = true;
+        }
+
+        foreach (var (name, text) in snapshot.LocalNames ?? []) name.Value = text;
         if (snapshot.Names == null) return;
         _definedNames.Clear();
         foreach (var (key, value) in snapshot.Names) _definedNames[key] = value;
     }
 }
 
-internal sealed record FormulaSnapshot(List<(Worksheet Sheet, CellRef Ref, string Formula)> Cells, Dictionary<string, string> Names);
+internal sealed record FormulaSnapshot(
+    List<(Worksheet Sheet, CellRef Ref, string Formula)> Cells,
+    Dictionary<string, string> Names,
+    List<(XElement Name, string Text)> LocalNames = null);

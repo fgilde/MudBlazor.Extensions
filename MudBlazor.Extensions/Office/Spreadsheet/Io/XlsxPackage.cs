@@ -71,8 +71,84 @@ internal sealed class XlsxSheetPart
     /// <summary>Cell attributes the model does not represent (<c>cm</c>, <c>vm</c>, <c>ph</c> …), by cell key; only cells that have them.</summary>
     public Dictionary<long, XAttribute[]> CellAttributes { get; } = new();
 
-    /// <summary>Cells whose formula was stored as an array formula (<c>f/@t="array"</c>), including single-cell ones, by cell key.</summary>
-    public HashSet<long> ArrayFormulas { get; } = new();
+    /// <summary>
+    /// Cells whose formula was stored as an array formula (<c>f/@t="array"</c>), including single-cell ones: cell key to the size of the
+    /// original <c>ref</c>. An entry is dropped when the cell is edited.
+    /// </summary>
+    public Dictionary<long, (int Rows, int Columns)> ArrayFormulas { get; } = new();
+
+    /// <summary>
+    /// Moves every cell, row and column keyed entry (and the original <c>cols</c> element) along an inserted or deleted band of rows or
+    /// columns, like <see cref="Spreadsheet.Worksheet"/> moves its cells. Entries inside a deleted band are dropped.
+    /// </summary>
+    /// <param name="axis">Rows or columns.</param>
+    /// <param name="index">Zero-based first inserted or deleted row or column.</param>
+    /// <param name="count">Positive to insert, negative to delete.</param>
+    /// <returns>An action that puts the dropped entries back after the band was inserted again (undo of a delete).</returns>
+    public Action Shift(Axis axis, int index, int count)
+    {
+        var undo = new List<Action>();
+        var limit = axis == Axis.Row ? CellRef.MaxRows : CellRef.MaxColumns;
+        int Map(int v) => count > 0 ? v >= index ? v + count : v : v < index ? v : v < index - count ? -1 : v + count;
+
+        long? MapKey(long key)
+        {
+            var c = CellRef.FromKey(key);
+            var v = Map(axis == Axis.Row ? c.Row : c.Column);
+            if (v < 0 || v >= limit) return null;
+            return (axis == Axis.Row ? new CellRef(v, c.Column) : new CellRef(c.Row, v)).Key;
+        }
+
+        int? MapLine(int line) => Map(line) is var v && v >= 0 && v < limit ? v : null;
+
+        void Remap<TKey, TValue>(Dictionary<TKey, TValue> map, Func<TKey, TKey?> next) where TKey : struct
+        {
+            var entries = map.ToList();
+            map.Clear();
+            foreach (var (key, value) in entries)
+                if (next(key) is { } moved) map[moved] = value;
+                else undo.Add(() => map[key] = value);
+        }
+
+        Remap(OriginalXf, MapKey);
+        Remap(CellAttributes, MapKey);
+        Remap(RichStringCells, MapKey);
+        Remap(ArrayFormulas, MapKey);
+        if (axis == Axis.Row)
+        {
+            Remap(OriginalRowXf, MapLine);
+            Remap(RowAttributes, MapLine);
+        }
+        else
+        {
+            Remap(OriginalColXf, MapLine);
+            var position = Children.FindIndex(e => e.Name.LocalName == "cols");
+            if (position >= 0)
+            {
+                var original = Children[position];
+                var cols = new XElement(original);
+                foreach (var col in cols.Elements().Where(e => e.Name.LocalName == "col").ToList())
+                {
+                    var (min, max) = SheetXmlReader.ColumnSpan(col);
+                    var end = index - count;
+                    var (from, to) = count > 0
+                        ? (min >= index ? min + count : min, max >= index ? max + count : max)
+                        : (min < index ? min : min >= end ? min + count : index, max < index ? max : max >= end ? max + count : index - 1);
+                    if (to < from || from >= limit) col.Remove();
+                    else
+                    {
+                        col.SetAttributeValue("min", from + 1);
+                        col.SetAttributeValue("max", Math.Min(to, limit - 1) + 1);
+                    }
+                }
+
+                Children[position] = cols;
+                undo.Add(() => Children[Children.IndexOf(cols) is >= 0 and var i ? i : position] = original);
+            }
+        }
+
+        return () => undo.ForEach(a => a());
+    }
 }
 
 /// <summary>
@@ -124,6 +200,9 @@ internal sealed class XlsxPackage
 
     /// <summary>Style id in <see cref="Workbook.Styles"/> for each <c>cellXfs</c> index.</summary>
     public int[] XfStyleIds { get; set; } = [0];
+
+    /// <summary>The <c>cm</c> value of the first dynamic-array formula in the source; its cell metadata marks a formula as dynamic.</summary>
+    public string DynamicArrayCm { get; set; }
 
     /// <summary>Original <c>si</c> elements of shared strings with runs or phonetic text, by shared string index.</summary>
     public Dictionary<int, XElement> RichStrings { get; } = new();

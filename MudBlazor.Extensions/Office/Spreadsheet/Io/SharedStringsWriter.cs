@@ -10,12 +10,36 @@ internal sealed class SharedStringsWriter
     private static readonly Regex EscapeLike = new("_x[0-9A-Fa-f]{4}_", RegexOptions.CultureInvariant);
 
     private readonly Dictionary<string, int> _plain = new(StringComparer.Ordinal);
-    private readonly Dictionary<int, int> _rich = new();
     private readonly List<object> _items = [];
+    private readonly int _seeded = -1;
+
+    internal SharedStringsWriter()
+    {
+    }
+
+    internal SharedStringsWriter(Stream source)
+    {
+        using var reader = XmlReader.Create(source, SheetXmlReader.Settings);
+        while (!reader.EOF)
+        {
+            if (reader.NodeType != XmlNodeType.Element || reader.LocalName != "si")
+            {
+                reader.Read();
+                continue;
+            }
+
+            var si = (XElement)XNode.ReadFrom(reader);
+            var text = SheetXmlReader.Text(si, out var rich);
+            if (!rich) _plain.TryAdd(text, _items.Count);
+            _items.Add(si);
+        }
+
+        _seeded = _items.Count;
+    }
 
     internal int References { get; private set; }
 
-    internal int Count => _items.Count;
+    internal bool Unchanged => _items.Count == _seeded;
 
     internal int Add(string text)
     {
@@ -26,13 +50,10 @@ internal sealed class SharedStringsWriter
         return index;
     }
 
-    internal int AddRich(int sourceIndex, XElement si)
+    internal int AddRich(int sourceIndex)
     {
         References++;
-        if (_rich.TryGetValue(sourceIndex, out var index)) return index;
-        _rich[sourceIndex] = index = _items.Count;
-        _items.Add(si);
-        return index;
+        return sourceIndex;
     }
 
     internal void Write(Stream stream, XNamespace ns)
@@ -40,7 +61,7 @@ internal sealed class SharedStringsWriter
         using var w = XmlWriter.Create(stream, SheetXmlWriter.Settings);
         w.WriteStartDocument(true);
         w.WriteStartElement("sst", ns.NamespaceName);
-        w.WriteAttributeString("count", References.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        if (_seeded < 0) w.WriteAttributeString("count", References.ToString(System.Globalization.CultureInfo.InvariantCulture));
         w.WriteAttributeString("uniqueCount", _items.Count.ToString(System.Globalization.CultureInfo.InvariantCulture));
         foreach (var item in _items)
         {

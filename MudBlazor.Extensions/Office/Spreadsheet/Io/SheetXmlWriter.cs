@@ -26,7 +26,7 @@ internal static class SheetXmlWriter
     {
         "ACOT", "ACOTH", "AGGREGATE", "ARABIC", "ARRAYTOTEXT", "BASE", "BINOM.DIST", "CEILING.MATH", "CEILING.PRECISE", "CHOOSECOLS", "CHOOSEROWS",
         "COMBINA", "CONCAT", "COT", "COTH", "COVARIANCE.P", "COVARIANCE.S", "CSC", "CSCH", "DAYS", "DECIMAL", "DROP", "EXPAND", "EXPON.DIST",
-        "FILTER", "FLOOR.MATH", "FLOOR.PRECISE", "FORECAST.LINEAR", "FORMULATEXT", "HSTACK", "IFNA", "IFS", "ISFORMULA", "ISOWEEKNUM", "LET",
+        "FILTER", "FLOOR.MATH", "FLOOR.PRECISE", "FORECAST.LINEAR", "FORMULATEXT", "HSTACK", "IFNA", "IFS", "ISFORMULA", "ISO.CEILING", "ISOWEEKNUM", "LET",
         "MAXIFS", "MINIFS", "MODE.MULT", "MODE.SNGL", "MUNIT", "NETWORKDAYS.INTL", "NORM.DIST", "NORM.INV", "NORM.S.DIST", "NORM.S.INV",
         "NUMBERVALUE", "PDURATION", "PERCENTILE.EXC", "PERCENTILE.INC", "PERCENTRANK.INC", "PERMUTATIONA", "POISSON.DIST", "QUARTILE.EXC",
         "QUARTILE.INC", "RANDARRAY", "RANK.AVG", "RANK.EQ", "RRI", "SEC", "SECH", "SEQUENCE", "SHEET", "SHEETS", "SORT", "SORTBY", "STDEV.P",
@@ -34,18 +34,121 @@ internal static class SheetXmlWriter
         "VALUETOTEXT", "VAR.P", "VAR.S", "VSTACK", "WORKDAY.INTL", "WRAPCOLS", "WRAPROWS", "XLOOKUP", "XMATCH", "XOR"
     };
 
-    private static readonly Regex Calls = new("\"(?:[^\"]|\"\")*\"|'(?:[^']|'')*'|(?<![\\w.])[A-Za-z][A-Za-z0-9.]*(?=\\()", RegexOptions.CultureInvariant);
+    private const StringComparison Ignore = StringComparison.OrdinalIgnoreCase;
 
-    private static readonly Regex Prefixed = new(@"""(?:[^""]|"""")*""|'(?:[^']|'')*'|(?<![\w.])_xlfn\.(?:_xlws\.)?([A-Za-z][A-Za-z0-9.]*)(?=\()",
-        RegexOptions.CultureInvariant);
+    internal static string FromFile(string formula)
+    {
+        if (formula == null || !formula.Contains("_xl", Ignore) || Tokens(formula) is not { } tokens) return formula;
+        var sb = new StringBuilder(formula.Length);
+        var pos = 0;
+        for (var i = 0; i < tokens.Count; i++)
+        {
+            var t = tokens[i];
+            sb.Append(formula, pos, t.Start - pos);
+            pos = t.Start + t.Text.Length;
+            var text = t.Text;
+            if (t.Kind == FormulaTokenKind.Function && Bare(text) is var bare && bare.Length < text.Length)
+            {
+                if (bare.Equals("ANCHORARRAY", Ignore) && i + 3 < tokens.Count && tokens[i + 1].Kind == FormulaTokenKind.OpenParen
+                    && tokens[i + 2] is { Kind: FormulaTokenKind.Reference } inner && !inner.Text.Contains(':') && !inner.Text.EndsWith('#')
+                    && tokens[i + 3].Kind == FormulaTokenKind.CloseParen)
+                {
+                    text = inner.Text + "#";
+                    pos = tokens[i + 3].Start + 1;
+                    i += 3;
+                }
+                else if (Future.Contains(bare)) text = bare;
+            }
+            else if (t.Kind == FormulaTokenKind.Name && text.StartsWith("_xlpm.", Ignore)) text = text[6..];
 
-    internal static string FromFile(string formula) =>
-        formula == null || !formula.Contains("_xlfn.", StringComparison.OrdinalIgnoreCase) ? formula
-        : Prefixed.Replace(formula, m => m.Groups[1].Success && Future.Contains(m.Groups[1].Value) ? m.Groups[1].Value : m.Value);
+            sb.Append(text);
+        }
 
-    internal static string FormulaText(string formula) =>
-        Calls.Replace(formula, m => m.Value[0] is '"' or '\'' || !Future.Contains(m.Value) ? m.Value
-            : (m.Value.ToUpperInvariant() is "FILTER" or "SORT" ? "_xlfn._xlws." : "_xlfn.") + m.Value);
+        return sb.Append(formula, pos, formula.Length - pos).ToString();
+    }
+
+    internal static string FormulaText(string formula)
+    {
+        if (formula == null || formula.IndexOfAny(['(', '#', ';']) < 0 || Tokens(formula) is not { } tokens) return formula;
+        var sb = new StringBuilder(formula.Length + 16);
+        var pos = 0;
+        var frames = new List<Frame>();
+        var pendingLet = false;
+        for (var i = 0; i < tokens.Count; i++)
+        {
+            var t = tokens[i];
+            sb.Append(formula, pos, t.Start - pos);
+            pos = t.Start + t.Text.Length;
+            var text = t.Text;
+            var top = frames.Count > 0 ? frames[^1] : null;
+            switch (t.Kind)
+            {
+                case FormulaTokenKind.Function:
+                    pendingLet = Bare(text).Equals("LET", Ignore);
+                    if (Future.Contains(text)) text = (text.ToUpperInvariant() is "FILTER" or "SORT" ? "_xlfn._xlws." : "_xlfn.") + text;
+                    break;
+                case FormulaTokenKind.OpenParen or FormulaTokenKind.OpenBrace:
+                    frames.Add(new Frame(pendingLet && t.Kind == FormulaTokenKind.OpenParen, t.Kind == FormulaTokenKind.OpenParen));
+                    pendingLet = false;
+                    break;
+                case FormulaTokenKind.CloseParen or FormulaTokenKind.CloseBrace:
+                    if (frames.Count > 0) frames.RemoveAt(frames.Count - 1);
+                    break;
+                case FormulaTokenKind.Comma or FormulaTokenKind.Semicolon when top is { Paren: true }:
+                    text = ",";
+                    top.Argument++;
+                    break;
+                case FormulaTokenKind.Reference when text.EndsWith('#'):
+                    text = "_xlfn.ANCHORARRAY(" + text[..^1] + ")";
+                    break;
+                case FormulaTokenKind.Name when !text.StartsWith("_xlpm.", Ignore):
+                    if (top is { Let: true } && top.Argument % 2 == 0 && tokens[i - 1].Kind is FormulaTokenKind.OpenParen or FormulaTokenKind.Comma or FormulaTokenKind.Semicolon
+                        && i + 1 < tokens.Count && tokens[i + 1].Kind is FormulaTokenKind.Comma or FormulaTokenKind.Semicolon)
+                    {
+                        top.Names.Add(text);
+                        text = "_xlpm." + text;
+                    }
+                    else if (frames.Any(f => f.Names.Contains(text))) text = "_xlpm." + text;
+
+                    break;
+            }
+
+            sb.Append(text);
+        }
+
+        return sb.Append(formula, pos, formula.Length - pos).ToString();
+    }
+
+    private static List<FormulaToken> Tokens(string formula)
+    {
+        try
+        {
+            return FormulaLexer.Tokenize(formula, true);
+        }
+        catch (FormatException)
+        {
+            return null;
+        }
+    }
+
+    private static string Bare(string name)
+    {
+        foreach (var prefix in (ReadOnlySpan<string>)["_xlfn._xlws.", "_xlfn.", "_xlws."])
+            if (name.StartsWith(prefix, Ignore))
+                return name[prefix.Length..];
+        return name;
+    }
+
+    private sealed class Frame(bool let, bool paren)
+    {
+        public bool Let { get; } = let;
+
+        public bool Paren { get; } = paren;
+
+        public int Argument { get; set; }
+
+        public HashSet<string> Names { get; } = new(StringComparer.OrdinalIgnoreCase);
+    }
 
     internal static double PixelsToWidth(double px)
     {
@@ -216,7 +319,7 @@ internal static class SheetXmlWriter
         {
             var index = part != null && part.RichStringCells.TryGetValue(key, out var source) && package.RichStrings.TryGetValue(source, out var si)
                                       && value.TextValue == (rich.TryGetValue(source, out var plain) ? plain : rich[source] = SheetXmlReader.Text(si, out _))
-                ? strings.AddRich(source, si)
+                ? strings.AddRich(source)
                 : strings.Add(value.TextValue);
             text = index.ToString(CultureInfo.InvariantCulture);
         }
@@ -224,27 +327,39 @@ internal static class SheetXmlWriter
         if (type != null) w.WriteAttributeString("t", type);
         XAttribute[] extra = null;
         part?.CellAttributes.TryGetValue(key, out extra);
-        var dynamic = false;
+        string cm = null;
+        CellRange? array = null;
+        if (formula != null)
+        {
+            var originalCm = extra?.FirstOrDefault(a => a.Name == "cm")?.Value;
+            (int Rows, int Columns)? mark = part != null && part.ArrayFormulas.TryGetValue(key, out var size) ? size : null;
+            if (mark is { } legacy && (originalCm == null || !spills.ContainsKey(key)))
+            {
+                array = CellRange.FromBounds(at.Row, at.Column, Math.Min(at.Row + legacy.Rows, CellRef.MaxRows) - 1,
+                    Math.Min(at.Column + legacy.Columns, CellRef.MaxColumns) - 1);
+                cm = originalCm;
+            }
+            else if (spills.TryGetValue(key, out var spill))
+            {
+                array = spill;
+                cm = originalCm ?? package?.DynamicArrayCm;
+            }
+        }
+
+        if (cm != null) w.WriteAttributeString("cm", cm);
         foreach (var a in extra ?? [])
         {
-            if (a.Name.LocalName == "cm" && a.Name.Namespace == XNamespace.None)
-            {
-                if (formula == null) continue;
-                dynamic = true;
-            }
-
-            if (a.Name.LocalName == "vm" && a.Name.Namespace == XNamespace.None && (formula != null || value.Kind != CellValueKind.Error)) continue;
+            if (a.Name == "cm" || a.Name == "vm" && (formula != null || value.Kind != CellValueKind.Error)) continue;
             w.WriteAttributeString(a.Name.LocalName, a.Name.NamespaceName, a.Value);
         }
 
         if (formula != null)
         {
             w.WriteStartElement("f", main);
-            var spill = spills.TryGetValue(key, out var range) ? range : (CellRange?)null;
-            if (spill != null || dynamic || part?.ArrayFormulas.Contains(key) == true)
+            if (array is { } arrayRange)
             {
                 w.WriteAttributeString("t", "array");
-                w.WriteAttributeString("ref", (spill ?? new CellRange(at, at)).ToA1());
+                w.WriteAttributeString("ref", arrayRange.ToA1());
             }
 
             w.WriteString(SharedStringsWriter.Escape(FormulaText(formula), false));

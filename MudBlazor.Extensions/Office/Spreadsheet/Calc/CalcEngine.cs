@@ -31,6 +31,8 @@ public sealed class CalcEngine : IDisposable
     private readonly Dictionary<CellNode, FormulaNode> _formulas = new();
     private readonly HashSet<CellNode> _volatile = new();
     private readonly HashSet<CellNode> _keep = new();
+    private readonly Dictionary<CellNode, string> _keptFormulas = new();
+    private readonly Dictionary<(Worksheet Sheet, long Key), CellState> _before = new();
     private readonly Dictionary<CellNode, SpillState> _spills = new();
     private readonly HashSet<CellChange> _changed = new();
     private readonly List<CellNode> _grown = new();
@@ -82,10 +84,14 @@ public sealed class CalcEngine : IDisposable
         _volatile.Clear();
         _spills.Clear();
         _keep.Clear();
+        _keptFormulas.Clear();
         var cells = _wb.Sheets.SelectMany(sheet => sheet.UsedCells().Select(c => (Sheet: sheet, c.Ref, c.Cell))).ToList();
         foreach (var (sheet, r, cell) in cells)
             if (cell.Formula != null && !Register(new CellNode(sheet, r.Key), cell.Formula) && cell.Value.Kind != CellValueKind.Empty)
+            {
                 _keep.Add(new CellNode(sheet, r.Key));
+                _keptFormulas[new CellNode(sheet, r.Key)] = cell.Formula;
+            }
 
         var kept = new Dictionary<CellNode, CellRange>();
         foreach (var (sheet, r, cell) in cells)
@@ -121,8 +127,8 @@ public sealed class CalcEngine : IDisposable
             _keep.Remove(node);
             if (stored?.Formula is { } formula)
             {
-                Register(node, formula);
-                affected.Add(node);
+                if (!Register(node, formula) && stored.Value.Kind != CellValueKind.Empty && _keptFormulas.GetValueOrDefault(node) == formula) _keep.Add(node);
+                else affected.Add(node);
             }
             else
             {
@@ -301,6 +307,7 @@ public sealed class CalcEngine : IDisposable
                 {
                     if (_keep.Contains(node)) continue;
                     ClearSpill(node);
+                    Touch(node.Sheet, node.Cell);
                     node.Sheet[node.Cell].Value = CellValue.Error(CellError.Circ);
                     _changed.Add(new CellChange(node.Sheet, node.Cell));
                 }
@@ -315,6 +322,10 @@ public sealed class CalcEngine : IDisposable
 
         _grown.Clear();
         _freed.Clear();
+        foreach (var ((sheet, key), state) in _before)
+            if (sheet.Capture(CellRef.FromKey(key)) != state)
+                sheet.Modified = true;
+        _before.Clear();
         if (_changed.Count == 0) return;
         var args = new CalculatedEventArgs(_changed.ToList());
         _changed.Clear();
@@ -358,6 +369,7 @@ public sealed class CalcEngine : IDisposable
             value = _evaluator.ToScalar(result, scope);
         }
 
+        Touch(node.Sheet, node.Cell);
         node.Sheet[node.Cell].Value = value.Kind == CellValueKind.Empty ? CellValue.Number(0) : value;
         _changed.Add(new CellChange(node.Sheet, node.Cell));
         EvaluationCount++;
@@ -388,6 +400,7 @@ public sealed class CalcEngine : IDisposable
                 var target = new CellRef(anchor.Row + r, anchor.Column + col);
                 var v = array[r, col];
                 if (v.Kind == CellValueKind.Empty) v = CellValue.Number(0);
+                Touch(sheet, target);
                 var cell = sheet.Ensure(target);
                 if (cell.SpillAnchor == anchor && cell.Value == v && old?.Contains(target) == true) continue;
                 cell.Value = v;
@@ -422,8 +435,11 @@ public sealed class CalcEngine : IDisposable
                 ClearSpillCell(node.Sheet, c);
     }
 
+    private void Touch(Worksheet sheet, CellRef c) => _before.TryAdd((sheet, c.Relative.Key), sheet.Capture(c.Relative));
+
     private void ClearSpillCell(Worksheet sheet, CellRef c)
     {
+        Touch(sheet, c);
         var cell = sheet[c];
         sheet.Restore(c, new CellState(default, cell.Formula, cell.StyleId));
         _changed.Add(new CellChange(sheet, c));

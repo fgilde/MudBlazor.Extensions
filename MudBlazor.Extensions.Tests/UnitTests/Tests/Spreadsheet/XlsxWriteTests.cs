@@ -345,7 +345,8 @@ public class XlsxWriteTests(ITestOutputHelper output)
         read.Execute(new SetValueCommand(read.Sheets[0], R("C1"), CellValue.Text("bold tail!")));
         var written = Write(read);
         var items = Xml(written, "xl/sharedStrings.xml").Root!.Elements(M + "si").ToList();
-        Assert.Equal(3, items.Count);
+        Assert.Equal(4, items.Count);
+        Assert.Equal(["plain", "bold tail", "plain", "bold tail!"], items.Select(si => si.Value));
         var rich = XElement.Parse($"<sst xmlns=\"{Main}\">{strings}</sst>").Elements().ElementAt(1);
         Assert.Single(items, si => XNode.DeepEquals(si, rich));
         var cells = Xml(written, "xl/worksheets/sheet1.xml").Descendants(M + "c").ToDictionary(c => (string)c.Attribute("r")!, c => int.Parse(c.Value, CultureInfo.InvariantCulture));
@@ -542,17 +543,171 @@ public class XlsxWriteTests(ITestOutputHelper output)
         var before = GC.GetTotalMemory(true);
         var wb = Read(package);
         var retained = GC.GetTotalMemory(true) - before;
-        var target = new MemoryStream();
         var watch = Stopwatch.StartNew();
+        XlsxWriter.Write(wb, new MemoryStream());
+        var copied = watch.ElapsedMilliseconds;
+        wb.Execute(new SetValueCommand(wb.Sheets[0], new CellRef(0, 1), CellValue.Number(-1)));
+        var target = new MemoryStream();
+        watch.Restart();
         XlsxWriter.Write(wb, target);
         watch.Stop();
-        output.WriteLine($"write {rowCount}x{cols}: {watch.ElapsedMilliseconds} ms, {target.Length / 1024} KB; read retained {retained / (1024 * 1024)} MB, " +
-                         $"row attribute sets {wb.Package.Sheets[0].RowAttributes.Values.Distinct().Count()}");
+        output.WriteLine($"write {rowCount}x{cols}: untouched {copied} ms, edited {watch.ElapsedMilliseconds} ms, {target.Length / 1024} KB; " +
+                         $"read retained {retained / (1024 * 1024)} MB, row attribute sets {wb.Package.Sheets[0].RowAttributes.Values.Distinct().Count()}");
 
         var again = Read(target.ToArray()).Sheets[0];
         Assert.Equal(CellRange.FromBounds(0, 0, rowCount - 1, cols - 1), again.UsedRange);
         Assert.Equal("text 0", again[new CellRef(rowCount - 1, 0)].Value.TextValue);
         Assert.Equal(rowCount * 29 * 0.5, again[new CellRef(rowCount - 1, 29)].Value.NumberValue);
         Assert.Contains("x14ac:dyDescent=\"0.25\"", Encoding.UTF8.GetString(Entries(target.ToArray())["xl/worksheets/sheet1.xml"], 0, 4000));
+    }
+
+    private static string SheetXml(byte[] zip, int n = 1) => Encoding.UTF8.GetString(Entries(zip)[$"xl/worksheets/sheet{n}.xml"]);
+
+    [Fact]
+    public void Write_UntouchedSheet_ByteIdenticalAndStringsAppendOnly()
+    {
+        const string rows2 = """
+            <row r="1" spans="1:4"><c r="A1"><v>1</v></c><c r="B1"><f t="dataTable" ref="B1:B2" dt2D="0" dtr="0" r1="A1"/><v>5</v></c>
+            <c r="C1" t="inlineStr"><is><r><rPr><b/></rPr><t>bo</t></r><r><t>ld</t></r></is></c><c r="D1"><f t="shared" ref="D1:D2" si="0">A1*2</f><v>2</v></c></row>
+            <row r="2"><c r="B2"><v>6</v></c><c r="D2"><f t="shared" si="0"/><v>0</v></c><c r="E2" t="s"><v>1</v></c></row>
+            """;
+        const string strings = "<si><t>x</t></si><si><t>y</t></si><si><t>x</t></si>";
+        var package = Package([Sheet("<row r=\"1\"><c r=\"A1\"><v>1</v></c><c r=\"B1\" t=\"s\"><v>0</v></c></row>"), Sheet(rows2.ReplaceLineEndings(""))], strings);
+        var wb = Read(package);
+        using var engine = new CalcEngine(wb);
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Text("y")));
+        wb.Execute(new SetValueCommand(ws, R("A2"), CellValue.Text("new")));
+        var written = Write(wb);
+
+        Assert.Equal(Entries(package)["xl/worksheets/sheet2.xml"], Entries(written)["xl/worksheets/sheet2.xml"]);
+        Assert.Equal(["x", "y", "x", "new"], Xml(written, "xl/sharedStrings.xml").Root!.Elements(M + "si").Select(si => si.Value));
+        var cells = Xml(written, "xl/worksheets/sheet1.xml").Descendants(M + "c").ToDictionary(c => (string)c.Attribute("r")!, c => c.Value);
+        Assert.Equal("1", cells["A1"]);
+        Assert.Equal("0", cells["B1"]);
+        Assert.Equal("3", cells["A2"]);
+        Assert.Equal("y", At(Read(written).Sheets[0], "A1").Value.TextValue);
+    }
+
+    [Fact]
+    public void Write_StructureChange_ShiftsPackageData()
+    {
+        const string styles = """
+            <fonts count="1"><font><sz val="11"/><name val="Calibri"/></font></fonts>
+            <fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills>
+            <borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>
+            <cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+            <xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyProtection="1"><protection locked="0"/></xf></cellXfs>
+            """;
+        const string rows = """
+            <row r="1"><c r="A1"><v>1</v></c></row><row r="2"><c r="A2" s="1"/></row>
+            <row r="3" outlineLevel="1"><c r="B3" cm="1"><f t="array" ref="B3:B4">FOOBAR(1)</f><v>7</v></c></row><row r="4"><c r="B4"><v>8</v></c></row>
+            """;
+        var package = Package([Sheet(rows.ReplaceLineEndings(""), "<cols><col min=\"2\" max=\"2\" width=\"9.140625\" style=\"1\"/></cols>")], styles: styles.ReplaceLineEndings(""),
+            workbookExtra: "<definedNames><definedName name=\"_xlnm.Print_Area\" localSheetId=\"0\">Sheet1!$A$1:$B$4</definedName></definedNames>");
+        var wb = Read(package);
+        var ws = wb.Sheets[0];
+        using var engine = new CalcEngine(wb);
+
+        wb.Execute(new InsertRowsCommand(ws, 0, 1));
+        var xml = SheetXml(Write(wb));
+        Assert.Contains("<c r=\"A3\" s=\"1\" />", xml);
+        Assert.DoesNotContain("<c r=\"A2\" s=\"1\" />", xml);
+        Assert.Contains("<row r=\"4\" outlineLevel=\"1\">", xml);
+        Assert.Contains("<c r=\"B4\" cm=\"1\"><f t=\"array\" ref=\"B4:B5\">FOOBAR(1)</f><v>7</v></c>", xml);
+        Assert.Contains("<c r=\"B5\"><v>8</v></c>", xml);
+        Assert.Contains("<col min=\"2\" max=\"2\" width=\"9.140625\" style=\"1\" />", xml);
+        Assert.Equal("Sheet1!$A$2:$B$5", Xml(Write(wb), "xl/workbook.xml").Descendants(M + "definedName").Single().Value);
+
+        wb.Execute(new InsertColumnsCommand(ws, 0, 1));
+        xml = SheetXml(Write(wb));
+        Assert.Contains("<col min=\"3\" max=\"3\" width=\"9.140625\" style=\"1\" />", xml);
+        Assert.Contains("<c r=\"B3\" s=\"1\" />", xml);
+
+        wb.Execute(new DeleteRowsCommand(ws, 2, 1));
+        xml = SheetXml(Write(wb));
+        Assert.DoesNotContain(" s=\"1\" />", xml);
+        Assert.Contains("<row r=\"3\" outlineLevel=\"1\">", xml);
+
+        wb.Undo.Undo();
+        xml = SheetXml(Write(wb));
+        Assert.Contains("<c r=\"B3\" s=\"1\" />", xml);
+        Assert.Contains("<row r=\"4\" outlineLevel=\"1\">", xml);
+        Assert.Equal("Sheet1!$B$2:$C$5", Xml(Write(wb), "xl/workbook.xml").Descendants(M + "definedName").Single().Value);
+    }
+
+    [Theory]
+    [InlineData("SUM(A1#)+Sheet2!$B$2#", "SUM(_xlfn.ANCHORARRAY(A1))+_xlfn.ANCHORARRAY(Sheet2!$B$2)")]
+    [InlineData("LET(x,1,y,x+1,x*y)", "_xlfn.LET(_xlpm.x,1,_xlpm.y,_xlpm.x+1,_xlpm.x*_xlpm.y)")]
+    [InlineData("LET(x,LET(z,2,z),x&\"x\")", "_xlfn.LET(_xlpm.x,_xlfn.LET(_xlpm.z,2,_xlpm.z),_xlpm.x&\"x\")")]
+    [InlineData("ISO.CEILING(1.5)+IFS(TRUE,1)", "_xlfn.ISO.CEILING(1.5)+_xlfn.IFS(TRUE,1)")]
+    [InlineData("FILTER(A1:A3,A1:A3>1)", "_xlfn._xlws.FILTER(A1:A3,A1:A3>1)")]
+    [InlineData("\"A1# LET(x\"&x", "\"A1# LET(x\"&x")]
+    public void FormulaText_RoundTripsSpillRefsLetAndPrefixes(string model, string file)
+    {
+        Assert.Equal(file, SheetXmlWriter.FormulaText(model));
+        Assert.Equal(model, SheetXmlWriter.FromFile(file));
+    }
+
+    [Fact]
+    public void FormulaText_WritesCommaSeparators_AndLetFromFileEvaluates()
+    {
+        Assert.Equal("SUM(A1,A2)+SUM({1,2;3,4})", SheetXmlWriter.FormulaText("SUM(A1;A2)+SUM({1,2;3,4})"));
+        var wb = Read(Package([Sheet("<row r=\"1\"><c r=\"A1\"><f>_xlfn.LET(_xlpm.x,1,_xlpm.x+1)</f><v>2</v></c><c r=\"B1\"><f>_xlfn.SEQUENCE(2)</f><v>1</v></c><c r=\"C1\"><f>SUM(_xlfn.ANCHORARRAY(B1))</f><v>3</v></c></row>")]));
+        var ws = wb.Sheets[0];
+        Assert.Equal("LET(x,1,x+1)", At(ws, "A1").Formula);
+        Assert.Equal("SUM(B1#)", At(ws, "C1").Formula);
+        using var engine = new CalcEngine(wb);
+        Assert.Equal(2, At(ws, "A1").Value.NumberValue);
+        Assert.Equal(3, At(ws, "C1").Value.NumberValue);
+    }
+
+    [Fact]
+    public void Undo_OfEditedKeptFormula_RestoresCachedValue()
+    {
+        var wb = Read(Package([Sheet("<row r=\"1\"><c r=\"A1\"><f>FOOBAR(1)</f><v>42</v></c><c r=\"B1\"><f>A1+1</f><v>43</v></c></row>")]));
+        var ws = wb.Sheets[0];
+        using var engine = new CalcEngine(wb);
+        wb.Execute(new SetFormulaCommand(ws, R("A1"), "=FOOBAR(3)"));
+        Assert.Equal(CellValue.Error(CellError.Name), At(ws, "A1").Value);
+        wb.Undo.Undo();
+        Assert.Equal(42, At(ws, "A1").Value.NumberValue);
+        Assert.Equal(43, At(ws, "B1").Value.NumberValue);
+    }
+
+    [Fact]
+    public void Write_ArrayMarks_KeepLegacyRangeUntilEdited_AndReuseDynamicArrayMetadata()
+    {
+        const string rows = """
+            <row r="1"><c r="A1"><v>1</v></c><c r="B1"><f t="array" ref="B1:B3">A1:A2*2</f><v>2</v></c><c r="C1" cm="1"><f t="array" ref="C1:C2">_xlfn.SEQUENCE(2)</f><v>1</v></c></row>
+            <row r="2"><c r="A2"><v>2</v></c><c r="B2"><v>4</v></c><c r="C2"><v>2</v></c></row><row r="3"><c r="B3" t="e"><v>#N/A</v></c></row>
+            """;
+        var wb = Read(Package([Sheet(rows.ReplaceLineEndings(""))]));
+        var ws = wb.Sheets[0];
+        using var engine = new CalcEngine(wb);
+        wb.Execute(new SetFormulaCommand(ws, R("D1"), "=SEQUENCE(3)"));
+        var xml = SheetXml(Write(wb));
+        Assert.Contains("<c r=\"B1\"><f t=\"array\" ref=\"B1:B3\">A1:A2*2</f>", xml);
+        Assert.Contains("<c r=\"D1\" cm=\"1\"><f t=\"array\" ref=\"D1:D3\">_xlfn.SEQUENCE(3)</f>", xml);
+
+        wb.Execute(new SetFormulaCommand(ws, R("B1"), "=A1*3"));
+        Assert.Contains("<c r=\"B1\"><f>A1*3</f><v>3</v></c>", SheetXml(Write(wb)));
+    }
+
+    [Fact]
+    public void Write_SheetRenameSwap_RewritesLocalNamesOnce()
+    {
+        const string names = "<definedNames><definedName name=\"_xlnm.Print_Area\" localSheetId=\"0\">Sheet1!$A$1</definedName>" +
+                             "<definedName name=\"_xlnm.Print_Area\" localSheetId=\"1\">Sheet2!$B$2</definedName></definedNames>";
+        var wb = Read(Package([Sheet("<row r=\"1\"><c r=\"A1\"><f>Sheet2!B2</f><v>0</v></c></row>"), Sheet("")], workbookExtra: names));
+        var (first, second) = (wb.Sheets[0], wb.Sheets[1]);
+        wb.Execute(new RenameSheetCommand(first, "T"));
+        wb.Execute(new RenameSheetCommand(second, "Sheet1"));
+        wb.Execute(new RenameSheetCommand(first, "Sheet2"));
+        var written = Write(wb);
+
+        var defined = Xml(written, "xl/workbook.xml").Descendants(M + "definedName").ToList();
+        Assert.Equal(["Sheet2!$A$1", "Sheet1!$B$2"], defined.Select(d => d.Value));
+        Assert.Equal("Sheet1!B2", At(Read(written).Sheets[0], "A1").Formula);
     }
 }

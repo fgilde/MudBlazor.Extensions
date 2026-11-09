@@ -40,6 +40,10 @@ public sealed class Worksheet
 
     internal Workbook Workbook { get; }
 
+    internal bool Modified { get; set; }
+
+    private XlsxSheetPart Part => Workbook?.Package?.Sheets.Find(p => p.Worksheet == this);
+
     /// <summary>The sheet name.</summary>
     public string Name { get; internal set; }
 
@@ -289,11 +293,14 @@ public sealed class Worksheet
                 continue;
             }
 
+            if (cell.SpillAnchor is { } a && (axis == Axis.Row ? a.Row : a.Column) >= index)
+                cell.SpillAnchor = Moved(a, axis, count, limit);
             rebuilt[(axis == Axis.Row ? new CellRef(v, c.Column) : new CellRef(c.Row, v)).Key] = cell;
         }
 
         _cells = rebuilt;
         _usedRange = null;
+        Part?.Shift(axis, index, count);
         Remap(axis, v => v >= index ? v + count : v, limit);
         _merges = _merges.Select(m => ShiftRange(m, axis, Start(m, axis) >= index ? count : 0, End(m, axis) >= index ? count : 0, limit)).ToList();
         if (FreezeAt is { } f)
@@ -316,14 +323,30 @@ public sealed class Worksheet
         {
             var c = CellRef.FromKey(key);
             var v = axis == Axis.Row ? c.Row : c.Column;
-            if (v < index) kept[key] = cell;
-            else if (v < end) removed.Add((c, cell.State));
-            else kept[(axis == Axis.Row ? new CellRef(v - count, c.Column) : new CellRef(c.Row, v - count)).Key] = cell;
+            if (v >= index && v < end)
+            {
+                removed.Add((c, cell.State));
+                continue;
+            }
+
+            if (cell.SpillAnchor is { } a && (axis == Axis.Row ? a.Row : a.Column) is var anchor && anchor >= index)
+            {
+                if (anchor >= end) cell.SpillAnchor = Moved(a, axis, -count, limit);
+                else
+                {
+                    removed.Add((c, cell.State));
+                    cell.SpillAnchor = null;
+                    cell.Value = default;
+                    if (cell.State.IsEmpty) continue;
+                }
+            }
+
+            kept[v < index ? key : (axis == Axis.Row ? new CellRef(v - count, c.Column) : new CellRef(c.Row, v - count)).Key] = cell;
         }
 
         var snapshot = new DeleteSnapshot(removed, Sizes(axis).Where(p => p.Key >= index && p.Key < end).ToList(),
             HiddenSet(axis).Where(i => i >= index && i < end).ToList(),
-            AxisStyles(axis).Where(p => p.Key >= index && p.Key < end).ToList(), CopyMerges(), FreezeAt);
+            AxisStyles(axis).Where(p => p.Key >= index && p.Key < end).ToList(), CopyMerges(), FreezeAt, Part?.Shift(axis, index, -count));
         _cells = kept;
         _usedRange = null;
         Remap(axis, v => v < index ? v : v < end ? -1 : v - count, limit);
@@ -348,6 +371,13 @@ public sealed class Worksheet
         foreach (var (i, style) in snapshot.AxisStyles) AxisStyles(axis)[i] = style;
         _merges = [.. snapshot.Merges];
         FreezeAt = snapshot.Freeze;
+        snapshot.Package?.Invoke();
+    }
+
+    private static CellRef? Moved(CellRef r, Axis axis, int count, int limit)
+    {
+        var v = (axis == Axis.Row ? r.Row : r.Column) + count;
+        return v < 0 || v >= limit ? null : axis == Axis.Row ? new CellRef(v, r.Column) : new CellRef(r.Row, v);
     }
 
     private Dictionary<int, double> Sizes(Axis axis) => axis == Axis.Row ? _rowHeights : _columnWidths;
@@ -401,4 +431,5 @@ internal sealed record DeleteSnapshot(
     List<int> Hidden,
     List<KeyValuePair<int, int>> AxisStyles,
     List<CellRange> Merges,
-    CellRef? Freeze);
+    CellRef? Freeze,
+    Action Package = null);

@@ -31910,7 +31910,20 @@
             <summary>Cell attributes the model does not represent (<c>cm</c>, <c>vm</c>, <c>ph</c> …), by cell key; only cells that have them.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.ArrayFormulas">
-            <summary>Cells whose formula was stored as an array formula (<c>f/@t="array"</c>), including single-cell ones, by cell key.</summary>
+            <summary>
+            Cells whose formula was stored as an array formula (<c>f/@t="array"</c>), including single-cell ones: cell key to the size of the
+            original <c>ref</c>. An entry is dropped when the cell is edited.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Shift(MudBlazor.Extensions.Office.Spreadsheet.Axis,System.Int32,System.Int32)">
+            <summary>
+            Moves every cell, row and column keyed entry (and the original <c>cols</c> element) along an inserted or deleted band of rows or
+            columns, like <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Worksheet"/> moves its cells. Entries inside a deleted band are dropped.
+            </summary>
+            <param name="axis">Rows or columns.</param>
+            <param name="index">Zero-based first inserted or deleted row or column.</param>
+            <param name="count">Positive to insert, negative to delete.</param>
+            <returns>An action that puts the dropped entries back after the band was inserted again (undo of a delete).</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage">
             <summary>
@@ -31959,6 +31972,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.XfStyleIds">
             <summary>Style id in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Styles"/> for each <c>cellXfs</c> index.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.DynamicArrayCm">
+            <summary>The <c>cm</c> value of the first dynamic-array formula in the source; its cell metadata marks a formula as dynamic.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.RichStrings">
             <summary>Original <c>si</c> elements of shared strings with runs or phonetic text, by shared string index.</summary>

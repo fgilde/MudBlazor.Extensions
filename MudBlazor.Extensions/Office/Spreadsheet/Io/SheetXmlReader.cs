@@ -286,7 +286,12 @@ internal static class SheetXmlReader
         if (!Worksheet.InBounds(at)) return at.Column;
         if (xf != package.CanonicalXf[styleId]) part.OriginalXf[at.Key] = xf;
         if (extra != null) part.CellAttributes[at.Key] = [.. extra];
-        if (hasFormula && fType == "array") part.ArrayFormulas.Add(at.Key);
+        if (hasFormula && fType == "array")
+        {
+            var size = CellRange.TryParse(fRef, out var arrayRange) ? (arrayRange.RowCount, arrayRange.ColumnCount) : (1, 1);
+            part.ArrayFormulas[at.Key] = size;
+            if (extra?.FirstOrDefault(a => a.Name == "cm") is { } cm) package.DynamicArrayCm ??= cm.Value;
+        }
         var sharedIndex = -1;
         var value = type switch
         {
