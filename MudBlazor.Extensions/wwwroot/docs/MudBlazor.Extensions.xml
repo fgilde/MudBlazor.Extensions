@@ -29918,6 +29918,1097 @@
             MudBlazorExtensionsMiddlewareExtensions
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.Cell">
+            <summary>A stored cell: value, optional formula text and style id.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.Value">
+            <summary>The current (for formulas: last calculated) value.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.Formula">
+            <summary>Formula text without the leading equals sign, or null for constants.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.StyleId">
+            <summary>Index into <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.StyleTable"/>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellRange">
+            <summary>
+            A rectangular cell range between two corners. Corners may be given in any order; whole columns and rows
+            are represented by spanning all rows or columns.
+            </summary>
+            <param name="Start">First corner as written.</param>
+            <param name="End">Second corner as written.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRange.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellRef,MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>
+            A rectangular cell range between two corners. Corners may be given in any order; whole columns and rows
+            are represented by spanning all rows or columns.
+            </summary>
+            <param name="Start">First corner as written.</param>
+            <param name="End">Second corner as written.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Start">
+            <summary>First corner as written.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.End">
+            <summary>Second corner as written.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Top">
+            <summary>Top row (zero-based).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Bottom">
+            <summary>Bottom row (zero-based).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Left">
+            <summary>Left column (zero-based).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Right">
+            <summary>Right column (zero-based).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.RowCount">
+            <summary>Number of rows covered.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.ColumnCount">
+            <summary>Number of columns covered.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Area">
+            <summary>Number of cells covered.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.IsSingleCell">
+            <summary>True if the range covers exactly one cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.IsWholeColumns">
+            <summary>True if the range spans all rows (a whole-column range such as A:A).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.IsWholeRows">
+            <summary>True if the range spans all columns (a whole-row range such as 3:3).</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRange.FromBounds(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Creates a range from explicit bounds.</summary>
+            <param name="top">Top row.</param>
+            <param name="left">Left column.</param>
+            <param name="bottom">Bottom row.</param>
+            <param name="right">Right column.</param>
+            <returns>The range.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Parse(System.String)">
+            <summary>Parses A1 notation: <c>A1</c>, <c>A1:B2</c>, <c>A:A</c> or <c>3:3</c>.</summary>
+            <param name="a1">The text to parse.</param>
+            <returns>The parsed range.</returns>
+            <exception cref="T:System.FormatException">The text is not a valid range.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRange.TryParse(System.String,MudBlazor.Extensions.Office.Spreadsheet.CellRange@)">
+            <summary>Tries to parse A1 notation for ranges.</summary>
+            <param name="a1">The text to parse.</param>
+            <param name="range">The parsed range when successful.</param>
+            <returns>True if the text is a valid range.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Contains(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Tests whether a cell lies inside the range.</summary>
+            <param name="c">The cell to test.</param>
+            <returns>True if the cell is inside.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Intersects(MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
+            <summary>Tests whether two ranges share at least one cell.</summary>
+            <param name="other">The other range.</param>
+            <returns>True if they overlap.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Cells">
+            <summary>Enumerates all cells row by row, normalized to relative references.</summary>
+            <returns>The cells of the range.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRange.ToA1">
+            <summary>Formats the range in A1 notation.</summary>
+            <returns>For example <c>A1:B2</c>, <c>A:A</c>, <c>3:3</c> or <c>C3</c>.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellRef">
+            <summary>
+            Zero-based address of a single cell with optional absolute markers ($) as used in A1 notation.
+            </summary>
+            <param name="Row">Zero-based row index (0 to <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellRef.MaxRows"/> - 1).</param>
+            <param name="Column">Zero-based column index (0 to <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellRef.MaxColumns"/> - 1).</param>
+            <param name="RowAbsolute">True if the row is written with a leading $.</param>
+            <param name="ColumnAbsolute">True if the column is written with a leading $.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRef.#ctor(System.Int32,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Zero-based address of a single cell with optional absolute markers ($) as used in A1 notation.
+            </summary>
+            <param name="Row">Zero-based row index (0 to <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellRef.MaxRows"/> - 1).</param>
+            <param name="Column">Zero-based column index (0 to <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellRef.MaxColumns"/> - 1).</param>
+            <param name="RowAbsolute">True if the row is written with a leading $.</param>
+            <param name="ColumnAbsolute">True if the column is written with a leading $.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRef.Row">
+            <summary>Zero-based row index (0 to <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellRef.MaxRows"/> - 1).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRef.Column">
+            <summary>Zero-based column index (0 to <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellRef.MaxColumns"/> - 1).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRef.RowAbsolute">
+            <summary>True if the row is written with a leading $.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellRef.ColumnAbsolute">
+            <summary>True if the column is written with a leading $.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellRef.MaxRows">
+            <summary>Maximum number of rows in a worksheet (1,048,576).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellRef.MaxColumns">
+            <summary>Maximum number of columns in a worksheet (16,384, column XFD).</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRef.Parse(System.String)">
+            <summary>Parses an A1 style cell address such as <c>A1</c> or <c>$B$2</c>.</summary>
+            <param name="a1">The address to parse.</param>
+            <returns>The parsed reference.</returns>
+            <exception cref="T:System.FormatException">The text is not a valid cell address within the worksheet limits.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRef.TryParse(System.String,MudBlazor.Extensions.Office.Spreadsheet.CellRef@)">
+            <summary>Tries to parse an A1 style cell address.</summary>
+            <param name="a1">The address to parse.</param>
+            <param name="r">The parsed reference when successful.</param>
+            <returns>True if the text is a valid cell address within the worksheet limits.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRef.ToA1">
+            <summary>Formats the reference in A1 notation including absolute markers.</summary>
+            <returns>The A1 text, for example <c>$B$2</c>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellRef.ColumnName(System.Int32)">
+            <summary>Converts a zero-based column index to its letters (0 = A, 26 = AA).</summary>
+            <param name="col">Zero-based column index.</param>
+            <returns>The column letters.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellHorizontalAlignment">
+            <summary>Horizontal cell alignment.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellHorizontalAlignment.General">
+            <summary>Alignment depends on the value type.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellHorizontalAlignment.Left">
+            <summary>Left aligned.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellHorizontalAlignment.Center">
+            <summary>Centered.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellHorizontalAlignment.Right">
+            <summary>Right aligned.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellHorizontalAlignment.Justify">
+            <summary>Justified.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellVerticalAlignment">
+            <summary>Vertical cell alignment.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellVerticalAlignment.Top">
+            <summary>Aligned to the top.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellVerticalAlignment.Center">
+            <summary>Centered.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellVerticalAlignment.Bottom">
+            <summary>Aligned to the bottom.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellBorderStyle">
+            <summary>Border line style.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellBorderStyle.None">
+            <summary>No line.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellBorderStyle.Thin">
+            <summary>Thin line.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellBorderStyle.Medium">
+            <summary>Medium line.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellBorderStyle.Thick">
+            <summary>Thick line.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellBorderStyle.Dashed">
+            <summary>Dashed line.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellBorderStyle.Dotted">
+            <summary>Dotted line.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellBorderStyle.Double">
+            <summary>Double line.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellFont">
+            <summary>Font settings of a cell style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellFont.Name">
+            <summary>Font family name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellFont.Size">
+            <summary>Font size in points.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellFont.Bold">
+            <summary>Bold.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellFont.Italic">
+            <summary>Italic.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellFont.Underline">
+            <summary>Underlined.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellFont.Strikethrough">
+            <summary>Struck through.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellFont.Color">
+            <summary>Text color as #RRGGBB, or null for the theme default.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellFill">
+            <summary>Background fill of a cell style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellFill.Color">
+            <summary>Fill color as #RRGGBB, or null for no fill.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellBorderSide">
+            <summary>One side of a cell border.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellBorderSide.Style">
+            <summary>Line style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellBorderSide.Color">
+            <summary>Line color as #RRGGBB, or null for the theme default.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellBorder">
+            <summary>Borders of a cell style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellBorder.Left">
+            <summary>Left border.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellBorder.Right">
+            <summary>Right border.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellBorder.Top">
+            <summary>Top border.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellBorder.Bottom">
+            <summary>Bottom border.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellAlignment">
+            <summary>Alignment settings of a cell style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellAlignment.Horizontal">
+            <summary>Horizontal alignment.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellAlignment.Vertical">
+            <summary>Vertical alignment.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellAlignment.WrapText">
+            <summary>Wrap text inside the cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellAlignment.Indent">
+            <summary>Indent level.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellStyle">
+            <summary>Complete immutable style of a cell. Equal styles share one id in the <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.StyleTable"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellStyle.Default">
+            <summary>The default style, always id 0.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellStyle.Font">
+            <summary>Font settings.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellStyle.Fill">
+            <summary>Background fill.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellStyle.Border">
+            <summary>Borders.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellStyle.Alignment">
+            <summary>Alignment.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellStyle.NumberFormat">
+            <summary>Excel number format code, <c>General</c> by default.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.StyleTable">
+            <summary>Deduplicating table of cell styles; cells store only the style id.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StyleTable.Count">
+            <summary>Number of distinct styles including the default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StyleTable.Item(System.Int32)">
+            <summary>Gets the style for an id.</summary>
+            <param name="id">The style id.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.StyleTable.GetOrAdd(MudBlazor.Extensions.Office.Spreadsheet.CellStyle)">
+            <summary>Returns the id of an equal style, adding the style if it is new.</summary>
+            <param name="style">The style.</param>
+            <returns>The style id.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellValueKind">
+            <summary>The kind of data stored in a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CellValue"/>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellValueKind.Empty">
+            <summary>No value.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellValueKind.Number">
+            <summary>A number (also used for dates).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellValueKind.Text">
+            <summary>A text string.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellValueKind.Boolean">
+            <summary>A boolean.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellValueKind.Error">
+            <summary>An error value.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellError">
+            <summary>Spreadsheet error values.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Null">
+            <summary>#NULL!</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Div0">
+            <summary>#DIV/0!</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Value">
+            <summary>#VALUE!</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Ref">
+            <summary>#REF!</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Name">
+            <summary>#NAME?</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Num">
+            <summary>#NUM!</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.NA">
+            <summary>#N/A</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Spill">
+            <summary>#SPILL!</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Calc">
+            <summary>#CALC!</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Circ">
+            <summary>#CIRC! (circular reference)</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellValue">
+            <summary>Immutable cell value: empty, number, text, boolean or error. The default value is empty.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellValue.Kind">
+            <summary>The kind of value.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellValue.TextValue">
+            <summary>The text for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellValueKind.Text"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellValue.NumberValue">
+            <summary>The number for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellValueKind.Number"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellValue.BooleanValue">
+            <summary>The boolean for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellValueKind.Boolean"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellValue.ErrorValue">
+            <summary>The error for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellValueKind.Error"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellValue.Empty">
+            <summary>The empty value.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellValue.Number(System.Double)">
+            <summary>Creates a number value.</summary>
+            <param name="value">The number.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellValue.Text(System.String)">
+            <summary>Creates a text value; null yields the empty value.</summary>
+            <param name="value">The text.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellValue.Boolean(System.Boolean)">
+            <summary>Creates a boolean value.</summary>
+            <param name="value">The boolean.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellValue.Error(MudBlazor.Extensions.Office.Spreadsheet.CellError)">
+            <summary>Creates an error value.</summary>
+            <param name="error">The error.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellValue.ToString">
+            <summary>Formats the value with invariant culture (numbers round-trip, errors use their Excel codes).</summary>
+            <returns>The text form.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetValueCommand">
+            <summary>Sets a constant cell value and removes any formula.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="cell">The cell to set.</param>
+            <param name="value">The new value.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetValueCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef,MudBlazor.Extensions.Office.Spreadsheet.CellValue)">
+            <summary>Sets a constant cell value and removes any formula.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="cell">The cell to set.</param>
+            <param name="value">The new value.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetValueCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetValueCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetValueCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetFormulaCommand">
+            <summary>Sets the formula text of a cell. The stored text never has a leading equals sign; the value is left to the engine.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="cell">The cell to set.</param>
+            <param name="formula">Formula text, with or without a leading equals sign.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetFormulaCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef,System.String)">
+            <summary>Sets the formula text of a cell. The stored text never has a leading equals sign; the value is left to the engine.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="cell">The cell to set.</param>
+            <param name="formula">Formula text, with or without a leading equals sign.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetFormulaCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetFormulaCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetFormulaCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetStyleCommand">
+            <summary>Changes the style of every cell in a range, creating style-only cells where needed.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to format.</param>
+            <param name="change">Maps the current style of a cell to its new style.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetStyleCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,System.Func{MudBlazor.Extensions.Office.Spreadsheet.CellStyle,MudBlazor.Extensions.Office.Spreadsheet.CellStyle})">
+            <summary>Changes the style of every cell in a range, creating style-only cells where needed.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to format.</param>
+            <param name="change">Maps the current style of a cell to its new style.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetStyleCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,MudBlazor.Extensions.Office.Spreadsheet.CellStyle)">
+            <summary>Creates a command that replaces the style of every cell in the range with a fixed style.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to format.</param>
+            <param name="style">The style to apply.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetStyleCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetStyleCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetStyleCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ClearCommand">
+            <summary>Clears the contents (and optionally the formatting) of a range.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to clear.</param>
+            <param name="clearStyle">True to clear formatting as well.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ClearCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,System.Boolean)">
+            <summary>Clears the contents (and optionally the formatting) of a range.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to clear.</param>
+            <param name="clearStyle">True to clear formatting as well.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ClearCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ClearCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ClearCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand">
+            <summary>
+            An undoable workbook edit. <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)"/> may run repeatedly (execute, then redo) and must capture whatever
+            <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)"/> needs on each call. Commands must validate before mutating so a failing Apply leaves no trace.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand.Description">
+            <summary>Short description of the action for undo and redo labels.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <summary>Performs the edit.</summary>
+            <param name="wb">The workbook.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <summary>Reverses the edit performed by the last <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)"/>.</summary>
+            <param name="wb">The workbook.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.InsertCommandBase">
+            <summary>Shared implementation of inserting rows or columns.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="axis">Rows or columns.</param>
+            <param name="index">Zero-based index at which the new rows or columns appear.</param>
+            <param name="count">How many to insert.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.InsertCommandBase.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.Axis,System.Int32,System.Int32)">
+            <summary>Shared implementation of inserting rows or columns.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="axis">Rows or columns.</param>
+            <param name="index">Zero-based index at which the new rows or columns appear.</param>
+            <param name="count">How many to insert.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.InsertCommandBase.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.InsertCommandBase.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.InsertCommandBase.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DeleteCommandBase">
+            <summary>Shared implementation of deleting rows or columns.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="axis">Rows or columns.</param>
+            <param name="index">Zero-based index of the first row or column to delete.</param>
+            <param name="count">How many to delete.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteCommandBase.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.Axis,System.Int32,System.Int32)">
+            <summary>Shared implementation of deleting rows or columns.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="axis">Rows or columns.</param>
+            <param name="index">Zero-based index of the first row or column to delete.</param>
+            <param name="count">How many to delete.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DeleteCommandBase.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteCommandBase.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteCommandBase.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.InsertRowsCommand">
+            <summary>Inserts rows; existing rows at and below the index move down.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Zero-based row index at which the new rows appear.</param>
+            <param name="count">How many rows to insert.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.InsertRowsCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32,System.Int32)">
+            <summary>Inserts rows; existing rows at and below the index move down.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Zero-based row index at which the new rows appear.</param>
+            <param name="count">How many rows to insert.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.InsertColumnsCommand">
+            <summary>Inserts columns; existing columns at and right of the index move right.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Zero-based column index at which the new columns appear.</param>
+            <param name="count">How many columns to insert.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.InsertColumnsCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32,System.Int32)">
+            <summary>Inserts columns; existing columns at and right of the index move right.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Zero-based column index at which the new columns appear.</param>
+            <param name="count">How many columns to insert.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DeleteRowsCommand">
+            <summary>Deletes rows together with their cells; rows below move up.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Zero-based index of the first row to delete.</param>
+            <param name="count">How many rows to delete.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteRowsCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32,System.Int32)">
+            <summary>Deletes rows together with their cells; rows below move up.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Zero-based index of the first row to delete.</param>
+            <param name="count">How many rows to delete.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DeleteColumnsCommand">
+            <summary>Deletes columns together with their cells; columns to the right move left.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Zero-based index of the first column to delete.</param>
+            <param name="count">How many columns to delete.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteColumnsCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32,System.Int32)">
+            <summary>Deletes columns together with their cells; columns to the right move left.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Zero-based index of the first column to delete.</param>
+            <param name="count">How many columns to delete.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetHiddenCommand">
+            <summary>Hides or unhides a run of rows or columns.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="axis">Rows or columns.</param>
+            <param name="index">Zero-based first index.</param>
+            <param name="count">Number of rows or columns.</param>
+            <param name="hidden">True to hide, false to unhide.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetHiddenCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.Axis,System.Int32,System.Int32,System.Boolean)">
+            <summary>Hides or unhides a run of rows or columns.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="axis">Rows or columns.</param>
+            <param name="index">Zero-based first index.</param>
+            <param name="count">Number of rows or columns.</param>
+            <param name="hidden">True to hide, false to unhide.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetHiddenCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetHiddenCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetHiddenCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ResizeCommand">
+            <summary>Sets the width of columns or height of rows; a null size restores the default.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="axis">Rows (height) or columns (width).</param>
+            <param name="index">Zero-based first index.</param>
+            <param name="count">Number of rows or columns.</param>
+            <param name="size">Size in pixels, or null for the default.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ResizeCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.Axis,System.Int32,System.Int32,System.Nullable{System.Double})">
+            <summary>Sets the width of columns or height of rows; a null size restores the default.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="axis">Rows (height) or columns (width).</param>
+            <param name="index">Zero-based first index.</param>
+            <param name="count">Number of rows or columns.</param>
+            <param name="size">Size in pixels, or null for the default.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ResizeCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ResizeCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ResizeCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.MergeCommand">
+            <summary>Merges a range; existing merges that overlap it are replaced. Cell data is not modified.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to merge.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.MergeCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
+            <summary>Merges a range; existing merges that overlap it are replaced. Cell data is not modified.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to merge.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.MergeCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.MergeCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.MergeCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.UnmergeCommand">
+            <summary>Removes every merge that intersects a range.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to unmerge.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UnmergeCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
+            <summary>Removes every merge that intersects a range.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to unmerge.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.UnmergeCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UnmergeCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UnmergeCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FreezeCommand">
+            <summary>Freezes the panes above and left of a cell, or removes the freeze when the cell is null or A1.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="at">First scrolling cell, or null.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FreezeCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Nullable{MudBlazor.Extensions.Office.Spreadsheet.CellRef})">
+            <summary>Freezes the panes above and left of a cell, or removes the freeze when the cell is null or A1.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="at">First scrolling cell, or null.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FreezeCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FreezeCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FreezeCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.AddSheetCommand">
+            <summary>Adds a new empty sheet. After execution <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.AddSheetCommand.Sheet"/> holds it.</summary>
+            <param name="name">Name of the new sheet.</param>
+            <param name="index">Tab position, or -1 to append.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.AddSheetCommand.#ctor(System.String,System.Int32)">
+            <summary>Adds a new empty sheet. After execution <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.AddSheetCommand.Sheet"/> holds it.</summary>
+            <param name="name">Name of the new sheet.</param>
+            <param name="index">Tab position, or -1 to append.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.AddSheetCommand.Sheet">
+            <summary>The created sheet, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.AddSheetCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.AddSheetCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.AddSheetCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DeleteSheetCommand">
+            <summary>Deletes a sheet; the last remaining sheet cannot be deleted.</summary>
+            <param name="sheet">The sheet to delete.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteSheetCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet)">
+            <summary>Deletes a sheet; the last remaining sheet cannot be deleted.</summary>
+            <param name="sheet">The sheet to delete.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DeleteSheetCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteSheetCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteSheetCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RenameSheetCommand">
+            <summary>Renames a sheet and updates sheet references inside defined names. Formula references are handled by the engine.</summary>
+            <param name="sheet">The sheet to rename.</param>
+            <param name="newName">The new name.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RenameSheetCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String)">
+            <summary>Renames a sheet and updates sheet references inside defined names. Formula references are handled by the engine.</summary>
+            <param name="sheet">The sheet to rename.</param>
+            <param name="newName">The new name.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RenameSheetCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RenameSheetCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RenameSheetCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.MoveSheetCommand">
+            <summary>Moves a sheet to another tab position.</summary>
+            <param name="sheet">The sheet to move.</param>
+            <param name="newIndex">The target position.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.MoveSheetCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32)">
+            <summary>Moves a sheet to another tab position.</summary>
+            <param name="sheet">The sheet to move.</param>
+            <param name="newIndex">The target position.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.MoveSheetCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.MoveSheetCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.MoveSheetCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetTabColorCommand">
+            <summary>Sets the tab color of a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="color">Color as #RRGGBB, or null to clear.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTabColorCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String)">
+            <summary>Sets the tab color of a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="color">Color as #RRGGBB, or null to clear.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetTabColorCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTabColorCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTabColorCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DefineNameCommand">
+            <summary>Adds, changes or (with a null reference) removes a defined name.</summary>
+            <param name="name">The name.</param>
+            <param name="refersTo">Reference text such as <c>Sheet1!$A$1:$B$2</c>, or null to remove the name.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DefineNameCommand.#ctor(System.String,System.String)">
+            <summary>Adds, changes or (with a null reference) removes a defined name.</summary>
+            <param name="name">The name.</param>
+            <param name="refersTo">Reference text such as <c>Sheet1!$A$1:$B$2</c>, or null to remove the name.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DefineNameCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DefineNameCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DefineNameCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.UndoStack">
+            <summary>Undo and redo history of a workbook. Each user action is exactly one step; transactions group commands.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.UndoStack.MaxDepth">
+            <summary>Maximum number of undo steps kept; the oldest are dropped first.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.UndoStack.CanUndo">
+            <summary>True if a step can be undone (never while a transaction is open).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.UndoStack.CanRedo">
+            <summary>True if a step can be redone (never while a transaction is open).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.UndoStack.UndoDescription">
+            <summary>Description of the step that would be undone, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.UndoStack.RedoDescription">
+            <summary>Description of the step that would be redone, or null.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UndoStack.Undo">
+            <summary>Undoes the latest step.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UndoStack.Redo">
+            <summary>Redoes the latest undone step.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UndoStack.Clear">
+            <summary>Drops the whole history, for example after loading a file.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UndoStack.BeginTransaction(System.String)">
+            <summary>
+            Groups all commands executed until the returned scope is disposed into one undo step and one
+            <see cref="E:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Changed"/> event. Nested transactions merge into the outermost one; empty ones are dropped.
+            </summary>
+            <param name="description">Description of the combined step.</param>
+            <returns>The scope to dispose to end the transaction.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellChange">
+            <summary>A changed cell value or formula.</summary>
+            <param name="Sheet">The sheet containing the cell.</param>
+            <param name="Cell">The cell address.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellChange.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>A changed cell value or formula.</summary>
+            <param name="Sheet">The sheet containing the cell.</param>
+            <param name="Cell">The cell address.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellChange.Sheet">
+            <summary>The sheet containing the cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellChange.Cell">
+            <summary>The cell address.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RangeChange">
+            <summary>A range whose formatting changed (no value or formula change).</summary>
+            <param name="Sheet">The sheet containing the range.</param>
+            <param name="Range">The formatted range.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RangeChange.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
+            <summary>A range whose formatting changed (no value or formula change).</summary>
+            <param name="Sheet">The sheet containing the range.</param>
+            <param name="Range">The formatted range.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RangeChange.Sheet">
+            <summary>The sheet containing the range.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RangeChange.Range">
+            <summary>The formatted range.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind">
+            <summary>Kinds of structural workbook changes.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.RowsInserted">
+            <summary>Rows were inserted; <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.Index"/> and <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.Count"/> describe them.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.RowsDeleted">
+            <summary>Rows were deleted.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.ColumnsInserted">
+            <summary>Columns were inserted.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.ColumnsDeleted">
+            <summary>Columns were deleted.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.SheetAdded">
+            <summary>A sheet was added; <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.Index"/> is its position.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.SheetRemoved">
+            <summary>A sheet was removed; <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.Index"/> is its former position.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.SheetRenamed">
+            <summary>A sheet was renamed; <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.OldName"/> holds the previous name.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.SheetMoved">
+            <summary>A sheet was moved; <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.Index"/> is its new position.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.DefinedNamesChanged">
+            <summary>A defined name was added, changed or removed.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.Layout">
+            <summary>Hidden state, sizes, merges, freeze panes or tab color of a sheet changed.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.StructureChange">
+            <summary>A structural change with enough information to shift references.</summary>
+            <param name="Kind">What happened.</param>
+            <param name="Sheet">The affected sheet (null for defined names).</param>
+            <param name="Index">Zero-based first row, column or sheet position.</param>
+            <param name="Count">Number of rows or columns.</param>
+            <param name="OldName">Previous sheet name for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.SheetRenamed"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.#ctor(MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind,MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32,System.Int32,System.String)">
+            <summary>A structural change with enough information to shift references.</summary>
+            <param name="Kind">What happened.</param>
+            <param name="Sheet">The affected sheet (null for defined names).</param>
+            <param name="Index">Zero-based first row, column or sheet position.</param>
+            <param name="Count">Number of rows or columns.</param>
+            <param name="OldName">Previous sheet name for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.SheetRenamed"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.Kind">
+            <summary>What happened.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.Sheet">
+            <summary>The affected sheet (null for defined names).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.Index">
+            <summary>Zero-based first row, column or sheet position.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.Count">
+            <summary>Number of rows or columns.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StructureChange.OldName">
+            <summary>Previous sheet name for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.StructureChangeKind.SheetRenamed"/>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs">
+            <summary>Describes everything that changed during one command, transaction, undo or redo.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.Cells">
+            <summary>Cells whose value or formula changed (including cells moved into place by a structural change).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.FormattedRanges">
+            <summary>Ranges whose formatting changed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.Structure">
+            <summary>Structural changes in the order they happened.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.Workbook">
+            <summary>A workbook of worksheets with shared styles, defined names and an undo stack.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Sheets">
+            <summary>The sheets in tab order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Styles">
+            <summary>Shared cell styles.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.DefinedNames">
+            <summary>Defined names mapped to their reference text (for example <c>Sheet1!$A$1:$B$2</c>), case-insensitive.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Undo">
+            <summary>The undo and redo history.</summary>
+        </member>
+        <member name="E:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Changed">
+            <summary>Raised once after each command, transaction, undo or redo with everything that changed.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Create(System.String)">
+            <summary>Creates a workbook with one empty sheet.</summary>
+            <param name="firstSheet">Name of the first sheet.</param>
+            <returns>The new workbook.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Workbook.FindSheet(System.String)">
+            <summary>Finds a sheet by name, ignoring case.</summary>
+            <param name="name">The sheet name.</param>
+            <returns>The sheet, or null.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Execute(MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand)">
+            <summary>Applies a command and records it as one undo step (or adds it to the open transaction).</summary>
+            <param name="cmd">The command.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.Axis">
+            <summary>Row or column axis of a worksheet.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.Axis.Row">
+            <summary>Rows.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.Axis.Column">
+            <summary>Columns.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.Worksheet">
+            <summary>
+            A worksheet with sparse cell storage. Only cells with content or a non-default style are stored, and
+            row and column sizes are stored only where they differ from the defaults. All mutation goes through commands.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DefaultColumnWidth">
+            <summary>Default column width in pixels.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DefaultRowHeight">
+            <summary>Default row height in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Name">
+            <summary>The sheet name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.TabColor">
+            <summary>Tab color as #RRGGBB, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Hidden">
+            <summary>True if the sheet tab is hidden.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.FreezeAt">
+            <summary>First scrolling cell of a frozen pane (rows above and columns left of it stay fixed), or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Merges">
+            <summary>Merged ranges.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ColumnWidths">
+            <summary>Explicit column widths (only deviations from the default), keyed by zero-based column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.RowHeights">
+            <summary>Explicit row heights (only deviations from the default), keyed by zero-based row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.HiddenColumns">
+            <summary>Zero-based indexes of hidden columns.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.HiddenRows">
+            <summary>Zero-based indexes of hidden rows.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Item(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Gets the stored cell, or null if the address holds no content and no style.</summary>
+            <param name="r">The cell address.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.UsedCells">
+            <summary>Enumerates all stored cells in no particular order.</summary>
+            <returns>Address and cell pairs.</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.UsedRange">
+            <summary>Bounding range of all stored cells, or A1 for an empty sheet.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ColumnWidth(System.Int32)">
+            <summary>Width of a column in pixels (hidden columns keep their stored width).</summary>
+            <param name="c">Zero-based column.</param>
+            <returns>The width.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.RowHeight(System.Int32)">
+            <summary>Height of a row in pixels (hidden rows keep their stored height).</summary>
+            <param name="r">Zero-based row.</param>
+            <returns>The height.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.IsColumnHidden(System.Int32)">
+            <summary>Tests whether a column is hidden.</summary>
+            <param name="c">Zero-based column.</param>
+            <returns>True if hidden.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.IsRowHidden(System.Int32)">
+            <summary>Tests whether a row is hidden.</summary>
+            <param name="r">Zero-based row.</param>
+            <returns>True if hidden.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Options.AnimationIteration">
             <summary>
             Represents the animation timing function.
