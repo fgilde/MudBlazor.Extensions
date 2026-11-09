@@ -1,0 +1,66 @@
+@page "/spreadsheet-files"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [Demo(Name = "Files", Group = "Spreadsheet", Order = 20, Icon = Icons.Material.Outlined.FolderOpen, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor), typeof(MudExFileDisplay) }, Documentation = "Open and save xlsx and csv files locally, save to a server with SaveRequested, or edit them inside MudExFileDisplay.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Spreadsheet – Files"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["The File menu opens and creates workbooks and saves them locally. Saving as csv exports the active sheet."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Open and save locally"
+                  NavTitle="Open and save locally"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "ExcelSheet.xlsx and sample.csv are loaded through XlsxReader and CsvFormat",
+                                  "File menu: Open, New, Save, Save As",
+                                  "AllowOpen, AllowNew and AllowLocalSave control the File menu",
+                                  "Unmodeled parts of the xlsx package are preserved on save"
+                              })">
+        <DemoContent>
+            <SpreadsheetFilesExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Save to a server (simulated)"
+                  NavTitle="Save to a server"
+                  FeaturesTitle="Parameters and events"
+                  Features="@(new[]
+                              {
+                                  "SaveRequested – receives the exported file as MudExFileSaveRequest",
+                                  "Handled = true – tells the editor that your code stored the file",
+                                  "The content stream is only valid during the handler, so copy it"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Switch to edit mode, change a cell and press Ctrl+S. The handler reports the file name and size with a snackbar."]
+            </MudText>
+            <SpreadsheetServerSaveExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. In MudExFileDisplay"
+                  NavTitle="In MudExFileDisplay"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "AllowEdit adds the edit toggle for xlsx, xls, csv and tsv",
+                                  "The spreadsheet editor is picked automatically for these files"
+                              })">
+        <DemoContent>
+            <SpreadsheetFileDisplayExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

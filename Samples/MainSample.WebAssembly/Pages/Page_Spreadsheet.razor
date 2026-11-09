@@ -1,0 +1,84 @@
+@page "/spreadsheet"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [Demo(Name = "Overview", Group = "Spreadsheet", Order = 0, Icon = Icons.Material.Outlined.TableChart, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) }, Documentation = "MudExSpreadsheetEditor – an Excel-like editor with ribbon, formula bar, sheet tabs and status bar.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Spreadsheet Editor"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["Edit xlsx and csv workbooks with formulas, number formats, merges, frozen panes and undo. The editor fills its container, so give the host element a height."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Budget workbook"
+                  NavTitle="Budget workbook"
+                  FeaturesTitle="Parameters and events"
+                  Features="@(new[]
+                              {
+                                  "@bind-Workbook – edit a workbook built in code or loaded from a file",
+                                  "SelectionChanged – follow the selected range",
+                                  "Formulas, number formats, borders and frozen panes are part of the workbook",
+                                  "Ctrl+Z / Ctrl+Y undo and redo, Ctrl+B, Ctrl+1 Format Cells"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["A small budget with SUM, AVERAGE, IF, XLOOKUP and a FILTER spill, formatted as a table."]
+            </MudText>
+            <SpreadsheetBudgetExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Ribbon modes, colors and layout"
+                  NavTitle="Ribbon modes and colors"
+                  FeaturesTitle="Parameters"
+                  Features="@(new[]
+                              {
+                                  "RibbonMode – Classic, Simplified, Menu or Toolbar",
+                                  "RibbonColor – MudExColor, a theme color or any CSS color",
+                                  "ShowRibbon, RibbonCollapsed",
+                                  "ShowFormulaBar, ShowSheetTabs, ShowStatusBar"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Switch the ribbon mode and color and toggle the parts of the editor."]
+            </MudText>
+            <SpreadsheetModesExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. Read-only viewer"
+                  NavTitle="Read-only viewer"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "ReadOnly – only the View tab, no editing, no sheet management",
+                                  "Selection, status bar summary, zoom and gridline options still work"
+                              })">
+        <DemoContent>
+            <SpreadsheetViewerExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="4. 100,000 rows x 30 columns"
+                  NavTitle="100,000 rows"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "The workbook is built in code",
+                                  "Only the visible cells and a small buffer are in the DOM",
+                                  "Scrolling does not call .NET per pixel"
+                              })">
+        <DemoContent>
+            <SpreadsheetLargeExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

@@ -1,0 +1,25 @@
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Services
+@inject MudExFileService FileService
+
+@if (_stream != null)
+{
+    <div style="width: 100%; height: 520px;">
+        <MudExFileDisplay FileName="ExcelSheet.xlsx"
+                          ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                          ContentStream="@_stream"
+                          AllowEdit="true"
+                          Dense="true" />
+    </div>
+}
+
+@code {
+    private Stream? _stream;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _stream = await FileService.ReadStreamAsync(NavigationManager.ToAbsoluteUri("sample-data/ExcelSheet.xlsx").AbsoluteUri);
+    }
+}

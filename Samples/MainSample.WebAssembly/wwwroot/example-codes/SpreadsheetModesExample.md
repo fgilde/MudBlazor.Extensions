@@ -1,0 +1,58 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<MudStack Row="true" Wrap="Wrap.Wrap" AlignItems="AlignItems.Center" Spacing="4" Class="mb-3">
+    <MudToggleGroup T="MudExRibbonMode" @bind-Value="_mode" Color="Color.Primary" SelectionMode="SelectionMode.SingleSelection">
+        @foreach (var mode in Enum.GetValues<MudExRibbonMode>())
+        {
+            <MudToggleItem Value="@mode" Text="@mode.ToString()" />
+        }
+    </MudToggleGroup>
+    <MudSelect T="string" @bind-Value="_colorName" Label="@L["Ribbon color"]" Dense="true" Style="max-width: 200px;">
+        @foreach (var color in _colors.Keys)
+        {
+            <MudSelectItem Value="@color">@color</MudSelectItem>
+        }
+    </MudSelect>
+    <MudSwitch T="bool" @bind-Value="_showRibbon" Color="Color.Primary" Label="@L["Ribbon"]" />
+    <MudSwitch T="bool" @bind-Value="_collapsed" Color="Color.Primary" Label="@L["Collapsed"]" />
+    <MudSwitch T="bool" @bind-Value="_formulaBar" Color="Color.Primary" Label="@L["Formula bar"]" />
+    <MudSwitch T="bool" @bind-Value="_sheetTabs" Color="Color.Primary" Label="@L["Sheet tabs"]" />
+    <MudSwitch T="bool" @bind-Value="_statusBar" Color="Color.Primary" Label="@L["Status bar"]" />
+</MudStack>
+
+<div style="width: 100%; height: 520px;">
+    <MudExSpreadsheetEditor Workbook="_workbook"
+                            RibbonMode="@_mode"
+                            RibbonColor="@_colors[_colorName]"
+                            ShowRibbon="@_showRibbon"
+                            RibbonCollapsed="@_collapsed"
+                            ShowFormulaBar="@_formulaBar"
+                            ShowSheetTabs="@_sheetTabs"
+                            ShowStatusBar="@_statusBar" />
+</div>
+
+@code {
+    private static readonly Dictionary<string, MudExColor> _colors = new()
+    {
+        ["Excel green"] = "#217346",
+        ["Color.Primary"] = MudBlazor.Color.Primary,
+        ["Color.Secondary"] = MudBlazor.Color.Secondary,
+        ["Color.Info"] = MudBlazor.Color.Info,
+        ["PowerPoint orange"] = "#C43E1C",
+        ["OneNote purple"] = "#7719AA"
+    };
+
+    private readonly Workbook _workbook = SpreadsheetSamples.CreateBudget();
+    private MudExRibbonMode _mode = MudExRibbonMode.Classic;
+    private string _colorName = "Excel green";
+    private bool _showRibbon = true;
+    private bool _collapsed;
+    private bool _formulaBar = true;
+    private bool _sheetTabs = true;
+    private bool _statusBar = true;
+}
+
+```

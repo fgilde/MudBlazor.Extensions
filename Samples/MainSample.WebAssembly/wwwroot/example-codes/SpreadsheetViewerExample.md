@@ -1,0 +1,13 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<div style="width: 100%; height: 420px;">
+    <MudExSpreadsheetEditor Workbook="_workbook" ReadOnly="true" />
+</div>
+
+@code {
+    private readonly Workbook _workbook = SpreadsheetSamples.CreateBudget();
+}
+
+```

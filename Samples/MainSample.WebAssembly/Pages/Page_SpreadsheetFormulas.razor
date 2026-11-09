@@ -1,0 +1,37 @@
+@page "/spreadsheet-formulas"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [Demo(Name = "Formulas", Group = "Spreadsheet", Order = 10, Icon = Icons.Material.Outlined.Functions, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) }, Documentation = "Formulas, functions and dynamic array spills in MudExSpreadsheetEditor.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Spreadsheet – Formulas"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["Formulas use English function names. Both , and ; are accepted as argument separators, and the file stores the Excel form with a comma. Only affected cells are recalculated."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Budget with formulas"
+                  NavTitle="Budget with formulas"
+                  FeaturesTitle="Used in this workbook"
+                  Features="@(new[]
+                              {
+                                  "SUM and AVERAGE over rows and columns",
+                                  "IF for the status column",
+                                  "XLOOKUP for the lookup cell B11",
+                                  "FILTER spills a list starting at A14",
+                                  "Insert and Formulas tabs list all functions with signature and description"
+                              })">
+        <DemoContent>
+            <SpreadsheetFormulasExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

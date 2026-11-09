@@ -1,0 +1,13 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 420px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExSpreadsheetEditor</span> <span class="htmlAttributeName">Workbook</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;_workbook&quot;</span> <span class="htmlAttributeName">ReadOnly</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private readonly Workbook _workbook = SpreadsheetSamples.CreateBudget();
+}
+
+</pre></div>

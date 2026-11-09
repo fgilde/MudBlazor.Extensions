@@ -1,0 +1,25 @@
+@page "/spreadsheet-pg"
+@inherits BasePage
+
+@using MudBlazor.Extensions.Office.Spreadsheet
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [Demo(IsPlaygroundDemo = true, Name = "Playground", Order = 100, Group = "Spreadsheet", Icon = Icons.Material.Outlined.TableChart, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) })]
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <div style="width: 100%; height: 560px;">
+                <MudExSpreadsheetEditor @ref="ComponentRef" Workbook="_workbook" />
+            </div>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@ComponentRef"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    MudExSpreadsheetEditor? ComponentRef;
+    private readonly Workbook _workbook = SpreadsheetSamples.CreateBudget();
+}

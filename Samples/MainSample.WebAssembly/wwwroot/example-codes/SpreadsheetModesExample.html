@@ -1,0 +1,58 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Row</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">Wrap</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Wrap.Wrap&quot;</span> <span class="htmlAttributeName">AlignItems</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;AlignItems.Center&quot;</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudToggleGroup</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;MudExRibbonMode&quot; @bind-Value=&quot;_mode&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">SelectionMode</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;SelectionMode.SingleSelection&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @foreach (var mode in Enum.GetValues<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExRibbonMode</span><span class="htmlTagDelimiter">&gt;</span>())
+        {
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudToggleItem</span> <span class="htmlAttributeName">Value</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@mode&quot;</span> <span class="htmlAttributeName">Text</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@mode.ToString()&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+        }
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudToggleGroup</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSelect</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;string&quot; @bind-Value=&quot;_colorName&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Ribbon color&quot;]&quot;</span> <span class="htmlAttributeName">Dense</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">Style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;max-width: 200px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        @foreach (var color in _colors.Keys)
+        {
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSelectItem</span> <span class="htmlAttributeName">Value</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@color&quot;</span><span class="htmlTagDelimiter">&gt;</span>@color<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudSelectItem</span><span class="htmlTagDelimiter">&gt;</span>
+        }
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudSelect</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_showRibbon&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Ribbon&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_collapsed&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Collapsed&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_formulaBar&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Formula bar&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_sheetTabs&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Sheet tabs&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_statusBar&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Status bar&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 520px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExSpreadsheetEditor</span> <span class="htmlAttributeName">Workbook</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;_workbook&quot;</span>
+                            <span class="htmlAttributeName">RibbonMode</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_mode&quot;</span>
+                            <span class="htmlAttributeName">RibbonColor</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_colors[_colorName]&quot;</span>
+                            <span class="htmlAttributeName">ShowRibbon</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_showRibbon&quot;</span>
+                            <span class="htmlAttributeName">RibbonCollapsed</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_collapsed&quot;</span>
+                            <span class="htmlAttributeName">ShowFormulaBar</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_formulaBar&quot;</span>
+                            <span class="htmlAttributeName">ShowSheetTabs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_sheetTabs&quot;</span>
+                            <span class="htmlAttributeName">ShowStatusBar</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_statusBar&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private static readonly Dictionary&lt;string, MudExColor&gt; _colors = new()
+    {
+        [&quot;Excel green&quot;] = &quot;#217346&quot;,
+        [&quot;Color.Primary&quot;] = MudBlazor.Color.Primary,
+        [&quot;Color.Secondary&quot;] = MudBlazor.Color.Secondary,
+        [&quot;Color.Info&quot;] = MudBlazor.Color.Info,
+        [&quot;PowerPoint orange&quot;] = &quot;#C43E1C&quot;,
+        [&quot;OneNote purple&quot;] = &quot;#7719AA&quot;
+    };
+
+    private readonly Workbook _workbook = SpreadsheetSamples.CreateBudget();
+    private MudExRibbonMode _mode = MudExRibbonMode.Classic;
+    private string _colorName = &quot;Excel green&quot;;
+    private bool _showRibbon = true;
+    private bool _collapsed;
+    private bool _formulaBar = true;
+    private bool _sheetTabs = true;
+    private bool _statusBar = true;
+}
+
+</pre></div>
