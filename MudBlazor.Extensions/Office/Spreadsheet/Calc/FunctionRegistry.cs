@@ -1,11 +1,15 @@
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
-/// <summary>Case-insensitive lookup of worksheet functions by name.</summary>
+/// <summary>
+/// Case-insensitive lookup of worksheet functions by name. Register functions before handing the registry to a <see cref="CalcEngine"/>;
+/// registries are not synchronized.
+/// </summary>
 public sealed class FunctionRegistry
 {
     private readonly Dictionary<string, IFunction> _functions = new(StringComparer.OrdinalIgnoreCase);
+    private bool _readOnly;
 
-    /// <summary>The registry with all built-in functions.</summary>
+    /// <summary>The registry with all built-in functions. It is shared by all engines and read-only; use <see cref="Copy"/> to add functions.</summary>
     public static FunctionRegistry Default { get; } = CreateDefault();
 
     /// <summary>All registered functions.</summary>
@@ -13,7 +17,21 @@ public sealed class FunctionRegistry
 
     /// <summary>Adds or replaces a function.</summary>
     /// <param name="function">The function.</param>
-    public void Register(IFunction function) => _functions[function.Name] = function;
+    /// <exception cref="InvalidOperationException">The registry is <see cref="Default"/>.</exception>
+    public void Register(IFunction function)
+    {
+        if (_readOnly) throw new InvalidOperationException("The default function registry is shared and read-only; register functions on FunctionRegistry.Default.Copy().");
+        _functions[function.Name] = function;
+    }
+
+    /// <summary>Creates a writable registry with the same functions, for example to add custom functions to the built-in ones.</summary>
+    /// <returns>The copy.</returns>
+    public FunctionRegistry Copy()
+    {
+        var copy = new FunctionRegistry();
+        foreach (var (name, function) in _functions) copy._functions[name] = function;
+        return copy;
+    }
 
     /// <summary>Finds a function; the file prefixes <c>_xlfn.</c> and <c>_xlws.</c> are ignored.</summary>
     /// <param name="name">The function name.</param>
@@ -40,6 +58,7 @@ public sealed class FunctionRegistry
         InformationFunctions.Register(registry);
         FinancialFunctions.Register(registry);
         DynamicArrayFunctions.Register(registry);
+        registry._readOnly = true;
         return registry;
     }
 }

@@ -703,6 +703,23 @@ public class FormulaEngineTests
     }
 
     [Fact]
+    public void DefaultRegistry_IsReadOnly_CopyAcceptsCustomFunctions()
+    {
+        var custom = new DelegateFunction(new FunctionInfo("TWICE", "Test", "TWICE(x)", "Doubles."), 1, 1,
+            (ctx, a) => CalcValue.Number(ctx.ToScalar(a[0].Value).NumberValue * 2));
+        Assert.Throws<InvalidOperationException>(() => FunctionRegistry.Default.Register(custom));
+        Assert.False(FunctionRegistry.Default.TryGet("TWICE", out _));
+
+        var functions = FunctionRegistry.Default.Copy();
+        functions.Register(custom);
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        _ = new CalcEngine(wb, functions);
+        wb.Execute(new SetFormulaCommand(ws, R("A1"), "=TWICE(SUM(1,2))"));
+        Assert.Equal(CellValue.Number(6), ValueAt(ws, "A1"));
+    }
+
+    [Fact]
     public void InsufficientStackInFunction_YieldsValueError()
     {
         var functions = new FunctionRegistry();
