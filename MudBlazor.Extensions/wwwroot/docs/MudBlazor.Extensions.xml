@@ -19596,21 +19596,6 @@
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.Dispose">
             <inheritdoc />
         </member>
-        <member name="T:MudBlazor.Extensions.Components.FormatCellsDialog">
-            <summary>
-            The Format Cells dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/> with the tabs Number, Alignment, Font, Border and Fill.
-            Closes with the edited <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CellStyle"/> as result data.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.FormatCellsDialog.CellStyle">
-            <summary>The style shown when the dialog opens, usually the style of the active cell.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.FormatCellsDialog.Sample">
-            <summary>Value shown in the number format sample.</summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.FormatCellsDialog.OnInitialized">
-            <inheritdoc />
-        </member>
         <member name="T:MudBlazor.Extensions.Components.FormulaSuggestion">
             <summary>A completion offered while typing a formula.</summary>
             <param name="Name">The function or defined name.</param>
@@ -19755,6 +19740,21 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetFormatCellsDialog">
+            <summary>
+            The Format Cells dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/> with the tabs Number, Alignment, Font, Border and Fill.
+            Closes with the edited <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CellStyle"/> as result data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFormatCellsDialog.CellStyle">
+            <summary>The style shown when the dialog opens, usually the style of the active cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFormatCellsDialog.Sample">
+            <summary>Value shown in the number format sample.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetFormatCellsDialog.OnInitialized">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetFormulaBar">

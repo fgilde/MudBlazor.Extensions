@@ -24,6 +24,8 @@ public partial class MudExSpreadsheetSheetTabs
     private string _renameText;
     private bool _focusRename;
     private int _dragIndex = -1;
+    private readonly Dictionary<int, ElementReference> _tabElements = new();
+    private bool _focusActive;
 
     /// <summary>The workbook whose sheets are shown.</summary>
     [Parameter] public Workbook Workbook { get; set; }
@@ -125,16 +127,45 @@ public partial class MudExSpreadsheetSheetTabs
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (!_focusRename)
-            return;
-        _focusRename = false;
+        if (_focusRename)
+        {
+            _focusRename = false;
+            await TryFocusAsync(_renameInput);
+        }
+
+        if (_focusActive && _tabElements.TryGetValue(SheetIndex, out var tab))
+        {
+            _focusActive = false;
+            await TryFocusAsync(tab);
+        }
+    }
+
+    private static async Task TryFocusAsync(ElementReference element)
+    {
         try
         {
-            await _renameInput.FocusAsync();
+            await element.FocusAsync();
         }
         catch (Exception e) when (e is InvalidOperationException or Microsoft.JSInterop.JSException)
         {
         }
+    }
+
+    private async Task TabKeyDownAsync(KeyboardEventArgs e, int index)
+    {
+        var target = e.Key switch
+        {
+            "ArrowLeft" => PreviousVisible(index),
+            "ArrowRight" => NextVisible(index),
+            "Home" => NearestVisible(Workbook, 0),
+            "End" => NearestVisible(Workbook, Workbook.Sheets.Count - 1),
+            "Enter" or " " => index,
+            _ => -1
+        };
+        if (target < 0)
+            return;
+        _focusActive = true;
+        await SelectAsync(target);
     }
 
     private async Task SelectAsync(int index)

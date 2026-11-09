@@ -65,7 +65,10 @@
     private RenderFragment Tab(int index, Worksheet sheet, MenuContext menu) =>
         @<div class="@(index == SheetIndex ? "mud-ex-ssst-tab mud-ex-ssst-active" : "mud-ex-ssst-tab")"
               role="tab"
+              tabindex="@(index == SheetIndex ? "0" : "-1")"
               aria-selected="@(index == SheetIndex ? "true" : "false")"
+              @ref="_tabElements[index]"
+              @onkeydown="@(e => TabKeyDownAsync(e, index))"
               style="@(SafeColor(sheet.TabColor) is { } color ? $"--mud-ex-ssst-color:{color}" : null)"
               draggable="@(ReadOnly ? "false" : "true")"
               @onclick="@(() => SelectAsync(index))"

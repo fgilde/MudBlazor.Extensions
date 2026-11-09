@@ -9,7 +9,7 @@ namespace MudBlazor.Extensions.Components;
 /// The Format Cells dialog of <see cref="MudExSpreadsheetEditor"/> with the tabs Number, Alignment, Font, Border and Fill.
 /// Closes with the edited <see cref="Office.Spreadsheet.CellStyle"/> as result data.
 /// </summary>
-public partial class FormatCellsDialog
+public partial class MudExSpreadsheetFormatCellsDialog
 {
     private const string Custom = "Custom";
     private static readonly string[] Categories =

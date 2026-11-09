@@ -249,6 +249,23 @@ public class SpreadsheetEditorTests : IAsyncLifetime
         Assert.Null(wb.Sheets[0].FreezeAt);
     }
 
+
+    [Fact]
+    public void SheetTabs_KeyboardSelectsSheets()
+    {
+        var wb = Book(("A", "A1", 1d), ("B", "A1", 2d), ("C", "A1", 3d));
+        var cut = Render(wb, readOnly: true);
+        cut.WaitForAssertion(() => Assert.Equal(3, cut.FindAll(".mud-ex-ssst-tab").Count));
+        Assert.Equal(["0", "-1", "-1"], cut.FindAll(".mud-ex-ssst-tab").Select(t => t.GetAttribute("tabindex")));
+
+        cut.FindAll(".mud-ex-ssst-tab")[0].KeyDown(new KeyboardEventArgs { Key = "ArrowRight" });
+        cut.WaitForAssertion(() => Assert.Equal("B", cut.Instance.ActiveSheet.Name));
+        cut.FindAll(".mud-ex-ssst-tab")[1].KeyDown(new KeyboardEventArgs { Key = "End" });
+        cut.WaitForAssertion(() => Assert.Equal("C", cut.Instance.ActiveSheet.Name));
+        cut.FindAll(".mud-ex-ssst-tab")[2].KeyDown(new KeyboardEventArgs { Key = "ArrowLeft" });
+        cut.WaitForAssertion(() => Assert.Equal("B", cut.Instance.ActiveSheet.Name));
+        Assert.Equal(["-1", "0", "-1"], cut.FindAll(".mud-ex-ssst-tab").Select(t => t.GetAttribute("tabindex")));
+    }
     [Fact]
     public async Task SheetTabs_AddRenameDeleteMove()
     {
@@ -536,6 +553,7 @@ public class SpreadsheetEditorTests : IAsyncLifetime
         var cut = Render(Workbook.Create());
 
         Assert.Equal("#217346", cut.FindComponent<MudExRibbon>().Instance.Color.ToString());
+        Assert.StartsWith("--mud-ex-spreadsheet-accent:#217346;", cut.Find(".mud-ex-spreadsheet-editor").GetAttribute("style"));
     }
 
     [Fact]

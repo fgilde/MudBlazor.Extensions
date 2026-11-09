@@ -119,6 +119,8 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
 
     private bool IsReadOnly => ReadOnly || LoadFailed || _workbook == null;
 
+    private string RootStyle => $"--mud-ex-spreadsheet-accent:{MudExRibbonColors.BackgroundFor(RibbonColor)};{Style}";
+
     private SpreadsheetSelection CurrentSelection => _selection ?? SpreadsheetSelection.Single(default);
 
     private CellStyle ActiveStyle => ActiveSheet is { } sheet ? _workbook.Styles[sheet.EffectiveStyleId(CurrentSelection.Active)] : CellStyle.Default;

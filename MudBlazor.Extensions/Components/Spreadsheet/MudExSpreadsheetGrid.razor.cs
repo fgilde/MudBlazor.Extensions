@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Components;
@@ -206,7 +207,7 @@ public partial class MudExSpreadsheetGrid
     /// <param name="width">Visible width in pixels.</param>
     /// <param name="height">Visible height in pixels.</param>
     /// <returns>A task that completes when the new window is rendered.</returns>
-    [JSInvokable]
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task OnViewportChanged(double scrollTop, double scrollLeft, double width, double height)
     {
         if (_sheet == null) return Task.CompletedTask;

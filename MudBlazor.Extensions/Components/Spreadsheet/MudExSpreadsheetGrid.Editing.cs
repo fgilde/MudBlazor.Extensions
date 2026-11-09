@@ -508,7 +508,7 @@ public partial class MudExSpreadsheetGrid
     /// <param name="extend">True if Shift was held: extends the current range from the active cell.</param>
     /// <param name="add">True if Ctrl was held: adds a range.</param>
     /// <returns>A task that completes when the selection is updated.</returns>
-    [JSInvokable]
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public async Task OnPointerSelect(int anchorRow, int anchorCol, int row, int col, bool extend, bool add)
     {
         if (_sheet == null) return;
@@ -540,7 +540,7 @@ public partial class MudExSpreadsheetGrid
     /// <param name="extend">True if Shift was held.</param>
     /// <param name="add">True if Ctrl was held.</param>
     /// <returns>A task that completes when the selection is updated.</returns>
-    [JSInvokable]
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public async Task OnHeaderSelect(bool columns, int from, int to, bool extend, bool add)
     {
         if (_sheet == null) return;
@@ -559,7 +559,7 @@ public partial class MudExSpreadsheetGrid
 
     /// <summary>Called by the browser when the select-all corner is clicked.</summary>
     /// <returns>A task that completes when the selection is updated.</returns>
-    [JSInvokable]
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public async Task OnSelectAll()
     {
         if (_sheet == null) return;
@@ -572,7 +572,7 @@ public partial class MudExSpreadsheetGrid
     /// <param name="row">The row.</param>
     /// <param name="col">The column.</param>
     /// <returns>A task that completes when the editor is shown.</returns>
-    [JSInvokable]
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public async Task OnCellDoubleClick(int row, int col)
     {
         if (_sheet == null) return;
@@ -584,26 +584,26 @@ public partial class MudExSpreadsheetGrid
     /// <param name="col">The column.</param>
     /// <param name="px">The new width in screen pixels.</param>
     /// <returns>A task that completes when the width is set.</returns>
-    [JSInvokable]
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task ResizeColumn(int col, double px) => ResizeAsync(Axis.Column, col, px);
 
     /// <summary>Called by the browser after a row was resized by dragging its heading border.</summary>
     /// <param name="row">The row.</param>
     /// <param name="px">The new height in screen pixels.</param>
     /// <returns>A task that completes when the height is set.</returns>
-    [JSInvokable]
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task ResizeRow(int row, double px) => ResizeAsync(Axis.Row, row, px);
 
     /// <summary>Called by the browser after a double click on a row heading border: restores the default height.</summary>
     /// <param name="row">The row.</param>
     /// <returns>A task that completes when the height is reset.</returns>
-    [JSInvokable]
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task AutoFitRow(int row) => ResizeAsync(Axis.Row, row, -1);
 
     /// <summary>Returns the longest texts of a column with their CSS font so the browser can measure the auto-fit width.</summary>
     /// <param name="col">The column.</param>
     /// <returns>Pairs of text and font.</returns>
-    [JSInvokable]
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public List<string[]> AutoFitColumnCandidates(int col)
     {
         if (_sheet == null || !CanEdit) return [];
@@ -622,12 +622,12 @@ public partial class MudExSpreadsheetGrid
     /// <param name="bottom">Bottom row of the filled range.</param>
     /// <param name="right">Right column of the filled range.</param>
     /// <returns>A task that completes when the cells are written.</returns>
-    [JSInvokable]
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task FillTo(int top, int left, int bottom, int right) => FillToAsync(CellRange.FromBounds(top, left, bottom, right));
 
     /// <summary>Called by the browser after a double click on the fill handle: fills down along the data in the adjacent column.</summary>
     /// <returns>A task that completes when the cells are written.</returns>
-    [JSInvokable]
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task FillHandleDoubleClick()
     {
         var src = _selection.Range.Normalized;
