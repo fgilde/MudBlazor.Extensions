@@ -2,7 +2,6 @@ using Bunit;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
-using System.Reflection;
 using System.Text;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
@@ -19,7 +18,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
             await context.DisposeAsync();
     }
 
-    private IRenderedComponent<MudPopoverProvider> _provider;
+    private readonly Dictionary<IRenderedComponent<MudExFileDisplay>, IRenderedComponent<MudPopoverProvider>> _providers = [];
 
     private IRenderedComponent<MudExFileDisplay> Create(string fileName, string content, Action<ComponentParameterCollectionBuilder<MudExFileDisplay>> configure = null)
     {
@@ -27,7 +26,8 @@ public class FileDisplayEditModeTests : IAsyncLifetime
         _contexts.Add(context);
         context.Services.AddMudServicesWithExtensions();
         context.JSInterop.Mode = JSRuntimeMode.Loose;
-        _provider = context.Render<MudPopoverProvider>();
+        context.JSInterop.Setup<CssVariable[]>("MudExCssHelper.getCssVariables", _ => true).SetResult([]);
+        var provider = context.Render<MudPopoverProvider>();
         var display = context.Render<MudExFileDisplay>(p =>
         {
             p.Add(c => c.FileName, fileName)
@@ -37,6 +37,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
             configure?.Invoke(p);
         });
         display.InvokeAsync(() => display.FindComponent<MoveContent>().Instance.ElementFoundChanged(false)).GetAwaiter().GetResult();
+        _providers[display] = provider;
         return display;
     }
 
@@ -60,7 +61,15 @@ public class FileDisplayEditModeTests : IAsyncLifetime
     private string RenderedMenu(IRenderedComponent<MudExFileDisplay> cut)
     {
         cut.Find(".mud-menu button").Click();
-        return _provider.Markup;
+        return _providers[cut].Markup;
+    }
+
+    private void RenderWithViewer(IRenderedComponent<MudExFileDisplay> cut)
+    {
+        RenderedMenu(cut);
+        _providers[cut].FindAll(".mud-ex-file-display-menu-item-action")
+            .First(i => i.TextContent.Contains("Render with") && !i.TextContent.Contains("native"))
+            .Click();
     }
 
     [Fact]
@@ -81,10 +90,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
     public async Task SwitchingFromViewerToEditMode_SelectsEditor()
     {
         var cut = Create("a.json", "{\"a\":1}", p => p.Add(c => c.AllowEdit, true));
-        var possible = (List<IMudExFileDisplay>)typeof(MudExFileDisplay).GetField("_possibleRenderControls", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(cut.Instance);
-        var viewer = possible.First(c => c is not IMudExFileEditor);
-        await cut.InvokeAsync(() => typeof(MudExFileDisplay).GetMethod("RenderWith", BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(cut.Instance, [viewer]));
-        await cut.InvokeAsync(() => typeof(Microsoft.AspNetCore.Components.ComponentBase).GetMethod("StateHasChanged", BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(cut.Instance, null));
+        RenderWithViewer(cut);
         Assert.Empty(cut.FindComponents<MudExFileDisplayCode>());
 
         await cut.InvokeAsync(() => cut.Instance.SetEditModeAsync(true));
@@ -142,6 +148,41 @@ public class FileDisplayEditModeTests : IAsyncLifetime
 
         Assert.False(cut.Instance.EditMode);
         Assert.Equal([false], changes);
+        Assert.Empty(cut.FindComponents<MudExFileDisplayCode>());
+    }
+    [Fact]
+    public void RenderWithViewer_WhenDirty_RaisesIsDirtyChangedFalse()
+    {
+        var raised = new List<bool>();
+        var cut = Create("a.json", "{\"a\":1}", p => p
+            .Add(c => c.AllowEdit, true)
+            .Add(c => c.EditMode, true)
+            .Add(c => c.IsDirtyChanged, EventCallback.Factory.Create<bool>(this, v => raised.Add(v))));
+        cut.Find("textarea").Input("changed");
+
+        RenderWithViewer(cut);
+
+        Assert.False(cut.Instance.IsDirty);
+        Assert.Equal([true, false], raised);
+    }
+
+    [Fact]
+    public void RenderWithViewer_InEditMode_LeavesEditMode()
+    {
+        var changes = new List<bool>();
+        var cut = Create("a.json", "{\"a\":1}", p => p
+            .Add(c => c.AllowEdit, true)
+            .Add(c => c.EditMode, true)
+            .Add(c => c.EditModeChanged, EventCallback.Factory.Create<bool>(this, v => changes.Add(v))));
+
+        RenderWithViewer(cut);
+
+        Assert.False(cut.Instance.EditMode);
+        Assert.Equal([false], changes);
+        Assert.Empty(cut.FindComponents<MudExFileDisplayCode>());
+
+        cut.Render(p => p.Add(c => c.AllowEdit, true));
+
         Assert.Empty(cut.FindComponents<MudExFileDisplayCode>());
     }
 }

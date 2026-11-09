@@ -58,6 +58,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private ComponentForFileInfo _componentForFile;
     private Stream _contentStream;
     private bool _errorClosed;
+    private IMudExFileEditor _editor;
     private CancellationTokenSource _componentCts = new();
     private long? _fileMetaSize;
     private IDictionary<string, object> _fileMetaInformation;
@@ -528,14 +529,15 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
                 _possibleRenderControls.Add(possibleRenderControl);
         }
 
-        CanEdit = false;
-        foreach (var editor in _possibleRenderControls.OfType<IMudExFileEditor>())
+        _editor = null;
+        foreach (var editor in _possibleRenderControls.OfType<IMudExFileEditor>().OrderByDescending(c => c.RenderPriority))
         {
             if (!await editor.CanEditFileAsync(this, fs))
                 continue;
-            CanEdit = true;
+            _editor = editor;
             break;
         }
+        CanEdit = _editor != null;
 
         if (ViewDependsOnContentType && _componentForFile == null)
             _componentForFile = GetComponentForFile(_possibleRenderControls
@@ -574,10 +576,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     private static bool IsEditorType(Type type) => typeof(IMudExFileEditor).IsAssignableFrom(type);
 
-    private IMudExFileDisplay FindEditor() => _possibleRenderControls?
-        .OfType<IMudExFileEditor>()
-        .OrderByDescending(c => c.RenderPriority)
-        .FirstOrDefault();
+    private IMudExFileDisplay FindEditor() => _editor;
 
     private void RebuildActiveComponent()
     {
@@ -612,7 +611,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
         EditMode = editMode;
         if (editMode && (_componentForFile?.ControlType == null || !IsEditorType(_componentForFile.ControlType)))
-            RenderWith(FindEditor());
+            await RenderWith(FindEditor());
         else
             RebuildActiveComponent();
 
@@ -639,18 +638,18 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
         parameters.Add(nameof(IMudExFileDisplay.FileDisplayInfos), this);
 
-        if (fileComponent is IMudExFileEditor)
-        {
-            parameters[nameof(IMudExFileEditor.ReadOnly)] = !EditMode;
-            parameters[nameof(IsDirtyChanged)] = EventCallback.Factory.Create<bool>(this, OnEditorDirtyChangedAsync);
-        }
-
         if (ParametersForSubControls != null)
         {
             foreach (var param in ParametersForSubControls.Where(k => ComponentRenderHelper.IsValidParameter(type, k.Key, k.Value)))
             {
                 parameters[param.Key] = param.Value;
             }
+        }
+
+        if (fileComponent is IMudExFileEditor)
+        {
+            parameters[nameof(IMudExFileEditor.ReadOnly)] = !EditMode;
+            parameters[nameof(IsDirtyChanged)] = EventCallback.Factory.Create<bool>(this, OnEditorDirtyChangedAsync);
         }
 
 
@@ -834,11 +833,16 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             "document.getElementById('content-type-display-error').classList.remove('visible')");
     }
 
-    private void RenderWith(IMudExFileDisplay fileComponent)
+    private async Task RenderWith(IMudExFileDisplay fileComponent)
     {
         CloseContentError();
         if (_componentForFile?.ControlType != fileComponent?.GetType())
-            IsDirty = false;
+            await SetDirtyAsync(false);
+        if (EditMode && fileComponent is not IMudExFileEditor)
+        {
+            EditMode = false;
+            await EditModeChanged.InvokeAsync(false);
+        }
         _componentForFile = GetComponentForFile(fileComponent);
         if (fileComponent == null)
         {
