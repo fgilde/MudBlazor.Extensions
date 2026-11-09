@@ -27,6 +27,7 @@
                            aria-label="@(Text ?? Tooltip)"
                            value="@TextOf(Value)"
                            disabled="@Disabled"
+                           @attributes="KeyTipAttributes"
                            @onchange="OnTextChangedAsync" />
                     <datalist id="@listId">
                         @foreach (var item in Items ?? [])
@@ -42,6 +43,7 @@
                             style="@WidthStyle"
                             aria-label="@(Text ?? Tooltip)"
                             disabled="@Disabled"
+                            @attributes="KeyTipAttributes"
                             @onchange="OnSelectedAsync">
                         @foreach (var (item, index) in (Items ?? []).Select((item, index) => (item, index)))
                         {

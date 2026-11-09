@@ -18790,6 +18790,13 @@
             Whether the header offers a field to search and run commands.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.EnableKeyTips">
+            <summary>
+            Whether pressing and releasing Alt shows key tips: letters over the tabs and, after a tab is chosen, over its commands.
+            Tips come from <see cref="P:MudBlazor.Extensions.Components.MudExRibbonTab.KeyTip"/> and <see cref="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.KeyTip"/> or are assigned from the text,
+            the file tab uses "F".
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRibbon.ActiveTabIndex">
             <summary>
             Index of the active tab in <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.Tabs"/>.

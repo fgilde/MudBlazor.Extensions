@@ -32,6 +32,8 @@
                  disabled="@Disabled"
                  aria-label="@(Text ?? Tooltip)"
                  aria-pressed="@pressed?.ToString().ToLowerInvariant()"
+                 tabindex="@(dropDown ? "-1" : null)"
+                 @attributes="KeyTipAttributes"
                  @onclick="onClick"
                  @onkeydown:stopPropagation="isolateKeys">
             @if (icon != null)
@@ -61,6 +63,7 @@
             @Face(layout, onClick, cssClass: "mud-ex-ribbon-split-face", icon: icon, isolateKeys: true)
             <button type="button"
                     class="mud-ex-ribbon-button mud-ex-ribbon-split-arrow"
+                    tabindex="-1"
                     disabled="@Disabled"
                     aria-label="@(Ribbon?.TryLocalize("More options: {0}", Text) ?? Text)"
                     @onclick="e => menu.ToggleAsync(e)">

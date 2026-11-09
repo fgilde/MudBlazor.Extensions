@@ -644,3 +644,23 @@
     outline: 2px solid var(--mud-palette-primary);
   }
 }
+.mud-ex-ribbon-keytips {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--mud-zindex-tooltip);
+}
+.mud-ex-ribbon-keytip {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 16px;
+  padding: 0 4px;
+  border-radius: 2px;
+  background-color: var(--mud-palette-dark);
+  color: var(--mud-palette-dark-text);
+  box-shadow: var(--mud-elevation-2);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: center;
+}

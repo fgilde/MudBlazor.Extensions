@@ -18,6 +18,7 @@ public partial class MudExRibbon
 {
     private readonly List<MudExRibbonTab> _tabs = [];
     private readonly QuickAccessHost _quickAccess;
+    private readonly Dictionary<object, string> _keyTips = [];
     private IMudExRibbonView _view;
     private (MudExRibbonMode Mode, MudExRibbonTab Tab) _reductionKey;
     private int _reductionStep;
@@ -117,6 +118,13 @@ public partial class MudExRibbon
     /// Whether the header offers a field to search and run commands.
     /// </summary>
     [Parameter] public bool ShowCommandSearch { get; set; } = true;
+
+    /// <summary>
+    /// Whether pressing and releasing Alt shows key tips: letters over the tabs and, after a tab is chosen, over its commands.
+    /// Tips come from <see cref="MudExRibbonTab.KeyTip"/> and <see cref="MudExRibbonItemBase.KeyTip"/> or are assigned from the text,
+    /// the file tab uses "F".
+    /// </summary>
+    [Parameter] public bool EnableKeyTips { get; set; } = true;
 
     /// <summary>
     /// Index of the active tab in <see cref="Tabs"/>.
@@ -314,6 +322,38 @@ public partial class MudExRibbon
         Invalidate();
         return ActiveTabIndexChanged.InvokeAsync(ActiveTabIndex);
     }
+
+    internal void AssignKeyTips()
+    {
+        _keyTips.Clear();
+        if (!EnableKeyTips)
+            return;
+        var file = FileMenu == null ? [] : new (object Owner, string Text, string KeyTip)[] { (this, FileMenuText, "F") };
+        AddKeyTips(file.Concat(VisibleTabs.Select(t => ((object)t, t.Text, t.KeyTip))).ToList());
+        if (ActiveTab is { } tab)
+            AddKeyTips(tab.Groups.SelectMany(g => KeyTipItems(g.Items)).Select(i => ((object)i, i.Text ?? i.Tooltip, i.KeyTip))
+                .Concat(tab.Groups.Select(g => ((object)g, g.Text, (string)null))).ToList());
+    }
+
+    internal Dictionary<string, object> TabKeyTipAttributes(object owner) => KeyTipAttributes(owner, "tab");
+
+    internal Dictionary<string, object> ItemKeyTipAttributes(object owner) => KeyTipAttributes(owner, "item");
+
+    private Dictionary<string, object> KeyTipAttributes(object owner, string level)
+        => _keyTips.TryGetValue(owner, out var tip) ? new() { ["data-mudex-keytip"] = tip, ["data-mudex-keytip-level"] = level } : null;
+
+    private void AddKeyTips(IReadOnlyList<(object Owner, string Text, string KeyTip)> entries)
+    {
+        var tips = MudExRibbonKeyTips.Assign(entries.Select(e => (e.Text, e.KeyTip)).ToList());
+        for (var i = 0; i < tips.Length; i++)
+        {
+            if (tips[i] != null)
+                _keyTips[entries[i].Owner] = tips[i];
+        }
+    }
+
+    private static IEnumerable<MudExRibbonItemBase> KeyTipItems(IEnumerable<MudExRibbonItemBase> items)
+        => items.Where(i => i.Visible).SelectMany(i => i is MudExRibbonRow row ? KeyTipItems(row.Items) : i.IsCommand ? [i] : Enumerable.Empty<MudExRibbonItemBase>());
 
     private static IEnumerable<MudExRibbonItemBase> Flatten(IEnumerable<MudExRibbonItemBase> items)
         => items.SelectMany(item => Flatten(item.Children).Prepend(item));

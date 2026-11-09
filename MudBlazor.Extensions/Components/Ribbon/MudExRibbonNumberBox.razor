@@ -26,6 +26,7 @@
                        aria-valuemax="@(Max < double.MaxValue ? Max.ToString(CultureInfo.InvariantCulture) : null)"
                        value="@DisplayText"
                        disabled="@Disabled"
+                       @attributes="KeyTipAttributes"
                        @onchange="OnInputChangedAsync"
                        @onkeydown="OnKeyDownAsync" />
                 <div class="mud-ex-ribbon-spin">

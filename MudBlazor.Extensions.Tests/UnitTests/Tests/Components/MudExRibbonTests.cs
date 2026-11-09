@@ -1282,6 +1282,91 @@ public class MudExRibbonTests : IAsyncLifetime
         Assert.Empty(executed);
     }
 
+    private static string[] Tips(IRenderedComponent<MudExRibbon> cut, string level)
+        => cut.FindAll($"[data-mudex-keytip-level={level}]").Select(e => e.GetAttribute("data-mudex-keytip")!).ToArray();
+
+    [Fact]
+    public void KeyTips_AreUniquePerLevel()
+    {
+        Assert.Equal(["B", "O", "U"], MudExRibbonKeyTips.Assign([("Bold", null), ("Border", null), ("Bullets", null)]));
+        Assert.Equal(["A1", "A2", "A3", "B"], MudExRibbonKeyTips.Assign([("A", null), ("A", null), ("a!", null), ("Ab", null)]));
+
+        var (cut, _) = RenderModes(p => p.Add(x => x.FileMenu, "<div>Backstage</div>"));
+
+        cut.WaitForAssertion(() => Assert.Equal(["F", "H", "I"], Tips(cut, "tab")));
+        Assert.Equal("File", cut.Find("[data-mudex-keytip=F]").TextContent.Trim());
+        Assert.Equal(["P", "C", "B", "I", "S"], Tips(cut, "item"));
+        Assert.Equal("Paste", cut.Find("[data-mudex-keytip-level=item][data-mudex-keytip=P]").GetAttribute("aria-label"));
+
+        cut.FindAll("[role=tab]")[1].Click();
+        cut.WaitForAssertion(() => Assert.Equal(["T"], Tips(cut, "item")));
+
+        cut.Render(p => p.Add(x => x.Mode, MudExRibbonMode.Toolbar));
+        cut.WaitForAssertion(() => Assert.Equal(["T"], Tips(cut, "item")));
+        cut.Render(p => p.Add(x => x.Mode, MudExRibbonMode.Menu));
+        cut.WaitForAssertion(() => Assert.Equal(["F", "H", "I"], Tips(cut, "tab")));
+        Assert.Empty(Tips(cut, "item"));
+    }
+
+    [Fact]
+    public void ExplicitKeyTip_Wins()
+    {
+        Assert.Equal(["O", "B"], MudExRibbonKeyTips.Assign([("Bold", null), ("Border", "b")]));
+        Assert.Equal(["O", "FS"], MudExRibbonKeyTips.Assign([("Font", null), ("Font Size", "fs")]));
+
+        var cut = Render(p => p
+            .AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home").Add(x => x.KeyTip, "n")
+                .AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Font")
+                    .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Bold"))
+                    .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Border").Add(x => x.KeyTip, "B"))))
+            .AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Next")));
+
+        cut.WaitForAssertion(() => Assert.Equal(["N", "E"], Tips(cut, "tab")));
+        Assert.Equal(["O", "B"], Tips(cut, "item"));
+
+        cut.Render(p => p.Add(x => x.EnableKeyTips, false));
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll("[data-mudex-keytip]")));
+    }
+
+    [Fact]
+    public void Tabs_HaveTablistRolesAndAriaSelected()
+    {
+        var cut = Render(p => ContextualRibbon(p, true));
+
+        cut.WaitForAssertion(() => Assert.Equal(5, cut.FindAll("[role=tablist] [role=tab]").Count));
+        var tabs = cut.FindAll("[role=tab]");
+        Assert.Equal(["true", "false", "false", "false", "false"], tabs.Select(e => e.GetAttribute("aria-selected")));
+        Assert.Equal(["0", "-1", "-1", "-1", "-1"], tabs.Select(e => e.GetAttribute("tabindex")));
+
+        var titles = cut.FindAll(".mud-ex-ribbon-contextual-title");
+        Assert.All(titles, t => Assert.False(string.IsNullOrEmpty(t.Id)));
+        Assert.Equal([null, null, titles[0].Id, titles[0].Id, titles[1].Id], tabs.Select(e => e.GetAttribute("aria-describedby")));
+
+        tabs[3].Click();
+        cut.WaitForAssertion(() => Assert.Equal(["false", "false", "false", "true", "false"], cut.FindAll("[role=tab]").Select(e => e.GetAttribute("aria-selected"))));
+        Assert.Equal(["-1", "-1", "-1", "0", "-1"], cut.FindAll("[role=tab]").Select(e => e.GetAttribute("tabindex")));
+    }
+
+    [Fact]
+    public void Groups_HaveToolbarRoleAndLabel()
+    {
+        var (cut, _) = RenderModes(_ => { });
+
+        cut.WaitForAssertion(() => Assert.Equal(["Clipboard", "Font"], cut.FindAll(".mud-ex-ribbon-body [role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
+        Assert.Equal("-1", cut.Find(".mud-ex-ribbon-split-arrow").GetAttribute("tabindex"));
+        Assert.Equal("-1", cut.Find(".mud-ex-ribbon-menu-face").GetAttribute("tabindex"));
+        Assert.Null(cut.Find(".mud-ex-ribbon-split-face").GetAttribute("tabindex"));
+        Assert.All(cut.FindAll(".mud-ex-ribbon-menu [aria-haspopup=menu]"), e => Assert.Equal("0", e.GetAttribute("tabindex")));
+
+        cut.Render(p => p.Add(x => x.Mode, MudExRibbonMode.Simplified));
+        cut.WaitForAssertion(() => Assert.Equal(["Clipboard", "Font"], cut.FindAll(".mud-ex-ribbon-body [role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
+
+        cut.Render(p => p.Add(x => x.Mode, MudExRibbonMode.Toolbar));
+        cut.WaitForAssertion(() => Assert.Equal("Home", cut.Find(".mud-ex-ribbon-toolbar-items").GetAttribute("aria-label")));
+        Assert.Equal("toolbar", cut.Find(".mud-ex-ribbon-toolbar-items").GetAttribute("role"));
+        Assert.Equal(["Clipboard", "Font"], cut.FindAll(".mud-ex-ribbon-toolbar-group[role=group]").Select(e => e.GetAttribute("aria-label")));
+    }
+
     private sealed class FrozenTime : TimeProvider
     {
         private readonly DateTimeOffset _now = DateTimeOffset.UtcNow;

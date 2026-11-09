@@ -43,6 +43,7 @@
                     class="mud-ex-ribbon-button mud-ex-ribbon-large"
                     aria-haspopup="dialog"
                     aria-expanded="@(open ? "true" : "false")"
+                    @attributes="Ribbon.ItemKeyTipAttributes(group)"
                     @onclick="() => OpenGroup = open ? null : group"
                     @onkeydown="OnGroupKeyDown">
                 <MudIcon Icon="@(string.IsNullOrEmpty(group.Icon) ? Icons.Material.Filled.MoreHoriz : group.Icon)" Class="mud-ex-ribbon-icon" />

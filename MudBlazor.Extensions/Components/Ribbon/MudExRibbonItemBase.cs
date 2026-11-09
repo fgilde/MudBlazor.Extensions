@@ -127,6 +127,8 @@ public abstract partial class MudExRibbonItemBase : ComponentBase, IDisposable
             ? _pinAttributes ??= new() { ["oncontextmenu"] = EventCallback.Factory.Create<MouseEventArgs>(this, e => Ribbon?.OpenContextMenuAsync(this, e) ?? Task.CompletedTask) }
             : null;
 
+    internal Dictionary<string, object> KeyTipAttributes => Ribbon?.ItemKeyTipAttributes(this);
+
     internal bool HasContextMenu(MudExRibbonItemLayout layout) => IsCommand && Tab != null && layout != MudExRibbonItemLayout.MenuEntry;
 
     internal MudExRibbonItemLayout DeclaredLayout => Size switch

@@ -14,7 +14,8 @@
                          Style="@tab.ContextualStyle"
                          Label="@tab.Text"
                          Color="Color.Inherit"
-                         Dense="true">
+                         Dense="true"
+                         @attributes="Ribbon.TabKeyTipAttributes(tab)">
                     @GroupSections(tab.Groups, false, Section)
                 </MudMenu>
             }

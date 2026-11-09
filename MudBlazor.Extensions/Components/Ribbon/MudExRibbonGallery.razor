@@ -51,7 +51,9 @@
     private RenderFragment MoreArrow(MenuContext menu) =>
         @<button type="button"
                  class="mud-ex-ribbon-gallery-arrow mud-ex-ribbon-gallery-more"
+                 tabindex="-1"
                  disabled="@Disabled"
+                 @attributes="KeyTipAttributes"
                  aria-label="@(Ribbon?.TryLocalize("More: {0}", Text) ?? Text)"
                  @onclick="e => menu.ToggleAsync(e)">
             <MudIcon Icon="@Icons.Material.Filled.ExpandMore" Class="mud-ex-ribbon-arrow" />

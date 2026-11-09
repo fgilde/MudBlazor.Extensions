@@ -4,6 +4,7 @@
 @code {
     internal RenderFragment Header(RenderFragment content)
     {
+        Ribbon.AssignKeyTips();
         var quickAccess = Ribbon.QuickAccessItems;
         var fileMenuOpen = Ribbon.FileMenu != null && Ribbon.FileMenuOpen;
         return @<text>
@@ -26,6 +27,7 @@
                         aria-haspopup="dialog"
                         aria-expanded="@(fileMenuOpen ? "true" : "false")"
                         aria-controls="@(fileMenuOpen ? Ribbon.BackstageId : null)"
+                        @attributes="Ribbon.TabKeyTipAttributes(Ribbon)"
                         @ref="_fileTab"
                         @onclick="() => Ribbon.SetFileMenuOpenAsync(!fileMenuOpen)">
                     @Ribbon.TryLocalize(Ribbon.FileMenuText)
@@ -165,13 +167,14 @@
         @<div class="mud-ex-ribbon-tabs" role="tablist">
             @foreach (var set in TabSets(Ribbon.VisibleTabs))
             {
+                var titleId = set[0].Contextual && !string.IsNullOrEmpty(set[0].ContextualTitle) ? $"{Ribbon.ElementId}-contextual-{Ribbon.IndexOf(set[0])}" : null;
                 <div @key="set[0]"
                      class="@(set[0].Contextual ? "mud-ex-ribbon-tab-set mud-ex-ribbon-contextual" : "mud-ex-ribbon-tab-set")"
                      role="presentation"
                      style="@set[0].ContextualStyle">
-                    @if (!string.IsNullOrEmpty(set[0].ContextualTitle) && set[0].Contextual)
+                    @if (titleId != null)
                     {
-                        <div class="mud-ex-ribbon-contextual-title" aria-hidden="true">@set[0].ContextualTitle</div>
+                        <div class="mud-ex-ribbon-contextual-title" id="@titleId" aria-hidden="true">@set[0].ContextualTitle</div>
                     }
                     <div class="mud-ex-ribbon-tab-set-tabs" role="presentation">
                         @foreach (var tab in set)
@@ -185,6 +188,9 @@
                                     aria-expanded="@(Ribbon.IsCollapsed ? (active && _overlayOpen ? "true" : "false") : null)"
                                     class="@($"mud-ex-ribbon-tab{(active && (!Ribbon.IsCollapsed || _overlayOpen) ? " mud-ex-ribbon-tab-active" : "")} {tab.ContextualClass}".TrimEnd())"
                                     aria-selected="@(active ? "true" : "false")"
+                                    aria-describedby="@titleId"
+                                    tabindex="@(active ? "0" : "-1")"
+                                    @attributes="Ribbon.TabKeyTipAttributes(tab)"
                                     @onclick="() => OnTabClickAsync(tab)"
                                     @ondblclick="ToggleCollapsedAsync">
                                 @tab.Text
