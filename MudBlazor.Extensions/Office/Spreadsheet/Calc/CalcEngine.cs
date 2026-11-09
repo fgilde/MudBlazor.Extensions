@@ -26,6 +26,7 @@ public sealed class CalcEngine : IDisposable
 {
     private const int MaxSpillCells = 1_000_000;
     private const int MaxSpillPasses = 16;
+    private const int BulkCells = 4096;
 
     private readonly Workbook _wb;
     private readonly FormulaEvaluator _evaluator;
@@ -124,6 +125,44 @@ public sealed class CalcEngine : IDisposable
     {
         var starts = new List<CellNode>();
         var affected = new HashSet<CellNode>();
+        Changed(changed, affected, starts);
+        Finish(affected, starts);
+    }
+
+    private void OnBlocksChanged(WorkbookChangedEventArgs e)
+    {
+        var starts = new List<CellNode>();
+        var affected = new HashSet<CellNode>();
+        Changed(e.SingleCells.Where(c => !e.ValueRanges.Any(r => r.Sheet == c.Sheet && r.Range.Contains(c.Cell))).Select(c => (c.Sheet, c.Cell)), affected, starts);
+        foreach (var (sheet, range) in e.ValueRanges)
+        {
+            if (!_wb.Sheets.Contains(sheet)) continue;
+            var cells = sheet.FormulaKeys.Concat(sheet.SpillKeys).Select(CellRef.FromKey).Where(range.Contains).ToHashSet();
+            cells.UnionWith(_formulas.Keys.Where(n => n.Sheet == sheet && range.Contains(n.Cell)).Select(n => n.Cell));
+            Changed(cells.Select(c => (sheet, c)), affected, starts);
+
+            foreach (var (anchor, spill) in _spills)
+                if (anchor.Sheet == sheet && spill.Range.Intersects(range) && affected.Add(anchor))
+                    starts.Add(anchor);
+            foreach (var (node, _) in _formulas)
+                if (_graph.Precedents(node).Any(a => a.Sheet == sheet && a.Range.Intersects(range)) && affected.Add(node))
+                    starts.Add(node);
+        }
+
+        Finish(affected, starts);
+    }
+
+    private void Finish(HashSet<CellNode> affected, List<CellNode> starts)
+    {
+        foreach (var node in _volatile)
+            if (affected.Add(node))
+                starts.Add(node);
+        Close(affected, starts);
+        Recalculate(affected);
+    }
+
+    private void Changed(IEnumerable<(Worksheet Sheet, CellRef Cell)> changed, HashSet<CellNode> affected, List<CellNode> starts)
+    {
         foreach (var (sheet, cell) in changed)
         {
             if (!_wb.Sheets.Contains(sheet)) continue;
@@ -149,12 +188,6 @@ public sealed class CalcEngine : IDisposable
             starts.Add(node);
             AddAnchorsOver(node, affected, starts);
         }
-
-        foreach (var node in _volatile)
-            if (affected.Add(node))
-                starts.Add(node);
-        Close(affected, starts);
-        Recalculate(affected);
     }
 
     private void OnWorkbookChanged(object sender, WorkbookChangedEventArgs e)
@@ -162,7 +195,8 @@ public sealed class CalcEngine : IDisposable
         var structure = e.Structure.Where(s => s.Kind is not (StructureChangeKind.Layout or StructureChangeKind.SheetMoved)).ToList();
         if (structure.Count == 0)
         {
-            if (e.Cells.Count > 0) OnCellsChanged(e.Cells.Select(c => (c.Sheet, c.Cell)));
+            if (e.ValueRanges.Sum(r => (long)r.Range.Area) > BulkCells) OnBlocksChanged(e);
+            else if (e.Cells.Count > 0) OnCellsChanged(e.Cells.Select(c => (c.Sheet, c.Cell)));
         }
         else if (structure.Count > 1 || e.Cells.Count > 0 || !Apply(structure[0]))
             RecalculateAll();

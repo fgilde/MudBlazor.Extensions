@@ -181,6 +181,8 @@ public class NumberFormatTests
     [InlineData("de-DE", "12%", 0.12, "0%")]
     [InlineData("de-DE", "12,5%", 0.125, "0.00%")]
     [InlineData("en-US", "-7", -7, null)]
+    [InlineData("de-DE", "007", 7, null)]
+    [InlineData("de-DE", "20261109", 20261109, null)]
     [InlineData("en-US", "(7)", -7, null)]
     [InlineData("en-US", "$1,234.50", 1234.5, "$#,##0.00")]
     [InlineData("de-DE", "5 €", 5, "#,##0 \"€\"")]

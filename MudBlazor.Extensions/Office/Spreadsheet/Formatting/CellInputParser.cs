@@ -39,11 +39,22 @@ public static class CellInputParser
             return (CellValue.Boolean(true), null);
         if (s.Equals("FALSE", StringComparison.OrdinalIgnoreCase) || s.Equals(NumberFormat.BooleanText(false, culture), StringComparison.OrdinalIgnoreCase))
             return (CellValue.Boolean(false), null);
+        if (IsInteger(s)) return (CellValue.Number(double.Parse(s, NumberStyles.Float, Inv)), null);
         var error = FormulaLexer.ErrorCodes.FirstOrDefault(e => e.Code.Equals(s, StringComparison.OrdinalIgnoreCase));
         if (error.Code != null) return (CellValue.Error(error.Error), null);
         if (TryParseNumber(s, culture, out var n, out var format) || TryParseDateTime(s, culture, out n, out format))
             return (CellValue.Number(n), format);
         return (CellValue.Text(input), null);
+    }
+
+    private static bool IsInteger(string s)
+    {
+        var i = s.Length > 1 && s[0] == '-' ? 1 : 0;
+        if (s.Length - i is 0 or > 15) return false;
+        for (; i < s.Length; i++)
+            if (!char.IsAsciiDigit(s[i]))
+                return false;
+        return true;
     }
 
     internal static bool TryParseValue(string text, CultureInfo culture, out double value)

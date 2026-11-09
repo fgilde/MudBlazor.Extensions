@@ -423,6 +423,43 @@ public class FormulaEngineTests
             .OrderBy(c => c.Ref.Key).Select(c => $"{sh.Name}!{c.Ref.ToA1()}={c.Cell.Value}|{c.Cell.Formula}")));
     }
 
+    [Theory]
+    [InlineData(3, 3)]
+    [InlineData(120, 60)]
+    public void SetValues_RecalculatesDependentsAndDropsReplacedFormulas(int rows, int columns)
+    {
+        var (wb, ws, engine) = Create();
+        var last = new CellRef(rows - 1, columns - 1).ToA1();
+        var below = new CellRef(rows + 2, 0).ToA1();
+        var right = new CellRef(0, columns + 2).ToA1();
+        wb.Execute(new SetFormulaCommand(ws, R("B2"), "=7"));
+        wb.Execute(new SetFormulaCommand(ws, R(below), $"=SUM(A1:{last})"));
+        wb.Execute(new SetFormulaCommand(ws, R(right), "=B2*2"));
+        wb.Execute(new SetFormulaCommand(ws, new CellRef(rows + 5, 5), "=A1+1"));
+        wb.Execute(new SetFormulaCommand(ws, new CellRef(rows - 1, columns + 4), "=SEQUENCE(1,1)"));
+        wb.Execute(new SetFormulaCommand(ws, new CellRef(rows - 2, columns - 1), "=SEQUENCE(3)"));
+        Assert.Equal(CellValue.Number(14), ValueAt(ws, right));
+
+        var values = new CellValue[rows, columns];
+        for (var r = 0; r < rows; r++)
+            for (var c = 0; c < columns; c++)
+                values[r, c] = CellValue.Number(1);
+        var before = engine.EvaluationCount;
+        wb.Execute(new SetValuesCommand(ws, R("A1"), values));
+        Assert.Equal(CellValue.Number(rows * columns), ValueAt(ws, below));
+        Assert.Equal(CellValue.Number(2), ValueAt(ws, right));
+        Assert.Equal(CellValue.Number(2), ws[new CellRef(rows + 5, 5)].Value);
+        Assert.Null(ws[R("B2")].Formula);
+        Assert.Equal(CellValue.Number(1), ws[new CellRef(rows - 2, columns - 1)].Value);
+        Assert.Null(ws[new CellRef(rows, columns - 1)]);
+        Assert.Equal(3, engine.EvaluationCount - before);
+
+        wb.Undo.Undo();
+        Assert.Equal(CellValue.Number(14), ValueAt(ws, right));
+        Assert.Equal(CellValue.Number(10), ValueAt(ws, below));
+        Assert.Equal(CellValue.Number(3), ws[new CellRef(rows, columns - 1)].Value);
+    }
+
     [Fact]
     public void DeleteReferencedRow_YieldsRefError()
     {

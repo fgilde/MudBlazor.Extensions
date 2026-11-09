@@ -159,6 +159,46 @@ public class ModelTests
     }
 
     [Fact]
+    public void SetValues_WritesBlockAsOneUndoStepAndOneChange()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        var bold = wb.Styles.GetOrAdd(CellStyle.Default with { Font = new CellFont { Bold = true } });
+        wb.Execute(new SetValueCommand(ws, R("C3"), CellValue.Number(5)));
+        wb.Execute(new SetStyleCommand(ws, new CellRange(R("C3"), R("C3")), wb.Styles[bold]));
+        wb.Execute(new SetFormulaCommand(ws, R("B2"), "=1+1"));
+        var events = new List<WorkbookChangedEventArgs>();
+        wb.Changed += (_, e) => events.Add(e);
+
+        wb.Execute(new SetValuesCommand(ws, R("B2"), new[,]
+        {
+            { CellValue.Number(1), CellValue.Text("a") },
+            { CellValue.Boolean(true), CellValue.Empty }
+        }));
+        Assert.Single(events);
+        Assert.Equal([new RangeChange(ws, new CellRange(R("B2"), R("C3")))], events[0].ValueRanges);
+        Assert.Equal(4, events[0].Cells.Count);
+        Assert.Equal(new[] { "B2", "C2", "B3", "C3" }.Select(a => new CellChange(ws, R(a))).ToHashSet(), events[0].Cells.ToHashSet());
+        Assert.Equal(CellValue.Number(1), ValueAt(ws, "B2"));
+        Assert.Null(ws[R("B2")].Formula);
+        Assert.Equal(CellValue.Text("a"), ValueAt(ws, "C2"));
+        Assert.Equal(CellValue.Boolean(true), ValueAt(ws, "B3"));
+        Assert.Equal(CellValueKind.Empty, ValueAt(ws, "C3").Kind);
+        Assert.Equal(bold, ws[R("C3")].StyleId);
+        Assert.Equal("Set values", wb.Undo.UndoDescription);
+
+        wb.Undo.Undo();
+        Assert.Equal(2, events.Count);
+        Assert.Equal("1+1", ws[R("B2")].Formula);
+        Assert.Null(ws[R("C2")]);
+        Assert.Null(ws[R("B3")]);
+        Assert.Equal(CellValue.Number(5), ValueAt(ws, "C3"));
+        wb.Undo.Redo();
+        Assert.Equal(CellValue.Text("a"), ValueAt(ws, "C2"));
+        Assert.Throws<ArgumentOutOfRangeException>(() => wb.Execute(new SetValuesCommand(ws, new CellRef(CellRef.MaxRows - 1, 0), new CellValue[2, 1])));
+    }
+
+    [Fact]
     public void SetFormula_StoresTextWithoutLeadingEqualsAndUndoes()
     {
         var wb = Workbook.Create();

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Xml.Linq;
 
 namespace MudBlazor.Extensions.Office.Spreadsheet;
@@ -58,15 +59,64 @@ public readonly record struct StructureChange(StructureChangeKind Kind, Workshee
 public sealed class WorkbookChangedEventArgs : EventArgs
 {
     internal WorkbookChangedEventArgs(IReadOnlyCollection<CellChange> cells, IReadOnlyList<RangeChange> ranges,
-        IReadOnlyList<StructureChange> structure)
+        IReadOnlyList<StructureChange> structure, IReadOnlyList<RangeChange> valueRanges = null)
     {
-        Cells = cells;
+        SingleCells = cells;
+        ValueRanges = valueRanges ?? [];
+        Cells = ValueRanges.Count == 0 ? cells : new ChangedCells(cells, ValueRanges);
         FormattedRanges = ranges;
         Structure = structure;
     }
 
-    /// <summary>Cells whose value or formula changed through cell commands. Structural changes are reported only in <see cref="Structure"/>; consumers shift or recompute from there.</summary>
+    /// <summary>
+    /// Cells whose value or formula changed through cell commands, including every cell of <see cref="ValueRanges"/> (enumerated on
+    /// demand; a cell can appear twice when blocks overlap). Structural changes are reported only in <see cref="Structure"/>; consumers
+    /// shift or recompute from there.
+    /// </summary>
     public IReadOnlyCollection<CellChange> Cells { get; }
+
+    /// <summary>
+    /// Blocks whose values were replaced at once (<see cref="SetValuesCommand"/> and its undo). Their cells are part of <see cref="Cells"/> too;
+    /// consumers can handle a block as a whole instead of cell by cell.
+    /// </summary>
+    public IReadOnlyList<RangeChange> ValueRanges { get; }
+
+    internal IReadOnlyCollection<CellChange> SingleCells { get; }
+
+    private sealed class ChangedCells : IReadOnlyCollection<CellChange>
+    {
+        private readonly IReadOnlyCollection<CellChange> _cells;
+        private readonly IReadOnlyList<RangeChange> _ranges;
+
+        public ChangedCells(IReadOnlyCollection<CellChange> cells, IReadOnlyList<RangeChange> ranges)
+        {
+            _cells = cells;
+            _ranges = ranges;
+            Count = (int)Math.Min(int.MaxValue, cells.Count(c => !InRange(c)) + ranges.Sum(r => r.Range.Area));
+        }
+
+        public int Count { get; }
+
+        public IEnumerator<CellChange> GetEnumerator()
+        {
+            foreach (var c in _cells)
+                if (!InRange(c))
+                    yield return c;
+            foreach (var (sheet, range) in _ranges)
+                foreach (var c in range.Cells())
+                    yield return new CellChange(sheet, c);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        private bool InRange(CellChange c)
+        {
+            foreach (var r in _ranges)
+                if (r.Sheet == c.Sheet && r.Range.Contains(c.Cell))
+                    return true;
+            return false;
+        }
+    }
 
     /// <summary>Ranges whose formatting changed.</summary>
     public IReadOnlyList<RangeChange> FormattedRanges { get; }
@@ -82,6 +132,7 @@ public sealed class Workbook
     private readonly Dictionary<string, string> _definedNames = new(StringComparer.OrdinalIgnoreCase);
     private HashSet<CellChange> _cells = new();
     private List<RangeChange> _ranges = new();
+    private List<RangeChange> _valueRanges = new();
     private List<StructureChange> _structure = new();
     private int _batchDepth;
 
@@ -160,10 +211,11 @@ public sealed class Workbook
 
     internal void EndBatch()
     {
-        if (--_batchDepth > 0 || (_cells.Count == 0 && _ranges.Count == 0 && _structure.Count == 0)) return;
-        var args = new WorkbookChangedEventArgs(_cells, _ranges, _structure);
+        if (--_batchDepth > 0 || (_cells.Count == 0 && _ranges.Count == 0 && _structure.Count == 0 && _valueRanges.Count == 0)) return;
+        var args = new WorkbookChangedEventArgs(_cells, _ranges, _structure, _valueRanges);
         _cells = new();
         _ranges = new();
+        _valueRanges = new();
         _structure = new();
         Changed?.Invoke(this, args);
     }
@@ -173,6 +225,15 @@ public sealed class Workbook
         sheet.Modified = true;
         Package?.Sheets.Find(p => p.Worksheet == sheet)?.ArrayFormulas.Remove(cell.Relative.Key);
         _cells.Add(new CellChange(sheet, cell.Relative));
+    }
+
+    internal void NotifyValues(Worksheet sheet, CellRange range)
+    {
+        sheet.Modified = true;
+        if (Package?.Sheets.Find(p => p.Worksheet == sheet) is { } part)
+            foreach (var key in part.ArrayFormulas.Keys.Where(k => range.Contains(CellRef.FromKey(k))).ToList())
+                part.ArrayFormulas.Remove(key);
+        _valueRanges.Add(new RangeChange(sheet, range));
     }
 
     internal void NotifyFormatted(Worksheet sheet, CellRange range)

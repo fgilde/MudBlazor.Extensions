@@ -31839,6 +31839,35 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetValueCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetValuesCommand">
+            <summary>
+            Sets a block of constant values in one undo step and one <see cref="E:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Changed"/> event (reported in
+            <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.ValueRanges"/>), the fast way to fill a sheet from code. Values are stored as given, without
+            parsing; formulas in the block are removed, styles are kept and <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellValue.Empty"/> clears a cell's content.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="origin">The top-left cell of the block.</param>
+            <param name="values">The values by row and column.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetValuesCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef,MudBlazor.Extensions.Office.Spreadsheet.CellValue[0:,0:])">
+            <summary>
+            Sets a block of constant values in one undo step and one <see cref="E:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Changed"/> event (reported in
+            <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.ValueRanges"/>), the fast way to fill a sheet from code. Values are stored as given, without
+            parsing; formulas in the block are removed, styles are kept and <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellValue.Empty"/> clears a cell's content.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="origin">The top-left cell of the block.</param>
+            <param name="values">The values by row and column.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetValuesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetValuesCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetValuesCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetFormulaCommand">
             <summary>Sets the formula text of a cell. The stored text never has a leading equals sign; the value is left to the engine.</summary>
             <param name="sheet">The sheet.</param>
@@ -32703,7 +32732,17 @@
             <summary>Describes everything that changed during one command, transaction, undo or redo.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.Cells">
-            <summary>Cells whose value or formula changed through cell commands. Structural changes are reported only in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.Structure"/>; consumers shift or recompute from there.</summary>
+            <summary>
+            Cells whose value or formula changed through cell commands, including every cell of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.ValueRanges"/> (enumerated on
+            demand; a cell can appear twice when blocks overlap). Structural changes are reported only in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.Structure"/>; consumers
+            shift or recompute from there.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.ValueRanges">
+            <summary>
+            Blocks whose values were replaced at once (<see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SetValuesCommand"/> and its undo). Their cells are part of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.Cells"/> too;
+            consumers can handle a block as a whole instead of cell by cell.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.FormattedRanges">
             <summary>Ranges whose formatting changed.</summary>

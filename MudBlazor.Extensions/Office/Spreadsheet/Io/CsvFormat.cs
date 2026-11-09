@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
@@ -8,10 +7,6 @@ namespace MudBlazor.Extensions.Office.Spreadsheet;
 public static class CsvFormat
 {
     private static readonly char[] Delimiters = [',', ';', '\t', '|'];
-
-    private static readonly Regex DotThousands = new(@"^[+-]?[1-9]\d{0,2}(?:\.\d{3})+$", RegexOptions.CultureInvariant);
-
-    private static readonly Regex PlainNumber = new(@"^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$", RegexOptions.CultureInvariant);
 
     /// <summary>
     /// Reads delimited text into a workbook with one sheet. The encoding comes from the byte order mark, else UTF-8 if the bytes
@@ -32,16 +27,24 @@ public static class CsvFormat
         var ws = new Worksheet("Sheet1", wb) { CellLimit = Workbook.MaxCells };
         wb.SheetList.Add(ws);
         var culture = CultureInfo.CurrentCulture;
+        var dotGroups = culture.NumberFormat.NumberGroupSeparator == ".";
         var formats = new Dictionary<string, int>();
-        var field = new StringBuilder();
+        var field = new char[64];
+        var length = 0;
         int row = 0, col = 0;
         bool quoted = false, inQuotes = false;
 
+        void Append(char c)
+        {
+            if (length == field.Length) Array.Resize(ref field, field.Length * 2);
+            field[length++] = c;
+        }
+
         void Emit()
         {
-            if (field.Length > 0 && row < CellRef.MaxRows && col < CellRef.MaxColumns)
+            if (length > 0 && row < CellRef.MaxRows && col < CellRef.MaxColumns)
             {
-                var (value, format) = Convert(field.ToString(), culture);
+                var (value, format) = Convert(field.AsSpan(0, length), culture, dotGroups);
                 var cell = ws.Ensure(new CellRef(row, col));
                 cell.Value = value;
                 if (format != null)
@@ -52,7 +55,7 @@ public static class CsvFormat
                 }
             }
 
-            field.Clear();
+            length = 0;
             quoted = false;
         }
 
@@ -61,11 +64,11 @@ public static class CsvFormat
             var c = text[i];
             if (inQuotes)
             {
-                if (c != '"') field.Append(c);
-                else if (i + 1 < text.Length && text[i + 1] == '"') field.Append(text[++i]);
+                if (c != '"') Append(c);
+                else if (i + 1 < text.Length && text[i + 1] == '"') Append(text[++i]);
                 else inQuotes = false;
             }
-            else if (c == '"' && field.Length == 0 && !quoted) quoted = inQuotes = true;
+            else if (c == '"' && length == 0 && !quoted) quoted = inQuotes = true;
             else if (c == sep)
             {
                 Emit();
@@ -78,7 +81,7 @@ public static class CsvFormat
                 row++;
                 col = 0;
             }
-            else field.Append(c);
+            else Append(c);
         }
 
         Emit();
@@ -123,11 +126,36 @@ public static class CsvFormat
         }
     }
 
-    private static (CellValue, string) Convert(string s, CultureInfo culture)
+    private static (CellValue, string) Convert(ReadOnlySpan<char> s, CultureInfo culture, bool dotGroups)
     {
-        if (PlainNumber.IsMatch(s) && !(culture.NumberFormat.NumberGroupSeparator == "." && DotThousands.IsMatch(s))) return (CellValue.Number(double.Parse(s, NumberStyles.Float, CultureInfo.InvariantCulture)), null);
-        if (s[0] is '\'' or '=') return (CellValue.Text(s), null);
-        return CellInputParser.Parse(s, culture);
+        if (IsPlainNumber(s, dotGroups) && double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out var n)) return (CellValue.Number(n), null);
+        var text = s.ToString();
+        if (text[0] is '\'' or '=') return (CellValue.Text(text), null);
+        return CellInputParser.Parse(text, culture);
+    }
+
+    internal static bool IsPlainNumber(ReadOnlySpan<char> s, bool dotGroups)
+    {
+        var i = s.Length > 0 && s[0] is '+' or '-' ? 1 : 0;
+        var intStart = i;
+        while (i < s.Length && char.IsAsciiDigit(s[i])) i++;
+        var intDigits = i - intStart;
+        var fracDigits = -1;
+        if (i < s.Length && s[i] == '.')
+        {
+            var fracStart = ++i;
+            while (i < s.Length && char.IsAsciiDigit(s[i])) i++;
+            fracDigits = i - fracStart;
+        }
+
+        if (intDigits == 0 && fracDigits <= 0) return false;
+        if (i == s.Length)
+            return !(dotGroups && fracDigits == 3 && intDigits is >= 1 and <= 3 && s[intStart] != '0');
+        if (s[i] is not ('e' or 'E')) return false;
+        if (++i < s.Length && s[i] is '+' or '-') i++;
+        var expStart = i;
+        while (i < s.Length && char.IsAsciiDigit(s[i])) i++;
+        return i > expStart && i == s.Length;
     }
 
     private static string Decode(Stream stream)

@@ -31,6 +31,68 @@ public sealed class SetValueCommand(Worksheet sheet, CellRef cell, CellValue val
     }
 }
 
+/// <summary>
+/// Sets a block of constant values in one undo step and one <see cref="Workbook.Changed"/> event (reported in
+/// <see cref="WorkbookChangedEventArgs.ValueRanges"/>), the fast way to fill a sheet from code. Values are stored as given, without
+/// parsing; formulas in the block are removed, styles are kept and <see cref="CellValue.Empty"/> clears a cell's content.
+/// </summary>
+/// <param name="sheet">The sheet.</param>
+/// <param name="origin">The top-left cell of the block.</param>
+/// <param name="values">The values by row and column.</param>
+public sealed class SetValuesCommand(Worksheet sheet, CellRef origin, CellValue[,] values) : IWorkbookCommand
+{
+    private Dictionary<long, CellState> _before;
+    private CellRange? _range;
+
+    /// <inheritdoc />
+    public string Description => "Set values";
+
+    /// <inheritdoc />
+    public void Apply(Workbook wb)
+    {
+        ArgumentNullException.ThrowIfNull(values);
+        var (rows, columns) = (values.GetLength(0), values.GetLength(1));
+        if (rows == 0 || columns == 0) return;
+        var start = origin.Relative;
+        if (!Worksheet.InBounds(start) || (long)start.Row + rows > CellRef.MaxRows || (long)start.Column + columns > CellRef.MaxColumns)
+            throw new ArgumentOutOfRangeException(nameof(values), "The block lies outside the worksheet limits.");
+        var range = CellRange.FromBounds(start.Row, start.Column, start.Row + rows - 1, start.Column + columns - 1);
+        _range = range;
+        _before = new Dictionary<long, CellState>();
+        foreach (var c in sheet.ExistingIn(range)) _before[c.Key] = sheet.Capture(c);
+        sheet.Reserve((int)Math.Min(int.MaxValue, (long)sheet.CellCount + (long)rows * columns - _before.Count));
+        for (var r = 0; r < rows; r++)
+            for (var c = 0; c < columns; c++)
+            {
+                var at = new CellRef(start.Row + r, start.Column + c);
+                var value = values[r, c];
+                var existed = _before.TryGetValue(at.Key, out var old);
+                if (value.Kind == CellValueKind.Empty)
+                {
+                    if (existed) sheet.Restore(at, new CellState(default, null, old.StyleId));
+                    continue;
+                }
+
+                var cell = sheet.Ensure(at);
+                cell.Value = value;
+                if (!existed || old.Formula == null && old.SpillAnchor == null) continue;
+                cell.Formula = null;
+                cell.SpillAnchor = null;
+                sheet.Sync(at);
+            }
+
+        wb.NotifyValues(sheet, range);
+    }
+
+    /// <inheritdoc />
+    public void Revert(Workbook wb)
+    {
+        if (_range is not { } range) return;
+        foreach (var c in range.Cells()) sheet.Restore(c, _before.GetValueOrDefault(c.Key));
+        wb.NotifyValues(sheet, range);
+    }
+}
+
 /// <summary>Sets the formula text of a cell. The stored text never has a leading equals sign; the value is left to the engine.</summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="cell">The cell to set.</param>

@@ -321,6 +321,22 @@ public class XlsxReadTests(ITestOutputHelper output)
     }
 
     [Fact]
+    public void Csv_NumberScan_MatchesPlainNumberGrammar()
+    {
+        var plain = new System.Text.RegularExpressions.Regex(@"^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$");
+        var thousands = new System.Text.RegularExpressions.Regex(@"^[+-]?[1-9]\d{0,2}(?:\.\d{3})+$");
+        string[] tokens =
+        [
+            "0", "12", "-3", "+4", "1.5", "-1.5", ".5", "-.5", "5.", "1e5", "1E-5", "2.5e+10", "1e", "1e+", "e5", ".", "+", "-", "1.500", "0.500",
+            "-1.500", "12.345", "123.456", "1234.567", "1.5000", "1.50", "1.500.000", "1,5", " 1", "1 ", "1.2.3", "0x10", "1e5.5", "00.500", "999.999e1"
+        ];
+        foreach (var token in tokens)
+            foreach (var dotGroups in new[] { false, true })
+                Assert.True(CsvFormat.IsPlainNumber(token, dotGroups) == (plain.IsMatch(token) && !(dotGroups && thousands.IsMatch(token))), $"{token} {dotGroups}");
+        Assert.Equal(CellValueKind.Text, CsvFormat.Read(new MemoryStream(Encoding.UTF8.GetBytes("١٢"))).Sheets[0][R("A1")].Value.Kind);
+    }
+
+    [Fact]
     public void Csv_RoundTripsEmbeddedNewlines()
     {
         var csv = "﻿text,n\r\n\"line1\nline2\",1.5\n\"x,\"\"y\"\"\",2\n";
