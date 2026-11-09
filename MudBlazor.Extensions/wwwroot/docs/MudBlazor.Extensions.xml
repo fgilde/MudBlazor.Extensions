@@ -507,6 +507,95 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.DisposeAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1">
+            <summary>
+            Base class for file editors. Provides dirty tracking and the save pipeline.
+            </summary>
+            <typeparam name="T">The editor type</typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.FileDisplayInfos">
+            <summary>
+            Infos of the file to edit
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.MudExFileDisplay">
+            <summary>
+            The surrounding file display, if the editor is rendered inside one
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.ReadOnly">
+            <summary>
+            If true the content cannot be changed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.AllowLocalSave">
+            <summary>
+            If true the editor may save to a local file when the host does not handle saving
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SaveRequested">
+            <summary>
+            Raised before saving. The host can handle or cancel the save.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.Saved">
+            <summary>
+            Raised after the content was saved
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.IsDirtyChanged">
+            <summary>
+            Raised when <see cref="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.IsDirty"/> changes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.ContentChanged">
+            <summary>
+            Raised on every content change
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.IsDirty">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SaveFormats">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.LoadAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Loads the file into the editor
+            </summary>
+            <param name="fileDisplayInfos">Infos of the file</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SaveAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.MarkDirtyAsync">
+            <summary>
+            Marks the content as changed
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.MarkCleanAsync">
+            <summary>
+            Marks the content as saved
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1">
             <summary>
             Base class for components that require a JS module to be imported and a JS object to be created.
@@ -775,6 +864,47 @@
             <summary>
             Component to display information about the current recording
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.IMudExFileEditor">
+            <summary>
+            A file display that can edit and save the file it shows.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileEditor.ReadOnly">
+            <summary>
+            If true the content cannot be changed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileEditor.IsDirty">
+            <summary>
+            True if there are unsaved changes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileEditor.SaveFormats">
+            <summary>
+            Formats the editor can save to. The first one is the original format of the file.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.IMudExFileEditor.CanEditFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <summary>
+            Should return true if this editor can edit a file with the given information
+            </summary>
+            <param name="fileDisplayInfos">Infos of the file</param>
+            <param name="fileService">The file service</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.IMudExFileEditor.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">
+            <summary>
+            Exports the current content
+            </summary>
+            <param name="format">Target format, or null for the original format</param>
+            <param name="cancellationToken">Cancellation token</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.IMudExFileEditor.SaveAsync(System.Boolean)">
+            <summary>
+            Saves the current content
+            </summary>
+            <param name="saveAs">If true the user is asked for a new target</param>
+            <returns>True if the content was saved</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MoveContentPosition">
             <summary>
@@ -22653,6 +22783,51 @@
             <summary>
             Checks a file against every rule and returns why it was refused, or null when it passes.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExFileSaveRequest">
+            <summary>
+            Raised before an editor saves, so the host can take over saving.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileSaveRequest.Content">
+            <summary>
+            The content to be saved
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileSaveRequest.SaveAs">
+            <summary>
+            True if the user asked to save under a new target
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileSaveRequest.Handled">
+            <summary>
+            Set to true if the host saved the content itself
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileSaveRequest.Cancel">
+            <summary>
+            Set to true to abort saving
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExFileSavedEventArgs">
+            <summary>
+            Raised after an editor saved successfully.
+            </summary>
+            <param name="FileName">Name of the saved file</param>
+            <param name="Target">Where the file was saved</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExFileSavedEventArgs.#ctor(System.String,MudBlazor.Extensions.Core.MudExFileSaveTarget)">
+            <summary>
+            Raised after an editor saved successfully.
+            </summary>
+            <param name="FileName">Name of the saved file</param>
+            <param name="Target">Where the file was saved</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileSavedEventArgs.FileName">
+            <summary>Name of the saved file</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileSavedEventArgs.Target">
+            <summary>Where the file was saved</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.MudExIcons">
             <summary>
