@@ -3675,7 +3675,7 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayCode">
             <summary>
-            Simple component to display markdown files with MudExFileDisplay
+            Component to display and edit code and text files with MudExFileDisplay
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Name">
@@ -3698,22 +3698,21 @@
             The theme of the code block
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.FileDisplayInfos">
-            <summary>
-            The file display infos
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.MudExFileDisplay">
-            <summary>
-            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
-            </summary>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.SaveFormats">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <summary>
-            Returns true if it's a markdown file and we can handle it
+            Returns true if it's a code or text file and we can handle it
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.LoadAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayColumnarData">
@@ -25204,6 +25203,11 @@
         <member name="M:MudBlazor.Extensions.Helper.Internal.LineEndings.SplitLines(System.String)">
             <summary>
             Normalizes the line endings and splits into lines.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.Internal.LineEndings.DetectLineEnding(System.String)">
+            <summary>
+            Returns the first line ending found in the text (CRLF, LF or CR), LF if there is none.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.Internal.MimeMessage">

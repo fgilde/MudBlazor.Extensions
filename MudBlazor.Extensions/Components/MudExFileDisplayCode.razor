@@ -1,6 +1,13 @@
-﻿@inherits MudExBaseComponent<MudExFileDisplayCode>
+@inherits MudExFileEditorBase<MudExFileDisplayCode>
 
-@if (!string.IsNullOrEmpty(Value))
+@if (ReadOnly)
 {
-    <MudExCodeView FullHeight="true" FullWidth="true" Code="@Value" Theme="@Theme" Language="@Language"></MudExCodeView>
+    @if (!string.IsNullOrEmpty(Value))
+    {
+        <MudExCodeView FullHeight="true" FullWidth="true" Code="@Value" Theme="@Theme" Language="@Language"></MudExCodeView>
+    }
+}
+else
+{
+    <textarea class="mud-ex-code-editor" spellcheck="false" @bind="Value" @bind:event="oninput" @bind:after="MarkDirtyAsync"></textarea>
 }
