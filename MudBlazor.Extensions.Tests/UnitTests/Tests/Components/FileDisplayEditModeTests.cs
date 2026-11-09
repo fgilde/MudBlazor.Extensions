@@ -73,6 +73,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
     private string RenderedMenu(IRenderedComponent<MudExFileDisplay> cut)
     {
         cut.Find(".mud-menu button").Click();
+        _providers[cut].WaitForAssertion(() => Assert.Contains("mud-popover-open", _providers[cut].Markup));
         return _providers[cut].Markup;
     }
 
