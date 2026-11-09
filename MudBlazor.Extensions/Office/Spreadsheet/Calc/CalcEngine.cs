@@ -31,7 +31,7 @@ public sealed class CalcEngine : IDisposable
     private readonly Dictionary<CellNode, FormulaNode> _formulas = new();
     private readonly HashSet<CellNode> _volatile = new();
     private readonly HashSet<CellNode> _keep = new();
-    private readonly Dictionary<CellNode, string> _keptFormulas = new();
+    private readonly Dictionary<CellNode, (string Formula, CellValue Value)> _keptFormulas = new();
     private readonly Dictionary<(Worksheet Sheet, long Key), CellState> _before = new();
     private readonly Dictionary<CellNode, SpillState> _spills = new();
     private readonly HashSet<CellChange> _changed = new();
@@ -90,7 +90,7 @@ public sealed class CalcEngine : IDisposable
             if (cell.Formula != null && !Register(new CellNode(sheet, r.Key), cell.Formula) && cell.Value.Kind != CellValueKind.Empty)
             {
                 _keep.Add(new CellNode(sheet, r.Key));
-                _keptFormulas[new CellNode(sheet, r.Key)] = cell.Formula;
+                _keptFormulas[new CellNode(sheet, r.Key)] = (cell.Formula, cell.Value);
             }
 
         var kept = new Dictionary<CellNode, CellRange>();
@@ -127,7 +127,7 @@ public sealed class CalcEngine : IDisposable
             _keep.Remove(node);
             if (stored?.Formula is { } formula)
             {
-                if (!Register(node, formula) && stored.Value.Kind != CellValueKind.Empty && _keptFormulas.GetValueOrDefault(node) == formula) _keep.Add(node);
+                if (!Register(node, formula) && stored.Value.Kind != CellValueKind.Empty && _keptFormulas.GetValueOrDefault(node) == (formula, stored.Value)) _keep.Add(node);
                 else affected.Add(node);
             }
             else

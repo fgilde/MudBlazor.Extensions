@@ -676,6 +676,22 @@ public class XlsxWriteTests(ITestOutputHelper output)
     }
 
     [Fact]
+    public void EditingKeptFormulaAwayAndBack_ShowsNameErrorAndDoesNotPersistStaleValue()
+    {
+        var wb = Read(Package([Sheet("<row r=\"1\"><c r=\"A1\"><f>FOOBAR(1)</f><v>42</v></c></row>")]));
+        var ws = wb.Sheets[0];
+        using var engine = new CalcEngine(wb);
+        wb.Execute(new SetFormulaCommand(ws, R("A1"), "=1+1"));
+        Assert.Equal(2, At(ws, "A1").Value.NumberValue);
+        wb.Execute(new SetFormulaCommand(ws, R("A1"), "=FOOBAR(1)"));
+        Assert.Equal(CellValue.Error(CellError.Name), At(ws, "A1").Value);
+        Assert.DoesNotContain("<v>2</v>", SheetXml(Write(wb)));
+        wb.Undo.Undo();
+        wb.Undo.Undo();
+        Assert.Equal(42, At(ws, "A1").Value.NumberValue);
+    }
+
+    [Fact]
     public void Write_ArrayMarks_KeepLegacyRangeUntilEdited_AndReuseDynamicArrayMetadata()
     {
         const string rows = """

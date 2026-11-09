@@ -278,6 +278,14 @@ public sealed class Worksheet
     internal List<(CellRef Ref, CellState State)> Insert(Axis axis, int index, int count)
     {
         var limit = axis == Axis.Row ? CellRef.MaxRows : CellRef.MaxColumns;
+        foreach (var (key, cell) in _cells)
+        {
+            var c = CellRef.FromKey(key);
+            var v = axis == Axis.Row ? c.Row : c.Column;
+            if (v >= index && v + count >= limit && cell.HasContent)
+                throw new InvalidOperationException("Inserting would push cells beyond the worksheet limits.");
+        }
+
         var dropped = new List<(CellRef, CellState)>();
         var rebuilt = new Dictionary<long, Cell>(_cells.Count);
         foreach (var (key, cell) in _cells)
@@ -287,8 +295,6 @@ public sealed class Worksheet
             if (v >= index) v += count;
             if (v >= limit)
             {
-                if (cell.HasContent)
-                    throw new InvalidOperationException("Inserting would push cells beyond the worksheet limits.");
                 dropped.Add((c, cell.State));
                 continue;
             }

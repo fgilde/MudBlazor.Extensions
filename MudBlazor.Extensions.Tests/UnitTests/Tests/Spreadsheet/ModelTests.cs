@@ -310,6 +310,22 @@ public class ModelTests
     }
 
     [Fact]
+    public void InsertRows_BeyondLimitLeavesSpillAnchorsUntouched()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        using var engine = new CalcEngine(wb);
+        wb.Execute(new SetFormulaCommand(ws, new CellRef(1, 0), "=SEQUENCE(3)"));
+        var last = new CellRef(CellRef.MaxRows - 1, 0);
+        wb.Execute(new SetValueCommand(ws, last, CellValue.Number(1)));
+        var anchor = ws[new CellRef(2, 0)]!.SpillAnchor;
+        Assert.NotNull(anchor);
+        Assert.Throws<InvalidOperationException>(() => wb.Execute(new InsertRowsCommand(ws, 0, 1)));
+        Assert.Equal(anchor, ws[new CellRef(2, 0)]!.SpillAnchor);
+        Assert.Equal(CellValue.Number(1), ws[last].Value);
+    }
+
+    [Fact]
     public void DeleteRows_RemovesCellsShrinksMergesAndUndoes()
     {
         var wb = Workbook.Create();
