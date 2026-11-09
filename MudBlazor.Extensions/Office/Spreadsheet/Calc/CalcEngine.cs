@@ -15,9 +15,10 @@ public sealed class CalculatedEventArgs(IReadOnlyCollection<CellChange> cells) :
 /// the dependent cells in dependency order; structural changes and defined-name changes rebuild the graph. Cells on a
 /// circular reference get <see cref="CellError.Circ"/>. Array results spill into the cells below and to the right, which
 /// then hold computed values with <see cref="Cell.SpillAnchor"/> set; a non-empty cell in the way yields <see cref="CellError.Spill"/>.
-/// Formulas calling volatile functions recalculate on every calculation.
+/// Formulas calling volatile functions recalculate on every calculation. A formula that fails unexpectedly yields <see cref="CellError.Value"/>.
+/// Dispose the engine to stop following the workbook.
 /// </summary>
-public sealed class CalcEngine
+public sealed class CalcEngine : IDisposable
 {
     private const int MaxSpillCells = 1_000_000;
     private const int MaxSpillPasses = 16;
@@ -157,6 +158,9 @@ public sealed class CalcEngine
                 case RangeNode r when Resolve(r.Sheet, host) is { } sheet:
                     into.Add(new RefArea(sheet, r.Range.Normalized));
                     break;
+                case BinaryNode { Op: BinaryOp.Range } b when BoundingBox(b, host) is { } box:
+                    into.Add(box);
+                    break;
                 case NameNode name when depth < FormulaEvaluator.MaxNameDepth && _evaluator.ParseName(name.Name, _wb) is { } target:
                     stack.Push((target, depth + 1));
                     break;
@@ -181,6 +185,36 @@ public sealed class CalcEngine
         }
 
         return isVolatile;
+    }
+
+    private RefArea? BoundingBox(BinaryNode range, Worksheet host)
+    {
+        var parts = new Stack<FormulaNode>();
+        FormulaNode node = range;
+        while (node is BinaryNode { Op: BinaryOp.Range } b)
+        {
+            parts.Push(b.Right);
+            node = b.Left;
+        }
+
+        parts.Push(node);
+        RefArea? box = null;
+        foreach (var part in parts)
+        {
+            var area = part switch
+            {
+                RefNode { Spill: false } r when Resolve(r.Sheet, host) is { } s => new RefArea(s, new CellRange(r.Cell.Relative, r.Cell.Relative)),
+                RangeNode r when Resolve(r.Sheet, host) is { } s => new RefArea(s, r.Range.Normalized),
+                _ => (RefArea?)null
+            };
+            if (area is not { } a || (box is { } x && x.Sheet != a.Sheet)) return null;
+            box = box is { } y
+                ? new RefArea(a.Sheet, CellRange.FromBounds(Math.Min(y.Range.Top, a.Range.Top), Math.Min(y.Range.Left, a.Range.Left),
+                    Math.Max(y.Range.Bottom, a.Range.Bottom), Math.Max(y.Range.Right, a.Range.Right)))
+                : a;
+        }
+
+        return box;
     }
 
     private Worksheet Resolve(string sheet, Worksheet host) => sheet == null ? host : _wb.FindSheet(sheet);
@@ -253,12 +287,21 @@ public sealed class CalcEngine
     private void Evaluate(CellNode node)
     {
         var scope = new EvalScope(_wb, node.Sheet, node.Cell);
-        var result = _evaluator.Evaluate(_formulas[node], scope);
+        CalcValue result;
+        try
+        {
+            result = _evaluator.Evaluate(_formulas[node], scope);
+        }
+        catch (Exception)
+        {
+            result = CalcValue.Error(CellError.Value);
+        }
+
         var array = result.Kind switch
         {
             CalcValueKind.Array when result.Array.Rows > 1 || result.Array.Columns > 1 => result.Array,
             CalcValueKind.Reference when result.Areas.Count == 1 && !result.Areas[0].Range.IsSingleCell =>
-                result.Areas[0].Range.Area > MaxSpillCells ? null : FormulaEvaluator.ToArray(result),
+                result.Areas[0].Range.Area > MaxSpillCells ? null : FormulaEvaluator.ToArray(result, false),
             _ => null
         };
         CellValue value;
@@ -400,6 +443,9 @@ public sealed class CalcEngine
         result.Reverse();
         return result;
     }
+
+    /// <summary>Stops following <see cref="Workbook.Changed"/>; calculated values stay as they are.</summary>
+    public void Dispose() => _wb.Changed -= OnWorkbookChanged;
 
     private readonly record struct SpillState(CellRange Range, bool Active);
 }

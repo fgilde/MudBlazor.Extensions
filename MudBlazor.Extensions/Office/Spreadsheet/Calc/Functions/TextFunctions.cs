@@ -229,8 +229,7 @@ internal static class TextFunctions
     private static string ArrayText(CellValue v, bool strict) => v.Kind switch
     {
         CellValueKind.Text when strict => "\"" + v.TextValue.Replace("\"", "\"\"") + "\"",
-        CellValueKind.Number => v.NumberValue.ToString("G15", Fn.Inv),
-        _ => v.ToString()
+        _ => Coercion.ToText(v)
     };
 
     private static CellValue ParseValue(string text, CultureInfo culture)

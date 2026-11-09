@@ -30167,7 +30167,8 @@
             the dependent cells in dependency order; structural changes and defined-name changes rebuild the graph. Cells on a
             circular reference get <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Circ"/>. Array results spill into the cells below and to the right, which
             then hold computed values with <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.SpillAnchor"/> set; a non-empty cell in the way yields <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Spill"/>.
-            Formulas calling volatile functions recalculate on every calculation.
+            Formulas calling volatile functions recalculate on every calculation. A formula that fails unexpectedly yields <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Value"/>.
+            Dispose the engine to stop following the workbook.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Workbook,MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry)">
@@ -30202,6 +30203,9 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.OnCellsChanged(System.Collections.Generic.IEnumerable{System.ValueTuple{MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef}})">
             <summary>Updates the graph for changed cells (values or formulas) and recalculates the cells that depend on them.</summary>
             <param name="changed">The changed cells.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.Dispose">
+            <summary>Stops following <see cref="E:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Changed"/>; calculated values stay as they are.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CalcValueKind">
             <summary>What a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CalcValue"/> holds.</summary>
@@ -30323,9 +30327,18 @@
             <returns>True if the value converts.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Coercion.ToText(MudBlazor.Extensions.Office.Spreadsheet.CellValue)">
-            <summary>Converts a value to text: numbers with up to 15 significant digits in the current culture, booleans as TRUE or FALSE.</summary>
+            <summary>
+            Converts a value to text as the <c>&amp;</c> operator and the text functions do: numbers with up to 15 significant
+            digits and the decimal separator of the current culture (no thousands separators), booleans as TRUE or FALSE.
+            </summary>
             <param name="value">The value.</param>
             <returns>The text.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Coercion.CompareNumbers(System.Double,System.Double)">
+            <summary>Compares two numbers like Excel, treating numbers that agree in their first 15 significant digits as equal.</summary>
+            <param name="x">Left number.</param>
+            <param name="y">Right number.</param>
+            <returns>Negative, zero or positive.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Coercion.Compare(MudBlazor.Extensions.Office.Spreadsheet.CellValue,MudBlazor.Extensions.Office.Spreadsheet.CellValue)">
             <summary>
@@ -30597,7 +30610,10 @@
             <returns>The scalar.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.ToArray(MudBlazor.Extensions.Office.Spreadsheet.CalcValue)">
-            <summary>Materializes a value as an array (a scalar becomes 1x1).</summary>
+            <summary>
+            Materializes a value as an array (a scalar becomes 1x1). References of more than 65,536 cells are cut at the end of
+            the sheet's used range, since the cells beyond it are blank.
+            </summary>
             <param name="value">The value.</param>
             <returns>The array, or null for multi-area references.</returns>
         </member>
@@ -30634,8 +30650,9 @@
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ReferenceShifter">
             <summary>
-            Rewrites references in formula text when rows or columns are inserted or deleted, or a sheet is renamed. Formulas
-            without affected references are returned unchanged (including their whitespace); unparsable formulas are returned as is.
+            Rewrites references in formula text when rows or columns are inserted or deleted, or a sheet is renamed. Only the
+            affected references change; everything else, including whitespace and parts the parser does not understand (structured
+            references, sheet-scoped names, 3D references), is kept as written.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ReferenceShifter.ShiftRows(System.String,System.String,System.Int32,System.Int32)">
@@ -30655,7 +30672,7 @@
             <returns>The rewritten formula; references to deleted cells become <c>#REF!</c>.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ReferenceShifter.RenameSheet(System.String,System.String,System.String)">
-            <summary>Replaces the sheet name in sheet-qualified references.</summary>
+            <summary>Replaces the sheet name in sheet-qualified references and sheet-scoped names, including either end of a 3D reference.</summary>
             <param name="formula">Formula text without leading equals sign.</param>
             <param name="oldName">The previous sheet name (case-insensitive).</param>
             <param name="newName">The new sheet name.</param>
@@ -31059,7 +31076,7 @@
             <summary>The empty value.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellValue.Number(System.Double)">
-            <summary>Creates a number value.</summary>
+            <summary>Creates a number value; negative zero becomes zero.</summary>
             <param name="value">The number.</param>
             <returns>The value.</returns>
         </member>

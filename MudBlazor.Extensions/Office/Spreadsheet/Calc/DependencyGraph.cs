@@ -14,14 +14,14 @@ internal sealed class DependencyGraph
     private readonly Dictionary<CellNode, List<RefArea>> _precedents = new();
     private readonly Dictionary<CellNode, HashSet<CellNode>> _cells = new();
     private readonly Dictionary<(Worksheet Sheet, int Column, int Block), HashSet<(CellRange Range, CellNode Dependent)>> _buckets = new();
-    private readonly HashSet<(Worksheet Sheet, CellRange Range, CellNode Dependent)> _wide = new();
+    private readonly Dictionary<Worksheet, HashSet<(CellRange Range, CellNode Dependent)>> _wideBySheet = new();
 
     public void Clear()
     {
         _precedents.Clear();
         _cells.Clear();
         _buckets.Clear();
-        _wide.Clear();
+        _wideBySheet.Clear();
     }
 
     public void Set(CellNode node, List<RefArea> precedents)
@@ -50,9 +50,10 @@ internal sealed class DependencyGraph
                     if (range.Contains(cell))
                         yield return d;
 
-        foreach (var (sheet, range, d) in _wide)
-            if (sheet == node.Sheet && range.Contains(cell))
-                yield return d;
+        if (_wideBySheet.TryGetValue(node.Sheet, out var wide))
+            foreach (var (range, d) in wide)
+                if (range.Contains(cell))
+                    yield return d;
     }
 
     private void Index(RefArea area, CellNode node, bool add)
@@ -76,13 +77,9 @@ internal sealed class DependencyGraph
             for (var c = r.Left; c <= r.Right; c++)
                 Toggle(_buckets, (area.Sheet, c, WholeColumn), (r, node), add);
         }
-        else if (add)
-        {
-            _wide.Add((area.Sheet, r, node));
-        }
         else
         {
-            _wide.Remove((area.Sheet, r, node));
+            Toggle(_wideBySheet, area.Sheet, (r, node), add);
         }
     }
 

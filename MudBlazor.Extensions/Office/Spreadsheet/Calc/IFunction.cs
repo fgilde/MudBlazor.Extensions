@@ -101,7 +101,10 @@ public sealed class FunctionContext
     /// <returns>The scalar.</returns>
     public CellValue ToScalar(CalcValue value) => _evaluator.ToScalar(value, _scope);
 
-    /// <summary>Materializes a value as an array (a scalar becomes 1x1).</summary>
+    /// <summary>
+    /// Materializes a value as an array (a scalar becomes 1x1). References of more than 65,536 cells are cut at the end of
+    /// the sheet's used range, since the cells beyond it are blank.
+    /// </summary>
     /// <param name="value">The value.</param>
     /// <returns>The array, or null for multi-area references.</returns>
     public CalcArray ToArray(CalcValue value) => FormulaEvaluator.ToArray(value);

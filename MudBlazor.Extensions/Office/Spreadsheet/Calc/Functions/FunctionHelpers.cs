@@ -97,12 +97,7 @@ internal static class Fn
 
     internal static bool Bool(CellValue[] a, int i, bool fallback) => i < a.Length ? Bool(a[i]) : fallback;
 
-    internal static string Str(CellValue v) => v.Kind switch
-    {
-        CellValueKind.Error => throw Error(v.ErrorValue),
-        CellValueKind.Number => v.NumberValue.ToString("G15", Inv),
-        _ => v.ToString()
-    };
+    internal static string Str(CellValue v) => v.Kind == CellValueKind.Error ? throw Error(v.ErrorValue) : Coercion.ToText(v);
 
     internal static CellValue Number(double d) => double.IsFinite(d) ? CellValue.Number(d) : CellValue.Error(CellError.Num);
 
@@ -157,14 +152,7 @@ internal static class Fn
         if (value.Kind != CalcValueKind.Reference) return new Grid(ctx.ToArray(value));
         if (value.Areas.Count != 1) throw Error(CellError.Value);
         var (sheet, range) = value.Areas[0];
-        if (trim)
-        {
-            var used = sheet.UsedRange;
-            range = CellRange.FromBounds(range.Top, range.Left, Math.Max(range.Top, Math.Min(range.Bottom, used.Bottom)),
-                Math.Max(range.Left, Math.Min(range.Right, used.Right)));
-        }
-
-        return new Grid(sheet, range);
+        return new Grid(sheet, trim ? FormulaEvaluator.TrimToUsed(sheet, range) : range);
     }
 
     internal static Grid ToGrid(FunctionContext ctx, CalcArg arg, bool trim = false) => ToGrid(ctx, Value(arg), trim);
@@ -196,7 +184,7 @@ internal static class Fn
         return a.Kind switch
         {
             CellValueKind.Text => wildcards ? Like(b.TextValue, a.TextValue) : string.Equals(a.TextValue, b.TextValue, StringComparison.OrdinalIgnoreCase),
-            CellValueKind.Number => a.NumberValue == b.NumberValue,
+            CellValueKind.Number => Coercion.CompareNumbers(a.NumberValue, b.NumberValue) == 0,
             CellValueKind.Boolean => a.BooleanValue == b.BooleanValue,
             _ => a.ErrorValue == b.ErrorValue
         };

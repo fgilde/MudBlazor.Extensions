@@ -1,3 +1,4 @@
+using System.Globalization;
 using MudBlazor.Extensions.Office.Spreadsheet;
 using Xunit;
 
@@ -389,5 +390,175 @@ public class FormulaEngineTests
         Assert.Equal("C1+$D$2", ReferenceShifter.ShiftColumns("B1+$C$2", "Sheet1", 1, 1));
         Assert.Equal("  A1 + 1", ReferenceShifter.ShiftRows("  A1 + 1", "Sheet1", 5, 1));
         Assert.Equal("'New Name'!A1", ReferenceShifter.RenameSheet("old!A1", "OLD", "New Name"));
+    }
+
+    [Fact]
+    public void Comparison_UsesFifteenSignificantDigits()
+    {
+        Assert.Equal(CellValue.Boolean(true), Eval("=0.1+0.2=0.3"));
+        Assert.Equal(CellValue.Boolean(false), Eval("=0.1+0.2<>0.3"));
+        Assert.Equal(CellValue.Boolean(false), Eval("=0.1+0.2>0.3"));
+        Assert.Equal(CellValue.Boolean(true), Eval("=0.1+0.2>=0.3"));
+        Assert.Equal(CellValue.Boolean(false), Eval("=1.00000000000001=1"));
+        Assert.Equal(CellValue.Boolean(true), Eval("=1.000000000000001=1"));
+
+        var (wb, ws, _) = Create();
+        wb.Execute(new SetFormulaCommand(ws, R("A1"), "=0.1+0.2"));
+        wb.Execute(new SetFormulaCommand(ws, R("B1"), "=MATCH(0.3,A1:A1,0)"));
+        wb.Execute(new SetFormulaCommand(ws, R("C1"), "=COUNTIF(A1:A1,0.3)"));
+        wb.Execute(new SetFormulaCommand(ws, R("D1"), "=XLOOKUP(0.3,A1:A1,A1:A1,\"none\")"));
+        Assert.Equal(CellValue.Number(1), ValueAt(ws, "B1"));
+        Assert.Equal(CellValue.Number(1), ValueAt(ws, "C1"));
+        Assert.Equal(CellValueKind.Number, ValueAt(ws, "D1").Kind);
+    }
+
+    [Fact]
+    public void DefinedNameUnion_ShiftsOnInsertAndRenamesWithSheet()
+    {
+        var (wb, ws, _) = Create();
+        wb.Execute(new DefineNameCommand("Print_Titles", "Sheet1!$A:$A,Sheet1!$1:$1"));
+
+        wb.Execute(new InsertRowsCommand(ws, 0, 1));
+        Assert.Equal("Sheet1!$A:$A,Sheet1!$2:$2", wb.DefinedNames["Print_Titles"]);
+        wb.Execute(new InsertColumnsCommand(ws, 0, 2));
+        Assert.Equal("Sheet1!$C:$C,Sheet1!$2:$2", wb.DefinedNames["Print_Titles"]);
+        wb.Execute(new RenameSheetCommand(ws, "Data"));
+        Assert.Equal("Data!$C:$C,Data!$2:$2", wb.DefinedNames["Print_Titles"]);
+
+        wb.Undo.Undo();
+        wb.Undo.Undo();
+        wb.Undo.Undo();
+        Assert.Equal("Sheet1!$A:$A,Sheet1!$1:$1", wb.DefinedNames["Print_Titles"]);
+    }
+
+    [Fact]
+    public void UnparsableFormula_KnownReferencesStillShift()
+    {
+        var (wb, ws, _) = Create();
+        wb.Execute(new SetFormulaCommand(ws, R("Z1"), "=SUM(Table1[Col])+A5"));
+        wb.Execute(new InsertRowsCommand(ws, 2, 1));
+        Assert.Equal("SUM(Table1[Col])+A6", ws[R("Z1")].Formula);
+        wb.Undo.Undo();
+        Assert.Equal("SUM(Table1[Col])+A5", ws[R("Z1")].Formula);
+
+        Assert.Equal("SUM( Table1[[#This Row],[A1]] ) + A6", ReferenceShifter.ShiftRows("SUM( Table1[[#This Row],[A1]] ) + A5", "Sheet1", 0, 1));
+        Assert.Equal("[@A1]*B3", ReferenceShifter.ShiftRows("[@A1]*B2", "Sheet1", 0, 1));
+        Assert.Equal("Data!Local+Data!A1", ReferenceShifter.RenameSheet("Sheet1!Local+Sheet1!A1", "Sheet1", "Data"));
+        Assert.Equal("#REF!+1", ReferenceShifter.RemoveSheet("'My Sheet'!Local+1", "My Sheet"));
+        Assert.Equal("SUM(Sheet1:Last!A1)", ReferenceShifter.RenameSheet("SUM(Sheet1:Sheet3!A1)", "Sheet3", "Last"));
+        Assert.Equal("SUM('First Sheet:Sheet3'!A1)", ReferenceShifter.RenameSheet("SUM(Sheet1:Sheet3!A1)", "Sheet1", "First Sheet"));
+        Assert.Equal("SUM(Sheet1:Sheet3!A1)", ReferenceShifter.ShiftRows("SUM(Sheet1:Sheet3!A1)", "Sheet1", 0, 1));
+        Assert.Equal("A2#+1", ReferenceShifter.ShiftRows("A1#+1", "Sheet1", 0, 1));
+        Assert.Equal("SUM(A2, 1.50)", ReferenceShifter.ShiftRows("SUM(A1, 1.50)", "Sheet1", 0, 1));
+        Assert.Equal("\"unterminated", ReferenceShifter.ShiftRows("\"unterminated", "Sheet1", 0, 1));
+    }
+
+    [Fact]
+    public void StructurePrefilter_SkipsFormulasThatCannotReferenceTheSheet()
+    {
+        Assert.False(ReferenceShifter.CanReference("A1+SUM(B:B)", "Sheet1"));
+        Assert.False(ReferenceShifter.CanReference("Other!A1", "Sheet1"));
+        Assert.True(ReferenceShifter.CanReference("sheet1!A1", "Sheet1"));
+        Assert.True(ReferenceShifter.CanReference("'Bob''s'!A1", "Bob's"));
+        Assert.Equal("A5", ReferenceShifter.Shift("A5", Axis.Row, "Sheet1", 0, 1, "Other"));
+        Assert.Equal("Sheet1!A6", ReferenceShifter.Shift("Sheet1!A5", Axis.Row, "Sheet1", 0, 1, "Other"));
+    }
+
+    [Fact]
+    public void WholeColumnArrayOperation_IsCappedToUsedRange()
+    {
+        var (wb, ws, _) = Create();
+        for (var i = 0; i < 10; i++) wb.Execute(new SetValueCommand(ws, new CellRef(i, 0), CellValue.Number(i + 1)));
+        var before = GC.GetAllocatedBytesForCurrentThread();
+        wb.Execute(new SetFormulaCommand(ws, R("C1"), "=SUM(A:A*2)"));
+        var allocated = GC.GetAllocatedBytesForCurrentThread() - before;
+        Assert.Equal(CellValue.Number(110), ValueAt(ws, "C1"));
+        Assert.True(allocated < 4_000_000, $"allocated {allocated} bytes");
+    }
+
+    [Fact]
+    public void FunctionException_YieldsValueErrorWithoutStoppingRecalc()
+    {
+        var functions = new FunctionRegistry();
+        functions.Register(new DelegateFunction(new FunctionInfo("BOOM", "Test", "BOOM()", "Throws."), 0, 0,
+            (_, _) => throw new InvalidOperationException("boom")));
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        _ = new CalcEngine(wb, functions);
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(1)));
+        wb.Execute(new SetFormulaCommand(ws, R("B1"), "=BOOM()+A1"));
+        wb.Execute(new SetFormulaCommand(ws, R("C1"), "=A1+1"));
+        Assert.Equal(CellValue.Error(CellError.Value), ValueAt(ws, "B1"));
+        Assert.Equal(CellValue.Number(2), ValueAt(ws, "C1"));
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(5)));
+        Assert.Equal(CellValue.Number(6), ValueAt(ws, "C1"));
+    }
+
+    [Fact]
+    public void NegativeZero_IsNormalised()
+    {
+        var v = Eval("=0*-1");
+        Assert.Equal(CellValueKind.Number, v.Kind);
+        Assert.False(double.IsNegative(v.NumberValue));
+        Assert.Equal("0", v.ToString());
+        Assert.Equal(CellValue.Text("x0"), Eval("=\"x\"&-0"));
+        Assert.False(double.IsNegative(CellValue.Number(-0.0).NumberValue));
+    }
+
+    [Fact]
+    public void RangeOfRanges_TracksBoundingBox()
+    {
+        var (wb, ws, _) = Create();
+        wb.Execute(new SetFormulaCommand(ws, R("E1"), "=SUM(A1:A2:C3)"));
+        Assert.Equal(CellValue.Number(0), ValueAt(ws, "E1"));
+        wb.Execute(new SetValueCommand(ws, R("C3"), CellValue.Number(4)));
+        Assert.Equal(CellValue.Number(4), ValueAt(ws, "E1"));
+        wb.Execute(new SetValueCommand(ws, R("B2"), CellValue.Number(3)));
+        Assert.Equal(CellValue.Number(7), ValueAt(ws, "E1"));
+    }
+
+    [Fact]
+    public void ReplacedOrClearedFormula_DropsWideDependencies()
+    {
+        var (wb, ws, engine) = Create();
+        wb.Execute(new SetFormulaCommand(ws, R("A5"), "=SUM(1:1)"));
+        wb.Execute(new SetFormulaCommand(ws, R("A6"), "=SUM(1:1)"));
+        wb.Execute(new SetFormulaCommand(ws, R("A5"), "=5"));
+        wb.Execute(new ClearCommand(ws, new CellRange(R("A6"), R("A6"))));
+        var before = engine.EvaluationCount;
+        wb.Execute(new SetValueCommand(ws, R("B1"), CellValue.Number(1)));
+        Assert.Equal(0, engine.EvaluationCount - before);
+    }
+
+    [Fact]
+    public void Dispose_StopsFollowingTheWorkbook()
+    {
+        var (wb, ws, engine) = Create();
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(1)));
+        wb.Execute(new SetFormulaCommand(ws, R("B1"), "=A1"));
+        engine.Dispose();
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(2)));
+        Assert.Equal(CellValue.Number(1), ValueAt(ws, "B1"));
+    }
+
+    [Fact]
+    public void NumberToText_IsSharedAndFollowsCurrentCulture()
+    {
+        var previous = CultureInfo.CurrentCulture;
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+            Assert.Equal(CellValue.Text("x1,5"), Eval("=\"x\"&1.5"));
+            Assert.Equal(CellValue.Text("x1,5"), Eval("=CONCAT(\"x\",1.5)"));
+            Assert.Equal(CellValue.Text("1234567,5|0,3"), Eval("=TEXTJOIN(\"|\",TRUE,1234567.5,0.1+0.2)"));
+            Assert.Equal(CellValue.Text("0,3"), Eval("=\"\"&(0.1+0.2)"));
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            Assert.Equal(CellValue.Text("x1.5"), Eval("=CONCAT(\"x\",1.5)"));
+            Assert.Equal(CellValue.Text("1234567.5"), Eval("=\"\"&1234567.5"));
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previous;
+        }
     }
 }

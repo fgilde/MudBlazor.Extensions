@@ -9,6 +9,7 @@ internal sealed record LetBinding(string Name, CalcValue Value, LetBinding Next)
 internal sealed class FormulaEvaluator(FunctionRegistry functions)
 {
     internal const int MaxNameDepth = 32;
+    internal const int MaxDenseCells = 1 << 16;
 
     private readonly Dictionary<string, FormulaNode> _names = new();
 
@@ -62,7 +63,7 @@ internal sealed class FormulaEvaluator(FunctionRegistry functions)
 
     internal static CellValue GetValue(Worksheet sheet, CellRef cell) => sheet[cell]?.Value ?? default;
 
-    internal static CalcArray ToArray(CalcValue value)
+    internal static CalcArray ToArray(CalcValue value, bool trim = true)
     {
         switch (value.Kind)
         {
@@ -76,10 +77,18 @@ internal sealed class FormulaEvaluator(FunctionRegistry functions)
 
         if (value.Areas.Count != 1) return null;
         var (sheet, range) = value.Areas[0];
+        if (trim && range.Area > MaxDenseCells) range = TrimToUsed(sheet, range);
         var array = new CalcArray(range.RowCount, range.ColumnCount);
         foreach (var c in sheet.ExistingIn(range))
             array[c.Row - range.Top, c.Column - range.Left] = sheet[c].Value;
         return array;
+    }
+
+    internal static CellRange TrimToUsed(Worksheet sheet, CellRange range)
+    {
+        var used = sheet.UsedRange;
+        return CellRange.FromBounds(range.Top, range.Left, Math.Max(range.Top, Math.Min(range.Bottom, used.Bottom)),
+            Math.Max(range.Left, Math.Min(range.Right, used.Right)));
     }
 
     private static CalcValue Reference(EvalScope scope, string sheetName, CellRange range)

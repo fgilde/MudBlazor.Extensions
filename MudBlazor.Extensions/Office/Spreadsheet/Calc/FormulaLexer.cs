@@ -72,7 +72,9 @@ public static class FormulaLexer
     /// <param name="formula">The formula text.</param>
     /// <returns>The tokens in order.</returns>
     /// <exception cref="FormatException">The text contains a character or literal that is not valid in a formula.</exception>
-    public static IReadOnlyList<FormulaToken> Tokenize(string formula)
+    public static IReadOnlyList<FormulaToken> Tokenize(string formula) => Tokenize(formula, false);
+
+    internal static List<FormulaToken> Tokenize(string formula, bool tolerant)
     {
         var s = formula ?? "";
         var tokens = new List<FormulaToken>();
@@ -88,7 +90,18 @@ public static class FormulaLexer
             }
 
             var start = i;
-            var kind = Next(s, ref i);
+            FormulaTokenKind kind;
+            try
+            {
+                kind = Next(s, ref i, tolerant);
+            }
+            catch (FormatException) when (tolerant)
+            {
+                i = SkipUnknown(s, start);
+                space = false;
+                continue;
+            }
+
             tokens.Add(new FormulaToken(kind, s[start..i], start, space));
             space = false;
         }
@@ -96,7 +109,22 @@ public static class FormulaLexer
         return tokens;
     }
 
-    private static FormulaTokenKind Next(string s, ref int i)
+    private static int SkipUnknown(string s, int i)
+    {
+        if (s[i] is '"' or '\'') return QuotedEnd(s, i) is var end and >= 0 ? end : s.Length;
+        if (s[i] != '[') return i + 1;
+        var depth = 0;
+        for (var j = i; j < s.Length; j++)
+        {
+            if (s[j] == '\'') j++;
+            else if (s[j] == '[') depth++;
+            else if (s[j] == ']' && --depth == 0) return j + 1;
+        }
+
+        return s.Length;
+    }
+
+    private static FormulaTokenKind Next(string s, ref int i, bool tolerant)
     {
         var c = s[i];
         switch (c)
@@ -126,7 +154,7 @@ public static class FormulaLexer
                 var end = EndOfQuoted(s, i);
                 if (end >= s.Length || s[end] != '!') throw Unexpected(s, end);
                 i = end + 1;
-                return AfterSheet(s, ref i);
+                return AfterSheet(s, ref i, tolerant);
         }
 
         var j = i + 1;
@@ -134,7 +162,18 @@ public static class FormulaLexer
         if (IsNameChar(c) && j < s.Length && s[j] == '!')
         {
             i = j + 1;
-            return AfterSheet(s, ref i);
+            return AfterSheet(s, ref i, tolerant);
+        }
+
+        if (tolerant && IsNameChar(c) && j < s.Length && s[j] == ':')
+        {
+            var k = j + 1;
+            while (k < s.Length && IsNameChar(s[k])) k++;
+            if (k > j + 1 && k < s.Length && s[k] == '!')
+            {
+                i = k + 1;
+                return AfterSheet(s, ref i, tolerant);
+            }
         }
 
         if (TryReference(s, ref i)) return FormulaTokenKind.Reference;
@@ -155,13 +194,19 @@ public static class FormulaLexer
             : FormulaTokenKind.Name;
     }
 
-    private static FormulaTokenKind AfterSheet(string s, ref int i)
+    private static FormulaTokenKind AfterSheet(string s, ref int i, bool tolerant)
     {
         if (TryReference(s, ref i)) return FormulaTokenKind.Reference;
         if (i < s.Length && s[i] == '#')
         {
             i = EndOfError(s, i);
             return FormulaTokenKind.Error;
+        }
+
+        if (tolerant && i < s.Length && (char.IsLetter(s[i]) || s[i] is '_' or '\\'))
+        {
+            while (i < s.Length && IsNameChar(s[i])) i++;
+            return FormulaTokenKind.Name;
         }
 
         throw Unexpected(s, i);
@@ -181,7 +226,11 @@ public static class FormulaLexer
 
     private static bool IsNameChar(char c) => char.IsLetterOrDigit(c) || c is '_' or '.' or '\\';
 
-    private static int EndOfQuoted(string s, int i)
+    private static int EndOfQuoted(string s, int i) => QuotedEnd(s, i) is var end and >= 0
+        ? end
+        : throw new FormatException($"Unterminated {(s[i] == '"' ? "text" : "sheet name")} starting at position {i + 1}.");
+
+    private static int QuotedEnd(string s, int i)
     {
         var quote = s[i];
         for (var j = i + 1; j < s.Length; j++)
@@ -191,7 +240,7 @@ public static class FormulaLexer
             else return j + 1;
         }
 
-        throw new FormatException($"Unterminated {(quote == '"' ? "text" : "sheet name")} starting at position {i + 1}.");
+        return -1;
     }
 
     private static int EndOfError(string s, int i)

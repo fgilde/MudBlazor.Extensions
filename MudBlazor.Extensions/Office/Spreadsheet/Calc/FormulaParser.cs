@@ -150,6 +150,17 @@ public static class FormulaParser
         }
     }
 
+    internal static FormulaNode ParseReference(string text)
+    {
+        var bang = text.LastIndexOf('!');
+        var sheet = bang < 0 ? null : UnquoteSheet(text[..bang]);
+        var spill = text.EndsWith('#');
+        var range = CellRange.Parse(text[(bang + 1)..(spill ? ^1 : ^0)]);
+        return text.IndexOf(':', bang + 1) < 0 ? new RefNode(range.Start, sheet, spill) : new RangeNode(range, sheet);
+    }
+
+    internal static string UnquoteSheet(string sheet) => sheet is ['\'', .., '\''] ? sheet[1..^1].Replace("''", "'") : sheet;
+
     private static StringBuilder WriteSheet(StringBuilder sb, string sheet) =>
         sheet == null ? sb : sb.Append(Workbook.QuoteSheetName(sheet)).Append('!');
 
@@ -271,7 +282,7 @@ public static class FormulaParser
                     return ParseArray();
                 case FormulaTokenKind.Reference:
                     _pos++;
-                    return Reference(t.Text);
+                    return ParseReference(t.Text);
                 case FormulaTokenKind.Name:
                     _pos++;
                     return new NameNode(t.Text);
@@ -361,17 +372,6 @@ public static class FormulaParser
 
             if (rows.Any(r => r.Count != rows[0].Count)) throw new FormatException("All rows of an array constant need the same length.");
             return new ArrayConstNode(rows);
-        }
-
-        private static FormulaNode Reference(string text)
-        {
-            var bang = text.LastIndexOf('!');
-            var sheet = bang < 0 ? null : text[..bang];
-            if (sheet is ['\'', .., '\''])
-                sheet = sheet[1..^1].Replace("''", "'");
-            var spill = text.EndsWith('#');
-            var range = CellRange.Parse(text[(bang + 1)..(spill ? ^1 : ^0)]);
-            return text.IndexOf(':', bang + 1) < 0 ? new RefNode(range.Start, sheet, spill) : new RangeNode(range, sheet);
         }
     }
 }

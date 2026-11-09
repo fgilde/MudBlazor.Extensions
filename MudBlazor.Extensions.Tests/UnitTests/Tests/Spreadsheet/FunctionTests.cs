@@ -32,9 +32,18 @@ public class FunctionTests
 
     private static CellValue Eval(string formula, string culture = "en-US")
     {
-        var (wb, ws, _) = Fixture(culture);
-        wb.Execute(new SetFormulaCommand(ws, R("Z100"), formula));
-        return ValueAt(ws, "Z100");
+        var previous = CultureInfo.CurrentCulture;
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo(culture);
+            var (wb, ws, _) = Fixture(culture);
+            wb.Execute(new SetFormulaCommand(ws, R("Z100"), formula));
+            return ValueAt(ws, "Z100");
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previous;
+        }
     }
 
     private static void Check(string formula, object expected)

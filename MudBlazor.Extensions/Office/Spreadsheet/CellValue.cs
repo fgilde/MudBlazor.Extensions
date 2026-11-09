@@ -85,10 +85,10 @@ public readonly record struct CellValue
     /// <summary>The empty value.</summary>
     public static CellValue Empty => default;
 
-    /// <summary>Creates a number value.</summary>
+    /// <summary>Creates a number value; negative zero becomes zero.</summary>
     /// <param name="value">The number.</param>
     /// <returns>The value.</returns>
-    public static CellValue Number(double value) => new(CellValueKind.Number, value, null);
+    public static CellValue Number(double value) => new(CellValueKind.Number, value + 0.0, null);
 
     /// <summary>Creates a text value; null yields the empty value.</summary>
     /// <param name="value">The text.</param>

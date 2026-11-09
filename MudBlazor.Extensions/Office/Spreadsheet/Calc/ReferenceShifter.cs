@@ -1,8 +1,11 @@
+using System.Text;
+
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
 /// <summary>
-/// Rewrites references in formula text when rows or columns are inserted or deleted, or a sheet is renamed. Formulas
-/// without affected references are returned unchanged (including their whitespace); unparsable formulas are returned as is.
+/// Rewrites references in formula text when rows or columns are inserted or deleted, or a sheet is renamed. Only the
+/// affected references change; everything else, including whitespace and parts the parser does not understand (structured
+/// references, sheet-scoped names, 3D references), is kept as written.
 /// </summary>
 public static class ReferenceShifter
 {
@@ -22,39 +25,72 @@ public static class ReferenceShifter
     /// <returns>The rewritten formula; references to deleted cells become <c>#REF!</c>.</returns>
     public static string ShiftColumns(string formula, string sheet, int at, int count) => Shift(formula, Axis.Column, sheet, at, count, sheet);
 
-    /// <summary>Replaces the sheet name in sheet-qualified references.</summary>
+    /// <summary>Replaces the sheet name in sheet-qualified references and sheet-scoped names, including either end of a 3D reference.</summary>
     /// <param name="formula">Formula text without leading equals sign.</param>
     /// <param name="oldName">The previous sheet name (case-insensitive).</param>
     /// <param name="newName">The new sheet name.</param>
     /// <returns>The rewritten formula, quoting the new name where needed.</returns>
-    public static string RenameSheet(string formula, string oldName, string newName) => Rewrite(formula, n => n switch
-    {
-        RefNode r when Same(r.Sheet, oldName) => r with { Sheet = newName },
-        RangeNode r when Same(r.Sheet, oldName) => r with { Sheet = newName },
-        _ => n
-    });
+    public static string RenameSheet(string formula, string oldName, string newName) =>
+        !CanReference(formula, oldName) ? formula : Rewrite(formula, (_, sheet, body, _) =>
+        {
+            var ends = sheet?.Split(':');
+            if (ends == null || !ends.Any(e => Same(e, oldName))) return null;
+            for (var i = 0; i < ends.Length; i++)
+                if (Same(ends[i], oldName))
+                    ends[i] = newName;
+            var joined = string.Join(':', ends);
+            return (ends.All(e => Workbook.QuoteSheetName(e) == e) ? joined : "'" + joined.Replace("'", "''") + "'") + "!" + body;
+        });
 
-    internal static string RemoveSheet(string formula, string sheet) => Rewrite(formula, n => n switch
-    {
-        RefNode r when Same(r.Sheet, sheet) => new ErrorNode(CellError.Ref),
-        RangeNode r when Same(r.Sheet, sheet) => new ErrorNode(CellError.Ref),
-        _ => n
-    });
+    internal static string RemoveSheet(string formula, string sheet) =>
+        !CanReference(formula, sheet) ? formula : Rewrite(formula, (_, s, _, _) =>
+            s != null && s.Split(':').Any(e => Same(e, sheet)) ? "#REF!" : null);
 
-    internal static string Shift(string formula, Axis axis, string sheet, int at, int count, string host) => Rewrite(formula, n => n switch
-    {
-        RefNode r when Same(r.Sheet ?? host, sheet) => ShiftCell(r, axis, at, count),
-        RangeNode r when Same(r.Sheet ?? host, sheet) => ShiftRange(r, axis, at, count),
-        _ => n
-    });
+    internal static string Shift(string formula, Axis axis, string sheet, int at, int count, string host) =>
+        !Same(host, sheet) && !CanReference(formula, sheet) ? formula : Rewrite(formula, (prefix, s, _, node) =>
+        {
+            if (!Same(s ?? host, sheet)) return null;
+            var shifted = node switch
+            {
+                RefNode r => ShiftCell(r, axis, at, count),
+                RangeNode r => ShiftRange(r, axis, at, count),
+                _ => node
+            };
+            return shifted switch
+            {
+                _ when ReferenceEquals(shifted, node) => null,
+                RefNode r => prefix + r.Cell.ToA1() + (r.Spill ? "#" : ""),
+                RangeNode r => prefix + r.Range.ToA1(),
+                _ => "#REF!"
+            };
+        });
+
+    internal static bool CanReference(string formula, string sheet) =>
+        formula != null && formula.Contains('!') && (formula.Contains(sheet, StringComparison.OrdinalIgnoreCase)
+                                                     || formula.Contains(sheet.Replace("'", "''"), StringComparison.OrdinalIgnoreCase));
 
     private static bool Same(string a, string b) => a != null && string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
 
-    private static string Rewrite(string formula, Func<FormulaNode, FormulaNode> leaf)
+    private static string Rewrite(string formula, Func<string, string, string, FormulaNode, string> rewrite)
     {
-        if (formula == null || !FormulaParser.TryParse(formula, out var node, out _)) return formula;
-        var result = node.Rewrite(leaf);
-        return ReferenceEquals(result, node) ? formula : FormulaParser.Format(result);
+        if (string.IsNullOrEmpty(formula)) return formula;
+        StringBuilder sb = null;
+        var last = 0;
+        foreach (var t in FormulaLexer.Tokenize(formula, true))
+        {
+            var bang = t.Text.LastIndexOf('!');
+            if (t.Kind != FormulaTokenKind.Reference && (t.Kind != FormulaTokenKind.Name || bang < 0)) continue;
+            var prefix = t.Text[..(bang + 1)];
+            var sheet = bang < 0 ? null : FormulaParser.UnquoteSheet(t.Text[..bang]);
+            var node = t.Kind == FormulaTokenKind.Reference ? FormulaParser.ParseReference(t.Text) : null;
+            var text = rewrite(prefix, sheet, t.Text[(bang + 1)..], node);
+            if (text == null) continue;
+            sb ??= new StringBuilder(formula.Length + 8);
+            sb.Append(formula, last, t.Start - last).Append(text);
+            last = t.Start + t.Text.Length;
+        }
+
+        return sb == null ? formula : sb.Append(formula, last, formula.Length - last).ToString();
     }
 
     private static int Limit(Axis axis) => axis == Axis.Row ? CellRef.MaxRows : CellRef.MaxColumns;
