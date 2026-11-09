@@ -1,14 +1,15 @@
 using System.Globalization;
 using System.Xml.Linq;
+using static MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage;
 
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
 internal static class StylesXmlReader
 {
-    internal static int[] Read(Stream styles, string[] theme, StyleTable table)
+    internal static (int[] XfStyleIds, int[] CanonicalXf) Read(Stream styles, string[] theme, StyleTable table)
     {
         var root = XDocument.Load(styles).Root;
-        var indexed = Child(Child(root, "colors"), "indexedColors")?.Elements().Select(e => ((string)e.Attribute("rgb"))?[^6..]).ToArray()
+        var indexed = Child(Child(root, "colors"), "indexedColors")?.Elements().Select(e => ThemeColors.Hex((string)e.Attribute("rgb"))).ToArray()
                       ?? ThemeColors.Indexed;
         var formats = Child(root, "numFmts")?.Elements()
             .Where(e => int.TryParse((string)e.Attribute("numFmtId"), out _))
@@ -36,10 +37,12 @@ internal static class StylesXmlReader
             ids[i] = style == baseStyle ? 0 : table.GetOrAdd(style);
         }
 
-        return ids;
+        var canonical = new int[table.Count];
+        Array.Fill(canonical, -1);
+        canonical[0] = 0;
+        for (var i = xfs.Count - 1; i >= 0; i--) canonical[ids[i]] = i;
+        return (ids, canonical);
     }
-
-    private static XElement Child(XElement parent, string name) => parent?.Elements().FirstOrDefault(e => e.Name.LocalName == name);
 
     private static List<T> Items<T>(XElement root, string name, Func<XElement, T> read) =>
         Child(root, name)?.Elements().Select(read).ToList() ?? [];

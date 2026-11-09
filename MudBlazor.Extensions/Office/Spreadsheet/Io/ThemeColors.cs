@@ -35,7 +35,7 @@ internal static class ThemeColors
                 "sysClr" => (string)color.Attribute("lastClr"),
                 _ => null
             };
-            if (rgb is { Length: 6 }) colors[i] = rgb.ToUpperInvariant();
+            if (Hex(rgb) is { } valid) colors[i] = valid;
         }
 
         return colors;
@@ -45,13 +45,16 @@ internal static class ThemeColors
     {
         if (color == null || (string)color.Attribute("auto") is "1" or "true") return null;
         string rgb = null;
-        if ((string)color.Attribute("rgb") is { Length: >= 6 } argb) rgb = argb[^6..].ToUpperInvariant();
+        if ((string)color.Attribute("rgb") is { } argb) rgb = Hex(argb);
         else if (int.TryParse((string)color.Attribute("theme"), out var t)) rgb = t >= 0 && t < theme.Length ? theme[t] : null;
         else if (int.TryParse((string)color.Attribute("indexed"), out var x)) rgb = x >= 0 && x < indexed.Length ? indexed[x] : null;
         if (rgb == null) return null;
-        var tint = double.TryParse((string)color.Attribute("tint"), NumberStyles.Float, CultureInfo.InvariantCulture, out var v) ? v : 0;
+        var tint = double.TryParse((string)color.Attribute("tint"), NumberStyles.Float, CultureInfo.InvariantCulture, out var v) && double.IsFinite(v) ? Math.Clamp(v, -1, 1) : 0;
         return "#" + (tint == 0 ? rgb : ApplyTint(rgb, tint));
     }
+
+    internal static string Hex(string rgb) =>
+        rgb is { Length: 6 or 8 } && rgb.All(char.IsAsciiHexDigit) ? rgb[^6..].ToUpperInvariant() : null;
 
     internal static string ApplyTint(string rgb, double tint)
     {

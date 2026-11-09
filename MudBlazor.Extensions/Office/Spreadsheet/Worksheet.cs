@@ -175,6 +175,8 @@ public sealed class Worksheet
 
     internal void Reserve(int count) => _cells.EnsureCapacity(count);
 
+    internal int CellCapacity => _cells.EnsureCapacity(0);
+
     internal void Prune(CellRef r)
     {
         _usedRange = null;

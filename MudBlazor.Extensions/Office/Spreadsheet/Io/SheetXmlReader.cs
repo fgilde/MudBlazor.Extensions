@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
+using static MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage;
 
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
@@ -61,7 +62,7 @@ internal static class SheetXmlReader
         return root;
     }
 
-    internal static void Read(Stream stream, Worksheet ws, XlsxSheetPart part, string[] strings, XlsxPackage package, string[] theme)
+    internal static void Read(Stream stream, long partLength, Worksheet ws, XlsxSheetPart part, string[] strings, XlsxPackage package, string[] theme)
     {
         using var reader = XmlReader.Create(stream, Settings);
         reader.MoveToContent();
@@ -85,26 +86,33 @@ internal static class SheetXmlReader
 
             var element = (XElement)XNode.ReadFrom(reader);
             part.Children.Add(element);
-            Apply(element, ws, package, theme);
+            Apply(element, ws, package, theme, partLength);
         }
     }
 
-    private static XElement Child(XElement e, string name) => e?.Elements().FirstOrDefault(c => c.Name.LocalName == name);
+    private static double? Number(XElement e, string name) => Finite((string)e?.Attribute(name));
 
-    private static double? Number(XElement e, string name) =>
-        double.TryParse((string)e?.Attribute(name), NumberStyles.Float, CultureInfo.InvariantCulture, out var v) ? v : null;
+    private static double? Finite(string s) =>
+        double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out var v) && double.IsFinite(v) ? v : null;
+
+    private static int? Int(XElement e, string name) =>
+        int.TryParse((string)e.Attribute(name), NumberStyles.Integer, CultureInfo.InvariantCulture, out var v) ? v : null;
+
+    private static int Count(XElement e, string name, int limit) => Number(e, name) is { } v ? (int)Math.Clamp(v, 0, limit - 1) : 0;
 
     private static bool True(string s) => s is "1" or "true";
 
-    private static int StyleId(XlsxPackage package, string s) =>
-        int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out var xf) && xf >= 0 && xf < package.XfStyleIds.Length ? package.XfStyleIds[xf] : 0;
+    private static int Xf(XlsxPackage package, string s) =>
+        int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out var xf) && xf >= 0 && xf < package.XfStyleIds.Length ? xf : 0;
 
-    private static void Apply(XElement e, Worksheet ws, XlsxPackage package, string[] theme)
+    private static int StyleId(XlsxPackage package, string s) => package.XfStyleIds[Xf(package, s)];
+
+    private static void Apply(XElement e, Worksheet ws, XlsxPackage package, string[] theme, long partLength)
     {
         switch (e.Name.LocalName)
         {
             case "dimension":
-                if (CellRange.TryParse((string)e.Attribute("ref"), out var used)) ws.Reserve((int)Math.Min(used.Area, 4_000_000));
+                if (CellRange.TryParse((string)e.Attribute("ref"), out var used)) ws.Reserve((int)Math.Min(used.Area, Math.Min(4_000_000, partLength / 10)));
                 break;
             case "sheetPr":
                 ws.TabColor = ThemeColors.Resolve(Child(e, "tabColor"), theme, ThemeColors.Indexed);
@@ -113,9 +121,9 @@ internal static class SheetXmlReader
                 var pane = Child(Child(e, "sheetView"), "pane");
                 if ((string)pane?.Attribute("state") is "frozen" or "frozenSplit")
                 {
-                    var rows = (int)(Number(pane, "ySplit") ?? 0);
-                    var cols = (int)(Number(pane, "xSplit") ?? 0);
-                    if ((rows > 0 || cols > 0) && rows < CellRef.MaxRows && cols < CellRef.MaxColumns) ws.FreezeAt = new CellRef(rows, cols);
+                    var rows = Count(pane, "ySplit", CellRef.MaxRows);
+                    var cols = Count(pane, "xSplit", CellRef.MaxColumns);
+                    if (rows > 0 || cols > 0) ws.FreezeAt = new CellRef(rows, cols);
                 }
 
                 break;
@@ -127,12 +135,12 @@ internal static class SheetXmlReader
             case "cols":
                 foreach (var col in e.Elements().Where(c => c.Name.LocalName == "col"))
                 {
-                    var min = (int)(Number(col, "min") ?? 1) - 1;
-                    var max = Math.Min((int)(Number(col, "max") ?? min + 1), CellRef.MaxColumns) - 1;
+                    var min = Math.Clamp(Int(col, "min") ?? 1, 1, CellRef.MaxColumns);
+                    var max = Math.Clamp(Int(col, "max") ?? min, min, CellRef.MaxColumns);
                     var hidden = True((string)col.Attribute("hidden"));
                     var px = Number(col, "width") is { } w && (w > 0 || !hidden) ? ColumnWidthToPixels(w) : (double?)null;
                     var style = StyleId(package, (string)col.Attribute("style"));
-                    for (var c = Math.Max(min, 0); c <= max; c++)
+                    for (var c = min - 1; c < max; c++)
                     {
                         if (px is { } size && size != ws.DefaultColumnWidth) ws.SetSize(Axis.Column, c, size);
                         if (hidden) ws.SetHidden(Axis.Column, c, true);
@@ -168,8 +176,9 @@ internal static class SheetXmlReader
             if (reader.NodeType != XmlNodeType.Element) continue;
             if (reader.LocalName == "row")
             {
-                row = ReadRow(reader, ws, package, row);
+                row = ReadRow(reader, ws, part, package, row);
                 col = -1;
+                arrays?.RemoveAll(a => a.Range.Bottom < row);
             }
             else if (reader.LocalName == "c")
             {
@@ -180,16 +189,18 @@ internal static class SheetXmlReader
         reader.Read();
     }
 
-    private static int ReadRow(XmlReader reader, Worksheet ws, XlsxPackage package, int previous)
+    private static int ReadRow(XmlReader reader, Worksheet ws, XlsxSheetPart part, XlsxPackage package, int previous)
     {
         var row = int.TryParse(reader.GetAttribute("r"), NumberStyles.Integer, CultureInfo.InvariantCulture, out var r) ? r - 1 : previous + 1;
         if (row < 0 || row >= CellRef.MaxRows) return row;
-        if (double.TryParse(reader.GetAttribute("ht"), NumberStyles.Float, CultureInfo.InvariantCulture, out var ht)
-            && PointsToPixels(ht) is var px && px != ws.DefaultRowHeight)
+        if (Finite(reader.GetAttribute("ht")) is { } ht && PointsToPixels(ht) is var px && px != ws.DefaultRowHeight)
             ws.SetSize(Axis.Row, row, px);
         if (True(reader.GetAttribute("hidden"))) ws.SetHidden(Axis.Row, row, true);
-        if (True(reader.GetAttribute("customFormat")) && StyleId(package, reader.GetAttribute("s")) is var style and not 0)
-            ws.SetAxisStyle(Axis.Row, row, style);
+        if (!True(reader.GetAttribute("customFormat"))) return row;
+        var xf = Xf(package, reader.GetAttribute("s"));
+        var style = package.XfStyleIds[xf];
+        if (style != 0) ws.SetAxisStyle(Axis.Row, row, style);
+        if (xf != package.CanonicalXf[style]) part.OriginalRowXf[row] = xf;
         return row;
     }
 
@@ -215,7 +226,8 @@ internal static class SheetXmlReader
 
         reader.MoveToElement();
         var at = CellRef.TryParse(address, out var parsed) ? parsed : new CellRef(Math.Max(row, 0), col + 1);
-        var styleId = StyleId(package, style);
+        var xf = Xf(package, style);
+        var styleId = package.XfStyleIds[xf];
         string v = null, f = null, fType = null, fRef = null, fShared = null, inline = null;
         var hasFormula = false;
         if (!reader.IsEmptyElement)
@@ -249,6 +261,7 @@ internal static class SheetXmlReader
         }
 
         if (!Worksheet.InBounds(at)) return at.Column;
+        if (xf != package.CanonicalXf[styleId]) part.OriginalXf[at.Key] = xf;
         var sharedIndex = -1;
         var value = type switch
         {
@@ -262,7 +275,8 @@ internal static class SheetXmlReader
             "d" => DateTime.TryParse(v, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var date)
                 ? CellValue.Number(ExcelDate.ToSerial(date))
                 : CellValue.Empty,
-            _ => double.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture, out var n) ? CellValue.Number(n) : CellValue.Empty
+            _ => !double.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture, out var n) ? CellValue.Empty
+                : double.IsFinite(n) ? CellValue.Number(n) : CellValue.Error(CellError.Num)
         };
 
         string formula = null;

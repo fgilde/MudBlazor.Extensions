@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using System.Xml;
 using System.Xml.Linq;
+using static MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage;
 
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
@@ -19,9 +20,28 @@ public static class XlsxReader
     public static Workbook Read(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
-        byte[] source;
-        using (var copy = new MemoryStream())
+        try
         {
+            return ReadPackage(stream);
+        }
+        catch (Exception ex) when (ex is NullReferenceException or ArgumentException or FormatException or XmlException or KeyNotFoundException
+                                       or InvalidOperationException or IndexOutOfRangeException or OverflowException)
+        {
+            throw new InvalidDataException("The stream is not a valid spreadsheet package.", ex);
+        }
+    }
+
+    private static Workbook ReadPackage(Stream stream)
+    {
+        byte[] source;
+        if (stream.CanSeek)
+        {
+            source = new byte[stream.Length - stream.Position];
+            stream.ReadExactly(source);
+        }
+        else
+        {
+            using var copy = new MemoryStream();
             stream.CopyTo(copy);
             source = copy.ToArray();
         }
@@ -48,7 +68,9 @@ public static class XlsxReader
         package.Date1904 = (string)Child(root, "workbookPr")?.Attribute("date1904") is "1" or "true";
 
         var theme = Open(zip, package.ThemePart, ThemeColors.Read) ?? ThemeColors.Office;
-        package.XfStyleIds = Open(zip, package.StylesPart, s => StylesXmlReader.Read(s, theme, wb.Styles)) ?? [0];
+        var (xfStyleIds, canonicalXf) = Open(zip, package.StylesPart, s => StylesXmlReader.Read(s, theme, wb.Styles));
+        package.XfStyleIds = xfStyleIds is { Length: > 0 } ? xfStyleIds : [0];
+        package.CanonicalXf = canonicalXf is { Length: > 0 } ? canonicalXf : [0];
         var strings = Open(zip, package.SharedStringsPart, s => ReadSharedStrings(s, package)) ?? [];
 
         foreach (var sheet in Child(root, "sheets")?.Elements().Where(e => e.Name.LocalName == "sheet") ?? [])
@@ -71,11 +93,10 @@ public static class XlsxReader
             package.Sheets.Add(part);
             if (ws == null) continue;
             wb.SheetList.Add(ws);
-            Open(zip, partName, s =>
-            {
-                SheetXmlReader.Read(s, ws, part, strings, package, theme);
-                return true;
-            });
+            var entry = Find(zip, partName);
+            if (entry == null) continue;
+            using var s = entry.Open();
+            SheetXmlReader.Read(s, entry.Length, ws, part, strings, package, theme);
         }
 
         if (wb.Sheets.Count == 0) wb.SheetList.Add(new Worksheet("Sheet1", wb));
@@ -87,8 +108,6 @@ public static class XlsxReader
 
         return wb;
     }
-
-    private static XElement Child(XElement e, string name) => e?.Elements().FirstOrDefault(c => c.Name.LocalName == name);
 
     private static T Open<T>(ZipArchive zip, string part, Func<Stream, T> read)
     {

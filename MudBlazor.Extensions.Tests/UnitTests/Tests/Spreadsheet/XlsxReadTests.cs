@@ -357,4 +357,121 @@ public class XlsxReadTests(ITestOutputHelper output)
         Assert.Equal(CellValue.Boolean(true), At(ws, "C2").Value);
         Assert.Equal("hello", At(wb.Sheets[1], "A1").Value.TextValue);
     }
+
+    private static byte[] Replace(byte[] package, string entry, string xml)
+    {
+        var ms = new MemoryStream();
+        ms.Write(package);
+        using (var zip = new ZipArchive(ms, ZipArchiveMode.Update, true))
+        {
+            zip.GetEntry(entry)!.Delete();
+            using var s = zip.CreateEntry(entry).Open();
+            s.Write(Encoding.UTF8.GetBytes(xml));
+        }
+
+        return ms.ToArray();
+    }
+
+    private static T WithCulture<T>(string name, Func<T> action)
+    {
+        var previous = CultureInfo.CurrentCulture;
+        CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo(name);
+        try
+        {
+            return action();
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previous;
+        }
+    }
+
+    [Fact]
+    public void Reads_MalformedColsAndNonFiniteValues()
+    {
+        const string cols = "<cols><col min=\"1\" max=\"1e10\" hidden=\"1\"/><col min=\"2\" max=\"NaN\" hidden=\"1\"/><col min=\"3\" max=\"3\" width=\"NaN\"/></cols>";
+        const string rows = "<row r=\"1\"><c r=\"A1\"><v>NaN</v></c><c r=\"B1\"><v>Infinity</v></c></row><row r=\"2\" ht=\"NaN\"/>";
+        var ws = Read(Package([Sheet(rows, cols)])).Sheets[0];
+
+        Assert.True(ws.IsColumnHidden(0));
+        Assert.True(ws.IsColumnHidden(1));
+        Assert.False(ws.IsColumnHidden(5));
+        Assert.Equal(ws.DefaultColumnWidth, ws.ColumnWidth(2));
+        Assert.Equal(ws.DefaultRowHeight, ws.RowHeight(1));
+        Assert.Equal(CellValue.Error(CellError.Num), At(ws, "A1").Value);
+        Assert.Equal(CellValue.Error(CellError.Num), At(ws, "B1").Value);
+    }
+
+    [Fact]
+    public void Reads_DimensionReservation_CappedByPartSize()
+    {
+        var ws = Read(Package([Sheet("<row r=\"1\"><c r=\"A1\"><v>1</v></c></row>", "<dimension ref=\"A1:XFD1048576\"/>")])).Sheets[0];
+        Assert.True(ws.CellCapacity < 1000, $"capacity {ws.CellCapacity}");
+    }
+
+    [Fact]
+    public void Reads_OriginalXfKept_ForUnmodelledXfAttributes()
+    {
+        const string styles = """
+            <cellXfs count="4"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>
+            <xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyProtection="1"><protection locked="0"/></xf>
+            <xf numFmtId="10" fontId="0" fillId="0" borderId="0"/>
+            <xf numFmtId="10" fontId="0" fillId="0" borderId="0" applyProtection="1"><protection locked="0"/></xf></cellXfs>
+            """;
+        const string rows = "<row r=\"1\"><c r=\"A1\" s=\"1\"/><c r=\"B1\" s=\"1\"><v>5</v></c><c r=\"C1\" s=\"2\"><v>1</v></c><c r=\"D1\" s=\"3\"><v>1</v></c><c r=\"E1\" s=\"0\"/></row><row r=\"2\" s=\"3\" customFormat=\"1\"/>";
+        var wb = Read(Package([Sheet(rows)], styles: styles));
+        var ws = wb.Sheets[0];
+        var part = wb.Package.Sheets[0];
+
+        Assert.Null(At(ws, "A1"));
+        Assert.Equal(0, At(ws, "B1").StyleId);
+        Assert.Equal(At(ws, "C1").StyleId, At(ws, "D1").StyleId);
+        Assert.Equal([0, 2], wb.Package.CanonicalXf);
+        Assert.Equal(1, part.OriginalXf[R("A1").Key]);
+        Assert.Equal(1, part.OriginalXf[R("B1").Key]);
+        Assert.Equal(3, part.OriginalXf[R("D1").Key]);
+        Assert.False(part.OriginalXf.ContainsKey(R("C1").Key));
+        Assert.False(part.OriginalXf.ContainsKey(R("E1").Key));
+        Assert.Equal(3, part.OriginalRowXf[1]);
+    }
+
+    [Fact]
+    public void Reads_MalformedInput_ThrowsInvalidDataOrIgnoresBadColors()
+    {
+        var broken = Replace(Package([Sheet("")]), "xl/_rels/workbook.xml.rels",
+            $"<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"{Rel}/worksheet\"/></Relationships>");
+        Assert.Throws<InvalidDataException>(() => Read(broken));
+
+        const string styles = """
+            <colors><indexedColors><rgbColor rgb="FF"/></indexedColors></colors>
+            <fonts count="1"><font><color indexed="0"/></font></fonts>
+            <fills count="3"><fill><patternFill/></fill><fill><patternFill patternType="gray125"/></fill>
+            <fill><patternFill patternType="solid"><fgColor theme="4" tint="0.39997558519241921"/></patternFill></fill></fills>
+            <cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/><xf numFmtId="0" fontId="0" fillId="2" borderId="0"/></cellXfs>
+            """;
+        var wb = Read(Package([Sheet("<row r=\"1\"><c r=\"A1\" s=\"1\"><v>1</v></c></row>", "<sheetPr><tabColor rgb=\"FFZZZZZZ\"/></sheetPr>")],
+            styles: styles, theme: ThemeXml("ZZZZZZ", "ED7D31")));
+        AssertColorNear("#8EA9DB", wb.Styles[At(wb.Sheets[0], "A1").StyleId].Fill.Color);
+        Assert.Null(wb.Sheets[0].TabColor);
+    }
+
+    [Fact]
+    public void Translate_MovesRelativePartsOnly()
+    {
+        Assert.Equal("SUM(B2:C3)+$C$1+B:B+2:2+Sheet2!C4+B$1", ReferenceShifter.Translate("SUM(A1:B2)+$C$1+A:A+1:1+Sheet2!B3+A$1", 1, 1));
+        Assert.Equal("#REF!+Sheet2!#REF!+$A$1", ReferenceShifter.Translate("A1+Sheet2!A1+$A$1", -1, 0));
+    }
+
+    [Fact]
+    public void Csv_DeDe_ThousandsDotsAndListSeparator()
+    {
+        var ws = WithCulture("de-DE", () => CsvFormat.Read(new MemoryStream(Encoding.UTF8.GetBytes("Menge;Preis\r\nA;1.500\r\nB;115.00\r\nC;-12.345.678\r\n")))).Sheets[0];
+        Assert.Equal(1500, At(ws, "B2").Value.NumberValue);
+        Assert.Equal(115, At(ws, "B3").Value.NumberValue);
+        Assert.Equal(-12345678, At(ws, "B4").Value.NumberValue);
+
+        var headerless = WithCulture("de-DE", () => CsvFormat.Read(new MemoryStream(Encoding.UTF8.GetBytes("1,5;2,5;3,5")))).Sheets[0];
+        Assert.Equal(1.5, At(headerless, "A1").Value.NumberValue);
+        Assert.Equal(3.5, At(headerless, "C1").Value.NumberValue);
+    }
 }

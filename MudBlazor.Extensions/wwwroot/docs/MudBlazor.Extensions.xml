@@ -31737,6 +31737,16 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.RichStringCells">
             <summary>Cells holding a rich shared string: cell key to the shared string index of the original <c>si</c>.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OriginalXf">
+            <summary>
+            Cells whose original <c>cellXfs</c> index differs from <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.CanonicalXf"/> of their style id: cell key to
+            the original xf index. Includes styled empty cells that are not in the model because their xf maps to style 0
+            (for example an unlocked input cell). While a cell's style id is unchanged the writer emits this xf instead of the canonical one.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OriginalRowXf">
+            <summary>Rows with a row style whose original xf index differs from the canonical xf of their style id: zero-based row to xf index.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage">
             <summary>
             Inventory of a source xlsx package kept with a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Workbook"/> so the writer can copy untouched parts byte for byte and
@@ -31787,6 +31797,13 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.RichStrings">
             <summary>Original <c>si</c> elements of shared strings with runs or phonetic text, by shared string index.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.CanonicalXf">
+            <summary>
+            The first <c>cellXfs</c> index that produced each style id (index = style id; style 0 is xf 0). Several xfs that differ only in
+            attributes the model ignores (protection, quotePrefix, xfId, rotation …) share one style id; the cells keep their own xf in
+            <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OriginalXf"/>.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.ContentType(System.String)">
             <summary>Content type of a zip entry from its override or extension default.</summary>

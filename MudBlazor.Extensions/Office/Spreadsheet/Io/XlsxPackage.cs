@@ -48,6 +48,16 @@ internal sealed class XlsxSheetPart
 
     /// <summary>Cells holding a rich shared string: cell key to the shared string index of the original <c>si</c>.</summary>
     public Dictionary<long, int> RichStringCells { get; } = new();
+
+    /// <summary>
+    /// Cells whose original <c>cellXfs</c> index differs from <see cref="XlsxPackage.CanonicalXf"/> of their style id: cell key to
+    /// the original xf index. Includes styled empty cells that are not in the model because their xf maps to style 0
+    /// (for example an unlocked input cell). While a cell's style id is unchanged the writer emits this xf instead of the canonical one.
+    /// </summary>
+    public Dictionary<long, int> OriginalXf { get; } = new();
+
+    /// <summary>Rows with a row style whose original xf index differs from the canonical xf of their style id: zero-based row to xf index.</summary>
+    public Dictionary<int, int> OriginalRowXf { get; } = new();
 }
 
 /// <summary>
@@ -103,6 +113,13 @@ internal sealed class XlsxPackage
     /// <summary>Original <c>si</c> elements of shared strings with runs or phonetic text, by shared string index.</summary>
     public Dictionary<int, XElement> RichStrings { get; } = new();
 
+    /// <summary>
+    /// The first <c>cellXfs</c> index that produced each style id (index = style id; style 0 is xf 0). Several xfs that differ only in
+    /// attributes the model ignores (protection, quotePrefix, xfId, rotation …) share one style id; the cells keep their own xf in
+    /// <see cref="XlsxSheetPart.OriginalXf"/>.
+    /// </summary>
+    public int[] CanonicalXf { get; set; } = [0];
+
     /// <summary>Content type of a zip entry from its override or extension default.</summary>
     /// <param name="partName">Zip entry name without leading slash.</param>
     /// <returns>The content type, or null.</returns>
@@ -110,6 +127,8 @@ internal sealed class XlsxPackage
         partName == null ? null
         : OverrideContentTypes.TryGetValue("/" + partName, out var type) ? type
         : DefaultContentTypes.GetValueOrDefault(Path.GetExtension(partName).TrimStart('.'));
+
+    internal static XElement Child(XElement e, string name) => e?.Elements().FirstOrDefault(c => c.Name.LocalName == name);
 
     internal static ZipArchiveEntry Find(ZipArchive zip, string name) =>
         name == null ? null : zip.GetEntry(name) ?? zip.Entries.FirstOrDefault(e => string.Equals(e.FullName, name, StringComparison.OrdinalIgnoreCase));

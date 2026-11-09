@@ -68,10 +68,10 @@ public static class ReferenceShifter
     internal static string Translate(string formula, int rows, int columns) =>
         rows == 0 && columns == 0 ? formula : Rewrite(formula, (prefix, _, _, node) => node switch
         {
-            RefNode r => Move(r.Cell, rows, columns, false, false) is { } c ? prefix + c.ToA1() + (r.Spill ? "#" : "") : "#REF!",
+            RefNode r => Move(r.Cell, rows, columns, false, false) is { } c ? prefix + c.ToA1() + (r.Spill ? "#" : "") : prefix + "#REF!",
             RangeNode { Range: var g } => (Move(g.Start, rows, columns, g.IsWholeColumns, g.IsWholeRows), Move(g.End, rows, columns, g.IsWholeColumns, g.IsWholeRows)) is ({ } s, { } e)
                 ? prefix + new CellRange(s, e).ToA1()
-                : "#REF!",
+                : prefix + "#REF!",
             _ => null
         });
 

@@ -9,6 +9,8 @@ public static class CsvFormat
 {
     private static readonly char[] Delimiters = [',', ';', '\t', '|'];
 
+    private static readonly Regex DotThousands = new(@"^[+-]?\d{1,3}(?:\.\d{3})+$", RegexOptions.CultureInvariant);
+
     private static readonly Regex PlainNumber = new(@"^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$", RegexOptions.CultureInvariant);
 
     /// <summary>
@@ -120,7 +122,7 @@ public static class CsvFormat
 
     private static (CellValue, string) Convert(string s, CultureInfo culture)
     {
-        if (PlainNumber.IsMatch(s)) return (CellValue.Number(double.Parse(s, NumberStyles.Float, CultureInfo.InvariantCulture)), null);
+        if (PlainNumber.IsMatch(s) && !(culture.NumberFormat.NumberGroupSeparator == "." && DotThousands.IsMatch(s))) return (CellValue.Number(double.Parse(s, NumberStyles.Float, CultureInfo.InvariantCulture)), null);
         if (s[0] is '\'' or '=') return (CellValue.Text(s), null);
         return CellInputParser.Parse(s, culture);
     }
@@ -177,8 +179,11 @@ public static class CsvFormat
 
         if (any) lines.Add(counts);
         if (lines.Count == 0) return ',';
+        var list = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
         var best = Enumerable.Range(0, Delimiters.Length)
-            .OrderByDescending(d => lines.Min(l => l[d]))
+            .OrderByDescending(d => lines[0][d] > 0 && lines.All(l => l[d] == lines[0][d]))
+            .ThenByDescending(d => list.Length == 1 && list[0] == Delimiters[d])
+            .ThenByDescending(d => lines.Min(l => l[d]))
             .ThenByDescending(d => lines[0][d])
             .First();
         return lines[0][best] > 0 ? Delimiters[best] : ',';
