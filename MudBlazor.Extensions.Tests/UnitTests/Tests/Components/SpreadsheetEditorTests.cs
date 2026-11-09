@@ -384,6 +384,118 @@ public class SpreadsheetEditorTests : IAsyncLifetime
 
         cut.WaitForAssertion(() => Assert.Contains("boom", _dialogs[^1].Markup));
     }
+
+    private static byte[] WithHyperlink(byte[] xlsx)
+    {
+        using var ms = new MemoryStream();
+        ms.Write(xlsx);
+        using (var zip = new System.IO.Compression.ZipArchive(ms, System.IO.Compression.ZipArchiveMode.Update, true))
+        {
+            var entry = zip.GetEntry("xl/worksheets/sheet1.xml")!;
+            string xml;
+            using (var reader = new StreamReader(entry.Open()))
+                xml = reader.ReadToEnd();
+            entry.Delete();
+            using var writer = new StreamWriter(zip.CreateEntry("xl/worksheets/sheet1.xml").Open());
+            writer.Write(xml.Replace("</sheetData>", "</sheetData><hyperlinks><hyperlink ref=\"A1\" location=\"Sheet1!B5\"/></hyperlinks>"));
+        }
+
+        return ms.ToArray();
+    }
+
+    private static int Count(string text, string part) => (text.Length - text.Replace(part, "").Length) / part.Length;
+
+    [Fact]
+    public async Task SaveAsCsv_WithSeveralSheets_WarnsOnce()
+    {
+        var bytes = Xlsx(Book(("First", "A1", 1d), ("Second", "A1", 2d)));
+        var cut = Render(p => p.Add(x => x.FileDisplayInfos, new Infos("book.xlsx", XlsxType, bytes)));
+        cut.WaitForAssertion(() => Assert.NotNull(cut.Instance.CurrentWorkbook));
+        var csv = cut.Instance.SaveFormats.Single(f => f.Extension == "csv");
+
+        await using (await cut.InvokeAsync(() => cut.Instance.ExportAsync(csv))) { }
+        await using (await cut.InvokeAsync(() => cut.Instance.ExportAsync(csv))) { }
+
+        cut.WaitForAssertion(() => Assert.Equal(1, Count(_dialogs[^1].Markup, "Only the active sheet")));
+        Assert.Contains("First", _dialogs[^1].Markup);
+    }
+
+    [Fact]
+    public async Task SaveAsCsv_UsesCultureListSeparator()
+    {
+        CultureInfo.CurrentCulture = new CultureInfo("de-DE");
+        var bytes = Xlsx(Book(("Sheet1", "A1", 1.5d), ("Sheet1", "B1", "x")));
+        var cut = Render(p => p.Add(x => x.FileDisplayInfos, new Infos("book.xlsx", XlsxType, bytes)));
+        cut.WaitForAssertion(() => Assert.NotNull(cut.Instance.CurrentWorkbook));
+
+        await using var content = await cut.InvokeAsync(() => cut.Instance.ExportAsync(cut.Instance.SaveFormats.Single(f => f.Extension == "csv")));
+
+        using var reader = new StreamReader(content.Stream, Encoding.UTF8);
+        Assert.Equal("1,5;x\r\n", await reader.ReadToEndAsync());
+    }
+
+    [Fact]
+    public async Task UnshiftedReferences_WarnOnceOnFirstStructureChange()
+    {
+        var bytes = WithHyperlink(Xlsx(Book(("Sheet1", "A1", 1d))));
+        var cut = Render(p => p.Add(x => x.FileDisplayInfos, new Infos("book.xlsx", XlsxType, bytes)));
+        cut.WaitForAssertion(() => Assert.True(cut.Instance.CurrentWorkbook?.HasUnshiftedReferences));
+
+        await Run(cut, "xl-bold");
+        Assert.DoesNotContain("not updated", _dialogs[^1].Markup);
+        await Run(cut, "xl-insert-rows");
+        await Run(cut, "xl-insert-columns");
+
+        cut.WaitForAssertion(() => Assert.Equal(1, Count(_dialogs[^1].Markup, "not updated")));
+    }
+
+    [Fact]
+    public async Task SaveXls_SavesAsXlsxWithSaveAs()
+    {
+        var bytes = await File.ReadAllBytesAsync(Path.Combine(AppContext.BaseDirectory, "TestData", "Spreadsheet", "sample.xls"));
+        var requests = new List<(bool SaveAs, string FileName)>();
+        var cut = Render(p => p
+            .Add(x => x.FileDisplayInfos, new Infos("old.xls", "application/vnd.ms-excel", bytes))
+            .Add(x => x.SaveRequested, (MudExFileSaveRequest r) => { requests.Add((r.SaveAs, r.Content.FileName)); r.Handled = true; }));
+        cut.WaitForAssertion(() => Assert.NotNull(cut.Instance.CurrentWorkbook));
+
+        Assert.True(await cut.InvokeAsync(() => cut.Instance.SaveAsync()));
+        Assert.True(await cut.InvokeAsync(() => cut.Instance.SaveAsync()));
+
+        Assert.Equal([(true, "old.xlsx"), (false, "old.xlsx")], requests);
+        Assert.Equal("old.xlsx", cut.Instance.FileName);
+    }
+
+    [Fact]
+    public async Task InsertSheet_SelectsNewSheet()
+    {
+        var cut = Render(Book(("Data", "A1", 1d)));
+
+        await Run(cut, "xl-insert-sheet");
+
+        cut.WaitForAssertion(() => Assert.Equal("Sheet2", cut.Instance.ActiveSheet.Name));
+        Assert.Equal(["Sheet2", "Data"], cut.Instance.CurrentWorkbook.Sheets.Select(s => s.Name));
+        Assert.Equal("Sheet2", cut.FindComponent<MudExSpreadsheetGrid>().Instance.ActiveSheet.Name);
+    }
+
+    [Fact]
+    public async Task StructureCommand_CommitsOpenEditFirst()
+    {
+        var wb = Book(("Sheet1", "A1", 1d));
+        var cut = Render(wb);
+        Select(cut, "A2");
+        var grid = cut.FindComponent<MudExSpreadsheetGrid>();
+        grid.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = "7" });
+        grid.Find("textarea.mud-ex-ssg-editor").Input("7");
+        cut.WaitForAssertion(() => Assert.True(cut.Instance.IsDirty));
+
+        await Run(cut, "xl-insert-rows");
+
+        var sheet = wb.Sheets[0];
+        Assert.False(grid.Instance.IsEditing);
+        Assert.Equal(7, sheet[CellRef.Parse("A3")].Value.NumberValue);
+        Assert.Null(sheet[CellRef.Parse("A2")]);
+    }
     [Fact]
     public void RibbonColorDefault_IsExcelGreen()
     {

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
@@ -42,7 +43,10 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
     private MudExRibbonMode _mode;
     private MudExRibbonMode _modeParameter;
     private bool _gridRendered;
+    private MudExSpreadsheetGrid _observedGrid;
     private int _version;
+    private bool _csvWarned;
+    private bool _unshiftedWarned;
 
     /// <summary>The workbook to edit when no file is given. Changes by the user raise <see cref="WorkbookChanged"/>.</summary>
     [Parameter] public Workbook Workbook { get; set; }
@@ -159,10 +163,25 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
+        if (!ReferenceEquals(_grid, _observedGrid))
+        {
+            if (_observedGrid != null)
+                _observedGrid.EditChanged -= OnGridEditChanged;
+            _observedGrid = _grid;
+            if (_grid != null)
+                _grid.EditChanged += OnGridEditChanged;
+        }
+
         if (_grid == null || _gridRendered)
             return;
         _gridRendered = true;
         StateHasChanged();
+    }
+
+    private void OnGridEditChanged()
+    {
+        if (!IsDirty && _grid?.HasPendingEdit == true)
+            _ = InvokeAsync(MarkDirtyAsync);
     }
 
     /// <inheritdoc />
@@ -225,7 +244,15 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
         format ??= SaveFormats[0];
         var stream = new MemoryStream();
         if (format.Extension is "csv" or "tsv")
-            CsvFormat.Write(ActiveSheet, stream, format.Extension == "tsv" ? '\t' : _format == Csv ? _delimiter : ',');
+        {
+            if (_workbook.Sheets.Count > 1 && !_csvWarned)
+            {
+                _csvWarned = true;
+                await ShowNoticeAsync(TryLocalize("Only the active sheet \"{0}\" is saved. {1} files cannot hold several sheets.", ActiveSheet.Name, format.Extension.ToUpperInvariant()));
+            }
+
+            CsvFormat.Write(ActiveSheet, stream, format.Extension == "tsv" ? '\t' : _format == Csv ? _delimiter : ListSeparator);
+        }
         else
             XlsxWriter.Write(_workbook, stream);
         stream.Position = 0;
@@ -235,6 +262,14 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
             ContentType = format.ContentType,
             Stream = stream
         };
+    }
+
+    private static char ListSeparator => CultureInfo.CurrentCulture.TextInfo.ListSeparator is [var c] ? c : ',';
+
+    private async Task ShowNoticeAsync(string message)
+    {
+        if (DialogService != null)
+            await DialogService.ShowInformationAsync(TryLocalize("Note"), message, Icons.Material.Filled.Info);
     }
 
     private void Attach(Workbook wb)
@@ -248,6 +283,7 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
         _workbook = wb;
         _selection = null;
         _version++;
+        _csvWarned = _unshiftedWarned = false;
         if (wb == null)
         {
             _activeSheet = null;
@@ -276,10 +312,15 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
         }
 
         _sheetIndex = index;
+        var warn = !_unshiftedWarned && _workbook.HasUnshiftedReferences && e.Structure.Any(c => c.Kind is StructureChangeKind.RowsInserted
+            or StructureChangeKind.RowsDeleted or StructureChangeKind.ColumnsInserted or StructureChangeKind.ColumnsDeleted or StructureChangeKind.SheetRenamed);
+        _unshiftedWarned |= warn;
         _ = InvokeAsync(async () =>
         {
             try
             {
+                if (warn)
+                    await ShowNoticeAsync(TryLocalize("This workbook contains content such as conditional formatting, tables, charts or pivot tables whose references are not updated when rows, columns or sheet names change. Check them before you save."));
                 await MarkDirtyAsync();
                 await WorkbookChanged.InvokeAsync(_workbook);
             }
@@ -316,6 +357,8 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
     {
         if (_workbook != null)
             _workbook.Changed -= OnWorkbookChanged;
+        if (_observedGrid != null)
+            _observedGrid.EditChanged -= OnGridEditChanged;
         _engine?.Dispose();
         _engine = null;
         await base.DisposeAsync();

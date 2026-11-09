@@ -303,10 +303,11 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
             var document = _document;
             var handle = _handleId;
             var version = _editVersion;
-            var hostSaveAs = saveAs || _foreign;
             await using var content = await ExportAsync(format);
             if (document != _document || IsDisposed)
                 return false;
+            saveAs |= !copy && !string.Equals(Path.GetExtension(content.FileName), Path.GetExtension(FileName), StringComparison.OrdinalIgnoreCase);
+            var hostSaveAs = saveAs || _foreign;
             var request = new MudExFileSaveRequest { Content = content, SaveAs = hostSaveAs, IsCopy = copy };
             await SaveRequested.InvokeAsync(request);
             if (request.Cancel || document != _document || IsDisposed)

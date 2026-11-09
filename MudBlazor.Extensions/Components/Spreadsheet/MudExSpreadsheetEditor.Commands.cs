@@ -58,7 +58,7 @@ public partial class MudExSpreadsheetEditor
 
     private async Task RunAsync(Action action)
     {
-        if (!CanEdit)
+        if (!CanEdit || !await CommitPendingEditAsync())
             return;
         try
         {
@@ -70,6 +70,14 @@ public partial class MudExSpreadsheetEditor
         }
 
         await FocusGridAsync();
+    }
+
+    private async Task<bool> CommitPendingEditAsync()
+    {
+        if (_grid?.IsEditing != true)
+            return true;
+        await _grid.CommitEditAsync();
+        return !_grid.IsEditing;
     }
 
     private Task OnGridErrorAsync(Exception e) => ShowErrorAsync(e.Message);
@@ -271,8 +279,9 @@ public partial class MudExSpreadsheetEditor
 
     private Task InsertSheetAsync() => RunAsync(() =>
     {
-        _workbook.Execute(new AddSheetCommand(MudExSpreadsheetSheetTabs.NextSheetName(_workbook), _sheetIndex));
-        SelectSheet(_sheetIndex);
+        var command = new AddSheetCommand(MudExSpreadsheetSheetTabs.NextSheetName(_workbook), _sheetIndex);
+        _workbook.Execute(command);
+        SelectSheet(_workbook.Sheets.ToList().IndexOf(command.Sheet));
     });
 
     private Task DeleteSheetAsync() => RunCommandAsync(new DeleteSheetCommand(ActiveSheet));

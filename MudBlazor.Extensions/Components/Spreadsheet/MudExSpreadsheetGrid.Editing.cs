@@ -28,6 +28,8 @@ public partial class MudExSpreadsheetGrid
 
     internal bool EditFromBar => _editing && _editFromBar;
 
+    internal bool HasPendingEdit => _editing && _editText != _editOriginal;
+
     internal FormulaAssistResult Assist => _editing && !_assistDismissed ? _assist : FormulaAssistResult.None;
 
     internal int AssistIndex => _assistIndex;
