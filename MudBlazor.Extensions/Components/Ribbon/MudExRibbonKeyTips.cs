@@ -35,7 +35,7 @@ internal static class MudExRibbonKeyTips
         foreach (var i in pending)
         {
             var candidates = Candidates(entries[i].Text);
-            var prefix = candidates.Where(c => !(singles.TryGetValue(c, out var holder) && holder == Explicit)).DefaultIfEmpty(candidates[0]).First();
+            var prefix = candidates.Concat(Alphabet).Where(c => !(singles.TryGetValue(c, out var holder) && holder == Explicit)).DefaultIfEmpty(candidates[0]).First();
             if (singles.TryGetValue(prefix, out var owner) && owner != Explicit)
             {
                 singles.Remove(prefix);

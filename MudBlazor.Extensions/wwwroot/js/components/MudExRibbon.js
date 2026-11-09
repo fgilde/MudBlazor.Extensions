@@ -34,6 +34,7 @@ class MudExRibbon {
             this.altPressed = false;
             this.endKeyTips();
         };
+        this.onViewportChange = () => this.endKeyTips();
         this.onRootKeyDown = e => this.rootKeyDown(e);
         this.onFocusIn = e => this.focusIn(e);
         document.addEventListener('keydown', this.onDocumentKeyDown, true);
@@ -43,7 +44,7 @@ class MudExRibbon {
         elementRef.addEventListener('keydown', this.onRootKeyDown);
         elementRef.addEventListener('focusin', this.onFocusIn);
         this.mutations = new MutationObserver(() => this.scheduleRoving());
-        this.mutations.observe(elementRef, { childList: true, subtree: true, attributes: true, attributeFilter: ['disabled'] });
+        this.mutations.observe(elementRef, { childList: true, subtree: true, attributes: true, attributeFilter: ['disabled', 'class', 'hidden', 'style'] });
         this.scheduleRoving();
     }
 
@@ -133,6 +134,10 @@ class MudExRibbon {
         if (active && root.contains(active)) {
             return true;
         }
+        const modal = active?.closest?.('[aria-modal="true"], .mud-dialog');
+        if (modal && !modal.contains(root)) {
+            return false;
+        }
         const ribbons = document.querySelectorAll('.mud-ex-ribbon');
         return ribbons[0] === root && (ribbons.length === 1 || !active || active === document.body);
     }
@@ -209,9 +214,11 @@ class MudExRibbon {
             layer.appendChild(badge);
             return { el, tip: el.dataset.mudexKeytip, badge };
         });
-        this.elementRef.appendChild(layer);
+        document.body.appendChild(layer);
         this.keyTipLayer = layer;
         this.keyTipLevel = level;
+        window.addEventListener('scroll', this.onViewportChange, true);
+        window.addEventListener('resize', this.onViewportChange);
         return true;
     }
 
@@ -247,8 +254,10 @@ class MudExRibbon {
         this.keyTipFrame = requestAnimationFrame(() => {
             this.keyTipFrame = 0;
             const shown = tab.getAttribute('aria-selected') === 'true' && tab.getAttribute('aria-expanded') !== 'false';
-            if (shown || frames <= 0) {
+            if (shown) {
                 this.showKeyTips('item');
+            } else if (frames <= 0) {
+                this.endKeyTips();
             } else {
                 this.awaitItemKeyTips(tab, frames - 1);
             }
@@ -256,6 +265,8 @@ class MudExRibbon {
     }
 
     endKeyTips() {
+        window.removeEventListener('scroll', this.onViewportChange, true);
+        window.removeEventListener('resize', this.onViewportChange);
         cancelAnimationFrame(this.keyTipFrame);
         this.keyTipFrame = 0;
         this.keyTipLayer?.remove();
@@ -281,9 +292,14 @@ class MudExRibbon {
             && (el.hasAttribute(ROVING) || el.getAttribute('tabindex') !== '-1'));
     }
 
+    shownRovingMembers(group) {
+        return this.rovingMembers(group).filter(el => el.getClientRects().length > 0);
+    }
+
     setRovingItem(group, current) {
         const members = this.rovingMembers(group);
-        current ??= members.find(el => el.hasAttribute(ROVING) && el.tabIndex === 0) ?? members[0];
+        const shown = members.filter(el => el.getClientRects().length > 0);
+        current ??= shown.find(el => el.hasAttribute(ROVING) && el.tabIndex === 0) ?? shown[0];
         members.forEach(el => {
             el.setAttribute(ROVING, '');
             el.tabIndex = el === current ? 0 : -1;
@@ -305,7 +321,7 @@ class MudExRibbon {
             if (!group || target.matches('input, select, textarea')) {
                 return;
             }
-            items = this.rovingMembers(group);
+            items = this.shownRovingMembers(group);
         }
         const index = items.indexOf(target);
         if (index < 0) {
@@ -323,7 +339,7 @@ class MudExRibbon {
 
     focusIn(e) {
         const group = e.target.closest?.(GROUP);
-        if (group && this.rovingMembers(group).includes(e.target)) {
+        if (group && this.shownRovingMembers(group).includes(e.target)) {
             this.setRovingItem(group, e.target);
         }
     }

@@ -1313,6 +1313,7 @@ public class MudExRibbonTests : IAsyncLifetime
     {
         Assert.Equal(["O", "B"], MudExRibbonKeyTips.Assign([("Bold", null), ("Border", "b")]));
         Assert.Equal(["O", "FS"], MudExRibbonKeyTips.Assign([("Font", null), ("Font Size", "fs")]));
+        Assert.Equal(["X", "A1"], MudExRibbonKeyTips.Assign([("X", "x"), ("X", null)]));
 
         var cut = Render(p => p
             .AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home").Add(x => x.KeyTip, "n")

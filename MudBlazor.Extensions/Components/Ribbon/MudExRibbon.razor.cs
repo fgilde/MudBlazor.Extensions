@@ -123,6 +123,8 @@ public partial class MudExRibbon
     /// Whether pressing and releasing Alt shows key tips: letters over the tabs and, after a tab is chosen, over its commands.
     /// Tips come from <see cref="MudExRibbonTab.KeyTip"/> and <see cref="MudExRibbonItemBase.KeyTip"/> or are assigned from the text,
     /// the file tab uses "F".
+    /// Alt is handled while the focus is inside the ribbon. While the focus is elsewhere, only the first ribbon on the page reacts, and only when
+    /// it is the only ribbon or nothing is focused; focus inside a modal dialog that does not contain the ribbon is always ignored.
     /// </summary>
     [Parameter] public bool EnableKeyTips { get; set; } = true;
 
