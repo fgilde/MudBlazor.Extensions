@@ -12,12 +12,21 @@ internal sealed class FormulaEvaluator(FunctionRegistry functions)
     internal const int MaxDenseCells = 1 << 16;
 
     private readonly Dictionary<string, FormulaNode> _names = new();
+    private readonly Dictionary<string, CalcValue> _nameResults = new(StringComparer.OrdinalIgnoreCase);
+    private readonly HashSet<string> _namesInProgress = new(StringComparer.OrdinalIgnoreCase);
 
     public FunctionRegistry Functions => functions;
 
     public CultureInfo Culture { get; set; }
 
     public Func<Worksheet, CellRef, CellRange?> SpillRange { get; set; }
+
+    public CalcValue EvaluateFormula(FormulaNode node, EvalScope scope)
+    {
+        _nameResults.Clear();
+        _namesInProgress.Clear();
+        return Evaluate(node, scope);
+    }
 
     public CalcValue Evaluate(FormulaNode node, EvalScope scope) => node switch
     {
@@ -117,9 +126,13 @@ internal sealed class FormulaEvaluator(FunctionRegistry functions)
         for (var local = scope.Locals; local != null; local = local.Next)
             if (string.Equals(local.Name, name, StringComparison.OrdinalIgnoreCase))
                 return local.Value;
-        if (scope.NameDepth >= MaxNameDepth) return CalcValue.Error(CellError.Circ);
+        if (_nameResults.TryGetValue(name, out var known)) return known;
         var node = ParseName(name, scope.Workbook);
-        return node == null ? CalcValue.Error(CellError.Name) : Evaluate(node, scope with { NameDepth = scope.NameDepth + 1 });
+        if (node == null) return CalcValue.Error(CellError.Name);
+        if (scope.NameDepth >= MaxNameDepth || !_namesInProgress.Add(name)) return CalcValue.Error(CellError.Circ);
+        var result = Evaluate(node, scope with { NameDepth = scope.NameDepth + 1, Locals = null });
+        _namesInProgress.Remove(name);
+        return _nameResults[name] = result;
     }
 
     private CalcValue EvaluateBinary(BinaryNode b, EvalScope scope)

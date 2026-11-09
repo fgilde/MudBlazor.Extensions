@@ -175,6 +175,7 @@ public sealed class CalcEngine : IDisposable
     {
         var isVolatile = false;
         unknown = false;
+        var expanded = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var stack = new Stack<(FormulaNode Node, int Depth)>();
         stack.Push((ast, 0));
         while (stack.Count > 0)
@@ -192,7 +193,7 @@ public sealed class CalcEngine : IDisposable
                     into.Add(box);
                     break;
                 case NameNode name when depth < FormulaEvaluator.MaxNameDepth && _evaluator.ParseName(name.Name, _wb) is { } target:
-                    stack.Push((target, depth + 1));
+                    if (expanded.Add(name.Name)) stack.Push((target, depth + 1));
                     break;
                 case CallNode call:
                     if (!_evaluator.Functions.TryGet(call.Name, out var f)) unknown = true;
@@ -341,7 +342,7 @@ public sealed class CalcEngine : IDisposable
         Coercion.EvaluationCulture = Culture ?? CultureInfo.CurrentCulture;
         try
         {
-            result = _evaluator.Evaluate(_formulas[node], scope);
+            result = _evaluator.EvaluateFormula(_formulas[node], scope);
         }
         catch (Exception ex) when (ex is not OutOfMemoryException)
         {

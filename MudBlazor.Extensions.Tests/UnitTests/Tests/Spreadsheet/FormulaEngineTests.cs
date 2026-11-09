@@ -344,6 +344,42 @@ public class FormulaEngineTests
         Assert.Equal(CellValueKind.Error, ValueAt(ws, "C1").Kind);
     }
 
+    [Theory]
+    [InlineData("X", "X+X", null, null)]
+    [InlineData("A", "B+B", "B", "A+A")]
+    [InlineData("A", "B+C", "B", "C+C")]
+    public void DefinedNames_BranchingCycles_YieldCircQuickly(string n1, string t1, string n2, string t2)
+    {
+        var (wb, ws, _) = Create();
+        if (n2 != null) wb.Execute(new DefineNameCommand(n2, t2));
+        if (t2 == "C+C") wb.Execute(new DefineNameCommand("C", "A+A"));
+        var task = Task.Run(() =>
+        {
+            wb.Execute(new DefineNameCommand(n1, t1));
+            wb.Execute(new SetFormulaCommand(ws, R("A1"), "=" + n1));
+        });
+        Assert.True(task.Wait(TimeSpan.FromSeconds(10)), "Evaluating a self-referencing name did not finish.");
+        Assert.Equal(CellValue.Error(CellError.Circ), ValueAt(ws, "A1"));
+    }
+
+    [Fact]
+    public void DefinedNames_BranchingChain_IsEvaluatedOncePerName()
+    {
+        var (wb, ws, _) = Create();
+        var task = Task.Run(() =>
+        {
+            using (wb.Undo.BeginTransaction("names"))
+            {
+                for (var i = 0; i < 29; i++) wb.Execute(new DefineNameCommand("Step_" + i, $"Step_{i + 1}+Step_{i + 1}"));
+                wb.Execute(new DefineNameCommand("Step_29", "1"));
+            }
+
+            wb.Execute(new SetFormulaCommand(ws, R("A1"), "=Step_0"));
+        });
+        Assert.True(task.Wait(TimeSpan.FromSeconds(10)), "Evaluating a branching name chain did not finish.");
+        Assert.Equal(CellValue.Number(1 << 29), ValueAt(ws, "A1"));
+    }
+
     [Fact]
     public void Errors_Propagate()
     {
