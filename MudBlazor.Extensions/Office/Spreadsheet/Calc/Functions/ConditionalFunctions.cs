@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
 internal static class ConditionalFunctions
@@ -154,7 +152,7 @@ internal sealed class Criterion
         var rest = s[op.Length..];
         if (op == "") op = "=";
         if (rest.Length == 0) return new Criterion(op, default);
-        if (double.TryParse(rest, NumberStyles.Float, Fn.Inv, out var n) || Coercion.TryToNumber(CellValue.Text(rest), out n, out _)) return new Criterion(op, CellValue.Number(n));
+        if (Coercion.TryToNumber(CellValue.Text(rest), out var n, out _)) return new Criterion(op, CellValue.Number(n));
         if (rest.Equals("TRUE", StringComparison.OrdinalIgnoreCase) || rest.Equals("FALSE", StringComparison.OrdinalIgnoreCase))
             return new Criterion(op, CellValue.Boolean(rest.Equals("TRUE", StringComparison.OrdinalIgnoreCase)));
         var error = FormulaLexer.ErrorCodes.FirstOrDefault(e => e.Code.Equals(rest, StringComparison.OrdinalIgnoreCase));

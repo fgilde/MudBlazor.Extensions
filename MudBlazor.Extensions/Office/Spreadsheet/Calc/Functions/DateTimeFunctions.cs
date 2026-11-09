@@ -105,10 +105,8 @@ internal static class DateTimeFunctions
         r.Add(Cat, "TIMEVALUE(time_text)", "Converts a time in text form to a decimal number.", Fn.Lift((ctx, a) =>
         {
             if (a[0].Kind != CellValueKind.Text) throw Fn.Error(CellError.Value);
-            var s = a[0].TextValue.Trim();
-            if (TimeSpan.TryParse(s, ctx.Culture, out var t) && t.Days == 0) return CellValue.Number(t.TotalDays);
-            return DateTime.TryParse(s, ctx.Culture, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.NoCurrentDateDefault, out var d)
-                ? CellValue.Number(d.TimeOfDay.TotalDays)
+            return Fn.TryParseDate(a[0].TextValue, ctx.Culture, out var serial)
+                ? CellValue.Number(serial - Math.Floor(serial))
                 : throw Fn.Error(CellError.Value);
         }));
         r.Add(Cat, "YEARFRAC(start_date, end_date, [basis])", "Returns the fraction of the year between two dates.",

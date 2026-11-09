@@ -5,7 +5,18 @@ namespace MudBlazor.Extensions.Office.Spreadsheet;
 /// <summary>Excel conversion and comparison rules between numbers, text, booleans and blanks.</summary>
 public static class Coercion
 {
-    /// <summary>Converts a value to a number: blank is 0, booleans are 1 or 0, text is parsed with the current culture.</summary>
+    [ThreadStatic] internal static CultureInfo EvaluationCulture;
+
+    /// <summary>
+    /// The culture for converting between numbers and text: <see cref="CalcEngine.Culture"/> while a formula is evaluated,
+    /// otherwise <see cref="CultureInfo.CurrentCulture"/>.
+    /// </summary>
+    public static CultureInfo Culture => EvaluationCulture ?? CultureInfo.CurrentCulture;
+
+    /// <summary>
+    /// Converts a value to a number: blank is 0, booleans are 1 or 0, text is read like cell input in <see cref="Culture"/>
+    /// (numbers, percentages, currency, dates and times).
+    /// </summary>
     /// <param name="value">The value.</param>
     /// <param name="number">The number when successful.</param>
     /// <param name="error">The error to report when unsuccessful (the value's own error, or <see cref="CellError.Value"/>).</param>
@@ -25,9 +36,7 @@ public static class Coercion
                 number = value.BooleanValue ? 1 : 0;
                 return true;
             case CellValueKind.Text:
-                return (double.TryParse(value.TextValue, NumberStyles.Float, CultureInfo.CurrentCulture, out number)
-                        || double.TryParse(value.TextValue, NumberStyles.Float, CultureInfo.InvariantCulture, out number))
-                       && double.IsFinite(number);
+                return CellInputParser.TryParseValue(value.TextValue, Culture, out number);
             default:
                 error = value.ErrorValue;
                 return false;
@@ -66,12 +75,12 @@ public static class Coercion
 
     /// <summary>
     /// Converts a value to text as the <c>&amp;</c> operator and the text functions do: numbers with up to 15 significant
-    /// digits and the decimal separator of the current culture (no thousands separators), booleans as TRUE or FALSE.
+    /// digits and the decimal separator of <see cref="Culture"/> (no thousands separators), booleans as TRUE or FALSE.
     /// </summary>
     /// <param name="value">The value.</param>
     /// <returns>The text.</returns>
     public static string ToText(CellValue value) => value.Kind == CellValueKind.Number
-        ? value.NumberValue.ToString("G15", CultureInfo.CurrentCulture)
+        ? value.NumberValue.ToString("G15", Culture)
         : value.ToString();
 
     /// <summary>Compares two numbers like Excel, treating numbers that agree in their first 15 significant digits as equal.</summary>

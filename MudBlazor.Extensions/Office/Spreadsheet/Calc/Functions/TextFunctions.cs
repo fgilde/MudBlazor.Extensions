@@ -126,7 +126,9 @@ internal static class TextFunctions
             {
                 var format = Fn.Str(a[1]);
                 if (a[0].Kind == CellValueKind.Text && !Coercion.TryToNumber(a[0], out _, out _)) return a[0];
-                return Fn.Text(FormatNumber(Fn.Num(a[0]), format, ctx.Culture));
+                return NumberFormat.TryFormat(CellValue.Number(Fn.Num(a[0])), format, ctx.Culture, out var text, out _)
+                    ? Fn.Text(text)
+                    : throw Fn.Error(CellError.Value);
             }));
         r.Add(Cat, "FIXED(number, [decimals], [no_commas])", "Formats a number as text with a fixed number of decimals.", Fn.Lift(a =>
         {
@@ -147,7 +149,7 @@ internal static class TextFunctions
         r.Add(Cat, "VALUE(text)", "Converts text that looks like a number, percentage, date or time into a number.", Fn.Lift((ctx, a) => a[0].Kind switch
         {
             CellValueKind.Number or CellValueKind.Empty => CellValue.Number(a[0].NumberValue),
-            CellValueKind.Text => ParseValue(a[0].TextValue, ctx.Culture),
+            CellValueKind.Text => CellInputParser.TryParseValue(a[0].TextValue, ctx.Culture, out var n) ? Fn.Number(n) : throw Fn.Error(CellError.Value),
             CellValueKind.Error => a[0],
             _ => throw Fn.Error(CellError.Value)
         }));
@@ -232,17 +234,6 @@ internal static class TextFunctions
         _ => Coercion.ToText(v)
     };
 
-    private static CellValue ParseValue(string text, CultureInfo culture)
-    {
-        var s = text.Trim();
-        const NumberStyles styles = NumberStyles.Float | NumberStyles.AllowThousands | NumberStyles.AllowCurrencySymbol;
-        if (double.TryParse(s, styles, culture, out var n)) return Fn.Number(n);
-        if (s.EndsWith('%') && double.TryParse(s[..^1], styles, culture, out n)) return Fn.Number(n / 100);
-        if (s.Contains(':') && TimeSpan.TryParse(s, culture, out var time) && time.Days == 0) return CellValue.Number(time.TotalDays);
-        if (Fn.TryParseDate(s, culture, out var serial)) return CellValue.Number(serial);
-        throw Fn.Error(CellError.Value);
-    }
-
     private static CalcValue Around(FunctionContext ctx, IReadOnlyList<CalcArg> a, bool before)
     {
         var text = Fn.Str(Fn.Scalar(ctx, a[0]));
@@ -286,203 +277,5 @@ internal static class TextFunctions
             for (var c = 0; c < array.Columns; c++)
                 array[r, c] = c < rows[r].Length ? CellValue.Text(rows[r][c]) : pad;
         return CalcValue.FromArray(array);
-    }
-
-    private static string FormatNumber(double n, string format, CultureInfo culture)
-    {
-        var sections = SplitSections(format);
-        var section = sections[0];
-        if (n < 0 && sections.Count > 1 && sections[1].Length > 0)
-        {
-            section = sections[1];
-            n = -n;
-        }
-        else if (n == 0 && sections.Count > 2)
-            section = sections[2];
-
-        if (section.Equals("General", StringComparison.OrdinalIgnoreCase)) return n.ToString("G10", culture);
-        if (IsDateFormat(section))
-        {
-            if (n < 0 || n >= ExcelDate.MaxSerial + 1) throw Fn.Error(CellError.Value);
-            return FormatDate(n, section, culture);
-        }
-
-        var sb = new StringBuilder();
-        for (var i = 0; i < section.Length; i++)
-        {
-            var c = section[i];
-            switch (c)
-            {
-                case '"':
-                    var end = section.IndexOf('"', i + 1);
-                    if (end < 0) end = section.Length;
-                    sb.Append('"').Append(section, i + 1, Math.Max(0, end - i - 1)).Append('"');
-                    i = end;
-                    break;
-                case '\\' when i + 1 < section.Length:
-                    sb.Append('\\').Append(section[++i]);
-                    break;
-                case '[':
-                    i = Math.Max(i, section.IndexOf(']', i));
-                    break;
-                case '_' when i + 1 < section.Length:
-                    sb.Append(' ');
-                    i++;
-                    break;
-                case '*' when i + 1 < section.Length:
-                    i++;
-                    break;
-                default:
-                    sb.Append(c);
-                    break;
-            }
-        }
-
-        var net = sb.ToString();
-        return net.Length == 0 ? "" : n.ToString(net, culture);
-    }
-
-    private static List<string> SplitSections(string format)
-    {
-        var sections = new List<string>();
-        var start = 0;
-        var quoted = false;
-        for (var i = 0; i < format.Length; i++)
-        {
-            if (format[i] == '"') quoted = !quoted;
-            else if (format[i] == '\\') i++;
-            else if (format[i] == ';' && !quoted)
-            {
-                sections.Add(format[start..i]);
-                start = i + 1;
-            }
-        }
-
-        sections.Add(format[start..]);
-        return sections;
-    }
-
-    private static bool IsDateFormat(string section)
-    {
-        for (var i = 0; i < section.Length; i++)
-        {
-            switch (section[i])
-            {
-                case '"':
-                    i = section.IndexOf('"', i + 1) is var e and >= 0 ? e : section.Length;
-                    break;
-                case '\\':
-                case '_':
-                case '*':
-                    i++;
-                    break;
-                case '[':
-                    i = Math.Max(i, section.IndexOf(']', i));
-                    break;
-                default:
-                    if ("yYmMdDhHsS".Contains(section[i])) return true;
-                    break;
-            }
-        }
-
-        return false;
-    }
-
-    private static string FormatDate(double serial, string format, CultureInfo culture)
-    {
-        var tokens = new List<(char Kind, int Count, string Text)>();
-        for (var i = 0; i < format.Length; i++)
-        {
-            var c = format[i];
-            if (c == '"')
-            {
-                var end = format.IndexOf('"', i + 1);
-                if (end < 0) end = format.Length;
-                tokens.Add(('"', 0, format[(i + 1)..end]));
-                i = end;
-            }
-            else if (c == '\\' && i + 1 < format.Length) tokens.Add(('"', 0, format[++i].ToString()));
-            else if (c == '[') i = Math.Max(i, format.IndexOf(']', i));
-            else if (string.Compare(format, i, "AM/PM", 0, 5, StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                tokens.Add(('A', 5, null));
-                i += 4;
-            }
-            else if (string.Compare(format, i, "A/P", 0, 3, StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                tokens.Add(('A', 3, null));
-                i += 2;
-            }
-            else if ("ymdhs".Contains(char.ToLowerInvariant(c)))
-            {
-                var run = 1;
-                while (i + run < format.Length && char.ToLowerInvariant(format[i + run]) == char.ToLowerInvariant(c)) run++;
-                tokens.Add((char.ToLowerInvariant(c), run, null));
-                i += run - 1;
-            }
-            else tokens.Add(('"', 0, c.ToString()));
-        }
-
-        var twelveHour = tokens.Any(t => t.Kind == 'A');
-        var (year, month, day) = ExcelDate.ToDate(serial);
-        var seconds = (int)Math.Round((serial - Math.Floor(serial)) * 86400);
-        var (hour, minute, second) = (seconds / 3600 % 24, seconds / 60 % 60, seconds % 60);
-        var dow = (DayOfWeek)(((int)Math.Floor(serial) + 6) % 7);
-        var dtf = culture.DateTimeFormat;
-        var sb = new StringBuilder();
-        for (var i = 0; i < tokens.Count; i++)
-        {
-            var (kind, count, text) = tokens[i];
-            switch (kind)
-            {
-                case '"':
-                    sb.Append(text);
-                    break;
-                case 'y':
-                    sb.Append(count <= 2 ? (year % 100).ToString("00", Fn.Inv) : year.ToString("0000", Fn.Inv));
-                    break;
-                case 'm' when count <= 2 && IsMinute(tokens, i):
-                    sb.Append(minute.ToString(count == 1 ? "0" : "00", Fn.Inv));
-                    break;
-                case 'm':
-                    sb.Append(count switch
-                    {
-                        1 => month.ToString(Fn.Inv),
-                        2 => month.ToString("00", Fn.Inv),
-                        3 => dtf.GetAbbreviatedMonthName(month),
-                        4 => dtf.GetMonthName(month),
-                        _ => dtf.GetMonthName(month)[..1]
-                    });
-                    break;
-                case 'd':
-                    sb.Append(count switch
-                    {
-                        1 => day.ToString(Fn.Inv),
-                        2 => day.ToString("00", Fn.Inv),
-                        3 => dtf.GetAbbreviatedDayName(dow),
-                        _ => dtf.GetDayName(dow)
-                    });
-                    break;
-                case 'h':
-                    var h = twelveHour ? (hour % 12 == 0 ? 12 : hour % 12) : hour;
-                    sb.Append(h.ToString(count == 1 ? "0" : "00", Fn.Inv));
-                    break;
-                case 's':
-                    sb.Append(second.ToString(count == 1 ? "0" : "00", Fn.Inv));
-                    break;
-                case 'A':
-                    sb.Append(count == 5 ? (hour < 12 ? "AM" : "PM") : (hour < 12 ? "A" : "P"));
-                    break;
-            }
-        }
-
-        return sb.ToString();
-    }
-
-    private static bool IsMinute(List<(char Kind, int Count, string Text)> tokens, int at)
-    {
-        var previous = tokens.Take(at).LastOrDefault(t => t.Kind != '"').Kind;
-        var next = tokens.Skip(at + 1).FirstOrDefault(t => t.Kind != '"').Kind;
-        return previous == 'h' || next == 's';
     }
 }

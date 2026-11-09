@@ -202,20 +202,8 @@ internal static class Fn
         return serial is < 0 or >= ExcelDate.MaxSerial + 1 ? throw Error(CellError.Num) : serial;
     }
 
-    internal static bool TryParseDate(string text, CultureInfo culture, out double serial)
-    {
-        serial = 0;
-        if (!DateTime.TryParse(text, culture, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.NoCurrentDateDefault, out var d)) return false;
-        if (d.Date == DateTime.MinValue)
-        {
-            serial = d.TimeOfDay.TotalDays;
-            return true;
-        }
-
-        if (d.Year < 1900) return false;
-        serial = ExcelDate.ToSerial(d);
-        return true;
-    }
+    internal static bool TryParseDate(string text, CultureInfo culture, out double serial) =>
+        CellInputParser.TryParseDateTime(text.Trim(), culture, out serial, out _);
 
     internal static int Day(FunctionContext ctx, CellValue v) => (int)Math.Floor(SerialArg(ctx, v));
 

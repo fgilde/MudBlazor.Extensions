@@ -51,8 +51,9 @@ public sealed class CalcEngine : IDisposable
     public FunctionRegistry Functions => _evaluator.Functions;
 
     /// <summary>
-    /// Culture used by TEXT, VALUE, NUMBERVALUE, DATEVALUE and TIMEVALUE; null (the default) uses
-    /// <see cref="CultureInfo.CurrentCulture"/>. Takes effect on the next calculation.
+    /// Culture for all conversions between numbers and text in formulas (text in arithmetic, the &amp; operator, criteria,
+    /// TEXT, VALUE, NUMBERVALUE, DATEVALUE and TIMEVALUE); null (the default) uses <see cref="CultureInfo.CurrentCulture"/>.
+    /// Takes effect on the next calculation.
     /// </summary>
     public CultureInfo Culture
     {
@@ -299,13 +300,19 @@ public sealed class CalcEngine : IDisposable
     {
         var scope = new EvalScope(_wb, node.Sheet, node.Cell);
         CalcValue result;
+        var previousCulture = Coercion.EvaluationCulture;
+        Coercion.EvaluationCulture = Culture ?? CultureInfo.CurrentCulture;
         try
         {
             result = _evaluator.Evaluate(_formulas[node], scope);
         }
-        catch (Exception)
+        catch (Exception ex) when (ex is not (OutOfMemoryException or StackOverflowException or InsufficientExecutionStackException))
         {
             result = CalcValue.Error(CellError.Value);
+        }
+        finally
+        {
+            Coercion.EvaluationCulture = previousCulture;
         }
 
         var array = result.Kind switch

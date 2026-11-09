@@ -79,7 +79,7 @@ public sealed class FunctionContext
     /// <summary>The cell of the formula being evaluated.</summary>
     public CellRef Cell => _scope.Cell;
 
-    /// <summary>The culture for TEXT, VALUE, NUMBERVALUE, DATEVALUE and TIMEVALUE (<see cref="CalcEngine.Culture"/>, by default the current culture).</summary>
+    /// <summary>The culture for conversions between numbers and text (<see cref="CalcEngine.Culture"/>, by default the current culture).</summary>
     public CultureInfo Culture => _evaluator.Culture ?? CultureInfo.CurrentCulture;
 
     internal LetBinding Locals => _scope.Locals;

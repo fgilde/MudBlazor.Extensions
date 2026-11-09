@@ -30184,8 +30184,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.Culture">
             <summary>
-            Culture used by TEXT, VALUE, NUMBERVALUE, DATEVALUE and TIMEVALUE; null (the default) uses
-            <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>. Takes effect on the next calculation.
+            Culture for all conversions between numbers and text in formulas (text in arithmetic, the &amp; operator, criteria,
+            TEXT, VALUE, NUMBERVALUE, DATEVALUE and TIMEVALUE); null (the default) uses <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>.
+            Takes effect on the next calculation.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.EvaluationCount">
@@ -30312,8 +30313,17 @@
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.Coercion">
             <summary>Excel conversion and comparison rules between numbers, text, booleans and blanks.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Coercion.Culture">
+            <summary>
+            The culture for converting between numbers and text: <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.Culture"/> while a formula is evaluated,
+            otherwise <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Coercion.TryToNumber(MudBlazor.Extensions.Office.Spreadsheet.CellValue,System.Double@,MudBlazor.Extensions.Office.Spreadsheet.CellError@)">
-            <summary>Converts a value to a number: blank is 0, booleans are 1 or 0, text is parsed with the current culture.</summary>
+            <summary>
+            Converts a value to a number: blank is 0, booleans are 1 or 0, text is read like cell input in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Coercion.Culture"/>
+            (numbers, percentages, currency, dates and times).
+            </summary>
             <param name="value">The value.</param>
             <param name="number">The number when successful.</param>
             <param name="error">The error to report when unsuccessful (the value's own error, or <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Value"/>).</param>
@@ -30329,7 +30339,7 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Coercion.ToText(MudBlazor.Extensions.Office.Spreadsheet.CellValue)">
             <summary>
             Converts a value to text as the <c>&amp;</c> operator and the text functions do: numbers with up to 15 significant
-            digits and the decimal separator of the current culture (no thousands separators), booleans as TRUE or FALSE.
+            digits and the decimal separator of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Coercion.Culture"/> (no thousands separators), booleans as TRUE or FALSE.
             </summary>
             <param name="value">The value.</param>
             <returns>The text.</returns>
@@ -30593,7 +30603,7 @@
             <summary>The cell of the formula being evaluated.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.Culture">
-            <summary>The culture for TEXT, VALUE, NUMBERVALUE, DATEVALUE and TIMEVALUE (<see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.Culture"/>, by default the current culture).</summary>
+            <summary>The culture for conversions between numbers and text (<see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.Culture"/>, by default the current culture).</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.GetValue(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
             <summary>Reads a cell value; unstored cells are blank.</summary>
@@ -31572,6 +31582,63 @@
             </summary>
             <param name="description">Description of the combined step.</param>
             <returns>The scope to dispose to end the transaction.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.BuiltInNumberFormats">
+            <summary>The built-in number formats of SpreadsheetML (ids 0 to 49) that files reference by id instead of storing the code.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.BuiltInNumberFormats.Get(System.Int32,System.Globalization.CultureInfo)">
+            <summary>
+            Gets the code of a built-in format. With a culture, the short date (14) and short date and time (22) formats follow
+            that culture's short date pattern, as Excel displays them.
+            </summary>
+            <param name="id">The format id.</param>
+            <param name="culture">The display culture, or null for the codes defined by the standard.</param>
+            <returns>The format code, or null if the id is not built in.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.BuiltInNumberFormats.TryGetId(System.String,System.Int32@,System.Globalization.CultureInfo)">
+            <summary>Finds the id of a built-in format code.</summary>
+            <param name="formatCode">The format code.</param>
+            <param name="id">The id when found.</param>
+            <param name="culture">A culture whose short date codes also map to ids 14 and 22, or null.</param>
+            <returns>True if the code is built in.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellInputParser">
+            <summary>
+            Turns text typed into a cell into a value the way Excel does: numbers with the culture's separators, percentages,
+            currency amounts, dates and times in the culture's order or ISO form, booleans (also localized) and error codes.
+            A leading apostrophe forces text. Formulas (input starting with <c>=</c>) are not handled here.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellInputParser.Parse(System.String,System.Globalization.CultureInfo)">
+            <summary>Parses cell input.</summary>
+            <param name="input">The typed text.</param>
+            <param name="culture">The culture for separators, currency, date order, month names and booleans.</param>
+            <returns>
+            The value and a number format code that suits it (for example <c>0%</c> or the culture's short date), or null when the
+            cell's format should stay as it is.
+            </returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.NumberFormat">
+            <summary>
+            Formats cell values with Excel number format codes: up to four sections (positive;negative;zero;text), conditions such as
+            <c>[&gt;100]</c>, colors such as <c>[Red]</c>, digit placeholders, grouping, scaling, percent, scientific notation, fractions,
+            text, literals and date and time codes. Format codes use <c>.</c> and <c>,</c>; the output uses the separators and names of
+            the culture.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.NumberFormat.General">
+            <summary>The General format code.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.NumberFormat.Overflow">
+            <summary>The text shown when a value cannot be displayed with a format, such as a negative date.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.NumberFormat.Format(MudBlazor.Extensions.Office.Spreadsheet.CellValue,System.String,System.Globalization.CultureInfo,System.String@)">
+            <summary>Formats a value for display.</summary>
+            <param name="value">The value.</param>
+            <param name="formatCode">The format code; null or empty means <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.NumberFormat.General"/>.</param>
+            <param name="culture">The culture for separators, month and day names and booleans.</param>
+            <param name="color">The color of the chosen section (for example <c>Red</c> or <c>Color10</c>), or null.</param>
+            <returns>The text; <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.NumberFormat.Overflow"/> if the value cannot be shown with the format.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellChange">
             <summary>A changed cell value or formula.</summary>
