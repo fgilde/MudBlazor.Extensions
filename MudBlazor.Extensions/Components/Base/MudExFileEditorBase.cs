@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Services;
 
@@ -11,6 +12,8 @@ namespace MudBlazor.Extensions.Components.Base;
 public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFileEditor where T : MudExBaseComponent<T>
 {
     private string _handleId;
+    private int _editVersion;
+    private bool _saving;
 
     [Inject] private MudExFileService FileService { get; set; }
 
@@ -87,18 +90,32 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
         if (ReferenceEquals(previous, FileDisplayInfos))
             return;
 
-        await ReleaseHandleAsync();
-        await SetDirtyAsync(false);
-        if (FileDisplayInfos != null)
-            await LoadAsync(FileDisplayInfos);
+        try
+        {
+            await ReleaseHandleAsync();
+            await SetDirtyAsync(false);
+            if (FileDisplayInfos != null)
+                await LoadAsync(FileDisplayInfos);
+        }
+        catch (Exception e) when (MudExFileDisplay != null)
+        {
+            MudExFileDisplay.ShowError(e.Message);
+        }
+
         await InvokeAsync(StateHasChanged);
     }
 
     /// <inheritdoc />
     public async Task<bool> SaveAsync(bool saveAs = false)
     {
+        if (_saving || IsDisposed)
+            return false;
+
+        _saving = true;
         try
         {
+            var infos = FileDisplayInfos;
+            var version = _editVersion;
             await using var content = await ExportAsync();
             var request = new MudExFileSaveRequest { Content = content, SaveAs = saveAs };
             await SaveRequested.InvokeAsync(request);
@@ -107,6 +124,7 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
 
             string fileName;
             MudExFileSaveTarget target;
+            string oldHandle = null;
             if (request.Handled)
             {
                 fileName = content.FileName;
@@ -117,8 +135,14 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
                 var result = await FileService.SaveLocalFileAsync(content, saveAs ? null : _handleId);
                 if (result == null)
                     return false;
+                if (IsDisposed || !ReferenceEquals(infos, FileDisplayInfos))
+                {
+                    await TryReleaseAsync(result.HandleId);
+                    return false;
+                }
+
                 if (_handleId != null && result.HandleId != _handleId)
-                    await FileService.ReleaseLocalFileAsync(_handleId);
+                    oldHandle = _handleId;
                 _handleId = result.HandleId;
                 fileName = result.FileName;
                 target = result.Target;
@@ -126,14 +150,24 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
             else
                 return false;
 
-            await MarkCleanAsync();
+            if (!ReferenceEquals(infos, FileDisplayInfos))
+                return false;
+
+            if (version == _editVersion)
+                await MarkCleanAsync();
             await Saved.InvokeAsync(new MudExFileSavedEventArgs(fileName, target));
+            if (oldHandle != null)
+                await TryReleaseAsync(oldHandle);
             return true;
         }
         catch (Exception e) when (MudExFileDisplay != null)
         {
             MudExFileDisplay.ShowError(e.Message);
             return false;
+        }
+        finally
+        {
+            _saving = false;
         }
     }
 
@@ -142,6 +176,7 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
     /// </summary>
     protected async Task MarkDirtyAsync()
     {
+        _editVersion++;
         await SetDirtyAsync(true);
         await ContentChanged.InvokeAsync();
     }
@@ -164,13 +199,21 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
         var handle = _handleId;
         _handleId = null;
         if (handle != null)
-            await FileService.ReleaseLocalFileAsync(handle);
+            await TryReleaseAsync(handle);
+    }
+
+    private async Task TryReleaseAsync(string handle)
+    {
+        try { await FileService.ReleaseLocalFileAsync(handle); }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        catch (ObjectDisposedException) { }
     }
 
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
-        await ReleaseHandleAsync();
-        await base.DisposeAsync();
+        try { await ReleaseHandleAsync(); }
+        finally { await base.DisposeAsync(); }
     }
 }

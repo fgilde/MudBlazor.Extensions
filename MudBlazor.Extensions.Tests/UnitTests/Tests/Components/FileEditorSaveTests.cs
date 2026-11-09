@@ -88,8 +88,18 @@ public class FileEditorSaveTests
     }
 }
 
-public class FileEditorBaseTests
+public class FileEditorBaseTests : IAsyncLifetime
 {
+    private readonly List<TestContext> _contexts = [];
+
+    public Task InitializeAsync() => Task.CompletedTask;
+
+    public async Task DisposeAsync()
+    {
+        foreach (var context in _contexts)
+            await context.DisposeAsync();
+    }
+
     private sealed record Infos(string FileName, string Text) : IMudExFileDisplayInfos
     {
         public string Url => null;
@@ -97,9 +107,10 @@ public class FileEditorBaseTests
         public Stream ContentStream { get; } = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(Text));
     }
 
-    private static (IRenderedComponent<TestTextEditor> Cut, BunitJSInterop Js) Create(Action<ComponentParameterCollectionBuilder<TestTextEditor>> configure = null)
+    private (IRenderedComponent<TestTextEditor> Cut, BunitJSInterop Js) Create(Action<ComponentParameterCollectionBuilder<TestTextEditor>> configure = null)
     {
         var context = new TestContext();
+        _contexts.Add(context);
         context.Services.AddMudServicesWithExtensions();
         context.JSInterop.Mode = JSRuntimeMode.Loose;
         var cut = context.Render<TestTextEditor>(p =>
@@ -182,13 +193,84 @@ public class FileEditorBaseTests
     public async Task SaveAs_AlwaysAsksForNewTarget()
     {
         var (cut, js) = Create();
-        SetupLocalSave(js);
+        var round = 0;
+        js.Setup<MudExLocalFileSaveDto>("MudExFileSystemAccess.saveFile", _ => round == 0).SetResult(new MudExLocalFileSaveDto("h1", "a.txt", "Local"));
+        js.Setup<MudExLocalFileSaveDto>("MudExFileSystemAccess.saveFile", _ => round == 1).SetResult(new MudExLocalFileSaveDto("h2", "b.txt", "Local"));
         js.SetupVoid("MudExFileSystemAccess.releaseFile", _ => true).SetVoidResult();
 
         await cut.InvokeAsync(() => cut.Instance.SaveAsync());
+        round = 1;
         await cut.InvokeAsync(() => cut.Instance.SaveAsync(true));
 
         Assert.Null(js.Invocations["MudExFileSystemAccess.saveFile"].Last().Arguments[0]);
+        Assert.Equal("h1", js.Invocations["MudExFileSystemAccess.releaseFile"].Single().Arguments[0]);
+    }
+
+    [Fact]
+    public async Task Save_EditDuringSave_StaysDirty()
+    {
+        TestTextEditor editor = null;
+        var (cut, _) = Create(p => p
+            .Add(c => c.SaveRequested, EventCallback.Factory.Create<MudExFileSaveRequest>(this, async r =>
+            {
+                r.Handled = true;
+                await editor.Edit("newer");
+            })));
+        editor = cut.Instance;
+        await cut.InvokeAsync(() => editor.Edit("a"));
+
+        Assert.True(await cut.InvokeAsync(() => editor.SaveAsync()));
+        Assert.True(editor.IsDirty);
+    }
+
+    [Fact]
+    public async Task Save_WhileSaving_ReturnsFalse()
+    {
+        TestTextEditor editor = null;
+        bool? inner = null;
+        var (cut, _) = Create(p => p
+            .Add(c => c.SaveRequested, EventCallback.Factory.Create<MudExFileSaveRequest>(this, async r =>
+            {
+                r.Handled = true;
+                inner = await editor.SaveAsync();
+            })));
+        editor = cut.Instance;
+        await cut.InvokeAsync(() => editor.Edit("a"));
+
+        Assert.True(await cut.InvokeAsync(() => editor.SaveAsync()));
+        Assert.False(inner);
+    }
+
+    [Fact]
+    public async Task Dispose_ReleasesHandle()
+    {
+        var (cut, js) = Create();
+        SetupLocalSave(js);
+        js.SetupVoid("MudExFileSystemAccess.releaseFile", _ => true).SetVoidResult();
+        await cut.InvokeAsync(() => cut.Instance.SaveAsync());
+
+        await cut.InvokeAsync(() => cut.Instance.DisposeAsync().AsTask());
+
+        Assert.Equal("h1", js.Invocations["MudExFileSystemAccess.releaseFile"].Single().Arguments[0]);
+    }
+
+    [Fact]
+    public async Task Save_HostHandlerThrows_ShowsErrorInFileDisplay()
+    {
+        var context = new TestContext();
+        _contexts.Add(context);
+        context.Services.AddMudServicesWithExtensions();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
+        var display = context.Render<MudExFileDisplay>();
+        var cut = context.Render<TestTextEditor>(p => p
+            .AddCascadingValue(display.Instance)
+            .Add(c => c.FileDisplayInfos, new Infos("a.txt", "x"))
+            .Add(c => c.SaveRequested, EventCallback.Factory.Create<MudExFileSaveRequest>(this, _ => throw new InvalidOperationException("boom"))));
+        await cut.InvokeAsync(() => cut.Instance.Edit("a"));
+
+        Assert.False(await cut.InvokeAsync(() => cut.Instance.SaveAsync()));
+        Assert.True(cut.Instance.IsDirty);
+        Assert.Equal("boom", display.Instance.ErrorMessage);
     }
 
     [Fact]
@@ -231,16 +313,19 @@ public class FileEditorBaseTests
     [Fact]
     public async Task NewFileDisplayInfos_ResetsDirty_AndReleasesHandle()
     {
-        var (cut, js) = Create();
+        var dirtyValues = new List<bool>();
+        var (cut, js) = Create(p => p.Add(c => c.IsDirtyChanged, EventCallback.Factory.Create<bool>(this, dirtyValues.Add)));
         SetupLocalSave(js);
         js.SetupVoid("MudExFileSystemAccess.releaseFile", _ => true).SetVoidResult();
         await cut.InvokeAsync(() => cut.Instance.Edit("a"));
         await cut.InvokeAsync(() => cut.Instance.SaveAsync());
         await cut.InvokeAsync(() => cut.Instance.Edit("b"));
+        dirtyValues.Clear();
 
         cut.Render(p => p.Add(c => c.FileDisplayInfos, new Infos("b.txt", "new")));
 
         Assert.False(cut.Instance.IsDirty);
+        Assert.Equal([false], dirtyValues);
         Assert.Equal("new", cut.Instance.Text);
         Assert.Equal("h1", js.Invocations["MudExFileSystemAccess.releaseFile"].Single().Arguments[0]);
     }

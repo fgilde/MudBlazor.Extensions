@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components.Rendering;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Services;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 

@@ -22791,7 +22791,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Core.MudExFileSaveRequest.Content">
             <summary>
-            The content to be saved
+            The content to be saved. Only valid during the SaveRequested handler, it is disposed afterwards.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Core.MudExFileSaveRequest.SaveAs">

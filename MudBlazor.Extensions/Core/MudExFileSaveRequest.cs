@@ -6,7 +6,7 @@ namespace MudBlazor.Extensions.Core;
 public sealed class MudExFileSaveRequest
 {
     /// <summary>
-    /// The content to be saved
+    /// The content to be saved. Only valid during the SaveRequested handler, it is disposed afterwards.
     /// </summary>
     public MudExFileContent Content { get; init; }
 
