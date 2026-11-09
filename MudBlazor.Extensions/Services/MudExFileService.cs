@@ -367,4 +367,32 @@ public class MudExFileService : IMudExFileService
         _streams.Add(res);
         return res;
     }
+
+    /// <summary>
+    /// Saves a file to a local file via the File System Access API, or as a download when the browser lacks it.
+    /// </summary>
+    /// <param name="content">The content to save</param>
+    /// <param name="handleId">Handle id of an earlier save to overwrite the same file without asking again</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The save result, or null when the user cancelled</returns>
+    public async Task<MudExLocalFileSaveResult> SaveLocalFileAsync(MudExFileContent content, string handleId = null, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(content);
+        using var streamRef = new DotNetStreamReference(content.Stream, leaveOpen: true);
+        var dto = await _jsRuntime.InvokeAsync<MudExLocalFileSaveDto>(
+            "MudExFileSystemAccess.saveFile", cancellationToken, handleId, streamRef, content.FileName, content.ContentType);
+        return dto == null
+            ? null
+            : new MudExLocalFileSaveResult(dto.HandleId, dto.FileName, Enum.Parse<MudExFileSaveTarget>(dto.Target, true));
+    }
+
+    /// <summary>
+    /// Releases a local file handle kept by <see cref="SaveLocalFileAsync"/>.
+    /// </summary>
+    /// <param name="handleId">The handle id to release</param>
+    public async Task ReleaseLocalFileAsync(string handleId)
+    {
+        if (handleId != null)
+            await _jsRuntime.InvokeVoidAsync("MudExFileSystemAccess.releaseFile", handleId);
+    }
 }

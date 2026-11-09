@@ -22512,6 +22512,99 @@
         <member name="M:MudBlazor.Extensions.Core.MudExDimension.ToString">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExFileFormat">
+            <summary>
+            Describes a file format an editor can save to.
+            </summary>
+            <param name="Name">Display name of the format</param>
+            <param name="Extension">File extension of the format without the leading dot</param>
+            <param name="ContentType">MIME type of the format</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExFileFormat.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Describes a file format an editor can save to.
+            </summary>
+            <param name="Name">Display name of the format</param>
+            <param name="Extension">File extension of the format without the leading dot</param>
+            <param name="ContentType">MIME type of the format</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileFormat.Name">
+            <summary>Display name of the format</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileFormat.Extension">
+            <summary>File extension of the format without the leading dot</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileFormat.ContentType">
+            <summary>MIME type of the format</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExFileContent">
+            <summary>
+            The content of a file that is about to be saved. Disposing it disposes the stream.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileContent.FileName">
+            <summary>
+            Name of the file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileContent.ContentType">
+            <summary>
+            MIME type of the file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileContent.Stream">
+            <summary>
+            Stream with the file content
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExFileContent.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExFileSaveTarget">
+            <summary>
+            Where a file ended up after saving.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.MudExFileSaveTarget.Host">
+            <summary>
+            Saved by the host application
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.MudExFileSaveTarget.Local">
+            <summary>
+            Written to a local file picked by the user
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.MudExFileSaveTarget.Download">
+            <summary>
+            Handed to the browser as a download
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExLocalFileSaveResult">
+            <summary>
+            Result of saving a file locally.
+            </summary>
+            <param name="HandleId">Id of the local file handle for later saves, or null when no handle is kept (download)</param>
+            <param name="FileName">Name of the saved file</param>
+            <param name="Target">Where the file was saved</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExLocalFileSaveResult.#ctor(System.String,System.String,MudBlazor.Extensions.Core.MudExFileSaveTarget)">
+            <summary>
+            Result of saving a file locally.
+            </summary>
+            <param name="HandleId">Id of the local file handle for later saves, or null when no handle is kept (download)</param>
+            <param name="FileName">Name of the saved file</param>
+            <param name="Target">Where the file was saved</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExLocalFileSaveResult.HandleId">
+            <summary>Id of the local file handle for later saves, or null when no handle is kept (download)</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExLocalFileSaveResult.FileName">
+            <summary>Name of the saved file</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExLocalFileSaveResult.Target">
+            <summary>Where the file was saved</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.MudExFileRestrictions">
             <summary>
             What a file has to satisfy to be accepted: its extension, its mime type and its size.
@@ -30255,6 +30348,21 @@
             <summary>
             Reads a stream as excel file
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.SaveLocalFileAsync(MudBlazor.Extensions.Core.MudExFileContent,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Saves a file to a local file via the File System Access API, or as a download when the browser lacks it.
+            </summary>
+            <param name="content">The content to save</param>
+            <param name="handleId">Handle id of an earlier save to overwrite the same file without asking again</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>The save result, or null when the user cancelled</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReleaseLocalFileAsync(System.String)">
+            <summary>
+            Releases a local file handle kept by <see cref="M:MudBlazor.Extensions.Services.MudExFileService.SaveLocalFileAsync(MudBlazor.Extensions.Core.MudExFileContent,System.String,System.Threading.CancellationToken)"/>.
+            </summary>
+            <param name="handleId">The handle id to release</param>
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExHttpFileStructureManager">
             <summary>

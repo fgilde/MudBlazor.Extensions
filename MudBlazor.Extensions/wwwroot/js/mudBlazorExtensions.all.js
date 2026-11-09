@@ -1936,6 +1936,49 @@ class MudExFileSystemAccess {
     // lifetime. Picking a new root clears it outright, so switching folders doesn't pile the old tree on top.
     static _handles = {};
 
+    static _fileHandles = {};
+
+    static async saveFile(handleId, streamRef, suggestedName, mimeType) {
+        const buffer = await streamRef.arrayBuffer();
+        let handle = handleId ? MudExFileSystemAccess._fileHandles[handleId] : null;
+        if (!handle) {
+            if (typeof window.showSaveFilePicker !== 'function') {
+                const url = URL.createObjectURL(new Blob([buffer], { type: mimeType }));
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = suggestedName;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 10000);
+                return { handleId: null, fileName: suggestedName, target: 'Download' };
+            }
+            const dot = suggestedName.lastIndexOf('.');
+            const options = { suggestedName };
+            if (dot >= 0 && mimeType) {
+                options.types = [{ description: suggestedName.substring(dot + 1).toUpperCase(), accept: { [mimeType]: [suggestedName.substring(dot)] } }];
+            }
+            try {
+                handle = await window.showSaveFilePicker(options);
+            } catch (e) {
+                if (e && e.name === 'AbortError') {
+                    return null;
+                }
+                throw e;
+            }
+            handleId = crypto.randomUUID();
+            MudExFileSystemAccess._fileHandles[handleId] = handle;
+        }
+        const writable = await handle.createWritable();
+        await writable.write(buffer);
+        await writable.close();
+        return { handleId, fileName: handle.name, target: 'Local' };
+    }
+
+    static releaseFile(handleId) {
+        delete MudExFileSystemAccess._fileHandles[handleId];
+    }
+
     static isSupported() {
         return typeof window.showDirectoryPicker === 'function';
     }
