@@ -34,6 +34,7 @@ public partial class MudExRibbonTab
 
     /// <summary>
     /// All registered groups in declaration order.
+    /// Groups declared later (e.g. via @if) are appended to the end.
     /// </summary>
     public IReadOnlyList<MudExRibbonGroup> Groups => _groups;
 

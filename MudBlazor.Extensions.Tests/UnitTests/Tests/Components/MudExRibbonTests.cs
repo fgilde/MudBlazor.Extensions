@@ -65,6 +65,11 @@ public class MudExRibbonTests : IAsyncLifetime
         cut.FindAll("[role=tab]")[1].Click();
         cut.WaitForAssertion(() => Assert.Equal(["Tables"], cut.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
         Assert.Equal(1, cut.Instance.ActiveTabIndex);
+        var panel = cut.Find("[role=tabpanel]");
+        var insert = cut.FindAll("[role=tab]")[1];
+        Assert.Equal($"{cut.Instance.ElementId}-tab-1", insert.Id);
+        Assert.Equal(panel.Id, insert.GetAttribute("aria-controls"));
+        Assert.Equal(insert.Id, panel.GetAttribute("aria-labelledby"));
     }
 
     [Fact]
@@ -185,6 +190,22 @@ public class MudExRibbonTests : IAsyncLifetime
         cut.WaitForAssertion(() => Assert.Equal(1, cut.Instance.Clicks));
     }
 
+    [Fact]
+    public async Task ItemWithUnstableStateKey_DoesNotLoop()
+    {
+        var cut = NewContext().Render<RibbonHost>(p => p.Add(x => x.UnstableText, true));
+        var ribbon = cut.FindComponent<CountingRibbon>().Instance;
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-button")));
+        var before = ribbon.Renders;
+
+        for (var i = 0; i < 5; i++)
+            await cut.InvokeAsync(cut.Instance.Rerender);
+
+        cut.WaitForAssertion(() => Assert.Equal(6, cut.Instance.Renders));
+        Assert.Equal(5, ribbon.Renders - before);
+        Assert.Equal(cut.FindComponent<MudExRibbonButton>().Instance.Text, cut.Find(".mud-ex-ribbon-button").GetAttribute("aria-label"));
+    }
+
     private sealed class CountingRibbon : MudExRibbon
     {
         public int Renders { get; private set; }
@@ -200,6 +221,8 @@ public class MudExRibbonTests : IAsyncLifetime
     {
         public int Renders { get; private set; }
         public int Clicks { get; private set; }
+
+        [Parameter] public bool UnstableText { get; set; }
 
         public void Rerender() => StateHasChanged();
 
@@ -219,7 +242,7 @@ public class MudExRibbonTests : IAsyncLifetime
                     {
                         var step = 1;
                         item.OpenComponent<MudExRibbonButton>(0);
-                        item.AddAttribute(1, nameof(MudExRibbonButton.Text), string.Concat("Bo", "ld"));
+                        item.AddAttribute(1, nameof(MudExRibbonButton.Text), UnstableText ? Guid.NewGuid().ToString() : string.Concat("Bo", "ld"));
                         item.AddAttribute(2, nameof(MudExRibbonButton.OnClick), EventCallback.Factory.Create(this, () => Clicks += step));
                         item.CloseComponent();
                     }));

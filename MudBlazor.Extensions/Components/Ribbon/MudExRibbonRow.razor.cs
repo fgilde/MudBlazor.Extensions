@@ -16,6 +16,7 @@ public partial class MudExRibbonRow : IMudExRibbonItemHost
 
     /// <summary>
     /// Items of this row in declaration order.
+    /// Items declared later (e.g. via @if) are appended; use <see cref="MudExRibbonItemBase.Visible"/> to keep the declared position.
     /// </summary>
     public IReadOnlyList<MudExRibbonItemBase> Items => _items;
 

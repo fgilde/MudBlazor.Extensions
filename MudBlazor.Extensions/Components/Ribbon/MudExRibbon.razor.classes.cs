@@ -88,6 +88,11 @@ internal interface IMudExRibbonItemHost
     void Unregister(MudExRibbonItemBase item);
 }
 
+internal interface IMudExRibbonView
+{
+    void Refresh();
+}
+
 internal static class MudExRibbonColors
 {
     internal static string BackgroundFor(MudExColor color)

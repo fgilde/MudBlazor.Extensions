@@ -18733,6 +18733,7 @@
         <member name="P:MudBlazor.Extensions.Components.MudExRibbon.Tabs">
             <summary>
             All registered tabs in declaration order, including invisible ones.
+            Tabs declared later (e.g. via @if) are appended; use <see cref="P:MudBlazor.Extensions.Components.MudExRibbonTab.Visible"/> to keep the declared position.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExRibbonButton">
@@ -18805,6 +18806,7 @@
         <member name="P:MudBlazor.Extensions.Components.MudExRibbonGroup.Items">
             <summary>
             Direct items of this group in declaration order. Items inside a <see cref="T:MudBlazor.Extensions.Components.MudExRibbonRow"/> belong to the row.
+            Items declared later (e.g. via @if) are appended; use <see cref="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Visible"/> to keep the declared position.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonGroup.OnInitialized">
@@ -18929,6 +18931,7 @@
         <member name="P:MudBlazor.Extensions.Components.MudExRibbonRow.Items">
             <summary>
             Items of this row in declaration order.
+            Items declared later (e.g. via @if) are appended; use <see cref="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Visible"/> to keep the declared position.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRibbonRow.IsCommand">
@@ -18976,6 +18979,7 @@
         <member name="P:MudBlazor.Extensions.Components.MudExRibbonTab.Groups">
             <summary>
             All registered groups in declaration order.
+            Groups declared later (e.g. via @if) are appended to the end.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonTab.OnInitialized">
@@ -19009,6 +19013,23 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonToggleButton.ExecuteAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonClassicView">
+            <summary>
+            Classic Office layout of a <see cref="T:MudBlazor.Extensions.Components.MudExRibbon"/>: colored header with tabs and the titled groups of the active tab.
+            Rendered by the ribbon, not meant to be used directly.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonClassicView.Ribbon">
+            <summary>
+            The ribbon whose registered tabs, groups and items are drawn.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonClassicView.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonClassicView.Dispose">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.FilterHighlighting">
@@ -20007,11 +20028,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExValidationWrapper`1.Value">
             <summary>
             The value of the ValidationWrapper component. This will be passed to the set validation function.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExRibbonClassicView.Ribbon">
-            <summary>
-            The ribbon whose registered tabs, groups and items are drawn.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Capture.CaptureId">

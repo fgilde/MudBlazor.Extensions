@@ -41,6 +41,7 @@ public partial class MudExRibbonGroup : IMudExRibbonItemHost
 
     /// <summary>
     /// Direct items of this group in declaration order. Items inside a <see cref="MudExRibbonRow"/> belong to the row.
+    /// Items declared later (e.g. via @if) are appended; use <see cref="MudExRibbonItemBase.Visible"/> to keep the declared position.
     /// </summary>
     public IReadOnlyList<MudExRibbonItemBase> Items => _items;
 

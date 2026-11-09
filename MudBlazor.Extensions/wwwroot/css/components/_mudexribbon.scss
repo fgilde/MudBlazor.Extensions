@@ -79,8 +79,11 @@
   align-items: center;
   gap: 2px;
 }
+.mud-ex-ribbon-slot {
+  display: contents;
+}
 .mud-ex-ribbon-cell-large,
-.mud-ex-ribbon-group-items > .mud-ex-ribbon-separator {
+.mud-ex-ribbon-group-items > .mud-ex-ribbon-slot > .mud-ex-ribbon-separator {
   grid-row: 1 / -1;
   align-self: stretch;
 }

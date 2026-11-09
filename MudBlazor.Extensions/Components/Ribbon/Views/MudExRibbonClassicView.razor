@@ -1,6 +1,7 @@
 @namespace MudBlazor.Extensions.Components
 @attribute [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 @{
+    Ribbon.BeginViewRender();
     var activeTab = Ribbon.ActiveTab;
 }
 
@@ -13,8 +14,11 @@
         @foreach (var tab in Ribbon.VisibleTabs)
         {
             var active = tab == activeTab;
-            <button type="button"
+            <button @key="tab"
+                    type="button"
                     role="tab"
+                    id="@TabId(tab)"
+                    aria-controls="@PanelId"
                     class="@($"mud-ex-ribbon-tab{(active ? " mud-ex-ribbon-tab-active" : "")}")"
                     aria-selected="@(active ? "true" : "false")"
                     @onclick="() => Ribbon.SelectTabAsync(tab)">
@@ -27,14 +31,14 @@
         <div class="mud-ex-ribbon-header-end">@Ribbon.HeaderEndContent</div>
     }
 </div>
-<div class="mud-ex-ribbon-body" role="tabpanel">
+<div class="mud-ex-ribbon-body" role="tabpanel" id="@PanelId" aria-labelledby="@(activeTab == null ? null : TabId(activeTab))">
     @foreach (var group in activeTab?.Groups ?? [])
     {
-        <div class="mud-ex-ribbon-group" role="toolbar" aria-label="@group.Text">
+        <div @key="group" class="mud-ex-ribbon-group" role="toolbar" aria-label="@group.Text">
             <div class="mud-ex-ribbon-group-items">
                 @foreach (var item in group.Items.Where(i => i.Visible))
                 {
-                    @item.Render(item.DeclaredLayout)
+                    <div @key="item" class="mud-ex-ribbon-slot">@item.Render(item.DeclaredLayout)</div>
                 }
             </div>
             <div class="mud-ex-ribbon-group-title">
@@ -52,10 +56,3 @@
         </div>
     }
 </div>
-
-@code {
-    /// <summary>
-    /// The ribbon whose registered tabs, groups and items are drawn.
-    /// </summary>
-    [Parameter] public MudExRibbon Ribbon { get; set; }
-}

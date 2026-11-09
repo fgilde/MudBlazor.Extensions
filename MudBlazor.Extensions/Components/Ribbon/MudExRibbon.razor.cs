@@ -11,6 +11,7 @@ public partial class MudExRibbon
 {
     private readonly List<MudExRibbonTab> _tabs = [];
     private bool _invalidatePending;
+    private IMudExRibbonView _view;
 
     /// <summary>
     /// Declaration of the ribbon: <see cref="MudExRibbonTab"/> components.
@@ -54,6 +55,7 @@ public partial class MudExRibbon
 
     /// <summary>
     /// All registered tabs in declaration order, including invisible ones.
+    /// Tabs declared later (e.g. via @if) are appended; use <see cref="MudExRibbonTab.Visible"/> to keep the declared position.
     /// </summary>
     public IReadOnlyList<MudExRibbonTab> Tabs => _tabs;
 
@@ -65,6 +67,8 @@ public partial class MudExRibbon
     internal string HeaderStyle
         => $"background-color:{MudExRibbonColors.BackgroundFor(Color)};color:{MudExRibbonColors.ForegroundFor(Color)};";
 
+    internal int IndexOf(MudExRibbonTab tab) => _tabs.IndexOf(tab);
+
     internal void Register(MudExRibbonTab tab) => _tabs.Add(tab);
 
     internal void Unregister(MudExRibbonTab tab)
@@ -73,12 +77,22 @@ public partial class MudExRibbon
         Invalidate();
     }
 
+    internal void RegisterView(IMudExRibbonView view) => _view = view;
+
+    internal void UnregisterView(IMudExRibbonView view)
+    {
+        if (_view == view)
+            _view = null;
+    }
+
+    internal void BeginViewRender() => _invalidatePending = false;
+
     internal void Invalidate()
     {
-        if (_invalidatePending || IsDisposed)
+        if (_invalidatePending || IsDisposed || _view == null)
             return;
         _invalidatePending = true;
-        StateHasChanged();
+        _view.Refresh();
     }
 
     internal Task SelectTabAsync(MudExRibbonTab tab)
