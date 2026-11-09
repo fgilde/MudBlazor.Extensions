@@ -18,7 +18,7 @@ public class XlsxReadTests(ITestOutputHelper output)
 
     private static Cell At(Worksheet ws, string a1) => ws[R(a1)];
 
-    private static string Sheet(string sheetData, string before = "", string after = "", string rootNs = "") =>
+    internal static string Sheet(string sheetData, string before = "", string after = "", string rootNs = "") =>
         $"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><worksheet xmlns=\"{Main}\" xmlns:r=\"{Rel}\"{rootNs}>{before}<sheetData>{sheetData}</sheetData>{after}</worksheet>";
 
     internal static byte[] Package(string[] sheets, string? sharedStrings = null, string? styles = null, string? theme = null,

@@ -13,7 +13,9 @@ public sealed class CalculatedEventArgs(IReadOnlyCollection<CellChange> cells) :
 /// <summary>
 /// Calculates the formulas of a workbook and keeps their results in <see cref="Cell.Value"/>. Cell edits recalculate only
 /// the dependent cells in dependency order; structural changes and defined-name changes rebuild the graph. Cells on a
-/// circular reference get <see cref="CellError.Circ"/>. Array results spill into the cells below and to the right, which
+/// circular reference get <see cref="CellError.Circ"/>. Formulas that cannot be evaluated here (unknown functions or syntax the
+/// parser does not support) keep the value they had when the engine attached or the graph was rebuilt, together with the cells of
+/// their array result, until the formula itself is edited. Array results spill into the cells below and to the right, which
 /// then hold computed values with <see cref="Cell.SpillAnchor"/> set; a non-empty cell in the way yields <see cref="CellError.Spill"/>.
 /// Formulas calling volatile functions recalculate on every calculation. A formula that fails unexpectedly yields <see cref="CellError.Value"/>.
 /// Dispose the engine to stop following the workbook.
@@ -28,6 +30,7 @@ public sealed class CalcEngine : IDisposable
     private readonly DependencyGraph _graph = new();
     private readonly Dictionary<CellNode, FormulaNode> _formulas = new();
     private readonly HashSet<CellNode> _volatile = new();
+    private readonly HashSet<CellNode> _keep = new();
     private readonly Dictionary<CellNode, SpillState> _spills = new();
     private readonly HashSet<CellChange> _changed = new();
     private readonly List<CellNode> _grown = new();
@@ -78,14 +81,30 @@ public sealed class CalcEngine : IDisposable
         _formulas.Clear();
         _volatile.Clear();
         _spills.Clear();
-        foreach (var sheet in _wb.Sheets)
-            foreach (var (r, cell) in sheet.UsedCells().ToList())
+        _keep.Clear();
+        var cells = _wb.Sheets.SelectMany(sheet => sheet.UsedCells().Select(c => (Sheet: sheet, c.Ref, c.Cell))).ToList();
+        foreach (var (sheet, r, cell) in cells)
+            if (cell.Formula != null && !Register(new CellNode(sheet, r.Key), cell.Formula) && cell.Value.Kind != CellValueKind.Empty)
+                _keep.Add(new CellNode(sheet, r.Key));
+
+        var kept = new Dictionary<CellNode, CellRange>();
+        foreach (var (sheet, r, cell) in cells)
+        {
+            if (cell.SpillAnchor is not { } a) continue;
+            var anchor = new CellNode(sheet, a.Relative.Key);
+            if (!_keep.Contains(anchor))
             {
-                if (cell.SpillAnchor != null) ClearSpillCell(sheet, r);
-                if (cell.Formula != null) Register(new CellNode(sheet, r.Key), cell.Formula);
+                ClearSpillCell(sheet, r);
+                continue;
             }
 
-        Recalculate([.. _formulas.Keys]);
+            var range = kept.TryGetValue(anchor, out var k) ? k : new CellRange(a.Relative, a.Relative);
+            kept[anchor] = CellRange.FromBounds(Math.Min(range.Top, r.Row), Math.Min(range.Left, r.Column), Math.Max(range.Bottom, r.Row),
+                Math.Max(range.Right, r.Column));
+        }
+
+        foreach (var (anchor, range) in kept) _spills[anchor] = new SpillState(range, true);
+        Recalculate([.. _formulas.Keys.Where(n => !_keep.Contains(n))]);
     }
 
     /// <summary>Updates the graph for changed cells (values or formulas) and recalculates the cells that depend on them.</summary>
@@ -99,6 +118,7 @@ public sealed class CalcEngine : IDisposable
             if (!_wb.Sheets.Contains(sheet)) continue;
             var node = new CellNode(sheet, cell.Relative.Key);
             var stored = sheet[cell];
+            _keep.Remove(node);
             if (stored?.Formula is { } formula)
             {
                 Register(node, formula);
@@ -133,19 +153,22 @@ public sealed class CalcEngine : IDisposable
             OnCellsChanged(e.Cells.Select(c => (c.Sheet, c.Cell)));
     }
 
-    private void Register(CellNode node, string formula)
+    private bool Register(CellNode node, string formula)
     {
-        var ast = FormulaParser.TryParse(formula, out var parsed, out _) ? parsed : new ErrorNode(CellError.Name);
+        var parsedOk = FormulaParser.TryParse(formula, out var parsed, out _);
+        var ast = parsedOk ? parsed : new ErrorNode(CellError.Name);
         _formulas[node] = ast;
         var precedents = new List<RefArea>();
-        if (Collect(ast, node.Sheet, precedents)) _volatile.Add(node);
+        if (Collect(ast, node.Sheet, precedents, out var unknown)) _volatile.Add(node);
         else _volatile.Remove(node);
         _graph.Set(node, precedents);
+        return parsedOk && !unknown;
     }
 
-    private bool Collect(FormulaNode ast, Worksheet host, List<RefArea> into)
+    private bool Collect(FormulaNode ast, Worksheet host, List<RefArea> into, out bool unknown)
     {
         var isVolatile = false;
+        unknown = false;
         var stack = new Stack<(FormulaNode Node, int Depth)>();
         stack.Push((ast, 0));
         while (stack.Count > 0)
@@ -166,7 +189,8 @@ public sealed class CalcEngine : IDisposable
                     stack.Push((target, depth + 1));
                     break;
                 case CallNode call:
-                    if (_evaluator.Functions.TryGet(call.Name, out var f) && f.Info.IsVolatile) isVolatile = true;
+                    if (!_evaluator.Functions.TryGet(call.Name, out var f)) unknown = true;
+                    else if (f.Info.IsVolatile) isVolatile = true;
                     foreach (var arg in call.Args) stack.Push((arg, depth));
                     break;
                 case BinaryNode b:
@@ -275,6 +299,7 @@ public sealed class CalcEngine : IDisposable
 
                 foreach (var node in component)
                 {
+                    if (_keep.Contains(node)) continue;
                     ClearSpill(node);
                     node.Sheet[node.Cell].Value = CellValue.Error(CellError.Circ);
                     _changed.Add(new CellChange(node.Sheet, node.Cell));
@@ -298,6 +323,7 @@ public sealed class CalcEngine : IDisposable
 
     private void Evaluate(CellNode node)
     {
+        if (_keep.Contains(node)) return;
         var scope = new EvalScope(_wb, node.Sheet, node.Cell);
         CalcValue result;
         var previousCulture = Coercion.EvaluationCulture;

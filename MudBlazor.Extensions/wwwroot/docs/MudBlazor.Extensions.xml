@@ -30165,7 +30165,9 @@
             <summary>
             Calculates the formulas of a workbook and keeps their results in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.Value"/>. Cell edits recalculate only
             the dependent cells in dependency order; structural changes and defined-name changes rebuild the graph. Cells on a
-            circular reference get <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Circ"/>. Array results spill into the cells below and to the right, which
+            circular reference get <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Circ"/>. Formulas that cannot be evaluated here (unknown functions or syntax the
+            parser does not support) keep the value they had when the engine attached or the graph was rebuilt, together with the cells of
+            their array result, until the formula itself is edited. Array results spill into the cells below and to the right, which
             then hold computed values with <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.SpillAnchor"/> set; a non-empty cell in the way yields <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Spill"/>.
             Formulas calling volatile functions recalculate on every calculation. A formula that fails unexpectedly yields <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Value"/>.
             Dispose the engine to stop following the workbook.
@@ -31747,6 +31749,21 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OriginalRowXf">
             <summary>Rows with a row style whose original xf index differs from the canonical xf of their style id: zero-based row to xf index.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OriginalColXf">
+            <summary>Columns whose original <c>col/@style</c> xf index differs from the canonical xf of their style id: zero-based column to xf index.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.RowAttributes">
+            <summary>
+            Row attributes the model does not represent (<c>outlineLevel</c>, <c>collapsed</c>, <c>thickTop</c>, <c>thickBot</c>, <c>ph</c>,
+            <c>x14ac:dyDescent</c> …), by zero-based row; rows with equal attributes share one array. <c>spans</c> is dropped.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.CellAttributes">
+            <summary>Cell attributes the model does not represent (<c>cm</c>, <c>vm</c>, <c>ph</c> …), by cell key; only cells that have them.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.ArrayFormulas">
+            <summary>Cells whose formula was stored as an array formula (<c>f/@t="array"</c>), including single-cell ones, by cell key.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage">
             <summary>
             Inventory of a source xlsx package kept with a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Workbook"/> so the writer can copy untouched parts byte for byte and
@@ -31823,6 +31840,20 @@
             <param name="stream">The package; it is read to the end and left open.</param>
             <returns>The workbook. Formula cells hold their cached values until a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine"/> recalculates them.</returns>
             <exception cref="T:System.IO.InvalidDataException">The stream is not a spreadsheet package.</exception>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.XlsxWriter">
+            <summary>Writes a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Workbook"/> as an Office Open XML workbook (<c>.xlsx</c>, or <c>.xlsm</c> for macro-enabled sources).</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.XlsxWriter.Write(MudBlazor.Extensions.Office.Spreadsheet.Workbook,System.IO.Stream)">
+            <summary>
+            Writes the workbook. A workbook read by <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.XlsxReader"/> is written surgically: workbook.xml, the worksheets,
+            shared strings and styles are regenerated (keeping worksheet content, attributes and styles the model does not represent),
+            the calculation chain is removed, and every other part of the source package is copied unchanged, so macros, pivot
+            tables, drawings and custom XML survive and a macro-enabled workbook stays macro-enabled. Any other workbook is written as a
+            minimal package without a theme. Formulas are written with their calculated values; Excel does not recalculate on open.
+            </summary>
+            <param name="wb">The workbook.</param>
+            <param name="target">The stream to write the package to; it is left open.</param>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellChange">
             <summary>A changed cell value or formula.</summary>

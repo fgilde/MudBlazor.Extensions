@@ -86,13 +86,13 @@ internal static class SheetXmlReader
 
             var element = (XElement)XNode.ReadFrom(reader);
             part.Children.Add(element);
-            Apply(element, ws, package, theme, partLength);
+            Apply(element, ws, part, package, theme, partLength);
         }
     }
 
     private static double? Number(XElement e, string name) => Finite((string)e?.Attribute(name));
 
-    private static double? Finite(string s) =>
+    internal static double? Finite(string s) =>
         double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out var v) && double.IsFinite(v) ? v : null;
 
     private static int? Int(XElement e, string name) =>
@@ -105,9 +105,7 @@ internal static class SheetXmlReader
     private static int Xf(XlsxPackage package, string s) =>
         int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out var xf) && xf >= 0 && xf < package.XfStyleIds.Length ? xf : 0;
 
-    private static int StyleId(XlsxPackage package, string s) => package.XfStyleIds[Xf(package, s)];
-
-    private static void Apply(XElement e, Worksheet ws, XlsxPackage package, string[] theme, long partLength)
+    private static void Apply(XElement e, Worksheet ws, XlsxSheetPart part, XlsxPackage package, string[] theme, long partLength)
     {
         switch (e.Name.LocalName)
         {
@@ -119,32 +117,26 @@ internal static class SheetXmlReader
                 break;
             case "sheetViews":
                 var pane = Child(Child(e, "sheetView"), "pane");
-                if ((string)pane?.Attribute("state") is "frozen" or "frozenSplit")
-                {
-                    var rows = Count(pane, "ySplit", CellRef.MaxRows);
-                    var cols = Count(pane, "xSplit", CellRef.MaxColumns);
-                    if (rows > 0 || cols > 0) ws.FreezeAt = new CellRef(rows, cols);
-                }
-
+                if ((string)pane?.Attribute("state") is "frozen" or "frozenSplit") ws.FreezeAt = Frozen(pane);
                 break;
             case "sheetFormatPr":
-                if (Number(e, "defaultRowHeight") is > 0 and var height) ws.DefaultRowHeight = PointsToPixels(height);
-                if (Number(e, "defaultColWidth") is > 0 and var width) ws.DefaultColumnWidth = ColumnWidthToPixels(width);
-                else if (Number(e, "baseColWidth") is > 0 and var chars) ws.DefaultColumnWidth = Math.Ceiling((chars * 7 + 5) / 8) * 8;
+                ws.DefaultRowHeight = DefaultRowHeight(e);
+                ws.DefaultColumnWidth = DefaultColumnWidth(e);
                 break;
             case "cols":
                 foreach (var col in e.Elements().Where(c => c.Name.LocalName == "col"))
                 {
-                    var min = Math.Clamp(Int(col, "min") ?? 1, 1, CellRef.MaxColumns);
-                    var max = Math.Clamp(Int(col, "max") ?? min, min, CellRef.MaxColumns);
+                    var (min, max) = ColumnSpan(col);
                     var hidden = True((string)col.Attribute("hidden"));
                     var px = Number(col, "width") is { } w && (w > 0 || !hidden) ? ColumnWidthToPixels(w) : (double?)null;
-                    var style = StyleId(package, (string)col.Attribute("style"));
-                    for (var c = min - 1; c < max; c++)
+                    var xf = Xf(package, (string)col.Attribute("style"));
+                    var style = package.XfStyleIds[xf];
+                    for (var c = min; c <= max; c++)
                     {
                         if (px is { } size && size != ws.DefaultColumnWidth) ws.SetSize(Axis.Column, c, size);
                         if (hidden) ws.SetHidden(Axis.Column, c, true);
                         if (style != 0) ws.SetAxisStyle(Axis.Column, c, style);
+                        if (xf != package.CanonicalXf[style]) part.OriginalColXf[c] = xf;
                     }
                 }
 
@@ -156,6 +148,28 @@ internal static class SheetXmlReader
                     .Select(r => r.Value));
                 break;
         }
+    }
+
+    internal static CellRef? Frozen(XElement pane)
+    {
+        var rows = Count(pane, "ySplit", CellRef.MaxRows);
+        var cols = Count(pane, "xSplit", CellRef.MaxColumns);
+        return rows > 0 || cols > 0 ? new CellRef(rows, cols) : null;
+    }
+
+    internal static double DefaultRowHeight(XElement sheetFormatPr) =>
+        Number(sheetFormatPr, "defaultRowHeight") is > 0 and var height ? PointsToPixels(height) : Worksheet.StandardRowHeight;
+
+    internal static double DefaultColumnWidth(XElement sheetFormatPr) =>
+        Number(sheetFormatPr, "defaultColWidth") is > 0 and var width ? ColumnWidthToPixels(width)
+        : Number(sheetFormatPr, "baseColWidth") is > 0 and var chars ? Math.Ceiling((chars * 7 + 5) / 8) * 8
+        : Worksheet.StandardColumnWidth;
+
+    internal static (int Min, int Max) ColumnSpan(XElement col)
+    {
+        var min = Math.Clamp(Int(col, "min") ?? 1, 1, CellRef.MaxColumns);
+        var max = Math.Clamp(Int(col, "max") ?? min, min, CellRef.MaxColumns);
+        return (min - 1, max - 1);
     }
 
     private static void ReadSheetData(XmlReader reader, Worksheet ws, XlsxSheetPart part, string[] strings, XlsxPackage package)
@@ -170,13 +184,14 @@ internal static class SheetXmlReader
         var row = -1;
         var col = -1;
         var shared = new Dictionary<string, (CellRef At, string Formula)>();
+        var attributeSets = new Dictionary<string, XAttribute[]>();
         List<(CellRange Range, CellRef Anchor)> arrays = null;
         while (reader.Read() && reader.Depth > depth)
         {
             if (reader.NodeType != XmlNodeType.Element) continue;
             if (reader.LocalName == "row")
             {
-                row = ReadRow(reader, ws, part, package, row);
+                row = ReadRow(reader, ws, part, package, row, attributeSets);
                 col = -1;
                 arrays?.RemoveAll(a => a.Range.Bottom < row);
             }
@@ -189,10 +204,30 @@ internal static class SheetXmlReader
         reader.Read();
     }
 
-    private static int ReadRow(XmlReader reader, Worksheet ws, XlsxSheetPart part, XlsxPackage package, int previous)
+    private static List<XAttribute> Extra(XmlReader reader, Func<string, bool> modelled)
+    {
+        List<XAttribute> extra = null;
+        while (reader.MoveToNextAttribute())
+        {
+            if (reader.NamespaceURI.Length == 0 ? modelled(reader.LocalName) : reader.NamespaceURI == XNamespace.Xmlns.NamespaceName) continue;
+            (extra ??= []).Add(new XAttribute(XName.Get(reader.LocalName, reader.NamespaceURI), reader.Value));
+        }
+
+        reader.MoveToElement();
+        return extra;
+    }
+
+    private static int ReadRow(XmlReader reader, Worksheet ws, XlsxSheetPart part, XlsxPackage package, int previous, Dictionary<string, XAttribute[]> attributeSets)
     {
         var row = int.TryParse(reader.GetAttribute("r"), NumberStyles.Integer, CultureInfo.InvariantCulture, out var r) ? r - 1 : previous + 1;
         if (row < 0 || row >= CellRef.MaxRows) return row;
+        if (Extra(reader, n => n is "r" or "ht" or "hidden" or "s" or "customFormat" or "customHeight" or "spans") is { } extra)
+        {
+            var key = string.Join('\u0001', extra.Select(a => a.Name + "=" + a.Value));
+            if (!attributeSets.TryGetValue(key, out var set)) attributeSets[key] = set = [.. extra];
+            part.RowAttributes[row] = set;
+        }
+
         if (Finite(reader.GetAttribute("ht")) is { } ht && PointsToPixels(ht) is var px && px != ws.DefaultRowHeight)
             ws.SetSize(Axis.Row, row, px);
         if (True(reader.GetAttribute("hidden"))) ws.SetHidden(Axis.Row, row, true);
@@ -207,24 +242,12 @@ internal static class SheetXmlReader
     private static int ReadCell(XmlReader reader, Worksheet ws, XlsxSheetPart part, string[] strings, XlsxPackage package, int row, int col,
         Dictionary<string, (CellRef At, string Formula)> shared, ref List<(CellRange Range, CellRef Anchor)> arrays)
     {
-        string address = null, style = null, type = null;
-        while (reader.MoveToNextAttribute())
-        {
-            switch (reader.LocalName)
-            {
-                case "r":
-                    address = reader.Value;
-                    break;
-                case "s":
-                    style = reader.Value;
-                    break;
-                case "t":
-                    type = reader.Value;
-                    break;
-            }
-        }
-
-        reader.MoveToElement();
+        var address = reader.GetAttribute("r");
+        var style = reader.GetAttribute("s");
+        var type = reader.GetAttribute("t");
+        var extra = reader.AttributeCount > (address == null ? 0 : 1) + (style == null ? 0 : 1) + (type == null ? 0 : 1)
+            ? Extra(reader, n => n is "r" or "s" or "t")
+            : null;
         var at = CellRef.TryParse(address, out var parsed) ? parsed : new CellRef(Math.Max(row, 0), col + 1);
         var xf = Xf(package, style);
         var styleId = package.XfStyleIds[xf];
@@ -262,6 +285,8 @@ internal static class SheetXmlReader
 
         if (!Worksheet.InBounds(at)) return at.Column;
         if (xf != package.CanonicalXf[styleId]) part.OriginalXf[at.Key] = xf;
+        if (extra != null) part.CellAttributes[at.Key] = [.. extra];
+        if (hasFormula && fType == "array") part.ArrayFormulas.Add(at.Key);
         var sharedIndex = -1;
         var value = type switch
         {
@@ -305,7 +330,7 @@ internal static class SheetXmlReader
         if (formula == null && value.Kind == CellValueKind.Empty && styleId == 0 && anchor == null) return at.Column;
         var cell = ws.Ensure(at);
         cell.Value = value;
-        cell.Formula = formula;
+        cell.Formula = SheetXmlWriter.FromFile(formula);
         cell.StyleId = styleId;
         cell.SpillAnchor = anchor;
         if (type == "s" && sharedIndex >= 0 && package.RichStrings.ContainsKey(sharedIndex)) part.RichStringCells[at.Key] = sharedIndex;

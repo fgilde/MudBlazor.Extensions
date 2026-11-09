@@ -58,6 +58,21 @@ internal sealed class XlsxSheetPart
 
     /// <summary>Rows with a row style whose original xf index differs from the canonical xf of their style id: zero-based row to xf index.</summary>
     public Dictionary<int, int> OriginalRowXf { get; } = new();
+
+    /// <summary>Columns whose original <c>col/@style</c> xf index differs from the canonical xf of their style id: zero-based column to xf index.</summary>
+    public Dictionary<int, int> OriginalColXf { get; } = new();
+
+    /// <summary>
+    /// Row attributes the model does not represent (<c>outlineLevel</c>, <c>collapsed</c>, <c>thickTop</c>, <c>thickBot</c>, <c>ph</c>,
+    /// <c>x14ac:dyDescent</c> …), by zero-based row; rows with equal attributes share one array. <c>spans</c> is dropped.
+    /// </summary>
+    public Dictionary<int, XAttribute[]> RowAttributes { get; } = new();
+
+    /// <summary>Cell attributes the model does not represent (<c>cm</c>, <c>vm</c>, <c>ph</c> …), by cell key; only cells that have them.</summary>
+    public Dictionary<long, XAttribute[]> CellAttributes { get; } = new();
+
+    /// <summary>Cells whose formula was stored as an array formula (<c>f/@t="array"</c>), including single-cell ones, by cell key.</summary>
+    public HashSet<long> ArrayFormulas { get; } = new();
 }
 
 /// <summary>

@@ -104,7 +104,7 @@ public static class XlsxReader
         package.DefinedNames = Child(root, "definedNames");
         foreach (var name in package.DefinedNames?.Elements().Where(e => e.Name.LocalName == "definedName" && e.Attribute("localSheetId") == null) ?? [])
             if ((string)name.Attribute("name") is { Length: > 0 } key)
-                wb.DefinedNameMap[key] = name.Value;
+                wb.DefinedNameMap[key] = SheetXmlWriter.FromFile(name.Value);
 
         return wb;
     }
