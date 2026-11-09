@@ -5,6 +5,10 @@
 
 <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="4" Class="mb-3">
     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="_busy" OnClick="@Generate">@L["Generate 100,000 rows x 30 columns"]</MudButton>
+    @if (_busy)
+    {
+        <MudProgressLinear Color="Color.Primary" Value="_progress" Style="max-width: 240px;" />
+    }
     <MudText Typo="Typo.body2">@_info</MudText>
 </MudStack>
 
@@ -18,18 +22,24 @@
 @code {
     private Workbook? _workbook;
     private bool _busy;
+    private int _progress;
     private string _info = "";
 
     private async Task Generate()
     {
         _busy = true;
         _workbook = null;
+        _progress = 0;
         _info = L["Generating..."];
-        await Task.Yield();
         var watch = Stopwatch.StartNew();
-        _workbook = SpreadsheetSamples.CreateLarge();
+        var workbook = await SpreadsheetSamples.CreateLargeAsync(new Progress<int>(p =>
+        {
+            _progress = p;
+            _ = InvokeAsync(StateHasChanged);
+        }));
         watch.Stop();
-        _info = L["Built in {0} ms. Only the visible cells are rendered.", watch.ElapsedMilliseconds];
+        _workbook = workbook;
+        _info = L["Built in {0} ms with SetValuesCommand. Only the visible cells are rendered.", watch.ElapsedMilliseconds];
         _busy = false;
     }
 }

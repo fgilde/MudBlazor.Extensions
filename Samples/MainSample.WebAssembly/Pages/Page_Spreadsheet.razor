@@ -18,6 +18,7 @@
 
     <MudExDemoBox Title="1. Budget workbook"
                   NavTitle="Budget workbook"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
                   FeaturesTitle="Parameters and events"
                   Features="@(new[]
                               {
@@ -36,6 +37,7 @@
 
     <MudExDemoBox Title="2. Ribbon modes, colors and layout"
                   NavTitle="Ribbon modes and colors"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
                   FeaturesTitle="Parameters"
                   Features="@(new[]
                               {
@@ -48,12 +50,15 @@
             <MudText Typo="Typo.body2" Class="mb-4">
                 @L["Switch the ribbon mode and color and toggle the parts of the editor."]
             </MudText>
-            <SpreadsheetModesExample />
+            <SpreadsheetLazyDemo>
+                <SpreadsheetModesExample />
+            </SpreadsheetLazyDemo>
         </DemoContent>
     </MudExDemoBox>
 
     <MudExDemoBox Title="3. Read-only viewer"
                   NavTitle="Read-only viewer"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
                   FeaturesTitle="Highlights"
                   Features="@(new[]
                               {
@@ -61,12 +66,15 @@
                                   "Selection, status bar summary, zoom and gridline options still work"
                               })">
         <DemoContent>
-            <SpreadsheetViewerExample />
+            <SpreadsheetLazyDemo>
+                <SpreadsheetViewerExample />
+            </SpreadsheetLazyDemo>
         </DemoContent>
     </MudExDemoBox>
 
     <MudExDemoBox Title="4. 100,000 rows x 30 columns"
                   NavTitle="100,000 rows"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
                   FeaturesTitle="Highlights"
                   Features="@(new[]
                               {

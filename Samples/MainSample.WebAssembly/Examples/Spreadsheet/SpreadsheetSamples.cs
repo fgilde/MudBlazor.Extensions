@@ -1,5 +1,3 @@
-using System.Globalization;
-using System.Text;
 using MudBlazor.Extensions.Office.Spreadsheet;
 
 namespace MainSample.WebAssembly.Examples.Spreadsheet;
@@ -76,23 +74,32 @@ public static class SpreadsheetSamples
         return wb;
     }
 
-    public static Workbook CreateLarge(int rows = 100_000, int columns = 30)
+    public static async Task<Workbook> CreateLargeAsync(IProgress<int>? progress = null, int rows = 100_000, int columns = 30)
     {
-        var sb = new StringBuilder(rows * columns * 6);
+        const int chunk = 10_000;
+        var wb = Workbook.Create();
+        var sheet = wb.Sheets[0];
+        var header = new CellValue[1, columns];
         for (var c = 0; c < columns; c++)
-            sb.Append(c == 0 ? "" : ",").Append(c == 0 ? "Id" : $"Col{c}");
-        sb.Append('\n');
+            header[0, c] = CellValue.Text(c == 0 ? "Id" : $"Col{c}");
+        wb.Execute(new SetValuesCommand(sheet, new CellRef(0, 0), header));
         var rnd = new Random(42);
-        for (var r = 1; r <= rows; r++)
+        for (var start = 0; start < rows; start += chunk)
         {
-            sb.Append(r);
-            for (var c = 1; c < columns; c++)
-                sb.Append(',').Append(rnd.Next(0, 10_000).ToString(CultureInfo.InvariantCulture));
-            sb.Append('\n');
+            var count = Math.Min(chunk, rows - start);
+            var values = new CellValue[count, columns];
+            for (var r = 0; r < count; r++)
+            {
+                values[r, 0] = CellValue.Number(start + r + 1);
+                for (var c = 1; c < columns; c++)
+                    values[r, c] = CellValue.Number(rnd.Next(0, 10_000));
+            }
+
+            wb.Execute(new SetValuesCommand(sheet, new CellRef(start + 1, 0), values));
+            progress?.Report((start + count) * 100 / rows);
+            await Task.Delay(1);
         }
 
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString()));
-        var wb = CsvFormat.Read(stream, ',');
         wb.Undo.Clear();
         return wb;
     }

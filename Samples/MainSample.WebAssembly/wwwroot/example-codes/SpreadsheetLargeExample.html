@@ -5,6 +5,10 @@
 
 <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Row</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">AlignItems</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;AlignItems.Center&quot;</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
     <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudButton</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Filled&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Disabled</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;_busy&quot;</span> <span class="htmlAttributeName">OnClick</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@Generate&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Generate 100,000 rows x 30 columns&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+    @if (_busy)
+    {
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudProgressLinear</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Value</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;_progress&quot;</span> <span class="htmlAttributeName">Style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;max-width: 240px;&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    }
     <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span><span class="htmlTagDelimiter">&gt;</span>@_info<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
 <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
 
@@ -18,18 +22,24 @@
 @code {
     private Workbook? _workbook;
     private bool _busy;
+    private int _progress;
     private string _info = &quot;&quot;;
 
     private async Task Generate()
     {
         _busy = true;
         _workbook = null;
+        _progress = 0;
         _info = L[&quot;Generating...&quot;];
-        await Task.Yield();
         var watch = Stopwatch.StartNew();
-        _workbook = SpreadsheetSamples.CreateLarge();
+        var workbook = await SpreadsheetSamples.CreateLargeAsync(new Progress<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">int</span><span class="htmlTagDelimiter">&gt;</span>(p =&gt;
+        {
+            _progress = p;
+            _ = InvokeAsync(StateHasChanged);
+        }));
         watch.Stop();
-        _info = L[&quot;Built in {0} ms. Only the visible cells are rendered.&quot;, watch.ElapsedMilliseconds];
+        _workbook = workbook;
+        _info = L[&quot;Built in {0} ms with SetValuesCommand. Only the visible cells are rendered.&quot;, watch.ElapsedMilliseconds];
         _busy = false;
     }
 }
