@@ -11,7 +11,8 @@ public sealed class MudExFileSaveRequest
     public MudExFileContent Content { get; init; }
 
     /// <summary>
-    /// True if the user asked to save under a new target
+    /// True if the user asked to save under a new target. Also true for documents the user opened or created in the editor,
+    /// because they are no longer the file the host passed in. Saving locally still overwrites a file opened in the editor.
     /// </summary>
     public bool SaveAs { get; init; }
 

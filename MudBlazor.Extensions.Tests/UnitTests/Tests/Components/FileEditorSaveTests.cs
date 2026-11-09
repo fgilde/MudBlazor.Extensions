@@ -298,15 +298,16 @@ public class FileEditorBaseTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task Save_HostHandlerThrows_KeepsDirty_AndRethrowsStandalone()
+    public async Task Save_HostHandlerThrows_KeepsDirty_AndShowsErrorStandalone()
     {
         var (cut, _) = Create(p => p
             .Add(c => c.SaveRequested, EventCallback.Factory.Create<MudExFileSaveRequest>(this, _ => throw new InvalidOperationException("boom"))));
+        var dialogs = _contexts.Last().Render<MudDialogProvider>();
         await cut.InvokeAsync(() => cut.Instance.Edit("a"));
 
-        var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => cut.InvokeAsync(() => cut.Instance.SaveAsync()));
+        Assert.False(await cut.InvokeAsync(() => cut.Instance.SaveAsync()));
 
-        Assert.Equal("boom", ex.Message);
+        dialogs.WaitForAssertion(() => Assert.Contains("boom", dialogs.Markup));
         Assert.True(cut.Instance.IsDirty);
     }
 

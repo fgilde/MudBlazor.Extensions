@@ -103,8 +103,6 @@ public partial class MudExFileDisplayCode
     /// <inheritdoc />
     public override Task<MudExFileContent> ExportAsync(MudExFileFormat format = null, CancellationToken cancellationToken = default)
     {
-        if (LoadFailed)
-            throw new InvalidOperationException("The file could not be loaded and cannot be saved.");
         var text = (Value ?? string.Empty).NormalizeLineEndings().Replace("\n", _lineEnding);
         var body = _encoding.GetBytes(text);
         var bytes = _hadBom ? _encoding.GetPreamble().Concat(body).ToArray() : body;

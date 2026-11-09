@@ -9,7 +9,7 @@
             {
                 <MudButton Class="mud-ex-file-editor-backstage-new justify-start" StartIcon="@Icons.Material.Filled.NoteAdd" OnClick="@(() => RunAsync(Editor.NewAsync))">@TryLocalize("New")</MudButton>
             }
-            @if (Editor.AllowOpen)
+            @if (Editor.AllowOpen && !Editor.ReadOnly)
             {
                 <MudButton Class="mud-ex-file-editor-backstage-open justify-start" StartIcon="@Icons.Material.Filled.FolderOpen" OnClick="@(() => RunAsync(Editor.OpenAsync))">@TryLocalize("Open")</MudButton>
             }

@@ -56,6 +56,16 @@ public interface IMudExFileEditor : IMudExFileDisplay
     string FileName { get; }
 
     /// <summary>
+    /// MIME type of the current document
+    /// </summary>
+    string ContentType { get; }
+
+    /// <summary>
+    /// Raised after the document or its file changed: loaded, opened, created or saved
+    /// </summary>
+    event Action DocumentChanged;
+
+    /// <summary>
     /// Size in bytes of the current document when it was loaded or last saved, or null if unknown
     /// </summary>
     long? FileSize { get; }

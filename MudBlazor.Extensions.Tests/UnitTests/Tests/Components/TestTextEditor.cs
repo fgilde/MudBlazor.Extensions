@@ -29,6 +29,8 @@ public class TestTextEditor : MudExFileEditorBase<TestTextEditor>
     {
         using var reader = new StreamReader(content.Stream, leaveOpen: true);
         Text = await reader.ReadToEndAsync();
+        if (Text == "fail")
+            throw new InvalidDataException("corrupt");
     }
 
     public Task Edit(string text)

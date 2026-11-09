@@ -173,6 +173,19 @@ public class FileDisplayEditModeTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task NewInEditor_HeaderShowsEditorFileNameAndDirtyMarker()
+    {
+        var cut = Create("a.cs", "x", p => p.Add(c => c.AllowEdit, true).Add(c => c.EditMode, true));
+
+        Assert.True(await cut.InvokeAsync(() => Editor(cut).NewAsync()));
+
+        cut.WaitForAssertion(() => Assert.Contains("new.txt", cut.Markup));
+        Assert.DoesNotContain("a.cs", cut.Markup);
+        cut.Find("textarea").Input("y");
+        cut.WaitForAssertion(() => Assert.Contains("new.txt ●", cut.Markup));
+    }
+
+    [Fact]
     public void RenderWithViewer_InEditMode_LeavesEditMode()
     {
         var changes = new List<bool>();

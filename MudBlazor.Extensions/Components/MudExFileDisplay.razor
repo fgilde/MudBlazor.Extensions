@@ -153,7 +153,7 @@
             <MudSpacer />
             @if (ShowFileName)
             {
-                <MudText Class="@(IsDirty ? "mr-2 mud-ex-file-display-dirty" : "mr-2")" Color="Color.Primary" Typo="Typo.subtitle2">@(IsDirty ? $"{FileName} ●" : FileName)</MudText>
+                <MudText Class="@(IsDirty ? "mr-2 mud-ex-file-display-dirty" : "mr-2")" Color="Color.Primary" Typo="Typo.subtitle2">@(IsDirty ? $"{HeaderFileName} ●" : HeaderFileName)</MudText>
             }
             @if (ShowRenderer)
             {
@@ -164,7 +164,7 @@
                      AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopRight" Dense="@Dense" Size="Size.Medium" Icon="@MudExSvg.CombineIconsHorizontal(Icons.Material.Filled.MoreVert, BrowserFileExt.IconForFile(ContentType))">
                 <div class="mud-ex-file-display-menu-header">
                     <MudExIcon Color="@(ColorizeIcons ? BrowserFileExt.GetPreferredColor(ContentType) : IconColor)" Icon="@BrowserFileExt.IconForFile(ContentType)"></MudExIcon>
-                    <MudText Class="mud-ex-file-display-toolbar-text">@FileName</MudText>
+                    <MudText Class="mud-ex-file-display-toolbar-text">@HeaderFileName</MudText>
                 </div>
                 @foreach (var c in _possibleRenderControls.Where(c => c.GetType() != _componentForFile?.ControlType))
                 {

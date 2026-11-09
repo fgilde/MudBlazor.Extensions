@@ -647,6 +647,10 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         }
     }
 
+    internal void EditorDocumentChanged() => InvokeAsync(StateHasChanged);
+
+    private string HeaderFileName => _currentFileDisplay?.Instance is IMudExFileEditor { FileName.Length: > 0 } editor ? editor.FileName : FileName;
+
     internal static async Task<bool?> AskSaveChangesAsync(IDialogService dialogService, Func<string, string> localize)
     {
         if (dialogService == null)

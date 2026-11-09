@@ -575,9 +575,10 @@
             <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.ContentType">
-            <summary>
-            MIME type of the current document
-            </summary>
+            <inheritdoc />
+        </member>
+        <member name="E:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.DocumentChanged">
+            <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.FileSize">
             <inheritdoc />
@@ -973,6 +974,16 @@
         <member name="P:MudBlazor.Extensions.Components.IMudExFileEditor.FileName">
             <summary>
             Name of the current document
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileEditor.ContentType">
+            <summary>
+            MIME type of the current document
+            </summary>
+        </member>
+        <member name="E:MudBlazor.Extensions.Components.IMudExFileEditor.DocumentChanged">
+            <summary>
+            Raised after the document or its file changed: loaded, opened, created or saved
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.IMudExFileEditor.FileSize">
@@ -5317,6 +5328,12 @@
             <summary>
             The editor the menu acts on
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileEditorBackstage.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileEditorBackstage.DisposeAsync">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileGrid">
             <summary>
@@ -23854,7 +23871,8 @@
         </member>
         <member name="P:MudBlazor.Extensions.Core.MudExFileSaveRequest.SaveAs">
             <summary>
-            True if the user asked to save under a new target
+            True if the user asked to save under a new target. Also true for documents the user opened or created in the editor,
+            because they are no longer the file the host passed in. Saving locally still overwrites a file opened in the editor.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Core.MudExFileSaveRequest.IsCopy">

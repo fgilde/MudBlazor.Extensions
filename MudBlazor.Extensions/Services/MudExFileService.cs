@@ -401,11 +401,19 @@ public class MudExFileService : IMudExFileService
         if (dto == null)
             return null;
         await using var reference = dto.Content;
-        await using var source = await reference.OpenReadStreamAsync(long.MaxValue, ct);
-        var content = new MemoryStream();
-        await source.CopyToAsync(content, ct);
-        content.Position = 0;
-        return new MudExLocalFile(dto.HandleId, dto.FileName, dto.ContentType, content);
+        try
+        {
+            await using var source = await reference.OpenReadStreamAsync(long.MaxValue, ct);
+            var content = new MemoryStream();
+            await source.CopyToAsync(content, ct);
+            content.Position = 0;
+            return new MudExLocalFile(dto.HandleId, dto.FileName, dto.ContentType, content);
+        }
+        catch
+        {
+            await ReleaseLocalFileAsync(dto.HandleId);
+            throw;
+        }
     }
 
     /// <summary>

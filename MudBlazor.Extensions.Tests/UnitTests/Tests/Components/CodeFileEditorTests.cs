@@ -140,6 +140,7 @@ public class CodeFileEditorTests : IAsyncLifetime
             .AddCascadingValue(host.Instance)
             .Add(c => c.FileDisplayInfos, new FailingInfos()));
         Assert.Empty(cut.FindAll("textarea"));
-        await Assert.ThrowsAsync<InvalidOperationException>(() => cut.Instance.ExportAsync());
+        Assert.False(await cut.InvokeAsync(() => cut.Instance.SaveAsync()));
+        Assert.Contains("could not be loaded", host.Instance.ErrorMessage);
     }
 }

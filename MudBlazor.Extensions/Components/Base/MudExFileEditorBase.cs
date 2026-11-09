@@ -15,6 +15,8 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
     private int _editVersion;
     private int _document;
     private bool _saving;
+    private bool _replacing;
+    private bool _foreign;
 
     /// <summary>
     /// Service to read, open and save files
@@ -77,10 +79,11 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
     /// <inheritdoc />
     public string FileName { get; private set; }
 
-    /// <summary>
-    /// MIME type of the current document
-    /// </summary>
+    /// <inheritdoc />
     public string ContentType { get; private set; }
+
+    /// <inheritdoc />
+    public event Action DocumentChanged;
 
     /// <inheritdoc />
     public long? FileSize { get; private set; }
@@ -156,67 +159,72 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
 
         try
         {
-            await ReplaceDocumentAsync(null, () => FileDisplayInfos != null ? LoadAsync(FileDisplayInfos) : Task.CompletedTask);
+            await ReplaceDocumentAsync(null, false, () => FileDisplayInfos != null ? LoadAsync(FileDisplayInfos) : Task.CompletedTask);
         }
-        catch (Exception e) when (MudExFileDisplay != null)
+        catch (Exception e) when (CanShowError)
         {
-            MudExFileDisplay.ShowError(e.Message);
+            await ShowErrorAsync(e.Message);
         }
     }
 
     /// <inheritdoc />
     public async Task<bool> OpenAsync()
     {
-        if (!AllowOpen || IsDisposed)
+        if (_replacing || !AllowOpen || IsDisposed)
             return false;
 
+        _replacing = true;
+        string handle = null;
         try
         {
             var file = await FileService.OpenLocalFileAsync(OpenFormats);
             if (file == null)
                 return false;
 
-            var handle = file.HandleId;
+            handle = file.HandleId;
             await using var content = new MudExFileContent { FileName = file.FileName, ContentType = file.ContentType, Stream = file.Content };
-            try
-            {
-                if (!await ConfirmReplaceAsync())
-                    return false;
-                handle = null;
-                await ReplaceDocumentAsync(file.HandleId, () => LoadDocumentAsync(content));
-                return true;
-            }
-            finally
-            {
-                if (handle != null)
-                    await TryReleaseAsync(handle);
-            }
+            if (IsDisposed || !await ConfirmReplaceAsync() || IsDisposed)
+                return false;
+            handle = null;
+            await ReplaceDocumentAsync(file.HandleId, true, () => LoadDocumentAsync(content));
+            return true;
         }
-        catch (Exception e) when (MudExFileDisplay != null)
+        catch (Exception e) when (CanShowError)
         {
-            MudExFileDisplay.ShowError(e.Message);
+            await ShowErrorAsync(e.Message);
             return false;
+        }
+        finally
+        {
+            _replacing = false;
+            if (handle != null)
+                await TryReleaseAsync(handle);
         }
     }
 
     /// <inheritdoc />
     public async Task<bool> NewAsync()
     {
-        if (!AllowNew || ReadOnly || IsDisposed)
+        if (_replacing || !AllowNew || ReadOnly || IsDisposed)
             return false;
 
+        _replacing = true;
         try
         {
             await using var content = CreateNew();
-            if (content == null || !await ConfirmReplaceAsync())
+            if (content == null || !await ConfirmReplaceAsync() || IsDisposed)
                 return false;
-            await ReplaceDocumentAsync(null, () => LoadDocumentAsync(content));
+            await ReplaceDocumentAsync(null, true, () => LoadDocumentAsync(content));
             return true;
         }
-        catch (Exception e) when (MudExFileDisplay != null)
+        catch (Exception e) when (CanShowError)
         {
-            MudExFileDisplay.ShowError(e.Message);
+            await ShowErrorAsync(e.Message);
             return false;
+        }
+        finally
+        {
+            _replacing = false;
         }
     }
 
@@ -234,9 +242,10 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
         };
     }
 
-    private async Task ReplaceDocumentAsync(string handleId, Func<Task> load)
+    private async Task ReplaceDocumentAsync(string handleId, bool foreign, Func<Task> load)
     {
         _document++;
+        _foreign = foreign;
         await ReleaseHandleAsync();
         _handleId = handleId;
         await SetDirtyAsync(false);
@@ -249,7 +258,25 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
         finally
         {
             await InvokeAsync(StateHasChanged);
+            NotifyDocumentChanged(foreign);
         }
+    }
+
+    private void NotifyDocumentChanged(bool notifyDisplay)
+    {
+        DocumentChanged?.Invoke();
+        if (notifyDisplay)
+            MudExFileDisplay?.EditorDocumentChanged();
+    }
+
+    private bool CanShowError => MudExFileDisplay != null || DialogService != null;
+
+    private async Task ShowErrorAsync(string message)
+    {
+        if (MudExFileDisplay != null)
+            MudExFileDisplay.ShowError(message);
+        else
+            await DialogService.ShowInformationAsync(TryLocalize("Error"), message, Icons.Material.Filled.Error);
     }
 
     /// <inheritdoc />
@@ -266,12 +293,19 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
         _saving = true;
         try
         {
+            if (LoadFailed)
+                throw new InvalidOperationException(TryLocalize("The file could not be loaded and cannot be saved."));
+
             var document = _document;
+            var handle = _handleId;
             var version = _editVersion;
+            var hostSaveAs = saveAs || _foreign;
             await using var content = await ExportAsync(format);
-            var request = new MudExFileSaveRequest { Content = content, SaveAs = saveAs, IsCopy = copy };
+            if (document != _document || IsDisposed)
+                return false;
+            var request = new MudExFileSaveRequest { Content = content, SaveAs = hostSaveAs, IsCopy = copy };
             await SaveRequested.InvokeAsync(request);
-            if (request.Cancel)
+            if (request.Cancel || document != _document || IsDisposed)
                 return false;
 
             string fileName;
@@ -286,17 +320,18 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
             }
             else if (AllowLocalSave)
             {
-                var result = await FileService.SaveLocalFileAsync(content, saveAs ? null : _handleId);
+                var result = await FileService.SaveLocalFileAsync(content, saveAs ? null : handle);
                 if (result == null)
                     return false;
                 if (copy || IsDisposed || document != _document)
                 {
-                    await TryReleaseAsync(result.HandleId);
+                    if (result.HandleId != _handleId)
+                        await TryReleaseAsync(result.HandleId);
                     return copy;
                 }
 
-                if (_handleId != null && result.HandleId != _handleId)
-                    oldHandle = _handleId;
+                if (handle != null && result.HandleId != handle)
+                    oldHandle = handle;
                 _handleId = result.HandleId;
                 fileName = result.FileName;
                 target = result.Target;
@@ -304,22 +339,20 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
             else
                 return false;
 
-            if (document != _document)
-                return false;
-
             FileName = fileName;
             if (content.Stream is { CanSeek: true } stream)
                 FileSize = stream.Length;
             if (version == _editVersion)
                 await MarkCleanAsync();
+            NotifyDocumentChanged(true);
             await Saved.InvokeAsync(new MudExFileSavedEventArgs(fileName, target));
             if (oldHandle != null)
                 await TryReleaseAsync(oldHandle);
             return true;
         }
-        catch (Exception e) when (MudExFileDisplay != null)
+        catch (Exception e) when (CanShowError)
         {
-            MudExFileDisplay.ShowError(e.Message);
+            await ShowErrorAsync(e.Message);
             return false;
         }
         finally
