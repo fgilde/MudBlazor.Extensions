@@ -140,6 +140,12 @@ public partial class MudExFileDisplayCode
         await MarkDirtyAsync();
     }
 
+    /// <summary>
+    /// Called from JS on Ctrl+S
+    /// </summary>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnSaveKey() => SaveAsync();
+
     private async Task SyncValueAsync()
     {
         if (!_edited || _js == null)

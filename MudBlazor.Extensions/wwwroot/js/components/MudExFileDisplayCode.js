@@ -4,7 +4,9 @@ class MudExFileDisplayCode {
         this.dotnet = dotnet;
         this.notified = false;
         this.onInput = () => this.input();
+        this.onKeyDown = e => this.keyDown(e);
         area.addEventListener('input', this.onInput);
+        area.addEventListener('keydown', this.onKeyDown);
     }
 
     input() {
@@ -15,6 +17,13 @@ class MudExFileDisplayCode {
         this.dotnet.invokeMethodAsync('OnCodeInput').catch(() => this.notified = false);
     }
 
+    keyDown(e) {
+        if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === 's') {
+            e.preventDefault();
+            this.dotnet?.invokeMethodAsync('OnSaveKey').catch(() => {});
+        }
+    }
+
     readValue() {
         this.notified = false;
         return DotNet.createJSStreamReference(new Blob([this.area?.value ?? '']));
@@ -22,6 +31,7 @@ class MudExFileDisplayCode {
 
     dispose() {
         this.area?.removeEventListener('input', this.onInput);
+        this.area?.removeEventListener('keydown', this.onKeyDown);
         this.area = null;
         this.dotnet = null;
     }

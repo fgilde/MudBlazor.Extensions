@@ -32,7 +32,7 @@
         if (isDirty && !this._onBeforeUnload) {
             this._onBeforeUnload = (event) => { event.preventDefault(); event.returnValue = ''; };
             this._onKeyDown = (event) => {
-                if ((event.ctrlKey || event.metaKey) && !event.altKey && event.key.toLowerCase() === 's') {
+                if (!event.defaultPrevented && (event.ctrlKey || event.metaKey) && !event.altKey && event.key.toLowerCase() === 's') {
                     event.preventDefault();
                     if (this._saving)
                         return;
