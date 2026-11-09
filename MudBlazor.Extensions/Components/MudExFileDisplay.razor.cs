@@ -596,6 +596,80 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             return;
         IsDirty = dirty;
         await IsDirtyChanged.InvokeAsync(dirty);
+        await NotifyJsDirtyAsync(dirty);
+        await OnDirtyStateChangedAsync(dirty);
+    }
+
+    private async Task NotifyJsDirtyAsync(bool dirty)
+    {
+        if (JsReference == null)
+            return;
+        try
+        {
+            await JsReference.InvokeVoidAsync("setDirty", dirty);
+        }
+        catch (Exception e) when (e is JSDisconnectedException or ObjectDisposedException or TaskCanceledException)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Called after <see cref="IsDirty"/> changed.
+    /// </summary>
+    /// <param name="dirty">The new dirty state</param>
+    protected virtual Task OnDirtyStateChangedAsync(bool dirty) => Task.CompletedTask;
+
+    /// <summary>
+    /// If true, closing the file or switching the renderer while <see cref="IsDirty"/> asks the user to save, discard or cancel.
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool ConfirmDiscardChanges { get; set; } = true;
+
+    /// <summary>
+    /// Asks the user what to do with unsaved changes. Returns immediately with true if there is nothing to protect.
+    /// </summary>
+    /// <returns>True if the caller may continue (nothing to protect, saved or discarded). False if the user cancelled or saving failed.</returns>
+    public async Task<bool> ConfirmDiscardChangesAsync()
+    {
+        if (!IsDirty || !ConfirmDiscardChanges || DialogService == null)
+            return true;
+
+        var buttons = new[]
+        {
+            new MudExDialogResultAction { Label = TryLocalize("Cancel"), Variant = Variant.Text, Result = DialogResult.Cancel() },
+            new MudExDialogResultAction { Label = TryLocalize("Discard"), Variant = Variant.Text, Color = Color.Error, Result = DialogResult.Ok("discard") },
+            new MudExDialogResultAction { Label = TryLocalize("Save"), Variant = Variant.Filled, Color = Color.Primary, Result = DialogResult.Ok("save") }
+        };
+        var parameters = new DialogParameters
+        {
+            { nameof(MudExMessageDialog.Message), TryLocalize("The file has unsaved changes. Do you want to save them?") },
+            { nameof(MudExMessageDialog.Icon), Icons.Material.Filled.Warning },
+            { nameof(MudExMessageDialog.Buttons), buttons }
+        };
+        var dialog = await DialogService.ShowExAsync<MudExMessageDialog>(TryLocalize("Unsaved changes"), parameters, DialogServiceExt.DefaultOptions());
+        var result = await dialog.Result;
+        if (result == null || result.Canceled)
+            return false;
+        return result.Data as string == "save" ? await SaveAsync() : true;
+    }
+
+    /// <summary>
+    /// Called by the browser when the save shortcut is pressed.
+    /// </summary>
+    [JSInvokable]
+    public Task SaveFromShortcut() => SaveAsync();
+
+    private async Task CloseGuardedAsync()
+    {
+        if (await ConfirmDiscardChangesAsync())
+            await OnCloseClick.InvokeAsync();
+    }
+
+    private async Task RenderWithGuardedAsync(IMudExFileDisplay fileComponent)
+    {
+        if (await ConfirmDiscardChangesAsync())
+            await RenderWith(fileComponent);
     }
 
     /// <summary>

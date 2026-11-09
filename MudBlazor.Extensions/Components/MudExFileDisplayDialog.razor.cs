@@ -68,6 +68,31 @@ public partial class MudExFileDisplayDialog
     /// </summary>
     public static Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowAsync(IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialogAsync(stream, fileName, contentType, options);
 
+    private DialogOptions _optionsBeforeDirty;
+
+    /// <inheritdoc />
+    protected override async Task OnDirtyStateChangedAsync(bool dirty)
+    {
+        await base.OnDirtyStateChangedAsync(dirty);
+        if (MudDialog == null)
+            return;
+        if (dirty)
+        {
+            _optionsBeforeDirty = MudDialog.Options;
+            await MudDialog.SetOptionsAsync(MudDialog.Options with { CloseButton = false, BackdropClick = false, CloseOnEscapeKey = false });
+        }
+        else if (_optionsBeforeDirty != null)
+        {
+            await MudDialog.SetOptionsAsync(MudDialog.Options with
+            {
+                CloseButton = _optionsBeforeDirty.CloseButton,
+                BackdropClick = _optionsBeforeDirty.BackdropClick,
+                CloseOnEscapeKey = _optionsBeforeDirty.CloseOnEscapeKey
+            });
+            _optionsBeforeDirty = null;
+        }
+    }
+
     /// <summary>
     /// Submits the dialog.
     /// </summary>

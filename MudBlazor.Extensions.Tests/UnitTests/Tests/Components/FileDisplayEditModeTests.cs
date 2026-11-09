@@ -1,4 +1,4 @@
-using Bunit;
+﻿using Bunit;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
@@ -19,6 +19,8 @@ public class FileDisplayEditModeTests : IAsyncLifetime
     }
 
     private readonly Dictionary<IRenderedComponent<MudExFileDisplay>, IRenderedComponent<MudPopoverProvider>> _providers = [];
+    private readonly Dictionary<IRenderedComponent<MudExFileDisplay>, IRenderedComponent<MudDialogProvider>> _dialogs = [];
+    private readonly Dictionary<IRenderedComponent<MudExFileDisplay>, TestContext> _owners = [];
 
     private IRenderedComponent<MudExFileDisplay> Create(string fileName, string content, Action<ComponentParameterCollectionBuilder<MudExFileDisplay>> configure = null)
     {
@@ -28,6 +30,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
         context.JSInterop.Mode = JSRuntimeMode.Loose;
         context.JSInterop.Setup<CssVariable[]>("MudExCssHelper.getCssVariables", _ => true).SetResult([]);
         var provider = context.Render<MudPopoverProvider>();
+        var dialogs = context.Render<MudDialogProvider>();
         var display = context.Render<MudExFileDisplay>(p =>
         {
             p.Add(c => c.FileName, fileName)
@@ -38,6 +41,8 @@ public class FileDisplayEditModeTests : IAsyncLifetime
         });
         display.InvokeAsync(() => display.FindComponent<MoveContent>().Instance.ElementFoundChanged(false)).GetAwaiter().GetResult();
         _providers[display] = provider;
+        _dialogs[display] = dialogs;
+        _owners[display] = context;
         return display;
     }
 
@@ -161,8 +166,9 @@ public class FileDisplayEditModeTests : IAsyncLifetime
         cut.Find("textarea").Input("changed");
 
         RenderWithViewer(cut);
+        ClickDialogButton(cut, "Discard");
 
-        Assert.False(cut.Instance.IsDirty);
+        cut.WaitForAssertion(() => Assert.False(cut.Instance.IsDirty));
         Assert.Equal([true, false], raised);
     }
 
@@ -184,5 +190,107 @@ public class FileDisplayEditModeTests : IAsyncLifetime
         cut.Render(p => p.Add(c => c.AllowEdit, true));
 
         Assert.Empty(cut.FindComponents<MudExFileDisplayCode>());
+    }
+
+    private void ClickClose(IRenderedComponent<MudExFileDisplay> cut)
+    {
+        RenderedMenu(cut);
+        _providers[cut].FindAll(".mud-ex-file-display-menu-item-action").First(i => i.TextContent.Contains("Close")).Click();
+    }
+
+    private IRenderedComponent<MudExFileDisplay> CreateDirty(Action<ComponentParameterCollectionBuilder<MudExFileDisplay>> configure = null)
+    {
+        var cut = Create("a.cs", "x", p =>
+        {
+            p.Add(c => c.AllowEdit, true).Add(c => c.EditMode, true).Add(c => c.CanClose, true);
+            configure?.Invoke(p);
+        });
+        cut.Find("textarea").Input("changed");
+        return cut;
+    }
+
+    private void ClickDialogButton(IRenderedComponent<MudExFileDisplay> cut, string text)
+    {
+        cut.WaitForAssertion(() => Assert.Contains(_dialogs[cut].FindAll("button"), b => b.TextContent.Trim() == text));
+        _dialogs[cut].FindAll("button").First(b => b.TextContent.Trim() == text).Click();
+    }
+
+    [Fact]
+    public void Close_WhenDirty_AsksBeforeClosing()
+    {
+        var closed = 0;
+        var cut = CreateDirty(p => p.Add(c => c.OnCloseClick, EventCallback.Factory.Create(this, () => closed++)));
+
+        ClickClose(cut);
+
+        Assert.Equal(0, closed);
+        ClickDialogButton(cut, "Discard");
+        cut.WaitForAssertion(() => Assert.Equal(1, closed));
+    }
+
+    [Fact]
+    public void Close_WhenDirty_CancelKeepsFileOpen()
+    {
+        var closed = 0;
+        var cut = CreateDirty(p => p.Add(c => c.OnCloseClick, EventCallback.Factory.Create(this, () => closed++)));
+
+        ClickClose(cut);
+        ClickDialogButton(cut, "Cancel");
+
+        cut.WaitForAssertion(() => Assert.DoesNotContain(_dialogs[cut].FindAll("button"), b => b.TextContent.Trim() == "Discard"));
+        Assert.Equal(0, closed);
+        Assert.True(cut.Instance.IsDirty);
+    }
+
+    [Fact]
+    public void Close_WhenDirty_SaveSavesThenCloses()
+    {
+        var closed = 0;
+        var cut = CreateDirty(p => p
+            .Add(c => c.OnCloseClick, EventCallback.Factory.Create(this, () => closed++))
+            .Add(c => c.SaveRequested, EventCallback.Factory.Create<MudExFileSaveRequest>(this, r => r.Handled = true)));
+
+        ClickClose(cut);
+        ClickDialogButton(cut, "Save");
+
+        cut.WaitForAssertion(() => Assert.Equal(1, closed));
+        Assert.False(cut.Instance.IsDirty);
+    }
+
+    [Fact]
+    public void Close_WhenClean_DoesNotAsk()
+    {
+        var closed = 0;
+        var cut = Create("a.cs", "x", p => p.Add(c => c.CanClose, true).Add(c => c.OnCloseClick, EventCallback.Factory.Create(this, () => closed++)));
+
+        ClickClose(cut);
+
+        Assert.Equal(1, closed);
+        Assert.Empty(_dialogs[cut].FindAll("button"));
+    }
+
+    [Fact]
+    public void Close_WhenDirtyAndConfirmDisabled_DoesNotAsk()
+    {
+        var closed = 0;
+        var cut = CreateDirty(p => p
+            .Add(c => c.ConfirmDiscardChanges, false)
+            .Add(c => c.OnCloseClick, EventCallback.Factory.Create(this, () => closed++)));
+
+        ClickClose(cut);
+
+        Assert.Equal(1, closed);
+    }
+
+    [Fact]
+    public async Task Dirty_CallsJsSetDirty()
+    {
+        var cut = CreateDirty(p => p.Add(c => c.SaveRequested, EventCallback.Factory.Create<MudExFileSaveRequest>(this, r => r.Handled = true)));
+        var interop = _owners[cut].JSInterop;
+        Assert.Contains(interop.Invocations, i => i.Identifier == "setDirty" && true.Equals(i.Arguments[0]));
+
+        await cut.InvokeAsync(() => cut.Instance.SaveAsync());
+
+        Assert.Contains(interop.Invocations, i => i.Identifier == "setDirty" && false.Equals(i.Arguments[0]));
     }
 }

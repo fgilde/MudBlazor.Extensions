@@ -168,11 +168,11 @@
                 </div>
                 @foreach (var c in _possibleRenderControls.Where(c => c.GetType() != _componentForFile?.ControlType))
                 {
-                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(c))" Icon="@Icons.Material.Filled.Extension">@($"{TryLocalize("Render with {0}", c.Name ?? c.GetType().Name)}")</MudMenuItem>
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWithGuardedAsync(c))" Icon="@Icons.Material.Filled.Extension">@($"{TryLocalize("Render with {0}", c.Name ?? c.GetType().Name)}")</MudMenuItem>
                 }
                 @if (!_isNativeRendered)
                 {
-                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(null))" Icon="@Icons.Material.Filled.ExtensionOff">@($"{TryLocalize("Render with native control")}")</MudMenuItem>
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWithGuardedAsync(null))" Icon="@Icons.Material.Filled.ExtensionOff">@($"{TryLocalize("Render with native control")}")</MudMenuItem>
                 }
                 @if (AllowCopyUrl)
                 {
@@ -209,7 +209,7 @@
                 @if (CanClose)
                 {
                     <MudDivider/>                    
-                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(OnCloseClick)" Icon="@Icons.Material.Filled.Close">@($"{TryLocalize("Close")}")</MudMenuItem>
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(CloseGuardedAsync)" Icon="@Icons.Material.Filled.Close">@($"{TryLocalize("Close")}")</MudMenuItem>
                 }
             </MudMenu>
         }
