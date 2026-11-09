@@ -24,7 +24,8 @@ public abstract partial class MudExRibbonItemBase : ComponentBase, IDisposable
     /// <summary>
     /// Stable identifier of the command, used for example by <see cref="MudExRibbon.PinnedCommandIds"/>.
     /// Defaults to "{Tab}/{Group}/{Text}"; entries of a menu add the text of each parent menu before their own text,
-    /// for example "Home/Font/Case/UPPERCASE".
+    /// for example "Home/Font/Case/UPPERCASE". Two items with the same text in one group or menu get the same default,
+    /// so set the id explicitly for them.
     /// </summary>
     [Parameter]
     public string Id

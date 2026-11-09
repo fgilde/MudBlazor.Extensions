@@ -77,6 +77,7 @@ public partial class MudExRibbon
     /// <summary>
     /// Content of the backstage opened by the file tab, for example New, Open and Save. The file tab is shown only when this is set.
     /// The backstage covers the nearest ancestor with <c>position: relative</c> below the header.
+    /// Escape anywhere inside the backstage closes it, including Escape typed into inputs of this content.
     /// </summary>
     [Parameter] public RenderFragment FileMenu { get; set; }
 
@@ -103,7 +104,7 @@ public partial class MudExRibbon
 
     /// <summary>
     /// Ids (<see cref="MudExRibbonItemBase.Id"/>) of the commands the user pinned to the quick access toolbar with a right click.
-    /// Ids without a matching command are ignored.
+    /// Ids without a matching command are ignored, and commands of a hidden tab are not shown.
     /// </summary>
     [Parameter] public IList<string> PinnedCommandIds { get; set; }
 
@@ -149,7 +150,9 @@ public partial class MudExRibbon
     {
         get
         {
-            var commands = Commands.Where(c => c.IsCommand).ToLookup(c => c.Id);
+            if (PinnedCommandIds is not { Count: > 0 })
+                return _quickAccess.Items.ToList();
+            var commands = Commands.Where(c => c.IsCommand && c.Tab is { Visible: true }).ToLookup(c => c.Id);
             return _quickAccess.Items.Concat((PinnedCommandIds ?? []).SelectMany(id => commands[id].Take(1)).Distinct()).ToList();
         }
     }
@@ -275,7 +278,9 @@ public partial class MudExRibbon
     internal void NotifyCommandExecuted() => _view?.CommandExecuted();
 
     internal IReadOnlyList<MudExRibbonItemBase> SearchCommands(string text)
-        => string.IsNullOrWhiteSpace(text) ? [] : Commands.Where(c => c.IsCommand && c.IsReachable && c.Matches(text.Trim())).ToList();
+        => string.IsNullOrWhiteSpace(text)
+            ? []
+            : Commands.Where(c => c.IsCommand && c.IsReachable && (c.Children.Count == 0 || c is MudExRibbonMenuButton { Split: true }) && c.Matches(text.Trim())).ToList();
 
     internal bool IsPinned(MudExRibbonItemBase item) => PinnedCommandIds?.Contains(item.Id) == true;
 

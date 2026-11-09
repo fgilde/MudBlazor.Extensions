@@ -23,7 +23,9 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
 
     private bool _overlayOpen;
     private bool _backstageFocused;
+    private bool _returnFocus;
     private ElementReference _backstageBack;
+    private ElementReference _fileTab;
     private MudMenu _contextMenu;
     private MudExRibbonItemBase _contextItem;
 
@@ -53,15 +55,20 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
         if (backstageOpen)
             await Ribbon.PlaceBackstageAsync();
         if (backstageOpen && !_backstageFocused)
-            await FocusBackstageAsync();
+            await FocusAsync(_backstageBack);
         _backstageFocused = backstageOpen;
+        if (_returnFocus && !backstageOpen)
+        {
+            _returnFocus = false;
+            await FocusAsync(_fileTab);
+        }
     }
 
-    private async Task FocusBackstageAsync()
+    private static async Task FocusAsync(ElementReference element)
     {
         try
         {
-            await _backstageBack.FocusAsync();
+            await element.FocusAsync();
         }
         catch (Exception e) when (e is JSException or JSDisconnectedException or InvalidOperationException or TaskCanceledException)
         {
@@ -102,7 +109,13 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
     }
 
     private Task OnBackstageKeyDown(KeyboardEventArgs args)
-        => args.Key == "Escape" ? Ribbon.SetFileMenuOpenAsync(false) : Task.CompletedTask;
+        => args.Key == "Escape" ? CloseBackstageAsync() : Task.CompletedTask;
+
+    private Task CloseBackstageAsync()
+    {
+        _returnFocus = true;
+        return Ribbon.SetFileMenuOpenAsync(false);
+    }
 
     private void CloseOverlay() => _overlayOpen = false;
 

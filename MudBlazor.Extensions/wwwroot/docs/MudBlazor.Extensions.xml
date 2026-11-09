@@ -18750,6 +18750,7 @@
             <summary>
             Content of the backstage opened by the file tab, for example New, Open and Save. The file tab is shown only when this is set.
             The backstage covers the nearest ancestor with <c>position: relative</c> below the header.
+            Escape anywhere inside the backstage closes it, including Escape typed into inputs of this content.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRibbon.FileMenuText">
@@ -18776,7 +18777,7 @@
         <member name="P:MudBlazor.Extensions.Components.MudExRibbon.PinnedCommandIds">
             <summary>
             Ids (<see cref="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Id"/>) of the commands the user pinned to the quick access toolbar with a right click.
-            Ids without a matching command are ignored.
+            Ids without a matching command are ignored, and commands of a hidden tab are not shown.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRibbon.PinnedCommandIdsChanged">
@@ -19013,7 +19014,8 @@
             <summary>
             Stable identifier of the command, used for example by <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.PinnedCommandIds"/>.
             Defaults to "{Tab}/{Group}/{Text}"; entries of a menu add the text of each parent menu before their own text,
-            for example "Home/Font/Case/UPPERCASE".
+            for example "Home/Font/Case/UPPERCASE". Two items with the same text in one group or menu get the same default,
+            so set the id explicitly for them.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Text">

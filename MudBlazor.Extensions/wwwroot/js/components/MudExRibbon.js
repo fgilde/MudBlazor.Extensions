@@ -9,7 +9,12 @@ class MudExRibbon {
         this.frame = 0;
         this.busy = false;
         this.observed = null;
-        this.observer = new ResizeObserver(() => this.schedule());
+        this.header = null;
+        this.backstageId = null;
+        this.observer = new ResizeObserver(() => {
+            this.placeBackstage(this.backstageId);
+            this.schedule();
+        });
         document.fonts?.ready.then(() => this.schedule());
     }
 
@@ -35,7 +40,9 @@ class MudExRibbon {
     body() {
         const body = document.getElementById(this.panelId);
         if (body !== this.observed) {
-            this.observer.disconnect();
+            if (this.observed) {
+                this.observer.unobserve(this.observed);
+            }
             this.observed = body;
             if (body) {
                 this.observer.observe(body);
@@ -72,10 +79,19 @@ class MudExRibbon {
     }
 
     placeBackstage(id) {
-        const backstage = document.getElementById(id);
+        this.backstageId = id;
+        const backstage = id ? document.getElementById(id) : null;
         const header = backstage?.previousElementSibling;
-        if (header) {
-            backstage.style.top = `${header.offsetTop + header.offsetHeight}px`;
+        if (!header) {
+            return;
+        }
+        backstage.style.top = `${header.offsetTop + header.offsetHeight}px`;
+        if (header !== this.header) {
+            if (this.header) {
+                this.observer.unobserve(this.header);
+            }
+            this.header = header;
+            this.observer.observe(header);
         }
     }
 
@@ -85,6 +101,7 @@ class MudExRibbon {
         this.elementRef = null;
         this.dotnet = null;
         this.observed = null;
+        this.header = null;
     }
 }
 

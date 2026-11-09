@@ -26,6 +26,7 @@
                         aria-haspopup="dialog"
                         aria-expanded="@(fileMenuOpen ? "true" : "false")"
                         aria-controls="@(fileMenuOpen ? Ribbon.BackstageId : null)"
+                        @ref="_fileTab"
                         @onclick="() => Ribbon.SetFileMenuOpenAsync(!fileMenuOpen)">
                     @Ribbon.TryLocalize(Ribbon.FileMenuText)
                 </button>
@@ -78,7 +79,7 @@
                             class="mud-ex-ribbon-backstage-back"
                             aria-label="@Ribbon.TryLocalize("Back")"
                             @ref="_backstageBack"
-                            @onclick="() => Ribbon.SetFileMenuOpenAsync(false)">
+                            @onclick="CloseBackstageAsync">
                         <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
                     </button>
                 </div>
