@@ -1,0 +1,78 @@
+@inherits MudExBaseComponent<MudExSpreadsheetSheetTabs>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<div @attributes="UserAttributes" class="@($"mud-ex-spreadsheet-sheet-tabs {Class}".TrimEnd())" style="@Style">
+    @if (!ReadOnly && Workbook != null)
+    {
+        <MudIconButton Class="mud-ex-ssst-add" Icon="@Icons.Material.Filled.Add" Size="Size.Small" aria-label="@TryLocalize("New sheet")" title="@TryLocalize("New sheet")" OnClick="AddSheetAsync" />
+    }
+    <div class="mud-ex-ssst-list" role="tablist" aria-label="@TryLocalize("Sheets")">
+        @if (Workbook != null)
+        {
+            @for (var i = 0; i < Workbook.Sheets.Count; i++)
+            {
+                var index = i;
+                var sheet = Workbook.Sheets[i];
+                if (sheet.Hidden)
+                    continue;
+                if (_renaming == index)
+                {
+                    <input @ref="_renameInput" class="mud-ex-ssst-rename" @bind="_renameText" @bind:event="oninput" @onkeydown="RenameKeyDownAsync" @onblur="CommitRenameAsync" aria-label="@TryLocalize("Sheet name")" />
+                }
+                else if (ReadOnly)
+                {
+                    @Tab(index, sheet, null)
+                }
+                else
+                {
+                    <MudMenu ActivationEvent="MouseEvent.RightClick" PositionAtCursor="true" Dense="true">
+                        <ActivatorContent>@Tab(index, sheet, context)</ActivatorContent>
+                        <ChildContent>
+                            <MudMenuItem Icon="@Icons.Material.Filled.Add" OnClick="@(() => InsertSheetAsync(index))">@TryLocalize("Insert")</MudMenuItem>
+                            <MudMenuItem Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteSheetAsync(index))">@TryLocalize("Delete")</MudMenuItem>
+                            <MudMenuItem Icon="@Icons.Material.Filled.Edit" OnClick="@(() => BeginRename(index))">@TryLocalize("Rename")</MudMenuItem>
+                            <MudMenuItem Icon="@Icons.Material.Filled.ChevronLeft" Disabled="@(PreviousVisible(index) < 0)" OnClick="@(() => MoveSheetAsync(index, PreviousVisible(index)))">@TryLocalize("Move Left")</MudMenuItem>
+                            <MudMenuItem Icon="@Icons.Material.Filled.ChevronRight" Disabled="@(NextVisible(index) < 0)" OnClick="@(() => MoveSheetAsync(index, NextVisible(index)))">@TryLocalize("Move Right")</MudMenuItem>
+                            <MudMenu Label="@TryLocalize("Tab Color")" StartIcon="@Icons.Material.Filled.Palette" Dense="true">
+                                <MudMenuItem OnClick="@(() => RunAsync(new SetTabColorCommand(sheet, null)))">@TryLocalize("No Color")</MudMenuItem>
+                                @foreach (var color in TabColors)
+                                {
+                                    <MudMenuItem OnClick="@(() => RunAsync(new SetTabColorCommand(sheet, color.Color)))">
+                                        <span class="mud-ex-ssst-swatch" style="@($"background:{color.Color}")"></span>@TryLocalize(color.Name)
+                                    </MudMenuItem>
+                                }
+                            </MudMenu>
+                            <MudMenuItem Icon="@Icons.Material.Filled.VisibilityOff" OnClick="@(() => RunAsync(new SetSheetHiddenCommand(sheet, true)))">@TryLocalize("Hide")</MudMenuItem>
+                            @if (Workbook.Sheets.Any(s => s.Hidden))
+                            {
+                                <MudMenu Label="@TryLocalize("Unhide...")" StartIcon="@Icons.Material.Filled.Visibility" Dense="true">
+                                    @foreach (var hidden in Workbook.Sheets.Where(s => s.Hidden))
+                                    {
+                                        <MudMenuItem OnClick="@(() => UnhideAsync(hidden))">@hidden.Name</MudMenuItem>
+                                    }
+                                </MudMenu>
+                            }
+                        </ChildContent>
+                    </MudMenu>
+                }
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private RenderFragment Tab(int index, Worksheet sheet, MenuContext menu) =>
+        @<div class="@(index == SheetIndex ? "mud-ex-ssst-tab mud-ex-ssst-active" : "mud-ex-ssst-tab")"
+              role="tab"
+              aria-selected="@(index == SheetIndex ? "true" : "false")"
+              style="@(SafeColor(sheet.TabColor) is { } color ? $"--mud-ex-ssst-color:{color}" : null)"
+              draggable="@(ReadOnly ? "false" : "true")"
+              @onclick="@(() => SelectAsync(index))"
+              @ondblclick="@(() => BeginRename(index))"
+              @oncontextmenu="@(e => menu?.OpenAsync(e) ?? Task.CompletedTask)"
+              @oncontextmenu:preventDefault="@(menu != null)"
+              @ondragstart="@(() => _dragIndex = index)"
+              @ondragover:preventDefault="true"
+              @ondrop="@(() => DropAsync(index))">@sheet.Name</div>;
+}

@@ -1,0 +1,95 @@
+@inherits MudExBaseComponent<FormatCellsDialog>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<MudDialog Class="mud-ex-format-cells-dialog">
+    <DialogContent>
+        <MudTabs Elevation="0" Rounded="true" TabPanelsClass="pt-4" @bind-ActivePanelIndex="_tab">
+            <MudTabPanel Text="@TryLocalize("Number")">
+                <MudStack Spacing="2">
+                    <MudSelect T="string" Label="@TryLocalize("Category")" Value="_category" ValueChanged="SetCategory" Dense="true">
+                        @foreach (var name in Categories)
+                        {
+                            <MudSelectItem Value="@name">@TryLocalize(name)</MudSelectItem>
+                        }
+                    </MudSelect>
+                    @if (HasDecimals)
+                    {
+                        <MudNumericField T="int" Label="@TryLocalize("Decimal places")" Value="_decimals" ValueChanged="SetDecimals" Min="0" Max="30" Margin="Margin.Dense" />
+                    }
+                    @if (_category == "Number")
+                    {
+                        <MudCheckBox T="bool" Label="@TryLocalize("Use 1000 Separator (,)")" Value="_thousands" ValueChanged="SetThousands" Dense="true" />
+                    }
+                    <MudTextField T="string" Label="@TryLocalize("Type")" Value="_style.NumberFormat" ValueChanged="SetCode" Immediate="true" Margin="Margin.Dense" />
+                    <MudText Typo="Typo.body2" Class="mud-ex-format-cells-sample">@TryLocalize("Sample"): @Preview</MudText>
+                </MudStack>
+            </MudTabPanel>
+            <MudTabPanel Text="@TryLocalize("Alignment")">
+                <MudStack Spacing="2">
+                    <MudSelect T="CellHorizontalAlignment" Label="@TryLocalize("Horizontal")" Value="_style.Alignment.Horizontal" ValueChanged="@(v => Align(a => a with { Horizontal = v }))" Dense="true">
+                        @foreach (var value in Enum.GetValues<CellHorizontalAlignment>())
+                        {
+                            <MudSelectItem Value="@value">@TryLocalize(value.ToString())</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudSelect T="CellVerticalAlignment" Label="@TryLocalize("Vertical")" Value="_style.Alignment.Vertical" ValueChanged="@(v => Align(a => a with { Vertical = v }))" Dense="true">
+                        @foreach (var value in Enum.GetValues<CellVerticalAlignment>())
+                        {
+                            <MudSelectItem Value="@value">@TryLocalize(value.ToString())</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudNumericField T="int" Label="@TryLocalize("Indent")" Value="_style.Alignment.Indent" ValueChanged="@(v => Align(a => a with { Indent = v }))" Min="0" Max="250" Dense="true" />
+                    <MudCheckBox T="bool" Label="@TryLocalize("Wrap text")" Value="_style.Alignment.WrapText" ValueChanged="@(v => Align(a => a with { WrapText = v }))" Dense="true" />
+                </MudStack>
+            </MudTabPanel>
+            <MudTabPanel Text="@TryLocalize("Font")">
+                <MudStack Spacing="2">
+                    <MudTextField T="string" Label="@TryLocalize("Font")" Value="_style.Font.Name" ValueChanged="@(v => SetFont(f => f with { Name = string.IsNullOrWhiteSpace(v) ? f.Name : v.Trim() }))" Dense="true" />
+                    <MudNumericField T="double" Label="@TryLocalize("Size")" Value="_style.Font.Size" ValueChanged="@(v => SetFont(f => f with { Size = v }))" Min="1" Max="409" Dense="true" />
+                    <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="0">
+                        <MudCheckBox T="bool" Label="@TryLocalize("Bold")" Value="_style.Font.Bold" ValueChanged="@(v => SetFont(f => f with { Bold = v }))" Dense="true" />
+                        <MudCheckBox T="bool" Label="@TryLocalize("Italic")" Value="_style.Font.Italic" ValueChanged="@(v => SetFont(f => f with { Italic = v }))" Dense="true" />
+                        <MudCheckBox T="bool" Label="@TryLocalize("Underline")" Value="_style.Font.Underline" ValueChanged="@(v => SetFont(f => f with { Underline = v }))" Dense="true" />
+                        <MudCheckBox T="bool" Label="@TryLocalize("Strikethrough")" Value="_style.Font.Strikethrough" ValueChanged="@(v => SetFont(f => f with { Strikethrough = v }))" Dense="true" />
+                    </MudStack>
+                    <label class="mud-ex-format-cells-color">@TryLocalize("Color")
+                        <input type="color" value="@(_style.Font.Color ?? "#000000")" @onchange="@(e => SetFont(f => f with { Color = ColorOf(e) }))" />
+                    </label>
+                </MudStack>
+            </MudTabPanel>
+            <MudTabPanel Text="@TryLocalize("Border")">
+                <MudStack Spacing="2">
+                    <MudStack Row="true" Spacing="2">
+                        <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => SetBorder(_ => new CellBorder()))">@TryLocalize("None")</MudButton>
+                        <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => SetBorder(_ => AllSides(CellBorderStyle.Thin)))">@TryLocalize("All")</MudButton>
+                    </MudStack>
+                    @foreach (var (name, get, set) in Sides)
+                    {
+                        <MudSelect T="CellBorderStyle" Label="@TryLocalize(name)" Value="get(_style.Border).Style" ValueChanged="@(v => SetBorder(b => set(b, get(b) with { Style = v })))" Dense="true">
+                            @foreach (var value in Enum.GetValues<CellBorderStyle>())
+                            {
+                                <MudSelectItem Value="@value">@TryLocalize(value.ToString())</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+                    <label class="mud-ex-format-cells-color">@TryLocalize("Color")
+                        <input type="color" value="@(BorderColor ?? "#000000")" @onchange="@(e => SetBorderColor(ColorOf(e)))" />
+                    </label>
+                </MudStack>
+            </MudTabPanel>
+            <MudTabPanel Text="@TryLocalize("Fill")">
+                <MudStack Spacing="2">
+                    <label class="mud-ex-format-cells-color">@TryLocalize("Background Color")
+                        <input type="color" value="@(_style.Fill.Color ?? "#FFFFFF")" @onchange="@(e => _style = _style with { Fill = new CellFill { Color = ColorOf(e) } })" />
+                    </label>
+                    <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => _style = _style with { Fill = new CellFill() })">@TryLocalize("No Color")</MudButton>
+                </MudStack>
+            </MudTabPanel>
+        </MudTabs>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

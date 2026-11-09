@@ -635,6 +635,12 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.NewAsync">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.ShowErrorAsync(System.String)">
+            <summary>
+            Shows an error in the surrounding <see cref="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.MudExFileDisplay"/>, or in a dialog when the editor is used on its own
+            </summary>
+            <param name="message">The message</param>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SaveAsync(System.Boolean)">
             <inheritdoc />
         </member>
@@ -19571,6 +19577,21 @@
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.Dispose">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.FormatCellsDialog">
+            <summary>
+            The Format Cells dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/> with the tabs Number, Alignment, Font, Border and Fill.
+            Closes with the edited <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CellStyle"/> as result data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.FormatCellsDialog.CellStyle">
+            <summary>The style shown when the dialog opens, usually the style of the active cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.FormatCellsDialog.Sample">
+            <summary>Value shown in the number format sample.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.FormatCellsDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.FormulaSuggestion">
             <summary>A completion offered while typing a formula.</summary>
             <param name="Name">The function or defined name.</param>
@@ -19626,6 +19647,94 @@
         <member name="T:MudBlazor.Extensions.Components.FormulaAssist">
             <summary>Formula autocomplete from the function catalog and defined names, and the signature tip of the enclosing function.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor">
+            <summary>
+            Spreadsheet editor in the style of Excel with ribbon, formula bar, virtualized grid, sheet tabs and status bar.
+            Opens xlsx, xlsm, xltx, legacy xls (saved as xlsx), csv and tsv files and is the editor for these files in
+            <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/>. Without a file it edits the <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.Workbook"/> parameter.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.Workbook">
+            <summary>The workbook to edit when no file is given. Changes by the user raise <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.WorkbookChanged"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.WorkbookChanged">
+            <summary>Raised after every change of the workbook and when the editor replaces it (New, Open).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.RibbonMode">
+            <summary>Layout of the ribbon.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.ShowRibbon">
+            <summary>Whether the ribbon is shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.RibbonColor">
+            <summary>Color of the ribbon header. Defaults to the Excel green.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.RibbonCollapsed">
+            <summary>Whether the ribbon starts collapsed to its tab row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.RibbonContent">
+            <summary>Additional ribbon tabs rendered after the built-in tabs.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.ShowFormulaBar">
+            <summary>Whether the formula bar is shown. The user can toggle it on the View tab.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.ShowSheetTabs">
+            <summary>Whether the sheet tabs are shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.ShowStatusBar">
+            <summary>Whether the status bar with the selection summary and the zoom slider is shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.Selection">
+            <summary>The selection on the active sheet. Changes from the host are applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.SelectionChanged">
+            <summary>Raised when the user changes the selection.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.CurrentWorkbook">
+            <summary>The workbook currently shown, loaded from a file, created by New or given by <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.Workbook"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.Grid">
+            <summary>The grid of the active sheet, or null before the first render.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.ActiveSheet">
+            <summary>The shown sheet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.RenderPriority">
+            <summary>Wins over the older Excel viewers.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.SaveFormats">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.OpenFormats">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.OnAfterRender(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.CreateNew">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.LoadContentAsync(MudBlazor.Extensions.Core.MudExFileContent)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetFormulaBar">
             <summary>
             Excel style formula bar for a <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetGrid"/>: a name box that shows the active cell and jumps to a cell,
@@ -19678,6 +19787,10 @@
             </summary>
             <param name="text">The clipboard text.</param>
             <returns>A task that completes when the cells are written.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoFitColumnsAsync">
+            <summary>Sets the width of each selected column to fit its content, like AutoFit Column Width.</summary>
+            <returns>A task that completes when the widths are set.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillToAsync(MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
             <summary>
@@ -19850,6 +19963,80 @@
             <param name="width">Visible width in pixels.</param>
             <param name="height">Visible height in pixels.</param>
             <returns>A task that completes when the new window is rendered.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs">
+            <summary>
+            The sheet tabs of a spreadsheet: a click selects a sheet, a double click renames it, the context menu inserts, deletes, moves,
+            colors, hides and unhides sheets, and dragging a tab reorders the sheets. All changes are undoable workbook commands.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.Workbook">
+            <summary>The workbook whose sheets are shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.SheetIndex">
+            <summary>Index of the active sheet in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Sheets"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.SheetIndexChanged">
+            <summary>Raised when the user selects another sheet or a new sheet becomes active.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.ReadOnly">
+            <summary>Whether sheets can only be selected, not changed.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.AddSheetAsync">
+            <summary>Adds a new sheet after the active sheet and selects it.</summary>
+            <returns>A task that completes when the sheet is added.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.InsertSheetAsync(System.Int32)">
+            <summary>Inserts a new sheet at a position and selects it.</summary>
+            <param name="index">Position of the new sheet.</param>
+            <returns>A task that completes when the sheet is added.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.RenameSheetAsync(System.Int32,System.String)">
+            <summary>Renames a sheet. Invalid or duplicate names are reported and leave the sheet unchanged.</summary>
+            <param name="index">Index of the sheet.</param>
+            <param name="name">The new name.</param>
+            <returns>A task that completes when the sheet is renamed.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.DeleteSheetAsync(System.Int32)">
+            <summary>Deletes a sheet. The last visible sheet cannot be deleted.</summary>
+            <param name="index">Index of the sheet.</param>
+            <returns>A task that completes when the sheet is deleted.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.MoveSheetAsync(System.Int32,System.Int32)">
+            <summary>Moves a sheet to another position.</summary>
+            <param name="index">Index of the sheet.</param>
+            <param name="newIndex">Its new position.</param>
+            <returns>A task that completes when the sheet is moved.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.BeginRename(System.Int32)">
+            <summary>Shows the inline editor to rename a sheet.</summary>
+            <param name="index">Index of the sheet.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetStatusBar">
+            <summary>
+            Status bar of a spreadsheet: average, count and sum of the selected cells, formatted like the active cell, and a zoom slider.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetStatusBar.Sheet">
+            <summary>The sheet the selection belongs to.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetStatusBar.Selection">
+            <summary>The selected cells.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetStatusBar.Version">
+            <summary>Changes whenever the workbook changed, so the summary is computed again.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetStatusBar.Zoom">
+            <summary>Zoom factor, 1 is 100%.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetStatusBar.ZoomChanged">
+            <summary>Raised when the user changes the zoom.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetStatusBar.OnParametersSet">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.SpreadsheetAxis">
             <summary>
@@ -32039,6 +32226,25 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTabColorCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetSheetHiddenCommand">
+            <summary>Hides or shows a sheet. At least one sheet stays visible.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="hidden">True to hide, false to show.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetSheetHiddenCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Boolean)">
+            <summary>Hides or shows a sheet. At least one sheet stays visible.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="hidden">True to hide, false to show.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetSheetHiddenCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetSheetHiddenCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetSheetHiddenCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DefineNameCommand">

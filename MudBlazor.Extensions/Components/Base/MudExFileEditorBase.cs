@@ -271,7 +271,11 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
 
     private bool CanShowError => MudExFileDisplay != null || DialogService != null;
 
-    private async Task ShowErrorAsync(string message)
+    /// <summary>
+    /// Shows an error in the surrounding <see cref="MudExFileDisplay"/>, or in a dialog when the editor is used on its own
+    /// </summary>
+    /// <param name="message">The message</param>
+    protected async Task ShowErrorAsync(string message)
     {
         if (MudExFileDisplay != null)
             MudExFileDisplay.ShowError(message);

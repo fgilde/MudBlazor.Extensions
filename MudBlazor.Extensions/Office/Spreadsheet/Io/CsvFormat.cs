@@ -21,11 +21,13 @@ public static class CsvFormat
     /// <param name="stream">The text; it is read to the end and left open.</param>
     /// <param name="delimiter">The field delimiter, or null to detect one of <c>,</c> <c>;</c> tab <c>|</c> from the first lines.</param>
     /// <returns>The workbook.</returns>
-    public static Workbook Read(Stream stream, char? delimiter = null)
+    public static Workbook Read(Stream stream, char? delimiter = null) => Read(stream, delimiter, out _);
+
+    internal static Workbook Read(Stream stream, char? delimiter, out char sep)
     {
         ArgumentNullException.ThrowIfNull(stream);
         var text = Decode(stream);
-        var sep = delimiter ?? Detect(text);
+        sep = delimiter ?? Detect(text);
         var wb = new Workbook();
         var ws = new Worksheet("Sheet1", wb);
         wb.SheetList.Add(ws);

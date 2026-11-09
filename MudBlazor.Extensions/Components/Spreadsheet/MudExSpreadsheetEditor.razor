@@ -1,0 +1,260 @@
+@inherits MudBlazor.Extensions.Components.Base.MudExFileEditorBase<MudExSpreadsheetEditor>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<div @attributes="UserAttributes" class="@($"mud-ex-spreadsheet-editor {Class}".TrimEnd())" style="@Style">
+    @if (ShowRibbon)
+    {
+        var style = ActiveStyle;
+        <MudExRibbon Class="mud-ex-spreadsheet-ribbon" Color="@RibbonColor" @bind-Mode="_mode" @bind-Collapsed="_collapsed" FileMenuText="@TryLocalize("File")">
+            <FileMenu>
+                <MudExFileEditorBackstage Editor="this" Localizer="@Localizer" />
+            </FileMenu>
+            <QuickAccess>
+                @if (!IsReadOnly)
+                {
+                    <MudExRibbonButton Id="xl-save" Text="@TryLocalize("Save")" Icon="@Icons.Material.Filled.Save" Shortcut="Ctrl+S" OnClick="@(() => SaveAsync())" />
+                    <MudExRibbonButton Id="xl-undo" Text="@TryLocalize("Undo")" Icon="@Icons.Material.Filled.Undo" Shortcut="Ctrl+Z" Disabled="@(!_workbook.Undo.CanUndo)" OnClick="@(() => UndoAsync(false))" />
+                    <MudExRibbonButton Id="xl-redo" Text="@TryLocalize("Redo")" Icon="@Icons.Material.Filled.Redo" Shortcut="Ctrl+Y" Disabled="@(!_workbook.Undo.CanRedo)" OnClick="@(() => UndoAsync(true))" />
+                }
+            </QuickAccess>
+            <ChildContent>
+                <MudExRibbonTab Text="@TryLocalize("Home")" KeyTip="H" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Clipboard")" Icon="@Icons.Material.Filled.ContentPaste" CollapsePriority="2">
+                        <MudExRibbonMenuButton Id="xl-paste" Text="@TryLocalize("Paste")" Icon="@Icons.Material.Filled.ContentPaste" Split="true" Size="MudExRibbonItemSize.Large" KeyTip="V" Shortcut="Ctrl+V" OnClick="@(() => PasteAsync(false))">
+                            <MudExRibbonMenuItem Id="xl-paste-all" Text="@TryLocalize("Paste")" Icon="@Icons.Material.Filled.ContentPaste" Shortcut="Ctrl+V" OnClick="@(() => PasteAsync(false))" />
+                            <MudExRibbonMenuItem Id="xl-paste-values" Text="@TryLocalize("Paste Values")" Icon="@Icons.Material.Filled.Numbers" OnClick="@(() => PasteAsync(true))" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonButton Id="xl-cut" Text="@TryLocalize("Cut")" Icon="@Icons.Material.Filled.ContentCut" Size="MudExRibbonItemSize.Small" Shortcut="Ctrl+X" OnClick="CutAsync" />
+                        <MudExRibbonButton Id="xl-copy" Text="@TryLocalize("Copy")" Icon="@Icons.Material.Filled.ContentCopy" Size="MudExRibbonItemSize.Small" Shortcut="Ctrl+C" OnClick="CopyAsync" />
+                    </MudExRibbonGroup>
+
+                    <MudExRibbonGroup Text="@TryLocalize("Font")" Icon="@Icons.Material.Filled.FormatSize" CollapsePriority="5" OnDialogLauncherClick="FormatCellsAsync">
+                        <MudExRibbonRow>
+                            <MudExRibbonSelect T="string" Text="@TryLocalize("Font")" Items="@Fonts" Value="@style.Font.Name" ValueChanged="SetFontNameAsync" Editable="true" Width="140" />
+                            <MudExRibbonNumberBox Text="@TryLocalize("Font Size")" Value="@style.Font.Size" ValueChanged="SetFontSizeAsync" Min="1" Max="409" Step="1" />
+                        </MudExRibbonRow>
+                        <MudExRibbonRow>
+                            <MudExRibbonToggleButton Id="xl-bold" Text="@TryLocalize("Bold")" Icon="@Icons.Material.Filled.FormatBold" Shortcut="Ctrl+B" Size="MudExRibbonItemSize.Small" Checked="@style.Font.Bold" CheckedChanged="SetBoldAsync" />
+                            <MudExRibbonToggleButton Id="xl-italic" Text="@TryLocalize("Italic")" Icon="@Icons.Material.Filled.FormatItalic" Shortcut="Ctrl+I" Size="MudExRibbonItemSize.Small" Checked="@style.Font.Italic" CheckedChanged="SetItalicAsync" />
+                            <MudExRibbonToggleButton Id="xl-underline" Text="@TryLocalize("Underline")" Icon="@Icons.Material.Filled.FormatUnderlined" Shortcut="Ctrl+U" Size="MudExRibbonItemSize.Small" Checked="@style.Font.Underline" CheckedChanged="SetUnderlineAsync" />
+                            <MudExRibbonToggleButton Id="xl-strikethrough" Text="@TryLocalize("Strikethrough")" Icon="@Icons.Material.Filled.FormatStrikethrough" Shortcut="Ctrl+5" Size="MudExRibbonItemSize.Small" Checked="@style.Font.Strikethrough" CheckedChanged="SetStrikethroughAsync" />
+                            <MudExRibbonSeparator />
+                            <MudExRibbonMenuButton Id="xl-borders" Text="@TryLocalize("Borders")" Icon="@Icons.Material.Filled.BorderBottom" Split="true" Size="MudExRibbonItemSize.Small" OnClick="@(() => SetBordersAsync(BorderPreset.Bottom))">
+                                <MudExRibbonMenuItem Id="xl-border-bottom" Text="@TryLocalize("Bottom Border")" Icon="@Icons.Material.Filled.BorderBottom" OnClick="@(() => SetBordersAsync(BorderPreset.Bottom))" />
+                                <MudExRibbonMenuItem Id="xl-border-top" Text="@TryLocalize("Top Border")" Icon="@Icons.Material.Filled.BorderTop" OnClick="@(() => SetBordersAsync(BorderPreset.Top))" />
+                                <MudExRibbonMenuItem Id="xl-border-left" Text="@TryLocalize("Left Border")" Icon="@Icons.Material.Filled.BorderLeft" OnClick="@(() => SetBordersAsync(BorderPreset.Left))" />
+                                <MudExRibbonMenuItem Id="xl-border-right" Text="@TryLocalize("Right Border")" Icon="@Icons.Material.Filled.BorderRight" OnClick="@(() => SetBordersAsync(BorderPreset.Right))" />
+                                <MudExRibbonMenuItem Id="xl-border-none" Text="@TryLocalize("No Border")" Icon="@Icons.Material.Filled.BorderClear" OnClick="@(() => SetBordersAsync(BorderPreset.None))" />
+                                <MudExRibbonMenuItem Id="xl-border-all" Text="@TryLocalize("All Borders")" Icon="@Icons.Material.Filled.BorderAll" OnClick="@(() => SetBordersAsync(BorderPreset.All))" />
+                                <MudExRibbonMenuItem Id="xl-border-outside" Text="@TryLocalize("Outside Borders")" Icon="@Icons.Material.Filled.BorderOuter" OnClick="@(() => SetBordersAsync(BorderPreset.Outside))" />
+                                <MudExRibbonMenuItem Id="xl-border-thick" Text="@TryLocalize("Thick Outside Borders")" Icon="@Icons.Material.Filled.CheckBoxOutlineBlank" OnClick="@(() => SetBordersAsync(BorderPreset.ThickOutside))" />
+                            </MudExRibbonMenuButton>
+                            <MudExRibbonColorPicker Id="xl-fill" Text="@TryLocalize("Fill Color")" Icon="@Icons.Material.Filled.FormatColorFill" Size="MudExRibbonItemSize.Small" Palette="@Palette" Value="@_fillColor" ValueChanged="SetFillColorAsync" />
+                            <MudExRibbonColorPicker Id="xl-font-color" Text="@TryLocalize("Font Color")" Icon="@Icons.Material.Filled.FormatColorText" Size="MudExRibbonItemSize.Small" Palette="@Palette" Value="@_fontColor" ValueChanged="SetFontColorAsync" />
+                        </MudExRibbonRow>
+                    </MudExRibbonGroup>
+
+                    <MudExRibbonGroup Text="@TryLocalize("Alignment")" Icon="@Icons.Material.Filled.FormatAlignLeft" CollapsePriority="4" OnDialogLauncherClick="FormatCellsAsync">
+                        <MudExRibbonRow>
+                            <MudExRibbonToggleButton Id="xl-align-top" Text="@TryLocalize("Top Align")" Icon="@Icons.Material.Filled.VerticalAlignTop" Size="MudExRibbonItemSize.Small" Checked="@(style.Alignment.Vertical == CellVerticalAlignment.Top)" CheckedChanged="@(_ => SetVerticalAsync(CellVerticalAlignment.Top))" />
+                            <MudExRibbonToggleButton Id="xl-align-middle" Text="@TryLocalize("Middle Align")" Icon="@Icons.Material.Filled.VerticalAlignCenter" Size="MudExRibbonItemSize.Small" Checked="@(style.Alignment.Vertical == CellVerticalAlignment.Center)" CheckedChanged="@(_ => SetVerticalAsync(CellVerticalAlignment.Center))" />
+                            <MudExRibbonToggleButton Id="xl-align-bottom" Text="@TryLocalize("Bottom Align")" Icon="@Icons.Material.Filled.VerticalAlignBottom" Size="MudExRibbonItemSize.Small" Checked="@(style.Alignment.Vertical == CellVerticalAlignment.Bottom)" CheckedChanged="@(_ => SetVerticalAsync(CellVerticalAlignment.Bottom))" />
+                            <MudExRibbonSeparator />
+                            <MudExRibbonToggleButton Id="xl-wrap" Text="@TryLocalize("Wrap Text")" Icon="@Icons.Material.Filled.WrapText" Size="MudExRibbonItemSize.Small" Checked="@style.Alignment.WrapText" CheckedChanged="SetWrapAsync" />
+                        </MudExRibbonRow>
+                        <MudExRibbonRow>
+                            <MudExRibbonToggleButton Id="xl-align-left" Text="@TryLocalize("Align Left")" Icon="@Icons.Material.Filled.FormatAlignLeft" Size="MudExRibbonItemSize.Small" Checked="@(style.Alignment.Horizontal == CellHorizontalAlignment.Left)" CheckedChanged="@(_ => SetHorizontalAsync(CellHorizontalAlignment.Left))" />
+                            <MudExRibbonToggleButton Id="xl-align-center" Text="@TryLocalize("Center")" Icon="@Icons.Material.Filled.FormatAlignCenter" Size="MudExRibbonItemSize.Small" Checked="@(style.Alignment.Horizontal == CellHorizontalAlignment.Center)" CheckedChanged="@(_ => SetHorizontalAsync(CellHorizontalAlignment.Center))" />
+                            <MudExRibbonToggleButton Id="xl-align-right" Text="@TryLocalize("Align Right")" Icon="@Icons.Material.Filled.FormatAlignRight" Size="MudExRibbonItemSize.Small" Checked="@(style.Alignment.Horizontal == CellHorizontalAlignment.Right)" CheckedChanged="@(_ => SetHorizontalAsync(CellHorizontalAlignment.Right))" />
+                            <MudExRibbonSeparator />
+                            <MudExRibbonMenuButton Id="xl-merge" Text="@TryLocalize("Merge & Center")" Icon="@Icons.Material.Filled.CallMerge" Split="true" Size="MudExRibbonItemSize.Small" OnClick="MergeAndCenterAsync">
+                                <MudExRibbonMenuItem Id="xl-merge-center" Text="@TryLocalize("Merge & Center")" OnClick="MergeAndCenterAsync" />
+                                <MudExRibbonMenuItem Id="xl-merge-across" Text="@TryLocalize("Merge Across")" OnClick="MergeAcrossAsync" />
+                                <MudExRibbonMenuItem Id="xl-merge-cells" Text="@TryLocalize("Merge Cells")" OnClick="MergeCellsAsync" />
+                                <MudExRibbonMenuItem Id="xl-unmerge" Text="@TryLocalize("Unmerge Cells")" OnClick="UnmergeAsync" />
+                            </MudExRibbonMenuButton>
+                        </MudExRibbonRow>
+                    </MudExRibbonGroup>
+
+                    <MudExRibbonGroup Text="@TryLocalize("Number")" Icon="@Icons.Material.Filled.Numbers" CollapsePriority="3" OnDialogLauncherClick="FormatCellsAsync">
+                        <MudExRibbonRow>
+                            <MudExRibbonSelect T="string" Text="@TryLocalize("Number Format")" Items="@NumberFormatNames" ItemText="@(n => TryLocalize(n))" Value="@NumberFormatName" ValueChanged="@(n => SetNumberFormatAsync(NumberFormatCode(n)))" Width="130" />
+                        </MudExRibbonRow>
+                        <MudExRibbonRow>
+                            <MudExRibbonButton Id="xl-percent" Text="@TryLocalize("Percent Style")" Icon="@Icons.Material.Filled.Percent" Size="MudExRibbonItemSize.Small" Shortcut="Ctrl+Shift+%" OnClick="@(() => SetNumberFormatAsync("0%"))" />
+                            <MudExRibbonButton Id="xl-comma" Text="@TryLocalize("Comma Style")" Icon="@Icons.Material.Filled.Pin" Size="MudExRibbonItemSize.Small" OnClick="@(() => SetNumberFormatAsync("#,##0.00"))" />
+                            <MudExRibbonButton Id="xl-decimal-increase" Text="@TryLocalize("Increase Decimal")" Icon="@Icons.Material.Filled.Add" Size="MudExRibbonItemSize.Small" OnClick="@(() => ChangeDecimalsAsync(1))" />
+                            <MudExRibbonButton Id="xl-decimal-decrease" Text="@TryLocalize("Decrease Decimal")" Icon="@Icons.Material.Filled.Remove" Size="MudExRibbonItemSize.Small" OnClick="@(() => ChangeDecimalsAsync(-1))" />
+                        </MudExRibbonRow>
+                    </MudExRibbonGroup>
+
+                    <MudExRibbonGroup Text="@TryLocalize("Cells")" Icon="@Icons.Material.Filled.TableRows" CollapsePriority="1">
+                        <MudExRibbonMenuButton Id="xl-insert" Text="@TryLocalize("Insert")" Icon="@Icons.Material.Filled.AddBox" Size="MudExRibbonItemSize.Large">
+                            <MudExRibbonMenuItem Id="xl-insert-rows" Text="@TryLocalize("Insert Sheet Rows")" OnClick="InsertRowsAsync" />
+                            <MudExRibbonMenuItem Id="xl-insert-columns" Text="@TryLocalize("Insert Sheet Columns")" OnClick="InsertColumnsAsync" />
+                            <MudExRibbonMenuItem Id="xl-insert-sheet" Text="@TryLocalize("Insert Sheet")" OnClick="InsertSheetAsync" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonMenuButton Id="xl-delete" Text="@TryLocalize("Delete")" Icon="@Icons.Material.Filled.IndeterminateCheckBox" Size="MudExRibbonItemSize.Large">
+                            <MudExRibbonMenuItem Id="xl-delete-rows" Text="@TryLocalize("Delete Sheet Rows")" OnClick="DeleteRowsAsync" />
+                            <MudExRibbonMenuItem Id="xl-delete-columns" Text="@TryLocalize("Delete Sheet Columns")" OnClick="DeleteColumnsAsync" />
+                            <MudExRibbonMenuItem Id="xl-delete-sheet" Text="@TryLocalize("Delete Sheet")" OnClick="DeleteSheetAsync" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonMenuButton Id="xl-format" Text="@TryLocalize("Format")" Icon="@Icons.Material.Filled.ViewColumn" Size="MudExRibbonItemSize.Large">
+                            <MudExRibbonMenuItem Id="xl-row-height" Text="@TryLocalize("Row Height...")" OnClick="RowHeightAsync" />
+                            <MudExRibbonMenuItem Id="xl-autofit-rows" Text="@TryLocalize("AutoFit Row Height")" OnClick="AutoFitRowsAsync" />
+                            <MudExRibbonMenuItem Id="xl-column-width" Text="@TryLocalize("Column Width...")" OnClick="ColumnWidthAsync" />
+                            <MudExRibbonMenuItem Id="xl-autofit-columns" Text="@TryLocalize("AutoFit Column Width")" OnClick="AutoFitColumnsAsync" />
+                            <MudExRibbonMenuItem Id="xl-hide-unhide" Text="@TryLocalize("Hide & Unhide")">
+                                <MudExRibbonMenuItem Id="xl-hide-rows" Text="@TryLocalize("Hide Rows")" OnClick="@(() => SetRowsHiddenAsync(true))" />
+                                <MudExRibbonMenuItem Id="xl-hide-columns" Text="@TryLocalize("Hide Columns")" OnClick="@(() => SetColumnsHiddenAsync(true))" />
+                                <MudExRibbonMenuItem Id="xl-hide-sheet" Text="@TryLocalize("Hide Sheet")" OnClick="HideSheetAsync" />
+                                <MudExRibbonMenuItem Id="xl-unhide-rows" Text="@TryLocalize("Unhide Rows")" OnClick="@(() => SetRowsHiddenAsync(false))" />
+                                <MudExRibbonMenuItem Id="xl-unhide-columns" Text="@TryLocalize("Unhide Columns")" OnClick="@(() => SetColumnsHiddenAsync(false))" />
+                                @foreach (var sheet in _workbook?.Sheets.Where(s => s.Hidden) ?? [])
+                                {
+                                    <MudExRibbonMenuItem Id="@($"xl-unhide-sheet-{sheet.Name}")" Text="@(TryLocalize("Unhide Sheet") + ": " + sheet.Name)" OnClick="@(() => UnhideSheetAsync(sheet))" />
+                                }
+                            </MudExRibbonMenuItem>
+                            <MudExRibbonMenuItem Id="xl-rename-sheet" Text="@TryLocalize("Rename Sheet")" OnClick="RenameSheetAsync" />
+                            <MudExRibbonMenuItem Id="xl-tab-color" Text="@TryLocalize("Tab Color")">
+                                <MudExRibbonMenuItem Id="xl-tab-color-none" Text="@TryLocalize("No Color")" OnClick="@(() => SetTabColorAsync(null))" />
+                                @foreach (var color in MudExSpreadsheetSheetTabs.TabColors)
+                                {
+                                    <MudExRibbonMenuItem Id="@($"xl-tab-color-{color.Color}")" Text="@TryLocalize(color.Name)" OnClick="@(() => SetTabColorAsync(color.Color))" />
+                                }
+                            </MudExRibbonMenuItem>
+                            <MudExRibbonMenuItem Id="xl-format-cells" Text="@TryLocalize("Format Cells...")" Icon="@Icons.Material.Filled.Tune" Shortcut="Ctrl+1" OnClick="FormatCellsAsync" />
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+
+                    <MudExRibbonGroup Text="@TryLocalize("Editing")" Icon="@Icons.Material.Filled.Functions" CollapsePriority="2">
+                        @AutoSumButton("xl-autosum")
+                        <MudExRibbonMenuButton Id="xl-fill-menu" Text="@TryLocalize("Fill")" Icon="@Icons.Material.Filled.SouthEast" Size="MudExRibbonItemSize.Small">
+                            <MudExRibbonMenuItem Id="xl-fill-down" Text="@TryLocalize("Down")" Icon="@Icons.Material.Filled.ArrowDownward" Shortcut="Ctrl+D" OnClick="FillDownAsync" />
+                            <MudExRibbonMenuItem Id="xl-fill-right" Text="@TryLocalize("Right")" Icon="@Icons.Material.Filled.ArrowForward" Shortcut="Ctrl+R" OnClick="FillRightAsync" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonMenuButton Id="xl-clear" Text="@TryLocalize("Clear")" Icon="@Icons.Material.Filled.CleaningServices" Size="MudExRibbonItemSize.Small">
+                            <MudExRibbonMenuItem Id="xl-clear-all" Text="@TryLocalize("Clear All")" OnClick="@(() => ClearAsync(true, true))" />
+                            <MudExRibbonMenuItem Id="xl-clear-formats" Text="@TryLocalize("Clear Formats")" OnClick="@(() => ClearAsync(false, true))" />
+                            <MudExRibbonMenuItem Id="xl-clear-contents" Text="@TryLocalize("Clear Contents")" Shortcut="Delete" OnClick="@(() => ClearAsync(true, false))" />
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+
+                <MudExRibbonTab Text="@TryLocalize("Insert")" KeyTip="N" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Functions")" Icon="@Icons.Material.Filled.Functions">
+                        <MudExRibbonMenuButton Id="xl-insert-function" Text="@TryLocalize("Function")" Icon="@Icons.Material.Filled.Functions" Size="MudExRibbonItemSize.Large">
+                            @foreach (var (category, functions) in FunctionCategories)
+                            {
+                                <MudExRibbonMenuItem Text="@TryLocalize(category)">
+                                    @FunctionItems(functions)
+                                </MudExRibbonMenuItem>
+                            }
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+
+                <MudExRibbonTab Text="@TryLocalize("Formulas")" KeyTip="M" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Function Library")" Icon="@Icons.Material.Filled.Functions" CollapsePriority="2">
+                        @AutoSumButton("xl-formulas-autosum")
+                        @foreach (var (category, functions) in FunctionCategories)
+                        {
+                            <MudExRibbonMenuButton Text="@TryLocalize(category)" Icon="@Icons.Material.Filled.MenuBook" Size="MudExRibbonItemSize.Small">
+                                @FunctionItems(functions)
+                            </MudExRibbonMenuButton>
+                        }
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Defined Names")" Icon="@Icons.Material.Filled.Label" CollapsePriority="1">
+                        <MudExRibbonButton Id="xl-define-name" Text="@TryLocalize("Define Name")" Icon="@Icons.Material.Filled.NewLabel" OnClick="DefineNameAsync" />
+                        <MudExRibbonMenuButton Id="xl-name-manager" Text="@TryLocalize("Name Manager")" Icon="@Icons.Material.Filled.Label" Disabled="@(_workbook?.DefinedNames.Count is not > 0)">
+                            @foreach (var (name, refersTo) in _workbook?.DefinedNames ?? new Dictionary<string, string>())
+                            {
+                                <MudExRibbonMenuItem Id="@($"xl-name-{name}")" Text="@name" Description="@refersTo">
+                                    <MudExRibbonMenuItem Id="@($"xl-name-{name}-goto")" Text="@TryLocalize("Go To")" OnClick="@(() => GoToNameAsync(name))" />
+                                    <MudExRibbonMenuItem Id="@($"xl-name-{name}-delete")" Text="@TryLocalize("Delete")" OnClick="@(() => DeleteNameAsync(name))" />
+                                </MudExRibbonMenuItem>
+                            }
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Calculation")" Icon="@Icons.Material.Filled.Calculate" CollapsePriority="3">
+                        <MudExRibbonButton Id="xl-calculate" Text="@TryLocalize("Calculate Now")" Icon="@Icons.Material.Filled.Calculate" Size="MudExRibbonItemSize.Large" Shortcut="F9" OnClick="CalculateNowAsync" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+
+                <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
+                    @if (!IsReadOnly)
+                    {
+                        <MudExRibbonGroup Text="@TryLocalize("Window")" Icon="@Icons.Material.Filled.ViewQuilt" CollapsePriority="2">
+                            <MudExRibbonMenuButton Id="xl-freeze" Text="@TryLocalize("Freeze Panes")" Icon="@Icons.Material.Filled.AcUnit" Size="MudExRibbonItemSize.Large">
+                                <MudExRibbonMenuItem Id="xl-freeze-panes" Text="@TryLocalize("Freeze Panes")" OnClick="@(() => FreezeAsync(CurrentSelection.Active))" />
+                                <MudExRibbonMenuItem Id="xl-freeze-top-row" Text="@TryLocalize("Freeze Top Row")" OnClick="@(() => FreezeAsync(new CellRef(1, 0)))" />
+                                <MudExRibbonMenuItem Id="xl-freeze-first-column" Text="@TryLocalize("Freeze First Column")" OnClick="@(() => FreezeAsync(new CellRef(0, 1)))" />
+                                <MudExRibbonMenuItem Id="xl-unfreeze" Text="@TryLocalize("Unfreeze Panes")" Disabled="@(ActiveSheet?.FreezeAt == null)" OnClick="@(() => FreezeAsync(null))" />
+                            </MudExRibbonMenuButton>
+                        </MudExRibbonGroup>
+                    }
+                    <MudExRibbonGroup Text="@TryLocalize("Show")" Icon="@Icons.Material.Filled.Visibility" CollapsePriority="1">
+                        <MudExRibbonToggleButton Id="xl-show-gridlines" Text="@TryLocalize("Gridlines")" Icon="@Icons.Material.Filled.GridOn" Size="MudExRibbonItemSize.Small" @bind-Checked="_gridLines" />
+                        <MudExRibbonToggleButton Id="xl-show-headings" Text="@TryLocalize("Headings")" Icon="@Icons.Material.Filled.TableChart" Size="MudExRibbonItemSize.Small" @bind-Checked="_headings" />
+                        <MudExRibbonToggleButton Id="xl-show-formula-bar" Text="@TryLocalize("Formula Bar")" Icon="@Icons.Material.Filled.Functions" Size="MudExRibbonItemSize.Small" @bind-Checked="_formulaBar" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Zoom")" Icon="@Icons.Material.Filled.ZoomIn" CollapsePriority="3">
+                        <MudExRibbonSelect T="double" Text="@TryLocalize("Zoom")" Items="@ZoomLevels" ItemText="@(z => $"{z * 100:0}%")" Value="@_zoom" ValueChanged="OnZoomChanged" Width="80" />
+                        <MudExRibbonButton Id="xl-zoom-100" Text="@TryLocalize("100%")" Icon="@Icons.Material.Filled.ZoomInMap" Size="MudExRibbonItemSize.Small" OnClick="@(() => OnZoomChanged(1))" />
+                        <MudExRibbonButton Id="xl-zoom-selection" Text="@TryLocalize("Zoom to Selection")" Icon="@Icons.Material.Filled.ZoomOutMap" Size="MudExRibbonItemSize.Small" OnClick="ZoomToSelection" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+                @RibbonContent
+            </ChildContent>
+        </MudExRibbon>
+    }
+    @if (_formulaBar && _gridRendered && _grid != null)
+    {
+        <MudExSpreadsheetFormulaBar Grid="_grid" Localizer="@Localizer" />
+    }
+    <div class="mud-ex-spreadsheet-editor-grid">
+        @if (_workbook != null)
+        {
+            <MudExSpreadsheetGrid @ref="_grid"
+                                  Workbook="_workbook"
+                                  Engine="_engine"
+                                  SheetIndex="_sheetIndex"
+                                  SheetIndexChanged="OnSheetIndexChangedAsync"
+                                  Selection="_selection"
+                                  SelectionChanged="OnSelectionChangedAsync"
+                                  ReadOnly="IsReadOnly"
+                                  Zoom="_zoom"
+                                  ShowGridLines="_gridLines"
+                                  ShowHeadings="_headings"
+                                  FormatCellsRequested="FormatCellsAsync"
+                                  Localizer="@Localizer" />
+        }
+    </div>
+    @if (ShowSheetTabs && _workbook != null)
+    {
+        <MudExSpreadsheetSheetTabs Workbook="_workbook" SheetIndex="_sheetIndex" SheetIndexChanged="OnSheetIndexChangedAsync" ReadOnly="IsReadOnly" Localizer="@Localizer" />
+    }
+    @if (ShowStatusBar)
+    {
+        <MudExSpreadsheetStatusBar Sheet="ActiveSheet" Selection="CurrentSelection" Version="_version" Zoom="_zoom" ZoomChanged="OnZoomChanged" Localizer="@Localizer" />
+    }
+</div>
+
+@code {
+    private RenderFragment AutoSumButton(string id) =>
+        @<MudExRibbonMenuButton Id="@id" Text="@TryLocalize("AutoSum")" Icon="@Icons.Material.Filled.Functions" Split="true" Size="MudExRibbonItemSize.Small" Shortcut="Alt+=" OnClick="@(() => AutoSumAsync("SUM"))">
+            @foreach (var (name, function) in AutoSumFunctions)
+            {
+                <MudExRibbonMenuItem Id="@($"{id}-{function}")" Text="@TryLocalize(name)" OnClick="@(() => AutoSumAsync(function))" />
+            }
+        </MudExRibbonMenuButton>;
+
+    private RenderFragment FunctionItems(FunctionInfo[] functions) => __builder =>
+    {
+        foreach (var function in functions)
+        {
+            <MudExRibbonMenuItem Text="@function.Name" Tooltip="@function.Signature" Description="@function.Description" OnClick="@(() => InsertFunctionAsync(function.Name))" />
+        }
+    };
+}

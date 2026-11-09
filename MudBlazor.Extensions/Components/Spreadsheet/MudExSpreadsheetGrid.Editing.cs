@@ -109,6 +109,32 @@ public partial class MudExSpreadsheetGrid
         StateHasChanged();
     }
 
+    internal Task PasteValuesAsync(string text)
+    {
+        _clipboard = null;
+        return PasteTextAsync(text);
+    }
+
+    /// <summary>Sets the width of each selected column to fit its content, like AutoFit Column Width.</summary>
+    /// <returns>A task that completes when the widths are set.</returns>
+    public async Task AutoFitColumnsAsync()
+    {
+        if (!CanEdit || JsReference is not { } js) return;
+        var used = _sheet.UsedRange;
+        var widths = new List<(int Column, double Width)>();
+        foreach (var col in _selection.Ranges.SelectMany(r => Enumerable.Range(r.Left, Math.Max(0, Math.Min(r.Right, used.Right) - r.Left + 1))).Distinct())
+        {
+            var candidates = AutoFitColumnCandidates(col);
+            if (candidates.Count > 0) widths.Add((col, await js.InvokeAsync<double>("measure", candidates)));
+        }
+
+        if (widths.Count == 0) return;
+        using (_workbook.Undo.BeginTransaction("Column width"))
+            foreach (var (col, width) in widths)
+                _workbook.Execute(new ResizeCommand(_sheet, Axis.Column, col, 1, Math.Ceiling(width + 10)));
+        StateHasChanged();
+    }
+
     /// <summary>
     /// Extends the current range to <paramref name="target"/> like dragging the fill handle: numbers, dates and text ending in a
     /// number continue as a linear series, everything else is copied with relative references adjusted.

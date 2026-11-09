@@ -696,19 +696,23 @@ class MudExSpreadsheetGrid {
             if (!candidates?.length) {
                 return;
             }
-            const ctx = (this.canvas ??= document.createElement('canvas')).getContext('2d');
-            let width = 0;
-            for (const [text, font] of candidates) {
-                ctx.font = font;
-                width = Math.max(width, ctx.measureText(text).width);
-            }
-            this.dotnet.invokeMethodAsync('ResizeColumn', edge.index, Math.ceil(width + 10) * this.zoom());
+            this.dotnet.invokeMethodAsync('ResizeColumn', edge.index, Math.ceil(this.measure(candidates) + 10) * this.zoom());
             return;
         }
         const cell = this.cellAt(e.clientX, e.clientY, false);
         if (cell && !this.readOnly()) {
             this.dotnet.invokeMethodAsync('OnCellDoubleClick', cell.r, cell.c);
         }
+    }
+
+    measure(candidates) {
+        const ctx = (this.canvas ??= document.createElement('canvas')).getContext('2d');
+        let width = 0;
+        for (const [text, font] of candidates) {
+            ctx.font = font;
+            width = Math.max(width, ctx.measureText(text).width);
+        }
+        return width;
     }
 
     dispose() {

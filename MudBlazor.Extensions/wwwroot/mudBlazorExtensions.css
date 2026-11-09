@@ -7643,6 +7643,122 @@
   z-index: var(--mud-zindex-popover);
 }
 
+.mud-ex-spreadsheet-editor {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--mud-palette-surface);
+  color: var(--mud-palette-text-primary);
+}
+
+.mud-ex-spreadsheet-editor-grid {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 120px;
+}
+
+.mud-ex-spreadsheet-sheet-tabs {
+  display: flex;
+  align-items: stretch;
+  flex: 0 0 auto;
+  min-width: 0;
+  border-top: 1px solid var(--mud-palette-lines-default);
+  background-color: var(--mud-palette-background-gray);
+  font-size: 0.8125rem;
+}
+
+.mud-ex-ssst-list {
+  display: flex;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.mud-ex-ssst-tab {
+  --mud-ex-ssst-color: transparent;
+  padding: 4px 14px 2px;
+  border-right: 1px solid var(--mud-palette-lines-default);
+  border-bottom: 3px solid var(--mud-ex-ssst-color);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+.mud-ex-ssst-tab:hover {
+  background-color: var(--mud-palette-action-default-hover);
+}
+.mud-ex-ssst-tab.mud-ex-ssst-active {
+  background-color: var(--mud-palette-surface);
+  color: #217346;
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 #217346;
+}
+
+.mud-ex-ssst-rename {
+  width: 120px;
+  font: inherit;
+  padding: 2px 6px;
+}
+
+.mud-ex-ssst-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.mud-ex-spreadsheet-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  gap: 16px;
+  min-height: 24px;
+  padding: 0 8px;
+  border-top: 1px solid var(--mud-palette-lines-default);
+  background-color: var(--mud-palette-background-gray);
+  font-size: 0.75rem;
+}
+
+.mud-ex-sssb-summary {
+  display: flex;
+  gap: 16px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.mud-ex-sssb-zoom {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mud-ex-sssb-zoom-button {
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.mud-ex-sssb-slider {
+  width: 100px;
+  accent-color: #217346;
+}
+
+.mud-ex-sssb-percent {
+  min-width: 36px;
+  text-align: right;
+}
+
+.mud-ex-format-cells-color {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .mud-ex-blur {
   backdrop-filter: blur(10px);
 }

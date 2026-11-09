@@ -444,6 +444,34 @@ public sealed class SetTabColorCommand(Worksheet sheet, string color) : IWorkboo
     }
 }
 
+/// <summary>Hides or shows a sheet. At least one sheet stays visible.</summary>
+/// <param name="sheet">The sheet.</param>
+/// <param name="hidden">True to hide, false to show.</param>
+public sealed class SetSheetHiddenCommand(Worksheet sheet, bool hidden) : IWorkbookCommand
+{
+    private bool _before;
+
+    /// <inheritdoc />
+    public string Description => hidden ? "Hide sheet" : "Unhide sheet";
+
+    /// <inheritdoc />
+    public void Apply(Workbook wb)
+    {
+        if (hidden && !wb.SheetList.Any(x => x != sheet && !x.Hidden))
+            throw new InvalidOperationException("A workbook needs at least one visible sheet.");
+        _before = sheet.Hidden;
+        sheet.Hidden = hidden;
+        wb.Notify(StructureChangeKind.Layout, sheet);
+    }
+
+    /// <inheritdoc />
+    public void Revert(Workbook wb)
+    {
+        sheet.Hidden = _before;
+        wb.Notify(StructureChangeKind.Layout, sheet);
+    }
+}
+
 /// <summary>Adds, changes or (with a null reference) removes a defined name.</summary>
 /// <param name="name">The name.</param>
 /// <param name="refersTo">Reference text such as <c>Sheet1!$A$1:$B$2</c>, or null to remove the name.</param>
