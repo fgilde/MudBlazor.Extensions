@@ -106,6 +106,16 @@ require a commercial license. Decoding and encoding now run in the browser, see 
 
 ---
 
+## MudExFileDisplayCode Is an Editor
+
+`MudExFileDisplayCode` now derives from `MudExFileEditorBase` and renders an editable textarea unless
+`ReadOnly` is set. Inside `MudExFileDisplay` the display sets `ReadOnly` from its edit mode, so nothing changes there.
+If you render `<MudExFileDisplayCode>` directly and want the previous highlighted, read-only view, add `ReadOnly="true"`.
+
+**Reason:** text and code files can be edited and saved through the shared file editor pipeline.
+
+---
+
 ## Previously Deprecated Methods (Reminder)
 
 The following methods were already deprecated in earlier versions and continue to point to their async replacements:

@@ -94,7 +94,7 @@ else
             @if (_xmlInfos != null)
             {
                 <MudTabPanel Text="@TryLocalize("XML")" Icon="@Icons.Material.Outlined.Code">
-                    <MudExFileDisplayCode FileDisplayInfos="@_xmlInfos" />
+                    <MudExFileDisplayCode FileDisplayInfos="@_xmlInfos" ReadOnly="true" />
                 </MudTabPanel>
             }
 
