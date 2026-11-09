@@ -9,5 +9,5 @@
 }
 else
 {
-    <textarea class="mud-ex-code-editor" spellcheck="false" @bind="Value" @bind:event="oninput" @bind:after="MarkDirtyAsync"></textarea>
+    <textarea @key="_textKey" @ref="_area" class="mud-ex-code-editor" spellcheck="false" value="@_text"></textarea>
 }

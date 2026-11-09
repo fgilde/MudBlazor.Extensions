@@ -1,5 +1,6 @@
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Services;
@@ -24,6 +25,12 @@ public class CodeFileEditorTests : IAsyncLifetime
         public string Url => null;
         public string ContentType => "text/plain";
         public Stream ContentStream { get; } = new MemoryStream(Bytes);
+    }
+
+    private void Type(IRenderedComponent<MudExFileDisplayCode> cut, string text)
+    {
+        _contexts[^1].JSInterop.Setup<IJSStreamReference>("readValue", _ => true).SetResult(new TestStreamReference(text));
+        cut.InvokeAsync(() => cut.Instance.OnCodeInput()).GetAwaiter().GetResult();
     }
 
     private IRenderedComponent<MudExFileDisplayCode> Create(byte[] bytes, bool readOnly = false)
@@ -60,7 +67,7 @@ public class CodeFileEditorTests : IAsyncLifetime
     public void Typing_MarksDirty()
     {
         var cut = Create("a"u8.ToArray());
-        cut.Find("textarea").Input("x");
+        Type(cut, "x");
         Assert.True(cut.Instance.IsDirty);
     }
 
@@ -68,7 +75,7 @@ public class CodeFileEditorTests : IAsyncLifetime
     public async Task Export_KeepsCrLfLineEndings()
     {
         var cut = Create("a\r\nb"u8.ToArray());
-        cut.Find("textarea").Input("a\nb\nc");
+        Type(cut, "a\nb\nc");
         Assert.Equal("a\r\nb\r\nc", Encoding.UTF8.GetString(await Export(cut)));
     }
 
@@ -77,7 +84,7 @@ public class CodeFileEditorTests : IAsyncLifetime
     {
         var bytes = Encoding.Unicode.GetPreamble().Concat(Encoding.Unicode.GetBytes("a\nb")).ToArray();
         var cut = Create(bytes);
-        cut.Find("textarea").Input("a\nbc");
+        Type(cut, "a\nbc");
         var result = await Export(cut);
         Assert.Equal(new byte[] { 0xFF, 0xFE }, result.Take(2));
         Assert.Equal("a\nbc", Encoding.Unicode.GetString(result, 2, result.Length - 2));
@@ -87,7 +94,7 @@ public class CodeFileEditorTests : IAsyncLifetime
     public async Task Export_Utf8WithoutBom_StaysWithoutBom()
     {
         var cut = Create("a"u8.ToArray());
-        cut.Find("textarea").Input("ab");
+        Type(cut, "ab");
         Assert.Equal("ab"u8.ToArray(), await Export(cut));
     }
 
@@ -112,6 +119,36 @@ public class CodeFileEditorTests : IAsyncLifetime
         await using var content = await cut.InvokeAsync(() => cut.Instance.ExportAsync());
         Assert.Equal("new.txt", content.FileName);
         Assert.Equal("text/plain", content.ContentType);
+    }
+
+    [Fact]
+    public void Textarea_DoesNotBindInput_AndIsFilledWithContent()
+    {
+        var cut = Create("a\r\nb"u8.ToArray());
+        var area = cut.Find("textarea");
+        Assert.Equal("a\nb", area.GetAttribute("value"));
+        Assert.False(area.HasAttribute("blazor:oninput"));
+        Assert.False(area.HasAttribute("blazor:onchange"));
+    }
+
+    [Fact]
+    public async Task Export_WithoutTyping_DoesNotReadFromJs()
+    {
+        var cut = Create("abc"u8.ToArray());
+        Assert.Equal("abc"u8.ToArray(), await Export(cut));
+        Assert.DoesNotContain(_contexts[^1].JSInterop.Invocations, i => i.Identifier == "readValue");
+    }
+
+    [Fact]
+    public async Task SwitchToReadOnly_KeepsTypedText()
+    {
+        var cut = Create("a"u8.ToArray());
+        Type(cut, "typed");
+        cut.Render(p => p.Add(c => c.ReadOnly, true));
+        Assert.Equal("typed", cut.Instance.Value);
+        cut.Render(p => p.Add(c => c.ReadOnly, false));
+        Assert.Equal("typed", cut.Find("textarea").GetAttribute("value"));
+        Assert.Equal("typed"u8.ToArray(), await Export(cut));
     }
 
     private sealed class FailingStream : MemoryStream

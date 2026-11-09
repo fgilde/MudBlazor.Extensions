@@ -62,6 +62,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExFileDisplayCode.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExFileDisplayCode.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExFileDisplay.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExFileDisplay.js"

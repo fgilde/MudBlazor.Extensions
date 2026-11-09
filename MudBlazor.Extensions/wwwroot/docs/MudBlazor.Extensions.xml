@@ -3879,7 +3879,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Value">
             <summary>
-            The Current code string provided from file
+            The code string of the file. While editing it is updated when the content is exported.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Language">
@@ -3910,6 +3910,20 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.LoadContentAsync(MudBlazor.Extensions.Core.MudExFileContent)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.OnCodeInput">
+            <summary>
+            Called from JS on the first input after the content was loaded or read
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.DisposeAsync">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">

@@ -1,5 +1,6 @@
 using Bunit;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 using System.Text;
@@ -47,6 +48,12 @@ public class FileDisplayEditModeTests : IAsyncLifetime
     }
 
     private static MudExFileDisplayCode Editor(IRenderedComponent<MudExFileDisplay> cut) => cut.FindComponent<MudExFileDisplayCode>().Instance;
+
+    private void Type(IRenderedComponent<MudExFileDisplay> cut, string text)
+    {
+        _owners[cut].JSInterop.Setup<IJSStreamReference>("readValue", _ => true).SetResult(new TestStreamReference(text));
+        cut.InvokeAsync(() => Editor(cut).OnCodeInput()).GetAwaiter().GetResult();
+    }
 
     [Fact]
     public void EditMenu_OnlyWhenAllowEditAndEditorAvailable()
@@ -113,7 +120,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
             .Add(c => c.IsDirtyChanged, EventCallback.Factory.Create<bool>(this, v => raised.Add(v))));
         Assert.Empty(cut.FindAll(".mud-ex-file-display-dirty"));
 
-        cut.Find("textarea").Input("changed");
+        Type(cut, "changed");
 
         Assert.True(cut.Instance.IsDirty);
         Assert.Equal([true], raised);
@@ -128,7 +135,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
             .Add(c => c.AllowEdit, true)
             .Add(c => c.EditMode, true)
             .Add(c => c.SaveRequested, EventCallback.Factory.Create<MudExFileSaveRequest>(this, r => { seen = r; r.Handled = true; })));
-        cut.Find("textarea").Input("changed");
+        Type(cut, "changed");
 
         var saved = await cut.InvokeAsync(() => cut.Instance.SaveAsync());
 
@@ -163,7 +170,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
             .Add(c => c.AllowEdit, true)
             .Add(c => c.EditMode, true)
             .Add(c => c.IsDirtyChanged, EventCallback.Factory.Create<bool>(this, v => raised.Add(v))));
-        cut.Find("textarea").Input("changed");
+        Type(cut, "changed");
 
         RenderWithViewer(cut);
         ClickDialogButton(cut, "Discard");
@@ -181,7 +188,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
 
         cut.WaitForAssertion(() => Assert.Contains("new.txt", cut.Markup));
         Assert.DoesNotContain("a.cs", cut.Markup);
-        cut.Find("textarea").Input("y");
+        Type(cut, "y");
         cut.WaitForAssertion(() => Assert.Contains("new.txt ●", cut.Markup));
     }
 
@@ -221,7 +228,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
             p.Add(c => c.AllowEdit, true).Add(c => c.EditMode, true).Add(c => c.CanClose, true);
             configure?.Invoke(p);
         });
-        cut.Find("textarea").Input("changed");
+        Type(cut, "changed");
         cut.WaitForAssertion(() => Assert.True(cut.Instance.IsDirty));
         return cut;
     }

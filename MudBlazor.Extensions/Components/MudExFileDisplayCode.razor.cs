@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 using Nextended.Core.Extensions;
+using System.ComponentModel;
 using System.Text;
 
 namespace MudBlazor.Extensions.Components;
@@ -17,6 +20,14 @@ public partial class MudExFileDisplayCode
     private Encoding _encoding = new UTF8Encoding(false);
     private bool _hadBom;
     private string _lineEnding = "\n";
+    private string _text = string.Empty;
+    private int _textKey;
+    private bool _edited;
+    private ElementReference _area;
+    private string _jsArea;
+    private IJSObjectReference _module;
+    private IJSObjectReference _js;
+    private DotNetObjectReference<MudExFileDisplayCode> _dotnet;
 
     /// <summary>
     /// The name of the component
@@ -24,7 +35,7 @@ public partial class MudExFileDisplayCode
     public override string Name => nameof(MudExFileDisplayCode);
 
     /// <summary>
-    /// The Current code string provided from file
+    /// The code string of the file. While editing it is updated when the content is exported.
     /// </summary>
     public string Value { get; private set; }
 
@@ -98,19 +109,108 @@ public partial class MudExFileDisplayCode
         _hadBom = preamble.Length > 0 && bytes.AsSpan().StartsWith(preamble);
         _lineEnding = text.DetectLineEnding();
         Value = text.NormalizeLineEndings();
+        ResetText();
+    }
+
+    private void ResetText()
+    {
+        _edited = false;
+        _text = Value;
+        _textKey++;
     }
 
     /// <inheritdoc />
-    public override Task<MudExFileContent> ExportAsync(MudExFileFormat format = null, CancellationToken cancellationToken = default)
+    public override async Task SetParametersAsync(ParameterView parameters)
     {
+        if (_edited && !ReadOnly && parameters.TryGetValue<bool>(nameof(ReadOnly), out var readOnly) && readOnly)
+        {
+            await SyncValueAsync();
+            ResetText();
+        }
+        await base.SetParametersAsync(parameters);
+    }
+
+    /// <summary>
+    /// Called from JS on the first input after the content was loaded or read
+    /// </summary>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public async Task OnCodeInput()
+    {
+        _edited = true;
+        await MarkDirtyAsync();
+    }
+
+    private async Task SyncValueAsync()
+    {
+        if (!_edited || _js == null)
+            return;
+        var reference = await _js.InvokeAsync<IJSStreamReference>("readValue");
+        await using (reference)
+        {
+            await using var stream = await reference.OpenReadStreamAsync(long.MaxValue);
+            using var reader = new StreamReader(stream, new UTF8Encoding(false), false);
+            Value = await reader.ReadToEndAsync();
+        }
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        var area = ReadOnly || LoadFailed ? null : _area.Id;
+        if (area == _jsArea)
+            return;
+        await DisposeJsAsync();
+        _jsArea = area;
+        if (area == null)
+            return;
+        _dotnet ??= DotNetObjectReference.Create(this);
+        _module ??= await JsRuntime.ImportModuleAsync<MudExFileDisplayCode>();
+        _js = await _module.InvokeAsync<IJSObjectReference>("initializeMudExFileDisplayCode", _area, _dotnet);
+    }
+
+    private async Task DisposeJsAsync()
+    {
+        var js = _js;
+        _js = null;
+        if (js == null)
+            return;
+        try
+        {
+            await js.InvokeVoidAsync("dispose");
+            await js.DisposeAsync();
+        }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        catch (TaskCanceledException) { }
+    }
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        await DisposeJsAsync();
+        try
+        {
+            if (_module != null)
+                await _module.DisposeAsync();
+        }
+        catch (JSDisconnectedException) { }
+        _dotnet?.Dispose();
+        await base.DisposeAsync();
+    }
+
+    /// <inheritdoc />
+    public override async Task<MudExFileContent> ExportAsync(MudExFileFormat format = null, CancellationToken cancellationToken = default)
+    {
+        await SyncValueAsync();
         var text = (Value ?? string.Empty).NormalizeLineEndings().Replace("\n", _lineEnding);
         var body = _encoding.GetBytes(text);
         var bytes = _hadBom ? _encoding.GetPreamble().Concat(body).ToArray() : body;
-        return Task.FromResult(new MudExFileContent
+        return new MudExFileContent
         {
             FileName = FileName,
             ContentType = ContentType,
             Stream = new MemoryStream(bytes)
-        });
+        };
     }
 }
