@@ -41,7 +41,7 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
     protected override void OnInitialized() => Ribbon.RegisterView(this);
 
     /// <inheritdoc />
-    protected override Task OnAfterRenderAsync(bool firstRender) => Ribbon.SyncReductionAsync();
+    protected override Task OnAfterRenderAsync(bool firstRender) => Ribbon.SyncReductionAsync(_overlayOpen);
 
     void IMudExRibbonView.Refresh() => _ = InvokeAsync(StateHasChanged);
 

@@ -41,9 +41,10 @@
         return @<div @key="group" class="mud-ex-ribbon-group mud-ex-ribbon-group-collapsed">
             <button type="button"
                     class="mud-ex-ribbon-button mud-ex-ribbon-large"
-                    aria-haspopup="true"
+                    aria-haspopup="dialog"
                     aria-expanded="@(open ? "true" : "false")"
-                    @onclick="() => OpenGroup = open ? null : group">
+                    @onclick="() => OpenGroup = open ? null : group"
+                    @onkeydown="OnGroupKeyDown">
                 <MudIcon Icon="@(string.IsNullOrEmpty(group.Icon) ? Icons.Material.Filled.MoreHoriz : group.Icon)" Class="mud-ex-ribbon-icon" />
                 <span class="mud-ex-ribbon-label">@group.Text</span>
                 <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown" Class="mud-ex-ribbon-arrow" />
@@ -52,7 +53,7 @@
                         Class="mud-ex-ribbon-overlay mud-ex-ribbon-group-popover"
                         AnchorOrigin="Origin.BottomLeft"
                         TransformOrigin="Origin.TopLeft">
-                <div class="mud-ex-ribbon-overlay-content" @onkeydown="OnGroupKeyDown">@Group(group, MudExRibbonGroupState.Full)</div>
+                <div class="mud-ex-ribbon-overlay-content" role="dialog" aria-label="@group.Text" @onkeydown="OnGroupKeyDown">@Group(group, MudExRibbonGroupState.Full)</div>
             </MudPopover>
             <MudOverlay Class="mud-ex-ribbon-overlay-backdrop"
                         Visible="@open"

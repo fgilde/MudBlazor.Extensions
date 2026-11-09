@@ -761,6 +761,7 @@ public class MudExRibbonTests : IAsyncLifetime
         var buttons = cut.FindAll(".mud-ex-ribbon-group-collapsed > .mud-ex-ribbon-button.mud-ex-ribbon-large");
         Assert.Equal(["Clipboard", "Font"], buttons.Select(b => b.TextContent.Trim()));
         Assert.All(buttons, b => Assert.Equal("false", b.GetAttribute("aria-expanded")));
+        Assert.All(buttons, b => Assert.Equal("dialog", b.GetAttribute("aria-haspopup")));
 
         buttons[0].Click();
         popovers.WaitForAssertion(() => Assert.Equal(["Clipboard"], popovers.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
@@ -773,8 +774,53 @@ public class MudExRibbonTests : IAsyncLifetime
 
         cut.FindAll(".mud-ex-ribbon-group-collapsed > .mud-ex-ribbon-button")[1].Click();
         popovers.WaitForAssertion(() => Assert.Equal(["Font"], popovers.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
+        Assert.Equal("Font", popovers.Find("[role=dialog]").GetAttribute("aria-label"));
         popovers.Find(".mud-ex-ribbon-group-popover .mud-ex-ribbon-overlay-content").KeyDown(new KeyboardEventArgs { Key = "Escape" });
         popovers.WaitForAssertion(() => Assert.Empty(popovers.FindAll("[role=toolbar]")));
+
+        cut.FindAll(".mud-ex-ribbon-group-collapsed > .mud-ex-ribbon-button")[1].Click();
+        popovers.WaitForAssertion(() => Assert.Single(popovers.FindAll("[role=toolbar]")));
+        cut.FindAll(".mud-ex-ribbon-group-collapsed > .mud-ex-ribbon-button")[1].KeyDown(new KeyboardEventArgs { Key = "Escape" });
+        popovers.WaitForAssertion(() => Assert.Empty(popovers.FindAll("[role=toolbar]")));
+    }
+
+    [Theory]
+    [InlineData(MudExRibbonMode.Classic, 6)]
+    [InlineData(MudExRibbonMode.Simplified, 4)]
+    public async Task MaxReductionStep_LetsTheBodyScroll(MudExRibbonMode mode, int max)
+    {
+        var (cut, _) = RenderModes(p => p.Add(x => x.Mode, mode));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-body")));
+        Assert.Empty(cut.FindAll(".mud-ex-ribbon-body-scroll"));
+
+        await cut.InvokeAsync(() => cut.Instance.SetReductionStep(max - 1));
+        cut.WaitForAssertion(() => Assert.Equal(max - 1, cut.Instance.ReductionStep));
+        Assert.Empty(cut.FindAll(".mud-ex-ribbon-body-scroll"));
+
+        await cut.InvokeAsync(() => cut.Instance.SetReductionStep(max));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-body.mud-ex-ribbon-body-scroll")));
+
+        cut.FindAll("[role=tab]")[1].Click();
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-ribbon-body-scroll")));
+    }
+
+    [Fact]
+    public void TogglingCollapsedOrOverlay_ResetsJsMeasuring()
+    {
+        var context = NewContext();
+        context.Render<MudPopoverProvider>();
+        var cut = context.Render<MudExRibbon>(p => p.AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home")
+            .AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Font")
+                .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Bold")))));
+        IEnumerable<bool> Resets() => context.JSInterop.Invocations["update"].Select(i => (bool)i.Arguments[2]!);
+
+        cut.WaitForAssertion(() => Assert.Equal([true], Resets()));
+
+        cut.Render(p => p.Add(x => x.Collapsed, true));
+        cut.WaitForAssertion(() => Assert.Equal([true, true], Resets()));
+
+        cut.Find("[role=tab]").Click();
+        cut.WaitForAssertion(() => Assert.Equal([true, true, true], Resets()));
     }
 
     [Fact]
@@ -856,7 +902,7 @@ public class MudExRibbonTests : IAsyncLifetime
     }
 
     [Fact]
-    public void Select_DatalistIdIsUniquePerRender()
+    public void Select_DatalistIdIsStablePerItemAndLayout()
     {
         var (cut, _, context) = RenderGroup(g => g
             .AddChildContent<MudExRibbonSelect<string>>(b => b.Add(x => x.Text, "Size").Add(x => x.Items, ["10", "11"]).Add(x => x.Editable, true))

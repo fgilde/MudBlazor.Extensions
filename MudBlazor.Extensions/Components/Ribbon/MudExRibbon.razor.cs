@@ -14,7 +14,7 @@ public partial class MudExRibbon
     private IMudExRibbonView _view;
     private (MudExRibbonMode Mode, MudExRibbonTab Tab) _reductionKey;
     private int _reductionStep;
-    private ((MudExRibbonMode Mode, MudExRibbonTab Tab) Key, int Step, int Max)? _syncedReduction;
+    private ((MudExRibbonMode Mode, MudExRibbonTab Tab, bool Collapsed, bool OverlayOpen) Key, int Step, int Max)? _syncedReduction;
 
     /// <summary>
     /// Declaration of the ribbon: <see cref="MudExRibbonTab"/> components.
@@ -138,12 +138,14 @@ public partial class MudExRibbon
     public override async Task ImportModuleAndCreateJsAsync()
     {
         await base.ImportModuleAndCreateJsAsync();
-        await SyncReductionAsync();
+        await SyncReductionAsync(false);
     }
 
-    internal async Task SyncReductionAsync()
+    internal bool IsFullyReduced => MaxReductionStep > 0 && ReductionStep == MaxReductionStep;
+
+    internal async Task SyncReductionAsync(bool overlayOpen)
     {
-        var state = (Key: ReductionKey, Step: ReductionStep, Max: MaxReductionStep);
+        var state = (Key: (Mode, ActiveTab, IsCollapsed, overlayOpen), Step: ReductionStep, Max: MaxReductionStep);
         if (JsReference == null || IsDisposed || Equals(state, _syncedReduction))
             return;
         var reset = !Equals(_syncedReduction?.Key, state.Key);

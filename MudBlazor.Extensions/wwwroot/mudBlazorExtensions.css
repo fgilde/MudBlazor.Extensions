@@ -6481,6 +6481,12 @@
   overflow: hidden;
 }
 
+.mud-ex-ribbon-body-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
 .mud-ex-ribbon-simplified-body {
   align-items: center;
   min-height: 0;

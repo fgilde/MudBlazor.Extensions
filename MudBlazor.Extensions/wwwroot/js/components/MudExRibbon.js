@@ -10,6 +10,7 @@ class MudExRibbon {
         this.busy = false;
         this.observed = null;
         this.observer = new ResizeObserver(() => this.schedule());
+        document.fonts?.ready.then(() => this.schedule());
     }
 
     update(step, max, reset) {
@@ -52,9 +53,9 @@ class MudExRibbon {
         const overflows = body.scrollWidth > width;
         let next = this.step;
         if (overflows && this.step < this.max) {
-            this.widths[this.step] = width;
+            this.widths[this.step] = body.scrollWidth;
             next++;
-        } else if (!overflows && this.step > 0 && width >= this.widths[this.step - 1] + 8) {
+        } else if (!overflows && this.step > 0 && width >= (this.widths[this.step - 1] ?? 0) + 8) {
             next--;
         }
         if (next === this.step) {

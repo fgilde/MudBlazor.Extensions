@@ -74,7 +74,7 @@
     }
 
     private RenderFragment Panel(MudExRibbonTab activeTab, RenderFragment<MudExRibbonTab> body, string bodyClass) =>
-        @<div class="@($"mud-ex-ribbon-body {bodyClass}".TrimEnd())"
+        @<div class="@($"mud-ex-ribbon-body {bodyClass}{(Ribbon.IsFullyReduced ? " mud-ex-ribbon-body-scroll" : "")}".TrimEnd())"
               role="tabpanel"
               id="@PanelId"
               aria-labelledby="@(activeTab == null ? null : TabId(activeTab))">
