@@ -31640,6 +31640,173 @@
             <param name="color">The color of the chosen section (for example <c>Red</c> or <c>Color10</c>), or null.</param>
             <returns>The text; <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.NumberFormat.Overflow"/> if the value cannot be shown with the format.</returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CsvFormat">
+            <summary>Reads and writes delimited text (CSV, TSV) as defined by RFC 4180.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CsvFormat.Read(System.IO.Stream,System.Nullable{System.Char})">
+            <summary>
+            Reads delimited text into a workbook with one sheet. The encoding comes from the byte order mark, else UTF-8 if the bytes
+            are valid UTF-8, else Windows-1252. Plain numbers with a dot as decimal separator are read as numbers; other fields are
+            converted like typed input in <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/> (dates, percentages, currency).
+            </summary>
+            <param name="stream">The text; it is read to the end and left open.</param>
+            <param name="delimiter">The field delimiter, or null to detect one of <c>,</c> <c>;</c> tab <c>|</c> from the first lines.</param>
+            <returns>The workbook.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CsvFormat.Write(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.IO.Stream,System.Char)">
+            <summary>
+            Writes the sheet from A1 to the end of its used range as UTF-8 with byte order mark and CRLF line ends. Values are written
+            as displayed with their number format in <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>; numbers in the General format keep
+            15 significant digits. Fields containing the delimiter, quotes or line breaks are quoted.
+            </summary>
+            <param name="sheet">The sheet to write.</param>
+            <param name="target">The stream to write to; it is left open.</param>
+            <param name="delimiter">The field delimiter.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.XlsReader">
+            <summary>Reads legacy Excel 97-2003 workbooks (<c>.xls</c>) into a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Workbook"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.XlsReader.Read(System.IO.Stream)">
+            <summary>
+            Reads the cell values of every sheet with their number formats, plus sheet names and visibility. Formulas, other
+            styles and layout are not read; formula cells keep their last calculated value.
+            </summary>
+            <param name="stream">The file; it is left open.</param>
+            <returns>The workbook, without a source package (saving writes a new xlsx).</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.XlsxRelationship">
+            <summary>A package relationship.</summary>
+            <param name="Id">The relationship id.</param>
+            <param name="Type">The relationship type URI.</param>
+            <param name="Target">The target as written in the rels part.</param>
+            <param name="External">True for <c>TargetMode="External"</c>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.XlsxRelationship.#ctor(System.String,System.String,System.String,System.Boolean)">
+            <summary>A package relationship.</summary>
+            <param name="Id">The relationship id.</param>
+            <param name="Type">The relationship type URI.</param>
+            <param name="Target">The target as written in the rels part.</param>
+            <param name="External">True for <c>TargetMode="External"</c>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxRelationship.Id">
+            <summary>The relationship id.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxRelationship.Type">
+            <summary>The relationship type URI.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxRelationship.Target">
+            <summary>The target as written in the rels part.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxRelationship.External">
+            <summary>True for <c>TargetMode="External"</c>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart">
+            <summary>A sheet entry of the source workbook with the parts of its XML the model does not represent.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Name">
+            <summary>The sheet name as stored in the file.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.SheetId">
+            <summary>The <c>sheetId</c> attribute.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.RelationshipId">
+            <summary>The relationship id from workbook.xml.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.PartName">
+            <summary>Zip entry name of the sheet part, or null if the relationship target is missing.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.State">
+            <summary>The original <c>state</c> attribute (<c>visible</c>, <c>hidden</c> or <c>veryHidden</c>), or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Worksheet">
+            <summary>The worksheet read into the model, or null for chart sheets, dialog sheets and macro sheets.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Root">
+            <summary>The root element of the sheet part without children, keeping namespace declarations and <c>mc:Ignorable</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Children">
+            <summary>
+            All top-level children of the worksheet in original order. <c>sheetData</c> is an empty placeholder marking its position;
+            the other children are the original elements, including the partly modelled ones in <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Modelled"/>
+            (sheetPr, sheetViews, sheetFormatPr, cols keep attributes the model ignores).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Unmodelled">
+            <summary>Children the model does not represent at all, in original order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.RichStringCells">
+            <summary>Cells holding a rich shared string: cell key to the shared string index of the original <c>si</c>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage">
+            <summary>
+            Inventory of a source xlsx package kept with a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Workbook"/> so the writer can copy untouched parts byte for byte and
+            re-emit what the model does not represent.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.Source">
+            <summary>The original package bytes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.PartNames">
+            <summary>Zip entry names in original order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.DefaultContentTypes">
+            <summary>Default content types by lower-case extension.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.OverrideContentTypes">
+            <summary>Override content types by part name with leading slash.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.WorkbookPart">
+            <summary>Zip entry name of the workbook part.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.WorkbookContentType">
+            <summary>Content type of the workbook part (macro-enabled, template or plain).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.WorkbookRelationships">
+            <summary>Relationships of the workbook part in original order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.SharedStringsPart">
+            <summary>Zip entry name of the shared strings part, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.StylesPart">
+            <summary>Zip entry name of the styles part, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.ThemePart">
+            <summary>Zip entry name of the theme part, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.Sheets">
+            <summary>All sheets of workbook.xml in tab order, including sheets that are not worksheets.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.DefinedNames">
+            <summary>The original <c>definedNames</c> element (sheet-scoped, hidden and commented names live only here), or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.Date1904">
+            <summary>True if the workbook uses the 1904 date system; serials are kept as stored.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.XfStyleIds">
+            <summary>Style id in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Styles"/> for each <c>cellXfs</c> index.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.RichStrings">
+            <summary>Original <c>si</c> elements of shared strings with runs or phonetic text, by shared string index.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.ContentType(System.String)">
+            <summary>Content type of a zip entry from its override or extension default.</summary>
+            <param name="partName">Zip entry name without leading slash.</param>
+            <returns>The content type, or null.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.XlsxReader">
+            <summary>Reads Office Open XML workbooks (<c>.xlsx</c>, <c>.xlsm</c>, <c>.xltx</c>, <c>.xltm</c>) into a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Workbook"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.XlsxReader.Read(System.IO.Stream)">
+            <summary>
+            Reads a workbook: sheets with names, visibility and tab colors, defined names, cell values, formulas (shared formulas
+            expanded per cell, array formulas spilling from their first cell) with their cached results, styles, column widths, row
+            heights, hidden rows and columns, merged ranges and frozen panes. The workbook keeps the source package so parts and
+            worksheet content the model does not represent survive saving.
+            </summary>
+            <param name="stream">The package; it is read to the end and left open.</param>
+            <returns>The workbook. Formula cells hold their cached values until a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine"/> recalculates them.</returns>
+            <exception cref="T:System.IO.InvalidDataException">The stream is not a spreadsheet package.</exception>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellChange">
             <summary>A changed cell value or formula.</summary>
             <param name="Sheet">The sheet containing the cell.</param>

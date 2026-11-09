@@ -39,6 +39,8 @@
   <ItemGroup>
     <!-- Containers written by openssl with one legacy cipher each, read by the pkcs12 tests. -->
     <None Include="TestData\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Samples\MainSample.WebAssembly\wwwroot\sample-data\ExcelSheet.xlsx" Link="TestData\Spreadsheet\ExcelSheet.xlsx" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Samples\MainSample.WebAssembly\wwwroot\sample-data\sample.csv" Link="TestData\Spreadsheet\sample.csv" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

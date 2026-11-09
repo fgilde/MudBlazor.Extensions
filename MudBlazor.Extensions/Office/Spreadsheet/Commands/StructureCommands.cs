@@ -315,7 +315,7 @@ public sealed class AddSheetCommand(string name, int index = -1) : IWorkbookComm
     public void Apply(Workbook wb)
     {
         Workbook.ValidateSheetName(name, null, wb);
-        _sheet ??= new Worksheet(name);
+        _sheet ??= new Worksheet(name, wb);
         _position = index < 0 || index > wb.SheetList.Count ? wb.SheetList.Count : index;
         wb.SheetList.Insert(_position, _sheet);
         wb.Notify(StructureChangeKind.SheetAdded, _sheet, _position);

@@ -65,6 +65,23 @@ public static class ReferenceShifter
             };
         });
 
+    internal static string Translate(string formula, int rows, int columns) =>
+        rows == 0 && columns == 0 ? formula : Rewrite(formula, (prefix, _, _, node) => node switch
+        {
+            RefNode r => Move(r.Cell, rows, columns, false, false) is { } c ? prefix + c.ToA1() + (r.Spill ? "#" : "") : "#REF!",
+            RangeNode { Range: var g } => (Move(g.Start, rows, columns, g.IsWholeColumns, g.IsWholeRows), Move(g.End, rows, columns, g.IsWholeColumns, g.IsWholeRows)) is ({ } s, { } e)
+                ? prefix + new CellRange(s, e).ToA1()
+                : "#REF!",
+            _ => null
+        });
+
+    private static CellRef? Move(CellRef c, int rows, int columns, bool keepRow, bool keepColumn)
+    {
+        var row = c.RowAbsolute || keepRow ? c.Row : c.Row + rows;
+        var col = c.ColumnAbsolute || keepColumn ? c.Column : c.Column + columns;
+        return row >= 0 && row < CellRef.MaxRows && col >= 0 && col < CellRef.MaxColumns ? c with { Row = row, Column = col } : null;
+    }
+
     internal static bool CanReference(string formula, string sheet) =>
         formula != null && formula.Contains('!') && (formula.Contains(sheet, StringComparison.OrdinalIgnoreCase)
                                                      || formula.Contains(sheet.Replace("'", "''"), StringComparison.OrdinalIgnoreCase));

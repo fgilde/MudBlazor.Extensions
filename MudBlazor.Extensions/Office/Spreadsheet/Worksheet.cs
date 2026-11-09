@@ -32,7 +32,13 @@ public sealed class Worksheet
     private List<CellRange> _merges = new();
     private CellRange? _usedRange;
 
-    internal Worksheet(string name) => Name = name;
+    internal Worksheet(string name, Workbook workbook)
+    {
+        Name = name;
+        Workbook = workbook;
+    }
+
+    internal Workbook Workbook { get; }
 
     /// <summary>The sheet name.</summary>
     public string Name { get; internal set; }
@@ -166,6 +172,8 @@ public sealed class Worksheet
         _cells[key] = cell;
         return cell;
     }
+
+    internal void Reserve(int count) => _cells.EnsureCapacity(count);
 
     internal void Prune(CellRef r)
     {

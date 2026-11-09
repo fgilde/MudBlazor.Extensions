@@ -83,7 +83,7 @@ public sealed class Workbook
     private List<StructureChange> _structure = new();
     private int _batchDepth;
 
-    private Workbook() => Undo = new UndoStack(this);
+    internal Workbook() => Undo = new UndoStack(this);
 
     /// <summary>The sheets in tab order.</summary>
     public IReadOnlyList<Worksheet> Sheets => _sheets;
@@ -107,7 +107,7 @@ public sealed class Workbook
     {
         var wb = new Workbook();
         ValidateSheetName(firstSheet, null, wb);
-        wb._sheets.Add(new Worksheet(firstSheet));
+        wb._sheets.Add(new Worksheet(firstSheet, wb));
         return wb;
     }
 
@@ -134,6 +134,8 @@ public sealed class Workbook
     }
 
     internal List<Worksheet> SheetList => _sheets;
+
+    internal XlsxPackage Package { get; set; }
 
     internal Dictionary<string, string> DefinedNameMap => _definedNames;
 
