@@ -107,7 +107,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
 
         await cut.InvokeAsync(() => cut.Instance.SetEditModeAsync(true));
 
-        Assert.False(Editor(cut).ReadOnly);
+        cut.WaitForAssertion(() => Assert.False(Editor(cut).ReadOnly));
     }
 
     [Fact]

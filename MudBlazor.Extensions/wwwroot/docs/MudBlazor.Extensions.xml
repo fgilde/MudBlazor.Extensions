@@ -19673,6 +19673,9 @@
             <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/>. Without a file it edits the <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.Workbook"/> parameter.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.#ctor">
+            <summary>Creates the editor.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.Workbook">
             <summary>The workbook to edit when no file is given. Changes by the user raise <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.WorkbookChanged"/>.</summary>
         </member>
@@ -20083,6 +20086,9 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.SpreadsheetEditOverlay">
             <summary>Reference highlights and formula assist while editing in a cell; re-renders on its own while typing.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetStaticContent">
+            <summary>Renders its content once. Used for large ribbon declarations that never change, so editor renders skip them.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.SpreadsheetSelection">
             <summary>

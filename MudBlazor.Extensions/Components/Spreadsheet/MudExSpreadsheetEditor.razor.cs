@@ -44,9 +44,14 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
     private MudExRibbonMode _modeParameter;
     private bool _gridRendered;
     private MudExSpreadsheetGrid _observedGrid;
+    private MudExSpreadsheetStatusBar _statusBar;
+    private readonly EventCallback<SpreadsheetSelection> _selectionChanged;
     private int _version;
     private bool _csvWarned;
     private bool _unshiftedWarned;
+
+    /// <summary>Creates the editor.</summary>
+    public MudExSpreadsheetEditor() => _selectionChanged = new EventCallback<SpreadsheetSelection>(null, (Func<SpreadsheetSelection, Task>)OnSelectionChangedAsync);
 
     /// <summary>The workbook to edit when no file is given. Changes by the user raise <see cref="WorkbookChanged"/>.</summary>
     [Parameter] public Workbook Workbook { get; set; }
@@ -346,7 +351,12 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
 
     private async Task OnSelectionChangedAsync(SpreadsheetSelection selection)
     {
+        var style = ActiveStyle;
         _selection = selection;
+        if (ShowRibbon && style != ActiveStyle)
+            StateHasChanged();
+        else
+            _statusBar?.ShowSelection(CurrentSelection);
         await SelectionChanged.InvokeAsync(selection);
     }
 

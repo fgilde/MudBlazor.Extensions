@@ -185,8 +185,8 @@ public class SpreadsheetEditorTests : IAsyncLifetime
         display.WaitForAssertion(() => Assert.NotEmpty(display.FindComponents<MudExSpreadsheetEditor>()));
         Assert.True(display.Instance.CanEdit);
         display.Find(".mud-menu button").Click();
-        Assert.Contains(">Edit<", provider.Markup);
-        Assert.True(display.FindComponent<MudExSpreadsheetEditor>().Instance.ReadOnly);
+        provider.WaitForAssertion(() => Assert.Contains(">Edit<", provider.Markup));
+        display.WaitForAssertion(() => Assert.True(display.FindComponent<MudExSpreadsheetEditor>().Instance.ReadOnly));
     }
 
     [Fact]
@@ -496,6 +496,38 @@ public class SpreadsheetEditorTests : IAsyncLifetime
         Assert.Equal(7, sheet[CellRef.Parse("A3")].Value.NumberValue);
         Assert.Null(sheet[CellRef.Parse("A2")]);
     }
+
+    private static int RibbonRenders(IRenderedComponent<MudExSpreadsheetEditor> cut)
+        => cut.FindComponents<MudExRibbonMenuItem>().Sum(c => c.RenderCount)
+           + cut.FindComponents<MudExRibbonMenuButton>().Sum(c => c.RenderCount)
+           + cut.FindComponents<MudExRibbonButton>().Sum(c => c.RenderCount);
+
+    [Fact]
+    public void SelectionChange_DoesNotRenderRibbonUnlessStyleChanges()
+    {
+        var wb = Book(("Sheet1", "A1", 1d), ("Sheet1", "A2", 2d), ("Sheet1", "A3", 3d));
+        wb.Execute(new SetStyleCommand(wb.Sheets[0], CellRange.Parse("A3"), s => s with { Font = s.Font with { Bold = true } }));
+        var cut = Render(wb);
+        var grid = cut.FindComponent<MudExSpreadsheetGrid>();
+        cut.WaitForAssertion(() => Assert.NotNull(cut.FindComponent<MudExSpreadsheetFormulaBar>()));
+        var ribbonRenders = RibbonRenders(cut);
+
+        grid.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = "ArrowDown", ShiftKey = true });
+        cut.WaitForAssertion(() => Assert.Equal("Sum: 3", cut.Find(".mud-ex-sssb-sum").TextContent.Trim()));
+
+        Assert.Equal(ribbonRenders, RibbonRenders(cut));
+
+        var names = FunctionRegistry.Default.Functions.Select(f => f.Info.Name).ToHashSet();
+        var functionItems = cut.FindComponents<MudExRibbonMenuItem>().Where(c => names.Contains(c.Instance.Text)).ToList();
+        Assert.True(functionItems.Count > 500, functionItems.Count.ToString());
+        var functionRenders = functionItems.Sum(c => c.RenderCount);
+        ribbonRenders = RibbonRenders(cut);
+        grid.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
+        grid.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
+        cut.WaitForAssertion(() => Assert.True(cut.FindComponents<MudExRibbonToggleButton>().Single(b => b.Instance.Id == "xl-bold").Instance.Checked));
+        Assert.Equal(functionRenders, functionItems.Sum(c => c.RenderCount));
+    }
+
     [Fact]
     public void RibbonColorDefault_IsExcelGreen()
     {

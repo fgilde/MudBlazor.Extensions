@@ -59,3 +59,13 @@ internal sealed class SpreadsheetEditOverlay : ComponentBase, IDisposable
 
     private void OnChanged() => _ = InvokeAsync(StateHasChanged);
 }
+
+/// <summary>Renders its content once. Used for large ribbon declarations that never change, so editor renders skip them.</summary>
+internal sealed class SpreadsheetStaticContent : ComponentBase
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    protected override bool ShouldRender() => false;
+
+    protected override void BuildRenderTree(RenderTreeBuilder builder) => builder.AddContent(0, ChildContent);
+}

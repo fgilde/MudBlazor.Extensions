@@ -40,6 +40,13 @@ public partial class MudExSpreadsheetStatusBar
         _summary = Summarize(Sheet, Selection);
     }
 
+    internal void ShowSelection(SpreadsheetSelection selection)
+    {
+        Selection = selection;
+        OnParametersSet();
+        StateHasChanged();
+    }
+
     internal static (int Count, int Numbers, double Sum) Summarize(Worksheet sheet, SpreadsheetSelection selection)
     {
         if (sheet == null || selection == null)
