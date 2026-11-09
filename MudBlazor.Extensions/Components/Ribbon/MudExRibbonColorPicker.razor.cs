@@ -36,7 +36,15 @@ public partial class MudExRibbonColorPicker
     protected override object StateKey => (base.StateKey, Value, Palette, _moreColors);
 
     /// <inheritdoc />
-    public override Task ExecuteAsync() => Disabled ? Task.CompletedTask : ValueChanged.InvokeAsync(Value);
+    public override Task ExecuteAsync() => Disabled || !Value.IsSet() ? Task.CompletedTask : ValueChanged.InvokeAsync(Value);
+
+    private void OnMenuOpenChanged(bool open)
+    {
+        if (open || !_moreColors)
+            return;
+        _moreColors = false;
+        NotifyStateChanged();
+    }
 
     private void ToggleMoreColors()
     {

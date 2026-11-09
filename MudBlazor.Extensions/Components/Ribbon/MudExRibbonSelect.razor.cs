@@ -46,7 +46,7 @@ public partial class MudExRibbonSelect<T>
     public override bool IsCommand => false;
 
     /// <inheritdoc />
-    protected override object StateKey => (base.StateKey, Items, TextOf(Value), Editable, Width, _inputVersion);
+    protected override object StateKey => (base.StateKey, Items, Value, Editable, Width, _inputVersion);
 
     private string WidthStyle => $"width:{Width}px";
 

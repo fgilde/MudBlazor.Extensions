@@ -51,7 +51,7 @@ public partial class MudExRibbonGallery<TItem>
 
     /// <inheritdoc />
     protected override object StateKey
-        => (base.StateKey, Items, IsSelected(default) ? null : TextOf(SelectedItem), VisibleRows, Columns, FirstRow);
+        => (base.StateKey, Items, SelectedItem, VisibleRows, Columns, FirstRow);
 
     private int ColumnCount => Math.Max(1, Columns);
 

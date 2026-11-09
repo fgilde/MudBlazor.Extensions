@@ -1,6 +1,8 @@
 using Bunit;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 
@@ -207,9 +209,11 @@ public class MudExRibbonTests : IAsyncLifetime
     }
 
     private (IRenderedComponent<MudExRibbon> Ribbon, IRenderedComponent<MudPopoverProvider> Popovers, BunitContext Context) RenderGroup(
-        Action<ComponentParameterCollectionBuilder<MudExRibbonGroup>> configure)
+        Action<ComponentParameterCollectionBuilder<MudExRibbonGroup>> configure, TimeProvider? time = null)
     {
         var context = NewContext();
+        if (time != null)
+            context.Services.AddSingleton(time);
         var popovers = context.Render<MudPopoverProvider>();
         var cut = context.Render<MudExRibbon>(p => p.AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home")
             .AddChildContent<MudExRibbonGroup>(g =>
@@ -267,6 +271,59 @@ public class MudExRibbonTests : IAsyncLifetime
 
         cut.WaitForAssertion(() => Assert.Equal(1, clicks));
         cut.WaitForAssertion(() => Assert.Equal("false", cut.Find(".mud-ex-ribbon-menu [aria-haspopup=menu]").GetAttribute("aria-expanded")));
+    }
+
+    [Fact]
+    public void MenuActivator_EnterThenClick_OpensMenu()
+    {
+        var (cut, popovers, _) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonMenuButton>(m => m.Add(x => x.Text, "Styles")
+                .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Heading")))
+            .AddChildContent<MudExRibbonMenuButton>(m => m.Add(x => x.Text, "Paste").Add(x => x.Split, true)
+                .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Paste Special")))
+            .AddChildContent<MudExRibbonGallery<string>>(b => b.Add(x => x.Text, "Gallery").Add(x => x.Items, Styles)), new FrozenTime());
+
+        cut.WaitForAssertion(() => Assert.Equal(3, cut.FindAll("[aria-haspopup=menu]").Count));
+        string[] activators = [".mud-ex-ribbon-menu-face", ".mud-ex-ribbon-split-arrow", ".mud-ex-ribbon-gallery-more"];
+        for (var i = 0; i < activators.Length; i++)
+        {
+            var index = i;
+            cut.FindAll("[aria-haspopup=menu]")[index].KeyDown(new KeyboardEventArgs { Key = "Enter" });
+            cut.WaitForAssertion(() => Assert.Equal("true", cut.FindAll("[aria-haspopup=menu]")[index].GetAttribute("aria-expanded")));
+            cut.Find(activators[index]).Click();
+            cut.WaitForAssertion(() => Assert.Equal("true", cut.FindAll("[aria-haspopup=menu]")[index].GetAttribute("aria-expanded")));
+        }
+        popovers.WaitForAssertion(() => Assert.Contains("Heading", popovers.Markup));
+    }
+
+    [Fact]
+    public void SplitFace_Enter_RunsOnClick_MenuStaysClosed()
+    {
+        var clicks = 0;
+        var (cut, _, _) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonMenuButton>(m => m.Add(x => x.Text, "Paste").Add(x => x.Split, true).Add(x => x.OnClick, () => clicks++)
+                .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Paste Special"))), new FrozenTime());
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-split-face")));
+        var keyDown = Record.Exception(() => cut.Find(".mud-ex-ribbon-split-face").KeyDown(new KeyboardEventArgs { Key = "Enter" }));
+        Assert.IsType<MissingEventHandlerException>(keyDown);
+        cut.Find(".mud-ex-ribbon-split-face").Click();
+
+        cut.WaitForAssertion(() => Assert.Equal(1, clicks));
+        Assert.Equal("false", cut.Find("[aria-haspopup=menu]").GetAttribute("aria-expanded"));
+    }
+
+    [Fact]
+    public void ColorPicker_FaceWithoutColor_DoesNotRaise()
+    {
+        var raised = 0;
+        var (cut, _, _) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonColorPicker>(b => b.Add(x => x.Text, "Highlight").Add(x => x.ValueChanged, _ => raised++)));
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-split-face")));
+        cut.Find(".mud-ex-ribbon-split-face").Click();
+
+        Assert.Equal(0, raised);
     }
 
     private static readonly string[] Styles = ["Normal", "No Spacing", "Heading 1", "Heading 2", "Title", "Subtitle"];
@@ -403,6 +460,12 @@ public class MudExRibbonTests : IAsyncLifetime
         await popovers.InvokeAsync(() => edit.Instance.ValueChanged.InvokeAsync("#123456"));
         cut.WaitForAssertion(() => Assert.Equal("#123456", raised.Last()));
         Assert.Single(popovers.FindComponents<MudExColorEdit>());
+
+        cut.Find(".mud-ex-ribbon-split-arrow").Click();
+        cut.WaitForAssertion(() => Assert.Equal("false", cut.Find("[aria-haspopup=menu]").GetAttribute("aria-expanded")));
+        cut.Find(".mud-ex-ribbon-split-arrow").Click();
+        popovers.WaitForAssertion(() => Assert.Single(popovers.FindAll(".mud-ex-ribbon-more-colors")));
+        Assert.Empty(popovers.FindComponents<MudExColorEdit>());
     }
 
     [Fact]
@@ -430,6 +493,13 @@ public class MudExRibbonTests : IAsyncLifetime
             if (layout == MudExRibbonItemLayout.MenuEntry)
                 Assert.Contains(item.Text, rendered.Markup);
         }
+    }
+
+    private sealed class FrozenTime : TimeProvider
+    {
+        private readonly DateTimeOffset _now = DateTimeOffset.UtcNow;
+
+        public override DateTimeOffset GetUtcNow() => _now;
     }
 
     private sealed class CountingRibbon : MudExRibbon

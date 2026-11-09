@@ -1,5 +1,6 @@
 @namespace MudBlazor.Extensions.Components
 @inherits ComponentBase
+@using Microsoft.AspNetCore.Components.Web
 
 @code {
     internal static bool ShowsText(MudExRibbonItemLayout layout)
@@ -21,13 +22,18 @@
             </MudTooltip>;
 
     internal RenderFragment Face(MudExRibbonItemLayout layout, Func<Task> onClick, bool? pressed = null, bool dropDown = false,
-        string cssClass = null, RenderFragment icon = null) =>
+        string cssClass = null, RenderFragment icon = null, bool isolateKeys = false)
+        => Face(layout, _ => onClick(), pressed, dropDown, cssClass, icon, isolateKeys);
+
+    internal RenderFragment Face(MudExRibbonItemLayout layout, Func<MouseEventArgs, Task> onClick, bool? pressed = null, bool dropDown = false,
+        string cssClass = null, RenderFragment icon = null, bool isolateKeys = false) =>
         @<button type="button"
                  class="@($"mud-ex-ribbon-button mud-ex-ribbon-{LayoutName(layout)}{(pressed == true ? " mud-ex-ribbon-checked" : "")} {cssClass}".TrimEnd())"
                  disabled="@Disabled"
                  aria-label="@(Text ?? Tooltip)"
                  aria-pressed="@pressed?.ToString().ToLowerInvariant()"
-                 @onclick="onClick">
+                 @onclick="onClick"
+                 @onkeydown:stopPropagation="isolateKeys">
             @if (icon != null)
             {
                 @icon
@@ -52,24 +58,26 @@
 
     internal RenderFragment SplitFace(MudExRibbonItemLayout layout, Func<Task> onClick, MenuContext menu, RenderFragment icon = null) =>
         @<div class="@($"mud-ex-ribbon-split mud-ex-ribbon-split-{LayoutName(layout)}")">
-            @Face(layout, onClick, cssClass: "mud-ex-ribbon-split-face", icon: icon)
+            @Face(layout, onClick, cssClass: "mud-ex-ribbon-split-face", icon: icon, isolateKeys: true)
             <button type="button"
                     class="mud-ex-ribbon-button mud-ex-ribbon-split-arrow"
                     disabled="@Disabled"
                     aria-label="@(Ribbon?.TryLocalize("More options: {0}", Text) ?? Text)"
-                    @onclick="() => menu.ToggleAsync()">
+                    @onclick="e => menu.ToggleAsync(e)">
                 <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown" Class="mud-ex-ribbon-arrow" />
             </button>
         </div>;
 
     internal RenderFragment DropDown(RenderFragment<MenuContext> activator, RenderFragment content,
-        string cssClass = "mud-ex-ribbon-menu", Origin anchor = Origin.BottomLeft, Origin transform = Origin.TopLeft) =>
+        string cssClass = "mud-ex-ribbon-menu", Origin anchor = Origin.BottomLeft, Origin transform = Origin.TopLeft,
+        EventCallback<bool> openChanged = default) =>
         @<MudMenu Class="@cssClass"
                   Disabled="@Disabled"
                   Dense="true"
                   AnchorOrigin="@anchor"
                   TransformOrigin="@transform"
-                  ActivatorContent="@activator">
+                  ActivatorContent="@activator"
+                  OpenChanged="@openChanged">
             @content
         </MudMenu>;
 
@@ -88,6 +96,6 @@
         => layout == MudExRibbonItemLayout.MenuEntry
             ? SubMenu(MenuEntries(items))
             : WithTooltip(layout, DropDown(
-                menu => split == null ? Face(layout, () => menu.ToggleAsync(), dropDown: true) : SplitFace(layout, split, menu),
+                menu => split == null ? Face(layout, e => menu.ToggleAsync(e), dropDown: true, cssClass: "mud-ex-ribbon-menu-face") : SplitFace(layout, split, menu),
                 MenuEntries(items)));
 }

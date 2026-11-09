@@ -45,7 +45,7 @@
                     @DropDown(MoreArrow, Grid, "mud-ex-ribbon-menu mud-ex-ribbon-gallery-menu", Origin.TopRight, Origin.TopRight)
                 </div>
             </div>,
-        _ => WithTooltip(layout, DropDown(menu => Face(layout, () => menu.ToggleAsync(), dropDown: true), Grid))
+        _ => WithTooltip(layout, DropDown(menu => Face(layout, e => menu.ToggleAsync(e), dropDown: true), Grid))
     };
 
     private RenderFragment MoreArrow(MenuContext menu) =>
@@ -53,7 +53,7 @@
                  class="mud-ex-ribbon-gallery-arrow mud-ex-ribbon-gallery-more"
                  disabled="@Disabled"
                  aria-label="@(Ribbon?.TryLocalize("More: {0}", Text) ?? Text)"
-                 @onclick="() => menu.ToggleAsync()">
+                 @onclick="e => menu.ToggleAsync(e)">
             <MudIcon Icon="@Icons.Material.Filled.ExpandMore" Class="mud-ex-ribbon-arrow" />
         </button>;
 

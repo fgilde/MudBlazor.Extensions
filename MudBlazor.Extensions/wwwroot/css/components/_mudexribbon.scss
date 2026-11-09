@@ -207,7 +207,11 @@
   align-items: stretch;
   > div[role=button] {
     display: flex;
-    outline: none;
+    border-radius: var(--mud-default-borderradius);
+    &:focus-visible {
+      outline: 2px solid var(--mud-palette-primary);
+      outline-offset: -2px;
+    }
   }
 }
 .mud-ex-ribbon-split {

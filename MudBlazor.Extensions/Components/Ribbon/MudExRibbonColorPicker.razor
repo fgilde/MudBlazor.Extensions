@@ -9,7 +9,8 @@
               <span class="mud-ex-ribbon-label">@Text</span>
               @PaletteContent
           </div>
-        : WithTooltip(layout, DropDown(menu => SplitFace(layout, ExecuteAsync, menu, ColorIcon), PaletteContent));
+        : WithTooltip(layout, DropDown(menu => SplitFace(layout, ExecuteAsync, menu, ColorIcon), PaletteContent,
+            openChanged: EventCallback.Factory.Create<bool>(this, OnMenuOpenChanged)));
 
     private RenderFragment ColorIcon =>
         @<span class="mud-ex-ribbon-color-icon">
