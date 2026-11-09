@@ -1,6 +1,6 @@
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
-/// <summary>Shared implementation of inserting rows or columns.</summary>
+/// <summary>Shared implementation of inserting rows or columns; references in all formulas and defined names move along.</summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="axis">Rows or columns.</param>
 /// <param name="index">Zero-based index at which the new rows or columns appear.</param>
@@ -8,6 +8,7 @@ namespace MudBlazor.Extensions.Office.Spreadsheet;
 public abstract class InsertCommandBase(Worksheet sheet, Axis axis, int index, int count) : IWorkbookCommand
 {
     private List<(CellRef Ref, CellState State)> _dropped = new();
+    private FormulaSnapshot _formulas;
 
     /// <inheritdoc />
     public string Description => axis == Axis.Row ? "Insert rows" : "Insert columns";
@@ -19,12 +20,14 @@ public abstract class InsertCommandBase(Worksheet sheet, Axis axis, int index, i
         if (count < 1 || count > limit) throw new ArgumentOutOfRangeException(nameof(count));
         if (index < 0 || index >= limit) throw new ArgumentOutOfRangeException(nameof(index));
         _dropped = sheet.Insert(axis, index, count);
+        _formulas = wb.RewriteFormulas((f, host) => ReferenceShifter.Shift(f, axis, sheet.Name, index, count, host));
         wb.Notify(axis == Axis.Row ? StructureChangeKind.RowsInserted : StructureChangeKind.ColumnsInserted, sheet, index, count);
     }
 
     /// <inheritdoc />
     public void Revert(Workbook wb)
     {
+        wb.RestoreFormulas(_formulas);
         sheet.Delete(axis, index, count);
         foreach (var (r, state) in _dropped) sheet.Restore(r, state);
         wb.Notify(axis == Axis.Row ? StructureChangeKind.RowsDeleted : StructureChangeKind.ColumnsDeleted, sheet, index, count);
@@ -33,7 +36,7 @@ public abstract class InsertCommandBase(Worksheet sheet, Axis axis, int index, i
     internal static int AxisLimit(Axis axis) => axis == Axis.Row ? CellRef.MaxRows : CellRef.MaxColumns;
 }
 
-/// <summary>Shared implementation of deleting rows or columns.</summary>
+/// <summary>Shared implementation of deleting rows or columns; references in all formulas and defined names move along and references to deleted cells become <c>#REF!</c>.</summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="axis">Rows or columns.</param>
 /// <param name="index">Zero-based index of the first row or column to delete.</param>
@@ -41,6 +44,7 @@ public abstract class InsertCommandBase(Worksheet sheet, Axis axis, int index, i
 public abstract class DeleteCommandBase(Worksheet sheet, Axis axis, int index, int count) : IWorkbookCommand
 {
     private DeleteSnapshot _snapshot;
+    private FormulaSnapshot _formulas;
 
     /// <inheritdoc />
     public string Description => axis == Axis.Row ? "Delete rows" : "Delete columns";
@@ -50,12 +54,14 @@ public abstract class DeleteCommandBase(Worksheet sheet, Axis axis, int index, i
     {
         Check(axis, index, count);
         _snapshot = sheet.Delete(axis, index, count);
+        _formulas = wb.RewriteFormulas((f, host) => ReferenceShifter.Shift(f, axis, sheet.Name, index, -count, host));
         wb.Notify(axis == Axis.Row ? StructureChangeKind.RowsDeleted : StructureChangeKind.ColumnsDeleted, sheet, index, count);
     }
 
     /// <inheritdoc />
     public void Revert(Workbook wb)
     {
+        wb.RestoreFormulas(_formulas);
         sheet.RestoreDeleted(axis, index, count, _snapshot);
         wb.Notify(axis == Axis.Row ? StructureChangeKind.RowsInserted : StructureChangeKind.ColumnsInserted, sheet, index, count);
     }
@@ -323,11 +329,12 @@ public sealed class AddSheetCommand(string name, int index = -1) : IWorkbookComm
     }
 }
 
-/// <summary>Deletes a sheet; the last remaining sheet cannot be deleted.</summary>
+/// <summary>Deletes a sheet; references to it in formulas and defined names become <c>#REF!</c>. The last visible sheet cannot be deleted.</summary>
 /// <param name="sheet">The sheet to delete.</param>
 public sealed class DeleteSheetCommand(Worksheet sheet) : IWorkbookCommand
 {
     private int _position;
+    private FormulaSnapshot _formulas;
 
     /// <inheritdoc />
     public string Description => "Delete sheet";
@@ -340,24 +347,26 @@ public sealed class DeleteSheetCommand(Worksheet sheet) : IWorkbookCommand
         if (!wb.SheetList.Any(x => x != sheet && !x.Hidden))
             throw new InvalidOperationException("A workbook needs at least one visible sheet.");
         wb.SheetList.RemoveAt(_position);
+        _formulas = wb.RewriteFormulas((f, _) => ReferenceShifter.RemoveSheet(f, sheet.Name));
         wb.Notify(StructureChangeKind.SheetRemoved, sheet, _position);
     }
 
     /// <inheritdoc />
     public void Revert(Workbook wb)
     {
+        wb.RestoreFormulas(_formulas);
         wb.SheetList.Insert(_position, sheet);
         wb.Notify(StructureChangeKind.SheetAdded, sheet, _position);
     }
 }
 
-/// <summary>Renames a sheet and updates sheet references inside defined names. Formula references are handled by the engine.</summary>
+/// <summary>Renames a sheet and updates sheet references in all formulas and defined names.</summary>
 /// <param name="sheet">The sheet to rename.</param>
 /// <param name="newName">The new name.</param>
 public sealed class RenameSheetCommand(Worksheet sheet, string newName) : IWorkbookCommand
 {
     private string _oldName;
-    private Dictionary<string, string> _names;
+    private FormulaSnapshot _formulas;
 
     /// <inheritdoc />
     public string Description => "Rename sheet";
@@ -367,9 +376,8 @@ public sealed class RenameSheetCommand(Worksheet sheet, string newName) : IWorkb
     {
         Workbook.ValidateSheetName(newName, sheet, wb);
         _oldName = sheet.Name;
-        _names = new Dictionary<string, string>(wb.DefinedNameMap, StringComparer.OrdinalIgnoreCase);
         sheet.Name = newName;
-        wb.RenameInDefinedNames(_oldName, newName);
+        _formulas = wb.RewriteFormulas((f, _) => ReferenceShifter.RenameSheet(f, _oldName, newName));
         wb.Notify(StructureChangeKind.SheetRenamed, sheet, oldName: _oldName);
     }
 
@@ -377,8 +385,7 @@ public sealed class RenameSheetCommand(Worksheet sheet, string newName) : IWorkb
     public void Revert(Workbook wb)
     {
         sheet.Name = _oldName;
-        wb.DefinedNameMap.Clear();
-        foreach (var (key, value) in _names) wb.DefinedNameMap[key] = value;
+        wb.RestoreFormulas(_formulas);
         wb.Notify(StructureChangeKind.SheetRenamed, sheet, oldName: newName);
     }
 }

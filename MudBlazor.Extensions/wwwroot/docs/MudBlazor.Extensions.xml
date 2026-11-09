@@ -29918,6 +29918,672 @@
             MudBlazorExtensionsMiddlewareExtensions
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FormulaNode">
+            <summary>Base type of a parsed formula expression.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.NumberNode">
+            <summary>A number literal.</summary>
+            <param name="Value">The number.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.NumberNode.#ctor(System.Double)">
+            <summary>A number literal.</summary>
+            <param name="Value">The number.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.NumberNode.Value">
+            <summary>The number.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.TextNode">
+            <summary>A text literal.</summary>
+            <param name="Value">The unescaped text.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.TextNode.#ctor(System.String)">
+            <summary>A text literal.</summary>
+            <param name="Value">The unescaped text.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.TextNode.Value">
+            <summary>The unescaped text.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.BoolNode">
+            <summary>A boolean literal.</summary>
+            <param name="Value">The boolean.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.BoolNode.#ctor(System.Boolean)">
+            <summary>A boolean literal.</summary>
+            <param name="Value">The boolean.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.BoolNode.Value">
+            <summary>The boolean.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ErrorNode">
+            <summary>An error literal such as <c>#REF!</c>.</summary>
+            <param name="Error">The error.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ErrorNode.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellError)">
+            <summary>An error literal such as <c>#REF!</c>.</summary>
+            <param name="Error">The error.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ErrorNode.Error">
+            <summary>The error.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RefNode">
+            <summary>A single cell reference.</summary>
+            <param name="Cell">The cell, including absolute markers.</param>
+            <param name="Sheet">The sheet name, or null for the sheet the formula lives on.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RefNode.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellRef,System.String)">
+            <summary>A single cell reference.</summary>
+            <param name="Cell">The cell, including absolute markers.</param>
+            <param name="Sheet">The sheet name, or null for the sheet the formula lives on.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RefNode.Cell">
+            <summary>The cell, including absolute markers.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RefNode.Sheet">
+            <summary>The sheet name, or null for the sheet the formula lives on.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RangeNode">
+            <summary>A rectangular range reference, including whole columns (<c>A:A</c>) and rows (<c>1:1</c>).</summary>
+            <param name="Range">The range, including absolute markers.</param>
+            <param name="Sheet">The sheet name, or null for the sheet the formula lives on.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RangeNode.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellRange,System.String)">
+            <summary>A rectangular range reference, including whole columns (<c>A:A</c>) and rows (<c>1:1</c>).</summary>
+            <param name="Range">The range, including absolute markers.</param>
+            <param name="Sheet">The sheet name, or null for the sheet the formula lives on.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RangeNode.Range">
+            <summary>The range, including absolute markers.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RangeNode.Sheet">
+            <summary>The sheet name, or null for the sheet the formula lives on.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.NameNode">
+            <summary>A defined name.</summary>
+            <param name="Name">The name as written.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.NameNode.#ctor(System.String)">
+            <summary>A defined name.</summary>
+            <param name="Name">The name as written.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.NameNode.Name">
+            <summary>The name as written.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.UnaryNode">
+            <summary>A prefix sign.</summary>
+            <param name="Operator"><c>-</c> or <c>+</c>.</param>
+            <param name="Operand">The operand.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UnaryNode.#ctor(System.Char,MudBlazor.Extensions.Office.Spreadsheet.FormulaNode)">
+            <summary>A prefix sign.</summary>
+            <param name="Operator"><c>-</c> or <c>+</c>.</param>
+            <param name="Operand">The operand.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.UnaryNode.Operator">
+            <summary><c>-</c> or <c>+</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.UnaryNode.Operand">
+            <summary>The operand.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.PercentNode">
+            <summary>A postfix percent sign (divides by 100).</summary>
+            <param name="Operand">The operand.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.PercentNode.#ctor(MudBlazor.Extensions.Office.Spreadsheet.FormulaNode)">
+            <summary>A postfix percent sign (divides by 100).</summary>
+            <param name="Operand">The operand.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.PercentNode.Operand">
+            <summary>The operand.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp">
+            <summary>Binary operators, from reference operators to comparisons.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Range">
+            <summary><c>:</c> bounding range of two references.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Intersect">
+            <summary>Space: intersection of two references.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Union">
+            <summary><c>,</c> inside parentheses: union of two references.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Power">
+            <summary><c>^</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Multiply">
+            <summary><c>*</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Divide">
+            <summary><c>/</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Add">
+            <summary><c>+</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Subtract">
+            <summary><c>-</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Concat">
+            <summary><c>&amp;</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Equal">
+            <summary><c>=</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.NotEqual">
+            <summary><c>&lt;&gt;</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Less">
+            <summary><c>&lt;</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.LessOrEqual">
+            <summary><c>&lt;=</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.Greater">
+            <summary><c>&gt;</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.BinaryOp.GreaterOrEqual">
+            <summary><c>&gt;=</c></summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.BinaryNode">
+            <summary>A binary operation.</summary>
+            <param name="Op">The operator.</param>
+            <param name="Left">Left operand.</param>
+            <param name="Right">Right operand.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.BinaryNode.#ctor(MudBlazor.Extensions.Office.Spreadsheet.BinaryOp,MudBlazor.Extensions.Office.Spreadsheet.FormulaNode,MudBlazor.Extensions.Office.Spreadsheet.FormulaNode)">
+            <summary>A binary operation.</summary>
+            <param name="Op">The operator.</param>
+            <param name="Left">Left operand.</param>
+            <param name="Right">Right operand.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.BinaryNode.Op">
+            <summary>The operator.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.BinaryNode.Left">
+            <summary>Left operand.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.BinaryNode.Right">
+            <summary>Right operand.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CallNode">
+            <summary>A function call.</summary>
+            <param name="Name">Function name (upper case unless it carries a prefix such as <c>_xlfn.</c>).</param>
+            <param name="Args">The arguments; empty positions are <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.MissingArgNode"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CallNode.#ctor(System.String,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.FormulaNode})">
+            <summary>A function call.</summary>
+            <param name="Name">Function name (upper case unless it carries a prefix such as <c>_xlfn.</c>).</param>
+            <param name="Args">The arguments; empty positions are <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.MissingArgNode"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CallNode.Name">
+            <summary>Function name (upper case unless it carries a prefix such as <c>_xlfn.</c>).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CallNode.Args">
+            <summary>The arguments; empty positions are <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.MissingArgNode"/>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ArrayConstNode">
+            <summary>An array constant such as <c>{1,2;3,4}</c>.</summary>
+            <param name="Rows">Rows of literal nodes, all of equal length.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ArrayConstNode.#ctor(System.Collections.Generic.IReadOnlyList{System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.FormulaNode}})">
+            <summary>An array constant such as <c>{1,2;3,4}</c>.</summary>
+            <param name="Rows">Rows of literal nodes, all of equal length.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ArrayConstNode.Rows">
+            <summary>Rows of literal nodes, all of equal length.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ParenNode">
+            <summary>Parentheses kept from the source so formatting round-trips.</summary>
+            <param name="Inner">The enclosed expression.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ParenNode.#ctor(MudBlazor.Extensions.Office.Spreadsheet.FormulaNode)">
+            <summary>Parentheses kept from the source so formatting round-trips.</summary>
+            <param name="Inner">The enclosed expression.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ParenNode.Inner">
+            <summary>The enclosed expression.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.MissingArgNode">
+            <summary>An empty argument position, as in <c>IF(A1,,1)</c>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine">
+            <summary>
+            Calculates the formulas of a workbook and keeps their results in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.Value"/>. Cell edits recalculate only
+            the dependent cells in dependency order; structural changes and defined-name changes rebuild the graph. Cells on a
+            circular reference get <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Circ"/>.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Workbook,MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry)">
+            <summary>Attaches an engine to a workbook, calculates all formulas and follows <see cref="E:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Changed"/> from then on.</summary>
+            <param name="wb">The workbook.</param>
+            <param name="functions">The functions to use, or null for <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.Default"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.Functions">
+            <summary>The functions available to formulas.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.EvaluationCount">
+            <summary>Number of formula evaluations performed so far.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.RecalculateAll">
+            <summary>Rebuilds the dependency graph from all formulas and calculates every formula.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine.OnCellsChanged(System.Collections.Generic.IEnumerable{System.ValueTuple{MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef}})">
+            <summary>Updates the graph for changed cells (values or formulas) and recalculates the cells that depend on them.</summary>
+            <param name="changed">The changed cells.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CalcValueKind">
+            <summary>What a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CalcValue"/> holds.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CalcValueKind.Scalar">
+            <summary>A single <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CellValue"/>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CalcValueKind.Array">
+            <summary>A rectangular <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CalcArray"/>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CalcValueKind.Reference">
+            <summary>One or more referenced areas, read lazily.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RefArea">
+            <summary>A rectangular area of a worksheet.</summary>
+            <param name="Sheet">The worksheet.</param>
+            <param name="Range">The normalized range.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RefArea.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
+            <summary>A rectangular area of a worksheet.</summary>
+            <param name="Sheet">The worksheet.</param>
+            <param name="Range">The normalized range.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RefArea.Sheet">
+            <summary>The worksheet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RefArea.Range">
+            <summary>The normalized range.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CalcArray">
+            <summary>A rectangle of values addressed by zero-based row and column.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcArray.#ctor(System.Int32,System.Int32)">
+            <summary>Creates an array of empty values.</summary>
+            <param name="rows">Number of rows (at least 1).</param>
+            <param name="columns">Number of columns (at least 1).</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcArray.Rows">
+            <summary>Number of rows.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcArray.Columns">
+            <summary>Number of columns.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcArray.Item(System.Int32,System.Int32)">
+            <summary>Gets or sets a value.</summary>
+            <param name="row">Zero-based row.</param>
+            <param name="column">Zero-based column.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CalcValue">
+            <summary>Result of evaluating an expression: a scalar, an array or a lazy reference. The default value is the empty scalar.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.Kind">
+            <summary>What the value holds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.Scalar">
+            <summary>The value for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CalcValueKind.Scalar"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.Array">
+            <summary>The array for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CalcValueKind.Array"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.Areas">
+            <summary>The areas for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CalcValueKind.Reference"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.IsError">
+            <summary>True for a scalar error value.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.Empty">
+            <summary>The empty scalar.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.op_Implicit(MudBlazor.Extensions.Office.Spreadsheet.CellValue)~MudBlazor.Extensions.Office.Spreadsheet.CalcValue">
+            <summary>Wraps a cell value.</summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.Number(System.Double)">
+            <summary>Creates a number.</summary>
+            <param name="value">The number.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.Text(System.String)">
+            <summary>Creates a text value.</summary>
+            <param name="value">The text.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.Boolean(System.Boolean)">
+            <summary>Creates a boolean.</summary>
+            <param name="value">The boolean.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.Error(MudBlazor.Extensions.Office.Spreadsheet.CellError)">
+            <summary>Creates an error.</summary>
+            <param name="error">The error.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.FromArray(MudBlazor.Extensions.Office.Spreadsheet.CalcArray)">
+            <summary>Wraps an array.</summary>
+            <param name="array">The array.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcValue.FromReference(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.RefArea})">
+            <summary>Creates a reference to one or more areas.</summary>
+            <param name="areas">The areas.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.Coercion">
+            <summary>Excel conversion and comparison rules between numbers, text, booleans and blanks.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Coercion.TryToNumber(MudBlazor.Extensions.Office.Spreadsheet.CellValue,System.Double@,MudBlazor.Extensions.Office.Spreadsheet.CellError@)">
+            <summary>Converts a value to a number: blank is 0, booleans are 1 or 0, text is parsed with the current culture.</summary>
+            <param name="value">The value.</param>
+            <param name="number">The number when successful.</param>
+            <param name="error">The error to report when unsuccessful (the value's own error, or <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Value"/>).</param>
+            <returns>True if the value converts.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Coercion.TryToBoolean(MudBlazor.Extensions.Office.Spreadsheet.CellValue,System.Boolean@,MudBlazor.Extensions.Office.Spreadsheet.CellError@)">
+            <summary>Converts a value to a boolean: numbers are true unless 0, text must be TRUE or FALSE, blank is false.</summary>
+            <param name="value">The value.</param>
+            <param name="result">The boolean when successful.</param>
+            <param name="error">The error to report when unsuccessful.</param>
+            <returns>True if the value converts.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Coercion.ToText(MudBlazor.Extensions.Office.Spreadsheet.CellValue)">
+            <summary>Converts a value to text: numbers with up to 15 significant digits in the current culture, booleans as TRUE or FALSE.</summary>
+            <param name="value">The value.</param>
+            <returns>The text.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Coercion.Compare(MudBlazor.Extensions.Office.Spreadsheet.CellValue,MudBlazor.Extensions.Office.Spreadsheet.CellValue)">
+            <summary>
+            Compares two non-error values like Excel's comparison operators: blank adapts to the other side,
+            numbers sort before text before booleans, and text compares case-insensitively.
+            </summary>
+            <param name="a">Left value.</param>
+            <param name="b">Right value.</param>
+            <returns>Negative, zero or positive.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind">
+            <summary>Kinds of formula tokens.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Number">
+            <summary>A number literal.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Text">
+            <summary>A quoted text literal including its quotes.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Boolean">
+            <summary><c>TRUE</c> or <c>FALSE</c>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Error">
+            <summary>An error literal, optionally sheet-qualified.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Reference">
+            <summary>A cell or range reference, optionally sheet-qualified.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Function">
+            <summary>A function name (the next character is the opening parenthesis).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Name">
+            <summary>A defined name.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Operator">
+            <summary>An operator such as <c>+</c>, <c>&lt;=</c>, <c>%</c> or <c>:</c>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.OpenParen">
+            <summary><c>(</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.CloseParen">
+            <summary><c>)</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.OpenBrace">
+            <summary><c>{</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.CloseBrace">
+            <summary><c>}</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Comma">
+            <summary><c>,</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Semicolon">
+            <summary><c>;</c></summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FormulaToken">
+            <summary>A lexical token of a formula.</summary>
+            <param name="Kind">The token kind.</param>
+            <param name="Text">The token text exactly as written.</param>
+            <param name="Start">Offset of the token in the formula text.</param>
+            <param name="SpaceBefore">True if whitespace precedes the token.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FormulaToken.#ctor(MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind,System.String,System.Int32,System.Boolean)">
+            <summary>A lexical token of a formula.</summary>
+            <param name="Kind">The token kind.</param>
+            <param name="Text">The token text exactly as written.</param>
+            <param name="Start">Offset of the token in the formula text.</param>
+            <param name="SpaceBefore">True if whitespace precedes the token.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FormulaToken.Kind">
+            <summary>The token kind.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FormulaToken.Text">
+            <summary>The token text exactly as written.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FormulaToken.Start">
+            <summary>Offset of the token in the formula text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FormulaToken.SpaceBefore">
+            <summary>True if whitespace precedes the token.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FormulaLexer">
+            <summary>Splits formula text into tokens, for example to colour references while typing.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FormulaLexer.Tokenize(System.String)">
+            <summary>Tokenizes a formula; a leading equals sign is skipped.</summary>
+            <param name="formula">The formula text.</param>
+            <returns>The tokens in order.</returns>
+            <exception cref="T:System.FormatException">The text contains a character or literal that is not valid in a formula.</exception>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FormulaParser">
+            <summary>
+            Parses formulas with Excel precedence (<c>:</c>, space, union, unary sign, <c>%</c>, <c>^</c>, <c>* /</c>, <c>+ -</c>,
+            <c>&amp;</c>, comparisons) and formats them back in Excel form with <c>,</c> as argument separator.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaParser.MaxLength">
+            <summary>Maximum formula length in characters (as in Excel).</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FormulaParser.Parse(System.String)">
+            <summary>Parses a formula, with or without leading equals sign.</summary>
+            <param name="formula">The formula text.</param>
+            <returns>The expression tree.</returns>
+            <exception cref="T:System.FormatException">The formula is not valid.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FormulaParser.TryParse(System.String,MudBlazor.Extensions.Office.Spreadsheet.FormulaNode@,System.String@)">
+            <summary>Tries to parse a formula, with or without leading equals sign.</summary>
+            <param name="formula">The formula text.</param>
+            <param name="node">The expression tree when successful.</param>
+            <param name="error">A description of the problem when unsuccessful.</param>
+            <returns>True if the formula is valid.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FormulaParser.Format(MudBlazor.Extensions.Office.Spreadsheet.FormulaNode)">
+            <summary>Formats an expression tree in Excel form without leading equals sign.</summary>
+            <param name="node">The expression tree.</param>
+            <returns>The formula text, for example <c>SUM(A1:B2,1)</c>.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry">
+            <summary>Case-insensitive lookup of worksheet functions by name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.Default">
+            <summary>The registry with all built-in functions.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.Functions">
+            <summary>All registered functions.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.Register(MudBlazor.Extensions.Office.Spreadsheet.IFunction)">
+            <summary>Adds or replaces a function.</summary>
+            <param name="function">The function.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.TryGet(System.String,MudBlazor.Extensions.Office.Spreadsheet.IFunction@)">
+            <summary>Finds a function; the file prefixes <c>_xlfn.</c> and <c>_xlws.</c> are ignored.</summary>
+            <param name="name">The function name.</param>
+            <param name="function">The function when found.</param>
+            <returns>True if the function exists.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.IFunction">
+            <summary>A worksheet function.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.IFunction.Name">
+            <summary>The function name in upper case, for example <c>SUM</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.IFunction.Info">
+            <summary>Catalog information for autocomplete and help.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.IFunction.Invoke(MudBlazor.Extensions.Office.Spreadsheet.FunctionContext,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.CalcArg})">
+            <summary>Computes the result. Arguments are evaluated lazily on first access.</summary>
+            <param name="ctx">The evaluation context.</param>
+            <param name="args">The arguments.</param>
+            <returns>A scalar, array or reference. Throwing <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CalcErrorException"/> yields that error.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo">
+            <summary>Catalog information about a function.</summary>
+            <param name="Name">The function name.</param>
+            <param name="Category">Category such as Math, Logical or Text.</param>
+            <param name="Signature">Signature shown while typing, for example <c>SUM(number1, [number2], ...)</c>.</param>
+            <param name="Description">Short English description.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>Catalog information about a function.</summary>
+            <param name="Name">The function name.</param>
+            <param name="Category">Category such as Math, Logical or Text.</param>
+            <param name="Signature">Signature shown while typing, for example <c>SUM(number1, [number2], ...)</c>.</param>
+            <param name="Description">Short English description.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo.Name">
+            <summary>The function name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo.Category">
+            <summary>Category such as Math, Logical or Text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo.Signature">
+            <summary>Signature shown while typing, for example <c>SUM(number1, [number2], ...)</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo.Description">
+            <summary>Short English description.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CalcErrorException">
+            <summary>Thrown by function implementations to return an error value.</summary>
+            <param name="error">The error.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CalcErrorException.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellError)">
+            <summary>Thrown by function implementations to return an error value.</summary>
+            <param name="error">The error.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcErrorException.Error">
+            <summary>The error value to return.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CalcArg">
+            <summary>A lazily evaluated function argument.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcArg.Node">
+            <summary>The argument expression.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcArg.IsMissing">
+            <summary>True if the argument position is empty, as in <c>IF(A1,,1)</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CalcArg.Value">
+            <summary>The evaluated argument; references stay references. Evaluated once on first access.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext">
+            <summary>Access to the workbook and value helpers for function implementations.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.Workbook">
+            <summary>The workbook.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.Sheet">
+            <summary>The sheet of the formula being evaluated.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.Cell">
+            <summary>The cell of the formula being evaluated.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.GetValue(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Reads a cell value; unstored cells are blank.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="cell">The cell.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.ToScalar(MudBlazor.Extensions.Office.Spreadsheet.CalcValue)">
+            <summary>
+            Reduces a value to a scalar: arrays give their top-left value, single-cell references their value, and larger
+            references the cell in the formula's row or column (implicit intersection) or <c>#VALUE!</c>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The scalar.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.ToArray(MudBlazor.Extensions.Office.Spreadsheet.CalcValue)">
+            <summary>Materializes a value as an array (a scalar becomes 1x1).</summary>
+            <param name="value">The value.</param>
+            <returns>The array, or null for multi-area references.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionContext.Values(MudBlazor.Extensions.Office.Spreadsheet.CalcValue)">
+            <summary>
+            Enumerates the values of a scalar, an array (row by row) or a reference. References yield only non-blank stored
+            cells, row by row, so whole-column ranges stay cheap.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The values.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DelegateFunction">
+            <summary>A function implemented by a delegate, with argument count checking.</summary>
+            <param name="info">Catalog information; its name is the function name.</param>
+            <param name="minArgs">Minimum number of arguments.</param>
+            <param name="maxArgs">Maximum number of arguments, or -1 for no limit.</param>
+            <param name="invoke">The implementation.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DelegateFunction.#ctor(MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo,System.Int32,System.Int32,System.Func{MudBlazor.Extensions.Office.Spreadsheet.FunctionContext,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.CalcArg},MudBlazor.Extensions.Office.Spreadsheet.CalcValue})">
+            <summary>A function implemented by a delegate, with argument count checking.</summary>
+            <param name="info">Catalog information; its name is the function name.</param>
+            <param name="minArgs">Minimum number of arguments.</param>
+            <param name="maxArgs">Maximum number of arguments, or -1 for no limit.</param>
+            <param name="invoke">The implementation.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DelegateFunction.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DelegateFunction.Info">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DelegateFunction.Invoke(MudBlazor.Extensions.Office.Spreadsheet.FunctionContext,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.CalcArg})">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ReferenceShifter">
+            <summary>
+            Rewrites references in formula text when rows or columns are inserted or deleted, or a sheet is renamed. Formulas
+            without affected references are returned unchanged (including their whitespace); unparsable formulas are returned as is.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ReferenceShifter.ShiftRows(System.String,System.String,System.Int32,System.Int32)">
+            <summary>Shifts row references of a formula that lives on the changed sheet.</summary>
+            <param name="formula">Formula text without leading equals sign.</param>
+            <param name="sheet">Name of the sheet whose rows change.</param>
+            <param name="at">Zero-based first inserted or deleted row.</param>
+            <param name="count">Positive to insert rows at <paramref name="at"/>, negative to delete <c>-count</c> rows from it.</param>
+            <returns>The rewritten formula; references to deleted cells become <c>#REF!</c>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ReferenceShifter.ShiftColumns(System.String,System.String,System.Int32,System.Int32)">
+            <summary>Shifts column references of a formula that lives on the changed sheet.</summary>
+            <param name="formula">Formula text without leading equals sign.</param>
+            <param name="sheet">Name of the sheet whose columns change.</param>
+            <param name="at">Zero-based first inserted or deleted column.</param>
+            <param name="count">Positive to insert columns at <paramref name="at"/>, negative to delete <c>-count</c> columns from it.</param>
+            <returns>The rewritten formula; references to deleted cells become <c>#REF!</c>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ReferenceShifter.RenameSheet(System.String,System.String,System.String)">
+            <summary>Replaces the sheet name in sheet-qualified references.</summary>
+            <param name="formula">Formula text without leading equals sign.</param>
+            <param name="oldName">The previous sheet name (case-insensitive).</param>
+            <param name="newName">The new sheet name.</param>
+            <returns>The rewritten formula, quoting the new name where needed.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.Cell">
             <summary>A stored cell: value, optional formula text and style id.</summary>
         </member>
@@ -30447,14 +31113,14 @@
             <param name="wb">The workbook.</param>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.InsertCommandBase">
-            <summary>Shared implementation of inserting rows or columns.</summary>
+            <summary>Shared implementation of inserting rows or columns; references in all formulas and defined names move along.</summary>
             <param name="sheet">The sheet.</param>
             <param name="axis">Rows or columns.</param>
             <param name="index">Zero-based index at which the new rows or columns appear.</param>
             <param name="count">How many to insert.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.InsertCommandBase.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.Axis,System.Int32,System.Int32)">
-            <summary>Shared implementation of inserting rows or columns.</summary>
+            <summary>Shared implementation of inserting rows or columns; references in all formulas and defined names move along.</summary>
             <param name="sheet">The sheet.</param>
             <param name="axis">Rows or columns.</param>
             <param name="index">Zero-based index at which the new rows or columns appear.</param>
@@ -30470,14 +31136,14 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DeleteCommandBase">
-            <summary>Shared implementation of deleting rows or columns.</summary>
+            <summary>Shared implementation of deleting rows or columns; references in all formulas and defined names move along and references to deleted cells become <c>#REF!</c>.</summary>
             <param name="sheet">The sheet.</param>
             <param name="axis">Rows or columns.</param>
             <param name="index">Zero-based index of the first row or column to delete.</param>
             <param name="count">How many to delete.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteCommandBase.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.Axis,System.Int32,System.Int32)">
-            <summary>Shared implementation of deleting rows or columns.</summary>
+            <summary>Shared implementation of deleting rows or columns; references in all formulas and defined names move along and references to deleted cells become <c>#REF!</c>.</summary>
             <param name="sheet">The sheet.</param>
             <param name="axis">Rows or columns.</param>
             <param name="index">Zero-based index of the first row or column to delete.</param>
@@ -30680,11 +31346,11 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DeleteSheetCommand">
-            <summary>Deletes a sheet; the last remaining sheet cannot be deleted.</summary>
+            <summary>Deletes a sheet; references to it in formulas and defined names become <c>#REF!</c>. The last visible sheet cannot be deleted.</summary>
             <param name="sheet">The sheet to delete.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteSheetCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet)">
-            <summary>Deletes a sheet; the last remaining sheet cannot be deleted.</summary>
+            <summary>Deletes a sheet; references to it in formulas and defined names become <c>#REF!</c>. The last visible sheet cannot be deleted.</summary>
             <param name="sheet">The sheet to delete.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DeleteSheetCommand.Description">
@@ -30697,12 +31363,12 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RenameSheetCommand">
-            <summary>Renames a sheet and updates sheet references inside defined names. Formula references are handled by the engine.</summary>
+            <summary>Renames a sheet and updates sheet references in all formulas and defined names.</summary>
             <param name="sheet">The sheet to rename.</param>
             <param name="newName">The new name.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RenameSheetCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String)">
-            <summary>Renames a sheet and updates sheet references inside defined names. Formula references are handled by the engine.</summary>
+            <summary>Renames a sheet and updates sheet references in all formulas and defined names.</summary>
             <param name="sheet">The sheet to rename.</param>
             <param name="newName">The new name.</param>
         </member>

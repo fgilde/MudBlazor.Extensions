@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
 /// <summary>A changed cell value or formula.</summary>
@@ -172,12 +170,38 @@ public sealed class Workbook
             ? name
             : "'" + name.Replace("'", "''") + "'";
 
-    internal void RenameInDefinedNames(string oldName, string newName)
+    internal FormulaSnapshot RewriteFormulas(Func<string, string, string> rewrite)
     {
-        var pattern = "'" + Regex.Escape(oldName.Replace("'", "''")) + "'!|(?<![\\w.'])" + Regex.Escape(oldName) + "!";
-        var replacement = QuoteSheetName(newName) + "!";
-        foreach (var key in _definedNames.Keys.ToList())
-            _definedNames[key] = Regex.Replace(_definedNames[key], pattern, _ => replacement,
-                RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        var cells = new List<(Worksheet, CellRef, string)>();
+        foreach (var sheet in _sheets)
+            foreach (var (r, cell) in sheet.UsedCells())
+            {
+                if (cell.Formula == null) continue;
+                var text = rewrite(cell.Formula, sheet.Name);
+                if (text == cell.Formula) continue;
+                cells.Add((sheet, r, cell.Formula));
+                cell.Formula = text;
+            }
+
+        Dictionary<string, string> names = null;
+        foreach (var (key, value) in _definedNames.ToList())
+        {
+            var text = rewrite(value, null);
+            if (text == value) continue;
+            names ??= new Dictionary<string, string>(_definedNames, StringComparer.OrdinalIgnoreCase);
+            _definedNames[key] = text;
+        }
+
+        return new FormulaSnapshot(cells, names);
+    }
+
+    internal void RestoreFormulas(FormulaSnapshot snapshot)
+    {
+        foreach (var (sheet, r, formula) in snapshot.Cells) sheet[r].Formula = formula;
+        if (snapshot.Names == null) return;
+        _definedNames.Clear();
+        foreach (var (key, value) in snapshot.Names) _definedNames[key] = value;
     }
 }
+
+internal sealed record FormulaSnapshot(List<(Worksheet Sheet, CellRef Ref, string Formula)> Cells, Dictionary<string, string> Names);
