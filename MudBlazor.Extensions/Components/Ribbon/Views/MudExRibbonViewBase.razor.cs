@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -48,6 +49,12 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
     }
 
     private void CloseOverlay() => _overlayOpen = false;
+
+    private void OnOverlayKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == "Escape")
+            CloseOverlay();
+    }
 
     private Task OnTabClickAsync(MudExRibbonTab tab)
     {

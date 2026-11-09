@@ -10,12 +10,7 @@
             @foreach (var group in tab.Groups)
             {
                 <div @key="group" class="mud-ex-ribbon-group" role="toolbar" aria-label="@group.Text">
-                    <div class="mud-ex-ribbon-group-items">
-                        @foreach (var item in group.Items.Where(i => i.Visible))
-                        {
-                            <div @key="item" class="mud-ex-ribbon-slot">@item.Render(item.DeclaredLayout)</div>
-                        }
-                    </div>
+                    <div class="mud-ex-ribbon-group-items">@MudExRibbonItemBase.Slots(group.Items, item => item.DeclaredLayout)</div>
                     <div class="mud-ex-ribbon-group-title">
                         <span>@group.Text</span>
                         @if (group.OnDialogLauncherClick.HasDelegate)
@@ -23,7 +18,7 @@
                             <button type="button"
                                     class="mud-ex-ribbon-dialog-launcher"
                                     aria-label="@Ribbon.TryLocalize("More options: {0}", group.Text)"
-                                    @onclick="() => group.OnDialogLauncherClick.InvokeAsync()">
+                                    @onclick="() => LaunchDialogAsync(group)">
                                 <MudIcon Icon="@Icons.Material.Filled.SouthEast" Class="mud-ex-ribbon-icon" />
                             </button>
                         }
@@ -31,4 +26,10 @@
                 </div>
             }
         </text>;
+
+    private async Task LaunchDialogAsync(MudExRibbonGroup group)
+    {
+        await group.OnDialogLauncherClick.InvokeAsync();
+        Ribbon.NotifyCommandExecuted();
+    }
 }

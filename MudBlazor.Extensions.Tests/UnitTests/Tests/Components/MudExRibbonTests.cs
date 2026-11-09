@@ -611,6 +611,8 @@ public class MudExRibbonTests : IAsyncLifetime
         cut.Find(".mud-ex-ribbon-mode-switch button").Click();
         popovers.WaitForAssertion(() => Assert.Equal(["Classic ribbon", "Simplified ribbon", "Menu bar", "Toolbar"],
             popovers.FindAll(".mud-ex-ribbon-mode-option").Select(e => e.TextContent.Trim())));
+        Assert.All(popovers.FindAll(".mud-ex-ribbon-mode-option"), e => Assert.Equal("menuitemradio", e.GetAttribute("role")));
+        Assert.Equal(["true", "false", "false", "false"], popovers.FindAll(".mud-ex-ribbon-mode-option").Select(e => e.GetAttribute("aria-checked")));
 
         popovers.FindAll(".mud-ex-ribbon-mode-option")[2].Click();
 
@@ -642,12 +644,49 @@ public class MudExRibbonTests : IAsyncLifetime
 
         cut.FindAll("[role=tab]")[1].Click();
         popovers.WaitForAssertion(() => Assert.Equal(["Tables"], popovers.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
-        popovers.Find(".mud-overlay").Click();
+        popovers.Find(".mud-overlay.mud-ex-ribbon-overlay-backdrop").Click();
         popovers.WaitForAssertion(() => Assert.Empty(popovers.FindAll("[role=toolbar]")));
         Assert.True(cut.Instance.Collapsed);
 
         cut.Render(p => p.Add(x => x.Mode, MudExRibbonMode.Toolbar));
         cut.WaitForAssertion(() => Assert.Contains(cut.FindAll(".mud-ex-ribbon-toolbaricon"), e => e.GetAttribute("aria-label") == "Table"));
+    }
+
+    [Fact]
+    public void Collapsed_EscapeClosesOverlay()
+    {
+        var launches = 0;
+        var context = NewContext();
+        var popovers = context.Render<MudPopoverProvider>();
+        var cut = context.Render<MudExRibbon>(p => p.Add(x => x.Collapsed, true).AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home")
+            .AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Font").Add(x => x.OnDialogLauncherClick, () => launches++)
+                .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Bold")))));
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll("[role=tab]")));
+        Assert.Equal("false", cut.Find("[role=tab]").GetAttribute("aria-expanded"));
+        Assert.False(cut.Find("[role=tab]").HasAttribute("aria-controls"));
+
+        cut.Find("[role=tab]").Click();
+        popovers.WaitForAssertion(() => Assert.Single(popovers.FindAll("[role=toolbar]")));
+        Assert.Equal("true", cut.Find("[role=tab]").GetAttribute("aria-expanded"));
+        Assert.Equal(popovers.Find("[role=tabpanel]").Id, cut.Find("[role=tab]").GetAttribute("aria-controls"));
+        Assert.Contains("mud-ex-ribbon-overlay-backdrop", popovers.Find(".mud-overlay").ClassList);
+        Assert.Contains("mud-ex-ribbon-header-raised", cut.Find(".mud-ex-ribbon-header").ClassList);
+
+        popovers.Find(".mud-ex-ribbon-overlay-content").KeyDown(new KeyboardEventArgs { Key = "Escape" });
+        popovers.WaitForAssertion(() => Assert.Empty(popovers.FindAll("[role=toolbar]")));
+        Assert.Equal("false", cut.Find("[role=tab]").GetAttribute("aria-expanded"));
+
+        cut.Find("[role=tab]").Click();
+        popovers.WaitForAssertion(() => Assert.Single(popovers.FindAll("[role=toolbar]")));
+        popovers.Find(".mud-ex-ribbon-dialog-launcher").Click();
+        cut.WaitForAssertion(() => Assert.Equal(1, launches));
+        popovers.WaitForAssertion(() => Assert.Empty(popovers.FindAll("[role=toolbar]")));
+
+        cut.Render(p => p.Add(x => x.Collapsed, false));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll("[role=toolbar]")));
+        Assert.False(cut.Find("[role=tab]").HasAttribute("aria-expanded"));
+        Assert.Equal(cut.Find("[role=tabpanel]").Id, cut.Find("[role=tab]").GetAttribute("aria-controls"));
     }
 
     [Fact]

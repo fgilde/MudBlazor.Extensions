@@ -22,19 +22,12 @@
                 }
             </MudMenu>
             <div class="mud-ex-ribbon-toolbar-items" role="toolbar" aria-label="@activeTab?.Text">
-                @foreach (var (group, index) in (activeTab?.Groups ?? []).Select((group, index) => (group, index)))
-                {
-                    if (index > 0)
-                    {
-                        <MudDivider Vertical="true" FlexItem="true" Class="mud-ex-ribbon-separator" />
-                    }
-                    <div @key="group" class="mud-ex-ribbon-toolbar-group" role="group" aria-label="@group.Text">
-                        @foreach (var item in group.Items.Where(i => i.Visible))
-                        {
-                            <div @key="item" class="mud-ex-ribbon-slot">@item.Render(MudExRibbonItemLayout.ToolbarIcon)</div>
-                        }
-                    </div>
-                }
+                @GroupSections(activeTab?.Groups ?? [], true, Group)
             </div>
+        </div>;
+
+    private RenderFragment Group(MudExRibbonGroup group) =>
+        @<div @key="group" class="mud-ex-ribbon-toolbar-group" role="group" aria-label="@group.Text">
+            @MudExRibbonItemBase.Slots(group.Items, _ => MudExRibbonItemLayout.ToolbarIcon)
         </div>;
 }

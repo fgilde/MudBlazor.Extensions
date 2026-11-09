@@ -7,10 +7,5 @@
     /// <inheritdoc />
     public override RenderFragment Render(MudExRibbonItemLayout layout) => layout == MudExRibbonItemLayout.MenuEntry
         ? MenuEntries(Items)
-        : @<div class="mud-ex-ribbon-row">
-            @foreach (var item in Items.Where(i => i.Visible))
-            {
-                <div @key="item" class="mud-ex-ribbon-slot">@item.Render(ChildLayout(item, layout))</div>
-            }
-        </div>;
+        : @<div class="mud-ex-ribbon-row">@Slots(Items, item => ChildLayout(item, layout))</div>;
 }

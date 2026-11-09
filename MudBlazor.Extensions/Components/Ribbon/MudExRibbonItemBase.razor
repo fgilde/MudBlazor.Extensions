@@ -103,13 +103,15 @@
     internal RenderFragment SubMenu(RenderFragment content) =>
         @<MudMenu Label="@Text" StartIcon="@Icon" Disabled="@Disabled" Dense="true" Class="mud-ex-ribbon-submenu">@content</MudMenu>;
 
-    internal static RenderFragment MenuEntries(IEnumerable<MudExRibbonItemBase> items) =>
+    internal static RenderFragment Slots(IEnumerable<MudExRibbonItemBase> items, Func<MudExRibbonItemBase, MudExRibbonItemLayout> layout) =>
         @<text>
             @foreach (var item in items.Where(i => i.Visible))
             {
-                <div @key="item" class="mud-ex-ribbon-slot">@item.Render(MudExRibbonItemLayout.MenuEntry)</div>
+                <div @key="item" class="mud-ex-ribbon-slot">@item.Render(layout(item))</div>
             }
         </text>;
+
+    internal static RenderFragment MenuEntries(IEnumerable<MudExRibbonItemBase> items) => Slots(items, _ => MudExRibbonItemLayout.MenuEntry);
 
     internal RenderFragment RenderMenu(MudExRibbonItemLayout layout, IEnumerable<MudExRibbonItemBase> items, Func<Task> split)
         => layout == MudExRibbonItemLayout.MenuEntry

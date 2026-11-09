@@ -10,16 +10,14 @@
             @foreach (var tab in Ribbon.VisibleTabs)
             {
                 <MudMenu @key="tab" Class="mud-ex-ribbon-menubar-menu" Label="@tab.Text" Color="Color.Inherit" Dense="true">
-                    @foreach (var (group, index) in tab.Groups.Select((group, index) => (group, index)))
-                    {
-                        if (index > 0)
-                        {
-                            <MudDivider Class="mud-ex-ribbon-menu-section-divider" />
-                        }
-                        <div class="mud-ex-ribbon-menu-subheader">@group.Text</div>
-                        @MudExRibbonItemBase.MenuEntries(group.Items)
-                    }
+                    @GroupSections(tab.Groups, false, Section)
                 </MudMenu>
             }
         </div>;
+
+    private RenderFragment Section(MudExRibbonGroup group) =>
+        @<text>
+            <div class="mud-ex-ribbon-menu-subheader">@group.Text</div>
+            @MudExRibbonItemBase.MenuEntries(group.Items)
+        </text>;
 }

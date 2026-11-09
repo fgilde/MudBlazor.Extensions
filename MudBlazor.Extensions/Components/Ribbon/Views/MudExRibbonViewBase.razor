@@ -55,9 +55,15 @@
                                 AnchorOrigin="Origin.BottomLeft"
                                 TransformOrigin="Origin.TopLeft"
                                 RelativeWidth="DropdownWidth.Adaptive">
-                        @Panel(activeTab, body, bodyClass)
+                        <div class="mud-ex-ribbon-overlay-content" @onkeydown="OnOverlayKeyDown">
+                            @Panel(activeTab, body, bodyClass)
+                        </div>
                     </MudPopover>
-                    <MudOverlay Visible="@_overlayOpen" AutoClose="true" LockScroll="false" OnClosed="CloseOverlay" />
+                    <MudOverlay Class="mud-ex-ribbon-overlay-backdrop"
+                                Visible="@_overlayOpen"
+                                AutoClose="true"
+                                LockScroll="false"
+                                OnClosed="CloseOverlay" />
                 </div>
             }
             else
@@ -82,6 +88,20 @@
             }
         </div>;
 
+    internal static RenderFragment GroupSections(IEnumerable<MudExRibbonGroup> groups, bool vertical, RenderFragment<MudExRibbonGroup> section) =>
+        @<text>
+            @foreach (var (group, index) in groups.Select((group, index) => (group, index)))
+            {
+                if (index > 0)
+                {
+                    <MudDivider Vertical="@vertical"
+                                FlexItem="@vertical"
+                                Class="@(vertical ? "mud-ex-ribbon-separator" : "mud-ex-ribbon-menu-section-divider")" />
+                }
+                @section(group)
+            }
+        </text>;
+
     private RenderFragment TabStrip(MudExRibbonTab activeTab) =>
         @<div class="mud-ex-ribbon-tabs" role="tablist">
             @foreach (var tab in Ribbon.VisibleTabs)
@@ -91,7 +111,8 @@
                         type="button"
                         role="tab"
                         id="@TabId(tab)"
-                        aria-controls="@PanelId"
+                        aria-controls="@(Ribbon.IsCollapsed && !(active && _overlayOpen) ? null : PanelId)"
+                        aria-expanded="@(Ribbon.IsCollapsed ? (active && _overlayOpen ? "true" : "false") : null)"
                         class="@($"mud-ex-ribbon-tab{(active && (!Ribbon.IsCollapsed || _overlayOpen) ? " mud-ex-ribbon-tab-active" : "")}")"
                         aria-selected="@(active ? "true" : "false")"
                         @onclick="() => OnTabClickAsync(tab)"

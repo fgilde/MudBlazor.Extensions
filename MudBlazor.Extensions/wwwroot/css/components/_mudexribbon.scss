@@ -20,7 +20,10 @@
 }
 .mud-ex-ribbon-header-raised {
   position: relative;
-  z-index: 6;
+  z-index: calc(var(--mud-zindex-popover) - 1);
+}
+.mud-overlay.mud-ex-ribbon-overlay-backdrop {
+  z-index: calc(var(--mud-zindex-popover) - 2);
 }
 .mud-ex-ribbon-menu-mode .mud-ex-ribbon-header,
 .mud-ex-ribbon-toolbar-mode .mud-ex-ribbon-header {
