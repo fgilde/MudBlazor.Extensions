@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -21,6 +22,10 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
     ];
 
     private bool _overlayOpen;
+    private bool _backstageFocused;
+    private ElementReference _backstageBack;
+    private MudMenu _contextMenu;
+    private MudExRibbonItemBase _contextItem;
 
     private protected MudExRibbonGroup OpenGroup { get; set; }
 
@@ -41,7 +46,27 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
     protected override void OnInitialized() => Ribbon.RegisterView(this);
 
     /// <inheritdoc />
-    protected override Task OnAfterRenderAsync(bool firstRender) => Ribbon.SyncReductionAsync(_overlayOpen);
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Ribbon.SyncReductionAsync(_overlayOpen);
+        var backstageOpen = Ribbon.FileMenu != null && Ribbon.FileMenuOpen;
+        if (backstageOpen)
+            await Ribbon.PlaceBackstageAsync();
+        if (backstageOpen && !_backstageFocused)
+            await FocusBackstageAsync();
+        _backstageFocused = backstageOpen;
+    }
+
+    private async Task FocusBackstageAsync()
+    {
+        try
+        {
+            await _backstageBack.FocusAsync();
+        }
+        catch (Exception e) when (e is JSException or JSDisconnectedException or InvalidOperationException or TaskCanceledException)
+        {
+        }
+    }
 
     void IMudExRibbonView.Refresh() => _ = InvokeAsync(StateHasChanged);
 
@@ -54,6 +79,31 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
         _ = InvokeAsync(StateHasChanged);
     }
 
+    async Task IMudExRibbonView.OpenContextMenuAsync(MudExRibbonItemBase item, MouseEventArgs args)
+    {
+        _contextItem = item;
+        StateHasChanged();
+        if (_contextMenu != null)
+            await _contextMenu.OpenMenuAsync(args);
+    }
+
+    private static List<List<MudExRibbonTab>> TabSets(IEnumerable<MudExRibbonTab> tabs)
+    {
+        var sets = new List<List<MudExRibbonTab>>();
+        foreach (var tab in tabs)
+        {
+            if (sets.LastOrDefault() is { } last && last[0].Contextual == tab.Contextual
+                && (!tab.Contextual || (last[0].ContextualTitle == tab.ContextualTitle && last[0].ContextualStyle == tab.ContextualStyle)))
+                last.Add(tab);
+            else
+                sets.Add([tab]);
+        }
+        return sets;
+    }
+
+    private Task OnBackstageKeyDown(KeyboardEventArgs args)
+        => args.Key == "Escape" ? Ribbon.SetFileMenuOpenAsync(false) : Task.CompletedTask;
+
     private void CloseOverlay() => _overlayOpen = false;
 
     private void OnOverlayKeyDown(KeyboardEventArgs args)
@@ -62,11 +112,12 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
             CloseOverlay();
     }
 
-    private Task OnTabClickAsync(MudExRibbonTab tab)
+    private async Task OnTabClickAsync(MudExRibbonTab tab)
     {
+        await Ribbon.SetFileMenuOpenAsync(false);
         if (Ribbon.IsCollapsed)
             _overlayOpen = !_overlayOpen || tab != Ribbon.ActiveTab;
-        return Ribbon.SelectTabAsync(tab);
+        await Ribbon.SelectTabAsync(tab);
     }
 
     private Task ToggleCollapsedAsync()

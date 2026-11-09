@@ -93,6 +93,8 @@ internal interface IMudExRibbonView
     void Refresh();
 
     void CommandExecuted();
+
+    Task OpenContextMenuAsync(MudExRibbonItemBase item, Microsoft.AspNetCore.Components.Web.MouseEventArgs args);
 }
 
 internal static class MudExRibbonColors

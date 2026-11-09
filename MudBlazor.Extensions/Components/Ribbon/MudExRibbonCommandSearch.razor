@@ -1,0 +1,32 @@
+@namespace MudBlazor.Extensions.Components
+@attribute [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+
+<MudAutocomplete @ref="_autocomplete"
+                 T="MudExRibbonItemBase"
+                 Class="mud-ex-ribbon-command-search"
+                 PopoverClass="mud-ex-ribbon-search-popover"
+                 SearchFunc="SearchAsync"
+                 ValueChanged="ExecuteAsync"
+                 ToStringFunc="@(item => item?.Text)"
+                 ItemTemplate="Result"
+                 Placeholder="@Ribbon.TryLocalize("Search commands")"
+                 Adornment="Adornment.Start"
+                 AdornmentIcon="@Icons.Material.Filled.Search"
+                 IconSize="Size.Small"
+                 Margin="Margin.Dense"
+                 Variant="Variant.Outlined"
+                 Dense="true"
+                 CoerceText="false"
+                 ResetValueOnEmptyText="true" />
+
+@code {
+    private RenderFragment<MudExRibbonItemBase> Result => item =>
+        @<div class="mud-ex-ribbon-search-result">
+            @if (!string.IsNullOrEmpty(item.Icon))
+            {
+                <MudIcon Icon="@item.Icon" Class="mud-ex-ribbon-icon" />
+            }
+            <span class="mud-ex-ribbon-search-text">@item.Text</span>
+            <span class="mud-ex-ribbon-search-path">@item.LocationText</span>
+        </div>;
+}

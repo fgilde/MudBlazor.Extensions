@@ -18689,6 +18689,11 @@
             Office style ribbon. Tabs, groups and items are declared as child components and register themselves,
             the selected <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.Mode"/> decides how they are presented.
             </summary>
+            <remarks>
+            The <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.FileMenu"/> backstage covers its nearest ancestor with <c>position: relative</c> and leaves the header visible.
+            The ribbon sets no position itself, so wrap the ribbon and the content it controls in a relative container
+            with the ribbon at its top.
+            </remarks>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRibbon.ChildContent">
             <summary>
@@ -18741,6 +18746,49 @@
             Content shown at the end of the header.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.FileMenu">
+            <summary>
+            Content of the backstage opened by the file tab, for example New, Open and Save. The file tab is shown only when this is set.
+            The backstage covers the nearest ancestor with <c>position: relative</c> below the header.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.FileMenuText">
+            <summary>
+            Caption of the file tab.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.FileMenuOpen">
+            <summary>
+            Whether the <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.FileMenu"/> backstage is open.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.FileMenuOpenChanged">
+            <summary>
+            Raised when the user opens or closes the <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.FileMenu"/> backstage.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.QuickAccess">
+            <summary>
+            Items always shown as small icons at the start of the header, for example Save and Undo.
+            The commands of <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.PinnedCommandIds"/> follow them.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.PinnedCommandIds">
+            <summary>
+            Ids (<see cref="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Id"/>) of the commands the user pinned to the quick access toolbar with a right click.
+            Ids without a matching command are ignored.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.PinnedCommandIdsChanged">
+            <summary>
+            Raised when the user pins or unpins a command.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.ShowCommandSearch">
+            <summary>
+            Whether the header offers a field to search and run commands.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRibbon.ActiveTabIndex">
             <summary>
             Index of the active tab in <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.Tabs"/>.
@@ -18755,6 +18803,16 @@
             <summary>
             All registered tabs in declaration order, including invisible ones.
             Tabs declared later (e.g. via @if) are appended; use <see cref="P:MudBlazor.Extensions.Components.MudExRibbonTab.Visible"/> to keep the declared position.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.Commands">
+            <summary>
+            All registered items of all tabs in declaration order, depth first: rows, menu buttons and menu items are followed by their entries.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbon.#ctor">
+            <summary>
+            Creates the ribbon.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRibbon.SetReductionStep(System.Int32)">
@@ -18821,6 +18879,17 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonColorPicker.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonCommandSearch">
+            <summary>
+            Search field in the header of a <see cref="T:MudBlazor.Extensions.Components.MudExRibbon"/> that finds commands by text, tooltip or description and runs the chosen one.
+            Rendered by the ribbon, not meant to be used directly.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonCommandSearch.Ribbon">
+            <summary>
+            The ribbon whose commands are searched.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExRibbonContent">
             <summary>
@@ -18942,7 +19011,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Id">
             <summary>
-            Stable identifier of the command.
+            Stable identifier of the command, used for example by <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.PinnedCommandIds"/>.
+            Defaults to "{Tab}/{Group}/{Text}"; entries of a menu add the text of each parent menu before their own text,
+            for example "Home/Font/Case/UPPERCASE".
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Text">
@@ -19249,6 +19320,24 @@
             Whether the tab is shown.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonTab.Contextual">
+            <summary>
+            Whether the tab belongs to a selection, for example "Table Design". Contextual tabs are drawn tinted with
+            <see cref="P:MudBlazor.Extensions.Components.MudExRibbonTab.ContextualColor"/> after all normal tabs; bind <see cref="P:MudBlazor.Extensions.Components.MudExRibbonTab.Visible"/> to the selection to show them.
+            Becoming visible never activates the tab.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonTab.ContextualTitle">
+            <summary>
+            Caption shown above a contextual tab, for example "Table Tools". Consecutive contextual tabs with the same
+            caption and color share one caption.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonTab.ContextualColor">
+            <summary>
+            Tint of a contextual tab. Defaults to <see cref="F:MudBlazor.Color.Secondary"/>.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRibbonTab.ChildContent">
             <summary>
             Declaration of the groups of this tab.
@@ -19263,7 +19352,7 @@
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonTab.OnInitialized">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExRibbonTab.OnParametersSet">
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonTab.OnParametersSetAsync">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonTab.Dispose">

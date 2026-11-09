@@ -925,6 +925,317 @@ public class MudExRibbonTests : IAsyncLifetime
         cut.WaitForAssertion(() => Assert.Equal(id, cut.Find("datalist").Id));
     }
 
+    private static RenderFragment Tab(string text, string group, string item, string? contextualTitle = null, MudExColor? color = null, bool visible = true) => b =>
+    {
+        b.OpenComponent<MudExRibbonTab>(0);
+        b.AddAttribute(1, nameof(MudExRibbonTab.Text), text);
+        b.AddAttribute(2, nameof(MudExRibbonTab.Contextual), contextualTitle != null);
+        b.AddAttribute(3, nameof(MudExRibbonTab.ContextualTitle), contextualTitle);
+        b.AddAttribute(4, nameof(MudExRibbonTab.ContextualColor), color);
+        b.AddAttribute(5, nameof(MudExRibbonTab.Visible), visible);
+        b.AddAttribute(6, nameof(MudExRibbonTab.ChildContent), (RenderFragment)(g =>
+        {
+            g.OpenComponent<MudExRibbonGroup>(0);
+            g.AddAttribute(1, nameof(MudExRibbonGroup.Text), group);
+            g.AddAttribute(2, nameof(MudExRibbonGroup.ChildContent), (RenderFragment)(i =>
+            {
+                i.OpenComponent<MudExRibbonButton>(0);
+                i.AddAttribute(1, nameof(MudExRibbonButton.Text), item);
+                i.CloseComponent();
+            }));
+            g.CloseComponent();
+        }));
+        b.CloseComponent();
+    };
+
+    private static void ContextualRibbon(ComponentParameterCollectionBuilder<MudExRibbon> p, bool tableVisible)
+    {
+        RenderFragment[] tabs =
+        [
+            Tab("Home", "Clipboard", "Paste"),
+            Tab("Design", "Styles", "Shading", "Table Tools", visible: tableVisible),
+            Tab("Layout", "Merge", "Merge Cells", "Table Tools", visible: tableVisible),
+            Tab("Picture", "Adjust", "Crop", "Picture Tools", Color.Tertiary, tableVisible),
+            Tab("Insert", "Tables", "Table")
+        ];
+        p.Add(x => x.ChildContent, b =>
+        {
+            foreach (var tab in tabs)
+                b.AddContent(0, tab);
+        });
+    }
+
+    [Fact]
+    public void ContextualTab_HiddenUntilVisible_RenderedAfterNormalTabs()
+    {
+        var context = NewContext();
+        var popovers = context.Render<MudPopoverProvider>();
+        var cut = context.Render<MudExRibbon>(p => ContextualRibbon(p, false));
+
+        cut.WaitForAssertion(() => Assert.Equal(["Home", "Insert"], cut.FindAll("[role=tab]").Select(e => e.TextContent.Trim())));
+        Assert.Empty(cut.FindAll(".mud-ex-ribbon-contextual-title"));
+
+        cut.Render(p => ContextualRibbon(p, true));
+
+        cut.WaitForAssertion(() => Assert.Equal(["Home", "Insert", "Design", "Layout", "Picture"], cut.FindAll("[role=tab]").Select(e => e.TextContent.Trim())));
+        Assert.Equal(["Table Tools", "Picture Tools"], cut.FindAll(".mud-ex-ribbon-contextual-title").Select(e => e.TextContent.Trim()));
+        var sets = cut.FindAll(".mud-ex-ribbon-contextual");
+        Assert.Equal([["Design", "Layout"], ["Picture"]], sets.Select(s => s.QuerySelectorAll("[role=tab]").Select(e => e.TextContent.Trim()).ToArray()));
+        Assert.Contains("var(--mud-palette-secondary)", sets[0].GetAttribute("style"));
+        Assert.Contains("var(--mud-palette-tertiary)", sets[1].GetAttribute("style"));
+        Assert.All(sets.SelectMany(s => s.QuerySelectorAll("[role=tab]")), e => Assert.Contains("mud-ex-ribbon-tab-contextual", e.ClassList));
+        Assert.Equal("Home", cut.Find(".mud-ex-ribbon-tab-active").TextContent.Trim());
+
+        cut.Render(p => p.Add(x => x.Mode, MudExRibbonMode.Menu));
+        cut.WaitForAssertion(() => Assert.Equal(["Home", "Insert", "Design", "Layout", "Picture"],
+            cut.FindAll(".mud-ex-ribbon-menubar-menu > button").Select(e => e.TextContent.Trim())));
+        Assert.Equal(["Design", "Layout", "Picture"], cut.FindAll(".mud-ex-ribbon-menubar-menu.mud-ex-ribbon-tab-contextual > button").Select(e => e.TextContent.Trim()));
+        Assert.Contains("var(--mud-palette-secondary)", cut.FindAll(".mud-ex-ribbon-menubar-menu.mud-ex-ribbon-tab-contextual")[0].GetAttribute("style"));
+
+        cut.Render(p => p.Add(x => x.Mode, MudExRibbonMode.Toolbar));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-tab-select button")));
+        cut.Find(".mud-ex-ribbon-tab-select button").Click();
+        popovers.WaitForAssertion(() => Assert.Equal(["Home", "Insert", "Design", "Layout", "Picture"],
+            popovers.FindAll("[role=menuitem]").Select(e => e.TextContent.Trim())));
+        Assert.Equal(["Design", "Layout", "Picture"], popovers.FindAll("[role=menuitem].mud-ex-ribbon-tab-contextual").Select(e => e.TextContent.Trim()));
+    }
+
+    [Fact]
+    public void ContextualTab_BecomingVisible_DoesNotStealActiveTab()
+    {
+        var raised = new List<int>();
+        var cut = Render(p =>
+        {
+            p.Add(x => x.ActiveTabIndex, 0).Add(x => x.ActiveTabIndexChanged, i => raised.Add(i));
+            ContextualRibbon(p, false);
+        });
+        cut.WaitForAssertion(() => Assert.Equal("Home", cut.Find(".mud-ex-ribbon-tab-active").TextContent.Trim()));
+
+        cut.Render(p => ContextualRibbon(p, true));
+        cut.WaitForAssertion(() => Assert.Equal(5, cut.FindAll("[role=tab]").Count));
+        Assert.Equal("Home", cut.Find(".mud-ex-ribbon-tab-active").TextContent.Trim());
+        Assert.Equal(0, cut.Instance.ActiveTabIndex);
+        Assert.Empty(raised);
+
+        cut.FindAll("[role=tab]").Single(e => e.TextContent.Trim() == "Layout").Click();
+        cut.WaitForAssertion(() => Assert.Equal("Layout", cut.Find(".mud-ex-ribbon-tab-active").TextContent.Trim()));
+        Assert.Equal([2], raised);
+        Assert.Equal(["Merge"], cut.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label")));
+
+        cut.Render(p => ContextualRibbon(p, false));
+        cut.WaitForAssertion(() => Assert.Equal("Home", cut.Find(".mud-ex-ribbon-tab-active").TextContent.Trim()));
+        Assert.Equal([2, 0], raised);
+        Assert.Equal(0, cut.Instance.ActiveTabIndex);
+        Assert.Equal(["Clipboard"], cut.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label")));
+    }
+
+    [Theory]
+    [InlineData(MudExRibbonMode.Classic)]
+    [InlineData(MudExRibbonMode.Simplified)]
+    [InlineData(MudExRibbonMode.Menu)]
+    [InlineData(MudExRibbonMode.Toolbar)]
+    public void FileMenu_OpensBackstage_EscapeCloses(MudExRibbonMode mode)
+    {
+        var raised = new List<bool>();
+        var (cut, _) = RenderModes(p => p.Add(x => x.Mode, mode)
+            .Add(x => x.FileMenu, "<div class=\"recent\">Recent</div>")
+            .Add(x => x.FileMenuOpenChanged, v => raised.Add(v)));
+
+        var fileTab = cut.Find(".mud-ex-ribbon-header .mud-ex-ribbon-file-tab");
+        Assert.Equal("File", fileTab.TextContent.Trim());
+        Assert.Equal("false", fileTab.GetAttribute("aria-expanded"));
+        Assert.Empty(cut.FindAll(".mud-ex-ribbon-backstage"));
+        Assert.Contains("background-color:var(--mud-palette-primary-text)", fileTab.GetAttribute("style"));
+        Assert.Contains("color:var(--mud-palette-primary)", fileTab.GetAttribute("style"));
+        if (mode is MudExRibbonMode.Classic or MudExRibbonMode.Simplified)
+            Assert.Equal("Home", cut.Find("[role=tab]").TextContent.Trim());
+
+        fileTab.Click();
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-backstage .recent")));
+        Assert.Equal([true], raised);
+        Assert.True(cut.Instance.FileMenuOpen);
+        Assert.Equal("true", cut.Find(".mud-ex-ribbon-file-tab").GetAttribute("aria-expanded"));
+        Assert.Contains("mud-ex-ribbon-header-raised", cut.Find(".mud-ex-ribbon-header").ClassList);
+        Assert.Equal("dialog", cut.Find(".mud-ex-ribbon-backstage").GetAttribute("role"));
+
+        cut.Find(".mud-ex-ribbon-backstage").KeyDown(new KeyboardEventArgs { Key = "Escape" });
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-ribbon-backstage")));
+        Assert.Equal([true, false], raised);
+        Assert.DoesNotContain("mud-ex-ribbon-header-raised", cut.Find(".mud-ex-ribbon-header").ClassList);
+
+        cut.Render(p => p.Add(x => x.FileMenuOpen, true).Add(x => x.FileMenuText, "Datei"));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-backstage .recent")));
+        Assert.Equal("Datei", cut.Find(".mud-ex-ribbon-file-tab").TextContent.Trim());
+
+        cut.Find(".mud-ex-ribbon-backstage-back").Click();
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-ribbon-backstage")));
+        Assert.Equal([true, false, false], raised);
+
+        cut.Render(p => p.Add(x => x.FileMenu, (RenderFragment?)null));
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-ribbon-file-tab")));
+    }
+
+    [Fact]
+    public void FileMenu_PlacesBackstageBelowHeader_AndTabClickCloses()
+    {
+        var context = NewContext();
+        var raised = new List<bool>();
+        var cut = context.Render<MudExRibbon>(p => p.Add(x => x.FileMenu, "<div class=\"recent\">Recent</div>").Add(x => x.FileMenuOpenChanged, v => raised.Add(v))
+            .AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home").AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Clipboard")))
+            .AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Insert").AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Tables"))));
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("[role=tab]").Count));
+        Assert.Empty(context.JSInterop.Invocations["placeBackstage"]);
+
+        cut.Find(".mud-ex-ribbon-file-tab").Click();
+
+        cut.WaitForAssertion(() => Assert.Equal(cut.Instance.BackstageId, Assert.Single(context.JSInterop.Invocations["placeBackstage"]).Arguments[0]));
+        Assert.Equal(cut.Instance.BackstageId, cut.Find(".mud-ex-ribbon-backstage").Id);
+        Assert.Equal(cut.Instance.BackstageId, cut.Find(".mud-ex-ribbon-file-tab").GetAttribute("aria-controls"));
+        Assert.Contains("mud-ex-ribbon-header", cut.Find(".mud-ex-ribbon-backstage").PreviousElementSibling!.ClassList);
+
+        cut.FindAll("[role=tab]")[1].Click();
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-ribbon-backstage")));
+        Assert.Equal([true, false], raised);
+        Assert.Equal(1, cut.Instance.ActiveTabIndex);
+    }
+
+    [Theory]
+    [InlineData(MudExRibbonMode.Classic)]
+    [InlineData(MudExRibbonMode.Simplified)]
+    [InlineData(MudExRibbonMode.Toolbar)]
+    public void PinCommand_RaisesPinnedCommandIdsChanged_AndRendersInHeader(MudExRibbonMode mode)
+    {
+        var raised = new List<string[]>();
+        var undos = 0;
+        var (cut, popovers) = RenderModes(p => p.Add(x => x.Mode, mode)
+            .Add(x => x.PinnedCommandIdsChanged, ids => raised.Add(ids.ToArray()))
+            .Add<MudExRibbonButton>(x => x.QuickAccess, b => b.Add(x => x.Text, "Undo").Add(x => x.Icon, Icons.Material.Filled.Undo).Add(x => x.OnClick, () => undos++)));
+        AngleSharp.Dom.IElement QuickAccess(string label) => cut.FindAll(".mud-ex-ribbon-header .mud-ex-ribbon-quick-access .mud-ex-ribbon-button.mud-ex-ribbon-small")
+            .Single(e => e.GetAttribute("aria-label") == label);
+
+        cut.WaitForAssertion(() => Assert.Equal(["Undo"], cut.FindAll(".mud-ex-ribbon-quick-access .mud-ex-ribbon-button").Select(e => e.GetAttribute("aria-label"))));
+        Assert.Contains("mud-ex-ribbon-quick-access", cut.Find(".mud-ex-ribbon-header").FirstElementChild!.ClassList);
+        QuickAccess("Undo").Click();
+        cut.WaitForAssertion(() => Assert.Equal(1, undos));
+
+        cut.FindAll(".mud-ex-ribbon-button").First(e => e.GetAttribute("aria-label") == "Cut").ContextMenu();
+        popovers.WaitForAssertion(() => Assert.Single(popovers.FindAll(".mud-ex-ribbon-context-menu-item")));
+        Assert.Equal("Add to Quick Access Toolbar", popovers.Find(".mud-ex-ribbon-context-menu-item").TextContent.Trim());
+        popovers.Find(".mud-ex-ribbon-context-menu-item").Click();
+
+        cut.WaitForAssertion(() => Assert.Equal([["Home/Clipboard/Cut"]], raised));
+        cut.WaitForAssertion(() => Assert.Equal(["Undo", "Cut"], cut.FindAll(".mud-ex-ribbon-quick-access .mud-ex-ribbon-button").Select(e => e.GetAttribute("aria-label"))));
+        Assert.Equal(["Home/Clipboard/Cut"], cut.Instance.PinnedCommandIds);
+        popovers.WaitForAssertion(() => Assert.Empty(popovers.FindAll(".mud-ex-ribbon-context-menu-item")));
+
+        Assert.Throws<MissingEventHandlerException>(() => QuickAccess("Undo").ContextMenu());
+
+        QuickAccess("Cut").ContextMenu();
+        popovers.WaitForAssertion(() => Assert.Equal("Remove from Quick Access Toolbar", popovers.Find(".mud-ex-ribbon-context-menu-item").TextContent.Trim()));
+        popovers.Find(".mud-ex-ribbon-context-menu-item").Click();
+        cut.WaitForAssertion(() => Assert.Equal([["Home/Clipboard/Cut"], []], raised));
+        cut.WaitForAssertion(() => Assert.Equal(["Undo"], cut.FindAll(".mud-ex-ribbon-quick-access .mud-ex-ribbon-button").Select(e => e.GetAttribute("aria-label"))));
+
+        cut.Render(p => p.Add(x => x.PinnedCommandIds, ["Insert/Tables/Table", "missing/command", "Home/Clipboard/Paste/Keep Text Only"]));
+        cut.WaitForAssertion(() => Assert.Equal(["Undo", "Table", "Keep Text Only"],
+            cut.FindAll(".mud-ex-ribbon-quick-access .mud-ex-ribbon-button").Select(e => e.GetAttribute("aria-label"))));
+        Assert.Equal(2, raised.Count);
+    }
+
+    private static readonly string[] SearchIds =
+    [
+        "Home/Font/Bold", "Home/Font/Italic", "Home/Font/Format", "Home/Font/Format/Strikethrough", "Home/Font/Format/Case", "Home/Font/Format/Case/UPPERCASE",
+        "Home/Font/Size", "Home/Font/Hidden", "Design/Styles/Shading", "Secret/Group/Spy", "Insert/Tables/Table"
+    ];
+
+    private (IRenderedComponent<MudExRibbon> Ribbon, IRenderedComponent<MudPopoverProvider> Popovers) RenderSearch(
+        List<string> executed, bool boldDisabled = false, bool designVisible = true)
+    {
+        var context = NewContext();
+        var popovers = context.Render<MudPopoverProvider>();
+        var cut = context.Render<MudExRibbon>(p => p
+            .AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home")
+                .AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Font")
+                    .AddChildContent<MudExRibbonRow>(r => r
+                        .AddChildContent<MudExRibbonToggleButton>(b => b.Add(x => x.Text, "Bold").Add(x => x.Description, "Make the selected text bold.")
+                            .Add(x => x.Disabled, boldDisabled).Add(x => x.CheckedChanged, _ => executed.Add("Bold")))
+                        .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Italic").Add(x => x.Tooltip, "Slanted text").Add(x => x.OnClick, () => executed.Add("Italic"))))
+                    .AddChildContent<MudExRibbonMenuButton>(m => m.Add(x => x.Text, "Format")
+                        .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Strikethrough").Add(x => x.Description, "Draw a line through the selected text.")
+                            .Add(x => x.OnClick, () => executed.Add("Strikethrough")))
+                        .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Case")
+                            .AddChildContent<MudExRibbonMenuItem>(c => c.Add(x => x.Text, "UPPERCASE").Add(x => x.Description, "Turn the selected text into capitals.")
+                                .Add(x => x.OnClick, () => executed.Add("UPPERCASE")))))
+                    .AddChildContent<MudExRibbonNumberBox>(n => n.Add(x => x.Text, "Size").Add(x => x.Description, "Size of the selected text."))
+                    .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Hidden").Add(x => x.Visible, false).Add(x => x.Description, "Hide the selected text."))))
+            .AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Design").Add(x => x.Contextual, true).Add(x => x.Visible, designVisible)
+                .AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Styles")
+                    .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Shading").Add(x => x.Description, "Shade the selected text.")
+                        .Add(x => x.OnClick, () => executed.Add("Shading")))))
+            .AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Secret").Add(x => x.Visible, false)
+                .AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Group")
+                    .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Spy").Add(x => x.Description, "Spy on the selected text."))))
+            .AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Insert")
+                .AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Tables")
+                    .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Table").Add(x => x.Id, "Insert/Tables/Table")))));
+        cut.WaitForAssertion(() => Assert.Equal(4, cut.Instance.Tabs.Count));
+        return (cut, popovers);
+    }
+
+    private static List<AngleSharp.Dom.IElement> SearchResults(IRenderedComponent<MudExRibbon> cut, IRenderedComponent<MudPopoverProvider> popovers, string text)
+    {
+        cut.Find(".mud-ex-ribbon-command-search input").Input(text);
+        var results = new List<AngleSharp.Dom.IElement>();
+        popovers.WaitForAssertion(() =>
+        {
+            results = popovers.FindAll(".mud-ex-ribbon-search-result").ToList();
+            Assert.NotEmpty(results);
+        });
+        return results;
+    }
+
+    private static string ResultText(AngleSharp.Dom.IElement result)
+        => $"{result.QuerySelector(".mud-ex-ribbon-search-text")!.TextContent.Trim()} | {result.QuerySelector(".mud-ex-ribbon-search-path")!.TextContent.Trim()}";
+
+    [Fact]
+    public void CommandSearch_FindsByDescription_AndExecutes()
+    {
+        var executed = new List<string>();
+        var (cut, popovers) = RenderSearch(executed);
+
+        Assert.Equal(SearchIds, cut.Instance.Commands.Where(c => c is not MudExRibbonRow).Select(c => c.Id));
+        Assert.Equal("Search commands", cut.Find(".mud-ex-ribbon-command-search input").GetAttribute("placeholder"));
+
+        var results = SearchResults(cut, popovers, "SELECTED TEXT");
+        Assert.Equal(["Bold | Home › Font", "Strikethrough | Home › Font › Format", "UPPERCASE | Home › Font › Format › Case", "Shading | Design › Styles"],
+            results.Select(ResultText));
+
+        results[2].Closest(".mud-list-item")!.Click();
+        cut.WaitForAssertion(() => Assert.Equal(["UPPERCASE"], executed));
+        cut.WaitForAssertion(() => Assert.Equal(string.Empty, cut.Find(".mud-ex-ribbon-command-search input").GetAttribute("value") ?? string.Empty));
+
+        SearchResults(cut, popovers, "slanted").Single().Closest(".mud-list-item")!.Click();
+        cut.WaitForAssertion(() => Assert.Equal(["UPPERCASE", "Italic"], executed));
+
+        SearchResults(cut, popovers, "bold").Single().Closest(".mud-list-item")!.Click();
+        cut.WaitForAssertion(() => Assert.Equal(["UPPERCASE", "Italic", "Bold"], executed));
+        cut.WaitForAssertion(() => Assert.Equal("true", cut.FindAll(".mud-ex-ribbon-button").Single(e => e.GetAttribute("aria-label") == "Bold").GetAttribute("aria-pressed")));
+    }
+
+    [Fact]
+    public void CommandSearch_SkipsDisabledCommands()
+    {
+        var executed = new List<string>();
+        var (cut, popovers) = RenderSearch(executed, boldDisabled: true, designVisible: false);
+
+        Assert.Equal(["Strikethrough", "UPPERCASE"], SearchResults(cut, popovers, "selected").Select(r => r.QuerySelector(".mud-ex-ribbon-search-text")!.TextContent.Trim()));
+
+        cut.Render(p => p.Add(x => x.ShowCommandSearch, false));
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-ribbon-command-search")));
+        Assert.Empty(executed);
+    }
+
     private sealed class FrozenTime : TimeProvider
     {
         private readonly DateTimeOffset _now = DateTimeOffset.UtcNow;

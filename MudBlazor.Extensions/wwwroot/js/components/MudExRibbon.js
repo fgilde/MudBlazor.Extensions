@@ -71,6 +71,14 @@ class MudExRibbon {
             });
     }
 
+    placeBackstage(id) {
+        const backstage = document.getElementById(id);
+        const header = backstage?.previousElementSibling;
+        if (header) {
+            backstage.style.top = `${header.offsetTop + header.offsetHeight}px`;
+        }
+    }
+
     dispose() {
         cancelAnimationFrame(this.frame);
         this.observer.disconnect();

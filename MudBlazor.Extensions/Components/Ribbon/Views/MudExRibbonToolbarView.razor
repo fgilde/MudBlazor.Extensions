@@ -7,7 +7,8 @@
 @code {
     private RenderFragment Bar(MudExRibbonTab activeTab) =>
         @<div class="mud-ex-ribbon-toolbar">
-            <MudMenu Class="mud-ex-ribbon-tab-select"
+            <MudMenu Class="@($"mud-ex-ribbon-tab-select {activeTab?.ContextualClass}".TrimEnd())"
+                     Style="@activeTab?.ContextualStyle"
                      Label="@activeTab?.Text"
                      EndIcon="@Icons.Material.Filled.ArrowDropDown"
                      Color="Color.Inherit"
@@ -15,6 +16,8 @@
                 @foreach (var tab in Ribbon.VisibleTabs)
                 {
                     <MudMenuItem @key="tab"
+                                 Class="@tab.ContextualClass"
+                                 Style="@tab.ContextualStyle"
                                  Icon="@(tab == activeTab ? Icons.Material.Filled.Check : null)"
                                  OnClick="() => Ribbon.SelectTabAsync(tab)">
                         @tab.Text

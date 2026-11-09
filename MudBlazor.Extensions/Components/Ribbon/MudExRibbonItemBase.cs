@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -9,6 +10,8 @@ namespace MudBlazor.Extensions.Components;
 public abstract partial class MudExRibbonItemBase : ComponentBase, IDisposable
 {
     private object _stateKey;
+    private string _id;
+    private Dictionary<string, object> _pinAttributes;
 
     [CascadingParameter] internal MudExRibbon Ribbon { get; set; }
 
@@ -19,9 +22,16 @@ public abstract partial class MudExRibbonItemBase : ComponentBase, IDisposable
     [CascadingParameter] internal IMudExRibbonItemHost Host { get; set; }
 
     /// <summary>
-    /// Stable identifier of the command.
+    /// Stable identifier of the command, used for example by <see cref="MudExRibbon.PinnedCommandIds"/>.
+    /// Defaults to "{Tab}/{Group}/{Text}"; entries of a menu add the text of each parent menu before their own text,
+    /// for example "Home/Font/Case/UPPERCASE".
     /// </summary>
-    [Parameter] public string Id { get; set; }
+    [Parameter]
+    public string Id
+    {
+        get => _id ?? string.Join("/", Location.Append(Text));
+        set => _id = value;
+    }
 
     /// <summary>
     /// Caption of the item.
@@ -89,6 +99,34 @@ public abstract partial class MudExRibbonItemBase : ComponentBase, IDisposable
             return string.IsNullOrEmpty(Shortcut) ? title : $"{title} ({Shortcut})";
         }
     }
+
+    internal virtual IReadOnlyList<MudExRibbonItemBase> Children => [];
+
+    internal IEnumerable<MudExRibbonItemBase> Ancestors
+    {
+        get
+        {
+            for (var parent = Host as MudExRibbonItemBase; parent != null; parent = parent.Host as MudExRibbonItemBase)
+                yield return parent;
+        }
+    }
+
+    private IEnumerable<string> Location
+        => new[] { Tab?.Text, Group?.Text }.Concat(Ancestors.Reverse().Where(a => a is not MudExRibbonRow).Select(a => a.Text));
+
+    internal string LocationText => string.Join(" \u203A ", Location.Where(s => !string.IsNullOrEmpty(s)));
+
+    internal bool IsReachable => Visible && !Disabled && Tab is { Visible: true } && Ancestors.All(a => a.Visible && !a.Disabled);
+
+    internal bool Matches(string text)
+        => new[] { Text, Tooltip, Description }.Any(s => s?.Contains(text, StringComparison.CurrentCultureIgnoreCase) == true);
+
+    internal IReadOnlyDictionary<string, object> SlotAttributes(MudExRibbonItemLayout layout)
+        => HasContextMenu(layout)
+            ? _pinAttributes ??= new() { ["oncontextmenu"] = EventCallback.Factory.Create<MouseEventArgs>(this, e => Ribbon?.OpenContextMenuAsync(this, e) ?? Task.CompletedTask) }
+            : null;
+
+    internal bool HasContextMenu(MudExRibbonItemLayout layout) => IsCommand && Tab != null && layout != MudExRibbonItemLayout.MenuEntry;
 
     internal MudExRibbonItemLayout DeclaredLayout => Size switch
     {

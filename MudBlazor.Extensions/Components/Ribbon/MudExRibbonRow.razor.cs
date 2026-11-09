@@ -20,6 +20,8 @@ public partial class MudExRibbonRow : IMudExRibbonItemHost
     /// </summary>
     public IReadOnlyList<MudExRibbonItemBase> Items => _items;
 
+    internal override IReadOnlyList<MudExRibbonItemBase> Children => _items;
+
     /// <inheritdoc />
     public override bool IsCommand => false;
 

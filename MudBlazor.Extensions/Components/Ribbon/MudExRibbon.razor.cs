@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 
@@ -8,9 +9,15 @@ namespace MudBlazor.Extensions.Components;
 /// Office style ribbon. Tabs, groups and items are declared as child components and register themselves,
 /// the selected <see cref="Mode"/> decides how they are presented.
 /// </summary>
+/// <remarks>
+/// The <see cref="FileMenu"/> backstage covers its nearest ancestor with <c>position: relative</c> and leaves the header visible.
+/// The ribbon sets no position itself, so wrap the ribbon and the content it controls in a relative container
+/// with the ribbon at its top.
+/// </remarks>
 public partial class MudExRibbon
 {
     private readonly List<MudExRibbonTab> _tabs = [];
+    private readonly QuickAccessHost _quickAccess;
     private IMudExRibbonView _view;
     private (MudExRibbonMode Mode, MudExRibbonTab Tab) _reductionKey;
     private int _reductionStep;
@@ -68,6 +75,49 @@ public partial class MudExRibbon
     [Parameter] public RenderFragment HeaderEndContent { get; set; }
 
     /// <summary>
+    /// Content of the backstage opened by the file tab, for example New, Open and Save. The file tab is shown only when this is set.
+    /// The backstage covers the nearest ancestor with <c>position: relative</c> below the header.
+    /// </summary>
+    [Parameter] public RenderFragment FileMenu { get; set; }
+
+    /// <summary>
+    /// Caption of the file tab.
+    /// </summary>
+    [Parameter] public string FileMenuText { get; set; } = "File";
+
+    /// <summary>
+    /// Whether the <see cref="FileMenu"/> backstage is open.
+    /// </summary>
+    [Parameter] public bool FileMenuOpen { get; set; }
+
+    /// <summary>
+    /// Raised when the user opens or closes the <see cref="FileMenu"/> backstage.
+    /// </summary>
+    [Parameter] public EventCallback<bool> FileMenuOpenChanged { get; set; }
+
+    /// <summary>
+    /// Items always shown as small icons at the start of the header, for example Save and Undo.
+    /// The commands of <see cref="PinnedCommandIds"/> follow them.
+    /// </summary>
+    [Parameter] public RenderFragment QuickAccess { get; set; }
+
+    /// <summary>
+    /// Ids (<see cref="MudExRibbonItemBase.Id"/>) of the commands the user pinned to the quick access toolbar with a right click.
+    /// Ids without a matching command are ignored.
+    /// </summary>
+    [Parameter] public IList<string> PinnedCommandIds { get; set; }
+
+    /// <summary>
+    /// Raised when the user pins or unpins a command.
+    /// </summary>
+    [Parameter] public EventCallback<IList<string>> PinnedCommandIdsChanged { get; set; }
+
+    /// <summary>
+    /// Whether the header offers a field to search and run commands.
+    /// </summary>
+    [Parameter] public bool ShowCommandSearch { get; set; } = true;
+
+    /// <summary>
     /// Index of the active tab in <see cref="Tabs"/>.
     /// </summary>
     [Parameter] public int ActiveTabIndex { get; set; }
@@ -83,7 +133,31 @@ public partial class MudExRibbon
     /// </summary>
     public IReadOnlyList<MudExRibbonTab> Tabs => _tabs;
 
-    internal IEnumerable<MudExRibbonTab> VisibleTabs => _tabs.Where(t => t.Visible);
+    /// <summary>
+    /// All registered items of all tabs in declaration order, depth first: rows, menu buttons and menu items are followed by their entries.
+    /// </summary>
+    public IEnumerable<MudExRibbonItemBase> Commands => _tabs.SelectMany(t => t.Groups).SelectMany(g => Flatten(g.Items));
+
+    /// <summary>
+    /// Creates the ribbon.
+    /// </summary>
+    public MudExRibbon() => _quickAccess = new QuickAccessHost(this);
+
+    internal IEnumerable<MudExRibbonTab> VisibleTabs => _tabs.Where(t => t.Visible && !t.Contextual).Concat(_tabs.Where(t => t.Visible && t.Contextual));
+
+    internal IEnumerable<MudExRibbonItemBase> QuickAccessItems
+    {
+        get
+        {
+            var commands = Commands.Where(c => c.IsCommand).ToLookup(c => c.Id);
+            return _quickAccess.Items.Concat((PinnedCommandIds ?? []).SelectMany(id => commands[id].Take(1)).Distinct()).ToList();
+        }
+    }
+
+    internal string FileTabStyle
+        => $"background-color:{MudExRibbonColors.ForegroundFor(Color)};color:{MudExRibbonColors.BackgroundFor(Color)};";
+
+    internal string BackstageId => $"{ElementId}-backstage";
 
     internal MudExRibbonTab ActiveTab
         => _tabs.ElementAtOrDefault(ActiveTabIndex) is { Visible: true } tab ? tab : VisibleTabs.FirstOrDefault();
@@ -139,6 +213,21 @@ public partial class MudExRibbon
     {
         await base.ImportModuleAndCreateJsAsync();
         await SyncReductionAsync(false);
+        if (FileMenu != null && FileMenuOpen)
+            await PlaceBackstageAsync();
+    }
+
+    internal async Task PlaceBackstageAsync()
+    {
+        if (JsReference == null || IsDisposed)
+            return;
+        try
+        {
+            await JsReference.InvokeVoidAsync("placeBackstage", BackstageId);
+        }
+        catch (Exception e) when (e is JSDisconnectedException or ObjectDisposedException or TaskCanceledException)
+        {
+        }
     }
 
     internal bool IsFullyReduced => MaxReductionStep > 0 && ReductionStep == MaxReductionStep;
@@ -185,6 +274,45 @@ public partial class MudExRibbon
 
     internal void NotifyCommandExecuted() => _view?.CommandExecuted();
 
+    internal IReadOnlyList<MudExRibbonItemBase> SearchCommands(string text)
+        => string.IsNullOrWhiteSpace(text) ? [] : Commands.Where(c => c.IsCommand && c.IsReachable && c.Matches(text.Trim())).ToList();
+
+    internal bool IsPinned(MudExRibbonItemBase item) => PinnedCommandIds?.Contains(item.Id) == true;
+
+    internal Task TogglePinnedAsync(MudExRibbonItemBase item)
+    {
+        var ids = PinnedCommandIds?.ToList() ?? [];
+        if (!ids.Remove(item.Id))
+            ids.Add(item.Id);
+        PinnedCommandIds = ids;
+        Invalidate();
+        return PinnedCommandIdsChanged.InvokeAsync(ids);
+    }
+
+    internal Task OpenContextMenuAsync(MudExRibbonItemBase item, MouseEventArgs args)
+        => _view?.OpenContextMenuAsync(item, args) ?? Task.CompletedTask;
+
+    internal Task SetFileMenuOpenAsync(bool open)
+    {
+        if (open == FileMenuOpen)
+            return Task.CompletedTask;
+        FileMenuOpen = open;
+        Invalidate();
+        return FileMenuOpenChanged.InvokeAsync(open);
+    }
+
+    internal Task OnTabHiddenAsync(MudExRibbonTab tab)
+    {
+        if (_tabs.IndexOf(tab) != ActiveTabIndex || VisibleTabs.FirstOrDefault() is not { } fallback)
+            return Task.CompletedTask;
+        ActiveTabIndex = _tabs.IndexOf(fallback);
+        Invalidate();
+        return ActiveTabIndexChanged.InvokeAsync(ActiveTabIndex);
+    }
+
+    private static IEnumerable<MudExRibbonItemBase> Flatten(IEnumerable<MudExRibbonItemBase> items)
+        => items.SelectMany(item => Flatten(item.Children).Prepend(item));
+
     internal Task SelectTabAsync(MudExRibbonTab tab)
     {
         var index = _tabs.IndexOf(tab);
@@ -211,5 +339,18 @@ public partial class MudExRibbon
         Collapsed = collapsed;
         Invalidate();
         return CollapsedChanged.InvokeAsync(collapsed);
+    }
+
+    private sealed class QuickAccessHost(MudExRibbon ribbon) : IMudExRibbonItemHost
+    {
+        internal List<MudExRibbonItemBase> Items { get; } = [];
+
+        public void Register(MudExRibbonItemBase item) => Items.Add(item);
+
+        public void Unregister(MudExRibbonItemBase item)
+        {
+            Items.Remove(item);
+            ribbon.Invalidate();
+        }
     }
 }

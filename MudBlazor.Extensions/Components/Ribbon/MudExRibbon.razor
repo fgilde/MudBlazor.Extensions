@@ -5,7 +5,10 @@
      @attributes="UserAttributes"
      class="@($"mud-ex-ribbon mud-ex-ribbon-{Mode.ToString().ToLowerInvariant()}-mode {Class}".TrimEnd())"
      style="@Style">
-    <CascadingValue Value="this" IsFixed="true">@ChildContent</CascadingValue>
+    <CascadingValue Value="this" IsFixed="true">
+        @ChildContent
+        <CascadingValue Value="_quickAccess" IsFixed="true">@QuickAccess</CascadingValue>
+    </CascadingValue>
     @switch (Mode)
     {
         case MudExRibbonMode.Simplified:

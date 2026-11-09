@@ -9,7 +9,12 @@
         @<div class="mud-ex-ribbon-menubar">
             @foreach (var tab in Ribbon.VisibleTabs)
             {
-                <MudMenu @key="tab" Class="mud-ex-ribbon-menubar-menu" Label="@tab.Text" Color="Color.Inherit" Dense="true">
+                <MudMenu @key="tab"
+                         Class="@($"mud-ex-ribbon-menubar-menu {tab.ContextualClass}".TrimEnd())"
+                         Style="@tab.ContextualStyle"
+                         Label="@tab.Text"
+                         Color="Color.Inherit"
+                         Dense="true">
                     @GroupSections(tab.Groups, false, Section)
                 </MudMenu>
             }

@@ -107,7 +107,13 @@
         @<text>
             @foreach (var item in items.Where(i => i.Visible))
             {
-                <div @key="item" class="mud-ex-ribbon-slot">@item.Render(layout(item))</div>
+                var itemLayout = layout(item);
+                var contextMenu = item.HasContextMenu(itemLayout);
+                <div @key="item"
+                     class="mud-ex-ribbon-slot"
+                     @attributes="item.SlotAttributes(itemLayout)"
+                     @oncontextmenu:preventDefault="contextMenu"
+                     @oncontextmenu:stopPropagation="contextMenu">@item.Render(itemLayout)</div>
             }
         </text>;
 

@@ -31,6 +31,8 @@ public partial class MudExRibbonMenuButton : IMudExRibbonItemHost
     /// </summary>
     public IReadOnlyList<MudExRibbonItemBase> Items => _items;
 
+    internal override IReadOnlyList<MudExRibbonItemBase> Children => _items;
+
     /// <inheritdoc />
     protected override object StateKey => (base.StateKey, Split);
 
