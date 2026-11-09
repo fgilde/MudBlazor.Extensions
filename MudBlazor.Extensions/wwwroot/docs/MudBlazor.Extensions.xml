@@ -18757,6 +18757,20 @@
             Tabs declared later (e.g. via @if) are appended; use <see cref="P:MudBlazor.Extensions.Components.MudExRibbonTab.Visible"/> to keep the declared position.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbon.SetReductionStep(System.Int32)">
+            <summary>
+            Applies a reduction step measured by the ribbon script: in <see cref="F:MudBlazor.Extensions.Components.MudExRibbonMode.Classic"/> groups shrink one level per step,
+            in <see cref="F:MudBlazor.Extensions.Components.MudExRibbonMode.Simplified"/> one more item moves into the overflow menu. The step is clamped to what the active tab supports
+            and starts at 0 again when the tab or the mode changes.
+            </summary>
+            <param name="step">Number of reduction steps to apply.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbon.GetJsArguments">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbon.ImportModuleAndCreateJsAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExRibbonButton">
             <summary>
             A plain ribbon command.
@@ -19316,6 +19330,9 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.Dispose">

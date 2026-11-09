@@ -5,27 +5,75 @@
 @Tabbed(Body, null)
 
 @code {
-    private RenderFragment Body(MudExRibbonTab tab) =>
-        @<text>
+    private RenderFragment Body(MudExRibbonTab tab)
+    {
+        var states = MudExRibbonReduction.Apply(tab.Groups, Ribbon.ReductionStep);
+        if (OpenGroup != null && states.GetValueOrDefault(OpenGroup) != MudExRibbonGroupState.Collapsed)
+            OpenGroup = null;
+        return @<text>
             @foreach (var group in tab.Groups)
             {
-                <div @key="group" class="mud-ex-ribbon-group" role="toolbar" aria-label="@group.Text">
-                    <div class="mud-ex-ribbon-group-items">@MudExRibbonItemBase.Slots(group.Items, item => item.DeclaredLayout)</div>
-                    <div class="mud-ex-ribbon-group-title">
-                        <span>@group.Text</span>
-                        @if (group.OnDialogLauncherClick.HasDelegate)
-                        {
-                            <button type="button"
-                                    class="mud-ex-ribbon-dialog-launcher"
-                                    aria-label="@Ribbon.TryLocalize("More options: {0}", group.Text)"
-                                    @onclick="() => LaunchDialogAsync(group)">
-                                <MudIcon Icon="@Icons.Material.Filled.SouthEast" Class="mud-ex-ribbon-icon" />
-                            </button>
-                        }
-                    </div>
-                </div>
+                @(states[group] == MudExRibbonGroupState.Collapsed ? CollapsedGroup(group) : Group(group, states[group]))
             }
         </text>;
+    }
+
+    private RenderFragment Group(MudExRibbonGroup group, MudExRibbonGroupState state) =>
+        @<div @key="group" class="mud-ex-ribbon-group" role="toolbar" aria-label="@group.Text">
+            <div class="mud-ex-ribbon-group-items">@MudExRibbonItemBase.Slots(group.Items, item => LayoutOf(item, state))</div>
+            <div class="mud-ex-ribbon-group-title">
+                <span>@group.Text</span>
+                @if (group.OnDialogLauncherClick.HasDelegate)
+                {
+                    <button type="button"
+                            class="mud-ex-ribbon-dialog-launcher"
+                            aria-label="@Ribbon.TryLocalize("More options: {0}", group.Text)"
+                            @onclick="() => LaunchDialogAsync(group)">
+                        <MudIcon Icon="@Icons.Material.Filled.SouthEast" Class="mud-ex-ribbon-icon" />
+                    </button>
+                }
+            </div>
+        </div>;
+
+    private RenderFragment CollapsedGroup(MudExRibbonGroup group)
+    {
+        var open = OpenGroup == group;
+        return @<div @key="group" class="mud-ex-ribbon-group mud-ex-ribbon-group-collapsed">
+            <button type="button"
+                    class="mud-ex-ribbon-button mud-ex-ribbon-large"
+                    aria-haspopup="true"
+                    aria-expanded="@(open ? "true" : "false")"
+                    @onclick="() => OpenGroup = open ? null : group">
+                <MudIcon Icon="@(string.IsNullOrEmpty(group.Icon) ? Icons.Material.Filled.MoreHoriz : group.Icon)" Class="mud-ex-ribbon-icon" />
+                <span class="mud-ex-ribbon-label">@group.Text</span>
+                <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown" Class="mud-ex-ribbon-arrow" />
+            </button>
+            <MudPopover Open="@open"
+                        Class="mud-ex-ribbon-overlay mud-ex-ribbon-group-popover"
+                        AnchorOrigin="Origin.BottomLeft"
+                        TransformOrigin="Origin.TopLeft">
+                <div class="mud-ex-ribbon-overlay-content" @onkeydown="OnGroupKeyDown">@Group(group, MudExRibbonGroupState.Full)</div>
+            </MudPopover>
+            <MudOverlay Class="mud-ex-ribbon-overlay-backdrop"
+                        Visible="@open"
+                        AutoClose="true"
+                        LockScroll="false"
+                        OnClosed="() => OpenGroup = null" />
+        </div>;
+    }
+
+    private static MudExRibbonItemLayout LayoutOf(MudExRibbonItemBase item, MudExRibbonGroupState state) => state switch
+    {
+        MudExRibbonGroupState.Compact => MudExRibbonItemLayout.Small,
+        MudExRibbonGroupState.Reduced when item.DeclaredLayout == MudExRibbonItemLayout.Large => MudExRibbonItemLayout.Medium,
+        _ => item.DeclaredLayout
+    };
+
+    private void OnGroupKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == "Escape")
+            OpenGroup = null;
+    }
 
     private async Task LaunchDialogAsync(MudExRibbonGroup group)
     {

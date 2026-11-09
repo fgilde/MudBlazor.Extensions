@@ -6539,7 +6539,7 @@
   position: relative;
 }
 
-.mud-ex-ribbon-overlay > .mud-ex-ribbon-body {
+.mud-ex-ribbon-overlay-content > .mud-ex-ribbon-body {
   padding-right: 4px;
 }
 
@@ -6566,6 +6566,19 @@
   grid-auto-columns: max-content;
   align-items: center;
   gap: 2px;
+}
+
+.mud-ex-ribbon-group-collapsed {
+  position: relative;
+  padding-bottom: 4px;
+}
+.mud-ex-ribbon-group-collapsed > .mud-ex-ribbon-button {
+  flex: 1 1 auto;
+}
+
+.mud-ex-ribbon-group-popover .mud-ex-ribbon-group {
+  padding-top: 4px;
+  border-right: none;
 }
 
 .mud-ex-ribbon-slot {

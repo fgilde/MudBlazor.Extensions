@@ -746,18 +746,137 @@ public class MudExRibbonTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task CollapsedGroup_RendersSingleButton_OpeningPopover()
+    {
+        var pastes = 0;
+        var (cut, popovers) = RenderModes(_ => { }, () => pastes++);
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("[role=toolbar]").Count));
+
+        await cut.InvokeAsync(() => cut.Instance.SetReductionStep(100));
+
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll(".mud-ex-ribbon-group-collapsed").Count));
+        Assert.Equal(6, cut.Instance.ReductionStep);
+        Assert.Empty(cut.FindAll("[role=toolbar]"));
+        Assert.All(cut.FindAll(".mud-ex-ribbon-group-collapsed"), g => Assert.Single(g.QuerySelectorAll("button")));
+        var buttons = cut.FindAll(".mud-ex-ribbon-group-collapsed > .mud-ex-ribbon-button.mud-ex-ribbon-large");
+        Assert.Equal(["Clipboard", "Font"], buttons.Select(b => b.TextContent.Trim()));
+        Assert.All(buttons, b => Assert.Equal("false", b.GetAttribute("aria-expanded")));
+
+        buttons[0].Click();
+        popovers.WaitForAssertion(() => Assert.Equal(["Clipboard"], popovers.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
+        Assert.Equal("true", cut.FindAll(".mud-ex-ribbon-group-collapsed > .mud-ex-ribbon-button")[0].GetAttribute("aria-expanded"));
+        Assert.Single(popovers.FindAll(".mud-ex-ribbon-split-large"));
+
+        popovers.Find(".mud-ex-ribbon-split-face").Click();
+        cut.WaitForAssertion(() => Assert.Equal(1, pastes));
+        popovers.WaitForAssertion(() => Assert.Empty(popovers.FindAll("[role=toolbar]")));
+
+        cut.FindAll(".mud-ex-ribbon-group-collapsed > .mud-ex-ribbon-button")[1].Click();
+        popovers.WaitForAssertion(() => Assert.Equal(["Font"], popovers.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
+        popovers.Find(".mud-ex-ribbon-group-popover .mud-ex-ribbon-overlay-content").KeyDown(new KeyboardEventArgs { Key = "Escape" });
+        popovers.WaitForAssertion(() => Assert.Empty(popovers.FindAll("[role=toolbar]")));
+    }
+
+    [Fact]
+    public async Task ReducedAndCompactGroups_ShrinkItemLayouts()
+    {
+        var (cut, _) = RenderModes(_ => { });
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-split-large")));
+
+        await cut.InvokeAsync(() => cut.Instance.SetReductionStep(2));
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-ribbon-large")));
+        Assert.Single(cut.FindAll(".mud-ex-ribbon-split-medium"));
+        Assert.Contains(cut.FindAll(".mud-ex-ribbon-medium"), e => e.GetAttribute("aria-label") == "Styles");
+
+        await cut.InvokeAsync(() => cut.Instance.SetReductionStep(4));
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-ribbon-medium")));
+        Assert.Single(cut.FindAll(".mud-ex-ribbon-split-small"));
+        Assert.Equal(2, cut.FindAll("[role=toolbar]").Count);
+        Assert.Equal(2, cut.FindAll(".mud-ex-ribbon-group-title").Count);
+    }
+
+    [Fact]
+    public async Task Simplified_ReductionStep_MovesItemsFromTheRightIntoOverflowMenu()
+    {
+        var (cut, popovers) = RenderModes(p => p.Add(x => x.Mode, MudExRibbonMode.Simplified));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-simplified-body")));
+        Assert.Empty(cut.FindAll(".mud-ex-ribbon-overflow"));
+
+        await cut.InvokeAsync(() => cut.Instance.SetReductionStep(1));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-overflow")));
+        Assert.DoesNotContain(cut.FindAll(".mud-ex-ribbon-button"), e => e.GetAttribute("aria-label") == "Styles");
+        Assert.Contains(cut.FindAll(".mud-ex-ribbon-button"), e => e.GetAttribute("aria-label") == "Italic");
+
+        await cut.InvokeAsync(() => cut.Instance.SetReductionStep(3));
+        cut.WaitForAssertion(() => Assert.Equal(["Clipboard"], cut.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
+        Assert.Empty(cut.FindAll(".mud-ex-ribbon-simplified-body > .mud-ex-ribbon-separator"));
+        Assert.DoesNotContain(cut.FindAll(".mud-ex-ribbon-button"), e => e.GetAttribute("aria-label") == "Cut");
+
+        cut.Find(".mud-ex-ribbon-overflow button").Click();
+        popovers.WaitForAssertion(() =>
+        {
+            Assert.Contains(popovers.FindAll("[role=menuitem]"), e => e.TextContent.Contains("Cut"));
+            Assert.Contains(popovers.FindAll("[role=menuitemcheckbox]"), e => e.TextContent.Contains("Bold"));
+            Assert.Contains(popovers.FindAll("[role=menuitem]"), e => e.TextContent.Contains("Styles"));
+        });
+        Assert.Single(popovers.FindAll(".mud-ex-ribbon-menu-section-divider"));
+
+        await cut.InvokeAsync(() => cut.Instance.SetReductionStep(99));
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll("[role=toolbar]")));
+        Assert.Equal(4, cut.Instance.ReductionStep);
+    }
+
+    [Fact]
+    public async Task ChangingTabOrMode_ResetsReductionStep_MenuAndToolbarIgnoreIt()
+    {
+        var (cut, _) = RenderModes(_ => { });
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("[role=toolbar]").Count));
+
+        await cut.InvokeAsync(() => cut.Instance.SetReductionStep(6));
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll(".mud-ex-ribbon-group-collapsed").Count));
+
+        cut.FindAll("[role=tab]")[1].Click();
+        cut.WaitForAssertion(() => Assert.Equal(["Tables"], cut.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
+        Assert.Equal(0, cut.Instance.ReductionStep);
+        cut.FindAll("[role=tab]")[0].Click();
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("[role=toolbar]").Count));
+        Assert.Empty(cut.FindAll(".mud-ex-ribbon-group-collapsed"));
+
+        await cut.InvokeAsync(() => cut.Instance.SetReductionStep(6));
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll(".mud-ex-ribbon-group-collapsed").Count));
+        cut.Render(p => p.Add(x => x.Mode, MudExRibbonMode.Simplified));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-simplified-body")));
+        Assert.Equal(0, cut.Instance.ReductionStep);
+        Assert.Empty(cut.FindAll(".mud-ex-ribbon-overflow"));
+
+        cut.Render(p => p.Add(x => x.Mode, MudExRibbonMode.Toolbar));
+        await cut.InvokeAsync(() => cut.Instance.SetReductionStep(3));
+        Assert.Equal(0, cut.Instance.ReductionStep);
+        cut.WaitForAssertion(() => Assert.Contains(cut.FindAll(".mud-ex-ribbon-toolbaricon"), e => e.GetAttribute("aria-label") == "Styles"));
+    }
+
+    [Fact]
     public void Select_DatalistIdIsUniquePerRender()
     {
         var (cut, _, context) = RenderGroup(g => g
-            .AddChildContent<MudExRibbonSelect<string>>(b => b.Add(x => x.Text, "Size").Add(x => x.Items, ["10", "11"]).Add(x => x.Editable, true)));
+            .AddChildContent<MudExRibbonSelect<string>>(b => b.Add(x => x.Text, "Size").Add(x => x.Items, ["10", "11"]).Add(x => x.Editable, true))
+            .AddChildContent<MudExRibbonSelect<string>>(b => b.Add(x => x.Text, "Font").Add(x => x.Items, ["Arial"]).Add(x => x.Editable, true)));
 
-        cut.WaitForAssertion(() => Assert.Single(cut.FindAll("datalist")));
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("datalist").Count));
+        Assert.NotEqual(cut.FindAll("datalist")[0].Id, cut.FindAll("datalist")[1].Id);
         var item = cut.Instance.Tabs[0].Groups[0].Items[0];
-        var first = context.Render(item.Render(MudExRibbonItemLayout.Medium));
-        var second = context.Render(item.Render(MudExRibbonItemLayout.Medium));
+        var medium = context.Render(item.Render(MudExRibbonItemLayout.Medium));
+        var again = context.Render(item.Render(MudExRibbonItemLayout.Medium));
+        var menu = context.Render(item.Render(MudExRibbonItemLayout.MenuEntry));
 
-        Assert.NotEqual(first.Find("datalist").Id, second.Find("datalist").Id);
-        Assert.Equal(first.Find("datalist").Id, first.Find("input").GetAttribute("list"));
+        Assert.Equal(medium.Find("datalist").Id, again.Find("datalist").Id);
+        Assert.NotEqual(medium.Find("datalist").Id, menu.Find("datalist").Id);
+        Assert.Equal(medium.Find("datalist").Id, medium.Find("input").GetAttribute("list"));
+        Assert.Equal(menu.Find("datalist").Id, menu.Find("input").GetAttribute("list"));
+
+        var id = cut.Find("datalist").Id;
+        cut.Instance.Invalidate();
+        cut.WaitForAssertion(() => Assert.Equal(id, cut.Find("datalist").Id));
     }
 
     private sealed class FrozenTime : TimeProvider

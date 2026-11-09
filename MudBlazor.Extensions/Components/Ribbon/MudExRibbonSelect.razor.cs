@@ -9,6 +9,7 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExRibbonSelect<T>
 {
     private int _inputVersion;
+    private readonly string _listId = $"mud-ex-ribbon-list-{Guid.NewGuid():N}";
 
     /// <summary>
     /// Items to choose from.

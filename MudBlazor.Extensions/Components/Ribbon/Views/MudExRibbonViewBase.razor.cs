@@ -22,6 +22,8 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
 
     private bool _overlayOpen;
 
+    private protected MudExRibbonGroup OpenGroup { get; set; }
+
     private protected MudExRibbonViewBase()
     {
     }
@@ -31,20 +33,24 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
     /// </summary>
     [Parameter] public MudExRibbon Ribbon { get; set; }
 
-    private string PanelId => $"{Ribbon.ElementId}-panel";
+    private string PanelId => Ribbon.PanelId;
 
     private string TabId(MudExRibbonTab tab) => $"{Ribbon.ElementId}-tab-{Ribbon.IndexOf(tab)}";
 
     /// <inheritdoc />
     protected override void OnInitialized() => Ribbon.RegisterView(this);
 
+    /// <inheritdoc />
+    protected override Task OnAfterRenderAsync(bool firstRender) => Ribbon.SyncReductionAsync();
+
     void IMudExRibbonView.Refresh() => _ = InvokeAsync(StateHasChanged);
 
     void IMudExRibbonView.CommandExecuted()
     {
-        if (!_overlayOpen)
+        if (!_overlayOpen && OpenGroup == null)
             return;
         _overlayOpen = false;
+        OpenGroup = null;
         _ = InvokeAsync(StateHasChanged);
     }
 

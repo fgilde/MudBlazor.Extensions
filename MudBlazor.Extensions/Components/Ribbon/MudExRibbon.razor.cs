@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 
 namespace MudBlazor.Extensions.Components;
@@ -11,6 +12,9 @@ public partial class MudExRibbon
 {
     private readonly List<MudExRibbonTab> _tabs = [];
     private IMudExRibbonView _view;
+    private (MudExRibbonMode Mode, MudExRibbonTab Tab) _reductionKey;
+    private int _reductionStep;
+    private ((MudExRibbonMode Mode, MudExRibbonTab Tab) Key, int Step, int Max)? _syncedReduction;
 
     /// <summary>
     /// Declaration of the ribbon: <see cref="MudExRibbonTab"/> components.
@@ -88,6 +92,70 @@ public partial class MudExRibbon
 
     internal string HeaderStyle
         => $"background-color:{MudExRibbonColors.BackgroundFor(Color)};color:{MudExRibbonColors.ForegroundFor(Color)};";
+
+    internal string PanelId => $"{ElementId}-panel";
+
+    private (MudExRibbonMode Mode, MudExRibbonTab Tab) ReductionKey => (Mode, ActiveTab);
+
+    internal int MaxReductionStep => ActiveTab is not { } tab ? 0 : Mode switch
+    {
+        MudExRibbonMode.Classic => MudExRibbonReduction.MaxStep(tab.Groups),
+        MudExRibbonMode.Simplified => tab.Groups.Sum(g => g.Items.Count(i => i.Visible)),
+        _ => 0
+    };
+
+    internal int ReductionStep
+    {
+        get
+        {
+            if (!Equals(_reductionKey, ReductionKey))
+                (_reductionKey, _reductionStep) = (ReductionKey, 0);
+            return Math.Min(_reductionStep, MaxReductionStep);
+        }
+    }
+
+    /// <summary>
+    /// Applies a reduction step measured by the ribbon script: in <see cref="MudExRibbonMode.Classic"/> groups shrink one level per step,
+    /// in <see cref="MudExRibbonMode.Simplified"/> one more item moves into the overflow menu. The step is clamped to what the active tab supports
+    /// and starts at 0 again when the tab or the mode changes.
+    /// </summary>
+    /// <param name="step">Number of reduction steps to apply.</param>
+    [JSInvokable]
+    public Task SetReductionStep(int step)
+    {
+        step = Math.Clamp(step, 0, MaxReductionStep);
+        if (step == ReductionStep)
+            return Task.CompletedTask;
+        _reductionStep = step;
+        Invalidate();
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public override object[] GetJsArguments() => [ElementReference, CreateDotNetObjectReference(), PanelId];
+
+    /// <inheritdoc />
+    public override async Task ImportModuleAndCreateJsAsync()
+    {
+        await base.ImportModuleAndCreateJsAsync();
+        await SyncReductionAsync();
+    }
+
+    internal async Task SyncReductionAsync()
+    {
+        var state = (Key: ReductionKey, Step: ReductionStep, Max: MaxReductionStep);
+        if (JsReference == null || IsDisposed || Equals(state, _syncedReduction))
+            return;
+        var reset = !Equals(_syncedReduction?.Key, state.Key);
+        _syncedReduction = state;
+        try
+        {
+            await JsReference.InvokeVoidAsync("update", state.Step, state.Max, reset);
+        }
+        catch (Exception e) when (e is JSDisconnectedException or ObjectDisposedException or TaskCanceledException)
+        {
+        }
+    }
 
     internal int IndexOf(MudExRibbonTab tab) => _tabs.IndexOf(tab);
 

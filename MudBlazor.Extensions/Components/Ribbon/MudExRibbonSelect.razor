@@ -6,7 +6,7 @@
     /// <inheritdoc />
     public override RenderFragment Render(MudExRibbonItemLayout layout)
     {
-        var listId = $"mud-ex-ribbon-list-{Guid.NewGuid():N}";
+        var listId = $"{_listId}-{LayoutName(layout)}";
         return WithTooltip(layout,
             @<div class="@($"mud-ex-ribbon-field mud-ex-ribbon-{LayoutName(layout)}")">
                 @if (ShowsText(layout) && !string.IsNullOrEmpty(Text))
