@@ -31,26 +31,42 @@ class MudExFileSystemAccess {
         await writable.close();
     }
 
+    static async _download(streamRef, suggestedName, mimeType) {
+        const buffer = await streamRef.arrayBuffer();
+        const url = URL.createObjectURL(new Blob([buffer], { type: mimeType }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = suggestedName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+        return { handleId: null, fileName: suggestedName, target: 'Download' };
+    }
+
+    static async _pickOrDownload(streamRef, suggestedName, mimeType) {
+        try {
+            return { handle: await MudExFileSystemAccess._pickSaveHandle(suggestedName, mimeType) };
+        } catch (e) {
+            if (e && (e.name === 'SecurityError' || e.name === 'NotAllowedError')) {
+                return { download: await MudExFileSystemAccess._download(streamRef, suggestedName, mimeType) };
+            }
+            throw e;
+        }
+    }
+
     static async saveFile(handleId, streamRef, suggestedName, mimeType) {
         let handle = handleId ? MudExFileSystemAccess._fileHandles[handleId] : null;
         const reused = !!handle;
         if (!handle && typeof window.showSaveFilePicker !== 'function') {
-            const buffer = await streamRef.arrayBuffer();
-            const url = URL.createObjectURL(new Blob([buffer], { type: mimeType }));
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = suggestedName;
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            setTimeout(() => URL.revokeObjectURL(url), 10000);
-            return { handleId: null, fileName: suggestedName, target: 'Download' };
+            return await MudExFileSystemAccess._download(streamRef, suggestedName, mimeType);
         }
         if (!handle) {
-            handle = await MudExFileSystemAccess._pickSaveHandle(suggestedName, mimeType);
-            if (!handle) {
-                return null;
+            const picked = await MudExFileSystemAccess._pickOrDownload(streamRef, suggestedName, mimeType);
+            if (picked.download || !picked.handle) {
+                return picked.download ?? null;
             }
+            handle = picked.handle;
         }
         const buffer = await streamRef.arrayBuffer();
         try {
@@ -60,10 +76,11 @@ class MudExFileSystemAccess {
                 throw e;
             }
             delete MudExFileSystemAccess._fileHandles[handleId];
-            handle = await MudExFileSystemAccess._pickSaveHandle(suggestedName, mimeType);
-            if (!handle) {
-                return null;
+            const picked = await MudExFileSystemAccess._pickOrDownload({ arrayBuffer: async () => buffer }, suggestedName, mimeType);
+            if (picked.download || !picked.handle) {
+                return picked.download ?? null;
             }
+            handle = picked.handle;
             await MudExFileSystemAccess._writeHandle(handle, buffer);
             handleId = null;
         }
