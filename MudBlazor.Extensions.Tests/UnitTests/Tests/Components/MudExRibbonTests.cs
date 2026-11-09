@@ -689,6 +689,77 @@ public class MudExRibbonTests : IAsyncLifetime
         Assert.Equal(cut.Find("[role=tabpanel]").Id, cut.Find("[role=tab]").GetAttribute("aria-controls"));
     }
 
+    [Theory]
+    [InlineData(MudExRibbonMode.Classic, "[role=tablist]")]
+    [InlineData(MudExRibbonMode.Simplified, "[role=tablist]")]
+    [InlineData(MudExRibbonMode.Menu, ".mud-ex-ribbon-menubar")]
+    [InlineData(MudExRibbonMode.Toolbar, ".mud-ex-ribbon-toolbar")]
+    public void Header_HasTitleBarAndSeparateTabRow_InEveryMode(MudExRibbonMode mode, string tabs)
+    {
+        var (cut, _) = RenderModes(p => p.Add(x => x.Mode, mode)
+            .Add(x => x.FileMenu, "<div>Recent</div>")
+            .Add(x => x.TitleContent, "<span class=\"doc-title\">Document1</span>")
+            .Add(x => x.HeaderEndContent, "<span class=\"header-end\">User</span>"));
+
+        var rows = cut.Find(".mud-ex-ribbon-header").Children.Select(e => e.ClassName!).ToArray();
+        Assert.Equal(["mud-ex-ribbon-title-bar", "mud-ex-ribbon-tab-row"], rows);
+        var titleBar = cut.Find(".mud-ex-ribbon-title-bar");
+        var tabRow = cut.Find(".mud-ex-ribbon-tab-row");
+        Assert.NotNull(titleBar.QuerySelector(".doc-title"));
+        Assert.NotNull(titleBar.QuerySelector(".mud-ex-ribbon-command-search-host .mud-ex-ribbon-command-search"));
+        Assert.NotNull(titleBar.QuerySelector(".header-end"));
+        Assert.NotNull(titleBar.QuerySelector(".mud-ex-ribbon-mode-switch"));
+        Assert.Null(titleBar.QuerySelector(".mud-ex-ribbon-file-tab"));
+        Assert.Contains("mud-ex-ribbon-file-tab", tabRow.FirstElementChild!.ClassList);
+        Assert.NotNull(tabRow.QuerySelector(tabs));
+        Assert.Null(tabRow.QuerySelector(".mud-ex-ribbon-command-search-host"));
+        Assert.Null(tabRow.QuerySelector(".mud-ex-ribbon-mode-switch"));
+    }
+
+    [Fact]
+    public void Header_WithoutTitleBarContent_RendersOnlyTabRow()
+    {
+        var (cut, _) = RenderModes(p => p.Add(x => x.ShowCommandSearch, false).Add(x => x.ShowModeSwitch, false));
+
+        Assert.Equal(["mud-ex-ribbon-tab-row"], cut.Find(".mud-ex-ribbon-header").Children.Select(e => e.ClassName!));
+    }
+
+    [Fact]
+    public void CommandSearchToggle_ExpandsSearchAndFocusesInput()
+    {
+        var context = NewContext();
+        context.Render<MudPopoverProvider>();
+        var cut = context.Render<MudExRibbon>(p => p.AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home")
+            .AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Font").AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Bold")))));
+
+        var host = cut.Find(".mud-ex-ribbon-command-search-host");
+        Assert.DoesNotContain("mud-ex-ribbon-command-search-expanded", host.ClassList);
+        Assert.Equal("Search commands", cut.Find(".mud-ex-ribbon-command-search-toggle").GetAttribute("aria-label"));
+
+        cut.Find(".mud-ex-ribbon-command-search-toggle").Click();
+
+        cut.WaitForAssertion(() => Assert.Contains("mud-ex-ribbon-command-search-expanded", cut.Find(".mud-ex-ribbon-command-search-host").ClassList));
+        cut.WaitForAssertion(() => Assert.NotEmpty(context.JSInterop.Invocations["Blazor._internal.domWrapper.focus"]));
+
+        cut.Find(".mud-ex-ribbon-command-search-host").TriggerEvent("onfocusout", new FocusEventArgs());
+        cut.WaitForAssertion(() => Assert.DoesNotContain("mud-ex-ribbon-command-search-expanded", cut.Find(".mud-ex-ribbon-command-search-host").ClassList));
+    }
+
+    [Fact]
+    public void Collapsed_OverlayIsBoundToRibbonWidth_ToggleInTabRow()
+    {
+        var (cut, popovers) = RenderModes(p => p.Add(x => x.Collapsed, true));
+
+        Assert.NotNull(cut.Find(".mud-ex-ribbon-tab-row > .mud-ex-ribbon-collapse-toggle"));
+        cut.FindAll("[role=tab]")[0].Click();
+        popovers.WaitForAssertion(() => Assert.NotEmpty(popovers.FindAll("[role=toolbar]")));
+
+        var overlay = popovers.Find(".mud-ex-ribbon-overlay:not(.mud-ex-ribbon-group-popover)");
+        Assert.Contains("mud-popover-relative-width", overlay.ClassList);
+        Assert.DoesNotContain("mud-popover-adaptive-width", overlay.ClassList);
+        Assert.Equal(cut.Instance.PanelId, overlay.QuerySelector(".mud-ex-ribbon-overlay-content > .mud-ex-ribbon-body")!.Id);
+    }
+
     [Fact]
     public void DoubleClickTab_TogglesCollapsed()
     {
@@ -1147,7 +1218,7 @@ public class MudExRibbonTests : IAsyncLifetime
             .Single(e => e.GetAttribute("aria-label") == label);
 
         cut.WaitForAssertion(() => Assert.Equal(["Undo"], cut.FindAll(".mud-ex-ribbon-quick-access .mud-ex-ribbon-button").Select(e => e.GetAttribute("aria-label"))));
-        Assert.Contains("mud-ex-ribbon-quick-access", cut.Find(".mud-ex-ribbon-header").FirstElementChild!.ClassList);
+        Assert.Contains("mud-ex-ribbon-quick-access", cut.Find(".mud-ex-ribbon-header > .mud-ex-ribbon-title-bar").FirstElementChild!.ClassList);
         QuickAccess("Undo").Click();
         cut.WaitForAssertion(() => Assert.Equal(1, undos));
 

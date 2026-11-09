@@ -18901,6 +18901,9 @@
             The ribbon whose commands are searched.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonCommandSearch.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExRibbonContent">
             <summary>
             Hosts arbitrary content inside a ribbon group, for example a picker.

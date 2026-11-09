@@ -7,67 +7,76 @@
         Ribbon.AssignKeyTips();
         var quickAccess = Ribbon.QuickAccessItems;
         var fileMenuOpen = Ribbon.FileMenu != null && Ribbon.FileMenuOpen;
+        var showQuickAccess = quickAccess.Any(i => i.Visible);
+        var showTitleBar = showQuickAccess || Ribbon.TitleContent != null || Ribbon.ShowCommandSearch || Ribbon.HeaderEndContent != null || Ribbon.ShowModeSwitch;
         return @<text>
         <div class="@($"mud-ex-ribbon-header{(_overlayOpen || fileMenuOpen ? " mud-ex-ribbon-header-raised" : "")}")" style="@Ribbon.HeaderStyle">
-            @if (quickAccess.Any(i => i.Visible))
+            @if (showTitleBar)
             {
-                <div class="mud-ex-ribbon-quick-access" role="toolbar" aria-label="@Ribbon.TryLocalize("Quick Access Toolbar")">
-                    @MudExRibbonItemBase.Slots(quickAccess, _ => MudExRibbonItemLayout.Small)
+                <div class="mud-ex-ribbon-title-bar">
+                    @if (showQuickAccess)
+                    {
+                        <div class="mud-ex-ribbon-quick-access" role="toolbar" aria-label="@Ribbon.TryLocalize("Quick Access Toolbar")">
+                            @MudExRibbonItemBase.Slots(quickAccess, _ => MudExRibbonItemLayout.Small)
+                        </div>
+                    }
+                    @if (Ribbon.TitleContent != null)
+                    {
+                        <div class="mud-ex-ribbon-title">@Ribbon.TitleContent</div>
+                    }
+                    @if (Ribbon.ShowCommandSearch)
+                    {
+                        <MudExRibbonCommandSearch Ribbon="Ribbon" />
+                    }
+                    @if (Ribbon.HeaderEndContent != null)
+                    {
+                        <div class="mud-ex-ribbon-header-end">@Ribbon.HeaderEndContent</div>
+                    }
+                    @if (Ribbon.ShowModeSwitch)
+                    {
+                        <MudMenu Class="mud-ex-ribbon-mode-switch"
+                                 Icon="@Icons.Material.Filled.ViewDay"
+                                 Color="Color.Inherit"
+                                 Size="Size.Small"
+                                 Dense="true"
+                                 AriaLabel="@Ribbon.TryLocalize("Ribbon display options")"
+                                 AnchorOrigin="Origin.BottomRight"
+                                 TransformOrigin="Origin.TopRight">
+                            @foreach (var (mode, text) in Modes)
+                            {
+                                <MudMenuItem Class="mud-ex-ribbon-mode-option"
+                                             Icon="@(mode == Ribbon.Mode ? Icons.Material.Filled.Check : null)"
+                                             role="menuitemradio"
+                                             aria-checked="@(mode == Ribbon.Mode ? "true" : "false")"
+                                             OnClick="() => Ribbon.SetModeAsync(mode)">
+                                    @Ribbon.TryLocalize(text)
+                                </MudMenuItem>
+                            }
+                        </MudMenu>
+                    }
                 </div>
             }
-            @if (Ribbon.TitleContent != null)
-            {
-                <div class="mud-ex-ribbon-title">@Ribbon.TitleContent</div>
-            }
-            @if (Ribbon.FileMenu != null)
-            {
-                <button type="button"
-                        class="mud-ex-ribbon-tab mud-ex-ribbon-file-tab"
-                        style="@Ribbon.FileTabStyle"
-                        aria-haspopup="dialog"
-                        aria-expanded="@(fileMenuOpen ? "true" : "false")"
-                        aria-controls="@(fileMenuOpen ? Ribbon.BackstageId : null)"
-                        @attributes="Ribbon.TabKeyTipAttributes(Ribbon)"
-                        @ref="_fileTab"
-                        @onclick="() => Ribbon.SetFileMenuOpenAsync(!fileMenuOpen)">
-                    @Ribbon.TryLocalize(Ribbon.FileMenuText)
-                </button>
-            }
-            @content
-            @if (Ribbon.ShowCommandSearch)
-            {
-                <MudExRibbonCommandSearch Ribbon="Ribbon" />
-            }
-            @if (Ribbon.HeaderEndContent != null)
-            {
-                <div class="mud-ex-ribbon-header-end">@Ribbon.HeaderEndContent</div>
-            }
-            @if (Ribbon.ShowModeSwitch)
-            {
-                <MudMenu Class="mud-ex-ribbon-mode-switch"
-                         Icon="@Icons.Material.Filled.ViewDay"
-                         Color="Color.Inherit"
-                         Size="Size.Small"
-                         Dense="true"
-                         AriaLabel="@Ribbon.TryLocalize("Ribbon display options")"
-                         AnchorOrigin="Origin.BottomRight"
-                         TransformOrigin="Origin.TopRight">
-                    @foreach (var (mode, text) in Modes)
-                    {
-                        <MudMenuItem Class="mud-ex-ribbon-mode-option"
-                                     Icon="@(mode == Ribbon.Mode ? Icons.Material.Filled.Check : null)"
-                                     role="menuitemradio"
-                                     aria-checked="@(mode == Ribbon.Mode ? "true" : "false")"
-                                     OnClick="() => Ribbon.SetModeAsync(mode)">
-                            @Ribbon.TryLocalize(text)
-                        </MudMenuItem>
-                    }
-                </MudMenu>
-            }
-            @if (Ribbon.IsCollapsed && Ribbon.AllowCollapse)
-            {
-                @CollapseToggle
-            }
+            <div class="mud-ex-ribbon-tab-row">
+                @if (Ribbon.FileMenu != null)
+                {
+                    <button type="button"
+                            class="mud-ex-ribbon-tab mud-ex-ribbon-file-tab"
+                            style="@Ribbon.FileTabStyle"
+                            aria-haspopup="dialog"
+                            aria-expanded="@(fileMenuOpen ? "true" : "false")"
+                            aria-controls="@(fileMenuOpen ? Ribbon.BackstageId : null)"
+                            @attributes="Ribbon.TabKeyTipAttributes(Ribbon)"
+                            @ref="_fileTab"
+                            @onclick="() => Ribbon.SetFileMenuOpenAsync(!fileMenuOpen)">
+                        @Ribbon.TryLocalize(Ribbon.FileMenuText)
+                    </button>
+                }
+                @content
+                @if (Ribbon.IsCollapsed && Ribbon.AllowCollapse)
+                {
+                    @CollapseToggle
+                }
+            </div>
         </div>
         @if (fileMenuOpen)
         {
@@ -115,7 +124,7 @@
                                 Class="mud-ex-ribbon-overlay"
                                 AnchorOrigin="Origin.BottomLeft"
                                 TransformOrigin="Origin.TopLeft"
-                                RelativeWidth="DropdownWidth.Adaptive">
+                                RelativeWidth="DropdownWidth.Relative">
                         <div class="mud-ex-ribbon-overlay-content" @onkeydown="OnOverlayKeyDown">
                             @Panel(activeTab, body, bodyClass)
                         </div>

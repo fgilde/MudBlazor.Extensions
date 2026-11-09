@@ -1,23 +1,33 @@
 @namespace MudBlazor.Extensions.Components
 @attribute [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 
-<MudAutocomplete @ref="_autocomplete"
-                 T="MudExRibbonItemBase"
-                 Class="mud-ex-ribbon-command-search"
-                 PopoverClass="mud-ex-ribbon-search-popover"
-                 SearchFunc="SearchAsync"
-                 ValueChanged="ExecuteAsync"
-                 ToStringFunc="@(item => item?.Text)"
-                 ItemTemplate="Result"
-                 Placeholder="@Ribbon.TryLocalize("Search commands")"
-                 Adornment="Adornment.Start"
-                 AdornmentIcon="@Icons.Material.Filled.Search"
-                 IconSize="Size.Small"
-                 Margin="Margin.Dense"
-                 Variant="Variant.Outlined"
-                 Dense="true"
-                 CoerceText="false"
-                 ResetValueOnEmptyText="true" />
+<div class="@($"mud-ex-ribbon-command-search-host{(_expanded ? " mud-ex-ribbon-command-search-expanded" : "")}")"
+     @onfocusout="OnFocusOut">
+    <MudAutocomplete @ref="_autocomplete"
+                     T="MudExRibbonItemBase"
+                     Class="mud-ex-ribbon-command-search"
+                     PopoverClass="mud-ex-ribbon-search-popover"
+                     SearchFunc="SearchAsync"
+                     ValueChanged="ExecuteAsync"
+                     OpenChanged="OnOpenChanged"
+                     ToStringFunc="@(item => item?.Text)"
+                     ItemTemplate="Result"
+                     Placeholder="@Ribbon.TryLocalize("Search commands")"
+                     Adornment="Adornment.Start"
+                     AdornmentIcon="@Icons.Material.Filled.Search"
+                     IconSize="Size.Small"
+                     Margin="Margin.Dense"
+                     Variant="Variant.Outlined"
+                     Dense="true"
+                     CoerceText="false"
+                     ResetValueOnEmptyText="true" />
+    <MudIconButton Class="mud-ex-ribbon-command-search-toggle"
+                   Icon="@Icons.Material.Filled.Search"
+                   Color="Color.Inherit"
+                   Size="Size.Small"
+                   aria-label="@Ribbon.TryLocalize("Search commands")"
+                   OnClick="Expand" />
+</div>
 
 @code {
     private RenderFragment<MudExRibbonItemBase> Result => item =>
