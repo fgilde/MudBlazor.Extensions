@@ -441,6 +441,9 @@ public class XlsxReadTests(ITestOutputHelper output)
         var broken = Replace(Package([Sheet("")]), "xl/_rels/workbook.xml.rels",
             $"<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"{Rel}/worksheet\"/></Relationships>");
         Assert.Throws<InvalidDataException>(() => Read(broken));
+        var disposed = new MemoryStream(Package([Sheet("")]));
+        disposed.Dispose();
+        Assert.Throws<ObjectDisposedException>(() => XlsxReader.Read(disposed));
 
         const string styles = """
             <colors><indexedColors><rgbColor rgb="FF"/></indexedColors></colors>
@@ -465,13 +468,19 @@ public class XlsxReadTests(ITestOutputHelper output)
     [Fact]
     public void Csv_DeDe_ThousandsDotsAndListSeparator()
     {
-        var ws = WithCulture("de-DE", () => CsvFormat.Read(new MemoryStream(Encoding.UTF8.GetBytes("Menge;Preis\r\nA;1.500\r\nB;115.00\r\nC;-12.345.678\r\n")))).Sheets[0];
+        var ws = WithCulture("de-DE", () => CsvFormat.Read(new MemoryStream(Encoding.UTF8.GetBytes("Menge;Preis\r\nA;1.500\r\nB;115.00\r\nC;-12.345.678\r\nD;0.500\r\nE;0.125\r\n")))).Sheets[0];
         Assert.Equal(1500, At(ws, "B2").Value.NumberValue);
         Assert.Equal(115, At(ws, "B3").Value.NumberValue);
         Assert.Equal(-12345678, At(ws, "B4").Value.NumberValue);
+        Assert.Equal(0.5, At(ws, "B5").Value.NumberValue);
+        Assert.Equal(0.125, At(ws, "B6").Value.NumberValue);
 
         var headerless = WithCulture("de-DE", () => CsvFormat.Read(new MemoryStream(Encoding.UTF8.GetBytes("1,5;2,5;3,5")))).Sheets[0];
         Assert.Equal(1.5, At(headerless, "A1").Value.NumberValue);
         Assert.Equal(3.5, At(headerless, "C1").Value.NumberValue);
+
+        var ragged = WithCulture("en-US", () => CsvFormat.Read(new MemoryStream(Encoding.UTF8.GetBytes("a;b;c,x\r\nd;e;f;g,y\r\nh;i;j,z\r\n")))).Sheets[0];
+        Assert.Equal("c,x", At(ragged, "C1").Value.TextValue);
+        Assert.Equal("g,y", At(ragged, "D2").Value.TextValue);
     }
 }

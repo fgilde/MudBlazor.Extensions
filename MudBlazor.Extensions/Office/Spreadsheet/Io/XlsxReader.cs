@@ -24,7 +24,7 @@ public static class XlsxReader
         {
             return ReadPackage(stream);
         }
-        catch (Exception ex) when (ex is NullReferenceException or ArgumentException or FormatException or XmlException or KeyNotFoundException
+        catch (Exception ex) when (ex is not ObjectDisposedException && ex is NullReferenceException or ArgumentException or FormatException or XmlException or KeyNotFoundException
                                        or InvalidOperationException or IndexOutOfRangeException or OverflowException)
         {
             throw new InvalidDataException("The stream is not a valid spreadsheet package.", ex);

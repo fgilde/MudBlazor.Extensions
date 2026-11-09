@@ -9,7 +9,7 @@ public static class CsvFormat
 {
     private static readonly char[] Delimiters = [',', ';', '\t', '|'];
 
-    private static readonly Regex DotThousands = new(@"^[+-]?\d{1,3}(?:\.\d{3})+$", RegexOptions.CultureInvariant);
+    private static readonly Regex DotThousands = new(@"^[+-]?[1-9]\d{0,2}(?:\.\d{3})+$", RegexOptions.CultureInvariant);
 
     private static readonly Regex PlainNumber = new(@"^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$", RegexOptions.CultureInvariant);
 
@@ -159,6 +159,8 @@ public static class CsvFormat
         var counts = new int[Delimiters.Length];
         var any = false;
         var inQuotes = false;
+        var culture = CultureInfo.CurrentCulture;
+        var decimalSeparator = culture.NumberFormat.NumberDecimalSeparator is [var sep] ? sep : '.';
         for (var i = 0; i < text.Length && lines.Count < 10; i++)
         {
             var c = text[i];
@@ -173,18 +175,18 @@ public static class CsvFormat
             }
 
             any = true;
+            if (c == decimalSeparator && i > 0 && i + 1 < text.Length && char.IsAsciiDigit(text[i - 1]) && char.IsAsciiDigit(text[i + 1])) continue;
             var d = Array.IndexOf(Delimiters, c);
             if (d >= 0) counts[d]++;
         }
 
         if (any) lines.Add(counts);
         if (lines.Count == 0) return ',';
-        var list = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
+        var list = culture.TextInfo.ListSeparator;
         var best = Enumerable.Range(0, Delimiters.Length)
-            .OrderByDescending(d => lines[0][d] > 0 && lines.All(l => l[d] == lines[0][d]))
-            .ThenByDescending(d => list.Length == 1 && list[0] == Delimiters[d])
-            .ThenByDescending(d => lines.Min(l => l[d]))
+            .OrderByDescending(d => lines.Min(l => l[d]))
             .ThenByDescending(d => lines[0][d])
+            .ThenByDescending(d => list.Length == 1 && list[0] == Delimiters[d])
             .First();
         return lines[0][best] > 0 ? Delimiters[best] : ',';
     }
