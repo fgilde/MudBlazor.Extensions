@@ -192,9 +192,10 @@ public sealed class Workbook
     {
         var cells = new List<(Worksheet, CellRef, string)>();
         foreach (var sheet in _sheets)
-            foreach (var (r, cell) in sheet.UsedCells())
+            foreach (var key in sheet.FormulaKeys)
             {
-                if (cell.Formula == null) continue;
+                var r = CellRef.FromKey(key);
+                var cell = sheet[r];
                 var text = rewrite(cell.Formula, sheet.Name);
                 if (text == cell.Formula) continue;
                 cells.Add((sheet, r, cell.Formula));

@@ -23,6 +23,8 @@ public sealed class Worksheet
     public const double StandardRowHeight = 20;
 
     private Dictionary<long, Cell> _cells = new();
+    private HashSet<long> _formulaKeys = new();
+    private HashSet<long> _spillKeys = new();
     private readonly Dictionary<int, double> _columnWidths = new();
     private readonly Dictionary<int, double> _rowHeights = new();
     private readonly HashSet<int> _hiddenColumns = new();
@@ -179,12 +181,38 @@ public sealed class Worksheet
 
     internal void Reserve(int count) => _cells.EnsureCapacity(count);
 
+    internal IReadOnlyCollection<long> FormulaKeys => _formulaKeys;
+
+    internal IReadOnlyCollection<long> SpillKeys => _spillKeys;
+
+    internal void Sync(CellRef r)
+    {
+        var key = r.Key;
+        if (_cells.TryGetValue(key, out var cell))
+        {
+            Track(key, cell, _formulaKeys, _spillKeys);
+            return;
+        }
+
+        _formulaKeys.Remove(key);
+        _spillKeys.Remove(key);
+    }
+
+    private static void Track(long key, Cell cell, HashSet<long> formulas, HashSet<long> spills)
+    {
+        if (cell.Formula != null) formulas.Add(key);
+        else formulas.Remove(key);
+        if (cell.SpillAnchor != null) spills.Add(key);
+        else spills.Remove(key);
+    }
+
     internal int CellCapacity => _cells.EnsureCapacity(0);
 
     internal void Prune(CellRef r)
     {
         _usedRange = null;
         if (_cells.TryGetValue(r.Key, out var cell) && cell.State.IsEmpty) _cells.Remove(r.Key);
+        Sync(r);
     }
 
     internal CellState Capture(CellRef r)
@@ -199,6 +227,7 @@ public sealed class Worksheet
         if (state.IsEmpty)
         {
             _cells.Remove(r.Key);
+            Sync(r);
             return;
         }
 
@@ -207,6 +236,7 @@ public sealed class Worksheet
         cell.Formula = state.Formula;
         cell.StyleId = state.StyleId;
         cell.SpillAnchor = state.SpillAnchor;
+        Sync(r);
     }
 
     internal List<CellRef> ExistingIn(CellRange range)
@@ -288,6 +318,8 @@ public sealed class Worksheet
 
         var dropped = new List<(CellRef, CellState)>();
         var rebuilt = new Dictionary<long, Cell>(_cells.Count);
+        var formulas = new HashSet<long>(_formulaKeys.Count);
+        var spills = new HashSet<long>(_spillKeys.Count);
         foreach (var (key, cell) in _cells)
         {
             var c = CellRef.FromKey(key);
@@ -301,10 +333,14 @@ public sealed class Worksheet
 
             if (cell.SpillAnchor is { } a && (axis == Axis.Row ? a.Row : a.Column) >= index)
                 cell.SpillAnchor = Moved(a, axis, count, limit);
-            rebuilt[(axis == Axis.Row ? new CellRef(v, c.Column) : new CellRef(c.Row, v)).Key] = cell;
+            var moved = (axis == Axis.Row ? new CellRef(v, c.Column) : new CellRef(c.Row, v)).Key;
+            rebuilt[moved] = cell;
+            Track(moved, cell, formulas, spills);
         }
 
         _cells = rebuilt;
+        _formulaKeys = formulas;
+        _spillKeys = spills;
         _usedRange = null;
         Part?.Shift(axis, index, count);
         Remap(axis, v => v >= index ? v + count : v, limit);
@@ -325,6 +361,8 @@ public sealed class Worksheet
         var limit = axis == Axis.Row ? CellRef.MaxRows : CellRef.MaxColumns;
         var removed = new List<(CellRef, CellState)>();
         var kept = new Dictionary<long, Cell>(_cells.Count);
+        var formulas = new HashSet<long>(_formulaKeys.Count);
+        var spills = new HashSet<long>(_spillKeys.Count);
         foreach (var (key, cell) in _cells)
         {
             var c = CellRef.FromKey(key);
@@ -347,13 +385,17 @@ public sealed class Worksheet
                 }
             }
 
-            kept[v < index ? key : (axis == Axis.Row ? new CellRef(v - count, c.Column) : new CellRef(c.Row, v - count)).Key] = cell;
+            var moved = v < index ? key : (axis == Axis.Row ? new CellRef(v - count, c.Column) : new CellRef(c.Row, v - count)).Key;
+            kept[moved] = cell;
+            Track(moved, cell, formulas, spills);
         }
 
         var snapshot = new DeleteSnapshot(removed, Sizes(axis).Where(p => p.Key >= index && p.Key < end).ToList(),
             HiddenSet(axis).Where(i => i >= index && i < end).ToList(),
             AxisStyles(axis).Where(p => p.Key >= index && p.Key < end).ToList(), CopyMerges(), FreezeAt, Part?.Shift(axis, index, -count));
         _cells = kept;
+        _formulaKeys = formulas;
+        _spillKeys = spills;
         _usedRange = null;
         Remap(axis, v => v < index ? v : v < end ? -1 : v - count, limit);
         _merges = _merges.Select(m => ShrinkRange(m, axis, index, count)).Where(m => m is { IsSingleCell: false }).Select(m => m.Value).ToList();

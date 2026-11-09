@@ -30861,7 +30861,9 @@
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine">
             <summary>
             Calculates the formulas of a workbook and keeps their results in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Cell.Value"/>. Cell edits recalculate only
-            the dependent cells in dependency order; structural changes and defined-name changes rebuild the graph. Cells on a
+            the dependent cells in dependency order. Inserting or deleting rows or columns, adding, removing or renaming a sheet and
+            changing defined names recalculate only the formulas whose result can change (and their dependents); formulas whose
+            references just moved along keep their value. Parsed formulas are cached by their text. Cells on a
             circular reference get <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellError.Circ"/>. Formulas that cannot be evaluated here (unknown functions or syntax the
             parser does not support) keep the value they had when the engine attached or the graph was rebuilt, together with the cells of
             their array result, until the formula itself is edited. Array results spill into the cells below and to the right, which

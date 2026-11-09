@@ -31,6 +31,8 @@ internal sealed class DependencyGraph
         foreach (var area in precedents) Index(area, node, true);
     }
 
+    public List<RefArea> Precedents(CellNode node) => _precedents.GetValueOrDefault(node) ?? [];
+
     public void Remove(CellNode node)
     {
         if (!_precedents.Remove(node, out var old)) return;

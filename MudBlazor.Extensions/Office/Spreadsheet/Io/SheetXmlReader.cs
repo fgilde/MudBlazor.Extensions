@@ -338,6 +338,7 @@ internal static class SheetXmlReader
         cell.Formula = SheetXmlWriter.FromFile(formula);
         cell.StyleId = styleId;
         cell.SpillAnchor = anchor;
+        ws.Sync(at);
         if (type == "s" && sharedIndex >= 0 && package.RichStrings.ContainsKey(sharedIndex)) part.RichStringCells[at.Key] = sharedIndex;
         return at.Column;
     }

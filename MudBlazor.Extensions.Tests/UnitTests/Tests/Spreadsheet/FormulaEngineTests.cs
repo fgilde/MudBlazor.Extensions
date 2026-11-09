@@ -252,6 +252,178 @@ public class FormulaEngineTests
     }
 
     [Fact]
+    public void AddSheet_DoesNotRecalculateFormulas()
+    {
+        var (wb, ws, engine) = Create();
+        for (var r = 1; r <= 50; r++)
+        {
+            wb.Execute(new SetValueCommand(ws, R("A" + r), CellValue.Number(r)));
+            wb.Execute(new SetFormulaCommand(ws, R("B" + r), $"=A{r}*2"));
+        }
+
+        wb.Execute(new SetFormulaCommand(ws, R("C1"), "=Later!A1+1"));
+        var before = engine.EvaluationCount;
+        wb.Execute(new AddSheetCommand("Empty"));
+        wb.Execute(new MoveSheetCommand(wb.Sheets[1], 0));
+        Assert.Equal(0, engine.EvaluationCount - before);
+        wb.Execute(new AddSheetCommand("Later"));
+        Assert.Equal(1, engine.EvaluationCount - before);
+        Assert.Equal(CellValue.Number(1), ValueAt(ws, "C1"));
+    }
+
+    [Fact]
+    public void InsertRow_RecalculatesOnlyFormulasWhoseResultCanChange()
+    {
+        var (wb, ws, engine) = Create();
+        for (var r = 1; r <= 10; r++)
+        {
+            wb.Execute(new SetValueCommand(ws, R("A" + r), CellValue.Number(r)));
+            wb.Execute(new SetFormulaCommand(ws, R("B" + r), $"=A{r}*2"));
+        }
+
+        wb.Execute(new SetFormulaCommand(ws, R("C1"), "=SUM(A1:A10)"));
+        wb.Execute(new SetFormulaCommand(ws, R("D1"), "=C1+1"));
+        wb.Execute(new SetFormulaCommand(ws, R("E20"), "=ROW()"));
+        wb.Execute(new SetFormulaCommand(ws, R("F1"), "=COUNTBLANK(A1:A10)"));
+        var before = engine.EvaluationCount;
+
+        wb.Execute(new InsertRowsCommand(ws, 4, 1));
+        Assert.Equal(4, engine.EvaluationCount - before);
+        Assert.Equal(CellValue.Number(20), ValueAt(ws, "B11"));
+        Assert.Equal(CellValue.Number(55), ValueAt(ws, "C1"));
+        Assert.Equal(CellValue.Number(56), ValueAt(ws, "D1"));
+        Assert.Equal(CellValue.Number(21), ValueAt(ws, "E21"));
+        Assert.Equal(CellValue.Number(1), ValueAt(ws, "F1"));
+
+        before = engine.EvaluationCount;
+        wb.Undo.Undo();
+        Assert.Equal(4, engine.EvaluationCount - before);
+        Assert.Equal(CellValue.Number(20), ValueAt(ws, "B10"));
+        Assert.Equal(CellValue.Number(20), ValueAt(ws, "E20"));
+        Assert.Equal(CellValue.Number(0), ValueAt(ws, "F1"));
+
+        before = engine.EvaluationCount;
+        wb.Execute(new InsertRowsCommand(ws, 30, 2));
+        Assert.Equal(0, engine.EvaluationCount - before);
+    }
+
+    [Fact]
+    public void DeleteRow_UndoRestoresReferencesThroughCellsAndNames()
+    {
+        var (wb, ws, _) = Create();
+        wb.Execute(new SetValueCommand(ws, R("A5"), CellValue.Number(7)));
+        wb.Execute(new SetValueCommand(ws, R("A6"), CellValue.Number(8)));
+        wb.Execute(new DefineNameCommand("Five", "Sheet1!$A$5"));
+        wb.Execute(new SetFormulaCommand(ws, R("B1"), "=A5"));
+        wb.Execute(new SetFormulaCommand(ws, R("B2"), "=Five"));
+        wb.Execute(new SetFormulaCommand(ws, R("B3"), "=A6"));
+        wb.Execute(new SetFormulaCommand(ws, R("A10"), "=A5+1"));
+
+        wb.Execute(new DeleteRowsCommand(ws, 4, 1));
+        Assert.Equal(CellValue.Error(CellError.Ref), ValueAt(ws, "B1"));
+        Assert.Equal(CellValue.Error(CellError.Ref), ValueAt(ws, "B2"));
+        Assert.Equal(CellValue.Number(8), ValueAt(ws, "B3"));
+        Assert.Equal(CellValue.Error(CellError.Ref), ValueAt(ws, "A9"));
+
+        wb.Undo.Undo();
+        Assert.Equal(CellValue.Number(7), ValueAt(ws, "B1"));
+        Assert.Equal(CellValue.Number(7), ValueAt(ws, "B2"));
+        Assert.Equal(CellValue.Number(8), ValueAt(ws, "B3"));
+        Assert.Equal(CellValue.Number(8), ValueAt(ws, "A10"));
+        wb.Execute(new SetValueCommand(ws, R("A5"), CellValue.Number(1)));
+        Assert.Equal(CellValue.Number(1), ValueAt(ws, "B2"));
+        Assert.Equal(CellValue.Number(2), ValueAt(ws, "A10"));
+    }
+
+    [Fact]
+    public void InsertRow_InsideSpillAndAboveIntersection_Respills()
+    {
+        var (wb, ws, _) = Create();
+        wb.Execute(new AddSheetCommand("Data"));
+        var data = wb.Sheets[1];
+        for (var r = 1; r <= 10; r++)
+        {
+            wb.Execute(new SetValueCommand(data, R("A" + r), CellValue.Number(r * 10)));
+            wb.Execute(new SetValueCommand(data, R("B" + r), CellValue.Text("<=" + r * 10)));
+        }
+        wb.Execute(new SetFormulaCommand(ws, R("A1"), "=SEQUENCE(5)"));
+        wb.Execute(new SetFormulaCommand(ws, R("C5"), "=COUNTIF(Data!A1:A10,Data!B1:B10)"));
+        Assert.Equal(CellValue.Number(5), ValueAt(ws, "C5"));
+
+        wb.Execute(new InsertRowsCommand(ws, 2, 1));
+        for (var r = 1; r <= 5; r++) Assert.Equal(CellValue.Number(r), ValueAt(ws, "A" + r));
+        Assert.Null(ws[R("A6")]);
+        Assert.Equal(CellValue.Number(6), ValueAt(ws, "C6"));
+
+        wb.Undo.Undo();
+        for (var r = 1; r <= 5; r++) Assert.Equal(CellValue.Number(r), ValueAt(ws, "A" + r));
+        Assert.Null(ws[R("A6")]);
+        Assert.Equal(CellValue.Number(5), ValueAt(ws, "C5"));
+
+        wb.Execute(new DeleteRowsCommand(ws, 1, 1));
+        for (var r = 1; r <= 5; r++) Assert.Equal(CellValue.Number(r), ValueAt(ws, "A" + r));
+        Assert.Equal(CellValue.Number(4), ValueAt(ws, "C4"));
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    public void StructureChanges_MatchFullRecalculation(int seed)
+    {
+        var rnd = new Random(seed);
+        var (wb, ws, engine) = Create();
+        wb.Execute(new AddSheetCommand("Data"));
+        var data = wb.Sheets[1];
+        string[] formulas =
+        [
+            "=SUM(A1:A8)", "=A3*2", "=$A$2+B1", "=ROW()", "=COLUMN()+A1", "=SEQUENCE(3,2)", "=Data!A1:A6", "=COUNTIF(Data!A1:A9,Data!B1:B9)",
+            "=Data!A4+1", "=COUNTBLANK(A1:D6)", "=Rng*2", "=SUM(B:B)", "=INDEX(A1:A9,3)", "=A1:A9*1", "=IFERROR(C2+1,0)", "=SUM(2:2)"
+        ];
+        for (var r = 1; r <= 9; r++)
+        {
+            wb.Execute(new SetValueCommand(data, R("A" + r), CellValue.Number(r)));
+            wb.Execute(new SetValueCommand(data, R("B" + r), CellValue.Text(">" + r % 4)));
+        }
+
+        wb.Execute(new DefineNameCommand("Rng", "Sheet1!$A$4"));
+        for (var i = 0; i < 40; i++)
+        {
+            var at = new CellRef(rnd.Next(0, 12), rnd.Next(0, 6));
+            if (rnd.Next(3) == 0) wb.Execute(new SetValueCommand(ws, at, CellValue.Number(rnd.Next(1, 50))));
+            else wb.Execute(new SetFormulaCommand(ws, at, formulas[rnd.Next(formulas.Length)]));
+        }
+
+        for (var step = 0; step < 60; step++)
+        {
+            var sheet = rnd.Next(4) == 0 ? data : ws;
+            var index = rnd.Next(0, 10);
+            var count = rnd.Next(1, 3);
+            switch (rnd.Next(6))
+            {
+                case 0: wb.Execute(new InsertRowsCommand(sheet, index, count)); break;
+                case 1: wb.Execute(new DeleteRowsCommand(sheet, index, count)); break;
+                case 2: wb.Execute(new InsertColumnsCommand(sheet, index % 5, count)); break;
+                case 3: wb.Execute(new DeleteColumnsCommand(sheet, index % 5, count)); break;
+                case 4:
+                    if (wb.Undo.CanUndo) wb.Undo.Undo();
+                    break;
+                default:
+                    if (wb.Undo.CanRedo) wb.Undo.Redo();
+                    break;
+            }
+
+            var incremental = Snapshot(wb);
+            engine.RecalculateAll();
+            Assert.Equal(Snapshot(wb), incremental);
+        }
+
+        static string Snapshot(Workbook book) => string.Join("\n", book.Sheets.SelectMany(sh => sh.UsedCells()
+            .Where(c => c.Cell.Value.Kind != CellValueKind.Empty || c.Cell.Formula != null)
+            .OrderBy(c => c.Ref.Key).Select(c => $"{sh.Name}!{c.Ref.ToA1()}={c.Cell.Value}|{c.Cell.Formula}")));
+    }
+
+    [Fact]
     public void DeleteReferencedRow_YieldsRefError()
     {
         var (wb, ws, _) = Create();
