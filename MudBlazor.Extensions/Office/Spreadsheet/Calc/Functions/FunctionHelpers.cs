@@ -195,9 +195,6 @@ internal static class Fn
 
     internal static double SerialArg(FunctionContext ctx, CellValue v)
     {
-        if (v.Kind == CellValueKind.Text && !Coercion.TryToNumber(v, out _, out _))
-            return TryParseDate(v.TextValue, ctx.Culture, out var parsed) ? parsed : throw Error(CellError.Value);
-
         var serial = Num(v);
         return serial is < 0 or >= ExcelDate.MaxSerial + 1 ? throw Error(CellError.Num) : serial;
     }

@@ -124,6 +124,38 @@ public class NumberFormatTests
     [InlineData(0, "0")]
     public void General(double value, string expected) => Assert.Equal(expected, F(value, "General"));
 
+    [Theory]
+    [InlineData("en-US", 1e15, "1E+15")]
+    [InlineData("en-US", 2e11, "2E+11")]
+    [InlineData("en-US", 1e-6, "1E-06")]
+    [InlineData("en-US", -1e20, "-1E+20")]
+    [InlineData("en-US", 1.5e15, "1.5E+15")]
+    [InlineData("de-DE", 1e15, "1E+15")]
+    [InlineData("de-DE", 2e11, "2E+11")]
+    [InlineData("de-DE", 1e-6, "1E-06")]
+    [InlineData("de-DE", -1e20, "-1E+20")]
+    [InlineData("de-DE", 1.5e15, "1,5E+15")]
+    public void General_ScientificWithoutStraySeparator(string culture, double value, string expected) =>
+        Assert.Equal(expected, F(value, "General", culture));
+
+    [Fact]
+    public void AbbreviatedNames_HaveNoTrailingDot()
+    {
+        Assert.False(F(46335, "mmm", "de-DE").EndsWith('.'));
+        Assert.False(F(46335, "ddd", "de-DE").EndsWith('.'));
+        Assert.Equal("9-" + F(46335, "mmm", "de-DE") + "-26", F(46335, "d-mmm-yy", "de-DE"));
+    }
+
+    [Fact]
+    public void ElapsedAndAmPmTokens()
+    {
+        Assert.Equal("3960:00", F(2.75, "[mm]:ss"));
+        Assert.Equal("90", F(90 / 86400.0, "[ss]"));
+        Assert.Equal("6:30 p", F(0.7708333333, "h:mm a/p"));
+        Assert.Equal("6:30 A", F(0.2708333333, "h:mm A/P"));
+        Assert.Equal("12:00 AM", F(0, "h:mm AM/PM"));
+    }
+
     [Fact]
     public void BuiltInFormats()
     {
@@ -249,6 +281,9 @@ public class NumberFormatTests
         Assert.Equal(CellValue.Number(0), Eval("=DATEVALUE(\"18:00\")", "en-US"));
         Assert.Equal(CellValue.Number(0.75), Eval("=TIMEVALUE(\"2026-11-09 18:00\")", "en-US"));
         Assert.Equal(CellValue.Error(CellError.Value), Eval("=TIMEVALUE(\"12\")", "en-US"));
+        Assert.Equal(CellValue.Text("Name: abc"), Eval("=TEXT(\"abc\",\"\"\"Name: \"\"@\")", "en-US"));
+        Assert.Equal(CellValue.Text("1,50"), Eval("=TEXT(\"1,5\",\"0.00\")", "de-DE"));
+        Assert.Equal(CellValue.Error(CellError.Value), Eval("=\"Jan\"+0", "en-US"));
         Assert.Equal(CellValue.Error(CellError.Value), Eval("=TEXT(-1,\"yyyy\")", "en-US"));
     }
 }

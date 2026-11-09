@@ -125,8 +125,10 @@ internal static class TextFunctions
             Fn.Lift((ctx, a) =>
             {
                 var format = Fn.Str(a[1]);
-                if (a[0].Kind == CellValueKind.Text && !Coercion.TryToNumber(a[0], out _, out _)) return a[0];
-                return NumberFormat.TryFormat(CellValue.Number(Fn.Num(a[0])), format, ctx.Culture, out var text, out _)
+                var value = a[0].Kind == CellValueKind.Text
+                    ? Coercion.TryToNumber(a[0], out var n, out _) ? CellValue.Number(n) : a[0]
+                    : CellValue.Number(Fn.Num(a[0]));
+                return NumberFormat.TryFormat(value, format, ctx.Culture, out var text, out _)
                     ? Fn.Text(text)
                     : throw Fn.Error(CellError.Value);
             }));

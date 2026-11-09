@@ -306,7 +306,7 @@ public sealed class CalcEngine : IDisposable
         {
             result = _evaluator.Evaluate(_formulas[node], scope);
         }
-        catch (Exception ex) when (ex is not (OutOfMemoryException or StackOverflowException or InsufficientExecutionStackException))
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             result = CalcValue.Error(CellError.Value);
         }

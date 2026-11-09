@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -14,6 +15,8 @@ public static class CellInputParser
 
     private static readonly Regex Time = new(@"^(?<date>.*?)\s*(?:(?<=\d)T)?(?<h>\d{1,4}):(?<m>\d{1,2})(?::(?<s>\d{1,2}(?:[.,]\d+)?))?\s*(?<ampm>[AaPp][Mm]?)?$",
         RegexOptions.CultureInvariant);
+
+    private static readonly ConcurrentDictionary<(string Group, string Decimal), Regex> NumberPatterns = new();
 
     private static readonly Regex Iso = new(@"^(?<y>\d{4})-(?<m>\d{1,2})-(?<d>\d{1,2})$", RegexOptions.CultureInvariant);
 
@@ -45,6 +48,8 @@ public static class CellInputParser
 
     internal static bool TryParseValue(string text, CultureInfo culture, out double value)
     {
+        value = 0;
+        if (!text.Any(char.IsAsciiDigit)) return false;
         var s = text.Trim();
         return TryParseNumber(s, culture, out value, out _) || TryParseDateTime(s, culture, out value, out _);
     }
@@ -78,9 +83,9 @@ public static class CellInputParser
 
         var percent = s.EndsWith('%');
         if (percent) s = s[..^1].TrimEnd();
-        var group = Regex.Escape(nf.NumberGroupSeparator);
-        var m = Regex.Match(s, @"^(?<int>\d+|\d{1,3}(?:" + group + @"\d{3})+)?(?:" + Regex.Escape(nf.NumberDecimalSeparator)
-                               + @"(?<frac>\d*))?(?:[eE](?<exp>[+-]?\d+))?$", RegexOptions.CultureInvariant);
+        var m = NumberPatterns.GetOrAdd((nf.NumberGroupSeparator, nf.NumberDecimalSeparator), key => new Regex(
+            @"^(?<int>\d+|\d{1,3}(?:" + Regex.Escape(key.Group) + @"\d{3})+)?(?:" + Regex.Escape(key.Decimal)
+            + @"(?<frac>\d*))?(?:[eE](?<exp>[+-]?\d+))?$", RegexOptions.CultureInvariant)).Match(s);
         if (!m.Success || m.Groups["int"].Length + m.Groups["frac"].Length == 0) return false;
         var invariant = m.Groups["int"].Value.Replace(nf.NumberGroupSeparator, "") + "." + m.Groups["frac"].Value
                         + (m.Groups["exp"].Success ? "E" + m.Groups["exp"].Value : "");

@@ -495,6 +495,19 @@ public class FormulaEngineTests
     }
 
     [Fact]
+    public void InsufficientStackInFunction_YieldsValueError()
+    {
+        var functions = new FunctionRegistry();
+        functions.Register(new DelegateFunction(new FunctionInfo("DEEP", "Test", "DEEP()", "Throws."), 0, 0,
+            (_, _) => throw new InsufficientExecutionStackException()));
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        _ = new CalcEngine(wb, functions);
+        wb.Execute(new SetFormulaCommand(ws, R("A1"), "=DEEP()"));
+        Assert.Equal(CellValue.Error(CellError.Value), ValueAt(ws, "A1"));
+    }
+
+    [Fact]
     public void NegativeZero_IsNormalised()
     {
         var v = Eval("=0*-1");

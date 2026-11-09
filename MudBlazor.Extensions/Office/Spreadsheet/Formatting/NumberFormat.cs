@@ -19,6 +19,8 @@ public static class NumberFormat
     public const string Overflow = "########";
 
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
+    private const int MaxCachedFormats = 1024;
+
     private static readonly ConcurrentDictionary<string, Section[]> Cache = new();
 
     private static readonly string[] ColorNames = ["Black", "Blue", "Cyan", "Green", "Magenta", "Red", "White", "Yellow"];
@@ -126,6 +128,7 @@ public static class NumberFormat
 
         TryFormatNumber(n, Parse(code)[0], culture, out var text);
         var separator = culture.NumberFormat.NumberDecimalSeparator;
+        text = text.Replace(separator + "E", "E", StringComparison.Ordinal);
         return text.EndsWith(separator, StringComparison.Ordinal) ? text[..^separator.Length] : text;
     }
 
@@ -360,7 +363,7 @@ public static class NumberFormat
                 {
                     1 => month.ToString(Inv),
                     2 => month.ToString("00", Inv),
-                    3 => dtf.GetAbbreviatedMonthName(month),
+                    3 => dtf.GetAbbreviatedMonthName(month).TrimEnd('.'),
                     4 => dtf.GetMonthName(month),
                     _ => dtf.GetMonthName(month)[..1]
                 },
@@ -368,7 +371,7 @@ public static class NumberFormat
                 {
                     1 => day.ToString(Inv),
                     2 => day.ToString("00", Inv),
-                    3 => dtf.GetAbbreviatedDayName(dow),
+                    3 => dtf.GetAbbreviatedDayName(dow).TrimEnd('.'),
                     _ => dtf.GetDayName(dow)
                 },
                 'h' => Pad(twelveHour ? (hour % 12 == 0 ? 12 : hour % 12) : hour, t.Count),
@@ -390,7 +393,13 @@ public static class NumberFormat
 
     private static string Pad(long value, int count) => value.ToString(new string('0', Math.Max(count, 1)), Inv);
 
-    private static Section[] Parse(string formatCode) => Cache.GetOrAdd(string.IsNullOrEmpty(formatCode) ? General : formatCode, code =>
+    private static Section[] Parse(string formatCode)
+    {
+        if (Cache.Count > MaxCachedFormats) Cache.Clear();
+        return Cache.GetOrAdd(string.IsNullOrEmpty(formatCode) ? General : formatCode, Compile);
+    }
+
+    private static Section[] Compile(string code)
     {
         var sections = new List<Section>();
         var start = 0;
@@ -427,7 +436,7 @@ public static class NumberFormat
         }
 
         return sections.ToArray();
-    });
+    }
 
     private static Section ParseSection(string code)
     {
