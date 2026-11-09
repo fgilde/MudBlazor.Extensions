@@ -16,7 +16,6 @@ public partial class MudExFileDisplayCode
 {
     private Encoding _encoding = new UTF8Encoding(false);
     private bool _hadBom;
-    private bool _loadFailed;
     private string _lineEnding = "\n";
 
     /// <summary>
@@ -42,7 +41,13 @@ public partial class MudExFileDisplayCode
 
     /// <inheritdoc />
     public override IReadOnlyList<MudExFileFormat> SaveFormats =>
-        [new MudExFileFormat(Language.ToString(), Path.GetExtension(FileDisplayInfos?.FileName)?.TrimStart('.'), FileDisplayInfos?.ContentType)];
+        [new MudExFileFormat(Language == MudExCodeLanguage.Unknown ? "Text" : Language.ToString(), Path.GetExtension(FileName)?.TrimStart('.'), ContentType)];
+
+    /// <inheritdoc />
+    protected override IReadOnlyList<MudExFileFormat> OpenFormats => [];
+
+    /// <inheritdoc />
+    protected override MudExFileContent CreateNew() => new() { FileName = "new.txt", ContentType = "text/plain", Stream = new MemoryStream() };
 
     /// <summary>
     /// Returns true if it's a code or text file and we can handle it
@@ -64,58 +69,49 @@ public partial class MudExFileDisplayCode
     }
 
     /// <inheritdoc />
-    protected override async Task LoadAsync(IMudExFileDisplayInfos fileDisplayInfos)
+    protected override async Task LoadContentAsync(MudExFileContent content)
     {
-        Language = MudExCodeLanguageExtensionsMapping.GetCodeLanguageForFile(fileDisplayInfos.FileName);
+        Language = MudExCodeLanguageExtensionsMapping.GetCodeLanguageForFile(content.FileName);
         Value = string.Empty;
-        _loadFailed = false;
-        try
+        _encoding = new UTF8Encoding(false);
+        _hadBom = false;
+        _lineEnding = "\n";
+        using var buffer = new MemoryStream();
+        await content.Stream.CopyToAsync(buffer);
+        var bytes = buffer.ToArray();
+        string text;
+        using (var reader = new StreamReader(new MemoryStream(bytes), new UTF8Encoding(false, true), true))
         {
-            await using var stream = await FileService.ReadStreamAsync(fileDisplayInfos);
-            if (stream == null)
-                return;
-            using var buffer = new MemoryStream();
-            await stream.CopyToAsync(buffer);
-            var bytes = buffer.ToArray();
-            string text;
-            using (var reader = new StreamReader(new MemoryStream(bytes), new UTF8Encoding(false, true), true))
+            try
             {
-                try
-                {
-                    text = await reader.ReadToEndAsync();
-                    _encoding = reader.CurrentEncoding;
-                }
-                catch (DecoderFallbackException)
-                {
-                    _encoding = Encoding.Latin1;
-                    text = _encoding.GetString(bytes);
-                }
+                text = await reader.ReadToEndAsync();
+                _encoding = reader.CurrentEncoding;
             }
+            catch (DecoderFallbackException)
+            {
+                _encoding = Encoding.Latin1;
+                text = _encoding.GetString(bytes);
+            }
+        }
 
-            var preamble = _encoding.GetPreamble();
-            _hadBom = preamble.Length > 0 && bytes.AsSpan().StartsWith(preamble);
-            _lineEnding = text.DetectLineEnding();
-            Value = text.NormalizeLineEndings();
-        }
-        catch
-        {
-            _loadFailed = true;
-            throw;
-        }
+        var preamble = _encoding.GetPreamble();
+        _hadBom = preamble.Length > 0 && bytes.AsSpan().StartsWith(preamble);
+        _lineEnding = text.DetectLineEnding();
+        Value = text.NormalizeLineEndings();
     }
 
     /// <inheritdoc />
     public override Task<MudExFileContent> ExportAsync(MudExFileFormat format = null, CancellationToken cancellationToken = default)
     {
-        if (_loadFailed)
+        if (LoadFailed)
             throw new InvalidOperationException("The file could not be loaded and cannot be saved.");
         var text = (Value ?? string.Empty).NormalizeLineEndings().Replace("\n", _lineEnding);
         var body = _encoding.GetBytes(text);
         var bytes = _hadBom ? _encoding.GetPreamble().Concat(body).ToArray() : body;
         return Task.FromResult(new MudExFileContent
         {
-            FileName = FileDisplayInfos?.FileName,
-            ContentType = FileDisplayInfos?.ContentType,
+            FileName = FileName,
+            ContentType = ContentType,
             Stream = new MemoryStream(bytes)
         });
     }

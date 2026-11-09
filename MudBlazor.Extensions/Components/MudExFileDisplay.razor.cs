@@ -635,26 +635,40 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         if (!IsDirty || !ConfirmDiscardChanges || DialogService == null)
             return true;
 
+        switch (await AskSaveChangesAsync(DialogService, s => TryLocalize(s)))
+        {
+            case null:
+                return false;
+            case true:
+                return await SaveAsync();
+            default:
+                await SetDirtyAsync(false);
+                return true;
+        }
+    }
+
+    internal static async Task<bool?> AskSaveChangesAsync(IDialogService dialogService, Func<string, string> localize)
+    {
+        if (dialogService == null)
+            return false;
+
         var buttons = new[]
         {
-            new MudExDialogResultAction { Label = TryLocalize("Cancel"), Variant = Variant.Text, Result = DialogResult.Cancel() },
-            new MudExDialogResultAction { Label = TryLocalize("Discard"), Variant = Variant.Text, Color = Color.Error, Result = DialogResult.Ok("discard") },
-            new MudExDialogResultAction { Label = TryLocalize("Save"), Variant = Variant.Filled, Color = Color.Primary, Result = DialogResult.Ok("save") }
+            new MudExDialogResultAction { Label = localize("Cancel"), Variant = Variant.Text, Result = DialogResult.Cancel() },
+            new MudExDialogResultAction { Label = localize("Discard"), Variant = Variant.Text, Color = Color.Error, Result = DialogResult.Ok("discard") },
+            new MudExDialogResultAction { Label = localize("Save"), Variant = Variant.Filled, Color = Color.Primary, Result = DialogResult.Ok("save") }
         };
         var parameters = new DialogParameters
         {
-            { nameof(MudExMessageDialog.Message), TryLocalize("The file has unsaved changes. Do you want to save them?") },
+            { nameof(MudExMessageDialog.Message), localize("The file has unsaved changes. Do you want to save them?") },
             { nameof(MudExMessageDialog.Icon), Icons.Material.Filled.Warning },
             { nameof(MudExMessageDialog.Buttons), buttons }
         };
-        var dialog = await DialogService.ShowExAsync<MudExMessageDialog>(TryLocalize("Unsaved changes"), parameters, DialogServiceExt.DefaultOptions());
+        var dialog = await dialogService.ShowExAsync<MudExMessageDialog>(localize("Unsaved changes"), parameters, DialogServiceExt.DefaultOptions());
         var result = await dialog.Result;
         if (result == null || result.Canceled)
-            return false;
-        if (result.Data as string == "save")
-            return await SaveAsync();
-        await SetDirtyAsync(false);
-        return true;
+            return null;
+        return result.Data as string == "save";
     }
 
     /// <summary>

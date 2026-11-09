@@ -513,6 +513,11 @@
             </summary>
             <typeparam name="T">The editor type</typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.FileService">
+            <summary>
+            Service to read, open and save files
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.FileDisplayInfos">
             <summary>
             Infos of the file to edit
@@ -531,6 +536,16 @@
         <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.AllowLocalSave">
             <summary>
             If true the editor may save to a local file when the host does not handle saving
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.AllowOpen">
+            <summary>
+            If true the user may open a local file into the editor
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.AllowNew">
+            <summary>
+            If true the user may replace the content with a new empty document
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SaveRequested">
@@ -556,6 +571,22 @@
         <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.IsDirty">
             <inheritdoc />
         </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.FileName">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.ContentType">
+            <summary>
+            MIME type of the current document
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.FileSize">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.LoadFailed">
+            <summary>
+            True if loading the current document failed
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.Name">
             <inheritdoc />
         </member>
@@ -571,16 +602,42 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.OpenFormats">
+            <summary>
+            Formats offered when opening a local file. Empty accepts any file.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.CreateNew">
+            <summary>
+            Creates the content of a new empty document
+            </summary>
+            <returns>The new content, or null if the editor does not support new documents</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.LoadContentAsync(MudBlazor.Extensions.Core.MudExFileContent)">
+            <summary>
+            Loads a document into the editor
+            </summary>
+            <param name="content">The document. Its stream is disposed after this call.</param>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.LoadAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
             <summary>
-            Loads the file into the editor
+            Loads the file of <see cref="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.FileDisplayInfos"/> into the editor
             </summary>
             <param name="fileDisplayInfos">Infos of the file</param>
         </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.OpenAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.NewAsync">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SaveAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SaveCopyAsync(MudBlazor.Extensions.Core.MudExFileFormat)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.MarkDirtyAsync">
@@ -905,6 +962,45 @@
             </summary>
             <param name="saveAs">If true the user is asked for a new target</param>
             <returns>True if the content was saved</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.IMudExFileEditor.SaveCopyAsync(MudBlazor.Extensions.Core.MudExFileFormat)">
+            <summary>
+            Saves a copy in the given format. The document, its file and its dirty state stay unchanged.
+            </summary>
+            <param name="format">Target format, usually one of <see cref="P:MudBlazor.Extensions.Components.IMudExFileEditor.SaveFormats"/></param>
+            <returns>True if the copy was saved</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileEditor.FileName">
+            <summary>
+            Name of the current document
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileEditor.FileSize">
+            <summary>
+            Size in bytes of the current document when it was loaded or last saved, or null if unknown
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileEditor.AllowOpen">
+            <summary>
+            If true the user may open a local file into the editor
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileEditor.AllowNew">
+            <summary>
+            If true the user may replace the content with a new empty document
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.IMudExFileEditor.OpenAsync">
+            <summary>
+            Lets the user pick a local file and loads it. Unsaved changes are confirmed first. Saving afterwards overwrites the picked file.
+            </summary>
+            <returns>True if a file was opened</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.IMudExFileEditor.NewAsync">
+            <summary>
+            Replaces the content with a new empty document. Unsaved changes are confirmed first.
+            </summary>
+            <returns>True if a new document was created</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MoveContentPosition">
             <summary>
@@ -3782,6 +3878,12 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.SaveFormats">
             <inheritdoc />
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.OpenFormats">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.CreateNew">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <summary>
             Returns true if it's a code or text file and we can handle it
@@ -3790,7 +3892,7 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.LoadAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.LoadContentAsync(MudBlazor.Extensions.Core.MudExFileContent)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">
@@ -5204,6 +5306,17 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.DisposeAsync">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileEditorBackstage">
+            <summary>
+            Shared file menu of the file editors with New, Open, Save, Save as, Export and Info.
+            Meant as <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.FileMenu"/> of a <see cref="T:MudBlazor.Extensions.Components.MudExRibbon"/>, whose backstage it closes after a successful action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileEditorBackstage.Editor">
+            <summary>
+            The editor the menu acts on
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileGrid">
             <summary>
@@ -23650,6 +23763,36 @@
         <member name="P:MudBlazor.Extensions.Core.MudExLocalFileSaveResult.Target">
             <summary>Where the file was saved</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExLocalFile">
+            <summary>
+            A local file the user picked to open. The caller owns <see cref="P:MudBlazor.Extensions.Core.MudExLocalFile.Content"/> and disposes it.
+            </summary>
+            <param name="HandleId">Id of the local file handle to save back to the same file, or null when the browser keeps no handle</param>
+            <param name="FileName">Name of the file</param>
+            <param name="ContentType">MIME type of the file, or null when the browser does not know it</param>
+            <param name="Content">Stream with the file content</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExLocalFile.#ctor(System.String,System.String,System.String,System.IO.Stream)">
+            <summary>
+            A local file the user picked to open. The caller owns <see cref="P:MudBlazor.Extensions.Core.MudExLocalFile.Content"/> and disposes it.
+            </summary>
+            <param name="HandleId">Id of the local file handle to save back to the same file, or null when the browser keeps no handle</param>
+            <param name="FileName">Name of the file</param>
+            <param name="ContentType">MIME type of the file, or null when the browser does not know it</param>
+            <param name="Content">Stream with the file content</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExLocalFile.HandleId">
+            <summary>Id of the local file handle to save back to the same file, or null when the browser keeps no handle</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExLocalFile.FileName">
+            <summary>Name of the file</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExLocalFile.ContentType">
+            <summary>MIME type of the file, or null when the browser does not know it</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExLocalFile.Content">
+            <summary>Stream with the file content</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.MudExFileRestrictions">
             <summary>
             What a file has to satisfy to be accepted: its extension, its mime type and its size.
@@ -23712,6 +23855,11 @@
         <member name="P:MudBlazor.Extensions.Core.MudExFileSaveRequest.SaveAs">
             <summary>
             True if the user asked to save under a new target
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExFileSaveRequest.IsCopy">
+            <summary>
+            True if a copy in another format is saved (export). The editor keeps its document, file and dirty state.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Core.MudExFileSaveRequest.Handled">
@@ -33636,9 +33784,18 @@
             <param name="cancellationToken">Cancellation token</param>
             <returns>The save result, or null when the user cancelled</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.OpenLocalFileAsync(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Core.MudExFileFormat},System.Threading.CancellationToken)">
+            <summary>
+            Lets the user pick a local file via the File System Access API, or a file input when the browser lacks it.
+            Must be called before anything that loses the user activation of the triggering click.
+            </summary>
+            <param name="accept">Formats offered in the picker. Empty or null accepts any file.</param>
+            <param name="ct">Cancellation token</param>
+            <returns>The picked file with a handle for <see cref="M:MudBlazor.Extensions.Services.MudExFileService.SaveLocalFileAsync(MudBlazor.Extensions.Core.MudExFileContent,System.String,System.Threading.CancellationToken)"/>, or null when the user cancelled</returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReleaseLocalFileAsync(System.String)">
             <summary>
-            Releases a local file handle kept by <see cref="M:MudBlazor.Extensions.Services.MudExFileService.SaveLocalFileAsync(MudBlazor.Extensions.Core.MudExFileContent,System.String,System.Threading.CancellationToken)"/>.
+            Releases a local file handle kept by <see cref="M:MudBlazor.Extensions.Services.MudExFileService.SaveLocalFileAsync(MudBlazor.Extensions.Core.MudExFileContent,System.String,System.Threading.CancellationToken)"/> or <see cref="M:MudBlazor.Extensions.Services.MudExFileService.OpenLocalFileAsync(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Core.MudExFileFormat},System.Threading.CancellationToken)"/>.
             </summary>
             <param name="handleId">The handle id to release</param>
         </member>

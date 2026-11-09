@@ -99,6 +99,21 @@ public class CodeFileEditorTests : IAsyncLifetime
         Assert.Equal(bytes, await Export(cut));
     }
 
+    [Fact]
+    public async Task New_StartsEmptyTextFile()
+    {
+        var cut = Create("a"u8.ToArray());
+
+        Assert.True(await cut.InvokeAsync(() => cut.Instance.NewAsync()));
+
+        Assert.Equal("new.txt", cut.Instance.FileName);
+        Assert.Equal("", cut.Find("textarea").GetAttribute("value") ?? "");
+        Assert.Empty(await Export(cut));
+        await using var content = await cut.InvokeAsync(() => cut.Instance.ExportAsync());
+        Assert.Equal("new.txt", content.FileName);
+        Assert.Equal("text/plain", content.ContentType);
+    }
+
     private sealed class FailingStream : MemoryStream
     {
         public FailingStream() : base([1, 2, 3]) { }

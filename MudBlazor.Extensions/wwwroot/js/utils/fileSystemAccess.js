@@ -74,6 +74,44 @@ class MudExFileSystemAccess {
         return { handleId, fileName: handle.name, target: 'Local' };
     }
 
+    static _openedFile(handleId, file) {
+        return { handleId, fileName: file.name, contentType: file.type || null, content: DotNet.createJSStreamReference(file) };
+    }
+
+    static _openWithInput(formats) {
+        return new Promise(resolve => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = formats.flatMap(f => [f.extension ? '.' + f.extension : null, f.contentType]).filter(Boolean).join(',');
+            input.addEventListener('change', () => resolve(input.files.length ? MudExFileSystemAccess._openedFile(null, input.files[0]) : null));
+            input.addEventListener('cancel', () => resolve(null));
+            input.click();
+        });
+    }
+
+    static async openFile(formats) {
+        formats = formats || [];
+        if (typeof window.showOpenFilePicker !== 'function') {
+            return await MudExFileSystemAccess._openWithInput(formats);
+        }
+        const types = formats.filter(f => f.extension).map(f => ({
+            description: f.name || f.extension.toUpperCase(),
+            accept: { [f.contentType || 'application/octet-stream']: ['.' + f.extension] }
+        }));
+        let handle;
+        try {
+            [handle] = await window.showOpenFilePicker(types.length ? { types } : {});
+        } catch (e) {
+            if (e && e.name === 'AbortError') {
+                return null;
+            }
+            throw e;
+        }
+        const handleId = crypto.randomUUID();
+        MudExFileSystemAccess._fileHandles[handleId] = handle;
+        return MudExFileSystemAccess._openedFile(handleId, await handle.getFile());
+    }
+
     static releaseFile(handleId) {
         delete MudExFileSystemAccess._fileHandles[handleId];
     }

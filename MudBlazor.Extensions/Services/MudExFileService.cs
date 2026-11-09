@@ -389,7 +389,27 @@ public class MudExFileService : IMudExFileService
     }
 
     /// <summary>
-    /// Releases a local file handle kept by <see cref="SaveLocalFileAsync"/>.
+    /// Lets the user pick a local file via the File System Access API, or a file input when the browser lacks it.
+    /// Must be called before anything that loses the user activation of the triggering click.
+    /// </summary>
+    /// <param name="accept">Formats offered in the picker. Empty or null accepts any file.</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>The picked file with a handle for <see cref="SaveLocalFileAsync"/>, or null when the user cancelled</returns>
+    public async Task<MudExLocalFile> OpenLocalFileAsync(IReadOnlyList<MudExFileFormat> accept, CancellationToken ct = default)
+    {
+        var dto = await _jsRuntime.InvokeAsync<MudExLocalFileOpenDto>("MudExFileSystemAccess.openFile", ct, accept ?? []);
+        if (dto == null)
+            return null;
+        await using var reference = dto.Content;
+        await using var source = await reference.OpenReadStreamAsync(long.MaxValue, ct);
+        var content = new MemoryStream();
+        await source.CopyToAsync(content, ct);
+        content.Position = 0;
+        return new MudExLocalFile(dto.HandleId, dto.FileName, dto.ContentType, content);
+    }
+
+    /// <summary>
+    /// Releases a local file handle kept by <see cref="SaveLocalFileAsync"/> or <see cref="OpenLocalFileAsync"/>.
     /// </summary>
     /// <param name="handleId">The handle id to release</param>
     public async Task ReleaseLocalFileAsync(string handleId)

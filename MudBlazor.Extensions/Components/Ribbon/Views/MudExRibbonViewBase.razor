@@ -94,7 +94,7 @@
                         <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
                     </button>
                 </div>
-                <div class="mud-ex-ribbon-backstage-content">@Ribbon.FileMenu</div>
+                <div class="mud-ex-ribbon-backstage-content"><CascadingValue Value="Ribbon" IsFixed="true">@Ribbon.FileMenu</CascadingValue></div>
             </div>
         }
         <MudMenu @ref="_contextMenu" Class="mud-ex-ribbon-context-menu" PositionAtCursor="true" Dense="true">

@@ -1,0 +1,37 @@
+@inherits MudExBaseComponent<MudExFileEditorBackstage>
+@namespace MudBlazor.Extensions.Components
+
+@if (Editor != null)
+{
+    <MudStack Row="true" Spacing="6" Class="@($"mud-ex-file-editor-backstage pa-4 {Class}".TrimEnd())" Style="@Style">
+        <MudStack Spacing="1" Class="mud-ex-file-editor-backstage-actions">
+            @if (Editor.AllowNew && !Editor.ReadOnly)
+            {
+                <MudButton Class="mud-ex-file-editor-backstage-new justify-start" StartIcon="@Icons.Material.Filled.NoteAdd" OnClick="@(() => RunAsync(Editor.NewAsync))">@TryLocalize("New")</MudButton>
+            }
+            @if (Editor.AllowOpen)
+            {
+                <MudButton Class="mud-ex-file-editor-backstage-open justify-start" StartIcon="@Icons.Material.Filled.FolderOpen" OnClick="@(() => RunAsync(Editor.OpenAsync))">@TryLocalize("Open")</MudButton>
+            }
+            @if (!Editor.ReadOnly)
+            {
+                <MudButton Class="mud-ex-file-editor-backstage-save justify-start" StartIcon="@Icons.Material.Filled.Save" OnClick="@(() => RunAsync(() => Editor.SaveAsync()))">@TryLocalize("Save")</MudButton>
+            }
+            <MudButton Class="mud-ex-file-editor-backstage-save-as justify-start" StartIcon="@Icons.Material.Filled.SaveAs" OnClick="@(() => RunAsync(() => Editor.SaveAsync(true)))">@TryLocalize("Save as")</MudButton>
+            @if (Editor.SaveFormats?.Count > 1)
+            {
+                <MudText Typo="Typo.overline" Class="mt-2">@TryLocalize("Export")</MudText>
+                @foreach (var format in Editor.SaveFormats.Skip(1))
+                {
+                    <MudButton Class="mud-ex-file-editor-backstage-export justify-start" StartIcon="@Icons.Material.Filled.FileDownload" OnClick="@(() => RunAsync(() => Editor.SaveCopyAsync(format)))">@format.Name</MudButton>
+                }
+            }
+        </MudStack>
+        <MudStack Spacing="1" Class="mud-ex-file-editor-backstage-info">
+            <MudText Typo="Typo.h6">@TryLocalize("Info")</MudText>
+            <MudText Typo="Typo.body2"><b>@TryLocalize("File name")</b>: @Editor.FileName</MudText>
+            <MudText Typo="Typo.body2"><b>@TryLocalize("Size")</b>: @(Editor.FileSize is { } size ? Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(size) : "-")</MudText>
+            <MudText Typo="Typo.body2"><b>@TryLocalize("Format")</b>: @Editor.SaveFormats?.FirstOrDefault()?.Name</MudText>
+        </MudStack>
+    </MudStack>
+}

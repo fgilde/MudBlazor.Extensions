@@ -62,3 +62,14 @@ public enum MudExFileSaveTarget
 public sealed record MudExLocalFileSaveResult(string HandleId, string FileName, MudExFileSaveTarget Target);
 
 internal sealed record MudExLocalFileSaveDto(string HandleId, string FileName, string Target);
+
+/// <summary>
+/// A local file the user picked to open. The caller owns <see cref="Content"/> and disposes it.
+/// </summary>
+/// <param name="HandleId">Id of the local file handle to save back to the same file, or null when the browser keeps no handle</param>
+/// <param name="FileName">Name of the file</param>
+/// <param name="ContentType">MIME type of the file, or null when the browser does not know it</param>
+/// <param name="Content">Stream with the file content</param>
+public sealed record MudExLocalFile(string HandleId, string FileName, string ContentType, Stream Content);
+
+internal sealed record MudExLocalFileOpenDto(string HandleId, string FileName, string ContentType, Microsoft.JSInterop.IJSStreamReference Content);

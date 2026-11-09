@@ -13,8 +13,12 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
 {
     private string _handleId;
     private int _editVersion;
+    private int _document;
     private bool _saving;
 
+    /// <summary>
+    /// Service to read, open and save files
+    /// </summary>
     [Inject] protected MudExFileService FileService { get; set; }
 
     /// <summary>
@@ -36,6 +40,16 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
     /// If true the editor may save to a local file when the host does not handle saving
     /// </summary>
     [Parameter] public bool AllowLocalSave { get; set; } = true;
+
+    /// <summary>
+    /// If true the user may open a local file into the editor
+    /// </summary>
+    [Parameter] public bool AllowOpen { get; set; } = true;
+
+    /// <summary>
+    /// If true the user may replace the content with a new empty document
+    /// </summary>
+    [Parameter] public bool AllowNew { get; set; } = true;
 
     /// <summary>
     /// Raised before saving. The host can handle or cancel the save.
@@ -61,6 +75,22 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
     public bool IsDirty { get; private set; }
 
     /// <inheritdoc />
+    public string FileName { get; private set; }
+
+    /// <summary>
+    /// MIME type of the current document
+    /// </summary>
+    public string ContentType { get; private set; }
+
+    /// <inheritdoc />
+    public long? FileSize { get; private set; }
+
+    /// <summary>
+    /// True if loading the current document failed
+    /// </summary>
+    protected bool LoadFailed { get; private set; }
+
+    /// <inheritdoc />
     public abstract string Name { get; }
 
     /// <inheritdoc />
@@ -77,10 +107,44 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
     public abstract Task<MudExFileContent> ExportAsync(MudExFileFormat format = null, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Loads the file into the editor
+    /// Formats offered when opening a local file. Empty accepts any file.
+    /// </summary>
+    protected virtual IReadOnlyList<MudExFileFormat> OpenFormats => SaveFormats;
+
+    /// <summary>
+    /// Creates the content of a new empty document
+    /// </summary>
+    /// <returns>The new content, or null if the editor does not support new documents</returns>
+    protected virtual MudExFileContent CreateNew() => null;
+
+    /// <summary>
+    /// Loads a document into the editor
+    /// </summary>
+    /// <param name="content">The document. Its stream is disposed after this call.</param>
+    protected abstract Task LoadContentAsync(MudExFileContent content);
+
+    /// <summary>
+    /// Loads the file of <see cref="FileDisplayInfos"/> into the editor
     /// </summary>
     /// <param name="fileDisplayInfos">Infos of the file</param>
-    protected abstract Task LoadAsync(IMudExFileDisplayInfos fileDisplayInfos);
+    protected virtual async Task LoadAsync(IMudExFileDisplayInfos fileDisplayInfos)
+    {
+        await using var content = new MudExFileContent
+        {
+            FileName = fileDisplayInfos.FileName,
+            ContentType = fileDisplayInfos.ContentType,
+            Stream = await FileService.ReadStreamAsync(fileDisplayInfos) ?? Stream.Null
+        };
+        await LoadDocumentAsync(content);
+    }
+
+    private Task LoadDocumentAsync(MudExFileContent content)
+    {
+        FileName = content.FileName;
+        ContentType = content.ContentType;
+        FileSize = content.Stream is { CanSeek: true } stream ? stream.Length : null;
+        return LoadContentAsync(content);
+    }
 
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
@@ -92,21 +156,109 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
 
         try
         {
-            await ReleaseHandleAsync();
-            await SetDirtyAsync(false);
-            if (FileDisplayInfos != null)
-                await LoadAsync(FileDisplayInfos);
+            await ReplaceDocumentAsync(null, () => FileDisplayInfos != null ? LoadAsync(FileDisplayInfos) : Task.CompletedTask);
         }
         catch (Exception e) when (MudExFileDisplay != null)
         {
             MudExFileDisplay.ShowError(e.Message);
         }
-
-        await InvokeAsync(StateHasChanged);
     }
 
     /// <inheritdoc />
-    public async Task<bool> SaveAsync(bool saveAs = false)
+    public async Task<bool> OpenAsync()
+    {
+        if (!AllowOpen || IsDisposed)
+            return false;
+
+        try
+        {
+            var file = await FileService.OpenLocalFileAsync(OpenFormats);
+            if (file == null)
+                return false;
+
+            var handle = file.HandleId;
+            await using var content = new MudExFileContent { FileName = file.FileName, ContentType = file.ContentType, Stream = file.Content };
+            try
+            {
+                if (!await ConfirmReplaceAsync())
+                    return false;
+                handle = null;
+                await ReplaceDocumentAsync(file.HandleId, () => LoadDocumentAsync(content));
+                return true;
+            }
+            finally
+            {
+                if (handle != null)
+                    await TryReleaseAsync(handle);
+            }
+        }
+        catch (Exception e) when (MudExFileDisplay != null)
+        {
+            MudExFileDisplay.ShowError(e.Message);
+            return false;
+        }
+    }
+
+    /// <inheritdoc />
+    public async Task<bool> NewAsync()
+    {
+        if (!AllowNew || ReadOnly || IsDisposed)
+            return false;
+
+        try
+        {
+            await using var content = CreateNew();
+            if (content == null || !await ConfirmReplaceAsync())
+                return false;
+            await ReplaceDocumentAsync(null, () => LoadDocumentAsync(content));
+            return true;
+        }
+        catch (Exception e) when (MudExFileDisplay != null)
+        {
+            MudExFileDisplay.ShowError(e.Message);
+            return false;
+        }
+    }
+
+    private async Task<bool> ConfirmReplaceAsync()
+    {
+        if (!IsDirty)
+            return true;
+        if (MudExFileDisplay != null)
+            return await MudExFileDisplay.ConfirmDiscardChangesAsync();
+        return await Components.MudExFileDisplay.AskSaveChangesAsync(DialogService, s => TryLocalize(s)) switch
+        {
+            true => await SaveAsync(),
+            false => true,
+            null => false
+        };
+    }
+
+    private async Task ReplaceDocumentAsync(string handleId, Func<Task> load)
+    {
+        _document++;
+        await ReleaseHandleAsync();
+        _handleId = handleId;
+        await SetDirtyAsync(false);
+        LoadFailed = true;
+        try
+        {
+            await load();
+            LoadFailed = false;
+        }
+        finally
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    /// <inheritdoc />
+    public Task<bool> SaveAsync(bool saveAs = false) => SaveCoreAsync(null, saveAs, false);
+
+    /// <inheritdoc />
+    public Task<bool> SaveCopyAsync(MudExFileFormat format) => SaveCoreAsync(format, true, true);
+
+    private async Task<bool> SaveCoreAsync(MudExFileFormat format, bool saveAs, bool copy)
     {
         if (_saving || IsDisposed)
             return false;
@@ -114,10 +266,10 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
         _saving = true;
         try
         {
-            var infos = FileDisplayInfos;
+            var document = _document;
             var version = _editVersion;
-            await using var content = await ExportAsync();
-            var request = new MudExFileSaveRequest { Content = content, SaveAs = saveAs };
+            await using var content = await ExportAsync(format);
+            var request = new MudExFileSaveRequest { Content = content, SaveAs = saveAs, IsCopy = copy };
             await SaveRequested.InvokeAsync(request);
             if (request.Cancel)
                 return false;
@@ -127,6 +279,8 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
             string oldHandle = null;
             if (request.Handled)
             {
+                if (copy)
+                    return true;
                 fileName = content.FileName;
                 target = MudExFileSaveTarget.Host;
             }
@@ -135,10 +289,10 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
                 var result = await FileService.SaveLocalFileAsync(content, saveAs ? null : _handleId);
                 if (result == null)
                     return false;
-                if (IsDisposed || !ReferenceEquals(infos, FileDisplayInfos))
+                if (copy || IsDisposed || document != _document)
                 {
                     await TryReleaseAsync(result.HandleId);
-                    return false;
+                    return copy;
                 }
 
                 if (_handleId != null && result.HandleId != _handleId)
@@ -150,9 +304,12 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
             else
                 return false;
 
-            if (!ReferenceEquals(infos, FileDisplayInfos))
+            if (document != _document)
                 return false;
 
+            FileName = fileName;
+            if (content.Stream is { CanSeek: true } stream)
+                FileSize = stream.Length;
             if (version == _editVersion)
                 await MarkCleanAsync();
             await Saved.InvokeAsync(new MudExFileSavedEventArgs(fileName, target));

@@ -16,6 +16,11 @@ public sealed class MudExFileSaveRequest
     public bool SaveAs { get; init; }
 
     /// <summary>
+    /// True if a copy in another format is saved (export). The editor keeps its document, file and dirty state.
+    /// </summary>
+    public bool IsCopy { get; init; }
+
+    /// <summary>
     /// Set to true if the host saved the content itself
     /// </summary>
     public bool Handled { get; set; }
