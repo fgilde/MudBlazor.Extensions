@@ -56,6 +56,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExSpreadsheetGrid.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSpreadsheetGrid.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExFileDisplay.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExFileDisplay.js"

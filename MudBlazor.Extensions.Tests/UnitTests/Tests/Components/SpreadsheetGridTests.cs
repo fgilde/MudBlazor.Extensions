@@ -1,0 +1,325 @@
+using System.Globalization;
+using Bunit;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.DependencyInjection;
+using MudBlazor.Extensions.Components;
+using MudBlazor.Extensions.Office.Spreadsheet;
+using Xunit;
+
+namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
+
+public class SpreadsheetGridTests : IAsyncLifetime
+{
+    private readonly List<BunitContext> _contexts = [];
+
+    public Task InitializeAsync() => Task.CompletedTask;
+
+    public async Task DisposeAsync()
+    {
+        foreach (var context in _contexts)
+            await context.DisposeAsync();
+    }
+
+    private BunitContext NewContext()
+    {
+        var context = new BunitContext();
+        _contexts.Add(context);
+        context.Services.AddMudServicesWithExtensions();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
+        return context;
+    }
+
+    private IRenderedComponent<MudExSpreadsheetGrid> Render(Workbook wb, Action<ComponentParameterCollectionBuilder<MudExSpreadsheetGrid>> configure = null)
+        => NewContext().Render<MudExSpreadsheetGrid>(p =>
+        {
+            p.Add(x => x.Workbook, wb);
+            configure?.Invoke(p);
+        });
+
+    private static CellRef R(string a1) => CellRef.Parse(a1);
+
+    private static void Key(IRenderedComponent<MudExSpreadsheetGrid> cut, string key, bool ctrl = false, bool shift = false, bool alt = false) =>
+        cut.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = key, CtrlKey = ctrl, ShiftKey = shift, AltKey = alt });
+
+    private static void Type(IRenderedComponent<MudExSpreadsheetGrid> cut, string text)
+    {
+        Key(cut, text[..1]);
+        cut.WaitForAssertion(() => Assert.True(cut.Instance.IsEditing));
+        cut.Find("textarea.mud-ex-ssg-editor").Input(text);
+    }
+
+    private static Workbook Big(int rows, int columns)
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        ws.Reserve(rows * columns);
+        for (var r = 0; r < rows; r++)
+            for (var c = 0; c < columns; c++)
+                ws.Ensure(new CellRef(r, c)).Value = CellValue.Number(r * columns + c);
+        return wb;
+    }
+
+    [Fact]
+    public async Task RendersOnlyVisibleWindow()
+    {
+        var wb = Big(100_000, 10);
+        var cut = Render(wb);
+
+        const int limit = (40 + 20) * 10;
+        var cells = cut.FindAll(".mud-ex-ssg-cell");
+        Assert.InRange(cells.Count, 1, limit);
+        Assert.DoesNotContain(cells, e => e.GetAttribute("data-r") == "1000");
+        var canvas = cut.Find(".mud-ex-ssg-canvas").GetAttribute("style");
+        Assert.Contains("height:", canvas);
+
+        await cut.InvokeAsync(() => cut.Instance.OnViewportChanged(50_000 * Worksheet.StandardRowHeight, 0, 1200, 800));
+
+        cut.WaitForAssertion(() =>
+        {
+            var moved = cut.FindAll(".mud-ex-ssg-cell");
+            Assert.InRange(moved.Count, 1, limit);
+            Assert.Contains(moved, e => e.GetAttribute("data-r") == "50005" && e.GetAttribute("data-c") == "0");
+            Assert.DoesNotContain(moved, e => e.GetAttribute("data-r") == "0");
+        });
+        Assert.True(cut.FindAll(".mud-ex-ssg-rh").Count <= 40 + 20);
+    }
+
+    [Fact]
+    public void Typing_ThenEnter_CommitsAndMovesDown()
+    {
+        var wb = Workbook.Create();
+        var cut = Render(wb);
+
+        Type(cut, "abc");
+        Key(cut, "Enter");
+
+        cut.WaitForAssertion(() => Assert.False(cut.Instance.IsEditing));
+        Assert.Equal("abc", wb.Sheets[0][R("A1")].Value.TextValue);
+        Assert.Equal(R("A2"), cut.Instance.Selection.Active);
+        Assert.Contains(cut.FindAll(".mud-ex-ssg-cell"), e => e.TextContent == "abc");
+
+        Type(cut, "=A1&\"!\"");
+        Key(cut, "Tab");
+        cut.WaitForAssertion(() => Assert.Equal("abc!", wb.Sheets[0][R("A2")].Value.TextValue));
+        Assert.Equal(R("B2"), cut.Instance.Selection.Active);
+    }
+
+    [Fact]
+    public void Escape_CancelsEdit()
+    {
+        var wb = Workbook.Create();
+        wb.Execute(new SetValueCommand(wb.Sheets[0], R("A1"), CellValue.Number(7)));
+        var cut = Render(wb);
+
+        Type(cut, "xyz");
+        Key(cut, "Escape");
+
+        cut.WaitForAssertion(() => Assert.False(cut.Instance.IsEditing));
+        Assert.Equal(7, wb.Sheets[0][R("A1")].Value.NumberValue);
+        Assert.Equal(R("A1"), cut.Instance.Selection.Active);
+    }
+
+    [Fact]
+    public void GermanInput_ParsesNumberAndDate()
+    {
+        var previous = CultureInfo.CurrentCulture;
+        CultureInfo.CurrentCulture = new CultureInfo("de-DE");
+        try
+        {
+            var wb = Workbook.Create();
+            var ws = wb.Sheets[0];
+            var cut = Render(wb);
+
+            foreach (var input in new[] { "1,5", "09.11.2026", "12%", "=SUM(A1;A3)", "=SUMME(A1:A3)" })
+            {
+                Type(cut, input);
+                Key(cut, "Enter");
+                cut.WaitForAssertion(() => Assert.False(cut.Instance.IsEditing));
+            }
+
+            Assert.Equal(1.5, ws[R("A1")].Value.NumberValue);
+            Assert.Equal(ExcelDate.FromDate(2026, 11, 9), ws[R("A2")].Value.NumberValue);
+            Assert.Contains("yyyy", wb.Styles[ws[R("A2")].StyleId].NumberFormat);
+            Assert.Equal(0.12, ws[R("A3")].Value.NumberValue, 10);
+            Assert.Equal("0%", wb.Styles[ws[R("A3")].StyleId].NumberFormat);
+            Assert.Equal(1.62, ws[R("A4")].Value.NumberValue, 10);
+            Assert.Equal(CellError.Name, ws[R("A5")].Value.ErrorValue);
+            Assert.Contains(cut.FindAll(".mud-ex-ssg-cell"), e => e.TextContent == "1,5");
+            Assert.Contains(cut.FindAll(".mud-ex-ssg-cell"), e => e.TextContent == "09.11.2026");
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previous;
+        }
+    }
+
+    [Fact]
+    public void CtrlArrow_JumpsToRegionEdge()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        foreach (var a1 in new[] { "A1", "A2", "A3", "A4", "A5", "A10", "C1" })
+            wb.Execute(new SetValueCommand(ws, R(a1), CellValue.Number(1)));
+        var cut = Render(wb);
+
+        Key(cut, "ArrowDown", ctrl: true);
+        cut.WaitForAssertion(() => Assert.Equal(R("A5"), cut.Instance.Selection.Active));
+        Key(cut, "ArrowDown", ctrl: true);
+        cut.WaitForAssertion(() => Assert.Equal(R("A10"), cut.Instance.Selection.Active));
+        Key(cut, "ArrowDown", ctrl: true);
+        cut.WaitForAssertion(() => Assert.Equal(new CellRef(CellRef.MaxRows - 1, 0), cut.Instance.Selection.Active));
+        Assert.Contains(cut.FindAll(".mud-ex-ssg-rh"), e => e.TextContent == CellRef.MaxRows.ToString());
+
+        Key(cut, "Home", ctrl: true);
+        Key(cut, "ArrowRight", ctrl: true);
+        cut.WaitForAssertion(() => Assert.Equal(R("C1"), cut.Instance.Selection.Active));
+
+        Key(cut, "Home", ctrl: true);
+        Key(cut, "ArrowDown", ctrl: true, shift: true);
+        cut.WaitForAssertion(() => Assert.Equal(CellRange.Parse("A1:A5"), cut.Instance.Selection.Range.Normalized));
+        Assert.Equal(R("A1"), cut.Instance.Selection.Active);
+    }
+
+    [Fact]
+    public void FormulaBar_ShowsFormula_EditsActiveCell()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(2)));
+        wb.Execute(new SetFormulaCommand(ws, R("A2"), "=A1*3"));
+        var ctx = NewContext();
+        var grid = ctx.Render<MudExSpreadsheetGrid>(p => p.Add(x => x.Workbook, wb));
+        var bar = ctx.Render<MudExSpreadsheetFormulaBar>(p => p.Add(x => x.Grid, grid.Instance));
+
+        grid.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
+        bar.WaitForAssertion(() => Assert.Equal("=A1*3", bar.Find("input.mud-ex-ssg-fx-input").GetAttribute("value")));
+        Assert.Equal("A2", bar.Find("input.mud-ex-ssg-namebox").GetAttribute("value"));
+
+        var input = bar.Find("input.mud-ex-ssg-fx-input");
+        input.Focus();
+        input.Input("=A1*10");
+        bar.Find("input.mud-ex-ssg-fx-input").KeyDown(new KeyboardEventArgs { Key = "Enter" });
+
+        bar.WaitForAssertion(() => Assert.Equal(20, ws[R("A2")].Value.NumberValue));
+        Assert.Equal("A1*10", ws[R("A2")].Formula);
+        Assert.Equal(R("A3"), grid.Instance.Selection.Active);
+
+        var box = bar.Find("input.mud-ex-ssg-namebox");
+        box.Input("C7");
+        box.KeyDown(new KeyboardEventArgs { Key = "Enter" });
+        bar.WaitForAssertion(() => Assert.Equal(R("C7"), grid.Instance.Selection.Active));
+    }
+
+    [Fact]
+    public void FormulaAssist_SuggestsSumAndShowsSignature()
+    {
+        var assist = FormulaAssist.Analyze("=SU", 3, FunctionRegistry.Default, ["Sales"]);
+        Assert.Contains(assist.Suggestions, s => s.Name == "SUM");
+        Assert.DoesNotContain(assist.Suggestions, s => s.Name == "AVERAGE");
+        Assert.Equal("SU", assist.Prefix);
+
+        var names = FormulaAssist.Analyze("=sa", 3, FunctionRegistry.Default, ["Sales"]);
+        Assert.Contains(names.Suggestions, s => s.Name == "Sales" && s.IsName);
+
+        var tip = FormulaAssist.Analyze("=SUM(A1,", 8, FunctionRegistry.Default, []);
+        Assert.Equal("SUM", tip.Function?.Name);
+        Assert.Equal(1, tip.ArgumentIndex);
+        Assert.Empty(FormulaAssist.Analyze("SU", 2, FunctionRegistry.Default, []).Suggestions);
+
+        var wb = Workbook.Create();
+        var cut = Render(wb);
+        Type(cut, "=SU");
+        cut.WaitForAssertion(() => Assert.Contains(cut.FindAll(".mud-ex-ssg-assist-item"), e => e.TextContent.Contains("SUM")));
+
+        Key(cut, "Tab");
+        cut.WaitForAssertion(() => Assert.StartsWith("=SU", cut.Instance.EditText));
+        cut.WaitForAssertion(() => Assert.Contains("(", cut.Instance.EditText));
+        cut.Find("textarea.mud-ex-ssg-editor").Input("=SUM(");
+        cut.WaitForAssertion(() => Assert.Contains("number1", cut.Find(".mud-ex-ssg-signature").TextContent));
+    }
+
+    [Fact]
+    public void MergedCell_RendersSpanningElement()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Text("Title")));
+        wb.Execute(new MergeCommand(ws, CellRange.Parse("A1:C2")));
+        var cut = Render(wb);
+
+        var merged = cut.Find(".mud-ex-ssg-merged");
+        Assert.Equal("Title", merged.TextContent);
+        var style = merged.GetAttribute("style");
+        Assert.Contains($"width:{(3 * Worksheet.StandardColumnWidth + 1).ToString(CultureInfo.InvariantCulture)}px", style);
+        Assert.Contains($"height:{(2 * Worksheet.StandardRowHeight + 1).ToString(CultureInfo.InvariantCulture)}px", style);
+        Assert.DoesNotContain(cut.FindAll(".mud-ex-ssg-cell:not(.mud-ex-ssg-merged)"), e => e.GetAttribute("data-r") == "0" && e.GetAttribute("data-c") == "1");
+
+        Key(cut, "ArrowRight");
+        cut.WaitForAssertion(() => Assert.Equal(R("D1"), cut.Instance.Selection.Active));
+    }
+
+    [Fact]
+    public async Task Paste_TabSeparatedText_FillsRange()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        var cut = Render(wb);
+        Key(cut, "ArrowDown");
+        Key(cut, "ArrowRight");
+
+        await cut.InvokeAsync(() => cut.Instance.PasteTextAsync("1\t2\r\n3\t=B2+C2\r\n"));
+
+        Assert.Equal(1, ws[R("B2")].Value.NumberValue);
+        Assert.Equal(2, ws[R("C2")].Value.NumberValue);
+        Assert.Equal(3, ws[R("B3")].Value.NumberValue);
+        Assert.Equal(3, ws[R("C3")].Value.NumberValue);
+        Assert.Equal(CellRange.Parse("B2:C3"), cut.Instance.Selection.Range.Normalized);
+
+        wb.Undo.Undo();
+        Assert.Null(ws[R("B2")]);
+        Assert.Null(ws[R("C3")]);
+    }
+
+    [Fact]
+    public async Task ReadOnly_BlocksEditing()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(1)));
+        var cut = Render(wb, p => p.Add(x => x.ReadOnly, true));
+
+        Key(cut, "a");
+        Key(cut, "F2");
+        await cut.InvokeAsync(() => cut.Instance.BeginEditAsync("x"));
+        Assert.False(cut.Instance.IsEditing);
+
+        Key(cut, "Delete");
+        await cut.InvokeAsync(() => cut.Instance.PasteTextAsync("5"));
+        Key(cut, "b", ctrl: true);
+        Assert.Equal(1, ws[R("A1")].Value.NumberValue);
+        Assert.Equal(0, ws[R("A1")].StyleId);
+        Assert.False(wb.Undo.CanUndo && wb.Undo.UndoDescription != "Set value");
+        Assert.Empty(cut.FindAll(".mud-ex-ssg-fill"));
+
+        Key(cut, "ArrowDown");
+        cut.WaitForAssertion(() => Assert.Equal(R("A2"), cut.Instance.Selection.Active));
+    }
+
+    [Fact]
+    public void AxisMetrics_OffsetsAndLookup()
+    {
+        var axis = new SpreadsheetAxis(20, new Dictionary<int, double> { [2] = 50, [5] = 10 }, new HashSet<int> { 3 }, 1000);
+        Assert.Equal(0, axis.Offset(0));
+        Assert.Equal(40, axis.Offset(2));
+        Assert.Equal(90, axis.Offset(3));
+        Assert.Equal(90, axis.Offset(4));
+        Assert.Equal(110, axis.Offset(5));
+        Assert.Equal(120, axis.Offset(6));
+        Assert.Equal(0, axis.Size(3));
+        Assert.Equal(2, axis.IndexAt(89));
+        Assert.Equal(4, axis.IndexAt(90));
+        Assert.Equal(6, axis.IndexAt(120));
+        Assert.Equal(999, axis.IndexAt(1e9));
+    }
+}

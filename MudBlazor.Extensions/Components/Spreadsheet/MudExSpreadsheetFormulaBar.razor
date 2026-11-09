@@ -1,0 +1,38 @@
+@inherits MudExBaseComponent<MudExSpreadsheetFormulaBar>
+@namespace MudBlazor.Extensions.Components
+
+<div @attributes="UserAttributes" class="@($"mud-ex-spreadsheet-formula-bar {Class}".TrimEnd())" style="@Style">
+    <input class="mud-ex-ssg-namebox"
+           value="@(_nameEditing ? _nameText : Grid?.NameBoxText)"
+           spellcheck="false"
+           autocomplete="off"
+           aria-label="@TryLocalize("Name Box")"
+           @onfocus="NameFocus"
+           @onblur="NameBlur"
+           @oninput="NameInput"
+           @onkeydown="NameKeyDown" />
+    <div class="mud-ex-ssg-fx-buttons">
+        @if (Grid?.IsEditing == true)
+        {
+            <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" aria-label="@TryLocalize("Cancel")" title="@TryLocalize("Cancel")" OnClick="CancelAsync" />
+            <MudIconButton Icon="@Icons.Material.Filled.Check" Size="Size.Small" aria-label="@TryLocalize("Enter")" title="@TryLocalize("Enter")" OnClick="EnterAsync" />
+        }
+        <MudIconButton Icon="@Icons.Material.Filled.Functions" Size="Size.Small" Disabled="@(Grid?.CanEdit != true)"
+                       aria-label="@TryLocalize("Insert Function")" title="@TryLocalize("Insert Function")" OnClick="InsertFunctionAsync" />
+    </div>
+    <div class="mud-ex-ssg-fx-field">
+        <input class="@(Text.Ghost ? "mud-ex-ssg-fx-input mud-ex-ssg-fx-ghost" : "mud-ex-ssg-fx-input")"
+               value="@Text.Text"
+               spellcheck="false"
+               autocomplete="off"
+               readonly="@(Grid?.CanEdit != true)"
+               aria-label="@TryLocalize("Formula Bar")"
+               @onfocus="FocusAsync"
+               @oninput="InputAsync"
+               @onkeydown="KeyDownAsync" />
+        @if (Grid?.EditFromBar == true)
+        {
+            <div class="mud-ex-ssg-fx-assist">@((RenderFragment)(b => Grid.BuildAssist(b, this)))</div>
+        }
+    </div>
+</div>

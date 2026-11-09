@@ -19571,6 +19571,350 @@
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.Dispose">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.FormulaSuggestion">
+            <summary>A completion offered while typing a formula.</summary>
+            <param name="Name">The function or defined name.</param>
+            <param name="Description">Short description, or the reference a name refers to.</param>
+            <param name="IsName">True for a defined name, false for a function.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.FormulaSuggestion.#ctor(System.String,System.String,System.Boolean)">
+            <summary>A completion offered while typing a formula.</summary>
+            <param name="Name">The function or defined name.</param>
+            <param name="Description">Short description, or the reference a name refers to.</param>
+            <param name="IsName">True for a defined name, false for a function.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.FormulaSuggestion.Name">
+            <summary>The function or defined name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.FormulaSuggestion.Description">
+            <summary>Short description, or the reference a name refers to.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.FormulaSuggestion.IsName">
+            <summary>True for a defined name, false for a function.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.FormulaAssistResult">
+            <summary>What formula assist offers at the caret: completions for the word being typed and the signature of the enclosing function.</summary>
+            <param name="Prefix">The word being typed, or empty.</param>
+            <param name="PrefixStart">Offset of the word in the text.</param>
+            <param name="Suggestions">Matching functions and names.</param>
+            <param name="Function">The innermost function whose argument list contains the caret, or null.</param>
+            <param name="ArgumentIndex">Zero-based index of the argument at the caret.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.FormulaAssistResult.#ctor(System.String,System.Int32,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.FormulaSuggestion},MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo,System.Int32)">
+            <summary>What formula assist offers at the caret: completions for the word being typed and the signature of the enclosing function.</summary>
+            <param name="Prefix">The word being typed, or empty.</param>
+            <param name="PrefixStart">Offset of the word in the text.</param>
+            <param name="Suggestions">Matching functions and names.</param>
+            <param name="Function">The innermost function whose argument list contains the caret, or null.</param>
+            <param name="ArgumentIndex">Zero-based index of the argument at the caret.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.FormulaAssistResult.Prefix">
+            <summary>The word being typed, or empty.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.FormulaAssistResult.PrefixStart">
+            <summary>Offset of the word in the text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.FormulaAssistResult.Suggestions">
+            <summary>Matching functions and names.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.FormulaAssistResult.Function">
+            <summary>The innermost function whose argument list contains the caret, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.FormulaAssistResult.ArgumentIndex">
+            <summary>Zero-based index of the argument at the caret.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.FormulaAssist">
+            <summary>Formula autocomplete from the function catalog and defined names, and the signature tip of the enclosing function.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetFormulaBar">
+            <summary>
+            Excel style formula bar for a <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetGrid"/>: a name box that shows the active cell and jumps to a cell,
+            range or defined name (typing a new name defines it for the selection), and an input that shows and edits the content of
+            the active cell with function autocomplete and signature tips.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFormulaBar.Grid">
+            <summary>The grid whose active cell the bar shows and edits.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetFormulaBar.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetFormulaBar.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetGrid">
+            <summary>
+            Virtualized spreadsheet grid for one worksheet of a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Workbook"/>: renders only the visible cells plus a
+            buffer, supports Excel-style selection, keyboard navigation, in-cell editing, clipboard, fill and resizing. All edits go
+            through workbook commands and can be undone. Pointer drags, resizing and filling run in the browser; only their results
+            reach .NET, so the grid stays responsive in Blazor Server.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.BeginEditAsync(System.String)">
+            <summary>Starts editing the active cell.</summary>
+            <param name="initialText">Text that replaces the content (as when typing), or null to edit the current content (as with F2).</param>
+            <returns>A task that completes when the editor is shown.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CommitEditAsync">
+            <summary>Commits the edit to the active cell without moving the selection.</summary>
+            <returns>A task that completes when the value is written.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CancelEditAsync">
+            <summary>Discards the edit.</summary>
+            <returns>A task that completes when the editor is hidden.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CopyAsync">
+            <summary>Copies the current range as tab separated text to the clipboard.</summary>
+            <returns>A task that completes when the text is handed to the browser.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CutAsync">
+            <summary>Copies the current range and moves it on the next paste.</summary>
+            <returns>A task that completes when the text is handed to the browser.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.PasteTextAsync(System.String)">
+            <summary>
+            Pastes text at the top-left cell of the selection. Tab separated text fills a range; each value is parsed like typed input.
+            Text that was copied from this grid pastes the original cells with formulas, adjusting relative references.
+            </summary>
+            <param name="text">The clipboard text.</param>
+            <returns>A task that completes when the cells are written.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillToAsync(MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
+            <summary>
+            Extends the current range to <paramref name="target"/> like dragging the fill handle: numbers, dates and text ending in a
+            number continue as a linear series, everything else is copied with relative references adjusted.
+            </summary>
+            <param name="target">The range to fill; it must contain the current range and extend it in one direction.</param>
+            <returns>A task that completes when the cells are written.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillDown">
+            <summary>Fills the selection down from its top row (or the cell above a single selected row), like Ctrl+D.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillRight">
+            <summary>Fills the selection right from its left column (or the cell left of a single selected column), like Ctrl+R.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ApplyStyle(System.Func{MudBlazor.Extensions.Office.Spreadsheet.CellStyle,MudBlazor.Extensions.Office.Spreadsheet.CellStyle},System.String)">
+            <summary>Changes the style of every selected range in one undo step.</summary>
+            <param name="change">Maps the current style of a cell to its new style.</param>
+            <param name="description">Description of the undo step.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoSumAsync(System.String)">
+            <summary>
+            Starts editing the active cell with a function over the adjacent numbers above (or else to the left), like AutoSum (Alt+=).
+            </summary>
+            <param name="function">The function name, for example SUM, AVERAGE, COUNT, MAX or MIN.</param>
+            <returns>A task that completes when the editor is shown.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.GoToAsync(System.String)">
+            <summary>Jumps to a cell, a range or a defined name. An unknown valid name is defined for the current selection.</summary>
+            <param name="reference">For example <c>B7</c>, <c>A1:C3</c>, <c>Sheet2!A1</c> or a defined name.</param>
+            <returns>A task that completes when the selection changed.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnPointerSelect(System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">
+            <summary>Called by the browser after a pointer selection of cells.</summary>
+            <param name="anchorRow">Row where the drag started.</param>
+            <param name="anchorCol">Column where the drag started.</param>
+            <param name="row">Row where the drag ended.</param>
+            <param name="col">Column where the drag ended.</param>
+            <param name="extend">True if Shift was held: extends the current range from the active cell.</param>
+            <param name="add">True if Ctrl was held: adds a range.</param>
+            <returns>A task that completes when the selection is updated.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnHeaderSelect(System.Boolean,System.Int32,System.Int32,System.Boolean,System.Boolean)">
+            <summary>Called by the browser after a click or drag on column or row headings.</summary>
+            <param name="columns">True for column headings, false for row headings.</param>
+            <param name="from">First heading index.</param>
+            <param name="to">Last heading index.</param>
+            <param name="extend">True if Shift was held.</param>
+            <param name="add">True if Ctrl was held.</param>
+            <returns>A task that completes when the selection is updated.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnSelectAll">
+            <summary>Called by the browser when the select-all corner is clicked.</summary>
+            <returns>A task that completes when the selection is updated.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnCellDoubleClick(System.Int32,System.Int32)">
+            <summary>Called by the browser after a double click on a cell: starts editing it.</summary>
+            <param name="row">The row.</param>
+            <param name="col">The column.</param>
+            <returns>A task that completes when the editor is shown.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ResizeColumn(System.Int32,System.Double)">
+            <summary>Called by the browser after a column was resized by dragging its heading border.</summary>
+            <param name="col">The column.</param>
+            <param name="px">The new width in screen pixels.</param>
+            <returns>A task that completes when the width is set.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ResizeRow(System.Int32,System.Double)">
+            <summary>Called by the browser after a row was resized by dragging its heading border.</summary>
+            <param name="row">The row.</param>
+            <param name="px">The new height in screen pixels.</param>
+            <returns>A task that completes when the height is set.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoFitRow(System.Int32)">
+            <summary>Called by the browser after a double click on a row heading border: restores the default height.</summary>
+            <param name="row">The row.</param>
+            <returns>A task that completes when the height is reset.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoFitColumnCandidates(System.Int32)">
+            <summary>Returns the longest texts of a column with their CSS font so the browser can measure the auto-fit width.</summary>
+            <param name="col">The column.</param>
+            <returns>Pairs of text and font.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillTo(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Called by the browser after the fill handle was dragged.</summary>
+            <param name="top">Top row of the filled range.</param>
+            <param name="left">Left column of the filled range.</param>
+            <param name="bottom">Bottom row of the filled range.</param>
+            <param name="right">Right column of the filled range.</param>
+            <returns>A task that completes when the cells are written.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillHandleDoubleClick">
+            <summary>Called by the browser after a double click on the fill handle: fills down along the data in the adjacent column.</summary>
+            <returns>A task that completes when the cells are written.</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.Workbook">
+            <summary>The workbook to show and edit.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.SheetIndex">
+            <summary>Index of the shown sheet in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Sheets"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.SheetIndexChanged">
+            <summary>Raised when the grid wants to show another sheet, for example after jumping to a defined name on another sheet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ReadOnly">
+            <summary>Whether editing is disabled. Selection, navigation and copying stay available.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.Zoom">
+            <summary>Zoom factor, 1 is 100%.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ShowGridLines">
+            <summary>Whether gridlines are drawn.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ShowHeadings">
+            <summary>Whether row and column headings are shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.Selection">
+            <summary>The selection. Changes from the host are applied; changes by the user raise <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.SelectionChanged"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.SelectionChanged">
+            <summary>Raised when the user changes the selection.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.Engine">
+            <summary>
+            The calculation engine attached to <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.Workbook"/>. When null, the grid attaches and owns its own engine.
+            Pass an engine when the host needs it too, because two engines on one workbook calculate twice.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FormatCellsRequested">
+            <summary>Raised on Ctrl+1 so the host can open its format cells dialog.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ActiveSheet">
+            <summary>The shown worksheet, or null without a workbook.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.IsEditing">
+            <summary>True while a cell is being edited.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.EditText">
+            <summary>The text of the cell being edited.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ViewportWidth">
+            <summary>Width of the visible grid area in pixels, as last reported by the browser.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ViewportHeight">
+            <summary>Height of the visible grid area in pixels, as last reported by the browser.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ShouldRender">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FocusAsync">
+            <summary>Moves the keyboard focus to the grid.</summary>
+            <returns>A task that completes when the focus moved.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnViewportChanged(System.Double,System.Double,System.Double,System.Double)">
+            <summary>Called by the browser when the visible area left the rendered window or changed size.</summary>
+            <param name="scrollTop">Vertical scroll offset in pixels.</param>
+            <param name="scrollLeft">Horizontal scroll offset in pixels.</param>
+            <param name="width">Visible width in pixels.</param>
+            <param name="height">Visible height in pixels.</param>
+            <returns>A task that completes when the new window is rendered.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetAxis">
+            <summary>
+            Offsets of rows or columns from sparse size deviations: prefix sums over the deviating indexes give
+            <see cref="M:MudBlazor.Extensions.Components.SpreadsheetAxis.Offset(System.Int32)"/> in O(log k) and <see cref="M:MudBlazor.Extensions.Components.SpreadsheetAxis.IndexAt(System.Double)"/> in O(log n · log k).
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetGridRow">
+            <summary>
+            One row of the visible window. Its parameters are primitives, so Blazor skips it when the grid re-renders and neither the
+            window columns nor the row's version changed.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetEditOverlay">
+            <summary>Reference highlights and formula assist while editing in a cell; re-renders on its own while typing.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetSelection">
+            <summary>
+            The selection of a spreadsheet grid: the active cell and one or more ranges. The last range is the one extended with
+            Shift; its <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Start"/> is the anchor and its <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.End"/> the moving corner.
+            </summary>
+            <param name="Active">The active cell, which receives typed input.</param>
+            <param name="Ranges">The selected ranges; never empty.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetSelection.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellRef,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.CellRange})">
+            <summary>
+            The selection of a spreadsheet grid: the active cell and one or more ranges. The last range is the one extended with
+            Shift; its <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.Start"/> is the anchor and its <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellRange.End"/> the moving corner.
+            </summary>
+            <param name="Active">The active cell, which receives typed input.</param>
+            <param name="Ranges">The selected ranges; never empty.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetSelection.Active">
+            <summary>The active cell, which receives typed input.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetSelection.Ranges">
+            <summary>The selected ranges; never empty.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetSelection.Range">
+            <summary>The last (current) range.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetSelection.IsSingleCell">
+            <summary>True if exactly one cell is selected.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetSelection.Single(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Creates a selection of one cell.</summary>
+            <param name="cell">The cell.</param>
+            <returns>The selection.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetSelection.Of(MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
+            <summary>Creates a selection of one range with the active cell at its start.</summary>
+            <param name="range">The range.</param>
+            <returns>The selection.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetSelection.Contains(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Tests whether a cell is inside any selected range.</summary>
+            <param name="cell">The cell.</param>
+            <returns>True if selected.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetSelection.Equals(MudBlazor.Extensions.Components.SpreadsheetSelection)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetSelection.GetHashCode">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.FilterHighlighting">
             <summary>
             Controls how the highlighting of the filter is displayed

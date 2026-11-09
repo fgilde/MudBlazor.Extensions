@@ -1,0 +1,139 @@
+@inherits MudExJsRequiredBaseComponent<MudExSpreadsheetGrid>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Spreadsheet
+@using Microsoft.AspNetCore.Components.Rendering
+
+<div @ref="ElementReference"
+     @attributes="UserAttributes"
+     class="@($"mud-ex-spreadsheet-grid {Class}".TrimEnd())"
+     style="@RootStyle"
+     tabindex="0"
+     role="grid"
+     aria-label="@TryLocalize("Spreadsheet")"
+     aria-readonly="@(ReadOnly ? "true" : "false")"
+     aria-rowcount="@_rowExtent"
+     aria-colcount="@_colExtent"
+     data-readonly="@(ReadOnly ? "true" : "false")"
+     data-zoom="@_zoom.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+     data-win="@(_sheet != null ? WindowBounds : null)"
+     data-sticky="@(_sheet != null ? StickyBounds : null)"
+     @onkeydown="OnKeyDownAsync">
+    @if (_sheet != null)
+    {
+        <div class="mud-ex-ssg-viewport">
+            <div class="mud-ex-ssg-canvas" style="@CanvasStyle">
+                <CascadingValue Value="this" IsFixed="true">
+                    @((RenderFragment)(b =>
+                    {
+                        foreach (var pane in Panes()) RenderPane(b, pane);
+                    }))
+                </CascadingValue>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private void RenderPane(RenderTreeBuilder __builder, GridPane p)
+    {
+        <div class="@($"mud-ex-ssg-pane mud-ex-ssg-pane-{PaneNames[p.Kind]}")" @key="p.Kind">
+            @if (p.Kind != 0)
+            {
+                <div class="mud-ex-ssg-pane-bg" style="@PaneBackground(p)"></div>
+            }
+            @if (ShowGridLines && p.R1 >= p.R0 && p.C1 >= p.C0)
+            {
+                <div class="mud-ex-ssg-lines">
+                    @for (var r = p.R0; r <= p.R1; r++)
+                    {
+                        if (H(r) > 0)
+                        {
+                            <div class="mud-ex-ssg-hl" style="@HorizontalLine(p, r)"></div>
+                        }
+                    }
+                    @for (var c = p.C0; c <= p.C1; c++)
+                    {
+                        if (W(c) > 0)
+                        {
+                            <div class="mud-ex-ssg-vl" style="@VerticalLine(p, c)"></div>
+                        }
+                    }
+                </div>
+            }
+            @if (p.C1 >= p.C0)
+            {
+                <div class="mud-ex-ssg-rows">
+                    @for (var r = p.R0; r <= p.R1; r++)
+                    {
+                        var row = r;
+                        if (H(row) > 0)
+                        {
+                            BuildRowComponent(__builder, row, p);
+                        }
+                    }
+                </div>
+            }
+            @foreach (var m in MergesIn(p))
+            {
+                BuildMerge(__builder, m);
+            }
+            @if (p.Kind == 2 || p.Kind == 3)
+            {
+                @if (FrozenRows > 0)
+                {
+                    <div class="mud-ex-ssg-freeze-h" style="@($"top:{Px(Y(FrozenRows) - 1)};width:{Px(p.Kind == 2 ? X(_colExtent) : X(FrozenColumns))}")"></div>
+                }
+            }
+            @if (p.Kind == 1 || p.Kind == 3)
+            {
+                @if (FrozenColumns > 0)
+                {
+                    <div class="mud-ex-ssg-freeze-v" style="@($"left:{Px(X(FrozenColumns) - 1)};height:{Px(p.Kind == 1 ? Y(_rowExtent) : Y(FrozenRows))}")"></div>
+                }
+            }
+            @foreach (var o in Overlays(p))
+            {
+                <div class="@o.Class" style="@o.Style" data-range="@o.Range"></div>
+            }
+            @if (p.TopSticky)
+            {
+                @for (var c = p.C0; c <= p.C1; c++)
+                {
+                    var col = c;
+                    if (W(col) > 0)
+                    {
+                        <div class="@ColumnHeaderClass(col)" style="@ColumnHeaderStyle(col)" data-c="@col" role="columnheader">@CellRef.ColumnName(col)</div>
+                    }
+                }
+            }
+            @if (p.LeftSticky)
+            {
+                @for (var r = p.R0; r <= p.R1; r++)
+                {
+                    var row = r;
+                    if (H(row) > 0)
+                    {
+                        <div class="@RowHeaderClass(row)" style="@RowHeaderStyle(row)" data-r="@row" role="rowheader">@(row + 1)</div>
+                    }
+                }
+            }
+            @if (p.Kind == 3)
+            {
+                <div class="mud-ex-ssg-corner" style="@($"width:{Px(HeaderWidth)};height:{Px(HeaderHeight)}")" title="@TryLocalize("Select all")"></div>
+            }
+            @if (PaneOf(_selection.Active) == p.Kind)
+            {
+                <textarea class="@(_editing ? "mud-ex-ssg-editor editing" : "mud-ex-ssg-editor")"
+                          style="@EditorStyle"
+                          data-mode="@(_editMode ? "edit" : "enter")"
+                          spellcheck="false"
+                          autocomplete="off"
+                          aria-label="@TryLocalize("Cell editor")"
+                          readonly="@ReadOnly"
+                          @oninput="OnEditorInput"></textarea>
+                __builder.OpenComponent<SpreadsheetEditOverlay>(0);
+                __builder.CloseComponent();
+            }
+        </div>
+    }
+}

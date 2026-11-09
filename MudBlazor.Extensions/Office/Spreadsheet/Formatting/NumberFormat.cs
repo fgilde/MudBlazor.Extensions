@@ -114,6 +114,8 @@ public static class NumberFormat
         _ => n == s.Bound
     };
 
+    internal static bool IsDateFormat(string formatCode) => Parse(formatCode).Any(s => s.IsDate);
+
     internal static string GeneralText(double n, CultureInfo culture)
     {
         var a = Math.Abs(n);
