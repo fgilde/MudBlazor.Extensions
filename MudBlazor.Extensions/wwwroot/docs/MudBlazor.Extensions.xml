@@ -3920,6 +3920,11 @@
             Called from JS on the first input after the content was loaded or read
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.OnSaveKey">
+            <summary>
+            Called from JS on Ctrl+S
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
@@ -19797,9 +19802,15 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.PasteTextAsync(System.String)">
             <summary>
             Pastes text at the top-left cell of the selection. Tab separated text fills a range; each value is parsed like typed input.
-            Text that was copied from this grid pastes the original cells with formulas, adjusting relative references.
+            Text that was copied from this grid pastes the original cells with formulas, adjusting relative references; cut cells are
+            moved with their formulas unchanged.
             </summary>
             <param name="text">The clipboard text.</param>
+            <returns>A task that completes when the cells are written.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.PasteStreamAsync(Microsoft.JSInterop.IJSStreamReference)">
+            <summary>Called by the browser on paste. The text arrives as a stream, so large clipboards do not hit the message size limit of Blazor Server.</summary>
+            <param name="data">The clipboard text as UTF-8.</param>
             <returns>A task that completes when the cells are written.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoFitColumnsAsync">
@@ -19935,6 +19946,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FormatCellsRequested">
             <summary>Raised on Ctrl+1 so the host can open its format cells dialog.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.SaveKeyPressed">
+            <summary>Raised on Ctrl+S so the host can save.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnError">
+            <summary>Raised when a user action could not be applied to the workbook. Without a handler the error is shown in a dialog.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ActiveSheet">
             <summary>The shown worksheet, or null without a workbook.</summary>

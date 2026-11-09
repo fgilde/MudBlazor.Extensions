@@ -359,6 +359,31 @@ public class SpreadsheetEditorTests : IAsyncLifetime
         Assert.Equal("text", reread[CellRef.Parse("B1")].Value.ToString());
     }
 
+
+    [Fact]
+    public void CtrlS_InStandaloneEditor_Saves()
+    {
+        var requests = 0;
+        var cut = Render(p => p
+            .Add(x => x.Workbook, Book(("Sheet1", "A1", 1d)))
+            .Add(x => x.SaveRequested, (MudExFileSaveRequest r) => { requests++; r.Handled = true; }));
+
+        cut.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = "s", CtrlKey = true });
+
+        cut.WaitForAssertion(() => Assert.Equal(1, requests));
+    }
+
+    [Fact]
+    public async Task RibbonCommand_UnexpectedException_IsShown()
+    {
+        var wb = Book(("Sheet1", "A1", 1d));
+        var cut = Render(wb);
+        wb.Changed += (_, _) => throw new NotSupportedException("boom");
+
+        await Run(cut, "xl-bold");
+
+        cut.WaitForAssertion(() => Assert.Contains("boom", _dialogs[^1].Markup));
+    }
     [Fact]
     public void RibbonColorDefault_IsExcelGreen()
     {

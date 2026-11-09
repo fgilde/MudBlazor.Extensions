@@ -278,8 +278,16 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
         _sheetIndex = index;
         _ = InvokeAsync(async () =>
         {
-            await MarkDirtyAsync();
-            await WorkbookChanged.InvokeAsync(_workbook);
+            try
+            {
+                await MarkDirtyAsync();
+                await WorkbookChanged.InvokeAsync(_workbook);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorAsync(ex.Message);
+            }
+
             StateHasChanged();
         });
     }

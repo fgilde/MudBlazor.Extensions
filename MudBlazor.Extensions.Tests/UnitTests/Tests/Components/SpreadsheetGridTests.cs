@@ -259,6 +259,143 @@ public class SpreadsheetGridTests : IAsyncLifetime
         cut.WaitForAssertion(() => Assert.Equal(R("D1"), cut.Instance.Selection.Active));
     }
 
+
+    private static IRenderedComponent<MudExSpreadsheetGrid> SelectRange(IRenderedComponent<MudExSpreadsheetGrid> cut, string range)
+    {
+        cut.Render(p => p.Add(x => x.Selection, SpreadsheetSelection.Of(CellRange.Parse(range))));
+        return cut;
+    }
+
+    private string LastClipboard() =>
+        (string)_contexts[^1].JSInterop.Invocations.Last(i => i.Identifier == "writeClipboard").Arguments[0];
+
+    [Fact]
+    public async Task CutPaste_MovesFormulaWithoutAdjustingReferences()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        for (var r = 0; r < 10; r++) wb.Execute(new SetValueCommand(ws, new CellRef(r, 0), CellValue.Number(r + 1)));
+        wb.Execute(new SetFormulaCommand(ws, R("A11"), "=SUM(A1:A10)"));
+        var cut = Render(wb);
+
+        SelectRange(cut, "A11");
+        await cut.InvokeAsync(() => cut.Instance.CutAsync());
+        SelectRange(cut, "C11");
+        await cut.InvokeAsync(() => cut.Instance.PasteTextAsync(LastClipboard()));
+
+        Assert.Equal("SUM(A1:A10)", ws[R("C11")].Formula);
+        Assert.Equal(55, ws[R("C11")].Value.NumberValue);
+        Assert.False(ws[R("A11")]?.HasContent == true);
+    }
+
+    [Fact]
+    public async Task CutPaste_OverlappingMoveDown_KeepsAllValues()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        for (var r = 0; r < 3; r++) wb.Execute(new SetValueCommand(ws, new CellRef(r, 0), CellValue.Number(r + 1)));
+        var cut = Render(wb);
+
+        SelectRange(cut, "A1:A3");
+        await cut.InvokeAsync(() => cut.Instance.CutAsync());
+        SelectRange(cut, "A2");
+        await cut.InvokeAsync(() => cut.Instance.PasteTextAsync(LastClipboard()));
+
+        Assert.False(ws[R("A1")]?.HasContent == true);
+        Assert.Equal([1d, 2d, 3d], new[] { "A2", "A3", "A4" }.Select(a => ws[R(a)].Value.NumberValue));
+    }
+
+    [Fact]
+    public async Task PasteStream_WritesCells()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        var cut = Render(wb);
+        var text = string.Concat(Enumerable.Range(1, 5000).Select(i => $"{i}\tvalue {i}\r\n"));
+
+        await cut.InvokeAsync(() => cut.Instance.PasteStreamAsync(new TestStreamReference(text)));
+
+        Assert.Equal(5000, ws[R("A5000")].Value.NumberValue);
+        Assert.Equal("value 5000", ws[R("B5000")].Value.TextValue);
+    }
+
+    [Fact]
+    public void CommitFailure_ReportsError_AndKeepsEditOpen()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        var errors = new List<Exception>();
+        var fail = true;
+        wb.Changed += (_, _) =>
+        {
+            if (fail) throw new InvalidOperationException("boom");
+        };
+        var cut = Render(wb, p => p.Add(x => x.OnError, (Exception e) => errors.Add(e)));
+
+        Type(cut, "42");
+        Key(cut, "Enter");
+
+        cut.WaitForAssertion(() => Assert.Equal("boom", Assert.Single(errors).Message));
+        Assert.True(cut.Instance.IsEditing);
+        Assert.Equal("42", cut.Instance.EditText);
+        Assert.Equal(R("A1"), cut.Instance.Selection.Active);
+
+        fail = false;
+        Key(cut, "Enter");
+        cut.WaitForAssertion(() => Assert.False(cut.Instance.IsEditing));
+        Assert.Equal(42, ws[R("A1")].Value.NumberValue);
+    }
+
+    [Fact]
+    public void Paste_Failure_IsReported()
+    {
+        var wb = Workbook.Create();
+        var errors = new List<Exception>();
+        wb.Changed += (_, _) => throw new InvalidOperationException("boom");
+        var cut = Render(wb, p => p.Add(x => x.OnError, (Exception e) => errors.Add(e)));
+
+        cut.InvokeAsync(() => cut.Instance.PasteTextAsync("1\t2")).GetAwaiter().GetResult();
+
+        Assert.Equal("boom", Assert.Single(errors).Message);
+    }
+
+    [Fact]
+    public void Shortcuts_SaveAndPercent()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        var saves = 0;
+        var cut = Render(wb, p => p.Add(x => x.SaveKeyPressed, () => saves++));
+
+        Key(cut, "s", ctrl: true);
+        Assert.Equal(1, saves);
+        Type(cut, "1");
+        Key(cut, "s", ctrl: true);
+        Assert.Equal(2, saves);
+        Key(cut, "Escape");
+
+        Key(cut, "%", ctrl: true, shift: true);
+        Assert.Equal("0%", wb.Styles[ws.EffectiveStyleId(R("A1"))].NumberFormat);
+        Key(cut, "5", ctrl: true);
+        Assert.True(wb.Styles[ws.EffectiveStyleId(R("A1"))].Font.Strikethrough);
+    }
+
+    [Fact]
+    public async Task SetValuesBlock_RefreshesGridWithoutWalkingCells()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        var cut = Render(wb);
+        var values = new CellValue[100_000, 30];
+        for (var r = 0; r < 100_000; r++)
+            for (var c = 0; c < 30; c++)
+                values[r, c] = CellValue.Number(r * 30 + c);
+
+        await cut.InvokeAsync(() => wb.Execute(new SetValuesCommand(ws, R("A1"), values)));
+
+        cut.WaitForAssertion(() => Assert.Contains(cut.FindAll(".mud-ex-ssg-cell"), e => e.TextContent.Trim() == "31"));
+        Assert.Equal(99_999, cut.Instance.ActiveSheet.UsedRange.Bottom);
+    }
     [Fact]
     public async Task Paste_TabSeparatedText_FillsRange()
     {

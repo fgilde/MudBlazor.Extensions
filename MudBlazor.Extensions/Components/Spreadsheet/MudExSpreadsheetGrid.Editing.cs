@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
@@ -11,6 +12,7 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExSpreadsheetGrid
 {
     private const long MaxBulkCells = 100_000;
+    private const long MaxPasteBytes = 256L * 1024 * 1024;
     private static readonly Regex NumberSuffix = new(@"^(.*?)(\d+)$", RegexOptions.CultureInvariant);
 
     private bool _editing;
@@ -59,54 +61,100 @@ public partial class MudExSpreadsheetGrid
 
     /// <summary>
     /// Pastes text at the top-left cell of the selection. Tab separated text fills a range; each value is parsed like typed input.
-    /// Text that was copied from this grid pastes the original cells with formulas, adjusting relative references.
+    /// Text that was copied from this grid pastes the original cells with formulas, adjusting relative references; cut cells are
+    /// moved with their formulas unchanged.
     /// </summary>
     /// <param name="text">The clipboard text.</param>
     /// <returns>A task that completes when the cells are written.</returns>
-    [JSInvokable]
     public async Task PasteTextAsync(string text)
     {
         if (!CanEdit || string.IsNullOrEmpty(text)) return;
         var origin = _selection.Range.Normalized;
+        CellRange target = default;
+        if (!await TryWriteAsync(() => target = Paste(text, origin))) return;
+        await SelectAsync(new SpreadsheetSelection(target.Start, [target]), target.Start);
+        StateHasChanged();
+    }
+
+    /// <summary>Called by the browser on paste. The text arrives as a stream, so large clipboards do not hit the message size limit of Blazor Server.</summary>
+    /// <param name="data">The clipboard text as UTF-8.</param>
+    /// <returns>A task that completes when the cells are written.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public async Task PasteStreamAsync(IJSStreamReference data)
+    {
+        string text;
+        try
+        {
+            text = await ReadTextAsync(data);
+        }
+        catch (Exception e)
+        {
+            await ReportErrorAsync(e);
+            return;
+        }
+
+        await PasteTextAsync(text);
+    }
+
+    internal async Task<string> ReadClipboardAsync()
+    {
+        if (JsReference is not { } js) return null;
+        return await ReadTextAsync(await js.InvokeAsync<IJSStreamReference>("readClipboard"));
+    }
+
+    private static async Task<string> ReadTextAsync(IJSStreamReference data)
+    {
+        if (data == null) return null;
+        await using (data)
+        {
+            await using var stream = await data.OpenReadStreamAsync(MaxPasteBytes);
+            using var reader = new StreamReader(stream, Encoding.UTF8);
+            return await reader.ReadToEndAsync();
+        }
+    }
+
+    private CellRange Paste(string text, CellRange origin)
+    {
         CellRange target;
         if (_clipboard is { } clip && clip.Text == text && _workbook.Sheets.Contains(clip.Sheet))
         {
             target = CellRange.FromBounds(origin.Top, origin.Left, Math.Min(CellRef.MaxRows - 1, origin.Top + clip.Range.RowCount - 1),
                 Math.Min(CellRef.MaxColumns - 1, origin.Left + clip.Range.ColumnCount - 1));
+            var cells = clip.Range.Cells().ToList();
+            var dRow = target.Top - clip.Range.Top;
+            if (clip.Sheet == _sheet && (dRow > 0 || (dRow == 0 && target.Left > clip.Range.Left))) cells.Reverse();
             using (_workbook.Undo.BeginTransaction(clip.Cut ? "Move" : "Paste"))
             {
-                foreach (var s in clip.Range.Cells())
+                foreach (var s in cells)
                 {
                     var t = new CellRef(s.Row - clip.Range.Top + target.Top, s.Column - clip.Range.Left + target.Left);
-                    if (target.Contains(t)) CopyCell(clip.Sheet, s, t);
+                    if (target.Contains(t)) CopyCell(clip.Sheet, s, t, !clip.Cut);
                 }
 
                 if (clip.Cut)
-                    foreach (var s in clip.Range.Cells())
+                    foreach (var s in cells)
                         if (clip.Sheet != _sheet || !target.Contains(s))
                             ClearCell(clip.Sheet, s, true);
             }
 
             if (clip.Cut) _clipboard = null;
-        }
-        else
-        {
-            var rows = ParseTabular(text);
-            if (rows.Count == 0) return;
-            var width = rows.Max(r => r.Count);
-            target = CellRange.FromBounds(origin.Top, origin.Left, Math.Min(CellRef.MaxRows - 1, origin.Top + rows.Count - 1),
-                Math.Min(CellRef.MaxColumns - 1, origin.Left + width - 1));
-            using (_workbook.Undo.BeginTransaction("Paste"))
-                for (var i = 0; i < rows.Count; i++)
-                    for (var j = 0; j < rows[i].Count; j++)
-                    {
-                        var t = new CellRef(origin.Top + i, origin.Left + j);
-                        if (target.Contains(t)) WriteInput(t, rows[i][j]);
-                    }
+            return target;
         }
 
-        await SelectAsync(new SpreadsheetSelection(target.Start, [target]), target.Start);
-        StateHasChanged();
+        var rows = ParseTabular(text);
+        if (rows.Count == 0) return new CellRange(origin.Start, origin.Start);
+        var width = rows.Max(r => r.Count);
+        target = CellRange.FromBounds(origin.Top, origin.Left, Math.Min(CellRef.MaxRows - 1, origin.Top + rows.Count - 1),
+            Math.Min(CellRef.MaxColumns - 1, origin.Left + width - 1));
+        using (_workbook.Undo.BeginTransaction("Paste"))
+            for (var i = 0; i < rows.Count; i++)
+                for (var j = 0; j < rows[i].Count; j++)
+                {
+                    var t = new CellRef(origin.Top + i, origin.Left + j);
+                    if (target.Contains(t)) WriteInput(t, rows[i][j]);
+                }
+
+        return target;
     }
 
     internal Task PasteValuesAsync(string text)
@@ -149,6 +197,13 @@ public partial class MudExSpreadsheetGrid
         var vertical = target.Left == src.Left && target.Right == src.Right;
         if (!vertical && (target.Top != src.Top || target.Bottom != src.Bottom)) return;
         if (target.Area > MaxBulkCells) return;
+        if (!await TryWriteAsync(() => Fill(src, target, vertical))) return;
+        await SelectAsync(new SpreadsheetSelection(_selection.Active, [target]), _selection.Active);
+        StateHasChanged();
+    }
+
+    private void Fill(CellRange src, CellRange target, bool vertical)
+    {
         using (_workbook.Undo.BeginTransaction("Fill"))
         {
             var lines = vertical ? src.ColumnCount : src.RowCount;
@@ -183,9 +238,6 @@ public partial class MudExSpreadsheetGrid
                 }
             }
         }
-
-        await SelectAsync(new SpreadsheetSelection(_selection.Active, [target]), _selection.Active);
-        StateHasChanged();
     }
 
     /// <summary>Fills the selection down from its top row (or the cell above a single selected row), like Ctrl+D.</summary>
@@ -193,6 +245,29 @@ public partial class MudExSpreadsheetGrid
 
     /// <summary>Fills the selection right from its left column (or the cell left of a single selected column), like Ctrl+R.</summary>
     public void FillRight() => FillFromEdge(false);
+
+    private async Task<bool> TryWriteAsync(Action write)
+    {
+        try
+        {
+            write();
+            return true;
+        }
+        catch (Exception e)
+        {
+            await ReportErrorAsync(e);
+            return false;
+        }
+    }
+
+    private async Task ReportErrorAsync(Exception e)
+    {
+        StateHasChanged();
+        if (OnError.HasDelegate)
+            await OnError.InvokeAsync(e);
+        else if (DialogService != null)
+            await DialogService.ShowInformationAsync(TryLocalize("Error"), e.Message, Icons.Material.Filled.Error);
+    }
 
     /// <summary>Changes the style of every selected range in one undo step.</summary>
     /// <param name="change">Maps the current style of a cell to its new style.</param>
@@ -584,6 +659,18 @@ public partial class MudExSpreadsheetGrid
 
     private async Task OnKeyDownAsync(KeyboardEventArgs e)
     {
+        try
+        {
+            await OnKeyDownCoreAsync(e);
+        }
+        catch (Exception ex)
+        {
+            await ReportErrorAsync(ex);
+        }
+    }
+
+    private async Task OnKeyDownCoreAsync(KeyboardEventArgs e)
+    {
         if (_sheet == null) return;
         if (_editing)
         {
@@ -624,6 +711,9 @@ public partial class MudExSpreadsheetGrid
                 return;
             case "F2":
                 await BeginEditAsync();
+                return;
+            case "F9":
+                _engine?.RecalculateAll();
                 return;
             case "Delete":
                 ClearContents();
@@ -686,8 +776,14 @@ public partial class MudExSpreadsheetGrid
             case "u":
                 ToggleFont(f => f.Underline, (f, on) => f with { Underline = on }, "Underline");
                 break;
-            case "5":
+            case "5" when !shift:
                 ToggleFont(f => f.Strikethrough, (f, on) => f with { Strikethrough = on }, "Strikethrough");
+                break;
+            case "%" or "5":
+                ApplyStyle(s => s with { NumberFormat = "0%" }, "Percent Style");
+                break;
+            case "s":
+                await SaveKeyPressed.InvokeAsync();
                 break;
             case "1":
                 await FormatCellsRequested.InvokeAsync();
@@ -735,6 +831,9 @@ public partial class MudExSpreadsheetGrid
                 return;
             case "F2":
                 _editMode = !_editMode;
+                return;
+            case "s" or "S" when ctrl && !e.AltKey:
+                await SaveKeyPressed.InvokeAsync();
                 return;
             case ";" when ctrl:
                 await Js("insertText", DateTime.Today.ToString(Culture.DateTimeFormat.ShortDatePattern, Culture));
@@ -823,25 +922,35 @@ public partial class MudExSpreadsheetGrid
         var text = _editText;
         var cell = _editCell;
         var changed = text != _editOriginal;
-        EndEditState();
         if (CanEdit && (changed || allSelected))
         {
-            _clipboard = null;
-            using (_workbook.Undo.BeginTransaction("Typing"))
+            if (!await TryWriteAsync(() => WriteEdit(text, cell, allSelected)))
             {
-                if (allSelected && _selection.Ranges.Sum(r => r.Area) <= MaxBulkCells)
-                    foreach (var t in _selection.Ranges.SelectMany(r => r.Normalized.Cells()).Distinct())
-                        WriteInput(t, text.Length > 1 && text[0] == '='
-                            ? "=" + ReferenceShifter.Translate(text[1..], t.Row - cell.Row, t.Column - cell.Column)
-                            : text);
-                else
-                    WriteInput(cell, text);
+                await Js("beginEdit", _editText, _editMode, !_editFromBar);
+                return;
             }
+
+            _clipboard = null;
         }
 
+        EndEditState();
         await Js("endEdit", true);
         if (dRow != 0 || dCol != 0) await StepWithinSelectionAsync(dRow, dCol);
         StateHasChanged();
+    }
+
+    private void WriteEdit(string text, CellRef cell, bool allSelected)
+    {
+        using (_workbook.Undo.BeginTransaction("Typing"))
+        {
+            if (allSelected && _selection.Ranges.Sum(r => r.Area) <= MaxBulkCells)
+                foreach (var t in _selection.Ranges.SelectMany(r => r.Normalized.Cells()).Distinct())
+                    WriteInput(t, text.Length > 1 && text[0] == '='
+                        ? "=" + ReferenceShifter.Translate(text[1..], t.Row - cell.Row, t.Column - cell.Column)
+                        : text);
+            else
+                WriteInput(cell, text);
+        }
     }
 
     private void WriteInput(CellRef cell, string text)
@@ -1156,11 +1265,11 @@ public partial class MudExSpreadsheetGrid
             }
     }
 
-    private void CopyCell(Worksheet sheet, CellRef from, CellRef to)
+    private void CopyCell(Worksheet sheet, CellRef from, CellRef to, bool translate = true)
     {
         var src = sheet[from];
         if (src?.Formula != null)
-            _workbook.Execute(new SetFormulaCommand(_sheet, to, ReferenceShifter.Translate(src.Formula, to.Row - from.Row, to.Column - from.Column)));
+            _workbook.Execute(new SetFormulaCommand(_sheet, to, translate ? ReferenceShifter.Translate(src.Formula, to.Row - from.Row, to.Column - from.Column) : src.Formula));
         else if (src?.HasContent == true)
             _workbook.Execute(new SetValueCommand(_sheet, to, src.Value));
         else if (_sheet[to]?.HasContent == true)

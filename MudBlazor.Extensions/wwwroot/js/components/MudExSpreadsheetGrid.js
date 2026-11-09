@@ -1,7 +1,7 @@
 const ROW_HEADER = '.mud-ex-ssg-rh';
 const COL_HEADER = '.mud-ex-ssg-ch';
 const EDGE = 4;
-const COMMAND_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'Tab', 'Enter', 'F2', 'Delete', 'Backspace', 'Escape'];
+const COMMAND_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'Tab', 'Enter', 'F2', 'F9', 'Delete', 'Backspace', 'Escape'];
 
 class MudExSpreadsheetGrid {
     constructor(root, dotnet) {
@@ -151,7 +151,7 @@ class MudExSpreadsheetGrid {
         if (e.altKey && !ctrl && e.key === '=') {
             return true;
         }
-        return ctrl && !e.altKey && e.key.length === 1 && 'abiudrzyxc15;:'.includes(e.key.toLowerCase());
+        return ctrl && !e.altKey && e.key.length === 1 && 'abiudrzyxcs15%;:'.includes(e.key.toLowerCase()) && (e.key.toLowerCase() !== 's' || !this.readOnly());
     }
 
     keyDown(e) {
@@ -194,7 +194,7 @@ class MudExSpreadsheetGrid {
             this.endEdit(true);
             return;
         }
-        if (e.key === 'F2' || (ctrl && (e.key === ';' || e.key === ':'))) {
+        if (e.key === 'F2' || (ctrl && (e.key === ';' || e.key === ':' || (!e.altKey && e.key.toLowerCase() === 's')))) {
             e.preventDefault();
         }
     }
@@ -316,7 +316,12 @@ class MudExSpreadsheetGrid {
             return;
         }
         e.preventDefault();
-        this.dotnet?.invokeMethodAsync('PasteTextAsync', text);
+        this.dotnet?.invokeMethodAsync('PasteStreamAsync', DotNet.createJSStreamReference(new Blob([text]))).catch(() => {});
+    }
+
+    async readClipboard() {
+        const text = await navigator.clipboard.readText();
+        return DotNet.createJSStreamReference(new Blob([text ?? '']));
     }
 
     headers(selector, pane) {

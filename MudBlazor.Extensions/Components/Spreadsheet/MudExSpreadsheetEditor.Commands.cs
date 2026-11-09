@@ -64,12 +64,20 @@ public partial class MudExSpreadsheetEditor
         {
             action();
         }
-        catch (Exception e) when (e is ArgumentException or InvalidOperationException)
+        catch (Exception e)
         {
             await ShowErrorAsync(e.Message);
         }
 
         await FocusGridAsync();
+    }
+
+    private Task OnGridErrorAsync(Exception e) => ShowErrorAsync(e.Message);
+
+    private async Task SaveFromKeyAsync()
+    {
+        if (!IsReadOnly)
+            await SaveAsync();
     }
 
     private Task RunCommandAsync(IWorkbookCommand command) => RunAsync(() => _workbook.Execute(command));
@@ -375,7 +383,7 @@ public partial class MudExSpreadsheetEditor
         string text;
         try
         {
-            text = await JsRuntime.InvokeAsync<string>("navigator.clipboard.readText");
+            text = await _grid.ReadClipboardAsync();
         }
         catch (JSException)
         {

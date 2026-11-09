@@ -81,6 +81,12 @@ public partial class MudExSpreadsheetGrid
     /// <summary>Raised on Ctrl+1 so the host can open its format cells dialog.</summary>
     [Parameter] public EventCallback FormatCellsRequested { get; set; }
 
+    /// <summary>Raised on Ctrl+S so the host can save.</summary>
+    [Parameter] public EventCallback SaveKeyPressed { get; set; }
+
+    /// <summary>Raised when a user action could not be applied to the workbook. Without a handler the error is shown in a dialog.</summary>
+    [Parameter] public EventCallback<Exception> OnError { get; set; }
+
     /// <summary>The shown worksheet, or null without a workbook.</summary>
     public Worksheet ActiveSheet => _sheet;
 
@@ -352,12 +358,22 @@ public partial class MudExSpreadsheetGrid
 
         var bottom = 0;
         var right = 0;
-        foreach (var c in e.Cells)
+        foreach (var c in e.SingleCells)
         {
             if (c.Sheet != _sheet) continue;
             Bump(c.Cell.Row);
             bottom = Math.Max(bottom, c.Cell.Row);
             right = Math.Max(right, c.Cell.Column);
+        }
+
+        foreach (var (sheet, range) in e.ValueRanges)
+        {
+            if (sheet != _sheet) continue;
+            if (range.RowCount > 1000) layout = true;
+            else
+                for (var r = range.Top; r <= range.Bottom; r++) Bump(r);
+            bottom = Math.Max(bottom, range.Bottom);
+            right = Math.Max(right, range.Right);
         }
 
         if (bottom >= _rowExtent - RowBuffer || right >= _colExtent - ColumnBuffer)
