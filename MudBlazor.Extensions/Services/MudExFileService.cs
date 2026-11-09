@@ -378,6 +378,8 @@ public class MudExFileService : IMudExFileService
     public async Task<MudExLocalFileSaveResult> SaveLocalFileAsync(MudExFileContent content, string handleId = null, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(content);
+        if (content.Stream.CanSeek)
+            content.Stream.Position = 0;
         using var streamRef = new DotNetStreamReference(content.Stream, leaveOpen: true);
         var dto = await _jsRuntime.InvokeAsync<MudExLocalFileSaveDto>(
             "MudExFileSystemAccess.saveFile", cancellationToken, handleId, streamRef, content.FileName, content.ContentType);

@@ -7,8 +7,6 @@ namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
 public class FileEditorSaveTests
 {
-    
-
     private static (MudExFileService Service, BunitJSInterop Js) Create()
     {
         var context = new TestContext();
@@ -60,5 +58,30 @@ public class FileEditorSaveTests
         await service.SaveLocalFileAsync(content, "h1");
 
         Assert.Equal("h1", js.Invocations["MudExFileSystemAccess.saveFile"].Single().Arguments[0]);
+    }
+
+    [Fact]
+    public async Task SaveLocalFile_DownloadFallback_MapsTarget()
+    {
+        var (service, js) = Create();
+        js.Setup<MudExLocalFileSaveDto>("MudExFileSystemAccess.saveFile", _ => true)
+            .SetResult(new MudExLocalFileSaveDto(null, "a.txt", "Download"));
+
+        await using var content = Content();
+        var result = await service.SaveLocalFileAsync(content);
+
+        Assert.Equal(MudExFileSaveTarget.Download, result.Target);
+        Assert.Null(result.HandleId);
+    }
+
+    [Fact]
+    public async Task ReleaseLocalFile_InvokesReleaseFile()
+    {
+        var (service, js) = Create();
+        js.SetupVoid("MudExFileSystemAccess.releaseFile", _ => true).SetVoidResult();
+
+        await service.ReleaseLocalFileAsync("h1");
+
+        Assert.Equal("h1", js.Invocations["MudExFileSystemAccess.releaseFile"].Single().Arguments[0]);
     }
 }

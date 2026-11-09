@@ -9,40 +9,68 @@ class MudExFileSystemAccess {
 
     static _fileHandles = {};
 
-    static async saveFile(handleId, streamRef, suggestedName, mimeType) {
-        const buffer = await streamRef.arrayBuffer();
-        let handle = handleId ? MudExFileSystemAccess._fileHandles[handleId] : null;
-        if (!handle) {
-            if (typeof window.showSaveFilePicker !== 'function') {
-                const url = URL.createObjectURL(new Blob([buffer], { type: mimeType }));
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = suggestedName;
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-                setTimeout(() => URL.revokeObjectURL(url), 10000);
-                return { handleId: null, fileName: suggestedName, target: 'Download' };
-            }
-            const dot = suggestedName.lastIndexOf('.');
-            const options = { suggestedName };
-            if (dot >= 0 && mimeType) {
-                options.types = [{ description: suggestedName.substring(dot + 1).toUpperCase(), accept: { [mimeType]: [suggestedName.substring(dot)] } }];
-            }
-            try {
-                handle = await window.showSaveFilePicker(options);
-            } catch (e) {
-                if (e && e.name === 'AbortError') {
-                    return null;
-                }
-                throw e;
-            }
-            handleId = crypto.randomUUID();
-            MudExFileSystemAccess._fileHandles[handleId] = handle;
+    static async _pickSaveHandle(suggestedName, mimeType) {
+        const dot = suggestedName.lastIndexOf('.');
+        const options = { suggestedName };
+        if (dot >= 0 && mimeType) {
+            options.types = [{ description: suggestedName.substring(dot + 1).toUpperCase(), accept: { [mimeType]: [suggestedName.substring(dot)] } }];
         }
+        try {
+            return await window.showSaveFilePicker(options);
+        } catch (e) {
+            if (e && e.name === 'AbortError') {
+                return null;
+            }
+            throw e;
+        }
+    }
+
+    static async _writeHandle(handle, buffer) {
         const writable = await handle.createWritable();
         await writable.write(buffer);
         await writable.close();
+    }
+
+    static async saveFile(handleId, streamRef, suggestedName, mimeType) {
+        let handle = handleId ? MudExFileSystemAccess._fileHandles[handleId] : null;
+        const reused = !!handle;
+        if (!handle && typeof window.showSaveFilePicker !== 'function') {
+            const buffer = await streamRef.arrayBuffer();
+            const url = URL.createObjectURL(new Blob([buffer], { type: mimeType }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = suggestedName;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 10000);
+            return { handleId: null, fileName: suggestedName, target: 'Download' };
+        }
+        if (!handle) {
+            handle = await MudExFileSystemAccess._pickSaveHandle(suggestedName, mimeType);
+            if (!handle) {
+                return null;
+            }
+        }
+        const buffer = await streamRef.arrayBuffer();
+        try {
+            await MudExFileSystemAccess._writeHandle(handle, buffer);
+        } catch (e) {
+            if (!reused || !e || (e.name !== 'NotAllowedError' && e.name !== 'NotFoundError')) {
+                throw e;
+            }
+            delete MudExFileSystemAccess._fileHandles[handleId];
+            handle = await MudExFileSystemAccess._pickSaveHandle(suggestedName, mimeType);
+            if (!handle) {
+                return null;
+            }
+            await MudExFileSystemAccess._writeHandle(handle, buffer);
+            handleId = null;
+        }
+        if (!handleId) {
+            handleId = crypto.randomUUID();
+        }
+        MudExFileSystemAccess._fileHandles[handleId] = handle;
         return { handleId, fileName: handle.name, target: 'Local' };
     }
 
