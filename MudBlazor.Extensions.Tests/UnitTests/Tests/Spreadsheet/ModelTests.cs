@@ -253,9 +253,9 @@ public class ModelTests
     {
         var wb = Workbook.Create();
         var ws = wb.Sheets[0];
+        wb.Execute(new MergeCommand(ws, CellRange.Parse("A2:B3")));
         wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(1)));
         wb.Execute(new SetValueCommand(ws, R("A3"), CellValue.Number(3)));
-        wb.Execute(new MergeCommand(ws, CellRange.Parse("A2:B3")));
         wb.Execute(new FreezeCommand(ws, R("B4")));
         wb.Execute(new ResizeCommand(ws, Axis.Row, 2, 1, 40));
         wb.Execute(new SetHiddenCommand(ws, Axis.Row, 4, 1, true));
@@ -270,7 +270,7 @@ public class ModelTests
         Assert.Equal(new[] { CellRange.Parse("A4:B5") }, ws.Merges);
         Assert.Equal(R("B6"), ws.FreezeAt);
         Assert.Equal(40, ws.RowHeight(4));
-        Assert.Equal(Worksheet.DefaultRowHeight, ws.RowHeight(2));
+        Assert.Equal(ws.DefaultRowHeight, ws.RowHeight(2));
         Assert.True(ws.IsRowHidden(6));
         Assert.False(ws.IsRowHidden(4));
         var change = Assert.Single(Assert.Single(events).Structure);
@@ -314,10 +314,10 @@ public class ModelTests
     {
         var wb = Workbook.Create();
         var ws = wb.Sheets[0];
-        for (var i = 1; i <= 5; i++)
-            wb.Execute(new SetValueCommand(ws, R("A" + i), CellValue.Number(i)));
         wb.Execute(new MergeCommand(ws, CellRange.Parse("A2:B3")));
         wb.Execute(new MergeCommand(ws, CellRange.Parse("A4:B6")));
+        for (var i = 1; i <= 5; i++)
+            wb.Execute(new SetValueCommand(ws, R("A" + i), CellValue.Number(i)));
         wb.Execute(new FreezeCommand(ws, R("A5")));
 
         wb.Execute(new DeleteRowsCommand(ws, 1, 3));
@@ -354,7 +354,7 @@ public class ModelTests
         Assert.Equal(CellValueKind.Empty, ValueAt(ws, "C1").Kind);
         Assert.Equal(2, ws.UsedCells().Count());
         Assert.Equal(90, ws.ColumnWidth(1));
-        Assert.Equal(Worksheet.DefaultColumnWidth, ws.ColumnWidth(2));
+        Assert.Equal(ws.DefaultColumnWidth, ws.ColumnWidth(2));
 
         wb.Undo.Undo();
         Assert.Equal(CellValue.Number(2), ValueAt(ws, "B1"));
@@ -489,5 +489,228 @@ public class ModelTests
         Assert.Equal(StructureChangeKind.SheetRenamed, change.Kind);
         Assert.Equal("A", change.OldName);
         Assert.Equal("B", change.Sheet.Name);
+    }
+
+    [Fact]
+    public void StyleWholeColumn_DoesNotMaterialiseCells()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(1)));
+        var bold = CellStyle.Default with { Font = new CellFont { Bold = true } };
+
+        wb.Execute(new SetStyleCommand(ws, CellRange.Parse("A:A"), bold));
+
+        Assert.Single(ws.UsedCells());
+        var id = wb.Styles.GetOrAdd(bold);
+        Assert.Equal(id, ws.ColumnStyle(0));
+        Assert.Equal(id, ws.EffectiveStyleId(R("A500000")));
+        Assert.Equal(id, ws[R("A1")].StyleId);
+        Assert.Equal(0, ws.EffectiveStyleId(R("B1")));
+
+        wb.Undo.Undo();
+        Assert.Equal(0, ws.ColumnStyle(0));
+        Assert.Equal(0, ws[R("A1")].StyleId);
+        wb.Undo.Redo();
+        Assert.Equal(id, ws.ColumnStyle(0));
+    }
+
+    [Fact]
+    public void StyleWholeRow_SetsRowStyleAndRestylesExistingCellsOnly()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetValueCommand(ws, R("C2"), CellValue.Number(1)));
+        wb.Execute(new SetStyleCommand(ws, CellRange.Parse("2:2"), CellStyle.Default with { NumberFormat = "0.0" }));
+        Assert.Single(ws.UsedCells());
+        Assert.NotEqual(0, ws.RowStyle(1));
+        Assert.Equal(ws.RowStyle(1), ws[R("C2")].StyleId);
+        Assert.Equal(ws.RowStyle(1), ws.EffectiveStyleId(R("XFD2")));
+    }
+
+    [Fact]
+    public void InsertRows_AfterWholeColumnStyle_Succeeds()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        var bold = CellStyle.Default with { Font = new CellFont { Bold = true } };
+        wb.Execute(new SetStyleCommand(ws, CellRange.Parse("A:A"), bold));
+        var last = new CellRef(CellRef.MaxRows - 1, 1);
+        wb.Execute(new SetStyleCommand(ws, new CellRange(last, last), bold));
+        Assert.Single(ws.UsedCells());
+
+        wb.Execute(new InsertRowsCommand(ws, 0, 1));
+
+        Assert.Empty(ws.UsedCells());
+        Assert.Equal(wb.Styles.GetOrAdd(bold), ws.ColumnStyle(0));
+
+        wb.Undo.Undo();
+        Assert.Equal(wb.Styles.GetOrAdd(bold), ws[last].StyleId);
+    }
+
+    [Fact]
+    public void EffectiveStyle_CellOverridesRowOverridesColumn()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        var red = CellStyle.Default with { Fill = new CellFill { Color = "#FF0000" } };
+        var bold = CellStyle.Default with { Font = new CellFont { Bold = true } };
+        wb.Execute(new SetStyleCommand(ws, CellRange.Parse("B:B"), red));
+        wb.Execute(new SetStyleCommand(ws, CellRange.Parse("2:2"), bold));
+        var redId = wb.Styles.GetOrAdd(red);
+        var boldId = wb.Styles.GetOrAdd(bold);
+
+        Assert.Equal(redId, ws.EffectiveStyleId(R("B1")));
+        Assert.Equal(boldId, ws.EffectiveStyleId(R("B2")));
+        Assert.Equal(boldId, ws.EffectiveStyleId(R("A2")));
+        Assert.Equal(0, ws.EffectiveStyleId(R("A1")));
+
+        wb.Execute(new SetStyleCommand(ws, new CellRange(R("B2"), R("B2")), s => s with { NumberFormat = "0%" }));
+        var own = wb.Styles[ws.EffectiveStyleId(R("B2"))];
+        Assert.True(own.Font.Bold);
+        Assert.Equal("0%", own.NumberFormat);
+        Assert.Equal(boldId, ws.EffectiveStyleId(R("C2")));
+    }
+
+    [Fact]
+    public void InsertRow_ChangedEventCarriesNoPerCellFlood()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        using (wb.Undo.BeginTransaction("Fill"))
+            for (var i = 0; i < 1000; i++)
+                wb.Execute(new SetValueCommand(ws, new CellRef(i, 0), CellValue.Number(i)));
+        var events = new List<WorkbookChangedEventArgs>();
+        wb.Changed += (_, e) => events.Add(e);
+
+        wb.Execute(new InsertRowsCommand(ws, 0, 1));
+        wb.Execute(new DeleteRowsCommand(ws, 0, 1));
+        wb.Undo.Undo();
+        wb.Undo.Undo();
+
+        Assert.Equal(4, events.Count);
+        Assert.All(events, e => Assert.Empty(e.Cells));
+        Assert.All(events, e => Assert.Single(e.Structure));
+    }
+
+    [Fact]
+    public void Resize_WholeAxisSetsDefaultInsteadOfEntries()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new ResizeCommand(ws, Axis.Row, 3, 1, 50));
+        wb.Execute(new ResizeCommand(ws, Axis.Row, 0, CellRef.MaxRows, 30));
+        Assert.Empty(ws.RowHeights);
+        Assert.Equal(30, ws.DefaultRowHeight);
+        Assert.Equal(30, ws.RowHeight(3));
+
+        wb.Undo.Undo();
+        Assert.Equal(Worksheet.StandardRowHeight, ws.DefaultRowHeight);
+        Assert.Equal(50, ws.RowHeight(3));
+
+        wb.Execute(new ResizeCommand(ws, Axis.Column, 0, CellRef.MaxColumns, 80));
+        Assert.Equal(80, ws.ColumnWidth(5));
+    }
+
+    [Fact]
+    public void AxisCommands_RejectOutOfRangeIndexes()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        Assert.Throws<ArgumentOutOfRangeException>(() => wb.Execute(new ResizeCommand(ws, Axis.Column, CellRef.MaxColumns, 1, 10)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => wb.Execute(new ResizeCommand(ws, Axis.Row, -1, 1, 10)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => wb.Execute(new SetHiddenCommand(ws, Axis.Row, 0, CellRef.MaxRows + 1, true)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => wb.Execute(new DeleteColumnsCommand(ws, 16383, 2)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => wb.Execute(new InsertRowsCommand(ws, CellRef.MaxRows, 1)));
+        Assert.False(wb.Undo.CanUndo);
+    }
+
+    [Fact]
+    public void Refs_OutsideLimitsAreRejected()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        Assert.Throws<ArgumentOutOfRangeException>(() => CellRef.ColumnName(-1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => CellRef.ColumnName(CellRef.MaxColumns));
+        Assert.Throws<ArgumentOutOfRangeException>(() => wb.Execute(new SetValueCommand(ws, new CellRef(0, CellRef.MaxColumns), CellValue.Number(1))));
+        Assert.Throws<ArgumentOutOfRangeException>(() => wb.Execute(new SetValueCommand(ws, new CellRef(-1, 0), CellValue.Number(1))));
+        Assert.Throws<ArgumentOutOfRangeException>(() => wb.Execute(new FreezeCommand(ws, new CellRef(CellRef.MaxRows, 0))));
+        Assert.Null(ws[new CellRef(0, CellRef.MaxColumns)]);
+        Assert.False(wb.Undo.CanUndo);
+    }
+
+    [Fact]
+    public void Merge_KeepsOnlyTopLeftValueAndUndoRestores()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(1)));
+        wb.Execute(new SetValueCommand(ws, R("B1"), CellValue.Number(2)));
+        wb.Execute(new SetFormulaCommand(ws, R("A2"), "A1+1"));
+
+        wb.Execute(new MergeCommand(ws, CellRange.Parse("A1:B2")));
+        Assert.Equal(CellValue.Number(1), ws[R("A1")].Value);
+        Assert.Null(ws[R("B1")]);
+        Assert.Null(ws[R("A2")]);
+
+        wb.Undo.Undo();
+        Assert.Equal(CellValue.Number(2), ws[R("B1")].Value);
+        Assert.Equal("A1+1", ws[R("A2")].Formula);
+        Assert.Empty(ws.Merges);
+    }
+
+    [Fact]
+    public void UsedRange_IgnoresStyleOnlyCellsAndTracksChanges()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetStyleCommand(ws, CellRange.Parse("Z100"), CellStyle.Default with { NumberFormat = "0" }));
+        Assert.Equal(CellRange.Parse("A1"), ws.UsedRange);
+        wb.Execute(new SetValueCommand(ws, R("C3"), CellValue.Number(1)));
+        Assert.Equal(CellRange.Parse("C3"), ws.UsedRange);
+        wb.Execute(new SetValueCommand(ws, R("D5"), CellValue.Number(1)));
+        Assert.Equal(CellRange.Parse("C3:D5"), ws.UsedRange);
+        wb.Undo.Undo();
+        Assert.Equal(CellRange.Parse("C3"), ws.UsedRange);
+        wb.Execute(new InsertRowsCommand(ws, 0, 2));
+        Assert.Equal(CellRange.Parse("C5"), ws.UsedRange);
+    }
+
+    [Fact]
+    public void DeleteSheet_RejectsForeignSheet()
+    {
+        var wb = Workbook.Create();
+        var other = Workbook.Create("Other");
+        Assert.Throws<InvalidOperationException>(() => wb.Execute(new DeleteSheetCommand(other.Sheets[0])));
+    }
+
+    [Fact]
+    public void Undo_KeepsStepWhenRevertFails()
+    {
+        var wb = Workbook.Create();
+        var failing = new FailingCommand();
+        wb.Execute(failing);
+        Assert.Throws<InvalidOperationException>(() => wb.Undo.Undo());
+        Assert.True(wb.Undo.CanUndo);
+        Assert.False(wb.Undo.CanRedo);
+        failing.Fail = false;
+        wb.Undo.Undo();
+        Assert.True(wb.Undo.CanRedo);
+    }
+
+    private sealed class FailingCommand : IWorkbookCommand
+    {
+        public bool Fail { get; set; } = true;
+
+        public string Description => "Failing";
+
+        public void Apply(Workbook wb)
+        {
+        }
+
+        public void Revert(Workbook wb)
+        {
+            if (Fail) throw new InvalidOperationException();
+        }
     }
 }

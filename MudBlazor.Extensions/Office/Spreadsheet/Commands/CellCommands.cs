@@ -60,13 +60,17 @@ public sealed class SetFormulaCommand(Worksheet sheet, CellRef cell, string form
     }
 }
 
-/// <summary>Changes the style of every cell in a range, creating style-only cells where needed.</summary>
+/// <summary>
+/// Changes the style of every cell in a range. Ranges spanning whole columns or rows set column or row styles and restyle
+/// only existing cells; other ranges create style-only cells where needed.
+/// </summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="range">The range to format.</param>
-/// <param name="change">Maps the current style of a cell to its new style.</param>
+/// <param name="change">Maps the current effective style of a cell to its new style.</param>
 public sealed class SetStyleCommand(Worksheet sheet, CellRange range, Func<CellStyle, CellStyle> change) : IWorkbookCommand
 {
-    private readonly List<(CellRef Ref, int StyleId)> _before = new();
+    private readonly List<(CellRef Ref, int StyleId)> _cellsBefore = new();
+    private readonly List<(Axis Axis, int Index, int StyleId)> _axesBefore = new();
 
     /// <summary>Creates a command that replaces the style of every cell in the range with a fixed style.</summary>
     /// <param name="sheet">The sheet.</param>
@@ -82,32 +86,55 @@ public sealed class SetStyleCommand(Worksheet sheet, CellRange range, Func<CellS
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
-        _before.Clear();
-        var results = new Dictionary<int, int>();
-        foreach (var c in range.Cells())
+        Worksheet.Check(range);
+        _cellsBefore.Clear();
+        _axesBefore.Clear();
+        var cache = new Dictionary<int, int>();
+        int Next(int effective)
         {
-            var cell = sheet[c];
-            var old = cell?.StyleId ?? 0;
-            if (!results.TryGetValue(old, out var next))
-                results[old] = next = wb.Styles.GetOrAdd(change(wb.Styles[old]));
-            if (next == old) continue;
-            _before.Add((c, old));
+            if (!cache.TryGetValue(effective, out var next))
+                cache[effective] = next = wb.Styles.GetOrAdd(change(wb.Styles[effective]));
+            return next;
+        }
+
+        var wholeColumns = range.IsWholeColumns;
+        var wholeRows = range.IsWholeRows;
+        var cells = wholeColumns || wholeRows ? sheet.ExistingIn(range) : range.Cells();
+        foreach (var c in cells)
+        {
+            var effective = sheet.EffectiveStyleId(c);
+            var next = Next(effective);
+            if (next == effective) continue;
+            _cellsBefore.Add((c, sheet[c]?.StyleId ?? 0));
             sheet.Ensure(c).StyleId = next;
         }
 
+        if (wholeColumns) StyleAxis(Axis.Column, Enumerable.Range(range.Left, range.ColumnCount), Next);
+        if (wholeRows) StyleAxis(Axis.Row, wholeColumns ? sheet.AxisStyleKeys(Axis.Row) : Enumerable.Range(range.Top, range.RowCount), Next);
         wb.NotifyFormatted(sheet, range.Normalized);
     }
 
     /// <inheritdoc />
     public void Revert(Workbook wb)
     {
-        foreach (var (c, id) in _before)
+        foreach (var (c, id) in _cellsBefore)
         {
             sheet.Ensure(c).StyleId = id;
             sheet.Prune(c);
         }
 
+        foreach (var (axis, index, id) in _axesBefore) sheet.SetAxisStyle(axis, index, id);
         wb.NotifyFormatted(sheet, range.Normalized);
+    }
+
+    private void StyleAxis(Axis axis, IEnumerable<int> indexes, Func<int, int> next)
+    {
+        foreach (var i in indexes.ToList())
+        {
+            var old = sheet.AxisStyle(axis, i);
+            _axesBefore.Add((axis, i, old));
+            sheet.SetAxisStyle(axis, i, next(old));
+        }
     }
 }
 
@@ -125,6 +152,7 @@ public sealed class ClearCommand(Worksheet sheet, CellRange range, bool clearSty
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
+        Worksheet.Check(range);
         _before.Clear();
         foreach (var c in sheet.ExistingIn(range))
         {

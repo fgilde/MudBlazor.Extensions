@@ -7,25 +7,30 @@ namespace MudBlazor.Extensions.Office.Spreadsheet;
 /// <param name="count">How many to insert.</param>
 public abstract class InsertCommandBase(Worksheet sheet, Axis axis, int index, int count) : IWorkbookCommand
 {
+    private List<(CellRef Ref, CellState State)> _dropped = new();
+
     /// <inheritdoc />
     public string Description => axis == Axis.Row ? "Insert rows" : "Insert columns";
 
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
-        if (count < 1 || index < 0) throw new ArgumentOutOfRangeException(nameof(count));
-        sheet.Insert(axis, index, count);
+        var limit = AxisLimit(axis);
+        if (count < 1 || count > limit) throw new ArgumentOutOfRangeException(nameof(count));
+        if (index < 0 || index >= limit) throw new ArgumentOutOfRangeException(nameof(index));
+        _dropped = sheet.Insert(axis, index, count);
         wb.Notify(axis == Axis.Row ? StructureChangeKind.RowsInserted : StructureChangeKind.ColumnsInserted, sheet, index, count);
-        wb.NotifyShifted(sheet, axis, index);
     }
 
     /// <inheritdoc />
     public void Revert(Workbook wb)
     {
         sheet.Delete(axis, index, count);
+        foreach (var (r, state) in _dropped) sheet.Restore(r, state);
         wb.Notify(axis == Axis.Row ? StructureChangeKind.RowsDeleted : StructureChangeKind.ColumnsDeleted, sheet, index, count);
-        wb.NotifyShifted(sheet, axis, index);
     }
+
+    internal static int AxisLimit(Axis axis) => axis == Axis.Row ? CellRef.MaxRows : CellRef.MaxColumns;
 }
 
 /// <summary>Shared implementation of deleting rows or columns.</summary>
@@ -43,11 +48,9 @@ public abstract class DeleteCommandBase(Worksheet sheet, Axis axis, int index, i
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
-        if (count < 1 || index < 0) throw new ArgumentOutOfRangeException(nameof(count));
+        Check(axis, index, count);
         _snapshot = sheet.Delete(axis, index, count);
         wb.Notify(axis == Axis.Row ? StructureChangeKind.RowsDeleted : StructureChangeKind.ColumnsDeleted, sheet, index, count);
-        foreach (var (r, _) in _snapshot.Cells) wb.Notify(sheet, r);
-        wb.NotifyShifted(sheet, axis, index);
     }
 
     /// <inheritdoc />
@@ -55,8 +58,12 @@ public abstract class DeleteCommandBase(Worksheet sheet, Axis axis, int index, i
     {
         sheet.RestoreDeleted(axis, index, count, _snapshot);
         wb.Notify(axis == Axis.Row ? StructureChangeKind.RowsInserted : StructureChangeKind.ColumnsInserted, sheet, index, count);
-        foreach (var (r, _) in _snapshot.Cells) wb.Notify(sheet, r);
-        wb.NotifyShifted(sheet, axis, index);
+    }
+
+    internal static void Check(Axis axis, int index, int count)
+    {
+        if (index < 0 || count < 1 || (long)index + count > InsertCommandBase.AxisLimit(axis))
+            throw new ArgumentOutOfRangeException(nameof(count), "The rows or columns lie outside the worksheet limits.");
     }
 }
 
@@ -100,6 +107,7 @@ public sealed class SetHiddenCommand(Worksheet sheet, Axis axis, int index, int 
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
+        DeleteCommandBase.Check(axis, index, count);
         _changed.Clear();
         for (var i = index; i < index + count; i++)
         {
@@ -119,15 +127,20 @@ public sealed class SetHiddenCommand(Worksheet sheet, Axis axis, int index, int 
     }
 }
 
-/// <summary>Sets the width of columns or height of rows; a null size restores the default.</summary>
+/// <summary>
+/// Sets the width of columns or height of rows; a null size restores the standard. Resizing a whole axis changes the
+/// sheet default instead of storing one entry per index.
+/// </summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="axis">Rows (height) or columns (width).</param>
 /// <param name="index">Zero-based first index.</param>
 /// <param name="count">Number of rows or columns.</param>
-/// <param name="size">Size in pixels, or null for the default.</param>
+/// <param name="size">Size in pixels, or null for the standard size.</param>
 public sealed class ResizeCommand(Worksheet sheet, Axis axis, int index, int count, double? size) : IWorkbookCommand
 {
     private readonly List<(int Index, double? Size)> _before = new();
+    private List<KeyValuePair<int, double>> _entriesBefore;
+    private double _defaultBefore;
 
     /// <inheritdoc />
     public string Description => axis == Axis.Row ? "Resize rows" : "Resize columns";
@@ -135,13 +148,25 @@ public sealed class ResizeCommand(Worksheet sheet, Axis axis, int index, int cou
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
+        DeleteCommandBase.Check(axis, index, count);
         _before.Clear();
-        var fallback = axis == Axis.Row ? Worksheet.DefaultRowHeight : Worksheet.DefaultColumnWidth;
-        var target = size is { } s && s != fallback ? s : (double?)null;
-        for (var i = index; i < index + count; i++)
+        _entriesBefore = null;
+        var standard = axis == Axis.Row ? Worksheet.StandardRowHeight : Worksheet.StandardColumnWidth;
+        if (index == 0 && count == InsertCommandBase.AxisLimit(axis))
         {
-            _before.Add((i, sheet.SizeOrNull(axis, i)));
-            sheet.SetSize(axis, i, target);
+            _entriesBefore = sheet.SizeEntries(axis);
+            _defaultBefore = sheet.DefaultSize(axis);
+            sheet.ReplaceSizes(axis, []);
+            sheet.SetDefaultSize(axis, size ?? standard);
+        }
+        else
+        {
+            var target = size is { } s && s != sheet.DefaultSize(axis) ? s : (double?)null;
+            for (var i = index; i < index + count; i++)
+            {
+                _before.Add((i, sheet.SizeOrNull(axis, i)));
+                sheet.SetSize(axis, i, target);
+            }
         }
 
         wb.Notify(StructureChangeKind.Layout, sheet);
@@ -150,17 +175,29 @@ public sealed class ResizeCommand(Worksheet sheet, Axis axis, int index, int cou
     /// <inheritdoc />
     public void Revert(Workbook wb)
     {
-        foreach (var (i, old) in _before) sheet.SetSize(axis, i, old);
+        if (_entriesBefore != null)
+        {
+            sheet.ReplaceSizes(axis, _entriesBefore);
+            sheet.SetDefaultSize(axis, _defaultBefore);
+        }
+        else
+        {
+            foreach (var (i, old) in _before) sheet.SetSize(axis, i, old);
+        }
+
         wb.Notify(StructureChangeKind.Layout, sheet);
     }
 }
 
-/// <summary>Merges a range; existing merges that overlap it are replaced. Cell data is not modified.</summary>
+/// <summary>
+/// Merges a range; existing merges that overlap it are replaced. Like Excel, only the top-left value and formula are kept.
+/// </summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="range">The range to merge.</param>
 public sealed class MergeCommand(Worksheet sheet, CellRange range) : IWorkbookCommand
 {
     private List<CellRange> _before;
+    private readonly List<(CellRef Ref, CellState State)> _cleared = new();
 
     /// <inheritdoc />
     public string Description => "Merge cells";
@@ -168,8 +205,20 @@ public sealed class MergeCommand(Worksheet sheet, CellRange range) : IWorkbookCo
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
+        Worksheet.Check(range);
         if (range.IsSingleCell) throw new ArgumentException("A merge needs at least two cells.", nameof(range));
         _before = sheet.CopyMerges();
+        _cleared.Clear();
+        foreach (var c in sheet.ExistingIn(range))
+        {
+            if (c.Row == range.Top && c.Column == range.Left) continue;
+            var state = sheet.Capture(c);
+            if (state.Value.Kind == CellValueKind.Empty && state.Formula == null) continue;
+            _cleared.Add((c, state));
+            sheet.Restore(c, new CellState(default, null, state.StyleId));
+            wb.Notify(sheet, c);
+        }
+
         sheet.ReplaceMerges(_before.Where(m => !m.Intersects(range)).Append(range.Normalized));
         wb.Notify(StructureChangeKind.Layout, sheet);
     }
@@ -178,6 +227,12 @@ public sealed class MergeCommand(Worksheet sheet, CellRange range) : IWorkbookCo
     public void Revert(Workbook wb)
     {
         sheet.ReplaceMerges(_before);
+        foreach (var (c, state) in _cleared)
+        {
+            sheet.Restore(c, state);
+            wb.Notify(sheet, c);
+        }
+
         wb.Notify(StructureChangeKind.Layout, sheet);
     }
 }
@@ -195,6 +250,7 @@ public sealed class UnmergeCommand(Worksheet sheet, CellRange range) : IWorkbook
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
+        Worksheet.Check(range);
         _before = sheet.CopyMerges();
         sheet.ReplaceMerges(_before.Where(m => !m.Intersects(range)));
         wb.Notify(StructureChangeKind.Layout, sheet);
@@ -221,6 +277,7 @@ public sealed class FreezeCommand(Worksheet sheet, CellRef? at) : IWorkbookComma
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
+        if (at is { } a) Worksheet.Check(a);
         _before = sheet.FreezeAt;
         sheet.FreezeAt = at is { Row: 0, Column: 0 } or null ? null : at.Value.Relative;
         wb.Notify(StructureChangeKind.Layout, sheet);
@@ -278,8 +335,10 @@ public sealed class DeleteSheetCommand(Worksheet sheet) : IWorkbookCommand
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
-        if (wb.SheetList.Count < 2) throw new InvalidOperationException("A workbook needs at least one sheet.");
         _position = wb.SheetList.IndexOf(sheet);
+        if (_position < 0) throw new InvalidOperationException("The sheet does not belong to this workbook.");
+        if (!wb.SheetList.Any(x => x != sheet && !x.Hidden))
+            throw new InvalidOperationException("A workbook needs at least one visible sheet.");
         wb.SheetList.RemoveAt(_position);
         wb.Notify(StructureChangeKind.SheetRemoved, sheet, _position);
     }

@@ -30076,6 +30076,7 @@
             <summary>Converts a zero-based column index to its letters (0 = A, 26 = AA).</summary>
             <param name="col">Zero-based column index.</param>
             <returns>The column letters.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">The column is outside 0 to <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CellRef.MaxColumns"/> - 1.</exception>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellHorizontalAlignment">
             <summary>Horizontal cell alignment.</summary>
@@ -30375,16 +30376,22 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetStyleCommand">
-            <summary>Changes the style of every cell in a range, creating style-only cells where needed.</summary>
+            <summary>
+            Changes the style of every cell in a range. Ranges spanning whole columns or rows set column or row styles and restyle
+            only existing cells; other ranges create style-only cells where needed.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The range to format.</param>
-            <param name="change">Maps the current style of a cell to its new style.</param>
+            <param name="change">Maps the current effective style of a cell to its new style.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetStyleCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,System.Func{MudBlazor.Extensions.Office.Spreadsheet.CellStyle,MudBlazor.Extensions.Office.Spreadsheet.CellStyle})">
-            <summary>Changes the style of every cell in a range, creating style-only cells where needed.</summary>
+            <summary>
+            Changes the style of every cell in a range. Ranges spanning whole columns or rows set column or row styles and restyle
+            only existing cells; other ranges create style-only cells where needed.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The range to format.</param>
-            <param name="change">Maps the current style of a cell to its new style.</param>
+            <param name="change">Maps the current effective style of a cell to its new style.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetStyleCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,MudBlazor.Extensions.Office.Spreadsheet.CellStyle)">
             <summary>Creates a command that replaces the style of every cell in the range with a fixed style.</summary>
@@ -30559,20 +30566,26 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ResizeCommand">
-            <summary>Sets the width of columns or height of rows; a null size restores the default.</summary>
+            <summary>
+            Sets the width of columns or height of rows; a null size restores the standard. Resizing a whole axis changes the
+            sheet default instead of storing one entry per index.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="axis">Rows (height) or columns (width).</param>
             <param name="index">Zero-based first index.</param>
             <param name="count">Number of rows or columns.</param>
-            <param name="size">Size in pixels, or null for the default.</param>
+            <param name="size">Size in pixels, or null for the standard size.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ResizeCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.Axis,System.Int32,System.Int32,System.Nullable{System.Double})">
-            <summary>Sets the width of columns or height of rows; a null size restores the default.</summary>
+            <summary>
+            Sets the width of columns or height of rows; a null size restores the standard. Resizing a whole axis changes the
+            sheet default instead of storing one entry per index.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="axis">Rows (height) or columns (width).</param>
             <param name="index">Zero-based first index.</param>
             <param name="count">Number of rows or columns.</param>
-            <param name="size">Size in pixels, or null for the default.</param>
+            <param name="size">Size in pixels, or null for the standard size.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ResizeCommand.Description">
             <inheritdoc />
@@ -30584,12 +30597,16 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.MergeCommand">
-            <summary>Merges a range; existing merges that overlap it are replaced. Cell data is not modified.</summary>
+            <summary>
+            Merges a range; existing merges that overlap it are replaced. Like Excel, only the top-left value and formula are kept.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The range to merge.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.MergeCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
-            <summary>Merges a range; existing merges that overlap it are replaced. Cell data is not modified.</summary>
+            <summary>
+            Merges a range; existing merges that overlap it are replaced. Like Excel, only the top-left value and formula are kept.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The range to merge.</param>
         </member>
@@ -30890,7 +30907,7 @@
             <summary>Describes everything that changed during one command, transaction, undo or redo.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.Cells">
-            <summary>Cells whose value or formula changed (including cells moved into place by a structural change).</summary>
+            <summary>Cells whose value or formula changed through cell commands. Structural changes are reported only in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.Structure"/>; consumers shift or recompute from there.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.FormattedRanges">
             <summary>Ranges whose formatting changed.</summary>
@@ -30945,14 +30962,20 @@
             row and column sizes are stored only where they differ from the defaults. All mutation goes through commands.
             </summary>
         </member>
-        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DefaultColumnWidth">
-            <summary>Default column width in pixels.</summary>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.StandardColumnWidth">
+            <summary>Standard column width in pixels, the initial <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DefaultColumnWidth"/>.</summary>
         </member>
-        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DefaultRowHeight">
-            <summary>Default row height in pixels.</summary>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.StandardRowHeight">
+            <summary>Standard row height in pixels, the initial <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DefaultRowHeight"/>.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Name">
             <summary>The sheet name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DefaultColumnWidth">
+            <summary>Width in pixels of columns without an explicit width.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DefaultRowHeight">
+            <summary>Height in pixels of rows without an explicit height.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.TabColor">
             <summary>Tab color as #RRGGBB, or null.</summary>
@@ -30972,6 +30995,12 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.RowHeights">
             <summary>Explicit row heights (only deviations from the default), keyed by zero-based row.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ColumnStyles">
+            <summary>Column styles (style ids, only columns with a style), keyed by zero-based column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.RowStyles">
+            <summary>Row styles (style ids, only rows with a style), keyed by zero-based row.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.HiddenColumns">
             <summary>Zero-based indexes of hidden columns.</summary>
         </member>
@@ -30982,12 +31011,27 @@
             <summary>Gets the stored cell, or null if the address holds no content and no style.</summary>
             <param name="r">The cell address.</param>
         </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ColumnStyle(System.Int32)">
+            <summary>Style id applied to a whole column (0 if none).</summary>
+            <param name="col">Zero-based column.</param>
+            <returns>The style id.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.RowStyle(System.Int32)">
+            <summary>Style id applied to a whole row (0 if none).</summary>
+            <param name="row">Zero-based row.</param>
+            <returns>The style id.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.EffectiveStyleId(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Style id that renders a cell: its own style if set, else the row style, else the column style, else 0.</summary>
+            <param name="r">The cell address.</param>
+            <returns>The effective style id.</returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.UsedCells">
             <summary>Enumerates all stored cells in no particular order.</summary>
             <returns>Address and cell pairs.</returns>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.UsedRange">
-            <summary>Bounding range of all stored cells, or A1 for an empty sheet.</summary>
+            <summary>Bounding range of all cells holding a value or formula (style-only cells are ignored), or A1 if there are none.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ColumnWidth(System.Int32)">
             <summary>Width of a column in pixels (hidden columns keep their stored width).</summary>

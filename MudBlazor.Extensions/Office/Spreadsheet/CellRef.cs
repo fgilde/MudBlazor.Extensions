@@ -48,8 +48,10 @@ public readonly record struct CellRef(int Row, int Column, bool RowAbsolute = fa
     /// <summary>Converts a zero-based column index to its letters (0 = A, 26 = AA).</summary>
     /// <param name="col">Zero-based column index.</param>
     /// <returns>The column letters.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The column is outside 0 to <see cref="MaxColumns"/> - 1.</exception>
     public static string ColumnName(int col)
     {
+        if (col < 0 || col >= MaxColumns) throw new ArgumentOutOfRangeException(nameof(col));
         Span<char> buffer = stackalloc char[3];
         var i = buffer.Length;
         for (var n = col + 1; n > 0; n = (n - 1) / 26)

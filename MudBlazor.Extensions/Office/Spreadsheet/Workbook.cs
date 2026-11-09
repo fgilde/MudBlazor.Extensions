@@ -65,7 +65,7 @@ public sealed class WorkbookChangedEventArgs : EventArgs
         Structure = structure;
     }
 
-    /// <summary>Cells whose value or formula changed (including cells moved into place by a structural change).</summary>
+    /// <summary>Cells whose value or formula changed through cell commands. Structural changes are reported only in <see cref="Structure"/>; consumers shift or recompute from there.</summary>
     public IReadOnlyCollection<CellChange> Cells { get; }
 
     /// <summary>Ranges whose formatting changed.</summary>
@@ -152,12 +152,6 @@ public sealed class Workbook
     }
 
     internal void Notify(Worksheet sheet, CellRef cell) => _cells.Add(new CellChange(sheet, cell.Relative));
-
-    internal void NotifyShifted(Worksheet sheet, Axis axis, int index)
-    {
-        foreach (var (r, _) in sheet.UsedCells())
-            if ((axis == Axis.Row ? r.Row : r.Column) >= index) Notify(sheet, r);
-    }
 
     internal void NotifyFormatted(Worksheet sheet, CellRange range) => _ranges.Add(new RangeChange(sheet, range));
 

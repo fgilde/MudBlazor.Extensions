@@ -16,23 +16,32 @@ public enum Axis
 /// </summary>
 public sealed class Worksheet
 {
-    /// <summary>Default column width in pixels.</summary>
-    public const double DefaultColumnWidth = 64;
+    /// <summary>Standard column width in pixels, the initial <see cref="DefaultColumnWidth"/>.</summary>
+    public const double StandardColumnWidth = 64;
 
-    /// <summary>Default row height in pixels.</summary>
-    public const double DefaultRowHeight = 20;
+    /// <summary>Standard row height in pixels, the initial <see cref="DefaultRowHeight"/>.</summary>
+    public const double StandardRowHeight = 20;
 
     private Dictionary<long, Cell> _cells = new();
     private readonly Dictionary<int, double> _columnWidths = new();
     private readonly Dictionary<int, double> _rowHeights = new();
     private readonly HashSet<int> _hiddenColumns = new();
     private readonly HashSet<int> _hiddenRows = new();
+    private readonly Dictionary<int, int> _columnStyles = new();
+    private readonly Dictionary<int, int> _rowStyles = new();
     private List<CellRange> _merges = new();
+    private CellRange? _usedRange;
 
     internal Worksheet(string name) => Name = name;
 
     /// <summary>The sheet name.</summary>
     public string Name { get; internal set; }
+
+    /// <summary>Width in pixels of columns without an explicit width.</summary>
+    public double DefaultColumnWidth { get; internal set; } = StandardColumnWidth;
+
+    /// <summary>Height in pixels of rows without an explicit height.</summary>
+    public double DefaultRowHeight { get; internal set; } = StandardRowHeight;
 
     /// <summary>Tab color as #RRGGBB, or null.</summary>
     public string TabColor { get; internal set; }
@@ -52,6 +61,12 @@ public sealed class Worksheet
     /// <summary>Explicit row heights (only deviations from the default), keyed by zero-based row.</summary>
     public IReadOnlyDictionary<int, double> RowHeights => _rowHeights;
 
+    /// <summary>Column styles (style ids, only columns with a style), keyed by zero-based column.</summary>
+    public IReadOnlyDictionary<int, int> ColumnStyles => _columnStyles;
+
+    /// <summary>Row styles (style ids, only rows with a style), keyed by zero-based row.</summary>
+    public IReadOnlyDictionary<int, int> RowStyles => _rowStyles;
+
     /// <summary>Zero-based indexes of hidden columns.</summary>
     public IReadOnlySet<int> HiddenColumns => _hiddenColumns;
 
@@ -60,7 +75,26 @@ public sealed class Worksheet
 
     /// <summary>Gets the stored cell, or null if the address holds no content and no style.</summary>
     /// <param name="r">The cell address.</param>
-    public Cell this[CellRef r] => _cells.GetValueOrDefault(r.Key);
+    public Cell this[CellRef r] => InBounds(r) ? _cells.GetValueOrDefault(r.Key) : null;
+
+    /// <summary>Style id applied to a whole column (0 if none).</summary>
+    /// <param name="col">Zero-based column.</param>
+    /// <returns>The style id.</returns>
+    public int ColumnStyle(int col) => _columnStyles.GetValueOrDefault(col);
+
+    /// <summary>Style id applied to a whole row (0 if none).</summary>
+    /// <param name="row">Zero-based row.</param>
+    /// <returns>The style id.</returns>
+    public int RowStyle(int row) => _rowStyles.GetValueOrDefault(row);
+
+    /// <summary>Style id that renders a cell: its own style if set, else the row style, else the column style, else 0.</summary>
+    /// <param name="r">The cell address.</param>
+    /// <returns>The effective style id.</returns>
+    public int EffectiveStyleId(CellRef r)
+    {
+        if (_cells.TryGetValue(r.Key, out var cell) && cell.StyleId != 0) return cell.StyleId;
+        return _rowStyles.TryGetValue(r.Row, out var rs) ? rs : _columnStyles.GetValueOrDefault(r.Column);
+    }
 
     /// <summary>Enumerates all stored cells in no particular order.</summary>
     /// <returns>Address and cell pairs.</returns>
@@ -70,25 +104,8 @@ public sealed class Worksheet
             yield return (CellRef.FromKey(key), cell);
     }
 
-    /// <summary>Bounding range of all stored cells, or A1 for an empty sheet.</summary>
-    public CellRange UsedRange
-    {
-        get
-        {
-            if (_cells.Count == 0) return CellRange.FromBounds(0, 0, 0, 0);
-            int top = int.MaxValue, left = int.MaxValue, bottom = 0, right = 0;
-            foreach (var key in _cells.Keys)
-            {
-                var c = CellRef.FromKey(key);
-                top = Math.Min(top, c.Row);
-                bottom = Math.Max(bottom, c.Row);
-                left = Math.Min(left, c.Column);
-                right = Math.Max(right, c.Column);
-            }
-
-            return CellRange.FromBounds(top, left, bottom, right);
-        }
-    }
+    /// <summary>Bounding range of all cells holding a value or formula (style-only cells are ignored), or A1 if there are none.</summary>
+    public CellRange UsedRange => _usedRange ??= ComputeUsedRange();
 
     /// <summary>Width of a column in pixels (hidden columns keep their stored width).</summary>
     /// <param name="c">Zero-based column.</param>
@@ -110,8 +127,39 @@ public sealed class Worksheet
     /// <returns>True if hidden.</returns>
     public bool IsRowHidden(int r) => _hiddenRows.Contains(r);
 
+    internal static bool InBounds(CellRef r) => r.Row >= 0 && r.Row < CellRef.MaxRows && r.Column >= 0 && r.Column < CellRef.MaxColumns;
+
+    internal static void Check(CellRef r)
+    {
+        if (!InBounds(r)) throw new ArgumentOutOfRangeException(nameof(r), "The cell lies outside the worksheet limits.");
+    }
+
+    internal static void Check(CellRange range)
+    {
+        Check(range.Start);
+        Check(range.End);
+    }
+
+    private CellRange ComputeUsedRange()
+    {
+        int top = int.MaxValue, left = int.MaxValue, bottom = -1, right = -1;
+        foreach (var (key, cell) in _cells)
+        {
+            if (!cell.HasContent) continue;
+            var c = CellRef.FromKey(key);
+            top = Math.Min(top, c.Row);
+            bottom = Math.Max(bottom, c.Row);
+            left = Math.Min(left, c.Column);
+            right = Math.Max(right, c.Column);
+        }
+
+        return bottom < 0 ? CellRange.FromBounds(0, 0, 0, 0) : CellRange.FromBounds(top, left, bottom, right);
+    }
+
     internal Cell Ensure(CellRef r)
     {
+        Check(r);
+        _usedRange = null;
         var key = r.Key;
         if (_cells.TryGetValue(key, out var cell)) return cell;
         cell = new Cell();
@@ -121,13 +169,19 @@ public sealed class Worksheet
 
     internal void Prune(CellRef r)
     {
+        _usedRange = null;
         if (_cells.TryGetValue(r.Key, out var cell) && cell.State.IsEmpty) _cells.Remove(r.Key);
     }
 
-    internal CellState Capture(CellRef r) => _cells.TryGetValue(r.Key, out var cell) ? cell.State : default;
+    internal CellState Capture(CellRef r)
+    {
+        Check(r);
+        return _cells.TryGetValue(r.Key, out var cell) ? cell.State : default;
+    }
 
     internal void Restore(CellRef r, CellState state)
     {
+        _usedRange = null;
         if (state.IsEmpty)
         {
             _cells.Remove(r.Key);
@@ -173,15 +227,43 @@ public sealed class Worksheet
         else Sizes(axis)[index] = size.Value;
     }
 
+    internal double DefaultSize(Axis axis) => axis == Axis.Row ? DefaultRowHeight : DefaultColumnWidth;
+
+    internal void SetDefaultSize(Axis axis, double size)
+    {
+        if (axis == Axis.Row) DefaultRowHeight = size;
+        else DefaultColumnWidth = size;
+    }
+
+    internal List<KeyValuePair<int, double>> SizeEntries(Axis axis) => Sizes(axis).ToList();
+
+    internal void ReplaceSizes(Axis axis, IEnumerable<KeyValuePair<int, double>> entries)
+    {
+        var sizes = Sizes(axis);
+        sizes.Clear();
+        foreach (var (i, v) in entries) sizes[i] = v;
+    }
+
+    internal int AxisStyle(Axis axis, int index) => AxisStyles(axis).GetValueOrDefault(index);
+
+    internal void SetAxisStyle(Axis axis, int index, int styleId)
+    {
+        if (styleId == 0) AxisStyles(axis).Remove(index);
+        else AxisStyles(axis)[index] = styleId;
+    }
+
+    internal List<int> AxisStyleKeys(Axis axis) => AxisStyles(axis).Keys.ToList();
+
     internal void SetHidden(Axis axis, int index, bool hidden)
     {
         if (hidden) HiddenSet(axis).Add(index);
         else HiddenSet(axis).Remove(index);
     }
 
-    internal void Insert(Axis axis, int index, int count)
+    internal List<(CellRef Ref, CellState State)> Insert(Axis axis, int index, int count)
     {
         var limit = axis == Axis.Row ? CellRef.MaxRows : CellRef.MaxColumns;
+        var dropped = new List<(CellRef, CellState)>();
         var rebuilt = new Dictionary<long, Cell>(_cells.Count);
         foreach (var (key, cell) in _cells)
         {
@@ -189,23 +271,34 @@ public sealed class Worksheet
             var v = axis == Axis.Row ? c.Row : c.Column;
             if (v >= index) v += count;
             if (v >= limit)
-                throw new InvalidOperationException("Inserting would push cells beyond the worksheet limits.");
+            {
+                if (cell.HasContent)
+                    throw new InvalidOperationException("Inserting would push cells beyond the worksheet limits.");
+                dropped.Add((c, cell.State));
+                continue;
+            }
+
             rebuilt[(axis == Axis.Row ? new CellRef(v, c.Column) : new CellRef(c.Row, v)).Key] = cell;
         }
 
         _cells = rebuilt;
-        Remap(axis, v => v >= index ? v + count : v);
-        _merges = _merges.Select(m => ShiftRange(m, axis, Start(m, axis) >= index ? count : 0, End(m, axis) >= index ? count : 0)).ToList();
+        _usedRange = null;
+        Remap(axis, v => v >= index ? v + count : v, limit);
+        _merges = _merges.Select(m => ShiftRange(m, axis, Start(m, axis) >= index ? count : 0, End(m, axis) >= index ? count : 0, limit)).ToList();
         if (FreezeAt is { } f)
         {
             var v = axis == Axis.Row ? f.Row : f.Column;
-            if (index < v) FreezeAt = axis == Axis.Row ? new CellRef(v + count, f.Column) : new CellRef(f.Row, v + count);
+            var nv = Math.Min(v + count, limit - 1);
+            if (index < v) FreezeAt = axis == Axis.Row ? new CellRef(nv, f.Column) : new CellRef(f.Row, nv);
         }
+
+        return dropped;
     }
 
     internal DeleteSnapshot Delete(Axis axis, int index, int count)
     {
         var end = index + count;
+        var limit = axis == Axis.Row ? CellRef.MaxRows : CellRef.MaxColumns;
         var removed = new List<(CellRef, CellState)>();
         var kept = new Dictionary<long, Cell>(_cells.Count);
         foreach (var (key, cell) in _cells)
@@ -218,9 +311,11 @@ public sealed class Worksheet
         }
 
         var snapshot = new DeleteSnapshot(removed, Sizes(axis).Where(p => p.Key >= index && p.Key < end).ToList(),
-            HiddenSet(axis).Where(i => i >= index && i < end).ToList(), CopyMerges(), FreezeAt);
+            HiddenSet(axis).Where(i => i >= index && i < end).ToList(),
+            AxisStyles(axis).Where(p => p.Key >= index && p.Key < end).ToList(), CopyMerges(), FreezeAt);
         _cells = kept;
-        Remap(axis, v => v < index ? v : v < end ? -1 : v - count);
+        _usedRange = null;
+        Remap(axis, v => v < index ? v : v < end ? -1 : v - count, limit);
         _merges = _merges.Select(m => ShrinkRange(m, axis, index, count)).Where(m => m is { IsSingleCell: false }).Select(m => m.Value).ToList();
         if (FreezeAt is { } f)
         {
@@ -239,23 +334,31 @@ public sealed class Worksheet
         foreach (var (r, state) in snapshot.Cells) Restore(r, state);
         foreach (var (i, size) in snapshot.Sizes) Sizes(axis)[i] = size;
         foreach (var i in snapshot.Hidden) HiddenSet(axis).Add(i);
+        foreach (var (i, style) in snapshot.AxisStyles) AxisStyles(axis)[i] = style;
         _merges = [.. snapshot.Merges];
         FreezeAt = snapshot.Freeze;
     }
 
     private Dictionary<int, double> Sizes(Axis axis) => axis == Axis.Row ? _rowHeights : _columnWidths;
 
+    private Dictionary<int, int> AxisStyles(Axis axis) => axis == Axis.Row ? _rowStyles : _columnStyles;
+
     private HashSet<int> HiddenSet(Axis axis) => axis == Axis.Row ? _hiddenRows : _hiddenColumns;
 
-    private void Remap(Axis axis, Func<int, int> map)
+    private void Remap(Axis axis, Func<int, int> map, int limit)
     {
         var sizes = Sizes(axis);
-        var moved = sizes.Select(p => (Index: map(p.Key), p.Value)).Where(p => p.Index >= 0).ToList();
+        var moved = sizes.Select(p => (Index: map(p.Key), p.Value)).Where(p => p.Index >= 0 && p.Index < limit).ToList();
         sizes.Clear();
         foreach (var (i, v) in moved) sizes[i] = v;
 
+        var styles = AxisStyles(axis);
+        var movedStyles = styles.Select(p => (Index: map(p.Key), p.Value)).Where(p => p.Index >= 0 && p.Index < limit).ToList();
+        styles.Clear();
+        foreach (var (i, v) in movedStyles) styles[i] = v;
+
         var hidden = HiddenSet(axis);
-        var movedHidden = hidden.Select(map).Where(i => i >= 0).ToList();
+        var movedHidden = hidden.Select(map).Where(i => i >= 0 && i < limit).ToList();
         hidden.Clear();
         hidden.UnionWith(movedHidden);
     }
@@ -264,9 +367,9 @@ public sealed class Worksheet
 
     private static int End(CellRange r, Axis axis) => axis == Axis.Row ? r.Bottom : r.Right;
 
-    private static CellRange ShiftRange(CellRange r, Axis axis, int startShift, int endShift) => axis == Axis.Row
-        ? CellRange.FromBounds(r.Top + startShift, r.Left, r.Bottom + endShift, r.Right)
-        : CellRange.FromBounds(r.Top, r.Left + startShift, r.Bottom, r.Right + endShift);
+    private static CellRange ShiftRange(CellRange r, Axis axis, int startShift, int endShift, int limit) => axis == Axis.Row
+        ? CellRange.FromBounds(Math.Min(r.Top + startShift, limit - 1), r.Left, Math.Min(r.Bottom + endShift, limit - 1), r.Right)
+        : CellRange.FromBounds(r.Top, Math.Min(r.Left + startShift, limit - 1), r.Bottom, Math.Min(r.Right + endShift, limit - 1));
 
     private static CellRange? ShrinkRange(CellRange r, Axis axis, int index, int count)
     {
@@ -285,5 +388,6 @@ internal sealed record DeleteSnapshot(
     List<(CellRef Ref, CellState State)> Cells,
     List<KeyValuePair<int, double>> Sizes,
     List<int> Hidden,
+    List<KeyValuePair<int, int>> AxisStyles,
     List<CellRange> Merges,
     CellRef? Freeze);

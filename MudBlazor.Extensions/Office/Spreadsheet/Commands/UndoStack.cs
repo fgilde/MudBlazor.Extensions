@@ -32,8 +32,8 @@ public sealed class UndoStack
     {
         if (!CanUndo) throw new InvalidOperationException("Nothing to undo.");
         var cmd = _undo[^1];
-        _undo.RemoveAt(_undo.Count - 1);
         Run(() => cmd.Revert(_wb));
+        _undo.RemoveAt(_undo.Count - 1);
         _redo.Add(cmd);
     }
 
@@ -42,8 +42,8 @@ public sealed class UndoStack
     {
         if (!CanRedo) throw new InvalidOperationException("Nothing to redo.");
         var cmd = _redo[^1];
-        _redo.RemoveAt(_redo.Count - 1);
         Run(() => cmd.Apply(_wb));
+        _redo.RemoveAt(_redo.Count - 1);
         _undo.Add(cmd);
     }
 

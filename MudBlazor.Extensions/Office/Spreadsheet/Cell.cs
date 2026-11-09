@@ -12,6 +12,8 @@ public sealed class Cell
     /// <summary>Index into <see cref="StyleTable"/>.</summary>
     public int StyleId { get; internal set; }
 
+    internal bool HasContent => Value.Kind != CellValueKind.Empty || Formula != null;
+
     internal CellState State => new(Value, Formula, StyleId);
 }
 
