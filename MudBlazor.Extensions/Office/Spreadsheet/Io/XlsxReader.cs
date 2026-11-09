@@ -73,6 +73,7 @@ public static class XlsxReader
         package.CanonicalXf = canonicalXf is { Length: > 0 } ? canonicalXf : [0];
         var strings = Open(zip, package.SharedStringsPart, s => ReadSharedStrings(s, package)) ?? [];
 
+        var cells = 0;
         foreach (var sheet in Child(root, "sheets")?.Elements().Where(e => e.Name.LocalName == "sheet") ?? [])
         {
             var id = (string)sheet.Attributes().FirstOrDefault(a => a.Name.LocalName == "id" && a.Name.Namespace != XNamespace.None);
@@ -96,7 +97,10 @@ public static class XlsxReader
             var entry = Find(zip, partName);
             if (entry == null) continue;
             using var s = entry.Open();
+            ws.CellLimit = Workbook.MaxCells - cells;
             SheetXmlReader.Read(s, entry.Length, ws, part, strings, package, theme);
+            ws.CellLimit = int.MaxValue;
+            cells += ws.CellCount;
         }
 
         if (wb.Sheets.Count == 0) wb.SheetList.Add(new Worksheet("Sheet1", wb));
@@ -106,6 +110,7 @@ public static class XlsxReader
             if ((string)name.Attribute("name") is { Length: > 0 } key)
                 wb.DefinedNameMap[key] = SheetXmlWriter.FromFile(name.Value);
 
+        package.DetectUnshiftedReferences();
         return wb;
     }
 
@@ -117,7 +122,7 @@ public static class XlsxReader
         return read(s);
     }
 
-    private static XDocument Load(ZipArchive zip, string part) => Open(zip, part, s => XDocument.Load(s));
+    private static XDocument Load(ZipArchive zip, string part) => Open(zip, part, XlsxPackage.LoadXml);
 
     private static void ReadContentTypes(ZipArchive zip, XlsxPackage package)
     {
@@ -143,6 +148,7 @@ public static class XlsxReader
                 continue;
             }
 
+            if (list.Count >= Workbook.MaxCells) throw Worksheet.TooManyCells();
             var si = (XElement)XNode.ReadFrom(reader);
             list.Add(SheetXmlReader.Text(si, out var rich));
             if (rich) package.RichStrings[list.Count - 1] = si;

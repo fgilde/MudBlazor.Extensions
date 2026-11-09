@@ -19,9 +19,14 @@ public static class XlsReader
         using var reader = ExcelReaderFactory.CreateReader(stream, new ExcelReaderConfiguration { LeaveOpen = true });
         var wb = new Workbook();
         var formats = new Dictionary<string, int>();
+        var cells = 0;
         do
         {
-            var ws = new Worksheet(reader.Name, wb) { Hidden = !string.Equals(reader.VisibleState, "visible", StringComparison.OrdinalIgnoreCase) };
+            var ws = new Worksheet(reader.Name, wb)
+            {
+                Hidden = !string.Equals(reader.VisibleState, "visible", StringComparison.OrdinalIgnoreCase),
+                CellLimit = Workbook.MaxCells - cells
+            };
             wb.SheetList.Add(ws);
             for (var row = 0; reader.Read() && row < CellRef.MaxRows; row++)
             {
@@ -37,6 +42,9 @@ public static class XlsReader
                     cell.StyleId = id;
                 }
             }
+
+            ws.CellLimit = int.MaxValue;
+            cells += ws.CellCount;
         } while (reader.NextResult());
 
         return wb;

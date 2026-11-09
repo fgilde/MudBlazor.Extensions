@@ -31204,10 +31204,13 @@
             <returns>The formula text, for example <c>SUM(A1:B2,1)</c>.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry">
-            <summary>Case-insensitive lookup of worksheet functions by name.</summary>
+            <summary>
+            Case-insensitive lookup of worksheet functions by name. Register functions before handing the registry to a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CalcEngine"/>;
+            registries are not synchronized.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.Default">
-            <summary>The registry with all built-in functions.</summary>
+            <summary>The registry with all built-in functions. It is shared by all engines and read-only; use <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.Copy"/> to add functions.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.Functions">
             <summary>All registered functions.</summary>
@@ -31215,6 +31218,11 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.Register(MudBlazor.Extensions.Office.Spreadsheet.IFunction)">
             <summary>Adds or replaces a function.</summary>
             <param name="function">The function.</param>
+            <exception cref="T:System.InvalidOperationException">The registry is <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.Default"/>.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.Copy">
+            <summary>Creates a writable registry with the same functions, for example to add custom functions to the built-in ones.</summary>
+            <returns>The copy.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FunctionRegistry.TryGet(System.String,MudBlazor.Extensions.Office.Spreadsheet.IFunction@)">
             <summary>Finds a function; the file prefixes <c>_xlfn.</c> and <c>_xlws.</c> are ignored.</summary>
@@ -32538,7 +32546,13 @@
             <summary>The original <c>definedNames</c> element (sheet-scoped, hidden and commented names live only here), or null.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.Date1904">
-            <summary>True if the workbook uses the 1904 date system; serials are kept as stored.</summary>
+            <summary>
+            True if the workbook uses the 1904 date system. The reader adds <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.Date1904Offset"/> to numbers in date-formatted cells so the
+            model always holds 1900-based serials, and the writer subtracts it again.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.HasUnshiftedReferences">
+            <summary>True if sheets have children or the package has parts whose cell references are not shifted by structural changes.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage.XfStyleIds">
             <summary>Style id in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Styles"/> for each <c>cellXfs</c> index.</summary>
@@ -32711,6 +32725,21 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Undo">
             <summary>The undo and redo history.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.MaxCells">
+            <summary>
+            Maximum number of cells (and of shared strings) <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.XlsxReader"/>, <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.XlsReader"/> and <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CsvFormat"/>
+            create for one workbook; a larger file throws <see cref="T:System.IO.InvalidDataException"/>. Protects servers from files that would exhaust
+            memory. Defaults to 10,000,000. Editing is not limited. Set it once at startup.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.HasUnshiftedReferences">
+            <summary>
+            True if the source file contains content whose cell references are not moved when rows, columns or sheets change: conditional
+            formatting, data validation, hyperlinks, auto filters, sort state, tables, comments, drawings and charts, pivot tables and their
+            caches, external links, page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or
+            columns or renaming a sheet these keep pointing at their original cells; editors should warn once.
+            </summary>
         </member>
         <member name="E:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Changed">
             <summary>Raised once after each command, transaction, undo or redo with everything that changed.</summary>

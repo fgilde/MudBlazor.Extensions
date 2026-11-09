@@ -258,7 +258,7 @@ internal static class SheetXmlWriter
             {
                 var at = CellRef.FromKey(keys[i]);
                 if (!columns.TryGetValue(at.Column, out var name)) columns[at.Column] = name = CellRef.ColumnName(at.Column);
-                WriteCell(w, main, at, name, keys[i], cells[i], part, package, styles, strings, spills, rich);
+                WriteCell(w, main, at, name, keys[i], cells[i], part, package, styles, strings, spills, rich, ws.Workbook.Styles);
             }
 
             w.WriteEndElement();
@@ -291,7 +291,7 @@ internal static class SheetXmlWriter
     }
 
     private static void WriteCell(XmlWriter w, string main, CellRef at, string column, long key, Cell cell, XlsxSheetPart part, XlsxPackage package,
-        StylesXmlWriter styles, SharedStringsWriter strings, Dictionary<long, CellRange> spills, Dictionary<int, string> rich)
+        StylesXmlWriter styles, SharedStringsWriter strings, Dictionary<long, CellRange> spills, Dictionary<int, string> rich, StyleTable table)
     {
         w.WriteStartElement("c", main);
         w.WriteAttributeString("r", column + (at.Row + 1).ToString(CultureInfo.InvariantCulture));
@@ -306,6 +306,8 @@ internal static class SheetXmlWriter
         var value = cell.Value;
         var formula = cell.Formula;
         if (value.Kind == CellValueKind.Error && value.ErrorValue == CellError.Circ) value = CellValue.Number(0);
+        if (package?.Date1904 == true && value.Kind == CellValueKind.Number && package.IsDateStyle(table, cell.StyleId))
+            value = CellValue.Number(value.NumberValue - XlsxPackage.Date1904Offset);
         string text = null;
         var type = value.Kind switch
         {

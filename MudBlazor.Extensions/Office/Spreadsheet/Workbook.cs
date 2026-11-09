@@ -99,6 +99,21 @@ public sealed class Workbook
     /// <summary>The undo and redo history.</summary>
     public UndoStack Undo { get; }
 
+    /// <summary>
+    /// Maximum number of cells (and of shared strings) <see cref="XlsxReader"/>, <see cref="XlsReader"/> and <see cref="CsvFormat"/>
+    /// create for one workbook; a larger file throws <see cref="InvalidDataException"/>. Protects servers from files that would exhaust
+    /// memory. Defaults to 10,000,000. Editing is not limited. Set it once at startup.
+    /// </summary>
+    public static int MaxCells { get; set; } = 10_000_000;
+
+    /// <summary>
+    /// True if the source file contains content whose cell references are not moved when rows, columns or sheets change: conditional
+    /// formatting, data validation, hyperlinks, auto filters, sort state, tables, comments, drawings and charts, pivot tables and their
+    /// caches, external links, page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or
+    /// columns or renaming a sheet these keep pointing at their original cells; editors should warn once.
+    /// </summary>
+    public bool HasUnshiftedReferences => Package?.HasUnshiftedReferences == true;
+
     /// <summary>Raised once after each command, transaction, undo or redo with everything that changed.</summary>
     public event EventHandler<WorkbookChangedEventArgs> Changed;
 

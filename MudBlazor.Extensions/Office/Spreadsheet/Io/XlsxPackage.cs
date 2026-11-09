@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace MudBlazor.Extensions.Office.Spreadsheet;
@@ -159,6 +160,20 @@ internal sealed class XlsxPackage
 {
     internal const string RelationshipsNs = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
 
+    internal const double Date1904Offset = 1462;
+
+    private static readonly XmlReaderSettings XmlSettings = new() { DtdProcessing = DtdProcessing.Prohibit, IgnoreWhitespace = true, CloseInput = false };
+
+    private static readonly HashSet<string> UnshiftedChildren =
+    [
+        "conditionalFormatting", "dataValidations", "hyperlinks", "autoFilter", "sortState", "tableParts", "drawing", "legacyDrawing",
+        "legacyDrawingHF", "rowBreaks", "colBreaks", "protectedRanges", "scenarios", "dataConsolidate", "ignoredErrors", "extLst"
+    ];
+
+    private static readonly string[] UnshiftedContentTypes = ["pivot", ".table+xml", "chart", "drawing", "comments", "externalLink", "queryTable"];
+
+    private readonly Dictionary<int, bool> _dateStyles = new();
+
     /// <summary>The original package bytes.</summary>
     public byte[] Source { get; init; }
 
@@ -195,8 +210,14 @@ internal sealed class XlsxPackage
     /// <summary>The original <c>definedNames</c> element (sheet-scoped, hidden and commented names live only here), or null.</summary>
     public XElement DefinedNames { get; set; }
 
-    /// <summary>True if the workbook uses the 1904 date system; serials are kept as stored.</summary>
+    /// <summary>
+    /// True if the workbook uses the 1904 date system. The reader adds <see cref="Date1904Offset"/> to numbers in date-formatted cells so the
+    /// model always holds 1900-based serials, and the writer subtracts it again.
+    /// </summary>
     public bool Date1904 { get; set; }
+
+    /// <summary>True if sheets have children or the package has parts whose cell references are not shifted by structural changes.</summary>
+    public bool HasUnshiftedReferences { get; set; }
 
     /// <summary>Style id in <see cref="Workbook.Styles"/> for each <c>cellXfs</c> index.</summary>
     public int[] XfStyleIds { get; set; } = [0];
@@ -222,6 +243,23 @@ internal sealed class XlsxPackage
         : OverrideContentTypes.TryGetValue("/" + partName, out var type) ? type
         : DefaultContentTypes.GetValueOrDefault(Path.GetExtension(partName).TrimStart('.'));
 
+    internal static XDocument LoadXml(Stream stream)
+    {
+        using var reader = XmlReader.Create(stream, XmlSettings);
+        return XDocument.Load(reader);
+    }
+
+    internal bool IsDateStyle(StyleTable styles, int styleId)
+    {
+        if (styleId == 0) return false;
+        if (!_dateStyles.TryGetValue(styleId, out var date)) _dateStyles[styleId] = date = NumberFormat.IsDateFormat(styles[styleId].NumberFormat);
+        return date;
+    }
+
+    internal void DetectUnshiftedReferences() =>
+        HasUnshiftedReferences = Sheets.Any(p => p.Children.Any(c => UnshiftedChildren.Contains(c.Name.LocalName)))
+                                 || PartNames.Any(n => ContentType(n) is { } type && UnshiftedContentTypes.Any(t => type.Contains(t, StringComparison.OrdinalIgnoreCase)));
+
     internal static XElement Child(XElement e, string name) => e?.Elements().FirstOrDefault(c => c.Name.LocalName == name);
 
     internal static ZipArchiveEntry Find(ZipArchive zip, string name) =>
@@ -245,7 +283,7 @@ internal sealed class XlsxPackage
         var entry = Find(zip, RelsPartOf(part));
         if (entry == null) return [];
         using var s = entry.Open();
-        return XDocument.Load(s).Root.Elements().Where(e => e.Name.LocalName == "Relationship")
+        return LoadXml(s).Root.Elements().Where(e => e.Name.LocalName == "Relationship")
             .Select(e => new XlsxRelationship((string)e.Attribute("Id"), (string)e.Attribute("Type"), (string)e.Attribute("Target"),
                 (string)e.Attribute("TargetMode") == "External"))
             .ToList();

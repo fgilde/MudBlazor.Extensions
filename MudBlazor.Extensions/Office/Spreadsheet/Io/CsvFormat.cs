@@ -29,7 +29,7 @@ public static class CsvFormat
         var text = Decode(stream);
         sep = delimiter ?? Detect(text);
         var wb = new Workbook();
-        var ws = new Worksheet("Sheet1", wb);
+        var ws = new Worksheet("Sheet1", wb) { CellLimit = Workbook.MaxCells };
         wb.SheetList.Add(ws);
         var culture = CultureInfo.CurrentCulture;
         var formats = new Dictionary<string, int>();
@@ -82,6 +82,7 @@ public static class CsvFormat
         }
 
         Emit();
+        ws.CellLimit = int.MaxValue;
         return wb;
     }
 

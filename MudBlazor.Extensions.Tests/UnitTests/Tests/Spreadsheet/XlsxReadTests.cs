@@ -410,6 +410,14 @@ public class XlsxReadTests(ITestOutputHelper output)
     }
 
     [Fact]
+    public void Reads_DimensionReservation_CappedForLargeParts()
+    {
+        var padding = new string(' ', 4_000_000);
+        var ws = Read(Package([Sheet("<row r=\"1\"><c r=\"A1\"><v>1</v></c></row>", "<dimension ref=\"A1:XFD1048576\"/>", padding)])).Sheets[0];
+        Assert.True(ws.CellCapacity < 100_000, $"capacity {ws.CellCapacity}");
+    }
+
+    [Fact]
     public void Reads_OriginalXfKept_ForUnmodelledXfAttributes()
     {
         const string styles = """

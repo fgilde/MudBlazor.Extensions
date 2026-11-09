@@ -24,7 +24,7 @@ internal static class ThemeColors
     internal static string[] Read(Stream theme)
     {
         var colors = (string[])Office.Clone();
-        var scheme = XDocument.Load(theme).Descendants().FirstOrDefault(e => e.Name.LocalName == "clrScheme");
+        var scheme = XlsxPackage.LoadXml(theme).Descendants().FirstOrDefault(e => e.Name.LocalName == "clrScheme");
         if (scheme == null) return colors;
         for (var i = 0; i < SchemeOrder.Length; i++)
         {

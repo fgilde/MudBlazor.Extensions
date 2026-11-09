@@ -275,7 +275,7 @@ public static class XlsxWriter
             return _references;
         }
 
-        private XDocument Load(string part) => Read(Find(source, part), s => XDocument.Load(s));
+        private XDocument Load(string part) => Read(Find(source, part), LoadXml);
 
         private static T Read<T>(ZipArchiveEntry entry, Func<Stream, T> read)
         {

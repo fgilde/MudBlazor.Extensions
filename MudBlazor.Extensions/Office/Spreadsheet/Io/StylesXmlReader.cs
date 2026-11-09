@@ -8,7 +8,7 @@ internal static class StylesXmlReader
 {
     internal static (int[] XfStyleIds, int[] CanonicalXf) Read(Stream styles, string[] theme, StyleTable table)
     {
-        var root = XDocument.Load(styles).Root;
+        var root = LoadXml(styles).Root;
         var indexed = Child(Child(root, "colors"), "indexedColors")?.Elements().Select(e => ThemeColors.Hex((string)e.Attribute("rgb"))).ToArray()
                       ?? ThemeColors.Indexed;
         var formats = Child(root, "numFmts")?.Elements()

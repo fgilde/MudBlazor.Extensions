@@ -110,7 +110,7 @@ internal static class SheetXmlReader
         switch (e.Name.LocalName)
         {
             case "dimension":
-                if (CellRange.TryParse((string)e.Attribute("ref"), out var used)) ws.Reserve((int)Math.Min(used.Area, Math.Min(4_000_000, partLength / 10)));
+                if (CellRange.TryParse((string)e.Attribute("ref"), out var used)) ws.Reserve((int)Math.Min(used.Area, Math.Min(65_536, partLength / 10)));
                 break;
             case "sheetPr":
                 ws.TabColor = ThemeColors.Resolve(Child(e, "tabColor"), theme, ThemeColors.Indexed);
@@ -308,6 +308,8 @@ internal static class SheetXmlReader
             _ => !double.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture, out var n) ? CellValue.Empty
                 : double.IsFinite(n) ? CellValue.Number(n) : CellValue.Error(CellError.Num)
         };
+        if (package.Date1904 && type != "d" && value.Kind == CellValueKind.Number && package.IsDateStyle(ws.Workbook.Styles, styleId))
+            value = CellValue.Number(value.NumberValue + XlsxPackage.Date1904Offset);
 
         string formula = null;
         if (hasFormula && fType == "shared" && fShared != null)

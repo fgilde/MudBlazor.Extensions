@@ -174,12 +174,19 @@ public sealed class Worksheet
         _usedRange = null;
         var key = r.Key;
         if (_cells.TryGetValue(key, out var cell)) return cell;
+        if (_cells.Count >= CellLimit) throw TooManyCells();
         cell = new Cell();
         _cells[key] = cell;
         return cell;
     }
 
     internal void Reserve(int count) => _cells.EnsureCapacity(count);
+
+    internal int CellLimit { get; set; } = int.MaxValue;
+
+    internal int CellCount => _cells.Count;
+
+    internal static InvalidDataException TooManyCells() => new($"The file has more cells than {nameof(Workbook)}.{nameof(Workbook.MaxCells)} allows.");
 
     internal IReadOnlyCollection<long> FormulaKeys => _formulaKeys;
 

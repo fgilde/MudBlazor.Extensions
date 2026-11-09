@@ -70,6 +70,64 @@ public class XlsxWriteTests(ITestOutputHelper output)
         return ms.ToArray();
     }
 
+    private const string DateStyles =
+        "<cellXfs count=\"2\"><xf numFmtId=\"0\" fontId=\"0\" fillId=\"0\" borderId=\"0\"/><xf numFmtId=\"14\" fontId=\"0\" fillId=\"0\" borderId=\"0\" applyNumberFormat=\"1\"/></cellXfs>";
+
+    [Fact]
+    public void Date1904_ReadsAs1900SerialsAndWritesBackOriginalSerials()
+    {
+        var source = Package([Sheet("<row r=\"1\"><c r=\"A1\" s=\"1\"><v>44000</v></c><c r=\"B1\"><v>44000</v></c><c r=\"C1\" s=\"1\"><f>A1+1</f><v>44001</v></c></row>")],
+            styles: DateStyles, workbookExtra: "<workbookPr date1904=\"1\"/>");
+        var wb = Read(source);
+        var ws = wb.Sheets[0];
+        Assert.Equal(CellValue.Number(45462), At(ws, "A1").Value);
+        Assert.Equal(CellValue.Number(44000), At(ws, "B1").Value);
+        Assert.Equal(CellValue.Number(45463), At(ws, "C1").Value);
+        Assert.Equal("2024-06-19", NumberFormat.Format(At(ws, "A1").Value, "yyyy-mm-dd", CultureInfo.InvariantCulture, out _));
+        using var engine = new CalcEngine(wb);
+        Assert.Equal(CellValue.Number(45463), At(ws, "C1").Value);
+
+        wb.Execute(new SetValueCommand(ws, R("A2"), CellValue.Number(45462)));
+        wb.Execute(new SetStyleCommand(ws, new CellRange(R("A2"), R("A2")), wb.Styles[At(ws, "A1").StyleId]));
+        var sheet = Xml(Write(wb), "xl/worksheets/sheet1.xml");
+        string V(string cell) => sheet.Descendants(M + "c").Single(c => (string)c.Attribute("r") == cell).Element(M + "v")!.Value;
+        Assert.Equal("44000", V("A1"));
+        Assert.Equal("44000", V("B1"));
+        Assert.Equal("44001", V("C1"));
+        Assert.Equal("44000", V("A2"));
+    }
+
+    [Fact]
+    public void HasUnshiftedReferences_ReportsSheetFeaturesAndParts()
+    {
+        Assert.False(Read(Package([Sheet("<row r=\"1\"><c r=\"A1\"><v>1</v></c></row>")])).HasUnshiftedReferences);
+        Assert.False(Workbook.Create().HasUnshiftedReferences);
+        Assert.True(Read(Package([Sheet("", after: "<conditionalFormatting sqref=\"A1:A5\"><cfRule type=\"cellIs\" priority=\"1\" operator=\"greaterThan\"><formula>1</formula></cfRule></conditionalFormatting>")]))
+            .HasUnshiftedReferences);
+        Assert.True(Read(Package([Sheet("", after: "<dataValidations count=\"1\"><dataValidation type=\"whole\" sqref=\"B2\"/></dataValidations>")])).HasUnshiftedReferences);
+        Assert.True(Read(Package([Sheet("", after: "<hyperlinks><hyperlink ref=\"A1\" location=\"Sheet1!B5\"/></hyperlinks>")])).HasUnshiftedReferences);
+        Assert.True(Read(Package([Sheet("", "<autoFilter ref=\"A1:C9\"/>")])).HasUnshiftedReferences);
+        var pivot = With(Package([Sheet("")]), ("xl/pivotCache/pivotCacheDefinition1.xml", "<pivotCacheDefinition/>"),
+            ("[Content_Types].xml", Types(Override("/xl/workbook.xml", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"),
+                Override("/xl/worksheets/sheet1.xml", "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"),
+                Override("/xl/pivotCache/pivotCacheDefinition1.xml", "application/vnd.openxmlformats-officedocument.spreadsheetml.pivotCacheDefinition+xml"))));
+        Assert.True(Read(pivot).HasUnshiftedReferences);
+    }
+
+    [Theory]
+    [InlineData("xl/workbook.xml")]
+    [InlineData("[Content_Types].xml")]
+    [InlineData("xl/_rels/workbook.xml.rels")]
+    public void Read_RejectsDtdInPackageParts(string part)
+    {
+        var source = Package([Sheet("")]);
+        var xml = Encoding.UTF8.GetString(Entries(source)[part]);
+        var root = xml.IndexOf('<', xml.IndexOf("?>", StringComparison.Ordinal) + 2);
+        var name = xml[(root + 1)..xml.IndexOfAny([' ', '>'], root)];
+        var doctype = $"<!DOCTYPE {name} [<!ENTITY a \"aaaaaaaaaa\">]>";
+        Assert.Throws<InvalidDataException>(() => Read(With(source, (part, xml.Insert(root, doctype)))));
+    }
+
     private static string Types(params string[] overrides) =>
         $"<?xml version=\"1.0\" encoding=\"UTF-8\"?><Types xmlns=\"{CtNs}\"><Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\"/>" +
         "<Default Extension=\"xml\" ContentType=\"application/xml\"/>" + string.Concat(overrides) + "</Types>";
