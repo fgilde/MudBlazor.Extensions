@@ -291,11 +291,11 @@ public class FileDisplayEditModeTests : IAsyncLifetime
             .Add(c => c.OnCloseClick, EventCallback.Factory.Create(this, () => closed++))
             .Add(c => c.SaveRequested, EventCallback.Factory.Create<MudExFileSaveRequest>(this, r => { saveAttempts++; r.Handled = false; })));
 
-        ClickClose(cut);
+        var confirm = cut.InvokeAsync(() => cut.Instance.ConfirmDiscardChangesAsync());
         ClickDialogButton(cut, "Save");
 
-        cut.WaitForAssertion(() => Assert.Equal(1, saveAttempts));
-        await Task.Delay(100);
+        Assert.False(await confirm);
+        Assert.Equal(1, saveAttempts);
         Assert.Equal(0, closed);
         Assert.True(cut.Instance.IsDirty);
     }
