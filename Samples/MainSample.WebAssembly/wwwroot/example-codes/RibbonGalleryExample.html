@@ -1,0 +1,43 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+
+&lt;MudExRibbon @ref=&quot;ComponentRef&quot; Mode=&quot;@_mode&quot; ModeChanged=&quot;@(m =&gt; _mode = m)&quot; ShowCommandSearch=&quot;false&quot;&gt;
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExRibbonTab</span> <span class="htmlAttributeName">Text</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Design&quot;]&quot;</span> <span class="htmlAttributeName">KeyTip</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;D&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExRibbonGroup</span> <span class="htmlAttributeName">Text</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Themes&quot;]&quot;</span> <span class="htmlAttributeName">Icon</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@Icons.Material.Filled.Palette&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExRibbonGallery</span> <span class="htmlAttributeName">TItem</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Swatch&quot;</span> <span class="htmlAttributeName">Text</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Themes&quot;]&quot;</span> <span class="htmlAttributeName">Items</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_swatches&quot; @bind-SelectedItem=&quot;_swatch&quot;</span> <span class="htmlAttributeName">ItemText</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(s =&gt; s.Name)&quot;</span> <span class="htmlAttributeName">VisibleRows</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;2&quot;</span> <span class="htmlAttributeName">Columns</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+                <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ItemTemplate</span> <span class="htmlAttributeName">Context</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;swatch&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+                    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 36px; height: 24px; border-radius: 4px; background: linear-gradient(135deg, @swatch.From, @swatch.To);&quot;</span> <span class="htmlAttributeName">title</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@swatch.Name&quot;</span><span class="htmlTagDelimiter">&gt;</span><span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+                <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">ItemTemplate</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRibbonGallery</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRibbonGroup</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExRibbonGroup</span> <span class="htmlAttributeName">Text</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Text only gallery&quot;]&quot;</span> <span class="htmlAttributeName">Icon</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@Icons.Material.Filled.TextFormat&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExRibbonGallery</span> <span class="htmlAttributeName">TItem</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;string&quot;</span> <span class="htmlAttributeName">Text</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Layouts&quot;]&quot;</span> <span class="htmlAttributeName">Items</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_layouts&quot; @bind-SelectedItem=&quot;_layout&quot;</span> <span class="htmlAttributeName">VisibleRows</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;1&quot;</span> <span class="htmlAttributeName">Columns</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;3&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRibbonGroup</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRibbonTab</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudExRibbon</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;pa-4&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Selected theme: {0} | Selected layout: {1}&quot;, _swatch.Name, _layout]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private record Swatch(string Name, string From, string To);
+
+    private static readonly Swatch[] _swatches =
+    [
+        new(&quot;Ocean&quot;, &quot;#0077B6&quot;, &quot;#90E0EF&quot;),
+        new(&quot;Forest&quot;, &quot;#2D6A4F&quot;, &quot;#95D5B2&quot;),
+        new(&quot;Sunset&quot;, &quot;#C43E1C&quot;, &quot;#FFB703&quot;),
+        new(&quot;Violet&quot;, &quot;#7719AA&quot;, &quot;#E0AAFF&quot;),
+        new(&quot;Slate&quot;, &quot;#343A40&quot;, &quot;#ADB5BD&quot;),
+        new(&quot;Rose&quot;, &quot;#B5179E&quot;, &quot;#F72585&quot;),
+        new(&quot;Gold&quot;, &quot;#BF9000&quot;, &quot;#FFE066&quot;),
+        new(&quot;Mint&quot;, &quot;#2A9D8F&quot;, &quot;#B7E4C7&quot;)
+    ];
+    private static readonly string[] _layouts = [&quot;Compact&quot;, &quot;Normal&quot;, &quot;Wide&quot;];
+
+    private MudExRibbonMode _mode = MudExRibbonMode.Classic;
+    private Swatch _swatch = _swatches[0];
+    private string _layout = &quot;Normal&quot;;
+}
+
+</pre></div>

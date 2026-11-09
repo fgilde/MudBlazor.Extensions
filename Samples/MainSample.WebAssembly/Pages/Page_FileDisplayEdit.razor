@@ -1,0 +1,59 @@
+@page "/file-display-edit"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.FileDisplay
+
+@attribute [Demo(Group = "File Handling", Name = "File Display Edit Mode", Order = 3, Icon = Icons.Material.Outlined.EditNote, ForComponentTypes = new[] { typeof(MudExFileDisplay), typeof(MudExFileDisplayCode) }, Documentation = "Edit text and code files in MudExFileDisplay, save them locally or hand the save over to your own server code.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx File Display – Edit mode"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["With AllowEdit the file display gets an edit toggle for files that have an editor. Changes mark the file as dirty, Ctrl+S saves, and leaving edit mode or loading another file asks before discarding unsaved changes."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Edit and save locally"
+                  NavTitle="Edit and save locally"
+                  FeaturesTitle="Parameters and events"
+                  Features="@(new[]
+                              {
+                                  "AllowEdit – enables the edit toggle",
+                                  "@bind-EditMode – switch between viewer and editor",
+                                  "AllowLocalSave – save to a local file through the browser",
+                                  "IsDirtyChanged and Saved – react to changes and saves",
+                                  "ConfirmDiscardChanges – ask before changes are lost",
+                                  "SaveAsync() – save from code"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["sample.cs is opened from the sample data. Switch to edit mode, change the code and save it to a local file. Cancelling the browser save dialog keeps the file dirty."]
+            </MudText>
+            <FileDisplayEditExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Save to a server (simulated)"
+                  NavTitle="Save to a server"
+                  FeaturesTitle="Parameters and events"
+                  Features="@(new[]
+                              {
+                                  "SaveRequested – receives a MudExFileSaveRequest with the edited content",
+                                  "Handled = true – tells the display that your code stored the file",
+                                  "The content stream is only valid during the handler, so copy it",
+                                  "An exception in the handler keeps the file dirty and shows the error"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["The handler copies the edited content into memory, shows it in the second read-only viewer and reports success with a snackbar."]
+            </MudText>
+            <FileDisplayServerSaveExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

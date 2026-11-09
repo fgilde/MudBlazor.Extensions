@@ -1,0 +1,64 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Services
+@inject MudExFileService FileService
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Row</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">Wrap</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Wrap.Wrap&quot;</span> <span class="htmlAttributeName">AlignItems</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;AlignItems.Center&quot;</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_editMode&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Edit mode&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_allowLocalSave&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Allow local save&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_confirmDiscard&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Confirm discarding changes&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudButton</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Outlined&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">OnClick</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@SaveNow&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Save via SaveAsync()&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudChip</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;string&quot;</span> <span class="htmlAttributeName">Size</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Size.Small&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(_dirty ? Color.Warning : Color.Success)&quot;</span><span class="htmlTagDelimiter">&gt;</span>@(_dirty ? L[&quot;Unsaved changes&quot;] : L[&quot;No unsaved changes&quot;])<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudChip</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Last event: {0}&quot;, _last]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+@if (_stream != null)
+{
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 520px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;MudExFileDisplay @ref=&quot;_display&quot;
+                          FileName=&quot;sample.cs&quot;
+                          ContentType=&quot;text/plain&quot;
+                          ContentStream=&quot;@_stream&quot;
+                          AllowEdit=&quot;true&quot;
+                          @bind-EditMode=&quot;_editMode&quot;
+                          AllowLocalSave=&quot;@_allowLocalSave&quot;
+                          ConfirmDiscardChanges=&quot;@_confirmDiscard&quot;
+                          IsDirtyChanged=&quot;@OnDirtyChanged&quot;
+                          Saved=&quot;@OnSaved&quot;
+                          Dense=&quot;true&quot; /&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+}
+
+@code {
+    private MudExFileDisplay? _display;
+    private Stream? _stream;
+    private bool _editMode;
+    private bool _allowLocalSave = true;
+    private bool _confirmDiscard = true;
+    private bool _dirty;
+    private string _last = &quot;-&quot;;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _stream = await FileService.ReadStreamAsync(NavigationManager.ToAbsoluteUri(&quot;sample-data/sample.cs&quot;).AbsoluteUri);
+    }
+
+    private void OnDirtyChanged(bool dirty)
+    {
+        _dirty = dirty;
+        _last = dirty ? &quot;IsDirtyChanged: dirty&quot; : &quot;IsDirtyChanged: clean&quot;;
+    }
+
+    private void OnSaved(MudExFileSavedEventArgs args) =&gt; _last = &quot;Saved&quot;;
+
+    private async Task SaveNow()
+    {
+        if (_display != null)
+            _last = await _display.SaveAsync() ? &quot;SaveAsync: saved&quot; : &quot;SaveAsync: nothing saved&quot;;
+    }
+}
+
+</pre></div>

@@ -1,0 +1,27 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+
+<MudGrid Class="mb-3">
+    <MudItem xs="6" md="3"><MudSwitch T="bool" @bind-Value="_search" Color="Color.Primary" Label="@L["Command search"]" /></MudItem>
+    <MudItem xs="6" md="3"><MudSwitch T="bool" @bind-Value="_keyTips" Color="Color.Primary" Label="@L["Key tips (press Alt)"]" /></MudItem>
+    <MudItem xs="6" md="3"><MudSwitch T="bool" @bind-Value="_modeSwitch" Color="Color.Primary" Label="@L["Mode switch"]" /></MudItem>
+    <MudItem xs="6" md="3"><MudSwitch T="bool" @bind-Value="_allowCollapse" Color="Color.Primary" Label="@L["Allow collapse"]" /></MudItem>
+    <MudItem xs="6" md="3"><MudSwitch T="bool" @bind-Value="_snackbar" Color="Color.Primary" Label="@L["Snackbar per click"]" /></MudItem>
+    <MudItem xs="6" md="3"><MudSwitch T="bool" @bind-Value="_startCollapsed" Color="Color.Primary" Label="@L["Start collapsed"]" /></MudItem>
+</MudGrid>
+
+<RibbonWordLikeExample @key="_startCollapsed"
+                       ShowCommandSearch="@_search"
+                       EnableKeyTips="@_keyTips"
+                       ShowModeSwitch="@_modeSwitch"
+                       AllowCollapse="@_allowCollapse"
+                       ShowSnackbar="@_snackbar"
+                       StartCollapsed="@_startCollapsed"
+                       Title="Options.docx" />
+
+@code {
+    private bool _search = true, _keyTips = true, _modeSwitch = true, _allowCollapse = true, _snackbar, _startCollapsed;
+}
+
+```

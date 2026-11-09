@@ -1,0 +1,38 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+
+<MudStack Spacing="2" Class="mb-4">
+    <MudSlider T="int" Min="360" Max="1200" Step="20" @bind-Value="_width" Color="Color.Primary">@L["Container width: {0}px", _width]</MudSlider>
+    <MudSwitch T="bool" @bind-Value="_sync" Color="Color.Primary" Label="@L["Sync mode of all four ribbons"]" />
+</MudStack>
+
+<MudStack Spacing="4">
+    @foreach (var mode in _modes)
+    {
+        <div>
+            <MudText Typo="Typo.subtitle2" Class="mb-1">@mode</MudText>
+            <RibbonWordLikeExample Mode="@ModeOf(mode)" ModeChanged="@(m => OnModeChanged(mode, m))" Title="@($"{mode}.docx")" Width="@($"{_width}px")" />
+        </div>
+    }
+</MudStack>
+
+@code {
+    private static readonly MudExRibbonMode[] _modes = Enum.GetValues<MudExRibbonMode>();
+    private readonly Dictionary<MudExRibbonMode, MudExRibbonMode> _current = _modes.ToDictionary(m => m, m => m);
+    private int _width = 900;
+    private bool _sync;
+
+    private MudExRibbonMode ModeOf(MudExRibbonMode slot) => _current[slot];
+
+    private void OnModeChanged(MudExRibbonMode slot, MudExRibbonMode mode)
+    {
+        if (_sync)
+            foreach (var key in _modes)
+                _current[key] = mode;
+        else
+            _current[slot] = mode;
+    }
+}
+
+```

@@ -1,0 +1,25 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @foreach (var (name, color) in _colors)
+    {
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.subtitle2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-1&quot;</span><span class="htmlTagDelimiter">&gt;</span>@name<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">RibbonWordLikeExample</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@color&quot;</span> <span class="htmlAttributeName">Title</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@($&quot;{name}.docx&quot;)&quot;</span> <span class="htmlAttributeName">ContextualColor</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@color&quot;</span> <span class="htmlAttributeName">PictureSelected</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">ShowModeSwitch</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;false&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    }
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private static readonly (string Name, MudExColor Color)[] _colors =
+    [
+        (&quot;Color.Success&quot;, MudBlazor.Color.Success),
+        (&quot;#217346 (Excel green)&quot;, &quot;#217346&quot;),
+        (&quot;#C43E1C (PowerPoint orange)&quot;, &quot;#C43E1C&quot;),
+        (&quot;#7719AA (OneNote purple)&quot;, &quot;#7719AA&quot;)
+    ];
+}
+
+</pre></div>

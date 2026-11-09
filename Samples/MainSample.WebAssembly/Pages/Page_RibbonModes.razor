@@ -1,0 +1,56 @@
+@page "/ribbon-modes"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Ribbon
+
+@attribute [Demo(Name = "Modes", Documentation = "MudEx Ribbon – Classic, Simplified, Menu and Toolbar", Order = 10, Group = "Ribbon", Icon = Icons.Material.Outlined.ViewDay, ForComponentTypes = new[] { typeof(MudExRibbon) })]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Ribbon – Modes"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["The Mode parameter switches the presentation without touching the content. Users can switch themselves with the mode switch in the header unless ShowModeSwitch is false."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. All four modes side by side"
+                  NavTitle="All four modes"
+                  FeaturesTitle="Modes"
+                  Features="@(new[]
+                              {
+                                  "Classic – tabs with titled groups and large or small commands",
+                                  "Simplified – single line with small commands",
+                                  "Menu – one dropdown per tab",
+                                  "Toolbar – flat icon toolbar of the active tab",
+                                  "Mode / ModeChanged – two way bindable"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["All four ribbons are rendered from one shared definition. Use the slider to shrink the containers and see how each mode reacts. The mode switch in each header changes the mode of that ribbon, or of all four when sync is on."]
+            </MudText>
+            <RibbonModesExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Colors"
+                  NavTitle="Colors"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "Color accepts MudExColor – theme colors like Color.Success or any CSS color",
+                                  "ContextualColor tints the header of a contextual tab"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Each ribbon uses a different accent color: Color.Success, #217346, #C43E1C and #7719AA. The Picture format tab is shown to display the contextual color."]
+            </MudText>
+            <RibbonColorsExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

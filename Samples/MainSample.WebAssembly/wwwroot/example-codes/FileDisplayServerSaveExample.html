@@ -1,0 +1,66 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Services
+@inject MudExFileService FileService
+@inject ISnackbar Snackbar
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.subtitle2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Editor (AllowLocalSave is off, SaveRequested handles the save)&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+        @if (_source != null)
+        {
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 480px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+                <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExFileDisplay</span> <span class="htmlAttributeName">FileName</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;sample.cs&quot;</span>
+                                  <span class="htmlAttributeName">ContentType</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;text/plain&quot;</span>
+                                  <span class="htmlAttributeName">ContentStream</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_source&quot;</span>
+                                  <span class="htmlAttributeName">AllowEdit</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span>
+                                  <span class="htmlAttributeName">AllowLocalSave</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;false&quot;</span>
+                                  <span class="htmlAttributeName">SaveRequested</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@OnSaveRequested&quot;</span>
+                                  <span class="htmlAttributeName">Dense</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+        }
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;12&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.subtitle2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Simulated server storage (version {0})&quot;, _version]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+        @if (_server != null)
+        {
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 480px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+                &lt;MudExFileDisplay @key=&quot;_version&quot;
+                                  FileName=&quot;sample.cs&quot;
+                                  ContentType=&quot;text/plain&quot;
+                                  ContentStream=&quot;@_server&quot;
+                                  Dense=&quot;true&quot; /&gt;
+            <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+        }
+        else
+        {
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudAlert</span> <span class="htmlAttributeName">Severity</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Severity.Info&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Nothing saved yet. Switch the left viewer to edit mode, change something and press Ctrl+S.&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudAlert</span><span class="htmlTagDelimiter">&gt;</span>
+        }
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private Stream? _source;
+    private Stream? _server;
+    private int _version;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _source = await FileService.ReadStreamAsync(NavigationManager.ToAbsoluteUri(&quot;sample-data/sample.cs&quot;).AbsoluteUri);
+    }
+
+    private async Task OnSaveRequested(MudExFileSaveRequest request)
+    {
+        var copy = new MemoryStream();
+        await request.Content.Stream.CopyToAsync(copy);
+        copy.Position = 0;
+        _server = copy;
+        _version++;
+        request.Handled = true;
+        Snackbar.Add(L[&quot;Saved to server (simulated)&quot;], Severity.Success);
+    }
+}
+
+</pre></div>

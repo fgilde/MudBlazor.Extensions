@@ -1,0 +1,38 @@
+@page "/ribbon-pg"
+@inherits BasePage
+
+@attribute [Demo(IsPlaygroundDemo = true, Name = "Playground", Order = 100, Group = "Ribbon", Icon = Icons.Material.Outlined.ViewDay, ForComponentTypes = new[] { typeof(MudExRibbon) })]
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <div style="position: relative;">
+                <MudExRibbon @ref="ComponentRef" @bind-Mode="_mode">
+                    <MudExRibbonTab Text="Home" KeyTip="H">
+                        <MudExRibbonGroup Text="Actions" Icon="@Icons.Material.Filled.Bolt">
+                            <MudExRibbonButton Text="New" Icon="@Icons.Material.Filled.NoteAdd" Size="MudExRibbonItemSize.Large" OnClick="@(() => _last = "New")" />
+                            <MudExRibbonButton Text="Open" Icon="@Icons.Material.Filled.FolderOpen" OnClick="@(() => _last = "Open")" />
+                            <MudExRibbonButton Text="Save" Icon="@Icons.Material.Filled.Save" OnClick="@(() => _last = "Save")" />
+                        </MudExRibbonGroup>
+                    </MudExRibbonTab>
+                    <MudExRibbonTab Text="View" KeyTip="W">
+                        <MudExRibbonGroup Text="Zoom" Icon="@Icons.Material.Filled.ZoomIn">
+                            <MudExRibbonButton Text="Zoom in" Icon="@Icons.Material.Filled.ZoomIn" OnClick="@(() => _last = "Zoom in")" />
+                            <MudExRibbonButton Text="Zoom out" Icon="@Icons.Material.Filled.ZoomOut" OnClick="@(() => _last = "Zoom out")" />
+                        </MudExRibbonGroup>
+                    </MudExRibbonTab>
+                </MudExRibbon>
+            </div>
+            <MudText Typo="Typo.caption" Class="pa-2">@L["Last action: {0}", _last]</MudText>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@ComponentRef"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    MudExRibbon? ComponentRef;
+    private MudExRibbonMode _mode;
+    private string _last = "-";
+}

@@ -1,0 +1,38 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSlider</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;int&quot;</span> <span class="htmlAttributeName">Min</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;360&quot;</span> <span class="htmlAttributeName">Max</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;1200&quot;</span> <span class="htmlAttributeName">Step</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;20&quot; @bind-Value=&quot;_width&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Container width: {0}px&quot;, _width]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudSlider</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_sync&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Sync mode of all four ribbons&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @foreach (var mode in _modes)
+    {
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.subtitle2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-1&quot;</span><span class="htmlTagDelimiter">&gt;</span>@mode<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+            <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">RibbonWordLikeExample</span> <span class="htmlAttributeName">Mode</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@ModeOf(mode)&quot;</span> <span class="htmlAttributeName">ModeChanged</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(m =&gt; OnModeChanged(mode, m))&quot;</span> <span class="htmlAttributeName">Title</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@($&quot;{mode}.docx&quot;)&quot;</span> <span class="htmlAttributeName">Width</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@($&quot;{_width}px&quot;)&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+        <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+    }
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private static readonly MudExRibbonMode[] _modes = Enum.GetValues<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExRibbonMode</span><span class="htmlTagDelimiter">&gt;</span>();
+    private readonly Dictionary&lt;MudExRibbonMode, MudExRibbonMode&gt; _current = _modes.ToDictionary(m =&gt; m, m =&gt; m);
+    private int _width = 900;
+    private bool _sync;
+
+    private MudExRibbonMode ModeOf(MudExRibbonMode slot) =&gt; _current[slot];
+
+    private void OnModeChanged(MudExRibbonMode slot, MudExRibbonMode mode)
+    {
+        if (_sync)
+            foreach (var key in _modes)
+                _current[key] = mode;
+        else
+            _current[slot] = mode;
+    }
+}
+
+</pre></div>

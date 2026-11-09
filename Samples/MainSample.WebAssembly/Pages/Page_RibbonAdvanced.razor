@@ -1,0 +1,73 @@
+@page "/ribbon-advanced"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Ribbon
+
+@attribute [Demo(Name = "Advanced", Documentation = "MudEx Ribbon – contextual tabs, galleries, search, quick access and key tips", Order = 20, Group = "Ribbon", Icon = Icons.Material.Outlined.ViewDay, ForComponentTypes = new[] { typeof(MudExRibbon) })]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Ribbon – Advanced"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["Contextual tabs, galleries with custom templates, command search, quick access with pinning, collapsing, the file menu backstage and key tips."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Contextual tab"
+                  NavTitle="Contextual tab"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "Contextual = true – tab appears under a colored title",
+                                  "Visible – toggled by the host, here by a checkbox",
+                                  "ContextualTitle and ContextualColor"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Tick Picture selected to show the contextual tab Picture format and select it. Untick it while it is active to see the ribbon fall back to another tab."]
+            </MudText>
+            <RibbonContextualExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Galleries"
+                  NavTitle="Galleries"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "MudExRibbonGallery<T> with Items, SelectedItem, ItemTemplate and ItemText",
+                                  "VisibleRows and Columns control the size"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["A gallery with a custom item template (color gradients) and a plain text gallery."]
+            </MudText>
+            <RibbonGalleryExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. Search, quick access, collapse, file menu and key tips"
+                  NavTitle="Search, quick access and key tips"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "ShowCommandSearch – find and run commands by name",
+                                  "QuickAccess and PinnedCommandIds – pin commands to the header",
+                                  "Collapsed and AllowCollapse – collapse the ribbon to the tab row",
+                                  "FileMenu, FileMenuText and FileMenuOpen – backstage view",
+                                  "EnableKeyTips – press Alt to show the key tips"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Toggle the options and try the features. Press Alt to show the key tips, then H, N or W to jump to a tab and the shown letters to run a command."]
+            </MudText>
+            <RibbonOptionsExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

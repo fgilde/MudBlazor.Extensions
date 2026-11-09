@@ -1,0 +1,64 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Services
+@inject MudExFileService FileService
+
+<MudStack Row="true" Wrap="Wrap.Wrap" AlignItems="AlignItems.Center" Spacing="4" Class="mb-3">
+    <MudSwitch T="bool" @bind-Value="_editMode" Color="Color.Primary" Label="@L["Edit mode"]" />
+    <MudSwitch T="bool" @bind-Value="_allowLocalSave" Color="Color.Primary" Label="@L["Allow local save"]" />
+    <MudSwitch T="bool" @bind-Value="_confirmDiscard" Color="Color.Primary" Label="@L["Confirm discarding changes"]" />
+    <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="@SaveNow">@L["Save via SaveAsync()"]</MudButton>
+    <MudChip T="string" Size="Size.Small" Color="@(_dirty ? Color.Warning : Color.Success)">@(_dirty ? L["Unsaved changes"] : L["No unsaved changes"])</MudChip>
+</MudStack>
+
+<MudText Typo="Typo.caption" Class="mb-2">@L["Last event: {0}", _last]</MudText>
+
+@if (_stream != null)
+{
+    <div style="width: 100%; height: 520px;">
+        <MudExFileDisplay @ref="_display"
+                          FileName="sample.cs"
+                          ContentType="text/plain"
+                          ContentStream="@_stream"
+                          AllowEdit="true"
+                          @bind-EditMode="_editMode"
+                          AllowLocalSave="@_allowLocalSave"
+                          ConfirmDiscardChanges="@_confirmDiscard"
+                          IsDirtyChanged="@OnDirtyChanged"
+                          Saved="@OnSaved"
+                          Dense="true" />
+    </div>
+}
+
+@code {
+    private MudExFileDisplay? _display;
+    private Stream? _stream;
+    private bool _editMode;
+    private bool _allowLocalSave = true;
+    private bool _confirmDiscard = true;
+    private bool _dirty;
+    private string _last = "-";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _stream = await FileService.ReadStreamAsync(NavigationManager.ToAbsoluteUri("sample-data/sample.cs").AbsoluteUri);
+    }
+
+    private void OnDirtyChanged(bool dirty)
+    {
+        _dirty = dirty;
+        _last = dirty ? "IsDirtyChanged: dirty" : "IsDirtyChanged: clean";
+    }
+
+    private void OnSaved(MudExFileSavedEventArgs args) => _last = "Saved";
+
+    private async Task SaveNow()
+    {
+        if (_display != null)
+            _last = await _display.SaveAsync() ? "SaveAsync: saved" : "SaveAsync: nothing saved";
+    }
+}
+
+```

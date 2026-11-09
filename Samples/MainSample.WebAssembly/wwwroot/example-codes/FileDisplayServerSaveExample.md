@@ -1,0 +1,66 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Services
+@inject MudExFileService FileService
+@inject ISnackbar Snackbar
+
+<MudGrid>
+    <MudItem xs="12" md="6">
+        <MudText Typo="Typo.subtitle2" Class="mb-2">@L["Editor (AllowLocalSave is off, SaveRequested handles the save)"]</MudText>
+        @if (_source != null)
+        {
+            <div style="width: 100%; height: 480px;">
+                <MudExFileDisplay FileName="sample.cs"
+                                  ContentType="text/plain"
+                                  ContentStream="@_source"
+                                  AllowEdit="true"
+                                  AllowLocalSave="false"
+                                  SaveRequested="@OnSaveRequested"
+                                  Dense="true" />
+            </div>
+        }
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <MudText Typo="Typo.subtitle2" Class="mb-2">@L["Simulated server storage (version {0})", _version]</MudText>
+        @if (_server != null)
+        {
+            <div style="width: 100%; height: 480px;">
+                <MudExFileDisplay @key="_version"
+                                  FileName="sample.cs"
+                                  ContentType="text/plain"
+                                  ContentStream="@_server"
+                                  Dense="true" />
+            </div>
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Info">@L["Nothing saved yet. Switch the left viewer to edit mode, change something and press Ctrl+S."]</MudAlert>
+        }
+    </MudItem>
+</MudGrid>
+
+@code {
+    private Stream? _source;
+    private Stream? _server;
+    private int _version;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _source = await FileService.ReadStreamAsync(NavigationManager.ToAbsoluteUri("sample-data/sample.cs").AbsoluteUri);
+    }
+
+    private async Task OnSaveRequested(MudExFileSaveRequest request)
+    {
+        var copy = new MemoryStream();
+        await request.Content.Stream.CopyToAsync(copy);
+        copy.Position = 0;
+        _server = copy;
+        _version++;
+        request.Handled = true;
+        Snackbar.Add(L["Saved to server (simulated)"], Severity.Success);
+    }
+}
+
+```
