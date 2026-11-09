@@ -1,0 +1,26 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonItemBase
+
+<CascadingValue Value="this" IsFixed="true">@ChildContent</CascadingValue>
+
+@code {
+    /// <inheritdoc />
+    public override RenderFragment Render(MudExRibbonItemLayout layout)
+    {
+        if (_items.Any(i => i.Visible))
+            return RenderMenu(layout, _items, null);
+        if (layout != MudExRibbonItemLayout.MenuEntry)
+            return WithTooltip(layout, Face(layout, ExecuteAsync, Checked));
+        return @<MudMenuItem Class="mud-ex-ribbon-menu-item"
+                             Icon="@(Checked == true ? Icons.Material.Filled.Check : Icon)"
+                             Disabled="@Disabled"
+                             OnClick="ExecuteAsync"
+                             @attributes="CheckAttributes">
+                    <span class="mud-ex-ribbon-label">@Text</span>
+                    @if (!string.IsNullOrEmpty(Shortcut))
+                    {
+                        <span class="mud-ex-ribbon-shortcut">@Shortcut</span>
+                    }
+                </MudMenuItem>;
+    }
+}

@@ -1,0 +1,76 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonItemBase
+@typeparam TItem
+
+@code {
+    /// <inheritdoc />
+    public override RenderFragment Render(MudExRibbonItemLayout layout) => layout switch
+    {
+        MudExRibbonItemLayout.MenuEntry =>
+            @<div class="mud-ex-ribbon-field mud-ex-ribbon-menuentry">
+                <span class="mud-ex-ribbon-label">@Text</span>
+                @Grid
+            </div>,
+        MudExRibbonItemLayout.Large or MudExRibbonItemLayout.Medium =>
+            @<div class="mud-ex-ribbon-gallery mud-ex-ribbon-cell-large" role="group" aria-label="@Text">
+                <div class="mud-ex-ribbon-gallery-strip" role="listbox" aria-label="@Text" style="@ColumnsStyle">
+                    @foreach (var item in StripItems)
+                    {
+                        <button type="button"
+                                class="@ItemClass(item)"
+                                role="option"
+                                aria-selected="@(IsSelected(item) ? "true" : "false")"
+                                title="@TextOf(item)"
+                                disabled="@Disabled"
+                                @onclick="() => SelectAsync(item)">
+                            @ItemContent(item)
+                        </button>
+                    }
+                </div>
+                <div class="mud-ex-ribbon-gallery-arrows">
+                    <button type="button"
+                            class="mud-ex-ribbon-gallery-arrow mud-ex-ribbon-gallery-up"
+                            disabled="@(Disabled || FirstRow == 0)"
+                            aria-label="@(Ribbon?.TryLocalize("Previous row") ?? "Previous row")"
+                            @onclick="() => Scroll(-1)">
+                        <MudIcon Icon="@Icons.Material.Filled.ArrowDropUp" Class="mud-ex-ribbon-arrow" />
+                    </button>
+                    <button type="button"
+                            class="mud-ex-ribbon-gallery-arrow mud-ex-ribbon-gallery-down"
+                            disabled="@(Disabled || FirstRow >= MaxFirstRow)"
+                            aria-label="@(Ribbon?.TryLocalize("Next row") ?? "Next row")"
+                            @onclick="() => Scroll(1)">
+                        <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown" Class="mud-ex-ribbon-arrow" />
+                    </button>
+                    @DropDown(MoreArrow, Grid, "mud-ex-ribbon-menu mud-ex-ribbon-gallery-menu", Origin.TopRight, Origin.TopRight)
+                </div>
+            </div>,
+        _ => WithTooltip(layout, DropDown(menu => Face(layout, () => menu.ToggleAsync(), dropDown: true), Grid))
+    };
+
+    private RenderFragment MoreArrow(MenuContext menu) =>
+        @<button type="button"
+                 class="mud-ex-ribbon-gallery-arrow mud-ex-ribbon-gallery-more"
+                 disabled="@Disabled"
+                 aria-label="@(Ribbon?.TryLocalize("More: {0}", Text) ?? Text)"
+                 @onclick="() => menu.ToggleAsync()">
+            <MudIcon Icon="@Icons.Material.Filled.ExpandMore" Class="mud-ex-ribbon-arrow" />
+        </button>;
+
+    private RenderFragment Grid =>
+        @<div class="mud-ex-ribbon-gallery-grid" role="listbox" aria-label="@Text" style="@ColumnsStyle">
+            @foreach (var item in Items ?? [])
+            {
+                <MudMenuItem Class="@ItemClass(item)"
+                             Disabled="@Disabled"
+                             OnClick="() => SelectAsync(item)"
+                             role="option"
+                             aria-selected="@(IsSelected(item) ? "true" : "false")"
+                             title="@TextOf(item)">
+                    @ItemContent(item)
+                </MudMenuItem>
+            }
+        </div>;
+
+    private RenderFragment ItemContent(TItem item) => ItemTemplate?.Invoke(item) ?? (builder => builder.AddContent(0, TextOf(item)));
+}

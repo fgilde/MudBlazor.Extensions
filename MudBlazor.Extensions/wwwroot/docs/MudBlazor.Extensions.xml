@@ -18757,6 +18757,36 @@
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonButton.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonColorPicker">
+            <summary>
+            A split button for colors, for example the font color. The face applies the last chosen color, the arrow opens
+            a palette with "More colors…" for any other color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonColorPicker.Value">
+            <summary>
+            The last chosen color, drawn as a bar below the icon and applied by the face.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonColorPicker.ValueChanged">
+            <summary>
+            Raised when the face is clicked or a color is chosen.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonColorPicker.Palette">
+            <summary>
+            Colors offered in the dropdown. Defaults to the theme colors followed by ten standard colors.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonColorPicker.StateKey">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonColorPicker.ExecuteAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonColorPicker.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExRibbonContent">
             <summary>
             Hosts arbitrary content inside a ribbon group, for example a picker.
@@ -18771,6 +18801,57 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonContent.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonGallery`1">
+            <summary>
+            An in-ribbon gallery of previews, for example text styles. The strip shows <see cref="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.VisibleRows"/> rows of
+            <see cref="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.Columns"/> items, steps a row per arrow and drops all items as a grid from its "more" arrow.
+            </summary>
+            <typeparam name="TItem">Type of the gallery items.</typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.Items">
+            <summary>
+            Items of the gallery.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.SelectedItem">
+            <summary>
+            The highlighted item.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.SelectedItemChanged">
+            <summary>
+            Raised when the user selects an item.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.ItemTemplate">
+            <summary>
+            Preview of an item. Defaults to the text of <see cref="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.ItemText"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.ItemText">
+            <summary>
+            Name of an item for previews, tooltips and the command list. Defaults to <see cref="M:System.Object.ToString"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.VisibleRows">
+            <summary>
+            Number of item rows visible in the ribbon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.Columns">
+            <summary>
+            Number of items per row, in the ribbon and in the dropped grid.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.IsCommand">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGallery`1.StateKey">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonGallery`1.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExRibbonGroup">
@@ -18918,6 +18999,122 @@
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonItemBase.Dispose">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonMenuButton">
+            <summary>
+            A ribbon command that opens a dropdown menu of <see cref="T:MudBlazor.Extensions.Components.MudExRibbonMenuItem"/> components.
+            As split button the face runs <see cref="P:MudBlazor.Extensions.Components.MudExRibbonMenuButton.OnClick"/> and only the arrow opens the menu.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonMenuButton.Split">
+            <summary>
+            Whether the button is split into a face that runs <see cref="P:MudBlazor.Extensions.Components.MudExRibbonMenuButton.OnClick"/> and an arrow that opens the menu.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonMenuButton.OnClick">
+            <summary>
+            Raised when the face of a split button is clicked.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonMenuButton.ChildContent">
+            <summary>
+            Declaration of the menu entries.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonMenuButton.Items">
+            <summary>
+            Menu entries in declaration order.
+            Entries declared later (e.g. via @if) are appended; use <see cref="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Visible"/> to keep the declared position.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonMenuButton.StateKey">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonMenuButton.ExecuteAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonMenuButton.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonMenuItem">
+            <summary>
+            An entry of a <see cref="T:MudBlazor.Extensions.Components.MudExRibbonMenuButton"/>. Nested entries form a submenu.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonMenuItem.OnClick">
+            <summary>
+            Raised when the entry is executed. The menu closes afterwards.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonMenuItem.Checked">
+            <summary>
+            Check state drawn as a tick, null for an entry that cannot be checked.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonMenuItem.ChildContent">
+            <summary>
+            Declaration of the submenu entries.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonMenuItem.Items">
+            <summary>
+            Submenu entries in declaration order.
+            Entries declared later (e.g. via @if) are appended; use <see cref="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Visible"/> to keep the declared position.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonMenuItem.StateKey">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonMenuItem.ExecuteAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonMenuItem.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonNumberBox">
+            <summary>
+            A labelled number field with a spinner, for example "Before: 6 pt". Values are clamped to
+            <see cref="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.Min"/>..<see cref="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.Max"/> and snapped to <see cref="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.Step"/>; typed text commits on Enter or blur.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.Value">
+            <summary>
+            The current value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.ValueChanged">
+            <summary>
+            Raised when the user commits a new value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.Min">
+            <summary>
+            Smallest allowed value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.Max">
+            <summary>
+            Largest allowed value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.Step">
+            <summary>
+            Increment of the spinner and the grid values snap to, starting at <see cref="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.Min"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.Unit">
+            <summary>
+            Unit shown after the value, for example "pt". It may be typed along with the value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.IsCommand">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonNumberBox.StateKey">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonNumberBox.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExRibbonRow">
             <summary>
             A line of items inside a <see cref="T:MudBlazor.Extensions.Components.MudExRibbonGroup"/>, drawn side by side in small or medium layout.
@@ -18938,6 +19135,52 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonRow.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonSelect`1">
+            <summary>
+            A dropdown list in the ribbon, for example the font name. With <see cref="P:MudBlazor.Extensions.Components.MudExRibbonSelect`1.Editable"/> the user may also type a value.
+            </summary>
+            <typeparam name="T">Type of the items.</typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonSelect`1.Items">
+            <summary>
+            Items to choose from.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonSelect`1.Value">
+            <summary>
+            The selected value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonSelect`1.ValueChanged">
+            <summary>
+            Raised when the user selects or types a value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonSelect`1.ItemText">
+            <summary>
+            Text of an item. Defaults to <see cref="M:System.Object.ToString"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonSelect`1.Editable">
+            <summary>
+            Whether the user may type a value. Typed text selects the item with the same text;
+            for string items any text is accepted.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonSelect`1.Width">
+            <summary>
+            Width of the field in pixels.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonSelect`1.IsCommand">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonSelect`1.StateKey">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonSelect`1.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExRibbonSeparator">

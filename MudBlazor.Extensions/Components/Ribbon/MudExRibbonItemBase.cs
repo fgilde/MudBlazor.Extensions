@@ -6,7 +6,7 @@ namespace MudBlazor.Extensions.Components;
 /// Base class of all ribbon items. An item renders no markup where it is declared; it registers with its
 /// nearest host (group, row or menu) and is drawn by the ribbon through <see cref="Render"/>.
 /// </summary>
-public abstract class MudExRibbonItemBase : ComponentBase, IDisposable
+public abstract partial class MudExRibbonItemBase : ComponentBase, IDisposable
 {
     private object _stateKey;
 

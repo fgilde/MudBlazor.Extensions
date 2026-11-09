@@ -1,0 +1,9 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonItemBase
+
+<CascadingValue Value="this" IsFixed="true">@ChildContent</CascadingValue>
+
+@code {
+    /// <inheritdoc />
+    public override RenderFragment Render(MudExRibbonItemLayout layout) => RenderMenu(layout, Items, Split ? ExecuteAsync : null);
+}

@@ -1,0 +1,43 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonItemBase
+@using System.Globalization
+
+@code {
+    /// <inheritdoc />
+    public override RenderFragment Render(MudExRibbonItemLayout layout) => WithTooltip(layout,
+        @<div class="@($"mud-ex-ribbon-field mud-ex-ribbon-number mud-ex-ribbon-{LayoutName(layout)}")">
+            @if (ShowsText(layout) && !string.IsNullOrEmpty(Text))
+            {
+                <span class="mud-ex-ribbon-label">@Text</span>
+            }
+            else if (!string.IsNullOrEmpty(Icon))
+            {
+                <MudIcon Icon="@Icon" Class="mud-ex-ribbon-icon" />
+            }
+            <div class="mud-ex-ribbon-number-box">
+                <input @key="_inputVersion"
+                       type="text"
+                       inputmode="decimal"
+                       class="mud-ex-ribbon-number-input"
+                       role="spinbutton"
+                       aria-label="@(Text ?? Tooltip)"
+                       aria-valuenow="@Value.ToString(CultureInfo.InvariantCulture)"
+                       aria-valuemin="@Min.ToString(CultureInfo.InvariantCulture)"
+                       aria-valuemax="@(Max < double.MaxValue ? Max.ToString(CultureInfo.InvariantCulture) : null)"
+                       value="@DisplayText"
+                       disabled="@Disabled"
+                       @onchange="OnInputChangedAsync"
+                       @onkeydown="OnKeyDownAsync" />
+                <div class="mud-ex-ribbon-spin">
+                    <button type="button" tabindex="-1" class="mud-ex-ribbon-spin-up" disabled="@Disabled"
+                            aria-label="@(Ribbon?.TryLocalize("Increase") ?? "Increase")" @onclick="() => SpinAsync(1)">
+                        <MudIcon Icon="@Icons.Material.Filled.ArrowDropUp" />
+                    </button>
+                    <button type="button" tabindex="-1" class="mud-ex-ribbon-spin-down" disabled="@Disabled"
+                            aria-label="@(Ribbon?.TryLocalize("Decrease") ?? "Decrease")" @onclick="() => SpinAsync(-1)">
+                        <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown" />
+                    </button>
+                </div>
+            </div>
+        </div>);
+}

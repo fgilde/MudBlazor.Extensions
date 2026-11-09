@@ -1,0 +1,93 @@
+@namespace MudBlazor.Extensions.Components
+@inherits ComponentBase
+
+@code {
+    internal static bool ShowsText(MudExRibbonItemLayout layout)
+        => layout is MudExRibbonItemLayout.Large or MudExRibbonItemLayout.Medium or MudExRibbonItemLayout.MenuEntry;
+
+    internal RenderFragment WithTooltip(MudExRibbonItemLayout layout, RenderFragment content)
+        => layout == MudExRibbonItemLayout.MenuEntry ? content :
+            @<MudTooltip RootClass="@($"mud-ex-ribbon-cell-{LayoutName(layout)}")" Delay="500">
+                <ChildContent>@content</ChildContent>
+                <TooltipContent>
+                    <div class="mud-ex-ribbon-tooltip">
+                        <div class="mud-ex-ribbon-tooltip-title">@TooltipTitle</div>
+                        @if (!string.IsNullOrEmpty(Description))
+                        {
+                            <div>@Description</div>
+                        }
+                    </div>
+                </TooltipContent>
+            </MudTooltip>;
+
+    internal RenderFragment Face(MudExRibbonItemLayout layout, Func<Task> onClick, bool? pressed = null, bool dropDown = false,
+        string cssClass = null, RenderFragment icon = null) =>
+        @<button type="button"
+                 class="@($"mud-ex-ribbon-button mud-ex-ribbon-{LayoutName(layout)}{(pressed == true ? " mud-ex-ribbon-checked" : "")} {cssClass}".TrimEnd())"
+                 disabled="@Disabled"
+                 aria-label="@(Text ?? Tooltip)"
+                 aria-pressed="@pressed?.ToString().ToLowerInvariant()"
+                 @onclick="onClick">
+            @if (icon != null)
+            {
+                @icon
+            }
+            else if (!string.IsNullOrEmpty(Icon))
+            {
+                <MudIcon Icon="@Icon" Class="mud-ex-ribbon-icon" />
+            }
+            @if (ShowsText(layout))
+            {
+                <span class="mud-ex-ribbon-label">@Text</span>
+            }
+            @if (layout == MudExRibbonItemLayout.MenuEntry && !string.IsNullOrEmpty(Shortcut))
+            {
+                <span class="mud-ex-ribbon-shortcut">@Shortcut</span>
+            }
+            @if (dropDown)
+            {
+                <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown" Class="mud-ex-ribbon-arrow" />
+            }
+        </button>;
+
+    internal RenderFragment SplitFace(MudExRibbonItemLayout layout, Func<Task> onClick, MenuContext menu, RenderFragment icon = null) =>
+        @<div class="@($"mud-ex-ribbon-split mud-ex-ribbon-split-{LayoutName(layout)}")">
+            @Face(layout, onClick, cssClass: "mud-ex-ribbon-split-face", icon: icon)
+            <button type="button"
+                    class="mud-ex-ribbon-button mud-ex-ribbon-split-arrow"
+                    disabled="@Disabled"
+                    aria-label="@(Ribbon?.TryLocalize("More options: {0}", Text) ?? Text)"
+                    @onclick="() => menu.ToggleAsync()">
+                <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown" Class="mud-ex-ribbon-arrow" />
+            </button>
+        </div>;
+
+    internal RenderFragment DropDown(RenderFragment<MenuContext> activator, RenderFragment content,
+        string cssClass = "mud-ex-ribbon-menu", Origin anchor = Origin.BottomLeft, Origin transform = Origin.TopLeft) =>
+        @<MudMenu Class="@cssClass"
+                  Disabled="@Disabled"
+                  Dense="true"
+                  AnchorOrigin="@anchor"
+                  TransformOrigin="@transform"
+                  ActivatorContent="@activator">
+            @content
+        </MudMenu>;
+
+    internal RenderFragment SubMenu(RenderFragment content) =>
+        @<MudMenu Label="@Text" StartIcon="@Icon" Disabled="@Disabled" Dense="true" Class="mud-ex-ribbon-submenu">@content</MudMenu>;
+
+    internal static RenderFragment MenuEntries(IEnumerable<MudExRibbonItemBase> items) =>
+        @<text>
+            @foreach (var item in items.Where(i => i.Visible))
+            {
+                <div @key="item" class="mud-ex-ribbon-slot">@item.Render(MudExRibbonItemLayout.MenuEntry)</div>
+            }
+        </text>;
+
+    internal RenderFragment RenderMenu(MudExRibbonItemLayout layout, IEnumerable<MudExRibbonItemBase> items, Func<Task> split)
+        => layout == MudExRibbonItemLayout.MenuEntry
+            ? SubMenu(MenuEntries(items))
+            : WithTooltip(layout, DropDown(
+                menu => split == null ? Face(layout, () => menu.ToggleAsync(), dropDown: true) : SplitFace(layout, split, menu),
+                MenuEntries(items)));
+}

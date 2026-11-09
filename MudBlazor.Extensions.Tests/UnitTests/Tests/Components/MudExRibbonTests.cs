@@ -206,6 +206,232 @@ public class MudExRibbonTests : IAsyncLifetime
         Assert.Equal(cut.FindComponent<MudExRibbonButton>().Instance.Text, cut.Find(".mud-ex-ribbon-button").GetAttribute("aria-label"));
     }
 
+    private (IRenderedComponent<MudExRibbon> Ribbon, IRenderedComponent<MudPopoverProvider> Popovers, BunitContext Context) RenderGroup(
+        Action<ComponentParameterCollectionBuilder<MudExRibbonGroup>> configure)
+    {
+        var context = NewContext();
+        var popovers = context.Render<MudPopoverProvider>();
+        var cut = context.Render<MudExRibbon>(p => p.AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home")
+            .AddChildContent<MudExRibbonGroup>(g =>
+            {
+                g.Add(x => x.Text, "G");
+                configure(g);
+            })));
+        return (cut, popovers, context);
+    }
+
+    [Fact]
+    public void SplitButton_FaceRunsOnClick_ArrowOpensMenu()
+    {
+        var clicks = 0;
+        var (cut, popovers, _) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonMenuButton>(m => m.Add(x => x.Text, "Paste").Add(x => x.Split, true).Add(x => x.OnClick, () => clicks++)
+                .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Paste Special")))
+            .AddChildContent<MudExRibbonMenuButton>(m => m.Add(x => x.Text, "Styles")
+                .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Heading"))));
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-split-face")));
+        cut.Find(".mud-ex-ribbon-split-face").Click();
+
+        cut.WaitForAssertion(() => Assert.Equal(1, clicks));
+        Assert.DoesNotContain("Paste Special", popovers.Markup);
+
+        cut.Find(".mud-ex-ribbon-split-arrow").Click();
+        popovers.WaitForAssertion(() => Assert.Contains("Paste Special", popovers.Markup));
+        Assert.Equal(1, clicks);
+
+        cut.FindAll(".mud-ex-ribbon-menu .mud-ex-ribbon-button").Last().Click();
+        popovers.WaitForAssertion(() => Assert.Contains("Heading", popovers.Markup));
+    }
+
+    [Fact]
+    public void MenuItem_InvokesOnClick_AndClosesMenu()
+    {
+        var clicks = 0;
+        var (cut, popovers, _) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonMenuButton>(m => m.Add(x => x.Text, "Insert")
+                .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Table").Add(x => x.OnClick, () => clicks++))
+                .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Shapes")
+                    .AddChildContent<MudExRibbonMenuItem>(c => c.Add(x => x.Text, "Circle")))));
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-menu .mud-ex-ribbon-button")));
+        var menu = Assert.IsType<MudExRibbonMenuButton>(Assert.Single(cut.Instance.Tabs[0].Groups[0].Items));
+        Assert.Equal(["Table", "Shapes"], menu.Items.Select(i => i.Text));
+        Assert.Equal(["Circle"], ((MudExRibbonMenuItem)menu.Items[1]).Items.Select(i => i.Text));
+
+        cut.Find(".mud-ex-ribbon-menu .mud-ex-ribbon-button").Click();
+        popovers.WaitForAssertion(() => Assert.Contains(popovers.FindAll("[role=menuitem]"), e => e.TextContent.Contains("Table")));
+        Assert.Equal("true", cut.Find(".mud-ex-ribbon-menu [aria-haspopup=menu]").GetAttribute("aria-expanded"));
+
+        popovers.FindAll("[role=menuitem]").First(e => e.TextContent.Contains("Table")).Click();
+
+        cut.WaitForAssertion(() => Assert.Equal(1, clicks));
+        cut.WaitForAssertion(() => Assert.Equal("false", cut.Find(".mud-ex-ribbon-menu [aria-haspopup=menu]").GetAttribute("aria-expanded")));
+    }
+
+    private static readonly string[] Styles = ["Normal", "No Spacing", "Heading 1", "Heading 2", "Title", "Subtitle"];
+
+    [Fact]
+    public void Gallery_SelectingItem_RaisesSelectedItemChanged()
+    {
+        string? selected = null;
+        var (cut, _, _) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonGallery<string>>(b => b.Add(x => x.Text, "Styles").Add(x => x.Items, Styles)
+                .Add(x => x.SelectedItem, "Normal").Add(x => x.SelectedItemChanged, v => selected = v)));
+
+        cut.WaitForAssertion(() => Assert.Equal(Styles.Take(4), cut.FindAll(".mud-ex-ribbon-gallery-strip .mud-ex-ribbon-gallery-item").Select(e => e.TextContent.Trim())));
+        Assert.Equal("true", cut.Find(".mud-ex-ribbon-gallery-strip .mud-ex-ribbon-gallery-item").GetAttribute("aria-selected"));
+        Assert.True(cut.Find(".mud-ex-ribbon-gallery-up").HasAttribute("disabled"));
+
+        cut.FindAll(".mud-ex-ribbon-gallery-strip .mud-ex-ribbon-gallery-item")[2].Click();
+
+        cut.WaitForAssertion(() => Assert.Equal("Heading 1", selected));
+        cut.WaitForAssertion(() => Assert.Equal("true", cut.FindAll(".mud-ex-ribbon-gallery-strip .mud-ex-ribbon-gallery-item")[2].GetAttribute("aria-selected")));
+
+        cut.Find(".mud-ex-ribbon-gallery-down").Click();
+        cut.WaitForAssertion(() => Assert.Equal(Styles.Skip(4), cut.FindAll(".mud-ex-ribbon-gallery-strip .mud-ex-ribbon-gallery-item").Select(e => e.TextContent.Trim())));
+        Assert.True(cut.Find(".mud-ex-ribbon-gallery-down").HasAttribute("disabled"));
+    }
+
+    [Fact]
+    public void Gallery_MoreArrow_ShowsAllItems()
+    {
+        string? selected = null;
+        var (cut, popovers, _) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonGallery<string>>(b => b.Add(x => x.Text, "Styles").Add(x => x.Items, Styles)
+                .Add(x => x.ItemText, s => s.ToUpperInvariant()).Add(x => x.SelectedItemChanged, v => selected = v)));
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-gallery-more")));
+        cut.Find(".mud-ex-ribbon-gallery-more").Click();
+
+        popovers.WaitForAssertion(() => Assert.Equal(Styles.Select(s => s.ToUpperInvariant()),
+            popovers.FindAll(".mud-ex-ribbon-gallery-item").Select(e => e.TextContent.Trim())));
+
+        popovers.FindAll(".mud-ex-ribbon-gallery-item")[5].Click();
+
+        cut.WaitForAssertion(() => Assert.Equal("Subtitle", selected));
+        cut.WaitForAssertion(() => Assert.Equal("false", cut.Find(".mud-ex-ribbon-gallery [aria-haspopup=menu]").GetAttribute("aria-expanded")));
+        Assert.Contains(cut.FindAll(".mud-ex-ribbon-gallery-strip .mud-ex-ribbon-gallery-item"), e => e.TextContent.Trim() == "SUBTITLE");
+    }
+
+    [Fact]
+    public void NumberBox_ClampsToMinMax_AndSteps()
+    {
+        var raised = new List<double>();
+        var (cut, _, _) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonNumberBox>(b => b.Add(x => x.Text, "Before:").Add(x => x.Value, 2).Add(x => x.Min, 0).Add(x => x.Max, 10)
+                .Add(x => x.Step, 2).Add(x => x.Unit, "pt").Add(x => x.ValueChanged, v => raised.Add(v))));
+
+        cut.WaitForAssertion(() => Assert.Equal("2 pt", cut.Find(".mud-ex-ribbon-number input").GetAttribute("value")));
+
+        cut.Find(".mud-ex-ribbon-number input").Change("12 pt");
+        cut.WaitForAssertion(() => Assert.Equal("10 pt", cut.Find(".mud-ex-ribbon-number input").GetAttribute("value")));
+
+        cut.Find(".mud-ex-ribbon-number input").Change("-5");
+        cut.WaitForAssertion(() => Assert.Equal("0 pt", cut.Find(".mud-ex-ribbon-number input").GetAttribute("value")));
+
+        cut.Find(".mud-ex-ribbon-number input").Change("3");
+        cut.WaitForAssertion(() => Assert.Equal("4 pt", cut.Find(".mud-ex-ribbon-number input").GetAttribute("value")));
+
+        cut.Find(".mud-ex-ribbon-spin-up").Click();
+        cut.WaitForAssertion(() => Assert.Equal("6 pt", cut.Find(".mud-ex-ribbon-number input").GetAttribute("value")));
+
+        cut.Find(".mud-ex-ribbon-spin-down").Click();
+        cut.WaitForAssertion(() => Assert.Equal("4 pt", cut.Find(".mud-ex-ribbon-number input").GetAttribute("value")));
+        cut.Find(".mud-ex-ribbon-spin-down").Click();
+        cut.WaitForAssertion(() => Assert.Equal("2 pt", cut.Find(".mud-ex-ribbon-number input").GetAttribute("value")));
+
+        Assert.Equal([10d, 0d, 4d, 6d, 4d, 2d], raised);
+    }
+
+    [Fact]
+    public void Select_RaisesValueChanged()
+    {
+        string? font = null, size = null;
+        var (cut, _, _) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonSelect<string>>(b => b.Add(x => x.Text, "Font").Add(x => x.Items, ["Arial", "Calibri", "Times"])
+                .Add(x => x.Value, "Calibri").Add(x => x.ValueChanged, v => font = v))
+            .AddChildContent<MudExRibbonSelect<string>>(b => b.Add(x => x.Text, "Size").Add(x => x.Items, ["10", "11", "12"])
+                .Add(x => x.Editable, true).Add(x => x.ValueChanged, v => size = v)));
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll("select.mud-ex-ribbon-select")));
+        Assert.True(cut.FindAll("select.mud-ex-ribbon-select option")[1].HasAttribute("selected"));
+
+        cut.Find("select.mud-ex-ribbon-select").Change("2");
+        cut.WaitForAssertion(() => Assert.Equal("Times", font));
+        cut.WaitForAssertion(() => Assert.True(cut.FindAll("select.mud-ex-ribbon-select option")[2].HasAttribute("selected")));
+
+        Assert.Equal(["10", "11", "12"], cut.FindAll("datalist option").Select(o => o.GetAttribute("value")));
+        cut.Find("input.mud-ex-ribbon-select").Change("14");
+        cut.WaitForAssertion(() => Assert.Equal("14", size));
+    }
+
+    [Fact]
+    public async Task ColorPicker_FaceAppliesLastColor_PaletteSelectionRaisesValueChanged()
+    {
+        var raised = new List<string>();
+        var (cut, popovers, context) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonColorPicker>(b => b.Add(x => x.Text, "Font Color").Add(x => x.Value, Color.Error)
+                .Add(x => x.ValueChanged, v => raised.Add(v.ToString()))));
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-split-face")));
+        Assert.Contains("var(--mud-palette-error)", cut.Find(".mud-ex-ribbon-color-bar").GetAttribute("style"));
+
+        cut.Find(".mud-ex-ribbon-split-face").Click();
+        cut.WaitForAssertion(() => Assert.Equal(["Error"], raised));
+
+        cut.Find(".mud-ex-ribbon-split-arrow").Click();
+        popovers.WaitForAssertion(() => Assert.Equal(18, popovers.FindAll(".mud-ex-ribbon-swatch").Count));
+        Assert.Equal(["Primary", "Secondary", "Tertiary", "Info", "Success", "Warning", "Error", "Dark",
+                "#C00000", "#FF0000", "#FFC000", "#FFFF00", "#92D050", "#00B050", "#00B0F0", "#0070C0", "#002060", "#7030A0"],
+            popovers.FindAll(".mud-ex-ribbon-swatch").Select(e => e.GetAttribute("aria-label")));
+
+        popovers.FindAll(".mud-ex-ribbon-swatch").Single(e => e.GetAttribute("aria-label") == "#0070C0").Click();
+        cut.WaitForAssertion(() => Assert.Equal(["Error", "#0070C0"], raised));
+        cut.WaitForAssertion(() => Assert.Contains("#0070c0", cut.Find(".mud-ex-ribbon-color-bar").GetAttribute("style"), StringComparison.OrdinalIgnoreCase));
+
+        cut.Find(".mud-ex-ribbon-split-face").Click();
+        cut.WaitForAssertion(() => Assert.Equal(["Error", "#0070C0", "#0070C0"], raised));
+
+        cut.Find(".mud-ex-ribbon-split-arrow").Click();
+        popovers.WaitForAssertion(() => Assert.Single(popovers.FindAll(".mud-ex-ribbon-more-colors")));
+        context.JSInterop.Setup<CssVariable[]>("MudExCssHelper.getCssVariables", _ => true).SetResult([]);
+        popovers.Find(".mud-ex-ribbon-more-colors").Click();
+        popovers.WaitForAssertion(() => Assert.Single(popovers.FindComponents<MudExColorEdit>()));
+
+        var edit = popovers.FindComponent<MudExColorEdit>();
+        await popovers.InvokeAsync(() => edit.Instance.ValueChanged.InvokeAsync("#123456"));
+        cut.WaitForAssertion(() => Assert.Equal("#123456", raised.Last()));
+        Assert.Single(popovers.FindComponents<MudExColorEdit>());
+    }
+
+    [Fact]
+    public void NewItems_RenderInEveryLayout()
+    {
+        var (cut, _, context) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonMenuButton>(m => m.Add(x => x.Text, "Paste").Add(x => x.Split, true)
+                .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Paste Special")))
+            .AddChildContent<MudExRibbonMenuItem>(m => m.Add(x => x.Text, "Shapes").Add(x => x.Checked, true)
+                .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Circle")))
+            .AddChildContent<MudExRibbonGallery<string>>(b => b.Add(x => x.Text, "Styles").Add(x => x.Items, Styles))
+            .AddChildContent<MudExRibbonNumberBox>(b => b.Add(x => x.Text, "Indent"))
+            .AddChildContent<MudExRibbonSelect<string>>(b => b.Add(x => x.Text, "Font").Add(x => x.Items, ["Arial"]))
+            .AddChildContent<MudExRibbonColorPicker>(b => b.Add(x => x.Text, "Highlight")));
+
+        cut.WaitForAssertion(() => Assert.Equal(6, cut.Instance.Tabs[0].Groups[0].Items.Count));
+        var items = cut.Instance.Tabs[0].Groups[0].Items;
+        Assert.Equal([true, true, false, false, false, true], items.Select(i => i.IsCommand));
+
+        foreach (var item in items)
+        foreach (var layout in Enum.GetValues<MudExRibbonItemLayout>())
+        {
+            var rendered = context.Render(item.Render(layout));
+            Assert.False(string.IsNullOrWhiteSpace(rendered.Markup), $"{item.Text} {layout}");
+            if (layout == MudExRibbonItemLayout.MenuEntry)
+                Assert.Contains(item.Text, rendered.Markup);
+        }
+    }
+
     private sealed class CountingRibbon : MudExRibbon
     {
         public int Renders { get; private set; }

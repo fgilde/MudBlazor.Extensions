@@ -19,10 +19,4 @@ public partial class MudExRibbonButton
 
     /// <inheritdoc />
     public override Task ExecuteAsync() => Disabled ? Task.CompletedTask : OnClick.InvokeAsync();
-
-    private static bool ShowsText(MudExRibbonItemLayout layout)
-        => layout is MudExRibbonItemLayout.Large or MudExRibbonItemLayout.Medium or MudExRibbonItemLayout.MenuEntry;
-
-    private string ButtonClass(MudExRibbonItemLayout layout)
-        => $"mud-ex-ribbon-button mud-ex-ribbon-{LayoutName(layout)}{(Pressed == true ? " mud-ex-ribbon-checked" : "")}";
 }

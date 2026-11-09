@@ -1,0 +1,56 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonItemBase
+@typeparam T
+
+@code {
+    /// <inheritdoc />
+    public override RenderFragment Render(MudExRibbonItemLayout layout) => WithTooltip(layout,
+        @<div class="@($"mud-ex-ribbon-field mud-ex-ribbon-{LayoutName(layout)}")">
+            @if (ShowsText(layout) && !string.IsNullOrEmpty(Text))
+            {
+                <span class="mud-ex-ribbon-label">@Text</span>
+            }
+            else if (!string.IsNullOrEmpty(Icon))
+            {
+                <MudIcon Icon="@Icon" Class="mud-ex-ribbon-icon" />
+            }
+            @if (Editable)
+            {
+                <input @key="_inputVersion"
+                       type="text"
+                       class="mud-ex-ribbon-select"
+                       style="@WidthStyle"
+                       list="@_listId"
+                       aria-label="@(Text ?? Tooltip)"
+                       value="@TextOf(Value)"
+                       disabled="@Disabled"
+                       @onchange="OnTextChangedAsync" />
+                <datalist id="@_listId">
+                    @foreach (var item in Items ?? [])
+                    {
+                        <option value="@TextOf(item)"></option>
+                    }
+                </datalist>
+            }
+            else
+            {
+                var found = false;
+                <select class="mud-ex-ribbon-select"
+                        style="@WidthStyle"
+                        aria-label="@(Text ?? Tooltip)"
+                        disabled="@Disabled"
+                        @onchange="OnSelectedAsync">
+                    @foreach (var (item, index) in (Items ?? []).Select((item, index) => (item, index)))
+                    {
+                        var selected = !found && IsSelected(item);
+                        found |= selected;
+                        <option value="@index" selected="@selected">@TextOf(item)</option>
+                    }
+                    @if (!found)
+                    {
+                        <option value="" selected disabled hidden></option>
+                    }
+                </select>
+            }
+        </div>);
+}

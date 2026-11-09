@@ -3,39 +3,5 @@
 
 @code {
     /// <inheritdoc />
-    public override RenderFragment Render(MudExRibbonItemLayout layout)
-        => layout == MudExRibbonItemLayout.MenuEntry ? Face(layout) :
-            @<MudTooltip RootClass="@($"mud-ex-ribbon-cell-{LayoutName(layout)}")" Delay="500">
-                <ChildContent>@Face(layout)</ChildContent>
-                <TooltipContent>
-                    <div class="mud-ex-ribbon-tooltip">
-                        <div class="mud-ex-ribbon-tooltip-title">@TooltipTitle</div>
-                        @if (!string.IsNullOrEmpty(Description))
-                        {
-                            <div>@Description</div>
-                        }
-                    </div>
-                </TooltipContent>
-            </MudTooltip>;
-
-    private RenderFragment Face(MudExRibbonItemLayout layout) =>
-        @<button type="button"
-                 class="@ButtonClass(layout)"
-                 disabled="@Disabled"
-                 aria-label="@(Text ?? Tooltip)"
-                 aria-pressed="@Pressed?.ToString().ToLowerInvariant()"
-                 @onclick="ExecuteAsync">
-            @if (!string.IsNullOrEmpty(Icon))
-            {
-                <MudIcon Icon="@Icon" Class="mud-ex-ribbon-icon" />
-            }
-            @if (ShowsText(layout))
-            {
-                <span class="mud-ex-ribbon-label">@Text</span>
-            }
-            @if (layout == MudExRibbonItemLayout.MenuEntry && !string.IsNullOrEmpty(Shortcut))
-            {
-                <span class="mud-ex-ribbon-shortcut">@Shortcut</span>
-            }
-        </button>;
+    public override RenderFragment Render(MudExRibbonItemLayout layout) => WithTooltip(layout, Face(layout, ExecuteAsync, Pressed));
 }

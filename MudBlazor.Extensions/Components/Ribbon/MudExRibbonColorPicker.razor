@@ -1,0 +1,41 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonItemBase
+@using MudBlazor.Extensions.Core
+
+@code {
+    /// <inheritdoc />
+    public override RenderFragment Render(MudExRibbonItemLayout layout) => layout == MudExRibbonItemLayout.MenuEntry
+        ? @<div class="mud-ex-ribbon-field mud-ex-ribbon-menuentry">
+              <span class="mud-ex-ribbon-label">@Text</span>
+              @PaletteContent
+          </div>
+        : WithTooltip(layout, DropDown(menu => SplitFace(layout, ExecuteAsync, menu, ColorIcon), PaletteContent));
+
+    private RenderFragment ColorIcon =>
+        @<span class="mud-ex-ribbon-color-icon">
+            <MudIcon Icon="@(Icon ?? Icons.Material.Filled.FormatColorText)" Class="mud-ex-ribbon-icon" />
+            <span class="mud-ex-ribbon-color-bar" style="@($"background-color:{(Value.IsSet() ? MudExRibbonColors.BackgroundFor(Value) : "transparent")}")"></span>
+        </span>;
+
+    private RenderFragment PaletteContent =>
+        @<div class="mud-ex-ribbon-palette">
+            <div class="mud-ex-ribbon-swatches" role="group" aria-label="@Text">
+                @foreach (var color in Palette ?? DefaultPalette)
+                {
+                    <MudMenuItem Class="mud-ex-ribbon-swatch"
+                                 Style="@($"background-color:{MudExRibbonColors.BackgroundFor(color)}")"
+                                 Disabled="@Disabled"
+                                 OnClick="() => SelectAsync(color, false)"
+                                 aria-label="@color.ToString()"
+                                 title="@color.ToString()" />
+                }
+            </div>
+            <MudMenuItem Class="mud-ex-ribbon-more-colors" Icon="@Icons.Material.Filled.Palette" Disabled="@Disabled" AutoClose="false" OnClick="ToggleMoreColors">
+                @(Ribbon?.TryLocalize("More colors…") ?? "More colors…")
+            </MudMenuItem>
+            @if (_moreColors)
+            {
+                <MudExColorEdit PickerVariant="PickerVariant.Static" Value="@Value" ValueChanged="@((MudExColor color) => SelectAsync(color, true))" />
+            }
+        </div>;
+}
