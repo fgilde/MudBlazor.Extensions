@@ -647,14 +647,17 @@ public partial class MudExSpreadsheetGrid
         if (!CanEdit || index < 0) return;
         double? size = px < 0 ? null : Math.Round(Math.Max(0, px / _zoom), 2);
         var ranges = _selection.Ranges.Where(r => axis == Axis.Column ? r.IsWholeColumns && index >= r.Left && index <= r.Right : r.IsWholeRows && index >= r.Top && index <= r.Bottom).ToList();
-        using (_workbook.Undo.BeginTransaction(axis == Axis.Column ? "Column width" : "Row height"))
+        await TryWriteAsync(() =>
         {
-            if (ranges.Count == 0) _workbook.Execute(new ResizeCommand(_sheet, axis, index, 1, size));
-            foreach (var r in ranges)
-                _workbook.Execute(axis == Axis.Column
-                    ? new ResizeCommand(_sheet, axis, r.Left, r.ColumnCount, size)
-                    : new ResizeCommand(_sheet, axis, r.Top, r.RowCount, size));
-        }
+            using (_workbook.Undo.BeginTransaction(axis == Axis.Column ? "Column width" : "Row height"))
+            {
+                if (ranges.Count == 0) _workbook.Execute(new ResizeCommand(_sheet, axis, index, 1, size));
+                foreach (var r in ranges)
+                    _workbook.Execute(axis == Axis.Column
+                        ? new ResizeCommand(_sheet, axis, r.Left, r.ColumnCount, size)
+                        : new ResizeCommand(_sheet, axis, r.Top, r.RowCount, size));
+            }
+        });
 
         await InvokeAsync(StateHasChanged);
     }

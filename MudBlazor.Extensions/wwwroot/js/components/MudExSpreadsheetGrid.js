@@ -419,7 +419,7 @@ class MudExSpreadsheetGrid {
             e.preventDefault();
             this.endEditVisual();
             this.focus();
-            this.dotnet.invokeMethodAsync('OnSelectAll');
+            this.dotnet.invokeMethodAsync('OnSelectAll').catch(() => {});
             return;
         }
         if (t.classList.contains('mud-ex-ssg-fill') && !this.readOnly()) {
@@ -683,7 +683,7 @@ class MudExSpreadsheetGrid {
             return;
         }
         if (t.classList.contains('mud-ex-ssg-fill')) {
-            this.dotnet.invokeMethodAsync('FillHandleDoubleClick');
+            this.dotnet.invokeMethodAsync('FillHandleDoubleClick').catch(() => {});
             return;
         }
         const header = t.closest(`${COL_HEADER}, ${ROW_HEADER}`);
@@ -694,19 +694,19 @@ class MudExSpreadsheetGrid {
                 return;
             }
             if (!cols) {
-                this.dotnet.invokeMethodAsync('AutoFitRow', edge.index);
+                this.dotnet.invokeMethodAsync('AutoFitRow', edge.index).catch(() => {});
                 return;
             }
-            const candidates = await this.dotnet.invokeMethodAsync('AutoFitColumnCandidates', edge.index);
+            const candidates = await this.dotnet.invokeMethodAsync('AutoFitColumnCandidates', edge.index).catch(() => null);
             if (!candidates?.length) {
                 return;
             }
-            this.dotnet.invokeMethodAsync('ResizeColumn', edge.index, Math.ceil(this.measure(candidates) + 10) * this.zoom());
+            this.dotnet.invokeMethodAsync('ResizeColumn', edge.index, Math.ceil(this.measure(candidates) + 10) * this.zoom()).catch(() => {});
             return;
         }
         const cell = this.cellAt(e.clientX, e.clientY, false);
         if (cell && !this.readOnly()) {
-            this.dotnet.invokeMethodAsync('OnCellDoubleClick', cell.r, cell.c);
+            this.dotnet.invokeMethodAsync('OnCellDoubleClick', cell.r, cell.c).catch(() => {});
         }
     }
 
