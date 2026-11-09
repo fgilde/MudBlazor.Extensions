@@ -50,6 +50,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExRibbon.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExRibbon.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExFileDisplay.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExFileDisplay.js"

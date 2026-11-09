@@ -6387,6 +6387,221 @@
   }
 }
 
+.mud-ex-ribbon {
+  --mud-ex-ribbon-row-h: 26px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--mud-palette-surface);
+  color: var(--mud-palette-text-primary);
+  border-bottom: 1px solid var(--mud-palette-lines-default);
+  font-size: 0.8125rem;
+}
+
+.mud-ex-ribbon-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  min-height: 40px;
+  padding: 4px 8px 0;
+}
+
+.mud-ex-ribbon-title,
+.mud-ex-ribbon-header-end {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  gap: 8px;
+  padding-bottom: 4px;
+}
+
+.mud-ex-ribbon-title {
+  font-weight: 500;
+}
+
+.mud-ex-ribbon-tabs {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 2px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.mud-ex-ribbon-tab {
+  padding: 6px 14px;
+  border: none;
+  border-radius: var(--mud-default-borderradius) var(--mud-default-borderradius) 0 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.mud-ex-ribbon-tab:hover {
+  background-color: color-mix(in srgb, currentColor 14%, transparent);
+}
+.mud-ex-ribbon-tab:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+.mud-ex-ribbon-tab.mud-ex-ribbon-tab-active {
+  background-color: var(--mud-palette-surface);
+  color: var(--mud-palette-text-primary);
+  font-weight: 500;
+}
+
+.mud-ex-ribbon-body {
+  display: flex;
+  align-items: stretch;
+  min-height: calc(var(--mud-ex-ribbon-row-h) * 3 + 32px);
+  padding: 4px 4px 0;
+  overflow: hidden;
+}
+
+.mud-ex-ribbon-group {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  padding: 0 6px;
+  border-right: 1px solid var(--mud-palette-lines-default);
+}
+
+.mud-ex-ribbon-group-items {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-rows: repeat(3, var(--mud-ex-ribbon-row-h));
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  align-items: center;
+  gap: 2px;
+}
+
+.mud-ex-ribbon-cell-large,
+.mud-ex-ribbon-group-items > .mud-ex-ribbon-separator {
+  grid-row: 1/-1;
+  align-self: stretch;
+}
+
+.mud-ex-ribbon-cell-large {
+  display: flex;
+}
+
+.mud-ex-ribbon-group-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 20px;
+  padding: 0 14px;
+  color: var(--mud-palette-text-secondary);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.mud-ex-ribbon-dialog-launcher {
+  position: absolute;
+  right: -4px;
+  display: inline-flex;
+  padding: 2px;
+  border: none;
+  border-radius: var(--mud-default-borderradius);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.mud-ex-ribbon-dialog-launcher:hover {
+  background-color: var(--mud-palette-action-default-hover);
+}
+.mud-ex-ribbon-dialog-launcher .mud-ex-ribbon-icon {
+  font-size: 12px;
+}
+
+.mud-ex-ribbon-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: var(--mud-ex-ribbon-row-h);
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: var(--mud-default-borderradius);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.mud-ex-ribbon-button .mud-ex-ribbon-icon {
+  font-size: 20px;
+}
+.mud-ex-ribbon-button:hover:not(:disabled) {
+  background-color: var(--mud-palette-action-default-hover);
+}
+.mud-ex-ribbon-button:focus-visible {
+  outline: 2px solid var(--mud-palette-primary);
+  outline-offset: -2px;
+}
+.mud-ex-ribbon-button:disabled {
+  color: var(--mud-palette-text-disabled);
+  cursor: default;
+}
+.mud-ex-ribbon-button.mud-ex-ribbon-checked {
+  border-color: color-mix(in srgb, var(--mud-palette-primary) 40%, transparent);
+  background-color: color-mix(in srgb, var(--mud-palette-primary) 16%, transparent);
+}
+.mud-ex-ribbon-button.mud-ex-ribbon-large {
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2px;
+  height: auto;
+  min-width: 48px;
+  padding: 4px 6px;
+}
+.mud-ex-ribbon-button.mud-ex-ribbon-large .mud-ex-ribbon-icon {
+  font-size: 32px;
+}
+.mud-ex-ribbon-button.mud-ex-ribbon-large .mud-ex-ribbon-label {
+  max-width: 80px;
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
+}
+.mud-ex-ribbon-button.mud-ex-ribbon-small, .mud-ex-ribbon-button.mud-ex-ribbon-toolbaricon {
+  justify-content: center;
+  min-width: var(--mud-ex-ribbon-row-h);
+  padding: 0 3px;
+}
+.mud-ex-ribbon-button.mud-ex-ribbon-menuentry {
+  width: 100%;
+}
+.mud-ex-ribbon-button.mud-ex-ribbon-menuentry .mud-ex-ribbon-shortcut {
+  margin-left: auto;
+  padding-left: 24px;
+  color: var(--mud-palette-text-secondary);
+}
+
+.mud-ex-ribbon-row,
+.mud-ex-ribbon-content {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.mud-ex-ribbon-separator.mud-divider-vertical {
+  align-self: stretch;
+  height: auto;
+  margin: 2px 4px;
+}
+
+.mud-ex-ribbon-tooltip {
+  max-width: 280px;
+  text-align: left;
+}
+
+.mud-ex-ribbon-tooltip-title {
+  font-weight: 600;
+}
+
 .mud-ex-blur {
   backdrop-filter: blur(10px);
 }

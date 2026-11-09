@@ -1,0 +1,61 @@
+@namespace MudBlazor.Extensions.Components
+@attribute [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+@{
+    var activeTab = Ribbon.ActiveTab;
+}
+
+<div class="mud-ex-ribbon-header" style="@Ribbon.HeaderStyle">
+    @if (Ribbon.TitleContent != null)
+    {
+        <div class="mud-ex-ribbon-title">@Ribbon.TitleContent</div>
+    }
+    <div class="mud-ex-ribbon-tabs" role="tablist">
+        @foreach (var tab in Ribbon.VisibleTabs)
+        {
+            var active = tab == activeTab;
+            <button type="button"
+                    role="tab"
+                    class="@($"mud-ex-ribbon-tab{(active ? " mud-ex-ribbon-tab-active" : "")}")"
+                    aria-selected="@(active ? "true" : "false")"
+                    @onclick="() => Ribbon.SelectTabAsync(tab)">
+                @tab.Text
+            </button>
+        }
+    </div>
+    @if (Ribbon.HeaderEndContent != null)
+    {
+        <div class="mud-ex-ribbon-header-end">@Ribbon.HeaderEndContent</div>
+    }
+</div>
+<div class="mud-ex-ribbon-body" role="tabpanel">
+    @foreach (var group in activeTab?.Groups ?? [])
+    {
+        <div class="mud-ex-ribbon-group" role="toolbar" aria-label="@group.Text">
+            <div class="mud-ex-ribbon-group-items">
+                @foreach (var item in group.Items.Where(i => i.Visible))
+                {
+                    @item.Render(item.DeclaredLayout)
+                }
+            </div>
+            <div class="mud-ex-ribbon-group-title">
+                <span>@group.Text</span>
+                @if (group.OnDialogLauncherClick.HasDelegate)
+                {
+                    <button type="button"
+                            class="mud-ex-ribbon-dialog-launcher"
+                            aria-label="@Ribbon.TryLocalize("More options: {0}", group.Text)"
+                            @onclick="() => group.OnDialogLauncherClick.InvokeAsync()">
+                        <MudIcon Icon="@Icons.Material.Filled.SouthEast" Class="mud-ex-ribbon-icon" />
+                    </button>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// The ribbon whose registered tabs, groups and items are drawn.
+    /// </summary>
+    [Parameter] public MudExRibbon Ribbon { get; set; }
+}

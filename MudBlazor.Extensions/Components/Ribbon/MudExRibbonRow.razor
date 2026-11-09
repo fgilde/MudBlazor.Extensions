@@ -1,0 +1,15 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonItemBase
+
+<CascadingValue Value="this" IsFixed="true">@ChildContent</CascadingValue>
+
+@code {
+    /// <inheritdoc />
+    public override RenderFragment Render(MudExRibbonItemLayout layout) =>
+        @<div class="mud-ex-ribbon-row">
+            @foreach (var item in Items.Where(i => i.Visible))
+            {
+                @item.Render(ChildLayout(item, layout))
+            }
+        </div>;
+}

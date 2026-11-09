@@ -1,0 +1,13 @@
+@inherits MudExJsRequiredBaseComponent<MudExRibbon>
+@namespace MudBlazor.Extensions.Components
+@{
+    _invalidatePending = false;
+}
+
+<div @ref="ElementReference"
+     @attributes="UserAttributes"
+     class="mud-ex-ribbon @Class"
+     style="@Style">
+    <CascadingValue Value="this" IsFixed="true">@ChildContent</CascadingValue>
+    <MudExRibbonClassicView Ribbon="this" />
+</div>

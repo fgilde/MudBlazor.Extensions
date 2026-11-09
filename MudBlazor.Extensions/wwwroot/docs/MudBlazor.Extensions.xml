@@ -18609,6 +18609,408 @@
             </summary>
             <typeparam name="T">Slider value type.</typeparam>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonMode">
+            <summary>
+            Presentation of a <see cref="T:MudBlazor.Extensions.Components.MudExRibbon"/>. All modes render the same tabs, groups and items.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonMode.Classic">
+            <summary>
+            Office ribbon with tabs, titled groups and large or small commands.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonMode.Simplified">
+            <summary>
+            Single line ribbon with small commands.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonMode.Menu">
+            <summary>
+            Classic menu bar with one dropdown per tab.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonMode.Toolbar">
+            <summary>
+            Flat icon toolbar of the active tab.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonItemSize">
+            <summary>
+            Declared size of a ribbon item.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonItemSize.Large">
+            <summary>
+            Large icon above the text, spanning all rows of a group.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonItemSize.Medium">
+            <summary>
+            Icon followed by the text.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonItemSize.Small">
+            <summary>
+            Icon only.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonItemLayout">
+            <summary>
+            Layout an item is asked to render itself in.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonItemLayout.Large">
+            <summary>
+            Large icon above the text.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonItemLayout.Medium">
+            <summary>
+            Icon followed by the text.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonItemLayout.Small">
+            <summary>
+            Icon only.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonItemLayout.MenuEntry">
+            <summary>
+            Entry of a dropdown menu.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExRibbonItemLayout.ToolbarIcon">
+            <summary>
+            Icon of a flat toolbar.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbon">
+            <summary>
+            Office style ribbon. Tabs, groups and items are declared as child components and register themselves,
+            the selected <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.Mode"/> decides how they are presented.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.ChildContent">
+            <summary>
+            Declaration of the ribbon: <see cref="T:MudBlazor.Extensions.Components.MudExRibbonTab"/> components.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.Mode">
+            <summary>
+            Presentation of the ribbon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.ModeChanged">
+            <summary>
+            Raised when the presentation changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.Color">
+            <summary>
+            Background of the header. The text color is chosen for contrast.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.TitleContent">
+            <summary>
+            Content shown at the start of the header, for example a file name.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.HeaderEndContent">
+            <summary>
+            Content shown at the end of the header.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.ActiveTabIndex">
+            <summary>
+            Index of the active tab in <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.Tabs"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.ActiveTabIndexChanged">
+            <summary>
+            Raised when the user selects another tab.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.Tabs">
+            <summary>
+            All registered tabs in declaration order, including invisible ones.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonButton">
+            <summary>
+            A plain ribbon command.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonButton.OnClick">
+            <summary>
+            Raised when the command is executed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonButton.Pressed">
+            <summary>
+            Pressed state for aria-pressed, null for a button that is not a toggle.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonButton.ExecuteAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonButton.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonContent">
+            <summary>
+            Hosts arbitrary content inside a ribbon group, for example a picker.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonContent.ChildContent">
+            <summary>
+            Content drawn in the ribbon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonContent.IsCommand">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonContent.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonGroup">
+            <summary>
+            A titled group of commands inside a <see cref="T:MudBlazor.Extensions.Components.MudExRibbonTab"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGroup.Text">
+            <summary>
+            Title shown below the commands.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGroup.Icon">
+            <summary>
+            Icon used when the group is collapsed to a single button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGroup.CollapsePriority">
+            <summary>
+            Groups with a lower priority shrink first when space runs out.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGroup.ChildContent">
+            <summary>
+            Declaration of the items of this group.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGroup.OnDialogLauncherClick">
+            <summary>
+            When set, a dialog launcher arrow is shown next to the title and raises this callback.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonGroup.Items">
+            <summary>
+            Direct items of this group in declaration order. Items inside a <see cref="T:MudBlazor.Extensions.Components.MudExRibbonRow"/> belong to the row.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonGroup.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonGroup.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonGroup.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonItemBase">
+            <summary>
+            Base class of all ribbon items. An item renders no markup where it is declared; it registers with its
+            nearest host (group, row or menu) and is drawn by the ribbon through <see cref="M:MudBlazor.Extensions.Components.MudExRibbonItemBase.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Id">
+            <summary>
+            Stable identifier of the command.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Text">
+            <summary>
+            Caption of the item.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Icon">
+            <summary>
+            Icon of the item, for example a value of <see cref="T:MudBlazor.Icons"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Tooltip">
+            <summary>
+            Tooltip title. Defaults to <see cref="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Text"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Description">
+            <summary>
+            Longer description shown in the tooltip below the title.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Shortcut">
+            <summary>
+            Keyboard shortcut shown in brackets after the tooltip title, for example "Ctrl+B". The ribbon does not bind the key.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.KeyTip">
+            <summary>
+            Key tip shown for the item in key tip mode.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Size">
+            <summary>
+            Declared size of the item.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Disabled">
+            <summary>
+            Whether the item is disabled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.Visible">
+            <summary>
+            Whether the item is shown.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.IsCommand">
+            <summary>
+            Whether the item is a command that appears in command search and menus.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.StateKey">
+            <summary>
+            Values of all visible state. The ribbon is redrawn only when this value changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.TooltipTitle">
+            <summary>
+            Tooltip title including the shortcut, for example "Bold (Ctrl+B)".
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonItemBase.LayoutName(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <summary>
+            Lower case name of a layout as used in css class names.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonItemBase.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <summary>
+            Renders the item in the given layout.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonItemBase.ExecuteAsync">
+            <summary>
+            Executes the command of the item.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonItemBase.NotifyStateChanged">
+            <summary>
+            Redraws the ribbon if <see cref="P:MudBlazor.Extensions.Components.MudExRibbonItemBase.StateKey"/> changed since the last call.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonItemBase.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonItemBase.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonItemBase.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonRow">
+            <summary>
+            A line of items inside a <see cref="T:MudBlazor.Extensions.Components.MudExRibbonGroup"/>, drawn side by side in small or medium layout.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonRow.ChildContent">
+            <summary>
+            Declaration of the items of this row.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonRow.Items">
+            <summary>
+            Items of this row in declaration order.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonRow.IsCommand">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonRow.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonSeparator">
+            <summary>
+            A vertical rule between ribbon items, a divider in menus.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonSeparator.IsCommand">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonSeparator.Render(MudBlazor.Extensions.Components.MudExRibbonItemLayout)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonTab">
+            <summary>
+            A tab of a <see cref="T:MudBlazor.Extensions.Components.MudExRibbon"/> holding <see cref="T:MudBlazor.Extensions.Components.MudExRibbonGroup"/> components.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonTab.Text">
+            <summary>
+            Caption of the tab.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonTab.KeyTip">
+            <summary>
+            Key tip shown for the tab in key tip mode.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonTab.Visible">
+            <summary>
+            Whether the tab is shown.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonTab.ChildContent">
+            <summary>
+            Declaration of the groups of this tab.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonTab.Groups">
+            <summary>
+            All registered groups in declaration order.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonTab.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonTab.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonTab.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonToggleButton">
+            <summary>
+            A ribbon command that stays pressed while <see cref="P:MudBlazor.Extensions.Components.MudExRibbonToggleButton.Checked"/> is true.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonToggleButton.Checked">
+            <summary>
+            Whether the button is pressed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonToggleButton.CheckedChanged">
+            <summary>
+            Raised when the user toggles the button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonToggleButton.Pressed">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonToggleButton.StateKey">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonToggleButton.ExecuteAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.FilterHighlighting">
             <summary>
             Controls how the highlighting of the filter is displayed
@@ -19605,6 +20007,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExValidationWrapper`1.Value">
             <summary>
             The value of the ValidationWrapper component. This will be passed to the set validation function.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonClassicView.Ribbon">
+            <summary>
+            The ribbon whose registered tabs, groups and items are drawn.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Capture.CaptureId">
