@@ -66,4 +66,6 @@ public static class ExcelDate
         if (y > 1900 || m > 2) first++;
         return first + day - 1;
     }
+
+    internal static int DaysInMonth(int year, int month) => year == 1900 && month == 2 ? 29 : DateTime.DaysInMonth(year, month);
 }

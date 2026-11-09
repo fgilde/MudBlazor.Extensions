@@ -239,7 +239,7 @@ internal static class TextFunctions
         if (double.TryParse(s, styles, culture, out var n)) return Fn.Number(n);
         if (s.EndsWith('%') && double.TryParse(s[..^1], styles, culture, out n)) return Fn.Number(n / 100);
         if (s.Contains(':') && TimeSpan.TryParse(s, culture, out var time) && time.Days == 0) return CellValue.Number(time.TotalDays);
-        if (DateTime.TryParse(s, culture, DateTimeStyles.AllowWhiteSpaces, out var date)) return CellValue.Number(ExcelDate.ToSerial(date));
+        if (Fn.TryParseDate(s, culture, out var serial)) return CellValue.Number(serial);
         throw Fn.Error(CellError.Value);
     }
 
@@ -247,7 +247,7 @@ internal static class TextFunctions
     {
         var text = Fn.Str(Fn.Scalar(ctx, a[0]));
         var delimiter = Fn.Str(Fn.Scalar(ctx, a[1]));
-        var instance = a.Count > 2 && !a[2].IsMissing ? Fn.Int(Fn.Scalar(ctx, a[2])) : 1;
+        var instance = Fn.OptionalInt(ctx, a, 2, 1);
         var ignoreCase = a.Count > 3 && Fn.Int(Fn.Scalar(ctx, a[3])) == 1;
         var matchEnd = a.Count > 4 && Fn.Bool(Fn.Scalar(ctx, a[4]));
         if (instance == 0 || Math.Abs(instance) > Math.Max(text.Length, 1)) return CalcValue.Error(CellError.Value);

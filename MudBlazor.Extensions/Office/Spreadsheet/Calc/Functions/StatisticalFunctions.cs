@@ -273,20 +273,12 @@ internal static class StatisticalFunctions
 
     internal static double Mode(List<double> n)
     {
-        var counts = new Dictionary<double, int>();
-        double best = 0;
-        var max = 1;
-        foreach (var x in n)
-        {
-            var c = counts[x] = counts.GetValueOrDefault(x) + 1;
-            if (c > max || (c == max && c > 1 && n.IndexOf(x) < n.IndexOf(best)))
-            {
-                max = c;
-                best = x;
-            }
-        }
-
-        return max < 2 ? throw Fn.Error(CellError.NA) : best;
+        var counts = new Dictionary<double, (int Count, int First)>();
+        for (var i = 0; i < n.Count; i++)
+            counts[n[i]] = counts.TryGetValue(n[i], out var seen) ? (seen.Count + 1, seen.First) : (1, i);
+        if (counts.Count == 0) throw Fn.Error(CellError.NA);
+        var best = counts.MaxBy(p => (p.Value.Count, -p.Value.First));
+        return best.Value.Count < 2 ? throw Fn.Error(CellError.NA) : best.Key;
     }
 
     internal static double Kth(List<double> n, double k, bool largest)

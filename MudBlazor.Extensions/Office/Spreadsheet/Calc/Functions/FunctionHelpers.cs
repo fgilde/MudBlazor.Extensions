@@ -109,6 +109,9 @@ internal static class Fn
 
     internal static CellValue Scalar(FunctionContext ctx, CalcArg arg) => arg.IsMissing ? default : ctx.ToScalar(arg.Value);
 
+    internal static int OptionalInt(FunctionContext ctx, IReadOnlyList<CalcArg> a, int i, int fallback) =>
+        a.Count > i && !a[i].IsMissing ? Int(Scalar(ctx, a[i])) : fallback;
+
     internal static CalcArray Array(FunctionContext ctx, CalcArg arg) =>
         ctx.ToArray(Value(arg)) ?? throw Error(CellError.Value);
 
@@ -193,13 +196,25 @@ internal static class Fn
     internal static double SerialArg(FunctionContext ctx, CellValue v)
     {
         if (v.Kind == CellValueKind.Text && !Coercion.TryToNumber(v, out _, out _))
-        {
-            if (!DateTime.TryParse(v.TextValue, ctx.Culture, DateTimeStyles.AllowWhiteSpaces, out var parsed)) throw Error(CellError.Value);
-            return ExcelDate.ToSerial(parsed);
-        }
+            return TryParseDate(v.TextValue, ctx.Culture, out var parsed) ? parsed : throw Error(CellError.Value);
 
         var serial = Num(v);
-        return serial is < 0 or > ExcelDate.MaxSerial + 1 ? throw Error(CellError.Num) : serial;
+        return serial is < 0 or >= ExcelDate.MaxSerial + 1 ? throw Error(CellError.Num) : serial;
+    }
+
+    internal static bool TryParseDate(string text, CultureInfo culture, out double serial)
+    {
+        serial = 0;
+        if (!DateTime.TryParse(text, culture, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.NoCurrentDateDefault, out var d)) return false;
+        if (d.Date == DateTime.MinValue)
+        {
+            serial = d.TimeOfDay.TotalDays;
+            return true;
+        }
+
+        if (d.Year < 1900) return false;
+        serial = ExcelDate.ToSerial(d);
+        return true;
     }
 
     internal static int Day(FunctionContext ctx, CellValue v) => (int)Math.Floor(SerialArg(ctx, v));

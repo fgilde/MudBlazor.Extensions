@@ -338,7 +338,7 @@ internal static class MathFunctions
     {
         var numbers = Fn.Numbers(ctx, args).Select(Math.Truncate).ToList();
         if (numbers.Any(n => n < 0)) return CalcValue.Error(CellError.Num);
-        return Fn.Number(numbers.Aggregate(combine));
+        return numbers.Count == 0 ? CalcValue.Error(CellError.Value) : Fn.Number(numbers.Aggregate(combine));
     }
 
     private static CalcValue SumProduct(FunctionContext ctx, IReadOnlyList<CalcArg> args)

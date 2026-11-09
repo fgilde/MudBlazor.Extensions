@@ -296,7 +296,9 @@ public class FunctionTests
     [Fact]
     public void DateTimeFunctions_TodayAndNow()
     {
-        Assert.Equal(ExcelDate.ToSerial(DateTime.Today), Eval("=TODAY()").NumberValue);
+        var dayBefore = ExcelDate.ToSerial(DateTime.Today);
+        var today = Eval("=TODAY()").NumberValue;
+        Assert.Contains(today, new[] { dayBefore, ExcelDate.ToSerial(DateTime.Today) });
         Assert.InRange(Eval("=NOW()").NumberValue - ExcelDate.ToSerial(DateTime.Now), -0.001, 0.001);
     }
 
@@ -596,5 +598,86 @@ public class FunctionTests
         Assert.Contains(new CellChange(ws, R("H1")), seen);
         Assert.Contains(new CellChange(ws, R("H3")), seen);
         Assert.Equal(new CellRange(R("H1"), R("H3")), engine.SpillRange(ws, R("H1")));
+    }
+
+    [Fact]
+    public void FreedSpillCells_RecalculateTheirReaders()
+    {
+        var (wb, ws, _) = Fixture();
+        wb.Execute(new SetFormulaCommand(ws, R("H2"), "=G3*2"));
+        wb.Execute(new SetFormulaCommand(ws, R("G1"), "=SEQUENCE(3)"));
+        Assert.Equal(CellValue.Number(6), ValueAt(ws, "H2"));
+        wb.Undo.Undo();
+        Assert.Equal(CellValue.Number(0), ValueAt(ws, "H2"));
+        wb.Undo.Redo();
+        Assert.Equal(CellValue.Number(6), ValueAt(ws, "H2"));
+        wb.Execute(new ClearCommand(ws, new CellRange(R("G1"), R("G1"))));
+        Assert.Equal(CellValue.Number(0), ValueAt(ws, "H2"));
+        wb.Undo.Undo();
+        Assert.Equal(CellValue.Number(6), ValueAt(ws, "H2"));
+        wb.Execute(new SetValueCommand(ws, R("G1"), CellValue.Number(5)));
+        Assert.Equal(CellValue.Number(0), ValueAt(ws, "H2"));
+    }
+
+    [Fact]
+    public void VolatileReferences_SeeEditedPrecedentFormulas()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        _ = new CalcEngine(wb);
+        wb.Execute(new SetValueCommand(ws, R("X1"), CellValue.Number(1)));
+        wb.Execute(new SetFormulaCommand(ws, R("A3"), "=X1*2"));
+        wb.Execute(new SetFormulaCommand(ws, R("B1"), "=SUM(OFFSET(A1,0,0,5))"));
+        wb.Execute(new SetFormulaCommand(ws, R("C1"), "=INDIRECT(\"A3\")+0"));
+        Assert.Equal(CellValue.Number(2), ValueAt(ws, "B1"));
+        wb.Execute(new SetFormulaCommand(ws, R("A3"), "=X1*3"));
+        Assert.Equal(CellValue.Number(3), ValueAt(ws, "B1"));
+        Assert.Equal(CellValue.Number(3), ValueAt(ws, "C1"));
+        wb.Execute(new SetValueCommand(ws, R("X1"), CellValue.Number(10)));
+        Assert.Equal(CellValue.Number(30), ValueAt(ws, "B1"));
+        Assert.Equal(CellValue.Number(30), ValueAt(ws, "C1"));
+    }
+
+    [Theory]
+    [InlineData("=VLOOKUP(3.5,A1:C5,3,)", "#N/A")]
+    [InlineData("=VLOOKUP(3,A1:C5,3,)", 30)]
+    [InlineData("=HLOOKUP(1.5,A1:C2,2,)", "#N/A")]
+    [InlineData("=GCD(Y1:Y2)", "#VALUE!")]
+    [InlineData("=LCM(Y1:Y2)", "#VALUE!")]
+    [InlineData("=YEAR(2958466)", "#NUM!")]
+    [InlineData("=YEAR(2958465)", 9999)]
+    [InlineData("=DATEVALUE(\"18:00\")", 0)]
+    [InlineData("=DAY(\"18:00\")", 0)]
+    [InlineData("=HOUR(\"18:00\")", 18)]
+    [InlineData("=DATEVALUE(\"1899-12-30\")", "#VALUE!")]
+    [InlineData("=VALUE(\"1899-12-30\")", "#VALUE!")]
+    [InlineData("=YEAR(\"1899-12-30\")", "#VALUE!")]
+    [InlineData("=DATEVALUE(\"1900-03-01\")", 61)]
+    [InlineData("=MODE(3,1,1,3,2)", 3)]
+    [InlineData("=MODE(1,2,3)", "#N/A")]
+    public void ReviewFixes_LookupDateAndDivisorEdgeCases(string formula, object expected) => Check(formula, expected);
+
+    [Fact]
+    public void Lookup_TrimsOnlyAlongTheSearchAxis()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        _ = new CalcEngine(wb);
+        for (var i = 0; i < 3; i++)
+        {
+            wb.Execute(new SetValueCommand(ws, new CellRef(i, 0), CellValue.Number(i + 1)));
+            wb.Execute(new SetValueCommand(ws, new CellRef(i, 2), CellValue.Text("xyz"[i].ToString())));
+        }
+
+        wb.Execute(new SetFormulaCommand(ws, R("E20"), "=LOOKUP(2,A1:D10)"));
+        wb.Execute(new SetFormulaCommand(ws, R("E21"), "=VLOOKUP(3,A1:F5,6,FALSE)"));
+        wb.Execute(new SetFormulaCommand(ws, R("E22"), "=VLOOKUP(3,A1:F5,7,FALSE)"));
+        wb.Execute(new SetFormulaCommand(ws, R("E23"), "=HLOOKUP(1,A1:C30,30,FALSE)"));
+        wb.Execute(new SetFormulaCommand(ws, R("E24"), "=VLOOKUP(\"y\",C1:C3,1,FALSE)"));
+        Assert.Equal(CellValue.Number(0), ValueAt(ws, "E20"));
+        Assert.Equal(CellValue.Number(0), ValueAt(ws, "E21"));
+        Assert.Equal(CellValue.Error(CellError.Ref), ValueAt(ws, "E22"));
+        Assert.Equal(CellValue.Number(0), ValueAt(ws, "E23"));
+        Assert.Equal(CellValue.Text("y"), ValueAt(ws, "E24"));
     }
 }

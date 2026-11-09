@@ -24,7 +24,7 @@ internal static class LookupFunctions
                 if (!keys.IsVector) return CalcValue.Error(CellError.Value);
                 var vertical = keys.Columns == 1 && keys.Rows > 1 || (keys.Length == 1 && values.Columns == 1);
                 if (vertical ? values.Rows < keys.Rows : values.Columns < keys.Columns) return CalcValue.Error(CellError.Value);
-                var i = Find(keys, lookup, Mode(ctx, a, 4), Mode(ctx, a, 5, 1));
+                var i = Find(keys, lookup, Fn.OptionalInt(ctx, a, 4, 0), Fn.OptionalInt(ctx, a, 5, 1));
                 if (i < 0) return a.Count > 3 && !a[3].IsMissing ? a[3].Value : CalcValue.Error(CellError.NA);
                 return vertical ? values.Slice(i, 0, 1, values.Columns) : values.Slice(0, i, values.Rows, 1);
             });
@@ -32,7 +32,7 @@ internal static class LookupFunctions
         {
             var keys = Fn.ToGrid(ctx, a[1], true);
             if (!keys.IsVector) return CalcValue.Error(CellError.Value);
-            var i = Find(keys, Fn.Scalar(ctx, a[0]), Mode(ctx, a, 2), Mode(ctx, a, 3, 1));
+            var i = Find(keys, Fn.Scalar(ctx, a[0]), Fn.OptionalInt(ctx, a, 2, 0), Fn.OptionalInt(ctx, a, 3, 1));
             return i < 0 ? CalcValue.Error(CellError.NA) : CalcValue.Number(i + 1);
         });
         r.Add(Cat, "MATCH(lookup_value, lookup_array, [match_type])", "Returns the relative position of an item in a range.", (ctx, a) =>
@@ -51,19 +51,20 @@ internal static class LookupFunctions
         });
         r.Add(Cat, "LOOKUP(lookup_value, lookup_vector, [result_vector])", "Looks up a value in a sorted vector and returns the value at the same position of another vector.", (ctx, a) =>
         {
+            var table = Fn.ToGrid(ctx, a[1]);
             var keys = Fn.ToGrid(ctx, a[1], true);
             var lookup = Fn.Scalar(ctx, a[0]);
             if (a.Count > 2)
             {
                 var results = Fn.ToGrid(ctx, a[2]);
-                var i = Find(keys.IsVector ? keys : Vector(keys, keys.Rows > keys.Columns), lookup, -1, 2);
+                var i = Find(table.IsVector ? keys : Vector(keys, table.Rows > table.Columns), lookup, -1, 2);
                 return i < 0 ? CalcValue.Error(CellError.NA) : i < results.Length ? results.At(i) : CalcValue.Error(CellError.NA);
             }
 
-            var byRow = keys.Columns > keys.Rows;
+            var byRow = table.Columns > table.Rows;
             var j = Find(Vector(keys, !byRow), lookup, -1, 2);
             if (j < 0) return CalcValue.Error(CellError.NA);
-            return byRow ? keys.Slice(keys.Rows - 1, j, 1, 1) : keys.Slice(j, keys.Columns - 1, 1, 1);
+            return byRow ? table.Slice(table.Rows - 1, j, 1, 1) : table.Slice(j, table.Columns - 1, 1, 1);
         });
         r.Add(Cat, "OFFSET(reference, rows, cols, [height], [width])", "Returns a reference offset from a reference by rows and columns.", (ctx, a) =>
         {
@@ -73,8 +74,8 @@ internal static class LookupFunctions
             var (sheet, range) = reference.Areas[0];
             var top = range.Top + Fn.Int(Fn.Scalar(ctx, a[1]));
             var left = range.Left + Fn.Int(Fn.Scalar(ctx, a[2]));
-            var height = a.Count > 3 && !a[3].IsMissing ? Fn.Int(Fn.Scalar(ctx, a[3])) : range.RowCount;
-            var width = a.Count > 4 && !a[4].IsMissing ? Fn.Int(Fn.Scalar(ctx, a[4])) : range.ColumnCount;
+            var height = Fn.OptionalInt(ctx, a, 3, range.RowCount);
+            var width = Fn.OptionalInt(ctx, a, 4, range.ColumnCount);
             if (height == 0 || width == 0) return CalcValue.Error(CellError.Ref);
             var bottom = top + height - Math.Sign(height);
             var right = left + width - Math.Sign(width);
@@ -137,9 +138,6 @@ internal static class LookupFunctions
             Fn.Lift(a => a.Length > 1 ? a[1] : CellValue.Text(Fn.Str(a[0]))));
     }
 
-    private static int Mode(FunctionContext ctx, IReadOnlyList<CalcArg> a, int i, int fallback = 0) =>
-        a.Count > i && !a[i].IsMissing ? Fn.Int(Fn.Scalar(ctx, a[i])) : fallback;
-
     private static Grid Vector(Grid grid, bool column)
     {
         var array = new CalcArray(column ? grid.Rows : 1, column ? 1 : grid.Columns);
@@ -199,12 +197,12 @@ internal static class LookupFunctions
     private static CalcValue Lookup(FunctionContext ctx, IReadOnlyList<CalcArg> a, bool vertical)
     {
         var lookup = Fn.Scalar(ctx, a[0]);
-        var table = Fn.ToGrid(ctx, a[1], true);
+        var table = Fn.ToGrid(ctx, a[1]);
         var index = Fn.Int(Fn.Scalar(ctx, a[2]));
-        var approximate = a.Count <= 3 || a[3].IsMissing || Fn.Bool(Fn.Scalar(ctx, a[3]));
+        var approximate = a.Count <= 3 || (!a[3].IsMissing && Fn.Bool(Fn.Scalar(ctx, a[3])));
         if (index < 1) return CalcValue.Error(CellError.Value);
         if (index > (vertical ? table.Columns : table.Rows)) return CalcValue.Error(CellError.Ref);
-        var keys = Vector(table, vertical);
+        var keys = Vector(Fn.ToGrid(ctx, a[1], true), vertical);
         var i = Find(keys, lookup, approximate ? -1 : 2, approximate ? 2 : 1);
         if (i < 0) return CalcValue.Error(CellError.NA);
         return vertical ? table[i, index - 1] : table[index - 1, i];
@@ -213,7 +211,7 @@ internal static class LookupFunctions
     private static CalcValue Index(FunctionContext ctx, IReadOnlyList<CalcArg> a)
     {
         var source = a[0].Value;
-        var areaIndex = a.Count > 3 && !a[3].IsMissing ? Fn.Int(Fn.Scalar(ctx, a[3])) : 1;
+        var areaIndex = Fn.OptionalInt(ctx, a, 3, 1);
         Grid grid;
         if (source.Kind == CalcValueKind.Reference)
         {
@@ -226,7 +224,7 @@ internal static class LookupFunctions
             grid = Fn.ToGrid(ctx, source);
         }
 
-        var row = a.Count > 1 && !a[1].IsMissing ? Fn.Int(Fn.Scalar(ctx, a[1])) : 0;
+        var row = Fn.OptionalInt(ctx, a, 1, 0);
         var hasColumn = a.Count > 2 && !a[2].IsMissing;
         var col = hasColumn ? Fn.Int(Fn.Scalar(ctx, a[2])) : 0;
         if (!hasColumn && grid.Rows == 1 && grid.Columns > 1) (row, col) = (1, row);

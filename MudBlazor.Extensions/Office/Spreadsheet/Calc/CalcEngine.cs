@@ -249,19 +249,26 @@ public sealed class CalcEngine : IDisposable
 
     private void Recalculate(HashSet<CellNode> affected)
     {
+        var rerunVolatile = _volatile.Count > 0;
+        var volatileStarts = new List<CellNode>();
         for (var pass = 0; pass < MaxSpillPasses; pass++)
         {
             var starts = new List<CellNode>(_grown);
+            starts.AddRange(_freed);
+            starts.AddRange(volatileStarts);
+            volatileStarts.Clear();
             foreach (var freed in _freed) AddAnchorsOver(freed, affected, starts);
             _grown.Clear();
             _freed.Clear();
             Close(affected, starts);
             if (affected.Count == 0) break;
+            var evaluatedPlain = false;
             foreach (var component in Components(affected))
             {
                 if (component.Count == 1 && !Next(component[0]).Contains(component[0]))
                 {
                     Evaluate(component[0]);
+                    evaluatedPlain |= !_volatile.Contains(component[0]);
                     continue;
                 }
 
@@ -274,6 +281,10 @@ public sealed class CalcEngine : IDisposable
             }
 
             affected = new HashSet<CellNode>();
+            if (!rerunVolatile || !evaluatedPlain) continue;
+            rerunVolatile = false;
+            volatileStarts.AddRange(_volatile);
+            affected.UnionWith(_volatile);
         }
 
         _grown.Clear();

@@ -98,8 +98,8 @@ internal static class DateTimeFunctions
         r.Add(Cat, "DATEVALUE(date_text)", "Converts a date in text form to a serial number.", Fn.Lift((ctx, a) =>
         {
             if (a[0].Kind != CellValueKind.Text) throw Fn.Error(CellError.Value);
-            return DateTime.TryParse(a[0].TextValue, ctx.Culture, DateTimeStyles.AllowWhiteSpaces, out var d)
-                ? CellValue.Number(Math.Floor(ExcelDate.ToSerial(d)))
+            return Fn.TryParseDate(a[0].TextValue, ctx.Culture, out var serial)
+                ? CellValue.Number(Math.Floor(serial))
                 : throw Fn.Error(CellError.Value);
         }));
         r.Add(Cat, "TIMEVALUE(time_text)", "Converts a time in text form to a decimal number.", Fn.Lift((ctx, a) =>
@@ -129,11 +129,11 @@ internal static class DateTimeFunctions
         var target = ExcelDate.FromDate(y, m + months, 1);
         if (target < 0 || target > ExcelDate.MaxSerial) throw Fn.Error(CellError.Num);
         var (ty, tm, _) = ExcelDate.ToDate(target);
-        var last = ty == 1900 && tm == 2 ? 29 : DateTime.DaysInMonth(ty, tm);
+        var last = ExcelDate.DaysInMonth(ty, tm);
         return target + (endOfMonth ? last : Math.Min(d, last)) - 1;
     }
 
-    private static bool IsLastOfMonth(int y, int m, int d) => d == (y == 1900 && m == 2 ? 29 : DateTime.DaysInMonth(y, m));
+    private static bool IsLastOfMonth(int y, int m, int d) => d == ExcelDate.DaysInMonth(y, m);
 
     private static int Days360(int start, int end, bool european)
     {

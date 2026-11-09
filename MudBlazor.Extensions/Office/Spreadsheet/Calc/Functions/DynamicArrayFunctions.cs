@@ -31,8 +31,8 @@ internal static class DynamicArrayFunctions
         r.Add(Cat, "SORT(array, [sort_index], [sort_order], [by_col])", "Sorts the rows (or columns) of an array.", (ctx, a) =>
         {
             var source = Fn.Array(ctx, a[0]);
-            var index = Optional(ctx, a, 1, 1);
-            var order = Optional(ctx, a, 2, 1);
+            var index = Fn.OptionalInt(ctx, a, 1, 1);
+            var order = Fn.OptionalInt(ctx, a, 2, 1);
             var byCol = a.Count > 3 && !a[3].IsMissing && Fn.Bool(Fn.Scalar(ctx, a[3]));
             if (order is not (1 or -1) || index < 1 || index > (byCol ? source.Rows : source.Columns)) return CalcValue.Error(CellError.Value);
             var keys = Enumerable.Range(0, byCol ? source.Columns : source.Rows)
@@ -47,7 +47,7 @@ internal static class DynamicArrayFunctions
             for (var i = 1; i < a.Count; i += 2)
             {
                 by.Add(Fn.Array(ctx, a[i]));
-                orders.Add(Optional(ctx, a, i + 1, 1));
+                orders.Add(Fn.OptionalInt(ctx, a, i + 1, 1));
             }
 
             var byCol = by[0].Rows == 1 && by[0].Columns > 1;
@@ -72,14 +72,14 @@ internal static class DynamicArrayFunctions
         });
         r.Add(Cat, "SEQUENCE(rows, [columns], [start], [step])", "Returns an array of sequential numbers.", (ctx, a) =>
         {
-            var (rows, cols) = (Optional(ctx, a, 0, 1), Optional(ctx, a, 1, 1));
+            var (rows, cols) = (Fn.OptionalInt(ctx, a, 0, 1), Fn.OptionalInt(ctx, a, 1, 1));
             var start = a.Count > 2 && !a[2].IsMissing ? Fn.Num(Fn.Scalar(ctx, a[2])) : 1;
             var step = a.Count > 3 && !a[3].IsMissing ? Fn.Num(Fn.Scalar(ctx, a[3])) : 1;
             return Sized(rows, cols, () => Make(rows, cols, (row, col) => Fn.Number(start + (row * (double)cols + col) * step)));
         });
         r.Add(Cat, "RANDARRAY([rows], [columns], [min], [max], [integer])", "Returns an array of random numbers.", (ctx, a) =>
         {
-            var (rows, cols) = (Optional(ctx, a, 0, 1), Optional(ctx, a, 1, 1));
+            var (rows, cols) = (Fn.OptionalInt(ctx, a, 0, 1), Fn.OptionalInt(ctx, a, 1, 1));
             var min = a.Count > 2 && !a[2].IsMissing ? Fn.Num(Fn.Scalar(ctx, a[2])) : 0;
             var max = a.Count > 3 && !a[3].IsMissing ? Fn.Num(Fn.Scalar(ctx, a[3])) : 1;
             var integer = a.Count > 4 && !a[4].IsMissing && Fn.Bool(Fn.Scalar(ctx, a[4]));
@@ -129,16 +129,13 @@ internal static class DynamicArrayFunctions
         r.Add(Cat, "EXPAND(array, rows, [columns], [pad_with])", "Expands an array to the given size.", (ctx, a) =>
         {
             var source = Fn.Array(ctx, a[0]);
-            var rows = Optional(ctx, a, 1, source.Rows);
-            var cols = Optional(ctx, a, 2, source.Columns);
+            var rows = Fn.OptionalInt(ctx, a, 1, source.Rows);
+            var cols = Fn.OptionalInt(ctx, a, 2, source.Columns);
             var pad = a.Count > 3 && !a[3].IsMissing ? Fn.Scalar(ctx, a[3]) : CellValue.Error(CellError.NA);
             if (rows < source.Rows || cols < source.Columns) return CalcValue.Error(CellError.Value);
             return Sized(rows, cols, () => Make(rows, cols, (row, col) => row < source.Rows && col < source.Columns ? source[row, col] : pad));
         });
     }
-
-    private static int Optional(FunctionContext ctx, IReadOnlyList<CalcArg> a, int i, int fallback) =>
-        a.Count > i && !a[i].IsMissing ? Fn.Int(Fn.Scalar(ctx, a[i])) : fallback;
 
     private static CalcValue Make(int rows, int cols, Func<int, int, CellValue> value)
     {
@@ -215,7 +212,7 @@ internal static class DynamicArrayFunctions
     private static CalcValue Flatten(FunctionContext ctx, IReadOnlyList<CalcArg> a, bool column)
     {
         var source = Fn.Array(ctx, a[0]);
-        var ignore = Optional(ctx, a, 1, 0);
+        var ignore = Fn.OptionalInt(ctx, a, 1, 0);
         var byColumn = a.Count > 2 && !a[2].IsMissing && Fn.Bool(Fn.Scalar(ctx, a[2]));
         if (ignore is < 0 or > 3) return CalcValue.Error(CellError.Value);
         var items = new List<CellValue>();
