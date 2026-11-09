@@ -3391,6 +3391,51 @@
             Set to true to allow user to download the loaded file and specify directly a folder to save file in
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.AllowEdit">
+            <summary>
+            Set to true to allow the user to switch to edit mode if an editor is available for the file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.EditMode">
+            <summary>
+            True if the file is shown in an editor that accepts changes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.EditModeChanged">
+            <summary>
+            Raised when the edit mode changes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.AllowLocalSave">
+            <summary>
+            If true editors may save to a local file when the host does not handle SaveRequested
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.SaveRequested">
+            <summary>
+            Raised before an editor saves, so the host can take over saving
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.Saved">
+            <summary>
+            Raised after an editor saved the file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.IsDirtyChanged">
+            <summary>
+            Raised when the editor gets unsaved changes or loses them
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.IsDirty">
+            <summary>
+            True if the active editor has unsaved changes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.CanEdit">
+            <summary>
+            True if an editor is available that can edit the current file
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.AllowCopyUrl">
             <summary>
             Set to true to allow user to copy the file url to clipboard
@@ -3520,6 +3565,19 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.OnParametersSetAsync">
             <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.SetEditModeAsync(System.Boolean)">
+            <summary>
+            Switches between viewing and editing. Switching to edit mode picks an editor if the active renderer is none.
+            </summary>
+            <param name="editMode">True to edit, false to view</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.SaveAsync(System.Boolean)">
+            <summary>
+            Saves the file through the active editor
+            </summary>
+            <param name="saveAs">If true the user is asked for a new target</param>
+            <returns>True if the content was saved. False if it was not saved or the active renderer is not an editor.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.GetFileRenderInfos(System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.String)">
             <summary>

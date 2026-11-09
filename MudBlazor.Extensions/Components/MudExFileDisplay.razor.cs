@@ -204,6 +204,61 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     public bool AllowSaveAs { get; set; } = true;
 
     /// <summary>
+    /// Set to true to allow the user to switch to edit mode if an editor is available for the file
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool AllowEdit { get; set; }
+
+    /// <summary>
+    /// True if the file is shown in an editor that accepts changes
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool EditMode { get; set; }
+
+    /// <summary>
+    /// Raised when the edit mode changes
+    /// </summary>
+    [Parameter]
+    public EventCallback<bool> EditModeChanged { get; set; }
+
+    /// <summary>
+    /// If true editors may save to a local file when the host does not handle SaveRequested
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool AllowLocalSave { get; set; } = true;
+
+    /// <summary>
+    /// Raised before an editor saves, so the host can take over saving
+    /// </summary>
+    [Parameter]
+    public EventCallback<MudExFileSaveRequest> SaveRequested { get; set; }
+
+    /// <summary>
+    /// Raised after an editor saved the file
+    /// </summary>
+    [Parameter]
+    public EventCallback<MudExFileSavedEventArgs> Saved { get; set; }
+
+    /// <summary>
+    /// Raised when the editor gets unsaved changes or loses them
+    /// </summary>
+    [Parameter]
+    public EventCallback<bool> IsDirtyChanged { get; set; }
+
+    /// <summary>
+    /// True if the active editor has unsaved changes
+    /// </summary>
+    public bool IsDirty { get; private set; }
+
+    /// <summary>
+    /// True if an editor is available that can edit the current file
+    /// </summary>
+    public bool CanEdit { get; private set; }
+
+    /// <summary>
     /// Set to true to allow user to copy the file url to clipboard
     /// </summary>
     [Parameter]
@@ -431,6 +486,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         if (!updateRequired)
             return;
 
+        await SetDirtyAsync(false);
         _errorClosed = false;
         ErrorMessage = null;
         // the banner is made visible by inline js on the native object tag - resetting the flags
@@ -472,10 +528,37 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
                 _possibleRenderControls.Add(possibleRenderControl);
         }
 
+        CanEdit = false;
+        foreach (var editor in _possibleRenderControls.OfType<IMudExFileEditor>())
+        {
+            if (!await editor.CanEditFileAsync(this, fs))
+                continue;
+            CanEdit = true;
+            break;
+        }
+
         if (ViewDependsOnContentType && _componentForFile == null)
             _componentForFile = GetComponentForFile(_possibleRenderControls
                 .OrderByDescending(c => c.RenderPriority)
                 .FirstOrDefault(c => c.StartsActive && !ForceNativeRender));
+
+        if (EditMode && !CanEdit)
+        {
+            EditMode = false;
+            await EditModeChanged.InvokeAsync(false);
+            RebuildActiveComponent();
+        }
+        else if (EditMode && _componentForFile?.ControlType is { } active && !IsEditorType(active))
+        {
+            var editor = FindEditor();
+            if (editor != null)
+                _componentForFile = GetComponentForFile(editor);
+        }
+        else if (_componentForFile?.ControlType is { } current && IsEditorType(current)
+                 && _componentForFile.Parameters.TryGetValue(nameof(IMudExFileEditor.ReadOnly), out var readOnly) && (bool)readOnly == EditMode)
+        {
+            RebuildActiveComponent();
+        }
         if (!_internalOverwrite)
             renderInfos = GetRenderInfos();
         await base.OnParametersSetAsync();
@@ -489,6 +572,62 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     }
 
 
+    private static bool IsEditorType(Type type) => typeof(IMudExFileEditor).IsAssignableFrom(type);
+
+    private IMudExFileDisplay FindEditor() => _possibleRenderControls?
+        .OfType<IMudExFileEditor>()
+        .OrderByDescending(c => c.RenderPriority)
+        .FirstOrDefault();
+
+    private void RebuildActiveComponent()
+    {
+        var type = _componentForFile?.ControlType;
+        if (type == null)
+            return;
+        var control = _possibleRenderControls?.FirstOrDefault(c => c.GetType() == type);
+        if (control != null)
+            _componentForFile = GetComponentForFile(control);
+    }
+
+    private async Task OnEditorDirtyChangedAsync(bool dirty) => await SetDirtyAsync(dirty);
+
+    private async Task SetDirtyAsync(bool dirty)
+    {
+        if (IsDirty == dirty)
+            return;
+        IsDirty = dirty;
+        await IsDirtyChanged.InvokeAsync(dirty);
+    }
+
+    /// <summary>
+    /// Switches between viewing and editing. Switching to edit mode picks an editor if the active renderer is none.
+    /// </summary>
+    /// <param name="editMode">True to edit, false to view</param>
+    public async Task SetEditModeAsync(bool editMode)
+    {
+        if (editMode && !CanEdit)
+            return;
+        if (editMode == EditMode)
+            return;
+
+        EditMode = editMode;
+        if (editMode && (_componentForFile?.ControlType == null || !IsEditorType(_componentForFile.ControlType)))
+            RenderWith(FindEditor());
+        else
+            RebuildActiveComponent();
+
+        await EditModeChanged.InvokeAsync(editMode);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>
+    /// Saves the file through the active editor
+    /// </summary>
+    /// <param name="saveAs">If true the user is asked for a new target</param>
+    /// <returns>True if the content was saved. False if it was not saved or the active renderer is not an editor.</returns>
+    public async Task<bool> SaveAsync(bool saveAs = false)
+        => _currentFileDisplay is { Instance: IMudExFileEditor editor } && await editor.SaveAsync(saveAs);
+
     [UnconditionalSuppressMessage("Trimming", "IL2072",
         Justification = "IMudExFileDisplay implementations are Blazor components resolved from DI; their public members are kept by the Razor compiler + DI roots.")]
     private ComponentForFileInfo GetComponentForFile(IMudExFileDisplay fileComponent)
@@ -499,6 +638,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         var parameters = ComponentRenderHelper.GetCompatibleParameters(this, type);
 
         parameters.Add(nameof(IMudExFileDisplay.FileDisplayInfos), this);
+
+        if (fileComponent is IMudExFileEditor)
+        {
+            parameters[nameof(IMudExFileEditor.ReadOnly)] = !EditMode;
+            parameters[nameof(IsDirtyChanged)] = EventCallback.Factory.Create<bool>(this, OnEditorDirtyChangedAsync);
+        }
 
         if (ParametersForSubControls != null)
         {
@@ -692,6 +837,8 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private void RenderWith(IMudExFileDisplay fileComponent)
     {
         CloseContentError();
+        if (_componentForFile?.ControlType != fileComponent?.GetType())
+            IsDirty = false;
         _componentForFile = GetComponentForFile(fileComponent);
         if (fileComponent == null)
         {

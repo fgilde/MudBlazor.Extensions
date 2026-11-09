@@ -153,7 +153,7 @@
             <MudSpacer />
             @if (ShowFileName)
             {
-                <MudText Class="mr-2" Color="Color.Primary" Typo="Typo.subtitle2">@(FileName)</MudText>
+                <MudText Class="@(IsDirty ? "mr-2 mud-ex-file-display-dirty" : "mr-2")" Color="Color.Primary" Typo="Typo.subtitle2">@(IsDirty ? $"{FileName} ●" : FileName)</MudText>
             }
             @if (ShowRenderer)
             {
@@ -186,7 +186,20 @@
                 {
                     <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(DownloadFileAsync)" Icon="@Icons.Material.Filled.Download">@($"{TryLocalize("Download")}")</MudMenuItem>
                 }
-                @if (AllowSaveAs)
+                @if (AllowEdit && CanEdit && !EditMode)
+                {
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => SetEditModeAsync(true))" Icon="@Icons.Material.Filled.Edit">@($"{TryLocalize("Edit")}")</MudMenuItem>
+                }
+                @if (EditMode)
+                {
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => SetEditModeAsync(false))" Icon="@Icons.Material.Filled.Visibility">@($"{TryLocalize("View")}")</MudMenuItem>
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" Disabled="@(!IsDirty)" OnClick="@(() => SaveAsync())" Icon="@Icons.Material.Filled.Save">@($"{TryLocalize("Save")}")</MudMenuItem>
+                }
+                @if (AllowSaveAs && EditMode)
+                {
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => SaveAsync(true))" Icon="@Icons.Material.Filled.Download">@($"{TryLocalize("Save as")}")</MudMenuItem>
+                }
+                else if (AllowSaveAs)
                 {
                     <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(SaveFileAsAsync)" Icon="@Icons.Material.Filled.Download">@($"{TryLocalize("Save as")}")</MudMenuItem>
                 }
