@@ -76,20 +76,27 @@ public partial class MudExFileDisplayDialog
         await base.OnDirtyStateChangedAsync(dirty);
         if (MudDialog == null)
             return;
-        if (dirty)
+        try
         {
-            _optionsBeforeDirty = MudDialog.Options;
-            await MudDialog.SetOptionsAsync(MudDialog.Options with { CloseButton = false, BackdropClick = false, CloseOnEscapeKey = false });
-        }
-        else if (_optionsBeforeDirty != null)
-        {
-            await MudDialog.SetOptionsAsync(MudDialog.Options with
+            if (dirty)
             {
-                CloseButton = _optionsBeforeDirty.CloseButton,
-                BackdropClick = _optionsBeforeDirty.BackdropClick,
-                CloseOnEscapeKey = _optionsBeforeDirty.CloseOnEscapeKey
-            });
-            _optionsBeforeDirty = null;
+                _optionsBeforeDirty = MudDialog.Options;
+                await MudDialog.SetOptionsAsync(MudDialog.Options with { CloseButton = false, BackdropClick = false, CloseOnEscapeKey = false });
+            }
+            else if (_optionsBeforeDirty != null)
+            {
+                var original = _optionsBeforeDirty;
+                _optionsBeforeDirty = null;
+                await MudDialog.SetOptionsAsync(MudDialog.Options with
+                {
+                    CloseButton = original.CloseButton,
+                    BackdropClick = original.BackdropClick,
+                    CloseOnEscapeKey = original.CloseOnEscapeKey
+                });
+            }
+        }
+        catch (ObjectDisposedException)
+        {
         }
     }
 

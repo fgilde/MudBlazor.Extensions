@@ -3587,6 +3587,7 @@
             <summary>
             Called by the browser when the save shortcut is pressed.
             </summary>
+            <returns>A task that completes when saving finished.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.SetEditModeAsync(System.Boolean)">
             <summary>

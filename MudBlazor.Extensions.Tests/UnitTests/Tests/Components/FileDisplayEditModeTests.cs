@@ -1,4 +1,4 @@
-﻿using Bunit;
+using Bunit;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
@@ -96,7 +96,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
     {
         var cut = Create("a.json", "{\"a\":1}", p => p.Add(c => c.AllowEdit, true));
         RenderWithViewer(cut);
-        Assert.Empty(cut.FindComponents<MudExFileDisplayCode>());
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindComponents<MudExFileDisplayCode>()));
 
         await cut.InvokeAsync(() => cut.Instance.SetEditModeAsync(true));
 
@@ -183,9 +183,12 @@ public class FileDisplayEditModeTests : IAsyncLifetime
 
         RenderWithViewer(cut);
 
-        Assert.False(cut.Instance.EditMode);
-        Assert.Equal([false], changes);
-        Assert.Empty(cut.FindComponents<MudExFileDisplayCode>());
+        cut.WaitForAssertion(() =>
+        {
+            Assert.False(cut.Instance.EditMode);
+            Assert.Equal([false], changes);
+            Assert.Empty(cut.FindComponents<MudExFileDisplayCode>());
+        });
 
         cut.Render(p => p.Add(c => c.AllowEdit, true));
 
@@ -206,6 +209,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
             configure?.Invoke(p);
         });
         cut.Find("textarea").Input("changed");
+        cut.WaitForAssertion(() => Assert.True(cut.Instance.IsDirty));
         return cut;
     }
 
@@ -226,6 +230,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
         Assert.Equal(0, closed);
         ClickDialogButton(cut, "Discard");
         cut.WaitForAssertion(() => Assert.Equal(1, closed));
+        Assert.False(cut.Instance.IsDirty);
     }
 
     [Fact]
@@ -243,7 +248,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
     }
 
     [Fact]
-    public void Close_WhenDirty_SaveSavesThenCloses()
+    public void Close_WhenDirty_SaveSucceeds_Closes()
     {
         var closed = 0;
         var cut = CreateDirty(p => p
@@ -258,6 +263,24 @@ public class FileDisplayEditModeTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task Close_WhenDirty_SaveCancelled_DoesNotClose()
+    {
+        var closed = 0;
+        var saveAttempts = 0;
+        var cut = CreateDirty(p => p
+            .Add(c => c.OnCloseClick, EventCallback.Factory.Create(this, () => closed++))
+            .Add(c => c.SaveRequested, EventCallback.Factory.Create<MudExFileSaveRequest>(this, r => { saveAttempts++; r.Handled = false; })));
+
+        ClickClose(cut);
+        ClickDialogButton(cut, "Save");
+
+        cut.WaitForAssertion(() => Assert.Equal(1, saveAttempts));
+        await Task.Delay(100);
+        Assert.Equal(0, closed);
+        Assert.True(cut.Instance.IsDirty);
+    }
+
+    [Fact]
     public void Close_WhenClean_DoesNotAsk()
     {
         var closed = 0;
@@ -265,7 +288,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
 
         ClickClose(cut);
 
-        Assert.Equal(1, closed);
+        cut.WaitForAssertion(() => Assert.Equal(1, closed));
         Assert.Empty(_dialogs[cut].FindAll("button"));
     }
 
@@ -279,7 +302,7 @@ public class FileDisplayEditModeTests : IAsyncLifetime
 
         ClickClose(cut);
 
-        Assert.Equal(1, closed);
+        cut.WaitForAssertion(() => Assert.Equal(1, closed));
     }
 
     [Fact]
@@ -287,10 +310,10 @@ public class FileDisplayEditModeTests : IAsyncLifetime
     {
         var cut = CreateDirty(p => p.Add(c => c.SaveRequested, EventCallback.Factory.Create<MudExFileSaveRequest>(this, r => r.Handled = true)));
         var interop = _owners[cut].JSInterop;
-        Assert.Contains(interop.Invocations, i => i.Identifier == "setDirty" && true.Equals(i.Arguments[0]));
+        cut.WaitForAssertion(() => Assert.Contains(interop.Invocations, i => i.Identifier == "setDirty" && true.Equals(i.Arguments[0])));
 
         await cut.InvokeAsync(() => cut.Instance.SaveAsync());
 
-        Assert.Contains(interop.Invocations, i => i.Identifier == "setDirty" && false.Equals(i.Arguments[0]));
+        cut.WaitForAssertion(() => Assert.Contains(interop.Invocations, i => i.Identifier == "setDirty" && false.Equals(i.Arguments[0])));
     }
 }

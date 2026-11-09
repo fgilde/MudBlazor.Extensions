@@ -651,12 +651,16 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         var result = await dialog.Result;
         if (result == null || result.Canceled)
             return false;
-        return result.Data as string == "save" ? await SaveAsync() : true;
+        if (result.Data as string == "save")
+            return await SaveAsync();
+        await SetDirtyAsync(false);
+        return true;
     }
 
     /// <summary>
     /// Called by the browser when the save shortcut is pressed.
     /// </summary>
+    /// <returns>A task that completes when saving finished.</returns>
     [JSInvokable]
     public Task SaveFromShortcut() => SaveAsync();
 

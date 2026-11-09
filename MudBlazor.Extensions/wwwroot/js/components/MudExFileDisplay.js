@@ -34,11 +34,15 @@
             this._onKeyDown = (event) => {
                 if ((event.ctrlKey || event.metaKey) && !event.altKey && event.key.toLowerCase() === 's') {
                     event.preventDefault();
-                    this.dotnet.invokeMethodAsync('SaveFromShortcut');
+                    if (this._saving)
+                        return;
+                    this._saving = true;
+                    this.dotnet.invokeMethodAsync('SaveFromShortcut').catch(() => {}).finally(() => { this._saving = false; });
                 }
             };
             window.addEventListener('beforeunload', this._onBeforeUnload);
-            this._errorTarget.addEventListener('keydown', this._onKeyDown);
+            if (this.elementRef instanceof Element)
+                this.elementRef.addEventListener('keydown', this._onKeyDown);
         } else if (!isDirty) {
             this.removeDirtyHandlers();
         }
@@ -48,7 +52,8 @@
         if (!this._onBeforeUnload)
             return;
         window.removeEventListener('beforeunload', this._onBeforeUnload);
-        this._errorTarget.removeEventListener('keydown', this._onKeyDown);
+        if (this.elementRef instanceof Element)
+            this.elementRef.removeEventListener('keydown', this._onKeyDown);
         this._onBeforeUnload = null;
         this._onKeyDown = null;
     }
