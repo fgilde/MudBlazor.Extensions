@@ -52,13 +52,15 @@ public partial class MudExRibbonColorPicker
         NotifyStateChanged();
     }
 
-    private Task SelectAsync(MudExColor color, bool keepMoreColors)
+    private async Task SelectAsync(MudExColor color, bool keepMoreColors)
     {
         if (Disabled)
-            return Task.CompletedTask;
+            return;
         Value = color;
         _moreColors &= keepMoreColors;
         NotifyStateChanged();
-        return ValueChanged.InvokeAsync(color);
+        await ValueChanged.InvokeAsync(color);
+        if (!keepMoreColors)
+            Ribbon?.NotifyCommandExecuted();
     }
 }

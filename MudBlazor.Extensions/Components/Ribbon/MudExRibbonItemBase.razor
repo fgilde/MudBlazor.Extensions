@@ -81,6 +81,25 @@
             @content
         </MudMenu>;
 
+    internal RenderFragment MenuEntry(Func<Task> onClick, bool? isChecked = null) =>
+        @<MudMenuItem Class="mud-ex-ribbon-menu-item"
+                      Icon="@(isChecked == true ? Icons.Material.Filled.Check : Icon)"
+                      Disabled="@Disabled"
+                      OnClick="onClick"
+                      @attributes="CheckAttributes(isChecked)">
+            <span class="mud-ex-ribbon-label">@Text</span>
+            @if (!string.IsNullOrEmpty(Shortcut))
+            {
+                <span class="mud-ex-ribbon-shortcut">@Shortcut</span>
+            }
+        </MudMenuItem>;
+
+    private static Dictionary<string, object> CheckAttributes(bool? isChecked) => isChecked == null ? null : new()
+    {
+        ["role"] = "menuitemcheckbox",
+        ["aria-checked"] = isChecked.Value ? "true" : "false"
+    };
+
     internal RenderFragment SubMenu(RenderFragment content) =>
         @<MudMenu Label="@Text" StartIcon="@Icon" Disabled="@Disabled" Dense="true" Class="mud-ex-ribbon-submenu">@content</MudMenu>;
 
@@ -94,7 +113,7 @@
 
     internal RenderFragment RenderMenu(MudExRibbonItemLayout layout, IEnumerable<MudExRibbonItemBase> items, Func<Task> split)
         => layout == MudExRibbonItemLayout.MenuEntry
-            ? SubMenu(MenuEntries(items))
+            ? SubMenu(split == null ? MenuEntries(items) : @<text>@MenuEntry(split)<MudDivider />@MenuEntries(items)</text>)
             : WithTooltip(layout, DropDown(
                 menu => split == null ? Face(layout, e => menu.ToggleAsync(e), dropDown: true, cssClass: "mud-ex-ribbon-menu-face") : SplitFace(layout, split, menu),
                 MenuEntries(items)));

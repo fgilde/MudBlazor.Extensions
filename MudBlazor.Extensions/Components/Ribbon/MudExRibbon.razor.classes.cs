@@ -91,6 +91,8 @@ internal interface IMudExRibbonItemHost
 internal interface IMudExRibbonView
 {
     void Refresh();
+
+    void CommandExecuted();
 }
 
 internal static class MudExRibbonColors

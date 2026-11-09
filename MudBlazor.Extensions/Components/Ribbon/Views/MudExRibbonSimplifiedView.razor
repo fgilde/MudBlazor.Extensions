@@ -1,0 +1,32 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonViewBase
+@attribute [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+
+@Tabbed(Body, "mud-ex-ribbon-simplified-body")
+
+@code {
+    private RenderFragment Body(MudExRibbonTab tab) =>
+        @<text>
+            @foreach (var (group, index) in tab.Groups.Select((group, index) => (group, index)))
+            {
+                if (index > 0)
+                {
+                    <MudDivider Vertical="true" FlexItem="true" Class="mud-ex-ribbon-separator" />
+                }
+                <div @key="group" class="mud-ex-ribbon-simplified-group" role="toolbar" aria-label="@group.Text">
+                    @foreach (var item in group.Items.Where(i => i.Visible))
+                    {
+                        <div @key="item" class="mud-ex-ribbon-slot">@item.Render(LayoutOf(item))</div>
+                    }
+                </div>
+            }
+            @OverflowMenu(tab)
+        </text>;
+
+    private static MudExRibbonItemLayout LayoutOf(MudExRibbonItemBase item)
+        => item.Size == MudExRibbonItemSize.Small || (string.IsNullOrEmpty(item.Text) && item is not MudExRibbonRow)
+            ? MudExRibbonItemLayout.Small
+            : MudExRibbonItemLayout.Medium;
+
+    private RenderFragment OverflowMenu(MudExRibbonTab tab) => null;
+}

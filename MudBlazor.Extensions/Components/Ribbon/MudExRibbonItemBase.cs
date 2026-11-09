@@ -112,6 +112,12 @@ public abstract partial class MudExRibbonItemBase : ComponentBase, IDisposable
     /// </summary>
     public virtual Task ExecuteAsync() => Task.CompletedTask;
 
+    internal async Task ExecuteCommandAsync()
+    {
+        await ExecuteAsync();
+        Ribbon?.NotifyCommandExecuted();
+    }
+
     /// <summary>
     /// Redraws the ribbon if <see cref="StateKey"/> changed since the last call.
     /// </summary>

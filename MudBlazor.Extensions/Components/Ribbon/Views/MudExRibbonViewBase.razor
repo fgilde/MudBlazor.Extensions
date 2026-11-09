@@ -1,0 +1,112 @@
+@namespace MudBlazor.Extensions.Components
+@inherits ComponentBase
+
+@code {
+    internal RenderFragment Header(RenderFragment content) =>
+        @<div class="@($"mud-ex-ribbon-header{(_overlayOpen ? " mud-ex-ribbon-header-raised" : "")}")" style="@Ribbon.HeaderStyle">
+            @if (Ribbon.TitleContent != null)
+            {
+                <div class="mud-ex-ribbon-title">@Ribbon.TitleContent</div>
+            }
+            @content
+            @if (Ribbon.HeaderEndContent != null)
+            {
+                <div class="mud-ex-ribbon-header-end">@Ribbon.HeaderEndContent</div>
+            }
+            @if (Ribbon.ShowModeSwitch)
+            {
+                <MudMenu Class="mud-ex-ribbon-mode-switch"
+                         Icon="@Icons.Material.Filled.ViewDay"
+                         Color="Color.Inherit"
+                         Size="Size.Small"
+                         Dense="true"
+                         AriaLabel="@Ribbon.TryLocalize("Ribbon display options")"
+                         AnchorOrigin="Origin.BottomRight"
+                         TransformOrigin="Origin.TopRight">
+                    @foreach (var (mode, text) in Modes)
+                    {
+                        <MudMenuItem Class="mud-ex-ribbon-mode-option"
+                                     Icon="@(mode == Ribbon.Mode ? Icons.Material.Filled.Check : null)"
+                                     role="menuitemradio"
+                                     aria-checked="@(mode == Ribbon.Mode ? "true" : "false")"
+                                     OnClick="() => Ribbon.SetModeAsync(mode)">
+                            @Ribbon.TryLocalize(text)
+                        </MudMenuItem>
+                    }
+                </MudMenu>
+            }
+            @if (Ribbon.IsCollapsed && Ribbon.AllowCollapse)
+            {
+                @CollapseToggle
+            }
+        </div>;
+
+    internal RenderFragment Tabbed(RenderFragment<MudExRibbonTab> body, string bodyClass)
+    {
+        var activeTab = Ribbon.ActiveTab;
+        _overlayOpen &= Ribbon.IsCollapsed;
+        return @<text>
+            @Header(TabStrip(activeTab))
+            @if (Ribbon.IsCollapsed)
+            {
+                <div class="mud-ex-ribbon-overlay-anchor">
+                    <MudPopover Open="@_overlayOpen"
+                                Class="mud-ex-ribbon-overlay"
+                                AnchorOrigin="Origin.BottomLeft"
+                                TransformOrigin="Origin.TopLeft"
+                                RelativeWidth="DropdownWidth.Adaptive">
+                        @Panel(activeTab, body, bodyClass)
+                    </MudPopover>
+                    <MudOverlay Visible="@_overlayOpen" AutoClose="true" LockScroll="false" OnClosed="CloseOverlay" />
+                </div>
+            }
+            else
+            {
+                @Panel(activeTab, body, bodyClass)
+            }
+        </text>;
+    }
+
+    private RenderFragment Panel(MudExRibbonTab activeTab, RenderFragment<MudExRibbonTab> body, string bodyClass) =>
+        @<div class="@($"mud-ex-ribbon-body {bodyClass}".TrimEnd())"
+              role="tabpanel"
+              id="@PanelId"
+              aria-labelledby="@(activeTab == null ? null : TabId(activeTab))">
+            @if (activeTab != null)
+            {
+                @body(activeTab)
+            }
+            @if (!Ribbon.IsCollapsed && Ribbon.AllowCollapse)
+            {
+                @CollapseToggle
+            }
+        </div>;
+
+    private RenderFragment TabStrip(MudExRibbonTab activeTab) =>
+        @<div class="mud-ex-ribbon-tabs" role="tablist">
+            @foreach (var tab in Ribbon.VisibleTabs)
+            {
+                var active = tab == activeTab;
+                <button @key="tab"
+                        type="button"
+                        role="tab"
+                        id="@TabId(tab)"
+                        aria-controls="@PanelId"
+                        class="@($"mud-ex-ribbon-tab{(active && (!Ribbon.IsCollapsed || _overlayOpen) ? " mud-ex-ribbon-tab-active" : "")}")"
+                        aria-selected="@(active ? "true" : "false")"
+                        @onclick="() => OnTabClickAsync(tab)"
+                        @ondblclick="ToggleCollapsedAsync">
+                    @tab.Text
+                </button>
+            }
+        </div>;
+
+    private RenderFragment CollapseToggle =>
+        @<button type="button"
+                 class="mud-ex-ribbon-collapse-toggle"
+                 aria-label="@Ribbon.TryLocalize(Ribbon.IsCollapsed ? "Expand the ribbon" : "Collapse the ribbon")"
+                 aria-expanded="@(Ribbon.IsCollapsed ? "false" : "true")"
+                 @onclick="ToggleCollapsedAsync">
+            <MudIcon Icon="@(Ribbon.IsCollapsed ? Icons.Material.Filled.ExpandMore : Icons.Material.Filled.ExpandLess)" Class="mud-ex-ribbon-icon" />
+        </button>;
+}

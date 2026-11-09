@@ -10,7 +10,6 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExRibbon
 {
     private readonly List<MudExRibbonTab> _tabs = [];
-    private bool _invalidatePending;
     private IMudExRibbonView _view;
 
     /// <summary>
@@ -27,6 +26,27 @@ public partial class MudExRibbon
     /// Raised when the presentation changes.
     /// </summary>
     [Parameter] public EventCallback<MudExRibbonMode> ModeChanged { get; set; }
+
+    /// <summary>
+    /// Whether only the header is shown and a tab opens its commands as an overlay.
+    /// Applies to <see cref="MudExRibbonMode.Classic"/> and <see cref="MudExRibbonMode.Simplified"/>.
+    /// </summary>
+    [Parameter] public bool Collapsed { get; set; }
+
+    /// <summary>
+    /// Raised when the user collapses or expands the ribbon.
+    /// </summary>
+    [Parameter] public EventCallback<bool> CollapsedChanged { get; set; }
+
+    /// <summary>
+    /// Whether the header offers a button to switch the <see cref="Mode"/>.
+    /// </summary>
+    [Parameter] public bool ShowModeSwitch { get; set; } = true;
+
+    /// <summary>
+    /// Whether the user may collapse the ribbon with the chevron button or a double click on a tab.
+    /// </summary>
+    [Parameter] public bool AllowCollapse { get; set; } = true;
 
     /// <summary>
     /// Background of the header. The text color is chosen for contrast.
@@ -64,6 +84,8 @@ public partial class MudExRibbon
     internal MudExRibbonTab ActiveTab
         => _tabs.ElementAtOrDefault(ActiveTabIndex) is { Visible: true } tab ? tab : VisibleTabs.FirstOrDefault();
 
+    internal bool IsCollapsed => Collapsed && Mode is MudExRibbonMode.Classic or MudExRibbonMode.Simplified;
+
     internal string HeaderStyle
         => $"background-color:{MudExRibbonColors.BackgroundFor(Color)};color:{MudExRibbonColors.ForegroundFor(Color)};";
 
@@ -85,15 +107,13 @@ public partial class MudExRibbon
             _view = null;
     }
 
-    internal void BeginViewRender() => _invalidatePending = false;
-
     internal void Invalidate()
     {
-        if (_invalidatePending || IsDisposed || _view == null)
-            return;
-        _invalidatePending = true;
-        _view.Refresh();
+        if (!IsDisposed)
+            _view?.Refresh();
     }
+
+    internal void NotifyCommandExecuted() => _view?.CommandExecuted();
 
     internal Task SelectTabAsync(MudExRibbonTab tab)
     {
@@ -103,5 +123,23 @@ public partial class MudExRibbon
         ActiveTabIndex = index;
         Invalidate();
         return ActiveTabIndexChanged.InvokeAsync(index);
+    }
+
+    internal Task SetModeAsync(MudExRibbonMode mode)
+    {
+        if (mode == Mode)
+            return Task.CompletedTask;
+        Mode = mode;
+        StateHasChanged();
+        return ModeChanged.InvokeAsync(mode);
+    }
+
+    internal Task SetCollapsedAsync(bool collapsed)
+    {
+        if (collapsed == Collapsed)
+            return Task.CompletedTask;
+        Collapsed = collapsed;
+        Invalidate();
+        return CollapsedChanged.InvokeAsync(collapsed);
     }
 }

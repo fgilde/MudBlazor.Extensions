@@ -1,12 +1,15 @@
-.mud-ex-ribbon {
+.mud-ex-ribbon,
+.mud-ex-ribbon-overlay {
   --mud-ex-ribbon-row-h: 26px;
+  color: var(--mud-palette-text-primary);
+  font-size: 0.8125rem;
+}
+.mud-ex-ribbon {
   display: flex;
   flex-direction: column;
   min-width: 0;
   background-color: var(--mud-palette-surface);
-  color: var(--mud-palette-text-primary);
   border-bottom: 1px solid var(--mud-palette-lines-default);
-  font-size: 0.8125rem;
 }
 .mud-ex-ribbon-header {
   display: flex;
@@ -15,8 +18,19 @@
   min-height: 40px;
   padding: 4px 8px 0;
 }
+.mud-ex-ribbon-header-raised {
+  position: relative;
+  z-index: 6;
+}
+.mud-ex-ribbon-menu-mode .mud-ex-ribbon-header,
+.mud-ex-ribbon-toolbar-mode .mud-ex-ribbon-header {
+  align-items: center;
+  padding: 2px 8px;
+}
 .mud-ex-ribbon-title,
-.mud-ex-ribbon-header-end {
+.mud-ex-ribbon-header-end,
+.mud-ex-ribbon-mode-switch,
+.mud-ex-ribbon-header > .mud-ex-ribbon-collapse-toggle {
   display: flex;
   align-items: center;
   align-self: center;
@@ -57,11 +71,72 @@
   }
 }
 .mud-ex-ribbon-body {
+  position: relative;
   display: flex;
   align-items: stretch;
   min-height: calc(var(--mud-ex-ribbon-row-h) * 3 + 32px);
-  padding: 4px 4px 0;
+  padding: 4px 28px 0 4px;
   overflow: hidden;
+}
+.mud-ex-ribbon-simplified-body {
+  align-items: center;
+  min-height: 0;
+  padding: 2px 28px 2px 4px;
+}
+.mud-ex-ribbon-simplified-group,
+.mud-ex-ribbon-menubar,
+.mud-ex-ribbon-toolbar,
+.mud-ex-ribbon-toolbar-items,
+.mud-ex-ribbon-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.mud-ex-ribbon-menubar,
+.mud-ex-ribbon-toolbar {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.mud-ex-ribbon-toolbar-items {
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.mud-ex-ribbon-collapse-toggle {
+  display: inline-flex;
+  padding: 2px;
+  border: none;
+  border-radius: var(--mud-default-borderradius);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  &:hover {
+    background-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+  }
+  .mud-ex-ribbon-icon {
+    font-size: 18px;
+  }
+}
+.mud-ex-ribbon-body > .mud-ex-ribbon-collapse-toggle {
+  position: absolute;
+  right: 4px;
+  bottom: 2px;
+}
+.mud-ex-ribbon-overlay-anchor {
+  position: relative;
+}
+.mud-ex-ribbon-overlay > .mud-ex-ribbon-body {
+  padding-right: 4px;
+}
+.mud-ex-ribbon-menu-subheader {
+  padding: 6px 16px 2px;
+  color: var(--mud-palette-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 .mud-ex-ribbon-group {
   display: flex;

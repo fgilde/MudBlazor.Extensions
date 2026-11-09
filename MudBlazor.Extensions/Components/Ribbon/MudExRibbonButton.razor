@@ -3,5 +3,7 @@
 
 @code {
     /// <inheritdoc />
-    public override RenderFragment Render(MudExRibbonItemLayout layout) => WithTooltip(layout, Face(layout, ExecuteAsync, Pressed));
+    public override RenderFragment Render(MudExRibbonItemLayout layout) => layout == MudExRibbonItemLayout.MenuEntry
+        ? MenuEntry(ExecuteCommandAsync, Pressed)
+        : WithTooltip(layout, Face(layout, ExecuteCommandAsync, Pressed));
 }

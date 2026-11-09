@@ -1,0 +1,40 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonViewBase
+@attribute [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+
+@Header(Bar(Ribbon.ActiveTab))
+
+@code {
+    private RenderFragment Bar(MudExRibbonTab activeTab) =>
+        @<div class="mud-ex-ribbon-toolbar">
+            <MudMenu Class="mud-ex-ribbon-tab-select"
+                     Label="@activeTab?.Text"
+                     EndIcon="@Icons.Material.Filled.ArrowDropDown"
+                     Color="Color.Inherit"
+                     Dense="true">
+                @foreach (var tab in Ribbon.VisibleTabs)
+                {
+                    <MudMenuItem @key="tab"
+                                 Icon="@(tab == activeTab ? Icons.Material.Filled.Check : null)"
+                                 OnClick="() => Ribbon.SelectTabAsync(tab)">
+                        @tab.Text
+                    </MudMenuItem>
+                }
+            </MudMenu>
+            <div class="mud-ex-ribbon-toolbar-items" role="toolbar" aria-label="@activeTab?.Text">
+                @foreach (var (group, index) in (activeTab?.Groups ?? []).Select((group, index) => (group, index)))
+                {
+                    if (index > 0)
+                    {
+                        <MudDivider Vertical="true" FlexItem="true" Class="mud-ex-ribbon-separator" />
+                    }
+                    <div @key="group" class="mud-ex-ribbon-toolbar-group" role="group" aria-label="@group.Text">
+                        @foreach (var item in group.Items.Where(i => i.Visible))
+                        {
+                            <div @key="item" class="mud-ex-ribbon-slot">@item.Render(MudExRibbonItemLayout.ToolbarIcon)</div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>;
+}

@@ -18705,6 +18705,27 @@
             Raised when the presentation changes.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.Collapsed">
+            <summary>
+            Whether only the header is shown and a tab opens its commands as an overlay.
+            Applies to <see cref="F:MudBlazor.Extensions.Components.MudExRibbonMode.Classic"/> and <see cref="F:MudBlazor.Extensions.Components.MudExRibbonMode.Simplified"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.CollapsedChanged">
+            <summary>
+            Raised when the user collapses or expands the ribbon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.ShowModeSwitch">
+            <summary>
+            Whether the header offers a button to switch the <see cref="P:MudBlazor.Extensions.Components.MudExRibbon.Mode"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbon.AllowCollapse">
+            <summary>
+            Whether the user may collapse the ribbon with the chevron button or a double click on a tab.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExRibbon.Color">
             <summary>
             Background of the header. The text color is chosen for contrast.
@@ -19264,15 +19285,40 @@
             Rendered by the ribbon, not meant to be used directly.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExRibbonClassicView.Ribbon">
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonMenuView">
+            <summary>
+            Menu bar layout of a <see cref="T:MudBlazor.Extensions.Components.MudExRibbon"/>: one dropdown menu per tab with a section per group.
+            Rendered by the ribbon, not meant to be used directly.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonSimplifiedView">
+            <summary>
+            Simplified layout of a <see cref="T:MudBlazor.Extensions.Components.MudExRibbon"/>: colored header with tabs and the items of the active tab in one line,
+            groups separated by rules. Rendered by the ribbon, not meant to be used directly.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonToolbarView">
+            <summary>
+            Toolbar layout of a <see cref="T:MudBlazor.Extensions.Components.MudExRibbon"/>: a tab dropdown followed by the items of the active tab as icons.
+            Rendered by the ribbon, not meant to be used directly.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExRibbonViewBase">
+            <summary>
+            Base of the views that draw a <see cref="T:MudBlazor.Extensions.Components.MudExRibbon"/> in one <see cref="T:MudBlazor.Extensions.Components.MudExRibbonMode"/>.
+            The active view registers with the ribbon and redraws itself when tabs, groups or items change.
+            Rendered by the ribbon, not meant to be used directly.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExRibbonViewBase.Ribbon">
             <summary>
             The ribbon whose registered tabs, groups and items are drawn.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExRibbonClassicView.OnInitialized">
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.OnInitialized">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExRibbonClassicView.Dispose">
+        <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.Dispose">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.FilterHighlighting">

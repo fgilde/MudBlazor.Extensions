@@ -5,5 +5,5 @@
 
 @code {
     /// <inheritdoc />
-    public override RenderFragment Render(MudExRibbonItemLayout layout) => RenderMenu(layout, Items, Split ? ExecuteAsync : null);
+    public override RenderFragment Render(MudExRibbonItemLayout layout) => RenderMenu(layout, Items, Split ? ExecuteCommandAsync : null);
 }

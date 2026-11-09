@@ -8,7 +8,6 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="T">Type of the items.</typeparam>
 public partial class MudExRibbonSelect<T>
 {
-    private readonly string _listId = $"mud-ex-ribbon-list-{Guid.NewGuid():N}";
     private int _inputVersion;
 
     /// <summary>
@@ -81,5 +80,6 @@ public partial class MudExRibbonSelect<T>
         Value = value;
         NotifyStateChanged();
         await ValueChanged.InvokeAsync(value);
+        Ribbon?.NotifyCommandExecuted();
     }
 }

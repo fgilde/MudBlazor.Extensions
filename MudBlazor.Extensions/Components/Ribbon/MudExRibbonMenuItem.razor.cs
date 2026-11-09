@@ -33,12 +33,6 @@ public partial class MudExRibbonMenuItem : IMudExRibbonItemHost
     /// <inheritdoc />
     protected override object StateKey => (base.StateKey, Checked);
 
-    private Dictionary<string, object> CheckAttributes => Checked == null ? null : new()
-    {
-        ["role"] = "menuitemcheckbox",
-        ["aria-checked"] = Checked.Value ? "true" : "false"
-    };
-
     /// <inheritdoc />
     public override Task ExecuteAsync() => Disabled ? Task.CompletedTask : OnClick.InvokeAsync();
 

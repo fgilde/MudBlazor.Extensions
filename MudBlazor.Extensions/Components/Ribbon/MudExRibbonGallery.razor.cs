@@ -87,5 +87,6 @@ public partial class MudExRibbonGallery<TItem>
             _firstRow = Math.Min(row, MaxFirstRow);
         NotifyStateChanged();
         await SelectedItemChanged.InvokeAsync(item);
+        Ribbon?.NotifyCommandExecuted();
     }
 }

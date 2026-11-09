@@ -215,7 +215,7 @@ public class MudExRibbonTests : IAsyncLifetime
         if (time != null)
             context.Services.AddSingleton(time);
         var popovers = context.Render<MudPopoverProvider>();
-        var cut = context.Render<MudExRibbon>(p => p.AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home")
+        var cut = context.Render<MudExRibbon>(p => p.Add(x => x.ShowModeSwitch, false).AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home")
             .AddChildContent<MudExRibbonGroup>(g =>
             {
                 g.Add(x => x.Text, "G");
@@ -493,6 +493,232 @@ public class MudExRibbonTests : IAsyncLifetime
             if (layout == MudExRibbonItemLayout.MenuEntry)
                 Assert.Contains(item.Text, rendered.Markup);
         }
+    }
+
+    private static readonly string[] Commands = ["Paste", "Keep Text Only", "Bold", "Italic", "Cut", "Styles", "Heading", "Table"];
+
+    private (IRenderedComponent<MudExRibbon> Ribbon, IRenderedComponent<MudPopoverProvider> Popovers) RenderModes(
+        Action<ComponentParameterCollectionBuilder<MudExRibbon>> configure, Action? onPaste = null, Action<bool>? onBold = null)
+    {
+        var context = NewContext();
+        context.Services.AddSingleton<TimeProvider>(new FrozenTime());
+        var popovers = context.Render<MudPopoverProvider>();
+        var cut = context.Render<MudExRibbon>(p =>
+        {
+            configure(p);
+            p.AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Home")
+                    .AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Clipboard")
+                        .AddChildContent<MudExRibbonMenuButton>(m => m.Add(x => x.Text, "Paste").Add(x => x.Split, true).Add(x => x.Size, MudExRibbonItemSize.Large)
+                            .Add(x => x.Icon, Icons.Material.Filled.ContentPaste).Add(x => x.OnClick, () => onPaste?.Invoke())
+                            .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Keep Text Only")))
+                        .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Cut").Add(x => x.Size, MudExRibbonItemSize.Small).Add(x => x.Icon, Icons.Material.Filled.ContentCut)))
+                    .AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Font")
+                        .AddChildContent<MudExRibbonRow>(r => r
+                            .AddChildContent<MudExRibbonToggleButton>(b => b.Add(x => x.Text, "Bold").Add(x => x.Size, MudExRibbonItemSize.Small)
+                                .Add(x => x.Icon, Icons.Material.Filled.FormatBold).Add(x => x.CheckedChanged, v => onBold?.Invoke(v)))
+                            .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Italic").Add(x => x.Size, MudExRibbonItemSize.Small).Add(x => x.Icon, Icons.Material.Filled.FormatItalic)))
+                        .AddChildContent<MudExRibbonMenuButton>(m => m.Add(x => x.Text, "Styles")
+                            .AddChildContent<MudExRibbonMenuItem>(i => i.Add(x => x.Text, "Heading")))))
+                .AddChildContent<MudExRibbonTab>(t => t.Add(x => x.Text, "Insert")
+                    .AddChildContent<MudExRibbonGroup>(g => g.Add(x => x.Text, "Tables")
+                        .AddChildContent<MudExRibbonButton>(b => b.Add(x => x.Text, "Table").Add(x => x.Icon, Icons.Material.Filled.TableChart))));
+        });
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.Instance.Tabs.Count));
+        return (cut, popovers);
+    }
+
+    private static IEnumerable<string> Labels(IRenderedComponent<MudExRibbon> cut, IRenderedComponent<MudPopoverProvider> popovers)
+        => cut.FindAll("*").Concat(popovers.FindAll("*"))
+            .SelectMany(e => e.ChildNodes.OfType<AngleSharp.Dom.IText>().Select(t => t.Text.Trim()).Append(e.GetAttribute("aria-label") ?? string.Empty))
+            .Where(s => s.Length > 0);
+
+    private static void OpenAllMenus(IRenderedComponent<MudExRibbon> cut, IRenderedComponent<MudPopoverProvider> popovers, HashSet<string> found)
+    {
+        var opened = new HashSet<string>();
+        found.UnionWith(Labels(cut, popovers));
+        while (cut.FindAll("[aria-haspopup=menu]").Concat(popovers.FindAll("[aria-haspopup=menu]"))
+                   .FirstOrDefault(e => e.Closest(".mud-ex-ribbon-mode-switch") == null && opened.Add(e.Closest(".mud-menu")!.Id!)) is { } activator)
+        {
+            try
+            {
+                activator.Click();
+            }
+            catch (MissingEventHandlerException)
+            {
+                activator.QuerySelectorAll("button").Last().Click();
+            }
+            found.UnionWith(Labels(cut, popovers));
+        }
+    }
+
+    [Theory]
+    [InlineData(MudExRibbonMode.Classic)]
+    [InlineData(MudExRibbonMode.Simplified)]
+    [InlineData(MudExRibbonMode.Menu)]
+    [InlineData(MudExRibbonMode.Toolbar)]
+    public void EveryMode_ExposesTheSameCommands(MudExRibbonMode mode)
+    {
+        var (cut, popovers) = RenderModes(p => p.Add(x => x.Mode, mode));
+        var found = new HashSet<string>();
+
+        for (var tab = 0; tab < 2; tab++)
+        {
+            var index = tab;
+            cut.Render(p => p.Add(x => x.ActiveTabIndex, index));
+            cut.WaitForAssertion(() => Assert.Single(cut.FindAll($".mud-ex-ribbon-{mode.ToString().ToLowerInvariant()}-mode")));
+            OpenAllMenus(cut, popovers, found);
+        }
+
+        Assert.Empty(Commands.Except(found));
+    }
+
+    [Fact]
+    public void Simplified_RendersOneRowOfMediumAndSmallItems()
+    {
+        var (cut, _) = RenderModes(p => p.Add(x => x.Mode, MudExRibbonMode.Simplified));
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-simplified-body")));
+        Assert.Empty(cut.FindAll(".mud-ex-ribbon-large"));
+        Assert.Single(cut.FindAll(".mud-ex-ribbon-split-medium"));
+        Assert.Contains(cut.FindAll(".mud-ex-ribbon-small"), e => e.GetAttribute("aria-label") == "Cut");
+        Assert.Single(cut.FindAll(".mud-ex-ribbon-simplified-body > .mud-ex-ribbon-separator"));
+        Assert.Empty(cut.FindAll(".mud-ex-ribbon-group-title"));
+    }
+
+    [Fact]
+    public void Toolbar_TabDropdownSelectsTab()
+    {
+        var (cut, popovers) = RenderModes(p => p.Add(x => x.Mode, MudExRibbonMode.Toolbar));
+
+        cut.WaitForAssertion(() => Assert.Contains(cut.FindAll(".mud-ex-ribbon-toolbaricon"), e => e.GetAttribute("aria-label") == "Cut"));
+        Assert.Contains("Home", cut.Find(".mud-ex-ribbon-tab-select").TextContent);
+
+        cut.Find(".mud-ex-ribbon-tab-select button").Click();
+        popovers.WaitForAssertion(() => Assert.Contains(popovers.FindAll("[role=menuitem]"), e => e.TextContent.Contains("Insert")));
+        popovers.FindAll("[role=menuitem]").First(e => e.TextContent.Contains("Insert")).Click();
+
+        cut.WaitForAssertion(() => Assert.Contains(cut.FindAll(".mud-ex-ribbon-toolbaricon"), e => e.GetAttribute("aria-label") == "Table"));
+        Assert.Equal(1, cut.Instance.ActiveTabIndex);
+    }
+
+    [Fact]
+    public void ModeSwitch_RaisesModeChanged()
+    {
+        var raised = new List<MudExRibbonMode>();
+        var (cut, popovers) = RenderModes(p => p.Add(x => x.ModeChanged, m => raised.Add(m)));
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-mode-switch button")));
+        cut.Find(".mud-ex-ribbon-mode-switch button").Click();
+        popovers.WaitForAssertion(() => Assert.Equal(["Classic ribbon", "Simplified ribbon", "Menu bar", "Toolbar"],
+            popovers.FindAll(".mud-ex-ribbon-mode-option").Select(e => e.TextContent.Trim())));
+
+        popovers.FindAll(".mud-ex-ribbon-mode-option")[2].Click();
+
+        cut.WaitForAssertion(() => Assert.Equal([MudExRibbonMode.Menu], raised));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ribbon-menu-mode")));
+        Assert.Equal(MudExRibbonMode.Menu, cut.Instance.Mode);
+        Assert.Single(cut.FindAll(".mud-ex-ribbon-mode-switch"));
+
+        cut.Render(p => p.Add(x => x.ShowModeSwitch, false));
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-ribbon-mode-switch")));
+    }
+
+    [Fact]
+    public void Collapsed_HidesGroups_TabClickShowsOverlay()
+    {
+        var pastes = 0;
+        var (cut, popovers) = RenderModes(p => p.Add(x => x.Collapsed, true), () => pastes++);
+
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("[role=tab]").Count));
+        Assert.Empty(cut.FindAll("[role=toolbar]"));
+        Assert.Empty(popovers.FindAll("[role=toolbar]"));
+
+        cut.FindAll("[role=tab]")[0].Click();
+        popovers.WaitForAssertion(() => Assert.Equal(["Clipboard", "Font"], popovers.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
+
+        popovers.Find(".mud-ex-ribbon-split-face").Click();
+        cut.WaitForAssertion(() => Assert.Equal(1, pastes));
+        popovers.WaitForAssertion(() => Assert.Empty(popovers.FindAll("[role=toolbar]")));
+
+        cut.FindAll("[role=tab]")[1].Click();
+        popovers.WaitForAssertion(() => Assert.Equal(["Tables"], popovers.FindAll("[role=toolbar]").Select(e => e.GetAttribute("aria-label"))));
+        popovers.Find(".mud-overlay").Click();
+        popovers.WaitForAssertion(() => Assert.Empty(popovers.FindAll("[role=toolbar]")));
+        Assert.True(cut.Instance.Collapsed);
+
+        cut.Render(p => p.Add(x => x.Mode, MudExRibbonMode.Toolbar));
+        cut.WaitForAssertion(() => Assert.Contains(cut.FindAll(".mud-ex-ribbon-toolbaricon"), e => e.GetAttribute("aria-label") == "Table"));
+    }
+
+    [Fact]
+    public void DoubleClickTab_TogglesCollapsed()
+    {
+        var raised = new List<bool>();
+        var (cut, _) = RenderModes(p => p.Add(x => x.CollapsedChanged, v => raised.Add(v)));
+
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("[role=toolbar]").Count));
+        cut.FindAll("[role=tab]")[0].DoubleClick();
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll("[role=toolbar]")));
+        Assert.Equal([true], raised);
+
+        cut.FindAll("[role=tab]")[0].DoubleClick();
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("[role=toolbar]").Count));
+        Assert.Equal([true, false], raised);
+
+        cut.Find(".mud-ex-ribbon-body .mud-ex-ribbon-collapse-toggle").Click();
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll("[role=toolbar]")));
+        cut.Find(".mud-ex-ribbon-header .mud-ex-ribbon-collapse-toggle").Click();
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("[role=toolbar]").Count));
+        Assert.Equal([true, false, true, false], raised);
+
+        cut.Render(p => p.Add(x => x.AllowCollapse, false));
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-ribbon-collapse-toggle")));
+        cut.FindAll("[role=tab]")[0].DoubleClick();
+        Assert.Equal(2, cut.FindAll("[role=toolbar]").Count);
+        Assert.Equal(4, raised.Count);
+    }
+
+    [Fact]
+    public void Menu_ExecutingCommand_ClosesMenu()
+    {
+        var pastes = 0;
+        bool? bold = null;
+        var (cut, popovers) = RenderModes(p => p.Add(x => x.Mode, MudExRibbonMode.Menu), () => pastes++, v => bold = v);
+
+        cut.WaitForAssertion(() => Assert.Equal(["Home", "Insert"], cut.FindAll(".mud-ex-ribbon-menubar-menu > button").Select(e => e.TextContent.Trim())));
+        cut.FindAll(".mud-ex-ribbon-menubar-menu > button")[0].Click();
+        popovers.WaitForAssertion(() => Assert.Equal(["Clipboard", "Font"], popovers.FindAll(".mud-ex-ribbon-menu-subheader").Select(e => e.TextContent.Trim())));
+        var boldEntry = popovers.Find("[role=menuitemcheckbox]");
+        Assert.Equal("false", boldEntry.GetAttribute("aria-checked"));
+
+        boldEntry.Click();
+
+        cut.WaitForAssertion(() => Assert.True(bold));
+        cut.WaitForAssertion(() => Assert.Equal("false", cut.FindAll(".mud-ex-ribbon-menubar-menu > button")[0].GetAttribute("aria-expanded")));
+
+        cut.FindAll(".mud-ex-ribbon-menubar-menu > button")[0].Click();
+        popovers.WaitForAssertion(() => Assert.Equal("true", popovers.Find("[role=menuitemcheckbox]").GetAttribute("aria-checked")));
+        popovers.FindAll("[aria-haspopup=menu]").First(e => e.TextContent.Contains("Paste")).Click();
+        popovers.WaitForAssertion(() => Assert.Contains(popovers.FindAll("[role=menuitem]"), e => e.TextContent.Contains("Keep Text Only")));
+        popovers.FindAll("[role=menuitem]").Single(e => e.GetAttribute("aria-haspopup") == null && e.TextContent.Contains("Paste")).Click();
+
+        cut.WaitForAssertion(() => Assert.Equal(1, pastes));
+        cut.WaitForAssertion(() => Assert.Equal("false", cut.FindAll(".mud-ex-ribbon-menubar-menu > button")[0].GetAttribute("aria-expanded")));
+    }
+
+    [Fact]
+    public void Select_DatalistIdIsUniquePerRender()
+    {
+        var (cut, _, context) = RenderGroup(g => g
+            .AddChildContent<MudExRibbonSelect<string>>(b => b.Add(x => x.Text, "Size").Add(x => x.Items, ["10", "11"]).Add(x => x.Editable, true)));
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll("datalist")));
+        var item = cut.Instance.Tabs[0].Groups[0].Items[0];
+        var first = context.Render(item.Render(MudExRibbonItemLayout.Medium));
+        var second = context.Render(item.Render(MudExRibbonItemLayout.Medium));
+
+        Assert.NotEqual(first.Find("datalist").Id, second.Find("datalist").Id);
+        Assert.Equal(first.Find("datalist").Id, first.Find("input").GetAttribute("list"));
     }
 
     private sealed class FrozenTime : TimeProvider
