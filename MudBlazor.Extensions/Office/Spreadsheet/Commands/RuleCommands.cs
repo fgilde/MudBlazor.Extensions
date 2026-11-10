@@ -179,17 +179,24 @@ internal sealed record RuleState(IReadOnlyList<ConditionalFormatting> Formats, I
 
     public static List<ConditionalFormatting> Prepend(IReadOnlyList<ConditionalFormatting> formats, ConditionalFormatting added)
     {
-        var priorities = new Dictionary<ConditionalRule, int>(ReferenceEqualityComparer.Instance);
-        foreach (var rule in added.Rules.OrderBy(r => r.Priority).Concat(formats.SelectMany(f => f.Rules).OrderBy(r => r.Priority)))
-            priorities[rule] = priorities.Count + 1;
+        var existing = formats.SelectMany(f => f.Rules).ToList();
+        var priorities = new Queue<int>(Ranks(existing, added.Rules.Count + 1).Concat(Ranks(added.Rules, 1)));
 
         ConditionalFormatting Renumber(ConditionalFormatting f)
         {
-            var rules = f.Rules.Select(r => r.Priority == priorities[r] ? r : r with { Priority = priorities[r] }).ToList();
+            var rules = f.Rules.Select(r => priorities.Dequeue() is var p && r.Priority == p ? r : r with { Priority = p }).ToList();
             return rules.SequenceEqual(f.Rules, ReferenceEqualityComparer.Instance) ? f : f with { Rules = rules };
         }
 
         return [.. formats.Select(Renumber), Renumber(added)];
+    }
+
+    private static int[] Ranks(IReadOnlyList<ConditionalRule> rules, int first)
+    {
+        var ranks = new int[rules.Count];
+        var order = Enumerable.Range(0, rules.Count).OrderBy(i => rules[i].Priority).ToList();
+        for (var k = 0; k < order.Count; k++) ranks[order[k]] = first + k;
+        return ranks;
     }
 
     public static List<T> Replace<T>(IReadOnlyList<T> list, int index, T item) where T : class
