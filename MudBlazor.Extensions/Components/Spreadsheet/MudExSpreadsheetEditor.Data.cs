@@ -66,7 +66,7 @@ public partial class MudExSpreadsheetEditor
         return columns.Any(c => Kind(region.Top + 1, c) is not (CellValueKind.Text or CellValueKind.Empty)) || (Bold(region.Top) && !Bold(region.Top + 1));
     }
 
-    private Task SortAsync(bool descending) => RunAsync(() =>
+    internal Task SortAsync(bool descending) => RunAsync(() =>
     {
         var (range, header) = SortTarget();
         _workbook.Execute(new SortCommand(ActiveSheet, range, [new SortKey(CurrentSelection.Active.Column, descending)], header));

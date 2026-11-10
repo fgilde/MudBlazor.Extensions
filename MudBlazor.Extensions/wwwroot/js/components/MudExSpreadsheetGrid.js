@@ -1,7 +1,7 @@
 const ROW_HEADER = '.mud-ex-ssg-rh';
 const COL_HEADER = '.mud-ex-ssg-ch';
 const EDGE = 4;
-const COMMAND_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'Tab', 'Enter', 'F2', 'F9', 'Delete', 'Backspace', 'Escape'];
+const COMMAND_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'Tab', 'Enter', 'F2', 'F5', 'F9', 'Delete', 'Backspace', 'Escape'];
 
 class MudExSpreadsheetGrid {
     constructor(root, dotnet) {
@@ -23,6 +23,7 @@ class MudExSpreadsheetGrid {
         this.onHover = e => this.hover(e);
         this.onDblClick = e => this.dblClick(e);
         this.onPaste = e => this.paste(e);
+        this.onContextMenu = e => this.contextMenu(e);
         this.resizeObserver = new ResizeObserver(() => this.schedule());
         this.mutations = new MutationObserver(() => {
             this.attachViewport();
@@ -49,6 +50,7 @@ class MudExSpreadsheetGrid {
         viewport.addEventListener('pointerdown', this.onPointerDown);
         viewport.addEventListener('pointermove', this.onHover);
         viewport.addEventListener('dblclick', this.onDblClick);
+        viewport.addEventListener('contextmenu', this.onContextMenu);
         this.resizeObserver.observe(viewport);
         this.bound = true;
     }
@@ -60,6 +62,7 @@ class MudExSpreadsheetGrid {
             v.removeEventListener('pointerdown', this.onPointerDown);
             v.removeEventListener('pointermove', this.onHover);
             v.removeEventListener('dblclick', this.onDblClick);
+            v.removeEventListener('contextmenu', this.onContextMenu);
             this.resizeObserver.unobserve(v);
         }
         this.bound = false;
@@ -148,10 +151,10 @@ class MudExSpreadsheetGrid {
         if (e.key === ' ' && (ctrl || e.shiftKey)) {
             return true;
         }
-        if (e.altKey && !ctrl && e.key === '=') {
+        if ((e.altKey && !ctrl && e.key === '=') || (e.key === 'F3' && (ctrl || e.shiftKey))) {
             return true;
         }
-        return ctrl && !e.altKey && e.key.length === 1 && 'abiudrzyxcs15%;:'.includes(e.key.toLowerCase()) && (e.key.toLowerCase() !== 's' || !this.readOnly());
+        return ctrl && !e.altKey && e.key.length === 1 && 'abiudrzyxcs15%;:fgh'.includes(e.key.toLowerCase()) && (e.key.toLowerCase() !== 's' || !this.readOnly());
     }
 
     keyDown(e) {
@@ -288,21 +291,30 @@ class MudExSpreadsheetGrid {
         }
     }
 
-    async writeClipboard(text) {
+    async writeClipboard(text, html) {
         try {
-            await navigator.clipboard.writeText(text);
+            if (html && window.ClipboardItem && navigator.clipboard?.write) {
+                await navigator.clipboard.write([new ClipboardItem({
+                    'text/plain': new Blob([text], { type: 'text/plain' }),
+                    'text/html': new Blob([html], { type: 'text/html' })
+                })]);
+            } else {
+                await navigator.clipboard.writeText(text);
+            }
         } catch {
-            const area = document.createElement('textarea');
-            area.value = text;
-            area.style.position = 'fixed';
-            area.style.opacity = '0';
-            document.body.appendChild(area);
-            area.select();
+            const copy = e => {
+                e.clipboardData.setData('text/plain', text);
+                if (html) {
+                    e.clipboardData.setData('text/html', html);
+                }
+                e.preventDefault();
+            };
+            document.addEventListener('copy', copy, true);
             try {
                 document.execCommand('copy');
             } catch {
             }
-            area.remove();
+            document.removeEventListener('copy', copy, true);
         }
         this.focus();
     }
@@ -312,16 +324,48 @@ class MudExSpreadsheetGrid {
             return;
         }
         const text = e.clipboardData?.getData('text/plain');
-        if (text == null) {
+        const html = e.clipboardData?.getData('text/html');
+        if (!text && !html) {
             return;
         }
         e.preventDefault();
-        this.dotnet?.invokeMethodAsync('PasteStreamAsync', DotNet.createJSStreamReference(new Blob([text]))).catch(() => {});
+        const stream = s => DotNet.createJSStreamReference(new Blob([s]));
+        this.dotnet?.invokeMethodAsync('PasteStreamAsync', stream(text ?? ''), html ? stream(html) : null).catch(() => {});
     }
 
-    async readClipboard() {
+    async readClipboard(type) {
+        if (type === 'text/html') {
+            try {
+                for (const item of await navigator.clipboard.read()) {
+                    if (item.types.includes('text/html')) {
+                        return DotNet.createJSStreamReference(await item.getType('text/html'));
+                    }
+                }
+            } catch {
+            }
+            return null;
+        }
         const text = await navigator.clipboard.readText();
         return DotNet.createJSStreamReference(new Blob([text ?? '']));
+    }
+
+    contextMenu(e) {
+        const t = e.target;
+        if (!this.dotnet || t.closest('textarea.mud-ex-ssg-editor.editing, .mud-ex-ssg-assist-host, .mud-ex-ssg-filter, .mud-ex-ssg-dv')) {
+            return;
+        }
+        const header = t.closest(`${COL_HEADER}, ${ROW_HEADER}`);
+        const cell = header ? null : this.cellAt(e.clientX, e.clientY, false);
+        if (!header && !cell) {
+            return;
+        }
+        e.preventDefault();
+        this.endEditVisual();
+        this.focus();
+        const kind = header ? (header.matches(COL_HEADER) ? 'column' : 'row') : 'cell';
+        const r = header ? +(header.dataset.r ?? -1) : cell.r;
+        const c = header ? +(header.dataset.c ?? -1) : cell.c;
+        this.dotnet.invokeMethodAsync('OnContextMenu', kind, r, c, e.clientX, e.clientY).catch(() => {});
     }
 
     headers(selector, pane) {

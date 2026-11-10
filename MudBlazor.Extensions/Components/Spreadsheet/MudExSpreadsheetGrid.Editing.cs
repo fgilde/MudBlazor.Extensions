@@ -487,7 +487,7 @@ public partial class MudExSpreadsheetGrid
         if (sheet[cell] != null) _workbook.Execute(new ClearCommand(sheet, new CellRange(cell, cell), style));
     }
 
-    private static bool IsValidName(string name) =>
+    internal static bool IsValidName(string name) =>
         name.Length is > 0 and <= 255 && (char.IsLetter(name[0]) || name[0] is '_' or '\\') && name.All(c => char.IsLetterOrDigit(c) || c is '_' or '.' or '\\')
         && !CellRange.TryParse(name, out _) && !name.Equals("TRUE", StringComparison.OrdinalIgnoreCase) && !name.Equals("FALSE", StringComparison.OrdinalIgnoreCase)
         && !(name.Length == 1 && char.ToUpperInvariant(name[0]) is 'R' or 'C');

@@ -19802,6 +19802,34 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetFindReplaceDialog">
+            <summary>
+            The Find and Replace dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>. Searches the sheet or the workbook by rows, in formulas or shown
+            values, optionally case-sensitive or for the entire cell. Find Next selects the cell, switching sheets if needed; Replace All is one undo
+            step and reports the count. While the auto filter hides rows, only visible cells are searched and replaced.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFindReplaceDialog.Workbook">
+            <summary>The workbook to search.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFindReplaceDialog.Sheet">
+            <summary>The sheet where the search starts.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFindReplaceDialog.Start">
+            <summary>The cell after which the search starts.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFindReplaceDialog.Replace">
+            <summary>Whether the dialog opens on the Replace tab.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFindReplaceDialog.CanReplace">
+            <summary>Whether replacing is allowed; false shows only the Find part.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFindReplaceDialog.Select">
+            <summary>Selects a found cell, switching to its sheet.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetFindReplaceDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetFormatCellsDialog">
             <summary>
             The Format Cells dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/> with the tabs Number, Alignment, Font, Border and Fill.
@@ -19833,6 +19861,15 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetFormulaBar.Dispose">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetGoToDialog">
+            <summary>
+            The Go To dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>: lists the defined names and takes a name or reference such as <c>B7</c> or
+            <c>Sheet2!A1:C3</c>. Closes with the entered text as result data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGoToDialog.Names">
+            <summary>The defined names with their references.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetGrid">
             <summary>
             Virtualized spreadsheet grid for one worksheet of a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Workbook"/>: renders only the visible cells plus a
@@ -19842,12 +19879,15 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CopyAsync">
-            <summary>Copies the current range as tab separated text to the clipboard.</summary>
-            <returns>A task that completes when the text is handed to the browser.</returns>
+            <summary>
+            Copies the current range to the clipboard as tab separated text and as an HTML table with formats. Like Excel, only the visible
+            rows of a filtered range are copied.
+            </summary>
+            <returns>A task that completes when the data is handed to the browser.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CutAsync">
             <summary>Copies the current range and moves it on the next paste.</summary>
-            <returns>A task that completes when the text is handed to the browser.</returns>
+            <returns>A task that completes when the data is handed to the browser.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.PasteTextAsync(System.String)">
             <summary>
@@ -19858,9 +19898,19 @@
             <param name="text">The clipboard text.</param>
             <returns>A task that completes when the cells are written.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.PasteStreamAsync(Microsoft.JSInterop.IJSStreamReference)">
-            <summary>Called by the browser on paste. The text arrives as a stream, so large clipboards do not hit the message size limit of Blazor Server.</summary>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.PasteAsync(System.String,System.String)">
+            <summary>
+            Pastes clipboard data at the top-left cell of the selection. A table in <paramref name="html"/>, as Excel, Google Sheets and
+            browsers copy it, wins over the text and brings values, formats and merged cells; data copied from this grid pastes the original cells.
+            </summary>
+            <param name="text">The <c>text/plain</c> part of the clipboard.</param>
+            <param name="html">The <c>text/html</c> part of the clipboard, or null.</param>
+            <returns>A task that completes when the cells are written.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.PasteStreamAsync(Microsoft.JSInterop.IJSStreamReference,Microsoft.JSInterop.IJSStreamReference)">
+            <summary>Called by the browser on paste. The data arrives as streams, so large clipboards do not hit the message size limit of Blazor Server.</summary>
             <param name="data">The clipboard text as UTF-8.</param>
+            <param name="html">The HTML of the clipboard as UTF-8, or null.</param>
             <returns>A task that completes when the cells are written.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.BeginEditAsync(System.String)">
@@ -19939,6 +19989,27 @@
             <summary>Returns the longest texts of a column with their CSS font so the browser can measure the auto-fit width.</summary>
             <param name="col">The column.</param>
             <returns>Pairs of text and font.</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.DialogRequested">
+            <summary>Raised on the shortcuts of Find, Replace, Go To, Insert Function and Name Manager so the host can open its dialog.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ContextMenuRequested">
+            <summary>Raised on a right click on a cell or heading, after the clicked cell, row or column was selected if it was not.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnContextMenu(System.String,System.Int32,System.Int32,System.Double,System.Double)">
+            <summary>Called by the browser on a right click in the grid.</summary>
+            <param name="kind"><c>cell</c>, <c>row</c> or <c>column</c>.</param>
+            <param name="row">The row, or -1 for a column heading.</param>
+            <param name="col">The column, or -1 for a row heading.</param>
+            <param name="clientX">Horizontal pointer position.</param>
+            <param name="clientY">Vertical pointer position.</param>
+            <returns>A task that completes when the host was told.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.VisibleParts(MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
+            <summary>
+            Splits a range into the bands of rows that edits hit. While the auto filter hides rows, only visible rows are hit, like Fill,
+            Delete and Replace All in Excel; otherwise the range is returned unchanged.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.GoToAsync(System.String)">
             <summary>Jumps to a cell, a range or a defined name. An unknown valid name is defined for the current selection.</summary>
@@ -20058,6 +20129,81 @@
             <param name="height">Visible height in pixels.</param>
             <returns>A task that completes when the new window is rendered.</returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetDialog">
+            <summary>A dialog the grid asks its host to open from a keyboard shortcut.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SpreadsheetDialog.Find">
+            <summary>Find (Ctrl+F).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SpreadsheetDialog.Replace">
+            <summary>Replace (Ctrl+H).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SpreadsheetDialog.GoTo">
+            <summary>Go To (Ctrl+G, F5).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SpreadsheetDialog.InsertFunction">
+            <summary>Insert Function (Shift+F3).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SpreadsheetDialog.NameManager">
+            <summary>Name Manager (Ctrl+F3).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetContextMenuKind">
+            <summary>The part of the grid a context menu was opened on.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SpreadsheetContextMenuKind.Cell">
+            <summary>A cell.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SpreadsheetContextMenuKind.RowHeader">
+            <summary>A row heading.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SpreadsheetContextMenuKind.ColumnHeader">
+            <summary>A column heading.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetContextMenuEventArgs">
+            <summary>Arguments of <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ContextMenuRequested"/>.</summary>
+            <param name="Kind">Where the menu was opened.</param>
+            <param name="ClientX">Horizontal pointer position in CSS pixels of the viewport.</param>
+            <param name="ClientY">Vertical pointer position in CSS pixels of the viewport.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetContextMenuEventArgs.#ctor(MudBlazor.Extensions.Components.SpreadsheetContextMenuKind,System.Double,System.Double)">
+            <summary>Arguments of <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ContextMenuRequested"/>.</summary>
+            <param name="Kind">Where the menu was opened.</param>
+            <param name="ClientX">Horizontal pointer position in CSS pixels of the viewport.</param>
+            <param name="ClientY">Vertical pointer position in CSS pixels of the viewport.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetContextMenuEventArgs.Kind">
+            <summary>Where the menu was opened.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetContextMenuEventArgs.ClientX">
+            <summary>Horizontal pointer position in CSS pixels of the viewport.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetContextMenuEventArgs.ClientY">
+            <summary>Vertical pointer position in CSS pixels of the viewport.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetInsertFunctionDialog">
+            <summary>
+            The Insert Function dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>: search and category filter over the worksheet functions with their
+            signature and description. Closes with the chosen <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.FunctionInfo"/> as result data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetInsertFunctionDialog.Functions">
+            <summary>The functions to choose from.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetNameManagerDialog">
+            <summary>
+            The Name Manager of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>: lists the defined names and adds, changes, renames and deletes them. Every
+            change is applied at once as one undo step.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetNameManagerDialog.Workbook">
+            <summary>The workbook whose names are managed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetNameManagerDialog.DefaultRefersTo">
+            <summary>The reference proposed for a new name, usually the selection.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetNameManagerDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs">
             <summary>
             The sheet tabs of a spreadsheet: a click selects a sheet, a double click renames it, the context menu inserts, deletes, moves,
@@ -20107,6 +20253,27 @@
             <param name="index">Index of the sheet.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetSizeDialog">
+            <summary>
+            The Row Height and Column Width dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>: row heights in points, column widths in characters like
+            Excel. Closes with a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.ResizeCommand"/> as result data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSizeDialog.Sheet">
+            <summary>The sheet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSizeDialog.Axis">
+            <summary>Rows or columns.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSizeDialog.Index">
+            <summary>The first row or column to resize.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSizeDialog.Count">
+            <summary>The number of rows or columns to resize.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetSizeDialog.OnInitialized">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetSortDialog">
@@ -20224,6 +20391,29 @@
         <member name="M:MudBlazor.Extensions.Components.SpreadsheetCellStyles.Create">
             <summary>Creates the styles; the currency style uses the current culture.</summary>
             <returns>Normal, Good, Bad, Neutral, Heading 1–4, Input, Output, Calculation, Note, Percent and Currency.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetContextMenu">
+            <summary>
+            The context menu of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/> for cells, row headings and column headings. It is opened at the pointer by
+            the grid's right click and runs the editor's commands. Content is only built while the menu is open.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetContextMenu.Editor">
+            <summary>The editor whose commands the items run.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetContextMenu.Items">
+            <summary>Additional items, for example for notes and links, rendered before Format Cells.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetContextMenu.Kind">
+            <summary>The variant of the open menu, or null while it is closed.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetContextMenu.OpenAsync(MudBlazor.Extensions.Components.SpreadsheetContextMenuEventArgs)">
+            <summary>Opens the menu at a pointer position.</summary>
+            <param name="args">Where and on what the menu was requested.</param>
+            <returns>A task that completes when the menu is open.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetContextMenu.ShouldRender">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.SpreadsheetGridRow">
             <summary>
@@ -34273,6 +34463,107 @@
             <param name="sheet">The sheet to write.</param>
             <param name="target">The stream to write to; it is left open.</param>
             <param name="delimiter">The field delimiter.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableCell">
+            <summary>One cell of an HTML table read by <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableFormat"/>.</summary>
+            <param name="Row">Zero-based row in the table.</param>
+            <param name="Column">Zero-based column in the table, after the columns taken by spans of earlier cells.</param>
+            <param name="Value">The value.</param>
+            <param name="Formula">The formula without the leading equals sign, or null.</param>
+            <param name="Style">
+            The style read from the allowed CSS: bold, italic, underline, strikethrough, font color, fill, alignment, wrapping and number format.
+            Everything else keeps the default.
+            </param>
+            <param name="RowSpan">Number of rows the cell spans.</param>
+            <param name="ColumnSpan">Number of columns the cell spans.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableCell.#ctor(System.Int32,System.Int32,MudBlazor.Extensions.Office.Spreadsheet.CellValue,System.String,MudBlazor.Extensions.Office.Spreadsheet.CellStyle,System.Int32,System.Int32)">
+            <summary>One cell of an HTML table read by <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableFormat"/>.</summary>
+            <param name="Row">Zero-based row in the table.</param>
+            <param name="Column">Zero-based column in the table, after the columns taken by spans of earlier cells.</param>
+            <param name="Value">The value.</param>
+            <param name="Formula">The formula without the leading equals sign, or null.</param>
+            <param name="Style">
+            The style read from the allowed CSS: bold, italic, underline, strikethrough, font color, fill, alignment, wrapping and number format.
+            Everything else keeps the default.
+            </param>
+            <param name="RowSpan">Number of rows the cell spans.</param>
+            <param name="ColumnSpan">Number of columns the cell spans.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableCell.Row">
+            <summary>Zero-based row in the table.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableCell.Column">
+            <summary>Zero-based column in the table, after the columns taken by spans of earlier cells.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableCell.Value">
+            <summary>The value.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableCell.Formula">
+            <summary>The formula without the leading equals sign, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableCell.Style">
+            <summary>
+            The style read from the allowed CSS: bold, italic, underline, strikethrough, font color, fill, alignment, wrapping and number format.
+            Everything else keeps the default.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableCell.RowSpan">
+            <summary>Number of rows the cell spans.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableCell.ColumnSpan">
+            <summary>Number of columns the cell spans.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.HtmlTable">
+            <summary>A table read by <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableFormat.Read(System.String,System.Globalization.CultureInfo)"/>.</summary>
+            <param name="Cells">The cells in document order.</param>
+            <param name="RowCount">Number of rows including spans.</param>
+            <param name="ColumnCount">Number of columns including spans.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.HtmlTable.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.HtmlTableCell},System.Int32,System.Int32)">
+            <summary>A table read by <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableFormat.Read(System.String,System.Globalization.CultureInfo)"/>.</summary>
+            <param name="Cells">The cells in document order.</param>
+            <param name="RowCount">Number of rows including spans.</param>
+            <param name="ColumnCount">Number of columns including spans.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.HtmlTable.Cells">
+            <summary>The cells in document order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.HtmlTable.RowCount">
+            <summary>Number of rows including spans.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.HtmlTable.ColumnCount">
+            <summary>Number of columns including spans.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableFormat">
+            <summary>
+            Reads and writes the HTML tables that Excel, Google Sheets and browsers put on the clipboard. The reader is a tolerant tokenizer for
+            the not well-formed HTML of Excel: it never runs or renders anything, drops scripts, styles, frames and every attribute or CSS
+            property outside a short list of formatting properties.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableFormat.MaxLength">
+            <summary>Largest HTML text that is read, in characters.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableFormat.Read(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            Reads the first HTML table that has cells. Values come from Excel's <c>x:num</c>, <c>x:bool</c>, <c>x:str</c> and <c>x:fmla</c>
+            attributes or Google Sheets' <c>data-sheets-value</c> where present; other text is parsed like typed input in <paramref name="culture"/>.
+            </summary>
+            <param name="html">The HTML, for example the <c>text/html</c> part of the clipboard.</param>
+            <param name="culture">The culture for parsing numbers and dates; null for the current culture.</param>
+            <returns>The table, or null if the HTML holds no table cell.</returns>
+            <exception cref="T:System.ArgumentException">The HTML is longer than <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableFormat.MaxLength"/>.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableFormat.Write(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,System.Globalization.CultureInfo)">
+            <summary>
+            Writes a range as a minimal HTML table that Excel and Google Sheets paste with values, number formats, fonts, fills, alignment and
+            merged cells. Rows hidden by the auto filter are left out, as Excel copies only the visible rows of a filtered range.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to write.</param>
+            <param name="culture">The culture for the shown texts; null for the current culture.</param>
+            <returns>The HTML document.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.XlsReader">
             <summary>Reads legacy Excel 97-2003 workbooks (<c>.xls</c>) into a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Workbook"/>.</summary>

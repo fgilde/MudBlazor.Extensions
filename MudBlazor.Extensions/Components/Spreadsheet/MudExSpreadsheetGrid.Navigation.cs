@@ -189,6 +189,12 @@ public partial class MudExSpreadsheetGrid
             case "F9":
                 _engine?.RecalculateAll();
                 return;
+            case "F5":
+                await DialogRequested.InvokeAsync(SpreadsheetDialog.GoTo);
+                return;
+            case "F3" when ctrl || e.ShiftKey:
+                await DialogRequested.InvokeAsync(ctrl ? SpreadsheetDialog.NameManager : SpreadsheetDialog.InsertFunction);
+                return;
             case "Delete":
                 ClearContents();
                 return;
@@ -261,6 +267,15 @@ public partial class MudExSpreadsheetGrid
                 break;
             case "1":
                 await FormatCellsRequested.InvokeAsync();
+                break;
+            case "f":
+                await DialogRequested.InvokeAsync(SpreadsheetDialog.Find);
+                break;
+            case "h":
+                await DialogRequested.InvokeAsync(SpreadsheetDialog.Replace);
+                break;
+            case "g":
+                await DialogRequested.InvokeAsync(SpreadsheetDialog.GoTo);
                 break;
             case ";":
                 await BeginEditAsync(DateTime.Today.ToString(Culture.DateTimeFormat.ShortDatePattern, Culture));

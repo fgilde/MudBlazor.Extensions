@@ -1,0 +1,24 @@
+@inherits MudExBaseComponent<MudExSpreadsheetGoToDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="mud-ex-ssgoto-dialog">
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudText Typo="Typo.body2">@TryLocalize("Go to:")</MudText>
+            <div class="mud-ex-sslist" role="listbox" aria-label="@TryLocalize("Go to:")">
+                @foreach (var (name, refersTo) in Names)
+                {
+                    <div class="@(name == _reference ? "mud-ex-sslist-item mud-ex-sslist-selected" : "mud-ex-sslist-item")" role="option" tabindex="0"
+                         aria-selected="@(name == _reference ? "true" : "false")" data-name="@name" @onclick="@(() => _reference = name)" @ondblclick="Ok">
+                        <span>@name</span><span>@refersTo</span>
+                    </div>
+                }
+            </div>
+            <MudTextField T="string" Class="mud-ex-ssgoto-reference" Label="@TryLocalize("Reference:")" @bind-Value="_reference" Immediate="true" Margin="Margin.Dense" />
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-ssgoto-ok" Color="Color.Primary" Variant="Variant.Filled" Disabled="@string.IsNullOrWhiteSpace(_reference)" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

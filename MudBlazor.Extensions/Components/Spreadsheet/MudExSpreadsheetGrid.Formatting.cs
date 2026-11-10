@@ -102,8 +102,8 @@ public partial class MudExSpreadsheetGrid
     {
         if (!CanEdit) return;
         using (_workbook.Undo.BeginTransaction("Clear contents"))
-            foreach (var r in _selection.Ranges)
-                _workbook.Execute(new ClearCommand(_sheet, r.Normalized));
+            foreach (var r in _selection.Ranges.SelectMany(VisibleParts))
+                _workbook.Execute(new ClearCommand(_sheet, r));
     }
 
     private void ToggleFont(Func<CellFont, bool> get, Func<CellFont, bool, CellFont> set, string description)

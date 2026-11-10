@@ -1,0 +1,55 @@
+@inherits MudExBaseComponent<SpreadsheetContextMenu>
+@namespace MudBlazor.Extensions.Components
+
+<MudMenu @ref="_menu" Class="mud-ex-ss-context" PositionAtCursor="true" Dense="true" OpenChanged="OnOpenChanged">
+    <ActivatorContent><span class="mud-ex-ss-context-anchor"></span></ActivatorContent>
+    <ChildContent>
+        @if (_kind is { } kind)
+        {
+            <MudMenuItem Class="mud-ex-ss-cm-cut" Icon="@Icons.Material.Filled.ContentCut" OnClick="Editor.CutAsync">@TryLocalize("Cut")</MudMenuItem>
+            <MudMenuItem Class="mud-ex-ss-cm-copy" Icon="@Icons.Material.Filled.ContentCopy" OnClick="Editor.CopyAsync">@TryLocalize("Copy")</MudMenuItem>
+            <MudMenuItem Class="mud-ex-ss-cm-paste" Icon="@Icons.Material.Filled.ContentPaste" OnClick="@(() => Editor.PasteAsync(false))">@TryLocalize("Paste")</MudMenuItem>
+            <MudMenuItem Class="mud-ex-ss-cm-paste-values" Icon="@Icons.Material.Filled.Numbers" OnClick="@(() => Editor.PasteAsync(true))">@TryLocalize("Paste Values")</MudMenuItem>
+            <MudDivider />
+            @if (kind != SpreadsheetContextMenuKind.ColumnHeader)
+            {
+                <MudMenuItem Class="mud-ex-ss-cm-insert-rows" Icon="@Icons.Material.Filled.AddBox" OnClick="Editor.InsertRowsAsync">@TryLocalize(kind == SpreadsheetContextMenuKind.Cell ? "Insert Row Above" : "Insert")</MudMenuItem>
+            }
+            @if (kind != SpreadsheetContextMenuKind.RowHeader)
+            {
+                <MudMenuItem Class="mud-ex-ss-cm-insert-columns" Icon="@Icons.Material.Filled.AddBox" OnClick="Editor.InsertColumnsAsync">@TryLocalize(kind == SpreadsheetContextMenuKind.Cell ? "Insert Column Left" : "Insert")</MudMenuItem>
+            }
+            @if (kind != SpreadsheetContextMenuKind.ColumnHeader)
+            {
+                <MudMenuItem Class="mud-ex-ss-cm-delete-rows" Icon="@Icons.Material.Filled.IndeterminateCheckBox" OnClick="Editor.DeleteRowsAsync">@TryLocalize(kind == SpreadsheetContextMenuKind.Cell ? "Delete Row" : "Delete")</MudMenuItem>
+            }
+            @if (kind != SpreadsheetContextMenuKind.RowHeader)
+            {
+                <MudMenuItem Class="mud-ex-ss-cm-delete-columns" Icon="@Icons.Material.Filled.IndeterminateCheckBox" OnClick="Editor.DeleteColumnsAsync">@TryLocalize(kind == SpreadsheetContextMenuKind.Cell ? "Delete Column" : "Delete")</MudMenuItem>
+            }
+            <MudMenuItem Class="mud-ex-ss-cm-clear" Icon="@Icons.Material.Filled.CleaningServices" OnClick="@(() => Editor.ClearAsync(true, false))">@TryLocalize("Clear Contents")</MudMenuItem>
+            <MudDivider />
+            @if (kind == SpreadsheetContextMenuKind.Cell)
+            {
+                <MudMenuItem Class="mud-ex-ss-cm-filter-value" Icon="@Icons.Material.Filled.FilterAlt" OnClick="Editor.FilterBySelectedValueAsync">@TryLocalize("Filter by Selected Cell's Value")</MudMenuItem>
+                <MudMenuItem Class="mud-ex-ss-cm-sort-asc" Icon="@Icons.Material.Filled.ArrowUpward" OnClick="@(() => Editor.SortAsync(false))">@TryLocalize("Sort A to Z")</MudMenuItem>
+                <MudMenuItem Class="mud-ex-ss-cm-sort-desc" Icon="@Icons.Material.Filled.ArrowDownward" OnClick="@(() => Editor.SortAsync(true))">@TryLocalize("Sort Z to A")</MudMenuItem>
+                <MudDivider />
+            }
+            @Items?.Invoke(kind)
+            <MudMenuItem Class="mud-ex-ss-cm-format" Icon="@Icons.Material.Filled.Tune" OnClick="Editor.FormatCellsAsync">@TryLocalize("Format Cells...")</MudMenuItem>
+            @if (kind == SpreadsheetContextMenuKind.RowHeader)
+            {
+                <MudMenuItem Class="mud-ex-ss-cm-row-height" OnClick="Editor.RowHeightAsync">@TryLocalize("Row Height...")</MudMenuItem>
+                <MudMenuItem Class="mud-ex-ss-cm-hide" Icon="@Icons.Material.Filled.VisibilityOff" OnClick="@(() => Editor.SetRowsHiddenAsync(true))">@TryLocalize("Hide")</MudMenuItem>
+                <MudMenuItem Class="mud-ex-ss-cm-unhide" Icon="@Icons.Material.Filled.Visibility" OnClick="@(() => Editor.SetRowsHiddenAsync(false))">@TryLocalize("Unhide")</MudMenuItem>
+            }
+            else if (kind == SpreadsheetContextMenuKind.ColumnHeader)
+            {
+                <MudMenuItem Class="mud-ex-ss-cm-column-width" OnClick="Editor.ColumnWidthAsync">@TryLocalize("Column Width...")</MudMenuItem>
+                <MudMenuItem Class="mud-ex-ss-cm-hide" Icon="@Icons.Material.Filled.VisibilityOff" OnClick="@(() => Editor.SetColumnsHiddenAsync(true))">@TryLocalize("Hide")</MudMenuItem>
+                <MudMenuItem Class="mud-ex-ss-cm-unhide" Icon="@Icons.Material.Filled.Visibility" OnClick="@(() => Editor.SetColumnsHiddenAsync(false))">@TryLocalize("Unhide")</MudMenuItem>
+            }
+        }
+    </ChildContent>
+</MudMenu>

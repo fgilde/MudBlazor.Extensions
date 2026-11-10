@@ -34,23 +34,25 @@ public partial class MudExSpreadsheetGrid
 
     private void Fill(CellRange src, CellRange target, bool vertical)
     {
+        var steps = vertical
+            ? Enumerable.Range(target.Top, target.RowCount).Where(r => !HidesRow(r)).ToList()
+            : Enumerable.Range(target.Left, target.ColumnCount).ToList();
+        var sourceSteps = steps.Where(p => vertical ? p >= src.Top && p <= src.Bottom : p >= src.Left && p <= src.Right).ToList();
+        if (sourceSteps.Count == 0) return;
+        var start = steps.IndexOf(sourceSteps[0]);
         using (_workbook.Undo.BeginTransaction("Fill"))
         {
             var lines = vertical ? src.ColumnCount : src.RowCount;
             for (var line = 0; line < lines; line++)
             {
-                var seq = vertical
-                    ? Enumerable.Range(src.Top, src.RowCount).Select(r => new CellRef(r, src.Left + line)).ToList()
-                    : Enumerable.Range(src.Left, src.ColumnCount).Select(c => new CellRef(src.Top + line, c)).ToList();
+                if (!vertical && HidesRow(src.Top + line)) continue;
+                var seq = sourceSteps.Select(p => vertical ? new CellRef(p, src.Left + line) : new CellRef(src.Top + line, p)).ToList();
                 var series = Series(seq);
-                var from = vertical ? target.Top : target.Left;
-                var to = vertical ? target.Bottom : target.Right;
-                var start = vertical ? src.Top : src.Left;
-                for (var i = from; i <= to; i++)
+                for (var i = 0; i < steps.Count; i++)
                 {
                     var k = i - start;
                     if (k >= 0 && k < seq.Count) continue;
-                    var t = vertical ? new CellRef(i, src.Left + line) : new CellRef(src.Top + line, i);
+                    var t = vertical ? new CellRef(steps[i], src.Left + line) : new CellRef(src.Top + line, steps[i]);
                     var s = seq[((k % seq.Count) + seq.Count) % seq.Count];
                     if (series != null)
                     {
@@ -109,11 +111,14 @@ public partial class MudExSpreadsheetGrid
         if (r.Area > MaxBulkCells) r = CellRange.FromBounds(r.Top, r.Left, Math.Min(r.Bottom, _sheet.UsedRange.Bottom), Math.Min(r.Right, _sheet.UsedRange.Right));
         var single = down ? r.RowCount == 1 : r.ColumnCount == 1;
         if (single && (down ? r.Top == 0 : r.Left == 0)) return;
+        var sourceRow = single ? r.Top - 1 : r.Top;
+        while (down && sourceRow > 0 && sourceRow < r.Bottom && HidesRow(sourceRow)) sourceRow += single ? -1 : 1;
         using (_workbook.Undo.BeginTransaction(down ? "Fill down" : "Fill right"))
             foreach (var t in r.Cells())
             {
+                if (HidesRow(t.Row)) continue;
                 var s = down
-                    ? new CellRef(single ? r.Top - 1 : r.Top, t.Column)
+                    ? new CellRef(sourceRow, t.Column)
                     : new CellRef(t.Row, single ? r.Left - 1 : r.Left);
                 if (s != t) CopyCell(_sheet, s, t);
             }

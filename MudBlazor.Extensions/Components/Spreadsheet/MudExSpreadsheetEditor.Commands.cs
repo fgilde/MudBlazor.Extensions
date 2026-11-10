@@ -269,13 +269,13 @@ public partial class MudExSpreadsheetEditor
 
     private Task UnmergeAsync() => RunCommandAsync(new UnmergeCommand(ActiveSheet, ActiveRange));
 
-    private Task InsertRowsAsync() => RunCommandAsync(new InsertRowsCommand(ActiveSheet, ActiveRange.Top, ActiveRange.RowCount));
+    internal Task InsertRowsAsync() => RunCommandAsync(new InsertRowsCommand(ActiveSheet, ActiveRange.Top, ActiveRange.RowCount));
 
-    private Task InsertColumnsAsync() => RunCommandAsync(new InsertColumnsCommand(ActiveSheet, ActiveRange.Left, ActiveRange.ColumnCount));
+    internal Task InsertColumnsAsync() => RunCommandAsync(new InsertColumnsCommand(ActiveSheet, ActiveRange.Left, ActiveRange.ColumnCount));
 
-    private Task DeleteRowsAsync() => RunCommandAsync(new DeleteRowsCommand(ActiveSheet, ActiveRange.Top, ActiveRange.RowCount));
+    internal Task DeleteRowsAsync() => RunCommandAsync(new DeleteRowsCommand(ActiveSheet, ActiveRange.Top, ActiveRange.RowCount));
 
-    private Task DeleteColumnsAsync() => RunCommandAsync(new DeleteColumnsCommand(ActiveSheet, ActiveRange.Left, ActiveRange.ColumnCount));
+    internal Task DeleteColumnsAsync() => RunCommandAsync(new DeleteColumnsCommand(ActiveSheet, ActiveRange.Left, ActiveRange.ColumnCount));
 
     private Task InsertSheetAsync() => RunAsync(() =>
     {
@@ -302,9 +302,9 @@ public partial class MudExSpreadsheetEditor
         _activeSheet = _workbook.Sheets[index];
     }
 
-    private Task SetRowsHiddenAsync(bool hidden) => RunCommandAsync(new SetHiddenCommand(ActiveSheet, Axis.Row, ActiveRange.Top, ActiveRange.RowCount, hidden));
+    internal Task SetRowsHiddenAsync(bool hidden) => RunCommandAsync(new SetHiddenCommand(ActiveSheet, Axis.Row, ActiveRange.Top, ActiveRange.RowCount, hidden));
 
-    private Task SetColumnsHiddenAsync(bool hidden) => RunCommandAsync(new SetHiddenCommand(ActiveSheet, Axis.Column, ActiveRange.Left, ActiveRange.ColumnCount, hidden));
+    internal Task SetColumnsHiddenAsync(bool hidden) => RunCommandAsync(new SetHiddenCommand(ActiveSheet, Axis.Column, ActiveRange.Left, ActiveRange.ColumnCount, hidden));
 
     private Task AutoFitRowsAsync() => RunCommandAsync(new ResizeCommand(ActiveSheet, Axis.Row, ActiveRange.Top, ActiveRange.RowCount, null));
 
@@ -315,29 +315,19 @@ public partial class MudExSpreadsheetEditor
         await FocusGridAsync();
     }
 
-    private async Task RowHeightAsync()
-    {
-        if (!CanEdit) return;
-        var points = await PromptNumberAsync("Row Height", "Row height:", ActiveSheet.RowHeight(ActiveRange.Top) * 72 / 96, 409);
-        if (points is { } p)
-            await RunCommandAsync(new ResizeCommand(ActiveSheet, Axis.Row, ActiveRange.Top, ActiveRange.RowCount, Math.Round(p * 96 / 72, 2)));
-    }
+    internal Task RowHeightAsync() => SizeAsync(Axis.Row, ActiveRange.Top, ActiveRange.RowCount, "Row Height");
 
-    private async Task ColumnWidthAsync()
-    {
-        if (!CanEdit) return;
-        var chars = await PromptNumberAsync("Column Width", "Column width:", Math.Max(0, (ActiveSheet.ColumnWidth(ActiveRange.Left) - 5) / 7), 255);
-        if (chars is { } c)
-            await RunCommandAsync(new ResizeCommand(ActiveSheet, Axis.Column, ActiveRange.Left, ActiveRange.ColumnCount, c == 0 ? 0 : Math.Round(c * 7 + 5)));
-    }
+    internal Task ColumnWidthAsync() => SizeAsync(Axis.Column, ActiveRange.Left, ActiveRange.ColumnCount, "Column Width");
 
-    private async Task<double?> PromptNumberAsync(string title, string label, double value, double max)
-    {
-        bool Parse(string s, out double d) => double.TryParse(s, NumberStyles.Float, CultureInfo.CurrentCulture, out d) && d >= 0 && d <= max;
-        var text = await DialogService.PromptAsync(TryLocalize(title), TryLocalize(label), value.ToString("0.##", CultureInfo.CurrentCulture),
-            TryLocalize("OK"), TryLocalize("Cancel"), canConfirm: s => Parse(s, out _));
-        return text != null && Parse(text, out var result) ? result : null;
-    }
+    private Task SizeAsync(Axis axis, int index, int count, string title) => !CanEdit
+        ? Task.CompletedTask
+        : ShowCommandDialogAsync<MudExSpreadsheetSizeDialog>(title, new DialogParameters
+        {
+            { nameof(MudExSpreadsheetSizeDialog.Sheet), ActiveSheet },
+            { nameof(MudExSpreadsheetSizeDialog.Axis), axis },
+            { nameof(MudExSpreadsheetSizeDialog.Index), index },
+            { nameof(MudExSpreadsheetSizeDialog.Count), count }
+        });
 
     private async Task RenameSheetAsync()
     {
@@ -365,34 +355,36 @@ public partial class MudExSpreadsheetEditor
 
     private Task FillRightAsync() => RunAsync(() => _grid?.FillRight());
 
-    private Task ClearAsync(bool contents, bool formats) => RunAsync(() =>
+    internal Task ClearAsync(bool contents, bool formats) => RunAsync(() =>
     {
         using (_workbook.Undo.BeginTransaction(contents && formats ? "Clear All" : contents ? "Clear Contents" : "Clear Formats"))
-            foreach (var r in CurrentSelection.Ranges.Select(x => x.Normalized))
+            foreach (var r in CurrentSelection.Ranges.SelectMany(x => _grid?.VisibleParts(x) ?? [x.Normalized]))
                 _workbook.Execute(contents
                     ? new ClearCommand(ActiveSheet, r, formats)
                     : new SetStyleCommand(ActiveSheet, r, CellStyle.Default));
     });
 
-    private async Task CopyAsync()
+    internal async Task CopyAsync()
     {
         if (_grid != null)
             await _grid.CopyAsync();
     }
 
-    private async Task CutAsync()
+    internal async Task CutAsync()
     {
         if (CanEdit && _grid != null)
             await _grid.CutAsync();
     }
 
-    private async Task PasteAsync(bool valuesOnly)
+    internal async Task PasteAsync(bool valuesOnly)
     {
         if (!CanEdit || _grid == null) return;
-        string text;
+        string text, html = null;
         try
         {
             text = await _grid.ReadClipboardAsync();
+            if (!valuesOnly)
+                html = await _grid.ReadClipboardAsync("text/html");
         }
         catch (JSException)
         {
@@ -403,7 +395,7 @@ public partial class MudExSpreadsheetEditor
         if (valuesOnly)
             await _grid.PasteValuesAsync(text);
         else
-            await _grid.PasteTextAsync(text);
+            await _grid.PasteAsync(text, html);
         await FocusGridAsync();
     }
 
@@ -427,15 +419,6 @@ public partial class MudExSpreadsheetEditor
         await RunCommandAsync(new DefineNameCommand(name.Trim(), Office.Spreadsheet.Workbook.QuoteSheetName(ActiveSheet.Name) + "!" + target.ToA1()));
     }
 
-    private async Task GoToNameAsync(string name)
-    {
-        if (_grid != null)
-            await _grid.GoToAsync(name);
-        await FocusGridAsync();
-    }
-
-    private Task DeleteNameAsync(string name) => RunCommandAsync(new DefineNameCommand(name, null));
-
     private Task CalculateNowAsync() => RunAsync(() => _engine?.RecalculateAll());
 
     private Task FreezeAsync(CellRef? at) => RunCommandAsync(new FreezeCommand(ActiveSheet, at is { Row: 0, Column: 0 } ? null : at));
@@ -454,7 +437,7 @@ public partial class MudExSpreadsheetEditor
         OnZoomChanged(Math.Min((_grid.ViewportWidth - 50) / width, (_grid.ViewportHeight - 20) / height));
     }
 
-    private async Task FormatCellsAsync()
+    internal async Task FormatCellsAsync()
     {
         if (!CanEdit) return;
         var before = ActiveStyle;

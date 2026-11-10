@@ -1,0 +1,39 @@
+@inherits MudExBaseComponent<MudExSpreadsheetInsertFunctionDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="mud-ex-ssfn-dialog">
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudStack Row="true" Spacing="2">
+                <MudTextField T="string" Class="mud-ex-ssfn-search" Label="@TryLocalize("Search for a function:")" @bind-Value="_search" Immediate="true" Margin="Margin.Dense"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                <MudSelect T="string" Class="mud-ex-ssfn-category" Label="@TryLocalize("Category")" @bind-Value="_category" Dense="true" Margin="Margin.Dense">
+                    <MudSelectItem T="string" Value="@All">@TryLocalize(All)</MudSelectItem>
+                    @foreach (var category in Categories)
+                    {
+                        <MudSelectItem T="string" Value="@category">@TryLocalize(category)</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudStack>
+            <div class="mud-ex-sslist" role="listbox" aria-label="@TryLocalize("Select a function:")">
+                @foreach (var function in Shown)
+                {
+                    var f = function;
+                    <div class="@(f == _selected ? "mud-ex-sslist-item mud-ex-sslist-selected" : "mud-ex-sslist-item")" role="option" tabindex="0"
+                         aria-selected="@(f == _selected ? "true" : "false")" data-name="@f.Name" @onclick="@(() => _selected = f)" @ondblclick="@(() => Insert(f))">
+                        <span>@f.Name</span>
+                    </div>
+                }
+            </div>
+            @if (_selected != null)
+            {
+                <MudText Class="mud-ex-ssfn-signature" Typo="Typo.subtitle2">@_selected.Signature</MudText>
+                <MudText Class="mud-ex-ssfn-description" Typo="Typo.body2">@_selected.Description</MudText>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-ssfn-ok" Color="Color.Primary" Variant="Variant.Filled" Disabled="@(_selected == null)" OnClick="@(() => Insert(_selected))">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

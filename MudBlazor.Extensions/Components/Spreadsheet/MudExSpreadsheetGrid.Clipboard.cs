@@ -1,9 +1,5 @@
 using System.ComponentModel;
 using System.Text;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Office.Spreadsheet;
 
@@ -11,16 +7,19 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExSpreadsheetGrid
 {
-    private const long MaxPasteBytes = 256L * 1024 * 1024;
+    private const long MaxPasteBytes = HtmlTableFormat.MaxLength;
 
     private ClipboardSource _clipboard;
 
-    /// <summary>Copies the current range as tab separated text to the clipboard.</summary>
-    /// <returns>A task that completes when the text is handed to the browser.</returns>
+    /// <summary>
+    /// Copies the current range to the clipboard as tab separated text and as an HTML table with formats. Like Excel, only the visible
+    /// rows of a filtered range are copied.
+    /// </summary>
+    /// <returns>A task that completes when the data is handed to the browser.</returns>
     public Task CopyAsync() => CopyCoreAsync(false);
 
     /// <summary>Copies the current range and moves it on the next paste.</summary>
-    /// <returns>A task that completes when the text is handed to the browser.</returns>
+    /// <returns>A task that completes when the data is handed to the browser.</returns>
     public Task CutAsync() => CopyCoreAsync(CanEdit);
 
     /// <summary>
@@ -30,26 +29,37 @@ public partial class MudExSpreadsheetGrid
     /// </summary>
     /// <param name="text">The clipboard text.</param>
     /// <returns>A task that completes when the cells are written.</returns>
-    public async Task PasteTextAsync(string text)
+    public Task PasteTextAsync(string text) => PasteAsync(text, null);
+
+    /// <summary>
+    /// Pastes clipboard data at the top-left cell of the selection. A table in <paramref name="html"/>, as Excel, Google Sheets and
+    /// browsers copy it, wins over the text and brings values, formats and merged cells; data copied from this grid pastes the original cells.
+    /// </summary>
+    /// <param name="text">The <c>text/plain</c> part of the clipboard.</param>
+    /// <param name="html">The <c>text/html</c> part of the clipboard, or null.</param>
+    /// <returns>A task that completes when the cells are written.</returns>
+    public async Task PasteAsync(string text, string html)
     {
-        if (!CanEdit || string.IsNullOrEmpty(text)) return;
+        if (!CanEdit || (string.IsNullOrEmpty(text) && string.IsNullOrEmpty(html))) return;
         var origin = _selection.Range.Normalized;
         CellRange target = default;
-        if (!await TryWriteAsync(() => target = Paste(text, origin))) return;
+        if (!await TryWriteAsync(() => target = Paste(text ?? "", html, origin))) return;
         await SelectAsync(new SpreadsheetSelection(target.Start, [target]), target.Start);
         StateHasChanged();
     }
 
-    /// <summary>Called by the browser on paste. The text arrives as a stream, so large clipboards do not hit the message size limit of Blazor Server.</summary>
+    /// <summary>Called by the browser on paste. The data arrives as streams, so large clipboards do not hit the message size limit of Blazor Server.</summary>
     /// <param name="data">The clipboard text as UTF-8.</param>
+    /// <param name="html">The HTML of the clipboard as UTF-8, or null.</param>
     /// <returns>A task that completes when the cells are written.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public async Task PasteStreamAsync(IJSStreamReference data)
+    public async Task PasteStreamAsync(IJSStreamReference data, IJSStreamReference html = null)
     {
-        string text;
+        string text, markup;
         try
         {
             text = await ReadTextAsync(data);
+            markup = await ReadTextAsync(html);
         }
         catch (Exception e)
         {
@@ -57,13 +67,13 @@ public partial class MudExSpreadsheetGrid
             return;
         }
 
-        await PasteTextAsync(text);
+        await PasteAsync(text, markup);
     }
 
-    internal async Task<string> ReadClipboardAsync()
+    internal async Task<string> ReadClipboardAsync(string type = "text/plain")
     {
         if (JsReference is not { } js) return null;
-        return await ReadTextAsync(await js.InvokeAsync<IJSStreamReference>("readClipboard"));
+        return await ReadTextAsync(await js.InvokeAsync<IJSStreamReference>("readClipboard", type));
     }
 
     private static async Task<string> ReadTextAsync(IJSStreamReference data)
@@ -77,39 +87,14 @@ public partial class MudExSpreadsheetGrid
         }
     }
 
-    private CellRange Paste(string text, CellRange origin)
+    private CellRange Paste(string text, string html, CellRange origin)
     {
-        CellRange target;
-        if (_clipboard is { } clip && clip.Text == text && _workbook.Sheets.Contains(clip.Sheet))
-        {
-            target = CellRange.FromBounds(origin.Top, origin.Left, Math.Min(CellRef.MaxRows - 1, origin.Top + clip.Range.RowCount - 1),
-                Math.Min(CellRef.MaxColumns - 1, origin.Left + clip.Range.ColumnCount - 1));
-            var cells = clip.Range.Cells().ToList();
-            var dRow = target.Top - clip.Range.Top;
-            if (clip.Sheet == _sheet && (dRow > 0 || (dRow == 0 && target.Left > clip.Range.Left))) cells.Reverse();
-            using (_workbook.Undo.BeginTransaction(clip.Cut ? "Move" : "Paste"))
-            {
-                foreach (var s in cells)
-                {
-                    var t = new CellRef(s.Row - clip.Range.Top + target.Top, s.Column - clip.Range.Left + target.Left);
-                    if (target.Contains(t)) CopyCell(clip.Sheet, s, t, !clip.Cut);
-                }
-
-                if (clip.Cut)
-                    foreach (var s in cells)
-                        if (clip.Sheet != _sheet || !target.Contains(s))
-                            ClearCell(clip.Sheet, s, true);
-            }
-
-            if (clip.Cut) _clipboard = null;
-            return target;
-        }
-
+        if (_clipboard is { } clip && clip.Text == text && _workbook.Sheets.Contains(clip.Sheet)) return PasteCopied(clip, origin);
+        if (!string.IsNullOrEmpty(html) && HtmlTableFormat.Read(html, Culture) is { } table) return PasteTable(table, origin);
         var rows = ParseTabular(text);
         if (rows.Count == 0) return new CellRange(origin.Start, origin.Start);
         var width = rows.Max(r => r.Count);
-        target = CellRange.FromBounds(origin.Top, origin.Left, Math.Min(CellRef.MaxRows - 1, origin.Top + rows.Count - 1),
-            Math.Min(CellRef.MaxColumns - 1, origin.Left + width - 1));
+        var target = Target(origin, rows.Count, width);
         using (_workbook.Undo.BeginTransaction("Paste"))
             for (var i = 0; i < rows.Count; i++)
                 for (var j = 0; j < rows[i].Count; j++)
@@ -117,6 +102,67 @@ public partial class MudExSpreadsheetGrid
                     var t = new CellRef(origin.Top + i, origin.Left + j);
                     if (target.Contains(t)) WriteInput(t, rows[i][j]);
                 }
+
+        return target;
+    }
+
+    private static CellRange Target(CellRange origin, int rows, int columns) =>
+        CellRange.FromBounds(origin.Top, origin.Left, Math.Min(CellRef.MaxRows - 1, origin.Top + rows - 1), Math.Min(CellRef.MaxColumns - 1, origin.Left + columns - 1));
+
+    private CellRange PasteCopied(ClipboardSource clip, CellRange origin)
+    {
+        var target = Target(origin, clip.Rows.Count, clip.Range.ColumnCount);
+        var cells = new List<(CellRef Source, CellRef Target)>();
+        for (var i = 0; i < clip.Rows.Count; i++)
+            for (var c = clip.Range.Left; c <= clip.Range.Right; c++)
+            {
+                var t = new CellRef(origin.Top + i, c - clip.Range.Left + target.Left);
+                if (target.Contains(t)) cells.Add((new CellRef(clip.Rows[i], c), t));
+            }
+
+        var dRow = target.Top - clip.Range.Top;
+        if (clip.Sheet == _sheet && (dRow > 0 || (dRow == 0 && target.Left > clip.Range.Left))) cells.Reverse();
+        using (_workbook.Undo.BeginTransaction(clip.Cut ? "Move" : "Paste"))
+        {
+            foreach (var (s, t) in cells) CopyCell(clip.Sheet, s, t, !clip.Cut);
+            if (clip.Cut)
+                foreach (var row in clip.Rows)
+                    for (var c = clip.Range.Left; c <= clip.Range.Right; c++)
+                    {
+                        var s = new CellRef(row, c);
+                        if (clip.Sheet != _sheet || !target.Contains(s)) ClearCell(clip.Sheet, s, true);
+                    }
+        }
+
+        if (clip.Cut) _clipboard = null;
+        return target;
+    }
+
+    private CellRange PasteTable(HtmlTable table, CellRange origin)
+    {
+        var target = Target(origin, table.RowCount, table.ColumnCount);
+        using (_workbook.Undo.BeginTransaction("Paste"))
+        {
+            if (_sheet.Merges.Any(m => m.Intersects(target))) _workbook.Execute(new UnmergeCommand(_sheet, target));
+            foreach (var cell in table.Cells)
+            {
+                var t = new CellRef(origin.Top + cell.Row, origin.Left + cell.Column);
+                if (!target.Contains(t)) continue;
+                var h = cell.Style;
+                _workbook.Execute(new SetStyleCommand(_sheet, new CellRange(t, t), s => s with
+                {
+                    Font = s.Font with { Bold = h.Font.Bold, Italic = h.Font.Italic, Underline = h.Font.Underline, Strikethrough = h.Font.Strikethrough, Color = h.Font.Color },
+                    Fill = h.Fill,
+                    Alignment = s.Alignment with { Horizontal = h.Alignment.Horizontal, Vertical = h.Alignment.Vertical, WrapText = h.Alignment.WrapText },
+                    NumberFormat = h.NumberFormat
+                }));
+                if (cell.Formula != null) _workbook.Execute(new SetFormulaCommand(_sheet, t, cell.Formula));
+                else if (cell.Value.Kind != CellValueKind.Empty) _workbook.Execute(new SetValueCommand(_sheet, t, cell.Value));
+                else if (_sheet[t]?.HasContent == true) _workbook.Execute(new ClearCommand(_sheet, new CellRange(t, t)));
+                var merge = CellRange.FromBounds(t.Row, t.Column, Math.Min(target.Bottom, t.Row + cell.RowSpan - 1), Math.Min(target.Right, t.Column + cell.ColumnSpan - 1));
+                if (!merge.IsSingleCell) _workbook.Execute(new MergeCommand(_sheet, merge));
+            }
+        }
 
         return target;
     }
@@ -134,8 +180,9 @@ public partial class MudExSpreadsheetGrid
         var used = _sheet.UsedRange;
         if (range.Area > MaxBulkCells)
             range = CellRange.FromBounds(range.Top, range.Left, Math.Max(range.Top, Math.Min(range.Bottom, used.Bottom)), Math.Max(range.Left, Math.Min(range.Right, used.Right)));
+        var rows = (_sheet.FilteredRows.Count > 0 ? _sheet.VisibleRowsIn(range) : Enumerable.Range(range.Top, range.RowCount)).ToList();
         var sb = new StringBuilder();
-        for (var r = range.Top; r <= range.Bottom; r++)
+        foreach (var r in rows)
         {
             for (var c = range.Left; c <= range.Right; c++)
             {
@@ -148,9 +195,9 @@ public partial class MudExSpreadsheetGrid
         }
 
         var result = sb.ToString();
-        _clipboard = new ClipboardSource(_sheet, range, cut, result);
+        _clipboard = new ClipboardSource(_sheet, range, rows, cut, result);
         StateHasChanged();
-        await Js("writeClipboard", result);
+        await Js("writeClipboard", result, HtmlTableFormat.Write(_sheet, range, Culture));
     }
 
     internal static List<List<string>> ParseTabular(string text)
@@ -209,5 +256,5 @@ public partial class MudExSpreadsheetGrid
         return rows;
     }
 
-    private sealed record ClipboardSource(Worksheet Sheet, CellRange Range, bool Cut, string Text);
+    private sealed record ClipboardSource(Worksheet Sheet, CellRange Range, IReadOnlyList<int> Rows, bool Cut, string Text);
 }

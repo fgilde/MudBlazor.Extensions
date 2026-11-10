@@ -143,6 +143,11 @@
                             <MudExRibbonMenuItem Id="xl-clear-formats" Text="@TryLocalize("Clear Formats")" OnClick="@(() => ClearAsync(false, true))" />
                             <MudExRibbonMenuItem Id="xl-clear-contents" Text="@TryLocalize("Clear Contents")" Shortcut="Delete" OnClick="@(() => ClearAsync(true, false))" />
                         </MudExRibbonMenuButton>
+                        <MudExRibbonMenuButton Id="xl-find-select" Text="@TryLocalize("Find & Select")" Icon="@Icons.Material.Filled.Search" Size="MudExRibbonItemSize.Large" KeyTip="FD">
+                            <MudExRibbonMenuItem Id="xl-find" Text="@TryLocalize("Find...")" Icon="@Icons.Material.Filled.Search" Shortcut="Ctrl+F" OnClick="@(() => FindReplaceAsync(false))" />
+                            <MudExRibbonMenuItem Id="xl-replace" Text="@TryLocalize("Replace...")" Icon="@Icons.Material.Filled.FindReplace" Shortcut="Ctrl+H" OnClick="@(() => FindReplaceAsync(true))" />
+                            <MudExRibbonMenuItem Id="xl-goto" Text="@TryLocalize("Go To...")" Icon="@Icons.Material.Filled.MoveDown" Shortcut="Ctrl+G" OnClick="GoToAsync" />
+                        </MudExRibbonMenuButton>
                     </MudExRibbonGroup>
                 </MudExRibbonTab>
 
@@ -154,20 +159,13 @@
 
                 <MudExRibbonTab Text="@TryLocalize("Formulas")" KeyTip="M" Visible="@(!IsReadOnly)">
                     <MudExRibbonGroup Text="@TryLocalize("Function Library")" Icon="@Icons.Material.Filled.Functions" CollapsePriority="2">
+                        <MudExRibbonButton Id="xl-insert-function-dialog" Text="@TryLocalize("Insert Function")" Icon="@Icons.Material.Filled.Functions" Size="MudExRibbonItemSize.Large" Shortcut="Shift+F3" KeyTip="F" OnClick="InsertFunctionDialogAsync" />
                         @AutoSumButton("xl-formulas-autosum")
                         @Static(FunctionLibraryMenus)
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Defined Names")" Icon="@Icons.Material.Filled.Label" CollapsePriority="1">
                         <MudExRibbonButton Id="xl-define-name" Text="@TryLocalize("Define Name")" Icon="@Icons.Material.Filled.NewLabel" OnClick="DefineNameAsync" />
-                        <MudExRibbonMenuButton Id="xl-name-manager" Text="@TryLocalize("Name Manager")" Icon="@Icons.Material.Filled.Label" Disabled="@(_workbook?.DefinedNames.Count is not > 0)">
-                            @foreach (var (name, refersTo) in _workbook?.DefinedNames ?? new Dictionary<string, string>())
-                            {
-                                <MudExRibbonMenuItem Id="@($"xl-name-{name}")" Text="@name" Description="@refersTo">
-                                    <MudExRibbonMenuItem Id="@($"xl-name-{name}-goto")" Text="@TryLocalize("Go To")" OnClick="@(() => GoToNameAsync(name))" />
-                                    <MudExRibbonMenuItem Id="@($"xl-name-{name}-delete")" Text="@TryLocalize("Delete")" OnClick="@(() => DeleteNameAsync(name))" />
-                                </MudExRibbonMenuItem>
-                            }
-                        </MudExRibbonMenuButton>
+                        <MudExRibbonButton Id="xl-name-manager" Text="@TryLocalize("Name Manager")" Icon="@Icons.Material.Filled.Label" Size="MudExRibbonItemSize.Large" Shortcut="Ctrl+F3" KeyTip="N" OnClick="NameManagerAsync" />
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Calculation")" Icon="@Icons.Material.Filled.Calculate" CollapsePriority="3">
                         <MudExRibbonButton Id="xl-calculate" Text="@TryLocalize("Calculate Now")" Icon="@Icons.Material.Filled.Calculate" Size="MudExRibbonItemSize.Large" Shortcut="F9" OnClick="CalculateNowAsync" />
@@ -236,7 +234,13 @@
                                   FormatCellsRequested="FormatCellsAsync"
                                   SaveKeyPressed="SaveFromKeyAsync"
                                   OnError="OnGridErrorAsync"
+                                  DialogRequested="OnDialogRequestedAsync"
+                                  ContextMenuRequested="OnContextMenuRequestedAsync"
                                   Localizer="@Localizer" />
+        }
+        @if (!IsReadOnly)
+        {
+            <SpreadsheetContextMenu @ref="_contextMenu" Editor="this" Localizer="@Localizer" />
         }
     </div>
     @if (ShowSheetTabs && _workbook != null)

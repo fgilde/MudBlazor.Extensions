@@ -1,0 +1,31 @@
+@inherits MudExBaseComponent<MudExSpreadsheetNameManagerDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="mud-ex-ssnames-dialog">
+    <DialogContent>
+        <MudStack Spacing="2">
+            <div class="mud-ex-sslist" role="listbox" aria-label="@TryLocalize("Names")">
+                @foreach (var (name, refersTo) in Workbook.DefinedNames.OrderBy(n => n.Key, StringComparer.OrdinalIgnoreCase))
+                {
+                    <div class="@(name == _selected ? "mud-ex-sslist-item mud-ex-sslist-selected" : "mud-ex-sslist-item")" role="option" tabindex="0"
+                         aria-selected="@(name == _selected ? "true" : "false")" data-name="@name" @onclick="@(() => Select(name))">
+                        <span>@name</span><span>@refersTo</span>
+                    </div>
+                }
+            </div>
+            <MudTextField T="string" Class="mud-ex-ssnames-name" Label="@TryLocalize("Name:")" @bind-Value="_name" Immediate="true" Margin="Margin.Dense" />
+            <MudTextField T="string" Class="mud-ex-ssnames-refers" Label="@TryLocalize("Refers to:")" @bind-Value="_refersTo" Immediate="true" Margin="Margin.Dense" />
+            @if (_error != null)
+            {
+                <MudAlert Class="mud-ex-ssnames-error" Severity="Severity.Error" Dense="true">@_error</MudAlert>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Class="mud-ex-ssnames-new" StartIcon="@Icons.Material.Filled.Add" OnClick="New">@TryLocalize("New")</MudButton>
+        <MudButton Class="mud-ex-ssnames-delete" StartIcon="@Icons.Material.Filled.Delete" Disabled="@(_selected == null)" OnClick="Delete">@TryLocalize("Delete")</MudButton>
+        <MudSpacer />
+        <MudButton Class="mud-ex-ssnames-save" Color="Color.Primary" Variant="Variant.Outlined" Disabled="@(!CanSave)" OnClick="Save">@TryLocalize(_selected == null ? "Add" : "Save")</MudButton>
+        <MudButton Class="mud-ex-ssnames-close" OnClick="Close">@TryLocalize("Close")</MudButton>
+    </DialogActions>
+</MudDialog>

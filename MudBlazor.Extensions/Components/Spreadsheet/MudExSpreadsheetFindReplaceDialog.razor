@@ -1,0 +1,51 @@
+@inherits MudExBaseComponent<MudExSpreadsheetFindReplaceDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="mud-ex-ssfind-dialog">
+    <DialogContent>
+        @if (CanReplace)
+        {
+            <MudTabs @bind-ActivePanelIndex="_tab" Elevation="0">
+                <MudTabPanel Text="@TryLocalize("Find")" />
+                <MudTabPanel Text="@TryLocalize("Replace")" />
+            </MudTabs>
+        }
+        <MudStack Spacing="2" Class="mt-2">
+            <MudTextField T="string" Class="mud-ex-ssfind-what" Label="@TryLocalize("Find what:")" @bind-Value="_what" Immediate="true" Margin="Margin.Dense" />
+            @if (Replacing)
+            {
+                <MudTextField T="string" Class="mud-ex-ssfind-with" Label="@TryLocalize("Replace with:")" @bind-Value="_with" Immediate="true" Margin="Margin.Dense" />
+            }
+            <MudStack Row="true" Spacing="2">
+                <MudSelect T="bool" Label="@TryLocalize("Within:")" @bind-Value="_workbookScope" Dense="true" Margin="Margin.Dense">
+                    <MudSelectItem T="bool" Value="false">@TryLocalize("Sheet")</MudSelectItem>
+                    <MudSelectItem T="bool" Value="true">@TryLocalize("Workbook")</MudSelectItem>
+                </MudSelect>
+                @if (!Replacing)
+                {
+                    <MudSelect T="bool" Label="@TryLocalize("Look in:")" @bind-Value="_formulas" Dense="true" Margin="Margin.Dense">
+                        <MudSelectItem T="bool" Value="true">@TryLocalize("Formulas")</MudSelectItem>
+                        <MudSelectItem T="bool" Value="false">@TryLocalize("Values")</MudSelectItem>
+                    </MudSelect>
+                }
+            </MudStack>
+            <MudStack Row="true" Spacing="2">
+                <MudCheckBox T="bool" Label="@TryLocalize("Match case")" @bind-Value="_matchCase" Dense="true" />
+                <MudCheckBox T="bool" Label="@TryLocalize("Match entire cell contents")" @bind-Value="_entireCell" Dense="true" />
+            </MudStack>
+            @if (_status != null)
+            {
+                <MudText Class="mud-ex-ssfind-status" Typo="Typo.body2">@_status</MudText>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        @if (Replacing)
+        {
+            <MudButton Class="mud-ex-ssfind-replace-all" Disabled="@(!CanSearch)" OnClick="ReplaceAll">@TryLocalize("Replace All")</MudButton>
+            <MudButton Class="mud-ex-ssfind-replace" Disabled="@(!CanSearch)" OnClick="ReplaceAsync">@TryLocalize("Replace")</MudButton>
+        }
+        <MudButton Class="mud-ex-ssfind-next" Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!CanSearch)" OnClick="FindNextAsync">@TryLocalize("Find Next")</MudButton>
+        <MudButton Class="mud-ex-ssfind-close" OnClick="Close">@TryLocalize("Close")</MudButton>
+    </DialogActions>
+</MudDialog>

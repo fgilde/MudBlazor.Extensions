@@ -632,3 +632,27 @@ $mud-ex-ssg-ref-colors: #4472c4, #c0504d, #7030a0, #00b050, #ed7d31, #2e75b6, #b
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.mud-ex-sslist {
+  max-height: 220px;
+  overflow: auto;
+  border: 1px solid var(--mud-palette-lines-default);
+}
+.mud-ex-sslist-item {
+  display: flex;
+  gap: 12px;
+  padding: 2px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.mud-ex-sslist-item:hover {
+  background: var(--mud-palette-action-default-hover);
+}
+.mud-ex-sslist-item.mud-ex-sslist-selected {
+  background: var(--mud-palette-primary);
+  color: var(--mud-palette-primary-text);
+}
+.mud-ex-sslist-item > span + span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.75;
+}

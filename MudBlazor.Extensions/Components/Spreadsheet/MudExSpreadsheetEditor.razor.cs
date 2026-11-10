@@ -348,6 +348,7 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
             await _grid.CommitEditAsync();
         _sheetIndex = index;
         _activeSheet = _workbook.Sheets[index];
+        _selection = null;
         StateHasChanged();
     }
 
