@@ -117,7 +117,8 @@ internal static class PptxReader
         var slide = new Slide
         {
             Layout = layouts.Find(l => string.Equals(l.PartName, layoutPart, StringComparison.OrdinalIgnoreCase)),
-            Hidden = (string)xml.Root!.Attribute("show") is "0" or "false"
+            Hidden = (string)xml.Root!.Attribute("show") is "0" or "false",
+            ReservedId = SlideTiming.MaxTarget(xml.Root)
         };
         var master = slide.Layout?.Master;
         slide.Background = ReadBackground(opc, part, rels, xml.Root, master);

@@ -69,7 +69,8 @@ public class SlideCommandTests
     private static string Snapshot(Presentation presentation)
     {
         var sb = new StringBuilder();
-        foreach (var (part, media) in presentation.PendingMedia.OrderBy(m => m.Key))
+        var used = presentation.Slides.SelectMany(s => SlideShape.Flatten(s.Shapes)).OfType<PictureShape>().Select(p => p.ImagePart).ToHashSet();
+        foreach (var (part, media) in presentation.PendingMedia.Where(m => used.Contains(m.Key)).OrderBy(m => m.Key))
             sb.AppendLine($"media {part} {media.ContentType} {Convert.ToBase64String(media.Data)}");
         foreach (var slide in presentation.Slides)
         {
@@ -226,6 +227,23 @@ public class SlideCommandTests
         presentation.Execute(second);
         Assert.Equal("/ppt/media/image2.jpg", second.Picture.ImagePart);
         Assert.Throws<ArgumentException>(() => presentation.Execute(new InsertPictureCommand(presentation.Slides[0], [1], "text/plain", default)));
+    }
+
+    [Fact]
+    public void InsertPicture_AllowsOnlyKnownImageTypes_CopiesTheBuffer()
+    {
+        var presentation = Deck();
+        var data = new byte[] { 1, 2, 3 };
+        var command = new InsertPictureCommand(presentation.Slides[0], data, "image/jpg", default);
+
+        presentation.Execute(command);
+        data[0] = 9;
+
+        Assert.Equal("/ppt/media/image1.jpg", command.Picture.ImagePart);
+        Assert.Equal("image/jpeg", command.Picture.ContentType);
+        Assert.Equal(new byte[] { 1, 2, 3 }, presentation.PendingMedia[command.Picture.ImagePart].Data);
+        Assert.Throws<ArgumentException>(() => presentation.Execute(new InsertPictureCommand(presentation.Slides[0], [1], "image/png/../x", default)));
+        Assert.Throws<ArgumentException>(() => presentation.Execute(new InsertPictureCommand(presentation.Slides[0], [1], "image/x-citrix-jpeg", default)));
     }
 
     [Fact]

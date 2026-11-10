@@ -44,4 +44,6 @@ public sealed class Slide
     internal List<SlideShape> ShapeList { get; } = [];
 
     internal Slide CopyOf { get; init; }
+
+    internal uint ReservedId { get; init; }
 }

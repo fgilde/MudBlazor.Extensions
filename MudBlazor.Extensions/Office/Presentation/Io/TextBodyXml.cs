@@ -11,6 +11,7 @@ internal static class TextBodyXml
 
     internal static void Write(XElement shape, TextBody body)
     {
+        if (shape.Name == P + "cxnSp") return;
         var txBody = shape.Element(P + "txBody");
         if (body == null)
         {

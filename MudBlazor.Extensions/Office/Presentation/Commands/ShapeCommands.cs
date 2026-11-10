@@ -141,10 +141,20 @@ public sealed class InsertShapeCommand(Slide slide, SlideShape shape, int? index
 /// <summary>Adds a picture on top of the other shapes. The image is stored as a new media part when the presentation is saved.</summary>
 /// <param name="slide">The slide.</param>
 /// <param name="image">The image bytes.</param>
-/// <param name="contentType">The image content type, for example <c>image/png</c>.</param>
+/// <param name="contentType">The image content type: PNG, JPEG, GIF, BMP, TIFF, SVG, WebP, EMF or WMF.</param>
 /// <param name="transform">The position and size in slide coordinates.</param>
 public sealed class InsertPictureCommand(Slide slide, byte[] image, string contentType, ShapeTransform transform) : IDocumentCommand<Presentation>
 {
+    private static readonly Dictionary<string, (string Extension, string ContentType)> MediaTypes = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["image/png"] = ("png", "image/png"), ["image/jpeg"] = ("jpg", "image/jpeg"), ["image/jpg"] = ("jpg", "image/jpeg"), ["image/pjpeg"] = ("jpg", "image/jpeg"),
+        ["image/gif"] = ("gif", "image/gif"), ["image/bmp"] = ("bmp", "image/bmp"), ["image/x-bmp"] = ("bmp", "image/bmp"), ["image/tiff"] = ("tiff", "image/tiff"),
+        ["image/svg+xml"] = ("svg", "image/svg+xml"), ["image/webp"] = ("webp", "image/webp"), ["image/x-emf"] = ("emf", "image/x-emf"), ["image/emf"] = ("emf", "image/x-emf"),
+        ["image/x-wmf"] = ("wmf", "image/x-wmf"), ["image/wmf"] = ("wmf", "image/x-wmf")
+    };
+
+    private (byte[] Data, string ContentType) _media;
+
     /// <summary>The created picture, available after the command was applied.</summary>
     public PictureShape Picture { get; private set; }
 
@@ -155,18 +165,19 @@ public sealed class InsertPictureCommand(Slide slide, byte[] image, string conte
     public void Apply(Presentation document)
     {
         ArgumentNullException.ThrowIfNull(image);
-        if (contentType?.StartsWith("image/", StringComparison.OrdinalIgnoreCase) != true)
-            throw new ArgumentException("The content type must be an image type.", nameof(contentType));
+        var type = MediaType(contentType);
         if (Picture == null)
         {
             var id = ShapeEdit.NextId(slide);
+            _media = (image.ToArray(), type.ContentType);
             Picture = new PictureShape
             {
-                Id = id, Name = $"Picture {id - 1}", Transform = transform, ImagePart = MediaPart(document, contentType), ContentType = contentType, Master = slide.Layout?.Master
+                Id = id, Name = $"Picture {id - 1}", Transform = transform, ImagePart = MediaPart(document, type.ContentType), ContentType = type.ContentType,
+                Master = slide.Layout?.Master
             };
         }
 
-        document.PendingMedia[Picture.ImagePart] = (image, contentType);
+        document.PendingMedia[Picture.ImagePart] = _media;
         slide.ShapeList.Add(Picture);
         document.Notify(slide, PresentationChangeKind.Content);
     }
@@ -175,23 +186,21 @@ public sealed class InsertPictureCommand(Slide slide, byte[] image, string conte
     public void Revert(Presentation document)
     {
         slide.ShapeList.Remove(Picture);
-        document.PendingMedia.Remove(Picture.ImagePart);
         document.Notify(slide, PresentationChangeKind.Content);
     }
 
     internal static string MediaPart(Presentation document, string contentType)
     {
-        var extension = contentType["image/".Length..].Split('+')[0].ToLowerInvariant() switch
-        {
-            "jpeg" => "jpg",
-            var other => other
-        };
+        var extension = MediaType(contentType).Extension;
         for (var i = 1;; i++)
         {
             var part = $"/ppt/media/image{i}.{extension}";
-            if (!document.PendingMedia.ContainsKey(part) && document.Package?.Opc.PartNames.Contains(part, StringComparer.OrdinalIgnoreCase) != true) return part;
+            if (!document.PendingMedia.ContainsKey(part) && document.Package?.Opc.Entry(part) == null) return part;
         }
     }
+
+    private static (string Extension, string ContentType) MediaType(string contentType) =>
+        MediaTypes.TryGetValue(contentType ?? "", out var type) ? type : throw new ArgumentException($"The image type '{contentType}' is not supported.", nameof(contentType));
 }
 
 /// <summary>Deletes shapes, including shapes inside groups.</summary>
@@ -345,7 +354,7 @@ internal static class ShapeEdit
 
     internal static List<SlideShape> Container(Slide slide, SlideShape shape) => shape.Parent?.ChildList ?? slide.ShapeList;
 
-    internal static uint NextId(Slide slide) => SlideShape.Flatten(slide.Shapes).Select(s => s.Id).DefaultIfEmpty(1u).Max() + 1;
+    internal static uint NextId(Slide slide) => Math.Max(slide.ReservedId, SlideShape.Flatten(slide.Shapes).Select(s => s.Id).DefaultIfEmpty(1u).Max()) + 1;
 
     internal static uint AssignIds(SlideShape shape, uint next)
     {
@@ -358,7 +367,7 @@ internal static class ShapeEdit
         var copy = shape.Clone(null);
         copy.Transform = shape.ResolvedTransform;
         var part = document.PartOf(slide);
-        foreach (var s in SlideShape.Flatten([copy])) s.SourcePart ??= part;
+        foreach (var s in SlideShape.Flatten([copy]).Where(s => s.Source != null)) s.SourcePart ??= part;
         return copy;
     }
 

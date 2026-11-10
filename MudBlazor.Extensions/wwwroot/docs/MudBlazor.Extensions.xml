@@ -31878,14 +31878,14 @@
             <summary>Adds a picture on top of the other shapes. The image is stored as a new media part when the presentation is saved.</summary>
             <param name="slide">The slide.</param>
             <param name="image">The image bytes.</param>
-            <param name="contentType">The image content type, for example <c>image/png</c>.</param>
+            <param name="contentType">The image content type: PNG, JPEG, GIF, BMP, TIFF, SVG, WebP, EMF or WMF.</param>
             <param name="transform">The position and size in slide coordinates.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.InsertPictureCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Byte[],System.String,MudBlazor.Extensions.Office.Presentation.ShapeTransform)">
             <summary>Adds a picture on top of the other shapes. The image is stored as a new media part when the presentation is saved.</summary>
             <param name="slide">The slide.</param>
             <param name="image">The image bytes.</param>
-            <param name="contentType">The image content type, for example <c>image/png</c>.</param>
+            <param name="contentType">The image content type: PNG, JPEG, GIF, BMP, TIFF, SVG, WebP, EMF or WMF.</param>
             <param name="transform">The position and size in slide coordinates.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.InsertPictureCommand.Picture">
@@ -32086,7 +32086,7 @@
             formatting stays exactly as in the file.
             </summary>
             <param name="slide">The slide.</param>
-            <param name="shape">The id of an <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/>.</param>
+            <param name="shape">The id of an <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/> that is no connector.</param>
             <param name="body">The new text.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.SetTextCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,MudBlazor.Extensions.Office.Presentation.TextBody)">
@@ -32095,7 +32095,7 @@
             formatting stays exactly as in the file.
             </summary>
             <param name="slide">The slide.</param>
-            <param name="shape">The id of an <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/>.</param>
+            <param name="shape">The id of an <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/> that is no connector.</param>
             <param name="body">The new text.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.SetTextCommand.Description">
@@ -32366,6 +32366,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.AutoShape.IsTextBox">
             <summary>True if the shape is a text box.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AutoShape.IsConnector">
+            <summary>True if the shape is a connector; connectors have no text.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.GroupShape">
             <summary>A group of shapes. Its children are positioned in the child coordinate space <see cref="P:MudBlazor.Extensions.Office.Presentation.GroupShape.ChildTransform"/>.</summary>

@@ -24,4 +24,8 @@ public sealed class AutoShape : SlideShape
 
     /// <summary>True if the shape is a text box.</summary>
     public bool IsTextBox { get; internal set; }
+
+    /// <summary>True if the shape is a connector; connectors have no text.</summary>
+    public bool IsConnector { get; internal set; }
+
 }

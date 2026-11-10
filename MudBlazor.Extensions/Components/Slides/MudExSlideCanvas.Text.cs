@@ -63,7 +63,7 @@ public partial class MudExSlideCanvas
 
     internal async Task BeginTextAsync(uint id, string text = null, double[] caret = null)
     {
-        if (ReadOnly || Find(id) is not AutoShape shape || ReferenceEquals(_text?.Shape, shape))
+        if (ReadOnly || Find(id) is not AutoShape { IsConnector: false } shape || ReferenceEquals(_text?.Shape, shape))
             return;
         CommitText();
         _text = new TextSession(Slide, shape, null, text, caret);

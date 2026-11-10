@@ -15,7 +15,7 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
     private SlideShape ReadShape(XElement e, GroupShape parent)
     {
         SlideShape shape;
-        if (e.Name == P + "sp" || e.Name == P + "cxnSp") shape = new AutoShape();
+        if (e.Name == P + "sp" || e.Name == P + "cxnSp") shape = new AutoShape { IsConnector = e.Name == P + "cxnSp" };
         else if (e.Name == P + "pic") shape = IsMedia(e) ? new OpaqueShape { Kind = "media" } : new PictureShape();
         else if (e.Name == P + "grpSp") shape = new GroupShape();
         else if (e.Name == P + "graphicFrame") shape = new OpaqueShape { Kind = FrameKind(e) };

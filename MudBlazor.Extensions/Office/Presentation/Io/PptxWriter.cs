@@ -146,15 +146,20 @@ public static partial class PptxWriter
                 rels.Add(new OpcRelationship(NextId(rels), RelNs + "/slideLayout", Relative(partName, layout), null));
             var root = xml.Root!;
             if (root.Element(P + "cSld")?.Element(P + "spTree") is { } tree)
+            {
                 new SlideXml(partName, source?.PartName, rels, _opc, (target, transform) => Relative(partName, CopyPart(target, [], transform))).WriteTree(tree, slide.ShapeList);
+                SlideTiming.RemoveDeadTargets(root, tree);
+            }
+
             RemoveReferences(xml, rels, r => isNew && r.Type.EndsWith("/comments", StringComparison.Ordinal) || IsDead(partName, r));
             if (isNew && source != null && CreationId(xml) is { } creationId) creationId.SetAttributeValue("val", (uint)(_nextCreationId++ % uint.MaxValue));
             var hidden = (string)root.Attribute("show") is "0" or "false";
             if (hidden != slide.Hidden) root.SetAttributeValue("show", slide.Hidden ? "0" : null);
             WriteNotes(slide, partName, source, isNew, rels);
-            if (!isNew && rels.Count == source.Relationships.Count && XNode.DeepEquals(xml, source.Xml)) return;
+            var relsChanged = isNew || !rels.SequenceEqual(source.Relationships);
+            if (!relsChanged && XNode.DeepEquals(xml, source.Xml)) return;
             Put(partName, xml);
-            if (isNew || rels.Count != source.Relationships.Count) PutRelationships(partName, rels);
+            if (relsChanged) PutRelationships(partName, rels);
             if (isNew) SetOverride(partName, ContentTypePrefix + "slide+xml");
         }
 
@@ -168,10 +173,9 @@ public static partial class PptxWriter
                 var patched = new XDocument(source.NotesXml);
                 TextBodyXml.WriteNotes(patched, slide.Notes);
                 var patchedRels = _opc.Relationships(notesSource).ToList();
-                var count = patchedRels.Count;
                 RemoveReferences(patched, patchedRels, r => IsDead(notesSource, r));
                 Put(notesSource, patched);
-                if (patchedRels.Count != count) PutRelationships(notesSource, patchedRels);
+                if (!patchedRels.SequenceEqual(_opc.Relationships(notesSource))) PutRelationships(notesSource, patchedRels);
                 return;
             }
 

@@ -58,7 +58,7 @@ internal sealed class SlideXml(string part, string basis, List<OpcRelationship> 
                 break;
         }
 
-        if (shape.SourcePart != null && !string.Equals(shape.SourcePart, basis, StringComparison.OrdinalIgnoreCase)) Import(e, shape.SourcePart, shape is GroupShape);
+        if (shape.Source != null && shape.SourcePart != null && !string.Equals(shape.SourcePart, basis, StringComparison.OrdinalIgnoreCase)) Import(e, shape.SourcePart, shape is GroupShape);
         else if (shape is not GroupShape) Separate(e);
         return e;
     }
