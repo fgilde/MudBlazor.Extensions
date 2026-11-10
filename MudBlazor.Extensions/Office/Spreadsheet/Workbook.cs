@@ -161,7 +161,7 @@ public sealed class Workbook
     /// <summary>
     /// True if the source file contains content whose cell references are not moved when rows, columns or sheets change:
     /// threaded comments, form controls, drawing shapes linked to cell text, charts in group shapes, chart sheets, pivot tables and their caches, external links,
-    /// query tables, slicers, timelines, protected ranges, scenarios, data consolidation or extension lists. After inserting or deleting rows or columns or renaming a sheet these
+    /// query tables, slicers, timelines, protected ranges, scenarios, data consolidation, custom sheet views or extension lists. After inserting or deleting rows or columns or renaming a sheet these
     /// keep pointing at their original cells; editors should warn once.
     /// </summary>
     public bool HasUnshiftedReferences => Package?.HasUnshiftedReferences == true;

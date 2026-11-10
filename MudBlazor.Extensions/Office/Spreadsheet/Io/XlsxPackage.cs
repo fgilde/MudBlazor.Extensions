@@ -320,7 +320,7 @@ internal sealed class XlsxPackage
 
     private static readonly XmlReaderSettings XmlSettings = new() { DtdProcessing = DtdProcessing.Prohibit, IgnoreWhitespace = true, CloseInput = false };
 
-    private static readonly HashSet<string> UnshiftedChildren = ["protectedRanges", "scenarios", "dataConsolidate", "extLst"];
+    private static readonly HashSet<string> UnshiftedChildren = ["protectedRanges", "scenarios", "dataConsolidate", "customSheetViews", "extLst"];
 
     private static readonly string[] UnshiftedContentTypes = ["pivot", "chart", "drawing+xml", "comments", "externalLink", "queryTable", "slicer", "timeline"];
 

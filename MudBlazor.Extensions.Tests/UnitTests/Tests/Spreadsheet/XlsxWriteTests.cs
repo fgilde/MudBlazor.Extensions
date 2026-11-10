@@ -109,6 +109,8 @@ public class XlsxWriteTests(ITestOutputHelper output)
         Assert.False(Read(Package([Sheet("", after: "<rowBreaks count=\"1\"><brk id=\"5\" max=\"16383\" man=\"1\"/></rowBreaks>")])).HasUnshiftedReferences);
         Assert.True(Read(Package([Sheet("", after: "<protectedRanges><protectedRange sqref=\"A1:B2\" name=\"p\"/></protectedRanges>")])).HasUnshiftedReferences);
         Assert.False(Read(Package([Sheet("", after: "<autoFilter ref=\"A1:C9\"/><sortState ref=\"A2:C9\"/>")])).HasUnshiftedReferences);
+        Assert.True(Read(Package([Sheet("", after: "<customSheetViews><customSheetView guid=\"{00000000-0000-0000-0000-000000000001}\"><selection activeCell=\"B5\" sqref=\"B5\"/></customSheetView></customSheetViews>")]))
+            .HasUnshiftedReferences);
         var pivot = With(Package([Sheet("")]), ("xl/pivotCache/pivotCacheDefinition1.xml", "<pivotCacheDefinition/>"),
             ("[Content_Types].xml", Types(Override("/xl/workbook.xml", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"),
                 Override("/xl/worksheets/sheet1.xml", "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"),

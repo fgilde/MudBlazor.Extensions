@@ -184,6 +184,20 @@ public class AnnotationTests
         Assert.Equal([("F1", "Me", "new"), ("B2", "Ann", "changed"), ("D6", "Bob", "Bob: second")], back.Notes.OrderBy(n => n.Cell.Row).ThenBy(n => n.Cell.Column).Select(N));
     }
 
+    [Theory]
+    [InlineData("Checkbox")]
+    [InlineData("Button")]
+    [InlineData("Pict")]
+    public void Vml_WithFormControlOrOleShape_IsNotModelled(string objectType)
+    {
+        var vml = Encoding.Latin1.GetBytes(Vml(checkbox: true).Replace("ObjectType=\"Checkbox\"", $"ObjectType=\"{objectType}\""));
+        var wb = Read(With(NotePackage(checkbox: true), "", ("xl/drawings/vmlDrawing1.vml", vml)));
+        Assert.False(wb.Package!.Sheets[0].AnnotationsModelled);
+        Assert.True(wb.HasUnshiftedReferences);
+        Assert.Equal(2, wb.Sheets[0].Notes.Count);
+        Assert.True(Read(NotePackage()).Package!.Sheets[0].AnnotationsModelled);
+    }
+
     [Fact]
     public void ThreadedComments_KeepNotesReadOnly()
     {

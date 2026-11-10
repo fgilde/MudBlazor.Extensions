@@ -30,13 +30,16 @@ public class IntegrationRoundTripTests
         Assert.Equal(Snapshot(1, "Data"), Snapshot(back));
         Assert.Equal((20, 25), PictureRows(shifted));
         Assert.Equal(["11"], Breaks(shifted, "rowBreaks"));
-        var ignored = Load(Entry(shifted, "xl/worksheets/sheet1.xml")).Root!.Elements().Single(e => e.Name.LocalName == "ignoredErrors").Elements().Single();
-        Assert.Equal("H3:H4", (string)ignored.Attribute("sqref")!);
+        Assert.Equal("H3:H4", IgnoredErrors(shifted));
 
         back.Execute(new DeleteRowsCommand(back.Sheets[0], 0, 1));
-        var restored = Read(Write(back));
+        var deleted = Write(back);
+        var restored = Read(deleted);
         Assert.False(restored.HasUnshiftedReferences);
         Assert.Equal(Snapshot(0, "Data"), Snapshot(restored));
+        Assert.Equal((19, 24), PictureRows(deleted));
+        Assert.Equal(["10"], Breaks(deleted, "rowBreaks"));
+        Assert.Equal("H2:H3", IgnoredErrors(deleted));
 
         restored.Execute(new RenameSheetCommand(restored.Sheets[0], "My Data"));
         var renamed = Read(Write(restored));
@@ -254,6 +257,9 @@ public class IntegrationRoundTripTests
         int Row(string name) => int.Parse(anchor.Elements().Single(e => e.Name.LocalName == name).Elements().Single(e => e.Name.LocalName == "row").Value);
         return (Row("from"), Row("to"));
     }
+
+    private static string IgnoredErrors(byte[] package) =>
+        (string)Load(Entry(package, "xl/worksheets/sheet1.xml")).Root!.Elements().Single(e => e.Name.LocalName == "ignoredErrors").Elements().Single().Attribute("sqref")!;
 
     private static List<string> Breaks(byte[] package, string name) =>
         Load(Entry(package, "xl/worksheets/sheet1.xml")).Root!.Elements().Single(e => e.Name.LocalName == name).Elements().Select(b => (string)b.Attribute("id")!).ToList();
