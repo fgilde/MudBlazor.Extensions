@@ -19781,19 +19781,6 @@
             reach .NET, so the grid stays responsive in Blazor Server.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.BeginEditAsync(System.String)">
-            <summary>Starts editing the active cell.</summary>
-            <param name="initialText">Text that replaces the content (as when typing), or null to edit the current content (as with F2).</param>
-            <returns>A task that completes when the editor is shown.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CommitEditAsync">
-            <summary>Commits the edit to the active cell without moving the selection.</summary>
-            <returns>A task that completes when the value is written.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CancelEditAsync">
-            <summary>Discards the edit.</summary>
-            <returns>A task that completes when the editor is hidden.</returns>
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CopyAsync">
             <summary>Copies the current range as tab separated text to the clipboard.</summary>
             <returns>A task that completes when the text is handed to the browser.</returns>
@@ -19816,9 +19803,25 @@
             <param name="data">The clipboard text as UTF-8.</param>
             <returns>A task that completes when the cells are written.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoFitColumnsAsync">
-            <summary>Sets the width of each selected column to fit its content, like AutoFit Column Width.</summary>
-            <returns>A task that completes when the widths are set.</returns>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.BeginEditAsync(System.String)">
+            <summary>Starts editing the active cell.</summary>
+            <param name="initialText">Text that replaces the content (as when typing), or null to edit the current content (as with F2).</param>
+            <returns>A task that completes when the editor is shown.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CommitEditAsync">
+            <summary>Commits the edit to the active cell without moving the selection.</summary>
+            <returns>A task that completes when the value is written.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CancelEditAsync">
+            <summary>Discards the edit.</summary>
+            <returns>A task that completes when the editor is hidden.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoSumAsync(System.String)">
+            <summary>
+            Starts editing the active cell with a function over the adjacent numbers above (or else to the left), like AutoSum (Alt+=).
+            </summary>
+            <param name="function">The function name, for example SUM, AVERAGE, COUNT, MAX or MIN.</param>
+            <returns>A task that completes when the editor is shown.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillToAsync(MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
             <summary>
@@ -19834,17 +19837,48 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillRight">
             <summary>Fills the selection right from its left column (or the cell left of a single selected column), like Ctrl+R.</summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillTo(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Called by the browser after the fill handle was dragged.</summary>
+            <param name="top">Top row of the filled range.</param>
+            <param name="left">Left column of the filled range.</param>
+            <param name="bottom">Bottom row of the filled range.</param>
+            <param name="right">Right column of the filled range.</param>
+            <returns>A task that completes when the cells are written.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillHandleDoubleClick">
+            <summary>Called by the browser after a double click on the fill handle: fills down along the data in the adjacent column.</summary>
+            <returns>A task that completes when the cells are written.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoFitColumnsAsync">
+            <summary>Sets the width of each selected column to fit its content, like AutoFit Column Width.</summary>
+            <returns>A task that completes when the widths are set.</returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ApplyStyle(System.Func{MudBlazor.Extensions.Office.Spreadsheet.CellStyle,MudBlazor.Extensions.Office.Spreadsheet.CellStyle},System.String)">
             <summary>Changes the style of every selected range in one undo step.</summary>
             <param name="change">Maps the current style of a cell to its new style.</param>
             <param name="description">Description of the undo step.</param>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoSumAsync(System.String)">
-            <summary>
-            Starts editing the active cell with a function over the adjacent numbers above (or else to the left), like AutoSum (Alt+=).
-            </summary>
-            <param name="function">The function name, for example SUM, AVERAGE, COUNT, MAX or MIN.</param>
-            <returns>A task that completes when the editor is shown.</returns>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ResizeColumn(System.Int32,System.Double)">
+            <summary>Called by the browser after a column was resized by dragging its heading border.</summary>
+            <param name="col">The column.</param>
+            <param name="px">The new width in screen pixels.</param>
+            <returns>A task that completes when the width is set.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ResizeRow(System.Int32,System.Double)">
+            <summary>Called by the browser after a row was resized by dragging its heading border.</summary>
+            <param name="row">The row.</param>
+            <param name="px">The new height in screen pixels.</param>
+            <returns>A task that completes when the height is set.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoFitRow(System.Int32)">
+            <summary>Called by the browser after a double click on a row heading border: restores the default height.</summary>
+            <param name="row">The row.</param>
+            <returns>A task that completes when the height is reset.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoFitColumnCandidates(System.Int32)">
+            <summary>Returns the longest texts of a column with their CSS font so the browser can measure the auto-fit width.</summary>
+            <param name="col">The column.</param>
+            <returns>Pairs of text and font.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.GoToAsync(System.String)">
             <summary>Jumps to a cell, a range or a defined name. An unknown valid name is defined for the current selection.</summary>
@@ -19879,40 +19913,6 @@
             <param name="row">The row.</param>
             <param name="col">The column.</param>
             <returns>A task that completes when the editor is shown.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ResizeColumn(System.Int32,System.Double)">
-            <summary>Called by the browser after a column was resized by dragging its heading border.</summary>
-            <param name="col">The column.</param>
-            <param name="px">The new width in screen pixels.</param>
-            <returns>A task that completes when the width is set.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ResizeRow(System.Int32,System.Double)">
-            <summary>Called by the browser after a row was resized by dragging its heading border.</summary>
-            <param name="row">The row.</param>
-            <param name="px">The new height in screen pixels.</param>
-            <returns>A task that completes when the height is set.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoFitRow(System.Int32)">
-            <summary>Called by the browser after a double click on a row heading border: restores the default height.</summary>
-            <param name="row">The row.</param>
-            <returns>A task that completes when the height is reset.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.AutoFitColumnCandidates(System.Int32)">
-            <summary>Returns the longest texts of a column with their CSS font so the browser can measure the auto-fit width.</summary>
-            <param name="col">The column.</param>
-            <returns>Pairs of text and font.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillTo(System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>Called by the browser after the fill handle was dragged.</summary>
-            <param name="top">Top row of the filled range.</param>
-            <param name="left">Left column of the filled range.</param>
-            <param name="bottom">Bottom row of the filled range.</param>
-            <param name="right">Right column of the filled range.</param>
-            <returns>A task that completes when the cells are written.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.FillHandleDoubleClick">
-            <summary>Called by the browser after a double click on the fill handle: fills down along the data in the adjacent column.</summary>
-            <returns>A task that completes when the cells are written.</returns>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.Workbook">
             <summary>The workbook to show and edit.</summary>
