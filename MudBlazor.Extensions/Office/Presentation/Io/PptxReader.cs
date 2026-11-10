@@ -22,6 +22,7 @@ internal static class PptxReader
 
         var xml = opc.ReadXml(main);
         var root = xml.Root!;
+        if (root.Name.Namespace != P) throw new InvalidDataException("Strict Open XML presentations are not supported.");
         var rels = opc.Relationships(main);
         var presentation = new Presentation();
         var size = root.Element(P + "sldSz");

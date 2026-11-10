@@ -247,6 +247,43 @@ public class SlideCommandTests
     }
 
     [Fact]
+    public void InsertShape_ShapeAlreadyPlaced_Throws_CreatedShapeIsInserted()
+    {
+        var presentation = Deck();
+        var child = SlideShape.Flatten(presentation.Slides[0].Shapes).First(s => s.Parent != null);
+
+        Assert.Throws<ArgumentException>(() => presentation.Execute(new InsertShapeCommand(presentation.Slides[1], presentation.Slides[0].Shapes[1])));
+        Assert.Throws<ArgumentException>(() => presentation.Execute(new InsertShapeCommand(presentation.Slides[1], child)));
+        Assert.Throws<ArgumentException>(() => presentation.Execute(new InsertShapeCommand(presentation.Slides[1], presentation.Layouts[0].ShapeList[0])));
+        Assert.Throws<ArgumentException>(() => AutoShape.Create("nope", default));
+        Assert.False(presentation.Undo.CanUndo);
+
+        var created = AutoShape.Create("ellipse", new ShapeTransform(1, 2, 3, 4), new ShapeFill(ShapeFillKind.Solid, "#FF0000"));
+        var box = AutoShape.CreateTextBox(new ShapeTransform(5, 6, 7, 8));
+        presentation.Execute(new InsertShapeCommand(presentation.Slides[1], created));
+        presentation.Execute(new InsertShapeCommand(presentation.Slides[1], box));
+
+        Assert.Equal([created, box], presentation.Slides[1].Shapes.Skip(1));
+        Assert.True(box.IsTextBox);
+        Assert.Single(box.Text.Paragraphs);
+    }
+
+    [Fact]
+    public void ShapeCommands_InvalidTransformOrLine_ThrowWithoutChange()
+    {
+        var presentation = Deck();
+        var slide = presentation.Slides[0];
+
+        Assert.Throws<ArgumentException>(() => presentation.Execute(new SetTransformsCommand(slide, new Dictionary<uint, ShapeTransform> { [3] = new(0, 0, -1, 5) })));
+        Assert.Throws<ArgumentException>(() => presentation.Execute(new SetShapeStyleCommand(slide, [3], null, new ShapeLine("#000000", -1))));
+        Assert.Throws<ArgumentException>(() => presentation.Execute(new SetShapeStyleCommand(slide, [3], null, new ShapeLine("#000000", 12700, "wavy"))));
+        Assert.Throws<ArgumentException>(() => presentation.Execute(new InsertShapeCommand(slide, AutoShape.Create("rect", new ShapeTransform(0, 0, 1, -1)))));
+
+        Assert.False(presentation.Undo.CanUndo);
+        Assert.Equal(new ShapeTransform(0, 0, 100, 100), slide.Shapes[1].Transform);
+    }
+
+    [Fact]
     public void DuplicateShapes_CopiesGetNewIdsAndOffset()
     {
         var presentation = Deck();

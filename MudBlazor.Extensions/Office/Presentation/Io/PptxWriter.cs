@@ -101,8 +101,8 @@ public static partial class PptxWriter
             foreach (var part in _removed) Remove(part);
             if (deleted.Count > 0)
             {
-                UnlinkCopiedParts();
                 RemoveOrphans(deleted.Select(d => d.PartName));
+                UnlinkCopiedParts();
             }
 
             if (_done.Count > 0) WriteAppProperties();

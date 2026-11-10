@@ -15,6 +15,7 @@ internal sealed class OpcPackageWriter : IDisposable
     private readonly OpcPackage _source;
     private readonly ZipArchive _zip;
     private readonly HashSet<string> _written = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, int> _next = [];
 
     public OpcPackageWriter(OpcPackage source, Stream target)
     {
@@ -27,12 +28,12 @@ internal sealed class OpcPackageWriter : IDisposable
     public void Copy(string part)
     {
         var from = _source.Entry(part) ?? throw new FileNotFoundException("Package part not found.", part);
+        Claim(part);
         var to = _zip.CreateEntry(from.FullName, CompressionLevel.Optimal);
         to.LastWriteTime = from.LastWriteTime;
         using var input = from.Open();
         using var output = to.Open();
         input.CopyTo(output);
-        _written.Add(part);
     }
 
     /// <summary>Writes a part with the given bytes.</summary>
@@ -73,15 +74,17 @@ internal sealed class OpcPackageWriter : IDisposable
                 overrides.Select(o => new XElement(ns + "Override", new XAttribute("PartName", o.Key), new XAttribute("ContentType", o.Value))))));
     }
 
-    /// <summary>Returns the first part name of the pattern that neither the source package nor this writer uses.</summary>
+    /// <summary>Returns the next part name of the pattern that neither the source package nor this writer uses; each call returns a new name.</summary>
     /// <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
     /// <returns>The free part name.</returns>
     public string NextPartName(string pattern)
     {
-        for (var i = 1;; i++)
+        for (var i = _next.GetValueOrDefault(pattern, 1);; i++)
         {
             var name = string.Format(pattern, i);
-            if (!_written.Contains(name) && !_source.PartNames.Contains(name, StringComparer.OrdinalIgnoreCase)) return name;
+            if (_written.Contains(name) || _source.Entry(name) != null) continue;
+            _next[pattern] = i + 1;
+            return name;
         }
     }
 
@@ -89,10 +92,15 @@ internal sealed class OpcPackageWriter : IDisposable
 
     private void Put(string part, Action<Stream> write)
     {
+        Claim(part);
         var entry = _zip.CreateEntry(part.TrimStart('/'), CompressionLevel.Optimal);
         entry.LastWriteTime = EntryTime;
         using var stream = entry.Open();
         write(stream);
-        _written.Add(part);
+    }
+
+    private void Claim(string part)
+    {
+        if (!_written.Add(part)) throw new InvalidOperationException($"The part {part} is written twice.");
     }
 }

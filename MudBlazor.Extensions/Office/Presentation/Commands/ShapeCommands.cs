@@ -29,6 +29,7 @@ public sealed class SetTransformsCommand(Slide slide, IReadOnlyDictionary<uint, 
     /// <inheritdoc />
     public void Apply(Presentation document)
     {
+        foreach (var transform in absolute.Values) ShapeEdit.Validate(transform);
         var targets = absolute.Select(e => (Shape: ShapeEdit.Find<SlideShape>(slide, e.Key), Target: e.Value))
             .OrderBy(e => ShapeEdit.Ancestors(e.Shape).Count()).ToList();
         _before = targets.Select(e => (e.Shape, e.Shape.Transform)).ToList();
@@ -59,6 +60,7 @@ public sealed class SetShapeStyleCommand(Slide slide, IReadOnlyList<uint> shapes
     /// <inheritdoc />
     public void Apply(Presentation document)
     {
+        ShapeEdit.Validate(line);
         _before = shapes.Select(id => ShapeEdit.Find<SlideShape>(slide, id)).OfType<AutoShape>().Select(s => (s, s.Fill, s.Line)).ToList();
         foreach (var (shape, _, _) in _before)
         {
@@ -111,7 +113,7 @@ public sealed class SetGeometryCommand(Slide slide, uint shape, string preset) :
 /// Adds a shape on top of the others or at a position. The shape and its children get new ids that are unique on the slide.
 /// </summary>
 /// <param name="slide">The slide.</param>
-/// <param name="shape">A new top-level shape.</param>
+/// <param name="shape">A new top-level shape, for example from <see cref="AutoShape.Create"/>, that is on no slide.</param>
 /// <param name="index">The z-order position, or null for the top.</param>
 public sealed class InsertShapeCommand(Slide slide, SlideShape shape, int? index = null) : IDocumentCommand<Presentation>
 {
@@ -122,6 +124,15 @@ public sealed class InsertShapeCommand(Slide slide, SlideShape shape, int? index
     public void Apply(Presentation document)
     {
         ArgumentNullException.ThrowIfNull(shape);
+        var placed = document.SlideList.Append(slide).Select(s => s.ShapeList).Concat(document.LayoutList.Select(l => l.ShapeList)).Concat(document.MasterList.Select(m => m.ShapeList));
+        if (shape.Parent != null || placed.Any(shapes => SlideShape.Flatten(shapes).Contains(shape)))
+            throw new ArgumentException("The shape is already part of a slide, layout or master.", nameof(shape));
+        foreach (var s in SlideShape.Flatten([shape]))
+        {
+            if (s.Transform is { } transform) ShapeEdit.Validate(transform);
+            if (s is AutoShape auto) ShapeEdit.Validate(auto.Line);
+        }
+
         var at = index ?? slide.ShapeList.Count;
         if (at < 0 || at > slide.ShapeList.Count) throw new ArgumentOutOfRangeException(nameof(index));
         ShapeEdit.AssignIds(shape, ShapeEdit.NextId(slide));
@@ -165,6 +176,7 @@ public sealed class InsertPictureCommand(Slide slide, byte[] image, string conte
     public void Apply(Presentation document)
     {
         ArgumentNullException.ThrowIfNull(image);
+        ShapeEdit.Validate(transform);
         var type = MediaType(contentType);
         if (Picture == null)
         {
@@ -333,6 +345,23 @@ public sealed class ReorderShapesCommand(Slide slide, IReadOnlyList<uint> shapes
 
 internal static class ShapeEdit
 {
+    private const long MaxLineWidth = 20116800;
+
+    private static readonly HashSet<string> Dashes =
+        ["solid", "dot", "dash", "lgDash", "dashDot", "lgDashDot", "lgDashDotDot", "sysDash", "sysDot", "sysDashDot", "sysDashDotDot"];
+
+    internal static void Validate(ShapeTransform transform)
+    {
+        if (transform.Width < 0 || transform.Height < 0 || !double.IsFinite(transform.Rotation))
+            throw new ArgumentException("A transform needs a width and height of at least 0 and a finite rotation.", nameof(transform));
+    }
+
+    internal static void Validate(ShapeLine line)
+    {
+        if (line != null && (line.Width is < 0 or > MaxLineWidth || line.Dash != null && !Dashes.Contains(line.Dash)))
+            throw new ArgumentException($"A line needs a width from 0 to {MaxLineWidth} EMU and a preset dash name.", nameof(line));
+    }
+
     internal static T Find<T>(Slide slide, uint id) where T : SlideShape =>
         SlideShape.Flatten(slide.Shapes).FirstOrDefault(s => s.Id == id) switch
         {

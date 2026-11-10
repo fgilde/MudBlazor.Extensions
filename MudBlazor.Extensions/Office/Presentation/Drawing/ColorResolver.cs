@@ -7,6 +7,7 @@ namespace MudBlazor.Extensions.Office.Presentation;
 internal static class ColorResolver
 {
     private static readonly Dictionary<string, string> DefaultMap = new() { ["bg1"] = "lt1", ["tx1"] = "dk1", ["bg2"] = "lt2", ["tx2"] = "dk2" };
+    private static readonly HashSet<string> SchemeNames = [.. ThemeColors.SchemeOrder, .. DefaultMap.Keys, "phClr"];
 
     internal static string Resolve(string color, SlideMaster master)
     {
@@ -61,7 +62,7 @@ internal static class ColorResolver
         var parts = color?.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         if (parts is not { Length: > 0 }) return null;
         var element = parts[0].StartsWith("scheme:", StringComparison.Ordinal)
-            ? new XElement(PptxReader.A + "schemeClr", new XAttribute("val", parts[0][7..]))
+            ? SchemeNames.Contains(parts[0][7..]) ? new XElement(PptxReader.A + "schemeClr", new XAttribute("val", parts[0][7..])) : null
             : ThemeColors.Hex(parts[0].TrimStart('#')) is { } hex ? new XElement(PptxReader.A + "srgbClr", new XAttribute("val", hex)) : null;
         element?.Add(parts.Skip(1).Select(m => m.Split('='))
             .Where(m => m.Length == 2 && m[0] is "lumMod" or "lumOff" or "tint" or "shade" && int.TryParse(m[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out _))

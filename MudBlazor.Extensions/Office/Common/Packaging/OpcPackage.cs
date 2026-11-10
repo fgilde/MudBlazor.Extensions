@@ -15,6 +15,7 @@ internal sealed record OpcRelationship(string Id, string Type, string Target, st
 internal sealed class OpcPackage
 {
     private const string ContentTypesPart = "/[Content_Types].xml";
+    private const long MaxPartLength = 256L * 1024 * 1024;
     private static readonly XmlReaderSettings XmlSettings = new() { DtdProcessing = DtdProcessing.Prohibit, CloseInput = false };
 
     private readonly ZipArchive _zip;
@@ -127,6 +128,9 @@ internal sealed class OpcPackage
         return part[..(slash + 1)] + "_rels/" + part[(slash + 1)..] + ".rels";
     }
 
-    private Stream Open(string part) =>
-        (_entries.GetValueOrDefault(part) ?? throw new FileNotFoundException("Package part not found.", part)).Open();
+    private Stream Open(string part)
+    {
+        var entry = _entries.GetValueOrDefault(part) ?? throw new FileNotFoundException("Package part not found.", part);
+        return entry.Length <= MaxPartLength ? entry.Open() : throw new InvalidDataException($"The package part {part} is larger than 256 MB.");
+    }
 }

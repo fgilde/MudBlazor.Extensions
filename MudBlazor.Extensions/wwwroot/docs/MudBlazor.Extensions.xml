@@ -31767,7 +31767,7 @@
             <param name="overrides">Content types by part name.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.OpcPackageWriter.NextPartName(System.String)">
-            <summary>Returns the first part name of the pattern that neither the source package nor this writer uses.</summary>
+            <summary>Returns the next part name of the pattern that neither the source package nor this writer uses; each call returns a new name.</summary>
             <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
             <returns>The free part name.</returns>
         </member>
@@ -31854,7 +31854,7 @@
             Adds a shape on top of the others or at a position. The shape and its children get new ids that are unique on the slide.
             </summary>
             <param name="slide">The slide.</param>
-            <param name="shape">A new top-level shape.</param>
+            <param name="shape">A new top-level shape, for example from <see cref="M:MudBlazor.Extensions.Office.Presentation.AutoShape.Create(System.String,MudBlazor.Extensions.Office.Presentation.ShapeTransform,MudBlazor.Extensions.Office.Presentation.ShapeFill,MudBlazor.Extensions.Office.Presentation.ShapeLine,MudBlazor.Extensions.Office.Presentation.TextBody)"/>, that is on no slide.</param>
             <param name="index">The z-order position, or null for the top.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,MudBlazor.Extensions.Office.Presentation.SlideShape,System.Nullable{System.Int32})">
@@ -31862,7 +31862,7 @@
             Adds a shape on top of the others or at a position. The shape and its children get new ids that are unique on the slide.
             </summary>
             <param name="slide">The slide.</param>
-            <param name="shape">A new top-level shape.</param>
+            <param name="shape">A new top-level shape, for example from <see cref="M:MudBlazor.Extensions.Office.Presentation.AutoShape.Create(System.String,MudBlazor.Extensions.Office.Presentation.ShapeTransform,MudBlazor.Extensions.Office.Presentation.ShapeFill,MudBlazor.Extensions.Office.Presentation.ShapeLine,MudBlazor.Extensions.Office.Presentation.TextBody)"/>, that is on no slide.</param>
             <param name="index">The z-order position, or null for the top.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand.Description">
@@ -32369,6 +32369,21 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.AutoShape.IsConnector">
             <summary>True if the shape is a connector; connectors have no text.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AutoShape.Create(System.String,MudBlazor.Extensions.Office.Presentation.ShapeTransform,MudBlazor.Extensions.Office.Presentation.ShapeFill,MudBlazor.Extensions.Office.Presentation.ShapeLine,MudBlazor.Extensions.Office.Presentation.TextBody)">
+            <summary>Creates a shape of a preset geometry to add with <see cref="T:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand"/>.</summary>
+            <param name="preset">A preset name from <see cref="P:MudBlazor.Extensions.Office.Presentation.PresetGeometry.Supported"/>.</param>
+            <param name="transform">The position and size in slide coordinates.</param>
+            <param name="fill">The fill, or null to inherit it.</param>
+            <param name="line">The outline, or null to inherit it.</param>
+            <param name="text">The text, or null for a shape without text.</param>
+            <returns>The new shape.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AutoShape.CreateTextBox(MudBlazor.Extensions.Office.Presentation.ShapeTransform,MudBlazor.Extensions.Office.Presentation.TextBody)">
+            <summary>Creates a text box without fill to add with <see cref="T:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand"/>.</summary>
+            <param name="transform">The position and size in slide coordinates.</param>
+            <param name="text">The text, or null for one empty paragraph.</param>
+            <returns>The new text box.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.GroupShape">
             <summary>A group of shapes. Its children are positioned in the child coordinate space <see cref="P:MudBlazor.Extensions.Office.Presentation.GroupShape.ChildTransform"/>.</summary>

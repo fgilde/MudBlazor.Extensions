@@ -39,7 +39,7 @@ internal static class TextBodyXml
 
     internal static void WriteNotes(XDocument notes, string text)
     {
-        if (NotesText(notes) == text || NotesBody(notes) is not { } body) return;
+        if (NotesText(notes) == text || (NotesBody(notes) ?? AddNotesBody(notes)) is not { } body) return;
         var txBody = body.Element(P + "txBody") ?? SlideXml.Place(body, new XElement(P + "txBody", new XElement(A + "bodyPr"), new XElement(A + "lstStyle")), "extLst");
         var template = txBody.Elements(A + "p").FirstOrDefault();
         var pPr = template?.Element(A + "pPr");
@@ -47,6 +47,19 @@ internal static class TextBodyXml
         txBody.Elements(A + "p").Remove();
         txBody.Add(text.Split('\n').Select(line => new XElement(A + "p", pPr == null ? null : new XElement(pPr),
             line.Length == 0 ? null : new XElement(A + "r", rPr == null ? null : new XElement(rPr), new XElement(A + "t", SharedStringsWriter.Escape(line))))));
+    }
+
+    private static XElement AddNotesBody(XDocument notes)
+    {
+        if (notes.Root?.Element(P + "cSld")?.Element(P + "spTree") is not { } tree) return null;
+        var id = tree.Descendants(P + "cNvPr").Select(c => Long((string)c.Attribute("id")) ?? 0).DefaultIfEmpty().Max() + 1;
+        var body = new XElement(P + "sp",
+            new XElement(P + "nvSpPr", new XElement(P + "cNvPr", new XAttribute("id", id), new XAttribute("name", $"Notes Placeholder {id - 1}")),
+                new XElement(P + "cNvSpPr", new XElement(A + "spLocks", new XAttribute("noGrp", "1"))),
+                new XElement(P + "nvPr", new XElement(P + "ph", new XAttribute("type", "body"), new XAttribute("idx", "1")))),
+            new XElement(P + "spPr"));
+        SlideXml.Place(tree, body, "extLst");
+        return body;
     }
 
     private static XElement Paragraph(TextParagraph paragraph)
