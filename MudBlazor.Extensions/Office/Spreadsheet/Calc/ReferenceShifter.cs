@@ -42,6 +42,9 @@ public static class ReferenceShifter
             return (ends.All(e => Workbook.QuoteSheetName(e) == e) ? joined : "'" + joined.Replace("'", "''") + "'") + "!" + body;
         });
 
+    internal static string QualifySheet(string formula, string sheet) =>
+        Rewrite(formula, (_, s, body, node) => s == null && node != null ? Workbook.QuoteSheetName(sheet) + "!" + body : null);
+
     internal static string RemoveSheet(string formula, string sheet) =>
         !CanReference(formula, sheet) ? formula : Rewrite(formula, (_, s, _, _) =>
             s != null && s.Split(':').Any(e => Same(e, sheet)) ? "#REF!" : null);

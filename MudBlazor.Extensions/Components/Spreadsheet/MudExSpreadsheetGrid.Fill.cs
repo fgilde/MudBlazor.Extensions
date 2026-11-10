@@ -128,7 +128,8 @@ public partial class MudExSpreadsheetGrid
     {
         var src = sheet[from];
         if (src?.Formula != null)
-            _workbook.Execute(new SetFormulaCommand(_sheet, to, translate ? ReferenceShifter.Translate(src.Formula, to.Row - from.Row, to.Column - from.Column) : src.Formula));
+            _workbook.Execute(new SetFormulaCommand(_sheet, to, translate ? ReferenceShifter.Translate(src.Formula, to.Row - from.Row, to.Column - from.Column)
+                : sheet == _sheet ? src.Formula : ReferenceShifter.QualifySheet(src.Formula, sheet.Name)));
         else if (src?.HasContent == true)
             _workbook.Execute(new SetValueCommand(_sheet, to, src.Value));
         else if (_sheet[to]?.HasContent == true)

@@ -289,6 +289,28 @@ public class SpreadsheetGridTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task CutToOtherSheet_PrefixesSourceSheet()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new AddSheetCommand("Other Sheet"));
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(4)));
+        wb.Execute(new SetFormulaCommand(ws, R("B1"), "=A1*2+SUM($A$1:A1)+'Other Sheet'!A1"));
+        var cut = Render(wb);
+
+        SelectRange(cut, "B1");
+        await cut.InvokeAsync(() => cut.Instance.CutAsync());
+        cut.Render(p => p.Add(x => x.SheetIndex, 1));
+        SelectRange(cut, "C3");
+        await cut.InvokeAsync(() => cut.Instance.PasteTextAsync(LastClipboard()));
+
+        var target = wb.Sheets[1][R("C3")];
+        Assert.Equal("Sheet1!A1*2+SUM(Sheet1!$A$1:A1)+'Other Sheet'!A1", target.Formula);
+        Assert.Equal(12, target.Value.NumberValue);
+        Assert.False(ws[R("B1")]?.HasContent == true);
+    }
+
+    [Fact]
     public async Task CutPaste_OverlappingMoveDown_KeepsAllValues()
     {
         var wb = Workbook.Create();
