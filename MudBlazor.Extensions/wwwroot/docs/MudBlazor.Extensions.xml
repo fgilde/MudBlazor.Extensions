@@ -35439,6 +35439,12 @@
             <param name="range">The range.</param>
             <returns>Zero-based row indexes in ascending order.</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ClaimFilteredRows">
+            <remarks>
+            A row hidden in the file counts as filtered when it fails the criteria both in the current culture and invariantly, so the result does not depend on
+            the reader's culture when the file was written in either; a row that passes in one of them stays hidden by hand.
+            </remarks>
+        </member>
         <member name="T:MudBlazor.Extensions.Options.AnimationIteration">
             <summary>
             Represents the animation timing function.

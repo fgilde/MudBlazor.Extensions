@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
 /// <summary>Row or column axis of a worksheet.</summary>
@@ -383,10 +385,15 @@ public sealed class Worksheet
         _filteredRows = [.. rows];
     }
 
+    /// <remarks>
+    /// A row hidden in the file counts as filtered when it fails the criteria both in the current culture and invariantly, so the result does not depend on
+    /// the reader's culture when the file was written in either; a row that passes in one of them stays hidden by hand.
+    /// </remarks>
     internal void ClaimFilteredRows()
     {
         if (AutoFilter is not { Columns.Count: > 0 } filter) return;
         var known = filter.EvaluateKnown(this);
+        known.IntersectWith(filter.EvaluateKnown(this, CultureInfo.InvariantCulture));
         var opaque = filter.HasOpaqueColumns
             ? _hiddenRows.Where(r => r > filter.Range.Top && r <= filter.Range.Bottom && !known.Contains(r)).ToHashSet()
             : [];

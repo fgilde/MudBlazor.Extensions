@@ -386,6 +386,48 @@ public class SortFilterTests
     }
 
     [Fact]
+    public void Read_FilteredRows_DoNotDependOnCurrentCulture()
+    {
+        var rows = "<row r=\"1\"><c r=\"A1\" t=\"inlineStr\"><is><t>V</t></is></c></row><row r=\"2\"><c r=\"A2\"><v>0.5</v></c></row>"
+                   + "<row r=\"3\" hidden=\"1\"><c r=\"A3\"><v>1.5</v></c></row><row r=\"4\" hidden=\"1\"><c r=\"A4\"><v>2.5</v></c></row>";
+        const string filter = "<autoFilter ref=\"A1:A4\"><filterColumn colId=\"0\"><filters><filter val=\"0.5\"/><filter val=\"1.5\"/></filters></filterColumn></autoFilter>";
+        var package = XlsxReadTests.Package([XlsxReadTests.Sheet(rows, after: filter)]);
+        var culture = System.Globalization.CultureInfo.CurrentCulture;
+        try
+        {
+            foreach (var name in (string[])["de-DE", "en-US"])
+            {
+                System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(name);
+                var ws = XlsxReader.Read(new MemoryStream(package)).Sheets[0];
+                Assert.Equal([3], ws.FilteredRows);
+                Assert.Equal([2, 3], ws.HiddenRows.Order());
+            }
+        }
+        finally
+        {
+            System.Globalization.CultureInfo.CurrentCulture = culture;
+        }
+    }
+
+    [Fact]
+    public void Filter_RemovingLastUnevaluableColumn_ForgetsItsRows()
+    {
+        var rows = string.Concat(Enumerable.Range(1, 4).Select(r => $"<row r=\"{r}\"{(r == 3 ? " hidden=\"1\"" : "")}><c r=\"A{r}\"><v>{r}</v></c><c r=\"B{r}\"><v>{r}</v></c></row>"));
+        const string filter = "<autoFilter ref=\"A1:B4\"><filterColumn colId=\"0\"><dynamicFilter type=\"aboveAverage\"/></filterColumn></autoFilter>";
+        var wb = XlsxReader.Read(new MemoryStream(XlsxReadTests.Package([XlsxReadTests.Sheet(rows, after: filter)])));
+        var ws = wb.Sheets[0];
+        Assert.Equal([2], ws.FilteredRows);
+
+        wb.Execute(new ApplyFilterCommand(ws, 0, null));
+        Assert.Empty(ws.FilteredRows);
+        wb.Execute(new ApplyFilterCommand(ws, 1, FilterCriteria.Color(0)));
+        Assert.Empty(ws.FilteredRows);
+        wb.Undo.Undo();
+        wb.Undo.Undo();
+        Assert.Equal([2], ws.FilteredRows);
+    }
+
+    [Fact]
     public void Subtotal_And_Aggregate_FollowFilterAndHiddenRows()
     {
         var (wb, ws) = Sheet(["V"], [1], [2], [3], [4]);

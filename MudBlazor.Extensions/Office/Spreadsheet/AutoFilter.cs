@@ -131,19 +131,20 @@ public sealed record FilterCriteria
 
     internal static FilterCriteria Other() => new() { Kind = FilterKind.Other };
 
-    internal Func<int, bool> Matcher(Worksheet sheet, int column, int top, int bottom)
+    internal Func<int, bool> Matcher(Worksheet sheet, int column, int top, int bottom, CultureInfo culture = null)
     {
+        culture ??= CultureInfo.CurrentCulture;
         CellValue Value(int row) => sheet[new CellRef(row, column)]?.Value ?? default;
         string Text(int row) => NumberFormat.Format(Value(row), sheet.Workbook.Styles[sheet.EffectiveStyleId(new CellRef(row, column))].NumberFormat,
-            CultureInfo.CurrentCulture, out _);
+            culture, out _);
         switch (Kind)
         {
             case FilterKind.Values:
-                var set = new HashSet<string>(Shown, StringComparer.CurrentCultureIgnoreCase);
+                var set = new HashSet<string>(Shown, StringComparer.Create(culture, true));
                 return r => Text(r) is { Length: > 0 } t ? set.Contains(t) : Blanks;
             case FilterKind.Custom:
-                var first = Comparison(Operator1, Value1);
-                var second = Operator2 is { } op ? Comparison(op, Value2) : null;
+                var first = Comparison(Operator1, Value1, culture);
+                var second = Operator2 is { } op ? Comparison(op, Value2, culture) : null;
                 return r =>
                 {
                     var (value, text) = (Value(r), Text(r));
@@ -168,7 +169,7 @@ public sealed record FilterCriteria
         }
     }
 
-    private static Func<CellValue, string, bool> Comparison(CustomFilterOperator op, string criterion)
+    private static Func<CellValue, string, bool> Comparison(CustomFilterOperator op, string criterion, CultureInfo culture)
     {
         var isNumber = double.TryParse(criterion, NumberStyles.Float, CultureInfo.InvariantCulture, out var number);
         var pattern = op is CustomFilterOperator.Equal or CustomFilterOperator.NotEqual ? Wildcard(criterion) : null;
@@ -177,7 +178,7 @@ public sealed record FilterCriteria
             if (isNumber && value.Kind == CellValueKind.Number) return Test(value.NumberValue.CompareTo(number), op);
             if (pattern != null) return pattern.IsMatch(text) == (op == CustomFilterOperator.Equal);
             return value.Kind == CellValueKind.Text && !isNumber
-                                                   && Test(string.Compare(text, criterion, CultureInfo.CurrentCulture, CompareOptions.IgnoreCase), op);
+                                                   && Test(string.Compare(text, criterion, culture, CompareOptions.IgnoreCase), op);
         };
     }
 
@@ -251,7 +252,8 @@ public sealed class AutoFilter
         }
         else columns[column] = criteria;
 
-        return new AutoFilter(Range, columns, Sort, Source, sources, OpaqueRows);
+        var next = new AutoFilter(Range, columns, Sort, Source, sources, OpaqueRows);
+        return next.HasOpaqueColumns ? next : next.WithOpaqueRows(new HashSet<int>());
     }
 
     internal AutoFilter WithOpaqueRows(IReadOnlySet<int> rows) => new(Range, Columns, Sort, Source, ColumnSources, rows);
@@ -279,13 +281,13 @@ public sealed class AutoFilter
         return hidden;
     }
 
-    internal HashSet<int> EvaluateKnown(Worksheet sheet)
+    internal HashSet<int> EvaluateKnown(Worksheet sheet, CultureInfo culture = null)
     {
         var hidden = new HashSet<int>();
         var (top, bottom) = (Range.Top + 1, Range.Bottom);
         foreach (var (column, criteria) in Columns.Where(p => IsEvaluable(p.Value)))
         {
-            var matches = criteria.Matcher(sheet, column, top, bottom);
+            var matches = criteria.Matcher(sheet, column, top, bottom, culture);
             for (var r = top; r <= bottom; r++)
                 if (!hidden.Contains(r) && !matches(r))
                     hidden.Add(r);
