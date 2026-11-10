@@ -19643,10 +19643,6 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.PrintAsync">
-            <summary>Prints the selection, or the used range when a single cell is selected, as a static table through the browser's print dialog.</summary>
-            <returns>A task that completes when the print table is rendered.</returns>
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.#ctor">
             <summary>Creates the editor.</summary>
         </member>
@@ -19699,7 +19695,7 @@
             <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.RenderPriority">
-            <summary>Wins over the older Excel viewers.</summary>
+            <summary>Priority among the file displays for spreadsheet files.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.SaveFormats">
             <inheritdoc />
@@ -20018,18 +20014,6 @@
             <param name="clientX">Horizontal pointer position.</param>
             <param name="clientY">Vertical pointer position.</param>
             <returns>A task that completes when the host was told.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.VisibleParts(MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
-            <summary>
-            Splits a range into the bands of rows that edits hit. While the auto filter hides rows, only visible rows are hit, like Fill,
-            Delete and Replace All in Excel; otherwise the range is returned unchanged.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.GoToAsync(System.String,System.Boolean)">
-            <summary>Jumps to a cell, a range or a defined name. With <paramref name="define"/>, an unknown valid name is defined for the current selection, as in the Name Box.</summary>
-            <param name="reference">For example <c>B7</c>, <c>A1:C3</c>, <c>Sheet2!A1</c> or a defined name.</param>
-            <param name="define">True to define an unknown name instead of failing.</param>
-            <returns>False if the reference is not valid.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnPointerSelect(System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">
             <summary>Called by the browser after a pointer selection of cells.</summary>
