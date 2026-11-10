@@ -43,7 +43,17 @@ public class FeatureSamplesTests
         Assert.Single(sheet.DataValidations);
         Assert.Single(sheet.Notes);
         Assert.Single(sheet.Links);
-        Assert.NotEmpty(sheet.FilteredRows);
+        Assert.Equal([1, 2], sheet.FilteredRows.Order());
+    }
+
+    [Fact]
+    public void Data_SortedByRegionThenCalculatedAmount()
+    {
+        var sheet = SpreadsheetFeatureSamples.CreateData().Sheets[1];
+        var rows = Enumerable.Range(1, 12).Select(r => (Region: sheet[new CellRef(r, 0)].Value.TextValue, Amount: sheet[new CellRef(r, 4)].Value.NumberValue)).ToList();
+        Assert.All(rows, r => Assert.True(r.Amount > 0));
+        Assert.All(rows.Zip(rows.Skip(1)), p => Assert.True(string.Compare(p.First.Region, p.Second.Region, StringComparison.CurrentCultureIgnoreCase) < 0
+                                                             || p.First.Region == p.Second.Region && p.First.Amount >= p.Second.Amount));
     }
 
     [Theory]

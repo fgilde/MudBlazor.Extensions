@@ -12,12 +12,13 @@ public static class SpreadsheetFeatureSamples
     {
         var wb = Workbook.Create("Sales");
         var sheet = wb.Sheets[0];
+        using var engine = new CalcEngine(wb);
         using (wb.Undo.BeginTransaction("Create overview"))
         {
             Fill(wb, sheet, "A1", Header("Product", "Q1", "Q2", "Q3", "Total"), Products.Select((p, i) => Row(p, 120 + i * 45, 90 + i * 60, 200 - i * 25, "")).ToArray());
             SetFormulas(wb, sheet, "E", 2, 7, row => $"SUM(B{row}:D{row})");
             wb.Execute(new CreateTableCommand(sheet, CellRange.Parse("A1:E7"), true));
-            wb.Execute(new ApplyTableFilterCommand(sheet, sheet.Tables[0].Name, 4, FilterCriteria.Custom(CustomFilterOperator.GreaterThanOrEqual, "300")));
+            wb.Execute(new ApplyTableFilterCommand(sheet, sheet.Tables[0].Name, 4, FilterCriteria.Custom(CustomFilterOperator.GreaterThanOrEqual, "500")));
 
             sheet.Text(wb, "G1", "Region");
             sheet.Text(wb, "H1", "North");
@@ -26,7 +27,7 @@ public static class SpreadsheetFeatureSamples
             wb.Execute(new AddDataValidationCommand(sheet, new DataValidation([CellRange.Parse("H1")], ValidationType.List, Formula1: "\"North,South,East,West\"",
                 PromptTitle: "Region", Prompt: "Pick a region from the list.", ErrorTitle: "Unknown region", Error: "Choose one of the listed regions.")));
             wb.Execute(new AddConditionalFormattingCommand(sheet, new ConditionalFormatting([CellRange.Parse("B2:D7")], [Scale()])));
-            wb.Execute(new SetNoteCommand(sheet, new CellNote(CellRef.Parse("A1"), "MudEx", "Filtered to totals of 300 and more. Open the filter button of Total to change it.")));
+            wb.Execute(new SetNoteCommand(sheet, new CellNote(CellRef.Parse("A1"), "MudEx", "Filtered to totals of 500 and more. Open the filter button of Total to change it.")));
             sheet.Text(wb, "G4", "mudex.org");
             wb.Execute(new SetLinkCommand(sheet, new CellLink(CellRef.Parse("G4"), "https://mudex.org", null, "mudex.org", "Open the MudBlazor.Extensions site")));
             wb.Execute(new InsertChartCommand(sheet, CellRange.Parse("A1:D7"), ChartKind.Column));
@@ -42,6 +43,7 @@ public static class SpreadsheetFeatureSamples
     {
         var wb = Workbook.Create("Table");
         var table = wb.Sheets[0];
+        using var engine = new CalcEngine(wb);
         using (wb.Undo.BeginTransaction("Create data demo"))
         {
             Fill(wb, table, "A1", OrderHeader, Orders());
@@ -88,6 +90,7 @@ public static class SpreadsheetFeatureSamples
     {
         var wb = Workbook.Create("Charts");
         var sheet = wb.Sheets[0];
+        using var engine = new CalcEngine(wb);
         using (wb.Undo.BeginTransaction("Create charts demo"))
         {
             Fill(wb, sheet, "A1", Header("Month", "Revenue", "Costs", "Profit"),

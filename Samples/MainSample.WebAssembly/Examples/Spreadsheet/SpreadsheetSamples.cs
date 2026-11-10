@@ -103,6 +103,15 @@ public static class SpreadsheetSamples
             watch.Restart();
         }
 
+        wb.Execute(new AddConditionalFormattingCommand(sheet, new ConditionalFormatting([new CellRange(new CellRef(1, 1), new CellRef(rows, 1))],
+        [
+            new ConditionalRule.ColorScale(
+            [
+                new ColorScaleStop(new ConditionalValue(ConditionalValueType.Min), "#F8696B"),
+                new ColorScaleStop(new ConditionalValue(ConditionalValueType.Percentile, "50"), "#FFEB84"),
+                new ColorScaleStop(new ConditionalValue(ConditionalValueType.Max), "#63BE7B")
+            ])
+        ])));
         wb.Undo.Clear();
         return wb;
     }
