@@ -1,0 +1,21 @@
+@inherits MudExBaseComponent<MudExSpreadsheetNoteEditor>
+@namespace MudBlazor.Extensions.Components
+
+<div class="@($"mud-ex-ssg-note-box {(Editing ? "mud-ex-ssg-note-editing" : "")} {Class}".TrimEnd())" style="@Style" @onkeydown="OnKeyDownAsync" @onkeydown:stopPropagation="true">
+    @if (!string.IsNullOrEmpty(Author))
+    {
+        <div class="mud-ex-ssg-note-author">@Author:</div>
+    }
+    @if (Editing)
+    {
+        <textarea @ref="_input" class="mud-ex-ssg-note-text" aria-label="@TryLocalize("Note")" @bind="_text" @bind:event="oninput"></textarea>
+        <div class="mud-ex-ssg-note-actions">
+            <MudButton Class="mud-ex-ssg-note-cancel" Size="Size.Small" OnClick="@(() => OnCancel.InvokeAsync())">@TryLocalize("Cancel")</MudButton>
+            <MudButton Class="mud-ex-ssg-note-save" Size="Size.Small" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => OnSave.InvokeAsync(_text))">@TryLocalize("Save")</MudButton>
+        </div>
+    }
+    else
+    {
+        <div class="mud-ex-ssg-note-text">@Note?.Text</div>
+    }
+</div>

@@ -5354,6 +5354,9 @@
             The editor the menu acts on
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileEditorBackstage.ChildContent">
+            <summary>Additional actions of the editor, rendered after Save as.</summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileEditorBackstage.OnParametersSet">
             <inheritdoc />
         </member>
@@ -19651,6 +19654,45 @@
         <member name="T:MudBlazor.Extensions.Components.FormulaAssist">
             <summary>Formula autocomplete from the function catalog and defined names, and the signature tip of the enclosing function.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetChart">
+            <summary>
+            Shows one chart of a worksheet: column, line, pie and scatter charts with <see cref="T:MudBlazor.MudChart`1"/>, area and horizontal bar charts as SVG,
+            and charts the editor cannot draw as a placeholder. It renders again only when its data, size or look changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetChart.Chart">
+            <summary>The chart to show.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetChart.Data">
+            <summary>The chart's data, see <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.ChartDataResolver.Resolve(MudBlazor.Extensions.Office.Spreadsheet.Workbook,MudBlazor.Extensions.Office.Spreadsheet.SheetChart)"/>. A new instance renders the chart again.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetChart.Width">
+            <summary>Width in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetChart.Height">
+            <summary>Height in pixels.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetChart.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetChart.ShouldRender">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetChartDialog">
+            <summary>
+            The chart dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>: chart type, title, legend, stacking and the series with their name, category and
+            value references. Closes with an <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.UpdateChartCommand"/> as result data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetChartDialog.Sheet">
+            <summary>The sheet holding the chart.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetChartDialog.Chart">
+            <summary>The chart to edit.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetChartDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetConditionalFormatDialog">
             <summary>
             The conditional formatting dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>: the rules manager and the New/Edit Formatting Rule editor.
@@ -19678,6 +19720,16 @@
             Opens xlsx, xlsm, xltx, legacy xls (saved as xlsx), csv and tsv files and is the editor for these files in
             <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/>. Without a file it edits the <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.Workbook"/> parameter.
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.Author">
+            <summary>The author written into new notes.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.PrintAsync">
+            <summary>Prints the selection, or the used range when a single cell is selected, as a static table through the browser's print dialog.</summary>
+            <returns>A task that completes when the print table is rendered.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.#ctor">
             <summary>Creates the editor.</summary>
@@ -19877,6 +19929,46 @@
             through workbook commands and can be undone. Pointer drags, resizing and filling run in the browser; only their results
             reach .NET, so the grid stays responsive in Blazor Server.
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.Author">
+            <summary>The author written into new notes.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnLinkClick(System.Int32,System.Int32)">
+            <summary>Called by the browser on a Ctrl+click on a hyperlink cell. Opens safe web and mail targets in a new tab and jumps to places in the workbook.</summary>
+            <param name="row">The row.</param>
+            <param name="col">The column.</param>
+            <returns>A task that completes when the link was followed.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnNoteHover(System.Int32,System.Int32)">
+            <summary>Called by the browser when the pointer enters or leaves a cell with a note.</summary>
+            <param name="row">The row, or -1 when the pointer left.</param>
+            <param name="col">The column, or -1 when the pointer left.</param>
+            <returns>A task that completes when the note is shown or hidden.</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.ChartEditRequested">
+            <summary>Raised on a double click on a chart so the host can open its chart dialog.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.SelectedChart">
+            <summary>The selected chart, or null while cells are selected.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnChartSelect(System.String)">
+            <summary>Called by the browser when a chart was clicked.</summary>
+            <param name="id">The chart id.</param>
+            <returns>A task that completes when the chart is selected.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnChartMoved(System.String,System.Double,System.Double,System.Double,System.Double)">
+            <summary>Called by the browser after a chart was moved or resized with the pointer.</summary>
+            <param name="id">The chart id.</param>
+            <param name="left">New left edge in canvas pixels.</param>
+            <param name="top">New top edge in canvas pixels.</param>
+            <param name="width">New width in pixels.</param>
+            <param name="height">New height in pixels.</param>
+            <returns>A task that completes when the chart moved.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnChartDoubleClick(System.String)">
+            <summary>Called by the browser after a double click on a chart.</summary>
+            <param name="id">The chart id.</param>
+            <returns>A task that completes when the host was told.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CopyAsync">
             <summary>
@@ -20147,6 +20239,9 @@
         <member name="F:MudBlazor.Extensions.Components.SpreadsheetDialog.NameManager">
             <summary>Name Manager (Ctrl+F3).</summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Components.SpreadsheetDialog.Hyperlink">
+            <summary>Insert Hyperlink (Ctrl+K).</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.SpreadsheetContextMenuKind">
             <summary>The part of the grid a context menu was opened on.</summary>
         </member>
@@ -20189,6 +20284,30 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetInsertFunctionDialog.Functions">
             <summary>The functions to choose from.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetLinkDialog">
+            <summary>
+            The Insert Hyperlink dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>: a web or mail address or a place in the workbook, the text to display and
+            a screen tip. Closes with the new <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CellLink"/> as result data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetLinkDialog.Workbook">
+            <summary>The workbook, for the list of sheets.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetLinkDialog.Sheet">
+            <summary>The sheet the link is set on.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetLinkDialog.Cell">
+            <summary>The cell the link is set on.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetLinkDialog.Link">
+            <summary>The link to edit, or null for a new one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetLinkDialog.DisplayText">
+            <summary>The text the cell shows now.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetLinkDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetNameManagerDialog">
             <summary>
             The Name Manager of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>: lists the defined names and adds, changes, renames and deletes them. Every
@@ -20203,6 +20322,48 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetNameManagerDialog.OnInitialized">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor">
+            <summary>
+            The note box next to a cell of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetGrid"/>: shows the author and text of a note while the pointer is over the cell,
+            or edits it. Escape cancels editing.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.Note">
+            <summary>The shown note, or null for a new one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.Author">
+            <summary>The author shown above the text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.Editing">
+            <summary>True to edit the text, false to only show it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.OnSave">
+            <summary>Raised with the new text when the user saves.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.OnCancel">
+            <summary>Raised when the user cancels editing.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetPrintView">
+            <summary>
+            A static, not virtualized table of a range of a worksheet with values, fonts, fills, borders and merges, used for printing. Hidden rows and
+            columns are left out, and the table stops after <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetPrintView.MaxCells"/> cells.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetPrintView.Sheet">
+            <summary>The sheet to print.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetPrintView.Range">
+            <summary>The range to print.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetPrintView.MaxCells">
+            <summary>The most cells printed; later rows are left out with a message.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs">
             <summary>

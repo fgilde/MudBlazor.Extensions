@@ -1,0 +1,31 @@
+.mud-ex-ss-print {
+  display: none;
+}
+@media print {
+  body:has(> .mud-ex-ss-print-active) > :not(.mud-ex-ss-print-active) {
+    display: none !important;
+  }
+  .mud-ex-ss-print.mud-ex-ss-print-active {
+    display: block;
+  }
+}
+.mud-ex-ss-print-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+  font-size: 11pt;
+  color: #000;
+  td {
+    padding: 0 3px;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: bottom;
+  }
+  tr {
+    break-inside: avoid;
+  }
+}
+.mud-ex-ss-print-note {
+  font-size: 9pt;
+  font-style: italic;
+}

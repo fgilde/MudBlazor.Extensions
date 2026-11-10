@@ -1,4 +1,4 @@
-const CONTEXT_IGNORE = 'textarea.mud-ex-ssg-editor.editing, .mud-ex-ssg-assist-host, .mud-ex-ssg-filter, .mud-ex-ssg-dv';
+const CONTEXT_IGNORE = 'textarea.mud-ex-ssg-editor.editing, .mud-ex-ssg-assist-host, .mud-ex-ssg-filter, .mud-ex-ssg-dv, .mud-ex-ssg-chart, .mud-ex-ssg-note-box';
 
 export const clipboardMethods = {
     async writeClipboard(text, html) {
@@ -30,7 +30,7 @@ export const clipboardMethods = {
     },
 
     paste(e) {
-        if (this.isEditing() || this.readOnly()) {
+        if (this.isEditing() || this.readOnly() || e.target.closest?.('.mud-ex-ssg-note-box')) {
             return;
         }
         const text = e.clipboardData?.getData('text/plain');

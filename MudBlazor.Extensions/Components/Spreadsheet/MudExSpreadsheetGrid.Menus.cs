@@ -21,7 +21,10 @@ public enum SpreadsheetDialog
     InsertFunction,
 
     /// <summary>Name Manager (Ctrl+F3).</summary>
-    NameManager
+    NameManager,
+
+    /// <summary>Insert Hyperlink (Ctrl+K).</summary>
+    Hyperlink
 }
 
 /// <summary>The part of the grid a context menu was opened on.</summary>
@@ -116,6 +119,8 @@ public partial class MudExSpreadsheetGrid
         if (start >= 0) yield return CellRange.FromBounds(start, r.Left, previous, r.Right);
         if (last < r.Bottom) yield return CellRange.FromBounds(last + 1, r.Left, r.Bottom, r.Right);
     }
+
+    internal Task PrintAsync(ElementReference element) => Js("printNode", element);
 
     private bool HidesRow(int row) => _sheet.FilteredRows.Count > 0 && _sheet.IsRowHidden(row);
 }

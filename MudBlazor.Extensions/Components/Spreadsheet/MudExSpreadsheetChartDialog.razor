@@ -1,0 +1,39 @@
+@inherits MudExBaseComponent<MudExSpreadsheetChartDialog>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<MudDialog Class="mud-ex-sschart-dialog">
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudSelect T="ChartKind" Class="mud-ex-sschart-kind" Label="@TryLocalize("Chart type:")" @bind-Value="_kind" Dense="true" Margin="Margin.Dense">
+                @foreach (var kind in Kinds)
+                {
+                    <MudSelectItem T="ChartKind" Value="kind">@TryLocalize(kind.ToString())</MudSelectItem>
+                }
+            </MudSelect>
+            <MudTextField T="string" Class="mud-ex-sschart-title-input" Label="@TryLocalize("Chart title:")" @bind-Value="_title" Immediate="true" Margin="Margin.Dense" />
+            <MudStack Row="true">
+                <MudCheckBox T="bool" Class="mud-ex-sschart-legend-input" @bind-Value="_legend" Label="@TryLocalize("Legend")" Dense="true" />
+                <MudCheckBox T="bool" Class="mud-ex-sschart-stacked-input" @bind-Value="_stacked" Label="@TryLocalize("Stacked")" Dense="true"
+                             Disabled="@(_kind is ChartKind.Pie or ChartKind.Scatter)" />
+            </MudStack>
+            <MudText Typo="Typo.subtitle2">@TryLocalize("Series")</MudText>
+            @for (var i = 0; i < _rows.Count; i++)
+            {
+                var row = _rows[i];
+                <MudStack Row="true" AlignItems="AlignItems.Center" Class="mud-ex-sschart-series">
+                    <MudTextField T="string" Label="@TryLocalize("Name")" @bind-Value="row.Name" Immediate="true" Margin="Margin.Dense" />
+                    <MudTextField T="string" Label="@TryLocalize("Categories")" @bind-Value="row.Categories" Immediate="true" Margin="Margin.Dense" />
+                    <MudTextField T="string" Label="@TryLocalize("Values")" @bind-Value="row.Values" Immediate="true" Margin="Margin.Dense" Required="true" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" aria-label="@TryLocalize("Remove series")" Disabled="@(_rows.Count == 1)"
+                                   OnClick="@(() => _rows.Remove(row))" />
+                </MudStack>
+            }
+            <MudButton Class="mud-ex-sschart-add" Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" OnClick="@(() => _rows.Add(new SeriesRow()))">@TryLocalize("Add series")</MudButton>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-sschart-ok" Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!Valid)" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

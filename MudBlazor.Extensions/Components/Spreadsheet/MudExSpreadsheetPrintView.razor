@@ -1,0 +1,31 @@
+@inherits MudExBaseComponent<MudExSpreadsheetPrintView>
+@namespace MudBlazor.Extensions.Components
+
+@if (Sheet != null)
+{
+    var (rows, cols, truncated) = Layout();
+    <table class="mud-ex-ss-print-table">
+        <colgroup>
+            @foreach (var c in cols)
+            {
+                <col style="@($"width:{Px(Sheet.ColumnWidth(c))}")" />
+            }
+        </colgroup>
+        @foreach (var r in rows)
+        {
+            <tr style="@($"height:{Px(Sheet.RowHeight(r))}")">
+                @foreach (var c in cols)
+                {
+                    var at = new MudBlazor.Extensions.Office.Spreadsheet.CellRef(r, c);
+                    if (Covered(at)) continue;
+                    var span = Span(at);
+                    <td rowspan="@(span.Rows > 1 ? span.Rows : null)" colspan="@(span.Columns > 1 ? span.Columns : null)" style="@CellStyle(at)">@Text(at)</td>
+                }
+            </tr>
+        }
+    </table>
+    @if (truncated)
+    {
+        <p class="mud-ex-ss-print-note">@TryLocalize("Only the first {0} cells are printed.", MaxCells)</p>
+    }
+}

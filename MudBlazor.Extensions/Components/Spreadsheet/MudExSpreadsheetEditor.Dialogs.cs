@@ -15,6 +15,7 @@ public partial class MudExSpreadsheetEditor
         SpreadsheetDialog.Replace => FindReplaceAsync(true),
         SpreadsheetDialog.GoTo => GoToAsync(),
         SpreadsheetDialog.InsertFunction => InsertFunctionDialogAsync(),
+        SpreadsheetDialog.Hyperlink => InsertLinkAsync(),
         _ => NameManagerAsync()
     };
 

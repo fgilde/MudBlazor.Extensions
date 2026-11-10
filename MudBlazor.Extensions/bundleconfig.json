@@ -68,6 +68,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExSpreadsheetObjects.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSpreadsheetObjects.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExFileDisplayCode.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExFileDisplayCode.js"

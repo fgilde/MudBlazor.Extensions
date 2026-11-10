@@ -18,6 +18,7 @@
                 <MudButton Class="mud-ex-file-editor-backstage-save justify-start" StartIcon="@Icons.Material.Filled.Save" OnClick="@(() => RunAsync(() => Editor.SaveAsync()))">@TryLocalize("Save")</MudButton>
             }
             <MudButton Class="mud-ex-file-editor-backstage-save-as justify-start" StartIcon="@Icons.Material.Filled.SaveAs" OnClick="@(() => RunAsync(() => Editor.SaveAsync(true)))">@TryLocalize("Save as")</MudButton>
+            @ChildContent
             @if (Editor.SaveFormats?.Count > 1)
             {
                 <MudText Typo="Typo.overline" Class="mt-2">@TryLocalize("Export")</MudText>

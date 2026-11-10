@@ -6,9 +6,11 @@
     @if (ShowRibbon)
     {
         var style = ActiveStyle;
-        <MudExRibbon Class="mud-ex-spreadsheet-ribbon" Color="@RibbonColor" @bind-Mode="_mode" @bind-Collapsed="_collapsed" FileMenuText="@TryLocalize("File")">
+        <MudExRibbon @ref="_ribbon" Class="mud-ex-spreadsheet-ribbon" Color="@RibbonColor" @bind-Mode="_mode" @bind-Collapsed="_collapsed" FileMenuText="@TryLocalize("File")">
             <FileMenu>
-                <MudExFileEditorBackstage Editor="this" Localizer="@Localizer" />
+                <MudExFileEditorBackstage Editor="this" Localizer="@Localizer">
+                    <MudButton Class="mud-ex-file-editor-backstage-print justify-start" StartIcon="@Icons.Material.Filled.Print" Disabled="@(ActiveSheet == null)" OnClick="PrintFromBackstageAsync">@TryLocalize("Print")</MudButton>
+                </MudExFileEditorBackstage>
             </FileMenu>
             <QuickAccess>
                 @if (!IsReadOnly)
@@ -155,6 +157,16 @@
                     <MudExRibbonGroup Text="@TryLocalize("Functions")" Icon="@Icons.Material.Filled.Functions">
                         @Static(InsertFunctionMenu)
                     </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Charts")" Icon="@Icons.Material.Filled.BarChart" CollapsePriority="2">
+                        @Static(ChartsGroup)
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Links")" Icon="@Icons.Material.Filled.Link" CollapsePriority="1">
+                        <MudExRibbonButton Id="xl-link" Text="@TryLocalize("Link")" Icon="@Icons.Material.Filled.Link" Size="MudExRibbonItemSize.Large" KeyTip="I" Shortcut="Ctrl+K" OnClick="InsertLinkAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Notes")" Icon="@Icons.Material.Filled.StickyNote2" CollapsePriority="1">
+                        <MudExRibbonButton Id="xl-note-new" Text="@TryLocalize("New Note")" Icon="@Icons.Material.Filled.StickyNote2" Size="MudExRibbonItemSize.Large" Disabled="@NotesReadOnly" OnClick="EditNoteAsync" />
+                        <MudExRibbonButton Id="xl-note-delete" Text="@TryLocalize("Delete Note")" Icon="@Icons.Material.Filled.Delete" Size="MudExRibbonItemSize.Small" Disabled="@NotesReadOnly" OnClick="DeleteNoteAsync" />
+                    </MudExRibbonGroup>
                 </MudExRibbonTab>
 
                 <MudExRibbonTab Text="@TryLocalize("Formulas")" KeyTip="M" Visible="@(!IsReadOnly)">
@@ -236,6 +248,8 @@
                                   OnError="OnGridErrorAsync"
                                   DialogRequested="OnDialogRequestedAsync"
                                   ContextMenuRequested="OnContextMenuRequestedAsync"
+                                  ChartEditRequested="EditChartAsync"
+                                  Author="@Author"
                                   Localizer="@Localizer" />
         }
         @if (!IsReadOnly)
@@ -246,6 +260,12 @@
     @if (ShowSheetTabs && _workbook != null)
     {
         <MudExSpreadsheetSheetTabs Workbook="_workbook" SheetIndex="_sheetIndex" SheetIndexChanged="OnSheetIndexChangedAsync" ReadOnly="IsReadOnly" Localizer="@Localizer" />
+    }
+    @if (_print is { } print)
+    {
+        <div class="mud-ex-ss-print" @ref="_printElement">
+            <MudExSpreadsheetPrintView Sheet="print.Sheet" Range="print.Range" Localizer="@Localizer" />
+        </div>
     }
     @if (ShowStatusBar)
     {
@@ -336,6 +356,14 @@
         return (s.Fill.Color != null ? $"background:{s.Fill.Color};" : "") + (s.Font.Color != null ? $"color:{s.Font.Color};" : "") + (s.Font.Bold ? "font-weight:700;" : "")
                + (s.Border.Bottom.Style != CellBorderStyle.None ? $"border-bottom:2px solid {s.Border.Bottom.Color ?? "currentColor"};" : "");
     }
+
+    private RenderFragment ChartsGroup => __builder =>
+    {
+        foreach (var (id, name, icon, kind) in ChartButtons)
+        {
+            <MudExRibbonButton Id="@id" Text="@TryLocalize(name)" Icon="@icon" Size="MudExRibbonItemSize.Small" OnClick="@(() => InsertChartAsync(kind))" />
+        }
+    };
 
     private RenderFragment InsertFunctionMenu =>
         @<MudExRibbonMenuButton Id="xl-insert-function" Text="@TryLocalize("Function")" Icon="@Icons.Material.Filled.Functions" Size="MudExRibbonItemSize.Large">

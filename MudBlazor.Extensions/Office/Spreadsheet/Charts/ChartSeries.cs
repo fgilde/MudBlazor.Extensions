@@ -53,6 +53,20 @@ public static class ChartDataResolver
         return new ChartData(categories ?? Enumerable.Range(1, count).Select(i => i.ToString(CultureInfo.CurrentCulture)).ToList(), series);
     }
 
+    internal static List<(Worksheet Sheet, CellRange Range)> Sources(Workbook wb, SheetChart chart)
+    {
+        var host = wb.Sheets.FirstOrDefault(s => s.Charts.Contains(chart)) ?? wb.Sheets[0];
+        var list = new List<(Worksheet, CellRange)>();
+        foreach (var reference in chart.Series.SelectMany(s => new[] { s.NameRef, s.CategoriesRef, s.ValuesRef }).Where(r => r != null))
+        {
+            if (RuleFormulas.Parse(reference) is not { } node) continue;
+            var result = RuleFormulas.Calculate(new FormulaEvaluator(FunctionRegistry.Default), node, wb, host, default);
+            if (result.Kind == CalcValueKind.Reference) list.AddRange(result.Areas.Select(x => (x.Sheet, x.Range)));
+        }
+
+        return list;
+    }
+
     internal static List<(Worksheet Sheet, CellRef Cell, CellValue Value)> Cells(Workbook wb, Worksheet host, string reference)
     {
         if (RuleFormulas.Parse(reference) is not { } node) return null;

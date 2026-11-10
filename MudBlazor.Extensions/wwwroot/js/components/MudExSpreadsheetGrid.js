@@ -1,4 +1,5 @@
 import { clipboardMethods } from './MudExSpreadsheetClipboard.js';
+import { objectMethods } from './MudExSpreadsheetObjects.js';
 
 const ROW_HEADER = '.mud-ex-ssg-rh';
 const COL_HEADER = '.mud-ex-ssg-ch';
@@ -156,7 +157,7 @@ class MudExSpreadsheetGrid {
         if ((e.altKey && !ctrl && e.key === '=') || (e.key === 'F3' && (ctrl || e.shiftKey))) {
             return true;
         }
-        return ctrl && !e.altKey && e.key.length === 1 && 'abiudrzyxcs15%;:fgh'.includes(e.key.toLowerCase()) && (e.key.toLowerCase() !== 's' || !this.readOnly());
+        return ctrl && !e.altKey && e.key.length === 1 && 'abiudrzyxcs15%;:fghk'.includes(e.key.toLowerCase()) && (e.key.toLowerCase() !== 's' || !this.readOnly());
     }
 
     keyDown(e) {
@@ -362,6 +363,7 @@ class MudExSpreadsheetGrid {
     }
 
     hover(e) {
+        this.objectHover(e);
         if (this.drag) {
             return;
         }
@@ -377,7 +379,7 @@ class MudExSpreadsheetGrid {
             return;
         }
         const t = e.target;
-        if (t.closest('.mud-ex-ssg-filter, .mud-ex-ssg-dv')) {
+        if (t.closest('.mud-ex-ssg-filter, .mud-ex-ssg-dv') || this.objectPointerDown(e)) {
             return;
         }
         if (t.closest('.mud-ex-ssg-assist-host')) {
@@ -651,7 +653,7 @@ class MudExSpreadsheetGrid {
             return;
         }
         const t = e.target;
-        if (t.closest('.mud-ex-ssg-assist-host, .mud-ex-ssg-filter, .mud-ex-ssg-dv') || t.closest('textarea.mud-ex-ssg-editor')) {
+        if (t.closest('.mud-ex-ssg-assist-host, .mud-ex-ssg-filter, .mud-ex-ssg-dv') || t.closest('textarea.mud-ex-ssg-editor') || this.objectDblClick(e)) {
             return;
         }
         if (t.classList.contains('mud-ex-ssg-fill')) {
@@ -709,7 +711,7 @@ class MudExSpreadsheetGrid {
     }
 }
 
-Object.assign(MudExSpreadsheetGrid.prototype, clipboardMethods);
+Object.assign(MudExSpreadsheetGrid.prototype, clipboardMethods, objectMethods);
 
 export function initializeMudExSpreadsheetGrid(elementRef, dotnet) {
     return new MudExSpreadsheetGrid(elementRef, dotnet);

@@ -7947,6 +7947,224 @@
   text-overflow: ellipsis;
   opacity: 0.75;
 }
+.mud-ex-ssg-link {
+  color: #0563c1;
+  text-decoration: underline;
+}
+.mud-ex-ssg-note-mark {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 6px solid #c00000;
+  border-left: 6px solid transparent;
+  pointer-events: none;
+}
+.mud-ex-ssg-charts {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 0;
+  height: 0;
+}
+.mud-ex-ssg-chart {
+  position: absolute;
+  box-sizing: border-box;
+  background-color: var(--mud-palette-surface);
+  border: 1px solid var(--mud-palette-lines-default);
+  cursor: move;
+  touch-action: none;
+}
+.mud-ex-ssg-chart[data-locked=true] {
+  cursor: default;
+}
+.mud-ex-ssg-chart-selected {
+  outline: 2px solid var(--mud-palette-primary);
+}
+.mud-ex-ssg-chart-handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  box-sizing: border-box;
+  background-color: var(--mud-palette-surface);
+  border: 1px solid var(--mud-palette-primary);
+}
+.mud-ex-ssg-chart-handle[data-h=nw] {
+  left: 0;
+  top: 0;
+  cursor: nwse-resize;
+}
+.mud-ex-ssg-chart-handle[data-h=n] {
+  left: 50%;
+  top: 0;
+  cursor: ns-resize;
+}
+.mud-ex-ssg-chart-handle[data-h=ne] {
+  left: 100%;
+  top: 0;
+  cursor: nesw-resize;
+}
+.mud-ex-ssg-chart-handle[data-h=e] {
+  left: 100%;
+  top: 50%;
+  cursor: ew-resize;
+}
+.mud-ex-ssg-chart-handle[data-h=se] {
+  left: 100%;
+  top: 100%;
+  cursor: nwse-resize;
+}
+.mud-ex-ssg-chart-handle[data-h=s] {
+  left: 50%;
+  top: 100%;
+  cursor: ns-resize;
+}
+.mud-ex-ssg-chart-handle[data-h=sw] {
+  left: 0;
+  top: 100%;
+  cursor: nesw-resize;
+}
+.mud-ex-ssg-chart-handle[data-h=w] {
+  left: 0;
+  top: 50%;
+  cursor: ew-resize;
+}
+.mud-ex-sschart {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+  font-size: 12px;
+  pointer-events: none;
+}
+.mud-ex-sschart-title {
+  flex: 0 0 24px;
+  line-height: 24px;
+  text-align: center;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mud-ex-sschart-body {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.mud-ex-sschart-svg {
+  display: block;
+  flex: 0 0 auto;
+}
+.mud-ex-sschart-axis {
+  stroke: var(--mud-palette-lines-default);
+  stroke-width: 1;
+}
+.mud-ex-sschart-area {
+  fill-opacity: 0.75;
+}
+.mud-ex-sschart-label {
+  fill: var(--mud-palette-text-secondary);
+  font-size: 11px;
+}
+.mud-ex-sschart-legend {
+  display: flex;
+  flex: 0 0 22px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.mud-ex-sschart-legend > span > i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+}
+.mud-ex-sschart-placeholder {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--mud-palette-text-secondary);
+  background: repeating-linear-gradient(45deg, transparent 0 8px, var(--mud-palette-action-default-hover) 8px 16px);
+}
+.mud-ex-ssg-note-box {
+  position: absolute;
+  z-index: 5;
+  box-sizing: border-box;
+  min-width: 180px;
+  max-width: 320px;
+  padding: 4px 6px;
+  background-color: #fffbcc;
+  color: #000;
+  border: 1px solid #a0a0a0;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  white-space: pre-wrap;
+  user-select: text;
+  pointer-events: none;
+}
+.mud-ex-ssg-note-box.mud-ex-ssg-note-editing {
+  pointer-events: auto;
+}
+.mud-ex-ssg-note-author {
+  font-weight: 700;
+}
+textarea.mud-ex-ssg-note-text {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 72px;
+  resize: both;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.mud-ex-ssg-note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.mud-ex-ss-print {
+  display: none;
+}
+@media print {
+  body:has(> .mud-ex-ss-print-active) > :not(.mud-ex-ss-print-active) {
+    display: none !important;
+  }
+  .mud-ex-ss-print.mud-ex-ss-print-active {
+    display: block;
+  }
+}
+.mud-ex-ss-print-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+  font-size: 11pt;
+  color: #000;
+}
+.mud-ex-ss-print-table td {
+  padding: 0 3px;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+.mud-ex-ss-print-table tr {
+  break-inside: avoid;
+}
+.mud-ex-ss-print-note {
+  font-size: 9pt;
+  font-style: italic;
+}
 .mud-ex-blur {
   backdrop-filter: blur(10px);
 }

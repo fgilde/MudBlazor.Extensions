@@ -152,6 +152,7 @@ public partial class MudExSpreadsheetGrid
             return;
         }
 
+        if (_selectedChart != null && await ChartKeyAsync(e)) return;
         var ctrl = e.CtrlKey || e.MetaKey;
         var key = e.Key ?? "";
         switch (key)
@@ -277,6 +278,9 @@ public partial class MudExSpreadsheetGrid
             case "g":
                 await DialogRequested.InvokeAsync(SpreadsheetDialog.GoTo);
                 break;
+            case "k":
+                await DialogRequested.InvokeAsync(SpreadsheetDialog.Hyperlink);
+                break;
             case ";":
                 await BeginEditAsync(DateTime.Today.ToString(Culture.DateTimeFormat.ShortDatePattern, Culture));
                 break;
@@ -289,6 +293,7 @@ public partial class MudExSpreadsheetGrid
     private async Task SelectAsync(SpreadsheetSelection sel, CellRef? reveal = null)
     {
         var changed = !sel.Equals(_selection);
+        _selectedChart = null;
         _selection = sel;
         Selection = sel;
         Reveal(reveal ?? sel.Active);

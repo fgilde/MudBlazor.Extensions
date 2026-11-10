@@ -15,6 +15,9 @@ public partial class MudExFileEditorBackstage
     /// </summary>
     [Parameter] public IMudExFileEditor Editor { get; set; }
 
+    /// <summary>Additional actions of the editor, rendered after Save as.</summary>
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
     [CascadingParameter] private MudExRibbon Ribbon { get; set; }
 
     /// <inheritdoc />

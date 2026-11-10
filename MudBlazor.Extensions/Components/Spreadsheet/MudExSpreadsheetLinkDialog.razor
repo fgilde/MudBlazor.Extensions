@@ -1,0 +1,34 @@
+@inherits MudExBaseComponent<MudExSpreadsheetLinkDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="mud-ex-sslink-dialog">
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudTextField T="string" Class="mud-ex-sslink-display" Label="@TryLocalize("Text to display:")" @bind-Value="_display" Immediate="true" Margin="Margin.Dense" />
+            <MudRadioGroup T="bool" @bind-Value="_internal">
+                <MudRadio T="bool" Value="false" Class="mud-ex-sslink-web">@TryLocalize("Web page or e-mail address")</MudRadio>
+                <MudRadio T="bool" Value="true" Class="mud-ex-sslink-place">@TryLocalize("Place in this document")</MudRadio>
+            </MudRadioGroup>
+            @if (_internal)
+            {
+                <MudSelect T="string" Class="mud-ex-sslink-sheet" Label="@TryLocalize("Sheet:")" @bind-Value="_sheet" Dense="true" Margin="Margin.Dense">
+                    @foreach (var sheet in Workbook.Sheets)
+                    {
+                        <MudSelectItem T="string" Value="@sheet.Name">@sheet.Name</MudSelectItem>
+                    }
+                </MudSelect>
+                <MudTextField T="string" Class="mud-ex-sslink-reference" Label="@TryLocalize("Cell reference:")" @bind-Value="_reference" Immediate="true" Margin="Margin.Dense" />
+            }
+            else
+            {
+                <MudTextField T="string" Class="mud-ex-sslink-address" Label="@TryLocalize("Address:")" @bind-Value="_address" Immediate="true" Margin="Margin.Dense"
+                              HelperText="@(Unsafe ? TryLocalize("Only http, https and mailto addresses can be opened.") : null)" />
+            }
+            <MudTextField T="string" Class="mud-ex-sslink-tooltip" Label="@TryLocalize("ScreenTip:")" @bind-Value="_tooltip" Immediate="true" Margin="Margin.Dense" />
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-sslink-ok" Color="Color.Primary" Variant="Variant.Filled" Disabled="@(Result == null)" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

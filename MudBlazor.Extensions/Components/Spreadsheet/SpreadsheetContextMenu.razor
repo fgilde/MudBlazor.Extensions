@@ -36,6 +36,20 @@
                 <MudMenuItem Class="mud-ex-ss-cm-sort-desc" Icon="@Icons.Material.Filled.ArrowDownward" OnClick="@(() => Editor.SortAsync(true))">@TryLocalize("Sort Z to A")</MudMenuItem>
                 <MudDivider />
             }
+            @if (kind == SpreadsheetContextMenuKind.Cell)
+            {
+                <MudMenuItem Class="mud-ex-ss-cm-link" Icon="@Icons.Material.Filled.Link" OnClick="Editor.InsertLinkAsync">@TryLocalize(Editor.HasLink ? "Edit Hyperlink..." : "Link...")</MudMenuItem>
+                @if (Editor.HasLink)
+                {
+                    <MudMenuItem Class="mud-ex-ss-cm-link-remove" Icon="@Icons.Material.Filled.LinkOff" OnClick="Editor.RemoveLinkAsync">@TryLocalize("Remove Hyperlink")</MudMenuItem>
+                }
+                <MudMenuItem Class="mud-ex-ss-cm-note" Icon="@Icons.Material.Filled.StickyNote2" Disabled="@Editor.NotesReadOnly" OnClick="Editor.EditNoteAsync">@TryLocalize(Editor.HasNote ? "Edit Note" : "New Note")</MudMenuItem>
+                @if (Editor.HasNote)
+                {
+                    <MudMenuItem Class="mud-ex-ss-cm-note-delete" Icon="@Icons.Material.Filled.Delete" Disabled="@Editor.NotesReadOnly" OnClick="Editor.DeleteNoteAsync">@TryLocalize("Delete Note")</MudMenuItem>
+                }
+                <MudDivider />
+            }
             @Items?.Invoke(kind)
             <MudMenuItem Class="mud-ex-ss-cm-format" Icon="@Icons.Material.Filled.Tune" OnClick="Editor.FormatCellsAsync">@TryLocalize("Format Cells...")</MudMenuItem>
             @if (kind == SpreadsheetContextMenuKind.RowHeader)

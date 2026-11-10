@@ -258,6 +258,8 @@ public partial class MudExSpreadsheetGrid
         _editing = false;
         _filterOpen = null;
         _listOpen = false;
+        _noteHover = _noteEdit = null;
+        _selectedChart = null;
         _sheet = sheet;
         var previous = _selection;
         _selection = sheet != null && _sheetSelections.TryGetValue(sheet, out var s) ? s : SpreadsheetSelection.Single(default);
@@ -349,6 +351,7 @@ public partial class MudExSpreadsheetGrid
     private void OnWorkbookChanged(object sender, WorkbookChangedEventArgs e)
     {
         if (_sheet == null) return;
+        InvalidateCharts(e);
         var layout = false;
         foreach (var s in e.Structure)
             layout |= s.Sheet == null || s.Sheet == _sheet || s.Kind is StructureChangeKind.SheetRemoved or StructureChangeKind.SheetAdded or StructureChangeKind.SheetMoved;
@@ -401,6 +404,7 @@ public partial class MudExSpreadsheetGrid
     private void OnCalculated(object sender, CalculatedEventArgs e)
     {
         if (_sheet == null) return;
+        InvalidateCharts(e);
         if (e.Cells.Count > 5000 || (HasRules && e.Cells.Any(c => c.Sheet == _sheet))) _layoutVersion++;
         else
             foreach (var c in e.Cells)
@@ -588,7 +592,7 @@ public partial class MudExSpreadsheetGrid
             var cell = _sheet[at];
             var content = cell?.HasContent == true;
             var look = LookAt(at, _sheet.EffectiveStyleId(at), out var cf);
-            if (!content && look.Box.Length == 0 && cf == null) continue;
+            if (!content && look.Box.Length == 0 && cf == null && NoteAt(at) == null) continue;
             double extendLeft = 0, extendRight = 0;
             if (content && cell.Value.Kind == CellValueKind.Text && !look.Wrap)
             {
@@ -642,6 +646,10 @@ public partial class MudExSpreadsheetGrid
         if (look.Wrap) cls.Append(" mud-ex-ssg-wrap");
         var overflow = extendLeft > 0 || extendRight > 0;
         if (overflow) cls.Append(" mud-ex-ssg-ovf");
+        var link = text != null ? LinkFor(at) : null;
+        if (link?.IsSafe == true) cls.Append(" mud-ex-ssg-link");
+        var note = NoteAt(at);
+        if (note != null) cls.Append(" mud-ex-ssg-noted");
 
         b.OpenElement(0, "div");
         b.SetKey(key);
@@ -649,6 +657,14 @@ public partial class MudExSpreadsheetGrid
         b.AddAttribute(2, "data-r", at.Row);
         b.AddAttribute(3, "data-c", at.Column);
         b.AddAttribute(4, "style", $"left:{Px(x - 1)};top:{Px(y - 1)};width:{Px(w + 1)};height:{Px(h + 1)};{look.Box}{ConditionalBox(cf)}{look.Text}{(color != null ? "color:" + color + ";" : "")}");
+        if (link?.IsSafe == true) b.AddAttribute(10, "title", link.Tooltip ?? TryLocalize("Ctrl+click to follow the link."));
+        if (note != null)
+        {
+            b.OpenElement(11, "span");
+            b.AddAttribute(12, "class", "mud-ex-ssg-note-mark");
+            b.CloseElement();
+        }
+
         if (cf?.Icon is { } icon)
         {
             b.OpenRegion(9);
