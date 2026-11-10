@@ -347,6 +347,26 @@ public class SpreadsheetGridTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task PasteHtmlFormula_ShiftsRelativeToTarget()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetValueCommand(ws, R("C5"), CellValue.Number(4)));
+        wb.Execute(new SetFormulaCommand(ws, R("B2"), "=A2*2+$A$1"));
+        var cut = Render(wb);
+
+        SelectRange(cut, "B2");
+        await cut.InvokeAsync(() => cut.Instance.CopyAsync());
+        var write = _contexts[^1].JSInterop.Invocations.Last(i => i.Identifier == "writeClipboard");
+        Key(cut, "Escape");
+        SelectRange(cut, "D5");
+        await cut.InvokeAsync(() => cut.Instance.PasteAsync((string)write.Arguments[0], (string)write.Arguments[1]));
+
+        Assert.Equal("C5*2+$A$1", ws[R("D5")].Formula);
+        Assert.Equal(8, ws[R("D5")].Value.NumberValue);
+    }
+
+    [Fact]
     public async Task CutToOtherSheet_PrefixesSourceSheet()
     {
         var wb = Workbook.Create();

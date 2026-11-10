@@ -156,7 +156,8 @@ public partial class MudExSpreadsheetGrid
                     Alignment = s.Alignment with { Horizontal = h.Alignment.Horizontal, Vertical = h.Alignment.Vertical, WrapText = h.Alignment.WrapText },
                     NumberFormat = h.NumberFormat
                 }));
-                if (cell.Formula != null) _workbook.Execute(new SetFormulaCommand(_sheet, t, cell.Formula));
+                if (cell.Formula != null)
+                    _workbook.Execute(new SetFormulaCommand(_sheet, t, cell.Source is { } s ? ReferenceShifter.Translate(cell.Formula, t.Row - s.Row, t.Column - s.Column) : cell.Formula));
                 else if (cell.Value.Kind != CellValueKind.Empty) _workbook.Execute(new SetValueCommand(_sheet, t, cell.Value));
                 else if (_sheet[t]?.HasContent == true) _workbook.Execute(new ClearCommand(_sheet, new CellRange(t, t)));
                 var merge = CellRange.FromBounds(t.Row, t.Column, Math.Min(target.Bottom, t.Row + cell.RowSpan - 1), Math.Min(target.Right, t.Column + cell.ColumnSpan - 1));

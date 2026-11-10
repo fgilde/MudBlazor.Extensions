@@ -16,7 +16,11 @@ namespace MudBlazor.Extensions.Office.Spreadsheet;
 /// </param>
 /// <param name="RowSpan">Number of rows the cell spans.</param>
 /// <param name="ColumnSpan">Number of columns the cell spans.</param>
-public sealed record HtmlTableCell(int Row, int Column, CellValue Value, string Formula, CellStyle Style, int RowSpan, int ColumnSpan);
+/// <param name="Source">
+/// The cell the formula was copied from, when the HTML names it (tables written by <see cref="HtmlTableFormat.Write"/> do); a paste moves the
+/// formula's relative references from there to the target. Null for other sources, whose formulas are pasted as written.
+/// </param>
+public sealed record HtmlTableCell(int Row, int Column, CellValue Value, string Formula, CellStyle Style, int RowSpan, int ColumnSpan, CellRef? Source = null);
 
 /// <summary>A table read by <see cref="HtmlTableFormat.Read"/>.</summary>
 /// <param name="Cells">The cells in document order.</param>
@@ -132,6 +136,8 @@ public static class HtmlTableFormat
         if (value.Kind == CellValueKind.Number) sb.Append(" x:num=\"").Append(value.NumberValue.ToString("R", CultureInfo.InvariantCulture)).Append('"');
         else if (value.Kind == CellValueKind.Boolean) sb.Append(" x:bool=\"").Append(value.BooleanValue ? "TRUE" : "FALSE").Append('"');
         else if (value.Kind == CellValueKind.Text) sb.Append(" x:str");
+        if (cell?.Formula != null)
+            sb.Append(" x:fmla=\"=").Append(WebUtility.HtmlEncode(cell.Formula)).Append("\" data-mudex-at=\"").Append(at.ToA1()).Append('"');
         sb.Append('>');
         if (value.Kind != CellValueKind.Empty)
             sb.Append(WebUtility.HtmlEncode(NumberFormat.Format(value, style.NumberFormat, culture, out _)).Replace("\r\n", "\n").Replace("\n", "<br>"));
@@ -569,7 +575,8 @@ public static class HtmlTableFormat
                 }
             };
             var (value, formula) = Resolve(c.Attributes, c.Finish(), ref style);
-            _cells.Add(new HtmlTableCell(c.Row, c.Column, value, formula, style, c.RowSpan, c.ColumnSpan));
+            var source = formula != null && c.Attributes.TryGetValue("data-mudex-at", out var at) && CellRef.TryParse(at, out var s) ? s : (CellRef?)null;
+            _cells.Add(new HtmlTableCell(c.Row, c.Column, value, formula, style, c.RowSpan, c.ColumnSpan, source));
             _rows = Math.Max(_rows, c.Row + c.RowSpan);
             _columns = Math.Max(_columns, c.Column + c.ColumnSpan);
         }
