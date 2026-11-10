@@ -291,7 +291,7 @@ public sealed class AutoFilter
     internal HashSet<int> EvaluateKnown(Worksheet sheet, CultureInfo culture = null)
     {
         var hidden = new HashSet<int>();
-        var (top, bottom) = (Range.Top + 1, Range.Bottom);
+        var (top, bottom) = (Range.Top + 1, Math.Min(Range.Bottom, sheet.UsedRange.Bottom));
         foreach (var (column, criteria) in Columns.Where(p => IsEvaluable(p.Value)))
         {
             var matches = criteria.Matcher(sheet, column, top, bottom, culture);

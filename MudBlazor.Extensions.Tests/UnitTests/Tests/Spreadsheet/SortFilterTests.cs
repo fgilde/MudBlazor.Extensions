@@ -92,6 +92,17 @@ public class SortFilterTests
     }
 
     [Fact]
+    public void Filter_OverWholeColumns_EvaluatesOnlyTheUsedRows()
+    {
+        var (wb, ws) = Sheet(["Name", "Score"], ["a", 1], ["b", 2], ["c", 3]);
+        wb.Execute(new SetAutoFilterCommand(ws, G("A1:B1048576")));
+        wb.Execute(new ApplyFilterCommand(ws, 0, FilterCriteria.Values(new HashSet<string> { "a", "c" })));
+        Assert.Equal([2], ws.FilteredRows);
+        wb.Execute(new ApplyFilterCommand(ws, 1, FilterCriteria.Top10(1)));
+        Assert.Equal([1, 2], ws.FilteredRows.Order());
+    }
+
+    [Fact]
     public void Sort_PartOfFilterRange_DoesNotRecordFilterSort()
     {
         var (wb, ws) = Sheet(["Name", "Score"], ["b", 2], ["c", 3], ["a", 1], ["d", 4]);
