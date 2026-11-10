@@ -512,3 +512,43 @@ public sealed class DefineNameCommand(string name, string refersTo) : IWorkbookC
         wb.Notify(StructureChangeKind.DefinedNamesChanged, null);
     }
 }
+
+/// <summary>
+/// Renames a defined name. Every formula, defined name, conditional format, validation, table formula, chart series and link location that
+/// uses the name is rewritten to the new name.
+/// </summary>
+/// <param name="name">The current name (case-insensitive).</param>
+/// <param name="newName">The new name.</param>
+public sealed class RenameNameCommand(string name, string newName) : IWorkbookCommand
+{
+    private FormulaSnapshot _formulas;
+    private string _oldKey;
+
+    /// <inheritdoc />
+    public string Description => "Rename name";
+
+    /// <inheritdoc />
+    public void Apply(Workbook wb)
+    {
+        var names = wb.DefinedNameMap;
+        if (name == null || !names.ContainsKey(name)) throw new ArgumentException($"The name '{name}' is not defined.", nameof(name));
+        if (string.IsNullOrWhiteSpace(newName)) throw new ArgumentException("A name is required.", nameof(newName));
+        if (!string.Equals(name, newName, StringComparison.OrdinalIgnoreCase) && names.ContainsKey(newName))
+            throw new ArgumentException($"The name '{newName}' already exists.", nameof(newName));
+        if (wb.FindTable(newName) != null) throw new ArgumentException($"The name '{newName}' is already used by a table.", nameof(newName));
+        _oldKey = names.Keys.First(k => string.Equals(k, name, StringComparison.OrdinalIgnoreCase));
+        _formulas = wb.RewriteFormulas((f, _) => ReferenceShifter.RenameName(f, name, newName));
+        names.Remove(_oldKey, out var refersTo);
+        names[newName] = refersTo;
+        wb.Notify(StructureChangeKind.DefinedNamesChanged, null);
+    }
+
+    /// <inheritdoc />
+    public void Revert(Workbook wb)
+    {
+        wb.DefinedNameMap.Remove(newName, out var refersTo);
+        wb.DefinedNameMap[_oldKey] = refersTo;
+        wb.RestoreFormulas(_formulas);
+        wb.Notify(StructureChangeKind.DefinedNamesChanged, null);
+    }
+}

@@ -33794,6 +33794,31 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DefineNameCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RenameNameCommand">
+            <summary>
+            Renames a defined name. Every formula, defined name, conditional format, validation, table formula, chart series and link location that
+            uses the name is rewritten to the new name.
+            </summary>
+            <param name="name">The current name (case-insensitive).</param>
+            <param name="newName">The new name.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RenameNameCommand.#ctor(System.String,System.String)">
+            <summary>
+            Renames a defined name. Every formula, defined name, conditional format, validation, table formula, chart series and link location that
+            uses the name is rewritten to the new name.
+            </summary>
+            <param name="name">The current name (case-insensitive).</param>
+            <param name="newName">The new name.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RenameNameCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RenameNameCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RenameNameCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CreateTableCommand">
             <summary>
             Turns a range into a table with the next free name <c>TableN</c>. With headers, the first row holds the column names (empty and

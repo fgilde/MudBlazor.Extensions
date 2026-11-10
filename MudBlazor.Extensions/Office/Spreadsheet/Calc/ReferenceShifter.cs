@@ -92,6 +92,22 @@ public static class ReferenceShifter
         return row >= 0 && row < CellRef.MaxRows && col >= 0 && col < CellRef.MaxColumns ? c with { Row = row, Column = col } : null;
     }
 
+    internal static string RenameName(string formula, string oldName, string newName)
+    {
+        if (string.IsNullOrEmpty(formula) || formula.IndexOf(oldName, StringComparison.OrdinalIgnoreCase) < 0) return formula;
+        StringBuilder sb = null;
+        var last = 0;
+        foreach (var t in FormulaLexer.Tokenize(formula, true))
+        {
+            if (t.Kind != FormulaTokenKind.Name || !Same(t.Text, oldName)) continue;
+            sb ??= new StringBuilder(formula.Length + newName.Length);
+            sb.Append(formula, last, t.Start - last).Append(newName);
+            last = t.Start + t.Text.Length;
+        }
+
+        return sb == null ? formula : sb.Append(formula, last, formula.Length - last).ToString();
+    }
+
     internal static bool CanReference(string formula, string sheet) =>
         formula != null && formula.Contains('!') && (formula.Contains(sheet, StringComparison.OrdinalIgnoreCase)
                                                      || formula.Contains(sheet.Replace("'", "''"), StringComparison.OrdinalIgnoreCase));
