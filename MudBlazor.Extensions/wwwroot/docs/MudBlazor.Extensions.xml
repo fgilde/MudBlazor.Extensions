@@ -19530,6 +19530,9 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Master">
             <summary>The master used to resolve theme colours if the shape has none of its own.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Inherited">
+            <summary>True for a shape of the layout or master: it is drawn behind the slide's shapes and takes no pointer events.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideText">
             <summary>Shows the text of a shape. The text is rendered as text nodes, never as markup.</summary>
         </member>
@@ -31691,6 +31694,9 @@
         <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other">
             <summary>A gradient, pattern, picture or group fill; kept unchanged when the file is written.</summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Picture">
+            <summary>A picture (<c>a:blipFill</c>); only used by <see cref="T:MudBlazor.Extensions.Office.Presentation.SlideBackground"/>, picture-filled shapes report <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/>.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.ShapeFill">
             <summary>The fill of a shape.</summary>
             <param name="Kind">The kind of fill.</param>
@@ -31777,6 +31783,36 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeTransform.FlipV">
             <summary>True if the shape is mirrored vertically.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SlideBackground">
+            <summary>The background of a slide, layout or master.</summary>
+            <param name="Kind">
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/> for a gradient or pattern, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Picture"/> or
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None"/>.
+            </param>
+            <param name="Color">The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>; the first stop of a gradient; null for a picture or no fill.</param>
+            <param name="ImagePart">The image part of a picture background, or null.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SlideBackground.#ctor(MudBlazor.Extensions.Office.Presentation.ShapeFillKind,System.String,System.String)">
+            <summary>The background of a slide, layout or master.</summary>
+            <param name="Kind">
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/> for a gradient or pattern, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Picture"/> or
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None"/>.
+            </param>
+            <param name="Color">The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>; the first stop of a gradient; null for a picture or no fill.</param>
+            <param name="ImagePart">The image part of a picture background, or null.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideBackground.Kind">
+            <summary>
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/> for a gradient or pattern, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Picture"/> or
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideBackground.Color">
+            <summary>The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>; the first stop of a gradient; null for a picture or no fill.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideBackground.ImagePart">
+            <summary>The image part of a picture background, or null.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PptxWriter">
             <summary>
@@ -31972,6 +32008,9 @@
         <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Version">
             <summary>Incremented by every change of the slide; use it as render key.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Background">
+            <summary>The slide's own background, or null if it is inherited from the layout or master.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.SlideLayout">
             <summary>A slide layout; its placeholders give slides their default positions and text styles.</summary>
         </member>
@@ -31985,7 +32024,10 @@
             <summary>The master this layout belongs to.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.SlideLayout.Shapes">
-            <summary>The layout's shapes, including its placeholders.</summary>
+            <summary>The layout's shapes that are not placeholders, such as logos, bands and lines; they are drawn behind the slide's shapes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideLayout.Background">
+            <summary>The layout's own background, or null if it is inherited from the master.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.SlideMaster">
             <summary>A slide master with its theme, text styles, shapes and layouts.</summary>
@@ -31997,7 +32039,10 @@
             <summary>The layouts of this master in file order.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.SlideMaster.Shapes">
-            <summary>The master's shapes, including its placeholders.</summary>
+            <summary>The master's shapes that are not placeholders, such as logos, bands and lines; they are drawn behind layout and slide shapes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideMaster.Background">
+            <summary>The master's background, or null if it has none.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.RunFormat">
             <summary>Character formatting of a text run; null properties are inherited.</summary>

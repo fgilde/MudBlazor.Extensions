@@ -83,21 +83,26 @@ internal static class PptxReader
             && opc.ResolveTarget(part, themeRel.Target) is var themePart && opc.Entry(themePart) != null)
         {
             var theme = opc.ReadXml(themePart);
+            master.ThemePart = themePart;
+            master.FormatScheme = theme.Descendants(A + "fmtScheme").FirstOrDefault();
             master.Theme = ThemeColors.Read(theme);
             master.MajorFont = (string)theme.Descendants(A + "majorFont").FirstOrDefault()?.Element(A + "latin")?.Attribute("typeface");
             master.MinorFont = (string)theme.Descendants(A + "minorFont").FirstOrDefault()?.Element(A + "latin")?.Attribute("typeface");
         }
 
+        master.Background = ReadBackground(opc, part, rels, root, master);
         master.ShapeList.AddRange(new ShapeReader(opc, part, rels, master, [], false).ReadTree(root));
         foreach (var id in Ids(root, "sldLayoutIdLst"))
             if (Target(opc, part, rels, id) is { } layoutPart)
             {
                 var layoutRoot = opc.ReadXml(layoutPart).Root!;
+                var layoutRels = opc.Relationships(layoutPart);
                 var layout = new SlideLayout
                 {
-                    PartName = layoutPart, Master = master, Name = (string)layoutRoot.Element(P + "cSld")?.Attribute("name"), Type = (string)layoutRoot.Attribute("type")
+                    PartName = layoutPart, Master = master, Name = (string)layoutRoot.Element(P + "cSld")?.Attribute("name"), Type = (string)layoutRoot.Attribute("type"),
+                    Background = ReadBackground(opc, layoutPart, layoutRels, layoutRoot, master), ShowMasterShapes = ShowMasterShapes(layoutRoot)
                 };
-                layout.ShapeList.AddRange(new ShapeReader(opc, layoutPart, opc.Relationships(layoutPart), master, master.ShapeList, false).ReadTree(layoutRoot));
+                layout.ShapeList.AddRange(new ShapeReader(opc, layoutPart, layoutRels, master, master.ShapeList, false).ReadTree(layoutRoot));
                 master.LayoutList.Add(layout);
             }
 
@@ -115,6 +120,8 @@ internal static class PptxReader
             Hidden = (string)xml.Root!.Attribute("show") is "0" or "false"
         };
         var master = slide.Layout?.Master;
+        slide.Background = ReadBackground(opc, part, rels, xml.Root, master);
+        slide.ShowMasterShapes = ShowMasterShapes(xml.Root);
         slide.ShapeList.AddRange(new ShapeReader(opc, part, rels, master, (IReadOnlyList<SlideShape>)slide.Layout?.ShapeList ?? [], true).ReadTree(xml.Root));
 
         var notesPart = Related(opc, part, rels, "/notesSlide");
@@ -126,6 +133,39 @@ internal static class PptxReader
             Slide = slide, PartName = part, RelationshipId = relationshipId, SlideId = slideId, Xml = xml, Relationships = rels, NotesPart = notesPart, NotesXml = notesXml
         };
     }
+
+    private static SlideBackground ReadBackground(OpcPackage opc, string part, IReadOnlyList<OpcRelationship> rels, XElement root, SlideMaster master)
+    {
+        var background = root.Element(P + "cSld")?.Element(P + "bg");
+        if (background?.Element(P + "bgPr") is { } properties) return Background(opc, part, rels, ShapeReader.FillOf(properties));
+        if (background?.Element(P + "bgRef") is not { } reference) return null;
+        var index = Long((string)reference.Attribute("idx")) ?? 0;
+        if (index is 0 or 1000) return new SlideBackground(ShapeFillKind.None, null, null);
+        var color = reference.Elements().FirstOrDefault();
+        var style = master?.FormatScheme?.Element(A + (index > 1000 ? "bgFillStyleLst" : "fillStyleLst"))?.Elements().ElementAtOrDefault((int)(index % 1000) - 1);
+        if (style == null) return new SlideBackground(ShapeFillKind.Solid, ColorResolver.FromXml(color), null);
+        style = new XElement(style);
+        if (color != null)
+            foreach (var placeholder in style.Descendants(A + "schemeClr").Where(c => (string)c.Attribute("val") == "phClr").ToList())
+                placeholder.ReplaceWith(new XElement(color.Name, color.Attributes(), color.Elements(), placeholder.Elements()));
+        return Background(opc, master.ThemePart, opc.Relationships(master.ThemePart), style);
+    }
+
+    private static SlideBackground Background(OpcPackage opc, string part, IReadOnlyList<OpcRelationship> rels, XElement fill) => fill?.Name.LocalName switch
+    {
+        null => null,
+        "noFill" => new SlideBackground(ShapeFillKind.None, null, null),
+        "solidFill" => new SlideBackground(ShapeFillKind.Solid, ShapeReader.FillColor(fill), null),
+        "blipFill" => new SlideBackground(ShapeFillKind.Picture, null, EmbeddedPart(opc, part, rels, fill)),
+        _ => new SlideBackground(ShapeFillKind.Other, ShapeReader.FillColor(fill), null)
+    };
+
+    internal static string EmbeddedPart(OpcPackage opc, string part, IReadOnlyList<OpcRelationship> rels, XElement blipFill) =>
+        (string)blipFill?.Element(A + "blip")?.Attribute(R + "embed") is { } embed && rels.FirstOrDefault(r => r.Id == embed && r.TargetMode == null) is { } rel
+            ? opc.ResolveTarget(part, rel.Target)
+            : null;
+
+    private static bool ShowMasterShapes(XElement root) => (string)root.Attribute("showMasterSp") is not ("0" or "false");
 
     internal static XElement NotesBody(XDocument notes) =>
         notes.Descendants(P + "sp").FirstOrDefault(sp => (string)sp.Descendants(P + "ph").FirstOrDefault()?.Attribute("type") == "body");

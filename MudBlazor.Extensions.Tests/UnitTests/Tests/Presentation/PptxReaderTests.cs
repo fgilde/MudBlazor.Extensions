@@ -275,4 +275,77 @@ public class PptxReaderTests
         Assert.True(presentation.Slides[0].Hidden);
         Assert.False(presentation.Slides[1].Hidden);
     }
+
+    [Fact]
+    public void Reader_SlideBackgroundSolid()
+    {
+        var presentation = new PptxBuilder
+            {
+                LayoutBackground = "<p:bg><p:bgPr><a:gradFill><a:gsLst><a:gs pos=\"0\"><a:srgbClr val=\"445566\"/></a:gs><a:gs pos=\"100000\"><a:srgbClr val=\"000000\"/></a:gs></a:gsLst></a:gradFill></p:bgPr></p:bg>"
+            }
+            .Slide("", background: "<p:bg><p:bgPr><a:solidFill><a:srgbClr val=\"112233\"/></a:solidFill><a:effectLst/></p:bgPr></p:bg>")
+            .Slide("")
+            .Load();
+
+        var own = presentation.Slides[0];
+        Assert.Equal(new SlideBackground(ShapeFillKind.Solid, "#112233", null), own.Background);
+        Assert.Same(own.Background, SlideBackground.EffectiveBackground(own));
+        var inheriting = presentation.Slides[1];
+        Assert.Null(inheriting.Background);
+        Assert.Equal(new SlideBackground(ShapeFillKind.Other, "#445566", null), inheriting.Layout.Background);
+        Assert.Same(inheriting.Layout.Background, SlideBackground.EffectiveBackground(inheriting));
+        Assert.Null(inheriting.Layout.Master.Background);
+    }
+
+    [Fact]
+    public void Reader_BackgroundInheritedFromMaster_ViaBgRef()
+    {
+        var presentation = new PptxBuilder
+            {
+                MasterBackground = "<p:bg><p:bgRef idx=\"1002\"><a:schemeClr val=\"bg2\"/></p:bgRef></p:bg>",
+                ThemeFormat = "<a:fmtScheme name=\"Test\"><a:fillStyleLst/><a:lnStyleLst/><a:effectStyleLst/><a:bgFillStyleLst>" +
+                              "<a:solidFill><a:schemeClr val=\"phClr\"/></a:solidFill>" +
+                              "<a:solidFill><a:schemeClr val=\"phClr\"><a:lumMod val=\"50000\"/></a:schemeClr></a:solidFill>" +
+                              "</a:bgFillStyleLst></a:fmtScheme>"
+            }
+            .Slide("")
+            .Load();
+        var fallback = new PptxBuilder().ThemeColor("lt1", "FEFEFE").Slide("").Load();
+
+        var slide = presentation.Slides[0];
+        Assert.Null(slide.Background);
+        Assert.Null(slide.Layout.Background);
+        Assert.Equal(new SlideBackground(ShapeFillKind.Solid, "scheme:bg2 lumMod=50000", null), slide.Layout.Master.Background);
+        Assert.Same(slide.Layout.Master.Background, SlideBackground.EffectiveBackground(slide));
+        var white = SlideBackground.EffectiveBackground(fallback.Slides[0]);
+        Assert.Equal(ShapeFillKind.Solid, white.Kind);
+        Assert.Equal("#FEFEFE", ColorResolver.Resolve(white.Color, fallback.Masters[0]));
+    }
+
+    [Fact]
+    public void Reader_PictureBackground_ImagePart()
+    {
+        var builder = new PptxBuilder();
+        builder.ExtraParts["ppt/media/bg.png"] = (null, "png");
+        var presentation = builder
+            .Slide("", rels: "<Relationship Id=\"rId5\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/image\" Target=\"../media/bg.png\"/>",
+                background: "<p:bg><p:bgPr><a:blipFill><a:blip r:embed=\"rId5\"/><a:stretch><a:fillRect/></a:stretch></a:blipFill><a:effectLst/></p:bgPr></p:bg>")
+            .Load();
+
+        Assert.Equal(new SlideBackground(ShapeFillKind.Picture, null, "/ppt/media/bg.png"), presentation.Slides[0].Background);
+    }
+
+    [Fact]
+    public void Reader_LayoutAndMasterShapes_ExcludePlaceholders()
+    {
+        var builder = new PptxBuilder();
+        builder.MasterShapes += Shape(10, "Logo", Xfrm(0, 0, 100, 100));
+        builder.LayoutShapes += Shape(11, "Band", Xfrm(0, 0, 100, 100));
+        var presentation = builder.Slide(Placeholder(2, "Title 1", "type=\"title\"", "")).Load();
+
+        var layout = presentation.Layouts[0];
+        Assert.Equal(["Logo"], layout.Master.Shapes.Select(s => s.Name));
+        Assert.Equal(["Band"], layout.Shapes.Select(s => s.Name));
+        Assert.Equal(new ShapeTransform(1000000, 500000, 8000000, 1000000), presentation.Slides[0].Shapes[0].ResolvedTransform);
+    }
 }

@@ -24,7 +24,22 @@ public partial class MudExSlideView
     [Parameter] public bool Interactive { get; set; }
 
     private string RootStyle =>
-        $"aspect-ratio:{Presentation.SlideWidth.ToString(CultureInfo.InvariantCulture)}/{Presentation.SlideHeight.ToString(CultureInfo.InvariantCulture)};{Style}";
+        $"aspect-ratio:{Presentation.SlideWidth.ToString(CultureInfo.InvariantCulture)}/{Presentation.SlideHeight.ToString(CultureInfo.InvariantCulture)};{BackgroundStyle}{Style}";
+
+    private string BackgroundStyle
+    {
+        get
+        {
+            var background = SlideBackground.EffectiveBackground(Slide);
+            return background.Kind switch
+            {
+                ShapeFillKind.Picture when Images?.UrlFor(background.ImagePart) is { } url =>
+                    $"background-image:url(\"{CssString(url)}\");background-size:cover;background-position:center;",
+                ShapeFillKind.Solid or ShapeFillKind.Other when ColorResolver.Resolve(background.Color, Slide.Layout?.Master) is { } color => $"background-color:{color};",
+                _ => ""
+            };
+        }
+    }
 
     /// <inheritdoc />
     protected override void OnInitialized()
@@ -40,6 +55,9 @@ public partial class MudExSlideView
         Remember();
         return true;
     }
+
+    private static string CssString(string value) =>
+        string.Concat(value.Where(c => !char.IsControl(c))).Replace("\\", "\\\\", StringComparison.Ordinal).Replace("\"", "\\\"", StringComparison.Ordinal);
 
     private void Remember() => (_rendered, _renderedVersion, _renderedInteractive) = (Slide, Slide?.Version ?? 0, Interactive);
 }

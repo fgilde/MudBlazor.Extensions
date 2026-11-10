@@ -14,7 +14,7 @@
 .mud-ex-slide-shape {
   position: absolute;
   box-sizing: border-box;
-  &.mud-ex-slide-group {
+  &.mud-ex-slide-group, &.mud-ex-slide-inherited {
     pointer-events: none;
   }
 }

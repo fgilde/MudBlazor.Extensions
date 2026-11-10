@@ -31,6 +31,16 @@ public sealed class Slide
     /// <summary>Incremented by every change of the slide; use it as render key.</summary>
     public int Version { get; internal set; }
 
+    /// <summary>The slide's own background, or null if it is inherited from the layout or master.</summary>
+    public SlideBackground Background { get; internal set; }
+
+    internal bool ShowMasterShapes { get; set; } = true;
+
+    internal IEnumerable<SlideShape> InheritedShapes =>
+        !ShowMasterShapes || Layout == null
+            ? []
+            : (Layout.ShowMasterShapes && Layout.Master != null ? Layout.Master.Shapes : []).Concat(Layout.Shapes);
+
     internal List<SlideShape> ShapeList { get; } = [];
 
     internal Slide CopyOf { get; init; }

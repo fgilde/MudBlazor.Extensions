@@ -8955,7 +8955,7 @@ textarea.mud-ex-ssg-note-text {
   position: absolute;
   box-sizing: border-box;
 }
-.mud-ex-slide-shape.mud-ex-slide-group {
+.mud-ex-slide-shape.mud-ex-slide-group, .mud-ex-slide-shape.mud-ex-slide-inherited {
   pointer-events: none;
 }
 .mud-ex-slide-geometry {

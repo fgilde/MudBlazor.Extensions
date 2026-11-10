@@ -126,4 +126,58 @@ public class SlideViewTests
         Assert.Contains("width:10%", style);
         Assert.Contains("height:10%", style);
     }
+
+    [Fact]
+    public void SlideView_RendersBackgroundColor()
+    {
+        var builder = new PptxBuilder();
+        builder.ExtraParts["ppt/media/bg.png"] = (null, "png");
+        var presentation = builder
+            .Slide("", background: "<p:bg><p:bgPr><a:solidFill><a:srgbClr val=\"112233\"/></a:solidFill></p:bgPr></p:bg>")
+            .Slide("", rels: "<Relationship Id=\"rId5\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/image\" Target=\"../media/bg.png\"/>",
+                background: "<p:bg><p:bgPr><a:blipFill><a:blip r:embed=\"rId5\"/></a:blipFill></p:bgPr></p:bg>")
+            .Load();
+        using var context = new TestContext();
+        using var second = new TestContext();
+
+        var solid = Render(context, presentation).Find(".mud-ex-slide").GetAttribute("style");
+        var picture = Render(second,presentation, presentation.Slides[1]).Find(".mud-ex-slide").GetAttribute("style");
+
+        Assert.Contains("background-color:#112233", solid);
+        Assert.Contains("background-image:url(\"data:image/png;base64,", picture);
+        Assert.Contains("background-size:cover", picture);
+    }
+
+    [Fact]
+    public void SlideView_RendersMasterShapesBelowSlideShapes()
+    {
+        var builder = new PptxBuilder();
+        builder.MasterShapes += Shape(10, "Logo", Xfrm(0, 0, 100, 100) + "<a:solidFill><a:srgbClr val=\"00FF00\"/></a:solidFill>");
+        builder.LayoutShapes += Shape(11, "Band", Xfrm(0, 0, 100, 100) + "<a:solidFill><a:srgbClr val=\"0000FF\"/></a:solidFill>");
+        var presentation = builder.Slide(Shape(2, "Box", Xfrm(0, 0, 100, 100) + Solid)).Load();
+        using var context = new TestContext();
+
+        var cut = Render(context, presentation);
+
+        Assert.Equal(["#00FF00", "#0000FF", "#FF0000"], cut.FindAll(".mud-ex-slide-shape path").Select(p => p.GetAttribute("fill")));
+        Assert.Equal(["2"], cut.FindAll("[data-shape-id]").Select(e => e.GetAttribute("data-shape-id")));
+        Assert.Equal(2, cut.FindAll(".mud-ex-slide-inherited").Count);
+    }
+
+    [Fact]
+    public void SlideView_ShowMasterSpFalse_HidesMasterShapes()
+    {
+        var builder = new PptxBuilder { LayoutAttributes = " showMasterSp=\"0\"" };
+        builder.MasterShapes += Shape(10, "Logo", Xfrm(0, 0, 100, 100) + "<a:solidFill><a:srgbClr val=\"00FF00\"/></a:solidFill>");
+        builder.LayoutShapes += Shape(11, "Band", Xfrm(0, 0, 100, 100) + "<a:solidFill><a:srgbClr val=\"0000FF\"/></a:solidFill>");
+        var presentation = builder.Slide("").Slide("", "showMasterSp=\"0\"").Load();
+        using var context = new TestContext();
+        using var second = new TestContext();
+
+        var layoutOnly = Render(context, presentation).FindAll(".mud-ex-slide-shape path").Select(p => p.GetAttribute("fill"));
+        var none = Render(second,presentation, presentation.Slides[1]).FindAll(".mud-ex-slide-shape");
+
+        Assert.Equal(["#0000FF"], layoutOnly);
+        Assert.Empty(none);
+    }
 }

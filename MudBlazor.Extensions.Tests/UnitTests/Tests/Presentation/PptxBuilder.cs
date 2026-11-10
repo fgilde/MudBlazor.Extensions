@@ -13,7 +13,7 @@ internal sealed class PptxBuilder
 
     private const string RelNs = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
 
-    private readonly List<(string Shapes, string Attributes, string? Notes, string Rels, string Tail)> _slides = [];
+    private readonly List<(string Shapes, string Attributes, string? Notes, string Rels, string Tail, string Background)> _slides = [];
 
     private readonly Dictionary<string, string> _theme = new()
     {
@@ -22,6 +22,14 @@ internal sealed class PptxBuilder
     };
 
     public string ExtraSlideIds { get; set; } = "";
+
+    public string MasterBackground { get; set; } = "";
+
+    public string LayoutBackground { get; set; } = "";
+
+    public string LayoutAttributes { get; set; } = "";
+
+    public string ThemeFormat { get; set; } = "";
 
     public string CustomShows { get; set; } = "";
 
@@ -63,9 +71,9 @@ internal sealed class PptxBuilder
         return this;
     }
 
-    public PptxBuilder Slide(string shapes, string attributes = "", string? notes = null, string rels = "", string tail = "")
+    public PptxBuilder Slide(string shapes, string attributes = "", string? notes = null, string rels = "", string tail = "", string background = "")
     {
-        _slides.Add((shapes, attributes, notes, rels, tail));
+        _slides.Add((shapes, attributes, notes, rels, tail, background));
         return this;
     }
 
@@ -130,22 +138,22 @@ internal sealed class PptxBuilder
         Add("ppt/theme/theme1.xml", "officedocument.theme",
             $"<a:theme {Ns} name=\"Test\"><a:themeElements><a:clrScheme name=\"Test\">{colors}</a:clrScheme>" +
             "<a:fontScheme name=\"Test\"><a:majorFont><a:latin typeface=\"Major Font\"/></a:majorFont><a:minorFont><a:latin typeface=\"Minor Font\"/></a:minorFont></a:fontScheme>" +
-            "</a:themeElements></a:theme>");
+            $"{ThemeFormat}</a:themeElements></a:theme>");
         Add("ppt/slideMasters/slideMaster1.xml", "officedocument.presentationml.slideMaster",
-            $"<p:sldMaster {Ns}><p:cSld><p:spTree>{TreeStart}{MasterShapes}</p:spTree></p:cSld><p:clrMap {ClrMap}/>" +
+            $"<p:sldMaster {Ns}><p:cSld>{MasterBackground}<p:spTree>{TreeStart}{MasterShapes}</p:spTree></p:cSld><p:clrMap {ClrMap}/>" +
             $"<p:sldLayoutIdLst><p:sldLayoutId id=\"2147483649\" r:id=\"rId1\"/></p:sldLayoutIdLst><p:txStyles>{TxStyles}</p:txStyles></p:sldMaster>");
         Add("ppt/slideMasters/_rels/slideMaster1.xml.rels", null,
             Rels(("rId1", "slideLayout", "../slideLayouts/slideLayout1.xml"), ("rId2", "theme", "../theme/theme1.xml")));
         Add("ppt/slideLayouts/slideLayout1.xml", "officedocument.presentationml.slideLayout",
-            $"<p:sldLayout {Ns} type=\"obj\"><p:cSld name=\"Title and Content\"><p:spTree>{TreeStart}{LayoutShapes}</p:spTree></p:cSld></p:sldLayout>");
+            $"<p:sldLayout {Ns} type=\"obj\"{LayoutAttributes}><p:cSld name=\"Title and Content\">{LayoutBackground}<p:spTree>{TreeStart}{LayoutShapes}</p:spTree></p:cSld></p:sldLayout>");
         Add("ppt/slideLayouts/_rels/slideLayout1.xml.rels", null, Rels(("rId1", "slideMaster", "../slideMasters/slideMaster1.xml")));
 
         for (var i = 0; i < _slides.Count; i++)
         {
-            var (shapes, attributes, notes, rels, tail) = _slides[i];
+            var (shapes, attributes, notes, rels, tail, background) = _slides[i];
             var n = i + 1;
             Add($"ppt/slides/slide{n}.xml", "officedocument.presentationml.slide",
-                $"<p:sld {Ns} {attributes}><p:cSld><p:spTree>{TreeStart}{shapes}</p:spTree></p:cSld>{tail}</p:sld>");
+                $"<p:sld {Ns} {attributes}><p:cSld>{background}<p:spTree>{TreeStart}{shapes}</p:spTree></p:cSld>{tail}</p:sld>");
             var slideRels = new List<(string, string, string)> { ("rId1", "slideLayout", "../slideLayouts/slideLayout1.xml") };
             if (notes != null)
             {

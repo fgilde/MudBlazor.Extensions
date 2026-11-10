@@ -3,6 +3,8 @@ namespace MudBlazor.Extensions.Office.Presentation;
 /// <summary>A slide layout; its placeholders give slides their default positions and text styles.</summary>
 public sealed class SlideLayout
 {
+    private List<SlideShape> _shapes;
+
     internal SlideLayout()
     {
     }
@@ -16,8 +18,13 @@ public sealed class SlideLayout
     /// <summary>The master this layout belongs to.</summary>
     public SlideMaster Master { get; internal set; }
 
-    /// <summary>The layout's shapes, including its placeholders.</summary>
-    public IReadOnlyList<SlideShape> Shapes => ShapeList;
+    /// <summary>The layout's shapes that are not placeholders, such as logos, bands and lines; they are drawn behind the slide's shapes.</summary>
+    public IReadOnlyList<SlideShape> Shapes => _shapes ??= ShapeList.Where(s => s.Placeholder == null).ToList();
+
+    /// <summary>The layout's own background, or null if it is inherited from the master.</summary>
+    public SlideBackground Background { get; internal set; }
+
+    internal bool ShowMasterShapes { get; set; } = true;
 
     internal List<SlideShape> ShapeList { get; } = [];
 

@@ -42,12 +42,8 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
                 ReadAutoShape(auto, e);
                 break;
             case PictureShape picture:
-                var embed = (string)e.Element(P + "blipFill")?.Element(A + "blip")?.Attribute(R + "embed");
-                if (rels.FirstOrDefault(r => r.Id == embed && r.TargetMode == null) is { } rel)
-                {
-                    picture.ImagePart = opc.ResolveTarget(part, rel.Target);
-                    picture.ContentType = opc.ContentType(picture.ImagePart);
-                }
+                picture.ImagePart = EmbeddedPart(opc, part, rels, e.Element(P + "blipFill"));
+                if (picture.ImagePart != null) picture.ContentType = opc.ContentType(picture.ImagePart);
 
                 break;
             case GroupShape group:
@@ -188,10 +184,10 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
             _ => "other"
         };
 
-    private static XElement FillOf(XElement properties) =>
+    internal static XElement FillOf(XElement properties) =>
         properties?.Elements().FirstOrDefault(f => f.Name.LocalName is "noFill" or "solidFill" or "gradFill" or "pattFill" or "blipFill" or "grpFill");
 
-    private static string FillColor(XElement fill) => ColorResolver.FromXml(fill.Name.LocalName switch
+    internal static string FillColor(XElement fill) => ColorResolver.FromXml(fill.Name.LocalName switch
     {
         "solidFill" => fill.Elements().FirstOrDefault(),
         "gradFill" => fill.Element(A + "gsLst")?.Elements(A + "gs").FirstOrDefault()?.Elements().FirstOrDefault(),

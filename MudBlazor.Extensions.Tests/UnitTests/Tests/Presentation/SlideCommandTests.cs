@@ -274,9 +274,9 @@ public class SlideCommandTests
         var slide = presentation.Slides[1];
         Assert.Same(command.Slide, slide);
         Assert.Same(layout, slide.Layout);
-        Assert.Equal(layout.Shapes.Select(s => s.Placeholder), slide.Shapes.Select(s => s.Placeholder));
+        Assert.Equal(layout.ShapeList.Select(s => s.Placeholder), slide.Shapes.Select(s => s.Placeholder));
         Assert.All(slide.Shapes, s => Assert.Null(s.Transform));
-        Assert.Equal(layout.Shapes.Select(s => s.ResolvedTransform), slide.Shapes.Select(s => s.ResolvedTransform));
+        Assert.Equal(layout.ShapeList.Select(s => s.ResolvedTransform), slide.Shapes.Select(s => s.ResolvedTransform));
         Assert.All(slide.Shapes.Cast<AutoShape>(), s => Assert.Equal("", string.Concat(s.Text.Paragraphs.SelectMany(p => p.Runs).Select(r => r.Text))));
         Assert.Equal(2, Ids(slide.Shapes).Distinct().Count());
     }

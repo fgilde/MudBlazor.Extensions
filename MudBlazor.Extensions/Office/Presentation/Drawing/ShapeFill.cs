@@ -13,7 +13,10 @@ public enum ShapeFillKind
     Inherited,
 
     /// <summary>A gradient, pattern, picture or group fill; kept unchanged when the file is written.</summary>
-    Other
+    Other,
+
+    /// <summary>A picture (<c>a:blipFill</c>); only used by <see cref="SlideBackground"/>, picture-filled shapes report <see cref="Other"/>.</summary>
+    Picture
 }
 
 /// <summary>The fill of a shape.</summary>

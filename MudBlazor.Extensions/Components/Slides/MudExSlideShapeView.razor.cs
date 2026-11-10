@@ -19,6 +19,9 @@ public partial class MudExSlideShapeView
     /// <summary>The master used to resolve theme colours if the shape has none of its own.</summary>
     [Parameter] public SlideMaster Master { get; set; }
 
+    /// <summary>True for a shape of the layout or master: it is drawn behind the slide's shapes and takes no pointer events.</summary>
+    [Parameter] public bool Inherited { get; set; }
+
     private SlideMaster ColorMaster => Shape.Master ?? Master;
 
     private string ShapeClass => Shape switch
@@ -26,7 +29,7 @@ public partial class MudExSlideShapeView
         OpaqueShape => "mud-ex-slide-shape mud-ex-slide-opaque",
         GroupShape => "mud-ex-slide-shape mud-ex-slide-group",
         _ => "mud-ex-slide-shape"
-    };
+    } + (Inherited ? " mud-ex-slide-inherited" : "");
 
     private string FrameStyle
     {
