@@ -1,0 +1,25 @@
+@page "/slides-playground"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Slides
+@using MudBlazor.Extensions.Office.Presentation
+
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "Playground", Order = 100, Group = "Slide Editor", Icon = Icons.Material.Outlined.Slideshow, ForComponentTypes = new[] { typeof(MudExSlideEditor) })]
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <div style="width: 100%; height: 560px;">
+                <MudExSlideEditor @ref="ComponentRef" Presentation="_presentation" />
+            </div>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@ComponentRef"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    MudExSlideEditor? ComponentRef;
+    private readonly Presentation _presentation = SlidesSamples.CreateDeck();
+}

@@ -3,7 +3,7 @@
 
 @using MainSample.WebAssembly.Examples.FileDisplay
 
-@attribute [Demo(Group = "File Handling", Name = "File Display Edit Mode", Order = 3, Icon = Icons.Material.Outlined.EditNote, ForComponentTypes = new[] { typeof(MudExFileDisplay), typeof(MudExFileDisplayCode) }, Documentation = "Edit text and code files in MudExFileDisplay, save them locally or hand the save over to your own server code.")]
+@attribute [DemoNew(Group = "File Handling", Name = "File Display Edit Mode", Order = 3, Icon = Icons.Material.Outlined.EditNote, ForComponentTypes = new[] { typeof(MudExFileDisplay), typeof(MudExFileDisplayCode) }, Documentation = "Edit text and code files in MudExFileDisplay, save them locally or hand the save over to your own server code.")]
 
 <MudPaper Class="pa-6 mb-6">
     <MudText Typo="Typo.h4" GutterBottom="true">
@@ -51,6 +51,23 @@
                 @L["The handler copies the edited content into memory, shows it in the second read-only viewer and reports success with a snackbar."]
             </MudText>
             <FileDisplayServerSaveExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. Presentations (pptx)"
+                  NavTitle="Presentations"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "AllowEdit adds the edit toggle for pptx files",
+                                  "The slide editor is picked automatically for them",
+                                  "Ctrl+S saves, SaveRequested works like for every other editor"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["sample.pptx is opened in the viewer. Switch to edit mode to get the slide editor with its ribbon."]
+            </MudText>
+            <FileDisplayPptxExample />
         </DemoContent>
     </MudExDemoBox>
 

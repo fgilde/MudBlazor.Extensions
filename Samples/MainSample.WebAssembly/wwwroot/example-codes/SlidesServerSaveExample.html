@@ -1,0 +1,30 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Office.Presentation
+@inject ISnackbar Snackbar
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.caption&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Last save: {0}&quot;, _last]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 600px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExSlideEditor @ref=&quot;ComponentRef&quot;
+                      Presentation=&quot;_presentation&quot;
+                      AllowLocalSave=&quot;false&quot;
+                      SaveRequested=&quot;@OnSaveRequested&quot; /&gt;
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private readonly Presentation _presentation = SlidesSamples.CreateDeck();
+    private string _last = &quot;-&quot;;
+
+    private async Task OnSaveRequested(MudExFileSaveRequest request)
+    {
+        var copy = new MemoryStream();
+        await request.Content.Stream.CopyToAsync(copy);
+        request.Handled = true;
+        _last = $&quot;{request.Content.FileName}, {copy.Length:N0} bytes&quot;;
+        Snackbar.Add(L[&quot;Saved {0} to the server (simulated)&quot;, _last], Severity.Success);
+    }
+}
+
+</pre></div>

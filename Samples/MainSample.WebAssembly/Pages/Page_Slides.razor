@@ -1,0 +1,78 @@
+@page "/slides"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Slides
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [DemoNew(Name = "Overview", Group = "Slide Editor", Order = 0, Icon = Icons.Material.Outlined.Slideshow, ForComponentTypes = new[] { typeof(MudExSlideEditor) }, Documentation = "MudExSlideEditor – a PowerPoint-like editor with ribbon, slide panel, canvas, notes and status bar.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Slide Editor"]
+    </MudText>
+    <MudText Typo="Typo.body1" Class="mb-4">
+        @L["Edit pptx presentations with text, shapes and pictures, a slide panel with drag and drop, speaker notes and undo. The editor fills its container, so give the host element a height."]
+    </MudText>
+    <MudGrid>
+        @foreach (var (title, text) in _tiles)
+        {
+            <MudItem xs="12" sm="6" md="3">
+                <MudPaper Outlined="true" Class="pa-3 fill-height">
+                    <MudText Typo="Typo.subtitle2">@title</MudText>
+                    <MudText Typo="Typo.body2">@text</MudText>
+                </MudPaper>
+            </MudItem>
+        }
+    </MudGrid>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. A deck built in code"
+                  NavTitle="Deck built in code"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Used in this deck"
+                  Features="@(new[]
+                              {
+                                  "Presentation.Create() makes a blank deck, commands fill it",
+                                  "Placeholders with text and bullets",
+                                  "Shapes with preset geometry, fill and outline",
+                                  "A picture and speaker notes on every slide",
+                                  "@bind-Presentation – the deck follows every edit"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SlidesOverviewExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Read-only viewer"
+                  NavTitle="Read-only viewer"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "ReadOnly – no editing, no slide management",
+                                  "Slide panel, notes, zoom and navigation keys still work"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SlidesViewerExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
+
+@code {
+    private static readonly (string Title, string Text)[] _tiles =
+    [
+        ("Canvas editing", "Select, move, resize and rotate shapes with smart guides."),
+        ("Rich text", "Edit text in shapes with fonts, colors, bullets and alignment."),
+        ("Slide panel", "Lazy thumbnails, drag and drop, duplicate, hide and delete."),
+        ("Lossless pptx", "Unmodeled content of the file is kept when you save.")
+    ];
+}
