@@ -347,6 +347,21 @@ public class SpreadsheetGridTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task StructuredReferenceOutsideTable_IsReportedNotThrown()
+    {
+        var wb = Workbook.Create();
+        var errors = new List<Exception>();
+        var cut = Render(wb, p => p.Add(x => x.OnError, (Exception e) => errors.Add(e)));
+
+        Type(cut, "=[Amount]*2");
+        await cut.InvokeAsync(cut.Instance.CommitEditAsync);
+
+        Assert.IsType<ArgumentException>(Assert.Single(errors));
+        Assert.True(cut.Instance.IsEditing);
+        Assert.Null(wb.Sheets[0][R("A1")]);
+    }
+
+    [Fact]
     public async Task PasteHtmlFormula_ShiftsRelativeToTarget()
     {
         var wb = Workbook.Create();
