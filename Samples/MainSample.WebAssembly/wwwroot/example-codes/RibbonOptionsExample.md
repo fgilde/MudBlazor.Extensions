@@ -11,7 +11,7 @@
     <MudItem xs="6" md="3"><MudSwitch T="bool" @bind-Value="_startCollapsed" Color="Color.Primary" Label="@L["Start collapsed"]" /></MudItem>
 </MudGrid>
 
-<RibbonWordLikeExample @key="_startCollapsed"
+<RibbonWordLikeExample RibbonReady="@(r => ComponentRef = r)" @key="_startCollapsed"
                        ShowCommandSearch="@_search"
                        EnableKeyTips="@_keyTips"
                        ShowModeSwitch="@_modeSwitch"
@@ -21,6 +21,8 @@
                        Title="Options.docx" />
 
 @code {
+    protected override void OnInitialized() => ReplacesComponentRef = true;
+
     private bool _search = true, _keyTips = true, _modeSwitch = true, _allowCollapse = true, _snackbar, _startCollapsed;
 }
 

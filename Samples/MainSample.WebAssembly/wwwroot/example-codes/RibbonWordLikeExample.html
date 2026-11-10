@@ -4,7 +4,7 @@
 @inject ISnackbar Snackbar
 
 <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;position: relative; width: @Width; max-width: 100%; border: 1px solid var(--mud-palette-lines-default); overflow: hidden;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
-    &lt;MudExRibbon @ref=&quot;ComponentRef&quot;
+    &lt;MudExRibbon @ref=&quot;_ribbon&quot;
                  Mode=&quot;@Mode&quot;
                  ModeChanged=&quot;@OnModeChanged&quot;
                  Color=&quot;@Color&quot;
@@ -121,6 +121,9 @@
 <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
 
 @code {
+    private MudExRibbon? _ribbon;
+
+    [Parameter] public Action<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">IComponent</span><span class="htmlTagDelimiter">&gt;</span>? RibbonReady { get; set; }
     [Parameter] public MudExRibbonMode Mode { get; set; } = MudExRibbonMode.Classic;
     [Parameter] public EventCallback<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExRibbonMode</span><span class="htmlTagDelimiter">&gt;</span> ModeChanged { get; set; }
     [Parameter] public MudExColor Color { get; set; } = MudBlazor.Color.Primary;
@@ -191,6 +194,18 @@
     {
         _fileMenuOpen = false;
         Log($&quot;File: {action}&quot;);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (RibbonReady == null)
+            await base.OnInitializedAsync();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) ComponentRef = _ribbon;
+        if (firstRender) RibbonReady?.Invoke(_ribbon!);
     }
 }
 

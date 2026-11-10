@@ -11,16 +11,18 @@
     <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudItem</span> <span class="htmlAttributeName">xs</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;6&quot;</span> <span class="htmlAttributeName">md</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;3&quot;</span><span class="htmlTagDelimiter">&gt;</span><span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_startCollapsed&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Start collapsed&quot;]&quot;</span> <span class="htmlTagDelimiter">/&gt;</span><span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>
 <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudGrid</span><span class="htmlTagDelimiter">&gt;</span>
 
-&lt;RibbonWordLikeExample @key=&quot;_startCollapsed&quot;
-                       ShowCommandSearch=&quot;@_search&quot;
-                       EnableKeyTips=&quot;@_keyTips&quot;
-                       ShowModeSwitch=&quot;@_modeSwitch&quot;
-                       AllowCollapse=&quot;@_allowCollapse&quot;
-                       ShowSnackbar=&quot;@_snackbar&quot;
-                       StartCollapsed=&quot;@_startCollapsed&quot;
-                       Title=&quot;Options.docx&quot; /&gt;
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">RibbonWordLikeExample</span> <span class="htmlAttributeName">RibbonReady</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(r =&gt; ComponentRef = r)&quot; @key=&quot;_startCollapsed&quot;</span>
+                       <span class="htmlAttributeName">ShowCommandSearch</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_search&quot;</span>
+                       <span class="htmlAttributeName">EnableKeyTips</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_keyTips&quot;</span>
+                       <span class="htmlAttributeName">ShowModeSwitch</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_modeSwitch&quot;</span>
+                       <span class="htmlAttributeName">AllowCollapse</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_allowCollapse&quot;</span>
+                       <span class="htmlAttributeName">ShowSnackbar</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_snackbar&quot;</span>
+                       <span class="htmlAttributeName">StartCollapsed</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_startCollapsed&quot;</span>
+                       <span class="htmlAttributeName">Title</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Options.docx&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
 
 @code {
+    protected override void OnInitialized() =&gt; ReplacesComponentRef = true;
+
     private bool _search = true, _keyTips = true, _modeSwitch = true, _allowCollapse = true, _snackbar, _startCollapsed;
 }
 

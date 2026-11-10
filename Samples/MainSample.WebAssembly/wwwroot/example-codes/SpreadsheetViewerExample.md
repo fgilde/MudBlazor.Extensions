@@ -3,7 +3,7 @@
 @using MudBlazor.Extensions.Office.Spreadsheet
 
 <div style="width: 100%; height: 420px;">
-    <MudExSpreadsheetEditor Workbook="_workbook" ReadOnly="true" />
+    <MudExSpreadsheetEditor @ref="ComponentRef" Workbook="_workbook" ReadOnly="true" />
 </div>
 
 @code {

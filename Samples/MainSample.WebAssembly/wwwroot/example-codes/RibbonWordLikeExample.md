@@ -4,7 +4,7 @@
 @inject ISnackbar Snackbar
 
 <div style="position: relative; width: @Width; max-width: 100%; border: 1px solid var(--mud-palette-lines-default); overflow: hidden;">
-    <MudExRibbon @ref="ComponentRef"
+    <MudExRibbon @ref="_ribbon"
                  Mode="@Mode"
                  ModeChanged="@OnModeChanged"
                  Color="@Color"
@@ -121,6 +121,9 @@
 </div>
 
 @code {
+    private MudExRibbon? _ribbon;
+
+    [Parameter] public Action<IComponent>? RibbonReady { get; set; }
     [Parameter] public MudExRibbonMode Mode { get; set; } = MudExRibbonMode.Classic;
     [Parameter] public EventCallback<MudExRibbonMode> ModeChanged { get; set; }
     [Parameter] public MudExColor Color { get; set; } = MudBlazor.Color.Primary;
@@ -191,6 +194,18 @@
     {
         _fileMenuOpen = false;
         Log($"File: {action}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (RibbonReady == null)
+            await base.OnInitializedAsync();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) ComponentRef = _ribbon;
+        if (firstRender) RibbonReady?.Invoke(_ribbon!);
     }
 }
 

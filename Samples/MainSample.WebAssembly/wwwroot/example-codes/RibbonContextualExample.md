@@ -5,7 +5,7 @@
 <MudCheckBox T="bool" @bind-Value="_pictureSelected" Color="Color.Primary" Label="@L["Picture selected"]" />
 <MudText Typo="Typo.caption" Class="mb-2">@L["Ticking the box shows the contextual tab Picture format with its own colored header. Unticking it while the tab is active falls back to a visible tab."]</MudText>
 
-<RibbonWordLikeExample PictureSelected="@_pictureSelected" ContextualColor="@((MudExColor)"#C43E1C")" ShowSnackbar="true" Title="Contextual.docx" />
+<RibbonWordLikeExample RibbonReady="@(r => ComponentRef = r)" PictureSelected="@_pictureSelected" ContextualColor="@((MudExColor)"#C43E1C")" ShowSnackbar="true" Title="Contextual.docx" />
 
 @code {
     private bool _pictureSelected;

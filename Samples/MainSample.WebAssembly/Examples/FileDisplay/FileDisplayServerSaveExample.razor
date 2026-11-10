@@ -10,7 +10,7 @@
         @if (_source != null)
         {
             <div style="width: 100%; height: 480px;">
-                <MudExFileDisplay FileName="sample.cs"
+                <MudExFileDisplay @ref="ComponentRef" FileName="sample.cs"
                                   ContentType="text/plain"
                                   ContentStream="@_source"
                                   AllowEdit="true"

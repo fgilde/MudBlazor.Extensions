@@ -17,7 +17,7 @@
 @if (_stream != null)
 {
     <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 520px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
-        &lt;MudExFileDisplay @ref=&quot;_display&quot;
+        &lt;MudExFileDisplay @ref=&quot;ComponentRef&quot;
                           FileName=&quot;sample.cs&quot;
                           ContentType=&quot;text/plain&quot;
                           ContentStream=&quot;@_stream&quot;
@@ -32,7 +32,7 @@
 }
 
 @code {
-    private MudExFileDisplay? _display;
+    private MudExFileDisplay? _display =&gt; ComponentRef as MudExFileDisplay;
     private Stream? _stream;
     private bool _editMode;
     private bool _allowLocalSave = true;

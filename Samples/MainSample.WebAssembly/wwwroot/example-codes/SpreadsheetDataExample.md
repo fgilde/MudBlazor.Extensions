@@ -7,7 +7,7 @@
 </MudAlert>
 
 <div style="width: 100%; height: 560px;">
-    <MudExSpreadsheetEditor @bind-Workbook="_workbook" />
+    <MudExSpreadsheetEditor @ref="ComponentRef" @bind-Workbook="_workbook" />
 </div>
 
 @code {

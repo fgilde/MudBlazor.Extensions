@@ -15,7 +15,7 @@
 @if (_workbook != null)
 {
     <div style="width: 100%; height: 520px;">
-        <MudExSpreadsheetEditor @bind-Workbook="_workbook" />
+        <MudExSpreadsheetEditor @ref="ComponentRef" @bind-Workbook="_workbook" />
     </div>
 }
 

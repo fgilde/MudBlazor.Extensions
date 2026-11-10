@@ -11,7 +11,7 @@
     {
         <div>
             <MudText Typo="Typo.subtitle2" Class="mb-1">@mode</MudText>
-            <RibbonWordLikeExample Mode="@ModeOf(mode)" ModeChanged="@(m => OnModeChanged(mode, m))" Title="@($"{mode}.docx")" Width="@($"{_width}px")" />
+            <RibbonWordLikeExample RibbonReady="@(r => ComponentRef = r)" Mode="@ModeOf(mode)" ModeChanged="@(m => OnModeChanged(mode, m))" Title="@($"{mode}.docx")" Width="@($"{_width}px")" />
         </div>
     }
 </MudStack>

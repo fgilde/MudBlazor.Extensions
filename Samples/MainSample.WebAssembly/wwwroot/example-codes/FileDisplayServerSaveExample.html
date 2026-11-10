@@ -11,13 +11,13 @@
         @if (_source != null)
         {
             <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 480px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
-                <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudExFileDisplay</span> <span class="htmlAttributeName">FileName</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;sample.cs&quot;</span>
-                                  <span class="htmlAttributeName">ContentType</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;text/plain&quot;</span>
-                                  <span class="htmlAttributeName">ContentStream</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@_source&quot;</span>
-                                  <span class="htmlAttributeName">AllowEdit</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span>
-                                  <span class="htmlAttributeName">AllowLocalSave</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;false&quot;</span>
-                                  <span class="htmlAttributeName">SaveRequested</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@OnSaveRequested&quot;</span>
-                                  <span class="htmlAttributeName">Dense</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+                &lt;MudExFileDisplay @ref=&quot;ComponentRef&quot; FileName=&quot;sample.cs&quot;
+                                  ContentType=&quot;text/plain&quot;
+                                  ContentStream=&quot;@_source&quot;
+                                  AllowEdit=&quot;true&quot;
+                                  AllowLocalSave=&quot;false&quot;
+                                  SaveRequested=&quot;@OnSaveRequested&quot;
+                                  Dense=&quot;true&quot; /&gt;
             <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
         }
     <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudItem</span><span class="htmlTagDelimiter">&gt;</span>

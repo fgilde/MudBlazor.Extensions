@@ -6,7 +6,7 @@
 @if (_stream != null)
 {
     <div style="width: 100%; height: 520px;">
-        <MudExFileDisplay FileName="ExcelSheet.xlsx"
+        <MudExFileDisplay @ref="ComponentRef" FileName="ExcelSheet.xlsx"
                           ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                           ContentStream="@_stream"
                           AllowEdit="true"

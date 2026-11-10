@@ -7,7 +7,7 @@
     {
         <div>
             <MudText Typo="Typo.subtitle2" Class="mb-1">@name</MudText>
-            <RibbonWordLikeExample Color="@color" Title="@($"{name}.docx")" ContextualColor="@color" PictureSelected="true" ShowModeSwitch="false" />
+            <RibbonWordLikeExample RibbonReady="@(r => ComponentRef = r)" Color="@color" Title="@($"{name}.docx")" ContextualColor="@color" PictureSelected="true" ShowModeSwitch="false" />
         </div>
     }
 </MudStack>

@@ -17,7 +17,7 @@
 @if (_stream != null)
 {
     <div style="width: 100%; height: 520px;">
-        <MudExFileDisplay @ref="_display"
+        <MudExFileDisplay @ref="ComponentRef"
                           FileName="sample.cs"
                           ContentType="text/plain"
                           ContentStream="@_stream"
@@ -32,7 +32,7 @@
 }
 
 @code {
-    private MudExFileDisplay? _display;
+    private MudExFileDisplay? _display => ComponentRef as MudExFileDisplay;
     private Stream? _stream;
     private bool _editMode;
     private bool _allowLocalSave = true;
