@@ -1,0 +1,32 @@
+@inherits ComponentBase
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Presentation
+
+<div class="@ShapeClass" data-shape-id="@Shape.Id" style="@FrameStyle">
+    @switch (Shape)
+    {
+        case AutoShape auto:
+            var path = GeometryPath(auto);
+            @if (path != null)
+            {
+                <svg class="mud-ex-slide-geometry" viewBox="0 0 @Num(Shape.ResolvedTransform.Width) @Num(Shape.ResolvedTransform.Height)" preserveAspectRatio="none">
+                    <path d="@path" fill="@FillOf(auto)" stroke="@StrokeOf(auto)" stroke-width="@Num(auto.Line?.Width ?? 0)" stroke-dasharray="@DashOf(auto)" />
+                </svg>
+            }
+            @if (auto.Text != null)
+            {
+                <MudExSlideText Shape="auto" Presentation="Presentation" />
+            }
+            break;
+        case PictureShape picture:
+            var url = Images?.UrlFor(picture.ImagePart);
+            @if (url != null)
+            {
+                <img class="mud-ex-slide-picture" src="@url" alt="@picture.Name" draggable="false" />
+            }
+            break;
+        case OpaqueShape opaque:
+            <div class="mud-ex-slide-opaque-label"><span>@opaque.Name</span><small>@opaque.Kind</small></div>
+            break;
+    }
+</div>

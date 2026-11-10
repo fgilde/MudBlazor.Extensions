@@ -19515,6 +19515,63 @@
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.Dispose">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideShapeView">
+            <summary>Shows one shape of a slide at its resolved position. Groups render an empty frame; their children are shapes of their own.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Shape">
+            <summary>The shape to show.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Presentation">
+            <summary>The presentation that defines the slide size.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Images">
+            <summary>The image URLs of the presentation.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Master">
+            <summary>The master used to resolve theme colours if the shape has none of its own.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideText">
+            <summary>Shows the text of a shape. The text is rendered as text nodes, never as markup.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideText.Shape">
+            <summary>The shape whose text is shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideText.Presentation">
+            <summary>The presentation that defines the slide size.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideView">
+            <summary>Shows one slide as DOM that scales with its container: shapes in percent of the slide, font sizes in container query units.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideView.Presentation">
+            <summary>The presentation the slide belongs to.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideView.Slide">
+            <summary>The slide to show. It renders again only when its <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Version"/> changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideView.Images">
+            <summary>The image URLs of the presentation; pictures stay empty if null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideView.Interactive">
+            <summary>True if the shapes take pointer events, as in the editor; false for thumbnails.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideView.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideView.ShouldRender">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SlideImageUrls">
+            <summary>Resolves the URL of an image part of a presentation: a blob URL once the browser registered one, otherwise a data URI.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SlideImageUrls.Register(System.String,System.String)">
+            <summary>Registers the blob URL of an image part; it replaces the data URI.</summary>
+            <param name="partName">The image part name.</param>
+            <param name="url">The blob URL.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SlideImageUrls.UrlFor(System.String)">
+            <summary>Gets the URL of an image part, or null if the part does not exist.</summary>
+            <param name="partName">The image part name.</param>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.FormulaSuggestion">
             <summary>A completion offered while typing a formula.</summary>
             <param name="Name">The function or defined name.</param>

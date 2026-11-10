@@ -1,0 +1,30 @@
+@inherits ComponentBase
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Presentation
+
+<div class="mud-ex-slide-text" style="@BodyStyle">
+    @foreach (var paragraph in Shape.Text.Paragraphs)
+    {
+        <div class="mud-ex-slide-paragraph" style="@ParagraphStyle(paragraph)">
+            @if (paragraph.Bullet == true)
+            {
+                <span style="@RunStyle(paragraph.Runs.Count > 0 ? paragraph.Runs[0] : EmptyRun(paragraph))">&bull;&nbsp;</span>
+            }
+            @foreach (var run in paragraph.Runs)
+            {
+                @if (run.Text == "\n")
+                {
+                    <br />
+                }
+                else
+                {
+                    <span style="@RunStyle(run)">@run.Text</span>
+                }
+            }
+            @if (paragraph.Runs.Count == 0)
+            {
+                <span style="@RunStyle(EmptyRun(paragraph))">&#8203;</span>
+            }
+        </div>
+    }
+</div>

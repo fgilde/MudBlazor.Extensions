@@ -1,0 +1,66 @@
+.mud-ex-slide {
+  position: relative;
+  container-type: inline-size;
+  width: 100%;
+  overflow: hidden;
+  background-color: #fff;
+  color: #000;
+  font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+  user-select: none;
+  &:not(.mud-ex-slide-interactive) {
+    pointer-events: none;
+  }
+}
+.mud-ex-slide-shape {
+  position: absolute;
+  box-sizing: border-box;
+  &.mud-ex-slide-group {
+    pointer-events: none;
+  }
+}
+.mud-ex-slide-geometry {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.mud-ex-slide-picture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+.mud-ex-slide-text {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow-wrap: break-word;
+}
+.mud-ex-slide-paragraph {
+  margin: 0;
+  line-height: 1.2;
+}
+.mud-ex-slide-opaque {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--mud-palette-text-secondary, #666);
+  background: repeating-linear-gradient(45deg, rgba(128, 128, 128, 0.16) 0, rgba(128, 128, 128, 0.16) 4px, transparent 4px, transparent 8px);
+}
+.mud-ex-slide-opaque-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.6cqw;
+  padding: 0.4cqw 0.8cqw;
+  background: rgba(255, 255, 255, 0.85);
+  color: #333;
+  small {
+    font-size: 1.2cqw;
+    opacity: 0.7;
+  }
+}

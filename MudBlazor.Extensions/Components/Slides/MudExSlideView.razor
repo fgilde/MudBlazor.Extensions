@@ -1,0 +1,13 @@
+@inherits MudExBaseComponent<MudExSlideView>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Presentation
+
+@if (Presentation != null && Slide != null)
+{
+    <div class="@($"mud-ex-slide{(Interactive ? " mud-ex-slide-interactive" : "")} {Class}".TrimEnd())" style="@RootStyle">
+        @foreach (var shape in SlideShape.Flatten(Slide.Shapes))
+        {
+            <MudExSlideShapeView @key="shape" Shape="shape" Presentation="Presentation" Images="Images" Master="@(Slide.Layout?.Master)" />
+        }
+    </div>
+}
