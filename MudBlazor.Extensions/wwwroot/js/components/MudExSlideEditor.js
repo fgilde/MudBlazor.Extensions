@@ -1,6 +1,9 @@
 const ITEM = '.mud-ex-slide-panel-item';
 const BEFORE = 'mud-ex-slide-panel-drop-before';
 const AFTER = 'mud-ex-slide-panel-drop-after';
+const SHORTCUT_TARGETS = '.mud-ex-slide-canvas, .mud-ex-slide-panel';
+const SHORTCUTS = 'fhmyz';
+const OWN_PASTE = 'input, textarea, [contenteditable], .mud-ex-slide-text-editor';
 
 class MudExSlideEditor {
     constructor(root, dotnet) {
@@ -14,7 +17,8 @@ class MudExSlideEditor {
         this.mutations = new MutationObserver(() => this.schedule());
         this.mutations.observe(root, { childList: true, subtree: true });
         this.events = [
-            ['dragstart', e => this.dragStart(e)], ['dragover', e => this.dragOver(e)], ['drop', e => this.drop(e)], ['dragend', () => this.dragEnd()]
+            ['dragstart', e => this.dragStart(e)], ['dragover', e => this.dragOver(e)], ['drop', e => this.drop(e)], ['dragend', () => this.dragEnd()],
+            ['keydown', e => this.keyDown(e)], ['paste', e => this.pasteEvent(e)]
         ];
         this.events.forEach(([type, handler]) => root.addEventListener(type, handler));
         this.schedule();
@@ -53,6 +57,66 @@ class MudExSlideEditor {
     revokeAll() {
         this.urls.forEach(url => URL.revokeObjectURL(url));
         this.urls.clear();
+    }
+
+    keyDown(e) {
+        if ((e.ctrlKey || e.metaKey) && !e.altKey && SHORTCUTS.includes(e.key?.toLowerCase()) && e.target.closest?.(SHORTCUT_TARGETS)) {
+            e.preventDefault();
+        }
+    }
+
+    pasteEvent(e) {
+        if (!this.dotnet || e.target.closest?.(OWN_PASTE)) {
+            return;
+        }
+        e.preventDefault();
+        const data = e.clipboardData;
+        this.paste(data ? data.getData('text/plain') : null, [...(data?.files ?? [])].find(f => f.type.startsWith('image/')));
+    }
+
+    async readClipboard() {
+        let text = null;
+        let image = null;
+        try {
+            for (const item of await navigator.clipboard.read()) {
+                const type = item.types.find(t => t.startsWith('image/'));
+                if (type && !image) {
+                    image = await item.getType(type);
+                }
+                if (text === null && item.types.includes('text/plain')) {
+                    text = await (await item.getType('text/plain')).text();
+                }
+            }
+        } catch {
+            try {
+                text = await navigator.clipboard.readText();
+            } catch {
+                text = null;
+            }
+        }
+        this.paste(text, image);
+    }
+
+    paste(text, image) {
+        const stream = blob => blob ? DotNet.createJSStreamReference(blob) : null;
+        this.dotnet?.invokeMethodAsync('OnPasteAsync', stream(text === null ? null : new Blob([text])), stream(image), image?.type ?? null).catch(() => {});
+    }
+
+    async writeClipboard(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+        } catch {
+            const copy = e => {
+                e.clipboardData.setData('text/plain', text);
+                e.preventDefault();
+            };
+            document.addEventListener('copy', copy, true);
+            try {
+                document.execCommand('copy');
+            } catch {
+            }
+            document.removeEventListener('copy', copy, true);
+        }
     }
 
     reveal(key) {

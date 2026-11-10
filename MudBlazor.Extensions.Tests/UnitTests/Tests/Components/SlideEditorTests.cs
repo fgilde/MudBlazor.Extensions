@@ -294,7 +294,7 @@ public class SlideEditorTests : IAsyncLifetime
 
         cut.WaitForAssertion(() => Assert.False(Disabled("pp-arrange")));
         Assert.False(Disabled("pp-bold"));
-        Assert.True(Disabled("pp-paste"));
+        Assert.False(Disabled("pp-cut"));
         Assert.Equal([shape.Id], cut.Instance.SelectedShapes);
 
         cut.Find(".mud-ex-slide-canvas").KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });

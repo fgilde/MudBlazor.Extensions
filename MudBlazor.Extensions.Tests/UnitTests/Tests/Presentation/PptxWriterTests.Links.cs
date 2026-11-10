@@ -223,6 +223,38 @@ public partial class PptxWriterTests
     }
 
     [Fact]
+    public void Writer_ShapesPastedOnOtherSlide_ShareImagesAndCopyCharts()
+    {
+        var builder = new PptxBuilder().Slide(Chart + SmartArt + Picture, rels: ChartRels).Slide(Shape(2, "Box", Xfrm(0, 0, 10, 10)));
+        AddChartParts(builder);
+        var source = builder.Build();
+        var presentation = Load(source);
+        var (from, to) = (presentation.Slides[0], presentation.Slides[1]);
+        using (presentation.Undo.BeginTransaction("Paste"))
+            foreach (var shape in from.Shapes.ToList())
+                presentation.Execute(new InsertShapeCommand(to, ShapeEdit.Detach(presentation, from, shape)));
+
+        var output = Save(presentation);
+
+        AssertConsistent(output);
+        Assert.True(Parts(source)["/ppt/slides/slide1.xml"].SequenceEqual(Parts(output)["/ppt/slides/slide1.xml"]));
+        var opc = OpcPackage.Open(output);
+        const string slide = "/ppt/slides/slide2.xml";
+        string Target(string part, string id) => opc.ResolveTarget(part, opc.Relationships(part).Single(r => r.Id == id).Target);
+        var xml = Xml(output, slide);
+        var chart = Target(slide, (string)xml.Descendants().Single(e => e.Name.LocalName == "chart").Attribute(R + "id"));
+        Assert.NotEqual("/ppt/charts/chart1.xml", chart);
+        Assert.Equal(Parts(source)["/ppt/charts/chart1.xml"], Parts(output)[chart]);
+        Assert.NotEqual("/ppt/embeddings/Microsoft_Excel_Worksheet.xlsx", Target(chart, "rId1"));
+        var data = Target(slide, (string)xml.Descendants().Single(e => e.Name.LocalName == "relIds").Attribute(R + "dm"));
+        Assert.NotEqual("/ppt/diagrams/data1.xml", data);
+        var drawing = Target(slide, (string)opc.ReadXml(data).Descendants().Single(e => e.Name.LocalName == "dataModelExt").Attribute("relId"));
+        Assert.NotEqual("/ppt/diagrams/drawing1.xml", drawing);
+        Assert.Equal(Parts(source)["/ppt/diagrams/drawing1.xml"], Parts(output)[drawing]);
+        Assert.Equal("/ppt/media/image9.png", Target(slide, (string)xml.Descendants(A + "blip").Single().Attribute(R + "embed")));
+    }
+
+    [Fact]
     public void Writer_EditedField_BecomesPlainRun_InvalidColorKeepsFill()
     {
         var presentation = new PptxBuilder()

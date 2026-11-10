@@ -1,0 +1,38 @@
+@inherits MudExBaseComponent<MudExSlideFindReplaceDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="mud-ex-slidefind-dialog">
+    <DialogContent>
+        @if (CanReplace)
+        {
+            <MudTabs @bind-ActivePanelIndex="_tab" Elevation="0">
+                <MudTabPanel Text="@TryLocalize("Find")" />
+                <MudTabPanel Text="@TryLocalize("Replace")" />
+            </MudTabs>
+        }
+        <MudStack Spacing="2" Class="mt-2">
+            <MudTextField T="string" Class="mud-ex-slidefind-what" Label="@TryLocalize("Find what:")" @bind-Value="_what" Immediate="true" Margin="Margin.Dense" />
+            @if (Replacing)
+            {
+                <MudTextField T="string" Class="mud-ex-slidefind-with" Label="@TryLocalize("Replace with:")" @bind-Value="_with" Immediate="true" Margin="Margin.Dense" />
+            }
+            <MudStack Row="true" Spacing="2">
+                <MudCheckBox T="bool" Class="mud-ex-slidefind-case" Label="@TryLocalize("Match case")" @bind-Value="_matchCase" Dense="true" />
+                <MudCheckBox T="bool" Class="mud-ex-slidefind-whole" Label="@TryLocalize("Find whole words only")" @bind-Value="_wholeWord" Dense="true" />
+            </MudStack>
+            @if (_status != null)
+            {
+                <MudText Class="mud-ex-slidefind-status" Typo="Typo.body2">@_status</MudText>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        @if (Replacing)
+        {
+            <MudButton Class="mud-ex-slidefind-replace-all" Disabled="@(!CanSearch)" OnClick="ReplaceAll">@TryLocalize("Replace All")</MudButton>
+            <MudButton Class="mud-ex-slidefind-replace" Disabled="@(!CanSearch)" OnClick="ReplaceAsync">@TryLocalize("Replace")</MudButton>
+        }
+        <MudButton Class="mud-ex-slidefind-next" Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!CanSearch)" OnClick="FindNextAsync">@TryLocalize("Find Next")</MudButton>
+        <MudButton Class="mud-ex-slidefind-close" OnClick="Close">@TryLocalize("Close")</MudButton>
+    </DialogActions>
+</MudDialog>

@@ -12,7 +12,6 @@ public partial class MudExSlideCanvas
 
     private TextSession _text;
     private MudExSlideTextEditor _textEditor;
-    private bool _insertTextBox;
 
     /// <summary>Raised on the first input of a text editing session, before the text is committed.</summary>
     [Parameter] public EventCallback TextInput { get; set; }
@@ -30,37 +29,28 @@ public partial class MudExSlideCanvas
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task OnShapeDoubleClickAsync(uint id, double x, double y) => InvokeAsync(() => BeginTextAsync(id, null, [x, y]));
 
-    /// <summary>Called by the browser when the user clicked the slide to insert a text box there.</summary>
-    /// <param name="x">The horizontal position in slide coordinates (EMU).</param>
-    /// <param name="y">The vertical position in slide coordinates (EMU).</param>
-    /// <returns>A task that completes when the text box is inserted and edited.</returns>
-    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnInsertAsync(double x, double y) => InvokeAsync(async () =>
+    private Task InsertTextBoxAsync(double x, double y, double width)
     {
-        if (!_insertTextBox || ReadOnly || Slide == null)
-            return;
-        _insertTextBox = false;
-        CommitText();
         var shape = new AutoShape
         {
             IsTextBox = true,
             Fill = new ShapeFill(ShapeFillKind.None),
             Transform = new ShapeTransform(Math.Clamp((long)Math.Round(x), 0, Presentation.SlideWidth), Math.Clamp((long)Math.Round(y), 0, Presentation.SlideHeight),
-                TextBoxWidth, TextBoxHeight),
+                width >= 1 ? (long)Math.Round(width) : TextBoxWidth, TextBoxHeight),
             Text = new TextBody { Wrap = true, Paragraphs = [new TextParagraph()] }
         };
         var insert = new InsertShapeCommand(Slide, shape);
         insert.Apply(Presentation);
         shape.Name = $"TextBox {shape.Id - 1}";
         _text = new TextSession(Slide, shape, insert, null, null);
-        await SelectAsync([shape.Id]);
-    });
+        return SelectAsync([shape.Id]);
+    }
 
     internal Task InsertTextBoxAsync()
     {
         if (ReadOnly || Slide == null)
             return Task.CompletedTask;
-        _insertTextBox = true;
+        _insert = TextBoxInsert;
         return CommitTextAsync();
     }
 
@@ -161,8 +151,8 @@ public partial class MudExSlideCanvas
         var align = ctrl ? key.ToLowerInvariant() switch { "l" => "left", "e" => "center", "r" => "right", "j" => "justify", _ => null } : null;
         switch (key)
         {
-            case "Escape" when _insertTextBox:
-                _insertTextBox = false;
+            case "Escape" when _insert != null:
+                _insert = null;
                 StateHasChanged();
                 return true;
             case "b" or "B" or "i" or "I" or "u" or "U" when ctrl && _selection.Count > 0:

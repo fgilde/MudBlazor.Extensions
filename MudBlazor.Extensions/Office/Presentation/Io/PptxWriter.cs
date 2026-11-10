@@ -146,7 +146,7 @@ public static partial class PptxWriter
                 rels.Add(new OpcRelationship(NextId(rels), RelNs + "/slideLayout", Relative(partName, layout), null));
             var root = xml.Root!;
             if (root.Element(P + "cSld")?.Element(P + "spTree") is { } tree)
-                new SlideXml(partName, rels, (target, transform) => Relative(partName, CopyPart(_opc.ResolveTarget(partName, target), [], transform))).WriteTree(tree, slide.ShapeList);
+                new SlideXml(partName, source?.PartName, rels, _opc, (target, transform) => Relative(partName, CopyPart(target, [], transform))).WriteTree(tree, slide.ShapeList);
             RemoveReferences(xml, rels, r => isNew && r.Type.EndsWith("/comments", StringComparison.Ordinal) || IsDead(partName, r));
             if (isNew && source != null && CreationId(xml) is { } creationId) creationId.SetAttributeValue("val", (uint)(_nextCreationId++ % uint.MaxValue));
             var hidden = (string)root.Attribute("show") is "0" or "false";

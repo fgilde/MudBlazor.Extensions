@@ -66,6 +66,8 @@ public sealed class Presentation
 
     internal bool CanHaveNotes(Slide slide) => slide.HasNotesPart || Package?.NotesMasterPart != null;
 
+    internal string PartOf(Slide slide) => Package?.Slides.FirstOrDefault(p => p.Slide == (slide.CopyOf ?? slide))?.PartName;
+
     internal void Notify(Slide slide, PresentationChangeKind kind)
     {
         if (slide != null)

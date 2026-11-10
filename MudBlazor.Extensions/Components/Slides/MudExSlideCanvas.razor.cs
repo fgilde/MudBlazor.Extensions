@@ -78,10 +78,11 @@ public partial class MudExSlideCanvas
         if (!ReferenceEquals(Slide, _slide) || ReadOnly)
         {
             CommitText();
-            _insertTextBox = false;
+            _insert = null;
             _slide = Slide;
             _version = Slide?.Version ?? 0;
-            Change([]);
+            Change(_pendingSelection is { } pending && ReferenceEquals(pending.Slide, Slide) ? pending.Ids : []);
+            _pendingSelection = null;
         }
         else if (Slide != null && Slide.Version != _version)
         {

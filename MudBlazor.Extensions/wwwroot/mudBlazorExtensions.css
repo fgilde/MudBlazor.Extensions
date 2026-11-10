@@ -8979,6 +8979,7 @@ textarea.mud-ex-ssg-note-text {
   display: flex;
   flex-direction: column;
   overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 .mud-ex-slide-paragraph {
   margin: 0;
@@ -9150,8 +9151,42 @@ textarea.mud-ex-ssg-note-text {
   pointer-events: auto;
   cursor: text;
 }
-.mud-ex-slide-text-editor .mud-ex-slide-text {
-  white-space: pre-wrap;
+.mud-ex-slide-gallery {
+  padding: 4px 8px;
+  max-width: 300px;
+}
+.mud-ex-slide-gallery-header {
+  padding: 6px 0 2px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--mud-palette-text-secondary);
+}
+.mud-ex-slide-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 32px);
+  gap: 2px;
+}
+.mud-menu-item.mud-ex-slide-gallery-item {
+  min-height: 0;
+  padding: 4px;
+  justify-content: center;
+}
+.mud-ex-slide-gallery-item svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+  overflow: visible;
+}
+.mud-ex-slide-gallery-shape path {
+  fill: var(--mud-palette-primary);
+  fill-opacity: 0.25;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+.mud-ex-slide-gallery-line path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
 }
 .mud-ex-slide-text-editable {
   min-height: 1em;

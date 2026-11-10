@@ -4,7 +4,7 @@
 
 <div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-slide-canvas {Class}".TrimEnd())" style="@Style" tabindex="0" role="application"
      aria-label="@TryLocalize("Slide")" data-readonly="@(ReadOnly ? "true" : "false")" data-selection="@string.Join(",", _selection)"
-     data-insert="@(_insertTextBox ? "text-box" : null)" @onkeydown="_keyDown">
+     data-insert="@_insert" @onkeydown="_keyDown">
     @if (Presentation != null && Slide != null)
     {
         <div class="mud-ex-slide-canvas-frame" style="@FrameStyle" data-width="@Presentation.SlideWidth" data-height="@Presentation.SlideHeight">

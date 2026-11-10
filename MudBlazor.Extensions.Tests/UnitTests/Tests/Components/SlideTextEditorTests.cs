@@ -262,7 +262,7 @@ public class SlideTextEditorTests : IAsyncLifetime
 
         await Run(cut, "pp-insert-text-box");
         cut.WaitForAssertion(() => Assert.Equal("text-box", cut.Find(".mud-ex-slide-canvas").GetAttribute("data-insert")));
-        await cut.InvokeAsync(() => canvas.Instance.OnInsertAsync(2 * Inch, 3 * Inch));
+        await cut.InvokeAsync(() => canvas.Instance.OnInsertAsync(2 * Inch, 3 * Inch, 0, 0));
 
         var box = Assert.IsType<AutoShape>(slide.Shapes[^1]);
         Assert.True(box.IsTextBox);
@@ -279,7 +279,7 @@ public class SlideTextEditorTests : IAsyncLifetime
         Assert.False(cut.Instance.IsDirty);
 
         await Run(cut, "pp-insert-text-box");
-        await cut.InvokeAsync(() => canvas.Instance.OnInsertAsync(Inch, Inch));
+        await cut.InvokeAsync(() => canvas.Instance.OnInsertAsync(Inch, Inch, 0, 0));
         box = (AutoShape)slide.Shapes[^1];
         editor = cut.FindComponent<MudExSlideTextEditor>();
         var dom = Dom(box, presentation);

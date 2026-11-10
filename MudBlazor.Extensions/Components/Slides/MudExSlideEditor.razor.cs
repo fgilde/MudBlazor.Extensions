@@ -19,7 +19,8 @@ public partial class MudExSlideEditor : IMudExFileEditor
     private static readonly MudExFileFormat Pptx = new("PowerPoint Presentation", "pptx", PptxContentType);
 
     private readonly EventCallback<KeyboardEventArgs> _keyDown;
-    private readonly EventCallback<KeyboardEventArgs> _navigationKeyDown;
+    private readonly EventCallback<KeyboardEventArgs> _canvasKeyDown;
+    private readonly EventCallback<KeyboardEventArgs> _panelKeyDown;
     private Presentation _presentation;
     private Presentation _presentationParameter;
     private SlideImageUrls _images;
@@ -50,7 +51,8 @@ public partial class MudExSlideEditor : IMudExFileEditor
     public MudExSlideEditor()
     {
         _keyDown = new EventCallback<KeyboardEventArgs>(WithoutRender.Instance, (Func<KeyboardEventArgs, Task>)OnKeyDownAsync);
-        _navigationKeyDown = new EventCallback<KeyboardEventArgs>(WithoutRender.Instance, (Func<KeyboardEventArgs, Task>)OnNavigationKeyDownAsync);
+        _canvasKeyDown = new EventCallback<KeyboardEventArgs>(WithoutRender.Instance, (Func<KeyboardEventArgs, Task>)(e => OnShortcutKeyDownAsync(e, false)));
+        _panelKeyDown = new EventCallback<KeyboardEventArgs>(WithoutRender.Instance, (Func<KeyboardEventArgs, Task>)(e => OnShortcutKeyDownAsync(e, true)));
     }
 
     /// <summary>The presentation to edit when no file is given. Changes by the user raise <see cref="PresentationChanged"/>.</summary>
@@ -232,6 +234,7 @@ public partial class MudExSlideEditor : IMudExFileEditor
         _currentIndex = 0;
         _current = presentation?.Slides.FirstOrDefault();
         _selection = _current == null ? [] : [_current];
+        _clipboard = null;
         if (presentation != null)
             presentation.Changed += OnPresentationChanged;
     }
@@ -327,6 +330,32 @@ public partial class MudExSlideEditor : IMudExFileEditor
             await SaveAsync();
             StateHasChanged();
         }
+    }
+
+    private async Task OnShortcutKeyDownAsync(KeyboardEventArgs e, bool panel)
+    {
+        if ((e.CtrlKey || e.MetaKey) && !e.AltKey)
+        {
+            var action = e.Key.ToLowerInvariant() switch
+            {
+                "z" => UndoAsync(e.ShiftKey),
+                "y" => UndoAsync(true),
+                "m" => AddSlideAsync(null),
+                "f" => FindReplaceAsync(false),
+                "h" => FindReplaceAsync(true),
+                "c" => panel ? CopySlidesAsync() : CopyShapesAsync(false),
+                "x" when !panel => CopyShapesAsync(true),
+                _ => null
+            };
+            if (action == null)
+                return;
+            await action;
+            StateHasChanged();
+            return;
+        }
+
+        if (panel || e.Key is not ("PageUp" or "PageDown") || SelectedShapes.Count == 0)
+            await OnNavigationKeyDownAsync(e);
     }
 
     private Task OnNavigationKeyDownAsync(KeyboardEventArgs e)

@@ -162,7 +162,7 @@ public sealed class InsertPictureCommand(Slide slide, byte[] image, string conte
             var id = ShapeEdit.NextId(slide);
             Picture = new PictureShape
             {
-                Id = id, Name = $"Picture {id - 1}", Transform = transform, ImagePart = MediaPart(document), ContentType = contentType, Master = slide.Layout?.Master
+                Id = id, Name = $"Picture {id - 1}", Transform = transform, ImagePart = MediaPart(document, contentType), ContentType = contentType, Master = slide.Layout?.Master
             };
         }
 
@@ -179,7 +179,7 @@ public sealed class InsertPictureCommand(Slide slide, byte[] image, string conte
         document.Notify(slide, PresentationChangeKind.Content);
     }
 
-    private string MediaPart(Presentation document)
+    internal static string MediaPart(Presentation document, string contentType)
     {
         var extension = contentType["image/".Length..].Split('+')[0].ToLowerInvariant() switch
         {
@@ -351,6 +351,15 @@ internal static class ShapeEdit
     {
         foreach (var s in SlideShape.Flatten([shape])) s.Id = next++;
         return next;
+    }
+
+    internal static SlideShape Detach(Presentation document, Slide slide, SlideShape shape)
+    {
+        var copy = shape.Clone(null);
+        copy.Transform = shape.ResolvedTransform;
+        var part = document.PartOf(slide);
+        foreach (var s in SlideShape.Flatten([copy])) s.SourcePart ??= part;
+        return copy;
     }
 
     internal static ShapeTransform ToLocal(SlideShape shape, ShapeTransform absolute) =>

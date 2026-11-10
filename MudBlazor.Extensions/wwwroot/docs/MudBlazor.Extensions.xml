@@ -19522,6 +19522,24 @@
             and only their result reaches .NET as one undo step. The keyboard nudges, deletes, duplicates and cycles through the shapes.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.ZoomChanged">
+            <summary>Raised with the new zoom factor when the user turns the mouse wheel with Ctrl pressed.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnInsertAsync(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Called by the browser when the user clicked or dragged on the slide to insert the chosen shape or a text box. A click inserts the default size.
+            </summary>
+            <param name="x">The horizontal start position in slide coordinates (EMU).</param>
+            <param name="y">The vertical start position in slide coordinates (EMU).</param>
+            <param name="width">The horizontal drag distance in EMU, negative to the left; zero for a click.</param>
+            <param name="height">The vertical drag distance in EMU, negative upwards; zero for a click.</param>
+            <returns>A task that completes when the shape is inserted and selected.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnWheelZoomAsync(System.Double)">
+            <summary>Called by the browser when the user zoomed with Ctrl and the mouse wheel.</summary>
+            <param name="zoom">The new zoom factor.</param>
+            <returns>A task that completes when the zoom is handed to the host.</returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.#ctor">
             <summary>Creates the canvas.</summary>
         </member>
@@ -19600,12 +19618,6 @@
             <param name="y">The vertical client position in pixels.</param>
             <returns>A task that completes when editing started.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnInsertAsync(System.Double,System.Double)">
-            <summary>Called by the browser when the user clicked the slide to insert a text box there.</summary>
-            <param name="x">The horizontal position in slide coordinates (EMU).</param>
-            <param name="y">The vertical position in slide coordinates (EMU).</param>
-            <returns>A task that completes when the text box is inserted and edited.</returns>
-        </member>
         <member name="T:MudBlazor.Extensions.Components.ShapeTransformDto">
             <summary>A shape transform reported by the browser after a gesture on the <see cref="T:MudBlazor.Extensions.Components.MudExSlideCanvas"/>, in slide coordinates (EMU).</summary>
         </member>
@@ -19629,6 +19641,16 @@
             Presentation editor in the style of PowerPoint with ribbon, slide panel, notes pane and status bar.
             Opens pptx files and is the editor for them in <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/>. Without a file it edits the <see cref="P:MudBlazor.Extensions.Components.MudExSlideEditor.Presentation"/> parameter.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.OnPasteAsync(Microsoft.JSInterop.IJSStreamReference,Microsoft.JSInterop.IJSStreamReference,System.String)">
+            <summary>
+            Called by the browser on paste with the clipboard content. Shapes or slides copied in this editor are pasted as such while the clipboard
+            still holds their text; otherwise an image becomes a picture and text a text box.
+            </summary>
+            <param name="text">The <c>text/plain</c> part as UTF-8, or null if the browser could not read it.</param>
+            <param name="image">The first image of the clipboard, or null.</param>
+            <param name="contentType">The content type of <paramref name="image"/>.</param>
+            <returns>A task that completes when the content is inserted.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.#ctor">
             <summary>Creates the editor.</summary>
@@ -19714,6 +19736,30 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.DisposeAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideFindReplaceDialog">
+            <summary>
+            The Find and Replace dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSlideEditor"/>. Searches the text of all shapes and the notes, optionally case-sensitive or for whole
+            words. Find Next shows the slide and selects the shape; Replace All is one undo step and keeps the formatting of the runs.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideFindReplaceDialog.Presentation">
+            <summary>The presentation to search.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideFindReplaceDialog.Start">
+            <summary>The slide where the search starts.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideFindReplaceDialog.Replace">
+            <summary>Whether the dialog opens on the Replace tab.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideFindReplaceDialog.CanReplace">
+            <summary>Whether replacing is allowed; false shows only the Find part.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideFindReplaceDialog.Select">
+            <summary>Shows a found slide and selects the shape, or no shape for a match in the notes.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideFindReplaceDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideNotes">
             <summary>The speaker notes pane of the slide editor. The text is committed when the field loses the focus.</summary>
         </member>
@@ -19792,6 +19838,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.SlideSelection.Slides">
             <summary>The selected slides in show order.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideShapeGallery">
+            <summary>The preset shapes of <see cref="P:MudBlazor.Extensions.Office.Presentation.PresetGeometry.Supported"/> as a grouped grid of previews, as in the Shapes gallery of PowerPoint.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeGallery.ShapeChosen">
+            <summary>Raised with the preset name when the user picks a shape.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideShapeView">
             <summary>Shows one shape of a slide at its resolved position. Groups render an empty frame; their children are shapes of their own.</summary>

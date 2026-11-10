@@ -4,7 +4,7 @@ using static MudBlazor.Extensions.Office.Presentation.PptxReader;
 
 namespace MudBlazor.Extensions.Office.Presentation;
 
-internal sealed class SlideXml(string part, List<OpcRelationship> relationships, Func<string, Action<XDocument>, string> cloneTarget)
+internal sealed class SlideXml(string part, string basis, List<OpcRelationship> relationships, OpcPackage opc, Func<string, Action<XDocument>, string> cloneTarget)
 {
     internal static readonly string[] Fills = ["noFill", "solidFill", "gradFill", "blipFill", "pattFill", "grpFill"];
     private static readonly string[] AfterLine = ["effectLst", "effectDag", "scene3d", "sp3d", "extLst"];
@@ -58,7 +58,8 @@ internal sealed class SlideXml(string part, List<OpcRelationship> relationships,
                 break;
         }
 
-        if (shape is not GroupShape) Separate(e);
+        if (shape.SourcePart != null && !string.Equals(shape.SourcePart, basis, StringComparison.OrdinalIgnoreCase)) Import(e, shape.SourcePart, shape is GroupShape);
+        else if (shape is not GroupShape) Separate(e);
         return e;
     }
 
@@ -82,20 +83,45 @@ internal sealed class SlideXml(string part, List<OpcRelationship> relationships,
         }
     }
 
-    private string Clone(OpcRelationship rel)
+    private void Import(XElement e, string origin, bool group)
     {
-        var target = cloneTarget(rel.Target, rel.Type.EndsWith("/diagramData", StringComparison.Ordinal) ? CloneDrawing : null);
+        var rels = opc.Relationships(origin);
+        var ids = new Dictionary<string, string>();
+        var own = group ? e.Elements().Where(c => !IsShape(c)).SelectMany(c => c.DescendantsAndSelf()).Prepend(e) : e.DescendantsAndSelf();
+        foreach (var reference in own.Attributes().Where(a => a.Name.Namespace == R).ToList())
+        {
+            if (!ids.TryGetValue(reference.Value, out var id))
+                ids[reference.Value] = id = rels.FirstOrDefault(r => r.Id == reference.Value) is { } rel ? Import(rel, origin) : null;
+            if (id == null) reference.Remove();
+            else reference.Value = id;
+        }
+    }
+
+    private string Import(OpcRelationship rel, string origin)
+    {
+        if (rel.TargetMode == null && PptxWriter.Owned(rel.Type)) return Clone(rel, origin);
+        var target = rel.TargetMode == null ? PptxWriter.Relative(part, opc.ResolveTarget(origin, rel.Target)) : rel.Target;
+        var existing = relationships.Find(r => r.Type == rel.Type && r.TargetMode == rel.TargetMode && r.Target == target);
+        if (existing == null) relationships.Add(existing = new OpcRelationship(PptxWriter.NextId(relationships), rel.Type, target, rel.TargetMode));
+        return existing.Id;
+    }
+
+    private string Clone(OpcRelationship rel, string from = null)
+    {
+        from ??= part;
+        var target = cloneTarget(opc.ResolveTarget(from, rel.Target), rel.Type.EndsWith("/diagramData", StringComparison.Ordinal) ? data => CloneDrawing(data, from) : null);
         var copy = new OpcRelationship(PptxWriter.NextId(relationships), rel.Type, target, null);
         relationships.Add(copy);
         _used.Add(copy.Id);
         return copy.Id;
     }
 
-    private void CloneDrawing(XDocument data)
+    private void CloneDrawing(XDocument data, string from)
     {
+        var rels = from == part ? relationships : opc.Relationships(from);
         foreach (var extension in data.Descendants().Where(d => d.Name.LocalName == "dataModelExt").ToList())
-            if (relationships.Find(r => r.Id == (string)extension.Attribute("relId")) is { TargetMode: null } drawing)
-                extension.SetAttributeValue("relId", Clone(drawing));
+            if (rels.FirstOrDefault(r => r.Id == (string)extension.Attribute("relId")) is { TargetMode: null } drawing)
+                extension.SetAttributeValue("relId", Clone(drawing, from));
     }
 
     private XElement Create(SlideShape shape) => shape switch

@@ -6,6 +6,8 @@ const MIN_PX = 4;
 const KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 const TEXT_EDITOR = '.mud-ex-slide-text-editor';
 const FORMAT_KEYS = 'biulerj';
+const AREA = ['marquee', 'insert'];
+const ZOOM_IDLE_MS = 400;
 
 const rad = deg => deg * Math.PI / 180;
 const pct = (value, whole) => `${value / whole * 100}%`;
@@ -17,7 +19,7 @@ class MudExSlideCanvas {
         this.drag = null;
         this.onMove = e => this.pointerMove(e);
         this.onUp = e => this.pointerUp(e);
-        this.events = [['pointerdown', e => this.pointerDown(e)], ['keydown', e => this.keyDown(e)], ['dblclick', e => this.dblClick(e)]];
+        this.events = [['pointerdown', e => this.pointerDown(e)], ['keydown', e => this.keyDown(e)], ['dblclick', e => this.dblClick(e)], ['wheel', e => this.wheel(e)]];
         this.events.forEach(([type, handler]) => root.addEventListener(type, handler));
     }
 
@@ -84,8 +86,8 @@ class MudExSlideCanvas {
         e.preventDefault();
         this.root.focus({ preventScroll: true });
         if (this.root.dataset.insert) {
-            const point = this.toSlide(this.metrics(frame), e.clientX, e.clientY);
-            this.dotnet.invokeMethodAsync('OnInsertAsync', point.x, point.y).catch(() => {});
+            const m = this.metrics(frame);
+            this.begin(e, frame, { kind: 'insert', m, start: this.toSlide(m, e.clientX, e.clientY) });
             return;
         }
         const toggle = e.shiftKey || e.ctrlKey || e.metaKey;
@@ -128,6 +130,19 @@ class MudExSlideCanvas {
         this.dotnet.invokeMethodAsync('OnShapeDoubleClickAsync', +shape.dataset.shapeId, e.clientX, e.clientY).catch(() => {});
     }
 
+    wheel(e) {
+        const frame = this.frame();
+        if (!(e.ctrlKey || e.metaKey) || !frame || !this.dotnet) {
+            return;
+        }
+        e.preventDefault();
+        const now = performance.now();
+        const base = this.zoom && now - this.zoom.at < ZOOM_IDLE_MS ? this.zoom.value : frame.getBoundingClientRect().width / (+frame.dataset.width / 9525);
+        const value = Math.min(4, Math.max(0.1, base * Math.exp(-e.deltaY / 500)));
+        this.zoom = { value, at: now };
+        this.dotnet.invokeMethodAsync('OnWheelZoomAsync', value).catch(() => {});
+    }
+
     onScrollbar(e) {
         const r = this.root.getBoundingClientRect();
         return e.clientX >= r.left + this.root.clientLeft + this.root.clientWidth || e.clientY >= r.top + this.root.clientTop + this.root.clientHeight;
@@ -156,12 +171,12 @@ class MudExSlideCanvas {
         if (!d.moved && Math.hypot(d.x - d.x0, d.y - d.y0) < CLICK_PX) {
             return;
         }
-        if (d.kind !== 'marquee' && !d.ids) {
+        if (!AREA.includes(d.kind) && !d.ids) {
             return;
         }
         if (!d.moved) {
             d.moved = true;
-            d.boxes = d.kind === 'marquee' ? [] : this.boxes(d.frame, d.ids);
+            d.boxes = AREA.includes(d.kind) ? [] : this.boxes(d.frame, d.ids);
             d.elements = this.elements(d);
             if (d.kind === 'move') {
                 d.targets = this.snapTargets(d);
@@ -189,6 +204,12 @@ class MudExSlideCanvas {
             this.restore(d);
             return;
         }
+        if (d.kind === 'insert') {
+            const p = this.toSlide(d.m, d.x, d.y);
+            const [w, h] = d.moved ? [p.x - d.start.x, p.y - d.start.y] : [0, 0];
+            await this.dotnet.invokeMethodAsync('OnInsertAsync', d.start.x, d.start.y, w, h).catch(() => {});
+            return;
+        }
         if (!d.moved) {
             if (d.kind === 'marquee' && !d.toggle) {
                 await this.dotnet.invokeMethodAsync('OnSelectionAsync', []).catch(() => {});
@@ -212,7 +233,7 @@ class MudExSlideCanvas {
         const p = this.toSlide(d.m, d.x, d.y);
         let dx = p.x - d.start.x;
         let dy = p.y - d.start.y;
-        if (d.kind === 'marquee') {
+        if (AREA.includes(d.kind)) {
             return { x: Math.min(d.start.x, p.x), y: Math.min(d.start.y, p.y), w: Math.abs(dx), h: Math.abs(dy) };
         }
         if (d.kind === 'rotate') {
@@ -364,7 +385,7 @@ class MudExSlideCanvas {
     }
 
     preview(d, result) {
-        if (d.kind === 'marquee') {
+        if (AREA.includes(d.kind)) {
             this.showMarquee(d.frame, result);
             return;
         }

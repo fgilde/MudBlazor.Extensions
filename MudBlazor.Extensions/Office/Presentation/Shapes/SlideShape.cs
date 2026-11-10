@@ -46,6 +46,8 @@ public abstract class SlideShape
 
     internal XElement Source { get; set; }
 
+    internal string SourcePart { get; set; }
+
     internal virtual SlideShape Clone(GroupShape parent)
     {
         var copy = (SlideShape)MemberwiseClone();
