@@ -258,6 +258,7 @@ public partial class MudExSpreadsheetGrid
         var sheet = sheets is { Count: > 0 } ? sheets[Math.Clamp(SheetIndex, 0, sheets.Count - 1)] : null;
         if (ReferenceEquals(sheet, _sheet)) return false;
         if (_sheet != null) _sheetSelections[_sheet] = _selection;
+        if (HasNoteDraft && CanEditNotes) WriteNote(_noteEdit.Value, _noteText);
         _editing = false;
         _filterOpen = null;
         _listOpen = false;

@@ -6,7 +6,7 @@ namespace MudBlazor.Extensions.Components;
 
 /// <summary>
 /// The note box next to a cell of <see cref="MudExSpreadsheetGrid"/>: shows the author and text of a note while the pointer is over the cell,
-/// or edits it. Escape cancels editing.
+/// or edits it. Escape cancels editing, Ctrl+S raises <see cref="SaveKeyPressed"/>.
 /// </summary>
 public partial class MudExSpreadsheetNoteEditor
 {
@@ -28,6 +28,12 @@ public partial class MudExSpreadsheetNoteEditor
 
     /// <summary>Raised when the user cancels editing.</summary>
     [Parameter] public EventCallback OnCancel { get; set; }
+
+    /// <summary>Raised with the current text whenever the user types.</summary>
+    [Parameter] public EventCallback<string> TextChanged { get; set; }
+
+    /// <summary>Raised when the user presses Ctrl+S while editing.</summary>
+    [Parameter] public EventCallback SaveKeyPressed { get; set; }
 
     /// <inheritdoc />
     protected override void OnInitialized()
@@ -52,5 +58,15 @@ public partial class MudExSpreadsheetNoteEditor
         }
     }
 
-    private Task OnKeyDownAsync(KeyboardEventArgs e) => Editing && e.Key == "Escape" ? OnCancel.InvokeAsync() : Task.CompletedTask;
+    private Task OnKeyDownAsync(KeyboardEventArgs e) =>
+        !Editing ? Task.CompletedTask
+        : e.Key == "Escape" ? OnCancel.InvokeAsync()
+        : (e.CtrlKey || e.MetaKey) && !e.AltKey && e.Key is "s" or "S" ? SaveKeyPressed.InvokeAsync()
+        : Task.CompletedTask;
+
+    private Task OnInputAsync(ChangeEventArgs e)
+    {
+        _text = e.Value?.ToString() ?? "";
+        return TextChanged.InvokeAsync(_text);
+    }
 }

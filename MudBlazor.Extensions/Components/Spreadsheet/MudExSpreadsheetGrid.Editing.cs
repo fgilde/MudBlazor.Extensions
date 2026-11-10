@@ -25,7 +25,7 @@ public partial class MudExSpreadsheetGrid
 
     internal bool EditFromBar => _editing && _editFromBar;
 
-    internal bool HasPendingEdit => _editing && _editText != _editOriginal;
+    internal bool HasPendingEdit => _editing && _editText != _editOriginal || HasNoteDraft;
 
     internal FormulaAssistResult Assist => _editing && !_assistDismissed ? _assist : FormulaAssistResult.None;
 
@@ -36,9 +36,13 @@ public partial class MudExSpreadsheetGrid
     /// <returns>A task that completes when the editor is shown.</returns>
     public Task BeginEditAsync(string initialText = null) => BeginEditCoreAsync(initialText, false);
 
-    /// <summary>Commits the edit to the active cell without moving the selection.</summary>
+    /// <summary>Commits the edit to the active cell without moving the selection, and a changed note that is being written.</summary>
     /// <returns>A task that completes when the value is written.</returns>
-    public Task CommitEditAsync() => CommitAsync(0, 0, false);
+    public async Task CommitEditAsync()
+    {
+        if (HasNoteDraft) await SaveNoteAsync(_noteText);
+        await CommitAsync(0, 0, false);
+    }
 
     /// <summary>Discards the edit.</summary>
     /// <returns>A task that completes when the editor is hidden.</returns>

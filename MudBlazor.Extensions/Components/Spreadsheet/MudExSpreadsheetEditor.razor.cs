@@ -278,8 +278,12 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
     /// <inheritdoc />
     public override async Task<MudExFileContent> ExportAsync(MudExFileFormat format = null, CancellationToken cancellationToken = default)
     {
-        if (_grid?.IsEditing == true)
+        if (_grid?.IsEditing == true || _grid?.HasPendingEdit == true)
+        {
             await _grid.CommitEditAsync();
+            if (_grid.HasPendingEdit) await MarkDirtyAsync();
+        }
+
         format ??= SaveFormats[0];
         var stream = new MemoryStream();
         if (format.Extension is "csv" or "tsv")
@@ -390,7 +394,7 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
     {
         if (_workbook == null || index < 0 || index >= _workbook.Sheets.Count)
             return;
-        if (_grid?.IsEditing == true)
+        if (_grid?.IsEditing == true || _grid?.HasPendingEdit == true)
             await _grid.CommitEditAsync();
         _sheetIndex = index;
         _activeSheet = _workbook.Sheets[index];

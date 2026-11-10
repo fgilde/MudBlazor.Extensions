@@ -11,6 +11,11 @@ public partial class MudExSpreadsheetGrid
     private Dictionary<CellRef, CellNote> _notesByCell = new();
     private CellRef? _noteHover;
     private CellRef? _noteEdit;
+    private string _noteText;
+    private readonly EventCallback<string> _noteTextChanged;
+
+    /// <summary>Creates the grid.</summary>
+    public MudExSpreadsheetGrid() => _noteTextChanged = new EventCallback<string>(null, (Action<string>)OnNoteTextChanged);
 
     /// <summary>The author written into new notes.</summary>
     [Parameter] public string Author { get; set; }
@@ -42,6 +47,8 @@ public partial class MudExSpreadsheetGrid
 
     internal bool CanEditNotes => CanEdit && !_sheet.NotesReadOnly;
 
+    internal bool HasNoteDraft => _noteEdit is { } cell && _noteText != (NoteAt(cell)?.Text ?? "");
+
     internal CellRef ActiveCell => MergeAt(_selection.Active)?.Start ?? _selection.Active;
 
     internal CellNote NoteAt(CellRef cell)
@@ -62,6 +69,7 @@ public partial class MudExSpreadsheetGrid
         if (!CanEditNotes) return;
         if (_editing) await CommitAsync(0, 0, false);
         _noteEdit = ActiveCell;
+        _noteText = NoteAt(ActiveCell)?.Text ?? "";
         _noteHover = null;
         StateHasChanged();
     }
@@ -88,19 +96,38 @@ public partial class MudExSpreadsheetGrid
         return $"left:{Px(X(r.Right + 1) + 8)};top:{Px(Y(r.Top))}";
     }
 
+    private void OnNoteTextChanged(string text)
+    {
+        _noteText = text;
+        NotifyEdit();
+    }
+
     private async Task SaveNoteAsync(string text)
     {
         if (_noteEdit is not { } cell) return;
-        _noteEdit = null;
-        var author = NoteAt(cell)?.Author ?? Author ?? "";
-        await TryWriteAsync(() => _workbook.Execute(new SetNoteCommand(_sheet, new CellNote(cell, author, text ?? ""))));
+        await TryWriteAsync(() => WriteNote(cell, text));
         StateHasChanged();
         await FocusAsync();
+    }
+
+    private void WriteNote(CellRef cell, string text)
+    {
+        _noteEdit = null;
+        var author = NoteAt(cell)?.Author ?? Author ?? "";
+        try
+        {
+            _workbook.Execute(new SetNoteCommand(_sheet, new CellNote(cell, author, text ?? "")));
+        }
+        finally
+        {
+            NotifyEdit();
+        }
     }
 
     private async Task CancelNoteAsync()
     {
         _noteEdit = null;
+        NotifyEdit();
         StateHasChanged();
         await FocusAsync();
     }

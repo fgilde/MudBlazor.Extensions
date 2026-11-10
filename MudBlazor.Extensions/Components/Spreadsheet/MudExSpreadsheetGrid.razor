@@ -181,6 +181,8 @@
                                             Style="@NoteBoxStyle(note.Cell)"
                                             OnSave="SaveNoteAsync"
                                             OnCancel="CancelNoteAsync"
+                                            TextChanged="_noteTextChanged"
+                                            SaveKeyPressed="SaveKeyPressed"
                                             Localizer="@Localizer" />
             }
             @if (p.TopSticky)

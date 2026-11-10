@@ -226,6 +226,32 @@ public class SpreadsheetChartsNotesTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task Note_Draft_KeptOnSaveAndSheetSwitch()
+    {
+        var wb = Book(("B2", "x"));
+        wb.Execute(new AddSheetCommand("Two"));
+        wb.Undo.Clear();
+        var ws = wb.Sheets[0];
+        var cut = Render(wb);
+
+        Select(cut, "C3");
+        await Run(cut, "xl-note-new");
+        cut.WaitForAssertion(() => Assert.NotNull(cut.Find(".mud-ex-ssg-note-box textarea")));
+        cut.Find(".mud-ex-ssg-note-box textarea").Input("Draft");
+        cut.WaitForAssertion(() => Assert.True(cut.Instance.IsDirty));
+        await cut.InvokeAsync(async () => await (await cut.Instance.ExportAsync()).DisposeAsync());
+        Assert.Equal("Draft", ws.Notes.Single().Text);
+
+        Select(cut, "D4");
+        await Run(cut, "xl-note-new");
+        cut.WaitForAssertion(() => Assert.NotNull(cut.Find(".mud-ex-ssg-note-box textarea")));
+        cut.Find(".mud-ex-ssg-note-box textarea").Input("Second");
+        cut.FindAll(".mud-ex-ssst-tab")[0].KeyDown(new KeyboardEventArgs { Key = "ArrowRight" });
+        cut.WaitForAssertion(() => Assert.Equal("Two", cut.Instance.ActiveSheet.Name));
+        Assert.Equal("Second", ws.Notes.Single(n => n.Cell.Relative == CellRef.Parse("D4")).Text);
+    }
+
+    [Fact]
     public async Task Link_CtrlClick_OpensSafeTargetOnly()
     {
         var wb = Book(("A1", "site"), ("A2", "bad"), ("A3", "jump"));
