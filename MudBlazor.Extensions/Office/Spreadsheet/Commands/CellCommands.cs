@@ -111,6 +111,7 @@ public sealed class SetFormulaCommand(Worksheet sheet, CellRef cell, string form
         _before = sheet.Capture(cell);
         var text = formula?.TrimStart();
         if (text != null && text.StartsWith('=')) text = text[1..];
+        StructuredReferences.RequireTable(text, sheet.TableAt(cell) != null);
         var target = sheet.Ensure(cell);
         target.Formula = string.IsNullOrEmpty(text) ? null : text;
         target.SpillAnchor = null;

@@ -83,8 +83,7 @@ public class TableTests
         Assert.Equal(60, N(ws, "D3"));
         Assert.Equal(200, N(ws, "F1"));
 
-        wb.Execute(new SetFormulaCommand(ws, R("F5"), "=[@Qty]"));
-        Assert.Equal(CellValue.Error(CellError.Ref), ws[R("F5")].Value);
+        Assert.Throws<ArgumentException>(() => wb.Execute(new SetFormulaCommand(ws, R("F5"), "=[@Qty]")));
         wb.Execute(new SetFormulaCommand(o, R("A5"), "=Sales[@Qty]"));
         Assert.Equal(CellValue.Error(CellError.Value), o[R("A5")].Value);
         wb.Execute(new SetFormulaCommand(o, R("A6"), "=SUM(Sales[Nope])"));
@@ -537,6 +536,27 @@ public class TableTests
     }
 
     [Fact]
+    public void UnqualifiedStructuredRefs_OutsideTables_AreRejectedAtInput()
+    {
+        var (wb, ws) = Sales();
+        foreach (var formula in (string[])["=[@Qty]*2", "=SUM([Qty])", "=SUM([[#Data],[Qty]])"])
+            Assert.Contains("table", Assert.Throws<ArgumentException>(() => wb.Execute(new SetFormulaCommand(ws, R("F2"), formula))).Message);
+        Assert.Null(ws[R("F2")]);
+        wb.Execute(new SetFormulaCommand(ws, R("F2"), "=SUM(Sales[Qty])"));
+        wb.Execute(new SetFormulaCommand(ws, R("D2"), "=[@Qty]*[@Price]"));
+        Assert.Equal("[@Qty]*[@Price]", ws[R("D2")].Formula);
+
+        Assert.Throws<ArgumentException>(() => wb.Execute(new DefineNameCommand("Units", "[Qty]")));
+        wb.Execute(new DefineNameCommand("Units", "Sales[Qty]"));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddConditionalFormattingCommand(ws,
+            new ConditionalFormatting([G("B2:B4")], [new ConditionalRule.Expression("[@Qty]>2", new DifferentialStyle(Fill: new CellFill { Color = "#FF0000" }))]))));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddDataValidationCommand(ws,
+            new DataValidation([G("B2:B4")], ValidationType.Whole, "lessThan", "MAX([Qty])"))));
+        Assert.Empty(ws.ConditionalFormats);
+        Assert.Empty(ws.DataValidations);
+    }
+
+    [Fact]
     public void HeaderSync_RunsOnceAtTransactionCommit()
     {
         var (wb, ws) = Sales();
@@ -655,7 +675,6 @@ public class TableTests
         using var engine = new CalcEngine(wb);
         wb.Execute(new SetFormulaCommand(ws, R("F1"), "=SUM(Sales[Unit-Price])"));
         wb.Execute(new SetFormulaCommand(ws, R("F2"), "=ROWS(Sales[[#Headers],[#Totals]])"));
-        wb.Execute(new SetFormulaCommand(ws, R("F7"), "=[@Qty]"));
         Assert.Equal(60, N(ws, "F1"));
         Assert.Equal(CellValue.Error(CellError.Ref), ws[R("F2")].Value);
         wb.Execute(new SetTotalsRowCommand(ws, "Sales", true));
@@ -663,7 +682,6 @@ public class TableTests
         var written = Write(wb);
         var f = Xml(written, "xl/worksheets/sheet1.xml").Root!.Descendants(M + "c").ToDictionary(c => (string)c.Attribute("r")!, c => c.Element(M + "f")?.Value);
         Assert.Equal("SUM(Sales[[Unit-Price]])", f["F1"]);
-        Assert.Equal("#REF!", f["F7"]);
         Assert.Equal("Sales[[#This Row],[Qty]]", Xml(written, "xl/workbook.xml").Root!.Descendants(M + "definedName").Single().Value);
         var table = Xml(written, "xl/tables/table1.xml").Root!;
         var columns = table.Element(M + "tableColumns")!.Elements().ToList();

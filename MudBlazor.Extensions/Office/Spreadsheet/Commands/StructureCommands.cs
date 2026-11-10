@@ -497,6 +497,7 @@ public sealed class DefineNameCommand(string name, string refersTo) : IWorkbookC
     {
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("A name is required.", nameof(name));
         if (refersTo != null && wb.FindTable(name) != null) throw new ArgumentException($"The name '{name}' is already used by a table.", nameof(name));
+        StructuredReferences.RequireTable(refersTo, false);
         _before = wb.DefinedNameMap.GetValueOrDefault(name);
         Set(wb, refersTo);
     }

@@ -321,6 +321,7 @@ internal static class RuleRanges
         if (formatting.Rules is not { Count: > 0 } rules) throw new ArgumentException("Conditional formatting needs at least one rule.", nameof(formatting));
         if (rules.Any(r => r is not { IsComplete: true }))
             throw new ArgumentException("Every rule needs its formula, operator, period, stops or thresholds.", nameof(formatting));
+        formatting.Rewrite(f => StructuredReferences.RequireTable(f, false));
     }
 
     internal static void Check(IReadOnlyList<CellRange> ranges)

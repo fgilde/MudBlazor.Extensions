@@ -96,6 +96,12 @@ internal static class StructuredReferences
         return (table.Range.Left + Math.Min(a, b), table.Range.Left + Math.Max(a, b));
     }
 
+    internal static string RequireTable(string formula, bool insideTable) =>
+        insideTable || formula == null || !formula.Contains('[')
+        || !FormulaLexer.Tokenize(formula, true).Any(t => t.Kind == FormulaTokenKind.StructuredReference && TryParse(t.Text) is { Table: null })
+            ? formula
+            : throw new ArgumentException($"'{formula}' uses a structured reference without a table name such as [Col] or [@Col]; that only works in a cell of a table. Write Table1[Col] instead.");
+
     internal static string ToDisplay(string formula) =>
         formula == null || !formula.Contains(ThisRowItem, Ignore) ? formula
         : Rewrite(formula, t => t.Text.Contains(ThisRowItem, Ignore) && TryParse(t.Text) is { } node ? Format(node, false) : null);
