@@ -51,8 +51,8 @@ public partial class MudExSpreadsheetEditor
             { nameof(MudExSpreadsheetGoToDialog.Names), _workbook.DefinedNames },
             { nameof(MudExSpreadsheetGoToDialog.Localizer), Localizer }
         }, DialogDefaults);
-        if (await reference.Result is { Canceled: false, Data: string text } && _grid != null)
-            await _grid.GoToAsync(text);
+        if (await reference.Result is { Canceled: false, Data: string text } && _grid != null && !await _grid.GoToAsync(text))
+            await ShowNoticeAsync(TryLocalize("Reference is not valid."));
         await FocusGridAsync();
     }
 

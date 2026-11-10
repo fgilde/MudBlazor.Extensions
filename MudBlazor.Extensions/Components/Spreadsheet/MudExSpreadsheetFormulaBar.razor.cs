@@ -63,7 +63,7 @@ public partial class MudExSpreadsheetFormulaBar : IDisposable
 
         if (e.Key != "Enter") return;
         _nameEditing = false;
-        await Grid.GoToAsync(_nameText);
+        await Grid.GoToAsync(_nameText, true);
         await Grid.FocusAsync();
     }
 

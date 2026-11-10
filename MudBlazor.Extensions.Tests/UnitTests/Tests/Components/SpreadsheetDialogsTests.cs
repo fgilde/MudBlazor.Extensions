@@ -253,6 +253,47 @@ public class SpreadsheetDialogsTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task NameManager_Rename_RewritesFormulas()
+    {
+        var wb = Book(("A1", 2d));
+        wb.Execute(new DefineNameCommand("Rate", "Sheet1!$A$1"));
+        wb.Execute(new SetFormulaCommand(wb.Sheets[0], CellRef.Parse("B1"), "=Rate*10"));
+        wb.Undo.Clear();
+        var cut = Render(wb);
+
+        var open = Run(cut, "xl-name-manager");
+        cut.WaitForAssertion(() => Assert.NotEmpty(_dialogs.FindAll(".mud-ex-sslist-item[data-name='Rate']")));
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-sslist-item[data-name='Rate']").Click());
+        _dialogs.Find(".mud-ex-ssnames-name input").Input("Tax");
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-ssnames-save").Click());
+
+        Assert.Equal(["Tax"], wb.DefinedNames.Keys);
+        Assert.Equal("Tax*10", wb.Sheets[0][CellRef.Parse("B1")].Formula);
+        Assert.Equal(20, wb.Sheets[0][CellRef.Parse("B1")].Value.NumberValue);
+        await cut.InvokeAsync(wb.Undo.Undo);
+        Assert.Equal("Rate*10", wb.Sheets[0][CellRef.Parse("B1")].Formula);
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-ssnames-close").Click());
+        await open;
+    }
+
+    [Fact]
+    public async Task GoTo_UnknownName_IsNotDefined()
+    {
+        var wb = Book();
+        var cut = Render(wb);
+        var grid = Select(cut, "A1");
+
+        Key(grid, "F5");
+        cut.WaitForAssertion(() => Assert.NotEmpty(_dialogs.FindAll(".mud-ex-ssgoto-reference input")));
+        _dialogs.Find(".mud-ex-ssgoto-reference input").Input("Missing");
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-ssgoto-ok").Click());
+
+        cut.WaitForAssertion(() => Assert.Contains("Reference is not valid.", _dialogs.Markup));
+        Assert.Empty(wb.DefinedNames);
+        Assert.Equal(CellRef.Parse("A1"), grid.Instance.Selection.Active);
+    }
+
+    [Fact]
     public async Task InsertFunction_InsertsSignature()
     {
         var wb = Book();

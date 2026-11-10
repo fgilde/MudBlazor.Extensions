@@ -11,12 +11,13 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExSpreadsheetGrid
 {
-    /// <summary>Jumps to a cell, a range or a defined name. An unknown valid name is defined for the current selection.</summary>
+    /// <summary>Jumps to a cell, a range or a defined name. With <paramref name="define"/>, an unknown valid name is defined for the current selection, as in the Name Box.</summary>
     /// <param name="reference">For example <c>B7</c>, <c>A1:C3</c>, <c>Sheet2!A1</c> or a defined name.</param>
-    /// <returns>A task that completes when the selection changed.</returns>
-    internal async Task GoToAsync(string reference)
+    /// <param name="define">True to define an unknown name instead of failing.</param>
+    /// <returns>False if the reference is not valid.</returns>
+    internal async Task<bool> GoToAsync(string reference, bool define = false)
     {
-        if (_sheet == null || string.IsNullOrWhiteSpace(reference)) return;
+        if (_sheet == null || string.IsNullOrWhiteSpace(reference)) return false;
         var text = reference.Trim();
         if (_workbook.DefinedNames.TryGetValue(text, out var refersTo)) text = refersTo.TrimStart('=');
         var sheet = _sheet;
@@ -41,14 +42,15 @@ public partial class MudExSpreadsheetGrid
                 await SheetIndexChanged.InvokeAsync(_workbook.Sheets.ToList().IndexOf(sheet));
             }
 
-            return;
+            return true;
         }
 
-        if (!CanEdit || bang > 0 || !IsValidName(text)) return;
+        if (!define || !CanEdit || bang > 0 || !IsValidName(text)) return false;
         var r = _selection.Range.Normalized;
         var target = new CellRange(r.Start with { RowAbsolute = true, ColumnAbsolute = true }, r.End with { RowAbsolute = true, ColumnAbsolute = true });
         _workbook.Execute(new DefineNameCommand(text, Workbook.QuoteSheetName(_sheet.Name) + "!" + target.ToA1()));
         NotifyEdit();
+        return true;
     }
 
     /// <summary>Called by the browser after a pointer selection of cells.</summary>

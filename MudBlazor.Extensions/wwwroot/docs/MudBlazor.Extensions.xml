@@ -20111,10 +20111,11 @@
             Delete and Replace All in Excel; otherwise the range is returned unchanged.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.GoToAsync(System.String)">
-            <summary>Jumps to a cell, a range or a defined name. An unknown valid name is defined for the current selection.</summary>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.GoToAsync(System.String,System.Boolean)">
+            <summary>Jumps to a cell, a range or a defined name. With <paramref name="define"/>, an unknown valid name is defined for the current selection, as in the Name Box.</summary>
             <param name="reference">For example <c>B7</c>, <c>A1:C3</c>, <c>Sheet2!A1</c> or a defined name.</param>
-            <returns>A task that completes when the selection changed.</returns>
+            <param name="define">True to define an unknown name instead of failing.</param>
+            <returns>False if the reference is not valid.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.OnPointerSelect(System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">
             <summary>Called by the browser after a pointer selection of cells.</summary>

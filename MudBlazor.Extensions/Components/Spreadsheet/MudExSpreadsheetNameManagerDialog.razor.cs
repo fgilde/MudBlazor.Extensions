@@ -53,10 +53,10 @@ public partial class MudExSpreadsheetNameManagerDialog
         var refersTo = _refersTo.Trim().TrimStart('=');
         if (Run("Define name", () =>
             {
-                var renamed = _selected != null && !string.Equals(_selected, name, StringComparison.OrdinalIgnoreCase);
-                if ((renamed || _selected == null) && Workbook.DefinedNames.ContainsKey(name)) throw new ArgumentException(TryLocalize("The name '{0}' already exists.", name));
-                Workbook.Execute(new DefineNameCommand(name, refersTo));
-                if (renamed) Workbook.Execute(new DefineNameCommand(_selected, null));
+                var other = _selected == null || !string.Equals(_selected, name, StringComparison.OrdinalIgnoreCase);
+                if (other && Workbook.DefinedNames.ContainsKey(name)) throw new ArgumentException(TryLocalize("The name '{0}' already exists.", name));
+                if (_selected != null && _selected != name) Workbook.Execute(new RenameNameCommand(_selected, name));
+                if (_selected == null || Workbook.DefinedNames[name] != refersTo) Workbook.Execute(new DefineNameCommand(name, refersTo));
             }))
             Select(Workbook.DefinedNames.Keys.First(k => string.Equals(k, name, StringComparison.OrdinalIgnoreCase)));
     }
