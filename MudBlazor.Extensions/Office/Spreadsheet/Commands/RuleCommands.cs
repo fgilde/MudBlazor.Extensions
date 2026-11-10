@@ -82,7 +82,7 @@ public sealed class AddDataValidationCommand(Worksheet sheet, DataValidation val
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
-        RuleRanges.Check(validation.Ranges);
+        RuleRanges.Check(validation);
         validation.Rewrite(f => StructuredReferences.RequireTable(f, false));
         _before = RuleState.Capture(sheet);
         (_before with { Validations = [.. _before.Validations, validation] }).Restore(wb, sheet);
@@ -109,7 +109,7 @@ public sealed class EditDataValidationCommand(Worksheet sheet, int index, DataVa
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
-        RuleRanges.Check(validation.Ranges);
+        RuleRanges.Check(validation);
         validation.Rewrite(f => StructuredReferences.RequireTable(f, false));
         _before = RuleState.Capture(sheet);
         (_before with { Validations = RuleState.Replace(_before.Validations, index, validation) }).Restore(wb, sheet);

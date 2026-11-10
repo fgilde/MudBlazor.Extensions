@@ -466,6 +466,23 @@ public class RulesTests
     }
 
     [Fact]
+    public void Validation_OverExcelLimitsOrIncomplete_Rejected()
+    {
+        var (wb, ws) = Column(1);
+        DataValidation On(ValidationType type, string f1 = null, string f2 = null) => new([G("A1:A3")], type, "between", f1, f2);
+        var longList = "\"" + string.Join(",", Enumerable.Range(0, 60).Select(i => "Country" + i)) + "\"";
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddDataValidationCommand(ws, On(ValidationType.List, longList))));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddDataValidationCommand(ws, On(ValidationType.Whole))));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddDataValidationCommand(ws, On(ValidationType.Decimal, "1"))));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddDataValidationCommand(ws, On(ValidationType.List))));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddDataValidationCommand(ws, On(ValidationType.Any) with { PromptTitle = new string('t', 33) })));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddDataValidationCommand(ws, On(ValidationType.Any) with { Error = new string('e', 256) })));
+        wb.Execute(new AddDataValidationCommand(ws, On(ValidationType.Whole, "1", "5") with { PromptTitle = new string('t', 32), Prompt = new string('p', 255) }));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new EditDataValidationCommand(ws, 0, On(ValidationType.Whole, "1"))));
+        Assert.Single(ws.DataValidations);
+    }
+
+    [Fact]
     public void IncompleteRules_RejectedByCommands_UnreadableRulesKeptOnWrite()
     {
         var (wb, ws) = Column(1);

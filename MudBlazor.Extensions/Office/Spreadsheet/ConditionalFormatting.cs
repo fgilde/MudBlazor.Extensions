@@ -324,6 +324,28 @@ internal static class RuleRanges
         formatting.Rewrite(f => StructuredReferences.RequireTable(f, false));
     }
 
+    internal static void Check(DataValidation validation)
+    {
+        Check(validation.Ranges);
+        var comparing = validation.Type is not (ValidationType.Any or ValidationType.List or ValidationType.Custom);
+        if (validation.Type != ValidationType.Any && string.IsNullOrWhiteSpace(validation.Formula1))
+            throw new ArgumentException("This kind of validation needs a value or source.", nameof(validation));
+        if (comparing && validation.Operator is null or "between" or "notBetween" && string.IsNullOrWhiteSpace(validation.Formula2))
+            throw new ArgumentException("Between and not between need a minimum and a maximum.", nameof(validation));
+        if (validation.Type == ValidationType.List && validation.Formula1.Trim().TrimStart('=') is ['"', .., '"'] list && list.Length - 2 > MaxListLength)
+            throw new ArgumentException($"A list source can hold at most {MaxListLength} characters. Use a range of cells as the source instead.", nameof(validation));
+        if (validation.PromptTitle?.Length > MaxTitleLength || validation.ErrorTitle?.Length > MaxTitleLength)
+            throw new ArgumentException($"A title can hold at most {MaxTitleLength} characters.", nameof(validation));
+        if (validation.Prompt?.Length > MaxMessageLength || validation.Error?.Length > MaxMessageLength)
+            throw new ArgumentException($"A message can hold at most {MaxMessageLength} characters.", nameof(validation));
+    }
+
+    internal const int MaxListLength = 255;
+
+    internal const int MaxTitleLength = 32;
+
+    internal const int MaxMessageLength = 255;
+
     internal static void Check(IReadOnlyList<CellRange> ranges)
     {
         if (ranges == null || ranges.Count == 0) throw new ArgumentException("At least one range is required.", nameof(ranges));
