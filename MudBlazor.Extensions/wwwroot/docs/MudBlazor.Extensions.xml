@@ -34240,8 +34240,9 @@
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Shift(MudBlazor.Extensions.Office.Spreadsheet.Axis,System.Int32,System.Int32)">
             <summary>
-            Moves every cell, row and column keyed entry (and the original <c>cols</c> and <c>sortState</c> elements) along an inserted or deleted band of rows or
-            columns, like <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Worksheet"/> moves its cells. Entries inside a deleted band are dropped.
+            Moves every cell, row and column keyed entry (and the original <c>cols</c>, <c>sortState</c>, <c>ignoredErrors</c>, <c>rowBreaks</c> and
+            <c>colBreaks</c> elements and the drawing anchors) along an inserted or deleted band of rows or columns, like <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Worksheet"/>
+            moves its cells. Entries inside a deleted band are dropped; a page break inside it moves to the start of the band.
             </summary>
             <param name="axis">Rows or columns.</param>
             <param name="index">Zero-based first inserted or deleted row or column.</param>
@@ -34570,8 +34571,8 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.HasUnshiftedReferences">
             <summary>
             True if the source file contains content whose cell references are not moved when rows, columns or sheets change:
-            threaded comments, form controls and other legacy drawing shapes, drawing shapes linked to cell text, chart sheets, pivot tables and their caches, external links,
-            page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or columns or renaming a sheet these
+            threaded comments, form controls, drawing shapes linked to cell text, charts in group shapes, chart sheets, pivot tables and their caches, external links,
+            query tables, slicers, timelines, protected ranges, scenarios, data consolidation or extension lists. After inserting or deleting rows or columns or renaming a sheet these
             keep pointing at their original cells; editors should warn once.
             </summary>
         </member>

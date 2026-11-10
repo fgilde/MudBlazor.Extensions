@@ -414,7 +414,7 @@ public class SpreadsheetEditorTests : IAsyncLifetime
                 xml = reader.ReadToEnd();
             entry.Delete();
             using var writer = new StreamWriter(zip.CreateEntry("xl/worksheets/sheet1.xml").Open());
-            writer.Write(xml.Replace("</sheetData>", "</sheetData><rowBreaks count=\"1\" manualBreakCount=\"1\"><brk id=\"5\" max=\"16383\" man=\"1\"/></rowBreaks>"));
+            writer.Write(xml.Replace("</sheetData>", "</sheetData><protectedRanges><protectedRange sqref=\"A1:B2\" name=\"p\"/></protectedRanges>"));
         }
 
         return ms.ToArray();

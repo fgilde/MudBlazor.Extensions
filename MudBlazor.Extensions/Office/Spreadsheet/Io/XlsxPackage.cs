@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.IO.Compression;
 using System.Xml;
 using System.Xml.Linq;
@@ -140,8 +141,9 @@ internal sealed class XlsxSheetPart
     public Dictionary<long, (int Rows, int Columns)> ArrayFormulas { get; } = new();
 
     /// <summary>
-    /// Moves every cell, row and column keyed entry (and the original <c>cols</c> and <c>sortState</c> elements) along an inserted or deleted band of rows or
-    /// columns, like <see cref="Spreadsheet.Worksheet"/> moves its cells. Entries inside a deleted band are dropped.
+    /// Moves every cell, row and column keyed entry (and the original <c>cols</c>, <c>sortState</c>, <c>ignoredErrors</c>, <c>rowBreaks</c> and
+    /// <c>colBreaks</c> elements and the drawing anchors) along an inserted or deleted band of rows or columns, like <see cref="Spreadsheet.Worksheet"/>
+    /// moves its cells. Entries inside a deleted band are dropped; a page break inside it moves to the start of the band.
     /// </summary>
     /// <param name="axis">Rows or columns.</param>
     /// <param name="index">Zero-based first inserted or deleted row or column.</param>
@@ -172,31 +174,67 @@ internal sealed class XlsxSheetPart
                 else undo.Add(() => map[key] = value);
         }
 
-        var sortAt = Children.FindIndex(e => e.Name.LocalName == "sortState");
-        if (sortAt >= 0)
+        void Patch(string name, Func<XElement, bool> keep)
         {
-            var original = Children[sortAt];
-            var sort = new XElement(original);
-            var gone = false;
+            var at = Children.FindIndex(e => e.Name.LocalName == name);
+            if (at < 0) return;
+            var original = Children[at];
+            var copy = new XElement(original);
+            if (keep(copy))
+            {
+                Children[at] = copy;
+                undo.Add(() => Children[at] = original);
+            }
+            else
+            {
+                Children.RemoveAt(at);
+                undo.Add(() => Children.Insert(at, original));
+            }
+        }
+
+        Patch("sortState", sort =>
+        {
             foreach (var e in sort.DescendantsAndSelf().ToList())
             {
                 if (!CellRange.TryParse((string)e.Attribute("ref"), out var r)) continue;
                 if (Spreadsheet.Worksheet.MoveRange(r, axis, index, count) is { } moved) e.SetAttributeValue("ref", moved.ToA1());
-                else if (e == sort) gone = true;
+                else if (e == sort) return false;
                 else e.Remove();
             }
 
-            if (gone)
+            return true;
+        });
+
+        Patch("ignoredErrors", errors =>
+        {
+            foreach (var e in errors.Elements().Where(e => e.Name.LocalName == "ignoredError").ToList())
             {
-                Children.RemoveAt(sortAt);
-                undo.Add(() => Children.Insert(sortAt, original));
+                var ranges = ((string)e.Attribute("sqref") ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s => CellRange.TryParse(s, out var r) ? Spreadsheet.Worksheet.MoveRange(r, axis, index, count)?.ToA1() : s).OfType<string>().ToList();
+                if (ranges.Count == 0) e.Remove();
+                else e.SetAttributeValue("sqref", string.Join(' ', ranges));
             }
-            else
+
+            return errors.HasElements;
+        });
+
+        Patch(axis == Axis.Row ? "rowBreaks" : "colBreaks", breaks =>
+        {
+            var seen = new HashSet<int>();
+            foreach (var brk in breaks.Elements().Where(e => e.Name.LocalName == "brk").ToList())
             {
-                Children[sortAt] = sort;
-                undo.Add(() => Children[sortAt] = original);
+                if (!int.TryParse((string)brk.Attribute("id"), NumberStyles.Integer, CultureInfo.InvariantCulture, out var id)) continue;
+                var moved = count > 0 ? id >= index ? id + count : id : id < index ? id : Math.Max(index, id + count);
+                if (moved <= 0 || moved >= limit || !seen.Add(moved)) brk.Remove();
+                else brk.SetAttributeValue("id", moved);
             }
-        }
+
+            var left = breaks.Elements().Where(e => e.Name.LocalName == "brk").ToList();
+            if (breaks.Attribute("count") != null) breaks.SetAttributeValue("count", left.Count);
+            if (breaks.Attribute("manualBreakCount") != null)
+                breaks.SetAttributeValue("manualBreakCount", left.Count(b => (string)b.Attribute("man") is "1" or "true"));
+            return left.Count > 0;
+        });
 
         if (DrawingRoot != null && ChartXmlWriter.ShiftDrawing(DrawingRoot, axis, index, count) is var drawing && drawing != DrawingRoot)
         {
@@ -242,7 +280,10 @@ internal sealed class XlsxSheetPart
             }
         }
 
-        return () => undo.ForEach(a => a());
+        return () =>
+        {
+            for (var i = undo.Count - 1; i >= 0; i--) undo[i]();
+        };
     }
 
     /// <summary>Drops the cell keyed entries (rich string runs, extra attributes, original xf) of cells whose content was replaced, for example by sorting.</summary>
@@ -279,12 +320,9 @@ internal sealed class XlsxPackage
 
     private static readonly XmlReaderSettings XmlSettings = new() { DtdProcessing = DtdProcessing.Prohibit, IgnoreWhitespace = true, CloseInput = false };
 
-    private static readonly HashSet<string> UnshiftedChildren =
-    [
-        "legacyDrawingHF", "rowBreaks", "colBreaks", "protectedRanges", "scenarios", "dataConsolidate", "ignoredErrors", "extLst"
-    ];
+    private static readonly HashSet<string> UnshiftedChildren = ["protectedRanges", "scenarios", "dataConsolidate", "extLst"];
 
-    private static readonly string[] UnshiftedContentTypes = ["pivot", "chart", "drawing", "comments", "externalLink", "queryTable"];
+    private static readonly string[] UnshiftedContentTypes = ["pivot", "chart", "drawing+xml", "comments", "externalLink", "queryTable", "slicer", "timeline"];
 
     private readonly Dictionary<int, bool> _dateStyles = new();
 

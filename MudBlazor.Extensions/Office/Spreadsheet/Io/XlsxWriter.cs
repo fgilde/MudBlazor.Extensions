@@ -14,6 +14,7 @@ public static partial class XlsxWriter
     private const string ContentTypesPart = "[Content_Types].xml";
     private const string SpreadsheetType = "application/vnd.openxmlformats-officedocument.spreadsheetml.";
     private const string WorksheetType = SpreadsheetType + "worksheet+xml";
+    private static readonly DateTimeOffset EntryTime = new(new DateTime(1980, 1, 1));
 
     /// <summary>
     /// Writes the workbook. A workbook read by <see cref="XlsxReader"/> is written surgically: workbook.xml, the worksheets,
@@ -336,7 +337,9 @@ public static partial class XlsxWriter
 
         private static void Put(ZipArchive zip, string name, Action<Stream> write)
         {
-            using var s = zip.CreateEntry(name, CompressionLevel.Optimal).Open();
+            var entry = zip.CreateEntry(name, CompressionLevel.Optimal);
+            entry.LastWriteTime = EntryTime;
+            using var s = entry.Open();
             write(s);
         }
 
