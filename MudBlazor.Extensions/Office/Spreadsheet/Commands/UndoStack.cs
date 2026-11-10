@@ -72,6 +72,8 @@ public sealed class UndoStack
         return new Scope(this);
     }
 
+    internal bool InTransaction => _transaction != null;
+
     internal void Record(IWorkbookCommand cmd)
     {
         _redo.Clear();
@@ -104,6 +106,7 @@ public sealed class UndoStack
         {
             var commands = _transaction;
             _transaction = null;
+            if (commands.Count > 0 && TableEdits.SyncHeaders(_wb) is { } sync) commands.Add(sync);
             if (commands.Count > 0) Record(new CompositeCommand(_transactionDescription, commands));
         }
 

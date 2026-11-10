@@ -537,6 +537,30 @@ public class TableTests
     }
 
     [Fact]
+    public void HeaderSync_RunsOnceAtTransactionCommit()
+    {
+        var (wb, ws) = Sales();
+        using var engine = new CalcEngine(wb);
+        wb.Execute(new SetFormulaCommand(ws, R("F1"), "=SUM(Sales[Qty])"));
+        var events = 0;
+        wb.Changed += (_, _) => events++;
+        using (wb.Undo.BeginTransaction("Edit"))
+        {
+            wb.Execute(new SetValueCommand(ws, R("B1"), V("Units")));
+            Assert.Equal("Qty", ws.Tables[0].Columns[1].Name);
+            wb.Execute(new SetValueCommand(ws, R("B2"), V(5)));
+            Assert.Equal("Qty", ws.Tables[0].Columns[1].Name);
+        }
+
+        Assert.Equal(1, events);
+        Assert.Equal(("Units", "SUM(Sales[Units])", 12d), (ws.Tables[0].Columns[1].Name, ws[R("F1")].Formula, N(ws, "F1")));
+        wb.Undo.Undo();
+        Assert.Equal(("Qty", "Qty", "SUM(Sales[Qty])", 9d), (ws[R("B1")].Value.TextValue, ws.Tables[0].Columns[1].Name, ws[R("F1")].Formula, N(ws, "F1")));
+        wb.Undo.Redo();
+        Assert.Equal(("Units", "SUM(Sales[Units])", 12d), (ws.Tables[0].Columns[1].Name, ws[R("F1")].Formula, N(ws, "F1")));
+    }
+
+    [Fact]
     public void Writer_SafetyNet_HeaderCellsBecomeColumnNames()
     {
         var (wb, ws) = Sales();
