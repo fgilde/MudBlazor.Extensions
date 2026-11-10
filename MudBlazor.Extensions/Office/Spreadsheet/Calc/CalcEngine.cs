@@ -197,9 +197,16 @@ public sealed class CalcEngine : IDisposable
         {
             if (e.ValueRanges.Sum(r => (long)r.Range.Area) > BulkCells) OnBlocksChanged(e);
             else if (e.Cells.Count > 0) OnCellsChanged(e.Cells.Select(c => (c.Sheet, c.Cell)));
+            if (e.Structure.Any(s => s.Kind == StructureChangeKind.Layout)) OnRowsShownOrHidden();
         }
         else if (structure.Count > 1 || e.Cells.Count > 0 || !Apply(structure[0]))
             RecalculateAll();
+    }
+
+    private void OnRowsShownOrHidden()
+    {
+        var starts = _formulas.Where(p => p.Value.HiddenSensitive).Select(p => p.Key).ToList();
+        if (starts.Count > 0) Finish([.. starts], starts);
     }
 
     private bool Apply(StructureChange change)
@@ -390,16 +397,16 @@ public sealed class CalcEngine : IDisposable
 
         var precedents = new List<RefArea>();
         var info = Collect(ast, node.Sheet, precedents);
-        _formulas[node] = new FormulaEntry(formula, ast, info.Positional, info.Names);
+        _formulas[node] = new FormulaEntry(formula, ast, info.Positional, info.Names, info.HiddenSensitive);
         if (info.Volatile) _volatile.Add(node);
         else _volatile.Remove(node);
         _graph.Set(node, precedents);
         return ast != Unparsable && !info.Unknown;
     }
 
-    private (bool Volatile, bool Unknown, bool Positional, bool Names) Collect(FormulaNode ast, Worksheet host, List<RefArea> into)
+    private (bool Volatile, bool Unknown, bool Positional, bool Names, bool HiddenSensitive) Collect(FormulaNode ast, Worksheet host, List<RefArea> into)
     {
-        bool isVolatile = false, unknown = false, positional = false, names = false;
+        bool isVolatile = false, unknown = false, positional = false, names = false, hidden = false;
         var expanded = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var stack = new Stack<(FormulaNode Node, int Depth)>();
         stack.Push((ast, 0));
@@ -425,6 +432,7 @@ public sealed class CalcEngine : IDisposable
                 case CallNode call:
                     if (!_evaluator.Functions.TryGet(call.Name, out var f)) unknown = true;
                     else if (f.Info.IsVolatile) isVolatile = true;
+                    if (f?.Name is "SUBTOTAL" or "AGGREGATE") hidden = true;
                     if (f != null && (f.Name is "ROW" or "COLUMN" || !FunctionRegistry.Default.TryGet(f.Name, out var builtIn) || builtIn != f)) positional = true;
                     foreach (var arg in call.Args) stack.Push((arg, depth));
                     break;
@@ -444,7 +452,7 @@ public sealed class CalcEngine : IDisposable
             }
         }
 
-        return (isVolatile, unknown, positional, names);
+        return (isVolatile, unknown, positional, names, hidden);
     }
 
     private RefArea? BoundingBox(BinaryNode range, Worksheet host)
@@ -739,5 +747,5 @@ public sealed class CalcEngine : IDisposable
 
     private readonly record struct SpillState(CellRange Range, bool Active);
 
-    private sealed record FormulaEntry(string Text, FormulaNode Ast, bool Positional, bool UsesNames);
+    private sealed record FormulaEntry(string Text, FormulaNode Ast, bool Positional, bool UsesNames, bool HiddenSensitive);
 }

@@ -26,7 +26,7 @@ public enum FilterKind
     /// <summary>Shows rows by cell or font color (a differential format of the file).</summary>
     Color,
 
-    /// <summary>A filter read from a file that the model does not represent (dynamic or icon filter); it is written back unchanged and hides no rows when filters are re-applied.</summary>
+    /// <summary>A filter read from a file that the model does not represent (date group, dynamic or icon filter); it is written back unchanged, and the rows it hid in the file stay hidden when other columns are re-applied.</summary>
     Other
 }
 
@@ -123,7 +123,7 @@ public sealed record FilterCriteria
     public static FilterCriteria Top10(double count, bool percent = false, bool bottom = false) =>
         new() { Kind = FilterKind.Top10, Count = count, Percent = percent, Bottom = bottom };
 
-    /// <summary>Shows rows by color. Kept and written, not evaluated: re-applying filters hides no rows for it.</summary>
+    /// <summary>Shows rows by color. Kept and written, not evaluated: rows it hid in the file stay hidden, and it hides no further rows.</summary>
     /// <param name="dxfId">Index of the differential format holding the color.</param>
     /// <param name="cellColor">True for fill color, false for font color.</param>
     /// <returns>The criteria.</returns>
@@ -211,13 +211,14 @@ public sealed record FilterCriteria
 public sealed class AutoFilter
 {
     internal AutoFilter(CellRange range, IReadOnlyDictionary<int, FilterCriteria> columns = null, SortKey sort = null, XElement source = null,
-        IReadOnlyDictionary<int, XElement> columnSources = null)
+        IReadOnlyDictionary<int, XElement> columnSources = null, IReadOnlySet<int> opaqueRows = null)
     {
         Range = range.Normalized;
         Columns = columns ?? new Dictionary<int, FilterCriteria>();
         Sort = sort;
         Source = source;
         ColumnSources = columnSources ?? new Dictionary<int, XElement>();
+        OpaqueRows = opaqueRows ?? new HashSet<int>();
     }
 
     /// <summary>The filtered range; its first row holds the filter buttons.</summary>
@@ -233,6 +234,12 @@ public sealed class AutoFilter
 
     internal IReadOnlyDictionary<int, XElement> ColumnSources { get; }
 
+    internal IReadOnlySet<int> OpaqueRows { get; }
+
+    internal bool HasOpaqueColumns => Columns.Values.Any(c => !IsEvaluable(c));
+
+    internal static bool IsEvaluable(FilterCriteria c) => c.Kind is FilterKind.Values or FilterKind.Custom or FilterKind.Top10;
+
     internal AutoFilter WithColumn(int column, FilterCriteria criteria)
     {
         var columns = Columns.ToDictionary();
@@ -244,26 +251,37 @@ public sealed class AutoFilter
         }
         else columns[column] = criteria;
 
-        return new AutoFilter(Range, columns, Sort, Source, sources);
+        return new AutoFilter(Range, columns, Sort, Source, sources, OpaqueRows);
     }
+
+    internal AutoFilter WithOpaqueRows(IReadOnlySet<int> rows) => new(Range, Columns, Sort, Source, ColumnSources, rows);
 
     internal AutoFilter Shift(Axis axis, int index, int count)
     {
         if (Worksheet.MoveRange(Range, axis, index, count) is not { } range) return null;
-        if (axis == Axis.Row) return new AutoFilter(range, Columns, Sort, Source, ColumnSources);
-        int? Map(int c) => count > 0 ? c >= index ? c + count < CellRef.MaxColumns ? c + count : null : c
+        var limit = axis == Axis.Row ? CellRef.MaxRows : CellRef.MaxColumns;
+        int? Map(int c) => count > 0 ? c >= index ? c + count < limit ? c + count : null : c
             : c < index ? c : c < index - count ? null : c + count;
+        if (axis == Axis.Row)
+            return new AutoFilter(range, Columns, Sort, Source, ColumnSources, OpaqueRows.Select(Map).OfType<int>().ToHashSet());
         Dictionary<int, T> Remap<T>(IReadOnlyDictionary<int, T> map) =>
             map.Select(p => (Key: Map(p.Key), p.Value)).Where(p => p.Key != null).ToDictionary(p => p.Key.Value, p => p.Value);
         var sort = Sort != null && Map(Sort.Column) is { } c ? Sort with { Column = c } : null;
-        return new AutoFilter(range, Remap(Columns), sort, Source, Remap(ColumnSources));
+        return new AutoFilter(range, Remap(Columns), sort, Source, Remap(ColumnSources), OpaqueRows);
     }
 
     internal HashSet<int> Evaluate(Worksheet sheet)
     {
+        var hidden = EvaluateKnown(sheet);
+        if (HasOpaqueColumns) hidden.UnionWith(OpaqueRows);
+        return hidden;
+    }
+
+    internal HashSet<int> EvaluateKnown(Worksheet sheet)
+    {
         var hidden = new HashSet<int>();
         var (top, bottom) = (Range.Top + 1, Range.Bottom);
-        foreach (var (column, criteria) in Columns)
+        foreach (var (column, criteria) in Columns.Where(p => IsEvaluable(p.Value)))
         {
             var matches = criteria.Matcher(sheet, column, top, bottom);
             for (var r = top; r <= bottom; r++)

@@ -347,10 +347,17 @@ public sealed class Worksheet
     internal void ClaimFilteredRows()
     {
         if (AutoFilter is not { Columns.Count: > 0 } filter) return;
-        var rows = _hiddenRows.Where(r => r > filter.Range.Top && r <= filter.Range.Bottom).ToList();
+        var known = filter.EvaluateKnown(this);
+        var opaque = filter.HasOpaqueColumns
+            ? _hiddenRows.Where(r => r > filter.Range.Top && r <= filter.Range.Bottom && !known.Contains(r)).ToHashSet()
+            : [];
+        var rows = _hiddenRows.Where(r => known.Contains(r) || opaque.Contains(r)).ToList();
         _hiddenRows.ExceptWith(rows);
         SetFiltered(rows);
+        AutoFilter = filter.WithOpaqueRows(opaque);
     }
+
+    internal Action ForgetFileData(Func<CellRef, bool> where) => Part?.Forget(where);
 
     internal List<(CellRef Ref, CellState State)> Insert(Axis axis, int index, int count)
     {

@@ -182,6 +182,8 @@ internal static class SheetXmlReader
         var f = column.Elements().FirstOrDefault(c => c.Name.LocalName != "extLst");
         switch (f?.Name.LocalName)
         {
+            case "filters" when f.Elements().Any(c => c.Name.LocalName == "dateGroupItem"):
+                return FilterCriteria.Other();
             case "filters":
                 return FilterCriteria.Values(f.Elements().Where(c => c.Name.LocalName == "filter").Select(c => (string)c.Attribute("val") ?? "").ToHashSet(),
                     True((string)f.Attribute("blank")));

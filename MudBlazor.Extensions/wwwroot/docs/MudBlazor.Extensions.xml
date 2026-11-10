@@ -30689,7 +30689,7 @@
             <summary>Shows rows by cell or font color (a differential format of the file).</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Other">
-            <summary>A filter read from a file that the model does not represent (dynamic or icon filter); it is written back unchanged and hides no rows when filters are re-applied.</summary>
+            <summary>A filter read from a file that the model does not represent (date group, dynamic or icon filter); it is written back unchanged, and the rows it hid in the file stay hidden when other columns are re-applied.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator">
             <summary>Comparison of a custom filter.</summary>
@@ -30777,7 +30777,7 @@
             <returns>The criteria.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Color(System.Int32,System.Boolean)">
-            <summary>Shows rows by color. Kept and written, not evaluated: re-applying filters hides no rows for it.</summary>
+            <summary>Shows rows by color. Kept and written, not evaluated: rows it hid in the file stay hidden, and it hides no further rows.</summary>
             <param name="dxfId">Index of the differential format holding the color.</param>
             <param name="cellColor">True for fill color, false for font color.</param>
             <returns>The criteria.</returns>
@@ -32182,7 +32182,8 @@
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SortCommand">
             <summary>
             Sorts the rows of a range in a stable way, in Excel order: numbers, text, booleans, errors, and blank cells last (also when descending).
-            Values, formulas (moved relatively, as when copying), styles and row heights move with their rows.
+            Values, formulas (moved relatively, as when copying), styles and row heights move with their rows. Like Excel, hidden and filtered rows
+            stay in place and only the visible rows are reordered among themselves; ranges that intersect merged cells are refused.
             </summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The range to sort.</param>
@@ -32192,7 +32193,8 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SortCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.SortKey},System.Boolean)">
             <summary>
             Sorts the rows of a range in a stable way, in Excel order: numbers, text, booleans, errors, and blank cells last (also when descending).
-            Values, formulas (moved relatively, as when copying), styles and row heights move with their rows.
+            Values, formulas (moved relatively, as when copying), styles and row heights move with their rows. Like Excel, hidden and filtered rows
+            stay in place and only the visible rows are reordered among themselves; ranges that intersect merged cells are refused.
             </summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The range to sort.</param>
@@ -32779,6 +32781,11 @@
             <param name="index">Zero-based first inserted or deleted row or column.</param>
             <param name="count">Positive to insert, negative to delete.</param>
             <returns>An action that puts the dropped entries back after the band was inserted again (undo of a delete).</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Forget(System.Func{MudBlazor.Extensions.Office.Spreadsheet.CellRef,System.Boolean})">
+            <summary>Drops the cell keyed entries (rich string runs, extra attributes, original xf) of cells whose content was replaced, for example by sorting.</summary>
+            <param name="where">Selects the cells.</param>
+            <returns>An action that puts the dropped entries back.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage">
             <summary>

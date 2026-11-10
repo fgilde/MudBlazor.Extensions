@@ -176,6 +176,27 @@ internal sealed class XlsxSheetPart
 
         return () => undo.ForEach(a => a());
     }
+
+    /// <summary>Drops the cell keyed entries (rich string runs, extra attributes, original xf) of cells whose content was replaced, for example by sorting.</summary>
+    /// <param name="where">Selects the cells.</param>
+    /// <returns>An action that puts the dropped entries back.</returns>
+    public Action Forget(Func<CellRef, bool> where)
+    {
+        var undo = new List<Action>();
+        void Drop<T>(Dictionary<long, T> map)
+        {
+            foreach (var (key, value) in map.Where(p => where(CellRef.FromKey(p.Key))).ToList())
+            {
+                map.Remove(key);
+                undo.Add(() => map[key] = value);
+            }
+        }
+
+        Drop(RichStringCells);
+        Drop(CellAttributes);
+        Drop(OriginalXf);
+        return () => undo.ForEach(a => a());
+    }
 }
 
 /// <summary>

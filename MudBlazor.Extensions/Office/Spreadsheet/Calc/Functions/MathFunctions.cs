@@ -143,11 +143,11 @@ internal static class MathFunctions
         r.Add(Cat, "LCM(number1, [number2], ...)", "Returns the least common multiple.",
             (ctx, a) => Divisors(ctx, a, (x, y) => x == 0 || y == 0 ? 0 : x / Gcd(x, y) * y));
 
-        r.Add(Cat, "SUBTOTAL(function_num, ref1, [ref2], ...)", "Returns a subtotal (1-11 include, 101-111 ignore hidden rows) of references.", (ctx, a) =>
+        r.Add(Cat, "SUBTOTAL(function_num, ref1, [ref2], ...)", "Returns a subtotal of references, always ignoring filtered rows (1-11 include, 101-111 ignore rows hidden by hand).", (ctx, a) =>
         {
             var fn = Fn.Int(Fn.Scalar(ctx, a[0]));
             if (fn % 100 is < 1 or > 11 || fn is > 111 or (> 11 and < 101)) return CalcValue.Error(CellError.Value);
-            return Aggregate(fn % 100, Collect(ctx, a, 1, fn > 100, false, true), 0);
+            return Aggregate(fn % 100, Collect(ctx, a, 1, true, fn > 100, false, true), 0);
         });
         r.Add(Cat, "AGGREGATE(function_num, options, ref1, [ref2], ...)", "Returns an aggregate (1-19) optionally ignoring hidden rows, errors and nested subtotals.", (ctx, a) =>
         {
@@ -156,7 +156,7 @@ internal static class MathFunctions
             if (fn is < 1 or > 19 || options is < 0 or > 7) return CalcValue.Error(CellError.Value);
             var withK = fn >= 14;
             if (withK && a.Count != 4) return CalcValue.Error(CellError.Value);
-            var values = Collect(ctx, withK ? [a[2]] : a, withK ? 0 : 2, options % 2 == 1, options is 2 or 3 or 6 or 7, options <= 3);
+            var values = Collect(ctx, withK ? [a[2]] : a, withK ? 0 : 2, options % 2 == 1, options % 2 == 1, options is 2 or 3 or 6 or 7, options <= 3);
             return Aggregate(fn, values, withK ? Fn.Num(Fn.Scalar(ctx, a[3])) : 0);
         });
 
@@ -380,7 +380,8 @@ internal static class MathFunctions
         return Fn.Number(sum);
     }
 
-    private static List<CellValue> Collect(FunctionContext ctx, IReadOnlyList<CalcArg> args, int from, bool skipHidden, bool skipErrors, bool skipNested)
+    private static List<CellValue> Collect(FunctionContext ctx, IReadOnlyList<CalcArg> args, int from, bool skipFiltered, bool skipHidden, bool skipErrors,
+        bool skipNested)
     {
         var list = new List<CellValue>();
         void Add(CellValue v)
@@ -406,7 +407,7 @@ internal static class MathFunctions
                 foreach (var c in cells)
                 {
                     var cell = sheet[c];
-                    if (skipHidden && sheet.IsRowHidden(c.Row)) continue;
+                    if (skipHidden ? sheet.IsRowHidden(c.Row) : skipFiltered && sheet.IsRowFiltered(c.Row)) continue;
                     if (skipNested && cell.Formula is { } f && (f.Contains("SUBTOTAL(", StringComparison.OrdinalIgnoreCase)
                                                                 || f.Contains("AGGREGATE(", StringComparison.OrdinalIgnoreCase))) continue;
                     Add(cell.Value);

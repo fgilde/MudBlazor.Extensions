@@ -106,6 +106,7 @@ public sealed class DeleteColumnsCommand(Worksheet sheet, int index, int count) 
 public sealed class SetHiddenCommand(Worksheet sheet, Axis axis, int index, int count, bool hidden) : IWorkbookCommand
 {
     private readonly List<int> _changed = new();
+    private IReadOnlySet<int> _filteredBefore;
 
     /// <inheritdoc />
     public string Description => (hidden ? "Hide " : "Unhide ") + (axis == Axis.Row ? "rows" : "columns");
@@ -122,6 +123,8 @@ public sealed class SetHiddenCommand(Worksheet sheet, Axis axis, int index, int 
             sheet.SetHidden(axis, i, hidden);
         }
 
+        _filteredBefore = sheet.FilteredRows;
+        if (axis == Axis.Row && !hidden) sheet.SetFiltered(_filteredBefore.Where(r => r < index || r >= index + count));
         wb.Notify(StructureChangeKind.Layout, sheet);
     }
 
@@ -129,6 +132,7 @@ public sealed class SetHiddenCommand(Worksheet sheet, Axis axis, int index, int 
     public void Revert(Workbook wb)
     {
         foreach (var i in _changed) sheet.SetHidden(axis, i, !hidden);
+        sheet.SetFiltered(_filteredBefore);
         wb.Notify(StructureChangeKind.Layout, sheet);
     }
 }

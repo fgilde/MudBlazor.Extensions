@@ -291,6 +291,133 @@ public class SortFilterTests
         Assert.Equal([0, 3, 5, 6], ws.VisibleRowsIn(G("A1:B7")));
     }
 
+    [Fact]
+    public void Sort_FilteredList_PermutesOnlyVisibleRows()
+    {
+        var (wb, ws) = Sheet(["N", "T"], [5, "x"], [4, "y"], [3, "x"], [2, "y"], [1, "x"], [0, "z"]);
+        wb.Execute(new SetHiddenCommand(ws, Axis.Row, 6, 1, true));
+        wb.Execute(new SetAutoFilterCommand(ws, G("A1:B7")));
+        wb.Execute(new ApplyFilterCommand(ws, 1, FilterCriteria.Values(new HashSet<string> { "x", "z" })));
+        Assert.Equal([2, 4], ws.FilteredRows.Order());
+
+        wb.Execute(new SortCommand(ws, G("A1:B7"), [new SortKey(0)], hasHeader: true));
+
+        Assert.Equal([1, 4, 3, 2, 5, 0], Column(ws, 0, 1, 6).Select(v => (int)v.NumberValue));
+        Assert.All(ws.VisibleRowsIn(G("A2:A7")), r => Assert.Equal("x", ws[new CellRef(r, 1)].Value.TextValue));
+        Assert.Equal("z", ws[R("B7")].Value.TextValue);
+
+        wb.Undo.Undo();
+        Assert.Equal([5, 4, 3, 2, 1, 0], Column(ws, 0, 1, 6).Select(v => (int)v.NumberValue));
+    }
+
+    [Fact]
+    public void Sort_RangeWithMerge_Throws()
+    {
+        var (wb, ws) = Sheet([2, "b"], [1, "a"]);
+        wb.Execute(new MergeCommand(ws, G("C1:D1")));
+        wb.Execute(new MergeCommand(ws, G("A2:B2")));
+
+        Assert.Throws<InvalidOperationException>(() => wb.Execute(new SortCommand(ws, G("A1:B2"), [new SortKey(0)], hasHeader: false)));
+        Assert.Equal(2, ws[R("A1")].Value.NumberValue);
+    }
+
+    [Fact]
+    public void Filter_UnevaluableFileCriteria_KeepTheirRows()
+    {
+        var rows = string.Concat(Enumerable.Range(1, 6).Select(r =>
+            $"<row r=\"{r}\"{(r is 3 or 4 ? " hidden=\"1\"" : "")}><c r=\"A{r}\"><v>{45000 + r}</v></c><c r=\"B{r}\" t=\"inlineStr\"><is><t>{(char)('a' + r)}</t></is></c><c r=\"C{r}\"><v>{r}</v></c></row>"));
+        const string filter = "<autoFilter ref=\"A1:C6\"><filterColumn colId=\"0\"><filters><dateGroupItem year=\"2023\" dateTimeGrouping=\"year\"/></filters></filterColumn>"
+                              + "<filterColumn colId=\"2\"><dynamicFilter type=\"aboveAverage\"/></filterColumn></autoFilter>";
+        var wb = XlsxReader.Read(new MemoryStream(XlsxReadTests.Package([XlsxReadTests.Sheet(rows, after: filter)])));
+        var ws = wb.Sheets[0];
+        Assert.Equal(FilterKind.Other, ws.AutoFilter.Columns[0].Kind);
+        Assert.Equal(FilterKind.Other, ws.AutoFilter.Columns[2].Kind);
+        Assert.Equal([2, 3], ws.FilteredRows.Order());
+
+        wb.Execute(new ApplyFilterCommand(ws, 1, FilterCriteria.Values(new HashSet<string> { "c", "d", "e", "f", "g" })));
+        Assert.Equal([2, 3], ws.FilteredRows.Order());
+        wb.Execute(new ApplyFilterCommand(ws, 1, FilterCriteria.Values(new HashSet<string> { "c", "d", "e", "f" })));
+        Assert.Equal([2, 3, 5], ws.FilteredRows.Order());
+
+        wb.Execute(new DeleteColumnsCommand(ws, 1, 1));
+        Assert.Equal([2, 3], ws.FilteredRows.Order());
+        wb.Execute(new InsertRowsCommand(ws, 1, 1));
+        Assert.Equal([3, 4], ws.FilteredRows.Order());
+        wb.Execute(new DeleteColumnsCommand(ws, 0, 2));
+        Assert.Empty(ws.FilteredRows);
+    }
+
+    [Fact]
+    public void Read_HandHiddenRowPassingAllCriteria_StaysHandHidden()
+    {
+        var rows = "<row r=\"1\"><c r=\"A1\"><v>0</v></c></row><row r=\"2\" hidden=\"1\"><c r=\"A2\"><v>5</v></c></row><row r=\"3\" hidden=\"1\"><c r=\"A3\"><v>1</v></c></row>";
+        const string filter = "<autoFilter ref=\"A1:A3\"><filterColumn colId=\"0\"><customFilters><customFilter operator=\"greaterThan\" val=\"2\"/></customFilters></filterColumn></autoFilter>";
+        var ws = XlsxReader.Read(new MemoryStream(XlsxReadTests.Package([XlsxReadTests.Sheet(rows, after: filter)]))).Sheets[0];
+
+        Assert.Equal([2], ws.FilteredRows);
+        Assert.Equal([1, 2], ws.HiddenRows.Order());
+    }
+
+    [Fact]
+    public void Subtotal_And_Aggregate_FollowFilterAndHiddenRows()
+    {
+        var (wb, ws) = Sheet(["V"], [1], [2], [3], [4]);
+        _ = new CalcEngine(wb);
+        wb.Execute(new SetFormulaCommand(ws, R("A7"), "=SUBTOTAL(9,A2:A5)"));
+        wb.Execute(new SetFormulaCommand(ws, R("A8"), "=SUBTOTAL(109,A2:A5)"));
+        wb.Execute(new SetFormulaCommand(ws, R("A9"), "=AGGREGATE(9,5,A2:A5)"));
+        wb.Execute(new SetFormulaCommand(ws, R("A10"), "=AGGREGATE(9,4,A2:A5)"));
+        wb.Execute(new SetFormulaCommand(ws, R("B7"), "=A7*2"));
+        double At(string a1) => ws[R(a1)].Value.NumberValue;
+
+        wb.Execute(new SetHiddenCommand(ws, Axis.Row, 2, 1, true));
+        Assert.Equal((10d, 8d, 8d, 10d), (At("A7"), At("A8"), At("A9"), At("A10")));
+
+        wb.Execute(new SetAutoFilterCommand(ws, G("A1:A5")));
+        wb.Execute(new ApplyFilterCommand(ws, 0, FilterCriteria.Custom(CustomFilterOperator.LessThan, "4")));
+        Assert.Equal((6d, 4d, 4d, 10d, 12d), (At("A7"), At("A8"), At("A9"), At("A10"), At("B7")));
+
+        wb.Undo.Undo();
+        Assert.Equal((10d, 20d), (At("A7"), At("B7")));
+    }
+
+    [Fact]
+    public void SetHidden_UnhidesFilteredRow_UndoRestores()
+    {
+        var (wb, ws) = Sheet(["N"], ["a"], ["b"]);
+        wb.Execute(new SetAutoFilterCommand(ws, G("A1:A3")));
+        wb.Execute(new ApplyFilterCommand(ws, 0, FilterCriteria.Values(new HashSet<string> { "a" })));
+
+        wb.Execute(new SetHiddenCommand(ws, Axis.Row, 0, 3, false));
+        Assert.Empty(ws.HiddenRows);
+
+        wb.Undo.Undo();
+        Assert.Equal([2], ws.FilteredRows);
+    }
+
+    [Fact]
+    public void Sort_DropsFileDataOfMovedCells()
+    {
+        var rows = "<row r=\"1\"><c r=\"A1\"><v>2</v></c><c r=\"B1\" t=\"e\" vm=\"1\"><v>#N/A</v></c><c r=\"C1\" t=\"s\"><v>0</v></c></row>"
+                   + "<row r=\"2\"><c r=\"A2\"><v>1</v></c><c r=\"B2\" t=\"e\"><v>#DIV/0!</v></c><c r=\"C2\" t=\"inlineStr\"><is><t>rich</t></is></c></row>";
+        var package = XlsxReadTests.Package([XlsxReadTests.Sheet(rows)], sharedStrings: "<si><r><rPr><b/></rPr><t>rich</t></r></si>");
+        var wb = XlsxReader.Read(new MemoryStream(package));
+        var ws = wb.Sheets[0];
+
+        wb.Execute(new SortCommand(ws, G("A1:C2"), [new SortKey(0)], hasHeader: false));
+
+        var cells = Xml(Write(wb)).Descendants(M + "c").ToDictionary(c => (string)c.Attribute("r")!);
+        Assert.Equal("#DIV/0!", cells["B1"].Value);
+        Assert.Null(cells["B1"].Attribute("vm"));
+        Assert.NotEqual("0", cells["C1"].Value);
+        Assert.Equal(cells["C1"].Value, cells["C2"].Value);
+
+        wb.Undo.Undo();
+        cells = Xml(Write(wb)).Descendants(M + "c").ToDictionary(c => (string)c.Attribute("r")!);
+        Assert.Equal("1", (string)cells["B1"].Attribute("vm"));
+        Assert.Equal("0", cells["C1"].Value);
+    }
+
     private static byte[] Write(Workbook wb)
     {
         var ms = new MemoryStream();
