@@ -165,6 +165,28 @@ public class SpreadsheetChartsNotesTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task FrozenPanes_ChartsAndNotesRenderInTheirPane()
+    {
+        var wb = Sales();
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetNoteCommand(ws, new CellNote(CellRef.Parse("A1"), "Ann", "Top")));
+        var cut = Render(wb);
+        var grid = Select(cut, "A1:C3");
+        await Run(cut, "xl-chart-column");
+        var id = Assert.Single(ws.Charts).Id;
+        await cut.InvokeAsync(() => grid.Instance.OnChartMoved(id, grid.Instance.X(5), grid.Instance.Y(10), 200, 80));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ssg-pane-main .mud-ex-ssg-chart")));
+
+        await cut.InvokeAsync(() => wb.Execute(new FreezeCommand(ws, CellRef.Parse("A20"))));
+        await cut.InvokeAsync(() => grid.Instance.OnNoteHover(0, 0));
+
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(".mud-ex-ssg-pane-top .mud-ex-ssg-chart")));
+        Assert.Empty(cut.FindAll(".mud-ex-ssg-pane-main .mud-ex-ssg-chart"));
+        Assert.Contains("overflow:hidden", cut.Find(".mud-ex-ssg-pane-top .mud-ex-ssg-charts").GetAttribute("style"));
+        Assert.Contains("Top", cut.Find(".mud-ex-ssg-pane-top .mud-ex-ssg-note-box").TextContent);
+    }
+
+    [Fact]
     public async Task Note_IndicatorAndEdit()
     {
         var wb = Book(("B2", "x"));
@@ -221,6 +243,8 @@ public class SpreadsheetChartsNotesTests : IAsyncLifetime
         Assert.Contains("mud-ex-ssg-link", cut.Find(".mud-ex-ssg-cell[data-r='2'][data-c='0']").ClassName);
         Assert.Empty(cut.FindAll("a[href]"));
         Assert.DoesNotContain("Other!B5", cut.Markup);
+        Assert.Equal("https://example.com/a", cut.Find(".mud-ex-ssg-cell[data-r='0'][data-c='0']").GetAttribute("data-href"));
+        Assert.Single(cut.FindAll("[data-href]"));
 
         await cut.InvokeAsync(() => cut.Instance.OnLinkClick(0, 0));
         var open = Assert.Single(js.Invocations, i => i.Identifier == "openLink");

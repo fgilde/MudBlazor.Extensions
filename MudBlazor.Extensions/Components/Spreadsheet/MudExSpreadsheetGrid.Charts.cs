@@ -95,10 +95,10 @@ public partial class MudExSpreadsheetGrid
         return e.Key == "Escape";
     }
 
-    private IEnumerable<SheetChart> VisibleCharts()
+    private IEnumerable<SheetChart> VisibleCharts(GridPane p)
     {
-        if (_sheet.Charts.Count == 0) yield break;
-        var window = CellRange.FromBounds(FrozenRows > 0 ? 0 : _firstRow, FrozenColumns > 0 ? 0 : _firstCol, _lastRow, _lastCol);
+        if (_sheet.Charts.Count == 0 || p.R1 < p.R0 || p.C1 < p.C0) yield break;
+        var window = CellRange.FromBounds(p.R0, p.C0, p.R1, p.C1);
         foreach (var c in _sheet.Charts)
             if (CellRange.FromBounds(Math.Min(c.From.Row, c.To.Row), Math.Min(c.From.Column, c.To.Column), Math.Max(c.From.Row, c.To.Row), Math.Max(c.From.Column, c.To.Column)).Intersects(window))
                 yield return c;
@@ -110,6 +110,8 @@ public partial class MudExSpreadsheetGrid
         var top = Y(c.From.Row) + c.FromOffset.Y * _zoom;
         return (left, top, Math.Max(1, X(c.To.Column) + c.ToOffset.X * _zoom - left), Math.Max(1, Y(c.To.Row) + c.ToOffset.Y * _zoom - top));
     }
+
+    private string ChartLayerStyle(GridPane p) => p.Kind == 0 ? null : PaneBackground(p) + ";overflow:hidden";
 
     private static string ChartStyle((double Left, double Top, double Width, double Height) b) =>
         $"left:{Px(b.Left)};top:{Px(b.Top)};width:{Px(b.Width)};height:{Px(b.Height)}";

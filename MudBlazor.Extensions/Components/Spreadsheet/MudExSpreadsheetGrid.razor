@@ -39,41 +39,6 @@
                         foreach (var pane in Panes()) RenderPane(b, pane);
                     }))
                 </CascadingValue>
-                @if (_sheet.Charts.Count > 0)
-                {
-                    <div class="mud-ex-ssg-charts">
-                        @foreach (var chart in VisibleCharts())
-                        {
-                            var box = ChartBox(chart);
-                            var selected = chart.Id == _selectedChart;
-                            <div @key="chart.Id"
-                                 class="@(selected ? "mud-ex-ssg-chart mud-ex-ssg-chart-selected" : "mud-ex-ssg-chart")"
-                                 style="@ChartStyle(box)"
-                                 data-chart="@chart.Id"
-                                 data-locked="@(Locked(chart) ? "true" : "false")">
-                                <MudExSpreadsheetChart Chart="chart" Data="@ChartDataOf(chart)" Width="box.Width" Height="box.Height" Localizer="@Localizer" />
-                                @if (selected)
-                                {
-                                    @foreach (var handle in ChartHandles)
-                                    {
-                                        <div class="mud-ex-ssg-chart-handle" data-h="@handle"></div>
-                                    }
-                                }
-                            </div>
-                        }
-                    </div>
-                }
-                @if (NoteBox is { } note)
-                {
-                    <MudExSpreadsheetNoteEditor @key="note.Cell"
-                                                Note="note.Note"
-                                                Author="@(note.Note?.Author ?? Author)"
-                                                Editing="note.Editing"
-                                                Style="@NoteBoxStyle(note.Cell)"
-                                                OnSave="SaveNoteAsync"
-                                                OnCancel="CancelNoteAsync"
-                                                Localizer="@Localizer" />
-                }
             </div>
         </div>
     }
@@ -182,6 +147,41 @@
             @foreach (var o in Overlays(p))
             {
                 <div class="@o.Class" style="@o.Style" data-range="@o.Range"></div>
+            }
+            @if (VisibleCharts(p).ToList() is { Count: > 0 } charts)
+            {
+                <div class="mud-ex-ssg-charts" style="@ChartLayerStyle(p)">
+                    @foreach (var chart in charts)
+                    {
+                        var box = ChartBox(chart);
+                        var selected = chart.Id == _selectedChart;
+                        <div @key="chart.Id"
+                             class="@(selected ? "mud-ex-ssg-chart mud-ex-ssg-chart-selected" : "mud-ex-ssg-chart")"
+                             style="@ChartStyle(box)"
+                             data-chart="@chart.Id"
+                             data-locked="@(Locked(chart) ? "true" : "false")">
+                            <MudExSpreadsheetChart Chart="chart" Data="@ChartDataOf(chart)" Width="box.Width" Height="box.Height" Localizer="@Localizer" />
+                            @if (selected)
+                            {
+                                @foreach (var handle in ChartHandles)
+                                {
+                                    <div class="mud-ex-ssg-chart-handle" data-h="@handle"></div>
+                                }
+                            }
+                        </div>
+                    }
+                </div>
+            }
+            @if (NoteBox is { } note && PaneOf(note.Cell) == p.Kind)
+            {
+                <MudExSpreadsheetNoteEditor @key="note.Cell"
+                                            Note="note.Note"
+                                            Author="@(note.Note?.Author ?? Author)"
+                                            Editing="note.Editing"
+                                            Style="@NoteBoxStyle(note.Cell)"
+                                            OnSave="SaveNoteAsync"
+                                            OnCancel="CancelNoteAsync"
+                                            Localizer="@Localizer" />
             }
             @if (p.TopSticky)
             {
