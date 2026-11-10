@@ -2,6 +2,7 @@ using Bunit;
 using MainSample.WebAssembly;
 using MainSample.WebAssembly.Examples;
 using MainSample.WebAssembly.Services;
+using MainSample.WebAssembly.Shared;
 using MainSample.WebAssembly.Types;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,7 +50,7 @@ public class OfficeDemoConventionsTests
 
     [Theory]
     [MemberData(nameof(ExampleNames))]
-    public async Task OfficeExamples_SetComponentRef(string name)
+    public async Task OfficeExamples_SetComponentRef_AndRegisterWithDemoBox(string name)
     {
         if (NeedsInteraction.Contains(name))
             return;
@@ -66,9 +67,12 @@ public class OfficeDemoConventionsTests
         context.Render<MudDialogProvider>();
 
         var type = ExampleType(name);
-        var cut = context.Render<DynamicComponent>(p => p.Add(c => c.Type, type));
+        var holder = new Holder();
+        var cut = context.Render<CascadingValue<IExampleHolder>>(p => p.Add(c => c.Value, holder)
+            .AddChildContent<DynamicComponent>(d => d.Add(c => c.Type, type)));
         var example = cut.FindComponents<ExampleBase>().First().Instance;
         cut.WaitForAssertion(() => Assert.NotNull(example.ComponentRef), TimeSpan.FromSeconds(10));
+        Assert.Contains(example, holder.Registered);
 
         var expected = type.Namespace switch
         {
@@ -78,6 +82,17 @@ public class OfficeDemoConventionsTests
             _ => name.Contains("FileDisplay") || name.Contains("ServerSave") ? typeof(MudExFileDisplay) : typeof(MudExSpreadsheetEditor)
         };
         Assert.IsType(expected, example.ComponentRef);
+    }
+
+    private sealed class Holder : IExampleHolder
+    {
+        public List<IExample> Registered { get; } = [];
+
+        public Task RegisterAsync(IExample example)
+        {
+            Registered.Add(example);
+            return Task.CompletedTask;
+        }
     }
 
     private sealed class SampleDataHandler : HttpMessageHandler

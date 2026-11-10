@@ -25,7 +25,11 @@
     private string _name = &quot;&quot;;
     private string? _error;
 
-    protected override Task OnInitializedAsync() =&gt; LoadAsync(&quot;ExcelSheet.xlsx&quot;);
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LoadAsync(&quot;ExcelSheet.xlsx&quot;);
+    }
 
     private async Task LoadAsync(string file)
     {

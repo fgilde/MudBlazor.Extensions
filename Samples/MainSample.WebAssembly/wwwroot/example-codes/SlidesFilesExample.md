@@ -25,7 +25,11 @@
     private string _name = "";
     private string? _error;
 
-    protected override Task OnInitializedAsync() => LoadAsync("sample.pptx");
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LoadAsync("sample.pptx");
+    }
 
     private void NewDeck()
     {
