@@ -16,7 +16,26 @@
 
 <MudExDemoPage>
 
-    <MudExDemoBox Title="1. Budget workbook"
+    <MudExDemoBox Title="1. Feature overview"
+                  NavTitle="Feature overview"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Used in this workbook"
+                  Features="@(new[]
+                              {
+                                  "Formulas in the Total column and the grand total",
+                                  "A column chart of the quarters, updated live",
+                                  "A color scale as conditional formatting",
+                                  "A table with a filter on the Total column",
+                                  "A validation dropdown in H1, a note on A1 and a hyperlink in G4"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SpreadsheetOverviewExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Budget workbook"
                   NavTitle="Budget workbook"
                   FeaturesPlacement="DemoFeaturesPlacement.Below"
                   FeaturesTitle="Parameters and events"
@@ -35,7 +54,7 @@
         </DemoContent>
     </MudExDemoBox>
 
-    <MudExDemoBox Title="2. Ribbon modes, colors and layout"
+    <MudExDemoBox Title="3. Ribbon modes, colors and layout"
                   NavTitle="Ribbon modes and colors"
                   FeaturesPlacement="DemoFeaturesPlacement.Below"
                   FeaturesTitle="Parameters"
@@ -56,7 +75,7 @@
         </DemoContent>
     </MudExDemoBox>
 
-    <MudExDemoBox Title="3. Read-only viewer"
+    <MudExDemoBox Title="4. Read-only viewer"
                   NavTitle="Read-only viewer"
                   FeaturesPlacement="DemoFeaturesPlacement.Below"
                   FeaturesTitle="Highlights"
@@ -72,7 +91,7 @@
         </DemoContent>
     </MudExDemoBox>
 
-    <MudExDemoBox Title="4. 100,000 rows x 30 columns"
+    <MudExDemoBox Title="5. 100,000 rows x 30 columns"
                   NavTitle="100,000 rows"
                   FeaturesPlacement="DemoFeaturesPlacement.Below"
                   FeaturesTitle="Highlights"

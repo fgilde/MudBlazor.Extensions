@@ -1,0 +1,17 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudAlert</span> <span class="htmlAttributeName">Severity</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Severity.Info&quot;</span> <span class="htmlAttributeName">Dense</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    @L[&quot;Try it: change a value in B2:C9 and the charts follow, drag or resize a chart, or select a range and insert another chart from the Insert tab.&quot;]
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudAlert</span><span class="htmlTagDelimiter">&gt;</span>
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 600px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExSpreadsheetEditor @bind-Workbook=&quot;_workbook&quot; /&gt;
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private Workbook _workbook = SpreadsheetFeatureSamples.CreateCharts();
+}
+
+</pre></div>

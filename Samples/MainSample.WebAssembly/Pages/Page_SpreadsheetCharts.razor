@@ -1,0 +1,39 @@
+@page "/spreadsheet-charts"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [Demo(Name = "Charts", Group = "Spreadsheet", Order = 30, Icon = Icons.Material.Outlined.BarChart, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) }, Documentation = "Charts built from cell ranges that update live in MudExSpreadsheetEditor.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Spreadsheet – Charts"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["Charts read their values from cell ranges and redraw when the cells change. They are saved as Excel charts and can be moved, resized and removed."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Charts from ranges"
+                  NavTitle="Charts from ranges"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Used in this workbook"
+                  Features="@(new[]
+                              {
+                                  "A column chart of revenue and costs over A1:C9",
+                                  "A line chart of revenue, costs and the Profit formulas over A1:D9",
+                                  "A pie chart of revenue by region over A12:B16",
+                                  "Change a value and the charts redraw, Ctrl+Z undoes it"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SpreadsheetChartsExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

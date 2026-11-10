@@ -1,0 +1,40 @@
+@page "/spreadsheet-data"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [Demo(Name = "Data", Group = "Spreadsheet", Order = 20, Icon = Icons.Material.Outlined.FilterAlt, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) }, Documentation = "Tables, sorting, filtering, data validation, conditional formatting, links and notes in MudExSpreadsheetEditor.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Spreadsheet – Data"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["Tables, sorting, filters, validation rules and conditional formatting are stored in the xlsx file like Excel does, and they move with the cells when rows or columns are inserted or deleted."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Tables, sort, filter and validation"
+                  NavTitle="Tables, sort, filter, validation"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Used in this workbook"
+                  Features="@(new[]
+                              {
+                                  "Table sheet – a table with a totals row and filter buttons",
+                                  "Sort and filter sheet – an auto filter sorted by Region and Amount, filtered to Qty above 5",
+                                  "Validation sheet – a status dropdown, a whole number rule and a warning-only rule",
+                                  "Conditional formatting colors the Done and Blocked statuses",
+                                  "Notes show on hover, the filter and sort commands are undoable"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SpreadsheetDataExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
