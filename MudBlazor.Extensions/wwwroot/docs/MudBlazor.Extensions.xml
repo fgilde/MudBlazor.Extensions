@@ -31885,7 +31885,7 @@
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand">
             <summary>
-            Adds a shape on top of the others or at a position. The shape and its children get new ids that are unique on the slide.
+            Adds a shape on top of the others or at a position. The shape and its children get new ids that are unique on the slide, and a name if they have none.
             </summary>
             <param name="slide">The slide.</param>
             <param name="shape">A new top-level shape, for example from <see cref="M:MudBlazor.Extensions.Office.Presentation.AutoShape.Create(System.String,MudBlazor.Extensions.Office.Presentation.ShapeTransform,MudBlazor.Extensions.Office.Presentation.ShapeFill,MudBlazor.Extensions.Office.Presentation.ShapeLine,MudBlazor.Extensions.Office.Presentation.TextBody)"/>, that is on no slide.</param>
@@ -31893,7 +31893,7 @@
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,MudBlazor.Extensions.Office.Presentation.SlideShape,System.Nullable{System.Int32})">
             <summary>
-            Adds a shape on top of the others or at a position. The shape and its children get new ids that are unique on the slide.
+            Adds a shape on top of the others or at a position. The shape and its children get new ids that are unique on the slide, and a name if they have none.
             </summary>
             <param name="slide">The slide.</param>
             <param name="shape">A new top-level shape, for example from <see cref="M:MudBlazor.Extensions.Office.Presentation.AutoShape.Create(System.String,MudBlazor.Extensions.Office.Presentation.ShapeTransform,MudBlazor.Extensions.Office.Presentation.ShapeFill,MudBlazor.Extensions.Office.Presentation.ShapeLine,MudBlazor.Extensions.Office.Presentation.TextBody)"/>, that is on no slide.</param>
