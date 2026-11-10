@@ -67,7 +67,7 @@ public static class XlsxReader
         var wb = new Workbook { Package = package };
         package.Date1904 = (string)Child(root, "workbookPr")?.Attribute("date1904") is "1" or "true";
 
-        var theme = Open(zip, package.ThemePart, ThemeColors.Read) ?? ThemeColors.Office;
+        var theme = Open(zip, package.ThemePart, s => ThemeColors.Read(XlsxPackage.LoadXml(s))) ?? ThemeColors.Office;
         var (xfStyleIds, canonicalXf) = Open(zip, package.StylesPart, s => StylesXmlReader.Read(s, theme, wb.Styles));
         package.XfStyleIds = xfStyleIds is { Length: > 0 } ? xfStyleIds : [0];
         package.CanonicalXf = canonicalXf is { Length: > 0 } ? canonicalXf : [0];

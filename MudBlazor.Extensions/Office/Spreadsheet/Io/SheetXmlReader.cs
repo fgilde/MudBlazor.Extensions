@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using static MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage;
@@ -16,14 +15,9 @@ internal static class SheetXmlReader
         CloseInput = false
     };
 
-    private static readonly Regex Escape = new("_x([0-9A-Fa-f]{4})_", RegexOptions.CultureInvariant);
-
     internal static double ColumnWidthToPixels(double width) => Math.Truncate((256 * width + Math.Truncate(128.0 / 7)) / 256 * 7);
 
     internal static double PointsToPixels(double points) => points * 96 / 72;
-
-    internal static string Decode(string s) =>
-        s != null && s.Contains("_x", StringComparison.Ordinal) ? Escape.Replace(s, m => ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString()) : s;
 
     internal static string Text(XElement si, out bool rich)
     {
@@ -41,7 +35,7 @@ internal static class SheetXmlReader
             if (part != null) text = text == null ? part : text + part;
         }
 
-        return Decode(text ?? "");
+        return OoxmlText.Decode(text ?? "");
     }
 
     internal static XElement ReadRoot(XmlReader r)
@@ -191,13 +185,13 @@ internal static class SheetXmlReader
             case "filters" when f.Elements().Any(c => c.Name.LocalName == "dateGroupItem"):
                 return FilterCriteria.Other();
             case "filters":
-                return FilterCriteria.Values(f.Elements().Where(c => c.Name.LocalName == "filter").Select(c => Decode((string)c.Attribute("val") ?? "")).ToHashSet(),
+                return FilterCriteria.Values(f.Elements().Where(c => c.Name.LocalName == "filter").Select(c => OoxmlText.Decode((string)c.Attribute("val") ?? "")).ToHashSet(),
                     True((string)f.Attribute("blank")));
             case "customFilters":
                 var list = f.Elements().Where(c => c.Name.LocalName == "customFilter").ToList();
                 if (list.Count == 0) return FilterCriteria.Other();
-                return FilterCriteria.Custom(Operator(list[0]), Decode((string)list[0].Attribute("val")), True((string)f.Attribute("and")),
-                    list.Count > 1 ? Operator(list[1]) : null, list.Count > 1 ? Decode((string)list[1].Attribute("val")) : null);
+                return FilterCriteria.Custom(Operator(list[0]), OoxmlText.Decode((string)list[0].Attribute("val")), True((string)f.Attribute("and")),
+                    list.Count > 1 ? Operator(list[1]) : null, list.Count > 1 ? OoxmlText.Decode((string)list[1].Attribute("val")) : null);
             case "top10":
                 return FilterCriteria.Top10(Number(f, "val") ?? 10, True((string)f.Attribute("percent")), (string)f.Attribute("top") is "0" or "false");
             case "colorFilter":
@@ -360,8 +354,8 @@ internal static class SheetXmlReader
                 : CellValue.Empty,
             "b" => v == null ? CellValue.Empty : CellValue.Boolean(True(v.Trim())),
             "e" => v == null ? CellValue.Empty : ErrorValue(v.Trim()),
-            "str" => v == null ? CellValue.Empty : CellValue.Text(Decode(v)),
-            "inlineStr" => CellValue.Text(inline ?? (v == null ? null : Decode(v))),
+            "str" => v == null ? CellValue.Empty : CellValue.Text(OoxmlText.Decode(v)),
+            "inlineStr" => CellValue.Text(inline ?? (v == null ? null : OoxmlText.Decode(v))),
             "d" => DateTime.TryParse(v, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var date)
                 ? CellValue.Number(ExcelDate.ToSerial(date))
                 : CellValue.Empty,

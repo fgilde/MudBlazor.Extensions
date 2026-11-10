@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Xml.Linq;
 
-namespace MudBlazor.Extensions.Office.Spreadsheet;
+namespace MudBlazor.Extensions.Office;
 
 internal static class ThemeColors
 {
@@ -20,8 +20,6 @@ internal static class ThemeColors
         "3366FF", "33CCCC", "99CC00", "FFCC00", "FF9900", "FF6600", "666699", "969696",
         "003366", "339966", "003300", "333300", "993300", "993366", "333399", "333333"
     ];
-
-    internal static string[] Read(Stream theme) => Read(XlsxPackage.LoadXml(theme));
 
     internal static string[] Read(XDocument theme)
     {

@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Xml.Linq;
-using MudBlazor.Extensions.Office.Spreadsheet;
 
 namespace MudBlazor.Extensions.Office.Presentation;
 
@@ -176,7 +175,7 @@ internal static class PptxReader
         string.Join("\n", NotesBody(notes)?.Element(P + "txBody")?.Elements(A + "p").Select(p => string.Concat(p.Elements().Select(RunText))) ?? []);
 
     internal static string RunText(XElement node) =>
-        node.Name == A + "br" ? "\n" : node.Name == A + "r" || node.Name == A + "fld" ? SheetXmlReader.Decode((string)node.Element(A + "t") ?? "") : null;
+        node.Name == A + "br" ? "\n" : node.Name == A + "r" || node.Name == A + "fld" ? OoxmlText.Decode((string)node.Element(A + "t") ?? "") : null;
 
     private static IEnumerable<string> Ids(XElement root, string list) =>
         root.Element(P + list)?.Elements().Select(e => (string)e.Attribute(R + "id")).Where(id => id != null) ?? [];

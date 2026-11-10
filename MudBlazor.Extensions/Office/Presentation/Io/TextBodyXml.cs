@@ -1,5 +1,4 @@
 using System.Xml.Linq;
-using MudBlazor.Extensions.Office.Spreadsheet;
 using static MudBlazor.Extensions.Office.Presentation.PptxReader;
 
 namespace MudBlazor.Extensions.Office.Presentation;
@@ -46,7 +45,7 @@ internal static class TextBodyXml
         var rPr = template?.Elements(A + "r").FirstOrDefault()?.Element(A + "rPr");
         txBody.Elements(A + "p").Remove();
         txBody.Add(text.Split('\n').Select(line => new XElement(A + "p", pPr == null ? null : new XElement(pPr),
-            line.Length == 0 ? null : new XElement(A + "r", rPr == null ? null : new XElement(rPr), new XElement(A + "t", SharedStringsWriter.Escape(line))))));
+            line.Length == 0 ? null : new XElement(A + "r", rPr == null ? null : new XElement(rPr), new XElement(A + "t", OoxmlText.Escape(line))))));
     }
 
     private static XElement AddNotesBody(XDocument notes)
@@ -131,8 +130,8 @@ internal static class TextBodyXml
         if (name == A + "br") return r;
         var t = r.Element(A + "t");
         if (t == null) r.Add(t = new XElement(A + "t"));
-        if (SheetXmlReader.Decode(t.Value) == run.Text) return r;
-        t.Value = SharedStringsWriter.Escape(run.Text);
+        if (OoxmlText.Decode(t.Value) == run.Text) return r;
+        t.Value = OoxmlText.Escape(run.Text);
         if (r.Name != A + "fld") return r;
         r.Name = A + "r";
         r.RemoveAttributes();

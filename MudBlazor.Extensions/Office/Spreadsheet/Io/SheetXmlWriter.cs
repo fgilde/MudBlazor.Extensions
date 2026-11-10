@@ -384,14 +384,14 @@ internal static class SheetXmlWriter
             }
 
             if (formula.Contains('[')) formula = StructuredReferences.ToFile(formula, ws.TableAt(at)?.Name);
-            w.WriteString(SharedStringsWriter.Escape(FormulaText(formula), false));
+            w.WriteString(OoxmlText.Escape(FormulaText(formula), false));
             w.WriteEndElement();
         }
 
         text ??= value.Kind switch
         {
             CellValueKind.Number => Number(value.NumberValue),
-            CellValueKind.Text => SharedStringsWriter.Escape(value.TextValue),
+            CellValueKind.Text => OoxmlText.Escape(value.TextValue),
             CellValueKind.Boolean => value.BooleanValue ? "1" : "0",
             CellValueKind.Error => value.ToString(),
             _ => null
@@ -494,7 +494,7 @@ internal static class SheetXmlWriter
             case FilterKind.Values:
                 f.SetAttributeValue("blank", c.Blanks ? 1 : null);
                 f.Elements(ns + "filter").Remove();
-                f.AddFirst(c.Shown.Order(StringComparer.Ordinal).Select(v => new XElement(ns + "filter", new XAttribute("val", SharedStringsWriter.Escape(v)))));
+                f.AddFirst(c.Shown.Order(StringComparer.Ordinal).Select(v => new XElement(ns + "filter", new XAttribute("val", OoxmlText.Escape(v)))));
                 break;
             case FilterKind.Custom:
                 f.SetAttributeValue("and", c.And ? 1 : null);
@@ -518,7 +518,7 @@ internal static class SheetXmlWriter
 
     private static XElement CustomFilter(CustomFilterOperator op, string value, XNamespace ns) =>
         new(ns + "customFilter", op == CustomFilterOperator.Equal ? null : new XAttribute("operator", SheetXmlReader.FilterOperators[(int)op]),
-            new XAttribute("val", SharedStringsWriter.Escape(value ?? "")));
+            new XAttribute("val", OoxmlText.Escape(value ?? "")));
 
     private static XElement Cols(XElement original, Worksheet ws, XlsxSheetPart part, XlsxPackage package, StylesXmlWriter styles, XNamespace ns)
     {

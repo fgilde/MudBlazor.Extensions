@@ -75,7 +75,7 @@ public static partial class XlsxWriter
                         new XElement(XName.Get("workbookView", SheetXmlWriter.MainNs))), new XElement(XName.Get("sheets", SheetXmlWriter.MainNs))))
                 : Load(package.WorkbookPart);
             var ns = doc.Root!.Name.Namespace;
-            var theme = package?.ThemePart is { } themePart && Find(source, themePart) is { } themeEntry ? Read(themeEntry, ThemeColors.Read) : ThemeColors.Office;
+            var theme = package?.ThemePart is { } themePart && Find(source, themePart) is { } themeEntry ? Read(themeEntry, s => ThemeColors.Read(XlsxPackage.LoadXml(s))) : ThemeColors.Office;
             var stylesDoc = package?.StylesPart is { } stylesPart && Find(source, stylesPart) != null ? Load(stylesPart) : null;
             var styles = new StylesXmlWriter(stylesDoc, wb.Styles, package?.CanonicalXf ?? [0], CultureInfo.CurrentCulture);
             var stylesPartName = stylesDoc != null ? package.StylesPart : AddPart("styles", typeBase, "styles.xml");

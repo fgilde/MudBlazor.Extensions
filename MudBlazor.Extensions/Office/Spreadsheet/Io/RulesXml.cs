@@ -110,7 +110,7 @@ internal static class RulesXml
             "duplicateValues" or "uniqueValues" => new ConditionalRule.Duplicate(type == "uniqueValues", style, priority, stop),
             "timePeriod" => new ConditionalRule.TimePeriod((string)r.Attribute("timePeriod") ?? "today", style, priority, stop),
             _ when Array.IndexOf(TextTypes, type) is >= 0 and var kind =>
-                new ConditionalRule.ContainsText((ContainsTextKind)kind, SheetXmlReader.Decode((string)r.Attribute("text")), style, priority, stop),
+                new ConditionalRule.ContainsText((ContainsTextKind)kind, OoxmlText.Decode((string)r.Attribute("text")), style, priority, stop),
             _ => null
         };
         return (rule is { IsComplete: true } ? rule : new OpaqueRule(priority, stop)) with { Source = r, DxfId = dxfId };
@@ -130,12 +130,12 @@ internal static class RulesXml
         if (ranges.Count == 0) return null;
         var type = Array.IndexOf(ValidationTypes, (string)v.Attribute("type")) is > 0 and var t ? (ValidationType)t : ValidationType.Any;
         return new DataValidation(ranges, type, (string)v.Attribute("operator") ?? "between", Formula(Child(v, "formula1")?.Value), Formula(Child(v, "formula2")?.Value),
-            True(v, "allowBlank"), !True(v, "showDropDown"), SheetXmlReader.Decode((string)v.Attribute("promptTitle")),
-            SheetXmlReader.Decode((string)v.Attribute("prompt")), SheetXmlReader.Decode((string)v.Attribute("errorTitle")), SheetXmlReader.Decode((string)v.Attribute("error")), (string)v.Attribute("errorStyle") ?? "stop") { Source = v };
+            True(v, "allowBlank"), !True(v, "showDropDown"), OoxmlText.Decode((string)v.Attribute("promptTitle")),
+            OoxmlText.Decode((string)v.Attribute("prompt")), OoxmlText.Decode((string)v.Attribute("errorTitle")), OoxmlText.Decode((string)v.Attribute("error")), (string)v.Attribute("errorStyle") ?? "stop") { Source = v };
     }
 
     private static XElement FormulaElement(XNamespace ns, string name, string formula) =>
-        formula == null ? null : new XElement(ns + name, SharedStringsWriter.Escape(SheetXmlWriter.FormulaText(RuleFormulas.Bare(formula)), false));
+        formula == null ? null : new XElement(ns + name, OoxmlText.Escape(SheetXmlWriter.FormulaText(RuleFormulas.Bare(formula)), false));
 
     private static XElement WriteRule(ConditionalRule rule, CellRef anchor, XNamespace ns, StylesXmlWriter styles, string[] theme, int knownDxfs)
     {
@@ -199,7 +199,7 @@ internal static class RulesXml
             case ConditionalRule.ContainsText t:
                 var kind = (int)t.Kind;
                 x.SetAttributeValue("operator", kind < TextOperators.Length ? TextOperators[kind] : null);
-                x.SetAttributeValue("text", kind < TextOperators.Length ? SharedStringsWriter.Escape(t.Text ?? "") : null);
+                x.SetAttributeValue("text", kind < TextOperators.Length ? OoxmlText.Escape(t.Text ?? "") : null);
                 formulas = [string.Format(CultureInfo.InvariantCulture, TextFormulas[kind], at, "\"" + (t.Text ?? "").Replace("\"", "\"\"") + "\"")];
                 break;
             case ConditionalRule.TimePeriod p:
@@ -225,7 +225,7 @@ internal static class RulesXml
     }
 
     private static XElement Cfvo(ConditionalValue v, XNamespace ns) => new(ns + "cfvo", new XAttribute("type", ValueTypes[(int)v.Type]),
-        v.Value == null ? null : new XAttribute("val", SharedStringsWriter.Escape(SheetXmlWriter.FormulaText(RuleFormulas.Bare(v.Value)), false)), v.GreaterOrEqual ? null : new XAttribute("gte", 0));
+        v.Value == null ? null : new XAttribute("val", OoxmlText.Escape(SheetXmlWriter.FormulaText(RuleFormulas.Bare(v.Value)), false)), v.GreaterOrEqual ? null : new XAttribute("gte", 0));
 
     private static XElement Color(XElement source, string color, XNamespace ns, string[] theme) =>
         source != null && string.Equals(ThemeColors.Resolve(source, theme, ThemeColors.Indexed), color, StringComparison.OrdinalIgnoreCase)
@@ -244,10 +244,10 @@ internal static class RulesXml
         x.SetAttributeValue("operator", !comparing || d.Operator is null or "between" ? null : d.Operator);
         x.SetAttributeValue("allowBlank", d.AllowBlank ? 1 : null);
         x.SetAttributeValue("showDropDown", d.ShowDropDown ? null : 1);
-        x.SetAttributeValue("errorTitle", SharedStringsWriter.Escape(d.ErrorTitle));
-        x.SetAttributeValue("error", SharedStringsWriter.Escape(d.Error));
-        x.SetAttributeValue("promptTitle", SharedStringsWriter.Escape(d.PromptTitle));
-        x.SetAttributeValue("prompt", SharedStringsWriter.Escape(d.Prompt));
+        x.SetAttributeValue("errorTitle", OoxmlText.Escape(d.ErrorTitle));
+        x.SetAttributeValue("error", OoxmlText.Escape(d.Error));
+        x.SetAttributeValue("promptTitle", OoxmlText.Escape(d.PromptTitle));
+        x.SetAttributeValue("prompt", OoxmlText.Escape(d.Prompt));
         x.SetAttributeValue("sqref", Sqref(d.Ranges));
         x.AddFirst(FormulaElement(ns, "formula1", d.Formula1), comparing ? FormulaElement(ns, "formula2", d.Formula2) : null);
         return x;

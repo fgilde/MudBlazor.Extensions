@@ -48,8 +48,8 @@ internal static class TableXml
     {
         if (!CellRange.TryParse((string)e.Attribute("ref"), out var range)) return null;
         var columns = Child(e, "tableColumns")?.Elements().Where(c => c.Name.LocalName == "tableColumn")
-            .Select(c => new TableColumn(SheetXmlReader.Decode((string)c.Attribute("name") ?? ""), (string)c.Attribute("totalsRowFunction") is { } f and not "none" ? f : null,
-                FromFile(Child(c, "calculatedColumnFormula")?.Value)) { Id = Int(c, "id"), Source = c, TotalsLabel = SheetXmlReader.Decode((string)c.Attribute("totalsRowLabel")) })
+            .Select(c => new TableColumn(OoxmlText.Decode((string)c.Attribute("name") ?? ""), (string)c.Attribute("totalsRowFunction") is { } f and not "none" ? f : null,
+                FromFile(Child(c, "calculatedColumnFormula")?.Value)) { Id = Int(c, "id"), Source = c, TotalsLabel = OoxmlText.Decode((string)c.Attribute("totalsRowLabel")) })
             .ToList() ?? [];
         if (columns.Count != range.Normalized.ColumnCount) return null;
         var style = Child(e, "tableStyleInfo");
@@ -112,15 +112,15 @@ internal static class TableXml
     {
         var c = column.Source != null ? new XElement(column.Source) : new XElement(ns + "tableColumn");
         c.SetAttributeValue("id", id);
-        if (SheetXmlReader.Decode((string)c.Attribute("name") ?? "") != name) c.SetAttributeValue("name", SharedStringsWriter.Escape(name, breaks: true));
+        if (OoxmlText.Decode((string)c.Attribute("name") ?? "") != name) c.SetAttributeValue("name", OoxmlText.Escape(name, breaks: true));
         c.SetAttributeValue("totalsRowFunction", column.TotalsFunction);
-        c.SetAttributeValue("totalsRowLabel", SharedStringsWriter.Escape(column.TotalsLabel, breaks: true));
+        c.SetAttributeValue("totalsRowLabel", OoxmlText.Escape(column.TotalsLabel, breaks: true));
         var formula = Child(c, "calculatedColumnFormula");
         if (column.CalculatedFormula == null) formula?.Remove();
         else if (FromFile(formula?.Value) != column.CalculatedFormula)
         {
             if (formula == null) c.AddFirst(formula = new XElement(ns + "calculatedColumnFormula"));
-            formula.Value = SharedStringsWriter.Escape(SheetXmlWriter.FormulaText(StructuredReferences.ToFile(column.CalculatedFormula, table)), false);
+            formula.Value = OoxmlText.Escape(SheetXmlWriter.FormulaText(StructuredReferences.ToFile(column.CalculatedFormula, table)), false);
         }
 
         return c;

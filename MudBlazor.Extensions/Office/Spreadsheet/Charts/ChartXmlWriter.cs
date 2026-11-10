@@ -227,7 +227,7 @@ internal static class ChartXmlWriter
 
     private static XElement SeriesName(XNamespace c, ChartSeries s, Workbook wb, Worksheet host) =>
         new(c + "tx", s.NameRef == null
-            ? new XElement(c + "v", SharedStringsWriter.Escape(s.Name, false))
+            ? new XElement(c + "v", OoxmlText.Escape(s.Name, false))
             : new XElement(c + "strRef", new XElement(c + "f", s.NameRef), Cache(c, "strCache", [s.Name ?? ""])));
 
     private static XElement Data(XNamespace c, string name, string reference, bool text, Workbook wb, Worksheet host)
@@ -241,7 +241,7 @@ internal static class ChartXmlWriter
 
     private static XElement Cache(XNamespace c, string name, IReadOnlyList<string> values) =>
         new(c + name, name == "numCache" ? new XElement(c + "formatCode", "General") : null, Val(c, "ptCount", values.Count.ToString(CultureInfo.InvariantCulture)),
-            values.Select((v, i) => v == null ? null : new XElement(c + "pt", new XAttribute("idx", i), new XElement(c + "v", SharedStringsWriter.Escape(v, false)))));
+            values.Select((v, i) => v == null ? null : new XElement(c + "pt", new XAttribute("idx", i), new XElement(c + "v", OoxmlText.Escape(v, false)))));
 
     private static IEnumerable<XElement> Axes(XNamespace c, ChartKind kind, string axis1, string axis2)
     {
@@ -268,7 +268,7 @@ internal static class ChartXmlWriter
         var pPr = Child(p, "pPr");
         var rPr = Child(Child(p, "r"), "rPr");
         var rich = new XElement(c + "rich", new XElement(a + "bodyPr"), new XElement(a + "lstStyle"),
-            text.Split('\n').Select(line => new XElement(a + "p", pPr == null ? null : new XElement(pPr), new XElement(a + "r", rPr == null ? null : new XElement(rPr), new XElement(a + "t", SharedStringsWriter.Escape(line, false))))));
+            text.Split('\n').Select(line => new XElement(a + "p", pPr == null ? null : new XElement(pPr), new XElement(a + "r", rPr == null ? null : new XElement(rPr), new XElement(a + "t", OoxmlText.Escape(line, false))))));
         if (Child(Child(template, "tx"), "rich") is { } old)
         {
             rich.Element(a + "bodyPr")!.ReplaceWith(Child(old, "bodyPr") ?? new XElement(a + "bodyPr"));
