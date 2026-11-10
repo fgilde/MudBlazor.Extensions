@@ -82,7 +82,8 @@ public sealed class SortCommand(Worksheet sheet, CellRange range, IReadOnlyList<
         sheet.Notes = sheet.Notes.Select(n => Inside(n.Cell) ? n with { Cell = Moved(n.Cell) } : n).ToList();
         sheet.Links = sheet.Links.Select(l => l.Span.Rows == 0 && Inside(l.Cell) && l.Cell.Column + l.Span.Columns <= _data.Right ? l with { Cell = Moved(l.Cell) } : l)
             .ToList();
-        if (sheet.AutoFilter is { } filter && filter.Range.Contains(_data.Start) && filter.Range.Contains(_data.End))
+        if (sheet.AutoFilter is { } filter && _data.Top == filter.Range.Top + 1 && _data.Bottom >= Math.Min(filter.Range.Bottom, sheet.UsedRange.Bottom)
+            && _data.Left >= filter.Range.Left && _data.Right <= filter.Range.Right)
             sheet.AutoFilter = filter.WithSort(keys[0]);
     }
 

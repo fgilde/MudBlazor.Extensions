@@ -68,6 +68,17 @@ public class SortFilterTests
     }
 
     [Fact]
+    public void Sort_PartOfFilterRange_DoesNotRecordFilterSort()
+    {
+        var (wb, ws) = Sheet(["Name", "Score"], ["b", 2], ["c", 3], ["a", 1], ["d", 4]);
+        wb.Execute(new SetAutoFilterCommand(ws, G("A1:B5")));
+        wb.Execute(new SortCommand(ws, G("A2:B3"), [new SortKey(0, Descending: true)], hasHeader: false));
+        Assert.Null(ws.AutoFilter!.Sort);
+        wb.Execute(new SortCommand(ws, G("A2:B5"), [new SortKey(1)], hasHeader: false));
+        Assert.Equal(new SortKey(1), ws.AutoFilter!.Sort);
+    }
+
+    [Fact]
     public void Sort_ByTwoKeys_StableAndExcelOrder()
     {
         var (wb, ws) = Sheet(
