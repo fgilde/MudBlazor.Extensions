@@ -2,7 +2,7 @@ const ZWSP = String.fromCharCode(8203);
 const RUN_KEYS = ['b', 'i', 'u', 's', 'size', 'color', 'font'];
 const FLAGS = ['b', 'i', 'u', 's'];
 const ALIGN = { l: 'left', e: 'center', r: 'right', j: 'justify' };
-const BLOCKED = ['insertFromDrop', 'insertFromPaste', 'insertHTML', 'insertLink'];
+const BLOCKED = ['insertFromDrop', 'insertFromPaste', 'insertHTML', 'insertLink', 'historyUndo', 'historyRedo'];
 
 const num = value => value == null || value === '' ? null : +value;
 const isDiv = node => node.nodeType === Node.ELEMENT_NODE && node.tagName === 'DIV';
@@ -70,12 +70,16 @@ class MudExSlideText {
         this.root.focus({ preventScroll: true });
         const first = this.firstText(this.root);
         const last = this.lastText(this.root);
+        const typed = this.canvas?.mudExTyped?.text;
+        if (this.canvas) {
+            this.canvas.mudExTyped = null;
+        }
         if (options.text != null && first && last) {
             const all = document.createRange();
             all.setStart(first, 0);
             all.setEnd(last, last.length);
             this.select(all);
-            this.insertText(options.text);
+            this.insertText(typed?.startsWith(options.text) ? typed : options.text);
             return;
         }
         const caret = options.caret;
@@ -152,6 +156,12 @@ class MudExSlideText {
         const ctrl = e.ctrlKey || e.metaKey;
         const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
         if (ctrl && !e.altKey && key === 's') {
+            e.preventDefault();
+            return;
+        }
+        if (ctrl && !e.altKey && (key === 'z' || key === 'y')) {
+            e.preventDefault();
+            this.commit(true);
             return;
         }
         e.stopPropagation();

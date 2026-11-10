@@ -133,10 +133,9 @@ public class SlideEditorTests : IAsyncLifetime
 
         var notes = cut.Find(".mud-ex-slide-notes textarea");
         notes.Input("Speaker notes for two");
-        Assert.False(cut.Instance.IsDirty);
+        cut.WaitForAssertion(() => Assert.True(cut.Instance.IsDirty));
         cut.Find(".mud-ex-slide-notes textarea").Blur();
 
-        cut.WaitForAssertion(() => Assert.True(cut.Instance.IsDirty));
         Assert.Equal("Speaker notes for two", cut.Instance.CurrentPresentation.Slides[1].Notes);
         Assert.True(await cut.InvokeAsync(() => cut.Instance.SaveAsync()));
         Assert.False(cut.Instance.IsDirty);

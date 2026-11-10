@@ -34,6 +34,7 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
         {
             shape.Placeholder = new PlaceholderRef((string)ph.Attribute("type") ?? "obj", (uint?)Long((string)ph.Attribute("idx")));
             shape.InheritsFrom = FindPlaceholder(shape.Placeholder);
+            shape.HasCustomPrompt = (string)ph.Attribute("hasCustomPrompt") is "1" or "true";
         }
 
         switch (shape)

@@ -15,7 +15,7 @@
                 {
                     <div class="mud-ex-slide-text-layer">
                         <MudExSlideTextEditor @key="_text" @ref="_textEditor" Presentation="Presentation" Shape="_text.Shape" Text="@_text.Text" Caret="@_text.Caret"
-                                              TextChanged="OnTextChangedAsync" Committed="OnTextCommittedAsync" Localizer="@Localizer" />
+                                              TextChanged="_textChanged" Committed="_textCommitted" Localizer="@Localizer" />
                     </div>
                 }
                 <div class="mud-ex-slide-canvas-layer">

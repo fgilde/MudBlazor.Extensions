@@ -4,7 +4,10 @@ using MudBlazor.Extensions.Office.Presentation;
 
 namespace MudBlazor.Extensions.Components;
 
-/// <summary>Shows one slide as DOM that scales with its container: shapes in percent of the slide, font sizes in container query units.</summary>
+/// <summary>
+/// Shows one slide as DOM that scales with its container: shapes in percent of the slide, font sizes in container query units. When
+/// <see cref="Interactive"/> is set, empty title and text placeholders show a dashed outline and their prompt text.
+/// </summary>
 public partial class MudExSlideView
 {
     private Slide _rendered;
@@ -58,6 +61,22 @@ public partial class MudExSlideView
         if (ReferenceEquals(_rendered, Slide) && _renderedVersion == Slide?.Version && _renderedInteractive == Interactive && ReferenceEquals(_renderedHiddenText, HiddenText)) return false;
         Remember();
         return true;
+    }
+
+    private string PromptOf(SlideShape shape)
+    {
+        if (!Interactive || ReferenceEquals(shape, HiddenText) || shape is not AutoShape { Placeholder: { } placeholder } auto
+            || auto.Text?.Paragraphs.Any(p => p.Runs.Any(r => r.Text.Length > 0)) == true)
+            return null;
+        if (auto.InheritsFrom is AutoShape { HasCustomPrompt: true, Text: { } prompt })
+            return string.Join("\n", prompt.Paragraphs.Select(p => string.Concat(p.Runs.Select(r => r.Text))));
+        return placeholder.Type switch
+        {
+            "title" or "ctrTitle" => TryLocalize("Click to add title"),
+            "subTitle" => TryLocalize("Click to add subtitle"),
+            "body" or "obj" => TryLocalize("Click to add text"),
+            _ => null
+        };
     }
 
     private static string CssString(string value) =>

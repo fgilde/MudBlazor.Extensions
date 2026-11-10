@@ -42,6 +42,8 @@ public abstract class SlideShape
 
     internal SlideShape InheritsFrom { get; set; }
 
+    internal bool HasCustomPrompt { get; set; }
+
     internal SlideMaster Master { get; set; }
 
     internal XElement Source { get; set; }

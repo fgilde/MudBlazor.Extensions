@@ -7,7 +7,6 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExSlideEditor
 {
     private const long PasteOffset = 914400 / 8;
-    private const long TextBoxLine = 369332;
     private const long MaxPasteBytes = 50L * 1024 * 1024;
 
     private Clip _clipboard;
@@ -150,14 +149,9 @@ public partial class MudExSlideEditor
             return;
         var lines = Normalize(text).Split('\n');
         var width = Math.Min(6 * 914400L, _presentation.SlideWidth * 4 / 5);
-        var height = Math.Min(TextBoxLine * lines.Length, _presentation.SlideHeight);
-        var shape = new AutoShape
-        {
-            IsTextBox = true,
-            Fill = new ShapeFill(ShapeFillKind.None),
-            Transform = new ShapeTransform((_presentation.SlideWidth - width) / 2, (_presentation.SlideHeight - height) / 2, width, height),
-            Text = new TextBody { Wrap = true, Paragraphs = lines.Select(l => new TextParagraph { Runs = l.Length == 0 ? [] : [new TextRun(l)] }).ToList() }
-        };
+        var height = Math.Min(MudExSlideCanvas.TextBoxHeight * lines.Length, _presentation.SlideHeight);
+        var shape = AutoShape.CreateTextBox(new ShapeTransform((_presentation.SlideWidth - width) / 2, (_presentation.SlideHeight - height) / 2, width, height),
+            new TextBody { Wrap = true, Paragraphs = lines.Select(l => new TextParagraph { Runs = l.Length == 0 ? [] : [new TextRun(l)] }).ToList() });
         await RunAsync(() =>
         {
             _presentation.Execute(new InsertShapeCommand(slide, shape));

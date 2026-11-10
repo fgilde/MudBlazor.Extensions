@@ -7,7 +7,7 @@ namespace MudBlazor.Extensions.Components;
 /// <summary>The slide panel of the slide editor: numbered thumbnails that are rendered once they scroll into view, multi-selection and a context menu.</summary>
 public partial class MudExSlidePanel
 {
-    private const int EagerThumbnails = 8;
+    internal const int EagerThumbnails = 8;
     private readonly HashSet<string> _visible = [];
     private Presentation _presentation;
     private Slide _anchor;

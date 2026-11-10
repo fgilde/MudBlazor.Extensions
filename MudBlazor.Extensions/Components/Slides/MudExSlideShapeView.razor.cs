@@ -25,6 +25,9 @@ public partial class MudExSlideShapeView
     /// <summary>True to leave out the text, for example while it is edited.</summary>
     [Parameter] public bool HideText { get; set; }
 
+    /// <summary>The prompt shown in an empty placeholder with a dashed outline, or null.</summary>
+    [Parameter] public string Prompt { get; set; }
+
     private SlideMaster ColorMaster => Shape.Master ?? Master;
 
     private string ShapeClass => Shape switch
@@ -32,7 +35,7 @@ public partial class MudExSlideShapeView
         OpaqueShape => "mud-ex-slide-shape mud-ex-slide-opaque",
         GroupShape => "mud-ex-slide-shape mud-ex-slide-group",
         _ => "mud-ex-slide-shape"
-    } + (Inherited ? " mud-ex-slide-inherited" : "");
+    } + (Inherited ? " mud-ex-slide-inherited" : "") + (Prompt != null ? " mud-ex-slide-placeholder-empty" : "");
 
     internal static string BoxStyle(ShapeTransform t, Presentation presentation, bool flip = true)
     {

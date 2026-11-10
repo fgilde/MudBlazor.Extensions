@@ -8,6 +8,8 @@ public partial class MudExSlideEditor
     {
         if (IsReadOnly)
             return;
+        if (_canvas != null)
+            await _canvas.CommitTextAsync();
         try
         {
             action();
@@ -74,8 +76,6 @@ public partial class MudExSlideEditor
 
     private async Task UndoAsync(bool redo)
     {
-        if (_canvas != null)
-            await _canvas.CommitTextAsync();
         await RunAsync(() =>
         {
             if (redo && _presentation.Undo.CanRedo)

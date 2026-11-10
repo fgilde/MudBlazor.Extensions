@@ -33,13 +33,15 @@ public partial class MudExSlideText
         var format = shape.EffectiveFormat(run);
         var decoration = string.Join(' ', new[] { format.Underline == true ? "underline" : null, format.Strike == true ? "line-through" : null }.Where(d => d != null));
         return $"font-size:{Cqw((long)((format.SizePt ?? 18) * 12700), presentation)}cqw;color:{format.Color};" +
-               (format.Font != null ? $"font-family:'{format.Font.Replace("'", "")}',sans-serif;" : "") +
+               (CssFont(format.Font) is { Length: > 0 } font ? $"font-family:\"{font}\",sans-serif;" : "") +
                (format.Bold == true ? "font-weight:bold;" : "") +
                (format.Italic == true ? "font-style:italic;" : "") +
                (decoration.Length > 0 ? $"text-decoration:{decoration};" : "");
     }
 
-    private static TextRun EmptyRun(TextParagraph paragraph) => new("", paragraph.EndFormat);
+    internal static TextRun EmptyRun(TextParagraph paragraph) => new("", paragraph.EndFormat);
+
+    private static string CssFont(string font) => font == null ? null : string.Concat(font.Where(c => char.IsLetterOrDigit(c) || c is ' ' or '-' or '_' or '.')).Trim();
 
     private static string Cqw(long? emu, Presentation presentation) => MudExSlideShapeView.Num((emu ?? 0) / (double)presentation.SlideWidth * 100);
 }

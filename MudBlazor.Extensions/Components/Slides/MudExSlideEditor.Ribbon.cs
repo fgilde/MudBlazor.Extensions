@@ -42,10 +42,7 @@ public partial class MudExSlideEditor
         ("pp-send-to-back", "Send to Back", Icons.Material.Filled.FlipToBack, ZOrderChange.SendToBack)
     ];
 
-    private IReadOnlyList<AutoShape> SelectedTextShapes => _current == null
-        ? []
-        : SlideShape.Flatten(_current.Shapes).Where(s => SelectedShapes.Contains(s.Id)).SelectMany(s => SlideShape.Flatten([s])).OfType<AutoShape>()
-            .Where(s => s.Text != null).ToList();
+    private IReadOnlyList<AutoShape> SelectedTextShapes => SelectedAutoShapes.Where(s => s.Text != null).ToList();
 
     private RunFormat CurrentFormat => SelectedTextShapes.Select(s => s.Text.Paragraphs.SelectMany(p => p.Runs).FirstOrDefault() is { } run ? s.EffectiveFormat(run) : null)
         .FirstOrDefault(f => f != null);
@@ -75,8 +72,7 @@ public partial class MudExSlideEditor
 
     private Task SetFontSizeAsync(double size) => size > 0 ? FormatAsync("size", size.ToString(CultureInfo.InvariantCulture)) : Task.CompletedTask;
 
-    private Task SetFontColorAsync(MudExColor color) =>
-        color.IsSet() && color.ToMudColor() is { } c ? FormatAsync("color", c.ToString(MudColorOutputFormats.Hex).ToUpperInvariant()) : Task.CompletedTask;
+    private Task SetFontColorAsync(MudExColor color) => Hex(color) is { } hex ? FormatAsync("color", hex) : Task.CompletedTask;
 
     private Task InsertTextBoxAsync() => IsReadOnly || _canvas == null ? Task.CompletedTask : _canvas.InsertTextBoxAsync();
 }

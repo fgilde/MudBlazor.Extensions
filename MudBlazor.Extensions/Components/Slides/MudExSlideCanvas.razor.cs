@@ -11,7 +11,9 @@ namespace MudBlazor.Extensions.Components;
 /// <summary>
 /// The editing area of the slide editor: shows a slide at a zoom level with a selection layer above it.
 /// Shapes are selected, moved, resized and rotated with the pointer, with smart guides while moving; the gestures run in the browser
-/// and only their result reaches .NET as one undo step. The keyboard nudges, deletes, duplicates and cycles through the shapes.
+/// and only their result reaches .NET as one undo step. The keyboard nudges, deletes, duplicates and cycles through the shapes; Tab past the
+/// last shape leaves the canvas. The canvas does not listen to <see cref="Office.Presentation.Presentation.Changed"/>: a host that changes the
+/// presentation itself renders the canvas again.
 /// </summary>
 public partial class MudExSlideCanvas
 {
@@ -20,6 +22,8 @@ public partial class MudExSlideCanvas
     private static readonly string[] Handles = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
 
     private readonly EventCallback<KeyboardEventArgs> _keyDown;
+    private readonly EventCallback<IReadOnlyList<SlideTextParagraphDto>> _textChanged;
+    private readonly EventCallback<IReadOnlyList<SlideTextParagraphDto>> _textCommitted;
     private List<uint> _selection = [];
     private Slide _slide;
     private int _version;
@@ -31,8 +35,12 @@ public partial class MudExSlideCanvas
     private bool _disposed;
 
     /// <summary>Creates the canvas.</summary>
-    public MudExSlideCanvas() =>
+    public MudExSlideCanvas()
+    {
         _keyDown = new EventCallback<KeyboardEventArgs>(WithoutRender.Instance, (Func<KeyboardEventArgs, Task>)OnKeyDownAsync);
+        _textChanged = new EventCallback<IReadOnlyList<SlideTextParagraphDto>>(WithoutRender.Instance, (Func<IReadOnlyList<SlideTextParagraphDto>, Task>)OnTextChangedAsync);
+        _textCommitted = new EventCallback<IReadOnlyList<SlideTextParagraphDto>>(WithoutRender.Instance, (Func<IReadOnlyList<SlideTextParagraphDto>, Task>)OnTextCommittedAsync);
+    }
 
     /// <summary>The presentation the slide belongs to. Edits are executed on it.</summary>
     [Parameter] public Presentation Presentation { get; set; }
@@ -82,7 +90,8 @@ public partial class MudExSlideCanvas
             _slide = Slide;
             _version = Slide?.Version ?? 0;
             Change(_pendingSelection is { } pending && ReferenceEquals(pending.Slide, Slide) ? pending.Ids : []);
-            _pendingSelection = null;
+            if (Slide != null)
+                _pendingSelection = null;
         }
         else if (Slide != null && Slide.Version != _version)
         {
@@ -281,10 +290,8 @@ public partial class MudExSlideCanvas
     {
         var last = _selection.Count == 0 ? null : Find(_selection[^1]);
         var siblings = last?.Parent?.Children ?? Slide.Shapes;
-        if (siblings.Count == 0)
-            return Task.CompletedTask;
-        var index = last == null ? (direction > 0 ? 0 : siblings.Count - 1) : (siblings.ToList().IndexOf(last) + direction + siblings.Count) % siblings.Count;
-        return SelectAsync([siblings[index].Id]);
+        var index = last == null ? (direction > 0 ? 0 : -1) : siblings.ToList().IndexOf(last) + direction;
+        return SelectAsync(index >= 0 && index < siblings.Count ? [siblings[index].Id] : []);
     }
 
     private async Task ReleaseJsAsync()
@@ -306,6 +313,7 @@ public partial class MudExSlideCanvas
     public override async ValueTask DisposeAsync()
     {
         _disposed = true;
+        CommitText();
         await ReleaseJsAsync();
         await base.DisposeAsync();
     }

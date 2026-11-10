@@ -614,6 +614,17 @@
             </summary>
             <returns>The new content, or null if the editor does not support new documents</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.FlushPendingEditsAsync">
+            <summary>
+            Commits edits that are still pending in the editor, for example text being typed, before the content is saved
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.HostReplacedDocument">
+            <summary>
+            Call from <c>OnParametersSet</c> when the host passes a document that is not the current one. After the parameters are set
+            the file name, the local file handle and the dirty state are reset, so saving cannot overwrite the previous file.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.LoadContentAsync(MudBlazor.Extensions.Core.MudExFileContent)">
             <summary>
             Loads a document into the editor
@@ -19519,7 +19530,9 @@
             <summary>
             The editing area of the slide editor: shows a slide at a zoom level with a selection layer above it.
             Shapes are selected, moved, resized and rotated with the pointer, with smart guides while moving; the gestures run in the browser
-            and only their result reaches .NET as one undo step. The keyboard nudges, deletes, duplicates and cycles through the shapes.
+            and only their result reaches .NET as one undo step. The keyboard nudges, deletes, duplicates and cycles through the shapes; Tab past the
+            last shape leaves the canvas. The canvas does not listen to <see cref="E:MudBlazor.Extensions.Office.Presentation.Presentation.Changed"/>: a host that changes the
+            presentation itself renders the canvas again.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.ZoomChanged">
@@ -19616,6 +19629,11 @@
             <param name="id">The id of the shape.</param>
             <param name="x">The horizontal client position in pixels.</param>
             <param name="y">The vertical client position in pixels.</param>
+            <returns>A task that completes when editing started.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnCompositionStartAsync(System.UInt32)">
+            <summary>Called by the browser when an input method starts composing on the canvas: starts editing the text of the selected shape.</summary>
+            <param name="id">The id of the shape.</param>
             <returns>A task that completes when editing started.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ShapeTransformDto">
@@ -19721,12 +19739,16 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.LoadContentAsync(MudBlazor.Extensions.Core.MudExFileContent)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.FlushPendingEditsAsync">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.OnThumbnailsVisible(System.String[])">
-            <summary>Called by the browser when thumbnails in the slide panel scrolled into view.</summary>
+            <summary>Called by the browser when thumbnails in the slide panel scrolled into view. Their images reach the browser before they render.</summary>
             <param name="keys">The <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Key"/> of each visible slide.</param>
+            <returns>A task that completes when the thumbnails are shown.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.OnSlidesDropped(System.Int32,System.Int32)">
             <summary>Called by the browser when slides were dragged to a new position in the slide panel.</summary>
@@ -19761,7 +19783,7 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideNotes">
-            <summary>The speaker notes pane of the slide editor. The text is committed when the field loses the focus.</summary>
+            <summary>The speaker notes pane of the slide editor. The text is committed when the field loses the focus; the first change raises <see cref="P:MudBlazor.Extensions.Components.MudExSlideNotes.NotesInput"/>.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideNotes.Slide">
             <summary>The slide whose notes are shown.</summary>
@@ -19774,6 +19796,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideNotes.NotesChanged">
             <summary>Raised with the new text when the user leaves the field after changing the notes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideNotes.NotesInput">
+            <summary>Raised on the first input that changes the notes, before they are committed.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideNotes.OnParametersSet">
             <inheritdoc />
@@ -19866,6 +19891,9 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.HideText">
             <summary>True to leave out the text, for example while it is edited.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Prompt">
+            <summary>The prompt shown in an empty placeholder with a dashed outline, or null.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideStatusBar">
             <summary>Status bar of the slide editor: the slide position and a zoom slider.</summary>
         </member>
@@ -19936,7 +19964,10 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideView">
-            <summary>Shows one slide as DOM that scales with its container: shapes in percent of the slide, font sizes in container query units.</summary>
+            <summary>
+            Shows one slide as DOM that scales with its container: shapes in percent of the slide, font sizes in container query units. When
+            <see cref="P:MudBlazor.Extensions.Components.MudExSlideView.Interactive"/> is set, empty title and text placeholders show a dashed outline and their prompt text.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideView.Presentation">
             <summary>The presentation the slide belongs to.</summary>
@@ -19960,7 +19991,10 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.SlideImageUrls">
-            <summary>Resolves the URL of an image part of a presentation: a blob URL once the browser registered one, otherwise a data URI.</summary>
+            <summary>
+            Resolves the URL of an image part of a presentation: a blob URL once the browser registered one, otherwise a data URI. Only raster images get
+            blob URLs; SVG and other types stay data URIs, whose documents never run in the page's origin.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.SlideImageUrls.Register(System.String,System.String)">
             <summary>Registers the blob URL of an image part; it replaces the data URI.</summary>

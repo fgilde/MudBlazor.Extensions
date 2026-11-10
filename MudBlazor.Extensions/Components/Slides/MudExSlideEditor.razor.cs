@@ -23,8 +23,9 @@ public partial class MudExSlideEditor : IMudExFileEditor
     private readonly EventCallback<KeyboardEventArgs> _panelKeyDown;
     private Presentation _presentation;
     private Presentation _presentationParameter;
+    private readonly HashSet<Slide> _imagesReady = [];
     private SlideImageUrls _images;
-    private bool _imagesReady;
+    private Task _changeNotification = Task.CompletedTask;
     private Slide _current;
     private int _currentIndex;
     private IReadOnlyList<Slide> _selection = [];
@@ -33,6 +34,7 @@ public partial class MudExSlideEditor : IMudExFileEditor
     private IJSObjectReference _js;
     private DotNetObjectReference<MudExSlideEditor> _dotnet;
     private bool _jsStarted;
+    private bool _disposed;
     private Slide _revealed;
     private MudExSlidePanel _panel;
     private MudExSlideNotes _notes;
@@ -107,6 +109,8 @@ public partial class MudExSlideEditor : IMudExFileEditor
 
     private bool HasShapeSelection => !IsReadOnly && SelectedShapes.Count > 0;
 
+    private Slide CanvasSlide => _current != null && _imagesReady.Contains(_current) ? _current : null;
+
     private string RootStyle => $"--mud-ex-slide-accent:{MudExRibbonColors.BackgroundFor(RibbonColor)};{Style}";
 
     /// <inheritdoc />
@@ -126,6 +130,8 @@ public partial class MudExSlideEditor : IMudExFileEditor
         if (!ReferenceEquals(Presentation, _presentationParameter))
         {
             _presentationParameter = Presentation;
+            if (Presentation != null && _presentation != null && !ReferenceEquals(Presentation, _presentation))
+                HostReplacedDocument();
             if (Presentation != null)
                 Attach(Presentation);
         }
@@ -152,10 +158,9 @@ public partial class MudExSlideEditor : IMudExFileEditor
             await StartJsAsync();
         }
 
-        if (!_imagesReady && _presentation != null)
+        if (_current is { } current && !_imagesReady.Contains(current))
         {
-            await RegisterImagesAsync(_presentation.Slides);
-            _imagesReady = true;
+            await RegisterImagesAsync(_imagesReady.Count == 0 ? _presentation.Slides.Take(MudExSlidePanel.EagerThumbnails).Prepend(current) : [current]);
             StateHasChanged();
         }
         else if (_js != null && _current != null && !ReferenceEquals(_current, _revealed))
@@ -171,8 +176,11 @@ public partial class MudExSlideEditor : IMudExFileEditor
         try
         {
             await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
-            _dotnet = DotNetObjectReference.Create(this);
-            (_module, _js) = await JsRuntime.ImportModuleAndCreateJsAsync<MudExSlideEditor>(_root, _dotnet);
+            var dotnet = DotNetObjectReference.Create(this);
+            var (module, js) = await JsRuntime.ImportModuleAndCreateJsAsync<MudExSlideEditor>(_root, dotnet);
+            (_module, _js, _dotnet) = (module, js, dotnet);
+            if (_disposed)
+                await ReleaseJsAsync();
         }
         catch (Exception e) when (e is JSException or JSDisconnectedException)
         {
@@ -204,12 +212,19 @@ public partial class MudExSlideEditor : IMudExFileEditor
     }
 
     /// <inheritdoc />
-    public override async Task<MudExFileContent> ExportAsync(MudExFileFormat format = null, CancellationToken cancellationToken = default)
+    protected override async Task FlushPendingEditsAsync()
     {
         if (_notes != null)
             await _notes.CommitAsync();
         if (_canvas != null)
             await _canvas.CommitTextAsync();
+        await _changeNotification;
+    }
+
+    /// <inheritdoc />
+    public override async Task<MudExFileContent> ExportAsync(MudExFileFormat format = null, CancellationToken cancellationToken = default)
+    {
+        await FlushPendingEditsAsync();
         var stream = new MemoryStream();
         _presentation.Save(stream);
         stream.Position = 0;
@@ -230,7 +245,7 @@ public partial class MudExSlideEditor : IMudExFileEditor
         _ = RevokeImagesAsync();
         _presentation = presentation;
         _images = presentation == null ? null : new SlideImageUrls(presentation);
-        _imagesReady = false;
+        _imagesReady.Clear();
         _currentIndex = 0;
         _current = presentation?.Slides.FirstOrDefault();
         _selection = _current == null ? [] : [_current];
@@ -249,12 +264,12 @@ public partial class MudExSlideEditor : IMudExFileEditor
         else
             Show(_current, _selection.Where(slides.Contains).OrderBy(IndexOf).DefaultIfEmpty(_current).ToList());
 
-        _ = InvokeAsync(async () =>
+        _changeNotification = InvokeAsync(async () =>
         {
             try
             {
-                await RegisterImagesAsync(e.Slides.Where(slides.Contains));
                 await NotifyChangedAsync();
+                await RegisterImagesAsync(e.Slides.Where(slides.Contains));
             }
             catch (Exception ex)
             {
@@ -290,23 +305,28 @@ public partial class MudExSlideEditor : IMudExFileEditor
 
     private async Task RegisterImagesAsync(IEnumerable<Slide> slides)
     {
-        if (_js == null || _images == null)
+        if (_images is not { } images)
             return;
-        var images = _images;
-        foreach (var part in slides.SelectMany(ImageParts).Distinct(StringComparer.OrdinalIgnoreCase).Where(p => !images.IsRegistered(p)).ToList())
+        var list = slides.ToList();
+        foreach (var part in list.SelectMany(ImageParts).Distinct(StringComparer.OrdinalIgnoreCase).Where(images.NeedsBlob).ToList())
         {
-            if (images.Load(part) is not ({ } data, var contentType))
+            if (!ReferenceEquals(images, _images))
+                return;
+            if (_js is not { } js || images.Load(part) is not ({ } data, var contentType))
                 continue;
             try
             {
-                if (await _js.InvokeAsync<string>("register", data, contentType) is { } url)
+                if (await js.InvokeAsync<string>("register", data, contentType) is { } url)
                     images.Register(part, url);
             }
-            catch (Exception e) when (e is JSException or JSDisconnectedException)
+            catch (Exception e) when (e is JSException or JSDisconnectedException or ObjectDisposedException)
             {
-                return;
+                break;
             }
         }
+
+        if (ReferenceEquals(images, _images))
+            _imagesReady.UnionWith(list);
     }
 
     private static IEnumerable<string> ImageParts(Slide slide) =>
@@ -378,10 +398,17 @@ public partial class MudExSlideEditor : IMudExFileEditor
         return Task.CompletedTask;
     }
 
-    /// <summary>Called by the browser when thumbnails in the slide panel scrolled into view.</summary>
+    /// <summary>Called by the browser when thumbnails in the slide panel scrolled into view. Their images reach the browser before they render.</summary>
     /// <param name="keys">The <see cref="Slide.Key"/> of each visible slide.</param>
+    /// <returns>A task that completes when the thumbnails are shown.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public void OnThumbnailsVisible(string[] keys) => _ = InvokeAsync(() => _panel?.MarkVisible(keys));
+    public Task OnThumbnailsVisible(string[] keys) => InvokeAsync(async () =>
+    {
+        if (_presentation == null || keys == null)
+            return;
+        await RegisterImagesAsync(_presentation.Slides.Where(s => keys.Contains(s.Key)));
+        _panel?.MarkVisible(keys);
+    });
 
     /// <summary>Called by the browser when slides were dragged to a new position in the slide panel.</summary>
     /// <param name="from">The index of the dragged slide.</param>
@@ -393,20 +420,28 @@ public partial class MudExSlideEditor : IMudExFileEditor
         StateHasChanged();
     });
 
+    private async Task ReleaseJsAsync()
+    {
+        var (js, module, dotnet) = (_js, _module, _dotnet);
+        (_js, _module, _dotnet) = (null, null, null);
+        if (js != null)
+        {
+            try { await js.InvokeVoidAsync("dispose"); } catch { }
+            try { await js.DisposeAsync(); } catch { }
+        }
+
+        if (module != null)
+            try { await module.DisposeAsync(); } catch { }
+        dotnet?.Dispose();
+    }
+
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        _disposed = true;
         if (_presentation != null)
             _presentation.Changed -= OnPresentationChanged;
-        if (_js != null)
-        {
-            try { await _js.InvokeVoidAsync("dispose"); } catch { }
-            try { await _js.DisposeAsync(); } catch { }
-        }
-
-        if (_module != null)
-            try { await _module.DisposeAsync(); } catch { }
-        _dotnet?.Dispose();
+        await ReleaseJsAsync();
         await base.DisposeAsync();
     }
 }

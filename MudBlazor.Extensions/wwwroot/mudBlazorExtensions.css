@@ -9200,6 +9200,18 @@ textarea.mud-ex-ssg-note-text {
 .mud-ex-slide-selection-editing {
   border-style: dashed;
 }
+.mud-ex-slide-canvas:focus-visible, .mud-ex-slide-panel:focus-visible {
+  outline: 2px solid var(--mud-ex-slide-accent, var(--mud-palette-primary));
+  outline-offset: -2px;
+}
+.mud-ex-slide-placeholder-empty {
+  outline: 1px dashed rgba(0, 0, 0, 0.45);
+  outline-offset: -1px;
+}
+.mud-ex-slide-prompt {
+  opacity: 0.55;
+  white-space: pre-wrap;
+}
 .mud-ex-slide-canvas[data-insert] .mud-ex-slide-canvas-frame {
   cursor: crosshair;
 }

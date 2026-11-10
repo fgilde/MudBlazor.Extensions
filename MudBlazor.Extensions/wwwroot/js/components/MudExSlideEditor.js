@@ -4,6 +4,7 @@ const AFTER = 'mud-ex-slide-panel-drop-after';
 const SHORTCUT_TARGETS = '.mud-ex-slide-canvas, .mud-ex-slide-panel';
 const SHORTCUTS = 'fhmyz';
 const OWN_PASTE = 'input, textarea, [contenteditable], .mud-ex-slide-text-editor';
+const RASTER = ['image/png', 'image/jpeg', 'image/gif', 'image/bmp', 'image/webp'];
 
 class MudExSlideEditor {
     constructor(root, dotnet) {
@@ -49,7 +50,11 @@ class MudExSlideEditor {
     }
 
     register(bytes, contentType) {
-        const url = URL.createObjectURL(new Blob([bytes], { type: contentType || 'application/octet-stream' }));
+        const type = (contentType || '').toLowerCase();
+        if (!RASTER.includes(type)) {
+            return null;
+        }
+        const url = URL.createObjectURL(new Blob([bytes], { type }));
         this.urls.add(url);
         return url;
     }
@@ -60,7 +65,11 @@ class MudExSlideEditor {
     }
 
     keyDown(e) {
-        if ((e.ctrlKey || e.metaKey) && !e.altKey && SHORTCUTS.includes(e.key?.toLowerCase()) && e.target.closest?.(SHORTCUT_TARGETS)) {
+        if (!(e.ctrlKey || e.metaKey) || e.altKey) {
+            return;
+        }
+        const key = e.key?.toLowerCase();
+        if ((key === 's' && this.root?.dataset.readonly !== 'true') || (SHORTCUTS.includes(key) && e.target.closest?.(SHORTCUT_TARGETS))) {
             e.preventDefault();
         }
     }

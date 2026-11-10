@@ -2,7 +2,7 @@
 @namespace MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Office.Presentation
 
-<div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-slide-editor {Class}".TrimEnd())" style="@RootStyle" @onkeydown="_keyDown">
+<div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-slide-editor {Class}".TrimEnd())" style="@RootStyle" data-readonly="@(IsReadOnly ? "true" : "false")" @onkeydown="_keyDown">
     @if (ShowRibbon)
     {
         <MudExRibbon Class="mud-ex-slide-ribbon" Color="@RibbonColor" @bind-Mode="_mode" @bind-Collapsed="_collapsed" FileMenuText="@TryLocalize("File")">
@@ -110,17 +110,17 @@
     <div class="mud-ex-slide-editor-body">
         @if (_panelVisible && _presentation != null)
         {
-            <MudExSlidePanel @ref="_panel" Presentation="_presentation" Images="_images" Current="_current" Selection="_selection" ShowThumbnails="_imagesReady"
+            <MudExSlidePanel @ref="_panel" Presentation="_presentation" Images="_images" Current="_current" Selection="_selection" ShowThumbnails="@(_imagesReady.Count > 0)"
                              LazyThumbnails="@(_js != null)" ReadOnly="IsReadOnly" SelectionChanged="OnSelectionChanged" KeyDown="_panelKeyDown"
                              NewSlideRequested="@(() => AddSlideAsync(null))" DuplicateRequested="DuplicateSlidesAsync" DeleteRequested="DeleteSlidesAsync"
                              HideRequested="SetHiddenAsync" Localizer="@Localizer" />
         }
         <div class="mud-ex-slide-editor-main">
-            <MudExSlideCanvas @ref="_canvas" Presentation="_presentation" Slide="@(_imagesReady ? _current : null)" Images="_images" Zoom="@(_zoom ?? 0)" ReadOnly="IsReadOnly"
+            <MudExSlideCanvas @ref="_canvas" Presentation="_presentation" Slide="@CanvasSlide" Images="_images" Zoom="@(_zoom ?? 0)" ReadOnly="IsReadOnly"
                               SelectionChanged="@(_ => StateHasChanged())" KeyDown="_canvasKeyDown" TextInput="MarkDirtyAsync" ZoomChanged="@(z => SetZoom(z))" Localizer="@Localizer" />
             @if (_notesVisible && _current != null)
             {
-                <MudExSlideNotes @ref="_notes" Slide="_current" ReadOnly="IsReadOnly" CanHaveNotes="@_presentation.CanHaveNotes(_current)" NotesChanged="SetNotesAsync" Localizer="@Localizer" />
+                <MudExSlideNotes @ref="_notes" Slide="_current" ReadOnly="IsReadOnly" CanHaveNotes="@_presentation.CanHaveNotes(_current)" NotesChanged="SetNotesAsync" NotesInput="MarkDirtyAsync" Localizer="@Localizer" />
             }
         </div>
     </div>

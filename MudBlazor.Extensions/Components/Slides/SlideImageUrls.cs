@@ -2,9 +2,14 @@ using MudBlazor.Extensions.Office.Presentation;
 
 namespace MudBlazor.Extensions.Components;
 
-/// <summary>Resolves the URL of an image part of a presentation: a blob URL once the browser registered one, otherwise a data URI.</summary>
+/// <summary>
+/// Resolves the URL of an image part of a presentation: a blob URL once the browser registered one, otherwise a data URI. Only raster images get
+/// blob URLs; SVG and other types stay data URIs, whose documents never run in the page's origin.
+/// </summary>
 public sealed class SlideImageUrls
 {
+    private static readonly HashSet<string> RasterTypes = new(StringComparer.OrdinalIgnoreCase) { "image/png", "image/jpeg", "image/gif", "image/bmp", "image/webp" };
+
     private readonly Presentation _presentation;
     private readonly Dictionary<string, string> _blobs = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, string> _dataUris = new(StringComparer.OrdinalIgnoreCase);
@@ -28,10 +33,18 @@ public sealed class SlideImageUrls
         if (_blobs.TryGetValue(partName, out var blob)) return blob;
         if (_dataUris.TryGetValue(partName, out var cached)) return cached;
         var (data, contentType) = Load(partName);
-        return data == null ? null : _dataUris[partName] = $"data:{contentType};base64,{Convert.ToBase64String(data)}";
+        return data == null ? null : _dataUris[partName] = $"data:{SafeType(contentType)};base64,{Convert.ToBase64String(data)}";
     }
 
-    internal bool IsRegistered(string partName) => _blobs.ContainsKey(partName);
+    internal bool NeedsBlob(string partName) => !_blobs.ContainsKey(partName) && RasterTypes.Contains(ContentTypeOf(partName) ?? "");
+
+    private static string SafeType(string contentType) =>
+        contentType is { Length: > 6 } && contentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase) && contentType.All(c => char.IsAsciiLetterOrDigit(c) || c is '/' or '+' or '-' or '.')
+            ? contentType
+            : "application/octet-stream";
+
+    private string ContentTypeOf(string partName) =>
+        _presentation.PendingMedia.TryGetValue(partName, out var pending) ? pending.ContentType : _presentation.Package?.Opc.ContentType(partName);
 
     internal (byte[] Data, string ContentType) Load(string partName)
     {

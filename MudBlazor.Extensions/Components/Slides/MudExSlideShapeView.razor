@@ -17,6 +17,15 @@
             {
                 <MudExSlideText Shape="auto" Presentation="Presentation" />
             }
+            @if (Prompt != null)
+            {
+                var paragraph = auto.Text?.Paragraphs.FirstOrDefault() ?? new TextParagraph();
+                <div class="mud-ex-slide-text mud-ex-slide-prompt" style="@MudExSlideText.BodyStyle(auto, Presentation)">
+                    <div class="mud-ex-slide-paragraph" style="@MudExSlideText.ParagraphStyle(auto, paragraph)">
+                        <span style="@MudExSlideText.RunStyle(auto, Presentation, MudExSlideText.EmptyRun(paragraph))">@Prompt</span>
+                    </div>
+                </div>
+            }
             break;
         case PictureShape picture:
             var url = Images?.UrlFor(picture.ImagePart);

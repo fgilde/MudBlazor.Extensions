@@ -8,6 +8,7 @@ const TEXT_EDITOR = '.mud-ex-slide-text-editor';
 const FORMAT_KEYS = 'biulerj';
 const AREA = ['marquee', 'insert'];
 const ZOOM_IDLE_MS = 400;
+const MODIFIERS = ['Shift', 'Control', 'Alt', 'AltGraph', 'Meta', 'CapsLock', 'Dead'];
 
 const rad = deg => deg * Math.PI / 180;
 const pct = (value, whole) => `${value / whole * 100}%`;
@@ -69,10 +70,41 @@ class MudExSlideCanvas {
         const ctrl = e.ctrlKey || e.metaKey;
         const selected = !!this.root.dataset.selection;
         const key = e.key.toLowerCase();
-        if ((KEYS.includes(e.key) && selected) || (e.key === 'Tab' && !ctrl && this.frame()?.querySelector(SHAPE)) || (ctrl && (key === 'a' || key === 'd'))
+        this.typed(e, ctrl);
+        if ((KEYS.includes(e.key) && selected) || (e.key === 'Tab' && !ctrl && !this.leaves(e.shiftKey)) || (ctrl && (key === 'a' || key === 'd'))
             || (selected && ((ctrl && key.length === 1 && FORMAT_KEYS.includes(key)) || (!ctrl && e.key === ' ')))) {
             e.preventDefault();
         }
+    }
+
+    typed(e, ctrl) {
+        const ids = this.selection();
+        if (ctrl || ids.length !== 1) {
+            this.root.mudExTyped = null;
+            return;
+        }
+        if (e.isComposing || e.keyCode === 229) {
+            this.dotnet?.invokeMethodAsync('OnCompositionStartAsync', ids[0]).catch(() => {});
+            return;
+        }
+        if (MODIFIERS.includes(e.key)) {
+            return;
+        }
+        const typed = this.root.mudExTyped;
+        this.root.mudExTyped = e.key.length !== 1 ? null : { id: ids[0], text: (typed?.id === ids[0] ? typed.text : '') + e.key };
+    }
+
+    leaves(back) {
+        const frame = this.frame();
+        const shapes = [...(frame?.querySelectorAll(SHAPE) ?? [])];
+        const ids = this.selection();
+        if (!ids.length) {
+            return back || !shapes.length;
+        }
+        const last = shapes.find(s => +s.dataset.shapeId === ids[ids.length - 1]);
+        const siblings = shapes.filter(s => (s.dataset.groupId ?? '') === (last?.dataset.groupId ?? ''));
+        const index = siblings.indexOf(last) + (back ? -1 : 1);
+        return index < 0 || index >= siblings.length;
     }
 
     pointerDown(e) {
@@ -85,6 +117,7 @@ class MudExSlideCanvas {
         }
         e.preventDefault();
         this.root.focus({ preventScroll: true });
+        this.root.mudExTyped = null;
         if (this.root.dataset.insert) {
             const m = this.metrics(frame);
             this.begin(e, frame, { kind: 'insert', m, start: this.toSlide(m, e.clientX, e.clientY) });
@@ -123,11 +156,17 @@ class MudExSlideCanvas {
 
     dblClick(e) {
         const frame = this.frame();
-        const shape = e.target.closest(SHAPE);
-        if (!frame || !shape || !frame.contains(shape) || !this.dotnet || this.root.dataset.readonly === 'true' || e.target.closest(TEXT_EDITOR)) {
+        if (!frame || !this.dotnet || this.root.dataset.readonly === 'true' || e.target.closest(TEXT_EDITOR)) {
             return;
         }
-        this.dotnet.invokeMethodAsync('OnShapeDoubleClickAsync', +shape.dataset.shapeId, e.clientX, e.clientY).catch(() => {});
+        const hits = document.elementsFromPoint(e.clientX, e.clientY);
+        if (hits[0]?.closest(TEXT_EDITOR)) {
+            return;
+        }
+        const shape = [e.target, ...hits].map(el => el.closest?.(SHAPE)).find(s => s && frame.contains(s));
+        if (shape) {
+            this.dotnet.invokeMethodAsync('OnShapeDoubleClickAsync', +shape.dataset.shapeId, e.clientX, e.clientY).catch(() => {});
+        }
     }
 
     wheel(e) {

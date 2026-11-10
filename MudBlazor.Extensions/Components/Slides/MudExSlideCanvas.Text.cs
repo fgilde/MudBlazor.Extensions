@@ -7,8 +7,8 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExSlideCanvas
 {
+    internal const long TextBoxHeight = 369332;
     private const long TextBoxWidth = 914400 * 3;
-    private const long TextBoxHeight = 369332;
 
     private TextSession _text;
     private MudExSlideTextEditor _textEditor;
@@ -29,16 +29,16 @@ public partial class MudExSlideCanvas
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task OnShapeDoubleClickAsync(uint id, double x, double y) => InvokeAsync(() => BeginTextAsync(id, null, [x, y]));
 
+    /// <summary>Called by the browser when an input method starts composing on the canvas: starts editing the text of the selected shape.</summary>
+    /// <param name="id">The id of the shape.</param>
+    /// <returns>A task that completes when editing started.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnCompositionStartAsync(uint id) => InvokeAsync(() => _selection is [var selected] && selected == id ? BeginTextAsync(id) : Task.CompletedTask);
+
     private Task InsertTextBoxAsync(double x, double y, double width)
     {
-        var shape = new AutoShape
-        {
-            IsTextBox = true,
-            Fill = new ShapeFill(ShapeFillKind.None),
-            Transform = new ShapeTransform(Math.Clamp((long)Math.Round(x), 0, Presentation.SlideWidth), Math.Clamp((long)Math.Round(y), 0, Presentation.SlideHeight),
-                width >= 1 ? (long)Math.Round(width) : TextBoxWidth, TextBoxHeight),
-            Text = new TextBody { Wrap = true, Paragraphs = [new TextParagraph()] }
-        };
+        var shape = AutoShape.CreateTextBox(new ShapeTransform(Math.Clamp((long)Math.Round(x), 0, Presentation.SlideWidth),
+            Math.Clamp((long)Math.Round(y), 0, Presentation.SlideHeight), width >= 1 ? (long)Math.Round(width) : TextBoxWidth, TextBoxHeight));
         var insert = new InsertShapeCommand(Slide, shape);
         insert.Apply(Presentation);
         shape.Name = $"TextBox {shape.Id - 1}";
@@ -54,11 +54,13 @@ public partial class MudExSlideCanvas
         return CommitTextAsync();
     }
 
-    internal Task CommitTextAsync()
+    internal async Task CommitTextAsync()
     {
+        if (_text is { } session && _textEditor != null && await _textEditor.ReadAsync() is { } live && ReferenceEquals(session, _text))
+            session.Draft = live;
         CommitText();
         StateHasChanged();
-        return RaiseSelectionAsync();
+        await RaiseSelectionAsync();
     }
 
     internal async Task BeginTextAsync(uint id, string text = null, double[] caret = null)

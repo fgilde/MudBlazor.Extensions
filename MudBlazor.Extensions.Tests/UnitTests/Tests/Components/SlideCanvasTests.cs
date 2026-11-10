@@ -180,7 +180,7 @@ public class SlideCanvasTests : IDisposable
     }
 
     [Fact]
-    public async Task Canvas_SelectAll_Tab_Escape()
+    public async Task Canvas_SelectAll_Escape_TabLeavesAfterLastShape()
     {
         var presentation = TwoBoxes();
         var cut = Render(presentation);
@@ -194,9 +194,17 @@ public class SlideCanvasTests : IDisposable
         await Key(cut, "Tab");
         Assert.Equal([2u], cut.Instance.Selection);
         await Key(cut, "Tab", shift: true);
-        Assert.Equal([10u], cut.Instance.Selection);
+        Assert.Empty(cut.Instance.Selection);
+        await Key(cut, "Tab", shift: true);
+        Assert.Empty(cut.Instance.Selection);
+        foreach (var id in new[] { 2u, 3u, 7u, 10u })
+        {
+            await Key(cut, "Tab");
+            Assert.Equal([id], cut.Instance.Selection);
+        }
+
         await Key(cut, "Tab");
-        Assert.Equal([2u], cut.Instance.Selection);
+        Assert.Empty(cut.Instance.Selection);
     }
 
     [Fact]

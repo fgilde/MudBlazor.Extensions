@@ -63,6 +63,14 @@ public partial class MudExSlideTextEditor
         }
     }
 
+    internal async Task<SlideTextParagraphDto[]> ReadAsync()
+    {
+        if (_js == null)
+            return null;
+        try { return await _js.InvokeAsync<SlideTextParagraphDto[]>("read"); }
+        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException) { return null; }
+    }
+
     internal async Task FormatAsync(string key, string value)
     {
         if (_js == null)
