@@ -1,0 +1,78 @@
+using System.Globalization;
+using System.Xml.Linq;
+using MudBlazor.Extensions.Office.Spreadsheet;
+
+namespace MudBlazor.Extensions.Office.Presentation;
+
+/// <summary>
+/// Converts DrawingML colours to and from the model format: <c>#RRGGBB</c> or <c>scheme:name</c>, followed by space separated
+/// modifiers such as <c>lumMod=75000</c>, <c>lumOff=25000</c>, <c>tint=40000</c> or <c>shade=50000</c>.
+/// </summary>
+internal static class ColorResolver
+{
+    private static readonly Dictionary<string, string> DefaultMap = new() { ["bg1"] = "lt1", ["tx1"] = "dk1", ["bg2"] = "lt2", ["tx2"] = "dk2" };
+
+    /// <summary>Resolves a model colour to <c>#RRGGBB</c> through the colour map and theme of a master.</summary>
+    /// <param name="color">The model colour.</param>
+    /// <param name="master">The master whose colour map and theme apply; null uses the Office theme.</param>
+    /// <returns>The colour, or null if it cannot be resolved.</returns>
+    internal static string Resolve(string color, SlideMaster master)
+    {
+        if (string.IsNullOrEmpty(color)) return null;
+        var parts = color.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        var rgb = parts[0].StartsWith("scheme:", StringComparison.Ordinal) ? Scheme(parts[0][7..], master) : ThemeColors.Hex(parts[0].TrimStart('#'));
+        if (rgb == null) return null;
+        double lumMod = 1, lumOff = 0;
+        foreach (var modifier in parts.Skip(1))
+        {
+            var eq = modifier.IndexOf('=');
+            if (eq < 0 || !int.TryParse(modifier[(eq + 1)..], NumberStyles.Integer, CultureInfo.InvariantCulture, out var value)) continue;
+            var f = value / 100000.0;
+            switch (modifier[..eq])
+            {
+                case "lumMod":
+                    lumMod = f;
+                    break;
+                case "lumOff":
+                    lumOff = f;
+                    break;
+                case "tint":
+                    rgb = Channels(rgb, c => c * f + 1 - f);
+                    break;
+                case "shade":
+                    rgb = Channels(rgb, c => c * f);
+                    break;
+            }
+        }
+
+        if (lumMod != 1 || lumOff != 0) rgb = ThemeColors.MapLightness(rgb, l => l * lumMod + lumOff);
+        return "#" + rgb;
+    }
+
+    internal static string FromXml(XElement color)
+    {
+        var value = (string)color?.Attribute("val");
+        var basis = color?.Name.LocalName switch
+        {
+            "srgbClr" => ThemeColors.Hex(value) is { } hex ? "#" + hex : null,
+            "schemeClr" => value is null or "phClr" ? null : "scheme:" + value,
+            "sysClr" => ThemeColors.Hex((string)color.Attribute("lastClr")) is { } sys ? "#" + sys : null,
+            "prstClr" => value switch { "black" => "#000000", "white" => "#FFFFFF", _ => null },
+            _ => null
+        };
+        if (basis == null) return null;
+        return basis + string.Concat(color.Elements().Where(m => m.Name.LocalName is "lumMod" or "lumOff" or "tint" or "shade")
+            .Select(m => $" {m.Name.LocalName}={(string)m.Attribute("val")}"));
+    }
+
+    private static string Scheme(string name, SlideMaster master)
+    {
+        var mapped = master?.ColorMap.GetValueOrDefault(name) ?? DefaultMap.GetValueOrDefault(name, name);
+        var index = Array.IndexOf(ThemeColors.SchemeOrder, mapped);
+        return index < 0 ? null : (master?.Theme ?? ThemeColors.Office)[index];
+    }
+
+    private static string Channels(string rgb, Func<double, double> map) =>
+        string.Concat(Enumerable.Range(0, 3).Select(i =>
+            ((int)Math.Round(Math.Clamp(map(Convert.ToInt32(rgb.Substring(i * 2, 2), 16) / 255.0), 0, 1) * 255)).ToString("X2", CultureInfo.InvariantCulture)));
+}

@@ -31264,6 +31264,506 @@
             <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
             <returns>The free part name.</returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ColorResolver">
+            <summary>
+            Converts DrawingML colours to and from the model format: <c>#RRGGBB</c> or <c>scheme:name</c>, followed by space separated
+            modifiers such as <c>lumMod=75000</c>, <c>lumOff=25000</c>, <c>tint=40000</c> or <c>shade=50000</c>.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ColorResolver.Resolve(System.String,MudBlazor.Extensions.Office.Presentation.SlideMaster)">
+            <summary>Resolves a model colour to <c>#RRGGBB</c> through the colour map and theme of a master.</summary>
+            <param name="color">The model colour.</param>
+            <param name="master">The master whose colour map and theme apply; null uses the Office theme.</param>
+            <returns>The colour, or null if it cannot be resolved.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ShapeFillKind">
+            <summary>How a shape is filled.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None">
+            <summary>No fill (<c>a:noFill</c>).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid">
+            <summary>A solid colour (<c>a:solidFill</c>).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Inherited">
+            <summary>No own fill; the shape style or placeholder decides.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other">
+            <summary>A gradient, pattern, picture or group fill; kept unchanged when the file is written.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ShapeFill">
+            <summary>The fill of a shape.</summary>
+            <param name="Kind">The kind of fill.</param>
+            <param name="Color">
+            The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>: the solid colour, the first gradient stop or pattern foreground for
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/>, the shape style colour for <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Inherited"/>; null if there is none.
+            </param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ShapeFill.#ctor(MudBlazor.Extensions.Office.Presentation.ShapeFillKind,System.String)">
+            <summary>The fill of a shape.</summary>
+            <param name="Kind">The kind of fill.</param>
+            <param name="Color">
+            The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>: the solid colour, the first gradient stop or pattern foreground for
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/>, the shape style colour for <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Inherited"/>; null if there is none.
+            </param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeFill.Kind">
+            <summary>The kind of fill.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeFill.Color">
+            <summary>
+            The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>: the solid colour, the first gradient stop or pattern foreground for
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/>, the shape style colour for <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Inherited"/>; null if there is none.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ShapeLine">
+            <summary>The outline of a shape.</summary>
+            <param name="Color">The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>, or null for no line.</param>
+            <param name="Width">The width in EMU.</param>
+            <param name="Dash">The preset dash name, for example <c>solid</c> or <c>dash</c>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ShapeLine.#ctor(System.String,System.Int64,System.String)">
+            <summary>The outline of a shape.</summary>
+            <param name="Color">The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>, or null for no line.</param>
+            <param name="Width">The width in EMU.</param>
+            <param name="Dash">The preset dash name, for example <c>solid</c> or <c>dash</c>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeLine.Color">
+            <summary>The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>, or null for no line.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeLine.Width">
+            <summary>The width in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeLine.Dash">
+            <summary>The preset dash name, for example <c>solid</c> or <c>dash</c>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ShapeTransform">
+            <summary>Position, size, rotation and flip of a shape in EMU (914400 per inch, 12700 per point).</summary>
+            <param name="X">Left edge of the unrotated box.</param>
+            <param name="Y">Top edge of the unrotated box.</param>
+            <param name="Width">Width of the box.</param>
+            <param name="Height">Height of the box.</param>
+            <param name="Rotation">Clockwise rotation around the box centre in degrees.</param>
+            <param name="FlipH">True if the shape is mirrored horizontally.</param>
+            <param name="FlipV">True if the shape is mirrored vertically.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ShapeTransform.#ctor(System.Int64,System.Int64,System.Int64,System.Int64,System.Double,System.Boolean,System.Boolean)">
+            <summary>Position, size, rotation and flip of a shape in EMU (914400 per inch, 12700 per point).</summary>
+            <param name="X">Left edge of the unrotated box.</param>
+            <param name="Y">Top edge of the unrotated box.</param>
+            <param name="Width">Width of the box.</param>
+            <param name="Height">Height of the box.</param>
+            <param name="Rotation">Clockwise rotation around the box centre in degrees.</param>
+            <param name="FlipH">True if the shape is mirrored horizontally.</param>
+            <param name="FlipV">True if the shape is mirrored vertically.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeTransform.X">
+            <summary>Left edge of the unrotated box.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeTransform.Y">
+            <summary>Top edge of the unrotated box.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeTransform.Width">
+            <summary>Width of the box.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeTransform.Height">
+            <summary>Height of the box.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeTransform.Rotation">
+            <summary>Clockwise rotation around the box centre in degrees.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeTransform.FlipH">
+            <summary>True if the shape is mirrored horizontally.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeTransform.FlipV">
+            <summary>True if the shape is mirrored vertically.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.PptxSlidePart">
+            <summary>A slide of the source package with its original XML.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.Slide">
+            <summary>The slide read into the model.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.PartName">
+            <summary>The slide part name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.RelationshipId">
+            <summary>The relationship id of the slide in the presentation rels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.SlideId">
+            <summary>The <c>p:sldId</c> id.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.Xml">
+            <summary>The original slide XML.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.Relationships">
+            <summary>The original relationships of the slide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.NotesPart">
+            <summary>The notes slide part name, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.NotesXml">
+            <summary>The original notes slide XML, or null.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.PptxPackage">
+            <summary>The source package of a presentation; parts the model does not change are copied from it unchanged.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxPackage.Opc">
+            <summary>The opened package.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxPackage.PresentationPart">
+            <summary>The presentation part name, usually <c>/ppt/presentation.xml</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxPackage.PresentationXml">
+            <summary>The original presentation XML.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxPackage.NotesMasterPart">
+            <summary>The notes master part name, or null if the presentation has none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxPackage.Slides">
+            <summary>The slides of the source in file order.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.Presentation">
+            <summary>A presentation of slides with their layouts and masters, and an undo stack.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Presentation.SlideWidth">
+            <summary>Slide width in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Presentation.SlideHeight">
+            <summary>Slide height in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Presentation.Slides">
+            <summary>The slides in show order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Presentation.Masters">
+            <summary>The slide masters.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Presentation.Layouts">
+            <summary>The layouts of all masters.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Presentation.Undo">
+            <summary>The undo and redo history.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Presentation.HasOpaqueContent">
+            <summary>True if a slide contains content the editor keeps but does not model, such as charts, SmartArt, tables or media.</summary>
+        </member>
+        <member name="E:MudBlazor.Extensions.Office.Presentation.Presentation.Changed">
+            <summary>Raised once after each command or transaction with everything that changed.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.Load(System.IO.Stream)">
+            <summary>Reads a .pptx file.</summary>
+            <param name="stream">The file content.</param>
+            <returns>The presentation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.Create">
+            <summary>Creates a blank 16:9 presentation with one title slide.</summary>
+            <returns>The presentation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.Execute(MudBlazor.Extensions.Office.IDocumentCommand{MudBlazor.Extensions.Office.Presentation.Presentation})">
+            <summary>Applies a command and records it as one undo step (or adds it to the open transaction).</summary>
+            <param name="command">The command.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind">
+            <summary>What changed in a presentation.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind.None">
+            <summary>Nothing.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind.Content">
+            <summary>Shapes or text of the slides changed.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind.SlidesAdded">
+            <summary>Slides were added.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind.SlidesRemoved">
+            <summary>Slides were removed.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind.SlideOrder">
+            <summary>The slide order or hidden state changed.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind.Notes">
+            <summary>Speaker notes changed.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.PresentationChangedEventArgs">
+            <summary>Describes everything that changed during one command, transaction, undo or redo.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PresentationChangedEventArgs.Slides">
+            <summary>The affected slides, including removed ones.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PresentationChangedEventArgs.Kind">
+            <summary>The kinds of change.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.AutoShape">
+            <summary>A preset geometry shape, text box, placeholder or connector, optionally with text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AutoShape.Geometry">
+            <summary>The preset geometry name, <c>rect</c> by default; <c>custom</c> for a custom geometry.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AutoShape.Adjustments">
+            <summary>The adjust values of the preset geometry by guide name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AutoShape.Fill">
+            <summary>The fill.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AutoShape.Line">
+            <summary>The outline, or null if it is inherited.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AutoShape.Text">
+            <summary>The text, or null if the shape has no text body.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AutoShape.IsTextBox">
+            <summary>True if the shape is a text box.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.GroupShape">
+            <summary>A group of shapes. Its children are positioned in the child coordinate space <see cref="P:MudBlazor.Extensions.Office.Presentation.GroupShape.ChildTransform"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.GroupShape.Children">
+            <summary>The child shapes in z-order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.GroupShape.ChildTransform">
+            <summary>The child coordinate space (<c>a:chOff</c>, <c>a:chExt</c>) that maps onto the group's own box.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.OpaqueShape">
+            <summary>Content the editor does not model, such as a chart or SmartArt. It renders as a named frame and can only be moved and resized.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.OpaqueShape.Kind">
+            <summary>The kind of content: <c>chart</c>, <c>table</c>, <c>smartArt</c>, <c>media</c>, <c>ole</c> or <c>other</c>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.PictureShape">
+            <summary>A picture.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PictureShape.ImagePart">
+            <summary>The image part name, for example <c>/ppt/media/image1.png</c>; null for a linked or missing image.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PictureShape.ContentType">
+            <summary>The content type of the image part, or null.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.PlaceholderRef">
+            <summary>A reference to a placeholder of the slide layout.</summary>
+            <param name="Type">The placeholder type, for example <c>title</c>, <c>ctrTitle</c>, <c>body</c> or <c>obj</c> (the default).</param>
+            <param name="Index">The placeholder index, or null.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.PlaceholderRef.#ctor(System.String,System.Nullable{System.UInt32})">
+            <summary>A reference to a placeholder of the slide layout.</summary>
+            <param name="Type">The placeholder type, for example <c>title</c>, <c>ctrTitle</c>, <c>body</c> or <c>obj</c> (the default).</param>
+            <param name="Index">The placeholder index, or null.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PlaceholderRef.Type">
+            <summary>The placeholder type, for example <c>title</c>, <c>ctrTitle</c>, <c>body</c> or <c>obj</c> (the default).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PlaceholderRef.Index">
+            <summary>The placeholder index, or null.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SlideShape">
+            <summary>A shape on a slide, layout or master.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideShape.Id">
+            <summary>The shape id, unique per slide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideShape.Name">
+            <summary>The shape name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideShape.Transform">
+            <summary>The shape's own transform in its parent's coordinates; null if it is inherited from the placeholder.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideShape.ResolvedTransform">
+            <summary>The transform in slide coordinates, with placeholder inheritance and group transforms applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideShape.Placeholder">
+            <summary>The placeholder this shape fills, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideShape.Parent">
+            <summary>The group containing this shape, or null for a top-level shape.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.Slide">
+            <summary>A slide of a presentation.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Key">
+            <summary>A key that identifies the slide while the presentation is in memory.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Layout">
+            <summary>The layout the slide is based on, or null if the file references none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Shapes">
+            <summary>The top-level shapes; the list order is the z-order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Notes">
+            <summary>The speaker notes, paragraphs separated by newlines; empty if there are none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.HasNotesPart">
+            <summary>True if the slide has a notes slide part.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Hidden">
+            <summary>True if the slide is hidden in the slide show.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Modified">
+            <summary>True if the slide changed since it was loaded.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Version">
+            <summary>Incremented by every change of the slide; use it as render key.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SlideLayout">
+            <summary>A slide layout; its placeholders give slides their default positions and text styles.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideLayout.Name">
+            <summary>The layout name, for example <c>Title and Content</c>, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideLayout.Type">
+            <summary>The layout type, for example <c>title</c>, <c>obj</c> or <c>blank</c>, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideLayout.Master">
+            <summary>The master this layout belongs to.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideLayout.Shapes">
+            <summary>The layout's shapes, including its placeholders.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SlideMaster">
+            <summary>A slide master with its theme, text styles, shapes and layouts.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideMaster.Name">
+            <summary>The master name, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideMaster.Layouts">
+            <summary>The layouts of this master in file order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideMaster.Shapes">
+            <summary>The master's shapes, including its placeholders.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.RunFormat">
+            <summary>Character formatting of a text run; null properties are inherited.</summary>
+            <param name="Bold">Bold.</param>
+            <param name="Italic">Italic.</param>
+            <param name="Underline">Underlined.</param>
+            <param name="Strike">Struck through.</param>
+            <param name="SizePt">Font size in points.</param>
+            <param name="Color">
+            Text colour: <c>#RRGGBB</c> or a theme colour like <c>scheme:accent1</c>, optionally followed by space separated DrawingML modifiers
+            such as <c>lumMod=75000</c>.
+            </param>
+            <param name="Font">Latin typeface name; <c>+mj-lt</c> and <c>+mn-lt</c> stand for the theme heading and body fonts.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RunFormat.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Double},System.String,System.String)">
+            <summary>Character formatting of a text run; null properties are inherited.</summary>
+            <param name="Bold">Bold.</param>
+            <param name="Italic">Italic.</param>
+            <param name="Underline">Underlined.</param>
+            <param name="Strike">Struck through.</param>
+            <param name="SizePt">Font size in points.</param>
+            <param name="Color">
+            Text colour: <c>#RRGGBB</c> or a theme colour like <c>scheme:accent1</c>, optionally followed by space separated DrawingML modifiers
+            such as <c>lumMod=75000</c>.
+            </param>
+            <param name="Font">Latin typeface name; <c>+mj-lt</c> and <c>+mn-lt</c> stand for the theme heading and body fonts.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Bold">
+            <summary>Bold.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Italic">
+            <summary>Italic.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Underline">
+            <summary>Underlined.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Strike">
+            <summary>Struck through.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RunFormat.SizePt">
+            <summary>Font size in points.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color">
+            <summary>
+            Text colour: <c>#RRGGBB</c> or a theme colour like <c>scheme:accent1</c>, optionally followed by space separated DrawingML modifiers
+            such as <c>lumMod=75000</c>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Font">
+            <summary>Latin typeface name; <c>+mj-lt</c> and <c>+mn-lt</c> stand for the theme heading and body fonts.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.TextAnchor">
+            <summary>Vertical anchoring of text in its shape.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TextAnchor.Top">
+            <summary>Top.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TextAnchor.Middle">
+            <summary>Middle.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TextAnchor.Bottom">
+            <summary>Bottom.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.TextBody">
+            <summary>The text of a shape. Body properties the slide does not set are inherited from the layout and master placeholders.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.Paragraphs">
+            <summary>The paragraphs in order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.Anchor">
+            <summary>Vertical anchoring.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.InsetLeft">
+            <summary>Left inset in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.InsetTop">
+            <summary>Top inset in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.InsetRight">
+            <summary>Right inset in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.InsetBottom">
+            <summary>Bottom inset in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.Wrap">
+            <summary>True if lines wrap at the shape width.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.TextAlign">
+            <summary>Horizontal alignment of a paragraph.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TextAlign.Left">
+            <summary>Left aligned.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TextAlign.Center">
+            <summary>Centred.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TextAlign.Right">
+            <summary>Right aligned.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TextAlign.Justify">
+            <summary>Justified.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.TextParagraph">
+            <summary>A paragraph of a text body.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.Align">
+            <summary>The alignment, inherited from the list styles when the paragraph sets none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.Level">
+            <summary>The outline level, 0 to 8.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.Bullet">
+            <summary>True for a bullet, false for an explicit <c>a:buNone</c>, null to inherit.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.Runs">
+            <summary>The runs in order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.EndFormat">
+            <summary>Formatting of the paragraph end (<c>a:endParaRPr</c>), used for the caret in an empty paragraph; null if none.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.TextRun">
+            <summary>A run of uniformly formatted text. A line break (<c>a:br</c>) is a run whose text is a single newline.</summary>
+            <param name="Text">The text.</param>
+            <param name="Format">The run's own formatting; null means none.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.TextRun.#ctor(System.String,MudBlazor.Extensions.Office.Presentation.RunFormat)">
+            <summary>A run of uniformly formatted text. A line break (<c>a:br</c>) is a run whose text is a single newline.</summary>
+            <param name="Text">The text.</param>
+            <param name="Format">The run's own formatting; null means none.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextRun.Text">
+            <summary>The text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextRun.Format">
+            <summary>The run's own formatting; properties not set are inherited.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SortKey">
             <summary>One sort level.</summary>
             <param name="Column">Zero-based sheet column to sort by.</param>

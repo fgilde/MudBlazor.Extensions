@@ -5,7 +5,7 @@ namespace MudBlazor.Extensions.Office.Spreadsheet;
 
 internal static class ThemeColors
 {
-    private static readonly string[] SchemeOrder = ["lt1", "dk1", "lt2", "dk2", "accent1", "accent2", "accent3", "accent4", "accent5", "accent6", "hlink", "folHlink"];
+    internal static readonly string[] SchemeOrder = ["lt1", "dk1", "lt2", "dk2", "accent1", "accent2", "accent3", "accent4", "accent5", "accent6", "hlink", "folHlink"];
 
     internal static readonly string[] Office = ["FFFFFF", "000000", "E7E6E6", "44546A", "4472C4", "ED7D31", "A5A5A5", "FFC000", "5B9BD5", "70AD47", "0563C1", "954F72"];
 
@@ -21,10 +21,12 @@ internal static class ThemeColors
         "003366", "339966", "003300", "333300", "993300", "993366", "333399", "333333"
     ];
 
-    internal static string[] Read(Stream theme)
+    internal static string[] Read(Stream theme) => Read(XlsxPackage.LoadXml(theme));
+
+    internal static string[] Read(XDocument theme)
     {
         var colors = (string[])Office.Clone();
-        var scheme = XlsxPackage.LoadXml(theme).Descendants().FirstOrDefault(e => e.Name.LocalName == "clrScheme");
+        var scheme = theme.Descendants().FirstOrDefault(e => e.Name.LocalName == "clrScheme");
         if (scheme == null) return colors;
         for (var i = 0; i < SchemeOrder.Length; i++)
         {
@@ -56,7 +58,9 @@ internal static class ThemeColors
     internal static string Hex(string rgb) =>
         rgb is { Length: 6 or 8 } && rgb.All(char.IsAsciiHexDigit) ? rgb[^6..].ToUpperInvariant() : null;
 
-    internal static string ApplyTint(string rgb, double tint)
+    internal static string ApplyTint(string rgb, double tint) => MapLightness(rgb, l => tint < 0 ? l * (1 + tint) : l * (1 - tint) + tint);
+
+    internal static string MapLightness(string rgb, Func<double, double> map)
     {
         var r = Convert.ToInt32(rgb[..2], 16) / 255.0;
         var g = Convert.ToInt32(rgb[2..4], 16) / 255.0;
@@ -73,7 +77,7 @@ internal static class ThemeColors
             h /= 6;
         }
 
-        l = tint < 0 ? l * (1 + tint) : l * (1 - tint) + tint;
+        l = Math.Clamp(map(l), 0, 1);
         var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
         var p = 2 * l - q;
         return Hex(Hue(p, q, h + 1 / 3.0)) + Hex(Hue(p, q, h)) + Hex(Hue(p, q, h - 1 / 3.0));

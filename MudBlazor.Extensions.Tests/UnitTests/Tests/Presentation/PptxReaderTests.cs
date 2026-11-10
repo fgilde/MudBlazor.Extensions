@@ -1,0 +1,212 @@
+using Xunit;
+using static MudBlazor.Extensions.Tests.UnitTests.Tests.Presentation.PptxBuilder;
+
+namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Presentation;
+
+using MudBlazor.Extensions.Office.Presentation;
+
+public class PptxReaderTests
+{
+    private const string ChartUri = "http://schemas.openxmlformats.org/drawingml/2006/chart";
+    private const string DiagramUri = "http://schemas.openxmlformats.org/drawingml/2006/diagram";
+
+    private static string Text(SlideShape shape) =>
+        string.Join("|", ((AutoShape)shape).Text.Paragraphs.Select(p => string.Concat(p.Runs.Select(r => r.Text))));
+
+    private static string Frame(uint id, string name, string uri) =>
+        $"<p:graphicFrame><p:nvGraphicFramePr><p:cNvPr id=\"{id}\" name=\"{name}\"/><p:cNvGraphicFramePr/><p:nvPr/></p:nvGraphicFramePr>" +
+        "<p:xfrm><a:off x=\"100\" y=\"200\"/><a:ext cx=\"300\" cy=\"400\"/></p:xfrm>" +
+        $"<a:graphic><a:graphicData uri=\"{uri}\"><x:data xmlns:x=\"urn:test\" r:id=\"rId9\"/></a:graphicData></a:graphic></p:graphicFrame>";
+
+    [Fact]
+    public void Reader_SampleDeck_ReadsAllSlides()
+    {
+        using var file = File.OpenRead(Path.Combine(AppContext.BaseDirectory, "TestData", "Presentation", "sample.pptx"));
+        var presentation = Presentation.Load(file);
+
+        Assert.Equal(3, presentation.Slides.Count);
+        Assert.Single(presentation.Masters);
+        Assert.Equal(11, presentation.Layouts.Count);
+        Assert.False(presentation.HasOpaqueContent);
+        Assert.Equal(3, presentation.Slides.Select(s => s.Key).Distinct().Count());
+
+        var title = presentation.Slides[0].Shapes[0];
+        Assert.Equal("MudBlazor.Extensions", Text(title));
+        Assert.Null(title.Transform);
+        Assert.Equal(new ShapeTransform(685800, 2130425, 7772400, 1470025), title.ResolvedTransform);
+        Assert.Equal(new PlaceholderRef("ctrTitle", null), title.Placeholder);
+
+        var content = (AutoShape)presentation.Slides[1].Shapes[1];
+        Assert.Equal([0, 0, 0, 1, 1], content.Text.Paragraphs.Select(p => p.Level));
+        Assert.True(presentation.Slides[1].HasNotesPart);
+        Assert.StartsWith("These notes come from ppt/notesSlides", presentation.Slides[1].Notes);
+        Assert.False(presentation.Slides[0].HasNotesPart);
+
+        var picture = Assert.IsType<PictureShape>(presentation.Slides[2].Shapes[1]);
+        Assert.Equal("/ppt/media/image1.png", picture.ImagePart);
+        Assert.Equal("image/png", picture.ContentType);
+        Assert.Equal(new ShapeTransform(4206240, 1828800, 2926080, 2926080), picture.Transform);
+
+        var textBox = (AutoShape)presentation.Slides[2].Shapes[2];
+        Assert.True(textBox.IsTextBox);
+        Assert.False(textBox.Text.Wrap);
+        Assert.Equal(ShapeFillKind.None, textBox.Fill.Kind);
+        Assert.Equal(new RunFormat(Italic: true, SizePt: 20), textBox.Text.Paragraphs[0].Runs[0].Format);
+        Assert.All(presentation.Slides, s => Assert.Contains(s.Layout, presentation.Layouts));
+    }
+
+    [Fact]
+    public void Reader_SlideSize()
+    {
+        var presentation = new PptxBuilder { Width = 9144000, Height = 5143500 }.Slide("").Load();
+
+        Assert.Equal(9144000, presentation.SlideWidth);
+        Assert.Equal(5143500, presentation.SlideHeight);
+    }
+
+    [Fact]
+    public void Reader_PlaceholderWithoutXfrm_InheritsLayoutTransform()
+    {
+        var presentation = new PptxBuilder()
+            .Slide(Placeholder(2, "Title 1", "type=\"title\"", "") + Placeholder(3, "Content 2", "idx=\"1\"", ""))
+            .Load();
+
+        var shapes = presentation.Slides[0].Shapes;
+        Assert.Null(shapes[0].Transform);
+        Assert.Equal(new ShapeTransform(1000000, 500000, 8000000, 1000000), shapes[0].ResolvedTransform);
+        Assert.Equal(new ShapeTransform(838200, 1825625, 10515600, 4351338), shapes[1].ResolvedTransform);
+        Assert.Equal(new PlaceholderRef("obj", 1), shapes[1].Placeholder);
+    }
+
+    [Fact]
+    public void Reader_GroupChild_ResolvedTransformIsAbsolute()
+    {
+        var group = "<p:grpSp><p:nvGrpSpPr><p:cNvPr id=\"10\" name=\"Group 9\"/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr>" +
+                    "<a:xfrm rot=\"5400000\"><a:off x=\"1000000\" y=\"1000000\"/><a:ext cx=\"2000000\" cy=\"1000000\"/>" +
+                    "<a:chOff x=\"100000\" y=\"100000\"/><a:chExt cx=\"1000000\" cy=\"500000\"/></a:xfrm></p:grpSpPr>" +
+                    Shape(11, "Child", Xfrm(100000, 100000, 500000, 250000)) + "</p:grpSp>";
+        var presentation = new PptxBuilder().Slide(group).Load();
+
+        var parent = Assert.IsType<GroupShape>(presentation.Slides[0].Shapes.Single());
+        var child = parent.Children.Single();
+        Assert.Same(parent, child.Parent);
+        Assert.Equal(new ShapeTransform(100000, 100000, 1000000, 500000), parent.ChildTransform);
+        Assert.Equal(new ShapeTransform(100000, 100000, 500000, 250000), child.Transform);
+        Assert.Equal(new ShapeTransform(1750000, 750000, 1000000, 500000, 90), child.ResolvedTransform);
+    }
+
+    [Fact]
+    public void Reader_MixedRuns_KeepRunBoundariesAndFormats()
+    {
+        var body = "<a:p><a:r><a:rPr lang=\"de-DE\"/><a:t>Normal </a:t></a:r>" +
+                   "<a:r><a:rPr lang=\"de-DE\" b=\"1\" sz=\"2400\"><a:solidFill><a:srgbClr val=\"ff0000\"/></a:solidFill><a:latin typeface=\"Arial\"/></a:rPr><a:t>fett</a:t></a:r>" +
+                   "<a:r><a:t> normal</a:t></a:r><a:endParaRPr sz=\"1200\"/></a:p>";
+        var presentation = new PptxBuilder().Slide(Shape(2, "Text", Xfrm(0, 0, 100, 100), body)).Load();
+
+        var paragraph = ((AutoShape)presentation.Slides[0].Shapes[0]).Text.Paragraphs.Single();
+        Assert.Equal(["Normal ", "fett", " normal"], paragraph.Runs.Select(r => r.Text));
+        Assert.Equal(new RunFormat(), paragraph.Runs[0].Format);
+        Assert.Equal(new RunFormat(Bold: true, SizePt: 24, Color: "#FF0000", Font: "Arial"), paragraph.Runs[1].Format);
+        Assert.Equal(new RunFormat(), paragraph.Runs[2].Format);
+        Assert.Equal(new RunFormat(SizePt: 12), paragraph.EndFormat);
+    }
+
+    [Fact]
+    public void Reader_LineBreak_IsNewlineRun()
+    {
+        var body = "<a:p><a:r><a:t>a</a:t></a:r><a:br><a:rPr sz=\"1000\"/></a:br><a:r><a:t>b</a:t></a:r></a:p>";
+        var presentation = new PptxBuilder().Slide(Shape(2, "Text", Xfrm(0, 0, 100, 100), body)).Load();
+
+        var runs = ((AutoShape)presentation.Slides[0].Shapes[0]).Text.Paragraphs[0].Runs;
+        Assert.Equal(["a", "\n", "b"], runs.Select(r => r.Text));
+        Assert.Equal(10, runs[1].Format.SizePt);
+    }
+
+    [Fact]
+    public void Reader_SchemeColor_ResolvesThroughClrMapAndLumMod()
+    {
+        var body = "<a:p><a:r><a:rPr><a:solidFill><a:schemeClr val=\"tx1\"><a:lumMod val=\"50000\"/></a:schemeClr></a:solidFill></a:rPr><a:t>x</a:t></a:r></a:p>";
+        var builder = new PptxBuilder { ClrMap = "bg1=\"lt1\" tx1=\"dk2\" bg2=\"lt2\" tx2=\"dk1\" accent1=\"accent1\"" }.ThemeColor("dk2", "FF0000");
+        var spPr = Xfrm(0, 0, 100, 100) + "<a:solidFill><a:schemeClr val=\"accent1\"><a:lumMod val=\"75000\"/><a:lumOff val=\"25000\"/></a:schemeClr></a:solidFill>";
+        var presentation = builder.Slide(Shape(2, "Text", spPr, body)).Load();
+
+        var shape = (AutoShape)presentation.Slides[0].Shapes[0];
+        var run = shape.Text.Paragraphs[0].Runs[0];
+        var master = presentation.Masters[0];
+        Assert.Equal("scheme:tx1 lumMod=50000", run.Format.Color);
+        Assert.Equal("#800000", ColorResolver.Resolve(run.Format.Color, master));
+        Assert.Equal("#800000", shape.EffectiveFormat(run).Color);
+        Assert.Equal(new ShapeFill(ShapeFillKind.Solid, "scheme:accent1 lumMod=75000 lumOff=25000"), shape.Fill);
+        Assert.Equal("#7395D3", ColorResolver.Resolve(shape.Fill.Color, master));
+        Assert.Equal("#BFBFBF", ColorResolver.Resolve("#FFFFFF shade=75000", master));
+        Assert.Equal("#BFBFBF", ColorResolver.Resolve("#000000 tint=25000", master));
+    }
+
+    [Fact]
+    public void Reader_EffectiveFormat_InheritsThroughLayoutAndMasterStyles()
+    {
+        var builder = new PptxBuilder
+        {
+            LayoutShapes = Placeholder(2, "Title 1", "type=\"title\"", Xfrm(0, 0, 10, 10))
+                .Replace("<a:lstStyle/>", "<a:lstStyle><a:lvl1pPr algn=\"ctr\"><a:defRPr sz=\"3600\" b=\"1\"/></a:lvl1pPr></a:lstStyle>")
+        };
+        var presentation = builder
+            .Slide(Placeholder(2, "Title 1", "type=\"title\"", "", "<a:p><a:r><a:t>T</a:t></a:r></a:p>") +
+                   Placeholder(3, "Body", "type=\"body\" idx=\"1\"", "", "<a:p><a:pPr lvl=\"1\"/><a:r><a:t>B</a:t></a:r></a:p>") +
+                   Shape(4, "Box", Xfrm(0, 0, 10, 10), "<a:p><a:r><a:t>X</a:t></a:r></a:p>"))
+            .Load();
+
+        var shapes = presentation.Slides[0].Shapes.Cast<AutoShape>().ToList();
+        var title = shapes[0].EffectiveFormat(shapes[0].Text.Paragraphs[0].Runs[0]);
+        Assert.Equal(36, title.SizePt);
+        Assert.True(title.Bold);
+        Assert.Equal("Major Font", title.Font);
+        Assert.Equal("#000000", title.Color);
+        Assert.Equal(TextAlign.Center, shapes[0].Text.Paragraphs[0].Align);
+        Assert.Equal(24, shapes[1].EffectiveFormat(shapes[1].Text.Paragraphs[0].Runs[0]).SizePt);
+        Assert.Equal(18, shapes[2].EffectiveFormat(shapes[2].Text.Paragraphs[0].Runs[0]).SizePt);
+    }
+
+    [Fact]
+    public void Reader_GraphicFrameChart_IsOpaqueShape()
+    {
+        var presentation = new PptxBuilder().Slide(Frame(5, "Chart 4", ChartUri)).Load();
+
+        var chart = Assert.IsType<OpaqueShape>(presentation.Slides[0].Shapes.Single());
+        Assert.Equal("chart", chart.Kind);
+        Assert.Equal("Chart 4", chart.Name);
+        Assert.Equal(5u, chart.Id);
+        Assert.Equal(new ShapeTransform(100, 200, 300, 400), chart.Transform);
+        Assert.True(presentation.HasOpaqueContent);
+    }
+
+    [Fact]
+    public void Reader_SmartArt_SetsHasOpaqueContent()
+    {
+        var presentation = new PptxBuilder().Slide(Shape(2, "Box", Xfrm(0, 0, 10, 10))).Slide(Frame(7, "Diagram 6", DiagramUri)).Load();
+
+        Assert.True(presentation.HasOpaqueContent);
+        Assert.Equal("smartArt", ((OpaqueShape)presentation.Slides[1].Shapes[0]).Kind);
+        Assert.False(new PptxBuilder().Slide(Shape(2, "Box", Xfrm(0, 0, 10, 10))).Load().HasOpaqueContent);
+    }
+
+    [Fact]
+    public void Reader_Notes_ReadsBodyPlaceholderText()
+    {
+        var presentation = new PptxBuilder().Slide("", notes: "First line\nSecond line").Slide("").Load();
+
+        Assert.True(presentation.Slides[0].HasNotesPart);
+        Assert.Equal("First line\nSecond line", presentation.Slides[0].Notes);
+        Assert.False(presentation.Slides[1].HasNotesPart);
+        Assert.Equal("", presentation.Slides[1].Notes);
+    }
+
+    [Fact]
+    public void Reader_HiddenSlide()
+    {
+        var presentation = new PptxBuilder().Slide("", "show=\"0\"").Slide("").Load();
+
+        Assert.True(presentation.Slides[0].Hidden);
+        Assert.False(presentation.Slides[1].Hidden);
+    }
+}
