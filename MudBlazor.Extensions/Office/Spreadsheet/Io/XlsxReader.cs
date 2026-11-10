@@ -100,6 +100,7 @@ public static class XlsxReader
             ws.CellLimit = Workbook.MaxCells - cells;
             SheetXmlReader.Read(s, entry.Length, ws, part, strings, package, theme);
             ws.Tables = TableXml.Read(zip, part);
+            foreach (var table in ws.Tables) table.ClaimFilteredRows(ws);
             AnnotationXml.Read(zip, part, ws);
             ChartXmlReader.Read(zip, part, ws);
             ws.CellLimit = int.MaxValue;

@@ -33204,12 +33204,12 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetAutoFilterCommand">
-            <summary>Sets the auto filter range of a sheet without criteria, or removes the auto filter; either way all filtered rows show again.</summary>
+            <summary>Sets the auto filter range of a sheet without criteria, or removes the auto filter; either way the rows it filtered show again.</summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The range including its header row, or null to remove the auto filter.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetAutoFilterCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Nullable{MudBlazor.Extensions.Office.Spreadsheet.CellRange})">
-            <summary>Sets the auto filter range of a sheet without criteria, or removes the auto filter; either way all filtered rows show again.</summary>
+            <summary>Sets the auto filter range of a sheet without criteria, or removes the auto filter; either way the rows it filtered show again.</summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The range including its header row, or null to remove the auto filter.</param>
         </member>
@@ -33241,6 +33241,29 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ApplyFilterCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ApplyTableFilterCommand">
+            <summary>Sets or (with null criteria) clears the criteria of one column of a table's filter and re-applies all filters of the sheet, hiding and showing rows.</summary>
+            <param name="sheet">The sheet holding the table.</param>
+            <param name="table">The table name; the table must show filter buttons (<see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Filter"/> is not null).</param>
+            <param name="column">Zero-based sheet column inside the table.</param>
+            <param name="criteria">The criteria, or null to show all values of the column.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ApplyTableFilterCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String,System.Int32,MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria)">
+            <summary>Sets or (with null criteria) clears the criteria of one column of a table's filter and re-applies all filters of the sheet, hiding and showing rows.</summary>
+            <param name="sheet">The sheet holding the table.</param>
+            <param name="table">The table name; the table must show filter buttons (<see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Filter"/> is not null).</param>
+            <param name="column">Zero-based sheet column inside the table.</param>
+            <param name="criteria">The criteria, or null to show all values of the column.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ApplyTableFilterCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ApplyTableFilterCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ApplyTableFilterCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand">
@@ -35097,6 +35120,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.HasAutoFilter">
             <summary>True if the header row shows filter buttons.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Filter">
+            <summary>
+            The filter behind the filter buttons of the header row: criteria by zero-based sheet column over <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Range"/> without the totals row;
+            null if the table shows no filter buttons. Change it with <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.ApplyTableFilterCommand"/>.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.DataRange">
             <summary>The data rows: <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Range"/> without header and totals rows.</summary>

@@ -557,6 +557,38 @@ public class TableTests
     }
 
     [Fact]
+    public void TableFilter_HidesRows_RoundTrips_AndFollowsColumnInserts()
+    {
+        var (wb, ws) = Sales();
+        Assert.Empty(ws.Tables[0].Filter!.Columns);
+        wb.Execute(new ApplyTableFilterCommand(ws, "Sales", 1, FilterCriteria.Values(new HashSet<string> { "3" })));
+        Assert.Equal([1, 3], ws.FilteredRows.Order());
+        wb.Execute(new SetAutoFilterCommand(ws, G("F1:F4")));
+        wb.Execute(new ApplyFilterCommand(ws, 5, FilterCriteria.Values(new HashSet<string>(), blanks: true)));
+        Assert.Equal([1, 3], ws.FilteredRows.Order());
+
+        var written = Write(wb);
+        var filter = Xml(written, "xl/tables/table1.xml").Root!.Element(M + "autoFilter")!;
+        Assert.Equal(("A1:D4", "1", "3"), ((string)filter.Attribute("ref")!, (string)filter.Element(M + "filterColumn")!.Attribute("colId")!,
+            (string)filter.Element(M + "filterColumn")!.Element(M + "filters")!.Element(M + "filter")!.Attribute("val")!));
+        var back = Read(written).Sheets[0];
+        Assert.Equal(["3"], back.Tables[0].Filter!.Columns[1].Shown);
+        Assert.Equal([1, 3], back.FilteredRows.Order());
+        Assert.Empty(back.HiddenRows.Except(back.FilteredRows));
+
+        wb.Execute(new InsertColumnsCommand(ws, 0, 1));
+        Assert.Equal(FilterKind.Values, ws.Tables[0].Filter!.Columns[2].Kind);
+        wb.Execute(new ApplyTableFilterCommand(ws, "Sales", 2, null));
+        Assert.Empty(ws.FilteredRows);
+        wb.Undo.Undo();
+        Assert.Equal([1, 3], ws.FilteredRows.Order());
+        for (var i = 0; i < 4; i++) wb.Undo.Undo();
+        Assert.Empty(ws.FilteredRows);
+        Assert.Empty(ws.Tables[0].Filter!.Columns);
+        Assert.Throws<ArgumentOutOfRangeException>(() => wb.Execute(new ApplyTableFilterCommand(ws, "Sales", 7, null)));
+    }
+
+    [Fact]
     public void HeaderSync_RunsOnceAtTransactionCommit()
     {
         var (wb, ws) = Sales();

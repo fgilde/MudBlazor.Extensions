@@ -446,7 +446,7 @@ internal static class SheetXmlWriter
 
     private static readonly string[] FilterNames = ["filters", "customFilters", "top10", "colorFilter", "dynamicFilter", "iconFilter"];
 
-    private static XElement AutoFilterXml(AutoFilter filter, XNamespace ns)
+    internal static XElement AutoFilterXml(AutoFilter filter, XNamespace ns)
     {
         if (filter == null) return null;
         var range = filter.Range;

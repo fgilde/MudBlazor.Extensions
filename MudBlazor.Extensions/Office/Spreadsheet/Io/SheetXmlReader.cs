@@ -162,7 +162,7 @@ internal static class SheetXmlReader
 
     internal static readonly string[] FilterOperators = ["equal", "notEqual", "greaterThan", "greaterThanOrEqual", "lessThan", "lessThanOrEqual"];
 
-    private static AutoFilter ReadAutoFilter(XElement e)
+    internal static AutoFilter ReadAutoFilter(XElement e)
     {
         if (!CellRange.TryParse((string)e.Attribute("ref"), out var range)) return null;
         range = range.Normalized;

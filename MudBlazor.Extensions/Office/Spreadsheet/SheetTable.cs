@@ -65,6 +65,16 @@ public sealed class SheetTable
     /// <summary>True if the header row shows filter buttons.</summary>
     public bool HasAutoFilter { get; private set; }
 
+    /// <summary>
+    /// The filter behind the filter buttons of the header row: criteria by zero-based sheet column over <see cref="Range"/> without the totals row;
+    /// null if the table shows no filter buttons. Change it with <see cref="ApplyTableFilterCommand"/>.
+    /// </summary>
+    public AutoFilter Filter => HasAutoFilter && HeaderRow ? (_filter ?? new AutoFilter(FilterRange)).WithRange(FilterRange) : null;
+
+    private CellRange FilterRange => CellRange.FromBounds(Range.Top, Range.Left, Range.Bottom - (TotalsRow ? 1 : 0), Range.Right);
+
+    private AutoFilter _filter;
+
     /// <summary>The data rows: <see cref="Range"/> without header and totals rows.</summary>
     public CellRange DataRange => CellRange.FromBounds(Range.Top + (HeaderRow ? 1 : 0), Range.Left, Range.Bottom - (TotalsRow ? 1 : 0), Range.Right);
 
@@ -91,12 +101,12 @@ public sealed class SheetTable
 
     internal static SheetTable FromFile(XElement source, string partName, string relationshipId, int id, string name, string displayName, CellRange range,
         bool headerRow, bool totalsRow, IReadOnlyList<TableColumn> columns, string style, bool bandedRows, bool bandedColumns, bool firstColumn,
-        bool lastColumn, bool autoFilter) =>
+        bool lastColumn, AutoFilter filter) =>
         new(name, range, columns)
         {
             Source = source, PartName = partName, RelationshipId = relationshipId, Id = id, DisplayName = displayName, HeaderRow = headerRow,
             TotalsRow = totalsRow, StyleName = style, BandedRows = bandedRows, BandedColumns = bandedColumns, FirstColumn = firstColumn,
-            LastColumn = lastColumn, HasAutoFilter = autoFilter
+            LastColumn = lastColumn, HasAutoFilter = filter != null, _filter = filter
         };
 
     internal static SheetTable Create(int id, string name, CellRange range, bool headerRow, IReadOnlyList<TableColumn> columns, string style) =>
@@ -120,6 +130,18 @@ public sealed class SheetTable
         return copy;
     }
 
+    internal SheetTable WithFilter(AutoFilter filter)
+    {
+        var copy = With();
+        copy._filter = filter;
+        return copy;
+    }
+
+    internal void ClaimFilteredRows(Worksheet sheet)
+    {
+        if (Filter is { Columns.Count: > 0 } filter) _filter = sheet.ClaimFilteredRows(filter);
+    }
+
     internal SheetTable RewriteFormulas(Func<string, string> rewrite)
     {
         List<TableColumn> columns = null;
@@ -137,6 +159,14 @@ public sealed class SheetTable
         string.Equals(Name, name, StringComparison.OrdinalIgnoreCase) || string.Equals(DisplayName, name, StringComparison.OrdinalIgnoreCase);
 
     internal SheetTable Shift(Axis axis, int index, int count)
+    {
+        var moved = Move(axis, index, count);
+        if (moved == null || moved == this || _filter == null) return moved;
+        moved._filter = _filter.WithRange(FilterRange).Shift(axis, index, count);
+        return moved;
+    }
+
+    private SheetTable Move(Axis axis, int index, int count)
     {
         var start = axis == Axis.Row ? Range.Top : Range.Left;
         var end = axis == Axis.Row ? Range.Bottom : Range.Right;

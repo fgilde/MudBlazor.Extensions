@@ -391,7 +391,11 @@ public sealed class Worksheet
     /// </remarks>
     internal void ClaimFilteredRows()
     {
-        if (AutoFilter is not { Columns.Count: > 0 } filter) return;
+        if (AutoFilter is { Columns.Count: > 0 } filter) AutoFilter = ClaimFilteredRows(filter);
+    }
+
+    internal AutoFilter ClaimFilteredRows(AutoFilter filter)
+    {
         var known = filter.EvaluateKnown(this);
         known.IntersectWith(filter.EvaluateKnown(this, CultureInfo.InvariantCulture));
         var opaque = filter.HasOpaqueColumns
@@ -399,8 +403,8 @@ public sealed class Worksheet
             : [];
         var rows = _hiddenRows.Where(r => known.Contains(r) || opaque.Contains(r)).ToList();
         _hiddenRows.ExceptWith(rows);
-        SetFiltered(rows);
-        AutoFilter = filter.WithOpaqueRows(opaque);
+        SetFiltered(_filteredRows.Concat(rows));
+        return filter.WithOpaqueRows(opaque);
     }
 
     internal bool DrawingOpaque => Part is { DrawingPart: not null, OriginalDrawing: null };

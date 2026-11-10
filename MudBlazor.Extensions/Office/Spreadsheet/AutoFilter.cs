@@ -260,6 +260,13 @@ public sealed class AutoFilter
 
     internal AutoFilter WithSort(SortKey sort) => new(Range, Columns, sort, Source, ColumnSources, OpaqueRows);
 
+    internal AutoFilter WithRange(CellRange range)
+    {
+        if (range == Range) return this;
+        bool Inside(int column) => column >= range.Left && column <= range.Right;
+        return new AutoFilter(range, Columns.Where(p => Inside(p.Key)).ToDictionary(), Sort, Source, ColumnSources.Where(p => Inside(p.Key)).ToDictionary(), OpaqueRows);
+    }
+
     internal AutoFilter Shift(Axis axis, int index, int count)
     {
         if (Worksheet.MoveRange(Range, axis, index, count) is not { } range) return null;

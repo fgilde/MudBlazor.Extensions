@@ -43,7 +43,7 @@ internal static class TableXml
         return SheetTable.FromFile(e, partName, relationshipId, Int(e, "id"), name, (string)e.Attribute("displayName") ?? name, range.Normalized,
             (string)e.Attribute("headerRowCount") is not "0", Int(e, "totalsRowCount") > 0, columns, (string)style?.Attribute("name"),
             True(style, "showRowStripes"), True(style, "showColumnStripes"), True(style, "showFirstColumn"), True(style, "showLastColumn"),
-            Child(e, "autoFilter") != null);
+            Child(e, "autoFilter") is { } filter ? SheetXmlReader.ReadAutoFilter(filter) ?? new AutoFilter(range.Normalized, source: filter) : null);
     }
 
     private static string FromFile(string formula) => formula == null ? null : StructuredReferences.ToDisplay(SheetXmlWriter.FromFile(formula));
@@ -66,17 +66,8 @@ internal static class TableXml
         if (t.TotalsRow) e.SetAttributeValue("totalsRowShown", null);
         else if (t.Source == null) e.SetAttributeValue("totalsRowShown", "0");
 
-        var filter = Child(e, "autoFilter");
-        if (t.HasAutoFilter && t.HeaderRow)
-        {
-            if (filter == null) e.AddFirst(filter = new XElement(ns + "autoFilter"));
-            var r = t.Range;
-            filter.SetAttributeValue("ref", CellRange.FromBounds(r.Top, r.Left, r.Bottom - (t.TotalsRow ? 1 : 0), r.Right).ToA1());
-            foreach (var column in filter.Elements().Where(c => c.Name.LocalName == "filterColumn").ToList())
-                if (Int(column, "colId") >= t.Columns.Count)
-                    column.Remove();
-        }
-        else filter?.Remove();
+        Child(e, "autoFilter")?.Remove();
+        if (t.Filter is { } filter) e.AddFirst(SheetXmlWriter.AutoFilterXml(filter, ns));
 
         if (t.Source != null && (string)t.Source.Attribute("ref") != t.Range.ToA1()) Child(e, "sortState")?.Remove();
         var columns = Child(e, "tableColumns");
