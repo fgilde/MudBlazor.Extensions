@@ -47,13 +47,18 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
     private MudExSpreadsheetGrid _observedGrid;
     private MudExSpreadsheetStatusBar _statusBar;
     private readonly EventCallback<SpreadsheetSelection> _selectionChanged;
+    private readonly EventCallback<KeyboardEventArgs> _keyDown;
     private int _version;
     private bool _csvWarned;
     private bool _unshiftedWarned;
     private bool _editDirty;
 
     /// <summary>Creates the editor.</summary>
-    public MudExSpreadsheetEditor() => _selectionChanged = new EventCallback<SpreadsheetSelection>(null, (Func<SpreadsheetSelection, Task>)OnSelectionChangedAsync);
+    public MudExSpreadsheetEditor()
+    {
+        _selectionChanged = new EventCallback<SpreadsheetSelection>(null, (Func<SpreadsheetSelection, Task>)OnSelectionChangedAsync);
+        _keyDown = new EventCallback<KeyboardEventArgs>(WithoutRender.Instance, (Func<KeyboardEventArgs, Task>)OnKeyDownAsync);
+    }
 
     /// <summary>The workbook to edit when no file is given. Changes by the user raise <see cref="WorkbookChanged"/>.</summary>
     [Parameter] public Workbook Workbook { get; set; }
@@ -202,10 +207,20 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
         }
     }
 
+    private sealed class WithoutRender : IHandleEvent
+    {
+        public static readonly WithoutRender Instance = new();
+
+        public Task HandleEventAsync(EventCallbackWorkItem item, object arg) => item.InvokeAsync(arg);
+    }
+
     private async Task OnKeyDownAsync(KeyboardEventArgs e)
     {
         if ((e.CtrlKey || e.MetaKey) && !e.AltKey && e.Key is "s" or "S")
+        {
             await SaveFromKeyAsync();
+            StateHasChanged();
+        }
     }
 
     /// <inheritdoc />

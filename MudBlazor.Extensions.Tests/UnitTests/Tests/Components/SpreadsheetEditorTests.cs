@@ -714,6 +714,20 @@ public class SpreadsheetEditorTests : IAsyncLifetime
         }
     }
 
+    [Fact]
+    public async Task KeysOutsideTheGrid_DoNotRenderTheEditor()
+    {
+        var host = NewContext().Render<BoundHost>(p => p.Add(x => x.Workbook, Book(("Sheet1", "A1", 1d))));
+        var editor = host.FindComponent<CountingEditor>().Instance;
+        host.WaitForAssertion(() => Assert.NotNull(editor.Grid));
+        await host.InvokeAsync(() => Task.Delay(50));
+        var before = editor.Renders;
+        foreach (var key in "=SUM(A1)")
+            await host.Find(".mud-ex-spreadsheet-editor").TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = key.ToString() });
+        await host.InvokeAsync(() => Task.Delay(50));
+        Assert.Equal(before, editor.Renders);
+    }
+
     [Theory]
     [InlineData("General", 1, 1.5, "0.00")]
     [InlineData("General", -1, 1.5, "0")]

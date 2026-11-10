@@ -2,7 +2,7 @@
 @namespace MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Office.Spreadsheet
 
-<div @attributes="UserAttributes" class="@($"mud-ex-spreadsheet-editor {Class}".TrimEnd())" style="@RootStyle" @onkeydown="OnKeyDownAsync">
+<div @attributes="UserAttributes" class="@($"mud-ex-spreadsheet-editor {Class}".TrimEnd())" style="@RootStyle" @onkeydown="_keyDown">
     @if (ShowRibbon)
     {
         var style = ActiveStyle;
