@@ -17,7 +17,8 @@
      data-zoom="@_zoom.ToString(System.Globalization.CultureInfo.InvariantCulture)"
      data-win="@(_sheet != null ? WindowBounds : null)"
      data-sticky="@(_sheet != null ? StickyBounds : null)"
-     @onkeydown="OnKeyDownAsync">
+     @onkeydown="OnKeyDownAsync"
+     @onkeydown:stopPropagation="true">
     @if (_sheet != null)
     {
         <div class="mud-ex-ssg-viewport">

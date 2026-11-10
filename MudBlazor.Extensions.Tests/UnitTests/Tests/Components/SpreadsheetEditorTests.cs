@@ -391,6 +391,38 @@ public class SpreadsheetEditorTests : IAsyncLifetime
     }
 
     [Fact]
+    public void CtrlS_InRibbon_SavesOnce()
+    {
+        var requests = 0;
+        var cut = Render(p => p
+            .Add(x => x.Workbook, Book(("Sheet1", "A1", 1d)))
+            .Add(x => x.SaveRequested, (MudExFileSaveRequest r) => { requests++; r.Handled = true; }));
+
+        cut.Find(".mud-ex-spreadsheet-ribbon").KeyDown(new KeyboardEventArgs { Key = "s", CtrlKey = true });
+        cut.WaitForAssertion(() => Assert.Equal(1, requests));
+        cut.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = "S", CtrlKey = true });
+        cut.WaitForAssertion(() => Assert.Equal(2, requests));
+        cut.Render();
+        Assert.Equal(2, requests);
+    }
+
+    [Fact]
+    public void Escape_CancelsPendingEdit_NotDirty()
+    {
+        var cut = Render(Book(("Sheet1", "A1", 1d)));
+        var grid = cut.FindComponent<MudExSpreadsheetGrid>();
+        cut.WaitForAssertion(() => Assert.NotNull(cut.Instance.Grid));
+
+        grid.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = "x" });
+        cut.WaitForAssertion(() => Assert.True(cut.Instance.IsDirty));
+        grid.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = "Escape" });
+
+        cut.WaitForAssertion(() => Assert.False(cut.Instance.IsDirty));
+        Assert.False(grid.Instance.IsEditing);
+        Assert.Equal(1, cut.Instance.CurrentWorkbook.Sheets[0][CellRef.Parse("A1")].Value.NumberValue);
+    }
+
+    [Fact]
     public async Task RibbonCommand_UnexpectedException_IsShown()
     {
         var wb = Book(("Sheet1", "A1", 1d));

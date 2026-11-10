@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Office.Spreadsheet;
@@ -49,6 +50,7 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
     private int _version;
     private bool _csvWarned;
     private bool _unshiftedWarned;
+    private bool _editDirty;
 
     /// <summary>Creates the editor.</summary>
     public MudExSpreadsheetEditor() => _selectionChanged = new EventCallback<SpreadsheetSelection>(null, (Func<SpreadsheetSelection, Task>)OnSelectionChangedAsync);
@@ -187,8 +189,23 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
 
     private void OnGridEditChanged()
     {
-        if (!IsDirty && _grid?.HasPendingEdit == true)
+        if (_grid?.HasPendingEdit == true)
+        {
+            if (IsDirty) return;
+            _editDirty = true;
             _ = InvokeAsync(MarkDirtyAsync);
+        }
+        else if (_editDirty && _grid?.IsEditing != true)
+        {
+            _editDirty = false;
+            _ = InvokeAsync(MarkCleanAsync);
+        }
+    }
+
+    private async Task OnKeyDownAsync(KeyboardEventArgs e)
+    {
+        if ((e.CtrlKey || e.MetaKey) && !e.AltKey && e.Key is "s" or "S")
+            await SaveFromKeyAsync();
     }
 
     /// <inheritdoc />
@@ -309,6 +326,7 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
         if (!ReferenceEquals(sender, _workbook))
             return;
         _version++;
+        _editDirty = false;
         var sheets = _workbook.Sheets.ToList();
         var index = sheets.IndexOf(_activeSheet);
         if (index < 0 || _activeSheet.Hidden)
