@@ -19,9 +19,11 @@ public sealed record CellLink(CellRef Cell, string Target, string Location, stri
     /// <summary>
     /// True if the link may be followed when clicked: a location inside the workbook that is not a URI with a scheme, or an absolute
     /// <c>http</c>, <c>https</c> or <c>mailto</c> target. Any other target (<c>file</c>, relative paths, <c>javascript</c> …) should only be shown as text.
+    /// A location made only of column letters such as <c>AB:AC</c> reads like a URI (<c>tel:sms</c>) and counts as safe only with a sheet name.
     /// </summary>
     public bool IsSafe => string.IsNullOrEmpty(Target)
-        ? !string.IsNullOrEmpty(Location) && (CellRange.TryParse(Location, out _) || !Uri.TryCreate(WebUtility.HtmlDecode(Location), UriKind.Absolute, out _))
+        ? !string.IsNullOrEmpty(Location) && (CellRange.TryParse(Location, out _) && Location.Any(char.IsDigit)
+                                              || !Uri.TryCreate(WebUtility.HtmlDecode(Location), UriKind.Absolute, out _))
         : Uri.TryCreate(Target, UriKind.Absolute, out var uri) && SafeSchemes.Contains(uri.Scheme);
 
     internal XElement Source { get; init; }

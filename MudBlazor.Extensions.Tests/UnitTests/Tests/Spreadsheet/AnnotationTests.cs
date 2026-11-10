@@ -283,10 +283,10 @@ public class AnnotationTests
             Assert.False(Ext(unsafeTarget).IsSafe, unsafeTarget);
         Assert.False(Ext("&#106;avascript:alert(1)").IsSafe);
         static CellLink Internal(string location) => new(new CellRef(0, 0), null, location, null, null);
-        foreach (var safe in (string[])["Sheet2!A1", "'My Sheet'!A1:B2", "A1:B2", "AB:AC", "1:3", "XFD1:XFD2", "MyName", "'R&D'!C3"])
+        foreach (var safe in (string[])["Sheet2!A1", "'My Sheet'!A1:B2", "A1:B2", "Sheet2!AB:AC", "1:3", "XFD1:XFD2", "MyName", "'R&D'!C3"])
             Assert.True(Internal(safe).IsSafe, safe);
         foreach (var unsafeLocation in (string[])["javascript:alert(1)", "JaVaScRiPt:alert(1)", " javascript:alert(1)", "&#106;avascript:alert(1)",
-                     "&#x6A;avascript:alert(1)", "https://example.com", "C:\\Windows\\calc.exe"])
+                     "&#x6A;avascript:alert(1)", "https://example.com", "C:\\Windows\\calc.exe", "tel:sms", "sms:abc", "TEL:XYZ", "AB:AC"])
             Assert.False(Internal(unsafeLocation).IsSafe, unsafeLocation);
     }
 

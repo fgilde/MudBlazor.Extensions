@@ -32258,6 +32258,7 @@
             <summary>
             True if the link may be followed when clicked: a location inside the workbook that is not a URI with a scheme, or an absolute
             <c>http</c>, <c>https</c> or <c>mailto</c> target. Any other target (<c>file</c>, relative paths, <c>javascript</c> …) should only be shown as text.
+            A location made only of column letters such as <c>AB:AC</c> reads like a URI (<c>tel:sms</c>) and counts as safe only with a sheet name.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellNote">
