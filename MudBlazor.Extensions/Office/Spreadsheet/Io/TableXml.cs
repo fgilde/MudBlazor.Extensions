@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.IO.Compression;
+using System.Xml;
 using System.Xml.Linq;
 using static MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage;
 
@@ -16,16 +17,28 @@ internal static class TableXml
         var rels = ReadRelationships(zip, part.PartName);
         foreach (var tablePart in parts.Elements().Where(e => e.Name.LocalName == "tablePart"))
         {
-            var id = (string)tablePart.Attributes().FirstOrDefault(a => a.Name.LocalName == "id" && a.Name.Namespace != XNamespace.None);
+            var id = RelationshipId(tablePart);
             if (rels.FirstOrDefault(r => r.Id == id && !r.External) is not { } rel || Find(zip, ResolveTarget(part.PartName, rel.Target)) is not { } entry) continue;
             XElement root;
-            using (var s = entry.Open()) root = LoadXml(s).Root;
-            if (Table(root, entry.FullName, id) is { } table)
+            try
+            {
+                using var s = entry.Open();
+                root = LoadXml(s).Root;
+            }
+            catch (XmlException)
+            {
+                root = null;
+            }
+
+            if (root != null && Table(root, entry.FullName, id) is { } table)
             {
                 part.TableParts.Add((id, entry.FullName));
                 tables.Add(table);
+                continue;
             }
-            else part.OpaqueTableParts.Add(id);
+
+            part.OpaqueTableParts.Add(id);
+            if (root != null) part.OpaqueTables.Add((Int(root, "id"), [(string)root.Attribute("name"), (string)root.Attribute("displayName")]));
         }
 
         return tables;
@@ -38,6 +51,7 @@ internal static class TableXml
             .Select(c => new TableColumn(SheetXmlReader.Decode((string)c.Attribute("name") ?? ""), (string)c.Attribute("totalsRowFunction") is { } f and not "none" ? f : null,
                 FromFile(Child(c, "calculatedColumnFormula")?.Value)) { Id = Int(c, "id"), Source = c, TotalsLabel = SheetXmlReader.Decode((string)c.Attribute("totalsRowLabel")) })
             .ToList() ?? [];
+        if (columns.Count != range.Normalized.ColumnCount) return null;
         var style = Child(e, "tableStyleInfo");
         var name = (string)e.Attribute("name") ?? (string)e.Attribute("displayName") ?? "";
         return SheetTable.FromFile(e, partName, relationshipId, Int(e, "id"), name, (string)e.Attribute("displayName") ?? name, range.Normalized,

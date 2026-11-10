@@ -28,7 +28,7 @@ public static partial class XlsxWriter
         {
             var ns = sheet.Original?.Root?.Name.Namespace ?? XNamespace.Get(SheetXmlWriter.MainNs);
             var opaque = sheet.Original?.OpaqueLinks ?? [];
-            var used = opaque.Select(AnnotationXml.RelationshipId).Where(id => id != null).ToHashSet();
+            var used = opaque.Select(RelationshipId).Where(id => id != null).ToHashSet();
             var links = AnnotationXml.WriteLinks(Original(sheet, "hyperlinks"), sheet.Worksheet.Links, opaque, ns, link =>
             {
                 if (string.IsNullOrEmpty(link.Target)) return null;

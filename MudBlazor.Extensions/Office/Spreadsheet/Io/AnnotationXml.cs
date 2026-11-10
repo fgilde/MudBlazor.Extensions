@@ -2,6 +2,7 @@ using System.Globalization;
 using System.IO.Compression;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Linq;
 using static MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage;
 
@@ -53,7 +54,18 @@ internal static class AnnotationXml
         {
             part.CommentsPart = comments.FullName;
             part.CommentsRelationshipId = commentsRel.Id;
-            using (var s = comments.Open()) part.CommentsRoot = LoadXml(s).Root;
+            try
+            {
+                using var s = comments.Open();
+                part.CommentsRoot = LoadXml(s).Root;
+            }
+            catch (XmlException)
+            {
+                ws.NotesReadOnly = true;
+                part.OriginalNotes = ws.Notes;
+                return;
+            }
+
             var authors = Child(part.CommentsRoot, "authors")?.Elements().Select(a => SheetXmlReader.Decode(a.Value)).ToList() ?? [];
             ws.Notes = Child(part.CommentsRoot, "commentList")?.Elements().Where(e => e.Name.LocalName == "comment").Select(e => Note(e, authors, shapes))
                 .OfType<CellNote>().ToList() ?? [];
@@ -156,9 +168,6 @@ internal static class AnnotationXml
     }
 
     internal static int MaxDrawing(string vml) => Drawings(vml).DefaultIfEmpty(0).Max();
-
-    internal static string RelationshipId(XElement e) =>
-        (string)e?.Attributes().FirstOrDefault(a => a.Name.LocalName == "id" && a.Name.Namespace != XNamespace.None);
 
     private static IEnumerable<int> Drawings(string vml) =>
         IdMap.Matches(vml).SelectMany(m => Digits.Matches(m.Groups[1].Value)).Select(d => int.TryParse(d.Value, CultureInfo.InvariantCulture, out var n) ? n : 0);

@@ -24,7 +24,7 @@ public static partial class XlsxWriter
             foreach (var element in root.Elements().ToList())
             {
                 var anchor = element.Name.LocalName == "AlternateContent" ? Child(element, "Choice")?.Elements().FirstOrDefault() : element;
-                var id = ChartXmlReader.RelationshipId(Child(Child(Child(Child(anchor, "graphicFrame"), "graphic"), "graphicData"), "chart"));
+                var id = RelationshipId(Child(Child(Child(Child(anchor, "graphicFrame"), "graphic"), "graphicData"), "chart"));
                 if (id == null || originals.All(c => c.RelationshipId != id)) continue;
                 var chart = ws.Charts.FirstOrDefault(c => c.RelationshipId == id);
                 if (chart == null)

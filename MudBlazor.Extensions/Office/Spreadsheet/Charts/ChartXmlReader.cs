@@ -100,9 +100,6 @@ internal static class ChartXmlReader
 
     internal static string Val(XElement e) => (string)e?.Attribute("val");
 
-    internal static string RelationshipId(XElement e) =>
-        (string)e?.Attributes().FirstOrDefault(a => a.Name.LocalName == "id" && a.Name.Namespace != XNamespace.None);
-
     internal static (CellRef Cell, (double X, double Y) Offset) Marker(XElement marker)
     {
         int Int(string name) => int.TryParse(Child(marker, name)?.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var v) ? Math.Max(0, v) : 0;

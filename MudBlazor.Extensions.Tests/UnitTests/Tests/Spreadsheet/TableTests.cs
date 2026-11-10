@@ -812,6 +812,10 @@ public class TableTests
         Assert.Equal(Entry(package, "xl/tables/table1.xml"), Entry(written, "xl/tables/table1.xml"));
         Assert.Equal(Entry(package, "xl/worksheets/_rels/sheet1.xml.rels"), Entry(written, "xl/worksheets/_rels/sheet1.xml.rels"));
         Assert.Equal("rId1", (string)Xml(written, "xl/worksheets/sheet1.xml").Root!.Element(M + "tableParts")!.Element(M + "tablePart")!.Attribute(XName.Get("id", Rel)));
+
+        wb.Execute(new CreateTableCommand(ws, G("H1:H2"), true));
+        Assert.Equal((4, "Table2"), (ws.Tables.Single().Id, ws.Tables.Single().Name));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new RenameTableCommand(ws, "Table2", "Table1")));
     }
 
     private static Workbook Read(byte[] package) => XlsxReader.Read(new MemoryStream(package));

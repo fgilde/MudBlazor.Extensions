@@ -350,16 +350,21 @@ internal static class TableEdits
     {
         if (!Workbook.IsIdentifier(name))
             throw new ArgumentException($"'{name}' is not a valid table name.", nameof(name));
-        if (wb.Tables.Any(t => t != ignore && t.Matches(name)) || wb.DefinedNames.ContainsKey(name))
+        if (wb.Tables.Any(t => t != ignore && t.Matches(name)) || wb.DefinedNames.ContainsKey(name) || OpaqueName(wb, name))
             throw new ArgumentException($"The name '{name}' is already in use.", nameof(name));
     }
 
-    internal static int NextId(Workbook wb) => wb.Tables.Select(t => t.Id).DefaultIfEmpty(0).Max() + 1;
+    internal static int NextId(Workbook wb) => wb.Tables.Select(t => t.Id).Concat(OpaqueTables(wb).Select(t => t.Id)).DefaultIfEmpty(0).Max() + 1;
+
+    private static IEnumerable<(int Id, string[] Names)> OpaqueTables(Workbook wb) => wb.Package?.Sheets.SelectMany(p => p.OpaqueTables) ?? [];
+
+    private static bool OpaqueName(Workbook wb, string name) =>
+        OpaqueTables(wb).Any(t => t.Names.Any(n => string.Equals(n, name, StringComparison.OrdinalIgnoreCase)));
 
     internal static string NextName(Workbook wb)
     {
         var i = 1;
-        while (wb.FindTable("Table" + i) != null || wb.DefinedNames.ContainsKey("Table" + i)) i++;
+        while (wb.FindTable("Table" + i) != null || wb.DefinedNames.ContainsKey("Table" + i) || OpaqueName(wb, "Table" + i)) i++;
         return "Table" + i;
     }
 

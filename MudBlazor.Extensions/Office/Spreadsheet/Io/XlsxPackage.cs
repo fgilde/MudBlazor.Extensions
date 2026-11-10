@@ -52,6 +52,9 @@ internal sealed class XlsxSheetPart
     /// <summary>Relationship ids of table parts the model could not read; they stay in <c>tableParts</c> and are copied unchanged.</summary>
     public List<string> OpaqueTableParts { get; } = [];
 
+    /// <summary>Id and names (<c>name</c>, <c>displayName</c>) of the readable table parts the model could not represent; new tables avoid them.</summary>
+    public List<(int Id, string[] Names)> OpaqueTables { get; } = [];
+
     /// <summary>Hyperlinks whose <c>ref</c> cannot be parsed; they are written back unchanged after the modelled links.</summary>
     public List<XElement> OpaqueLinks { get; } = [];
 
@@ -418,6 +421,9 @@ internal sealed class XlsxPackage
                                  || PartNames.Any(n => !modelled.Contains(n) && ContentType(n) is { } type
                                                                             && UnshiftedContentTypes.Any(t => type.Contains(t, StringComparison.OrdinalIgnoreCase)));
     }
+
+    internal static string RelationshipId(XElement e) =>
+        (string)e?.Attributes().FirstOrDefault(a => a.Name.LocalName == "id" && a.Name.Namespace != XNamespace.None);
 
     internal static XElement Child(XElement e, string name) => e?.Elements().FirstOrDefault(c => c.Name.LocalName == name);
 
