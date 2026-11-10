@@ -1,10 +1,69 @@
 const CHART = '.mud-ex-ssg-chart';
+const HEADERS = '.mud-ex-ssg-ch, .mud-ex-ssg-rh';
 const NOTE_BOX = '.mud-ex-ssg-note-box';
 const MIN_SIZE = 20;
 
 const px = b => ({ left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px` });
 
 export const objectMethods = {
+    hover(e) {
+        this.objectHover(e);
+        if (this.drag) {
+            return;
+        }
+        const header = e.target.closest?.(HEADERS);
+        const cols = header?.matches('.mud-ex-ssg-ch');
+        const edge = header && !this.readOnly() && this.resizeTarget(e, cols);
+        this.viewport.classList.toggle('mud-ex-ssg-resize-col', !!edge && cols);
+        this.viewport.classList.toggle('mud-ex-ssg-resize-row', !!edge && !cols);
+    },
+
+    async dblClick(e) {
+        if (!this.dotnet) {
+            return;
+        }
+        const t = e.target;
+        if (t.closest('.mud-ex-ssg-assist-host, .mud-ex-ssg-filter, .mud-ex-ssg-dv') || t.closest('textarea.mud-ex-ssg-editor') || this.objectDblClick(e)) {
+            return;
+        }
+        if (t.classList.contains('mud-ex-ssg-fill')) {
+            this.dotnet.invokeMethodAsync('FillHandleDoubleClick').catch(() => {});
+            return;
+        }
+        const header = t.closest(HEADERS);
+        if (header) {
+            const cols = header.matches('.mud-ex-ssg-ch');
+            const edge = !this.readOnly() && this.resizeTarget(e, cols);
+            if (!edge) {
+                return;
+            }
+            if (!cols) {
+                this.dotnet.invokeMethodAsync('AutoFitRow', edge.index).catch(() => {});
+                return;
+            }
+            const candidates = await this.dotnet.invokeMethodAsync('AutoFitColumnCandidates', edge.index).catch(() => null);
+            if (!candidates?.length) {
+                return;
+            }
+            this.dotnet.invokeMethodAsync('ResizeColumn', edge.index, Math.ceil(this.measure(candidates) + 10) * this.zoom()).catch(() => {});
+            return;
+        }
+        const cell = this.cellAt(e.clientX, e.clientY, false);
+        if (cell && !this.readOnly()) {
+            this.dotnet.invokeMethodAsync('OnCellDoubleClick', cell.r, cell.c).catch(() => {});
+        }
+    },
+
+    measure(candidates) {
+        const ctx = (this.canvas ??= document.createElement('canvas')).getContext('2d');
+        let width = 0;
+        for (const [text, font] of candidates) {
+            ctx.font = font;
+            width = Math.max(width, ctx.measureText(text).width);
+        }
+        return width;
+    },
+
     objectPointerDown(e) {
         const t = e.target;
         if (t.closest(NOTE_BOX)) {
@@ -20,7 +79,11 @@ export const objectMethods = {
             e.preventDefault();
             this.endEditVisual();
             this.focus();
-            this.dotnet.invokeMethodAsync('OnLinkClick', +link.dataset.r, +link.dataset.c).catch(() => {});
+            if (link.dataset.href) {
+                this.openLink(link.dataset.href);
+            } else {
+                this.dotnet.invokeMethodAsync('OnLinkClick', +link.dataset.r, +link.dataset.c).catch(() => {});
+            }
             return true;
         }
         return false;

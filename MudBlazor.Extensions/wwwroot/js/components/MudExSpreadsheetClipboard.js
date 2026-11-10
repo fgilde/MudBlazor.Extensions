@@ -1,6 +1,63 @@
 const CONTEXT_IGNORE = 'textarea.mud-ex-ssg-editor.editing, .mud-ex-ssg-assist-host, .mud-ex-ssg-filter, .mud-ex-ssg-dv, .mud-ex-ssg-chart, .mud-ex-ssg-note-box';
 
 export const clipboardMethods = {
+    rootFocus(e) {
+        if (e.target === this.root) {
+            this.focus();
+        }
+    },
+
+    saveKey(e) {
+        if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key?.toLowerCase() === 's' && !this.readOnly()) {
+            e.preventDefault();
+        }
+    },
+
+    place() {
+        const sink = this.sink();
+        const active = this.root.querySelector('.mud-ex-ssg-active');
+        if (!sink || !active) {
+            return;
+        }
+        const a = active.getBoundingClientRect();
+        const r = this.root.getBoundingClientRect();
+        Object.assign(sink.style, { left: `${a.left - r.left}px`, top: `${a.top - r.top}px`, minWidth: `${a.width}px`, height: `${a.height}px` });
+    },
+
+    composition(e) {
+        const sink = this.sink();
+        if (e.target !== sink) {
+            return;
+        }
+        this.composing = e.type === 'compositionstart';
+        if (this.composing) {
+            this.place();
+        }
+        sink.classList.toggle('mud-ex-ssg-composing', this.composing && !this.readOnly());
+        if (!this.composing) {
+            this.transfer();
+        }
+    },
+
+    sinkInput(e) {
+        if (e.target === this.sink() && !e.isComposing && !this.composing) {
+            this.transfer();
+        }
+    },
+
+    transfer() {
+        const sink = this.sink();
+        const text = sink?.value ?? '';
+        if (sink) {
+            sink.value = '';
+        }
+        if (!text || this.readOnly() || this.isEditing()) {
+            return;
+        }
+        this.startTyping();
+        this.insertText(text);
+    },
+
     async writeClipboard(text, html) {
         try {
             if (html && window.ClipboardItem && navigator.clipboard?.write) {

@@ -7,18 +7,27 @@
      @attributes="UserAttributes"
      class="@($"mud-ex-spreadsheet-grid {Class}".TrimEnd())"
      style="@RootStyle"
-     tabindex="0"
+     tabindex="-1"
      role="grid"
      aria-label="@TryLocalize("Spreadsheet")"
      aria-readonly="@(ReadOnly ? "true" : "false")"
-     aria-rowcount="@_rowExtent"
-     aria-colcount="@_colExtent"
+     aria-multiselectable="true"
+     aria-rowcount="@(_rowExtent + 1)"
+     aria-colcount="@(_colExtent + 1)"
      data-readonly="@(ReadOnly ? "true" : "false")"
      data-zoom="@_zoom.ToString(System.Globalization.CultureInfo.InvariantCulture)"
      data-win="@(_sheet != null ? WindowBounds : null)"
      data-sticky="@(_sheet != null ? StickyBounds : null)"
      @onkeydown="OnKeyDownAsync"
      @onkeydown:stopPropagation="true">
+    <textarea class="mud-ex-ssg-ime"
+              tabindex="0"
+              inputmode="none"
+              spellcheck="false"
+              autocomplete="off"
+              readonly="@ReadOnly"
+              aria-label="@TryLocalize("Spreadsheet")"
+              aria-activedescendant="@(_sheet != null ? ActiveCellId : null)"></textarea>
     @if (_sheet != null)
     {
         <div class="mud-ex-ssg-viewport">
@@ -111,7 +120,9 @@
             }
             @foreach (var m in MergesIn(p))
             {
-                BuildMerge(__builder, m);
+                <div role="row" aria-rowindex="@(m.Top + 2)" @key="m">
+                    @{ BuildMerge(__builder, m); }
+                </div>
             }
             @foreach (var f in FilterHeads(p))
             {
@@ -172,14 +183,16 @@
             }
             @if (p.TopSticky)
             {
-                @for (var c = p.C0; c <= p.C1; c++)
-                {
-                    var col = c;
-                    if (W(col) > 0)
+                <div role="row" aria-rowindex="1">
+                    @for (var c = p.C0; c <= p.C1; c++)
                     {
-                        <div class="@ColumnHeaderClass(col)" style="@ColumnHeaderStyle(col)" data-c="@col" role="columnheader">@CellRef.ColumnName(col)</div>
+                        var col = c;
+                        if (W(col) > 0)
+                        {
+                            <div class="@ColumnHeaderClass(col)" style="@ColumnHeaderStyle(col)" data-c="@col" role="columnheader" aria-colindex="@(col + 2)">@CellRef.ColumnName(col)</div>
+                        }
                     }
-                }
+                </div>
             }
             @if (p.LeftSticky)
             {
@@ -188,7 +201,9 @@
                     var row = r;
                     if (H(row) > 0)
                     {
-                        <div class="@RowHeaderClass(row)" style="@RowHeaderStyle(row)" data-r="@row" role="rowheader">@(row + 1)</div>
+                        <div role="row" aria-rowindex="@(row + 2)">
+                            <div class="@RowHeaderClass(row)" style="@RowHeaderStyle(row)" data-r="@row" role="rowheader" aria-colindex="1">@(row + 1)</div>
+                        </div>
                     }
                 }
             }

@@ -18,22 +18,23 @@ class MudExSpreadsheetGrid {
         this.drag = null;
         this.preview = null;
         this.scrollFrame = 0;
-        this.onScroll = () => this.schedule();
-        this.onKeyDown = e => this.keyDown(e);
-        this.onPointerDown = e => this.pointerDown(e);
         this.onPointerMove = e => this.pointerMove(e);
         this.onPointerUp = e => this.pointerUp(e);
-        this.onHover = e => this.hover(e);
-        this.onDblClick = e => this.dblClick(e);
-        this.onPaste = e => this.paste(e);
-        this.onContextMenu = e => this.contextMenu(e);
+        this.viewportEvents = {
+            scroll: () => this.schedule(), pointerdown: e => this.pointerDown(e), pointermove: e => this.hover(e),
+            dblclick: e => this.dblClick(e), contextmenu: e => this.contextMenu(e)
+        };
+        this.rootEvents = [
+            [root, 'keydown', e => this.keyDown(e)], [root, 'paste', e => this.paste(e)], [root, 'focus', e => this.rootFocus(e)],
+            [root, 'compositionstart', e => this.composition(e)], [root, 'compositionend', e => this.composition(e)], [root, 'input', e => this.sinkInput(e)],
+            [root.closest('.mud-ex-spreadsheet-editor') ?? root, 'keydown', e => this.saveKey(e)]
+        ];
+        this.rootEvents.forEach(([t, type, handler]) => t.addEventListener(type, handler));
         this.resizeObserver = new ResizeObserver(() => this.schedule());
         this.mutations = new MutationObserver(() => {
             this.attachViewport();
             this.schedule();
         });
-        root.addEventListener('keydown', this.onKeyDown);
-        root.addEventListener('paste', this.onPaste);
         this.mutations.observe(root, { attributes: true, attributeFilter: ['data-win'], childList: true });
         this.attachViewport();
         this.schedule();
@@ -49,11 +50,7 @@ class MudExSpreadsheetGrid {
         if (!viewport) {
             return;
         }
-        viewport.addEventListener('scroll', this.onScroll, { passive: true });
-        viewport.addEventListener('pointerdown', this.onPointerDown);
-        viewport.addEventListener('pointermove', this.onHover);
-        viewport.addEventListener('dblclick', this.onDblClick);
-        viewport.addEventListener('contextmenu', this.onContextMenu);
+        Object.entries(this.viewportEvents).forEach(([type, handler]) => viewport.addEventListener(type, handler, { passive: type === 'scroll' }));
         this.resizeObserver.observe(viewport);
         this.bound = true;
     }
@@ -61,11 +58,7 @@ class MudExSpreadsheetGrid {
     detachViewport() {
         const v = this.viewport;
         if (v && this.bound) {
-            v.removeEventListener('scroll', this.onScroll);
-            v.removeEventListener('pointerdown', this.onPointerDown);
-            v.removeEventListener('pointermove', this.onHover);
-            v.removeEventListener('dblclick', this.onDblClick);
-            v.removeEventListener('contextmenu', this.onContextMenu);
+            Object.entries(this.viewportEvents).forEach(([type, handler]) => v.removeEventListener(type, handler));
             this.resizeObserver.unobserve(v);
         }
         this.bound = false;
@@ -130,6 +123,10 @@ class MudExSpreadsheetGrid {
         return this.root.querySelector('textarea.mud-ex-ssg-editor');
     }
 
+    sink() {
+        return this.root?.querySelector('textarea.mud-ex-ssg-ime');
+    }
+
     isEditing() {
         return !!this.editor()?.classList.contains('editing');
     }
@@ -165,8 +162,11 @@ class MudExSpreadsheetGrid {
             return;
         }
         if (!this.isEditing()) {
-            if (e.target !== this.root) {
+            if (e.target !== this.root && e.target !== this.sink()) {
                 return;
+            }
+            if (e.key.length !== 1 && !this.isCommand(e)) {
+                this.place();
             }
             if (this.isPrintable(e) && !this.readOnly()) {
                 this.startTyping();
@@ -263,7 +263,7 @@ class MudExSpreadsheetGrid {
     }
 
     focus() {
-        this.root?.focus({ preventScroll: true });
+        (this.sink() ?? this.root)?.focus({ preventScroll: true });
     }
 
     scrollTo(top, left) {
@@ -360,18 +360,6 @@ class MudExSpreadsheetGrid {
             }
         }
         return null;
-    }
-
-    hover(e) {
-        this.objectHover(e);
-        if (this.drag) {
-            return;
-        }
-        const header = e.target.closest?.(`${COL_HEADER}, ${ROW_HEADER}`);
-        const cols = header?.matches(COL_HEADER);
-        const edge = header && !this.readOnly() && this.resizeTarget(e, cols);
-        this.viewport.classList.toggle('mud-ex-ssg-resize-col', !!edge && cols);
-        this.viewport.classList.toggle('mud-ex-ssg-resize-row', !!edge && !cols);
     }
 
     pointerDown(e) {
@@ -648,58 +636,11 @@ class MudExSpreadsheetGrid {
         }
     }
 
-    async dblClick(e) {
-        if (!this.dotnet) {
-            return;
-        }
-        const t = e.target;
-        if (t.closest('.mud-ex-ssg-assist-host, .mud-ex-ssg-filter, .mud-ex-ssg-dv') || t.closest('textarea.mud-ex-ssg-editor') || this.objectDblClick(e)) {
-            return;
-        }
-        if (t.classList.contains('mud-ex-ssg-fill')) {
-            this.dotnet.invokeMethodAsync('FillHandleDoubleClick').catch(() => {});
-            return;
-        }
-        const header = t.closest(`${COL_HEADER}, ${ROW_HEADER}`);
-        if (header) {
-            const cols = header.matches(COL_HEADER);
-            const edge = !this.readOnly() && this.resizeTarget(e, cols);
-            if (!edge) {
-                return;
-            }
-            if (!cols) {
-                this.dotnet.invokeMethodAsync('AutoFitRow', edge.index).catch(() => {});
-                return;
-            }
-            const candidates = await this.dotnet.invokeMethodAsync('AutoFitColumnCandidates', edge.index).catch(() => null);
-            if (!candidates?.length) {
-                return;
-            }
-            this.dotnet.invokeMethodAsync('ResizeColumn', edge.index, Math.ceil(this.measure(candidates) + 10) * this.zoom()).catch(() => {});
-            return;
-        }
-        const cell = this.cellAt(e.clientX, e.clientY, false);
-        if (cell && !this.readOnly()) {
-            this.dotnet.invokeMethodAsync('OnCellDoubleClick', cell.r, cell.c).catch(() => {});
-        }
-    }
-
-    measure(candidates) {
-        const ctx = (this.canvas ??= document.createElement('canvas')).getContext('2d');
-        let width = 0;
-        for (const [text, font] of candidates) {
-            ctx.font = font;
-            width = Math.max(width, ctx.measureText(text).width);
-        }
-        return width;
-    }
-
     dispose() {
         cancelAnimationFrame(this.frame);
         cancelAnimationFrame(this.scrollFrame);
         this.detachViewport();
-        this.root?.removeEventListener('keydown', this.onKeyDown);
-        this.root?.removeEventListener('paste', this.onPaste);
+        this.rootEvents.forEach(([t, type, handler]) => t.removeEventListener(type, handler));
         this.resizeObserver.disconnect();
         this.mutations.disconnect();
         this.preview?.remove();

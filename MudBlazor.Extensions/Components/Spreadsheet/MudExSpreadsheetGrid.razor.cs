@@ -45,6 +45,7 @@ public partial class MudExSpreadsheetGrid
     private bool _raiseSelection;
     private bool _scrollRequest;
     private double[] _reveal;
+    private readonly string _id = "mud-ex-ssg-" + Guid.NewGuid().ToString("N")[..8];
 
     /// <summary>The workbook to show and edit.</summary>
     [Parameter] public Workbook Workbook { get; set; }
@@ -148,8 +149,10 @@ public partial class MudExSpreadsheetGrid
             _parameterSelection = Selection;
             if (Selection is { Ranges.Count: > 0 } && _sheet != null && !Selection.Equals(_selection))
             {
+                var before = _selection;
                 _selection = Selection;
                 Reveal(_selection.Active);
+                BumpSelection(before);
             }
         }
 
@@ -314,40 +317,6 @@ public partial class MudExSpreadsheetGrid
 
     private int ColumnAt(double canvasX) => _cols.IndexAt(Math.Max(0, (canvasX - HeaderWidth) / _zoom));
 
-    private void Reveal(CellRef cell)
-    {
-        if (_sheet == null) return;
-        if (cell.Row >= _rowExtent - RowBuffer || cell.Column >= _colExtent - ColumnBuffer)
-        {
-            _maxRow = Math.Max(_maxRow, cell.Row);
-            _maxCol = Math.Max(_maxCol, cell.Column);
-            Relayout();
-        }
-
-        var stickyTop = Y(FrozenRows);
-        var stickyLeft = X(FrozenColumns);
-        var range = MergeAt(cell) ?? new CellRange(cell, cell);
-        double x = -1, y = -1;
-        if (range.Top >= FrozenRows)
-        {
-            y = Y(range.Top);
-            var bottom = Y(range.Bottom + 1);
-            if (y - _scrollTop < stickyTop) _scrollTop = Math.Max(0, y - stickyTop);
-            else if (bottom - _scrollTop > _viewHeight) _scrollTop = Math.Min(y - stickyTop, bottom - _viewHeight);
-        }
-
-        if (range.Left >= FrozenColumns)
-        {
-            x = X(range.Left);
-            var right = X(range.Right + 1);
-            if (x - _scrollLeft < stickyLeft) _scrollLeft = Math.Max(0, x - stickyLeft);
-            else if (right - _scrollLeft > _viewWidth) _scrollLeft = Math.Min(x - stickyLeft, right - _viewWidth);
-        }
-
-        UpdateWindow();
-        _reveal = [x, y, X(range.Right + 1) - X(range.Left), Y(range.Bottom + 1) - Y(range.Top), stickyLeft, stickyTop];
-    }
-
     private void OnWorkbookChanged(object sender, WorkbookChangedEventArgs e)
     {
         if (_sheet == null) return;
@@ -463,6 +432,8 @@ public partial class MudExSpreadsheetGrid
     }
 
     private int PaneOf(CellRef cell) => (cell.Row < FrozenRows ? 2 : 0) + (cell.Column < FrozenColumns ? 1 : 0);
+
+    private string ActiveCellId => $"{_id}-{ActiveCell.Row}-{ActiveCell.Column}";
 
     private string RootStyle => $"--mud-ex-ssg-zoom:{_zoom.ToString(CultureInfo.InvariantCulture)};{Style}";
 
@@ -583,6 +554,10 @@ public partial class MudExSpreadsheetGrid
         var y = Y(row);
         var h = Y(row + 1) - y;
         if (h <= 0) return;
+        var active = ActiveCell;
+        b.OpenElement(20, "div");
+        b.AddAttribute(21, "role", "row");
+        b.AddAttribute(22, "aria-rowindex", row + 2);
         for (var c = c0; c <= c1; c++)
         {
             var at = new CellRef(row, c);
@@ -592,7 +567,7 @@ public partial class MudExSpreadsheetGrid
             var cell = _sheet[at];
             var content = cell?.HasContent == true;
             var look = LookAt(at, _sheet.EffectiveStyleId(at), out var cf);
-            if (!content && look.Box.Length == 0 && cf == null && NoteAt(at) == null) continue;
+            if (!content && look.Box.Length == 0 && cf == null && NoteAt(at) == null && at != active) continue;
             double extendLeft = 0, extendRight = 0;
             if (content && cell.Value.Kind == CellValueKind.Text && !look.Wrap)
             {
@@ -604,6 +579,8 @@ public partial class MudExSpreadsheetGrid
 
             BuildCell(b, c, at, x, y, w, h, extendLeft, extendRight, false, look, cf);
         }
+
+        b.CloseElement();
     }
 
     private bool IsFree(int row, int col)
@@ -658,6 +635,12 @@ public partial class MudExSpreadsheetGrid
         b.AddAttribute(3, "data-c", at.Column);
         b.AddAttribute(4, "style", $"left:{Px(x - 1)};top:{Px(y - 1)};width:{Px(w + 1)};height:{Px(h + 1)};{look.Box}{ConditionalBox(cf)}{look.Text}{(color != null ? "color:" + color + ";" : "")}");
         if (link?.IsSafe == true) b.AddAttribute(10, "title", link.Tooltip ?? TryLocalize("Ctrl+click to follow the link."));
+        if (link?.IsSafe == true && !string.IsNullOrEmpty(link.Target))
+            b.AddAttribute(13, "data-href", string.IsNullOrEmpty(link.Location) ? link.Target : link.Target + "#" + link.Location);
+        b.AddAttribute(14, "role", "gridcell");
+        b.AddAttribute(15, "aria-colindex", at.Column + 2);
+        if (_selection.Contains(at)) b.AddAttribute(16, "aria-selected", "true");
+        if (at == ActiveCell) b.AddAttribute(17, "id", ActiveCellId);
         if (note != null)
         {
             b.OpenElement(11, "span");

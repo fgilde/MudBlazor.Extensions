@@ -293,12 +293,62 @@ public partial class MudExSpreadsheetGrid
     private async Task SelectAsync(SpreadsheetSelection sel, CellRef? reveal = null)
     {
         var changed = !sel.Equals(_selection);
+        var before = _selection;
         _selectedChart = null;
         _selection = sel;
         Selection = sel;
         Reveal(reveal ?? sel.Active);
+        if (changed) BumpSelection(before);
         NotifyEdit();
         if (changed) await SelectionChanged.InvokeAsync(sel);
+    }
+
+    private void Reveal(CellRef cell)
+    {
+        if (_sheet == null) return;
+        if (cell.Row >= _rowExtent - RowBuffer || cell.Column >= _colExtent - ColumnBuffer)
+        {
+            _maxRow = Math.Max(_maxRow, cell.Row);
+            _maxCol = Math.Max(_maxCol, cell.Column);
+            Relayout();
+        }
+
+        var stickyTop = Y(FrozenRows);
+        var stickyLeft = X(FrozenColumns);
+        var range = MergeAt(cell) ?? new CellRange(cell, cell);
+        double x = -1, y = -1;
+        if (range.Top >= FrozenRows)
+        {
+            y = Y(range.Top);
+            var bottom = Y(range.Bottom + 1);
+            if (y - _scrollTop < stickyTop) _scrollTop = Math.Max(0, y - stickyTop);
+            else if (bottom - _scrollTop > _viewHeight) _scrollTop = Math.Min(y - stickyTop, bottom - _viewHeight);
+        }
+
+        if (range.Left >= FrozenColumns)
+        {
+            x = X(range.Left);
+            var right = X(range.Right + 1);
+            if (x - _scrollLeft < stickyLeft) _scrollLeft = Math.Max(0, x - stickyLeft);
+            else if (right - _scrollLeft > _viewWidth) _scrollLeft = Math.Min(x - stickyLeft, right - _viewWidth);
+        }
+
+        UpdateWindow();
+        _reveal = [x, y, X(range.Right + 1) - X(range.Left), Y(range.Bottom + 1) - Y(range.Top), stickyLeft, stickyTop];
+    }
+
+    private void BumpSelection(SpreadsheetSelection before)
+    {
+        foreach (var sel in new[] { before, _selection })
+        {
+            Bump(sel.Active.Row);
+            foreach (var r in sel.Ranges)
+            {
+                var n = r.Normalized;
+                for (var row = n.Top; row <= Math.Min(n.Bottom, FrozenRows - 1); row++) Bump(row);
+                for (var row = Math.Max(n.Top, _firstRow); row <= Math.Min(n.Bottom, _lastRow); row++) Bump(row);
+            }
+        }
     }
 
     private Task SelectCellAsync(CellRef cell)

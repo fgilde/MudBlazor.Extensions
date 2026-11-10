@@ -1,4 +1,5 @@
 using System.Globalization;
+using AngleSharp.Dom;
 using Bunit;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -286,6 +287,39 @@ public class SpreadsheetGridTests : IAsyncLifetime
         Assert.Equal("SUM(A1:A10)", ws[R("C11")].Formula);
         Assert.Equal(55, ws[R("C11")].Value.NumberValue);
         Assert.False(ws[R("A11")]?.HasContent == true);
+    }
+
+    [Fact]
+    public void Grid_AriaRolesAndIndices()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(1)));
+        wb.Execute(new SetValueCommand(ws, R("B2"), CellValue.Number(2)));
+        var cut = Render(wb);
+
+        var root = cut.Find(".mud-ex-spreadsheet-grid");
+        Assert.Equal("grid", root.GetAttribute("role"));
+        Assert.Equal("true", root.GetAttribute("aria-multiselectable"));
+        var header = cut.FindAll("[role=columnheader]").First(h => h.TextContent == "B");
+        Assert.Equal("3", header.GetAttribute("aria-colindex"));
+        Assert.Equal("1", header.ParentElement.GetAttribute("aria-rowindex"));
+        var rowHeader = cut.FindAll("[role=rowheader]").First(h => h.TextContent == "2");
+        Assert.Equal("row", rowHeader.ParentElement.GetAttribute("role"));
+        Assert.Equal("3", rowHeader.ParentElement.GetAttribute("aria-rowindex"));
+
+        IElement Active() => cut.Find("#" + cut.Find(".mud-ex-ssg-ime").GetAttribute("aria-activedescendant"));
+        var a1 = Active();
+        Assert.Equal(("gridcell", "2", "true"), (a1.GetAttribute("role"), a1.GetAttribute("aria-colindex"), a1.GetAttribute("aria-selected")));
+        Assert.Equal(("row", "2"), (a1.ParentElement.GetAttribute("role"), a1.ParentElement.GetAttribute("aria-rowindex")));
+
+        Key(cut, "ArrowDown");
+        Key(cut, "ArrowRight", shift: true);
+        cut.WaitForAssertion(() => Assert.Equal(("1", "0"), (Active().GetAttribute("data-r"), Active().GetAttribute("data-c"))));
+        Assert.Equal("3", Active().ParentElement.GetAttribute("aria-rowindex"));
+        var b2 = cut.Find(".mud-ex-ssg-cell[data-r='1'][data-c='1']");
+        Assert.Equal(("3", "true"), (b2.GetAttribute("aria-colindex"), b2.GetAttribute("aria-selected")));
+        Assert.Null(cut.Find(".mud-ex-ssg-cell[data-r='0'][data-c='0']").GetAttribute("aria-selected"));
     }
 
     [Fact]
