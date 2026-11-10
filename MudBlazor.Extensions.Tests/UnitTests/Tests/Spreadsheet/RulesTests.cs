@@ -522,6 +522,23 @@ public class RulesTests
     }
 
     [Fact]
+    public void DifferentialBorder_EmptySidesAreUnset()
+    {
+        const string styles = "<dxfs count=\"1\"><dxf><border><left/><right/><top/><bottom style=\"thin\"/></border></dxf></dxfs>";
+        var wb = XlsxReader.Read(new MemoryStream(XlsxReadTests.Package([XlsxReadTests.Sheet("")], styles: styles)));
+        var dxf = wb.Styles.DifferentialStyles[0];
+        var left = new CellBorderSide { Style = CellBorderStyle.Medium };
+        var applied = dxf.ApplyTo(new CellStyle { Border = new CellBorder { Left = left } });
+        Assert.Equal(left, applied.Border.Left);
+        Assert.Equal(CellBorderStyle.Thin, applied.Border.Bottom.Style);
+
+        var none = new DifferentialStyle(Border: new DifferentialBorder { Left = new CellBorderSide { Style = CellBorderStyle.None } });
+        var ws = wb.Sheets[0];
+        wb.Execute(new AddConditionalFormattingCommand(ws, new ConditionalFormatting([G("A1")], [new ConditionalRule.Expression("TRUE", none)])));
+        Assert.Contains(none, XlsxReader.Read(new MemoryStream(Write(wb))).Styles.DifferentialStyles);
+    }
+
+    [Fact]
     public void Validation_AnyNeverRejects()
     {
         var (wb, ws) = Column(1);

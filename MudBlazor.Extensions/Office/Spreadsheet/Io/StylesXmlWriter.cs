@@ -78,8 +78,8 @@ internal sealed class StylesXmlWriter
                 : new XElement(_ns + "numFmt", new XAttribute("numFmtId", NumFmt(style.NumberFormat)), new XAttribute("formatCode", style.NumberFormat)),
             style.Fill == null ? null : new XElement(_ns + "fill", new XElement(_ns + "patternFill",
                 style.Fill.Color == null ? new XAttribute("patternType", "none") : new XElement(_ns + "bgColor", Rgb(style.Fill.Color)))),
-            border == null ? null : new XElement(_ns + "border", Side("left", border.Left), Side("right", border.Right), Side("top", border.Top),
-                Side("bottom", border.Bottom))));
+            border == null ? null : new XElement(_ns + "border", Side("left", border.Left, true), Side("right", border.Right, true), Side("top", border.Top, true),
+                Side("bottom", border.Bottom, true))));
         _addedDxfs[style] = id;
         Changed = true;
         return id;
@@ -158,8 +158,8 @@ internal sealed class StylesXmlWriter
         f.Color == null ? null : new XElement(_ns + "color", Rgb(f.Color)),
         new XElement(_ns + "name", new XAttribute("val", f.Name ?? "Calibri")));
 
-    private XElement Side(string name, CellBorderSide side) => side == null ? null : new(_ns + name,
-        side.Style == CellBorderStyle.None ? null : new XAttribute("style", side.Style.ToString().ToLowerInvariant()),
+    private XElement Side(string name, CellBorderSide side, bool explicitNone = false) => side == null ? null : new(_ns + name,
+        side.Style == CellBorderStyle.None && !explicitNone ? null : new XAttribute("style", side.Style.ToString().ToLowerInvariant()),
         side.Style == CellBorderStyle.None || side.Color == null ? null : new XElement(_ns + "color", Rgb(side.Color)));
 
     private XElement Border(CellBorder b) =>

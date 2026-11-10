@@ -54,7 +54,7 @@ internal static class StylesXmlReader
             : new CellFill { Color = ThemeColors.Resolve(Child(pattern, "bgColor") ?? Child(pattern, "fgColor"), theme, indexed) };
         var numFmt = Child(dxf, "numFmt");
         var border = Child(dxf, "border");
-        CellBorderSide Side(string name) => BorderSide(border, name) is { } side ? ReadSide(side, theme, indexed) : null;
+        CellBorderSide Side(string name) => BorderSide(border, name) is { } side && side.Attribute("style") != null ? ReadSide(side, theme, indexed) : null;
         return new DifferentialStyle(Child(dxf, "font") is { } font ? ReadDxfFont(font, theme, indexed) : null, fill,
             border == null ? null : new DifferentialBorder { Left = Side("left"), Right = Side("right"), Top = Side("top"), Bottom = Side("bottom") },
             numFmt == null ? null : (string)numFmt.Attribute("formatCode") ?? formats.GetValueOrDefault(Int(numFmt, "numFmtId"))
