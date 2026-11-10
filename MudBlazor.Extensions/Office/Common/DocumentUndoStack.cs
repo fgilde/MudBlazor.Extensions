@@ -5,17 +5,17 @@ namespace MudBlazor.Extensions.Office;
 public sealed class DocumentUndoStack<TDocument>
 {
     private readonly TDocument _document;
-    private readonly Action<TDocument> _onTransactionEnd;
+    private readonly Action<TDocument> _onStepEnd;
     private readonly List<IDocumentCommand<TDocument>> _undo = new();
     private readonly List<IDocumentCommand<TDocument>> _redo = new();
     private List<IDocumentCommand<TDocument>> _transaction;
     private string _transactionDescription;
     private int _transactionDepth;
 
-    internal DocumentUndoStack(TDocument document, Action<TDocument> onTransactionEnd = null)
+    internal DocumentUndoStack(TDocument document, Action<TDocument> onStepEnd = null)
     {
         _document = document;
-        _onTransactionEnd = onTransactionEnd;
+        _onStepEnd = onStepEnd;
     }
 
     /// <summary>Maximum number of undo steps kept; the oldest are dropped first.</summary>
@@ -43,6 +43,7 @@ public sealed class DocumentUndoStack<TDocument>
         command.Revert(_document);
         _undo.RemoveAt(_undo.Count - 1);
         _redo.Add(command);
+        _onStepEnd?.Invoke(_document);
     }
 
     /// <summary>Redoes the latest undone step.</summary>
@@ -53,6 +54,7 @@ public sealed class DocumentUndoStack<TDocument>
         command.Apply(_document);
         _redo.RemoveAt(_redo.Count - 1);
         _undo.Add(command);
+        _onStepEnd?.Invoke(_document);
     }
 
     /// <summary>Drops the whole history, for example after loading a file.</summary>
@@ -99,7 +101,7 @@ public sealed class DocumentUndoStack<TDocument>
         _transaction = null;
         if (commands.Count == 0) return;
         Record(new CompositeCommand(_transactionDescription, commands));
-        _onTransactionEnd?.Invoke(_document);
+        _onStepEnd?.Invoke(_document);
     }
 
     private sealed class Scope(DocumentUndoStack<TDocument> owner) : IDisposable

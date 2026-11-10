@@ -31264,6 +31264,342 @@
             <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
             <returns>The free part name.</returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ZOrderChange">
+            <summary>A change of the z-order of shapes.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ZOrderChange.BringToFront">
+            <summary>Moves the shapes to the top.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ZOrderChange.BringForward">
+            <summary>Moves the shapes one step up.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ZOrderChange.SendBackward">
+            <summary>Moves the shapes one step down.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ZOrderChange.SendToBack">
+            <summary>Moves the shapes to the bottom.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetTransformsCommand">
+            <summary>Moves, resizes, rotates or flips shapes. Placeholders that inherit their position get an explicit transform.</summary>
+            <param name="slide">The slide.</param>
+            <param name="absolute">The new transforms in slide coordinates by shape id; children of groups are converted to their group's child coordinates.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTransformsCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyDictionary{System.UInt32,MudBlazor.Extensions.Office.Presentation.ShapeTransform})">
+            <summary>Moves, resizes, rotates or flips shapes. Placeholders that inherit their position get an explicit transform.</summary>
+            <param name="slide">The slide.</param>
+            <param name="absolute">The new transforms in slide coordinates by shape id; children of groups are converted to their group's child coordinates.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetTransformsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTransformsCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTransformsCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetShapeStyleCommand">
+            <summary>Sets the fill and outline of shapes. Shapes other than <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/> are left as they are.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="fill">The new fill, or null to keep it.</param>
+            <param name="line">The new outline, or null to keep it.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetShapeStyleCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},MudBlazor.Extensions.Office.Presentation.ShapeFill,MudBlazor.Extensions.Office.Presentation.ShapeLine)">
+            <summary>Sets the fill and outline of shapes. Shapes other than <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/> are left as they are.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="fill">The new fill, or null to keep it.</param>
+            <param name="line">The new outline, or null to keep it.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetShapeStyleCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetShapeStyleCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetShapeStyleCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetGeometryCommand">
+            <summary>Changes the preset geometry of a shape; adjust values are reset when the geometry changes.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shape">The id of an <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/>.</param>
+            <param name="preset">A preset name from <see cref="P:MudBlazor.Extensions.Office.Presentation.PresetGeometry.Supported"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetGeometryCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.String)">
+            <summary>Changes the preset geometry of a shape; adjust values are reset when the geometry changes.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shape">The id of an <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/>.</param>
+            <param name="preset">A preset name from <see cref="P:MudBlazor.Extensions.Office.Presentation.PresetGeometry.Supported"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetGeometryCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetGeometryCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetGeometryCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand">
+            <summary>
+            Adds a shape on top of the others or at a position. The shape and its children get new ids that are unique on the slide.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="shape">A new top-level shape.</param>
+            <param name="index">The z-order position, or null for the top.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,MudBlazor.Extensions.Office.Presentation.SlideShape,System.Nullable{System.Int32})">
+            <summary>
+            Adds a shape on top of the others or at a position. The shape and its children get new ids that are unique on the slide.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="shape">A new top-level shape.</param>
+            <param name="index">The z-order position, or null for the top.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.InsertPictureCommand">
+            <summary>Adds a picture on top of the other shapes. The image is stored as a new media part when the presentation is saved.</summary>
+            <param name="slide">The slide.</param>
+            <param name="image">The image bytes.</param>
+            <param name="contentType">The image content type, for example <c>image/png</c>.</param>
+            <param name="transform">The position and size in slide coordinates.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertPictureCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Byte[],System.String,MudBlazor.Extensions.Office.Presentation.ShapeTransform)">
+            <summary>Adds a picture on top of the other shapes. The image is stored as a new media part when the presentation is saved.</summary>
+            <param name="slide">The slide.</param>
+            <param name="image">The image bytes.</param>
+            <param name="contentType">The image content type, for example <c>image/png</c>.</param>
+            <param name="transform">The position and size in slide coordinates.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.InsertPictureCommand.Picture">
+            <summary>The created picture, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.InsertPictureCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertPictureCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertPictureCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.DeleteShapesCommand">
+            <summary>Deletes shapes, including shapes inside groups.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32})">
+            <summary>Deletes shapes, including shapes inside groups.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.DeleteShapesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteShapesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteShapesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.DuplicateShapesCommand">
+            <summary>Copies shapes, moved by an offset, on top of their group or slide.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="offset">The offset in EMU, applied to X and Y in slide coordinates.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DuplicateShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},System.Int64)">
+            <summary>Copies shapes, moved by an offset, on top of their group or slide.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="offset">The offset in EMU, applied to X and Y in slide coordinates.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.DuplicateShapesCommand.Copies">
+            <summary>The copies in z-order, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.DuplicateShapesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DuplicateShapesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DuplicateShapesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ReorderShapesCommand">
+            <summary>Changes the z-order of shapes within their group or slide; selected shapes move as a block and keep their relative order.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="change">The change.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ReorderShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},MudBlazor.Extensions.Office.Presentation.ZOrderChange)">
+            <summary>Changes the z-order of shapes within their group or slide; selected shapes move as a block and keep their relative order.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="change">The change.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ReorderShapesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ReorderShapesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ReorderShapesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.AddSlideCommand">
+            <summary>Adds a slide based on a layout. The slide gets the layout's placeholders as empty shapes; date, footer and slide number are left out.</summary>
+            <param name="index">The position of the new slide, from 0 to the slide count.</param>
+            <param name="layout">The layout.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AddSlideCommand.#ctor(System.Int32,MudBlazor.Extensions.Office.Presentation.SlideLayout)">
+            <summary>Adds a slide based on a layout. The slide gets the layout's placeholders as empty shapes; date, footer and slide number are left out.</summary>
+            <param name="index">The position of the new slide, from 0 to the slide count.</param>
+            <param name="layout">The layout.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AddSlideCommand.Slide">
+            <summary>The created slide, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AddSlideCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AddSlideCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AddSlideCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.DuplicateSlidesCommand">
+            <summary>Copies slides; the copies are inserted as a block after the last of them, in show order.</summary>
+            <param name="slides">The slides.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DuplicateSlidesCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide})">
+            <summary>Copies slides; the copies are inserted as a block after the last of them, in show order.</summary>
+            <param name="slides">The slides.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.DuplicateSlidesCommand.Copies">
+            <summary>The copies in show order, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.DuplicateSlidesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DuplicateSlidesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DuplicateSlidesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.DeleteSlidesCommand">
+            <summary>Deletes slides. Deleting every slide is allowed.</summary>
+            <param name="slides">The slides.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteSlidesCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide})">
+            <summary>Deletes slides. Deleting every slide is allowed.</summary>
+            <param name="slides">The slides.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.DeleteSlidesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteSlidesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteSlidesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.MoveSlidesCommand">
+            <summary>Moves slides as a block to a new position; they keep their relative show order.</summary>
+            <param name="slides">The slides.</param>
+            <param name="targetIndex">The position in the current slide list before which the slides are placed, from 0 to the slide count.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MoveSlidesCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide},System.Int32)">
+            <summary>Moves slides as a block to a new position; they keep their relative show order.</summary>
+            <param name="slides">The slides.</param>
+            <param name="targetIndex">The position in the current slide list before which the slides are placed, from 0 to the slide count.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.MoveSlidesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MoveSlidesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MoveSlidesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetSlideHiddenCommand">
+            <summary>Hides slides in the slide show or shows them again.</summary>
+            <param name="slides">The slides.</param>
+            <param name="hidden">True to hide the slides.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetSlideHiddenCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide},System.Boolean)">
+            <summary>Hides slides in the slide show or shows them again.</summary>
+            <param name="slides">The slides.</param>
+            <param name="hidden">True to hide the slides.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetSlideHiddenCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetSlideHiddenCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetSlideHiddenCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetNotesCommand">
+            <summary>Sets the speaker notes of a slide. A slide without notes gets a notes slide when the presentation is saved, which needs a notes master.</summary>
+            <param name="slide">The slide.</param>
+            <param name="text">The notes, paragraphs separated by newlines.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetNotesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.String)">
+            <summary>Sets the speaker notes of a slide. A slide without notes gets a notes slide when the presentation is saved, which needs a notes master.</summary>
+            <param name="slide">The slide.</param>
+            <param name="text">The notes, paragraphs separated by newlines.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetNotesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetNotesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetNotesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetTextCommand">
+            <summary>
+            Replaces the text of a shape. Build the body with <c>with</c> from the current one and keep unchanged paragraphs and runs, so their
+            formatting stays exactly as in the file.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="shape">The id of an <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/>.</param>
+            <param name="body">The new text.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTextCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,MudBlazor.Extensions.Office.Presentation.TextBody)">
+            <summary>
+            Replaces the text of a shape. Build the body with <c>with</c> from the current one and keep unchanged paragraphs and runs, so their
+            formatting stays exactly as in the file.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="shape">The id of an <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/>.</param>
+            <param name="body">The new text.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetTextCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTextCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTextCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PresetGeometry">
             <summary>PowerPoint preset shapes (<c>a:prstGeom</c>) as SVG path data.</summary>
         </member>
@@ -31410,7 +31746,7 @@
             <summary>True if a slide contains content the editor keeps but does not model, such as charts, SmartArt, tables or media.</summary>
         </member>
         <member name="E:MudBlazor.Extensions.Office.Presentation.Presentation.Changed">
-            <summary>Raised once after each command or transaction with everything that changed.</summary>
+            <summary>Raised once after each command, transaction, undo or redo with everything that changed.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.Load(System.IO.Stream)">
             <summary>Reads a .pptx file.</summary>

@@ -46,6 +46,14 @@ public abstract class SlideShape
 
     internal XElement Source { get; set; }
 
+    internal virtual SlideShape Clone(GroupShape parent)
+    {
+        var copy = (SlideShape)MemberwiseClone();
+        copy.Parent = parent;
+        copy.Source = Source == null ? null : new XElement(Source);
+        return copy;
+    }
+
     internal static IEnumerable<SlideShape> Flatten(IEnumerable<SlideShape> shapes) =>
         shapes.SelectMany(s => s is GroupShape g ? Flatten(g.Children).Prepend(s) : new[] { s });
 }

@@ -29,7 +29,7 @@ public sealed class Presentation
     /// <summary>True if a slide contains content the editor keeps but does not model, such as charts, SmartArt, tables or media.</summary>
     public bool HasOpaqueContent => SlideList.Any(s => SlideShape.Flatten(s.Shapes).Any(shape => shape is OpaqueShape));
 
-    /// <summary>Raised once after each command or transaction with everything that changed.</summary>
+    /// <summary>Raised once after each command, transaction, undo or redo with everything that changed.</summary>
     public event EventHandler<PresentationChangedEventArgs> Changed;
 
     internal List<Slide> SlideList { get; } = [];
@@ -39,6 +39,8 @@ public sealed class Presentation
     internal List<SlideLayout> LayoutList { get; } = [];
 
     internal PptxPackage Package { get; set; }
+
+    internal Dictionary<string, (byte[] Data, string ContentType)> PendingMedia { get; } = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Reads a .pptx file.</summary>
     /// <param name="stream">The file content.</param>

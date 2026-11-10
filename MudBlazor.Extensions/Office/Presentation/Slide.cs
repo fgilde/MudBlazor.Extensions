@@ -32,4 +32,6 @@ public sealed class Slide
     public int Version { get; internal set; }
 
     internal List<SlideShape> ShapeList { get; } = [];
+
+    internal Slide CopyOf { get; init; }
 }
