@@ -51,6 +51,9 @@ internal sealed class XlsxSheetPart
     /// <summary>Relationship ids of table parts the model could not read; they stay in <c>tableParts</c> and are copied unchanged.</summary>
     public List<string> OpaqueTableParts { get; } = [];
 
+    /// <summary>Hyperlinks whose <c>ref</c> cannot be parsed; they are written back unchanged after the modelled links.</summary>
+    public List<XElement> OpaqueLinks { get; } = [];
+
     /// <summary>Zip entry name of the legacy comments part holding the notes, or null.</summary>
     public string CommentsPart { get; set; }
 

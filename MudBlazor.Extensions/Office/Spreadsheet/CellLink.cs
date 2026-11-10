@@ -1,3 +1,4 @@
+using System.Net;
 using System.Xml.Linq;
 
 namespace MudBlazor.Extensions.Office.Spreadsheet;
@@ -16,11 +17,11 @@ public sealed record CellLink(CellRef Cell, string Target, string Location, stri
     private static readonly string[] SafeSchemes = ["http", "https", "mailto"];
 
     /// <summary>
-    /// True if the link may be followed when clicked: a location inside the workbook, or an absolute <c>http</c>, <c>https</c> or
-    /// <c>mailto</c> target. Any other target (<c>file</c>, relative paths, <c>javascript</c> …) should only be shown as text.
+    /// True if the link may be followed when clicked: a location inside the workbook that is not a URI with a scheme, or an absolute
+    /// <c>http</c>, <c>https</c> or <c>mailto</c> target. Any other target (<c>file</c>, relative paths, <c>javascript</c> …) should only be shown as text.
     /// </summary>
     public bool IsSafe => string.IsNullOrEmpty(Target)
-        ? !string.IsNullOrEmpty(Location)
+        ? !string.IsNullOrEmpty(Location) && (CellRange.TryParse(Location, out _) || !Uri.TryCreate(WebUtility.HtmlDecode(Location), UriKind.Absolute, out _))
         : Uri.TryCreate(Target, UriKind.Absolute, out var uri) && SafeSchemes.Contains(uri.Scheme);
 
     internal XElement Source { get; init; }

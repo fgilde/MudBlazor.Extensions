@@ -102,8 +102,16 @@ public sealed class Worksheet
     /// <summary>Tables on this sheet; change them with the table commands.</summary>
     public IReadOnlyList<SheetTable> Tables { get; internal set; } = [];
 
-    /// <summary>Hyperlinks on this sheet; change them with <see cref="SetLinkCommand"/> and <see cref="RemoveLinkCommand"/>.</summary>
+    /// <summary>
+    /// Hyperlinks on this sheet in file order; change them with <see cref="SetLinkCommand"/> and <see cref="RemoveLinkCommand"/>. Links may overlap,
+    /// then the later one applies to the shared cells (see <see cref="LinkAt"/>).
+    /// </summary>
     public IReadOnlyList<CellLink> Links { get; internal set; } = [];
+
+    /// <summary>Finds the hyperlink that applies to a cell: the last link covering it.</summary>
+    /// <param name="cell">The cell.</param>
+    /// <returns>The link, or null.</returns>
+    public CellLink LinkAt(CellRef cell) => Links.LastOrDefault(l => l.Area.Contains(cell.Relative));
 
     /// <summary>Notes on this sheet; change them with <see cref="SetNoteCommand"/> and <see cref="RemoveNoteCommand"/>.</summary>
     public IReadOnlyList<CellNote> Notes { get; internal set; } = [];

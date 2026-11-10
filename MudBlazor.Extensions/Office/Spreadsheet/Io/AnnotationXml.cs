@@ -21,13 +21,17 @@ internal static class AnnotationXml
     private static readonly Regex AnchorTag = new(@"(?<=<x:Anchor>)[^<]*(?=</x:Anchor>)", Options);
     private static readonly Regex Digits = new(@"\d+", Options);
     private static readonly Regex ShapeId = new(@"\bid\s*=\s*[""']_x0000_s(\d+)", Options);
+    private static readonly Regex NoteShapeType = new(@"<v:shapetype\b[^>]*\bid\s*=\s*[""']_x0000_t202[""']", Options);
+    private static readonly Regex FirstShape = new(@"<v:shape\b", Options);
     private static readonly Regex IdMap = new(@"<o:idmap\b[^>]*\bdata\s*=\s*[""']([^""']*)", Options);
 
     internal static void Read(ZipArchive zip, XlsxSheetPart part, Worksheet ws)
     {
         if (part.PartName == null) return;
         var rels = ReadRelationships(zip, part.PartName);
-        ws.Links = SheetChild(part, "hyperlinks")?.Elements().Where(e => e.Name.LocalName == "hyperlink").Select(e => Link(e, rels)).OfType<CellLink>().ToList() ?? [];
+        var hyperlinks = SheetChild(part, "hyperlinks")?.Elements().Where(e => e.Name.LocalName == "hyperlink").ToList() ?? [];
+        ws.Links = hyperlinks.Select(e => Link(e, rels)).OfType<CellLink>().ToList();
+        part.OpaqueLinks.AddRange(hyperlinks.Where(e => !CellRange.TryParse((string)e.Attribute("ref"), out _)));
         ws.NotesReadOnly = rels.Any(r => IsType(r, "threadedComment"));
 
         var shapes = new Dictionary<long, string>();
@@ -36,7 +40,7 @@ internal static class AnnotationXml
         {
             part.VmlPart = vml.FullName;
             part.VmlRelationshipId = legacyId;
-            using (var reader = new StreamReader(vml.Open(), Encoding.Latin1)) part.VmlText = reader.ReadToEnd();
+            using (var s = vml.Open()) part.VmlText = ReadVml(s);
             var notes = ShapeBlock.Matches(part.VmlText).Select(m => m.Value).Where(v => NoteType.IsMatch(v)).ToList();
             foreach (var shape in notes)
                 if (ShapeCell(shape) is { } cell)
@@ -58,9 +62,15 @@ internal static class AnnotationXml
         part.OriginalNotes = ws.Notes;
     }
 
-    internal static XElement WriteLinks(XElement original, IReadOnlyList<CellLink> links, XNamespace ns, Func<CellLink, string> relationship)
+    internal static string ReadVml(Stream stream)
     {
-        if (links.Count == 0) return null;
+        using var reader = new StreamReader(stream, Encoding.Latin1, detectEncodingFromByteOrderMarks: false);
+        return reader.ReadToEnd();
+    }
+
+    internal static XElement WriteLinks(XElement original, IReadOnlyList<CellLink> links, IReadOnlyList<XElement> opaque, XNamespace ns, Func<CellLink, string> relationship)
+    {
+        if (links.Count == 0 && opaque.Count == 0) return null;
         var e = original != null ? new XElement(original.Name, original.Attributes()) : new XElement(ns + "hyperlinks");
         foreach (var link in links)
         {
@@ -81,6 +91,7 @@ internal static class AnnotationXml
             e.Add(h);
         }
 
+        e.Add(opaque);
         return e;
     }
 
@@ -136,15 +147,18 @@ internal static class AnnotationXml
         {
             var id = ShapeId.Matches(text).Select(m => int.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture)).DefaultIfEmpty(1024 * Drawings(text).DefaultIfEmpty(1).Min()).Max();
             var shapes = string.Concat(added.Select(n => NewShape(n.Cell, ++id)));
-            if (!text.Contains("_x0000_t202", StringComparison.Ordinal)) shapes = ShapeType + shapes;
             var end = text.LastIndexOf("</xml>", StringComparison.OrdinalIgnoreCase);
             text = end < 0 ? text + shapes : text.Insert(end, shapes);
+            if (!NoteShapeType.IsMatch(text)) text = text.Insert(FirstShape.Match(text).Index, ShapeType);
         }
 
         return ClientData.IsMatch(text) || ShapeBlock.IsMatch(text) ? text : null;
     }
 
     internal static int MaxDrawing(string vml) => Drawings(vml).DefaultIfEmpty(0).Max();
+
+    internal static string RelationshipId(XElement e) =>
+        (string)e?.Attributes().FirstOrDefault(a => a.Name.LocalName == "id" && a.Name.Namespace != XNamespace.None);
 
     private static IEnumerable<int> Drawings(string vml) =>
         IdMap.Matches(vml).SelectMany(m => Digits.Matches(m.Groups[1].Value)).Select(d => int.TryParse(d.Value, CultureInfo.InvariantCulture, out var n) ? n : 0);
@@ -221,9 +235,6 @@ internal static class AnnotationXml
         rel == null || rel.External ? null : Find(zip, ResolveTarget(part.PartName, rel.Target));
 
     private static XElement SheetChild(XlsxSheetPart part, string name) => part.Children.FirstOrDefault(c => c.Name.LocalName == name);
-
-    private static string RelationshipId(XElement e) =>
-        (string)e?.Attributes().FirstOrDefault(a => a.Name.LocalName == "id" && a.Name.Namespace != XNamespace.None);
 
     private static string Empty(string s) => string.IsNullOrEmpty(s) ? null : s;
 

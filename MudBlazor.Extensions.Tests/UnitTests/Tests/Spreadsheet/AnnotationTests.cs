@@ -281,7 +281,103 @@ public class AnnotationTests
         foreach (var unsafeTarget in (string[])["javascript:alert(1)", "JavaScript:alert(1)", " javascript:alert(1)", "java\tscript:alert(1)", "vbscript:x",
                      "data:text/html,<script>alert(1)</script>", "file:///C:/Windows/System32/calc.exe", "\\\\server\\share\\x.exe", "other.xlsx", ""])
             Assert.False(Ext(unsafeTarget).IsSafe, unsafeTarget);
-        Assert.True(new CellLink(new CellRef(0, 0), null, "Sheet2!A1", null, null).IsSafe);
+        Assert.False(Ext("&#106;avascript:alert(1)").IsSafe);
+        static CellLink Internal(string location) => new(new CellRef(0, 0), null, location, null, null);
+        foreach (var safe in (string[])["Sheet2!A1", "'My Sheet'!A1:B2", "A1:B2", "AB:AC", "1:3", "XFD1:XFD2", "MyName", "'R&D'!C3"])
+            Assert.True(Internal(safe).IsSafe, safe);
+        foreach (var unsafeLocation in (string[])["javascript:alert(1)", "JaVaScRiPt:alert(1)", " javascript:alert(1)", "&#106;avascript:alert(1)",
+                     "&#x6A;avascript:alert(1)", "https://example.com", "C:\\Windows\\calc.exe"])
+            Assert.False(Internal(unsafeLocation).IsSafe, unsafeLocation);
+    }
+
+    [Fact]
+    public void Link_InsideRangedLink_KeepsRangeAndWins()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetLinkCommand(ws, new CellLink(R("A1"), "https://range.example/", null, null, null) { Span = (2, 2) }));
+        wb.Execute(new SetLinkCommand(ws, new CellLink(R("B2"), "https://cell.example/", null, null, null)));
+
+        Assert.Equal(["A1:C3", "B2"], ws.Links.Select(l => l.Area.ToA1()));
+        Assert.Equal("https://cell.example/", ws.LinkAt(R("B2"))!.Target);
+        Assert.Equal("https://range.example/", ws.LinkAt(R("C3"))!.Target);
+        Assert.Null(ws.LinkAt(R("D4")));
+
+        wb.Execute(new SetLinkCommand(ws, ws.LinkAt(R("C3"))! with { Target = "https://edited.example/" }));
+        Assert.Equal(["A1:C3", "B2"], ws.Links.Select(l => l.Area.ToA1()));
+        Assert.Equal("https://edited.example/", ws.Links[0].Target);
+
+        wb.Execute(new RemoveLinkCommand(ws, R("B2")));
+        Assert.Equal("https://edited.example/", ws.LinkAt(R("B2"))!.Target);
+
+        var back = Read(Write(wb)).Sheets[0];
+        Assert.Equal(["A1:C3"], back.Links.Select(l => l.Area.ToA1()));
+    }
+
+    [Fact]
+    public void Links_UnparsableRefAndSharedRel_Kept()
+    {
+        var package = LinkPackage(extra: "<hyperlink ref=\"A1\" r:id=\"rId1\" display=\"Twin\"/><hyperlink ref=\"nonsense\" r:id=\"rId3\" xr:uid=\"{L3}\"/>",
+            extraRels: $"<Relationship Id=\"rId3\" Type=\"{Rel}/hyperlink\" Target=\"https://kept.example/\" TargetMode=\"External\"/>");
+        var wb = Read(package);
+        var ws = wb.Sheets[0];
+        Assert.Equal(3, ws.Links.Count);
+
+        wb.Execute(new InsertRowsCommand(ws, 0, 1));
+        var written = Write(wb);
+        var links = Xml(written, "xl/worksheets/sheet1.xml").Root!.Element(M + "hyperlinks")!.Elements().ToList();
+        Assert.Equal([("A2", "rId1"), ("A3", null), ("A2", "rId1"), ("nonsense", "rId3")], links.Select(l => ((string)l.Attribute("ref")!, (string?)l.Attribute(RelId))));
+        Assert.Equal("{L3}", (string)links[3].Attribute(Xr + "uid")!);
+        Assert.Equal(Entry(package, "xl/worksheets/_rels/sheet1.xml.rels"), Entry(written, "xl/worksheets/_rels/sheet1.xml.rels"));
+        Assert.Equal(["https://example.com/", "https://example.com/"], Read(written).Sheets[0].Links.Where(l => l.Target != null).Select(l => l.Target));
+    }
+
+    [Fact]
+    public void NewNotes_OnTwoSheets_GetDistinctIdMapsAndShapeIds()
+    {
+        var wb = Workbook.Create();
+        wb.Execute(new AddSheetCommand("Second"));
+        wb.Execute(new SetNoteCommand(wb.Sheets[0], new CellNote(R("A1"), "Ann", "one")));
+        wb.Execute(new SetNoteCommand(wb.Sheets[1], new CellNote(R("A1"), "Ann", "two")));
+        var written = Write(wb);
+
+        var vmls = Entries(written).Where(n => n.EndsWith(".vml", StringComparison.Ordinal)).Select(n => Encoding.Latin1.GetString(Entry(written, n))).ToList();
+        Assert.Equal(2, vmls.Count);
+        static string Match(string vml, string pattern) => System.Text.RegularExpressions.Regex.Match(vml, pattern).Groups[1].Value;
+        Assert.NotEqual(Match(vmls[0], "data=\"(\\d+)\""), Match(vmls[1], "data=\"(\\d+)\""));
+        Assert.NotEqual(Match(vmls[0], "id=\"(_x0000_s\\d+)\""), Match(vmls[1], "id=\"(_x0000_s\\d+)\""));
+        var back = Read(written);
+        Assert.Equal(["one", "two"], back.Sheets.Select(s => s.Notes.Single().Text));
+    }
+
+    [Fact]
+    public void Vml_WithByteOrderMark_KeepsBytes()
+    {
+        var package = NotePackage(bom: true);
+        var wb = Read(package);
+        var ws = wb.Sheets[0];
+        Assert.Equal(2, ws.Notes.Count);
+        wb.Execute(new SetNoteCommand(ws, new CellNote(R("F1"), "Me", "new")));
+        var vml = Entry(Write(wb), "xl/drawings/vmlDrawing1.vml");
+
+        var original = Entry(package, "xl/drawings/vmlDrawing1.vml");
+        var end = Array.LastIndexOf(original, (byte)'<');
+        Assert.Equal(original[..end], vml[..end]);
+        Assert.Equal([0xEF, 0xBB, 0xBF], vml[..3]);
+        Assert.Contains("\u00e4\u00f6", Encoding.UTF8.GetString(vml));
+    }
+
+    [Fact]
+    public void Vml_WithoutNoteShapeType_GetsItBeforeShapes()
+    {
+        var wb = Read(NotePackage(shapeType: false));
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetNoteCommand(ws, new CellNote(R("F1"), "Me", "new")));
+        var vml = Encoding.Latin1.GetString(Entry(Write(wb), "xl/drawings/vmlDrawing1.vml"));
+
+        var type = vml.IndexOf("<v:shapetype id=\"_x0000_t202\"", StringComparison.Ordinal);
+        Assert.InRange(type, 0, vml.IndexOf("<v:shape ", StringComparison.Ordinal));
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(vml, "<v:shapetype "));
     }
 
     private const string Comments = $$"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?><comments xmlns="{{Main}}" xmlns:xr="{{XrNs}}"><authors><author>Ann</author><author>Bob</author></authors><commentList><comment ref="B2" authorId="0" shapeId="0" xr:uid="{N1}"><text><r><rPr><b/><sz val="9"/></rPr><t>Ann:</t></r><r><rPr><sz val="9"/></rPr><t xml:space="preserve">&#10;first</t></r></text></comment><comment ref="D5" authorId="1" shapeId="0" xr:uid="{N2}"><text><r><rPr><b/></rPr><t>Bob:</t></r><r><t xml:space="preserve"> second</t></r></text></comment></commentList><extLst><ext uri="{X}"/></extLst></comments>""";
@@ -292,14 +388,17 @@ public class AnnotationTests
 
     private const string NoteD5Shape = "<v:shape id=\"_x0000_s1027\" type=\"#_x0000_t202\" style='position:absolute;visibility:hidden' fillcolor=\"#ffffe1\">\r\n  <x:ClientData ObjectType=\"Note\">\r\n   <x:Anchor>\r\n    4, 15, 3, 10, 6, 15, 7, 4</x:Anchor>\r\n   <x:Row>4</x:Row>\r\n   <x:Column>3</x:Column>\r\n  </x:ClientData>\r\n </v:shape>";
 
-    private static string Vml(bool checkbox) =>
+    private static string Vml(bool checkbox, bool shapeType = true) =>
         "<xml xmlns:v=\"urn:schemas-microsoft-com:vml\"\r\n xmlns:o=\"urn:schemas-microsoft-com:office:office\"\r\n xmlns:x=\"urn:schemas-microsoft-com:office:excel\">\r\n"
-        + " <o:shapelayout v:ext=\"edit\">\r\n  <o:idmap v:ext=\"edit\" data=\"1\"/>\r\n </o:shapelayout><v:shapetype id=\"_x0000_t202\" coordsize=\"21600,21600\" o:spt=\"202\"\r\n"
-        + "  path=\"m,l,21600r21600,l21600,xe\">\r\n  <v:stroke joinstyle=\"miter\"/>\r\n  <v:path gradientshapeok=\"t\" o:connecttype=\"rect\"/>\r\n </v:shapetype>"
+        + " <o:shapelayout v:ext=\"edit\">\r\n  <o:idmap v:ext=\"edit\" data=\"1\"/>\r\n </o:shapelayout>"
+        + (shapeType ? "<v:shapetype id=\"_x0000_t202\" coordsize=\"21600,21600\" o:spt=\"202\"\r\n"
+                       + "  path=\"m,l,21600r21600,l21600,xe\">\r\n  <v:stroke joinstyle=\"miter\"/>\r\n  <v:path gradientshapeok=\"t\" o:connecttype=\"rect\"/>\r\n </v:shapetype>" : "")
         + NoteB2Shape + (checkbox ? CheckboxShape : "") + NoteD5Shape + "</xml>";
 
-    private static byte[] NotePackage(bool checkbox = false, bool threaded = false)
+    private static byte[] NotePackage(bool checkbox = false, bool threaded = false, bool bom = false, bool shapeType = true)
     {
+        var vml = bom ? [0xEF, 0xBB, 0xBF, .. Encoding.UTF8.GetBytes(Vml(checkbox).Replace("</xml>", "<!-- äö --></xml>"))]
+            : Encoding.Latin1.GetBytes(Vml(checkbox, shapeType));
         var sheet = XlsxReadTests.Sheet("<row r=\"2\"><c r=\"B2\"><v>1</v></c></row>", "",
             "<pageMargins left=\"0.7\" right=\"0.7\" top=\"0.75\" bottom=\"0.75\" header=\"0.3\" footer=\"0.3\"/><legacyDrawing r:id=\"rId3\"/>");
         var rels = $"<Relationship Id=\"rId2\" Type=\"{Rel}/comments\" Target=\"../comments1.xml\"/><Relationship Id=\"rId3\" Type=\"{Rel}/vmlDrawing\" Target=\"../drawings/vmlDrawing1.vml\"/>"
@@ -307,16 +406,17 @@ public class AnnotationTests
         var types = $"<Override PartName=\"/xl/comments1.xml\" ContentType=\"{CommentsType}\"/><Default Extension=\"vml\" ContentType=\"{VmlType}\"/>"
                     + (threaded ? "<Override PartName=\"/xl/threadedComments/threadedComment1.xml\" ContentType=\"application/vnd.ms-excel.threadedcomments+xml\"/>" : "");
         return With(XlsxReadTests.Package([sheet]), types, ("xl/worksheets/_rels/sheet1.xml.rels", RelsXml(rels)), ("xl/comments1.xml", Encoding.UTF8.GetBytes(Comments)),
-            ("xl/drawings/vmlDrawing1.vml", Encoding.Latin1.GetBytes(Vml(checkbox))),
+            ("xl/drawings/vmlDrawing1.vml", vml),
             ("xl/threadedComments/threadedComment1.xml", threaded ? Encoding.UTF8.GetBytes("<ThreadedComments xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2018/threadedcomments\"/>") : null));
     }
 
-    private static byte[] LinkPackage()
+    private static byte[] LinkPackage(string extra = "", string extraRels = "")
     {
         var sheet = XlsxReadTests.Sheet("<row r=\"1\"><c r=\"A1\"><v>1</v></c></row>", "",
-            "<hyperlinks><hyperlink ref=\"A1\" r:id=\"rId1\" display=\"Site\" xr:uid=\"{L1}\"/><hyperlink ref=\"A2\" location=\"Sheet2!B3\" display=\"Go\" tooltip=\"tip\" xr:uid=\"{L2}\"/></hyperlinks>"
-            + "<pageMargins left=\"0.7\" right=\"0.7\" top=\"0.75\" bottom=\"0.75\" header=\"0.3\" footer=\"0.3\"/>", $" xmlns:xr=\"{XrNs}\"");
-        var rels = $"<Relationship Id=\"rId1\" Type=\"{Rel}/hyperlink\" Target=\"https://example.com/\" TargetMode=\"External\"/><Relationship Id=\"rId2\" Type=\"{Rel}/printerSettings\" Target=\"../printerSettings/printerSettings1.bin\"/>";
+            "<hyperlinks><hyperlink ref=\"A1\" r:id=\"rId1\" display=\"Site\" xr:uid=\"{L1}\"/><hyperlink ref=\"A2\" location=\"Sheet2!B3\" display=\"Go\" tooltip=\"tip\" xr:uid=\"{L2}\"/>"
+            + extra + "</hyperlinks><pageMargins left=\"0.7\" right=\"0.7\" top=\"0.75\" bottom=\"0.75\" header=\"0.3\" footer=\"0.3\"/>", $" xmlns:xr=\"{XrNs}\"");
+        var rels = $"<Relationship Id=\"rId1\" Type=\"{Rel}/hyperlink\" Target=\"https://example.com/\" TargetMode=\"External\"/><Relationship Id=\"rId2\" Type=\"{Rel}/printerSettings\" Target=\"../printerSettings/printerSettings1.bin\"/>"
+                   + extraRels;
         return With(XlsxReadTests.Package([sheet, XlsxReadTests.Sheet("")]), "<Default Extension=\"bin\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.printerSettings\"/>",
             ("xl/worksheets/_rels/sheet1.xml.rels", RelsXml(rels)), ("xl/printerSettings/printerSettings1.bin", new byte[] { 1, 2, 3 }));
     }

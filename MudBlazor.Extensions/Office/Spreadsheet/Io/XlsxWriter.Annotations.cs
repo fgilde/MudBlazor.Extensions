@@ -27,8 +27,9 @@ public static partial class XlsxWriter
         private (XElement Links, XElement Legacy) Annotations(SheetEntry sheet, string typeBase, SheetRels rels)
         {
             var ns = sheet.Original?.Root?.Name.Namespace ?? XNamespace.Get(SheetXmlWriter.MainNs);
-            var used = new HashSet<string>();
-            var links = AnnotationXml.WriteLinks(Original(sheet, "hyperlinks"), sheet.Worksheet.Links, ns, link =>
+            var opaque = sheet.Original?.OpaqueLinks ?? [];
+            var used = opaque.Select(AnnotationXml.RelationshipId).Where(id => id != null).ToHashSet();
+            var links = AnnotationXml.WriteLinks(Original(sheet, "hyperlinks"), sheet.Worksheet.Links, opaque, ns, link =>
             {
                 if (string.IsNullOrEmpty(link.Target)) return null;
                 var target = link.Target.Replace(" ", "%20", StringComparison.Ordinal);
@@ -97,11 +98,7 @@ public static partial class XlsxWriter
         {
             if (_drawing < 0)
                 _drawing = source?.Entries.Where(e => e.FullName.EndsWith(".vml", StringComparison.OrdinalIgnoreCase))
-                    .Select(e => Read(e, s =>
-                    {
-                        using var reader = new StreamReader(s, Encoding.Latin1);
-                        return AnnotationXml.MaxDrawing(reader.ReadToEnd());
-                    }))
+                    .Select(e => Read(e, s => AnnotationXml.MaxDrawing(AnnotationXml.ReadVml(s))))
                     .DefaultIfEmpty(0).Max() ?? 0;
             return ++_drawing;
         }

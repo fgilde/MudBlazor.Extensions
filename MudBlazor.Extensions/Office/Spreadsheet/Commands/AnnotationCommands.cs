@@ -1,6 +1,9 @@
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
-/// <summary>Adds a hyperlink to a cell or replaces the link that covers it.</summary>
+/// <summary>
+/// Adds a hyperlink or replaces the link with the same area. A link set on part of a ranged link is added after it and applies to its cells, as in Excel;
+/// build an edit with <c>with</c> from <see cref="Worksheet.LinkAt"/> to change the ranged link itself.
+/// </summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="link">The link; it needs a <see cref="CellLink.Target"/> or a <see cref="CellLink.Location"/>.</param>
 public sealed class SetLinkCommand(Worksheet sheet, CellLink link) : IWorkbookCommand
@@ -19,7 +22,8 @@ public sealed class SetLinkCommand(Worksheet sheet, CellLink link) : IWorkbookCo
             throw new ArgumentException("A link needs a target or a location.", nameof(link));
         _before = AnnotationState.Capture(sheet);
         var cell = link.Cell.Relative;
-        var old = sheet.Links.FirstOrDefault(l => l.Area.Contains(cell));
+        var area = (link with { Cell = cell }).Area;
+        var old = sheet.Links.LastOrDefault(l => l.Area == area);
         var next = link with { Cell = cell, Source = link.Source ?? old?.Source, RelationshipId = link.RelationshipId ?? old?.RelationshipId };
         (_before with { Links = AnnotationState.Put(sheet.Links, old, next) }).Restore(wb, sheet);
     }
@@ -28,7 +32,7 @@ public sealed class SetLinkCommand(Worksheet sheet, CellLink link) : IWorkbookCo
     public void Revert(Workbook wb) => _before.Restore(wb, sheet);
 }
 
-/// <summary>Removes the hyperlink that covers a cell.</summary>
+/// <summary>Removes the hyperlink that applies to a cell (<see cref="Worksheet.LinkAt"/>).</summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="cell">A cell of the link.</param>
 public sealed class RemoveLinkCommand(Worksheet sheet, CellRef cell) : IWorkbookCommand
@@ -41,7 +45,7 @@ public sealed class RemoveLinkCommand(Worksheet sheet, CellRef cell) : IWorkbook
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
-        var old = sheet.Links.FirstOrDefault(l => l.Area.Contains(cell.Relative)) ?? throw new ArgumentException("The cell has no link.", nameof(cell));
+        var old = sheet.LinkAt(cell) ?? throw new ArgumentException("The cell has no link.", nameof(cell));
         _before = AnnotationState.Capture(sheet);
         (_before with { Links = AnnotationState.Put(sheet.Links, old, null) }).Restore(wb, sheet);
     }

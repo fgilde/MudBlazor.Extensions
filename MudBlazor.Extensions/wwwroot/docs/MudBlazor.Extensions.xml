@@ -31707,8 +31707,8 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.IsSafe">
             <summary>
-            True if the link may be followed when clicked: a location inside the workbook, or an absolute <c>http</c>, <c>https</c> or
-            <c>mailto</c> target. Any other target (<c>file</c>, relative paths, <c>javascript</c> …) should only be shown as text.
+            True if the link may be followed when clicked: a location inside the workbook that is not a URI with a scheme, or an absolute
+            <c>http</c>, <c>https</c> or <c>mailto</c> target. Any other target (<c>file</c>, relative paths, <c>javascript</c> …) should only be shown as text.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellNote">
@@ -32340,12 +32340,18 @@
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetLinkCommand">
-            <summary>Adds a hyperlink to a cell or replaces the link that covers it.</summary>
+            <summary>
+            Adds a hyperlink or replaces the link with the same area. A link set on part of a ranged link is added after it and applies to its cells, as in Excel;
+            build an edit with <c>with</c> from <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.LinkAt(MudBlazor.Extensions.Office.Spreadsheet.CellRef)"/> to change the ranged link itself.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="link">The link; it needs a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Target"/> or a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Location"/>.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetLinkCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellLink)">
-            <summary>Adds a hyperlink to a cell or replaces the link that covers it.</summary>
+            <summary>
+            Adds a hyperlink or replaces the link with the same area. A link set on part of a ranged link is added after it and applies to its cells, as in Excel;
+            build an edit with <c>with</c> from <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.LinkAt(MudBlazor.Extensions.Office.Spreadsheet.CellRef)"/> to change the ranged link itself.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="link">The link; it needs a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Target"/> or a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Location"/>.</param>
         </member>
@@ -32359,12 +32365,12 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RemoveLinkCommand">
-            <summary>Removes the hyperlink that covers a cell.</summary>
+            <summary>Removes the hyperlink that applies to a cell (<see cref="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.LinkAt(MudBlazor.Extensions.Office.Spreadsheet.CellRef)"/>).</summary>
             <param name="sheet">The sheet.</param>
             <param name="cell">A cell of the link.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RemoveLinkCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
-            <summary>Removes the hyperlink that covers a cell.</summary>
+            <summary>Removes the hyperlink that applies to a cell (<see cref="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.LinkAt(MudBlazor.Extensions.Office.Spreadsheet.CellRef)"/>).</summary>
             <param name="sheet">The sheet.</param>
             <param name="cell">A cell of the link.</param>
         </member>
@@ -34144,6 +34150,9 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OpaqueTableParts">
             <summary>Relationship ids of table parts the model could not read; they stay in <c>tableParts</c> and are copied unchanged.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OpaqueLinks">
+            <summary>Hyperlinks whose <c>ref</c> cannot be parsed; they are written back unchanged after the modelled links.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.CommentsPart">
             <summary>Zip entry name of the legacy comments part holding the notes, or null.</summary>
         </member>
@@ -34667,7 +34676,15 @@
             <summary>Tables on this sheet; change them with the table commands.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Links">
-            <summary>Hyperlinks on this sheet; change them with <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SetLinkCommand"/> and <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.RemoveLinkCommand"/>.</summary>
+            <summary>
+            Hyperlinks on this sheet in file order; change them with <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SetLinkCommand"/> and <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.RemoveLinkCommand"/>. Links may overlap,
+            then the later one applies to the shared cells (see <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.LinkAt(MudBlazor.Extensions.Office.Spreadsheet.CellRef)"/>).
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.LinkAt(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Finds the hyperlink that applies to a cell: the last link covering it.</summary>
+            <param name="cell">The cell.</param>
+            <returns>The link, or null.</returns>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Notes">
             <summary>Notes on this sheet; change them with <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SetNoteCommand"/> and <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.RemoveNoteCommand"/>.</summary>
