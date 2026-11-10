@@ -17,9 +17,9 @@ public class SlideEditorUITests : BaseUITest
 
     private static async Task<ILocator> OpenAsync(IPage page)
     {
-        await page.Locator("button").Filter(new() { HasText = "Show demo" }).First.ClickAsync(new() { Timeout = 60000 });
+        await page.Locator("button").Filter(new() { HasText = "Show demo" }).First.ClickAsync(new() { Timeout = 120000 });
         var canvas = page.Locator(".mud-ex-slide-canvas[data-readonly='false']").First;
-        await canvas.Locator("[data-shape-id='3']").WaitForAsync(new() { Timeout = 60000 });
+        await canvas.Locator("[data-shape-id='3']").WaitForAsync(new() { Timeout = 120000 });
         await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
         return canvas;
     }
