@@ -19849,6 +19849,9 @@
             reach .NET, so the grid stays responsive in Blazor Server.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.#ctor">
+            <summary>Creates the grid.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.Author">
             <summary>The author written into new notes.</summary>
         </member>
@@ -19930,7 +19933,7 @@
             <returns>A task that completes when the editor is shown.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CommitEditAsync">
-            <summary>Commits the edit to the active cell without moving the selection.</summary>
+            <summary>Commits the edit to the active cell without moving the selection, and a changed note that is being written.</summary>
             <returns>A task that completes when the value is written.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetGrid.CancelEditAsync">
@@ -20246,7 +20249,7 @@
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor">
             <summary>
             The note box next to a cell of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetGrid"/>: shows the author and text of a note while the pointer is over the cell,
-            or edits it. Escape cancels editing.
+            or edits it. Escape cancels editing, Ctrl+S raises <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.SaveKeyPressed"/>.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.Note">
@@ -20263,6 +20266,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.OnCancel">
             <summary>Raised when the user cancels editing.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.TextChanged">
+            <summary>Raised with the current text whenever the user types.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.SaveKeyPressed">
+            <summary>Raised when the user presses Ctrl+S while editing.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetNoteEditor.OnInitialized">
             <inheritdoc />
@@ -34779,6 +34788,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OpaqueTableParts">
             <summary>Relationship ids of table parts the model could not read; they stay in <c>tableParts</c> and are copied unchanged.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OpaqueTables">
+            <summary>Id and names (<c>name</c>, <c>displayName</c>) of the readable table parts the model could not represent; new tables avoid them.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OpaqueLinks">
             <summary>Hyperlinks whose <c>ref</c> cannot be parsed; they are written back unchanged after the modelled links.</summary>
