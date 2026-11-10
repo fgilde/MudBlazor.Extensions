@@ -143,6 +143,26 @@ var workbook = XlsxReader.Read(stream);
 
 ---
 
+## `MudExFileDisplayPresentation` Replaced by `MudExSlideEditor` (Announcement)
+
+`MudExFileDisplayPresentation` is marked `[Obsolete]` and is removed in the next major release. `MudExFileDisplay` already opens pptx
+in `MudExSlideEditor`, read-only unless the display is in edit mode (the display sets `ReadOnly` from its edit mode).
+
+**Reason:** one slide component that views, edits and saves pptx without losing content it does not model.
+
+**Before:**
+```razor
+<MudExFileDisplayPresentation FileDisplayInfos="@infos" />
+```
+
+**After:**
+```razor
+<MudExFileDisplay Url="@url" />
+<MudExSlideEditor FileDisplayInfos="@infos" ReadOnly="true" />
+```
+
+---
+
 ## Previously Deprecated Methods (Reminder)
 
 The following methods were already deprecated in earlier versions and continue to point to their async replacements:

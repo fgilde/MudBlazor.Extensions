@@ -12,6 +12,7 @@ namespace MudBlazor.Extensions.Components;
 /// renders the slides as scalable html - text, pictures, solid fills, groups and speaker notes. Runs fully
 /// client-side and needs neither Office nor an online service, unlike <see cref="MudExFileDisplayOfficeLive"/>.
 /// </summary>
+[Obsolete("Replaced by MudExSlideEditor, removed in the next major release")]
 public partial class MudExFileDisplayPresentation : IMudExFileDisplay
 {
     [Inject] private MudExFileService FileService { get; set; }
