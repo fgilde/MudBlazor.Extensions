@@ -604,6 +604,50 @@ public class SpreadsheetEditorTests : IAsyncLifetime
         Assert.Equal("Book1.xlsx", clean.Instance.FileName);
     }
 
+    private sealed class CountingEditor : MudExSpreadsheetEditor
+    {
+        public int Renders { get; private set; }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            Renders++;
+            base.OnAfterRender(firstRender);
+        }
+    }
+
+    private sealed class BoundHost : ComponentBase
+    {
+        [Parameter] public Workbook Workbook { get; set; }
+
+        protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder b)
+        {
+            b.OpenComponent<CountingEditor>(0);
+            b.AddComponentParameter(1, nameof(MudExSpreadsheetEditor.Workbook), Workbook);
+            b.AddComponentParameter(2, nameof(MudExSpreadsheetEditor.WorkbookChanged), EventCallback.Factory.Create<Workbook>(this, w => Workbook = w));
+            b.AddComponentParameter(3, nameof(MudExSpreadsheetEditor.IsDirtyChanged), EventCallback.Factory.Create<bool>(this, _ => { }));
+            b.AddComponentParameter(4, nameof(MudExSpreadsheetEditor.ContentChanged), EventCallback.Factory.Create(this, () => { }));
+            b.CloseComponent();
+        }
+    }
+
+    [Fact]
+    public async Task EditorRenders_OncePerWorkbookChange()
+    {
+        var wb = Book(("Sheet1", "A1", 1d));
+        var host = NewContext().Render<BoundHost>(p => p.Add(x => x.Workbook, wb));
+        var editor = host.FindComponent<CountingEditor>().Instance;
+        host.WaitForAssertion(() => Assert.NotNull(editor.Grid));
+
+        foreach (var value in new[] { 2d, 3d })
+        {
+            var before = editor.Renders;
+            await host.InvokeAsync(() => wb.Execute(new SetValueCommand(wb.Sheets[0], CellRef.Parse("B1"), CellValue.Number(value))));
+            host.WaitForAssertion(() => Assert.True(editor.IsDirty));
+            await host.InvokeAsync(() => Task.Delay(50));
+            Assert.Equal(before + 1, editor.Renders);
+        }
+    }
+
     [Theory]
     [InlineData("General", 1, 1.5, "0.00")]
     [InlineData("General", -1, 1.5, "0")]

@@ -76,7 +76,7 @@ public static class SpreadsheetSamples
 
     public static async Task<Workbook> CreateLargeAsync(IProgress<int>? progress = null, int rows = 100_000, int columns = 30)
     {
-        const int chunk = 10_000;
+        const int chunk = 1_000;
         var wb = Workbook.Create();
         var sheet = wb.Sheets[0];
         var header = new CellValue[1, columns];
@@ -84,6 +84,7 @@ public static class SpreadsheetSamples
             header[0, c] = CellValue.Text(c == 0 ? "Id" : $"Col{c}");
         wb.Execute(new SetValuesCommand(sheet, new CellRef(0, 0), header));
         var rnd = new Random(42);
+        var watch = System.Diagnostics.Stopwatch.StartNew();
         for (var start = 0; start < rows; start += chunk)
         {
             var count = Math.Min(chunk, rows - start);
@@ -96,8 +97,10 @@ public static class SpreadsheetSamples
             }
 
             wb.Execute(new SetValuesCommand(sheet, new CellRef(start + 1, 0), values));
+            if (watch.ElapsedMilliseconds < 50) continue;
             progress?.Report((start + count) * 100 / rows);
             await Task.Delay(1);
+            watch.Restart();
         }
 
         wb.Undo.Clear();

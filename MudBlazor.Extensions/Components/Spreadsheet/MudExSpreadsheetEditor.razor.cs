@@ -328,8 +328,7 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
             {
                 if (warn)
                     await ShowNoticeAsync(TryLocalize("This workbook contains content such as conditional formatting, tables, charts or pivot tables whose references are not updated when rows, columns or sheet names change. Check them before you save."));
-                await MarkDirtyAsync();
-                await WorkbookChanged.InvokeAsync(_workbook);
+                await NotifyChangedAsync();
             }
             catch (Exception ex)
             {
@@ -338,6 +337,20 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
 
             StateHasChanged();
         });
+    }
+
+    private async Task NotifyChangedAsync()
+    {
+        SupressStateChange = true;
+        try
+        {
+            await MarkDirtyAsync();
+            await WorkbookChanged.InvokeAsync(_workbook);
+        }
+        finally
+        {
+            SupressStateChange = false;
+        }
     }
 
     private async Task OnSheetIndexChangedAsync(int index)
