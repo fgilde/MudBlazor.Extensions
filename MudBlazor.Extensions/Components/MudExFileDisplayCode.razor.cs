@@ -35,7 +35,7 @@ public partial class MudExFileDisplayCode
     public override string Name => nameof(MudExFileDisplayCode);
 
     /// <summary>
-    /// The code string of the file. While editing it is updated when the content is exported.
+    /// The code string of the file. While editing it is updated shortly after typing pauses and when the content is exported.
     /// </summary>
     public string Value { get; private set; }
 
@@ -139,6 +139,12 @@ public partial class MudExFileDisplayCode
         _edited = true;
         await MarkDirtyAsync();
     }
+
+    /// <summary>
+    /// Called from JS shortly after typing paused; reads the text once instead of on every key
+    /// </summary>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnCodeIdle() => SyncValueAsync();
 
     /// <summary>
     /// Called from JS on Ctrl+S

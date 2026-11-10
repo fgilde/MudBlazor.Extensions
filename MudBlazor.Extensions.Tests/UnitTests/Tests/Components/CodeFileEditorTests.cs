@@ -72,6 +72,19 @@ public class CodeFileEditorTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task TypingPause_UpdatesValueOnce()
+    {
+        var cut = Create("a"u8.ToArray());
+        Type(cut, "abc");
+        Assert.Equal("a", cut.Instance.Value);
+
+        await cut.InvokeAsync(() => cut.Instance.OnCodeIdle());
+
+        Assert.Equal("abc", cut.Instance.Value);
+        Assert.Single(_contexts[^1].JSInterop.Invocations, i => i.Identifier == "readValue");
+    }
+
+    [Fact]
     public async Task Export_KeepsCrLfLineEndings()
     {
         var cut = Create("a\r\nb"u8.ToArray());

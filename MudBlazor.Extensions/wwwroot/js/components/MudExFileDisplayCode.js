@@ -10,7 +10,12 @@ class MudExFileDisplayCode {
     }
 
     input() {
-        if (this.notified || !this.dotnet) {
+        if (!this.dotnet) {
+            return;
+        }
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => this.dotnet?.invokeMethodAsync('OnCodeIdle').catch(() => {}), 400);
+        if (this.notified) {
             return;
         }
         this.notified = true;
@@ -30,6 +35,7 @@ class MudExFileDisplayCode {
     }
 
     dispose() {
+        clearTimeout(this.timer);
         this.area?.removeEventListener('input', this.onInput);
         this.area?.removeEventListener('keydown', this.onKeyDown);
         this.area = null;
