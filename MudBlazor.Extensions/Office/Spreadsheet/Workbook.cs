@@ -159,9 +159,9 @@ public sealed class Workbook
 
     /// <summary>
     /// True if the source file contains content whose cell references are not moved when rows, columns or sheets change:
-    /// hyperlinks, comments, drawings and charts, pivot tables and their
-    /// caches, external links, page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or
-    /// columns or renaming a sheet these keep pointing at their original cells; editors should warn once.
+    /// threaded comments, form controls and other legacy drawing shapes, drawings and charts, pivot tables and their caches, external links,
+    /// page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or columns or renaming a sheet these
+    /// keep pointing at their original cells; editors should warn once.
     /// </summary>
     public bool HasUnshiftedReferences => Package?.HasUnshiftedReferences == true;
 
@@ -327,6 +327,18 @@ public sealed class Workbook
             sheet.Modified = true;
         }
 
+        List<(Worksheet, IReadOnlyList<CellLink>)> links = null;
+        foreach (var sheet in _sheets)
+        {
+            var list = sheet.Links.Select(l => !string.IsNullOrEmpty(l.Target) || string.IsNullOrEmpty(l.Location)
+                ? l
+                : rewrite(l.Location, sheet.Name, l.Cell) is var text && text != l.Location ? l with { Location = text } : l).ToList();
+            if (list.SequenceEqual(sheet.Links, ReferenceEqualityComparer.Instance)) continue;
+            (links ??= []).Add((sheet, sheet.Links));
+            sheet.Links = list;
+            sheet.Modified = true;
+        }
+
         List<(XElement, string)> localNames = null;
         foreach (var name in Package?.DefinedNames?.Elements().Where(e => e.Name.LocalName == "definedName" && e.Attribute("localSheetId") != null) ?? [])
         {
@@ -348,7 +360,7 @@ public sealed class Workbook
             _definedNames[key] = text;
         }
 
-        return new FormulaSnapshot(cells, names, localNames, rules, tables);
+        return new FormulaSnapshot(cells, names, localNames, rules, tables, links);
     }
 
     internal void RestoreFormulas(FormulaSnapshot snapshot)
@@ -361,6 +373,12 @@ public sealed class Workbook
 
         foreach (var (name, text) in snapshot.LocalNames ?? []) name.Value = text;
         foreach (var (sheet, tables) in snapshot.Tables ?? []) sheet.Tables = tables;
+        foreach (var (sheet, links) in snapshot.Links ?? [])
+        {
+            sheet.Links = links;
+            sheet.Modified = true;
+        }
+
         foreach (var (sheet, formats, validations) in snapshot.Rules ?? [])
         {
             sheet.ConditionalFormats = formats;
@@ -379,4 +397,5 @@ internal sealed record FormulaSnapshot(
     Dictionary<string, string> Names,
     List<(XElement Name, string Text)> LocalNames = null,
     List<(Worksheet Sheet, IReadOnlyList<ConditionalFormatting> Formats, IReadOnlyList<DataValidation> Validations)> Rules = null,
-    List<(Worksheet Sheet, IReadOnlyList<SheetTable> Tables)> Tables = null);
+    List<(Worksheet Sheet, IReadOnlyList<SheetTable> Tables)> Tables = null,
+    List<(Worksheet Sheet, IReadOnlyList<CellLink> Links)> Links = null);

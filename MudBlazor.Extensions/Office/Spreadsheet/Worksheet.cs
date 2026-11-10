@@ -102,6 +102,18 @@ public sealed class Worksheet
     /// <summary>Tables on this sheet; change them with the table commands.</summary>
     public IReadOnlyList<SheetTable> Tables { get; internal set; } = [];
 
+    /// <summary>Hyperlinks on this sheet; change them with <see cref="SetLinkCommand"/> and <see cref="RemoveLinkCommand"/>.</summary>
+    public IReadOnlyList<CellLink> Links { get; internal set; } = [];
+
+    /// <summary>Notes on this sheet; change them with <see cref="SetNoteCommand"/> and <see cref="RemoveNoteCommand"/>.</summary>
+    public IReadOnlyList<CellNote> Notes { get; internal set; } = [];
+
+    /// <summary>
+    /// True if the source file has threaded comments on this sheet. Their legacy notes are shown but cannot be edited, and the comment parts are
+    /// saved unchanged.
+    /// </summary>
+    public bool NotesReadOnly { get; internal set; }
+
     /// <summary>Finds the table containing a cell.</summary>
     /// <param name="cell">The cell address.</param>
     /// <returns>The table, or null.</returns>
@@ -463,7 +475,7 @@ public sealed class Worksheet
         var snapshot = new DeleteSnapshot(removed, Sizes(axis).Where(p => p.Key >= index && p.Key < end).ToList(),
             HiddenSet(axis).Where(i => i >= index && i < end).ToList(),
             AxisStyles(axis).Where(p => p.Key >= index && p.Key < end).ToList(), CopyMerges(), FreezeAt, AutoFilter, _filteredRows,
-            ConditionalFormats, DataValidations, Tables, Part?.Shift(axis, index, -count));
+            ConditionalFormats, DataValidations, Tables, Links, Notes, Part?.Shift(axis, index, -count));
         _cells = kept;
         _formulaKeys = formulas;
         _spillKeys = spills;
@@ -499,6 +511,8 @@ public sealed class Worksheet
         ConditionalFormats = snapshot.ConditionalFormats;
         DataValidations = snapshot.DataValidations;
         Tables = snapshot.Tables;
+        Links = snapshot.Links;
+        Notes = snapshot.Notes;
         foreach (var (i, style) in snapshot.AxisStyles) AxisStyles(axis)[i] = style;
         _merges = [.. snapshot.Merges];
         FreezeAt = snapshot.Freeze;
@@ -510,6 +524,8 @@ public sealed class Worksheet
         Tables = Tables.Select(t => t.Shift(axis, index, count)).OfType<SheetTable>().ToList();
         ConditionalFormats = ConditionalFormats.Select(c => c.Shift(axis, index, count)).OfType<ConditionalFormatting>().ToList();
         DataValidations = DataValidations.Select(d => d.Shift(axis, index, count)).OfType<DataValidation>().ToList();
+        Links = Links.Select(l => l.Shift(axis, index, count)).OfType<CellLink>().ToList();
+        Notes = Notes.Select(n => n.Shift(axis, index, count)).OfType<CellNote>().ToList();
     }
 
     private static CellRef? Moved(CellRef r, Axis axis, int count, int limit)
@@ -580,4 +596,6 @@ internal sealed record DeleteSnapshot(
     IReadOnlyList<ConditionalFormatting> ConditionalFormats,
     IReadOnlyList<DataValidation> DataValidations,
     IReadOnlyList<SheetTable> Tables,
+    IReadOnlyList<CellLink> Links,
+    IReadOnlyList<CellNote> Notes,
     Action Package = null);

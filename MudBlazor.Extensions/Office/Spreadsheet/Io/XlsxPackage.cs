@@ -15,7 +15,7 @@ internal sealed record XlsxRelationship(string Id, string Type, string Target, b
 internal sealed class XlsxSheetPart
 {
     internal static readonly HashSet<string> Modelled = ["sheetPr", "dimension", "sheetViews", "sheetFormatPr", "cols", "sheetData", "mergeCells", "autoFilter",
-        "conditionalFormatting", "dataValidations", "tableParts"];
+        "conditionalFormatting", "dataValidations", "tableParts", "hyperlinks", "legacyDrawing"];
 
     /// <summary>The sheet name as stored in the file.</summary>
     public string Name { get; init; }
@@ -50,6 +50,33 @@ internal sealed class XlsxSheetPart
 
     /// <summary>Relationship ids of table parts the model could not read; they stay in <c>tableParts</c> and are copied unchanged.</summary>
     public List<string> OpaqueTableParts { get; } = [];
+
+    /// <summary>Zip entry name of the legacy comments part holding the notes, or null.</summary>
+    public string CommentsPart { get; set; }
+
+    /// <summary>Relationship id of <see cref="CommentsPart"/> in the sheet rels.</summary>
+    public string CommentsRelationshipId { get; set; }
+
+    /// <summary>The original root of <see cref="CommentsPart"/>; attributes, authors and unknown children stay when notes change.</summary>
+    public XElement CommentsRoot { get; set; }
+
+    /// <summary>Zip entry name of the VML drawing of <c>legacyDrawing</c>, or null.</summary>
+    public string VmlPart { get; set; }
+
+    /// <summary>Relationship id of <see cref="VmlPart"/> (the <c>legacyDrawing</c> r:id).</summary>
+    public string VmlRelationshipId { get; set; }
+
+    /// <summary>The VML text read as Latin-1, so unchanged shapes are written back byte for byte; VML from Excel is not always well-formed XML.</summary>
+    public string VmlText { get; set; }
+
+    /// <summary>True if every anchored shape of the VML drawing is a note, so all its references move with the notes.</summary>
+    public bool VmlOnlyNotes { get; set; } = true;
+
+    /// <summary>The notes as read; the comment and VML parts are rewritten only when the sheet's notes differ from these.</summary>
+    public IReadOnlyList<CellNote> OriginalNotes { get; set; } = [];
+
+    /// <summary>True if the notes, comments part and VML drawing of this sheet are modelled completely and follow structural changes.</summary>
+    public bool AnnotationsModelled => Worksheet is { NotesReadOnly: false } && VmlOnlyNotes;
 
     /// <summary>Children the model does not represent at all, in original order.</summary>
     public IEnumerable<XElement> Unmodelled => Children.Where(c => !Modelled.Contains(c.Name.LocalName));
@@ -220,7 +247,7 @@ internal sealed class XlsxPackage
 
     private static readonly HashSet<string> UnshiftedChildren =
     [
-        "hyperlinks", "drawing", "legacyDrawing", "legacyDrawingHF", "rowBreaks", "colBreaks", "protectedRanges", "scenarios", "dataConsolidate", "ignoredErrors", "extLst"
+        "drawing", "legacyDrawingHF", "rowBreaks", "colBreaks", "protectedRanges", "scenarios", "dataConsolidate", "ignoredErrors", "extLst"
     ];
 
     private static readonly string[] UnshiftedContentTypes = ["pivot", "chart", "drawing", "comments", "externalLink", "queryTable"];
@@ -309,9 +336,15 @@ internal sealed class XlsxPackage
         return date;
     }
 
-    internal void DetectUnshiftedReferences() =>
-        HasUnshiftedReferences = Sheets.Any(p => p.Children.Any(c => UnshiftedChildren.Contains(c.Name.LocalName)))
-                                 || PartNames.Any(n => ContentType(n) is { } type && UnshiftedContentTypes.Any(t => type.Contains(t, StringComparison.OrdinalIgnoreCase)));
+    internal void DetectUnshiftedReferences()
+    {
+        var modelled = Sheets.Where(p => p.AnnotationsModelled).SelectMany(p => new[] { p.CommentsPart, p.VmlPart }).Where(n => n != null)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        HasUnshiftedReferences = Sheets.Any(p => p.Children.Any(c => UnshiftedChildren.Contains(c.Name.LocalName)
+                                                                      || c.Name.LocalName == "legacyDrawing" && !p.AnnotationsModelled))
+                                 || PartNames.Any(n => !modelled.Contains(n) && ContentType(n) is { } type
+                                                                            && UnshiftedContentTypes.Any(t => type.Contains(t, StringComparison.OrdinalIgnoreCase)));
+    }
 
     internal static XElement Child(XElement e, string name) => e?.Elements().FirstOrDefault(c => c.Name.LocalName == name);
 

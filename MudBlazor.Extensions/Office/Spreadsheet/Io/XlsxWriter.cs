@@ -7,7 +7,7 @@ using static MudBlazor.Extensions.Office.Spreadsheet.XlsxPackage;
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
 /// <summary>Writes a <see cref="Workbook"/> as an Office Open XML workbook (<c>.xlsx</c>, or <c>.xlsm</c> for macro-enabled sources).</summary>
-public static class XlsxWriter
+public static partial class XlsxWriter
 {
     private const string PackageRelationshipsNs = "http://schemas.openxmlformats.org/package/2006/relationships";
     private const string ContentTypesNs = "http://schemas.openxmlformats.org/package/2006/content-types";
@@ -33,7 +33,7 @@ public static class XlsxWriter
         new PackageWriter(wb, package, source).Write(target);
     }
 
-    private sealed class PackageWriter(Workbook wb, XlsxPackage package, ZipArchive source)
+    private sealed partial class PackageWriter(Workbook wb, XlsxPackage package, ZipArchive source)
     {
         private readonly Dictionary<string, Action<Stream>> _parts = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> _removed = new(StringComparer.OrdinalIgnoreCase);
@@ -88,9 +88,16 @@ public static class XlsxWriter
             var sheets = Sheets(typeBase);
             UpdateWorkbook(doc, ns, typeBase, sheets);
             _parts[_workbookPart] = s => SheetXmlWriter.Save(doc, s);
-            var tables = sheets.Where(x => x.Worksheet != null).ToDictionary(x => x.Worksheet, x => Tables(x, typeBase));
-            foreach (var sheet in sheets.Where(x => x.Worksheet != null && (x.Original == null || x.Worksheet.Modified || Find(source, x.PartName) == null)))
-                _parts[sheet.PartName] = s => SheetXmlWriter.Write(s, sheet.Worksheet, sheet.Original, package, styles, strings, theme, tables[sheet.Worksheet]);
+            foreach (var sheet in sheets.Where(x => x.Worksheet != null))
+            {
+                var rels = new SheetRels(sheet.Original != null ? ReadRelationships(source, sheet.PartName) : []);
+                var tables = Tables(sheet, typeBase, rels);
+                var rewrite = sheet.Original == null || sheet.Worksheet.Modified || Find(source, sheet.PartName) == null;
+                var (links, legacy) = rewrite ? Annotations(sheet, typeBase, rels) : default;
+                if (rels.Changed) _parts[RelsPartOf(sheet.PartName)] = s => WriteRelationships(s, rels.List);
+                if (rewrite)
+                    _parts[sheet.PartName] = s => SheetXmlWriter.Write(s, sheet.Worksheet, sheet.Original, package, styles, strings, theme, tables, links, legacy);
+            }
 
             var relsPart = RelsPartOf(_workbookPart);
             if (package == null || !_rels.SequenceEqual(package.WorkbookRelationships)) _parts[relsPart] = s => WriteRelationships(s, _rels);
@@ -223,14 +230,12 @@ public static class XlsxWriter
                             : "0";
         }
 
-        private List<string> Tables(SheetEntry sheet, string typeBase)
+        private List<string> Tables(SheetEntry sheet, string typeBase, SheetRels rels)
         {
             var original = sheet.Original?.TableParts ?? [];
             var ids = new List<string>();
             if (original.Count == 0 && sheet.Worksheet.Tables.Count == 0) return [.. sheet.Original?.OpaqueTableParts ?? []];
             var rewrite = sheet.Original == null || sheet.Worksheet.Modified || Find(source, sheet.PartName) == null;
-            var rels = sheet.Original != null && Find(source, RelsPartOf(sheet.PartName)) != null ? ReadRelationships(source, sheet.PartName) : [];
-            var changed = false;
             foreach (var table in sheet.Worksheet.Tables)
             {
                 var names = rewrite && table.HeaderRow ? TableEdits.HeaderNames(sheet.Worksheet, table, (_, c) => c?.Value ?? default).Names : null;
@@ -243,30 +248,18 @@ public static class XlsxWriter
                     continue;
                 }
 
-                var existing = new HashSet<string>((source?.Entries.Select(e => e.FullName) ?? []).Concat(_added), StringComparer.OrdinalIgnoreCase);
-                var folder = _workbookPart[..(_workbookPart.LastIndexOf('/') + 1)] + "tables/table";
-                var n = 1;
-                while (existing.Contains(folder + n + ".xml")) n++;
-                var part = folder + n + ".xml";
-                _added.Add(part);
-                _overrides["/" + part] = TableXml.ContentType;
-                var id = 1;
-                while (rels.Any(r => r.Id == "rId" + id)) id++;
-                rels.Add(new XlsxRelationship("rId" + id, typeBase + "/table", Relative(sheet.PartName, part), false));
-                ids.Add("rId" + id);
-                changed = true;
+                var part = NewPart(Folder + "tables/table{0}.xml", TableXml.ContentType);
+                ids.Add(rels.Add(typeBase + "/table", Relative(sheet.PartName, part)));
                 _parts[part] = s => SheetXmlWriter.Save(new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), TableXml.Write(table, names)), s);
             }
 
             foreach (var (id, part) in original.Where(p => sheet.Worksheet.Tables.All(t => t.PartName != p.PartName)))
             {
-                rels.RemoveAll(r => r.Id == id);
+                rels.Remove(id);
                 Remove(part);
-                changed = true;
             }
 
             ids.AddRange(sheet.Original?.OpaqueTableParts ?? []);
-            if (changed) _parts[RelsPartOf(sheet.PartName)] = s => WriteRelationships(s, rels);
             return ids;
         }
 

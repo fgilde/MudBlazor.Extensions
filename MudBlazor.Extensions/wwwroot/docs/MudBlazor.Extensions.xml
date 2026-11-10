@@ -31665,6 +31665,73 @@
             Such cells have no formula of their own; null for all other cells.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellLink">
+            <summary>A hyperlink on a cell.</summary>
+            <param name="Cell">The linked cell.</param>
+            <param name="Target">External target such as a web address, stored as a relationship of the sheet; null for a link inside the workbook.</param>
+            <param name="Location">
+            Place inside the workbook, for example <c>'Sheet 2'!A1</c> or a defined name, used when <paramref name="Target"/> is null. It follows row,
+            column and sheet changes like a formula. With an external target it is the fragment of that target and stays as written.
+            </param>
+            <param name="Display">Text shown for the link, or null.</param>
+            <param name="Tooltip">Text shown when hovering the link, or null.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellLink.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellRef,System.String,System.String,System.String,System.String)">
+            <summary>A hyperlink on a cell.</summary>
+            <param name="Cell">The linked cell.</param>
+            <param name="Target">External target such as a web address, stored as a relationship of the sheet; null for a link inside the workbook.</param>
+            <param name="Location">
+            Place inside the workbook, for example <c>'Sheet 2'!A1</c> or a defined name, used when <paramref name="Target"/> is null. It follows row,
+            column and sheet changes like a formula. With an external target it is the fragment of that target and stays as written.
+            </param>
+            <param name="Display">Text shown for the link, or null.</param>
+            <param name="Tooltip">Text shown when hovering the link, or null.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Cell">
+            <summary>The linked cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Target">
+            <summary>External target such as a web address, stored as a relationship of the sheet; null for a link inside the workbook.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Location">
+            <summary>
+            Place inside the workbook, for example <c>'Sheet 2'!A1</c> or a defined name, used when <paramref name="Target"/> is null. It follows row,
+            column and sheet changes like a formula. With an external target it is the fragment of that target and stays as written.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Display">
+            <summary>Text shown for the link, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Tooltip">
+            <summary>Text shown when hovering the link, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.IsSafe">
+            <summary>
+            True if the link may be followed when clicked: a location inside the workbook, or an absolute <c>http</c>, <c>https</c> or
+            <c>mailto</c> target. Any other target (<c>file</c>, relative paths, <c>javascript</c> …) should only be shown as text.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellNote">
+            <summary>A note (classic Excel comment) on a cell.</summary>
+            <param name="Cell">The annotated cell.</param>
+            <param name="Author">The author's name.</param>
+            <param name="Text">The plain text; formatting runs from the file are kept while the text is unchanged.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellNote.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellRef,System.String,System.String)">
+            <summary>A note (classic Excel comment) on a cell.</summary>
+            <param name="Cell">The annotated cell.</param>
+            <param name="Author">The author's name.</param>
+            <param name="Text">The plain text; formatting runs from the file are kept while the text is unchanged.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellNote.Cell">
+            <summary>The annotated cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellNote.Author">
+            <summary>The author's name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellNote.Text">
+            <summary>The plain text; formatting runs from the file are kept while the text is unchanged.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellRange">
             <summary>
             A rectangular cell range between two corners. Corners may be given in any order; whole columns and rows
@@ -32146,6 +32213,82 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CellValue.ToString">
             <summary>Formats the value with invariant culture (numbers round-trip, errors use their Excel codes).</summary>
             <returns>The text form.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetLinkCommand">
+            <summary>Adds a hyperlink to a cell or replaces the link that covers it.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="link">The link; it needs a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Target"/> or a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Location"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetLinkCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellLink)">
+            <summary>Adds a hyperlink to a cell or replaces the link that covers it.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="link">The link; it needs a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Target"/> or a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.CellLink.Location"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetLinkCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetLinkCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetLinkCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RemoveLinkCommand">
+            <summary>Removes the hyperlink that covers a cell.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="cell">A cell of the link.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RemoveLinkCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Removes the hyperlink that covers a cell.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="cell">A cell of the link.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RemoveLinkCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RemoveLinkCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RemoveLinkCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetNoteCommand">
+            <summary>Adds a note to a cell or replaces its note. Build an edit with <c>with</c> from the current note so its shape and formatting stay.</summary>
+            <param name="sheet">The sheet; its <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.NotesReadOnly"/> must be false.</param>
+            <param name="note">The note.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetNoteCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellNote)">
+            <summary>Adds a note to a cell or replaces its note. Build an edit with <c>with</c> from the current note so its shape and formatting stay.</summary>
+            <param name="sheet">The sheet; its <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.NotesReadOnly"/> must be false.</param>
+            <param name="note">The note.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetNoteCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetNoteCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetNoteCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RemoveNoteCommand">
+            <summary>Removes the note of a cell.</summary>
+            <param name="sheet">The sheet; its <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.NotesReadOnly"/> must be false.</param>
+            <param name="cell">The cell.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RemoveNoteCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Removes the note of a cell.</summary>
+            <param name="sheet">The sheet; its <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.NotesReadOnly"/> must be false.</param>
+            <param name="cell">The cell.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RemoveNoteCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RemoveNoteCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RemoveNoteCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetValueCommand">
             <summary>Sets a constant cell value and removes any formula.</summary>
@@ -33769,6 +33912,33 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OpaqueTableParts">
             <summary>Relationship ids of table parts the model could not read; they stay in <c>tableParts</c> and are copied unchanged.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.CommentsPart">
+            <summary>Zip entry name of the legacy comments part holding the notes, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.CommentsRelationshipId">
+            <summary>Relationship id of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.CommentsPart"/> in the sheet rels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.CommentsRoot">
+            <summary>The original root of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.CommentsPart"/>; attributes, authors and unknown children stay when notes change.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.VmlPart">
+            <summary>Zip entry name of the VML drawing of <c>legacyDrawing</c>, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.VmlRelationshipId">
+            <summary>Relationship id of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.VmlPart"/> (the <c>legacyDrawing</c> r:id).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.VmlText">
+            <summary>The VML text read as Latin-1, so unchanged shapes are written back byte for byte; VML from Excel is not always well-formed XML.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.VmlOnlyNotes">
+            <summary>True if every anchored shape of the VML drawing is a note, so all its references move with the notes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OriginalNotes">
+            <summary>The notes as read; the comment and VML parts are rewritten only when the sheet's notes differ from these.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.AnnotationsModelled">
+            <summary>True if the notes, comments part and VML drawing of this sheet are modelled completely and follow structural changes.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Unmodelled">
             <summary>Children the model does not represent at all, in original order.</summary>
         </member>
@@ -34135,9 +34305,9 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.HasUnshiftedReferences">
             <summary>
             True if the source file contains content whose cell references are not moved when rows, columns or sheets change:
-            hyperlinks, comments, drawings and charts, pivot tables and their
-            caches, external links, page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or
-            columns or renaming a sheet these keep pointing at their original cells; editors should warn once.
+            threaded comments, form controls and other legacy drawing shapes, drawings and charts, pivot tables and their caches, external links,
+            page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or columns or renaming a sheet these
+            keep pointing at their original cells; editors should warn once.
             </summary>
         </member>
         <member name="E:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Changed">
@@ -34239,6 +34409,18 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Tables">
             <summary>Tables on this sheet; change them with the table commands.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Links">
+            <summary>Hyperlinks on this sheet; change them with <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SetLinkCommand"/> and <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.RemoveLinkCommand"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Notes">
+            <summary>Notes on this sheet; change them with <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SetNoteCommand"/> and <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.RemoveNoteCommand"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.NotesReadOnly">
+            <summary>
+            True if the source file has threaded comments on this sheet. Their legacy notes are shown but cannot be edited, and the comment parts are
+            saved unchanged.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.TableAt(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
             <summary>Finds the table containing a cell.</summary>

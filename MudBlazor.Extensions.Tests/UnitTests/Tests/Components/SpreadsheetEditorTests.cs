@@ -402,7 +402,7 @@ public class SpreadsheetEditorTests : IAsyncLifetime
         cut.WaitForAssertion(() => Assert.Contains("boom", _dialogs[^1].Markup));
     }
 
-    private static byte[] WithHyperlink(byte[] xlsx)
+    private static byte[] WithPageBreak(byte[] xlsx)
     {
         using var ms = new MemoryStream();
         ms.Write(xlsx);
@@ -414,7 +414,7 @@ public class SpreadsheetEditorTests : IAsyncLifetime
                 xml = reader.ReadToEnd();
             entry.Delete();
             using var writer = new StreamWriter(zip.CreateEntry("xl/worksheets/sheet1.xml").Open());
-            writer.Write(xml.Replace("</sheetData>", "</sheetData><hyperlinks><hyperlink ref=\"A1\" location=\"Sheet1!B5\"/></hyperlinks>"));
+            writer.Write(xml.Replace("</sheetData>", "</sheetData><rowBreaks count=\"1\" manualBreakCount=\"1\"><brk id=\"5\" max=\"16383\" man=\"1\"/></rowBreaks>"));
         }
 
         return ms.ToArray();
@@ -454,7 +454,7 @@ public class SpreadsheetEditorTests : IAsyncLifetime
     [Fact]
     public async Task UnshiftedReferences_WarnOnceOnFirstStructureChange()
     {
-        var bytes = WithHyperlink(Xlsx(Book(("Sheet1", "A1", 1d))));
+        var bytes = WithPageBreak(Xlsx(Book(("Sheet1", "A1", 1d))));
         var cut = Render(p => p.Add(x => x.FileDisplayInfos, new Infos("book.xlsx", XlsxType, bytes)));
         cut.WaitForAssertion(() => Assert.True(cut.Instance.CurrentWorkbook?.HasUnshiftedReferences));
 
