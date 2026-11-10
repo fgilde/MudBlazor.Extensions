@@ -110,6 +110,21 @@ public class SpreadsheetDataFeaturesTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task DataTab_SortWholeColumn_BlankTopCell_ExpandsToDataRegion()
+    {
+        var wb = Book(("A1", "Report"), ("A3", "Name"), ("B3", "Qty"), ("A4", "c"), ("B4", 3d), ("A5", "a"), ("B5", 1d), ("A6", "b"), ("B6", 2d));
+        var cut = Render(wb);
+        Select(cut, "B1:B1048576");
+
+        await Run(cut, "xl-sort-desc");
+
+        var sheet = wb.Sheets[0];
+        Assert.Equal("Report", sheet[new CellRef(0, 0)].Value.ToString());
+        Assert.Equal(["Name", "c", "b", "a"], Enumerable.Range(2, 4).Select(r => sheet[new CellRef(r, 0)].Value.ToString()));
+        Assert.Equal(["Qty", "3", "2", "1"], Enumerable.Range(2, 4).Select(r => sheet[new CellRef(r, 1)].Value.ToString()));
+    }
+
+    [Fact]
     public void FilterMenu_UncheckValue_HidesRows()
     {
         var wb = Fruits();

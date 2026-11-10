@@ -53,12 +53,27 @@ public partial class MudExSpreadsheetEditor
         if (sheet.TableAt(active) is { } table) return (MudExSpreadsheetGrid.SortRange(table, default), table.HeaderRow);
         if (sheet.AutoFilter is { } filter && filter.Range.Contains(active)) return (filter.Range, true);
         var selected = ActiveRange.Normalized;
-        var region = _grid?.CurrentRegion(active) ?? selected;
-        var range = selected.IsSingleCell || region.Left < selected.Left || region.Right > selected.Right
-            ? CellRange.FromBounds(Math.Min(region.Top, selected.Top), Math.Min(region.Left, selected.Left), Math.Max(region.Bottom, selected.Bottom),
-                Math.Max(region.Right, selected.Right))
-            : selected;
+        var region = _grid?.CurrentRegion(DataAnchor(sheet, selected, active)) ?? selected;
+        var range = selected.IsSingleCell
+            ? region
+            : region.Left < selected.Left || region.Right > selected.Right
+                ? CellRange.FromBounds(Math.Max(region.Top, selected.Top), Math.Min(region.Left, selected.Left), Math.Min(region.Bottom, selected.Bottom),
+                    Math.Max(region.Right, selected.Right))
+                : selected;
         return (range, HasHeader(range));
+    }
+
+    private static CellRef DataAnchor(Worksheet sheet, CellRange selected, CellRef active)
+    {
+        bool HasValue(CellRef r) => sheet[r] is { } cell && cell.Value.Kind != CellValueKind.Empty;
+        if (selected.IsSingleCell || HasValue(active)) return active;
+        var bottom = Math.Min(selected.Bottom, sheet.UsedRange.Bottom);
+        for (var row = selected.Top; row <= bottom; row++)
+        {
+            var cell = new CellRef(row, active.Column);
+            if (HasValue(cell)) return cell;
+        }
+        return active;
     }
 
     private bool HasHeader(CellRange region)
