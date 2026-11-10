@@ -31,16 +31,12 @@ public partial class MudExSlideShapeView
         _ => "mud-ex-slide-shape"
     } + (Inherited ? " mud-ex-slide-inherited" : "");
 
-    private string FrameStyle
+    internal static string BoxStyle(ShapeTransform t, Presentation presentation, bool flip = true)
     {
-        get
-        {
-            var t = Shape.ResolvedTransform;
-            var style = $"left:{Percent(t.X, Presentation.SlideWidth)}%;top:{Percent(t.Y, Presentation.SlideHeight)}%;" +
-                        $"width:{Percent(t.Width, Presentation.SlideWidth)}%;height:{Percent(t.Height, Presentation.SlideHeight)}%;";
-            var transform = $"{(t.Rotation != 0 ? $"rotate({Num(t.Rotation)}deg) " : "")}{(t.FlipH ? "scaleX(-1) " : "")}{(t.FlipV ? "scaleY(-1)" : "")}".Trim();
-            return transform.Length == 0 ? style : $"{style}transform:{transform};";
-        }
+        var style = $"left:{Percent(t.X, presentation.SlideWidth)}%;top:{Percent(t.Y, presentation.SlideHeight)}%;" +
+                    $"width:{Percent(t.Width, presentation.SlideWidth)}%;height:{Percent(t.Height, presentation.SlideHeight)}%;";
+        var transform = $"{(t.Rotation != 0 ? $"rotate({Num(t.Rotation)}deg) " : "")}{(flip && t.FlipH ? "scaleX(-1) " : "")}{(flip && t.FlipV ? "scaleY(-1)" : "")}".Trim();
+        return transform.Length == 0 ? style : $"{style}transform:{transform};";
     }
 
     internal static string Num(double value) => value.ToString("0.####", CultureInfo.InvariantCulture);

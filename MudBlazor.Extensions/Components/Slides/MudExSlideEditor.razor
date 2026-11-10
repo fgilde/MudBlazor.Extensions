@@ -21,8 +21,8 @@
                 <MudExRibbonTab Text="@TryLocalize("Home")" KeyTip="H" Visible="@(!IsReadOnly)">
                     <MudExRibbonGroup Text="@TryLocalize("Clipboard")" Icon="@Icons.Material.Filled.ContentPaste" CollapsePriority="2">
                         <MudExRibbonButton Id="pp-paste" Text="@TryLocalize("Paste")" Icon="@Icons.Material.Filled.ContentPaste" Size="MudExRibbonItemSize.Large" Shortcut="Ctrl+V" Disabled="true" />
-                        <MudExRibbonButton Id="pp-cut" Text="@TryLocalize("Cut")" Icon="@Icons.Material.Filled.ContentCut" Size="MudExRibbonItemSize.Small" Shortcut="Ctrl+X" Disabled="true" />
-                        <MudExRibbonButton Id="pp-copy" Text="@TryLocalize("Copy")" Icon="@Icons.Material.Filled.ContentCopy" Size="MudExRibbonItemSize.Small" Shortcut="Ctrl+C" Disabled="true" />
+                        <MudExRibbonButton Id="pp-cut" Text="@TryLocalize("Cut")" Icon="@Icons.Material.Filled.ContentCut" Size="MudExRibbonItemSize.Small" Shortcut="Ctrl+X" Disabled="@(!HasShapeSelection)" />
+                        <MudExRibbonButton Id="pp-copy" Text="@TryLocalize("Copy")" Icon="@Icons.Material.Filled.ContentCopy" Size="MudExRibbonItemSize.Small" Shortcut="Ctrl+C" Disabled="@(!HasShapeSelection)" />
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Slides")" Icon="@Icons.Material.Filled.Slideshow" CollapsePriority="5">
                         @NewSlideButton("pp-new-slide")
@@ -105,14 +105,8 @@
                              HideRequested="SetHiddenAsync" Localizer="@Localizer" />
         }
         <div class="mud-ex-slide-editor-main">
-            <div class="mud-ex-slide-editor-stage" tabindex="0" @onkeydown="_navigationKeyDown">
-                @if (_current != null && _imagesReady)
-                {
-                    <div class="mud-ex-slide-editor-frame" style="@FrameStyle">
-                        <MudExSlideView Presentation="_presentation" Slide="_current" Images="_images" />
-                    </div>
-                }
-            </div>
+            <MudExSlideCanvas @ref="_canvas" Presentation="_presentation" Slide="@(_imagesReady ? _current : null)" Images="_images" Zoom="@(_zoom ?? 0)" ReadOnly="IsReadOnly"
+                              SelectionChanged="@(_ => StateHasChanged())" KeyDown="_navigationKeyDown" Localizer="@Localizer" />
             @if (_notesVisible && _current != null)
             {
                 <MudExSlideNotes @ref="_notes" Slide="_current" ReadOnly="IsReadOnly" CanHaveNotes="@_presentation.CanHaveNotes(_current)" NotesChanged="SetNotesAsync" Localizer="@Localizer" />

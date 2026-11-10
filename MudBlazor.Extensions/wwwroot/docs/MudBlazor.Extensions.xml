@@ -19515,6 +19515,94 @@
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.Dispose">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideCanvas">
+            <summary>
+            The editing area of the slide editor: shows a slide at a zoom level with a selection layer above it.
+            Shapes are selected, moved, resized and rotated with the pointer, with smart guides while moving; the gestures run in the browser
+            and only their result reaches .NET as one undo step. The keyboard nudges, deletes, duplicates and cycles through the shapes.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.#ctor">
+            <summary>Creates the canvas.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.Presentation">
+            <summary>The presentation the slide belongs to. Edits are executed on it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.Slide">
+            <summary>The slide to edit. Changing it clears the selection.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.Images">
+            <summary>The image URLs of the presentation.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.Zoom">
+            <summary>The zoom factor, 1 is the actual size at 96 dpi. Zero or less (the default) fits the slide into the canvas.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.ReadOnly">
+            <summary>If true shapes can neither be selected nor changed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.SelectionChanged">
+            <summary>Raised whenever the selected shapes change, also when the slide changes or selected shapes disappear.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.KeyDown">
+            <summary>Raised for keys the canvas does not handle itself, for example to switch slides.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.Selection">
+            <summary>The ids of the selected shapes. A group and one of its descendants are never selected together.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.SelectAsync(System.Collections.Generic.IEnumerable{System.UInt32})">
+            <summary>Selects shapes. Unknown ids and descendants of other selected shapes are ignored.</summary>
+            <param name="ids">The shape ids.</param>
+            <returns>A task that completes when the selection is shown.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnSelectionAsync(System.UInt32[])">
+            <summary>Called by the browser with the shapes the user selected by a marquee or by clicking the empty slide.</summary>
+            <param name="ids">The shape ids.</param>
+            <returns>A task that completes when the selection is shown.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnShapeClickAsync(System.UInt32,System.Boolean)">
+            <summary>
+            Called by the browser when the user clicked a shape. A click selects the outermost group of the shape, a click inside a selected group
+            selects the next level below it. With <paramref name="toggle"/> the clicked shape is added to or removed from the selection.
+            </summary>
+            <param name="id">The id of the shape that was hit.</param>
+            <param name="toggle">True if Shift or Ctrl was pressed.</param>
+            <returns>The new selection.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnTransformsAsync(System.Collections.Generic.Dictionary{System.UInt32,MudBlazor.Extensions.Components.ShapeTransformDto})">
+            <summary>Called by the browser when the user moved, resized or rotated shapes. All changes are one undo step.</summary>
+            <param name="transforms">The new transforms in slide coordinates (EMU) by shape id.</param>
+            <returns>A task that completes when the change is executed.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ShapeTransformDto">
+            <summary>A shape transform reported by the browser after a gesture on the <see cref="T:MudBlazor.Extensions.Components.MudExSlideCanvas"/>, in slide coordinates (EMU).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ShapeTransformDto.X">
+            <summary>Left edge of the unrotated box.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ShapeTransformDto.Y">
+            <summary>Top edge of the unrotated box.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ShapeTransformDto.Width">
+            <summary>Width of the box.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ShapeTransformDto.Height">
+            <summary>Height of the box.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ShapeTransformDto.Rotation">
+            <summary>Clockwise rotation in degrees.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideEditor">
             <summary>
             Presentation editor in the style of PowerPoint with ribbon, slide panel, notes pane and status bar.
@@ -19559,6 +19647,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.SelectedSlides">
             <summary>The slides selected in the slide panel, in show order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.SelectedShapes">
+            <summary>The ids of the shapes selected on the current slide.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.Name">
             <inheritdoc />

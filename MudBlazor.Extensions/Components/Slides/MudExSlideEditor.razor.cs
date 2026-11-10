@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -28,7 +27,6 @@ public partial class MudExSlideEditor : IMudExFileEditor
     private Slide _current;
     private int _currentIndex;
     private IReadOnlyList<Slide> _selection = [];
-    private IReadOnlyList<uint> _shapeSelection = [];
     private ElementReference _root;
     private IJSObjectReference _module;
     private IJSObjectReference _js;
@@ -37,6 +35,7 @@ public partial class MudExSlideEditor : IMudExFileEditor
     private Slide _revealed;
     private MudExSlidePanel _panel;
     private MudExSlideNotes _notes;
+    private MudExSlideCanvas _canvas;
     private double? _zoom;
     private bool _notesVisible = true;
     private bool _notesParameter = true;
@@ -90,6 +89,9 @@ public partial class MudExSlideEditor : IMudExFileEditor
     /// <summary>The slides selected in the slide panel, in show order.</summary>
     public IReadOnlyList<Slide> SelectedSlides => _selection;
 
+    /// <summary>The ids of the shapes selected on the current slide.</summary>
+    public IReadOnlyList<uint> SelectedShapes => _canvas?.Selection ?? [];
+
     /// <inheritdoc />
     public override string Name => "Slide editor";
 
@@ -101,20 +103,9 @@ public partial class MudExSlideEditor : IMudExFileEditor
 
     private bool IsReadOnly => ReadOnly || LoadFailed || _presentation == null;
 
-    private bool HasShapeSelection => !IsReadOnly && _shapeSelection.Count > 0;
+    private bool HasShapeSelection => !IsReadOnly && SelectedShapes.Count > 0;
 
     private string RootStyle => $"--mud-ex-slide-accent:{MudExRibbonColors.BackgroundFor(RibbonColor)};{Style}";
-
-    private string FrameStyle
-    {
-        get
-        {
-            var ratio = (_presentation.SlideWidth / (double)_presentation.SlideHeight).ToString(CultureInfo.InvariantCulture);
-            return _zoom is { } zoom
-                ? $"width:{(_presentation.SlideWidth / 9525d * zoom).ToString("0.##", CultureInfo.InvariantCulture)}px"
-                : $"width:min(100cqw, 100cqh * {ratio})";
-        }
-    }
 
     /// <inheritdoc />
     public override Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService)
@@ -236,7 +227,6 @@ public partial class MudExSlideEditor : IMudExFileEditor
         _presentation = presentation;
         _images = presentation == null ? null : new SlideImageUrls(presentation);
         _imagesReady = false;
-        _shapeSelection = [];
         _currentIndex = 0;
         _current = presentation?.Slides.FirstOrDefault();
         _selection = _current == null ? [] : [_current];
@@ -288,8 +278,6 @@ public partial class MudExSlideEditor : IMudExFileEditor
 
     private void Show(Slide slide, IReadOnlyList<Slide> selection = null)
     {
-        if (!ReferenceEquals(slide, _current))
-            _shapeSelection = [];
         _current = slide;
         _currentIndex = slide == null ? 0 : IndexOf(slide);
         _selection = selection ?? (slide == null ? [] : [slide]);
@@ -328,13 +316,6 @@ public partial class MudExSlideEditor : IMudExFileEditor
         try { await _js.InvokeVoidAsync("revokeAll"); }
         catch (JSException) { }
         catch (JSDisconnectedException) { }
-    }
-
-    private sealed class WithoutRender : IHandleEvent
-    {
-        public static readonly WithoutRender Instance = new();
-
-        public Task HandleEventAsync(EventCallbackWorkItem item, object arg) => item.InvokeAsync(arg);
     }
 
     private async Task OnKeyDownAsync(KeyboardEventArgs e)

@@ -82,8 +82,8 @@ public partial class MudExSlideEditor
 
     private Task ArrangeAsync(ZOrderChange change) => RunAsync(() =>
     {
-        if (_current != null && _shapeSelection.Count > 0)
-            _presentation.Execute(new ReorderShapesCommand(_current, _shapeSelection, change));
+        if (_current != null && SelectedShapes.Count > 0)
+            _presentation.Execute(new ReorderShapesCommand(_current, SelectedShapes, change));
     });
 
     private void OnSelectionChanged(SlideSelection selection) => Show(selection.Current, selection.Slides);

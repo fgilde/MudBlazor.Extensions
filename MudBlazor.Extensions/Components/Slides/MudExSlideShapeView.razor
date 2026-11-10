@@ -2,7 +2,7 @@
 @namespace MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Office.Presentation
 
-<div class="@ShapeClass" data-shape-id="@(Inherited ? null : Shape.Id)" style="@FrameStyle">
+<div class="@ShapeClass" data-shape-id="@(Inherited ? null : Shape.Id)" data-group-id="@(Inherited ? null : Shape.Parent?.Id)" style="@BoxStyle(Shape.ResolvedTransform, Presentation)">
     @switch (Shape)
     {
         case AutoShape auto:

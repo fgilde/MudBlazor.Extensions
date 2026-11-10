@@ -158,11 +158,11 @@ public class SlideEditorTests : IAsyncLifetime
         Assert.True(cut.Find(".mud-ex-slide-notes textarea").HasAttribute("readonly"));
         Assert.Empty(cut.FindAll(".mud-ex-slide-panel-item[draggable=true]"));
 
-        cut.Find(".mud-ex-slide-editor-stage").KeyDown(new KeyboardEventArgs { Key = "PageDown" });
+        cut.Find(".mud-ex-slide-canvas").KeyDown(new KeyboardEventArgs { Key = "PageDown" });
         cut.WaitForAssertion(() => Assert.Equal("Slide 2 of 3", Status(cut)));
-        cut.Find(".mud-ex-slide-editor-stage").KeyDown(new KeyboardEventArgs { Key = "End" });
+        cut.Find(".mud-ex-slide-canvas").KeyDown(new KeyboardEventArgs { Key = "End" });
         cut.WaitForAssertion(() => Assert.Equal("Slide 3 of 3", Status(cut)));
-        cut.Find(".mud-ex-slide-editor-stage").KeyDown(new KeyboardEventArgs { Key = "ArrowUp" });
+        cut.Find(".mud-ex-slide-canvas").KeyDown(new KeyboardEventArgs { Key = "ArrowUp" });
         cut.WaitForAssertion(() => Assert.Equal("Slide 2 of 3", Status(cut)));
         Assert.False(cut.Instance.IsDirty);
     }
@@ -204,7 +204,12 @@ public class SlideEditorTests : IAsyncLifetime
         var renders = host.Instance.Renders;
 
         foreach (var key in "notes")
+        {
             await host.Find(".mud-ex-slide-editor").TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = key.ToString() });
+            await host.Find(".mud-ex-slide-canvas").TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = key.ToString() });
+        }
+
+        await host.Find(".mud-ex-slide-canvas").TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = "Escape" });
         await host.InvokeAsync(() => Task.Delay(50));
 
         Assert.Equal(renders, host.Instance.Renders);
@@ -230,7 +235,7 @@ public class SlideEditorTests : IAsyncLifetime
         cut.WaitForAssertion(() => Assert.Equal(1, requests));
 
         cut.Render(p => p.Add(x => x.ReadOnly, true));
-        cut.Find(".mud-ex-slide-editor-stage").KeyDown(new KeyboardEventArgs { Key = "s", CtrlKey = true });
+        cut.Find(".mud-ex-slide-canvas").KeyDown(new KeyboardEventArgs { Key = "s", CtrlKey = true });
         Assert.Equal(1, requests);
     }
 
@@ -272,6 +277,35 @@ public class SlideEditorTests : IAsyncLifetime
 
         cut.WaitForAssertion(() => Assert.Equal(9, panel.FindComponents<MudExSlideView>().Count));
         Assert.NotEmpty(cut.FindAll(".mud-ex-slide-panel-item")[10].QuerySelectorAll(".mud-ex-slide"));
+    }
+
+    [Fact]
+    public async Task Editor_CanvasSelection_EnablesShapeControls_ArrowsNudgeInsteadOfNavigating()
+    {
+        var presentation = Sample();
+        var cut = Render(presentation);
+        var shape = presentation.Slides[0].Shapes[0];
+        var before = shape.ResolvedTransform;
+        bool Disabled(string id) => cut.FindComponent<MudExRibbon>().Instance.Commands.Single(c => c.Id == id).Disabled;
+        Assert.True(Disabled("pp-arrange"));
+
+        var canvas = cut.FindComponent<MudExSlideCanvas>();
+        await cut.InvokeAsync(() => canvas.Instance.OnSelectionAsync([shape.Id]));
+
+        cut.WaitForAssertion(() => Assert.False(Disabled("pp-arrange")));
+        Assert.False(Disabled("pp-bold"));
+        Assert.True(Disabled("pp-paste"));
+        Assert.Equal([shape.Id], cut.Instance.SelectedShapes);
+
+        cut.Find(".mud-ex-slide-canvas").KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
+
+        Assert.Equal("Slide 1 of 3", Status(cut));
+        Assert.Equal(before with { Y = before.Y + 914400 / 8 }, shape.ResolvedTransform);
+        Assert.True(presentation.Undo.CanUndo);
+
+        Click(cut, 1);
+        cut.WaitForAssertion(() => Assert.True(Disabled("pp-arrange")));
+        Assert.Empty(cut.Instance.SelectedShapes);
     }
 
     private sealed class CountingEditor : MudExSlideEditor
