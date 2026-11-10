@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace MudBlazor.Extensions.Office.Spreadsheet;
@@ -224,6 +225,23 @@ public sealed class Workbook
             EndBatch();
         }
     }
+
+    /// <summary>
+    /// True if the text can name a defined name: up to 255 letters, digits, underscores, periods and backslashes, starting with a letter, underscore
+    /// or backslash, and neither a cell reference (<c>Q1</c>, <c>XFD1048576</c>), an R1C1 reference (<c>R1C1</c>, <c>RC</c>, <c>C</c>), <c>TRUE</c> nor
+    /// <c>FALSE</c>. Like Excel, a function name such as <c>Rate</c> is allowed: <c>Rate*2</c> uses the name and <c>RATE(…)</c> the function.
+    /// </summary>
+    /// <param name="name">The candidate name.</param>
+    /// <returns>True if the name is valid.</returns>
+    public static bool IsValidName(string name) =>
+        IsIdentifier(name) && !name.Equals("TRUE", StringComparison.OrdinalIgnoreCase) && !name.Equals("FALSE", StringComparison.OrdinalIgnoreCase);
+
+    internal static bool IsIdentifier(string name) =>
+        !string.IsNullOrEmpty(name) && name.Length <= 255 && (char.IsLetter(name[0]) || name[0] is '_' or '\\')
+        && name.All(c => char.IsLetterOrDigit(c) || c is '_' or '.' or '\\') && !CellRange.TryParse(name, out _) && !R1C1.IsMatch(name);
+
+    private static readonly Regex R1C1 = new(@"^(?:[RC]|R\d*C\d*|R\d+|C\d+)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
 
     internal List<Worksheet> SheetList => _sheets;
 

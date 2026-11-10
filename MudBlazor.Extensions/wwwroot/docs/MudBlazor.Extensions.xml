@@ -35332,6 +35332,15 @@
             <summary>Applies a command and records it as one undo step (or adds it to the open transaction).</summary>
             <param name="cmd">The command.</param>
         </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Workbook.IsValidName(System.String)">
+            <summary>
+            True if the text can name a defined name: up to 255 letters, digits, underscores, periods and backslashes, starting with a letter, underscore
+            or backslash, and neither a cell reference (<c>Q1</c>, <c>XFD1048576</c>), an R1C1 reference (<c>R1C1</c>, <c>RC</c>, <c>C</c>), <c>TRUE</c> nor
+            <c>FALSE</c>. Like Excel, a function name such as <c>Rate</c> is allowed: <c>Rate*2</c> uses the name and <c>RATE(…)</c> the function.
+            </summary>
+            <param name="name">The candidate name.</param>
+            <returns>True if the name is valid.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.Axis">
             <summary>Row or column axis of a worksheet.</summary>
         </member>

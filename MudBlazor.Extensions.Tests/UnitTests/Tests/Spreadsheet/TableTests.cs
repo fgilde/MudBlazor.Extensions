@@ -639,6 +639,17 @@ public class TableTests
     }
 
     [Fact]
+    public void ExternalWorkbookRefs_AreNotMistakenForTableRefs()
+    {
+        var (wb, ws) = Sales();
+        wb.Execute(new SetFormulaCommand(ws, R("F9"), "=[1]Sheet1!A1"));
+        wb.Execute(new SetFormulaCommand(ws, R("F10"), "=SUM([Book1.xlsx]Sheet1!A1:A2)"));
+        Assert.Equal(("[1]Sheet1!A1", "SUM([Book1.xlsx]Sheet1!A1:A2)"), (ws[R("F9")].Formula, ws[R("F10")].Formula));
+        var error = Record.Exception(() => wb.Execute(new SetFormulaCommand(ws, R("F11"), "=SUM([Qty")));
+        Assert.True(error is null or ArgumentException, error?.GetType().Name);
+    }
+
+    [Fact]
     public void HeaderSync_RunsOnceAtTransactionCommit()
     {
         var (wb, ws) = Sales();

@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
@@ -335,8 +334,6 @@ internal sealed class TableUndo
 
 internal static class TableEdits
 {
-    private static readonly Regex R1C1 = new(@"^(?:[RC]|R\d*C\d*|R\d+|C\d+)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-
     internal static SheetTable Get(Worksheet sheet, string name) =>
         sheet.Tables.FirstOrDefault(t => t.Matches(name)) ?? throw new ArgumentException($"The sheet has no table named '{name}'.", nameof(name));
 
@@ -351,8 +348,7 @@ internal static class TableEdits
 
     internal static void ValidateName(Workbook wb, string name, SheetTable ignore)
     {
-        if (string.IsNullOrEmpty(name) || name.Length > 255 || !(char.IsLetter(name[0]) || name[0] is '_' or '\\')
-            || !name.All(c => char.IsLetterOrDigit(c) || c is '_' or '.' or '\\') || CellRef.TryParse(name, out _) || R1C1.IsMatch(name))
+        if (!Workbook.IsIdentifier(name))
             throw new ArgumentException($"'{name}' is not a valid table name.", nameof(name));
         if (wb.Tables.Any(t => t != ignore && t.Matches(name)) || wb.DefinedNames.ContainsKey(name))
             throw new ArgumentException($"The name '{name}' is already in use.", nameof(name));

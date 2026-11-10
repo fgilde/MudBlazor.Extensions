@@ -496,6 +496,7 @@ public sealed class DefineNameCommand(string name, string refersTo) : IWorkbookC
     public void Apply(Workbook wb)
     {
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("A name is required.", nameof(name));
+        if (refersTo != null && !wb.DefinedNameMap.ContainsKey(name)) RenameNameCommand.Validate(name, nameof(name));
         if (refersTo != null && wb.FindTable(name) != null) throw new ArgumentException($"The name '{name}' is already used by a table.", nameof(name));
         StructuredReferences.RequireTable(refersTo, false);
         _before = wb.DefinedNameMap.GetValueOrDefault(name);
@@ -532,7 +533,10 @@ public sealed class RenameNameCommand(string name, string newName) : IWorkbookCo
     {
         var names = wb.DefinedNameMap;
         if (name == null || !names.ContainsKey(name)) throw new ArgumentException($"The name '{name}' is not defined.", nameof(name));
-        if (string.IsNullOrWhiteSpace(newName)) throw new ArgumentException("A name is required.", nameof(newName));
+        Validate(newName, nameof(newName));
+        if (wb.Package?.DefinedNames?.Elements().Any(e => e.Name.LocalName == "definedName" && e.Attribute("localSheetId") != null
+                && string.Equals((string)e.Attribute("name"), name, StringComparison.OrdinalIgnoreCase)) == true)
+            throw new ArgumentException($"A sheet-level name '{name}' takes precedence on its sheet, so formulas there cannot be renamed safely.", nameof(name));
         if (!string.Equals(name, newName, StringComparison.OrdinalIgnoreCase) && names.ContainsKey(newName))
             throw new ArgumentException($"The name '{newName}' already exists.", nameof(newName));
         if (wb.FindTable(newName) != null) throw new ArgumentException($"The name '{newName}' is already used by a table.", nameof(newName));
@@ -541,6 +545,13 @@ public sealed class RenameNameCommand(string name, string newName) : IWorkbookCo
         names.Remove(_oldKey, out var refersTo);
         names[newName] = refersTo;
         wb.Notify(StructureChangeKind.DefinedNamesChanged, null);
+    }
+
+    internal static void Validate(string name, string parameter)
+    {
+        if (!Workbook.IsValidName(name))
+            throw new ArgumentException($"'{name}' is not a valid name. Use letters, digits, underscores and periods, start with a letter or underscore, "
+                                        + "and avoid cell references, TRUE and FALSE.", parameter);
     }
 
     /// <inheritdoc />

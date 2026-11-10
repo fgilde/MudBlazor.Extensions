@@ -542,12 +542,12 @@ public class FormulaEngineTests
     [Theory]
     [InlineData("X", "X+X", null, null)]
     [InlineData("A", "B+B", "B", "A+A")]
-    [InlineData("A", "B+C", "B", "C+C")]
+    [InlineData("A", "B+D", "B", "D+D")]
     public void DefinedNames_BranchingCycles_YieldCircQuickly(string n1, string t1, string n2, string t2)
     {
         var (wb, ws, _) = Create();
         if (n2 != null) wb.Execute(new DefineNameCommand(n2, t2));
-        if (t2 == "C+C") wb.Execute(new DefineNameCommand("C", "A+A"));
+        if (t2 == "D+D") wb.Execute(new DefineNameCommand("D", "A+A"));
         var task = Task.Run(() =>
         {
             wb.Execute(new DefineNameCommand(n1, t1));
