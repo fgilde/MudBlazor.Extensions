@@ -226,6 +226,28 @@ public class SpreadsheetChartsNotesTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task ChartDialog_RejectsBadReferences_QualifiesSheetName()
+    {
+        var wb = Sales();
+        var cut = Render(wb);
+        var grid = Select(cut, "A1:C3");
+        await Run(cut, "xl-chart-column");
+        var id = Assert.Single(wb.Sheets[0].Charts).Id;
+
+        var open = cut.InvokeAsync(() => grid.Instance.OnChartDoubleClick(id));
+        cut.WaitForAssertion(() => Assert.NotEmpty(_dialogs.FindAll(".mud-ex-sschart-values input")));
+        _dialogs.Find(".mud-ex-sschart-values input").Input("B2:B");
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-sschart-ok").Click());
+        cut.WaitForAssertion(() => Assert.NotEmpty(_dialogs.FindAll(".mud-ex-sschart-problem")));
+        Assert.Equal("Sheet1!$B$2:$B$3", wb.Sheets[0].Charts[0].Series[0].ValuesRef);
+
+        _dialogs.Find(".mud-ex-sschart-values input").Input("C2:C3");
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-sschart-ok").Click());
+        await open;
+        Assert.Equal("Sheet1!C2:C3", wb.Sheets[0].Charts[0].Series[0].ValuesRef);
+    }
+
+    [Fact]
     public async Task Note_Draft_KeptOnSaveAndSheetSwitch()
     {
         var wb = Book(("B2", "x"));

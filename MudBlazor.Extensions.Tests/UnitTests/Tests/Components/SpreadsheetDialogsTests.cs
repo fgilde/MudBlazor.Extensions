@@ -246,6 +246,12 @@ public class SpreadsheetDialogsTests : IAsyncLifetime
         await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-ssnames-delete").Click());
         Assert.Empty(wb.DefinedNames);
 
+        _dialogs.Find(".mud-ex-ssnames-name input").Input("Broken");
+        _dialogs.Find(".mud-ex-ssnames-refers input").Input("=Sheet1!$B$2+");
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-ssnames-save").Click());
+        Assert.NotEmpty(_dialogs.FindAll(".mud-ex-ssnames-error"));
+        Assert.Empty(wb.DefinedNames);
+
         _dialogs.Find(".mud-ex-ssnames-name input").Input("A1");
         Assert.True(_dialogs.Find(".mud-ex-ssnames-save").HasAttribute("disabled"));
         await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-ssnames-close").Click());

@@ -51,6 +51,12 @@ public partial class MudExSpreadsheetNameManagerDialog
     {
         var name = _name.Trim();
         var refersTo = _refersTo.Trim().TrimStart('=');
+        if (RuleFormulas.Parse(refersTo) == null)
+        {
+            _error = TryLocalize("The formula contains an error.");
+            return;
+        }
+
         if (Run("Define name", () =>
             {
                 var other = _selected == null || !string.Equals(_selected, name, StringComparison.OrdinalIgnoreCase);

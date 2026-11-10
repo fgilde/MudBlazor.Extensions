@@ -16,6 +16,7 @@ public partial class MudExSpreadsheetChartDialog
     private bool _legend;
     private bool _stacked;
     private List<SeriesRow> _rows = [];
+    private string _problem;
 
     private sealed class SeriesRow
     {
@@ -59,17 +60,36 @@ public partial class MudExSpreadsheetChartDialog
     private void Ok()
     {
         if (!Valid) return;
-        var series = _rows.Select(r =>
+        try
         {
-            var name = r.Name?.Trim() ?? "";
-            var nameRef = name.StartsWith('=') ? name[1..] : null;
-            var keepName = r.Source != null && nameRef == r.Source.NameRef;
-            return new SheetChartSeries(nameRef, keepName ? r.Source.Name : nameRef == null ? name : null, Ref(r.Categories), Ref(r.Values), r.Source?.Color);
-        }).ToList();
-        MudDialog.Close(DialogResult.Ok<IWorkbookCommand>(new UpdateChartCommand(Sheet, Chart.Id, _kind, _title ?? "", _legend, series, _stacked)));
+            var series = _rows.Select(r =>
+            {
+                var name = r.Name?.Trim() ?? "";
+                var nameRef = name.StartsWith('=') ? Ref(name, r.Source?.NameRef) : null;
+                var keepName = r.Source != null && nameRef == r.Source.NameRef;
+                return new SheetChartSeries(nameRef, keepName ? r.Source.Name : nameRef == null ? name : null, Ref(r.Categories, r.Source?.CategoriesRef),
+                    Ref(r.Values, r.Source?.ValuesRef), r.Source?.Color);
+            }).ToList();
+            MudDialog.Close(DialogResult.Ok<IWorkbookCommand>(new UpdateChartCommand(Sheet, Chart.Id, _kind, _title ?? "", _legend, series, _stacked)));
+        }
+        catch (ArgumentException e)
+        {
+            _problem = e.Message;
+        }
     }
 
-    private static string Ref(string text) => string.IsNullOrWhiteSpace(text) ? null : text.Trim().TrimStart('=');
+    private string Ref(string text, string original)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return null;
+        text = text.Trim().TrimStart('=');
+        if (text == original) return text;
+        var bang = text.LastIndexOf('!');
+        var sheet = bang < 0 ? Workbook.QuoteSheetName(Sheet.Name) : text[..bang];
+        var name = sheet.Length > 1 && sheet[0] == '\'' && sheet[^1] == '\'' ? sheet[1..^1].Replace("''", "'") : sheet;
+        if (!CellRange.TryParse(text[(bang + 1)..], out _) || Sheet.Workbook.FindSheet(name) == null)
+            throw new ArgumentException(TryLocalize("'{0}' is not a reference to cells of a sheet, for example {1}!B2:B5.", text, Workbook.QuoteSheetName(Sheet.Name)));
+        return sheet + "!" + text[(bang + 1)..];
+    }
 
     private void Cancel() => MudDialog.Cancel();
 }

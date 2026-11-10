@@ -406,6 +406,45 @@ public class SpreadsheetDataFeaturesTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task ValidationDialog_NumbersInUserCulture_InvalidInputShownNotWritten()
+    {
+        CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+        var wb = Book();
+        var cut = Render(wb);
+        Select(cut, "B2:B4");
+
+        var open = Run(cut, "xl-data-validation");
+        cut.WaitForAssertion(() => Assert.NotEmpty(_dialogs.FindAll(".mud-ex-ssdv-ok")));
+        await cut.InvokeAsync(() => _dialogs.FindComponents<MudSelect<ValidationType>>().Single().Instance.SelectOption(ValidationType.Decimal));
+        cut.WaitForAssertion(() => _dialogs.Find(".mud-ex-ssdv-formula1 input").Input("1,5"));
+        _dialogs.Find(".mud-ex-ssdv-formula2 input").Input("zehn");
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-ssdv-ok").Click());
+        cut.WaitForAssertion(() => Assert.NotEmpty(_dialogs.FindAll(".mud-ex-ssdv-problem")));
+        Assert.Empty(wb.Sheets[0].DataValidations);
+
+        _dialogs.Find(".mud-ex-ssdv-formula2 input").Input("10");
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-ssdv-ok").Click());
+        await open;
+        var dv = Assert.Single(wb.Sheets[0].DataValidations);
+        Assert.Equal(("1.5", "10"), (dv.Formula1, dv.Formula2));
+    }
+
+    [Fact]
+    public async Task ConditionalFormatDialog_InvalidFormula_ShownNotWritten()
+    {
+        var wb = Book(("A1", 3d), ("A2", 10d));
+        var cut = Render(wb);
+        Select(cut, "A1:A2");
+
+        _ = Run(cut, "xl-cf-greater");
+        cut.WaitForAssertion(() => Assert.NotEmpty(_dialogs.FindAll(".mud-ex-sscf-value1 input")));
+        _dialogs.Find(".mud-ex-sscf-value1 input").Input("=A1>");
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-sscf-ok").Click());
+        cut.WaitForAssertion(() => Assert.NotEmpty(_dialogs.FindAll(".mud-ex-sscf-problem")));
+        Assert.Empty(wb.Sheets[0].ConditionalFormats);
+    }
+
+    [Fact]
     public async Task ValidationDialog_AddsListRule()
     {
         var wb = Book();

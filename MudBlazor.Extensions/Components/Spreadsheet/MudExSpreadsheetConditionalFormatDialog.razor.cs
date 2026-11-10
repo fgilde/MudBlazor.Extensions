@@ -87,6 +87,7 @@ public partial class MudExSpreadsheetConditionalFormatDialog
     private bool _bold;
     private bool _italic;
     private bool _stop;
+    private string _problem;
 
     [CascadingParameter] private IMudDialogInstance MudDialog { get; set; }
 
@@ -269,6 +270,12 @@ public partial class MudExSpreadsheetConditionalFormatDialog
     {
         if (ParseRanges() is not { } ranges) return;
         var rule = Build();
+        if (FormulaProblem(rule))
+        {
+            _problem = TryLocalize("The formula contains an error.");
+            return;
+        }
+
         if (_editing is not { } e)
         {
             Close(new AddConditionalFormattingCommand(Sheet, new ConditionalFormatting(ranges, [rule])));
@@ -288,6 +295,13 @@ public partial class MudExSpreadsheetConditionalFormatDialog
             ? new DeleteConditionalFormattingCommand(Sheet, e.FormatIndex)
             : new EditConditionalFormattingCommand(Sheet, e.FormatIndex, cf with { Rules = cf.Rules.Where((_, i) => i != e.RuleIndex).ToList() }));
     }
+
+    private static bool FormulaProblem(ConditionalRule rule) => rule switch
+    {
+        ConditionalRule.Expression x => RuleFormulas.Parse(x.Formula) == null,
+        ConditionalRule.CellIs x => RuleFormulas.Parse(x.Formula1) == null || x.Formula2 != null && RuleFormulas.Parse(x.Formula2) == null,
+        _ => false
+    };
 
     private void Close(IWorkbookCommand command) => MudDialog.Close(DialogResult.Ok(command));
 

@@ -24,12 +24,16 @@
                 <MudStack Row="true" AlignItems="AlignItems.Center" Class="mud-ex-sschart-series">
                     <MudTextField T="string" Label="@TryLocalize("Name")" @bind-Value="row.Name" Immediate="true" Margin="Margin.Dense" />
                     <MudTextField T="string" Label="@TryLocalize("Categories")" @bind-Value="row.Categories" Immediate="true" Margin="Margin.Dense" />
-                    <MudTextField T="string" Label="@TryLocalize("Values")" @bind-Value="row.Values" Immediate="true" Margin="Margin.Dense" Required="true" />
+                    <MudTextField T="string" Class="mud-ex-sschart-values" Label="@TryLocalize("Values")" @bind-Value="row.Values" Immediate="true" Margin="Margin.Dense" Required="true" />
                     <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" aria-label="@TryLocalize("Remove series")" Disabled="@(_rows.Count == 1)"
                                    OnClick="@(() => _rows.Remove(row))" />
                 </MudStack>
             }
             <MudButton Class="mud-ex-sschart-add" Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" OnClick="@(() => _rows.Add(new SeriesRow()))">@TryLocalize("Add series")</MudButton>
+            @if (_problem != null)
+            {
+                <MudAlert Class="mud-ex-sschart-problem" Severity="Severity.Error" Dense="true">@_problem</MudAlert>
+            }
         </MudStack>
     </DialogContent>
     <DialogActions>

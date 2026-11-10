@@ -152,6 +152,10 @@
                     <span class="mud-ex-sscf-preview" style="@StylePreview(Format())">AaBbCcYyZz</span>
                 }
                 <MudCheckBox T="bool" Label="@TryLocalize("Stop If True")" @bind-Value="_stop" Dense="true" />
+                @if (_problem != null)
+                {
+                    <MudAlert Class="mud-ex-sscf-problem" Severity="Severity.Error" Dense="true">@_problem</MudAlert>
+                }
             </MudStack>
         }
     </DialogContent>

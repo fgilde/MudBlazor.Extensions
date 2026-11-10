@@ -39,8 +39,8 @@
             </MudTabPanel>
             <MudTabPanel Text="@TryLocalize("Input Message")">
                 <MudStack Spacing="2">
-                    <MudTextField T="string" Label="@TryLocalize("Title")" @bind-Value="_promptTitle" Margin="Margin.Dense" />
-                    <MudTextField T="string" Label="@TryLocalize("Input message")" @bind-Value="_prompt" Lines="3" Margin="Margin.Dense" />
+                    <MudTextField T="string" Label="@TryLocalize("Title")" @bind-Value="_promptTitle" MaxLength="RuleRanges.MaxTitleLength" Margin="Margin.Dense" />
+                    <MudTextField T="string" Label="@TryLocalize("Input message")" @bind-Value="_prompt" MaxLength="RuleRanges.MaxMessageLength" Lines="3" Margin="Margin.Dense" />
                 </MudStack>
             </MudTabPanel>
             <MudTabPanel Text="@TryLocalize("Error Alert")">
@@ -50,11 +50,15 @@
                         <MudSelectItem Value="@("warning")">@TryLocalize("Warning")</MudSelectItem>
                         <MudSelectItem Value="@("information")">@TryLocalize("Information")</MudSelectItem>
                     </MudSelect>
-                    <MudTextField T="string" Label="@TryLocalize("Title")" @bind-Value="_errorTitle" Margin="Margin.Dense" />
-                    <MudTextField T="string" Label="@TryLocalize("Error message")" @bind-Value="_error" Lines="3" Margin="Margin.Dense" />
+                    <MudTextField T="string" Label="@TryLocalize("Title")" @bind-Value="_errorTitle" MaxLength="RuleRanges.MaxTitleLength" Margin="Margin.Dense" />
+                    <MudTextField T="string" Label="@TryLocalize("Error message")" @bind-Value="_error" MaxLength="RuleRanges.MaxMessageLength" Lines="3" Margin="Margin.Dense" />
                 </MudStack>
             </MudTabPanel>
         </MudTabs>
+        @if (_problem != null)
+        {
+            <MudAlert Class="mud-ex-ssdv-problem" Severity="Severity.Error" Dense="true">@_problem</MudAlert>
+        }
     </DialogContent>
     <DialogActions>
         <MudButton Class="mud-ex-ssdv-clear" Disabled="@(Index < 0)" OnClick="ClearAll">@TryLocalize("Clear All")</MudButton>

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Office.Spreadsheet;
 
@@ -34,6 +35,7 @@ public partial class MudExSpreadsheetValidationDialog
     private string _errorTitle;
     private string _error;
     private int _tab;
+    private string _problem;
 
     [CascadingParameter] private IMudDialogInstance MudDialog { get; set; }
 
@@ -75,20 +77,38 @@ public partial class MudExSpreadsheetValidationDialog
     {
         if (formula == null) return "";
         if (type == ValidationType.List && formula.Length >= 2 && formula[0] == '"' && formula[^1] == '"') return formula[1..^1].Replace("\"\"", "\"");
-        return formula.StartsWith('=') || type is not (ValidationType.List or ValidationType.Custom) ? formula : "=" + formula;
+        if (type is not (ValidationType.List or ValidationType.Custom) && double.TryParse(formula, NumberStyles.Float, CultureInfo.InvariantCulture, out var n))
+            return n.ToString(CultureInfo.CurrentCulture);
+        return formula.StartsWith('=') ? formula : "=" + formula;
     }
 
     private string Formula(string text)
     {
         text = text?.Trim() ?? "";
         if (text.Length == 0) return null;
-        if (text.StartsWith('=')) return text[1..];
-        return _type == ValidationType.List ? "\"" + text.Replace("\"", "\"\"") + "\"" : text;
+        if (text.StartsWith('=') || _type == ValidationType.Custom)
+            return RuleFormulas.Parse(text.TrimStart('=')) != null ? text.TrimStart('=') : throw new ArgumentException(TryLocalize("The formula contains an error."));
+        if (_type == ValidationType.List) return "\"" + text.Replace("\"", "\"\"") + "\"";
+        return CellInputParser.TryParseValue(text, CultureInfo.CurrentCulture, out var n)
+            ? n.ToString("R", CultureInfo.InvariantCulture)
+            : throw new ArgumentException(TryLocalize("Enter a number, a date or a time, or a formula that starts with ="));
     }
 
     private static string Text(string value) => string.IsNullOrWhiteSpace(value) ? null : value;
 
     private void Ok()
+    {
+        try
+        {
+            Close();
+        }
+        catch (ArgumentException e)
+        {
+            _problem = TryLocalize(e.Message);
+        }
+    }
+
+    private void Close()
     {
         var rule = (_existing ?? new DataValidation(Ranges ?? [], _type)) with
         {
@@ -104,6 +124,7 @@ public partial class MudExSpreadsheetValidationDialog
             ErrorTitle = Text(_errorTitle),
             Error = Text(_error)
         };
+        RuleRanges.Check(rule);
         MudDialog.Close(DialogResult.Ok<IWorkbookCommand>(_existing == null ? new AddDataValidationCommand(Sheet, rule) : new EditDataValidationCommand(Sheet, Index, rule)));
     }
 
