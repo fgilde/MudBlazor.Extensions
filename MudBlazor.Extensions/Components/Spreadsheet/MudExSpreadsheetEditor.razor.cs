@@ -108,7 +108,7 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
     /// <inheritdoc />
     public override string Name => nameof(MudExSpreadsheetEditor);
 
-    /// <summary>Wins over the older Excel viewers.</summary>
+    /// <summary>Priority among the file displays for spreadsheet files.</summary>
     public int RenderPriority => 10;
 
     /// <inheritdoc />

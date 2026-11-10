@@ -40,6 +40,8 @@ public partial class MudExSpreadsheetEditor
         ("bottom10p", "Bottom 10%...", "bottom10Percent"), ("above", "Above Average...", "aboveAverage"), ("below", "Below Average...", "belowAverage")
     ];
 
+    private CellRange ActionRange => ActiveRange.IsSingleCell ? _grid?.CurrentRegion(CurrentSelection.Active) ?? ActiveRange : ActiveRange;
+
     private bool HasFilterCriteria => ActiveSheet?.AutoFilter?.Columns.Count > 0;
 
     private bool FilterOn => ActiveSheet is { } sheet && (sheet.AutoFilter != null || sheet.TableAt(CurrentSelection.Active)?.HasAutoFilter == true);
@@ -98,7 +100,7 @@ public partial class MudExSpreadsheetEditor
         else if (sheet.AutoFilter != null)
             _workbook.Execute(new SetAutoFilterCommand(sheet, null));
         else
-            _workbook.Execute(new SetAutoFilterCommand(sheet, ActiveRange.IsSingleCell ? _grid?.CurrentRegion(active) ?? ActiveRange : ActiveRange));
+            _workbook.Execute(new SetAutoFilterCommand(sheet, ActionRange));
     });
 
     private Task ClearFilterAsync() => RunAsync(() =>
@@ -185,7 +187,7 @@ public partial class MudExSpreadsheetEditor
             return;
         }
 
-        var range = ActiveRange.IsSingleCell ? _grid?.CurrentRegion(CurrentSelection.Active) ?? ActiveRange : ActiveRange;
+        var range = ActionRange;
         await ShowCommandDialogAsync<MudExSpreadsheetTableDialog>("Create Table", new DialogParameters
         {
             { nameof(MudExSpreadsheetTableDialog.Sheet), sheet },
@@ -201,8 +203,7 @@ public partial class MudExSpreadsheetEditor
     {
         if (!await CommitPendingEditAsync()) return;
         parameters.Add(nameof(MudExSpreadsheetFormatCellsDialog.Localizer), Localizer);
-        var reference = await DialogService.ShowAsync<TDialog>(TryLocalize(title), parameters,
-            new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true });
+        var reference = await DialogService.ShowAsync<TDialog>(TryLocalize(title), parameters, DialogDefaults);
         var result = await reference.Result;
         if (result is { Canceled: false, Data: IWorkbookCommand command })
             await RunCommandAsync(command);

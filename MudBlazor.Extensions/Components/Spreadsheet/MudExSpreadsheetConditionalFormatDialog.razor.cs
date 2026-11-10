@@ -332,7 +332,7 @@ public partial class MudExSpreadsheetConditionalFormatDialog
         style == null ? "" : $"{(Safe(style.Fill?.Color) is { } fill ? "background:" + fill + ";" : "")}{(Safe(style.Font?.Color) is { } color ? "color:" + color + ";" : "")}"
                              + $"{(style.Font?.Bold == true ? "font-weight:700;" : "")}{(style.Font?.Italic == true ? "font-style:italic;" : "")}";
 
-    private static string Safe(string color) => color != null && HexColor.IsMatch(color) ? color : null;
+    private static string Safe(string color) => MudExSpreadsheetGrid.SafeColor(color);
 
     private static string ColorOf(ChangeEventArgs e) => e.Value?.ToString() is { } value && HexColor.IsMatch(value) ? value.ToUpperInvariant() : null;
 

@@ -89,10 +89,6 @@ public partial class MudExSpreadsheetGrid
         await ContextMenuRequested.InvokeAsync(new SpreadsheetContextMenuEventArgs(menu, clientX, clientY));
     }
 
-    /// <summary>
-    /// Splits a range into the bands of rows that edits hit. While the auto filter hides rows, only visible rows are hit, like Fill,
-    /// Delete and Replace All in Excel; otherwise the range is returned unchanged.
-    /// </summary>
     internal IEnumerable<CellRange> VisibleParts(CellRange range)
     {
         var r = range.Normalized;

@@ -47,8 +47,6 @@ public partial class MudExSpreadsheetEditor
         }
     }
 
-    /// <summary>Prints the selection, or the used range when a single cell is selected, as a static table through the browser's print dialog.</summary>
-    /// <returns>A task that completes when the print table is rendered.</returns>
     internal async Task PrintAsync()
     {
         if (ActiveSheet is not { } sheet || !await CommitPendingEditAsync()) return;
@@ -70,8 +68,7 @@ public partial class MudExSpreadsheetEditor
 
     private Task InsertChartAsync(ChartKind kind) => RunAsync(() =>
     {
-        var range = ActiveRange.IsSingleCell ? _grid?.CurrentRegion(CurrentSelection.Active) ?? ActiveRange : ActiveRange;
-        var command = new InsertChartCommand(ActiveSheet, range, kind);
+        var command = new InsertChartCommand(ActiveSheet, ActionRange, kind);
         _workbook.Execute(command);
         _grid?.SelectChart(command.Chart.Id);
     });

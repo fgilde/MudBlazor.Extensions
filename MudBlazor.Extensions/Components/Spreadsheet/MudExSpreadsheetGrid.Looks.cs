@@ -181,7 +181,7 @@ public partial class MudExSpreadsheetGrid
             .Append(SafeColor(b.Color) ?? "var(--mud-palette-text-primary)").Append(';');
     }
 
-    private static string SafeColor(string color) =>
+    internal static string SafeColor(string color) =>
         color is { Length: 7 or 9 } && color[0] == '#' && color.Skip(1).All(char.IsAsciiHexDigit) ? color : null;
 
     private static string SafeFont(string name) =>

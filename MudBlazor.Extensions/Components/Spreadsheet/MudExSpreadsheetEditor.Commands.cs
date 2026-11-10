@@ -442,8 +442,7 @@ public partial class MudExSpreadsheetEditor
         if (!CanEdit) return;
         var before = ActiveStyle;
         var parameters = new DialogParameters { { nameof(MudExSpreadsheetFormatCellsDialog.CellStyle), before }, { nameof(MudExSpreadsheetFormatCellsDialog.Localizer), Localizer } };
-        var reference = await DialogService.ShowAsync<MudExSpreadsheetFormatCellsDialog>(TryLocalize("Format Cells"), parameters,
-            new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true });
+        var reference = await DialogService.ShowAsync<MudExSpreadsheetFormatCellsDialog>(TryLocalize("Format Cells"), parameters, DialogDefaults);
         var result = await reference.Result;
         if (result is { Canceled: false, Data: CellStyle after })
             await ApplyStyleAsync(s => s with

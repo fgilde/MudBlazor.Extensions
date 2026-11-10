@@ -11,10 +11,6 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExSpreadsheetGrid
 {
-    /// <summary>Jumps to a cell, a range or a defined name. With <paramref name="define"/>, an unknown valid name is defined for the current selection, as in the Name Box.</summary>
-    /// <param name="reference">For example <c>B7</c>, <c>A1:C3</c>, <c>Sheet2!A1</c> or a defined name.</param>
-    /// <param name="define">True to define an unknown name instead of failing.</param>
-    /// <returns>False if the reference is not valid.</returns>
     internal async Task<bool> GoToAsync(string reference, bool define = false)
     {
         if (_sheet == null || string.IsNullOrWhiteSpace(reference)) return false;

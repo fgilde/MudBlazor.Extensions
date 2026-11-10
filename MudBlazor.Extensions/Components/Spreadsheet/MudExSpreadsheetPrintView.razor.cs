@@ -76,8 +76,8 @@ public partial class MudExSpreadsheetPrintView
         if (s.Font.Italic) sb.Append("font-style:italic;");
         if (s.Font.Underline || s.Font.Strikethrough) sb.Append("text-decoration:").Append(s.Font.Underline ? "underline " : "").Append(s.Font.Strikethrough ? "line-through" : "").Append(';');
         if (s.Font.Size > 0) sb.Append("font-size:").Append(s.Font.Size.ToString("0.##", CultureInfo.InvariantCulture)).Append("pt;");
-        if (Color(s.Font.Color) is { } color) sb.Append("color:").Append(color).Append(';');
-        if (Color(s.Fill.Color) is { } fill) sb.Append("background:").Append(fill).Append(';');
+        if (MudExSpreadsheetGrid.SafeColor(s.Font.Color) is { } color) sb.Append("color:").Append(color).Append(';');
+        if (MudExSpreadsheetGrid.SafeColor(s.Fill.Color) is { } fill) sb.Append("background:").Append(fill).Append(';');
         sb.Append(s.Alignment.Horizontal switch
         {
             CellHorizontalAlignment.Center => "text-align:center;",
@@ -96,9 +96,6 @@ public partial class MudExSpreadsheetPrintView
     private static void Side(StringBuilder sb, string side, CellBorderSide b)
     {
         if (b.Style == CellBorderStyle.None) return;
-        sb.Append("border-").Append(side).Append(":1px solid ").Append(Color(b.Color) ?? "#000").Append(';');
+        sb.Append("border-").Append(side).Append(":1px solid ").Append(MudExSpreadsheetGrid.SafeColor(b.Color) ?? "#000").Append(';');
     }
-
-    private static string Color(string color) =>
-        color is { Length: 7 or 9 } && color[0] == '#' && color.Skip(1).All(char.IsAsciiHexDigit) ? color : null;
 }
