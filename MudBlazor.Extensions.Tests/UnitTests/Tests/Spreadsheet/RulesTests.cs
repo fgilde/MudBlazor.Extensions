@@ -167,6 +167,21 @@ public class RulesTests
     }
 
     [Fact]
+    public void AddConditionalFormatting_NewRulesGetTopPriority()
+    {
+        var (wb, ws) = Column(50, 20);
+        wb.Execute(new AddConditionalFormattingCommand(ws, new ConditionalFormatting([G("A1:A2")],
+            [new ConditionalRule.CellIs("greaterThan", "10", null, Green, Priority: 1), new ConditionalRule.CellIs("greaterThan", "30", null, Bold, Priority: 2)])));
+        wb.Execute(new AddConditionalFormattingCommand(ws, new ConditionalFormatting([G("A1")],
+            [new ConditionalRule.CellIs("greaterThan", "40", null, Red, Priority: 5), new ConditionalRule.Expression("TRUE", Red, Priority: 3)])));
+
+        Assert.Equal([3, 4, 2, 1], ws.ConditionalFormats.SelectMany(f => f.Rules).Select(r => r.Priority));
+        using (var cf = new ConditionalFormatEvaluator(wb, ws)) Assert.Equal(Red.Fill, cf.Evaluate(R("A1"))!.Style.Fill);
+        wb.Undo.Undo();
+        Assert.Equal([1, 2], ws.ConditionalFormats.SelectMany(f => f.Rules).Select(r => r.Priority));
+    }
+
+    [Fact]
     public void Aggregates_ComputedOncePerChange()
     {
         var wb = Workbook.Create();

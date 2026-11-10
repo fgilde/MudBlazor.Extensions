@@ -33261,12 +33261,12 @@
             <param name="wb">The workbook.</param>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.AddConditionalFormattingCommand">
-            <summary>Adds conditional formatting to a sheet.</summary>
+            <summary>Adds conditional formatting to a sheet. Like Excel, its rules take the highest priorities and all other rules of the sheet move down.</summary>
             <param name="sheet">The sheet.</param>
             <param name="formatting">The ranges and rules.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.AddConditionalFormattingCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatting)">
-            <summary>Adds conditional formatting to a sheet.</summary>
+            <summary>Adds conditional formatting to a sheet. Like Excel, its rules take the highest priorities and all other rules of the sheet move down.</summary>
             <param name="sheet">The sheet.</param>
             <param name="formatting">The ranges and rules.</param>
         </member>

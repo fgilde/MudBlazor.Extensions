@@ -1,6 +1,6 @@
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
-/// <summary>Adds conditional formatting to a sheet.</summary>
+/// <summary>Adds conditional formatting to a sheet. Like Excel, its rules take the highest priorities and all other rules of the sheet move down.</summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="formatting">The ranges and rules.</param>
 public sealed class AddConditionalFormattingCommand(Worksheet sheet, ConditionalFormatting formatting) : IWorkbookCommand
@@ -15,7 +15,7 @@ public sealed class AddConditionalFormattingCommand(Worksheet sheet, Conditional
     {
         RuleRanges.Check(formatting);
         _before = RuleState.Capture(sheet);
-        (_before with { Formats = [.. _before.Formats, formatting] }).Restore(wb, sheet);
+        (_before with { Formats = RuleState.Prepend(_before.Formats, formatting) }).Restore(wb, sheet);
     }
 
     /// <inheritdoc />
@@ -176,6 +176,21 @@ public sealed class ClearRulesCommand(Worksheet sheet, CellRange range, bool con
 internal sealed record RuleState(IReadOnlyList<ConditionalFormatting> Formats, IReadOnlyList<DataValidation> Validations)
 {
     public static RuleState Capture(Worksheet sheet) => new(sheet.ConditionalFormats, sheet.DataValidations);
+
+    public static List<ConditionalFormatting> Prepend(IReadOnlyList<ConditionalFormatting> formats, ConditionalFormatting added)
+    {
+        var priorities = new Dictionary<ConditionalRule, int>(ReferenceEqualityComparer.Instance);
+        foreach (var rule in added.Rules.OrderBy(r => r.Priority).Concat(formats.SelectMany(f => f.Rules).OrderBy(r => r.Priority)))
+            priorities[rule] = priorities.Count + 1;
+
+        ConditionalFormatting Renumber(ConditionalFormatting f)
+        {
+            var rules = f.Rules.Select(r => r.Priority == priorities[r] ? r : r with { Priority = priorities[r] }).ToList();
+            return rules.SequenceEqual(f.Rules, ReferenceEqualityComparer.Instance) ? f : f with { Rules = rules };
+        }
+
+        return [.. formats.Select(Renumber), Renumber(added)];
+    }
 
     public static List<T> Replace<T>(IReadOnlyList<T> list, int index, T item) where T : class
     {
