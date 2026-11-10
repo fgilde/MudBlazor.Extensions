@@ -159,7 +159,7 @@ public sealed class Workbook
 
     /// <summary>
     /// True if the source file contains content whose cell references are not moved when rows, columns or sheets change:
-    /// threaded comments, form controls and other legacy drawing shapes, drawings and charts, pivot tables and their caches, external links,
+    /// threaded comments, form controls and other legacy drawing shapes, drawing shapes linked to cell text, chart sheets, pivot tables and their caches, external links,
     /// page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or columns or renaming a sheet these
     /// keep pointing at their original cells; editors should warn once.
     /// </summary>
@@ -339,6 +339,16 @@ public sealed class Workbook
             sheet.Modified = true;
         }
 
+        List<(Worksheet, IReadOnlyList<SheetChart>)> charts = null;
+        foreach (var sheet in _sheets)
+        {
+            var list = sheet.Charts.Select(c => c.RewriteFormulas(f => rewrite(f, sheet.Name, null))).ToList();
+            if (list.SequenceEqual(sheet.Charts, ReferenceEqualityComparer.Instance)) continue;
+            (charts ??= []).Add((sheet, sheet.Charts));
+            sheet.Charts = list;
+            sheet.Modified = true;
+        }
+
         List<(XElement, string)> localNames = null;
         foreach (var name in Package?.DefinedNames?.Elements().Where(e => e.Name.LocalName == "definedName" && e.Attribute("localSheetId") != null) ?? [])
         {
@@ -360,7 +370,7 @@ public sealed class Workbook
             _definedNames[key] = text;
         }
 
-        return new FormulaSnapshot(cells, names, localNames, rules, tables, links);
+        return new FormulaSnapshot(cells, names, localNames, rules, tables, links, charts);
     }
 
     internal void RestoreFormulas(FormulaSnapshot snapshot)
@@ -376,6 +386,12 @@ public sealed class Workbook
         foreach (var (sheet, links) in snapshot.Links ?? [])
         {
             sheet.Links = links;
+            sheet.Modified = true;
+        }
+
+        foreach (var (sheet, charts) in snapshot.Charts ?? [])
+        {
+            sheet.Charts = charts;
             sheet.Modified = true;
         }
 
@@ -398,4 +414,5 @@ internal sealed record FormulaSnapshot(
     List<(XElement Name, string Text)> LocalNames = null,
     List<(Worksheet Sheet, IReadOnlyList<ConditionalFormatting> Formats, IReadOnlyList<DataValidation> Validations)> Rules = null,
     List<(Worksheet Sheet, IReadOnlyList<SheetTable> Tables)> Tables = null,
-    List<(Worksheet Sheet, IReadOnlyList<CellLink> Links)> Links = null);
+    List<(Worksheet Sheet, IReadOnlyList<CellLink> Links)> Links = null,
+    List<(Worksheet Sheet, IReadOnlyList<SheetChart> Charts)> Charts = null);

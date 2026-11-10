@@ -161,7 +161,7 @@ internal static class SheetXmlWriter
     internal static string Number(double v) => v.ToString("R", CultureInfo.InvariantCulture);
 
     internal static void Write(Stream stream, Worksheet ws, XlsxSheetPart part, XlsxPackage package, StylesXmlWriter styles, SharedStringsWriter strings,
-        string[] theme, IReadOnlyList<string> tableParts, XElement hyperlinks = null, XElement legacyDrawing = null)
+        string[] theme, IReadOnlyList<string> tableParts, XElement hyperlinks = null, XElement legacyDrawing = null, XElement drawing = null)
     {
         var root = part?.Root ?? new XElement(XName.Get("worksheet", MainNs), new XAttribute("xmlns", MainNs),
             new XAttribute(XNamespace.Xmlns + "r", RelationshipsNs));
@@ -192,7 +192,7 @@ internal static class SheetXmlWriter
             RulesXml.WriteValidations(ws, Original("dataValidations"), ns),
             ws.Merges.Count == 0 ? null : new XElement(ns + "mergeCells", new XAttribute("count", ws.Merges.Count),
                 ws.Merges.Select(m => new XElement(ns + "mergeCell", new XAttribute("ref", m.ToA1())))),
-            hyperlinks, legacyDrawing,
+            hyperlinks, drawing, legacyDrawing,
             tableParts.Count == 0 ? null : new XElement(ns + "tableParts", new XAttribute("count", tableParts.Count),
                 tableParts.Select(id => new XElement(ns + "tablePart", new XAttribute(XName.Get("id", RelationshipsNs), id))))
         ], ns);

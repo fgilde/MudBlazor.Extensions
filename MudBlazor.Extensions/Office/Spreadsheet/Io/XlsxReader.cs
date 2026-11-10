@@ -101,6 +101,7 @@ public static class XlsxReader
             SheetXmlReader.Read(s, entry.Length, ws, part, strings, package, theme);
             ws.Tables = TableXml.Read(zip, part);
             AnnotationXml.Read(zip, part, ws);
+            ChartXmlReader.Read(zip, part, ws);
             ws.CellLimit = int.MaxValue;
             cells += ws.CellCount;
         }

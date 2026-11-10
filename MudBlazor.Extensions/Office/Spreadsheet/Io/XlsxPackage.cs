@@ -15,7 +15,7 @@ internal sealed record XlsxRelationship(string Id, string Type, string Target, b
 internal sealed class XlsxSheetPart
 {
     internal static readonly HashSet<string> Modelled = ["sheetPr", "dimension", "sheetViews", "sheetFormatPr", "cols", "sheetData", "mergeCells", "autoFilter",
-        "conditionalFormatting", "dataValidations", "tableParts", "hyperlinks", "legacyDrawing"];
+        "conditionalFormatting", "dataValidations", "tableParts", "hyperlinks", "legacyDrawing", "drawing"];
 
     /// <summary>The sheet name as stored in the file.</summary>
     public string Name { get; init; }
@@ -77,6 +77,30 @@ internal sealed class XlsxSheetPart
 
     /// <summary>True if the notes, comments part and VML drawing of this sheet are modelled completely and follow structural changes.</summary>
     public bool AnnotationsModelled => Worksheet is { NotesReadOnly: false } && VmlOnlyNotes;
+
+    /// <summary>Zip entry name of the drawing part of <c>drawing</c>, or null.</summary>
+    public string DrawingPart { get; set; }
+
+    /// <summary>Relationship id of <see cref="DrawingPart"/> (the <c>drawing</c> r:id).</summary>
+    public string DrawingRelationshipId { get; set; }
+
+    /// <summary>The drawing as read, or null if the sheet has none or it is not well-formed (then it is kept unchanged and charts cannot be added).</summary>
+    public XElement OriginalDrawing { get; set; }
+
+    /// <summary>The drawing with its cell anchors moved along structural changes; the writer starts from it.</summary>
+    public XElement DrawingRoot { get; set; }
+
+    /// <summary>True if a shape in the drawing shows a cell's text (<c>textlink</c>) or a chart part could not be read; those references do not move.</summary>
+    public bool DrawingLinked { get; set; }
+
+    /// <summary>The drawing part, its charts and the parts the charts use (styles, colors, shapes); their references are modelled.</summary>
+    public HashSet<string> DrawingParts { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>The charts as read; the drawing is rewritten only when the sheet's charts or anchors differ.</summary>
+    public IReadOnlyList<SheetChart> OriginalCharts { get; set; } = [];
+
+    /// <summary>True if the drawing and its charts follow structural changes.</summary>
+    public bool DrawingModelled => DrawingPart == null || OriginalDrawing != null && !DrawingLinked;
 
     /// <summary>Children the model does not represent at all, in original order.</summary>
     public IEnumerable<XElement> Unmodelled => Children.Where(c => !Modelled.Contains(c.Name.LocalName));
@@ -171,6 +195,13 @@ internal sealed class XlsxSheetPart
             }
         }
 
+        if (DrawingRoot != null && ChartXmlWriter.ShiftDrawing(DrawingRoot, axis, index, count) is var drawing && drawing != DrawingRoot)
+        {
+            var before = DrawingRoot;
+            DrawingRoot = drawing;
+            undo.Add(() => DrawingRoot = before);
+        }
+
         Remap(OriginalXf, MapKey);
         Remap(CellAttributes, MapKey);
         Remap(RichStringCells, MapKey);
@@ -247,7 +278,7 @@ internal sealed class XlsxPackage
 
     private static readonly HashSet<string> UnshiftedChildren =
     [
-        "drawing", "legacyDrawingHF", "rowBreaks", "colBreaks", "protectedRanges", "scenarios", "dataConsolidate", "ignoredErrors", "extLst"
+        "legacyDrawingHF", "rowBreaks", "colBreaks", "protectedRanges", "scenarios", "dataConsolidate", "ignoredErrors", "extLst"
     ];
 
     private static readonly string[] UnshiftedContentTypes = ["pivot", "chart", "drawing", "comments", "externalLink", "queryTable"];
@@ -339,9 +370,10 @@ internal sealed class XlsxPackage
     internal void DetectUnshiftedReferences()
     {
         var modelled = Sheets.Where(p => p.AnnotationsModelled).SelectMany(p => new[] { p.CommentsPart, p.VmlPart }).Where(n => n != null)
-            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+            .Concat(Sheets.Where(p => p.DrawingModelled).SelectMany(p => p.DrawingParts)).ToHashSet(StringComparer.OrdinalIgnoreCase);
         HasUnshiftedReferences = Sheets.Any(p => p.Children.Any(c => UnshiftedChildren.Contains(c.Name.LocalName)
-                                                                      || c.Name.LocalName == "legacyDrawing" && !p.AnnotationsModelled))
+                                                                      || c.Name.LocalName == "legacyDrawing" && !p.AnnotationsModelled
+                                                                      || c.Name.LocalName == "drawing" && !p.DrawingModelled))
                                  || PartNames.Any(n => !modelled.Contains(n) && ContentType(n) is { } type
                                                                             && UnshiftedContentTypes.Any(t => type.Contains(t, StringComparison.OrdinalIgnoreCase)));
     }

@@ -32214,6 +32214,131 @@
             <summary>Formats the value with invariant culture (numbers round-trip, errors use their Excel codes).</summary>
             <returns>The text form.</returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ChartSeries">
+            <summary>A data series of a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SheetChart"/>. References are formula text without equals sign, for example <c>Sheet1!$B$2:$B$5</c>.</summary>
+            <param name="NameRef">The cell holding the series name, or null when <paramref name="Name"/> is literal text.</param>
+            <param name="Name">The series name as stored in the file; <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.ChartDataResolver"/> reads it from <paramref name="NameRef"/>.</param>
+            <param name="CategoriesRef">The category labels (the X values of a scatter chart), or null for 1, 2, 3 …</param>
+            <param name="ValuesRef">The values.</param>
+            <param name="Color">The fill or line color as #RRGGBB, or null for the default palette.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ChartSeries.#ctor(System.String,System.String,System.String,System.String,System.String)">
+            <summary>A data series of a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SheetChart"/>. References are formula text without equals sign, for example <c>Sheet1!$B$2:$B$5</c>.</summary>
+            <param name="NameRef">The cell holding the series name, or null when <paramref name="Name"/> is literal text.</param>
+            <param name="Name">The series name as stored in the file; <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.ChartDataResolver"/> reads it from <paramref name="NameRef"/>.</param>
+            <param name="CategoriesRef">The category labels (the X values of a scatter chart), or null for 1, 2, 3 …</param>
+            <param name="ValuesRef">The values.</param>
+            <param name="Color">The fill or line color as #RRGGBB, or null for the default palette.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ChartSeries.NameRef">
+            <summary>The cell holding the series name, or null when <paramref name="Name"/> is literal text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ChartSeries.Name">
+            <summary>The series name as stored in the file; <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.ChartDataResolver"/> reads it from <paramref name="NameRef"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ChartSeries.CategoriesRef">
+            <summary>The category labels (the X values of a scatter chart), or null for 1, 2, 3 …</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ChartSeries.ValuesRef">
+            <summary>The values.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ChartSeries.Color">
+            <summary>The fill or line color as #RRGGBB, or null for the default palette.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ChartData">
+            <summary>The values a chart shows, read from the cells its series reference.</summary>
+            <param name="Categories">The category labels, shared by all series.</param>
+            <param name="Series">Name and values of each series; a cell without a number gives <see cref="F:System.Double.NaN"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ChartData.#ctor(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double[]}})">
+            <summary>The values a chart shows, read from the cells its series reference.</summary>
+            <param name="Categories">The category labels, shared by all series.</param>
+            <param name="Series">Name and values of each series; a cell without a number gives <see cref="F:System.Double.NaN"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ChartData.Categories">
+            <summary>The category labels, shared by all series.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ChartData.Series">
+            <summary>Name and values of each series; a cell without a number gives <see cref="F:System.Double.NaN"/>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ChartDataResolver">
+            <summary>Reads the data of a chart from the workbook.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ChartDataResolver.Resolve(MudBlazor.Extensions.Office.Spreadsheet.Workbook,MudBlazor.Extensions.Office.Spreadsheet.SheetChart)">
+            <summary>
+            Reads names, categories and values of the chart's series from their cells. Formula cells give their calculated (or cached) values; nothing
+            is recalculated. A reference that cannot be resolved, for example to another workbook, falls back to the values cached in the chart.
+            </summary>
+            <param name="wb">The workbook.</param>
+            <param name="chart">The chart.</param>
+            <returns>The data; empty for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ChartKind">
+            <summary>The chart types the editor can show and create.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Column">
+            <summary>Vertical bars.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Bar">
+            <summary>Horizontal bars.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Line">
+            <summary>Lines.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Pie">
+            <summary>A pie.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Area">
+            <summary>Filled areas.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Scatter">
+            <summary>X/Y points.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other">
+            <summary>Any other chart read from a file. It is shown as a placeholder and saved unchanged, apart from its cell references.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SheetChart">
+            <summary>
+            A chart placed on a worksheet. Charts are immutable; change them with <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.InsertChartCommand"/>, <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.MoveChartCommand"/>,
+            <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.UpdateChartCommand"/> and <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.DeleteChartCommand"/>. Their references follow row, column and sheet changes like formulas.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Id">
+            <summary>Identifies the chart in the commands; unique in the workbook and kept while the chart changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Kind">
+            <summary>The chart type.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Title">
+            <summary>The title text, or null for no title.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Stacked">
+            <summary>True if bars, columns, lines or areas are stacked.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.ShowLegend">
+            <summary>True if the legend is shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Series">
+            <summary>The data series in plot order; empty for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.From">
+            <summary>The cell holding the top left corner.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.To">
+            <summary>The cell holding the bottom right corner.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.FromOffset">
+            <summary>Offset of the top left corner inside <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.From"/> in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.ToOffset">
+            <summary>Offset of the bottom right corner inside <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.To"/> in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.ReadOnly">
+            <summary>
+            True if the chart cannot be moved, changed or deleted here because it is anchored to a single cell or to the sheet, or is an Office 2016
+            chart. Its references still follow structural changes.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetLinkCommand">
             <summary>Adds a hyperlink to a cell or replaces the link that covers it.</summary>
             <param name="sheet">The sheet.</param>
@@ -32413,6 +32538,113 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ClearCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.InsertChartCommand">
+            <summary>
+            Inserts a chart of a range next to it. Like Excel, the series run along the longer side of the range; a first row and a first column holding text
+            become the series names and the categories, and an empty top left cell makes both of them labels. A scatter chart takes its X values from the
+            first column.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The data range.</param>
+            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.InsertChartCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,MudBlazor.Extensions.Office.Spreadsheet.ChartKind)">
+            <summary>
+            Inserts a chart of a range next to it. Like Excel, the series run along the longer side of the range; a first row and a first column holding text
+            become the series names and the categories, and an empty top left cell makes both of them labels. A scatter chart takes its X values from the
+            first column.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The data range.</param>
+            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.InsertChartCommand.Chart">
+            <summary>The created chart, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.InsertChartCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.InsertChartCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.InsertChartCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.MoveChartCommand">
+            <summary>Moves or resizes a chart by placing its corners in other cells.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="id">The chart's <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Id"/>.</param>
+            <param name="from">The cell for the top left corner.</param>
+            <param name="to">The cell for the bottom right corner.</param>
+            <param name="fromOffset">Offset of the top left corner inside <paramref name="from"/> in pixels.</param>
+            <param name="toOffset">Offset of the bottom right corner inside <paramref name="to"/> in pixels.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.MoveChartCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String,MudBlazor.Extensions.Office.Spreadsheet.CellRef,MudBlazor.Extensions.Office.Spreadsheet.CellRef,System.ValueTuple{System.Double,System.Double},System.ValueTuple{System.Double,System.Double})">
+            <summary>Moves or resizes a chart by placing its corners in other cells.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="id">The chart's <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Id"/>.</param>
+            <param name="from">The cell for the top left corner.</param>
+            <param name="to">The cell for the bottom right corner.</param>
+            <param name="fromOffset">Offset of the top left corner inside <paramref name="from"/> in pixels.</param>
+            <param name="toOffset">Offset of the bottom right corner inside <paramref name="to"/> in pixels.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.MoveChartCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.MoveChartCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.MoveChartCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.UpdateChartCommand">
+            <summary>Changes the type, title, legend, stacking or series of a chart. Formatting from the file stays where it still applies.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="id">The chart's <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Id"/>.</param>
+            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</param>
+            <param name="title">The title, or null or empty for none.</param>
+            <param name="showLegend">True to show the legend.</param>
+            <param name="series">The series, each with a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.ChartSeries.ValuesRef"/>; null keeps them.</param>
+            <param name="stacked">True to stack bars, lines or areas; null keeps the setting. Ignored for pie and scatter charts.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UpdateChartCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String,MudBlazor.Extensions.Office.Spreadsheet.ChartKind,System.String,System.Boolean,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.ChartSeries},System.Nullable{System.Boolean})">
+            <summary>Changes the type, title, legend, stacking or series of a chart. Formatting from the file stays where it still applies.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="id">The chart's <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Id"/>.</param>
+            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</param>
+            <param name="title">The title, or null or empty for none.</param>
+            <param name="showLegend">True to show the legend.</param>
+            <param name="series">The series, each with a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.ChartSeries.ValuesRef"/>; null keeps them.</param>
+            <param name="stacked">True to stack bars, lines or areas; null keeps the setting. Ignored for pie and scatter charts.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.UpdateChartCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UpdateChartCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UpdateChartCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DeleteChartCommand">
+            <summary>Deletes a chart.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="id">The chart's <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Id"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteChartCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String)">
+            <summary>Deletes a chart.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="id">The chart's <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Id"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DeleteChartCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteChartCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteChartCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetAutoFilterCommand">
@@ -33939,6 +34171,30 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.AnnotationsModelled">
             <summary>True if the notes, comments part and VML drawing of this sheet are modelled completely and follow structural changes.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.DrawingPart">
+            <summary>Zip entry name of the drawing part of <c>drawing</c>, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.DrawingRelationshipId">
+            <summary>Relationship id of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.DrawingPart"/> (the <c>drawing</c> r:id).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OriginalDrawing">
+            <summary>The drawing as read, or null if the sheet has none or it is not well-formed (then it is kept unchanged and charts cannot be added).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.DrawingRoot">
+            <summary>The drawing with its cell anchors moved along structural changes; the writer starts from it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.DrawingLinked">
+            <summary>True if a shape in the drawing shows a cell's text (<c>textlink</c>) or a chart part could not be read; those references do not move.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.DrawingParts">
+            <summary>The drawing part, its charts and the parts the charts use (styles, colors, shapes); their references are modelled.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OriginalCharts">
+            <summary>The charts as read; the drawing is rewritten only when the sheet's charts or anchors differ.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.DrawingModelled">
+            <summary>True if the drawing and its charts follow structural changes.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Unmodelled">
             <summary>Children the model does not represent at all, in original order.</summary>
         </member>
@@ -34305,7 +34561,7 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.HasUnshiftedReferences">
             <summary>
             True if the source file contains content whose cell references are not moved when rows, columns or sheets change:
-            threaded comments, form controls and other legacy drawing shapes, drawings and charts, pivot tables and their caches, external links,
+            threaded comments, form controls and other legacy drawing shapes, drawing shapes linked to cell text, chart sheets, pivot tables and their caches, external links,
             page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or columns or renaming a sheet these
             keep pointing at their original cells; editors should warn once.
             </summary>
@@ -34415,6 +34671,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Notes">
             <summary>Notes on this sheet; change them with <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SetNoteCommand"/> and <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.RemoveNoteCommand"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Charts">
+            <summary>Charts on this sheet in drawing order; change them with the chart commands.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.NotesReadOnly">
             <summary>

@@ -108,6 +108,9 @@ public sealed class Worksheet
     /// <summary>Notes on this sheet; change them with <see cref="SetNoteCommand"/> and <see cref="RemoveNoteCommand"/>.</summary>
     public IReadOnlyList<CellNote> Notes { get; internal set; } = [];
 
+    /// <summary>Charts on this sheet in drawing order; change them with the chart commands.</summary>
+    public IReadOnlyList<SheetChart> Charts { get; internal set; } = [];
+
     /// <summary>
     /// True if the source file has threaded comments on this sheet. Their legacy notes are shown but cannot be edited, and the comment parts are
     /// saved unchanged.
@@ -383,6 +386,8 @@ public sealed class Worksheet
         AutoFilter = filter.WithOpaqueRows(opaque);
     }
 
+    internal bool DrawingOpaque => Part is { DrawingPart: not null, OriginalDrawing: null };
+
     internal Action ForgetFileData(Func<CellRef, bool> where) => Part?.Forget(where);
 
     internal List<(CellRef Ref, CellState State)> Insert(Axis axis, int index, int count)
@@ -475,7 +480,7 @@ public sealed class Worksheet
         var snapshot = new DeleteSnapshot(removed, Sizes(axis).Where(p => p.Key >= index && p.Key < end).ToList(),
             HiddenSet(axis).Where(i => i >= index && i < end).ToList(),
             AxisStyles(axis).Where(p => p.Key >= index && p.Key < end).ToList(), CopyMerges(), FreezeAt, AutoFilter, _filteredRows,
-            ConditionalFormats, DataValidations, Tables, Links, Notes, Part?.Shift(axis, index, -count));
+            ConditionalFormats, DataValidations, Tables, Links, Notes, Charts, Part?.Shift(axis, index, -count));
         _cells = kept;
         _formulaKeys = formulas;
         _spillKeys = spills;
@@ -513,6 +518,7 @@ public sealed class Worksheet
         Tables = snapshot.Tables;
         Links = snapshot.Links;
         Notes = snapshot.Notes;
+        Charts = snapshot.Charts;
         foreach (var (i, style) in snapshot.AxisStyles) AxisStyles(axis)[i] = style;
         _merges = [.. snapshot.Merges];
         FreezeAt = snapshot.Freeze;
@@ -526,6 +532,7 @@ public sealed class Worksheet
         DataValidations = DataValidations.Select(d => d.Shift(axis, index, count)).OfType<DataValidation>().ToList();
         Links = Links.Select(l => l.Shift(axis, index, count)).OfType<CellLink>().ToList();
         Notes = Notes.Select(n => n.Shift(axis, index, count)).OfType<CellNote>().ToList();
+        Charts = Charts.Select(c => c.Shift(axis, index, count)).ToList();
     }
 
     private static CellRef? Moved(CellRef r, Axis axis, int count, int limit)
@@ -598,4 +605,5 @@ internal sealed record DeleteSnapshot(
     IReadOnlyList<SheetTable> Tables,
     IReadOnlyList<CellLink> Links,
     IReadOnlyList<CellNote> Notes,
+    IReadOnlyList<SheetChart> Charts,
     Action Package = null);

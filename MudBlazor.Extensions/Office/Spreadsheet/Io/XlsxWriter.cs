@@ -94,9 +94,10 @@ public static partial class XlsxWriter
                 var tables = Tables(sheet, typeBase, rels);
                 var rewrite = sheet.Original == null || sheet.Worksheet.Modified || Find(source, sheet.PartName) == null;
                 var (links, legacy) = rewrite ? Annotations(sheet, typeBase, rels) : default;
+                var drawing = rewrite ? Drawing(sheet, typeBase, rels) : null;
                 if (rels.Changed) _parts[RelsPartOf(sheet.PartName)] = s => WriteRelationships(s, rels.List);
                 if (rewrite)
-                    _parts[sheet.PartName] = s => SheetXmlWriter.Write(s, sheet.Worksheet, sheet.Original, package, styles, strings, theme, tables, links, legacy);
+                    _parts[sheet.PartName] = s => SheetXmlWriter.Write(s, sheet.Worksheet, sheet.Original, package, styles, strings, theme, tables, links, legacy, drawing);
             }
 
             var relsPart = RelsPartOf(_workbookPart);
