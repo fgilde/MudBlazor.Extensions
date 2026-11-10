@@ -264,6 +264,7 @@ public class SlideCommandTests
         presentation.Execute(new InsertShapeCommand(presentation.Slides[1], box));
 
         Assert.Equal([created, box], presentation.Slides[1].Shapes.Skip(1));
+        Assert.Equal(["Shape 2", "TextBox 3"], [created.Name, box.Name]);
         Assert.True(box.IsTextBox);
         Assert.Single(box.Text.Paragraphs);
     }

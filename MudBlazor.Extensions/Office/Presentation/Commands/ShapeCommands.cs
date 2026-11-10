@@ -110,7 +110,7 @@ public sealed class SetGeometryCommand(Slide slide, uint shape, string preset) :
 }
 
 /// <summary>
-/// Adds a shape on top of the others or at a position. The shape and its children get new ids that are unique on the slide.
+/// Adds a shape on top of the others or at a position. The shape and its children get new ids that are unique on the slide, and a name if they have none.
 /// </summary>
 /// <param name="slide">The slide.</param>
 /// <param name="shape">A new top-level shape, for example from <see cref="AutoShape.Create"/>, that is on no slide.</param>
@@ -136,6 +136,7 @@ public sealed class InsertShapeCommand(Slide slide, SlideShape shape, int? index
         var at = index ?? slide.ShapeList.Count;
         if (at < 0 || at > slide.ShapeList.Count) throw new ArgumentOutOfRangeException(nameof(index));
         ShapeEdit.AssignIds(shape, ShapeEdit.NextId(slide));
+        foreach (var s in SlideShape.Flatten([shape]).Where(s => s.Name.Length == 0)) s.Name = $"{(s is AutoShape { IsTextBox: true } ? "TextBox" : "Shape")} {s.Id - 1}";
         shape.Master ??= slide.Layout?.Master;
         slide.ShapeList.Insert(at, shape);
         document.Notify(slide, PresentationChangeKind.Content);
