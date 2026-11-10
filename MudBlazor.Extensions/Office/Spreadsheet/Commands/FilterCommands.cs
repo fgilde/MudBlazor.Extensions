@@ -80,11 +80,7 @@ internal sealed record FilterState(AutoFilter Filter, IReadOnlySet<int> Rows, IR
 
     public static FilterState Evaluate(Worksheet sheet, AutoFilter filter, IReadOnlyList<SheetTable> tables)
     {
-        var rows = filter?.Evaluate(sheet) ?? [];
-        foreach (var t in tables)
-            if (t.Filter is { Columns.Count: > 0 } f)
-                rows.UnionWith(f.Evaluate(sheet));
-        return new FilterState(filter, rows, tables);
+        return new FilterState(filter, sheet.EvaluateFilters(filter, tables), tables);
     }
 
     public void Restore(Workbook wb, Worksheet sheet)

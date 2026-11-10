@@ -138,6 +138,11 @@ public class StructureRecalculationTests
         Assert.Equal(before + 2, engine.EvaluationCount);
         wb.Undo.Undo();
         Assert.Equal(CellValue.Number(15), ValueAt(ws, "B1"));
+
+        before = engine.EvaluationCount;
+        wb.Execute(new InsertRowsCommand(ws, 9, 1));
+        wb.Execute(new DeleteRowsCommand(ws, 9, 1));
+        Assert.Equal(before, engine.EvaluationCount);
     }
 
     [Theory]

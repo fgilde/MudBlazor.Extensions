@@ -385,6 +385,29 @@ public sealed class Worksheet
         _filteredRows = [.. rows];
     }
 
+    internal HashSet<int> EvaluateFilters(AutoFilter filter, IReadOnlyList<SheetTable> tables)
+    {
+        var rows = filter?.Evaluate(this) ?? [];
+        foreach (var t in tables)
+            if (t.Filter is { Columns.Count: > 0 } f)
+                rows.UnionWith(f.Evaluate(this));
+        return rows;
+    }
+
+    internal void ReapplyFilters() => SetFiltered(EvaluateFilters(AutoFilter, Tables));
+
+    internal static bool FiltersLost(IReadOnlyList<SheetTable> before, IReadOnlyList<SheetTable> after, bool resized)
+    {
+        foreach (var t in before)
+        {
+            if (t.Filter is not { Columns.Count: > 0 } f) continue;
+            if (after.FirstOrDefault(x => x.Id == t.Id)?.Filter is not { } g || g.Columns.Count < f.Columns.Count
+                || resized && (g.Range.RowCount != f.Range.RowCount || g.Range.ColumnCount != f.Range.ColumnCount)) return true;
+        }
+
+        return false;
+    }
+
     /// <remarks>
     /// A row hidden in the file counts as filtered when it fails the criteria both in the current culture and invariantly, so the result does not depend on
     /// the reader's culture when the file was written in either; a row that passes in one of them stays hidden by hand.
@@ -450,7 +473,7 @@ public sealed class Worksheet
         _usedRange = null;
         Part?.Shift(axis, index, count);
         Remap(axis, v => v >= index ? v + count : v, limit);
-        if (AutoFilter != null && (AutoFilter = AutoFilter.Shift(axis, index, count)) == null) SetFiltered([]);
+        if (AutoFilter != null && (AutoFilter = AutoFilter.Shift(axis, index, count)) == null) ReapplyFilters();
         ShiftRules(axis, index, count);
         _merges = _merges.Select(m => ShiftRange(m, axis, Start(m, axis) >= index ? count : 0, End(m, axis) >= index ? count : 0, limit)).ToList();
         if (FreezeAt is { } f)
@@ -508,12 +531,11 @@ public sealed class Worksheet
         _usedRange = null;
         Remap(axis, v => v < index ? v : v < end ? -1 : v - count, limit);
         _merges = _merges.Select(m => ShrinkRange(m, axis, index, count)).Where(m => m is { IsSingleCell: false }).Select(m => m.Value).ToList();
+        var tables = Tables;
         ShiftRules(axis, index, -count);
-        if (AutoFilter is { } before)
-        {
-            AutoFilter = before.Shift(axis, index, -count);
-            if (AutoFilter == null || AutoFilter.Columns.Count < before.Columns.Count) SetFiltered(AutoFilter?.Evaluate(this) ?? []);
-        }
+        var filter = AutoFilter;
+        AutoFilter = filter?.Shift(axis, index, -count);
+        if (filter != null && (AutoFilter == null || AutoFilter.Columns.Count < filter.Columns.Count) || FiltersLost(tables, Tables, false)) ReapplyFilters();
 
         if (FreezeAt is { } f)
         {
@@ -584,7 +606,9 @@ public sealed class Worksheet
         var movedHidden = hidden.Select(map).Where(i => i >= 0 && i < limit).ToList();
         hidden.Clear();
         hidden.UnionWith(movedHidden);
-        if (axis == Axis.Row) SetFiltered(_filteredRows.Select(map).Where(i => i >= 0 && i < limit));
+        if (axis != Axis.Row) return;
+        _hiddenOrFiltered = null;
+        _filteredRows = [.. _filteredRows.Select(map).Where(i => i >= 0 && i < limit)];
     }
 
     internal static CellRange? MoveRange(CellRange r, Axis axis, int index, int count) => count >= 0

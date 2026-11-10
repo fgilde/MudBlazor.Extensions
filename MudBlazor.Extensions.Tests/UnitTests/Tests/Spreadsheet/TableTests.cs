@@ -589,6 +589,56 @@ public class TableTests
     }
 
     [Fact]
+    public void TableFilter_ReleasesRows_WhenItsCriteriaOrTableGo()
+    {
+        var (wb, ws) = Sales();
+        wb.Execute(new ApplyTableFilterCommand(ws, "Sales", 1, FilterCriteria.Values(new HashSet<string> { "3" })));
+        Assert.Equal([1, 3], ws.FilteredRows.Order());
+        IWorkbookCommand[] commands =
+        [
+            new DeleteColumnsCommand(ws, 1, 1), new SetTableOptionsCommand(ws, "Sales", hasAutoFilter: false), new ResizeTableCommand(ws, "Sales", G("A1:A4")),
+            new ConvertToRangeCommand(ws, "Sales"), new DeleteRowsCommand(ws, 0, 1)
+        ];
+        foreach (var command in commands)
+        {
+            wb.Execute(command);
+            Assert.Empty(ws.FilteredRows);
+            wb.Undo.Undo();
+            Assert.Equal([1, 3], ws.FilteredRows.Order());
+        }
+
+        wb.Execute(new ResizeTableCommand(ws, "Sales", G("A1:D3")));
+        Assert.Equal([1], ws.FilteredRows);
+        wb.Undo.Undo();
+        wb.Execute(new SetTableOptionsCommand(ws, "Sales", hasAutoFilter: false));
+        wb.Execute(new SetTableOptionsCommand(ws, "Sales", hasAutoFilter: true));
+        Assert.Empty(ws.Tables[0].Filter!.Columns);
+    }
+
+    [Fact]
+    public void TableFilter_Rows_SurviveSheetFilterChanges()
+    {
+        var (wb, ws) = Sales();
+        wb.Execute(new SetValuesCommand(ws, R("F1"), new[,] { { V("K") }, { V("x") }, { V("y") }, { V("x") } }));
+        wb.Execute(new ApplyTableFilterCommand(ws, "Sales", 1, FilterCriteria.Values(new HashSet<string> { "3" })));
+        wb.Execute(new SetAutoFilterCommand(ws, G("F1:F4")));
+        wb.Execute(new ApplyFilterCommand(ws, 5, FilterCriteria.Values(new HashSet<string> { "x" })));
+        Assert.Equal([1, 2, 3], ws.FilteredRows.Order());
+
+        wb.Execute(new DeleteColumnsCommand(ws, 5, 1));
+        Assert.Null(ws.AutoFilter);
+        Assert.Equal([1, 3], ws.FilteredRows.Order());
+        wb.Undo.Undo();
+        Assert.Equal([1, 2, 3], ws.FilteredRows.Order());
+
+        wb.Execute(new CreateTableCommand(ws, G("F1:F4"), true, "TableStyleLight1"));
+        Assert.Null(ws.AutoFilter);
+        Assert.Equal([1, 3], ws.FilteredRows.Order());
+        wb.Undo.Undo();
+        Assert.Equal([1, 2, 3], ws.FilteredRows.Order());
+    }
+
+    [Fact]
     public void HeaderSync_RunsOnceAtTransactionCommit()
     {
         var (wb, ws) = Sales();

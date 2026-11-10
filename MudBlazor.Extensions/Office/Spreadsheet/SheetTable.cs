@@ -126,6 +126,7 @@ public sealed class SheetTable
         copy.FirstColumn = firstColumn ?? FirstColumn;
         copy.LastColumn = lastColumn ?? LastColumn;
         copy.HasAutoFilter = HeaderRow && (autoFilter ?? HasAutoFilter);
+        if (!copy.HasAutoFilter) copy._filter = null;
         copy.Dirty = true;
         return copy;
     }

@@ -291,13 +291,19 @@ internal sealed class TableUndo
 
     internal void ClearAutoFilter()
     {
-        _filter = (_sheet.AutoFilter, _sheet.FilteredRows);
+        _filter ??= (_sheet.AutoFilter, _sheet.FilteredRows);
         _sheet.AutoFilter = null;
-        _sheet.SetFiltered([]);
+        _sheet.ReapplyFilters();
     }
 
     internal void Done(bool structure, params CellRange[] ranges)
     {
+        if (Worksheet.FiltersLost(_tables.First(p => p.Sheet == _sheet).Tables, _sheet.Tables, true))
+        {
+            _filter ??= (_sheet.AutoFilter, _sheet.FilteredRows);
+            _sheet.ReapplyFilters();
+        }
+
         _structure = structure;
         _ranges.AddRange(ranges);
         Notify();
