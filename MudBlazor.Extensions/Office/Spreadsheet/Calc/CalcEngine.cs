@@ -36,6 +36,8 @@ public sealed partial class CalcEngine : IDisposable
     private readonly Dictionary<string, FormulaNode> _parsed = new(StringComparer.Ordinal);
     private Dictionary<CellNode, FormulaEntry> _formulas = new();
     private HashSet<CellNode> _volatile = new();
+    private HashSet<CellNode> _hiddenSensitive = new();
+    private long _hiddenVersion;
     private HashSet<CellNode> _keep = new();
     private Dictionary<CellNode, (string Formula, CellValue Value)> _keptFormulas = new();
     private readonly Dictionary<(Worksheet Sheet, long Key), CellState> _before = new();
@@ -92,6 +94,8 @@ public sealed partial class CalcEngine : IDisposable
         _graph.Clear();
         _formulas.Clear();
         _volatile.Clear();
+        _hiddenSensitive.Clear();
+        _hiddenVersion = _wb.HiddenVersion;
         _spills.Clear();
         _keep.Clear();
         _keptFormulas.Clear();
@@ -158,6 +162,7 @@ public sealed partial class CalcEngine : IDisposable
 
     private void Finish(HashSet<CellNode> affected, List<CellNode> starts)
     {
+        affected.RemoveWhere(n => !_formulas.ContainsKey(n));
         foreach (var node in _volatile)
             if (affected.Add(node))
                 starts.Add(node);
@@ -183,6 +188,7 @@ public sealed partial class CalcEngine : IDisposable
                 _formulas.Remove(node);
                 _graph.Remove(node);
                 _volatile.Remove(node);
+                _hiddenSensitive.Remove(node);
                 _keptFormulas.Remove(node);
                 ClearSpill(node);
                 if (stored?.SpillAnchor is { } anchor && !SpillCovers(new CellNode(sheet, anchor.Key), node.Cell))
@@ -197,20 +203,28 @@ public sealed partial class CalcEngine : IDisposable
     private void OnWorkbookChanged(object sender, WorkbookChangedEventArgs e)
     {
         var structure = e.Structure.Where(s => s.Kind is not (StructureChangeKind.Layout or StructureChangeKind.SheetMoved)).ToList();
+        var layout = e.Structure.Any(s => s.Kind == StructureChangeKind.Layout);
+        var bulk = e.ValueRanges.Sum(r => (long)r.Range.Area) > BulkCells;
         if (structure.Count == 0)
         {
-            if (e.ValueRanges.Sum(r => (long)r.Range.Area) > BulkCells) OnBlocksChanged(e);
+            if (bulk) OnBlocksChanged(e);
             else if (e.Cells.Count > 0) OnCellsChanged(e.Cells.Select(c => (c.Sheet, c.Cell)));
-            if (e.Structure.Any(s => s.Kind == StructureChangeKind.Layout)) OnRowsShownOrHidden();
+            if (layout) OnRowsShownOrHidden();
         }
-        else if (structure.Count > 1 || e.Cells.Count > 0 || !Apply(structure[0]))
+        else if (bulk || !Apply(structure, e.Cells.Select(c => (c.Sheet, c.Cell))))
             RecalculateAll();
     }
 
     private void OnRowsShownOrHidden()
     {
-        var starts = _formulas.Where(p => p.Value.HiddenSensitive).Select(p => p.Key).ToList();
-        if (starts.Count > 0) Finish([.. starts], starts);
+        if (HiddenChanged() && _hiddenSensitive.Count > 0) Finish([.. _hiddenSensitive], [.. _hiddenSensitive]);
+    }
+
+    private bool HiddenChanged()
+    {
+        if (_wb.HiddenVersion == _hiddenVersion) return false;
+        _hiddenVersion = _wb.HiddenVersion;
+        return true;
     }
 
     private IEnumerable<CellNode> Next(CellNode node)
@@ -393,5 +407,5 @@ public sealed partial class CalcEngine : IDisposable
 
     private readonly record struct SpillState(CellRange Range, bool Active);
 
-    private sealed record FormulaEntry(string Text, FormulaNode Ast, bool Positional, bool UsesNames, bool HiddenSensitive);
+    private sealed record FormulaEntry(string Text, FormulaNode Ast, bool Positional, bool UsesNames);
 }

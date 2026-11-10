@@ -369,6 +369,7 @@ public sealed class Worksheet
     internal void SetHidden(Axis axis, int index, bool hidden)
     {
         _hiddenOrFiltered = null;
+        Workbook.HiddenVersion++;
         if (hidden) HiddenSet(axis).Add(index);
         else HiddenSet(axis).Remove(index);
     }
@@ -378,6 +379,7 @@ public sealed class Worksheet
     internal void SetFiltered(IEnumerable<int> rows)
     {
         _hiddenOrFiltered = null;
+        Workbook.HiddenVersion++;
         _filteredRows = [.. rows];
     }
 

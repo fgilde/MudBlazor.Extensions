@@ -70,8 +70,9 @@ public sealed class WorkbookChangedEventArgs : EventArgs
 
     /// <summary>
     /// Cells whose value or formula changed through cell commands, including every cell of <see cref="ValueRanges"/> (enumerated on
-    /// demand; a cell can appear twice when blocks overlap). Structural changes are reported only in <see cref="Structure"/>; consumers
-    /// shift or recompute from there.
+    /// demand; a cell can appear twice when blocks overlap). Cells and ranges are given at their position after all changes of the event:
+    /// a row or column inserted or deleted later in the same transaction moves them, and cells it deletes are left out. Structural changes
+    /// are reported only in <see cref="Structure"/>; consumers shift or recompute from there.
     /// </summary>
     public IReadOnlyCollection<CellChange> Cells { get; }
 
@@ -230,6 +231,8 @@ public sealed class Workbook
 
     internal Dictionary<string, string> DefinedNameMap => _definedNames;
 
+    internal long HiddenVersion { get; set; }
+
     internal void BeginBatch() => _batchDepth++;
 
     internal void EndBatch()
@@ -270,8 +273,24 @@ public sealed class Workbook
         if (sheet != null && kind is not (StructureChangeKind.SheetMoved or StructureChangeKind.SheetRenamed or StructureChangeKind.SheetRemoved
                 or StructureChangeKind.DefinedNamesChanged))
             sheet.Modified = true;
+        if (kind is StructureChangeKind.RowsInserted or StructureChangeKind.RowsDeleted or StructureChangeKind.ColumnsInserted or StructureChangeKind.ColumnsDeleted)
+            ShiftPending(new AxisShift(sheet, kind is StructureChangeKind.RowsInserted or StructureChangeKind.RowsDeleted ? Axis.Row : Axis.Column, index,
+                kind is StructureChangeKind.RowsInserted or StructureChangeKind.ColumnsInserted ? count : -count));
         _structure.Add(new StructureChange(kind, sheet, index, count, oldName));
     }
+
+    private void ShiftPending(AxisShift shift)
+    {
+        if (_cells.Count > 0)
+            _cells = _cells.Select(c => c.Sheet != shift.Sheet ? c : shift.Forward(c.Cell) is { } moved ? c with { Cell = moved } : (CellChange?)null)
+                .OfType<CellChange>().ToHashSet();
+        _ranges = Shift(_ranges, shift);
+        _valueRanges = Shift(_valueRanges, shift);
+    }
+
+    private static List<RangeChange> Shift(List<RangeChange> ranges, AxisShift shift) => ranges.Count == 0 ? ranges
+        : ranges.Select(r => r.Sheet != shift.Sheet ? r : shift.Forward(r.Range) is { } moved ? r with { Range = moved } : (RangeChange?)null)
+            .OfType<RangeChange>().ToList();
 
     internal static void ValidateSheetName(string name, Worksheet ignore, Workbook wb)
     {

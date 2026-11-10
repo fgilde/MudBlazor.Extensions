@@ -35180,8 +35180,9 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.Cells">
             <summary>
             Cells whose value or formula changed through cell commands, including every cell of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.ValueRanges"/> (enumerated on
-            demand; a cell can appear twice when blocks overlap). Structural changes are reported only in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.Structure"/>; consumers
-            shift or recompute from there.
+            demand; a cell can appear twice when blocks overlap). Cells and ranges are given at their position after all changes of the event:
+            a row or column inserted or deleted later in the same transaction moves them, and cells it deletes are left out. Structural changes
+            are reported only in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.Structure"/>; consumers shift or recompute from there.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.WorkbookChangedEventArgs.ValueRanges">

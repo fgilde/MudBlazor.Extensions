@@ -19,6 +19,7 @@ internal readonly record struct AxisShift(Worksheet Sheet, Axis Axis, int Index,
     public CellRange? Forward(CellRange r)
     {
         var (s, e) = Axis == Axis.Row ? (r.Top, r.Bottom) : (r.Left, r.Right);
+        if (s == 0 && e == Limit - 1) return r;
         int ns, ne;
         if (Count > 0)
         {

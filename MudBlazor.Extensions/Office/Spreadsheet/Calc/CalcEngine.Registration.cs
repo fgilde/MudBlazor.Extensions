@@ -13,6 +13,16 @@ public sealed partial class CalcEngine
     {
         var ast = Parse(formula);
         if (ast == Unparsable) return false;
+        var areas = new List<RefArea>();
+        Collect(ast, node.Sheet, node.Cell, areas);
+        var current = _graph.Precedents(node);
+        if (areas.Count != current.Count) return false;
+        for (var i = 0; i < areas.Count; i++)
+        {
+            var (a, b) = (areas[i].Range, current[i].Range);
+            if (areas[i].Sheet != current[i].Sheet || a.Top != b.Top || a.Left != b.Left || a.Bottom != b.Bottom || a.Right != b.Right) return false;
+        }
+
         _formulas[node] = entry with { Text = formula, Ast = ast };
         return true;
     }
@@ -34,9 +44,11 @@ public sealed partial class CalcEngine
         var ast = Parse(formula);
         var precedents = new List<RefArea>();
         var info = Collect(ast, node.Sheet, node.Cell, precedents);
-        _formulas[node] = new FormulaEntry(formula, ast, info.Positional, info.Names, info.HiddenSensitive);
+        _formulas[node] = new FormulaEntry(formula, ast, info.Positional, info.Names);
         if (info.Volatile) _volatile.Add(node);
         else _volatile.Remove(node);
+        if (info.HiddenSensitive) _hiddenSensitive.Add(node);
+        else _hiddenSensitive.Remove(node);
         _graph.Set(node, precedents);
         return ast != Unparsable && !info.Unknown;
     }
