@@ -91,8 +91,10 @@ internal static class ChartXmlWriter
         var root = new XElement(chart.Source);
         var types = Child(Child(root, "chart"), "plotArea")?.Elements().Where(e => e.Name.LocalName.EndsWith("Chart", StringComparison.Ordinal)).ToList() ?? [];
         var slots = before.Kind == ChartKind.Other ? [] : types[0].Elements().Where(e => e.Name.LocalName == "ser").SelectMany(s => ChartXmlReader.Slots(s).All).ToHashSet();
-        foreach (var (f, text) in root.Descendants().Where(e => e.Name.LocalName == "f" && !slots.Contains(e)).Zip(chart.OtherRefs))
-            if (f.Value != text) f.Value = text;
+        var others = root.Descendants().Where(e => e.Name.LocalName == "f" && !slots.Contains(e)).ToList();
+        if (others.Count == chart.OtherRefs.Count)
+            foreach (var (f, text) in others.Zip(chart.OtherRefs))
+                if (f.Value != text) f.Value = text;
         if (chart.Kind == ChartKind.Other || before.Kind == ChartKind.Other) return root;
 
         var c = root.Name.Namespace;
