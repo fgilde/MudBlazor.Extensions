@@ -23,7 +23,7 @@ internal static class SheetXmlReader
     internal static double PointsToPixels(double points) => points * 96 / 72;
 
     internal static string Decode(string s) =>
-        s.Contains("_x", StringComparison.Ordinal) ? Escape.Replace(s, m => ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString()) : s;
+        s != null && s.Contains("_x", StringComparison.Ordinal) ? Escape.Replace(s, m => ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString()) : s;
 
     internal static string Text(XElement si, out bool rich)
     {
@@ -191,13 +191,13 @@ internal static class SheetXmlReader
             case "filters" when f.Elements().Any(c => c.Name.LocalName == "dateGroupItem"):
                 return FilterCriteria.Other();
             case "filters":
-                return FilterCriteria.Values(f.Elements().Where(c => c.Name.LocalName == "filter").Select(c => (string)c.Attribute("val") ?? "").ToHashSet(),
+                return FilterCriteria.Values(f.Elements().Where(c => c.Name.LocalName == "filter").Select(c => Decode((string)c.Attribute("val") ?? "")).ToHashSet(),
                     True((string)f.Attribute("blank")));
             case "customFilters":
                 var list = f.Elements().Where(c => c.Name.LocalName == "customFilter").ToList();
                 if (list.Count == 0) return FilterCriteria.Other();
-                return FilterCriteria.Custom(Operator(list[0]), (string)list[0].Attribute("val"), True((string)f.Attribute("and")),
-                    list.Count > 1 ? Operator(list[1]) : null, list.Count > 1 ? (string)list[1].Attribute("val") : null);
+                return FilterCriteria.Custom(Operator(list[0]), Decode((string)list[0].Attribute("val")), True((string)f.Attribute("and")),
+                    list.Count > 1 ? Operator(list[1]) : null, list.Count > 1 ? Decode((string)list[1].Attribute("val")) : null);
             case "top10":
                 return FilterCriteria.Top10(Number(f, "val") ?? 10, True((string)f.Attribute("percent")), (string)f.Attribute("top") is "0" or "false");
             case "colorFilter":

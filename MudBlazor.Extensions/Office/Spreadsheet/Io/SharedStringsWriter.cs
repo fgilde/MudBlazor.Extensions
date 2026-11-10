@@ -87,14 +87,16 @@ internal sealed class SharedStringsWriter
         w.WriteEndElement();
     }
 
-    private static bool Valid(char c) => c is >= ' ' and < (char)0xD800 or '\t' or '\n' or > (char)0xDFFF and < (char)0xFFFE;
+    private static bool Valid(char c, bool breaks = false) =>
+        c is >= ' ' and < (char)0xD800 or > (char)0xDFFF and < (char)0xFFFE || !breaks && c is '\t' or '\n';
 
-    internal static string Escape(string s, bool literals = true)
+    internal static string Escape(string s, bool literals = true, bool breaks = false)
     {
+        if (string.IsNullOrEmpty(s)) return s;
         var plain = true;
         foreach (var c in s)
         {
-            if (Valid(c)) continue;
+            if (Valid(c, breaks)) continue;
             plain = false;
             break;
         }
@@ -111,7 +113,7 @@ internal sealed class SharedStringsWriter
                 continue;
             }
 
-            if (Valid(c)) sb.Append(c);
+            if (Valid(c, breaks)) sb.Append(c);
             else sb.Append("_x").Append(((int)c).ToString("X4", System.Globalization.CultureInfo.InvariantCulture)).Append('_');
         }
 

@@ -36,7 +36,7 @@ internal static class TableXml
         if (!CellRange.TryParse((string)e.Attribute("ref"), out var range)) return null;
         var columns = Child(e, "tableColumns")?.Elements().Where(c => c.Name.LocalName == "tableColumn")
             .Select(c => new TableColumn(SheetXmlReader.Decode((string)c.Attribute("name") ?? ""), (string)c.Attribute("totalsRowFunction") is { } f and not "none" ? f : null,
-                FromFile(Child(c, "calculatedColumnFormula")?.Value)) { Id = Int(c, "id"), Source = c, TotalsLabel = (string)c.Attribute("totalsRowLabel") })
+                FromFile(Child(c, "calculatedColumnFormula")?.Value)) { Id = Int(c, "id"), Source = c, TotalsLabel = SheetXmlReader.Decode((string)c.Attribute("totalsRowLabel")) })
             .ToList() ?? [];
         var style = Child(e, "tableStyleInfo");
         var name = (string)e.Attribute("name") ?? (string)e.Attribute("displayName") ?? "";
@@ -98,20 +98,17 @@ internal static class TableXml
     {
         var c = column.Source != null ? new XElement(column.Source) : new XElement(ns + "tableColumn");
         c.SetAttributeValue("id", id);
-        if (SheetXmlReader.Decode((string)c.Attribute("name") ?? "") != name) c.SetAttributeValue("name", Encode(name));
+        if (SheetXmlReader.Decode((string)c.Attribute("name") ?? "") != name) c.SetAttributeValue("name", SharedStringsWriter.Escape(name, breaks: true));
         c.SetAttributeValue("totalsRowFunction", column.TotalsFunction);
-        c.SetAttributeValue("totalsRowLabel", column.TotalsLabel);
+        c.SetAttributeValue("totalsRowLabel", SharedStringsWriter.Escape(column.TotalsLabel, breaks: true));
         var formula = Child(c, "calculatedColumnFormula");
         if (column.CalculatedFormula == null) formula?.Remove();
         else if (FromFile(formula?.Value) != column.CalculatedFormula)
         {
             if (formula == null) c.AddFirst(formula = new XElement(ns + "calculatedColumnFormula"));
-            formula.Value = SheetXmlWriter.FormulaText(StructuredReferences.ToFile(column.CalculatedFormula, table));
+            formula.Value = SharedStringsWriter.Escape(SheetXmlWriter.FormulaText(StructuredReferences.ToFile(column.CalculatedFormula, table)), false);
         }
 
         return c;
     }
-
-    private static string Encode(string name) =>
-        name.Any(char.IsControl) ? string.Concat(name.Select(ch => char.IsControl(ch) ? $"_x{(int)ch:x4}_" : ch.ToString())) : name;
 }

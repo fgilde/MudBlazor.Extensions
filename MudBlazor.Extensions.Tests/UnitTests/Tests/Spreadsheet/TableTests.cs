@@ -779,7 +779,7 @@ public class TableTests
         var table = Xml(written, "xl/tables/table1.xml").Root!;
         var columns = table.Element(M + "tableColumns")!.Elements().ToList();
         Assert.Equal(("Total", "sum"), ((string)columns[0].Attribute("totalsRowLabel"), (string)columns[3].Attribute("totalsRowFunction")));
-        Assert.Contains("It'em_x000a_Name", Encoding.UTF8.GetString(Entry(written, "xl/tables/table1.xml")));
+        Assert.Contains("It'em_x000A_Name", Encoding.UTF8.GetString(Entry(written, "xl/tables/table1.xml")));
         var again = Read(written).Sheets[0];
         Assert.Equal("It'em\nName", again.Tables[0].Columns[0].Name);
         Assert.Equal("SUM(Sales[[Unit-Price]])", again[R("F1")].Formula);

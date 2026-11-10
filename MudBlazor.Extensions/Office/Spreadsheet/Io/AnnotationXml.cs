@@ -54,7 +54,7 @@ internal static class AnnotationXml
             part.CommentsPart = comments.FullName;
             part.CommentsRelationshipId = commentsRel.Id;
             using (var s = comments.Open()) part.CommentsRoot = LoadXml(s).Root;
-            var authors = Child(part.CommentsRoot, "authors")?.Elements().Select(a => a.Value).ToList() ?? [];
+            var authors = Child(part.CommentsRoot, "authors")?.Elements().Select(a => SheetXmlReader.Decode(a.Value)).ToList() ?? [];
             ws.Notes = Child(part.CommentsRoot, "commentList")?.Elements().Where(e => e.Name.LocalName == "comment").Select(e => Note(e, authors, shapes))
                 .OfType<CellNote>().ToList() ?? [];
         }
@@ -86,8 +86,8 @@ internal static class AnnotationXml
             }
 
             h.SetAttributeValue("location", Empty(link.Location));
-            h.SetAttributeValue("display", Empty(link.Display));
-            h.SetAttributeValue("tooltip", Empty(link.Tooltip));
+            h.SetAttributeValue("display", SharedStringsWriter.Escape(Empty(link.Display)));
+            h.SetAttributeValue("tooltip", SharedStringsWriter.Escape(Empty(link.Tooltip)));
             e.Add(h);
         }
 
@@ -101,7 +101,7 @@ internal static class AnnotationXml
         var root = original != null ? new XElement(original) : new XElement(ns + "comments");
         var authors = Child(root, "authors");
         if (authors == null) root.AddFirst(authors = new XElement(ns + "authors"));
-        var names = authors.Elements().Select(a => a.Value).ToList();
+        var names = authors.Elements().Select(a => SheetXmlReader.Decode(a.Value)).ToList();
         var list = Child(root, "commentList");
         if (list == null) authors.AddAfterSelf(list = new XElement(ns + "commentList"));
         list.RemoveNodes();
@@ -122,14 +122,14 @@ internal static class AnnotationXml
             if (text == null || SheetXmlReader.Text(text, out _) != (note.Text ?? ""))
             {
                 text?.Remove();
-                c.AddFirst(new XElement(ns + "text", new XElement(ns + "t", new XAttribute(XNamespace.Xml + "space", "preserve"), Encode(note.Text ?? ""))));
+                c.AddFirst(new XElement(ns + "text", new XElement(ns + "t", new XAttribute(XNamespace.Xml + "space", "preserve"), SharedStringsWriter.Escape(note.Text ?? ""))));
             }
 
             list.Add(c);
         }
 
         authors.RemoveNodes();
-        authors.Add(names.Select(n => new XElement(ns + "author", n)));
+        authors.Add(names.Select(n => new XElement(ns + "author", SharedStringsWriter.Escape(n))));
         return new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), root);
     }
 
@@ -169,7 +169,8 @@ internal static class AnnotationXml
         range = range.Normalized;
         var id = RelationshipId(e);
         var target = id == null ? null : rels.FirstOrDefault(r => r.Id == id)?.Target;
-        return new CellLink(new CellRef(range.Top, range.Left), target, (string)e.Attribute("location"), (string)e.Attribute("display"), (string)e.Attribute("tooltip"))
+        return new CellLink(new CellRef(range.Top, range.Left), target, (string)e.Attribute("location"), SheetXmlReader.Decode((string)e.Attribute("display")),
+            SheetXmlReader.Decode((string)e.Attribute("tooltip")))
         {
             Source = e,
             RelationshipId = target == null ? null : id,
@@ -237,9 +238,4 @@ internal static class AnnotationXml
     private static XElement SheetChild(XlsxSheetPart part, string name) => part.Children.FirstOrDefault(c => c.Name.LocalName == name);
 
     private static string Empty(string s) => string.IsNullOrEmpty(s) ? null : s;
-
-    private static string Encode(string s) =>
-        s.Any(ch => char.IsControl(ch) && ch is not ('\t' or '\n' or '\r'))
-            ? string.Concat(s.Select(ch => char.IsControl(ch) && ch is not ('\t' or '\n' or '\r') ? $"_x{(int)ch:x4}_" : ch.ToString()))
-            : s;
 }

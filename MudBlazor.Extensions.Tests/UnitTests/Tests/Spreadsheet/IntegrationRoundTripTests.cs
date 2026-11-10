@@ -47,6 +47,45 @@ public class IntegrationRoundTripTests
     }
 
     [Fact]
+    public void ControlCharacters_InFilterNotesLinksRulesAndCharts_StayWellFormedAndRoundTrip()
+    {
+        const string odd = "ab_x0041_";
+        var wb = Workbook.Create("Data");
+        var ws = wb.Sheets[0];
+        object[][] rows = [["Name", "Qty"], [odd, 1], ["x", 2]];
+        for (var r = 0; r < rows.Length; r++)
+            for (var c = 0; c < 2; c++)
+                wb.Execute(new SetValueCommand(ws, new CellRef(r, c), rows[r][c] is string s ? CellValue.Text(s) : CellValue.Number(Convert.ToDouble(rows[r][c]))));
+        wb.Execute(new SetAutoFilterCommand(ws, CellRange.Parse("A1:B3")));
+        wb.Execute(new ApplyFilterCommand(ws, 0, FilterCriteria.Values(new HashSet<string> { odd })));
+        wb.Execute(new SetNoteCommand(ws, new CellNote(R("A2"), odd, odd)));
+        wb.Execute(new SetLinkCommand(ws, new CellLink(R("B2"), "https://example.com/", null, odd, odd)));
+        wb.Execute(new AddConditionalFormattingCommand(ws, new ConditionalFormatting([CellRange.Parse("A2:A3")],
+            [new ConditionalRule.ContainsText(ContainsTextKind.Contains, odd, new DifferentialStyle(NumberFormat: "0.0"))])));
+        wb.Execute(new AddDataValidationCommand(ws, new DataValidation([CellRange.Parse("B2:B3")], ValidationType.Any, PromptTitle: "t", Prompt: odd,
+            ErrorTitle: odd, Error: odd)));
+        wb.Execute(new InsertChartCommand(ws, CellRange.Parse("A1:B3"), ChartKind.Column));
+        var package = Write(wb);
+
+        using (var zip = new ZipArchive(new MemoryStream(package), ZipArchiveMode.Read))
+            foreach (var entry in zip.Entries.Where(e => e.FullName.EndsWith(".xml", StringComparison.Ordinal)))
+            {
+                using var reader = System.Xml.XmlReader.Create(entry.Open());
+                while (reader.Read())
+                {
+                }
+            }
+
+        var back = Read(package).Sheets[0];
+        Assert.Equal((odd, odd), (back.Notes.Single().Author, back.Notes.Single().Text));
+        Assert.Equal((odd, odd), (back.Links.Single().Display, back.Links.Single().Tooltip));
+        Assert.Equal([odd], back.AutoFilter!.Columns[0].Shown);
+        Assert.Equal(odd, ((ConditionalRule.ContainsText)back.ConditionalFormats.Single().Rules.Single()).Text);
+        var dv = back.DataValidations.Single();
+        Assert.Equal(("t", odd, odd, odd), (dv.PromptTitle, dv.Prompt, dv.ErrorTitle, dv.Error));
+    }
+
+    [Fact]
     public void PivotFile_StillFlagsUnshifted()
     {
         var plain = XlsxReadTests.Package([XlsxReadTests.Sheet("")]);
