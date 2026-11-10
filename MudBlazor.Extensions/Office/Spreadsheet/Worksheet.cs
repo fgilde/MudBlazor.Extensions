@@ -473,8 +473,8 @@ public sealed class Worksheet
         _usedRange = null;
         Part?.Shift(axis, index, count);
         Remap(axis, v => v >= index ? v + count : v, limit);
-        if (AutoFilter != null && (AutoFilter = AutoFilter.Shift(axis, index, count)) == null) ReapplyFilters();
         ShiftRules(axis, index, count);
+        if (AutoFilter != null && (AutoFilter = AutoFilter.Shift(axis, index, count)) == null) ReapplyFilters();
         _merges = _merges.Select(m => ShiftRange(m, axis, Start(m, axis) >= index ? count : 0, End(m, axis) >= index ? count : 0, limit)).ToList();
         if (FreezeAt is { } f)
         {
