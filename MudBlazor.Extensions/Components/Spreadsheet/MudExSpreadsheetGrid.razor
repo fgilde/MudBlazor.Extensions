@@ -77,6 +77,45 @@
             {
                 BuildMerge(__builder, m);
             }
+            @foreach (var f in FilterHeads(p))
+            {
+                var head = f;
+                <MudMenu @key="@($"f{head.Cell.Row},{head.Cell.Column}")"
+                         Class="mud-ex-ssg-filter"
+                         Style="@FilterButtonStyle(head.Cell)"
+                         Dense="true"
+                         AnchorOrigin="Origin.BottomRight"
+                         TransformOrigin="Origin.TopRight"
+                         Open="@(_filterOpen == head.Cell)"
+                         OpenChanged="@(o => OnFilterOpenChanged(head.Cell, o))">
+                    <ActivatorContent>
+                        <button type="button"
+                                class="@(head.Filtered ? "mud-ex-ssg-filter-btn mud-ex-ssg-filtered" : "mud-ex-ssg-filter-btn")"
+                                data-c="@head.Cell.Column"
+                                tabindex="-1"
+                                aria-haspopup="menu"
+                                aria-label="@TryLocalize("Filter {0}", DisplayText(head.Cell))"
+                                @onclick="@(e => context.ToggleAsync(e))">
+                            <MudIcon Icon="@(head.Filtered ? Icons.Material.Filled.FilterAlt : Icons.Material.Filled.ArrowDropDown)" />
+                        </button>
+                    </ActivatorContent>
+                    <ChildContent>
+                        @if (_filterOpen == head.Cell)
+                        {
+                            <MudExSpreadsheetFilterMenu Sheet="_sheet"
+                                                        Range="@(head.Table?.Range ?? _sheet.AutoFilter.Range)"
+                                                        Column="head.Cell.Column"
+                                                        Criteria="@(head.Table == null ? _sheet.AutoFilter.Columns.GetValueOrDefault(head.Cell.Column) : null)"
+                                                        CanFilter="@(head.Table == null && CanEdit)"
+                                                        DisplayText="DisplayText"
+                                                        OnSort="@(d => SortFromFilterAsync(head, d))"
+                                                        OnApply="@(c => ApplyFilterAsync(head, c))"
+                                                        OnCancel="CloseFilter"
+                                                        Localizer="@Localizer" />
+                        }
+                    </ChildContent>
+                </MudMenu>
+            }
             @if (p.Kind == 2 || p.Kind == 3)
             {
                 @if (FrozenRows > 0)
@@ -133,6 +172,23 @@
                           @oninput="OnEditorInput"></textarea>
                 __builder.OpenComponent<SpreadsheetEditOverlay>(0);
                 __builder.CloseComponent();
+                if (ListValidation is { } dv)
+                {
+                    <MudMenu Class="mud-ex-ssg-dv" Style="@ListButtonStyle" Dense="true" MaxHeight="300" Open="_listOpen" OpenChanged="@(o => _listOpen = o)">
+                        <ActivatorContent>
+                            <button type="button" class="mud-ex-ssg-dv-btn" tabindex="-1" aria-haspopup="listbox" aria-label="@TryLocalize("Choose a value")"
+                                    @onclick="@(e => context.ToggleAsync(e))">
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown" />
+                            </button>
+                        </ActivatorContent>
+                        <ChildContent>
+                            @foreach (var item in ListItems(dv))
+                            {
+                                <MudMenuItem Class="mud-ex-ssg-dv-item" OnClick="@(() => PickListItemAsync(item))">@item</MudMenuItem>
+                            }
+                        </ChildContent>
+                    </MudMenu>
+                }
             }
         </div>
     }

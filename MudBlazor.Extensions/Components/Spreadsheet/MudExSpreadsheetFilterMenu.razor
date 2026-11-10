@@ -1,0 +1,93 @@
+@inherits MudExBaseComponent<MudExSpreadsheetFilterMenu>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<div class="mud-ex-ssfm" @onkeydown:stopPropagation="true" @onpointerdown:stopPropagation="true">
+    <button type="button" class="mud-ex-ssfm-cmd mud-ex-ssfm-sort-asc" @onclick="@(() => OnSort.InvokeAsync(false))">
+        <MudIcon Icon="@Icons.Material.Filled.ArrowUpward" Size="Size.Small" />@TryLocalize(Numeric ? "Sort Smallest to Largest" : "Sort A to Z")
+    </button>
+    <button type="button" class="mud-ex-ssfm-cmd mud-ex-ssfm-sort-desc" @onclick="@(() => OnSort.InvokeAsync(true))">
+        <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Small" />@TryLocalize(Numeric ? "Sort Largest to Smallest" : "Sort Z to A")
+    </button>
+    @if (CanFilter)
+    {
+        <div class="mud-ex-ssfm-sep"></div>
+        <button type="button" class="mud-ex-ssfm-cmd mud-ex-ssfm-clear" disabled="@(Criteria == null)" @onclick="@(() => OnApply.InvokeAsync(null))">
+            <MudIcon Icon="@Icons.Material.Filled.FilterAltOff" Size="Size.Small" />@TryLocalize("Clear Filter From \"{0}\"", Header)
+        </button>
+        <button type="button" class="mud-ex-ssfm-cmd" aria-expanded="@(_showOperators ? "true" : "false")" @onclick="@(() => _showOperators = !_showOperators)">
+            <MudIcon Icon="@Icons.Material.Filled.FilterList" Size="Size.Small" />@TryLocalize(Numeric ? "Number Filters" : "Text Filters")
+            <MudIcon Icon="@(_showOperators ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ChevronRight)" Size="Size.Small" Class="mud-ex-ssfm-more" />
+        </button>
+        @if (_showOperators)
+        {
+            <div class="mud-ex-ssfm-operators">
+                @foreach (var choice in Numeric ? NumberChoices : TextChoices)
+                {
+                    <button type="button" class="mud-ex-ssfm-cmd" @onclick="@(() => StartCustom(choice))">@TryLocalize(choice.Name)</button>
+                }
+            </div>
+        }
+
+        @if (_custom)
+        {
+            <div class="mud-ex-ssfm-custom">
+                @CustomRow(0)
+                <div class="mud-ex-ssfm-andor">
+                    <label><input type="radio" name="@_id" checked="@_and" @onchange="@(() => _and = true)" /> @TryLocalize("And")</label>
+                    <label><input type="radio" name="@_id" checked="@(!_and)" @onchange="@(() => _and = false)" /> @TryLocalize("Or")</label>
+                </div>
+                @CustomRow(1)
+            </div>
+        }
+        else
+        {
+            <MudTextField T="string" Class="mud-ex-ssfm-search" Placeholder="@TryLocalize("Search")" Value="_search" ValueChanged="@(v => _search = v ?? "")"
+                          Immediate="true" Margin="Margin.Dense" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" />
+            <div class="mud-ex-ssfm-list" role="group" aria-label="@TryLocalize("Values")">
+                <label class="mud-ex-ssfm-option mud-ex-ssfm-all">
+                    <input type="checkbox" checked="@AllChecked" @onchange="@(e => CheckAll(e.Value is true))" />@TryLocalize("(Select All)")
+                </label>
+                @foreach (var value in Shown)
+                {
+                    <label class="mud-ex-ssfm-value" data-value="@value" @key="value">
+                        <input type="checkbox" checked="@_checked.Contains(value)" @onchange="@(e => Check(value, e.Value is true))" />@value
+                    </label>
+                }
+                @if (_hasBlanks && _search.Length == 0)
+                {
+                    <label class="mud-ex-ssfm-option mud-ex-ssfm-blanks">
+                        <input type="checkbox" checked="@_blanks" @onchange="@(e => _blanks = e.Value is true)" />@TryLocalize("(Blanks)")
+                    </label>
+                }
+            </div>
+            @if (_capped)
+            {
+                <div class="mud-ex-ssfm-note">@TryLocalize("Not all items are shown. Use the search to find more.")</div>
+            }
+        }
+
+        <div class="mud-ex-ssfm-actions">
+            <MudButton Class="mud-ex-ssfm-ok" Size="Size.Small" Variant="Variant.Filled" Color="Color.Primary" OnClick="ApplyAsync">@TryLocalize("OK")</MudButton>
+            <MudButton Class="mud-ex-ssfm-cancel" Size="Size.Small" OnClick="@(() => OnCancel.InvokeAsync())">@TryLocalize("Cancel")</MudButton>
+        </div>
+    }
+</div>
+
+@code {
+    private RenderFragment CustomRow(int row) =>
+        @<div class="mud-ex-ssfm-row">
+            <select class="mud-ex-ssfm-op" aria-label="@TryLocalize("Operator")" @onchange="@(e => _operators[row] = int.TryParse(e.Value?.ToString(), out var i) ? i : -1)">
+                @if (row == 1)
+                {
+                    <option value="-1" selected="@(_operators[row] < 0)"></option>
+                }
+                @for (var i = 0; i < Choices.Length; i++)
+                {
+                    var index = i;
+                    <option value="@index" selected="@(_operators[row] == index)">@TryLocalize(Choices[index].Name)</option>
+                }
+            </select>
+            <input class="mud-ex-ssfm-input" aria-label="@TryLocalize("Value")" value="@_values[row]" @oninput="@(e => _values[row] = e.Value?.ToString() ?? "")" />
+        </div>;
+}

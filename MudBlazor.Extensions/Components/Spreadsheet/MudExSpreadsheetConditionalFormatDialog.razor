@@ -1,0 +1,172 @@
+@inherits MudExBaseComponent<MudExSpreadsheetConditionalFormatDialog>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<MudDialog Class="mud-ex-sscf-dialog">
+    <DialogContent>
+        @if (_manage)
+        {
+            <MudStack Spacing="2">
+                <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+                    <MudButton Class="mud-ex-sscf-new" Size="Size.Small" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" OnClick="@(() => StartNew(null))">@TryLocalize("New Rule...")</MudButton>
+                    <MudSpacer />
+                    <MudCheckBox T="bool" Label="@TryLocalize("Show rules for this worksheet")" @bind-Value="_wholeSheet" Dense="true" />
+                </MudStack>
+                @if (!Entries.Any())
+                {
+                    <MudText Typo="Typo.body2" Class="mud-ex-sscf-empty">@TryLocalize("No rules.")</MudText>
+                }
+                @foreach (var entry in Entries)
+                {
+                    var e = entry;
+                    <div class="mud-ex-sscf-entry">
+                        <span class="mud-ex-sscf-rule">@Describe(e.Rule)</span>
+                        <span class="mud-ex-sscf-preview" style="@Preview(e.Rule)">AaBbCc</span>
+                        <span class="mud-ex-sscf-ranges">@string.Join(" ", e.Ranges.Select(r => r.ToA1()))</span>
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" aria-label="@TryLocalize("Edit Rule...")" OnClick="@(() => StartEdit(e))" />
+                        <MudIconButton Class="mud-ex-sscf-delete" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" aria-label="@TryLocalize("Delete Rule")" OnClick="@(() => Delete(e))" />
+                    </div>
+                }
+            </MudStack>
+        }
+        else
+        {
+            <MudStack Spacing="2">
+                <MudSelect T="RuleKind" Label="@TryLocalize("Select a Rule Type")" @bind-Value="_kind" Dense="true">
+                    @foreach (var (kind, name) in Kinds)
+                    {
+                        <MudSelectItem Value="@kind">@TryLocalize(name)</MudSelectItem>
+                    }
+                </MudSelect>
+                <MudTextField T="string" Label="@TryLocalize("Applies to")" @bind-Value="_appliesTo" Immediate="true" Error="@(ParseRanges() == null)" Margin="Margin.Dense" />
+                @switch (_kind)
+                {
+                    case RuleKind.CellValue:
+                        <MudStack Row="true" Spacing="2">
+                            <MudSelect T="string" Label="@TryLocalize("Cell Value")" @bind-Value="_operator" Dense="true">
+                                @foreach (var (op, name) in Operators)
+                                {
+                                    <MudSelectItem Value="@op">@TryLocalize(name)</MudSelectItem>
+                                }
+                            </MudSelect>
+                            <MudTextField T="string" Class="mud-ex-sscf-value1" Label="@TryLocalize("Value")" @bind-Value="_value1" Immediate="true" Margin="Margin.Dense" />
+                            @if (_operator is "between" or "notBetween")
+                            {
+                                <MudTextField T="string" Label="@TryLocalize("and")" @bind-Value="_value2" Immediate="true" Margin="Margin.Dense" />
+                            }
+                        </MudStack>
+                        break;
+                    case RuleKind.Text:
+                        <MudStack Row="true" Spacing="2">
+                            <MudSelect T="ContainsTextKind" Label="@TryLocalize("Format only cells with")" @bind-Value="_textKind" Dense="true">
+                                @foreach (var (kind, name) in TextKinds)
+                                {
+                                    <MudSelectItem Value="@kind">@TryLocalize(name)</MudSelectItem>
+                                }
+                            </MudSelect>
+                            @if (_textKind is ContainsTextKind.Contains or ContainsTextKind.NotContains or ContainsTextKind.BeginsWith or ContainsTextKind.EndsWith)
+                            {
+                                <MudTextField T="string" Label="@TryLocalize("Text")" @bind-Value="_value1" Immediate="true" Margin="Margin.Dense" />
+                            }
+                        </MudStack>
+                        break;
+                    case RuleKind.Date:
+                        <MudSelect T="string" Label="@TryLocalize("A date occurring")" @bind-Value="_period" Dense="true">
+                            @foreach (var (period, name) in Periods)
+                            {
+                                <MudSelectItem Value="@period">@TryLocalize(name)</MudSelectItem>
+                            }
+                        </MudSelect>
+                        break;
+                    case RuleKind.TopBottom:
+                        <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+                            <MudSelect T="bool" Label="@TryLocalize("Format values that rank in the")" @bind-Value="_bottom" Dense="true">
+                                <MudSelectItem Value="false">@TryLocalize("Top")</MudSelectItem>
+                                <MudSelectItem Value="true">@TryLocalize("Bottom")</MudSelectItem>
+                            </MudSelect>
+                            <MudNumericField T="int" Label="@TryLocalize("Rank")" @bind-Value="_rank" Min="1" Max="1000" Margin="Margin.Dense" />
+                            <MudCheckBox T="bool" Label="@TryLocalize("% of the selected range")" @bind-Value="_percent" Dense="true" />
+                        </MudStack>
+                        break;
+                    case RuleKind.Average:
+                        <MudSelect T="bool" Label="@TryLocalize("Format values that are")" @bind-Value="_below" Dense="true">
+                            <MudSelectItem Value="false">@TryLocalize("above")</MudSelectItem>
+                            <MudSelectItem Value="true">@TryLocalize("below")</MudSelectItem>
+                        </MudSelect>
+                        break;
+                    case RuleKind.Duplicate:
+                        <MudSelect T="bool" Label="@TryLocalize("Format all")" @bind-Value="_unique" Dense="true">
+                            <MudSelectItem Value="false">@TryLocalize("duplicate")</MudSelectItem>
+                            <MudSelectItem Value="true">@TryLocalize("unique")</MudSelectItem>
+                        </MudSelect>
+                        break;
+                    case RuleKind.Formula:
+                        <MudTextField T="string" Class="mud-ex-sscf-formula" Label="@TryLocalize("Format values where this formula is true")" @bind-Value="_value1" Immediate="true" Margin="Margin.Dense" />
+                        break;
+                    case RuleKind.ColorScale:
+                        <MudCheckBox T="bool" Label="@TryLocalize("3-Color Scale")" @bind-Value="_threeColors" Dense="true" />
+                        <MudStack Row="true" Spacing="2">
+                            @ColorInput("Minimum", 0)
+                            @if (_threeColors)
+                            {
+                                @ColorInput("Midpoint", 1)
+                            }
+                            @ColorInput("Maximum", 2)
+                        </MudStack>
+                        break;
+                    case RuleKind.DataBar:
+                        @ColorInput("Bar Color", 3)
+                        break;
+                    case RuleKind.IconSet:
+                        <MudSelect T="string" Label="@TryLocalize("Icon Style")" @bind-Value="_iconSet" Dense="true">
+                            @foreach (var (name, set) in MudExSpreadsheetEditor.IconSets)
+                            {
+                                <MudSelectItem Value="@set">@TryLocalize(name)</MudSelectItem>
+                            }
+                        </MudSelect>
+                        <MudStack Row="true" Spacing="2">
+                            <MudCheckBox T="bool" Label="@TryLocalize("Reverse Icon Order")" @bind-Value="_reverse" Dense="true" />
+                            <MudCheckBox T="bool" Label="@TryLocalize("Show Icon Only")" @bind-Value="_iconOnly" Dense="true" />
+                        </MudStack>
+                        break;
+                }
+                @if (HasFormat)
+                {
+                    <MudSelect T="int" Label="@TryLocalize("Format with")" @bind-Value="_preset" Dense="true">
+                        @for (var i = 0; i < Presets.Length; i++)
+                        {
+                            var index = i;
+                            <MudSelectItem Value="@index">@TryLocalize(Presets[index].Name)</MudSelectItem>
+                        }
+                        <MudSelectItem Value="@Presets.Length">@TryLocalize("Custom Format")</MudSelectItem>
+                    </MudSelect>
+                    @if (_preset == Presets.Length)
+                    {
+                        <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+                            @ColorInput("Font Color", 4)
+                            @ColorInput("Fill Color", 5)
+                            <MudCheckBox T="bool" Label="@TryLocalize("Bold")" @bind-Value="_bold" Dense="true" />
+                            <MudCheckBox T="bool" Label="@TryLocalize("Italic")" @bind-Value="_italic" Dense="true" />
+                        </MudStack>
+                    }
+                    <span class="mud-ex-sscf-preview" style="@StylePreview(Format())">AaBbCcYyZz</span>
+                }
+                <MudCheckBox T="bool" Label="@TryLocalize("Stop If True")" @bind-Value="_stop" Dense="true" />
+            </MudStack>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@TryLocalize(_manage ? "Close" : "Cancel")</MudButton>
+        @if (!_manage)
+        {
+            <MudButton Class="mud-ex-sscf-ok" Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!Valid)" OnClick="Ok">@TryLocalize("OK")</MudButton>
+        }
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private RenderFragment ColorInput(string label, int slot) =>
+        @<label class="mud-ex-format-cells-color">@TryLocalize(label)
+            <input type="color" value="@(_colors[slot] ?? "#000000")" @onchange="@(e => _colors[slot] = ColorOf(e))" />
+        </label>;
+}

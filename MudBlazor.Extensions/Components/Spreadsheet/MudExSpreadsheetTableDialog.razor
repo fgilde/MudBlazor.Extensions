@@ -1,0 +1,16 @@
+@inherits MudExBaseComponent<MudExSpreadsheetTableDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="mud-ex-sstable-dialog">
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudTextField T="string" Label="@TryLocalize("Where is the data for your table?")" Value="_range" ValueChanged="@(v => _range = v ?? "")" Immediate="true"
+                          Error="@(!Valid)" Margin="Margin.Dense" />
+            <MudCheckBox T="bool" Label="@TryLocalize("My table has headers")" @bind-Value="_headers" Dense="true" />
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-sstable-ok" Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!Valid)" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

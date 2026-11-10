@@ -374,7 +374,7 @@ public partial class MudExSpreadsheetGrid
         return SelectAsync(new SpreadsheetSelection(_selection.Active, [target]), _selection.Active);
     }
 
-    private CellRange CurrentRegion(CellRef cell)
+    internal CellRange CurrentRegion(CellRef cell)
     {
         int top = cell.Row, left = cell.Column, bottom = cell.Row, right = cell.Column;
         var used = _sheet.UsedRange;

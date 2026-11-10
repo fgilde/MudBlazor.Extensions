@@ -138,7 +138,7 @@ public partial class MudExSpreadsheetGrid
         {
             _zoom = zoom;
             _headings = ShowHeadings;
-            _looks.Clear();
+            ClearLooks();
             layout = true;
         }
 
@@ -229,7 +229,7 @@ public partial class MudExSpreadsheetGrid
         _engineParameter = Engine;
         _sheet = null;
         _sheetSelections.Clear();
-        _looks.Clear();
+        ClearLooks();
         _clipboard = null;
         if (_workbook == null) return;
         _workbook.Changed += OnWorkbookChanged;
@@ -243,6 +243,7 @@ public partial class MudExSpreadsheetGrid
         if (_engine != null) _engine.Calculated -= OnCalculated;
         _ownedEngine?.Dispose();
         _ownedEngine = null;
+        DisposeConditional();
         _engine = null;
         _workbook = null;
         _editing = false;
@@ -255,6 +256,8 @@ public partial class MudExSpreadsheetGrid
         if (ReferenceEquals(sheet, _sheet)) return false;
         if (_sheet != null) _sheetSelections[_sheet] = _selection;
         _editing = false;
+        _filterOpen = null;
+        _listOpen = false;
         _sheet = sheet;
         var previous = _selection;
         _selection = sheet != null && _sheetSelections.TryGetValue(sheet, out var s) ? s : SpreadsheetSelection.Single(default);
@@ -389,6 +392,8 @@ public partial class MudExSpreadsheetGrid
             ResolveSheet();
             Relayout();
         }
+        else if (HasRules && (e.SingleCells.Any(c => c.Sheet == _sheet) || e.ValueRanges.Any(v => v.Sheet == _sheet) || e.FormattedRanges.Any(f => f.Sheet == _sheet)))
+            _layoutVersion++;
 
         RefreshFromModel();
     }
@@ -396,7 +401,7 @@ public partial class MudExSpreadsheetGrid
     private void OnCalculated(object sender, CalculatedEventArgs e)
     {
         if (_sheet == null) return;
-        if (e.Cells.Count > 5000) _layoutVersion++;
+        if (e.Cells.Count > 5000 || (HasRules && e.Cells.Any(c => c.Sheet == _sheet))) _layoutVersion++;
         else
             foreach (var c in e.Cells)
                 if (c.Sheet == _sheet) Bump(c.Cell.Row);
@@ -581,10 +586,9 @@ public partial class MudExSpreadsheetGrid
             var w = X(c + 1) - x;
             if (w <= 0 || InWindowMerge(at)) continue;
             var cell = _sheet[at];
-            var styleId = _sheet.EffectiveStyleId(at);
             var content = cell?.HasContent == true;
-            var look = Look(styleId);
-            if (!content && look.Box.Length == 0) continue;
+            var look = LookAt(at, _sheet.EffectiveStyleId(at), out var cf);
+            if (!content && look.Box.Length == 0 && cf == null) continue;
             double extendLeft = 0, extendRight = 0;
             if (content && cell.Value.Kind == CellValueKind.Text && !look.Wrap)
             {
@@ -594,7 +598,7 @@ public partial class MudExSpreadsheetGrid
                     for (var n = c - 1; n >= c0 && IsFree(row, n); n--) extendLeft += W(n);
             }
 
-            BuildCell(b, c, at, x, y, w, h, extendLeft, extendRight, false);
+            BuildCell(b, c, at, x, y, w, h, extendLeft, extendRight, false, look, cf);
         }
     }
 
@@ -604,16 +608,19 @@ public partial class MudExSpreadsheetGrid
         return _sheet[at]?.HasContent != true && !InWindowMerge(at);
     }
 
-    private void BuildMerge(RenderTreeBuilder b, CellRange m) =>
-        BuildCell(b, m.ToA1(), m.Start, X(m.Left), Y(m.Top), X(m.Right + 1) - X(m.Left), Y(m.Bottom + 1) - Y(m.Top), 0, 0, true);
+    private void BuildMerge(RenderTreeBuilder b, CellRange m)
+    {
+        var look = LookAt(m.Start, _sheet.EffectiveStyleId(m.Start), out var cf);
+        BuildCell(b, m.ToA1(), m.Start, X(m.Left), Y(m.Top), X(m.Right + 1) - X(m.Left), Y(m.Bottom + 1) - Y(m.Top), 0, 0, true, look, cf);
+    }
 
-    private void BuildCell(RenderTreeBuilder b, object key, CellRef at, double x, double y, double w, double h, double extendLeft, double extendRight, bool merged)
+    private void BuildCell(RenderTreeBuilder b, object key, CellRef at, double x, double y, double w, double h, double extendLeft, double extendRight, bool merged,
+        CellLook look, ConditionalResult cf)
     {
         var cell = _sheet[at];
-        var look = Look(_sheet.EffectiveStyleId(at));
         string text = null, color = null;
         var horizontal = look.Horizontal;
-        if (cell?.HasContent == true)
+        if (cell?.HasContent == true && cf?.HideValue != true)
         {
             text = NumberFormat.Format(cell.Value, look.Format, Culture, out var named);
             color = NamedColor(named);
@@ -641,7 +648,14 @@ public partial class MudExSpreadsheetGrid
         b.AddAttribute(1, "class", cls.ToString());
         b.AddAttribute(2, "data-r", at.Row);
         b.AddAttribute(3, "data-c", at.Column);
-        b.AddAttribute(4, "style", $"left:{Px(x - 1)};top:{Px(y - 1)};width:{Px(w + 1)};height:{Px(h + 1)};{look.Box}{look.Text}{(color != null ? "color:" + color + ";" : "")}");
+        b.AddAttribute(4, "style", $"left:{Px(x - 1)};top:{Px(y - 1)};width:{Px(w + 1)};height:{Px(h + 1)};{look.Box}{ConditionalBox(cf)}{look.Text}{(color != null ? "color:" + color + ";" : "")}");
+        if (cf?.Icon is { } icon)
+        {
+            b.OpenRegion(9);
+            BuildIcon(b, icon);
+            b.CloseRegion();
+        }
+
         if (overflow)
         {
             b.OpenElement(5, "span");
@@ -656,76 +670,6 @@ public partial class MudExSpreadsheetGrid
 
         b.CloseElement();
     }
-
-    private CellLook Look(int id)
-    {
-        if (_looks.TryGetValue(id, out var look)) return look;
-        var s = _workbook.Styles[id];
-        var box = new StringBuilder();
-        if (SafeColor(s.Fill.Color) is { } fill) box.Append("background:").Append(fill).Append(';');
-        Border(box, "left", s.Border.Left);
-        Border(box, "right", s.Border.Right);
-        Border(box, "top", s.Border.Top);
-        Border(box, "bottom", s.Border.Bottom);
-        var text = new StringBuilder();
-        var f = s.Font;
-        var family = SafeFont(f.Name);
-        if (family.Length > 0 && family != "Calibri") text.Append("font-family:'").Append(family).Append("',Calibri,Carlito,sans-serif;");
-        if (f.Size > 0 && Math.Abs(f.Size - 11) > 0.01) text.Append("font-size:").Append(Px(Math.Round(f.Size * 96 / 72 * _zoom, 2))).Append(';');
-        if (f.Bold) text.Append("font-weight:700;");
-        if (f.Italic) text.Append("font-style:italic;");
-        if (f.Underline || f.Strikethrough)
-            text.Append("text-decoration:").Append(f.Underline ? "underline" : "").Append(f.Underline && f.Strikethrough ? " " : "").Append(f.Strikethrough ? "line-through" : "").Append(';');
-        if (SafeColor(f.Color) is { } color) text.Append("color:").Append(color).Append(';');
-        if (s.Alignment.Indent > 0) text.Append("padding-left:").Append(Px((3 + s.Alignment.Indent * 9) * _zoom)).Append(';');
-        look = new CellLook(box.ToString(), text.ToString(), s.Alignment.Horizontal, s.Alignment.Vertical, s.Alignment.WrapText, s.NumberFormat);
-        _looks[id] = look;
-        return look;
-    }
-
-    private string FontShorthand(int styleId)
-    {
-        var f = _workbook.Styles[styleId].Font;
-        var family = SafeFont(f.Name);
-        return $"{(f.Italic ? "italic " : "")}{(f.Bold ? "700 " : "")}{Px(Math.Round((f.Size > 0 ? f.Size : 11) * 96 / 72, 2))} '{(family.Length > 0 ? family : "Calibri")}', Calibri, Carlito, sans-serif";
-    }
-
-    private static void Border(StringBuilder sb, string side, CellBorderSide b)
-    {
-        if (b == null || b.Style == CellBorderStyle.None) return;
-        var (width, style) = b.Style switch
-        {
-            CellBorderStyle.Medium => (2, "solid"),
-            CellBorderStyle.Thick => (3, "solid"),
-            CellBorderStyle.Dashed => (1, "dashed"),
-            CellBorderStyle.Dotted => (1, "dotted"),
-            CellBorderStyle.Double => (3, "double"),
-            _ => (1, "solid")
-        };
-        sb.Append("border-").Append(side).Append(':').Append(width).Append("px ").Append(style).Append(' ')
-            .Append(SafeColor(b.Color) ?? "var(--mud-palette-text-primary)").Append(';');
-    }
-
-    private static string SafeColor(string color) =>
-        color is { Length: 7 or 9 } && color[0] == '#' && color.Skip(1).All(char.IsAsciiHexDigit) ? color : null;
-
-    private static string SafeFont(string name) =>
-        name == null ? "" : new string(name.Where(c => char.IsLetterOrDigit(c) || c is ' ' or '-' or '_').ToArray()).Trim();
-
-    private static string NamedColor(string name) => name switch
-    {
-        "Black" or "Blue" or "Cyan" or "Green" or "Magenta" or "Red" or "White" or "Yellow" => name.ToLowerInvariant(),
-        _ => null
-    };
-
-    internal string DisplayText(CellRef at)
-    {
-        var cell = _sheet?[at];
-        if (cell?.HasContent != true) return "";
-        return NumberFormat.Format(cell.Value, _workbook.Styles[_sheet.EffectiveStyleId(at)].NumberFormat, Culture, out _);
-    }
-
-    private sealed record CellLook(string Box, string Text, CellHorizontalAlignment Horizontal, CellVerticalAlignment Vertical, bool Wrap, string Format);
 
     private readonly record struct GridPane(int Kind, int R0, int R1, int C0, int C1)
     {

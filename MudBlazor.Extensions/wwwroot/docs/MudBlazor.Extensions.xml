@@ -19651,6 +19651,27 @@
         <member name="T:MudBlazor.Extensions.Components.FormulaAssist">
             <summary>Formula autocomplete from the function catalog and defined names, and the signature tip of the enclosing function.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetConditionalFormatDialog">
+            <summary>
+            The conditional formatting dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>: the rules manager and the New/Edit Formatting Rule editor.
+            Closes with one add, edit or delete command for the sheet's conditional formats as result data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetConditionalFormatDialog.Sheet">
+            <summary>The sheet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetConditionalFormatDialog.Ranges">
+            <summary>The ranges a new rule applies to, usually the selection.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetConditionalFormatDialog.Kind">
+            <summary>
+            What the dialog opens with: manage, new, or a rule preset such as greaterThan, lessThan, between, equal, containsText, timePeriod, duplicate,
+            top10, top10Percent, bottom10, bottom10Percent, aboveAverage or belowAverage.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetConditionalFormatDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor">
             <summary>
             Spreadsheet editor in the style of Excel with ribbon, formula bar, virtualized grid, sheet tabs and status bar.
@@ -19740,6 +19761,45 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu">
+            <summary>
+            The drop-down of an auto filter column in <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetGrid"/>: sorting, a searchable list of the column's values and
+            number or text filters. It raises <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.OnApply"/> with the new criteria and leaves the command to the host.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.MaxValues">
+            <summary>The most distinct values the list shows, as in Excel.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.Sheet">
+            <summary>The sheet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.Range">
+            <summary>The filter range including its header row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.Column">
+            <summary>Zero-based sheet column of the filter.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.Criteria">
+            <summary>The current criteria of the column, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.CanFilter">
+            <summary>Whether the filter part is offered; false shows only sorting.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.DisplayText">
+            <summary>Returns the shown text of a cell; filters compare against it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.OnSort">
+            <summary>Raised with true for descending order when the user sorts by the column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.OnApply">
+            <summary>Raised with the new criteria of the column, null to show all values.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.OnCancel">
+            <summary>Raised when the user closes the menu without a change.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.OnInitialized">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetFormatCellsDialog">
@@ -20049,6 +20109,26 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetSheetTabs.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetSortDialog">
+            <summary>
+            The Sort dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/> with several sort levels; closes with a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SortCommand"/> as result data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSortDialog.Sheet">
+            <summary>The sheet to sort.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSortDialog.Range">
+            <summary>The range to sort, including a header row if <see cref="P:MudBlazor.Extensions.Components.MudExSpreadsheetSortDialog.HasHeader"/> is set.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSortDialog.HasHeader">
+            <summary>Whether the first row of the range is proposed as header that stays in place.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetSortDialog.Column">
+            <summary>The zero-based sheet column of the first sort level.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetSortDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetStatusBar">
             <summary>
             Status bar of a spreadsheet: average, count and sum of the selected cells, formatted like the active cell, and a zoom slider.
@@ -20072,11 +20152,78 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetStatusBar.OnParametersSet">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetTableDialog">
+            <summary>
+            The Create Table dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>: asks for the range and whether it has a header row and closes with a
+            <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.CreateTableCommand"/> as result data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetTableDialog.Sheet">
+            <summary>The sheet that gets the table.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetTableDialog.Range">
+            <summary>The proposed range.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetTableDialog.HasHeaders">
+            <summary>Whether the first row of the range is proposed as header row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetTableDialog.StyleName">
+            <summary>The table style, for example TableStyleMedium2.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetTableDialog.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetValidationDialog">
+            <summary>
+            The Data Validation dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/> with the tabs Settings, Input Message and Error Alert. Closes with an add,
+            edit or delete command for the sheet's data validations as result data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetValidationDialog.Sheet">
+            <summary>The sheet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetValidationDialog.Ranges">
+            <summary>The ranges a new validation applies to, usually the selection.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetValidationDialog.Index">
+            <summary>Index of the validation to edit in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DataValidations"/>, or -1 to add one.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpreadsheetValidationDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.SpreadsheetAxis">
             <summary>
             Offsets of rows or columns from sparse size deviations: prefix sums over the deviating indexes give
             <see cref="M:MudBlazor.Extensions.Components.SpreadsheetAxis.Offset(System.Int32)"/> in O(log k) and <see cref="M:MudBlazor.Extensions.Components.SpreadsheetAxis.IndexAt(System.Double)"/> in O(log n · log k).
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetCellStyle">
+            <summary>A named cell style of the Cell Styles gallery.</summary>
+            <param name="Name">The name, for example Good or Heading 1.</param>
+            <param name="Style">The parts of the cell format the style sets.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetCellStyle.#ctor(System.String,MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle)">
+            <summary>A named cell style of the Cell Styles gallery.</summary>
+            <param name="Name">The name, for example Good or Heading 1.</param>
+            <param name="Style">The parts of the cell format the style sets.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetCellStyle.Name">
+            <summary>The name, for example Good or Heading 1.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetCellStyle.Style">
+            <summary>The parts of the cell format the style sets.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetCellStyle.ApplyTo(MudBlazor.Extensions.Office.Spreadsheet.CellStyle)">
+            <summary>Applies the style like Excel: each part the style sets (font, fill, border, number format) replaces that part of the cell format.</summary>
+            <param name="cellStyle">The current cell format.</param>
+            <returns>The new cell format.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetCellStyles">
+            <summary>The cell styles offered by the Cell Styles gallery of <see cref="T:MudBlazor.Extensions.Components.MudExSpreadsheetEditor"/>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetCellStyles.Create">
+            <summary>Creates the styles; the currency style uses the current culture.</summary>
+            <returns>Normal, Good, Bad, Neutral, Heading 1–4, Input, Output, Calculation, Note, Percent and Currency.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Components.SpreadsheetGridRow">
             <summary>
@@ -20138,6 +20285,57 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.SpreadsheetSelection.GetHashCode">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetTableStyle">
+            <summary>Colors the spreadsheet grid uses to draw a table style.</summary>
+            <param name="HeaderFill">Fill of the header row, or null for none.</param>
+            <param name="HeaderFont">Font color of the header row, or null for the default.</param>
+            <param name="BandFill">Fill of every other data row.</param>
+            <param name="Border">Color of the header and totals separator lines, or null for none.</param>
+            <param name="DataFont">Font color of the data rows, or null for the default.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetTableStyle.#ctor(System.String,System.String,System.String,System.String,System.String)">
+            <summary>Colors the spreadsheet grid uses to draw a table style.</summary>
+            <param name="HeaderFill">Fill of the header row, or null for none.</param>
+            <param name="HeaderFont">Font color of the header row, or null for the default.</param>
+            <param name="BandFill">Fill of every other data row.</param>
+            <param name="Border">Color of the header and totals separator lines, or null for none.</param>
+            <param name="DataFont">Font color of the data rows, or null for the default.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetTableStyle.HeaderFill">
+            <summary>Fill of the header row, or null for none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetTableStyle.HeaderFont">
+            <summary>Font color of the header row, or null for the default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetTableStyle.BandFill">
+            <summary>Fill of every other data row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetTableStyle.Border">
+            <summary>Color of the header and totals separator lines, or null for none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetTableStyle.DataFont">
+            <summary>Font color of the data rows, or null for the default.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SpreadsheetTableStyles">
+            <summary>
+            The built-in table style names (TableStyleLight1–21, TableStyleMedium1–28, TableStyleDark1–11) with a generated palette for each,
+            built from seven accent colors. Unknown names look like TableStyleMedium2.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SpreadsheetTableStyles.Names">
+            <summary>All built-in table style names in gallery order.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetTableStyles.Palette(System.String)">
+            <summary>Returns the palette of a table style.</summary>
+            <param name="name">Style name such as TableStyleMedium2.</param>
+            <returns>The palette; unknown names get the palette of TableStyleMedium2.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SpreadsheetTableStyles.Format(MudBlazor.Extensions.Office.Spreadsheet.SheetTable,MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Returns the table look of a cell: header, totals and banding formats of the table's style.</summary>
+            <param name="table">The table.</param>
+            <param name="cell">A cell inside the table.</param>
+            <returns>The look, or null for cells outside the table or a table without style.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Components.FilterHighlighting">
             <summary>

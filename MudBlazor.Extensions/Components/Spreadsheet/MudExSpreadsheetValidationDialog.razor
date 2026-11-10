@@ -1,0 +1,65 @@
+@inherits MudExBaseComponent<MudExSpreadsheetValidationDialog>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Spreadsheet
+
+<MudDialog Class="mud-ex-ssdv-dialog">
+    <DialogContent>
+        <MudTabs Elevation="0" Rounded="true" TabPanelsClass="pt-4" @bind-ActivePanelIndex="_tab">
+            <MudTabPanel Text="@TryLocalize("Settings")">
+                <MudStack Spacing="2">
+                    <MudSelect T="ValidationType" Label="@TryLocalize("Allow")" @bind-Value="_type" Dense="true">
+                        @foreach (var (type, name) in Types)
+                        {
+                            <MudSelectItem Value="@type">@TryLocalize(name)</MudSelectItem>
+                        }
+                    </MudSelect>
+                    @if (Compares)
+                    {
+                        <MudSelect T="string" Label="@TryLocalize("Data")" @bind-Value="_operator" Dense="true">
+                            @foreach (var (op, name) in Operators)
+                            {
+                                <MudSelectItem Value="@op">@TryLocalize(name)</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+                    @if (_type != ValidationType.Any)
+                    {
+                        <MudTextField T="string" Class="mud-ex-ssdv-formula1" Label="@TryLocalize(FirstLabel)" @bind-Value="_formula1" Immediate="true" Margin="Margin.Dense" />
+                    }
+                    @if (Between)
+                    {
+                        <MudTextField T="string" Class="mud-ex-ssdv-formula2" Label="@TryLocalize("Maximum")" @bind-Value="_formula2" Immediate="true" Margin="Margin.Dense" />
+                    }
+                    <MudCheckBox T="bool" Label="@TryLocalize("Ignore blank")" @bind-Value="_allowBlank" Dense="true" />
+                    @if (_type == ValidationType.List)
+                    {
+                        <MudCheckBox T="bool" Label="@TryLocalize("In-cell dropdown")" @bind-Value="_dropDown" Dense="true" />
+                    }
+                </MudStack>
+            </MudTabPanel>
+            <MudTabPanel Text="@TryLocalize("Input Message")">
+                <MudStack Spacing="2">
+                    <MudTextField T="string" Label="@TryLocalize("Title")" @bind-Value="_promptTitle" Margin="Margin.Dense" />
+                    <MudTextField T="string" Label="@TryLocalize("Input message")" @bind-Value="_prompt" Lines="3" Margin="Margin.Dense" />
+                </MudStack>
+            </MudTabPanel>
+            <MudTabPanel Text="@TryLocalize("Error Alert")">
+                <MudStack Spacing="2">
+                    <MudSelect T="string" Label="@TryLocalize("Style")" @bind-Value="_errorStyle" Dense="true">
+                        <MudSelectItem Value="@("stop")">@TryLocalize("Stop")</MudSelectItem>
+                        <MudSelectItem Value="@("warning")">@TryLocalize("Warning")</MudSelectItem>
+                        <MudSelectItem Value="@("information")">@TryLocalize("Information")</MudSelectItem>
+                    </MudSelect>
+                    <MudTextField T="string" Label="@TryLocalize("Title")" @bind-Value="_errorTitle" Margin="Margin.Dense" />
+                    <MudTextField T="string" Label="@TryLocalize("Error message")" @bind-Value="_error" Lines="3" Margin="Margin.Dense" />
+                </MudStack>
+            </MudTabPanel>
+        </MudTabs>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Class="mud-ex-ssdv-clear" Disabled="@(Index < 0)" OnClick="ClearAll">@TryLocalize("Clear All")</MudButton>
+        <MudSpacer />
+        <MudButton OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-ssdv-ok" Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!Valid)" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

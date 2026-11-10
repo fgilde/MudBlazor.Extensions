@@ -89,6 +89,10 @@
                         </MudExRibbonRow>
                     </MudExRibbonGroup>
 
+                    <MudExRibbonGroup Text="@TryLocalize("Styles")" Icon="@Icons.Material.Filled.Palette" CollapsePriority="1">
+                        @Static(StylesGroup)
+                    </MudExRibbonGroup>
+
                     <MudExRibbonGroup Text="@TryLocalize("Cells")" Icon="@Icons.Material.Filled.TableRows" CollapsePriority="1">
                         <MudExRibbonMenuButton Id="xl-insert" Text="@TryLocalize("Insert")" Icon="@Icons.Material.Filled.AddBox" Size="MudExRibbonItemSize.Large">
                             <MudExRibbonMenuItem Id="xl-insert-rows" Text="@TryLocalize("Insert Sheet Rows")" OnClick="InsertRowsAsync" />
@@ -170,6 +174,20 @@
                     </MudExRibbonGroup>
                 </MudExRibbonTab>
 
+                <MudExRibbonTab Text="@TryLocalize("Data")" KeyTip="A" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Sort & Filter")" Icon="@Icons.Material.Filled.FilterAlt" CollapsePriority="2">
+                        <MudExRibbonButton Id="xl-sort-asc" Text="@TryLocalize("Sort A to Z")" Icon="@Icons.Material.Filled.ArrowUpward" Size="MudExRibbonItemSize.Small" KeyTip="SA" OnClick="@(() => SortAsync(false))" />
+                        <MudExRibbonButton Id="xl-sort-desc" Text="@TryLocalize("Sort Z to A")" Icon="@Icons.Material.Filled.ArrowDownward" Size="MudExRibbonItemSize.Small" KeyTip="SD" OnClick="@(() => SortAsync(true))" />
+                        <MudExRibbonButton Id="xl-sort-custom" Text="@TryLocalize("Sort...")" Icon="@Icons.Material.Filled.Sort" Size="MudExRibbonItemSize.Large" KeyTip="SS" OnClick="CustomSortAsync" />
+                        <MudExRibbonToggleButton Id="xl-filter" Text="@TryLocalize("Filter")" Icon="@Icons.Material.Filled.FilterAlt" Size="MudExRibbonItemSize.Large" KeyTip="T" Shortcut="Ctrl+Shift+L" Checked="@FilterOn" CheckedChanged="@(_ => ToggleFilterAsync())" />
+                        <MudExRibbonButton Id="xl-filter-clear" Text="@TryLocalize("Clear")" Icon="@Icons.Material.Filled.FilterAltOff" Size="MudExRibbonItemSize.Small" KeyTip="C" Disabled="@(!HasFilterCriteria)" OnClick="ClearFilterAsync" />
+                        <MudExRibbonButton Id="xl-filter-reapply" Text="@TryLocalize("Reapply")" Icon="@Icons.Material.Filled.Refresh" Size="MudExRibbonItemSize.Small" KeyTip="Y" Disabled="@(!HasFilterCriteria)" OnClick="ReapplyFilterAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Data Tools")" Icon="@Icons.Material.Filled.FactCheck" CollapsePriority="1">
+                        <MudExRibbonButton Id="xl-data-validation" Text="@TryLocalize("Data Validation...")" Icon="@Icons.Material.Filled.FactCheck" Size="MudExRibbonItemSize.Large" KeyTip="V" OnClick="DataValidationAsync" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+
                 <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
                     @if (!IsReadOnly)
                     {
@@ -246,6 +264,74 @@
         builder.AddComponentParameter(1, nameof(SpreadsheetStaticContent.ChildContent), content);
         builder.CloseComponent();
     };
+
+    private RenderFragment StylesGroup =>
+        @<text>
+            <MudExRibbonMenuButton Id="xl-conditional-formatting" Text="@TryLocalize("Conditional Formatting")" Icon="@Icons.Material.Filled.FormatColorFill" Size="MudExRibbonItemSize.Large" KeyTip="L">
+                <MudExRibbonMenuItem Id="xl-cf-highlight" Text="@TryLocalize("Highlight Cells Rules")" Icon="@Icons.Material.Filled.Highlight">
+                    @foreach (var (id, name, kind) in HighlightRules)
+                    {
+                        <MudExRibbonMenuItem Id="@($"xl-cf-{id}")" Text="@TryLocalize(name)" OnClick="@(() => ConditionalFormatAsync(kind))" />
+                    }
+                </MudExRibbonMenuItem>
+                <MudExRibbonMenuItem Id="xl-cf-topbottom" Text="@TryLocalize("Top/Bottom Rules")" Icon="@Icons.Material.Filled.FormatListNumbered">
+                    @foreach (var (id, name, kind) in TopBottomRules)
+                    {
+                        <MudExRibbonMenuItem Id="@($"xl-cf-{id}")" Text="@TryLocalize(name)" OnClick="@(() => ConditionalFormatAsync(kind))" />
+                    }
+                </MudExRibbonMenuItem>
+                <MudExRibbonMenuItem Id="xl-cf-bars" Text="@TryLocalize("Data Bars")" Icon="@Icons.Material.Filled.BarChart">
+                    @foreach (var (name, color) in BarColors)
+                    {
+                        <MudExRibbonMenuItem Id="@($"xl-cf-bar-{name.Replace(" ", "").ToLowerInvariant()}")" Text="@TryLocalize(name)" OnClick="@(() => AddDataBarAsync(color))" />
+                    }
+                </MudExRibbonMenuItem>
+                <MudExRibbonMenuItem Id="xl-cf-scales" Text="@TryLocalize("Color Scales")" Icon="@Icons.Material.Filled.Gradient">
+                    @for (var i = 0; i < ScaleColors.Length; i++)
+                    {
+                        var (name, colors) = ScaleColors[i];
+                        <MudExRibbonMenuItem Id="@($"xl-cf-scale-{i}")" Text="@TryLocalize(name)" OnClick="@(() => AddColorScaleAsync(colors))" />
+                    }
+                </MudExRibbonMenuItem>
+                <MudExRibbonMenuItem Id="xl-cf-icons" Text="@TryLocalize("Icon Sets")" Icon="@Icons.Material.Filled.EmojiSymbols">
+                    @foreach (var (name, set) in IconSets)
+                    {
+                        <MudExRibbonMenuItem Id="@($"xl-cf-icon-{set}")" Text="@TryLocalize(name)" OnClick="@(() => AddIconSetAsync(set))" />
+                    }
+                </MudExRibbonMenuItem>
+                <MudExRibbonMenuItem Id="xl-cf-new" Text="@TryLocalize("New Rule...")" Icon="@Icons.Material.Filled.Add" OnClick="@(() => ConditionalFormatAsync("new"))" />
+                <MudExRibbonMenuItem Id="xl-cf-clear" Text="@TryLocalize("Clear Rules")" Icon="@Icons.Material.Filled.CleaningServices">
+                    <MudExRibbonMenuItem Id="xl-cf-clear-selection" Text="@TryLocalize("Clear Rules from Selected Cells")" OnClick="@(() => ClearRulesAsync(false))" />
+                    <MudExRibbonMenuItem Id="xl-cf-clear-sheet" Text="@TryLocalize("Clear Rules from Entire Sheet")" OnClick="@(() => ClearRulesAsync(true))" />
+                </MudExRibbonMenuItem>
+                <MudExRibbonMenuItem Id="xl-cf-manage" Text="@TryLocalize("Manage Rules...")" Icon="@Icons.Material.Filled.Rule" OnClick="@(() => ConditionalFormatAsync("manage"))" />
+            </MudExRibbonMenuButton>
+            <MudExRibbonGallery TItem="string" Id="xl-format-table" Text="@TryLocalize("Format as Table")" Icon="@Icons.Material.Filled.TableView" Size="MudExRibbonItemSize.Small" KeyTip="T"
+                                Items="@SpreadsheetTableStyles.Names" Columns="7" ItemText="@(n => n.Replace("TableStyle", ""))" SelectedItemChanged="FormatAsTableAsync">
+                <ItemTemplate>
+                    <span class="mud-ex-sstable-swatch" style="@TableStylePreview(context)"></span>
+                </ItemTemplate>
+            </MudExRibbonGallery>
+            <MudExRibbonGallery TItem="SpreadsheetCellStyle" Id="xl-cell-styles" Text="@TryLocalize("Cell Styles")" Icon="@Icons.Material.Filled.FormatPaint" Size="MudExRibbonItemSize.Small" KeyTip="J"
+                                Items="@SpreadsheetCellStyles.Create()" Columns="4" ItemText="@(s => TryLocalize(s.Name))" SelectedItemChanged="ApplyCellStyleAsync">
+                <ItemTemplate>
+                    <span class="mud-ex-sscellstyle" style="@CellStylePreview(context)">@TryLocalize(context.Name)</span>
+                </ItemTemplate>
+            </MudExRibbonGallery>
+        </text>;
+
+    private static string TableStylePreview(string name)
+    {
+        var p = SpreadsheetTableStyles.Palette(name);
+        return $"--mud-ex-sstable-head:{p.HeaderFill ?? "transparent"};--mud-ex-sstable-band:{p.BandFill};--mud-ex-sstable-line:{p.Border ?? "transparent"}";
+    }
+
+    private static string CellStylePreview(SpreadsheetCellStyle style)
+    {
+        var s = style.ApplyTo(CellStyle.Default);
+        return (s.Fill.Color != null ? $"background:{s.Fill.Color};" : "") + (s.Font.Color != null ? $"color:{s.Font.Color};" : "") + (s.Font.Bold ? "font-weight:700;" : "")
+               + (s.Border.Bottom.Style != CellBorderStyle.None ? $"border-bottom:2px solid {s.Border.Bottom.Color ?? "currentColor"};" : "");
+    }
 
     private RenderFragment InsertFunctionMenu =>
         @<MudExRibbonMenuButton Id="xl-insert-function" Text="@TryLocalize("Function")" Icon="@Icons.Material.Filled.Functions" Size="MudExRibbonItemSize.Large">

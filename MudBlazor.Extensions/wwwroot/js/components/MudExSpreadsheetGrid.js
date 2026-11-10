@@ -408,6 +408,9 @@ class MudExSpreadsheetGrid {
             return;
         }
         const t = e.target;
+        if (t.closest('.mud-ex-ssg-filter, .mud-ex-ssg-dv')) {
+            return;
+        }
         if (t.closest('.mud-ex-ssg-assist-host')) {
             e.preventDefault();
             return;
@@ -679,7 +682,7 @@ class MudExSpreadsheetGrid {
             return;
         }
         const t = e.target;
-        if (t.closest('.mud-ex-ssg-assist-host') || t.closest('textarea.mud-ex-ssg-editor')) {
+        if (t.closest('.mud-ex-ssg-assist-host, .mud-ex-ssg-filter, .mud-ex-ssg-dv') || t.closest('textarea.mud-ex-ssg-editor')) {
             return;
         }
         if (t.classList.contains('mud-ex-ssg-fill')) {

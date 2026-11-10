@@ -1,0 +1,38 @@
+@inherits MudExBaseComponent<MudExSpreadsheetSortDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="mud-ex-sssort-dialog">
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+                <MudButton Class="mud-ex-sssort-add" Size="Size.Small" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" OnClick="AddLevel">@TryLocalize("Add Level")</MudButton>
+                <MudSpacer />
+                <MudCheckBox T="bool" Label="@TryLocalize("My data has headers")" @bind-Value="_header" Dense="true" />
+            </MudStack>
+            @for (var i = 0; i < _levels.Count; i++)
+            {
+                var index = i;
+                <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center" Class="mud-ex-sssort-level">
+                    <MudText Typo="Typo.body2" Style="min-width:5em">@TryLocalize(index == 0 ? "Sort by" : "Then by")</MudText>
+                    <MudSelect T="int" Label="@TryLocalize("Column")" Value="_levels[index].Column" ValueChanged="@(c => _levels[index] = _levels[index] with { Column = c })" Dense="true">
+                        @for (var c = Range.Left; c <= Range.Right; c++)
+                        {
+                            var column = c;
+                            <MudSelectItem Value="@column">@ColumnName(column)</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudSelect T="bool" Label="@TryLocalize("Order")" Value="_levels[index].Descending" ValueChanged="@(d => _levels[index] = _levels[index] with { Descending = d })" Dense="true">
+                        <MudSelectItem Value="false">@TryLocalize("A to Z")</MudSelectItem>
+                        <MudSelectItem Value="true">@TryLocalize("Z to A")</MudSelectItem>
+                    </MudSelect>
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Disabled="@(_levels.Count == 1)" aria-label="@TryLocalize("Delete Level")"
+                                   OnClick="@(() => _levels.RemoveAt(index))" />
+                </MudStack>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-sssort-ok" Color="Color.Primary" Variant="Variant.Filled" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

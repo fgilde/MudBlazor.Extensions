@@ -378,6 +378,16 @@ public partial class MudExSpreadsheetGrid
         var changed = text != _editOriginal;
         if (CanEdit && (changed || allSelected))
         {
+            switch (await CheckEditAsync(text, cell))
+            {
+                case EditCheck.Retry:
+                    await Js("beginEdit", _editText, _editMode, !_editFromBar);
+                    return;
+                case EditCheck.Cancel:
+                    await CancelEditAsync();
+                    return;
+            }
+
             if (!await TryWriteAsync(() => WriteEdit(text, cell, allSelected)))
             {
                 await Js("beginEdit", _editText, _editMode, !_editFromBar);
@@ -421,17 +431,18 @@ public partial class MudExSpreadsheetGrid
             return;
         }
 
-        var format = _workbook.Styles[_sheet.EffectiveStyleId(cell)].NumberFormat;
-        if (format == "@")
-        {
-            _workbook.Execute(new SetValueCommand(_sheet, cell, CellValue.Text(text)));
-            return;
-        }
-
-        var (value, suggested) = CellInputParser.Parse(text, Culture);
+        var (value, suggested) = ParseInput(cell, text);
         _workbook.Execute(new SetValueCommand(_sheet, cell, value));
-        if (suggested != null && (string.IsNullOrEmpty(format) || format == NumberFormat.General))
+        if (suggested != null)
             _workbook.Execute(new SetStyleCommand(_sheet, new CellRange(cell, cell), s => s with { NumberFormat = suggested }));
+    }
+
+    private (CellValue Value, string SuggestedFormat) ParseInput(CellRef cell, string text)
+    {
+        var format = _workbook.Styles[_sheet.EffectiveStyleId(cell)].NumberFormat;
+        if (format == "@") return (CellValue.Text(text), null);
+        var (value, suggested) = CellInputParser.Parse(text, Culture);
+        return (value, string.IsNullOrEmpty(format) || format == NumberFormat.General ? suggested : null);
     }
 
     internal string CellEditText(CellRef at)
