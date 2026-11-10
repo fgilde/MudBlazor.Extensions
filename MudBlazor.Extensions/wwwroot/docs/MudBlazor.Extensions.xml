@@ -31264,18 +31264,6 @@
             <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
             <returns>The free part name.</returns>
         </member>
-        <member name="T:MudBlazor.Extensions.Office.Presentation.ColorResolver">
-            <summary>
-            Converts DrawingML colours to and from the model format: <c>#RRGGBB</c> or <c>scheme:name</c>, followed by space separated
-            modifiers such as <c>lumMod=75000</c>, <c>lumOff=25000</c>, <c>tint=40000</c> or <c>shade=50000</c>.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Office.Presentation.ColorResolver.Resolve(System.String,MudBlazor.Extensions.Office.Presentation.SlideMaster)">
-            <summary>Resolves a model colour to <c>#RRGGBB</c> through the colour map and theme of a master.</summary>
-            <param name="color">The model colour.</param>
-            <param name="master">The master whose colour map and theme apply; null uses the Office theme.</param>
-            <returns>The colour, or null if it cannot be resolved.</returns>
-        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PresetGeometry">
             <summary>PowerPoint preset shapes (<c>a:prstGeom</c>) as SVG path data.</summary>
         </member>
@@ -31397,51 +31385,6 @@
         <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeTransform.FlipV">
             <summary>True if the shape is mirrored vertically.</summary>
         </member>
-        <member name="T:MudBlazor.Extensions.Office.Presentation.PptxSlidePart">
-            <summary>A slide of the source package with its original XML.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.Slide">
-            <summary>The slide read into the model.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.PartName">
-            <summary>The slide part name.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.RelationshipId">
-            <summary>The relationship id of the slide in the presentation rels.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.SlideId">
-            <summary>The <c>p:sldId</c> id.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.Xml">
-            <summary>The original slide XML.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.Relationships">
-            <summary>The original relationships of the slide.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.NotesPart">
-            <summary>The notes slide part name, or null.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxSlidePart.NotesXml">
-            <summary>The original notes slide XML, or null.</summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Office.Presentation.PptxPackage">
-            <summary>The source package of a presentation; parts the model does not change are copied from it unchanged.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxPackage.Opc">
-            <summary>The opened package.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxPackage.PresentationPart">
-            <summary>The presentation part name, usually <c>/ppt/presentation.xml</c>.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxPackage.PresentationXml">
-            <summary>The original presentation XML.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxPackage.NotesMasterPart">
-            <summary>The notes master part name, or null if the presentation has none.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Office.Presentation.PptxPackage.Slides">
-            <summary>The slides of the source in file order.</summary>
-        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.Presentation">
             <summary>A presentation of slides with their layouts and masters, and an undo stack.</summary>
         </member>
@@ -31504,7 +31447,7 @@
             <summary>Speaker notes changed.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PresentationChangedEventArgs">
-            <summary>Describes everything that changed during one command, transaction, undo or redo.</summary>
+            <summary>Describes everything that changed during one command or transaction.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.PresentationChangedEventArgs.Slides">
             <summary>The affected slides, including removed ones.</summary>
@@ -31711,28 +31654,28 @@
             <summary>Bottom.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.TextBody">
-            <summary>The text of a shape. Body properties the slide does not set are inherited from the layout and master placeholders.</summary>
+            <summary>The text of a shape. Body properties hold the shape's own values; null inherits them from the layout and master placeholders.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.Paragraphs">
             <summary>The paragraphs in order.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.Anchor">
-            <summary>Vertical anchoring.</summary>
+            <summary>Vertical anchoring; null inherits it.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.InsetLeft">
-            <summary>Left inset in EMU.</summary>
+            <summary>Left inset in EMU; null inherits it.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.InsetTop">
-            <summary>Top inset in EMU.</summary>
+            <summary>Top inset in EMU; null inherits it.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.InsetRight">
-            <summary>Right inset in EMU.</summary>
+            <summary>Right inset in EMU; null inherits it.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.InsetBottom">
-            <summary>Bottom inset in EMU.</summary>
+            <summary>Bottom inset in EMU; null inherits it.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.Wrap">
-            <summary>True if lines wrap at the shape width.</summary>
+            <summary>True if lines wrap at the shape width; null inherits it.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.TextAlign">
             <summary>Horizontal alignment of a paragraph.</summary>
@@ -31753,7 +31696,7 @@
             <summary>A paragraph of a text body.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.Align">
-            <summary>The alignment, inherited from the list styles when the paragraph sets none.</summary>
+            <summary>The paragraph's own alignment; null inherits it from the list styles.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.Level">
             <summary>The outline level, 0 to 8.</summary>

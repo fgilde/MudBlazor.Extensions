@@ -21,8 +21,40 @@ internal static class TextStyles
     internal static IEnumerable<XElement> ListLevels(SlideShape shape, int level) =>
         Chain(shape).Select(s => ListStyle(s)?.Element(Level(level))).Append(MasterLevel(shape, level)).Where(e => e != null);
 
-    internal static IEnumerable<XElement> BodyProperties(SlideShape shape) =>
-        Chain(shape).Select(s => s.Source?.Element(PptxReader.P + "txBody")?.Element(PptxReader.A + "bodyPr")).Where(e => e != null);
+    internal static TextBody EffectiveBody(this AutoShape shape)
+    {
+        var bodies = Chain(shape).Select(s => (s as AutoShape)?.Text).Where(b => b != null).ToList();
+        T Pick<T>(Func<TextBody, T?> value, T fallback) where T : struct => bodies.Select(value).FirstOrDefault(v => v != null) ?? fallback;
+        return (shape.Text ?? new TextBody()) with
+        {
+            Anchor = Pick(b => b.Anchor, TextAnchor.Top),
+            InsetLeft = Pick(b => b.InsetLeft, 91440L),
+            InsetTop = Pick(b => b.InsetTop, 45720L),
+            InsetRight = Pick(b => b.InsetRight, 91440L),
+            InsetBottom = Pick(b => b.InsetBottom, 45720L),
+            Wrap = Pick(b => b.Wrap, true)
+        };
+    }
+
+    internal static TextAlign EffectiveAlign(this AutoShape shape, TextParagraph paragraph) =>
+        paragraph.Align ?? ListLevels(shape, paragraph.Level).Select(l => ParseAlign((string)l.Attribute("algn"))).FirstOrDefault(a => a != null) ?? TextAlign.Left;
+
+    internal static TextAlign? ParseAlign(string value) => value switch
+    {
+        "l" => TextAlign.Left,
+        "ctr" => TextAlign.Center,
+        "r" => TextAlign.Right,
+        "just" or "justLow" or "dist" or "thaiDist" => TextAlign.Justify,
+        _ => null
+    };
+
+    internal static TextAnchor? ParseAnchor(string value) => value switch
+    {
+        "t" or "just" or "dist" => TextAnchor.Top,
+        "ctr" => TextAnchor.Middle,
+        "b" => TextAnchor.Bottom,
+        _ => null
+    };
 
     private static IEnumerable<SlideShape> Chain(SlideShape shape)
     {

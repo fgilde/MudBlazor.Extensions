@@ -21,6 +21,8 @@ internal sealed class PptxBuilder
         ["accent3"] = "A5A5A5", ["accent4"] = "FFC000", ["accent5"] = "5B9BD5", ["accent6"] = "70AD47", ["hlink"] = "0563C1", ["folHlink"] = "954F72"
     };
 
+    public string ExtraSlideIds { get; set; } = "";
+
     public long Width { get; set; } = 12192000;
 
     public long Height { get; set; } = 6858000;
@@ -84,7 +86,7 @@ internal sealed class PptxBuilder
         var slideIds = string.Concat(_slides.Select((_, i) => $"<p:sldId id=\"{256 + i}\" r:id=\"rId{i + 2}\"/>"));
         Add("ppt/presentation.xml", "officedocument.presentationml.presentation.main",
             $"<p:presentation {Ns}><p:sldMasterIdLst><p:sldMasterId id=\"2147483648\" r:id=\"rId1\"/></p:sldMasterIdLst>" +
-            $"<p:sldIdLst>{slideIds}</p:sldIdLst><p:sldSz cx=\"{Width}\" cy=\"{Height}\"/><p:notesSz cx=\"6858000\" cy=\"9144000\"/>" +
+            $"<p:sldIdLst>{slideIds}{ExtraSlideIds}</p:sldIdLst><p:sldSz cx=\"{Width}\" cy=\"{Height}\"/><p:notesSz cx=\"6858000\" cy=\"9144000\"/>" +
             "<p:defaultTextStyle><a:lvl1pPr><a:defRPr sz=\"1800\"><a:solidFill><a:schemeClr val=\"tx1\"/></a:solidFill></a:defRPr></a:lvl1pPr></p:defaultTextStyle></p:presentation>");
         Add("ppt/_rels/presentation.xml.rels", null,
             Rels([("rId1", "slideMaster", "slideMasters/slideMaster1.xml"), .._slides.Select((_, i) => ($"rId{i + 2}", "slide", $"slides/slide{i + 1}.xml"))]));

@@ -23,7 +23,7 @@ public enum PresentationChangeKind
     Notes = 16
 }
 
-/// <summary>Describes everything that changed during one command, transaction, undo or redo.</summary>
+/// <summary>Describes everything that changed during one command or transaction.</summary>
 public sealed class PresentationChangedEventArgs : EventArgs
 {
     internal PresentationChangedEventArgs(IReadOnlyCollection<Slide> slides, PresentationChangeKind kind)

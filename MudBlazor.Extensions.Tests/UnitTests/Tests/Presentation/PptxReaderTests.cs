@@ -162,9 +162,75 @@ public class PptxReaderTests
         Assert.True(title.Bold);
         Assert.Equal("Major Font", title.Font);
         Assert.Equal("#000000", title.Color);
-        Assert.Equal(TextAlign.Center, shapes[0].Text.Paragraphs[0].Align);
+        Assert.Null(shapes[0].Text.Paragraphs[0].Align);
+        Assert.Equal(TextAlign.Center, shapes[0].EffectiveAlign(shapes[0].Text.Paragraphs[0]));
         Assert.Equal(24, shapes[1].EffectiveFormat(shapes[1].Text.Paragraphs[0].Runs[0]).SizePt);
         Assert.Equal(18, shapes[2].EffectiveFormat(shapes[2].Text.Paragraphs[0].Runs[0]).SizePt);
+    }
+
+    [Fact]
+    public void Reader_InheritedBodyAndAlign_StayNullAndResolveThroughLayout()
+    {
+        var builder = new PptxBuilder
+        {
+            LayoutShapes = Placeholder(2, "Title 1", "type=\"title\"", Xfrm(0, 0, 10, 10))
+                .Replace("<a:bodyPr/>", "<a:bodyPr anchor=\"b\" lIns=\"0\" wrap=\"none\"/>")
+                .Replace("<a:lstStyle/>", "<a:lstStyle><a:lvl1pPr algn=\"ctr\"/></a:lstStyle>")
+        };
+        var slideTitle = Placeholder(2, "Title 1", "type=\"title\"", "", "<a:p><a:r><a:t>a</a:t></a:r></a:p><a:p><a:pPr algn=\"r\"/><a:r><a:t>b</a:t></a:r></a:p>")
+            .Replace("<a:bodyPr/>", "<a:bodyPr tIns=\"1000\"/>");
+        var shape = (AutoShape)builder.Slide(slideTitle).Load().Slides[0].Shapes[0];
+
+        var own = shape.Text;
+        Assert.Equal(((TextAnchor?)null, (long?)null, (long?)1000, (long?)null, (long?)null, (bool?)null),
+            (own.Anchor, own.InsetLeft, own.InsetTop, own.InsetRight, own.InsetBottom, own.Wrap));
+        var effective = shape.EffectiveBody();
+        Assert.Equal((TextAnchor.Bottom, 0L, 1000L, 91440L, 45720L, false),
+            (effective.Anchor, effective.InsetLeft, effective.InsetTop, effective.InsetRight, effective.InsetBottom, effective.Wrap));
+        Assert.Equal([null, TextAlign.Right], shape.Text.Paragraphs.Select(p => p.Align));
+        Assert.Equal([TextAlign.Center, TextAlign.Right], shape.Text.Paragraphs.Select(shape.EffectiveAlign));
+    }
+
+    [Fact]
+    public void ColorResolver_WhitespaceOrEmpty_IsNoColor()
+    {
+        Assert.Null(ColorResolver.Resolve(" ", null));
+        Assert.Null(ColorResolver.Resolve("", null));
+    }
+
+    [Fact]
+    public void ColorResolver_Modifiers_ApplyInFileOrder()
+    {
+        Assert.Equal("#C0C0C0", ColorResolver.Resolve("#FFFFFF shade=50000 lumOff=25000", null));
+        Assert.Equal("#808080", ColorResolver.Resolve("#FFFFFF lumOff=25000 shade=50000", null));
+    }
+
+    [Fact]
+    public void Reader_NestedFlippedGroupWithMedia_ResolvesChildAndIsOpaque()
+    {
+        static string Group(uint id, string xfrmAttributes, string children) =>
+            $"<p:grpSp><p:nvGrpSpPr><p:cNvPr id=\"{id}\" name=\"Group {id}\"/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm{xfrmAttributes}>" +
+            "<a:off x=\"0\" y=\"0\"/><a:ext cx=\"1000\" cy=\"1000\"/><a:chOff x=\"0\" y=\"0\"/><a:chExt cx=\"1000\" cy=\"1000\"/></a:xfrm></p:grpSpPr>" +
+            children + "</p:grpSp>";
+        var video = "<p:pic><p:nvPicPr><p:cNvPr id=\"21\" name=\"Video\"/><p:cNvPicPr/><p:nvPr><a:videoFile r:link=\"rId7\"/></p:nvPr></p:nvPicPr>" +
+                    $"<p:blipFill/><p:spPr>{Xfrm(0, 0, 10, 10)}</p:spPr></p:pic>";
+        var presentation = new PptxBuilder()
+            .Slide(Group(10, " flipH=\"1\"", Group(11, "", Shape(12, "Child", Xfrm(0, 0, 100, 100, " rot=\"1800000\"")) + video)))
+            .Load();
+
+        var inner = (GroupShape)((GroupShape)presentation.Slides[0].Shapes[0]).Children[0];
+        Assert.Equal(new ShapeTransform(900, 0, 100, 100, 330, true), inner.Children[0].ResolvedTransform);
+        Assert.Equal("media", Assert.IsType<OpaqueShape>(inner.Children[1]).Kind);
+        Assert.True(presentation.HasOpaqueContent);
+    }
+
+    [Fact]
+    public void Reader_DanglingSlideId_IsSkipped()
+    {
+        var presentation = new PptxBuilder { ExtraSlideIds = "<p:sldId id=\"300\" r:id=\"rId99\"/>" }.Slide("").Load();
+
+        Assert.Single(presentation.Slides);
+        Assert.Single(presentation.Package.Slides);
     }
 
     [Fact]

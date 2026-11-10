@@ -21,8 +21,8 @@ public enum TextAlign
 /// <summary>A paragraph of a text body.</summary>
 public sealed record TextParagraph
 {
-    /// <summary>The alignment, inherited from the list styles when the paragraph sets none.</summary>
-    public TextAlign Align { get; init; }
+    /// <summary>The paragraph's own alignment; null inherits it from the list styles.</summary>
+    public TextAlign? Align { get; init; }
 
     /// <summary>The outline level, 0 to 8.</summary>
     public int Level { get; init; }

@@ -15,29 +15,29 @@ public enum TextAnchor
     Bottom
 }
 
-/// <summary>The text of a shape. Body properties the slide does not set are inherited from the layout and master placeholders.</summary>
+/// <summary>The text of a shape. Body properties hold the shape's own values; null inherits them from the layout and master placeholders.</summary>
 public sealed record TextBody
 {
     /// <summary>The paragraphs in order.</summary>
     public IReadOnlyList<TextParagraph> Paragraphs { get; init; } = [];
 
-    /// <summary>Vertical anchoring.</summary>
-    public TextAnchor Anchor { get; init; }
+    /// <summary>Vertical anchoring; null inherits it.</summary>
+    public TextAnchor? Anchor { get; init; }
 
-    /// <summary>Left inset in EMU.</summary>
-    public long InsetLeft { get; init; } = 91440;
+    /// <summary>Left inset in EMU; null inherits it.</summary>
+    public long? InsetLeft { get; init; }
 
-    /// <summary>Top inset in EMU.</summary>
-    public long InsetTop { get; init; } = 45720;
+    /// <summary>Top inset in EMU; null inherits it.</summary>
+    public long? InsetTop { get; init; }
 
-    /// <summary>Right inset in EMU.</summary>
-    public long InsetRight { get; init; } = 91440;
+    /// <summary>Right inset in EMU; null inherits it.</summary>
+    public long? InsetRight { get; init; }
 
-    /// <summary>Bottom inset in EMU.</summary>
-    public long InsetBottom { get; init; } = 45720;
+    /// <summary>Bottom inset in EMU; null inherits it.</summary>
+    public long? InsetBottom { get; init; }
 
-    /// <summary>True if lines wrap at the shape width.</summary>
-    public bool Wrap { get; init; } = true;
+    /// <summary>True if lines wrap at the shape width; null inherits it.</summary>
+    public bool? Wrap { get; init; }
 
     internal XElement Source { get; init; }
 }

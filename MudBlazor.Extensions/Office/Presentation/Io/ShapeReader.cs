@@ -92,36 +92,34 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
         }
 
         shape.IsTextBox = (string)e.Element(P + "nvSpPr")?.Element(P + "cNvSpPr")?.Attribute("txBox") is "1" or "true";
-        if (e.Element(P + "txBody") is { } body) shape.Text = ReadText(shape, body);
+        if (e.Element(P + "txBody") is { } body) shape.Text = ReadText(body);
     }
 
-    private static TextBody ReadText(SlideShape shape, XElement body)
+    private static TextBody ReadText(XElement body)
     {
-        var properties = TextStyles.BodyProperties(shape).ToList();
-        string Body(string name) => properties.Select(b => (string)b.Attribute(name)).FirstOrDefault(v => v != null);
+        var properties = body.Element(A + "bodyPr");
+        string Body(string name) => (string)properties?.Attribute(name);
         return new TextBody
         {
             Source = body,
-            Anchor = Body("anchor") switch { "ctr" => TextAnchor.Middle, "b" => TextAnchor.Bottom, _ => TextAnchor.Top },
-            InsetLeft = Long(Body("lIns")) ?? 91440,
-            InsetTop = Long(Body("tIns")) ?? 45720,
-            InsetRight = Long(Body("rIns")) ?? 91440,
-            InsetBottom = Long(Body("bIns")) ?? 45720,
-            Wrap = Body("wrap") != "none",
-            Paragraphs = body.Elements(A + "p").Select(p => ReadParagraph(shape, p)).ToList()
+            Anchor = TextStyles.ParseAnchor(Body("anchor")),
+            InsetLeft = Long(Body("lIns")),
+            InsetTop = Long(Body("tIns")),
+            InsetRight = Long(Body("rIns")),
+            InsetBottom = Long(Body("bIns")),
+            Wrap = Body("wrap") switch { "none" => false, "square" => true, _ => null },
+            Paragraphs = body.Elements(A + "p").Select(ReadParagraph).ToList()
         };
     }
 
-    private static TextParagraph ReadParagraph(SlideShape shape, XElement p)
+    private static TextParagraph ReadParagraph(XElement p)
     {
         var pPr = p.Element(A + "pPr");
-        var level = (int)Math.Clamp(Long((string)pPr?.Attribute("lvl")) ?? 0, 0, 8);
-        var align = (string)pPr?.Attribute("algn") ?? TextStyles.ListLevels(shape, level).Select(l => (string)l.Attribute("algn")).FirstOrDefault(a => a != null);
         return new TextParagraph
         {
             Source = p,
-            Level = level,
-            Align = align switch { "ctr" => TextAlign.Center, "r" => TextAlign.Right, "just" or "justLow" or "dist" or "thaiDist" => TextAlign.Justify, _ => TextAlign.Left },
+            Level = (int)Math.Clamp(Long((string)pPr?.Attribute("lvl")) ?? 0, 0, 8),
+            Align = TextStyles.ParseAlign((string)pPr?.Attribute("algn")),
             Bullet = pPr?.Elements().FirstOrDefault(b => b.Name.LocalName is "buNone" or "buChar" or "buAutoNum" or "buBlip")?.Name.LocalName switch
             {
                 null => null,
