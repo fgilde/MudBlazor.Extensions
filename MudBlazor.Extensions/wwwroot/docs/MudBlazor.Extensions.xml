@@ -31109,6 +31109,161 @@
             MudBlazorExtensionsMiddlewareExtensions
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.DocumentUndoStack`1">
+            <summary>Undo and redo history of a document. Each user action is exactly one step; transactions group commands.</summary>
+            <typeparam name="TDocument">The document type the commands edit.</typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.DocumentUndoStack`1.MaxDepth">
+            <summary>Maximum number of undo steps kept; the oldest are dropped first.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.DocumentUndoStack`1.CanUndo">
+            <summary>True if a step can be undone (never while a transaction is open).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.DocumentUndoStack`1.CanRedo">
+            <summary>True if a step can be redone (never while a transaction is open).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.DocumentUndoStack`1.UndoDescription">
+            <summary>Description of the step that would be undone, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.DocumentUndoStack`1.RedoDescription">
+            <summary>Description of the step that would be redone, or null.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.DocumentUndoStack`1.Undo">
+            <summary>Undoes the latest step.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.DocumentUndoStack`1.Redo">
+            <summary>Redoes the latest undone step.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.DocumentUndoStack`1.Clear">
+            <summary>Drops the whole history, for example after loading a file.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.DocumentUndoStack`1.BeginTransaction(System.String)">
+            <summary>
+            Groups all commands recorded until the returned scope is disposed into one undo step. Nested transactions merge into the
+            outermost one; empty ones are dropped.
+            </summary>
+            <param name="description">Description of the combined step.</param>
+            <returns>The scope to dispose to end the transaction.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.IDocumentCommand`1">
+            <summary>A reversible edit of a document.</summary>
+            <typeparam name="TDocument">The document type the command edits.</typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.IDocumentCommand`1.Description">
+            <summary>Short description of the edit, shown for undo and redo.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.IDocumentCommand`1.Apply(`0)">
+            <summary>Applies the edit. Runs again for redo and validates before mutating.</summary>
+            <param name="document">The document to edit.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.IDocumentCommand`1.Revert(`0)">
+            <summary>Reverts the edit.</summary>
+            <param name="document">The document to edit.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.OpcRelationship">
+            <summary>A package relationship.</summary>
+            <param name="Id">The relationship id.</param>
+            <param name="Type">The relationship type URI.</param>
+            <param name="Target">The target as written in the rels part.</param>
+            <param name="TargetMode">The <c>TargetMode</c> attribute (<c>External</c>), or null for internal targets.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcRelationship.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>A package relationship.</summary>
+            <param name="Id">The relationship id.</param>
+            <param name="Type">The relationship type URI.</param>
+            <param name="Target">The target as written in the rels part.</param>
+            <param name="TargetMode">The <c>TargetMode</c> attribute (<c>External</c>), or null for internal targets.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.OpcRelationship.Id">
+            <summary>The relationship id.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.OpcRelationship.Type">
+            <summary>The relationship type URI.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.OpcRelationship.Target">
+            <summary>The target as written in the rels part.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.OpcRelationship.TargetMode">
+            <summary>The <c>TargetMode</c> attribute (<c>External</c>), or null for internal targets.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.OpcPackage">
+            <summary>A read-only view of an OPC (zip) package. Part names carry a leading slash and compare case-insensitively.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.OpcPackage.Source">
+            <summary>The package bytes as opened.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.OpcPackage.PartNames">
+            <summary>Names of all parts, with leading slash.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.OpcPackage.DefaultContentTypes">
+            <summary>Extension defaults of <c>[Content_Types].xml</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.OpcPackage.OverrideContentTypes">
+            <summary>Part overrides of <c>[Content_Types].xml</c>.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackage.Open(System.Byte[])">
+            <summary>Opens a package.</summary>
+            <param name="source">The zip bytes.</param>
+            <returns>The package.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackage.ReadXml(System.String)">
+            <summary>Reads a part as XML; DTDs are rejected.</summary>
+            <param name="part">The part name.</param>
+            <returns>The document.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackage.ReadBytes(System.String)">
+            <summary>Reads a part's raw bytes.</summary>
+            <param name="part">The part name.</param>
+            <returns>The bytes.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackage.Relationships(System.String)">
+            <summary>Reads the relationships of a part; empty if it has no rels part.</summary>
+            <param name="part">The source part name, or <c>/</c> for the package relationships.</param>
+            <returns>The relationships in file order.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackage.ResolveTarget(System.String,System.String)">
+            <summary>Resolves a relationship target against its source part.</summary>
+            <param name="sourcePart">The source part name.</param>
+            <param name="target">The target as written in the rels part.</param>
+            <returns>The part name with leading slash.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackage.ContentType(System.String)">
+            <summary>The content type of a part from its override or extension default.</summary>
+            <param name="part">The part name.</param>
+            <returns>The content type, or null.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.OpcPackageWriter">
+            <summary>Writes an OPC package: parts are copied unchanged from a source package or put as new content.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackageWriter.Copy(System.String)">
+            <summary>Copies a part of the source package unchanged, keeping its timestamp.</summary>
+            <param name="part">The part name.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackageWriter.Put(System.String,System.Byte[])">
+            <summary>Writes a part with the given bytes.</summary>
+            <param name="part">The part name.</param>
+            <param name="content">The content.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackageWriter.Put(System.String,System.Xml.Linq.XDocument)">
+            <summary>Writes a part with the given XML.</summary>
+            <param name="part">The part name.</param>
+            <param name="xml">The document.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackageWriter.PutRelationships(System.String,System.Collections.Generic.IEnumerable{MudBlazor.Extensions.Office.OpcRelationship})">
+            <summary>Writes the rels part of a part.</summary>
+            <param name="sourcePart">The source part name, or <c>/</c> for the package relationships.</param>
+            <param name="relationships">The relationships.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackageWriter.PutContentTypes(System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+            <summary>Writes <c>[Content_Types].xml</c>.</summary>
+            <param name="defaults">Content types by extension.</param>
+            <param name="overrides">Content types by part name.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackageWriter.NextPartName(System.String)">
+            <summary>Returns the first part name of the pattern that neither the source package nor this writer uses.</summary>
+            <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
+            <returns>The free part name.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SortKey">
             <summary>One sort level.</summary>
             <param name="Column">Zero-based sheet column to sort by.</param>
