@@ -74,6 +74,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExSlideText.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSlideText.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExSpreadsheetClipboard.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExSpreadsheetClipboard.js"

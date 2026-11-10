@@ -3,25 +3,34 @@
 @using MudBlazor.Extensions.Office.Presentation
 
 <div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-slide-canvas {Class}".TrimEnd())" style="@Style" tabindex="0" role="application"
-     aria-label="@TryLocalize("Slide")" data-readonly="@(ReadOnly ? "true" : "false")" data-selection="@string.Join(",", _selection)" @onkeydown="_keyDown">
+     aria-label="@TryLocalize("Slide")" data-readonly="@(ReadOnly ? "true" : "false")" data-selection="@string.Join(",", _selection)"
+     data-insert="@(_insertTextBox ? "text-box" : null)" @onkeydown="_keyDown">
     @if (Presentation != null && Slide != null)
     {
         <div class="mud-ex-slide-canvas-frame" style="@FrameStyle" data-width="@Presentation.SlideWidth" data-height="@Presentation.SlideHeight">
-            <MudExSlideView Presentation="Presentation" Slide="Slide" Images="Images" Interactive="@(!ReadOnly)" />
+            <MudExSlideView Presentation="Presentation" Slide="Slide" Images="Images" Interactive="@(!ReadOnly)" HiddenText="@_text?.Shape" />
             @if (!ReadOnly)
             {
+                @if (_text != null)
+                {
+                    <div class="mud-ex-slide-text-layer">
+                        <MudExSlideTextEditor @key="_text" @ref="_textEditor" Presentation="Presentation" Shape="_text.Shape" Text="@_text.Text" Caret="@_text.Caret"
+                                              TextChanged="OnTextChangedAsync" Committed="OnTextCommittedAsync" Localizer="@Localizer" />
+                    </div>
+                }
                 <div class="mud-ex-slide-canvas-layer">
                     @foreach (var shape in SelectedShapes)
                     {
                         var t = shape.ResolvedTransform;
-                        <div @key="shape" class="mud-ex-slide-selection" data-id="@shape.Id" data-x="@t.X" data-y="@t.Y" data-w="@t.Width" data-h="@t.Height"
+                        var editing = ReferenceEquals(shape, _text?.Shape);
+                        <div @key="shape" class="@(editing ? "mud-ex-slide-selection mud-ex-slide-selection-editing" : "mud-ex-slide-selection")" data-id="@shape.Id" data-x="@t.X" data-y="@t.Y" data-w="@t.Width" data-h="@t.Height"
                              data-r="@MudExSlideShapeView.Num(t.Rotation)" data-fh="@(t.FlipH ? "true" : null)" data-fv="@(t.FlipV ? "true" : null)"
                              data-opaque="@(shape is OpaqueShape ? "true" : null)" style="@MudExSlideShapeView.BoxStyle(t, Presentation, false)">
-                            @foreach (var handle in Handles)
+                            @foreach (var handle in editing ? [] : Handles)
                             {
                                 <span class="@($"mud-ex-slide-handle mud-ex-slide-handle-{handle}")" data-handle="@handle"></span>
                             }
-                            @if (shape is not OpaqueShape)
+                            @if (shape is not OpaqueShape && !editing)
                             {
                                 <span class="mud-ex-slide-handle mud-ex-slide-handle-rotate" data-handle="rotate"></span>
                             }

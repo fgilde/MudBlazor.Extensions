@@ -13,7 +13,7 @@
                     <path d="@path" fill="@FillOf(auto)" stroke="@StrokeOf(auto)" stroke-width="@Num(auto.Line?.Width ?? 0)" stroke-dasharray="@DashOf(auto)" />
                 </svg>
             }
-            @if (auto.Text != null)
+            @if (auto.Text != null && !HideText)
             {
                 <MudExSlideText Shape="auto" Presentation="Presentation" />
             }

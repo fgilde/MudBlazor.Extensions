@@ -206,6 +206,8 @@ public partial class MudExSlideEditor : IMudExFileEditor
     {
         if (_notes != null)
             await _notes.CommitAsync();
+        if (_canvas != null)
+            await _canvas.CommitTextAsync();
         var stream = new MemoryStream();
         _presentation.Save(stream);
         stream.Position = 0;

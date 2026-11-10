@@ -22,6 +22,9 @@ public partial class MudExSlideShapeView
     /// <summary>True for a shape of the layout or master: it is drawn behind the slide's shapes and takes no pointer events.</summary>
     [Parameter] public bool Inherited { get; set; }
 
+    /// <summary>True to leave out the text, for example while it is edited.</summary>
+    [Parameter] public bool HideText { get; set; }
+
     private SlideMaster ColorMaster => Shape.Master ?? Master;
 
     private string ShapeClass => Shape switch

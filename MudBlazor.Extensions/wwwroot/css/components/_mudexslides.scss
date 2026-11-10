@@ -196,6 +196,38 @@
   border: 1px solid var(--mud-ex-slide-accent, var(--mud-palette-primary));
   background-color: rgba(128, 128, 128, 0.15);
 }
+.mud-ex-slide-text-layer {
+  position: absolute;
+  inset: 0;
+  container-type: inline-size;
+  pointer-events: none;
+  color: #000;
+  font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+}
+.mud-ex-slide-text-editor {
+  position: absolute;
+  box-sizing: border-box;
+  pointer-events: auto;
+  cursor: text;
+  .mud-ex-slide-text {
+    white-space: pre-wrap;
+  }
+}
+.mud-ex-slide-text-editable {
+  min-height: 1em;
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+  [data-bullet="1"]::before {
+    content: "\2022\00a0";
+  }
+}
+.mud-ex-slide-selection-editing {
+  border-style: dashed;
+}
+.mud-ex-slide-canvas[data-insert] .mud-ex-slide-canvas-frame {
+  cursor: crosshair;
+}
 .mud-ex-slide-notes {
   flex: 0 0 auto;
   max-height: 30%;

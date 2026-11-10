@@ -2,13 +2,13 @@
 @namespace MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Office.Presentation
 
-<div class="mud-ex-slide-text" style="@BodyStyle">
+<div class="mud-ex-slide-text" style="@BodyStyle(Shape, Presentation)">
     @foreach (var paragraph in Shape.Text.Paragraphs)
     {
-        <div class="mud-ex-slide-paragraph" style="@ParagraphStyle(paragraph)">
+        <div class="mud-ex-slide-paragraph" style="@ParagraphStyle(Shape, paragraph)">
             @if (paragraph.Bullet == true)
             {
-                <span style="@RunStyle(paragraph.Runs.Count > 0 ? paragraph.Runs[0] : EmptyRun(paragraph))">&bull;&nbsp;</span>
+                <span style="@RunStyle(Shape, Presentation, paragraph.Runs.Count > 0 ? paragraph.Runs[0] : EmptyRun(paragraph))">&bull;&nbsp;</span>
             }
             @foreach (var run in paragraph.Runs)
             {
@@ -18,12 +18,12 @@
                 }
                 else
                 {
-                    <span style="@RunStyle(run)">@run.Text</span>
+                    <span style="@RunStyle(Shape, Presentation, run)">@run.Text</span>
                 }
             }
             @if (paragraph.Runs.Count == 0)
             {
-                <span style="@RunStyle(EmptyRun(paragraph))">&#8203;</span>
+                <span style="@RunStyle(Shape, Presentation, EmptyRun(paragraph))">&#8203;</span>
             }
         </div>
     }

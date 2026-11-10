@@ -19585,6 +19585,27 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.DisposeAsync">
             <inheritdoc />
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.TextInput">
+            <summary>Raised on the first input of a text editing session, before the text is committed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.IsEditingText">
+            <summary>True while the text of a shape is edited.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnShapeDoubleClickAsync(System.UInt32,System.Double,System.Double)">
+            <summary>
+            Called by the browser when a shape was double-clicked: selects it and starts editing its text with the caret at the clicked point.
+            </summary>
+            <param name="id">The id of the shape.</param>
+            <param name="x">The horizontal client position in pixels.</param>
+            <param name="y">The vertical client position in pixels.</param>
+            <returns>A task that completes when editing started.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnInsertAsync(System.Double,System.Double)">
+            <summary>Called by the browser when the user clicked the slide to insert a text box there.</summary>
+            <param name="x">The horizontal position in slide coordinates (EMU).</param>
+            <param name="y">The vertical position in slide coordinates (EMU).</param>
+            <returns>A task that completes when the text box is inserted and edited.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ShapeTransformDto">
             <summary>A shape transform reported by the browser after a gesture on the <see cref="T:MudBlazor.Extensions.Components.MudExSlideCanvas"/>, in slide coordinates (EMU).</summary>
         </member>
@@ -19790,6 +19811,9 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Inherited">
             <summary>True for a shape of the layout or master: it is drawn behind the slide's shapes and takes no pointer events.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.HideText">
+            <summary>True to leave out the text, for example while it is edited.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideStatusBar">
             <summary>Status bar of the slide editor: the slide position and a zoom slider.</summary>
         </member>
@@ -19814,6 +19838,51 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideText.Presentation">
             <summary>The presentation that defines the slide size.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideTextEditor">
+            <summary>
+            Edits the text of a shape in place: a content editable element over the shape's text area whose paragraphs and runs are built and
+            formatted by the browser. Text from the file is set as text, never as markup. The model changes only when <see cref="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.Committed"/> is handled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.Presentation">
+            <summary>The presentation the shape belongs to.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.Shape">
+            <summary>The shape whose text is edited.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.Text">
+            <summary>Text typed to start editing; it replaces the whole text. Null keeps the text and puts the caret at the end or at <see cref="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.Caret"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.Caret">
+            <summary>The point in client pixels where the caret is placed, for example where the shape was double-clicked; null for the end of the text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.TextChanged">
+            <summary>Raised with the current text after each input and formatting change, but not during an IME composition.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.Committed">
+            <summary>Raised with the final text when the user ends editing with Esc or a click outside.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnTextInputAsync(MudBlazor.Extensions.Components.SlideTextParagraphDto[])">
+            <summary>Called by the browser with the current text after an input.</summary>
+            <param name="paragraphs">The paragraphs of the editing DOM.</param>
+            <returns>A task that completes when the text is stored.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnTextCommitAsync(MudBlazor.Extensions.Components.SlideTextParagraphDto[])">
+            <summary>Called by the browser when the user ends editing.</summary>
+            <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+            <returns>A task that completes when the text is committed.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnPasteHtml(System.String)">
+            <summary>Called by the browser when HTML is pasted. Keeps only text with bold, italic, underline and colour.</summary>
+            <param name="html">The <c>text/html</c> content of the clipboard.</param>
+            <returns>The pasted paragraphs.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideView">
             <summary>Shows one slide as DOM that scales with its container: shapes in percent of the slide, font sizes in container query units.</summary>
         </member>
@@ -19828,6 +19897,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideView.Interactive">
             <summary>True if the shapes take pointer events, as in the editor; false for thumbnails.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideView.HiddenText">
+            <summary>A shape whose text is not shown, because it is being edited above the slide.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideView.OnInitialized">
             <inheritdoc />
@@ -19846,6 +19918,57 @@
         <member name="M:MudBlazor.Extensions.Components.SlideImageUrls.UrlFor(System.String)">
             <summary>Gets the URL of an image part, or null if the part does not exist.</summary>
             <param name="partName">The image part name.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SlideTextParagraphDto">
+            <summary>A paragraph of the text editing DOM exchanged between <see cref="T:MudBlazor.Extensions.Components.MudExSlideTextEditor"/> and the browser.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextParagraphDto.Source">
+            <summary>Index of the original paragraph this one came from, or null for a new paragraph.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextParagraphDto.Align">
+            <summary>The paragraph's own alignment (<c>left</c>, <c>center</c>, <c>right</c>, <c>justify</c>), or null to inherit it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextParagraphDto.Bullet">
+            <summary><c>1</c> for a bullet, <c>0</c> for none, null to inherit.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextParagraphDto.Style">
+            <summary>The CSS the paragraph is shown with; only sent to the browser.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextParagraphDto.Runs">
+            <summary>The runs in order.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SlideTextRunDto">
+            <summary>A run of the text editing DOM. Format values are the run's own values; null inherits them.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextRunDto.Source">
+            <summary>Index of the original run (counted over all paragraphs) this one came from, or null for new text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextRunDto.Text">
+            <summary>The text; a newline is a line break.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextRunDto.B">
+            <summary>Bold: <c>1</c>, <c>0</c> or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextRunDto.I">
+            <summary>Italic: <c>1</c>, <c>0</c> or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextRunDto.U">
+            <summary>Underline: <c>1</c>, <c>0</c> or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextRunDto.S">
+            <summary>Strikethrough: <c>1</c>, <c>0</c> or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextRunDto.Size">
+            <summary>Font size in points, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextRunDto.Color">
+            <summary>Colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextRunDto.Font">
+            <summary>Typeface, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextRunDto.Style">
+            <summary>The CSS the run is shown with; only sent to the browser.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.FormulaSuggestion">
             <summary>A completion offered while typing a formula.</summary>

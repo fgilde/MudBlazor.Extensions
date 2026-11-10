@@ -61,21 +61,25 @@ public static class HtmlTableFormat
         if (string.IsNullOrEmpty(html)) return null;
         if (html.Length > MaxLength) throw new ArgumentException("The HTML is too large to paste.", nameof(html));
         var reader = new TableReader(culture ?? CultureInfo.CurrentCulture);
+        Tokenize(html, reader);
+        return reader.Result();
+    }
+
+    internal static void Tokenize(string html, IHtmlTokenSink sink)
+    {
         var i = 0;
-        while (i < html.Length && !reader.Done)
+        while (i < html.Length && !sink.Done)
         {
             var lt = html.IndexOf('<', i);
             if (lt < 0)
             {
-                reader.Text(html[i..]);
+                sink.Text(html[i..]);
                 break;
             }
 
-            if (lt > i) reader.Text(html[i..lt]);
-            i = ReadTag(html, lt, reader);
+            if (lt > i) sink.Text(html[i..lt]);
+            i = ReadTag(html, lt, sink);
         }
-
-        return reader.Result();
     }
 
     /// <summary>
@@ -164,7 +168,7 @@ public static class HtmlTableFormat
         return css.ToString();
     }
 
-    private static int ReadTag(string html, int at, TableReader reader)
+    private static int ReadTag(string html, int at, IHtmlTokenSink reader)
     {
         if (string.CompareOrdinal(html, at, "<!--", 0, 4) == 0)
         {
@@ -301,7 +305,7 @@ public static class HtmlTableFormat
         _ => null
     };
 
-    private static IEnumerable<string> Split(string text, char separator)
+    internal static IEnumerable<string> Split(string text, char separator)
     {
         var start = 0;
         var depth = 0;
@@ -334,7 +338,7 @@ public static class HtmlTableFormat
         }
     }
 
-    private static string Color(string v)
+    internal static string Color(string v)
     {
         if (string.IsNullOrEmpty(v)) return null;
         if (v[0] == '#')
@@ -416,7 +420,7 @@ public static class HtmlTableFormat
         return sb.ToString();
     }
 
-    private sealed class TableReader(CultureInfo culture)
+    private sealed class TableReader(CultureInfo culture) : IHtmlTokenSink
     {
         private readonly List<HtmlTableCell> _cells = [];
         private readonly List<int> _busyUntil = [];
@@ -645,4 +649,17 @@ public static class HtmlTableFormat
         public string Finish() =>
             string.Join('\n', Text.ToString().Split('\n').Select(line => line.Trim(' '))).Trim('\n').Replace(' ', ' ');
     }
+}
+
+internal interface IHtmlTokenSink
+{
+    bool Done { get; }
+
+    void Text(string text);
+
+    void Start(string name, Dictionary<string, string> attributes);
+
+    void End(string name);
+
+    void StyleSheet(string css);
 }

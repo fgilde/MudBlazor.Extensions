@@ -72,13 +72,18 @@ public partial class MudExSlideEditor
             _presentation.Execute(new SetNotesCommand(_current, text));
     });
 
-    private Task UndoAsync(bool redo) => RunAsync(() =>
+    private async Task UndoAsync(bool redo)
     {
-        if (redo && _presentation.Undo.CanRedo)
-            _presentation.Undo.Redo();
-        else if (!redo && _presentation.Undo.CanUndo)
-            _presentation.Undo.Undo();
-    });
+        if (_canvas != null)
+            await _canvas.CommitTextAsync();
+        await RunAsync(() =>
+        {
+            if (redo && _presentation.Undo.CanRedo)
+                _presentation.Undo.Redo();
+            else if (!redo && _presentation.Undo.CanUndo)
+                _presentation.Undo.Undo();
+        });
+    }
 
     private Task ArrangeAsync(ZOrderChange change) => RunAsync(() =>
     {

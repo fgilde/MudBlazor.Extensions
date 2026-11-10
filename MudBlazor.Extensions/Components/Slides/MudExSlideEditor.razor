@@ -32,25 +32,29 @@
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Font")" Icon="@Icons.Material.Filled.FormatSize" CollapsePriority="4">
                         <MudExRibbonRow>
-                            <MudExRibbonSelect T="string" Text="@TryLocalize("Font")" Items="@Fonts" Value="@Fonts[0]" Editable="true" Width="140" Disabled="@(!HasShapeSelection)" />
-                            <MudExRibbonNumberBox Text="@TryLocalize("Font Size")" Value="18" Min="1" Max="4000" Step="1" Disabled="@(!HasShapeSelection)" />
+                            <MudExRibbonSelect T="string" Text="@TryLocalize("Font")" Items="@Fonts" Value="@(CurrentFormat?.Font ?? Fonts[0])" ValueChanged="SetFontAsync" Editable="true" Width="140" Disabled="@(!HasShapeSelection)" />
+                            <MudExRibbonNumberBox Text="@TryLocalize("Font Size")" Value="@(CurrentFormat?.SizePt ?? 18)" ValueChanged="SetFontSizeAsync" Min="1" Max="4000" Step="1" Disabled="@(!HasShapeSelection)" />
                         </MudExRibbonRow>
                         <MudExRibbonRow>
-                            @foreach (var (id, text, icon, shortcut) in FontToggles)
+                            @foreach (var (id, text, icon, shortcut, key) in FontToggles)
                             {
-                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)" />
+                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)"
+                                                         Checked="@IsOn(key)" CheckedChanged="@(_ => FormatAsync(key, null))" />
                             }
-                            <MudExRibbonColorPicker Id="pp-font-color" Text="@TryLocalize("Font Color")" Icon="@Icons.Material.Filled.FormatColorText" Size="MudExRibbonItemSize.Small" Palette="@Palette" Disabled="@(!HasShapeSelection)" />
+                            <MudExRibbonColorPicker Id="pp-font-color" Text="@TryLocalize("Font Color")" Icon="@Icons.Material.Filled.FormatColorText" Size="MudExRibbonItemSize.Small" Palette="@Palette" Disabled="@(!HasShapeSelection)"
+                                                    ValueChanged="SetFontColorAsync" />
                         </MudExRibbonRow>
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Paragraph")" Icon="@Icons.Material.Filled.FormatAlignLeft" CollapsePriority="3">
                         <MudExRibbonRow>
-                            <MudExRibbonToggleButton Id="pp-bullets" Text="@TryLocalize("Bullets")" Icon="@Icons.Material.Filled.FormatListBulleted" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)" />
+                            <MudExRibbonToggleButton Id="pp-bullets" Text="@TryLocalize("Bullets")" Icon="@Icons.Material.Filled.FormatListBulleted" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)"
+                                                     Checked="@IsOn("bullet")" CheckedChanged="@(_ => FormatAsync("bullet", null))" />
                         </MudExRibbonRow>
                         <MudExRibbonRow>
-                            @foreach (var (id, text, icon, shortcut) in AlignToggles)
+                            @foreach (var (id, text, icon, shortcut, align) in AlignToggles)
                             {
-                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)" />
+                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)"
+                                                         Checked="@(CurrentAlign == align)" CheckedChanged="@(_ => FormatAsync("align", align.ToString().ToLowerInvariant()))" />
                             }
                         </MudExRibbonRow>
                     </MudExRibbonGroup>
@@ -78,7 +82,7 @@
                         <MudExRibbonButton Id="pp-insert-shapes" Text="@TryLocalize("Shapes")" Icon="@Icons.Material.Filled.Category" Size="MudExRibbonItemSize.Large" Disabled="true" />
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Text")" Icon="@Icons.Material.Filled.TextFields" CollapsePriority="1">
-                        <MudExRibbonButton Id="pp-insert-text-box" Text="@TryLocalize("Text Box")" Icon="@Icons.Material.Filled.TextFields" Size="MudExRibbonItemSize.Large" Disabled="true" />
+                        <MudExRibbonButton Id="pp-insert-text-box" Text="@TryLocalize("Text Box")" Icon="@Icons.Material.Filled.TextFields" Size="MudExRibbonItemSize.Large" Disabled="@(_current == null)" OnClick="InsertTextBoxAsync" />
                     </MudExRibbonGroup>
                 </MudExRibbonTab>
 
@@ -106,7 +110,7 @@
         }
         <div class="mud-ex-slide-editor-main">
             <MudExSlideCanvas @ref="_canvas" Presentation="_presentation" Slide="@(_imagesReady ? _current : null)" Images="_images" Zoom="@(_zoom ?? 0)" ReadOnly="IsReadOnly"
-                              SelectionChanged="@(_ => StateHasChanged())" KeyDown="_navigationKeyDown" Localizer="@Localizer" />
+                              SelectionChanged="@(_ => StateHasChanged())" KeyDown="_navigationKeyDown" TextInput="MarkDirtyAsync" Localizer="@Localizer" />
             @if (_notesVisible && _current != null)
             {
                 <MudExSlideNotes @ref="_notes" Slide="_current" ReadOnly="IsReadOnly" CanHaveNotes="@_presentation.CanHaveNotes(_current)" NotesChanged="SetNotesAsync" Localizer="@Localizer" />

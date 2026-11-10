@@ -10,6 +10,7 @@ public partial class MudExSlideView
     private Slide _rendered;
     private int _renderedVersion;
     private bool _renderedInteractive;
+    private SlideShape _renderedHiddenText;
 
     /// <summary>The presentation the slide belongs to.</summary>
     [Parameter] public Presentation Presentation { get; set; }
@@ -22,6 +23,9 @@ public partial class MudExSlideView
 
     /// <summary>True if the shapes take pointer events, as in the editor; false for thumbnails.</summary>
     [Parameter] public bool Interactive { get; set; }
+
+    /// <summary>A shape whose text is not shown, because it is being edited above the slide.</summary>
+    [Parameter] public SlideShape HiddenText { get; set; }
 
     private string RootStyle =>
         $"aspect-ratio:{Presentation.SlideWidth.ToString(CultureInfo.InvariantCulture)}/{Presentation.SlideHeight.ToString(CultureInfo.InvariantCulture)};{BackgroundStyle}{Style}";
@@ -51,7 +55,7 @@ public partial class MudExSlideView
     /// <inheritdoc />
     protected override bool ShouldRender()
     {
-        if (ReferenceEquals(_rendered, Slide) && _renderedVersion == Slide?.Version && _renderedInteractive == Interactive) return false;
+        if (ReferenceEquals(_rendered, Slide) && _renderedVersion == Slide?.Version && _renderedInteractive == Interactive && ReferenceEquals(_renderedHiddenText, HiddenText)) return false;
         Remember();
         return true;
     }
@@ -59,5 +63,5 @@ public partial class MudExSlideView
     private static string CssString(string value) =>
         string.Concat(value.Where(c => !char.IsControl(c))).Replace("\\", "\\\\", StringComparison.Ordinal).Replace("\"", "\\\"", StringComparison.Ordinal);
 
-    private void Remember() => (_rendered, _renderedVersion, _renderedInteractive) = (Slide, Slide?.Version ?? 0, Interactive);
+    private void Remember() => (_rendered, _renderedVersion, _renderedInteractive, _renderedHiddenText) = (Slide, Slide?.Version ?? 0, Interactive, HiddenText);
 }

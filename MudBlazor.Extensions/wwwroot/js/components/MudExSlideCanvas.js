@@ -4,6 +4,8 @@ const SNAP_PX = 6;
 const CLICK_PX = 3;
 const MIN_PX = 4;
 const KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+const TEXT_EDITOR = '.mud-ex-slide-text-editor';
+const FORMAT_KEYS = 'biulerj';
 
 const rad = deg => deg * Math.PI / 180;
 const pct = (value, whole) => `${value / whole * 100}%`;
@@ -15,7 +17,7 @@ class MudExSlideCanvas {
         this.drag = null;
         this.onMove = e => this.pointerMove(e);
         this.onUp = e => this.pointerUp(e);
-        this.events = [['pointerdown', e => this.pointerDown(e)], ['keydown', e => this.keyDown(e)]];
+        this.events = [['pointerdown', e => this.pointerDown(e)], ['keydown', e => this.keyDown(e)], ['dblclick', e => this.dblClick(e)]];
         this.events.forEach(([type, handler]) => root.addEventListener(type, handler));
     }
 
@@ -65,7 +67,8 @@ class MudExSlideCanvas {
         const ctrl = e.ctrlKey || e.metaKey;
         const selected = !!this.root.dataset.selection;
         const key = e.key.toLowerCase();
-        if ((KEYS.includes(e.key) && selected) || (e.key === 'Tab' && !ctrl && this.frame()?.querySelector(SHAPE)) || (ctrl && (key === 'a' || key === 'd'))) {
+        if ((KEYS.includes(e.key) && selected) || (e.key === 'Tab' && !ctrl && this.frame()?.querySelector(SHAPE)) || (ctrl && (key === 'a' || key === 'd'))
+            || (selected && ((ctrl && key.length === 1 && FORMAT_KEYS.includes(key)) || (!ctrl && e.key === ' ')))) {
             e.preventDefault();
         }
     }
@@ -75,8 +78,16 @@ class MudExSlideCanvas {
         if (e.button !== 0 || this.drag || !frame || !this.dotnet || this.root.dataset.readonly === 'true' || this.onScrollbar(e)) {
             return;
         }
+        if (e.target.closest(TEXT_EDITOR)) {
+            return;
+        }
         e.preventDefault();
         this.root.focus({ preventScroll: true });
+        if (this.root.dataset.insert) {
+            const point = this.toSlide(this.metrics(frame), e.clientX, e.clientY);
+            this.dotnet.invokeMethodAsync('OnInsertAsync', point.x, point.y).catch(() => {});
+            return;
+        }
         const toggle = e.shiftKey || e.ctrlKey || e.metaKey;
         const handle = e.target.closest('[data-handle]');
         const m = this.metrics(frame);
@@ -106,6 +117,15 @@ class MudExSlideCanvas {
                 }
             }).catch(() => {});
         }
+    }
+
+    dblClick(e) {
+        const frame = this.frame();
+        const shape = e.target.closest(SHAPE);
+        if (!frame || !shape || !frame.contains(shape) || !this.dotnet || this.root.dataset.readonly === 'true' || e.target.closest(TEXT_EDITOR)) {
+            return;
+        }
+        this.dotnet.invokeMethodAsync('OnShapeDoubleClickAsync', +shape.dataset.shapeId, e.clientX, e.clientY).catch(() => {});
     }
 
     onScrollbar(e) {

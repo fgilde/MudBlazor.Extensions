@@ -77,6 +77,8 @@ public partial class MudExSlideCanvas
         base.OnParametersSet();
         if (!ReferenceEquals(Slide, _slide) || ReadOnly)
         {
+            CommitText();
+            _insertTextBox = false;
             _slide = Slide;
             _version = Slide?.Version ?? 0;
             Change([]);
@@ -84,6 +86,8 @@ public partial class MudExSlideCanvas
         else if (Slide != null && Slide.Version != _version)
         {
             _version = Slide.Version;
+            if (_text != null && !SlideShape.Flatten(Slide.Shapes).Contains(_text.Shape))
+                _text = null;
             Change(_selection);
         }
     }
@@ -229,7 +233,11 @@ public partial class MudExSlideCanvas
 
     private async Task<bool> HandleKeyAsync(KeyboardEventArgs e)
     {
-        if (ReadOnly || Slide == null || e.AltKey)
+        if (ReadOnly || Slide == null)
+            return false;
+        if (_text != null)
+            return true;
+        if (e.AltKey)
             return false;
         var ctrl = e.CtrlKey || e.MetaKey;
         var any = _selection.Count > 0;
@@ -264,7 +272,7 @@ public partial class MudExSlideCanvas
                 await SelectAsync([]);
                 return true;
             default:
-                return false;
+                return await HandleTextKeyAsync(e.Key, ctrl);
         }
     }
 
