@@ -290,6 +290,30 @@ public class SpreadsheetGridTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task ConditionalFormatChange_RedrawsOnlyRuleRows()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        for (var r = 0; r < 20; r++)
+        {
+            wb.Execute(new SetValueCommand(ws, new CellRef(r, 0), CellValue.Number(r)));
+            wb.Execute(new SetValueCommand(ws, new CellRef(r, 2), CellValue.Number(r)));
+        }
+
+        var style = new DifferentialStyle(new DifferentialFont { Color = "#FF0000" }, null);
+        wb.Execute(new AddConditionalFormattingCommand(ws, new ConditionalFormatting([CellRange.Parse("A1:A5")], [new ConditionalRule.CellIs("greaterThan", "2", null, style)])));
+        var cut = Render(wb);
+        Dictionary<int, int> Renders() => cut.FindComponents<SpreadsheetGridRow>().ToDictionary(r => r.Instance.Row, r => r.RenderCount);
+        var before = Renders();
+
+        await cut.InvokeAsync(() => wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(5))));
+
+        cut.WaitForAssertion(() => Assert.Contains("color:#FF0000", cut.Find(".mud-ex-ssg-cell[data-r='0'][data-c='0']").GetAttribute("style")));
+        var after = Renders();
+        Assert.Equal([0, 1, 2, 3, 4], after.Where(p => p.Value != before[p.Key]).Select(p => p.Key).Order());
+    }
+
+    [Fact]
     public void Grid_AriaRolesAndIndices()
     {
         var wb = Workbook.Create();

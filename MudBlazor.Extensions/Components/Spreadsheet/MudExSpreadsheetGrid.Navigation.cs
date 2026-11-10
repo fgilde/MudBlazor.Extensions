@@ -342,12 +342,7 @@ public partial class MudExSpreadsheetGrid
         foreach (var sel in new[] { before, _selection })
         {
             Bump(sel.Active.Row);
-            foreach (var r in sel.Ranges)
-            {
-                var n = r.Normalized;
-                for (var row = n.Top; row <= Math.Min(n.Bottom, FrozenRows - 1); row++) Bump(row);
-                for (var row = Math.Max(n.Top, _firstRow); row <= Math.Min(n.Bottom, _lastRow); row++) Bump(row);
-            }
+            foreach (var r in sel.Ranges) BumpRows(r);
         }
     }
 

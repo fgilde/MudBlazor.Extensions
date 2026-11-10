@@ -365,7 +365,7 @@ public partial class MudExSpreadsheetGrid
             Relayout();
         }
         else if (HasRules && (e.SingleCells.Any(c => c.Sheet == _sheet) || e.ValueRanges.Any(v => v.Sheet == _sheet) || e.FormattedRanges.Any(f => f.Sheet == _sheet)))
-            _layoutVersion++;
+            BumpConditionalRows();
 
         RefreshFromModel();
     }
@@ -374,10 +374,11 @@ public partial class MudExSpreadsheetGrid
     {
         if (_sheet == null) return;
         InvalidateCharts(e);
-        if (e.Cells.Count > 5000 || (HasRules && e.Cells.Any(c => c.Sheet == _sheet))) _layoutVersion++;
+        if (e.Cells.Count > 5000) _layoutVersion++;
         else
             foreach (var c in e.Cells)
                 if (c.Sheet == _sheet) Bump(c.Cell.Row);
+        if (HasRules && e.Cells.Count <= 5000 && e.Cells.Any(c => c.Sheet == _sheet)) BumpConditionalRows();
         RefreshFromModel();
     }
 
@@ -388,6 +389,20 @@ public partial class MudExSpreadsheetGrid
     }
 
     private void Bump(int row) => _rowStamps[row] = ++_stamp;
+
+    private void BumpRows(CellRange range)
+    {
+        var n = range.Normalized;
+        for (var row = n.Top; row <= Math.Min(n.Bottom, FrozenRows - 1); row++) Bump(row);
+        for (var row = Math.Max(n.Top, _firstRow); row <= Math.Min(n.Bottom, _lastRow); row++) Bump(row);
+    }
+
+    private void BumpConditionalRows()
+    {
+        foreach (var cf in _sheet.ConditionalFormats)
+            foreach (var range in cf.Ranges)
+                BumpRows(range);
+    }
 
     private long RowVersion(int row) => ((long)_layoutVersion << 32) | (uint)_rowStamps.GetValueOrDefault(row);
 
