@@ -48,11 +48,15 @@ public partial class MudExSpreadsheetEditor
     {
         var sheet = ActiveSheet;
         var active = CurrentSelection.Active;
-        if (!ActiveRange.IsSingleCell) return (ActiveRange, false);
         if (sheet.TableAt(active) is { } table) return (MudExSpreadsheetGrid.SortRange(table, default), table.HeaderRow);
         if (sheet.AutoFilter is { } filter && filter.Range.Contains(active)) return (filter.Range, true);
-        var region = _grid?.CurrentRegion(active) ?? ActiveRange;
-        return (region, HasHeader(region));
+        var selected = ActiveRange.Normalized;
+        var region = _grid?.CurrentRegion(active) ?? selected;
+        var range = selected.IsSingleCell || region.Left < selected.Left || region.Right > selected.Right
+            ? CellRange.FromBounds(Math.Min(region.Top, selected.Top), Math.Min(region.Left, selected.Left), Math.Max(region.Bottom, selected.Bottom),
+                Math.Max(region.Right, selected.Right))
+            : selected;
+        return (range, HasHeader(range));
     }
 
     private bool HasHeader(CellRange region)

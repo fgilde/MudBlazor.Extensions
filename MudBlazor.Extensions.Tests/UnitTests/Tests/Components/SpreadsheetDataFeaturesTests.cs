@@ -93,6 +93,22 @@ public class SpreadsheetDataFeaturesTests : IAsyncLifetime
         Assert.Equal(["Name", "c", "b", "a"], Enumerable.Range(0, 4).Select(r => sheet[new CellRef(r, 0)].Value.ToString()));
     }
 
+    [Theory]
+    [InlineData("B1:B1048576")]
+    [InlineData("B2:B4")]
+    public async Task DataTab_SortColumnSelection_ExpandsToRegionWithHeader(string selection)
+    {
+        var wb = Book(("A1", "Name"), ("B1", "Qty"), ("A2", "c"), ("B2", 3d), ("A3", "a"), ("B3", 1d), ("A4", "b"), ("B4", 2d));
+        var cut = Render(wb);
+        Select(cut, selection);
+
+        await Run(cut, "xl-sort-desc");
+
+        var sheet = wb.Sheets[0];
+        Assert.Equal(["Name", "c", "b", "a"], Enumerable.Range(0, 4).Select(r => sheet[new CellRef(r, 0)].Value.ToString()));
+        Assert.Equal(["Qty", "3", "2", "1"], Enumerable.Range(0, 4).Select(r => sheet[new CellRef(r, 1)].Value.ToString()));
+    }
+
     [Fact]
     public void FilterMenu_UncheckValue_HidesRows()
     {
