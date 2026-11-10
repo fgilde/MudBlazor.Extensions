@@ -77,6 +77,8 @@ public sealed partial class CalcEngine : IDisposable
     /// <summary>Number of formula evaluations performed so far.</summary>
     public long EvaluationCount { get; private set; }
 
+    internal long GraphIndexOperations => _graph.IndexOperations;
+
     /// <summary>The range filled by the array result of a formula cell, or null if the cell does not spill (or is blocked).</summary>
     /// <param name="sheet">The sheet.</param>
     /// <param name="anchor">The formula cell.</param>

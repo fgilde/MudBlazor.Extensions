@@ -365,6 +365,31 @@ public class FormulaEngineTests
         Assert.Equal(CellValue.Number(4), ValueAt(ws, "C4"));
     }
 
+    [Fact]
+    public void InsertRowAbove100kFormulas_ReindexesNothing()
+    {
+        var (wb, ws) = SpreadsheetPerfTests.SumSheet();
+        var engine = new CalcEngine(wb);
+        var indexed = engine.GraphIndexOperations;
+        var evaluations = engine.EvaluationCount;
+
+        wb.Execute(new InsertRowsCommand(ws, 0, 1));
+        Assert.Equal(indexed, engine.GraphIndexOperations);
+        Assert.Equal(evaluations, engine.EvaluationCount);
+        Assert.Equal("SUM(A50001:D50001)", ws[R("E50001")].Formula);
+
+        wb.Execute(new SetValueCommand(ws, R("A50001"), CellValue.Number(1000)));
+        Assert.Equal(CellValue.Number(151003), ValueAt(ws, "E50001"));
+        Assert.Equal(evaluations + 1, engine.EvaluationCount);
+
+        wb.Undo.Undo();
+        wb.Undo.Undo();
+        Assert.Equal(indexed, engine.GraphIndexOperations);
+        Assert.Equal(CellValue.Number(6), ValueAt(ws, "E1"));
+        wb.Execute(new SetValueCommand(ws, R("D2"), CellValue.Number(10)));
+        Assert.Equal(CellValue.Number(16), ValueAt(ws, "E2"));
+    }
+
     [Theory]
     [InlineData(1)]
     [InlineData(2)]
@@ -372,7 +397,7 @@ public class FormulaEngineTests
     public void StructureChanges_MatchFullRecalculation(int seed)
     {
         var rnd = new Random(seed);
-        var (wb, ws, engine) = Create();
+        var (wb, ws, _) = Create();
         wb.Execute(new AddSheetCommand("Data"));
         var data = wb.Sheets[1];
         string[] formulas =
@@ -389,6 +414,9 @@ public class FormulaEngineTests
 
         wb.Execute(new DefineNameCommand("Rng", "Sheet1!$A$4"));
         for (var r = 3; r <= 7; r++) wb.Execute(new SetFormulaCommand(data, R("D" + r), "=COUNTIF(Sheet1!A1:A9,Sheet1!A1:A9)+ROW(Sheet1!C4)"));
+        using (wb.Undo.BeginTransaction("Bulk"))
+            for (var r = 21; r <= 5020; r++)
+                wb.Execute(new SetFormulaCommand(ws, R("H" + r), $"=A{r - 18}+Data!A{r % 9 + 1}+SUM(G{r}:G{r + 2})"));
         for (var i = 0; i < 40; i++)
         {
             var at = new CellRef(rnd.Next(0, 12), rnd.Next(0, 6));
@@ -416,7 +444,7 @@ public class FormulaEngineTests
             }
 
             var incremental = Snapshot(wb);
-            engine.RecalculateAll();
+            new CalcEngine(wb).Dispose();
             Assert.Equal(Snapshot(wb), incremental);
         }
 

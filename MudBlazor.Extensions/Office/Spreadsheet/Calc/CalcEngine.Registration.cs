@@ -9,19 +9,29 @@ public sealed partial class CalcEngine
         _keptFormulas[node] = (cell.Formula, cell.Value);
     }
 
-    private bool Register(CellNode node, string formula)
+    private bool Relocate(CellNode node, FormulaEntry entry, string formula)
     {
-        if (!_parsed.TryGetValue(formula, out var ast))
-        {
-            if (_parsed.Count > 2 * _formulas.Count + 1024)
-            {
-                _parsed.Clear();
-                foreach (var entry in _formulas.Values) _parsed[entry.Text] = entry.Ast;
-            }
+        var ast = Parse(formula);
+        if (ast == Unparsable) return false;
+        _formulas[node] = entry with { Text = formula, Ast = ast };
+        return true;
+    }
 
-            _parsed[formula] = ast = FormulaParser.TryParse(formula, out var parsed, out _) ? parsed : Unparsable;
+    private FormulaNode Parse(string formula)
+    {
+        if (_parsed.TryGetValue(formula, out var ast)) return ast;
+        if (_parsed.Count > 2 * _formulas.Count + 1024)
+        {
+            _parsed.Clear();
+            foreach (var entry in _formulas.Values) _parsed[entry.Text] = entry.Ast;
         }
 
+        return _parsed[formula] = FormulaParser.TryParse(formula, out var parsed, out _) ? parsed : Unparsable;
+    }
+
+    private bool Register(CellNode node, string formula)
+    {
+        var ast = Parse(formula);
         var precedents = new List<RefArea>();
         var info = Collect(ast, node.Sheet, node.Cell, precedents);
         _formulas[node] = new FormulaEntry(formula, ast, info.Positional, info.Names, info.HiddenSensitive);

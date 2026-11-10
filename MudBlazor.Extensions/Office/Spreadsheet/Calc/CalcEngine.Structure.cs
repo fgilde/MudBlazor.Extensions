@@ -29,7 +29,7 @@ public sealed partial class CalcEngine
         var end = index + count;
         var limit = rows ? CellRef.MaxRows : CellRef.MaxColumns;
 
-        int Map(int v) => insert ? v >= index ? v + count : v : v < index ? v : v < end ? -1 : v - count;
+        var shift = new AxisShift(sheet, rows ? Axis.Row : Axis.Column, index, insert ? count : -count);
         (int Start, int End) Span(CellRange r) => rows ? (r.Top, r.Bottom) : (r.Left, r.Right);
 
         bool Touches(RefArea a)
@@ -43,27 +43,9 @@ public sealed partial class CalcEngine
 
         bool Shifted(RefArea a) => a.Sheet == sheet && Span(a.Range).End >= index;
 
-        CellNode? MapNode(CellNode n)
-        {
-            if (n.Sheet != sheet) return n;
-            var c = n.Cell;
-            var v = Map(rows ? c.Row : c.Column);
-            return v < 0 || v >= limit ? null : new CellNode(sheet, (rows ? new CellRef(v, c.Column) : new CellRef(c.Row, v)).Key);
-        }
-
-        CellRange? MapRange(CellRange r)
-        {
-            var (s, e) = Span(r);
-            var ns = insert ? Map(s) : s < index ? s : s >= end ? s - count : index;
-            var ne = insert ? Math.Min(Map(e), limit - 1) : e < index ? e : e >= end ? e - count : index - 1;
-            if (ne < ns || ns >= limit) return null;
-            return rows ? CellRange.FromBounds(ns, r.Left, ne, r.Right) : CellRange.FromBounds(r.Top, ns, r.Bottom, ne);
-        }
+        CellNode? MapNode(CellNode n) => n.Sheet != sheet ? n : shift.Forward(n.Cell) is { } c ? new CellNode(sheet, c.Key) : null;
 
         var formulas = new Dictionary<CellNode, FormulaEntry>(_formulas.Count);
-        var unchanged = new List<(CellNode Node, List<RefArea> Areas)>(_formulas.Count);
-        var stale = new List<CellNode>();
-        var placed = new List<(CellNode Node, List<RefArea> Areas)>();
         var volatileNodes = new HashSet<CellNode>();
         var keep = new HashSet<CellNode>();
         var keptFormulas = new Dictionary<CellNode, (string, CellValue)>();
@@ -74,8 +56,8 @@ public sealed partial class CalcEngine
             var spilled = _spills.TryGetValue(node, out var spill);
             if (MapNode(node) is not { } target)
             {
-                stale.Add(node);
-                if (spilled && spill.Active && MapRange(spill.Range) is { } rest)
+                _graph.Remove(node);
+                if (spilled && spill.Active && shift.Forward(spill.Range) is { } rest)
                     foreach (var c in rest.Cells())
                         starts.Add(new CellNode(sheet, c.Key));
                 continue;
@@ -87,16 +69,12 @@ public sealed partial class CalcEngine
                                    || spilled && node.Sheet == sheet && Touches(new RefArea(sheet, spill.Range)))
                 dirty.Add(target);
             formulas[target] = entry;
-            var same = target.Sheet[target.Cell]?.Formula == entry.Text;
-            if (same) unchanged.Add((target, areas));
-            if (moved) stale.Add(node);
-            if (moved && same) placed.Add((target, areas));
             if (_volatile.Contains(node)) volatileNodes.Add(target);
             if (_keep.Contains(node)) keep.Add(target);
             if (_keptFormulas.TryGetValue(node, out var kept)) keptFormulas[target] = kept;
             if (!spilled) continue;
             if (node.Sheet != sheet) spills[target] = spill;
-            else if (MapRange(spill.Range) is { } range) spills[target] = spill with { Range = range };
+            else if (shift.Forward(spill.Range) is { } range) spills[target] = spill with { Range = range };
         }
 
         _formulas = formulas;
@@ -104,17 +82,7 @@ public sealed partial class CalcEngine
         _keep = keep;
         _keptFormulas = keptFormulas;
         _spills = spills;
-        if (stale.Count * 2 > formulas.Count)
-        {
-            _graph.Clear();
-            foreach (var (node, areas) in unchanged) _graph.Set(node, areas);
-        }
-        else
-        {
-            foreach (var node in stale) _graph.Remove(node);
-            foreach (var (node, areas) in placed) _graph.Set(node, areas);
-        }
-
+        _graph.Shift(shift);
         foreach (var key in sheet.FormulaKeys)
         {
             var node = new CellNode(sheet, key);
@@ -147,10 +115,12 @@ public sealed partial class CalcEngine
             var textChanged = cell.Formula != entry.Text;
             var names = namesChanged && entry.UsesNames;
             if (!textChanged && !names && (newName == null || !ReferenceShifter.CanReference(entry.Text, newName))) continue;
+            var relocated = shift && !names && CountRefErrors(entry.Text) == CountRefErrors(cell.Formula);
+            if (relocated && !_keep.Contains(node) && !_keptFormulas.ContainsKey(node) && Relocate(node, entry, cell.Formula)) continue;
             _keep.Remove(node);
             _keptFormulas.Remove(node);
             RegisterOrKeep(node, cell);
-            if (!shift || names || CountRefErrors(entry.Text) != CountRefErrors(cell.Formula)) dirty.Add(node);
+            if (!relocated) dirty.Add(node);
         }
     }
 
