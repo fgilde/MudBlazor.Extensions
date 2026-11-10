@@ -56,6 +56,19 @@ internal static class ColorResolver
             .Select(m => $" {m.Name.LocalName}={(string)m.Attribute("val")}"));
     }
 
+    internal static XElement ToXml(string color)
+    {
+        var parts = color?.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts is not { Length: > 0 }) return null;
+        var element = parts[0].StartsWith("scheme:", StringComparison.Ordinal)
+            ? new XElement(PptxReader.A + "schemeClr", new XAttribute("val", parts[0][7..]))
+            : ThemeColors.Hex(parts[0].TrimStart('#')) is { } hex ? new XElement(PptxReader.A + "srgbClr", new XAttribute("val", hex)) : null;
+        element?.Add(parts.Skip(1).Select(m => m.Split('='))
+            .Where(m => m.Length == 2 && m[0] is "lumMod" or "lumOff" or "tint" or "shade" && int.TryParse(m[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out _))
+            .Select(m => new XElement(PptxReader.A + m[0], new XAttribute("val", m[1]))));
+        return element;
+    }
+
     private static string Lightness(string rgb, ref double lumMod, ref double lumOff)
     {
         if (lumMod == 1 && lumOff == 0) return rgb;

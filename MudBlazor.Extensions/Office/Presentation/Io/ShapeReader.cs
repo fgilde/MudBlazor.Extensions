@@ -28,8 +28,7 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
         shape.Source = e;
         shape.Parent = parent;
         shape.Master = master;
-        var xfrm = e.Element(P + "spPr")?.Element(A + "xfrm") ?? e.Element(P + "grpSpPr")?.Element(A + "xfrm") ?? e.Element(P + "xfrm")
-                   ?? (shape is OpaqueShape ? e.Descendants().FirstOrDefault(d => d.Name.LocalName == "xfrm") : null);
+        var xfrm = XfrmOf(e, shape is OpaqueShape);
         shape.Transform = ReadTransform(xfrm);
         if (e.Elements().FirstOrDefault()?.Element(P + "nvPr")?.Element(P + "ph") is { } ph)
         {
@@ -65,7 +64,14 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
         return shape;
     }
 
-    private void ReadAutoShape(AutoShape shape, XElement e)
+    private static void ReadAutoShape(AutoShape shape, XElement e)
+    {
+        ReadStyle(shape, e);
+        shape.IsTextBox = (string)e.Element(P + "nvSpPr")?.Element(P + "cNvSpPr")?.Attribute("txBox") is "1" or "true";
+        if (e.Element(P + "txBody") is { } body) shape.Text = ReadText(body);
+    }
+
+    internal static void ReadStyle(AutoShape shape, XElement e)
     {
         var spPr = e.Element(P + "spPr");
         var style = e.Element(P + "style");
@@ -90,9 +96,6 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
             shape.Line = new ShapeLine(lineFill == null ? StyleColor(style, "lnRef") : FillColor(lineFill), Long((string)ln.Attribute("w")) ?? 12700,
                 (string)ln.Element(A + "prstDash")?.Attribute("val") ?? "solid");
         }
-
-        shape.IsTextBox = (string)e.Element(P + "nvSpPr")?.Element(P + "cNvSpPr")?.Attribute("txBox") is "1" or "true";
-        if (e.Element(P + "txBody") is { } body) shape.Text = ReadText(body);
     }
 
     private static TextBody ReadText(XElement body)
@@ -107,7 +110,7 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
             InsetTop = Long(Body("tIns")),
             InsetRight = Long(Body("rIns")),
             InsetBottom = Long(Body("bIns")),
-            Wrap = Body("wrap") switch { "none" => false, "square" => true, _ => null },
+            Wrap = ParseWrap(Body("wrap")),
             Paragraphs = body.Elements(A + "p").Select(ReadParagraph).ToList()
         };
     }
@@ -118,18 +121,34 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
         return new TextParagraph
         {
             Source = p,
-            Level = (int)Math.Clamp(Long((string)pPr?.Attribute("lvl")) ?? 0, 0, 8),
+            Level = ParseLevel(pPr),
             Align = TextStyles.ParseAlign((string)pPr?.Attribute("algn")),
-            Bullet = pPr?.Elements().FirstOrDefault(b => b.Name.LocalName is "buNone" or "buChar" or "buAutoNum" or "buBlip")?.Name.LocalName switch
-            {
-                null => null,
-                "buNone" => false,
-                _ => true
-            },
+            Bullet = ParseBullet(pPr),
             Runs = p.Elements().Where(n => RunText(n) != null).Select(n => new TextRun(RunText(n), ReadRunFormat(n.Element(A + "rPr"))) { Source = n }).ToList(),
             EndFormat = p.Element(A + "endParaRPr") is { } end ? ReadRunFormat(end) : null
         };
     }
+
+    internal static bool? ParseWrap(string value) => value switch
+    {
+        "none" => false,
+        "square" => true,
+        _ => null
+    };
+
+    internal static int ParseLevel(XElement pPr) => (int)Math.Clamp(Long((string)pPr?.Attribute("lvl")) ?? 0, 0, 8);
+
+    internal static bool? ParseBullet(XElement pPr) =>
+        pPr?.Elements().FirstOrDefault(b => b.Name.LocalName is "buNone" or "buChar" or "buAutoNum" or "buBlip")?.Name.LocalName switch
+        {
+            null => null,
+            "buNone" => false,
+            _ => true
+        };
+
+    internal static XElement XfrmOf(XElement e, bool opaque) =>
+        e.Element(P + "spPr")?.Element(A + "xfrm") ?? e.Element(P + "grpSpPr")?.Element(A + "xfrm") ?? e.Element(P + "xfrm")
+        ?? (opaque ? e.Descendants().FirstOrDefault(d => d.Name.LocalName == "xfrm") : null);
 
     private SlideShape FindPlaceholder(PlaceholderRef placeholder)
     {
@@ -146,7 +165,7 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
         _ => type
     };
 
-    private static ShapeTransform? ReadTransform(XElement xfrm)
+    internal static ShapeTransform? ReadTransform(XElement xfrm)
     {
         var offset = xfrm?.Element(A + "off");
         var extent = xfrm?.Element(A + "ext");

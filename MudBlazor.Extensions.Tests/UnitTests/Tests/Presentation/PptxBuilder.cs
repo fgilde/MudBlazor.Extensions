@@ -13,7 +13,7 @@ internal sealed class PptxBuilder
 
     private const string RelNs = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
 
-    private readonly List<(string Shapes, string Attributes, string? Notes, string Rels)> _slides = [];
+    private readonly List<(string Shapes, string Attributes, string? Notes, string Rels, string Tail)> _slides = [];
 
     private readonly Dictionary<string, string> _theme = new()
     {
@@ -22,6 +22,16 @@ internal sealed class PptxBuilder
     };
 
     public string ExtraSlideIds { get; set; } = "";
+
+    public string CustomShows { get; set; } = "";
+
+    public string PresentationExt { get; set; } = "";
+
+    public bool NotesMaster { get; set; }
+
+    public bool AppXml { get; set; }
+
+    public Dictionary<string, (string? ContentType, string Content)> ExtraParts { get; } = new();
 
     public long Width { get; set; } = 12192000;
 
@@ -49,9 +59,9 @@ internal sealed class PptxBuilder
         return this;
     }
 
-    public PptxBuilder Slide(string shapes, string attributes = "", string? notes = null, string rels = "")
+    public PptxBuilder Slide(string shapes, string attributes = "", string? notes = null, string rels = "", string tail = "")
     {
-        _slides.Add((shapes, attributes, notes, rels));
+        _slides.Add((shapes, attributes, notes, rels, tail));
         return this;
     }
 
@@ -75,21 +85,42 @@ internal sealed class PptxBuilder
         void Add(string part, string? contentType, string xml)
         {
             parts[part] = xml;
-            if (contentType != null) overrides.Append($"<Override PartName=\"/{part}\" ContentType=\"application/vnd.openxmlformats-{contentType}+xml\"/>");
+            if (contentType != null)
+                overrides.Append($"<Override PartName=\"/{part}\" ContentType=\"{(contentType.Contains('/') ? contentType : $"application/vnd.openxmlformats-{contentType}+xml")}\"/>");
         }
 
         string Rels(params (string Id, string Type, string Target)[] rels) =>
             "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" +
             string.Concat(rels.Select(r => $"<Relationship Id=\"{r.Id}\" Type=\"{RelNs}/{r.Type}\" Target=\"{r.Target}\"/>")) + "</Relationships>";
 
-        Add("_rels/.rels", null, Rels(("rId1", "officeDocument", "ppt/presentation.xml")));
+        Add("_rels/.rels", null, AppXml
+            ? Rels(("rId1", "officeDocument", "ppt/presentation.xml"), ("rId2", "extended-properties", "docProps/app.xml"))
+            : Rels(("rId1", "officeDocument", "ppt/presentation.xml")));
+        if (AppXml)
+            Add("docProps/app.xml", "officedocument.extended-properties",
+                "<Properties xmlns=\"http://schemas.openxmlformats.org/officeDocument/2006/extended-properties\"><Application>Test</Application>" +
+                $"<Slides>{_slides.Count}</Slides><Notes>{_slides.Count(s => s.Notes != null)}</Notes><HiddenSlides>0</HiddenSlides></Properties>");
         var slideIds = string.Concat(_slides.Select((_, i) => $"<p:sldId id=\"{256 + i}\" r:id=\"rId{i + 2}\"/>"));
+        var notesMasterId = NotesMaster ? $"<p:notesMasterIdLst><p:notesMasterId r:id=\"rId{_slides.Count + 2}\"/></p:notesMasterIdLst>" : "";
         Add("ppt/presentation.xml", "officedocument.presentationml.presentation.main",
-            $"<p:presentation {Ns}><p:sldMasterIdLst><p:sldMasterId id=\"2147483648\" r:id=\"rId1\"/></p:sldMasterIdLst>" +
-            $"<p:sldIdLst>{slideIds}{ExtraSlideIds}</p:sldIdLst><p:sldSz cx=\"{Width}\" cy=\"{Height}\"/><p:notesSz cx=\"6858000\" cy=\"9144000\"/>" +
-            "<p:defaultTextStyle><a:lvl1pPr><a:defRPr sz=\"1800\"><a:solidFill><a:schemeClr val=\"tx1\"/></a:solidFill></a:defRPr></a:lvl1pPr></p:defaultTextStyle></p:presentation>");
+            $"<p:presentation {Ns}><p:sldMasterIdLst><p:sldMasterId id=\"2147483648\" r:id=\"rId1\"/></p:sldMasterIdLst>{notesMasterId}" +
+            $"<p:sldIdLst>{slideIds}{ExtraSlideIds}</p:sldIdLst><p:sldSz cx=\"{Width}\" cy=\"{Height}\"/><p:notesSz cx=\"6858000\" cy=\"9144000\"/>{CustomShows}" +
+            "<p:defaultTextStyle><a:lvl1pPr><a:defRPr sz=\"1800\"><a:solidFill><a:schemeClr val=\"tx1\"/></a:solidFill></a:defRPr></a:lvl1pPr></p:defaultTextStyle>" +
+            $"{PresentationExt}</p:presentation>");
         Add("ppt/_rels/presentation.xml.rels", null,
-            Rels([("rId1", "slideMaster", "slideMasters/slideMaster1.xml"), .._slides.Select((_, i) => ($"rId{i + 2}", "slide", $"slides/slide{i + 1}.xml"))]));
+            Rels([
+                ("rId1", "slideMaster", "slideMasters/slideMaster1.xml"), .._slides.Select((_, i) => ($"rId{i + 2}", "slide", $"slides/slide{i + 1}.xml")),
+                ..NotesMaster ? [($"rId{_slides.Count + 2}", "notesMaster", "notesMasters/notesMaster1.xml")] : Array.Empty<(string, string, string)>()
+            ]));
+        if (NotesMaster)
+        {
+            Add("ppt/notesMasters/notesMaster1.xml", "officedocument.presentationml.notesMaster",
+                $"<p:notesMaster {Ns}><p:cSld><p:spTree>{TreeStart}" + Placeholder(2, "Notes Placeholder 1", "type=\"body\" idx=\"1\"", "") +
+                $"</p:spTree></p:cSld><p:clrMap {ClrMap}/></p:notesMaster>");
+            Add("ppt/notesMasters/_rels/notesMaster1.xml.rels", null, Rels(("rId1", "theme", "../theme/theme1.xml")));
+        }
+
+        foreach (var (part, (contentType, content)) in ExtraParts) Add(part, contentType, content);
 
         var colors = string.Concat(_theme.Select(c => $"<a:{c.Key}><a:srgbClr val=\"{c.Value}\"/></a:{c.Key}>"));
         Add("ppt/theme/theme1.xml", "officedocument.theme",
@@ -107,10 +138,10 @@ internal sealed class PptxBuilder
 
         for (var i = 0; i < _slides.Count; i++)
         {
-            var (shapes, attributes, notes, rels) = _slides[i];
+            var (shapes, attributes, notes, rels, tail) = _slides[i];
             var n = i + 1;
             Add($"ppt/slides/slide{n}.xml", "officedocument.presentationml.slide",
-                $"<p:sld {Ns} {attributes}><p:cSld><p:spTree>{TreeStart}{shapes}</p:spTree></p:cSld></p:sld>");
+                $"<p:sld {Ns} {attributes}><p:cSld><p:spTree>{TreeStart}{shapes}</p:spTree></p:cSld>{tail}</p:sld>");
             var slideRels = new List<(string, string, string)> { ("rId1", "slideLayout", "../slideLayouts/slideLayout1.xml") };
             if (notes != null)
             {
@@ -122,7 +153,9 @@ internal sealed class PptxBuilder
                     Placeholder(3, "Notes Placeholder 2", "type=\"body\" idx=\"1\"", "", paragraphs) +
                     Placeholder(4, "Slide Number Placeholder 3", "type=\"sldNum\" idx=\"5\"", "", "<a:p><a:r><a:t>99</a:t></a:r></a:p>") +
                     "</p:spTree></p:cSld></p:notes>");
-                Add($"ppt/notesSlides/_rels/notesSlide{n}.xml.rels", null, Rels(("rId1", "slide", $"../slides/slide{n}.xml")));
+                Add($"ppt/notesSlides/_rels/notesSlide{n}.xml.rels", null, NotesMaster
+                    ? Rels(("rId1", "slide", $"../slides/slide{n}.xml"), ("rId2", "notesMaster", "../notesMasters/notesMaster1.xml"))
+                    : Rels(("rId1", "slide", $"../slides/slide{n}.xml")));
             }
 
             Add($"ppt/slides/_rels/slide{n}.xml.rels", null, Rels([.. slideRels]).Replace("</Relationships>", rels + "</Relationships>"));

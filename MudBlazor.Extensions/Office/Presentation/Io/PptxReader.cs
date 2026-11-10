@@ -127,14 +127,14 @@ internal static class PptxReader
         };
     }
 
-    private static string NotesText(XDocument notes)
-    {
-        var body = notes.Descendants(P + "sp").FirstOrDefault(sp => (string)sp.Descendants(P + "ph").FirstOrDefault()?.Attribute("type") == "body");
-        return string.Join("\n", body?.Element(P + "txBody")?.Elements(A + "p").Select(p => string.Concat(p.Elements().Select(RunText))) ?? []);
-    }
+    internal static XElement NotesBody(XDocument notes) =>
+        notes.Descendants(P + "sp").FirstOrDefault(sp => (string)sp.Descendants(P + "ph").FirstOrDefault()?.Attribute("type") == "body");
+
+    internal static string NotesText(XDocument notes) =>
+        string.Join("\n", NotesBody(notes)?.Element(P + "txBody")?.Elements(A + "p").Select(p => string.Concat(p.Elements().Select(RunText))) ?? []);
 
     internal static string RunText(XElement node) =>
-        node.Name == A + "br" ? "\n" : node.Name == A + "r" || node.Name == A + "fld" ? (string)node.Element(A + "t") ?? "" : null;
+        node.Name == A + "br" ? "\n" : node.Name == A + "r" || node.Name == A + "fld" ? SheetXmlReader.Decode((string)node.Element(A + "t") ?? "") : null;
 
     private static IEnumerable<string> Ids(XElement root, string list) =>
         root.Element(P + list)?.Elements().Select(e => (string)e.Attribute(R + "id")).Where(id => id != null) ?? [];

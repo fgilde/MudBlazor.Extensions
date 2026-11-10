@@ -49,7 +49,11 @@ public sealed class Presentation
 
     /// <summary>Creates a blank 16:9 presentation with one title slide.</summary>
     /// <returns>The presentation.</returns>
-    public static Presentation Create() => throw new NotImplementedException();
+    public static Presentation Create() => PptxReader.Read(new MemoryStream(BlankPresentation.Build()));
+
+    /// <summary>Writes the presentation as a .pptx file. Unchanged parts are copied from the loaded file.</summary>
+    /// <param name="target">The stream that receives the file.</param>
+    public void Save(Stream target) => PptxWriter.Write(this, target);
 
     /// <summary>Applies a command and records it as one undo step (or adds it to the open transaction).</summary>
     /// <param name="command">The command.</param>

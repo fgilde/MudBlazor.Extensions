@@ -31721,6 +31721,17 @@
         <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeTransform.FlipV">
             <summary>True if the shape is mirrored vertically.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.PptxWriter">
+            <summary>
+            Writes a presentation as a .pptx file. Unchanged parts are copied from the loaded file; changed slides are patched in their original XML, so content
+            the editor does not model stays as it was.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.PptxWriter.Write(MudBlazor.Extensions.Office.Presentation.Presentation,System.IO.Stream)">
+            <summary>Writes a presentation as a .pptx file.</summary>
+            <param name="presentation">The presentation.</param>
+            <param name="target">The stream that receives the file.</param>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.Presentation">
             <summary>A presentation of slides with their layouts and masters, and an undo stack.</summary>
         </member>
@@ -31756,6 +31767,10 @@
         <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.Create">
             <summary>Creates a blank 16:9 presentation with one title slide.</summary>
             <returns>The presentation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.Save(System.IO.Stream)">
+            <summary>Writes the presentation as a .pptx file. Unchanged parts are copied from the loaded file.</summary>
+            <param name="target">The stream that receives the file.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.Execute(MudBlazor.Extensions.Office.IDocumentCommand{MudBlazor.Extensions.Office.Presentation.Presentation})">
             <summary>Applies a command and records it as one undo step (or adds it to the open transaction).</summary>
