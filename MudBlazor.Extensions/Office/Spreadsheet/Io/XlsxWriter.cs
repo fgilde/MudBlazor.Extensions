@@ -88,8 +88,9 @@ public static class XlsxWriter
             var sheets = Sheets(typeBase);
             UpdateWorkbook(doc, ns, typeBase, sheets);
             _parts[_workbookPart] = s => SheetXmlWriter.Save(doc, s);
+            var tables = sheets.Where(x => x.Worksheet != null).ToDictionary(x => x.Worksheet, x => Tables(x, typeBase));
             foreach (var sheet in sheets.Where(x => x.Worksheet != null && (x.Original == null || x.Worksheet.Modified || Find(source, x.PartName) == null)))
-                _parts[sheet.PartName] = s => SheetXmlWriter.Write(s, sheet.Worksheet, sheet.Original, package, styles, strings, theme);
+                _parts[sheet.PartName] = s => SheetXmlWriter.Write(s, sheet.Worksheet, sheet.Original, package, styles, strings, theme, tables[sheet.Worksheet]);
 
             var relsPart = RelsPartOf(_workbookPart);
             if (package == null || !_rels.SequenceEqual(package.WorkbookRelationships)) _parts[relsPart] = s => WriteRelationships(s, _rels);
@@ -220,6 +221,57 @@ public static class XlsxWriter
                         a.Value = int.TryParse(a.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var old) && map.TryGetValue(old, out var now)
                             ? now.ToString(CultureInfo.InvariantCulture)
                             : "0";
+        }
+
+        private List<string> Tables(SheetEntry sheet, string typeBase)
+        {
+            var original = sheet.Original?.TableParts ?? [];
+            var ids = new List<string>();
+            if (original.Count == 0 && sheet.Worksheet.Tables.Count == 0) return ids;
+            var rels = sheet.Original != null && Find(source, RelsPartOf(sheet.PartName)) != null ? ReadRelationships(source, sheet.PartName) : [];
+            var changed = false;
+            foreach (var table in sheet.Worksheet.Tables)
+            {
+                if (table.PartName != null && original.Any(p => p.PartName == table.PartName))
+                {
+                    ids.Add(table.RelationshipId);
+                    if (table.Dirty) _parts[table.PartName] = s => SheetXmlWriter.Save(new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), TableXml.Write(table)), s);
+                    continue;
+                }
+
+                var existing = new HashSet<string>((source?.Entries.Select(e => e.FullName) ?? []).Concat(_added), StringComparer.OrdinalIgnoreCase);
+                var folder = _workbookPart[..(_workbookPart.LastIndexOf('/') + 1)] + "tables/table";
+                var n = 1;
+                while (existing.Contains(folder + n + ".xml")) n++;
+                var part = folder + n + ".xml";
+                _added.Add(part);
+                _overrides["/" + part] = TableXml.ContentType;
+                var id = 1;
+                while (rels.Any(r => r.Id == "rId" + id)) id++;
+                rels.Add(new XlsxRelationship("rId" + id, typeBase + "/table", Relative(sheet.PartName, part), false));
+                ids.Add("rId" + id);
+                changed = true;
+                _parts[part] = s => SheetXmlWriter.Save(new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), TableXml.Write(table)), s);
+            }
+
+            foreach (var (id, part) in original.Where(p => sheet.Worksheet.Tables.All(t => t.PartName != p.PartName)))
+            {
+                rels.RemoveAll(r => r.Id == id);
+                Remove(part);
+                changed = true;
+            }
+
+            if (changed) _parts[RelsPartOf(sheet.PartName)] = s => WriteRelationships(s, rels);
+            return ids;
+        }
+
+        private static string Relative(string from, string to)
+        {
+            var a = from.Split('/')[..^1];
+            var b = to.Split('/');
+            var i = 0;
+            while (i < a.Length && i < b.Length - 1 && a[i] == b[i]) i++;
+            return string.Concat(Enumerable.Repeat("../", a.Length - i)) + string.Join('/', b[i..]);
         }
 
         private string AddPart(string type, string typeBase, string target, string contentType = null)

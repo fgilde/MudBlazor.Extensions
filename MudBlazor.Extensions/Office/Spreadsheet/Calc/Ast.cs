@@ -30,6 +30,33 @@ public sealed record RefNode(CellRef Cell, string Sheet, bool Spill = false) : F
 /// <param name="Sheet">The sheet name, or null for the sheet the formula lives on.</param>
 public sealed record RangeNode(CellRange Range, string Sheet) : FormulaNode;
 
+/// <summary>The rows of a table a structured reference selects; <see cref="Headers"/>, <see cref="Data"/> and <see cref="Totals"/> combine.</summary>
+[Flags]
+public enum StructuredItem
+{
+    /// <summary><c>#Data</c>: the data rows (the default when only columns are given).</summary>
+    Data = 1,
+
+    /// <summary><c>#Headers</c>: the header row.</summary>
+    Headers = 2,
+
+    /// <summary><c>#Totals</c>: the totals row.</summary>
+    Totals = 4,
+
+    /// <summary><c>#All</c>: header, data and totals rows.</summary>
+    All = Data | Headers | Totals,
+
+    /// <summary><c>@</c> or <c>#This Row</c>: the data row of the formula cell.</summary>
+    ThisRow = 8
+}
+
+/// <summary>A structured reference to a table, such as <c>Sales[Amount]</c>, <c>[@Qty]</c> or <c>Sales[[#Headers],[A]:[C]]</c>.</summary>
+/// <param name="Table">The table name, or null for the table containing the formula cell.</param>
+/// <param name="Column1">The first (or only) column, or null for all columns.</param>
+/// <param name="Column2">The last column of a column range, or null.</param>
+/// <param name="Items">The selected rows.</param>
+public sealed record StructuredRefNode(string Table, string Column1, string Column2, StructuredItem Items) : FormulaNode;
+
 /// <summary>A defined name.</summary>
 /// <param name="Name">The name as written.</param>
 public sealed record NameNode(string Name) : FormulaNode;

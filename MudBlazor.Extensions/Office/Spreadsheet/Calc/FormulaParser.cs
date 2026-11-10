@@ -92,6 +92,9 @@ public static class FormulaParser
             case NameNode n:
                 sb.Append(n.Name);
                 break;
+            case StructuredRefNode s:
+                sb.Append(StructuredReferences.Format(s, false));
+                break;
             case ParenNode p:
                 sb.Append('(');
                 Write(sb, p.Inner);
@@ -242,7 +245,7 @@ public static class FormulaParser
         {
             var left = ParseRange();
             while (_pos < tokens.Count && tokens[_pos].SpaceBefore && tokens[_pos].Kind is FormulaTokenKind.Reference
-                       or FormulaTokenKind.Name or FormulaTokenKind.Function or FormulaTokenKind.OpenParen)
+                       or FormulaTokenKind.StructuredReference or FormulaTokenKind.Name or FormulaTokenKind.Function or FormulaTokenKind.OpenParen)
                 left = new BinaryNode(BinaryOp.Intersect, left, ParseRange());
             return left;
         }
@@ -286,6 +289,9 @@ public static class FormulaParser
                 case FormulaTokenKind.Name:
                     _pos++;
                     return new NameNode(t.Text);
+                case FormulaTokenKind.StructuredReference:
+                    _pos++;
+                    return StructuredReferences.Parse(t.Text);
                 default:
                     return ParseLiteral();
             }

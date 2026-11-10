@@ -99,6 +99,7 @@ public static class XlsxReader
             using var s = entry.Open();
             ws.CellLimit = Workbook.MaxCells - cells;
             SheetXmlReader.Read(s, entry.Length, ws, part, strings, package, theme);
+            ws.Tables = TableXml.Read(zip, part);
             ws.CellLimit = int.MaxValue;
             cells += ws.CellCount;
         }

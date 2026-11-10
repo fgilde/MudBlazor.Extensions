@@ -99,6 +99,14 @@ public sealed class Worksheet
     /// <summary>Data validation rules in file order; change them with the rule commands.</summary>
     public IReadOnlyList<DataValidation> DataValidations { get; internal set; } = [];
 
+    /// <summary>Tables on this sheet; change them with the table commands.</summary>
+    public IReadOnlyList<SheetTable> Tables { get; internal set; } = [];
+
+    /// <summary>Finds the table containing a cell.</summary>
+    /// <param name="cell">The cell address.</param>
+    /// <returns>The table, or null.</returns>
+    public SheetTable TableAt(CellRef cell) => Tables.FirstOrDefault(t => t.Range.Contains(cell));
+
     /// <summary>Gets the stored cell, or null if the address holds no content and no style.</summary>
     /// <param name="r">The cell address.</param>
     public Cell this[CellRef r] => InBounds(r) ? _cells.GetValueOrDefault(r.Key) : null;
@@ -455,7 +463,7 @@ public sealed class Worksheet
         var snapshot = new DeleteSnapshot(removed, Sizes(axis).Where(p => p.Key >= index && p.Key < end).ToList(),
             HiddenSet(axis).Where(i => i >= index && i < end).ToList(),
             AxisStyles(axis).Where(p => p.Key >= index && p.Key < end).ToList(), CopyMerges(), FreezeAt, AutoFilter, _filteredRows,
-            ConditionalFormats, DataValidations, Part?.Shift(axis, index, -count));
+            ConditionalFormats, DataValidations, Tables, Part?.Shift(axis, index, -count));
         _cells = kept;
         _formulaKeys = formulas;
         _spillKeys = spills;
@@ -490,6 +498,7 @@ public sealed class Worksheet
         SetFiltered(snapshot.Filtered);
         ConditionalFormats = snapshot.ConditionalFormats;
         DataValidations = snapshot.DataValidations;
+        Tables = snapshot.Tables;
         foreach (var (i, style) in snapshot.AxisStyles) AxisStyles(axis)[i] = style;
         _merges = [.. snapshot.Merges];
         FreezeAt = snapshot.Freeze;
@@ -498,6 +507,7 @@ public sealed class Worksheet
 
     private void ShiftRules(Axis axis, int index, int count)
     {
+        Tables = Tables.Select(t => t.Shift(axis, index, count)).OfType<SheetTable>().ToList();
         ConditionalFormats = ConditionalFormats.Select(c => c.Shift(axis, index, count)).OfType<ConditionalFormatting>().ToList();
         DataValidations = DataValidations.Select(d => d.Shift(axis, index, count)).OfType<DataValidation>().ToList();
     }
@@ -569,4 +579,5 @@ internal sealed record DeleteSnapshot(
     IReadOnlySet<int> Filtered,
     IReadOnlyList<ConditionalFormatting> ConditionalFormats,
     IReadOnlyList<DataValidation> DataValidations,
+    IReadOnlyList<SheetTable> Tables,
     Action Package = null);

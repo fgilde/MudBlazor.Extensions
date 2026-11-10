@@ -21,6 +21,7 @@ public abstract class InsertCommandBase(Worksheet sheet, Axis axis, int index, i
         if (index < 0 || index >= limit) throw new ArgumentOutOfRangeException(nameof(index));
         _dropped = sheet.Insert(axis, index, count);
         _formulas = wb.RewriteFormulas((f, host) => ReferenceShifter.Shift(f, axis, sheet.Name, index, count, host));
+        TableEdits.AfterInsert(sheet, axis, index, count);
         wb.Notify(axis == Axis.Row ? StructureChangeKind.RowsInserted : StructureChangeKind.ColumnsInserted, sheet, index, count);
     }
 
@@ -351,7 +352,8 @@ public sealed class DeleteSheetCommand(Worksheet sheet) : IWorkbookCommand
         if (!wb.SheetList.Any(x => x != sheet && !x.Hidden))
             throw new InvalidOperationException("A workbook needs at least one visible sheet.");
         wb.SheetList.RemoveAt(_position);
-        _formulas = wb.RewriteFormulas((f, _) => ReferenceShifter.RemoveSheet(f, sheet.Name));
+        _formulas = wb.RewriteFormulas((f, _) => sheet.Tables.Aggregate(ReferenceShifter.RemoveSheet(f, sheet.Name),
+            (text, t) => StructuredReferences.Replace(text, t.Name, node => node.Table != null && t.Matches(node.Table) ? "#REF!" : null)));
         wb.Notify(StructureChangeKind.SheetRemoved, sheet, _position);
     }
 

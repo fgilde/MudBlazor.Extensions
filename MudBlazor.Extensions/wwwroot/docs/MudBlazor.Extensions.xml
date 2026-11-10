@@ -30878,6 +30878,50 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RangeNode.Sheet">
             <summary>The sheet name, or null for the sheet the formula lives on.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.StructuredItem">
+            <summary>The rows of a table a structured reference selects; <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.StructuredItem.Headers"/>, <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.StructuredItem.Data"/> and <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.StructuredItem.Totals"/> combine.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructuredItem.Data">
+            <summary><c>#Data</c>: the data rows (the default when only columns are given).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructuredItem.Headers">
+            <summary><c>#Headers</c>: the header row.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructuredItem.Totals">
+            <summary><c>#Totals</c>: the totals row.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructuredItem.All">
+            <summary><c>#All</c>: header, data and totals rows.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.StructuredItem.ThisRow">
+            <summary><c>@</c> or <c>#This Row</c>: the data row of the formula cell.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.StructuredRefNode">
+            <summary>A structured reference to a table, such as <c>Sales[Amount]</c>, <c>[@Qty]</c> or <c>Sales[[#Headers],[A]:[C]]</c>.</summary>
+            <param name="Table">The table name, or null for the table containing the formula cell.</param>
+            <param name="Column1">The first (or only) column, or null for all columns.</param>
+            <param name="Column2">The last column of a column range, or null.</param>
+            <param name="Items">The selected rows.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.StructuredRefNode.#ctor(System.String,System.String,System.String,MudBlazor.Extensions.Office.Spreadsheet.StructuredItem)">
+            <summary>A structured reference to a table, such as <c>Sales[Amount]</c>, <c>[@Qty]</c> or <c>Sales[[#Headers],[A]:[C]]</c>.</summary>
+            <param name="Table">The table name, or null for the table containing the formula cell.</param>
+            <param name="Column1">The first (or only) column, or null for all columns.</param>
+            <param name="Column2">The last column of a column range, or null.</param>
+            <param name="Items">The selected rows.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StructuredRefNode.Table">
+            <summary>The table name, or null for the table containing the formula cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StructuredRefNode.Column1">
+            <summary>The first (or only) column, or null for all columns.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StructuredRefNode.Column2">
+            <summary>The last column of a column range, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StructuredRefNode.Items">
+            <summary>The selected rows.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.NameNode">
             <summary>A defined name.</summary>
             <param name="Name">The name as written.</param>
@@ -31343,6 +31387,9 @@
         </member>
         <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.Semicolon">
             <summary><c>;</c></summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FormulaTokenKind.StructuredReference">
+            <summary>A structured table reference such as <c>Sales[Amount]</c> or <c>[@Qty]</c>, including all its brackets.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FormulaToken">
             <summary>A lexical token of a formula.</summary>
@@ -32761,6 +32808,179 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DefineNameCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CreateTableCommand">
+            <summary>
+            Turns a range into a table with the next free name <c>TableN</c>. With headers, the first row holds the column names (empty and
+            duplicate names are made unique and written back as text); without headers the table has no header row and columns are named
+            <c>Column1</c>, <c>Column2</c> … A sheet auto filter overlapping the range is removed.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The cells of the table, including the header row.</param>
+            <param name="hasHeaders">True if the first row holds the column names.</param>
+            <param name="styleName">A built-in Excel table style such as <c>TableStyleMedium2</c>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CreateTableCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,System.Boolean,System.String)">
+            <summary>
+            Turns a range into a table with the next free name <c>TableN</c>. With headers, the first row holds the column names (empty and
+            duplicate names are made unique and written back as text); without headers the table has no header row and columns are named
+            <c>Column1</c>, <c>Column2</c> … A sheet auto filter overlapping the range is removed.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The cells of the table, including the header row.</param>
+            <param name="hasHeaders">True if the first row holds the column names.</param>
+            <param name="styleName">A built-in Excel table style such as <c>TableStyleMedium2</c>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CreateTableCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CreateTableCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.CreateTableCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ResizeTableCommand">
+            <summary>Changes the cells of a table. The header row stays where it is; new columns take their names from the header cells.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The table name.</param>
+            <param name="range">The new range including header and totals rows.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ResizeTableCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String,MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
+            <summary>Changes the cells of a table. The header row stays where it is; new columns take their names from the header cells.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The table name.</param>
+            <param name="range">The new range including header and totals rows.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ResizeTableCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ResizeTableCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ResizeTableCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.RenameTableCommand">
+            <summary>Renames a table and updates the structured references in all formulas and defined names.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The current table name.</param>
+            <param name="newName">The new name: letters, digits, underscores and periods, starting with a letter or underscore, not a cell reference, unique among tables and defined names.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RenameTableCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String,System.String)">
+            <summary>Renames a table and updates the structured references in all formulas and defined names.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The current table name.</param>
+            <param name="newName">The new name: letters, digits, underscores and periods, starting with a letter or underscore, not a cell reference, unique among tables and defined names.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.RenameTableCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RenameTableCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.RenameTableCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConvertToRangeCommand">
+            <summary>Removes a table but keeps its cells; structured references to it become absolute A1 references.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The table name.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConvertToRangeCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String)">
+            <summary>Removes a table but keeps its cells; structured references to it become absolute A1 references.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The table name.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConvertToRangeCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConvertToRangeCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConvertToRangeCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetTableOptionsCommand">
+            <summary>Changes the style options of a table; null keeps an option.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The table name.</param>
+            <param name="styleName">A built-in Excel table style such as <c>TableStyleLight9</c>, or an empty string for none.</param>
+            <param name="bandedRows">Shade every other row.</param>
+            <param name="bandedColumns">Shade every other column.</param>
+            <param name="firstColumn">Emphasize the first column.</param>
+            <param name="lastColumn">Emphasize the last column.</param>
+            <param name="hasAutoFilter">Show filter buttons (only with a header row).</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTableOptionsCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String,System.String,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+            <summary>Changes the style options of a table; null keeps an option.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The table name.</param>
+            <param name="styleName">A built-in Excel table style such as <c>TableStyleLight9</c>, or an empty string for none.</param>
+            <param name="bandedRows">Shade every other row.</param>
+            <param name="bandedColumns">Shade every other column.</param>
+            <param name="firstColumn">Emphasize the first column.</param>
+            <param name="lastColumn">Emphasize the last column.</param>
+            <param name="hasAutoFilter">Show filter buttons (only with a header row).</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetTableOptionsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTableOptionsCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTableOptionsCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetTotalsRowCommand">
+            <summary>
+            Shows or hides the totals row. Showing it takes the empty row below the table, writes <c>Total</c> into the first column and a
+            <c>SUBTOTAL</c> formula for every column with a totals function (the last column gets <c>sum</c> if none has one); hiding it clears the row.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The table name.</param>
+            <param name="show">True to show the totals row.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTotalsRowCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String,System.Boolean)">
+            <summary>
+            Shows or hides the totals row. Showing it takes the empty row below the table, writes <c>Total</c> into the first column and a
+            <c>SUBTOTAL</c> formula for every column with a totals function (the last column gets <c>sum</c> if none has one); hiding it clears the row.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The table name.</param>
+            <param name="show">True to show the totals row.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetTotalsRowCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTotalsRowCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTotalsRowCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetTotalsFunctionCommand">
+            <summary>Sets the totals row function of a column and the matching <c>SUBTOTAL</c> formula in its totals cell, as Excel does.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The table name.</param>
+            <param name="column">The column name.</param>
+            <param name="function"><c>sum</c>, <c>average</c>, <c>count</c>, <c>countNums</c>, <c>max</c>, <c>min</c>, <c>stdDev</c>, <c>var</c>, or null for none.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTotalsFunctionCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String,System.String,System.String)">
+            <summary>Sets the totals row function of a column and the matching <c>SUBTOTAL</c> formula in its totals cell, as Excel does.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="table">The table name.</param>
+            <param name="column">The column name.</param>
+            <param name="function"><c>sum</c>, <c>average</c>, <c>count</c>, <c>countNums</c>, <c>max</c>, <c>min</c>, <c>stdDev</c>, <c>var</c>, or null for none.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetTotalsFunctionCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTotalsFunctionCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetTotalsFunctionCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.UndoStack">
             <summary>Undo and redo history of a workbook. Each user action is exactly one step; transactions group commands.</summary>
         </member>
@@ -33481,6 +33701,9 @@
             (sheetPr, sheetViews, sheetFormatPr, cols keep attributes the model ignores).
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.TableParts">
+            <summary>Table parts of the source sheet: relationship id and zip entry name, in <c>tableParts</c> order.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Unmodelled">
             <summary>Children the model does not represent at all, in original order.</summary>
         </member>
@@ -33630,6 +33853,80 @@
             <param name="wb">The workbook.</param>
             <param name="target">The stream to write the package to; it is left open.</param>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.TableColumn">
+            <summary>A column of a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SheetTable"/>.</summary>
+            <param name="Name">The column name, equal to the text of its header cell; unique in the table, ignoring case.</param>
+            <param name="TotalsFunction">Excel's totals row function (<c>sum</c>, <c>average</c>, <c>count</c>, <c>countNums</c>, <c>max</c>, <c>min</c>,
+            <c>stdDev</c>, <c>var</c> or <c>custom</c>), or null for none.</param>
+            <param name="CalculatedFormula">The formula every data cell of a calculated column holds (without leading equals sign), or null.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.TableColumn.#ctor(System.String,System.String,System.String)">
+            <summary>A column of a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.SheetTable"/>.</summary>
+            <param name="Name">The column name, equal to the text of its header cell; unique in the table, ignoring case.</param>
+            <param name="TotalsFunction">Excel's totals row function (<c>sum</c>, <c>average</c>, <c>count</c>, <c>countNums</c>, <c>max</c>, <c>min</c>,
+            <c>stdDev</c>, <c>var</c> or <c>custom</c>), or null for none.</param>
+            <param name="CalculatedFormula">The formula every data cell of a calculated column holds (without leading equals sign), or null.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.TableColumn.Name">
+            <summary>The column name, equal to the text of its header cell; unique in the table, ignoring case.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.TableColumn.TotalsFunction">
+            <summary>Excel's totals row function (<c>sum</c>, <c>average</c>, <c>count</c>, <c>countNums</c>, <c>max</c>, <c>min</c>,
+            <c>stdDev</c>, <c>var</c> or <c>custom</c>), or null for none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.TableColumn.CalculatedFormula">
+            <summary>The formula every data cell of a calculated column holds (without leading equals sign), or null.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SheetTable">
+            <summary>
+            An Excel table (list object) on a worksheet. Tables are immutable; change them with the table commands. Formulas address them with
+            structured references such as <c>Sales[Amount]</c> and <c>[@Qty]</c>. Table and column names are case-insensitive.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Name">
+            <summary>The table name used in structured references.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.DisplayName">
+            <summary>The display name stored in the file; equal to <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Name"/> for tables created or renamed here.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Range">
+            <summary>The whole table including the header and totals rows.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.HeaderRow">
+            <summary>True if the first row of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Range"/> holds the column names.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.TotalsRow">
+            <summary>True if the last row of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Range"/> is a totals row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Columns">
+            <summary>The columns from left to right, one per column of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Range"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.StyleName">
+            <summary>The built-in Excel table style, such as <c>TableStyleMedium2</c>, or null for none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.BandedRows">
+            <summary>True to shade every other data row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.BandedColumns">
+            <summary>True to shade every other column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.FirstColumn">
+            <summary>True to emphasize the first column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.LastColumn">
+            <summary>True to emphasize the last column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.HasAutoFilter">
+            <summary>True if the header row shows filter buttons.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.DataRange">
+            <summary>The data rows: <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Range"/> without header and totals rows.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.ColumnIndex(System.String)">
+            <summary>Finds a column by name, ignoring case.</summary>
+            <param name="name">The column name.</param>
+            <returns>The zero-based position in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetTable.Columns"/>, or -1.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CellChange">
             <summary>A changed cell value or formula.</summary>
             <param name="Sheet">The sheet containing the cell.</param>
@@ -33773,7 +34070,7 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.HasUnshiftedReferences">
             <summary>
             True if the source file contains content whose cell references are not moved when rows, columns or sheets change:
-            hyperlinks, tables, comments, drawings and charts, pivot tables and their
+            hyperlinks, comments, drawings and charts, pivot tables and their
             caches, external links, page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or
             columns or renaming a sheet these keep pointing at their original cells; editors should warn once.
             </summary>
@@ -33785,6 +34082,14 @@
             <summary>Creates a workbook with one empty sheet.</summary>
             <param name="firstSheet">Name of the first sheet.</param>
             <returns>The new workbook.</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Tables">
+            <summary>All tables of all sheets in tab order.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Workbook.FindTable(System.String)">
+            <summary>Finds a table by name, ignoring case.</summary>
+            <param name="name">The table name.</param>
+            <returns>The table, or null.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Workbook.FindSheet(System.String)">
             <summary>Finds a sheet by name, ignoring case.</summary>
@@ -33866,6 +34171,14 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DataValidations">
             <summary>Data validation rules in file order; change them with the rule commands.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Tables">
+            <summary>Tables on this sheet; change them with the table commands.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.TableAt(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Finds the table containing a cell.</summary>
+            <param name="cell">The cell address.</param>
+            <returns>The table, or null.</returns>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Item(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
             <summary>Gets the stored cell, or null if the address holds no content and no style.</summary>

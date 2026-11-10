@@ -45,7 +45,10 @@ public enum FormulaTokenKind
     Comma,
 
     /// <summary><c>;</c></summary>
-    Semicolon
+    Semicolon,
+
+    /// <summary>A structured table reference such as <c>Sales[Amount]</c> or <c>[@Qty]</c>, including all its brackets.</summary>
+    StructuredReference
 }
 
 /// <summary>A lexical token of a formula.</summary>
@@ -112,16 +115,7 @@ public static class FormulaLexer
     private static int SkipUnknown(string s, int i)
     {
         if (s[i] is '"' or '\'') return QuotedEnd(s, i) is var end and >= 0 ? end : s.Length;
-        if (s[i] != '[') return i + 1;
-        var depth = 0;
-        for (var j = i; j < s.Length; j++)
-        {
-            if (s[j] == '\'') j++;
-            else if (s[j] == '[') depth++;
-            else if (s[j] == ']' && --depth == 0) return j + 1;
-        }
-
-        return s.Length;
+        return s[i] == '[' ? s.Length : i + 1;
     }
 
     private static FormulaTokenKind Next(string s, ref int i, bool tolerant)
@@ -150,6 +144,9 @@ public static class FormulaLexer
             case '+' or '-' or '*' or '/' or '^' or '&' or '=' or '%' or ':':
                 i++;
                 return FormulaTokenKind.Operator;
+            case '[':
+                i = EndOfBrackets(s, i);
+                return FormulaTokenKind.StructuredReference;
             case '\'':
                 var end = EndOfQuoted(s, i);
                 if (end >= s.Length || s[end] != '!') throw Unexpected(s, end);
@@ -159,6 +156,12 @@ public static class FormulaLexer
 
         var j = i + 1;
         while (j < s.Length && IsNameChar(s[j])) j++;
+        if ((char.IsLetter(c) || c is '_' or '\\') && j < s.Length && s[j] == '[')
+        {
+            i = EndOfBrackets(s, j);
+            return FormulaTokenKind.StructuredReference;
+        }
+
         if (IsNameChar(c) && j < s.Length && s[j] == '!')
         {
             i = j + 1;
@@ -222,6 +225,19 @@ public static class FormulaLexer
         if (end < s.Length && s[end] == '#' && !m.Value.Contains(':')) end++;
         i = end;
         return true;
+    }
+
+    private static int EndOfBrackets(string s, int i)
+    {
+        var depth = 0;
+        for (var j = i; j < s.Length; j++)
+        {
+            if (s[j] == '\'') j++;
+            else if (s[j] == '[') depth++;
+            else if (s[j] == ']' && --depth == 0) return j + 1;
+        }
+
+        throw new FormatException($"Unterminated structured reference starting at position {i + 1}.");
     }
 
     private static bool IsNameChar(char c) => char.IsLetterOrDigit(c) || c is '_' or '.' or '\\';

@@ -15,7 +15,7 @@ internal sealed record XlsxRelationship(string Id, string Type, string Target, b
 internal sealed class XlsxSheetPart
 {
     internal static readonly HashSet<string> Modelled = ["sheetPr", "dimension", "sheetViews", "sheetFormatPr", "cols", "sheetData", "mergeCells", "autoFilter",
-        "conditionalFormatting", "dataValidations"];
+        "conditionalFormatting", "dataValidations", "tableParts"];
 
     /// <summary>The sheet name as stored in the file.</summary>
     public string Name { get; init; }
@@ -44,6 +44,9 @@ internal sealed class XlsxSheetPart
     /// (sheetPr, sheetViews, sheetFormatPr, cols keep attributes the model ignores).
     /// </summary>
     public List<XElement> Children { get; } = [];
+
+    /// <summary>Table parts of the source sheet: relationship id and zip entry name, in <c>tableParts</c> order.</summary>
+    public List<(string RelationshipId, string PartName)> TableParts { get; } = [];
 
     /// <summary>Children the model does not represent at all, in original order.</summary>
     public IEnumerable<XElement> Unmodelled => Children.Where(c => !Modelled.Contains(c.Name.LocalName));
@@ -214,10 +217,10 @@ internal sealed class XlsxPackage
 
     private static readonly HashSet<string> UnshiftedChildren =
     [
-        "hyperlinks", "tableParts", "drawing", "legacyDrawing", "legacyDrawingHF", "rowBreaks", "colBreaks", "protectedRanges", "scenarios", "dataConsolidate", "ignoredErrors", "extLst"
+        "hyperlinks", "drawing", "legacyDrawing", "legacyDrawingHF", "rowBreaks", "colBreaks", "protectedRanges", "scenarios", "dataConsolidate", "ignoredErrors", "extLst"
     ];
 
-    private static readonly string[] UnshiftedContentTypes = ["pivot", ".table+xml", "chart", "drawing", "comments", "externalLink", "queryTable"];
+    private static readonly string[] UnshiftedContentTypes = ["pivot", "chart", "drawing", "comments", "externalLink", "queryTable"];
 
     private readonly Dictionary<int, bool> _dateStyles = new();
 

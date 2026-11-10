@@ -397,7 +397,7 @@ internal static class SheetXmlReader
         if (formula == null && value.Kind == CellValueKind.Empty && styleId == 0 && anchor == null) return at.Column;
         var cell = ws.Ensure(at);
         cell.Value = value;
-        cell.Formula = SheetXmlWriter.FromFile(formula);
+        cell.Formula = StructuredReferences.ToDisplay(SheetXmlWriter.FromFile(formula));
         cell.StyleId = styleId;
         cell.SpillAnchor = anchor;
         ws.Sync(at);

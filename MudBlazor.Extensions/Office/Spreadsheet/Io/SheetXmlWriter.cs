@@ -160,7 +160,7 @@ internal static class SheetXmlWriter
     internal static string Number(double v) => v.ToString("R", CultureInfo.InvariantCulture);
 
     internal static void Write(Stream stream, Worksheet ws, XlsxSheetPart part, XlsxPackage package, StylesXmlWriter styles, SharedStringsWriter strings,
-        string[] theme)
+        string[] theme, IReadOnlyList<string> tableParts)
     {
         var root = part?.Root ?? new XElement(XName.Get("worksheet", MainNs), new XAttribute("xmlns", MainNs),
             new XAttribute(XNamespace.Xmlns + "r", RelationshipsNs));
@@ -190,7 +190,9 @@ internal static class SheetXmlWriter
             new XElement(ns + "sheetData"), AutoFilterXml(ws.AutoFilter, ns), .. RulesXml.WriteFormats(ws, ns, styles, theme),
             RulesXml.WriteValidations(ws, Original("dataValidations"), ns),
             ws.Merges.Count == 0 ? null : new XElement(ns + "mergeCells", new XAttribute("count", ws.Merges.Count),
-                ws.Merges.Select(m => new XElement(ns + "mergeCell", new XAttribute("ref", m.ToA1()))))
+                ws.Merges.Select(m => new XElement(ns + "mergeCell", new XAttribute("ref", m.ToA1())))),
+            tableParts.Count == 0 ? null : new XElement(ns + "tableParts", new XAttribute("count", tableParts.Count),
+                tableParts.Select(id => new XElement(ns + "tablePart", new XAttribute(XName.Get("id", RelationshipsNs), id))))
         ], ns);
 
         using var w = XmlWriter.Create(stream, Settings);
@@ -259,7 +261,7 @@ internal static class SheetXmlWriter
             {
                 var at = CellRef.FromKey(keys[i]);
                 if (!columns.TryGetValue(at.Column, out var name)) columns[at.Column] = name = CellRef.ColumnName(at.Column);
-                WriteCell(w, main, at, name, keys[i], cells[i], part, package, styles, strings, spills, rich, ws.Workbook.Styles);
+                WriteCell(w, main, at, name, keys[i], cells[i], part, package, styles, strings, spills, rich, ws);
             }
 
             w.WriteEndElement();
@@ -292,7 +294,7 @@ internal static class SheetXmlWriter
     }
 
     private static void WriteCell(XmlWriter w, string main, CellRef at, string column, long key, Cell cell, XlsxSheetPart part, XlsxPackage package,
-        StylesXmlWriter styles, SharedStringsWriter strings, Dictionary<long, CellRange> spills, Dictionary<int, string> rich, StyleTable table)
+        StylesXmlWriter styles, SharedStringsWriter strings, Dictionary<long, CellRange> spills, Dictionary<int, string> rich, Worksheet ws)
     {
         w.WriteStartElement("c", main);
         w.WriteAttributeString("r", column + (at.Row + 1).ToString(CultureInfo.InvariantCulture));
@@ -307,7 +309,7 @@ internal static class SheetXmlWriter
         var value = cell.Value;
         var formula = cell.Formula;
         if (value.Kind == CellValueKind.Error && value.ErrorValue == CellError.Circ) value = CellValue.Number(0);
-        if (package?.Date1904 == true && value.Kind == CellValueKind.Number && package.IsDateStyle(table, cell.StyleId))
+        if (package?.Date1904 == true && value.Kind == CellValueKind.Number && package.IsDateStyle(ws.Workbook.Styles, cell.StyleId))
             value = CellValue.Number(value.NumberValue - XlsxPackage.Date1904Offset);
         string text = null;
         var type = value.Kind switch
@@ -365,6 +367,7 @@ internal static class SheetXmlWriter
                 w.WriteAttributeString("ref", arrayRange.ToA1());
             }
 
+            if (formula.Contains('[')) formula = StructuredReferences.ToFile(formula, ws.TableAt(at)?.Name);
             w.WriteString(SharedStringsWriter.Escape(FormulaText(formula), false));
             w.WriteEndElement();
         }

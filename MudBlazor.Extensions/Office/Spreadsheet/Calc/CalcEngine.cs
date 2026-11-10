@@ -41,6 +41,7 @@ public sealed class CalcEngine : IDisposable
     private readonly Dictionary<(Worksheet Sheet, long Key), CellState> _before = new();
     private Dictionary<CellNode, SpillState> _spills = new();
     private Dictionary<string, string> _names = new(StringComparer.OrdinalIgnoreCase);
+    private string _tables = "";
     private readonly HashSet<CellChange> _changed = new();
     private readonly List<CellNode> _grown = new();
     private readonly List<CellNode> _freed = new();
@@ -93,6 +94,7 @@ public sealed class CalcEngine : IDisposable
         _keep.Clear();
         _keptFormulas.Clear();
         _names = new Dictionary<string, string>(_wb.DefinedNameMap, StringComparer.OrdinalIgnoreCase);
+        _tables = StructuredReferences.Signature(_wb);
         foreach (var sheet in _wb.Sheets)
             foreach (var key in sheet.FormulaKeys)
                 RegisterOrKeep(new CellNode(sheet, key), sheet[CellRef.FromKey(key)]);
@@ -336,6 +338,9 @@ public sealed class CalcEngine : IDisposable
         var namesChanged = _names.Count != _wb.DefinedNameMap.Count
                            || _wb.DefinedNameMap.Any(p => !_names.TryGetValue(p.Key, out var text) || text != p.Value);
         if (namesChanged) _names = new Dictionary<string, string>(_wb.DefinedNameMap, StringComparer.OrdinalIgnoreCase);
+        var tables = StructuredReferences.Signature(_wb);
+        namesChanged |= tables != _tables;
+        _tables = tables;
         var sheets = _wb.Sheets.ToHashSet();
         var newName = change.Kind is StructureChangeKind.SheetAdded or StructureChangeKind.SheetRenamed ? change.Sheet.Name : null;
         foreach (var (node, entry) in _formulas.ToList())
@@ -396,7 +401,7 @@ public sealed class CalcEngine : IDisposable
         }
 
         var precedents = new List<RefArea>();
-        var info = Collect(ast, node.Sheet, precedents);
+        var info = Collect(ast, node.Sheet, node.Cell, precedents);
         _formulas[node] = new FormulaEntry(formula, ast, info.Positional, info.Names, info.HiddenSensitive);
         if (info.Volatile) _volatile.Add(node);
         else _volatile.Remove(node);
@@ -404,7 +409,7 @@ public sealed class CalcEngine : IDisposable
         return ast != Unparsable && !info.Unknown;
     }
 
-    private (bool Volatile, bool Unknown, bool Positional, bool Names, bool HiddenSensitive) Collect(FormulaNode ast, Worksheet host, List<RefArea> into)
+    private (bool Volatile, bool Unknown, bool Positional, bool Names, bool HiddenSensitive) Collect(FormulaNode ast, Worksheet host, CellRef cell, List<RefArea> into)
     {
         bool isVolatile = false, unknown = false, positional = false, names = false, hidden = false;
         var expanded = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -423,6 +428,11 @@ public sealed class CalcEngine : IDisposable
                     break;
                 case BinaryNode { Op: BinaryOp.Range } b when BoundingBox(b, host) is { } box:
                     into.Add(box);
+                    break;
+                case StructuredRefNode s:
+                    names = true;
+                    if (StructuredReferences.Find(_wb, host, cell, s, out _) == null) unknown = true;
+                    else if (StructuredReferences.Resolve(_wb, host, cell, s) is { Kind: CalcValueKind.Reference } area) into.AddRange(area.Areas);
                     break;
                 case NameNode name:
                     names = true;

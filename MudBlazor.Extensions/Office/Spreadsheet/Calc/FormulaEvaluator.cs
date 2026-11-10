@@ -38,6 +38,7 @@ internal sealed class FormulaEvaluator(FunctionRegistry functions)
         RefNode r => Reference(scope, r.Sheet, new CellRange(r.Cell, r.Cell)),
         RangeNode r => Reference(scope, r.Sheet, r.Range),
         NameNode n => EvaluateName(n.Name, scope),
+        StructuredRefNode s => StructuredReferences.Resolve(scope.Workbook, scope.Sheet, scope.Cell, s),
         ParenNode p => Evaluate(p.Inner, scope),
         UnaryNode { Operator: '-' } u => Map(Evaluate(u.Operand, scope), scope,
             v => Arithmetic(CellValue.Number(0), v, (_, y) => Number(-y))),
@@ -116,7 +117,8 @@ internal sealed class FormulaEvaluator(FunctionRegistry functions)
 
     internal FormulaNode ParseName(string name, Workbook wb)
     {
-        if (!wb.DefinedNames.TryGetValue(name, out var text)) return null;
+        if (!wb.DefinedNames.TryGetValue(name, out var text))
+            return wb.FindTable(name, out _) is { } table ? new StructuredRefNode(table.Name, null, null, StructuredItem.Data) : null;
         if (_names.TryGetValue(text, out var node)) return node;
         return _names[text] = FormulaParser.TryParse(text, out node, out _) ? node : new ErrorNode(CellError.Name);
     }

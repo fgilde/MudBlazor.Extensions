@@ -159,7 +159,7 @@ public sealed class Workbook
 
     /// <summary>
     /// True if the source file contains content whose cell references are not moved when rows, columns or sheets change:
-    /// hyperlinks, tables, comments, drawings and charts, pivot tables and their
+    /// hyperlinks, comments, drawings and charts, pivot tables and their
     /// caches, external links, page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or
     /// columns or renaming a sheet these keep pointing at their original cells; editors should warn once.
     /// </summary>
@@ -177,6 +177,28 @@ public sealed class Workbook
         ValidateSheetName(firstSheet, null, wb);
         wb._sheets.Add(new Worksheet(firstSheet, wb));
         return wb;
+    }
+
+    /// <summary>All tables of all sheets in tab order.</summary>
+    public IReadOnlyList<SheetTable> Tables => _sheets.SelectMany(s => s.Tables).ToList();
+
+    /// <summary>Finds a table by name, ignoring case.</summary>
+    /// <param name="name">The table name.</param>
+    /// <returns>The table, or null.</returns>
+    public SheetTable FindTable(string name) => FindTable(name, out _);
+
+    internal SheetTable FindTable(string name, out Worksheet sheet)
+    {
+        foreach (var s in _sheets)
+            foreach (var t in s.Tables)
+                if (t.Matches(name))
+                {
+                    sheet = s;
+                    return t;
+                }
+
+        sheet = null;
+        return null;
     }
 
     /// <summary>Finds a sheet by name, ignoring case.</summary>
@@ -264,7 +286,9 @@ public sealed class Workbook
             ? name
             : "'" + name.Replace("'", "''") + "'";
 
-    internal FormulaSnapshot RewriteFormulas(Func<string, string, string> rewrite)
+    internal FormulaSnapshot RewriteFormulas(Func<string, string, string> rewrite) => RewriteFormulas((f, host, _) => rewrite(f, host));
+
+    internal FormulaSnapshot RewriteFormulas(Func<string, string, CellRef?, string> rewrite)
     {
         var cells = new List<(Worksheet, CellRef, string)>();
         foreach (var sheet in _sheets)
@@ -272,7 +296,7 @@ public sealed class Workbook
             {
                 var r = CellRef.FromKey(key);
                 var cell = sheet[r];
-                var text = rewrite(cell.Formula, sheet.Name);
+                var text = rewrite(cell.Formula, sheet.Name, r);
                 if (text == cell.Formula) continue;
                 cells.Add((sheet, r, cell.Formula));
                 cell.Formula = text;
@@ -282,13 +306,23 @@ public sealed class Workbook
         List<(Worksheet, IReadOnlyList<ConditionalFormatting>, IReadOnlyList<DataValidation>)> rules = null;
         foreach (var sheet in _sheets)
         {
-            var formats = sheet.ConditionalFormats.Select(c => c.Rewrite(f => rewrite(f, sheet.Name))).ToList();
-            var validations = sheet.DataValidations.Select(d => d.Rewrite(f => rewrite(f, sheet.Name))).ToList();
+            var formats = sheet.ConditionalFormats.Select(c => c.Rewrite(f => rewrite(f, sheet.Name, null))).ToList();
+            var validations = sheet.DataValidations.Select(d => d.Rewrite(f => rewrite(f, sheet.Name, null))).ToList();
             if (formats.SequenceEqual(sheet.ConditionalFormats, ReferenceEqualityComparer.Instance)
                 && validations.SequenceEqual(sheet.DataValidations, ReferenceEqualityComparer.Instance)) continue;
             (rules ??= []).Add((sheet, sheet.ConditionalFormats, sheet.DataValidations));
             sheet.ConditionalFormats = formats;
             sheet.DataValidations = validations;
+            sheet.Modified = true;
+        }
+
+        List<(Worksheet, IReadOnlyList<SheetTable>)> tables = null;
+        foreach (var sheet in _sheets)
+        {
+            var list = sheet.Tables.Select(t => t.RewriteFormulas(f => rewrite(f, sheet.Name, t.DataRange.Start))).ToList();
+            if (list.SequenceEqual(sheet.Tables, ReferenceEqualityComparer.Instance)) continue;
+            (tables ??= []).Add((sheet, sheet.Tables));
+            sheet.Tables = list;
             sheet.Modified = true;
         }
 
@@ -298,7 +332,7 @@ public sealed class Workbook
             var host = int.TryParse((string)name.Attribute("localSheetId"), out var id) && id >= 0 && id < Package.Sheets.Count
                 ? Package.Sheets[id].Worksheet?.Name ?? Package.Sheets[id].Name
                 : null;
-            var text = rewrite(name.Value, host);
+            var text = rewrite(name.Value, host, null);
             if (text == name.Value) continue;
             (localNames ??= []).Add((name, name.Value));
             name.Value = text;
@@ -307,13 +341,13 @@ public sealed class Workbook
         Dictionary<string, string> names = null;
         foreach (var (key, value) in _definedNames.ToList())
         {
-            var text = rewrite(value, null);
+            var text = rewrite(value, null, null);
             if (text == value) continue;
             names ??= new Dictionary<string, string>(_definedNames, StringComparer.OrdinalIgnoreCase);
             _definedNames[key] = text;
         }
 
-        return new FormulaSnapshot(cells, names, localNames, rules);
+        return new FormulaSnapshot(cells, names, localNames, rules, tables);
     }
 
     internal void RestoreFormulas(FormulaSnapshot snapshot)
@@ -325,6 +359,7 @@ public sealed class Workbook
         }
 
         foreach (var (name, text) in snapshot.LocalNames ?? []) name.Value = text;
+        foreach (var (sheet, tables) in snapshot.Tables ?? []) sheet.Tables = tables;
         foreach (var (sheet, formats, validations) in snapshot.Rules ?? [])
         {
             sheet.ConditionalFormats = formats;
@@ -342,4 +377,5 @@ internal sealed record FormulaSnapshot(
     List<(Worksheet Sheet, CellRef Ref, string Formula)> Cells,
     Dictionary<string, string> Names,
     List<(XElement Name, string Text)> LocalNames = null,
-    List<(Worksheet Sheet, IReadOnlyList<ConditionalFormatting> Formats, IReadOnlyList<DataValidation> Validations)> Rules = null);
+    List<(Worksheet Sheet, IReadOnlyList<ConditionalFormatting> Formats, IReadOnlyList<DataValidation> Validations)> Rules = null,
+    List<(Worksheet Sheet, IReadOnlyList<SheetTable> Tables)> Tables = null);
