@@ -69,6 +69,7 @@ internal static class SheetXmlWriter
 
     internal static string FormulaText(string formula)
     {
+        formula = StructuredReferences.ToFile(formula, null);
         if (formula == null || formula.IndexOfAny(['(', '#', ';']) < 0 || Tokens(formula) is not { } tokens) return formula;
         var sb = new StringBuilder(formula.Length + 16);
         var pos = 0;
@@ -216,6 +217,16 @@ internal static class SheetXmlWriter
     {
         var list = ws.UsedCells().ToList();
         var extra = part?.OriginalXf.Where(p => package.XfStyleIds[p.Value] == 0 && ws[CellRef.FromKey(p.Key)] == null).Select(p => p.Key).ToList() ?? [];
+        var headers = new Dictionary<long, string>();
+        foreach (var table in ws.Tables.Where(t => t.HeaderRow))
+        {
+            var (names, plain) = TableEdits.HeaderNames(ws, table, (_, c) => c?.Value ?? default);
+            for (var i = 0; i < names.Length; i++)
+                if (!plain[i])
+                    headers[new CellRef(table.Range.Top, table.Range.Left + i).Key] = names[i];
+        }
+
+        extra.AddRange(headers.Keys.Where(k => ws[CellRef.FromKey(k)] == null && !extra.Contains(k)));
         var keys = new long[list.Count + extra.Count];
         var cells = new Cell[keys.Length];
         for (var i = 0; i < list.Count; i++)
@@ -226,6 +237,10 @@ internal static class SheetXmlWriter
 
         extra.CopyTo(keys, list.Count);
         Array.Sort(keys, cells);
+        if (headers.Count > 0)
+            for (var i = 0; i < keys.Length; i++)
+                if (headers.TryGetValue(keys[i], out var name))
+                    cells[i] = new Cell { Value = CellValue.Text(name), StyleId = cells[i]?.StyleId ?? 0 };
         return (keys, cells);
     }
 

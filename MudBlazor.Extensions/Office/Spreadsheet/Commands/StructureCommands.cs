@@ -54,8 +54,12 @@ public abstract class DeleteCommandBase(Worksheet sheet, Axis axis, int index, i
     public void Apply(Workbook wb)
     {
         Check(axis, index, count);
+        var tables = sheet.Tables;
         _snapshot = sheet.Delete(axis, index, count);
-        _formulas = wb.RewriteFormulas((f, host) => ReferenceShifter.Shift(f, axis, sheet.Name, index, -count, host));
+        var drop = TableEdits.DropReferences(wb, sheet, tables, axis, index, count);
+        _formulas = wb.RewriteFormulas((f, host, cell) => ReferenceShifter.Shift(f, axis, sheet.Name, index, -count, host) is var text && drop != null
+            ? drop(text, host, cell)
+            : text);
         wb.Notify(axis == Axis.Row ? StructureChangeKind.RowsDeleted : StructureChangeKind.ColumnsDeleted, sheet, index, count);
     }
 
@@ -492,6 +496,7 @@ public sealed class DefineNameCommand(string name, string refersTo) : IWorkbookC
     public void Apply(Workbook wb)
     {
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("A name is required.", nameof(name));
+        if (refersTo != null && wb.FindTable(name) != null) throw new ArgumentException($"The name '{name}' is already used by a table.", nameof(name));
         _before = wb.DefinedNameMap.GetValueOrDefault(name);
         Set(wb, refersTo);
     }

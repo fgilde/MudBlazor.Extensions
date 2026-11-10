@@ -7,7 +7,6 @@ namespace MudBlazor.Extensions.Office.Spreadsheet;
 public sealed class SetValueCommand(Worksheet sheet, CellRef cell, CellValue value) : IWorkbookCommand
 {
     private CellState _before;
-    private Action _table;
 
     /// <inheritdoc />
     public string Description => "Set value";
@@ -22,13 +21,11 @@ public sealed class SetValueCommand(Worksheet sheet, CellRef cell, CellValue val
         target.SpillAnchor = null;
         sheet.Prune(cell);
         wb.Notify(sheet, cell);
-        _table = TableEdits.OnValueSet(wb, sheet, cell);
     }
 
     /// <inheritdoc />
     public void Revert(Workbook wb)
     {
-        _table?.Invoke();
         sheet.Restore(cell, _before);
         wb.Notify(sheet, cell);
     }

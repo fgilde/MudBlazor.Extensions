@@ -122,7 +122,7 @@ public sealed class UndoStack
         }
     }
 
-    private sealed class CompositeCommand(string description, IReadOnlyList<IWorkbookCommand> commands) : IWorkbookCommand
+    internal sealed class CompositeCommand(string description, IReadOnlyList<IWorkbookCommand> commands) : IWorkbookCommand
     {
         public string Description => description;
 

@@ -33766,6 +33766,9 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.TableParts">
             <summary>Table parts of the source sheet: relationship id and zip entry name, in <c>tableParts</c> order.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.OpaqueTableParts">
+            <summary>Relationship ids of table parts the model could not read; they stay in <c>tableParts</c> and are copied unchanged.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Unmodelled">
             <summary>Children the model does not represent at all, in original order.</summary>
         </member>

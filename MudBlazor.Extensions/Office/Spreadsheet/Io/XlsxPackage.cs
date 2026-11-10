@@ -48,6 +48,9 @@ internal sealed class XlsxSheetPart
     /// <summary>Table parts of the source sheet: relationship id and zip entry name, in <c>tableParts</c> order.</summary>
     public List<(string RelationshipId, string PartName)> TableParts { get; } = [];
 
+    /// <summary>Relationship ids of table parts the model could not read; they stay in <c>tableParts</c> and are copied unchanged.</summary>
+    public List<string> OpaqueTableParts { get; } = [];
+
     /// <summary>Children the model does not represent at all, in original order.</summary>
     public IEnumerable<XElement> Unmodelled => Children.Where(c => !Modelled.Contains(c.Name.LocalName));
 

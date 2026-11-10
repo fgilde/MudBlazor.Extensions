@@ -14,6 +14,7 @@ public sealed class SetAutoFilterCommand(Worksheet sheet, CellRange? range) : IW
     public void Apply(Workbook wb)
     {
         if (range is { } r) Worksheet.Check(r);
+        if (range is { } area && sheet.Tables.Any(t => t.Range.Intersects(area))) throw new InvalidOperationException("An auto filter cannot overlap a table.");
         _before = FilterState.Capture(sheet);
         new FilterState(range is { } g ? new AutoFilter(g) : null, new HashSet<int>()).Restore(wb, sheet);
     }

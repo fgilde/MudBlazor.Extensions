@@ -103,7 +103,7 @@ public class TableTests
         Assert.Equal(new StructuredRefNode("T", null, null, StructuredItem.All), FormulaParser.Parse("T[#All]"));
         Assert.Equal(new StructuredRefNode("T", null, null, StructuredItem.Data), FormulaParser.Parse("T[]"));
         Assert.Equal(new StructuredRefNode("T", "[x]", null, StructuredItem.Data), FormulaParser.Parse("T['[x']]"));
-        Assert.Equal("T['[x']]", FormulaParser.Format(new StructuredRefNode("T", "[x]", null, StructuredItem.Data)));
+        Assert.Equal("T[['[x']]]", FormulaParser.Format(new StructuredRefNode("T", "[x]", null, StructuredItem.Data)));
         Assert.Equal("T[[#Totals],[A]]", FormulaParser.Format(FormulaParser.Parse("T[[#Totals],[A]]")));
         var token = Assert.Single(FormulaLexer.Tokenize("=Sales[[#Headers],[Qty]]"));
         Assert.Equal(FormulaTokenKind.StructuredReference, token.Kind);
@@ -489,6 +489,194 @@ public class TableTests
         Assert.Equal(G("A1:D4"), ws.Tables[0].Range);
         Assert.Null(ws[R("E1")]);
         Assert.Equal(2, wb.Tables.Count);
+    }
+
+    [Fact]
+    public void HeaderEdits_AnyCommand_KeepColumnNamesInSync()
+    {
+        var (wb, ws) = Sales();
+        wb.Execute(new AddSheetCommand("Other"));
+        var o = wb.Sheets[1];
+        using var engine = new CalcEngine(wb);
+        wb.Execute(new SetFormulaCommand(ws, R("D2"), "=[@Qty]*[@Price]"));
+        wb.Execute(new SetFormulaCommand(ws, R("F1"), "=SUM(Sales[Qty])"));
+        wb.Execute(new SetFormulaCommand(o, R("A1"), "=SUM(Sales[Price])"));
+
+        wb.Execute(new SetValuesCommand(ws, R("B1"), new[,] { { V("Units"), V("Cost") } }));
+        Assert.Equal(["Item", "Units", "Cost", "Total"], ws.Tables[0].Columns.Select(c => c.Name));
+        Assert.Equal("[@Units]*[@Cost]", ws[R("D3")].Formula);
+        Assert.Equal("SUM(Sales[Units])", ws[R("F1")].Formula);
+        Assert.Equal("SUM(Sales[Cost])", o[R("A1")].Formula);
+        Assert.Equal(9, N(ws, "F1"));
+        Assert.Equal(60, N(o, "A1"));
+        wb.Undo.Undo();
+        Assert.Equal(["Item", "Qty", "Price", "Total"], ws.Tables[0].Columns.Select(c => c.Name));
+        Assert.Equal(("Qty", "[@Qty]*[@Price]", "SUM(Sales[Price])"), (ws[R("B1")].Value.TextValue, ws[R("D3")].Formula, o[R("A1")].Formula));
+        wb.Undo.Redo();
+        Assert.Equal(("Units", "SUM(Sales[Units])"), (ws.Tables[0].Columns[1].Name, ws[R("F1")].Formula));
+        wb.Undo.Undo();
+
+        wb.Execute(new ClearCommand(ws, G("A1")));
+        Assert.Equal(("Column1", "Column1"), (ws.Tables[0].Columns[0].Name, ws[R("A1")].Value.TextValue));
+
+        wb.Execute(new SetFormulaCommand(ws, R("C1"), "=\"Co\"&\"st\""));
+        Assert.Equal(("Cost", null, "Cost"), (ws[R("C1")].Value.TextValue, ws[R("C1")].Formula, ws.Tables[0].Columns[2].Name));
+        Assert.Equal("SUM(Sales[Cost])", o[R("A1")].Formula);
+
+        wb.Execute(new SetValueCommand(ws, R("A1"), V(2024)));
+        Assert.Equal((CellValue.Text("2024"), "2024"), (ws[R("A1")].Value, ws.Tables[0].Columns[0].Name));
+
+        wb.Execute(new SetValuesCommand(ws, R("A1"), new[,] { { V("Total"), V("Total") } }));
+        Assert.Equal(["Total2", "Total3", "Cost", "Total"], ws.Tables[0].Columns.Select(c => c.Name));
+        Assert.Equal(["Total2", "Total3"], new[] { "A1", "B1" }.Select(a => ws[R(a)].Value.TextValue));
+        wb.Undo.Undo();
+
+        wb.Execute(new SortCommand(ws, G("A1:A4"), [new SortKey(0, Descending: true)], hasHeader: false));
+        Assert.Equal(("c", "c"), (ws[R("A1")].Value.TextValue, ws.Tables[0].Columns[0].Name));
+        Assert.Equal("2024", ws[R("A4")].Value.TextValue);
+    }
+
+    [Fact]
+    public void Writer_SafetyNet_HeaderCellsBecomeColumnNames()
+    {
+        var (wb, ws) = Sales();
+        ws[R("B1")].Value = CellValue.Number(7);
+        ws[R("C1")].Formula = "\"Q\"&\"ty\"";
+        ws[R("C1")].Value = CellValue.Text("Qty");
+        ws.Modified = true;
+
+        var written = Write(wb);
+        var columns = Xml(written, "xl/tables/table1.xml").Root!.Element(M + "tableColumns")!.Elements().Select(c => (string)c.Attribute("name"));
+        Assert.Equal(["Item", "7", "Qty", "Total"], columns);
+        var cells = Xml(written, "xl/worksheets/sheet1.xml").Root!.Descendants(M + "c").ToDictionary(c => (string)c.Attribute("r")!);
+        Assert.Equal("s", (string)cells["B1"].Attribute("t"));
+        Assert.Null(cells["C1"].Element(M + "f"));
+        var again = Read(written).Sheets[0];
+        Assert.Equal(["Item", "7", "Qty", "Total"], again.Tables[0].Columns.Select(c => c.Name));
+        Assert.Equal(["Item", "7", "Qty", "Total"], new[] { "A1", "B1", "C1", "D1" }.Select(a => again[R(a)].Value.TextValue));
+    }
+
+    [Fact]
+    public void DeleteHeaderRowOrColumn_StructuredRefsBecomeRefErrors()
+    {
+        var (wb, ws) = Sales();
+        wb.Execute(new AddSheetCommand("Other"));
+        var o = wb.Sheets[1];
+        using var engine = new CalcEngine(wb);
+        wb.Execute(new SetFormulaCommand(ws, R("D2"), "=[@Qty]*[@Price]"));
+        wb.Execute(new SetFormulaCommand(ws, R("F1"), "=SUM(Sales[Price])"));
+        wb.Execute(new SetFormulaCommand(o, R("A1"), "=SUM(Sales[Qty])"));
+        wb.Execute(new SetFormulaCommand(o, R("A2"), "=ROWS(Sales)+SUM(Sales[[Qty]:[Price]])"));
+        wb.Execute(new SetFormulaCommand(o, R("A3"), "=SUM(Sales[Total])"));
+
+        wb.Execute(new DeleteColumnsCommand(ws, 1, 1));
+        Assert.Equal("#REF!*[@Price]", ws[R("C3")].Formula);
+        Assert.Equal("SUM(Sales[Price])", ws[R("E1")].Formula);
+        Assert.Equal(("SUM(#REF!)", "ROWS(Sales)+SUM(#REF!)", "SUM(Sales[Total])"), (o[R("A1")].Formula, o[R("A2")].Formula, o[R("A3")].Formula));
+        Assert.Equal(CellValue.Error(CellError.Ref), o[R("A1")].Value);
+        wb.Undo.Undo();
+        Assert.Equal(("SUM(Sales[Qty])", "[@Qty]*[@Price]"), (o[R("A1")].Formula, ws[R("D3")].Formula));
+        Assert.Equal(9, N(o, "A1"));
+
+        wb.Execute(new DeleteRowsCommand(ws, 0, 1));
+        Assert.Empty(ws.Tables);
+        Assert.Equal("#REF!*#REF!", ws[R("D2")].Formula);
+        Assert.Equal(("SUM(#REF!)", "ROWS(#REF!)+SUM(#REF!)", "SUM(#REF!)"), (o[R("A1")].Formula, o[R("A2")].Formula, o[R("A3")].Formula));
+        Assert.Equal(CellValue.Error(CellError.Ref), o[R("A3")].Value);
+        wb.Undo.Undo();
+        Assert.Equal(("SUM(Sales[Total])", "[@Qty]*[@Price]"), (o[R("A3")].Formula, ws[R("D3")].Formula));
+        Assert.Equal(200, N(o, "A3"));
+    }
+
+    [Fact]
+    public void ExternalWorkbookPrefix_IsNotAStructuredReference()
+    {
+        Assert.Throws<FormatException>(() => FormulaLexer.Tokenize("[1]Sheet1!A1"));
+        Assert.Throws<FormatException>(() => FormulaLexer.Tokenize("Sales[Qty]x"));
+        var (wb, ws) = Sales();
+        wb.Execute(new SetFormulaCommand(ws, R("D2"), "=[1]Data!A1+[@Qty]"));
+        wb.Execute(new SetFormulaCommand(ws, R("F2"), "=[1]Sheet1!A1+[2]!Name+Sales[@Qty]"));
+        var written = Write(wb);
+        var f = Xml(written, "xl/worksheets/sheet1.xml").Root!.Descendants(M + "c").ToDictionary(c => (string)c.Attribute("r")!, c => c.Element(M + "f")?.Value);
+        Assert.Equal("[1]Data!A1+Sales[[#This Row],[Qty]]", f["D2"]);
+        Assert.Equal("[1]Sheet1!A1+[2]!Name+Sales[[#This Row],[Qty]]", f["F2"]);
+        Assert.Equal("[1]Data!A1+Sales[@Qty]", Read(written).Sheets[0][R("D2")].Formula);
+    }
+
+    [Fact]
+    public void AutoFilter_NeverOverlapsTable_NamesNeverClash()
+    {
+        var (wb, ws) = Sales();
+        Assert.Throws<InvalidOperationException>(() => wb.Execute(new SetAutoFilterCommand(ws, G("C1:F4"))));
+        wb.Execute(new SetAutoFilterCommand(ws, G("F1:G4")));
+        Assert.Throws<InvalidOperationException>(() => wb.Execute(new ResizeTableCommand(ws, "Sales", G("A1:F4"))));
+        Assert.Equal(G("A1:D4"), ws.Tables[0].Range);
+
+        Assert.Throws<ArgumentException>(() => wb.Execute(new DefineNameCommand("SALES", "Sheet1!$A$1")));
+        wb.Execute(new DefineNameCommand("Rate", "Sheet1!$A$1"));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new RenameTableCommand(ws, "Sales", "RATE")));
+        wb.Execute(new DefineNameCommand("Table1", "Sheet1!$A$1"));
+        wb.Execute(new SetValuesCommand(ws, R("H1"), new[,] { { V("X") }, { V(1) } }));
+        wb.Execute(new CreateTableCommand(ws, G("H1:H2"), true, "TableStyleLight1"));
+        Assert.Equal("Table2", ws.Tables[1].Name);
+    }
+
+    [Fact]
+    public void FileForms_EscapingLabelsAndLineBreaks()
+    {
+        var (wb, ws) = Sales();
+        wb.Execute(new SetValueCommand(ws, R("C1"), V("Unit-Price")));
+        wb.Execute(new SetValueCommand(ws, R("A1"), V("It'em\nName")));
+        wb.Execute(new DefineNameCommand("Firsts", "Sales[@Qty]"));
+        using var engine = new CalcEngine(wb);
+        wb.Execute(new SetFormulaCommand(ws, R("F1"), "=SUM(Sales[Unit-Price])"));
+        wb.Execute(new SetFormulaCommand(ws, R("F2"), "=ROWS(Sales[[#Headers],[#Totals]])"));
+        wb.Execute(new SetFormulaCommand(ws, R("F7"), "=[@Qty]"));
+        Assert.Equal(60, N(ws, "F1"));
+        Assert.Equal(CellValue.Error(CellError.Ref), ws[R("F2")].Value);
+        wb.Execute(new SetTotalsRowCommand(ws, "Sales", true));
+
+        var written = Write(wb);
+        var f = Xml(written, "xl/worksheets/sheet1.xml").Root!.Descendants(M + "c").ToDictionary(c => (string)c.Attribute("r")!, c => c.Element(M + "f")?.Value);
+        Assert.Equal("SUM(Sales[[Unit-Price]])", f["F1"]);
+        Assert.Equal("#REF!", f["F7"]);
+        Assert.Equal("Sales[[#This Row],[Qty]]", Xml(written, "xl/workbook.xml").Root!.Descendants(M + "definedName").Single().Value);
+        var table = Xml(written, "xl/tables/table1.xml").Root!;
+        var columns = table.Element(M + "tableColumns")!.Elements().ToList();
+        Assert.Equal(("Total", "sum"), ((string)columns[0].Attribute("totalsRowLabel"), (string)columns[3].Attribute("totalsRowFunction")));
+        Assert.Contains("It'em_x000a_Name", Encoding.UTF8.GetString(Entry(written, "xl/tables/table1.xml")));
+        var again = Read(written).Sheets[0];
+        Assert.Equal("It'em\nName", again.Tables[0].Columns[0].Name);
+        Assert.Equal("SUM(Sales[[Unit-Price]])", again[R("F1")].Formula);
+        Assert.Equal(new StructuredRefNode("T", "a'b", null, StructuredItem.Data), FormulaParser.Parse("T[a''b]"));
+        Assert.Equal("T[[a''b]]", FormulaParser.Format(new StructuredRefNode("T", "a'b", null, StructuredItem.Data)));
+    }
+
+    [Fact]
+    public void UnparsableTablePart_KeptWithItsRelationship()
+    {
+        var package = TablePackage();
+        using (var ms = new MemoryStream())
+        {
+            ms.Write(package);
+            using (var zip = new ZipArchive(ms, ZipArchiveMode.Update, true))
+            {
+                zip.GetEntry("xl/tables/table1.xml")!.Delete();
+                using var s = zip.CreateEntry("xl/tables/table1.xml").Open();
+                s.Write(Encoding.UTF8.GetBytes(TablePart.ReplaceLineEndings("").Replace("ref=\"A1:D4\" totalsRowShown", "ref=\"bad\" totalsRowShown")));
+            }
+
+            package = ms.ToArray();
+        }
+
+        var wb = Read(package);
+        var ws = wb.Sheets[0];
+        Assert.Empty(ws.Tables);
+        wb.Execute(new SetValueCommand(ws, R("H1"), V(1)));
+        var written = Write(wb);
+        Assert.Equal(Entry(package, "xl/tables/table1.xml"), Entry(written, "xl/tables/table1.xml"));
+        Assert.Equal(Entry(package, "xl/worksheets/_rels/sheet1.xml.rels"), Entry(written, "xl/worksheets/_rels/sheet1.xml.rels"));
+        Assert.Equal("rId1", (string)Xml(written, "xl/worksheets/sheet1.xml").Root!.Element(M + "tableParts")!.Element(M + "tablePart")!.Attribute(XName.Get("id", Rel)));
     }
 
     private static Workbook Read(byte[] package) => XlsxReader.Read(new MemoryStream(package));

@@ -20,8 +20,12 @@ internal static class TableXml
             if (rels.FirstOrDefault(r => r.Id == id && !r.External) is not { } rel || Find(zip, ResolveTarget(part.PartName, rel.Target)) is not { } entry) continue;
             XElement root;
             using (var s = entry.Open()) root = LoadXml(s).Root;
-            part.TableParts.Add((id, entry.FullName));
-            if (Table(root, entry.FullName, id) is { } table) tables.Add(table);
+            if (Table(root, entry.FullName, id) is { } table)
+            {
+                part.TableParts.Add((id, entry.FullName));
+                tables.Add(table);
+            }
+            else part.OpaqueTableParts.Add(id);
         }
 
         return tables;
@@ -32,7 +36,7 @@ internal static class TableXml
         if (!CellRange.TryParse((string)e.Attribute("ref"), out var range)) return null;
         var columns = Child(e, "tableColumns")?.Elements().Where(c => c.Name.LocalName == "tableColumn")
             .Select(c => new TableColumn(SheetXmlReader.Decode((string)c.Attribute("name") ?? ""), (string)c.Attribute("totalsRowFunction") is { } f and not "none" ? f : null,
-                FromFile(Child(c, "calculatedColumnFormula")?.Value)) { Id = Int(c, "id"), Source = c })
+                FromFile(Child(c, "calculatedColumnFormula")?.Value)) { Id = Int(c, "id"), Source = c, TotalsLabel = (string)c.Attribute("totalsRowLabel") })
             .ToList() ?? [];
         var style = Child(e, "tableStyleInfo");
         var name = (string)e.Attribute("name") ?? (string)e.Attribute("displayName") ?? "";
@@ -49,7 +53,7 @@ internal static class TableXml
 
     private static bool True(XElement e, string name) => (string)e?.Attribute(name) is "1" or "true";
 
-    internal static XElement Write(SheetTable t)
+    internal static XElement Write(SheetTable t, IReadOnlyList<string> names = null)
     {
         var ns = t.Source?.Name.Namespace ?? XNamespace.Get(SheetXmlWriter.MainNs);
         var e = t.Source != null ? new XElement(t.Source) : new XElement(ns + "table");
@@ -86,7 +90,8 @@ internal static class TableXml
         columns.RemoveNodes();
         columns.SetAttributeValue("count", t.Columns.Count);
         var next = t.Columns.Select(c => c.Id).DefaultIfEmpty(0).Max() + 1;
-        foreach (var column in t.Columns) columns.Add(Column(column, column.Id > 0 ? column.Id : next++, t.Name, ns));
+        for (var i = 0; i < t.Columns.Count; i++)
+            columns.Add(Column(t.Columns[i], t.Columns[i].Id > 0 ? t.Columns[i].Id : next++, names?[i] ?? t.Columns[i].Name, t.Name, ns));
 
         var info = Child(e, "tableStyleInfo");
         if (info == null) columns.AddAfterSelf(info = new XElement(ns + "tableStyleInfo"));
@@ -98,12 +103,13 @@ internal static class TableXml
         return e;
     }
 
-    private static XElement Column(TableColumn column, int id, string table, XNamespace ns)
+    private static XElement Column(TableColumn column, int id, string name, string table, XNamespace ns)
     {
         var c = column.Source != null ? new XElement(column.Source) : new XElement(ns + "tableColumn");
         c.SetAttributeValue("id", id);
-        if (SheetXmlReader.Decode((string)c.Attribute("name") ?? "") != column.Name) c.SetAttributeValue("name", column.Name);
+        if (SheetXmlReader.Decode((string)c.Attribute("name") ?? "") != name) c.SetAttributeValue("name", Encode(name));
         c.SetAttributeValue("totalsRowFunction", column.TotalsFunction);
+        c.SetAttributeValue("totalsRowLabel", column.TotalsLabel);
         var formula = Child(c, "calculatedColumnFormula");
         if (column.CalculatedFormula == null) formula?.Remove();
         else if (FromFile(formula?.Value) != column.CalculatedFormula)
@@ -114,4 +120,7 @@ internal static class TableXml
 
         return c;
     }
+
+    private static string Encode(string name) =>
+        name.Any(char.IsControl) ? string.Concat(name.Select(ch => char.IsControl(ch) ? $"_x{(int)ch:x4}_" : ch.ToString())) : name;
 }

@@ -115,7 +115,16 @@ public static class FormulaLexer
     private static int SkipUnknown(string s, int i)
     {
         if (s[i] is '"' or '\'') return QuotedEnd(s, i) is var end and >= 0 ? end : s.Length;
-        return s[i] == '[' ? s.Length : i + 1;
+        if (s[i] != '[') return i + 1;
+        var depth = 0;
+        for (var j = i; j < s.Length; j++)
+        {
+            if (s[j] == '\'') j++;
+            else if (s[j] == '[') depth++;
+            else if (s[j] == ']' && --depth == 0) return j + 1;
+        }
+
+        return s.Length;
     }
 
     private static FormulaTokenKind Next(string s, ref int i, bool tolerant)
@@ -145,7 +154,7 @@ public static class FormulaLexer
                 i++;
                 return FormulaTokenKind.Operator;
             case '[':
-                i = EndOfBrackets(s, i);
+                i = EndOfStructured(s, i, i);
                 return FormulaTokenKind.StructuredReference;
             case '\'':
                 var end = EndOfQuoted(s, i);
@@ -158,7 +167,7 @@ public static class FormulaLexer
         while (j < s.Length && IsNameChar(s[j])) j++;
         if ((char.IsLetter(c) || c is '_' or '\\') && j < s.Length && s[j] == '[')
         {
-            i = EndOfBrackets(s, j);
+            i = EndOfStructured(s, i, j);
             return FormulaTokenKind.StructuredReference;
         }
 
@@ -225,6 +234,15 @@ public static class FormulaLexer
         if (end < s.Length && s[end] == '#' && !m.Value.Contains(':')) end++;
         i = end;
         return true;
+    }
+
+    private static int EndOfStructured(string s, int start, int open)
+    {
+        var end = EndOfBrackets(s, open);
+        if (end < s.Length && (IsNameChar(s[end]) || s[end] is '!' or '\'') || start == open && s.AsSpan(open + 1, end - open - 2) is { Length: > 0 } inner
+                && !inner.ContainsAnyExcept("0123456789"))
+            throw Unexpected(s, start);
+        return end;
     }
 
     private static int EndOfBrackets(string s, int i)

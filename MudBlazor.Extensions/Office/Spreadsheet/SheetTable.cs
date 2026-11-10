@@ -12,6 +12,8 @@ public sealed record TableColumn(string Name, string TotalsFunction = null, stri
     internal int Id { get; init; }
 
     internal XElement Source { get; init; }
+
+    internal string TotalsLabel { get; init; }
 }
 
 /// <summary>

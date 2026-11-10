@@ -215,7 +215,8 @@ public sealed class Workbook
         try
         {
             cmd.Apply(this);
-            Undo.Record(cmd);
+            var sync = TableEdits.SyncHeaders(this);
+            Undo.Record(sync == null ? cmd : new UndoStack.CompositeCommand(cmd.Description, [cmd, sync]));
         }
         finally
         {

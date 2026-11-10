@@ -227,15 +227,19 @@ public static class XlsxWriter
         {
             var original = sheet.Original?.TableParts ?? [];
             var ids = new List<string>();
-            if (original.Count == 0 && sheet.Worksheet.Tables.Count == 0) return ids;
+            if (original.Count == 0 && sheet.Worksheet.Tables.Count == 0) return [.. sheet.Original?.OpaqueTableParts ?? []];
+            var rewrite = sheet.Original == null || sheet.Worksheet.Modified || Find(source, sheet.PartName) == null;
             var rels = sheet.Original != null && Find(source, RelsPartOf(sheet.PartName)) != null ? ReadRelationships(source, sheet.PartName) : [];
             var changed = false;
             foreach (var table in sheet.Worksheet.Tables)
             {
+                var names = rewrite && table.HeaderRow ? TableEdits.HeaderNames(sheet.Worksheet, table, (_, c) => c?.Value ?? default).Names : null;
+                if (names != null && names.SequenceEqual(table.Columns.Select(c => c.Name))) names = null;
                 if (table.PartName != null && original.Any(p => p.PartName == table.PartName))
                 {
                     ids.Add(table.RelationshipId);
-                    if (table.Dirty) _parts[table.PartName] = s => SheetXmlWriter.Save(new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), TableXml.Write(table)), s);
+                    if (table.Dirty || names != null)
+                        _parts[table.PartName] = s => SheetXmlWriter.Save(new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), TableXml.Write(table, names)), s);
                     continue;
                 }
 
@@ -251,7 +255,7 @@ public static class XlsxWriter
                 rels.Add(new XlsxRelationship("rId" + id, typeBase + "/table", Relative(sheet.PartName, part), false));
                 ids.Add("rId" + id);
                 changed = true;
-                _parts[part] = s => SheetXmlWriter.Save(new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), TableXml.Write(table)), s);
+                _parts[part] = s => SheetXmlWriter.Save(new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), TableXml.Write(table, names)), s);
             }
 
             foreach (var (id, part) in original.Where(p => sheet.Worksheet.Tables.All(t => t.PartName != p.PartName)))
@@ -261,6 +265,7 @@ public static class XlsxWriter
                 changed = true;
             }
 
+            ids.AddRange(sheet.Original?.OpaqueTableParts ?? []);
             if (changed) _parts[RelsPartOf(sheet.PartName)] = s => WriteRelationships(s, rels);
             return ids;
         }

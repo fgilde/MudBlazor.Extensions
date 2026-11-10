@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace MudBlazor.Extensions.Office.Spreadsheet;
@@ -24,7 +25,7 @@ public sealed class CreateTableCommand(Worksheet sheet, CellRange range, bool ha
         var area = range.Normalized;
         if (hasHeaders && area.RowCount == 1) area = CellRange.FromBounds(area.Top, area.Left, area.Top + 1, area.Right);
         Worksheet.Check(area);
-        TableEdits.CheckFree(sheet, area, null);
+        TableEdits.CheckFree(sheet, area, null, false);
         _undo = new TableUndo(wb, sheet);
         var table = SheetTable.Create(TableEdits.NextId(wb), TableEdits.NextName(wb), area, hasHeaders, TableEdits.Columns(sheet, area, hasHeaders, null), styleName);
         TableEdits.WriteHeaders(_undo, sheet, table);
@@ -179,14 +180,15 @@ public sealed class SetTotalsRowCommand(Worksheet sheet, string table, bool show
             TableEdits.CheckFree(sheet, band, null);
             _undo = new TableUndo(wb, sheet);
             var columns = t.Columns.ToList();
-            if (columns.All(c => c.TotalsFunction == null)) columns[^1] = columns[^1] with { TotalsFunction = "sum" };
+            if (columns.All(c => c.TotalsFunction == null)) columns[^1] = columns[^1] with { TotalsFunction = "sum", TotalsLabel = null };
+            if (columns[0].TotalsFunction == null) columns[0] = columns[0] with { TotalsLabel = columns[0].TotalsLabel ?? "Total" };
             var shown = t.With(range: CellRange.FromBounds(r.Top, r.Left, band.Top, r.Right), totalsRow: true, columns: columns);
             TableEdits.Replace(sheet, t, shown);
             for (var i = 0; i < columns.Count; i++)
             {
                 var at = new CellRef(band.Top, r.Left + i);
                 if (TableEdits.Subtotal(columns[i].TotalsFunction, shown.Name, columns[i].Name) is { } formula) _undo.Set(at, default, formula);
-                else if (i == 0) _undo.Set(at, CellValue.Text("Total"));
+                else if (columns[i].TotalsLabel is { } label) _undo.Set(at, CellValue.Text(label));
             }
 
             _undo.Done(true, shown.Range);
@@ -225,13 +227,36 @@ public sealed class SetTotalsFunctionCommand(Worksheet sheet, string table, stri
         var formula = TableEdits.Subtotal(function, t.Name, t.Columns[i].Name);
         if (function != null && formula == null) throw new ArgumentException($"'{function}' is not a totals function.", nameof(function));
         _undo = new TableUndo(wb, sheet);
-        TableEdits.Replace(sheet, t, t.With(columns: t.Columns.Select((c, k) => k == i ? c with { TotalsFunction = function } : c).ToList()));
+        TableEdits.Replace(sheet, t, t.With(columns: t.Columns.Select((c, k) => k == i ? c with { TotalsFunction = function, TotalsLabel = function == null ? c.TotalsLabel : null } : c).ToList()));
         _undo.Set(new CellRef(t.Range.Bottom, t.Range.Left + i), default, formula);
         _undo.Done(false);
     }
 
     /// <inheritdoc />
     public void Revert(Workbook wb) => _undo.Revert();
+}
+
+internal sealed class HeaderSyncCommand : IWorkbookCommand
+{
+    private List<TableUndo> _undo = [];
+
+    public string Description => "Rename columns";
+
+    internal bool Changed => _undo.Count > 0;
+
+    public void Apply(Workbook wb)
+    {
+        _undo = [];
+        foreach (var sheet in wb.Sheets)
+            foreach (var table in sheet.Tables.Where(t => t.HeaderRow).ToList())
+                if (TableEdits.SyncHeader(wb, sheet, table) is { } undo)
+                    _undo.Add(undo);
+    }
+
+    public void Revert(Workbook wb)
+    {
+        for (var i = _undo.Count - 1; i >= 0; i--) _undo[i].Revert();
+    }
 }
 
 internal sealed class TableUndo
@@ -311,9 +336,10 @@ internal static class TableEdits
 
     internal static void Replace(Worksheet sheet, SheetTable old, SheetTable now) => sheet.Tables = sheet.Tables.Select(t => t == old ? now : t).ToList();
 
-    internal static void CheckFree(Worksheet sheet, CellRange area, SheetTable ignore)
+    internal static void CheckFree(Worksheet sheet, CellRange area, SheetTable ignore, bool autoFilter = true)
     {
         if (sheet.Tables.Any(t => t != ignore && t.Range.Intersects(area))) throw new InvalidOperationException("A table cannot overlap another table.");
+        if (autoFilter && sheet.AutoFilter?.Range.Intersects(area) == true) throw new InvalidOperationException("A table cannot overlap the auto filter of the sheet.");
         if (sheet.Merges.Any(m => m.Intersects(area))) throw new InvalidOperationException("A table cannot contain merged cells.");
     }
 
@@ -375,22 +401,103 @@ internal static class TableEdits
         return (host == tableSheet ? "" : Workbook.QuoteSheetName(tableSheet.Name) + "!") + new CellRange(start, end).ToA1();
     }
 
-    internal static Action OnValueSet(Workbook wb, Worksheet sheet, CellRef cell)
+    internal static IWorkbookCommand SyncHeaders(Workbook wb)
     {
-        if (sheet.TableAt(cell) is not { HeaderRow: true } table || cell.Row != table.Range.Top) return null;
-        var i = cell.Column - table.Range.Left;
-        var old = table.Columns[i].Name;
-        var taken = table.Columns.Where((_, k) => k != i).Select(c => c.Name).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        var name = SheetTable.UniqueName(HeaderText(sheet[cell]?.Value ?? default), taken);
-        sheet.Ensure(cell).Value = CellValue.Text(name);
-        if (name == old) return null;
+        if (wb.Sheets.All(s => s.Tables.Count == 0)) return null;
+        var sync = new HeaderSyncCommand();
+        sync.Apply(wb);
+        return sync.Changed ? sync : null;
+    }
+
+    internal static (string[] Names, bool[] Plain) HeaderNames(Worksheet sheet, SheetTable table, Func<CellRef, Cell, CellValue> value)
+    {
+        var count = table.Columns.Count;
+        var names = new string[count];
+        var plain = new bool[count];
+        var taken = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        for (var i = 0; i < count; i++)
+        {
+            var name = table.Columns[i].Name;
+            plain[i] = sheet[Header(table, i)] is { Formula: null, Value.Kind: CellValueKind.Text } cell && cell.Value.TextValue == name && taken.Add(name);
+            if (plain[i]) names[i] = name;
+        }
+
+        for (var i = 0; i < count; i++)
+        {
+            if (plain[i]) continue;
+            var at = Header(table, i);
+            var v = value(at, sheet[at]);
+            var text = v.Kind switch
+            {
+                CellValueKind.Empty => null,
+                CellValueKind.Text => v.TextValue,
+                _ => NumberFormat.Format(v, sheet.Workbook.Styles[sheet.EffectiveStyleId(at)].NumberFormat, CultureInfo.CurrentCulture, out _)
+            };
+            taken.Add(names[i] = SheetTable.UniqueName(text, taken));
+        }
+
+        return (names, plain);
+    }
+
+    private static CellRef Header(SheetTable table, int column) => new(table.Range.Top, table.Range.Left + column);
+
+    internal static TableUndo SyncHeader(Workbook wb, Worksheet sheet, SheetTable table)
+    {
+        var (names, plain) = HeaderNames(sheet, table, (at, cell) => cell?.Formula is { } f ? Evaluate(wb, sheet, at, f, cell.Value) : cell?.Value ?? default);
+        if (plain.All(p => p)) return null;
         var undo = new TableUndo(wb, sheet);
-        undo.Rewrite((f, host, at) => StructuredReferences.RenameColumn(f,
-            node => node.Table != null ? table.Matches(node.Table) : at is { } c && wb.FindSheet(host)?.TableAt(c)?.Matches(table.Name) == true, old, name));
-        var current = Get(sheet, table.Name);
-        Replace(sheet, current, current.With(columns: current.Columns.Select((c, k) => k == i ? c with { Name = name } : c).ToList()));
-        undo.Done(true);
-        return undo.Revert;
+        var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        for (var i = 0; i < names.Length; i++)
+        {
+            if (!plain[i]) undo.Set(Header(table, i), CellValue.Text(names[i]));
+            if (names[i] != table.Columns[i].Name) map[table.Columns[i].Name] = names[i];
+        }
+
+        if (map.Count > 0)
+        {
+            undo.Rewrite((f, host, at) => StructuredReferences.RenameColumns(f,
+                node => node.Table != null ? table.Matches(node.Table) : at is { } c && wb.FindSheet(host)?.TableAt(c)?.Matches(table.Name) == true, map));
+            var current = Get(sheet, table.Name);
+            Replace(sheet, current, current.With(columns: current.Columns.Select((c, k) => c with { Name = names[k] }).ToList()));
+        }
+
+        undo.Done(map.Count > 0);
+        return undo;
+    }
+
+    private static CellValue Evaluate(Workbook wb, Worksheet sheet, CellRef at, string formula, CellValue cached)
+    {
+        if (!FormulaParser.TryParse(formula, out var ast, out _)) return cached;
+        try
+        {
+            var evaluator = new FormulaEvaluator(FunctionRegistry.Default);
+            var scope = new EvalScope(wb, sheet, at);
+            return evaluator.ToScalar(evaluator.EvaluateFormula(ast, scope), scope);
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException)
+        {
+            return cached;
+        }
+    }
+
+    internal static Func<string, string, CellRef?, string> DropReferences(Workbook wb, Worksheet sheet, IReadOnlyList<SheetTable> before, Axis axis, int index, int count)
+    {
+        var gone = new List<(SheetTable Table, CellRange? Range, HashSet<string> Columns)>();
+        foreach (var t in before)
+        {
+            var now = sheet.Tables.FirstOrDefault(x => x.Matches(t.Name));
+            if (now == null) gone.Add((t, Worksheet.MoveRange(t.Range, axis, index, -count), null));
+            else if (now.Columns.Count != t.Columns.Count)
+                gone.Add((t, now.Range, t.Columns.Select(c => c.Name).Except(now.Columns.Select(c => c.Name), StringComparer.OrdinalIgnoreCase)
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase)));
+        }
+
+        if (gone.Count == 0) return null;
+        return (formula, host, cell) => gone.Aggregate(formula, (text, g) => StructuredReferences.Replace(text, g.Table.Name, node =>
+            (node.Table != null ? g.Table.Matches(node.Table) : cell is { } c && wb.FindSheet(host) == sheet && g.Range?.Contains(c) == true)
+            && (g.Columns == null || node.Column1 != null && g.Columns.Contains(node.Column1) || node.Column2 != null && g.Columns.Contains(node.Column2))
+                ? "#REF!"
+                : null));
     }
 
     internal static Action OnFormulaSet(Workbook wb, Worksheet sheet, CellRef cell)

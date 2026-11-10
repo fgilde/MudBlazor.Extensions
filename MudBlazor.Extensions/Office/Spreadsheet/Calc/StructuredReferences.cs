@@ -15,7 +15,8 @@ internal static class StructuredReferences
         var open = text.IndexOf('[');
         if (open < 0 || text[^1] != ']') throw new FormatException($"'{text}' is not a structured reference.");
         var table = open == 0 ? null : text[..open];
-        var inner = text[(open + 1)..^1].Trim();
+        var raw = text[(open + 1)..^1];
+        var inner = raw.Trim();
         if (inner.Length == 0) return new StructuredRefNode(table, null, null, StructuredItem.Data);
         if (inner[0] == '@')
         {
@@ -25,7 +26,7 @@ internal static class StructuredReferences
         }
 
         if (inner[0] == '#') return new StructuredRefNode(table, null, null, Item(inner));
-        if (inner[0] != '[') return new StructuredRefNode(table, Unescape(inner), null, StructuredItem.Data);
+        if (inner[0] != '[') return new StructuredRefNode(table, Unescape(raw), null, StructuredItem.Data);
         var groups = Groups(inner);
         StructuredItem items = 0;
         foreach (var g in groups.Where(g => g.Second == null && g.First.StartsWith('#'))) items |= Item(g.First);
@@ -43,8 +44,8 @@ internal static class StructuredReferences
             return sb.Append("[@").Append(node.Column2 == null && node.Column1 != null && node.Column1.All(c => char.IsLetterOrDigit(c) || c == '_')
                 ? node.Column1
                 : columns).Append(']').ToString();
-        if (node.Items == StructuredItem.Data && node.Column2 == null)
-            return sb.Append('[').Append(node.Column1 == null ? "" : Escape(node.Column1)).Append(']').ToString();
+        if (node.Items == StructuredItem.Data && node.Column2 == null && Plain(node.Column1))
+            return sb.Append('[').Append(node.Column1).Append(']').ToString();
         var parts = new List<string>();
         if (node.Items == StructuredItem.All) parts.Add("[#All]");
         else if (node.Items != StructuredItem.Data || columns == null)
@@ -52,6 +53,8 @@ internal static class StructuredReferences
         if (columns != null) parts.Add(columns);
         return (parts.Count == 1 && columns == null ? sb.Append(parts[0]) : sb.Append('[').AppendJoin(',', parts).Append(']')).ToString();
     }
+
+    private static bool Plain(string column) => column == null || column.All(c => char.IsLetterOrDigit(c) || c is ' ' or '_');
 
     internal static SheetTable Find(Workbook wb, Worksheet host, CellRef cell, StructuredRefNode node, out Worksheet sheet)
     {
@@ -78,7 +81,7 @@ internal static class StructuredReferences
         var headers = (items & StructuredItem.Headers) != 0 && table.HeaderRow;
         var totals = (items & StructuredItem.Totals) != 0 && table.TotalsRow;
         var rows = (items & StructuredItem.Data) != 0;
-        if (!headers && !totals && !rows) return null;
+        if (!headers && !totals && !rows || (items & StructuredItem.All) == (StructuredItem.Headers | StructuredItem.Totals)) return null;
         var top = headers ? table.Range.Top : rows ? data.Top : table.Range.Bottom;
         var bottom = totals ? table.Range.Bottom : rows ? data.Bottom : table.Range.Top;
         return CellRange.FromBounds(top, left, bottom, right);
@@ -99,8 +102,9 @@ internal static class StructuredReferences
 
     internal static string ToFile(string formula, string table) =>
         formula == null || !formula.Contains('[') ? formula
-        : Rewrite(formula, t => TryParse(t.Text) is { } node && (node.Table == null && table != null || node.Items == StructuredItem.ThisRow)
-            ? Format(node with { Table = node.Table ?? table }, true)
+        : Rewrite(formula, t => TryParse(t.Text) is not { } node ? null
+            : node.Table == null && table == null ? "#REF!"
+            : node.Table == null || node.Items == StructuredItem.ThisRow || !Plain(node.Column1) || !Plain(node.Column2) ? Format(node with { Table = node.Table ?? table }, true)
             : null);
 
     internal static string RenameTable(string formula, string oldName, string newName) =>
@@ -109,15 +113,15 @@ internal static class StructuredReferences
             ? newName + t.Text[oldName.Length..]
             : t.Kind == FormulaTokenKind.Name && t.Text.Equals(oldName, Ignore) ? newName : null, true);
 
-    internal static string RenameColumn(string formula, Func<StructuredRefNode, bool> target, string oldName, string newName) =>
+    internal static string RenameColumns(string formula, Func<StructuredRefNode, bool> target, IReadOnlyDictionary<string, string> names) =>
         formula == null || !formula.Contains('[') ? formula
         : Rewrite(formula, t =>
         {
             if (TryParse(t.Text) is not { } node || !target(node)) return null;
             var renamed = node with
             {
-                Column1 = string.Equals(node.Column1, oldName, Ignore) ? newName : node.Column1,
-                Column2 = string.Equals(node.Column2, oldName, Ignore) ? newName : node.Column2
+                Column1 = node.Column1 != null && names.TryGetValue(node.Column1, out var a) ? a : node.Column1,
+                Column2 = node.Column2 != null && names.TryGetValue(node.Column2, out var b) ? b : node.Column2
             };
             return renamed == node ? null : Format(renamed, t.Text.Contains(ThisRowItem, Ignore));
         });
