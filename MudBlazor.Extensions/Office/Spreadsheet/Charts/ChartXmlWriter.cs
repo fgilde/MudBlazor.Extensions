@@ -30,18 +30,22 @@ internal static class ChartXmlWriter
 
     internal static XElement ShiftDrawing(XElement root, Axis axis, int index, int count)
     {
-        var moves = Markers(root).Select(m =>
-        {
-            var (cell, offset) = ChartXmlReader.Marker(m);
-            var moved = SheetChart.Move(cell, offset, axis, index, count);
-            return moved == (cell, offset) ? ((CellRef, (double, double))?)null : moved;
-        }).ToList();
-        if (moves.All(m => m == null)) return root;
         var copy = new XElement(root);
-        foreach (var (marker, move) in Markers(copy).Zip(moves))
-            if (move is { } m)
-                SetMarker(marker, m.Item1, m.Item2);
-        return copy;
+        var changed = false;
+        foreach (var anchor in copy.Descendants().Where(e => e.Name.LocalName is "twoCellAnchor" or "oneCellAnchor"))
+        {
+            if (Child(anchor, "from") is not { } fromMarker) continue;
+            var toMarker = Child(anchor, "to");
+            var (from, fromOffset) = ChartXmlReader.Marker(fromMarker);
+            var (to, toOffset) = toMarker != null ? ChartXmlReader.Marker(toMarker) : (from, fromOffset);
+            var moved = SheetChart.MoveAnchor(ChartXmlReader.EditAs(anchor), from, fromOffset, to, toOffset, axis, index, count);
+            if (moved == (from, fromOffset, to, toOffset)) continue;
+            changed = true;
+            SetMarker(fromMarker, moved.From, moved.FromOffset);
+            SetMarker(toMarker, moved.To, moved.ToOffset);
+        }
+
+        return changed ? copy : root;
     }
 
     internal static void SetAnchor(XElement anchor, SheetChart chart)
@@ -227,6 +231,7 @@ internal static class ChartXmlWriter
     private static XElement Data(XNamespace c, string name, string reference, bool text, Workbook wb, Worksheet host)
     {
         var cells = ChartDataResolver.Cells(wb, host, reference) ?? [];
+        text |= name == "xVal" && cells.Any(x => x.Value.Kind is not (CellValueKind.Empty or CellValueKind.Number));
         var values = cells.Select(x => text ? x.Value.Kind == CellValueKind.Empty ? null : x.Value.ToString()
                 : x.Value.Kind == CellValueKind.Number ? SheetXmlWriter.Number(x.Value.NumberValue) : null).ToList();
         return new XElement(c + name, new XElement(c + (text ? "strRef" : "numRef"), new XElement(c + "f", reference), Cache(c, text ? "strCache" : "numCache", values)));
@@ -323,9 +328,6 @@ internal static class ChartXmlWriter
         if (parent.Elements().FirstOrDefault(e => Array.IndexOf(order, e.Name.LocalName) > rank) is { } after) after.AddBeforeSelf(child);
         else parent.Add(child);
     }
-
-    private static IEnumerable<XElement> Markers(XElement root) =>
-        root.Descendants().Where(e => e.Name.LocalName is "from" or "to" && e.Parent?.Name.LocalName is "twoCellAnchor" or "oneCellAnchor");
 
     private static void SetMarker(XElement marker, CellRef cell, (double X, double Y) offset)
     {

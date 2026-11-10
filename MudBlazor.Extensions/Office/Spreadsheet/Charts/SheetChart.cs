@@ -83,12 +83,14 @@ public sealed class SheetChart
 
     internal IReadOnlyList<string> OtherRefs { get; private set; } = [];
 
+    internal string EditAs { get; private set; }
+
     internal static SheetChart Create(ChartKind kind, string title, bool stacked, bool legend, IReadOnlyList<ChartSeries> series, IReadOnlyList<string> otherRefs,
-        bool readOnly = false, XElement source = null, string partName = null, string relationshipId = null) =>
+        bool readOnly = false, XElement source = null, string partName = null, string relationshipId = null, string editAs = null) =>
         new(Guid.NewGuid().ToString("N"), kind)
         {
             Title = title, Stacked = stacked, ShowLegend = legend, Series = series, OtherRefs = otherRefs, ReadOnly = readOnly, Source = source, PartName = partName,
-            RelationshipId = relationshipId
+            RelationshipId = relationshipId, EditAs = editAs
         };
 
     internal SheetChart Place(CellRef from, (double X, double Y) fromOffset, CellRef to, (double X, double Y) toOffset)
@@ -107,8 +109,7 @@ public sealed class SheetChart
 
     internal SheetChart Shift(Axis axis, int index, int count)
     {
-        var (from, fromOffset) = Move(From, FromOffset, axis, index, count);
-        var (to, toOffset) = Move(To, ToOffset, axis, index, count);
+        var (from, fromOffset, to, toOffset) = MoveAnchor(EditAs, From, FromOffset, To, ToOffset, axis, index, count);
         return from == From && to == To && fromOffset == FromOffset && toOffset == ToOffset ? this : Place(from, fromOffset, to, toOffset);
     }
 
@@ -125,6 +126,22 @@ public sealed class SheetChart
     }
 
     internal CellRange Area => CellRange.FromBounds(From.Row, From.Column, Math.Max(From.Row, To.Row), Math.Max(From.Column, To.Column));
+
+    internal static (CellRef From, (double X, double Y) FromOffset, CellRef To, (double X, double Y) ToOffset) MoveAnchor(string editAs, CellRef from,
+        (double X, double Y) fromOffset, CellRef to, (double X, double Y) toOffset, Axis axis, int index, int count)
+    {
+        if (editAs == "absolute") return (from, fromOffset, to, toOffset);
+        var (start, startOffset) = Move(from, fromOffset, axis, index, count);
+        if (editAs != "oneCell")
+        {
+            var (end, endOffset) = Move(to, toOffset, axis, index, count);
+            return (start, startOffset, end, endOffset);
+        }
+
+        return axis == Axis.Row
+            ? (start, startOffset, new CellRef(Math.Clamp(to.Row + start.Row - from.Row, 0, CellRef.MaxRows - 1), to.Column), toOffset)
+            : (start, startOffset, new CellRef(to.Row, Math.Clamp(to.Column + start.Column - from.Column, 0, CellRef.MaxColumns - 1)), toOffset);
+    }
 
     internal static (CellRef Cell, (double X, double Y) Offset) Move(CellRef cell, (double X, double Y) offset, Axis axis, int index, int count)
     {

@@ -44,7 +44,7 @@ internal static class ChartXmlReader
             }
 
             Collect(zip, chartEntry.FullName, part.DrawingParts);
-            var chart = Chart(root, readOnly, chartEntry.FullName, chartId);
+            var chart = Chart(root, readOnly, chartEntry.FullName, chartId, EditAs(anchor));
             var (from, fromOffset, to, toOffset) = Anchor(anchor, ws);
             charts.Add(chart.Place(from, fromOffset, to, toOffset));
         }
@@ -52,7 +52,7 @@ internal static class ChartXmlReader
         ws.Charts = part.OriginalCharts = charts;
     }
 
-    internal static SheetChart Chart(XElement root, bool readOnly, string partName, string relationshipId)
+    internal static SheetChart Chart(XElement root, bool readOnly, string partName, string relationshipId, string editAs = null)
     {
         var chart = Child(root, "chart");
         var plot = Child(chart, "plotArea");
@@ -63,7 +63,7 @@ internal static class ChartXmlReader
         var slots = kind == ChartKind.Other ? [] : types[0].Elements().Where(e => e.Name.LocalName == "ser").SelectMany(s => Slots(s).All).ToHashSet();
         var other = root.Descendants().Where(e => e.Name.LocalName == "f" && !slots.Contains(e)).Select(e => e.Value).ToList();
         return SheetChart.Create(kind, Title(chart, series), kind != ChartKind.Other && Val(Child(types[0], "grouping")) == "stacked", Child(chart, "legend") != null,
-            series, other, readOnly, root, partName, relationshipId);
+            series, other, readOnly, root, partName, relationshipId, editAs);
     }
 
     internal static (XElement Name, XElement Categories, XElement Values, IEnumerable<XElement> All) Slots(XElement ser)
@@ -90,6 +90,13 @@ internal static class ChartXmlReader
         var rgb = Val(Child(Child(spPr, "solidFill"), "srgbClr") ?? Child(Child(Child(spPr, "ln"), "solidFill"), "srgbClr"));
         return rgb is { Length: 6 } ? "#" + rgb.ToUpperInvariant() : null;
     }
+
+    internal static string EditAs(XElement anchor) => anchor?.Name.LocalName switch
+    {
+        "absoluteAnchor" => "absolute",
+        "oneCellAnchor" => "oneCell",
+        _ => (string)anchor?.Attribute("editAs")
+    };
 
     internal static string Val(XElement e) => (string)e?.Attribute("val");
 

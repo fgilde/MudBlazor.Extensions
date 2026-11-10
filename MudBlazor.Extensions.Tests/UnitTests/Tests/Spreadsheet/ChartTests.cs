@@ -390,6 +390,76 @@ public class ChartTests
         Assert.Equal(Entry(package, "xl/charts/chart1.xml"), Entry(Write(wb), "xl/charts/chart1.xml"));
     }
 
+    [Fact]
+    public void Shift_RespectsAnchorEditAs()
+    {
+        var anchors = Drawing(0).Split("<xdr:twoCellAnchor>");
+        var drawing = anchors[0] + "<xdr:twoCellAnchor editAs=\"oneCell\">" + anchors[1] + "<xdr:twoCellAnchor editAs=\"absolute\">" + anchors[2];
+        var package = ChartPackage(drawing: drawing);
+        var wb = Read(package);
+        var ws = wb.Sheets[0];
+        Assert.False(wb.HasUnshiftedReferences);
+        (int, int, int, int, int, int) Rows()
+        {
+            var e = Xml(Write(wb), "xl/drawings/drawing1.xml").Root!.Elements().Select(a => (int.Parse(a.Element(Xdr + "from")!.Element(Xdr + "row")!.Value),
+                int.Parse(a.Element(Xdr + "to")!.Element(Xdr + "row")!.Value))).ToList();
+            return (e[0].Item1, e[0].Item2, e[1].Item1, e[1].Item2, e[2].Item1, e[2].Item2);
+        }
+
+        (CellRef, CellRef, CellRef, CellRef) Model() => (ws.Charts[0].From, ws.Charts[0].To, ws.Charts[1].From, ws.Charts[1].To);
+
+        wb.Execute(new InsertRowsCommand(ws, 5, 2));
+        Assert.Equal((1, 16, 1, 10, 1, 11), Rows());
+        Assert.Equal((R("E2"), R("L17"), R("N2"), R("S12")), Model());
+        wb.Execute(new InsertRowsCommand(ws, 0, 1));
+        Assert.Equal((2, 17, 2, 11, 1, 11), Rows());
+        Assert.Equal((R("E3"), R("L18"), R("N2"), R("S12")), Model());
+        wb.Execute(new DeleteRowsCommand(ws, 4, 3));
+        Assert.Equal((2, 17, 2, 11, 1, 11), Rows());
+        wb.Execute(new DeleteRowsCommand(ws, 0, 1));
+        Assert.Equal((1, 16, 1, 10, 1, 11), Rows());
+        Assert.Equal((R("E2"), R("L17"), R("N2"), R("S12")), Model());
+
+        for (var i = 0; i < 4; i++) wb.Undo.Undo();
+        Assert.Equal(Entry(package, "xl/drawings/drawing1.xml"), Entry(Write(wb), "xl/drawings/drawing1.xml"));
+    }
+
+    [Fact]
+    public void DeleteRows_CoveringChart_CollapsesAnchorAndUndoRestores()
+    {
+        var package = ChartPackage();
+        var wb = Read(package);
+        var ws = wb.Sheets[0];
+        wb.Execute(new DeleteRowsCommand(ws, 0, 20));
+
+        Assert.Equal(2, ws.Charts.Count);
+        Assert.All(ws.Charts, c => Assert.Equal((0, 0, 0.0, 0.0), (c.From.Row, c.To.Row, c.FromOffset.Y, c.ToOffset.Y)));
+        var anchors = Xml(Write(wb), "xl/drawings/drawing1.xml").Root!.Elements().ToList();
+        Assert.Equal(3, anchors.Count);
+        Assert.Equal([("0", "0"), ("0", "9"), ("0", "0")], anchors.Select(a => (a.Element(Xdr + "from")!.Element(Xdr + "row")!.Value, a.Element(Xdr + "to")!.Element(Xdr + "row")!.Value)));
+
+        wb.Undo.Undo();
+        Assert.Equal((R("E2"), R("L17"), (1.0, 2.0)), (ws.Charts[0].From, ws.Charts[0].To, ws.Charts[0].FromOffset));
+        Assert.Equal(Entry(package, "xl/drawings/drawing1.xml"), Entry(Write(wb), "xl/drawings/drawing1.xml"));
+    }
+
+    [Fact]
+    public void ScatterWithTextX_WritesStringReference()
+    {
+        var wb = Workbook.Create();
+        var ws = wb.Sheets[0];
+        Fill(wb, ws, "A1", ["X", "Y"], ["a", 2], ["b", 4]);
+        wb.Execute(new InsertChartCommand(ws, CellRange.Parse("A1:B3"), ChartKind.Scatter));
+        var written = Write(wb);
+        var ser = Xml(written, Entries(written).Single(n => n.StartsWith("xl/charts/chart", StringComparison.Ordinal))).Root!.Descendants(C + "ser").Single();
+
+        var x = ser.Element(C + "xVal")!.Elements().Single();
+        Assert.Equal("strRef", x.Name.LocalName);
+        Assert.Equal(["a", "b"], x.Descendants(C + "v").Select(v => v.Value));
+        Assert.Equal("numRef", ser.Element(C + "yVal")!.Elements().Single().Name.LocalName);
+        Assert.Equal("Sheet1!$A$2:$A$3", Read(written).Sheets[0].Charts[0].Series[0].CategoriesRef);
+    }
+
     private static void Fill(Workbook wb, Worksheet ws, string start, params object?[][] rows)
     {
         var at = R(start);
@@ -485,7 +555,7 @@ public class ChartTests
         + $"<cx:numDim type=\"val\"><cx:f>Sheet1!$B${2 + rows}:$B${4 + rows}</cx:f><cx:lvl ptCount=\"3\" formatCode=\"General\"><cx:pt idx=\"0\">10</cx:pt><cx:pt idx=\"1\">20</cx:pt><cx:pt idx=\"2\">30</cx:pt></cx:lvl></cx:numDim>"
         + "</cx:data></cx:chartData><cx:chart><cx:plotArea><cx:plotAreaRegion><cx:series layoutId=\"waterfall\" uniqueId=\"{1}\"><cx:dataId val=\"0\"/></cx:series></cx:plotAreaRegion></cx:plotArea></cx:chart></cx:chartSpace>";
 
-    private static byte[] ChartPackage(string? chart2 = null, bool chartEx = false)
+    private static byte[] ChartPackage(string? chart2 = null, bool chartEx = false, string? drawing = null)
     {
         string Cell(string r, string body, string type = "") => $"<c r=\"{r}\"{type}>{body}</c>";
         var rows = "<row r=\"1\">" + Cell("A1", "<v>0</v>", " t=\"s\"") + Cell("B1", "<v>1</v>", " t=\"s\"") + Cell("C1", "<v>2</v>", " t=\"s\"") + "</row>";
@@ -518,7 +588,7 @@ public class ChartTests
             ("xl/sharedStrings.xml", Encoding.UTF8.GetBytes($"<sst xmlns=\"{Main}\">{string.Concat(new[] { "Month", "North", "South", "Jan", "Feb", "Mar" }.Select(s => $"<si><t>{s}</t></si>"))}</sst>")),
             ("xl/worksheets/sheet1.xml", Encoding.UTF8.GetBytes(sheet)),
             ("xl/worksheets/_rels/sheet1.xml.rels", Encoding.UTF8.GetBytes(Rels(("rId1", "drawing", "../drawings/drawing1.xml")))),
-            ("xl/drawings/drawing1.xml", Encoding.UTF8.GetBytes(Drawing(0, chartEx))),
+            ("xl/drawings/drawing1.xml", Encoding.UTF8.GetBytes(drawing ?? Drawing(0, chartEx))),
             ("xl/drawings/_rels/drawing1.xml.rels", Encoding.UTF8.GetBytes(Rels([.. drawingRels]))),
             ("xl/charts/chart1.xml", Encoding.UTF8.GetBytes(ColumnChart(0))),
             ("xl/charts/_rels/chart1.xml.rels", Encoding.UTF8.GetBytes(Rels(("rId1", "http://schemas.microsoft.com/office/2011/relationships/chartStyle", "style1.xml")))),
