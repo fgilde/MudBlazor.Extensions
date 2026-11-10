@@ -41,6 +41,33 @@ public class SortFilterTests
         Enumerable.Range(from, to - from + 1).Select(r => ws[new CellRef(r, column)]?.Value ?? default).ToList();
 
     [Fact]
+    public void Sort_MovesNotesAndLinksAndRecordsFilterSort()
+    {
+        var (wb, ws) = Sheet(["Name", "Score"], ["b", 2], ["c", 3], ["a", 1]);
+        wb.Execute(new SetAutoFilterCommand(ws, G("A1:B4")));
+        wb.Execute(new SetNoteCommand(ws, new CellNote(R("A2"), "me", "about b")));
+        wb.Execute(new SetLinkCommand(ws, new CellLink(R("B3"), "https://c.example/", null, null, null)));
+        wb.Execute(new SetLinkCommand(ws, new CellLink(R("D2"), "https://outside.example/", null, null, null)));
+
+        var key = new SortKey(0);
+        wb.Execute(new SortCommand(ws, G("A1:B4"), [key], hasHeader: true));
+        Assert.Equal([V("a"), V("b"), V("c")], Column(ws, 0, 1, 3));
+        Assert.Equal(("A3", "about b"), (ws.Notes.Single().Cell.ToA1(), ws.Notes.Single().Text));
+        Assert.Equal("https://c.example/", ws.LinkAt(R("B4"))!.Target);
+        Assert.Null(ws.LinkAt(R("B3")));
+        Assert.Equal("https://outside.example/", ws.LinkAt(R("D2"))!.Target);
+        Assert.Equal(key, ws.AutoFilter!.Sort);
+
+        wb.Undo.Undo();
+        Assert.Equal("A2", ws.Notes.Single().Cell.ToA1());
+        Assert.Equal("https://c.example/", ws.LinkAt(R("B3"))!.Target);
+        Assert.Null(ws.AutoFilter!.Sort);
+
+        wb.Execute(new SortCommand(ws, G("D1:D3"), [key with { Column = 3 }], hasHeader: false));
+        Assert.Null(ws.AutoFilter!.Sort);
+    }
+
+    [Fact]
     public void Sort_ByTwoKeys_StableAndExcelOrder()
     {
         var (wb, ws) = Sheet(

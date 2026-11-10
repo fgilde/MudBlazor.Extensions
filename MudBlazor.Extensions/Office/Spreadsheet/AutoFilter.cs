@@ -256,6 +256,8 @@ public sealed class AutoFilter
 
     internal AutoFilter WithOpaqueRows(IReadOnlySet<int> rows) => new(Range, Columns, Sort, Source, ColumnSources, rows);
 
+    internal AutoFilter WithSort(SortKey sort) => new(Range, Columns, sort, Source, ColumnSources, OpaqueRows);
+
     internal AutoFilter Shift(Axis axis, int index, int count)
     {
         if (Worksheet.MoveRange(Range, axis, index, count) is not { } range) return null;

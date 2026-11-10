@@ -33422,8 +33422,9 @@
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SortCommand">
             <summary>
             Sorts the rows of a range in a stable way, in Excel order: numbers, text, booleans, errors, and blank cells last (also when descending).
-            Values, formulas (moved relatively, as when copying), styles and row heights move with their rows. Like Excel, hidden and filtered rows
-            stay in place and only the visible rows are reordered among themselves; ranges that intersect merged cells are refused.
+            Values, formulas (moved relatively, as when copying), styles, row heights, notes and single-row links move with their rows. Like Excel, hidden
+            and filtered rows stay in place and only the visible rows are reordered among themselves; ranges that intersect merged cells are refused.
+            Sorting inside the auto filter range records the first key as the filter's sort.
             </summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The range to sort.</param>
@@ -33433,8 +33434,9 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SortCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.SortKey},System.Boolean)">
             <summary>
             Sorts the rows of a range in a stable way, in Excel order: numbers, text, booleans, errors, and blank cells last (also when descending).
-            Values, formulas (moved relatively, as when copying), styles and row heights move with their rows. Like Excel, hidden and filtered rows
-            stay in place and only the visible rows are reordered among themselves; ranges that intersect merged cells are refused.
+            Values, formulas (moved relatively, as when copying), styles, row heights, notes and single-row links move with their rows. Like Excel, hidden
+            and filtered rows stay in place and only the visible rows are reordered among themselves; ranges that intersect merged cells are refused.
+            Sorting inside the auto filter range records the first key as the filter's sort.
             </summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The range to sort.</param>

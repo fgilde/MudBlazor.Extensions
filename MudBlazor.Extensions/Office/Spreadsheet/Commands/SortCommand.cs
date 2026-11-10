@@ -4,8 +4,9 @@ namespace MudBlazor.Extensions.Office.Spreadsheet;
 
 /// <summary>
 /// Sorts the rows of a range in a stable way, in Excel order: numbers, text, booleans, errors, and blank cells last (also when descending).
-/// Values, formulas (moved relatively, as when copying), styles and row heights move with their rows. Like Excel, hidden and filtered rows
-/// stay in place and only the visible rows are reordered among themselves; ranges that intersect merged cells are refused.
+/// Values, formulas (moved relatively, as when copying), styles, row heights, notes and single-row links move with their rows. Like Excel, hidden
+/// and filtered rows stay in place and only the visible rows are reordered among themselves; ranges that intersect merged cells are refused.
+/// Sorting inside the auto filter range records the first key as the filter's sort.
 /// </summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="range">The range to sort.</param>
@@ -17,6 +18,7 @@ public sealed class SortCommand(Worksheet sheet, CellRange range, IReadOnlyList<
     private List<(int Row, double? Height)> _heights;
     private List<int> _rows;
     private Action _restoreFileData;
+    private (AutoFilter Filter, IReadOnlyList<CellNote> Notes, IReadOnlyList<CellLink> Links) _annotations;
     private CellRange _data;
 
     /// <inheritdoc />
@@ -45,6 +47,8 @@ public sealed class SortCommand(Worksheet sheet, CellRange range, IReadOnlyList<
         var moved = _rows.Where((r, i) => order[i] != r).ToHashSet();
         _restoreFileData = sheet.ForgetFileData(c => moved.Contains(c.Row) && c.Column >= _data.Left && c.Column <= _data.Right);
 
+        _annotations = (sheet.AutoFilter, sheet.Notes, sheet.Links);
+        MoveAnnotations(order.Select((from, i) => (from, _rows[i])).ToDictionary());
         foreach (var (c, _) in _before) sheet.Restore(c, default);
         for (var i = 0; i < order.Count; i++)
         {
@@ -67,7 +71,19 @@ public sealed class SortCommand(Worksheet sheet, CellRange range, IReadOnlyList<
         foreach (var (c, state) in _before) sheet.Restore(c, state);
         foreach (var (row, height) in _heights) sheet.SetSize(Axis.Row, row, height);
         _restoreFileData?.Invoke();
+        (sheet.AutoFilter, sheet.Notes, sheet.Links) = _annotations;
         Notify(wb);
+    }
+
+    private void MoveAnnotations(Dictionary<int, int> target)
+    {
+        bool Inside(CellRef c) => c.Column >= _data.Left && c.Column <= _data.Right && target.ContainsKey(c.Row);
+        CellRef Moved(CellRef c) => new(target[c.Row], c.Column);
+        sheet.Notes = sheet.Notes.Select(n => Inside(n.Cell) ? n with { Cell = Moved(n.Cell) } : n).ToList();
+        sheet.Links = sheet.Links.Select(l => l.Span.Rows == 0 && Inside(l.Cell) && l.Cell.Column + l.Span.Columns <= _data.Right ? l with { Cell = Moved(l.Cell) } : l)
+            .ToList();
+        if (sheet.AutoFilter is { } filter && filter.Range.Contains(_data.Start) && filter.Range.Contains(_data.End))
+            sheet.AutoFilter = filter.WithSort(keys[0]);
     }
 
     private void Notify(Workbook wb)
