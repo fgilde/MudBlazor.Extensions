@@ -1,0 +1,13 @@
+@inherits MudExBaseComponent<MudExSlideStatusBar>
+@namespace MudBlazor.Extensions.Components
+
+<div @attributes="UserAttributes" class="@($"mud-ex-slide-status-bar {Class}".TrimEnd())" style="@Style" role="status">
+    <span class="mud-ex-slide-status-position">@(SlideCount > 0 ? TryLocalize("Slide {0} of {1}", SlideNumber, SlideCount) : "")</span>
+    <div class="mud-ex-sssb-zoom">
+        <button type="button" class="mud-ex-sssb-zoom-button" aria-label="@TryLocalize("Zoom Out")" title="@TryLocalize("Zoom Out")" @onclick="@(() => SetZoomAsync(Value - 0.1))">−</button>
+        <input type="range" class="mud-ex-sssb-slider" min="10" max="400" step="10" value="@Percent" aria-label="@TryLocalize("Zoom")" @onchange="OnSliderChangedAsync" />
+        <button type="button" class="mud-ex-sssb-zoom-button" aria-label="@TryLocalize("Zoom In")" title="@TryLocalize("Zoom In")" @onclick="@(() => SetZoomAsync(Value + 0.1))">+</button>
+        <span class="mud-ex-sssb-percent">@(Zoom == null ? TryLocalize("Fit") : $"{Percent}%")</span>
+        <MudIconButton Class="mud-ex-slide-status-fit" Icon="@Icons.Material.Filled.FitScreen" Size="Size.Small" aria-label="@TryLocalize("Fit to Window")" title="@TryLocalize("Fit to Window")" OnClick="@(() => ZoomChanged.InvokeAsync(null))" />
+    </div>
+</div>

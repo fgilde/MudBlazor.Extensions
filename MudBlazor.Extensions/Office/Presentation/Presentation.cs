@@ -64,6 +64,8 @@ public sealed class Presentation
         if (!Undo.InTransaction) RaiseChanged();
     }
 
+    internal bool CanHaveNotes(Slide slide) => slide.HasNotesPart || Package?.NotesMasterPart != null;
+
     internal void Notify(Slide slide, PresentationChangeKind kind)
     {
         if (slide != null)

@@ -19515,6 +19515,172 @@
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.Dispose">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideEditor">
+            <summary>
+            Presentation editor in the style of PowerPoint with ribbon, slide panel, notes pane and status bar.
+            Opens pptx files and is the editor for them in <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/>. Without a file it edits the <see cref="P:MudBlazor.Extensions.Components.MudExSlideEditor.Presentation"/> parameter.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.#ctor">
+            <summary>Creates the editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.Presentation">
+            <summary>The presentation to edit when no file is given. Changes by the user raise <see cref="P:MudBlazor.Extensions.Components.MudExSlideEditor.PresentationChanged"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.PresentationChanged">
+            <summary>Raised after every change of the presentation and when the editor replaces it (New, Open).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.RibbonMode">
+            <summary>Layout of the ribbon.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.ShowRibbon">
+            <summary>Whether the ribbon is shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.RibbonColor">
+            <summary>Color of the ribbon header. Defaults to the PowerPoint orange.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.RibbonCollapsed">
+            <summary>Whether the ribbon starts collapsed to its tab row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.RibbonContent">
+            <summary>Additional ribbon tabs rendered after the built-in tabs.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.ShowNotes">
+            <summary>Whether the notes pane is shown. The user can toggle it on the View tab.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.ShowSlidePanel">
+            <summary>Whether the slide panel with the thumbnails is shown. The user can toggle it on the View tab.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.CurrentPresentation">
+            <summary>The presentation currently shown, loaded from a file, created by New or given by <see cref="P:MudBlazor.Extensions.Components.MudExSlideEditor.Presentation"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.CurrentSlide">
+            <summary>The slide shown in the editing area.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.SelectedSlides">
+            <summary>The slides selected in the slide panel, in show order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.RenderPriority">
+            <summary>Priority among the file displays for presentation files.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.SaveFormats">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.CreateNew">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.LoadContentAsync(MudBlazor.Extensions.Core.MudExFileContent)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.OnThumbnailsVisible(System.String[])">
+            <summary>Called by the browser when thumbnails in the slide panel scrolled into view.</summary>
+            <param name="keys">The <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Key"/> of each visible slide.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.OnSlidesDropped(System.Int32,System.Int32)">
+            <summary>Called by the browser when slides were dragged to a new position in the slide panel.</summary>
+            <param name="from">The index of the dragged slide.</param>
+            <param name="target">The insertion index, from 0 to the slide count.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideNotes">
+            <summary>The speaker notes pane of the slide editor. The text is committed when the field loses the focus.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideNotes.Slide">
+            <summary>The slide whose notes are shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideNotes.ReadOnly">
+            <summary>If true the notes cannot be changed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideNotes.CanHaveNotes">
+            <summary>False if the slide cannot get notes because the presentation has no notes master; the pane is then read-only with a hint.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideNotes.NotesChanged">
+            <summary>Raised with the new text when the user leaves the field after changing the notes.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideNotes.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlidePanel">
+            <summary>The slide panel of the slide editor: numbered thumbnails that are rendered once they scroll into view, multi-selection and a context menu.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.Presentation">
+            <summary>The presentation whose slides are listed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.Images">
+            <summary>The image URLs of the presentation.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.Current">
+            <summary>The slide shown in the editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.Selection">
+            <summary>The selected slides.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.SelectionChanged">
+            <summary>Raised when the user clicks a slide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.ShowThumbnails">
+            <summary>False until the images are ready; no thumbnail is rendered before.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.LazyThumbnails">
+            <summary>If true only the first thumbnails are rendered at once, the others after the browser reported them visible.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.ReadOnly">
+            <summary>If true slides can only be selected, not changed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.KeyDown">
+            <summary>Raised for keys pressed in the panel.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.NewSlideRequested">
+            <summary>Raised by the context menu entry New Slide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.DuplicateRequested">
+            <summary>Raised by the context menu entry Duplicate Slide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.DeleteRequested">
+            <summary>Raised by the context menu entry Delete Slide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlidePanel.HideRequested">
+            <summary>Raised by the context menu entries Hide Slide (true) and Show Slide (false).</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlidePanel.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SlideSelection">
+            <summary>The slide selection of the slide panel.</summary>
+            <param name="Current">The slide to show in the editor.</param>
+            <param name="Slides">The selected slides in show order.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SlideSelection.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide})">
+            <summary>The slide selection of the slide panel.</summary>
+            <param name="Current">The slide to show in the editor.</param>
+            <param name="Slides">The selected slides in show order.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideSelection.Current">
+            <summary>The slide to show in the editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideSelection.Slides">
+            <summary>The selected slides in show order.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideShapeView">
             <summary>Shows one shape of a slide at its resolved position. Groups render an empty frame; their children are shapes of their own.</summary>
         </member>
@@ -19532,6 +19698,21 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Inherited">
             <summary>True for a shape of the layout or master: it is drawn behind the slide's shapes and takes no pointer events.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideStatusBar">
+            <summary>Status bar of the slide editor: the slide position and a zoom slider.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideStatusBar.SlideNumber">
+            <summary>The number of the shown slide, starting at 1.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideStatusBar.SlideCount">
+            <summary>The number of slides.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideStatusBar.Zoom">
+            <summary>Zoom factor, 1 is 100%; null fits the slide into the window.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideStatusBar.ZoomChanged">
+            <summary>Raised when the user changes the zoom; null means fit to window.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideText">
             <summary>Shows the text of a shape. The text is rendered as text nodes, never as markup.</summary>

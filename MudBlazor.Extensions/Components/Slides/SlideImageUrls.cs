@@ -31,7 +31,9 @@ public sealed class SlideImageUrls
         return data == null ? null : _dataUris[partName] = $"data:{contentType};base64,{Convert.ToBase64String(data)}";
     }
 
-    private (byte[] Data, string ContentType) Load(string partName)
+    internal bool IsRegistered(string partName) => _blobs.ContainsKey(partName);
+
+    internal (byte[] Data, string ContentType) Load(string partName)
     {
         if (_presentation.PendingMedia.TryGetValue(partName, out var pending)) return pending;
         var opc = _presentation.Package?.Opc;

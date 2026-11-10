@@ -190,7 +190,7 @@ public sealed class SetNotesCommand(Slide slide, string text) : IDocumentCommand
     /// <inheritdoc />
     public void Apply(Presentation document)
     {
-        if (!slide.HasNotesPart && document.Package?.NotesMasterPart == null)
+        if (!document.CanHaveNotes(slide))
             throw new InvalidOperationException("The slide has no notes and the presentation has no notes master.");
         _before = slide.Notes;
         slide.Notes = (text ?? "").ReplaceLineEndings("\n");

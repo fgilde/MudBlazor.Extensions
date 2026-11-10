@@ -1,0 +1,44 @@
+@inherits MudExBaseComponent<MudExSlidePanel>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Presentation
+
+<div @attributes="UserAttributes" class="@($"mud-ex-slide-panel {Class}".TrimEnd())" style="@Style" role="listbox" aria-multiselectable="true" aria-label="@TryLocalize("Slides")" tabindex="0" @onkeydown="KeyDown">
+    @if (Presentation != null)
+    {
+        var ratio = $"aspect-ratio:{Presentation.SlideWidth}/{Presentation.SlideHeight}";
+        @for (var i = 0; i < Presentation.Slides.Count; i++)
+        {
+            var slide = Presentation.Slides[i];
+            var selected = Selection?.Contains(slide) == true;
+            <div @key="slide" class="@ItemClass(slide, selected)" role="option" aria-selected="@(selected ? "true" : "false")" data-slide-key="@slide.Key" data-slide-index="@i"
+                 draggable="@(ReadOnly ? null : "true")" @onclick="@(e => ClickAsync(slide, e))" @oncontextmenu="@(e => ContextMenuAsync(slide, e))" @oncontextmenu:preventDefault="@(!ReadOnly)">
+                <span class="mud-ex-slide-panel-number">@(i + 1)</span>
+                <div class="mud-ex-slide-panel-thumb" style="@ratio">
+                    @if (ShowThumbnails && (!LazyThumbnails || _visible.Contains(slide.Key)))
+                    {
+                        <MudExSlideView Presentation="Presentation" Slide="slide" Images="Images" />
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+@if (!ReadOnly)
+{
+    <MudMenu @ref="_menu" Class="mud-ex-slide-panel-menu" PositionAtCursor="true" Dense="true">
+        <ActivatorContent><span class="mud-ex-slide-panel-menu-anchor"></span></ActivatorContent>
+        <ChildContent>
+            <MudMenuItem Icon="@Icons.Material.Filled.AddBox" OnClick="NewSlideRequested">@TryLocalize("New Slide")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.ContentCopy" OnClick="DuplicateRequested">@TryLocalize("Duplicate Slide")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.Delete" OnClick="DeleteRequested">@TryLocalize("Delete Slide")</MudMenuItem>
+            @if (Selection?.All(s => s.Hidden) == true)
+            {
+                <MudMenuItem Icon="@Icons.Material.Filled.Visibility" OnClick="@(() => HideRequested.InvokeAsync(false))">@TryLocalize("Show Slide")</MudMenuItem>
+            }
+            else
+            {
+                <MudMenuItem Icon="@Icons.Material.Filled.VisibilityOff" OnClick="@(() => HideRequested.InvokeAsync(true))">@TryLocalize("Hide Slide")</MudMenuItem>
+            }
+        </ChildContent>
+    </MudMenu>
+}

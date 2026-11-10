@@ -1,0 +1,9 @@
+@inherits MudExBaseComponent<MudExSlideNotes>
+@namespace MudBlazor.Extensions.Components
+
+<div @attributes="UserAttributes" class="@($"mud-ex-slide-notes {Class}".TrimEnd())" style="@Style">
+    <MudTextField T="string" Value="@_draft" ValueChanged="@(v => _draft = v)" Immediate="true" Lines="3" Variant="Variant.Text" Underline="false"
+                  Placeholder="@TryLocalize("Click to add notes")" aria-label="@TryLocalize("Notes")" ReadOnly="@(ReadOnly || !CanHaveNotes)"
+                  HelperText="@(CanHaveNotes ? null : TryLocalize("This presentation has no notes master, so notes cannot be added to this slide."))"
+                  OnBlur="@(_ => CommitAsync())" />
+</div>
