@@ -49,7 +49,7 @@ public class MudExWebComponentsTests
 
     [Theory]
     [InlineData(typeof(MudExFileDisplay), "mudex-file-display")]
-    [InlineData(typeof(MudExFileDisplayExcelUniver), "mudex-file-display-excel-univer")]
+    [InlineData(typeof(MudExSpreadsheetEditor), "mudex-spreadsheet-editor")]
     [InlineData(typeof(MoveContent), "mudex-move-content")]
     public void TagNameFollowsTheDocumentedScheme(Type type, string expected)
         => Assert.Equal(expected, MudExWebComponents.TagName(type));

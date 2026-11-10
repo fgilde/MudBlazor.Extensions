@@ -4354,95 +4354,6 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayEpub.DisposeAsync">
             <inheritdoc />
         </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayExcel">
-            <summary>
-            Simple Excel file viewer
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcel.Name">
-            <summary>
-            The name of the component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcel.RenderPriority">
-            <inheritdoc />
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcel.Value">
-            <summary>
-            The Current code string provided from file
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcel.FileDisplayInfos">
-            <summary>
-            The file display infos
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcel.Src">
-            <summary>
-            Src url of xlsx file
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcel.MudExFileDisplay">
-            <summary>
-            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcel.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcel.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver">
-            <summary>
-            Excel file viewer using Univer spreadsheet library
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.Name">
-            <summary>
-            The name of the component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.StartsActive">
-            <summary>
-            Not the default viewer for Excel files
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.FileDisplayInfos">
-            <summary>
-            The file display infos
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.MudExFileDisplay">
-            <summary>
-            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.GetJsArguments">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.ImportModuleAndCreateJsAsync">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.OnWorkbookLoaded">
-            <summary>
-            Called from JS when the workbook is loaded
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcelUniver.OnError(System.String)">
-            <summary>
-            Called from JS when an error occurs
-            </summary>
-        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayFont">
             <summary>
             Simple component to display markdown files with MudExFileDisplay
@@ -24098,11 +24009,6 @@
             FileService 
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadExcelFile(System.IO.Stream,System.String)">
-            <summary>
-            Reads a stream as excel file
-            </summary>
-        </member>
         <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToAbsoluteUrlAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Converts a url to an absolute url
@@ -37026,11 +36932,6 @@
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.DownloadAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadExcelFile(System.IO.Stream,System.String)">
-            <summary>
-            Reads a stream as excel file
-            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.SaveLocalFileAsync(MudBlazor.Extensions.Core.MudExFileContent,System.String,System.Threading.CancellationToken)">
             <summary>

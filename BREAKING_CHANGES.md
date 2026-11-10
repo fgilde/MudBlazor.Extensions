@@ -116,6 +116,33 @@ If you render `<MudExFileDisplayCode>` directly and want the previous highlighte
 
 ---
 
+## Excel Viewers Replaced by `MudExSpreadsheetEditor`
+
+`MudExFileDisplayExcel` (ExcelDataReader grid) and `MudExFileDisplayExcelUniver` (Univer from a CDN) are removed together with
+`IMudExFileService.ReadExcelFile`, `ExcelFile`, `ExcelSheet` and `ExcelRow`. `MudExFileDisplay` now opens xlsx, xlsm, xls, csv and tsv
+in `MudExSpreadsheetEditor`, read-only unless the display is in edit mode (the display sets `ReadOnly` from its edit mode).
+
+**Reason:** one spreadsheet component that reads, edits and saves xlsx, xls and csv without loading scripts from a CDN.
+
+**Before:**
+```razor
+<MudExFileDisplayExcel Src="@url" />
+```
+```csharp
+var excel = fileService.ReadExcelFile(stream, contentType);
+```
+
+**After:**
+```razor
+<MudExFileDisplay Url="@url" />
+<MudExSpreadsheetEditor FileDisplayInfos="@infos" ReadOnly="true" />
+```
+```csharp
+var workbook = XlsxReader.Read(stream);
+```
+
+---
+
 ## Previously Deprecated Methods (Reminder)
 
 The following methods were already deprecated in earlier versions and continue to point to their async replacements:

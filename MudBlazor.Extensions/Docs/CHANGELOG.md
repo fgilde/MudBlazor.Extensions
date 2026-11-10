@@ -1,4 +1,5 @@
 ﻿## Change Log    
+ - 9.13.0 > Breaking: MudExFileDisplayExcel, MudExFileDisplayExcelUniver, `IMudExFileService.ReadExcelFile` and `ExcelFile` are removed, MudExFileDisplay opens xlsx, xls, csv and tsv in MudExSpreadsheetEditor (see BREAKING_CHANGES.md)
  - 9.12.2 > Fix MudExBaseComponent `OnFinishedRenderAsync`: the render finished completion threw "An attempt was made to transition a task to a final state when it had already completed" as an unobserved exception on every re-render after the first (fgilde/MudExRichTextEditor#63)
  - 9.12.2 > Update NuGet packages (ASP.NET Core 10.0.14, Nextended 10.1.51, MudBlazor.Markdown 9.12.0, MsgReader 6.2, SharpCompress 0.50.8, FluentValidation 12.2.0, NUglify 1.23.6)
  - 9.12.1 > Update Nextended to 10.1.50 (CreateInstance for interfaces and constructor chains with ever growing generic types)

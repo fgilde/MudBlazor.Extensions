@@ -161,6 +161,42 @@ public class SpreadsheetEditorTests : IAsyncLifetime
         Assert.Equal("Excel Workbook", cut.Instance.SaveFormats[0].Name);
     }
 
+    [Theory]
+    [InlineData("book.xlsx", XlsxType)]
+    [InlineData("book.csv", "text/csv")]
+    [InlineData("book.tsv", "text/tab-separated-values")]
+    public async Task Xlsx_InFileDisplay_UsesSpreadsheetEditor_ReadOnlyByDefault(string name, string type)
+    {
+        var context = NewContext();
+        var display = context.Render<MudExFileDisplay>(p => p
+            .Add(c => c.FileName, name)
+            .Add(c => c.ContentType, type)
+            .Add(c => c.ContentStream, new MemoryStream(name.EndsWith(".xlsx") ? Xlsx(Book(("Sheet1", "A1", 1d))) : Encoding.UTF8.GetBytes("a,b" + (char)10 + "1,2"))));
+        await display.InvokeAsync(() => display.FindComponent<MoveContent>().Instance.ElementFoundChanged(false));
+
+        display.WaitForAssertion(() => Assert.NotEmpty(display.FindComponents<MudExSpreadsheetEditor>()));
+        Assert.True(display.FindComponent<MudExSpreadsheetEditor>().Instance.ReadOnly);
+    }
+
+    [Fact]
+    public void NoUniverScriptReferenced()
+    {
+        var root = new DirectoryInfo(AppContext.BaseDirectory);
+        while (root is not null && !File.Exists(Path.Combine(root.FullName, "MudBlazor.Extensions.slnx")))
+            root = root.Parent;
+        Assert.NotNull(root);
+        var library = Path.Combine(root.FullName, "MudBlazor.Extensions");
+        var files = new[] { "Components", "wwwroot/js", "wwwroot/css" }
+            .SelectMany(d => Directory.EnumerateFiles(Path.Combine(library, d), "*.*", SearchOption.AllDirectories))
+            .Where(f => f.EndsWith(".razor") || f.EndsWith(".cs") || f.EndsWith(".js") || f.EndsWith(".css"));
+        Assert.All(files, f =>
+        {
+            var text = File.ReadAllText(f);
+            Assert.DoesNotContain("univer", text, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("luckyexcel", text, StringComparison.OrdinalIgnoreCase);
+        });
+    }
+
     [Fact]
     public async Task IsEditorForXlsxCsvXls_InFileDisplay()
     {
@@ -171,8 +207,6 @@ public class SpreadsheetEditorTests : IAsyncLifetime
 
         var priority = ((IMudExFileDisplay)editor).RenderPriority;
         Assert.Equal(10, priority);
-        Assert.True(priority > ((IMudExFileDisplay)new MudExFileDisplayExcel()).RenderPriority);
-        Assert.True(priority > ((IMudExFileDisplay)new MudExFileDisplayExcelUniver()).RenderPriority);
 
         var context = NewContext(out var provider);
         var display = context.Render<MudExFileDisplay>(p => p

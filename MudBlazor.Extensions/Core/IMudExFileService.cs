@@ -12,11 +12,6 @@ namespace MudBlazor.Extensions.Core;
 public interface IMudExFileService : IAsyncDisposable
 {
     /// <summary>
-    /// Reads a stream as excel file
-    /// </summary>
-    ExcelFile ReadExcelFile(Stream stream, string contentType);
-
-    /// <summary>
     /// Converts a url to an absolute url
     /// </summary>
     /// <param name="url"></param>

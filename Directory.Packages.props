@@ -58,7 +58,6 @@
 
     <!-- File / document handling -->
     <PackageVersion Include="ExcelDataReader" Version="3.9.0" />
-    <PackageVersion Include="ExcelDataReader.DataSet" Version="3.9.0" />
     <PackageVersion Include="SharpCompress" Version="0.50.8" />
     <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.14" />
     <PackageVersion Include="MetadataExtractor" Version="2.9.3" />

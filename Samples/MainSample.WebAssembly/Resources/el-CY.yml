@@ -2204,7 +2204,6 @@ MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
 MudExFileDisplay: Οθόνη MudExFileDisplay
 MudExFileDisplayCode: MudExFileDisplayCode
 MudExFileDisplayDialog: MudExFileDisplayDialog
-MudExFileDisplayExcel: MudExFileDisplayExcel
 MudExFileDisplayFont: MudExFileDisplayFont
 MudExFileDisplayHtml: MudExFileDisplayHtml
 MudExFileDisplayOfficeLive: MudExFileDisplayOfficeLive

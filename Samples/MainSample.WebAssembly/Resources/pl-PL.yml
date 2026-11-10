@@ -2204,7 +2204,6 @@ MudExEnumSelect<TEnum>: MudExEnumSelect (Wybór MudExEnum))<TEnum>
 MudExFileDisplay: Wyświetlacz MudExFileDisplay
 MudExFileDisplayCode: MudExFileDisplayCode (Kod wyświetlacza)
 MudExFileDisplayDialog: MudExFileDisplayDialog
-MudExFileDisplayExcel: MudExFileDisplayExcel
 MudExFileDisplayFont: MudExFileDisplayFont (Czcionka wyświetlająca MudExFile)
 MudExFileDisplayHtml: MudExFileDisplayHtml (Plik MudExFileDisplayHtml)
 MudExFileDisplayOfficeLive: MudExFileDisplayOfficeLive
