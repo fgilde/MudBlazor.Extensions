@@ -42,18 +42,17 @@
         }
         else
         {
-            <MudTextField T="string" Class="mud-ex-ssfm-search" Placeholder="@TryLocalize("Search")" Value="_search" ValueChanged="@(v => _search = v ?? "")"
+            <MudTextField T="string" Class="mud-ex-ssfm-search" Placeholder="@TryLocalize("Search")" Value="_search" ValueChanged="@(v => { _search = v ?? ""; _shown = null; })"
                           Immediate="true" Margin="Margin.Dense" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" />
             <div class="mud-ex-ssfm-list" role="group" aria-label="@TryLocalize("Values")">
                 <label class="mud-ex-ssfm-option mud-ex-ssfm-all">
                     <input type="checkbox" checked="@AllChecked" @onchange="@(e => CheckAll(e.Value is true))" />@TryLocalize("(Select All)")
                 </label>
-                @foreach (var value in Shown)
-                {
+                <MudVirtualize Enabled="@(Shown.Count > VirtualizeFrom)" Items="Shown" Context="value" ItemSize="24" OverscanCount="10">
                     <label class="mud-ex-ssfm-value" data-value="@value" @key="value">
                         <input type="checkbox" checked="@_checked.Contains(value)" @onchange="@(e => Check(value, e.Value is true))" />@value
                     </label>
-                }
+                </MudVirtualize>
                 @if (_hasBlanks && _search.Length == 0)
                 {
                     <label class="mud-ex-ssfm-option mud-ex-ssfm-blanks">

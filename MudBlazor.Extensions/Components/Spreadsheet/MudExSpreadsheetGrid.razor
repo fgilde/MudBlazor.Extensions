@@ -150,10 +150,11 @@
                         @if (_filterOpen == head.Cell)
                         {
                             <MudExSpreadsheetFilterMenu Sheet="_sheet"
-                                                        Range="@(head.Table?.Range ?? _sheet.AutoFilter.Range)"
+                                                        Range="@FilterOf(head).Range"
                                                         Column="head.Cell.Column"
-                                                        Criteria="@(head.Table == null ? _sheet.AutoFilter.Columns.GetValueOrDefault(head.Cell.Column) : null)"
-                                                        CanFilter="@(head.Table == null && CanEdit)"
+                                                        Filter="@FilterOf(head)"
+                                                        Criteria="@FilterOf(head).Columns.GetValueOrDefault(head.Cell.Column)"
+                                                        CanFilter="CanEdit"
                                                         DisplayText="DisplayText"
                                                         OnSort="@(d => SortFromFilterAsync(head, d))"
                                                         OnApply="@(c => ApplyFilterAsync(head, c))"

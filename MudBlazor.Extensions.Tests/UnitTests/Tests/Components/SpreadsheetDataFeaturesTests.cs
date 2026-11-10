@@ -114,6 +114,42 @@ public class SpreadsheetDataFeaturesTests : IAsyncLifetime
     }
 
     [Fact]
+    public void TableHeaderFilter_HidesRows()
+    {
+        var wb = Book(("A1", "Fruit"), ("B1", "Qty"), ("A2", "apple"), ("B2", 1d), ("A3", "pear"), ("B3", 2d), ("A4", "apple"), ("B4", 3d));
+        wb.Execute(new CreateTableCommand(wb.Sheets[0], CellRange.Parse("A1:B4"), true));
+        wb.Undo.Clear();
+        var cut = Render(wb);
+
+        cut.Find(".mud-ex-ssg-filter-btn[data-c='0']").Click();
+        cut.WaitForAssertion(() => Assert.Equal(["apple", "pear"], _popovers.FindAll(".mud-ex-ssfm-value").Select(v => v.TextContent.Trim())));
+        _popovers.Find(".mud-ex-ssfm-value[data-value='apple'] input").Change(false);
+        _popovers.Find(".mud-ex-ssfm-ok").Click();
+
+        var sheet = wb.Sheets[0];
+        cut.WaitForAssertion(() => Assert.True(sheet.IsRowFiltered(1)));
+        Assert.False(sheet.IsRowFiltered(2));
+        Assert.Equal(["pear"], sheet.Tables[0].Filter.Columns[0].Shown);
+        cut.WaitForAssertion(() => Assert.Contains("mud-ex-ssg-filtered", cut.Find(".mud-ex-ssg-filter-btn[data-c='0']").ClassName));
+    }
+
+    [Fact]
+    public void FilterValues_OnlyFromRowsShownByOtherColumns()
+    {
+        var wb = Book(("A1", "Fruit"), ("B1", "Color"), ("A2", "apple"), ("B2", "red"), ("A3", "pear"), ("B3", "green"), ("A4", "apple"), ("B4", "yellow"));
+        var sheet = wb.Sheets[0];
+        wb.Execute(new SetAutoFilterCommand(sheet, CellRange.Parse("A1:B4")));
+        wb.Execute(new ApplyFilterCommand(sheet, 0, FilterCriteria.Values(new HashSet<string> { "apple" })));
+        wb.Execute(new ApplyFilterCommand(sheet, 1, FilterCriteria.Values(new HashSet<string> { "red" })));
+        var cut = Render(wb);
+
+        cut.Find(".mud-ex-ssg-filter-btn[data-c='1']").Click();
+
+        cut.WaitForAssertion(() => Assert.Equal(["red", "yellow"], _popovers.FindAll(".mud-ex-ssfm-value").Select(v => v.TextContent.Trim())));
+        Assert.Equal([true, false], _popovers.FindAll(".mud-ex-ssfm-value input").Select(i => i.HasAttribute("checked")));
+    }
+
+    [Fact]
     public async Task Validation_StopError_KeepsEditOpen()
     {
         var wb = Book(("A2", 5d));

@@ -13,6 +13,8 @@ public partial class MudExSpreadsheetFilterMenu
     /// <summary>The most distinct values the list shows, as in Excel.</summary>
     public const int MaxValues = 10_000;
 
+    private const int VirtualizeFrom = 200;
+
     private static readonly Choice[] Choices =
     [
         new("Equals", CustomFilterOperator.Equal, "{0}"),
@@ -44,6 +46,7 @@ public partial class MudExSpreadsheetFilterMenu
     private bool _showOperators;
     private bool _custom;
     private bool _and = true;
+    private List<string> _shown;
 
     private sealed record Choice(string Name, CustomFilterOperator Operator, string Pattern);
 
@@ -55,6 +58,9 @@ public partial class MudExSpreadsheetFilterMenu
 
     /// <summary>Zero-based sheet column of the filter.</summary>
     [Parameter] public int Column { get; set; }
+
+    /// <summary>The auto filter the column belongs to. Rows hidden by its other columns are left out of the value list, as in Excel.</summary>
+    [Parameter] public AutoFilter Filter { get; set; }
 
     /// <summary>The current criteria of the column, or null.</summary>
     [Parameter] public FilterCriteria Criteria { get; set; }
@@ -78,7 +84,7 @@ public partial class MudExSpreadsheetFilterMenu
 
     private string Header => DisplayText?.Invoke(new CellRef(Range.Top, Column)) ?? "";
 
-    private IEnumerable<string> Shown => _search.Length == 0 ? _items : _items.Where(v => v.Contains(_search, StringComparison.CurrentCultureIgnoreCase));
+    private List<string> Shown => _shown ??= _search.Length == 0 ? _items : _items.Where(v => v.Contains(_search, StringComparison.CurrentCultureIgnoreCase)).ToList();
 
     private bool AllChecked => Shown.All(_checked.Contains) && (!_hasBlanks || _blanks || _search.Length > 0);
 
@@ -90,8 +96,10 @@ public partial class MudExSpreadsheetFilterMenu
         var bottom = Math.Min(Range.Bottom, Sheet.UsedRange.Bottom);
         var seen = new Dictionary<string, CellValue>(StringComparer.OrdinalIgnoreCase);
         var numbers = 0;
+        var hidden = Filter?.WithColumn(Column, null).Evaluate(Sheet) ?? [];
         for (var r = Range.Top + 1; r <= bottom; r++)
         {
+            if (hidden.Contains(r)) continue;
             var at = new CellRef(r, Column);
             var text = DisplayText(at);
             if (text.Length == 0)
@@ -161,7 +169,7 @@ public partial class MudExSpreadsheetFilterMenu
 
     private void CheckAll(bool on)
     {
-        foreach (var value in Shown.ToList()) Check(value, on);
+        foreach (var value in Shown) Check(value, on);
         if (_search.Length == 0) _blanks = on;
     }
 

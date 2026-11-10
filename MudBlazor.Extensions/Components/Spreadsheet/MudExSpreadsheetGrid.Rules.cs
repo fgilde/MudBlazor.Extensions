@@ -25,12 +25,14 @@ public partial class MudExSpreadsheetGrid
                     yield return new FilterHead(new CellRef(filter.Range.Top, c), null, filter.Columns.ContainsKey(c));
         foreach (var t in _sheet.Tables)
         {
-            if (!t.HasAutoFilter || !t.HeaderRow || t.Range.Top < p.R0 || t.Range.Top > p.R1) continue;
+            if (t.Filter is not { } f || t.Range.Top < p.R0 || t.Range.Top > p.R1) continue;
             for (var c = Math.Max(p.C0, t.Range.Left); c <= Math.Min(p.C1, t.Range.Right); c++)
                 if (W(c) > 0 && H(t.Range.Top) > 0)
-                    yield return new FilterHead(new CellRef(t.Range.Top, c), t, false);
+                    yield return new FilterHead(new CellRef(t.Range.Top, c), t, f.Columns.ContainsKey(c));
         }
     }
+
+    private AutoFilter FilterOf(FilterHead head) => head.Table?.Filter ?? _sheet.AutoFilter;
 
     private string FilterButtonStyle(CellRef cell)
     {
@@ -63,7 +65,9 @@ public partial class MudExSpreadsheetGrid
     private async Task ApplyFilterAsync(FilterHead head, FilterCriteria criteria)
     {
         CloseFilter();
-        await TryWriteAsync(() => _workbook.Execute(new ApplyFilterCommand(_sheet, head.Cell.Column, criteria)));
+        await TryWriteAsync(() => _workbook.Execute(head.Table == null
+            ? new ApplyFilterCommand(_sheet, head.Cell.Column, criteria)
+            : new ApplyTableFilterCommand(_sheet, head.Table.Name, head.Cell.Column, criteria)));
     }
 
     private DataValidation ListValidation

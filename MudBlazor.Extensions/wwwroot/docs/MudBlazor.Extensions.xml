@@ -19838,6 +19838,9 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.Column">
             <summary>Zero-based sheet column of the filter.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.Filter">
+            <summary>The auto filter the column belongs to. Rows hidden by its other columns are left out of the value list, as in Excel.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetFilterMenu.Criteria">
             <summary>The current criteria of the column, or null.</summary>
         </member>
