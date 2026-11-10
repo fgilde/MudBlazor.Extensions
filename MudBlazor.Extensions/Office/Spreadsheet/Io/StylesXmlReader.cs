@@ -37,11 +37,26 @@ internal static class StylesXmlReader
             ids[i] = style == baseStyle ? 0 : table.GetOrAdd(style);
         }
 
+        foreach (var dxf in Child(root, "dxfs")?.Elements().Where(e => e.Name.LocalName == "dxf") ?? [])
+            table.AddDifferential(ReadDxf(dxf, formats, theme, indexed));
+
         var canonical = new int[table.Count];
         Array.Fill(canonical, -1);
         canonical[0] = 0;
         for (var i = xfs.Count - 1; i >= 0; i--) canonical[ids[i]] = i;
         return (ids, canonical);
+    }
+
+    private static DifferentialStyle ReadDxf(XElement dxf, Dictionary<int, string> formats, string[] theme, string[] indexed)
+    {
+        var pattern = Child(Child(dxf, "fill"), "patternFill");
+        var fill = Child(dxf, "fill") == null ? null
+            : new CellFill { Color = ThemeColors.Resolve(Child(pattern, "bgColor") ?? Child(pattern, "fgColor"), theme, indexed) };
+        var numFmt = Child(dxf, "numFmt");
+        return new DifferentialStyle(Child(dxf, "font") is { } font ? ReadFont(font, theme, indexed) : null, fill,
+            Child(dxf, "border") is { } border ? ReadBorder(border, theme, indexed) : null,
+            numFmt == null ? null : (string)numFmt.Attribute("formatCode") ?? formats.GetValueOrDefault(Int(numFmt, "numFmtId"))
+                                    ?? BuiltInNumberFormats.Get(Int(numFmt, "numFmtId"), CultureInfo.CurrentCulture));
     }
 
     private static List<T> Items<T>(XElement root, string name, Func<XElement, T> read) =>

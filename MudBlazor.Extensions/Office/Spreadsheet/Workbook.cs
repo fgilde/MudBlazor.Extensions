@@ -158,8 +158,8 @@ public sealed class Workbook
     public static int MaxCells { get; set; } = 10_000_000;
 
     /// <summary>
-    /// True if the source file contains content whose cell references are not moved when rows, columns or sheets change: conditional
-    /// formatting, data validation, hyperlinks, tables, comments, drawings and charts, pivot tables and their
+    /// True if the source file contains content whose cell references are not moved when rows, columns or sheets change:
+    /// hyperlinks, tables, comments, drawings and charts, pivot tables and their
     /// caches, external links, page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or
     /// columns or renaming a sheet these keep pointing at their original cells; editors should warn once.
     /// </summary>
@@ -279,6 +279,19 @@ public sealed class Workbook
                 sheet.Modified = true;
             }
 
+        List<(Worksheet, IReadOnlyList<ConditionalFormatting>, IReadOnlyList<DataValidation>)> rules = null;
+        foreach (var sheet in _sheets)
+        {
+            var formats = sheet.ConditionalFormats.Select(c => c.Rewrite(f => rewrite(f, sheet.Name))).ToList();
+            var validations = sheet.DataValidations.Select(d => d.Rewrite(f => rewrite(f, sheet.Name))).ToList();
+            if (formats.SequenceEqual(sheet.ConditionalFormats, ReferenceEqualityComparer.Instance)
+                && validations.SequenceEqual(sheet.DataValidations, ReferenceEqualityComparer.Instance)) continue;
+            (rules ??= []).Add((sheet, sheet.ConditionalFormats, sheet.DataValidations));
+            sheet.ConditionalFormats = formats;
+            sheet.DataValidations = validations;
+            sheet.Modified = true;
+        }
+
         List<(XElement, string)> localNames = null;
         foreach (var name in Package?.DefinedNames?.Elements().Where(e => e.Name.LocalName == "definedName" && e.Attribute("localSheetId") != null) ?? [])
         {
@@ -300,7 +313,7 @@ public sealed class Workbook
             _definedNames[key] = text;
         }
 
-        return new FormulaSnapshot(cells, names, localNames);
+        return new FormulaSnapshot(cells, names, localNames, rules);
     }
 
     internal void RestoreFormulas(FormulaSnapshot snapshot)
@@ -312,6 +325,13 @@ public sealed class Workbook
         }
 
         foreach (var (name, text) in snapshot.LocalNames ?? []) name.Value = text;
+        foreach (var (sheet, formats, validations) in snapshot.Rules ?? [])
+        {
+            sheet.ConditionalFormats = formats;
+            sheet.DataValidations = validations;
+            sheet.Modified = true;
+        }
+
         if (snapshot.Names == null) return;
         _definedNames.Clear();
         foreach (var (key, value) in snapshot.Names) _definedNames[key] = value;
@@ -321,4 +341,5 @@ public sealed class Workbook
 internal sealed record FormulaSnapshot(
     List<(Worksheet Sheet, CellRef Ref, string Formula)> Cells,
     Dictionary<string, string> Names,
-    List<(XElement Name, string Text)> LocalNames = null);
+    List<(XElement Name, string Text)> LocalNames = null,
+    List<(Worksheet Sheet, IReadOnlyList<ConditionalFormatting> Formats, IReadOnlyList<DataValidation> Validations)> Rules = null);

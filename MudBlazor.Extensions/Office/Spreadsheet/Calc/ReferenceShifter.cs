@@ -75,6 +75,16 @@ public static class ReferenceShifter
             _ => null
         });
 
+    internal static FormulaNode Translate(FormulaNode node, int rows, int columns) =>
+        rows == 0 && columns == 0 ? node : node.Rewrite(n => n switch
+        {
+            RefNode r => Move(r.Cell, rows, columns, false, false) is { } c ? r with { Cell = c } : new ErrorNode(CellError.Ref),
+            RangeNode { Range: var g } r => (Move(g.Start, rows, columns, g.IsWholeColumns, g.IsWholeRows), Move(g.End, rows, columns, g.IsWholeColumns, g.IsWholeRows)) is ({ } s, { } e)
+                ? r with { Range = new CellRange(s, e) }
+                : new ErrorNode(CellError.Ref),
+            _ => n
+        });
+
     private static CellRef? Move(CellRef c, int rows, int columns, bool keepRow, bool keepColumn)
     {
         var row = c.RowAbsolute || keepRow ? c.Row : c.Row + rows;

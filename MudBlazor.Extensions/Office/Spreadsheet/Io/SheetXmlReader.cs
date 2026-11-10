@@ -151,6 +151,12 @@ internal static class SheetXmlReader
                 ws.AutoFilter = ReadAutoFilter(e);
                 ws.ClaimFilteredRows();
                 break;
+            case "conditionalFormatting":
+                if (RulesXml.ReadFormatting(e, ws.Workbook.Styles.DifferentialStyles, theme) is { } cf) ws.ConditionalFormats = [.. ws.ConditionalFormats, cf];
+                break;
+            case "dataValidations":
+                ws.DataValidations = RulesXml.ReadValidations(e);
+                break;
         }
     }
 

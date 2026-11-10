@@ -15,6 +15,7 @@ internal sealed class StylesXmlWriter
     private readonly CultureInfo _culture;
     private readonly Dictionary<int, int> _added = new();
     private readonly Dictionary<string, int> _parts = new();
+    private readonly Dictionary<DifferentialStyle, int> _addedDxfs = new();
 
     internal StylesXmlWriter(XDocument original, StyleTable table, int[] canonical, CultureInfo culture)
     {
@@ -54,9 +55,34 @@ internal sealed class StylesXmlWriter
         return xf;
     }
 
+    internal int Dxf(DifferentialStyle style, int? original)
+    {
+        var known = _table.DifferentialStyles;
+        if (original is { } id && id >= 0 && id < known.Count && known[id] == style) return id;
+        for (var i = 0; i < known.Count; i++)
+            if (known[i] == style)
+                return i;
+        if (_addedDxfs.TryGetValue(style, out id)) return id;
+        var dxfs = Section("dxfs");
+        id = dxfs.Elements().Count();
+        var font = style.Font;
+        dxfs.Add(new XElement(_ns + "dxf",
+            font == null ? null : new XElement(_ns + "font", font.Bold ? new XElement(_ns + "b") : null, font.Italic ? new XElement(_ns + "i") : null,
+                font.Strikethrough ? new XElement(_ns + "strike") : null, font.Underline ? new XElement(_ns + "u") : null,
+                font.Color == null ? null : new XElement(_ns + "color", Rgb(font.Color))),
+            style.NumberFormat == null ? null
+                : new XElement(_ns + "numFmt", new XAttribute("numFmtId", NumFmt(style.NumberFormat)), new XAttribute("formatCode", style.NumberFormat)),
+            style.Fill == null ? null : new XElement(_ns + "fill", new XElement(_ns + "patternFill",
+                style.Fill.Color == null ? new XAttribute("patternType", "none") : new XElement(_ns + "bgColor", Rgb(style.Fill.Color)))),
+            style.Border == null ? null : Border(style.Border)));
+        _addedDxfs[style] = id;
+        Changed = true;
+        return id;
+    }
+
     internal void Save(Stream stream)
     {
-        foreach (var name in (ReadOnlySpan<string>)["numFmts", "fonts", "fills", "borders", "cellXfs"])
+        foreach (var name in (ReadOnlySpan<string>)["numFmts", "fonts", "fills", "borders", "cellXfs", "dxfs"])
             if (Child(_doc.Root, name) is { } section)
                 section.SetAttributeValue("count", section.Elements().Count());
         SheetXmlWriter.Save(_doc, stream);

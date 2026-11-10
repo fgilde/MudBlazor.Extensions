@@ -215,7 +215,7 @@ public class XlsxReadTests(ITestOutputHelper output)
         var part = wb.Package.Sheets.Single(p => p.Worksheet == wb.Sheets[0]);
         Assert.Equal(["dimension", "sheetData", "mergeCells", "conditionalFormatting", "pageMargins", "foo"],
             part.Children.Select(c => c.Name.LocalName));
-        Assert.Equal(["conditionalFormatting", "pageMargins", "foo"], part.Unmodelled.Select(c => c.Name.LocalName));
+        Assert.Equal(["pageMargins", "foo"], part.Unmodelled.Select(c => c.Name.LocalName));
         var kept = part.Children[3];
         Assert.Equal(System.Xml.Linq.XNamespace.Get(Main) + "conditionalFormatting", kept.Name);
         Assert.Equal("5", kept.Descendants().Single(d => d.Name.LocalName == "formula").Value);

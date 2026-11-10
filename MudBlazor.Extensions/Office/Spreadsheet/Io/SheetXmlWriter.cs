@@ -187,7 +187,8 @@ internal static class SheetXmlWriter
         [
             SheetPr(Original("sheetPr"), ws, ns, theme), dimension, SheetViews(Original("sheetViews"), ws, ns),
             SheetFormatPr(Original("sheetFormatPr"), ws, ns), Cols(Original("cols"), ws, part, package, styles, ns),
-            new XElement(ns + "sheetData"), AutoFilterXml(ws.AutoFilter, ns),
+            new XElement(ns + "sheetData"), AutoFilterXml(ws.AutoFilter, ns), .. RulesXml.WriteFormats(ws, ns, styles, theme),
+            RulesXml.WriteValidations(ws, Original("dataValidations"), ns),
             ws.Merges.Count == 0 ? null : new XElement(ns + "mergeCells", new XAttribute("count", ws.Merges.Count),
                 ws.Merges.Select(m => new XElement(ns + "mergeCell", new XAttribute("ref", m.ToA1()))))
         ], ns);

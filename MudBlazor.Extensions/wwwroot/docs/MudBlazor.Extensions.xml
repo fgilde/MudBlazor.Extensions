@@ -31239,6 +31239,30 @@
             <param name="b">Right value.</param>
             <returns>Negative, zero or positive.</returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatEvaluator">
+            <summary>
+            Evaluates the conditional formatting of a sheet cell by cell, so a grid only pays for the cells it shows. Aggregates (minimum, maximum,
+            percentiles, ranks, averages, duplicate counts) are computed once per rule and kept until <see cref="E:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Changed"/> fires or
+            <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatEvaluator.Invalidate"/> is called. Evaluation never changes the workbook or the calculation engine. Dispose the evaluator to stop
+            following the workbook.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatEvaluator.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Workbook,MudBlazor.Extensions.Office.Spreadsheet.Worksheet)">
+            <summary>Creates an evaluator for one sheet and follows the workbook's changes.</summary>
+            <param name="wb">The workbook.</param>
+            <param name="sheet">The sheet whose rules are evaluated.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatEvaluator.Evaluate(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
+            <summary>Applies all rules covering a cell in priority order.</summary>
+            <param name="cell">The cell.</param>
+            <returns>The combined result, or null if no rule matches.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatEvaluator.Invalidate">
+            <summary>Drops all cached aggregates; the next <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatEvaluator.Evaluate(MudBlazor.Extensions.Office.Spreadsheet.CellRef)"/> computes them again.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatEvaluator.Dispose">
+            <summary>Stops following <see cref="E:MudBlazor.Extensions.Office.Spreadsheet.Workbook.Changed"/>.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ExcelDate">
             <summary>
             Converts between Excel date serials (1900 date system) and dates. Serial 1 is 1 January 1900 and the fraction is the
@@ -31886,8 +31910,43 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellStyle.NumberFormat">
             <summary>Excel number format code, <c>General</c> by default.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle">
+            <summary>
+            A differential format that conditional formatting lays over the cell style. Null parts leave the cell style unchanged; of the font only
+            bold, italic, underline, strikethrough and color apply.
+            </summary>
+            <param name="Font">Font changes, or null.</param>
+            <param name="Fill">Fill, or null.</param>
+            <param name="Border">Borders, or null.</param>
+            <param name="NumberFormat">Number format code, or null.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellFont,MudBlazor.Extensions.Office.Spreadsheet.CellFill,MudBlazor.Extensions.Office.Spreadsheet.CellBorder,System.String)">
+            <summary>
+            A differential format that conditional formatting lays over the cell style. Null parts leave the cell style unchanged; of the font only
+            bold, italic, underline, strikethrough and color apply.
+            </summary>
+            <param name="Font">Font changes, or null.</param>
+            <param name="Fill">Fill, or null.</param>
+            <param name="Border">Borders, or null.</param>
+            <param name="NumberFormat">Number format code, or null.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.Font">
+            <summary>Font changes, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.Fill">
+            <summary>Fill, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.Border">
+            <summary>Borders, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.NumberFormat">
+            <summary>Number format code, or null.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.StyleTable">
             <summary>Deduplicating table of cell styles; cells store only the style id.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StyleTable.DifferentialStyles">
+            <summary>The differential formats (<c>dxfs</c>) of the source file by index. Formats of new rules are added to the file when it is saved.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.StyleTable.Count">
             <summary>Number of distinct styles including the default.</summary>
@@ -32178,6 +32237,153 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
             <summary>Reverses the edit performed by the last <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)"/>.</summary>
             <param name="wb">The workbook.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.AddConditionalFormattingCommand">
+            <summary>Adds conditional formatting to a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="formatting">The ranges and rules.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.AddConditionalFormattingCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatting)">
+            <summary>Adds conditional formatting to a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="formatting">The ranges and rules.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.AddConditionalFormattingCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.AddConditionalFormattingCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.AddConditionalFormattingCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.EditConditionalFormattingCommand">
+            <summary>Replaces one conditional formatting of a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ConditionalFormats"/>.</param>
+            <param name="formatting">The new ranges and rules.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.EditConditionalFormattingCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32,MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatting)">
+            <summary>Replaces one conditional formatting of a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ConditionalFormats"/>.</param>
+            <param name="formatting">The new ranges and rules.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.EditConditionalFormattingCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.EditConditionalFormattingCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.EditConditionalFormattingCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DeleteConditionalFormattingCommand">
+            <summary>Removes one conditional formatting of a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ConditionalFormats"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteConditionalFormattingCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32)">
+            <summary>Removes one conditional formatting of a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ConditionalFormats"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DeleteConditionalFormattingCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteConditionalFormattingCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteConditionalFormattingCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.AddDataValidationCommand">
+            <summary>Adds a data validation rule to a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="validation">The rule.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.AddDataValidationCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.DataValidation)">
+            <summary>Adds a data validation rule to a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="validation">The rule.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.AddDataValidationCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.AddDataValidationCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.AddDataValidationCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.EditDataValidationCommand">
+            <summary>Replaces one data validation rule of a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DataValidations"/>.</param>
+            <param name="validation">The new rule.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.EditDataValidationCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32,MudBlazor.Extensions.Office.Spreadsheet.DataValidation)">
+            <summary>Replaces one data validation rule of a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DataValidations"/>.</param>
+            <param name="validation">The new rule.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.EditDataValidationCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.EditDataValidationCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.EditDataValidationCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DeleteDataValidationCommand">
+            <summary>Removes one data validation rule of a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DataValidations"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteDataValidationCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32)">
+            <summary>Removes one data validation rule of a sheet.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DataValidations"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DeleteDataValidationCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteDataValidationCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DeleteDataValidationCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ClearRulesCommand">
+            <summary>
+            Removes conditional formatting and data validation from a range, like Excel's "Clear rules from selected cells". Ranges that only partly
+            overlap keep their other cells, and their formulas stay relative to the same cells.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The cleared range.</param>
+            <param name="conditionalFormats">True to clear conditional formatting.</param>
+            <param name="dataValidations">True to clear data validation.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ClearRulesCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,System.Boolean,System.Boolean)">
+            <summary>
+            Removes conditional formatting and data validation from a range, like Excel's "Clear rules from selected cells". Ranges that only partly
+            overlap keep their other cells, and their formulas stay relative to the same cells.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The cleared range.</param>
+            <param name="conditionalFormats">True to clear conditional formatting.</param>
+            <param name="dataValidations">True to clear data validation.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ClearRulesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ClearRulesCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ClearRulesCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SortCommand">
             <summary>
@@ -32589,6 +32795,543 @@
             </summary>
             <param name="description">Description of the combined step.</param>
             <returns>The scope to dispose to end the transaction.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType">
+            <summary>How a threshold of a color scale, data bar or icon set is computed.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Min">
+            <summary>The smallest number of the ranges.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Max">
+            <summary>The largest number of the ranges.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Number">
+            <summary>A fixed number (or formula) in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValue.Value"/>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Percent">
+            <summary>A percentage of the span between the smallest and the largest number.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Percentile">
+            <summary>A percentile of the numbers of the ranges.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Formula">
+            <summary>The result of the formula in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValue.Value"/>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValue">
+            <summary>A threshold of a color scale, data bar or icon set (<c>cfvo</c>).</summary>
+            <param name="Type">How the threshold is computed.</param>
+            <param name="Value">Number, percentage or formula text; null for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Min"/> and <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Max"/>.</param>
+            <param name="GreaterOrEqual">For icon sets: true if values equal to the threshold reach it, false if they must exceed it.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValue.#ctor(MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType,System.String,System.Boolean)">
+            <summary>A threshold of a color scale, data bar or icon set (<c>cfvo</c>).</summary>
+            <param name="Type">How the threshold is computed.</param>
+            <param name="Value">Number, percentage or formula text; null for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Min"/> and <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Max"/>.</param>
+            <param name="GreaterOrEqual">For icon sets: true if values equal to the threshold reach it, false if they must exceed it.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValue.Type">
+            <summary>How the threshold is computed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValue.Value">
+            <summary>Number, percentage or formula text; null for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Min"/> and <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValueType.Max"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalValue.GreaterOrEqual">
+            <summary>For icon sets: true if values equal to the threshold reach it, false if they must exceed it.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ColorScaleStop">
+            <summary>One color of a color scale.</summary>
+            <param name="Value">Where the color applies.</param>
+            <param name="Color">The color as #RRGGBB.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ColorScaleStop.#ctor(MudBlazor.Extensions.Office.Spreadsheet.ConditionalValue,System.String)">
+            <summary>One color of a color scale.</summary>
+            <param name="Value">Where the color applies.</param>
+            <param name="Color">The color as #RRGGBB.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ColorScaleStop.Value">
+            <summary>Where the color applies.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ColorScaleStop.Color">
+            <summary>The color as #RRGGBB.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ContainsTextKind">
+            <summary>What a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.ContainsText"/> rule tests.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ContainsTextKind.Contains">
+            <summary>The display text contains the text, ignoring case.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ContainsTextKind.NotContains">
+            <summary>The display text does not contain the text.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ContainsTextKind.BeginsWith">
+            <summary>The display text begins with the text.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ContainsTextKind.EndsWith">
+            <summary>The display text ends with the text.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ContainsTextKind.Blanks">
+            <summary>The cell is blank or holds only spaces.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ContainsTextKind.NotBlanks">
+            <summary>The cell is not blank.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ContainsTextKind.Errors">
+            <summary>The cell holds an error.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ContainsTextKind.NotErrors">
+            <summary>The cell holds no error.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule">
+            <summary>
+            A conditional formatting rule. Rules with a lower <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Priority"/> win; with <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.StopIfTrue"/> no rule of lower priority applies
+            once this one matched. Formulas are written for the top-left cell of the first range and move relatively for the other cells.
+            </summary>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip all rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.#ctor(System.Int32,System.Boolean)">
+            <summary>
+            A conditional formatting rule. Rules with a lower <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Priority"/> win; with <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.StopIfTrue"/> no rule of lower priority applies
+            once this one matched. Formulas are written for the top-left cell of the first range and move relatively for the other cells.
+            </summary>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip all rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Priority">
+            <summary>Priority, 1 is the highest.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.StopIfTrue">
+            <summary>True to skip all rules of lower priority when this rule matches.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.CellIs">
+            <summary>Formats cells whose value compares to one or two values.</summary>
+            <param name="Operator">between, notBetween, equal, notEqual, greaterThan, lessThan, greaterThanOrEqual or lessThanOrEqual.</param>
+            <param name="Formula1">The first value as formula, for example <c>10</c>, <c>"abc"</c> or <c>$D$1</c>.</param>
+            <param name="Formula2">The second value for between and notBetween, else null.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.CellIs.#ctor(System.String,System.String,System.String,MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle,System.Int32,System.Boolean)">
+            <summary>Formats cells whose value compares to one or two values.</summary>
+            <param name="Operator">between, notBetween, equal, notEqual, greaterThan, lessThan, greaterThanOrEqual or lessThanOrEqual.</param>
+            <param name="Formula1">The first value as formula, for example <c>10</c>, <c>"abc"</c> or <c>$D$1</c>.</param>
+            <param name="Formula2">The second value for between and notBetween, else null.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.CellIs.Operator">
+            <summary>between, notBetween, equal, notEqual, greaterThan, lessThan, greaterThanOrEqual or lessThanOrEqual.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.CellIs.Formula1">
+            <summary>The first value as formula, for example <c>10</c>, <c>"abc"</c> or <c>$D$1</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.CellIs.Formula2">
+            <summary>The second value for between and notBetween, else null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.CellIs.Style">
+            <summary>The format applied to matching cells.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Expression">
+            <summary>Formats cells for which a formula returns true.</summary>
+            <param name="Formula">The formula, for example <c>$B2&gt;100</c>.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Expression.#ctor(System.String,MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle,System.Int32,System.Boolean)">
+            <summary>Formats cells for which a formula returns true.</summary>
+            <param name="Formula">The formula, for example <c>$B2&gt;100</c>.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Expression.Formula">
+            <summary>The formula, for example <c>$B2&gt;100</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Expression.Style">
+            <summary>The format applied to matching cells.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.ColorScale">
+            <summary>Colors numbers on a gradient of two or three colors.</summary>
+            <param name="Stops">Two or three stops from the lowest to the highest.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.ColorScale.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.ColorScaleStop},System.Int32,System.Boolean)">
+            <summary>Colors numbers on a gradient of two or three colors.</summary>
+            <param name="Stops">Two or three stops from the lowest to the highest.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.ColorScale.Stops">
+            <summary>Two or three stops from the lowest to the highest.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.DataBar">
+            <summary>Draws a bar whose length follows the number.</summary>
+            <param name="Min">Where the bar is empty.</param>
+            <param name="Max">Where the bar is full.</param>
+            <param name="Color">Bar color as #RRGGBB.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.DataBar.#ctor(MudBlazor.Extensions.Office.Spreadsheet.ConditionalValue,MudBlazor.Extensions.Office.Spreadsheet.ConditionalValue,System.String,System.Int32,System.Boolean)">
+            <summary>Draws a bar whose length follows the number.</summary>
+            <param name="Min">Where the bar is empty.</param>
+            <param name="Max">Where the bar is full.</param>
+            <param name="Color">Bar color as #RRGGBB.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.DataBar.Min">
+            <summary>Where the bar is empty.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.DataBar.Max">
+            <summary>Where the bar is full.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.DataBar.Color">
+            <summary>Bar color as #RRGGBB.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.IconSet">
+            <summary>Shows an icon by the band the number falls into.</summary>
+            <param name="Set">Excel icon set name, for example <c>3Arrows</c> or <c>5Rating</c>.</param>
+            <param name="Thresholds">Lower bound of each icon, one per icon from the lowest band up; the first is usually 0 percent.</param>
+            <param name="Reverse">True to reverse the icon order.</param>
+            <param name="ShowValue">False to show only the icon.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.IconSet.#ctor(System.String,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.ConditionalValue},System.Boolean,System.Boolean,System.Int32,System.Boolean)">
+            <summary>Shows an icon by the band the number falls into.</summary>
+            <param name="Set">Excel icon set name, for example <c>3Arrows</c> or <c>5Rating</c>.</param>
+            <param name="Thresholds">Lower bound of each icon, one per icon from the lowest band up; the first is usually 0 percent.</param>
+            <param name="Reverse">True to reverse the icon order.</param>
+            <param name="ShowValue">False to show only the icon.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.IconSet.Set">
+            <summary>Excel icon set name, for example <c>3Arrows</c> or <c>5Rating</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.IconSet.Thresholds">
+            <summary>Lower bound of each icon, one per icon from the lowest band up; the first is usually 0 percent.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.IconSet.Reverse">
+            <summary>True to reverse the icon order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.IconSet.ShowValue">
+            <summary>False to show only the icon.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Top10">
+            <summary>Formats the largest or smallest numbers.</summary>
+            <param name="Rank">Number of items, or percent of items with <paramref name="Percent"/>.</param>
+            <param name="Percent">True if <paramref name="Rank"/> is a percentage.</param>
+            <param name="Bottom">True for the smallest numbers.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Top10.#ctor(System.Int32,System.Boolean,System.Boolean,MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle,System.Int32,System.Boolean)">
+            <summary>Formats the largest or smallest numbers.</summary>
+            <param name="Rank">Number of items, or percent of items with <paramref name="Percent"/>.</param>
+            <param name="Percent">True if <paramref name="Rank"/> is a percentage.</param>
+            <param name="Bottom">True for the smallest numbers.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Top10.Rank">
+            <summary>Number of items, or percent of items with <paramref name="Percent"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Top10.Percent">
+            <summary>True if <paramref name="Rank"/> is a percentage.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Top10.Bottom">
+            <summary>True for the smallest numbers.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Top10.Style">
+            <summary>The format applied to matching cells.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.AboveAverage">
+            <summary>Formats numbers above or below the average of the ranges.</summary>
+            <param name="Below">True for numbers below the average.</param>
+            <param name="Equal">True to include numbers equal to the bound.</param>
+            <param name="StdDev">Number of standard deviations the bound lies from the average, 0 for the average itself.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.AboveAverage.#ctor(System.Boolean,System.Boolean,System.Int32,MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle,System.Int32,System.Boolean)">
+            <summary>Formats numbers above or below the average of the ranges.</summary>
+            <param name="Below">True for numbers below the average.</param>
+            <param name="Equal">True to include numbers equal to the bound.</param>
+            <param name="StdDev">Number of standard deviations the bound lies from the average, 0 for the average itself.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.AboveAverage.Below">
+            <summary>True for numbers below the average.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.AboveAverage.Equal">
+            <summary>True to include numbers equal to the bound.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.AboveAverage.StdDev">
+            <summary>Number of standard deviations the bound lies from the average, 0 for the average itself.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.AboveAverage.Style">
+            <summary>The format applied to matching cells.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.ContainsText">
+            <summary>Formats cells by their display text, blanks or errors.</summary>
+            <param name="Kind">What is tested.</param>
+            <param name="Text">The text for the text kinds, else null.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.ContainsText.#ctor(MudBlazor.Extensions.Office.Spreadsheet.ContainsTextKind,System.String,MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle,System.Int32,System.Boolean)">
+            <summary>Formats cells by their display text, blanks or errors.</summary>
+            <param name="Kind">What is tested.</param>
+            <param name="Text">The text for the text kinds, else null.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.ContainsText.Kind">
+            <summary>What is tested.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.ContainsText.Text">
+            <summary>The text for the text kinds, else null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.ContainsText.Style">
+            <summary>The format applied to matching cells.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Duplicate">
+            <summary>Formats values that occur more than once in the ranges, or exactly once with <paramref name="Unique"/>. Text compares ignoring case.</summary>
+            <param name="Unique">True for unique values instead of duplicates.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Duplicate.#ctor(System.Boolean,MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle,System.Int32,System.Boolean)">
+            <summary>Formats values that occur more than once in the ranges, or exactly once with <paramref name="Unique"/>. Text compares ignoring case.</summary>
+            <param name="Unique">True for unique values instead of duplicates.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Duplicate.Unique">
+            <summary>True for unique values instead of duplicates.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.Duplicate.Style">
+            <summary>The format applied to matching cells.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.TimePeriod">
+            <summary>Formats dates in a period relative to today.</summary>
+            <param name="Period">today, yesterday, tomorrow, last7Days, thisWeek, lastWeek, nextWeek, thisMonth, lastMonth or nextMonth.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.TimePeriod.#ctor(System.String,MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle,System.Int32,System.Boolean)">
+            <summary>Formats dates in a period relative to today.</summary>
+            <param name="Period">today, yesterday, tomorrow, last7Days, thisWeek, lastWeek, nextWeek, thisMonth, lastMonth or nextMonth.</param>
+            <param name="Style">The format applied to matching cells.</param>
+            <param name="Priority">Priority, 1 is the highest.</param>
+            <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.TimePeriod.Period">
+            <summary>today, yesterday, tomorrow, last7Days, thisWeek, lastWeek, nextWeek, thisMonth, lastMonth or nextMonth.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.TimePeriod.Style">
+            <summary>The format applied to matching cells.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatting">
+            <summary>Conditional formatting: rules applied to one or more ranges of a sheet.</summary>
+            <param name="Ranges">The ranges; formulas of the rules are relative to the top-left cell of the first range.</param>
+            <param name="Rules">The rules.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatting.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.CellRange},System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule})">
+            <summary>Conditional formatting: rules applied to one or more ranges of a sheet.</summary>
+            <param name="Ranges">The ranges; formulas of the rules are relative to the top-left cell of the first range.</param>
+            <param name="Rules">The rules.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatting.Ranges">
+            <summary>The ranges; formulas of the rules are relative to the top-left cell of the first range.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatting.Rules">
+            <summary>The rules.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalResult">
+            <summary>The result of all conditional formatting rules for one cell.</summary>
+            <param name="Style">The merged differential format of the matching rules, or null.</param>
+            <param name="ScaleColor">Fill color from a color scale as #RRGGBB, or null.</param>
+            <param name="BarFraction">Length of a data bar from 0 to 1, or null.</param>
+            <param name="BarColor">Color of the data bar, or null.</param>
+            <param name="Icon">Stable icon id <c>set:index</c> such as <c>3Arrows:0</c> (index 0 is the lowest band's icon), or null.</param>
+            <param name="HideValue">True if an icon set or data bar hides the cell value.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ConditionalResult.#ctor(MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle,System.String,System.Nullable{System.Double},System.String,System.String,System.Boolean)">
+            <summary>The result of all conditional formatting rules for one cell.</summary>
+            <param name="Style">The merged differential format of the matching rules, or null.</param>
+            <param name="ScaleColor">Fill color from a color scale as #RRGGBB, or null.</param>
+            <param name="BarFraction">Length of a data bar from 0 to 1, or null.</param>
+            <param name="BarColor">Color of the data bar, or null.</param>
+            <param name="Icon">Stable icon id <c>set:index</c> such as <c>3Arrows:0</c> (index 0 is the lowest band's icon), or null.</param>
+            <param name="HideValue">True if an icon set or data bar hides the cell value.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalResult.Style">
+            <summary>The merged differential format of the matching rules, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalResult.ScaleColor">
+            <summary>Fill color from a color scale as #RRGGBB, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalResult.BarFraction">
+            <summary>Length of a data bar from 0 to 1, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalResult.BarColor">
+            <summary>Color of the data bar, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalResult.Icon">
+            <summary>Stable icon id <c>set:index</c> such as <c>3Arrows:0</c> (index 0 is the lowest band's icon), or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalResult.HideValue">
+            <summary>True if an icon set or data bar hides the cell value.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ValidationType">
+            <summary>What a data validation accepts.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ValidationType.Any">
+            <summary>Any value.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ValidationType.Whole">
+            <summary>Whole numbers compared with the operator.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ValidationType.Decimal">
+            <summary>Numbers compared with the operator.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ValidationType.List">
+            <summary>One of the items of <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.Formula1"/>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ValidationType.Date">
+            <summary>Dates (serial numbers) compared with the operator.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ValidationType.Time">
+            <summary>Times (fractions of a day) compared with the operator.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ValidationType.TextLength">
+            <summary>Text whose length compares with the operator.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ValidationType.Custom">
+            <summary>Values for which <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.Formula1"/> returns true.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DataValidation">
+            <summary>
+            A data validation rule on one or more ranges. Formulas are written for the top-left cell of the first range and move relatively for the
+            other cells.
+            </summary>
+            <param name="Ranges">The validated ranges.</param>
+            <param name="Type">What is accepted.</param>
+            <param name="Operator">between, notBetween, equal, notEqual, greaterThan, lessThan, greaterThanOrEqual or lessThanOrEqual.</param>
+            <param name="Formula1">The first value; for lists a quoted comma separated list such as <c>"a,b,c"</c> or a range such as <c>$E$1:$E$3</c>.</param>
+            <param name="Formula2">The second value for between and notBetween, else null.</param>
+            <param name="AllowBlank">True if blank cells are valid.</param>
+            <param name="ShowDropDown">True to offer the list items in a drop-down (written as Excel's inverted <c>showDropDown</c> attribute).</param>
+            <param name="PromptTitle">Title of the input message, or null.</param>
+            <param name="Prompt">Input message shown when the cell is selected, or null.</param>
+            <param name="ErrorTitle">Title of the error message, or null.</param>
+            <param name="Error">Error message shown for invalid input, or null.</param>
+            <param name="ErrorStyle">stop (reject), warning or information.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.CellRange},MudBlazor.Extensions.Office.Spreadsheet.ValidationType,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            A data validation rule on one or more ranges. Formulas are written for the top-left cell of the first range and move relatively for the
+            other cells.
+            </summary>
+            <param name="Ranges">The validated ranges.</param>
+            <param name="Type">What is accepted.</param>
+            <param name="Operator">between, notBetween, equal, notEqual, greaterThan, lessThan, greaterThanOrEqual or lessThanOrEqual.</param>
+            <param name="Formula1">The first value; for lists a quoted comma separated list such as <c>"a,b,c"</c> or a range such as <c>$E$1:$E$3</c>.</param>
+            <param name="Formula2">The second value for between and notBetween, else null.</param>
+            <param name="AllowBlank">True if blank cells are valid.</param>
+            <param name="ShowDropDown">True to offer the list items in a drop-down (written as Excel's inverted <c>showDropDown</c> attribute).</param>
+            <param name="PromptTitle">Title of the input message, or null.</param>
+            <param name="Prompt">Input message shown when the cell is selected, or null.</param>
+            <param name="ErrorTitle">Title of the error message, or null.</param>
+            <param name="Error">Error message shown for invalid input, or null.</param>
+            <param name="ErrorStyle">stop (reject), warning or information.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.Ranges">
+            <summary>The validated ranges.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.Type">
+            <summary>What is accepted.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.Operator">
+            <summary>between, notBetween, equal, notEqual, greaterThan, lessThan, greaterThanOrEqual or lessThanOrEqual.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.Formula1">
+            <summary>The first value; for lists a quoted comma separated list such as <c>"a,b,c"</c> or a range such as <c>$E$1:$E$3</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.Formula2">
+            <summary>The second value for between and notBetween, else null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.AllowBlank">
+            <summary>True if blank cells are valid.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.ShowDropDown">
+            <summary>True to offer the list items in a drop-down (written as Excel's inverted <c>showDropDown</c> attribute).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.PromptTitle">
+            <summary>Title of the input message, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.Prompt">
+            <summary>Input message shown when the cell is selected, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.ErrorTitle">
+            <summary>Title of the error message, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.Error">
+            <summary>Error message shown for invalid input, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DataValidation.ErrorStyle">
+            <summary>stop (reject), warning or information.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ValidationResult">
+            <summary>The outcome of <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.DataValidator.Validate(MudBlazor.Extensions.Office.Spreadsheet.Workbook,MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef,MudBlazor.Extensions.Office.Spreadsheet.CellValue)"/>.</summary>
+            <param name="IsValid">True if the value is accepted.</param>
+            <param name="Validation">The rule that applies to the cell (its messages and error style), or null if none does.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ValidationResult.#ctor(System.Boolean,MudBlazor.Extensions.Office.Spreadsheet.DataValidation)">
+            <summary>The outcome of <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.DataValidator.Validate(MudBlazor.Extensions.Office.Spreadsheet.Workbook,MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef,MudBlazor.Extensions.Office.Spreadsheet.CellValue)"/>.</summary>
+            <param name="IsValid">True if the value is accepted.</param>
+            <param name="Validation">The rule that applies to the cell (its messages and error style), or null if none does.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ValidationResult.IsValid">
+            <summary>True if the value is accepted.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ValidationResult.Validation">
+            <summary>The rule that applies to the cell (its messages and error style), or null if none does.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DataValidator">
+            <summary>Checks values against the data validation rules of a sheet without changing the workbook.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DataValidator.Validate(MudBlazor.Extensions.Office.Spreadsheet.Workbook,MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRef,MudBlazor.Extensions.Office.Spreadsheet.CellValue)">
+            <summary>Checks a value before it is written into a cell.</summary>
+            <param name="wb">The workbook.</param>
+            <param name="sheet">The sheet.</param>
+            <param name="cell">The target cell.</param>
+            <param name="value">The proposed value.</param>
+            <returns>The result; valid if no rule covers the cell.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DataValidator.ListItems(MudBlazor.Extensions.Office.Spreadsheet.Workbook,MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.DataValidation)">
+            <summary>The items of a list validation as display texts, for a drop-down.</summary>
+            <param name="wb">The workbook.</param>
+            <param name="sheet">The sheet holding the rule.</param>
+            <param name="dv">The rule.</param>
+            <returns>The items; empty for other types or blank sources.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.BuiltInNumberFormats">
             <summary>The built-in number formats of SpreadsheetML (ids 0 to 49) that files reference by id instead of storing the code.</summary>
@@ -33029,8 +33772,8 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.HasUnshiftedReferences">
             <summary>
-            True if the source file contains content whose cell references are not moved when rows, columns or sheets change: conditional
-            formatting, data validation, hyperlinks, tables, comments, drawings and charts, pivot tables and their
+            True if the source file contains content whose cell references are not moved when rows, columns or sheets change:
+            hyperlinks, tables, comments, drawings and charts, pivot tables and their
             caches, external links, page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or
             columns or renaming a sheet these keep pointing at their original cells; editors should warn once.
             </summary>
@@ -33117,6 +33860,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.AutoFilter">
             <summary>The auto filter, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ConditionalFormats">
+            <summary>Conditional formatting in file order; change it with the rule commands.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DataValidations">
+            <summary>Data validation rules in file order; change them with the rule commands.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Item(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
             <summary>Gets the stored cell, or null if the address holds no content and no style.</summary>

@@ -153,11 +153,25 @@ public sealed record CellStyle
     public string NumberFormat { get; init; } = "General";
 }
 
+/// <summary>
+/// A differential format that conditional formatting lays over the cell style. Null parts leave the cell style unchanged; of the font only
+/// bold, italic, underline, strikethrough and color apply.
+/// </summary>
+/// <param name="Font">Font changes, or null.</param>
+/// <param name="Fill">Fill, or null.</param>
+/// <param name="Border">Borders, or null.</param>
+/// <param name="NumberFormat">Number format code, or null.</param>
+public sealed record DifferentialStyle(CellFont Font = null, CellFill Fill = null, CellBorder Border = null, string NumberFormat = null);
+
 /// <summary>Deduplicating table of cell styles; cells store only the style id.</summary>
 public sealed class StyleTable
 {
     private readonly List<CellStyle> _styles = [CellStyle.Default];
     private readonly Dictionary<CellStyle, int> _ids = new() { [CellStyle.Default] = 0 };
+    private readonly List<DifferentialStyle> _differential = [];
+
+    /// <summary>The differential formats (<c>dxfs</c>) of the source file by index. Formats of new rules are added to the file when it is saved.</summary>
+    public IReadOnlyList<DifferentialStyle> DifferentialStyles => _differential;
 
     /// <summary>Number of distinct styles including the default.</summary>
     public int Count => _styles.Count;
@@ -177,4 +191,6 @@ public sealed class StyleTable
         _ids[style] = id;
         return id;
     }
+
+    internal void AddDifferential(DifferentialStyle style) => _differential.Add(style);
 }

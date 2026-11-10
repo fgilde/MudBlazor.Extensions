@@ -102,9 +102,9 @@ public class XlsxWriteTests(ITestOutputHelper output)
     {
         Assert.False(Read(Package([Sheet("<row r=\"1\"><c r=\"A1\"><v>1</v></c></row>")])).HasUnshiftedReferences);
         Assert.False(Workbook.Create().HasUnshiftedReferences);
-        Assert.True(Read(Package([Sheet("", after: "<conditionalFormatting sqref=\"A1:A5\"><cfRule type=\"cellIs\" priority=\"1\" operator=\"greaterThan\"><formula>1</formula></cfRule></conditionalFormatting>")]))
+        Assert.False(Read(Package([Sheet("", after: "<conditionalFormatting sqref=\"A1:A5\"><cfRule type=\"cellIs\" priority=\"1\" operator=\"greaterThan\"><formula>1</formula></cfRule></conditionalFormatting>")]))
             .HasUnshiftedReferences);
-        Assert.True(Read(Package([Sheet("", after: "<dataValidations count=\"1\"><dataValidation type=\"whole\" sqref=\"B2\"/></dataValidations>")])).HasUnshiftedReferences);
+        Assert.False(Read(Package([Sheet("", after: "<dataValidations count=\"1\"><dataValidation type=\"whole\" sqref=\"B2\"/></dataValidations>")])).HasUnshiftedReferences);
         Assert.True(Read(Package([Sheet("", after: "<hyperlinks><hyperlink ref=\"A1\" location=\"Sheet1!B5\"/></hyperlinks>")])).HasUnshiftedReferences);
         Assert.False(Read(Package([Sheet("", after: "<autoFilter ref=\"A1:C9\"/><sortState ref=\"A2:C9\"/>")])).HasUnshiftedReferences);
         var pivot = With(Package([Sheet("")]), ("xl/pivotCache/pivotCacheDefinition1.xml", "<pivotCacheDefinition/>"),

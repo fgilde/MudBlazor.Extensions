@@ -93,6 +93,12 @@ public sealed class Worksheet
     /// <summary>The auto filter, or null.</summary>
     public AutoFilter AutoFilter { get; internal set; }
 
+    /// <summary>Conditional formatting in file order; change it with the rule commands.</summary>
+    public IReadOnlyList<ConditionalFormatting> ConditionalFormats { get; internal set; } = [];
+
+    /// <summary>Data validation rules in file order; change them with the rule commands.</summary>
+    public IReadOnlyList<DataValidation> DataValidations { get; internal set; } = [];
+
     /// <summary>Gets the stored cell, or null if the address holds no content and no style.</summary>
     /// <param name="r">The cell address.</param>
     public Cell this[CellRef r] => InBounds(r) ? _cells.GetValueOrDefault(r.Key) : null;
@@ -399,6 +405,7 @@ public sealed class Worksheet
         Part?.Shift(axis, index, count);
         Remap(axis, v => v >= index ? v + count : v, limit);
         if (AutoFilter != null && (AutoFilter = AutoFilter.Shift(axis, index, count)) == null) SetFiltered([]);
+        ShiftRules(axis, index, count);
         _merges = _merges.Select(m => ShiftRange(m, axis, Start(m, axis) >= index ? count : 0, End(m, axis) >= index ? count : 0, limit)).ToList();
         if (FreezeAt is { } f)
         {
@@ -448,13 +455,14 @@ public sealed class Worksheet
         var snapshot = new DeleteSnapshot(removed, Sizes(axis).Where(p => p.Key >= index && p.Key < end).ToList(),
             HiddenSet(axis).Where(i => i >= index && i < end).ToList(),
             AxisStyles(axis).Where(p => p.Key >= index && p.Key < end).ToList(), CopyMerges(), FreezeAt, AutoFilter, _filteredRows,
-            Part?.Shift(axis, index, -count));
+            ConditionalFormats, DataValidations, Part?.Shift(axis, index, -count));
         _cells = kept;
         _formulaKeys = formulas;
         _spillKeys = spills;
         _usedRange = null;
         Remap(axis, v => v < index ? v : v < end ? -1 : v - count, limit);
         _merges = _merges.Select(m => ShrinkRange(m, axis, index, count)).Where(m => m is { IsSingleCell: false }).Select(m => m.Value).ToList();
+        ShiftRules(axis, index, -count);
         if (AutoFilter is { } before)
         {
             AutoFilter = before.Shift(axis, index, -count);
@@ -480,10 +488,18 @@ public sealed class Worksheet
         foreach (var i in snapshot.Hidden) HiddenSet(axis).Add(i);
         AutoFilter = snapshot.AutoFilter;
         SetFiltered(snapshot.Filtered);
+        ConditionalFormats = snapshot.ConditionalFormats;
+        DataValidations = snapshot.DataValidations;
         foreach (var (i, style) in snapshot.AxisStyles) AxisStyles(axis)[i] = style;
         _merges = [.. snapshot.Merges];
         FreezeAt = snapshot.Freeze;
         snapshot.Package?.Invoke();
+    }
+
+    private void ShiftRules(Axis axis, int index, int count)
+    {
+        ConditionalFormats = ConditionalFormats.Select(c => c.Shift(axis, index, count)).OfType<ConditionalFormatting>().ToList();
+        DataValidations = DataValidations.Select(d => d.Shift(axis, index, count)).OfType<DataValidation>().ToList();
     }
 
     private static CellRef? Moved(CellRef r, Axis axis, int count, int limit)
@@ -551,4 +567,6 @@ internal sealed record DeleteSnapshot(
     CellRef? Freeze,
     AutoFilter AutoFilter,
     IReadOnlySet<int> Filtered,
+    IReadOnlyList<ConditionalFormatting> ConditionalFormats,
+    IReadOnlyList<DataValidation> DataValidations,
     Action Package = null);

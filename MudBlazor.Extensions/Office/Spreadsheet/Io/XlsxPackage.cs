@@ -14,7 +14,8 @@ internal sealed record XlsxRelationship(string Id, string Type, string Target, b
 /// <summary>A sheet entry of the source workbook with the parts of its XML the model does not represent.</summary>
 internal sealed class XlsxSheetPart
 {
-    internal static readonly HashSet<string> Modelled = ["sheetPr", "dimension", "sheetViews", "sheetFormatPr", "cols", "sheetData", "mergeCells", "autoFilter"];
+    internal static readonly HashSet<string> Modelled = ["sheetPr", "dimension", "sheetViews", "sheetFormatPr", "cols", "sheetData", "mergeCells", "autoFilter",
+        "conditionalFormatting", "dataValidations"];
 
     /// <summary>The sheet name as stored in the file.</summary>
     public string Name { get; init; }
@@ -213,8 +214,7 @@ internal sealed class XlsxPackage
 
     private static readonly HashSet<string> UnshiftedChildren =
     [
-        "conditionalFormatting", "dataValidations", "hyperlinks", "tableParts", "drawing", "legacyDrawing",
-        "legacyDrawingHF", "rowBreaks", "colBreaks", "protectedRanges", "scenarios", "dataConsolidate", "ignoredErrors", "extLst"
+        "hyperlinks", "tableParts", "drawing", "legacyDrawing", "legacyDrawingHF", "rowBreaks", "colBreaks", "protectedRanges", "scenarios", "dataConsolidate", "ignoredErrors", "extLst"
     ];
 
     private static readonly string[] UnshiftedContentTypes = ["pivot", ".table+xml", "chart", "drawing", "comments", "externalLink", "queryTable"];
