@@ -34,6 +34,7 @@ public sealed class SortCommand(Worksheet sheet, CellRange range, IReadOnlyList<
         if (sheet.Merges.Any(m => m.Intersects(range)))
             throw new InvalidOperationException("A range that contains merged cells cannot be sorted. Unmerge the cells first.");
         _before = null;
+        wb.Calculate();
         var (top, bottom) = (range.Top + (hasHeader ? 1 : 0), Math.Min(range.Bottom, sheet.UsedRange.Bottom));
         if (top > bottom) return;
         _data = CellRange.FromBounds(top, range.Left, bottom, range.Right);

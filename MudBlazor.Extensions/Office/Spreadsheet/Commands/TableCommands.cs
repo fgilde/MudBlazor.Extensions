@@ -363,11 +363,14 @@ internal static class TableEdits
         return "Table" + i;
     }
 
-    internal static List<TableColumn> Columns(Worksheet sheet, CellRange area, bool headers, SheetTable keep) =>
-        SheetTable.Unique(Enumerable.Range(area.Left, area.ColumnCount).Select(c =>
+    internal static List<TableColumn> Columns(Worksheet sheet, CellRange area, bool headers, SheetTable keep)
+    {
+        sheet.Workbook.Calculate();
+        return SheetTable.Unique(Enumerable.Range(area.Left, area.ColumnCount).Select(c =>
             keep != null && c >= keep.Range.Left && c <= keep.Range.Right
                 ? keep.Columns[c - keep.Range.Left]
                 : new TableColumn(headers ? HeaderText(sheet[new CellRef(area.Top, c)]?.Value ?? default) : null)));
+    }
 
     internal static string HeaderText(CellValue value) => value.Kind == CellValueKind.Empty ? null : value.ToString();
 
@@ -406,6 +409,7 @@ internal static class TableEdits
     internal static IWorkbookCommand SyncHeaders(Workbook wb)
     {
         if (wb.Sheets.All(s => s.Tables.Count == 0)) return null;
+        wb.Calculate();
         var sync = new HeaderSyncCommand();
         sync.Apply(wb);
         return sync.Changed ? sync : null;

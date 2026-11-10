@@ -68,6 +68,30 @@ public class SortFilterTests
     }
 
     [Fact]
+    public void SortAndFilter_InsideTransaction_UseCalculatedFormulaValues()
+    {
+        var (wb, ws) = Sheet(["Item", "Qty", "Total"], ["a", 1], ["b", 5], ["c", 3]);
+        using var engine = new CalcEngine(wb);
+        using (wb.Undo.BeginTransaction("Build"))
+        {
+            for (var r = 1; r <= 3; r++) wb.Execute(new SetFormulaCommand(ws, new CellRef(r, 2), $"=B{r + 1}*100"));
+            wb.Execute(new SortCommand(ws, G("A1:C4"), [new SortKey(2, Descending: true)], hasHeader: true));
+            wb.Execute(new SetAutoFilterCommand(ws, G("A1:C4")));
+            wb.Execute(new ApplyFilterCommand(ws, 2, FilterCriteria.Custom(CustomFilterOperator.GreaterThanOrEqual, "300")));
+            wb.Execute(new SetFormulaCommand(ws, R("E1"), "=\"Sum\""));
+            wb.Execute(new CreateTableCommand(ws, G("E1:E2"), true));
+        }
+
+        Assert.Equal([V("b"), V("c"), V("a")], Column(ws, 0, 1, 3));
+        Assert.Equal([3], ws.FilteredRows);
+        Assert.Equal("Sum", ws.Tables.Single().Columns[0].Name);
+        wb.Undo.Undo();
+        wb.Undo.Redo();
+        Assert.Equal([V("b"), V("c"), V("a")], Column(ws, 0, 1, 3));
+        Assert.Equal([3], ws.FilteredRows);
+    }
+
+    [Fact]
     public void Sort_PartOfFilterRange_DoesNotRecordFilterSort()
     {
         var (wb, ws) = Sheet(["Name", "Score"], ["b", 2], ["c", 3], ["a", 1], ["d", 4]);

@@ -55,7 +55,7 @@ public sealed partial class CalcEngine : IDisposable
     {
         _wb = wb;
         _evaluator = new FormulaEvaluator(functions ?? FunctionRegistry.Default) { SpillRange = SpillRange };
-        wb.Changed += OnWorkbookChanged;
+        wb.Calculating += OnWorkbookChanged;
         RecalculateAll();
     }
 
@@ -403,7 +403,7 @@ public sealed partial class CalcEngine : IDisposable
     }
 
     /// <summary>Stops following <see cref="Workbook.Changed"/>; calculated values stay as they are.</summary>
-    public void Dispose() => _wb.Changed -= OnWorkbookChanged;
+    public void Dispose() => _wb.Calculating -= OnWorkbookChanged;
 
     private readonly record struct SpillState(CellRange Range, bool Active);
 

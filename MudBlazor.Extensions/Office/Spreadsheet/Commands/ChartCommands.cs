@@ -36,6 +36,7 @@ public sealed class InsertChartCommand(Worksheet sheet, CellRange range, ChartKi
 
     private static SheetChart Build(Worksheet sheet, CellRange r, ChartKind kind)
     {
+        sheet.Workbook.Calculate();
         bool Text(int row, int col) => sheet[new CellRef(row, col)]?.Value.Kind == CellValueKind.Text;
         bool Empty(int row, int col) => sheet[new CellRef(row, col)] is not { HasContent: true };
         var firstRow = Enumerable.Range(r.Left + 1, r.ColumnCount - 1).Any(c => Text(r.Top, c));

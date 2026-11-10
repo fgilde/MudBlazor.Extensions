@@ -132,10 +132,8 @@ public sealed class Workbook
 {
     private readonly List<Worksheet> _sheets = new();
     private readonly Dictionary<string, string> _definedNames = new(StringComparer.OrdinalIgnoreCase);
-    private HashSet<CellChange> _cells = new();
-    private List<RangeChange> _ranges = new();
-    private List<RangeChange> _valueRanges = new();
-    private List<StructureChange> _structure = new();
+    private PendingChanges _pending = new();
+    private PendingChanges _uncalculated = new();
     private int _batchDepth;
 
     internal Workbook() => Undo = new UndoStack(this);
@@ -253,22 +251,33 @@ public sealed class Workbook
 
     internal void BeginBatch() => _batchDepth++;
 
+    internal event EventHandler<WorkbookChangedEventArgs> Calculating;
+
     internal void EndBatch()
     {
-        if (--_batchDepth > 0 || (_cells.Count == 0 && _ranges.Count == 0 && _structure.Count == 0 && _valueRanges.Count == 0)) return;
-        var args = new WorkbookChangedEventArgs(_cells, _ranges, _structure, _valueRanges);
-        _cells = new();
-        _ranges = new();
-        _valueRanges = new();
-        _structure = new();
+        if (--_batchDepth > 0) return;
+        Calculate();
+        if (_pending.IsEmpty) return;
+        var args = _pending.ToArgs();
+        _pending = new();
         Changed?.Invoke(this, args);
+    }
+
+    internal void Calculate()
+    {
+        if (_uncalculated.IsEmpty) return;
+        var args = _uncalculated.ToArgs();
+        _uncalculated = new();
+        Calculating?.Invoke(this, args);
     }
 
     internal void Notify(Worksheet sheet, CellRef cell)
     {
         sheet.Modified = true;
         Package?.Sheets.Find(p => p.Worksheet == sheet)?.ArrayFormulas.Remove(cell.Relative.Key);
-        _cells.Add(new CellChange(sheet, cell.Relative));
+        var change = new CellChange(sheet, cell.Relative);
+        _pending.Cells.Add(change);
+        _uncalculated.Cells.Add(change);
     }
 
     internal void NotifyValues(Worksheet sheet, CellRange range)
@@ -277,13 +286,14 @@ public sealed class Workbook
         if (Package?.Sheets.Find(p => p.Worksheet == sheet) is { } part)
             foreach (var key in part.ArrayFormulas.Keys.Where(k => range.Contains(CellRef.FromKey(k))).ToList())
                 part.ArrayFormulas.Remove(key);
-        _valueRanges.Add(new RangeChange(sheet, range));
+        _pending.ValueRanges.Add(new RangeChange(sheet, range));
+        _uncalculated.ValueRanges.Add(new RangeChange(sheet, range));
     }
 
     internal void NotifyFormatted(Worksheet sheet, CellRange range)
     {
         sheet.Modified = true;
-        _ranges.Add(new RangeChange(sheet, range));
+        _pending.Ranges.Add(new RangeChange(sheet, range));
     }
 
     internal void Notify(StructureChangeKind kind, Worksheet sheet, int index = 0, int count = 0, string oldName = null)
@@ -292,23 +302,45 @@ public sealed class Workbook
                 or StructureChangeKind.DefinedNamesChanged))
             sheet.Modified = true;
         if (kind is StructureChangeKind.RowsInserted or StructureChangeKind.RowsDeleted or StructureChangeKind.ColumnsInserted or StructureChangeKind.ColumnsDeleted)
-            ShiftPending(new AxisShift(sheet, kind is StructureChangeKind.RowsInserted or StructureChangeKind.RowsDeleted ? Axis.Row : Axis.Column, index,
-                kind is StructureChangeKind.RowsInserted or StructureChangeKind.ColumnsInserted ? count : -count));
-        _structure.Add(new StructureChange(kind, sheet, index, count, oldName));
+        {
+            var shift = new AxisShift(sheet, kind is StructureChangeKind.RowsInserted or StructureChangeKind.RowsDeleted ? Axis.Row : Axis.Column, index,
+                kind is StructureChangeKind.RowsInserted or StructureChangeKind.ColumnsInserted ? count : -count);
+            _pending.Shift(shift);
+            _uncalculated.Shift(shift);
+        }
+
+        var change = new StructureChange(kind, sheet, index, count, oldName);
+        _pending.Structure.Add(change);
+        _uncalculated.Structure.Add(change);
     }
 
-    private void ShiftPending(AxisShift shift)
+    private sealed class PendingChanges
     {
-        if (_cells.Count > 0)
-            _cells = _cells.Select(c => c.Sheet != shift.Sheet ? c : shift.Forward(c.Cell) is { } moved ? c with { Cell = moved } : (CellChange?)null)
-                .OfType<CellChange>().ToHashSet();
-        _ranges = Shift(_ranges, shift);
-        _valueRanges = Shift(_valueRanges, shift);
-    }
+        public HashSet<CellChange> Cells { get; private set; } = new();
 
-    private static List<RangeChange> Shift(List<RangeChange> ranges, AxisShift shift) => ranges.Count == 0 ? ranges
-        : ranges.Select(r => r.Sheet != shift.Sheet ? r : shift.Forward(r.Range) is { } moved ? r with { Range = moved } : (RangeChange?)null)
-            .OfType<RangeChange>().ToList();
+        public List<RangeChange> Ranges { get; private set; } = new();
+
+        public List<RangeChange> ValueRanges { get; private set; } = new();
+
+        public List<StructureChange> Structure { get; } = new();
+
+        public bool IsEmpty => Cells.Count == 0 && Ranges.Count == 0 && ValueRanges.Count == 0 && Structure.Count == 0;
+
+        public WorkbookChangedEventArgs ToArgs() => new(Cells, Ranges, Structure, ValueRanges);
+
+        public void Shift(AxisShift shift)
+        {
+            if (Cells.Count > 0)
+                Cells = Cells.Select(c => c.Sheet != shift.Sheet ? c : shift.Forward(c.Cell) is { } moved ? c with { Cell = moved } : (CellChange?)null)
+                    .OfType<CellChange>().ToHashSet();
+            Ranges = Shift(Ranges, shift);
+            ValueRanges = Shift(ValueRanges, shift);
+        }
+
+        private static List<RangeChange> Shift(List<RangeChange> ranges, AxisShift shift) => ranges.Count == 0 ? ranges
+            : ranges.Select(r => r.Sheet != shift.Sheet ? r : shift.Forward(r.Range) is { } moved ? r with { Range = moved } : (RangeChange?)null)
+                .OfType<RangeChange>().ToList();
+    }
 
     internal static void ValidateSheetName(string name, Worksheet ignore, Workbook wb)
     {
