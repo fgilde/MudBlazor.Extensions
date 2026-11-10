@@ -176,6 +176,46 @@ public class SpreadsheetDataFeaturesTests : IAsyncLifetime
     }
 
     [Fact]
+    public void Validation_InputMessage_ShownForSelectedCell()
+    {
+        var wb = Book();
+        wb.Execute(new AddDataValidationCommand(wb.Sheets[0], new DataValidation([CellRange.Parse("B2")], ValidationType.Whole, "between", "1", "10",
+            PromptTitle: "Quantity", Prompt: "Enter 1 to 10.")));
+        var cut = Render(wb);
+        Assert.Empty(cut.FindAll(".mud-ex-ssg-dv-prompt"));
+
+        Select(cut, "B2");
+
+        cut.WaitForAssertion(() => Assert.Equal("QuantityEnter 1 to 10.", cut.Find(".mud-ex-ssg-dv-prompt").TextContent.Trim()));
+        Assert.Equal(cut.Find(".mud-ex-ssg-dv-prompt").Id, cut.Find(".mud-ex-ssg-ime").GetAttribute("aria-describedby"));
+        Select(cut, "B3");
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(".mud-ex-ssg-dv-prompt")));
+    }
+
+    [Fact]
+    public async Task Validation_TypedFormula_IsCheckedByItsResult()
+    {
+        var wb = Book(("B1", 50d));
+        wb.Execute(new AddDataValidationCommand(wb.Sheets[0], new DataValidation([CellRange.Parse("A1")], ValidationType.Whole, "between", "1", "10",
+            Error: "Enter 1 to 10.")));
+        var cut = Render(wb);
+        var grid = Select(cut, "A1");
+        grid.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = "=" });
+        grid.Find("textarea.mud-ex-ssg-editor").Input("=B1*2");
+
+        var commit = cut.InvokeAsync(grid.Instance.CommitEditAsync);
+        cut.WaitForAssertion(() => Assert.Contains("Enter 1 to 10.", _dialogs.Markup));
+        await cut.InvokeAsync(() => _dialogs.FindAll("button").Single(b => b.TextContent.Trim() == "Cancel").Click());
+        await commit;
+        Assert.Null(wb.Sheets[0][CellRef.Parse("A1")]);
+
+        grid.Find(".mud-ex-spreadsheet-grid").KeyDown(new KeyboardEventArgs { Key = "=" });
+        grid.Find("textarea.mud-ex-ssg-editor").Input("=B1/10");
+        await cut.InvokeAsync(grid.Instance.CommitEditAsync);
+        Assert.Equal("B1/10", wb.Sheets[0][CellRef.Parse("A1")].Formula);
+    }
+
+    [Fact]
     public void Validation_ListShowsDropdownItems()
     {
         var wb = Book();

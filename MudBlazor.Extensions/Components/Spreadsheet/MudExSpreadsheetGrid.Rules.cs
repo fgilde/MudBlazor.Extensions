@@ -91,6 +91,28 @@ public partial class MudExSpreadsheetGrid
         }
     }
 
+    private DataValidation InputMessage
+    {
+        get
+        {
+            if (_sheet == null || _sheet.DataValidations.Count == 0) return null;
+            var at = ActiveCell;
+            var dv = _sheet.DataValidations.FirstOrDefault(v => v.Ranges.Any(r => r.Contains(at)));
+            return string.IsNullOrEmpty(dv?.Prompt) && string.IsNullOrEmpty(dv?.PromptTitle) ? null : dv;
+        }
+    }
+
+    private string PromptId => _id + "-prompt";
+
+    private string PromptStyle
+    {
+        get
+        {
+            var r = MergeAt(_selection.Active) ?? new CellRange(_selection.Active, _selection.Active);
+            return $"left:{Px(X(r.Left) + 8)};top:{Px(Y(r.Bottom + 1) + 4)}";
+        }
+    }
+
     private IReadOnlyList<string> ListItems(DataValidation dv) => _listOpen ? DataValidator.ListItems(_workbook, _sheet, dv) : [];
 
     private async Task PickListItemAsync(string item)
@@ -125,7 +147,8 @@ public partial class MudExSpreadsheetGrid
 
     private CellValue? ProposedValue(CellRef cell, string text)
     {
-        if (text.Length > 1 && text[0] == '=') return null;
+        if (text.Length > 1 && text[0] == '=')
+            return RuleFormulas.Parse(text[1..]) is { } node ? RuleFormulas.Evaluate(_workbook, _sheet, node, cell, cell) : null;
         return text.Length == 0 ? CellValue.Empty : ParseInput(cell, text).Value;
     }
 }

@@ -7553,6 +7553,22 @@
   opacity: 1;
 }
 
+.mud-ex-ssg-dv-prompt {
+  position: absolute;
+  z-index: 5;
+  box-sizing: border-box;
+  max-width: 260px;
+  padding: 4px 6px;
+  background-color: var(--mud-palette-surface);
+  color: var(--mud-palette-text-primary);
+  border: 1px solid var(--mud-palette-lines-default);
+  box-shadow: var(--mud-elevation-2);
+  font-family: var(--mud-typography-default-family);
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+  pointer-events: none;
+}
+
 .mud-ex-ssg-assist-host {
   position: absolute;
   z-index: 7;

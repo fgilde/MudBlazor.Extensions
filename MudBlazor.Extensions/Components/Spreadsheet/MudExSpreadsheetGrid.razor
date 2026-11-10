@@ -27,7 +27,8 @@
               autocomplete="off"
               readonly="@ReadOnly"
               aria-label="@TryLocalize("Spreadsheet")"
-              aria-activedescendant="@(_sheet != null ? ActiveCellId : null)"></textarea>
+              aria-activedescendant="@(_sheet != null ? ActiveCellId : null)"
+              aria-describedby="@(InputMessage != null ? PromptId : null)"></textarea>
     @if (_sheet != null)
     {
         <div class="mud-ex-ssg-viewport">
@@ -224,6 +225,16 @@
                           @oninput="OnEditorInput"></textarea>
                 __builder.OpenComponent<SpreadsheetEditOverlay>(0);
                 __builder.CloseComponent();
+                if (InputMessage is { } prompt)
+                {
+                    <div id="@PromptId" class="mud-ex-ssg-dv-prompt" style="@PromptStyle" role="tooltip">
+                        @if (!string.IsNullOrEmpty(prompt.PromptTitle))
+                        {
+                            <b>@prompt.PromptTitle</b>
+                        }
+                        <div>@prompt.Prompt</div>
+                    </div>
+                }
                 if (ListValidation is { } dv)
                 {
                     <MudMenu Class="mud-ex-ssg-dv" Style="@ListButtonStyle" Dense="true" MaxHeight="300" Open="_listOpen" OpenChanged="@(o => _listOpen = o)">
