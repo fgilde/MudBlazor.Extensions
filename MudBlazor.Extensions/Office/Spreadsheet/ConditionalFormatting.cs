@@ -78,7 +78,11 @@ public abstract record ConditionalRule(int Priority, bool StopIfTrue)
 
     internal int? DxfId { get; init; }
 
+    internal static readonly string[] Comparisons = ["between", "notBetween", "equal", "notEqual", "greaterThan", "lessThan", "greaterThanOrEqual", "lessThanOrEqual"];
+
     internal virtual DifferentialStyle Format => null;
+
+    internal virtual bool IsComplete => true;
 
     internal abstract ConditionalRule With(Func<string, string> map);
 
@@ -106,6 +110,9 @@ public abstract record ConditionalRule(int Priority, bool StopIfTrue)
     {
         internal override DifferentialStyle Format => Style;
 
+        internal override bool IsComplete => Array.IndexOf(Comparisons, Operator) >= 0 && !string.IsNullOrWhiteSpace(RuleFormulas.Bare(Formula1))
+                                              && (Operator is not ("between" or "notBetween") || !string.IsNullOrWhiteSpace(RuleFormulas.Bare(Formula2)));
+
         internal override ConditionalRule With(Func<string, string> map) => this with { Formula1 = map(Formula1), Formula2 = map(Formula2) };
     }
 
@@ -118,6 +125,8 @@ public abstract record ConditionalRule(int Priority, bool StopIfTrue)
     {
         internal override DifferentialStyle Format => Style;
 
+        internal override bool IsComplete => !string.IsNullOrWhiteSpace(RuleFormulas.Bare(Formula));
+
         internal override ConditionalRule With(Func<string, string> map) => this with { Formula = map(Formula) };
     }
 
@@ -127,6 +136,8 @@ public abstract record ConditionalRule(int Priority, bool StopIfTrue)
     /// <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
     public sealed record ColorScale(IReadOnlyList<ColorScaleStop> Stops, int Priority = 1, bool StopIfTrue = false) : ConditionalRule(Priority, StopIfTrue)
     {
+        internal override bool IsComplete => Stops is { Count: 2 or 3 } && Stops.All(s => s?.Value != null);
+
         internal override ConditionalRule With(Func<string, string> map) => this with { Stops = Stops.Select(s => s with { Value = s.Value.Rewrite(map) }).ToList() };
     }
 
@@ -138,6 +149,8 @@ public abstract record ConditionalRule(int Priority, bool StopIfTrue)
     /// <param name="StopIfTrue">True to skip rules of lower priority when this rule matches.</param>
     public sealed record DataBar(ConditionalValue Min, ConditionalValue Max, string Color, int Priority = 1, bool StopIfTrue = false) : ConditionalRule(Priority, StopIfTrue)
     {
+        internal override bool IsComplete => Min != null && Max != null;
+
         internal override ConditionalRule With(Func<string, string> map) => this with { Min = Min.Rewrite(map), Max = Max.Rewrite(map) };
     }
 
@@ -151,6 +164,8 @@ public abstract record ConditionalRule(int Priority, bool StopIfTrue)
     public sealed record IconSet(string Set, IReadOnlyList<ConditionalValue> Thresholds, bool Reverse = false, bool ShowValue = true, int Priority = 1,
         bool StopIfTrue = false) : ConditionalRule(Priority, StopIfTrue)
     {
+        internal override bool IsComplete => !string.IsNullOrEmpty(Set) && Thresholds is { Count: > 0 } && Thresholds.All(t => t != null);
+
         internal override ConditionalRule With(Func<string, string> map) => this with { Thresholds = Thresholds.Select(t => t.Rewrite(map)).ToList() };
     }
 
@@ -219,8 +234,16 @@ public abstract record ConditionalRule(int Priority, bool StopIfTrue)
     {
         internal override DifferentialStyle Format => Style;
 
+        internal override bool IsComplete => RulesXml.PeriodFormulas.ContainsKey(Period ?? "");
+
         internal override ConditionalRule With(Func<string, string> map) => this;
     }
+}
+
+/// <summary>A rule read from a file that the model cannot represent; it never matches and is written back unchanged.</summary>
+internal sealed record OpaqueRule(int Priority, bool StopIfTrue) : ConditionalRule(Priority, StopIfTrue)
+{
+    internal override ConditionalRule With(Func<string, string> map) => this;
 }
 
 /// <summary>Conditional formatting: rules applied to one or more ranges of a sheet.</summary>
@@ -290,6 +313,14 @@ internal static class RuleRanges
         if (cut.Left > r.Left) yield return CellRange.FromBounds(top, r.Left, bottom, cut.Left - 1);
         if (cut.Right < r.Right) yield return CellRange.FromBounds(top, cut.Right + 1, bottom, r.Right);
         if (cut.Bottom < r.Bottom) yield return CellRange.FromBounds(cut.Bottom + 1, r.Left, r.Bottom, r.Right);
+    }
+
+    internal static void Check(ConditionalFormatting formatting)
+    {
+        Check(formatting.Ranges);
+        if (formatting.Rules is not { Count: > 0 } rules) throw new ArgumentException("Conditional formatting needs at least one rule.", nameof(formatting));
+        if (rules.Any(r => r is not { IsComplete: true }))
+            throw new ArgumentException("Every rule needs its formula, operator, period, stops or thresholds.", nameof(formatting));
     }
 
     internal static void Check(IReadOnlyList<CellRange> ranges)

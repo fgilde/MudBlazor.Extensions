@@ -53,10 +53,28 @@ internal static class StylesXmlReader
         var fill = Child(dxf, "fill") == null ? null
             : new CellFill { Color = ThemeColors.Resolve(Child(pattern, "bgColor") ?? Child(pattern, "fgColor"), theme, indexed) };
         var numFmt = Child(dxf, "numFmt");
-        return new DifferentialStyle(Child(dxf, "font") is { } font ? ReadFont(font, theme, indexed) : null, fill,
-            Child(dxf, "border") is { } border ? ReadBorder(border, theme, indexed) : null,
+        var border = Child(dxf, "border");
+        CellBorderSide Side(string name) => BorderSide(border, name) is { } side ? ReadSide(side, theme, indexed) : null;
+        return new DifferentialStyle(Child(dxf, "font") is { } font ? ReadDxfFont(font, theme, indexed) : null, fill,
+            border == null ? null : new DifferentialBorder { Left = Side("left"), Right = Side("right"), Top = Side("top"), Bottom = Side("bottom") },
             numFmt == null ? null : (string)numFmt.Attribute("formatCode") ?? formats.GetValueOrDefault(Int(numFmt, "numFmtId"))
                                     ?? BuiltInNumberFormats.Get(Int(numFmt, "numFmtId"), CultureInfo.CurrentCulture));
+    }
+
+    private static DifferentialFont ReadDxfFont(XElement font, string[] theme, string[] indexed)
+    {
+        bool? Set(string name) => Child(font, name) is { } e ? Flag(e) : null;
+        var color = Child(font, "color");
+        return new DifferentialFont
+        {
+            Name = Val(Child(font, "name")),
+            Size = double.TryParse(Val(Child(font, "sz")), NumberStyles.Float, CultureInfo.InvariantCulture, out var size) ? size : null,
+            Bold = Set("b"),
+            Italic = Set("i"),
+            Underline = Child(font, "u") is { } u ? Val(u) != "none" : null,
+            Strikethrough = Set("strike"),
+            Color = color == null || (string)color.Attribute("indexed") == "64" ? null : ThemeColors.Resolve(color, theme, indexed)
+        };
     }
 
     private static List<T> Items<T>(XElement root, string name, Func<XElement, T> read) =>
@@ -104,28 +122,31 @@ internal static class StylesXmlReader
 
     private static CellBorder ReadBorder(XElement border, string[] theme, string[] indexed)
     {
-        CellBorderSide Side(string name)
-        {
-            var side = Child(border, name) ?? Child(border, name == "left" ? "start" : name == "right" ? "end" : name);
-            var style = (string)side?.Attribute("style") switch
-            {
-                null or "none" => CellBorderStyle.None,
-                "thin" or "hair" => CellBorderStyle.Thin,
-                "medium" => CellBorderStyle.Medium,
-                "thick" => CellBorderStyle.Thick,
-                "dotted" => CellBorderStyle.Dotted,
-                "double" => CellBorderStyle.Double,
-                _ => CellBorderStyle.Dashed
-            };
-            var color = Child(side, "color");
-            return new CellBorderSide
-            {
-                Style = style,
-                Color = style == CellBorderStyle.None || (string)color?.Attribute("indexed") == "64" ? null : ThemeColors.Resolve(color, theme, indexed)
-            };
-        }
-
+        CellBorderSide Side(string name) => ReadSide(BorderSide(border, name), theme, indexed);
         return new CellBorder { Left = Side("left"), Right = Side("right"), Top = Side("top"), Bottom = Side("bottom") };
+    }
+
+    private static XElement BorderSide(XElement border, string name) =>
+        Child(border, name) ?? Child(border, name == "left" ? "start" : name == "right" ? "end" : name);
+
+    private static CellBorderSide ReadSide(XElement side, string[] theme, string[] indexed)
+    {
+        var style = (string)side?.Attribute("style") switch
+        {
+            null or "none" => CellBorderStyle.None,
+            "thin" or "hair" => CellBorderStyle.Thin,
+            "medium" => CellBorderStyle.Medium,
+            "thick" => CellBorderStyle.Thick,
+            "dotted" => CellBorderStyle.Dotted,
+            "double" => CellBorderStyle.Double,
+            _ => CellBorderStyle.Dashed
+        };
+        var color = Child(side, "color");
+        return new CellBorderSide
+        {
+            Style = style,
+            Color = style == CellBorderStyle.None || (string)color?.Attribute("indexed") == "64" ? null : ThemeColors.Resolve(color, theme, indexed)
+        };
     }
 
     private static CellAlignment ReadAlignment(XElement a) => a == null

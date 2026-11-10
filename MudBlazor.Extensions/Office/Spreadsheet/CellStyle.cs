@@ -153,15 +153,91 @@ public sealed record CellStyle
     public string NumberFormat { get; init; } = "General";
 }
 
+/// <summary>Font changes of a <see cref="DifferentialStyle"/>; null properties leave the cell's font unchanged.</summary>
+public sealed record DifferentialFont
+{
+    /// <summary>Font family name, or null.</summary>
+    public string Name { get; init; }
+
+    /// <summary>Font size in points, or null.</summary>
+    public double? Size { get; init; }
+
+    /// <summary>Bold on or off, or null.</summary>
+    public bool? Bold { get; init; }
+
+    /// <summary>Italic on or off, or null.</summary>
+    public bool? Italic { get; init; }
+
+    /// <summary>Underline on or off, or null.</summary>
+    public bool? Underline { get; init; }
+
+    /// <summary>Strikethrough on or off, or null.</summary>
+    public bool? Strikethrough { get; init; }
+
+    /// <summary>Text color as #RRGGBB, or null.</summary>
+    public string Color { get; init; }
+
+    internal DifferentialFont Over(DifferentialFont lower) => lower == null ? this : new DifferentialFont
+    {
+        Name = Name ?? lower.Name, Size = Size ?? lower.Size, Bold = Bold ?? lower.Bold, Italic = Italic ?? lower.Italic,
+        Underline = Underline ?? lower.Underline, Strikethrough = Strikethrough ?? lower.Strikethrough, Color = Color ?? lower.Color
+    };
+}
+
+/// <summary>Border changes of a <see cref="DifferentialStyle"/>; null sides leave the cell's border unchanged.</summary>
+public sealed record DifferentialBorder
+{
+    /// <summary>Left border, or null.</summary>
+    public CellBorderSide Left { get; init; }
+
+    /// <summary>Right border, or null.</summary>
+    public CellBorderSide Right { get; init; }
+
+    /// <summary>Top border, or null.</summary>
+    public CellBorderSide Top { get; init; }
+
+    /// <summary>Bottom border, or null.</summary>
+    public CellBorderSide Bottom { get; init; }
+
+    internal DifferentialBorder Over(DifferentialBorder lower) => lower == null ? this : new DifferentialBorder
+    {
+        Left = Left ?? lower.Left, Right = Right ?? lower.Right, Top = Top ?? lower.Top, Bottom = Bottom ?? lower.Bottom
+    };
+}
+
 /// <summary>
-/// A differential format that conditional formatting lays over the cell style. Null parts leave the cell style unchanged; of the font only
-/// bold, italic, underline, strikethrough and color apply.
+/// A differential format that conditional formatting lays over the cell style. Only what it sets changes: null parts and null properties
+/// leave the cell style unchanged, so a dxf that sets only a color keeps a bold cell bold.
 /// </summary>
 /// <param name="Font">Font changes, or null.</param>
-/// <param name="Fill">Fill, or null.</param>
-/// <param name="Border">Borders, or null.</param>
+/// <param name="Fill">Fill (a fill without color removes the fill), or null.</param>
+/// <param name="Border">Border changes, or null.</param>
 /// <param name="NumberFormat">Number format code, or null.</param>
-public sealed record DifferentialStyle(CellFont Font = null, CellFill Fill = null, CellBorder Border = null, string NumberFormat = null);
+public sealed record DifferentialStyle(DifferentialFont Font = null, CellFill Fill = null, DifferentialBorder Border = null, string NumberFormat = null)
+{
+    /// <summary>Applies the format to a cell style.</summary>
+    /// <param name="baseStyle">The cell's own style.</param>
+    /// <returns>The style to render.</returns>
+    public CellStyle ApplyTo(CellStyle baseStyle)
+    {
+        var f = baseStyle.Font;
+        var b = baseStyle.Border;
+        return baseStyle with
+        {
+            Font = Font == null ? f : f with
+            {
+                Name = Font.Name ?? f.Name, Size = Font.Size ?? f.Size, Bold = Font.Bold ?? f.Bold, Italic = Font.Italic ?? f.Italic,
+                Underline = Font.Underline ?? f.Underline, Strikethrough = Font.Strikethrough ?? f.Strikethrough, Color = Font.Color ?? f.Color
+            },
+            Fill = Fill ?? baseStyle.Fill,
+            Border = Border == null ? b : b with { Left = Border.Left ?? b.Left, Right = Border.Right ?? b.Right, Top = Border.Top ?? b.Top, Bottom = Border.Bottom ?? b.Bottom },
+            NumberFormat = NumberFormat ?? baseStyle.NumberFormat
+        };
+    }
+
+    internal DifferentialStyle Over(DifferentialStyle lower) => lower == null ? this
+        : new DifferentialStyle(Font?.Over(lower.Font) ?? lower.Font, Fill ?? lower.Fill, Border?.Over(lower.Border) ?? lower.Border, NumberFormat ?? lower.NumberFormat);
+}
 
 /// <summary>Deduplicating table of cell styles; cells store only the style id.</summary>
 public sealed class StyleTable

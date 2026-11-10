@@ -10,7 +10,7 @@ public class RulesTests
     private static readonly XNamespace M = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
     private static readonly DifferentialStyle Red = new(Fill: new CellFill { Color = "#FF0000" });
     private static readonly DifferentialStyle Green = new(Fill: new CellFill { Color = "#00FF00" });
-    private static readonly DifferentialStyle Bold = new(Font: new CellFont { Bold = true });
+    private static readonly DifferentialStyle Bold = new(Font: new DifferentialFont { Bold = true });
 
     private static CellRef R(string a1) => CellRef.Parse(a1);
 
@@ -153,7 +153,7 @@ public class RulesTests
     public void StopIfTrue_PriorityOrder()
     {
         var (wb, ws) = Column(50, 20);
-        var both = new DifferentialStyle(Font: new CellFont { Bold = true }, Fill: new CellFill { Color = "#00FF00" });
+        var both = new DifferentialStyle(Font: new DifferentialFont { Bold = true }, Fill: new CellFill { Color = "#00FF00" });
         using var cf = Format(wb, ws, "A1:A2", new ConditionalRule.CellIs("greaterThan", "10", null, both, Priority: 2));
         wb.Execute(new AddConditionalFormattingCommand(ws, new ConditionalFormatting([G("A1:A2")], [new ConditionalRule.CellIs("greaterThan", "40", null, Red, Priority: 1)])));
 
@@ -323,7 +323,7 @@ public class RulesTests
         var ws = wb.Sheets[0];
 
         Assert.Equal(2, wb.Styles.DifferentialStyles.Count);
-        Assert.Equal(new DifferentialStyle(new CellFont { Bold = true, Color = "#9C0006" }, new CellFill { Color = "#FFC7CE" }), wb.Styles.DifferentialStyles[0]);
+        Assert.Equal(new DifferentialStyle(new DifferentialFont { Bold = true, Color = "#9C0006" }, new CellFill { Color = "#FFC7CE" }), wb.Styles.DifferentialStyles[0]);
         Assert.Equal(new DifferentialStyle(NumberFormat: "0.0"), wb.Styles.DifferentialStyles[1]);
         Assert.Equal(2, ws.ConditionalFormats.Count);
         var first = ws.ConditionalFormats[0];
@@ -438,6 +438,164 @@ public class RulesTests
         var reopened = XlsxReader.Read(new MemoryStream(Write(fresh)));
         Assert.Equal([Red], reopened.Styles.DifferentialStyles);
         Assert.Equal(Red, ((ConditionalRule.Top10)reopened.Sheets[0].ConditionalFormats[0].Rules[0]).Style);
+    }
+
+    [Fact]
+    public void IncompleteRules_RejectedByCommands_UnreadableRulesKeptOnWrite()
+    {
+        var (wb, ws) = Column(1);
+        ConditionalFormatting On(params ConditionalRule[] rules) => new([G("A1:A3")], rules);
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddConditionalFormattingCommand(ws, On())));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddConditionalFormattingCommand(ws, On(new ConditionalRule.Expression(" ", Red)))));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddConditionalFormattingCommand(ws, On(new ConditionalRule.TimePeriod("decade", Red)))));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new AddConditionalFormattingCommand(ws, On(new ConditionalRule.CellIs("between", "1", null, Red)))));
+        wb.Execute(new AddConditionalFormattingCommand(ws, On(new ConditionalRule.Expression("A1>0", Red))));
+        Assert.Throws<ArgumentException>(() => wb.Execute(new EditConditionalFormattingCommand(ws, 0, On())));
+        Assert.Single(ws.ConditionalFormats);
+
+        ws.ConditionalFormats = [On()];
+        Assert.Null(Xml(Write(wb)).Root!.Element(M + "conditionalFormatting"));
+
+        const string unreadable = "<conditionalFormatting sqref=\"B1:B5\" pivot=\"1\"><cfRule type=\"expression\" dxfId=\"0\" priority=\"1\"/>"
+                                  + "<cfRule type=\"timePeriod\" priority=\"2\" timePeriod=\"decade\"><formula>B1&gt;0</formula></cfRule>"
+                                  + "<cfRule type=\"futureRule\" priority=\"3\" x=\"1\"/></conditionalFormatting>"
+                                  + "<conditionalFormatting sqref=\"C1\"><cfRule type=\"expression\" priority=\"4\"><formula>C1&gt;0</formula></cfRule><cfRule type=\"bogus\" priority=\"5\"/></conditionalFormatting>";
+        var package = XlsxReadTests.Package([XlsxReadTests.Sheet("<row r=\"1\"><c r=\"A1\"><v>1</v></c></row>", "", unreadable)]);
+        var read = XlsxReader.Read(new MemoryStream(package));
+        var sheet = read.Sheets[0];
+        Assert.Equal([3, 2], sheet.ConditionalFormats.Select(c => c.Rules.Count));
+        using (var cf = new ConditionalFormatEvaluator(read, sheet)) Assert.Null(cf.Evaluate(R("B1")));
+        read.Execute(new SetValueCommand(sheet, R("A1"), CellValue.Number(2)));
+        var original = Xml(package).Root!.Elements(M + "conditionalFormatting").ToList();
+        var written = Xml(Write(read)).Root!.Elements(M + "conditionalFormatting").ToList();
+        Assert.True(XNode.DeepEquals(original[0], written[0]));
+        Assert.True(XNode.DeepEquals(original[1], written[1]));
+
+        read.Execute(new InsertColumnsCommand(sheet, 0, 1));
+        written = Xml(Write(read)).Root!.Elements(M + "conditionalFormatting").ToList();
+        Assert.Equal(["C1:C5", "D1"], written.Select(w => (string)w.Attribute("sqref")));
+        Assert.True(XNode.DeepEquals(original[0].Elements().First(), written[0].Elements().First()));
+        Assert.Equal("D1>0", written[1].Elements().First().Value);
+        Assert.True(XNode.DeepEquals(original[1].Elements().Last(), written[1].Elements().Last()));
+    }
+
+    [Fact]
+    public void DifferentialStyle_AppliesOnlySetParts()
+    {
+        var baseStyle = new CellStyle
+        {
+            Font = new CellFont { Bold = true, Italic = true, Size = 14 },
+            Fill = new CellFill { Color = "#FFFF00" },
+            Border = new CellBorder { Top = new CellBorderSide { Style = CellBorderStyle.Thick } },
+            NumberFormat = "0.00"
+        };
+        var colorOnly = new DifferentialStyle(new DifferentialFont { Color = "#FF0000" });
+        Assert.Equal(baseStyle with { Font = baseStyle.Font with { Color = "#FF0000" } }, colorOnly.ApplyTo(baseStyle));
+        var explicitOff = new DifferentialStyle(new DifferentialFont { Bold = false }, new CellFill(),
+            new DifferentialBorder { Bottom = new CellBorderSide { Style = CellBorderStyle.Thin, Color = "#0000FF" } }, "0%");
+        Assert.Equal(baseStyle with
+        {
+            Font = baseStyle.Font with { Bold = false },
+            Fill = new CellFill(),
+            Border = baseStyle.Border with { Bottom = new CellBorderSide { Style = CellBorderStyle.Thin, Color = "#0000FF" } },
+            NumberFormat = "0%"
+        }, explicitOff.ApplyTo(baseStyle));
+
+        const string styles = "<dxfs count=\"2\"><dxf><font><color rgb=\"FFFF0000\"/></font></dxf>"
+                              + "<dxf><font><b val=\"0\"/><u val=\"none\"/><sz val=\"9\"/></font><border><bottom style=\"thin\"/></border></dxf></dxfs>";
+        var wb = XlsxReader.Read(new MemoryStream(XlsxReadTests.Package([XlsxReadTests.Sheet("")], styles: styles)));
+        Assert.Equal(colorOnly, wb.Styles.DifferentialStyles[0]);
+        Assert.Equal(new DifferentialStyle(new DifferentialFont { Bold = false, Underline = false, Size = 9 },
+            Border: new DifferentialBorder { Bottom = new CellBorderSide { Style = CellBorderStyle.Thin } }), wb.Styles.DifferentialStyles[1]);
+
+        var ws = wb.Sheets[0];
+        wb.Execute(new SetValueCommand(ws, R("A1"), CellValue.Number(5)));
+        wb.Execute(new AddConditionalFormattingCommand(ws, new ConditionalFormatting([G("A1")],
+            [new ConditionalRule.CellIs("greaterThan", "1", null, colorOnly, 1), new ConditionalRule.CellIs("greaterThan", "0", null, explicitOff, 2)])));
+        using var cf = new ConditionalFormatEvaluator(wb, ws);
+        var merged = cf.Evaluate(R("A1"))!.Style;
+        Assert.Equal(new DifferentialFont { Bold = false, Color = "#FF0000" }, merged.Font);
+        Assert.Equal("0%", merged.NumberFormat);
+
+        var again = XlsxReader.Read(new MemoryStream(Write(wb))).Styles.DifferentialStyles;
+        Assert.Equal([colorOnly, wb.Styles.DifferentialStyles[1], explicitOff], again);
+    }
+
+    [Fact]
+    public void Validation_AnyNeverRejects()
+    {
+        var (wb, ws) = Column(1);
+        wb.Execute(new AddDataValidationCommand(ws, new DataValidation([G("B1:B3")], ValidationType.Any, AllowBlank: false)));
+        Assert.True(DataValidator.Validate(wb, ws, R("B1"), CellValue.Empty).IsValid);
+        Assert.True(DataValidator.Validate(wb, ws, R("B1"), CellValue.Text("x")).IsValid);
+    }
+
+    [Fact]
+    public void RuleCommands_UndoRedo()
+    {
+        var (wb, ws) = Column(1);
+        var first = new ConditionalFormatting([G("A1:A3")], [new ConditionalRule.Expression("A1>0", Red)]);
+        var second = new ConditionalFormatting([G("B1:B3")], [new ConditionalRule.Expression("B1>0", Green)]);
+        var dv1 = new DataValidation([G("C1")], ValidationType.Whole, "greaterThan", "0");
+        var dv2 = new DataValidation([G("C2")], ValidationType.List, Formula1: "\"a,b\"");
+        wb.Execute(new AddConditionalFormattingCommand(ws, first));
+        wb.Execute(new EditConditionalFormattingCommand(ws, 0, second));
+        wb.Execute(new DeleteConditionalFormattingCommand(ws, 0));
+        wb.Execute(new AddDataValidationCommand(ws, dv1));
+        wb.Execute(new EditDataValidationCommand(ws, 0, dv2));
+        wb.Execute(new DeleteDataValidationCommand(ws, 0));
+
+        (ConditionalFormatting[] Formats, DataValidation[] Validations)[] expected =
+        [
+            ([], []), ([first], []), ([second], []), ([], []), ([], [dv1]), ([], [dv2]), ([], [])
+        ];
+        void Check(int i)
+        {
+            Assert.Equal(expected[i].Formats, ws.ConditionalFormats);
+            Assert.Equal(expected[i].Validations, ws.DataValidations);
+        }
+
+        for (var i = expected.Length - 2; i >= 0; i--)
+        {
+            wb.Undo.Undo();
+            Check(i);
+        }
+
+        for (var i = 1; i < expected.Length; i++)
+        {
+            wb.Undo.Redo();
+            Check(i);
+        }
+
+        Assert.Throws<ArgumentOutOfRangeException>(() => wb.Execute(new DeleteDataValidationCommand(ws, 0)));
+    }
+
+    [Fact]
+    public void RenameAndDeleteSheet_ReachRuleFormulas()
+    {
+        var (wb, data) = Column(1, 2, 3);
+        wb.Execute(new AddSheetCommand("Other"));
+        var other = wb.Sheets[1];
+        wb.Execute(new AddConditionalFormattingCommand(other, new ConditionalFormatting([G("A1")], [new ConditionalRule.Expression("Sheet1!$A$1>0", Red)])));
+        wb.Execute(new AddDataValidationCommand(other, new DataValidation([G("B1")], ValidationType.List, Formula1: "=Sheet1!$A$1:$A$3")));
+        string Formula() => ((ConditionalRule.Expression)other.ConditionalFormats[0].Rules[0]).Formula;
+
+        Assert.Equal(["1", "2", "3"], DataValidator.ListItems(wb, other, other.DataValidations[0]));
+        wb.Execute(new RenameSheetCommand(data, "My Data"));
+        Assert.Equal("'My Data'!$A$1>0", Formula());
+        Assert.Equal("='My Data'!$A$1:$A$3", other.DataValidations[0].Formula1);
+        Assert.Equal(["1", "2", "3"], DataValidator.ListItems(wb, other, other.DataValidations[0]));
+
+        wb.Execute(new DeleteSheetCommand(data));
+        Assert.Equal("#REF!>0", Formula());
+        Assert.Equal("=#REF!", other.DataValidations[0].Formula1);
+        Assert.Empty(DataValidator.ListItems(wb, other, other.DataValidations[0]));
+
+        wb.Undo.Undo();
+        Assert.Equal("'My Data'!$A$1>0", Formula());
+        wb.Undo.Undo();
+        Assert.Equal("Sheet1!$A$1>0", Formula());
+        Assert.Equal("=Sheet1!$A$1:$A$3", other.DataValidations[0].Formula1);
     }
 
     private static byte[] Write(Workbook wb)

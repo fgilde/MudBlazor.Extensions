@@ -79,7 +79,7 @@ public sealed class ConditionalFormatEvaluator : IDisposable
                     break;
                 default:
                     applied = Matches(state, rule, cell, value, number);
-                    if (applied) style = Merge(style, rule.Format);
+                    if (applied) style = style == null ? rule.Format : style.Over(rule.Format);
                     break;
             }
 
@@ -278,11 +278,6 @@ public sealed class ConditionalFormatEvaluator : IDisposable
         CellValueKind.Text => "t" + v.TextValue.ToUpperInvariant(),
         _ => (int)v.Kind + v.ToString()
     };
-
-    private static DifferentialStyle Merge(DifferentialStyle current, DifferentialStyle next) =>
-        current == null ? next
-        : next == null ? current
-        : new DifferentialStyle(current.Font ?? next.Font, current.Fill ?? next.Fill, current.Border ?? next.Border, current.NumberFormat ?? next.NumberFormat);
 
     private sealed class RuleState(ConditionalFormatting formatting)
     {

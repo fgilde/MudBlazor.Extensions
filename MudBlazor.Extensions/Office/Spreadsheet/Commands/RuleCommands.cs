@@ -13,7 +13,7 @@ public sealed class AddConditionalFormattingCommand(Worksheet sheet, Conditional
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
-        RuleRanges.Check(formatting.Ranges);
+        RuleRanges.Check(formatting);
         _before = RuleState.Capture(sheet);
         (_before with { Formats = [.. _before.Formats, formatting] }).Restore(wb, sheet);
     }
@@ -22,7 +22,10 @@ public sealed class AddConditionalFormattingCommand(Worksheet sheet, Conditional
     public void Revert(Workbook wb) => _before.Restore(wb, sheet);
 }
 
-/// <summary>Replaces one conditional formatting of a sheet.</summary>
+/// <summary>
+/// Replaces one conditional formatting of a sheet. Build the replacement with <c>with</c> from the current item so the parts of the file the
+/// model does not represent (extension links, unknown attributes) stay.
+/// </summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="index">Index in <see cref="Worksheet.ConditionalFormats"/>.</param>
 /// <param name="formatting">The new ranges and rules.</param>
@@ -36,7 +39,7 @@ public sealed class EditConditionalFormattingCommand(Worksheet sheet, int index,
     /// <inheritdoc />
     public void Apply(Workbook wb)
     {
-        RuleRanges.Check(formatting.Ranges);
+        RuleRanges.Check(formatting);
         _before = RuleState.Capture(sheet);
         (_before with { Formats = RuleState.Replace(_before.Formats, index, formatting) }).Restore(wb, sheet);
     }
@@ -88,7 +91,10 @@ public sealed class AddDataValidationCommand(Worksheet sheet, DataValidation val
     public void Revert(Workbook wb) => _before.Restore(wb, sheet);
 }
 
-/// <summary>Replaces one data validation rule of a sheet.</summary>
+/// <summary>
+/// Replaces one data validation rule of a sheet. Build the replacement with <c>with</c> from the current item so the parts of the file the
+/// model does not represent stay.
+/// </summary>
 /// <param name="sheet">The sheet.</param>
 /// <param name="index">Index in <see cref="Worksheet.DataValidations"/>.</param>
 /// <param name="validation">The new rule.</param>

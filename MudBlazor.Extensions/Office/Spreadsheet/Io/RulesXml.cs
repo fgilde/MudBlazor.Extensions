@@ -17,7 +17,7 @@ internal static class RulesXml
         "LEN(TRIM({0}))>0", "ISERROR({0})", "NOT(ISERROR({0}))"
     ];
 
-    private static readonly Dictionary<string, string> PeriodFormulas = new()
+    internal static readonly Dictionary<string, string> PeriodFormulas = new()
     {
         ["today"] = "FLOOR({0},1)=TODAY()",
         ["yesterday"] = "FLOOR({0},1)=TODAY()-1",
@@ -41,8 +41,8 @@ internal static class RulesXml
     {
         var ranges = Ranges((string)e.Attribute("sqref"));
         if (ranges.Count == 0) return null;
-        var rules = e.Elements().Where(r => r.Name.LocalName == "cfRule").Select(r => ReadRule(r, dxfs, theme)).OfType<ConditionalRule>().ToList();
-        return new ConditionalFormatting(ranges, rules) { Source = e };
+        var rules = e.Elements().Where(r => r.Name.LocalName == "cfRule").Select(r => ReadRule(r, dxfs, theme)).ToList();
+        return rules.Count == 0 ? null : new ConditionalFormatting(ranges, rules) { Source = e };
     }
 
     internal static List<DataValidation> ReadValidations(XElement e) =>
@@ -51,7 +51,7 @@ internal static class RulesXml
     internal static IEnumerable<XElement> WriteFormats(Worksheet ws, XNamespace ns, StylesXmlWriter styles, string[] theme)
     {
         var known = ws.Workbook.Styles.DifferentialStyles.Count;
-        foreach (var cf in ws.ConditionalFormats)
+        foreach (var cf in ws.ConditionalFormats.Where(c => c.Rules.Count > 0))
         {
             var e = cf.Source == null ? new XElement(ns + "conditionalFormatting") : new XElement(cf.Source);
             e.SetAttributeValue("sqref", Sqref(cf.Ranges));
@@ -113,7 +113,7 @@ internal static class RulesXml
                 new ConditionalRule.ContainsText((ContainsTextKind)kind, (string)r.Attribute("text"), style, priority, stop),
             _ => null
         };
-        return rule == null ? null : rule with { Source = r, DxfId = dxfId };
+        return (rule is { IsComplete: true } ? rule : new OpaqueRule(priority, stop)) with { Source = r, DxfId = dxfId };
     }
 
     private static List<ConditionalValue> Values(XElement parent) => parent.Elements().Where(c => c.Name.LocalName == "cfvo").Select(c =>
@@ -139,6 +139,7 @@ internal static class RulesXml
 
     private static XElement WriteRule(ConditionalRule rule, CellRef anchor, XNamespace ns, StylesXmlWriter styles, string[] theme, int knownDxfs)
     {
+        if (rule is OpaqueRule) return new XElement(rule.Source);
         var x = rule.Source == null ? new XElement(ns + "cfRule") : new XElement(rule.Source);
         x.Elements(ns + "formula").Remove();
         x.SetAttributeValue("type", rule switch

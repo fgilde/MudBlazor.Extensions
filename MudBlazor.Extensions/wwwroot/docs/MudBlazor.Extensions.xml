@@ -31957,37 +31957,81 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.CellStyle.NumberFormat">
             <summary>Excel number format code, <c>General</c> by default.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DifferentialFont">
+            <summary>Font changes of a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle"/>; null properties leave the cell's font unchanged.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialFont.Name">
+            <summary>Font family name, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialFont.Size">
+            <summary>Font size in points, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialFont.Bold">
+            <summary>Bold on or off, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialFont.Italic">
+            <summary>Italic on or off, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialFont.Underline">
+            <summary>Underline on or off, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialFont.Strikethrough">
+            <summary>Strikethrough on or off, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialFont.Color">
+            <summary>Text color as #RRGGBB, or null.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DifferentialBorder">
+            <summary>Border changes of a <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle"/>; null sides leave the cell's border unchanged.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialBorder.Left">
+            <summary>Left border, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialBorder.Right">
+            <summary>Right border, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialBorder.Top">
+            <summary>Top border, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialBorder.Bottom">
+            <summary>Bottom border, or null.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle">
             <summary>
-            A differential format that conditional formatting lays over the cell style. Null parts leave the cell style unchanged; of the font only
-            bold, italic, underline, strikethrough and color apply.
+            A differential format that conditional formatting lays over the cell style. Only what it sets changes: null parts and null properties
+            leave the cell style unchanged, so a dxf that sets only a color keeps a bold cell bold.
             </summary>
             <param name="Font">Font changes, or null.</param>
-            <param name="Fill">Fill, or null.</param>
-            <param name="Border">Borders, or null.</param>
+            <param name="Fill">Fill (a fill without color removes the fill), or null.</param>
+            <param name="Border">Border changes, or null.</param>
             <param name="NumberFormat">Number format code, or null.</param>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.#ctor(MudBlazor.Extensions.Office.Spreadsheet.CellFont,MudBlazor.Extensions.Office.Spreadsheet.CellFill,MudBlazor.Extensions.Office.Spreadsheet.CellBorder,System.String)">
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.#ctor(MudBlazor.Extensions.Office.Spreadsheet.DifferentialFont,MudBlazor.Extensions.Office.Spreadsheet.CellFill,MudBlazor.Extensions.Office.Spreadsheet.DifferentialBorder,System.String)">
             <summary>
-            A differential format that conditional formatting lays over the cell style. Null parts leave the cell style unchanged; of the font only
-            bold, italic, underline, strikethrough and color apply.
+            A differential format that conditional formatting lays over the cell style. Only what it sets changes: null parts and null properties
+            leave the cell style unchanged, so a dxf that sets only a color keeps a bold cell bold.
             </summary>
             <param name="Font">Font changes, or null.</param>
-            <param name="Fill">Fill, or null.</param>
-            <param name="Border">Borders, or null.</param>
+            <param name="Fill">Fill (a fill without color removes the fill), or null.</param>
+            <param name="Border">Border changes, or null.</param>
             <param name="NumberFormat">Number format code, or null.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.Font">
             <summary>Font changes, or null.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.Fill">
-            <summary>Fill, or null.</summary>
+            <summary>Fill (a fill without color removes the fill), or null.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.Border">
-            <summary>Borders, or null.</summary>
+            <summary>Border changes, or null.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.NumberFormat">
             <summary>Number format code, or null.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.DifferentialStyle.ApplyTo(MudBlazor.Extensions.Office.Spreadsheet.CellStyle)">
+            <summary>Applies the format to a cell style.</summary>
+            <param name="baseStyle">The cell's own style.</param>
+            <returns>The style to render.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.StyleTable">
             <summary>Deduplicating table of cell styles; cells store only the style id.</summary>
@@ -32305,13 +32349,19 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.EditConditionalFormattingCommand">
-            <summary>Replaces one conditional formatting of a sheet.</summary>
+            <summary>
+            Replaces one conditional formatting of a sheet. Build the replacement with <c>with</c> from the current item so the parts of the file the
+            model does not represent (extension links, unknown attributes) stay.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ConditionalFormats"/>.</param>
             <param name="formatting">The new ranges and rules.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.EditConditionalFormattingCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32,MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatting)">
-            <summary>Replaces one conditional formatting of a sheet.</summary>
+            <summary>
+            Replaces one conditional formatting of a sheet. Build the replacement with <c>with</c> from the current item so the parts of the file the
+            model does not represent (extension links, unknown attributes) stay.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.ConditionalFormats"/>.</param>
             <param name="formatting">The new ranges and rules.</param>
@@ -32364,13 +32414,19 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.EditDataValidationCommand">
-            <summary>Replaces one data validation rule of a sheet.</summary>
+            <summary>
+            Replaces one data validation rule of a sheet. Build the replacement with <c>with</c> from the current item so the parts of the file the
+            model does not represent stay.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DataValidations"/>.</param>
             <param name="validation">The new rule.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.EditDataValidationCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32,MudBlazor.Extensions.Office.Spreadsheet.DataValidation)">
-            <summary>Replaces one data validation rule of a sheet.</summary>
+            <summary>
+            Replaces one data validation rule of a sheet. Build the replacement with <c>with</c> from the current item so the parts of the file the
+            model does not represent stay.
+            </summary>
             <param name="sheet">The sheet.</param>
             <param name="index">Index in <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.DataValidations"/>.</param>
             <param name="validation">The new rule.</param>
@@ -33367,6 +33423,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ConditionalRule.TimePeriod.Style">
             <summary>The format applied to matching cells.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.OpaqueRule">
+            <summary>A rule read from a file that the model cannot represent; it never matches and is written back unchanged.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.OpaqueRule.#ctor(System.Int32,System.Boolean)">
+            <summary>A rule read from a file that the model cannot represent; it never matches and is written back unchanged.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ConditionalFormatting">
             <summary>Conditional formatting: rules applied to one or more ranges of a sheet.</summary>

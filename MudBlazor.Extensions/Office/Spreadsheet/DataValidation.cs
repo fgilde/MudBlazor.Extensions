@@ -119,7 +119,7 @@ public static class DataValidator
                             items.Add(v.ToString());
                 break;
             default:
-                if (result.Scalar.Kind != CellValueKind.Empty) items.Add(result.Scalar.ToString());
+                if (result.Scalar.Kind is not (CellValueKind.Empty or CellValueKind.Error)) items.Add(result.Scalar.ToString());
                 break;
         }
 
@@ -131,11 +131,10 @@ public static class DataValidator
 
     private static bool IsValid(Workbook wb, Worksheet sheet, DataValidation dv, CellRef cell, CellValue value)
     {
+        if (dv.Type == ValidationType.Any) return true;
         if (value.Kind == CellValueKind.Empty) return dv.AllowBlank;
         switch (dv.Type)
         {
-            case ValidationType.Any:
-                return true;
             case ValidationType.List:
                 var items = ListItems(wb, sheet, dv);
                 var texts = new[] { value.ToString(), Display(wb, sheet, cell, value) };
