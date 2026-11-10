@@ -29,6 +29,8 @@ public sealed class Worksheet
     private readonly Dictionary<int, double> _rowHeights = new();
     private readonly HashSet<int> _hiddenColumns = new();
     private readonly HashSet<int> _hiddenRows = new();
+    private HashSet<int> _filteredRows = new();
+    private HashSet<int> _hiddenOrFiltered;
     private readonly Dictionary<int, int> _columnStyles = new();
     private readonly Dictionary<int, int> _rowStyles = new();
     private List<CellRange> _merges = new();
@@ -82,8 +84,14 @@ public sealed class Worksheet
     /// <summary>Zero-based indexes of hidden columns.</summary>
     public IReadOnlySet<int> HiddenColumns => _hiddenColumns;
 
-    /// <summary>Zero-based indexes of hidden rows.</summary>
-    public IReadOnlySet<int> HiddenRows => _hiddenRows;
+    /// <summary>Zero-based indexes of hidden rows, whether hidden by hand or by the auto filter.</summary>
+    public IReadOnlySet<int> HiddenRows => _filteredRows.Count == 0 ? _hiddenRows : _hiddenOrFiltered ??= [.. _hiddenRows, .. _filteredRows];
+
+    /// <summary>Zero-based indexes of rows hidden by the auto filter, tracked apart from rows hidden by hand.</summary>
+    public IReadOnlySet<int> FilteredRows => _filteredRows;
+
+    /// <summary>The auto filter, or null.</summary>
+    public AutoFilter AutoFilter { get; internal set; }
 
     /// <summary>Gets the stored cell, or null if the address holds no content and no style.</summary>
     /// <param name="r">The cell address.</param>
@@ -134,10 +142,25 @@ public sealed class Worksheet
     /// <returns>True if hidden.</returns>
     public bool IsColumnHidden(int c) => _hiddenColumns.Contains(c);
 
-    /// <summary>Tests whether a row is hidden.</summary>
+    /// <summary>Tests whether a row is hidden, by hand or by the auto filter.</summary>
     /// <param name="r">Zero-based row.</param>
     /// <returns>True if hidden.</returns>
-    public bool IsRowHidden(int r) => _hiddenRows.Contains(r);
+    public bool IsRowHidden(int r) => _hiddenRows.Contains(r) || _filteredRows.Contains(r);
+
+    /// <summary>Tests whether the auto filter hides a row.</summary>
+    /// <param name="r">Zero-based row.</param>
+    /// <returns>True if filtered out.</returns>
+    public bool IsRowFiltered(int r) => _filteredRows.Contains(r);
+
+    /// <summary>Enumerates the rows of a range that are neither hidden by hand nor filtered out, so edits in a filtered range hit only visible rows.</summary>
+    /// <param name="range">The range.</param>
+    /// <returns>Zero-based row indexes in ascending order.</returns>
+    public IEnumerable<int> VisibleRowsIn(CellRange range)
+    {
+        for (var r = range.Top; r <= range.Bottom; r++)
+            if (!IsRowHidden(r))
+                yield return r;
+    }
 
     internal static bool InBounds(CellRef r) => r.Row >= 0 && r.Row < CellRef.MaxRows && r.Column >= 0 && r.Column < CellRef.MaxColumns;
 
@@ -308,8 +331,25 @@ public sealed class Worksheet
 
     internal void SetHidden(Axis axis, int index, bool hidden)
     {
+        _hiddenOrFiltered = null;
         if (hidden) HiddenSet(axis).Add(index);
         else HiddenSet(axis).Remove(index);
+    }
+
+    internal bool IsHiddenByHand(Axis axis, int index) => HiddenSet(axis).Contains(index);
+
+    internal void SetFiltered(IEnumerable<int> rows)
+    {
+        _hiddenOrFiltered = null;
+        _filteredRows = [.. rows];
+    }
+
+    internal void ClaimFilteredRows()
+    {
+        if (AutoFilter is not { Columns.Count: > 0 } filter) return;
+        var rows = _hiddenRows.Where(r => r > filter.Range.Top && r <= filter.Range.Bottom).ToList();
+        _hiddenRows.ExceptWith(rows);
+        SetFiltered(rows);
     }
 
     internal List<(CellRef Ref, CellState State)> Insert(Axis axis, int index, int count)
@@ -351,6 +391,7 @@ public sealed class Worksheet
         _usedRange = null;
         Part?.Shift(axis, index, count);
         Remap(axis, v => v >= index ? v + count : v, limit);
+        if (AutoFilter != null && (AutoFilter = AutoFilter.Shift(axis, index, count)) == null) SetFiltered([]);
         _merges = _merges.Select(m => ShiftRange(m, axis, Start(m, axis) >= index ? count : 0, End(m, axis) >= index ? count : 0, limit)).ToList();
         if (FreezeAt is { } f)
         {
@@ -399,13 +440,20 @@ public sealed class Worksheet
 
         var snapshot = new DeleteSnapshot(removed, Sizes(axis).Where(p => p.Key >= index && p.Key < end).ToList(),
             HiddenSet(axis).Where(i => i >= index && i < end).ToList(),
-            AxisStyles(axis).Where(p => p.Key >= index && p.Key < end).ToList(), CopyMerges(), FreezeAt, Part?.Shift(axis, index, -count));
+            AxisStyles(axis).Where(p => p.Key >= index && p.Key < end).ToList(), CopyMerges(), FreezeAt, AutoFilter, _filteredRows,
+            Part?.Shift(axis, index, -count));
         _cells = kept;
         _formulaKeys = formulas;
         _spillKeys = spills;
         _usedRange = null;
         Remap(axis, v => v < index ? v : v < end ? -1 : v - count, limit);
         _merges = _merges.Select(m => ShrinkRange(m, axis, index, count)).Where(m => m is { IsSingleCell: false }).Select(m => m.Value).ToList();
+        if (AutoFilter is { } before)
+        {
+            AutoFilter = before.Shift(axis, index, -count);
+            if (AutoFilter == null || AutoFilter.Columns.Count < before.Columns.Count) SetFiltered(AutoFilter?.Evaluate(this) ?? []);
+        }
+
         if (FreezeAt is { } f)
         {
             var v = axis == Axis.Row ? f.Row : f.Column;
@@ -423,6 +471,8 @@ public sealed class Worksheet
         foreach (var (r, state) in snapshot.Cells) Restore(r, state);
         foreach (var (i, size) in snapshot.Sizes) Sizes(axis)[i] = size;
         foreach (var i in snapshot.Hidden) HiddenSet(axis).Add(i);
+        AutoFilter = snapshot.AutoFilter;
+        SetFiltered(snapshot.Filtered);
         foreach (var (i, style) in snapshot.AxisStyles) AxisStyles(axis)[i] = style;
         _merges = [.. snapshot.Merges];
         FreezeAt = snapshot.Freeze;
@@ -457,7 +507,12 @@ public sealed class Worksheet
         var movedHidden = hidden.Select(map).Where(i => i >= 0 && i < limit).ToList();
         hidden.Clear();
         hidden.UnionWith(movedHidden);
+        if (axis == Axis.Row) SetFiltered(_filteredRows.Select(map).Where(i => i >= 0 && i < limit));
     }
+
+    internal static CellRange? MoveRange(CellRange r, Axis axis, int index, int count) => count >= 0
+        ? ShiftRange(r, axis, Start(r, axis) >= index ? count : 0, End(r, axis) >= index ? count : 0, axis == Axis.Row ? CellRef.MaxRows : CellRef.MaxColumns)
+        : ShrinkRange(r, axis, index, -count);
 
     private static int Start(CellRange r, Axis axis) => axis == Axis.Row ? r.Top : r.Left;
 
@@ -487,4 +542,6 @@ internal sealed record DeleteSnapshot(
     List<KeyValuePair<int, int>> AxisStyles,
     List<CellRange> Merges,
     CellRef? Freeze,
+    AutoFilter AutoFilter,
+    IReadOnlySet<int> Filtered,
     Action Package = null);

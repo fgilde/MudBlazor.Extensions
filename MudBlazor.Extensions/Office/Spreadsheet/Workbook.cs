@@ -159,7 +159,7 @@ public sealed class Workbook
 
     /// <summary>
     /// True if the source file contains content whose cell references are not moved when rows, columns or sheets change: conditional
-    /// formatting, data validation, hyperlinks, auto filters, sort state, tables, comments, drawings and charts, pivot tables and their
+    /// formatting, data validation, hyperlinks, tables, comments, drawings and charts, pivot tables and their
     /// caches, external links, page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or
     /// columns or renaming a sheet these keep pointing at their original cells; editors should warn once.
     /// </summary>

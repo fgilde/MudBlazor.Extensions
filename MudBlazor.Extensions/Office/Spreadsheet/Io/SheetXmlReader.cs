@@ -147,8 +147,60 @@ internal static class SheetXmlReader
                     .Where(r => r is { IsSingleCell: false })
                     .Select(r => r.Value));
                 break;
+            case "autoFilter":
+                ws.AutoFilter = ReadAutoFilter(e);
+                ws.ClaimFilteredRows();
+                break;
         }
     }
+
+    internal static readonly string[] FilterOperators = ["equal", "notEqual", "greaterThan", "greaterThanOrEqual", "lessThan", "lessThanOrEqual"];
+
+    private static AutoFilter ReadAutoFilter(XElement e)
+    {
+        if (!CellRange.TryParse((string)e.Attribute("ref"), out var range)) return null;
+        range = range.Normalized;
+        var columns = new Dictionary<int, FilterCriteria>();
+        var sources = new Dictionary<int, XElement>();
+        foreach (var column in e.Elements().Where(c => c.Name.LocalName == "filterColumn"))
+        {
+            if (Int(column, "colId") is not { } id || id < 0 || id > range.Right - range.Left) continue;
+            columns[range.Left + id] = Criteria(column);
+            sources[range.Left + id] = column;
+        }
+
+        var state = Child(e, "sortState");
+        var condition = Child(state, "sortCondition");
+        var sort = condition != null && CellRange.TryParse((string)condition.Attribute("ref"), out var by)
+            ? new SortKey(by.Left, True((string)condition.Attribute("descending")), True((string)state.Attribute("caseSensitive")))
+            : null;
+        return new AutoFilter(range, columns, sort, e, sources);
+    }
+
+    private static FilterCriteria Criteria(XElement column)
+    {
+        var f = column.Elements().FirstOrDefault(c => c.Name.LocalName != "extLst");
+        switch (f?.Name.LocalName)
+        {
+            case "filters":
+                return FilterCriteria.Values(f.Elements().Where(c => c.Name.LocalName == "filter").Select(c => (string)c.Attribute("val") ?? "").ToHashSet(),
+                    True((string)f.Attribute("blank")));
+            case "customFilters":
+                var list = f.Elements().Where(c => c.Name.LocalName == "customFilter").ToList();
+                if (list.Count == 0) return FilterCriteria.Other();
+                return FilterCriteria.Custom(Operator(list[0]), (string)list[0].Attribute("val"), True((string)f.Attribute("and")),
+                    list.Count > 1 ? Operator(list[1]) : null, list.Count > 1 ? (string)list[1].Attribute("val") : null);
+            case "top10":
+                return FilterCriteria.Top10(Number(f, "val") ?? 10, True((string)f.Attribute("percent")), (string)f.Attribute("top") is "0" or "false");
+            case "colorFilter":
+                return FilterCriteria.Color(Int(f, "dxfId") ?? 0, (string)f.Attribute("cellColor") is not ("0" or "false"));
+            default:
+                return FilterCriteria.Other();
+        }
+    }
+
+    private static CustomFilterOperator Operator(XElement customFilter) =>
+        Array.IndexOf(FilterOperators, (string)customFilter.Attribute("operator")) is >= 0 and var i ? (CustomFilterOperator)i : CustomFilterOperator.Equal;
 
     internal static CellRef? Frozen(XElement pane)
     {

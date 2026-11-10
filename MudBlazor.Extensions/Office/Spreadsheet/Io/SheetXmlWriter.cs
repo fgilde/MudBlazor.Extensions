@@ -187,7 +187,7 @@ internal static class SheetXmlWriter
         [
             SheetPr(Original("sheetPr"), ws, ns, theme), dimension, SheetViews(Original("sheetViews"), ws, ns),
             SheetFormatPr(Original("sheetFormatPr"), ws, ns), Cols(Original("cols"), ws, part, package, styles, ns),
-            new XElement(ns + "sheetData"),
+            new XElement(ns + "sheetData"), AutoFilterXml(ws.AutoFilter, ns),
             ws.Merges.Count == 0 ? null : new XElement(ns + "mergeCells", new XAttribute("count", ws.Merges.Count),
                 ws.Merges.Select(m => new XElement(ns + "mergeCell", new XAttribute("ref", m.ToA1()))))
         ], ns);
@@ -423,6 +423,82 @@ internal static class SheetXmlWriter
             format.SetAttributeValue("defaultColWidth", Number(PixelsToWidth(ws.DefaultColumnWidth)));
         return format;
     }
+
+    private static readonly string[] FilterNames = ["filters", "customFilters", "top10", "colorFilter", "dynamicFilter", "iconFilter"];
+
+    private static XElement AutoFilterXml(AutoFilter filter, XNamespace ns)
+    {
+        if (filter == null) return null;
+        var range = filter.Range;
+        var e = filter.Source == null ? new XElement(ns + "autoFilter") : new XElement(filter.Source);
+        e.SetAttributeValue("ref", range.ToA1());
+        e.Elements(ns + "filterColumn").Remove();
+        e.AddFirst(filter.Columns.OrderBy(p => p.Key).Select(p => FilterColumn(p.Key - range.Left, p.Value, filter.ColumnSources.GetValueOrDefault(p.Key), ns)));
+        var sort = e.Element(ns + "sortState");
+        if (filter.Sort is not { } key)
+        {
+            sort?.Remove();
+            return e;
+        }
+
+        if (sort == null)
+        {
+            sort = new XElement(ns + "sortState");
+            if (e.Element(ns + "extLst") is { } ext) ext.AddBeforeSelf(sort);
+            else e.Add(sort);
+        }
+
+        var data = CellRange.FromBounds(Math.Min(range.Top + 1, range.Bottom), range.Left, range.Bottom, range.Right);
+        sort.SetAttributeValue("ref", data.ToA1());
+        sort.SetAttributeValue("caseSensitive", key.CaseSensitive ? 1 : null);
+        var conditions = sort.Elements(ns + "sortCondition").ToList();
+        var condition = conditions.Count > 0 ? new XElement(conditions[0]) : new XElement(ns + "sortCondition");
+        conditions.Remove();
+        condition.SetAttributeValue("descending", key.Descending ? 1 : null);
+        condition.SetAttributeValue("ref", CellRange.FromBounds(data.Top, key.Column, data.Bottom, key.Column).ToA1());
+        sort.AddFirst(condition);
+        return e;
+    }
+
+    private static XElement FilterColumn(int colId, FilterCriteria c, XElement source, XNamespace ns)
+    {
+        var column = source == null ? new XElement(ns + "filterColumn") : new XElement(source);
+        column.SetAttributeValue("colId", colId);
+        if (c.Kind == FilterKind.Other) return column;
+        var name = c.Kind switch { FilterKind.Values => "filters", FilterKind.Custom => "customFilters", FilterKind.Top10 => "top10", _ => "colorFilter" };
+        var old = column.Elements().Where(x => x.Name.Namespace == ns && FilterNames.Contains(x.Name.LocalName)).ToList();
+        var f = old.FirstOrDefault(x => x.Name.LocalName == name) is { } same ? new XElement(same) : new XElement(ns + name);
+        old.Remove();
+        switch (c.Kind)
+        {
+            case FilterKind.Values:
+                f.SetAttributeValue("blank", c.Blanks ? 1 : null);
+                f.Elements(ns + "filter").Remove();
+                f.AddFirst(c.Shown.Order(StringComparer.Ordinal).Select(v => new XElement(ns + "filter", new XAttribute("val", v))));
+                break;
+            case FilterKind.Custom:
+                f.SetAttributeValue("and", c.And ? 1 : null);
+                f.Elements(ns + "customFilter").Remove();
+                f.Add(CustomFilter(c.Operator1, c.Value1, ns), c.Operator2 is { } op ? CustomFilter(op, c.Value2, ns) : null);
+                break;
+            case FilterKind.Top10:
+                f.SetAttributeValue("top", c.Bottom ? 0 : null);
+                f.SetAttributeValue("percent", c.Percent ? 1 : null);
+                f.SetAttributeValue("val", Number(c.Count));
+                break;
+            default:
+                f.SetAttributeValue("dxfId", c.DxfId);
+                f.SetAttributeValue("cellColor", c.CellColor ? null : 0);
+                break;
+        }
+
+        column.AddFirst(f);
+        return column;
+    }
+
+    private static XElement CustomFilter(CustomFilterOperator op, string value, XNamespace ns) =>
+        new(ns + "customFilter", op == CustomFilterOperator.Equal ? null : new XAttribute("operator", SheetXmlReader.FilterOperators[(int)op]),
+            new XAttribute("val", value ?? ""));
 
     private static XElement Cols(XElement original, Worksheet ws, XlsxSheetPart part, XlsxPackage package, StylesXmlWriter styles, XNamespace ns)
     {

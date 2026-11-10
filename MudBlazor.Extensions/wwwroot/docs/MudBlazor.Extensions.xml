@@ -30652,6 +30652,148 @@
             MudBlazorExtensionsMiddlewareExtensions
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SortKey">
+            <summary>One sort level.</summary>
+            <param name="Column">Zero-based sheet column to sort by.</param>
+            <param name="Descending">True to sort from largest to smallest; blank cells stay last either way.</param>
+            <param name="CaseSensitive">True to order text case-sensitively.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SortKey.#ctor(System.Int32,System.Boolean,System.Boolean)">
+            <summary>One sort level.</summary>
+            <param name="Column">Zero-based sheet column to sort by.</param>
+            <param name="Descending">True to sort from largest to smallest; blank cells stay last either way.</param>
+            <param name="CaseSensitive">True to order text case-sensitively.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SortKey.Column">
+            <summary>Zero-based sheet column to sort by.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SortKey.Descending">
+            <summary>True to sort from largest to smallest; blank cells stay last either way.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SortKey.CaseSensitive">
+            <summary>True to order text case-sensitively.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FilterKind">
+            <summary>Kinds of auto filter criteria.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Values">
+            <summary>Shows rows whose display text is in a list.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Custom">
+            <summary>Shows rows matching one or two comparisons.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Top10">
+            <summary>Shows the largest or smallest values.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Color">
+            <summary>Shows rows by cell or font color (a differential format of the file).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Other">
+            <summary>A filter read from a file that the model does not represent (dynamic or icon filter); it is written back unchanged and hides no rows when filters are re-applied.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator">
+            <summary>Comparison of a custom filter.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator.Equal">
+            <summary>Equal; text criteria may use the wildcards <c>*</c> and <c>?</c> (<c>~</c> escapes), so <c>*abc*</c> means "contains".</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator.NotEqual">
+            <summary>Not equal; wildcards as for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator.Equal"/>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator.GreaterThan">
+            <summary>Greater than.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator.GreaterThanOrEqual">
+            <summary>Greater than or equal.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator.LessThan">
+            <summary>Less than.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator.LessThanOrEqual">
+            <summary>Less than or equal.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria">
+            <summary>The criteria of one auto filter column. Create it with <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Values(System.Collections.Generic.IReadOnlySet{System.String},System.Boolean)"/>, <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Custom(MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator,System.String,System.Boolean,System.Nullable{MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator},System.String)"/>, <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Top10(System.Double,System.Boolean,System.Boolean)"/> or <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Color(System.Int32,System.Boolean)"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Kind">
+            <summary>The kind of criteria.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Shown">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Values"/>: display texts of the rows to show (case-insensitive).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Blanks">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Values"/>: true to show blank cells as well.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Operator1">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Custom"/>: the first comparison.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Value1">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Custom"/>: the first value; numbers in invariant format, text with optional wildcards.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.And">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Custom"/>: true if both comparisons must match, false if either may.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Operator2">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Custom"/>: the second comparison, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Value2">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Custom"/>: the second value.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Count">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Top10"/>: number of items, or percent of items with <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Percent"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Percent">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Top10"/>: true if <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Count"/> is a percentage.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Bottom">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Top10"/>: true for the smallest values instead of the largest.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.DxfId">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Color"/>: index of the differential format holding the color.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.CellColor">
+            <summary>For <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.FilterKind.Color"/>: true to filter by fill color, false by font color.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Values(System.Collections.Generic.IReadOnlySet{System.String},System.Boolean)">
+            <summary>Shows rows whose display text is one of the given texts.</summary>
+            <param name="shown">Display texts to show.</param>
+            <param name="blanks">True to show blank cells too.</param>
+            <returns>The criteria.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Custom(MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator,System.String,System.Boolean,System.Nullable{MudBlazor.Extensions.Office.Spreadsheet.CustomFilterOperator},System.String)">
+            <summary>Shows rows matching one comparison, or two combined with and/or.</summary>
+            <param name="operator1">The first comparison.</param>
+            <param name="value1">The first value.</param>
+            <param name="and">True if both comparisons must match.</param>
+            <param name="operator2">The second comparison, or null.</param>
+            <param name="value2">The second value.</param>
+            <returns>The criteria.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Top10(System.Double,System.Boolean,System.Boolean)">
+            <summary>Shows the largest or smallest numbers of the column.</summary>
+            <param name="count">Number of items, or percent of items.</param>
+            <param name="percent">True if <paramref name="count"/> is a percentage.</param>
+            <param name="bottom">True for the smallest values.</param>
+            <returns>The criteria.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria.Color(System.Int32,System.Boolean)">
+            <summary>Shows rows by color. Kept and written, not evaluated: re-applying filters hides no rows for it.</summary>
+            <param name="dxfId">Index of the differential format holding the color.</param>
+            <param name="cellColor">True for fill color, false for font color.</param>
+            <returns>The criteria.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.AutoFilter">
+            <summary>The auto filter of a worksheet: the filtered range (header row first), criteria per column and the recorded sort.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.AutoFilter.Range">
+            <summary>The filtered range; its first row holds the filter buttons.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.AutoFilter.Columns">
+            <summary>Criteria by zero-based sheet column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.AutoFilter.Sort">
+            <summary>The sort recorded with the filter, or null.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.FormulaNode">
             <summary>Base type of a parsed formula expression.</summary>
         </member>
@@ -31980,6 +32122,46 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ClearCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SetAutoFilterCommand">
+            <summary>Sets the auto filter range of a sheet without criteria, or removes the auto filter; either way all filtered rows show again.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range including its header row, or null to remove the auto filter.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetAutoFilterCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Nullable{MudBlazor.Extensions.Office.Spreadsheet.CellRange})">
+            <summary>Sets the auto filter range of a sheet without criteria, or removes the auto filter; either way all filtered rows show again.</summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range including its header row, or null to remove the auto filter.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SetAutoFilterCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetAutoFilterCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SetAutoFilterCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ApplyFilterCommand">
+            <summary>Sets or (with null criteria) clears the criteria of one auto filter column and re-applies all criteria, hiding and showing rows.</summary>
+            <param name="sheet">The sheet; it must have an auto filter.</param>
+            <param name="column">Zero-based sheet column inside the auto filter range.</param>
+            <param name="criteria">The criteria, or null to show all values of the column.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ApplyFilterCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.Int32,MudBlazor.Extensions.Office.Spreadsheet.FilterCriteria)">
+            <summary>Sets or (with null criteria) clears the criteria of one auto filter column and re-applies all criteria, hiding and showing rows.</summary>
+            <param name="sheet">The sheet; it must have an auto filter.</param>
+            <param name="column">Zero-based sheet column inside the auto filter range.</param>
+            <param name="criteria">The criteria, or null to show all values of the column.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.ApplyFilterCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ApplyFilterCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.ApplyFilterCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand">
             <summary>
             An undoable workbook edit. <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)"/> may run repeatedly (execute, then redo) and must capture whatever
@@ -31996,6 +32178,35 @@
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
             <summary>Reverses the edit performed by the last <see cref="M:MudBlazor.Extensions.Office.Spreadsheet.IWorkbookCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)"/>.</summary>
             <param name="wb">The workbook.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SortCommand">
+            <summary>
+            Sorts the rows of a range in a stable way, in Excel order: numbers, text, booleans, errors, and blank cells last (also when descending).
+            Values, formulas (moved relatively, as when copying), styles and row heights move with their rows.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to sort.</param>
+            <param name="keys">Sort levels, most significant first; their columns must lie inside the range.</param>
+            <param name="hasHeader">True if the first row of the range is a header that stays in place.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SortCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.SortKey},System.Boolean)">
+            <summary>
+            Sorts the rows of a range in a stable way, in Excel order: numbers, text, booleans, errors, and blank cells last (also when descending).
+            Values, formulas (moved relatively, as when copying), styles and row heights move with their rows.
+            </summary>
+            <param name="sheet">The sheet.</param>
+            <param name="range">The range to sort.</param>
+            <param name="keys">Sort levels, most significant first; their columns must lie inside the range.</param>
+            <param name="hasHeader">True if the first row of the range is a header that stays in place.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SortCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SortCommand.Apply(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.SortCommand.Revert(MudBlazor.Extensions.Office.Spreadsheet.Workbook)">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.InsertCommandBase">
             <summary>Shared implementation of inserting rows or columns; references in all formulas and defined names move along.</summary>
@@ -32561,7 +32772,7 @@
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.XlsxSheetPart.Shift(MudBlazor.Extensions.Office.Spreadsheet.Axis,System.Int32,System.Int32)">
             <summary>
-            Moves every cell, row and column keyed entry (and the original <c>cols</c> element) along an inserted or deleted band of rows or
+            Moves every cell, row and column keyed entry (and the original <c>cols</c> and <c>sortState</c> elements) along an inserted or deleted band of rows or
             columns, like <see cref="T:MudBlazor.Extensions.Office.Spreadsheet.Worksheet"/> moves its cells. Entries inside a deleted band are dropped.
             </summary>
             <param name="axis">Rows or columns.</param>
@@ -32812,7 +33023,7 @@
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Workbook.HasUnshiftedReferences">
             <summary>
             True if the source file contains content whose cell references are not moved when rows, columns or sheets change: conditional
-            formatting, data validation, hyperlinks, auto filters, sort state, tables, comments, drawings and charts, pivot tables and their
+            formatting, data validation, hyperlinks, tables, comments, drawings and charts, pivot tables and their
             caches, external links, page breaks, ignored errors, protected ranges or extension lists. After inserting or deleting rows or
             columns or renaming a sheet these keep pointing at their original cells; editors should warn once.
             </summary>
@@ -32892,7 +33103,13 @@
             <summary>Zero-based indexes of hidden columns.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.HiddenRows">
-            <summary>Zero-based indexes of hidden rows.</summary>
+            <summary>Zero-based indexes of hidden rows, whether hidden by hand or by the auto filter.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.FilteredRows">
+            <summary>Zero-based indexes of rows hidden by the auto filter, tracked apart from rows hidden by hand.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.AutoFilter">
+            <summary>The auto filter, or null.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.Item(MudBlazor.Extensions.Office.Spreadsheet.CellRef)">
             <summary>Gets the stored cell, or null if the address holds no content and no style.</summary>
@@ -32936,9 +33153,19 @@
             <returns>True if hidden.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.IsRowHidden(System.Int32)">
-            <summary>Tests whether a row is hidden.</summary>
+            <summary>Tests whether a row is hidden, by hand or by the auto filter.</summary>
             <param name="r">Zero-based row.</param>
             <returns>True if hidden.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.IsRowFiltered(System.Int32)">
+            <summary>Tests whether the auto filter hides a row.</summary>
+            <param name="r">Zero-based row.</param>
+            <returns>True if filtered out.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.Worksheet.VisibleRowsIn(MudBlazor.Extensions.Office.Spreadsheet.CellRange)">
+            <summary>Enumerates the rows of a range that are neither hidden by hand nor filtered out, so edits in a filtered range hit only visible rows.</summary>
+            <param name="range">The range.</param>
+            <returns>Zero-based row indexes in ascending order.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Options.AnimationIteration">
             <summary>

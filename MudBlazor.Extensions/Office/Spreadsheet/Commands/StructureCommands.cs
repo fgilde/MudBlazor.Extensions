@@ -117,7 +117,7 @@ public sealed class SetHiddenCommand(Worksheet sheet, Axis axis, int index, int 
         _changed.Clear();
         for (var i = index; i < index + count; i++)
         {
-            if ((axis == Axis.Row ? sheet.IsRowHidden(i) : sheet.IsColumnHidden(i)) == hidden) continue;
+            if (sheet.IsHiddenByHand(axis, i) == hidden) continue;
             _changed.Add(i);
             sheet.SetHidden(axis, i, hidden);
         }

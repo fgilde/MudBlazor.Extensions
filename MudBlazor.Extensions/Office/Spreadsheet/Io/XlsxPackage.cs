@@ -14,7 +14,7 @@ internal sealed record XlsxRelationship(string Id, string Type, string Target, b
 /// <summary>A sheet entry of the source workbook with the parts of its XML the model does not represent.</summary>
 internal sealed class XlsxSheetPart
 {
-    internal static readonly HashSet<string> Modelled = ["sheetPr", "dimension", "sheetViews", "sheetFormatPr", "cols", "sheetData", "mergeCells"];
+    internal static readonly HashSet<string> Modelled = ["sheetPr", "dimension", "sheetViews", "sheetFormatPr", "cols", "sheetData", "mergeCells", "autoFilter"];
 
     /// <summary>The sheet name as stored in the file.</summary>
     public string Name { get; init; }
@@ -79,7 +79,7 @@ internal sealed class XlsxSheetPart
     public Dictionary<long, (int Rows, int Columns)> ArrayFormulas { get; } = new();
 
     /// <summary>
-    /// Moves every cell, row and column keyed entry (and the original <c>cols</c> element) along an inserted or deleted band of rows or
+    /// Moves every cell, row and column keyed entry (and the original <c>cols</c> and <c>sortState</c> elements) along an inserted or deleted band of rows or
     /// columns, like <see cref="Spreadsheet.Worksheet"/> moves its cells. Entries inside a deleted band are dropped.
     /// </summary>
     /// <param name="axis">Rows or columns.</param>
@@ -109,6 +109,32 @@ internal sealed class XlsxSheetPart
             foreach (var (key, value) in entries)
                 if (next(key) is { } moved) map[moved] = value;
                 else undo.Add(() => map[key] = value);
+        }
+
+        var sortAt = Children.FindIndex(e => e.Name.LocalName == "sortState");
+        if (sortAt >= 0)
+        {
+            var original = Children[sortAt];
+            var sort = new XElement(original);
+            var gone = false;
+            foreach (var e in sort.DescendantsAndSelf().ToList())
+            {
+                if (!CellRange.TryParse((string)e.Attribute("ref"), out var r)) continue;
+                if (Spreadsheet.Worksheet.MoveRange(r, axis, index, count) is { } moved) e.SetAttributeValue("ref", moved.ToA1());
+                else if (e == sort) gone = true;
+                else e.Remove();
+            }
+
+            if (gone)
+            {
+                Children.RemoveAt(sortAt);
+                undo.Add(() => Children.Insert(sortAt, original));
+            }
+            else
+            {
+                Children[sortAt] = sort;
+                undo.Add(() => Children[sortAt] = original);
+            }
         }
 
         Remap(OriginalXf, MapKey);
@@ -166,7 +192,7 @@ internal sealed class XlsxPackage
 
     private static readonly HashSet<string> UnshiftedChildren =
     [
-        "conditionalFormatting", "dataValidations", "hyperlinks", "autoFilter", "sortState", "tableParts", "drawing", "legacyDrawing",
+        "conditionalFormatting", "dataValidations", "hyperlinks", "tableParts", "drawing", "legacyDrawing",
         "legacyDrawingHF", "rowBreaks", "colBreaks", "protectedRanges", "scenarios", "dataConsolidate", "ignoredErrors", "extLst"
     ];
 
