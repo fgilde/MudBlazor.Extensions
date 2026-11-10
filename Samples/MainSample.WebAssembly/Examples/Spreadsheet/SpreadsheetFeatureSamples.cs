@@ -20,16 +20,16 @@ public static class SpreadsheetFeatureSamples
             wb.Execute(new CreateTableCommand(sheet, CellRange.Parse("A1:E7"), true));
             wb.Execute(new ApplyTableFilterCommand(sheet, sheet.Tables[0].Name, 4, FilterCriteria.Custom(CustomFilterOperator.GreaterThanOrEqual, "500")));
 
-            sheet.Text(wb, "G1", "Region");
-            sheet.Text(wb, "H1", "North");
-            sheet.Text(wb, "G2", "Grand total");
-            wb.Execute(new SetFormulaCommand(sheet, CellRef.Parse("H2"), "SUM(E2:E7)"));
-            wb.Execute(new AddDataValidationCommand(sheet, new DataValidation([CellRange.Parse("H1")], ValidationType.List, Formula1: "\"North,South,East,West\"",
+            sheet.Text(wb, "A9", "Region");
+            sheet.Text(wb, "B9", "North");
+            sheet.Text(wb, "A10", "Grand total");
+            wb.Execute(new SetFormulaCommand(sheet, CellRef.Parse("B10"), "SUBTOTAL(109,E2:E7)"));
+            wb.Execute(new AddDataValidationCommand(sheet, new DataValidation([CellRange.Parse("B9")], ValidationType.List, Formula1: "\"North,South,East,West\"",
                 PromptTitle: "Region", Prompt: "Pick a region from the list.", ErrorTitle: "Unknown region", Error: "Choose one of the listed regions.")));
             wb.Execute(new AddConditionalFormattingCommand(sheet, new ConditionalFormatting([CellRange.Parse("B2:D7")], [Scale()])));
             wb.Execute(new SetNoteCommand(sheet, new CellNote(CellRef.Parse("A1"), "MudEx", "Filtered to totals of 500 and more. Open the filter button of Total to change it.")));
-            sheet.Text(wb, "G4", "mudex.org");
-            wb.Execute(new SetLinkCommand(sheet, new CellLink(CellRef.Parse("G4"), "https://mudex.org", null, "mudex.org", "Open the MudBlazor.Extensions site")));
+            sheet.Text(wb, "A11", "mudex.org");
+            wb.Execute(new SetLinkCommand(sheet, new CellLink(CellRef.Parse("A11"), "https://mudex.org", null, "mudex.org", "Open the MudBlazor.Extensions site")));
             wb.Execute(new InsertChartCommand(sheet, CellRange.Parse("A1:D7"), ChartKind.Column));
             wb.Execute(new UpdateChartCommand(sheet, sheet.Charts[0].Id, ChartKind.Column, "Sales per quarter", true));
             wb.Execute(new ResizeCommand(sheet, Axis.Column, 0, 1, 110));
