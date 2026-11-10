@@ -17,6 +17,7 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
     private bool _saving;
     private bool _replacing;
     private bool _foreign;
+    private bool _hostReplaced;
 
     /// <summary>
     /// Service to read, open and save files
@@ -121,6 +122,17 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
     protected virtual MudExFileContent CreateNew() => null;
 
     /// <summary>
+    /// Commits edits that are still pending in the editor, for example text being typed, before the content is saved
+    /// </summary>
+    protected virtual Task FlushPendingEditsAsync() => Task.CompletedTask;
+
+    /// <summary>
+    /// Call from <c>OnParametersSet</c> when the host passes a document that is not the current one. After the parameters are set
+    /// the file name, the local file handle and the dirty state are reset, so saving cannot overwrite the previous file.
+    /// </summary>
+    protected void HostReplacedDocument() => _hostReplaced = true;
+
+    /// <summary>
     /// Loads a document into the editor
     /// </summary>
     /// <param name="content">The document. Its stream is disposed after this call.</param>
@@ -154,6 +166,16 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
     {
         var previous = FileDisplayInfos;
         await base.SetParametersAsync(parameters);
+        if (_hostReplaced)
+        {
+            _hostReplaced = false;
+            await ReplaceDocumentAsync(null, false, () =>
+            {
+                (FileName, ContentType, FileSize) = (null, null, null);
+                return Task.CompletedTask;
+            });
+        }
+
         if (ReferenceEquals(previous, FileDisplayInfos))
             return;
 
@@ -300,6 +322,7 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
             if (LoadFailed)
                 throw new InvalidOperationException(TryLocalize("The file could not be loaded and cannot be saved."));
 
+            await FlushPendingEditsAsync();
             var document = _document;
             var handle = _handleId;
             var version = _editVersion;

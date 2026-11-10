@@ -157,6 +157,8 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
         if (!ReferenceEquals(Workbook, _workbookParameter))
         {
             _workbookParameter = Workbook;
+            if (Workbook != null && _workbook != null && !ReferenceEquals(Workbook, _workbook))
+                HostReplacedDocument();
             if (Workbook != null)
                 Attach(Workbook);
         }
