@@ -9,7 +9,7 @@ namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Presentation;
 
 using MudBlazor.Extensions.Office.Presentation;
 
-public class PptxWriterTests
+public partial class PptxWriterTests
 {
     private static readonly XNamespace P = "http://schemas.openxmlformats.org/presentationml/2006/main";
     private static readonly XNamespace A = "http://schemas.openxmlformats.org/drawingml/2006/main";
@@ -437,6 +437,26 @@ public class PptxWriterTests
     private static Dictionary<string, string> Overrides(byte[] package) =>
         Xml(package, "/[Content_Types].xml").Root!.Elements(ContentTypes + "Override").ToDictionary(o => (string)o.Attribute("PartName"), o => (string)o.Attribute("ContentType"));
 
+    private static void AssertNoDanglingRelationships(byte[] package)
+    {
+        var opc = OpcPackage.Open(package);
+        var parts = opc.PartNames.ToHashSet(StringComparer.OrdinalIgnoreCase);
+        foreach (var rels in parts.Where(p => p.EndsWith(".rels", StringComparison.Ordinal)))
+        {
+            var source = rels.Replace("/_rels/", "/", StringComparison.Ordinal)[..^5];
+            Assert.True(source == "/" || parts.Contains(source), $"Rels without source {rels}");
+            foreach (var rel in opc.Relationships(source).Where(r => r.TargetMode == null))
+                Assert.True(parts.Contains(opc.ResolveTarget(source, rel.Target)), $"{rels}: {rel.Id} -> {rel.Target}");
+        }
+
+        foreach (var part in parts.Where(p => p.EndsWith(".xml", StringComparison.Ordinal) && p != "/[Content_Types].xml"))
+        {
+            var ids = opc.Relationships(part).Select(r => r.Id).ToHashSet();
+            foreach (var reference in opc.ReadXml(part).Descendants().Attributes().Where(a => a.Name.Namespace == R && a.Value.Length > 0))
+                Assert.True(ids.Contains(reference.Value), $"{part}: {reference.Name.LocalName}={reference.Value} has no relationship");
+        }
+    }
+
     private static void AssertConsistent(byte[] package)
     {
         var opc = OpcPackage.Open(package);
@@ -444,14 +464,7 @@ public class PptxWriterTests
         foreach (var part in parts.Where(p => !p.EndsWith(".rels", StringComparison.Ordinal) && p != "/[Content_Types].xml"))
             Assert.True(opc.ContentType(part) != null, $"No content type for {part}");
         foreach (var name in opc.OverrideContentTypes.Keys) Assert.True(parts.Contains(name), $"Override without part {name}");
-        foreach (var rels in parts.Where(p => p.EndsWith(".rels", StringComparison.Ordinal)))
-        {
-            var source = rels.Replace("/_rels/", "/", StringComparison.Ordinal)[..^5];
-            if (source == "/.") source = "/";
-            Assert.True(source == "/" || parts.Contains(source), $"Rels without source {rels}");
-            foreach (var rel in opc.Relationships(source).Where(r => r.TargetMode == null))
-                Assert.True(parts.Contains(opc.ResolveTarget(source, rel.Target)), $"{rels}: {rel.Id} -> {rel.Target}");
-        }
+        AssertNoDanglingRelationships(package);
 
         var main = opc.ReadXml("/ppt/presentation.xml");
         var mainRels = opc.Relationships("/ppt/presentation.xml").Select(r => r.Id).ToHashSet();

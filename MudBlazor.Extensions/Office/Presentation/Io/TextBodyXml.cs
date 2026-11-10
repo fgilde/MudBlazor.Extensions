@@ -117,7 +117,12 @@ internal static class TextBodyXml
         if (name == A + "br") return r;
         var t = r.Element(A + "t");
         if (t == null) r.Add(t = new XElement(A + "t"));
-        if (SheetXmlReader.Decode(t.Value) != run.Text) t.Value = SharedStringsWriter.Escape(run.Text);
+        if (SheetXmlReader.Decode(t.Value) == run.Text) return r;
+        t.Value = SharedStringsWriter.Escape(run.Text);
+        if (r.Name != A + "fld") return r;
+        r.Name = A + "r";
+        r.RemoveAttributes();
+        r.Element(A + "pPr")?.Remove();
         return r;
     }
 
@@ -130,10 +135,11 @@ internal static class TextBodyXml
         Set(rPr, "u", before.Underline, format.Underline, u => u ? "sng" : "none");
         Set(rPr, "strike", before.Strike, format.Strike, s => s ? "sngStrike" : "noStrike");
         Set(rPr, "sz", before.SizePt, format.SizePt, s => Format((long)Math.Round(s * 100)));
-        if (before.Color != format.Color)
+        var fill = format.Color == null ? null : SlideXml.SolidFill(format.Color);
+        if (before.Color != format.Color && (fill != null || format.Color == null))
         {
             rPr.Elements().Where(f => SlideXml.Fills.Contains(f.Name.LocalName)).Remove();
-            SlideXml.Place(rPr, format.Color == null ? null : SlideXml.SolidFill(format.Color), AfterFill);
+            SlideXml.Place(rPr, fill, AfterFill);
         }
 
         if (before.Font == format.Font) return;

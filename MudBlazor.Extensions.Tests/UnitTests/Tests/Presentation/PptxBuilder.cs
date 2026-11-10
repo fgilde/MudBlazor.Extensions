@@ -31,6 +31,10 @@ internal sealed class PptxBuilder
 
     public bool AppXml { get; set; }
 
+    public string PresentationRels { get; set; } = "";
+
+    public Dictionary<int, string> NotesRels { get; } = new();
+
     public Dictionary<string, (string? ContentType, string Content)> ExtraParts { get; } = new();
 
     public long Width { get; set; } = 12192000;
@@ -111,7 +115,7 @@ internal sealed class PptxBuilder
             Rels([
                 ("rId1", "slideMaster", "slideMasters/slideMaster1.xml"), .._slides.Select((_, i) => ($"rId{i + 2}", "slide", $"slides/slide{i + 1}.xml")),
                 ..NotesMaster ? [($"rId{_slides.Count + 2}", "notesMaster", "notesMasters/notesMaster1.xml")] : Array.Empty<(string, string, string)>()
-            ]));
+            ]).Replace("</Relationships>", PresentationRels + "</Relationships>"));
         if (NotesMaster)
         {
             Add("ppt/notesMasters/notesMaster1.xml", "officedocument.presentationml.notesMaster",
@@ -153,9 +157,9 @@ internal sealed class PptxBuilder
                     Placeholder(3, "Notes Placeholder 2", "type=\"body\" idx=\"1\"", "", paragraphs) +
                     Placeholder(4, "Slide Number Placeholder 3", "type=\"sldNum\" idx=\"5\"", "", "<a:p><a:r><a:t>99</a:t></a:r></a:p>") +
                     "</p:spTree></p:cSld></p:notes>");
-                Add($"ppt/notesSlides/_rels/notesSlide{n}.xml.rels", null, NotesMaster
+                Add($"ppt/notesSlides/_rels/notesSlide{n}.xml.rels", null, (NotesMaster
                     ? Rels(("rId1", "slide", $"../slides/slide{n}.xml"), ("rId2", "notesMaster", "../notesMasters/notesMaster1.xml"))
-                    : Rels(("rId1", "slide", $"../slides/slide{n}.xml")));
+                    : Rels(("rId1", "slide", $"../slides/slide{n}.xml"))).Replace("</Relationships>", NotesRels.GetValueOrDefault(n, "") + "</Relationships>"));
             }
 
             Add($"ppt/slides/_rels/slide{n}.xml.rels", null, Rels([.. slideRels]).Replace("</Relationships>", rels + "</Relationships>"));

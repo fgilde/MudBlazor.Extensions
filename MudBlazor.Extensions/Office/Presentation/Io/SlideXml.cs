@@ -4,11 +4,13 @@ using static MudBlazor.Extensions.Office.Presentation.PptxReader;
 
 namespace MudBlazor.Extensions.Office.Presentation;
 
-internal sealed class SlideXml(string part, List<OpcRelationship> relationships)
+internal sealed class SlideXml(string part, List<OpcRelationship> relationships, Func<string, Action<XDocument>, string> cloneTarget)
 {
     internal static readonly string[] Fills = ["noFill", "solidFill", "gradFill", "blipFill", "pattFill", "grpFill"];
     private static readonly string[] AfterLine = ["effectLst", "effectDag", "scene3d", "sp3d", "extLst"];
     private static readonly string[] AfterFill = ["ln", .. AfterLine];
+    private readonly HashSet<string> _used = [];
+    private readonly HashSet<string> _creationIds = [];
 
     internal void WriteTree(XElement container, IEnumerable<SlideShape> shapes)
     {
@@ -28,7 +30,7 @@ internal sealed class SlideXml(string part, List<OpcRelationship> relationships)
 
     internal static XElement SolidFill(string color) => ColorResolver.ToXml(color) is { } c ? new XElement(A + "solidFill", c) : null;
 
-    private static bool IsShape(XElement e) =>
+    internal static bool IsShape(XElement e) =>
         e.Name.LocalName == "AlternateContent" || e.Name.Namespace == P && e.Name.LocalName is "sp" or "cxnSp" or "pic" or "grpSp" or "graphicFrame" or "contentPart";
 
     private XElement Render(SlideShape shape)
@@ -45,6 +47,7 @@ internal sealed class SlideXml(string part, List<OpcRelationship> relationships)
             WriteTransform(branch, shape);
         }
 
+        RenewCreationId(e, shape);
         switch (shape)
         {
             case AutoShape auto:
@@ -55,7 +58,44 @@ internal sealed class SlideXml(string part, List<OpcRelationship> relationships)
                 break;
         }
 
+        if (shape is not GroupShape) Separate(e);
         return e;
+    }
+
+    private void RenewCreationId(XElement e, SlideShape shape)
+    {
+        if (e.Descendants(P + "cNvPr").FirstOrDefault()?.Descendants().FirstOrDefault(d => d.Name.LocalName == "creationId") is not { } creation
+            || (string)creation.Attribute("id") is not { Length: > 9 } id || _creationIds.Add(id)) return;
+        var renewed = id[..^9] + shape.Id.ToString("X8", CultureInfo.InvariantCulture) + "}";
+        _creationIds.Add(renewed);
+        foreach (var element in e.Descendants().Where(d => d.Name.LocalName == "creationId" && (string)d.Attribute("id") == id)) element.SetAttributeValue("id", renewed);
+    }
+
+    private void Separate(XElement e)
+    {
+        var references = e.DescendantsAndSelf().Attributes().Where(a => a.Name.Namespace == R).ToList();
+        foreach (var id in references.Select(a => a.Value).Distinct().ToList())
+        {
+            if (relationships.Find(r => r.Id == id) is not { TargetMode: null } rel || !PptxWriter.Owned(rel.Type) || _used.Add(id)) continue;
+            var copy = Clone(rel);
+            foreach (var reference in references.Where(a => a.Value == id)) reference.Value = copy;
+        }
+    }
+
+    private string Clone(OpcRelationship rel)
+    {
+        var target = cloneTarget(rel.Target, rel.Type.EndsWith("/diagramData", StringComparison.Ordinal) ? CloneDrawing : null);
+        var copy = new OpcRelationship(PptxWriter.NextId(relationships), rel.Type, target, null);
+        relationships.Add(copy);
+        _used.Add(copy.Id);
+        return copy.Id;
+    }
+
+    private void CloneDrawing(XDocument data)
+    {
+        foreach (var extension in data.Descendants().Where(d => d.Name.LocalName == "dataModelExt").ToList())
+            if (relationships.Find(r => r.Id == (string)extension.Attribute("relId")) is { TargetMode: null } drawing)
+                extension.SetAttributeValue("relId", Clone(drawing));
     }
 
     private XElement Create(SlideShape shape) => shape switch
@@ -132,15 +172,16 @@ internal sealed class SlideXml(string part, List<OpcRelationship> relationships)
                     new XElement(A + "gd", new XAttribute("name", a.Key), new XAttribute("fmla", "val " + a.Value.ToString(CultureInfo.InvariantCulture)))))), [.. Fills, .. AfterFill]);
         }
 
-        if (before.Fill != shape.Fill && shape.Fill.Kind != ShapeFillKind.Other)
+        var fill = shape.Fill.Kind switch
+        {
+            ShapeFillKind.None => new XElement(A + "noFill"),
+            ShapeFillKind.Solid => SolidFill(shape.Fill.Color),
+            _ => null
+        };
+        if (before.Fill != shape.Fill && (fill != null || shape.Fill.Kind == ShapeFillKind.Inherited))
         {
             spPr.Elements().Where(f => Fills.Contains(f.Name.LocalName)).Remove();
-            Place(spPr, shape.Fill.Kind switch
-            {
-                ShapeFillKind.None => new XElement(A + "noFill"),
-                ShapeFillKind.Solid => SolidFill(shape.Fill.Color),
-                _ => null
-            }, AfterFill);
+            Place(spPr, fill, AfterFill);
         }
 
         if (before.Line != shape.Line) WriteLine(spPr, before.Line, shape.Line);
@@ -158,10 +199,10 @@ internal sealed class SlideXml(string part, List<OpcRelationship> relationships)
 
         ln ??= Place(spPr, new XElement(A + "ln"), AfterLine);
         if (before?.Width != line.Width) ln.SetAttributeValue("w", line.Width);
-        if (before == null || before.Color != line.Color)
+        if ((before == null || before.Color != line.Color) && (line.Color == null ? new XElement(A + "noFill") : SolidFill(line.Color)) is { } fill)
         {
             ln.Elements().Where(f => Fills.Contains(f.Name.LocalName)).Remove();
-            ln.AddFirst(line.Color == null ? new XElement(A + "noFill") : SolidFill(line.Color));
+            ln.AddFirst(fill);
         }
 
         if (before == null || before.Dash != line.Dash)

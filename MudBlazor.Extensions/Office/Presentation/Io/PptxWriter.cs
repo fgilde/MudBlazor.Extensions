@@ -8,7 +8,7 @@ namespace MudBlazor.Extensions.Office.Presentation;
 /// Writes a presentation as a .pptx file. Unchanged parts are copied from the loaded file; changed slides are patched in their original XML, so content
 /// the editor does not model stays as it was.
 /// </summary>
-public static class PptxWriter
+public static partial class PptxWriter
 {
     internal const string RelNs = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
     internal const string ImageRel = RelNs + "/image";
@@ -51,20 +51,30 @@ public static class PptxWriter
         "rId" + (relationships.Select(r => r.Id.StartsWith("rId", StringComparison.Ordinal) && int.TryParse(r.Id.AsSpan(3), NumberStyles.None, CultureInfo.InvariantCulture, out var n) ? n : 0)
             .DefaultIfEmpty().Max() + 1);
 
-    private sealed class Job(Presentation presentation, PptxPackage package, OpcPackageWriter writer)
+    private sealed partial class Job(Presentation presentation, PptxPackage package, OpcPackageWriter writer)
     {
         private readonly OpcPackage _opc = package.Opc;
         private readonly Dictionary<string, string> _defaults = new(package.Opc.DefaultContentTypes, StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, string> _overrides = new(package.Opc.OverrideContentTypes, StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> _done = new(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<string> _removed = new(StringComparer.OrdinalIgnoreCase);
         private bool _contentTypesChanged;
         private int _notes;
+        private long _nextCreationId;
 
         internal void Run()
         {
             var parts = package.Slides.ToDictionary(s => s.Slide);
             var live = presentation.SlideList.ToHashSet();
             var deleted = package.Slides.Where(s => !live.Contains(s.Slide)).ToList();
+            var kept = package.Slides.Except(deleted).ToList();
+            foreach (var part in deleted)
+            {
+                _removed.Add(part.PartName);
+                if (part.NotesPart != null && !kept.Any(k => string.Equals(k.NotesPart, part.NotesPart, StringComparison.OrdinalIgnoreCase))) _removed.Add(part.NotesPart);
+            }
+
+            _nextCreationId = package.Slides.Select(s => Long((string)CreationId(s.Xml)?.Attribute("val")) ?? 0).DefaultIfEmpty().Max() + 1;
             var presentationRels = _opc.Relationships(package.PresentationPart).ToList();
             var nextSlideId = Math.Max(255, package.PresentationXml.Root!.Element(P + "sldIdLst")?.Elements(P + "sldId")
                 .Select(e => Long((string)e.Attribute("id")) ?? 0).DefaultIfEmpty().Max() ?? 0) + 1;
@@ -87,12 +97,12 @@ public static class PptxWriter
                 entries.Add(new SlideEntry(rel.Id, (uint)nextSlideId++, false));
             }
 
-            if (!presentation.SlideList.SequenceEqual(package.Slides.Select(s => s.Slide))) WritePresentation(entries, deleted, presentationRels);
-            var kept = package.Slides.Except(deleted).ToList();
-            foreach (var part in deleted)
+            if (!presentation.SlideList.SequenceEqual(package.Slides.Select(s => s.Slide))) WritePresentation(entries, presentationRels);
+            foreach (var part in _removed) Remove(part);
+            if (deleted.Count > 0)
             {
-                Remove(part.PartName);
-                if (part.NotesPart != null && !kept.Any(k => string.Equals(k.NotesPart, part.NotesPart, StringComparison.OrdinalIgnoreCase))) Remove(part.NotesPart);
+                UnlinkCopiedParts();
+                RemoveOrphans(deleted.Select(d => d.PartName));
             }
 
             if (_done.Count > 0) WriteAppProperties();
@@ -125,13 +135,20 @@ public static class PptxWriter
         {
             var isNew = source?.PartName != partName;
             var xml = source != null ? new XDocument(source.Xml) : XDocument.Parse(NewSlide);
+            var copied = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             var rels = source == null
                 ? []
-                : source.Relationships.Where(r => !isNew || !r.Type.EndsWith("/notesSlide", StringComparison.Ordinal)).Select(r => Retarget(r, source.PartName, partName)).ToList();
-            if (source == null && slide.Layout?.PartName != null)
-                rels.Add(new OpcRelationship(NextId(rels), RelNs + "/slideLayout", Relative(partName, slide.Layout.PartName), null));
+                : source.Relationships.Where(r => !isNew || !r.Type.EndsWith("/notesSlide", StringComparison.Ordinal))
+                    .Select(r => isNew && r.TargetMode == null && Owned(r.Type)
+                        ? r with { Target = Relative(partName, CopyPart(_opc.ResolveTarget(source.PartName, r.Target), copied)) }
+                        : Retarget(r, source.PartName, partName)).ToList();
+            if (source == null && (slide.Layout ?? presentation.LayoutList.FirstOrDefault())?.PartName is { } layout)
+                rels.Add(new OpcRelationship(NextId(rels), RelNs + "/slideLayout", Relative(partName, layout), null));
             var root = xml.Root!;
-            if (root.Element(P + "cSld")?.Element(P + "spTree") is { } tree) new SlideXml(partName, rels).WriteTree(tree, slide.ShapeList);
+            if (root.Element(P + "cSld")?.Element(P + "spTree") is { } tree)
+                new SlideXml(partName, rels, (target, transform) => Relative(partName, CopyPart(_opc.ResolveTarget(partName, target), [], transform))).WriteTree(tree, slide.ShapeList);
+            RemoveReferences(xml, rels, r => isNew && r.Type.EndsWith("/comments", StringComparison.Ordinal) || IsDead(partName, r));
+            if (isNew && source != null && CreationId(xml) is { } creationId) creationId.SetAttributeValue("val", (uint)(_nextCreationId++ % uint.MaxValue));
             var hidden = (string)root.Attribute("show") is "0" or "false";
             if (hidden != slide.Hidden) root.SetAttributeValue("show", slide.Hidden ? "0" : null);
             WriteNotes(slide, partName, source, isNew, rels);
@@ -147,10 +164,14 @@ public static class PptxWriter
             if (!isNew && notesSource != null)
             {
                 _notes++;
-                if (slide.Notes == NotesText(source.NotesXml)) return;
+                if (_done.Contains(notesSource) || slide.Notes == NotesText(source.NotesXml)) return;
                 var patched = new XDocument(source.NotesXml);
                 TextBodyXml.WriteNotes(patched, slide.Notes);
+                var patchedRels = _opc.Relationships(notesSource).ToList();
+                var count = patchedRels.Count;
+                RemoveReferences(patched, patchedRels, r => IsDead(notesSource, r));
                 Put(notesSource, patched);
+                if (patchedRels.Count != count) PutRelationships(notesSource, patchedRels);
                 return;
             }
 
@@ -162,6 +183,7 @@ public static class PptxWriter
             var notesRels = copy
                 ? _opc.Relationships(notesSource).Where(r => !r.Type.EndsWith("/slide", StringComparison.Ordinal)).Select(r => Retarget(r, notesSource, notesPart)).ToList()
                 : [new OpcRelationship("rId1", RelNs + "/notesMaster", Relative(notesPart, package.NotesMasterPart), null)];
+            RemoveReferences(xml, notesRels, r => IsDead(notesPart, r));
             notesRels.Add(new OpcRelationship(NextId(notesRels), RelNs + "/slide", Relative(notesPart, partName), null));
             Put(notesPart, xml);
             PutRelationships(notesPart, notesRels);
@@ -170,7 +192,7 @@ public static class PptxWriter
             _notes++;
         }
 
-        private void WritePresentation(List<SlideEntry> entries, List<PptxSlidePart> deleted, List<OpcRelationship> rels)
+        private void WritePresentation(List<SlideEntry> entries, List<OpcRelationship> rels)
         {
             var xml = new XDocument(package.PresentationXml);
             var root = xml.Root!;
@@ -189,12 +211,10 @@ public static class PptxWriter
 
             list.ReplaceNodes(items);
             if (items.Count == 0) list.Remove();
-            var removed = deleted.Select(d => d.RelationshipId).ToHashSet();
-            root.Element(P + "custShowLst")?.Descendants(P + "sld").Where(s => removed.Contains((string)s.Attribute(R + "id"))).Remove();
+            RemoveReferences(xml, rels, r => IsDead(package.PresentationPart, r));
             WriteSections(root, entries);
             Put(package.PresentationPart, xml);
-            if (removed.Count > 0 || rels.Count != _opc.Relationships(package.PresentationPart).Count)
-                PutRelationships(package.PresentationPart, rels.Where(r => !removed.Contains(r.Id)));
+            if (!rels.SequenceEqual(_opc.Relationships(package.PresentationPart))) PutRelationships(package.PresentationPart, rels);
         }
 
         private void WriteSections(XElement root, List<SlideEntry> entries)
@@ -277,7 +297,9 @@ public static class PptxWriter
 
         private void PutRelationships(string part, IEnumerable<OpcRelationship> rels)
         {
-            writer.PutRelationships(part, rels);
+            var list = rels.ToList();
+            _writtenRels[part] = list;
+            writer.PutRelationships(part, list);
             _done.Add(OpcPackage.RelsPartOf(part));
         }
 
