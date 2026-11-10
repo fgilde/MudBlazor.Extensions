@@ -637,6 +637,7 @@ class MudExSpreadsheetGrid {
     }
 
     dispose() {
+        this.chartUp({ type: 'pointercancel' });
         cancelAnimationFrame(this.frame);
         cancelAnimationFrame(this.scrollFrame);
         this.detachViewport();

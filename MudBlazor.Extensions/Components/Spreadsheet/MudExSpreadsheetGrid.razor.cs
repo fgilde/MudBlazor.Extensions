@@ -249,6 +249,7 @@ public partial class MudExSpreadsheetGrid
         DisposeConditional();
         _engine = null;
         _workbook = null;
+        _sheet = null;
         _editing = false;
     }
 

@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Office.Spreadsheet;
 
@@ -158,7 +159,7 @@ public partial class MudExSpreadsheetFilterMenu
         var index = Array.FindIndex(Choices, c => c.Operator == op && c.Pattern == pattern);
         return index < 0
             ? (Array.FindIndex(Choices, c => c.Operator == op && c.Pattern == "{0}"), value)
-            : (index, value[(lead ? 1 : 0)..(value.Length - (trail ? 1 : 0))]);
+            : (index, Regex.Replace(value[(lead ? 1 : 0)..(value.Length - (trail ? 1 : 0))], "~(.)", "$1"));
     }
 
     private void Check(string value, bool on)
@@ -202,7 +203,9 @@ public partial class MudExSpreadsheetFilterMenu
     private FilterCriteria CustomCriteria()
     {
         if (_operators[0] < 0) return null;
-        string Value(int row) => string.Format(CultureInfo.InvariantCulture, Choices[_operators[row]].Pattern, _values[row].Trim());
+        string Value(int row) => Choices[_operators[row]].Pattern is var pattern && pattern == "{0}"
+            ? _values[row].Trim()
+            : string.Format(CultureInfo.InvariantCulture, pattern, _values[row].Trim().Replace("~", "~~").Replace("*", "~*").Replace("?", "~?"));
         var first = Choices[_operators[0]];
         return _operators[1] < 0 || _values[1].Trim().Length == 0
             ? FilterCriteria.Custom(first.Operator, Value(0))

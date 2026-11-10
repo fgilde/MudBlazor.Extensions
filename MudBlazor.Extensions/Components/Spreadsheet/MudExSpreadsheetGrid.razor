@@ -15,6 +15,7 @@
      aria-rowcount="@(_rowExtent + 1)"
      aria-colcount="@(_colExtent + 1)"
      data-readonly="@(ReadOnly ? "true" : "false")"
+     data-contextmenu="@(ContextMenuRequested.HasDelegate && !ReadOnly ? "true" : "false")"
      data-zoom="@_zoom.ToString(System.Globalization.CultureInfo.InvariantCulture)"
      data-win="@(_sheet != null ? WindowBounds : null)"
      data-sticky="@(_sheet != null ? StickyBounds : null)"
@@ -124,7 +125,7 @@
                                                         DisplayText="DisplayText"
                                                         OnSort="@(d => SortFromFilterAsync(head, d))"
                                                         OnApply="@(c => ApplyFilterAsync(head, c))"
-                                                        OnCancel="CloseFilter"
+                                                        OnCancel="CloseFilterAsync"
                                                         Localizer="@Localizer" />
                         }
                     </ChildContent>

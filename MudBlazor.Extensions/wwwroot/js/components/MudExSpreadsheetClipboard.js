@@ -118,7 +118,7 @@ export const clipboardMethods = {
 
     contextMenu(e) {
         const t = e.target;
-        if (!this.dotnet || t.closest(CONTEXT_IGNORE)) {
+        if (!this.dotnet || this.root.dataset.contextmenu !== 'true' || t.closest(CONTEXT_IGNORE)) {
             return;
         }
         const header = t.closest('.mud-ex-ssg-ch, .mud-ex-ssg-rh');

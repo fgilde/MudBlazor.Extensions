@@ -46,10 +46,11 @@ public partial class MudExSpreadsheetGrid
         else if (_filterOpen == cell) _filterOpen = null;
     }
 
-    private void CloseFilter()
+    private async Task CloseFilterAsync()
     {
         _filterOpen = null;
         StateHasChanged();
+        await FocusAsync();
     }
 
     internal static CellRange SortRange(SheetTable table, CellRange filterRange) =>
@@ -57,14 +58,14 @@ public partial class MudExSpreadsheetGrid
 
     private async Task SortFromFilterAsync(FilterHead head, bool descending)
     {
-        CloseFilter();
+        await CloseFilterAsync();
         var range = SortRange(head.Table, _sheet.AutoFilter?.Range ?? default);
         await TryWriteAsync(() => _workbook.Execute(new SortCommand(_sheet, range, [new SortKey(head.Cell.Column, descending)], true)));
     }
 
     private async Task ApplyFilterAsync(FilterHead head, FilterCriteria criteria)
     {
-        CloseFilter();
+        await CloseFilterAsync();
         await TryWriteAsync(() => _workbook.Execute(head.Table == null
             ? new ApplyFilterCommand(_sheet, head.Cell.Column, criteria)
             : new ApplyTableFilterCommand(_sheet, head.Table.Name, head.Cell.Column, criteria)));

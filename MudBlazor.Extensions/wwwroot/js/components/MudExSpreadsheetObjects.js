@@ -42,7 +42,7 @@ export const objectMethods = {
                 return;
             }
             const candidates = await this.dotnet.invokeMethodAsync('AutoFitColumnCandidates', edge.index).catch(() => null);
-            if (!candidates?.length) {
+            if (!candidates?.length || !this.dotnet) {
                 return;
             }
             this.dotnet.invokeMethodAsync('ResizeColumn', edge.index, Math.ceil(this.measure(candidates) + 10) * this.zoom()).catch(() => {});
@@ -213,6 +213,7 @@ export const objectMethods = {
         if (!el) {
             return;
         }
+        document.querySelectorAll('.mud-ex-ss-print-active').forEach(n => n.remove());
         const copy = el.cloneNode(true);
         copy.classList.add('mud-ex-ss-print-active');
         document.body.appendChild(copy);
