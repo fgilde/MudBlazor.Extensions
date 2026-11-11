@@ -1,0 +1,19 @@
+name: Generate LibMentor documentation
+description: Build validated AI documentation from a versioned source snapshot
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+    - name: Restore pinned CLI
+      shell: bash
+      working-directory: ${{ github.workspace }}
+      run: dotnet tool restore
+    - name: Generate and verify
+      shell: bash
+      working-directory: ${{ github.workspace }}
+      run: |
+        version="$(python3 .github/scripts/libmentor-version.py)"
+        dotnet tool run libmentor -- generate --revision "$GITHUB_SHA" --library-version "$version"
+        dotnet tool run libmentor -- generate --check --revision "$GITHUB_SHA" --library-version "$version"

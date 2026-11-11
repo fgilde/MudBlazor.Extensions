@@ -1,0 +1,19 @@
+name: LibMentor validation
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/libmentor
+      - uses: actions/upload-artifact@v4
+        with:
+          name: libmentor-documentation
+          path: .libmentor
+          include-hidden-files: true
