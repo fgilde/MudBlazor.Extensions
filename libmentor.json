@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "name": "MudBlazor.Extensions",
+  "repository": "https://github.com/fgilde/MudBlazor.Extensions",
+  "revision": "main",
+  "output": ".libmentor",
+  "exclude": [
+    "**/*.de.md",
+    "docs/de/**",
+    "**/node_modules/**"
+  ],
+  "examples": [],
+  "guidance": [
+    "This is a source snapshot. Check the installed package version and API evidence before suggesting code."
+  ],
+  "description": "Blazor components, dialogs, file viewers and extensions for MudBlazor.",
+  "version": "9.12.2-source",
+  "documents": [
+    "README.md",
+    "docs/**/*.md"
+  ],
+  "sources": [
+    "MudBlazor.Extensions/**/*.cs",
+    "MudBlazor.Extensions.CodeGator.Adapter/**/*.cs"
+  ],
+  "packages": [
+    "MudBlazor.Extensions",
+    "MudBlazor.Extensions.CodeGator.Adapter"
+  ],
+  "baseUrl": "https://fgilde.github.io/MudBlazor.Extensions/ai"
+}

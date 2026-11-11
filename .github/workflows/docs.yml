@@ -6,6 +6,14 @@ on:
       - main
     paths:
       - 'docs/**'
+      - 'MudBlazor.Extensions/**/*.cs'
+      - 'MudBlazor.Extensions.CodeGator.Adapter/**'
+      - 'MudBlazor.Extensions/MudBlazor.Extensions.csproj'
+      - 'README.md'
+      - 'libmentor.json'
+      - '.config/dotnet-tools.json'
+      - '.github/actions/libmentor/**'
+      - '.github/scripts/libmentor-version.py'
       - 'mkdocs.yml'
       - 'requirements.txt'
       - 'MudBlazor.Extensions/Docs/**'
@@ -49,5 +57,10 @@ jobs:
       - name: Build documentation
         run: mkdocs build --clean --verbose
 
+      - uses: ./.github/actions/libmentor
+
+      - name: Include AI documentation
+        run: cp -R .libmentor site/ai
+
       - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force --clean --verbose
+        run: ghp-import -n -p -f site
