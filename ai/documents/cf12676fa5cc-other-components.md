@@ -1,0 +1,336 @@
+# Other Components
+
+Additional utility components provided by MudBlazor.Extensions.
+
+!!! info "Component Categories"
+    For detailed documentation on specific component types, see:
+    
+    - [Picker Components](pickers.md) - Color, Icon, Font, Enum pickers
+    - [Grid and Layout](grid-layout.md) - Grid, Dock Layout, Split Panels
+    - [Display and Media](display-media.md) - Image Viewer, Code View, Markdown
+    - [Form Inputs](form-inputs.md) - Text Fields, Checkboxes, Selects
+
+## MudExList
+
+Enhanced list component with additional features.
+
+### Basic Usage
+
+```razor
+<MudExList>
+    <MudExListItem>Item 1</MudExListItem>
+    <MudExListItem>Item 2</MudExListItem>
+    <MudExListItem>Item 3</MudExListItem>
+</MudExList>
+```
+
+### Features
+
+- Nested lists
+- Icons and avatars
+- Click events
+- Selection support
+- Virtualization for large lists
+
+## MudExOrgChart
+
+A pannable, zoomable org chart drawn from a flat list with parent ids (or a children function). Sample [here](https://www.mudex.org/org-chart).
+
+### Basic Usage
+
+```razor
+<MudExOrgChart TItem="Person" Items="@people" IdFunc="p => p.Id" ParentIdFunc="p => p.ManagerId" TextFunc="p => p.Name"
+               AllowReparent="true" OnReparent="@(a => a.Item.ManagerId = a.NewParent?.Id)" @bind-SelectedItem="@selected">
+    <NodeTemplate Context="person">
+        <b>@person.Name</b> <span>@person.Role</span>
+    </NodeTemplate>
+</MudExOrgChart>
+```
+
+### Features
+
+- Forest from `ParentIdFunc` (missing parents and cycles become roots) or `ChildrenFunc`
+- Top down or left to right (`Orientation`)
+- Collapse and expand per card, `ExpandAll`, `CollapseAll`, `InitiallyExpandedDepth`
+- Search with highlight; the match is opened and centered, Enter jumps to the next (`SearchFunc`, `SearchPlaceholder`)
+- `SearchItemTemplate` turns the search into an autocomplete that lists the matches (e.g. with avatars); picking one centers it
+- Collapse button count: direct children, everyone below (`CountDescendants`) or your own number (`CountFunc`)
+- Zoom buttons, Ctrl + mouse wheel, pan by dragging or the wheel (`ZoomOnWheel` swaps both), fit on open, `CenterOn(item)`; a press that panned does not click the card
+- Minimap with the visible area; click or drag in it to move the view (`ShowMinimap`, `MinimapPosition`)
+- Drag a card onto another to change its parent (`AllowReparent`, `CanReparent`, `OnReparent`), cycles are refused
+- Refused drops raise `OnReparentRefused` with the reason (`OrgChartReparentRefusal.Cycle` or `NotAllowed`), e.g. for a warning
+- `RootDropZone` (with `AllowDropToRoot`): a drop zone in the toolbar that lights up while a card is dragged and makes it a root; `IsDragging` and `DraggedItem` tell the drag state
+- Themed by the MudBlazor palette, works in dark mode
+
+## MudExCardList
+
+Card-based list component for displaying items as cards.
+
+### Basic Usage
+
+```razor
+<MudExCardList Items="@items" T="MyItem">
+    <ItemTemplate Context="item">
+        <MudCard>
+            <MudCardContent>@item.Name</MudCardContent>
+        </MudCard>
+    </ItemTemplate>
+</MudExCardList>
+```
+
+### Features
+
+- Grid or flex layout
+- Responsive columns
+- Custom card templates
+- Sorting and filtering
+
+## MudExGroupBox
+
+Group box component for organizing related content.
+
+### Basic Usage
+
+```razor
+<MudExGroupBox Title="Settings">
+    <!-- Content -->
+</MudExGroupBox>
+```
+
+### Features
+
+- Collapsible content
+- Custom header
+- Border styling
+- Icon support
+
+## MudExPopover
+
+Popover component for displaying content on hover or click.
+
+### Basic Usage
+
+```razor
+<MudExPopover>
+    <Activator>
+        <MudButton>Show Popover</MudButton>
+    </Activator>
+    <Content>
+        <MudText>Popover content</MudText>
+    </Content>
+</MudExPopover>
+```
+
+### Features
+
+- Multiple trigger modes (hover, click, focus)
+- Positioning options
+- Arrow indicator
+- Auto-close on outside click
+
+## MudExToggleableSearch
+
+Toggleable search component for space-efficient search functionality.
+
+### Basic Usage
+
+```razor
+<MudExToggleableSearch @bind-Value="@searchText" OnSearch="@HandleSearch" />
+```
+
+### Features
+
+- Expandable search input
+- Icon animation
+- Clear button
+- Debounced search
+
+## MudExSlideBar
+
+Slide-in panel component for navigation or additional content.
+
+### Basic Usage
+
+```razor
+<MudExSlideBar @bind-Open="@isOpen" Position="SlideBarPosition.Left">
+    <MudText>Slide bar content</MudText>
+</MudExSlideBar>
+```
+
+### Features
+
+- Multiple positions (left, right, top, bottom)
+- Overlay support
+- Swipe gestures
+- Animated transitions
+
+## MudExTaskBar
+
+Task bar component for application-level navigation.
+
+### Basic Usage
+
+```razor
+<MudExTaskBar>
+    <MudExTaskBarItem Icon="@Icons.Material.Filled.Home" Text="Home" />
+    <MudExTaskBarItem Icon="@Icons.Material.Filled.Settings" Text="Settings" />
+</MudExTaskBar>
+```
+
+### Features
+
+- Icon and text display
+- Active state indication
+- Click events
+- Responsive design
+
+## MudExVirtualize
+
+Virtualization component for efficient rendering of large lists.
+
+### Basic Usage
+
+```razor
+<MudExVirtualize Items="@largeList" Context="item">
+    <MudExVirtualItem>
+        <MudText>@item.Name</MudText>
+    </MudExVirtualItem>
+</MudExVirtualize>
+```
+
+### Features
+
+- Efficient rendering of large datasets
+- Smooth scrolling
+- Dynamic item heights
+- Placeholder support
+
+## MudExComponentPropertyGrid
+
+Property grid component for editing component properties.
+
+### Basic Usage
+
+```razor
+<MudExComponentPropertyGrid Component="@myComponent" />
+```
+
+### Features
+
+- Automatic property discovery
+- Type-appropriate editors
+- Property categorization
+- Read-only mode
+
+## MudExApiView
+
+API documentation viewer component.
+
+### Basic Usage
+
+```razor
+<MudExApiView ApiUrl="https://api.example.com/swagger.json" />
+```
+
+### Features
+
+- Swagger/OpenAPI support
+- Interactive API testing
+- Request/response examples
+- Authentication support
+
+## MudExSpeechToTextButton
+
+Speech recognition button for voice input.
+
+### Basic Usage
+
+```razor
+<MudExSpeechToTextButton OnTextRecognized="@HandleText" />
+```
+
+### Features
+
+- Browser speech recognition
+- Language selection
+- Continuous or single recognition
+- Visual feedback
+
+## MudExCaptureButton
+
+Button component for capturing photos/videos from camera.
+
+### Basic Usage
+
+```razor
+<MudExCaptureButton OnCapture="@HandleCapture" />
+```
+
+### Features
+
+- Camera access
+- Photo or video capture
+- Preview before submit
+- Multiple capture modes
+
+## MudExColorBubble
+
+Color bubble display component.
+
+### Basic Usage
+
+```razor
+<MudExColorBubble Color="@color" Size="Size.Large" />
+```
+
+### Features
+
+- Visual color representation
+- Multiple sizes
+- Border options
+- Click events
+
+## Cloud File Pickers
+
+Components for integrating cloud storage providers.
+
+### MudExDropBoxFilePicker
+
+```razor
+<MudExDropBoxFilePicker OnFileSelected="@HandleFile" AppKey="@appKey" />
+```
+
+### MudExGoogleFilePicker
+
+```razor
+<MudExGoogleFilePicker OnFileSelected="@HandleFile" ClientId="@clientId" />
+```
+
+### MudExOneDriveFilePicker
+
+```razor
+<MudExOneDriveFilePicker OnFileSelected="@HandleFile" ClientId="@clientId" />
+```
+
+### Features
+
+- OAuth authentication
+- File browsing
+- Multiple file selection
+- Download support
+
+## Best Practices
+
+- Use appropriate components for the use case
+- Consider mobile responsiveness
+- Test accessibility features
+- Leverage virtualization for large datasets
+- Follow MudBlazor theming conventions
+
+## See Also
+
+- [Picker Components](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/pickers.md)
+- [Grid and Layout](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/grid-layout.md)
+- [Display and Media](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/display-media.md)
+- [Form Inputs](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/form-inputs.md)
+- [Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/extensions/index.md)

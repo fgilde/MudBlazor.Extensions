@@ -1,0 +1,51 @@
+# MudBlazor.Extensions
+
+> Blazor components, dialogs, file viewers and extensions for MudBlazor.
+
+Version: 9.12.2-source.fd8e30adddf8
+
+## Documentation
+
+- [API reference](https://fgilde.github.io/MudBlazor.Extensions/ai/api.md)
+- [Complete context](https://fgilde.github.io/MudBlazor.Extensions/ai/llms-full.txt)
+- [Machine-readable knowledge](https://fgilde.github.io/MudBlazor.Extensions/ai/knowledge.json)
+- [Agent skill](https://fgilde.github.io/MudBlazor.Extensions/ai/skills/mudblazor-extensions/SKILL.md)
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/b33563055168-README.md): README.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/0b5ca119d2be-README.md): docs/README.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/93688c0caa82-contributing.md): docs/about/contributing.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/a23be567ca8c-license.md): docs/about/license.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/363e82493e2e-index.md): docs/api/index.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/77f023b99d3d-changelog.md): docs/changelog.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/fd71ac2603ad-app-loader.md): docs/components/app-loader.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/93ac95f610cd-display-media.md): docs/components/display-media.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/61eaf014c35f-file-display.md): docs/components/file-display.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/9f67f9e11b44-form-inputs.md): docs/components/form-inputs.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/bfbc8ceeda30-grid-layout.md): docs/components/grid-layout.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/76d4fc704e6d-index.md): docs/components/index.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/f0716656068e-object-edit.md): docs/components/object-edit.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/cf12676fa5cc-other-components.md): docs/components/other-components.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/da84ba054b50-pickers.md): docs/components/pickers.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/91b8b4fa196f-structured-data-editor.md): docs/components/structured-data-editor.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/b2f2ce6d762f-svg.md): docs/components/svg.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/4fbc988be9eb-tree-view.md): docs/components/tree-view.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/d6b973ededc7-upload-edit.md): docs/components/upload-edit.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/e30a8dfc595a-browser-extensions.md): docs/extensions/browser-extensions.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/c65a76662e3f-dialog-extensions.md): docs/extensions/dialog-extensions.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/011b0bf9fe21-index.md): docs/extensions/index.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/6828264893db-installation.md): docs/getting-started/installation.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/527a8429a3b6-setup.md): docs/getting-started/setup.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/b4d68dc855d0-index.md): docs/index.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/cff43bbe54ca-index.md): docs/services/index.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/1e8dc52fb9f9-speech-recognition.md): docs/services/speech-recognition.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/19e848c0efb2-2026-07-27-phase1-nuget-compile-fixes.md): docs/superpowers/plans/2026-07-27-phase1-nuget-compile-fixes.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/fec771db1793-2026-07-27-phase2-dock-ui.md): docs/superpowers/plans/2026-07-27-phase2-dock-ui.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/14484103edf6-2026-07-27-trymudex-codepen-redesign-design.md): docs/superpowers/specs/2026-07-27-trymudex-codepen-redesign-design.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/0d235295d9b0-2026-07-27-trymudex-codepen-redesign-status.md): docs/superpowers/specs/2026-07-27-trymudex-codepen-redesign-status.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/fe404711905a-2026-07-31-playzor-packages.md): docs/superpowers/specs/2026-07-31-playzor-packages.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/6ca8581a083f-2026-08-28-mudex-webcomponents-design.md): docs/superpowers/specs/2026-08-28-mudex-webcomponents-design.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/0e3feef7a055-color-utils.md): docs/utilities/color-utils.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/c158cbaab653-css-builder.md): docs/utilities/css-builder.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/d166b23f9044-helpers.md): docs/utilities/helpers.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/98e854e736fe-index.md): docs/utilities/index.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/7f365a56071e-size-utils.md): docs/utilities/size-utils.md
+- [Markdig.Syntax.Inlines.ContainerInline](https://fgilde.github.io/MudBlazor.Extensions/ai/documents/d7aa4b827712-style-builder.md): docs/utilities/style-builder.md
