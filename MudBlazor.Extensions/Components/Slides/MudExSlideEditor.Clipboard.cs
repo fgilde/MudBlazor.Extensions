@@ -181,7 +181,12 @@ public partial class MudExSlideEditor
     }
 
     private static string PlainText(IEnumerable<SlideShape> shapes) =>
-        string.Join("\r\n", SlideShape.Flatten(shapes).OfType<AutoShape>().Where(s => s.Text != null).SelectMany(s => s.Text.Paragraphs)
+        string.Join("\r\n", SlideShape.Flatten(shapes).SelectMany(s => s switch
+            {
+                AutoShape { Text: { } text } => [text],
+                TableShape table => table.Rows.SelectMany(r => r.Cells).Where(c => !c.IsMergedAway && c.Text != null).Select(c => c.Text),
+                _ => []
+            }).SelectMany(t => t.Paragraphs)
             .Select(p => string.Concat(p.Runs.Select(r => r.Text)).ReplaceLineEndings("\r\n")));
 
     private static string Normalize(string text) => (text ?? "").ReplaceLineEndings("\n").TrimEnd('\n');

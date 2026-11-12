@@ -19760,7 +19760,7 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideFindReplaceDialog">
             <summary>
-            The Find and Replace dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSlideEditor"/>. Searches the text of all shapes and the notes, optionally case-sensitive or for whole
+            The Find and Replace dialog of <see cref="T:MudBlazor.Extensions.Components.MudExSlideEditor"/>. Searches the text of all shapes, table cells and the notes, optionally case-sensitive or for whole
             words. Find Next shows the slide and selects the shape; Replace All is one undo step and keeps the formatting of the runs.
             </summary>
         </member>
@@ -32004,12 +32004,18 @@
             <summary>Moves the shapes to the bottom.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.SetTransformsCommand">
-            <summary>Moves, resizes, rotates or flips shapes. Placeholders that inherit their position get an explicit transform.</summary>
+            <summary>
+            Moves, resizes, rotates or flips shapes. Placeholders that inherit their position get an explicit transform. A resized table scales its columns
+            and rows to the new size.
+            </summary>
             <param name="slide">The slide.</param>
             <param name="absolute">The new transforms in slide coordinates by shape id; children of groups are converted to their group's child coordinates.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.SetTransformsCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyDictionary{System.UInt32,MudBlazor.Extensions.Office.Presentation.ShapeTransform})">
-            <summary>Moves, resizes, rotates or flips shapes. Placeholders that inherit their position get an explicit transform.</summary>
+            <summary>
+            Moves, resizes, rotates or flips shapes. Placeholders that inherit their position get an explicit transform. A resized table scales its columns
+            and rows to the new size.
+            </summary>
             <param name="slide">The slide.</param>
             <param name="absolute">The new transforms in slide coordinates by shape id; children of groups are converted to their group's child coordinates.</param>
         </member>
@@ -32297,6 +32303,294 @@
         <member name="M:MudBlazor.Extensions.Office.Presentation.SetNotesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.InsertTableCommand">
+            <summary>
+            Adds a table on top of the other shapes, with the style <see cref="F:MudBlazor.Extensions.Office.Presentation.TableShape.DefaultStyleId"/>, a header row, banded rows, equal column widths
+            and rows of 370840 EMU. The frame gets the size of the columns and rows.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="rows">The number of rows, at least 1.</param>
+            <param name="columns">The number of columns, at least 1.</param>
+            <param name="transform">The position and width in slide coordinates; the width is shared by the columns.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertTableCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Int32,System.Int32,MudBlazor.Extensions.Office.Presentation.ShapeTransform)">
+            <summary>
+            Adds a table on top of the other shapes, with the style <see cref="F:MudBlazor.Extensions.Office.Presentation.TableShape.DefaultStyleId"/>, a header row, banded rows, equal column widths
+            and rows of 370840 EMU. The frame gets the size of the columns and rows.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="rows">The number of rows, at least 1.</param>
+            <param name="columns">The number of columns, at least 1.</param>
+            <param name="transform">The position and width in slide coordinates; the width is shared by the columns.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.InsertTableCommand.Table">
+            <summary>The created table, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.InsertTableCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertTableCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertTableCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetTableCellTextCommand">
+            <summary>Replaces the text of a table cell. Build the body with <c>with</c> from the current one, as for <see cref="T:MudBlazor.Extensions.Office.Presentation.SetTextCommand"/>.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="row">The row index.</param>
+            <param name="column">The column index of a cell that is not merged away.</param>
+            <param name="body">The new text.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableCellTextCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.Int32,System.Int32,MudBlazor.Extensions.Office.Presentation.TextBody)">
+            <summary>Replaces the text of a table cell. Build the body with <c>with</c> from the current one, as for <see cref="T:MudBlazor.Extensions.Office.Presentation.SetTextCommand"/>.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="row">The row index.</param>
+            <param name="column">The column index of a cell that is not merged away.</param>
+            <param name="body">The new text.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetTableCellTextCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableCellTextCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableCellTextCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.InsertTableRowsCommand">
+            <summary>Inserts empty rows with the height and cell formatting of the row above. A merged range that the new rows run through grows.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="index">The index of the first new row, from 0 to the row count.</param>
+            <param name="count">The number of rows, at least 1.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertTableRowsCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.Int32,System.Int32)">
+            <summary>Inserts empty rows with the height and cell formatting of the row above. A merged range that the new rows run through grows.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="index">The index of the first new row, from 0 to the row count.</param>
+            <param name="count">The number of rows, at least 1.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.InsertTableRowsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertTableRowsCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertTableRowsCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.DeleteTableRowsCommand">
+            <summary>
+            Deletes rows. A merged range shrinks; if its first row is deleted, the remaining part keeps the text. Deleting every row deletes the table.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="index">The index of the first row to delete.</param>
+            <param name="count">The number of rows, at least 1.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteTableRowsCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.Int32,System.Int32)">
+            <summary>
+            Deletes rows. A merged range shrinks; if its first row is deleted, the remaining part keeps the text. Deleting every row deletes the table.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="index">The index of the first row to delete.</param>
+            <param name="count">The number of rows, at least 1.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.DeleteTableRowsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteTableRowsCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteTableRowsCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.InsertTableColumnsCommand">
+            <summary>Inserts empty columns with the width and cell formatting of the column to the left. A merged range that the new columns run through grows.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="index">The index of the first new column, from 0 to the column count.</param>
+            <param name="count">The number of columns, at least 1.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertTableColumnsCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.Int32,System.Int32)">
+            <summary>Inserts empty columns with the width and cell formatting of the column to the left. A merged range that the new columns run through grows.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="index">The index of the first new column, from 0 to the column count.</param>
+            <param name="count">The number of columns, at least 1.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.InsertTableColumnsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertTableColumnsCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.InsertTableColumnsCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.DeleteTableColumnsCommand">
+            <summary>
+            Deletes columns. A merged range shrinks; if its first column is deleted, the remaining part keeps the text. Deleting every column deletes the table.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="index">The index of the first column to delete.</param>
+            <param name="count">The number of columns, at least 1.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteTableColumnsCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.Int32,System.Int32)">
+            <summary>
+            Deletes columns. A merged range shrinks; if its first column is deleted, the remaining part keeps the text. Deleting every column deletes the table.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="index">The index of the first column to delete.</param>
+            <param name="count">The number of columns, at least 1.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.DeleteTableColumnsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteTableColumnsCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteTableColumnsCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.MergeTableCellsCommand">
+            <summary>
+            Merges a range of cells. The texts of the cells move paragraph by paragraph into the first cell. The range must contain every merged range it touches.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="row">The first row of the range.</param>
+            <param name="column">The first column of the range.</param>
+            <param name="rowCount">The number of rows, at least 1.</param>
+            <param name="columnCount">The number of columns, at least 1.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MergeTableCellsCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Merges a range of cells. The texts of the cells move paragraph by paragraph into the first cell. The range must contain every merged range it touches.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="row">The first row of the range.</param>
+            <param name="column">The first column of the range.</param>
+            <param name="rowCount">The number of rows, at least 1.</param>
+            <param name="columnCount">The number of columns, at least 1.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.MergeTableCellsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MergeTableCellsCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MergeTableCellsCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SplitTableCellCommand">
+            <summary>Splits a merged range back into its cells. The text stays in the first cell.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="row">The row of the first cell of the range.</param>
+            <param name="column">The column of the first cell of the range.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SplitTableCellCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.Int32,System.Int32)">
+            <summary>Splits a merged range back into its cells. The text stays in the first cell.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="row">The row of the first cell of the range.</param>
+            <param name="column">The column of the first cell of the range.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SplitTableCellCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SplitTableCellCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SplitTableCellCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetTableSizesCommand">
+            <summary>Sets the column widths and row heights of a table; the frame gets their sums as width and height.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="columnWidths">One width per column in EMU, each at least 0.</param>
+            <param name="rowHeights">One height per row in EMU, each at least 0.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableSizesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.Collections.Generic.IReadOnlyList{System.Int64},System.Collections.Generic.IReadOnlyList{System.Int64})">
+            <summary>Sets the column widths and row heights of a table; the frame gets their sums as width and height.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="columnWidths">One width per column in EMU, each at least 0.</param>
+            <param name="rowHeights">One height per row in EMU, each at least 0.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetTableSizesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableSizesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableSizesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetTableCellFillCommand">
+            <summary>Sets the fill of table cells.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="cells">The cells as row and column index.</param>
+            <param name="fill">The fill, or null to take it from the table style.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableCellFillCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Int32,System.Int32}},MudBlazor.Extensions.Office.Presentation.ShapeFill)">
+            <summary>Sets the fill of table cells.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="cells">The cells as row and column index.</param>
+            <param name="fill">The fill, or null to take it from the table style.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetTableCellFillCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableCellFillCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableCellFillCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetTableOptionsCommand">
+            <summary>Turns the style options of a table on or off; null keeps an option.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="firstRow">The header row.</param>
+            <param name="bandedRows">Banded rows.</param>
+            <param name="firstColumn">The first column.</param>
+            <param name="lastRow">The total row.</param>
+            <param name="lastColumn">The last column.</param>
+            <param name="bandedColumns">Banded columns.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableOptionsCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+            <summary>Turns the style options of a table on or off; null keeps an option.</summary>
+            <param name="slide">The slide.</param>
+            <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
+            <param name="firstRow">The header row.</param>
+            <param name="bandedRows">Banded rows.</param>
+            <param name="firstColumn">The first column.</param>
+            <param name="lastRow">The total row.</param>
+            <param name="lastColumn">The last column.</param>
+            <param name="bandedColumns">Banded columns.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetTableOptionsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableOptionsCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableOptionsCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.SetTextCommand">
             <summary>
             Replaces the text of a shape. Build the body with <c>with</c> from the current one and keep unchanged paragraphs and runs, so their
@@ -32563,7 +32857,7 @@
             <summary>The undo and redo history.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.Presentation.HasOpaqueContent">
-            <summary>True if a slide contains content the editor keeps but does not model, such as charts, SmartArt, tables or media.</summary>
+            <summary>True if a slide contains content the editor keeps but does not model, such as charts, SmartArt or media.</summary>
         </member>
         <member name="E:MudBlazor.Extensions.Office.Presentation.Presentation.Changed">
             <summary>Raised once after each command, transaction, undo or redo with everything that changed.</summary>
@@ -32743,6 +33037,84 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.SlideShape.Parent">
             <summary>The group containing this shape, or null for a top-level shape.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.TableRow">
+            <summary>A row of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableRow.Height">
+            <summary>The row height in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableRow.Cells">
+            <summary>The cells, one per column.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.TableCell">
+            <summary>A cell of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>. Margins and anchor hold the cell's own values; null takes the default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableCell.Text">
+            <summary>The text, or null if the cell has no text body.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableCell.Fill">
+            <summary>The fill, or null to take it from the table style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableCell.ColumnSpan">
+            <summary>The number of columns a merged range spans from this cell, at least 1.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableCell.RowSpan">
+            <summary>The number of rows a merged range spans from this cell, at least 1.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableCell.IsMergedAway">
+            <summary>True if the cell lies under a merged range that starts in another cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableCell.MarginLeft">
+            <summary>The left margin in EMU, or null for the default of 91440.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableCell.MarginTop">
+            <summary>The top margin in EMU, or null for the default of 45720.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableCell.MarginRight">
+            <summary>The right margin in EMU, or null for the default of 91440.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableCell.MarginBottom">
+            <summary>The bottom margin in EMU, or null for the default of 45720.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableCell.Anchor">
+            <summary>The vertical anchoring of the text, or null for the default (top).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.TableShape">
+            <summary>
+            A table (<c>a:tbl</c> in a graphic frame). Every row has one cell per column; a merged range keeps its covered cells, marked as
+            <see cref="P:MudBlazor.Extensions.Office.Presentation.TableCell.IsMergedAway"/>.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TableShape.DefaultStyleId">
+            <summary>The style of new tables: Medium Style 2 - Accent 1, the PowerPoint default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableShape.ColumnWidths">
+            <summary>The column widths in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableShape.Rows">
+            <summary>The rows from top to bottom.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableShape.StyleId">
+            <summary>The id of the table style, for example <see cref="F:MudBlazor.Extensions.Office.Presentation.TableShape.DefaultStyleId"/>, or null for none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableShape.FirstRow">
+            <summary>True if the style formats the first row as a header.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableShape.FirstColumn">
+            <summary>True if the style formats the first column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableShape.LastRow">
+            <summary>True if the style formats the last row as a total row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableShape.LastColumn">
+            <summary>True if the style formats the last column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableShape.BandedRows">
+            <summary>True if the style bands the rows.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TableShape.BandedColumns">
+            <summary>True if the style bands the columns.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.Slide">
             <summary>A slide of a presentation.</summary>

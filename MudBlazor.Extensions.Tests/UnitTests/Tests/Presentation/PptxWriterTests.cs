@@ -512,6 +512,17 @@ public partial class PptxWriterTests
                     case OpaqueShape opaque:
                         sb.AppendLine($"    {opaque.Kind}");
                         break;
+                    case TableShape table:
+                        sb.AppendLine($"    {table.StyleId} {table.FirstRow}{table.FirstColumn}{table.LastRow}{table.LastColumn}{table.BandedRows}{table.BandedColumns} {string.Join(",", table.ColumnWidths)}");
+                        foreach (var row in table.Rows)
+                        {
+                            sb.AppendLine($"    tr {row.Height}");
+                            foreach (var cell in row.Cells)
+                                sb.AppendLine($"      tc {cell.RowSpan}x{cell.ColumnSpan} {cell.IsMergedAway} {cell.Fill} {cell.MarginLeft} {cell.MarginTop} {cell.MarginRight} {cell.MarginBottom} {cell.Anchor} " +
+                                              string.Join("/", cell.Text?.Paragraphs.Select(p => string.Join("+", p.Runs.Select(r => $"{r.Text}{r.Format}"))) ?? ["null"]));
+                        }
+
+                        break;
                     case GroupShape group:
                         sb.AppendLine($"    {group.ChildTransform}");
                         break;

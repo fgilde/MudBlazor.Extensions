@@ -56,6 +56,9 @@ internal sealed class SlideXml(string part, string basis, List<OpcRelationship> 
             case GroupShape group:
                 WriteTree(e, group.Children);
                 break;
+            case TableShape table:
+                TableXml.Write(e, table);
+                break;
         }
 
         if (shape.Source != null && shape.SourcePart != null && !string.Equals(shape.SourcePart, basis, StringComparison.OrdinalIgnoreCase)) Import(e, shape.SourcePart, shape is GroupShape);
@@ -134,6 +137,10 @@ internal sealed class SlideXml(string part, string basis, List<OpcRelationship> 
             new XElement(P + "blipFill", new XElement(A + "blip", picture.ImagePart == null ? null : new XAttribute(R + "embed", ImageRelationship(picture.ImagePart))),
                 new XElement(A + "stretch", new XElement(A + "fillRect"))),
             new XElement(P + "spPr", new XElement(A + "prstGeom", new XAttribute("prst", "rect"), new XElement(A + "avLst")))),
+        TableShape => new XElement(P + "graphicFrame",
+            new XElement(P + "nvGraphicFramePr", new XElement(P + "cNvPr"),
+                new XElement(P + "cNvGraphicFramePr", new XElement(A + "graphicFrameLocks", new XAttribute("noGrp", "1"))), NvPr(shape)),
+            new XElement(P + "xfrm"), TableXml.Create()),
         GroupShape => new XElement(P + "grpSp",
             new XElement(P + "nvGrpSpPr", new XElement(P + "cNvPr"), new XElement(P + "cNvGrpSpPr"), new XElement(P + "nvPr")), new XElement(P + "grpSpPr")),
         _ => throw new NotSupportedException($"A {shape.GetType().Name} without source XML cannot be written.")

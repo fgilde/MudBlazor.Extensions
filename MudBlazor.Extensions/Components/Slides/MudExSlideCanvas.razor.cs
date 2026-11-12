@@ -193,7 +193,7 @@ public partial class MudExSlideCanvas
                 Y = (long)Math.Round(dto.Y),
                 Width = Math.Max(1, (long)Math.Round(dto.Width)),
                 Height = Math.Max(1, (long)Math.Round(dto.Height)),
-                Rotation = shape is OpaqueShape || Math.Abs(Angle(dto.Rotation - current.Rotation + 180) - 180) < 0.001 ? current.Rotation : Angle(dto.Rotation)
+                Rotation = shape is OpaqueShape or TableShape || Math.Abs(Angle(dto.Rotation - current.Rotation + 180) - 180) < 0.001 ? current.Rotation : Angle(dto.Rotation)
             };
             if (target != current)
                 changes[id] = target;

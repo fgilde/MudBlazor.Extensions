@@ -45,7 +45,7 @@ internal static class BlankPresentation
                 ("slide", "slides/slide1.xml"), ("theme", "theme/theme1.xml"), ("presProps", "presProps.xml"), ("viewProps", "viewProps.xml"), ("tableStyles", "tableStyles.xml"))),
             ("ppt/presProps.xml", "presentationml.presProps", $"<p:presentationPr {Namespaces}/>"),
             ("ppt/viewProps.xml", "presentationml.viewProps", $"<p:viewPr {Namespaces}/>"),
-            ("ppt/tableStyles.xml", "presentationml.tableStyles", "<a:tblStyleLst xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" def=\"{5C22544A-7EE6-4342-B048-85BDC9FD1C3A}\"/>"),
+            ("ppt/tableStyles.xml", "presentationml.tableStyles", $"<a:tblStyleLst xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" def=\"{TableShape.DefaultStyleId}\"/>"),
             ("ppt/theme/theme1.xml", "theme", Theme),
             ("ppt/theme/theme2.xml", "theme", Theme),
             ("ppt/slideMasters/slideMaster1.xml", "presentationml.slideMaster", Master),

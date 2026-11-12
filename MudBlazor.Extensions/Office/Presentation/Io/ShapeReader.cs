@@ -20,7 +20,7 @@ internal sealed class ShapeReader(
         if (e.Name == P + "sp" || e.Name == P + "cxnSp") shape = new AutoShape { IsConnector = e.Name == P + "cxnSp" };
         else if (e.Name == P + "pic") shape = IsMedia(e) ? new OpaqueShape { Kind = "media" } : new PictureShape();
         else if (e.Name == P + "grpSp") shape = new GroupShape();
-        else if (e.Name == P + "graphicFrame") shape = new OpaqueShape { Kind = FrameKind(e) };
+        else if (e.Name == P + "graphicFrame") shape = TableXml.Of(e) is { } tbl ? TableXml.Read(tbl) : new OpaqueShape { Kind = FrameKind(e) };
         else if (e.Name == P + "contentPart" || e.Name.LocalName == "AlternateContent") shape = new OpaqueShape();
         else return null;
 
@@ -121,7 +121,7 @@ internal sealed class ShapeReader(
         return new ImageCrop(Edge("l"), Edge("t"), Edge("r"), Edge("b"));
     }
 
-    private static TextBody ReadText(XElement body)
+    internal static TextBody ReadText(XElement body)
     {
         var properties = body.Element(A + "bodyPr");
         string Body(string name) => (string)properties?.Attribute(name);

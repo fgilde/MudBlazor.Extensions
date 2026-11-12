@@ -25,12 +25,12 @@
                         var editing = ReferenceEquals(shape, _text?.Shape);
                         <div @key="shape" class="@(editing ? "mud-ex-slide-selection mud-ex-slide-selection-editing" : "mud-ex-slide-selection")" data-id="@shape.Id" data-x="@t.X" data-y="@t.Y" data-w="@t.Width" data-h="@t.Height"
                              data-r="@MudExSlideShapeView.Num(t.Rotation)" data-fh="@(t.FlipH ? "true" : null)" data-fv="@(t.FlipV ? "true" : null)"
-                             data-opaque="@(shape is OpaqueShape ? "true" : null)" style="@MudExSlideShapeView.BoxStyle(t, Presentation, false)">
+                             data-opaque="@(shape is OpaqueShape or TableShape ? "true" : null)" style="@MudExSlideShapeView.BoxStyle(t, Presentation, false)">
                             @foreach (var handle in editing ? [] : Handles)
                             {
                                 <span class="@($"mud-ex-slide-handle mud-ex-slide-handle-{handle}")" data-handle="@handle"></span>
                             }
-                            @if (shape is not OpaqueShape && !editing)
+                            @if (shape is not (OpaqueShape or TableShape) && !editing)
                             {
                                 <span class="mud-ex-slide-handle mud-ex-slide-handle-rotate" data-handle="rotate"></span>
                             }

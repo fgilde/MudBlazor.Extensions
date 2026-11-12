@@ -4,7 +4,7 @@ using MudBlazor.Extensions.Office.Presentation;
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
-/// The Find and Replace dialog of <see cref="MudExSlideEditor"/>. Searches the text of all shapes and the notes, optionally case-sensitive or for whole
+/// The Find and Replace dialog of <see cref="MudExSlideEditor"/>. Searches the text of all shapes, table cells and the notes, optionally case-sensitive or for whole
 /// words. Find Next shows the slide and selects the shape; Replace All is one undo step and keeps the formatting of the runs.
 /// </summary>
 public partial class MudExSlideFindReplaceDialog
@@ -59,7 +59,7 @@ public partial class MudExSlideFindReplaceDialog
         }
 
         _at = hit.Key;
-        if (Select != null) await Select(hit.Slide, hit.Shape?.Id);
+        if (Select != null) await Select(hit.Slide, hit.Target?.Shape.Id);
     }
 
     private async Task ReplaceAsync()
@@ -85,14 +85,16 @@ public partial class MudExSlideFindReplaceDialog
         try
         {
             using (Presentation.Undo.BeginTransaction(description))
-                foreach (var item in hits.GroupBy(h => (h.Slide, h.Shape)))
+                foreach (var item in hits.GroupBy(h => (h.Slide, h.Target)))
                 {
                     var paragraphs = item.ToLookup(h => h.Key.Paragraph, h => h.Key.Index);
-                    if (item.Key.Shape is { } shape)
-                        Presentation.Execute(new SetTextCommand(item.Key.Slide, shape.Id, shape.Text with
-                        {
-                            Paragraphs = shape.Text.Paragraphs.Select((p, i) => paragraphs.Contains(i) ? Replaced(p, paragraphs[i]) : p).ToList()
-                        }));
+                    if (item.Key.Target is { } target)
+                    {
+                        var body = target.Text with { Paragraphs = target.Text.Paragraphs.Select((p, i) => paragraphs.Contains(i) ? Replaced(p, paragraphs[i]) : p).ToList() };
+                        Presentation.Execute(target.Shape is TableShape
+                            ? new SetTableCellTextCommand(item.Key.Slide, target.Shape.Id, target.Row, target.Column, body)
+                            : new SetTextCommand(item.Key.Slide, target.Shape.Id, body));
+                    }
                     else
                         Presentation.Execute(new SetNotesCommand(item.Key.Slide, string.Join("\n", Lines(item.Key.Slide, null).Select((line, i) =>
                             paragraphs.Contains(i) ? string.Concat(Replaced(new TextParagraph { Runs = [new TextRun(line)] }, paragraphs[i]).Runs.Select(r => r.Text)) : line))));
@@ -134,7 +136,7 @@ public partial class MudExSlideFindReplaceDialog
         var slides = Presentation.SlideList;
         for (var s = 0; s < slides.Count; s++)
         {
-            var items = SlideShape.Flatten(slides[s].Shapes).OfType<AutoShape>().Where(a => a.Text != null).Append(null).ToList();
+            var items = Targets(slides[s]).Append(null).ToList();
             for (var i = 0; i < items.Count; i++)
             {
                 var lines = Lines(slides[s], items[i]);
@@ -145,8 +147,16 @@ public partial class MudExSlideFindReplaceDialog
         }
     }
 
-    private static IReadOnlyList<string> Lines(Slide slide, AutoShape shape) =>
-        shape == null ? slide.Notes.Split('\n') : shape.Text.Paragraphs.Select(p => string.Concat(p.Runs.Select(r => r.Text))).ToList();
+    private static IEnumerable<Target> Targets(Slide slide) => SlideShape.Flatten(slide.Shapes).SelectMany(shape => shape switch
+    {
+        AutoShape { Text: not null } => [new Target(shape, 0, 0)],
+        TableShape table => table.Rows.SelectMany((row, r) => row.Cells.Select((cell, c) => (Cell: cell, Target: new Target(shape, r, c))))
+            .Where(x => !x.Cell.IsMergedAway && x.Cell.Text != null).Select(x => x.Target),
+        _ => []
+    });
+
+    private static IReadOnlyList<string> Lines(Slide slide, Target target) =>
+        target == null ? slide.Notes.Split('\n') : target.Text.Paragraphs.Select(p => string.Concat(p.Runs.Select(r => r.Text))).ToList();
 
     private IEnumerable<int> Matches(string text)
     {
@@ -159,5 +169,10 @@ public partial class MudExSlideFindReplaceDialog
 
     private void Close() => MudDialog.Close();
 
-    private sealed record Hit((int Slide, int Item, int Paragraph, int Index) Key, Slide Slide, AutoShape Shape);
+    private sealed record Hit((int Slide, int Item, int Paragraph, int Index) Key, Slide Slide, Target Target);
+
+    private sealed record Target(SlideShape Shape, int Row, int Column)
+    {
+        public TextBody Text => Shape is TableShape table ? table.Rows[Row].Cells[Column].Text : ((AutoShape)Shape).Text;
+    }
 }

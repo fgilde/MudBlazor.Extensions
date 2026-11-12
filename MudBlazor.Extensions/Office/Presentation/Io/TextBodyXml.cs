@@ -10,23 +10,24 @@ internal static class TextBodyXml
 
     internal static void Write(XElement shape, TextBody body)
     {
-        if (shape.Name == P + "cxnSp") return;
-        var txBody = shape.Element(P + "txBody");
+        if (shape.Name != P + "cxnSp") Write(shape, P + "txBody", body, "extLst");
+    }
+
+    internal static void WriteCell(XElement cell, TextBody body) => Write(cell, A + "txBody", body, "tcPr", "extLst");
+
+    private static void Write(XElement holder, XName name, TextBody body, params string[] followers)
+    {
+        var txBody = holder.Element(name);
         if (body == null)
         {
             txBody?.Remove();
             return;
         }
 
-        txBody ??= SlideXml.Place(shape, new XElement(P + "txBody", new XElement(A + "bodyPr"), new XElement(A + "lstStyle")), "extLst");
+        txBody ??= SlideXml.Place(holder, new XElement(name, new XElement(A + "bodyPr"), new XElement(A + "lstStyle")), followers);
         var bodyPr = txBody.Element(A + "bodyPr");
         if (bodyPr == null) txBody.AddFirst(bodyPr = new XElement(A + "bodyPr"));
-        Set(bodyPr, "anchor", TextStyles.ParseAnchor((string)bodyPr.Attribute("anchor")), body.Anchor, a => a switch
-        {
-            TextAnchor.Middle => "ctr",
-            TextAnchor.Bottom => "b",
-            _ => "t"
-        });
+        Set(bodyPr, "anchor", TextStyles.ParseAnchor((string)bodyPr.Attribute("anchor")), body.Anchor, AnchorValue);
         Set(bodyPr, "lIns", Long((string)bodyPr.Attribute("lIns")), body.InsetLeft, Format);
         Set(bodyPr, "tIns", Long((string)bodyPr.Attribute("tIns")), body.InsetTop, Format);
         Set(bodyPr, "rIns", Long((string)bodyPr.Attribute("rIns")), body.InsetRight, Format);
@@ -161,12 +162,19 @@ internal static class TextBodyXml
         else (latin ?? SlideXml.Place(rPr, new XElement(A + "latin"), "ea", "cs", "sym", "hlinkClick", "hlinkMouseOver", "rtl", "extLst")).SetAttributeValue("typeface", format.Font);
     }
 
-    private static void Set<T>(XElement element, string name, T? current, T? value, Func<T, string> format) where T : struct
+    internal static string AnchorValue(TextAnchor anchor) => anchor switch
+    {
+        TextAnchor.Middle => "ctr",
+        TextAnchor.Bottom => "b",
+        _ => "t"
+    };
+
+    internal static void Set<T>(XElement element, string name, T? current, T? value, Func<T, string> format) where T : struct
     {
         if (!Nullable.Equals(current, value)) element.SetAttributeValue(name, value is { } v ? format(v) : null);
     }
 
     private static string Flag(bool value) => value ? "1" : "0";
 
-    private static string Format(long value) => value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    internal static string Format(long value) => value.ToString(System.Globalization.CultureInfo.InvariantCulture);
 }

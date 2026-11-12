@@ -97,7 +97,9 @@ public static partial class PptxWriter
                 entries.Add(new SlideEntry(rel.Id, (uint)nextSlideId++, false));
             }
 
+            var stylesAdded = AddTableStyles(presentationRels);
             if (!presentation.SlideList.SequenceEqual(package.Slides.Select(s => s.Slide))) WritePresentation(entries, presentationRels);
+            else if (stylesAdded) PutRelationships(package.PresentationPart, presentationRels);
             foreach (var part in _removed) Remove(part);
             if (deleted.Count > 0)
             {
@@ -129,6 +131,21 @@ public static partial class PptxWriter
                 _defaults[extension] = contentType;
                 _contentTypesChanged = true;
             }
+        }
+
+        private bool AddTableStyles(List<OpcRelationship> rels)
+        {
+            if (rels.Any(r => r.Type == RelNs + "/tableStyles") ||
+                !presentation.SlideList.SelectMany(s => SlideShape.Flatten(s.Shapes)).Any(s => s is TableShape { Source: null })) return false;
+            const string part = "/ppt/tableStyles.xml";
+            if (_opc.Entry(part) == null)
+            {
+                Put(part, new XDocument(new XElement(A + "tblStyleLst", new XAttribute(XNamespace.Xmlns + "a", A.NamespaceName), new XAttribute("def", TableShape.DefaultStyleId))));
+                SetOverride(part, ContentTypePrefix + "tableStyles+xml");
+            }
+
+            rels.Add(new OpcRelationship(NextId(rels), RelNs + "/tableStyles", Relative(package.PresentationPart, part), null));
+            return true;
         }
 
         private void WriteSlide(Slide slide, string partName, PptxSlidePart source)

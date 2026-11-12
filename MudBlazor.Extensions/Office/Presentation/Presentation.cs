@@ -27,7 +27,7 @@ public sealed class Presentation
     /// <summary>The undo and redo history.</summary>
     public DocumentUndoStack<Presentation> Undo { get; }
 
-    /// <summary>True if a slide contains content the editor keeps but does not model, such as charts, SmartArt, tables or media.</summary>
+    /// <summary>True if a slide contains content the editor keeps but does not model, such as charts, SmartArt or media.</summary>
     public bool HasOpaqueContent => SlideList.Any(s => SlideShape.Flatten(s.Shapes).Any(shape => shape is OpaqueShape));
 
     /// <summary>Raised once after each command, transaction, undo or redo with everything that changed.</summary>

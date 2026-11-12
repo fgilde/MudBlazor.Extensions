@@ -16,12 +16,15 @@ public enum ZOrderChange
     SendToBack
 }
 
-/// <summary>Moves, resizes, rotates or flips shapes. Placeholders that inherit their position get an explicit transform.</summary>
+/// <summary>
+/// Moves, resizes, rotates or flips shapes. Placeholders that inherit their position get an explicit transform. A resized table scales its columns
+/// and rows to the new size.
+/// </summary>
 /// <param name="slide">The slide.</param>
 /// <param name="absolute">The new transforms in slide coordinates by shape id; children of groups are converted to their group's child coordinates.</param>
 public sealed class SetTransformsCommand(Slide slide, IReadOnlyDictionary<uint, ShapeTransform> absolute) : IDocumentCommand<Presentation>
 {
-    private List<(SlideShape Shape, ShapeTransform? Transform)> _before;
+    private List<(SlideShape Shape, ShapeTransform? Transform, TableShape Table)> _before;
 
     /// <inheritdoc />
     public string Description => "Move";
@@ -32,10 +35,18 @@ public sealed class SetTransformsCommand(Slide slide, IReadOnlyDictionary<uint, 
         foreach (var transform in absolute.Values) ShapeEdit.Validate(transform);
         var targets = absolute.Select(e => (Shape: ShapeEdit.Find<SlideShape>(slide, e.Key), Target: e.Value))
             .OrderBy(e => ShapeEdit.Ancestors(e.Shape).Count()).ToList();
-        _before = targets.Select(e => (e.Shape, e.Shape.Transform)).ToList();
+        _before = targets.Select(e => (e.Shape, e.Shape.Transform, (e.Shape as TableShape)?.Snapshot())).ToList();
         foreach (var (shape, target) in targets) shape.Transform = ShapeEdit.ToLocal(shape, target);
-        if (_before.All(b => b.Shape.Transform == b.Transform)) Restore();
-        else document.Notify(slide, PresentationChangeKind.Content);
+        if (_before.All(b => b.Shape.Transform == b.Transform))
+        {
+            Restore();
+            return;
+        }
+
+        foreach (var (shape, transform, _) in _before)
+            if (shape is TableShape table && table.Transform != transform)
+                TableEdit.Scale(table, transform);
+        document.Notify(slide, PresentationChangeKind.Content);
     }
 
     /// <inheritdoc />
@@ -47,7 +58,11 @@ public sealed class SetTransformsCommand(Slide slide, IReadOnlyDictionary<uint, 
 
     private void Restore()
     {
-        foreach (var (shape, transform) in _before) shape.Transform = transform;
+        foreach (var (shape, transform, table) in _before)
+        {
+            shape.Transform = transform;
+            if (table != null) ((TableShape)shape).Restore(table);
+        }
     }
 }
 

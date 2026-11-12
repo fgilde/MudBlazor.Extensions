@@ -39,7 +39,7 @@ public partial class MudExSlideShapeView
 
     private string ShapeClass => Shape switch
     {
-        OpaqueShape => "mud-ex-slide-shape mud-ex-slide-opaque",
+        OpaqueShape or TableShape => "mud-ex-slide-shape mud-ex-slide-opaque",
         GroupShape => "mud-ex-slide-shape mud-ex-slide-group",
         _ => "mud-ex-slide-shape"
     } + (Inherited ? " mud-ex-slide-inherited" : "") + (Prompt != null ? " mud-ex-slide-placeholder-empty" : "");

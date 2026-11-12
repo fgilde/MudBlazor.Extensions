@@ -218,6 +218,37 @@ public class SlideEditorFeaturesTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task FindReplace_ReplacesInTableCells()
+    {
+        var presentation = new PptxBuilder()
+            .Slide(Shape(2, "Title", Xfrm(Inch, Inch, Inch, Inch), "<a:p><a:r><a:t>apple</a:t></a:r></a:p>") +
+                   TableTests.Table(3, "", [Inch, Inch], TableTests.Tc("apple pie") + TableTests.Tc("x"), TableTests.Tc("an apple") + TableTests.Tc("APPLE")))
+            .Load();
+        var cut = RenderEditor(presentation);
+        var table = TableTests.Table(presentation);
+        var rows = table.Rows;
+
+        await Key(cut, "h", ctrl: true);
+        _dialogs.WaitForAssertion(() => Assert.NotEmpty(_dialogs.FindAll(".mud-ex-slidefind-with input")));
+        _dialogs.Find(".mud-ex-slidefind-what input").Input("apple");
+        _dialogs.Find(".mud-ex-slidefind-with input").Input("pear");
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-slidefind-replace-all").Click());
+
+        Assert.Equal("pear", Text(presentation.Slides[0].Shapes[0]));
+        Assert.Equal("pear pie x | an pear pear", TableTests.Grid(table));
+        _dialogs.WaitForAssertion(() => Assert.Contains("4", _dialogs.Find(".mud-ex-slidefind-status").TextContent));
+        Assert.Equal("Replace All", presentation.Undo.UndoDescription);
+
+        await cut.InvokeAsync(() => presentation.Undo.Undo());
+        Assert.Same(rows, table.Rows);
+        Assert.False(presentation.Undo.CanUndo);
+
+        _dialogs.Find(".mud-ex-slidefind-what input").Input("an apple");
+        await cut.InvokeAsync(() => _dialogs.Find(".mud-ex-slidefind-next").Click());
+        Assert.Equal([3u], cut.Instance.SelectedShapes);
+    }
+
+    [Fact]
     public async Task FindNext_JumpsToSlideAndSelectsShape()
     {
         var presentation = Deck();

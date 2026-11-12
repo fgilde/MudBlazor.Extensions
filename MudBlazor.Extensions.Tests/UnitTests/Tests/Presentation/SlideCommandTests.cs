@@ -89,6 +89,9 @@ public class SlideCommandTests
             PictureShape p => $"{p.ImagePart} {p.ContentType}",
             GroupShape g => $"{g.ChildTransform} children={string.Join(",", g.Children.Select(Ref))}",
             OpaqueShape o => o.Kind,
+            TableShape t => $"{t.StyleId} {t.FirstRow}{t.FirstColumn}{t.LastRow}{t.LastColumn}{t.BandedRows}{t.BandedColumns} [{string.Join(",", t.ColumnWidths)}] " +
+                            string.Join(" / ", t.Rows.Select(r => $"{r.Height} {Ref(r.Source)} " + string.Concat(r.Cells.Select(c =>
+                                $"<{Text(c.Text)} {c.Fill} {c.RowSpan}x{c.ColumnSpan} {c.IsMergedAway} {c.MarginLeft} {c.MarginTop} {c.MarginRight} {c.MarginBottom} {c.Anchor} {Ref(c.Source)}>")))),
             _ => ""
         };
 
