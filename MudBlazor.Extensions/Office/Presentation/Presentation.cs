@@ -5,6 +5,7 @@ public sealed class Presentation
 {
     private readonly HashSet<Slide> _changedSlides = new();
     private PresentationChangeKind _changeKind;
+    private int _notifications;
 
     internal Presentation() => Undo = new DocumentUndoStack<Presentation>(this, p => p.RaiseChanged());
 
@@ -57,11 +58,13 @@ public sealed class Presentation
     /// <param name="target">The stream that receives the file.</param>
     public void Save(Stream target) => PptxWriter.Write(this, target);
 
-    /// <summary>Applies a command and records it as one undo step (or adds it to the open transaction).</summary>
+    /// <summary>Applies a command and records it as one undo step (or adds it to the open transaction). A command that changes nothing records nothing.</summary>
     /// <param name="command">The command.</param>
     public void Execute(IDocumentCommand<Presentation> command)
     {
+        var notifications = _notifications;
         command.Apply(this);
+        if (notifications == _notifications) return;
         Undo.Record(command);
         if (!Undo.InTransaction) RaiseChanged();
     }
@@ -72,6 +75,7 @@ public sealed class Presentation
 
     internal void Notify(Slide slide, PresentationChangeKind kind)
     {
+        _notifications++;
         if (slide != null)
         {
             slide.Modified = true;

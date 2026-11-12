@@ -31814,6 +31814,180 @@
             <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
             <returns>The free part name.</returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ShapeAlignment">
+            <summary>The edge or centre line shapes are aligned to.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeAlignment.Left">
+            <summary>Aligns the left edges.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeAlignment.Center">
+            <summary>Aligns the horizontal centres.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeAlignment.Right">
+            <summary>Aligns the right edges.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeAlignment.Top">
+            <summary>Aligns the top edges.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeAlignment.Middle">
+            <summary>Aligns the vertical centres.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeAlignment.Bottom">
+            <summary>Aligns the bottom edges.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.GroupShapesCommand">
+            <summary>
+            Groups shapes of the same level. The group takes the z-order position of the topmost shape, its frame is the bounding box of the
+            rotated shapes and its child space equals the frame, so the shapes keep their transforms.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The ids of at least two shapes with the same parent; placeholders cannot be grouped.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.GroupShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32})">
+            <summary>
+            Groups shapes of the same level. The group takes the z-order position of the topmost shape, its frame is the bounding box of the
+            rotated shapes and its child space equals the frame, so the shapes keep their transforms.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The ids of at least two shapes with the same parent; placeholders cannot be grouped.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.GroupShapesCommand.Group">
+            <summary>The created group, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.GroupShapesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.GroupShapesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.GroupShapesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.UngroupShapesCommand">
+            <summary>
+            Dissolves groups. The children take the place of their group and keep their visible position, size, rotation and flip; their
+            transforms are converted into the coordinates of the group's parent.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="groups">The ids of the groups.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.UngroupShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32})">
+            <summary>
+            Dissolves groups. The children take the place of their group and keep their visible position, size, rotation and flip; their
+            transforms are converted into the coordinates of the group's parent.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="groups">The ids of the groups.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.UngroupShapesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.UngroupShapesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.UngroupShapesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.AlignShapesCommand">
+            <summary>
+            Aligns shapes by the axis-aligned bounding boxes of the rotated shapes, to the selection or to the slide. A single shape is always
+            aligned to the slide.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="alignment">The edge or centre line.</param>
+            <param name="relativeToSlide">True to align to the slide instead of the selection.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AlignShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},MudBlazor.Extensions.Office.Presentation.ShapeAlignment,System.Boolean)">
+            <summary>
+            Aligns shapes by the axis-aligned bounding boxes of the rotated shapes, to the selection or to the slide. A single shape is always
+            aligned to the slide.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="alignment">The edge or centre line.</param>
+            <param name="relativeToSlide">True to align to the slide instead of the selection.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AlignShapesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AlignShapesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AlignShapesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.DistributeShapesCommand">
+            <summary>
+            Distributes shapes with equal gaps between their rotated bounding boxes. Without <paramref name="relativeToSlide"/> the outer shapes
+            keep their place; with it they move to the slide edges.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The ids of at least three shapes, or two when distributing on the slide.</param>
+            <param name="horizontal">True to distribute along the x axis, false along the y axis.</param>
+            <param name="relativeToSlide">True to distribute across the whole slide.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DistributeShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},System.Boolean,System.Boolean)">
+            <summary>
+            Distributes shapes with equal gaps between their rotated bounding boxes. Without <paramref name="relativeToSlide"/> the outer shapes
+            keep their place; with it they move to the slide edges.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The ids of at least three shapes, or two when distributing on the slide.</param>
+            <param name="horizontal">True to distribute along the x axis, false along the y axis.</param>
+            <param name="relativeToSlide">True to distribute across the whole slide.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.DistributeShapesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DistributeShapesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.DistributeShapesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.RotateShapesCommand">
+            <summary>Rotates each shape around its own centre.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="degrees">The clockwise angle in degrees; negative values rotate counter-clockwise.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RotateShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},System.Double)">
+            <summary>Rotates each shape around its own centre.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="degrees">The clockwise angle in degrees; negative values rotate counter-clockwise.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RotateShapesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RotateShapesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RotateShapesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.FlipShapesCommand">
+            <summary>Mirrors each shape in place, horizontally or vertically.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="horizontal">True to mirror left to right, false to mirror top to bottom.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.FlipShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},System.Boolean)">
+            <summary>Mirrors each shape in place, horizontally or vertically.</summary>
+            <param name="slide">The slide.</param>
+            <param name="shapes">The shape ids.</param>
+            <param name="horizontal">True to mirror left to right, false to mirror top to bottom.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.FlipShapesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.FlipShapesCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.FlipShapesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.ZOrderChange">
             <summary>A change of the z-order of shapes.</summary>
         </member>
@@ -31944,12 +32118,12 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.DeleteShapesCommand">
-            <summary>Deletes shapes, including shapes inside groups.</summary>
+            <summary>Deletes shapes, including shapes inside groups. A group whose children are all deleted is deleted with them.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.DeleteShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32})">
-            <summary>Deletes shapes, including shapes inside groups.</summary>
+            <summary>Deletes shapes, including shapes inside groups. A group whose children are all deleted is deleted with them.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
         </member>
@@ -32408,7 +32582,7 @@
             <param name="target">The stream that receives the file.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.Execute(MudBlazor.Extensions.Office.IDocumentCommand{MudBlazor.Extensions.Office.Presentation.Presentation})">
-            <summary>Applies a command and records it as one undo step (or adds it to the open transaction).</summary>
+            <summary>Applies a command and records it as one undo step (or adds it to the open transaction). A command that changes nothing records nothing.</summary>
             <param name="command">The command.</param>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind">

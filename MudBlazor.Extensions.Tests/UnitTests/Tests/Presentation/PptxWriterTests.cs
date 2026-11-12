@@ -512,6 +512,9 @@ public partial class PptxWriterTests
                     case OpaqueShape opaque:
                         sb.AppendLine($"    {opaque.Kind}");
                         break;
+                    case GroupShape group:
+                        sb.AppendLine($"    {group.ChildTransform}");
+                        break;
                 }
             }
         }

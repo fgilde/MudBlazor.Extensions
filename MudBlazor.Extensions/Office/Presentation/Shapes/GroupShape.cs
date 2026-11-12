@@ -22,12 +22,20 @@ public sealed class GroupShape : SlideShape
         return copy;
     }
 
+    internal (double X, double Y) Scale
+    {
+        get
+        {
+            var frame = Transform ?? default;
+            return (ChildTransform.Width == 0 ? 1 : (double)frame.Width / ChildTransform.Width, ChildTransform.Height == 0 ? 1 : (double)frame.Height / ChildTransform.Height);
+        }
+    }
+
     internal ShapeTransform ToParentSpace(ShapeTransform child)
     {
         var frame = Transform ?? default;
         var space = ChildTransform;
-        var sx = space.Width == 0 ? 1 : (double)frame.Width / space.Width;
-        var sy = space.Height == 0 ? 1 : (double)frame.Height / space.Height;
+        var (sx, sy) = Scale;
         double width = child.Width * sx, height = child.Height * sy;
         var dx = frame.X + (child.X - space.X) * sx + width / 2 - (frame.X + frame.Width / 2.0);
         var dy = frame.Y + (child.Y - space.Y) * sy + height / 2 - (frame.Y + frame.Height / 2.0);

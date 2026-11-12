@@ -66,7 +66,7 @@ public class SlideCommandTests
         return builder.Load();
     }
 
-    private static string Snapshot(Presentation presentation)
+    internal static string Snapshot(Presentation presentation)
     {
         var sb = new StringBuilder();
         var used = presentation.Slides.SelectMany(s => SlideShape.Flatten(s.Shapes)).OfType<PictureShape>().Select(p => p.ImagePart).ToHashSet();

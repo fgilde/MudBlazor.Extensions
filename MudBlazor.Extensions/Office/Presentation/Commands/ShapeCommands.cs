@@ -34,14 +34,20 @@ public sealed class SetTransformsCommand(Slide slide, IReadOnlyDictionary<uint, 
             .OrderBy(e => ShapeEdit.Ancestors(e.Shape).Count()).ToList();
         _before = targets.Select(e => (e.Shape, e.Shape.Transform)).ToList();
         foreach (var (shape, target) in targets) shape.Transform = ShapeEdit.ToLocal(shape, target);
-        document.Notify(slide, PresentationChangeKind.Content);
+        if (_before.All(b => b.Shape.Transform == b.Transform)) Restore();
+        else document.Notify(slide, PresentationChangeKind.Content);
     }
 
     /// <inheritdoc />
     public void Revert(Presentation document)
     {
-        foreach (var (shape, transform) in _before) shape.Transform = transform;
+        Restore();
         document.Notify(slide, PresentationChangeKind.Content);
+    }
+
+    private void Restore()
+    {
+        foreach (var (shape, transform) in _before) shape.Transform = transform;
     }
 }
 
@@ -61,14 +67,15 @@ public sealed class SetShapeStyleCommand(Slide slide, IReadOnlyList<uint> shapes
     public void Apply(Presentation document)
     {
         ShapeEdit.Validate(line);
-        _before = shapes.Select(id => ShapeEdit.Find<SlideShape>(slide, id)).OfType<AutoShape>().Select(s => (s, s.Fill, s.Line)).ToList();
+        _before = shapes.Select(id => ShapeEdit.Find<SlideShape>(slide, id)).OfType<AutoShape>()
+            .Where(s => (fill ?? s.Fill) != s.Fill || (line ?? s.Line) != s.Line).Select(s => (s, s.Fill, s.Line)).ToList();
         foreach (var (shape, _, _) in _before)
         {
             shape.Fill = fill ?? shape.Fill;
             shape.Line = line ?? shape.Line;
         }
 
-        document.Notify(slide, PresentationChangeKind.Content);
+        if (_before.Count > 0) document.Notify(slide, PresentationChangeKind.Content);
     }
 
     /// <inheritdoc />
@@ -95,6 +102,7 @@ public sealed class SetGeometryCommand(Slide slide, uint shape, string preset) :
     {
         if (!PresetGeometry.IsSupported(preset)) throw new ArgumentException($"The preset geometry '{preset}' is not supported.", nameof(preset));
         var target = ShapeEdit.Find<AutoShape>(slide, shape);
+        if (target.Geometry == preset) return;
         _before = (target, target.Geometry, target.Adjustments);
         if (target.Geometry != preset) target.Adjustments = new Dictionary<string, long>();
         target.Geometry = preset;
@@ -216,7 +224,7 @@ public sealed class InsertPictureCommand(Slide slide, byte[] image, string conte
         MediaTypes.TryGetValue(contentType ?? "", out var type) ? type : throw new ArgumentException($"The image type '{contentType}' is not supported.", nameof(contentType));
 }
 
-/// <summary>Deletes shapes, including shapes inside groups.</summary>
+/// <summary>Deletes shapes, including shapes inside groups. A group whose children are all deleted is deleted with them.</summary>
 /// <param name="slide">The slide.</param>
 /// <param name="shapes">The shape ids.</param>
 public sealed class DeleteShapesCommand(Slide slide, IReadOnlyList<uint> shapes) : IDocumentCommand<Presentation>
@@ -229,11 +237,14 @@ public sealed class DeleteShapesCommand(Slide slide, IReadOnlyList<uint> shapes)
     /// <inheritdoc />
     public void Apply(Presentation document)
     {
-        _removed = ShapeEdit.Outermost(slide, shapes)
+        var selected = shapes.Select(id => ShapeEdit.Find<SlideShape>(slide, id)).ToHashSet();
+        foreach (var group in SlideShape.Flatten(slide.Shapes).OfType<GroupShape>().Reverse())
+            if (group.Children.Count > 0 && group.Children.All(selected.Contains)) selected.Add(group);
+        _removed = ShapeEdit.Outermost(slide, selected)
             .Select(s => (Container: ShapeEdit.Container(slide, s), Index: ShapeEdit.Container(slide, s).IndexOf(s), Shape: s))
             .OrderByDescending(e => e.Index).ToList();
         foreach (var (container, index, _) in _removed) container.RemoveAt(index);
-        document.Notify(slide, PresentationChangeKind.Content);
+        if (_removed.Count > 0) document.Notify(slide, PresentationChangeKind.Content);
     }
 
     /// <inheritdoc />
@@ -278,7 +289,7 @@ public sealed class DuplicateShapesCommand(Slide slide, IReadOnlyList<uint> shap
         }
 
         foreach (var (container, copy) in _copies) container.Add(copy);
-        document.Notify(slide, PresentationChangeKind.Content);
+        if (_copies.Count > 0) document.Notify(slide, PresentationChangeKind.Content);
     }
 
     /// <inheritdoc />
@@ -306,7 +317,7 @@ public sealed class ReorderShapesCommand(Slide slide, IReadOnlyList<uint> shapes
         var selected = shapes.Select(id => ShapeEdit.Find<SlideShape>(slide, id)).ToHashSet();
         _before = selected.Select(s => ShapeEdit.Container(slide, s)).Distinct().Select(c => (c, c.ToArray())).ToList();
         foreach (var (container, _) in _before) Reorder(container, selected);
-        document.Notify(slide, PresentationChangeKind.Content);
+        if (_before.Any(b => !b.Container.SequenceEqual(b.Order))) document.Notify(slide, PresentationChangeKind.Content);
     }
 
     /// <inheritdoc />
@@ -371,10 +382,32 @@ internal static class ShapeEdit
             _ => throw new ArgumentException($"The shape {id} is no {typeof(T).Name}.", nameof(id))
         };
 
-    internal static List<SlideShape> Outermost(Slide slide, IEnumerable<uint> ids)
+    internal static List<SlideShape> Outermost(Slide slide, IEnumerable<uint> ids) => Outermost(slide, Shapes(slide, ids).ToHashSet());
+
+    internal static List<SlideShape> Outermost(Slide slide, HashSet<SlideShape> selected) =>
+        SlideShape.Flatten(slide.Shapes).Where(s => selected.Contains(s) && !Ancestors(s).Any(selected.Contains)).ToList();
+
+    internal static List<SlideShape> Shapes(Slide slide, IEnumerable<uint> ids) => ids.Distinct().Select(id => Find<SlideShape>(slide, id)).ToList();
+
+    internal static (double Left, double Top, double Right, double Bottom) Bounds(ShapeTransform t)
     {
-        var selected = ids.Select(id => Find<SlideShape>(slide, id)).ToHashSet();
-        return SlideShape.Flatten(slide.Shapes).Where(s => selected.Contains(s) && !Ancestors(s).Any(selected.Contains)).ToList();
+        var angle = t.Rotation * Math.PI / 180;
+        var (cos, sin) = (Math.Abs(Math.Cos(angle)), Math.Abs(Math.Sin(angle)));
+        var (width, height) = (t.Width * cos + t.Height * sin, t.Width * sin + t.Height * cos);
+        var (cx, cy) = (t.X + t.Width / 2.0, t.Y + t.Height / 2.0);
+        return (cx - width / 2, cy - height / 2, cx + width / 2, cy + height / 2);
+    }
+
+    internal static (double Left, double Top, double Right, double Bottom) Hull(IEnumerable<ShapeTransform> transforms)
+    {
+        var bounds = transforms.Select(Bounds).ToList();
+        return (bounds.Min(b => b.Left), bounds.Min(b => b.Top), bounds.Max(b => b.Right), bounds.Max(b => b.Bottom));
+    }
+
+    internal static double Angle(double degrees)
+    {
+        var angle = degrees % 360;
+        return angle < 0 ? angle + 360 : angle == 0 ? 0 : angle;
     }
 
     internal static IEnumerable<GroupShape> Ancestors(SlideShape shape)
