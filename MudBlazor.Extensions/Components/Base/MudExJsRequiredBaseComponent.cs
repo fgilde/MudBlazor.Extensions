@@ -31,6 +31,18 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
 
     internal IJsMudExComponent<T> AsJsComponent => this;
 
+    private async Task<bool> IsElementAttachedAsync()
+    {
+        try
+        {
+            return await JsRuntime.InvokeAsync<bool>("document.contains", ElementReference);
+        }
+        catch (Exception e) when (e is JSException or JSDisconnectedException or ObjectDisposedException or InvalidOperationException)
+        {
+            return false;
+        }
+    }
+
     /// <inheritdoc/>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -78,11 +90,32 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
     /// </summary>
     public virtual async Task ImportModuleAndCreateJsAsync()
     {
-        await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
-        var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(GetJsArguments());
-        JsReference = references.jsObjectReference;
-        ModuleReference = references.moduleReference;
-        _jsReferenceCreatedCompletionSource.TrySetResult(JsReference);
+        if (IsDisposed)
+            return;
+        try
+        {
+            await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
+            if (IsDisposed)
+                return;
+            var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(GetJsArguments());
+            JsReference = references.jsObjectReference;
+            ModuleReference = references.moduleReference;
+            _jsReferenceCreatedCompletionSource.TrySetResult(JsReference);
+        }
+        catch (JSException) when (IsDisposed)
+        {
+        }
+        catch (JSException)
+        {
+            if (!IsDisposed && await IsElementAttachedAsync())
+                throw;
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+        catch (ObjectDisposedException)
+        {
+        }
     }
 
     /// <inheritdoc/>
