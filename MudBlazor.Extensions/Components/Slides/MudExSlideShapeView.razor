@@ -6,22 +6,46 @@
     @switch (Shape)
     {
         case AutoShape auto:
-            var path = GeometryPath(auto);
+            var fill = ShapeFill.EffectiveFill(auto);
+            var line = ShapeLine.EffectiveLine(auto);
+            var paint = PaintOf(fill);
+            var stroke = StrokeOf(line);
+            var path = GeometryPath(auto, paint != "none" || stroke != "none");
             @if (path != null)
             {
                 <svg class="mud-ex-slide-geometry" viewBox="0 0 @Num(Shape.ResolvedTransform.Width) @Num(Shape.ResolvedTransform.Height)" preserveAspectRatio="none">
-                    <path d="@path" fill="@FillOf(auto)" stroke="@StrokeOf(auto)" stroke-width="@Num(auto.Line?.Width ?? 0)" stroke-dasharray="@DashOf(auto)" />
+                    @if (paint == PaintUrl && fill.Kind == ShapeFillKind.Gradient)
+                    {
+                        var (x1, y1, x2, y2) = GradientVector(fill.Angle);
+                        <defs>
+                            <linearGradient id="@_paintId" x1="@Num(x1)" y1="@Num(y1)" x2="@Num(x2)" y2="@Num(y2)">
+                                @foreach (var stop in MudExSlideView.Gradient(fill.Stops, ColorMaster, Shape.ColorMap))
+                                {
+                                    <stop offset="@Num(stop.Position)" stop-color="@stop.Color" />
+                                }
+                            </linearGradient>
+                        </defs>
+                    }
+                    else if (paint == PaintUrl)
+                    {
+                        <defs>
+                            <pattern id="@_paintId" width="1" height="1" patternContentUnits="objectBoundingBox">
+                                <image href="@Images.UrlFor(fill.ImagePart)" width="1" height="1" preserveAspectRatio="none" />
+                            </pattern>
+                        </defs>
+                    }
+                    <path d="@path" fill="@paint" stroke="@stroke" stroke-width="@Num(line?.Width ?? 0)" stroke-dasharray="@DashOf(line)" />
                 </svg>
             }
             @if (auto.Text != null && !HideText)
             {
-                <MudExSlideText Shape="auto" Presentation="Presentation" />
+                <MudExSlideText Shape="auto" Presentation="Presentation" SlideNumber="SlideNumber" />
             }
             @if (Prompt != null)
             {
                 var paragraph = auto.Text?.Paragraphs.FirstOrDefault() ?? new TextParagraph();
                 <div class="mud-ex-slide-text mud-ex-slide-prompt" style="@MudExSlideText.BodyStyle(auto, Presentation)">
-                    <div class="mud-ex-slide-paragraph" style="@MudExSlideText.ParagraphStyle(auto, paragraph)">
+                    <div class="mud-ex-slide-paragraph" style="@MudExSlideText.ParagraphStyle(auto, paragraph, Presentation)">
                         <span style="@MudExSlideText.RunStyle(auto, Presentation, MudExSlideText.EmptyRun(paragraph))">@Prompt</span>
                     </div>
                 </div>
@@ -29,7 +53,13 @@
             break;
         case PictureShape picture:
             var url = Images?.UrlFor(picture.ImagePart);
-            @if (url != null)
+            @if (url != null && CropStyle(picture.Crop) is { } crop)
+            {
+                <div class="mud-ex-slide-picture-crop">
+                    <img class="mud-ex-slide-picture" src="@url" alt="@picture.Name" draggable="false" style="@crop" />
+                </div>
+            }
+            else if (url != null)
             {
                 <img class="mud-ex-slide-picture" src="@url" alt="@picture.Name" draggable="false" />
             }

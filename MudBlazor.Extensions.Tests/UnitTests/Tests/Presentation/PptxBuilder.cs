@@ -35,6 +35,8 @@ internal sealed class PptxBuilder
 
     public string PresentationExt { get; set; } = "";
 
+    public string PresentationAttributes { get; set; } = "";
+
     public bool NotesMaster { get; set; }
 
     public bool AppXml { get; set; }
@@ -115,7 +117,7 @@ internal sealed class PptxBuilder
         var slideIds = string.Concat(_slides.Select((_, i) => $"<p:sldId id=\"{256 + i}\" r:id=\"rId{i + 2}\"/>"));
         var notesMasterId = NotesMaster ? $"<p:notesMasterIdLst><p:notesMasterId r:id=\"rId{_slides.Count + 2}\"/></p:notesMasterIdLst>" : "";
         Add("ppt/presentation.xml", "officedocument.presentationml.presentation.main",
-            $"<p:presentation {Ns}><p:sldMasterIdLst><p:sldMasterId id=\"2147483648\" r:id=\"rId1\"/></p:sldMasterIdLst>{notesMasterId}" +
+            $"<p:presentation {Ns}{PresentationAttributes}><p:sldMasterIdLst><p:sldMasterId id=\"2147483648\" r:id=\"rId1\"/></p:sldMasterIdLst>{notesMasterId}" +
             $"<p:sldIdLst>{slideIds}{ExtraSlideIds}</p:sldIdLst><p:sldSz cx=\"{Width}\" cy=\"{Height}\"/><p:notesSz cx=\"6858000\" cy=\"9144000\"/>{CustomShows}" +
             "<p:defaultTextStyle><a:lvl1pPr><a:defRPr sz=\"1800\"><a:solidFill><a:schemeClr val=\"tx1\"/></a:solidFill></a:defRPr></a:lvl1pPr></p:defaultTextStyle>" +
             $"{PresentationExt}</p:presentation>");

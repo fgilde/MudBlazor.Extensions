@@ -76,7 +76,7 @@ public sealed class DuplicateSlidesCommand(IReadOnlyList<Slide> slides) : IDocum
         var copy = new Slide
         {
             Layout = source.Layout, Notes = source.Notes, HasNotesPart = source.HasNotesPart, Hidden = source.Hidden, CopyOf = source.CopyOf ?? source,
-            ReservedId = source.ReservedId, Background = source.Background, ShowMasterShapes = source.ShowMasterShapes
+            ReservedId = source.ReservedId, Background = source.Background, ShowMasterShapes = source.ShowMasterShapes, ColorMap = source.ColorMap
         };
         copy.ShapeList.AddRange(source.ShapeList.Select(s => s.Clone(null)));
         return copy;

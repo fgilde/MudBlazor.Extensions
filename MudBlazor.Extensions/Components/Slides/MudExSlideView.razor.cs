@@ -14,6 +14,7 @@ public partial class MudExSlideView
     private int _renderedVersion;
     private bool _renderedInteractive;
     private SlideShape _renderedHiddenText;
+    private int _renderedNumber;
 
     /// <summary>The presentation the slide belongs to.</summary>
     [Parameter] public Presentation Presentation { get; set; }
@@ -33,20 +34,30 @@ public partial class MudExSlideView
     private string RootStyle =>
         $"aspect-ratio:{Presentation.SlideWidth.ToString(CultureInfo.InvariantCulture)}/{Presentation.SlideHeight.ToString(CultureInfo.InvariantCulture)};{BackgroundStyle}{Style}";
 
+    private int SlideNumber => Presentation == null || Slide == null ? 0 : Presentation.FirstSlideNumber + Math.Max(0, Presentation.SlideList.IndexOf(Slide));
+
     private string BackgroundStyle
     {
         get
         {
             var background = SlideBackground.EffectiveBackground(Slide);
+            var master = Slide.Layout?.Master;
+            var color = ColorResolver.Resolve(background.Color, master, Slide.EffectiveColorMap);
             return background.Kind switch
             {
                 ShapeFillKind.Picture when Images?.UrlFor(background.ImagePart) is { } url =>
                     $"background-image:url(\"{CssString(url)}\");background-size:cover;background-position:center;",
-                ShapeFillKind.Solid or ShapeFillKind.Other when ColorResolver.Resolve(background.Color, Slide.Layout?.Master) is { } color => $"background-color:{color};",
+                ShapeFillKind.Gradient when Gradient(background.Stops, master, Slide.EffectiveColorMap) is { Count: > 0 } stops =>
+                    $"background-color:{stops[0].Color};background-image:linear-gradient({MudExSlideShapeView.Num((background.Angle ?? 90) + 90)}deg, " +
+                    string.Join(", ", stops.Select(s => $"{s.Color} {MudExSlideShapeView.Num(s.Position * 100)}%")) + ");",
+                ShapeFillKind.Solid or ShapeFillKind.Other or ShapeFillKind.Gradient when color != null => $"background-color:{color};",
                 _ => ""
             };
         }
     }
+
+    internal static IReadOnlyList<GradientStop> Gradient(IEnumerable<GradientStop> stops, SlideMaster master, IReadOnlyDictionary<string, string> colorMap) =>
+        stops.Select(s => s with { Color = ColorResolver.Resolve(s.Color, master, colorMap) }).Where(s => s.Color != null).ToList();
 
     /// <inheritdoc />
     protected override void OnInitialized()
@@ -58,7 +69,8 @@ public partial class MudExSlideView
     /// <inheritdoc />
     protected override bool ShouldRender()
     {
-        if (ReferenceEquals(_rendered, Slide) && _renderedVersion == Slide?.Version && _renderedInteractive == Interactive && ReferenceEquals(_renderedHiddenText, HiddenText)) return false;
+        if (ReferenceEquals(_rendered, Slide) && _renderedVersion == Slide?.Version && _renderedInteractive == Interactive && ReferenceEquals(_renderedHiddenText, HiddenText)
+            && _renderedNumber == SlideNumber) return false;
         Remember();
         return true;
     }
@@ -82,5 +94,6 @@ public partial class MudExSlideView
     private static string CssString(string value) =>
         string.Concat(value.Where(c => !char.IsControl(c))).Replace("\\", "\\\\", StringComparison.Ordinal).Replace("\"", "\\\"", StringComparison.Ordinal);
 
-    private void Remember() => (_rendered, _renderedVersion, _renderedInteractive, _renderedHiddenText) = (Slide, Slide?.Version ?? 0, Interactive, HiddenText);
+    private void Remember() =>
+        (_rendered, _renderedVersion, _renderedInteractive, _renderedHiddenText, _renderedNumber) = (Slide, Slide?.Version ?? 0, Interactive, HiddenText, SlideNumber);
 }

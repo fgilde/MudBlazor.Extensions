@@ -8,11 +8,11 @@ internal static class ColorResolver
     private static readonly Dictionary<string, string> DefaultMap = new() { ["bg1"] = "lt1", ["tx1"] = "dk1", ["bg2"] = "lt2", ["tx2"] = "dk2" };
     private static readonly HashSet<string> SchemeNames = [.. ThemeColors.SchemeOrder, .. DefaultMap.Keys, "phClr"];
 
-    internal static string Resolve(string color, SlideMaster master)
+    internal static string Resolve(string color, SlideMaster master, IReadOnlyDictionary<string, string> colorMap = null)
     {
         if (string.IsNullOrWhiteSpace(color)) return null;
         var parts = color.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        var rgb = parts[0].StartsWith("scheme:", StringComparison.Ordinal) ? Scheme(parts[0][7..], master) : ThemeColors.Hex(parts[0].TrimStart('#'));
+        var rgb = parts[0].StartsWith("scheme:", StringComparison.Ordinal) ? Scheme(parts[0][7..], master, colorMap) : ThemeColors.Hex(parts[0].TrimStart('#'));
         if (rgb == null) return null;
         double lumMod = 1, lumOff = 0;
         foreach (var modifier in parts.Skip(1))
@@ -78,9 +78,9 @@ internal static class ColorResolver
         return ThemeColors.MapLightness(rgb, l => l * mod + off);
     }
 
-    private static string Scheme(string name, SlideMaster master)
+    private static string Scheme(string name, SlideMaster master, IReadOnlyDictionary<string, string> colorMap)
     {
-        var mapped = master?.ColorMap.GetValueOrDefault(name) ?? DefaultMap.GetValueOrDefault(name, name);
+        var mapped = (colorMap ?? master?.ColorMap)?.GetValueOrDefault(name) ?? DefaultMap.GetValueOrDefault(name, name);
         var index = Array.IndexOf(ThemeColors.SchemeOrder, mapped);
         return index < 0 ? null : (master?.Theme ?? ThemeColors.Office)[index];
     }

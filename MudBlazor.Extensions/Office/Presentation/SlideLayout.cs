@@ -26,6 +26,8 @@ public sealed class SlideLayout
 
     internal bool ShowMasterShapes { get; set; } = true;
 
+    internal IReadOnlyDictionary<string, string> ColorMap { get; set; }
+
     internal List<SlideShape> ShapeList { get; } = [];
 
     internal string PartName { get; set; }

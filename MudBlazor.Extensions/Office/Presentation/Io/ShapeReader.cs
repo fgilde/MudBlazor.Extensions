@@ -3,7 +3,9 @@ using static MudBlazor.Extensions.Office.Presentation.PptxReader;
 
 namespace MudBlazor.Extensions.Office.Presentation;
 
-internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<OpcRelationship> rels, SlideMaster master, IReadOnlyList<SlideShape> inherited, bool matchIndex)
+internal sealed class ShapeReader(
+    OpcPackage opc, string part, IReadOnlyList<OpcRelationship> rels, SlideMaster master, IReadOnlyList<SlideShape> inherited, bool matchIndex,
+    IReadOnlyDictionary<string, string> colorMap = null)
 {
     private static readonly string[] MediaElements = ["videoFile", "audioFile", "quickTimeFile", "wavAudioFile", "audioCd", "media"];
 
@@ -28,6 +30,7 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
         shape.Source = e;
         shape.Parent = parent;
         shape.Master = master;
+        shape.ColorMap = colorMap;
         var xfrm = XfrmOf(e, shape is OpaqueShape);
         shape.Transform = ReadTransform(xfrm);
         if (e.Elements().FirstOrDefault()?.Element(P + "nvPr")?.Element(P + "ph") is { } ph)
@@ -41,10 +44,13 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
         {
             case AutoShape auto:
                 ReadAutoShape(auto, e);
+                if (auto.Fill.Kind == ShapeFillKind.Picture) auto.Fill = auto.Fill with { ImagePart = EmbeddedPart(opc, part, rels, FillOf(e.Element(P + "spPr"))) };
                 break;
             case PictureShape picture:
-                picture.ImagePart = EmbeddedPart(opc, part, rels, e.Element(P + "blipFill"));
+                var blipFill = e.Element(P + "blipFill");
+                picture.ImagePart = EmbeddedPart(opc, part, rels, blipFill);
                 if (picture.ImagePart != null) picture.ContentType = opc.ContentType(picture.ImagePart);
+                picture.Crop = ReadCrop(blipFill?.Element(A + "srcRect"));
 
                 break;
             case GroupShape group:
@@ -79,20 +85,40 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
             .Where(gd => gd.Name != null && gd.Value != null)
             .GroupBy(gd => gd.Name).ToDictionary(g => g.Key, g => g.First().Value.Value) ?? new Dictionary<string, long>();
         var fill = FillOf(spPr);
-        shape.Fill = fill == null
-            ? new ShapeFill(ShapeFillKind.Inherited, StyleColor(style, "fillRef"))
-            : new ShapeFill(fill.Name.LocalName switch
-            {
-                "noFill" => ShapeFillKind.None,
-                "solidFill" => ShapeFillKind.Solid,
-                _ => ShapeFillKind.Other
-            }, FillColor(fill));
+        shape.Fill = fill == null ? new ShapeFill(ShapeFillKind.Inherited, StyleColor(style, "fillRef")) : ReadFill(fill);
         if (spPr?.Element(A + "ln") is { } ln)
         {
             var lineFill = FillOf(ln);
             shape.Line = new ShapeLine(lineFill == null ? StyleColor(style, "lnRef") : FillColor(lineFill), Long((string)ln.Attribute("w")) ?? 12700,
-                (string)ln.Element(A + "prstDash")?.Attribute("val") ?? "solid");
+                (string)ln.Element(A + "prstDash")?.Attribute("val") ?? "solid") { ColorInherited = lineFill == null };
         }
+    }
+
+    internal static ShapeFill ReadFill(XElement fill) => fill.Name.LocalName switch
+    {
+        "noFill" => new ShapeFill(ShapeFillKind.None),
+        "solidFill" => new ShapeFill(ShapeFillKind.Solid, FillColor(fill)),
+        "blipFill" => new ShapeFill(ShapeFillKind.Picture),
+        "gradFill" => ReadGradient(fill),
+        _ => new ShapeFill(ShapeFillKind.Other, FillColor(fill))
+    };
+
+    private static ShapeFill ReadGradient(XElement fill)
+    {
+        var stops = fill.Element(A + "gsLst")?.Elements(A + "gs")
+            .Select(gs => new GradientStop((Long((string)gs.Attribute("pos")) ?? 0) / 100000.0, ColorResolver.FromXml(gs.Elements().FirstOrDefault())))
+            .Where(gs => gs.Color != null).OrderBy(gs => gs.Position).ToList() ?? [];
+        return new ShapeFill(ShapeFillKind.Gradient, stops.FirstOrDefault()?.Color)
+        {
+            Stops = stops, Angle = fill.Element(A + "lin") is { } lin ? (Long((string)lin.Attribute("ang")) ?? 0) / 60000.0 : null
+        };
+    }
+
+    private static ImageCrop ReadCrop(XElement srcRect)
+    {
+        if (srcRect == null) return null;
+        double Edge(string name) => (Long((string)srcRect.Attribute(name)) ?? 0) / 100000.0;
+        return new ImageCrop(Edge("l"), Edge("t"), Edge("r"), Edge("b"));
     }
 
     private static TextBody ReadText(XElement body)
@@ -108,23 +134,49 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
             InsetRight = Long(Body("rIns")),
             InsetBottom = Long(Body("bIns")),
             Wrap = ParseWrap(Body("wrap")),
+            FontScalePercent = Percent(properties?.Element(A + "normAutofit")?.Attribute("fontScale")),
+            LineSpaceReductionPercent = Percent(properties?.Element(A + "normAutofit")?.Attribute("lnSpcReduction")),
             Paragraphs = body.Elements(A + "p").Select(ReadParagraph).ToList()
         };
     }
 
-    private static TextParagraph ReadParagraph(XElement p)
+    private static TextParagraph ReadParagraph(XElement p) => ReadParagraphProperties(p.Element(A + "pPr")) with
     {
-        var pPr = p.Element(A + "pPr");
+        Source = p,
+        Runs = p.Elements().Where(n => RunText(n) != null)
+            .Select(n => new TextRun(RunText(n), ReadRunFormat(n.Element(A + "rPr"))) { Source = n, FieldType = n.Name == A + "fld" ? (string)n.Attribute("type") : null })
+            .ToList(),
+        EndFormat = p.Element(A + "endParaRPr") is { } end ? ReadRunFormat(end) : null
+    };
+
+    internal static TextParagraph ReadParagraphProperties(XElement pPr)
+    {
+        var bullet = pPr?.Elements().FirstOrDefault(b => b.Name.LocalName is "buNone" or "buChar" or "buAutoNum" or "buBlip");
         return new TextParagraph
         {
-            Source = p,
             Level = ParseLevel(pPr),
             Align = TextStyles.ParseAlign((string)pPr?.Attribute("algn")),
             Bullet = ParseBullet(pPr),
-            Runs = p.Elements().Where(n => RunText(n) != null).Select(n => new TextRun(RunText(n), ReadRunFormat(n.Element(A + "rPr"))) { Source = n }).ToList(),
-            EndFormat = p.Element(A + "endParaRPr") is { } end ? ReadRunFormat(end) : null
+            MarginLeft = Long((string)pPr?.Attribute("marL")),
+            Indent = Long((string)pPr?.Attribute("indent")),
+            LineSpacingPercent = Percent(pPr?.Element(A + "lnSpc")?.Element(A + "spcPct")?.Attribute("val")),
+            SpaceBeforePt = Long((string)pPr?.Element(A + "spcBef")?.Element(A + "spcPts")?.Attribute("val")) / 100.0,
+            SpaceAfterPt = Long((string)pPr?.Element(A + "spcAft")?.Element(A + "spcPts")?.Attribute("val")) / 100.0,
+            BulletKind = bullet?.Name.LocalName switch
+            {
+                null => BulletKind.Inherited,
+                "buNone" => BulletKind.None,
+                "buAutoNum" => BulletKind.AutoNumber,
+                _ => BulletKind.Char
+            },
+            BulletChar = (string)bullet?.Attribute("char"),
+            AutoNumberType = (string)bullet?.Attribute("type"),
+            AutoNumberStart = (int?)Long((string)bullet?.Attribute("startAt")),
+            BulletFont = (string)pPr?.Element(A + "buFont")?.Attribute("typeface")
         };
     }
+
+    private static double? Percent(XAttribute value) => Long((string)value) / 1000.0;
 
     internal static bool? ParseWrap(string value) => value switch
     {
@@ -196,6 +248,6 @@ internal sealed class ShapeReader(OpcPackage opc, string part, IReadOnlyList<Opc
         _ => null
     });
 
-    private static string StyleColor(XElement style, string reference) =>
+    internal static string StyleColor(XElement style, string reference) =>
         style?.Element(A + reference) is { } r && (string)r.Attribute("idx") != "0" ? ColorResolver.FromXml(r.Elements().FirstOrDefault()) : null;
 }

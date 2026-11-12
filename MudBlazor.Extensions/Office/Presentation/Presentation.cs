@@ -40,6 +40,8 @@ public sealed class Presentation
 
     internal PptxPackage Package { get; set; }
 
+    internal int FirstSlideNumber { get; set; } = 1;
+
     internal Dictionary<string, (byte[] Data, string ContentType)> PendingMedia { get; } = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Reads a .pptx file.</summary>

@@ -36,6 +36,10 @@ public sealed class Slide
 
     internal bool ShowMasterShapes { get; set; } = true;
 
+    internal IReadOnlyDictionary<string, string> ColorMap { get; set; }
+
+    internal IReadOnlyDictionary<string, string> EffectiveColorMap => ColorMap ?? Layout?.ColorMap;
+
     internal IEnumerable<SlideShape> InheritedShapes =>
         !ShowMasterShapes || Layout == null
             ? []

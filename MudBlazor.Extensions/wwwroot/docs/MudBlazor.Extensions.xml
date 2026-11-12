@@ -19894,6 +19894,9 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Prompt">
             <summary>The prompt shown in an empty placeholder with a dashed outline, or null.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.SlideNumber">
+            <summary>The number shown by slide number fields.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideStatusBar">
             <summary>Status bar of the slide editor: the slide position and a zoom slider.</summary>
         </member>
@@ -19917,6 +19920,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideText.Presentation">
             <summary>The presentation that defines the slide size.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideText.SlideNumber">
+            <summary>The number shown by slide number fields.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideTextEditor">
             <summary>
@@ -20019,6 +20025,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.SlideTextParagraphDto.Style">
             <summary>The CSS the paragraph is shown with; only sent to the browser.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTextParagraphDto.Marker">
+            <summary>The bullet or number shown before the paragraph, or null; only sent to the browser, never part of the text.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.SlideTextParagraphDto.Runs">
             <summary>The runs in order.</summary>
@@ -32173,16 +32182,35 @@
             <summary>No own fill; the shape style or placeholder decides.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other">
-            <summary>A gradient, pattern, picture or group fill; kept unchanged when the file is written.</summary>
+            <summary>A pattern or group fill; kept unchanged when the file is written.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Picture">
-            <summary>A picture (<c>a:blipFill</c>); only used by <see cref="T:MudBlazor.Extensions.Office.Presentation.SlideBackground"/>, picture-filled shapes report <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/>.</summary>
+            <summary>A picture (<c>a:blipFill</c>); kept unchanged when the file is written.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Gradient">
+            <summary>A gradient (<c>a:gradFill</c>); kept unchanged when the file is written.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.GradientStop">
+            <summary>A colour stop of a gradient.</summary>
+            <param name="Position">The position from 0 (start) to 1 (end).</param>
+            <param name="Color">The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.GradientStop.#ctor(System.Double,System.String)">
+            <summary>A colour stop of a gradient.</summary>
+            <param name="Position">The position from 0 (start) to 1 (end).</param>
+            <param name="Color">The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.GradientStop.Position">
+            <summary>The position from 0 (start) to 1 (end).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.GradientStop.Color">
+            <summary>The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.ShapeFill">
             <summary>The fill of a shape.</summary>
             <param name="Kind">The kind of fill.</param>
             <param name="Color">
-            The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>: the solid colour, the first gradient stop or pattern foreground for
+            The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>: the solid colour, the first gradient stop, the pattern foreground for
             <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/>, the shape style colour for <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Inherited"/>; null if there is none.
             </param>
         </member>
@@ -32190,7 +32218,7 @@
             <summary>The fill of a shape.</summary>
             <param name="Kind">The kind of fill.</param>
             <param name="Color">
-            The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>: the solid colour, the first gradient stop or pattern foreground for
+            The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>: the solid colour, the first gradient stop, the pattern foreground for
             <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/>, the shape style colour for <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Inherited"/>; null if there is none.
             </param>
         </member>
@@ -32199,9 +32227,24 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeFill.Color">
             <summary>
-            The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>: the solid colour, the first gradient stop or pattern foreground for
+            The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>: the solid colour, the first gradient stop, the pattern foreground for
             <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/>, the shape style colour for <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Inherited"/>; null if there is none.
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeFill.Stops">
+            <summary>The colour stops of a gradient, ordered by position; empty for other fills.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeFill.Angle">
+            <summary>The direction of a linear gradient in degrees clockwise from left to right; null for path gradients and other fills.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeFill.ImagePart">
+            <summary>The image part of a picture fill, or null.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ShapeFill.Equals(MudBlazor.Extensions.Office.Presentation.ShapeFill)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ShapeFill.GetHashCode">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.ShapeLine">
             <summary>The outline of a shape.</summary>
@@ -32223,6 +32266,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeLine.Dash">
             <summary>The preset dash name, for example <c>solid</c> or <c>dash</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ShapeLine.ColorInherited">
+            <summary>
+            True if the outline has no fill of its own (<c>a:ln</c> without a fill element): its colour comes from the shape style, which is then in
+            <see cref="P:MudBlazor.Extensions.Office.Presentation.ShapeLine.Color"/>, or from the placeholder; a null <see cref="P:MudBlazor.Extensions.Office.Presentation.ShapeLine.Color"/> does not mean no line.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.ShapeTransform">
             <summary>Position, size, rotation and flip of a shape in EMU (914400 per inch, 12700 per point).</summary>
@@ -32268,8 +32317,8 @@
         <member name="T:MudBlazor.Extensions.Office.Presentation.SlideBackground">
             <summary>The background of a slide, layout or master.</summary>
             <param name="Kind">
-            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/> for a gradient or pattern, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Picture"/> or
-            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None"/>.
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Gradient"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/> for a pattern,
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Picture"/> or <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None"/>.
             </param>
             <param name="Color">The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>; the first stop of a gradient; null for a picture or no fill.</param>
             <param name="ImagePart">The image part of a picture background, or null.</param>
@@ -32277,16 +32326,16 @@
         <member name="M:MudBlazor.Extensions.Office.Presentation.SlideBackground.#ctor(MudBlazor.Extensions.Office.Presentation.ShapeFillKind,System.String,System.String)">
             <summary>The background of a slide, layout or master.</summary>
             <param name="Kind">
-            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/> for a gradient or pattern, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Picture"/> or
-            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None"/>.
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Gradient"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/> for a pattern,
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Picture"/> or <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None"/>.
             </param>
             <param name="Color">The colour in the format of <see cref="P:MudBlazor.Extensions.Office.Presentation.RunFormat.Color"/>; the first stop of a gradient; null for a picture or no fill.</param>
             <param name="ImagePart">The image part of a picture background, or null.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.SlideBackground.Kind">
             <summary>
-            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/> for a gradient or pattern, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Picture"/> or
-            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None"/>.
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Gradient"/>, <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Other"/> for a pattern,
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Picture"/> or <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None"/>.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.SlideBackground.Color">
@@ -32294,6 +32343,18 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.SlideBackground.ImagePart">
             <summary>The image part of a picture background, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideBackground.Stops">
+            <summary>The colour stops of a gradient background, ordered by position; empty for other backgrounds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideBackground.Angle">
+            <summary>The direction of a linear gradient in degrees clockwise from left to right; null for path gradients and other backgrounds.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SlideBackground.Equals(MudBlazor.Extensions.Office.Presentation.SlideBackground)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SlideBackground.GetHashCode">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PptxWriter">
             <summary>
@@ -32434,6 +32495,32 @@
         <member name="P:MudBlazor.Extensions.Office.Presentation.OpaqueShape.Kind">
             <summary>The kind of content: <c>chart</c>, <c>table</c>, <c>smartArt</c>, <c>media</c>, <c>ole</c> or <c>other</c>.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ImageCrop">
+            <summary>The part of an image that is shown (<c>a:srcRect</c>), as fractions of the image size cut off at each edge.</summary>
+            <param name="Left">The fraction cut off at the left.</param>
+            <param name="Top">The fraction cut off at the top.</param>
+            <param name="Right">The fraction cut off at the right.</param>
+            <param name="Bottom">The fraction cut off at the bottom.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ImageCrop.#ctor(System.Double,System.Double,System.Double,System.Double)">
+            <summary>The part of an image that is shown (<c>a:srcRect</c>), as fractions of the image size cut off at each edge.</summary>
+            <param name="Left">The fraction cut off at the left.</param>
+            <param name="Top">The fraction cut off at the top.</param>
+            <param name="Right">The fraction cut off at the right.</param>
+            <param name="Bottom">The fraction cut off at the bottom.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ImageCrop.Left">
+            <summary>The fraction cut off at the left.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ImageCrop.Top">
+            <summary>The fraction cut off at the top.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ImageCrop.Right">
+            <summary>The fraction cut off at the right.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ImageCrop.Bottom">
+            <summary>The fraction cut off at the bottom.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PictureShape">
             <summary>A picture.</summary>
         </member>
@@ -32442,6 +32529,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.PictureShape.ContentType">
             <summary>The content type of the image part, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PictureShape.Crop">
+            <summary>The cropping of the image, or null if the whole image is shown.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PlaceholderRef">
             <summary>A reference to a placeholder of the slide layout.</summary>
@@ -32629,6 +32719,12 @@
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.Wrap">
             <summary>True if lines wrap at the shape width; null inherits it.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.FontScalePercent">
+            <summary>The font scale in percent that shrinks the text to fit the shape (<c>a:normAutofit</c>), or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextBody.LineSpaceReductionPercent">
+            <summary>The line spacing reduction in percent that shrinks the text to fit the shape (<c>a:normAutofit</c>), or null.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.TextAlign">
             <summary>Horizontal alignment of a paragraph.</summary>
         </member>
@@ -32644,8 +32740,23 @@
         <member name="F:MudBlazor.Extensions.Office.Presentation.TextAlign.Justify">
             <summary>Justified.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.BulletKind">
+            <summary>The kind of bullet of a paragraph.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.BulletKind.None">
+            <summary>No bullet (<c>a:buNone</c>).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.BulletKind.Char">
+            <summary>A bullet character (<c>a:buChar</c> or a picture bullet).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.BulletKind.AutoNumber">
+            <summary>A number that counts up over the paragraphs of the same level (<c>a:buAutoNum</c>).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.BulletKind.Inherited">
+            <summary>No own bullet; the list styles decide.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.TextParagraph">
-            <summary>A paragraph of a text body.</summary>
+            <summary>A paragraph of a text body. Spacing, indent and bullet values hold the paragraph's own values; null inherits them from the list styles.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.Align">
             <summary>The paragraph's own alignment; null inherits it from the list styles.</summary>
@@ -32655,6 +32766,33 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.Bullet">
             <summary>True for a bullet, false for an explicit <c>a:buNone</c>, null to inherit.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.MarginLeft">
+            <summary>The left margin of the text in EMU; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.Indent">
+            <summary>The indent of the first line relative to <see cref="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.MarginLeft"/> in EMU, negative for a hanging indent; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.LineSpacingPercent">
+            <summary>The line spacing in percent of single spacing; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.SpaceBeforePt">
+            <summary>The space above the paragraph in points; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.SpaceAfterPt">
+            <summary>The space below the paragraph in points; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.BulletKind">
+            <summary>The paragraph's own kind of bullet as read from the file; <see cref="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.Bullet"/> takes precedence when a command changed it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.BulletChar">
+            <summary>The bullet character of <see cref="F:MudBlazor.Extensions.Office.Presentation.BulletKind.Char"/>, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.AutoNumberType">
+            <summary>The numbering scheme of <see cref="F:MudBlazor.Extensions.Office.Presentation.BulletKind.AutoNumber"/>, for example <c>arabicPeriod</c> or <c>alphaLcParenR</c>, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.AutoNumberStart">
+            <summary>The first number of <see cref="F:MudBlazor.Extensions.Office.Presentation.BulletKind.AutoNumber"/>, or null for 1.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextParagraph.Runs">
             <summary>The runs in order.</summary>
@@ -32677,6 +32815,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.TextRun.Format">
             <summary>The run's own formatting; properties not set are inherited.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.TextRun.FieldType">
+            <summary>The field type of a field run (<c>a:fld</c>), for example <c>slidenum</c> or <c>datetime1</c>; null for a normal run.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SortKey">
             <summary>One sort level.</summary>

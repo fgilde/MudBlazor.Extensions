@@ -46,6 +46,8 @@ public abstract class SlideShape
 
     internal SlideMaster Master { get; set; }
 
+    internal IReadOnlyDictionary<string, string> ColorMap { get; set; }
+
     internal XElement Source { get; set; }
 
     internal string SourcePart { get; set; }

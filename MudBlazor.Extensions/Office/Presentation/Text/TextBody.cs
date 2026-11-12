@@ -39,5 +39,11 @@ public sealed record TextBody
     /// <summary>True if lines wrap at the shape width; null inherits it.</summary>
     public bool? Wrap { get; init; }
 
+    /// <summary>The font scale in percent that shrinks the text to fit the shape (<c>a:normAutofit</c>), or null.</summary>
+    public double? FontScalePercent { get; init; }
+
+    /// <summary>The line spacing reduction in percent that shrinks the text to fit the shape (<c>a:normAutofit</c>), or null.</summary>
+    public double? LineSpaceReductionPercent { get; init; }
+
     internal XElement Source { get; init; }
 }

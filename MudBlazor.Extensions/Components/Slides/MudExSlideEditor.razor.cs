@@ -330,7 +330,7 @@ public partial class MudExSlideEditor : IMudExFileEditor
     }
 
     private static IEnumerable<string> ImageParts(Slide slide) =>
-        SlideShape.Flatten(slide.InheritedShapes.Concat(slide.Shapes)).OfType<PictureShape>().Select(p => p.ImagePart)
+        SlideShape.Flatten(slide.InheritedShapes.Concat(slide.Shapes)).Select(s => (s as PictureShape)?.ImagePart ?? (s as AutoShape)?.Fill.ImagePart)
             .Append(SlideBackground.EffectiveBackground(slide).ImagePart)
             .Where(p => p != null);
 

@@ -7,6 +7,8 @@ namespace MudBlazor.Extensions.Components;
 /// <summary>Shows one shape of a slide at its resolved position. Groups render an empty frame; their children are shapes of their own.</summary>
 public partial class MudExSlideShapeView
 {
+    private readonly string _paintId = "mud-ex-slide-paint-" + Guid.NewGuid().ToString("N");
+
     /// <summary>The shape to show.</summary>
     [Parameter] public SlideShape Shape { get; set; }
 
@@ -28,7 +30,12 @@ public partial class MudExSlideShapeView
     /// <summary>The prompt shown in an empty placeholder with a dashed outline, or null.</summary>
     [Parameter] public string Prompt { get; set; }
 
+    /// <summary>The number shown by slide number fields.</summary>
+    [Parameter] public int SlideNumber { get; set; }
+
     private SlideMaster ColorMaster => Shape.Master ?? Master;
+
+    private string PaintUrl => $"url(#{_paintId})";
 
     private string ShapeClass => Shape switch
     {
@@ -47,29 +54,51 @@ public partial class MudExSlideShapeView
 
     internal static string Num(double value) => value.ToString("0.####", CultureInfo.InvariantCulture);
 
+    internal static (double X1, double Y1, double X2, double Y2) GradientVector(double? angle)
+    {
+        var radians = (angle ?? 90) * Math.PI / 180;
+        var (cos, sin) = (Math.Cos(radians), Math.Sin(radians));
+        var half = (Math.Abs(cos) + Math.Abs(sin)) / 2;
+        return (Clean(0.5 - cos * half), Clean(0.5 - sin * half), Clean(0.5 + cos * half), Clean(0.5 + sin * half));
+    }
+
+    private static double Clean(double value) => Math.Round(value, 6) + 0d;
+
     private static string Percent(long part, long whole) => Num(whole == 0 ? 0 : (double)part / whole * 100);
 
-    private static string GeometryPath(AutoShape shape)
+    private static string GeometryPath(AutoShape shape, bool visible)
     {
         var t = shape.ResolvedTransform;
-        if (shape.Geometry == "custom" || t.Width <= 0 || t.Height <= 0) return null;
-        var hasFill = shape.Fill.Kind != ShapeFillKind.None && shape.Fill.Color != null;
-        if (!hasFill && shape.Line?.Color == null) return null;
+        if (!visible || shape.Geometry == "custom" || t.Width <= 0 || t.Height <= 0) return null;
         var preset = PresetGeometry.IsSupported(shape.Geometry) ? shape.Geometry : "rect";
         return PresetGeometry.Path(preset, t.Width, t.Height, shape.Adjustments);
     }
 
-    private string FillOf(AutoShape shape) =>
-        shape.Fill.Kind == ShapeFillKind.None || string.IsNullOrWhiteSpace(shape.Fill.Color) ? "none" : ColorResolver.Resolve(shape.Fill.Color, ColorMaster);
-
-    private string StrokeOf(AutoShape shape) =>
-        string.IsNullOrWhiteSpace(shape.Line?.Color) ? "none" : ColorResolver.Resolve(shape.Line.Color, ColorMaster);
-
-    private static string DashOf(AutoShape shape)
+    private string PaintOf(ShapeFill fill) => fill.Kind switch
     {
-        if (shape.Line == null) return null;
-        var unit = shape.Line.Width;
-        return shape.Line.Dash switch
+        ShapeFillKind.None => "none",
+        ShapeFillKind.Gradient when MudExSlideView.Gradient(fill.Stops, ColorMaster, Shape.ColorMap).Count > 0 => PaintUrl,
+        ShapeFillKind.Picture when Images?.UrlFor(fill.ImagePart) != null => PaintUrl,
+        _ => Resolve(fill.Color) ?? "none"
+    };
+
+    private string StrokeOf(ShapeLine line) => Resolve(line?.Color) ?? "none";
+
+    private string Resolve(string color) => ColorResolver.Resolve(color, ColorMaster, Shape.ColorMap);
+
+    private static string CropStyle(ImageCrop crop)
+    {
+        if (crop == null) return null;
+        var (width, height) = (1 - crop.Left - crop.Right, 1 - crop.Top - crop.Bottom);
+        if (width <= 0 || height <= 0) return null;
+        return $"left:{Num(-crop.Left / width * 100)}%;top:{Num(-crop.Top / height * 100)}%;width:{Num(100 / width)}%;height:{Num(100 / height)}%;";
+    }
+
+    private static string DashOf(ShapeLine line)
+    {
+        if (line == null) return null;
+        var unit = line.Width;
+        return line.Dash switch
         {
             "dash" or "sysDash" => $"{unit * 4} {unit * 3}",
             "dot" or "sysDot" => $"{unit} {unit * 2}",

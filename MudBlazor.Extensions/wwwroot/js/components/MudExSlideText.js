@@ -47,6 +47,9 @@ class MudExSlideText {
             if (p.bullet) {
                 div.dataset.bullet = p.bullet;
             }
+            if (p.marker) {
+                div.dataset.marker = p.marker;
+            }
             div.style.cssText = p.style || '';
             (p.runs || []).forEach(r => {
                 const span = document.createElement('span');

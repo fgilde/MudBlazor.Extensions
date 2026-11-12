@@ -180,4 +180,72 @@ public class SlideViewTests
         Assert.Equal(["#0000FF"], layoutOnly);
         Assert.Empty(none);
     }
+
+    [Fact]
+    public void SlideView_RendersBulletAndHangingIndent()
+    {
+        var builder = new PptxBuilder
+        {
+            TxStyles = "<p:titleStyle/><p:bodyStyle><a:lvl1pPr marL=\"228600\" indent=\"-228600\"><a:buFont typeface=\"Arial\"/><a:buChar char=\"•\"/><a:defRPr sz=\"2800\"/></a:lvl1pPr>" +
+                       "</p:bodyStyle><p:otherStyle/>"
+        };
+        var body = Text("First") + Text("Second") + "<a:p><a:pPr><a:buNone/></a:pPr><a:r><a:t>Plain</a:t></a:r></a:p>";
+        var presentation = builder.Slide(Placeholder(3, "Body", "type=\"body\" idx=\"1\"", "", body)).Load();
+        using var context = new TestContext();
+
+        var cut = Render(context, presentation);
+
+        var paragraphs = cut.FindAll(".mud-ex-slide-paragraph");
+        Assert.Equal(["•", "•"], cut.FindAll(".mud-ex-slide-bullet").Select(b => b.TextContent.Trim(' ')));
+        Assert.Equal("First", paragraphs[0].QuerySelector(".mud-ex-slide-bullet + span")!.TextContent);
+        Assert.Contains("padding-left:1.875cqw", paragraphs[0].GetAttribute("style"));
+        Assert.Contains("text-indent:-1.875cqw", paragraphs[0].GetAttribute("style"));
+        Assert.Contains("--mud-ex-slide-hang:1.875cqw", paragraphs[0].GetAttribute("style"));
+        Assert.Null(paragraphs[2].QuerySelector(".mud-ex-slide-bullet"));
+        Assert.Equal(["•", "•", null], SlideTextDom.ToDom((AutoShape)presentation.Slides[0].Shapes[0], presentation).Select(p => p.Marker));
+    }
+
+    [Fact]
+    public void SlideView_SlideNumberField_ShowsNumber()
+    {
+        const string field = "<a:p><a:fld id=\"{B6F15528-21DE-4FAA-801E-634DDDAF4B2B}\" type=\"slidenum\"><a:rPr lang=\"en-US\"/><a:t>‹#›</a:t></a:fld>" +
+                             "<a:r><a:t> / </a:t></a:r><a:fld id=\"{1D8BD707-D9CF-40AE-B4C6-C98DA3205C09}\" type=\"datetimeFigureOut\"><a:t>1/1/2000</a:t></a:fld></a:p>";
+        var shape = Shape(2, "Number", Xfrm(0, 0, 3000000, 1000000), field);
+        var presentation = new PptxBuilder { PresentationAttributes = " firstSlideNum=\"5\"" }.Slide(shape).Slide(shape).Load();
+        using var context = new TestContext();
+        using var second = new TestContext();
+
+        var first = Render(context, presentation).Find(".mud-ex-slide-text").TextContent;
+        var next = Render(second, presentation, presentation.Slides[1]).Find(".mud-ex-slide-text").TextContent;
+
+        Assert.Equal("slidenum", ((AutoShape)presentation.Slides[0].Shapes[0]).Text.Paragraphs[0].Runs[0].FieldType);
+        Assert.Null(((AutoShape)presentation.Slides[0].Shapes[0]).Text.Paragraphs[0].Runs[1].FieldType);
+        var today = DateTime.Today.ToString("d", System.Globalization.CultureInfo.CurrentCulture);
+        Assert.Equal($"5 / {today}", first);
+        Assert.Equal($"6 / {today}", next);
+    }
+
+    [Fact]
+    public void SlideView_GradientFill_RendersLinearGradient()
+    {
+        const string gradient = "<a:gradFill><a:gsLst><a:gs pos=\"0\"><a:srgbClr val=\"FF0000\"/></a:gs><a:gs pos=\"100000\"><a:srgbClr val=\"0000FF\"/></a:gs></a:gsLst>" +
+                                "<a:lin ang=\"5400000\"/></a:gradFill>";
+        var presentation = new PptxBuilder()
+            .Slide(Shape(2, "Box", Xfrm(0, 0, 100, 100) + "<a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom>" + gradient),
+                background: "<p:bg><p:bgPr>" + gradient + "</p:bgPr></p:bg>")
+            .Load();
+        using var context = new TestContext();
+
+        var cut = Render(context, presentation);
+
+        var fill = cut.Find("[data-shape-id='2'] path").GetAttribute("fill");
+        var id = cut.Find("[data-shape-id='2'] defs > *").GetAttribute("id");
+        Assert.Equal($"url(#{id})", fill);
+        Assert.Equal(("0.5", "0", "0.5", "1"), (Attr("x1"), Attr("y1"), Attr("x2"), Attr("y2")));
+        Assert.Equal(["0:#FF0000", "1:#0000FF"], cut.FindAll("[data-shape-id='2'] stop").Select(s => $"{s.GetAttribute("offset")}:{s.GetAttribute("stop-color")}"));
+        Assert.Contains("background-image:linear-gradient(180deg, #FF0000 0%, #0000FF 100%)", cut.Find(".mud-ex-slide").GetAttribute("style"));
+        return;
+
+        string Attr(string name) => cut.Find("[data-shape-id='2'] defs > *").GetAttribute(name);
+    }
 }

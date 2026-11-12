@@ -3,12 +3,14 @@
 @using MudBlazor.Extensions.Office.Presentation
 
 <div class="mud-ex-slide-text" style="@BodyStyle(Shape, Presentation)">
-    @foreach (var paragraph in Shape.Text.Paragraphs)
+    @{ var markers = Shape.Markers(); }
+    @for (var i = 0; i < Shape.Text.Paragraphs.Count; i++)
     {
-        <div class="mud-ex-slide-paragraph" style="@ParagraphStyle(Shape, paragraph)">
-            @if (paragraph.Bullet == true)
+        var paragraph = Shape.Text.Paragraphs[i];
+        <div class="mud-ex-slide-paragraph" style="@ParagraphStyle(Shape, paragraph, Presentation)">
+            @if (markers[i] != null)
             {
-                <span style="@RunStyle(Shape, Presentation, paragraph.Runs.Count > 0 ? paragraph.Runs[0] : EmptyRun(paragraph))">&bull;&nbsp;</span>
+                <span class="mud-ex-slide-bullet" style="@RunStyle(Shape, Presentation, paragraph.Runs.Count > 0 ? paragraph.Runs[0] : EmptyRun(paragraph))">@markers[i]&nbsp;</span>
             }
             @foreach (var run in paragraph.Runs)
             {
@@ -18,7 +20,7 @@
                 }
                 else
                 {
-                    <span style="@RunStyle(Shape, Presentation, run)">@run.Text</span>
+                    <span style="@RunStyle(Shape, Presentation, run)">@TextOf(run)</span>
                 }
             }
             @if (paragraph.Runs.Count == 0)

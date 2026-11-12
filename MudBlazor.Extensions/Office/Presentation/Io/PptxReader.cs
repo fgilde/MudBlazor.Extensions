@@ -27,6 +27,7 @@ internal static class PptxReader
         var size = root.Element(P + "sldSz");
         presentation.SlideWidth = Long((string)size?.Attribute("cx")) ?? presentation.SlideWidth;
         presentation.SlideHeight = Long((string)size?.Attribute("cy")) ?? presentation.SlideHeight;
+        presentation.FirstSlideNumber = (int?)Long((string)root.Attribute("firstSlideNum")) ?? 1;
 
         foreach (var id in Ids(root, "sldMasterIdLst"))
             if (Target(opc, main, rels, id) is { } part)
@@ -100,9 +101,10 @@ internal static class PptxReader
                 var layout = new SlideLayout
                 {
                     PartName = layoutPart, Master = master, Name = (string)layoutRoot.Element(P + "cSld")?.Attribute("name"), Type = (string)layoutRoot.Attribute("type"),
-                    Background = ReadBackground(opc, layoutPart, layoutRels, layoutRoot, master), ShowMasterShapes = ShowMasterShapes(layoutRoot)
+                    Background = ReadBackground(opc, layoutPart, layoutRels, layoutRoot, master), ShowMasterShapes = ShowMasterShapes(layoutRoot),
+                    ColorMap = ColorMapOverride(layoutRoot)
                 };
-                layout.ShapeList.AddRange(new ShapeReader(opc, layoutPart, layoutRels, master, master.ShapeList, false).ReadTree(layoutRoot));
+                layout.ShapeList.AddRange(new ShapeReader(opc, layoutPart, layoutRels, master, master.ShapeList, false, layout.ColorMap).ReadTree(layoutRoot));
                 master.LayoutList.Add(layout);
             }
 
@@ -118,12 +120,13 @@ internal static class PptxReader
         {
             Layout = layouts.Find(l => string.Equals(l.PartName, layoutPart, StringComparison.OrdinalIgnoreCase)),
             Hidden = (string)xml.Root!.Attribute("show") is "0" or "false",
-            ReservedId = SlideTiming.MaxTarget(xml.Root)
+            ReservedId = SlideTiming.MaxTarget(xml.Root),
+            ColorMap = ColorMapOverride(xml.Root)
         };
         var master = slide.Layout?.Master;
         slide.Background = ReadBackground(opc, part, rels, xml.Root, master);
         slide.ShowMasterShapes = ShowMasterShapes(xml.Root);
-        slide.ShapeList.AddRange(new ShapeReader(opc, part, rels, master, (IReadOnlyList<SlideShape>)slide.Layout?.ShapeList ?? [], true).ReadTree(xml.Root));
+        slide.ShapeList.AddRange(new ShapeReader(opc, part, rels, master, (IReadOnlyList<SlideShape>)slide.Layout?.ShapeList ?? [], true, slide.EffectiveColorMap).ReadTree(xml.Root));
 
         var notesPart = Related(opc, part, rels, "/notesSlide");
         var notesXml = notesPart == null ? null : opc.ReadXml(notesPart);
@@ -152,14 +155,15 @@ internal static class PptxReader
         return Background(opc, master.ThemePart, opc.Relationships(master.ThemePart), style);
     }
 
-    private static SlideBackground Background(OpcPackage opc, string part, IReadOnlyList<OpcRelationship> rels, XElement fill) => fill?.Name.LocalName switch
+    private static SlideBackground Background(OpcPackage opc, string part, IReadOnlyList<OpcRelationship> rels, XElement fill)
     {
-        null => null,
-        "noFill" => new SlideBackground(ShapeFillKind.None, null, null),
-        "solidFill" => new SlideBackground(ShapeFillKind.Solid, ShapeReader.FillColor(fill), null),
-        "blipFill" => new SlideBackground(ShapeFillKind.Picture, null, EmbeddedPart(opc, part, rels, fill)),
-        _ => new SlideBackground(ShapeFillKind.Other, ShapeReader.FillColor(fill), null)
-    };
+        if (fill == null) return null;
+        var read = ShapeReader.ReadFill(fill);
+        return new SlideBackground(read.Kind, read.Color, read.Kind == ShapeFillKind.Picture ? EmbeddedPart(opc, part, rels, fill) : null) { Stops = read.Stops, Angle = read.Angle };
+    }
+
+    private static IReadOnlyDictionary<string, string> ColorMapOverride(XElement root) =>
+        root.Element(P + "clrMapOvr")?.Element(A + "overrideClrMapping")?.Attributes().ToDictionary(a => a.Name.LocalName, a => a.Value);
 
     internal static string EmbeddedPart(OpcPackage opc, string part, IReadOnlyList<OpcRelationship> rels, XElement blipFill) =>
         (string)blipFill?.Element(A + "blip")?.Attribute(R + "embed") is { } embed && rels.FirstOrDefault(r => r.Id == embed && r.TargetMode == null) is { } rel

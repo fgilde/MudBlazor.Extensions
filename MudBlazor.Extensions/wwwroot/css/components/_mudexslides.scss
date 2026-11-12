@@ -32,6 +32,11 @@
   height: 100%;
   object-fit: fill;
 }
+.mud-ex-slide-picture-crop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
 .mud-ex-slide-text {
   position: absolute;
   inset: 0;
@@ -44,6 +49,11 @@
 .mud-ex-slide-paragraph {
   margin: 0;
   line-height: 1.2;
+}
+.mud-ex-slide-bullet {
+  display: inline-block;
+  min-width: var(--mud-ex-slide-hang, 0);
+  text-indent: 0;
 }
 .mud-ex-slide-opaque {
   display: flex;
@@ -253,8 +263,17 @@
   outline: none;
   user-select: text;
   -webkit-user-select: text;
-  [data-bullet="1"]::before {
+  [data-bullet="1"]::before, [data-marker]::before {
+    display: inline-block;
+    min-width: var(--mud-ex-slide-hang, 0);
+    text-indent: 0;
     content: "\2022\00a0";
+  }
+  [data-marker]::before {
+    content: attr(data-marker) "\00a0";
+  }
+  [data-bullet="0"]::before {
+    content: none;
   }
 }
 .mud-ex-slide-selection-editing {

@@ -21,6 +21,9 @@ public sealed class SlideTextParagraphDto
     /// <summary>The CSS the paragraph is shown with; only sent to the browser.</summary>
     public string Style { get; set; }
 
+    /// <summary>The bullet or number shown before the paragraph, or null; only sent to the browser, never part of the text.</summary>
+    public string Marker { get; set; }
+
     /// <summary>The runs in order.</summary>
     public SlideTextRunDto[] Runs { get; set; } = [];
 }
@@ -67,12 +70,14 @@ internal static class SlideTextDom
     {
         var index = 0;
         var paragraphs = shape.Text?.Paragraphs is { Count: > 0 } list ? list : [new TextParagraph()];
+        var markers = shape.Markers();
         return paragraphs.Select((p, i) => new SlideTextParagraphDto
         {
             Source = shape.Text?.Paragraphs.Count > 0 ? i : null,
             Align = p.Align?.ToString().ToLowerInvariant(),
             Bullet = Flag(p.Bullet),
-            Style = MudExSlideText.ParagraphStyle(shape, p),
+            Style = MudExSlideText.ParagraphStyle(shape, p, presentation),
+            Marker = i < markers.Count ? markers[i] : null,
             Runs = p.Runs.Count == 0
                 ? [Run(new TextRun("", p.EndFormat), null, shape, presentation)]
                 : p.Runs.Select(r => Run(r, index++, shape, presentation)).ToArray()
@@ -156,9 +161,9 @@ internal static class SlideTextDom
     {
         var format = new RunFormat(Bool(dto.B), Bool(dto.I), Bool(dto.U), Bool(dto.S), Size(dto.Size), Blank(dto.Color), Blank(dto.Font));
         if (source != null)
-            return Reuse(source, source with { Text = text, Format = format });
+            return Reuse(source, source with { Text = text, Format = format, FieldType = text == source.Text ? source.FieldType : null });
         if (format == new RunFormat())
-            return previous != null ? previous with { Text = text } : new TextRun(text, end);
+            return previous != null ? previous with { Text = text, FieldType = null } : new TextRun(text, end);
         return new TextRun(text, format);
     }
 

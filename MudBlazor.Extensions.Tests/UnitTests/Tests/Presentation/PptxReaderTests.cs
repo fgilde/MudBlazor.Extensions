@@ -292,7 +292,8 @@ public class PptxReaderTests
         Assert.Same(own.Background, SlideBackground.EffectiveBackground(own));
         var inheriting = presentation.Slides[1];
         Assert.Null(inheriting.Background);
-        Assert.Equal(new SlideBackground(ShapeFillKind.Other, "#445566", null), inheriting.Layout.Background);
+        Assert.Equal(new SlideBackground(ShapeFillKind.Gradient, "#445566", null) { Stops = [new GradientStop(0, "#445566"), new GradientStop(1, "#000000")] },
+            inheriting.Layout.Background);
         Assert.Same(inheriting.Layout.Background, SlideBackground.EffectiveBackground(inheriting));
         Assert.Null(inheriting.Layout.Master.Background);
     }
@@ -347,5 +348,174 @@ public class PptxReaderTests
         Assert.Equal(["Logo"], layout.Master.Shapes.Select(s => s.Name));
         Assert.Equal(["Band"], layout.Shapes.Select(s => s.Name));
         Assert.Equal(new ShapeTransform(1000000, 500000, 8000000, 1000000), presentation.Slides[0].Shapes[0].ResolvedTransform);
+    }
+
+    private static string StyledShape(uint id, string spPr, string style, string body = "<a:p><a:r><a:t>x</a:t></a:r></a:p>") =>
+        $"<p:sp><p:nvSpPr><p:cNvPr id=\"{id}\" name=\"Shape {id}\"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr><p:spPr>{Xfrm(0, 0, 100, 100)}{spPr}</p:spPr>" +
+        $"<p:style>{style}</p:style><p:txBody><a:bodyPr/><a:lstStyle/>{body}</p:txBody></p:sp>";
+
+    private static string Paragraph(string pPr, string text = "x") => $"<a:p>{pPr}<a:r><a:t>{text}</a:t></a:r></a:p>";
+
+    [Fact]
+    public void Reader_StyleRef_GivesFillLineAndFontColor()
+    {
+        const string style = "<a:lnRef idx=\"2\"><a:schemeClr val=\"accent1\"><a:shade val=\"50000\"/></a:schemeClr></a:lnRef>" +
+                             "<a:fillRef idx=\"1\"><a:schemeClr val=\"accent2\"/></a:fillRef><a:effectRef idx=\"0\"><a:schemeClr val=\"accent1\"/></a:effectRef>" +
+                             "<a:fontRef idx=\"minor\"><a:schemeClr val=\"lt1\"/></a:fontRef>";
+        var presentation = new PptxBuilder { ThemeFormat = "<a:fmtScheme name=\"Test\"><a:fillStyleLst/><a:lnStyleLst><a:ln w=\"6350\"/><a:ln w=\"12700\"/></a:lnStyleLst></a:fmtScheme>" }
+            .Slide(StyledShape(2, "", style) + StyledShape(3, "", style.Replace("lnRef idx=\"2\"", "lnRef idx=\"3\"")) +
+                   StyledShape(4, "<a:noFill/><a:ln><a:noFill/></a:ln>", style))
+            .Load();
+
+        var shapes = presentation.Slides[0].Shapes.Cast<AutoShape>().ToList();
+        var master = presentation.Masters[0];
+        Assert.Null(shapes[0].Line);
+        Assert.Equal(new ShapeFill(ShapeFillKind.Solid, "scheme:accent2"), ShapeFill.EffectiveFill(shapes[0]));
+        Assert.Equal("#ED7D31", ColorResolver.Resolve(ShapeFill.EffectiveFill(shapes[0]).Color, master));
+        Assert.Equal(new ShapeLine("scheme:accent1 shade=50000", 12700), ShapeLine.EffectiveLine(shapes[0]));
+        Assert.Equal(9525, ShapeLine.EffectiveLine(shapes[1]).Width);
+        Assert.Equal("#FFFFFF", shapes[0].EffectiveFormat(shapes[0].Text.Paragraphs[0].Runs[0]).Color);
+        Assert.Equal(ShapeFillKind.None, ShapeFill.EffectiveFill(shapes[2]).Kind);
+        Assert.Null(ShapeLine.EffectiveLine(shapes[2]).Color);
+    }
+
+    [Fact]
+    public void Reader_GradientFill_ReadsStopsAndAngle()
+    {
+        const string gradient = "<a:gradFill rotWithShape=\"1\"><a:gsLst><a:gs pos=\"100000\"><a:srgbClr val=\"0000FF\"/></a:gs><a:gs pos=\"0\"><a:schemeClr val=\"accent1\"/></a:gs>" +
+                                "<a:gs pos=\"50000\"><a:srgbClr val=\"00FF00\"/></a:gs></a:gsLst><a:lin ang=\"5400000\" scaled=\"0\"/></a:gradFill>";
+        const string radial = "<a:gradFill><a:gsLst><a:gs pos=\"0\"><a:srgbClr val=\"FFFFFF\"/></a:gs><a:gs pos=\"100000\"><a:srgbClr val=\"000000\"/></a:gs></a:gsLst>" +
+                              "<a:path path=\"circle\"/></a:gradFill>";
+        var presentation = new PptxBuilder()
+            .Slide(Shape(2, "Linear", Xfrm(0, 0, 100, 100) + gradient) + Shape(3, "Radial", Xfrm(0, 0, 100, 100) + radial),
+                background: "<p:bg><p:bgPr>" + gradient.Replace("5400000", "2700000") + "</p:bgPr></p:bg>")
+            .Load();
+
+        var linear = ((AutoShape)presentation.Slides[0].Shapes[0]).Fill;
+        Assert.Equal(ShapeFillKind.Gradient, linear.Kind);
+        Assert.Equal("scheme:accent1", linear.Color);
+        Assert.Equal([new GradientStop(0, "scheme:accent1"), new GradientStop(0.5, "#00FF00"), new GradientStop(1, "#0000FF")], linear.Stops);
+        Assert.Equal(90, linear.Angle);
+        var path = ((AutoShape)presentation.Slides[0].Shapes[1]).Fill;
+        Assert.Equal(ShapeFillKind.Gradient, path.Kind);
+        Assert.Null(path.Angle);
+        Assert.Equal(2, path.Stops.Count);
+        var background = presentation.Slides[0].Background;
+        Assert.Equal(ShapeFillKind.Gradient, background.Kind);
+        Assert.Equal(45, background.Angle);
+        Assert.Equal(linear.Stops, background.Stops);
+    }
+
+    [Fact]
+    public void Reader_PictureCrop_ReadsSrcRect()
+    {
+        const string rel = "<Relationship Id=\"rId5\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/image\" Target=\"../media/photo.png\"/>";
+        static string Picture(uint id, string crop) =>
+            $"<p:pic><p:nvPicPr><p:cNvPr id=\"{id}\" name=\"Photo\"/><p:cNvPicPr/><p:nvPr/></p:nvPicPr><p:blipFill><a:blip r:embed=\"rId5\"/>{crop}" +
+            $"<a:stretch><a:fillRect/></a:stretch></p:blipFill><p:spPr>{Xfrm(0, 0, 100, 100)}</p:spPr></p:pic>";
+        var builder = new PptxBuilder();
+        builder.ExtraParts["ppt/media/photo.png"] = (null, "png");
+        var presentation = builder
+            .Slide(Picture(2, "<a:srcRect l=\"10000\" t=\"20000\" r=\"30000\"/>") + Picture(3, "") +
+                   Shape(4, "Filled", Xfrm(0, 0, 100, 100) + "<a:blipFill><a:blip r:embed=\"rId5\"/><a:stretch><a:fillRect/></a:stretch></a:blipFill>"), rels: rel)
+            .Load();
+
+        var shapes = presentation.Slides[0].Shapes;
+        Assert.Equal(new ImageCrop(0.1, 0.2, 0.3, 0), ((PictureShape)shapes[0]).Crop);
+        Assert.Null(((PictureShape)shapes[1]).Crop);
+        var fill = ((AutoShape)shapes[2]).Fill;
+        Assert.Equal(ShapeFillKind.Picture, fill.Kind);
+        Assert.Equal("/ppt/media/photo.png", fill.ImagePart);
+    }
+
+    [Fact]
+    public void Reader_Bullets_InheritFromMasterBodyStyle()
+    {
+        var builder = new PptxBuilder
+        {
+            TxStyles = "<p:titleStyle/><p:bodyStyle><a:lvl1pPr marL=\"228600\" indent=\"-228600\"><a:lnSpc><a:spcPct val=\"90000\"/></a:lnSpc>" +
+                       "<a:spcBef><a:spcPts val=\"1000\"/></a:spcBef><a:buFont typeface=\"Arial\"/><a:buChar char=\"•\"/><a:defRPr sz=\"2800\"/></a:lvl1pPr>" +
+                       "<a:lvl2pPr marL=\"685800\" indent=\"-228600\"><a:buFont typeface=\"Wingdings\"/><a:buChar char=\"§\"/><a:defRPr sz=\"2400\"/></a:lvl2pPr></p:bodyStyle><p:otherStyle/>"
+        };
+        var body = Paragraph("") + Paragraph("<a:pPr lvl=\"1\"/>") + Paragraph("<a:pPr marL=\"0\" indent=\"0\"><a:spcAft><a:spcPts val=\"600\"/></a:spcAft><a:buNone/></a:pPr>");
+        var shape = (AutoShape)builder.Slide(Placeholder(3, "Body", "type=\"body\" idx=\"1\"", "", body)).Load().Slides[0].Shapes[0];
+
+        var paragraphs = shape.Text.Paragraphs;
+        Assert.Equal(((long?)null, (long?)null, BulletKind.Inherited), (paragraphs[0].MarginLeft, paragraphs[0].Indent, paragraphs[0].BulletKind));
+        Assert.Equal(((long?)0, (long?)0, (double?)6, BulletKind.None, (bool?)false),
+            (paragraphs[2].MarginLeft, paragraphs[2].Indent, paragraphs[2].SpaceAfterPt, paragraphs[2].BulletKind, paragraphs[2].Bullet));
+        var first = shape.EffectiveParagraph(paragraphs[0]);
+        Assert.Equal(((long?)228600, (long?)-228600, (double?)90, (double?)10, (double?)0, BulletKind.Char, "•"),
+            (first.MarginLeft, first.Indent, first.LineSpacingPercent, first.SpaceBeforePt, first.SpaceAfterPt, first.BulletKind, first.BulletChar));
+        Assert.Equal(685800, shape.EffectiveParagraph(paragraphs[1]).MarginLeft);
+        Assert.Equal(["•", "▪", null], shape.Markers());
+    }
+
+    [Fact]
+    public void Reader_AutoNumber_ContinuesAcrossParagraphs()
+    {
+        const string number = "<a:pPr><a:buAutoNum type=\"arabicPeriod\"/></a:pPr>";
+        const string letter = "<a:pPr lvl=\"1\"><a:buAutoNum type=\"alphaLcParenR\"/></a:pPr>";
+        const string roman = "<a:pPr><a:buAutoNum type=\"romanUcPeriod\" startAt=\"4\"/></a:pPr>";
+        var body = Paragraph(number) + Paragraph(number) + Paragraph(letter) + Paragraph(letter) + Paragraph(number) + "<a:p>" + number + "</a:p>" + Paragraph(number) +
+                   Paragraph("<a:pPr><a:buNone/></a:pPr>") + Paragraph(roman) + Paragraph(roman) + Paragraph(letter);
+        var shape = (AutoShape)new PptxBuilder().Slide(Shape(2, "List", Xfrm(0, 0, 100, 100), body)).Load().Slides[0].Shapes[0];
+
+        Assert.Equal(BulletKind.AutoNumber, shape.Text.Paragraphs[0].BulletKind);
+        Assert.Equal("arabicPeriod", shape.Text.Paragraphs[0].AutoNumberType);
+        Assert.Equal(["1.", "2.", "a)", "b)", "3.", null, "4.", null, "IV.", "V.", "a)"], shape.Markers());
+    }
+
+    [Fact]
+    public void Reader_NormAutofit_ReadsFontScale()
+    {
+        var presentation = new PptxBuilder()
+            .Slide(Shape(2, "Fit", Xfrm(0, 0, 100, 100), Paragraph("")).Replace("<a:bodyPr/>", "<a:bodyPr><a:normAutofit fontScale=\"62500\" lnSpcReduction=\"20000\"/></a:bodyPr>") +
+                   Shape(3, "Plain", Xfrm(0, 0, 100, 100), Paragraph("")))
+            .Load();
+
+        var fit = ((AutoShape)presentation.Slides[0].Shapes[0]).Text;
+        Assert.Equal(((double?)62.5, (double?)20), (fit.FontScalePercent, fit.LineSpaceReductionPercent));
+        var plain = ((AutoShape)presentation.Slides[0].Shapes[1]).Text;
+        Assert.Equal(((double?)null, (double?)null), (plain.FontScalePercent, plain.LineSpaceReductionPercent));
+    }
+
+    [Fact]
+    public void Reader_ClrMapOvr_ResolvesSchemeColorDifferently()
+    {
+        const string body = "<a:p><a:r><a:rPr><a:solidFill><a:schemeClr val=\"tx1\"/></a:solidFill></a:rPr><a:t>x</a:t></a:r></a:p>";
+        const string inverted = "<p:clrMapOvr><a:overrideClrMapping bg1=\"dk1\" tx1=\"lt1\" bg2=\"dk2\" tx2=\"lt2\" accent1=\"accent1\" accent2=\"accent2\" accent3=\"accent3\" " +
+                                "accent4=\"accent4\" accent5=\"accent5\" accent6=\"accent6\" hlink=\"hlink\" folHlink=\"folHlink\"/></p:clrMapOvr>";
+        var shape = Shape(2, "Text", Xfrm(0, 0, 100, 100) + "<a:solidFill><a:schemeClr val=\"bg1\"/></a:solidFill>", body);
+        var presentation = new PptxBuilder()
+            .Slide(shape, tail: inverted)
+            .Slide(shape, tail: "<p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr>")
+            .Load();
+
+        static string Color(Slide slide) => ((AutoShape)slide.Shapes[0]).EffectiveFormat(((AutoShape)slide.Shapes[0]).Text.Paragraphs[0].Runs[0]).Color;
+        Assert.Equal("#FFFFFF", Color(presentation.Slides[0]));
+        Assert.Equal("#000000", Color(presentation.Slides[1]));
+        var filled = (AutoShape)presentation.Slides[0].Shapes[0];
+        Assert.Equal("#000000", ColorResolver.Resolve(filled.Fill.Color, filled.Master, filled.ColorMap));
+    }
+
+    [Fact]
+    public void Reader_LineWithoutFill_IsInherited()
+    {
+        var builder = new PptxBuilder
+        {
+            LayoutShapes = Placeholder(2, "Title 1", "type=\"title\"", Xfrm(0, 0, 10, 10) + "<a:ln w=\"25400\"><a:solidFill><a:srgbClr val=\"FF0000\"/></a:solidFill></a:ln>")
+        };
+        var presentation = builder
+            .Slide(Placeholder(2, "Title 1", "type=\"title\"", "<a:ln w=\"38100\"/>") + Shape(3, "None", Xfrm(0, 0, 10, 10) + "<a:ln w=\"38100\"><a:noFill/></a:ln>"))
+            .Load();
+
+        var title = (AutoShape)presentation.Slides[0].Shapes[0];
+        Assert.True(title.Line.ColorInherited);
+        Assert.Null(title.Line.Color);
+        Assert.Equal(new ShapeLine("#FF0000", 38100), ShapeLine.EffectiveLine(title));
+        var none = (AutoShape)presentation.Slides[0].Shapes[1];
+        Assert.False(none.Line.ColorInherited);
+        Assert.Null(ShapeLine.EffectiveLine(none).Color);
     }
 }
