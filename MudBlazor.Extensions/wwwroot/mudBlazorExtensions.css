@@ -7203,7 +7203,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 0;
+  width: 0;
+  min-width: 100%;
   min-height: 0;
   height: 100%;
   overflow: hidden;
@@ -7691,6 +7692,7 @@
 .mud-ex-spreadsheet-editor {
   display: flex;
   flex-direction: column;
+  width: 100%;
   min-width: 0;
   min-height: 0;
   height: 100%;
@@ -9018,6 +9020,7 @@ textarea.mud-ex-ssg-note-text {
 .mud-ex-slide-editor {
   display: flex;
   flex-direction: column;
+  width: 100%;
   min-width: 0;
   min-height: 0;
   height: 100%;

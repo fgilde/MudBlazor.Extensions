@@ -4,7 +4,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 0;
+  width: 0;
+  min-width: 100%;
   min-height: 0;
   height: 100%;
   overflow: hidden;
@@ -411,6 +412,7 @@ $mud-ex-ssg-ref-colors: #4472c4, #c0504d, #7030a0, #00b050, #ed7d31, #2e75b6, #b
 .mud-ex-spreadsheet-editor {
   display: flex;
   flex-direction: column;
+  width: 100%;
   min-width: 0;
   min-height: 0;
   height: 100%;
