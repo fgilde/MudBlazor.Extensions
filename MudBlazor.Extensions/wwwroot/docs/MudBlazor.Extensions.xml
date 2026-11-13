@@ -20098,6 +20098,9 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.EndRequested">
             <summary>Raised by the end button.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.UtcOffset">
+            <summary>The offset of the viewer's clock from UTC for the time of day; null shows the time of the machine that renders.</summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideShowPresenter.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
@@ -31970,15 +31973,6 @@
         <member name="P:MudBlazor.Extensions.Office.ChartSnapshotSeries.Color">
             <summary>The fill or line color as #RRGGBB.</summary>
         </member>
-        <member name="T:MudBlazor.Extensions.Office.ChartSnapshotReader">
-            <summary>Reads the cached values of a DrawingML chart part.</summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Office.ChartSnapshotReader.Read(System.Xml.Linq.XDocument,System.Func{System.String,System.String})">
-            <summary>Reads kind, title and the cached values of a chart part.</summary>
-            <param name="chartPart">The chart part.</param>
-            <param name="resolveColor">Resolves a color written as <c>#RRGGBB</c> or <c>scheme:name</c> to <c>#RRGGBB</c>, or null.</param>
-            <returns>The snapshot, or null for chart types that cannot be drawn and for charts without cached values.</returns>
-        </member>
         <member name="T:MudBlazor.Extensions.Office.DocumentUndoStack`1">
             <summary>Undo and redo history of a document. Each user action is exactly one step; transactions group commands.</summary>
             <typeparam name="TDocument">The document type the commands edit.</typeparam>
@@ -33042,14 +33036,14 @@
             <summary>Sets the fill and outline of shapes. Shapes other than <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/> are left as they are.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
-            <param name="fill">The new fill, or null to keep it.</param>
+            <param name="fill">The new fill: no fill, inherited or a solid colour; null keeps it.</param>
             <param name="line">The new outline, or null to keep it.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.SetShapeStyleCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},MudBlazor.Extensions.Office.Presentation.ShapeFill,MudBlazor.Extensions.Office.Presentation.ShapeLine)">
             <summary>Sets the fill and outline of shapes. Shapes other than <see cref="T:MudBlazor.Extensions.Office.Presentation.AutoShape"/> are left as they are.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
-            <param name="fill">The new fill, or null to keep it.</param>
+            <param name="fill">The new fill: no fill, inherited or a solid colour; null keeps it.</param>
             <param name="line">The new outline, or null to keep it.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.SetShapeStyleCommand.Description">

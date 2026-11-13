@@ -147,4 +147,20 @@ public class LayoutCommandTests
         presentation.Execute(new ResetSlideCommand([presentation.Slides[1]]));
         Assert.False(presentation.Undo.CanUndo);
     }
+
+    [Fact]
+    public void SetLayout_TableInContentPlaceholder_NeverMovesIntoATextPlaceholder()
+    {
+        var table = TableTests.Table(5, "", [1000000], TableTests.Tc("a")).Replace("<p:nvPr/>", "<p:nvPr><p:ph idx=\"1\"/></p:nvPr>");
+        var presentation = Builder().Slide(Placeholder(2, "Title 1", "type=\"title\"", "", Title) + table).Load();
+        var slide = presentation.Slides[0];
+        var before = slide.Shapes.OfType<TableShape>().Single().ResolvedTransform;
+
+        presentation.Execute(new SetSlideLayoutCommand([slide], presentation.Layouts[3]));
+
+        var moved = slide.Shapes.OfType<TableShape>().Single();
+        Assert.Equal("obj", moved.Placeholder!.Type);
+        Assert.Equal(before, moved.Transform);
+        Assert.Contains(slide.Shapes, s => s is AutoShape { Placeholder.Type: "subTitle" });
+    }
 }

@@ -69,7 +69,7 @@ public sealed class SetTransformsCommand(Slide slide, IReadOnlyDictionary<uint, 
 /// <summary>Sets the fill and outline of shapes. Shapes other than <see cref="AutoShape"/> are left as they are.</summary>
 /// <param name="slide">The slide.</param>
 /// <param name="shapes">The shape ids.</param>
-/// <param name="fill">The new fill, or null to keep it.</param>
+/// <param name="fill">The new fill: no fill, inherited or a solid colour; null keeps it.</param>
 /// <param name="line">The new outline, or null to keep it.</param>
 public sealed class SetShapeStyleCommand(Slide slide, IReadOnlyList<uint> shapes, ShapeFill fill, ShapeLine line) : IDocumentCommand<Presentation>
 {
@@ -82,6 +82,8 @@ public sealed class SetShapeStyleCommand(Slide slide, IReadOnlyList<uint> shapes
     public void Apply(Presentation document)
     {
         ShapeEdit.Validate(line);
+        if (fill is not (null or { Kind: ShapeFillKind.None or ShapeFillKind.Inherited or ShapeFillKind.Solid }))
+            throw new ArgumentException("A shape fill must be no fill, inherited or a solid colour.", nameof(fill));
         _before = shapes.Select(id => ShapeEdit.Find<SlideShape>(slide, id)).OfType<AutoShape>()
             .Where(s => (fill ?? s.Fill) != s.Fill || (line ?? s.Line) != s.Line).Select(s => (s, s.Fill, s.Line)).ToList();
         foreach (var (shape, _, _) in _before)

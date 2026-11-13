@@ -12,6 +12,12 @@ internal static class TableXml
 
     internal static XElement Create() => new(A + "graphic", new XElement(A + "graphicData", new XAttribute("uri", Uri), new XElement(A + "tbl")));
 
+    internal static bool Readable(XElement tbl)
+    {
+        var columns = tbl.Element(A + "tblGrid")?.Elements(A + "gridCol").Count() ?? 0;
+        return columns > 0 && tbl.Elements(A + "tr").All(tr => tr.Elements(A + "tc").Count() <= columns);
+    }
+
     internal static TableShape Read(XElement tbl)
     {
         var table = new TableShape();

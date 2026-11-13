@@ -44,9 +44,9 @@ internal static class PlaceholderXml
         if (!spPr.Elements().Any(g => g.Name == A + "prstGeom" || g.Name == A + "custGeom"))
             SlideXml.Place(spPr, new XElement(A + "prstGeom", new XAttribute("prst", shape.Geometry == "custom" ? "rect" : shape.Geometry), new XElement(A + "avLst")),
                 [.. SlideXml.Fills, .. SlideXml.AfterFill]);
-        if (ShapeReader.FillOf(spPr) == null && inherited.Select(s => ShapeReader.FillOf(s.Element(P + "spPr"))).FirstOrDefault(f => f != null) is { } fill)
+        if (ShapeReader.FillOf(spPr) == null && inherited.Select(s => ShapeReader.FillOf(s.Element(P + "spPr"))).FirstOrDefault(f => f != null) is { } fill && !Related(fill))
             SlideXml.Place(spPr, new XElement(fill), SlideXml.AfterFill);
-        if (spPr.Element(A + "ln") == null && inherited.Select(s => s.Element(P + "spPr")?.Element(A + "ln")).FirstOrDefault(l => l != null) is { } line)
+        if (spPr.Element(A + "ln") == null && inherited.Select(s => s.Element(P + "spPr")?.Element(A + "ln")).FirstOrDefault(l => l != null) is { } line && !Related(line))
             SlideXml.Place(spPr, new XElement(line), SlideXml.AfterLine);
         var styled = new AutoShape();
         ShapeReader.ReadStyle(styled, source);
@@ -62,6 +62,7 @@ internal static class PlaceholderXml
         var own = txBody.Element(A + "lstStyle");
         var levels = Enumerable.Range(0, 9).Select(level => Merge(A + $"lvl{level + 1}pPr", TextStyles.ListLevels(shape, level))).Where(l => l.HasAttributes || l.HasElements);
         var lstStyle = new XElement(A + "lstStyle", own?.Element(A + "defPPr"), levels, own?.Element(A + "extLst"));
+        lstStyle.Descendants().Where(e => e.Attributes().Any(a => a.Name.Namespace == R)).Remove();
         own?.Remove();
         bodyPr.AddAfterSelf(lstStyle);
         var read = ShapeReader.ReadText(txBody);
@@ -71,6 +72,8 @@ internal static class PlaceholderXml
             FontScalePercent = read.FontScalePercent, LineSpaceReductionPercent = read.LineSpaceReductionPercent
         };
     }
+
+    private static bool Related(XElement element) => element.DescendantsAndSelf().Attributes().Any(a => a.Name.Namespace == R);
 
     private static XElement Merge(XName name, IEnumerable<XElement> specificFirst)
     {

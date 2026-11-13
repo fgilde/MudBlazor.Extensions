@@ -32,7 +32,7 @@ public sealed class SetSlideLayoutCommand(IReadOnlyList<Slide> slides, SlideLayo
         var matches = new Dictionary<SlideShape, AutoShape>();
         foreach (var key in new Func<string, string>[] { type => type, ShapeReader.Category })
         foreach (var shape in placeholders.Where(s => !matches.ContainsKey(s)))
-            if (free.Find(p => key(p.Placeholder.Type) == key(shape.Placeholder.Type)) is { } target)
+            if (free.Find(p => key(p.Placeholder.Type) == key(shape.Placeholder.Type) && Accepts(p, shape)) is { } target)
             {
                 matches[shape] = target;
                 free.Remove(target);
@@ -55,6 +55,9 @@ public sealed class SetSlideLayoutCommand(IReadOnlyList<Slide> slides, SlideLayo
                 shape.Master = layout.Master;
         slide.Layout = layout;
     }
+
+    private static bool Accepts(AutoShape target, SlideShape shape) =>
+        shape is AutoShape || target.Placeholder.Type == shape.Placeholder.Type || target.Placeholder.Type == "obj";
 
     private static bool IsEmpty(SlideShape shape) =>
         shape is AutoShape auto && string.IsNullOrWhiteSpace(string.Concat(auto.Text?.Paragraphs.SelectMany(p => p.Runs)

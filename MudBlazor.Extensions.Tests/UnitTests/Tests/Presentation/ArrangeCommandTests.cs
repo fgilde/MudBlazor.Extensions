@@ -376,4 +376,14 @@ public class ArrangeCommandTests
         Assert.Equal(new ShapeTransform(100, 200, 300, 400), slide.Shapes[0].Transform);
         Assert.Equal(90, slide.Shapes[1].Transform!.Value.Rotation);
     }
+
+    [Fact]
+    public void ShapeStyle_FillTheWriterCannotWrite_Throws()
+    {
+        var presentation = Deck();
+        var gradient = new ShapeFill(ShapeFillKind.Gradient) { Stops = [new GradientStop(0, "#FF0000"), new GradientStop(1, "#0000FF")] };
+
+        Assert.Throws<ArgumentException>(() => presentation.Execute(new SetShapeStyleCommand(presentation.Slides[0], [3], gradient, null)));
+        Assert.False(presentation.Undo.CanUndo);
+    }
 }

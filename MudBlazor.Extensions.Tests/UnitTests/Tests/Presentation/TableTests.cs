@@ -64,6 +64,19 @@ public class TableTests
         cell.IsMergedAway ? "_" : (Text(cell) is { Length: > 0 } text ? text : "·") + (cell.RowSpan * cell.ColumnSpan > 1 ? $"[{cell.RowSpan}x{cell.ColumnSpan}]" : "")))));
 
     [Fact]
+    public void Reader_TableWithoutGridOrWithExtraCells_StaysOpaque()
+    {
+        var noGrid = Table(3, "", [], $"{Tc("a")}{Tc("b")}");
+        var extraCell = Table(3, "", [1000000], $"{Tc("a")}{Tc("b")}");
+
+        foreach (var frame in new[] { noGrid, extraCell })
+        {
+            var shape = new PptxBuilder().Slide(frame).Load().Slides[0].Shapes[0];
+            Assert.Equal("table", Assert.IsType<OpaqueShape>(shape).Kind);
+        }
+    }
+
+    [Fact]
     public void Reader_Table_ReadsGridRowsCellsAndMerges()
     {
         var presentation = Deck();
