@@ -9,6 +9,8 @@ const SHORTCUTS = 'fhmyz';
 const OWN_PASTE = 'input, textarea, [contenteditable], .mud-ex-slide-text-editor';
 const RASTER = ['image/png', 'image/jpeg', 'image/gif', 'image/bmp', 'image/webp'];
 const CLIP = /data-mudex-clip="([0-9a-f]{32})"/;
+const SHOW = '.mud-ex-slide-show:not(.mud-ex-slide-show-preview)';
+const SHOW_TRIGGERS = '[data-mudex-ribbon-id="pp-show-from-beginning"], [data-mudex-ribbon-id="pp-show-from-current"], .mud-ex-slide-status-show';
 
 function clipOf(html) {
     return CLIP.exec(html ?? '')?.[1] ?? null;
@@ -34,7 +36,8 @@ class MudExSlideEditor {
         this.mutations.observe(root, { childList: true, subtree: true });
         this.events = [
             ['dragstart', e => this.dragStart(e)], ['dragover', e => this.dragOver(e)], ['drop', e => this.drop(e)], ['dragend', () => this.dragEnd()],
-            ['keydown', e => this.keyDown(e)], ['paste', e => this.pasteEvent(e)], ['focusin', e => e.target.matches?.(RENAME) && e.target.select()]
+            ['keydown', e => this.keyDown(e)], ['paste', e => this.pasteEvent(e)], ['focusin', e => e.target.matches?.(RENAME) && e.target.select()],
+            ['click', e => e.target.closest?.(SHOW_TRIGGERS) && this.launchShow()]
         ];
         this.events.forEach(([type, handler]) => root.addEventListener(type, handler));
         this.schedule();
@@ -82,6 +85,7 @@ class MudExSlideEditor {
     keyDown(e) {
         if (e.key === 'F5' && !e.ctrlKey && !e.metaKey && !e.altKey) {
             e.preventDefault();
+            this.launchShow();
             return;
         }
         if (e.key === 'Enter' && e.target.matches?.(RENAME)) {
@@ -97,6 +101,20 @@ class MudExSlideEditor {
         if ((key === 's' && this.root?.dataset.readonly !== 'true') || shortcut) {
             e.preventDefault();
         }
+    }
+
+    launchShow() {
+        const root = this.root;
+        if (!root || root.dataset.canShow !== 'true' || root.mudExShowLaunch || root.querySelector(SHOW)) {
+            return;
+        }
+        const launch = { focus: document.activeElement };
+        if (root.dataset.presenterView === 'true') {
+            launch.popup = window.open('about:blank', '_blank', 'popup');
+        } else if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+            launch.fullscreen = document.documentElement.requestFullscreen().then(() => true, () => false);
+        }
+        root.mudExShowLaunch = launch;
     }
 
     pasteEvent(e) {
@@ -251,6 +269,10 @@ class MudExSlideEditor {
         this.thumbnails.disconnect();
         this.mutations.disconnect();
         this.revokeAll();
+        if (this.root?.mudExShowLaunch) {
+            this.root.mudExShowLaunch.popup?.close();
+            delete this.root.mudExShowLaunch;
+        }
         this.marked = null;
         this.root = null;
         this.dotnet = null;

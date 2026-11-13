@@ -110,6 +110,35 @@ public class SlideEditorFixesTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task SlideShow_SendsTheImagesOfTheShownAndTheNextSlideOnly()
+    {
+        var builder = new PptxBuilder();
+        for (var i = 1; i <= 12; i++)
+        {
+            builder.Slide(Picture(2, "rId5"), rels: ImageRel("rId5", $"../media/image{i}.png"));
+            builder.ExtraParts[$"ppt/media/image{i}.png"] = (null, $"image {i}");
+        }
+
+        var presentation = builder.Load();
+        _context.JSInterop.Setup<string>("register", _ => true).SetResult("blob:test");
+        var cut = RenderEditor(p => p.Add(x => x.Presentation, presentation));
+        int Registered() => _context.JSInterop.Invocations.Count(i => i.Identifier == "register");
+        cut.FindAll(".mud-ex-slide-panel-item")[9].Click();
+        cut.WaitForAssertion(() => Assert.Equal(MudExSlidePanel.EagerThumbnails + 1, Registered()));
+
+        await cut.Find(".mud-ex-slide-editor").TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = "F5", ShiftKey = true });
+        await cut.Find(".mud-ex-slide-editor").TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = "F5", ShiftKey = true });
+
+        var show = cut.FindComponent<MudExSlideShow>();
+        Assert.Equal(MudExSlidePanel.EagerThumbnails + 2, Registered());
+        await show.Find(".mud-ex-slide-show").TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = "ArrowRight" });
+        cut.WaitForAssertion(() => Assert.Equal("10", show.Find(".mud-ex-slide-show-in").GetAttribute("data-slide-index")));
+        Assert.Equal(MudExSlidePanel.EagerThumbnails + 3, Registered());
+        Assert.Same(presentation.Slides[9], cut.Instance.CurrentSlide);
+        Assert.Single(cut.FindComponents<MudExSlideShow>());
+    }
+
+    [Fact]
     public void FontName_FromTheFile_CannotInjectCss()
     {
         var presentation = new PptxBuilder()

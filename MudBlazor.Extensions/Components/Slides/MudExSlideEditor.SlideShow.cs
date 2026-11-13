@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using MudBlazor.Extensions.Office.Presentation;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -8,6 +9,7 @@ public partial class MudExSlideEditor
     private EventCallback<KeyboardEventArgs>? _rootKeyDown;
     private EventCallback<int>? _showSlideChanged;
     private bool _showing;
+    private bool _showStarting;
     private bool _previewing;
     private bool _presenterView;
     private int _showStart;
@@ -18,12 +20,14 @@ public partial class MudExSlideEditor
         _rootKeyDown ??= new EventCallback<KeyboardEventArgs>(WithoutRender.Instance, (Func<KeyboardEventArgs, Task>)OnRootKeyDownAsync);
 
     private EventCallback<int> ShowSlideChanged =>
-        _showSlideChanged ??= new EventCallback<int>(WithoutRender.Instance, (Action<int>)(index => _showSlide = index));
+        _showSlideChanged ??= new EventCallback<int>(WithoutRender.Instance, (Func<int, Task>)OnShowSlideChangedAsync);
 
     private bool CanShow => _presentation?.Slides.Count > 0;
 
     private async Task OnRootKeyDownAsync(KeyboardEventArgs e)
     {
+        if (_showing || _showStarting)
+            return;
         if (e.Key == "F5" && !e.CtrlKey && !e.AltKey && !e.MetaKey)
         {
             await StartShowAsync(e.ShiftKey);
@@ -36,12 +40,29 @@ public partial class MudExSlideEditor
 
     private async Task StartShowAsync(bool fromCurrent)
     {
-        if (!CanShow || _showing)
+        if (!CanShow || _showing || _showStarting)
             return;
-        await FlushPendingEditsAsync();
-        await RegisterImagesAsync(_presentation.Slides);
-        (_showStart, _showSlide, _previewing, _showing) = (fromCurrent ? _currentIndex : 0, -1, false, true);
+        _showStarting = true;
+        try
+        {
+            var start = fromCurrent ? _currentIndex : 0;
+            await FlushPendingEditsAsync();
+            await RegisterImagesAsync(ShowSlides(start));
+            (_showStart, _showSlide, _previewing, _showing) = (start, -1, false, true);
+        }
+        finally
+        {
+            _showStarting = false;
+        }
     }
+
+    private Task OnShowSlideChangedAsync(int index)
+    {
+        _showSlide = index;
+        return RegisterImagesAsync(ShowSlides(index));
+    }
+
+    private IEnumerable<Slide> ShowSlides(int index) => _presentation.Slides.Skip(index).Where(s => !s.Hidden).Take(2);
 
     private void OnShowClosed()
     {

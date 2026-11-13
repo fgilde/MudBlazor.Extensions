@@ -10,8 +10,8 @@
 }
 else
 {
-    <div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-slide-show {Class}".TrimEnd())" style="@Style" tabindex="-1" role="dialog"
-         aria-label="@TryLocalize("Slide Show")" @onkeydown="_keyDown">
+    <dialog @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-slide-show {Class}".TrimEnd())" style="@Style" tabindex="-1" open
+            aria-label="@TryLocalize("Slide Show")" @onkeydown="_keyDown">
         @if (_popupBlocked)
         {
             <MudAlert Class="mud-ex-slide-show-alert" Severity="Severity.Warning" ShowCloseIcon="true" CloseIconClicked="@(() => _popupBlocked = false)">
@@ -21,14 +21,14 @@ else
         @if (_presenter)
         {
             <MudExSlideShowPresenter Presentation="Presentation" Images="_images" Slide="_state.Slide" SlideIndex="_state.SlideIndex" NextSlide="_next.Slide" NextTargets="_next.Targets"
-                                     Stage="Stage" PreviousRequested="@(() => OnShowCommand("previous", 0))" NextRequested="@(() => OnShowCommand("next", 0))"
+                                     Stage="Stage" UtcOffset="_utcOffset" PreviousRequested="@(() => OnShowCommand("previous", 0))" NextRequested="@(() => OnShowCommand("next", 0))"
                                      EndRequested="CloseAsync" Localizer="@Localizer" />
         }
         else
         {
             @Stage
         }
-    </div>
+    </dialog>
 }
 
 @code {

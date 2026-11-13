@@ -41,6 +41,9 @@ public partial class MudExSlideShowPresenter
     /// <summary>Raised by the end button.</summary>
     [Parameter] public EventCallback EndRequested { get; set; }
 
+    /// <summary>The offset of the viewer's clock from UTC for the time of day; null shows the time of the machine that renders.</summary>
+    [Parameter] public TimeSpan? UtcOffset { get; set; }
+
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

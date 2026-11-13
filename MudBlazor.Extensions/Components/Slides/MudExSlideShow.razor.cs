@@ -26,6 +26,7 @@ public partial class MudExSlideShow
     private (Slide Slide, IReadOnlyDictionary<(uint Shape, int? Paragraph), SlideTargetState> Targets) _next;
     private SlideTransition _transition;
     private double _running;
+    private TimeSpan? _utcOffset;
     private bool _presenter;
     private bool _popupBlocked;
     private bool _closed;
@@ -92,6 +93,14 @@ public partial class MudExSlideShow
         _jsStarted = true;
         try
         {
+            await _root.FocusAsync(true);
+        }
+        catch (Exception e) when (e is JSException or JSDisconnectedException or InvalidOperationException)
+        {
+        }
+
+        try
+        {
             if (await _js.StartAsync(JsRuntime, this, null, dotnet => [_root, dotnet]) is not { } js || _closed)
             {
                 await _js.DisposeAsync();
@@ -102,7 +111,10 @@ public partial class MudExSlideShow
             if (!PresenterView)
                 await js.InvokeVoidAsync("start");
             else if (await js.InvokeAsync<bool>("openAudience", TryLocalize("Slide Show")))
+            {
                 _presenter = true;
+                _utcOffset = TimeSpan.FromMinutes(await js.InvokeAsync<int>("utcOffset"));
+            }
             else
             {
                 _popupBlocked = true;
@@ -142,7 +154,13 @@ public partial class MudExSlideShow
         return _state.FullyBuilt && !_state.Slide.Transition.AdvanceOnClick ? Task.CompletedTask : MoveAsync(_state.Next, true);
     }
 
-    private Task OnKeyDownAsync(KeyboardEventArgs e) => e.Key == "Escape" ? CloseAsync() : Task.CompletedTask;
+    private Task OnKeyDownAsync(KeyboardEventArgs e) => e.CtrlKey || e.AltKey || e.MetaKey ? Task.CompletedTask : e.Key switch
+    {
+        "Escape" => CloseAsync(),
+        "ArrowRight" or "ArrowDown" or " " or "PageDown" or "n" or "N" or "Enter" => OnShowCommand("next", 0),
+        "ArrowLeft" or "ArrowUp" or "Backspace" or "PageUp" or "p" or "P" => OnShowCommand("previous", 0),
+        _ => Task.CompletedTask
+    };
 
     private async Task MoveAsync(Action move, bool forward)
     {

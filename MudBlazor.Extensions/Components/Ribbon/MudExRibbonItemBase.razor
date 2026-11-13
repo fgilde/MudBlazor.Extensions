@@ -33,6 +33,7 @@
                  aria-label="@(Text ?? Tooltip)"
                  aria-pressed="@pressed?.ToString().ToLowerInvariant()"
                  tabindex="@(dropDown ? "-1" : null)"
+                 data-mudex-ribbon-id="@Id"
                  @attributes="KeyTipAttributes"
                  @onclick="onClick"
                  @onkeydown:stopPropagation="isolateKeys">

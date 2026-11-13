@@ -5,7 +5,7 @@
 
 <div @attributes="UserAttributes" class="@($"mud-ex-slide-show-presenter {Class}".TrimEnd())" style="@Style">
     <div class="mud-ex-slide-show-presenter-bar">
-        <span class="mud-ex-slide-show-presenter-clock">@DateTime.Now.ToString("t", CultureInfo.CurrentCulture)</span>
+        <span class="mud-ex-slide-show-presenter-clock">@((UtcOffset is { } offset ? DateTime.UtcNow + offset : DateTime.Now).ToString("t", CultureInfo.CurrentCulture))</span>
         <span class="mud-ex-slide-show-presenter-stopwatch">@_stopwatch.Elapsed.ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture)</span>
         <MudIconButton Icon="@(_stopwatch.IsRunning ? Icons.Material.Filled.Pause : Icons.Material.Filled.PlayArrow)" Size="Size.Small" Color="Color.Inherit"
                        aria-label="@TryLocalize(_stopwatch.IsRunning ? "Pause timer" : "Resume timer")" title="@TryLocalize(_stopwatch.IsRunning ? "Pause timer" : "Resume timer")" OnClick="ToggleTimer" />

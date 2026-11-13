@@ -2,7 +2,8 @@
 @namespace MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Office.Presentation
 
-<div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-slide-editor {Class}".TrimEnd())" style="@RootStyle" data-readonly="@(IsReadOnly ? "true" : "false")" @onkeydown="RootKeyDown">
+<div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-slide-editor {Class}".TrimEnd())" style="@RootStyle" data-readonly="@(IsReadOnly ? "true" : "false")"
+     data-can-show="@(CanShow ? "true" : "false")" data-presenter-view="@(_presenterView ? "true" : "false")" @onkeydown="RootKeyDown">
     @if (ShowRibbon)
     {
         <MudExRibbon @ref="_ribbon" Class="mud-ex-slide-ribbon" Color="@RibbonColor" @bind-ActiveTabIndex="_tabIndex" @bind-Mode="_mode" @bind-Collapsed="_collapsed" FileMenuText="@TryLocalize("File")">
