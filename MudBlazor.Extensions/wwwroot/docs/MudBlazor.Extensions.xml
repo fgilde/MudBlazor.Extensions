@@ -34145,6 +34145,15 @@
             <param name="text">The text, or null for a shape without text.</param>
             <returns>The new shape.</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AutoShape.CreateStyled(System.String,MudBlazor.Extensions.Office.Presentation.ShapeTransform)">
+            <summary>
+            Creates a shape of a preset geometry in the theme's shape style, as PowerPoint inserts it: accent 1 fill, a darker accent 1 outline and an empty
+            centred text body whose text is light (<c>lt1</c>) in the minor font. Add it with <see cref="T:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand"/>.
+            </summary>
+            <param name="preset">A preset name from <see cref="P:MudBlazor.Extensions.Office.Presentation.PresetGeometry.Supported"/>.</param>
+            <param name="transform">The position and size in slide coordinates.</param>
+            <returns>The new shape.</returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.AutoShape.CreateTextBox(MudBlazor.Extensions.Office.Presentation.ShapeTransform,MudBlazor.Extensions.Office.Presentation.TextBody)">
             <summary>Creates a text box without fill to add with <see cref="T:MudBlazor.Extensions.Office.Presentation.InsertShapeCommand"/>.</summary>
             <param name="transform">The position and size in slide coordinates.</param>

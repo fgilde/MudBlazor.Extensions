@@ -41,9 +41,11 @@ public partial class MudExSlideCanvas
         var line = MudExSlideShapeGallery.IsLine(insert);
         if (Math.Abs(width) < 1 && Math.Abs(height) < 1)
             (width, height) = (ShapeSize, line ? 0 : ShapeSize);
-        var shape = AutoShape.Create(insert, new ShapeTransform((long)Math.Round(Math.Min(x, x + width)), (long)Math.Round(Math.Min(y, y + height)),
-                Math.Max(line ? 0 : 1, (long)Math.Round(Math.Abs(width))), Math.Max(line ? 0 : 1, (long)Math.Round(Math.Abs(height))), 0, line && width < 0, line && height < 0),
-            new ShapeFill(line ? ShapeFillKind.None : ShapeFillKind.Solid, line ? null : Accent), line ? new ShapeLine(Accent, 12700) : null);
+        var transform = new ShapeTransform((long)Math.Round(Math.Min(x, x + width)), (long)Math.Round(Math.Min(y, y + height)),
+            Math.Max(line ? 0 : 1, (long)Math.Round(Math.Abs(width))), Math.Max(line ? 0 : 1, (long)Math.Round(Math.Abs(height))), 0, line && width < 0, line && height < 0);
+        var shape = line
+            ? AutoShape.Create(insert, transform, new ShapeFill(ShapeFillKind.None), new ShapeLine(Accent, 12700))
+            : AutoShape.CreateStyled(insert, transform);
         Presentation.Execute(new InsertShapeCommand(Slide, shape));
         shape.Name = $"{MudExSlideShapeGallery.NameOf(insert)} {shape.Id - 1}";
         await SelectAsync([shape.Id]);

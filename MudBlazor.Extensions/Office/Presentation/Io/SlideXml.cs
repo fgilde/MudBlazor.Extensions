@@ -30,6 +30,20 @@ internal sealed class SlideXml(string part, string basis, List<OpcRelationship> 
 
     internal static XElement SolidFill(string color) => ColorResolver.ToXml(color) is { } c ? new XElement(A + "solidFill", c) : null;
 
+    internal static XElement StyledShape(string preset) => new(P + "sp",
+        new XElement(P + "nvSpPr", new XElement(P + "cNvPr", new XAttribute("id", 0), new XAttribute("name", "")), new XElement(P + "cNvSpPr"), new XElement(P + "nvPr")),
+        new XElement(P + "spPr", new XElement(A + "prstGeom", new XAttribute("prst", preset), new XElement(A + "avLst"))),
+        new XElement(P + "style",
+            StyleReference("lnRef", "2", "accent1", new XElement(A + "shade", new XAttribute("val", 50000))),
+            StyleReference("fillRef", "1", "accent1"),
+            StyleReference("effectRef", "0", "accent1"),
+            StyleReference("fontRef", "minor", "lt1")),
+        new XElement(P + "txBody", new XElement(A + "bodyPr", new XAttribute("rtlCol", 0), new XAttribute("anchor", "ctr")), new XElement(A + "lstStyle"),
+            new XElement(A + "p", new XElement(A + "pPr", new XAttribute("algn", "ctr")))));
+
+    private static XElement StyleReference(string name, string index, string color, params XElement[] modifiers) =>
+        new(A + name, new XAttribute("idx", index), new XElement(A + "schemeClr", new XAttribute("val", color), modifiers));
+
     internal static bool IsShape(XElement e) =>
         e.Name.LocalName == "AlternateContent" || e.Name.Namespace == P && e.Name.LocalName is "sp" or "cxnSp" or "pic" or "grpSp" or "graphicFrame" or "contentPart";
 

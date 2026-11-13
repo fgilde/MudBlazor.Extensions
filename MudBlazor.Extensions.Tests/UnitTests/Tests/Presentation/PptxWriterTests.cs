@@ -407,7 +407,7 @@ public partial class PptxWriterTests
 
     private static string Rel(string id, string type, string target) => $"<Relationship Id=\"{id}\" Type=\"{RelNs}/{type}\" Target=\"{target}\"/>";
 
-    private static byte[] Save(Presentation presentation)
+    internal static byte[] Save(Presentation presentation)
     {
         using var stream = new MemoryStream();
         presentation.Save(stream);
@@ -428,7 +428,7 @@ public partial class PptxWriterTests
         });
     }
 
-    private static XDocument Xml(byte[] package, string part) => XDocument.Parse(Encoding.UTF8.GetString(Parts(package)[part]).TrimStart('﻿'));
+    internal static XDocument Xml(byte[] package, string part) => XDocument.Parse(Encoding.UTF8.GetString(Parts(package)[part]).TrimStart('﻿'));
 
     private static List<OpcRelationship> Rels(byte[] package, string relsPart) =>
         Xml(package, relsPart).Root!.Elements(PackageRels + "Relationship")
@@ -457,7 +457,7 @@ public partial class PptxWriterTests
         }
     }
 
-    private static void AssertConsistent(byte[] package)
+    internal static void AssertConsistent(byte[] package)
     {
         var opc = OpcPackage.Open(package);
         var parts = opc.PartNames.ToHashSet(StringComparer.OrdinalIgnoreCase);

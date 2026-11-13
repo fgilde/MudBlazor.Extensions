@@ -40,6 +40,22 @@ public sealed class AutoShape : SlideShape
             ? new AutoShape { Geometry = preset, Transform = transform, Fill = fill ?? new ShapeFill(ShapeFillKind.Inherited), Line = line, Text = text }
             : throw new ArgumentException($"The preset geometry '{preset}' is not supported.", nameof(preset));
 
+    /// <summary>
+    /// Creates a shape of a preset geometry in the theme's shape style, as PowerPoint inserts it: accent 1 fill, a darker accent 1 outline and an empty
+    /// centred text body whose text is light (<c>lt1</c>) in the minor font. Add it with <see cref="InsertShapeCommand"/>.
+    /// </summary>
+    /// <param name="preset">A preset name from <see cref="PresetGeometry.Supported"/>.</param>
+    /// <param name="transform">The position and size in slide coordinates.</param>
+    /// <returns>The new shape.</returns>
+    public static AutoShape CreateStyled(string preset, ShapeTransform transform)
+    {
+        var shape = Create(preset, transform);
+        shape.Source = SlideXml.StyledShape(preset);
+        ShapeReader.ReadStyle(shape, shape.Source);
+        shape.Text = ShapeReader.ReadText(shape.Source.Element(PptxReader.P + "txBody"));
+        return shape;
+    }
+
     /// <summary>Creates a text box without fill to add with <see cref="InsertShapeCommand"/>.</summary>
     /// <param name="transform">The position and size in slide coordinates.</param>
     /// <param name="text">The text, or null for one empty paragraph.</param>

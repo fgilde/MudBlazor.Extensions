@@ -1,4 +1,5 @@
 using System.Text;
+using System.Xml.Linq;
 using Bunit;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Extensions.Components;
@@ -75,7 +76,7 @@ public class SlideEditorFeaturesTests : IAsyncLifetime
 
         var chevron = Assert.IsType<AutoShape>(slide.Shapes[^1]);
         Assert.Equal("chevron", chevron.Geometry);
-        Assert.Equal(new ShapeFill(ShapeFillKind.Solid, "scheme:accent1"), chevron.Fill);
+        Assert.Equal(new ShapeFill(ShapeFillKind.Inherited, "scheme:accent1"), chevron.Fill);
         Assert.Null(chevron.Line);
         Assert.Equal(new ShapeTransform(2 * Inch, 0, 2 * Inch, Inch), chevron.Transform);
         Assert.Equal([chevron.Id], cut.Instance.SelectedShapes);
@@ -93,6 +94,46 @@ public class SlideEditorFeaturesTests : IAsyncLifetime
         await cut.InvokeAsync(() => Canvas(cut).InsertShapeAsync("ellipse"));
         await cut.InvokeAsync(() => Canvas(cut).OnInsertAsync(Inch, Inch, 0, 0));
         Assert.Equal(new ShapeTransform(Inch, Inch, Inch, Inch), slide.Shapes[^1].Transform);
+    }
+
+    [Fact]
+    public async Task Gallery_NewShape_HasStyleAndCenteredBody()
+    {
+        var presentation = Deck();
+        var cut = RenderEditor(presentation);
+        var slide = presentation.Slides[0];
+
+        await cut.InvokeAsync(() => Canvas(cut).InsertShapeAsync("ellipse"));
+        await cut.InvokeAsync(() => Canvas(cut).OnInsertAsync(Inch, Inch, 2 * Inch, Inch));
+
+        var shape = Assert.IsType<AutoShape>(slide.Shapes[^1]);
+        Assert.Equal("#4472C4", ShapeFill.EffectiveFill(shape).Color is { } fill ? ColorResolver.Resolve(fill, shape.Master) : null, ignoreCase: true);
+        Assert.StartsWith("scheme:accent1", ShapeLine.EffectiveLine(shape)?.Color);
+        var paragraph = Assert.Single(shape.Text.Paragraphs);
+        Assert.Empty(paragraph.Runs);
+        Assert.Equal(TextAlign.Center, paragraph.Align);
+        Assert.Equal(TextAnchor.Middle, shape.EffectiveBody().Anchor);
+
+        presentation.Execute(new SetTextCommand(slide, shape.Id, shape.Text with { Paragraphs = [paragraph with { Runs = [new TextRun("typed")] }] }));
+        var run = shape.Text.Paragraphs[0].Runs[0];
+        Assert.Equal("#FFFFFF", shape.EffectiveFormat(run).Color, ignoreCase: true);
+        Assert.Equal(TextAlign.Center, shape.EffectiveParagraph(shape.Text.Paragraphs[0]).Align);
+
+        var output = PptxWriterTests.Save(presentation);
+        PptxWriterTests.AssertConsistent(output);
+        XNamespace p = "http://schemas.openxmlformats.org/presentationml/2006/main", a = "http://schemas.openxmlformats.org/drawingml/2006/main";
+        var sp = PptxWriterTests.Xml(output, "/ppt/slides/slide1.xml").Descendants(p + "sp").Last();
+        var style = sp.Element(p + "style")!;
+        Assert.Equal(["lnRef:2:accent1", "fillRef:1:accent1", "effectRef:0:accent1", "fontRef:minor:lt1"],
+            style.Elements().Select(r => $"{r.Name.LocalName}:{(string)r.Attribute("idx")}:{(string)r.Elements().Single().Attribute("val")}"));
+        Assert.Equal(["nvSpPr", "spPr", "style", "txBody"], sp.Elements().Select(e => e.Name.LocalName));
+        Assert.Null(sp.Element(p + "spPr")!.Element(a + "solidFill"));
+        Assert.Equal("ctr", (string)sp.Element(p + "txBody")!.Element(a + "bodyPr")!.Attribute("anchor"));
+        Assert.Equal("ctr", (string)sp.Element(p + "txBody")!.Element(a + "p")!.Element(a + "pPr")!.Attribute("algn"));
+        Assert.Equal("typed", sp.Descendants(a + "t").Single().Value);
+        var reloaded = (AutoShape)Presentation.Load(new MemoryStream(output)).Slides[0].Shapes[^1];
+        Assert.Equal("ellipse", reloaded.Geometry);
+        Assert.Equal("#FFFFFF", reloaded.EffectiveFormat(reloaded.Text.Paragraphs[0].Runs[0]).Color, ignoreCase: true);
     }
 
     [Fact]
