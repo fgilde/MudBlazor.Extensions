@@ -92,11 +92,13 @@ public sealed class Notebook
     internal string GetMediaType(string id) =>
         id == null ? null : PendingMedia.TryGetValue(id, out var pending) ? NotebookMediaTypes.TypeOf(pending.Extension) : Package?.MediaType(id);
 
+    internal static string MediaIdOf(byte[] data) => Convert.ToHexString(SHA256.HashData(data)).ToLowerInvariant();
+
     internal string AddMedia(byte[] data, string contentType)
     {
         ArgumentNullException.ThrowIfNull(data);
         var extension = NotebookMediaTypes.ExtensionOf(contentType) ?? throw new ArgumentException($"The content type {contentType} is not supported.", nameof(contentType));
-        var id = Convert.ToHexString(SHA256.HashData(data)).ToLowerInvariant();
+        var id = MediaIdOf(data);
         if (!PendingMedia.ContainsKey(id) && Package?.MediaEntry(id) == null) PendingMedia[id] = (data, extension);
         return id;
     }

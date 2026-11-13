@@ -168,6 +168,7 @@ public partial class MudExNotebookEditor : IMudExFileEditor
             catch (Exception e) when (e is InvalidOperationException or JSException or JSDisconnectedException or TaskCanceledException) { }
         }
 
+        await ApplyPendingSelectionAsync();
         if (_page != null && !ReferenceEquals(_page, _imagesPage) && _images is { } images)
         {
             _imagesPage = _page;

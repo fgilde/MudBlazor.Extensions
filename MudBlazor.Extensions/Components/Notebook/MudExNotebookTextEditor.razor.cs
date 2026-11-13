@@ -46,6 +46,18 @@ public partial class MudExNotebookTextEditor
     /// <summary>Raised for Ctrl+K with the selected text and the link at the selection, if any.</summary>
     [Parameter] public EventCallback<(string Text, string Link)> LinkRequested { get; set; }
 
+    /// <summary>The edited table cell as <c>row,column</c> if <see cref="BlockId"/> is a table; the editor then covers only that cell.</summary>
+    [Parameter] public string Cell { get; set; }
+
+    /// <summary>
+    /// If true, Tab at the end of a single plain paragraph ends editing through <see cref="Tabbed"/> instead of indenting, so the block can become a
+    /// table. In a cell Tab and Shift+Tab always end editing through <see cref="Tabbed"/>.
+    /// </summary>
+    [Parameter] public bool TableTab { get; set; }
+
+    /// <summary>Raised with the final text and whether Shift was held when Tab ended editing.</summary>
+    [Parameter] public EventCallback<(IReadOnlyList<NotebookTextParagraphDto> Paragraphs, bool Back)> Tabbed { get; set; }
+
     private string BoxStyle
     {
         get
@@ -61,7 +73,7 @@ public partial class MudExNotebookTextEditor
         await base.OnAfterRenderAsync(firstRender);
         if (!firstRender)
             return;
-        var options = new { Paragraphs = NotebookTextDom.ToDom(Paragraphs), Id = BlockId };
+        var options = new { Paragraphs = NotebookTextDom.ToDom(Paragraphs), Id = BlockId, Cell, TableTab };
         await _module.StartAsync(JsRuntime, this, "MudExNotebookText", dotnet => [_root, dotnet, options]);
     }
 
@@ -92,6 +104,13 @@ public partial class MudExNotebookTextEditor
     /// <returns>A task that completes when the text is committed.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task OnTextCommitAsync(NotebookTextParagraphDto[] paragraphs) => InvokeAsync(() => Committed.InvokeAsync(paragraphs ?? []));
+
+    /// <summary>Called by the browser when Tab ended editing in a table cell or at the end of a plain paragraph.</summary>
+    /// <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+    /// <param name="back">True for Shift+Tab.</param>
+    /// <returns>A task that completes when the text is handed on.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnTabAsync(NotebookTextParagraphDto[] paragraphs, bool back) => InvokeAsync(() => Tabbed.InvokeAsync((paragraphs ?? [], back)));
 
     /// <summary>Called by the browser on the first change of the text.</summary>
     /// <returns>A task that completes when the change is handed on.</returns>

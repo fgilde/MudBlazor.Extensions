@@ -12912,6 +12912,15 @@
         <member name="M:MudBlazor.Extensions.Components.MudExVirtualize`1.OnParametersSetAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookAltTextDialog">
+            <summary>The alternative text dialog of <see cref="T:MudBlazor.Extensions.Components.MudExNotebookEditor"/> for a picture. Closes with the trimmed text as a <see cref="T:System.String"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookAltTextDialog.Text">
+            <summary>The current alternative text.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookAltTextDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExNotebookCanvas">
             <summary>
             The editing surface of the notebook editor: shows a page with a selection layer above it. In the text tool a click on the free page starts a new
@@ -12947,6 +12956,49 @@
             </summary>
             <param name="polygon">The lasso line in page coordinates.</param>
             <returns>A task that completes when the selection is shown.</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.ShapeKind">
+            <summary>The kind of shape the <see cref="F:MudBlazor.Extensions.Components.NotebookTool.Shape"/> tool draws.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.ToolChanged">
+            <summary>Raised when the canvas switches the tool itself, for example back to <see cref="F:MudBlazor.Extensions.Components.NotebookTool.Select"/> after a shape was drawn.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.PictureDropped">
+            <summary>Raised when pictures were dropped on the page, with their content and the drop position in page coordinates.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.ContextMenu">
+            <summary>Raised for a right click on the page; <see cref="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.ContextTarget"/> tells which element and table cell was clicked.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.LastClick">
+            <summary>The position of the last click on the page in page coordinates, or null.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnShapeAsync(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Called by the browser once a shape was dragged open in the shape tool, with the start and end point in page coordinates. A click without
+            dragging adds a shape of 100 pixels. Lines and arrows point from the start to the end.
+            </summary>
+            <param name="x1">The horizontal start.</param>
+            <param name="y1">The vertical start.</param>
+            <param name="x2">The horizontal end.</param>
+            <param name="y2">The vertical end.</param>
+            <returns>A task that completes when the shape is added and selected.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnPictureDroppedAsync(Microsoft.JSInterop.IJSStreamReference,System.String,System.Double,System.Double)">
+            <summary>Called by the browser for every picture dropped on the page.</summary>
+            <param name="data">The picture file.</param>
+            <param name="contentType">The content type of the file.</param>
+            <param name="x">The horizontal drop position in page coordinates.</param>
+            <param name="y">The vertical drop position in page coordinates.</param>
+            <returns>A task that completes when the picture is handed to the host.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnContextMenuAsync(System.String,System.Int32,System.Int32,System.Double,System.Double)">
+            <summary>Called by the browser for a right click on the page. Selects the clicked element unless it is selected already.</summary>
+            <param name="id">The id of the clicked element, or null for the free page.</param>
+            <param name="row">The row of the clicked table cell, or -1.</param>
+            <param name="column">The column of the clicked table cell, or -1.</param>
+            <param name="clientX">The horizontal position in the window.</param>
+            <param name="clientY">The vertical position in the window.</param>
+            <returns>A task that completes when the menu is requested.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.#ctor">
             <summary>Creates the canvas.</summary>
@@ -13001,7 +13053,10 @@
             <returns>A task that completes when the selection is shown.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnPageClickAsync(System.Double,System.Double)">
-            <summary>Called by the browser for a click on the page in the text tool: edits the text block under the point or starts a new one there.</summary>
+            <summary>
+            Called by the browser for a click on the free page or into a text block. The point becomes <see cref="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.LastClick"/>; in the text tool the text
+            block under the point is edited or a new one starts there.
+            </summary>
             <param name="x">The horizontal position in page coordinates.</param>
             <param name="y">The vertical position in page coordinates.</param>
             <returns>A task that completes when the text session started.</returns>
@@ -13026,6 +13081,19 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.DisposeAsync">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnCellClickAsync(System.String,System.Int32,System.Int32)">
+            <summary>Called by the browser for a click into a table cell in the text tool: edits the text of that cell.</summary>
+            <param name="id">The id of the table.</param>
+            <param name="row">The row of the cell.</param>
+            <param name="column">The column of the cell.</param>
+            <returns>A task that completes when the text session started.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnColumnWidthsAsync(System.String,System.Double[])">
+            <summary>Called by the browser when the user dragged the border between two table columns.</summary>
+            <param name="id">The id of the table.</param>
+            <param name="widths">The new width of every column; widths below 8 pixels are raised to 8.</param>
+            <returns>A task that completes when the widths are set.</returns>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.TextEditRequested">
             <summary>Raised when a text editing session starts: a click on the free page in the text tool, a click into a text block or typing on a selected one.</summary>
@@ -13066,6 +13134,32 @@
         <member name="P:MudBlazor.Extensions.Components.InkPointDto.Pressure">
             <summary>The pen pressure from 0 to 1; 0.5 for a mouse.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.NotebookPictureDrop">
+            <summary>A picture dropped on a <see cref="T:MudBlazor.Extensions.Components.MudExNotebookCanvas"/>.</summary>
+            <param name="Data">The content of the file.</param>
+            <param name="ContentType">The content type the browser reported.</param>
+            <param name="X">The horizontal drop position in page coordinates.</param>
+            <param name="Y">The vertical drop position in page coordinates.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.NotebookPictureDrop.#ctor(System.Byte[],System.String,System.Double,System.Double)">
+            <summary>A picture dropped on a <see cref="T:MudBlazor.Extensions.Components.MudExNotebookCanvas"/>.</summary>
+            <param name="Data">The content of the file.</param>
+            <param name="ContentType">The content type the browser reported.</param>
+            <param name="X">The horizontal drop position in page coordinates.</param>
+            <param name="Y">The vertical drop position in page coordinates.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookPictureDrop.Data">
+            <summary>The content of the file.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookPictureDrop.ContentType">
+            <summary>The content type the browser reported.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookPictureDrop.X">
+            <summary>The horizontal drop position in page coordinates.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookPictureDrop.Y">
+            <summary>The vertical drop position in page coordinates.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.PointDto">
             <summary>A point reported by the browser in page coordinates (CSS pixels at 100 % zoom).</summary>
         </member>
@@ -13095,20 +13189,20 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.NotebookTextEditRequest">
             <summary>Asks the host to show the text editor for a block of a <see cref="T:MudBlazor.Extensions.Components.MudExNotebookCanvas"/>.</summary>
-            <param name="ElementId">The id of the text block; for a new block the id it gets when its text is committed.</param>
+            <param name="ElementId">The id of the text block or table; for a new block the id it gets when its text is committed.</param>
             <param name="X">The left edge of the block in page coordinates.</param>
             <param name="Y">The top edge of the block in page coordinates.</param>
             <param name="IsNew">True if the block does not exist yet; it is added only if text is written.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Components.NotebookTextEditRequest.#ctor(System.String,System.Double,System.Double,System.Boolean)">
             <summary>Asks the host to show the text editor for a block of a <see cref="T:MudBlazor.Extensions.Components.MudExNotebookCanvas"/>.</summary>
-            <param name="ElementId">The id of the text block; for a new block the id it gets when its text is committed.</param>
+            <param name="ElementId">The id of the text block or table; for a new block the id it gets when its text is committed.</param>
             <param name="X">The left edge of the block in page coordinates.</param>
             <param name="Y">The top edge of the block in page coordinates.</param>
             <param name="IsNew">True if the block does not exist yet; it is added only if text is written.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Components.NotebookTextEditRequest.ElementId">
-            <summary>The id of the text block; for a new block the id it gets when its text is committed.</summary>
+            <summary>The id of the text block or table; for a new block the id it gets when its text is committed.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.NotebookTextEditRequest.X">
             <summary>The left edge of the block in page coordinates.</summary>
@@ -13119,11 +13213,34 @@
         <member name="P:MudBlazor.Extensions.Components.NotebookTextEditRequest.IsNew">
             <summary>True if the block does not exist yet; it is added only if text is written.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextEditRequest.Row">
+            <summary>The row of the edited cell if <see cref="P:MudBlazor.Extensions.Components.NotebookTextEditRequest.ElementId"/> is a table, otherwise null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextEditRequest.Column">
+            <summary>The column of the edited cell if <see cref="P:MudBlazor.Extensions.Components.NotebookTextEditRequest.ElementId"/> is a table, otherwise null.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExNotebookEditor">
             <summary>
             Notebook editor in the style of OneNote with ribbon, section tabs, page list and status bar. Opens .mxnb files and is the viewer and editor for them in
             <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/>. Without a file it edits the <see cref="P:MudBlazor.Extensions.Components.MudExNotebookEditor.Notebook"/> parameter.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.OnPasteAsync(Microsoft.JSInterop.IJSStreamReference,Microsoft.JSInterop.IJSStreamReference,System.String,System.String)">
+            <summary>
+            Called by the browser on paste with the clipboard content. Elements or pages copied in this editor are pasted as such while the clipboard still
+            holds their marker (or, where the browser could not write one, their text); otherwise a picture is added, and text becomes a text block at the
+            last click on the page.
+            </summary>
+            <param name="text">The <c>text/plain</c> part as UTF-8, or null if the browser could not read it.</param>
+            <param name="image">The first image of the clipboard, or null.</param>
+            <param name="contentType">The content type of <paramref name="image"/>.</param>
+            <param name="clip">The marker found in the <c>text/html</c> part, or null.</param>
+            <returns>A task that completes when the content is inserted.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.OnZoomWheel(System.Double)">
+            <summary>Called by the browser for Ctrl+mouse wheel over the page.</summary>
+            <param name="factor">The factor to multiply the zoom with.</param>
+            <returns>A task that completes when the page is shown at the new zoom.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.#ctor">
             <summary>Creates the editor.</summary>
@@ -13327,6 +13444,65 @@
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookPageView.ShouldRender">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookSearchPanel">
+            <summary>
+            The search pane of <see cref="T:MudBlazor.Extensions.Components.MudExNotebookEditor"/>: finds text in page titles, text blocks and table cells of the current page or the whole
+            notebook and lists the hits by section and page.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSearchPanel.Notebook">
+            <summary>The notebook to search.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSearchPanel.Page">
+            <summary>The page searched unless <see cref="P:MudBlazor.Extensions.Components.MudExNotebookSearchPanel.WholeNotebook"/> is set.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSearchPanel.WholeNotebook">
+            <summary>If true every page of the notebook is searched.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSearchPanel.WholeNotebookChanged">
+            <summary>Raised when the user switches between the page and the notebook.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSearchPanel.Query">
+            <summary>The searched text; case is ignored.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSearchPanel.QueryChanged">
+            <summary>Raised when the user changes the searched text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSearchPanel.ResultSelected">
+            <summary>Raised when the user picks a hit.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSearchPanel.Closed">
+            <summary>Raised when the user closes the pane.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookSearchPanel.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.NotebookSearchResult">
+            <summary>A hit of <see cref="T:MudBlazor.Extensions.Components.MudExNotebookSearchPanel"/>.</summary>
+            <param name="Section">The section of the page.</param>
+            <param name="Page">The page.</param>
+            <param name="ElementId">The id of the text block or table, or null if the page title matched.</param>
+            <param name="Text">The matched text with some context.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.NotebookSearchResult.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookSection,MudBlazor.Extensions.Office.Notebook.NotebookPage,System.String,System.String)">
+            <summary>A hit of <see cref="T:MudBlazor.Extensions.Components.MudExNotebookSearchPanel"/>.</summary>
+            <param name="Section">The section of the page.</param>
+            <param name="Page">The page.</param>
+            <param name="ElementId">The id of the text block or table, or null if the page title matched.</param>
+            <param name="Text">The matched text with some context.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookSearchResult.Section">
+            <summary>The section of the page.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookSearchResult.Page">
+            <summary>The page.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookSearchResult.ElementId">
+            <summary>The id of the text block or table, or null if the page title matched.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookSearchResult.Text">
+            <summary>The matched text with some context.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExNotebookSectionTabs">
             <summary>
             The section tabs of the notebook editor, one colored tab per section. A click shows a section, a double click renames it, the context menu renames,
@@ -13427,6 +13603,18 @@
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.LinkRequested">
             <summary>Raised for Ctrl+K with the selected text and the link at the selection, if any.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.Cell">
+            <summary>The edited table cell as <c>row,column</c> if <see cref="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.BlockId"/> is a table; the editor then covers only that cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.TableTab">
+            <summary>
+            If true, Tab at the end of a single plain paragraph ends editing through <see cref="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.Tabbed"/> instead of indenting, so the block can become a
+            table. In a cell Tab and Shift+Tab always end editing through <see cref="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.Tabbed"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.Tabbed">
+            <summary>Raised with the final text and whether Shift was held when Tab ended editing.</summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
@@ -13434,6 +13622,12 @@
             <summary>Called by the browser when the user ends editing.</summary>
             <param name="paragraphs">The final paragraphs of the editing DOM.</param>
             <returns>A task that completes when the text is committed.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnTabAsync(MudBlazor.Extensions.Components.NotebookTextParagraphDto[],System.Boolean)">
+            <summary>Called by the browser when Tab ended editing in a table cell or at the end of a plain paragraph.</summary>
+            <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+            <param name="back">True for Shift+Tab.</param>
+            <returns>A task that completes when the text is handed on.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnTextInputAsync">
             <summary>Called by the browser on the first change of the text.</summary>
@@ -32940,6 +33134,27 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Office.Notebook.AddImageCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.SetImageAltTextCommand">
+            <summary>Sets the alternative text of a picture, the text screen readers read and shown while the picture cannot be loaded.</summary>
+            <param name="page">The page.</param>
+            <param name="imageId">The id of an <see cref="T:MudBlazor.Extensions.Office.Notebook.ImageElement"/>.</param>
+            <param name="altText">The new text; null is an empty text.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetImageAltTextCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.String,System.String)">
+            <summary>Sets the alternative text of a picture, the text screen readers read and shown while the picture cannot be loaded.</summary>
+            <param name="page">The page.</param>
+            <param name="imageId">The id of an <see cref="T:MudBlazor.Extensions.Office.Notebook.ImageElement"/>.</param>
+            <param name="altText">The new text; null is an empty text.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.SetImageAltTextCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetImageAltTextCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetImageAltTextCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.AddStrokeCommand">

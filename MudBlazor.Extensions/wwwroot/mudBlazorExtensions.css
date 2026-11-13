@@ -10258,3 +10258,82 @@ textarea.mud-ex-ssg-note-text {
   width: 28px;
   height: 28px;
 }
+.mud-ex-notebook-search-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 260px;
+  width: 260px;
+  min-height: 0;
+  border-left: 1px solid var(--mud-palette-lines-default);
+  background-color: var(--mud-palette-surface);
+  font-size: 0.8125rem;
+}
+.mud-ex-notebook-search-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+}
+.mud-ex-notebook-search-scope {
+  display: flex;
+  gap: 4px;
+  padding: 0 8px 4px;
+}
+.mud-ex-notebook-search-results {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 8px 8px;
+}
+.mud-ex-notebook-search-section {
+  margin-top: 8px;
+  font-weight: 600;
+}
+.mud-ex-notebook-search-page {
+  margin: 4px 0 2px 8px;
+  color: var(--mud-palette-text-secondary);
+}
+.mud-ex-notebook-search-result {
+  display: block;
+  width: 100%;
+  padding: 4px 8px 4px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.mud-ex-notebook-search-result:hover,
+.mud-ex-notebook-search-result:focus-visible {
+  background-color: var(--mud-palette-action-default-hover);
+}
+.mud-ex-notebook-search-empty {
+  padding: 8px;
+  color: var(--mud-palette-text-secondary);
+}
+@media print {
+  body.mud-ex-notebook-print-body * {
+    visibility: hidden !important;
+  }
+  .mud-ex-notebook-print .mud-ex-notebook-editor-surface,
+  .mud-ex-notebook-print .mud-ex-notebook-editor-surface * {
+    visibility: visible !important;
+  }
+  .mud-ex-notebook-print .mud-ex-notebook-editor-surface {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto !important;
+    overflow: visible !important;
+  }
+  .mud-ex-notebook-print .mud-ex-notebook-canvas-layer,
+  .mud-ex-notebook-print .mud-ex-notebook-ribbon,
+  .mud-ex-notebook-print .mud-ex-notebook-section-tabs,
+  .mud-ex-notebook-print .mud-ex-notebook-page-list,
+  .mud-ex-notebook-print .mud-ex-notebook-search-panel,
+  .mud-ex-notebook-print .mud-ex-notebook-status-bar {
+    display: none !important;
+  }
+}

@@ -86,6 +86,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExOfficeClipboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExOfficeClipboard.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExNotebookText.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExNotebookText.js"

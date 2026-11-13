@@ -96,7 +96,7 @@ public partial class MudExNotebookCanvas
         else if (Page.Version != _version)
         {
             _version = Page.Version;
-            if (_text is { IsNew: false } session && Find(session.ElementId) == null)
+            if (_text is { } session && !IsAlive(session))
                 _text = null;
             Change(_selection);
         }
@@ -144,14 +144,20 @@ public partial class MudExNotebookCanvas
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task OnSelectionAsync(string[] ids) => InvokeAsync(() => SelectAsync(ids ?? []));
 
-    /// <summary>Called by the browser for a click on the page in the text tool: edits the text block under the point or starts a new one there.</summary>
+    /// <summary>
+    /// Called by the browser for a click on the free page or into a text block. The point becomes <see cref="LastClick"/>; in the text tool the text
+    /// block under the point is edited or a new one starts there.
+    /// </summary>
     /// <param name="x">The horizontal position in page coordinates.</param>
     /// <param name="y">The vertical position in page coordinates.</param>
     /// <returns>A task that completes when the text session started.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task OnPageClickAsync(double x, double y) => InvokeAsync(async () =>
     {
-        if (!Editable || Tool != NotebookTool.Text || !double.IsFinite(x) || !double.IsFinite(y))
+        if (!Editable || !double.IsFinite(x) || !double.IsFinite(y))
+            return;
+        LastClick = (Math.Max(0, x), Math.Max(0, y));
+        if (Tool != NotebookTool.Text)
             return;
         await CommitTextAsync();
         var hit = Page.Elements.OfType<TextElement>().LastOrDefault(t => x >= t.X && x <= t.X + t.Width && y >= t.Y && y <= t.Y + HeightOf(t));
@@ -304,6 +310,9 @@ public partial class MudExNotebookCanvas
             case "Enter" or "F2" or { Length: 1 } when !ctrl && _selection is [var only] && Find(only) is TextElement text:
                 await BeginTextAsync(Request(text));
                 break;
+            case "Enter" or "F2" when !ctrl && _selection is [var only] && Find(only) is TableElement:
+                await EditCellAsync(only, 0, 0);
+                break;
         }
     }
 
@@ -375,8 +384,15 @@ public sealed class BoundsDto
 }
 
 /// <summary>Asks the host to show the text editor for a block of a <see cref="MudExNotebookCanvas"/>.</summary>
-/// <param name="ElementId">The id of the text block; for a new block the id it gets when its text is committed.</param>
+/// <param name="ElementId">The id of the text block or table; for a new block the id it gets when its text is committed.</param>
 /// <param name="X">The left edge of the block in page coordinates.</param>
 /// <param name="Y">The top edge of the block in page coordinates.</param>
 /// <param name="IsNew">True if the block does not exist yet; it is added only if text is written.</param>
-public sealed record NotebookTextEditRequest(string ElementId, double X, double Y, bool IsNew);
+public sealed record NotebookTextEditRequest(string ElementId, double X, double Y, bool IsNew)
+{
+    /// <summary>The row of the edited cell if <see cref="ElementId"/> is a table, otherwise null.</summary>
+    public int? Row { get; init; }
+
+    /// <summary>The column of the edited cell if <see cref="ElementId"/> is a table, otherwise null.</summary>
+    public int? Column { get; init; }
+}

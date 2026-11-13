@@ -3,7 +3,7 @@
 
 <div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-notebook-canvas {Class}".TrimEnd())" style="@Style" tabindex="0" role="application"
      aria-label="@TryLocalize("Page")" data-readonly="@(Editable ? "false" : "true")" data-tool="@Tool.ToString().ToLowerInvariant()"
-     data-zoom="@NotebookStyles.Num(EffectiveZoom)" data-selection="@string.Join(",", _selection)" data-editing="@_text?.ElementId" data-ink-color="@EffectiveInkColor" data-ink-width="@NotebookStyles.Num(EffectiveInkWidth)" @onkeydown="_keyDown">
+     data-zoom="@NotebookStyles.Num(EffectiveZoom)" data-selection="@string.Join(",", _selection)" data-editing="@_text?.ElementId" data-ink-color="@EffectiveInkColor" data-ink-width="@NotebookStyles.Num(EffectiveInkWidth)" data-shape="@ShapeKind.ToString().ToLowerInvariant()" @onkeydown="_keyDown">
     <MudExNotebookPageView Notebook="Notebook" Page="Page" Zoom="Zoom" Interactive="true" ViewportWidth="ViewportWidth" ViewportHeight="ViewportHeight"
                            MeasuredHeights="_heights" Images="Images" Localizer="@Localizer" />
     @if (Editable)
@@ -23,7 +23,8 @@
             {
                 <MudExNotebookTextEditor @key="session" @ref="_textEditor" BlockId="@(session.IsNew ? null : session.ElementId)" Paragraphs="@OriginalOf(session)"
                                          X="session.X" Y="session.Y" Width="@SessionWidth(session)" Zoom="EffectiveZoom" Committed="OnTextCommittedAsync"
-                                         TextInput="TextInput" SelectionChanged="OnTextSelectedAsync" LinkRequested="LinkRequested" Localizer="@Localizer" />
+                                         TextInput="TextInput" SelectionChanged="OnTextSelectedAsync" LinkRequested="LinkRequested" Cell="@CellKey(session)" TableTab="@(session.Row == null)"
+                                         Tabbed="OnTextTabbedAsync" Localizer="@Localizer" />
             }
             <div class="mud-ex-notebook-canvas-overlay"></div>
         </div>

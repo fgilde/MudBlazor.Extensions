@@ -1,3 +1,5 @@
+import { eventClipboardData, readClipboardData, sendPaste, writeClipboardData } from './MudExOfficeClipboard.js';
+
 const PAGE = '.mud-ex-notebook-page-item';
 const TAB = '.mud-ex-notebook-section-tab';
 const SURFACE = '.mud-ex-notebook-editor-surface';
@@ -6,7 +8,11 @@ const RENAME = '.mud-ex-notebook-section-rename';
 const INLINE = `.mud-ex-notebook-title, ${RENAME}`;
 const FIELDS = 'input, textarea, select, [contenteditable]';
 const SHORTCUT_TARGETS = '.mud-ex-notebook-editor-surface, .mud-ex-notebook-page-list, .mud-ex-notebook-section-tabs';
-const SHORTCUTS = 'nyz';
+const SHORTCUTS = 'nyzfe';
+const OWN_PASTE = 'input, textarea, [contenteditable], .mud-ex-notebook-text-editor';
+const PRINT = 'mud-ex-notebook-print';
+const PRINT_BODY = 'mud-ex-notebook-print-body';
+const ZOOM_STEP = 1.1;
 const NAVIGATION = ['PageUp', 'PageDown', 'Tab'];
 const RASTER = ['image/png', 'image/jpeg', 'image/gif', 'image/bmp', 'image/webp'];
 const BEFORE = 'mud-ex-notebook-drop-before';
@@ -28,9 +34,10 @@ class MudExNotebookEditor {
         this.mutations.observe(root, { childList: true, subtree: true });
         this.events = [
             ['dragstart', e => this.dragStart(e)], ['dragover', e => this.dragOver(e)], ['drop', e => this.drop(e)], ['dragend', () => this.dragEnd()],
-            ['keydown', e => this.keyDown(e)], ['focusin', e => e.target.matches?.(RENAME) && e.target.select()]
+            ['keydown', e => this.keyDown(e)], ['focusin', e => e.target.matches?.(RENAME) && e.target.select()], ['paste', e => this.pasteEvent(e)],
+            ['wheel', e => this.wheel(e), { passive: false }]
         ];
-        this.events.forEach(([type, handler]) => root.addEventListener(type, handler));
+        this.events.forEach(([type, handler, options]) => root.addEventListener(type, handler, options));
         this.observe();
     }
 
@@ -80,6 +87,45 @@ class MudExNotebookEditor {
         const url = URL.createObjectURL(new Blob([bytes], { type }));
         this.urls.add(url);
         return url;
+    }
+
+    pasteEvent(e) {
+        if (!this.dotnet || e.target.closest?.(OWN_PASTE) || this.root.dataset.readonly === 'true') {
+            return;
+        }
+        e.preventDefault();
+        sendPaste(this.dotnet, eventClipboardData(e));
+    }
+
+    async readClipboard() {
+        sendPaste(this.dotnet, await readClipboardData());
+    }
+
+    writeClipboard(text, clip) {
+        return writeClipboardData(text, clip);
+    }
+
+    wheel(e) {
+        if (!(e.ctrlKey || e.metaKey) || !e.deltaY || !e.target.closest?.(SURFACE)) {
+            return;
+        }
+        e.preventDefault();
+        this.dotnet?.invokeMethodAsync('OnZoomWheel', e.deltaY < 0 ? ZOOM_STEP : 1 / ZOOM_STEP).catch(() => {});
+    }
+
+    print() {
+        const root = this.root;
+        if (!root) {
+            return;
+        }
+        const done = () => {
+            root.classList.remove(PRINT);
+            document.body.classList.remove(PRINT_BODY);
+        };
+        root.classList.add(PRINT);
+        document.body.classList.add(PRINT_BODY);
+        window.addEventListener('afterprint', done, { once: true });
+        window.print();
     }
 
     revokeAll() {
@@ -188,7 +234,7 @@ class MudExNotebookEditor {
 
     dispose() {
         cancelAnimationFrame(this.frame);
-        this.events.forEach(([type, handler]) => this.root?.removeEventListener(type, handler));
+        this.events.forEach(([type, handler, options]) => this.root?.removeEventListener(type, handler, options));
         this.resize.disconnect();
         this.mutations.disconnect();
         this.revokeAll();

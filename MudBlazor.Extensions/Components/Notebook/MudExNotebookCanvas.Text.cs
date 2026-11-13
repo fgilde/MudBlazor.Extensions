@@ -101,7 +101,9 @@ public partial class MudExNotebookCanvas
         _sessionState = null;
         if (paragraphs != null && Editable)
         {
-            if (!session.IsNew && Find(session.ElementId) is TextElement)
+            if (session.Row is { } row && session.Column is { } column && Find(session.ElementId) is TableElement table && CellOf(table, session) != null)
+                Notebook.Execute(new SetTableCellCommand(Page, table.Id, row, column, CellText(paragraphs)));
+            else if (!session.IsNew && session.Row == null && Find(session.ElementId) is TextElement)
                 Notebook.Execute(new SetTextCommand(Page, session.ElementId, paragraphs));
             else if (session.IsNew && !NotebookEdit.IsEmpty(paragraphs))
                 Notebook.Execute(new AddElementCommand(Page, new TextElement { Id = session.ElementId, X = session.X, Y = session.Y, Width = NewTextWidth, Paragraphs = paragraphs }));
@@ -131,9 +133,26 @@ public partial class MudExNotebookCanvas
         await SelectionChanged.InvokeAsync(_selection);
     }
 
-    private IReadOnlyList<NoteParagraph> OriginalOf(NotebookTextEditRequest session) => !session.IsNew && Find(session.ElementId) is TextElement text ? text.Paragraphs : [];
+    private IReadOnlyList<NoteParagraph> OriginalOf(NotebookTextEditRequest session) => Find(session.ElementId) switch
+    {
+        TableElement table => CellOf(table, session)?.Paragraphs ?? [],
+        TextElement text when !session.IsNew && session.Row == null => text.Paragraphs,
+        _ => []
+    };
 
-    private double SessionWidth(NotebookTextEditRequest session) => !session.IsNew && Find(session.ElementId) is { } element ? element.Width : NewTextWidth;
+    private double SessionWidth(NotebookTextEditRequest session) => Find(session.ElementId) switch
+    {
+        TableElement table when CellOf(table, session) != null => Math.Max(1, table.ColumnWidths[session.Column!.Value] - 2 * NotebookStyles.CellPadding),
+        { } element when !session.IsNew => element.Width,
+        _ => NewTextWidth
+    };
+
+    private bool IsAlive(NotebookTextEditRequest session) => session.IsNew || Find(session.ElementId) switch
+    {
+        TableElement table => CellOf(table, session) != null,
+        TextElement => session.Row == null,
+        _ => false
+    };
 
     private static NotebookTextEditRequest Request(TextElement text) => new(text.Id, text.X, text.Y, false);
 }

@@ -44,7 +44,12 @@ class MudExNotebookText {
         this.canvas = root.closest('.mud-ex-notebook-canvas');
         this.box = root.closest('.mud-ex-notebook-text-editor') ?? root;
         this.id = options?.id || null;
+        this.cell = options?.cell || null;
+        this.tableTab = !!options?.tableTab;
         this.element = this.id ? this.canvas?.querySelector(`[data-element-id="${this.id}"]`) : null;
+        if (this.cell) {
+            this.element = this.placeInCell(this.element?.querySelector(`td[data-cell="${this.cell}"]`));
+        }
         this.element?.classList.add('mud-ex-notebook-editing');
         this.composing = false;
         this.commitPending = false;
@@ -256,7 +261,11 @@ class MudExNotebookText {
             this.commit(true);
         } else if (e.key === 'Tab' && !ctrl && !e.altKey) {
             e.preventDefault();
-            this.format('indent', e.shiftKey ? '-1' : '1');
+            if (this.cell || (this.tableTab && !e.shiftKey && this.tableable())) {
+                this.tab(e.shiftKey);
+            } else {
+                this.format('indent', e.shiftKey ? '-1' : '1');
+            }
         } else if (e.altKey && e.shiftKey && !ctrl && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
             e.preventDefault();
             this.move(e.key === 'ArrowUp');
@@ -621,6 +630,42 @@ class MudExNotebookText {
         }
         this.renumber();
         this.changed();
+    }
+
+    placeInCell(td) {
+        const page = this.canvas?.querySelector('.mud-ex-notebook-page');
+        if (!td || !page) {
+            return null;
+        }
+        const zoom = +this.canvas.dataset.zoom || 1;
+        const cell = td.getBoundingClientRect();
+        const origin = page.getBoundingClientRect();
+        const padding = parseFloat(getComputedStyle(td).paddingLeft) || 0;
+        this.box.style.left = `px`;
+        this.box.style.top = `px`;
+        return td.firstElementChild;
+    }
+
+    tableable() {
+        const divs = [...this.root.children].filter(isDiv);
+        const range = this.current();
+        if (divs.length !== 1 || divs[0].dataset.list || level(divs[0]) || !range?.collapsed || !plain(divs[0].textContent).trim()) {
+            return false;
+        }
+        const after = document.createRange();
+        after.setStart(range.endContainer, range.endOffset);
+        after.setEnd(divs[0], divs[0].childNodes.length);
+        return !plain(after.toString());
+    }
+
+    tab(back) {
+        if (this.done || !this.dotnet) {
+            return;
+        }
+        this.done = true;
+        const paragraphs = this.read();
+        this.canvas?.focus({ preventScroll: true });
+        this.dotnet.invokeMethodAsync('OnTabAsync', paragraphs, back).catch(() => {});
     }
 
     dispose() {

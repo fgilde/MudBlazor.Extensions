@@ -26,6 +26,27 @@ const segmentDistance = (a, b, c, d) => intersects(a, b, c, d) ? 0
 
 const pathOf = points => points.length ? `M${points.map(p => `${p.x} ${p.y}`).join('L')}${points.length === 1 ? `L${points[0].x} ${points[0].y}` : ''}` : '';
 
+function shapeOf(kind, a, b) {
+    if (!a || !b) {
+        return '';
+    }
+    const [l, t, r, btm] = [Math.min(a.x, b.x), Math.min(a.y, b.y), Math.max(a.x, b.x), Math.max(a.y, b.y)];
+    const [cx, cy, rx, ry] = [(l + r) / 2, (t + btm) / 2, (r - l) / 2, (btm - t) / 2];
+    switch (kind) {
+        case 'line':
+        case 'arrow':
+            return `M${a.x} ${a.y}L${b.x} ${b.y}`;
+        case 'ellipse':
+            return `M${l} ${cy}A${rx} ${ry} 0 1 0 ${r} ${cy}A${rx} ${ry} 0 1 0 ${l} ${cy}Z`;
+        case 'triangle':
+            return `M${cx} ${t}L${r} ${btm}L${l} ${btm}Z`;
+        case 'diamond':
+            return `M${cx} ${t}L${r} ${cy}L${cx} ${btm}L${l} ${cy}Z`;
+        default:
+            return `M${l} ${t}H${r}V${btm}H${l}Z`;
+    }
+}
+
 function strokeOf(svg) {
     const el = svg.closest('[data-element-id]');
     const path = svg.querySelector('path');
@@ -109,11 +130,12 @@ export const inkMethods = {
                 return;
             }
         }
-        if (tool !== 'pen' && tool !== 'highlighter' && tool !== 'eraser' && tool !== 'lasso') {
+        if (!DRAW_TOOLS.includes(tool)) {
             return;
         }
         this.focus(e);
-        const d = { kind: tool === 'eraser' ? 'erase' : tool === 'lasso' ? 'lasso' : 'stroke', ink: true, tool, points: [], frame: 0 };
+        const kind = { eraser: 'erase', lasso: 'lasso', shape: 'shape' }[tool] ?? 'stroke';
+        const d = { kind, ink: true, tool, shape: this.root.dataset.shape, points: [], frame: 0 };
         if (d.kind === 'erase') {
             d.strokes = [...page.querySelectorAll('.mud-ex-notebook-ink')].map(strokeOf).filter(s => s.points.length);
             d.hits = new Set();
@@ -143,7 +165,7 @@ export const inkMethods = {
         path.setAttribute('fill', 'none');
         path.setAttribute('stroke-linecap', 'round');
         path.setAttribute('stroke-linejoin', 'round');
-        if (d.kind === 'lasso') {
+        if (d.kind === 'lasso' || d.kind === 'shape') {
             path.setAttribute('class', 'mud-ex-notebook-live-lasso');
             path.setAttribute('vector-effect', 'non-scaling-stroke');
         } else {
@@ -204,7 +226,7 @@ export const inkMethods = {
         if (!d.path) {
             return;
         }
-        d.path.setAttribute('d', pathOf(d.points) + (d.kind === 'lasso' && d.points.length > 2 ? 'Z' : ''));
+        d.path.setAttribute('d', d.kind === 'shape' ? shapeOf(d.shape, d.points[0], d.points[d.points.length - 1]) : pathOf(d.points) + (d.kind === 'lasso' && d.points.length > 2 ? 'Z' : ''));
     },
 
     async inkUp(d, cancel) {
@@ -218,6 +240,9 @@ export const inkMethods = {
                 await this.dotnet.invokeMethodAsync('OnStrokeAsync', d.points).catch(() => {});
             } else if (d.kind === 'erase' && d.hits.size) {
                 await this.dotnet.invokeMethodAsync('OnEraseAsync', [...d.hits].map(s => s.id)).catch(() => {});
+            } else if (d.kind === 'shape' && d.points.length) {
+                const [a, b] = [d.points[0], d.points[d.points.length - 1]];
+                await this.dotnet.invokeMethodAsync('OnShapeAsync', a.x, a.y, b.x, b.y).catch(() => {});
             } else if (d.kind === 'lasso') {
                 const polygon = d.points.length > 2 ? d.points.map(p => ({ x: p.x, y: p.y })) : [];
                 await this.dotnet.invokeMethodAsync('OnLassoAsync', polygon).catch(() => {});

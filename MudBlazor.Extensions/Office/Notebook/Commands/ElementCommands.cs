@@ -211,3 +211,25 @@ public sealed class AddImageCommand(NotebookPage page, byte[] data, string conte
     /// <inheritdoc />
     public void Revert(Notebook document) => _edit.Revert(document);
 }
+
+/// <summary>Sets the alternative text of a picture, the text screen readers read and shown while the picture cannot be loaded.</summary>
+/// <param name="page">The page.</param>
+/// <param name="imageId">The id of an <see cref="ImageElement"/>.</param>
+/// <param name="altText">The new text; null is an empty text.</param>
+public sealed class SetImageAltTextCommand(NotebookPage page, string imageId, string altText) : IDocumentCommand<Notebook>
+{
+    private ElementEdit _edit;
+
+    /// <inheritdoc />
+    public string Description => "Alt text";
+
+    /// <inheritdoc />
+    public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements =>
+    {
+        var image = NotebookEdit.Find<ImageElement>(elements, imageId);
+        if ((altText ?? "") != image.AltText) NotebookEdit.Replace(elements, image).AltText = altText ?? "";
+    });
+
+    /// <inheritdoc />
+    public void Revert(Notebook document) => _edit.Revert(document);
+}

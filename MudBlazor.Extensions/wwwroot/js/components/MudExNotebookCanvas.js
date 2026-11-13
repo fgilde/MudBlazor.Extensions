@@ -11,6 +11,8 @@ const KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 const MODIFIERS = ['Shift', 'Control', 'Alt', 'AltGraph', 'Meta', 'CapsLock', 'Dead'];
 const FORMAT_KEYS = ['b', 'i', 'u'];
 const TODO = '.mud-ex-notebook-todo';
+const CELL = 'td[data-cell]';
+const BORDER_PX = 4;
 
 const px = value => `${value}px`;
 const frameSelector = id => `.mud-ex-notebook-selection[data-id="${id}"]`;
@@ -29,7 +31,7 @@ class MudExNotebookCanvas {
         this.pan = null;
         this.onMove = e => this.pointerMove(e);
         this.onUp = e => this.pointerUp(e);
-        this.events = [['pointerdown', e => this.pointerDown(e)], ['keydown', e => this.keyDown(e)], ['click', e => this.click(e)],
+        this.events = [['pointerdown', e => this.pointerDown(e)], ['keydown', e => this.keyDown(e)], ['click', e => this.click(e)], ['contextmenu', e => this.contextMenu(e)], ['dragover', e => this.dragOver(e)], ['drop', e => this.drop(e)],
             ['pointermove', e => this.touchMove(e)], ['pointerup', e => this.touchUp(e)], ['pointercancel', e => this.touchUp(e)]];
         this.events.forEach(([type, handler]) => root.addEventListener(type, handler));
         this.resizer = new ResizeObserver(entries => this.measured(entries));
@@ -195,6 +197,12 @@ class MudExNotebookCanvas {
         }
         const el = e.target.closest(ELEMENT);
         const id = el && page.contains(el) ? el.dataset.elementId : null;
+        const border = id ? this.columnBorder(e, el) : null;
+        if (border) {
+            this.focus(e);
+            this.begin(e, { kind: 'column', id, ...border, start });
+            return;
+        }
         const todo = id ? e.target.closest(TODO) : null;
         if (todo) {
             this.focus(e);
@@ -204,6 +212,12 @@ class MudExNotebookCanvas {
         }
         const toggle = e.shiftKey || e.ctrlKey || e.metaKey;
         this.focus(e);
+        const cell = id && tool === 'text' && !toggle ? e.target.closest(CELL) : null;
+        if (cell && el.contains(cell)) {
+            const [row, column] = cell.dataset.cell.split(',').map(Number);
+            this.begin(e, { kind: 'cell', id, ids: [id], row, column, start });
+            return;
+        }
         if (tool === 'text' && !toggle && (!id || el.classList.contains('mud-ex-notebook-text-element'))) {
             this.begin(e, { kind: 'click', start });
             return;
@@ -270,8 +284,10 @@ class MudExNotebookCanvas {
         const p = this.toPage(d.x, d.y);
         if (d.kind === 'marquee') {
             this.showMarquee(this.rect(d.start, p));
-        } else if (d.kind === 'move') {
+        } else if (d.kind === 'move' || d.kind === 'cell') {
             this.previewMove(d, p);
+        } else if (d.kind === 'column') {
+            this.previewColumns(d, this.columns(d, p));
         } else if (d.kind === 'resize') {
             this.previewResize(d, this.resized(d, p));
         }
@@ -308,7 +324,13 @@ class MudExNotebookCanvas {
                 await this.dotnet.invokeMethodAsync('OnSelectionAsync', d.toggle ? [...new Set([...this.selection(), ...ids])] : ids).catch(() => {});
             } else if (!d.toggle) {
                 await this.dotnet.invokeMethodAsync('OnSelectionAsync', []).catch(() => {});
+                await this.dotnet.invokeMethodAsync('OnPageClickAsync', d.start.x, d.start.y).catch(() => {});
             }
+            return;
+        }
+        if (d.kind === 'cell' && !d.moved) {
+            this.root.mudExCaret = [d.x0, d.y0];
+            await this.dotnet.invokeMethodAsync('OnCellClickAsync', d.id, d.row, d.column).catch(() => {});
             return;
         }
         if (!d.moved) {
@@ -317,7 +339,10 @@ class MudExNotebookCanvas {
             }
             return;
         }
-        if (d.kind === 'move') {
+        if (d.kind === 'column') {
+            this.restore(d, true);
+            await this.dotnet.invokeMethodAsync('OnColumnWidthsAsync', d.id, this.columns(d, p)).catch(() => {});
+        } else if (d.kind === 'move' || d.kind === 'cell') {
             const positions = {};
             this.moved(d, p).forEach(m => positions[m.id] = { x: m.x, y: m.y });
             await this.dotnet.invokeMethodAsync('OnMoveAsync', positions).catch(() => {});
@@ -326,6 +351,64 @@ class MudExNotebookCanvas {
             await this.dotnet.invokeMethodAsync('OnResizeAsync', { [d.id]: { x: b.x, y: b.y, width: b.w, height: b.h, free: !!d.shift } }).catch(() => {});
         }
         this.restore(d, false);
+    }
+
+    columnBorder(e, el) {
+        const td = el.classList.contains('mud-ex-notebook-table-element') ? e.target.closest(CELL) : null;
+        if (!td) {
+            return null;
+        }
+        const column = +td.dataset.cell.split(',')[1];
+        const r = td.getBoundingClientRect();
+        const index = Math.abs(e.clientX - r.right) <= BORDER_PX ? column : Math.abs(e.clientX - r.left) <= BORDER_PX ? column - 1 : -1;
+        const cols = [...el.querySelectorAll('col')];
+        if (index < 0 || index >= cols.length) {
+            return null;
+        }
+        return { column: index, widths: cols.map(c => parseFloat(c.style.width) || 0), cols, table: el.querySelector('table'), el };
+    }
+
+    columns(d, p) {
+        const widths = [...d.widths];
+        widths[d.column] = Math.max(MIN_PX, widths[d.column] + p.x - d.start.x);
+        return widths;
+    }
+
+    previewColumns(d, widths) {
+        const total = px(widths.reduce((s, w) => s + w, 0));
+        d.cols.forEach((col, i) => this.style(d, col, s => s.width = px(widths[i])));
+        this.style(d, d.table, s => s.width = total);
+        this.style(d, d.el, s => s.width = total);
+    }
+
+    contextMenu(e) {
+        if (this.readOnly() || !this.dotnet || !this.page()?.contains(e.target) || e.target.closest(TEXT_EDITOR)) {
+            return;
+        }
+        e.preventDefault();
+        const el = e.target.closest(ELEMENT);
+        const cell = el ? e.target.closest(CELL) : null;
+        const [row, column] = cell ? cell.dataset.cell.split(',').map(Number) : [-1, -1];
+        this.dotnet.invokeMethodAsync('OnContextMenuAsync', el?.dataset.elementId ?? null, row, column, e.clientX, e.clientY).catch(() => {});
+    }
+
+    dragOver(e) {
+        if (!this.readOnly() && [...(e.dataTransfer?.types ?? [])].includes('Files')) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        }
+    }
+
+    drop(e) {
+        const files = [...(e.dataTransfer?.files ?? [])].filter(f => f.type.startsWith('image/'));
+        if (this.readOnly() || !this.dotnet || !files.length || !this.page()) {
+            return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        const p = this.toPage(e.clientX, e.clientY);
+        files.forEach((file, i) => this.dotnet.invokeMethodAsync('OnPictureDroppedAsync', DotNet.createJSStreamReference(file), file.type, p.x + i * 20, p.y + i * 20)
+            .catch(() => {}));
     }
 
     rect(a, b) {

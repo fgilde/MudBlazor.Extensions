@@ -111,6 +111,15 @@ public partial class MudExNotebookEditor
         {
             switch (e.Key.ToLowerInvariant())
             {
+                case "f" or "e":
+                    await OpenSearchAsync(e.Key is "e" or "E");
+                    return true;
+                case "c" when area == KeyArea.Pages:
+                    await CopyPagesAsync();
+                    return true;
+                case "c" or "x" when area == KeyArea.Surface:
+                    await CopyElementsAsync(e.Key is "x" or "X");
+                    return true;
                 case "z" or "y" or "n" when IsReadOnly:
                     return false;
                 case "z":

@@ -1,0 +1,13 @@
+@inherits MudExBaseComponent<MudExNotebookAltTextDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="mud-ex-nbalt-dialog">
+    <DialogContent>
+        <MudTextField T="string" Class="mud-ex-nbalt-text" Label="@TryLocalize("Describe the picture for people who cannot see it:")" @bind-Value="_text" Immediate="true"
+                      Lines="3" Margin="Margin.Dense" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-nbalt-ok" Color="Color.Primary" Variant="Variant.Filled" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

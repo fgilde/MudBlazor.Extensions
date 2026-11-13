@@ -264,6 +264,32 @@ public class NotebookCommandTests
     }
 
     [Fact]
+    public void SetImageAltText_ApplyRevertRedo()
+    {
+        var notebook = Notebook.Create();
+        var page = First(notebook);
+        var add = new AddImageCommand(page, PngOfSize(10, 10), "image/png", 0, 0, 600);
+        notebook.Execute(add);
+        notebook.Undo.Clear();
+        var before = Snapshot(notebook);
+
+        notebook.Execute(new SetImageAltTextCommand(page, add.Image.Id, "A cat"));
+        var applied = Snapshot(notebook);
+        Assert.Equal("A cat", ((ImageElement)page.Elements[0]).AltText);
+        notebook.Undo.Undo();
+        Assert.Equal(before, Snapshot(notebook));
+        Assert.Equal("", ((ImageElement)page.Elements[0]).AltText);
+        notebook.Undo.Redo();
+        Assert.Equal(applied, Snapshot(notebook));
+        Assert.Equal("A cat", ((ImageElement)Reload(notebook).Sections[0].Pages[0].Elements[0]).AltText);
+
+        notebook.Undo.Clear();
+        notebook.Execute(new SetImageAltTextCommand(page, add.Image.Id, "A cat"));
+        Assert.False(notebook.Undo.CanUndo);
+        Assert.Throws<ArgumentException>(() => notebook.Execute(new SetImageAltTextCommand(page, "missing", "x")));
+    }
+
+    [Fact]
     public void Table_DeletingEveryRowOrColumn_Throws()
     {
         var notebook = AllKinds();
