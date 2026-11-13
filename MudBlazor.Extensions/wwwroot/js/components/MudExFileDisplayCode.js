@@ -31,7 +31,7 @@ class MudExFileDisplayCode {
 
     readValue() {
         this.notified = false;
-        return DotNet.createJSStreamReference(new Blob([this.area?.value ?? '']));
+        return new Blob([this.area?.value ?? '']);
     }
 
     dispose() {

@@ -105,15 +105,15 @@ export const clipboardMethods = {
             try {
                 for (const item of await navigator.clipboard.read()) {
                     if (item.types.includes('text/html')) {
-                        return DotNet.createJSStreamReference(await item.getType('text/html'));
+                        return await item.getType('text/html');
                     }
                 }
             } catch {
             }
-            return null;
+            return new Blob([]);
         }
         const text = await navigator.clipboard.readText();
-        return DotNet.createJSStreamReference(new Blob([text ?? '']));
+        return new Blob([text ?? '']);
     },
 
     contextMenu(e) {
