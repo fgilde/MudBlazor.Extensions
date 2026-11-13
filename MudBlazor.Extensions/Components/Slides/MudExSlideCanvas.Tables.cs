@@ -142,7 +142,7 @@ public partial class MudExSlideCanvas
             case "Escape":
                 await SelectCellsAsync(null);
                 return true;
-            case "Delete" or "Backspace" when !ctrl:
+            case "Delete" or "Backspace":
                 using (Presentation.Undo.BeginTransaction("Clear cells"))
                     foreach (var (_, row, column, shape) in SelectedCellShapes.Where(c => table.Rows[c.Row].Cells[c.Column].HasText))
                         Presentation.Execute(new SetTableCellTextCommand(Slide, table.Id, row, column, shape.Text with { Paragraphs = [shape.Text.Paragraphs[0] with { Runs = [] }] }));

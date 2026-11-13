@@ -107,13 +107,20 @@ public partial class MudExSlideShapeView
     private static string DashOf(ShapeLine line)
     {
         if (line == null) return null;
-        var unit = line.Width;
-        return line.Dash switch
+        int[] pattern = line.Dash switch
         {
-            "dash" or "sysDash" => $"{unit * 4} {unit * 3}",
-            "dot" or "sysDot" => $"{unit} {unit * 2}",
-            "dashDot" or "sysDashDot" => $"{unit * 4} {unit * 3} {unit} {unit * 3}",
+            "dash" => [4, 3],
+            "dot" => [1, 3],
+            "dashDot" => [4, 3, 1, 3],
+            "lgDash" => [8, 3],
+            "lgDashDot" => [8, 3, 1, 3],
+            "lgDashDotDot" => [8, 3, 1, 3, 1, 3],
+            "sysDash" => [3, 1],
+            "sysDot" => [1, 1],
+            "sysDashDot" => [3, 1, 1, 1],
+            "sysDashDotDot" => [3, 1, 1, 1, 1, 1],
             _ => null
         };
+        return pattern == null ? null : string.Join(" ", pattern.Select(p => p * line.Width));
     }
 }
