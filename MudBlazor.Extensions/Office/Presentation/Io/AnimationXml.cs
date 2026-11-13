@@ -27,14 +27,15 @@ internal static class AnimationXml
     {
         var shapes = (slide.Element(P + "cSld")?.Element(P + "spTree")?.Descendants(P + "cNvPr") ?? []).ToLookup(c => (string)c.Attribute("id"), c => c.Parent!.Parent!);
         var live = effects.Where(e => shapes.Contains(e.ShapeId.ToString(CultureInfo.InvariantCulture))).ToList();
-        if (live.Count == effects.Count && effects.SequenceEqual(loaded == null ? [] : Read(loaded))) return;
+        if (live.Count == effects.Count && AnimationEdit.Same(effects, loaded == null ? [] : Read(loaded))) return;
         var timing = slide.Element(P + "timing");
+        if (timing != null) SlideTiming.Renumber(timing);
         var before = timing == null ? [] : Builds(timing);
         var main = MainSequence(slide) ?? CreateMainSequence(slide);
         timing = slide.Element(P + "timing")!;
         var list = main.Element(P + "childTnLst") ?? Add(main, new XElement(P + "childTnLst"));
         list.RemoveNodes();
-        var used = Builds(timing).Concat(before).Concat(live.Where(e => e.Source != null).Select(e => Build(e.Source))).ToList();
+        var used = Builds(timing).Concat(before).Concat(timing.Element(P + "bldLst")?.Elements().Select(Build) ?? []).Concat(live.Where(e => e.Source != null).Select(e => Build(e.Source))).ToList();
         var created = new List<(string Shape, string Group)>();
         XElement step = null, slice = null;
         foreach (var (effect, newStep, newSlice, sliceStart, _) in SlideBuildSteps.Schedule(live))
@@ -67,7 +68,9 @@ internal static class AnimationXml
             if (shapes[shape].FirstOrDefault() is not { } element || element.Name != P + "sp") continue;
             var builds = timing.Element(P + "bldLst") ?? SlideXml.Place(timing, new XElement(P + "bldLst"), "extLst");
             builds.Add(new XElement(P + "bldP", new XAttribute("spid", shape), new XAttribute("grpId", group),
-                (string)element.Element(P + "nvSpPr")?.Element(P + "cNvSpPr")?.Attribute("txBox") is "1" or "true" ? null : new XAttribute("animBg", "1")));
+                (string)element.Element(P + "nvSpPr")?.Element(P + "cNvSpPr")?.Attribute("txBox") is "1" or "true" || element.Descendants(P + "ph").Any()
+                    ? null
+                    : new XAttribute("animBg", "1")));
         }
     }
 
@@ -75,7 +78,9 @@ internal static class AnimationXml
     {
         var tn = node.Element(P + "cTn")!;
         var target = tn.Descendants().FirstOrDefault(t => t.Name == P + "spTgt" || t.Name == P + "inkTgt");
-        var range = target?.Element(P + "txEl")?.Element(P + "pRg");
+        var text = target?.Element(P + "txEl");
+        var range = text?.Element(P + "pRg");
+        var paragraph = range != null && (string)range.Attribute("st") == (string)range.Attribute("end") ? (int?)Long((string)range.Attribute("st")) : null;
         var type = (string)tn.Attribute("presetClass") switch
         {
             "entr" => AnimationClass.Entrance,
@@ -85,13 +90,13 @@ internal static class AnimationXml
             _ => AnimationClass.Other
         };
         var id = Long((string)tn.Attribute("presetID"));
-        var preset = type is AnimationClass.Entrance or AnimationClass.Exit ? Presets.Where(p => p.Id == id).Select(p => p.Preset).DefaultIfEmpty(AnimationPreset.Other).First() : AnimationPreset.Other;
+        var preset = type is AnimationClass.Entrance or AnimationClass.Exit && (text == null || paragraph != null) ? Presets.Where(p => p.Id == id).Select(p => p.Preset).DefaultIfEmpty(AnimationPreset.Other).First() : AnimationPreset.Other;
         var subtype = Long((string)tn.Attribute("presetSubtype"));
         var trigger = NodeTypes.FirstOrDefault(n => n.NodeType == (string)tn.Attribute("nodeType"), (first ? AnimationTrigger.OnClick : AnimationTrigger.WithPrevious, null)).Trigger;
         var duration = tn.Element(P + "childTnLst")?.Descendants(P + "cTn").Select(c => Long((string)c.Attribute("dur")) is { } dur ? Start(c) + dur : 0).DefaultIfEmpty().Max() ?? 0;
         return new AnimationEffect((uint)(Long((string)target?.Attribute("spid")) ?? 0), type, preset, trigger, Start(tn) / 1000.0, duration / 1000.0,
             preset is AnimationPreset.FlyIn or AnimationPreset.Wipe ? Sides.FirstOrDefault(s => s.Subtype == subtype).Direction : AnimationDirection.None,
-            range != null && (string)range.Attribute("st") == (string)range.Attribute("end") ? (int?)Long((string)range.Attribute("st")) : null) { Source = node };
+            paragraph) { Source = node };
     }
 
     private static bool Reusable(AnimationEffect effect) =>
@@ -118,8 +123,8 @@ internal static class AnimationXml
                 behaviours.Add(Move(effect.ShapeId, "ppt_y", side.Y, "#ppt_y", entrance, ms));
                 break;
             case AnimationPreset.Zoom:
-                behaviours.Add(Move(effect.ShapeId, "ppt_w", "0", "#ppt_w", entrance, ms));
-                behaviours.Add(Move(effect.ShapeId, "ppt_h", "0", "#ppt_h", entrance, ms));
+                behaviours.Add(Move(effect.ShapeId, "ppt_w", "0", "#ppt_w", entrance, ms, false));
+                behaviours.Add(Move(effect.ShapeId, "ppt_h", "0", "#ppt_h", entrance, ms, false));
                 behaviours.Add(Filter(effect.ShapeId, entrance, "fade", ms));
                 break;
         }
@@ -141,9 +146,9 @@ internal static class AnimationXml
         new(P + "animEffect", new XAttribute("transition", entrance ? "in" : "out"), new XAttribute("filter", filter),
             Behaviour(shape, new XElement(P + "cTn", new XAttribute("dur", duration)), null));
 
-    private static XElement Move(uint shape, string attribute, string outside, string inside, bool entrance, long duration) =>
+    private static XElement Move(uint shape, string attribute, string outside, string inside, bool entrance, long duration, bool additive = true) =>
         new(P + "anim", new XAttribute("calcmode", "lin"), new XAttribute("valueType", "num"),
-            Behaviour(shape, new XElement(P + "cTn", new XAttribute("dur", duration), new XAttribute("fill", "hold")), attribute, true),
+            Behaviour(shape, new XElement(P + "cTn", new XAttribute("dur", duration), new XAttribute("fill", "hold")), attribute, additive),
             new XElement(P + "tavLst", Value(0, entrance ? outside : inside), Value(100000, entrance ? inside : outside)));
 
     private static XElement Value(int time, string value) =>

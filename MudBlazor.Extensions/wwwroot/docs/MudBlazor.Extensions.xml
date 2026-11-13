@@ -32038,6 +32038,14 @@
         <member name="P:MudBlazor.Extensions.Office.Presentation.AnimationEffect.ParagraphIndex">
             <summary>The animated paragraph of the shape's text, or null if the whole shape is animated.</summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AnimationEffect.Equals(MudBlazor.Extensions.Office.Presentation.AnimationEffect)">
+            <summary>Compares the modelled values; the original file content an effect was read from does not take part.</summary>
+            <param name="other">The other effect.</param>
+            <returns>True if both effects have the same values.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AnimationEffect.GetHashCode">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.ScheduledEffect">
             <summary>An animation effect with its start within its build step.</summary>
             <param name="Effect">The effect.</param>

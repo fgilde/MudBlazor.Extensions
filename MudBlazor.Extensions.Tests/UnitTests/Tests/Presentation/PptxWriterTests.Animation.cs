@@ -67,7 +67,7 @@ public partial class PptxWriterTests
     [Fact]
     public void Writer_UnchangedTransitionKind_KeepsEffectAttributes()
     {
-        var presentation = TransitionTests.Deck("<p:transition spd=\"slow\"><p:split orient=\"vert\" dir=\"in\"/></p:transition>");
+        var presentation = TransitionTests.Deck("<p:transition spd=\"slow\"><p:split orient=\"vert\" dir=\"in\"/><p:extLst><p:ext uri=\"{X}\"/></p:extLst></p:transition>");
         var slide = presentation.Slides[0];
         presentation.Execute(new SetTransitionCommand([slide], slide.Transition with { DurationSeconds = 0.5 }));
 
@@ -75,6 +75,7 @@ public partial class PptxWriterTests
 
         Assert.Null(transition.Attribute("spd"));
         Assert.Equal("in", (string)transition.Element(P + "split")!.Attribute("dir"));
+        Assert.Equal(["split", "extLst"], transition.Elements().Select(e => e.Name.LocalName));
     }
 
     [Fact]
@@ -212,5 +213,94 @@ public partial class PptxWriterTests
         var reloaded = SlideBuildSteps.For(Load(output).Slides[0]);
         Assert.Equal(steps.Select(s => string.Join(",", s.Effects.Select(e => $"{e.Effect.ShapeId}@{e.StartSeconds}"))),
             reloaded.Select(s => string.Join(",", s.Effects.Select(e => $"{e.Effect.ShapeId}@{e.StartSeconds}"))));
+    }
+
+    [Fact]
+    public void Writer_TriggerChangedWithFreshRecord_KeepsOriginalEffectNode()
+    {
+        var presentation = RichDeck();
+        var slide = presentation.Slides[0];
+        var original = EffectNodes(Xml(new PptxBuilder().Slide(Shapes(2, 3, 4, 5), tail: RichTiming).Build(), "/ppt/slides/slide1.xml").Root!).ToList();
+        var exit = slide.Animations[4];
+
+        presentation.Execute(new SetAnimationCommand(slide, 4, new AnimationEffect(exit.ShapeId, exit.Class, exit.Preset, AnimationTrigger.AfterPrevious, 0.5, exit.DurationSeconds, exit.Direction, null)));
+        var output = Save(presentation);
+
+        AssertConsistent(output);
+        var written = EffectNodes(SlideXml(output)).ToList();
+        Assert.True(XNode.DeepEquals(Stripped(original[4]), Stripped(written[4])));
+        Assert.Equal("afterEffect", (string)written[4].Element(P + "cTn")!.Attribute("nodeType"));
+    }
+
+    [Fact]
+    public void Writer_MainSequenceWithoutIds_AutomaticFirstStep_Saves()
+    {
+        var presentation = new PptxBuilder().Slide(Shapes(2, 3), tail: AnimationTests.Timing(Group(Slice(0, AnimationTests.Effect("entr", 10, 0, "withEffect", 2))))
+            .Replace(" id=\"1\"", "").Replace(" id=\"2\"", "")).Load();
+        var slide = presentation.Slides[0];
+        presentation.Execute(new AddAnimationCommand(slide, new AnimationEffect(3, AnimationClass.Entrance, AnimationPreset.Fade, AnimationTrigger.OnClick, 0, 0.5, AnimationDirection.None, null)));
+
+        var output = Save(presentation);
+
+        AssertConsistent(output);
+        var xml = SlideXml(output);
+        var main = xml.Descendants(P + "cTn").Single(c => (string)c.Attribute("nodeType") == "mainSeq");
+        Assert.Equal((string)main.Attribute("id"), (string)xml.Descendants(P + "tn").Single().Attribute("val"));
+    }
+
+    [Fact]
+    public void Writer_NewEffect_AvoidsGroupIdsOfOrphanBuilds()
+    {
+        var presentation = new PptxBuilder().Slide(Shapes(2, 4), tail: AnimationTests.Timing(Group(Slice(0, AnimationTests.Effect("entr", 10, 0, "clickEffect", 2))), "",
+            "<p:bldP spid=\"2\" grpId=\"0\"/><p:bldP spid=\"4\" grpId=\"0\"/>")).Load();
+        presentation.Execute(new AddAnimationCommand(presentation.Slides[0], new AnimationEffect(4, AnimationClass.Entrance, AnimationPreset.Fade, AnimationTrigger.OnClick, 0, 0.5, AnimationDirection.None, null)));
+
+        var xml = SlideXml(Save(presentation));
+
+        Assert.Equal(["2:0", "4:0", "4:1"], xml.Descendants(P + "bldP").Select(b => $"{b.Attribute("spid")!.Value}:{b.Attribute("grpId")!.Value}"));
+        Assert.Equal("1", (string)EffectNodes(xml).Last().Element(P + "cTn")!.Attribute("grpId"));
+    }
+
+    [Fact]
+    public void Writer_NewEffectOnPlaceholder_BuildWithoutAnimBg()
+    {
+        var presentation = new PptxBuilder().Slide(Placeholder(2, "Title 1", "type=\"title\"", "", "<a:p><a:r><a:t>T</a:t></a:r></a:p>")).Load();
+        presentation.Execute(new AddAnimationCommand(presentation.Slides[0], new AnimationEffect(2, AnimationClass.Entrance, AnimationPreset.Fade, AnimationTrigger.OnClick, 0, 0.5, AnimationDirection.None, null)));
+
+        var build = SlideXml(Save(presentation)).Descendants(P + "bldP").Single();
+
+        Assert.Null(build.Attribute("animBg"));
+    }
+
+    [Fact]
+    public void Writer_ZoomTemplate_WithoutAdditive_FlyInWithAdditiveBase()
+    {
+        var presentation = new PptxBuilder().Slide(Shapes(2)).Load();
+        var slide = presentation.Slides[0];
+        presentation.Execute(new AddAnimationCommand(slide, new AnimationEffect(2, AnimationClass.Entrance, AnimationPreset.Zoom, AnimationTrigger.OnClick, 0, 0.5, AnimationDirection.None, null)));
+        presentation.Execute(new AddAnimationCommand(slide, new AnimationEffect(2, AnimationClass.Exit, AnimationPreset.FlyIn, AnimationTrigger.OnClick, 0, 0.5, AnimationDirection.FromLeft, null)));
+
+        var anims = SlideXml(Save(presentation)).Descendants(P + "anim").Select(a => $"{a.Descendants(P + "attrName").Single().Value}:{(string)a.Element(P + "cBhvr")!.Attribute("additive")}");
+
+        Assert.Equal(["ppt_w:", "ppt_h:", "ppt_x:base", "ppt_y:base"], anims);
+    }
+
+    [Fact]
+    public void Writer_DeleteShape_RemovesInkTargetInInteractiveSequence()
+    {
+        const string ink = "<p:par><p:cTn presetID=\"1\" presetClass=\"entr\" presetSubtype=\"0\" fill=\"hold\" nodeType=\"clickEffect\"><p:stCondLst><p:cond delay=\"0\"/></p:stCondLst>" +
+                           "<p:childTnLst><p:set><p:cBhvr><p:cTn dur=\"1\" fill=\"hold\"/><p:tgtEl><p:inkTgt spid=\"3\"/></p:tgtEl><p:attrNameLst><p:attrName>style.visibility</p:attrName></p:attrNameLst></p:cBhvr>" +
+                           "<p:to><p:strVal val=\"visible\"/></p:to></p:set></p:childTnLst></p:cTn></p:par>";
+        var presentation = new PptxBuilder().Slide(Shapes(2, 3, 4), tail: AnimationTests.Timing(Group(Slice(0, AnimationTests.Effect("entr", 10, 0, "clickEffect", 2))),
+            Interactive(4, Group(Slice(0, ink, AnimationTests.Effect("entr", 10, 0, "withEffect", 2)))))).Load();
+
+        presentation.Execute(new DeleteShapesCommand(presentation.Slides[0], [3]));
+        var output = Save(presentation);
+
+        AssertConsistent(output);
+        var xml = SlideXml(output);
+        Assert.Empty(xml.Descendants(P + "inkTgt"));
+        Assert.Single(xml.Descendants(P + "cTn"), c => (string)c.Attribute("nodeType") == "interactiveSeq");
+        Assert.Equal(["2", "2", "4"], xml.Descendants(P + "spTgt").Select(t => (string)t.Attribute("spid")).Order());
     }
 }

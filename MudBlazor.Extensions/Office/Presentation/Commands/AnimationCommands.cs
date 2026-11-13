@@ -139,9 +139,10 @@ public sealed class SetAnimationCommand(Slide slide, int index, AnimationEffect 
     {
         var at = AnimationEdit.At(live, index, nameof(index));
         ArgumentNullException.ThrowIfNull(effect);
-        if (list[at] with { Trigger = effect.Trigger, DelaySeconds = effect.DelaySeconds } == effect) AnimationEdit.EnsureTiming(effect);
-        else AnimationEdit.EnsureCreatable(slide, effect);
-        list[at] = effect;
+        var value = effect.Source == null ? effect with { Source = list[at].Source } : effect;
+        if (list[at] with { Trigger = value.Trigger, DelaySeconds = value.DelaySeconds } == value) AnimationEdit.EnsureTiming(value);
+        else AnimationEdit.EnsureCreatable(slide, value);
+        list[at] = value;
     });
 
     /// <inheritdoc />
@@ -161,7 +162,7 @@ internal sealed class AnimationEdit
             SlideEdit.Ordered(document, [slide]);
             var list = slide.AnimationList.ToList();
             change(list, slide.LiveAnimations());
-            if (list.SequenceEqual(slide.AnimationList)) return;
+            if (Same(list, slide.AnimationList)) return;
             (_before, _after) = (slide.AnimationList.ToList(), list);
         }
 
@@ -175,6 +176,9 @@ internal sealed class AnimationEdit
 
     internal static int At(List<int> live, int index, string name) =>
         index >= 0 && index < live.Count ? live[index] : throw new ArgumentOutOfRangeException(name);
+
+    internal static bool Same(IReadOnlyList<AnimationEffect> a, IReadOnlyList<AnimationEffect> b) =>
+        a.Count == b.Count && a.Zip(b).All(p => p.First == p.Second && p.First.Source == p.Second.Source);
 
     internal static bool IsTime(double seconds) => double.IsFinite(seconds) && seconds >= 0;
 

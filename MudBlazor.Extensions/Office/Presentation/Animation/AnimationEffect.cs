@@ -95,4 +95,14 @@ public sealed record AnimationEffect(
     int? ParagraphIndex)
 {
     internal XElement Source { get; init; }
+
+    /// <summary>Compares the modelled values; the original file content an effect was read from does not take part.</summary>
+    /// <param name="other">The other effect.</param>
+    /// <returns>True if both effects have the same values.</returns>
+    public bool Equals(AnimationEffect other) =>
+        other is not null && ShapeId == other.ShapeId && Class == other.Class && Preset == other.Preset && Trigger == other.Trigger && DelaySeconds.Equals(other.DelaySeconds)
+        && DurationSeconds.Equals(other.DurationSeconds) && Direction == other.Direction && ParagraphIndex == other.ParagraphIndex;
+
+    /// <inheritdoc />
+    public override int GetHashCode() => HashCode.Combine(ShapeId, Class, Preset, Trigger, DelaySeconds, DurationSeconds, Direction, ParagraphIndex);
 }

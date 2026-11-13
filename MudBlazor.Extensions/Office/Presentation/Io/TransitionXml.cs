@@ -49,7 +49,7 @@ internal static class TransitionXml
         if (loaded == transition) return;
         var element = Find(slide).Transition;
         var old = loaded.Kind == transition.Kind && loaded.Direction == transition.Direction ? EffectOf(element) : null;
-        var sound = element?.Element(P + "sndAc");
+        var kept = element?.Elements().Where(e => e.Name == P + "sndAc" || e.Name == P + "extLst").Select(e => new XElement(e)).ToList();
         slide.Elements(P + "transition").Remove();
         Alternates(slide).Remove();
         if (transition is { Kind: TransitionKind.None, AdvanceOnClick: true, AdvanceAfterSeconds: null }) return;
@@ -58,7 +58,7 @@ internal static class TransitionXml
             speed == null ? null : new XAttribute("spd", speed),
             transition.AdvanceOnClick ? null : new XAttribute("advClick", "0"),
             transition.AdvanceAfterSeconds is { } after ? new XAttribute("advTm", ((long)Math.Round(after * 1000)).ToString(CultureInfo.InvariantCulture)) : null,
-            old != null ? new XElement(old) : Effect(transition), sound == null ? null : new XElement(sound)), "timing", "extLst");
+            old != null ? new XElement(old) : Effect(transition), kept), "timing", "extLst");
     }
 
     private static XElement EffectOf(XElement transition) => transition?.Elements().FirstOrDefault(e => e.Name != P + "sndAc" && e.Name != P + "extLst");

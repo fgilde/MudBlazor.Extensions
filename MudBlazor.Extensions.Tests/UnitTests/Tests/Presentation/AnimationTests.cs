@@ -112,9 +112,11 @@ public class AnimationTests
     public void Reader_ZoomPresets_AndUnknownEntrance()
     {
         var presentation = new PptxBuilder().Slide(Shapes(2),
-            tail: Timing(Group(Slice(0, Effect("entr", 23, 16, "clickEffect", 2), Effect("exit", 53, 16, "withEffect", 2), Effect("entr", 37, 0, "withEffect", 2))))).Load();
+            tail: Timing(Group(Slice(0, Effect("entr", 23, 16, "clickEffect", 2), Effect("exit", 53, 16, "withEffect", 2), Effect("entr", 37, 0, "withEffect", 2),
+                Effect("entr", 10, 0, "withEffect", 2, paragraph: 0).Replace("end=\"0\"", "end=\"1\""))))).Load();
 
-        Assert.Equal([AnimationPreset.Zoom, AnimationPreset.Zoom, AnimationPreset.Other], presentation.Slides[0].Animations.Select(a => a.Preset));
+        Assert.Equal([AnimationPreset.Zoom, AnimationPreset.Zoom, AnimationPreset.Other, AnimationPreset.Other], presentation.Slides[0].Animations.Select(a => a.Preset));
+        Assert.Null(presentation.Slides[0].Animations[3].ParagraphIndex);
     }
 
     [Fact]
@@ -157,6 +159,38 @@ public class AnimationTests
         presentation.Execute(new SetTransitionCommand([slide], slide.Transition));
 
         Assert.False(presentation.Undo.CanUndo);
+    }
+
+    [Fact]
+    public void SetAnimation_ValueEqualRecordWithoutSource_IsNoOp()
+    {
+        var presentation = RichDeck();
+        var slide = presentation.Slides[0];
+        var before = SlideCommandTests.Snapshot(presentation);
+
+        foreach (var index in new[] { 0, 2, 3 })
+        {
+            var e = slide.Animations[index];
+            presentation.Execute(new SetAnimationCommand(slide, index, new AnimationEffect(e.ShapeId, e.Class, e.Preset, e.Trigger, e.DelaySeconds, e.DurationSeconds, e.Direction, e.ParagraphIndex)));
+        }
+
+        Assert.False(presentation.Undo.CanUndo);
+        Assert.Equal(before, SlideCommandTests.Snapshot(presentation));
+        Assert.Equal(slide.Animations[0], slide.Animations[0] with { Source = null });
+    }
+
+    [Fact]
+    public void SetAnimation_FreshRecordChangingTiming_KeepsSource()
+    {
+        var presentation = RichDeck();
+        var slide = presentation.Slides[0];
+        var other = slide.Animations[3];
+
+        presentation.Execute(new SetAnimationCommand(slide, 3, new AnimationEffect(other.ShapeId, other.Class, other.Preset, AnimationTrigger.WithPrevious, 1, other.DurationSeconds, other.Direction, null)));
+
+        Assert.True(presentation.Undo.CanUndo);
+        Assert.Same(other.Source, slide.Animations[3].Source);
+        Assert.Equal(AnimationTrigger.WithPrevious, slide.Animations[3].Trigger);
     }
 
     [Fact]
