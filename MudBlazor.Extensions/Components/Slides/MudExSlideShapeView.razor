@@ -2,7 +2,8 @@
 @namespace MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Office.Presentation
 
-<div class="@ShapeClass" data-shape-id="@(Inherited ? null : Shape.Id)" data-group-id="@(Inherited ? null : Shape.Parent?.Id)" style="@BoxStyle(Shape.ResolvedTransform, Presentation)">
+<div class="@ShapeClass" data-shape-id="@(Inherited ? null : Shape.Id)" data-group-id="@(Inherited ? null : Shape.Parent?.Id)" data-table="@(Shape is TableShape ? "true" : null)"
+     style="@BoxStyle(Shape.ResolvedTransform, Presentation)">
     @switch (Shape)
     {
         case AutoShape auto:
@@ -71,7 +72,7 @@
             <div class="mud-ex-slide-opaque-label"><span>@opaque.Name</span><small>@opaque.Kind</small></div>
             break;
         case TableShape table:
-            <div class="mud-ex-slide-opaque-label"><span>@table.Name</span><small>table</small></div>
+            <MudExSlideTableView Table="table" Presentation="Presentation" Master="ColorMaster" SlideNumber="SlideNumber" HiddenCell="@(HideText ? HiddenCell : null)" />
             break;
     }
 </div>

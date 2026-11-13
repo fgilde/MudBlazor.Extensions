@@ -24,6 +24,7 @@ public partial class MudExSlideCanvas
     private readonly EventCallback<KeyboardEventArgs> _keyDown;
     private readonly EventCallback<IReadOnlyList<SlideTextParagraphDto>> _textChanged;
     private readonly EventCallback<IReadOnlyList<SlideTextParagraphDto>> _textCommitted;
+    private readonly EventCallback<(SlideTextParagraphDto[] Paragraphs, bool Back)> _textTabbed;
     private List<uint> _selection = [];
     private Slide _slide;
     private int _version;
@@ -40,6 +41,7 @@ public partial class MudExSlideCanvas
         _keyDown = new EventCallback<KeyboardEventArgs>(WithoutRender.Instance, (Func<KeyboardEventArgs, Task>)OnKeyDownAsync);
         _textChanged = new EventCallback<IReadOnlyList<SlideTextParagraphDto>>(WithoutRender.Instance, (Func<IReadOnlyList<SlideTextParagraphDto>, Task>)OnTextChangedAsync);
         _textCommitted = new EventCallback<IReadOnlyList<SlideTextParagraphDto>>(WithoutRender.Instance, (Func<IReadOnlyList<SlideTextParagraphDto>, Task>)OnTextCommittedAsync);
+        _textTabbed = new EventCallback<(SlideTextParagraphDto[], bool)>(WithoutRender.Instance, (Func<(SlideTextParagraphDto[], bool), Task>)OnTextTabbedAsync);
     }
 
     /// <summary>The presentation the slide belongs to. Edits are executed on it.</summary>
@@ -57,11 +59,14 @@ public partial class MudExSlideCanvas
     /// <summary>If true shapes can neither be selected nor changed.</summary>
     [Parameter] public bool ReadOnly { get; set; }
 
-    /// <summary>Raised whenever the selected shapes change, also when the slide changes or selected shapes disappear.</summary>
+    /// <summary>Raised whenever the selected shapes or table cells change, also when the slide changes or selected shapes disappear.</summary>
     [Parameter] public EventCallback<IReadOnlyList<uint>> SelectionChanged { get; set; }
 
     /// <summary>Raised for keys the canvas does not handle itself, for example to switch slides.</summary>
     [Parameter] public EventCallback<KeyboardEventArgs> KeyDown { get; set; }
+
+    /// <summary>Raised when the user opens the context menu on the slide; the browser menu is suppressed then. The shape under the pointer is selected first.</summary>
+    [Parameter] public EventCallback<MouseEventArgs> ContextMenu { get; set; }
 
     /// <summary>The ids of the selected shapes. A group and one of its descendants are never selected together.</summary>
     public IReadOnlyList<uint> Selection => _selection;
@@ -96,7 +101,7 @@ public partial class MudExSlideCanvas
         else if (Slide != null && Slide.Version != _version)
         {
             _version = Slide.Version;
-            if (_text != null && !SlideShape.Flatten(Slide.Shapes).Contains(_text.Shape))
+            if (_text != null && !SlideShape.Flatten(Slide.Shapes).Contains(_text.Owner))
                 _text = null;
             Change(_selection);
         }
@@ -221,6 +226,12 @@ public partial class MudExSlideCanvas
     {
         var shapes = ids.Distinct().Select(Find).Where(s => s != null).ToList();
         var next = shapes.Where(s => !Path(s).SkipLast(1).Any(shapes.Contains)).Select(s => s.Id).ToList();
+        if (_cells is { } cells && !(next is [var only] && only == cells.Table && Find(only) is TableShape))
+        {
+            _cells = null;
+            _raiseSelection = true;
+        }
+
         if (next.SequenceEqual(_selection))
             return;
         _selection = next;
@@ -250,6 +261,8 @@ public partial class MudExSlideCanvas
         if (e.AltKey)
             return false;
         var ctrl = e.CtrlKey || e.MetaKey;
+        if (await HandleCellKeyAsync(e, ctrl))
+            return true;
         var any = _selection.Count > 0;
         switch (e.Key)
         {

@@ -9,9 +9,12 @@ const FORMAT_KEYS = 'biulerj';
 const AREA = ['marquee', 'insert'];
 const ZOOM_IDLE_MS = 400;
 const MODIFIERS = ['Shift', 'Control', 'Alt', 'AltGraph', 'Meta', 'CapsLock', 'Dead'];
+const CELL = '[data-cell]';
+const GRIP_ACTIVE = 'mud-ex-slide-table-grip-active';
 
 const rad = deg => deg * Math.PI / 180;
 const pct = (value, whole) => `${value / whole * 100}%`;
+const cellOf = el => el.dataset.cell.split(',').map(Number);
 
 class MudExSlideCanvas {
     constructor(root, dotnet) {
@@ -20,7 +23,7 @@ class MudExSlideCanvas {
         this.drag = null;
         this.onMove = e => this.pointerMove(e);
         this.onUp = e => this.pointerUp(e);
-        this.events = [['pointerdown', e => this.pointerDown(e)], ['keydown', e => this.keyDown(e)], ['dblclick', e => this.dblClick(e)], ['wheel', e => this.wheel(e)]];
+        this.events = [['pointerdown', e => this.pointerDown(e)], ['keydown', e => this.keyDown(e)], ['dblclick', e => this.dblClick(e)], ['wheel', e => this.wheel(e)], ['contextmenu', e => this.contextMenu(e)]];
         this.events.forEach(([type, handler]) => root.addEventListener(type, handler));
     }
 
@@ -71,7 +74,8 @@ class MudExSlideCanvas {
         const selected = !!this.root.dataset.selection;
         const key = e.key.toLowerCase();
         this.typed(e, ctrl);
-        if ((KEYS.includes(e.key) && selected) || (e.key === 'Tab' && !ctrl && !this.leaves(e.shiftKey)) || (ctrl && (key === 'a' || key === 'd'))
+        const tab = e.key === 'Tab' && !ctrl && (!!this.root.dataset.cells || !this.leaves(e.shiftKey));
+        if ((KEYS.includes(e.key) && selected) || tab || (ctrl && (key === 'a' || key === 'd' || key === 'g'))
             || (selected && ((ctrl && key.length === 1 && FORMAT_KEYS.includes(key)) || (!ctrl && e.key === ' ')))) {
             e.preventDefault();
         }
@@ -132,6 +136,15 @@ class MudExSlideCanvas {
             this.begin(e, frame, { kind, handle: handle.dataset.handle, grabbed: +handle.closest('[data-id]').dataset.id, ids: this.selection(), m, start });
             return;
         }
+        const grip = e.target.closest('.mud-ex-slide-table-grip');
+        if (grip) {
+            this.begin(e, frame, { kind: 'grip', grip, box: grip.closest('[data-id]'), m, start });
+            return;
+        }
+        if (e.target.closest('.mud-ex-slide-table-edge')) {
+            this.begin(e, frame, { kind: 'move', ids: this.selection(), m, start });
+            return;
+        }
         const shape = e.target.closest(SHAPE);
         if (!shape || !frame.contains(shape)) {
             this.begin(e, frame, { kind: 'marquee', toggle, m, start });
@@ -144,7 +157,14 @@ class MudExSlideCanvas {
             this.dotnet.invokeMethodAsync('OnShapeClickAsync', id, true).catch(() => {});
             return;
         }
-        const drag = this.begin(e, frame, { kind: 'move', click: covered ? id : null, ids: covered ? selection : null, m, start });
+        const cell = shape.dataset.table && !toggle ? e.target.closest(CELL) : null;
+        if (cell && selection.length === 1 && selection[0] === id) {
+            const [row, column] = cellOf(cell);
+            this.begin(e, frame, { kind: 'cells', id, row, column, cell, m, start });
+            this.dotnet.invokeMethodAsync('OnCellSelectAsync', id, row, column, row, column).catch(() => {});
+            return;
+        }
+        const drag = this.begin(e, frame, { kind: 'move', click: covered ? id : null, ids: covered ? selection : null, table: cell ? id : null, cell, m, start });
         if (!covered) {
             this.dotnet.invokeMethodAsync('OnShapeClickAsync', id, toggle).then(ids => {
                 if (this.drag === drag) {
@@ -164,8 +184,34 @@ class MudExSlideCanvas {
             return;
         }
         const shape = [e.target, ...hits].map(el => el.closest?.(SHAPE)).find(s => s && frame.contains(s));
-        if (shape) {
-            this.dotnet.invokeMethodAsync('OnShapeDoubleClickAsync', +shape.dataset.shapeId, e.clientX, e.clientY).catch(() => {});
+        if (!shape) {
+            return;
+        }
+        const id = +shape.dataset.shapeId;
+        const cell = shape.dataset.table ? hits.map(el => el.closest?.(CELL)).find(c => c && shape.contains(c)) : null;
+        if (cell) {
+            const [row, column] = cellOf(cell);
+            this.dotnet.invokeMethodAsync('OnCellSelectAsync', id, row, column, row, column).catch(() => {});
+        }
+        this.dotnet.invokeMethodAsync('OnShapeDoubleClickAsync', id, e.clientX, e.clientY).catch(() => {});
+    }
+
+    contextMenu(e) {
+        const frame = this.frame();
+        if (!frame || !this.dotnet || this.root.dataset.readonly === 'true' || e.target.closest(TEXT_EDITOR)) {
+            return;
+        }
+        const shape = e.target.closest(SHAPE);
+        const selection = this.selection();
+        if (!shape || !frame.contains(shape)) {
+            if (selection.length) {
+                this.dotnet.invokeMethodAsync('OnSelectionAsync', []).catch(() => {});
+            }
+            return;
+        }
+        const id = +shape.dataset.shapeId;
+        if (!this.chain(this.parents(frame), id).some(i => selection.includes(i))) {
+            this.dotnet.invokeMethodAsync('OnShapeClickAsync', id, false).catch(() => {});
         }
     }
 
@@ -207,7 +253,16 @@ class MudExSlideCanvas {
         d.x = e.clientX;
         d.y = e.clientY;
         d.shift = e.shiftKey;
+        if (d.kind === 'cells') {
+            this.cells(d);
+            return;
+        }
         if (!d.moved && Math.hypot(d.x - d.x0, d.y - d.y0) < CLICK_PX) {
+            return;
+        }
+        if (d.kind === 'grip') {
+            d.moved = true;
+            this.previewGrip(d, this.gripResult(d));
             return;
         }
         if (!AREA.includes(d.kind) && !d.ids) {
@@ -249,11 +304,24 @@ class MudExSlideCanvas {
             await this.dotnet.invokeMethodAsync('OnInsertAsync', d.start.x, d.start.y, w, h).catch(() => {});
             return;
         }
+        if (d.kind === 'cells') {
+            return;
+        }
+        if (d.kind === 'grip') {
+            if (d.moved) {
+                await this.commitGrip(d);
+            }
+            return;
+        }
         if (!d.moved) {
             if (d.kind === 'marquee' && !d.toggle) {
                 await this.dotnet.invokeMethodAsync('OnSelectionAsync', []).catch(() => {});
             } else if (d.kind === 'move' && d.click != null) {
                 await this.dotnet.invokeMethodAsync('OnShapeClickAsync', d.click, false).catch(() => {});
+            }
+            if (d.kind === 'move' && d.table != null) {
+                const [row, column] = cellOf(d.cell);
+                await this.dotnet.invokeMethodAsync('OnCellSelectAsync', d.table, row, column, row, column).catch(() => {});
             }
             return;
         }
@@ -339,6 +407,51 @@ class MudExSlideCanvas {
         }
         const delta = target - grabbed.r;
         return d.boxes.map(b => b.opaque ? b : { ...b, r: ((b.r + delta) % 360 + 360) % 360 });
+    }
+
+    cells(d) {
+        const hit = document.elementFromPoint(d.x, d.y)?.closest(CELL);
+        if (!hit || hit === d.cell || +hit.closest(SHAPE)?.dataset.shapeId !== d.id) {
+            return;
+        }
+        d.cell = hit;
+        const [row, column] = cellOf(hit);
+        this.dotnet?.invokeMethodAsync('OnCellSelectAsync', d.id, d.row, d.column, row, column).catch(() => {});
+    }
+
+    gripResult(d) {
+        const box = d.box.dataset;
+        const column = d.grip.dataset.col != null;
+        const sizes = (column ? box.cols : box.rows).split(',').map(Number);
+        const index = +(column ? d.grip.dataset.col : d.grip.dataset.row);
+        const scale = sizes.reduce((a, b) => a + b, 0) / Math.max(1, +(column ? box.w : box.h));
+        const p = this.toSlide(d.m, d.x, d.y);
+        const min = MIN_PX / d.m.scale * scale;
+        const before = sizes[index - 1];
+        const after = index < sizes.length ? sizes[index] : null;
+        let delta = Math.max((column ? p.x - d.start.x : p.y - d.start.y) * scale, min - before);
+        if (after != null) {
+            delta = Math.min(delta, after - min);
+            sizes[index] = after - delta;
+        }
+        sizes[index - 1] = before + delta;
+        return { column, sizes, offset: delta / scale };
+    }
+
+    previewGrip(d, result) {
+        d.grip.classList.add(GRIP_ACTIVE);
+        const px = result.offset * d.m.scale;
+        d.grip.style.translate = result.column ? `${px}px 0` : `0 ${px}px`;
+    }
+
+    async commitGrip(d) {
+        const result = this.gripResult(d);
+        const other = (result.column ? d.box.dataset.rows : d.box.dataset.cols).split(',').map(Number);
+        const widths = (result.column ? result.sizes : other).map(Math.round);
+        const heights = (result.column ? other : result.sizes).map(Math.round);
+        await this.dotnet.invokeMethodAsync('OnTableSizesAsync', +d.box.dataset.id, widths, heights).catch(() => {});
+        d.grip.classList.remove(GRIP_ACTIVE);
+        d.grip.style.translate = '';
     }
 
     bounds(b) {
@@ -499,6 +612,7 @@ class MudExSlideCanvas {
         this.drag = null;
         if (d) {
             this.restore(d);
+            d.grip?.classList.remove(GRIP_ACTIVE);
         }
         this.events.forEach(([type, handler]) => this.root?.removeEventListener(type, handler));
         this.root?.removeEventListener('pointermove', this.onMove);

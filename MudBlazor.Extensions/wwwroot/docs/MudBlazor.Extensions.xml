@@ -19593,10 +19593,13 @@
             <summary>If true shapes can neither be selected nor changed.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.SelectionChanged">
-            <summary>Raised whenever the selected shapes change, also when the slide changes or selected shapes disappear.</summary>
+            <summary>Raised whenever the selected shapes or table cells change, also when the slide changes or selected shapes disappear.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.KeyDown">
             <summary>Raised for keys the canvas does not handle itself, for example to switch slides.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.ContextMenu">
+            <summary>Raised when the user opens the context menu on the slide; the browser menu is suppressed then. The shape under the pointer is selected first.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.Selection">
             <summary>The ids of the selected shapes. A group and one of its descendants are never selected together.</summary>
@@ -19636,6 +19639,22 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.DisposeAsync">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnCellSelectAsync(System.UInt32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Called by the browser when the user clicked into the selected table or dragged over its cells.</summary>
+            <param name="table">The id of the selected table.</param>
+            <param name="row">The row where the selection started.</param>
+            <param name="column">The column where the selection started.</param>
+            <param name="row2">The row where the selection ends.</param>
+            <param name="column2">The column where the selection ends.</param>
+            <returns>A task that completes when the cells are shown as selected.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideCanvas.OnTableSizesAsync(System.UInt32,System.Int64[],System.Int64[])">
+            <summary>Called by the browser when the user dragged a column or row border of the selected table.</summary>
+            <param name="table">The id of the table.</param>
+            <param name="columnWidths">The new column widths in EMU.</param>
+            <param name="rowHeights">The new row heights in EMU.</param>
+            <returns>A task that completes when the sizes are set.</returns>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.TextInput">
             <summary>Raised on the first input of a text editing session, before the text is committed.</summary>
@@ -19912,6 +19931,9 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.HideText">
             <summary>True to leave out the text, for example while it is edited.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.HiddenCell">
+            <summary>For a table with <see cref="P:MudBlazor.Extensions.Components.MudExSlideShapeView.HideText"/>: the cell whose text is left out.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Prompt">
             <summary>The prompt shown in an empty placeholder with a dashed outline, or null.</summary>
         </member>
@@ -19932,6 +19954,33 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideStatusBar.ZoomChanged">
             <summary>Raised when the user changes the zoom; null means fit to window.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideTableGridPicker">
+            <summary>A grid of up to 10 columns by 8 rows to pick the size of a new table, as in Insert → Table of PowerPoint.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTableGridPicker.Chosen">
+            <summary>Raised with the number of rows and columns the user picked.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideTableView">
+            <summary>
+            Shows a table of a slide as a grid inside its shape: columns and rows in the proportions of the file, cell fills and text colours from
+            the table style (Medium Style 2 in the accent colour of the style) unless a cell has its own fill, and white 1-pt lines between the cells.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTableView.Table">
+            <summary>The table to show.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTableView.Presentation">
+            <summary>The presentation that defines the slide size.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTableView.Master">
+            <summary>The master whose theme colours the table uses.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTableView.SlideNumber">
+            <summary>The number shown by slide number fields.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTableView.HiddenCell">
+            <summary>A cell whose text is not shown, because it is being edited above the slide.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideText">
             <summary>Shows the text of a shape. The text is rendered as text nodes, never as markup.</summary>
@@ -19969,6 +20018,12 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.Committed">
             <summary>Raised with the final text when the user ends editing with Esc or a click outside.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.Cell">
+            <summary>True for the text of a table cell: Tab and Shift+Tab end editing and raise <see cref="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.Tabbed"/> instead of inserting a tab.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideTextEditor.Tabbed">
+            <summary>Raised for a table cell with the final text when the user pressed Tab, with true for Shift+Tab.</summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
@@ -19981,6 +20036,12 @@
             <summary>Called by the browser when the user ends editing.</summary>
             <param name="paragraphs">The final paragraphs of the editing DOM.</param>
             <returns>A task that completes when the text is committed.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnTextTabAsync(MudBlazor.Extensions.Components.SlideTextParagraphDto[],System.Boolean)">
+            <summary>Called by the browser when the user pressed Tab in a table cell.</summary>
+            <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+            <param name="back">True for Shift+Tab.</param>
+            <returns>A task that completes when the text is committed and the next cell is edited.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnPasteHtml(System.String)">
             <summary>Called by the browser when HTML is pasted. Keeps only text with bold, italic, underline and colour.</summary>
@@ -20010,6 +20071,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideView.HiddenText">
             <summary>A shape whose text is not shown, because it is being edited above the slide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideView.HiddenCell">
+            <summary>For a table as <see cref="P:MudBlazor.Extensions.Components.MudExSlideView.HiddenText"/>: the cell whose text is not shown.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideView.OnInitialized">
             <inheritdoc />
@@ -32354,7 +32418,7 @@
             rotated shapes and its child space equals the frame, so the shapes keep their transforms.
             </summary>
             <param name="slide">The slide.</param>
-            <param name="shapes">The ids of at least two shapes with the same parent; placeholders cannot be grouped.</param>
+            <param name="shapes">The ids of at least two shapes with the same parent; placeholders and tables cannot be grouped.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.GroupShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32})">
             <summary>
@@ -32362,7 +32426,7 @@
             rotated shapes and its child space equals the frame, so the shapes keep their transforms.
             </summary>
             <param name="slide">The slide.</param>
-            <param name="shapes">The ids of at least two shapes with the same parent; placeholders cannot be grouped.</param>
+            <param name="shapes">The ids of at least two shapes with the same parent; placeholders and tables cannot be grouped.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.GroupShapesCommand.Group">
             <summary>The created group, available after the command was applied.</summary>
@@ -32460,13 +32524,13 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.RotateShapesCommand">
-            <summary>Rotates each shape around its own centre.</summary>
+            <summary>Rotates each shape around its own centre. Tables are skipped; they cannot be rotated.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
             <param name="degrees">The clockwise angle in degrees; negative values rotate counter-clockwise.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.RotateShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},System.Double)">
-            <summary>Rotates each shape around its own centre.</summary>
+            <summary>Rotates each shape around its own centre. Tables are skipped; they cannot be rotated.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
             <param name="degrees">The clockwise angle in degrees; negative values rotate counter-clockwise.</param>
@@ -32481,13 +32545,13 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.FlipShapesCommand">
-            <summary>Mirrors each shape in place, horizontally or vertically.</summary>
+            <summary>Mirrors each shape in place, horizontally or vertically. Tables are skipped; they cannot be flipped.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
             <param name="horizontal">True to mirror left to right, false to mirror top to bottom.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.FlipShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},System.Boolean)">
-            <summary>Mirrors each shape in place, horizontally or vertically.</summary>
+            <summary>Mirrors each shape in place, horizontally or vertically. Tables are skipped; they cannot be flipped.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
             <param name="horizontal">True to mirror left to right, false to mirror top to bottom.</param>

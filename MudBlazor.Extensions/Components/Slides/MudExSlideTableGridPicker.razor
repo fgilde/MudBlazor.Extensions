@@ -1,0 +1,17 @@
+@inherits MudExBaseComponent<MudExSlideTableGridPicker>
+@namespace MudBlazor.Extensions.Components
+
+<div @attributes="UserAttributes" class="@($"mud-ex-slide-table-picker {Class}".TrimEnd())" style="@Style">
+    <div class="mud-ex-slide-table-picker-title">@(_hover is { } hover ? $"{hover.Columns} x {hover.Rows} {TryLocalize("Table")}" : TryLocalize("Insert Table"))</div>
+    <div class="mud-ex-slide-table-picker-grid" @onmouseleave="@(() => _hover = null)">
+        @for (var row = 1; row <= MaxRows; row++)
+        {
+            for (var column = 1; column <= MaxColumns; column++)
+            {
+                var size = (row, column);
+                <MudMenuItem Class="@CellClass(size)" data-rows="@row" data-columns="@column" aria-label="@($"{column} x {row}")" @onmouseenter="@(() => _hover = size)"
+                             OnClick="@(() => Chosen.InvokeAsync(size))" />
+            }
+        }
+    </div>
+</div>

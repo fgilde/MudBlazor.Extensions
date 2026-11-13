@@ -140,6 +140,7 @@
   border: 1px solid var(--mud-ex-slide-accent, var(--mud-palette-primary));
   background-color: #fff;
   pointer-events: auto;
+  z-index: 1;
   &.mud-ex-slide-handle-nw {
     left: 0;
     top: 0;
@@ -365,5 +366,98 @@
   font-size: 0.75rem;
   .mud-ex-sssb-slider {
     accent-color: var(--mud-ex-slide-accent, var(--mud-palette-primary));
+  }
+}
+.mud-ex-slide-table {
+  position: absolute;
+  inset: 0;
+  display: grid;
+}
+.mud-ex-slide-table-cell {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.mud-ex-slide-table-range {
+  position: absolute;
+  box-sizing: border-box;
+  border: 2px solid var(--mud-ex-slide-accent, var(--mud-palette-primary));
+  background-color: rgba(128, 128, 128, 0.2);
+}
+.mud-ex-slide-table-grip {
+  position: absolute;
+  pointer-events: auto;
+  &.mud-ex-slide-table-grip-col {
+    top: 0;
+    bottom: 0;
+    width: 7px;
+    margin-left: -3px;
+    cursor: col-resize;
+  }
+  &.mud-ex-slide-table-grip-row {
+    left: 0;
+    right: 0;
+    height: 7px;
+    margin-top: -3px;
+    cursor: row-resize;
+  }
+  &.mud-ex-slide-table-grip-active {
+    background-color: var(--mud-ex-slide-accent, var(--mud-palette-primary));
+    opacity: 0.5;
+  }
+}
+.mud-ex-slide-table-edge {
+  position: absolute;
+  pointer-events: auto;
+  cursor: move;
+  &.mud-ex-slide-table-edge-top {
+    left: 0;
+    right: 0;
+    top: -6px;
+    height: 6px;
+  }
+  &.mud-ex-slide-table-edge-right {
+    top: 0;
+    bottom: 0;
+    right: -6px;
+    width: 6px;
+  }
+  &.mud-ex-slide-table-edge-bottom {
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 6px;
+  }
+  &.mud-ex-slide-table-edge-left {
+    top: 0;
+    bottom: 0;
+    left: -6px;
+    width: 6px;
+  }
+}
+.mud-ex-slide-table-picker {
+  padding: 4px 8px;
+}
+.mud-ex-slide-table-picker-title {
+  padding: 2px 0 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--mud-palette-text-secondary);
+}
+.mud-ex-slide-table-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 18px);
+  gap: 2px;
+}
+.mud-menu-item.mud-ex-slide-table-picker-cell {
+  min-height: 0;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid var(--mud-palette-lines-default);
+  &.mud-ex-slide-table-picker-on {
+    border-color: var(--mud-ex-slide-accent, var(--mud-palette-primary));
+    background-color: var(--mud-palette-action-default-hover);
   }
 }

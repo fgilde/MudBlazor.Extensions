@@ -65,6 +65,12 @@ public partial class MudExSlideCanvas
 
     internal async Task BeginTextAsync(uint id, string text = null, double[] caret = null)
     {
+        if (Find(id) is TableShape)
+        {
+            await BeginCellTextAsync(text, caret);
+            return;
+        }
+
         if (ReadOnly || Find(id) is not AutoShape { IsConnector: false } shape || ReferenceEquals(_text?.Shape, shape))
             return;
         CommitText();
@@ -77,9 +83,15 @@ public partial class MudExSlideCanvas
         if (_text is not { } session)
             return;
         _text = null;
-        if (!SlideShape.Flatten(session.Slide.Shapes).Contains(session.Shape))
+        if (!SlideShape.Flatten(session.Slide.Shapes).Contains(session.Owner))
             return;
         var body = session.Draft == null ? session.Shape.Text : SlideTextDom.FromDom(session.Shape.Text, session.Draft);
+        if (session.Cell != null)
+        {
+            CommitCell(session, body);
+            return;
+        }
+
         var empty = body?.Paragraphs.All(p => p.Runs.Count == 0) != false;
         if (session.Insert != null)
         {
@@ -112,9 +124,10 @@ public partial class MudExSlideCanvas
         }
 
         var shapes = SelectedShapes.SelectMany(s => SlideShape.Flatten([s])).OfType<AutoShape>().Where(s => s.Text != null).ToList();
-        if (shapes.Count == 0)
+        var cells = SelectedCellShapes;
+        if (shapes.Count == 0 && cells.Count == 0)
             return;
-        value ??= SlideTextDom.All(shapes, key) ? "0" : "1";
+        value ??= SlideTextDom.All(shapes.Concat(cells.Select(c => c.Shape)), key) ? "0" : "1";
         using (Presentation.Undo.BeginTransaction("Format text"))
         {
             foreach (var shape in shapes)
@@ -122,6 +135,13 @@ public partial class MudExSlideCanvas
                 var body = SlideTextDom.Format(shape.Text, key, value);
                 if (!ReferenceEquals(body, shape.Text))
                     Presentation.Execute(new SetTextCommand(Slide, shape.Id, body));
+            }
+
+            foreach (var (table, row, column, shape) in cells)
+            {
+                var body = SlideTextDom.Format(shape.Text, key, value);
+                if (!ReferenceEquals(body, shape.Text))
+                    Presentation.Execute(new SetTableCellTextCommand(Slide, table.Id, row, column, body));
             }
         }
 
@@ -185,6 +205,12 @@ public partial class MudExSlideCanvas
         public string Text { get; } = text;
 
         public double[] Caret { get; } = caret;
+
+        public (TableShape Table, int Row, int Column)? Cell { get; init; }
+
+        public SlideShape Owner => (SlideShape)Cell?.Table ?? Shape;
+
+        public (int Row, int Column)? Position => Cell is { } cell ? (cell.Row, cell.Column) : null;
 
         public IReadOnlyList<SlideTextParagraphDto> Draft { get; set; }
 

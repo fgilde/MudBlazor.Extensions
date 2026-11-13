@@ -42,7 +42,8 @@ public partial class MudExSlideEditor
         ("pp-send-to-back", "Send to Back", Icons.Material.Filled.FlipToBack, ZOrderChange.SendToBack)
     ];
 
-    private IReadOnlyList<AutoShape> SelectedTextShapes => SelectedAutoShapes.Where(s => s.Text != null).ToList();
+    private IReadOnlyList<AutoShape> SelectedTextShapes =>
+        SelectedAutoShapes.Where(s => s.Text != null).Concat(SelectedTable == null ? [] : _canvas.SelectedCellShapes.Select(c => c.Shape)).ToList();
 
     private RunFormat CurrentFormat => SelectedTextShapes.Select(s => s.Text.Paragraphs.SelectMany(p => p.Runs).FirstOrDefault() is { } run ? s.EffectiveFormat(run) : null)
         .FirstOrDefault(f => f != null);

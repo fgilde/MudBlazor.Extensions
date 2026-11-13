@@ -1,0 +1,22 @@
+@inherits ComponentBase
+@namespace MudBlazor.Extensions.Components
+
+@{ var styles = SlideTableStyles.For(Table, Master); }
+<div class="mud-ex-slide-table" style="@GridStyle">
+    @for (var r = 0; r < Table.Rows.Count; r++)
+    {
+        for (var c = 0; c < Table.Rows[r].Cells.Count; c++)
+        {
+            var (row, column, cell) = (r, c, Table.Rows[r].Cells[c]);
+            if (!cell.IsMergedAway)
+            {
+                <div class="mud-ex-slide-table-cell" data-cell="@($"{row},{column}")" style="@CellStyle(row, column, cell, styles[row][column])">
+                    @if (HiddenCell != (row, column))
+                    {
+                        <MudExSlideText Shape="@SlideTableStyles.TextShape(Table, row, column, styles[row][column], Master)" Presentation="Presentation" SlideNumber="SlideNumber" />
+                    }
+                </div>
+            }
+        }
+    }
+</div>

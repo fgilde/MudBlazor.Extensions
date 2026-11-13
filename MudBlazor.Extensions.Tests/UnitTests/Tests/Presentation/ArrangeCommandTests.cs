@@ -319,4 +319,23 @@ public class ArrangeCommandTests
         Assert.False(presentation.Undo.CanUndo);
         Assert.Equal(before, SlideCommandTests.Snapshot(presentation));
     }
+
+    [Fact]
+    public void Tables_CannotBeGroupedRotatedOrFlipped()
+    {
+        var presentation = TableTests.Deck();
+        var slide = presentation.Slides[0];
+        var table = TableTests.Table(presentation);
+        var before = table.Transform;
+
+        Assert.Throws<InvalidOperationException>(() => presentation.Execute(new GroupShapesCommand(slide, [2, 3])));
+        presentation.Execute(new RotateShapesCommand(slide, [3], 90));
+        presentation.Execute(new FlipShapesCommand(slide, [3], true));
+
+        Assert.Equal(before, table.Transform);
+        Assert.False(presentation.Undo.CanUndo);
+        presentation.Execute(new RotateShapesCommand(slide, [2, 3], 90));
+        Assert.Equal(90, slide.Shapes[0].Transform!.Value.Rotation);
+        Assert.Equal(before, table.Transform);
+    }
 }

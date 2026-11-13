@@ -811,7 +811,8 @@ $mud-ex-ssg-ref-colors: #4472c4, #c0504d, #7030a0, #00b050, #ed7d31, #2e75b6, #b
 }
 .mud-ex-sschart-svg {
   display: block;
-  flex: 0 0 auto;
+  flex: 1 1 0;
+  min-height: 0;
 }
 .mud-ex-sschart-axis {
   stroke: var(--mud-palette-lines-default);

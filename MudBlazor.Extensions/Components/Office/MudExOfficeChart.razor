@@ -16,7 +16,7 @@
         }
         else
         {
-            <svg class="mud-ex-sschart-svg" width="@F(_plot.Width)" height="@F(_plot.Height)" viewBox="@($"0 0 {F(_plot.Width)} {F(_plot.Height)}")">
+            <svg class="mud-ex-sschart-svg" width="100%" height="100%" viewBox="@($"0 0 {F(_plot.Width)} {F(_plot.Height)}")">
                 @foreach (var line in _lines)
                 {
                     <line class="mud-ex-sschart-axis" x1="@F(line.X1)" y1="@F(line.Y1)" x2="@F(line.X2)" y2="@F(line.Y2)" />

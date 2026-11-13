@@ -12,6 +12,7 @@ class MudExSlideText {
         this.root = root;
         this.dotnet = dotnet;
         this.slideWidth = options?.slideWidth || 12192000;
+        this.cell = !!options?.cell;
         this.canvas = root.closest('.mud-ex-slide-canvas');
         this.box = root.closest('.mud-ex-slide-text-editor') ?? root;
         this.composing = false;
@@ -171,6 +172,9 @@ class MudExSlideText {
         if (e.key === 'Escape') {
             e.preventDefault();
             this.commit(true);
+        } else if (e.key === 'Tab' && !ctrl && !e.altKey && this.cell) {
+            e.preventDefault();
+            this.tab(e.shiftKey);
         } else if (e.key === 'Tab' && !ctrl && !e.altKey) {
             e.preventDefault();
             this.insertText('\t');
@@ -290,6 +294,16 @@ class MudExSlideText {
             this.canvas?.focus({ preventScroll: true });
         }
         this.dotnet.invokeMethodAsync('OnTextCommitAsync', paragraphs).catch(() => {});
+    }
+
+    tab(back) {
+        if (this.done || !this.dotnet) {
+            return;
+        }
+        this.done = true;
+        const paragraphs = this.read();
+        this.canvas?.focus({ preventScroll: true });
+        this.dotnet.invokeMethodAsync('OnTextTabAsync', paragraphs, back).catch(() => {});
     }
 
     paragraphOf(node) {

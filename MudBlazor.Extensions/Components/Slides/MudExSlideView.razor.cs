@@ -14,6 +14,7 @@ public partial class MudExSlideView
     private int _renderedVersion;
     private bool _renderedInteractive;
     private SlideShape _renderedHiddenText;
+    private (int Row, int Column)? _renderedHiddenCell;
     private int _renderedNumber;
 
     /// <summary>The presentation the slide belongs to.</summary>
@@ -30,6 +31,9 @@ public partial class MudExSlideView
 
     /// <summary>A shape whose text is not shown, because it is being edited above the slide.</summary>
     [Parameter] public SlideShape HiddenText { get; set; }
+
+    /// <summary>For a table as <see cref="HiddenText"/>: the cell whose text is not shown.</summary>
+    [Parameter] public (int Row, int Column)? HiddenCell { get; set; }
 
     private string RootStyle =>
         $"aspect-ratio:{Presentation.SlideWidth.ToString(CultureInfo.InvariantCulture)}/{Presentation.SlideHeight.ToString(CultureInfo.InvariantCulture)};{BackgroundStyle}{Style}";
@@ -70,7 +74,7 @@ public partial class MudExSlideView
     protected override bool ShouldRender()
     {
         if (ReferenceEquals(_rendered, Slide) && _renderedVersion == Slide?.Version && _renderedInteractive == Interactive && ReferenceEquals(_renderedHiddenText, HiddenText)
-            && _renderedNumber == SlideNumber) return false;
+            && _renderedNumber == SlideNumber && _renderedHiddenCell == HiddenCell) return false;
         Remember();
         return true;
     }
@@ -95,5 +99,6 @@ public partial class MudExSlideView
         string.Concat(value.Where(c => !char.IsControl(c))).Replace("\\", "\\\\", StringComparison.Ordinal).Replace("\"", "\\\"", StringComparison.Ordinal);
 
     private void Remember() =>
-        (_rendered, _renderedVersion, _renderedInteractive, _renderedHiddenText, _renderedNumber) = (Slide, Slide?.Version ?? 0, Interactive, HiddenText, SlideNumber);
+        (_rendered, _renderedVersion, _renderedInteractive, _renderedHiddenText, _renderedNumber, _renderedHiddenCell) =
+        (Slide, Slide?.Version ?? 0, Interactive, HiddenText, SlideNumber, HiddenCell);
 }

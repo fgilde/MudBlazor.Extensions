@@ -36,6 +36,12 @@ public partial class MudExSlideTextEditor
     /// <summary>Raised with the final text when the user ends editing with Esc or a click outside.</summary>
     [Parameter] public EventCallback<IReadOnlyList<SlideTextParagraphDto>> Committed { get; set; }
 
+    /// <summary>True for the text of a table cell: Tab and Shift+Tab end editing and raise <see cref="Tabbed"/> instead of inserting a tab.</summary>
+    [Parameter] public bool Cell { get; set; }
+
+    /// <summary>Raised for a table cell with the final text when the user pressed Tab, with true for Shift+Tab.</summary>
+    [Parameter] public EventCallback<(SlideTextParagraphDto[] Paragraphs, bool Back)> Tabbed { get; set; }
+
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -51,7 +57,8 @@ public partial class MudExSlideTextEditor
                 Paragraphs = SlideTextDom.ToDom(Shape, Presentation),
                 SlideWidth = Presentation.SlideWidth,
                 Text,
-                Caret
+                Caret,
+                Cell
             };
             var (module, js) = await JsRuntime.ImportModuleAndCreateJsAsync<MudExSlideTextEditor>("MudExSlideText", _root, dotnet, options);
             (_module, _js, _dotnet) = (module, js, dotnet);
@@ -90,6 +97,13 @@ public partial class MudExSlideTextEditor
     /// <returns>A task that completes when the text is committed.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task OnTextCommitAsync(SlideTextParagraphDto[] paragraphs) => InvokeAsync(() => Committed.InvokeAsync(paragraphs ?? []));
+
+    /// <summary>Called by the browser when the user pressed Tab in a table cell.</summary>
+    /// <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+    /// <param name="back">True for Shift+Tab.</param>
+    /// <returns>A task that completes when the text is committed and the next cell is edited.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnTextTabAsync(SlideTextParagraphDto[] paragraphs, bool back) => InvokeAsync(() => Tabbed.InvokeAsync((paragraphs ?? [], back)));
 
     /// <summary>Called by the browser when HTML is pasted. Keeps only text with bold, italic, underline and colour.</summary>
     /// <param name="html">The <c>text/html</c> content of the clipboard.</param>

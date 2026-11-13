@@ -27,7 +27,7 @@ public enum ShapeAlignment
 /// rotated shapes and its child space equals the frame, so the shapes keep their transforms.
 /// </summary>
 /// <param name="slide">The slide.</param>
-/// <param name="shapes">The ids of at least two shapes with the same parent; placeholders cannot be grouped.</param>
+/// <param name="shapes">The ids of at least two shapes with the same parent; placeholders and tables cannot be grouped.</param>
 public sealed class GroupShapesCommand(Slide slide, IReadOnlyList<uint> shapes) : IDocumentCommand<Presentation>
 {
     private List<SlideShape> _container;
@@ -69,6 +69,7 @@ public sealed class GroupShapesCommand(Slide slide, IReadOnlyList<uint> shapes) 
         if (selected.Count < 2) throw new ArgumentException("Grouping needs at least two shapes.", nameof(shapes));
         if (selected.Select(s => s.Parent).Distinct().Count() > 1) throw new ArgumentException("The shapes must belong to the same group or all be top-level shapes.", nameof(shapes));
         if (SlideShape.Flatten(selected).Any(s => s.Placeholder != null)) throw new InvalidOperationException("Placeholders cannot be grouped.");
+        if (SlideShape.Flatten(selected).Any(s => s is TableShape)) throw new InvalidOperationException("Tables cannot be grouped.");
         _container = ShapeEdit.Container(slide, selected[0]);
         _members = _container.Where(selected.Contains).ToArray();
         _index = _container.IndexOf(_members[^1]) - (_members.Length - 1);
@@ -236,7 +237,7 @@ public sealed class DistributeShapesCommand(Slide slide, IReadOnlyList<uint> sha
     }
 }
 
-/// <summary>Rotates each shape around its own centre.</summary>
+/// <summary>Rotates each shape around its own centre. Tables are skipped; they cannot be rotated.</summary>
 /// <param name="slide">The slide.</param>
 /// <param name="shapes">The shape ids.</param>
 /// <param name="degrees">The clockwise angle in degrees; negative values rotate counter-clockwise.</param>
@@ -249,7 +250,7 @@ public sealed class RotateShapesCommand(Slide slide, IReadOnlyList<uint> shapes,
 
     /// <inheritdoc />
     public void Apply(Presentation document) =>
-        (_move ??= new SetTransformsCommand(slide, ShapeEdit.Shapes(slide, shapes ?? []).ToDictionary(s => s.Id, s => s.ResolvedTransform with
+        (_move ??= new SetTransformsCommand(slide, ShapeEdit.Shapes(slide, shapes ?? []).Where(s => s is not TableShape).ToDictionary(s => s.Id, s => s.ResolvedTransform with
         {
             Rotation = ShapeEdit.Angle(s.ResolvedTransform.Rotation + degrees)
         }))).Apply(document);
@@ -258,7 +259,7 @@ public sealed class RotateShapesCommand(Slide slide, IReadOnlyList<uint> shapes,
     public void Revert(Presentation document) => _move.Revert(document);
 }
 
-/// <summary>Mirrors each shape in place, horizontally or vertically.</summary>
+/// <summary>Mirrors each shape in place, horizontally or vertically. Tables are skipped; they cannot be flipped.</summary>
 /// <param name="slide">The slide.</param>
 /// <param name="shapes">The shape ids.</param>
 /// <param name="horizontal">True to mirror left to right, false to mirror top to bottom.</param>
@@ -271,7 +272,7 @@ public sealed class FlipShapesCommand(Slide slide, IReadOnlyList<uint> shapes, b
 
     /// <inheritdoc />
     public void Apply(Presentation document) =>
-        (_move ??= new SetTransformsCommand(slide, ShapeEdit.Shapes(slide, shapes ?? []).ToDictionary(s => s.Id, s =>
+        (_move ??= new SetTransformsCommand(slide, ShapeEdit.Shapes(slide, shapes ?? []).Where(s => s is not TableShape).ToDictionary(s => s.Id, s =>
         {
             var t = s.ResolvedTransform with { Rotation = ShapeEdit.Angle(-s.ResolvedTransform.Rotation) };
             return horizontal ? t with { FlipH = !t.FlipH } : t with { FlipV = !t.FlipV };
