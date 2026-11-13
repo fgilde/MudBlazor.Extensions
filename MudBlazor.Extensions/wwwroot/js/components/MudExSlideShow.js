@@ -4,6 +4,55 @@ const NEXT = ['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'n', 'N', 'Enter'];
 const PREVIOUS = ['ArrowLeft', 'ArrowUp', 'Backspace', 'PageUp', 'p', 'P'];
 const BLANK = { b: 'black', B: 'black', '.': 'black', w: 'white', W: 'white', ',': 'white' };
 
+function adopt(source, twins) {
+    const copy = source.cloneNode(true);
+    const pair = (a, b) => {
+        twins.set(a, b);
+        a.childNodes.forEach((child, i) => pair(child, b.childNodes[i]));
+    };
+    pair(source, copy);
+    return copy;
+}
+
+function reconcile(source, target, twins) {
+    if (source.nodeType !== 1) {
+        if (target.data !== source.data) {
+            target.data = source.data;
+        }
+        return;
+    }
+    for (const { name, value } of [...source.attributes]) {
+        if (target.getAttribute(name) !== value) {
+            target.setAttribute(name, value);
+        }
+    }
+    for (const { name } of [...target.attributes]) {
+        if (!source.hasAttribute(name)) {
+            target.removeAttribute(name);
+        }
+    }
+    const wanted = [...source.childNodes].map(child => {
+        const twin = twins.get(child);
+        if (twin?.parentNode !== target || twin.nodeName !== child.nodeName) {
+            return adopt(child, twins);
+        }
+        reconcile(child, twin, twins);
+        return twin;
+    });
+    const keep = new Set(wanted);
+    [...target.childNodes].filter(node => !keep.has(node)).forEach(node => target.removeChild(node));
+    wanted.forEach((node, i) => target.childNodes[i] !== node && target.insertBefore(node, target.childNodes[i] ?? null));
+}
+
+export function mirrorInto(source, container, twins) {
+    const twin = twins.get(source);
+    if (twin?.parentNode === container && container.childNodes.length === 1) {
+        reconcile(source, twin, twins);
+    } else {
+        container.replaceChildren(adopt(source, twins));
+    }
+}
+
 class MudExSlideShow {
     constructor(root, dotnet) {
         this.root = root;
@@ -12,6 +61,7 @@ class MudExSlideShow {
         this.fullscreen = false;
         this.popup = null;
         this.frame = 0;
+        this.twins = new WeakMap();
         this.onKey = e => this.keyDown(e);
         this.onClick = e => this.click(e);
         this.onFullscreen = () => this.fullscreenChanged();
@@ -144,7 +194,7 @@ class MudExSlideShow {
     mirror() {
         const stage = this.stage();
         if (this.popup && !this.popup.closed && stage) {
-            this.popup.document.body.replaceChildren(stage.cloneNode(true));
+            mirrorInto(stage, this.popup.document.body, this.twins);
         }
     }
 
