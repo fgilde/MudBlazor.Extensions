@@ -10,7 +10,7 @@ const FIELDS = 'input, textarea, select, [contenteditable]';
 const SHORTCUT_TARGETS = '.mud-ex-notebook-editor-surface, .mud-ex-notebook-page-list, .mud-ex-notebook-section-tabs';
 const SHORTCUTS = 'nyzfe';
 const OWN_PASTE = 'input, textarea, [contenteditable], .mud-ex-notebook-text-editor';
-const PRINT = 'mud-ex-notebook-print';
+const PRINT_ROOT = 'mud-ex-notebook-print-root';
 const PRINT_BODY = 'mud-ex-notebook-print-body';
 const ZOOM_STEP = 1.1;
 const NAVIGATION = ['PageUp', 'PageDown', 'Tab'];
@@ -114,17 +114,25 @@ class MudExNotebookEditor {
     }
 
     print() {
-        const root = this.root;
-        if (!root) {
+        const content = this.root?.querySelector('.mud-ex-notebook-page-content');
+        if (!content) {
             return;
         }
-        const done = () => {
-            root.classList.remove(PRINT);
-            document.body.classList.remove(PRINT_BODY);
-        };
-        root.classList.add(PRINT);
+        const copy = Object.assign(document.createElement('div'), { className: PRINT_ROOT });
+        const title = this.root.querySelector('.mud-ex-notebook-title');
+        copy.appendChild(document.createElement('h1')).textContent = title?.value ?? title?.textContent ?? '';
+        copy.appendChild(document.createElement('div')).textContent = this.root.querySelector('.mud-ex-notebook-page-date')?.textContent ?? '';
+        const page = copy.appendChild(Object.assign(document.createElement('div'), { className: 'mud-ex-notebook-page' }));
+        const clone = page.appendChild(content.cloneNode(true));
+        Object.assign(clone.style, { transform: 'none', position: 'relative' });
+        clone.querySelectorAll('.mud-ex-notebook-editing').forEach(el => el.classList.remove('mud-ex-notebook-editing'));
+        document.querySelectorAll(`.${PRINT_ROOT}`).forEach(el => el.remove());
+        document.body.appendChild(copy);
         document.body.classList.add(PRINT_BODY);
-        window.addEventListener('afterprint', done, { once: true });
+        window.addEventListener('afterprint', () => {
+            copy.remove();
+            document.body.classList.remove(PRINT_BODY);
+        }, { once: true });
         window.print();
     }
 
@@ -192,8 +200,16 @@ class MudExNotebookEditor {
         return { item: page, mark: after ? AFTER : BEFORE, method: 'OnPageDropped', index: Number(page.dataset.pageIndex) + (after ? 1 : 0) };
     }
 
+    files(e) {
+        return [...(e.dataTransfer?.types ?? [])].includes('Files');
+    }
+
     dragOver(e) {
         if (this.drag === null) {
+            if (!e.defaultPrevented && this.files(e)) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'none';
+            }
             return;
         }
         const target = this.target(e);
@@ -207,6 +223,9 @@ class MudExNotebookEditor {
 
     drop(e) {
         if (this.drag === null) {
+            if (this.files(e)) {
+                e.preventDefault();
+            }
             return;
         }
         const target = this.target(e);

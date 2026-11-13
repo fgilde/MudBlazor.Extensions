@@ -9826,6 +9826,12 @@ textarea.mud-ex-ssg-note-text {
   min-height: 1px;
   overflow: visible;
 }
+.mud-ex-notebook-page-interactive .mud-ex-notebook-geometry-element {
+  pointer-events: none;
+}
+.mud-ex-notebook-page-interactive .mud-ex-notebook-geometry-element path {
+  pointer-events: visiblePainted;
+}
 .mud-ex-notebook-highlighter {
   opacity: 0.5;
   mix-blend-mode: multiply;
@@ -10251,6 +10257,10 @@ textarea.mud-ex-ssg-note-text {
   stroke-width: 1px;
   stroke-dasharray: 4 3;
 }
+.mud-ex-notebook-col-resize .mud-ex-notebook-page-interactive,
+.mud-ex-notebook-col-resize .mud-ex-notebook-table td {
+  cursor: col-resize;
+}
 .mud-ex-notebook-erased {
   opacity: 0.25;
 }
@@ -10313,27 +10323,24 @@ textarea.mud-ex-ssg-note-text {
   padding: 8px;
   color: var(--mud-palette-text-secondary);
 }
+.mud-ex-notebook-print-root {
+  display: none;
+}
 @media print {
-  body.mud-ex-notebook-print-body * {
-    visibility: hidden !important;
-  }
-  .mud-ex-notebook-print .mud-ex-notebook-editor-surface,
-  .mud-ex-notebook-print .mud-ex-notebook-editor-surface * {
-    visibility: visible !important;
-  }
-  .mud-ex-notebook-print .mud-ex-notebook-editor-surface {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: auto !important;
+  body.mud-ex-notebook-print-body {
+    height: auto !important;
     overflow: visible !important;
   }
-  .mud-ex-notebook-print .mud-ex-notebook-canvas-layer,
-  .mud-ex-notebook-print .mud-ex-notebook-ribbon,
-  .mud-ex-notebook-print .mud-ex-notebook-section-tabs,
-  .mud-ex-notebook-print .mud-ex-notebook-page-list,
-  .mud-ex-notebook-print .mud-ex-notebook-search-panel,
-  .mud-ex-notebook-print .mud-ex-notebook-status-bar {
+  body.mud-ex-notebook-print-body > *:not(.mud-ex-notebook-print-root) {
     display: none !important;
+  }
+  body.mud-ex-notebook-print-body > .mud-ex-notebook-print-root {
+    display: block;
+    background-color: #fff;
+    color: #000;
+    font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+  }
+  .mud-ex-notebook-print-root .mud-ex-notebook-page {
+    overflow: visible;
   }
 }

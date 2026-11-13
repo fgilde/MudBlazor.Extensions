@@ -24,6 +24,7 @@ public partial class MudExNotebookElementView
         TableElement => "mud-ex-notebook-element mud-ex-notebook-table-element",
         OpaqueElement => "mud-ex-notebook-element mud-ex-notebook-opaque",
         ImageElement when _url == null => "mud-ex-notebook-element mud-ex-notebook-opaque",
+        InkElement or ShapeElement => "mud-ex-notebook-element mud-ex-notebook-geometry-element",
         _ => "mud-ex-notebook-element"
     };
 
