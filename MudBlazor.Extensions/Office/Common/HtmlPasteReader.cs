@@ -26,6 +26,8 @@ internal sealed class PastedParagraph
 
 internal sealed class HtmlPasteReader : IHtmlTokenSink
 {
+    private const int MaxOpen = 256;
+
     private static readonly HashSet<string> Blocks =
         ["p", "div", "li", "ul", "ol", "h1", "h2", "h3", "h4", "h5", "h6", "tr", "table", "blockquote", "pre", "section", "article", "header", "footer", "dt", "dd"];
 
@@ -70,7 +72,7 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         if (Blocks.Contains(name)) Break();
         if (name is "ul" or "ol") _lists.Add(name == "ul" ? PastedList.Bullet : PastedList.Number);
         if (name == "li") (_paragraphs[^1].List, _paragraphs[^1].Depth) = (_lists.Count == 0 ? PastedList.Bullet : _lists[^1], Math.Max(0, _lists.Count - 1));
-        if (Empty.Contains(name)) return;
+        if (Empty.Contains(name) || _open.Count >= MaxOpen) return;
         var format = name switch
         {
             "b" or "strong" => Current with { Bold = true },

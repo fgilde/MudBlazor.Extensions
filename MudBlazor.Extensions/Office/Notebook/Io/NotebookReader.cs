@@ -3,7 +3,6 @@ using System.Text.Json;
 
 namespace MudBlazor.Extensions.Office.Notebook;
 
-/// <summary>Reads the notebook format. A page whose JSON cannot be read becomes an empty, read-only error page whose file is kept unchanged.</summary>
 internal static class NotebookReader
 {
     public static Notebook Read(Stream stream, NotebookLoadOptions options)
@@ -14,7 +13,7 @@ internal static class NotebookReader
         var major = Major(manifest.FormatVersion) ?? throw new InvalidDataException($"The notebook format version {manifest.FormatVersion} is not valid.");
         var notebook = new Notebook
         {
-            Name = manifest.Name ?? "", Package = package, FormatVersion = manifest.FormatVersion, ReadOnlyFormat = major > 1, Extra = manifest.Extra
+            Name = manifest.Name ?? "", Package = package, FormatVersion = manifest.FormatVersion, ReadOnlyFormat = major > 1, Extra = manifest.Extra, Limits = options
         };
         var sectionIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var pageIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);

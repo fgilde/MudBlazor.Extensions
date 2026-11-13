@@ -172,7 +172,6 @@ internal sealed class CamelCaseEnumConverter<TEnum>() : JsonStringEnumConverter<
 [JsonSerializable(typeof(ElementDto))]
 internal sealed partial class NotebookJsonContext : JsonSerializerContext;
 
-/// <summary>Maps the notebook model to the JSON of the file format and back, checking every value read.</summary>
 internal static class NotebookJson
 {
     public static ManifestDto ToDto(Notebook notebook) => new()

@@ -28811,9 +28811,6 @@
             preview formats defined by the EPS specification are safe to hand to the existing viewers.
             </summary>
         </member>
-        <member name="T:MudBlazor.Extensions.Helper.Internal.Crc32">
-            <summary>CRC-32 (IEEE 802.3) as used by zip and PNG.</summary>
-        </member>
         <member name="T:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation">
             <summary>
             The key derivation of PKCS#12, RFC 7292 appendix B.2.
@@ -32945,11 +32942,6 @@
         <member name="T:MudBlazor.Extensions.Office.OpcPackageWriter">
             <summary>Writes an OPC package or another zip package: parts are copied unchanged from a source package or put as new content.</summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.OpcPackageWriter.#ctor(System.Func{System.String,System.IO.Compression.ZipArchiveEntry},System.IO.Stream)">
-            <summary>Creates a writer for a zip package without OPC parts.</summary>
-            <param name="source">Looks up an entry of the source package by part name (with leading slash); returns null if there is none.</param>
-            <param name="target">The stream that receives the package.</param>
-        </member>
         <member name="M:MudBlazor.Extensions.Office.OpcPackageWriter.Copy(System.String)">
             <summary>Copies a part of the source package unchanged, keeping its timestamp.</summary>
             <param name="part">The part name.</param>
@@ -32979,23 +32971,66 @@
             <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
             <returns>The free part name.</returns>
         </member>
-        <member name="T:MudBlazor.Extensions.Office.Notebook.AddElementCommand">
-            <summary>Adds an element on top of the others.</summary>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.AddTextCommand">
+            <summary>Adds a text block on top of the other elements. Text without any character adds nothing.</summary>
             <param name="page">The page.</param>
-            <param name="element">A new element whose id is not used on the page yet.</param>
+            <param name="x">The left edge in page coordinates.</param>
+            <param name="y">The top edge in page coordinates.</param>
+            <param name="width">The width in pixels; the height follows the text.</param>
+            <param name="paragraphs">The paragraphs, checked like those of <see cref="T:MudBlazor.Extensions.Office.Notebook.SetTextCommand"/>.</param>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Notebook.AddElementCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,MudBlazor.Extensions.Office.Notebook.NoteElement)">
-            <summary>Adds an element on top of the others.</summary>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddTextCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Double,System.Double,System.Double,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.NoteParagraph})">
+            <summary>Adds a text block on top of the other elements. Text without any character adds nothing.</summary>
             <param name="page">The page.</param>
-            <param name="element">A new element whose id is not used on the page yet.</param>
+            <param name="x">The left edge in page coordinates.</param>
+            <param name="y">The top edge in page coordinates.</param>
+            <param name="width">The width in pixels; the height follows the text.</param>
+            <param name="paragraphs">The paragraphs, checked like those of <see cref="T:MudBlazor.Extensions.Office.Notebook.SetTextCommand"/>.</param>
         </member>
-        <member name="P:MudBlazor.Extensions.Office.Notebook.AddElementCommand.Description">
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddTextCommand.Text">
+            <summary>The created text block, available after the command was applied; null if the text was empty.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddTextCommand.Description">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Notebook.AddElementCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddTextCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Notebook.AddElementCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddTextCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.AddShapeCommand">
+            <summary>Adds a shape on top of the other elements. A line or arrow runs from the top left to the bottom right corner of the bounds unless flipped.</summary>
+            <param name="page">The page.</param>
+            <param name="kind">The kind of shape.</param>
+            <param name="bounds">The rectangle in page coordinates.</param>
+            <param name="stroke">The outline colour as <c>#RRGGBB</c>.</param>
+            <param name="strokeWidth">The outline width in pixels.</param>
+            <param name="fill">The fill colour as <c>#RRGGBB</c>, or null for no fill.</param>
+            <param name="flipX">True if a line or arrow starts at the right edge.</param>
+            <param name="flipY">True if a line or arrow starts at the bottom edge.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddShapeCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,MudBlazor.Extensions.Office.Notebook.NoteShapeKind,MudBlazor.Extensions.Office.Notebook.NoteBounds,System.String,System.Double,System.String,System.Boolean,System.Boolean)">
+            <summary>Adds a shape on top of the other elements. A line or arrow runs from the top left to the bottom right corner of the bounds unless flipped.</summary>
+            <param name="page">The page.</param>
+            <param name="kind">The kind of shape.</param>
+            <param name="bounds">The rectangle in page coordinates.</param>
+            <param name="stroke">The outline colour as <c>#RRGGBB</c>.</param>
+            <param name="strokeWidth">The outline width in pixels.</param>
+            <param name="fill">The fill colour as <c>#RRGGBB</c>, or null for no fill.</param>
+            <param name="flipX">True if a line or arrow starts at the right edge.</param>
+            <param name="flipY">True if a line or arrow starts at the bottom edge.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddShapeCommand.Shape">
+            <summary>The created shape, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddShapeCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddShapeCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddShapeCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.DeleteElementsCommand">
@@ -34092,26 +34127,6 @@
         <member name="M:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.GetTypeInfo(System.Type)">
             <inheritdoc/>
         </member>
-        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookJson">
-            <summary>Maps the notebook model to the JSON of the file format and back, checking every value read.</summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookPackage">
-            <summary>
-            A read-only view of a notebook zip. Entry names are zip names without leading slash and compare ignoring case, as the writer does. Every entry is
-            inflated once while opening: the bytes actually produced count against the limits and must match the declared size and checksum. The manifest and
-            page JSON are kept; a corrupt page entry is reported through <see cref="M:MudBlazor.Extensions.Office.Notebook.NotebookPackage.Problem(System.String)"/> instead of failing the whole file.
-            </summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookReader">
-            <summary>Reads the notebook format. A page whose JSON cannot be read becomes an empty, read-only error page whose file is kept unchanged.</summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookWriter">
-            <summary>
-            Writes the notebook format into a buffer and copies it to the target only when complete. Unchanged pages and error pages are copied from the loaded
-            file, changed pages are written anew. A medium is kept if the JSON of any page names its id, also inside unknown properties or opaque elements;
-            other media are left out. Entries outside <c>notebook.json</c>, <c>pages/</c> and the media files are kept.
-            </summary>
-        </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.Notebook">
             <summary>A notebook of sections and pages in the style of OneNote, with an undo stack.</summary>
         </member>
@@ -34141,14 +34156,19 @@
         <member name="M:MudBlazor.Extensions.Office.Notebook.Notebook.Load(System.IO.Stream,MudBlazor.Extensions.Office.Notebook.NotebookLoadOptions)">
             <summary>Reads a notebook file (.mxnb). A page whose content cannot be read opens empty with <see cref="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.LoadError"/> set.</summary>
             <param name="stream">The file content.</param>
-            <param name="options">Limits for the unpacked size, or null for the defaults.</param>
+            <param name="options">
+            Limits for the unpacked size, or null for the defaults. They also apply to pictures added later and to saving, so the notebook can always be
+            opened again with the same limits.
+            </param>
             <returns>The notebook.</returns>
             <exception cref="T:System.IO.InvalidDataException">The file is not a notebook, contains unsafe entry paths or exceeds the size limits.</exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Notebook.Notebook.Save(System.IO.Stream)">
             <summary>Writes the notebook as a .mxnb file. Unchanged pages and media are copied from the loaded file; media no page uses are left out.</summary>
-            <param name="target">The stream that receives the file.</param>
-            <exception cref="T:System.InvalidOperationException">The notebook has a newer format version (<see cref="P:MudBlazor.Extensions.Office.Notebook.Notebook.ReadOnlyFormat"/>).</exception>
+            <param name="target">The stream that receives the file; it is not written if saving fails.</param>
+            <exception cref="T:System.InvalidOperationException">
+            The notebook has a newer format version (<see cref="P:MudBlazor.Extensions.Office.Notebook.Notebook.ReadOnlyFormat"/>), or the file would exceed the limits it was loaded with.
+            </exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Notebook.Notebook.Execute(MudBlazor.Extensions.Office.IDocumentCommand{MudBlazor.Extensions.Office.Notebook.Notebook})">
             <summary>Applies a command and records it as one undo step (or adds it to the open transaction). A command that changes nothing records nothing.</summary>
@@ -34179,7 +34199,7 @@
             <summary>Describes everything that changed during one command or transaction.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookChangedEventArgs.Pages">
-            <summary>The affected pages, including removed ones.</summary>
+            <summary>The pages whose content, title or level changed; structure changes (added, removed or moved pages and sections) are reported only through <see cref="P:MudBlazor.Extensions.Office.Notebook.NotebookChangedEventArgs.Kind"/>.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookChangedEventArgs.Kind">
             <summary>The kinds of change.</summary>
@@ -34221,7 +34241,7 @@
             <summary>Incremented by every change of the page; use it as render key.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.LoadError">
-            <summary>Why the page content could not be read, or null. Such a page is empty and read-only, and its file is saved unchanged.</summary>
+            <summary>Why the page content could not be read, or null. Such a page is empty and read-only; its file is saved unchanged if it could be unpacked, a corrupt file is dropped.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.ContentBounds">
             <summary>The hull of all elements; empty for a page without elements.</summary>

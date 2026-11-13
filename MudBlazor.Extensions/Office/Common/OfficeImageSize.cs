@@ -76,5 +76,5 @@ internal static class OfficeImageSize
     }
 
     private static double? Pixels(string value) =>
-        double.TryParse(value?.Trim().Replace("px", "", StringComparison.OrdinalIgnoreCase), NumberStyles.Float, CultureInfo.InvariantCulture, out var n) && n > 0 ? n : null;
+        double.TryParse(value?.Trim().Replace("px", "", StringComparison.OrdinalIgnoreCase), NumberStyles.Float, CultureInfo.InvariantCulture, out var n) && n > 0 && double.IsFinite(n) ? n : null;
 }

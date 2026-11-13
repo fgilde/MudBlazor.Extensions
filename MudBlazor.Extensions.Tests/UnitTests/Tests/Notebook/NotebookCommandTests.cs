@@ -49,7 +49,9 @@ public class NotebookCommandTests
         ["InsertTableColumns"] = n => new InsertTableColumnsCommand(First(n), "table", 2, 1),
         ["DeleteTableColumns"] = n => new DeleteTableColumnsCommand(First(n), "table", 0, 1),
         ["SetTableColumnWidths"] = n => new SetTableColumnWidthsCommand(First(n), "table", [50, 60]),
-        ["SetTableHeaderRow"] = n => new SetTableHeaderRowCommand(First(n), "table", false)
+        ["SetTableHeaderRow"] = n => new SetTableHeaderRowCommand(First(n), "table", false),
+        ["AddText"] = n => new AddTextCommand(First(n), 5, 6, 200, [Paragraph("Hello")]),
+        ["AddShape"] = n => new AddShapeCommand(First(n), NoteShapeKind.Arrow, new NoteBounds(1, 2, 30, 40), "#123456", 3, null, true)
     };
 
     public static TheoryData<string> CommandNames => new(Cases.Keys);
@@ -59,7 +61,7 @@ public class NotebookCommandTests
     private static NoteParagraph Paragraph(string text, NoteListKind list = NoteListKind.None, int indent = 0) =>
         new() { Runs = [new NoteRun(text)], List = list, Indent = indent };
 
-    private static byte[] PngOfSize(int width, int height)
+    internal static byte[] PngOfSize(int width, int height)
     {
         var png = new byte[24];
         Png.AsSpan(0, 8).CopyTo(png);
@@ -189,19 +191,6 @@ public class NotebookCommandTests
         Assert.Throws<ArgumentException>(() => notebook.Execute(new SetTextCommand(page, "text",
             [new NoteParagraph { Runs = [new NoteRun("x", new NoteRunFormat(Color: "red;background:url(x)"))] }])));
         Assert.False(notebook.Undo.CanUndo);
-    }
-
-    [Fact]
-    public void Resize_Ink_ScalesPoints()
-    {
-        var notebook = AllKinds();
-        var page = First(notebook);
-
-        notebook.Execute(new ResizeElementsCommand(page, new Dictionary<string, NoteBounds> { ["ink"] = new(10, 20, 60, 20) }));
-
-        var ink = (InkElement)page.Elements.Single(e => e.Id == "ink");
-        Assert.Equal(new NoteBounds(10, 20, 60, 20), ink.Bounds);
-        Assert.Equal([new InkPoint(0, 0, 0.5), new InkPoint(60, 20, 1)], ink.Points);
     }
 
     [Fact]

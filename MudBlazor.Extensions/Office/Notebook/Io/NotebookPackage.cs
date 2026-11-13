@@ -17,11 +17,6 @@ internal static class NotebookMediaTypes
     public static string TypeOf(string extension) => ByExtension.GetValueOrDefault(extension);
 }
 
-/// <summary>
-/// A read-only view of a notebook zip. Entry names are zip names without leading slash and compare ignoring case, as the writer does. Every entry is
-/// inflated once while opening: the bytes actually produced count against the limits and must match the declared size and checksum. The manifest and
-/// page JSON are kept; a corrupt page entry is reported through <see cref="Problem"/> instead of failing the whole file.
-/// </summary>
 internal sealed class NotebookPackage
 {
     public const string ManifestEntry = "notebook.json";
@@ -56,9 +51,10 @@ internal sealed class NotebookPackage
                 continue;
             }
 
-            if (!IsPage(name)) throw new InvalidDataException($"The notebook entry {name} is corrupt: {problem}");
+            if (IsPage(name)) _problems[name] = $"The page file is corrupt: {problem}";
+            else if (json != null) throw new InvalidDataException($"The notebook entry {name} is corrupt: {problem}");
+            else if (MediaId(name) is { } medium) _media.Remove(medium);
             _entries.Remove(name);
-            _problems[name] = $"The page file is corrupt: {problem}";
         }
     }
 
@@ -70,15 +66,22 @@ internal sealed class NotebookPackage
     {
         var buffer = new MemoryStream();
         var chunk = new byte[81920];
+        var max = MaxFileBytes(options);
         int read;
         while ((read = stream.Read(chunk)) > 0)
         {
-            if (buffer.Length + read > options.MaxTotalBytes) throw new InvalidDataException($"The notebook file is larger than {options.MaxTotalBytes} bytes.");
+            if (buffer.Length + read > max) throw new InvalidDataException($"The notebook file is larger than {max} bytes.");
             buffer.Write(chunk, 0, read);
         }
 
         buffer.Position = 0;
         return new NotebookPackage(buffer, options);
+    }
+
+    public static long MaxFileBytes(NotebookLoadOptions options)
+    {
+        var slack = options.MaxTotalBytes / 64 + (1 << 20);
+        return options.MaxTotalBytes > long.MaxValue - slack ? long.MaxValue : options.MaxTotalBytes + slack;
     }
 
     public static string PageEntry(string pageId) => PagesFolder + pageId + ".json";

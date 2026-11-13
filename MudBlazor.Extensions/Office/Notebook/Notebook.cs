@@ -42,6 +42,10 @@ public sealed class Notebook
 
     internal Dictionary<string, (byte[] Data, string Extension)> PendingMedia { get; } = new(StringComparer.OrdinalIgnoreCase);
 
+    internal NotebookLoadOptions Limits { get; set; } = new();
+
+    internal int Revision => _notifications;
+
     /// <summary>Creates a notebook with one section and one empty page.</summary>
     /// <param name="name">The name of the notebook.</param>
     /// <returns>The notebook.</returns>
@@ -56,14 +60,19 @@ public sealed class Notebook
 
     /// <summary>Reads a notebook file (.mxnb). A page whose content cannot be read opens empty with <see cref="NotebookPage.LoadError"/> set.</summary>
     /// <param name="stream">The file content.</param>
-    /// <param name="options">Limits for the unpacked size, or null for the defaults.</param>
+    /// <param name="options">
+    /// Limits for the unpacked size, or null for the defaults. They also apply to pictures added later and to saving, so the notebook can always be
+    /// opened again with the same limits.
+    /// </param>
     /// <returns>The notebook.</returns>
     /// <exception cref="InvalidDataException">The file is not a notebook, contains unsafe entry paths or exceeds the size limits.</exception>
     public static Notebook Load(Stream stream, NotebookLoadOptions options = null) => NotebookReader.Read(stream, options ?? new NotebookLoadOptions());
 
     /// <summary>Writes the notebook as a .mxnb file. Unchanged pages and media are copied from the loaded file; media no page uses are left out.</summary>
-    /// <param name="target">The stream that receives the file.</param>
-    /// <exception cref="InvalidOperationException">The notebook has a newer format version (<see cref="ReadOnlyFormat"/>).</exception>
+    /// <param name="target">The stream that receives the file; it is not written if saving fails.</param>
+    /// <exception cref="InvalidOperationException">
+    /// The notebook has a newer format version (<see cref="ReadOnlyFormat"/>), or the file would exceed the limits it was loaded with.
+    /// </exception>
     public void Save(Stream target) => NotebookWriter.Write(this, target);
 
     /// <summary>Applies a command and records it as one undo step (or adds it to the open transaction). A command that changes nothing records nothing.</summary>
@@ -103,6 +112,15 @@ public sealed class Notebook
         return id;
     }
 
+    internal void CheckRoom(long bytes)
+    {
+        var media = SectionList.SelectMany(s => s.PageList).SelectMany(p => p.ElementList).OfType<ImageElement>().Select(i => i.MediaId).Where(id => id != null)
+            .Distinct(StringComparer.OrdinalIgnoreCase).Sum(MediaSize);
+        var other = Package?.Names.Where(n => !NotebookPackage.IsMedia(n)).Sum(n => Package.Entry(n).Length) ?? 0;
+        if (bytes > Limits.MaxEntryBytes || media + other + bytes > Limits.MaxTotalBytes)
+            throw new InvalidOperationException($"The picture does not fit into the notebook: a picture may have at most {Limits.MaxEntryBytes} bytes and the whole notebook at most {Limits.MaxTotalBytes} bytes.");
+    }
+
     internal void Notify(NotebookPage page, NotebookChangeKind kind)
     {
         _notifications++;
@@ -117,6 +135,9 @@ public sealed class Notebook
 
         _changeKind |= kind;
     }
+
+    private long MediaSize(string id) =>
+        PendingMedia.TryGetValue(id, out var pending) ? pending.Data.Length : Package?.MediaEntry(id) is { } name ? Package.Entry(name).Length : 0;
 
     private void RaiseChanged()
     {

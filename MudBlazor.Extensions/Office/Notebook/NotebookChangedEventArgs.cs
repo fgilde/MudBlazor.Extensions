@@ -26,7 +26,7 @@ public sealed class NotebookChangedEventArgs : EventArgs
         Kind = kind;
     }
 
-    /// <summary>The affected pages, including removed ones.</summary>
+    /// <summary>The pages whose content, title or level changed; structure changes (added, removed or moved pages and sections) are reported only through <see cref="Kind"/>.</summary>
     public IReadOnlyCollection<NotebookPage> Pages { get; }
 
     /// <summary>The kinds of change.</summary>

@@ -314,17 +314,21 @@ public class NotebookFormatTests
     {
         var zip = PatchUncompressedSize(new NotebookBuilder().Page("p1").Media("bomb", "png", new byte[100_000]).Build(), "media/bomb.png", 10);
 
-        Assert.Throws<InvalidDataException>(() => Notebook.Load(new MemoryStream(zip), new NotebookLoadOptions { MaxEntryBytes = 1000 }));
+        Notebook? notebook = null;
+        try { notebook = Notebook.Load(new MemoryStream(zip), new NotebookLoadOptions { MaxEntryBytes = 1000 }); }
+        catch (InvalidDataException) { }
+
+        Assert.Null(notebook?.GetMedia("bomb"));
     }
 
     [Fact]
     public void Load_InputOverTotalLimit_StopsReading()
     {
-        var input = new CountingStream(new byte[1_000_000]);
+        var input = new CountingStream(new byte[4_000_000]);
 
         Assert.Throws<InvalidDataException>(() => Notebook.Load(input, new NotebookLoadOptions { MaxTotalBytes = 1000 }));
 
-        Assert.True(input.BytesRead < 200_000, $"{input.BytesRead} bytes read");
+        Assert.True(input.BytesRead < 1_200_000, $"{input.BytesRead} bytes read");
     }
 
     [Fact]

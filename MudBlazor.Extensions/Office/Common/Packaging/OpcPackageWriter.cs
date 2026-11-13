@@ -22,9 +22,6 @@ internal sealed class OpcPackageWriter : IDisposable
     {
     }
 
-    /// <summary>Creates a writer for a zip package without OPC parts.</summary>
-    /// <param name="source">Looks up an entry of the source package by part name (with leading slash); returns null if there is none.</param>
-    /// <param name="target">The stream that receives the package.</param>
     public OpcPackageWriter(Func<string, ZipArchiveEntry> source, Stream target)
     {
         _source = source;

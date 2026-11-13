@@ -1,6 +1,5 @@
 namespace MudBlazor.Extensions.Helper.Internal;
 
-/// <summary>CRC-32 (IEEE 802.3) as used by zip and PNG.</summary>
 internal static class Crc32
 {
     public const uint Initial = 0xFFFFFFFFu;

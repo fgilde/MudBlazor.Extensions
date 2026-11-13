@@ -35,7 +35,7 @@ public sealed class NotebookPage
     /// <summary>Incremented by every change of the page; use it as render key.</summary>
     public int Version { get; internal set; }
 
-    /// <summary>Why the page content could not be read, or null. Such a page is empty and read-only, and its file is saved unchanged.</summary>
+    /// <summary>Why the page content could not be read, or null. Such a page is empty and read-only; its file is saved unchanged if it could be unpacked, a corrupt file is dropped.</summary>
     public string LoadError { get; internal set; }
 
     /// <summary>The hull of all elements; empty for a page without elements.</summary>

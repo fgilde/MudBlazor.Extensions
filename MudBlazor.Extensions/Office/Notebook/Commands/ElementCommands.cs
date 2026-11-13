@@ -1,16 +1,11 @@
 namespace MudBlazor.Extensions.Office.Notebook;
 
-/// <summary>Adds an element on top of the others.</summary>
-/// <param name="page">The page.</param>
-/// <param name="element">A new element whose id is not used on the page yet.</param>
-public sealed class AddElementCommand(NotebookPage page, NoteElement element) : IDocumentCommand<Notebook>
+internal sealed class AddElementCommand(NotebookPage page, NoteElement element) : IDocumentCommand<Notebook>
 {
     private ElementEdit _edit;
 
-    /// <inheritdoc />
     public string Description => "Insert";
 
-    /// <inheritdoc />
     public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements =>
     {
         ArgumentNullException.ThrowIfNull(element);
@@ -20,6 +15,70 @@ public sealed class AddElementCommand(NotebookPage page, NoteElement element) : 
             throw new ArgumentException($"The element id {element.Id} is invalid or already used on the page.", nameof(element));
         NotebookEdit.Check(element.Bounds, nameof(element));
         elements.Add(element);
+    });
+
+    public void Revert(Notebook document) => _edit.Revert(document);
+}
+
+/// <summary>Adds a text block on top of the other elements. Text without any character adds nothing.</summary>
+/// <param name="page">The page.</param>
+/// <param name="x">The left edge in page coordinates.</param>
+/// <param name="y">The top edge in page coordinates.</param>
+/// <param name="width">The width in pixels; the height follows the text.</param>
+/// <param name="paragraphs">The paragraphs, checked like those of <see cref="SetTextCommand"/>.</param>
+public sealed class AddTextCommand(NotebookPage page, double x, double y, double width, IReadOnlyList<NoteParagraph> paragraphs) : IDocumentCommand<Notebook>
+{
+    private ElementEdit _edit;
+
+    /// <summary>The created text block, available after the command was applied; null if the text was empty.</summary>
+    public TextElement Text { get; private set; }
+
+    /// <inheritdoc />
+    public string Description => "Insert text";
+
+    /// <inheritdoc />
+    public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements =>
+    {
+        var text = NotebookEdit.Text(paragraphs, nameof(paragraphs));
+        Text = NotebookEdit.IsEmpty(text) ? null
+            : new TextElement { X = NotebookEdit.Number(x, nameof(x)), Y = NotebookEdit.Number(y, nameof(y)), Width = NotebookEdit.Positive(width, nameof(width)), Paragraphs = text };
+        if (Text != null) elements.Add(Text);
+    });
+
+    /// <inheritdoc />
+    public void Revert(Notebook document) => _edit.Revert(document);
+}
+
+/// <summary>Adds a shape on top of the other elements. A line or arrow runs from the top left to the bottom right corner of the bounds unless flipped.</summary>
+/// <param name="page">The page.</param>
+/// <param name="kind">The kind of shape.</param>
+/// <param name="bounds">The rectangle in page coordinates.</param>
+/// <param name="stroke">The outline colour as <c>#RRGGBB</c>.</param>
+/// <param name="strokeWidth">The outline width in pixels.</param>
+/// <param name="fill">The fill colour as <c>#RRGGBB</c>, or null for no fill.</param>
+/// <param name="flipX">True if a line or arrow starts at the right edge.</param>
+/// <param name="flipY">True if a line or arrow starts at the bottom edge.</param>
+public sealed class AddShapeCommand(NotebookPage page, NoteShapeKind kind, NoteBounds bounds, string stroke = "#000000", double strokeWidth = 2, string fill = null,
+    bool flipX = false, bool flipY = false) : IDocumentCommand<Notebook>
+{
+    private ElementEdit _edit;
+
+    /// <summary>The created shape, available after the command was applied.</summary>
+    public ShapeElement Shape { get; private set; }
+
+    /// <inheritdoc />
+    public string Description => "Insert shape";
+
+    /// <inheritdoc />
+    public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements =>
+    {
+        NotebookEdit.Check(bounds, nameof(bounds));
+        Shape = new ShapeElement
+        {
+            Kind = kind, X = bounds.X, Y = bounds.Y, Width = bounds.Width, Height = bounds.Height, Stroke = stroke, StrokeWidth = strokeWidth, Fill = fill,
+            FlipX = flipX, FlipY = flipY
+        };
+        elements.Add(Shape);
     });
 
     /// <inheritdoc />
@@ -100,8 +159,10 @@ public sealed class ResizeElementsCommand(NotebookPage page, IReadOnlyDictionary
             (resized.X, resized.Y, resized.Width, resized.Height) = target;
             if (resized is InkElement ink)
             {
-                var (sx, sy) = (element.Width > 0 ? target.Width / element.Width : 1, element.Height > 0 ? target.Height / element.Height : 1);
-                ink.Points = ink.Points.Select(p => p with { X = p.X * sx, Y = p.Y * sy }).ToList();
+                var pad = ink.StrokeWidth / 2;
+                var (width, height) = (element.Width - 2 * pad, element.Height - 2 * pad);
+                var (sx, sy) = (width > 0 ? Math.Max(0, target.Width - 2 * pad) / width : 1, height > 0 ? Math.Max(0, target.Height - 2 * pad) / height : 1);
+                NotebookEdit.FitInk(ink, ink.Points.Select(p => p with { X = target.X + pad + (p.X - pad) * sx, Y = target.Y + pad + (p.Y - pad) * sy }).ToList());
             }
             else if (resized is TableElement table && table.ColumnWidths.Sum() is > 0 and var sum)
                 table.ColumnWidths = table.ColumnWidths.Select(w => w * target.Width / sum).ToList();
@@ -181,6 +242,7 @@ public sealed class AddImageCommand(NotebookPage page, byte[] data, string conte
 {
     private const double FallbackWidth = 320;
     private const double FallbackHeight = 240;
+    private const double MaxSide = 10000;
 
     private ElementEdit _edit;
 
@@ -199,8 +261,11 @@ public sealed class AddImageCommand(NotebookPage page, byte[] data, string conte
         NotebookEdit.Number(x, nameof(x));
         NotebookEdit.Number(y, nameof(y));
         var bytes = data.ToArray();
-        var (width, height) = OfficeImageSize.Read(bytes, type) is { } size && size.Width > 0 && size.Height > 0 ? size : (FallbackWidth, FallbackHeight);
-        var scale = Math.Min(1, maxWidth / width);
+        document.CheckRoom(bytes.Length);
+        var (width, height) = OfficeImageSize.Read(bytes, type) is { } size && size.Width > 0 && size.Height > 0 && double.IsFinite(size.Width) && double.IsFinite(size.Height)
+            ? size : (FallbackWidth, FallbackHeight);
+        var scale = Math.Min(1, Math.Min(maxWidth, MaxSide) / width);
+        scale = Math.Min(scale, MaxSide / height);
         Image = new ImageElement
         {
             X = x, Y = y, Width = width * scale, Height = height * scale, MediaId = document.AddMedia(bytes, type), ContentType = type
