@@ -9,4 +9,7 @@ public sealed class OpaqueShape : SlideShape
 
     /// <summary>The kind of content: <c>chart</c>, <c>table</c>, <c>smartArt</c>, <c>media</c>, <c>ole</c> or <c>other</c>.</summary>
     public string Kind { get; internal set; } = "other";
+
+    /// <summary>The chart read from its cached values when <see cref="Kind"/> is <c>chart</c> and the chart can be drawn; otherwise null.</summary>
+    public ChartSnapshot Chart { get; internal set; }
 }

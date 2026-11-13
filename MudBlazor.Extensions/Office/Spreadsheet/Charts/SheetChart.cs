@@ -2,31 +2,6 @@ using System.Xml.Linq;
 
 namespace MudBlazor.Extensions.Office.Spreadsheet;
 
-/// <summary>The chart types the editor can show and create.</summary>
-public enum ChartKind
-{
-    /// <summary>Vertical bars.</summary>
-    Column,
-
-    /// <summary>Horizontal bars.</summary>
-    Bar,
-
-    /// <summary>Lines.</summary>
-    Line,
-
-    /// <summary>A pie.</summary>
-    Pie,
-
-    /// <summary>Filled areas.</summary>
-    Area,
-
-    /// <summary>X/Y points.</summary>
-    Scatter,
-
-    /// <summary>Any other chart read from a file. It is shown as a placeholder and saved unchanged, apart from its cell references.</summary>
-    Other
-}
-
 /// <summary>
 /// A chart placed on a worksheet. Charts are immutable; change them with <see cref="InsertChartCommand"/>, <see cref="MoveChartCommand"/>,
 /// <see cref="UpdateChartCommand"/> and <see cref="DeleteChartCommand"/>. Their references follow row, column and sheet changes like formulas.

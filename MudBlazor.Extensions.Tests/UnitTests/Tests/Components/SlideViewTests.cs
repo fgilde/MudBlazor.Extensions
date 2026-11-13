@@ -1,6 +1,7 @@
 using Bunit;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Tests.UnitTests.Tests.Office;
 using MudBlazor.Extensions.Tests.UnitTests.Tests.Presentation;
 using Xunit;
 using static MudBlazor.Extensions.Tests.UnitTests.Tests.Presentation.PptxBuilder;
@@ -84,6 +85,35 @@ public class SlideViewTests
         Assert.Contains("mud-ex-slide-opaque", opaque.ClassName);
         Assert.Contains("Sales chart", opaque.TextContent);
         Assert.Contains("chart", cut.Find("[data-shape-id='7'] small").TextContent);
+    }
+
+    [Fact]
+    public void SlideView_ChartFrame_RendersChart()
+    {
+        var presentation = new PptxBuilder { ExtraParts = { ["ppt/charts/chart1.xml"] = (ChartSnapshotReaderTests.ChartType, ChartSnapshotReaderTests.ChartXml()) } }
+            .Slide(ChartSnapshotReaderTests.Frame(7, "Sales chart", "rIdC"), rels: ChartSnapshotReaderTests.ChartRel).Load();
+        using var context = new TestContext();
+
+        var cut = Render(context, presentation);
+
+        var frame = cut.Find("[data-shape-id='7']");
+        Assert.Equal("Sales", frame.QuerySelector(".mud-ex-sschart-title")!.TextContent);
+        Assert.NotNull(frame.QuerySelector(".mud-ex-sschart-body"));
+        Assert.Empty(frame.QuerySelectorAll(".mud-ex-slide-opaque-label"));
+    }
+
+    [Fact]
+    public void SlideView_UnreadableChart_RendersFrame()
+    {
+        var presentation = new PptxBuilder { ExtraParts = { ["ppt/charts/chart1.xml"] = (ChartSnapshotReaderTests.ChartType, ChartSnapshotReaderTests.ChartXml(cache: false)) } }
+            .Slide(ChartSnapshotReaderTests.Frame(7, "Sales chart", "rIdC"), rels: ChartSnapshotReaderTests.ChartRel).Load();
+        using var context = new TestContext();
+
+        var cut = Render(context, presentation);
+
+        var frame = cut.Find("[data-shape-id='7']");
+        Assert.Contains("Sales chart", frame.TextContent);
+        Assert.Empty(frame.QuerySelectorAll(".mud-ex-sschart"));
     }
 
     [Fact]

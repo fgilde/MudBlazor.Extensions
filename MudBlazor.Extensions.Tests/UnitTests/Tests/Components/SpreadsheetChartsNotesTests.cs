@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Office;
 using MudBlazor.Extensions.Office.Spreadsheet;
 using Xunit;
 

@@ -1,3 +1,4 @@
+using System.Xml;
 using System.Xml.Linq;
 using static MudBlazor.Extensions.Office.Presentation.PptxReader;
 
@@ -7,6 +8,7 @@ internal sealed class ShapeReader(
     OpcPackage opc, string part, IReadOnlyList<OpcRelationship> rels, SlideMaster master, IReadOnlyList<SlideShape> inherited, bool matchIndex,
     IReadOnlyDictionary<string, string> colorMap = null)
 {
+    private static readonly XNamespace ChartNs = "http://schemas.openxmlformats.org/drawingml/2006/chart";
     private static readonly string[] MediaElements = ["videoFile", "audioFile", "quickTimeFile", "wavAudioFile", "audioCd", "media"];
 
     internal IEnumerable<SlideShape> ReadTree(XElement root) => ReadChildren(root?.Element(P + "cSld")?.Element(P + "spTree"), null);
@@ -20,7 +22,7 @@ internal sealed class ShapeReader(
         if (e.Name == P + "sp" || e.Name == P + "cxnSp") shape = new AutoShape { IsConnector = e.Name == P + "cxnSp" };
         else if (e.Name == P + "pic") shape = IsMedia(e) ? new OpaqueShape { Kind = "media" } : new PictureShape();
         else if (e.Name == P + "grpSp") shape = new GroupShape();
-        else if (e.Name == P + "graphicFrame") shape = TableXml.Of(e) is { } tbl ? TableXml.Read(tbl) : new OpaqueShape { Kind = FrameKind(e) };
+        else if (e.Name == P + "graphicFrame") shape = TableXml.Of(e) is { } tbl ? TableXml.Read(tbl) : ReadFrame(e);
         else if (e.Name == P + "contentPart" || e.Name.LocalName == "AlternateContent") shape = new OpaqueShape();
         else return null;
 
@@ -226,6 +228,27 @@ internal sealed class ShapeReader(
 
     private static bool IsMedia(XElement picture) =>
         picture.Element(P + "nvPicPr")?.Element(P + "nvPr")?.Descendants().Any(d => MediaElements.Contains(d.Name.LocalName)) == true;
+
+    private OpaqueShape ReadFrame(XElement e)
+    {
+        var shape = new OpaqueShape { Kind = FrameKind(e) };
+        if (shape.Kind == "chart") shape.Chart = ReadChart(e);
+        return shape;
+    }
+
+    private ChartSnapshot ReadChart(XElement e)
+    {
+        var id = (string)e.Element(A + "graphic")?.Element(A + "graphicData")?.Element(ChartNs + "chart")?.Attribute(R + "id");
+        if (id == null || rels.FirstOrDefault(r => r.Id == id && r.TargetMode == null) is not { } rel) return null;
+        try
+        {
+            return ChartSnapshotReader.Read(opc.ReadXml(opc.ResolveTarget(part, rel.Target)), c => ColorResolver.Resolve(c, master, colorMap));
+        }
+        catch (Exception ex) when (ex is XmlException or IOException or InvalidDataException or KeyNotFoundException)
+        {
+            return null;
+        }
+    }
 
     private static string FrameKind(XElement frame) =>
         ((string)frame.Element(A + "graphic")?.Element(A + "graphicData")?.Attribute("uri"))?.TrimEnd('/') switch

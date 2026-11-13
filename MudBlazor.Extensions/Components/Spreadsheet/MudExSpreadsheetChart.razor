@@ -1,9 +1,9 @@
 @inherits MudExBaseComponent<MudExSpreadsheetChart>
 @namespace MudBlazor.Extensions.Components
 
-<div class="@($"mud-ex-sschart {Class}".TrimEnd())" style="@Style">
-    @if (!Supported)
-    {
+@if (_snapshot == null)
+{
+    <div class="@($"mud-ex-sschart {Class}".TrimEnd())" style="@Style">
         <div class="mud-ex-sschart-placeholder">
             @if (!string.IsNullOrEmpty(Chart?.Title))
             {
@@ -11,48 +11,9 @@
             }
             <div>@TryLocalize("Chart not supported")</div>
         </div>
-    }
-    else
-    {
-        @if (!string.IsNullOrEmpty(Chart.Title))
-        {
-            <div class="mud-ex-sschart-title">@Chart.Title</div>
-        }
-        @if (MudType is { } type)
-        {
-            <div class="mud-ex-sschart-body">
-                <MudChart T="double" ChartType="type" ChartSeries="_series" ChartLabels="_labels" ChartOptions="_options" Width="100%" Height="100%" />
-            </div>
-        }
-        else
-        {
-            <svg class="mud-ex-sschart-svg" width="@F(_plot.Width)" height="@F(_plot.Height)" viewBox="@($"0 0 {F(_plot.Width)} {F(_plot.Height)}")">
-                @foreach (var line in _lines)
-                {
-                    <line class="mud-ex-sschart-axis" x1="@F(line.X1)" y1="@F(line.Y1)" x2="@F(line.X2)" y2="@F(line.Y2)" />
-                }
-                @foreach (var shape in _shapes)
-                {
-                    @if (shape.Path != null)
-                    {
-                        <path class="mud-ex-sschart-area" d="@shape.Path" fill="@shape.Color" />
-                    }
-                    else
-                    {
-                        <rect class="mud-ex-sschart-bar" x="@F(shape.X)" y="@F(shape.Y)" width="@F(shape.Width)" height="@F(shape.Height)" fill="@shape.Color" />
-                    }
-                }
-                @Labels
-            </svg>
-            @if (Chart.ShowLegend)
-            {
-                <div class="mud-ex-sschart-legend">
-                    @for (var i = 0; i < Data.Series.Count; i++)
-                    {
-                        <span><i style="@($"background:{Color(i)}")"></i>@Data.Series[i].Name</span>
-                    }
-                </div>
-            }
-        }
-    }
-</div>
+    </div>
+}
+else
+{
+    <MudExOfficeChart Snapshot="_snapshot" Width="Width" Height="Height" Class="@Class" Style="@Style" Localizer="@Localizer" />
+}

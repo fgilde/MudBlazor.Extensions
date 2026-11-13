@@ -18614,6 +18614,27 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection.ConfirmationCallback">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExOfficeChart">
+            <summary>
+            Shows a <see cref="T:MudBlazor.Extensions.Office.ChartSnapshot"/>: column, line, pie and scatter charts with <see cref="T:MudBlazor.MudChart`1"/>, and area and horizontal bar charts as SVG.
+            It renders again only when the snapshot or the size changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOfficeChart.Snapshot">
+            <summary>The chart to show. A new instance renders the chart again.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOfficeChart.Width">
+            <summary>Width in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOfficeChart.Height">
+            <summary>Height in pixels.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOfficeChart.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOfficeChart.ShouldRender">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.OrgChartIndex`1">
             <summary>
             The forest of <see cref="T:MudBlazor.Extensions.Components.MudExOrgChart`1"/>: every id gets a stable int key, cycles are broken so every item is reachable exactly once.
@@ -20122,8 +20143,8 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSpreadsheetChart">
             <summary>
-            Shows one chart of a worksheet: column, line, pie and scatter charts with <see cref="T:MudBlazor.MudChart`1"/>, area and horizontal bar charts as SVG,
-            and charts the editor cannot draw as a placeholder. It renders again only when its data, size or look changed.
+            Shows one chart of a worksheet with <see cref="T:MudBlazor.Extensions.Components.MudExOfficeChart"/>, and charts the editor cannot draw as a placeholder.
+            It renders again only when its data, size or look changed.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetChart.Chart">
@@ -31659,6 +31680,94 @@
             MudBlazorExtensionsMiddlewareExtensions
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.ChartKind">
+            <summary>The chart types the editor can show and create.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.ChartKind.Column">
+            <summary>Vertical bars.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.ChartKind.Bar">
+            <summary>Horizontal bars.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.ChartKind.Line">
+            <summary>Lines.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.ChartKind.Pie">
+            <summary>A pie.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.ChartKind.Area">
+            <summary>Filled areas.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.ChartKind.Scatter">
+            <summary>X/Y points.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.ChartKind.Other">
+            <summary>Any other chart read from a file. It is shown as a placeholder and saved unchanged, apart from its cell references.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.ChartSnapshot">
+            <summary>A chart as the values cached in its file: what a viewer draws without any workbook behind it.</summary>
+            <param name="Kind">The chart type.</param>
+            <param name="Title">The title text; empty for no title.</param>
+            <param name="Categories">The category labels, shared by all series.</param>
+            <param name="Series">The data series in plot order.</param>
+            <param name="ShowLegend">True if the legend is shown.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.ChartSnapshot.#ctor(MudBlazor.Extensions.Office.ChartKind,System.String,System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.ChartSnapshotSeries},System.Boolean)">
+            <summary>A chart as the values cached in its file: what a viewer draws without any workbook behind it.</summary>
+            <param name="Kind">The chart type.</param>
+            <param name="Title">The title text; empty for no title.</param>
+            <param name="Categories">The category labels, shared by all series.</param>
+            <param name="Series">The data series in plot order.</param>
+            <param name="ShowLegend">True if the legend is shown.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.ChartSnapshot.Kind">
+            <summary>The chart type.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.ChartSnapshot.Title">
+            <summary>The title text; empty for no title.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.ChartSnapshot.Categories">
+            <summary>The category labels, shared by all series.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.ChartSnapshot.Series">
+            <summary>The data series in plot order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.ChartSnapshot.ShowLegend">
+            <summary>True if the legend is shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.ChartSnapshot.Stacked">
+            <summary>True if bars, columns, lines or areas are stacked.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.ChartSnapshotSeries">
+            <summary>One series of a <see cref="T:MudBlazor.Extensions.Office.ChartSnapshot"/>.</summary>
+            <param name="Name">The series name.</param>
+            <param name="Values">The values; a point without a number is null.</param>
+            <param name="Color">The fill or line color as #RRGGBB.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.ChartSnapshotSeries.#ctor(System.String,System.Collections.Generic.IReadOnlyList{System.Nullable{System.Double}},System.String)">
+            <summary>One series of a <see cref="T:MudBlazor.Extensions.Office.ChartSnapshot"/>.</summary>
+            <param name="Name">The series name.</param>
+            <param name="Values">The values; a point without a number is null.</param>
+            <param name="Color">The fill or line color as #RRGGBB.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.ChartSnapshotSeries.Name">
+            <summary>The series name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.ChartSnapshotSeries.Values">
+            <summary>The values; a point without a number is null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.ChartSnapshotSeries.Color">
+            <summary>The fill or line color as #RRGGBB.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.ChartSnapshotReader">
+            <summary>Reads the cached values of a DrawingML chart part.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.ChartSnapshotReader.Read(System.Xml.Linq.XDocument,System.Func{System.String,System.String})">
+            <summary>Reads kind, title and the cached values of a chart part.</summary>
+            <param name="chartPart">The chart part.</param>
+            <param name="resolveColor">Resolves a color written as <c>#RRGGBB</c> or <c>scheme:name</c> to <c>#RRGGBB</c>, or null.</param>
+            <returns>The snapshot, or null for chart types that cannot be drawn and for charts without cached values.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.DocumentUndoStack`1">
             <summary>Undo and redo history of a document. Each user action is exactly one step; transactions group commands.</summary>
             <typeparam name="TDocument">The document type the commands edit.</typeparam>
@@ -33726,6 +33835,9 @@
         <member name="P:MudBlazor.Extensions.Office.Presentation.OpaqueShape.Kind">
             <summary>The kind of content: <c>chart</c>, <c>table</c>, <c>smartArt</c>, <c>media</c>, <c>ole</c> or <c>other</c>.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.OpaqueShape.Chart">
+            <summary>The chart read from its cached values when <see cref="P:MudBlazor.Extensions.Office.Presentation.OpaqueShape.Kind"/> is <c>chart</c> and the chart can be drawn; otherwise null.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.ImageCrop">
             <summary>The part of an image that is shown (<c>a:srcRect</c>), as fractions of the image size cut off at each edge.</summary>
             <param name="Left">The fraction cut off at the left.</param>
@@ -35757,31 +35869,7 @@
             </summary>
             <param name="wb">The workbook.</param>
             <param name="chart">The chart.</param>
-            <returns>The data; empty for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</returns>
-        </member>
-        <member name="T:MudBlazor.Extensions.Office.Spreadsheet.ChartKind">
-            <summary>The chart types the editor can show and create.</summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Column">
-            <summary>Vertical bars.</summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Bar">
-            <summary>Horizontal bars.</summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Line">
-            <summary>Lines.</summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Pie">
-            <summary>A pie.</summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Area">
-            <summary>Filled areas.</summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Scatter">
-            <summary>X/Y points.</summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other">
-            <summary>Any other chart read from a file. It is shown as a placeholder and saved unchanged, apart from its cell references.</summary>
+            <returns>The data; empty for <see cref="F:MudBlazor.Extensions.Office.ChartKind.Other"/>.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Spreadsheet.SheetChart">
             <summary>
@@ -35805,7 +35893,7 @@
             <summary>True if the legend is shown.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Series">
-            <summary>The data series in plot order; empty for <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</summary>
+            <summary>The data series in plot order; empty for <see cref="F:MudBlazor.Extensions.Office.ChartKind.Other"/>.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.From">
             <summary>The cell holding the top left corner.</summary>
@@ -36040,9 +36128,9 @@
             </summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The data range.</param>
-            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</param>
+            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.ChartKind.Other"/>.</param>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.InsertChartCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,MudBlazor.Extensions.Office.Spreadsheet.ChartKind)">
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.InsertChartCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,MudBlazor.Extensions.Office.Spreadsheet.CellRange,MudBlazor.Extensions.Office.ChartKind)">
             <summary>
             Inserts a chart of a range next to it. Like Excel, the series run along the longer side of the range; a first row and a first column holding text
             become the series names and the categories, and an empty top left cell makes both of them labels. A scatter chart takes its X values from the
@@ -36050,7 +36138,7 @@
             </summary>
             <param name="sheet">The sheet.</param>
             <param name="range">The data range.</param>
-            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</param>
+            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.ChartKind.Other"/>.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Spreadsheet.InsertChartCommand.Chart">
             <summary>The created chart, available after the command was applied.</summary>
@@ -36095,17 +36183,17 @@
             <summary>Changes the type, title, legend, stacking or series of a chart. Formatting from the file stays where it still applies.</summary>
             <param name="sheet">The sheet.</param>
             <param name="id">The chart's <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Id"/>.</param>
-            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</param>
+            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.ChartKind.Other"/>.</param>
             <param name="title">The title, or null or empty for none.</param>
             <param name="showLegend">True to show the legend.</param>
             <param name="series">The series, each with a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.ChartSeries.ValuesRef"/>; null keeps them.</param>
             <param name="stacked">True to stack bars, lines or areas; null keeps the setting. Ignored for pie and scatter charts.</param>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UpdateChartCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String,MudBlazor.Extensions.Office.Spreadsheet.ChartKind,System.String,System.Boolean,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.ChartSeries},System.Nullable{System.Boolean})">
+        <member name="M:MudBlazor.Extensions.Office.Spreadsheet.UpdateChartCommand.#ctor(MudBlazor.Extensions.Office.Spreadsheet.Worksheet,System.String,MudBlazor.Extensions.Office.ChartKind,System.String,System.Boolean,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Spreadsheet.ChartSeries},System.Nullable{System.Boolean})">
             <summary>Changes the type, title, legend, stacking or series of a chart. Formatting from the file stays where it still applies.</summary>
             <param name="sheet">The sheet.</param>
             <param name="id">The chart's <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.SheetChart.Id"/>.</param>
-            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.Spreadsheet.ChartKind.Other"/>.</param>
+            <param name="kind">The chart type; not <see cref="F:MudBlazor.Extensions.Office.ChartKind.Other"/>.</param>
             <param name="title">The title, or null or empty for none.</param>
             <param name="showLegend">True to show the legend.</param>
             <param name="series">The series, each with a <see cref="P:MudBlazor.Extensions.Office.Spreadsheet.ChartSeries.ValuesRef"/>; null keeps them.</param>

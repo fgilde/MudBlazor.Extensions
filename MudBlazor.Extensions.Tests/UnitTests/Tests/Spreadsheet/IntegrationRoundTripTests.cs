@@ -1,5 +1,6 @@
 using System.IO.Compression;
 using System.Xml.Linq;
+using MudBlazor.Extensions.Office;
 using MudBlazor.Extensions.Office.Spreadsheet;
 using Xunit;
 

@@ -64,6 +64,9 @@
                 <img class="mud-ex-slide-picture" src="@url" alt="@picture.Name" draggable="false" />
             }
             break;
+        case OpaqueShape { Chart: { } chart }:
+            <MudExOfficeChart Snapshot="chart" Width="@(Shape.ResolvedTransform.Width / 9525.0)" Height="@(Shape.ResolvedTransform.Height / 9525.0)" Style="width:100%;height:100%" />
+            break;
         case OpaqueShape opaque:
             <div class="mud-ex-slide-opaque-label"><span>@opaque.Name</span><small>@opaque.Kind</small></div>
             break;
