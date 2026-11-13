@@ -213,12 +213,12 @@ public partial class MudExSpreadsheetGrid
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task OnViewportChanged(double scrollTop, double scrollLeft, double width, double height)
     {
-        if (_sheet == null) return Task.CompletedTask;
         var before = (_firstRow, _lastRow, _firstCol, _lastCol, _rowExtent, _colExtent, _viewWidth, _viewHeight);
         _scrollTop = Math.Max(0, scrollTop);
         _scrollLeft = Math.Max(0, scrollLeft);
         if (width > 0) _viewWidth = width;
         if (height > 0) _viewHeight = height;
+        if (_sheet == null) return Task.CompletedTask;
         UpdateWindow();
         return before == (_firstRow, _lastRow, _firstCol, _lastCol, _rowExtent, _colExtent, _viewWidth, _viewHeight)
             ? Task.CompletedTask

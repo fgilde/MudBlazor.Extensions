@@ -80,9 +80,11 @@ class MudExSpreadsheetGrid {
             return;
         }
         const w = (this.root.dataset.win || '').split(',').map(Number);
+        const width = Math.min(v.clientWidth, window.innerWidth * 2);
+        const height = Math.min(v.clientHeight, window.innerHeight * 2);
         const outside = w.length < 6 || v.scrollTop < w[0] || v.scrollTop > w[1] || v.scrollLeft < w[2] || v.scrollLeft > w[3]
-            || Math.abs(v.clientWidth - w[4]) > 1 || Math.abs(v.clientHeight - w[5]) > 1;
-        const now = [v.scrollTop, v.scrollLeft, v.clientWidth, v.clientHeight];
+            || Math.abs(width - w[4]) > 1 || Math.abs(height - w[5]) > 1;
+        const now = [v.scrollTop, v.scrollLeft, width, height];
         if (outside && (!this.last || now.some((x, i) => x !== this.last[i]))) {
             this.report(now);
         }

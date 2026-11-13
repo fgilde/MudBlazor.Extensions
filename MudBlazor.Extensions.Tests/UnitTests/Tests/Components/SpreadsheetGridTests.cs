@@ -62,6 +62,18 @@ public class SpreadsheetGridTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task ViewportReportedBeforeTheWorkbook_IsUsedForTheWindow()
+    {
+        var cut = Render(null);
+
+        await cut.InvokeAsync(() => cut.Instance.OnViewportChanged(0, 0, 622, 300));
+        cut.Render(p => p.Add(x => x.Workbook, Big(10, 3)));
+
+        Assert.EndsWith(",622,300", cut.Find(".mud-ex-spreadsheet-grid").GetAttribute("data-win"));
+        Assert.Equal((622, 300), (cut.Instance.ViewportWidth, cut.Instance.ViewportHeight));
+    }
+
+    [Fact]
     public async Task RendersOnlyVisibleWindow()
     {
         var wb = Big(100_000, 10);
