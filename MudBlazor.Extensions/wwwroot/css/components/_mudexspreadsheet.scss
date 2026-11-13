@@ -410,6 +410,7 @@ $mud-ex-ssg-ref-colors: #4472c4, #c0504d, #7030a0, #00b050, #ed7d31, #2e75b6, #b
   z-index: var(--mud-zindex-popover);
 }
 .mud-ex-spreadsheet-editor {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;

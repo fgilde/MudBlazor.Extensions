@@ -7690,6 +7690,7 @@
 }
 
 .mud-ex-spreadsheet-editor {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -9019,6 +9020,7 @@ textarea.mud-ex-ssg-note-text {
   opacity: 0.7;
 }
 .mud-ex-slide-editor {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
