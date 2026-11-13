@@ -1,4 +1,5 @@
 ﻿## Change Log    
+ - 9.13.0 > New MudExNotebookEditor: a OneNote style notebook editor with colored section tabs, a page list with subpages, editable page titles, drag and drop reordering, undo and save as .mxnb; MudExFileDisplay opens .mxnb files in it, read-only unless in edit mode (.ipynb stays in the Jupyter viewer)
  - 9.13.0 > MudExFileDisplay opens pptx in the new MudExSlideEditor, read-only unless in edit mode; MudExFileDisplayPresentation and its pptx reader are removed (see BREAKING_CHANGES.md)
  - 9.13.0 > Breaking: MudExFileDisplayExcel, MudExFileDisplayExcelUniver, `IMudExFileService.ReadExcelFile` and `ExcelFile` are removed, MudExFileDisplay opens xlsx, xls, csv and tsv in MudExSpreadsheetEditor (see BREAKING_CHANGES.md)
  - 9.12.2 > Fix MudExBaseComponent `OnFinishedRenderAsync`: the render finished completion threw "An attempt was made to transition a task to a final state when it had already completed" as an unobserved exception on every re-render after the first (fgilde/MudExRichTextEditor#63)

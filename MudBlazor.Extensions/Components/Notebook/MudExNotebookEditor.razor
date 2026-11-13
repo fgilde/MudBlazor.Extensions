@@ -1,0 +1,94 @@
+@inherits MudBlazor.Extensions.Components.Base.MudExFileEditorBase<MudExNotebookEditor>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Notebook
+
+<div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-notebook-editor {Class}".TrimEnd())" style="@RootStyle" data-readonly="@(IsReadOnly ? "true" : "false")" @onkeydown="_keyDown">
+    @if (ShowRibbon)
+    {
+        <MudExRibbon Class="mud-ex-notebook-ribbon" Color="@RibbonColor" @bind-ActiveTabIndex="_tabIndex" @bind-Mode="_mode" @bind-Collapsed="_collapsed" FileMenuText="@TryLocalize("File")">
+            <FileMenu>
+                <MudExFileEditorBackstage Editor="this" Localizer="@Localizer" />
+            </FileMenu>
+            <QuickAccess>
+                @if (!IsReadOnly)
+                {
+                    <MudExRibbonButton Id="nb-save" Text="@TryLocalize("Save")" Icon="@Icons.Material.Filled.Save" Shortcut="Ctrl+S" OnClick="@(() => SaveAsync())" />
+                    <MudExRibbonButton Id="nb-undo" Text="@TryLocalize("Undo")" Icon="@Icons.Material.Filled.Undo" Shortcut="Ctrl+Z" Disabled="@(!_notebook.Undo.CanUndo)" OnClick="@(() => UndoAsync(false))" />
+                    <MudExRibbonButton Id="nb-redo" Text="@TryLocalize("Redo")" Icon="@Icons.Material.Filled.Redo" Shortcut="Ctrl+Y" Disabled="@(!_notebook.Undo.CanRedo)" OnClick="@(() => UndoAsync(true))" />
+                }
+            </QuickAccess>
+            <ChildContent>
+                <MudExRibbonTab Text="@TryLocalize("Home")" KeyTip="H" Visible="@(!IsReadOnly)">
+                    @Group("Clipboard", Icons.Material.Filled.ContentPaste, 3, ClipboardItems)
+                    @Group("Font", Icons.Material.Filled.FormatSize, 2, FontItems)
+                    @Group("Paragraph", Icons.Material.Filled.FormatListBulleted, 4, ParagraphItems)
+                    @Group("Styles", Icons.Material.Filled.Title, 1, StyleItems)
+                </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("Insert")" KeyTip="N" Visible="@(!IsReadOnly)">
+                    @Group("Tables", Icons.Material.Filled.TableChart, 2, TableItems)
+                    @Group("Images", Icons.Material.Filled.Image, 2, ImageItems)
+                    @Group("Illustrations", Icons.Material.Filled.Category, 1, ShapeItems)
+                    @Group("Links", Icons.Material.Filled.Link, 0, LinkItems)
+                </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("Draw")" KeyTip="D" Visible="@(!IsReadOnly)">
+                    @Group("Tools", Icons.Material.Filled.Draw, 0, DrawItems)
+                </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
+                    <MudExRibbonGroup Text="@TryLocalize("Show")" Icon="@Icons.Material.Filled.Visibility" CollapsePriority="1">
+                        <MudExRibbonToggleButton Id="nb-show-page-list" Text="@TryLocalize("Page List")" Icon="@Icons.Material.Filled.ViewSidebar" Size="MudExRibbonItemSize.Large" @bind-Checked="_pageListVisible" />
+                        <MudExRibbonToggleButton Id="nb-show-section-tabs" Text="@TryLocalize("Section Tabs")" Icon="@Icons.Material.Filled.Tab" Size="MudExRibbonItemSize.Large" @bind-Checked="_sectionTabsVisible" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Zoom")" Icon="@Icons.Material.Filled.ZoomIn" CollapsePriority="2">
+                        <MudExRibbonSelect T="double" Id="nb-zoom" Text="@TryLocalize("Zoom")" Items="@ZoomLevels" ItemText="@(z => $"{z * 100:0}%")" Value="@_zoom" ValueChanged="SetZoom" Width="80" />
+                        <MudExRibbonButton Id="nb-zoom-100" Text="@TryLocalize("100%")" Icon="@Icons.Material.Filled.ZoomOutMap" Size="MudExRibbonItemSize.Large" OnClick="@(() => SetZoom(1))" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+                @RibbonContent
+            </ChildContent>
+        </MudExRibbon>
+    }
+    @if (_notebook != null && _sectionTabsVisible)
+    {
+        <MudExNotebookSectionTabs @ref="_tabs" Notebook="_notebook" Current="_section" ReadOnly="IsReadOnly" CurrentChanged="ShowSectionAsync" AddRequested="AddSectionAsync"
+                                  CommandRequested="RunCommandAsync" KeyDown="_sectionsKeyDown" Localizer="@Localizer" />
+    }
+    <div class="mud-ex-notebook-editor-body">
+        <div class="mud-ex-notebook-editor-main">
+            <div class="mud-ex-notebook-editor-surface" tabindex="0" @onkeydown="_surfaceKeyDown">
+                @if (_page != null)
+                {
+                    <div class="mud-ex-notebook-page-header">
+                        @if (CanEditPage)
+                        {
+                            <input @key="_page" @ref="_titleInput" class="mud-ex-notebook-title" value="@_page.Title" placeholder="@TryLocalize("Untitled page")" aria-label="@TryLocalize("Page title")"
+                                   @oninput="_titleInputChanged" @onchange="OnTitleChangedAsync" @onkeydown="_keyDown" @onkeydown:stopPropagation="true" />
+                        }
+                        else
+                        {
+                            <h1 class="mud-ex-notebook-title mud-ex-notebook-title-static">@_page.Title</h1>
+                        }
+                        <div class="mud-ex-notebook-page-date">@_page.Created.ToLocalTime().ToString("f", System.Globalization.CultureInfo.CurrentCulture)</div>
+                    </div>
+                    <MudExNotebookPageView Notebook="_notebook" Page="_page" Zoom="_zoom" Interactive="IsReadOnly" ViewportWidth="_viewport.Width" ViewportHeight="_viewport.Height"
+                                           Images="_images" Localizer="@Localizer" />
+                }
+            </div>
+        </div>
+        @if (_section != null && _pageListVisible)
+        {
+            <MudExNotebookPageList Section="_section" Current="_page" ReadOnly="IsReadOnly" CurrentChanged="ShowPageAsync" AddRequested="AddPageAsync" RenameRequested="RenamePageAsync"
+                                   CommandRequested="RunCommandAsync" KeyDown="_pagesKeyDown" Localizer="@Localizer" />
+        }
+    </div>
+    <MudExNotebookStatusBar SectionName="@_section?.Name" PageNumber="@(PageIndex + 1)" PageCount="@(_section?.Pages.Count ?? 0)" Zoom="_zoom" ZoomChanged="SetZoom" Localizer="@Localizer" />
+</div>
+
+@code {
+    private RenderFragment Group(string text, string icon, int collapsePriority, (string Id, string Text, string Icon)[] items) =>
+        @<MudExRibbonGroup Text="@TryLocalize(text)" Icon="@icon" CollapsePriority="collapsePriority">
+            @foreach (var (id, itemText, itemIcon) in items)
+            {
+                <MudExRibbonButton Id="@id" Text="@TryLocalize(itemText)" Icon="@itemIcon" Size="@(items.Length == 1 ? MudExRibbonItemSize.Large : MudExRibbonItemSize.Small)" Disabled="true" />
+            }
+        </MudExRibbonGroup>;
+}

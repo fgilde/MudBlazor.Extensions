@@ -9892,3 +9892,212 @@ textarea.mud-ex-ssg-note-text {
 .mud-ex-notebook-page-error {
   padding: 16px;
 }
+.mud-ex-notebook-editor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--mud-palette-surface);
+  color: var(--mud-palette-text-primary);
+}
+.mud-ex-notebook-section-tabs {
+  display: flex;
+  align-items: flex-end;
+  flex: 0 0 auto;
+  gap: 2px;
+  min-width: 0;
+  padding: 4px 8px 0;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--mud-palette-lines-default);
+  background-color: var(--mud-palette-background-gray);
+  font-size: 0.8125rem;
+}
+.mud-ex-notebook-section-tab {
+  flex: 0 0 auto;
+  max-width: 200px;
+  padding: 4px 12px;
+  overflow: hidden;
+  border-top: 3px solid var(--mud-ex-notebook-section-color);
+  border-radius: 4px 4px 0 0;
+  background-color: color-mix(in srgb, var(--mud-ex-notebook-section-color) 14%, var(--mud-palette-surface));
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: none;
+}
+.mud-ex-notebook-section-selected {
+  background-color: var(--mud-palette-surface);
+  font-weight: 600;
+}
+.mud-ex-notebook-section-tab.mud-ex-notebook-drop-before {
+  box-shadow: inset 2px 0 0 var(--mud-ex-notebook-accent);
+}
+.mud-ex-notebook-section-tab.mud-ex-notebook-drop-after {
+  box-shadow: inset -2px 0 0 var(--mud-ex-notebook-accent);
+}
+.mud-ex-notebook-section-tab.mud-ex-notebook-drop-into {
+  outline: 2px solid var(--mud-ex-notebook-accent);
+  outline-offset: -2px;
+}
+.mud-ex-notebook-section-rename {
+  width: 140px;
+  font: inherit;
+}
+.mud-ex-notebook-section-add {
+  flex: 0 0 auto;
+  padding: 2px 10px;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.mud-ex-notebook-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  border-radius: 2px;
+}
+.mud-ex-notebook-menu {
+  position: absolute;
+}
+.mud-ex-notebook-editor-body {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+.mud-ex-notebook-editor-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+.mud-ex-notebook-editor-surface {
+  position: relative;
+  flex: 1 1 auto;
+  width: 0;
+  min-width: 100%;
+  min-height: 0;
+  overflow: auto;
+  background-color: #fff;
+  outline: none;
+}
+.mud-ex-notebook-page-header {
+  padding: 24px 48px 8px;
+  background-color: #fff;
+  color: #000;
+  font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+}
+.mud-ex-notebook-title {
+  display: block;
+  box-sizing: border-box;
+  width: min(100%, 640px);
+  min-height: 1.4em;
+  margin: 0;
+  padding: 2px 0;
+  border: none;
+  border-bottom: 1px solid #c8c8c8;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 1.75rem;
+  outline: none;
+}
+.mud-ex-notebook-title:focus {
+  border-bottom-color: var(--mud-ex-notebook-accent);
+}
+.mud-ex-notebook-title-static {
+  font-weight: normal;
+  overflow-wrap: anywhere;
+}
+.mud-ex-notebook-page-date {
+  margin-top: 4px;
+  color: #666;
+  font-size: 0.75rem;
+}
+.mud-ex-notebook-page-list {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 220px;
+  width: 220px;
+  min-height: 0;
+  border-left: 1px solid var(--mud-palette-lines-default);
+  background-color: var(--mud-palette-background-gray);
+  font-size: 0.8125rem;
+}
+.mud-ex-notebook-page-list-add {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border: none;
+  border-bottom: 1px solid var(--mud-palette-lines-default);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+.mud-ex-notebook-page-list-items {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  outline: none;
+}
+.mud-ex-notebook-page-item {
+  padding: 6px 12px;
+  overflow: hidden;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: none;
+}
+.mud-ex-notebook-page-level-1 {
+  padding-left: 28px;
+}
+.mud-ex-notebook-page-level-2 {
+  padding-left: 44px;
+}
+.mud-ex-notebook-page-selected {
+  border-left-color: var(--mud-ex-notebook-accent);
+  background-color: var(--mud-palette-surface);
+  font-weight: 600;
+}
+.mud-ex-notebook-page-untitled {
+  color: var(--mud-palette-text-secondary);
+  font-style: italic;
+}
+.mud-ex-notebook-page-item.mud-ex-notebook-drop-before {
+  box-shadow: inset 0 2px 0 var(--mud-ex-notebook-accent);
+}
+.mud-ex-notebook-page-item.mud-ex-notebook-drop-after {
+  box-shadow: inset 0 -2px 0 var(--mud-ex-notebook-accent);
+}
+.mud-ex-notebook-status-bar {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 16px;
+  min-height: 24px;
+  padding: 0 8px;
+  border-top: 1px solid var(--mud-palette-lines-default);
+  background-color: var(--mud-palette-background-gray);
+  font-size: 0.75rem;
+}
+.mud-ex-notebook-status-bar .mud-ex-sssb-zoom {
+  margin-left: auto;
+}
+.mud-ex-notebook-status-bar .mud-ex-sssb-slider {
+  accent-color: var(--mud-ex-notebook-accent, var(--mud-palette-primary));
+}

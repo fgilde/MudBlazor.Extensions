@@ -68,6 +68,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExNotebookEditor.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExNotebookEditor.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExSlideCanvas.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExSlideCanvas.js"

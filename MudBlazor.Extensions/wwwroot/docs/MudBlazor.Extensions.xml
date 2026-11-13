@@ -12912,6 +12912,111 @@
         <member name="M:MudBlazor.Extensions.Components.MudExVirtualize`1.OnParametersSetAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookEditor">
+            <summary>
+            Notebook editor in the style of OneNote with ribbon, section tabs, page list and status bar. Opens .mxnb files and is the viewer and editor for them in
+            <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/>. Without a file it edits the <see cref="P:MudBlazor.Extensions.Components.MudExNotebookEditor.Notebook"/> parameter.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.#ctor">
+            <summary>Creates the editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.Notebook">
+            <summary>The notebook to edit when no file is given. Changes by the user raise <see cref="P:MudBlazor.Extensions.Components.MudExNotebookEditor.NotebookChanged"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.NotebookChanged">
+            <summary>Raised after every change of the notebook and when the editor replaces it (New, Open).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.RibbonMode">
+            <summary>Layout of the ribbon.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.ShowRibbon">
+            <summary>Whether the ribbon is shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.RibbonColor">
+            <summary>Color of the ribbon header. Defaults to the OneNote purple.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.RibbonCollapsed">
+            <summary>Whether the ribbon starts collapsed to its tab row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.RibbonContent">
+            <summary>Additional ribbon tabs rendered after the built-in tabs.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.ShowPageList">
+            <summary>Whether the page list is shown. The user can toggle it on the View tab.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.ShowSectionTabs">
+            <summary>Whether the section tabs are shown. The user can toggle them on the View tab.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.CurrentNotebook">
+            <summary>The notebook currently shown, loaded from a file, created by New or given by <see cref="P:MudBlazor.Extensions.Components.MudExNotebookEditor.Notebook"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.CurrentSection">
+            <summary>The section whose pages are listed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.CurrentPage">
+            <summary>The page shown in the editing area.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.RenderPriority">
+            <summary>Priority among the file displays for notebook files.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.SaveFormats">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.CreateNew">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.LoadContentAsync(MudBlazor.Extensions.Core.MudExFileContent)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.FlushPendingEditsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.OnViewportResized(System.Double,System.Double)">
+            <summary>Called by the browser when the visible size of the page area changed.</summary>
+            <param name="width">The width in CSS pixels.</param>
+            <param name="height">The height below the page title in CSS pixels.</param>
+            <returns>A task that completes when the page was laid out again.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.OnSectionDropped(System.Int32,System.Int32)">
+            <summary>Called by the browser when a section tab was dragged to a new position.</summary>
+            <param name="from">The index of the dragged section.</param>
+            <param name="target">The insertion index, from 0 to the section count.</param>
+            <returns>A task that completes when the section moved.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.OnPageDropped(System.Int32,System.Int32)">
+            <summary>Called by the browser when a page was dragged to a new position in the page list.</summary>
+            <param name="from">The index of the dragged page in the current section.</param>
+            <param name="target">The insertion index, from 0 to the page count.</param>
+            <returns>A task that completes when the page moved.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookEditor.OnPageDroppedOnSection(System.Int32,System.Int32)">
+            <summary>Called by the browser when a page of the page list was dropped on a section tab; the page moves to the end of that section.</summary>
+            <param name="from">The index of the dragged page in the current section.</param>
+            <param name="section">The index of the target section.</param>
+            <returns>A task that completes when the page moved.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExNotebookElementView">
             <summary>
             Shows one element of a notebook page at its position in CSS pixels. It renders again only when the element id, its
@@ -12929,6 +13034,36 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookElementView.ShouldRender">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookPageList">
+            <summary>
+            The page list of the notebook editor: the titles of the pages of one section, subpages indented. A click shows a page, the context menu renames,
+            deletes, duplicates, indents and moves it, and pages can be dragged to reorder them or onto a section tab to move them there.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageList.Section">
+            <summary>The section whose pages are listed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageList.Current">
+            <summary>The page shown in the editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageList.ReadOnly">
+            <summary>If true pages can only be selected, not changed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageList.CurrentChanged">
+            <summary>Raised when the user clicks a page.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageList.AddRequested">
+            <summary>Raised by the Add Page button.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageList.RenameRequested">
+            <summary>Raised by the context menu entry Rename; the editor focuses the page title.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageList.CommandRequested">
+            <summary>Raised with a page command chosen in the context menu; the editor executes it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageList.KeyDown">
+            <summary>Raised for keys pressed in the list.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExNotebookPageView">
             <summary>
@@ -12969,6 +13104,54 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookPageView.ShouldRender">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookSectionTabs">
+            <summary>
+            The section tabs of the notebook editor, one colored tab per section. A click shows a section, a double click renames it, the context menu renames,
+            colors, deletes and moves it, and the tabs can be dragged to reorder the sections.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSectionTabs.Notebook">
+            <summary>The notebook whose sections are shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSectionTabs.Current">
+            <summary>The section shown in the editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSectionTabs.ReadOnly">
+            <summary>If true sections can only be selected, not changed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSectionTabs.CurrentChanged">
+            <summary>Raised when the user clicks a section tab.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSectionTabs.AddRequested">
+            <summary>Raised by the add button.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSectionTabs.CommandRequested">
+            <summary>Raised with a section command chosen by the user; the editor executes it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookSectionTabs.KeyDown">
+            <summary>Raised for keys pressed on the tabs.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookSectionTabs.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookStatusBar">
+            <summary>Status bar of the notebook editor: the section, the page position and a zoom slider.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookStatusBar.SectionName">
+            <summary>The name of the shown section.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookStatusBar.PageNumber">
+            <summary>The number of the shown page in its section, starting at 1.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookStatusBar.PageCount">
+            <summary>The number of pages in the section.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookStatusBar.Zoom">
+            <summary>Zoom factor, 1 is 100%.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookStatusBar.ZoomChanged">
+            <summary>Raised when the user changes the zoom.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExNotebookTableView">
             <summary>Shows a notebook table with fixed column widths; its height follows the cell text.</summary>
