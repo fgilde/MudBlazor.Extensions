@@ -7,8 +7,8 @@ namespace MudBlazor.Extensions.Office.Presentation;
 internal sealed class SlideXml(string part, string basis, List<OpcRelationship> relationships, OpcPackage opc, Func<string, Action<XDocument>, string> cloneTarget)
 {
     internal static readonly string[] Fills = ["noFill", "solidFill", "gradFill", "blipFill", "pattFill", "grpFill"];
-    private static readonly string[] AfterLine = ["effectLst", "effectDag", "scene3d", "sp3d", "extLst"];
-    private static readonly string[] AfterFill = ["ln", .. AfterLine];
+    internal static readonly string[] AfterLine = ["effectLst", "effectDag", "scene3d", "sp3d", "extLst"];
+    internal static readonly string[] AfterFill = ["ln", .. AfterLine];
     private readonly HashSet<string> _used = [];
     private readonly HashSet<string> _creationIds = [];
 

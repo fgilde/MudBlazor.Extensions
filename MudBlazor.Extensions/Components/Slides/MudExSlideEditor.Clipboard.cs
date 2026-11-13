@@ -115,7 +115,9 @@ public partial class MudExSlideEditor
                 foreach (var shape in clip.Shapes)
                 {
                     var copy = shape.Clone(null);
-                    var at = shape.Transform ?? default;
+                    if (PlaceholderXml.Collides(slide, copy))
+                        PlaceholderXml.ToTextBox(copy);
+                    var at = copy.Transform ?? default;
                     copy.Transform = at with { X = at.X + offset, Y = at.Y + offset };
                     foreach (var part in SlideShape.Flatten([copy]))
                         part.Master = master ?? part.Master;

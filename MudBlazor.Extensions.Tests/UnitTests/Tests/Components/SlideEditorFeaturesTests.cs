@@ -288,6 +288,57 @@ public class SlideEditorFeaturesTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task Paste_TitleOntoSlideWithTitle_BecomesTextBox()
+    {
+        const string layoutTitle = "<p:sp><p:nvSpPr><p:cNvPr id=\"2\" name=\"Title 1\"/><p:cNvSpPr/><p:nvPr><p:ph type=\"title\"/></p:nvPr></p:nvSpPr>" +
+                                   "<p:spPr><a:xfrm><a:off x=\"1000000\" y=\"500000\"/><a:ext cx=\"8000000\" cy=\"1000000\"/></a:xfrm><a:solidFill><a:schemeClr val=\"accent3\"/></a:solidFill></p:spPr>" +
+                                   "<p:txBody><a:bodyPr anchor=\"b\" lIns=\"0\"><a:normAutofit/></a:bodyPr><a:lstStyle><a:lvl1pPr algn=\"ctr\"><a:defRPr b=\"1\"><a:solidFill><a:schemeClr val=\"accent2\"/></a:solidFill></a:defRPr></a:lvl1pPr></a:lstStyle><a:p/></p:txBody></p:sp>";
+        var presentation = new PptxBuilder { LayoutShapes = layoutTitle }
+            .Slide(Placeholder(2, "Title 1", "type=\"title\"", "", "<a:p><a:r><a:rPr lang=\"en-US\" i=\"1\"/><a:t>Hello</a:t></a:r></a:p>"))
+            .Slide(Placeholder(2, "Title 1", "type=\"title\"", "", "<a:p><a:r><a:t>Other</a:t></a:r></a:p>"))
+            .Slide(Shape(2, "Box", Xfrm(0, 0, Inch, Inch)))
+            .Load();
+        var cut = RenderEditor(presentation);
+        var title = (AutoShape)presentation.Slides[0].Shapes[0];
+        var formats = title.Text.Paragraphs[0].Runs.Select(title.EffectiveFormat).ToList();
+        await cut.InvokeAsync(() => Canvas(cut).SelectAsync([2]));
+        await Key(cut, "c", ctrl: true);
+
+        cut.FindAll(".mud-ex-slide-panel-item")[1].Click();
+        await cut.InvokeAsync(() => cut.Instance.PasteAsync(null, null, null));
+
+        var pasted = Assert.IsType<AutoShape>(presentation.Slides[1].Shapes[^1]);
+        Assert.Null(pasted.Placeholder);
+        Assert.True(pasted.IsTextBox);
+        Assert.Equal(title.ResolvedTransform, pasted.Transform);
+        Assert.Equal(formats, pasted.Text.Paragraphs[0].Runs.Select(pasted.EffectiveFormat));
+        Assert.Equal(TextAlign.Center, pasted.EffectiveAlign(pasted.Text.Paragraphs[0]));
+        Assert.Equal(TextAnchor.Bottom, pasted.EffectiveBody().Anchor);
+        Assert.Equal(0, pasted.EffectiveBody().InsetLeft);
+        Assert.Equal(ShapeFill.EffectiveFill(title), ShapeFill.EffectiveFill(pasted));
+        Assert.Equal("Hello", Text(pasted));
+        Assert.Equal("Paste", presentation.Undo.UndoDescription);
+
+        cut.FindAll(".mud-ex-slide-panel-item")[2].Click();
+        await cut.InvokeAsync(() => cut.Instance.PasteAsync(null, null, null));
+        var kept = presentation.Slides[2].Shapes[^1];
+        Assert.Equal(new PlaceholderRef("title", null), kept.Placeholder);
+
+        var output = PptxWriterTests.Save(presentation);
+        PptxWriterTests.AssertConsistent(output);
+        var reloaded = (AutoShape)Presentation.Load(new MemoryStream(output)).Slides[1].Shapes[^1];
+        Assert.Null(reloaded.Placeholder);
+        Assert.True(reloaded.IsTextBox);
+        Assert.Equal(title.ResolvedTransform, reloaded.ResolvedTransform);
+        Assert.Equal(formats, reloaded.Text.Paragraphs[0].Runs.Select(reloaded.EffectiveFormat));
+        Assert.Equal(TextAlign.Center, reloaded.EffectiveAlign(reloaded.Text.Paragraphs[0]));
+        Assert.Equal(TextAnchor.Bottom, reloaded.EffectiveBody().Anchor);
+        Assert.Equal(ShapeFill.EffectiveFill(title), ShapeFill.EffectiveFill(reloaded));
+        XNamespace p = "http://schemas.openxmlformats.org/presentationml/2006/main";
+        Assert.Empty(PptxWriterTests.Xml(output, "/ppt/slides/slide2.xml").Descendants(p + "sp").Last().Descendants(p + "ph"));
+    }
+
+    [Fact]
     public async Task ReplaceAll_AcrossSlidesAndNotes_IsOneUndoStep()
     {
         var presentation = Deck();
