@@ -1,0 +1,41 @@
+@inherits ComponentBase
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Notebook
+
+<div class="@ElementClass" data-element-id="@Element.Id" style="@NotebookStyles.BoxStyle(Element)">
+    @switch (Element)
+    {
+        case TextElement text:
+            <MudExNotebookText Paragraphs="text.Paragraphs" />
+            break;
+        case InkElement ink:
+            <svg class="@(ink.Tool == InkTool.Highlighter ? "mud-ex-notebook-geometry mud-ex-notebook-highlighter" : "mud-ex-notebook-geometry")">
+                <path d="@NotebookStyles.InkPath(ink)" fill="none" stroke="@ColorOr(ink.Color, "#000000")" stroke-width="@NotebookStyles.Num(ink.StrokeWidth)"
+                      stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            break;
+        case ShapeElement shape:
+            var stroke = shape.StrokeWidth > 0 ? ColorOr(shape.Stroke, "#000000") : "none";
+            <svg class="mud-ex-notebook-geometry">
+                <path d="@NotebookStyles.ShapePath(shape)" fill="@ColorOr(shape.Fill, "none")" stroke="@stroke" stroke-width="@NotebookStyles.Num(shape.StrokeWidth)"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                @if (NotebookStyles.ArrowHead(shape) is { } head)
+                {
+                    <path d="@head" fill="@stroke" stroke="none" />
+                }
+            </svg>
+            break;
+        case ImageElement image when _url != null:
+            <img class="mud-ex-notebook-image" src="@_url" alt="@image.AltText" draggable="false" />
+            break;
+        case ImageElement image:
+            <div class="mud-ex-notebook-opaque-label"><span>@image.AltText</span></div>
+            break;
+        case TableElement table:
+            <MudExNotebookTableView Table="table" />
+            break;
+        case OpaqueElement opaque:
+            <div class="mud-ex-notebook-opaque-label"><span>@opaque.Type</span></div>
+            break;
+    }
+</div>

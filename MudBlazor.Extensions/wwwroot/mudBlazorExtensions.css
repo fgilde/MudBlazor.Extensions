@@ -9796,3 +9796,99 @@ textarea.mud-ex-ssg-note-text {
 .mud-ex-slide-status-show {
   margin-left: auto;
 }
+.mud-ex-notebook-page {
+  position: relative;
+  overflow: hidden;
+  background-color: #fff;
+  color: #000;
+  font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+  user-select: none;
+}
+.mud-ex-notebook-page:not(.mud-ex-notebook-page-interactive) {
+  pointer-events: none;
+}
+.mud-ex-notebook-page-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+}
+.mud-ex-notebook-element {
+  position: absolute;
+  box-sizing: border-box;
+}
+.mud-ex-notebook-geometry {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 1px;
+  min-height: 1px;
+  overflow: visible;
+}
+.mud-ex-notebook-highlighter {
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+.mud-ex-notebook-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+.mud-ex-notebook-text {
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+.mud-ex-notebook-paragraph {
+  margin: 0;
+  line-height: 1.4;
+}
+.mud-ex-notebook-h1, .mud-ex-notebook-h2, .mud-ex-notebook-h3 {
+  font-weight: 600;
+}
+.mud-ex-notebook-marker, .mud-ex-notebook-todo {
+  display: inline-block;
+  min-width: 24px;
+  user-select: none;
+}
+.mud-ex-notebook-link {
+  color: #0563c1;
+  text-decoration: underline;
+}
+.mud-ex-notebook-table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.mud-ex-notebook-table td {
+  box-sizing: border-box;
+  padding: 4px;
+  border: 1px solid #a0a0a0;
+  vertical-align: top;
+}
+.mud-ex-notebook-table .mud-ex-notebook-table-header td {
+  background-color: #f2f2f2;
+  font-weight: 600;
+}
+.mud-ex-notebook-opaque {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+  border: 1px dashed var(--mud-palette-text-secondary, #666);
+  background: repeating-linear-gradient(45deg, rgba(128, 128, 128, 0.16) 0, rgba(128, 128, 128, 0.16) 4px, transparent 4px, transparent 8px);
+}
+.mud-ex-notebook-opaque-label {
+  padding: 2px 6px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.85);
+  color: #333;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mud-ex-notebook-page-error {
+  padding: 16px;
+}

@@ -12912,6 +12912,94 @@
         <member name="M:MudBlazor.Extensions.Components.MudExVirtualize`1.OnParametersSetAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookElementView">
+            <summary>
+            Shows one element of a notebook page at its position in CSS pixels. It renders again only when the element id, its
+            <see cref="P:MudBlazor.Extensions.Office.Notebook.NoteElement.Version"/> or its image URL changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookElementView.Element">
+            <summary>The element to show.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookElementView.Images">
+            <summary>The image URLs of the notebook; images show their alternative text if null.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookElementView.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookElementView.ShouldRender">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookPageView">
+            <summary>
+            Shows one notebook page as a free surface of absolutely positioned elements. The surface size is computed from the model: the larger of the
+            viewport and the content plus a 400 px margin to the right and bottom, so it grows and shrinks with the content and never with its own CSS
+            layout. An element renders again only when its id or <see cref="P:MudBlazor.Extensions.Office.Notebook.NoteElement.Version"/> changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageView.Notebook">
+            <summary>The notebook the page belongs to.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageView.Page">
+            <summary>The page to show. It renders again only when its <see cref="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.Version"/> or its computed size changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageView.Zoom">
+            <summary>The zoom factor; 1 is 100 %.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageView.Interactive">
+            <summary>True if the elements take pointer events, as in the editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageView.ViewportWidth">
+            <summary>The width of the visible area in CSS pixels; the page is at least this wide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageView.ViewportHeight">
+            <summary>The height of the visible area in CSS pixels; the page is at least this high.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageView.MeasuredHeights">
+            <summary>
+            The rendered heights of text and table elements by element id, in CSS pixels at 100 % zoom. Elements without a measured height use an
+            estimate from their line count and font size.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookPageView.Images">
+            <summary>The image URLs of the notebook; if null, the view uses data URIs.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookPageView.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookPageView.ShouldRender">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookTableView">
+            <summary>Shows a notebook table with fixed column widths; its height follows the cell text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTableView.Table">
+            <summary>The table to show.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookText">
+            <summary>
+            Shows the paragraphs of a notebook text element or table cell. Text is rendered as text nodes, never as markup; list markers and check boxes
+            are separate elements that cannot be edited, and only <c>http</c>, <c>https</c> and <c>mailto</c> links become anchors.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookText.Paragraphs">
+            <summary>The paragraphs to show.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.NotebookImageUrls">
+            <summary>
+            Resolves the URL of a notebook medium: a blob URL once the browser registered one, otherwise a data URI. Only raster images get blob URLs;
+            SVG stays a data URI, whose document never runs in the page's origin.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.NotebookImageUrls.Register(System.String,System.String)">
+            <summary>Registers the blob URL of a medium; it replaces the data URI.</summary>
+            <param name="mediaId">The media id.</param>
+            <param name="url">The blob URL.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.NotebookImageUrls.UrlFor(System.String)">
+            <summary>Gets the URL of a medium, or null if the notebook has no such medium.</summary>
+            <param name="mediaId">The media id.</param>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IDefaultRenderDataProvider">
             <summary>
             Interface for providing default render data for mudex object edit property

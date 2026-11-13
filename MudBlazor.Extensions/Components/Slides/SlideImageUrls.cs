@@ -8,7 +8,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public sealed class SlideImageUrls
 {
-    private static readonly HashSet<string> RasterTypes = new(StringComparer.OrdinalIgnoreCase) { "image/png", "image/jpeg", "image/gif", "image/bmp", "image/webp" };
+    internal static readonly HashSet<string> RasterTypes = new(StringComparer.OrdinalIgnoreCase) { "image/png", "image/jpeg", "image/gif", "image/bmp", "image/webp" };
 
     private readonly Presentation _presentation;
     private readonly Dictionary<string, string> _blobs = new(StringComparer.OrdinalIgnoreCase);
@@ -38,7 +38,7 @@ public sealed class SlideImageUrls
 
     internal bool NeedsBlob(string partName) => !_blobs.ContainsKey(partName) && RasterTypes.Contains(ContentTypeOf(partName) ?? "");
 
-    private static string SafeType(string contentType) =>
+    internal static string SafeType(string contentType) =>
         contentType is { Length: > 6 } && contentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase) && contentType.All(c => char.IsAsciiLetterOrDigit(c) || c is '/' or '+' or '-' or '.')
             ? contentType
             : "application/octet-stream";

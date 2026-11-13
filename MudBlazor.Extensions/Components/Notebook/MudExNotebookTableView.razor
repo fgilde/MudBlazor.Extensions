@@ -1,0 +1,25 @@
+@inherits ComponentBase
+@namespace MudBlazor.Extensions.Components
+
+<table class="mud-ex-notebook-table" style="width:@(NotebookStyles.Num(Table.ColumnWidths.Sum()))px">
+    <colgroup>
+        @foreach (var width in Table.ColumnWidths)
+        {
+            <col style="width:@(NotebookStyles.Num(width))px" />
+        }
+    </colgroup>
+    <tbody>
+        @for (var r = 0; r < Table.Rows.Count; r++)
+        {
+            var row = r;
+            <tr class="@(row == 0 && Table.HeaderRow ? "mud-ex-notebook-table-header" : null)">
+                @for (var c = 0; c < Table.Rows[row].Count; c++)
+                {
+                    <td data-cell="@($"{row},{c}")">
+                        <MudExNotebookText Paragraphs="Table.Rows[row][c].Paragraphs" />
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

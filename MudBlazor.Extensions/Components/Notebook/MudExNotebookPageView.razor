@@ -1,0 +1,26 @@
+@inherits MudExBaseComponent<MudExNotebookPageView>
+@namespace MudBlazor.Extensions.Components
+
+@if (Notebook != null && Page != null)
+{
+    @if (Page.LoadError != null)
+    {
+        <div class="@($"mud-ex-notebook-page-error {Class}".TrimEnd())" style="@Style">
+            <MudAlert Severity="Severity.Error">@TryLocalize("This page could not be read. It is shown read-only and saved unchanged: {0}", Page.LoadError)</MudAlert>
+        </div>
+    }
+    else
+    {
+        var zoom = EffectiveZoom;
+        <div class="@($"mud-ex-notebook-page{(Interactive ? " mud-ex-notebook-page-interactive" : "")} {Class}".TrimEnd())" data-page-id="@Page.Id"
+             style="@($"width:{NotebookStyles.Num(_size.Width * zoom)}px;height:{NotebookStyles.Num(_size.Height * zoom)}px;{Style}")">
+            <div @key="Page" class="mud-ex-notebook-page-content"
+                 style="@($"width:{NotebookStyles.Num(_size.Width)}px;height:{NotebookStyles.Num(_size.Height)}px;transform:scale({NotebookStyles.Num(zoom)});")">
+                @foreach (var element in Page.Elements)
+                {
+                    <MudExNotebookElementView @key="element.Id" Element="element" Images="ImageUrls" />
+                }
+            </div>
+        </div>
+    }
+}
