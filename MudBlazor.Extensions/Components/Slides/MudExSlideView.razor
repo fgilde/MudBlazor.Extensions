@@ -13,7 +13,7 @@
         @foreach (var shape in SlideShape.Flatten(Slide.Shapes))
         {
             <MudExSlideShapeView @key="shape" Shape="shape" Presentation="Presentation" Images="Images" Master="@(Slide.Layout?.Master)" HideText="@ReferenceEquals(shape, HiddenText)" HiddenCell="@HiddenCell"
-                                 Prompt="@PromptOf(shape)" SlideNumber="@SlideNumber" />
+                                 Prompt="@PromptOf(shape)" SlideNumber="@SlideNumber" Target="@TargetOf(shape)" Targets="Targets" />
         }
     </div>
 }

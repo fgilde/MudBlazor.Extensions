@@ -1,6 +1,7 @@
 const ITEM = '.mud-ex-slide-panel-item';
 const SECTION = '.mud-ex-slide-panel-section';
 const RENAME = '.mud-ex-slide-panel-section-rename';
+const EFFECT = '.mud-ex-slide-animation-item';
 const BEFORE = 'mud-ex-slide-panel-drop-before';
 const AFTER = 'mud-ex-slide-panel-drop-after';
 const SHORTCUT_TARGETS = '.mud-ex-slide-canvas, .mud-ex-slide-panel';
@@ -67,6 +68,10 @@ class MudExSlideEditor {
     }
 
     keyDown(e) {
+        if (e.key === 'F5' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+            e.preventDefault();
+            return;
+        }
         if (e.key === 'Enter' && e.target.matches?.(RENAME)) {
             e.preventDefault();
             e.target.blur();
@@ -146,6 +151,10 @@ class MudExSlideEditor {
     }
 
     dragStart(e) {
+        if (e.target.closest?.(EFFECT)) {
+            e.dataTransfer.setData('text/plain', '');
+            return;
+        }
         const section = this.itemOf(e, SECTION);
         const item = section ?? this.itemOf(e);
         if (!item || item.getAttribute('draggable') !== 'true') {

@@ -1,0 +1,54 @@
+@inherits MudExBaseComponent<MudExSlideShow>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Presentation
+
+@if (Preview)
+{
+    <div @attributes="UserAttributes" class="@($"mud-ex-slide-show mud-ex-slide-show-preview {Class}".TrimEnd())" style="@Style" @onclick="CloseAsync">
+        @Stage
+    </div>
+}
+else
+{
+    <div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-slide-show {Class}".TrimEnd())" style="@Style" tabindex="-1" role="dialog"
+         aria-label="@TryLocalize("Slide Show")" @onkeydown="_keyDown">
+        @if (_popupBlocked)
+        {
+            <MudAlert Class="mud-ex-slide-show-alert" Severity="Severity.Warning" ShowCloseIcon="true" CloseIconClicked="@(() => _popupBlocked = false)">
+                @TryLocalize("The browser blocked the audience window. The slide show runs in this window.")
+            </MudAlert>
+        }
+        @if (_presenter)
+        {
+            <MudExSlideShowPresenter Presentation="Presentation" Images="_images" Slide="_state.Slide" SlideIndex="_state.SlideIndex" NextSlide="_next.Slide" NextTargets="_next.Targets"
+                                     Stage="Stage" PreviousRequested="@(() => OnShowCommand("previous", 0))" NextRequested="@(() => OnShowCommand("next", 0))"
+                                     EndRequested="CloseAsync" Localizer="@Localizer" />
+        }
+        else
+        {
+            @Stage
+        }
+    </div>
+}
+
+@code {
+    private RenderFragment Stage =>
+        @<div class="mud-ex-slide-show-stage" style="@RatioStyle">
+            @if (_state.IsEnd)
+            {
+                <div class="mud-ex-slide-show-end">@TryLocalize("End of slide show, click to exit.")</div>
+            }
+            else
+            {
+                @if (_previous is { } previous)
+                {
+                    <div @key="previous.Slide" class="@FrameClass("out")" style="@TransitionStyle">
+                        <MudExSlideView Presentation="Presentation" Slide="previous.Slide" Images="_images" Targets="previous.Targets" />
+                    </div>
+                }
+                <div @key="_state.Slide" class="@FrameClass("in")" style="@TransitionStyle" data-slide-index="@_state.SlideIndex" data-step="@_state.Step">
+                    <MudExSlideView Presentation="Presentation" Slide="_state.Slide" Images="_images" Targets="_targets" />
+                </div>
+            }
+        </div>;
+}

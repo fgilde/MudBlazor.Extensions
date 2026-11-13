@@ -1,0 +1,34 @@
+@inherits MudExBaseComponent<MudExSlideAnimationPane>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Presentation
+
+<div @attributes="UserAttributes" class="@($"mud-ex-slide-animation-pane {Class}".TrimEnd())" style="@Style" role="region" aria-label="@TryLocalize("Animation Pane")">
+    <div class="mud-ex-slide-animation-pane-toolbar">
+        <span class="mud-ex-slide-animation-pane-title">@TryLocalize("Animation Pane")</span>
+        <MudIconButton Icon="@Icons.Material.Filled.ArrowUpward" Size="Size.Small" aria-label="@TryLocalize("Move Up")" title="@TryLocalize("Move Up")"
+                       Disabled="@(SelectedIndex is not > 0)" OnClick="@(() => MoveAsync(SelectedIndex!.Value, SelectedIndex.Value - 1))" />
+        <MudIconButton Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Small" aria-label="@TryLocalize("Move Down")" title="@TryLocalize("Move Down")"
+                       Disabled="@(SelectedIndex is not { } down || down >= _effects.Count - 1)" OnClick="@(() => MoveAsync(SelectedIndex!.Value, SelectedIndex.Value + 1))" />
+        <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" aria-label="@TryLocalize("Remove")" title="@TryLocalize("Remove")"
+                       Disabled="@(SelectedIndex == null)" OnClick="RemoveAsync" />
+    </div>
+    <div class="mud-ex-slide-animation-list" role="listbox" aria-label="@TryLocalize("Animations")">
+        @for (var i = 0; i < _effects.Count; i++)
+        {
+            var index = i;
+            var (effect, step) = _effects[i];
+            <div class="@(index == SelectedIndex ? "mud-ex-slide-animation-item mud-ex-slide-animation-item-selected" : "mud-ex-slide-animation-item")" role="option"
+                 aria-selected="@(index == SelectedIndex ? "true" : "false")" draggable="true" data-index="@index" tabindex="0"
+                 @onclick="@(() => SelectedIndexChanged.InvokeAsync(index))" @onkeydown="@(e => e.Key is "Enter" or " " ? SelectedIndexChanged.InvokeAsync(index) : Task.CompletedTask)" @ondragstart="@(() => _drag = index)" @ondragover:preventDefault="true" @ondrop="@(() => DropAsync(index))">
+                <span class="mud-ex-slide-animation-step">@(effect.Trigger == AnimationTrigger.OnClick ? step.ToString() : "")</span>
+                <MudIcon Icon="@IconOf(effect)" Size="Size.Small" Class="@($"mud-ex-slide-animation-icon mud-ex-slide-animation-{effect.Class.ToString().ToLowerInvariant()}")" />
+                <span class="mud-ex-slide-animation-name">@NameOf(effect)</span>
+                <span class="mud-ex-slide-animation-effect">@TryLocalize(MudExSlideEditor.AnimationName(effect.Class, effect.Preset))</span>
+            </div>
+        }
+        @if (_effects.Count == 0)
+        {
+            <div class="mud-ex-slide-animation-empty">@TryLocalize("Select a shape and choose an effect to add an animation.")</div>
+        }
+    </div>
+</div>

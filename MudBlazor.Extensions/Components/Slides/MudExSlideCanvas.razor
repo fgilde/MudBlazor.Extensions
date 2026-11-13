@@ -59,6 +59,13 @@
                             }
                         </div>
                     }
+                    @if (ShowAnimationOrder)
+                    {
+                        @foreach (var (shape, label) in AnimationOrder())
+                        {
+                            <span class="mud-ex-slide-animation-badge" data-shape-id="@shape.Id" style="@BadgeStyle(shape)">@label</span>
+                        }
+                    }
                     <div class="mud-ex-slide-canvas-guides"></div>
                 </div>
             }

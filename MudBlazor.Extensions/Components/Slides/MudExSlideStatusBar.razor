@@ -3,6 +3,11 @@
 
 <div @attributes="UserAttributes" class="@($"mud-ex-slide-status-bar {Class}".TrimEnd())" style="@Style" role="status">
     <span class="mud-ex-slide-status-position">@(SlideCount > 0 ? TryLocalize("Slide {0} of {1}", SlideNumber, SlideCount) : "")</span>
+    @if (SlideShowRequested.HasDelegate)
+    {
+        <MudIconButton Class="mud-ex-slide-status-show" Icon="@Icons.Material.Filled.Slideshow" Size="Size.Small" aria-label="@TryLocalize("Slide Show")" title="@TryLocalize("Slide Show")"
+                       Disabled="@(SlideCount == 0)" OnClick="@(() => SlideShowRequested.InvokeAsync())" />
+    }
     <div class="mud-ex-sssb-zoom">
         <button type="button" class="mud-ex-sssb-zoom-button" aria-label="@TryLocalize("Zoom Out")" title="@TryLocalize("Zoom Out")" @onclick="@(() => SetZoomAsync(Value - 0.1))">−</button>
         <input type="range" class="mud-ex-sssb-slider" min="10" max="400" step="10" value="@Percent" aria-label="@TryLocalize("Zoom")" @onchange="OnSliderChangedAsync" />

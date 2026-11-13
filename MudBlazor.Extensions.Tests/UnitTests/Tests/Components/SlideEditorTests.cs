@@ -148,7 +148,7 @@ public class SlideEditorTests : IAsyncLifetime
         var cut = Render(Sample(), readOnly: true);
 
         var ribbon = cut.FindComponent<MudExRibbon>().Instance;
-        cut.WaitForAssertion(() => Assert.Equal(["View"], cut.FindComponent<MudExRibbon>().FindAll("[role=tab]").Select(t => t.TextContent.Trim())));
+        cut.WaitForAssertion(() => Assert.Equal(["Slide Show", "View"], cut.FindComponent<MudExRibbon>().FindAll("[role=tab]").Select(t => t.TextContent.Trim())));
         var visible = ribbon.Commands.Where(c => c.Tab is { Visible: true }).Select(c => c.Id).ToList();
         Assert.DoesNotContain("pp-new-slide", visible);
         Assert.DoesNotContain("pp-bold", visible);

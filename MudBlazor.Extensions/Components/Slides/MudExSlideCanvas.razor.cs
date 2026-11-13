@@ -68,6 +68,9 @@ public partial class MudExSlideCanvas
     /// <summary>Raised when the user opens the context menu on the slide; the browser menu is suppressed then. The shape under the pointer is selected first.</summary>
     [Parameter] public EventCallback<MouseEventArgs> ContextMenu { get; set; }
 
+    /// <summary>If true every animated shape shows the numbers of the clicks that play its effects, as on the Animations tab of PowerPoint.</summary>
+    [Parameter] public bool ShowAnimationOrder { get; set; }
+
     /// <summary>The ids of the selected shapes. A group and one of its descendants are never selected together.</summary>
     public IReadOnlyList<uint> Selection => _selection;
 
@@ -82,6 +85,22 @@ public partial class MudExSlideCanvas
                 ? $"width:{(Presentation.SlideWidth / 9525d * Zoom).ToString("0.##", CultureInfo.InvariantCulture)}px"
                 : $"width:min(100cqw, 100cqh * {ratio})";
         }
+    }
+
+    private IEnumerable<(SlideShape Shape, string Label)> AnimationOrder()
+    {
+        var steps = SlideBuildSteps.For(Slide);
+        var first = steps.Count > 0 && steps[0].Automatic ? 0 : 1;
+        var numbers = steps.SelectMany((s, i) => s.Effects.Select(e => (e.Effect.ShapeId, Number: i + first)));
+        return numbers.GroupBy(n => n.ShapeId)
+            .Select(g => (Shape: SlideShape.Flatten(Slide.Shapes).FirstOrDefault(s => s.Id == g.Key), Label: string.Join(",", g.Select(n => n.Number).Distinct())))
+            .Where(b => b.Shape != null);
+    }
+
+    private string BadgeStyle(SlideShape shape)
+    {
+        var t = shape.ResolvedTransform;
+        return $"left:{MudExSlideShapeView.Num(t.X * 100d / Presentation.SlideWidth)}%;top:{MudExSlideShapeView.Num(t.Y * 100d / Presentation.SlideHeight)}%";
     }
 
     /// <inheritdoc />

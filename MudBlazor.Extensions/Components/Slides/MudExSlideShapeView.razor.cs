@@ -36,6 +36,12 @@ public partial class MudExSlideShapeView
     /// <summary>The number shown by slide number fields.</summary>
     [Parameter] public int SlideNumber { get; set; }
 
+    /// <summary>The visibility and build animation of the shape in the slide show, or null.</summary>
+    [Parameter] public SlideTargetState Target { get; set; }
+
+    /// <summary>The visibility and build animation of the animated paragraphs in the slide show, or null.</summary>
+    [Parameter] public IReadOnlyDictionary<(uint Shape, int? Paragraph), SlideTargetState> Targets { get; set; }
+
     private SlideMaster ColorMaster => Shape.Master ?? Master;
 
     private string PaintUrl => $"url(#{_paintId})";
@@ -46,7 +52,7 @@ public partial class MudExSlideShapeView
         TableShape => "mud-ex-slide-shape mud-ex-slide-table-shape",
         GroupShape => "mud-ex-slide-shape mud-ex-slide-group",
         _ => "mud-ex-slide-shape"
-    } + (Inherited ? " mud-ex-slide-inherited" : "") + (Prompt != null ? " mud-ex-slide-placeholder-empty" : "");
+    } + (Inherited ? " mud-ex-slide-inherited" : "") + (Prompt != null ? " mud-ex-slide-placeholder-empty" : "") + (Target?.CssClass is { } animation ? " " + animation : "");
 
     internal static string BoxStyle(ShapeTransform t, Presentation presentation, bool flip = true)
     {

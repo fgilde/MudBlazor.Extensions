@@ -7,7 +7,8 @@
     @for (var i = 0; i < Shape.Text.Paragraphs.Count; i++)
     {
         var paragraph = Shape.Text.Paragraphs[i];
-        <div class="mud-ex-slide-paragraph" style="@ParagraphStyle(Shape, paragraph, Presentation)">
+        var target = Targets != null && Targets.TryGetValue((Shape.Id, i), out var state) ? state : null;
+        <div class="@(target?.CssClass is { } animation ? "mud-ex-slide-paragraph " + animation : "mud-ex-slide-paragraph")" style="@(ParagraphStyle(Shape, paragraph, Presentation) + target?.CssStyle)">
             @if (markers[i] != null)
             {
                 <span class="mud-ex-slide-bullet" style="@RunStyle(Shape, Presentation, paragraph.Runs.Count > 0 ? paragraph.Runs[0] : EmptyRun(paragraph))">@markers[i]&nbsp;</span>

@@ -3,7 +3,7 @@
 @using MudBlazor.Extensions.Office.Presentation
 
 <div class="@ShapeClass" data-shape-id="@(Inherited ? null : Shape.Id)" data-group-id="@(Inherited ? null : Shape.Parent?.Id)" data-table="@(Shape is TableShape ? "true" : null)"
-     style="@BoxStyle(Shape.ResolvedTransform, Presentation)">
+     style="@(BoxStyle(Shape.ResolvedTransform, Presentation) + Target?.CssStyle)">
     @switch (Shape)
     {
         case AutoShape auto:
@@ -40,7 +40,7 @@
             }
             @if (auto.Text != null && !HideText)
             {
-                <MudExSlideText Shape="auto" Presentation="Presentation" SlideNumber="SlideNumber" />
+                <MudExSlideText Shape="auto" Presentation="Presentation" SlideNumber="SlideNumber" Targets="Targets" />
             }
             @if (Prompt != null)
             {

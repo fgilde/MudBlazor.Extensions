@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace MudBlazor.Extensions.Components;
 
-/// <summary>Status bar of the slide editor: the slide position and a zoom slider.</summary>
+/// <summary>Status bar of the slide editor: the slide position, a Slide Show button and a zoom slider.</summary>
 public partial class MudExSlideStatusBar
 {
     /// <summary>The number of the shown slide, starting at 1.</summary>
@@ -17,6 +17,9 @@ public partial class MudExSlideStatusBar
 
     /// <summary>Raised when the user changes the zoom; null means fit to window.</summary>
     [Parameter] public EventCallback<double?> ZoomChanged { get; set; }
+
+    /// <summary>Raised by the Slide Show button, which is shown when a handler is set.</summary>
+    [Parameter] public EventCallback SlideShowRequested { get; set; }
 
     private double Value => Zoom ?? 1;
 

@@ -19547,6 +19547,30 @@
         <member name="M:MudBlazor.Extensions.Components.MudExRibbonViewBase.Dispose">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideAnimationPane">
+            <summary>
+            The animation pane of the slide editor: the effects of a slide in sequence order with the click that starts them and the animated shape.
+            Effects are reordered by dragging or with Move Up and Move Down, and removed; every change is one undo step.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideAnimationPane.Presentation">
+            <summary>The presentation the slide belongs to.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideAnimationPane.Slide">
+            <summary>The slide whose effects are listed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideAnimationPane.SelectedIndex">
+            <summary>The index of the selected effect in <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations"/>, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideAnimationPane.SelectedIndexChanged">
+            <summary>Raised with the index of the effect the user selected or moved.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideAnimationPane.CommandRequested">
+            <summary>Raised with the command for a reorder or removal; the host executes it.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideAnimationPane.OnParametersSet">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideCanvas">
             <summary>
             The editing area of the slide editor: shows a slide at a zoom level with a selection layer above it.
@@ -19600,6 +19624,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.ContextMenu">
             <summary>Raised when the user opens the context menu on the slide; the browser menu is suppressed then. The shape under the pointer is selected first.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.ShowAnimationOrder">
+            <summary>If true every animated shape shows the numbers of the clicks that play its effects, as on the Animations tab of PowerPoint.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideCanvas.Selection">
             <summary>The ids of the selected shapes. A group and one of its descendants are never selected together.</summary>
@@ -20009,8 +20036,107 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.SlideNumber">
             <summary>The number shown by slide number fields.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Target">
+            <summary>The visibility and build animation of the shape in the slide show, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShapeView.Targets">
+            <summary>The visibility and build animation of the animated paragraphs in the slide show, or null.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideShow">
+            <summary>
+            Plays a presentation as a slide show: full screen on a black stage with the slide transitions and build animations of the file. The keyboard follows
+            PowerPoint (Right, Space, Enter and N advance; Left, Backspace and P go back; a number and Enter jumps; B and W blank the screen; Esc ends), slides
+            advance by themselves after their <see cref="P:MudBlazor.Extensions.Office.Presentation.SlideTransition.AdvanceAfterSeconds"/>, and hidden slides are skipped. With <see cref="P:MudBlazor.Extensions.Components.MudExSlideShow.PresenterView"/>
+            the audience sees the show in a second browser window while this window shows the presenter view with notes, the next slide and timers.
+            The component can be used on its own; the host removes it when <see cref="P:MudBlazor.Extensions.Components.MudExSlideShow.Closed"/> is raised.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideShow.#ctor">
+            <summary>Creates the slide show.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShow.Presentation">
+            <summary>The presentation to show.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShow.StartIndex">
+            <summary>The index of the slide the show starts with; a hidden slide is skipped.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShow.PresenterView">
+            <summary>
+            If true the audience sees the show in a second browser window and this window shows the presenter view. If the browser blocks the window, a
+            message appears and the show runs in this window.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShow.Preview">
+            <summary>
+            If true the show plays the transition and all build steps of the start slide once inside its container, without full screen and keyboard,
+            and raises <see cref="P:MudBlazor.Extensions.Components.MudExSlideShow.Closed"/> afterwards or on a click.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShow.Images">
+            <summary>The image URLs of the presentation, for example those of the editor; without them pictures are shown from data URIs.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShow.Closed">
+            <summary>Raised when the show ends: by Esc, by a click on the end screen, when the audience window or full screen is closed, or when a preview finished.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShow.SlideChanged">
+            <summary>Raised with the index of the slide whenever the show moves to another slide.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideShow.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideShow.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideShow.OnShowCommand(System.String,System.Int32)">
+            <summary>Called by the browser with the result of a key or click in the show.</summary>
+            <param name="command">next, click, previous, first, last, goto or exit.</param>
+            <param name="number">For goto: the number of the slide, starting at 1.</param>
+            <returns>A task that completes when the show has moved.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideShow.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideShowPresenter">
+            <summary>The presenter view of <see cref="T:MudBlazor.Extensions.Components.MudExSlideShow"/>: the current slide, the next slide or build step, the notes, the time and a stopwatch.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.Presentation">
+            <summary>The presentation that is shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.Images">
+            <summary>The image URLs of the presentation.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.Slide">
+            <summary>The current slide, whose notes are shown; null on the end screen.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.SlideIndex">
+            <summary>The index of the current slide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.NextSlide">
+            <summary>The slide shown as the next step: the current slide with its next build step played, or the next slide; null at the end.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.NextTargets">
+            <summary>The visibility of the animated shapes of <see cref="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.NextSlide"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.Stage">
+            <summary>The stage the audience sees, shown as the current slide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.PreviousRequested">
+            <summary>Raised by the previous button.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.NextRequested">
+            <summary>Raised by the next button.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideShowPresenter.EndRequested">
+            <summary>Raised by the end button.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideShowPresenter.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideShowPresenter.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideStatusBar">
-            <summary>Status bar of the slide editor: the slide position and a zoom slider.</summary>
+            <summary>Status bar of the slide editor: the slide position, a Slide Show button and a zoom slider.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideStatusBar.SlideNumber">
             <summary>The number of the shown slide, starting at 1.</summary>
@@ -20023,6 +20149,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideStatusBar.ZoomChanged">
             <summary>Raised when the user changes the zoom; null means fit to window.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideStatusBar.SlideShowRequested">
+            <summary>Raised by the Slide Show button, which is shown when a handler is set.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideTableGridPicker">
             <summary>A grid of up to 10 columns by 8 rows to pick the size of a new table, as in Insert → Table of PowerPoint.</summary>
@@ -20062,6 +20191,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideText.SlideNumber">
             <summary>The number shown by slide number fields.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideText.Targets">
+            <summary>The visibility and build animation of the animated paragraphs in the slide show, or null.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideTextEditor">
             <summary>
@@ -20144,6 +20276,9 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideView.HiddenCell">
             <summary>For a table as <see cref="P:MudBlazor.Extensions.Components.MudExSlideView.HiddenText"/>: the cell whose text is not shown.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideView.Targets">
+            <summary>The visibility and build animation of animated shapes and paragraphs in the slide show; null shows every shape.</summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideView.OnInitialized">
             <inheritdoc />
         </member>
@@ -20164,6 +20299,27 @@
         <member name="M:MudBlazor.Extensions.Components.SlideImageUrls.UrlFor(System.String)">
             <summary>Gets the URL of an image part, or null if the part does not exist.</summary>
             <param name="partName">The image part name.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SlideTargetState">
+            <summary>How a shape or paragraph appears at one point of the slide show.</summary>
+            <param name="Hidden">True if the target is not visible once the current build step has played.</param>
+            <param name="Effect">The effect the target plays in the current build step, or null.</param>
+            <param name="StartSeconds">When the effect starts, in seconds after the step began.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SlideTargetState.#ctor(System.Boolean,MudBlazor.Extensions.Office.Presentation.AnimationEffect,System.Double)">
+            <summary>How a shape or paragraph appears at one point of the slide show.</summary>
+            <param name="Hidden">True if the target is not visible once the current build step has played.</param>
+            <param name="Effect">The effect the target plays in the current build step, or null.</param>
+            <param name="StartSeconds">When the effect starts, in seconds after the step began.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTargetState.Hidden">
+            <summary>True if the target is not visible once the current build step has played.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTargetState.Effect">
+            <summary>The effect the target plays in the current build step, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SlideTargetState.StartSeconds">
+            <summary>When the effect starts, in seconds after the step began.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.SlideTextParagraphDto">
             <summary>A paragraph of the text editing DOM exchanged between <see cref="T:MudBlazor.Extensions.Components.MudExSlideTextEditor"/> and the browser.</summary>

@@ -80,6 +80,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExSlideShow.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSlideShow.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExSpreadsheetClipboard.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExSpreadsheetClipboard.js"

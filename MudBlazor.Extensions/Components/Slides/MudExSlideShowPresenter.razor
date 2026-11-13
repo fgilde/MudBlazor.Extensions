@@ -1,0 +1,40 @@
+@inherits MudExBaseComponent<MudExSlideShowPresenter>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Presentation
+@using System.Globalization
+
+<div @attributes="UserAttributes" class="@($"mud-ex-slide-show-presenter {Class}".TrimEnd())" style="@Style">
+    <div class="mud-ex-slide-show-presenter-bar">
+        <span class="mud-ex-slide-show-presenter-clock">@DateTime.Now.ToString("t", CultureInfo.CurrentCulture)</span>
+        <span class="mud-ex-slide-show-presenter-stopwatch">@_stopwatch.Elapsed.ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture)</span>
+        <MudIconButton Icon="@(_stopwatch.IsRunning ? Icons.Material.Filled.Pause : Icons.Material.Filled.PlayArrow)" Size="Size.Small" Color="Color.Inherit"
+                       aria-label="@TryLocalize(_stopwatch.IsRunning ? "Pause timer" : "Resume timer")" title="@TryLocalize(_stopwatch.IsRunning ? "Pause timer" : "Resume timer")" OnClick="ToggleTimer" />
+        <MudIconButton Icon="@Icons.Material.Filled.Replay" Size="Size.Small" Color="Color.Inherit" aria-label="@TryLocalize("Restart timer")" title="@TryLocalize("Restart timer")" OnClick="RestartTimer" />
+    </div>
+    <div class="mud-ex-slide-show-presenter-current">@Stage</div>
+    <div class="mud-ex-slide-show-presenter-side">
+        <div class="mud-ex-slide-show-presenter-label">@TryLocalize("Next")</div>
+        <div class="mud-ex-slide-show-presenter-next" data-slide-index="@(NextSlide == null ? null : Presentation.SlideList.IndexOf(NextSlide))">
+            @if (NextSlide != null)
+            {
+                <MudExSlideView Presentation="Presentation" Slide="NextSlide" Images="Images" Targets="NextTargets" />
+            }
+            else
+            {
+                <span>@TryLocalize("End of slide show")</span>
+            }
+        </div>
+        <div class="mud-ex-slide-show-presenter-notes-bar">
+            <span class="mud-ex-slide-show-presenter-label">@TryLocalize("Notes")</span>
+            <MudIconButton Icon="@Icons.Material.Filled.TextDecrease" Size="Size.Small" Color="Color.Inherit" aria-label="@TryLocalize("Smaller notes")" title="@TryLocalize("Smaller notes")" OnClick="@(() => Resize(-2))" />
+            <MudIconButton Icon="@Icons.Material.Filled.TextIncrease" Size="Size.Small" Color="Color.Inherit" aria-label="@TryLocalize("Larger notes")" title="@TryLocalize("Larger notes")" OnClick="@(() => Resize(2))" />
+        </div>
+        <div class="mud-ex-slide-show-presenter-notes" style="@($"font-size:{_notesSize}px")">@Slide?.Notes</div>
+    </div>
+    <div class="mud-ex-slide-show-presenter-nav">
+        <MudIconButton Icon="@Icons.Material.Filled.NavigateBefore" Color="Color.Inherit" aria-label="@TryLocalize("Previous")" title="@TryLocalize("Previous")" OnClick="PreviousRequested" />
+        <span>@(Slide == null ? "" : TryLocalize("Slide {0} of {1}", SlideIndex + 1, Presentation.Slides.Count))</span>
+        <MudIconButton Icon="@Icons.Material.Filled.NavigateNext" Color="Color.Inherit" aria-label="@TryLocalize("Next")" title="@TryLocalize("Next")" OnClick="NextRequested" />
+        <MudButton Variant="Variant.Outlined" Color="Color.Inherit" Size="Size.Small" OnClick="EndRequested">@TryLocalize("End Slide Show")</MudButton>
+    </div>
+</div>

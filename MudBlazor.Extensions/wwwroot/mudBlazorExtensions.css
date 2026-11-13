@@ -9494,3 +9494,291 @@ textarea.mud-ex-ssg-note-text {
 .mud-ex-slide-design-major {
   font-size: 1rem;
 }
+.mud-ex-slide-show {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: #000;
+  color: #fff;
+  outline: none;
+  cursor: default;
+}
+.mud-ex-slide-show-preview {
+  position: absolute;
+  z-index: 5;
+  cursor: pointer;
+}
+.mud-ex-slide-editor-main {
+  position: relative;
+}
+.mud-ex-slide-show-alert {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  z-index: 10;
+  transform: translateX(-50%);
+}
+.mud-ex-slide-show-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #000;
+  container-type: size;
+}
+.mud-ex-slide-show-stage[data-blank]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: #000;
+}
+.mud-ex-slide-show-stage[data-blank="white"]::after {
+  background: #fff;
+}
+.mud-ex-slide-show-frame {
+  grid-area: 1 / 1;
+  width: min(100cqw, 100cqh * var(--mud-ex-show-ratio, 1.7778));
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+}
+.mud-ex-slide-show-in {
+  position: relative;
+  z-index: 1;
+}
+.mud-ex-slide-show-out {
+  position: relative;
+  z-index: 0;
+}
+.mud-ex-slide-show-out[class*="mud-ex-show-out-uncover"] {
+  z-index: 2;
+}
+.mud-ex-slide-show-end {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 1rem;
+  color: #fff;
+}
+.mud-ex-slide-show-audience > .mud-ex-slide-show-stage {
+  position: fixed;
+}
+
+.mud-ex-show-in-fade, .mud-ex-show-in-dissolve { animation-name: mud-ex-show-fade; }
+.mud-ex-show-in-dissolve { animation-timing-function: steps(8); }
+.mud-ex-show-in-zoom-in { animation-name: mud-ex-show-zoom-in; }
+.mud-ex-show-in-zoom-out { animation-name: mud-ex-show-zoom-out; }
+.mud-ex-show-in-push-left, .mud-ex-show-in-cover-left { animation-name: mud-ex-show-from-right; }
+.mud-ex-show-in-push-right, .mud-ex-show-in-cover-right { animation-name: mud-ex-show-from-left; }
+.mud-ex-show-in-push-up, .mud-ex-show-in-cover-up { animation-name: mud-ex-show-from-bottom; }
+.mud-ex-show-in-push-down, .mud-ex-show-in-cover-down { animation-name: mud-ex-show-from-top; }
+.mud-ex-show-out-push-left, .mud-ex-show-out-uncover-left { animation-name: mud-ex-show-to-left; }
+.mud-ex-show-out-push-right, .mud-ex-show-out-uncover-right { animation-name: mud-ex-show-to-right; }
+.mud-ex-show-out-push-up, .mud-ex-show-out-uncover-up { animation-name: mud-ex-show-to-top; }
+.mud-ex-show-out-push-down, .mud-ex-show-out-uncover-down { animation-name: mud-ex-show-to-bottom; }
+.mud-ex-show-in-wipe-left { animation-name: mud-ex-show-clip-right; }
+.mud-ex-show-in-wipe-right { animation-name: mud-ex-show-clip-left; }
+.mud-ex-show-in-wipe-up { animation-name: mud-ex-show-clip-bottom; }
+.mud-ex-show-in-wipe-down { animation-name: mud-ex-show-clip-top; }
+.mud-ex-show-in-split-horizontal { animation-name: mud-ex-show-split-horizontal; }
+.mud-ex-show-in-split-vertical { animation-name: mud-ex-show-split-vertical; }
+.mud-ex-show-in-randombars-horizontal, .mud-ex-show-in-randombars-vertical {
+  animation-name: mud-ex-show-bars;
+  animation-timing-function: steps(6);
+  mask-image: linear-gradient(to bottom, #000 var(--mud-ex-show-bars), transparent var(--mud-ex-show-bars));
+  mask-size: 100% 8%;
+}
+.mud-ex-show-in-randombars-vertical {
+  mask-image: linear-gradient(to right, #000 var(--mud-ex-show-bars), transparent var(--mud-ex-show-bars));
+  mask-size: 8% 100%;
+}
+
+.mud-ex-show-anim {
+  animation-fill-mode: backwards;
+  animation-timing-function: ease-out;
+}
+.mud-ex-show-exit-fade, .mud-ex-show-exit-zoom, .mud-ex-show-exit-fly-left, .mud-ex-show-exit-fly-right, .mud-ex-show-exit-fly-top, .mud-ex-show-exit-fly-bottom,
+.mud-ex-show-exit-wipe-left, .mud-ex-show-exit-wipe-right, .mud-ex-show-exit-wipe-top, .mud-ex-show-exit-wipe-bottom {
+  animation-direction: reverse;
+  animation-timing-function: ease-in;
+}
+.mud-ex-show-entr-appear { animation-name: mud-ex-show-hidden; }
+.mud-ex-show-exit-appear { animation-name: mud-ex-show-visible; }
+.mud-ex-show-entr-fade, .mud-ex-show-exit-fade { animation-name: mud-ex-show-fade; }
+.mud-ex-show-entr-zoom, .mud-ex-show-exit-zoom { animation-name: mud-ex-show-grow; }
+.mud-ex-show-entr-fly-left, .mud-ex-show-exit-fly-left { animation-name: mud-ex-show-from-left; }
+.mud-ex-show-entr-fly-right, .mud-ex-show-exit-fly-right { animation-name: mud-ex-show-from-right; }
+.mud-ex-show-entr-fly-top, .mud-ex-show-exit-fly-top { animation-name: mud-ex-show-from-top; }
+.mud-ex-show-entr-fly-bottom, .mud-ex-show-exit-fly-bottom { animation-name: mud-ex-show-from-bottom; }
+.mud-ex-show-entr-wipe-left, .mud-ex-show-exit-wipe-left { animation-name: mud-ex-show-clip-left; }
+.mud-ex-show-entr-wipe-right, .mud-ex-show-exit-wipe-right { animation-name: mud-ex-show-clip-right; }
+.mud-ex-show-entr-wipe-top, .mud-ex-show-exit-wipe-top { animation-name: mud-ex-show-clip-top; }
+.mud-ex-show-entr-wipe-bottom, .mud-ex-show-exit-wipe-bottom { animation-name: mud-ex-show-clip-bottom; }
+
+@property --mud-ex-show-bars {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@keyframes mud-ex-show-hidden { from, to { visibility: hidden; } }
+@keyframes mud-ex-show-visible { from, to { visibility: visible; } }
+@keyframes mud-ex-show-fade { from { visibility: visible; opacity: 0; } to { visibility: visible; opacity: 1; } }
+@keyframes mud-ex-show-grow { from { visibility: visible; opacity: 0; scale: 0; } to { visibility: visible; opacity: 1; scale: 1; } }
+@keyframes mud-ex-show-zoom-in { from { opacity: 0; scale: 0.3; } to { opacity: 1; scale: 1; } }
+@keyframes mud-ex-show-zoom-out { from { opacity: 0; scale: 1.6; } to { opacity: 1; scale: 1; } }
+@keyframes mud-ex-show-from-left { from { visibility: visible; translate: -100cqw 0; } to { visibility: visible; translate: 0 0; } }
+@keyframes mud-ex-show-from-right { from { visibility: visible; translate: 100cqw 0; } to { visibility: visible; translate: 0 0; } }
+@keyframes mud-ex-show-from-top { from { visibility: visible; translate: 0 -100cqw; } to { visibility: visible; translate: 0 0; } }
+@keyframes mud-ex-show-from-bottom { from { visibility: visible; translate: 0 100cqw; } to { visibility: visible; translate: 0 0; } }
+@keyframes mud-ex-show-to-left { to { translate: -100cqw 0; } }
+@keyframes mud-ex-show-to-right { to { translate: 100cqw 0; } }
+@keyframes mud-ex-show-to-top { to { translate: 0 -100cqh; } }
+@keyframes mud-ex-show-to-bottom { to { translate: 0 100cqh; } }
+@keyframes mud-ex-show-clip-left { from { visibility: visible; clip-path: inset(0 100% 0 0); } to { visibility: visible; clip-path: inset(0); } }
+@keyframes mud-ex-show-clip-right { from { visibility: visible; clip-path: inset(0 0 0 100%); } to { visibility: visible; clip-path: inset(0); } }
+@keyframes mud-ex-show-clip-top { from { visibility: visible; clip-path: inset(0 0 100% 0); } to { visibility: visible; clip-path: inset(0); } }
+@keyframes mud-ex-show-clip-bottom { from { visibility: visible; clip-path: inset(100% 0 0 0); } to { visibility: visible; clip-path: inset(0); } }
+@keyframes mud-ex-show-split-horizontal { from { clip-path: inset(50% 0 50% 0); } to { clip-path: inset(0); } }
+@keyframes mud-ex-show-split-vertical { from { clip-path: inset(0 50% 0 50%); } to { clip-path: inset(0); } }
+@keyframes mud-ex-show-bars { from { --mud-ex-show-bars: 0%; } to { --mud-ex-show-bars: 100%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mud-ex-slide-show-frame, .mud-ex-show-anim {
+    animation: none !important;
+  }
+  .mud-ex-slide-show-out {
+    display: none;
+  }
+}
+
+.mud-ex-slide-show-presenter {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 12px;
+  box-sizing: border-box;
+  background: #202020;
+  color: #fff;
+}
+.mud-ex-slide-show-presenter-bar, .mud-ex-slide-show-presenter-nav {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mud-ex-slide-show-presenter-clock, .mud-ex-slide-show-presenter-stopwatch {
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.mud-ex-slide-show-presenter-nav {
+  justify-content: center;
+}
+.mud-ex-slide-show-presenter-current {
+  position: relative;
+  min-height: 0;
+}
+.mud-ex-slide-show-presenter-side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+.mud-ex-slide-show-presenter-label {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+.mud-ex-slide-show-presenter-next {
+  display: grid;
+  place-items: center;
+  min-height: 80px;
+  background: #000;
+}
+.mud-ex-slide-show-presenter-notes-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.mud-ex-slide-show-presenter-notes {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
+
+.mud-ex-slide-animation-pane {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 260px;
+  min-height: 0;
+  border-left: 1px solid var(--mud-palette-lines-default);
+  background: var(--mud-palette-surface);
+}
+.mud-ex-slide-animation-pane-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--mud-palette-lines-default);
+}
+.mud-ex-slide-animation-pane-title {
+  flex: 1 1 auto;
+  font-weight: 500;
+}
+.mud-ex-slide-animation-list {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+.mud-ex-slide-animation-item {
+  display: grid;
+  grid-template-columns: 20px 20px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.mud-ex-slide-animation-item:hover {
+  background: var(--mud-palette-action-default-hover);
+}
+.mud-ex-slide-animation-item-selected {
+  background: var(--mud-palette-action-default-hover);
+  outline: 1px solid var(--mud-ex-slide-accent, var(--mud-palette-primary));
+  outline-offset: -1px;
+}
+.mud-ex-slide-animation-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mud-ex-slide-animation-effect, .mud-ex-slide-animation-step, .mud-ex-slide-animation-empty {
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+.mud-ex-slide-animation-empty {
+  padding: 8px;
+}
+.mud-ex-slide-animation-entrance { color: #2e7d32; }
+.mud-ex-slide-animation-exit { color: #c62828; }
+.mud-ex-slide-animation-badge {
+  position: absolute;
+  translate: -100% 0;
+  min-width: 16px;
+  padding: 0 3px;
+  box-sizing: border-box;
+  border: 1px solid #888;
+  background: #f2f2f2;
+  color: #333;
+  font-size: 11px;
+  line-height: 14px;
+  text-align: center;
+}
+.mud-ex-slide-status-show {
+  margin-left: auto;
+}

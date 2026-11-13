@@ -16,6 +16,7 @@ public partial class MudExSlideView
     private SlideShape _renderedHiddenText;
     private (int Row, int Column)? _renderedHiddenCell;
     private int _renderedNumber;
+    private IReadOnlyDictionary<(uint Shape, int? Paragraph), SlideTargetState> _renderedTargets;
 
     /// <summary>The presentation the slide belongs to.</summary>
     [Parameter] public Presentation Presentation { get; set; }
@@ -34,6 +35,9 @@ public partial class MudExSlideView
 
     /// <summary>For a table as <see cref="HiddenText"/>: the cell whose text is not shown.</summary>
     [Parameter] public (int Row, int Column)? HiddenCell { get; set; }
+
+    /// <summary>The visibility and build animation of animated shapes and paragraphs in the slide show; null shows every shape.</summary>
+    [Parameter] public IReadOnlyDictionary<(uint Shape, int? Paragraph), SlideTargetState> Targets { get; set; }
 
     private string RootStyle =>
         $"aspect-ratio:{Presentation.SlideWidth.ToString(CultureInfo.InvariantCulture)}/{Presentation.SlideHeight.ToString(CultureInfo.InvariantCulture)};{BackgroundStyle}{Style}";
@@ -74,7 +78,7 @@ public partial class MudExSlideView
     protected override bool ShouldRender()
     {
         if (ReferenceEquals(_rendered, Slide) && _renderedVersion == Slide?.Version && _renderedInteractive == Interactive && ReferenceEquals(_renderedHiddenText, HiddenText)
-            && _renderedNumber == SlideNumber && _renderedHiddenCell == HiddenCell) return false;
+            && _renderedNumber == SlideNumber && _renderedHiddenCell == HiddenCell && ReferenceEquals(_renderedTargets, Targets)) return false;
         Remember();
         return true;
     }
@@ -98,7 +102,23 @@ public partial class MudExSlideView
     private static string CssString(string value) =>
         string.Concat(value.Where(c => !char.IsControl(c))).Replace("\\", "\\\\", StringComparison.Ordinal).Replace("\"", "\\\"", StringComparison.Ordinal);
 
+    private SlideTargetState TargetOf(SlideShape shape)
+    {
+        if (Targets == null)
+            return null;
+        SlideTargetState own = null;
+        for (var current = shape; current != null; current = current.Parent)
+            if (Targets.TryGetValue((current.Id, null), out var state))
+            {
+                if (state.Hidden)
+                    return state;
+                own ??= state.Effect != null ? state : null;
+            }
+
+        return own;
+    }
+
     private void Remember() =>
-        (_rendered, _renderedVersion, _renderedInteractive, _renderedHiddenText, _renderedNumber, _renderedHiddenCell) =
-        (Slide, Slide?.Version ?? 0, Interactive, HiddenText, SlideNumber, HiddenCell);
+        (_rendered, _renderedVersion, _renderedInteractive, _renderedHiddenText, _renderedNumber, _renderedHiddenCell, _renderedTargets) =
+        (Slide, Slide?.Version ?? 0, Interactive, HiddenText, SlideNumber, HiddenCell, Targets);
 }

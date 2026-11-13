@@ -30,6 +30,9 @@ public partial class MudExSlideText
     /// <summary>The number shown by slide number fields.</summary>
     [Parameter] public int SlideNumber { get; set; }
 
+    /// <summary>The visibility and build animation of the animated paragraphs in the slide show, or null.</summary>
+    [Parameter] public IReadOnlyDictionary<(uint Shape, int? Paragraph), SlideTargetState> Targets { get; set; }
+
     internal static string BodyStyle(AutoShape shape, Presentation presentation)
     {
         var body = shape.EffectiveBody();
