@@ -10,6 +10,15 @@ public partial class MudExSlideEditor
 {
     private const long EmuPerPixel = 9525;
     private const long DefaultOutline = 9525;
+    private const string OutlineColor = "scheme:tx1";
+
+    private static readonly long[] OutlineWeights = [3175, 6350, 9525, 12700, 19050, 28575, 38100, 57150, 76200];
+
+    private static readonly (string Dash, string Text)[] OutlineDashes =
+    [
+        ("solid", "Solid"), ("sysDot", "Round Dot"), ("sysDash", "Square Dot"), ("dash", "Dash"), ("dashDot", "Dash Dot"), ("lgDash", "Long Dash"),
+        ("lgDashDot", "Long Dash Dot"), ("lgDashDotDot", "Long Dash Dot Dot")
+    ];
 
     private static readonly Dictionary<string, string> PictureTypes = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -37,22 +46,36 @@ public partial class MudExSlideEditor
                 _presentation.Execute(new SetGeometryCommand(_current, shape.Id, preset));
     });
 
+    private bool HasNoFill => SelectedAutoShapes is { Count: > 0 } shapes && shapes.All(s => ShapeFill.EffectiveFill(s).Kind == ShapeFillKind.None);
+
+    private ShapeLine CurrentOutline => SelectedAutoShapes.Select(ShapeLine.EffectiveLine).FirstOrDefault(l => l?.Color != null);
+
     private Task SetShapeFillAsync(MudExColor color) =>
-        Hex(color) is { } hex ? StyleAsync(new ShapeFill(ShapeFillKind.Solid, hex), null) : Task.CompletedTask;
+        Hex(color) is { } hex ? FillAsync(new ShapeFill(ShapeFillKind.Solid, hex)) : Task.CompletedTask;
 
-    private Task SetShapeOutlineAsync(MudExColor color)
-    {
-        if (Hex(color) is not { } hex)
-            return Task.CompletedTask;
-        var current = SelectedAutoShapes.Select(s => s.Line).FirstOrDefault(l => l != null);
-        return StyleAsync(null, new ShapeLine(hex, current?.Width is > 0 and var width ? width : DefaultOutline, current?.Dash ?? "solid"));
-    }
-
-    private Task StyleAsync(ShapeFill fill, ShapeLine line) => RunAsync(() =>
+    private Task FillAsync(ShapeFill fill) => RunAsync(() =>
     {
         var ids = SelectedAutoShapes.Select(s => s.Id).ToList();
         if (ids.Count > 0)
-            _presentation.Execute(new SetShapeStyleCommand(_current, ids, fill, line));
+            _presentation.Execute(new SetShapeStyleCommand(_current, ids, fill, null));
+    });
+
+    private Task SetShapeOutlineAsync(MudExColor color) => Hex(color) is { } hex ? OutlineAsync(l => l with { Color = hex }) : Task.CompletedTask;
+
+    private Task SetOutlineWeightAsync(long width) => OutlineAsync(l => l with { Width = width, Color = l.Color ?? OutlineColor });
+
+    private Task SetOutlineDashAsync(string dash) => OutlineAsync(l => l with { Dash = dash, Color = l.Color ?? OutlineColor });
+
+    private Task OutlineAsync(Func<ShapeLine, ShapeLine> change) => RunAsync(() =>
+    {
+        using (_presentation.Undo.BeginTransaction("Format shape"))
+            foreach (var shape in SelectedAutoShapes)
+            {
+                var effective = ShapeLine.EffectiveLine(shape);
+                var line = change(effective is { Width: > 0 } e ? e with { ColorInherited = false } : new ShapeLine(null, DefaultOutline, effective?.Dash ?? "solid"));
+                if (line != effective && (effective?.Color != null || line.Color != null))
+                    _presentation.Execute(new SetShapeStyleCommand(_current, [shape.Id], null, line));
+            }
     });
 
     private static string Hex(MudExColor color) => color.IsSet() && color.ToMudColor() is { } c ? c.ToString(MudColorOutputFormats.Hex).ToUpperInvariant() : null;

@@ -137,6 +137,66 @@ public class SlideEditorFeaturesTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task Fill_NoFill_WritesNoFill()
+    {
+        var presentation = Deck();
+        var cut = RenderEditor(presentation);
+        var slide = presentation.Slides[0];
+        var styled = AutoShape.CreateStyled("ellipse", new ShapeTransform(Inch, 3 * Inch, Inch, Inch));
+        presentation.Execute(new InsertShapeCommand(slide, styled));
+        var box = (AutoShape)slide.Shapes[1];
+        MudExRibbonItemBase Command(string id) => cut.FindComponent<MudExRibbon>().Instance.Commands.Single(c => c.Id == id);
+        Task Run(string id) => cut.InvokeAsync(() => Command(id).ExecuteAsync());
+        await cut.InvokeAsync(() => Canvas(cut).SelectAsync([box.Id, styled.Id]));
+        var steps = 0;
+        presentation.Changed += (_, _) => steps++;
+
+        Assert.False(((MudExRibbonMenuItem)Command("pp-shape-no-fill")).Checked);
+        await Run("pp-shape-no-fill");
+        Assert.Equal(new ShapeFill(ShapeFillKind.None), box.Fill);
+        Assert.Equal(new ShapeFill(ShapeFillKind.None), styled.Fill);
+        Assert.Equal("Format shape", presentation.Undo.UndoDescription);
+        cut.WaitForAssertion(() => Assert.True(((MudExRibbonMenuItem)Command("pp-shape-no-fill")).Checked));
+        var changes = steps;
+        await Run("pp-shape-no-fill");
+        Assert.Equal(changes, steps);
+
+        await Run("pp-shape-no-outline");
+        Assert.Null(ShapeLine.EffectiveLine(styled)!.Color);
+        Assert.Null(box.Line);
+        await Run("pp-shape-outline-weight-76200");
+        Assert.Equal(new ShapeLine("scheme:tx1", 76200), styled.Line);
+        Assert.Equal(new ShapeLine("scheme:tx1", 76200), box.Line);
+        await Run("pp-shape-outline-dash-lgDashDot");
+        Assert.Equal(new ShapeLine("scheme:tx1", 76200, "lgDashDot"), styled.Line);
+        cut.WaitForAssertion(() => Assert.True(((MudExRibbonMenuItem)Command("pp-shape-outline-weight-76200")).Checked));
+        Assert.True(((MudExRibbonMenuItem)Command("pp-shape-outline-dash-lgDashDot")).Checked);
+
+        var output = PptxWriterTests.Save(presentation);
+        PptxWriterTests.AssertConsistent(output);
+        XNamespace p = "http://schemas.openxmlformats.org/presentationml/2006/main", a = "http://schemas.openxmlformats.org/drawingml/2006/main";
+        var shapes = PptxWriterTests.Xml(output, "/ppt/slides/slide1.xml").Descendants(p + "sp").ToList();
+        foreach (var sp in new[] { shapes[1], shapes[^1] })
+        {
+            var spPr = sp.Element(p + "spPr")!;
+            Assert.NotNull(spPr.Element(a + "noFill"));
+            Assert.Null(spPr.Element(a + "solidFill"));
+            var ln = spPr.Element(a + "ln")!;
+            Assert.Equal("76200", (string)ln.Attribute("w"));
+            Assert.Equal("tx1", (string)ln.Element(a + "solidFill")!.Element(a + "schemeClr")!.Attribute("val"));
+            Assert.Equal("lgDashDot", (string)ln.Element(a + "prstDash")!.Attribute("val"));
+        }
+
+        Assert.Equal(ShapeFillKind.None, ((AutoShape)Presentation.Load(new MemoryStream(output)).Slides[0].Shapes[^1]).Fill.Kind);
+        presentation.Undo.Undo();
+        presentation.Undo.Undo();
+        presentation.Undo.Undo();
+        presentation.Undo.Undo();
+        Assert.Equal(new ShapeFill(ShapeFillKind.Inherited, "scheme:accent1"), styled.Fill);
+        Assert.Null(styled.Line);
+    }
+
+    [Fact]
     public async Task InsertPicture_FitsIntoSlideKeepingAspect()
     {
         var presentation = Deck();

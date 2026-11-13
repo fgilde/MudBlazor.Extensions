@@ -103,10 +103,29 @@
                                 <MudExRibbonMenuItem Id="pp-flip-horizontal" Text="@TryLocalize("Flip Horizontal")" Icon="@Icons.Material.Filled.Flip" Disabled="@(!CanRotate)" OnClick="@(() => FlipAsync(true))" />
                             </MudExRibbonMenuItem>
                         </MudExRibbonMenuButton>
-                        <MudExRibbonColorPicker Id="pp-shape-fill" Text="@TryLocalize("Shape Fill")" Icon="@Icons.Material.Filled.FormatColorFill" Size="MudExRibbonItemSize.Small" Palette="@Palette" Disabled="@(!HasShapeSelection)"
-                                                ValueChanged="SetShapeFillAsync" />
-                        <MudExRibbonColorPicker Id="pp-shape-outline" Text="@TryLocalize("Shape Outline")" Icon="@Icons.Material.Filled.BorderColor" Size="MudExRibbonItemSize.Small" Palette="@Palette" Disabled="@(!HasShapeSelection)"
-                                                ValueChanged="SetShapeOutlineAsync" />
+                        <MudExRibbonMenuButton Id="pp-shape-fill" Text="@TryLocalize("Shape Fill")" Icon="@Icons.Material.Filled.FormatColorFill" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)">
+                            <MudExRibbonColorPicker Id="pp-shape-fill-color" Text="@TryLocalize("Fill Color")" Icon="@Icons.Material.Filled.FormatColorFill" Palette="@Palette" Disabled="@(!HasShapeSelection)" ValueChanged="SetShapeFillAsync" />
+                            <MudExRibbonMenuItem Id="pp-shape-no-fill" Text="@TryLocalize("No Fill")" Icon="@Icons.Material.Filled.FormatColorReset" Disabled="@(!HasShapeSelection)" Checked="@HasNoFill"
+                                                 OnClick="@(() => FillAsync(new ShapeFill(ShapeFillKind.None)))" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonMenuButton Id="pp-shape-outline" Text="@TryLocalize("Shape Outline")" Icon="@Icons.Material.Filled.BorderColor" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)">
+                            @{ var outline = CurrentOutline; }
+                            <MudExRibbonColorPicker Id="pp-shape-outline-color" Text="@TryLocalize("Outline Color")" Icon="@Icons.Material.Filled.BorderColor" Palette="@Palette" Disabled="@(!HasShapeSelection)" ValueChanged="SetShapeOutlineAsync" />
+                            <MudExRibbonMenuItem Id="pp-shape-no-outline" Text="@TryLocalize("No Outline")" Icon="@Icons.Material.Filled.BorderClear" Disabled="@(!HasShapeSelection)" Checked="@(HasShapeSelection && outline == null)"
+                                                 OnClick="@(() => OutlineAsync(l => l with { Color = null }))" />
+                            <MudExRibbonMenuItem Id="pp-shape-outline-weight" Text="@TryLocalize("Weight")" Icon="@Icons.Material.Filled.LineWeight" Disabled="@(!HasShapeSelection)">
+                                @foreach (var width in OutlineWeights)
+                                {
+                                    <MudExRibbonMenuItem Id="@($"pp-shape-outline-weight-{width}")" Text="@($"{width / 12700d:0.##} pt")" Checked="@(outline?.Width == width)" OnClick="@(() => SetOutlineWeightAsync(width))" />
+                                }
+                            </MudExRibbonMenuItem>
+                            <MudExRibbonMenuItem Id="pp-shape-outline-dash" Text="@TryLocalize("Dashes")" Icon="@Icons.Material.Filled.LineStyle" Disabled="@(!HasShapeSelection)">
+                                @foreach (var (dash, text) in OutlineDashes)
+                                {
+                                    <MudExRibbonMenuItem Id="@($"pp-shape-outline-dash-{dash}")" Text="@TryLocalize(text)" Checked="@(outline != null && (outline.Dash ?? "solid") == dash)" OnClick="@(() => SetOutlineDashAsync(dash))" />
+                                }
+                            </MudExRibbonMenuItem>
+                        </MudExRibbonMenuButton>
                         @ShapesButton("pp-change-shape", TryLocalize("Change Shape"), ChangeShapeAsync, !HasShapeSelection, MudExRibbonItemSize.Small)
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Editing")" Icon="@Icons.Material.Filled.Search" CollapsePriority="0">
