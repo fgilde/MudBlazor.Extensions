@@ -47,6 +47,38 @@ public partial class PptxWriterTests
     }
 
     [Fact]
+    public void Writer_SetTransitionTiming_KeepsAlternateContent()
+    {
+        var presentation = TransitionTests.Deck(TransitionTests.Alternate);
+        var slide = presentation.Slides[0];
+        var changed = slide.Transition with { AdvanceAfterSeconds = 5 };
+
+        presentation.Execute(new SetTransitionCommand([slide], changed));
+        var output = Save(presentation);
+
+        AssertConsistent(output);
+        var alternate = Assert.Single(SlideXml(output).Elements(Mc + "AlternateContent"));
+        var choice = alternate.Element(Mc + "Choice")!.Element(P + "transition")!;
+        var fallback = alternate.Element(Mc + "Fallback")!.Element(P + "transition")!;
+        Assert.NotNull(choice.Element(P14 + "vortex"));
+        Assert.Equal("2000", (string)choice.Attribute(P14 + "dur"));
+        Assert.Equal(["5000", "5000"], new[] { choice, fallback }.Select(t => (string)t.Attribute("advTm")));
+        Assert.Equal(changed, Load(output).Slides[0].Transition);
+
+        presentation.Execute(new SetTransitionCommand([slide], changed with { DurationSeconds = 0.5 }));
+        choice = SlideXml(Save(presentation)).Descendants(Mc + "Choice").Single().Element(P + "transition")!;
+        Assert.Null(choice.Attribute(P14 + "dur"));
+        Assert.Null(choice.Attribute("spd"));
+        Assert.NotNull(choice.Element(P14 + "vortex"));
+    }
+
+    [Fact]
+    public void Reader_Transition_EmptyDirection_DefaultsToLeft()
+    {
+        Assert.Equal(TransitionDirection.Left, TransitionTests.Deck("<p:transition><p:push dir=\"\"/></p:transition>").Slides[0].Transition.Direction);
+    }
+
+    [Fact]
     public void Writer_TransitionNone_RemovesElement()
     {
         var presentation = TransitionTests.Deck("<p:transition spd=\"med\"><p:fade/></p:transition>");
