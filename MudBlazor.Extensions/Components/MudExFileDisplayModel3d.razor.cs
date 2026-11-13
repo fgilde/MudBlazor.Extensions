@@ -75,6 +75,8 @@ public partial class MudExFileDisplayModel3d : IMudExFileDisplay
     public override async Task ImportModuleAndCreateJsAsync()
     {
         await base.ImportModuleAndCreateJsAsync();
+        if (JsReference == null)
+            return;
 
         if (_pendingBytes != null)
         {

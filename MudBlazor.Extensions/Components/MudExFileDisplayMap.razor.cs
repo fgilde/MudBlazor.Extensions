@@ -63,6 +63,8 @@ public partial class MudExFileDisplayMap : IMudExFileDisplay
     public override async Task ImportModuleAndCreateJsAsync()
     {
         await base.ImportModuleAndCreateJsAsync();
+        if (JsReference == null)
+            return;
 
         // Leaflet itself is pulled in by the JS module, which can await the actual script execution.
         if (_pendingGeoJson != null)

@@ -100,6 +100,12 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
             var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(GetJsArguments());
             JsReference = references.jsObjectReference;
             ModuleReference = references.moduleReference;
+            if (IsDisposed)
+            {
+                await AsJsComponent.DisposeModulesAsync();
+                return;
+            }
+
             _jsReferenceCreatedCompletionSource.TrySetResult(JsReference);
         }
         catch (JSException) when (IsDisposed)

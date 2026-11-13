@@ -71,14 +71,16 @@ internal interface IJsMudExComponent<T> : IMudExComponent, IAsyncDisposable
     /// <returns></returns>
     public virtual async ValueTask DisposeModulesAsync()
     {
-        if (JsReference != null)
+        var (js, module) = (JsReference, ModuleReference);
+        (JsReference, ModuleReference) = (null, null);
+        if (js != null)
         {
-            try { await JsReference.InvokeVoidAsync("dispose"); } catch { }
-            try { await JsReference.DisposeAsync(); } catch { }
+            try { await js.InvokeVoidAsync("dispose"); } catch { }
+            try { await js.DisposeAsync(); } catch { }
         }
 
-        if (ModuleReference != null)
-            try { await ModuleReference.DisposeAsync(); } catch { }
+        if (module != null)
+            try { await module.DisposeAsync(); } catch { }
     }
 
 }

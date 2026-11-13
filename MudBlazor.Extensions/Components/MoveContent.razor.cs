@@ -95,6 +95,8 @@ public partial class MoveContent
     public override async Task ImportModuleAndCreateJsAsync()
     {
         await base.ImportModuleAndCreateJsAsync();
+        if (JsReference == null)
+            return;
         await JsReference.InvokeVoidAsync("move", ElementSelector.IsT0 ? ElementSelector.AsT0 : ElementSelector.AsT1, 
             Mode.ToString(), 
             Position.ToString(), 
