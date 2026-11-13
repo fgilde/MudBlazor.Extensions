@@ -1,4 +1,4 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 :root {
   --mud-ex-css-main: mud-ex ;
 }
@@ -10221,4 +10221,40 @@ textarea.mud-ex-ssg-note-text {
 }
 .mud-ex-notebook-text-editable > div[data-list="todo"]::before {
   cursor: pointer;
+}
+.mud-ex-notebook-canvas[data-tool="pen"],
+.mud-ex-notebook-canvas[data-tool="highlighter"],
+.mud-ex-notebook-canvas[data-tool="eraser"],
+.mud-ex-notebook-canvas[data-tool="lasso"],
+.mud-ex-notebook-canvas[data-tool="shape"] {
+  touch-action: none;
+}
+.mud-ex-notebook-canvas[data-tool="pen"] .mud-ex-notebook-page-interactive,
+.mud-ex-notebook-canvas[data-tool="highlighter"] .mud-ex-notebook-page-interactive,
+.mud-ex-notebook-canvas[data-tool="lasso"] .mud-ex-notebook-page-interactive,
+.mud-ex-notebook-canvas[data-tool="shape"] .mud-ex-notebook-page-interactive {
+  cursor: crosshair;
+}
+.mud-ex-notebook-canvas[data-tool="eraser"] .mud-ex-notebook-page-interactive {
+  cursor: cell;
+}
+.mud-ex-notebook-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: visible;
+  pointer-events: none;
+}
+.mud-ex-notebook-live-lasso {
+  fill: rgba(119, 25, 170, 0.06);
+  stroke: var(--mud-ex-notebook-accent, #7719AA);
+  stroke-width: 1px;
+  stroke-dasharray: 4 3;
+}
+.mud-ex-notebook-erased {
+  opacity: 0.25;
+}
+.mud-ex-notebook-pen-preview {
+  width: 28px;
+  height: 28px;
 }

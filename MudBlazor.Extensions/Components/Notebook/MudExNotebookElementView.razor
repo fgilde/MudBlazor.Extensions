@@ -9,7 +9,7 @@
             <MudExNotebookText Paragraphs="text.Paragraphs" />
             break;
         case InkElement ink:
-            <svg class="@(ink.Tool == InkTool.Highlighter ? "mud-ex-notebook-geometry mud-ex-notebook-highlighter" : "mud-ex-notebook-geometry")">
+            <svg class="@(ink.Tool == InkTool.Highlighter ? "mud-ex-notebook-geometry mud-ex-notebook-ink mud-ex-notebook-highlighter" : "mud-ex-notebook-geometry mud-ex-notebook-ink")">
                 <path d="@NotebookStyles.InkPath(ink)" fill="none" stroke="@ColorOr(ink.Color, "#000000")" stroke-width="@NotebookStyles.Num(ink.StrokeWidth)"
                       stroke-linecap="round" stroke-linejoin="round" />
             </svg>

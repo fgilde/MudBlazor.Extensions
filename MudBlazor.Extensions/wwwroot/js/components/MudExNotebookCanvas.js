@@ -1,3 +1,5 @@
+import { inkMethods } from './MudExNotebookInk.js';
+
 const PAGE = '.mud-ex-notebook-page';
 const ELEMENT = '[data-element-id]';
 const TEXT_EDITOR = '.mud-ex-notebook-text-editor';
@@ -23,9 +25,12 @@ class MudExNotebookCanvas {
         this.pending = new Map();
         this.observed = new Set();
         this.timer = 0;
+        this.touches = new Map();
+        this.pan = null;
         this.onMove = e => this.pointerMove(e);
         this.onUp = e => this.pointerUp(e);
-        this.events = [['pointerdown', e => this.pointerDown(e)], ['keydown', e => this.keyDown(e)], ['click', e => this.click(e)]];
+        this.events = [['pointerdown', e => this.pointerDown(e)], ['keydown', e => this.keyDown(e)], ['click', e => this.click(e)],
+            ['pointermove', e => this.touchMove(e)], ['pointerup', e => this.touchUp(e)], ['pointercancel', e => this.touchUp(e)]];
         this.events.forEach(([type, handler]) => root.addEventListener(type, handler));
         this.resizer = new ResizeObserver(entries => this.measured(entries));
         this.mutations = new MutationObserver(() => this.observe());
@@ -108,6 +113,11 @@ class MudExNotebookCanvas {
     }
 
     keyDown(e) {
+        if (e.key === 'Escape' && this.drag?.ink) {
+            e.preventDefault();
+            this.cancelGesture();
+            return;
+        }
         if (e.target !== this.root || this.readOnly() || e.altKey) {
             return;
         }
@@ -151,6 +161,12 @@ class MudExNotebookCanvas {
     }
 
     pointerDown(e) {
+        if (e.pointerType === 'touch' && e.isPrimary) {
+            this.touches.clear();
+        }
+        if (this.touchDown(e)) {
+            return;
+        }
         const page = this.page();
         if (e.button !== 0 || this.drag || !page || !this.dotnet || this.readOnly() || e.target.closest(TEXT_EDITOR)) {
             return;
@@ -174,6 +190,7 @@ class MudExNotebookCanvas {
             return;
         }
         if (tool !== 'text' && tool !== 'select') {
+            this.inkDown(e, tool, start);
             return;
         }
         const el = e.target.closest(ELEMENT);
@@ -237,6 +254,12 @@ class MudExNotebookCanvas {
         if (!d) {
             return;
         }
+        if (d.ink) {
+            if (e.pointerId === d.pointerId) {
+                this.inkMove(d, e);
+            }
+            return;
+        }
         d.x = e.clientX;
         d.y = e.clientY;
         d.shift = e.shiftKey;
@@ -259,7 +282,14 @@ class MudExNotebookCanvas {
         if (!d) {
             return;
         }
+        if (d.ink && e.pointerId !== d.pointerId) {
+            return;
+        }
         this.end(d);
+        if (d.ink) {
+            await this.inkUp(d, e.type === 'pointercancel');
+            return;
+        }
         if (e.type === 'pointercancel' || !this.dotnet) {
             this.restore(d, true);
             return;
@@ -405,11 +435,7 @@ class MudExNotebookCanvas {
     }
 
     dispose() {
-        const d = this.drag;
-        if (d) {
-            this.end(d);
-            this.restore(d, true);
-        }
+        this.cancelGesture();
         clearTimeout(this.timer);
         this.resizer.disconnect();
         this.mutations.disconnect();
@@ -418,6 +444,8 @@ class MudExNotebookCanvas {
         this.dotnet = null;
     }
 }
+
+Object.assign(MudExNotebookCanvas.prototype, inkMethods);
 
 export function initializeMudExNotebookCanvas(elementRef, dotnet) {
     return new MudExNotebookCanvas(elementRef, dotnet);

@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "outputFileName": "wwwroot/js/mudBlazorExtensions.all.js",
     "inputFiles": [
@@ -77,6 +77,12 @@
     "outputFileName": "wwwroot/js/components/MudExNotebookCanvas.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExNotebookCanvas.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExNotebookInk.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExNotebookInk.js"
     ]
   },
   {

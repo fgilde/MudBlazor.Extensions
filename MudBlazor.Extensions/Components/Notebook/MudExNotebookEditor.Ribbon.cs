@@ -22,9 +22,7 @@ public partial class MudExNotebookEditor
         ("nb-draw-type", "Type", Icons.Material.Filled.TextFields, NotebookTool.Text),
         ("nb-draw-select", "Select", Icons.Material.Filled.NearMe, NotebookTool.Select),
         ("nb-draw-lasso", "Lasso Select", Icons.Material.Filled.Gesture, NotebookTool.Lasso),
-        ("nb-draw-eraser", "Eraser", Icons.Material.Filled.AutoFixNormal, NotebookTool.Eraser),
-        ("nb-draw-pen", "Pen", Icons.Material.Filled.Edit, NotebookTool.Pen),
-        ("nb-draw-highlighter", "Highlighter", Icons.Material.Filled.BorderColor, NotebookTool.Highlighter)
+        ("nb-draw-eraser", "Eraser", Icons.Material.Filled.AutoFixNormal, NotebookTool.Eraser)
     ];
 
     private async Task SetToolAsync(NotebookTool tool)

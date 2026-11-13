@@ -79,9 +79,24 @@
                     <MudExRibbonGroup Text="@TryLocalize("Tools")" Icon="@Icons.Material.Filled.Draw" CollapsePriority="0">
                         @foreach (var (id, text, icon, tool) in DrawItems)
                         {
-                            <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Size="MudExRibbonItemSize.Large" Disabled="@(tool is not (NotebookTool.Text or NotebookTool.Select))"
+                            <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Size="MudExRibbonItemSize.Large" Disabled="@(!CanEditPage)"
                                                      Checked="@(_tool == tool)" CheckedChanged="@(_ => SetToolAsync(tool))" />
                         }
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Pens")" Icon="@Icons.Material.Filled.Edit" CollapsePriority="2">
+                        <MudExRibbonGallery TItem="NotebookInkPreset" Id="nb-draw-pens" Text="@TryLocalize("Pens")" Icon="@Icons.Material.Filled.Edit" Size="MudExRibbonItemSize.Large" Columns="6"
+                                            Items="InkPresets" ItemText="@(p => TryLocalize(p.Name))" SelectedItem="@CurrentPreset" SelectedItemChanged="ChoosePresetAsync" Disabled="@(!CanEditPage)">
+                            <ItemTemplate>
+                                <svg class="mud-ex-notebook-pen-preview" viewBox="0 0 32 32" aria-hidden="true">
+                                    <path d="M4 22C10 8 16 28 28 10" fill="none" stroke="@context.Color" stroke-width="@NotebookStyles.Num(Math.Min(context.Width, 10))" stroke-linecap="round"
+                                          opacity="@(context.Tool == NotebookTool.Highlighter ? "0.5" : "1")" />
+                                </svg>
+                            </ItemTemplate>
+                        </MudExRibbonGallery>
+                        <MudExRibbonColorPicker Id="nb-draw-color" Text="@TryLocalize("Color")" Icon="@Icons.Material.Filled.Palette" Size="MudExRibbonItemSize.Small" Palette="@Palette"
+                                                Disabled="@(!CanEditPage || !IsInkTool)" ValueChanged="SetInkColor" />
+                        <MudExRibbonNumberBox Id="nb-draw-width" Text="@TryLocalize("Thickness")" Value="@Ink.Width" ValueChanged="SetInkWidth" Min="0.5" Max="100" Step="0.5" Unit="px"
+                                              Disabled="@(!CanEditPage || !IsInkTool)" />
                     </MudExRibbonGroup>
                 </MudExRibbonTab>
                 <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
@@ -120,7 +135,7 @@
                         }
                         <div class="mud-ex-notebook-page-date">@_page.Created.ToLocalTime().ToString("f", System.Globalization.CultureInfo.CurrentCulture)</div>
                     </div>
-                    <MudExNotebookCanvas @ref="_canvas" Notebook="_notebook" Page="_page" Zoom="_zoom" ReadOnly="@(!CanEditPage)" Tool="_tool" ViewportWidth="_viewport.Width"
+                    <MudExNotebookCanvas @ref="_canvas" Notebook="_notebook" Page="_page" Zoom="_zoom" ReadOnly="@(!CanEditPage)" Tool="_tool" InkColor="@Ink.Color" InkWidth="@Ink.Width" ViewportWidth="_viewport.Width"
                                          ViewportHeight="_viewport.Height" Images="_images" SelectionChanged="OnCanvasSelectionChanged" TextInput="MarkDirtyAsync"
                                          LinkRequested="OpenLinkDialogAsync" Localizer="@Localizer" />
                 }

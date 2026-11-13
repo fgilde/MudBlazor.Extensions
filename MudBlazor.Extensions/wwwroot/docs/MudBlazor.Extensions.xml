@@ -12921,6 +12921,33 @@
             notebook itself renders the canvas again.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.InkColor">
+            <summary>The colour of new strokes as <c>#RRGGBB</c>, used by <see cref="F:MudBlazor.Extensions.Components.NotebookTool.Pen"/> and <see cref="F:MudBlazor.Extensions.Components.NotebookTool.Highlighter"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.InkWidth">
+            <summary>The width of new strokes in pixels.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnStrokeAsync(MudBlazor.Extensions.Components.InkPointDto[])">
+            <summary>
+            Called by the browser once a stroke of the pen or highlighter ends. The points are simplified and added as one stroke in one undo step; a single
+            point is a dot.
+            </summary>
+            <param name="points">The points in page coordinates.</param>
+            <returns>A task that completes when the stroke is added.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnEraseAsync(System.String[])">
+            <summary>Called by the browser once an eraser gesture ends, with every stroke it touched. They are deleted in one undo step.</summary>
+            <param name="ids">The ids of the touched strokes; other ids are ignored.</param>
+            <returns>A task that completes when the strokes are deleted.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnLassoAsync(MudBlazor.Extensions.Components.PointDto[])">
+            <summary>
+            Called by the browser once a lasso line is closed. Selects every stroke with more than half of its points inside and every other element whose
+            centre lies inside.
+            </summary>
+            <param name="polygon">The lasso line in page coordinates.</param>
+            <returns>A task that completes when the selection is shown.</returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.#ctor">
             <summary>Creates the canvas.</summary>
         </member>
@@ -13026,6 +13053,18 @@
             <param name="id">The id of the text block.</param>
             <param name="paragraph">The index of the paragraph.</param>
             <returns>A task that completes when the check box is toggled.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.InkPointDto">
+            <summary>A point of a stroke reported by the browser in page coordinates (CSS pixels at 100 % zoom).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.InkPointDto.X">
+            <summary>The horizontal position.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.InkPointDto.Y">
+            <summary>The vertical position.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.InkPointDto.Pressure">
+            <summary>The pen pressure from 0 to 1; 0.5 for a mouse.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.PointDto">
             <summary>A point reported by the browser in page coordinates (CSS pixels at 100 % zoom).</summary>

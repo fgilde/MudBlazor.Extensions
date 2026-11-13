@@ -3,7 +3,7 @@
 
 <div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-notebook-canvas {Class}".TrimEnd())" style="@Style" tabindex="0" role="application"
      aria-label="@TryLocalize("Page")" data-readonly="@(Editable ? "false" : "true")" data-tool="@Tool.ToString().ToLowerInvariant()"
-     data-zoom="@NotebookStyles.Num(EffectiveZoom)" data-selection="@string.Join(",", _selection)" data-editing="@_text?.ElementId" @onkeydown="_keyDown">
+     data-zoom="@NotebookStyles.Num(EffectiveZoom)" data-selection="@string.Join(",", _selection)" data-editing="@_text?.ElementId" data-ink-color="@EffectiveInkColor" data-ink-width="@NotebookStyles.Num(EffectiveInkWidth)" @onkeydown="_keyDown">
     <MudExNotebookPageView Notebook="Notebook" Page="Page" Zoom="Zoom" Interactive="true" ViewportWidth="ViewportWidth" ViewportHeight="ViewportHeight"
                            MeasuredHeights="_heights" Images="Images" Localizer="@Localizer" />
     @if (Editable)
