@@ -78,6 +78,8 @@ public class SlideCommandTests
             foreach (var shape in SlideShape.Flatten(slide.Shapes)) sb.AppendLine(Describe(shape));
         }
 
+        foreach (var section in presentation.Sections) sb.AppendLine($"section {Ref(section)} {section.Id} {section.Name} {string.Join(",", section.Slides.Select(s => s.Key))}");
+        sb.AppendLine($"titlePlaceholders={presentation.ShowSpecialPlaceholdersOnTitleSlide}");
         return sb.ToString();
     }
 
@@ -98,7 +100,7 @@ public class SlideCommandTests
     private static string Text(TextBody b) => b == null
         ? "no text"
         : $"{b.Anchor} {b.InsetLeft} {b.InsetTop} {b.InsetRight} {b.InsetBottom} {b.Wrap} source={Ref(b.Source)} " + string.Join(" | ", b.Paragraphs.Select(p =>
-            $"{p.Align} {p.Level} {p.Bullet} {p.EndFormat} source={Ref(p.Source)} " + string.Concat(p.Runs.Select(r => $"<{r.Text} {r.Format} {Ref(r.Source)}>"))));
+            $"{p.Align} {p.Level} {p.Bullet} {p.EndFormat} source={Ref(p.Source)} " + string.Concat(p.Runs.Select(r => $"<{r.Text} {r.Format} {r.FieldType} {Ref(r.Source)}>"))));
 
     private static int Ref(object o) => o == null ? 0 : RuntimeHelpers.GetHashCode(o);
 

@@ -13,7 +13,6 @@ public static partial class PptxWriter
     internal const string RelNs = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
     internal const string ImageRel = RelNs + "/image";
     private const string ContentTypePrefix = "application/vnd.openxmlformats-officedocument.presentationml.";
-    private static readonly XNamespace P14 = "http://schemas.microsoft.com/office/powerpoint/2010/main";
 
     private static readonly string NewSlide =
         $"<p:sld {BlankPresentation.Namespaces}><p:cSld><p:spTree>{BlankPresentation.TreeStart}</p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr></p:sld>";
@@ -97,9 +96,8 @@ public static partial class PptxWriter
                 entries.Add(new SlideEntry(rel.Id, (uint)nextSlideId++, false));
             }
 
-            var stylesAdded = AddTableStyles(presentationRels);
-            if (!presentation.SlideList.SequenceEqual(package.Slides.Select(s => s.Slide))) WritePresentation(entries, presentationRels);
-            else if (stylesAdded) PutRelationships(package.PresentationPart, presentationRels);
+            AddTableStyles(presentationRels);
+            WritePresentation(entries, presentationRels);
             foreach (var part in _removed) Remove(part);
             if (deleted.Count > 0)
             {
@@ -133,10 +131,10 @@ public static partial class PptxWriter
             }
         }
 
-        private bool AddTableStyles(List<OpcRelationship> rels)
+        private void AddTableStyles(List<OpcRelationship> rels)
         {
             if (rels.Any(r => r.Type == RelNs + "/tableStyles") ||
-                !presentation.SlideList.SelectMany(s => SlideShape.Flatten(s.Shapes)).Any(s => s is TableShape { Source: null })) return false;
+                !presentation.SlideList.SelectMany(s => SlideShape.Flatten(s.Shapes)).Any(s => s is TableShape { Source: null })) return;
             const string part = "/ppt/tableStyles.xml";
             if (_opc.Entry(part) == null)
             {
@@ -145,7 +143,6 @@ public static partial class PptxWriter
             }
 
             rels.Add(new OpcRelationship(NextId(rels), RelNs + "/tableStyles", Relative(package.PresentationPart, part), null));
-            return true;
         }
 
         private void WriteSlide(Slide slide, string partName, PptxSlidePart source)
@@ -161,6 +158,9 @@ public static partial class PptxWriter
                         : Retarget(r, source.PartName, partName)).ToList();
             if (source == null && (slide.Layout ?? presentation.LayoutList.FirstOrDefault())?.PartName is { } layout)
                 rels.Add(new OpcRelationship(NextId(rels), RelNs + "/slideLayout", Relative(partName, layout), null));
+            else if (slide.Layout?.PartName is { } layoutPart && rels.FindIndex(r => r.Type == RelNs + "/slideLayout" && r.TargetMode == null) is var index and >= 0
+                     && !string.Equals(_opc.ResolveTarget(partName, rels[index].Target), layoutPart, StringComparison.OrdinalIgnoreCase))
+                rels[index] = rels[index] with { Target = Relative(partName, layoutPart) };
             var root = xml.Root!;
             if (root.Element(P + "cSld")?.Element(P + "spTree") is { } tree)
             {
@@ -217,6 +217,17 @@ public static partial class PptxWriter
         {
             var xml = new XDocument(package.PresentationXml);
             var root = xml.Root!;
+            if (!presentation.SlideList.SequenceEqual(package.Slides.Select(s => s.Slide))) WriteSlideList(root, entries);
+            RemoveReferences(xml, rels, r => IsDead(package.PresentationPart, r));
+            WriteSections(root, entries);
+            if (((string)root.Attribute("showSpecialPlsOnTitleSld") is not ("0" or "false")) != presentation.ShowSpecialPlaceholdersOnTitleSlide)
+                root.SetAttributeValue("showSpecialPlsOnTitleSld", presentation.ShowSpecialPlaceholdersOnTitleSlide ? null : "0");
+            if (!XNode.DeepEquals(xml, package.PresentationXml)) Put(package.PresentationPart, xml);
+            if (!rels.SequenceEqual(_opc.Relationships(package.PresentationPart))) PutRelationships(package.PresentationPart, rels);
+        }
+
+        private static void WriteSlideList(XElement root, List<SlideEntry> entries)
+        {
             var list = root.Element(P + "sldIdLst");
             var originals = list?.Elements(P + "sldId").ToList() ?? [];
             var items = entries.Select(e => e.Kept && originals.Find(o => (string)o.Attribute(R + "id") == e.RelationshipId) is { } original
@@ -232,56 +243,45 @@ public static partial class PptxWriter
 
             list.ReplaceNodes(items);
             if (items.Count == 0) list.Remove();
-            RemoveReferences(xml, rels, r => IsDead(package.PresentationPart, r));
-            WriteSections(root, entries);
-            Put(package.PresentationPart, xml);
-            if (!rels.SequenceEqual(_opc.Relationships(package.PresentationPart))) PutRelationships(package.PresentationPart, rels);
         }
 
         private void WriteSections(XElement root, List<SlideEntry> entries)
         {
-            var sections = root.Descendants(P14 + "section").ToList();
-            if (sections.Count == 0) return;
-            var home = new Dictionary<uint, int>();
-            for (var i = 0; i < sections.Count; i++)
-                foreach (var id in sections[i].Descendants(P14 + "sldId"))
-                    home.TryAdd((uint)(Long((string)id.Attribute("id")) ?? 0), i);
-            var original = package.Slides.Select(s => s.SlideId).ToList();
-            var anchored = Anchored(entries.Select(e => e.Kept ? original.IndexOf(e.SlideId) : -1).ToList());
-            var members = sections.Select(_ => new List<uint>()).ToList();
-            var current = 0;
-            for (var i = 0; i < entries.Count; i++)
+            var extension = SectionExtension(root);
+            if (presentation.SectionList.Count == 0)
             {
-                if (anchored.Contains(i) && home.TryGetValue(entries[i].SlideId, out var section)) current = Math.Max(current, section);
-                members[current].Add(entries[i].SlideId);
+                if (extension?.Parent is not { } extensions) return;
+                extension.Remove();
+                if (!extensions.HasElements) extensions.Remove();
+                return;
             }
 
-            for (var i = 0; i < sections.Count; i++)
+            if (extension == null)
             {
-                var ids = sections[i].Element(P14 + "sldIdLst");
-                if (ids == null) sections[i].AddFirst(ids = new XElement(P14 + "sldIdLst"));
-                ids.ReplaceNodes(members[i].Select(id => new XElement(P14 + "sldId", new XAttribute("id", id))));
-            }
-        }
-
-        private static HashSet<int> Anchored(List<int> positions)
-        {
-            var length = new int[positions.Count];
-            var previous = new int[positions.Count];
-            var best = -1;
-            for (var i = 0; i < positions.Count; i++)
-            {
-                if (positions[i] < 0) continue;
-                (length[i], previous[i]) = (1, -1);
-                for (var j = 0; j < i; j++)
-                    if (positions[j] >= 0 && positions[j] < positions[i] && length[j] + 1 > length[i])
-                        (length[i], previous[i]) = (length[j] + 1, j);
-                if (best < 0 || length[i] > length[best]) best = i;
+                var extensions = root.Element(P + "extLst");
+                if (extensions == null) root.Add(extensions = new XElement(P + "extLst"));
+                extensions.AddFirst(extension = new XElement(P + "ext", new XAttribute("uri", SectionsUri)));
             }
 
-            var result = new HashSet<int>();
-            for (var i = best; i >= 0; i = previous[i]) result.Add(i);
-            return result;
+            var list = extension.Element(P14 + "sectionLst");
+            if (list == null) extension.Add(list = new XElement(P14 + "sectionLst", new XAttribute(XNamespace.Xmlns + "p14", P14.NamespaceName)));
+            var next = 0;
+            var sections = new List<XElement>();
+            foreach (var section in presentation.SectionList)
+            {
+                var element = section.Source != null ? new XElement(section.Source) : new XElement(P14 + "section");
+                element.SetAttributeValue("name", section.Name);
+                element.SetAttributeValue("id", section.Id);
+                var ids = entries.Skip(next).Take(section.Count).Select(e => (long?)e.SlideId).ToList();
+                next += section.Count;
+                var slideIds = element.Element(P14 + "sldIdLst");
+                if (slideIds == null) element.AddFirst(slideIds = new XElement(P14 + "sldIdLst"));
+                if (!slideIds.Elements(P14 + "sldId").Select(e => Long((string)e.Attribute("id"))).SequenceEqual(ids))
+                    slideIds.ReplaceNodes(ids.Select(id => new XElement(P14 + "sldId", new XAttribute("id", id!.Value))));
+                sections.Add(element);
+            }
+
+            if (!list.Elements(P14 + "section").SequenceEqual(sections, XNode.EqualityComparer)) list.ReplaceNodes(sections);
         }
 
         private void WriteAppProperties()

@@ -8,6 +8,8 @@ internal static class PptxReader
     internal static readonly XNamespace P = "http://schemas.openxmlformats.org/presentationml/2006/main";
     internal static readonly XNamespace A = "http://schemas.openxmlformats.org/drawingml/2006/main";
     internal static readonly XNamespace R = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+    internal static readonly XNamespace P14 = "http://schemas.microsoft.com/office/powerpoint/2010/main";
+    internal const string SectionsUri = "{521415D9-36F7-43E2-AB2F-B90AF26B5E84}";
 
     internal static Presentation Read(Stream stream)
     {
@@ -28,6 +30,7 @@ internal static class PptxReader
         presentation.SlideWidth = Long((string)size?.Attribute("cx")) ?? presentation.SlideWidth;
         presentation.SlideHeight = Long((string)size?.Attribute("cy")) ?? presentation.SlideHeight;
         presentation.FirstSlideNumber = (int?)Long((string)root.Attribute("firstSlideNum")) ?? 1;
+        presentation.ShowSpecialPlaceholdersOnTitleSlide = (string)root.Attribute("showSpecialPlsOnTitleSld") is not ("0" or "false");
 
         foreach (var id in Ids(root, "sldMasterIdLst"))
             if (Target(opc, main, rels, id) is { } part)
@@ -46,13 +49,37 @@ internal static class PptxReader
         {
             var relationshipId = (string)sldId.Attribute(R + "id");
             if (Target(opc, main, rels, relationshipId) is not { } part) continue;
-            var slidePart = ReadSlide(opc, part, relationshipId, (uint?)Long((string)sldId.Attribute("id")) ?? 0, presentation.LayoutList);
+            var slidePart = ReadSlide(opc, part, relationshipId, (uint?)Long((string)sldId.Attribute("id")) ?? 0, presentation);
             package.Slides.Add(slidePart);
             presentation.SlideList.Add(slidePart.Slide);
         }
 
         presentation.Package = package;
+        ReadSections(presentation, root, package);
         return presentation;
+    }
+
+    internal static XElement SectionExtension(XElement root) =>
+        root.Element(P + "extLst")?.Elements(P + "ext").FirstOrDefault(e => (string)e.Attribute("uri") == SectionsUri);
+
+    private static void ReadSections(Presentation presentation, XElement root, PptxPackage package)
+    {
+        var sections = SectionExtension(root)?.Element(P14 + "sectionLst")?.Elements(P14 + "section")
+            .Select(e => new PresentationSection(presentation, (string)e.Attribute("id") ?? PresentationSection.NewId(), (string)e.Attribute("name") ?? "") { Source = e })
+            .ToList() ?? [];
+        if (sections.Count == 0) return;
+        var home = new Dictionary<uint, int>();
+        for (var i = 0; i < sections.Count; i++)
+            foreach (var id in sections[i].Source.Descendants(P14 + "sldId"))
+                home.TryAdd((uint)(Long((string)id.Attribute("id")) ?? 0), i);
+        var current = 0;
+        foreach (var slide in package.Slides)
+        {
+            if (home.TryGetValue(slide.SlideId, out var section)) current = Math.Max(current, section);
+            sections[current].Count++;
+        }
+
+        presentation.SectionList.AddRange(sections);
     }
 
     internal static RunFormat ReadRunFormat(XElement properties)
@@ -111,14 +138,15 @@ internal static class PptxReader
         return master;
     }
 
-    private static PptxSlidePart ReadSlide(OpcPackage opc, string part, string relationshipId, uint slideId, List<SlideLayout> layouts)
+    private static PptxSlidePart ReadSlide(OpcPackage opc, string part, string relationshipId, uint slideId, Presentation presentation)
     {
         var xml = opc.ReadXml(part);
         var rels = opc.Relationships(part);
         var layoutPart = Related(opc, part, rels, "/slideLayout");
         var slide = new Slide
         {
-            Layout = layouts.Find(l => string.Equals(l.PartName, layoutPart, StringComparison.OrdinalIgnoreCase)),
+            Owner = presentation,
+            Layout = presentation.LayoutList.Find(l => string.Equals(l.PartName, layoutPart, StringComparison.OrdinalIgnoreCase)),
             Hidden = (string)xml.Root!.Attribute("show") is "0" or "false",
             ReservedId = SlideTiming.MaxTarget(xml.Root),
             ColorMap = ColorMapOverride(xml.Root)

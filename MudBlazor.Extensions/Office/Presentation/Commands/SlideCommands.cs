@@ -5,6 +5,8 @@ namespace MudBlazor.Extensions.Office.Presentation;
 /// <param name="layout">The layout.</param>
 public sealed class AddSlideCommand(int index, SlideLayout layout) : IDocumentCommand<Presentation>
 {
+    private SectionState _sections;
+
     /// <summary>The created slide, available after the command was applied.</summary>
     public Slide Slide { get; private set; }
 
@@ -16,8 +18,10 @@ public sealed class AddSlideCommand(int index, SlideLayout layout) : IDocumentCo
     {
         ArgumentNullException.ThrowIfNull(layout);
         if (index < 0 || index > document.SlideList.Count) throw new ArgumentOutOfRangeException(nameof(index));
-        Slide ??= Create();
+        Slide ??= Create(document);
+        _sections = new SectionState(document);
         document.SlideList.Insert(index, Slide);
+        _sections.Inserted(index, 1);
         document.Notify(Slide, PresentationChangeKind.SlidesAdded);
     }
 
@@ -25,19 +29,15 @@ public sealed class AddSlideCommand(int index, SlideLayout layout) : IDocumentCo
     public void Revert(Presentation document)
     {
         document.SlideList.Remove(Slide);
+        _sections.Restore();
         document.Notify(Slide, PresentationChangeKind.SlidesRemoved);
     }
 
-    private Slide Create()
+    private Slide Create(Presentation document)
     {
-        var slide = new Slide { Layout = layout };
+        var slide = new Slide { Layout = layout, Owner = document };
         var id = 2u;
-        foreach (var placeholder in layout.ShapeList.OfType<AutoShape>().Where(s => s.Placeholder is { Type: not ("dt" or "ftr" or "sldNum" or "hdr") }))
-            slide.ShapeList.Add(new AutoShape
-            {
-                Id = id++, Name = placeholder.Name, Placeholder = placeholder.Placeholder, InheritsFrom = placeholder, Master = layout.Master,
-                Geometry = placeholder.Geometry, Adjustments = placeholder.Adjustments, Text = new TextBody { Paragraphs = [new TextParagraph()] }
-            });
+        foreach (var placeholder in SlideEdit.ContentPlaceholders(layout)) slide.ShapeList.Add(SlideEdit.EmptyPlaceholder(placeholder, id++));
         return slide;
     }
 }
@@ -46,6 +46,8 @@ public sealed class AddSlideCommand(int index, SlideLayout layout) : IDocumentCo
 /// <param name="slides">The slides.</param>
 public sealed class DuplicateSlidesCommand(IReadOnlyList<Slide> slides) : IDocumentCommand<Presentation>
 {
+    private SectionState _sections;
+
     /// <summary>The copies in show order, available after the command was applied.</summary>
     public IReadOnlyList<Slide> Copies { get; private set; }
 
@@ -57,7 +59,10 @@ public sealed class DuplicateSlidesCommand(IReadOnlyList<Slide> slides) : IDocum
     {
         var ordered = SlideEdit.Ordered(document, slides);
         Copies ??= ordered.Select(Copy).ToList();
-        document.SlideList.InsertRange(document.SlideList.IndexOf(ordered[^1]) + 1, Copies);
+        var at = document.SlideList.IndexOf(ordered[^1]) + 1;
+        _sections = new SectionState(document);
+        document.SlideList.InsertRange(at, Copies);
+        _sections.Inserted(at, Copies.Count);
         foreach (var copy in Copies) document.Notify(copy, PresentationChangeKind.SlidesAdded);
     }
 
@@ -69,6 +74,8 @@ public sealed class DuplicateSlidesCommand(IReadOnlyList<Slide> slides) : IDocum
             document.SlideList.Remove(copy);
             document.Notify(copy, PresentationChangeKind.SlidesRemoved);
         }
+
+        _sections.Restore();
     }
 
     private static Slide Copy(Slide source)
@@ -76,7 +83,7 @@ public sealed class DuplicateSlidesCommand(IReadOnlyList<Slide> slides) : IDocum
         var copy = new Slide
         {
             Layout = source.Layout, Notes = source.Notes, HasNotesPart = source.HasNotesPart, Hidden = source.Hidden, CopyOf = source.CopyOf ?? source,
-            ReservedId = source.ReservedId, Background = source.Background, ShowMasterShapes = source.ShowMasterShapes, ColorMap = source.ColorMap
+            ReservedId = source.ReservedId, Owner = source.Owner, Background = source.Background, ShowMasterShapes = source.ShowMasterShapes, ColorMap = source.ColorMap
         };
         copy.ShapeList.AddRange(source.ShapeList.Select(s => s.Clone(null)));
         return copy;
@@ -88,6 +95,7 @@ public sealed class DuplicateSlidesCommand(IReadOnlyList<Slide> slides) : IDocum
 public sealed class DeleteSlidesCommand(IReadOnlyList<Slide> slides) : IDocumentCommand<Presentation>
 {
     private List<(int Index, Slide Slide)> _removed;
+    private SectionState _sections;
 
     /// <inheritdoc />
     public string Description => "Delete slide";
@@ -96,8 +104,10 @@ public sealed class DeleteSlidesCommand(IReadOnlyList<Slide> slides) : IDocument
     public void Apply(Presentation document)
     {
         _removed = SlideEdit.Ordered(document, slides).Select(s => (document.SlideList.IndexOf(s), s)).ToList();
+        _sections = new SectionState(document);
         for (var i = _removed.Count - 1; i >= 0; i--)
         {
+            _sections.Removing(_removed[i].Index);
             document.SlideList.RemoveAt(_removed[i].Index);
             document.Notify(_removed[i].Slide, PresentationChangeKind.SlidesRemoved);
         }
@@ -111,6 +121,8 @@ public sealed class DeleteSlidesCommand(IReadOnlyList<Slide> slides) : IDocument
             document.SlideList.Insert(index, slide);
             document.Notify(slide, PresentationChangeKind.SlidesAdded);
         }
+
+        _sections.Restore();
     }
 }
 
@@ -120,6 +132,7 @@ public sealed class DeleteSlidesCommand(IReadOnlyList<Slide> slides) : IDocument
 public sealed class MoveSlidesCommand(IReadOnlyList<Slide> slides, int targetIndex) : IDocumentCommand<Presentation>
 {
     private Slide[] _before;
+    private SectionState _sections;
 
     /// <inheritdoc />
     public string Description => "Move slide";
@@ -130,9 +143,17 @@ public sealed class MoveSlidesCommand(IReadOnlyList<Slide> slides, int targetInd
         var ordered = SlideEdit.Ordered(document, slides);
         if (targetIndex < 0 || targetIndex > document.SlideList.Count) throw new ArgumentOutOfRangeException(nameof(targetIndex));
         _before = document.SlideList.ToArray();
+        _sections = new SectionState(document);
         var at = targetIndex - ordered.Count(s => document.SlideList.IndexOf(s) < targetIndex);
-        document.SlideList.RemoveAll(ordered.Contains);
+        for (var i = ordered.Count - 1; i >= 0; i--)
+        {
+            var index = document.SlideList.IndexOf(ordered[i]);
+            _sections.Removing(index);
+            document.SlideList.RemoveAt(index);
+        }
+
         document.SlideList.InsertRange(at, ordered);
+        _sections.Inserted(at, ordered.Count);
         foreach (var slide in ordered) document.Notify(slide, PresentationChangeKind.SlideOrder);
     }
 
@@ -141,6 +162,7 @@ public sealed class MoveSlidesCommand(IReadOnlyList<Slide> slides, int targetInd
     {
         document.SlideList.Clear();
         document.SlideList.AddRange(_before);
+        _sections.Restore();
         foreach (var slide in slides) document.Notify(slide, PresentationChangeKind.SlideOrder);
     }
 }
@@ -213,4 +235,15 @@ internal static class SlideEdit
         if (slides.Any(s => !presentation.SlideList.Contains(s))) throw new ArgumentException("The slides must belong to the presentation.", nameof(slides));
         return slides.Distinct().OrderBy(presentation.SlideList.IndexOf).ToList();
     }
+
+    internal static IEnumerable<AutoShape> ContentPlaceholders(SlideLayout layout) =>
+        layout.ShapeList.OfType<AutoShape>().Where(s => s.Placeholder != null && !IsFooter(s.Placeholder));
+
+    internal static bool IsFooter(PlaceholderRef placeholder) => placeholder.Type is "dt" or "ftr" or "sldNum" or "hdr";
+
+    internal static AutoShape EmptyPlaceholder(AutoShape placeholder, uint id, TextBody text = null) => new()
+    {
+        Id = id, Name = placeholder.Name, Placeholder = placeholder.Placeholder, InheritsFrom = placeholder, Master = placeholder.Master,
+        Geometry = placeholder.Geometry, Adjustments = placeholder.Adjustments, Text = text ?? new TextBody { Paragraphs = [new TextParagraph()] }
+    };
 }

@@ -48,6 +48,7 @@ internal sealed class SlideXml(string part, string basis, List<OpcRelationship> 
         }
 
         RenewCreationId(e, shape);
+        WritePlaceholder(e, shape);
         switch (shape)
         {
             case AutoShape auto:
@@ -145,6 +146,14 @@ internal sealed class SlideXml(string part, string basis, List<OpcRelationship> 
             new XElement(P + "nvGrpSpPr", new XElement(P + "cNvPr"), new XElement(P + "cNvGrpSpPr"), new XElement(P + "nvPr")), new XElement(P + "grpSpPr")),
         _ => throw new NotSupportedException($"A {shape.GetType().Name} without source XML cannot be written.")
     };
+
+    private static void WritePlaceholder(XElement e, SlideShape shape)
+    {
+        if (shape.Placeholder is not { } placeholder || e.Elements().FirstOrDefault()?.Element(P + "nvPr")?.Element(P + "ph") is not { } ph
+            || new PlaceholderRef((string)ph.Attribute("type") ?? "obj", (uint?)Long((string)ph.Attribute("idx"))) == placeholder) return;
+        ph.SetAttributeValue("type", placeholder.Type == "obj" ? null : placeholder.Type);
+        ph.SetAttributeValue("idx", placeholder.Index?.ToString(CultureInfo.InvariantCulture));
+    }
 
     private static XElement NvPr(SlideShape shape) => new(P + "nvPr", shape.Placeholder is { } ph
         ? new XElement(P + "ph", ph.Type == "obj" ? null : new XAttribute("type", ph.Type), ph.Index is { } index ? new XAttribute("idx", index) : null)

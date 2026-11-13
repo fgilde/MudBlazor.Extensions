@@ -24,6 +24,9 @@ public sealed class Presentation
     /// <summary>The layouts of all masters.</summary>
     public IReadOnlyList<SlideLayout> Layouts => LayoutList;
 
+    /// <summary>The sections in show order; empty if the presentation has no sections. Every slide belongs to exactly one section when there are any.</summary>
+    public IReadOnlyList<PresentationSection> Sections => SectionList;
+
     /// <summary>The undo and redo history.</summary>
     public DocumentUndoStack<Presentation> Undo { get; }
 
@@ -38,6 +41,10 @@ public sealed class Presentation
     internal List<SlideMaster> MasterList { get; } = [];
 
     internal List<SlideLayout> LayoutList { get; } = [];
+
+    internal List<PresentationSection> SectionList { get; } = [];
+
+    internal bool ShowSpecialPlaceholdersOnTitleSlide { get; set; } = true;
 
     internal PptxPackage Package { get; set; }
 
@@ -67,6 +74,20 @@ public sealed class Presentation
         if (notifications == _notifications) return;
         Undo.Record(command);
         if (!Undo.InTransaction) RaiseChanged();
+    }
+
+    /// <summary>Gets the section a slide belongs to.</summary>
+    /// <param name="slide">The slide.</param>
+    /// <returns>The section, or null if the presentation has no sections or the slide is not part of it.</returns>
+    public PresentationSection SectionOf(Slide slide) => SlideList.IndexOf(slide) is var index and >= 0 ? SectionAt(index) : null;
+
+    internal PresentationSection SectionAt(int index)
+    {
+        var end = 0;
+        foreach (var section in SectionList)
+            if (index < (end += section.Count))
+                return section;
+        return null;
     }
 
     internal bool CanHaveNotes(Slide slide) => slide.HasNotesPart || Package?.NotesMasterPart != null;

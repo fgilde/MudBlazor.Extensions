@@ -207,7 +207,7 @@ internal sealed class ShapeReader(
                ?? candidates.Find(s => Category(s.Placeholder.Type) == Category(placeholder.Type));
     }
 
-    private static string Category(string type) => type switch
+    internal static string Category(string type) => type switch
     {
         "ctrTitle" => "title",
         "subTitle" or "obj" or "body" => "body",

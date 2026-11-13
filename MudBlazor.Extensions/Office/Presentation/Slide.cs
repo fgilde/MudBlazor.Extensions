@@ -50,4 +50,6 @@ public sealed class Slide
     internal Slide CopyOf { get; init; }
 
     internal uint ReservedId { get; init; }
+
+    internal Presentation Owner { get; init; }
 }

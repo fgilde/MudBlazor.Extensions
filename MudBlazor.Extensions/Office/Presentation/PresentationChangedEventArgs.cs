@@ -20,7 +20,10 @@ public enum PresentationChangeKind
     SlideOrder = 8,
 
     /// <summary>Speaker notes changed.</summary>
-    Notes = 16
+    Notes = 16,
+
+    /// <summary>Sections were added, removed, renamed or moved.</summary>
+    Sections = 32
 }
 
 /// <summary>Describes everything that changed during one command or transaction.</summary>

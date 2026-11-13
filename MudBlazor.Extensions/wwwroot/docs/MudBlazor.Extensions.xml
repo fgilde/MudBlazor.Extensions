@@ -31988,6 +31988,224 @@
         <member name="M:MudBlazor.Extensions.Office.Presentation.FlipShapesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions">
+            <summary>Date, slide number and footer of slides, as in the header and footer dialog.</summary>
+            <param name="ShowDate">True to show the date.</param>
+            <param name="AutomaticDate">True for a date field that shows the current date, false for <paramref name="FixedDate"/>.</param>
+            <param name="FixedDate">The fixed date text.</param>
+            <param name="ShowSlideNumber">True to show the slide number.</param>
+            <param name="ShowFooter">True to show the footer.</param>
+            <param name="FooterText">The footer text.</param>
+            <param name="HideOnTitleSlides">True to leave out slides with a title slide layout.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions.#ctor(System.Boolean,System.Boolean,System.String,System.Boolean,System.Boolean,System.String,System.Boolean)">
+            <summary>Date, slide number and footer of slides, as in the header and footer dialog.</summary>
+            <param name="ShowDate">True to show the date.</param>
+            <param name="AutomaticDate">True for a date field that shows the current date, false for <paramref name="FixedDate"/>.</param>
+            <param name="FixedDate">The fixed date text.</param>
+            <param name="ShowSlideNumber">True to show the slide number.</param>
+            <param name="ShowFooter">True to show the footer.</param>
+            <param name="FooterText">The footer text.</param>
+            <param name="HideOnTitleSlides">True to leave out slides with a title slide layout.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions.ShowDate">
+            <summary>True to show the date.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions.AutomaticDate">
+            <summary>True for a date field that shows the current date, false for <paramref name="FixedDate"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions.FixedDate">
+            <summary>The fixed date text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions.ShowSlideNumber">
+            <summary>True to show the slide number.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions.ShowFooter">
+            <summary>True to show the footer.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions.FooterText">
+            <summary>The footer text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions.HideOnTitleSlides">
+            <summary>True to leave out slides with a title slide layout.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions.From(MudBlazor.Extensions.Office.Presentation.Slide)">
+            <summary>Reads the current options of a slide.</summary>
+            <param name="slide">The slide.</param>
+            <returns>The options.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetHeaderFooterCommand">
+            <summary>
+            Adds or removes the date, slide number and footer placeholders of slides. They take their position from the layout; a part whose placeholder the layout
+            lacks is skipped.
+            </summary>
+            <param name="slides">The slides.</param>
+            <param name="options">The options.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetHeaderFooterCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide},MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions)">
+            <summary>
+            Adds or removes the date, slide number and footer placeholders of slides. They take their position from the layout; a part whose placeholder the layout
+            lacks is skipped.
+            </summary>
+            <param name="slides">The slides.</param>
+            <param name="options">The options.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetHeaderFooterCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetHeaderFooterCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetHeaderFooterCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetSlideLayoutCommand">
+            <summary>
+            Gives slides another layout. The placeholders of a slide are matched to those of the new layout by type, in order for the same type, and then take their
+            position from the layout. Missing placeholders are added empty. Placeholders without a match are removed when empty and otherwise keep their position.
+            </summary>
+            <param name="slides">The slides.</param>
+            <param name="layout">The new layout.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetSlideLayoutCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide},MudBlazor.Extensions.Office.Presentation.SlideLayout)">
+            <summary>
+            Gives slides another layout. The placeholders of a slide are matched to those of the new layout by type, in order for the same type, and then take their
+            position from the layout. Missing placeholders are added empty. Placeholders without a match are removed when empty and otherwise keep their position.
+            </summary>
+            <param name="slides">The slides.</param>
+            <param name="layout">The new layout.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetSlideLayoutCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetSlideLayoutCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetSlideLayoutCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ResetSlideCommand">
+            <summary>Resets the placeholders of slides to their layout: their own positions and text body settings are removed.</summary>
+            <param name="slides">The slides.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ResetSlideCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide})">
+            <summary>Resets the placeholders of slides to their layout: their own positions and text body settings are removed.</summary>
+            <param name="slides">The slides.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ResetSlideCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ResetSlideCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ResetSlideCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.AddSectionCommand">
+            <summary>
+            Starts a new section at a slide: the section that contains the slide is split before it. If the presentation has no sections yet and the slide is not the
+            first one, a default section is created for the slides before it.
+            </summary>
+            <param name="firstSlide">The first slide of the new section.</param>
+            <param name="name">The name of the new section.</param>
+            <param name="defaultSectionName">The name of the default section, if one is created.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AddSectionCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.String,System.String)">
+            <summary>
+            Starts a new section at a slide: the section that contains the slide is split before it. If the presentation has no sections yet and the slide is not the
+            first one, a default section is created for the slides before it.
+            </summary>
+            <param name="firstSlide">The first slide of the new section.</param>
+            <param name="name">The name of the new section.</param>
+            <param name="defaultSectionName">The name of the default section, if one is created.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AddSectionCommand.Section">
+            <summary>The created section, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AddSectionCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AddSectionCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AddSectionCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.RenameSectionCommand">
+            <summary>Renames a section.</summary>
+            <param name="section">The section.</param>
+            <param name="name">The new name.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RenameSectionCommand.#ctor(MudBlazor.Extensions.Office.Presentation.PresentationSection,System.String)">
+            <summary>Renames a section.</summary>
+            <param name="section">The section.</param>
+            <param name="name">The new name.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RenameSectionCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RenameSectionCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RenameSectionCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.RemoveSectionCommand">
+            <summary>
+            Removes a section. Its slides are deleted, or they join the previous section (the next one for the first section). Removing the last remaining section
+            removes the sections altogether.
+            </summary>
+            <param name="section">The section.</param>
+            <param name="removeSlides">True to delete the slides of the section as well.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RemoveSectionCommand.#ctor(MudBlazor.Extensions.Office.Presentation.PresentationSection,System.Boolean)">
+            <summary>
+            Removes a section. Its slides are deleted, or they join the previous section (the next one for the first section). Removing the last remaining section
+            removes the sections altogether.
+            </summary>
+            <param name="section">The section.</param>
+            <param name="removeSlides">True to delete the slides of the section as well.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RemoveSectionCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RemoveSectionCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RemoveSectionCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.RemoveAllSectionsCommand">
+            <summary>Removes all sections; the slides stay.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RemoveAllSectionsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RemoveAllSectionsCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RemoveAllSectionsCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.MoveSectionCommand">
+            <summary>Moves a section together with its slides.</summary>
+            <param name="section">The section.</param>
+            <param name="targetIndex">The position of the section after the move, from 0 to the section count minus one.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MoveSectionCommand.#ctor(MudBlazor.Extensions.Office.Presentation.PresentationSection,System.Int32)">
+            <summary>Moves a section together with its slides.</summary>
+            <param name="section">The section.</param>
+            <param name="targetIndex">The position of the section after the move, from 0 to the section count minus one.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.MoveSectionCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MoveSectionCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MoveSectionCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.ZOrderChange">
             <summary>A change of the z-order of shapes.</summary>
         </member>
@@ -32853,6 +33071,9 @@
         <member name="P:MudBlazor.Extensions.Office.Presentation.Presentation.Layouts">
             <summary>The layouts of all masters.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Presentation.Sections">
+            <summary>The sections in show order; empty if the presentation has no sections. Every slide belongs to exactly one section when there are any.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.Presentation.Undo">
             <summary>The undo and redo history.</summary>
         </member>
@@ -32879,6 +33100,11 @@
             <summary>Applies a command and records it as one undo step (or adds it to the open transaction). A command that changes nothing records nothing.</summary>
             <param name="command">The command.</param>
         </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.SectionOf(MudBlazor.Extensions.Office.Presentation.Slide)">
+            <summary>Gets the section a slide belongs to.</summary>
+            <param name="slide">The slide.</param>
+            <returns>The section, or null if the presentation has no sections or the slide is not part of it.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind">
             <summary>What changed in a presentation.</summary>
         </member>
@@ -32900,6 +33126,9 @@
         <member name="F:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind.Notes">
             <summary>Speaker notes changed.</summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind.Sections">
+            <summary>Sections were added, removed, renamed or moved.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PresentationChangedEventArgs">
             <summary>Describes everything that changed during one command or transaction.</summary>
         </member>
@@ -32908,6 +33137,21 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.PresentationChangedEventArgs.Kind">
             <summary>The kinds of change.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.PresentationSection">
+            <summary>A named section of a presentation: a run of consecutive slides.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.PresentationSection.DefaultName">
+            <summary>The name of the section PowerPoint creates before the first section when the deck had none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PresentationSection.Id">
+            <summary>The section id, a GUID in braces.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PresentationSection.Name">
+            <summary>The section name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PresentationSection.Slides">
+            <summary>The slides of the section in show order; empty for an empty section or a section that was removed.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.AutoShape">
             <summary>A preset geometry shape, text box, placeholder or connector, optionally with text.</summary>

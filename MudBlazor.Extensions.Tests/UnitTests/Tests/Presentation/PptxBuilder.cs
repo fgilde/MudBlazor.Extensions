@@ -13,7 +13,7 @@ internal sealed class PptxBuilder
 
     private const string RelNs = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
 
-    private readonly List<(string Shapes, string Attributes, string? Notes, string Rels, string Tail, string Background)> _slides = [];
+    private readonly List<(string Shapes, string Attributes, string? Notes, string Rels, string Tail, string Background, int Layout)> _slides = [];
 
     private readonly Dictionary<string, string> _theme = new()
     {
@@ -36,6 +36,8 @@ internal sealed class PptxBuilder
     public string PresentationExt { get; set; } = "";
 
     public string PresentationAttributes { get; set; } = "";
+
+    public List<(string Type, string Name, string Shapes)> ExtraLayouts { get; } = [];
 
     public bool NotesMaster { get; set; }
 
@@ -73,9 +75,9 @@ internal sealed class PptxBuilder
         return this;
     }
 
-    public PptxBuilder Slide(string shapes, string attributes = "", string? notes = null, string rels = "", string tail = "", string background = "")
+    public PptxBuilder Slide(string shapes, string attributes = "", string? notes = null, string rels = "", string tail = "", string background = "", int layout = 1)
     {
-        _slides.Add((shapes, attributes, notes, rels, tail, background));
+        _slides.Add((shapes, attributes, notes, rels, tail, background, layout));
         return this;
     }
 
@@ -143,20 +145,24 @@ internal sealed class PptxBuilder
             $"{ThemeFormat}</a:themeElements></a:theme>");
         Add("ppt/slideMasters/slideMaster1.xml", "officedocument.presentationml.slideMaster",
             $"<p:sldMaster {Ns}><p:cSld>{MasterBackground}<p:spTree>{TreeStart}{MasterShapes}</p:spTree></p:cSld><p:clrMap {ClrMap}/>" +
-            $"<p:sldLayoutIdLst><p:sldLayoutId id=\"2147483649\" r:id=\"rId1\"/></p:sldLayoutIdLst><p:txStyles>{TxStyles}</p:txStyles></p:sldMaster>");
+            $"<p:sldLayoutIdLst>{string.Concat(Enumerable.Range(0, ExtraLayouts.Count + 1).Select(i => $"<p:sldLayoutId id=\"{2147483649 + i}\" r:id=\"rId{i + 1}\"/>"))}</p:sldLayoutIdLst>" +
+            $"<p:txStyles>{TxStyles}</p:txStyles></p:sldMaster>");
         Add("ppt/slideMasters/_rels/slideMaster1.xml.rels", null,
-            Rels(("rId1", "slideLayout", "../slideLayouts/slideLayout1.xml"), ("rId2", "theme", "../theme/theme1.xml")));
+            Rels([.. Enumerable.Range(1, ExtraLayouts.Count + 1).Select(n => ($"rId{n}", "slideLayout", $"../slideLayouts/slideLayout{n}.xml")), ($"rId{ExtraLayouts.Count + 2}", "theme", "../theme/theme1.xml")]));
         Add("ppt/slideLayouts/slideLayout1.xml", "officedocument.presentationml.slideLayout",
             $"<p:sldLayout {Ns} type=\"obj\"{LayoutAttributes}><p:cSld name=\"Title and Content\">{LayoutBackground}<p:spTree>{TreeStart}{LayoutShapes}</p:spTree></p:cSld></p:sldLayout>");
-        Add("ppt/slideLayouts/_rels/slideLayout1.xml.rels", null, Rels(("rId1", "slideMaster", "../slideMasters/slideMaster1.xml")));
+        for (var i = 0; i < ExtraLayouts.Count; i++)
+            Add($"ppt/slideLayouts/slideLayout{i + 2}.xml", "officedocument.presentationml.slideLayout",
+                $"<p:sldLayout {Ns} type=\"{ExtraLayouts[i].Type}\"><p:cSld name=\"{ExtraLayouts[i].Name}\"><p:spTree>{TreeStart}{ExtraLayouts[i].Shapes}</p:spTree></p:cSld></p:sldLayout>");
+        for (var n = 1; n <= ExtraLayouts.Count + 1; n++) Add($"ppt/slideLayouts/_rels/slideLayout{n}.xml.rels", null, Rels(("rId1", "slideMaster", "../slideMasters/slideMaster1.xml")));
 
         for (var i = 0; i < _slides.Count; i++)
         {
-            var (shapes, attributes, notes, rels, tail, background) = _slides[i];
+            var (shapes, attributes, notes, rels, tail, background, layout) = _slides[i];
             var n = i + 1;
             Add($"ppt/slides/slide{n}.xml", "officedocument.presentationml.slide",
                 $"<p:sld {Ns} {attributes}><p:cSld>{background}<p:spTree>{TreeStart}{shapes}</p:spTree></p:cSld>{tail}</p:sld>");
-            var slideRels = new List<(string, string, string)> { ("rId1", "slideLayout", "../slideLayouts/slideLayout1.xml") };
+            var slideRels = new List<(string, string, string)> { ("rId1", "slideLayout", $"../slideLayouts/slideLayout{layout}.xml") };
             if (notes != null)
             {
                 slideRels.Add(("rId2", "notesSlide", $"../notesSlides/notesSlide{n}.xml"));
