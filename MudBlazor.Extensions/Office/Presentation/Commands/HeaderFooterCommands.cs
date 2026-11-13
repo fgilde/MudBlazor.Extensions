@@ -29,7 +29,7 @@ public sealed record HeaderFooterOptions(bool ShowDate, bool AutomaticDate, stri
 
 /// <summary>
 /// Adds or removes the date, slide number and footer placeholders of slides. They take their position from the layout; a part whose placeholder the layout
-/// lacks is skipped.
+/// lacks is not added.
 /// </summary>
 /// <param name="slides">The slides.</param>
 /// <param name="options">The options.</param>
@@ -73,13 +73,14 @@ public sealed class SetHeaderFooterCommand(IReadOnlyList<Slide> slides, HeaderFo
 
     private static void Set(Slide slide, string type, bool show, string text, string field)
     {
-        if (slide.Layout?.ShapeList.OfType<AutoShape>().FirstOrDefault(s => s.Placeholder?.Type == type) is not { } placeholder) return;
         var shape = HeaderFooter.Find(slide, type);
         if (!show)
         {
             slide.ShapeList.Remove(shape);
             return;
         }
+
+        if (slide.Layout?.ShapeList.OfType<AutoShape>().FirstOrDefault(s => s.Placeholder?.Type == type) is not { } placeholder) return;
 
         var runs = shape == null ? [] : HeaderFooter.Runs(shape).ToList();
         if (field == null ? shape != null && runs.All(r => r.FieldType == null) && HeaderFooter.Text(shape) == text : runs.Any(r => HeaderFooter.Kind(r.FieldType) == HeaderFooter.Kind(field)))

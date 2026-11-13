@@ -32096,7 +32096,7 @@
         <member name="T:MudBlazor.Extensions.Office.Presentation.SetHeaderFooterCommand">
             <summary>
             Adds or removes the date, slide number and footer placeholders of slides. They take their position from the layout; a part whose placeholder the layout
-            lacks is skipped.
+            lacks is not added.
             </summary>
             <param name="slides">The slides.</param>
             <param name="options">The options.</param>
@@ -32104,7 +32104,7 @@
         <member name="M:MudBlazor.Extensions.Office.Presentation.SetHeaderFooterCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide},MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions)">
             <summary>
             Adds or removes the date, slide number and footer placeholders of slides. They take their position from the layout; a part whose placeholder the layout
-            lacks is skipped.
+            lacks is not added.
             </summary>
             <param name="slides">The slides.</param>
             <param name="options">The options.</param>
@@ -32121,7 +32121,8 @@
         <member name="T:MudBlazor.Extensions.Office.Presentation.SetSlideLayoutCommand">
             <summary>
             Gives slides another layout. The placeholders of a slide are matched to those of the new layout by type, in order for the same type, and then take their
-            position from the layout. Missing placeholders are added empty. Placeholders without a match are removed when empty and otherwise keep their position.
+            position from the layout (tables, charts and pictures get it as their own position). Missing placeholders are added empty. Placeholders without a match are
+            removed when empty and otherwise keep their position.
             </summary>
             <param name="slides">The slides.</param>
             <param name="layout">The new layout.</param>
@@ -32129,7 +32130,8 @@
         <member name="M:MudBlazor.Extensions.Office.Presentation.SetSlideLayoutCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide},MudBlazor.Extensions.Office.Presentation.SlideLayout)">
             <summary>
             Gives slides another layout. The placeholders of a slide are matched to those of the new layout by type, in order for the same type, and then take their
-            position from the layout. Missing placeholders are added empty. Placeholders without a match are removed when empty and otherwise keep their position.
+            position from the layout (tables, charts and pictures get it as their own position). Missing placeholders are added empty. Placeholders without a match are
+            removed when empty and otherwise keep their position.
             </summary>
             <param name="slides">The slides.</param>
             <param name="layout">The new layout.</param>
@@ -32144,11 +32146,17 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.ResetSlideCommand">
-            <summary>Resets the placeholders of slides to their layout: their own positions and text body settings are removed.</summary>
+            <summary>
+            Resets the placeholders of slides to their layout: their own positions and text body settings are removed. Tables, charts and pictures get the layout
+            position as their own position.
+            </summary>
             <param name="slides">The slides.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.ResetSlideCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide})">
-            <summary>Resets the placeholders of slides to their layout: their own positions and text body settings are removed.</summary>
+            <summary>
+            Resets the placeholders of slides to their layout: their own positions and text body settings are removed. Tables, charts and pictures get the layout
+            position as their own position.
+            </summary>
             <param name="slides">The slides.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.ResetSlideCommand.Description">

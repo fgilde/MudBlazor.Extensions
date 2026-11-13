@@ -142,9 +142,12 @@ public sealed class MoveSlidesCommand(IReadOnlyList<Slide> slides, int targetInd
     {
         var ordered = SlideEdit.Ordered(document, slides);
         if (targetIndex < 0 || targetIndex > document.SlideList.Count) throw new ArgumentOutOfRangeException(nameof(targetIndex));
+        var at = targetIndex - ordered.Count(s => document.SlideList.IndexOf(s) < targetIndex);
+        var result = document.SlideList.Except(ordered).ToList();
+        result.InsertRange(at, ordered);
+        if (result.SequenceEqual(document.SlideList)) return;
         _before = document.SlideList.ToArray();
         _sections = new SectionState(document);
-        var at = targetIndex - ordered.Count(s => document.SlideList.IndexOf(s) < targetIndex);
         for (var i = ordered.Count - 1; i >= 0; i--)
         {
             var index = document.SlideList.IndexOf(ordered[i]);
@@ -238,6 +241,8 @@ internal static class SlideEdit
 
     internal static IEnumerable<AutoShape> ContentPlaceholders(SlideLayout layout) =>
         layout.ShapeList.OfType<AutoShape>().Where(s => s.Placeholder != null && !IsFooter(s.Placeholder));
+
+    internal static ShapeTransform? InheritedTransform(SlideShape shape) => shape is AutoShape ? null : shape.InheritsFrom?.ResolvedTransform ?? shape.Transform;
 
     internal static bool IsFooter(PlaceholderRef placeholder) => placeholder.Type is "dt" or "ftr" or "sldNum" or "hdr";
 

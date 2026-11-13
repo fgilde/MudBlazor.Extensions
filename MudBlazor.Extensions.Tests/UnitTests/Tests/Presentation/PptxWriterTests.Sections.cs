@@ -102,6 +102,39 @@ public partial class PptxWriterTests
     }
 
     [Fact]
+    public void Writer_LayoutChangeAndReset_KeepXfrmOfTablePlaceholder()
+    {
+        var table = TableTests.Table(3, "", [1000000, 1000000], TableTests.Tc("a") + TableTests.Tc("b")).Replace("<p:nvPr/>", "<p:nvPr><p:ph idx=\"1\"/></p:nvPr>");
+        PptxBuilder Builder() => LayoutCommandTests.Builder().Slide(PptxBuilder.Placeholder(2, "Title 1", "type=\"title\"", "", "<a:p/>") + table);
+        var presentation = Builder().Load();
+        var frame = presentation.Slides[0].Shapes[1];
+
+        presentation.Execute(new SetSlideLayoutCommand([presentation.Slides[0]], presentation.Layouts[1]));
+        var output = Save(presentation);
+
+        Assert.Equal(new ShapeTransform(1000000, 1800000, 3900000, 4000000), frame.Transform);
+        AssertConsistent(output);
+        Assert.Single(Xml(output, SlidePart).Descendants(P + "graphicFrame").Elements(P + "xfrm"));
+
+        var reset = Builder().Load();
+        reset.Execute(new ResetSlideCommand([reset.Slides[0]]));
+        var resetOutput = Save(reset);
+        Assert.Equal(new ShapeTransform(1000000, 1800000, 8000000, 4000000), reset.Slides[0].Shapes[1].Transform);
+        AssertConsistent(resetOutput);
+        Assert.Single(Xml(resetOutput, SlidePart).Descendants(P + "graphicFrame").Elements(P + "xfrm"));
+    }
+
+    [Fact]
+    public void Writer_EmptySectionList_Unmodified_KeepsPresentationXml()
+    {
+        var source = SectionTests.Builder(2, SectionTests.SectionList()).Build();
+
+        var output = Save(Load(source));
+
+        Assert.Equal(Parts(source)["/ppt/presentation.xml"], Parts(output)["/ppt/presentation.xml"]);
+    }
+
+    [Fact]
     public void Writer_SetLayout_ChangesLayoutRelationship()
     {
         var presentation = LayoutCommandTests.Builder()

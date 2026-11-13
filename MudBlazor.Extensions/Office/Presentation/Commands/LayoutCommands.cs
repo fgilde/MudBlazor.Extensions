@@ -2,7 +2,8 @@ namespace MudBlazor.Extensions.Office.Presentation;
 
 /// <summary>
 /// Gives slides another layout. The placeholders of a slide are matched to those of the new layout by type, in order for the same type, and then take their
-/// position from the layout. Missing placeholders are added empty. Placeholders without a match are removed when empty and otherwise keep their position.
+/// position from the layout (tables, charts and pictures get it as their own position). Missing placeholders are added empty. Placeholders without a match are
+/// removed when empty and otherwise keep their position.
 /// </summary>
 /// <param name="slides">The slides.</param>
 /// <param name="layout">The new layout.</param>
@@ -42,7 +43,7 @@ public sealed class SetSlideLayoutCommand(IReadOnlyList<Slide> slides, SlideLayo
             {
                 shape.Placeholder = target.Placeholder;
                 shape.InheritsFrom = target;
-                shape.Transform = null;
+                shape.Transform = SlideEdit.InheritedTransform(shape);
             }
             else if (IsEmpty(shape)) slide.ShapeList.Remove(shape);
             else shape.Transform = shape.ResolvedTransform;
@@ -56,10 +57,14 @@ public sealed class SetSlideLayoutCommand(IReadOnlyList<Slide> slides, SlideLayo
     }
 
     private static bool IsEmpty(SlideShape shape) =>
-        shape is AutoShape auto && string.IsNullOrWhiteSpace(string.Concat(auto.Text?.Paragraphs.SelectMany(p => p.Runs).Select(r => r.Text) ?? []));
+        shape is AutoShape auto && string.IsNullOrWhiteSpace(string.Concat(auto.Text?.Paragraphs.SelectMany(p => p.Runs)
+            .Where(r => r.FieldType == null || !SlideEdit.IsFooter(shape.Placeholder)).Select(r => r.Text) ?? []));
 }
 
-/// <summary>Resets the placeholders of slides to their layout: their own positions and text body settings are removed.</summary>
+/// <summary>
+/// Resets the placeholders of slides to their layout: their own positions and text body settings are removed. Tables, charts and pictures get the layout
+/// position as their own position.
+/// </summary>
 /// <param name="slides">The slides.</param>
 public sealed class ResetSlideCommand(IReadOnlyList<Slide> slides) : IDocumentCommand<Presentation>
 {
@@ -78,7 +83,7 @@ public sealed class ResetSlideCommand(IReadOnlyList<Slide> slides) : IDocumentCo
     {
         foreach (var shape in slide.ShapeList.Where(s => s.Placeholder != null && s.InheritsFrom != null))
         {
-            shape.Transform = null;
+            shape.Transform = SlideEdit.InheritedTransform(shape);
             if (shape is not AutoShape { Text: { } text } auto) continue;
             var reset = text with { Anchor = null, InsetLeft = null, InsetTop = null, InsetRight = null, InsetBottom = null, Wrap = null };
             if (reset != text) auto.Text = reset;

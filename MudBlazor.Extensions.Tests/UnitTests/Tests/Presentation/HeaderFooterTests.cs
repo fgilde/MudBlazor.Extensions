@@ -134,6 +134,20 @@ public class HeaderFooterTests
     }
 
     [Fact]
+    public void LayoutChange_DropsFieldOnlyFooters_HeaderFooterRemovesOrphanedFooter()
+    {
+        var presentation = Builder().Load();
+        var slide = presentation.Slides[0];
+        presentation.Execute(new SetHeaderFooterCommand([slide], All));
+
+        presentation.Execute(new SetSlideLayoutCommand([slide], presentation.Layouts[2]));
+        Assert.Equal(["Title 1", "Footer Placeholder 10"], slide.Shapes.Select(s => s.Name));
+
+        presentation.Execute(new SetHeaderFooterCommand([slide], All with { ShowFooter = false }));
+        Assert.Equal(["Title 1"], slide.Shapes.Select(s => s.Name));
+    }
+
+    [Fact]
     public void HeaderFooter_SameOptions_RecordsNoUndoStep()
     {
         var presentation = Builder().Load();

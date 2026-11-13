@@ -184,23 +184,24 @@ public sealed class MoveSectionCommand(PresentationSection section, int targetIn
         sections.Insert(targetIndex, section);
         document.SlideList.Clear();
         document.SlideList.AddRange(sections.SelectMany(s => members[s]));
-        Notify(document);
+        Notify(document, _slides);
     }
 
     /// <inheritdoc />
     public void Revert(Presentation document)
     {
+        var moved = document.SlideList.ToArray();
         document.SlideList.Clear();
         document.SlideList.AddRange(_slides);
         _before.Restore();
-        Notify(document);
+        Notify(document, moved);
     }
 
-    private void Notify(Presentation document)
+    private static void Notify(Presentation document, Slide[] previous)
     {
-        for (var i = 0; i < _slides.Length; i++)
-            if (_slides[i] != document.SlideList[i])
-                document.Notify(_slides[i], PresentationChangeKind.SlideOrder);
+        for (var i = 0; i < previous.Length; i++)
+            if (previous[i] != document.SlideList[i])
+                document.Notify(previous[i], PresentationChangeKind.SlideOrder);
         document.Notify(null, PresentationChangeKind.Sections);
     }
 }
@@ -217,6 +218,7 @@ internal sealed class SectionState(Presentation presentation)
 
     internal void Restore()
     {
+        if (_sections.Length > 0 || presentation.SectionList.Count > 0) presentation.Notify(null, PresentationChangeKind.Sections);
         presentation.SectionList.Clear();
         foreach (var (section, count) in _sections)
         {
@@ -227,11 +229,15 @@ internal sealed class SectionState(Presentation presentation)
 
     internal void Inserted(int index, int count)
     {
-        if (presentation.SectionList.Count > 0) (index == 0 ? presentation.SectionList[0] : presentation.SectionAt(index - 1)).Count += count;
+        if (presentation.SectionList.Count == 0) return;
+        (index == 0 ? presentation.SectionList[0] : presentation.SectionAt(index - 1)).Count += count;
+        presentation.Notify(null, PresentationChangeKind.Sections);
     }
 
     internal void Removing(int index)
     {
-        if (presentation.SectionAt(index) is { } section) section.Count--;
+        if (presentation.SectionAt(index) is not { } section) return;
+        section.Count--;
+        presentation.Notify(null, PresentationChangeKind.Sections);
     }
 }

@@ -198,6 +198,56 @@ public class SectionTests
     }
 
     [Fact]
+    public void MoveSection_UndoRedo_RaiseSlideOrder()
+    {
+        var presentation = Deck();
+        var changes = new List<PresentationChangedEventArgs>();
+        presentation.Changed += (_, e) => changes.Add(e);
+
+        presentation.Execute(new MoveSectionCommand(presentation.Sections[0], 2));
+        presentation.Undo.Undo();
+        presentation.Undo.Redo();
+
+        Assert.Equal(3, changes.Count);
+        Assert.All(changes, c =>
+        {
+            Assert.True(c.Kind.HasFlag(PresentationChangeKind.SlideOrder));
+            Assert.True(c.Kind.HasFlag(PresentationChangeKind.Sections));
+            Assert.Equal(5, c.Slides.Count);
+        });
+    }
+
+    [Fact]
+    public void MoveSlide_ToSamePlace_IsNoOp()
+    {
+        var presentation = Deck();
+        var before = SlideCommandTests.Snapshot(presentation);
+
+        presentation.Execute(new MoveSlidesCommand([presentation.Slides[2]], 2));
+        presentation.Execute(new MoveSlidesCommand([presentation.Slides[2]], 3));
+        presentation.Execute(new MoveSlidesCommand([presentation.Slides[2], presentation.Slides[3]], 4));
+
+        Assert.Equal(before, SlideCommandTests.Snapshot(presentation));
+        Assert.False(presentation.Undo.CanUndo);
+    }
+
+    [Fact]
+    public void SlideCommands_ChangingSectionMembership_RaiseSections()
+    {
+        var presentation = Deck();
+        var plain = Plain();
+        var kinds = new List<PresentationChangeKind>();
+        presentation.Changed += (_, e) => kinds.Add(e.Kind);
+        plain.Changed += (_, e) => kinds.Add(e.Kind);
+
+        presentation.Execute(new AddSlideCommand(2, presentation.Layouts[0]));
+        presentation.Undo.Undo();
+        plain.Execute(new AddSlideCommand(2, plain.Layouts[0]));
+
+        Assert.Equal([true, true, false], kinds.Select(k => k.HasFlag(PresentationChangeKind.Sections)));
+    }
+
+    [Fact]
     public void NoOpSectionCommands_RecordNoUndoStep()
     {
         var presentation = Deck();

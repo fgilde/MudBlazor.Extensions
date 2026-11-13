@@ -261,7 +261,7 @@ public static partial class PptxWriter
             var extension = SectionExtension(root);
             if (presentation.SectionList.Count == 0)
             {
-                if (extension?.Parent is not { } extensions) return;
+                if (extension?.Parent is not { } extensions || !extension.Descendants(P14 + "section").Any()) return;
                 extension.Remove();
                 if (!extensions.HasElements) extensions.Remove();
                 return;
