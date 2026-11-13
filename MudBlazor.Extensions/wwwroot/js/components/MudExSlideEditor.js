@@ -8,6 +8,18 @@ const SHORTCUT_TARGETS = '.mud-ex-slide-canvas, .mud-ex-slide-panel';
 const SHORTCUTS = 'fhmyz';
 const OWN_PASTE = 'input, textarea, [contenteditable], .mud-ex-slide-text-editor';
 const RASTER = ['image/png', 'image/jpeg', 'image/gif', 'image/bmp', 'image/webp'];
+const CLIP = /data-mudex-clip="([0-9a-f]{32})"/;
+
+function clipOf(html) {
+    return CLIP.exec(html ?? '')?.[1] ?? null;
+}
+
+function clipHtml(text, clip) {
+    const root = document.createElement('div');
+    root.setAttribute('data-mudex-clip', clip);
+    text.split(/\r?\n/).forEach(line => root.appendChild(document.createElement('div')).textContent = line);
+    return root.outerHTML;
+}
 
 class MudExSlideEditor {
     constructor(root, dotnet) {
@@ -93,12 +105,13 @@ class MudExSlideEditor {
         }
         e.preventDefault();
         const data = e.clipboardData;
-        this.paste(data ? data.getData('text/plain') : null, [...(data?.files ?? [])].find(f => f.type.startsWith('image/')));
+        this.paste(data ? data.getData('text/plain') : null, [...(data?.files ?? [])].find(f => f.type.startsWith('image/')), clipOf(data?.getData('text/html')));
     }
 
     async readClipboard() {
         let text = null;
         let image = null;
+        let clip = null;
         try {
             for (const item of await navigator.clipboard.read()) {
                 const type = item.types.find(t => t.startsWith('image/'));
@@ -108,6 +121,9 @@ class MudExSlideEditor {
                 if (text === null && item.types.includes('text/plain')) {
                     text = await (await item.getType('text/plain')).text();
                 }
+                if (clip === null && item.types.includes('text/html')) {
+                    clip = clipOf(await (await item.getType('text/html')).text());
+                }
             }
         } catch {
             try {
@@ -116,29 +132,45 @@ class MudExSlideEditor {
                 text = null;
             }
         }
-        this.paste(text, image);
+        this.paste(text, image, clip);
     }
 
-    paste(text, image) {
+    paste(text, image, clip) {
         const stream = blob => blob ? DotNet.createJSStreamReference(blob) : null;
-        this.dotnet?.invokeMethodAsync('OnPasteAsync', stream(text === null ? null : new Blob([text])), stream(image), image?.type ?? null).catch(() => {});
+        this.dotnet?.invokeMethodAsync('OnPasteAsync', stream(text === null ? null : new Blob([text])), stream(image), image?.type ?? null, clip).catch(() => {});
     }
 
-    async writeClipboard(text) {
+    async writeClipboard(text, clip) {
+        const html = clipHtml(text, clip);
+        try {
+            await navigator.clipboard.write([new ClipboardItem({
+                'text/plain': new Blob([text], { type: 'text/plain' }),
+                'text/html': new Blob([html], { type: 'text/html' })
+            })]);
+            return true;
+        } catch {
+        }
+        let written = false;
+        const copy = e => {
+            e.clipboardData.setData('text/plain', text);
+            e.clipboardData.setData('text/html', html);
+            e.preventDefault();
+            written = true;
+        };
+        document.addEventListener('copy', copy, true);
+        try {
+            document.execCommand('copy');
+        } catch {
+        }
+        document.removeEventListener('copy', copy, true);
+        if (written) {
+            return true;
+        }
         try {
             await navigator.clipboard.writeText(text);
         } catch {
-            const copy = e => {
-                e.clipboardData.setData('text/plain', text);
-                e.preventDefault();
-            };
-            document.addEventListener('copy', copy, true);
-            try {
-                document.execCommand('copy');
-            } catch {
-            }
-            document.removeEventListener('copy', copy, true);
         }
+        return false;
     }
 
     reveal(key) {

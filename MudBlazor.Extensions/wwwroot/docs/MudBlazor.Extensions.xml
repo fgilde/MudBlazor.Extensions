@@ -19748,14 +19748,15 @@
             Opens pptx files and is the editor for them in <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/>. Without a file it edits the <see cref="P:MudBlazor.Extensions.Components.MudExSlideEditor.Presentation"/> parameter.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.OnPasteAsync(Microsoft.JSInterop.IJSStreamReference,Microsoft.JSInterop.IJSStreamReference,System.String)">
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.OnPasteAsync(Microsoft.JSInterop.IJSStreamReference,Microsoft.JSInterop.IJSStreamReference,System.String,System.String)">
             <summary>
             Called by the browser on paste with the clipboard content. Shapes or slides copied in this editor are pasted as such while the clipboard
-            still holds their text; otherwise an image becomes a picture and text a text box.
+            still holds their marker (or, where the browser could not write one, their text); otherwise an image becomes a picture and text a text box.
             </summary>
             <param name="text">The <c>text/plain</c> part as UTF-8, or null if the browser could not read it.</param>
             <param name="image">The first image of the clipboard, or null.</param>
             <param name="contentType">The content type of <paramref name="image"/>.</param>
+            <param name="clip">The marker found in the <c>text/html</c> part, or null.</param>
             <returns>A task that completes when the content is inserted.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideEditor.#ctor">

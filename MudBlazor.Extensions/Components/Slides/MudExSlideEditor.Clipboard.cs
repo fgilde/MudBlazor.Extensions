@@ -13,14 +13,15 @@ public partial class MudExSlideEditor
 
     /// <summary>
     /// Called by the browser on paste with the clipboard content. Shapes or slides copied in this editor are pasted as such while the clipboard
-    /// still holds their text; otherwise an image becomes a picture and text a text box.
+    /// still holds their marker (or, where the browser could not write one, their text); otherwise an image becomes a picture and text a text box.
     /// </summary>
     /// <param name="text">The <c>text/plain</c> part as UTF-8, or null if the browser could not read it.</param>
     /// <param name="image">The first image of the clipboard, or null.</param>
     /// <param name="contentType">The content type of <paramref name="image"/>.</param>
+    /// <param name="clip">The marker found in the <c>text/html</c> part, or null.</param>
     /// <returns>A task that completes when the content is inserted.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public async Task OnPasteAsync(IJSStreamReference text, IJSStreamReference image, string contentType)
+    public async Task OnPasteAsync(IJSStreamReference text, IJSStreamReference image, string contentType, string clip)
     {
         string plain;
         byte[] bytes;
@@ -35,16 +36,16 @@ public partial class MudExSlideEditor
             return;
         }
 
-        await InvokeAsync(() => PasteAsync(plain, bytes, contentType));
+        await InvokeAsync(() => PasteAsync(plain, bytes, contentType, clip));
     }
 
-    internal async Task PasteAsync(string text, byte[] image, string contentType)
+    internal async Task PasteAsync(string text, byte[] image, string contentType, string marker = null)
     {
         if (IsReadOnly)
             return;
         if (_canvas != null)
             await _canvas.CommitTextAsync();
-        if (_clipboard is { } clip && image == null && (text == null || Normalize(text) == clip.Text))
+        if (_clipboard is { } clip && image == null && (marker != null ? marker == clip.Id : text == null || !clip.Marked && Normalize(text) == clip.Text))
             await PasteClipAsync(clip);
         else if (image != null)
             await InsertPictureAsync(image, contentType);
@@ -80,19 +81,21 @@ public partial class MudExSlideEditor
         var selected = SelectedShapes.ToList();
         var copies = ShapeEdit.Outermost(slide, selected).Select(s => ShapeEdit.Detach(_presentation, slide, s)).ToList();
         var text = PlainText(copies);
-        _clipboard = new Clip(slide, copies, null, Normalize(text)) { Pastes = cut ? -1 : 0 };
+        var clip = _clipboard = new Clip(slide, copies, null, Normalize(text)) { Pastes = cut ? -1 : 0 };
         if (cut)
             await RunAsync(() => _presentation.Execute(new DeleteShapesCommand(slide, selected)));
-        await WriteClipboardAsync(text);
+        clip.Marked = await WriteClipboardAsync(text, clip.Id);
     }
 
-    private Task CopySlidesAsync()
+    private async Task CopySlidesAsync()
     {
         if (_selection.Count == 0)
-            return Task.CompletedTask;
+            return;
+        if (_canvas != null)
+            await _canvas.CommitTextAsync();
         var text = PlainText(_selection.SelectMany(s => s.Shapes));
-        _clipboard = new Clip(null, null, _selection.ToList(), Normalize(text));
-        return WriteClipboardAsync(text);
+        var clip = _clipboard = new Clip(null, null, _selection.Select(DuplicateSlidesCommand.Snapshot).ToList(), Normalize(text));
+        clip.Marked = await WriteClipboardAsync(text, clip.Id);
     }
 
     private async Task PasteClipAsync(Clip clip)
@@ -129,19 +132,12 @@ public partial class MudExSlideEditor
             await _canvas.SelectAsync(slide, ids);
     }
 
-    private Task PasteSlidesAsync(IReadOnlyList<Slide> slides) => RunAsync(() =>
+    private Task PasteSlidesAsync(IReadOnlyList<Slide> snapshots) => RunAsync(() =>
     {
-        var sources = slides.Where(_presentation.SlideList.Contains).ToList();
-        if (sources.Count == 0)
-            return;
-        var duplicate = new DuplicateSlidesCommand(sources);
+        var paste = new DuplicateSlidesCommand(snapshots, _current == null ? _presentation.Slides.Count : IndexOf(_current) + 1);
         using (_presentation.Undo.BeginTransaction("Paste"))
-        {
-            _presentation.Execute(duplicate);
-            _presentation.Execute(new MoveSlidesCommand(duplicate.Copies, _current == null ? _presentation.Slides.Count : IndexOf(_current) + 1));
-        }
-
-        Show(duplicate.Copies[0], duplicate.Copies);
+            _presentation.Execute(paste);
+        Show(paste.Copies[0], paste.Copies);
     });
 
     private async Task PasteTextAsync(string text)
@@ -163,12 +159,12 @@ public partial class MudExSlideEditor
             await _canvas.SelectAsync(slide, [shape.Id]);
     }
 
-    private async Task WriteClipboardAsync(string text)
+    private async Task<bool> WriteClipboardAsync(string text, string marker)
     {
         if (_js == null)
-            return;
-        try { await _js.InvokeVoidAsync("writeClipboard", text); }
-        catch (Exception e) when (e is JSException or JSDisconnectedException) { }
+            return false;
+        try { return await _js.InvokeAsync<bool>("writeClipboard", text, marker); }
+        catch (Exception e) when (e is JSException or JSDisconnectedException) { return false; }
     }
 
     private static async Task<byte[]> ReadAsync(IJSStreamReference data)
@@ -202,6 +198,10 @@ public partial class MudExSlideEditor
         public IReadOnlyList<Slide> Slides { get; } = slides;
 
         public string Text { get; } = text;
+
+        public string Id { get; } = Guid.NewGuid().ToString("N");
+
+        public bool Marked { get; set; }
 
         public int Pastes { get; set; }
     }

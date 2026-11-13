@@ -288,6 +288,80 @@ public class SlideEditorFeaturesTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task Paste_ForeignTextEqualToOurs_PastesText()
+    {
+        _context.JSInterop.Setup<bool>("writeClipboard", _ => true).SetResult(true);
+        var presentation = Deck();
+        var cut = RenderEditor(presentation);
+        var slide = presentation.Slides[0];
+        await cut.InvokeAsync(() => Canvas(cut).SelectAsync([3]));
+        await Key(cut, "c", ctrl: true);
+        var copy = _context.JSInterop.Invocations.Last(i => i.Identifier == "writeClipboard");
+        Assert.Equal("box text", copy.Arguments[0]);
+        var marker = Assert.IsType<string>(copy.Arguments[1]);
+        Assert.Matches("^[0-9a-f]{32}$", marker);
+
+        await cut.InvokeAsync(() => cut.Instance.PasteAsync("box text", null, null, null));
+        var text = Assert.IsType<AutoShape>(slide.Shapes[^1]);
+        Assert.True(text.IsTextBox);
+        Assert.Equal("box text", Text(text));
+
+        await cut.InvokeAsync(() => cut.Instance.PasteAsync("box text", null, null, "0123456789abcdef0123456789abcdef"));
+        Assert.True(((AutoShape)slide.Shapes[^1]).IsTextBox);
+        Assert.NotSame(text, slide.Shapes[^1]);
+
+        await cut.InvokeAsync(() => cut.Instance.PasteAsync("something else", null, null, marker));
+        var shape = Assert.IsType<AutoShape>(slide.Shapes[^1]);
+        Assert.False(shape.IsTextBox);
+        Assert.Equal("box text", Text(shape));
+        Assert.Equal(ShapeFillKind.Solid, shape.Fill.Kind);
+
+        var count = slide.Shapes.Count;
+        await cut.InvokeAsync(() => cut.Instance.PasteAsync(null, null, null, null));
+        Assert.Equal(count + 1, slide.Shapes.Count);
+        Assert.False(((AutoShape)slide.Shapes[^1]).IsTextBox);
+    }
+
+    [Fact]
+    public async Task PasteSlides_UsesCopyTimeSnapshot()
+    {
+        var presentation = Deck();
+        var cut = RenderEditor(presentation);
+        var source = presentation.Slides[0];
+        var title = (AutoShape)source.Shapes[0];
+        var before = Text(title);
+
+        await Key(cut, "c", ctrl: true, target: ".mud-ex-slide-panel");
+        await cut.InvokeAsync(() => presentation.Execute(new SetTextCommand(source, title.Id, TableTests.Body("changed later"))));
+        await cut.InvokeAsync(() => presentation.Execute(new SetNotesCommand(source, "new notes")));
+        await cut.InvokeAsync(() => cut.FindAll(".mud-ex-slide-panel-item")[2].Click());
+        await cut.InvokeAsync(() => cut.Instance.PasteAsync(null, null, null, null));
+
+        var pasted = presentation.Slides[3];
+        Assert.Same(pasted, cut.Instance.CurrentSlide);
+        Assert.Equal(before, Text(pasted.Shapes[0]));
+        Assert.Equal("an apple a day", pasted.Notes);
+        Assert.Equal("changed later", Text(title));
+        Assert.Equal("Paste", presentation.Undo.UndoDescription);
+
+        await cut.InvokeAsync(() => presentation.Execute(new DeleteSlidesCommand([source])));
+        await cut.InvokeAsync(() => cut.Instance.PasteAsync(null, null, null, null));
+        var again = cut.Instance.CurrentSlide;
+        Assert.NotSame(pasted, again);
+        Assert.NotSame(pasted.Shapes[0], again.Shapes[0]);
+        Assert.Equal(before, Text(again.Shapes[0]));
+        Assert.Equal(4, presentation.Slides.Count);
+
+        var output = PptxWriterTests.Save(presentation);
+        PptxWriterTests.AssertConsistent(output);
+        var reloaded = Presentation.Load(new MemoryStream(output));
+        Assert.Equal([before, before], reloaded.Slides.Where(s => s.Shapes.Count == 2).Select(s => Text(s.Shapes[0])).Take(2));
+
+        await cut.InvokeAsync(() => presentation.Undo.Undo());
+        Assert.Equal(3, presentation.Slides.Count);
+    }
+
+    [Fact]
     public async Task Paste_TitleOntoSlideWithTitle_BecomesTextBox()
     {
         const string layoutTitle = "<p:sp><p:nvSpPr><p:cNvPr id=\"2\" name=\"Title 1\"/><p:cNvSpPr/><p:nvPr><p:ph type=\"title\"/></p:nvPr></p:nvSpPr>" +

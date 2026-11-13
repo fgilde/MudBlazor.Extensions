@@ -46,7 +46,10 @@ public sealed class AddSlideCommand(int index, SlideLayout layout) : IDocumentCo
 /// <param name="slides">The slides.</param>
 public sealed class DuplicateSlidesCommand(IReadOnlyList<Slide> slides) : IDocumentCommand<Presentation>
 {
+    private readonly int? _index;
     private SectionState _sections;
+
+    internal DuplicateSlidesCommand(IReadOnlyList<Slide> snapshots, int index) : this(snapshots) => _index = index;
 
     /// <summary>The copies in show order, available after the command was applied.</summary>
     public IReadOnlyList<Slide> Copies { get; private set; }
@@ -57,9 +60,9 @@ public sealed class DuplicateSlidesCommand(IReadOnlyList<Slide> slides) : IDocum
     /// <inheritdoc />
     public void Apply(Presentation document)
     {
-        var ordered = SlideEdit.Ordered(document, slides);
+        var ordered = _index == null ? SlideEdit.Ordered(document, slides) : slides;
         Copies ??= ordered.Select(Copy).ToList();
-        var at = document.SlideList.IndexOf(ordered[^1]) + 1;
+        var at = _index is { } index ? Math.Clamp(index, 0, document.SlideList.Count) : document.SlideList.IndexOf(ordered[^1]) + 1;
         _sections = new SectionState(document);
         document.SlideList.InsertRange(at, Copies);
         _sections.Inserted(at, Copies.Count);
@@ -77,6 +80,8 @@ public sealed class DuplicateSlidesCommand(IReadOnlyList<Slide> slides) : IDocum
 
         _sections.Restore();
     }
+
+    internal static Slide Snapshot(Slide source) => Copy(source);
 
     private static Slide Copy(Slide source)
     {
