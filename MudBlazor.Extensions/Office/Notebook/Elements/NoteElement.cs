@@ -51,5 +51,10 @@ public abstract class NoteElement
     /// <summary>The element's rectangle.</summary>
     public NoteBounds Bounds => new(X, Y, Width, Height);
 
+    /// <summary>The <see cref="NotebookPage.Version"/> of the last change of this element, 0 if it is unchanged since loading; use it with the id as render key.</summary>
+    public int Version { get; internal set; }
+
     internal Dictionary<string, JsonElement> Extra { get; set; }
+
+    internal NoteElement Clone() => (NoteElement)MemberwiseClone();
 }

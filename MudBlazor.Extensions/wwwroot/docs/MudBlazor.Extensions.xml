@@ -32134,6 +32134,676 @@
             <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
             <returns>The free part name.</returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.AddElementCommand">
+            <summary>Adds an element on top of the others.</summary>
+            <param name="page">The page.</param>
+            <param name="element">A new element whose id is not used on the page yet.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddElementCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,MudBlazor.Extensions.Office.Notebook.NoteElement)">
+            <summary>Adds an element on top of the others.</summary>
+            <param name="page">The page.</param>
+            <param name="element">A new element whose id is not used on the page yet.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddElementCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddElementCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddElementCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.DeleteElementsCommand">
+            <summary>Deletes elements.</summary>
+            <param name="page">The page.</param>
+            <param name="ids">The element ids.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteElementsCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Collections.Generic.IReadOnlyList{System.String})">
+            <summary>Deletes elements.</summary>
+            <param name="page">The page.</param>
+            <param name="ids">The element ids.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.DeleteElementsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteElementsCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteElementsCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.MoveElementsCommand">
+            <summary>Moves elements; this is one step however many elements move.</summary>
+            <param name="page">The page.</param>
+            <param name="positions">The new top left corners in page coordinates by element id.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.MoveElementsCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Collections.Generic.IReadOnlyDictionary{System.String,System.ValueTuple{System.Double,System.Double}})">
+            <summary>Moves elements; this is one step however many elements move.</summary>
+            <param name="page">The page.</param>
+            <param name="positions">The new top left corners in page coordinates by element id.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.MoveElementsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.MoveElementsCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.MoveElementsCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.ResizeElementsCommand">
+            <summary>
+            Moves and resizes elements. Freehand strokes scale their points, tables scale their columns to the new width. Elements of an unknown type
+            (<see cref="T:MudBlazor.Extensions.Office.Notebook.OpaqueElement"/>) keep their size.
+            </summary>
+            <param name="page">The page.</param>
+            <param name="bounds">The new rectangles in page coordinates by element id.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.ResizeElementsCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Collections.Generic.IReadOnlyDictionary{System.String,MudBlazor.Extensions.Office.Notebook.NoteBounds})">
+            <summary>
+            Moves and resizes elements. Freehand strokes scale their points, tables scale their columns to the new width. Elements of an unknown type
+            (<see cref="T:MudBlazor.Extensions.Office.Notebook.OpaqueElement"/>) keep their size.
+            </summary>
+            <param name="page">The page.</param>
+            <param name="bounds">The new rectangles in page coordinates by element id.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.ResizeElementsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.ResizeElementsCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.ResizeElementsCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.ReorderElementsCommand">
+            <summary>Brings elements to the front or sends them to the back; they keep their order among themselves.</summary>
+            <param name="page">The page.</param>
+            <param name="ids">The element ids.</param>
+            <param name="toFront">True to bring the elements to the front, false to send them to the back.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.ReorderElementsCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Collections.Generic.IReadOnlyList{System.String},System.Boolean)">
+            <summary>Brings elements to the front or sends them to the back; they keep their order among themselves.</summary>
+            <param name="page">The page.</param>
+            <param name="ids">The element ids.</param>
+            <param name="toFront">True to bring the elements to the front, false to send them to the back.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.ReorderElementsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.ReorderElementsCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.ReorderElementsCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.DuplicateElementsCommand">
+            <summary>Copies elements with new ids, shifted by an offset, on top of the others.</summary>
+            <param name="page">The page.</param>
+            <param name="ids">The element ids.</param>
+            <param name="offset">The shift of the copies to the right and down in pixels.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DuplicateElementsCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Collections.Generic.IReadOnlyList{System.String},System.Double)">
+            <summary>Copies elements with new ids, shifted by an offset, on top of the others.</summary>
+            <param name="page">The page.</param>
+            <param name="ids">The element ids.</param>
+            <param name="offset">The shift of the copies to the right and down in pixels.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.DuplicateElementsCommand.Copies">
+            <summary>The copies in z-order, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.DuplicateElementsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DuplicateElementsCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DuplicateElementsCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.AddImageCommand">
+            <summary>Adds a picture on top of the other elements, at its natural size but at most <paramref name="maxWidth"/> wide.</summary>
+            <param name="page">The page.</param>
+            <param name="data">The image bytes.</param>
+            <param name="contentType">The content type: PNG, JPEG, GIF, WebP, BMP or SVG.</param>
+            <param name="x">The left edge in page coordinates.</param>
+            <param name="y">The top edge in page coordinates.</param>
+            <param name="maxWidth">The largest width in pixels; a wider image is scaled down keeping its aspect ratio.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddImageCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Byte[],System.String,System.Double,System.Double,System.Double)">
+            <summary>Adds a picture on top of the other elements, at its natural size but at most <paramref name="maxWidth"/> wide.</summary>
+            <param name="page">The page.</param>
+            <param name="data">The image bytes.</param>
+            <param name="contentType">The content type: PNG, JPEG, GIF, WebP, BMP or SVG.</param>
+            <param name="x">The left edge in page coordinates.</param>
+            <param name="y">The top edge in page coordinates.</param>
+            <param name="maxWidth">The largest width in pixels; a wider image is scaled down keeping its aspect ratio.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddImageCommand.Image">
+            <summary>The created image, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddImageCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddImageCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddImageCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.AddStrokeCommand">
+            <summary>
+            Adds a freehand stroke on top of the other elements. The element's bounds are the hull of the points widened by half the stroke width, so a stroke
+            with a single point is a dot of the stroke width.
+            </summary>
+            <param name="page">The page.</param>
+            <param name="pagePoints">The points in page coordinates; pressure is clamped to 0–1.</param>
+            <param name="color">The colour as <c>#RRGGBB</c>.</param>
+            <param name="width">The stroke width in pixels.</param>
+            <param name="tool">The tool the stroke was drawn with.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddStrokeCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.InkPoint},System.String,System.Double,MudBlazor.Extensions.Office.Notebook.InkTool)">
+            <summary>
+            Adds a freehand stroke on top of the other elements. The element's bounds are the hull of the points widened by half the stroke width, so a stroke
+            with a single point is a dot of the stroke width.
+            </summary>
+            <param name="page">The page.</param>
+            <param name="pagePoints">The points in page coordinates; pressure is clamped to 0–1.</param>
+            <param name="color">The colour as <c>#RRGGBB</c>.</param>
+            <param name="width">The stroke width in pixels.</param>
+            <param name="tool">The tool the stroke was drawn with.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddStrokeCommand.Stroke">
+            <summary>The created stroke, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddStrokeCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddStrokeCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddStrokeCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.EraseStrokesCommand">
+            <summary>Deletes the freehand strokes an eraser gesture touched, as one step.</summary>
+            <param name="page">The page.</param>
+            <param name="ids">The ids of <see cref="T:MudBlazor.Extensions.Office.Notebook.InkElement"/>s, for example found with <see cref="M:MudBlazor.Extensions.Office.Notebook.InkGeometry.HitByEraser(MudBlazor.Extensions.Office.Notebook.InkElement,System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Double,System.Double}},System.Double)"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.EraseStrokesCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Collections.Generic.IReadOnlyList{System.String})">
+            <summary>Deletes the freehand strokes an eraser gesture touched, as one step.</summary>
+            <param name="page">The page.</param>
+            <param name="ids">The ids of <see cref="T:MudBlazor.Extensions.Office.Notebook.InkElement"/>s, for example found with <see cref="M:MudBlazor.Extensions.Office.Notebook.InkGeometry.HitByEraser(MudBlazor.Extensions.Office.Notebook.InkElement,System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Double,System.Double}},System.Double)"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.EraseStrokesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.EraseStrokesCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.EraseStrokesCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.AddSectionCommand">
+            <summary>Adds a section with one empty page.</summary>
+            <param name="index">The position of the new section, from 0 to the section count.</param>
+            <param name="name">The section name.</param>
+            <param name="color">The tab colour as <c>#RRGGBB</c>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddSectionCommand.#ctor(System.Int32,System.String,System.String)">
+            <summary>Adds a section with one empty page.</summary>
+            <param name="index">The position of the new section, from 0 to the section count.</param>
+            <param name="name">The section name.</param>
+            <param name="color">The tab colour as <c>#RRGGBB</c>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddSectionCommand.Section">
+            <summary>The created section, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddSectionCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddSectionCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddSectionCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.RenameSectionCommand">
+            <summary>Renames a section.</summary>
+            <param name="section">The section.</param>
+            <param name="name">The new name.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.RenameSectionCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookSection,System.String)">
+            <summary>Renames a section.</summary>
+            <param name="section">The section.</param>
+            <param name="name">The new name.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.RenameSectionCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.RenameSectionCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.RenameSectionCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.SetSectionColorCommand">
+            <summary>Sets the tab colour of a section.</summary>
+            <param name="section">The section.</param>
+            <param name="color">The colour as <c>#RRGGBB</c>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetSectionColorCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookSection,System.String)">
+            <summary>Sets the tab colour of a section.</summary>
+            <param name="section">The section.</param>
+            <param name="color">The colour as <c>#RRGGBB</c>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.SetSectionColorCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetSectionColorCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetSectionColorCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.DeleteSectionCommand">
+            <summary>Deletes a section with its pages. The last section cannot be deleted.</summary>
+            <param name="section">The section.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteSectionCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookSection)">
+            <summary>Deletes a section with its pages. The last section cannot be deleted.</summary>
+            <param name="section">The section.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.DeleteSectionCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteSectionCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+            <exception cref="T:System.InvalidOperationException">The section is the only one.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteSectionCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.MoveSectionCommand">
+            <summary>Moves a section to a new position.</summary>
+            <param name="section">The section.</param>
+            <param name="targetIndex">The position in the current section list before which the section is placed, from 0 to the section count.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.MoveSectionCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookSection,System.Int32)">
+            <summary>Moves a section to a new position.</summary>
+            <param name="section">The section.</param>
+            <param name="targetIndex">The position in the current section list before which the section is placed, from 0 to the section count.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.MoveSectionCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.MoveSectionCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.MoveSectionCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.AddPageCommand">
+            <summary>Adds an empty page to a section.</summary>
+            <param name="section">The section.</param>
+            <param name="index">The position of the new page, from 0 to the page count of the section.</param>
+            <param name="title">The page title.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddPageCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookSection,System.Int32,System.String)">
+            <summary>Adds an empty page to a section.</summary>
+            <param name="section">The section.</param>
+            <param name="index">The position of the new page, from 0 to the page count of the section.</param>
+            <param name="title">The page title.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddPageCommand.Page">
+            <summary>The created page, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddPageCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddPageCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddPageCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.RenamePageCommand">
+            <summary>Sets the title of a page.</summary>
+            <param name="page">The page.</param>
+            <param name="title">The new title.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.RenamePageCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.String)">
+            <summary>Sets the title of a page.</summary>
+            <param name="page">The page.</param>
+            <param name="title">The new title.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.RenamePageCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.RenamePageCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.RenamePageCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.DeletePagesCommand">
+            <summary>Deletes pages, also from several sections. A section that loses all its pages gets one empty page.</summary>
+            <param name="pages">The pages.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeletePagesCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.NotebookPage})">
+            <summary>Deletes pages, also from several sections. A section that loses all its pages gets one empty page.</summary>
+            <param name="pages">The pages.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.DeletePagesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeletePagesCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeletePagesCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.MovePagesCommand">
+            <summary>Moves pages as a block, also across sections; they keep their order. A section that loses all its pages gets one empty page.</summary>
+            <param name="pages">The pages.</param>
+            <param name="targetSection">The section that receives the pages.</param>
+            <param name="targetIndex">The position in the current page list of the target section before which the pages are placed, from 0 to its page count.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.MovePagesCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.NotebookPage},MudBlazor.Extensions.Office.Notebook.NotebookSection,System.Int32)">
+            <summary>Moves pages as a block, also across sections; they keep their order. A section that loses all its pages gets one empty page.</summary>
+            <param name="pages">The pages.</param>
+            <param name="targetSection">The section that receives the pages.</param>
+            <param name="targetIndex">The position in the current page list of the target section before which the pages are placed, from 0 to its page count.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.MovePagesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.MovePagesCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.MovePagesCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.SetPageLevelCommand">
+            <summary>Makes pages pages or subpages.</summary>
+            <param name="pages">The pages.</param>
+            <param name="level">0 for a page, 1 or 2 for a subpage.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetPageLevelCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.NotebookPage},System.Int32)">
+            <summary>Makes pages pages or subpages.</summary>
+            <param name="pages">The pages.</param>
+            <param name="level">0 for a page, 1 or 2 for a subpage.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.SetPageLevelCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetPageLevelCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetPageLevelCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.DuplicatePagesCommand">
+            <summary>Copies pages with their content; in each section the copies are inserted as a block after the last of the copied pages.</summary>
+            <param name="pages">The pages.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DuplicatePagesCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.NotebookPage})">
+            <summary>Copies pages with their content; in each section the copies are inserted as a block after the last of the copied pages.</summary>
+            <param name="pages">The pages.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.DuplicatePagesCommand.Copies">
+            <summary>The copies in order, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.DuplicatePagesCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DuplicatePagesCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DuplicatePagesCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.AddTableCommand">
+            <summary>Adds an empty table on top of the other elements.</summary>
+            <param name="page">The page.</param>
+            <param name="rows">The number of rows, at least 1.</param>
+            <param name="columns">The number of columns, at least 1.</param>
+            <param name="x">The left edge in page coordinates.</param>
+            <param name="y">The top edge in page coordinates.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddTableCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Int32,System.Int32,System.Double,System.Double)">
+            <summary>Adds an empty table on top of the other elements.</summary>
+            <param name="page">The page.</param>
+            <param name="rows">The number of rows, at least 1.</param>
+            <param name="columns">The number of columns, at least 1.</param>
+            <param name="x">The left edge in page coordinates.</param>
+            <param name="y">The top edge in page coordinates.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddTableCommand.Table">
+            <summary>The created table, available after the command was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.AddTableCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddTableCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.AddTableCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.SetTableCellCommand">
+            <summary>Replaces the text of a table cell.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="row">The row index.</param>
+            <param name="column">The column index.</param>
+            <param name="paragraphs">The new paragraphs, checked like those of <see cref="T:MudBlazor.Extensions.Office.Notebook.SetTextCommand"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTableCellCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.String,System.Int32,System.Int32,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.NoteParagraph})">
+            <summary>Replaces the text of a table cell.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="row">The row index.</param>
+            <param name="column">The column index.</param>
+            <param name="paragraphs">The new paragraphs, checked like those of <see cref="T:MudBlazor.Extensions.Office.Notebook.SetTextCommand"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.SetTableCellCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTableCellCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTableCellCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.InsertTableRowsCommand">
+            <summary>Inserts empty rows.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="index">The position of the first new row, from 0 to the row count.</param>
+            <param name="count">The number of rows.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.InsertTableRowsCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.String,System.Int32,System.Int32)">
+            <summary>Inserts empty rows.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="index">The position of the first new row, from 0 to the row count.</param>
+            <param name="count">The number of rows.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.InsertTableRowsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.InsertTableRowsCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.InsertTableRowsCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.DeleteTableRowsCommand">
+            <summary>Deletes rows; a table keeps at least one row, delete the table element instead.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="index">The first row to delete.</param>
+            <param name="count">The number of rows.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteTableRowsCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.String,System.Int32,System.Int32)">
+            <summary>Deletes rows; a table keeps at least one row, delete the table element instead.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="index">The first row to delete.</param>
+            <param name="count">The number of rows.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.DeleteTableRowsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteTableRowsCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteTableRowsCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.InsertTableColumnsCommand">
+            <summary>Inserts empty columns of the default width; the table grows by their width.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="index">The position of the first new column, from 0 to the column count.</param>
+            <param name="count">The number of columns.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.InsertTableColumnsCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.String,System.Int32,System.Int32)">
+            <summary>Inserts empty columns of the default width; the table grows by their width.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="index">The position of the first new column, from 0 to the column count.</param>
+            <param name="count">The number of columns.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.InsertTableColumnsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.InsertTableColumnsCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.InsertTableColumnsCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.DeleteTableColumnsCommand">
+            <summary>Deletes columns; a table keeps at least one column, delete the table element instead.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="index">The first column to delete.</param>
+            <param name="count">The number of columns.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteTableColumnsCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.String,System.Int32,System.Int32)">
+            <summary>Deletes columns; a table keeps at least one column, delete the table element instead.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="index">The first column to delete.</param>
+            <param name="count">The number of columns.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.DeleteTableColumnsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteTableColumnsCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.DeleteTableColumnsCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.SetTableColumnWidthsCommand">
+            <summary>Sets the column widths; the table width becomes their sum.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="widths">One positive width in pixels per column.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTableColumnWidthsCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.String,System.Collections.Generic.IReadOnlyList{System.Double})">
+            <summary>Sets the column widths; the table width becomes their sum.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="widths">One positive width in pixels per column.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.SetTableColumnWidthsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTableColumnWidthsCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTableColumnWidthsCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.SetTableHeaderRowCommand">
+            <summary>Makes the first row of a table a header row or a normal row.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="headerRow">True for a header row.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTableHeaderRowCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.String,System.Boolean)">
+            <summary>Makes the first row of a table a header row or a normal row.</summary>
+            <param name="page">The page.</param>
+            <param name="tableId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</param>
+            <param name="headerRow">True for a header row.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.SetTableHeaderRowCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTableHeaderRowCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTableHeaderRowCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.SetTextCommand">
+            <summary>
+            Replaces the paragraphs of a text block, typically once per editing session. A text without any characters deletes the block in the same step.
+            Colours, fonts, sizes and links are checked like those read from a file.
+            </summary>
+            <param name="page">The page.</param>
+            <param name="elementId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TextElement"/>.</param>
+            <param name="paragraphs">The new paragraphs.</param>
+            <exception cref="T:System.ArgumentException">A run has an invalid colour, font, size or link, or an indent is out of range.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTextCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.String,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.NoteParagraph})">
+            <summary>
+            Replaces the paragraphs of a text block, typically once per editing session. A text without any characters deletes the block in the same step.
+            Colours, fonts, sizes and links are checked like those read from a file.
+            </summary>
+            <param name="page">The page.</param>
+            <param name="elementId">The id of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TextElement"/>.</param>
+            <param name="paragraphs">The new paragraphs.</param>
+            <exception cref="T:System.ArgumentException">A run has an invalid colour, font, size or link, or an indent is out of range.</exception>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.SetTextCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTextCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetTextCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.SetShapeStyleCommand">
+            <summary>Sets outline and fill of shapes and the colour and width of freehand strokes. Other elements are left as they are.</summary>
+            <param name="page">The page.</param>
+            <param name="ids">The element ids.</param>
+            <param name="stroke">The outline or stroke colour as <c>#RRGGBB</c>, or null to keep it.</param>
+            <param name="strokeWidth">The outline or stroke width in pixels, or null to keep it.</param>
+            <param name="fill">The fill colour of shapes as <c>#RRGGBB</c>, an empty string for no fill, or null to keep it.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetShapeStyleCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Collections.Generic.IReadOnlyList{System.String},System.String,System.Nullable{System.Double},System.String)">
+            <summary>Sets outline and fill of shapes and the colour and width of freehand strokes. Other elements are left as they are.</summary>
+            <param name="page">The page.</param>
+            <param name="ids">The element ids.</param>
+            <param name="stroke">The outline or stroke colour as <c>#RRGGBB</c>, or null to keep it.</param>
+            <param name="strokeWidth">The outline or stroke width in pixels, or null to keep it.</param>
+            <param name="fill">The fill colour of shapes as <c>#RRGGBB</c>, an empty string for no fill, or null to keep it.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.SetShapeStyleCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetShapeStyleCommand.Apply(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.SetShapeStyleCommand.Revert(MudBlazor.Extensions.Office.Notebook.Notebook)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.ImageElement">
             <summary>An image whose bytes are a medium of the notebook (<see cref="M:MudBlazor.Extensions.Office.Notebook.Notebook.GetMedia(System.String)"/>).</summary>
         </member>
@@ -32249,6 +32919,18 @@
         <member name="P:MudBlazor.Extensions.Office.Notebook.NoteElement.Bounds">
             <summary>The element's rectangle.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteElement.Version">
+            <summary>The <see cref="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.Version"/> of the last change of this element, 0 if it is unchanged since loading; use it with the id as render key.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.OpaqueElement">
+            <summary>
+            An element this version cannot read, for example of a newer element type or with an unknown value. It can be moved, reordered, duplicated and
+            deleted; its JSON is saved unchanged apart from id and position.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.OpaqueElement.Type">
+            <summary>The element type named in the file.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.NoteShapeKind">
             <summary>The kind of a shape.</summary>
         </member>
@@ -32322,6 +33004,31 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Notebook.TextElement.Paragraphs">
             <summary>The paragraphs in order.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.InkGeometry">
+            <summary>Hit tests and simplification for freehand strokes. All coordinates are page coordinates unless stated otherwise.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.InkGeometry.DefaultTolerance">
+            <summary>The default tolerance of <see cref="M:MudBlazor.Extensions.Office.Notebook.InkGeometry.Simplify(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.InkPoint},System.Double)"/> in pixels.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.InkGeometry.HitByEraser(MudBlazor.Extensions.Office.Notebook.InkElement,System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Double,System.Double}},System.Double)">
+            <summary>Tells whether an eraser path touches a stroke, taking the stroke width into account.</summary>
+            <param name="stroke">The stroke.</param>
+            <param name="path">The eraser path; a single point is a tap.</param>
+            <param name="radius">The eraser radius in pixels.</param>
+            <returns>True if the eraser touches the stroke.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.InkGeometry.InsideLasso(MudBlazor.Extensions.Office.Notebook.NoteElement,System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Double,System.Double}})">
+            <summary>Tells whether a lasso selects an element: a stroke if more than half of its points lie inside, any other element if its centre does.</summary>
+            <param name="element">The element.</param>
+            <param name="polygon">The closed lasso line.</param>
+            <returns>True if the element is selected.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.InkGeometry.Simplify(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.InkPoint},System.Double)">
+            <summary>Reduces the points of a stroke with the Ramer-Douglas-Peucker algorithm. The first and last point are always kept.</summary>
+            <param name="points">The points.</param>
+            <param name="tolerance">The largest distance in pixels a dropped point may have from the simplified line.</param>
+            <returns>The kept points in order.</returns>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.Boolean">
             <summary>
@@ -32438,11 +33145,6 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ListElementDto">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ListParagraphDto">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
@@ -32459,6 +33161,11 @@
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ListListCellDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ListJsonElement">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
@@ -32650,6 +33357,18 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookSection.Pages">
             <summary>The pages in order; a section always has at least one.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NoteLists">
+            <summary>Numbering of list paragraphs.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NoteLists.Numbers(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.NoteParagraph})">
+            <summary>
+            The label of each paragraph: "1.", "a." or "i." (by indent level, repeating every three levels) for numbered paragraphs, otherwise an empty
+            string. Numbers count per indent level. A paragraph that is no list item restarts all numbering; another list item restarts its level and
+            the deeper ones.
+            </summary>
+            <param name="paragraphs">The paragraphs in order.</param>
+            <returns>One label per paragraph.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.NoteListKind">
             <summary>The list kind of a paragraph.</summary>

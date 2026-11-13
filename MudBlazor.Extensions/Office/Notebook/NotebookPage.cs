@@ -5,6 +5,8 @@ namespace MudBlazor.Extensions.Office.Notebook;
 /// <summary>A page of a notebook section: a free surface of elements that grows with its content.</summary>
 public sealed class NotebookPage
 {
+    internal const int MaxLevel = 2;
+
     internal NotebookPage()
     {
     }

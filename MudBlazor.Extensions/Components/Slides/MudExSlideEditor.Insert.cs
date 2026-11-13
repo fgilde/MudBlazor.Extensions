@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Office;
 using MudBlazor.Extensions.Office.Presentation;
 using MudBlazor.Utilities;
 
@@ -116,7 +117,7 @@ public partial class MudExSlideEditor
         var part = InsertPictureCommand.MediaPart(_presentation, contentType);
         if (url != null)
             _images.Register(part, url);
-        var command = new InsertPictureCommand(slide, data, contentType, FitPicture(SlideImageSize.Read(data, contentType)));
+        var command = new InsertPictureCommand(slide, data, contentType, FitPicture(OfficeImageSize.Read(data, contentType)));
         await RunAsync(() => _presentation.Execute(command));
         if (command.Picture == null)
             return;

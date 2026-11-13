@@ -39,7 +39,7 @@ internal sealed class PageDto : JsonObjectDto
 
     public DateTimeOffset Modified { get; set; }
 
-    public List<ElementDto> Elements { get; set; }
+    public List<JsonElement> Elements { get; set; }
 }
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
@@ -169,14 +169,12 @@ internal sealed class CamelCaseEnumConverter<TEnum>() : JsonStringEnumConverter<
     ])]
 [JsonSerializable(typeof(ManifestDto))]
 [JsonSerializable(typeof(PageDto))]
+[JsonSerializable(typeof(ElementDto))]
 internal sealed partial class NotebookJsonContext : JsonSerializerContext;
 
 /// <summary>Maps the notebook model to the JSON of the file format and back, checking every value read.</summary>
 internal static class NotebookJson
 {
-    private const int MaxIndent = 8;
-    private const int MaxLevel = 2;
-
     public static ManifestDto ToDto(Notebook notebook) => new()
     {
         FormatVersion = notebook.FormatVersion,
@@ -192,7 +190,7 @@ internal static class NotebookJson
         Level = page.Level,
         Created = page.Created,
         Modified = page.LastModified,
-        Elements = page.ElementList.Select(ToDto).ToList(),
+        Elements = page.ElementList.Select(ToJson).ToList(),
         Extra = page.Extra
     };
 
@@ -200,14 +198,16 @@ internal static class NotebookJson
     {
         var page = new NotebookPage
         {
-            Title = dto.Title ?? "", Level = Math.Clamp(dto.Level, 0, MaxLevel), Created = dto.Created, LastModified = dto.Modified, Extra = dto.Extra
+            Title = dto.Title ?? "", Level = Math.Clamp(dto.Level, 0, NotebookPage.MaxLevel), Created = dto.Created, LastModified = dto.Modified, Extra = dto.Extra
         };
-        foreach (var element in dto.Elements ?? [])
-            page.ElementList.Add(ToElement(element ?? throw new JsonException("An element is null.")));
+        foreach (var element in dto.Elements ?? []) page.ElementList.Add(ToElement(element));
         if (page.ElementList.Select(e => e.Id).Distinct(StringComparer.Ordinal).Count() != page.ElementList.Count)
             throw new JsonException("Two elements have the same id.");
         return page;
     }
+
+    private static JsonElement ToJson(NoteElement element) =>
+        element is OpaqueElement opaque ? opaque.ToJson() : JsonSerializer.SerializeToElement(ToDto(element), NotebookJsonContext.Default.ElementDto);
 
     private static ElementDto ToDto(NoteElement element)
     {
@@ -248,6 +248,19 @@ internal static class NotebookJson
         }).ToList(),
         List = p.List, Indent = p.Indent, Checked = p.Checked, Align = p.Align, Heading = p.Heading, Extra = p.Extra
     }).ToList();
+
+    private static NoteElement ToElement(JsonElement json)
+    {
+        if (json.ValueKind != JsonValueKind.Object) throw new JsonException("An element is not an object.");
+        try
+        {
+            return ToElement(json.Deserialize(NotebookJsonContext.Default.ElementDto));
+        }
+        catch (Exception e) when (e is JsonException or NotSupportedException)
+        {
+            return OpaqueElement.From(json);
+        }
+    }
 
     private static NoteElement ToElement(ElementDto dto)
     {
@@ -304,7 +317,7 @@ internal static class NotebookJson
             Runs = (p.Runs ?? []).Where(r => r != null).Select(r => new NoteRun(r.Text, new NoteRunFormat(r.Bold, r.Italic, r.Underline, r.Strike,
                 r.SizePt is > 0 and <= 1000 ? r.SizePt : null, Color(r.Color), Color(r.Highlight), NoteValues.IsFont(r.Font) ? r.Font : null, NoteValues.IsSafeLink(r.Link) ? r.Link : null)) { Extra = r.Extra })
                 .ToList(),
-            List = p.List, Indent = Math.Clamp(p.Indent, 0, MaxIndent), Checked = p.Checked, Align = p.Align, Heading = p.Heading, Extra = p.Extra
+            List = p.List, Indent = Math.Clamp(p.Indent, 0, NoteParagraph.MaxIndent), Checked = p.Checked, Align = p.Align, Heading = p.Heading, Extra = p.Extra
         }).ToList();
 
     private static string Color(string value) => NoteValues.IsColor(value) ? value : null;

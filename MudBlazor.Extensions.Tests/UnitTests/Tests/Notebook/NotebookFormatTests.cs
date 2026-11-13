@@ -163,8 +163,8 @@ public class NotebookFormatTests
 
     [Theory]
     [InlineData("{ \"title\": \"broken\", \"elements\": [")]
-    [InlineData("{\"elements\":[{\"type\":\"hologram\",\"id\":\"h\"}]}")]
-    [InlineData("{\"elements\":[{\"type\":\"ink\",\"id\":\"i\",\"points\":[1,2]}]}")]
+    [InlineData("{\"elements\":[{\"type\":\"hologram\"}]}")]
+    [InlineData("{\"elements\":[42]}")]
     [InlineData("{\"elements\":[{\"type\":\"ink\",\"id\":\"i\"},{\"type\":\"ink\",\"id\":\"i\"}]}")]
     public void Load_BrokenPageJson_GivesErrorPage_KeepsOriginalOnSave(string json)
     {

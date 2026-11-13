@@ -2,9 +2,9 @@ using System.Buffers.Binary;
 using System.Globalization;
 using System.Xml;
 
-namespace MudBlazor.Extensions.Components;
+namespace MudBlazor.Extensions.Office;
 
-internal static class SlideImageSize
+internal static class OfficeImageSize
 {
     private const string SvgNamespace = "http://www.w3.org/2000/svg";
 

@@ -50,6 +50,8 @@ public enum NoteHeading
 /// <summary>A paragraph of a text element or table cell.</summary>
 public sealed record NoteParagraph
 {
+    internal const int MaxIndent = 8;
+
     /// <summary>The runs in order.</summary>
     public IReadOnlyList<NoteRun> Runs { get; init; } = [];
 
