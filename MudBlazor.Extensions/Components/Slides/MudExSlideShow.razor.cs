@@ -3,7 +3,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
-using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Office.Presentation;
 using AnimationPreset = MudBlazor.Extensions.Office.Presentation.AnimationPreset;
 
@@ -32,9 +32,7 @@ public partial class MudExSlideShow
     private bool _jsStarted;
     private CancellationTokenSource _timer;
     private ElementReference _root;
-    private IJSObjectReference _module;
-    private IJSObjectReference _js;
-    private DotNetObjectReference<MudExSlideShow> _dotnet;
+    private readonly JsModule<MudExSlideShow> _js = new();
 
     /// <summary>Creates the slide show.</summary>
     public MudExSlideShow()
@@ -94,24 +92,21 @@ public partial class MudExSlideShow
         _jsStarted = true;
         try
         {
-            await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
-            var dotnet = DotNetObjectReference.Create(this);
-            (_module, _js) = await JsRuntime.ImportModuleAndCreateJsAsync<MudExSlideShow>(_root, dotnet);
-            _dotnet = dotnet;
-            if (IsDisposed || _closed)
+            if (await _js.StartAsync(JsRuntime, this, null, dotnet => [_root, dotnet]) is not { } js || _closed)
             {
-                await ReleaseJsAsync();
+                await _js.DisposeAsync();
+                _popupBlocked = PresenterView && !_closed;
                 return;
             }
 
             if (!PresenterView)
-                await _js.InvokeVoidAsync("start");
-            else if (await _js.InvokeAsync<bool>("openAudience", TryLocalize("Slide Show")))
+                await js.InvokeVoidAsync("start");
+            else if (await js.InvokeAsync<bool>("openAudience", TryLocalize("Slide Show")))
                 _presenter = true;
             else
             {
                 _popupBlocked = true;
-                await _js.InvokeVoidAsync("start");
+                await js.InvokeVoidAsync("start");
             }
         }
         catch (Exception e) when (e is JSException or JSDisconnectedException or InvalidOperationException)
@@ -261,26 +256,11 @@ public partial class MudExSlideShow
         await Closed.InvokeAsync();
     }
 
-    private async Task ReleaseJsAsync()
-    {
-        var (js, module, dotnet) = (_js, _module, _dotnet);
-        (_js, _module, _dotnet) = (null, null, null);
-        if (js != null)
-        {
-            try { await js.InvokeVoidAsync("dispose"); } catch { }
-            try { await js.DisposeAsync(); } catch { }
-        }
-
-        if (module != null)
-            try { await module.DisposeAsync(); } catch { }
-        dotnet?.Dispose();
-    }
-
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
         _timer?.Cancel();
-        await ReleaseJsAsync();
+        await _js.DisposeAsync();
         await base.DisposeAsync();
     }
 }

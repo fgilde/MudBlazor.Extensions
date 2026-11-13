@@ -3,7 +3,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
-using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Office.Presentation;
 
 namespace MudBlazor.Extensions.Components;
@@ -30,11 +30,8 @@ public partial class MudExSlideCanvas
     private Slide _slide;
     private int _version;
     private bool _raiseSelection;
+    private readonly JsModule<MudExSlideCanvas> _js = new();
     private ElementReference _root;
-    private IJSObjectReference _module;
-    private IJSObjectReference _js;
-    private DotNetObjectReference<MudExSlideCanvas> _dotnet;
-    private bool _disposed;
 
     /// <summary>Creates the canvas.</summary>
     public MudExSlideCanvas()
@@ -142,20 +139,8 @@ public partial class MudExSlideCanvas
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (!firstRender)
-            return;
-        try
-        {
-            await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
-            var dotnet = DotNetObjectReference.Create(this);
-            var (module, js) = await JsRuntime.ImportModuleAndCreateJsAsync<MudExSlideCanvas>(_root, dotnet);
-            (_module, _js, _dotnet) = (module, js, dotnet);
-            if (_disposed)
-                await ReleaseJsAsync();
-        }
-        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException)
-        {
-        }
+        if (firstRender)
+            await _js.StartAsync(JsRuntime, this, null, dotnet => [_root, dotnet]);
     }
 
     /// <summary>Selects shapes. Unknown ids and descendants of other selected shapes are ignored.</summary>
@@ -331,27 +316,11 @@ public partial class MudExSlideCanvas
         return SelectAsync(index >= 0 && index < siblings.Count ? [siblings[index].Id] : []);
     }
 
-    private async Task ReleaseJsAsync()
-    {
-        var (js, module, dotnet) = (_js, _module, _dotnet);
-        (_js, _module, _dotnet) = (null, null, null);
-        if (js != null)
-        {
-            try { await js.InvokeVoidAsync("dispose"); } catch { }
-            try { await js.DisposeAsync(); } catch { }
-        }
-
-        if (module != null)
-            try { await module.DisposeAsync(); } catch { }
-        dotnet?.Dispose();
-    }
-
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
-        _disposed = true;
         CommitText();
-        await ReleaseJsAsync();
+        await _js.DisposeAsync();
         await base.DisposeAsync();
     }
 }

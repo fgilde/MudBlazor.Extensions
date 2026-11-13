@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Office.Presentation;
 
 namespace MudBlazor.Extensions.Components;
@@ -12,11 +12,8 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExSlideTextEditor
 {
+    private readonly JsModule<MudExSlideTextEditor> _module = new();
     private ElementReference _root;
-    private IJSObjectReference _module;
-    private IJSObjectReference _js;
-    private DotNetObjectReference<MudExSlideTextEditor> _dotnet;
-    private bool _disposed;
 
     /// <summary>The presentation the shape belongs to.</summary>
     [Parameter] public Presentation Presentation { get; set; }
@@ -51,41 +48,23 @@ public partial class MudExSlideTextEditor
         await base.OnAfterRenderAsync(firstRender);
         if (!firstRender)
             return;
-        try
-        {
-            await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
-            var dotnet = DotNetObjectReference.Create(this);
-            var options = new
-            {
-                Paragraphs = SlideTextDom.ToDom(Shape, Presentation),
-                SlideWidth = Presentation.SlideWidth,
-                Text,
-                Caret,
-                Cell
-            };
-            var (module, js) = await JsRuntime.ImportModuleAndCreateJsAsync<MudExSlideTextEditor>("MudExSlideText", _root, dotnet, options);
-            (_module, _js, _dotnet) = (module, js, dotnet);
-            if (_disposed)
-                await ReleaseJsAsync();
-        }
-        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException)
-        {
-        }
+        var options = new { Paragraphs = SlideTextDom.ToDom(Shape, Presentation), SlideWidth = Presentation.SlideWidth, Text, Caret, Cell };
+        await _module.StartAsync(JsRuntime, this, "MudExSlideText", dotnet => [_root, dotnet, options]);
     }
 
     internal async Task<SlideTextParagraphDto[]> ReadAsync()
     {
-        if (_js == null)
+        if (_module.Js is not { } js)
             return null;
-        try { return await _js.InvokeAsync<SlideTextParagraphDto[]>("read"); }
+        try { return await js.InvokeAsync<SlideTextParagraphDto[]>("read"); }
         catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException) { return null; }
     }
 
     internal async Task FormatAsync(string key, string value)
     {
-        if (_js == null)
+        if (_module.Js is not { } js)
             return;
-        try { await _js.InvokeVoidAsync("format", key, value); }
+        try { await js.InvokeVoidAsync("format", key, value); }
         catch (Exception e) when (e is JSException or JSDisconnectedException) { }
     }
 
@@ -120,26 +99,10 @@ public partial class MudExSlideTextEditor
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public SlideTextParagraphDto[] OnPasteHtml(string html) => SlideTextDom.FromHtml(html);
 
-    private async Task ReleaseJsAsync()
-    {
-        var (js, module, dotnet) = (_js, _module, _dotnet);
-        (_js, _module, _dotnet) = (null, null, null);
-        if (js != null)
-        {
-            try { await js.InvokeVoidAsync("dispose"); } catch { }
-            try { await js.DisposeAsync(); } catch { }
-        }
-
-        if (module != null)
-            try { await module.DisposeAsync(); } catch { }
-        dotnet?.Dispose();
-    }
-
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
-        _disposed = true;
-        await ReleaseJsAsync();
+        await _module.DisposeAsync();
         await base.DisposeAsync();
     }
 }
