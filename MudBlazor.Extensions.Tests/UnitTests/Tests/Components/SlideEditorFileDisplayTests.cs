@@ -48,9 +48,23 @@ public class SlideEditorFileDisplayTests : IAsyncLifetime
         var (display, _) = Create();
 
         Assert.True(display.FindComponent<MudExSlideEditor>().Instance.ReadOnly);
-#pragma warning disable CS0618
-        Assert.Empty(display.FindComponents<MudExFileDisplayPresentation>());
-#pragma warning restore CS0618
+    }
+
+    [Fact]
+    public void NoPptxPresentationReferenced()
+    {
+        var root = AppContext.BaseDirectory;
+        while (root != null && !File.Exists(Path.Combine(root, "MudBlazor.Extensions.slnx")))
+            root = Path.GetDirectoryName(root);
+        Assert.NotNull(root);
+
+        var offenders = Directory.EnumerateFiles(Path.Combine(root, "MudBlazor.Extensions"), "*.*", SearchOption.AllDirectories)
+            .Where(f => f.EndsWith(".cs") || f.EndsWith(".razor"))
+            .Where(f => !f.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}") && !f.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}"))
+            .Where(f => File.ReadAllText(f).Contains("PptxPresentation") || File.ReadAllText(f).Contains("FileDisplayPresentation"))
+            .ToList();
+
+        Assert.Empty(offenders);
     }
 
     [Fact]

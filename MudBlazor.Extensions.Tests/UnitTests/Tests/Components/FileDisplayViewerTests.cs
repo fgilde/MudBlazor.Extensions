@@ -526,22 +526,6 @@ public class FileDisplayViewerTests
         Assert.DoesNotContain("../styles/book.css", html);
     }
 
-    [Fact]
-    public void Pptx_RendersShapePositionsInContainerUnits()
-    {
-        using var presentation = PptxPresentation.Open(BuildPptx());
-
-        Assert.Single(presentation.Slides);
-        Assert.Equal(12192000, presentation.SlideWidth);
-        Assert.Equal("Hello slide", presentation.Slides[0].Title);
-
-        var html = presentation.Slides[0].Html;
-        Assert.Contains("Hello slide", html);
-        // 1219200 EMU is exactly a tenth of the slide width, so it has to become 10 cqw
-        Assert.Contains("left:10.000cqw", html);
-        Assert.Contains("width:50.000cqw", html);
-    }
-
     [Theory]
     [InlineData("art.ai", "application/octet-stream")]
     [InlineData("template.ait", "application/octet-stream")]
@@ -743,34 +727,6 @@ public class FileDisplayViewerTests
                 """;
         }, ("OEBPS/images/pixel.png", png));
     }
-
-    private static MemoryStream BuildPptx() => BuildZip(zip =>
-    {
-        zip["ppt/presentation.xml"] = """
-            <p:presentation xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
-                            xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
-              <p:sldIdLst><p:sldId id="256" r:id="rId1"/></p:sldIdLst>
-              <p:sldSz cx="12192000" cy="6858000"/>
-            </p:presentation>
-            """;
-        zip["ppt/_rels/presentation.xml.rels"] = """
-            <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-              <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/slide1.xml"/>
-            </Relationships>
-            """;
-        zip["ppt/slides/slide1.xml"] = """
-            <p:sld xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
-                   xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
-              <p:cSld><p:spTree>
-                <p:sp>
-                  <p:nvSpPr><p:nvPr><p:ph type="title"/></p:nvPr></p:nvSpPr>
-                  <p:spPr><a:xfrm><a:off x="1219200" y="609600"/><a:ext cx="6096000" cy="1219200"/></a:xfrm></p:spPr>
-                  <p:txBody><a:bodyPr anchor="ctr"/><a:p><a:r><a:rPr sz="4400" b="1"/><a:t>Hello slide</a:t></a:r></a:p></p:txBody>
-                </p:sp>
-              </p:spTree></p:cSld>
-            </p:sld>
-            """;
-    });
 
     private static MemoryStream BuildZip(Action<Dictionary<string, string>> textEntries, params (string Path, byte[] Bytes)[] binaryEntries)
     {

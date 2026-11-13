@@ -4831,41 +4831,6 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPdf.DisposeAsync">
             <inheritdoc />
         </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayPresentation">
-            <summary>
-            Viewer for PowerPoint presentations (.pptx). Reads the OOXML package with <see cref="T:MudBlazor.Extensions.Helper.Internal.PptxPresentation"/> and
-            renders the slides as scalable html - text, pictures, solid fills, groups and speaker notes. Runs fully
-            client-side and needs neither Office nor an online service, unlike <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive"/>.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.Name">
-            <inheritdoc />
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.FileDisplayInfos">
-            <inheritdoc />
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.MudExFileDisplay">
-            <summary>
-            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.ShowNotes">
-            <summary>
-            Shows the speaker notes below the slide
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayPresentation.DisposeAsync">
-            <inheritdoc />
-        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData">
             <summary>
             Simple component to display markdown files with MudExFileDisplay
@@ -28339,61 +28304,6 @@
             Writes 8-bit grayscale or RGB pixels as PNG, so viewers that decode pixels themselves (DICOM, EPSI previews)
             can hand them to the browser. Everything else is decoded and encoded by the browser.
             </summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Helper.Internal.PptxPresentation">
-            <summary>
-            A minimal OOXML PowerPoint (.pptx) reader that turns every slide into a block of html. Positions and sizes are
-            emitted as container query units (cqw) relative to the slide width, so the whole slide scales with its
-            container without any JavaScript. Placeholders without their own transform inherit it from the slide layout and
-            then from the slide master, the way PowerPoint resolves them.
-            </summary>
-            <remarks>
-            Deliberately covers the common case only: text shapes, pictures, solid fills, groups and speaker notes. Charts,
-            SmartArt, tables, theme colors, gradients and animations are ignored - a slide using them renders without those
-            parts rather than failing.
-            </remarks>
-        </member>
-        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxPresentation.SlideWidth">
-            <summary>Slide width in EMU, the reference for every emitted cqw value.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxPresentation.SlideHeight">
-            <summary>Slide height in EMU.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxPresentation.Slides">
-            <summary>All slides in presentation order.</summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.Internal.PptxPresentation.ReadLayoutPlaceholders(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
-            <summary>
-            Collects the placeholder transforms of the slide layout and, behind it, the slide master. Keys are
-            "type:idx" plus the bare type, because a slide may reference a placeholder by either.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.Internal.PptxPresentation.Cqw(System.Int64)">
-            <summary>EMU expressed as a percentage of the slide width, which is what one cqw unit is.</summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Helper.Internal.PptxPresentation.Transform">
-            <summary>Position and size of a shape in EMU, plus the mapping a surrounding group applies to it.</summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.Internal.PptxPresentation.Transform.Apply(MudBlazor.Extensions.Helper.Internal.PptxPresentation.Transform)">
-            <summary>Maps a child transform through this group mapping.</summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.Internal.PptxPresentation.Transform.Combine(MudBlazor.Extensions.Helper.Internal.PptxPresentation.Transform)">
-            <summary>Chains this mapping with a nested one so nested groups keep working.</summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Helper.Internal.PptxSlide">
-            <summary>One rendered slide of a presentation.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxSlide.Number">
-            <summary>One based slide number.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxSlide.Title">
-            <summary>Text of the title placeholder, if the slide has one.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxSlide.Html">
-            <summary>The slide content as html, positioned in container query units.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Helper.Internal.PptxSlide.Notes">
-            <summary>Speaker notes of the slide.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.Internal.SizeParser.ParseMudExSize``1(System.String)">
             <summary>

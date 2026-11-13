@@ -143,10 +143,10 @@ var workbook = XlsxReader.Read(stream);
 
 ---
 
-## `MudExFileDisplayPresentation` Replaced by `MudExSlideEditor` (Announcement)
+## Presentation Viewer Replaced by `MudExSlideEditor`
 
-`MudExFileDisplayPresentation` is marked `[Obsolete]` and is removed in the next major release. `MudExFileDisplay` already opens pptx
-in `MudExSlideEditor`, read-only unless the display is in edit mode (the display sets `ReadOnly` from its edit mode).
+`MudExFileDisplayPresentation` is removed. `MudExFileDisplay` now opens pptx in `MudExSlideEditor`, read-only unless the display is in
+edit mode (the display sets `ReadOnly` from its edit mode). The speaker notes pane of the old viewer is the editor's `ShowNotes` parameter.
 
 **Reason:** one slide component that views, edits and saves pptx without losing content it does not model.
 
@@ -158,7 +158,7 @@ in `MudExSlideEditor`, read-only unless the display is in edit mode (the display
 **After:**
 ```razor
 <MudExFileDisplay Url="@url" />
-<MudExSlideEditor FileDisplayInfos="@infos" ReadOnly="true" />
+<MudExSlideEditor FileDisplayInfos="@infos" ReadOnly="true" ShowNotes="true" />
 ```
 
 ---
