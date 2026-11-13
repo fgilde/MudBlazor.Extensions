@@ -36,7 +36,7 @@ internal static class PlaceholderXml
     {
         var source = shape.Source ??= new XElement(P + "sp",
             new XElement(P + "nvSpPr", new XElement(P + "cNvPr"), new XElement(P + "cNvSpPr"), new XElement(P + "nvPr")), new XElement(P + "spPr"));
-        var inherited = Chain(shape.InheritsFrom).Select(s => s.Source).Where(s => s != null).ToList();
+        var inherited = TextStyles.Chain(shape.InheritsFrom).Select(s => s.Source).Where(s => s != null).ToList();
         source.Element(P + "nvSpPr")?.Element(P + "cNvSpPr")?.SetAttributeValue("txBox", "1");
         shape.IsTextBox = true;
 
@@ -70,11 +70,6 @@ internal static class PlaceholderXml
             Anchor = read.Anchor, InsetLeft = read.InsetLeft, InsetTop = read.InsetTop, InsetRight = read.InsetRight, InsetBottom = read.InsetBottom, Wrap = read.Wrap,
             FontScalePercent = read.FontScalePercent, LineSpaceReductionPercent = read.LineSpaceReductionPercent
         };
-    }
-
-    private static IEnumerable<SlideShape> Chain(SlideShape shape)
-    {
-        for (var s = shape; s != null; s = s.InheritsFrom) yield return s;
     }
 
     private static XElement Merge(XName name, IEnumerable<XElement> specificFirst)

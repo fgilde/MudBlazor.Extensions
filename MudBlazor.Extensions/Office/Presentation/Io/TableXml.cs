@@ -71,7 +71,7 @@ internal static class TableXml
         ReadProperties(before, tbl.Element(A + "tblPr"));
         if ((before.StyleId, before.FirstRow, before.FirstColumn, before.LastRow, before.LastColumn, before.BandedRows, before.BandedColumns) ==
             (table.StyleId, table.FirstRow, table.FirstColumn, table.LastRow, table.LastColumn, table.BandedRows, table.BandedColumns)) return;
-        var tblPr = tbl.Element(A + "tblPr") ?? AddFirst(tbl, new XElement(A + "tblPr"));
+        var tblPr = tbl.Element(A + "tblPr") ?? SlideXml.AddFirst(tbl, new XElement(A + "tblPr"));
         SetFlag(tblPr, "firstRow", table.FirstRow);
         SetFlag(tblPr, "firstCol", table.FirstColumn);
         SetFlag(tblPr, "lastRow", table.LastRow);
@@ -145,11 +145,5 @@ internal static class TableXml
     private static void SetSpan(XElement tc, string name, int value)
     {
         if (Span(tc, name) != value) tc.SetAttributeValue(name, value == 1 ? null : value);
-    }
-
-    private static XElement AddFirst(XElement parent, XElement child)
-    {
-        parent.AddFirst(child);
-        return child;
     }
 }

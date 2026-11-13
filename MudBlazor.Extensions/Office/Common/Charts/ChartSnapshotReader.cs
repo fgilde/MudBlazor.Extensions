@@ -4,8 +4,7 @@ using MudBlazor.Extensions.Office.Presentation;
 
 namespace MudBlazor.Extensions.Office;
 
-/// <summary>Reads the cached values of a DrawingML chart part.</summary>
-public static class ChartSnapshotReader
+internal static class ChartSnapshotReader
 {
     private const int MaxPoints = 100_000;
     private static readonly XNamespace C = "http://schemas.openxmlformats.org/drawingml/2006/chart";
@@ -17,11 +16,7 @@ public static class ChartSnapshotReader
         ["barChart"] = ChartKind.Column, ["lineChart"] = ChartKind.Line, ["pieChart"] = ChartKind.Pie, ["areaChart"] = ChartKind.Area, ["scatterChart"] = ChartKind.Scatter
     };
 
-    /// <summary>Reads kind, title and the cached values of a chart part.</summary>
-    /// <param name="chartPart">The chart part.</param>
-    /// <param name="resolveColor">Resolves a color written as <c>#RRGGBB</c> or <c>scheme:name</c> to <c>#RRGGBB</c>, or null.</param>
-    /// <returns>The snapshot, or null for chart types that cannot be drawn and for charts without cached values.</returns>
-    public static ChartSnapshot Read(XDocument chartPart, Func<string, string> resolveColor)
+    internal static ChartSnapshot Read(XDocument chartPart, Func<string, string> resolveColor)
     {
         var chart = chartPart?.Root?.Element(C + "chart");
         var types = chart?.Element(C + "plotArea")?.Elements().Where(e => e.Name.Namespace == C && e.Name.LocalName.EndsWith("Chart", StringComparison.Ordinal)).ToList() ?? [];

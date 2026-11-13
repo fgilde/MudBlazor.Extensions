@@ -55,8 +55,8 @@ internal static class AnimationXml
 
             var tn = node.Element(P + "cTn")!;
             tn.SetAttributeValue("nodeType", NodeTypes.First(n => n.Trigger == effect.Trigger).NodeType);
-            var conditions = tn.Element(P + "stCondLst") ?? AddFirst(tn, new XElement(P + "stCondLst"));
-            (conditions.Element(P + "cond") ?? AddFirst(conditions, new XElement(P + "cond"))).SetAttributeValue("delay", Milliseconds(effect.DelaySeconds));
+            var conditions = tn.Element(P + "stCondLst") ?? SlideXml.AddFirst(tn, new XElement(P + "stCondLst"));
+            (conditions.Element(P + "cond") ?? SlideXml.AddFirst(conditions, new XElement(P + "cond"))).SetAttributeValue("delay", Milliseconds(effect.DelaySeconds));
             slice!.Element(P + "cTn")!.Element(P + "childTnLst")!.Add(node);
         }
 
@@ -181,7 +181,7 @@ internal static class AnimationXml
     {
         var timing = slide.Element(P + "timing") ?? SlideXml.Place(slide, new XElement(P + "timing"), "extLst");
         var next = timing.Descendants(P + "cTn").Select(c => Long((string)c.Attribute("id")) ?? 0).DefaultIfEmpty().Max() + 1;
-        var tnLst = timing.Element(P + "tnLst") ?? AddFirst(timing, new XElement(P + "tnLst"));
+        var tnLst = timing.Element(P + "tnLst") ?? SlideXml.AddFirst(timing, new XElement(P + "tnLst"));
         var root = tnLst.Element(P + "par")?.Element(P + "cTn") ?? Add(tnLst, new XElement(P + "par",
             new XElement(P + "cTn", new XAttribute("id", next++), new XAttribute("dur", "indefinite"), new XAttribute("restart", "never"), new XAttribute("nodeType", "tmRoot")))).Element(P + "cTn")!;
         var children = root.Element(P + "childTnLst") ?? SlideXml.Place(root, new XElement(P + "childTnLst"), "subTnLst");
@@ -211,12 +211,6 @@ internal static class AnimationXml
     private static XElement Add(XElement parent, XElement child)
     {
         parent.Add(child);
-        return child;
-    }
-
-    private static XElement AddFirst(XElement parent, XElement child)
-    {
-        parent.AddFirst(child);
         return child;
     }
 }

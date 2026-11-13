@@ -279,7 +279,7 @@ internal sealed class SlideXml(string part, string basis, List<OpcRelationship> 
         }
     }
 
-    private static XElement AddFirst(XElement parent, XElement child)
+    internal static XElement AddFirst(XElement parent, XElement child)
     {
         parent.AddFirst(child);
         return child;
