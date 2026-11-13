@@ -9,6 +9,8 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExNotebookElementView
 {
+    private const double HitTolerance = 10;
+
     private (string Id, int Version, string Url)? _rendered;
     private string _url;
 
@@ -45,6 +47,8 @@ public partial class MudExNotebookElementView
         _rendered = key;
         return true;
     }
+
+    private static string HitWidth(double strokeWidth) => NotebookStyles.Num(Math.Max(strokeWidth, HitTolerance));
 
     private static string ColorOr(string color, string fallback) => NoteValues.IsColor(color) ? color : fallback;
 }

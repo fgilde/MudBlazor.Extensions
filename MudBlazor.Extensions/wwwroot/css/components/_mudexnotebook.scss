@@ -34,6 +34,9 @@
 .mud-ex-notebook-page-interactive .mud-ex-notebook-geometry-element path {
   pointer-events: visiblePainted;
 }
+.mud-ex-notebook-page-interactive .mud-ex-notebook-geometry-element path.mud-ex-notebook-hit {
+  pointer-events: stroke;
+}
 .mud-ex-notebook-highlighter {
   opacity: 0.5;
   mix-blend-mode: multiply;

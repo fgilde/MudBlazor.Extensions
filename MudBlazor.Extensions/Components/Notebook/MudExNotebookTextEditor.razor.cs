@@ -13,6 +13,9 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExNotebookTextEditor
 {
+    private const int MaxLinkText = 200;
+    private const int MaxLinkAddress = 2048;
+
     private readonly JsModule<MudExNotebookTextEditor> _module = new();
     private ElementReference _root;
 
@@ -146,7 +149,8 @@ public partial class MudExNotebookTextEditor
     /// <param name="link">The link at the selection, or null.</param>
     /// <returns>A task that completes when the request is handed on.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnLinkRequestAsync(string text, string link) => InvokeAsync(() => LinkRequested.InvokeAsync((text ?? "", link)));
+    public Task OnLinkRequestAsync(string text, string link) =>
+        InvokeAsync(() => LinkRequested.InvokeAsync(((text ?? "")[..Math.Min(text?.Length ?? 0, MaxLinkText)], link?.Length > MaxLinkAddress ? null : link)));
 
     /// <summary>
     /// Called by the browser when HTML is pasted. Keeps only text with bold, italic, underline, colour, lists and links with an allowed scheme;

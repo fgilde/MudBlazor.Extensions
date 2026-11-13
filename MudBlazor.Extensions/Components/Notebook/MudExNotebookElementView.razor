@@ -12,6 +12,8 @@
             <svg class="@(ink.Tool == InkTool.Highlighter ? "mud-ex-notebook-geometry mud-ex-notebook-ink mud-ex-notebook-highlighter" : "mud-ex-notebook-geometry mud-ex-notebook-ink")">
                 <path d="@NotebookStyles.InkPath(ink)" fill="none" stroke="@ColorOr(ink.Color, "#000000")" stroke-width="@NotebookStyles.Num(ink.StrokeWidth)"
                       stroke-linecap="round" stroke-linejoin="round" />
+                <path class="mud-ex-notebook-hit" d="@NotebookStyles.InkPath(ink)" fill="none" stroke="transparent" stroke-width="@HitWidth(ink.StrokeWidth)"
+                      stroke-linecap="round" stroke-linejoin="round" />
             </svg>
             break;
         case ShapeElement shape:
@@ -23,6 +25,8 @@
                 {
                     <path d="@head" fill="@stroke" stroke="none" />
                 }
+                <path class="mud-ex-notebook-hit" d="@NotebookStyles.ShapePath(shape)" fill="none" stroke="transparent" stroke-width="@HitWidth(shape.StrokeWidth)"
+                      stroke-linecap="round" stroke-linejoin="round" />
             </svg>
             break;
         case ImageElement image when _url != null:

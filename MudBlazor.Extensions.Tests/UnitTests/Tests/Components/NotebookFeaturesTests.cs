@@ -77,7 +77,7 @@ public class NotebookFeaturesTests : IAsyncLifetime
         Assert.Equal((NoteShapeKind.Arrow, new NoteBounds(100, 100, 100, 60), true, false), (shape.Kind, shape.Bounds, shape.FlipX, shape.FlipY));
         Assert.Equal([shape.Id], CanvasOf(cut).Selection);
         cut.WaitForAssertion(() => Assert.Equal(NotebookTool.Select, CanvasOf(cut).Tool));
-        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll($"[data-element-id='{shape.Id}'] path").Count));
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll($"[data-element-id='{shape.Id}'] path:not(.mud-ex-notebook-hit)").Count));
 
         await cut.InvokeAsync(() => cut.FindComponents<MudExRibbonColorPicker>().Single(p => p.Instance.Id == "nb-shape-outline").Instance.ValueChanged.InvokeAsync((MudExColor)"#FF0000"));
         Assert.Equal("#FF0000", ((ShapeElement)page.Elements[0]).Stroke);

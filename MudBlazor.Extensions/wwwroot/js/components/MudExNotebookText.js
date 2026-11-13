@@ -11,6 +11,7 @@ const AUTO = [['* ', 'bullet'], ['1. ', 'number'], ['[] ', 'todo']];
 const BULLETS = ['•', '◦', '▪'];
 const HEADING_PT = [11, 20, 16, 14];
 const INDENT_PX = 24;
+const LINK_TEXT_MAX = 200;
 const MAX_INDENT = 8;
 const ROMAN = [[1000, 'm'], [900, 'cm'], [500, 'd'], [400, 'cd'], [100, 'c'], [90, 'xc'], [50, 'l'], [40, 'xl'], [10, 'x'], [9, 'ix'], [5, 'v'], [4, 'iv'], [1, 'i']];
 
@@ -545,7 +546,7 @@ class MudExNotebookText {
         }
         this.linkRange = range.cloneRange();
         const host = range.startContainer.nodeType === Node.TEXT_NODE ? this.spanOf(range.startContainer) : null;
-        this.dotnet.invokeMethodAsync('OnLinkRequestAsync', plain(range.toString()), host?.dataset.link || null).catch(() => {});
+        this.dotnet.invokeMethodAsync('OnLinkRequestAsync', plain(range.toString()).slice(0, LINK_TEXT_MAX), host?.dataset.link || null).catch(() => {});
     }
 
     link(text, href) {

@@ -158,6 +158,28 @@ public class NotebookPageViewTests
         Assert.Equal("4", path.GetAttribute("stroke-width"));
         Assert.Equal("#FF0000", path.GetAttribute("stroke"));
         Assert.DoesNotContain("mud-ex-notebook-highlighter", element.ClassName);
+        Assert.Contains("mud-ex-notebook-geometry-element", element.ClassName);
+        var hit = element.QuerySelector("path.mud-ex-notebook-hit")!;
+        Assert.Equal(("M2 2L22 12L42 2", "10", "transparent", "none"), (hit.GetAttribute("d"), hit.GetAttribute("stroke-width"), hit.GetAttribute("stroke"), hit.GetAttribute("fill")));
+    }
+
+    [Fact]
+    public void PageView_ThinLineHasWideHitPath_ThickStrokeKeepsItsWidth()
+    {
+        var notebook = Notebook.Create();
+        var page = notebook.Sections[0].Pages[0];
+        var line = new AddShapeCommand(page, NoteShapeKind.Line, new NoteBounds(10, 10, 100, 0), "#000000", 2);
+        var thick = new AddStrokeCommand(page, [new InkPoint(10, 10, 0.5)], "#FFFF00", 18, InkTool.Highlighter);
+        notebook.Execute(line);
+        notebook.Execute(thick);
+        using var context = new TestContext();
+
+        var cut = Render(context, notebook);
+
+        var lineHit = cut.Find($"[data-element-id='{line.Shape.Id}'] path.mud-ex-notebook-hit");
+        Assert.Equal(cut.Find($"[data-element-id='{line.Shape.Id}'] path").GetAttribute("d"), lineHit.GetAttribute("d"));
+        Assert.Equal("10", lineHit.GetAttribute("stroke-width"));
+        Assert.Equal("18", cut.Find($"[data-element-id='{thick.Stroke.Id}'] path.mud-ex-notebook-hit").GetAttribute("stroke-width"));
     }
 
     [Fact]
