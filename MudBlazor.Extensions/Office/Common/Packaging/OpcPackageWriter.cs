@@ -5,19 +5,27 @@ using System.Xml.Linq;
 
 namespace MudBlazor.Extensions.Office;
 
-/// <summary>Writes an OPC package: parts are copied unchanged from a source package or put as new content.</summary>
+/// <summary>Writes an OPC package or another zip package: parts are copied unchanged from a source package or put as new content.</summary>
 internal sealed class OpcPackageWriter : IDisposable
 {
     private const string RelationshipsNs = "http://schemas.openxmlformats.org/package/2006/relationships";
     private const string ContentTypesNs = "http://schemas.openxmlformats.org/package/2006/content-types";
     private static readonly DateTimeOffset EntryTime = new(new DateTime(1980, 1, 1));
 
-    private readonly OpcPackage _source;
+    private readonly Func<string, ZipArchiveEntry> _source;
     private readonly ZipArchive _zip;
     private readonly HashSet<string> _written = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, int> _next = [];
 
     public OpcPackageWriter(OpcPackage source, Stream target)
+        : this(source.Entry, target)
+    {
+    }
+
+    /// <summary>Creates a writer for a zip package without OPC parts.</summary>
+    /// <param name="source">Looks up an entry of the source package by part name (with leading slash); returns null if there is none.</param>
+    /// <param name="target">The stream that receives the package.</param>
+    public OpcPackageWriter(Func<string, ZipArchiveEntry> source, Stream target)
     {
         _source = source;
         _zip = new ZipArchive(target, ZipArchiveMode.Create, true);
@@ -27,7 +35,7 @@ internal sealed class OpcPackageWriter : IDisposable
     /// <param name="part">The part name.</param>
     public void Copy(string part)
     {
-        var from = _source.Entry(part) ?? throw new FileNotFoundException("Package part not found.", part);
+        var from = _source(part) ?? throw new FileNotFoundException("Package part not found.", part);
         Claim(part);
         var to = _zip.CreateEntry(from.FullName, CompressionLevel.Optimal);
         to.LastWriteTime = from.LastWriteTime;
@@ -82,7 +90,7 @@ internal sealed class OpcPackageWriter : IDisposable
         for (var i = _next.GetValueOrDefault(pattern, 1);; i++)
         {
             var name = string.Format(pattern, i);
-            if (_written.Contains(name) || _source.Entry(name) != null) continue;
+            if (_written.Contains(name) || _source(name) != null) continue;
             _next[pattern] = i + 1;
             return name;
         }

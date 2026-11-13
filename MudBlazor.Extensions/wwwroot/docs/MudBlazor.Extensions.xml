@@ -32098,7 +32098,12 @@
             <returns>The content type, or null.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.OpcPackageWriter">
-            <summary>Writes an OPC package: parts are copied unchanged from a source package or put as new content.</summary>
+            <summary>Writes an OPC package or another zip package: parts are copied unchanged from a source package or put as new content.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackageWriter.#ctor(System.Func{System.String,System.IO.Compression.ZipArchiveEntry},System.IO.Stream)">
+            <summary>Creates a writer for a zip package without OPC parts.</summary>
+            <param name="source">Looks up an entry of the source package by part name (with leading slash); returns null if there is none.</param>
+            <param name="target">The stream that receives the package.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.OpcPackageWriter.Copy(System.String)">
             <summary>Copies a part of the source package unchanged, keeping its timestamp.</summary>
@@ -32128,6 +32133,669 @@
             <summary>Returns the next part name of the pattern that neither the source package nor this writer uses; each call returns a new name.</summary>
             <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
             <returns>The free part name.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.ImageElement">
+            <summary>An image whose bytes are a medium of the notebook (<see cref="M:MudBlazor.Extensions.Office.Notebook.Notebook.GetMedia(System.String)"/>).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.ImageElement.MediaId">
+            <summary>The media id: the content hash of the image bytes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.ImageElement.ContentType">
+            <summary>The image content type, one of the supported image types, or null if the file named an unsupported one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.ImageElement.AltText">
+            <summary>The alternative text.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.InkTool">
+            <summary>The tool a stroke was drawn with.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.InkTool.Pen">
+            <summary>An opaque pen.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.InkTool.Highlighter">
+            <summary>A translucent highlighter.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.InkPoint">
+            <summary>A point of a stroke.</summary>
+            <param name="X">The horizontal position relative to the element.</param>
+            <param name="Y">The vertical position relative to the element.</param>
+            <param name="Pressure">The pen pressure from 0 to 1.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.InkPoint.#ctor(System.Double,System.Double,System.Double)">
+            <summary>A point of a stroke.</summary>
+            <param name="X">The horizontal position relative to the element.</param>
+            <param name="Y">The vertical position relative to the element.</param>
+            <param name="Pressure">The pen pressure from 0 to 1.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.InkPoint.X">
+            <summary>The horizontal position relative to the element.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.InkPoint.Y">
+            <summary>The vertical position relative to the element.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.InkPoint.Pressure">
+            <summary>The pen pressure from 0 to 1.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.InkElement">
+            <summary>A freehand stroke. A stroke with a single point is a dot.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.InkElement.Points">
+            <summary>The points in drawing order, relative to the element's top left corner.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.InkElement.Color">
+            <summary>The colour as <c>#RRGGBB</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.InkElement.StrokeWidth">
+            <summary>The stroke width in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.InkElement.Tool">
+            <summary>The tool the stroke was drawn with.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NoteBounds">
+            <summary>A rectangle on a page in CSS pixels at 100 % zoom, origin at the top left of the page.</summary>
+            <param name="X">The left edge.</param>
+            <param name="Y">The top edge.</param>
+            <param name="Width">The width.</param>
+            <param name="Height">The height.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NoteBounds.#ctor(System.Double,System.Double,System.Double,System.Double)">
+            <summary>A rectangle on a page in CSS pixels at 100 % zoom, origin at the top left of the page.</summary>
+            <param name="X">The left edge.</param>
+            <param name="Y">The top edge.</param>
+            <param name="Width">The width.</param>
+            <param name="Height">The height.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteBounds.X">
+            <summary>The left edge.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteBounds.Y">
+            <summary>The top edge.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteBounds.Width">
+            <summary>The width.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteBounds.Height">
+            <summary>The height.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteBounds.Right">
+            <summary>The right edge.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteBounds.Bottom">
+            <summary>The bottom edge.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NoteBounds.Union(MudBlazor.Extensions.Office.Notebook.NoteBounds)">
+            <summary>The smallest rectangle containing both rectangles.</summary>
+            <param name="other">The other rectangle.</param>
+            <returns>The hull.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NoteElement">
+            <summary>An element on a notebook page. Coordinates are CSS pixels at 100 % zoom, origin at the top left of the page.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteElement.Id">
+            <summary>The element id, unique on its page.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteElement.X">
+            <summary>The left edge.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteElement.Y">
+            <summary>The top edge.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteElement.Width">
+            <summary>The width.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteElement.Height">
+            <summary>The height; 0 for text and tables means the height follows the content.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteElement.Bounds">
+            <summary>The element's rectangle.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NoteShapeKind">
+            <summary>The kind of a shape.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteShapeKind.Line">
+            <summary>A straight line.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteShapeKind.Arrow">
+            <summary>A straight line with an arrow head at its end.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteShapeKind.Rectangle">
+            <summary>A rectangle.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteShapeKind.Ellipse">
+            <summary>An ellipse.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteShapeKind.Triangle">
+            <summary>A triangle pointing up.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteShapeKind.Diamond">
+            <summary>A diamond.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.ShapeElement">
+            <summary>A geometric shape. A line or arrow runs from the top left to the bottom right corner of its bounds unless flipped.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.ShapeElement.Kind">
+            <summary>The kind of shape.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.ShapeElement.Stroke">
+            <summary>The outline colour as <c>#RRGGBB</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.ShapeElement.StrokeWidth">
+            <summary>The outline width in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.ShapeElement.Fill">
+            <summary>The fill colour as <c>#RRGGBB</c>, or null for no fill.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.ShapeElement.FlipX">
+            <summary>True if a line or arrow starts at the right edge instead of the left.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.ShapeElement.FlipY">
+            <summary>True if a line or arrow starts at the bottom edge instead of the top.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NoteTableCell">
+            <summary>A cell of a <see cref="T:MudBlazor.Extensions.Office.Notebook.TableElement"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteTableCell.Paragraphs">
+            <summary>The paragraphs of the cell.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NoteTableCell.Equals(MudBlazor.Extensions.Office.Notebook.NoteTableCell)">
+            <summary>Compares the paragraphs by value.</summary>
+            <param name="other">The other cell.</param>
+            <returns>True if both cells hold equal paragraphs.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NoteTableCell.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.TableElement">
+            <summary>A table of text cells. Its height follows the content; every row has one cell per column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.TableElement.ColumnWidths">
+            <summary>The column widths in pixels.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.TableElement.Rows">
+            <summary>The rows, each with one cell per column.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.TableElement.HeaderRow">
+            <summary>True if the first row is a header row.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.TextElement">
+            <summary>A block of text placed anywhere on the page. Its height follows the text unless <see cref="P:MudBlazor.Extensions.Office.Notebook.NoteElement.Height"/> is set.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.TextElement.Paragraphs">
+            <summary>The paragraphs in order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.Boolean">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.Double">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.NullableDouble">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.DoubleArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.CellDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ElementDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ImageDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.InkDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.InkTool">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ManifestDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.NoteAlign">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.NoteHeading">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.NoteListKind">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.NoteShapeKind">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.PageDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ParagraphDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.RunDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.SectionDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ShapeDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.TableDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.TextDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.DictionaryStringJsonElement">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ListCellDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ListElementDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ListParagraphDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ListRunDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ListSectionDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ListListCellDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.ListString">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.DateTimeOffset">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.JsonElement">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.Int32">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.String">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.Default">
+            <summary>
+            The default <see cref="T:System.Text.Json.Serialization.JsonSerializerContext"/> associated with a default <see cref="T:System.Text.Json.JsonSerializerOptions"/> instance.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.GeneratedSerializerOptions">
+            <summary>
+            The source-generated options associated with this context.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.#ctor">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.#ctor(System.Text.Json.JsonSerializerOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NotebookJsonContext.GetTypeInfo(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookJson">
+            <summary>Maps the notebook model to the JSON of the file format and back, checking every value read.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookPackage">
+            <summary>A read-only view of a notebook zip with checked entry paths and sizes. Entry names are zip names without leading slash.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookReader">
+            <summary>Reads the notebook format. A page whose JSON cannot be read becomes an empty, read-only error page whose file is kept unchanged.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookWriter">
+            <summary>
+            Writes the notebook format. Unchanged pages, error pages and media still in use are copied from the loaded file; changed pages are written anew; media
+            no page uses are left out. Entries outside <c>pages/</c> and <c>media/</c> are kept.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.Notebook">
+            <summary>A notebook of sections and pages in the style of OneNote, with an undo stack.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.Notebook.Name">
+            <summary>The name of the notebook.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.Notebook.Sections">
+            <summary>The sections in order; a notebook always has at least one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.Notebook.Undo">
+            <summary>The undo and redo history.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.Notebook.ReadOnlyFormat">
+            <summary>True if the file was written by a newer major format version; the notebook can be viewed but not edited or saved.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.Notebook.Modified">
+            <summary>True if the notebook changed since it was loaded or created.</summary>
+        </member>
+        <member name="E:MudBlazor.Extensions.Office.Notebook.Notebook.Changed">
+            <summary>Raised once after each command, transaction, undo or redo with everything that changed.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.Notebook.Create(System.String)">
+            <summary>Creates a notebook with one section and one empty page.</summary>
+            <param name="name">The name of the notebook.</param>
+            <returns>The notebook.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.Notebook.Load(System.IO.Stream,MudBlazor.Extensions.Office.Notebook.NotebookLoadOptions)">
+            <summary>Reads a notebook file (.mxnb). A page whose content cannot be read opens empty with <see cref="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.LoadError"/> set.</summary>
+            <param name="stream">The file content.</param>
+            <param name="options">Limits for the unpacked size, or null for the defaults.</param>
+            <returns>The notebook.</returns>
+            <exception cref="T:System.IO.InvalidDataException">The file is not a notebook, contains unsafe entry paths or exceeds the size limits.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.Notebook.Save(System.IO.Stream)">
+            <summary>Writes the notebook as a .mxnb file. Unchanged pages and media are copied from the loaded file; media no page uses are left out.</summary>
+            <param name="target">The stream that receives the file.</param>
+            <exception cref="T:System.InvalidOperationException">The notebook has a newer format version (<see cref="P:MudBlazor.Extensions.Office.Notebook.Notebook.ReadOnlyFormat"/>).</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.Notebook.Execute(MudBlazor.Extensions.Office.IDocumentCommand{MudBlazor.Extensions.Office.Notebook.Notebook})">
+            <summary>Applies a command and records it as one undo step (or adds it to the open transaction). A command that changes nothing records nothing.</summary>
+            <param name="command">The command.</param>
+            <exception cref="T:System.InvalidOperationException">The notebook has a newer format version (<see cref="P:MudBlazor.Extensions.Office.Notebook.Notebook.ReadOnlyFormat"/>).</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.Notebook.GetMedia(System.String)">
+            <summary>Gets the bytes of a medium, for example an image.</summary>
+            <param name="id">The media id of an <see cref="T:MudBlazor.Extensions.Office.Notebook.ImageElement"/>.</param>
+            <returns>The bytes, or null if the notebook has no such medium.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookChangeKind">
+            <summary>What changed in a notebook.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NotebookChangeKind.None">
+            <summary>Nothing.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NotebookChangeKind.Content">
+            <summary>Elements or text of pages changed.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NotebookChangeKind.Pages">
+            <summary>Pages were added, removed, moved, renamed or indented.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NotebookChangeKind.Sections">
+            <summary>Sections were added, removed, renamed, recoloured or moved.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookChangedEventArgs">
+            <summary>Describes everything that changed during one command or transaction.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookChangedEventArgs.Pages">
+            <summary>The affected pages, including removed ones.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookChangedEventArgs.Kind">
+            <summary>The kinds of change.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookLoadOptions">
+            <summary>Limits for reading a notebook file; a file that exceeds them is rejected.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookLoadOptions.MaxEntryBytes">
+            <summary>The largest unpacked size of a single entry in bytes. Default 256 MB.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookLoadOptions.MaxTotalBytes">
+            <summary>The largest unpacked size of all entries together in bytes. Default 256 MB.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookPage">
+            <summary>A page of a notebook section: a free surface of elements that grows with its content.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.Id">
+            <summary>The page id, unique in the notebook.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.Title">
+            <summary>The page title.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.Level">
+            <summary>The subpage level, 0 for a page and 1 or 2 for subpages.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.Created">
+            <summary>When the page was created.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.LastModified">
+            <summary>When the page content was last changed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.Elements">
+            <summary>The elements; the list order is the z-order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.Modified">
+            <summary>True if the page changed since it was loaded.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.Version">
+            <summary>Incremented by every change of the page; use it as render key.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.LoadError">
+            <summary>Why the page content could not be read, or null. Such a page is empty and read-only, and its file is saved unchanged.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookPage.ContentBounds">
+            <summary>The hull of all elements; empty for a page without elements.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookSection">
+            <summary>A section of a notebook: a coloured tab holding pages.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookSection.Id">
+            <summary>The section id, unique in the notebook.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookSection.Name">
+            <summary>The section name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookSection.Color">
+            <summary>The tab colour as <c>#RRGGBB</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NotebookSection.Pages">
+            <summary>The pages in order; a section always has at least one.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NoteListKind">
+            <summary>The list kind of a paragraph.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteListKind.None">
+            <summary>No list.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteListKind.Bullet">
+            <summary>A bulleted list.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteListKind.Number">
+            <summary>A numbered list; numbers count per indent level.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteListKind.Todo">
+            <summary>A to-do list with a check box.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NoteAlign">
+            <summary>The horizontal alignment of a paragraph.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteAlign.Left">
+            <summary>Left aligned.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteAlign.Center">
+            <summary>Centred.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteAlign.Right">
+            <summary>Right aligned.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NoteHeading">
+            <summary>The heading style of a paragraph.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteHeading.None">
+            <summary>Normal text.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteHeading.H1">
+            <summary>Heading 1.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteHeading.H2">
+            <summary>Heading 2.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Notebook.NoteHeading.H3">
+            <summary>Heading 3.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NoteParagraph">
+            <summary>A paragraph of a text element or table cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteParagraph.Runs">
+            <summary>The runs in order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteParagraph.List">
+            <summary>The list kind.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteParagraph.Indent">
+            <summary>The indent level, 0 to 8.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteParagraph.Checked">
+            <summary>True if the check box of a <see cref="F:MudBlazor.Extensions.Office.Notebook.NoteListKind.Todo"/> item is ticked.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteParagraph.Align">
+            <summary>The alignment.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteParagraph.Heading">
+            <summary>The heading style.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NoteParagraph.Equals(MudBlazor.Extensions.Office.Notebook.NoteParagraph)">
+            <summary>Compares all values, the runs by value.</summary>
+            <param name="other">The other paragraph.</param>
+            <returns>True if both paragraphs are equal.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NoteParagraph.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NoteRun">
+            <summary>A run of uniformly formatted text.</summary>
+            <param name="Text">The text.</param>
+            <param name="Format">The formatting; null means none.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NoteRun.#ctor(System.String,MudBlazor.Extensions.Office.Notebook.NoteRunFormat)">
+            <summary>A run of uniformly formatted text.</summary>
+            <param name="Text">The text.</param>
+            <param name="Format">The formatting; null means none.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteRun.Text">
+            <summary>The text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteRun.Format">
+            <summary>The formatting.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NoteRun.Equals(MudBlazor.Extensions.Office.Notebook.NoteRun)">
+            <summary>Compares text and formatting.</summary>
+            <param name="other">The other run.</param>
+            <returns>True if text and formatting are equal.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NoteRun.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Notebook.NoteRunFormat">
+            <summary>The formatting of a run of text.</summary>
+            <param name="Bold">Bold.</param>
+            <param name="Italic">Italic.</param>
+            <param name="Underline">Underlined.</param>
+            <param name="Strike">Struck through.</param>
+            <param name="SizePt">The font size in points, or null for the default.</param>
+            <param name="Color">The text colour as <c>#RRGGBB</c>, or null for the default.</param>
+            <param name="Highlight">The highlight colour as <c>#RRGGBB</c>, or null for none.</param>
+            <param name="Font">The font family, or null for the default.</param>
+            <param name="Link">The link target; only <c>http</c>, <c>https</c> and <c>mailto</c> links are kept when a file is read.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Notebook.NoteRunFormat.#ctor(System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Nullable{System.Double},System.String,System.String,System.String,System.String)">
+            <summary>The formatting of a run of text.</summary>
+            <param name="Bold">Bold.</param>
+            <param name="Italic">Italic.</param>
+            <param name="Underline">Underlined.</param>
+            <param name="Strike">Struck through.</param>
+            <param name="SizePt">The font size in points, or null for the default.</param>
+            <param name="Color">The text colour as <c>#RRGGBB</c>, or null for the default.</param>
+            <param name="Highlight">The highlight colour as <c>#RRGGBB</c>, or null for none.</param>
+            <param name="Font">The font family, or null for the default.</param>
+            <param name="Link">The link target; only <c>http</c>, <c>https</c> and <c>mailto</c> links are kept when a file is read.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteRunFormat.Bold">
+            <summary>Bold.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteRunFormat.Italic">
+            <summary>Italic.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteRunFormat.Underline">
+            <summary>Underlined.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteRunFormat.Strike">
+            <summary>Struck through.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteRunFormat.SizePt">
+            <summary>The font size in points, or null for the default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteRunFormat.Color">
+            <summary>The text colour as <c>#RRGGBB</c>, or null for the default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteRunFormat.Highlight">
+            <summary>The highlight colour as <c>#RRGGBB</c>, or null for none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteRunFormat.Font">
+            <summary>The font family, or null for the default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Notebook.NoteRunFormat.Link">
+            <summary>The link target; only <c>http</c>, <c>https</c> and <c>mailto</c> links are kept when a file is read.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.AnimationClass">
             <summary>The class of an animation effect.</summary>
