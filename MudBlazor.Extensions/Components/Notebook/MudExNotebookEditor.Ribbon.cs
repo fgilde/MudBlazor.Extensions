@@ -49,13 +49,21 @@ public partial class MudExNotebookEditor
 
     private static readonly (string Id, string Text, string Icon)[] LinkItems = [("nb-insert-link", "Link", Icons.Material.Filled.Link)];
 
-    private static readonly (string Id, string Text, string Icon)[] DrawItems =
+    private static readonly (string Id, string Text, string Icon, NotebookTool Tool)[] DrawItems =
     [
-        ("nb-draw-type", "Type", Icons.Material.Filled.TextFields),
-        ("nb-draw-select", "Select", Icons.Material.Filled.NearMe),
-        ("nb-draw-lasso", "Lasso Select", Icons.Material.Filled.Gesture),
-        ("nb-draw-eraser", "Eraser", Icons.Material.Filled.AutoFixNormal),
-        ("nb-draw-pen", "Pen", Icons.Material.Filled.Edit),
-        ("nb-draw-highlighter", "Highlighter", Icons.Material.Filled.BorderColor)
+        ("nb-draw-type", "Type", Icons.Material.Filled.TextFields, NotebookTool.Text),
+        ("nb-draw-select", "Select", Icons.Material.Filled.NearMe, NotebookTool.Select),
+        ("nb-draw-lasso", "Lasso Select", Icons.Material.Filled.Gesture, NotebookTool.Lasso),
+        ("nb-draw-eraser", "Eraser", Icons.Material.Filled.AutoFixNormal, NotebookTool.Eraser),
+        ("nb-draw-pen", "Pen", Icons.Material.Filled.Edit, NotebookTool.Pen),
+        ("nb-draw-highlighter", "Highlighter", Icons.Material.Filled.BorderColor, NotebookTool.Highlighter)
     ];
+
+    private async Task SetToolAsync(NotebookTool tool)
+    {
+        await CommitTextAsync();
+        _tool = tool;
+    }
+
+    private Task CommitTextAsync() => _canvas?.CommitTextAsync() ?? Task.CompletedTask;
 }

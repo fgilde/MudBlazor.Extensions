@@ -12,6 +12,7 @@ public partial class MudExNotebookEditor
     {
         if (IsReadOnly)
             return;
+        await CommitTextAsync();
         await CommitTitleAsync();
         try
         {
@@ -80,6 +81,7 @@ public partial class MudExNotebookEditor
     {
         if (section == null || page == null || (ReferenceEquals(section, _section) && ReferenceEquals(page, _page)))
             return false;
+        await CommitTextAsync();
         await CommitTitleAsync();
         if (!section.Pages.Contains(page))
             return false;

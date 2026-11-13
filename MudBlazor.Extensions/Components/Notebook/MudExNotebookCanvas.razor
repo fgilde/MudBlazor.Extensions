@@ -1,0 +1,25 @@
+@inherits MudExBaseComponent<MudExNotebookCanvas>
+@namespace MudBlazor.Extensions.Components
+
+<div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-notebook-canvas {Class}".TrimEnd())" style="@Style" tabindex="0" role="application"
+     aria-label="@TryLocalize("Page")" data-readonly="@(Editable ? "false" : "true")" data-tool="@Tool.ToString().ToLowerInvariant()"
+     data-zoom="@NotebookStyles.Num(EffectiveZoom)" data-selection="@string.Join(",", _selection)" data-editing="@_text?.ElementId" @onkeydown="_keyDown">
+    <MudExNotebookPageView Notebook="Notebook" Page="Page" Zoom="Zoom" Interactive="true" ViewportWidth="ViewportWidth" ViewportHeight="ViewportHeight"
+                           MeasuredHeights="_heights" Images="Images" Localizer="@Localizer" />
+    @if (Editable)
+    {
+        <div class="mud-ex-notebook-canvas-layer">
+            @foreach (var element in SelectedElements)
+            {
+                <div @key="element.Id" class="mud-ex-notebook-selection" data-id="@element.Id" data-kind="@KindOf(element)" data-x="@NotebookStyles.Num(element.X)"
+                     data-y="@NotebookStyles.Num(element.Y)" data-w="@NotebookStyles.Num(element.Width)" data-h="@NotebookStyles.Num(HeightOf(element))" style="@FrameStyle(element)">
+                    @foreach (var handle in HandlesOf(element))
+                    {
+                        <span class="@($"mud-ex-notebook-handle mud-ex-notebook-handle-{handle}")" data-handle="@handle"></span>
+                    }
+                </div>
+            }
+            <div class="mud-ex-notebook-canvas-overlay"></div>
+        </div>
+    }
+</div>

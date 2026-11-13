@@ -42,7 +42,9 @@ public partial class MudExNotebookPageView
     /// <summary>The image URLs of the notebook; if null, the view uses data URIs.</summary>
     [Parameter] public NotebookImageUrls Images { get; set; }
 
-    private double EffectiveZoom => Zoom > 0 && double.IsFinite(Zoom) ? Zoom : 1;
+    private double EffectiveZoom => ZoomOf(Zoom);
+
+    internal static double ZoomOf(double zoom) => zoom > 0 && double.IsFinite(zoom) ? zoom : 1;
 
     private NotebookImageUrls ImageUrls => Images ?? _ownImages;
 

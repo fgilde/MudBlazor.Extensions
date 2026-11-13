@@ -10101,3 +10101,96 @@ textarea.mud-ex-ssg-note-text {
 .mud-ex-notebook-status-bar .mud-ex-sssb-slider {
   accent-color: var(--mud-ex-notebook-accent, var(--mud-palette-primary));
 }
+.mud-ex-notebook-canvas {
+  position: relative;
+  outline: none;
+}
+.mud-ex-notebook-canvas:focus-visible {
+  outline: 2px solid var(--mud-ex-notebook-accent, #7719AA);
+  outline-offset: -2px;
+}
+.mud-ex-notebook-canvas[data-tool="text"] .mud-ex-notebook-page-interactive {
+  cursor: text;
+}
+.mud-ex-notebook-canvas[data-readonly="true"] .mud-ex-notebook-page-interactive {
+  cursor: default;
+}
+.mud-ex-notebook-canvas-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+.mud-ex-notebook-selection {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px solid var(--mud-ex-notebook-accent, #7719AA);
+  pointer-events: none;
+}
+.mud-ex-notebook-handle {
+  position: absolute;
+  box-sizing: border-box;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--mud-ex-notebook-accent, #7719AA);
+  background-color: #fff;
+  pointer-events: auto;
+  touch-action: none;
+}
+.mud-ex-notebook-handle-nw {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+.mud-ex-notebook-handle-n {
+  top: -5px;
+  left: calc(50% - 4px);
+  cursor: ns-resize;
+}
+.mud-ex-notebook-handle-ne {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+.mud-ex-notebook-handle-e {
+  top: calc(50% - 4px);
+  right: -5px;
+  cursor: ew-resize;
+}
+.mud-ex-notebook-handle-se {
+  right: -5px;
+  bottom: -5px;
+  cursor: nwse-resize;
+}
+.mud-ex-notebook-handle-s {
+  bottom: -5px;
+  left: calc(50% - 4px);
+  cursor: ns-resize;
+}
+.mud-ex-notebook-handle-sw {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+.mud-ex-notebook-handle-w {
+  top: calc(50% - 4px);
+  left: -5px;
+  cursor: ew-resize;
+}
+.mud-ex-notebook-handle-move {
+  top: -11px;
+  right: -1px;
+  left: -1px;
+  width: auto;
+  height: 10px;
+  border-radius: 3px 3px 0 0;
+  background-color: var(--mud-ex-notebook-accent, #7719AA);
+  cursor: move;
+}
+.mud-ex-notebook-marquee {
+  position: absolute;
+  border: 1px dashed var(--mud-ex-notebook-accent, #7719AA);
+  background-color: rgba(119, 25, 170, 0.08);
+  pointer-events: none;
+}

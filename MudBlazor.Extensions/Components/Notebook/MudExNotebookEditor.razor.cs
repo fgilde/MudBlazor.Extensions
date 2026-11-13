@@ -39,8 +39,10 @@ public partial class MudExNotebookEditor : IMudExFileEditor
     private ElementReference _root;
     private ElementReference _titleInput;
     private MudExNotebookSectionTabs _tabs;
+    private MudExNotebookCanvas _canvas;
     private (double Width, double Height) _viewport;
     private double _zoom = 1;
+    private NotebookTool _tool = NotebookTool.Text;
     private bool _pageListVisible = true;
     private bool _pageListParameter = true;
     private bool _sectionTabsVisible = true;
@@ -202,6 +204,7 @@ public partial class MudExNotebookEditor : IMudExFileEditor
     /// <inheritdoc />
     protected override async Task FlushPendingEditsAsync()
     {
+        await CommitTextAsync();
         await CommitTitleAsync();
         await _changeNotification;
     }

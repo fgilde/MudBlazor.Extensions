@@ -31,7 +31,13 @@
                     @Group("Links", Icons.Material.Filled.Link, 0, LinkItems)
                 </MudExRibbonTab>
                 <MudExRibbonTab Text="@TryLocalize("Draw")" KeyTip="D" Visible="@(!IsReadOnly)">
-                    @Group("Tools", Icons.Material.Filled.Draw, 0, DrawItems)
+                    <MudExRibbonGroup Text="@TryLocalize("Tools")" Icon="@Icons.Material.Filled.Draw" CollapsePriority="0">
+                        @foreach (var (id, text, icon, tool) in DrawItems)
+                        {
+                            <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Size="MudExRibbonItemSize.Large" Disabled="@(tool is not (NotebookTool.Text or NotebookTool.Select))"
+                                                     Checked="@(_tool == tool)" CheckedChanged="@(_ => SetToolAsync(tool))" />
+                        }
+                    </MudExRibbonGroup>
                 </MudExRibbonTab>
                 <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
                     <MudExRibbonGroup Text="@TryLocalize("Show")" Icon="@Icons.Material.Filled.Visibility" CollapsePriority="1">
@@ -69,8 +75,8 @@
                         }
                         <div class="mud-ex-notebook-page-date">@_page.Created.ToLocalTime().ToString("f", System.Globalization.CultureInfo.CurrentCulture)</div>
                     </div>
-                    <MudExNotebookPageView Notebook="_notebook" Page="_page" Zoom="_zoom" Interactive="IsReadOnly" ViewportWidth="_viewport.Width" ViewportHeight="_viewport.Height"
-                                           Images="_images" Localizer="@Localizer" />
+                    <MudExNotebookCanvas @ref="_canvas" Notebook="_notebook" Page="_page" Zoom="_zoom" ReadOnly="@(!CanEditPage)" Tool="_tool" ViewportWidth="_viewport.Width"
+                                         ViewportHeight="_viewport.Height" Images="_images" Localizer="@Localizer" />
                 }
             </div>
         </div>

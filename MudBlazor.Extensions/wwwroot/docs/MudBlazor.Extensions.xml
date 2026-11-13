@@ -12912,6 +12912,150 @@
         <member name="M:MudBlazor.Extensions.Components.MudExVirtualize`1.OnParametersSetAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookCanvas">
+            <summary>
+            The editing surface of the notebook editor: shows a page with a selection layer above it. In the text tool a click on the free page starts a new
+            text block there and a click into a text block edits it; elements are selected, moved and resized with the pointer. The gestures run in the
+            browser and only their result reaches .NET as one undo step. The keyboard nudges, deletes, duplicates and cycles through the elements; Tab past
+            the last element leaves the surface. The canvas does not listen to <see cref="E:MudBlazor.Extensions.Office.Notebook.Notebook.Changed"/>: a host that changes the
+            notebook itself renders the canvas again.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.#ctor">
+            <summary>Creates the canvas.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.Notebook">
+            <summary>The notebook the page belongs to. Edits are executed on it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.Page">
+            <summary>The page to edit. Changing it clears the selection.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.Zoom">
+            <summary>The zoom factor; 1 is 100 %.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.Images">
+            <summary>The image URLs of the notebook; if null, the page uses data URIs.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.ViewportWidth">
+            <summary>The width of the visible area in CSS pixels; the page is at least this wide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.ViewportHeight">
+            <summary>The height of the visible area in CSS pixels; the page is at least this high.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.ReadOnly">
+            <summary>If true elements can neither be selected nor changed, and links open with a plain click.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.Tool">
+            <summary>What a pointer gesture on the page does. The host holds the tool and switches it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.SelectionChanged">
+            <summary>Raised whenever the selected elements change, also when the page changes or selected elements disappear.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.TextEditRequested">
+            <summary>Raised when the user starts writing: a click on the free page in the text tool, a click into a text block or typing on a selected one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.Selection">
+            <summary>The ids of the selected elements.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.SelectAsync(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>Selects elements; unknown ids are ignored. A running text session on another element ends first.</summary>
+            <param name="ids">The element ids.</param>
+            <returns>A task that completes when the selection is shown.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnSelectionAsync(System.String[])">
+            <summary>Called by the browser with the elements the user selected by a click or a selection frame.</summary>
+            <param name="ids">The element ids.</param>
+            <returns>A task that completes when the selection is shown.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnPageClickAsync(System.Double,System.Double)">
+            <summary>Called by the browser for a click on the page in the text tool: edits the text block under the point or starts a new one there.</summary>
+            <param name="x">The horizontal position in page coordinates.</param>
+            <param name="y">The vertical position in page coordinates.</param>
+            <returns>A task that completes when the text session started.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnMoveAsync(System.Collections.Generic.Dictionary{System.String,MudBlazor.Extensions.Components.PointDto})">
+            <summary>Called by the browser when the user moved elements. All moves are one undo step; positions are kept at 0 or more.</summary>
+            <param name="positions">The new top left corners in page coordinates by element id.</param>
+            <returns>A task that completes when the change is executed.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnResizeAsync(System.Collections.Generic.Dictionary{System.String,MudBlazor.Extensions.Components.BoundsDto})">
+            <summary>
+            Called by the browser when the user resized elements. Text blocks and tables change only their width, pictures keep their aspect ratio
+            unless <see cref="P:MudBlazor.Extensions.Components.BoundsDto.Free"/> is set, and elements of an unknown type keep their size. All changes are one undo step.
+            </summary>
+            <param name="bounds">The new rectangles in page coordinates by element id.</param>
+            <returns>A task that completes when the change is executed.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnHeightsMeasuredAsync(System.Collections.Generic.Dictionary{System.String,System.Double})">
+            <summary>Called by the browser with the rendered heights of text blocks and tables, in CSS pixels at 100 % zoom.</summary>
+            <param name="heights">The heights by element id; only changed values are sent.</param>
+            <returns>A task that completes when the page was laid out again.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.PointDto">
+            <summary>A point reported by the browser in page coordinates (CSS pixels at 100 % zoom).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.PointDto.X">
+            <summary>The horizontal position.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.PointDto.Y">
+            <summary>The vertical position.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.BoundsDto">
+            <summary>A rectangle reported by the browser after resizing an element, in page coordinates (CSS pixels at 100 % zoom).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.BoundsDto.X">
+            <summary>The left edge.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.BoundsDto.Y">
+            <summary>The top edge.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.BoundsDto.Width">
+            <summary>The width.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.BoundsDto.Height">
+            <summary>The height.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.BoundsDto.Free">
+            <summary>True if the user held Shift, so a picture is resized without keeping its aspect ratio.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.NotebookTextEditRequest">
+            <summary>Asks the host to show the text editor for a block of a <see cref="T:MudBlazor.Extensions.Components.MudExNotebookCanvas"/>.</summary>
+            <param name="ElementId">The id of the text block; for a new block the id it gets when its text is committed.</param>
+            <param name="X">The left edge of the block in page coordinates.</param>
+            <param name="Y">The top edge of the block in page coordinates.</param>
+            <param name="IsNew">True if the block does not exist yet; it is added only if text is written.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.NotebookTextEditRequest.#ctor(System.String,System.Double,System.Double,System.Boolean)">
+            <summary>Asks the host to show the text editor for a block of a <see cref="T:MudBlazor.Extensions.Components.MudExNotebookCanvas"/>.</summary>
+            <param name="ElementId">The id of the text block; for a new block the id it gets when its text is committed.</param>
+            <param name="X">The left edge of the block in page coordinates.</param>
+            <param name="Y">The top edge of the block in page coordinates.</param>
+            <param name="IsNew">True if the block does not exist yet; it is added only if text is written.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextEditRequest.ElementId">
+            <summary>The id of the text block; for a new block the id it gets when its text is committed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextEditRequest.X">
+            <summary>The left edge of the block in page coordinates.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextEditRequest.Y">
+            <summary>The top edge of the block in page coordinates.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextEditRequest.IsNew">
+            <summary>True if the block does not exist yet; it is added only if text is written.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExNotebookEditor">
             <summary>
             Notebook editor in the style of OneNote with ribbon, section tabs, page list and status bar. Opens .mxnb files and is the viewer and editor for them in
@@ -13182,6 +13326,30 @@
         <member name="M:MudBlazor.Extensions.Components.NotebookImageUrls.UrlFor(System.String)">
             <summary>Gets the URL of a medium, or null if the notebook has no such medium.</summary>
             <param name="mediaId">The media id.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.NotebookTool">
+            <summary>What a pointer gesture on the notebook page does.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.NotebookTool.Text">
+            <summary>A click on the page writes text there; elements are selected and moved.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.NotebookTool.Select">
+            <summary>Elements are selected, moved and resized; dragging on the free page selects everything inside the frame.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.NotebookTool.Pen">
+            <summary>Draws with a pen.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.NotebookTool.Highlighter">
+            <summary>Draws with a translucent highlighter.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.NotebookTool.Eraser">
+            <summary>Erases whole strokes.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.NotebookTool.Lasso">
+            <summary>Selects strokes and elements with a freehand line.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.NotebookTool.Shape">
+            <summary>Draws a shape.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IDefaultRenderDataProvider">
             <summary>
