@@ -1,10 +1,12 @@
+using System.Text;
 using System.Text.Json;
 
 namespace MudBlazor.Extensions.Office.Notebook;
 
 /// <summary>
-/// Writes the notebook format. Unchanged pages, error pages and media still in use are copied from the loaded file; changed pages are written anew; media
-/// no page uses are left out. Entries outside <c>pages/</c> and <c>media/</c> are kept.
+/// Writes the notebook format into a buffer and copies it to the target only when complete. Unchanged pages and error pages are copied from the loaded
+/// file, changed pages are written anew. A medium is kept if the JSON of any page names its id, also inside unknown properties or opaque elements;
+/// other media are left out. Entries outside <c>notebook.json</c>, <c>pages/</c> and the media files are kept.
 /// </summary>
 internal static class NotebookWriter
 {
@@ -12,36 +14,60 @@ internal static class NotebookWriter
     {
         ArgumentNullException.ThrowIfNull(target);
         if (notebook.ReadOnlyFormat) throw new InvalidOperationException("The notebook was written by a newer version and cannot be saved.");
+        using var buffer = new MemoryStream();
+        using (var writer = new OpcPackageWriter(part => notebook.Package?.Entry(part[1..]), buffer)) Write(notebook, writer);
+        buffer.Position = 0;
+        buffer.CopyTo(target);
+    }
+
+    private static void Write(Notebook notebook, OpcPackageWriter writer)
+    {
         var package = notebook.Package;
-        using var writer = new OpcPackageWriter(part => package?.Entry(part[1..]), target);
         writer.Put("/" + NotebookPackage.ManifestEntry, JsonSerializer.SerializeToUtf8Bytes(NotebookJson.ToDto(notebook), NotebookJsonContext.Default.ManifestDto));
 
-        var media = new HashSet<string>(StringComparer.Ordinal);
+        var known = new HashSet<string>(notebook.PendingMedia.Keys.Concat(package?.MediaIds ?? []), StringComparer.OrdinalIgnoreCase);
+        var lengths = known.Select(id => id.Length).ToHashSet();
+        var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var page in notebook.SectionList.SelectMany(s => s.PageList))
         {
-            if (page.LoadError != null)
+            byte[] json;
+            if (page.SourceEntry != null && (page.LoadError != null || !page.Modified))
             {
-                if (page.SourceEntry != null) writer.Copy("/" + page.SourceEntry);
-                if (page.SourceText != null) media.UnionWith(KnownMedia(notebook).Where(id => page.SourceText.Contains(id, StringComparison.Ordinal)));
-                continue;
+                writer.Copy("/" + page.SourceEntry);
+                json = package.Read(page.SourceEntry);
             }
+            else if (page.LoadError == null)
+            {
+                json = JsonSerializer.SerializeToUtf8Bytes(NotebookJson.ToDto(page), NotebookJsonContext.Default.PageDto);
+                writer.Put("/" + NotebookPackage.PageEntry(page.Id), json);
+            }
+            else continue;
 
-            media.UnionWith(page.ElementList.OfType<ImageElement>().Select(i => i.MediaId).Where(id => id != null));
-            if (!page.Modified && page.SourceEntry != null) writer.Copy("/" + page.SourceEntry);
-            else writer.Put("/" + NotebookPackage.PageEntry(page.Id), JsonSerializer.SerializeToUtf8Bytes(NotebookJson.ToDto(page), NotebookJsonContext.Default.PageDto));
+            MarkUsed(json, known, lengths, used);
         }
 
-        foreach (var id in media)
+        foreach (var id in used)
             if (notebook.PendingMedia.TryGetValue(id, out var pending)) writer.Put("/" + NotebookPackage.MediaEntryName(id, pending.Extension), pending.Data);
-            else if (package?.MediaEntry(id) is { } entry) writer.Copy("/" + entry);
+            else writer.Copy("/" + package.MediaEntry(id));
 
         if (package == null) return;
         foreach (var name in package.Names.Where(IsForeign)) writer.Copy("/" + name);
     }
 
-    private static IEnumerable<string> KnownMedia(Notebook notebook) => notebook.PendingMedia.Keys.Concat(notebook.Package?.MediaIds ?? []);
+    private static void MarkUsed(ReadOnlySpan<byte> json, HashSet<string> known, HashSet<int> lengths, HashSet<string> used)
+    {
+        for (var i = 0; i < json.Length;)
+        {
+            var start = i;
+            while (i < json.Length && IsIdByte(json[i])) i++;
+            if (i == start) i++;
+            else if (lengths.Contains(i - start) && known.TryGetValue(Encoding.ASCII.GetString(json[start..i]), out var id)) used.Add(id);
+        }
+    }
+
+    private static bool IsIdByte(byte b) => b is >= (byte)'a' and <= (byte)'z' or >= (byte)'A' and <= (byte)'Z' or >= (byte)'0' and <= (byte)'9' or (byte)'-' or (byte)'_';
 
     private static bool IsForeign(string name) =>
-        name != NotebookPackage.ManifestEntry && !name.StartsWith(NotebookPackage.PagesFolder, StringComparison.Ordinal)
-                                              && !name.StartsWith(NotebookPackage.MediaFolder, StringComparison.Ordinal);
+        !name.Equals(NotebookPackage.ManifestEntry, StringComparison.OrdinalIgnoreCase) && !name.StartsWith(NotebookPackage.PagesFolder, StringComparison.OrdinalIgnoreCase)
+                                                                                     && !NotebookPackage.IsMedia(name);
 }

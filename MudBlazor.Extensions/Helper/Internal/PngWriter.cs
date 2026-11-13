@@ -10,14 +10,6 @@ namespace MudBlazor.Extensions.Helper.Internal;
 /// </summary>
 internal static class PngWriter
 {
-    private static readonly uint[] CrcTable = Enumerable.Range(0, 256).Select(n =>
-    {
-        var c = (uint)n;
-        for (var k = 0; k < 8; k++)
-            c = (c & 1) != 0 ? 0xEDB88320 ^ (c >> 1) : c >> 1;
-        return c;
-    }).ToArray();
-
     public static byte[] Write(ReadOnlySpan<byte> pixels, int width, int height, int channels)
     {
         if (channels is not (1 or 3))
@@ -60,12 +52,7 @@ internal static class PngWriter
         stream.Write(typeBytes);
         stream.Write(data);
 
-        var crc = 0xFFFFFFFFu;
-        foreach (var b in typeBytes)
-            crc = CrcTable[(crc ^ b) & 0xFF] ^ (crc >> 8);
-        foreach (var b in data)
-            crc = CrcTable[(crc ^ b) & 0xFF] ^ (crc >> 8);
-        BinaryPrimitives.WriteUInt32BigEndian(number, crc ^ 0xFFFFFFFFu);
+        BinaryPrimitives.WriteUInt32BigEndian(number, Crc32.Final(Crc32.Update(Crc32.Update(Crc32.Initial, typeBytes), data)));
         stream.Write(number);
     }
 }

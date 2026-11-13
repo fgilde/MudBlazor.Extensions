@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Text;
 using System.Text.Json;
 
 namespace MudBlazor.Extensions.Office.Notebook;
@@ -17,15 +16,15 @@ internal static class NotebookReader
         {
             Name = manifest.Name ?? "", Package = package, FormatVersion = manifest.FormatVersion, ReadOnlyFormat = major > 1, Extra = manifest.Extra
         };
-        var sectionIds = new HashSet<string>(StringComparer.Ordinal);
-        var pageIds = new HashSet<string>(StringComparer.Ordinal);
+        var sectionIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var pageIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var dto in manifest.Sections ?? [])
         {
-            if (!NoteValues.IsId(dto?.Id) || !sectionIds.Add(dto.Id)) throw new InvalidDataException($"The notebook has an invalid or duplicate section id {dto?.Id}.");
+            if (!NoteValues.IsId(dto?.Id) || !sectionIds.Add(dto.Id)) throw new InvalidDataException($"The notebook has an invalid or duplicate section id {dto?.Id} (ids are compared ignoring case).");
             var section = new NotebookSection { Id = dto.Id, Name = dto.Name ?? "", Color = NoteValues.IsColor(dto.Color) ? dto.Color : NotebookSection.DefaultColor, Extra = dto.Extra };
             foreach (var id in dto.Pages ?? [])
             {
-                if (!NoteValues.IsId(id) || !pageIds.Add(id)) throw new InvalidDataException($"The notebook has an invalid or duplicate page id {id}.");
+                if (!NoteValues.IsId(id) || !pageIds.Add(id)) throw new InvalidDataException($"The notebook has an invalid or duplicate page id {id} (ids are compared ignoring case).");
                 section.PageList.Add(ReadPage(package, id));
             }
 
@@ -54,18 +53,17 @@ internal static class NotebookReader
     private static NotebookPage ReadPage(NotebookPackage package, string id)
     {
         var name = NotebookPackage.PageEntry(id);
-        if (package.Entry(name) == null) return new NotebookPage { Id = id, LoadError = "The page file is missing." };
-        var bytes = package.Read(name);
+        if (package.Entry(name)?.FullName is not { } entry) return new NotebookPage { Id = id, LoadError = package.Problem(name) ?? "The page file is missing." };
         try
         {
-            var page = NotebookJson.ToPage(JsonSerializer.Deserialize(bytes, NotebookJsonContext.Default.PageDto) ?? throw new JsonException("The page is empty."));
+            var page = NotebookJson.ToPage(JsonSerializer.Deserialize(package.Read(entry), NotebookJsonContext.Default.PageDto) ?? throw new JsonException("The page is empty."));
             page.Id = id;
-            page.SourceEntry = name;
+            page.SourceEntry = entry;
             return page;
         }
         catch (Exception e) when (e is JsonException or NotSupportedException)
         {
-            return new NotebookPage { Id = id, SourceEntry = name, SourceText = Encoding.UTF8.GetString(bytes), LoadError = e.Message };
+            return new NotebookPage { Id = id, SourceEntry = entry, LoadError = e.Message };
         }
     }
 

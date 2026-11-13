@@ -20,8 +20,8 @@ public sealed class OpaqueElement : NoteElement
 
     internal static OpaqueElement From(JsonElement json)
     {
-        if (!json.TryGetProperty("id", out var id) || id.ValueKind != JsonValueKind.String || id.GetString() is not { Length: > 0 } value)
-            throw new JsonException("An element has no id.");
+        if (!json.TryGetProperty("id", out var id) || id.ValueKind != JsonValueKind.String || id.GetString() is not { } value || !NoteValues.IsId(value))
+            throw new JsonException("An element has no valid id.");
         return new OpaqueElement
         {
             Id = value, Type = json.TryGetProperty("type", out var type) && type.ValueKind == JsonValueKind.String ? type.GetString() : "",

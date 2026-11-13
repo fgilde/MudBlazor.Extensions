@@ -27969,6 +27969,9 @@
             preview formats defined by the EPS specification are safe to hand to the existing viewers.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.Crc32">
+            <summary>CRC-32 (IEEE 802.3) as used by zip and PNG.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.Internal.Crypto.Pkcs12KeyDerivation">
             <summary>
             The key derivation of PKCS#12, RFC 7292 appendix B.2.
@@ -33218,15 +33221,20 @@
             <summary>Maps the notebook model to the JSON of the file format and back, checking every value read.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookPackage">
-            <summary>A read-only view of a notebook zip with checked entry paths and sizes. Entry names are zip names without leading slash.</summary>
+            <summary>
+            A read-only view of a notebook zip. Entry names are zip names without leading slash and compare ignoring case, as the writer does. Every entry is
+            inflated once while opening: the bytes actually produced count against the limits and must match the declared size and checksum. The manifest and
+            page JSON are kept; a corrupt page entry is reported through <see cref="M:MudBlazor.Extensions.Office.Notebook.NotebookPackage.Problem(System.String)"/> instead of failing the whole file.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookReader">
             <summary>Reads the notebook format. A page whose JSON cannot be read becomes an empty, read-only error page whose file is kept unchanged.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.NotebookWriter">
             <summary>
-            Writes the notebook format. Unchanged pages, error pages and media still in use are copied from the loaded file; changed pages are written anew; media
-            no page uses are left out. Entries outside <c>pages/</c> and <c>media/</c> are kept.
+            Writes the notebook format into a buffer and copies it to the target only when complete. Unchanged pages and error pages are copied from the loaded
+            file, changed pages are written anew. A medium is kept if the JSON of any page names its id, also inside unknown properties or opaque elements;
+            other media are left out. Entries outside <c>notebook.json</c>, <c>pages/</c> and the media files are kept.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.Notebook">

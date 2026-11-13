@@ -283,7 +283,7 @@ internal static class NotebookJson
             TableDto table => ToTable(table),
             _ => throw new JsonException("Unknown element type.")
         };
-        element.Id = string.IsNullOrEmpty(dto.Id) ? throw new JsonException("An element has no id.") : dto.Id;
+        element.Id = NoteValues.IsId(dto.Id) ? dto.Id : throw new JsonException("An element has no valid id.");
         element.X = dto.X;
         element.Y = dto.Y;
         element.Width = Math.Max(0, dto.Width);

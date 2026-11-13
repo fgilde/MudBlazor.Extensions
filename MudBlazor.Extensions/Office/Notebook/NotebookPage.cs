@@ -46,6 +46,4 @@ public sealed class NotebookPage
     internal Dictionary<string, JsonElement> Extra { get; set; }
 
     internal string SourceEntry { get; set; }
-
-    internal string SourceText { get; set; }
 }

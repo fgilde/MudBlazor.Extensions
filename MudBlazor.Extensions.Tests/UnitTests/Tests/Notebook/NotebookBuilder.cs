@@ -34,6 +34,12 @@ internal sealed class NotebookBuilder
         return this;
     }
 
+    public NotebookBuilder PageRef(string id)
+    {
+        _sections[^1].Pages.Add(id);
+        return this;
+    }
+
     public NotebookBuilder Media(string id, string extension, byte[] data)
     {
         Entries[$"media/{id}.{extension}"] = data;
@@ -72,6 +78,22 @@ internal sealed class NotebookBuilder
             }
 
         return ms.ToArray();
+    }
+
+    public static byte[] PatchUncompressedSize(byte[] zip, string name, int size)
+    {
+        var copy = (byte[])zip.Clone();
+        BitConverter.GetBytes(size).CopyTo(copy, Header(copy, name, 0x04034b50, 26, 30) + 22);
+        BitConverter.GetBytes(size).CopyTo(copy, Header(copy, name, 0x02014b50, 28, 46) + 24);
+        return copy;
+    }
+
+    public static byte[] CorruptData(byte[] zip, string name)
+    {
+        var copy = (byte[])zip.Clone();
+        var header = Header(copy, name, 0x04034b50, 26, 30);
+        copy[header + 30 + BitConverter.ToUInt16(copy, header + 26) + BitConverter.ToUInt16(copy, header + 28)] = 0xFF;
+        return copy;
     }
 
     public static Dictionary<string, byte[]> Unzip(byte[] zip)
@@ -147,6 +169,16 @@ internal sealed class NotebookBuilder
         second.PageList.Add(new NotebookPage { Id = "p3", Title = "Three", Level = 2 });
         notebook.SectionList.Add(second);
         return notebook;
+    }
+
+    private static int Header(byte[] zip, string name, uint signature, int nameLengthOffset, int nameOffset)
+    {
+        var bytes = Encoding.UTF8.GetBytes(name);
+        for (var i = 0; i < zip.Length - nameOffset; i++)
+            if (BitConverter.ToUInt32(zip, i) == signature && BitConverter.ToUInt16(zip, i + nameLengthOffset) == bytes.Length
+                                                          && zip.AsSpan(i + nameOffset, bytes.Length).SequenceEqual(bytes))
+                return i;
+        throw new InvalidOperationException($"No header for {name}.");
     }
 
     private static NoteTableCell Cell(string text) => new() { Paragraphs = [new NoteParagraph { Runs = [new NoteRun(text)] }] };

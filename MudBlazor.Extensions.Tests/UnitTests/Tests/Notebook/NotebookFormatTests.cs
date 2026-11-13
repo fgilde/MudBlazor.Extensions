@@ -162,13 +162,13 @@ public class NotebookFormatTests
     }
 
     [Theory]
-    [InlineData("{ \"title\": \"broken\", \"elements\": [")]
-    [InlineData("{\"elements\":[{\"type\":\"hologram\"}]}")]
-    [InlineData("{\"elements\":[42]}")]
-    [InlineData("{\"elements\":[{\"type\":\"ink\",\"id\":\"i\"},{\"type\":\"ink\",\"id\":\"i\"}]}")]
-    public void Load_BrokenPageJson_GivesErrorPage_KeepsOriginalOnSave(string json)
+    [InlineData("{ \"cover\": \"media-in-broken\", \"title\": \"broken\", \"elements\": [")]
+    [InlineData("{\"cover\":\"media-in-broken\",\"elements\":[{\"type\":\"hologram\"}]}")]
+    [InlineData("{\"cover\":\"media-in-broken\",\"elements\":[42]}")]
+    [InlineData("{\"cover\":\"media-in-broken\",\"elements\":[{\"type\":\"ink\",\"id\":\"i\"},{\"type\":\"ink\",\"id\":\"i\"}]}")]
+    [InlineData("{\"cover\":\"media-in-broken\",\"elements\":[{\"type\":\"ink\",\"id\":\"a b\"}]}")]
+    public void Load_BrokenPageJson_GivesErrorPage_KeepsOriginalOnSave(string broken)
     {
-        var broken = json.Replace("\"elements\": [", "\"elements\": [ \"media-in-broken\" ", StringComparison.Ordinal);
         var builder = new NotebookBuilder().Page("p1", Image("i", "m1")).RawPage("bad", broken).Page("p3")
             .Media("m1", "png", [1]).Media("media-in-broken", "png", [2]).Media("orphan", "png", [3]);
 
@@ -181,7 +181,7 @@ public class NotebookFormatTests
         Assert.Single(Page(notebook, "p1").Elements);
         var saved = Unzip(Save(notebook));
         Assert.Equal(Encoding.UTF8.GetBytes(broken), saved["pages/bad.json"]);
-        Assert.Equal(broken.Contains("media-in-broken"), saved.ContainsKey("media/media-in-broken.png"));
+        Assert.True(saved.ContainsKey("media/media-in-broken.png"));
         Assert.DoesNotContain("media/orphan.png", saved.Keys);
         Assert.Equal(["p1", "bad", "p3"], Notebook.Load(new MemoryStream(Save(notebook))).Sections[0].Pages.Select(p => p.Id));
     }
@@ -232,5 +232,135 @@ public class NotebookFormatTests
         Assert.Equal(new NoteBounds(0, 5, 150, 295), page.ContentBounds);
         Assert.Equal(150, page.ContentBounds.Right);
         Assert.Equal(300, page.ContentBounds.Bottom);
+    }
+
+    [Theory]
+    [InlineData("pages")]
+    [InlineData("sections")]
+    [InlineData("media")]
+    [InlineData("manifest")]
+    public void Load_NamesDifferingOnlyInCase_Rejected(string kind)
+    {
+        var builder = new NotebookBuilder().Page("p1", Image("i", "ab"));
+        switch (kind)
+        {
+            case "pages":
+                builder.PageRef("P1");
+                break;
+            case "sections":
+                builder.Section("S2").Page("p2").Section("s2").Page("p3");
+                break;
+            case "media":
+                builder.Media("ab", "png", [1]).Media("AB", "png", [2]);
+                break;
+            case "manifest":
+                builder.Entries["Notebook.json"] = [1];
+                break;
+        }
+
+        Assert.Throws<InvalidDataException>(() => builder.Load());
+    }
+
+    [Fact]
+    public void Save_Failure_LeavesTargetUntouched()
+    {
+        var notebook = Notebook.Create();
+        notebook.SectionList[0].PageList.Add(new NotebookPage { Id = notebook.Sections[0].Pages[0].Id });
+        using var target = new MemoryStream();
+
+        Assert.Throws<InvalidOperationException>(() => notebook.Save(target));
+
+        Assert.Equal(0, target.Length);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Save_MediaReferencedFromUnknownDataOrOpaqueElements_Kept(bool modify)
+    {
+        var elements = Text("t", "{\"text\":\"x\"}").Replace("\"x\":5", "\"x\":5,\"crop\":\"c2\"") + ",{\"type\":\"video\",\"id\":\"v\",\"poster\":\"c3\"}";
+        var notebook = new NotebookBuilder()
+            .Page("p1", elements, ",\"cover\":\"media/c1.png\",\"thumb\":\"c4\"")
+            .Media("c1", "png", [1]).Media("c2", "png", [2]).Media("c3", "png", [3]).Media("c4", "avif", [4]).Media("c5", "avif", [5]).Media("c6", "png", [6])
+            .Load();
+        if (modify)
+        {
+            var page = Page(notebook, "p1");
+            page.Title = "Edited";
+            notebook.Notify(page, NotebookChangeKind.Content);
+        }
+
+        var saved = Unzip(Save(notebook));
+
+        foreach (var name in new[] { "media/c1.png", "media/c2.png", "media/c3.png", "media/c4.avif" }) Assert.Contains(name, saved.Keys);
+        Assert.DoesNotContain("media/c5.avif", saved.Keys);
+        Assert.DoesNotContain("media/c6.png", saved.Keys);
+        Assert.Null(notebook.GetMedia("c4"));
+    }
+
+    [Fact]
+    public void Load_EntryWithLyingSizeHeader_Rejected()
+    {
+        var zip = PatchUncompressedSize(new NotebookBuilder().Page("p1").Media("bomb", "png", new byte[100_000]).Build(), "media/bomb.png", 10);
+
+        Assert.Throws<InvalidDataException>(() => Notebook.Load(new MemoryStream(zip), new NotebookLoadOptions { MaxEntryBytes = 1000 }));
+    }
+
+    [Fact]
+    public void Load_InputOverTotalLimit_StopsReading()
+    {
+        var input = new CountingStream(new byte[1_000_000]);
+
+        Assert.Throws<InvalidDataException>(() => Notebook.Load(input, new NotebookLoadOptions { MaxTotalBytes = 1000 }));
+
+        Assert.True(input.BytesRead < 200_000, $"{input.BytesRead} bytes read");
+    }
+
+    [Fact]
+    public void Load_CorruptPageEntry_GivesErrorPage()
+    {
+        var zip = CorruptData(new NotebookBuilder().Page("p1", Image("i", "m1")).Page("bad").Media("m1", "png", [1]).Build(), "pages/bad.json");
+
+        var notebook = Notebook.Load(new MemoryStream(zip));
+
+        Assert.False(string.IsNullOrEmpty(Page(notebook, "bad").LoadError));
+        Assert.Single(Page(notebook, "p1").Elements);
+        var reloaded = Notebook.Load(new MemoryStream(Save(notebook)));
+        Assert.Equal(["p1", "bad"], reloaded.Sections[0].Pages.Select(p => p.Id));
+        Assert.Equal([1], reloaded.GetMedia("m1"));
+    }
+
+    private sealed class CountingStream(byte[] data) : Stream
+    {
+        private readonly MemoryStream _inner = new(data);
+
+        public long BytesRead { get; private set; }
+
+        public override bool CanRead => true;
+
+        public override bool CanSeek => false;
+
+        public override bool CanWrite => false;
+
+        public override long Length => throw new NotSupportedException();
+
+        public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            var read = _inner.Read(buffer, offset, count);
+            BytesRead += read;
+            return read;
+        }
+
+        public override void Flush()
+        {
+        }
+
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+
+        public override void SetLength(long value) => throw new NotSupportedException();
+
+        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
     }
 }

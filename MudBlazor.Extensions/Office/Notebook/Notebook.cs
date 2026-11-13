@@ -40,7 +40,7 @@ public sealed class Notebook
 
     internal Dictionary<string, JsonElement> Extra { get; set; }
 
-    internal Dictionary<string, (byte[] Data, string Extension)> PendingMedia { get; } = new(StringComparer.Ordinal);
+    internal Dictionary<string, (byte[] Data, string Extension)> PendingMedia { get; } = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Creates a notebook with one section and one empty page.</summary>
     /// <param name="name">The name of the notebook.</param>
@@ -86,8 +86,11 @@ public sealed class Notebook
     {
         if (id == null) return null;
         if (PendingMedia.TryGetValue(id, out var pending)) return pending.Data;
-        return Package?.MediaEntry(id) is { } entry ? Package.Read(entry) : null;
+        return Package?.MediaType(id) != null ? Package.Read(Package.MediaEntry(id)) : null;
     }
+
+    internal string GetMediaType(string id) =>
+        id == null ? null : PendingMedia.TryGetValue(id, out var pending) ? NotebookMediaTypes.TypeOf(pending.Extension) : Package?.MediaType(id);
 
     internal string AddMedia(byte[] data, string contentType)
     {
