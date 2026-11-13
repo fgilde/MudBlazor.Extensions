@@ -7,9 +7,9 @@ public static class SlidesSamples
     private const long Emu = 914400;
     private const string PictureBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP4z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg==";
 
-    public static Presentation CreateDeck()
+    public static Presentation CreateDeck(SlideDesign design = null)
     {
-        var deck = Presentation.Create();
+        var deck = Presentation.Create(design);
         var title = deck.Slides[0];
         SetText(deck, title, 2, "Slide Editor");
         SetText(deck, title, 3, "Built in code with MudBlazor.Extensions");
@@ -48,8 +48,74 @@ public static class SlidesSamples
         SetText(deck, picture, 2, "Pictures");
         deck.Execute(new InsertPictureCommand(picture, Convert.FromBase64String(PictureBase64), "image/png", new ShapeTransform(3 * Emu, 2 * Emu, 6 * Emu, 3 * Emu)));
         deck.Execute(new SetNotesCommand(picture, "A picture inserted from bytes."));
+        AddTable(deck);
+        AddGroup(deck);
+        AddAnimated(deck);
+        deck.Execute(new AddSectionCommand(deck.Slides[1], "Content"));
+        deck.Execute(new AddSectionCommand(deck.Slides[4], "Tables and motion"));
+        var fade = new SlideTransition(TransitionKind.Fade, TransitionDirection.None, 0.75, true, null);
+        deck.Execute(new SetTransitionCommand(deck.Slides.Skip(1).ToList(), fade));
         deck.Undo.Clear();
         return deck;
+    }
+
+    public static Presentation CreateTablesDeck()
+    {
+        var deck = Presentation.Create();
+        SetText(deck, deck.Slides[0], 2, "Tables");
+        SetText(deck, deck.Slides[0], 3, "Select a cell, then use the Table Design and Layout tabs");
+        deck.Execute(new SetNotesCommand(deck.Slides[0], "Click into the table on the next slide."));
+        var (slide, table) = AddTable(deck);
+        deck.Execute(new InsertTableRowsCommand(slide, table, 4, 1));
+        deck.Execute(new MergeTableCellsCommand(slide, table, 4, 0, 1, 3));
+        deck.Execute(new SetTableCellTextCommand(slide, table, 4, 0, new TextBody { Paragraphs = [new TextParagraph { Runs = [new TextRun("Total: 4.1 M")] }] }));
+        deck.Undo.Clear();
+        return deck;
+    }
+
+    private static (Slide Slide, uint Table) AddTable(Presentation deck)
+    {
+        var slide = Add(deck, deck.Slides.Count, "titleOnly");
+        SetText(deck, slide, 2, "Tables");
+        var insert = new InsertTableCommand(slide, 4, 3, new ShapeTransform(Emu, 2 * Emu, 10 * Emu, 2 * Emu));
+        deck.Execute(insert);
+        string[][] cells = [["Quarter", "Revenue", "Growth"], ["Q1", "1.2 M", "+4 %"], ["Q2", "1.5 M", "+25 %"], ["Q3", "1.4 M", "-7 %"]];
+        for (var row = 0; row < cells.Length; row++)
+            for (var column = 0; column < cells[row].Length; column++)
+                deck.Execute(new SetTableCellTextCommand(slide, insert.Table.Id, row, column, new TextBody { Paragraphs = [new TextParagraph { Runs = [new TextRun(cells[row][column])] }] }));
+        deck.Execute(new SetNotesCommand(slide, "A table with a header row. Use the Table Design and Layout tabs to style it, merge cells and add rows."));
+        return (slide, insert.Table.Id);
+    }
+
+    private static void AddGroup(Presentation deck)
+    {
+        var slide = Add(deck, deck.Slides.Count, "titleOnly");
+        SetText(deck, slide, 2, "Groups");
+        var first = AutoShape.CreateStyled("ellipse", new ShapeTransform(2 * Emu, 2 * Emu, 2 * Emu, 2 * Emu));
+        var second = AutoShape.CreateStyled("rightArrow", new ShapeTransform(4 * Emu, 2 * Emu, 3 * Emu, 2 * Emu));
+        deck.Execute(new InsertShapeCommand(slide, first));
+        deck.Execute(new InsertShapeCommand(slide, second));
+        deck.Execute(new GroupShapesCommand(slide, [first.Id, second.Id]));
+        deck.Execute(new SetNotesCommand(slide, "Both shapes form one group; move, resize or rotate it as a unit and use Ungroup to split it."));
+    }
+
+    private static void AddAnimated(Presentation deck)
+    {
+        var slide = Add(deck, deck.Slides.Count, "titleOnly");
+        SetText(deck, slide, 2, "Build steps");
+        var ids = new List<uint>();
+        foreach (var (text, x) in new[] { ("First", Emu), ("Second", 5 * Emu), ("Third", 9 * Emu) })
+        {
+            var shape = AutoShape.CreateStyled("roundRect", new ShapeTransform(x, 2 * Emu, 3 * Emu, 2 * Emu));
+            deck.Execute(new InsertShapeCommand(slide, shape));
+            SetText(deck, slide, shape.Id, text);
+            ids.Add(shape.Id);
+        }
+
+        var effects = new[] { (AnimationPreset.Fade, AnimationDirection.None), (AnimationPreset.FlyIn, AnimationDirection.FromLeft), (AnimationPreset.Zoom, AnimationDirection.None) };
+        for (var i = 0; i < ids.Count; i++)
+            deck.Execute(new AddAnimationCommand(slide, new AnimationEffect(ids[i], AnimationClass.Entrance, effects[i].Item1, AnimationTrigger.OnClick, 0, 0.5, effects[i].Item2, null)));
+        deck.Execute(new SetNotesCommand(slide, "Each shape appears on a click. Press F5 to see the build steps in the slide show."));
     }
 
     private static Slide Add(Presentation deck, int index, string layoutType)

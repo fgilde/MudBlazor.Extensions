@@ -1,0 +1,27 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Presentation
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Row</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">AlignItems</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;AlignItems.Center&quot;</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudButton</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;slides-standalone-start&quot;</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Filled&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">StartIcon</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@Icons.Material.Filled.PlayArrow&quot;</span> <span class="htmlAttributeName">Disabled</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;_running&quot;</span> <span class="htmlAttributeName">OnClick</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Start&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Start the show&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudSwitch</span> <span class="htmlAttributeName">T</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;bool&quot; @bind-Value=&quot;_presenterView&quot;</span> <span class="htmlAttributeName">Label</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@L[&quot;Presenter view&quot;]&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Disabled</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;_running&quot;</span> <span class="htmlTagDelimiter">/&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+@if (_running)
+{
+    &lt;MudExSlideShow @ref=&quot;ComponentRef&quot; Presentation=&quot;_presentation&quot; PresenterView=&quot;_presenterView&quot; Closed=&quot;Stop&quot; /&gt;
+}
+
+@code {
+    private readonly Presentation _presentation = SlidesSamples.CreateDeck();
+    private bool _running;
+    private bool _presenterView;
+
+    public SlidesStandaloneShowExample() =&gt; ReplacesComponentRef = true;
+
+    private void Start() =&gt; _running = true;
+
+    private void Stop() =&gt; _running = false;
+}
+
+</pre></div>

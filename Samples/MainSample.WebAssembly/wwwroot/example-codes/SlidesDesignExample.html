@@ -1,0 +1,21 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Presentation
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Row</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">AlignItems</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;AlignItems.Center&quot;</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span> <span class="htmlAttributeName">Wrap</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Wrap.Wrap&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Apply a design to every slide:&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+    @foreach (var design in SlideDesigns.BuiltIn)
+    {
+        var current = design;
+        <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudButton</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Outlined&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">Size</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Size.Small&quot;</span> <span class="htmlAttributeName">OnClick</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(() =&gt; _presentation.Execute(new ApplyDesignCommand(current)))&quot;</span><span class="htmlTagDelimiter">&gt;</span>@current.Name<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+    }
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 600px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExSlideEditor @ref=&quot;ComponentRef&quot; @bind-Presentation=&quot;_presentation&quot; /&gt;
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private Presentation _presentation = SlidesSamples.CreateDeck(SlideDesigns.BuiltIn[2]);
+}
+
+</pre></div>

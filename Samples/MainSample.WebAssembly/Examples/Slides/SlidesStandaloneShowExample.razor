@@ -1,0 +1,24 @@
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Presentation
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Spacing="4">
+    <MudButton Class="slides-standalone-start" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.PlayArrow" Disabled="_running" OnClick="Start">@L["Start the show"]</MudButton>
+    <MudSwitch T="bool" @bind-Value="_presenterView" Label="@L["Presenter view"]" Color="Color.Primary" Disabled="_running" />
+</MudStack>
+
+@if (_running)
+{
+    <MudExSlideShow @ref="ComponentRef" Presentation="_presentation" PresenterView="_presenterView" Closed="Stop" />
+}
+
+@code {
+    private readonly Presentation _presentation = SlidesSamples.CreateDeck();
+    private bool _running;
+    private bool _presenterView;
+
+    public SlidesStandaloneShowExample() => ReplacesComponentRef = true;
+
+    private void Start() => _running = true;
+
+    private void Stop() => _running = false;
+}

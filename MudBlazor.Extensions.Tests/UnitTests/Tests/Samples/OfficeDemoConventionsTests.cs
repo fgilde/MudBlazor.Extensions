@@ -22,6 +22,7 @@ public class OfficeDemoConventionsTests
     ];
 
     private static readonly string[] NeedsInteraction = ["SpreadsheetLargeExample"];
+    private static readonly string[] StartsOnClick = ["SlidesStandaloneShowExample"];
     private static readonly string[] Helpers = ["SpreadsheetLazyDemo"];
 
     private static IEnumerable<Type> OfficeComponents() => typeof(ExampleBase).Assembly.GetTypes()
@@ -71,12 +72,14 @@ public class OfficeDemoConventionsTests
         var cut = context.Render<CascadingValue<IExampleHolder>>(p => p.Add(c => c.Value, holder)
             .AddChildContent<DynamicComponent>(d => d.Add(c => c.Type, type)));
         var example = cut.FindComponents<ExampleBase>().First().Instance;
+        if (StartsOnClick.Contains(name))
+            cut.Find("button").Click();
         cut.WaitForAssertion(() => Assert.NotNull(example.ComponentRef), TimeSpan.FromSeconds(10));
         Assert.Contains(example, holder.Registered);
 
         var expected = type.Namespace switch
         {
-            "MainSample.WebAssembly.Examples.Slides" => typeof(MudExSlideEditor),
+            "MainSample.WebAssembly.Examples.Slides" => StartsOnClick.Contains(name) ? typeof(MudExSlideShow) : typeof(MudExSlideEditor),
             "MainSample.WebAssembly.Examples.Ribbon" => typeof(MudExRibbon),
             "MainSample.WebAssembly.Examples.FileDisplay" => typeof(MudExFileDisplay),
             _ => name.Contains("FileDisplay") || name.Contains("ServerSave") ? typeof(MudExFileDisplay) : typeof(MudExSpreadsheetEditor)

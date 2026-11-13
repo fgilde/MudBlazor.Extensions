@@ -1,0 +1,14 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Presentation
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-2&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Switch on Presenter View in the Slide Show tab, then start the show. The audience window shows the slides, this window shows notes, the next slide, a clock and a stopwatch.&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 600px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExSlideEditor @ref=&quot;ComponentRef&quot; @bind-Presentation=&quot;_presentation&quot; /&gt;
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private Presentation _presentation = SlidesSamples.CreateDeck();
+}
+
+</pre></div>
