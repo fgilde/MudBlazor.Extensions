@@ -35,9 +35,9 @@ public class NotebookInkTests : IAsyncLifetime
         _context.Render<MudExNotebookCanvas>(p => p.Add(c => c.Notebook, notebook).Add(c => c.Page, page).Add(c => c.Tool, tool).Add(c => c.ReadOnly, readOnly)
             .Add(c => c.InkColor, color).Add(c => c.InkWidth, width).Add(c => c.ViewportWidth, 800).Add(c => c.ViewportHeight, 600));
 
-    private static InkPointDto P(double x, double y, double pressure = 0.5) => new() { X = x, Y = y, Pressure = pressure };
+    private static double[] P(double x, double y, double pressure = 0.5) => [x, y, pressure];
 
-    private static Task Stroke(IRenderedComponent<MudExNotebookCanvas> cut, params InkPointDto[] points) => cut.InvokeAsync(() => cut.Instance.OnStrokeAsync(points));
+    private static Task Stroke(IRenderedComponent<MudExNotebookCanvas> cut, params double[][] points) => cut.InvokeAsync(() => cut.Instance.OnStrokeAsync(points.SelectMany(p => p).ToArray(), null));
 
     private static string AddStroke(Notebook notebook, NotebookPage page, params (double X, double Y)[] points)
     {
@@ -95,15 +95,15 @@ public class NotebookInkTests : IAsyncLifetime
         notebook.Undo.Clear();
         var cut = Canvas(notebook, page, NotebookTool.Eraser);
 
-        await cut.InvokeAsync(() => cut.Instance.OnEraseAsync([first, second, "box", "unknown", first]));
+        await cut.InvokeAsync(() => cut.Instance.OnEraseAsync([first, second, "box", "unknown", first], null));
 
         Assert.Equal([third, "box"], page.Elements.Select(e => e.Id));
         notebook.Undo.Undo();
         Assert.Equal([first, second, third, "box"], page.Elements.Select(e => e.Id));
         Assert.False(notebook.Undo.CanUndo);
 
-        await cut.InvokeAsync(() => cut.Instance.OnEraseAsync(["box"]));
-        await cut.InvokeAsync(() => cut.Instance.OnEraseAsync([]));
+        await cut.InvokeAsync(() => cut.Instance.OnEraseAsync(["box"], null));
+        await cut.InvokeAsync(() => cut.Instance.OnEraseAsync([], null));
         Assert.False(notebook.Undo.CanUndo);
     }
 
@@ -119,15 +119,15 @@ public class NotebookInkTests : IAsyncLifetime
         var cut = Canvas(notebook, page, NotebookTool.Lasso);
         await cut.InvokeAsync(() => cut.Instance.OnHeightsMeasuredAsync(new Dictionary<string, double> { ["tall"] = 100 }));
 
-        PointDto[] square = [new() { X = 0, Y = 0 }, new() { X = 100, Y = 0 }, new() { X = 100, Y = 100 }, new() { X = 0, Y = 100 }];
-        await cut.InvokeAsync(() => cut.Instance.OnLassoAsync(square));
+        double[] square = [0, 0, 100, 0, 100, 100, 0, 100];
+        await cut.InvokeAsync(() => cut.Instance.OnLassoAsync(square, null));
 
         Assert.Equal([inside, "shape"], cut.Instance.Selection);
         Assert.Equal(2, cut.FindAll(".mud-ex-notebook-selection").Count);
         Assert.Equal(8, cut.FindAll($".mud-ex-notebook-selection[data-id='{inside}'] [data-handle]").Count);
         Assert.DoesNotContain(mostlyOutside, cut.Instance.Selection);
 
-        await cut.InvokeAsync(() => cut.Instance.OnLassoAsync([]));
+        await cut.InvokeAsync(() => cut.Instance.OnLassoAsync([], null));
         Assert.Empty(cut.Instance.Selection);
     }
 
@@ -170,8 +170,8 @@ public class NotebookInkTests : IAsyncLifetime
         var cut = Canvas(notebook, page, NotebookTool.Pen, readOnly: true);
 
         await Stroke(cut, P(1, 1), P(5, 5));
-        await cut.InvokeAsync(() => cut.Instance.OnEraseAsync([stroke]));
-        await cut.InvokeAsync(() => cut.Instance.OnLassoAsync([new() { X = 0, Y = 0 }, new() { X = 100, Y = 0 }, new() { X = 100, Y = 100 }]));
+        await cut.InvokeAsync(() => cut.Instance.OnEraseAsync([stroke], null));
+        await cut.InvokeAsync(() => cut.Instance.OnLassoAsync([0, 0, 100, 0, 100, 100], null));
 
         Assert.Equal([stroke], page.Elements.Select(e => e.Id));
         Assert.Empty(cut.Instance.Selection);

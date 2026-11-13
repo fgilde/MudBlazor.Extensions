@@ -147,7 +147,7 @@ public class NotebookFeaturesTests : IAsyncLifetime
         Assert.Equal("0,0", editor.Instance.Cell);
         Assert.False(editor.Instance.TableTab);
 
-        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync([Dto(null, "Cell text")]));
+        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync([Dto(null, "Cell text")], null));
         Assert.Equal("Cell text", TextOf(((TableElement)page.Elements[0]).Rows[0][0].Paragraphs));
         cut.WaitForAssertion(() => Assert.Contains("Cell text", cut.Find("td[data-cell='0,0']").TextContent));
 
@@ -170,7 +170,7 @@ public class NotebookFeaturesTests : IAsyncLifetime
         await cut.InvokeAsync(() => cut.Instance.OnPageClickAsync(20, 25));
         var editor = cut.FindComponent<MudExNotebookTextEditor>();
         Assert.True(editor.Instance.TableTab);
-        await cut.InvokeAsync(() => editor.Instance.OnTabAsync([Dto(0, "Hello")], false));
+        await cut.InvokeAsync(() => editor.Instance.OnTabAsync([Dto(0, "Hello")], null, false));
 
         var table = Assert.IsType<TableElement>(page.Elements.Single(e => e.Id != "list"));
         Assert.Equal((10d, 20d, 1, 2), (table.X, table.Y, table.Rows.Count, table.ColumnWidths.Count));
@@ -183,7 +183,7 @@ public class NotebookFeaturesTests : IAsyncLifetime
         Assert.False(notebook.Undo.CanUndo);
 
         await cut.InvokeAsync(() => cut.Instance.OnPageClickAsync(20, 405));
-        await cut.InvokeAsync(() => cut.FindComponent<MudExNotebookTextEditor>().Instance.OnTabAsync([new NotebookTextParagraphDto { Source = 0, List = "bullet", Runs = [new NotebookTextRunDto { Source = 0, Text = "Item" }] }], false));
+        await cut.InvokeAsync(() => cut.FindComponent<MudExNotebookTextEditor>().Instance.OnTabAsync([new NotebookTextParagraphDto { Source = 0, List = "bullet", Runs = [new NotebookTextRunDto { Source = 0, Text = "Item" }] }], null, false));
         Assert.IsType<TextElement>(page.Elements.Single(e => e.Id == "list"));
         Assert.Equal(2, page.Elements.Count);
     }
@@ -201,14 +201,14 @@ public class NotebookFeaturesTests : IAsyncLifetime
 
         await cut.InvokeAsync(() => cut.Instance.OnCellClickAsync(id, 0, 1));
         Assert.Equal((0, 1), (cut.Instance.TextEdit!.Row, cut.Instance.TextEdit.Column));
-        await cut.InvokeAsync(() => cut.FindComponent<MudExNotebookTextEditor>().Instance.OnTabAsync([Dto(null, "b")], false));
+        await cut.InvokeAsync(() => cut.FindComponent<MudExNotebookTextEditor>().Instance.OnTabAsync([Dto(null, "b")], null, false));
 
         var table = (TableElement)page.Elements.Single();
         Assert.Equal(2, table.Rows.Count);
         Assert.Equal("b", TextOf(table.Rows[0][1].Paragraphs));
         Assert.Equal((1, 0), (cut.Instance.TextEdit!.Row, cut.Instance.TextEdit.Column));
 
-        await cut.InvokeAsync(() => cut.FindComponent<MudExNotebookTextEditor>().Instance.OnTabAsync([Dto(null, "c")], true));
+        await cut.InvokeAsync(() => cut.FindComponent<MudExNotebookTextEditor>().Instance.OnTabAsync([Dto(null, "c")], null, true));
         Assert.Equal((0, 1), (cut.Instance.TextEdit!.Row, cut.Instance.TextEdit.Column));
         Assert.Equal("c", TextOf(((TableElement)page.Elements.Single()).Rows[1][0].Paragraphs));
 

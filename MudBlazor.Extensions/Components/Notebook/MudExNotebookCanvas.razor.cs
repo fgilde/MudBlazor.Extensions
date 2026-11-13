@@ -62,6 +62,9 @@ public partial class MudExNotebookCanvas
     /// <summary>Raised whenever the selected elements change, also when the page changes or selected elements disappear.</summary>
     [Parameter] public EventCallback<IReadOnlyList<string>> SelectionChanged { get; set; }
 
+    /// <summary>Raised when an edit made in the browser failed, with the exception to show. Without a handler the exception is passed to the browser.</summary>
+    [Parameter] public EventCallback<Exception> CommandFailed { get; set; }
+
     /// <summary>The ids of the selected elements.</summary>
     public IReadOnlyList<string> Selection => _selection;
 
@@ -78,6 +81,14 @@ public partial class MudExNotebookCanvas
             var selected = _selection.ToHashSet();
             return Page?.Elements.Where(e => selected.Contains(e.Id)) ?? [];
         }
+    }
+
+    /// <inheritdoc />
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        if (_text != null && Editable && parameters.TryGetValue<bool>(nameof(ReadOnly), out var readOnly) && readOnly)
+            await RunAsync(CommitTextAsync);
+        await base.SetParametersAsync(parameters);
     }
 
     /// <inheritdoc />
@@ -109,7 +120,9 @@ public partial class MudExNotebookCanvas
         if (Tool != _tool)
         {
             _tool = Tool;
-            await CommitTextAsync();
+            await RunAsync(CommitTextAsync);
+            if (Tool is NotebookTool.Pen or NotebookTool.Highlighter or NotebookTool.Eraser)
+                Change([]);
         }
 
         await RaiseSelectionAsync();
@@ -138,11 +151,52 @@ public partial class MudExNotebookCanvas
         await RaiseSelectionAsync();
     }
 
-    /// <summary>Called by the browser with the elements the user selected by a click or a selection frame.</summary>
+    /// <summary>Called by the browser with the elements the user selected; a list of more than 100,000 ids is ignored.</summary>
     /// <param name="ids">The element ids.</param>
     /// <returns>A task that completes when the selection is shown.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnSelectionAsync(string[] ids) => InvokeAsync(() => SelectAsync(ids ?? []));
+    public Task OnSelectionAsync(string[] ids) => Guard(() => ids is { Length: > JsPayload.MaxItems } ? Task.CompletedTask : SelectAsync(ids ?? []));
+
+    /// <summary>
+    /// Called by the browser for a click on an element: selects only it unless it is selected already, or with <paramref name="toggle"/> adds it to or
+    /// removes it from the selection.
+    /// </summary>
+    /// <param name="id">The element id.</param>
+    /// <param name="toggle">True if Shift or Ctrl was held.</param>
+    /// <returns>A task that completes when the selection is shown.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnElementClickAsync(string id, bool toggle) => Guard(() =>
+    {
+        var selected = _selection.Contains(id);
+        return SelectAsync(toggle ? selected ? _selection.Where(i => i != id).ToList() : [.. _selection, id] : selected ? _selection.ToList() : [id]);
+    });
+
+    /// <summary>Called by the browser once a selection frame was drawn: selects the elements lying completely inside.</summary>
+    /// <param name="x">The left edge in page coordinates.</param>
+    /// <param name="y">The top edge in page coordinates.</param>
+    /// <param name="width">The width.</param>
+    /// <param name="height">The height.</param>
+    /// <param name="toggle">True to add the elements to the selection.</param>
+    /// <returns>A task that completes when the selection is shown.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnMarqueeAsync(double x, double y, double width, double height, bool toggle) => Guard(() =>
+    {
+        if (!Editable || !new[] { x, y, width, height }.All(double.IsFinite))
+            return Task.CompletedTask;
+        var inside = Page.Elements.Where(e => e.X >= x && e.Y >= y && e.X + e.Width <= x + width && e.Y + HeightOf(e) <= y + height).Select(e => e.Id);
+        return SelectAsync(toggle ? _selection.Concat(inside).ToList() : inside.ToList());
+    });
+
+    /// <summary>Scrolls the page so that an element is visible.</summary>
+    /// <param name="id">The element id.</param>
+    /// <returns>A task that completes when the page scrolled.</returns>
+    public async Task RevealAsync(string id)
+    {
+        if (_js.Js is not { } js || id == null)
+            return;
+        try { await js.InvokeVoidAsync("reveal", id); }
+        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException) { }
+    }
 
     /// <summary>
     /// Called by the browser for a click on the free page or into a text block. The point becomes <see cref="LastClick"/>; in the text tool the text
@@ -152,7 +206,7 @@ public partial class MudExNotebookCanvas
     /// <param name="y">The vertical position in page coordinates.</param>
     /// <returns>A task that completes when the text session started.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnPageClickAsync(double x, double y) => InvokeAsync(async () =>
+    public Task OnPageClickAsync(double x, double y) => Guard(async () =>
     {
         if (!Editable || !double.IsFinite(x) || !double.IsFinite(y))
             return;
@@ -166,15 +220,17 @@ public partial class MudExNotebookCanvas
     });
 
     /// <summary>Called by the browser when the user moved elements. All moves are one undo step; positions are kept at 0 or more.</summary>
-    /// <param name="positions">The new top left corners in page coordinates by element id.</param>
+    /// <param name="dx">The horizontal offset in page coordinates.</param>
+    /// <param name="dy">The vertical offset in page coordinates.</param>
+    /// <param name="ids">The moved elements, or null for the selected ones.</param>
     /// <returns>A task that completes when the change is executed.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnMoveAsync(Dictionary<string, PointDto> positions) => InvokeAsync(() =>
+    public Task OnMoveAsync(double dx, double dy, string[] ids) => Guard(() =>
     {
-        if (!Editable || positions == null)
+        if (!Editable || !double.IsFinite(dx) || !double.IsFinite(dy) || ids is { Length: > JsPayload.MaxItems })
             return;
-        Move(positions.Where(p => p.Value != null && double.IsFinite(p.Value.X) && double.IsFinite(p.Value.Y))
-            .ToDictionary(p => p.Key, p => (p.Value.X, p.Value.Y)));
+        var moved = (ids ?? []).ToHashSet();
+        Move((ids == null ? SelectedElements : Page.Elements.Where(e => moved.Contains(e.Id))).ToDictionary(e => e.Id, e => (e.X + dx, e.Y + dy)));
     });
 
     /// <summary>
@@ -184,9 +240,9 @@ public partial class MudExNotebookCanvas
     /// <param name="bounds">The new rectangles in page coordinates by element id.</param>
     /// <returns>A task that completes when the change is executed.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnResizeAsync(Dictionary<string, BoundsDto> bounds) => InvokeAsync(() =>
+    public Task OnResizeAsync(Dictionary<string, BoundsDto> bounds) => Guard(() =>
     {
-        if (!Editable || bounds == null)
+        if (!Editable || bounds == null || bounds.Count > JsPayload.MaxItems)
             return;
         var changes = new Dictionary<string, NoteBounds>();
         foreach (var (id, dto) in bounds)
@@ -213,8 +269,10 @@ public partial class MudExNotebookCanvas
     /// <param name="heights">The heights by element id; only changed values are sent.</param>
     /// <returns>A task that completes when the page was laid out again.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnHeightsMeasuredAsync(Dictionary<string, double> heights) => InvokeAsync(() =>
+    public Task OnHeightsMeasuredAsync(Dictionary<string, double> heights) => Guard(() =>
     {
+        if (heights is { Count: > JsPayload.MaxItems })
+            return;
         var changed = false;
         foreach (var (id, height) in heights ?? [])
         {
@@ -229,6 +287,26 @@ public partial class MudExNotebookCanvas
     });
 
     private double HeightOf(NoteElement element) => MudExNotebookPageView.HeightOf(element, _heights);
+
+    private async Task RunAsync(Func<Task> action)
+    {
+        try
+        {
+            await action();
+        }
+        catch (Exception e) when (CommandFailed.HasDelegate)
+        {
+            await CommandFailed.InvokeAsync(e);
+        }
+    }
+
+    private Task Guard(Func<Task> action) => InvokeAsync(() => RunAsync(action));
+
+    private Task Guard(Action action) => Guard(() =>
+    {
+        action();
+        return Task.CompletedTask;
+    });
 
     private NoteElement Find(string id) => Page?.Elements.FirstOrDefault(e => e.Id == id);
 
@@ -349,19 +427,10 @@ public partial class MudExNotebookCanvas
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        await RunAsync(CommitTextAsync);
         await _js.DisposeAsync();
         await base.DisposeAsync();
     }
-}
-
-/// <summary>A point reported by the browser in page coordinates (CSS pixels at 100 % zoom).</summary>
-public sealed class PointDto
-{
-    /// <summary>The horizontal position.</summary>
-    public double X { get; set; }
-
-    /// <summary>The vertical position.</summary>
-    public double Y { get; set; }
 }
 
 /// <summary>A rectangle reported by the browser after resizing an element, in page coordinates (CSS pixels at 100 % zoom).</summary>

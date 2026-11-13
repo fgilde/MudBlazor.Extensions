@@ -12936,25 +12936,28 @@
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.InkWidth">
             <summary>The width of new strokes in pixels.</summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnStrokeAsync(MudBlazor.Extensions.Components.InkPointDto[])">
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnStrokeAsync(System.Double[],Microsoft.JSInterop.IJSStreamReference)">
             <summary>
             Called by the browser once a stroke of the pen or highlighter ends. The points are simplified and added as one stroke in one undo step; a single
-            point is a dot.
+            point is a dot. More than 100,000 values are ignored.
             </summary>
-            <param name="points">The points in page coordinates.</param>
+            <param name="points">The points in page coordinates as <c>x, y, pressure</c> triples, or null if they come as <paramref name="stream"/>.</param>
+            <param name="stream">The points as a JSON array when they are too many for one message.</param>
             <returns>A task that completes when the stroke is added.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnEraseAsync(System.String[])">
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnEraseAsync(System.String[],Microsoft.JSInterop.IJSStreamReference)">
             <summary>Called by the browser once an eraser gesture ends, with every stroke it touched. They are deleted in one undo step.</summary>
-            <param name="ids">The ids of the touched strokes; other ids are ignored.</param>
+            <param name="ids">The ids of the touched strokes, or null if they come as <paramref name="stream"/>; other ids are ignored.</param>
+            <param name="stream">The ids as a JSON array when they are too many for one message.</param>
             <returns>A task that completes when the strokes are deleted.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnLassoAsync(MudBlazor.Extensions.Components.PointDto[])">
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnLassoAsync(System.Double[],Microsoft.JSInterop.IJSStreamReference)">
             <summary>
             Called by the browser once a lasso line is closed. Selects every stroke with more than half of its points inside and every other element whose
             centre lies inside.
             </summary>
-            <param name="polygon">The lasso line in page coordinates.</param>
+            <param name="polygon">The lasso line in page coordinates as <c>x, y</c> pairs, or null if it comes as <paramref name="stream"/>.</param>
+            <param name="stream">The line as a JSON array when it is too long for one message.</param>
             <returns>A task that completes when the selection is shown.</returns>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.ShapeKind">
@@ -13030,8 +13033,14 @@
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.SelectionChanged">
             <summary>Raised whenever the selected elements change, also when the page changes or selected elements disappear.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.CommandFailed">
+            <summary>Raised when an edit made in the browser failed, with the exception to show. Without a handler the exception is passed to the browser.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.Selection">
             <summary>The ids of the selected elements.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnParametersSet">
             <inheritdoc />
@@ -13048,9 +13057,32 @@
             <returns>A task that completes when the selection is shown.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnSelectionAsync(System.String[])">
-            <summary>Called by the browser with the elements the user selected by a click or a selection frame.</summary>
+            <summary>Called by the browser with the elements the user selected; a list of more than 100,000 ids is ignored.</summary>
             <param name="ids">The element ids.</param>
             <returns>A task that completes when the selection is shown.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnElementClickAsync(System.String,System.Boolean)">
+            <summary>
+            Called by the browser for a click on an element: selects only it unless it is selected already, or with <paramref name="toggle"/> adds it to or
+            removes it from the selection.
+            </summary>
+            <param name="id">The element id.</param>
+            <param name="toggle">True if Shift or Ctrl was held.</param>
+            <returns>A task that completes when the selection is shown.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnMarqueeAsync(System.Double,System.Double,System.Double,System.Double,System.Boolean)">
+            <summary>Called by the browser once a selection frame was drawn: selects the elements lying completely inside.</summary>
+            <param name="x">The left edge in page coordinates.</param>
+            <param name="y">The top edge in page coordinates.</param>
+            <param name="width">The width.</param>
+            <param name="height">The height.</param>
+            <param name="toggle">True to add the elements to the selection.</param>
+            <returns>A task that completes when the selection is shown.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.RevealAsync(System.String)">
+            <summary>Scrolls the page so that an element is visible.</summary>
+            <param name="id">The element id.</param>
+            <returns>A task that completes when the page scrolled.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnPageClickAsync(System.Double,System.Double)">
             <summary>
@@ -13061,9 +13093,11 @@
             <param name="y">The vertical position in page coordinates.</param>
             <returns>A task that completes when the text session started.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnMoveAsync(System.Collections.Generic.Dictionary{System.String,MudBlazor.Extensions.Components.PointDto})">
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnMoveAsync(System.Double,System.Double,System.String[])">
             <summary>Called by the browser when the user moved elements. All moves are one undo step; positions are kept at 0 or more.</summary>
-            <param name="positions">The new top left corners in page coordinates by element id.</param>
+            <param name="dx">The horizontal offset in page coordinates.</param>
+            <param name="dy">The vertical offset in page coordinates.</param>
+            <param name="ids">The moved elements, or null for the selected ones.</param>
             <returns>A task that completes when the change is executed.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnResizeAsync(System.Collections.Generic.Dictionary{System.String,MudBlazor.Extensions.Components.BoundsDto})">
@@ -13122,18 +13156,6 @@
             <param name="paragraph">The index of the paragraph.</param>
             <returns>A task that completes when the check box is toggled.</returns>
         </member>
-        <member name="T:MudBlazor.Extensions.Components.InkPointDto">
-            <summary>A point of a stroke reported by the browser in page coordinates (CSS pixels at 100 % zoom).</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.InkPointDto.X">
-            <summary>The horizontal position.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.InkPointDto.Y">
-            <summary>The vertical position.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.InkPointDto.Pressure">
-            <summary>The pen pressure from 0 to 1; 0.5 for a mouse.</summary>
-        </member>
         <member name="T:MudBlazor.Extensions.Components.NotebookPictureDrop">
             <summary>A picture dropped on a <see cref="T:MudBlazor.Extensions.Components.MudExNotebookCanvas"/>.</summary>
             <param name="Data">The content of the file.</param>
@@ -13159,15 +13181,6 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.NotebookPictureDrop.Y">
             <summary>The vertical drop position in page coordinates.</summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Components.PointDto">
-            <summary>A point reported by the browser in page coordinates (CSS pixels at 100 % zoom).</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.PointDto.X">
-            <summary>The horizontal position.</summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.PointDto.Y">
-            <summary>The vertical position.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.BoundsDto">
             <summary>A rectangle reported by the browser after resizing an element, in page coordinates (CSS pixels at 100 % zoom).</summary>
@@ -13271,6 +13284,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.ShowSectionTabs">
             <summary>Whether the section tabs are shown. The user can toggle them on the View tab.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.MaxFileBytes">
+            <summary>
+            The largest unpacked size of a notebook file in bytes that the editor opens. Pictures that would make the notebook larger are refused, so a saved
+            notebook always opens again. Default 256 MB.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.CurrentNotebook">
             <summary>The notebook currently shown, loaded from a file, created by New or given by <see cref="P:MudBlazor.Extensions.Components.MudExNotebookEditor.Notebook"/>.</summary>
@@ -13618,14 +13637,16 @@
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnTextCommitAsync(MudBlazor.Extensions.Components.NotebookTextParagraphDto[])">
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnTextCommitAsync(MudBlazor.Extensions.Components.NotebookTextParagraphDto[],Microsoft.JSInterop.IJSStreamReference)">
             <summary>Called by the browser when the user ends editing.</summary>
-            <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+            <param name="paragraphs">The final paragraphs of the editing DOM, or null if they come as <paramref name="stream"/>.</param>
+            <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
             <returns>A task that completes when the text is committed.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnTabAsync(MudBlazor.Extensions.Components.NotebookTextParagraphDto[],System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnTabAsync(MudBlazor.Extensions.Components.NotebookTextParagraphDto[],Microsoft.JSInterop.IJSStreamReference,System.Boolean)">
             <summary>Called by the browser when Tab ended editing in a table cell or at the end of a plain paragraph.</summary>
-            <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+            <param name="paragraphs">The final paragraphs of the editing DOM, or null if they come as <paramref name="stream"/>.</param>
+            <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
             <param name="back">True for Shift+Tab.</param>
             <returns>A task that completes when the text is handed on.</returns>
         </member>
@@ -13633,9 +13654,13 @@
             <summary>Called by the browser on the first change of the text.</summary>
             <returns>A task that completes when the change is handed on.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnSelectionFormatAsync(MudBlazor.Extensions.Components.NotebookTextParagraphDto[])">
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnSelectionFormatAsync(MudBlazor.Extensions.Components.NotebookTextParagraphDto[],Microsoft.JSInterop.IJSStreamReference)">
             <summary>Called by the browser after the selection or its format changed.</summary>
-            <param name="paragraphs">The paragraphs the selection touches with the runs it covers; the run at the caret for an empty selection.</param>
+            <param name="paragraphs">
+            The paragraphs the selection touches with the formats of the runs it covers, without their text; the run at the caret for an empty selection.
+            Null if they come as <paramref name="stream"/>.
+            </param>
+            <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
             <returns>A task that completes when the selection is handed on.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnLinkRequestAsync(System.String,System.String)">
@@ -13644,12 +13669,13 @@
             <param name="link">The link at the selection, or null.</param>
             <returns>A task that completes when the request is handed on.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnPasteHtml(System.String)">
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnPasteHtml(System.String,Microsoft.JSInterop.IJSStreamReference)">
             <summary>
             Called by the browser when HTML is pasted. Keeps only text with bold, italic, underline, colour, lists and links with an allowed scheme;
             scripts, styles and everything else are dropped.
             </summary>
-            <param name="html">The <c>text/html</c> content of the clipboard.</param>
+            <param name="html">The <c>text/html</c> content of the clipboard, or null if it comes as <paramref name="stream"/>.</param>
+            <param name="stream">The HTML as a JSON string when it is too large for one message.</param>
             <returns>The pasted paragraphs.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.DisposeAsync">
@@ -21045,19 +21071,22 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnTextInputAsync(MudBlazor.Extensions.Components.SlideTextParagraphDto[])">
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnTextInputAsync(MudBlazor.Extensions.Components.SlideTextParagraphDto[],Microsoft.JSInterop.IJSStreamReference)">
             <summary>Called by the browser with the current text after an input.</summary>
-            <param name="paragraphs">The paragraphs of the editing DOM.</param>
+            <param name="paragraphs">The paragraphs of the editing DOM, or null if they come as <paramref name="stream"/>.</param>
+            <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
             <returns>A task that completes when the text is stored.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnTextCommitAsync(MudBlazor.Extensions.Components.SlideTextParagraphDto[])">
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnTextCommitAsync(MudBlazor.Extensions.Components.SlideTextParagraphDto[],Microsoft.JSInterop.IJSStreamReference)">
             <summary>Called by the browser when the user ends editing.</summary>
-            <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+            <param name="paragraphs">The final paragraphs of the editing DOM, or null if they come as <paramref name="stream"/>.</param>
+            <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
             <returns>A task that completes when the text is committed.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnTextTabAsync(MudBlazor.Extensions.Components.SlideTextParagraphDto[],System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnTextTabAsync(MudBlazor.Extensions.Components.SlideTextParagraphDto[],Microsoft.JSInterop.IJSStreamReference,System.Boolean)">
             <summary>Called by the browser when the user pressed Tab in a table cell.</summary>
-            <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+            <param name="paragraphs">The final paragraphs of the editing DOM, or null if they come as <paramref name="stream"/>.</param>
+            <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
             <param name="back">True for Shift+Tab.</param>
             <returns>A task that completes when the text is committed and the next cell is edited.</returns>
         </member>
@@ -21066,9 +21095,10 @@
             <param name="paragraphs">The paragraphs the selection touches with the runs it covers; the run at the caret for an empty selection.</param>
             <returns>A task that completes when the selection is handed on.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnPasteHtml(System.String)">
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.OnPasteHtml(System.String,Microsoft.JSInterop.IJSStreamReference)">
             <summary>Called by the browser when HTML is pasted. Keeps only text with bold, italic, underline and colour.</summary>
-            <param name="html">The <c>text/html</c> content of the clipboard.</param>
+            <param name="html">The <c>text/html</c> content of the clipboard, or null if it comes as <paramref name="stream"/>.</param>
+            <param name="stream">The HTML as a JSON string when it is too large for one message.</param>
             <returns>The pasted paragraphs.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideTextEditor.DisposeAsync">

@@ -39,7 +39,7 @@ public partial class MudExNotebookCanvas
     /// <param name="y2">The vertical end.</param>
     /// <returns>A task that completes when the shape is added and selected.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnShapeAsync(double x1, double y1, double x2, double y2) => InvokeAsync(async () =>
+    public Task OnShapeAsync(double x1, double y1, double x2, double y2) => Guard(async () =>
     {
         if (!Editable || Tool != NotebookTool.Shape || !new[] { x1, y1, x2, y2 }.All(double.IsFinite))
             return;
@@ -47,14 +47,11 @@ public partial class MudExNotebookCanvas
         var line = ShapeKind is NoteShapeKind.Line or NoteShapeKind.Arrow;
         if (Math.Abs(x2 - x1) < MinShapeSize && Math.Abs(y2 - y1) < MinShapeSize)
             (x2, y2) = (x1 + DefaultShapeSize, line ? y1 : y1 + DefaultShapeSize);
-        var shape = new ShapeElement
-        {
-            Id = NoteValues.NewId(), Kind = ShapeKind, X = Math.Min(x1, x2), Y = Math.Min(y1, y2), Width = Math.Abs(x2 - x1), Height = Math.Abs(y2 - y1),
-            FlipX = line && x2 < x1, FlipY = line && y2 < y1
-        };
+        var add = new AddShapeCommand(Page, ShapeKind, new NoteBounds(Math.Min(x1, x2), Math.Min(y1, y2), Math.Abs(x2 - x1), Math.Abs(y2 - y1)),
+            flipX: line && x2 < x1, flipY: line && y2 < y1);
         await CommitTextAsync();
-        Execute(new AddElementCommand(Page, shape));
-        await SelectAsync([shape.Id]);
+        Execute(add);
+        await SelectAsync([add.Shape.Id]);
         await ToolChanged.InvokeAsync(NotebookTool.Select);
     });
 
@@ -65,7 +62,7 @@ public partial class MudExNotebookCanvas
     /// <param name="y">The vertical drop position in page coordinates.</param>
     /// <returns>A task that completes when the picture is handed to the host.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public async Task OnPictureDroppedAsync(IJSStreamReference data, string contentType, double x, double y)
+    public Task OnPictureDroppedAsync(IJSStreamReference data, string contentType, double x, double y) => Guard(async () =>
     {
         byte[] bytes;
         await using (data)
@@ -78,8 +75,8 @@ public partial class MudExNotebookCanvas
             bytes = buffer.ToArray();
         }
 
-        await InvokeAsync(() => PictureDropped.InvokeAsync(new NotebookPictureDrop(bytes, contentType, Math.Max(0, x), Math.Max(0, y))));
-    }
+        await PictureDropped.InvokeAsync(new NotebookPictureDrop(bytes, contentType, Math.Max(0, x), Math.Max(0, y)));
+    });
 
     /// <summary>Called by the browser for a right click on the page. Selects the clicked element unless it is selected already.</summary>
     /// <param name="id">The id of the clicked element, or null for the free page.</param>
@@ -89,7 +86,7 @@ public partial class MudExNotebookCanvas
     /// <param name="clientY">The vertical position in the window.</param>
     /// <returns>A task that completes when the menu is requested.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnContextMenuAsync(string id, int row, int column, double clientX, double clientY) => InvokeAsync(async () =>
+    public Task OnContextMenuAsync(string id, int row, int column, double clientX, double clientY) => Guard(async () =>
     {
         if (!Editable)
             return;

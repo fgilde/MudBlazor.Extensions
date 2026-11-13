@@ -31,7 +31,7 @@ public partial class MudExNotebookEditor
     [
         ("nb-bullets", "Bullets", Icons.Material.Filled.FormatListBulleted, null, NoteListKind.Bullet),
         ("nb-numbering", "Numbering", Icons.Material.Filled.FormatListNumbered, null, NoteListKind.Number),
-        ("nb-todo", "To Do", Icons.Material.Filled.CheckBox, "Ctrl+1", NoteListKind.Todo)
+        ("nb-todo", "To Do", Icons.Material.Filled.CheckBox, null, NoteListKind.Todo)
     ];
 
     private static readonly (string Id, string Text, string Icon, string Shortcut, NoteAlign Align)[] AlignToggles =
@@ -101,9 +101,9 @@ public partial class MudExNotebookEditor
             await _canvas.SetLinkAsync(text, address);
     }
 
-    private void OnCanvasSelectionChanged(IReadOnlyList<string> ids)
-    {
-    }
+    private void OnCanvasSelectionChanged(IReadOnlyList<string> ids) => StateHasChanged();
+
+    private Task OnCanvasFailedAsync(Exception e) => ShowErrorAsync(e.Message);
 
     private static string Hex(MudExColor color) => color.IsSet() && color.ToMudColor() is { } c ? c.ToString(MudColorOutputFormats.Hex).ToUpperInvariant() : null;
 }

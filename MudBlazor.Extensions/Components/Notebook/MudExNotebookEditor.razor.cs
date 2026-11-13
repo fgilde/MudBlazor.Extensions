@@ -90,6 +90,12 @@ public partial class MudExNotebookEditor : IMudExFileEditor
     /// <summary>Whether the section tabs are shown. The user can toggle them on the View tab.</summary>
     [Parameter] public bool ShowSectionTabs { get; set; } = true;
 
+    /// <summary>
+    /// The largest unpacked size of a notebook file in bytes that the editor opens. Pictures that would make the notebook larger are refused, so a saved
+    /// notebook always opens again. Default 256 MB.
+    /// </summary>
+    [Parameter] public long MaxFileBytes { get; set; } = 256L * 1024 * 1024;
+
     /// <summary>The notebook currently shown, loaded from a file, created by New or given by <see cref="Notebook"/>.</summary>
     public Notebook CurrentNotebook => _notebook;
 
@@ -113,6 +119,8 @@ public partial class MudExNotebookEditor : IMudExFileEditor
     private bool CanEditPage => !IsReadOnly && _page?.LoadError == null;
 
     private int PageIndex => _section?.PageList.IndexOf(_page) ?? -1;
+
+    private NotebookLoadOptions Limits => new() { MaxEntryBytes = MaxFileBytes, MaxTotalBytes = MaxFileBytes };
 
     private string RootStyle => $"--mud-ex-notebook-accent:{MudExRibbonColors.BackgroundFor(RibbonColor)};{Style}";
 
@@ -144,7 +152,11 @@ public partial class MudExNotebookEditor : IMudExFileEditor
         }
 
         if (_notebook == null && FileDisplayInfos == null)
-            Attach(Office.Notebook.Notebook.Create());
+        {
+            var notebook = Office.Notebook.Notebook.Create();
+            notebook.Limits = Limits;
+            Attach(notebook);
+        }
         if (ShowPageList != _pageListParameter)
             _pageListVisible = _pageListParameter = ShowPageList;
         if (ShowSectionTabs != _sectionTabsParameter)
@@ -197,7 +209,7 @@ public partial class MudExNotebookEditor : IMudExFileEditor
         if (buffer.Length == 0)
             throw new InvalidDataException(TryLocalize("The file is empty."));
         buffer.Position = 0;
-        var notebook = Office.Notebook.Notebook.Load(buffer);
+        var notebook = Office.Notebook.Notebook.Load(buffer, Limits);
         Attach(notebook);
         await NotebookChanged.InvokeAsync(notebook);
     }

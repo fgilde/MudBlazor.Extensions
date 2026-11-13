@@ -4,6 +4,7 @@ const PAGE = '.mud-ex-notebook-page';
 const ELEMENT = '[data-element-id]';
 const TEXT_EDITOR = '.mud-ex-notebook-text-editor';
 const LINK = '.mud-ex-notebook-link';
+const ANCHOR = `a${LINK}`;
 const CLICK_PX = 3;
 const MIN_PX = 8;
 const MEASURE_MS = 100;
@@ -13,6 +14,8 @@ const FORMAT_KEYS = ['b', 'i', 'u'];
 const TODO = '.mud-ex-notebook-todo';
 const CELL = 'td[data-cell]';
 const BORDER_PX = 4;
+const REPORT_MAX = 200;
+const COLUMN_CURSOR = 'mud-ex-notebook-col-resize';
 
 const px = value => `${value}px`;
 const frameSelector = id => `.mud-ex-notebook-selection[data-id="${id}"]`;
@@ -32,7 +35,7 @@ class MudExNotebookCanvas {
         this.onMove = e => this.pointerMove(e);
         this.onUp = e => this.pointerUp(e);
         this.events = [['pointerdown', e => this.pointerDown(e)], ['keydown', e => this.keyDown(e)], ['click', e => this.click(e)], ['contextmenu', e => this.contextMenu(e)], ['dragover', e => this.dragOver(e)], ['drop', e => this.drop(e)],
-            ['pointermove', e => this.touchMove(e)], ['pointerup', e => this.touchUp(e)], ['pointercancel', e => this.touchUp(e)]];
+            ['pointermove', e => this.touchMove(e)], ['pointermove', e => this.hover(e)], ['pointerup', e => this.touchUp(e)], ['pointercancel', e => this.touchUp(e)]];
         this.events.forEach(([type, handler]) => root.addEventListener(type, handler));
         this.resizer = new ResizeObserver(entries => this.measured(entries));
         this.mutations = new MutationObserver(() => this.observe());
@@ -64,6 +67,13 @@ class MudExNotebookCanvas {
 
     observe() {
         const page = this.page();
+        if (page?.dataset.pageId !== this.pageId) {
+            this.pageId = page?.dataset.pageId;
+            this.heights.clear();
+            this.pending.clear();
+            this.observed.forEach(el => this.resizer.unobserve(el));
+            this.observed.clear();
+        }
         this.observed.forEach(el => {
             if (!el.isConnected) {
                 this.resizer.unobserve(el);
@@ -97,14 +107,28 @@ class MudExNotebookCanvas {
         if (!this.dotnet || !this.pending.size) {
             return;
         }
-        const heights = Object.fromEntries(this.pending);
-        this.pending.forEach((height, id) => this.heights.set(id, height));
-        this.pending.clear();
-        this.dotnet.invokeMethodAsync('OnHeightsMeasuredAsync', heights).catch(() => {});
+        const batch = [...this.pending].slice(0, REPORT_MAX);
+        batch.forEach(([id, height]) => {
+            this.heights.set(id, height);
+            this.pending.delete(id);
+        });
+        if (this.pending.size) {
+            this.timer = setTimeout(() => this.report(), MEASURE_MS);
+        }
+        this.dotnet.invokeMethodAsync('OnHeightsMeasuredAsync', Object.fromEntries(batch)).catch(() => {});
+    }
+
+    reveal(id) {
+        this.page()?.querySelector(elementSelector(id))?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+
+    hover(e) {
+        const el = this.drag || this.readOnly() ? null : e.target.closest?.(ELEMENT);
+        this.root?.classList.toggle(COLUMN_CURSOR, !!(el && this.page()?.contains(el) && this.columnBorder(e, el)));
     }
 
     click(e) {
-        const link = e.target.closest?.(LINK);
+        const link = e.target.closest?.(ANCHOR);
         if (!link || this.readOnly() || !this.root.contains(link)) {
             return;
         }
@@ -200,7 +224,7 @@ class MudExNotebookCanvas {
         const border = id ? this.columnBorder(e, el) : null;
         if (border) {
             this.focus(e);
-            this.begin(e, { kind: 'column', id, ...border, start });
+            this.begin(e, { kind: 'column', id, ...border, cell: tool === 'text' ? e.target.closest(CELL) : null, start });
             return;
         }
         const todo = id ? e.target.closest(TODO) : null;
@@ -230,7 +254,7 @@ class MudExNotebookCanvas {
         const covered = selection.includes(id);
         const ids = toggle ? (covered ? selection.filter(i => i !== id) : [...selection, id]) : (covered ? selection : [id]);
         if (toggle || !covered) {
-            this.dotnet.invokeMethodAsync('OnSelectionAsync', ids).catch(() => {});
+            this.dotnet.invokeMethodAsync('OnElementClickAsync', id, toggle).catch(() => {});
         }
         this.begin(e, { kind: 'move', ids: toggle && covered ? [] : ids, click: covered && !toggle ? id : null, start });
     }
@@ -320,17 +344,18 @@ class MudExNotebookCanvas {
         }
         if (d.kind === 'marquee') {
             if (d.moved) {
-                const ids = this.inside(this.rect(d.start, p));
-                await this.dotnet.invokeMethodAsync('OnSelectionAsync', d.toggle ? [...new Set([...this.selection(), ...ids])] : ids).catch(() => {});
+                const r = this.rect(d.start, p);
+                await this.dotnet.invokeMethodAsync('OnMarqueeAsync', r.x, r.y, r.w, r.h, !!d.toggle).catch(() => {});
             } else if (!d.toggle) {
                 await this.dotnet.invokeMethodAsync('OnSelectionAsync', []).catch(() => {});
                 await this.dotnet.invokeMethodAsync('OnPageClickAsync', d.start.x, d.start.y).catch(() => {});
             }
             return;
         }
-        if (d.kind === 'cell' && !d.moved) {
+        if ((d.kind === 'cell' || (d.kind === 'column' && d.cell)) && !d.moved) {
+            const [row, column] = d.kind === 'cell' ? [d.row, d.column] : d.cell.dataset.cell.split(',').map(Number);
             this.root.mudExCaret = [d.x0, d.y0];
-            await this.dotnet.invokeMethodAsync('OnCellClickAsync', d.id, d.row, d.column).catch(() => {});
+            await this.dotnet.invokeMethodAsync('OnCellClickAsync', d.id, row, column).catch(() => {});
             return;
         }
         if (!d.moved) {
@@ -342,10 +367,10 @@ class MudExNotebookCanvas {
         if (d.kind === 'column') {
             this.restore(d, true);
             await this.dotnet.invokeMethodAsync('OnColumnWidthsAsync', d.id, this.columns(d, p)).catch(() => {});
-        } else if (d.kind === 'move' || d.kind === 'cell') {
-            const positions = {};
-            this.moved(d, p).forEach(m => positions[m.id] = { x: m.x, y: m.y });
-            await this.dotnet.invokeMethodAsync('OnMoveAsync', positions).catch(() => {});
+        } else if ((d.kind === 'move' || d.kind === 'cell') && d.ids.length) {
+            const selection = this.selection();
+            const same = d.ids.length === selection.length && d.ids.every(id => selection.includes(id));
+            await this.dotnet.invokeMethodAsync('OnMoveAsync', p.x - d.start.x, p.y - d.start.y, same ? null : d.ids).catch(() => {});
         } else if (d.kind === 'resize') {
             const b = this.resized(d, p);
             await this.dotnet.invokeMethodAsync('OnResizeAsync', { [d.id]: { x: b.x, y: b.y, width: b.w, height: b.h, free: !!d.shift } }).catch(() => {});
@@ -413,15 +438,6 @@ class MudExNotebookCanvas {
 
     rect(a, b) {
         return { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), w: Math.abs(b.x - a.x), h: Math.abs(b.y - a.y) };
-    }
-
-    inside(rect) {
-        return [...this.page().querySelectorAll(ELEMENT)].filter(el => {
-            const r = el.getBoundingClientRect();
-            const a = this.toPage(r.left, r.top);
-            const b = this.toPage(r.right, r.bottom);
-            return a.x >= rect.x && a.y >= rect.y && b.x <= rect.x + rect.w && b.y <= rect.y + rect.h;
-        }).map(el => el.dataset.elementId);
     }
 
     moved(d, p) {

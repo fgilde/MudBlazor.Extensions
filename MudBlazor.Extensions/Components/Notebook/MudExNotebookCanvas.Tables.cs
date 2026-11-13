@@ -14,7 +14,7 @@ public partial class MudExNotebookCanvas
     /// <param name="column">The column of the cell.</param>
     /// <returns>A task that completes when the text session started.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnCellClickAsync(string id, int row, int column) => InvokeAsync(async () =>
+    public Task OnCellClickAsync(string id, int row, int column) => Guard(async () =>
     {
         if (!Editable || Tool != NotebookTool.Text || Find(id) is not TableElement || _text is { Row: not null } session && session.ElementId == id
             && session.Row == row && session.Column == column)
@@ -28,7 +28,7 @@ public partial class MudExNotebookCanvas
     /// <param name="widths">The new width of every column; widths below 8 pixels are raised to 8.</param>
     /// <returns>A task that completes when the widths are set.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnColumnWidthsAsync(string id, double[] widths) => InvokeAsync(async () =>
+    public Task OnColumnWidthsAsync(string id, double[] widths) => Guard(async () =>
     {
         if (!Editable || Find(id) is not TableElement table || widths == null || widths.Length != table.ColumnWidths.Count || !widths.All(double.IsFinite))
             return;
@@ -55,9 +55,9 @@ public partial class MudExNotebookCanvas
         if (!Editable)
             await EndTextEditAsync(null);
         else if (session is { Row: { } row, Column: { } column } && Find(session.ElementId) is TableElement table && CellOf(table, session) != null)
-            await TabToCellAsync(table, row, column, paragraphs, tab.Back);
+            await RunAsync(() => TabToCellAsync(table, row, column, paragraphs, tab.Back));
         else if (session.Row == null && !tab.Back && paragraphs is [{ List: NoteListKind.None }] && !NotebookEdit.IsEmpty(paragraphs))
-            await ToTableAsync(session, paragraphs);
+            await RunAsync(() => ToTableAsync(session, paragraphs));
         else
             await EndTextEditAsync(paragraphs);
     }

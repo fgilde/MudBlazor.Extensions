@@ -1,6 +1,7 @@
 using Bunit;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Services;
@@ -64,7 +65,7 @@ public class SlideEditorFixesTests : IAsyncLifetime
         await cut.InvokeAsync(() => canvas.Instance.OnSelectionAsync([id]));
         cut.Find(".mud-ex-slide-canvas").KeyDown(new KeyboardEventArgs { Key = draft[..1] });
         var editor = cut.FindComponent<MudExSlideTextEditor>().Instance;
-        await cut.InvokeAsync(() => editor.OnTextInputAsync([new SlideTextParagraphDto { Runs = [new SlideTextRunDto { Text = draft }] }]));
+        await cut.InvokeAsync(() => editor.OnTextInputAsync([new SlideTextParagraphDto { Runs = [new SlideTextRunDto { Text = draft }] }], null));
         return editor;
     }
 
@@ -159,8 +160,8 @@ public class SlideEditorFixesTests : IAsyncLifetime
     {
         var presentation = TextDeck();
         byte[] saved = null;
-        _context.JSInterop.Setup<SlideTextParagraphDto[]>("read", _ => true)
-            .SetResult([new SlideTextParagraphDto { Runs = [new SlideTextRunDto { Text = "Quarterly" }] }]);
+        _context.JSInterop.Setup<IJSStreamReference>("readData", _ => true)
+            .SetResult(new JsonStreamReference(new[] { new SlideTextParagraphDto { Runs = [new SlideTextRunDto { Text = "Quarterly" }] } }));
         var cut = RenderEditor(p => p.Add(x => x.Presentation, presentation).Add(x => x.SaveRequested, (MudExFileSaveRequest r) =>
         {
             using var buffer = new MemoryStream();
@@ -237,7 +238,7 @@ public class SlideEditorFixesTests : IAsyncLifetime
         await cut.InvokeAsync(() => cut.Instance.InsertTextBoxAsync());
         await cut.InvokeAsync(() => cut.Instance.OnInsertAsync(Inch, Inch, 0, 0));
         var editor = cut.FindComponent<MudExSlideTextEditor>().Instance;
-        await cut.InvokeAsync(() => editor.OnTextInputAsync([new SlideTextParagraphDto { Runs = [new SlideTextRunDto { Text = "Hi" }] }]));
+        await cut.InvokeAsync(() => editor.OnTextInputAsync([new SlideTextParagraphDto { Runs = [new SlideTextRunDto { Text = "Hi" }] }], null));
         Assert.Equal(2, slide.Shapes.Count);
 
         await _context.DisposeComponentsAsync();

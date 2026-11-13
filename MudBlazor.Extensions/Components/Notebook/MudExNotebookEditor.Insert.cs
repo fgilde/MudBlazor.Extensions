@@ -185,7 +185,10 @@ public partial class MudExNotebookEditor
         if (await GoAsync(result.Section, result.Page))
             _pendingSelection = ids;
         else if (ReferenceEquals(result.Page, _page) && _canvas != null)
+        {
             await _canvas.SelectAsync(ids);
+            await _canvas.RevealAsync(result.ElementId);
+        }
     }
 
     private async Task ApplyPendingSelectionAsync()
@@ -194,6 +197,7 @@ public partial class MudExNotebookEditor
             return;
         _pendingSelection = null;
         await _canvas.SelectAsync(ids);
+        await _canvas.RevealAsync(ids.FirstOrDefault());
         StateHasChanged();
     }
 
@@ -207,7 +211,7 @@ public partial class MudExNotebookEditor
     {
         if (!double.IsFinite(factor) || factor <= 0)
             return;
-        SetZoom(_zoom * factor);
+        SetZoom(factor > 1 ? ZoomLevels.FirstOrDefault(z => z > _zoom, _zoom) : ZoomLevels.LastOrDefault(z => z < _zoom, _zoom));
         StateHasChanged();
     });
 }

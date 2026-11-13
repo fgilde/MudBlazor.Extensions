@@ -142,7 +142,7 @@ public class SlideTextEditorTests : IAsyncLifetime
         var dom = Dom(shape, presentation);
         var run = dom[2].Runs[0];
         dom[2].Runs = [Copy(run, "one "), Copy(run, "two", "1"), Copy(run, " three"), .. dom[2].Runs.Skip(1)];
-        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(dom));
+        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(dom, null));
 
         Assert.Empty(cut.FindComponents<MudExSlideTextEditor>());
         var runs = shape.Text.Paragraphs[2].Runs;
@@ -178,14 +178,14 @@ public class SlideTextEditorTests : IAsyncLifetime
 
         var dom = Dom(shape, presentation);
         dom[0].Runs[1].Text = "f";
-        await cut.InvokeAsync(() => editor.Instance.OnTextInputAsync(dom));
+        await cut.InvokeAsync(() => editor.Instance.OnTextInputAsync(dom, null));
         cut.WaitForAssertion(() => Assert.True(cut.Instance.IsDirty));
         cut.Find(".mud-ex-slide-text-editable").KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
         Assert.Equal("Slide 1 of 2", cut.Find(".mud-ex-slide-status-position").TextContent.Trim());
         dom[0].Runs[1].Text = "fe";
-        await cut.InvokeAsync(() => editor.Instance.OnTextInputAsync(dom));
+        await cut.InvokeAsync(() => editor.Instance.OnTextInputAsync(dom, null));
         dom[0].Runs[1].Text = "fest";
-        await cut.InvokeAsync(() => editor.Instance.OnTextInputAsync(dom));
+        await cut.InvokeAsync(() => editor.Instance.OnTextInputAsync(dom, null));
         Assert.Same(before, shape.Text);
         Assert.False(presentation.Undo.CanUndo);
 
@@ -201,7 +201,7 @@ public class SlideTextEditorTests : IAsyncLifetime
         cut.Find(".mud-ex-slide-canvas").KeyDown(new KeyboardEventArgs { Key = "F2" });
         editor = cut.FindComponent<MudExSlideTextEditor>();
         Assert.Null(editor.Instance.Text);
-        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(Dom((AutoShape)presentation.Slides[1].Shapes[0], presentation)));
+        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(Dom((AutoShape)presentation.Slides[1].Shapes[0], presentation), null));
         Assert.False(presentation.Undo.CanUndo);
     }
 
@@ -214,10 +214,10 @@ public class SlideTextEditorTests : IAsyncLifetime
         await cut.InvokeAsync(() => cut.Instance.OnShapeDoubleClickAsync(shape.Id, 0, 0));
         var editor = cut.FindComponent<MudExSlideTextEditor>();
 
-        var pasted = editor.Instance.OnPasteHtml(
+        var pasted = await editor.Instance.OnPasteHtml(
             "<html><head><style>b{color:red}</style><title>t</title></head><body><!--StartFragment--><b onclick=\"alert(1)\">neu</b>" +
             "<script>alert('x')</script><span style=\"color:#ff0000;font-size:40px;font-family:Evil\" class=\"x\">&lt;script&gt;rot</span>" +
-            "<img src=x onerror=alert(1)><p><i>zwei</i> <u>drei</u></p><!--EndFragment--></body></html>");
+            "<img src=x onerror=alert(1)><p><i>zwei</i> <u>drei</u></p><!--EndFragment--></body></html>", null);
 
         Assert.Equal(2, pasted.Length);
         Assert.Equal(["neu", "<script>rot"], pasted[0].Runs.Select(r => r.Text));
@@ -229,13 +229,13 @@ public class SlideTextEditorTests : IAsyncLifetime
         Assert.Equal(["1", null, null], pasted[1].Runs.Select(r => r.I));
         Assert.Equal([null, null, "1"], pasted[1].Runs.Select(r => r.U));
         Assert.DoesNotContain(pasted.SelectMany(p => p.Runs), r => r.Text.Contains("alert"));
-        Assert.Empty(editor.Instance.OnPasteHtml("<script>alert(1)</script>"));
+        Assert.Empty(await editor.Instance.OnPasteHtml("<script>alert(1)</script>", null));
 
         var dom = Dom(shape, presentation);
         var bold = dom[0].Runs[1];
         var inserted = pasted[0].Runs.Select(r => new SlideTextRunDto { Source = bold.Source, Text = r.Text, B = r.B ?? bold.B, Color = r.Color ?? bold.Color }).ToArray();
         dom[0].Runs = [dom[0].Runs[0], .. inserted, dom[0].Runs[2]];
-        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(dom));
+        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(dom, null));
 
         var reloaded = SaveAndLoad(presentation).Slides[0].Shapes.OfType<AutoShape>().Single(s => s.Name == "Text").Text;
         var runs = reloaded.Paragraphs[0].Runs;
@@ -271,7 +271,7 @@ public class SlideTextEditorTests : IAsyncLifetime
         Assert.Null(cut.Find(".mud-ex-slide-canvas").GetAttribute("data-insert"));
         var editor = cut.FindComponent<MudExSlideTextEditor>();
 
-        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(Dom(box, presentation)));
+        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(Dom(box, presentation), null));
 
         Assert.DoesNotContain(box, slide.Shapes);
         Assert.Empty(cut.Instance.SelectedShapes);
@@ -284,8 +284,8 @@ public class SlideTextEditorTests : IAsyncLifetime
         editor = cut.FindComponent<MudExSlideTextEditor>();
         var dom = Dom(box, presentation);
         dom[0].Runs[0].Text = "Hallo";
-        await cut.InvokeAsync(() => editor.Instance.OnTextInputAsync(dom));
-        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(dom));
+        await cut.InvokeAsync(() => editor.Instance.OnTextInputAsync(dom, null));
+        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(dom, null));
 
         Assert.Same(box, slide.Shapes[^1]);
         Assert.Equal("Hallo", box.Text.Paragraphs[0].Runs.Single().Text);

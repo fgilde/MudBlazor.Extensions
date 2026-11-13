@@ -1,4 +1,5 @@
 import { ZWSP, isDiv, fontFamily, richTextMethods } from './MudExRichText.js';
+import { encode, payload } from './MudExOfficeInterop.js';
 
 const RUN_KEYS = ['b', 'i', 'u', 's', 'size', 'color', 'font'];
 const FLAGS = ['b', 'i', 'u', 's'];
@@ -93,6 +94,10 @@ class MudExSlideText {
         } else if (last) {
             this.caret(last, last.length);
         }
+    }
+
+    readData() {
+        return encode(this.read());
     }
 
     read() {
@@ -227,7 +232,7 @@ class MudExSlideText {
             return;
         }
         this.sending = true;
-        this.dotnet.invokeMethodAsync('OnTextInputAsync', this.read()).catch(() => {}).finally(() => {
+        this.dotnet.invokeMethodAsync('OnTextInputAsync', ...payload(this.read())).catch(() => {}).finally(() => {
             this.sending = false;
             if (this.again) {
                 this.again = false;
@@ -243,7 +248,7 @@ class MudExSlideText {
         this.done = true;
         const paragraphs = this.read();
         this.canvas?.focus({ preventScroll: true });
-        this.dotnet.invokeMethodAsync('OnTextTabAsync', paragraphs, back).catch(() => {});
+        this.dotnet.invokeMethodAsync('OnTextTabAsync', ...payload(paragraphs), back).catch(() => {});
     }
 
     format(key, value) {
@@ -341,7 +346,7 @@ class MudExSlideText {
         }
         const html = data.getData('text/html');
         const text = data.getData('text/plain');
-        let paragraphs = html ? await this.dotnet.invokeMethodAsync('OnPasteHtml', html).catch(() => null) : null;
+        let paragraphs = html ? await this.dotnet.invokeMethodAsync('OnPasteHtml', ...payload(html)).catch(() => null) : null;
         if (!paragraphs?.length) {
             paragraphs = text ? text.replace(/\r\n?/g, '\n').split('\n').map(line => ({ runs: [{ text: line }] })) : [];
         }

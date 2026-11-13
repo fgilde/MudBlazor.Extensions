@@ -81,8 +81,8 @@ public partial class MudExNotebookTextEditor
     {
         if (_module.Js is not { } js)
             return null;
-        try { return await js.InvokeAsync<NotebookTextParagraphDto[]>("read"); }
-        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException) { return null; }
+        try { return await JsPayload.ReadAsync<NotebookTextParagraphDto[]>(null, await js.InvokeAsync<IJSStreamReference>("readData")); }
+        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException or IOException or System.Text.Json.JsonException) { return null; }
     }
 
     internal Task FormatAsync(string key, string value) => CallAsync("format", key, value);
@@ -100,17 +100,27 @@ public partial class MudExNotebookTextEditor
     }
 
     /// <summary>Called by the browser when the user ends editing.</summary>
-    /// <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+    /// <param name="paragraphs">The final paragraphs of the editing DOM, or null if they come as <paramref name="stream"/>.</param>
+    /// <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
     /// <returns>A task that completes when the text is committed.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnTextCommitAsync(NotebookTextParagraphDto[] paragraphs) => InvokeAsync(() => Committed.InvokeAsync(paragraphs ?? []));
+    public async Task OnTextCommitAsync(NotebookTextParagraphDto[] paragraphs, IJSStreamReference stream)
+    {
+        var list = await JsPayload.ReadAsync(paragraphs, stream);
+        await InvokeAsync(() => Committed.InvokeAsync(list ?? []));
+    }
 
     /// <summary>Called by the browser when Tab ended editing in a table cell or at the end of a plain paragraph.</summary>
-    /// <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+    /// <param name="paragraphs">The final paragraphs of the editing DOM, or null if they come as <paramref name="stream"/>.</param>
+    /// <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
     /// <param name="back">True for Shift+Tab.</param>
     /// <returns>A task that completes when the text is handed on.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnTabAsync(NotebookTextParagraphDto[] paragraphs, bool back) => InvokeAsync(() => Tabbed.InvokeAsync((paragraphs ?? [], back)));
+    public async Task OnTabAsync(NotebookTextParagraphDto[] paragraphs, IJSStreamReference stream, bool back)
+    {
+        var list = await JsPayload.ReadAsync(paragraphs, stream);
+        await InvokeAsync(() => Tabbed.InvokeAsync((list ?? [], back)));
+    }
 
     /// <summary>Called by the browser on the first change of the text.</summary>
     /// <returns>A task that completes when the change is handed on.</returns>
@@ -118,10 +128,18 @@ public partial class MudExNotebookTextEditor
     public Task OnTextInputAsync() => InvokeAsync(() => TextInput.InvokeAsync());
 
     /// <summary>Called by the browser after the selection or its format changed.</summary>
-    /// <param name="paragraphs">The paragraphs the selection touches with the runs it covers; the run at the caret for an empty selection.</param>
+    /// <param name="paragraphs">
+    /// The paragraphs the selection touches with the formats of the runs it covers, without their text; the run at the caret for an empty selection.
+    /// Null if they come as <paramref name="stream"/>.
+    /// </param>
+    /// <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
     /// <returns>A task that completes when the selection is handed on.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnSelectionFormatAsync(NotebookTextParagraphDto[] paragraphs) => InvokeAsync(() => SelectionChanged.InvokeAsync(paragraphs ?? []));
+    public async Task OnSelectionFormatAsync(NotebookTextParagraphDto[] paragraphs, IJSStreamReference stream)
+    {
+        var list = await JsPayload.ReadAsync(paragraphs, stream);
+        await InvokeAsync(() => SelectionChanged.InvokeAsync(list ?? []));
+    }
 
     /// <summary>Called by the browser for Ctrl+K.</summary>
     /// <param name="text">The selected text.</param>
@@ -134,10 +152,11 @@ public partial class MudExNotebookTextEditor
     /// Called by the browser when HTML is pasted. Keeps only text with bold, italic, underline, colour, lists and links with an allowed scheme;
     /// scripts, styles and everything else are dropped.
     /// </summary>
-    /// <param name="html">The <c>text/html</c> content of the clipboard.</param>
+    /// <param name="html">The <c>text/html</c> content of the clipboard, or null if it comes as <paramref name="stream"/>.</param>
+    /// <param name="stream">The HTML as a JSON string when it is too large for one message.</param>
     /// <returns>The pasted paragraphs.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public NotebookTextParagraphDto[] OnPasteHtml(string html) => NotebookTextDom.FromHtml(html);
+    public async Task<NotebookTextParagraphDto[]> OnPasteHtml(string html, IJSStreamReference stream) => NotebookTextDom.FromHtml(await JsPayload.ReadAsync(html, stream));
 
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()

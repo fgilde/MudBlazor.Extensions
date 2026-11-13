@@ -1,7 +1,11 @@
+import { payload } from './MudExOfficeInterop.js';
+
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const DRAW_TOOLS = ['pen', 'highlighter', 'eraser', 'lasso', 'shape'];
 const ERASER_PX = 6;
 const MIN_STEP_PX = 0.25;
+const STROKE_TOLERANCE_PX = 0.5;
+const LASSO_TOLERANCE_PX = 1;
 const ERASED = 'mud-ex-notebook-erased';
 const COLOR = /^#[0-9a-f]{6}$/i;
 const NUMBER = /-?\d*\.?\d+(?:e[-+]?\d+)?/gi;
@@ -23,6 +27,34 @@ const intersects = (a, b, c, d) => {
 
 const segmentDistance = (a, b, c, d) => intersects(a, b, c, d) ? 0
     : Math.min(pointSegment(a, c, d), pointSegment(b, c, d), pointSegment(c, a, b), pointSegment(d, a, b));
+
+const round = value => Math.round(value * 100) / 100;
+
+function simplify(points, tolerance) {
+    if (points.length < 3) {
+        return points;
+    }
+    const keep = new Uint8Array(points.length);
+    keep[0] = keep[points.length - 1] = 1;
+    const ranges = [[0, points.length - 1]];
+    while (ranges.length) {
+        const [first, last] = ranges.pop();
+        let index = -1;
+        let max = tolerance;
+        for (let i = first + 1; i < last; i++) {
+            const distance = pointSegment(points[i], points[first], points[last]);
+            if (distance > max) {
+                max = distance;
+                index = i;
+            }
+        }
+        if (index >= 0) {
+            keep[index] = 1;
+            ranges.push([first, index], [index, last]);
+        }
+    }
+    return points.filter((_, i) => keep[i]);
+}
 
 const pathOf = points => points.length ? `M${points.map(p => `${p.x} ${p.y}`).join('L')}${points.length === 1 ? `L${points[0].x} ${points[0].y}` : ''}` : '';
 
@@ -237,15 +269,16 @@ export const inkMethods = {
             }
             if (d.kind === 'stroke' && d.points.length) {
                 this.renderInk(d);
-                await this.dotnet.invokeMethodAsync('OnStrokeAsync', d.points).catch(() => {});
+                const points = simplify(d.points, STROKE_TOLERANCE_PX).flatMap(p => [round(p.x), round(p.y), round(p.pressure)]);
+                await this.dotnet.invokeMethodAsync('OnStrokeAsync', ...payload(points)).catch(() => {});
             } else if (d.kind === 'erase' && d.hits.size) {
-                await this.dotnet.invokeMethodAsync('OnEraseAsync', [...d.hits].map(s => s.id)).catch(() => {});
+                await this.dotnet.invokeMethodAsync('OnEraseAsync', ...payload([...d.hits].map(s => s.id))).catch(() => {});
             } else if (d.kind === 'shape' && d.points.length) {
                 const [a, b] = [d.points[0], d.points[d.points.length - 1]];
                 await this.dotnet.invokeMethodAsync('OnShapeAsync', a.x, a.y, b.x, b.y).catch(() => {});
             } else if (d.kind === 'lasso') {
-                const polygon = d.points.length > 2 ? d.points.map(p => ({ x: p.x, y: p.y })) : [];
-                await this.dotnet.invokeMethodAsync('OnLassoAsync', polygon).catch(() => {});
+                const polygon = d.points.length > 2 ? simplify(d.points, LASSO_TOLERANCE_PX).flatMap(p => [round(p.x), round(p.y)]) : [];
+                await this.dotnet.invokeMethodAsync('OnLassoAsync', ...payload(polygon)).catch(() => {});
             }
         } finally {
             d.svg?.remove();

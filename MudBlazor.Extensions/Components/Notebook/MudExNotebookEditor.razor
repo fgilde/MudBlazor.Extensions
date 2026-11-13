@@ -74,7 +74,7 @@
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Editing")" Icon="@Icons.Material.Filled.Search" CollapsePriority="0">
                         <MudExRibbonButton Id="nb-find" Text="@TryLocalize("Find")" Icon="@Icons.Material.Filled.Search" Shortcut="Ctrl+F" Size="MudExRibbonItemSize.Small" OnClick="@(() => OpenSearchAsync(false))" />
-                        <MudExRibbonButton Id="nb-find-notebook" Text="@TryLocalize("Search Notebook")" Icon="@Icons.Material.Filled.ManageSearch" Shortcut="Ctrl+E" Size="MudExRibbonItemSize.Small"
+                        <MudExRibbonButton Id="nb-find-notebook" Text="@TryLocalize("Search Notebook")" Icon="@Icons.Material.Filled.ManageSearch" Size="MudExRibbonItemSize.Small"
                                            OnClick="@(() => OpenSearchAsync(true))" />
                     </MudExRibbonGroup>
                 </MudExRibbonTab>
@@ -176,7 +176,7 @@
                         <div class="mud-ex-notebook-page-date">@_page.Created.ToLocalTime().ToString("f", System.Globalization.CultureInfo.CurrentCulture)</div>
                     </div>
                     <MudExNotebookCanvas @ref="_canvas" Notebook="_notebook" Page="_page" Zoom="_zoom" ReadOnly="@(!CanEditPage)" Tool="_tool" InkColor="@Ink.Color" InkWidth="@Ink.Width" ViewportWidth="_viewport.Width"
-                                         ViewportHeight="_viewport.Height" Images="_images" SelectionChanged="OnCanvasSelectionChanged" TextInput="MarkDirtyAsync"
+                                         ViewportHeight="_viewport.Height" Images="_images" SelectionChanged="OnCanvasSelectionChanged" CommandFailed="OnCanvasFailedAsync" TextInput="MarkDirtyAsync"
                                          LinkRequested="OpenLinkDialogAsync" ShapeKind="_shapeKind" ToolChanged="@(t => _tool = t)" PictureDropped="OnPictureDroppedAsync"
                                          ContextMenu="OpenContextMenuAsync" Localizer="@Localizer" />
                 }

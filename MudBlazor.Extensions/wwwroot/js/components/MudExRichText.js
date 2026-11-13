@@ -1,3 +1,5 @@
+import { payload } from './MudExOfficeInterop.js';
+
 export const ZWSP = String.fromCharCode(8203);
 
 export const isDiv = node => node.nodeType === Node.ELEMENT_NODE && node.tagName === 'DIV';
@@ -97,7 +99,7 @@ export const richTextMethods = {
         if (focus) {
             this.canvas?.focus({ preventScroll: true });
         }
-        this.dotnet.invokeMethodAsync('OnTextCommitAsync', paragraphs).catch(() => {});
+        this.dotnet.invokeMethodAsync('OnTextCommitAsync', ...payload(paragraphs)).catch(() => {});
     },
 
     paragraphOf(node) {

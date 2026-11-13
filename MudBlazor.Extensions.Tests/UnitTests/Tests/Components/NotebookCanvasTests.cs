@@ -120,26 +120,23 @@ public class NotebookCanvasTests : IDisposable
         var cut = Render(notebook, page);
         await Select(cut, "image", "box");
 
-        await cut.InvokeAsync(() => cut.Instance.OnMoveAsync(new Dictionary<string, PointDto>
-        {
-            ["image"] = new() { X = 150, Y = 260 },
-            ["box"] = new() { X = -30, Y = -5 },
-            ["unknown"] = new() { X = 1, Y = 1 }
-        }));
+        await cut.InvokeAsync(() => cut.Instance.OnMoveAsync(50, 60, null));
 
         Assert.Equal((150d, 260d), (Element(page, "image").X, Element(page, "image").Y));
-        Assert.Equal((0d, 0d), (Element(page, "box").X, Element(page, "box").Y));
+        Assert.Equal((450d, 110d), (Element(page, "box").X, Element(page, "box").Y));
         Assert.Equal(["image", "box"], cut.Instance.Selection);
         cut.WaitForAssertion(() => Assert.Contains("left:150px", cut.Find(".mud-ex-notebook-selection[data-id='image']").GetAttribute("style")));
 
-        await cut.InvokeAsync(() => cut.Instance.OnMoveAsync(new Dictionary<string, PointDto> { ["future"] = new() { X = 520, Y = 310 } }));
+        await cut.InvokeAsync(() => cut.Instance.OnMoveAsync(-1000, 10, ["future", "unknown"]));
+        Assert.Equal((0d, 310d), (Element(page, "future").X, Element(page, "future").Y));
         notebook.Undo.Undo();
         notebook.Undo.Undo();
         Assert.Equal((100d, 200d), (Element(page, "image").X, Element(page, "image").Y));
         Assert.Equal((400d, 50d), (Element(page, "box").X, Element(page, "box").Y));
         Assert.False(notebook.Undo.CanUndo);
 
-        await cut.InvokeAsync(() => cut.Instance.OnMoveAsync(new Dictionary<string, PointDto> { ["box"] = new() { X = 400, Y = 50 }, ["image"] = new() { X = double.NaN, Y = 1 } }));
+        await cut.InvokeAsync(() => cut.Instance.OnMoveAsync(double.NaN, 1, null));
+        await cut.InvokeAsync(() => cut.Instance.OnMoveAsync(0, 0, null));
         Assert.False(notebook.Undo.CanUndo);
     }
 
@@ -275,7 +272,7 @@ public class NotebookCanvasTests : IDisposable
         var cut = Render(notebook, page);
         Assert.Contains("width:940px;height:740px", PageStyle(cut));
 
-        await cut.InvokeAsync(() => cut.Instance.OnMoveAsync(new Dictionary<string, PointDto> { ["box"] = new() { X = 2000, Y = 3000 } }));
+        await cut.InvokeAsync(() => cut.Instance.OnMoveAsync(1600, 2950, ["box"]));
         cut.WaitForAssertion(() => Assert.Contains("width:2450px;height:3450px", PageStyle(cut)));
 
         await Select(cut, "box");
@@ -308,7 +305,7 @@ public class NotebookCanvasTests : IDisposable
         await Select(cut, "image");
         await Key(cut, "a", ctrl: true);
         await cut.InvokeAsync(() => cut.Instance.OnPageClickAsync(50, 500));
-        await cut.InvokeAsync(() => cut.Instance.OnMoveAsync(new Dictionary<string, PointDto> { ["image"] = new() { X = 0, Y = 0 } }));
+        await cut.InvokeAsync(() => cut.Instance.OnMoveAsync(-100, -200, ["image"]));
         await cut.InvokeAsync(() => cut.Instance.OnResizeAsync(new Dictionary<string, BoundsDto> { ["image"] = new() { X = 0, Y = 0, Width = 9, Height = 9 } }));
 
         Assert.Empty(cut.Instance.Selection);

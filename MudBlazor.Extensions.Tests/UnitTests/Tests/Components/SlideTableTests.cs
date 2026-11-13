@@ -134,7 +134,7 @@ public class SlideTableTests : IAsyncLifetime
 
         await Key(cut, "F2");
         var editor = cut.FindComponent<MudExSlideTextEditor>().Instance;
-        await cut.InvokeAsync(() => editor.OnTextTabAsync(Dom("new"), false));
+        await cut.InvokeAsync(() => editor.OnTextTabAsync(Dom("new"), null, false));
         Assert.Equal("new", TableTests.Text(table.Rows[4].Cells[0]));
         Assert.Equal((4, 1, 1, 1), Canvas(cut).SelectedCells);
         cut.WaitForAssertion(() => Assert.True(Canvas(cut).IsEditingText));
@@ -158,7 +158,7 @@ public class SlideTableTests : IAsyncLifetime
         await Key(cut, "y");
         Assert.Same(editor.Instance, cut.FindComponent<MudExSlideTextEditor>().Instance);
 
-        await cut.InvokeAsync(() => editor.Instance.OnTextInputAsync(Dom("xy")));
+        await cut.InvokeAsync(() => editor.Instance.OnTextInputAsync(Dom("xy"), null));
         Assert.Same(before, table.Rows[0].Cells[1].Text);
         var saved = await cut.InvokeAsync(() => cut.Instance.ExportAsync());
 
@@ -173,7 +173,7 @@ public class SlideTableTests : IAsyncLifetime
         await cut.InvokeAsync(() => Canvas(cut).OnCellSelectAsync(3, 2, 2, 2, 2));
         await Key(cut, "F2");
         editor = cut.FindComponent<MudExSlideTextEditor>();
-        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(Dom("F")));
+        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(Dom("F"), null));
         Assert.False(presentation.Undo.CanUndo);
 
         await cut.InvokeAsync(() => Canvas(cut).OnCellSelectAsync(3, 2, 1, 2, 2));

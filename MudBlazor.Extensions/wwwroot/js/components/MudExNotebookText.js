@@ -1,4 +1,5 @@
 import { ZWSP, isDiv, fontFamily, richTextMethods } from './MudExRichText.js';
+import { encode, payload } from './MudExOfficeInterop.js';
 
 const RUN_KEYS = ['size', 'color', 'highlight', 'font', 'link'];
 const FLAGS = ['b', 'i', 'u', 's'];
@@ -176,6 +177,10 @@ class MudExNotebookText {
         });
     }
 
+    readData() {
+        return encode(this.read());
+    }
+
     read() {
         const paragraphs = [];
         let loose = null;
@@ -234,9 +239,9 @@ class MudExNotebookText {
             const selected = this.paragraphs(range).map(div => {
                 const spans = [...div.querySelectorAll('span')];
                 const hit = spans.filter(s => range.collapsed ? s.contains(range.startContainer) : range.intersectsNode(s));
-                return this.paragraphDto(div, (hit.length ? hit : spans.slice(0, 1)).map(s => this.runOf(s)));
+                return this.paragraphDto(div, (hit.length ? hit : spans.slice(0, 1)).map(s => ({ ...this.runOf(s), text: s.textContent ? ' ' : '' })));
             });
-            this.dotnet.invokeMethodAsync('OnSelectionFormatAsync', selected).catch(() => {});
+            this.dotnet.invokeMethodAsync('OnSelectionFormatAsync', ...payload(selected)).catch(() => {});
         }, 150);
     }
 
@@ -569,7 +574,7 @@ class MudExNotebookText {
         }
         const html = data.getData('text/html');
         const text = data.getData('text/plain');
-        let paragraphs = html ? await this.dotnet.invokeMethodAsync('OnPasteHtml', html).catch(() => null) : null;
+        let paragraphs = html ? await this.dotnet.invokeMethodAsync('OnPasteHtml', ...payload(html)).catch(() => null) : null;
         if (!paragraphs?.length) {
             paragraphs = text ? text.replace(/\r\n?/g, '\n').split('\n').map(line => ({ runs: [{ text: line }] })) : [];
         }
@@ -639,10 +644,10 @@ class MudExNotebookText {
         }
         const zoom = +this.canvas.dataset.zoom || 1;
         const cell = td.getBoundingClientRect();
-        const origin = page.getBoundingClientRect();
-        const padding = parseFloat(getComputedStyle(td).paddingLeft) || 0;
-        this.box.style.left = `px`;
-        this.box.style.top = `px`;
+        const origin = (this.box.offsetParent ?? page).getBoundingClientRect();
+        const style = getComputedStyle(td);
+        this.box.style.left = `${cell.left - origin.left + ((parseFloat(style.paddingLeft) || 0) + td.clientLeft) * zoom}px`;
+        this.box.style.top = `${cell.top - origin.top + ((parseFloat(style.paddingTop) || 0) + td.clientTop) * zoom}px`;
         return td.firstElementChild;
     }
 
@@ -665,7 +670,7 @@ class MudExNotebookText {
         this.done = true;
         const paragraphs = this.read();
         this.canvas?.focus({ preventScroll: true });
-        this.dotnet.invokeMethodAsync('OnTabAsync', paragraphs, back).catch(() => {});
+        this.dotnet.invokeMethodAsync('OnTabAsync', ...payload(paragraphs), back).catch(() => {});
     }
 
     dispose() {

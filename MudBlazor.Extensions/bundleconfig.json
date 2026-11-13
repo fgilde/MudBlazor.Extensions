@@ -98,6 +98,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExOfficeInterop.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExOfficeInterop.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExRichText.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExRichText.js"

@@ -55,7 +55,7 @@ public class NotebookTextEditorTests : IAsyncLifetime
         await cut.InvokeAsync(() => cut.Instance.OnPageClickAsync(20, 25));
         Assert.True(cut.Instance.IsEditingText);
         var editor = cut.FindComponent<MudExNotebookTextEditor>();
-        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(paragraphs));
+        await cut.InvokeAsync(() => editor.Instance.OnTextCommitAsync(paragraphs, null));
         Assert.False(cut.Instance.IsEditingText);
     }
 
@@ -165,14 +165,14 @@ public class NotebookTextEditorTests : IAsyncLifetime
     }
 
     [Fact]
-    public void TextEdit_PasteHtml_KeepsBoldAndList_DropsScript()
+    public async Task TextEdit_PasteHtml_KeepsBoldAndList_DropsScript()
     {
         var editor = _context.Render<MudExNotebookTextEditor>(p => p.Add(e => e.Paragraphs, [new NoteParagraph()]));
 
-        var pasted = editor.Instance.OnPasteHtml(
+        var pasted = await editor.Instance.OnPasteHtml(
             "<html><head><style>b{color:red}</style></head><body><ul><li><b onclick=\"alert(1)\">bold</b> item</li><li>two<ul><li>nested</li></ul></li></ul>" +
             "<ol><li>first</li></ol><script>alert('x')</script><p>&lt;script&gt;x</p><p><a href=\"javascript:alert(1)\">bad</a> <a href=\"https://mudex.org\">good</a></p>" +
-            "<img src=x onerror=alert(1)></body></html>");
+            "<img src=x onerror=alert(1)></body></html>", null);
 
         Assert.Equal(["bullet", "bullet", "bullet", "number", null, null], pasted.Select(p => p.List));
         Assert.Equal([0, 0, 1, 0, 0, 0], pasted.Select(p => p.Indent));
@@ -181,7 +181,7 @@ public class NotebookTextEditorTests : IAsyncLifetime
         Assert.Equal("<script>x", Assert.Single(pasted[4].Runs).Text);
         Assert.Equal([null, null, "https://mudex.org"], pasted[5].Runs.Select(r => r.Link));
         Assert.DoesNotContain(pasted.SelectMany(p => p.Runs), r => r.Text.Contains("alert"));
-        Assert.Empty(editor.Instance.OnPasteHtml("<script>alert(1)</script>"));
+        Assert.Empty(await editor.Instance.OnPasteHtml("<script>alert(1)</script>", null));
 
         var paragraphs = NotebookTextDom.FromDom([], pasted);
         Assert.Equal(NoteListKind.Bullet, paragraphs[0].List);

@@ -48,7 +48,7 @@ public partial class MudExNotebookCanvas
     /// <param name="paragraph">The index of the paragraph.</param>
     /// <returns>A task that completes when the check box is toggled.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnTodoToggleAsync(string id, int paragraph) => InvokeAsync(() =>
+    public Task OnTodoToggleAsync(string id, int paragraph) => Guard(() =>
     {
         if (!Editable || _text?.ElementId == id || Find(id) is not TextElement text || paragraph < 0 || paragraph >= text.Paragraphs.Count
             || text.Paragraphs[paragraph].List != NoteListKind.Todo)
@@ -93,25 +93,31 @@ public partial class MudExNotebookCanvas
             await EndTextEditAsync(live == null ? null : NotebookTextDom.FromDom(OriginalOf(session), live));
     }
 
-    internal Task EndTextEditAsync(IReadOnlyList<NoteParagraph> paragraphs)
+    internal async Task EndTextEditAsync(IReadOnlyList<NoteParagraph> paragraphs)
     {
         if (_text is not { } session)
-            return Task.CompletedTask;
+            return;
         _text = null;
         _sessionState = null;
-        if (paragraphs != null && Editable)
-        {
-            if (session.Row is { } row && session.Column is { } column && Find(session.ElementId) is TableElement table && CellOf(table, session) != null)
-                Notebook.Execute(new SetTableCellCommand(Page, table.Id, row, column, CellText(paragraphs)));
-            else if (!session.IsNew && session.Row == null && Find(session.ElementId) is TextElement)
-                Notebook.Execute(new SetTextCommand(Page, session.ElementId, paragraphs));
-            else if (session.IsNew && !NotebookEdit.IsEmpty(paragraphs))
-                Notebook.Execute(new AddElementCommand(Page, new TextElement { Id = session.ElementId, X = session.X, Y = session.Y, Width = NewTextWidth, Paragraphs = paragraphs }));
-        }
-
         _raiseSelection = true;
         StateHasChanged();
-        return RaiseSelectionAsync();
+        if (paragraphs != null && Editable)
+            await RunAsync(() =>
+            {
+                Store(session, paragraphs);
+                return Task.CompletedTask;
+            });
+        await RaiseSelectionAsync();
+    }
+
+    private void Store(NotebookTextEditRequest session, IReadOnlyList<NoteParagraph> paragraphs)
+    {
+        if (session.Row is { } row && session.Column is { } column && Find(session.ElementId) is TableElement table && CellOf(table, session) != null)
+            Notebook.Execute(new SetTableCellCommand(Page, table.Id, row, column, CellText(paragraphs)));
+        else if (!session.IsNew && session.Row == null && Find(session.ElementId) is TextElement)
+            Notebook.Execute(new SetTextCommand(Page, session.ElementId, paragraphs));
+        else if (session.IsNew && !NotebookEdit.IsEmpty(paragraphs))
+            Notebook.Execute(new AddElementCommand(Page, new TextElement { Id = session.ElementId, X = session.X, Y = session.Y, Width = NewTextWidth, Paragraphs = paragraphs }));
     }
 
     private Task BeginTextAsync(NotebookTextEditRequest request)

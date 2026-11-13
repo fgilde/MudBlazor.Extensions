@@ -56,8 +56,8 @@ public partial class MudExSlideTextEditor
     {
         if (_module.Js is not { } js)
             return null;
-        try { return await js.InvokeAsync<SlideTextParagraphDto[]>("read"); }
-        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException) { return null; }
+        try { return await JsPayload.ReadAsync<SlideTextParagraphDto[]>(null, await js.InvokeAsync<IJSStreamReference>("readData")); }
+        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException or IOException or System.Text.Json.JsonException) { return null; }
     }
 
     internal async Task FormatAsync(string key, string value)
@@ -69,23 +69,38 @@ public partial class MudExSlideTextEditor
     }
 
     /// <summary>Called by the browser with the current text after an input.</summary>
-    /// <param name="paragraphs">The paragraphs of the editing DOM.</param>
+    /// <param name="paragraphs">The paragraphs of the editing DOM, or null if they come as <paramref name="stream"/>.</param>
+    /// <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
     /// <returns>A task that completes when the text is stored.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnTextInputAsync(SlideTextParagraphDto[] paragraphs) => InvokeAsync(() => TextChanged.InvokeAsync(paragraphs ?? []));
+    public async Task OnTextInputAsync(SlideTextParagraphDto[] paragraphs, IJSStreamReference stream)
+    {
+        var list = await JsPayload.ReadAsync(paragraphs, stream);
+        await InvokeAsync(() => TextChanged.InvokeAsync(list ?? []));
+    }
 
     /// <summary>Called by the browser when the user ends editing.</summary>
-    /// <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+    /// <param name="paragraphs">The final paragraphs of the editing DOM, or null if they come as <paramref name="stream"/>.</param>
+    /// <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
     /// <returns>A task that completes when the text is committed.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnTextCommitAsync(SlideTextParagraphDto[] paragraphs) => InvokeAsync(() => Committed.InvokeAsync(paragraphs ?? []));
+    public async Task OnTextCommitAsync(SlideTextParagraphDto[] paragraphs, IJSStreamReference stream)
+    {
+        var list = await JsPayload.ReadAsync(paragraphs, stream);
+        await InvokeAsync(() => Committed.InvokeAsync(list ?? []));
+    }
 
     /// <summary>Called by the browser when the user pressed Tab in a table cell.</summary>
-    /// <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+    /// <param name="paragraphs">The final paragraphs of the editing DOM, or null if they come as <paramref name="stream"/>.</param>
+    /// <param name="stream">The paragraphs as JSON when they are too large for one message.</param>
     /// <param name="back">True for Shift+Tab.</param>
     /// <returns>A task that completes when the text is committed and the next cell is edited.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public Task OnTextTabAsync(SlideTextParagraphDto[] paragraphs, bool back) => InvokeAsync(() => Tabbed.InvokeAsync((paragraphs ?? [], back)));
+    public async Task OnTextTabAsync(SlideTextParagraphDto[] paragraphs, IJSStreamReference stream, bool back)
+    {
+        var list = await JsPayload.ReadAsync(paragraphs, stream);
+        await InvokeAsync(() => Tabbed.InvokeAsync((list ?? [], back)));
+    }
 
     /// <summary>Called by the browser after the selection or its format changed.</summary>
     /// <param name="paragraphs">The paragraphs the selection touches with the runs it covers; the run at the caret for an empty selection.</param>
@@ -94,10 +109,11 @@ public partial class MudExSlideTextEditor
     public Task OnSelectionFormatAsync(SlideTextParagraphDto[] paragraphs) => InvokeAsync(() => SelectionChanged.InvokeAsync(paragraphs ?? []));
 
     /// <summary>Called by the browser when HTML is pasted. Keeps only text with bold, italic, underline and colour.</summary>
-    /// <param name="html">The <c>text/html</c> content of the clipboard.</param>
+    /// <param name="html">The <c>text/html</c> content of the clipboard, or null if it comes as <paramref name="stream"/>.</param>
+    /// <param name="stream">The HTML as a JSON string when it is too large for one message.</param>
     /// <returns>The pasted paragraphs.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public SlideTextParagraphDto[] OnPasteHtml(string html) => SlideTextDom.FromHtml(html);
+    public async Task<SlideTextParagraphDto[]> OnPasteHtml(string html, IJSStreamReference stream) => SlideTextDom.FromHtml(await JsPayload.ReadAsync(html, stream));
 
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
