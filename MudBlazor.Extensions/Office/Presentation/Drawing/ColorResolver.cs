@@ -82,7 +82,7 @@ internal static class ColorResolver
     {
         var mapped = (colorMap ?? master?.ColorMap)?.GetValueOrDefault(name) ?? DefaultMap.GetValueOrDefault(name, name);
         var index = Array.IndexOf(ThemeColors.SchemeOrder, mapped);
-        return index < 0 ? null : (master?.Theme ?? ThemeColors.Office)[index];
+        return index < 0 ? null : (master?.Theme.Palette ?? ThemeColors.Office)[index];
     }
 
     private static string Channels(string rgb, Func<double, double> map) =>

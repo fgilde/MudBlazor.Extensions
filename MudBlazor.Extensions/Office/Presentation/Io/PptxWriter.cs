@@ -97,6 +97,7 @@ public static partial class PptxWriter
             }
 
             AddTableStyles(presentationRels);
+            WriteMasters();
             WritePresentation(entries, presentationRels);
             foreach (var part in _removed) Remove(part);
             if (deleted.Count > 0)
@@ -128,6 +129,16 @@ public static partial class PptxWriter
                 if (_defaults.ContainsKey(extension) || _overrides.ContainsKey(part)) continue;
                 _defaults[extension] = contentType;
                 _contentTypesChanged = true;
+            }
+        }
+
+        private void WriteMasters()
+        {
+            foreach (var master in presentation.MasterList)
+            {
+                if (master.ThemePart != null && !_done.Contains(master.ThemePart) && !master.Theme.Matches(master.LoadedTheme))
+                    Put(master.ThemePart, ThemeXml.Patch(_opc.ReadXml(master.ThemePart), master.Theme));
+                if (!Equals(master.Background, master.LoadedBackground)) Put(master.PartName, ThemeXml.WriteBackground(_opc.ReadXml(master.PartName), master.Background));
             }
         }
 

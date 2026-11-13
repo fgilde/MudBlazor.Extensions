@@ -31,6 +31,10 @@ internal sealed class PptxBuilder
 
     public string ThemeFormat { get; set; } = "";
 
+    public string ThemeTail { get; set; } = "";
+
+    public bool SecondMaster { get; set; }
+
     public string CustomShows { get; set; } = "";
 
     public string PresentationExt { get; set; } = "";
@@ -117,9 +121,10 @@ internal sealed class PptxBuilder
                 "<Properties xmlns=\"http://schemas.openxmlformats.org/officeDocument/2006/extended-properties\"><Application>Test</Application>" +
                 $"<Slides>{_slides.Count}</Slides><Notes>{_slides.Count(s => s.Notes != null)}</Notes><HiddenSlides>0</HiddenSlides></Properties>");
         var slideIds = string.Concat(_slides.Select((_, i) => $"<p:sldId id=\"{256 + i}\" r:id=\"rId{i + 2}\"/>"));
+        var secondMasterId = SecondMaster ? "<p:sldMasterId id=\"2147483700\" r:id=\"rIdM2\"/>" : "";
         var notesMasterId = NotesMaster ? $"<p:notesMasterIdLst><p:notesMasterId r:id=\"rId{_slides.Count + 2}\"/></p:notesMasterIdLst>" : "";
         Add("ppt/presentation.xml", "officedocument.presentationml.presentation.main",
-            $"<p:presentation {Ns}{PresentationAttributes}><p:sldMasterIdLst><p:sldMasterId id=\"2147483648\" r:id=\"rId1\"/></p:sldMasterIdLst>{notesMasterId}" +
+            $"<p:presentation {Ns}{PresentationAttributes}><p:sldMasterIdLst><p:sldMasterId id=\"2147483648\" r:id=\"rId1\"/>{secondMasterId}</p:sldMasterIdLst>{notesMasterId}" +
             $"<p:sldIdLst>{slideIds}{ExtraSlideIds}</p:sldIdLst><p:sldSz cx=\"{Width}\" cy=\"{Height}\"/><p:notesSz cx=\"6858000\" cy=\"9144000\"/>{CustomShows}" +
             "<p:defaultTextStyle><a:lvl1pPr><a:defRPr sz=\"1800\"><a:solidFill><a:schemeClr val=\"tx1\"/></a:solidFill></a:defRPr></a:lvl1pPr></p:defaultTextStyle>" +
             $"{PresentationExt}</p:presentation>");
@@ -127,7 +132,7 @@ internal sealed class PptxBuilder
             Rels([
                 ("rId1", "slideMaster", "slideMasters/slideMaster1.xml"), .._slides.Select((_, i) => ($"rId{i + 2}", "slide", $"slides/slide{i + 1}.xml")),
                 ..NotesMaster ? [($"rId{_slides.Count + 2}", "notesMaster", "notesMasters/notesMaster1.xml")] : Array.Empty<(string, string, string)>()
-            ]).Replace("</Relationships>", PresentationRels + "</Relationships>"));
+            ]).Replace("</Relationships>", PresentationRels + (SecondMaster ? $"<Relationship Id=\"rIdM2\" Type=\"{RelNs}/slideMaster\" Target=\"slideMasters/slideMaster2.xml\"/>" : "") + "</Relationships>"));
         if (NotesMaster)
         {
             Add("ppt/notesMasters/notesMaster1.xml", "officedocument.presentationml.notesMaster",
@@ -138,11 +143,7 @@ internal sealed class PptxBuilder
 
         foreach (var (part, (contentType, content)) in ExtraParts) Add(part, contentType, content);
 
-        var colors = string.Concat(_theme.Select(c => $"<a:{c.Key}><a:srgbClr val=\"{c.Value}\"/></a:{c.Key}>"));
-        Add("ppt/theme/theme1.xml", "officedocument.theme",
-            $"<a:theme {Ns} name=\"Test\"><a:themeElements><a:clrScheme name=\"Test\">{colors}</a:clrScheme>" +
-            "<a:fontScheme name=\"Test\"><a:majorFont><a:latin typeface=\"Major Font\"/></a:majorFont><a:minorFont><a:latin typeface=\"Minor Font\"/></a:minorFont></a:fontScheme>" +
-            $"{ThemeFormat}</a:themeElements></a:theme>");
+        Add("ppt/theme/theme1.xml", "officedocument.theme", Theme(_theme, "Major Font", "Minor Font"));
         Add("ppt/slideMasters/slideMaster1.xml", "officedocument.presentationml.slideMaster",
             $"<p:sldMaster {Ns}><p:cSld>{MasterBackground}<p:spTree>{TreeStart}{MasterShapes}</p:spTree></p:cSld><p:clrMap {ClrMap}/>" +
             $"<p:sldLayoutIdLst>{string.Concat(Enumerable.Range(0, ExtraLayouts.Count + 1).Select(i => $"<p:sldLayoutId id=\"{2147483649 + i}\" r:id=\"rId{i + 1}\"/>"))}</p:sldLayoutIdLst>" +
@@ -155,6 +156,20 @@ internal sealed class PptxBuilder
             Add($"ppt/slideLayouts/slideLayout{i + 2}.xml", "officedocument.presentationml.slideLayout",
                 $"<p:sldLayout {Ns} type=\"{ExtraLayouts[i].Type}\"><p:cSld name=\"{ExtraLayouts[i].Name}\"><p:spTree>{TreeStart}{ExtraLayouts[i].Shapes}</p:spTree></p:cSld></p:sldLayout>");
         for (var n = 1; n <= ExtraLayouts.Count + 1; n++) Add($"ppt/slideLayouts/_rels/slideLayout{n}.xml.rels", null, Rels(("rId1", "slideMaster", "../slideMasters/slideMaster1.xml")));
+
+        if (SecondMaster)
+        {
+            var layout = ExtraLayouts.Count + 2;
+            Add("ppt/theme/theme3.xml", "officedocument.theme", Theme(_theme.ToDictionary(c => c.Key, c => c.Key == "dk1" ? "102030" : c.Value), "Second Major", "Second Minor"));
+            Add("ppt/slideMasters/slideMaster2.xml", "officedocument.presentationml.slideMaster",
+                $"<p:sldMaster {Ns}><p:cSld name=\"Second\"><p:spTree>{TreeStart}{MasterShapes}</p:spTree></p:cSld><p:clrMap {ClrMap}/>" +
+                $"<p:sldLayoutIdLst><p:sldLayoutId id=\"2147483701\" r:id=\"rId1\"/></p:sldLayoutIdLst><p:txStyles>{TxStyles}</p:txStyles></p:sldMaster>");
+            Add("ppt/slideMasters/_rels/slideMaster2.xml.rels", null,
+                Rels(("rId1", "slideLayout", $"../slideLayouts/slideLayout{layout}.xml"), ("rId2", "theme", "../theme/theme3.xml")));
+            Add($"ppt/slideLayouts/slideLayout{layout}.xml", "officedocument.presentationml.slideLayout",
+                $"<p:sldLayout {Ns} type=\"obj\"><p:cSld name=\"Second Content\"><p:spTree>{TreeStart}{LayoutShapes}</p:spTree></p:cSld></p:sldLayout>");
+            Add($"ppt/slideLayouts/_rels/slideLayout{layout}.xml.rels", null, Rels(("rId1", "slideMaster", "../slideMasters/slideMaster2.xml")));
+        }
 
         for (var i = 0; i < _slides.Count; i++)
         {
@@ -196,6 +211,13 @@ internal sealed class PptxBuilder
 
         return ms.ToArray();
     }
+
+    private string Theme(Dictionary<string, string> theme, string major, string minor) =>
+        $"<a:theme {Ns} name=\"Test\"><a:themeElements><a:clrScheme name=\"Test\">" +
+        string.Concat(theme.Select(c => $"<a:{c.Key}><a:srgbClr val=\"{c.Value}\"/></a:{c.Key}>")) + "</a:clrScheme>" +
+        $"<a:fontScheme name=\"Test\"><a:majorFont><a:latin typeface=\"{major}\"/><a:ea typeface=\"\"/><a:cs typeface=\"\"/></a:majorFont>" +
+        $"<a:minorFont><a:latin typeface=\"{minor}\"/><a:ea typeface=\"\"/><a:cs typeface=\"\"/></a:minorFont></a:fontScheme>" +
+        $"{ThemeFormat}</a:themeElements>{ThemeTail}</a:theme>";
 
     private const string TreeStart = "<p:nvGrpSpPr><p:cNvPr id=\"1\" name=\"\"/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr/>";
 }

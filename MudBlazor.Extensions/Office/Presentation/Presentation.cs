@@ -58,8 +58,18 @@ public sealed class Presentation
     public static Presentation Load(Stream stream) => PptxReader.Read(stream);
 
     /// <summary>Creates a blank 16:9 presentation with one title slide.</summary>
+    /// <param name="design">The design of the new presentation, or null for the default theme.</param>
     /// <returns>The presentation.</returns>
-    public static Presentation Create() => PptxReader.Read(new MemoryStream(BlankPresentation.Build()));
+    public static Presentation Create(SlideDesign design = null)
+    {
+        var presentation = PptxReader.Read(new MemoryStream(BlankPresentation.Build()));
+        if (design == null) return presentation;
+        new ApplyDesignCommand(design).Apply(presentation);
+        using var buffer = new MemoryStream();
+        presentation.Save(buffer);
+        buffer.Position = 0;
+        return PptxReader.Read(buffer);
+    }
 
     /// <summary>Writes the presentation as a .pptx file. Unchanged parts are copied from the loaded file.</summary>
     /// <param name="target">The stream that receives the file.</param>

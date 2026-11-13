@@ -113,12 +113,10 @@ internal static class PptxReader
             var theme = opc.ReadXml(themePart);
             master.ThemePart = themePart;
             master.FormatScheme = theme.Descendants(A + "fmtScheme").FirstOrDefault();
-            master.Theme = ThemeColors.Read(theme);
-            master.MajorFont = (string)theme.Descendants(A + "majorFont").FirstOrDefault()?.Element(A + "latin")?.Attribute("typeface");
-            master.MinorFont = (string)theme.Descendants(A + "minorFont").FirstOrDefault()?.Element(A + "latin")?.Attribute("typeface");
+            master.Theme = master.LoadedTheme = ThemeXml.Read(theme);
         }
 
-        master.Background = ReadBackground(opc, part, rels, root, master);
+        master.Background = master.LoadedBackground = ReadBackground(opc, part, rels, root, master);
         master.ShapeList.AddRange(new ShapeReader(opc, part, rels, master, [], false).ReadTree(root));
         foreach (var id in Ids(root, "sldLayoutIdLst"))
             if (Target(opc, part, rels, id) is { } layoutPart)

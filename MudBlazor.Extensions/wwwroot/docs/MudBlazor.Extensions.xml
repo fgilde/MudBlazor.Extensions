@@ -31988,6 +31988,65 @@
         <member name="M:MudBlazor.Extensions.Office.Presentation.FlipShapesCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ApplyDesignCommand">
+            <summary>Applies a design to slide masters: theme colours, theme fonts and the master background. Layouts and slides with their own background keep it.</summary>
+            <param name="design">The design.</param>
+            <param name="masters">The masters to change, or null for all masters.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ApplyDesignCommand.#ctor(MudBlazor.Extensions.Office.Presentation.SlideDesign,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.SlideMaster})">
+            <summary>Applies a design to slide masters: theme colours, theme fonts and the master background. Layouts and slides with their own background keep it.</summary>
+            <param name="design">The design.</param>
+            <param name="masters">The masters to change, or null for all masters.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ApplyDesignCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ApplyDesignCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ApplyDesignCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ApplyThemeColorsCommand">
+            <summary>Sets the theme colours of slide masters.</summary>
+            <param name="colors">The twelve colours as <c>#RRGGBB</c> in the order of <see cref="P:MudBlazor.Extensions.Office.Presentation.PresentationTheme.Colors"/>.</param>
+            <param name="masters">The masters to change, or null for all masters.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ApplyThemeColorsCommand.#ctor(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.SlideMaster})">
+            <summary>Sets the theme colours of slide masters.</summary>
+            <param name="colors">The twelve colours as <c>#RRGGBB</c> in the order of <see cref="P:MudBlazor.Extensions.Office.Presentation.PresentationTheme.Colors"/>.</param>
+            <param name="masters">The masters to change, or null for all masters.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ApplyThemeColorsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ApplyThemeColorsCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ApplyThemeColorsCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ApplyThemeFontsCommand">
+            <summary>Sets the theme fonts of slide masters.</summary>
+            <param name="major">The heading font.</param>
+            <param name="minor">The body font.</param>
+            <param name="masters">The masters to change, or null for all masters.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ApplyThemeFontsCommand.#ctor(System.String,System.String,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.SlideMaster})">
+            <summary>Sets the theme fonts of slide masters.</summary>
+            <param name="major">The heading font.</param>
+            <param name="minor">The body font.</param>
+            <param name="masters">The masters to change, or null for all masters.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ApplyThemeFontsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ApplyThemeFontsCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ApplyThemeFontsCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.HeaderFooterOptions">
             <summary>Date, slide number and footer of slides, as in the header and footer dialog.</summary>
             <param name="ShowDate">True to show the date.</param>
@@ -32836,6 +32895,58 @@
         <member name="M:MudBlazor.Extensions.Office.Presentation.SetTextCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.PresentationTheme">
+            <summary>The theme of a slide master: its colour scheme and fonts.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PresentationTheme.Name">
+            <summary>The theme name from the file, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PresentationTheme.Colors">
+            <summary>The twelve scheme colours as <c>#RRGGBB</c> in the order dk1, lt1, dk2, lt2, accent1 to accent6, hlink, folHlink.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PresentationTheme.MajorFont">
+            <summary>The heading font, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.PresentationTheme.MinorFont">
+            <summary>The body font, or null.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SlideDesign">
+            <summary>A design that sets the theme colours, the theme fonts and the background of slide masters.</summary>
+            <param name="Name">The design name.</param>
+            <param name="Colors">The twelve theme colours as <c>#RRGGBB</c> in the order of <see cref="P:MudBlazor.Extensions.Office.Presentation.PresentationTheme.Colors"/>.</param>
+            <param name="MajorFont">The heading font.</param>
+            <param name="MinorFont">The body font.</param>
+            <param name="Background">The master background: a solid colour, a gradient or no fill.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SlideDesign.#ctor(System.String,System.Collections.Generic.IReadOnlyList{System.String},System.String,System.String,MudBlazor.Extensions.Office.Presentation.SlideBackground)">
+            <summary>A design that sets the theme colours, the theme fonts and the background of slide masters.</summary>
+            <param name="Name">The design name.</param>
+            <param name="Colors">The twelve theme colours as <c>#RRGGBB</c> in the order of <see cref="P:MudBlazor.Extensions.Office.Presentation.PresentationTheme.Colors"/>.</param>
+            <param name="MajorFont">The heading font.</param>
+            <param name="MinorFont">The body font.</param>
+            <param name="Background">The master background: a solid colour, a gradient or no fill.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideDesign.Name">
+            <summary>The design name.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideDesign.Colors">
+            <summary>The twelve theme colours as <c>#RRGGBB</c> in the order of <see cref="P:MudBlazor.Extensions.Office.Presentation.PresentationTheme.Colors"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideDesign.MajorFont">
+            <summary>The heading font.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideDesign.MinorFont">
+            <summary>The body font.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideDesign.Background">
+            <summary>The master background: a solid colour, a gradient or no fill.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SlideDesigns">
+            <summary>The built-in slide designs.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideDesigns.BuiltIn">
+            <summary>The six built-in designs: Paper, Slate, Ocean, Forest, Sunset and Mono.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PresetGeometry">
             <summary>PowerPoint preset shapes (<c>a:prstGeom</c>) as SVG path data.</summary>
         </member>
@@ -33088,8 +33199,9 @@
             <param name="stream">The file content.</param>
             <returns>The presentation.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.Create">
+        <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.Create(MudBlazor.Extensions.Office.Presentation.SlideDesign)">
             <summary>Creates a blank 16:9 presentation with one title slide.</summary>
+            <param name="design">The design of the new presentation, or null for the default theme.</param>
             <returns>The presentation.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.Presentation.Save(System.IO.Stream)">
@@ -33128,6 +33240,9 @@
         </member>
         <member name="F:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind.Sections">
             <summary>Sections were added, removed, renamed or moved.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.PresentationChangeKind.Theme">
+            <summary>Theme colours, theme fonts or master backgrounds changed; every slide is affected.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.PresentationChangedEventArgs">
             <summary>Describes everything that changed during one command or transaction.</summary>
@@ -33422,6 +33537,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.SlideMaster.Background">
             <summary>The master's background, or null if it has none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideMaster.Theme">
+            <summary>The theme of this master and its layouts and slides.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.RunFormat">
             <summary>Character formatting of a text run; null properties are inherited.</summary>

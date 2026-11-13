@@ -23,7 +23,10 @@ public enum PresentationChangeKind
     Notes = 16,
 
     /// <summary>Sections were added, removed, renamed or moved.</summary>
-    Sections = 32
+    Sections = 32,
+
+    /// <summary>Theme colours, theme fonts or master backgrounds changed; every slide is affected.</summary>
+    Theme = 64
 }
 
 /// <summary>Describes everything that changed during one command or transaction.</summary>

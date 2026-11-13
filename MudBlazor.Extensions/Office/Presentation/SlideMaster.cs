@@ -23,6 +23,13 @@ public sealed class SlideMaster
     /// <summary>The master's background, or null if it has none.</summary>
     public SlideBackground Background { get; internal set; }
 
+    /// <summary>The theme of this master and its layouts and slides.</summary>
+    public PresentationTheme Theme { get; internal set; } = PresentationTheme.Default;
+
+    internal PresentationTheme LoadedTheme { get; set; } = PresentationTheme.Default;
+
+    internal SlideBackground LoadedBackground { get; set; }
+
     internal string ThemePart { get; set; }
 
     internal XElement FormatScheme { get; set; }
@@ -33,13 +40,7 @@ public sealed class SlideMaster
 
     internal string PartName { get; set; }
 
-    internal string[] Theme { get; set; } = ThemeColors.Office;
-
     internal IReadOnlyDictionary<string, string> ColorMap { get; set; } = new Dictionary<string, string>();
-
-    internal string MajorFont { get; set; }
-
-    internal string MinorFont { get; set; }
 
     internal XElement TextStyles { get; set; }
 
