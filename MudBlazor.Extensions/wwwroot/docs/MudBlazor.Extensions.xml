@@ -32062,7 +32062,8 @@
             <typeparam name="TDocument">The document type the commands edit.</typeparam>
         </member>
         <member name="P:MudBlazor.Extensions.Office.DocumentUndoStack`1.MaxDepth">
-            <summary>Maximum number of undo steps kept; the oldest are dropped first.</summary>
+            <summary>Maximum number of undo steps kept; the oldest are dropped first. Must be at least 1.</summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">The value is less than 1.</exception>
         </member>
         <member name="P:MudBlazor.Extensions.Office.DocumentUndoStack`1.CanUndo">
             <summary>True if a step can be undone (never while a transaction is open).</summary>

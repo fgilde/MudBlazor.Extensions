@@ -69,6 +69,19 @@ public class DocumentUndoStackTests
         Assert.Equal(["a"], doc.Items);
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void UndoStack_MaxDepthBelowOne_Throws(int depth)
+    {
+        var stack = new DocumentUndoStack<Doc>(new Doc());
+
+        var error = Assert.Throws<ArgumentOutOfRangeException>(() => stack.MaxDepth = depth);
+        Assert.Equal("value", error.ParamName);
+        Assert.Contains("at least 1", error.Message);
+        Assert.Equal(100, stack.MaxDepth);
+    }
+
     [Fact]
     public void UndoStack_RedoClearedByNewCommand()
     {

@@ -11,6 +11,7 @@ public sealed class DocumentUndoStack<TDocument>
     private List<IDocumentCommand<TDocument>> _transaction;
     private string _transactionDescription;
     private int _transactionDepth;
+    private int _maxDepth = 100;
 
     internal DocumentUndoStack(TDocument document, Action<TDocument> onStepEnd = null)
     {
@@ -18,8 +19,13 @@ public sealed class DocumentUndoStack<TDocument>
         _onStepEnd = onStepEnd;
     }
 
-    /// <summary>Maximum number of undo steps kept; the oldest are dropped first.</summary>
-    public int MaxDepth { get; set; } = 100;
+    /// <summary>Maximum number of undo steps kept; the oldest are dropped first. Must be at least 1.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">The value is less than 1.</exception>
+    public int MaxDepth
+    {
+        get => _maxDepth;
+        set => _maxDepth = value >= 1 ? value : throw new ArgumentOutOfRangeException(nameof(value), value, "The undo depth must be at least 1.");
+    }
 
     /// <summary>True if a step can be undone (never while a transaction is open).</summary>
     public bool CanUndo => _transactionDepth == 0 && _undo.Count > 0;
