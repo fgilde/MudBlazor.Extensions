@@ -432,4 +432,154 @@ public class NotebookCommandTests
         Assert.Equal(new NoteBounds(10, 20, 5, 6), reloaded.Elements[0].Bounds);
         Assert.Equal("kept", ((TextElement)reloaded.Elements[2]).Paragraphs[0].Runs[0].Text);
     }
+
+    [Fact]
+    public void Commands_NonFiniteValues_AreRefused()
+    {
+        var notebook = AllKinds();
+        var page = First(notebook);
+        var nanSize = new NoteParagraph { Runs = [new NoteRun("x", new NoteRunFormat(SizePt: double.NaN))] };
+        Func<IDocumentCommand<Notebook>>[] commands =
+        [
+            () => new MoveElementsCommand(page, new Dictionary<string, (double X, double Y)> { ["ink"] = (10, double.NaN) }),
+            () => new MoveElementsCommand(page, new Dictionary<string, (double X, double Y)> { ["ink"] = (double.PositiveInfinity, 2.25) }),
+            () => new ResizeElementsCommand(page, new Dictionary<string, NoteBounds> { ["shape"] = new(1, 1, double.NaN, 10) }),
+            () => new ResizeElementsCommand(page, new Dictionary<string, NoteBounds> { ["table"] = new(1, 1, 0, 0) }),
+            () => new SetTextCommand(page, "text", [nanSize]),
+            () => new SetTableCellCommand(page, "table", 0, 0, [nanSize]),
+            () => new AddStrokeCommand(page, [new InkPoint(1, 1, double.NaN)], "#000000", 2, InkTool.Pen),
+            () => new AddStrokeCommand(page, [new InkPoint(1, double.NegativeInfinity, 0.5)], "#000000", 2, InkTool.Pen),
+            () => new AddElementCommand(page, new InkElement { Id = "i2", Points = [new InkPoint(double.NaN, 0, 0.5)] }),
+            () => new AddElementCommand(page, new TableElement { Id = "t2", ColumnWidths = [double.NaN], Rows = [[new NoteTableCell()]] }),
+            () => new AddElementCommand(page, new TextElement
+            {
+                Id = "x2", Paragraphs = [new NoteParagraph { Runs = [new NoteRun("x", new NoteRunFormat(SizePt: double.PositiveInfinity))] }]
+            }),
+            () => new AddElementCommand(page, new ShapeElement { Id = "s2", StrokeWidth = double.NaN }),
+            () => new SetShapeStyleCommand(page, ["ink"], null, 0, null),
+            () => new SetShapeStyleCommand(page, ["shape"], null, double.NaN, null),
+            () => new SetTableColumnWidthsCommand(page, "table", [double.NaN, 5]),
+            () => new DuplicateElementsCommand(page, ["shape"], double.NaN),
+            () => new AddImageCommand(page, Png, "image/png", 0, double.NaN, 600),
+            () => new AddTableCommand(page, 1, 1, double.NaN, 0)
+        ];
+
+        foreach (var command in commands) Assert.ThrowsAny<ArgumentException>(() => notebook.Execute(command()));
+
+        Assert.False(notebook.Undo.CanUndo);
+        Assert.NotEmpty(Save(notebook));
+    }
+
+    [Fact]
+    public void DuplicatePages_CopiesStartWithFreshVersions_AndKeysNeverRepeat()
+    {
+        var notebook = AllKinds();
+        var source = First(notebook);
+        for (var i = 1; i <= 3; i++) notebook.Execute(new MoveElementsCommand(source, new Dictionary<string, (double X, double Y)> { ["ink"] = (i, i) }));
+        Assert.Equal(3, source.Elements.Single(e => e.Id == "ink").Version);
+        var duplicate = new DuplicatePagesCommand([source]);
+        notebook.Execute(duplicate);
+        var copy = Assert.Single(duplicate.Copies);
+
+        Assert.All(copy.Elements, e => Assert.True(e.Version <= copy.Version));
+        var seen = copy.Elements.ToDictionary(e => e.Id, e => e.Version);
+        foreach (var id in new[] { "shape", "text", "ink" })
+        {
+            notebook.Execute(new MoveElementsCommand(copy, new Dictionary<string, (double X, double Y)> { [id] = (500, 500) }));
+            var version = copy.Elements.Single(e => e.Id == id).Version;
+            Assert.True(version > seen[id], $"{id}: {version} <= {seen[id]}");
+            seen[id] = version;
+        }
+    }
+
+    [Fact]
+    public void SetShapeStyle_InkWidth_UpdatesHull()
+    {
+        var notebook = Notebook.Create();
+        var page = First(notebook);
+        var add = new AddStrokeCommand(page, [new InkPoint(10, 10, 0.5), new InkPoint(30, 20, 0.5)], "#000000", 2, InkTool.Pen);
+        notebook.Execute(add);
+        Assert.Equal(new NoteBounds(9, 9, 22, 12), add.Stroke.Bounds);
+
+        notebook.Execute(new SetShapeStyleCommand(page, [add.Stroke.Id], null, 12, null));
+
+        var wide = (InkElement)page.Elements.Single();
+        Assert.Equal(new NoteBounds(4, 4, 32, 22), wide.Bounds);
+        Assert.Equal([new InkPoint(6, 6, 0.5), new InkPoint(26, 16, 0.5)], wide.Points);
+        notebook.Undo.Undo();
+        var thin = (InkElement)page.Elements.Single();
+        Assert.Equal(new NoteBounds(9, 9, 22, 12), thin.Bounds);
+        Assert.Equal([new InkPoint(1, 1, 0.5), new InkPoint(21, 11, 0.5)], thin.Points);
+    }
+
+    [Fact]
+    public void EraseStrokes_TwoStrokes_OneUndoStep()
+    {
+        var notebook = Notebook.Create();
+        var page = First(notebook);
+        var first = new AddStrokeCommand(page, [new InkPoint(1, 1, 0.5)], "#000000", 2, InkTool.Pen);
+        var second = new AddStrokeCommand(page, [new InkPoint(9, 9, 0.5)], "#000000", 2, InkTool.Pen);
+        notebook.Execute(first);
+        notebook.Execute(second);
+
+        notebook.Execute(new EraseStrokesCommand(page, [first.Stroke.Id, second.Stroke.Id]));
+
+        Assert.Empty(page.Elements);
+        notebook.Undo.Undo();
+        Assert.Equal(2, page.Elements.Count);
+    }
+
+    [Fact]
+    public void DuplicateElements_Opaque_GetsNewIdInSavedJson()
+    {
+        const string raw = "{\"type\":\"hologram\",\"id\":\"h\",\"x\":3,\"y\":4,\"beam\":1}";
+        var notebook = new NotebookBuilder().Page("p1", raw).Load();
+        var duplicate = new DuplicateElementsCommand(Page(notebook, "p1"), ["h"], 10);
+
+        notebook.Execute(duplicate);
+
+        var json = JsonDocument.Parse(Unzip(Save(notebook))["pages/p1.json"]).RootElement.GetProperty("elements");
+        Assert.Equal(raw, json[0].GetRawText());
+        Assert.Equal(duplicate.Copies[0].Id, json[1].GetProperty("id").GetString());
+        Assert.Equal(13, json[1].GetProperty("x").GetDouble());
+        Assert.Equal(1, json[1].GetProperty("beam").GetInt32());
+    }
+
+    [Fact]
+    public void DeletePages_OnlyBlankPage_IsNoOp()
+    {
+        var notebook = Notebook.Create();
+
+        notebook.Execute(new DeletePagesCommand([First(notebook)]));
+
+        Assert.False(notebook.Undo.CanUndo);
+    }
+
+    [Fact]
+    public void AddImage_CopiesTheBytes()
+    {
+        var notebook = Notebook.Create();
+        var data = (byte[])Png.Clone();
+        var command = new AddImageCommand(First(notebook), data, "image/png", 0, 0, 600);
+        notebook.Execute(command);
+
+        data[^1] = 99;
+
+        Assert.Equal(Png, notebook.GetMedia(command.Image.MediaId));
+    }
+
+    [Fact]
+    public void Commands_NullIds_ThrowArgumentNull()
+    {
+        var notebook = AllKinds();
+        var page = First(notebook);
+
+        Assert.Throws<ArgumentNullException>(() => notebook.Execute(new DeleteElementsCommand(page, null!)));
+        Assert.Throws<ArgumentNullException>(() => notebook.Execute(new MoveElementsCommand(page, null!)));
+        Assert.Throws<ArgumentNullException>(() => notebook.Execute(new ResizeElementsCommand(page, null!)));
+        Assert.Throws<ArgumentNullException>(() => notebook.Execute(new ReorderElementsCommand(page, null!, true)));
+        Assert.Throws<ArgumentNullException>(() => notebook.Execute(new DuplicateElementsCommand(page, null!, 1)));
+        Assert.Throws<ArgumentNullException>(() => notebook.Execute(new SetShapeStyleCommand(page, null!, null, null, null)));
+        Assert.Throws<ArgumentNullException>(() => notebook.Execute(new EraseStrokesCommand(page, null!)));
+    }
 }

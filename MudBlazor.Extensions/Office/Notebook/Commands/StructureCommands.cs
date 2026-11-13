@@ -184,7 +184,10 @@ public sealed class RenamePageCommand(NotebookPage page, string title) : IDocume
     }
 }
 
-/// <summary>Deletes pages, also from several sections. A section that loses all its pages gets one empty page.</summary>
+/// <summary>
+/// Deletes pages, also from several sections. A section that loses all its pages gets one empty page; deleting the only, blank page of a section
+/// changes nothing.
+/// </summary>
 /// <param name="pages">The pages.</param>
 public sealed class DeletePagesCommand(IReadOnlyList<NotebookPage> pages) : IDocumentCommand<Notebook>
 {
@@ -199,6 +202,7 @@ public sealed class DeletePagesCommand(IReadOnlyList<NotebookPage> pages) : IDoc
     {
         foreach (var (section, page) in NotebookEdit.Ordered(document, pages))
         {
+            if (section.PageList.Count == 1 && page is { LoadError: null, Title.Length: 0, ElementList.Count: 0 }) continue;
             section.PageList.Remove(page);
             NotebookEdit.AddPageIfEmpty(section, _fresh);
         }

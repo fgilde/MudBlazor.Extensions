@@ -31,6 +31,7 @@ public sealed class OpaqueElement : NoteElement
 
     internal JsonElement ToJson()
     {
+        if (Raw.GetProperty("id").GetString() == Id && Number(Raw, "x") == X && Number(Raw, "y") == Y) return Raw;
         var node = JsonNode.Parse(Raw.GetRawText())!.AsObject();
         node["id"] = Id;
         node["x"] = X;

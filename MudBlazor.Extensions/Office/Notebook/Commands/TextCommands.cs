@@ -28,11 +28,14 @@ public sealed class SetTextCommand(NotebookPage page, string elementId, IReadOnl
     public void Revert(Notebook document) => _edit.Revert(document);
 }
 
-/// <summary>Sets outline and fill of shapes and the colour and width of freehand strokes. Other elements are left as they are.</summary>
+/// <summary>
+/// Sets outline and fill of shapes and the colour and width of freehand strokes; a stroke's bounds follow its new width. Other elements are left as
+/// they are.
+/// </summary>
 /// <param name="page">The page.</param>
 /// <param name="ids">The element ids.</param>
 /// <param name="stroke">The outline or stroke colour as <c>#RRGGBB</c>, or null to keep it.</param>
-/// <param name="strokeWidth">The outline or stroke width in pixels, or null to keep it.</param>
+/// <param name="strokeWidth">The outline or stroke width in pixels (a stroke needs more than 0), or null to keep it.</param>
 /// <param name="fill">The fill colour of shapes as <c>#RRGGBB</c>, an empty string for no fill, or null to keep it.</param>
 public sealed class SetShapeStyleCommand(NotebookPage page, IReadOnlyList<string> ids, string stroke, double? strokeWidth, string fill) : IDocumentCommand<Notebook>
 {
@@ -46,7 +49,8 @@ public sealed class SetShapeStyleCommand(NotebookPage page, IReadOnlyList<string
     {
         if (stroke != null) NotebookEdit.Color(stroke, nameof(stroke));
         if (fill is { Length: > 0 }) NotebookEdit.Color(fill, nameof(fill));
-        if (strokeWidth is { } width && (!double.IsFinite(width) || width < 0)) throw new ArgumentOutOfRangeException(nameof(strokeWidth));
+        if (strokeWidth is { } width) NotebookEdit.Number(width, nameof(strokeWidth), 0);
+        ArgumentNullException.ThrowIfNull(ids);
         foreach (var element in ids.Distinct().Select(id => NotebookEdit.Find<NoteElement>(elements, id)).ToList())
             switch (element)
             {
@@ -57,7 +61,10 @@ public sealed class SetShapeStyleCommand(NotebookPage page, IReadOnlyList<string
                     break;
                 case InkElement ink when (stroke ?? ink.Color, strokeWidth ?? ink.StrokeWidth) is var inkStyle && inkStyle != (ink.Color, ink.StrokeWidth):
                     var colored = NotebookEdit.Replace(elements, ink);
-                    (colored.Color, colored.StrokeWidth) = inkStyle;
+                    colored.Color = inkStyle.Item1;
+                    if (inkStyle.Item2 == ink.StrokeWidth) break;
+                    colored.StrokeWidth = NotebookEdit.Positive(inkStyle.Item2, nameof(strokeWidth));
+                    if (ink.Points.Count > 0) NotebookEdit.FitInk(colored, ink.Points.Select(p => p with { X = ink.X + p.X, Y = ink.Y + p.Y }).ToList());
                     break;
             }
     });

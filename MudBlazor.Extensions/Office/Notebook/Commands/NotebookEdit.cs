@@ -49,15 +49,60 @@ internal static class NotebookEdit
     public static string Color(string value, string name) =>
         NoteValues.IsColor(value) ? value : throw new ArgumentException($"The colour '{value}' is not of the form #RRGGBB.", name);
 
-    public static double Finite(double value, string name) => double.IsFinite(value) ? value : throw new ArgumentOutOfRangeException(name, value, "The value must be finite.");
+    public static double Number(double value, string name, double min = double.MinValue, double max = double.MaxValue) =>
+        double.IsFinite(value) && value >= min && value <= max ? value : throw new ArgumentOutOfRangeException(name, value, "The value must be a finite number in range.");
+
+    public static double Positive(double value, string name) => Number(value, name, double.Epsilon);
 
     public static NoteBounds Check(NoteBounds bounds, string name)
     {
-        Finite(bounds.X, name);
-        Finite(bounds.Y, name);
-        if (!double.IsFinite(bounds.Width) || !double.IsFinite(bounds.Height) || bounds.Width < 0 || bounds.Height < 0)
-            throw new ArgumentOutOfRangeException(name, bounds, "The size must be finite and not negative.");
+        Number(bounds.X, name);
+        Number(bounds.Y, name);
+        Number(bounds.Width, name, 0);
+        Number(bounds.Height, name, 0);
         return bounds;
+    }
+
+    public static void Validate(NoteElement element, string name)
+    {
+        Check(element.Bounds, name);
+        switch (element)
+        {
+            case TextElement text:
+                Text(text.Paragraphs, name);
+                break;
+            case InkElement ink:
+                Color(ink.Color, name);
+                Number(ink.StrokeWidth, name, 0);
+                foreach (var point in ink.Points)
+                {
+                    Number(point.X, name);
+                    Number(point.Y, name);
+                    Number(point.Pressure, name, 0, 1);
+                }
+
+                break;
+            case ShapeElement shape:
+                Color(shape.Stroke, name);
+                if (shape.Fill != null) Color(shape.Fill, name);
+                Number(shape.StrokeWidth, name, 0);
+                if (!Enum.IsDefined(shape.Kind)) throw new ArgumentException("The shape kind is not defined.", name);
+                break;
+            case TableElement table:
+                foreach (var width in table.ColumnWidths) Number(width, name, 0);
+                if (table.Rows.Any(r => r?.Count != table.ColumnWidths.Count || r.Any(c => c == null)))
+                    throw new ArgumentException("Every table row needs one cell per column.", name);
+                foreach (var cell in table.Rows.SelectMany(r => r)) Text(cell.Paragraphs, name);
+                break;
+        }
+    }
+
+    public static void FitInk(InkElement ink, IReadOnlyList<InkPoint> pagePoints)
+    {
+        var pad = ink.StrokeWidth / 2;
+        var (left, top) = (pagePoints.Min(p => p.X) - pad, pagePoints.Min(p => p.Y) - pad);
+        (ink.X, ink.Y, ink.Width, ink.Height) = (left, top, pagePoints.Max(p => p.X) - left + pad, pagePoints.Max(p => p.Y) - top + pad);
+        ink.Points = pagePoints.Select(p => p with { X = p.X - left, Y = p.Y - top }).ToList();
     }
 
     public static IReadOnlyList<NoteParagraph> Text(IReadOnlyList<NoteParagraph> paragraphs, string name)
@@ -65,12 +110,17 @@ internal static class NotebookEdit
         ArgumentNullException.ThrowIfNull(paragraphs, name);
         foreach (var paragraph in paragraphs)
         {
-            if (paragraph?.Runs == null || paragraph.Runs.Any(r => r == null)) throw new ArgumentException("A paragraph or run is null.", name);
+            if (paragraph?.Runs == null || paragraph.Runs.Any(r => r?.Text == null || r.Format == null)) throw new ArgumentException("A paragraph, run or format is null.", name);
             if (paragraph.Indent is < 0 or > NoteParagraph.MaxIndent) throw new ArgumentException($"The indent must be from 0 to {NoteParagraph.MaxIndent}.", name);
+            if (!Enum.IsDefined(paragraph.List) || !Enum.IsDefined(paragraph.Align) || !Enum.IsDefined(paragraph.Heading))
+                throw new ArgumentException("A paragraph has an undefined list kind, alignment or heading.", name);
             foreach (var format in paragraph.Runs.Select(r => r.Format))
-                if (format.SizePt is <= 0 or > 1000 || !Optional(format.Color, NoteValues.IsColor) || !Optional(format.Highlight, NoteValues.IsColor)
-                    || !Optional(format.Font, NoteValues.IsFont) || !Optional(format.Link, NoteValues.IsSafeLink))
-                    throw new ArgumentException("A run has an invalid size, colour, font or link.", name);
+            {
+                if (format.SizePt is { } size) Number(size, name, double.Epsilon, 1000);
+                if (!Optional(format.Color, NoteValues.IsColor) || !Optional(format.Highlight, NoteValues.IsColor) || !Optional(format.Font, NoteValues.IsFont)
+                    || !Optional(format.Link, NoteValues.IsSafeLink))
+                    throw new ArgumentException("A run has an invalid colour, font or link.", name);
+            }
         }
 
         return paragraphs.ToList();
@@ -101,6 +151,7 @@ internal sealed class ElementEdit
         var elements = page.ElementList.ToList();
         build(elements);
         if (elements.SequenceEqual(page.ElementList)) return null;
+        foreach (var element in elements.Except(page.ElementList)) NotebookEdit.Validate(element, nameof(element));
         var edit = new ElementEdit(page, page.ElementList.ToArray(), elements.ToArray());
         edit.Show(document, edit._after, edit._before);
         return edit;

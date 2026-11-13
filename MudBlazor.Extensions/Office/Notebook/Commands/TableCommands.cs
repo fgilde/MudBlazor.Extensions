@@ -23,7 +23,7 @@ public sealed class AddTableCommand(NotebookPage page, int rows, int columns, do
         if (columns < 1) throw new ArgumentOutOfRangeException(nameof(columns));
         Table = new TableElement
         {
-            X = NotebookEdit.Finite(x, nameof(x)), Y = NotebookEdit.Finite(y, nameof(y)), Width = columns * TableEdit.DefaultColumnWidth,
+            X = NotebookEdit.Number(x, nameof(x)), Y = NotebookEdit.Number(y, nameof(y)), Width = columns * TableEdit.DefaultColumnWidth,
             ColumnWidths = Enumerable.Repeat(TableEdit.DefaultColumnWidth, columns).ToList(), Rows = Enumerable.Range(0, rows).Select(_ => TableEdit.EmptyRow(columns)).ToList()
         };
         elements.Add(Table);
@@ -186,9 +186,8 @@ public sealed class SetTableColumnWidthsCommand(NotebookPage page, string tableI
     /// <inheritdoc />
     public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements => TableEdit.Change(elements, tableId, table =>
     {
-        if (widths == null || widths.Count != table.ColumnWidths.Count || widths.Any(w => !double.IsFinite(w) || w <= 0))
-            throw new ArgumentException("The widths must be positive, one per column.", nameof(widths));
-        return (table.Rows, widths.ToList());
+        if (widths == null || widths.Count != table.ColumnWidths.Count) throw new ArgumentException("The widths must be given one per column.", nameof(widths));
+        return (table.Rows, widths.Select(w => NotebookEdit.Positive(w, nameof(widths))).ToList());
     }));
 
     /// <inheritdoc />

@@ -32300,7 +32300,7 @@
             with a single point is a dot of the stroke width.
             </summary>
             <param name="page">The page.</param>
-            <param name="pagePoints">The points in page coordinates; pressure is clamped to 0–1.</param>
+            <param name="pagePoints">The points in page coordinates; pressure is clamped to 0–1. Every value must be finite.</param>
             <param name="color">The colour as <c>#RRGGBB</c>.</param>
             <param name="width">The stroke width in pixels.</param>
             <param name="tool">The tool the stroke was drawn with.</param>
@@ -32311,7 +32311,7 @@
             with a single point is a dot of the stroke width.
             </summary>
             <param name="page">The page.</param>
-            <param name="pagePoints">The points in page coordinates; pressure is clamped to 0–1.</param>
+            <param name="pagePoints">The points in page coordinates; pressure is clamped to 0–1. Every value must be finite.</param>
             <param name="color">The colour as <c>#RRGGBB</c>.</param>
             <param name="width">The stroke width in pixels.</param>
             <param name="tool">The tool the stroke was drawn with.</param>
@@ -32490,11 +32490,17 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.DeletePagesCommand">
-            <summary>Deletes pages, also from several sections. A section that loses all its pages gets one empty page.</summary>
+            <summary>
+            Deletes pages, also from several sections. A section that loses all its pages gets one empty page; deleting the only, blank page of a section
+            changes nothing.
+            </summary>
             <param name="pages">The pages.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Notebook.DeletePagesCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Notebook.NotebookPage})">
-            <summary>Deletes pages, also from several sections. A section that loses all its pages gets one empty page.</summary>
+            <summary>
+            Deletes pages, also from several sections. A section that loses all its pages gets one empty page; deleting the only, blank page of a section
+            changes nothing.
+            </summary>
             <param name="pages">The pages.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Notebook.DeletePagesCommand.Description">
@@ -32783,19 +32789,25 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.SetShapeStyleCommand">
-            <summary>Sets outline and fill of shapes and the colour and width of freehand strokes. Other elements are left as they are.</summary>
+            <summary>
+            Sets outline and fill of shapes and the colour and width of freehand strokes; a stroke's bounds follow its new width. Other elements are left as
+            they are.
+            </summary>
             <param name="page">The page.</param>
             <param name="ids">The element ids.</param>
             <param name="stroke">The outline or stroke colour as <c>#RRGGBB</c>, or null to keep it.</param>
-            <param name="strokeWidth">The outline or stroke width in pixels, or null to keep it.</param>
+            <param name="strokeWidth">The outline or stroke width in pixels (a stroke needs more than 0), or null to keep it.</param>
             <param name="fill">The fill colour of shapes as <c>#RRGGBB</c>, an empty string for no fill, or null to keep it.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Notebook.SetShapeStyleCommand.#ctor(MudBlazor.Extensions.Office.Notebook.NotebookPage,System.Collections.Generic.IReadOnlyList{System.String},System.String,System.Nullable{System.Double},System.String)">
-            <summary>Sets outline and fill of shapes and the colour and width of freehand strokes. Other elements are left as they are.</summary>
+            <summary>
+            Sets outline and fill of shapes and the colour and width of freehand strokes; a stroke's bounds follow its new width. Other elements are left as
+            they are.
+            </summary>
             <param name="page">The page.</param>
             <param name="ids">The element ids.</param>
             <param name="stroke">The outline or stroke colour as <c>#RRGGBB</c>, or null to keep it.</param>
-            <param name="strokeWidth">The outline or stroke width in pixels, or null to keep it.</param>
+            <param name="strokeWidth">The outline or stroke width in pixels (a stroke needs more than 0), or null to keep it.</param>
             <param name="fill">The fill colour of shapes as <c>#RRGGBB</c>, an empty string for no fill, or null to keep it.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Notebook.SetShapeStyleCommand.Description">

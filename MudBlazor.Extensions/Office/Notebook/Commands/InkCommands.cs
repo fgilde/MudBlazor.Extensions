@@ -5,7 +5,7 @@ namespace MudBlazor.Extensions.Office.Notebook;
 /// with a single point is a dot of the stroke width.
 /// </summary>
 /// <param name="page">The page.</param>
-/// <param name="pagePoints">The points in page coordinates; pressure is clamped to 0–1.</param>
+/// <param name="pagePoints">The points in page coordinates; pressure is clamped to 0–1. Every value must be finite.</param>
 /// <param name="color">The colour as <c>#RRGGBB</c>.</param>
 /// <param name="width">The stroke width in pixels.</param>
 /// <param name="tool">The tool the stroke was drawn with.</param>
@@ -22,17 +22,11 @@ public sealed class AddStrokeCommand(NotebookPage page, IReadOnlyList<InkPoint> 
     /// <inheritdoc />
     public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements =>
     {
-        if (pagePoints is not { Count: > 0 } || pagePoints.Any(p => !double.IsFinite(p.X) || !double.IsFinite(p.Y)))
-            throw new ArgumentException("A stroke needs at least one point with finite coordinates.", nameof(pagePoints));
-        if (!double.IsFinite(width) || width <= 0) throw new ArgumentOutOfRangeException(nameof(width));
-        NotebookEdit.Color(color, nameof(color));
-        var pad = width / 2;
-        var (left, top) = (pagePoints.Min(p => p.X) - pad, pagePoints.Min(p => p.Y) - pad);
-        Stroke = new InkElement
-        {
-            X = left, Y = top, Width = pagePoints.Max(p => p.X) - left + pad, Height = pagePoints.Max(p => p.Y) - top + pad, Color = color, StrokeWidth = width,
-            Tool = tool, Points = pagePoints.Select(p => new InkPoint(p.X - left, p.Y - top, double.IsFinite(p.Pressure) ? Math.Clamp(p.Pressure, 0, 1) : 0.5)).ToList()
-        };
+        if (pagePoints is not { Count: > 0 }) throw new ArgumentException("A stroke needs at least one point.", nameof(pagePoints));
+        var points = pagePoints.Select(p => new InkPoint(NotebookEdit.Number(p.X, nameof(pagePoints)), NotebookEdit.Number(p.Y, nameof(pagePoints)),
+            Math.Clamp(NotebookEdit.Number(p.Pressure, nameof(pagePoints)), 0, 1))).ToList();
+        Stroke = new InkElement { Color = NotebookEdit.Color(color, nameof(color)), StrokeWidth = NotebookEdit.Positive(width, nameof(width)), Tool = tool };
+        NotebookEdit.FitInk(Stroke, points);
         elements.Add(Stroke);
     });
 
@@ -53,6 +47,7 @@ public sealed class EraseStrokesCommand(NotebookPage page, IReadOnlyList<string>
     /// <inheritdoc />
     public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements =>
     {
+        ArgumentNullException.ThrowIfNull(ids);
         foreach (var stroke in ids.Distinct().Select(id => NotebookEdit.Find<InkElement>(elements, id)).ToList()) elements.Remove(stroke);
     });
 

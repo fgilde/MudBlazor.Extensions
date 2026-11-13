@@ -56,5 +56,10 @@ public abstract class NoteElement
 
     internal Dictionary<string, JsonElement> Extra { get; set; }
 
-    internal NoteElement Clone() => (NoteElement)MemberwiseClone();
+    internal NoteElement Clone()
+    {
+        var copy = (NoteElement)MemberwiseClone();
+        copy.Version = 0;
+        return copy;
+    }
 }

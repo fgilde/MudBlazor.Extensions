@@ -16,10 +16,12 @@ public static class InkGeometry
         ArgumentNullException.ThrowIfNull(stroke);
         if (path is not { Count: > 0 } || stroke.Points.Count == 0) return false;
         var reach = radius + stroke.StrokeWidth / 2;
-        var points = stroke.Points.Select(p => (X: stroke.X + p.X, Y: stroke.Y + p.Y)).ToList();
-        if (path.Max(p => p.X) < points.Min(p => p.X) - reach || path.Min(p => p.X) > points.Max(p => p.X) + reach
-            || path.Max(p => p.Y) < points.Min(p => p.Y) - reach || path.Min(p => p.Y) > points.Max(p => p.Y) + reach)
+        var (left, top, right, bottom) = (double.MaxValue, double.MaxValue, double.MinValue, double.MinValue);
+        foreach (var p in stroke.Points) (left, top, right, bottom) = (Math.Min(left, p.X), Math.Min(top, p.Y), Math.Max(right, p.X), Math.Max(bottom, p.Y));
+        if (path.Max(p => p.X) < stroke.X + left - reach || path.Min(p => p.X) > stroke.X + right + reach
+            || path.Max(p => p.Y) < stroke.Y + top - reach || path.Min(p => p.Y) > stroke.Y + bottom + reach)
             return false;
+        var points = stroke.Points.Select(p => (X: stroke.X + p.X, Y: stroke.Y + p.Y)).ToList();
         for (var i = 0; i < path.Count; i++)
         {
             var (a, b) = (path[i], path[Math.Min(i + 1, path.Count - 1)]);

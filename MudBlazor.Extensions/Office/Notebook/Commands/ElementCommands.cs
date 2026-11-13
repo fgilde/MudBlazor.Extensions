@@ -39,6 +39,7 @@ public sealed class DeleteElementsCommand(NotebookPage page, IReadOnlyList<strin
     /// <inheritdoc />
     public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements =>
     {
+        ArgumentNullException.ThrowIfNull(ids);
         foreach (var element in ids.Distinct().Select(id => NotebookEdit.Find<NoteElement>(elements, id)).ToList()) elements.Remove(element);
     });
 
@@ -59,10 +60,11 @@ public sealed class MoveElementsCommand(NotebookPage page, IReadOnlyDictionary<s
     /// <inheritdoc />
     public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements =>
     {
+        ArgumentNullException.ThrowIfNull(positions);
         foreach (var (id, (x, y)) in positions)
         {
             var element = NotebookEdit.Find<NoteElement>(elements, id);
-            if (NotebookEdit.Finite(x, nameof(positions)) == element.X && NotebookEdit.Finite(y, nameof(positions)) == element.Y) continue;
+            if ((NotebookEdit.Number(x, nameof(positions)), NotebookEdit.Number(y, nameof(positions))) == (element.X, element.Y)) continue;
             var moved = NotebookEdit.Replace(elements, element);
             (moved.X, moved.Y) = (x, y);
         }
@@ -88,10 +90,12 @@ public sealed class ResizeElementsCommand(NotebookPage page, IReadOnlyDictionary
     /// <inheritdoc />
     public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements =>
     {
+        ArgumentNullException.ThrowIfNull(bounds);
         foreach (var (id, target) in bounds)
         {
             var element = NotebookEdit.Find<NoteElement>(elements, id);
-            if (element is OpaqueElement || NotebookEdit.Check(target, nameof(bounds)) == element.Bounds) continue;
+            if (NotebookEdit.Check(target, nameof(bounds)) == element.Bounds || element is OpaqueElement) continue;
+            if (element is TableElement) NotebookEdit.Positive(target.Width, nameof(bounds));
             var resized = NotebookEdit.Replace(elements, element);
             (resized.X, resized.Y, resized.Width, resized.Height) = target;
             if (resized is InkElement ink)
@@ -122,6 +126,7 @@ public sealed class ReorderElementsCommand(NotebookPage page, IReadOnlyList<stri
     /// <inheritdoc />
     public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements =>
     {
+        ArgumentNullException.ThrowIfNull(ids);
         var selected = ids.Select(id => NotebookEdit.Find<NoteElement>(elements, id)).ToHashSet();
         var ordered = elements.Where(selected.Contains).ToList();
         elements.RemoveAll(selected.Contains);
@@ -149,7 +154,8 @@ public sealed class DuplicateElementsCommand(NotebookPage page, IReadOnlyList<st
     /// <inheritdoc />
     public void Apply(Notebook document) => _edit = ElementEdit.Run(document, page, _edit, elements =>
     {
-        NotebookEdit.Finite(offset, nameof(offset));
+        NotebookEdit.Number(offset, nameof(offset));
+        ArgumentNullException.ThrowIfNull(ids);
         var selected = ids.Select(id => NotebookEdit.Find<NoteElement>(elements, id)).ToHashSet();
         Copies = elements.Where(selected.Contains).Select(e =>
         {
@@ -189,13 +195,15 @@ public sealed class AddImageCommand(NotebookPage page, byte[] data, string conte
     {
         ArgumentNullException.ThrowIfNull(data);
         var type = NotebookMediaTypes.Normalize(contentType) ?? throw new ArgumentException($"The content type {contentType} is not supported.", nameof(contentType));
-        if (!double.IsFinite(maxWidth) || maxWidth <= 0) throw new ArgumentOutOfRangeException(nameof(maxWidth));
-        var (width, height) = OfficeImageSize.Read(data, type) is { } size && size.Width > 0 && size.Height > 0 ? size : (FallbackWidth, FallbackHeight);
+        NotebookEdit.Positive(maxWidth, nameof(maxWidth));
+        NotebookEdit.Number(x, nameof(x));
+        NotebookEdit.Number(y, nameof(y));
+        var bytes = data.ToArray();
+        var (width, height) = OfficeImageSize.Read(bytes, type) is { } size && size.Width > 0 && size.Height > 0 ? size : (FallbackWidth, FallbackHeight);
         var scale = Math.Min(1, maxWidth / width);
         Image = new ImageElement
         {
-            X = NotebookEdit.Finite(x, nameof(x)), Y = NotebookEdit.Finite(y, nameof(y)), Width = width * scale, Height = height * scale,
-            MediaId = document.AddMedia(data, type), ContentType = type
+            X = x, Y = y, Width = width * scale, Height = height * scale, MediaId = document.AddMedia(bytes, type), ContentType = type
         };
         elements.Add(Image);
     });
