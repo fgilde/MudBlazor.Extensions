@@ -83,9 +83,11 @@ public sealed class DuplicateSlidesCommand(IReadOnlyList<Slide> slides) : IDocum
         var copy = new Slide
         {
             Layout = source.Layout, Notes = source.Notes, HasNotesPart = source.HasNotesPart, Hidden = source.Hidden, CopyOf = source.CopyOf ?? source,
-            ReservedId = source.ReservedId, Owner = source.Owner, Background = source.Background, ShowMasterShapes = source.ShowMasterShapes, ColorMap = source.ColorMap
+            ReservedId = source.ReservedId, Owner = source.Owner, Background = source.Background, ShowMasterShapes = source.ShowMasterShapes, ColorMap = source.ColorMap,
+            Transition = source.Transition
         };
         copy.ShapeList.AddRange(source.ShapeList.Select(s => s.Clone(null)));
+        copy.AnimationList.AddRange(source.AnimationList);
         return copy;
     }
 }

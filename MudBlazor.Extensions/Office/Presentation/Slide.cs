@@ -34,6 +34,14 @@ public sealed class Slide
     /// <summary>The slide's own background, or null if it is inherited from the layout or master.</summary>
     public SlideBackground Background { get; internal set; }
 
+    /// <summary>The transition that brings the slide on screen in the slide show.</summary>
+    public SlideTransition Transition { get; internal set; } = SlideTransition.None;
+
+    /// <summary>The effects of the main animation sequence in order. Effects of shapes that are no longer on the slide are left out.</summary>
+    public IReadOnlyList<AnimationEffect> Animations => LiveAnimations().Select(i => AnimationList[i]).ToList();
+
+    internal List<AnimationEffect> AnimationList { get; } = [];
+
     internal bool ShowMasterShapes { get; set; } = true;
 
     internal IReadOnlyDictionary<string, string> ColorMap { get; set; }
@@ -52,4 +60,10 @@ public sealed class Slide
     internal uint ReservedId { get; init; }
 
     internal Presentation Owner { get; init; }
+
+    internal List<int> LiveAnimations()
+    {
+        var ids = SlideShape.Flatten(ShapeList).Select(s => s.Id).ToHashSet();
+        return Enumerable.Range(0, AnimationList.Count).Where(i => ids.Contains(AnimationList[i].ShapeId)).ToList();
+    }
 }

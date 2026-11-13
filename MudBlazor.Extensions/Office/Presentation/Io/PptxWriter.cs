@@ -176,8 +176,11 @@ public static partial class PptxWriter
             if (root.Element(P + "cSld")?.Element(P + "spTree") is { } tree)
             {
                 new SlideXml(partName, source?.PartName, rels, _opc, (target, transform) => Relative(partName, CopyPart(target, [], transform))).WriteTree(tree, slide.ShapeList);
+                AnimationXml.Write(root, slide.AnimationList, source?.Xml.Root);
                 SlideTiming.RemoveDeadTargets(root, tree);
             }
+
+            TransitionXml.Write(root, slide.Transition);
 
             RemoveReferences(xml, rels, r => isNew && r.Type.EndsWith("/comments", StringComparison.Ordinal) || IsDead(partName, r));
             if (isNew && source != null && CreationId(xml) is { } creationId) creationId.SetAttributeValue("val", (uint)(_nextCreationId++ % uint.MaxValue));

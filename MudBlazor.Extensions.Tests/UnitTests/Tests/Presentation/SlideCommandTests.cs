@@ -75,6 +75,7 @@ public class SlideCommandTests
         foreach (var slide in presentation.Slides)
         {
             sb.AppendLine($"slide {slide.Key} {Ref(slide.Layout)} hidden={slide.Hidden} notes={slide.Notes} part={slide.HasNotesPart} copyOf={slide.CopyOf?.Key}");
+            sb.AppendLine($"  transition {slide.Transition} animations {string.Join("; ", slide.AnimationList.Select(a => $"{a} source={Ref(a.Source)}"))}");
             foreach (var shape in SlideShape.Flatten(slide.Shapes)) sb.AppendLine(Describe(shape));
         }
 

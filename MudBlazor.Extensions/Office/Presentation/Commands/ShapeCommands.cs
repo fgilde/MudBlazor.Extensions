@@ -432,7 +432,8 @@ internal static class ShapeEdit
 
     internal static List<SlideShape> Container(Slide slide, SlideShape shape) => shape.Parent?.ChildList ?? slide.ShapeList;
 
-    internal static uint NextId(Slide slide) => Math.Max(slide.ReservedId, SlideShape.Flatten(slide.Shapes).Select(s => s.Id).DefaultIfEmpty(1u).Max()) + 1;
+    internal static uint NextId(Slide slide) =>
+        Math.Max(slide.ReservedId, SlideShape.Flatten(slide.Shapes).Select(s => s.Id).Concat(slide.AnimationList.Select(a => a.ShapeId)).DefaultIfEmpty(1u).Max()) + 1;
 
     internal static uint AssignIds(SlideShape shape, uint next)
     {

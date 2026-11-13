@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Xml.Linq;
 using static MudBlazor.Extensions.Office.Presentation.PptxReader;
 
@@ -17,12 +18,28 @@ internal static class SlideTiming
         var ids = tree.Descendants(P + "cNvPr").Select(c => (string)c.Attribute("id")).ToHashSet();
         foreach (var timing in slide.Descendants(P + "timing").ToList())
         {
-            foreach (var target in timing.Descendants(P + "spTgt").Where(t => !ids.Contains((string)t.Attribute("spid"))).ToList())
+            foreach (var target in timing.Descendants().Where(t => (t.Name == P + "spTgt" || t.Name == P + "inkTgt") && !ids.Contains((string)t.Attribute("spid"))).ToList())
                 if (target.Ancestors().Contains(timing))
                     target.Ancestors().FirstOrDefault(a => a.Parent?.Name.LocalName is "tnLst" or "childTnLst" or "subTnLst")?.Remove();
             timing.Descendants().Where(b => b.Name.Namespace == P && Builds.Contains(b.Name.LocalName) && !ids.Contains((string)b.Attribute("spid"))).Remove();
             Prune(timing);
         }
+    }
+
+    internal static void Renumber(XElement timing)
+    {
+        var ids = new Dictionary<string, string>();
+        var next = 0;
+        foreach (var node in timing.Descendants(P + "cTn"))
+        {
+            var id = (++next).ToString(CultureInfo.InvariantCulture);
+            if ((string)node.Attribute("id") is { } old) ids.TryAdd(old, id);
+            node.SetAttributeValue("id", id);
+        }
+
+        foreach (var reference in timing.Descendants(P + "tn"))
+            if (ids.TryGetValue((string)reference.Attribute("val") ?? "", out var id))
+                reference.SetAttributeValue("val", id);
     }
 
     private static void Prune(XElement timing)

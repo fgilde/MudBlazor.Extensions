@@ -31814,6 +31814,402 @@
             <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
             <returns>The free part name.</returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.AnimationClass">
+            <summary>The class of an animation effect.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationClass.Entrance">
+            <summary>The target appears.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationClass.Exit">
+            <summary>The target disappears.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationClass.Emphasis">
+            <summary>The target is emphasised and stays visible.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationClass.Path">
+            <summary>The target moves along a path.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationClass.Other">
+            <summary>Any other effect, for example a media command.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.AnimationPreset">
+            <summary>The preset of an entrance or exit effect.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationPreset.Appear">
+            <summary>Appears or disappears at once.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationPreset.Fade">
+            <summary>Fades in or out.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationPreset.FlyIn">
+            <summary>Flies in from or out to an edge of the slide.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationPreset.Wipe">
+            <summary>An edge moves across and reveals or hides the target.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationPreset.Zoom">
+            <summary>Grows from or shrinks to its centre.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationPreset.Other">
+            <summary>An effect the editor keeps but does not model; the slide show plays it as <see cref="F:MudBlazor.Extensions.Office.Presentation.AnimationPreset.Appear"/> and never hides the target with it.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.AnimationTrigger">
+            <summary>What starts an animation effect.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationTrigger.OnClick">
+            <summary>A click starts the effect.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationTrigger.WithPrevious">
+            <summary>The effect starts together with the previous one.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationTrigger.AfterPrevious">
+            <summary>The effect starts when the previous ones have finished.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.AnimationDirection">
+            <summary>The direction of a fly-in or wipe effect; for exit effects the edge the target leaves to.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationDirection.None">
+            <summary>No direction.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationDirection.FromLeft">
+            <summary>From the left.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationDirection.FromRight">
+            <summary>From the right.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationDirection.FromTop">
+            <summary>From the top.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.AnimationDirection.FromBottom">
+            <summary>From the bottom.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.AnimationEffect">
+            <summary>An effect of the main animation sequence of a slide.</summary>
+            <param name="ShapeId">The id of the animated shape.</param>
+            <param name="Class">The class of the effect.</param>
+            <param name="Preset">The preset; <see cref="F:MudBlazor.Extensions.Office.Presentation.AnimationPreset.Other"/> for every effect that is not a modelled entrance or exit.</param>
+            <param name="Trigger">What starts the effect.</param>
+            <param name="DelaySeconds">The delay after the start in seconds.</param>
+            <param name="DurationSeconds">The duration in seconds.</param>
+            <param name="Direction">The direction of a fly-in or wipe.</param>
+            <param name="ParagraphIndex">The animated paragraph of the shape's text, or null if the whole shape is animated.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AnimationEffect.#ctor(System.UInt32,MudBlazor.Extensions.Office.Presentation.AnimationClass,MudBlazor.Extensions.Office.Presentation.AnimationPreset,MudBlazor.Extensions.Office.Presentation.AnimationTrigger,System.Double,System.Double,MudBlazor.Extensions.Office.Presentation.AnimationDirection,System.Nullable{System.Int32})">
+            <summary>An effect of the main animation sequence of a slide.</summary>
+            <param name="ShapeId">The id of the animated shape.</param>
+            <param name="Class">The class of the effect.</param>
+            <param name="Preset">The preset; <see cref="F:MudBlazor.Extensions.Office.Presentation.AnimationPreset.Other"/> for every effect that is not a modelled entrance or exit.</param>
+            <param name="Trigger">What starts the effect.</param>
+            <param name="DelaySeconds">The delay after the start in seconds.</param>
+            <param name="DurationSeconds">The duration in seconds.</param>
+            <param name="Direction">The direction of a fly-in or wipe.</param>
+            <param name="ParagraphIndex">The animated paragraph of the shape's text, or null if the whole shape is animated.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AnimationEffect.ShapeId">
+            <summary>The id of the animated shape.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AnimationEffect.Class">
+            <summary>The class of the effect.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AnimationEffect.Preset">
+            <summary>The preset; <see cref="F:MudBlazor.Extensions.Office.Presentation.AnimationPreset.Other"/> for every effect that is not a modelled entrance or exit.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AnimationEffect.Trigger">
+            <summary>What starts the effect.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AnimationEffect.DelaySeconds">
+            <summary>The delay after the start in seconds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AnimationEffect.DurationSeconds">
+            <summary>The duration in seconds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AnimationEffect.Direction">
+            <summary>The direction of a fly-in or wipe.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AnimationEffect.ParagraphIndex">
+            <summary>The animated paragraph of the shape's text, or null if the whole shape is animated.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.ScheduledEffect">
+            <summary>An animation effect with its start within its build step.</summary>
+            <param name="Effect">The effect.</param>
+            <param name="StartSeconds">The start in seconds after the step began, including the effect's delay.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.ScheduledEffect.#ctor(MudBlazor.Extensions.Office.Presentation.AnimationEffect,System.Double)">
+            <summary>An animation effect with its start within its build step.</summary>
+            <param name="Effect">The effect.</param>
+            <param name="StartSeconds">The start in seconds after the step began, including the effect's delay.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ScheduledEffect.Effect">
+            <summary>The effect.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.ScheduledEffect.StartSeconds">
+            <summary>The start in seconds after the step began, including the effect's delay.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.BuildStep">
+            <summary>The effects one click of the slide show plays: an on-click effect and the effects that follow it with or after the previous one.</summary>
+            <param name="Automatic">True for a first step that starts without a click, because the slide's first effect starts with or after the previous one.</param>
+            <param name="Effects">The effects in sequence order.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.BuildStep.#ctor(System.Boolean,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.ScheduledEffect})">
+            <summary>The effects one click of the slide show plays: an on-click effect and the effects that follow it with or after the previous one.</summary>
+            <param name="Automatic">True for a first step that starts without a click, because the slide's first effect starts with or after the previous one.</param>
+            <param name="Effects">The effects in sequence order.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.BuildStep.Automatic">
+            <summary>True for a first step that starts without a click, because the slide's first effect starts with or after the previous one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.BuildStep.Effects">
+            <summary>The effects in sequence order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.BuildStep.DurationSeconds">
+            <summary>The time in seconds until the last effect of the step has finished.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SlideBuildSteps">
+            <summary>The build steps of a slide in the slide show and the visibility of its animated shapes and paragraphs.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SlideBuildSteps.For(MudBlazor.Extensions.Office.Presentation.Slide)">
+            <summary>Gets the build steps of a slide.</summary>
+            <param name="slide">The slide.</param>
+            <returns>The steps in show order.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SlideBuildSteps.InitiallyHidden(MudBlazor.Extensions.Office.Presentation.Slide)">
+            <summary>
+            Gets the targets that are hidden when the slide is shown: a shape or paragraph is hidden exactly when its first effect is an entrance with a known preset.
+            </summary>
+            <param name="slide">The slide.</param>
+            <returns>The hidden targets; a null paragraph stands for the whole shape.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SlideBuildSteps.VisibleAfter(MudBlazor.Extensions.Office.Presentation.Slide,System.Int32)">
+            <summary>
+            Gets the visibility of the animated targets after a number of build steps, for stepping forward, back or jumping. Entrances and every effect with
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.AnimationPreset.Other"/> make the target visible; only exits with a known preset hide it.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="stepCount">The number of steps played, including an automatic first step; larger numbers mean all steps.</param>
+            <returns>For every animated shape or paragraph, true if it is visible. Targets that are not listed are visible.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.TransitionKind">
+            <summary>The effect of a slide transition.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.None">
+            <summary>No effect.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Cut">
+            <summary>The slide replaces the previous one at once.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Fade">
+            <summary>The slide fades in.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Push">
+            <summary>The slide pushes the previous one out.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Wipe">
+            <summary>An edge moves across and reveals the slide.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Split">
+            <summary>The slide is revealed from the middle or the edges.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Cover">
+            <summary>The slide moves in over the previous one.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Uncover">
+            <summary>The previous slide moves away and uncovers the slide.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Zoom">
+            <summary>The slide zooms in or out.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Dissolve">
+            <summary>The slide dissolves in.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.RandomBars">
+            <summary>The slide appears in random bars.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Other">
+            <summary>An effect the editor keeps but does not model; the slide show plays it as a fade.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.TransitionDirection">
+            <summary>The direction of a slide transition.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.None">
+            <summary>The default direction of the effect.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.Left">
+            <summary>To the left (push, wipe, cover, uncover).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.Right">
+            <summary>To the right (push, wipe, cover, uncover).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.Up">
+            <summary>Upwards (push, wipe, cover, uncover).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.Down">
+            <summary>Downwards (push, wipe, cover, uncover).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.In">
+            <summary>Inwards (zoom).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.Out">
+            <summary>Outwards (zoom).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.Horizontal">
+            <summary>Horizontal (split, random bars).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.Vertical">
+            <summary>Vertical (split, random bars).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SlideTransition">
+            <summary>The transition that brings a slide on screen in the slide show, and how the show advances from the slide.</summary>
+            <param name="Kind">The effect.</param>
+            <param name="Direction">The direction of the effect, as it is written in the file; <see cref="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.None"/> for effects without one.</param>
+            <param name="DurationSeconds">The duration of the effect in seconds. A changed transition is saved with the nearest of 0.5, 0.75 and 1 seconds.</param>
+            <param name="AdvanceOnClick">True if a click advances to the next slide.</param>
+            <param name="AdvanceAfterSeconds">The time after which the show advances by itself, or null.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SlideTransition.#ctor(MudBlazor.Extensions.Office.Presentation.TransitionKind,MudBlazor.Extensions.Office.Presentation.TransitionDirection,System.Double,System.Boolean,System.Nullable{System.Double})">
+            <summary>The transition that brings a slide on screen in the slide show, and how the show advances from the slide.</summary>
+            <param name="Kind">The effect.</param>
+            <param name="Direction">The direction of the effect, as it is written in the file; <see cref="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.None"/> for effects without one.</param>
+            <param name="DurationSeconds">The duration of the effect in seconds. A changed transition is saved with the nearest of 0.5, 0.75 and 1 seconds.</param>
+            <param name="AdvanceOnClick">True if a click advances to the next slide.</param>
+            <param name="AdvanceAfterSeconds">The time after which the show advances by itself, or null.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideTransition.Kind">
+            <summary>The effect.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideTransition.Direction">
+            <summary>The direction of the effect, as it is written in the file; <see cref="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.None"/> for effects without one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideTransition.DurationSeconds">
+            <summary>The duration of the effect in seconds. A changed transition is saved with the nearest of 0.5, 0.75 and 1 seconds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideTransition.AdvanceOnClick">
+            <summary>True if a click advances to the next slide.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideTransition.AdvanceAfterSeconds">
+            <summary>The time after which the show advances by itself, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SlideTransition.None">
+            <summary>No transition; a click advances.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetTransitionCommand">
+            <summary>
+            Sets the transition of slides. A direction of <see cref="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.None"/> means the default direction of the effect.
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Other"/> can only be kept on slides that already have such a transition.
+            </summary>
+            <param name="slides">The slides.</param>
+            <param name="transition">The transition.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTransitionCommand.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Presentation.Slide},MudBlazor.Extensions.Office.Presentation.SlideTransition)">
+            <summary>
+            Sets the transition of slides. A direction of <see cref="F:MudBlazor.Extensions.Office.Presentation.TransitionDirection.None"/> means the default direction of the effect.
+            <see cref="F:MudBlazor.Extensions.Office.Presentation.TransitionKind.Other"/> can only be kept on slides that already have such a transition.
+            </summary>
+            <param name="slides">The slides.</param>
+            <param name="transition">The transition.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetTransitionCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTransitionCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetTransitionCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.AddAnimationCommand">
+            <summary>
+            Adds an effect to the main animation sequence of a slide. Only entrance and exit effects with the presets Appear, Fade, FlyIn, Wipe and Zoom on a
+            whole top-level shape can be added; fly-in and wipe need a direction, the others none.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="effect">The effect.</param>
+            <param name="index">The position in <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations"/>, or null to append.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AddAnimationCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,MudBlazor.Extensions.Office.Presentation.AnimationEffect,System.Nullable{System.Int32})">
+            <summary>
+            Adds an effect to the main animation sequence of a slide. Only entrance and exit effects with the presets Appear, Fade, FlyIn, Wipe and Zoom on a
+            whole top-level shape can be added; fly-in and wipe need a direction, the others none.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="effect">The effect.</param>
+            <param name="index">The position in <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations"/>, or null to append.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.AddAnimationCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AddAnimationCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.AddAnimationCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.RemoveAnimationCommand">
+            <summary>Removes an effect from the main animation sequence of a slide.</summary>
+            <param name="slide">The slide.</param>
+            <param name="index">The position in <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RemoveAnimationCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Int32)">
+            <summary>Removes an effect from the main animation sequence of a slide.</summary>
+            <param name="slide">The slide.</param>
+            <param name="index">The position in <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.RemoveAnimationCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RemoveAnimationCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.RemoveAnimationCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.MoveAnimationCommand">
+            <summary>Moves an effect within the main animation sequence of a slide.</summary>
+            <param name="slide">The slide.</param>
+            <param name="index">The current position in <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations"/>.</param>
+            <param name="targetIndex">The position in <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations"/> after the move.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MoveAnimationCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Int32,System.Int32)">
+            <summary>Moves an effect within the main animation sequence of a slide.</summary>
+            <param name="slide">The slide.</param>
+            <param name="index">The current position in <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations"/>.</param>
+            <param name="targetIndex">The position in <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations"/> after the move.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.MoveAnimationCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MoveAnimationCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.MoveAnimationCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Presentation.SetAnimationCommand">
+            <summary>
+            Replaces an effect of the main animation sequence of a slide. Trigger and delay can be changed on every effect; any other change needs an effect that
+            <see cref="T:MudBlazor.Extensions.Office.Presentation.AddAnimationCommand"/> accepts.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="index">The position in <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations"/>.</param>
+            <param name="effect">The new effect.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetAnimationCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Int32,MudBlazor.Extensions.Office.Presentation.AnimationEffect)">
+            <summary>
+            Replaces an effect of the main animation sequence of a slide. Trigger and delay can be changed on every effect; any other change needs an effect that
+            <see cref="T:MudBlazor.Extensions.Office.Presentation.AddAnimationCommand"/> accepts.
+            </summary>
+            <param name="slide">The slide.</param>
+            <param name="index">The position in <see cref="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations"/>.</param>
+            <param name="effect">The new effect.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.SetAnimationCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetAnimationCommand.Apply(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Presentation.SetAnimationCommand.Revert(MudBlazor.Extensions.Office.Presentation.Presentation)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.ShapeAlignment">
             <summary>The edge or centre line shapes are aligned to.</summary>
         </member>
@@ -33512,6 +33908,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Background">
             <summary>The slide's own background, or null if it is inherited from the layout or master.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Transition">
+            <summary>The transition that brings the slide on screen in the slide show.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Presentation.Slide.Animations">
+            <summary>The effects of the main animation sequence in order. Effects of shapes that are no longer on the slide are left out.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.SlideLayout">
             <summary>A slide layout; its placeholders give slides their default positions and text styles.</summary>

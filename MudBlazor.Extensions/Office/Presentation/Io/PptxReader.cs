@@ -147,8 +147,10 @@ internal static class PptxReader
             Layout = presentation.LayoutList.Find(l => string.Equals(l.PartName, layoutPart, StringComparison.OrdinalIgnoreCase)),
             Hidden = (string)xml.Root!.Attribute("show") is "0" or "false",
             ReservedId = SlideTiming.MaxTarget(xml.Root),
-            ColorMap = ColorMapOverride(xml.Root)
+            ColorMap = ColorMapOverride(xml.Root),
+            Transition = TransitionXml.Read(xml.Root)
         };
+        slide.AnimationList.AddRange(AnimationXml.Read(xml.Root));
         var master = slide.Layout?.Master;
         slide.Background = ReadBackground(opc, part, rels, xml.Root, master);
         slide.ShowMasterShapes = ShowMasterShapes(xml.Root);
