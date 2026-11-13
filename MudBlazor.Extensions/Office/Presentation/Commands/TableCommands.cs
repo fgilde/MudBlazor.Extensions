@@ -295,7 +295,10 @@ public sealed class SetTableSizesCommand(Slide slide, uint table, IReadOnlyList<
 /// <param name="slide">The slide.</param>
 /// <param name="table">The id of a <see cref="TableShape"/>.</param>
 /// <param name="cells">The cells as row and column index.</param>
-/// <param name="fill">The fill, or null to take it from the table style.</param>
+/// <param name="fill">
+/// The fill, or null to take it from the table style: <see cref="ShapeFillKind.None"/> or <see cref="ShapeFillKind.Solid"/> with a colour that can
+/// be written; other fills throw an <see cref="ArgumentException"/>.
+/// </param>
 public sealed class SetTableCellFillCommand(Slide slide, uint table, IReadOnlyList<(int Row, int Column)> cells, ShapeFill fill) : IDocumentCommand<Presentation>
 {
     private readonly TableChange _change = new(slide, table);
@@ -306,6 +309,8 @@ public sealed class SetTableCellFillCommand(Slide slide, uint table, IReadOnlyLi
     /// <inheritdoc />
     public void Apply(Presentation document) => _change.Apply(document, t =>
     {
+        if (fill is not (null or { Kind: ShapeFillKind.None }) && (fill.Kind != ShapeFillKind.Solid || SlideXml.SolidFill(fill.Color) == null))
+            throw new ArgumentException("A cell fill must be no fill or a solid colour that can be written.", nameof(fill));
         var grid = TableEdit.Grid(t.Rows);
         foreach (var (r, c) in cells ?? []) grid[r][c] = TableEdit.Cell(grid, r, c, true) with { Fill = fill };
         t.Rows = TableEdit.Rows(t.Rows, grid);

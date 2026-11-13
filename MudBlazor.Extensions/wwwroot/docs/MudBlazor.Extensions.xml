@@ -33657,14 +33657,20 @@
             <param name="slide">The slide.</param>
             <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
             <param name="cells">The cells as row and column index.</param>
-            <param name="fill">The fill, or null to take it from the table style.</param>
+            <param name="fill">
+            The fill, or null to take it from the table style: <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None"/> or <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid"/> with a colour that can
+            be written; other fills throw an <see cref="T:System.ArgumentException"/>.
+            </param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.SetTableCellFillCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.UInt32,System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Int32,System.Int32}},MudBlazor.Extensions.Office.Presentation.ShapeFill)">
             <summary>Sets the fill of table cells.</summary>
             <param name="slide">The slide.</param>
             <param name="table">The id of a <see cref="T:MudBlazor.Extensions.Office.Presentation.TableShape"/>.</param>
             <param name="cells">The cells as row and column index.</param>
-            <param name="fill">The fill, or null to take it from the table style.</param>
+            <param name="fill">
+            The fill, or null to take it from the table style: <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.None"/> or <see cref="F:MudBlazor.Extensions.Office.Presentation.ShapeFillKind.Solid"/> with a colour that can
+            be written; other fills throw an <see cref="T:System.ArgumentException"/>.
+            </param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Presentation.SetTableCellFillCommand.Description">
             <inheritdoc />

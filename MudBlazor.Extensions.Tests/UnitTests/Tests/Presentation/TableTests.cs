@@ -314,4 +314,28 @@ public class TableTests
         Assert.False(presentation.Undo.CanUndo);
         Assert.Equal(before, SlideCommandTests.Snapshot(presentation));
     }
+
+    [Theory]
+    [InlineData(ShapeFillKind.Gradient, "#FF0000")]
+    [InlineData(ShapeFillKind.Picture, null)]
+    [InlineData(ShapeFillKind.Other, "#FF0000")]
+    [InlineData(ShapeFillKind.Inherited, null)]
+    [InlineData(ShapeFillKind.Solid, null)]
+    [InlineData(ShapeFillKind.Solid, "scheme:nonsense")]
+    public void SetTableCellFill_KindTheWriterCannotWrite_Throws(ShapeFillKind kind, string color)
+    {
+        var presentation = Deck();
+        var slide = presentation.Slides[0];
+        var before = SlideCommandTests.Snapshot(presentation);
+
+        var error = Assert.Throws<ArgumentException>(() => presentation.Execute(new SetTableCellFillCommand(slide, 3, [(0, 0)], new ShapeFill(kind, color))));
+
+        Assert.Equal("fill", error.ParamName);
+        Assert.False(presentation.Undo.CanUndo);
+        Assert.Equal(before, SlideCommandTests.Snapshot(presentation));
+        presentation.Execute(new SetTableCellFillCommand(slide, 3, [(0, 0)], new ShapeFill(ShapeFillKind.None)));
+        presentation.Execute(new SetTableCellFillCommand(slide, 3, [(0, 1)], new ShapeFill(ShapeFillKind.Solid, "scheme:accent2")));
+        presentation.Execute(new SetTableCellFillCommand(slide, 3, [(0, 1)], null));
+        Assert.True(presentation.Undo.CanUndo);
+    }
 }
