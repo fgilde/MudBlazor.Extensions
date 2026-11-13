@@ -71,6 +71,23 @@
         </DemoContent>
     </MudExDemoBox>
 
+    <MudExDemoBox Title="4. Notebooks (mxnb)"
+                  NavTitle="Notebooks"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "AllowEdit adds the edit toggle for mxnb files",
+                                  "The notebook editor is picked automatically for them",
+                                  "Ctrl+S saves, SaveRequested works like for every other editor"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["sample.mxnb is opened in the viewer. Switch to edit mode to get the notebook editor with its ribbon."]
+            </MudText>
+            <FileDisplayNotebookExample />
+        </DemoContent>
+    </MudExDemoBox>
+
 </MudExDemoPage>
 
 <DemoNavigation CurrentPage="@this" />

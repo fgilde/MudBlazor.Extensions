@@ -1,0 +1,25 @@
+@page "/notebook-playground"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Notebook
+@using Doc = MudBlazor.Extensions.Office.Notebook.Notebook
+
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "Playground", Order = 100, Group = "Notebook Editor", Icon = Icons.Material.Outlined.Book, ForComponentTypes = new[] { typeof(MudExNotebookEditor) })]
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <div style="width: 100%; height: 560px;">
+                <MudExNotebookEditor @ref="ComponentRef" Notebook="_notebook" />
+            </div>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@ComponentRef"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    MudExNotebookEditor? ComponentRef;
+    private readonly Doc _notebook = NotebookSamples.CreateNotebook();
+}

@@ -1,0 +1,55 @@
+@page "/notebook-files"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Notebook
+
+@attribute [DemoNew(Name = "Files", Group = "Notebook Editor", Order = 20, Icon = Icons.Material.Outlined.FolderOpen, ForComponentTypes = new[] { typeof(MudExNotebookEditor) }, Documentation = "Open and save mxnb files locally or save to a server with SaveRequested.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Notebook Editor – Files"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["The File menu opens and creates notebooks and saves them locally. Pages you did not change and media that are still in use are written back unchanged."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Open and save locally"
+                  NavTitle="Open and save locally"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "sample.mxnb is loaded through Notebook.Load",
+                                  "File menu: Open, New, Save, Save As",
+                                  "AllowOpen, AllowNew and AllowLocalSave control the File menu",
+                                  "A failed download shows an alert instead of the editor"
+                              })">
+        <DemoContent>
+            <NotebookFilesExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Save to a server (simulated)"
+                  NavTitle="Save to a server"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Parameters and events"
+                  Features="@(new[]
+                              {
+                                  "SaveRequested – receives the exported file as MudExFileSaveRequest",
+                                  "Handled = true – tells the editor that your code stored the file",
+                                  "The content stream is only valid during the handler, so copy it"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Change something and press Ctrl+S. The handler reports the file name and size with a snackbar."]
+            </MudText>
+            <NotebookServerSaveExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

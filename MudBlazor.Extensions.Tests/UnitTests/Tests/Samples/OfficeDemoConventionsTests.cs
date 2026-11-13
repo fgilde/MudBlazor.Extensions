@@ -13,12 +13,12 @@ namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Samples;
 
 public class OfficeDemoConventionsTests
 {
-    private static readonly string[] PageGroups = ["Spreadsheet", "Ribbon", "Slide Editor"];
-    private static readonly string[] PagePrefixes = ["Page_Spreadsheet", "Page_Ribbon", "Page_Slides", "Page_FileDisplayEdit"];
+    private static readonly string[] PageGroups = ["Spreadsheet", "Ribbon", "Slide Editor", "Notebook Editor"];
+    private static readonly string[] PagePrefixes = ["Page_Spreadsheet", "Page_Ribbon", "Page_Slides", "Page_Notebook", "Page_FileDisplayEdit"];
     private static readonly string[] ExampleNamespaces =
     [
         "MainSample.WebAssembly.Examples.Spreadsheet", "MainSample.WebAssembly.Examples.Ribbon",
-        "MainSample.WebAssembly.Examples.Slides", "MainSample.WebAssembly.Examples.FileDisplay"
+        "MainSample.WebAssembly.Examples.Slides", "MainSample.WebAssembly.Examples.Notebook", "MainSample.WebAssembly.Examples.FileDisplay"
     ];
 
     private static readonly string[] NeedsInteraction = ["SpreadsheetLargeExample"];
@@ -40,9 +40,10 @@ public class OfficeDemoConventionsTests
             .Where(p => p.Demo != null && (PageGroups.Contains(p.Demo.Group) || PagePrefixes.Any(p.Type.Name.StartsWith)))
             .ToList();
 
-        Assert.True(pages.Count >= 14);
+        Assert.True(pages.Count >= 17);
         Assert.All(pages, p => Assert.IsType<DemoNewAttribute>(p.Demo));
         Assert.Contains(pages, p => p.Demo.Group == "Slide Editor");
+        Assert.Contains(pages, p => p.Demo.Group == "Notebook Editor");
     }
 
     [Theory]
@@ -80,6 +81,7 @@ public class OfficeDemoConventionsTests
         var expected = type.Namespace switch
         {
             "MainSample.WebAssembly.Examples.Slides" => StartsOnClick.Contains(name) ? typeof(MudExSlideShow) : typeof(MudExSlideEditor),
+            "MainSample.WebAssembly.Examples.Notebook" => typeof(MudExNotebookEditor),
             "MainSample.WebAssembly.Examples.Ribbon" => typeof(MudExRibbon),
             "MainSample.WebAssembly.Examples.FileDisplay" => typeof(MudExFileDisplay),
             _ => name.Contains("FileDisplay") || name.Contains("ServerSave") ? typeof(MudExFileDisplay) : typeof(MudExSpreadsheetEditor)

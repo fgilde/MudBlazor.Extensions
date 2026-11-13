@@ -1,0 +1,13 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using Doc = MudBlazor.Extensions.Office.Notebook.Notebook
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 640px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExNotebookEditor @ref=&quot;ComponentRef&quot; @bind-Notebook=&quot;_notebook&quot; /&gt;
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private Doc _notebook = NotebookSamples.CreateNotebook();
+}
+
+</pre></div>
