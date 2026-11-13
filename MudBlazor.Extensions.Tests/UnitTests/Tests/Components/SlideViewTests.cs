@@ -278,4 +278,23 @@ public class SlideViewTests
 
         string Attr(string name) => cut.Find("[data-shape-id='2'] defs > *").GetAttribute(name);
     }
+
+    [Fact]
+    public void SlideView_SerifFont_GetsSerifFallback()
+    {
+        var body = string.Concat(new[] { "Georgia", "Consolas", "Calibri" }.Select(font =>
+            $"<a:p><a:r><a:rPr lang=\"en-US\"><a:latin typeface=\"{font}\"/></a:rPr><a:t>{font}</a:t></a:r></a:p>"));
+        var presentation = new PptxBuilder().Slide(Shape(2, "Text", Xfrm(0, 0, 3000000, 1000000), body)).Load();
+        using var context = new TestContext();
+
+        var cut = Render(context, presentation);
+
+        var styles = cut.FindAll(".mud-ex-slide-text span").Select(s => s.GetAttribute("style")).ToList();
+        Assert.Contains(styles, s => s!.Contains("font-family:\"Georgia\",serif;"));
+        Assert.Contains(styles, s => s!.Contains("font-family:\"Consolas\",monospace;"));
+        Assert.Contains(styles, s => s!.Contains("font-family:\"Calibri\",sans-serif;"));
+        Assert.Equal("serif", MudExSlideText.GenericFamily("Times New Roman"));
+        Assert.Equal("monospace", MudExSlideText.GenericFamily("courier new"));
+        Assert.Equal("sans-serif", MudExSlideText.GenericFamily(null));
+    }
 }

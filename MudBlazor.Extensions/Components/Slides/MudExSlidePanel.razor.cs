@@ -4,7 +4,10 @@ using MudBlazor.Extensions.Office.Presentation;
 
 namespace MudBlazor.Extensions.Components;
 
-/// <summary>The slide panel of the slide editor: numbered thumbnails that are rendered once they scroll into view, multi-selection and a context menu.</summary>
+/// <summary>
+/// The slide panel of the slide editor: numbered thumbnails that are rendered once they scroll into view, multi-selection, a context menu and collapsible
+/// section headers.
+/// </summary>
 public partial class MudExSlidePanel
 {
     internal const int EagerThumbnails = 8;
@@ -61,6 +64,15 @@ public partial class MudExSlidePanel
             _presentation = Presentation;
             _visible.Clear();
             _anchor = null;
+            _collapsed.Clear();
+            _renaming = null;
+        }
+
+        if (!ReferenceEquals(Current, _shown))
+        {
+            _shown = Current;
+            if (Current != null && Presentation?.SectionOf(Current) is { } section)
+                _collapsed.Remove(section.Id);
         }
 
         _visible.UnionWith(Presentation?.Slides.Take(EagerThumbnails).Select(s => s.Key) ?? []);

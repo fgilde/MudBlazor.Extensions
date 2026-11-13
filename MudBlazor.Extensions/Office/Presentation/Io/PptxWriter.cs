@@ -138,8 +138,36 @@ public static partial class PptxWriter
             {
                 if (master.ThemePart != null && !_done.Contains(master.ThemePart) && !master.Theme.Matches(master.LoadedTheme))
                     Put(master.ThemePart, ThemeXml.Patch(_opc.ReadXml(master.ThemePart), master.Theme));
-                if (!Equals(master.Background, master.LoadedBackground)) Put(master.PartName, ThemeXml.WriteBackground(_opc.ReadXml(master.PartName), master.Background));
+                var xml = Equals(master.Background, master.LoadedBackground) ? null : ThemeXml.WriteBackground(_opc.ReadXml(master.PartName), master.Background);
+                WriteTransforms(master.PartName, master.ShapeList, xml);
             }
+
+            foreach (var layout in presentation.LayoutList) WriteTransforms(layout.PartName, layout.ShapeList, null);
+        }
+
+        private void WriteTransforms(string part, IReadOnlyList<SlideShape> shapes, XDocument xml)
+        {
+            if (shapes.Any(s => s.Source != null && s.Transform != ShapeReader.ReadTransform(ShapeReader.XfrmOf(s.Source, s is OpaqueShape))))
+                SlideXml.WriteTransforms(xml ??= new XDocument(_opc.ReadXml(part)), shapes);
+            if (xml != null) Put(part, xml);
+        }
+
+        private void WriteSlideSize(XElement root)
+        {
+            var size = root.Element(P + "sldSz");
+            if (Long((string)size?.Attribute("cx")) == presentation.SlideWidth && Long((string)size?.Attribute("cy")) == presentation.SlideHeight
+                || size == null && (presentation.SlideWidth, presentation.SlideHeight) == (12192000, 6858000)) return;
+            size ??= SlideXml.Place(root, new XElement(P + "sldSz"), "notesSz", "smartTags", "embeddedFontLst", "custShowLst", "photoAlbum", "custDataLst", "kinsoku",
+                "defaultTextStyle", "modifyVerifier", "extLst");
+            size.SetAttributeValue("cx", presentation.SlideWidth);
+            size.SetAttributeValue("cy", presentation.SlideHeight);
+            size.SetAttributeValue("type", (presentation.SlideWidth, presentation.SlideHeight) switch
+            {
+                (9144000, 6858000) => "screen4x3",
+                (9144000, 5715000) => "screen16x10",
+                (9144000, 5143500) => "screen16x9",
+                _ => null
+            });
         }
 
         private void AddTableStyles(List<OpcRelationship> rels)
@@ -234,6 +262,7 @@ public static partial class PptxWriter
             if (!presentation.SlideList.SequenceEqual(package.Slides.Select(s => s.Slide))) WriteSlideList(root, entries);
             RemoveReferences(xml, rels, r => IsDead(package.PresentationPart, r));
             WriteSections(root, entries);
+            WriteSlideSize(root);
             if (((string)root.Attribute("showSpecialPlsOnTitleSld") is not ("0" or "false")) != presentation.ShowSpecialPlaceholdersOnTitleSlide)
                 root.SetAttributeValue("showSpecialPlsOnTitleSld", presentation.ShowSpecialPlaceholdersOnTitleSlide ? null : "0");
             if (!XNode.DeepEquals(xml, package.PresentationXml)) Put(package.PresentationPart, xml);

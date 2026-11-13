@@ -1,0 +1,20 @@
+@inherits MudExBaseComponent<MudExSlideLayoutGallery>
+@namespace MudBlazor.Extensions.Components
+
+<div @attributes="UserAttributes" class="@($"mud-ex-slide-layout-gallery {Class}".TrimEnd())" style="@Style" role="listbox" aria-label="@TryLocalize("Layouts")">
+    @foreach (var layout in Layouts ?? [])
+    {
+        var selected = ReferenceEquals(layout, Selected);
+        var name = layout.Name ?? TryLocalize("Layout");
+        <MudMenuItem Class="mud-ex-slide-layout-item" role="option" aria-selected="@(selected ? "true" : "false")" title="@name" OnClick="@(() => LayoutChosen.InvokeAsync(layout))">
+            <div class="mud-ex-slide-layout-preview">
+                <MudExSlideView Presentation="Presentation" Slide="@PreviewOf(layout)" Images="Images" />
+                @foreach (var placeholder in Placeholders(layout))
+                {
+                    <div class="mud-ex-slide-layout-placeholder" style="@Box(placeholder)"></div>
+                }
+            </div>
+            <span class="mud-ex-slide-layout-name">@name</span>
+        </MudMenuItem>
+    }
+</div>

@@ -9402,3 +9402,95 @@ textarea.mud-ex-ssg-note-text {
   border-color: var(--mud-ex-slide-accent, var(--mud-palette-primary));
   background-color: var(--mud-palette-action-default-hover);
 }
+.mud-ex-slide-panel-section {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 4px 2px 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+.mud-ex-slide-panel-section.mud-ex-slide-panel-drop-before {
+  box-shadow: inset 0 2px 0 var(--mud-ex-slide-accent, var(--mud-palette-primary));
+}
+.mud-ex-slide-panel-section.mud-ex-slide-panel-drop-after {
+  box-shadow: inset 0 -2px 0 var(--mud-ex-slide-accent, var(--mud-palette-primary));
+}
+.mud-ex-slide-panel-section-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mud-ex-slide-panel-section-count {
+  font-weight: normal;
+  color: var(--mud-palette-text-secondary);
+}
+.mud-ex-slide-panel-section-count::before {
+  content: "(";
+}
+.mud-ex-slide-panel-section-count::after {
+  content: ")";
+}
+.mud-ex-slide-panel-section-rename {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0 2px;
+  font: inherit;
+  color: inherit;
+  background-color: var(--mud-palette-surface);
+  border: 1px solid var(--mud-ex-slide-accent, var(--mud-palette-primary));
+  outline: none;
+}
+.mud-ex-slide-design-gallery, .mud-ex-slide-layout-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 136px);
+  gap: 4px;
+  padding: 4px 8px;
+}
+.mud-menu-item.mud-ex-slide-design-item, .mud-menu-item.mud-ex-slide-layout-item {
+  min-height: 0;
+  padding: 4px;
+}
+.mud-ex-slide-design-preview, .mud-ex-slide-layout-preview {
+  position: relative;
+  width: 128px;
+  box-shadow: 0 0 0 1px var(--mud-palette-lines-default);
+}
+.mud-ex-slide-design-item[aria-selected="true"] .mud-ex-slide-design-preview, .mud-ex-slide-layout-item[aria-selected="true"] .mud-ex-slide-layout-preview {
+  outline: 2px solid var(--mud-ex-slide-accent, var(--mud-palette-primary));
+}
+.mud-ex-slide-design-name, .mud-ex-slide-layout-name {
+  display: block;
+  width: 128px;
+  padding-top: 2px;
+  overflow: hidden;
+  font-size: 0.75rem;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mud-ex-slide-layout-placeholder {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px dashed rgba(0, 0, 0, 0.45);
+}
+.mud-ex-slide-design-swatches {
+  display: inline-flex;
+  margin-right: 8px;
+}
+.mud-ex-slide-design-swatch {
+  width: 10px;
+  height: 14px;
+}
+.mud-ex-slide-design-fonts {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.mud-ex-slide-design-major {
+  font-size: 1rem;
+}

@@ -1,0 +1,25 @@
+@inherits MudExBaseComponent<MudExSlideHeaderFooterDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="mud-ex-slide-hf-dialog">
+    <DialogContent>
+        <MudText Typo="Typo.subtitle2">@TryLocalize("Include on slide")</MudText>
+        <MudStack Spacing="0">
+            <MudCheckBox T="bool" Class="mud-ex-slide-hf-date" Label="@TryLocalize("Date and time")" @bind-Value="_showDate" Dense="true" />
+            <MudRadioGroup T="bool" Class="mud-ex-slide-hf-date-mode ml-8" @bind-Value="_automaticDate" Disabled="@(!_showDate)">
+                <MudRadio T="bool" Value="true" Dense="true">@TryLocalize("Update automatically")</MudRadio>
+                <MudRadio T="bool" Value="false" Dense="true">@TryLocalize("Fixed")</MudRadio>
+            </MudRadioGroup>
+            <MudTextField T="string" Class="mud-ex-slide-hf-fixed-date ml-8" Label="@TryLocalize("Fixed date")" @bind-Value="_fixedDate" Disabled="@(!_showDate || _automaticDate)" Margin="Margin.Dense" />
+            <MudCheckBox T="bool" Class="mud-ex-slide-hf-number" Label="@TryLocalize("Slide number")" @bind-Value="_showSlideNumber" Dense="true" />
+            <MudCheckBox T="bool" Class="mud-ex-slide-hf-footer" Label="@TryLocalize("Footer")" @bind-Value="_showFooter" Dense="true" />
+            <MudTextField T="string" Class="mud-ex-slide-hf-footer-text ml-8" Label="@TryLocalize("Footer text")" @bind-Value="_footerText" Disabled="@(!_showFooter)" Margin="Margin.Dense" />
+            <MudCheckBox T="bool" Class="mud-ex-slide-hf-hide-title" Label="@TryLocalize("Don't show on title slide")" @bind-Value="_hideOnTitleSlides" Dense="true" />
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Class="mud-ex-slide-hf-cancel" OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-slide-hf-apply" OnClick="@(() => Close(false))">@TryLocalize("Apply")</MudButton>
+        <MudButton Class="mud-ex-slide-hf-apply-all" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => Close(true))">@TryLocalize("Apply to All")</MudButton>
+    </DialogActions>
+</MudDialog>

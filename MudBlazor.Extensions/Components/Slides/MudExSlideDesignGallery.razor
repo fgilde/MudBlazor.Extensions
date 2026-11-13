@@ -1,0 +1,19 @@
+@inherits MudExBaseComponent<MudExSlideDesignGallery>
+@namespace MudBlazor.Extensions.Components
+
+<div @attributes="UserAttributes" class="@($"mud-ex-slide-design-gallery {Class}".TrimEnd())" style="@Style" role="listbox" aria-label="@TryLocalize("Themes")">
+    @foreach (var (design, presentation, slide) in _previews)
+    {
+        var selected = Equals(design, Current);
+        <MudMenuItem Class="mud-ex-slide-design-item" role="option" aria-selected="@(selected ? "true" : "false")" title="@TryLocalize(design.Name)"
+                     OnClick="@(() => DesignChosen.InvokeAsync(design))">
+            <div class="mud-ex-slide-design-preview">
+                @if (slide != null)
+                {
+                    <MudExSlideView Presentation="presentation" Slide="slide" Images="Images" />
+                }
+            </div>
+            <span class="mud-ex-slide-design-name">@TryLocalize(design.Name)</span>
+        </MudMenuItem>
+    }
+</div>

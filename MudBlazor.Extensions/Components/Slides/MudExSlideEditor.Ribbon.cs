@@ -1,5 +1,8 @@
+using System.ComponentModel;
 using System.Globalization;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Office;
 using MudBlazor.Utilities;
 using MudBlazor.Extensions.Office.Presentation;
 
@@ -76,4 +79,54 @@ public partial class MudExSlideEditor
     private Task SetFontColorAsync(MudExColor color) => Hex(color) is { } hex ? FormatAsync("color", hex) : Task.CompletedTask;
 
     private Task InsertTextBoxAsync() => IsReadOnly || _canvas == null ? Task.CompletedTask : _canvas.InsertTextBoxAsync();
+
+    private PresentationSection CurrentSection => _current == null ? null : _presentation?.SectionOf(_current);
+
+    private bool HasSections => _presentation?.Sections.Count > 0;
+
+    private Task RunCommandAsync(IDocumentCommand<Presentation> command) => RunAsync(() => _presentation.Execute(command));
+
+    private async Task AddSectionAsync()
+    {
+        if (_current == null)
+            return;
+        var command = new AddSectionCommand(_current, TryLocalize("Untitled Section"), TryLocalize(PresentationSection.DefaultName));
+        await RunCommandAsync(command);
+        if (command.Section != null)
+            _panel?.StartRename(command.Section);
+    }
+
+    /// <summary>Called by the browser when a section header was dragged to a new position in the slide panel.</summary>
+    /// <param name="from">The index of the dragged section.</param>
+    /// <param name="target">The insertion index, from 0 to the section count.</param>
+    /// <returns>A task that completes when the section moved.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnSectionDropped(int from, int target) => InvokeAsync(async () =>
+    {
+        var sections = _presentation?.Sections ?? [];
+        var index = target > from ? target - 1 : target;
+        if (from < 0 || from >= sections.Count || target < 0 || target > sections.Count || index == from)
+            return;
+        await RunCommandAsync(new MoveSectionCommand(sections[from], index));
+        StateHasChanged();
+    });
+
+    private Task SetLayoutAsync(SlideLayout layout) => _selection.Count == 0 ? Task.CompletedTask : RunCommandAsync(new SetSlideLayoutCommand(_selection, layout));
+
+    private Task ResetSlidesAsync() => _selection.Count == 0 ? Task.CompletedTask : RunCommandAsync(new ResetSlideCommand(_selection));
+
+    private async Task HeaderFooterAsync()
+    {
+        if (IsReadOnly || _current == null)
+            return;
+        if (_canvas != null)
+            await _canvas.CommitTextAsync();
+        var dialog = await DialogService.ShowAsync<MudExSlideHeaderFooterDialog>(TryLocalize("Header and Footer"), new DialogParameters
+        {
+            { nameof(MudExSlideHeaderFooterDialog.Options), HeaderFooterOptions.From(_current) },
+            { nameof(MudExSlideHeaderFooterDialog.Localizer), Localizer }
+        }, new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true });
+        if (await dialog.Result is { Canceled: false, Data: (HeaderFooterOptions options, bool all) })
+            await RunCommandAsync(new SetHeaderFooterCommand(all ? _presentation.Slides : _selection, options));
+    }
 }

@@ -9,6 +9,18 @@ public partial class MudExSlideText
 {
     private const double SingleLineHeight = 1.2;
 
+    private static readonly HashSet<string> SerifFonts = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Georgia", "Cambria", "Times New Roman", "Times", "Garamond", "Book Antiqua", "Palatino Linotype", "Palatino", "Bookman Old Style", "Century Schoolbook",
+        "Constantia", "Baskerville Old Face", "Bodoni MT", "Didot", "Perpetua", "Sylfaen"
+    };
+
+    private static readonly HashSet<string> MonospaceFonts = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Consolas", "Courier New", "Courier", "Lucida Console", "Lucida Sans Typewriter", "Cascadia Code", "Cascadia Mono", "Menlo", "Monaco", "Source Code Pro",
+        "Fira Code", "JetBrains Mono", "Andale Mono"
+    };
+
     /// <summary>The shape whose text is shown.</summary>
     [Parameter] public AutoShape Shape { get; set; }
 
@@ -48,11 +60,16 @@ public partial class MudExSlideText
         var decoration = string.Join(' ', new[] { format.Underline == true ? "underline" : null, format.Strike == true ? "line-through" : null }.Where(d => d != null));
         var scale = (shape.Text?.FontScalePercent ?? 100) / 100;
         return $"font-size:{Cqw(Emu((format.SizePt ?? 18) * scale), presentation)}cqw;color:{format.Color};" +
-               (CssFont(format.Font) is { Length: > 0 } font ? $"font-family:\"{font}\",sans-serif;" : "") +
+               FontStyle(format.Font) +
                (format.Bold == true ? "font-weight:bold;" : "") +
                (format.Italic == true ? "font-style:italic;" : "") +
                (decoration.Length > 0 ? $"text-decoration:{decoration};" : "");
     }
+
+    internal static string GenericFamily(string font) =>
+        font == null ? "sans-serif" : SerifFonts.Contains(font) ? "serif" : MonospaceFonts.Contains(font) ? "monospace" : "sans-serif";
+
+    internal static string FontStyle(string font) => CssFont(font) is { Length: > 0 } css ? $"font-family:\"{css}\",{GenericFamily(css)};" : "";
 
     internal static TextRun EmptyRun(TextParagraph paragraph) => new("", paragraph.EndFormat);
 

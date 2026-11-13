@@ -1,4 +1,6 @@
 const ITEM = '.mud-ex-slide-panel-item';
+const SECTION = '.mud-ex-slide-panel-section';
+const RENAME = '.mud-ex-slide-panel-section-rename';
 const BEFORE = 'mud-ex-slide-panel-drop-before';
 const AFTER = 'mud-ex-slide-panel-drop-after';
 const SHORTCUT_TARGETS = '.mud-ex-slide-canvas, .mud-ex-slide-panel';
@@ -19,7 +21,7 @@ class MudExSlideEditor {
         this.mutations.observe(root, { childList: true, subtree: true });
         this.events = [
             ['dragstart', e => this.dragStart(e)], ['dragover', e => this.dragOver(e)], ['drop', e => this.drop(e)], ['dragend', () => this.dragEnd()],
-            ['keydown', e => this.keyDown(e)], ['paste', e => this.pasteEvent(e)]
+            ['keydown', e => this.keyDown(e)], ['paste', e => this.pasteEvent(e)], ['focusin', e => e.target.matches?.(RENAME) && e.target.select()]
         ];
         this.events.forEach(([type, handler]) => root.addEventListener(type, handler));
         this.schedule();
@@ -65,11 +67,17 @@ class MudExSlideEditor {
     }
 
     keyDown(e) {
+        if (e.key === 'Enter' && e.target.matches?.(RENAME)) {
+            e.preventDefault();
+            e.target.blur();
+            return;
+        }
         if (!(e.ctrlKey || e.metaKey) || e.altKey) {
             return;
         }
         const key = e.key?.toLowerCase();
-        if ((key === 's' && this.root?.dataset.readonly !== 'true') || (SHORTCUTS.includes(key) && e.target.closest?.(SHORTCUT_TARGETS))) {
+        const shortcut = SHORTCUTS.includes(key) && e.target.closest?.(SHORTCUT_TARGETS) && !e.target.matches?.('input');
+        if ((key === 's' && this.root?.dataset.readonly !== 'true') || shortcut) {
             e.preventDefault();
         }
     }
@@ -132,29 +140,30 @@ class MudExSlideEditor {
         [...(this.root?.querySelectorAll(ITEM) ?? [])].find(item => item.dataset.slideKey === key)?.scrollIntoView({ block: 'nearest' });
     }
 
-    itemOf(e) {
-        const item = e.target?.closest?.(ITEM);
+    itemOf(e, selector = ITEM) {
+        const item = e.target?.closest?.(selector);
         return item && this.root?.contains(item) ? item : null;
     }
 
     dragStart(e) {
-        const item = this.itemOf(e);
+        const section = this.itemOf(e, SECTION);
+        const item = section ?? this.itemOf(e);
         if (!item || item.getAttribute('draggable') !== 'true') {
             return;
         }
-        this.drag = Number(item.dataset.slideIndex);
+        this.drag = section ? { section: true, index: Number(section.dataset.sectionIndex) } : { section: false, index: Number(item.dataset.slideIndex) };
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/plain', '');
     }
 
     target(e) {
-        const item = this.itemOf(e);
+        const item = this.itemOf(e, this.drag.section ? SECTION : ITEM);
         if (!item) {
             return null;
         }
         const box = item.getBoundingClientRect();
         const after = e.clientY > box.top + box.height / 2;
-        return { item, after, index: Number(item.dataset.slideIndex) + (after ? 1 : 0) };
+        return { item, after, index: Number(this.drag.section ? item.dataset.sectionIndex : item.dataset.slideIndex) + (after ? 1 : 0) };
     }
 
     dragOver(e) {
@@ -175,13 +184,13 @@ class MudExSlideEditor {
             return;
         }
         const target = this.target(e);
-        const from = this.drag;
+        const { section, index } = this.drag;
         this.dragEnd();
         if (!target) {
             return;
         }
         e.preventDefault();
-        this.dotnet?.invokeMethodAsync('OnSlidesDropped', from, target.index).catch(() => {});
+        this.dotnet?.invokeMethodAsync(section ? 'OnSectionDropped' : 'OnSlidesDropped', index, target.index).catch(() => {});
     }
 
     dragEnd() {

@@ -6,20 +6,29 @@
     @if (Presentation != null)
     {
         var ratio = $"aspect-ratio:{Presentation.SlideWidth}/{Presentation.SlideHeight}";
-        @for (var i = 0; i < Presentation.Slides.Count; i++)
+        var sections = Presentation.Sections;
+        var index = 0;
+        @if (sections.Count == 0)
         {
-            var slide = Presentation.Slides[i];
-            var selected = Selection?.Contains(slide) == true;
-            <div @key="slide" class="@ItemClass(slide, selected)" role="option" aria-selected="@(selected ? "true" : "false")" data-slide-key="@slide.Key" data-slide-index="@i"
-                 draggable="@(ReadOnly ? null : "true")" @onclick="@(e => ClickAsync(slide, e))" @oncontextmenu="@(e => ContextMenuAsync(slide, e))" @oncontextmenu:preventDefault="@(!ReadOnly)">
-                <span class="mud-ex-slide-panel-number">@(i + 1)</span>
-                <div class="mud-ex-slide-panel-thumb" style="@ratio">
-                    @if (ShowThumbnails && (!LazyThumbnails || _visible.Contains(slide.Key)))
-                    {
-                        <MudExSlideView Presentation="Presentation" Slide="slide" Images="Images" />
-                    }
-                </div>
-            </div>
+            @foreach (var slide in Presentation.Slides)
+            {
+                @Item(slide, index++, ratio)
+            }
+        }
+        @for (var s = 0; s < sections.Count; s++)
+        {
+            var section = sections[s];
+            var slides = section.Slides;
+            @SectionHeader(section, s, slides.Count)
+            @if (IsCollapsed(section))
+            {
+                index += slides.Count;
+                continue;
+            }
+            @foreach (var slide in slides)
+            {
+                @Item(slide, index++, ratio)
+            }
         }
     }
 </div>
@@ -31,6 +40,7 @@
             <MudMenuItem Icon="@Icons.Material.Filled.AddBox" OnClick="NewSlideRequested">@TryLocalize("New Slide")</MudMenuItem>
             <MudMenuItem Icon="@Icons.Material.Filled.ContentCopy" OnClick="DuplicateRequested">@TryLocalize("Duplicate Slide")</MudMenuItem>
             <MudMenuItem Icon="@Icons.Material.Filled.Delete" OnClick="DeleteRequested">@TryLocalize("Delete Slide")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.PlaylistAdd" OnClick="AddSectionRequested">@TryLocalize("Add Section")</MudMenuItem>
             @if (Selection?.All(s => s.Hidden) == true)
             {
                 <MudMenuItem Icon="@Icons.Material.Filled.Visibility" OnClick="@(() => HideRequested.InvokeAsync(false))">@TryLocalize("Show Slide")</MudMenuItem>
@@ -41,4 +51,59 @@
             }
         </ChildContent>
     </MudMenu>
+    <MudMenu @ref="_sectionMenu" Class="mud-ex-slide-panel-menu" PositionAtCursor="true" Dense="true">
+        <ActivatorContent><span class="mud-ex-slide-panel-menu-anchor"></span></ActivatorContent>
+        <ChildContent>
+            @{ var at = _menuSection == null ? -1 : Presentation.SectionList.IndexOf(_menuSection); }
+            <MudMenuItem Icon="@Icons.Material.Filled.Edit" OnClick="@(() => StartRename(_menuSection))">@TryLocalize("Rename Section")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.PlaylistRemove" OnClick="@(() => RequestAsync(new RemoveSectionCommand(_menuSection, false)))">@TryLocalize("Remove Section")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.DeleteSweep" OnClick="@(() => RequestAsync(new RemoveSectionCommand(_menuSection, true)))">@TryLocalize("Remove Section & Slides")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.ClearAll" OnClick="@(() => RequestAsync(new RemoveAllSectionsCommand()))">@TryLocalize("Remove All Sections")</MudMenuItem>
+            <MudDivider />
+            <MudMenuItem Icon="@Icons.Material.Filled.ArrowUpward" Disabled="@(at <= 0)" OnClick="@(() => RequestAsync(new MoveSectionCommand(_menuSection, at - 1)))">@TryLocalize("Move Section Up")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.ArrowDownward" Disabled="@(at < 0 || at >= Presentation.Sections.Count - 1)" OnClick="@(() => RequestAsync(new MoveSectionCommand(_menuSection, at + 1)))">@TryLocalize("Move Section Down")</MudMenuItem>
+            <MudDivider />
+            <MudMenuItem Icon="@Icons.Material.Filled.UnfoldLess" OnClick="@(() => SetCollapsed(true))">@TryLocalize("Collapse All")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.UnfoldMore" OnClick="@(() => SetCollapsed(false))">@TryLocalize("Expand All")</MudMenuItem>
+        </ChildContent>
+    </MudMenu>
+}
+
+@code {
+    private RenderFragment Item(Slide slide, int i, string ratio)
+    {
+        var selected = Selection?.Contains(slide) == true;
+        return @<div @key="slide" class="@ItemClass(slide, selected)" role="option" aria-selected="@(selected ? "true" : "false")" data-slide-key="@slide.Key" data-slide-index="@i"
+                     draggable="@(ReadOnly ? null : "true")" @onclick="@(e => ClickAsync(slide, e))" @oncontextmenu="@(e => ContextMenuAsync(slide, e))" @oncontextmenu:preventDefault="@(!ReadOnly)">
+                    <span class="mud-ex-slide-panel-number">@(i + 1)</span>
+                    <div class="mud-ex-slide-panel-thumb" style="@ratio">
+                        @if (ShowThumbnails && (!LazyThumbnails || _visible.Contains(slide.Key)))
+                        {
+                            <MudExSlideView Presentation="Presentation" Slide="slide" Images="Images" />
+                        }
+                    </div>
+                </div>;
+    }
+
+    private RenderFragment SectionHeader(PresentationSection section, int index, int count)
+    {
+        var collapsed = IsCollapsed(section);
+        var renaming = !ReadOnly && _renaming == section.Id;
+        return @<div @key="section" class="mud-ex-slide-panel-section" role="button" aria-expanded="@(collapsed ? "false" : "true")" data-section-index="@index"
+                     draggable="@(ReadOnly || renaming ? null : "true")" @onclick="@(() => Toggle(section))" @oncontextmenu="@(e => SectionMenuAsync(section, e))"
+                     @oncontextmenu:preventDefault="@(!ReadOnly)">
+                    <MudIcon Icon="@(collapsed ? Icons.Material.Filled.ArrowRight : Icons.Material.Filled.ArrowDropDown)" Size="Size.Small" Class="mud-ex-slide-panel-section-toggle" />
+                    @if (renaming)
+                    {
+                        <input @ref="_renameInput" class="mud-ex-slide-panel-section-rename" value="@section.Name" aria-label="@TryLocalize("Section name")"
+                               @onchange="@(e => RenameAsync(section, e.Value as string))" @onblur="@(() => EndRename(section))" @onkeydown="RenameKeyDown"
+                               @onkeydown:stopPropagation="true" @onclick:stopPropagation="true" />
+                    }
+                    else
+                    {
+                        <span class="mud-ex-slide-panel-section-name">@section.Name</span>
+                    }
+                    <span class="mud-ex-slide-panel-section-count">@count</span>
+                </div>;
+    }
 }

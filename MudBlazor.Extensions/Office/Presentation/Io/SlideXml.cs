@@ -33,10 +33,21 @@ internal sealed class SlideXml(string part, string basis, List<OpcRelationship> 
     internal static bool IsShape(XElement e) =>
         e.Name.LocalName == "AlternateContent" || e.Name.Namespace == P && e.Name.LocalName is "sp" or "cxnSp" or "pic" or "grpSp" or "graphicFrame" or "contentPart";
 
+    internal static void WriteTransforms(XDocument part, IEnumerable<SlideShape> shapes)
+    {
+        var elements = part.Root?.Element(P + "cSld")?.Element(P + "spTree")?.Elements().Where(IsShape).ToList() ?? [];
+        foreach (var shape in shapes)
+            if (elements.Find(e => Long((string)e.Descendants(P + "cNvPr").FirstOrDefault()?.Attribute("id")) == shape.Id) is { } element)
+                foreach (var branch in Branches(element))
+                    WriteTransform(branch, shape);
+    }
+
+    private static IEnumerable<XElement> Branches(XElement e) => e.Name.LocalName == "AlternateContent" ? e.Elements().SelectMany(b => b.Elements().Take(1)) : [e];
+
     private XElement Render(SlideShape shape)
     {
         var e = shape.Source != null ? new XElement(shape.Source) : Create(shape);
-        foreach (var branch in e.Name.LocalName == "AlternateContent" ? e.Elements().SelectMany(b => b.Elements().Take(1)) : [e])
+        foreach (var branch in Branches(e))
         {
             if (branch.Descendants(P + "cNvPr").FirstOrDefault() is { } properties)
             {

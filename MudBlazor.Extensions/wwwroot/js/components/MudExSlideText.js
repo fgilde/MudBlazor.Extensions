@@ -3,8 +3,16 @@ const RUN_KEYS = ['b', 'i', 'u', 's', 'size', 'color', 'font'];
 const FLAGS = ['b', 'i', 'u', 's'];
 const ALIGN = { l: 'left', e: 'center', r: 'right', j: 'justify' };
 const BLOCKED = ['insertFromDrop', 'insertFromPaste', 'insertHTML', 'insertLink', 'historyUndo', 'historyRedo'];
+const SERIF = ['georgia', 'cambria', 'times new roman', 'times', 'garamond', 'book antiqua', 'palatino linotype', 'palatino', 'bookman old style',
+    'century schoolbook', 'constantia', 'baskerville old face', 'bodoni mt', 'didot', 'perpetua', 'sylfaen'];
+const MONOSPACE = ['consolas', 'courier new', 'courier', 'lucida console', 'lucida sans typewriter', 'cascadia code', 'cascadia mono', 'menlo', 'monaco',
+    'source code pro', 'fira code', 'jetbrains mono', 'andale mono'];
 
 const num = value => value == null || value === '' ? null : +value;
+const generic = font => {
+    const name = font.trim().toLowerCase();
+    return SERIF.includes(name) ? 'serif' : MONOSPACE.includes(name) ? 'monospace' : 'sans-serif';
+};
 const isDiv = node => node.nodeType === Node.ELEMENT_NODE && node.tagName === 'DIV';
 
 class MudExSlideText {
@@ -619,9 +627,11 @@ class MudExSlideText {
             case 'color':
                 style.color = value;
                 break;
-            case 'font':
-                style.fontFamily = `'${String(value).replace(/['"\\]/g, '')}', sans-serif`;
+            case 'font': {
+                const font = String(value).replace(/['"\\]/g, '');
+                style.fontFamily = `'${font}', ${generic(font)}`;
                 break;
+            }
         }
     }
 
