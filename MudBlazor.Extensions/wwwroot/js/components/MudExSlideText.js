@@ -150,15 +150,35 @@ class MudExSlideText {
             return;
         }
         if (node.tagName === 'SPAN') {
-            const d = node.dataset;
-            const run = { source: num(d.r), text: node.textContent };
-            RUN_KEYS.forEach(k => {
-                run[k] = d[k] ?? null;
-            });
-            runs.push(run);
+            runs.push(this.runOf(node));
             return;
         }
         node.childNodes.forEach(n => this.collect(n, runs));
+    }
+
+    runOf(span) {
+        const run = { source: num(span.dataset.r), text: span.textContent };
+        RUN_KEYS.forEach(k => {
+            run[k] = span.dataset[k] ?? null;
+        });
+        return run;
+    }
+
+    report() {
+        clearTimeout(this.reportTimer);
+        this.reportTimer = setTimeout(() => {
+            const range = this.range;
+            if (!range || this.done || !this.dotnet || !this.root.contains(range.startContainer)) {
+                return;
+            }
+            const selected = this.paragraphs(range).map(div => {
+                const spans = [...div.querySelectorAll('span')];
+                const hit = spans.filter(s => range.collapsed ? s.contains(range.startContainer) : range.intersectsNode(s));
+                const runs = (hit.length ? hit : spans.slice(0, 1)).map(s => this.runOf(s));
+                return { source: num(div.dataset.p), align: div.dataset.align ?? null, bullet: div.dataset.bullet ?? null, runs };
+            });
+            this.dotnet.invokeMethodAsync('OnSelectionFormatAsync', selected).catch(() => {});
+        }, 150);
     }
 
     keyDown(e) {
@@ -236,6 +256,7 @@ class MudExSlideText {
         const sel = getSelection();
         if (this.root && sel?.rangeCount && this.root.contains(sel.anchorNode)) {
             this.range = sel.getRangeAt(0).cloneRange();
+            this.report();
         }
     }
 
@@ -273,6 +294,7 @@ class MudExSlideText {
         if (!this.dotnet || this.done) {
             return;
         }
+        this.report();
         if (this.sending) {
             this.again = true;
             return;
@@ -699,6 +721,7 @@ class MudExSlideText {
     }
 
     dispose() {
+        clearTimeout(this.reportTimer);
         this.events?.forEach(([target, type, handler, capture]) => target.removeEventListener(type, handler, !!capture));
         this.events = null;
         this.done = true;

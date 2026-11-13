@@ -42,6 +42,9 @@ public partial class MudExSlideTextEditor
     /// <summary>Raised for a table cell with the final text when the user pressed Tab, with true for Shift+Tab.</summary>
     [Parameter] public EventCallback<(SlideTextParagraphDto[] Paragraphs, bool Back)> Tabbed { get; set; }
 
+    /// <summary>Raised, at most a few times per second, with the paragraphs and runs the selection touches after the selection or its format changed.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<SlideTextParagraphDto>> SelectionChanged { get; set; }
+
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -104,6 +107,12 @@ public partial class MudExSlideTextEditor
     /// <returns>A task that completes when the text is committed and the next cell is edited.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task OnTextTabAsync(SlideTextParagraphDto[] paragraphs, bool back) => InvokeAsync(() => Tabbed.InvokeAsync((paragraphs ?? [], back)));
+
+    /// <summary>Called by the browser after the selection or its format changed.</summary>
+    /// <param name="paragraphs">The paragraphs the selection touches with the runs it covers; the run at the caret for an empty selection.</param>
+    /// <returns>A task that completes when the selection is handed on.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnSelectionFormatAsync(SlideTextParagraphDto[] paragraphs) => InvokeAsync(() => SelectionChanged.InvokeAsync(paragraphs ?? []));
 
     /// <summary>Called by the browser when HTML is pasted. Keeps only text with bold, italic, underline and colour.</summary>
     /// <param name="html">The <c>text/html</c> content of the clipboard.</param>

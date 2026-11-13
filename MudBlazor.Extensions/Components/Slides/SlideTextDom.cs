@@ -92,6 +92,25 @@ internal static class SlideTextDom
         return original != null && built.SequenceEqual(original.Paragraphs, ReferenceEqualityComparer.Instance) ? original : body with { Paragraphs = built };
     }
 
+    internal static AutoShape Selection(AutoShape shape, IReadOnlyList<SlideTextParagraphDto> paragraphs)
+    {
+        var body = shape.Text ?? new TextBody();
+        var runs = body.Paragraphs.SelectMany(p => p.Runs).ToList();
+        var selected = paragraphs.Select(dto =>
+        {
+            var source = At(body.Paragraphs, dto.Source) ?? new TextParagraph();
+            return source with
+            {
+                Align = ParseAlign(dto.Align), Bullet = Bool(dto.Bullet), Runs = (dto.Runs ?? []).Select(r => Run(At(runs, r.Source), r, " ", null, source.EndFormat)).ToList()
+            };
+        });
+        return new AutoShape
+        {
+            Placeholder = shape.Placeholder, InheritsFrom = shape.InheritsFrom, Master = shape.Master, ColorMap = shape.ColorMap, Source = shape.Source,
+            Text = body with { Paragraphs = selected.ToList() }
+        };
+    }
+
     internal static bool All(IEnumerable<AutoShape> shapes, string key) => key switch
     {
         "bullet" => shapes.SelectMany(s => s.Text.Paragraphs).All(p => p.Bullet == true),

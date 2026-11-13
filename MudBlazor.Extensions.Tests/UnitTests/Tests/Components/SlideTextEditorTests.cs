@@ -337,4 +337,44 @@ public class SlideTextEditorTests : IAsyncLifetime
         Assert.Same(original[0], shape.Text.Paragraphs[0].Runs[0]);
         Assert.False(presentation.Undo.CanUndo);
     }
+
+    [Fact]
+    public async Task RibbonState_WhileEditing_FollowsTheTextSelection()
+    {
+        var presentation = Deck();
+        var shape = TextShape(presentation);
+        var cut = RenderEditor(presentation);
+        var canvas = cut.FindComponent<MudExSlideCanvas>();
+        bool? Checked(string id) => ((MudExRibbonToggleButton)cut.FindComponent<MudExRibbon>().Instance.Commands.Single(c => c.Id == id)).Checked;
+        double Size() => cut.FindComponents<MudExRibbonNumberBox>().Single(b => b.Instance.Text == "Font Size").Instance.Value;
+        Task Report(params SlideTextParagraphDto[] selection) =>
+            cut.InvokeAsync(() => cut.FindComponent<MudExSlideTextEditor>().Instance.OnSelectionFormatAsync(selection));
+
+        await cut.InvokeAsync(() => canvas.Instance.OnShapeDoubleClickAsync(shape.Id, 0, 0));
+        Assert.False(Checked("pp-bold"));
+        Assert.Equal(18, Size());
+
+        await Report(new SlideTextParagraphDto { Source = 0, Runs = [new SlideTextRunDto { Source = 1, Text = "fett", B = "1" }] });
+        cut.WaitForAssertion(() => Assert.True(Checked("pp-bold")));
+        Assert.False(Checked("pp-italic"));
+        Assert.True(Checked("pp-align-left"));
+
+        await Report(new SlideTextParagraphDto { Source = 0, Align = "center", Runs = [new SlideTextRunDto { Source = 1, Text = "fett", B = "1" }, new SlideTextRunDto { Source = 2, Text = " n", I = "1" }] });
+        cut.WaitForAssertion(() => Assert.False(Checked("pp-bold")));
+        Assert.True(Checked("pp-align-center"));
+        Assert.False(Checked("pp-align-left"));
+
+        await Report(new SlideTextParagraphDto { Source = 1, Runs = [new SlideTextRunDto { Text = "​" }] });
+        cut.WaitForAssertion(() => Assert.Equal(24, Size()));
+
+        await Report(new SlideTextParagraphDto { Runs = [new SlideTextRunDto { Text = "new", I = "1", Size = "40", Font = "Georgia" }] });
+        cut.WaitForAssertion(() => Assert.True(Checked("pp-italic")));
+        Assert.Equal(40, Size());
+        Assert.Equal("Georgia", cut.FindComponents<MudExRibbonSelect<string>>().Single(s => s.Instance.Text == "Font").Instance.Value);
+
+        await cut.InvokeAsync(() => canvas.Instance.CommitTextAsync());
+        cut.WaitForAssertion(() => Assert.False(Checked("pp-italic")));
+        Assert.Equal(18, Size());
+        Assert.False(presentation.Undo.CanUndo);
+    }
 }

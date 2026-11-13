@@ -19,6 +19,8 @@ public partial class MudExSlideCanvas
     /// <summary>True while the text of a shape is edited.</summary>
     public bool IsEditingText => _text != null;
 
+    internal AutoShape TextSelection => _text?.Selection;
+
     /// <summary>
     /// Called by the browser when a shape was double-clicked: selects it and starts editing its text with the caret at the clicked point.
     /// </summary>
@@ -83,6 +85,7 @@ public partial class MudExSlideCanvas
         if (_text is not { } session)
             return;
         _text = null;
+        _raiseSelection |= session.Selection != null;
         if (!SlideShape.Flatten(session.Slide.Shapes).Contains(session.Owner))
             return;
         var body = session.Draft == null ? session.Shape.Text : SlideTextDom.FromDom(session.Shape.Text, session.Draft);
@@ -167,6 +170,14 @@ public partial class MudExSlideCanvas
         return CommitTextAsync();
     }
 
+    private async Task OnTextSelectedAsync(IReadOnlyList<SlideTextParagraphDto> paragraphs)
+    {
+        if (_text is not { } session)
+            return;
+        session.Selection = SlideTextDom.Selection(session.Shape, paragraphs);
+        await SelectionChanged.InvokeAsync(_selection);
+    }
+
     private async Task<bool> HandleTextKeyAsync(string key, bool ctrl)
     {
         var single = _selection.Count == 1 && Find(_selection[0]) is AutoShape;
@@ -215,5 +226,7 @@ public partial class MudExSlideCanvas
         public IReadOnlyList<SlideTextParagraphDto> Draft { get; set; }
 
         public bool Typed { get; set; }
+
+        public AutoShape Selection { get; set; }
     }
 }

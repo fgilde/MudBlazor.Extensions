@@ -25,6 +25,7 @@ public partial class MudExSlideCanvas
     private readonly EventCallback<IReadOnlyList<SlideTextParagraphDto>> _textChanged;
     private readonly EventCallback<IReadOnlyList<SlideTextParagraphDto>> _textCommitted;
     private readonly EventCallback<(SlideTextParagraphDto[] Paragraphs, bool Back)> _textTabbed;
+    private readonly EventCallback<IReadOnlyList<SlideTextParagraphDto>> _textSelected;
     private List<uint> _selection = [];
     private Slide _slide;
     private int _version;
@@ -42,6 +43,7 @@ public partial class MudExSlideCanvas
         _textChanged = new EventCallback<IReadOnlyList<SlideTextParagraphDto>>(WithoutRender.Instance, (Func<IReadOnlyList<SlideTextParagraphDto>, Task>)OnTextChangedAsync);
         _textCommitted = new EventCallback<IReadOnlyList<SlideTextParagraphDto>>(WithoutRender.Instance, (Func<IReadOnlyList<SlideTextParagraphDto>, Task>)OnTextCommittedAsync);
         _textTabbed = new EventCallback<(SlideTextParagraphDto[], bool)>(WithoutRender.Instance, (Func<(SlideTextParagraphDto[], bool), Task>)OnTextTabbedAsync);
+        _textSelected = new EventCallback<IReadOnlyList<SlideTextParagraphDto>>(WithoutRender.Instance, (Func<IReadOnlyList<SlideTextParagraphDto>, Task>)OnTextSelectedAsync);
     }
 
     /// <summary>The presentation the slide belongs to. Edits are executed on it.</summary>
@@ -59,7 +61,10 @@ public partial class MudExSlideCanvas
     /// <summary>If true shapes can neither be selected nor changed.</summary>
     [Parameter] public bool ReadOnly { get; set; }
 
-    /// <summary>Raised whenever the selected shapes or table cells change, also when the slide changes or selected shapes disappear.</summary>
+    /// <summary>
+    /// Raised whenever the selected shapes or table cells change, also when the slide changes or selected shapes disappear, and while text is edited
+    /// when the text selection or its format changes.
+    /// </summary>
     [Parameter] public EventCallback<IReadOnlyList<uint>> SelectionChanged { get; set; }
 
     /// <summary>Raised for keys the canvas does not handle itself, for example to switch slides.</summary>

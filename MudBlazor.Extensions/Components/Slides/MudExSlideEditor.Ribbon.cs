@@ -48,10 +48,12 @@ public partial class MudExSlideEditor
     private IReadOnlyList<AutoShape> SelectedTextShapes =>
         SelectedAutoShapes.Where(s => s.Text != null).Concat(SelectedTable == null ? [] : _canvas.SelectedCellShapes.Select(c => c.Shape)).ToList();
 
-    private RunFormat CurrentFormat => SelectedTextShapes.Select(s => s.Text.Paragraphs.SelectMany(p => p.Runs).FirstOrDefault() is { } run ? s.EffectiveFormat(run) : null)
+    private IReadOnlyList<AutoShape> FormatShapes => _canvas?.TextSelection is { } selection ? [selection] : SelectedTextShapes;
+
+    private RunFormat CurrentFormat => FormatShapes.Select(s => s.Text.Paragraphs.SelectMany(p => p.Runs).FirstOrDefault() is { } run ? s.EffectiveFormat(run) : null)
         .FirstOrDefault(f => f != null);
 
-    private TextAlign? CurrentAlign => SelectedTextShapes.FirstOrDefault() is { Text.Paragraphs: [var paragraph, ..] } shape ? shape.EffectiveAlign(paragraph) : null;
+    private TextAlign? CurrentAlign => FormatShapes.FirstOrDefault() is { Text.Paragraphs: [var paragraph, ..] } shape ? shape.EffectiveAlign(paragraph) : null;
 
     private SlideMaster CurrentMaster => _current?.Layout?.Master ?? _presentation?.Masters.FirstOrDefault();
 
@@ -68,7 +70,7 @@ public partial class MudExSlideEditor
         }
     }
 
-    private bool IsOn(string key) => SelectedTextShapes is { Count: > 0 } shapes && SlideTextDom.All(shapes, key);
+    private bool IsOn(string key) => FormatShapes is { Count: > 0 } shapes && SlideTextDom.All(shapes, key);
 
     private Task FormatAsync(string key, string value) => IsReadOnly || _canvas == null ? Task.CompletedTask : _canvas.FormatTextAsync(key, value);
 
