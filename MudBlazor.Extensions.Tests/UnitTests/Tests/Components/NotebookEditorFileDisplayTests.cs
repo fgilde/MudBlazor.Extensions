@@ -2,6 +2,7 @@ using System.Text;
 using Bunit;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Tests.UnitTests.Tests.Notebook;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
@@ -62,6 +63,20 @@ public class NotebookEditorFileDisplayTests : IAsyncLifetime
         display.WaitForAssertion(() => Assert.False(display.FindComponent<MudExNotebookEditor>().Instance.ReadOnly));
         Assert.Same(editor, display.FindComponent<MudExNotebookEditor>().Instance);
         Assert.NotEmpty(display.FindAll("input.mud-ex-notebook-title"));
+    }
+
+    [Fact]
+    public void One_InFileDisplay_UsesNotebookEditor_ReadOnlyByDefault()
+    {
+        var bytes = OneNoteFileBuilder.Build(new OnePage("From OneNote", DateTime.UtcNow, new OneOutline(1, 2, 10, new OneParagraph("Body"))));
+
+        var display = Display("notes.one", "application/octet-stream", bytes, p => p.Add(c => c.AllowEdit, true));
+
+        display.WaitForAssertion(() => Assert.NotEmpty(display.FindComponents<MudExNotebookEditor>()));
+        var editor = display.FindComponent<MudExNotebookEditor>().Instance;
+        display.WaitForAssertion(() => Assert.Equal("From OneNote", editor.CurrentPage?.Title));
+        Assert.True(editor.ReadOnly);
+        Assert.Contains("Body", display.Markup);
     }
 
     [Fact]

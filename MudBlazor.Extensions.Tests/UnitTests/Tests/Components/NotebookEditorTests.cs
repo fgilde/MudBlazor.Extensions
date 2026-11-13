@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Services;
+using MudBlazor.Extensions.Tests.UnitTests.Tests.Notebook;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
@@ -268,6 +269,43 @@ public class NotebookEditorTests : IAsyncLifetime
         Assert.Same(other.Sections[0].Pages[0], cut.Instance.CurrentPage);
         Assert.Null(cut.Instance.FileName);
         Assert.False(cut.Instance.IsDirty);
+    }
+
+    [Fact]
+    public async Task Editor_OpensOneNoteFile_SavesItAsMxnbUnderANewName()
+    {
+        MudExFileSaveRequest request = null;
+        byte[] saved = null;
+        var bytes = OneNoteFileBuilder.Build(new OnePage("From OneNote", DateTime.UtcNow, new OneOutline(1, 2, 10, new OneParagraph("Hello"))));
+        var cut = Render(p => p
+            .Add(x => x.FileDisplayInfos, new Infos("Quick Notes.one", "application/msonenote", bytes))
+            .Add(x => x.SaveRequested, (MudExFileSaveRequest r) =>
+            {
+                request = r;
+                saved = ((MemoryStream)r.Content.Stream).ToArray();
+                r.Handled = true;
+            }));
+        cut.WaitForAssertion(() => Assert.Equal("From OneNote", cut.Instance.CurrentPage?.Title));
+        Assert.Equal("Quick Notes", cut.Instance.CurrentSection.Name);
+        Assert.Equal("Hello", Assert.IsType<TextElement>(Assert.Single(cut.Instance.CurrentPage.Elements)).Paragraphs[0].Runs[0].Text);
+
+        Assert.True(await cut.InvokeAsync(() => cut.Instance.SaveAsync()));
+
+        Assert.Equal("Quick Notes.mxnb", request.Content.FileName);
+        Assert.Equal(MxnbType, request.Content.ContentType);
+        Assert.True(request.SaveAs);
+        Assert.Equal("Quick Notes.mxnb", cut.Instance.FileName);
+        Assert.Equal(["From OneNote"], Notebook.Load(new MemoryStream(saved)).Sections[0].Pages.Select(p => p.Title));
+    }
+
+    [Theory]
+    [InlineData("notes.one", "application/octet-stream", true)]
+    [InlineData("notes.bin", "application/msonenote", true)]
+    [InlineData("Open Notebook.onetoc2", "application/msonenote", false)]
+    [InlineData("Open Notebook.onetoc2", "application/octet-stream", false)]
+    public async Task Editor_HandlesOneNoteSectionsButNotTheTableOfContents(string fileName, string contentType, bool handled)
+    {
+        Assert.Equal(handled, await new MudExNotebookEditor().CanHandleFileAsync(new Infos(fileName, contentType, []), null!));
     }
 
     [Fact]

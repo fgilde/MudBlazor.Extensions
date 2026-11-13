@@ -68,6 +68,20 @@ public sealed class Notebook
     /// <exception cref="InvalidDataException">The file is not a notebook, contains unsafe entry paths or exceeds the size limits.</exception>
     public static Notebook Load(Stream stream, NotebookLoadOptions options = null) => NotebookReader.Read(stream, options ?? new NotebookLoadOptions());
 
+    /// <summary>
+    /// Reads the text of a OneNote section file (.one) into a notebook with one section. Each OneNote page becomes a page with its title and creation
+    /// date, and each outline becomes a text block with its paragraphs at the outline's position. Pictures, ink, tables and attached files are left out.
+    /// </summary>
+    /// <param name="stream">The file content.</param>
+    /// <param name="fileName">The file name; without extension it names the notebook and its section. Null names the section "Section 1".</param>
+    /// <param name="options">Limits for the file size, or null for the defaults. The smaller of the two limits applies to the .one file.</param>
+    /// <returns>The notebook. It is not linked to the file and is saved as .mxnb.</returns>
+    /// <exception cref="InvalidDataException">
+    /// The file is not a OneNote section, is damaged, is password-protected, is in the packaged SharePoint/OneDrive format or exceeds the size limit.
+    /// </exception>
+    public static Notebook LoadOneNote(Stream stream, string fileName = null, NotebookLoadOptions options = null) =>
+        OneNoteReader.Read(stream, fileName, options ?? new NotebookLoadOptions());
+
     /// <summary>Writes the notebook as a .mxnb file. Unchanged pages and media are copied from the loaded file; media no page uses are left out.</summary>
     /// <param name="target">The stream that receives the file; it is not written if saving fails.</param>
     /// <exception cref="InvalidOperationException">

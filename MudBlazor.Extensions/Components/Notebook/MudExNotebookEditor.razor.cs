@@ -10,13 +10,16 @@ using MudBlazor.Extensions.Services;
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
-/// Notebook editor in the style of OneNote with ribbon, section tabs, page list and status bar. Opens .mxnb files and is the viewer and editor for them in
+/// Notebook editor in the style of OneNote with ribbon, section tabs, page list and status bar. Opens .mxnb files and the text of OneNote sections (.one,
+/// saved as .mxnb) and is the viewer and editor for them in
 /// <see cref="MudExFileDisplay"/>. Without a file it edits the <see cref="Notebook"/> parameter.
 /// </summary>
 public partial class MudExNotebookEditor : IMudExFileEditor
 {
     private const string MxnbContentType = "application/vnd.mudex.notebook+zip";
+    private const string OneNoteContentType = "application/msonenote";
     private static readonly MudExFileFormat Mxnb = new("Notebook", "mxnb", MxnbContentType);
+    private static readonly MudExFileFormat OneNote = new("OneNote section", "one", OneNoteContentType);
 
     private readonly JsModule<MudExNotebookEditor> _js = new();
     private readonly EventCallback<KeyboardEventArgs> _keyDown;
@@ -114,6 +117,9 @@ public partial class MudExNotebookEditor : IMudExFileEditor
     /// <inheritdoc />
     public override IReadOnlyList<MudExFileFormat> SaveFormats => [Mxnb];
 
+    /// <inheritdoc />
+    protected override IReadOnlyList<MudExFileFormat> OpenFormats => [Mxnb, OneNote];
+
     private bool IsReadOnly => ReadOnly || LoadFailed || _notebook == null || _notebook.ReadOnlyFormat;
 
     private bool CanEditPage => !IsReadOnly && _page?.LoadError == null;
@@ -128,7 +134,15 @@ public partial class MudExNotebookEditor : IMudExFileEditor
     public override Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService)
         => Task.FromResult(fileDisplayInfos != null
                            && (string.Equals(Path.GetExtension(fileDisplayInfos.FileName ?? ""), ".mxnb", StringComparison.OrdinalIgnoreCase)
-                               || string.Equals(fileDisplayInfos.ContentType, MxnbContentType, StringComparison.OrdinalIgnoreCase)));
+                               || string.Equals(fileDisplayInfos.ContentType, MxnbContentType, StringComparison.OrdinalIgnoreCase)
+                               || IsOneNote(fileDisplayInfos.FileName, fileDisplayInfos.ContentType)));
+
+    private static bool IsOneNote(string fileName, string contentType)
+    {
+        var extension = Path.GetExtension(fileName ?? "");
+        return string.Equals(extension, ".one", StringComparison.OrdinalIgnoreCase)
+               || string.Equals(contentType, OneNoteContentType, StringComparison.OrdinalIgnoreCase) && !string.Equals(extension, ".onetoc2", StringComparison.OrdinalIgnoreCase);
+    }
 
     /// <inheritdoc />
     public override Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)
@@ -209,7 +223,9 @@ public partial class MudExNotebookEditor : IMudExFileEditor
         if (buffer.Length == 0)
             throw new InvalidDataException(TryLocalize("The file is empty."));
         buffer.Position = 0;
-        var notebook = Office.Notebook.Notebook.Load(buffer, Limits);
+        var notebook = IsOneNote(content.FileName, content.ContentType)
+            ? Office.Notebook.Notebook.LoadOneNote(buffer, content.FileName, Limits)
+            : Office.Notebook.Notebook.Load(buffer, Limits);
         Attach(notebook);
         await NotebookChanged.InvokeAsync(notebook);
     }
