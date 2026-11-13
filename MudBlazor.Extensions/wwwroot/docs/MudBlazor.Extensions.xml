@@ -32672,13 +32672,13 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.RotateShapesCommand">
-            <summary>Rotates each shape around its own centre. Tables are skipped; they cannot be rotated.</summary>
+            <summary>Rotates each shape around its own centre. Tables, charts and other graphic frames are skipped; they cannot be rotated.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
             <param name="degrees">The clockwise angle in degrees; negative values rotate counter-clockwise.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.RotateShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},System.Double)">
-            <summary>Rotates each shape around its own centre. Tables are skipped; they cannot be rotated.</summary>
+            <summary>Rotates each shape around its own centre. Tables, charts and other graphic frames are skipped; they cannot be rotated.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
             <param name="degrees">The clockwise angle in degrees; negative values rotate counter-clockwise.</param>
@@ -32693,13 +32693,13 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Presentation.FlipShapesCommand">
-            <summary>Mirrors each shape in place, horizontally or vertically. Tables are skipped; they cannot be flipped.</summary>
+            <summary>Mirrors each shape in place, horizontally or vertically. Tables, charts and other graphic frames are skipped; they cannot be flipped.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
             <param name="horizontal">True to mirror left to right, false to mirror top to bottom.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Presentation.FlipShapesCommand.#ctor(MudBlazor.Extensions.Office.Presentation.Slide,System.Collections.Generic.IReadOnlyList{System.UInt32},System.Boolean)">
-            <summary>Mirrors each shape in place, horizontally or vertically. Tables are skipped; they cannot be flipped.</summary>
+            <summary>Mirrors each shape in place, horizontally or vertically. Tables, charts and other graphic frames are skipped; they cannot be flipped.</summary>
             <param name="slide">The slide.</param>
             <param name="shapes">The shape ids.</param>
             <param name="horizontal">True to mirror left to right, false to mirror top to bottom.</param>

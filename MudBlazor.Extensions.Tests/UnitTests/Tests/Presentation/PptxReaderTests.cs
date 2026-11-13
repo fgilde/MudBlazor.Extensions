@@ -7,13 +7,13 @@ using MudBlazor.Extensions.Office.Presentation;
 
 public class PptxReaderTests
 {
-    private const string ChartUri = "http://schemas.openxmlformats.org/drawingml/2006/chart";
+    internal const string ChartUri = "http://schemas.openxmlformats.org/drawingml/2006/chart";
     private const string DiagramUri = "http://schemas.openxmlformats.org/drawingml/2006/diagram";
 
     private static string Text(SlideShape shape) =>
         string.Join("|", ((AutoShape)shape).Text.Paragraphs.Select(p => string.Concat(p.Runs.Select(r => r.Text))));
 
-    private static string Frame(uint id, string name, string uri) =>
+    internal static string Frame(uint id, string name, string uri) =>
         $"<p:graphicFrame><p:nvGraphicFramePr><p:cNvPr id=\"{id}\" name=\"{name}\"/><p:cNvGraphicFramePr/><p:nvPr/></p:nvGraphicFramePr>" +
         "<p:xfrm><a:off x=\"100\" y=\"200\"/><a:ext cx=\"300\" cy=\"400\"/></p:xfrm>" +
         $"<a:graphic><a:graphicData uri=\"{uri}\"><x:data xmlns:x=\"urn:test\" r:id=\"rId9\"/></a:graphicData></a:graphic></p:graphicFrame>";

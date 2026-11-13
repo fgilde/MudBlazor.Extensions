@@ -43,6 +43,9 @@ public class ArrangeCommandTests
         Shape(4, "B", Xfrm(4000000, 500000, 1000000, 1000000)) +
         Shape(5, "C", Xfrm(6000000, 2000000, 1000000, 3000000, " rot=\"5400000\"")) + RotatedGroup).Load();
 
+    private static List<(uint, ShapeTransform?)> Transforms(Presentation presentation) =>
+        SlideShape.Flatten(presentation.Slides[0].Shapes).Select(s => (s.Id, s.Transform)).ToList();
+
     private static SlideShape Find(Presentation presentation, uint id) => SlideShape.Flatten(presentation.Slides[0].Shapes).Single(s => s.Id == id);
 
     private static (double Left, double Top, double Right, double Bottom) Bounds(ShapeTransform t)
@@ -337,5 +340,40 @@ public class ArrangeCommandTests
         presentation.Execute(new RotateShapesCommand(slide, [2, 3], 90));
         Assert.Equal(90, slide.Shapes[0].Transform!.Value.Rotation);
         Assert.Equal(before, table.Transform);
+    }
+
+    [Theory]
+    [InlineData("Align")]
+    [InlineData("Distribute")]
+    [InlineData("Rotate")]
+    [InlineData("Flip")]
+    public void GroupAndOwnChild_ActsOnGroupOnly(string name)
+    {
+        IDocumentCommand<Presentation> Command(Presentation p, params uint[] ids) => name switch
+        {
+            "Align" => new AlignShapesCommand(p.Slides[0], ids, ShapeAlignment.Left, false),
+            "Distribute" => new DistributeShapesCommand(p.Slides[0], ids, true, false),
+            "Rotate" => new RotateShapesCommand(p.Slides[0], ids, 90),
+            _ => new FlipShapesCommand(p.Slides[0], ids, true)
+        };
+        var (withChild, groupOnly) = (Deck(), Deck());
+
+        withChild.Execute(Command(withChild, 3, 4, 20, 21, 24));
+        groupOnly.Execute(Command(groupOnly, 3, 4, 20));
+
+        Assert.Equal(Transforms(groupOnly), Transforms(withChild));
+    }
+
+    [Fact]
+    public void ChartFrames_AreNotRotatedOrFlipped()
+    {
+        var presentation = new PptxBuilder().Slide(PptxReaderTests.Frame(5, "Chart 4", PptxReaderTests.ChartUri) + Shape(6, "Box", Xfrm(0, 0, 10, 10))).Load();
+        var slide = presentation.Slides[0];
+
+        presentation.Execute(new RotateShapesCommand(slide, [5, 6], 90));
+        presentation.Execute(new FlipShapesCommand(slide, [5], true));
+
+        Assert.Equal(new ShapeTransform(100, 200, 300, 400), slide.Shapes[0].Transform);
+        Assert.Equal(90, slide.Shapes[1].Transform!.Value.Rotation);
     }
 }

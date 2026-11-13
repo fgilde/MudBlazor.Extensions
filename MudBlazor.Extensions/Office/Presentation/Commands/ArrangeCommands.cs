@@ -169,7 +169,7 @@ public sealed class AlignShapesCommand(Slide slide, IReadOnlyList<uint> shapes, 
 
     private Dictionary<uint, ShapeTransform> Targets(Presentation document)
     {
-        var selected = ShapeEdit.Shapes(slide, shapes ?? []);
+        var selected = ShapeEdit.Outermost(slide, shapes ?? []);
         if (selected.Count == 0) return [];
         var area = relativeToSlide || selected.Count == 1
             ? (0, 0, document.SlideWidth, document.SlideHeight)
@@ -215,7 +215,7 @@ public sealed class DistributeShapesCommand(Slide slide, IReadOnlyList<uint> sha
 
     private Dictionary<uint, ShapeTransform> Targets(Presentation document)
     {
-        var selected = ShapeEdit.Shapes(slide, shapes ?? []);
+        var selected = ShapeEdit.Outermost(slide, shapes ?? []);
         if (selected.Count < (relativeToSlide ? 2 : 3))
             throw new ArgumentException($"Distributing needs at least {(relativeToSlide ? 2 : 3)} shapes.", nameof(shapes));
         var spans = selected.Select(s => (Shape: s, Bounds: ShapeEdit.Bounds(s.ResolvedTransform)))
@@ -237,7 +237,7 @@ public sealed class DistributeShapesCommand(Slide slide, IReadOnlyList<uint> sha
     }
 }
 
-/// <summary>Rotates each shape around its own centre. Tables are skipped; they cannot be rotated.</summary>
+/// <summary>Rotates each shape around its own centre. Tables, charts and other graphic frames are skipped; they cannot be rotated.</summary>
 /// <param name="slide">The slide.</param>
 /// <param name="shapes">The shape ids.</param>
 /// <param name="degrees">The clockwise angle in degrees; negative values rotate counter-clockwise.</param>
@@ -250,7 +250,7 @@ public sealed class RotateShapesCommand(Slide slide, IReadOnlyList<uint> shapes,
 
     /// <inheritdoc />
     public void Apply(Presentation document) =>
-        (_move ??= new SetTransformsCommand(slide, ShapeEdit.Shapes(slide, shapes ?? []).Where(s => s is not TableShape).ToDictionary(s => s.Id, s => s.ResolvedTransform with
+        (_move ??= new SetTransformsCommand(slide, ShapeEdit.Outermost(slide, shapes ?? []).Where(ShapeEdit.CanRotate).ToDictionary(s => s.Id, s => s.ResolvedTransform with
         {
             Rotation = ShapeEdit.Angle(s.ResolvedTransform.Rotation + degrees)
         }))).Apply(document);
@@ -259,7 +259,7 @@ public sealed class RotateShapesCommand(Slide slide, IReadOnlyList<uint> shapes,
     public void Revert(Presentation document) => _move.Revert(document);
 }
 
-/// <summary>Mirrors each shape in place, horizontally or vertically. Tables are skipped; they cannot be flipped.</summary>
+/// <summary>Mirrors each shape in place, horizontally or vertically. Tables, charts and other graphic frames are skipped; they cannot be flipped.</summary>
 /// <param name="slide">The slide.</param>
 /// <param name="shapes">The shape ids.</param>
 /// <param name="horizontal">True to mirror left to right, false to mirror top to bottom.</param>
@@ -272,7 +272,7 @@ public sealed class FlipShapesCommand(Slide slide, IReadOnlyList<uint> shapes, b
 
     /// <inheritdoc />
     public void Apply(Presentation document) =>
-        (_move ??= new SetTransformsCommand(slide, ShapeEdit.Shapes(slide, shapes ?? []).Where(s => s is not TableShape).ToDictionary(s => s.Id, s =>
+        (_move ??= new SetTransformsCommand(slide, ShapeEdit.Outermost(slide, shapes ?? []).Where(ShapeEdit.CanRotate).ToDictionary(s => s.Id, s =>
         {
             var t = s.ResolvedTransform with { Rotation = ShapeEdit.Angle(-s.ResolvedTransform.Rotation) };
             return horizontal ? t with { FlipH = !t.FlipH } : t with { FlipV = !t.FlipV };

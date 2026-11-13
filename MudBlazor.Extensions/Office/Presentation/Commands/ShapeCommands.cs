@@ -402,6 +402,8 @@ internal static class ShapeEdit
     internal static List<SlideShape> Outermost(Slide slide, HashSet<SlideShape> selected) =>
         SlideShape.Flatten(slide.Shapes).Where(s => selected.Contains(s) && !Ancestors(s).Any(selected.Contains)).ToList();
 
+    internal static bool CanRotate(SlideShape shape) => shape is not TableShape && !(shape is OpaqueShape && shape.Source?.Name == PptxReader.P + "graphicFrame");
+
     internal static List<SlideShape> Shapes(Slide slide, IEnumerable<uint> ids) => ids.Distinct().Select(id => Find<SlideShape>(slide, id)).ToList();
 
     internal static (double Left, double Top, double Right, double Bottom) Bounds(ShapeTransform t)
