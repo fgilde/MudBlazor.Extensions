@@ -12,11 +12,50 @@ public class SlideEditorUITests : BaseUITest
 {
     protected override Browser? TargetBrowser => Browser.Chromium;
 
+    private static readonly SemaphoreSlim WarmUp = new(1, 1);
+    private static bool _warm;
+
     public SlideEditorUITests(PlaywrightFixture playwrightFixture) : base(playwrightFixture)
     { }
 
+    private static async Task<bool> WarmUpAsync(IPage page)
+    {
+        await WarmUp.WaitAsync();
+        try
+        {
+            if (_warm)
+                return false;
+            for (var attempt = 1; !_warm && attempt <= 5; attempt++)
+            {
+                var probe = await page.Context.NewPageAsync();
+                try
+                {
+                    await probe.GotoAsync(page.Url, new() { WaitUntil = WaitUntilState.NetworkIdle, Timeout = 120000 });
+                    await probe.Locator("button").Filter(new() { HasText = "Show demo" }).First.ClickAsync(new() { Timeout = 120000 });
+                    await probe.Locator(".mud-ex-slide-canvas[data-readonly='false'] [data-shape-id='3']").First.WaitForAsync(new() { Timeout = 60000 });
+                    _warm = true;
+                }
+                catch (TimeoutException)
+                {
+                }
+                finally
+                {
+                    await probe.CloseAsync();
+                }
+            }
+
+            return true;
+        }
+        finally
+        {
+            WarmUp.Release();
+        }
+    }
+
     private static async Task<ILocator> OpenAsync(IPage page)
     {
+        if (await WarmUpAsync(page))
+            await page.ReloadAsync(new() { WaitUntil = WaitUntilState.NetworkIdle, Timeout = 120000 });
         await page.Locator("button").Filter(new() { HasText = "Show demo" }).First.ClickAsync(new() { Timeout = 120000 });
         var canvas = page.Locator(".mud-ex-slide-canvas[data-readonly='false']").First;
         await canvas.Locator("[data-shape-id='3']").WaitForAsync(new() { Timeout = 120000 });
