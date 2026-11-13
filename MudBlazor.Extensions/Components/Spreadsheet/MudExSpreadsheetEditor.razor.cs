@@ -5,6 +5,7 @@ using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Office.Spreadsheet;
 using MudBlazor.Extensions.Services;
+using Nextended.Core;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -15,13 +16,13 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExSpreadsheetEditor : IMudExFileEditor
 {
-    private const string XlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    private static string XlsxContentType = MimeType.Xlsx;
     private static readonly MudExFileFormat Xlsx = new("Excel Workbook", "xlsx", XlsxContentType);
-    private static readonly MudExFileFormat Xlsm = new("Excel Macro-Enabled Workbook", "xlsm", "application/vnd.ms-excel.sheet.macroEnabled.12");
-    private static readonly MudExFileFormat Xltx = new("Excel Template", "xltx", "application/vnd.openxmlformats-officedocument.spreadsheetml.template");
-    private static readonly MudExFileFormat Xls = new("Excel 97-2003 Workbook", "xls", "application/vnd.ms-excel");
-    private static readonly MudExFileFormat Csv = new("CSV (Comma delimited)", "csv", "text/csv");
-    private static readonly MudExFileFormat Tsv = new("Text (Tab delimited)", "tsv", "text/tab-separated-values");
+    private static readonly MudExFileFormat Xlsm = new("Excel Macro-Enabled Workbook", "xlsm", MimeType.Xlsm);
+    private static readonly MudExFileFormat Xltx = new("Excel Template", "xltx", MimeType.Xltx);
+    private static readonly MudExFileFormat Xls = new("Excel 97-2003 Workbook", "xls", MimeType.Xls);
+    private static readonly MudExFileFormat Csv = new("CSV (Comma delimited)", "csv", MimeType.Csv);
+    private static readonly MudExFileFormat Tsv = new("Text (Tab delimited)", "tsv", MimeType.Tsv);
     private static readonly MudExFileFormat[] Readable = [Xlsx, Xlsm, Xltx, Xls, Csv, Tsv];
 
     private MudExSpreadsheetGrid _grid;

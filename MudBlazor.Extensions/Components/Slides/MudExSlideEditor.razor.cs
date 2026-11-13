@@ -6,6 +6,7 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Office.Presentation;
 using MudBlazor.Extensions.Services;
+using Nextended.Core;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -15,7 +16,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExSlideEditor : IMudExFileEditor
 {
-    private const string PptxContentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    private static string PptxContentType = MimeType.Pptx;
     private static readonly MudExFileFormat Pptx = new("PowerPoint Presentation", "pptx", PptxContentType);
 
     private readonly EventCallback<KeyboardEventArgs> _keyDown;
