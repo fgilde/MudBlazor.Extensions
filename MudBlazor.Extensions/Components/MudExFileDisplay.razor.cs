@@ -32,6 +32,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private DynamicComponent _currentFileDisplay;
     private bool _internalCall;
     private bool _isNativeRendered;
+    private bool _resolvingViewer;
     private string _id = Guid.NewGuid().ToString();
     private (string tag, Dictionary<string, object> attributes)? renderInfos;
     private BrowserInfo _info;
@@ -520,6 +521,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// <inheritdoc/>
     protected override async Task OnParametersSetAsync()
     {
+        _resolvingViewer = _componentForFile == null;
         var fs = Get<IMudExFileService>();
         var possibleRenderControls = GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType() && !Ignored(c)).ToList();
         _possibleRenderControls = new List<IMudExFileDisplay>();
@@ -543,6 +545,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             _componentForFile = GetComponentForFile(_possibleRenderControls
                 .OrderByDescending(c => c.RenderPriority)
                 .FirstOrDefault(c => c.StartsActive && !ForceNativeRender));
+        _resolvingViewer = false;
 
         if (EditMode && !CanEdit)
         {

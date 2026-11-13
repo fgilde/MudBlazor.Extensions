@@ -102,7 +102,7 @@
                 <DynamicComponent @key="_fileVersion" @ref="_currentFileDisplay" Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters" />
             }
         }
-        else
+        else if (!_resolvingViewer)
         {
             _isNativeRendered = true;
             <div class="mud-ex-file-display" style="@ViewerContentStyleStr()">
