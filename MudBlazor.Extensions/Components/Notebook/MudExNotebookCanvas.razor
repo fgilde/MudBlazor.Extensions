@@ -19,6 +19,12 @@
                     }
                 </div>
             }
+            @if (_text is { } session)
+            {
+                <MudExNotebookTextEditor @key="session" @ref="_textEditor" BlockId="@(session.IsNew ? null : session.ElementId)" Paragraphs="@OriginalOf(session)"
+                                         X="session.X" Y="session.Y" Width="@SessionWidth(session)" Zoom="EffectiveZoom" Committed="OnTextCommittedAsync"
+                                         TextInput="TextInput" SelectionChanged="OnTextSelectedAsync" LinkRequested="LinkRequested" Localizer="@Localizer" />
+            }
             <div class="mud-ex-notebook-canvas-overlay"></div>
         </div>
     }

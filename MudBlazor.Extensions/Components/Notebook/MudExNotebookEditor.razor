@@ -20,15 +20,60 @@
             <ChildContent>
                 <MudExRibbonTab Text="@TryLocalize("Home")" KeyTip="H" Visible="@(!IsReadOnly)">
                     @Group("Clipboard", Icons.Material.Filled.ContentPaste, 3, ClipboardItems)
-                    @Group("Font", Icons.Material.Filled.FormatSize, 2, FontItems)
-                    @Group("Paragraph", Icons.Material.Filled.FormatListBulleted, 4, ParagraphItems)
-                    @Group("Styles", Icons.Material.Filled.Title, 1, StyleItems)
+                    <MudExRibbonGroup Text="@TryLocalize("Font")" Icon="@Icons.Material.Filled.FormatSize" CollapsePriority="2">
+                        <MudExRibbonRow>
+                            <MudExRibbonSelect T="string" Id="nb-font" Text="@TryLocalize("Font")" Items="@Fonts" Value="@(TextState?.Font ?? Fonts[0])" ValueChanged="SetFontAsync" Editable="true" Width="140" Disabled="@(!CanFormat)" />
+                            <MudExRibbonNumberBox Id="nb-font-size" Text="@TryLocalize("Font Size")" Value="@(TextState?.SizePt ?? 11)" ValueChanged="SetFontSizeAsync" Min="1" Max="1000" Step="1" Disabled="@(!CanFormat)" />
+                        </MudExRibbonRow>
+                        <MudExRibbonRow>
+                            @foreach (var (id, text, icon, shortcut, key) in FontToggles)
+                            {
+                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@(!CanFormat)"
+                                                         Checked="@IsOn(key)" CheckedChanged="@(_ => FormatAsync(key, null))" />
+                            }
+                            <MudExRibbonColorPicker Id="nb-highlight" Text="@TryLocalize("Highlight")" Icon="@Icons.Material.Filled.BorderColor" Size="MudExRibbonItemSize.Small" Palette="@HighlightPalette"
+                                                    Disabled="@(!CanFormat)" ValueChanged="SetHighlightAsync" />
+                            <MudExRibbonColorPicker Id="nb-font-color" Text="@TryLocalize("Font Color")" Icon="@Icons.Material.Filled.FormatColorText" Size="MudExRibbonItemSize.Small" Palette="@Palette"
+                                                    Disabled="@(!CanFormat)" ValueChanged="SetFontColorAsync" />
+                        </MudExRibbonRow>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Paragraph")" Icon="@Icons.Material.Filled.FormatListBulleted" CollapsePriority="4">
+                        <MudExRibbonRow>
+                            @foreach (var (id, text, icon, shortcut, list) in ListToggles)
+                            {
+                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@(!CanFormat)"
+                                                         Checked="@(TextState?.List == list)" CheckedChanged="@(_ => SetListAsync(list))" />
+                            }
+                            <MudExRibbonButton Id="nb-outdent" Text="@TryLocalize("Decrease Indent")" Icon="@Icons.Material.Filled.FormatIndentDecrease" Shortcut="Shift+Tab" Size="MudExRibbonItemSize.Small"
+                                               Disabled="@(!CanFormat)" OnClick="@(() => FormatAsync("indent", "-1"))" />
+                            <MudExRibbonButton Id="nb-indent" Text="@TryLocalize("Increase Indent")" Icon="@Icons.Material.Filled.FormatIndentIncrease" Shortcut="Tab" Size="MudExRibbonItemSize.Small"
+                                               Disabled="@(!CanFormat)" OnClick="@(() => FormatAsync("indent", "1"))" />
+                        </MudExRibbonRow>
+                        <MudExRibbonRow>
+                            @foreach (var (id, text, icon, shortcut, align) in AlignToggles)
+                            {
+                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@(!CanFormat)"
+                                                         Checked="@(TextState?.Align == align)" CheckedChanged="@(_ => FormatAsync("align", align.ToString().ToLowerInvariant()))" />
+                            }
+                        </MudExRibbonRow>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Styles")" Icon="@Icons.Material.Filled.Title" CollapsePriority="1">
+                        @foreach (var (id, text, heading) in HeadingToggles)
+                        {
+                            <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@(heading == NoteHeading.None ? Icons.Material.Filled.TextFields : Icons.Material.Filled.Title)"
+                                                     Size="MudExRibbonItemSize.Small" Disabled="@(!CanFormat)" Checked="@(TextState?.Heading == heading)"
+                                                     CheckedChanged="@(_ => FormatAsync("heading", ((int)heading).ToString(System.Globalization.CultureInfo.InvariantCulture)))" />
+                        }
+                    </MudExRibbonGroup>
                 </MudExRibbonTab>
                 <MudExRibbonTab Text="@TryLocalize("Insert")" KeyTip="N" Visible="@(!IsReadOnly)">
                     @Group("Tables", Icons.Material.Filled.TableChart, 2, TableItems)
                     @Group("Images", Icons.Material.Filled.Image, 2, ImageItems)
                     @Group("Illustrations", Icons.Material.Filled.Category, 1, ShapeItems)
-                    @Group("Links", Icons.Material.Filled.Link, 0, LinkItems)
+                    <MudExRibbonGroup Text="@TryLocalize("Links")" Icon="@Icons.Material.Filled.Link" CollapsePriority="0">
+                        <MudExRibbonButton Id="nb-insert-link" Text="@TryLocalize("Link")" Icon="@Icons.Material.Filled.Link" Shortcut="Ctrl+K" Size="MudExRibbonItemSize.Large" Disabled="@(!CanLink)"
+                                           OnClick="InsertLinkAsync" />
+                    </MudExRibbonGroup>
                 </MudExRibbonTab>
                 <MudExRibbonTab Text="@TryLocalize("Draw")" KeyTip="D" Visible="@(!IsReadOnly)">
                     <MudExRibbonGroup Text="@TryLocalize("Tools")" Icon="@Icons.Material.Filled.Draw" CollapsePriority="0">
@@ -76,7 +121,8 @@
                         <div class="mud-ex-notebook-page-date">@_page.Created.ToLocalTime().ToString("f", System.Globalization.CultureInfo.CurrentCulture)</div>
                     </div>
                     <MudExNotebookCanvas @ref="_canvas" Notebook="_notebook" Page="_page" Zoom="_zoom" ReadOnly="@(!CanEditPage)" Tool="_tool" ViewportWidth="_viewport.Width"
-                                         ViewportHeight="_viewport.Height" Images="_images" Localizer="@Localizer" />
+                                         ViewportHeight="_viewport.Height" Images="_images" SelectionChanged="OnCanvasSelectionChanged" TextInput="MarkDirtyAsync"
+                                         LinkRequested="OpenLinkDialogAsync" Localizer="@Localizer" />
                 }
             </div>
         </div>

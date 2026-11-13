@@ -12951,9 +12951,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.SelectionChanged">
             <summary>Raised whenever the selected elements change, also when the page changes or selected elements disappear.</summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.TextEditRequested">
-            <summary>Raised when the user starts writing: a click on the free page in the text tool, a click into a text block or typing on a selected one.</summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.Selection">
             <summary>The ids of the selected elements.</summary>
         </member>
@@ -13002,6 +12999,33 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.DisposeAsync">
             <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.TextEditRequested">
+            <summary>Raised when a text editing session starts: a click on the free page in the text tool, a click into a text block or typing on a selected one.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.TextInput">
+            <summary>Raised on the first input of a text editing session, before the text is committed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.LinkRequested">
+            <summary>Raised for Ctrl+K in a text editing session with the selected text and the link at the selection; answer with <see cref="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.SetLinkAsync(System.String,System.String)"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.IsEditingText">
+            <summary>True while a text block is edited.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.SetLinkAsync(System.String,System.String)">
+            <summary>
+            Sets a link on the text selected when <see cref="P:MudBlazor.Extensions.Components.MudExNotebookCanvas.LinkRequested"/> was raised. Only <c>http</c>, <c>https</c> and <c>mailto</c> addresses are
+            accepted.
+            </summary>
+            <param name="text">The text to show; the address if empty.</param>
+            <param name="address">The link target.</param>
+            <returns>A task that completes when the link is set.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookCanvas.OnTodoToggleAsync(System.String,System.Int32)">
+            <summary>Called by the browser when the check box of a to-do item was clicked outside a text editing session.</summary>
+            <param name="id">The id of the text block.</param>
+            <param name="paragraph">The index of the paragraph.</param>
+            <returns>A task that completes when the check box is toggled.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Components.PointDto">
             <summary>A point reported by the browser in page coordinates (CSS pixels at 100 % zoom).</summary>
@@ -13179,6 +13203,21 @@
         <member name="M:MudBlazor.Extensions.Components.MudExNotebookElementView.ShouldRender">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookLinkDialog">
+            <summary>
+            The link dialog of <see cref="T:MudBlazor.Extensions.Components.MudExNotebookEditor"/>: the text to show and the address. Only <c>http</c>, <c>https</c> and <c>mailto</c>
+            addresses are accepted. Closes with the text and the trimmed address as a <c>(string Text, string Address)</c> tuple.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookLinkDialog.Text">
+            <summary>The text to show, usually the selected text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookLinkDialog.Address">
+            <summary>The current address, or null for a new link.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookLinkDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExNotebookPageList">
             <summary>
             The page list of the notebook editor: the titles of the pages of one section, subpages indented. A click shows a page, the context menu renames,
@@ -13312,6 +13351,77 @@
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookText.Paragraphs">
             <summary>The paragraphs to show.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExNotebookTextEditor">
+            <summary>
+            Edits a notebook text block in place: a content editable element exactly over the block whose paragraphs are <c>div</c> elements and whose runs
+            are <c>span</c> elements carrying their format as <c>data-*</c> attributes. Lists, to-do items, indents and links are handled in the browser;
+            text from the file or the clipboard is set as text, never as markup. The model changes only when <see cref="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.Committed"/> is handled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.BlockId">
+            <summary>The id of the edited block, or null for a block that does not exist yet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.Paragraphs">
+            <summary>The paragraphs the editing starts with.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.X">
+            <summary>The left edge of the block in page coordinates.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.Y">
+            <summary>The top edge of the block in page coordinates.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.Width">
+            <summary>The width of the block in page coordinates.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.Zoom">
+            <summary>The zoom factor of the page; 1 is 100 %.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.Committed">
+            <summary>Raised with the final text when the user ends editing with Esc, Ctrl+Z or a click outside.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.TextInput">
+            <summary>Raised once, on the first change of the text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.SelectionChanged">
+            <summary>Raised, at most a few times per second, with the paragraphs and runs the selection touches.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookTextEditor.LinkRequested">
+            <summary>Raised for Ctrl+K with the selected text and the link at the selection, if any.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnTextCommitAsync(MudBlazor.Extensions.Components.NotebookTextParagraphDto[])">
+            <summary>Called by the browser when the user ends editing.</summary>
+            <param name="paragraphs">The final paragraphs of the editing DOM.</param>
+            <returns>A task that completes when the text is committed.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnTextInputAsync">
+            <summary>Called by the browser on the first change of the text.</summary>
+            <returns>A task that completes when the change is handed on.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnSelectionFormatAsync(MudBlazor.Extensions.Components.NotebookTextParagraphDto[])">
+            <summary>Called by the browser after the selection or its format changed.</summary>
+            <param name="paragraphs">The paragraphs the selection touches with the runs it covers; the run at the caret for an empty selection.</param>
+            <returns>A task that completes when the selection is handed on.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnLinkRequestAsync(System.String,System.String)">
+            <summary>Called by the browser for Ctrl+K.</summary>
+            <param name="text">The selected text.</param>
+            <param name="link">The link at the selection, or null.</param>
+            <returns>A task that completes when the request is handed on.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.OnPasteHtml(System.String)">
+            <summary>
+            Called by the browser when HTML is pasted. Keeps only text with bold, italic, underline, colour, lists and links with an allowed scheme;
+            scripts, styles and everything else are dropped.
+            </summary>
+            <param name="html">The <c>text/html</c> content of the clipboard.</param>
+            <returns>The pasted paragraphs.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExNotebookTextEditor.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.NotebookImageUrls">
             <summary>
             Resolves the URL of a notebook medium: a blob URL once the browser registered one, otherwise a data URI. Only raster images get blob URLs;
@@ -13326,6 +13436,66 @@
         <member name="M:MudBlazor.Extensions.Components.NotebookImageUrls.UrlFor(System.String)">
             <summary>Gets the URL of a medium, or null if the notebook has no such medium.</summary>
             <param name="mediaId">The media id.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.NotebookTextParagraphDto">
+            <summary>A paragraph of the text editing DOM exchanged between <see cref="T:MudBlazor.Extensions.Components.MudExNotebookTextEditor"/> and the browser.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextParagraphDto.Source">
+            <summary>Index of the original paragraph this one came from, or null for a new paragraph.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextParagraphDto.List">
+            <summary>The list kind: <c>bullet</c>, <c>number</c>, <c>todo</c> or null for none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextParagraphDto.Indent">
+            <summary>The indent level, 0 to 8.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextParagraphDto.Checked">
+            <summary>True if the check box of a to-do item is ticked.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextParagraphDto.Align">
+            <summary>The alignment: <c>left</c>, <c>center</c> or <c>right</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextParagraphDto.Heading">
+            <summary>The heading level, 0 for normal text to 3.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextParagraphDto.Runs">
+            <summary>The runs in order.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.NotebookTextRunDto">
+            <summary>A run of the text editing DOM of <see cref="T:MudBlazor.Extensions.Components.MudExNotebookTextEditor"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextRunDto.Source">
+            <summary>Index of the original run (counted over all paragraphs) this one came from, or null for new text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextRunDto.Text">
+            <summary>The text; a newline is a line break.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextRunDto.B">
+            <summary>Bold.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextRunDto.I">
+            <summary>Italic.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextRunDto.U">
+            <summary>Underlined.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextRunDto.S">
+            <summary>Struck through.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextRunDto.Size">
+            <summary>The font size in points, or null for the default.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextRunDto.Color">
+            <summary>The text colour as <c>#RRGGBB</c>, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextRunDto.Highlight">
+            <summary>The highlight colour as <c>#RRGGBB</c>, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextRunDto.Font">
+            <summary>The font family, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.NotebookTextRunDto.Link">
+            <summary>The link target, or null; only <c>http</c>, <c>https</c> and <c>mailto</c> are kept.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.NotebookTool">
             <summary>What a pointer gesture on the notebook page does.</summary>

@@ -1,0 +1,7 @@
+@inherits MudExBaseComponent<MudExNotebookTextEditor>
+@namespace MudBlazor.Extensions.Components
+
+<div class="@($"mud-ex-notebook-text-editor {Class}".TrimEnd())" style="@($"{BoxStyle}{Style}")">
+    <div @ref="_root" class="mud-ex-notebook-text mud-ex-notebook-text-editable" contenteditable="true" spellcheck="true" role="textbox" aria-multiline="true"
+         aria-label="@TryLocalize("Text")"></div>
+</div>

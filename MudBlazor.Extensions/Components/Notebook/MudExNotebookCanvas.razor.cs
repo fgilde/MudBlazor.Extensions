@@ -30,7 +30,6 @@ public partial class MudExNotebookCanvas
     private int _version;
     private NotebookTool _tool;
     private bool _raiseSelection;
-    private NotebookTextEditRequest _text;
     private ElementReference _root;
 
     /// <summary>Creates the canvas.</summary>
@@ -63,13 +62,8 @@ public partial class MudExNotebookCanvas
     /// <summary>Raised whenever the selected elements change, also when the page changes or selected elements disappear.</summary>
     [Parameter] public EventCallback<IReadOnlyList<string>> SelectionChanged { get; set; }
 
-    /// <summary>Raised when the user starts writing: a click on the free page in the text tool, a click into a text block or typing on a selected one.</summary>
-    [Parameter] public EventCallback<NotebookTextEditRequest> TextEditRequested { get; set; }
-
     /// <summary>The ids of the selected elements.</summary>
     public IReadOnlyList<string> Selection => _selection;
-
-    internal NotebookTextEditRequest TextEdit => _text;
 
     internal IReadOnlyDictionary<string, double> MeasuredHeights => _heights;
 
@@ -228,34 +222,6 @@ public partial class MudExNotebookCanvas
             StateHasChanged();
     });
 
-    internal Task EndTextEditAsync(IReadOnlyList<NoteParagraph> paragraphs)
-    {
-        if (_text is not { } session)
-            return Task.CompletedTask;
-        _text = null;
-        if (paragraphs != null && Editable)
-        {
-            if (!session.IsNew && Find(session.ElementId) is TextElement)
-                Notebook.Execute(new SetTextCommand(Page, session.ElementId, paragraphs));
-            else if (session.IsNew && !NotebookEdit.IsEmpty(paragraphs))
-                Notebook.Execute(new AddElementCommand(Page, new TextElement { Id = session.ElementId, X = session.X, Y = session.Y, Width = NewTextWidth, Paragraphs = paragraphs }));
-        }
-
-        StateHasChanged();
-        return Task.CompletedTask;
-    }
-
-    internal Task CommitTextAsync() => EndTextEditAsync(null);
-
-    private Task BeginTextAsync(NotebookTextEditRequest request)
-    {
-        _text = request;
-        StateHasChanged();
-        return TextEditRequested.InvokeAsync(request);
-    }
-
-    private static NotebookTextEditRequest Request(TextElement text) => new(text.Id, text.X, text.Y, false);
-
     private double HeightOf(NoteElement element) => MudExNotebookPageView.HeightOf(element, _heights);
 
     private NoteElement Find(string id) => Page?.Elements.FirstOrDefault(e => e.Id == id);
@@ -325,6 +291,9 @@ public partial class MudExNotebookCanvas
                 break;
             case "a" or "A" when ctrl:
                 await SelectAsync(Page.Elements.Select(el => el.Id));
+                break;
+            case "b" or "B" or "i" or "I" or "u" or "U" when ctrl && any:
+                await FormatTextAsync(e.Key.ToLowerInvariant(), null);
                 break;
             case "Tab" when !ctrl:
                 await CycleAsync(e.ShiftKey ? -1 : 1);

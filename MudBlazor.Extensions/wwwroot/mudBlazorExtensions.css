@@ -10194,3 +10194,31 @@ textarea.mud-ex-ssg-note-text {
   background-color: rgba(119, 25, 170, 0.08);
   pointer-events: none;
 }
+.mud-ex-notebook-todo {
+  cursor: pointer;
+}
+.mud-ex-notebook-editing {
+  visibility: hidden;
+}
+.mud-ex-notebook-text-editor {
+  position: absolute;
+  box-sizing: border-box;
+  transform-origin: 0 0;
+  color: #000;
+  font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+  box-shadow: 0 0 0 1px var(--mud-ex-notebook-accent, #7719AA);
+}
+.mud-ex-notebook-text-editable {
+  min-height: 1.4em;
+  outline: none;
+  cursor: text;
+}
+.mud-ex-notebook-text-editable > div[data-marker]::before {
+  content: attr(data-marker);
+  display: inline-block;
+  min-width: 24px;
+  user-select: none;
+}
+.mud-ex-notebook-text-editable > div[data-list="todo"]::before {
+  cursor: pointer;
+}

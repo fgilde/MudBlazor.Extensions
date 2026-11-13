@@ -1,8 +1,6 @@
 using System.Globalization;
-using System.Net;
-using System.Text;
+using MudBlazor.Extensions.Office;
 using MudBlazor.Extensions.Office.Presentation;
-using MudBlazor.Extensions.Office.Spreadsheet;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -140,13 +138,13 @@ internal static class SlideTextDom
         return paragraphs.SequenceEqual(body.Paragraphs, ReferenceEqualityComparer.Instance) ? body : body with { Paragraphs = paragraphs };
     }
 
-    internal static SlideTextParagraphDto[] FromHtml(string html)
+    internal static SlideTextParagraphDto[] FromHtml(string html) => HtmlPasteReader.Read(html).Select(p => new SlideTextParagraphDto
     {
-        if (string.IsNullOrEmpty(html) || html.Length > HtmlTableFormat.MaxLength) return [];
-        var reader = new PasteReader();
-        HtmlTableFormat.Tokenize(html, reader);
-        return reader.Result();
-    }
+        Runs = p.Runs.Select(r => new SlideTextRunDto
+        {
+            Text = r.Text, B = r.Format.Bold ? "1" : null, I = r.Format.Italic ? "1" : null, U = r.Format.Underline ? "1" : null, Color = r.Format.Color
+        }).ToArray()
+    }).ToArray();
 
     private static SlideTextRunDto Run(TextRun run, int? source, AutoShape shape, Presentation presentation) => new()
     {
@@ -245,123 +243,4 @@ internal static class SlideTextDom
         double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var size) && size is >= 1 and <= 4000 ? size : null;
 
     private static string Blank(string value) => string.IsNullOrWhiteSpace(value) ? null : value;
-
-    private sealed class PasteReader : IHtmlTokenSink
-    {
-        private static readonly HashSet<string> Blocks =
-            ["p", "div", "li", "ul", "ol", "h1", "h2", "h3", "h4", "h5", "h6", "tr", "table", "blockquote", "pre", "section", "article", "header", "footer", "dt", "dd"];
-
-        private static readonly HashSet<string> Empty = ["br", "img", "hr", "meta", "link", "input", "col", "wbr", "area", "base", "source", "param", "embed"];
-
-        private readonly List<List<SlideTextRunDto>> _paragraphs = [[]];
-        private readonly List<(string Name, PasteFormat Format)> _open = [];
-        private bool _space = true;
-
-        public bool Done => false;
-
-        private PasteFormat Current => _open.Count == 0 ? default : _open[^1].Format;
-
-        public SlideTextParagraphDto[] Result()
-        {
-            foreach (var paragraph in _paragraphs.Where(p => p.Count > 0))
-            {
-                paragraph[^1].Text = paragraph[^1].Text.TrimEnd(' ');
-                if (paragraph[^1].Text.Length == 0) paragraph.RemoveAt(paragraph.Count - 1);
-            }
-
-            return _paragraphs.Where(p => p.Count > 0).Select(p => new SlideTextParagraphDto { Runs = p.ToArray() }).ToArray();
-        }
-
-        public void StyleSheet(string css)
-        {
-        }
-
-        public void Start(string name, Dictionary<string, string> attributes)
-        {
-            if (name == "br")
-            {
-                Add("\n");
-                _space = true;
-                return;
-            }
-
-            if (Blocks.Contains(name)) Break();
-            if (Empty.Contains(name)) return;
-            var format = name switch
-            {
-                "b" or "strong" => Current with { Bold = true },
-                "i" or "em" => Current with { Italic = true },
-                "u" or "ins" => Current with { Underline = true },
-                _ => Current
-            };
-            _open.Add((name, attributes.TryGetValue("style", out var css) ? Css(format, css) : format));
-        }
-
-        public void End(string name)
-        {
-            var at = _open.FindLastIndex(o => o.Name == name);
-            if (at >= 0) _open.RemoveRange(at, _open.Count - at);
-            if (Blocks.Contains(name)) Break();
-        }
-
-        public void Text(string text)
-        {
-            var sb = new StringBuilder();
-            foreach (var c in WebUtility.HtmlDecode(text))
-            {
-                if (c is ' ' or '\t' or '\n' or '\r' or '\f')
-                {
-                    if (!_space) sb.Append(' ');
-                    _space = true;
-                }
-                else if (!char.IsControl(c))
-                {
-                    sb.Append(c);
-                    _space = false;
-                }
-            }
-
-            Add(sb.ToString());
-        }
-
-        private void Break()
-        {
-            if (_paragraphs[^1].Count > 0) _paragraphs.Add([]);
-            _space = true;
-        }
-
-        private void Add(string text)
-        {
-            if (text.Length == 0) return;
-            var f = Current;
-            var runs = _paragraphs[^1];
-            var run = new SlideTextRunDto { Text = text, B = f.Bold ? "1" : null, I = f.Italic ? "1" : null, U = f.Underline ? "1" : null, Color = f.Color };
-            if (runs.Count > 0 && runs[^1] is { } last && last.B == run.B && last.I == run.I && last.U == run.U && last.Color == run.Color)
-                last.Text += text;
-            else
-                runs.Add(run);
-        }
-
-        private static PasteFormat Css(PasteFormat format, string css)
-        {
-            foreach (var declaration in HtmlTableFormat.Split(css, ';'))
-            {
-                var colon = declaration.IndexOf(':');
-                if (colon <= 0) continue;
-                var value = declaration[(colon + 1)..].Replace("!important", "", StringComparison.OrdinalIgnoreCase).Trim().ToLowerInvariant();
-                format = declaration[..colon].Trim().ToLowerInvariant() switch
-                {
-                    "font-weight" => format with { Bold = value is "bold" or "bolder" || int.TryParse(value, out var weight) && weight >= 600 },
-                    "font-style" => format with { Italic = value is "italic" or "oblique" },
-                    "text-decoration" or "text-decoration-line" => format with { Underline = value.Contains("underline") },
-                    "color" => format with { Color = HtmlTableFormat.Color(value) ?? format.Color },
-                    _ => format
-                };
-            }
-
-            return format;
-        }
-    }
-
-    private readonly record struct PasteFormat(bool Bold, bool Italic, bool Underline, string Color);
 }

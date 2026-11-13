@@ -7,6 +7,8 @@ const MIN_PX = 8;
 const MEASURE_MS = 100;
 const KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 const MODIFIERS = ['Shift', 'Control', 'Alt', 'AltGraph', 'Meta', 'CapsLock', 'Dead'];
+const FORMAT_KEYS = ['b', 'i', 'u'];
+const TODO = '.mud-ex-notebook-todo';
 
 const px = value => `${value}px`;
 const frameSelector = id => `.mud-ex-notebook-selection[data-id="${id}"]`;
@@ -114,7 +116,8 @@ class MudExNotebookCanvas {
         const key = e.key.toLowerCase();
         this.typed(e, ctrl);
         const tab = e.key === 'Tab' && !ctrl && !this.leaves(e.shiftKey);
-        if ((KEYS.includes(e.key) && selected) || tab || (ctrl && (key === 'a' || key === 'd')) || (selected && !ctrl && e.key === ' ')) {
+        if ((KEYS.includes(e.key) && selected) || tab || (ctrl && (key === 'a' || key === 'd')) || (selected && !ctrl && e.key === ' ')
+            || (selected && ctrl && FORMAT_KEYS.includes(key))) {
             e.preventDefault();
         }
     }
@@ -175,6 +178,13 @@ class MudExNotebookCanvas {
         }
         const el = e.target.closest(ELEMENT);
         const id = el && page.contains(el) ? el.dataset.elementId : null;
+        const todo = id ? e.target.closest(TODO) : null;
+        if (todo) {
+            this.focus(e);
+            const paragraph = todo.closest('.mud-ex-notebook-paragraph');
+            this.dotnet.invokeMethodAsync('OnTodoToggleAsync', id, [...paragraph.parentElement.children].indexOf(paragraph)).catch(() => {});
+            return;
+        }
         const toggle = e.shiftKey || e.ctrlKey || e.metaKey;
         this.focus(e);
         if (tool === 'text' && !toggle && (!id || el.classList.contains('mud-ex-notebook-text-element'))) {

@@ -1,0 +1,16 @@
+@inherits MudExBaseComponent<MudExNotebookLinkDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="mud-ex-nblink-dialog">
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudTextField T="string" Class="mud-ex-nblink-text" Label="@TryLocalize("Text to display:")" @bind-Value="_text" Immediate="true" Margin="Margin.Dense" />
+            <MudTextField T="string" Class="mud-ex-nblink-address" Label="@TryLocalize("Address:")" @bind-Value="_address" Immediate="true" Margin="Margin.Dense"
+                          HelperText="@(Unsafe ? TryLocalize("Only http, https and mailto addresses can be opened.") : null)" Error="Unsafe" />
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-nblink-ok" Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!IsAllowed(_address))" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>
