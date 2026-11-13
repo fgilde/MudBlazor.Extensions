@@ -273,6 +273,17 @@ public class NotebookFormatTests
         Assert.Equal(0, target.Length);
     }
 
+    [Fact]
+    public void Save_MediaIdWrittenWithEscape_InUnchangedPage_Kept()
+    {
+        var notebook = new NotebookBuilder().Page("p1", Image("i", "m\\u0031")).Media("m1", "png", Png).Load();
+        Assert.Equal("m1", ((ImageElement)Page(notebook, "p1").Elements.Single()).MediaId);
+
+        var saved = Unzip(Save(notebook));
+
+        Assert.Equal(Png, saved["media/m1.png"]);
+    }
+
     [Theory]
     [InlineData(false)]
     [InlineData(true)]

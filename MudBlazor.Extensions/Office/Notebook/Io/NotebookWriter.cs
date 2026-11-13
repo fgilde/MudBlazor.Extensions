@@ -44,6 +44,8 @@ internal static class NotebookWriter
             else continue;
 
             MarkUsed(json, known, lengths, used);
+            foreach (var image in page.ElementList.OfType<ImageElement>())
+                if (image.MediaId != null && known.TryGetValue(image.MediaId, out var id)) used.Add(id);
         }
 
         foreach (var id in used)
