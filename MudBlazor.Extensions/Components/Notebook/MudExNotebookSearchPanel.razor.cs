@@ -12,6 +12,7 @@ public partial class MudExNotebookSearchPanel
     private const int SnippetContext = 40;
 
     private IReadOnlyList<NotebookSearchResult> _results = [];
+    private (Notebook, NotebookPage, string, int)? _searched;
 
     /// <summary>The notebook to search.</summary>
     [Parameter] public Notebook Notebook { get; set; }
@@ -41,20 +42,29 @@ public partial class MudExNotebookSearchPanel
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        _results = Search(Notebook, WholeNotebook ? null : Page, Query);
+        UpdateResults();
+    }
+
+    private void UpdateResults()
+    {
+        var key = (Notebook, WholeNotebook ? null : Page, Query, Notebook?.Revision ?? 0);
+        if (key == _searched)
+            return;
+        _searched = key;
+        _results = Search(key.Item1, key.Item2, key.Query);
     }
 
     private async Task SetQueryAsync(string query)
     {
         Query = query;
-        _results = Search(Notebook, WholeNotebook ? null : Page, Query);
+        UpdateResults();
         await QueryChanged.InvokeAsync(query);
     }
 
     private async Task SetScopeAsync(bool wholeNotebook)
     {
         WholeNotebook = wholeNotebook;
-        _results = Search(Notebook, WholeNotebook ? null : Page, Query);
+        UpdateResults();
         await WholeNotebookChanged.InvokeAsync(wholeNotebook);
     }
 
