@@ -58,10 +58,11 @@ public class SlideTableTests : IAsyncLifetime
         var presentation = TableTests.Deck();
         var slide = presentation.Slides[1];
         var cut = RenderEditor(presentation);
-        cut.FindAll(".mud-ex-slide-panel-item")[1].Click();
+        await cut.InvokeAsync(() => cut.FindAll(".mud-ex-slide-panel-item")[1].Click());
 
-        cut.FindAll("[role='tab']").First(t => t.TextContent.Trim() == "Insert").Click();
-        cut.WaitForAssertion(() => cut.FindAll("button.mud-ex-ribbon-menu-face").First(b => b.GetAttribute("aria-label") == "Table").Click());
+        await cut.InvokeAsync(() => cut.FindAll("[role='tab']").First(t => t.TextContent.Trim() == "Insert").Click());
+        cut.WaitForAssertion(() => Assert.Contains(cut.FindAll("button.mud-ex-ribbon-menu-face"), b => b.GetAttribute("aria-label") == "Table"));
+        await cut.InvokeAsync(() => cut.FindAll("button.mud-ex-ribbon-menu-face").First(b => b.GetAttribute("aria-label") == "Table").Click());
         _popovers.WaitForAssertion(() => Assert.Equal(80, _popovers.FindAll(".mud-ex-slide-table-picker [data-rows]").Count));
         _popovers.Find(".mud-ex-slide-table-picker [data-rows='3'][data-columns='4']").Click();
 
