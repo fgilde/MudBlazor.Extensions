@@ -81,6 +81,38 @@ public class SlideDesignTests : IAsyncLifetime
     }
 
     [Fact]
+    public void DesignGallery_Previews_NeitherSaveNorLoadTheDeck()
+    {
+        var presentation = Sample();
+        var cut = RenderEditor(presentation);
+        var slide = presentation.Slides[0];
+        var unsaveable = new OpaqueShape { Id = 999, Name = "No source", Kind = "other", Transform = new ShapeTransform(0, 0, 10, 10) };
+        slide.ShapeList.Add(unsaveable);
+        slide.Modified = true;
+        Assert.Throws<NotSupportedException>(() => presentation.Save(new MemoryStream()));
+        var (theme, background, version) = (presentation.Masters[0].Theme, presentation.Masters[0].Background, slide.Version);
+
+        Tab(cut, "Design");
+        Open(cut, "Themes");
+        _popovers.WaitForAssertion(() => Assert.Equal(6, _popovers.FindAll(".mud-ex-slide-design-item .mud-ex-slide").Count));
+
+        var previews = _popovers.FindComponent<MudExSlideDesignGallery>().FindComponents<MudExSlideView>().Select(v => v.Instance).ToList();
+        Assert.Equal(6, previews.Count);
+        Assert.All(previews, p => Assert.Same(presentation, p.Presentation));
+        Assert.Equal(SlideDesigns.BuiltIn.Select(d => d.Colors), previews.Select(p => p.Slide.Layout!.Master.Theme.Colors));
+        Assert.Equal(SlideDesigns.BuiltIn.Select(d => d.Background), previews.Select(p => p.Slide.Layout!.Master.Background));
+        Assert.All(previews, p => Assert.Contains(p.Slide.Shapes, s => s.Name == "No source"));
+        Assert.All(previews, p => Assert.DoesNotContain(p.Slide, presentation.Slides));
+        var ocean = previews[SlideDesigns.BuiltIn.ToList().FindIndex(d => d.Name == "Ocean")].Slide;
+        var title = SlideShape.Flatten(ocean.Shapes).OfType<AutoShape>().First(s => s.Text?.Paragraphs.Any(p => p.Runs.Count > 0) == true);
+        Assert.Equal("Aptos", title.EffectiveFormat(title.Text.Paragraphs.First(p => p.Runs.Count > 0).Runs[0]).Font);
+        Assert.Same(theme, presentation.Masters[0].Theme);
+        Assert.Same(background, presentation.Masters[0].Background);
+        Assert.Equal(version, slide.Version);
+        Assert.False(presentation.Undo.CanUndo);
+    }
+
+    [Fact]
     public void Design_ColorsOnly_KeepsFonts()
     {
         var presentation = Sample();

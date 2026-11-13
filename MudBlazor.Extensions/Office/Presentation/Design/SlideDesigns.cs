@@ -21,4 +21,31 @@ public static class SlideDesigns
         new("Mono", ["#111111", "#FFFFFF", "#333333", "#EEEEEE", "#222222", "#444444", "#5A5A5A", "#6E6E6E", "#3A3A3A", "#767676", "#1A1A1A", "#555555"],
             "Consolas", "Segoe UI", Plain)
     ];
+
+    internal static Slide Preview(Slide slide, SlideDesign design)
+    {
+        if (slide.Layout is not { Master: { } source } layout) return null;
+        var master = new SlideMaster
+        {
+            Name = source.Name, Theme = source.Theme.With(PresentationTheme.Normalize(design.Colors), design.MajorFont, design.MinorFont), Background = design.Background,
+            FormatScheme = source.FormatScheme, ColorMap = source.ColorMap, TextStyles = source.TextStyles, DefaultTextStyle = source.DefaultTextStyle
+        };
+        master.ShapeList.AddRange(Retarget(source.Shapes, master));
+        var preview = new SlideLayout
+        {
+            Name = layout.Name, Type = layout.Type, Master = master, Background = layout.Background, ShowMasterShapes = layout.ShowMasterShapes, ColorMap = layout.ColorMap
+        };
+        preview.ShapeList.AddRange(Retarget(layout.Shapes, master));
+        var copy = DuplicateSlidesCommand.Snapshot(slide);
+        copy.Layout = preview;
+        foreach (var shape in SlideShape.Flatten(copy.Shapes)) shape.Master = master;
+        return copy;
+    }
+
+    private static List<SlideShape> Retarget(IEnumerable<SlideShape> shapes, SlideMaster master)
+    {
+        var copies = shapes.Select(s => s.Clone(null)).ToList();
+        foreach (var shape in SlideShape.Flatten(copies)) shape.Master = master;
+        return copies;
+    }
 }

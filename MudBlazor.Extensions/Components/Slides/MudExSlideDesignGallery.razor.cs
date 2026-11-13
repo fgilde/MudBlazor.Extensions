@@ -1,4 +1,3 @@
-using System.Xml;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Office.Presentation;
 
@@ -8,7 +7,7 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExSlideDesignGallery
 {
     private (Presentation Presentation, Slide Slide, int Version) _source;
-    private IReadOnlyList<(SlideDesign Design, Presentation Presentation, Slide Slide)> _previews = [];
+    private IReadOnlyList<(SlideDesign Design, Slide Slide)> _previews = [];
 
     /// <summary>The presentation the designs are previewed with.</summary>
     [Parameter] public Presentation Presentation { get; set; }
@@ -33,29 +32,6 @@ public partial class MudExSlideDesignGallery
         if (source == _source)
             return;
         _source = source;
-        _previews = Previews();
-    }
-
-    private IReadOnlyList<(SlideDesign, Presentation, Slide)> Previews()
-    {
-        var index = Slide == null || Presentation == null ? -1 : Presentation.SlideList.IndexOf(Slide);
-        if (index < 0)
-            return SlideDesigns.BuiltIn.Select(d => (d, (Presentation)null, (Slide)null)).ToList();
-        try
-        {
-            using var buffer = new MemoryStream();
-            Presentation.Save(buffer);
-            var bytes = buffer.ToArray();
-            return SlideDesigns.BuiltIn.Select(design =>
-            {
-                var copy = Office.Presentation.Presentation.Load(new MemoryStream(bytes));
-                new ApplyDesignCommand(design).Apply(copy);
-                return (design, copy, copy.Slides[index]);
-            }).ToList();
-        }
-        catch (Exception e) when (e is InvalidOperationException or InvalidDataException or IOException or XmlException)
-        {
-            return SlideDesigns.BuiltIn.Select(d => (d, (Presentation)null, (Slide)null)).ToList();
-        }
+        _previews = SlideDesigns.BuiltIn.Select(d => (d, Slide == null || Presentation == null ? null : SlideDesigns.Preview(Slide, d))).ToList();
     }
 }
