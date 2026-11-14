@@ -1,0 +1,33 @@
+@inherits ComponentBase
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Presentation
+
+<div class="mud-ex-slide-text" style="@BodyStyle(Shape, Presentation)">
+    @{ var markers = Shape.Markers(); }
+    @for (var i = 0; i < Shape.Text.Paragraphs.Count; i++)
+    {
+        var paragraph = Shape.Text.Paragraphs[i];
+        var target = Targets != null && Targets.TryGetValue((Shape.Id, i), out var state) ? state : null;
+        <div class="@(target?.CssClass is { } animation ? "mud-ex-slide-paragraph " + animation : "mud-ex-slide-paragraph")" style="@(ParagraphStyle(Shape, paragraph, Presentation) + target?.CssStyle)">
+            @if (markers[i] != null)
+            {
+                <span class="mud-ex-slide-bullet" style="@RunStyle(Shape, Presentation, paragraph.Runs.Count > 0 ? paragraph.Runs[0] : EmptyRun(paragraph))">@markers[i]&nbsp;</span>
+            }
+            @foreach (var run in paragraph.Runs)
+            {
+                @if (run.Text == "\n")
+                {
+                    <br />
+                }
+                else
+                {
+                    <span style="@RunStyle(Shape, Presentation, run)">@TextOf(run)</span>
+                }
+            }
+            @if (paragraph.Runs.Count == 0)
+            {
+                <span style="@RunStyle(Shape, Presentation, EmptyRun(paragraph))">&#8203;</span>
+            }
+        </div>
+    }
+</div>

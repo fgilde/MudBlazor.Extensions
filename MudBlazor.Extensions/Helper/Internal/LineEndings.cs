@@ -25,4 +25,15 @@ internal static class LineEndings
     /// </summary>
     public static string[] SplitLines(this string text)
         => text.NormalizeLineEndings().Split('\n');
+
+    /// <summary>
+    /// Returns the first line ending found in the text (CRLF, LF or CR), LF if there is none.
+    /// </summary>
+    public static string DetectLineEnding(this string text)
+    {
+        var index = text?.AsSpan().IndexOfAny('\r', '\n') ?? -1;
+        if (index < 0 || text[index] == '\n')
+            return "\n";
+        return index + 1 < text.Length && text[index + 1] == '\n' ? "\r\n" : "\r";
+    }
 }

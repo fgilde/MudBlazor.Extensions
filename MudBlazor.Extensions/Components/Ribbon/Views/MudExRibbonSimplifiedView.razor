@@ -1,0 +1,42 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonViewBase
+@attribute [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+
+@Tabbed(Body, "mud-ex-ribbon-simplified-body")
+
+@code {
+    private RenderFragment Body(MudExRibbonTab tab)
+    {
+        var overflow = MudExRibbonReduction.Overflow(tab.Groups, Ribbon.ReductionStep);
+        return @<text>
+            @GroupSections(tab.Groups.Where(g => !g.Items.Any(overflow.Contains) || g.Items.Any(i => i.Visible && !overflow.Contains(i))), true,
+                group => Group(group, group.Items.Where(i => !overflow.Contains(i))))
+            @if (overflow.Count > 0)
+            {
+                @OverflowMenu(tab, overflow)
+            }
+        </text>;
+    }
+
+    private RenderFragment Group(MudExRibbonGroup group, IEnumerable<MudExRibbonItemBase> items) =>
+        @<div @key="group" class="mud-ex-ribbon-simplified-group" role="toolbar" aria-label="@group.Text">
+            @MudExRibbonItemBase.Slots(items, LayoutOf)
+        </div>;
+
+    private static MudExRibbonItemLayout LayoutOf(MudExRibbonItemBase item)
+        => item.Size == MudExRibbonItemSize.Small || (string.IsNullOrEmpty(item.Text) && item is not MudExRibbonRow)
+            ? MudExRibbonItemLayout.Small
+            : MudExRibbonItemLayout.Medium;
+
+    private RenderFragment OverflowMenu(MudExRibbonTab tab, IReadOnlySet<MudExRibbonItemBase> overflow) =>
+        @<MudMenu Class="mud-ex-ribbon-overflow"
+                  Icon="@Icons.Material.Filled.MoreHoriz"
+                  Size="Size.Small"
+                  Dense="true"
+                  AriaLabel="@Ribbon.TryLocalize("More commands")"
+                  AnchorOrigin="Origin.BottomRight"
+                  TransformOrigin="Origin.TopRight">
+            @GroupSections(tab.Groups.Where(g => g.Items.Any(overflow.Contains)), false,
+                group => MudExRibbonItemBase.MenuEntries(group.Items.Where(overflow.Contains)))
+        </MudMenu>;
+}

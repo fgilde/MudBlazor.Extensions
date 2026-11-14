@@ -1,0 +1,474 @@
+using System.Globalization;
+using System.IO.Compression;
+using System.Xml;
+using System.Xml.Linq;
+
+namespace MudBlazor.Extensions.Office.Spreadsheet;
+
+/// <summary>A package relationship.</summary>
+/// <param name="Id">The relationship id.</param>
+/// <param name="Type">The relationship type URI.</param>
+/// <param name="Target">The target as written in the rels part.</param>
+/// <param name="External">True for <c>TargetMode="External"</c>.</param>
+internal sealed record XlsxRelationship(string Id, string Type, string Target, bool External);
+
+/// <summary>A sheet entry of the source workbook with the parts of its XML the model does not represent.</summary>
+internal sealed class XlsxSheetPart
+{
+    internal static readonly HashSet<string> Modelled = ["sheetPr", "dimension", "sheetViews", "sheetFormatPr", "cols", "sheetData", "mergeCells", "autoFilter",
+        "conditionalFormatting", "dataValidations", "tableParts", "hyperlinks", "legacyDrawing", "drawing"];
+
+    /// <summary>The sheet name as stored in the file.</summary>
+    public string Name { get; init; }
+
+    /// <summary>The <c>sheetId</c> attribute.</summary>
+    public string SheetId { get; init; }
+
+    /// <summary>The relationship id from workbook.xml.</summary>
+    public string RelationshipId { get; init; }
+
+    /// <summary>Zip entry name of the sheet part, or null if the relationship target is missing.</summary>
+    public string PartName { get; init; }
+
+    /// <summary>The original <c>state</c> attribute (<c>visible</c>, <c>hidden</c> or <c>veryHidden</c>), or null.</summary>
+    public string State { get; init; }
+
+    /// <summary>The worksheet read into the model, or null for chart sheets, dialog sheets and macro sheets.</summary>
+    public Worksheet Worksheet { get; init; }
+
+    /// <summary>The root element of the sheet part without children, keeping namespace declarations and <c>mc:Ignorable</c>.</summary>
+    public XElement Root { get; set; }
+
+    /// <summary>
+    /// All top-level children of the worksheet in original order. <c>sheetData</c> is an empty placeholder marking its position;
+    /// the other children are the original elements, including the partly modelled ones in <see cref="Modelled"/>
+    /// (sheetPr, sheetViews, sheetFormatPr, cols keep attributes the model ignores).
+    /// </summary>
+    public List<XElement> Children { get; } = [];
+
+    /// <summary>Table parts of the source sheet: relationship id and zip entry name, in <c>tableParts</c> order.</summary>
+    public List<(string RelationshipId, string PartName)> TableParts { get; } = [];
+
+    /// <summary>Relationship ids of table parts the model could not read; they stay in <c>tableParts</c> and are copied unchanged.</summary>
+    public List<string> OpaqueTableParts { get; } = [];
+
+    /// <summary>Id and names (<c>name</c>, <c>displayName</c>) of the readable table parts the model could not represent; new tables avoid them.</summary>
+    public List<(int Id, string[] Names)> OpaqueTables { get; } = [];
+
+    /// <summary>Hyperlinks whose <c>ref</c> cannot be parsed; they are written back unchanged after the modelled links.</summary>
+    public List<XElement> OpaqueLinks { get; } = [];
+
+    /// <summary>Zip entry name of the legacy comments part holding the notes, or null.</summary>
+    public string CommentsPart { get; set; }
+
+    /// <summary>Relationship id of <see cref="CommentsPart"/> in the sheet rels.</summary>
+    public string CommentsRelationshipId { get; set; }
+
+    /// <summary>The original root of <see cref="CommentsPart"/>; attributes, authors and unknown children stay when notes change.</summary>
+    public XElement CommentsRoot { get; set; }
+
+    /// <summary>Zip entry name of the VML drawing of <c>legacyDrawing</c>, or null.</summary>
+    public string VmlPart { get; set; }
+
+    /// <summary>Relationship id of <see cref="VmlPart"/> (the <c>legacyDrawing</c> r:id).</summary>
+    public string VmlRelationshipId { get; set; }
+
+    /// <summary>The VML text read as Latin-1, so unchanged shapes are written back byte for byte; VML from Excel is not always well-formed XML.</summary>
+    public string VmlText { get; set; }
+
+    /// <summary>True if every anchored shape of the VML drawing is a note, so all its references move with the notes.</summary>
+    public bool VmlOnlyNotes { get; set; } = true;
+
+    /// <summary>The notes as read; the comment and VML parts are rewritten only when the sheet's notes differ from these.</summary>
+    public IReadOnlyList<CellNote> OriginalNotes { get; set; } = [];
+
+    /// <summary>True if the notes, comments part and VML drawing of this sheet are modelled completely and follow structural changes.</summary>
+    public bool AnnotationsModelled => Worksheet is { NotesReadOnly: false } && VmlOnlyNotes;
+
+    /// <summary>Zip entry name of the drawing part of <c>drawing</c>, or null.</summary>
+    public string DrawingPart { get; set; }
+
+    /// <summary>Relationship id of <see cref="DrawingPart"/> (the <c>drawing</c> r:id).</summary>
+    public string DrawingRelationshipId { get; set; }
+
+    /// <summary>The drawing as read, or null if the sheet has none or it is not well-formed (then it is kept unchanged and charts cannot be added).</summary>
+    public XElement OriginalDrawing { get; set; }
+
+    /// <summary>The drawing with its cell anchors moved along structural changes; the writer starts from it.</summary>
+    public XElement DrawingRoot { get; set; }
+
+    /// <summary>True if a shape in the drawing shows a cell's text (<c>textlink</c>) or a chart part could not be read; those references do not move.</summary>
+    public bool DrawingLinked { get; set; }
+
+    /// <summary>The drawing part, its charts and the parts the charts use (styles, colors, shapes); their references are modelled.</summary>
+    public HashSet<string> DrawingParts { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>The charts as read; the drawing is rewritten only when the sheet's charts or anchors differ.</summary>
+    public IReadOnlyList<SheetChart> OriginalCharts { get; set; } = [];
+
+    /// <summary>True if the drawing and its charts follow structural changes.</summary>
+    public bool DrawingModelled => DrawingPart == null || OriginalDrawing != null && !DrawingLinked;
+
+    /// <summary>Children the model does not represent at all, in original order.</summary>
+    public IEnumerable<XElement> Unmodelled => Children.Where(c => !Modelled.Contains(c.Name.LocalName));
+
+    /// <summary>Cells holding a rich shared string: cell key to the shared string index of the original <c>si</c>.</summary>
+    public Dictionary<long, int> RichStringCells { get; } = new();
+
+    /// <summary>
+    /// Cells whose original <c>cellXfs</c> index differs from <see cref="XlsxPackage.CanonicalXf"/> of their style id: cell key to
+    /// the original xf index. Includes styled empty cells that are not in the model because their xf maps to style 0
+    /// (for example an unlocked input cell). While a cell's style id is unchanged the writer emits this xf instead of the canonical one.
+    /// </summary>
+    public Dictionary<long, int> OriginalXf { get; } = new();
+
+    /// <summary>Rows with a row style whose original xf index differs from the canonical xf of their style id: zero-based row to xf index.</summary>
+    public Dictionary<int, int> OriginalRowXf { get; } = new();
+
+    /// <summary>Columns whose original <c>col/@style</c> xf index differs from the canonical xf of their style id: zero-based column to xf index.</summary>
+    public Dictionary<int, int> OriginalColXf { get; } = new();
+
+    /// <summary>
+    /// Row attributes the model does not represent (<c>outlineLevel</c>, <c>collapsed</c>, <c>thickTop</c>, <c>thickBot</c>, <c>ph</c>,
+    /// <c>x14ac:dyDescent</c> …), by zero-based row; rows with equal attributes share one array. <c>spans</c> is dropped.
+    /// </summary>
+    public Dictionary<int, XAttribute[]> RowAttributes { get; } = new();
+
+    /// <summary>Cell attributes the model does not represent (<c>cm</c>, <c>vm</c>, <c>ph</c> …), by cell key; only cells that have them.</summary>
+    public Dictionary<long, XAttribute[]> CellAttributes { get; } = new();
+
+    /// <summary>
+    /// Cells whose formula was stored as an array formula (<c>f/@t="array"</c>), including single-cell ones: cell key to the size of the
+    /// original <c>ref</c>. An entry is dropped when the cell is edited.
+    /// </summary>
+    public Dictionary<long, (int Rows, int Columns)> ArrayFormulas { get; } = new();
+
+    /// <summary>
+    /// Moves every cell, row and column keyed entry (and the original <c>cols</c>, <c>sortState</c>, <c>ignoredErrors</c>, <c>rowBreaks</c> and
+    /// <c>colBreaks</c> elements and the drawing anchors) along an inserted or deleted band of rows or columns, like <see cref="Spreadsheet.Worksheet"/>
+    /// moves its cells. Entries inside a deleted band are dropped; a page break inside it moves to the start of the band.
+    /// </summary>
+    /// <param name="axis">Rows or columns.</param>
+    /// <param name="index">Zero-based first inserted or deleted row or column.</param>
+    /// <param name="count">Positive to insert, negative to delete.</param>
+    /// <returns>An action that puts the dropped entries back after the band was inserted again (undo of a delete).</returns>
+    public Action Shift(Axis axis, int index, int count)
+    {
+        var undo = new List<Action>();
+        var limit = axis == Axis.Row ? CellRef.MaxRows : CellRef.MaxColumns;
+        int Map(int v) => count > 0 ? v >= index ? v + count : v : v < index ? v : v < index - count ? -1 : v + count;
+
+        long? MapKey(long key)
+        {
+            var c = CellRef.FromKey(key);
+            var v = Map(axis == Axis.Row ? c.Row : c.Column);
+            if (v < 0 || v >= limit) return null;
+            return (axis == Axis.Row ? new CellRef(v, c.Column) : new CellRef(c.Row, v)).Key;
+        }
+
+        int? MapLine(int line) => Map(line) is var v && v >= 0 && v < limit ? v : null;
+
+        void Remap<TKey, TValue>(Dictionary<TKey, TValue> map, Func<TKey, TKey?> next) where TKey : struct
+        {
+            var entries = map.ToList();
+            map.Clear();
+            foreach (var (key, value) in entries)
+                if (next(key) is { } moved) map[moved] = value;
+                else undo.Add(() => map[key] = value);
+        }
+
+        void Patch(string name, Func<XElement, bool> keep)
+        {
+            var at = Children.FindIndex(e => e.Name.LocalName == name);
+            if (at < 0) return;
+            var original = Children[at];
+            var copy = new XElement(original);
+            if (keep(copy))
+            {
+                Children[at] = copy;
+                undo.Add(() => Children[at] = original);
+            }
+            else
+            {
+                Children.RemoveAt(at);
+                undo.Add(() => Children.Insert(at, original));
+            }
+        }
+
+        Patch("sortState", sort =>
+        {
+            foreach (var e in sort.DescendantsAndSelf().ToList())
+            {
+                if (!CellRange.TryParse((string)e.Attribute("ref"), out var r)) continue;
+                if (Spreadsheet.Worksheet.MoveRange(r, axis, index, count) is { } moved) e.SetAttributeValue("ref", moved.ToA1());
+                else if (e == sort) return false;
+                else e.Remove();
+            }
+
+            return true;
+        });
+
+        Patch("ignoredErrors", errors =>
+        {
+            foreach (var e in errors.Elements().Where(e => e.Name.LocalName == "ignoredError").ToList())
+            {
+                var ranges = ((string)e.Attribute("sqref") ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s => CellRange.TryParse(s, out var r) ? Spreadsheet.Worksheet.MoveRange(r, axis, index, count)?.ToA1() : s).OfType<string>().ToList();
+                if (ranges.Count == 0) e.Remove();
+                else e.SetAttributeValue("sqref", string.Join(' ', ranges));
+            }
+
+            return errors.HasElements;
+        });
+
+        Patch(axis == Axis.Row ? "rowBreaks" : "colBreaks", breaks =>
+        {
+            var seen = new HashSet<int>();
+            foreach (var brk in breaks.Elements().Where(e => e.Name.LocalName == "brk").ToList())
+            {
+                if (!int.TryParse((string)brk.Attribute("id"), NumberStyles.Integer, CultureInfo.InvariantCulture, out var id)) continue;
+                var moved = count > 0 ? id >= index ? id + count : id : id < index ? id : Math.Max(index, id + count);
+                if (moved <= 0 || moved >= limit || !seen.Add(moved)) brk.Remove();
+                else brk.SetAttributeValue("id", moved);
+            }
+
+            var left = breaks.Elements().Where(e => e.Name.LocalName == "brk").ToList();
+            if (breaks.Attribute("count") != null) breaks.SetAttributeValue("count", left.Count);
+            if (breaks.Attribute("manualBreakCount") != null)
+                breaks.SetAttributeValue("manualBreakCount", left.Count(b => (string)b.Attribute("man") is "1" or "true"));
+            return left.Count > 0;
+        });
+
+        if (DrawingRoot != null && ChartXmlWriter.ShiftDrawing(DrawingRoot, axis, index, count) is var drawing && drawing != DrawingRoot)
+        {
+            var before = DrawingRoot;
+            DrawingRoot = drawing;
+            undo.Add(() => DrawingRoot = before);
+        }
+
+        Remap(OriginalXf, MapKey);
+        Remap(CellAttributes, MapKey);
+        Remap(RichStringCells, MapKey);
+        Remap(ArrayFormulas, MapKey);
+        if (axis == Axis.Row)
+        {
+            Remap(OriginalRowXf, MapLine);
+            Remap(RowAttributes, MapLine);
+        }
+        else
+        {
+            Remap(OriginalColXf, MapLine);
+            var position = Children.FindIndex(e => e.Name.LocalName == "cols");
+            if (position >= 0)
+            {
+                var original = Children[position];
+                var cols = new XElement(original);
+                foreach (var col in cols.Elements().Where(e => e.Name.LocalName == "col").ToList())
+                {
+                    var (min, max) = SheetXmlReader.ColumnSpan(col);
+                    var end = index - count;
+                    var (from, to) = count > 0
+                        ? (min >= index ? min + count : min, max >= index ? max + count : max)
+                        : (min < index ? min : min >= end ? min + count : index, max < index ? max : max >= end ? max + count : index - 1);
+                    if (to < from || from >= limit) col.Remove();
+                    else
+                    {
+                        col.SetAttributeValue("min", from + 1);
+                        col.SetAttributeValue("max", Math.Min(to, limit - 1) + 1);
+                    }
+                }
+
+                Children[position] = cols;
+                undo.Add(() => Children[Children.IndexOf(cols) is >= 0 and var i ? i : position] = original);
+            }
+        }
+
+        return () =>
+        {
+            for (var i = undo.Count - 1; i >= 0; i--) undo[i]();
+        };
+    }
+
+    /// <summary>Drops the cell keyed entries (rich string runs, extra attributes, original xf) of cells whose content was replaced, for example by sorting.</summary>
+    /// <param name="where">Selects the cells.</param>
+    /// <returns>An action that puts the dropped entries back.</returns>
+    public Action Forget(Func<CellRef, bool> where)
+    {
+        var undo = new List<Action>();
+        void Drop<T>(Dictionary<long, T> map)
+        {
+            foreach (var (key, value) in map.Where(p => where(CellRef.FromKey(p.Key))).ToList())
+            {
+                map.Remove(key);
+                undo.Add(() => map[key] = value);
+            }
+        }
+
+        Drop(RichStringCells);
+        Drop(CellAttributes);
+        Drop(OriginalXf);
+        return () => undo.ForEach(a => a());
+    }
+}
+
+/// <summary>
+/// Inventory of a source xlsx package kept with a <see cref="Workbook"/> so the writer can copy untouched parts byte for byte and
+/// re-emit what the model does not represent.
+/// </summary>
+internal sealed class XlsxPackage
+{
+    internal const string RelationshipsNs = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+
+    internal const double Date1904Offset = 1462;
+
+    private static readonly XmlReaderSettings XmlSettings = new() { DtdProcessing = DtdProcessing.Prohibit, IgnoreWhitespace = true, CloseInput = false };
+
+    private static readonly HashSet<string> UnshiftedChildren = ["protectedRanges", "scenarios", "dataConsolidate", "customSheetViews", "extLst"];
+
+    private static readonly string[] UnshiftedContentTypes = ["pivot", "chart", "drawing+xml", "comments", "externalLink", "queryTable", "slicer", "timeline"];
+
+    private readonly Dictionary<int, bool> _dateStyles = new();
+
+    /// <summary>The original package bytes.</summary>
+    public byte[] Source { get; init; }
+
+    /// <summary>Zip entry names in original order.</summary>
+    public List<string> PartNames { get; } = [];
+
+    /// <summary>Default content types by lower-case extension.</summary>
+    public Dictionary<string, string> DefaultContentTypes { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Override content types by part name with leading slash.</summary>
+    public Dictionary<string, string> OverrideContentTypes { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Zip entry name of the workbook part.</summary>
+    public string WorkbookPart { get; set; }
+
+    /// <summary>Content type of the workbook part (macro-enabled, template or plain).</summary>
+    public string WorkbookContentType => ContentType(WorkbookPart);
+
+    /// <summary>Relationships of the workbook part in original order.</summary>
+    public List<XlsxRelationship> WorkbookRelationships { get; } = [];
+
+    /// <summary>Zip entry name of the shared strings part, or null.</summary>
+    public string SharedStringsPart { get; set; }
+
+    /// <summary>Zip entry name of the styles part, or null.</summary>
+    public string StylesPart { get; set; }
+
+    /// <summary>Zip entry name of the theme part, or null.</summary>
+    public string ThemePart { get; set; }
+
+    /// <summary>All sheets of workbook.xml in tab order, including sheets that are not worksheets.</summary>
+    public List<XlsxSheetPart> Sheets { get; } = [];
+
+    /// <summary>The original <c>definedNames</c> element (sheet-scoped, hidden and commented names live only here), or null.</summary>
+    public XElement DefinedNames { get; set; }
+
+    /// <summary>
+    /// True if the workbook uses the 1904 date system. The reader adds <see cref="Date1904Offset"/> to numbers in date-formatted cells so the
+    /// model always holds 1900-based serials, and the writer subtracts it again.
+    /// </summary>
+    public bool Date1904 { get; set; }
+
+    /// <summary>True if sheets have children or the package has parts whose cell references are not shifted by structural changes.</summary>
+    public bool HasUnshiftedReferences { get; set; }
+
+    /// <summary>Style id in <see cref="Workbook.Styles"/> for each <c>cellXfs</c> index.</summary>
+    public int[] XfStyleIds { get; set; } = [0];
+
+    /// <summary>The <c>cm</c> value of the first dynamic-array formula in the source; its cell metadata marks a formula as dynamic.</summary>
+    public string DynamicArrayCm { get; set; }
+
+    /// <summary>Original <c>si</c> elements of shared strings with runs or phonetic text, by shared string index.</summary>
+    public Dictionary<int, XElement> RichStrings { get; } = new();
+
+    /// <summary>
+    /// The first <c>cellXfs</c> index that produced each style id (index = style id; style 0 is xf 0). Several xfs that differ only in
+    /// attributes the model ignores (protection, quotePrefix, xfId, rotation …) share one style id; the cells keep their own xf in
+    /// <see cref="XlsxSheetPart.OriginalXf"/>.
+    /// </summary>
+    public int[] CanonicalXf { get; set; } = [0];
+
+    /// <summary>Content type of a zip entry from its override or extension default.</summary>
+    /// <param name="partName">Zip entry name without leading slash.</param>
+    /// <returns>The content type, or null.</returns>
+    public string ContentType(string partName) =>
+        partName == null ? null
+        : OverrideContentTypes.TryGetValue("/" + partName, out var type) ? type
+        : DefaultContentTypes.GetValueOrDefault(Path.GetExtension(partName).TrimStart('.'));
+
+    internal static XDocument LoadXml(Stream stream)
+    {
+        using var reader = XmlReader.Create(stream, XmlSettings);
+        return XDocument.Load(reader);
+    }
+
+    internal bool IsDateStyle(StyleTable styles, int styleId)
+    {
+        if (styleId == 0) return false;
+        if (!_dateStyles.TryGetValue(styleId, out var date)) _dateStyles[styleId] = date = NumberFormat.IsDateFormat(styles[styleId].NumberFormat);
+        return date;
+    }
+
+    internal void DetectUnshiftedReferences()
+    {
+        var modelled = Sheets.Where(p => p.AnnotationsModelled).SelectMany(p => new[] { p.CommentsPart, p.VmlPart }).Where(n => n != null)
+            .Concat(Sheets.Where(p => p.DrawingModelled).SelectMany(p => p.DrawingParts)).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        HasUnshiftedReferences = Sheets.Any(p => p.Children.Any(c => UnshiftedChildren.Contains(c.Name.LocalName)
+                                                                      || c.Name.LocalName == "legacyDrawing" && !p.AnnotationsModelled
+                                                                      || c.Name.LocalName == "drawing" && !p.DrawingModelled))
+                                 || PartNames.Any(n => !modelled.Contains(n) && ContentType(n) is { } type
+                                                                            && UnshiftedContentTypes.Any(t => type.Contains(t, StringComparison.OrdinalIgnoreCase)));
+    }
+
+    internal static string RelationshipId(XElement e) =>
+        (string)e?.Attributes().FirstOrDefault(a => a.Name.LocalName == "id" && a.Name.Namespace != XNamespace.None);
+
+    internal static XElement Child(XElement e, string name) => e?.Elements().FirstOrDefault(c => c.Name.LocalName == name);
+
+    internal static ZipArchiveEntry Find(ZipArchive zip, string name) =>
+        name == null ? null : zip.GetEntry(name) ?? zip.Entries.FirstOrDefault(e => string.Equals(e.FullName, name, StringComparison.OrdinalIgnoreCase));
+
+    internal static string RelsPartOf(string part)
+    {
+        var slash = part.LastIndexOf('/');
+        return part[..(slash + 1)] + "_rels/" + part[(slash + 1)..] + ".rels";
+    }
+
+    internal static string ResolveTarget(string sourcePart, string target)
+    {
+        if (target.StartsWith('/')) return Normalize(target[1..]);
+        var slash = sourcePart.LastIndexOf('/');
+        return Normalize(sourcePart[..(slash + 1)] + target);
+    }
+
+    internal static List<XlsxRelationship> ReadRelationships(ZipArchive zip, string part)
+    {
+        var entry = Find(zip, RelsPartOf(part));
+        if (entry == null) return [];
+        using var s = entry.Open();
+        return LoadXml(s).Root.Elements().Where(e => e.Name.LocalName == "Relationship")
+            .Select(e => new XlsxRelationship((string)e.Attribute("Id"), (string)e.Attribute("Type"), (string)e.Attribute("Target"),
+                (string)e.Attribute("TargetMode") == "External"))
+            .ToList();
+    }
+
+    internal static bool IsType(XlsxRelationship rel, string type) => rel.Type != null && rel.Type.EndsWith("/" + type, StringComparison.Ordinal);
+
+    private static string Normalize(string path)
+    {
+        var parts = new List<string>();
+        foreach (var p in Uri.UnescapeDataString(path).Split('/'))
+        {
+            if (p is "" or ".") continue;
+            if (p == "..")
+            {
+                if (parts.Count > 0) parts.RemoveAt(parts.Count - 1);
+            }
+            else parts.Add(p);
+        }
+
+        return string.Join('/', parts);
+    }
+}

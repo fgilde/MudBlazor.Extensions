@@ -1,0 +1,69 @@
+namespace MudBlazor.Extensions.Office.Presentation;
+
+/// <summary>A slide of a presentation.</summary>
+public sealed class Slide
+{
+    internal Slide()
+    {
+    }
+
+    /// <summary>A key that identifies the slide while the presentation is in memory.</summary>
+    public string Key { get; } = Guid.NewGuid().ToString("N");
+
+    /// <summary>The layout the slide is based on, or null if the file references none.</summary>
+    public SlideLayout Layout { get; internal set; }
+
+    /// <summary>The top-level shapes; the list order is the z-order.</summary>
+    public IReadOnlyList<SlideShape> Shapes => ShapeList;
+
+    /// <summary>The speaker notes, paragraphs separated by newlines; empty if there are none.</summary>
+    public string Notes { get; internal set; } = "";
+
+    /// <summary>True if the slide has a notes slide part.</summary>
+    public bool HasNotesPart { get; internal set; }
+
+    /// <summary>True if the slide is hidden in the slide show.</summary>
+    public bool Hidden { get; internal set; }
+
+    /// <summary>True if the slide changed since it was loaded.</summary>
+    public bool Modified { get; internal set; }
+
+    /// <summary>Incremented by every change of the slide; use it as render key.</summary>
+    public int Version { get; internal set; }
+
+    /// <summary>The slide's own background, or null if it is inherited from the layout or master.</summary>
+    public SlideBackground Background { get; internal set; }
+
+    /// <summary>The transition that brings the slide on screen in the slide show.</summary>
+    public SlideTransition Transition { get; internal set; } = SlideTransition.None;
+
+    /// <summary>The effects of the main animation sequence in order. Effects of shapes that are no longer on the slide are left out.</summary>
+    public IReadOnlyList<AnimationEffect> Animations => LiveAnimations().Select(i => AnimationList[i]).ToList();
+
+    internal List<AnimationEffect> AnimationList { get; } = [];
+
+    internal bool ShowMasterShapes { get; set; } = true;
+
+    internal IReadOnlyDictionary<string, string> ColorMap { get; set; }
+
+    internal IReadOnlyDictionary<string, string> EffectiveColorMap => ColorMap ?? Layout?.ColorMap;
+
+    internal IEnumerable<SlideShape> InheritedShapes =>
+        !ShowMasterShapes || Layout == null
+            ? []
+            : (Layout.ShowMasterShapes && Layout.Master != null ? Layout.Master.Shapes : []).Concat(Layout.Shapes);
+
+    internal List<SlideShape> ShapeList { get; } = [];
+
+    internal Slide CopyOf { get; init; }
+
+    internal uint ReservedId { get; init; }
+
+    internal Presentation Owner { get; init; }
+
+    internal List<int> LiveAnimations()
+    {
+        var ids = SlideShape.Flatten(ShapeList).Select(s => s.Id).ToHashSet();
+        return Enumerable.Range(0, AnimationList.Count).Where(i => ids.Contains(AnimationList[i].ShapeId)).ToList();
+    }
+}

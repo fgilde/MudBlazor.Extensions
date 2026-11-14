@@ -86,7 +86,6 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" />
     <PackageReference Include="ExcelDataReader" />
-    <PackageReference Include="ExcelDataReader.DataSet" />
     <PackageReference Include="Microsoft.Data.Sqlite" />
     <PackageReference Include="AuralizeBlazor" />
     <PackageReference Include="MudBlazor.Markdown" />

@@ -203,4 +203,24 @@ public class ViewerMetaContractTests
         Assert.Equal(42, Assert.Contains("Rows", meta));
         Assert.Equal(7, Assert.Contains("Columns", meta));
     }
+
+    [Fact]
+    public async Task ViewerMetaContract_IncludesSlideEditor()
+    {
+        await using var context = CreateContext();
+        var bytes = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "TestData", "Presentation", "sample.pptx"));
+        IDictionary<string, object> reported = null;
+
+        var cut = context.Render<MudExFileDisplay>(parameters => parameters
+            .Add(c => c.FileName, "deck.pptx")
+            .Add(c => c.ContentType, "application/vnd.openxmlformats-officedocument.presentationml.presentation")
+            .Add(c => c.ContentStream, new MemoryStream(bytes))
+            .Add(c => c.FileMetaInformationChanged, meta => reported = meta));
+
+        cut.WaitForAssertion(() =>
+        {
+            Assert.NotNull(reported);
+            Assert.True(Assert.Contains("Slides", reported) is int count && count > 0);
+        });
+    }
 }

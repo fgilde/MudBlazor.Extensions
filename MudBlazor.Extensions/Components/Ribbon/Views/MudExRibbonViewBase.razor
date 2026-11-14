@@ -1,0 +1,221 @@
+@namespace MudBlazor.Extensions.Components
+@inherits ComponentBase
+
+@code {
+    internal RenderFragment Header(RenderFragment content)
+    {
+        Ribbon.AssignKeyTips();
+        var quickAccess = Ribbon.QuickAccessItems;
+        var fileMenuOpen = Ribbon.FileMenu != null && Ribbon.FileMenuOpen;
+        var showQuickAccess = quickAccess.Any(i => i.Visible);
+        var showTitleBar = showQuickAccess || Ribbon.TitleContent != null || Ribbon.ShowCommandSearch || Ribbon.HeaderEndContent != null || Ribbon.ShowModeSwitch;
+        return @<text>
+        <div class="@($"mud-ex-ribbon-header{(_overlayOpen || fileMenuOpen ? " mud-ex-ribbon-header-raised" : "")}")" style="@Ribbon.HeaderStyle">
+            @if (showTitleBar)
+            {
+                <div class="mud-ex-ribbon-title-bar">
+                    @if (showQuickAccess)
+                    {
+                        <div class="mud-ex-ribbon-quick-access" role="toolbar" aria-label="@Ribbon.TryLocalize("Quick Access Toolbar")">
+                            @MudExRibbonItemBase.Slots(quickAccess, _ => MudExRibbonItemLayout.Small)
+                        </div>
+                    }
+                    @if (Ribbon.TitleContent != null)
+                    {
+                        <div class="mud-ex-ribbon-title">@Ribbon.TitleContent</div>
+                    }
+                    @if (Ribbon.ShowCommandSearch)
+                    {
+                        <MudExRibbonCommandSearch Ribbon="Ribbon" />
+                    }
+                    @if (Ribbon.HeaderEndContent != null)
+                    {
+                        <div class="mud-ex-ribbon-header-end">@Ribbon.HeaderEndContent</div>
+                    }
+                    @if (Ribbon.ShowModeSwitch)
+                    {
+                        <MudMenu Class="mud-ex-ribbon-mode-switch"
+                                 Icon="@Icons.Material.Filled.ViewDay"
+                                 Color="Color.Inherit"
+                                 Size="Size.Small"
+                                 Dense="true"
+                                 AriaLabel="@Ribbon.TryLocalize("Ribbon display options")"
+                                 AnchorOrigin="Origin.BottomRight"
+                                 TransformOrigin="Origin.TopRight">
+                            @foreach (var (mode, text) in Modes)
+                            {
+                                <MudMenuItem Class="mud-ex-ribbon-mode-option"
+                                             Icon="@(mode == Ribbon.Mode ? Icons.Material.Filled.Check : null)"
+                                             role="menuitemradio"
+                                             aria-checked="@(mode == Ribbon.Mode ? "true" : "false")"
+                                             OnClick="() => Ribbon.SetModeAsync(mode)">
+                                    @Ribbon.TryLocalize(text)
+                                </MudMenuItem>
+                            }
+                        </MudMenu>
+                    }
+                </div>
+            }
+            <div class="mud-ex-ribbon-tab-row">
+                @if (Ribbon.FileMenu != null)
+                {
+                    <button type="button"
+                            class="mud-ex-ribbon-tab mud-ex-ribbon-file-tab"
+                            style="@Ribbon.FileTabStyle"
+                            aria-haspopup="dialog"
+                            aria-expanded="@(fileMenuOpen ? "true" : "false")"
+                            aria-controls="@(fileMenuOpen ? Ribbon.BackstageId : null)"
+                            @attributes="Ribbon.TabKeyTipAttributes(Ribbon)"
+                            @ref="_fileTab"
+                            @onclick="() => Ribbon.SetFileMenuOpenAsync(!fileMenuOpen)">
+                        @Ribbon.TryLocalize(Ribbon.FileMenuText)
+                    </button>
+                }
+                @content
+                @if (Ribbon.IsCollapsed && Ribbon.AllowCollapse)
+                {
+                    @CollapseToggle
+                }
+            </div>
+        </div>
+        @if (fileMenuOpen)
+        {
+            <div class="mud-ex-ribbon-backstage"
+                 id="@Ribbon.BackstageId"
+                 role="dialog"
+                 aria-label="@Ribbon.TryLocalize(Ribbon.FileMenuText)"
+                 @onkeydown="OnBackstageKeyDown">
+                <div class="mud-ex-ribbon-backstage-nav" style="@Ribbon.HeaderStyle">
+                    <button type="button"
+                            class="mud-ex-ribbon-backstage-back"
+                            aria-label="@Ribbon.TryLocalize("Back")"
+                            @ref="_backstageBack"
+                            @onclick="CloseBackstageAsync">
+                        <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    </button>
+                </div>
+                <div class="mud-ex-ribbon-backstage-content"><CascadingValue Value="Ribbon" IsFixed="true">@Ribbon.FileMenu</CascadingValue></div>
+            </div>
+        }
+        <MudMenu @ref="_contextMenu" Class="mud-ex-ribbon-context-menu" PositionAtCursor="true" Dense="true">
+            @if (_contextItem != null)
+            {
+                var pinned = Ribbon.IsPinned(_contextItem);
+                <MudMenuItem Class="mud-ex-ribbon-context-menu-item"
+                             Icon="@(pinned ? Icons.Material.Outlined.PushPin : Icons.Material.Filled.PushPin)"
+                             OnClick="() => Ribbon.TogglePinnedAsync(_contextItem)">
+                    @Ribbon.TryLocalize(pinned ? "Remove from Quick Access Toolbar" : "Add to Quick Access Toolbar")
+                </MudMenuItem>
+            }
+        </MudMenu>
+        </text>;
+    }
+
+    internal RenderFragment Tabbed(RenderFragment<MudExRibbonTab> body, string bodyClass)
+    {
+        var activeTab = Ribbon.ActiveTab;
+        _overlayOpen &= Ribbon.IsCollapsed;
+        return @<text>
+            @Header(TabStrip(activeTab))
+            @if (Ribbon.IsCollapsed)
+            {
+                <div class="mud-ex-ribbon-overlay-anchor">
+                    <MudPopover Open="@_overlayOpen"
+                                Class="mud-ex-ribbon-overlay"
+                                AnchorOrigin="Origin.BottomLeft"
+                                TransformOrigin="Origin.TopLeft"
+                                RelativeWidth="DropdownWidth.Relative">
+                        <div class="mud-ex-ribbon-overlay-content" @onkeydown="OnOverlayKeyDown">
+                            @Panel(activeTab, body, bodyClass)
+                        </div>
+                    </MudPopover>
+                    <MudOverlay Class="mud-ex-ribbon-overlay-backdrop"
+                                Visible="@_overlayOpen"
+                                AutoClose="true"
+                                LockScroll="false"
+                                OnClosed="CloseOverlay" />
+                </div>
+            }
+            else
+            {
+                @Panel(activeTab, body, bodyClass)
+            }
+        </text>;
+    }
+
+    private RenderFragment Panel(MudExRibbonTab activeTab, RenderFragment<MudExRibbonTab> body, string bodyClass) =>
+        @<div class="@($"mud-ex-ribbon-body {bodyClass}{(Ribbon.IsFullyReduced ? " mud-ex-ribbon-body-scroll" : "")}".TrimEnd())"
+              role="tabpanel"
+              id="@PanelId"
+              aria-labelledby="@(activeTab == null ? null : TabId(activeTab))">
+            @if (activeTab != null)
+            {
+                @body(activeTab)
+            }
+            @if (!Ribbon.IsCollapsed && Ribbon.AllowCollapse)
+            {
+                @CollapseToggle
+            }
+        </div>;
+
+    internal static RenderFragment GroupSections(IEnumerable<MudExRibbonGroup> groups, bool vertical, RenderFragment<MudExRibbonGroup> section) =>
+        @<text>
+            @foreach (var (group, index) in groups.Select((group, index) => (group, index)))
+            {
+                if (index > 0)
+                {
+                    <MudDivider Vertical="@vertical"
+                                FlexItem="@vertical"
+                                Class="@(vertical ? "mud-ex-ribbon-separator" : "mud-ex-ribbon-menu-section-divider")" />
+                }
+                @section(group)
+            }
+        </text>;
+
+    private RenderFragment TabStrip(MudExRibbonTab activeTab) =>
+        @<div class="mud-ex-ribbon-tabs" role="tablist">
+            @foreach (var set in TabSets(Ribbon.VisibleTabs))
+            {
+                var titleId = set[0].Contextual && !string.IsNullOrEmpty(set[0].ContextualTitle) ? $"{Ribbon.ElementId}-contextual-{Ribbon.IndexOf(set[0])}" : null;
+                <div @key="set[0]"
+                     class="@(set[0].Contextual ? "mud-ex-ribbon-tab-set mud-ex-ribbon-contextual" : "mud-ex-ribbon-tab-set")"
+                     role="presentation"
+                     style="@set[0].ContextualStyle">
+                    @if (titleId != null)
+                    {
+                        <div class="mud-ex-ribbon-contextual-title" id="@titleId" aria-hidden="true">@set[0].ContextualTitle</div>
+                    }
+                    <div class="mud-ex-ribbon-tab-set-tabs" role="presentation">
+                        @foreach (var tab in set)
+                        {
+                            var active = tab == activeTab;
+                            <button @key="tab"
+                                    type="button"
+                                    role="tab"
+                                    id="@TabId(tab)"
+                                    aria-controls="@(Ribbon.IsCollapsed && !(active && _overlayOpen) ? null : PanelId)"
+                                    aria-expanded="@(Ribbon.IsCollapsed ? (active && _overlayOpen ? "true" : "false") : null)"
+                                    class="@($"mud-ex-ribbon-tab{(active && (!Ribbon.IsCollapsed || _overlayOpen) ? " mud-ex-ribbon-tab-active" : "")} {tab.ContextualClass}".TrimEnd())"
+                                    aria-selected="@(active ? "true" : "false")"
+                                    aria-describedby="@titleId"
+                                    tabindex="@(active ? "0" : "-1")"
+                                    @attributes="Ribbon.TabKeyTipAttributes(tab)"
+                                    @onclick="() => OnTabClickAsync(tab)"
+                                    @ondblclick="ToggleCollapsedAsync">
+                                @tab.Text
+                            </button>
+                        }
+                    </div>
+                </div>
+            }
+        </div>;
+
+    private RenderFragment CollapseToggle =>
+        @<button type="button"
+                 class="mud-ex-ribbon-collapse-toggle"
+                 aria-label="@Ribbon.TryLocalize(Ribbon.IsCollapsed ? "Expand the ribbon" : "Collapse the ribbon")"
+                 aria-expanded="@(Ribbon.IsCollapsed ? "false" : "true")"
+                 @onclick="ToggleCollapsedAsync">
+            <MudIcon Icon="@(Ribbon.IsCollapsed ? Icons.Material.Filled.ExpandMore : Icons.Material.Filled.ExpandLess)" Class="mud-ex-ribbon-icon" />
+        </button>;
+}

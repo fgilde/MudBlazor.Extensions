@@ -106,6 +106,63 @@ require a commercial license. Decoding and encoding now run in the browser, see 
 
 ---
 
+## MudExFileDisplayCode Is an Editor
+
+`MudExFileDisplayCode` now derives from `MudExFileEditorBase` and renders an editable textarea unless
+`ReadOnly` is set. Inside `MudExFileDisplay` the display sets `ReadOnly` from its edit mode, so nothing changes there.
+If you render `<MudExFileDisplayCode>` directly and want the previous highlighted, read-only view, add `ReadOnly="true"`.
+
+**Reason:** text and code files can be edited and saved through the shared file editor pipeline.
+
+---
+
+## Excel Viewers Replaced by `MudExSpreadsheetEditor`
+
+`MudExFileDisplayExcel` (ExcelDataReader grid) and `MudExFileDisplayExcelUniver` (Univer from a CDN) are removed together with
+`IMudExFileService.ReadExcelFile`, `ExcelFile`, `ExcelSheet` and `ExcelRow`. `MudExFileDisplay` now opens xlsx, xlsm, xls, csv and tsv
+in `MudExSpreadsheetEditor`, read-only unless the display is in edit mode (the display sets `ReadOnly` from its edit mode).
+
+**Reason:** one spreadsheet component that reads, edits and saves xlsx, xls and csv without loading scripts from a CDN.
+
+**Before:**
+```razor
+<MudExFileDisplayExcel Src="@url" />
+```
+```csharp
+var excel = fileService.ReadExcelFile(stream, contentType);
+```
+
+**After:**
+```razor
+<MudExFileDisplay Url="@url" />
+<MudExSpreadsheetEditor FileDisplayInfos="@infos" ReadOnly="true" />
+```
+```csharp
+var workbook = XlsxReader.Read(stream);
+```
+
+---
+
+## Presentation Viewer Replaced by `MudExSlideEditor`
+
+`MudExFileDisplayPresentation` is removed. `MudExFileDisplay` now opens pptx in `MudExSlideEditor`, read-only unless the display is in
+edit mode (the display sets `ReadOnly` from its edit mode). The speaker notes pane of the old viewer is the editor's `ShowNotes` parameter.
+
+**Reason:** one slide component that views, edits and saves pptx without losing content it does not model.
+
+**Before:**
+```razor
+<MudExFileDisplayPresentation FileDisplayInfos="@infos" />
+```
+
+**After:**
+```razor
+<MudExFileDisplay Url="@url" />
+<MudExSlideEditor FileDisplayInfos="@infos" ReadOnly="true" ShowNotes="true" />
+```
+
+---
+
 ## Previously Deprecated Methods (Reminder)
 
 The following methods were already deprecated in earlier versions and continue to point to their async replacements:

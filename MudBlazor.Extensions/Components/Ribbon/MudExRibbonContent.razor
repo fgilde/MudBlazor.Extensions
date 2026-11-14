@@ -1,0 +1,8 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonItemBase
+
+@code {
+    /// <inheritdoc />
+    public override RenderFragment Render(MudExRibbonItemLayout layout) =>
+        @<div class="@($"mud-ex-ribbon-content mud-ex-ribbon-cell-{LayoutName(layout)}")">@ChildContent</div>;
+}

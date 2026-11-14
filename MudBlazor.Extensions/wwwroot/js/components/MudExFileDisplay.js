@@ -28,8 +28,38 @@
         setTimeout(() => this.dotnet.invokeMethodAsync('HandleContentError').then(isHandled => { if (!isHandled) showError(); }, showError), 0);
     }
 
-    
+    setDirty(isDirty) {
+        if (isDirty && !this._onBeforeUnload) {
+            this._onBeforeUnload = (event) => { event.preventDefault(); event.returnValue = ''; };
+            this._onKeyDown = (event) => {
+                if (!event.defaultPrevented && (event.ctrlKey || event.metaKey) && !event.altKey && event.key.toLowerCase() === 's') {
+                    event.preventDefault();
+                    if (this._saving)
+                        return;
+                    this._saving = true;
+                    this.dotnet.invokeMethodAsync('SaveFromShortcut').catch(() => {}).finally(() => { this._saving = false; });
+                }
+            };
+            window.addEventListener('beforeunload', this._onBeforeUnload);
+            if (this.elementRef instanceof Element)
+                this.elementRef.addEventListener('keydown', this._onKeyDown);
+        } else if (!isDirty) {
+            this.removeDirtyHandlers();
+        }
+    }
+
+    removeDirtyHandlers() {
+        if (!this._onBeforeUnload)
+            return;
+        window.removeEventListener('beforeunload', this._onBeforeUnload);
+        if (this.elementRef instanceof Element)
+            this.elementRef.removeEventListener('keydown', this._onKeyDown);
+        this._onBeforeUnload = null;
+        this._onKeyDown = null;
+    }
+
     dispose() {
+        this.removeDirtyHandlers();
         this._errorTarget.removeEventListener('error', this._onError, true);
         if (window.__mudExFileDisplay && window.__mudExFileDisplay[this.id]) {
             window.__mudExFileDisplay[this.id] = null;

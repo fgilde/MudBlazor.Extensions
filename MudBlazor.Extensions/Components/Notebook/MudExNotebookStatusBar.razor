@@ -1,0 +1,13 @@
+@inherits MudExBaseComponent<MudExNotebookStatusBar>
+@namespace MudBlazor.Extensions.Components
+
+<div @attributes="UserAttributes" class="@($"mud-ex-notebook-status-bar {Class}".TrimEnd())" style="@Style" role="status">
+    <span class="mud-ex-notebook-status-section">@SectionName</span>
+    <span class="mud-ex-notebook-status-position">@(PageCount > 0 ? TryLocalize("Page {0} of {1}", PageNumber, PageCount) : "")</span>
+    <div class="mud-ex-sssb-zoom">
+        <button type="button" class="mud-ex-sssb-zoom-button" aria-label="@TryLocalize("Zoom Out")" title="@TryLocalize("Zoom Out")" @onclick="@(() => SetZoomAsync(Zoom - 0.1))">−</button>
+        <input type="range" class="mud-ex-sssb-slider" min="25" max="400" step="5" value="@Percent" aria-label="@TryLocalize("Zoom")" @onchange="OnSliderChangedAsync" />
+        <button type="button" class="mud-ex-sssb-zoom-button" aria-label="@TryLocalize("Zoom In")" title="@TryLocalize("Zoom In")" @onclick="@(() => SetZoomAsync(Zoom + 0.1))">+</button>
+        <span class="mud-ex-sssb-percent">@($"{Percent}%")</span>
+    </div>
+</div>

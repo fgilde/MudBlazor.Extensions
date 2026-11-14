@@ -1936,6 +1936,132 @@ class MudExFileSystemAccess {
     // lifetime. Picking a new root clears it outright, so switching folders doesn't pile the old tree on top.
     static _handles = {};
 
+    static _fileHandles = {};
+
+    static async _pickSaveHandle(suggestedName, mimeType) {
+        const dot = suggestedName.lastIndexOf('.');
+        const options = { suggestedName };
+        if (dot >= 0 && mimeType) {
+            options.types = [{ description: suggestedName.substring(dot + 1).toUpperCase(), accept: { [mimeType]: [suggestedName.substring(dot)] } }];
+        }
+        try {
+            return await window.showSaveFilePicker(options);
+        } catch (e) {
+            if (e && e.name === 'AbortError') {
+                return null;
+            }
+            throw e;
+        }
+    }
+
+    static async _writeHandle(handle, buffer) {
+        const writable = await handle.createWritable();
+        await writable.write(buffer);
+        await writable.close();
+    }
+
+    static async _download(streamRef, suggestedName, mimeType) {
+        const buffer = await streamRef.arrayBuffer();
+        const url = URL.createObjectURL(new Blob([buffer], { type: mimeType }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = suggestedName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+        return { handleId: null, fileName: suggestedName, target: 'Download' };
+    }
+
+    static async _pickOrDownload(streamRef, suggestedName, mimeType) {
+        try {
+            return { handle: await MudExFileSystemAccess._pickSaveHandle(suggestedName, mimeType) };
+        } catch (e) {
+            if (e && (e.name === 'SecurityError' || e.name === 'NotAllowedError')) {
+                return { download: await MudExFileSystemAccess._download(streamRef, suggestedName, mimeType) };
+            }
+            throw e;
+        }
+    }
+
+    static async saveFile(handleId, streamRef, suggestedName, mimeType) {
+        let handle = handleId ? MudExFileSystemAccess._fileHandles[handleId] : null;
+        const reused = !!handle;
+        if (!handle && typeof window.showSaveFilePicker !== 'function') {
+            return await MudExFileSystemAccess._download(streamRef, suggestedName, mimeType);
+        }
+        if (!handle) {
+            const picked = await MudExFileSystemAccess._pickOrDownload(streamRef, suggestedName, mimeType);
+            if (picked.download || !picked.handle) {
+                return picked.download ?? null;
+            }
+            handle = picked.handle;
+        }
+        const buffer = await streamRef.arrayBuffer();
+        try {
+            await MudExFileSystemAccess._writeHandle(handle, buffer);
+        } catch (e) {
+            if (!reused || !e || (e.name !== 'NotAllowedError' && e.name !== 'NotFoundError')) {
+                throw e;
+            }
+            delete MudExFileSystemAccess._fileHandles[handleId];
+            const picked = await MudExFileSystemAccess._pickOrDownload({ arrayBuffer: async () => buffer }, suggestedName, mimeType);
+            if (picked.download || !picked.handle) {
+                return picked.download ?? null;
+            }
+            handle = picked.handle;
+            await MudExFileSystemAccess._writeHandle(handle, buffer);
+            handleId = null;
+        }
+        if (!handleId) {
+            handleId = crypto.randomUUID();
+        }
+        MudExFileSystemAccess._fileHandles[handleId] = handle;
+        return { handleId, fileName: handle.name, target: 'Local' };
+    }
+
+    static _openedFile(handleId, file) {
+        return { handleId, fileName: file.name, contentType: file.type || null, content: DotNet.createJSStreamReference(file) };
+    }
+
+    static _openWithInput(formats) {
+        return new Promise(resolve => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = formats.flatMap(f => [f.extension ? '.' + f.extension : null, f.contentType]).filter(Boolean).join(',');
+            input.addEventListener('change', () => resolve(input.files.length ? MudExFileSystemAccess._openedFile(null, input.files[0]) : null));
+            input.addEventListener('cancel', () => resolve(null));
+            input.click();
+        });
+    }
+
+    static async openFile(formats) {
+        formats = formats || [];
+        if (typeof window.showOpenFilePicker !== 'function') {
+            return await MudExFileSystemAccess._openWithInput(formats);
+        }
+        const types = formats.filter(f => f.extension).map(f => ({
+            description: f.name || f.extension.toUpperCase(),
+            accept: { [f.contentType || 'application/octet-stream']: ['.' + f.extension] }
+        }));
+        let handle;
+        try {
+            [handle] = await window.showOpenFilePicker(types.length ? { types } : {});
+        } catch (e) {
+            if (e && e.name === 'AbortError') {
+                return null;
+            }
+            throw e;
+        }
+        const handleId = crypto.randomUUID();
+        MudExFileSystemAccess._fileHandles[handleId] = handle;
+        return MudExFileSystemAccess._openedFile(handleId, await handle.getFile());
+    }
+
+    static releaseFile(handleId) {
+        delete MudExFileSystemAccess._fileHandles[handleId];
+    }
+
     static isSupported() {
         return typeof window.showDirectoryPicker === 'function';
     }

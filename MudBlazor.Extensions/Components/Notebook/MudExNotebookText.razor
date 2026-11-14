@@ -1,0 +1,44 @@
+@inherits ComponentBase
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Notebook
+
+<div class="mud-ex-notebook-text">
+    @{ var numbers = NoteLists.Numbers(Paragraphs); }
+    @for (var i = 0; i < Paragraphs.Count; i++)
+    {
+        var paragraph = Paragraphs[i];
+        var heading = HeadingLevel(paragraph);
+        <div class="@(heading == null ? "mud-ex-notebook-paragraph" : "mud-ex-notebook-paragraph mud-ex-notebook-h" + heading)" role="@(heading == null ? null : "heading")"
+             aria-level="@heading" style="@NotebookStyles.ParagraphStyle(paragraph)">
+            @switch (paragraph.List)
+            {
+                case NoteListKind.Todo:
+                    <span class="@(paragraph.Checked ? "mud-ex-notebook-todo mud-ex-notebook-todo-checked" : "mud-ex-notebook-todo")" role="checkbox"
+                          aria-checked="@(paragraph.Checked ? "true" : "false")" contenteditable="false">@(paragraph.Checked ? CheckedBox : EmptyBox)</span>
+                    break;
+                case NoteListKind.Number:
+                    <span class="mud-ex-notebook-marker" contenteditable="false">@numbers[i]</span>
+                    break;
+                case NoteListKind.Bullet:
+                    <span class="mud-ex-notebook-marker" contenteditable="false">@NotebookStyles.Bullet(paragraph)</span>
+                    break;
+            }
+            @foreach (var run in paragraph.Runs)
+            {
+                @if (NoteValues.IsSafeLink(run.Format.Link))
+                {
+                    <a class="mud-ex-notebook-run mud-ex-notebook-link" href="@run.Format.Link" target="_blank" rel="noopener noreferrer"
+                       style="@NotebookStyles.RunStyle(paragraph, run)">@run.Text</a>
+                }
+                else
+                {
+                    <span class="mud-ex-notebook-run" style="@NotebookStyles.RunStyle(paragraph, run)">@run.Text</span>
+                }
+            }
+            @if (paragraph.Runs.All(r => r.Text.Length == 0))
+            {
+                <span style="@NotebookStyles.EmptyRunStyle(paragraph)">&#8203;</span>
+            }
+        </div>
+    }
+</div>

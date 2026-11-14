@@ -75,6 +75,21 @@ public partial class DialogOptionsEx
     };
 
     /// <summary>
+    /// The options for the dialogs an office editor (spreadsheet, slides, notebook) opens: <paramref name="options"/> when set,
+    /// otherwise a copy of <see cref="DefaultDialogOptions"/> with a small, full width dialog and a close button.
+    /// </summary>
+    internal static DialogOptionsEx EditorDialogOptions(DialogOptionsEx options)
+    {
+        if (options != null)
+            return options;
+        var result = DefaultDialogOptions?.CloneOptions() ?? new DialogOptionsEx();
+        result.MaxWidth = MudBlazor.MaxWidth.Small;
+        result.FullWidth = true;
+        result.CloseButton = true;
+        return result;
+    }
+
+    /// <summary>
     /// Dialog options for file display dialog.
     /// </summary>
     public static DialogOptionsEx FileDisplayDialogOptions => new()

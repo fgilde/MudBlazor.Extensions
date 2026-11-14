@@ -1,0 +1,111 @@
+@page "/spreadsheet"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [DemoNew(Name = "Overview", Group = "Spreadsheet", Order = 0, Icon = Icons.Material.Outlined.TableChart, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) }, Documentation = "MudExSpreadsheetEditor – an Excel-like editor with ribbon, formula bar, sheet tabs and status bar.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Spreadsheet Editor"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["Edit xlsx and csv workbooks with formulas, number formats, merges, frozen panes and undo. The editor fills its container, so give the host element a height."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Feature overview"
+                  NavTitle="Feature overview"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Used in this workbook"
+                  Features="@(new[]
+                              {
+                                  "Formulas in the Total column and the grand total",
+                                  "A column chart of the quarters, updated live",
+                                  "A color scale as conditional formatting",
+                                  "A table with a filter on the Total column",
+                                  "A validation dropdown in B9, a note on A1 and a hyperlink in A11"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SpreadsheetOverviewExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Budget workbook"
+                  NavTitle="Budget workbook"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Parameters and events"
+                  Features="@(new[]
+                              {
+                                  "@bind-Workbook – edit a workbook built in code or loaded from a file",
+                                  "SelectionChanged – follow the selected range",
+                                  "Formulas, number formats, borders and frozen panes are part of the workbook",
+                                  "Ctrl+Z / Ctrl+Y undo and redo, Ctrl+B, Ctrl+1 Format Cells"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["A small budget with SUM, AVERAGE, IF, XLOOKUP and a FILTER spill, formatted as a table."]
+            </MudText>
+            <SpreadsheetBudgetExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. Ribbon modes, colors and layout"
+                  NavTitle="Ribbon modes and colors"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Parameters"
+                  Features="@(new[]
+                              {
+                                  "RibbonMode – Classic, Simplified, Menu or Toolbar",
+                                  "RibbonColor – MudExColor, a theme color or any CSS color",
+                                  "ShowRibbon, RibbonCollapsed",
+                                  "ShowFormulaBar, ShowSheetTabs, ShowStatusBar"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Switch the ribbon mode and color and toggle the parts of the editor."]
+            </MudText>
+            <SpreadsheetLazyDemo>
+                <SpreadsheetModesExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="4. Read-only viewer"
+                  NavTitle="Read-only viewer"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "ReadOnly – only the View tab, no editing, no sheet management",
+                                  "Selection, status bar summary, zoom and gridline options still work"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SpreadsheetViewerExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="5. 100,000 rows x 30 columns"
+                  NavTitle="100,000 rows"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "The workbook is built in code",
+                                  "Only the visible cells and a small buffer are in the DOM",
+                                  "Scrolling does not call .NET per pixel"
+                              })">
+        <DemoContent>
+            <SpreadsheetLargeExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

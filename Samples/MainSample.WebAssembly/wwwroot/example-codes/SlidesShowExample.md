@@ -1,0 +1,14 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Presentation
+
+<MudText Typo="Typo.body2" Class="mb-2">@L["Press F5 for the slide show from the beginning, Shift+F5 from the current slide, or use the Slide Show tab and the button in the status bar. Esc ends the show."]</MudText>
+<div style="width: 100%; height: 600px;">
+    <MudExSlideEditor @ref="ComponentRef" @bind-Presentation="_presentation" />
+</div>
+
+@code {
+    private Presentation _presentation = SlidesSamples.CreateDeck();
+}
+
+```

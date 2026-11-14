@@ -1,0 +1,124 @@
+using System.Globalization;
+using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Office.Presentation;
+
+namespace MudBlazor.Extensions.Components;
+
+/// <summary>
+/// Shows one slide as DOM that scales with its container: shapes in percent of the slide, font sizes in container query units. When
+/// <see cref="Interactive"/> is set, empty title and text placeholders show a dashed outline and their prompt text.
+/// </summary>
+public partial class MudExSlideView
+{
+    private Slide _rendered;
+    private int _renderedVersion;
+    private bool _renderedInteractive;
+    private SlideShape _renderedHiddenText;
+    private (int Row, int Column)? _renderedHiddenCell;
+    private int _renderedNumber;
+    private IReadOnlyDictionary<(uint Shape, int? Paragraph), SlideTargetState> _renderedTargets;
+
+    /// <summary>The presentation the slide belongs to.</summary>
+    [Parameter] public Presentation Presentation { get; set; }
+
+    /// <summary>The slide to show. It renders again only when its <see cref="Slide.Version"/> changes.</summary>
+    [Parameter] public Slide Slide { get; set; }
+
+    /// <summary>The image URLs of the presentation; pictures stay empty if null.</summary>
+    [Parameter] public SlideImageUrls Images { get; set; }
+
+    /// <summary>True if the shapes take pointer events, as in the editor; false for thumbnails.</summary>
+    [Parameter] public bool Interactive { get; set; }
+
+    /// <summary>A shape whose text is not shown, because it is being edited above the slide.</summary>
+    [Parameter] public SlideShape HiddenText { get; set; }
+
+    /// <summary>For a table as <see cref="HiddenText"/>: the cell whose text is not shown.</summary>
+    [Parameter] public (int Row, int Column)? HiddenCell { get; set; }
+
+    /// <summary>The visibility and build animation of animated shapes and paragraphs in the slide show; null shows every shape.</summary>
+    [Parameter] public IReadOnlyDictionary<(uint Shape, int? Paragraph), SlideTargetState> Targets { get; set; }
+
+    private string RootStyle =>
+        $"aspect-ratio:{Presentation.SlideWidth.ToString(CultureInfo.InvariantCulture)}/{Presentation.SlideHeight.ToString(CultureInfo.InvariantCulture)};{BackgroundStyle}{Style}";
+
+    private int SlideNumber => Presentation == null || Slide == null ? 0 : Presentation.FirstSlideNumber + Math.Max(0, Presentation.SlideList.IndexOf(Slide));
+
+    private string BackgroundStyle
+    {
+        get
+        {
+            var background = SlideBackground.EffectiveBackground(Slide);
+            var master = Slide.Layout?.Master;
+            var color = ColorResolver.Resolve(background.Color, master, Slide.EffectiveColorMap);
+            return background.Kind switch
+            {
+                ShapeFillKind.Picture when Images?.UrlFor(background.ImagePart) is { } url =>
+                    $"background-image:url(\"{CssString(url)}\");background-size:cover;background-position:center;",
+                ShapeFillKind.Gradient when Gradient(background.Stops, master, Slide.EffectiveColorMap) is { Count: > 0 } stops =>
+                    $"background-color:{stops[0].Color};background-image:linear-gradient({MudExSlideShapeView.Num((background.Angle ?? 90) + 90)}deg, " +
+                    string.Join(", ", stops.Select(s => $"{s.Color} {MudExSlideShapeView.Num(s.Position * 100)}%")) + ");",
+                ShapeFillKind.Solid or ShapeFillKind.Other or ShapeFillKind.Gradient when color != null => $"background-color:{color};",
+                _ => ""
+            };
+        }
+    }
+
+    internal static IReadOnlyList<GradientStop> Gradient(IEnumerable<GradientStop> stops, SlideMaster master, IReadOnlyDictionary<string, string> colorMap) =>
+        stops.Select(s => s with { Color = ColorResolver.Resolve(s.Color, master, colorMap) }).Where(s => s.Color != null).ToList();
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Remember();
+    }
+
+    /// <inheritdoc />
+    protected override bool ShouldRender()
+    {
+        if (ReferenceEquals(_rendered, Slide) && _renderedVersion == Slide?.Version && _renderedInteractive == Interactive && ReferenceEquals(_renderedHiddenText, HiddenText)
+            && _renderedNumber == SlideNumber && _renderedHiddenCell == HiddenCell && ReferenceEquals(_renderedTargets, Targets)) return false;
+        Remember();
+        return true;
+    }
+
+    private string PromptOf(SlideShape shape)
+    {
+        if (!Interactive || ReferenceEquals(shape, HiddenText) || shape is not AutoShape { Placeholder: { } placeholder } auto
+            || auto.Text?.Paragraphs.Any(p => p.Runs.Any(r => r.Text.Length > 0)) == true)
+            return null;
+        if (auto.InheritsFrom is AutoShape { HasCustomPrompt: true, Text: { } prompt })
+            return string.Join("\n", prompt.Paragraphs.Select(p => string.Concat(p.Runs.Select(r => r.Text))));
+        return placeholder.Type switch
+        {
+            "title" or "ctrTitle" => TryLocalize("Click to add title"),
+            "subTitle" => TryLocalize("Click to add subtitle"),
+            "body" or "obj" => TryLocalize("Click to add text"),
+            _ => null
+        };
+    }
+
+    private static string CssString(string value) =>
+        string.Concat(value.Where(c => !char.IsControl(c))).Replace("\\", "\\\\", StringComparison.Ordinal).Replace("\"", "\\\"", StringComparison.Ordinal);
+
+    private SlideTargetState TargetOf(SlideShape shape)
+    {
+        if (Targets == null)
+            return null;
+        SlideTargetState own = null;
+        for (var current = shape; current != null; current = current.Parent)
+            if (Targets.TryGetValue((current.Id, null), out var state))
+            {
+                if (state.Hidden)
+                    return state;
+                own ??= state.Effect != null ? state : null;
+            }
+
+        return own;
+    }
+
+    private void Remember() =>
+        (_rendered, _renderedVersion, _renderedInteractive, _renderedHiddenText, _renderedNumber, _renderedHiddenCell, _renderedTargets) =
+        (Slide, Slide?.Version ?? 0, Interactive, HiddenText, SlideNumber, HiddenCell, Targets);
+}

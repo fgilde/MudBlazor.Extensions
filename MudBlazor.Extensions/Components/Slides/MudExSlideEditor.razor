@@ -1,0 +1,375 @@
+@inherits MudBlazor.Extensions.Components.Base.MudExFileEditorBase<MudExSlideEditor>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Presentation
+
+<div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-slide-editor {Class}".TrimEnd())" style="@RootStyle" data-readonly="@(IsReadOnly ? "true" : "false")"
+     data-can-show="@(CanShow ? "true" : "false")" data-presenter-view="@(_presenterView ? "true" : "false")" @onkeydown="RootKeyDown">
+    @if (ShowRibbon)
+    {
+        <MudExRibbon @ref="_ribbon" Class="mud-ex-slide-ribbon" Color="@RibbonColor" @bind-ActiveTabIndex="_tabIndex" @bind-Mode="_mode" @bind-Collapsed="_collapsed" FileMenuText="@TryLocalize("File")">
+            <FileMenu>
+                <MudExFileEditorBackstage Editor="this" Localizer="@Localizer" />
+            </FileMenu>
+            <QuickAccess>
+                @if (!IsReadOnly)
+                {
+                    <MudExRibbonButton Id="pp-save" Text="@TryLocalize("Save")" Icon="@Icons.Material.Filled.Save" Shortcut="Ctrl+S" OnClick="@(() => SaveAsync())" />
+                    <MudExRibbonButton Id="pp-undo" Text="@TryLocalize("Undo")" Icon="@Icons.Material.Filled.Undo" Shortcut="Ctrl+Z" Disabled="@(!_presentation.Undo.CanUndo)" OnClick="@(() => UndoAsync(false))" />
+                    <MudExRibbonButton Id="pp-redo" Text="@TryLocalize("Redo")" Icon="@Icons.Material.Filled.Redo" Shortcut="Ctrl+Y" Disabled="@(!_presentation.Undo.CanRedo)" OnClick="@(() => UndoAsync(true))" />
+                }
+            </QuickAccess>
+            <ChildContent>
+                <MudExRibbonTab Text="@TryLocalize("Home")" KeyTip="H" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Clipboard")" Icon="@Icons.Material.Filled.ContentPaste" CollapsePriority="2">
+                        <MudExRibbonButton Id="pp-paste" Text="@TryLocalize("Paste")" Icon="@Icons.Material.Filled.ContentPaste" Size="MudExRibbonItemSize.Large" Shortcut="Ctrl+V" Disabled="@(_current == null)" OnClick="PasteFromRibbonAsync" />
+                        <MudExRibbonButton Id="pp-cut" Text="@TryLocalize("Cut")" Icon="@Icons.Material.Filled.ContentCut" Size="MudExRibbonItemSize.Small" Shortcut="Ctrl+X" Disabled="@(!HasShapeSelection)" OnClick="@(() => CopyShapesAsync(true))" />
+                        <MudExRibbonButton Id="pp-copy" Text="@TryLocalize("Copy")" Icon="@Icons.Material.Filled.ContentCopy" Size="MudExRibbonItemSize.Small" Shortcut="Ctrl+C" Disabled="@(!HasShapeSelection)" OnClick="@(() => CopyShapesAsync(false))" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Slides")" Icon="@Icons.Material.Filled.Slideshow" CollapsePriority="5">
+                        @NewSlideButton("pp-new-slide")
+                        <MudExRibbonButton Id="pp-duplicate-slide" Text="@TryLocalize("Duplicate Slide")" Icon="@Icons.Material.Filled.ContentCopy" Size="MudExRibbonItemSize.Small" Disabled="@(_current == null)" OnClick="DuplicateSlidesAsync" />
+                        <MudExRibbonButton Id="pp-delete-slide" Text="@TryLocalize("Delete Slide")" Icon="@Icons.Material.Filled.Delete" Size="MudExRibbonItemSize.Small" Disabled="@(_current == null)" OnClick="DeleteSlidesAsync" />
+                        <MudExRibbonToggleButton Id="pp-hide-slide" Text="@TryLocalize("Hide Slide")" Icon="@Icons.Material.Filled.VisibilityOff" Size="MudExRibbonItemSize.Small" Disabled="@(_current == null)" Checked="@(_current?.Hidden == true)" CheckedChanged="SetHiddenAsync" />
+                        <MudExRibbonMenuButton Id="pp-layout" Text="@TryLocalize("Layout")" Icon="@Icons.Material.Filled.ViewQuilt" Size="MudExRibbonItemSize.Small" Disabled="@(_current == null)">
+                            <MudExRibbonContent>
+                                <MudExSlideLayoutGallery Presentation="_presentation" Layouts="AvailableLayouts" Images="_images" Selected="@_current?.Layout" LayoutChosen="SetLayoutAsync" Localizer="@Localizer" />
+                            </MudExRibbonContent>
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonButton Id="pp-reset-slide" Text="@TryLocalize("Reset")" Icon="@Icons.Material.Filled.RestartAlt" Size="MudExRibbonItemSize.Small" Disabled="@(_current == null)" OnClick="ResetSlidesAsync" />
+                        <MudExRibbonMenuButton Id="pp-section" Text="@TryLocalize("Section")" Icon="@Icons.Material.Filled.ViewAgenda" Size="MudExRibbonItemSize.Small" Disabled="@(_current == null)">
+                            <MudExRibbonMenuItem Id="pp-section-add" Text="@TryLocalize("Add Section")" Icon="@Icons.Material.Filled.PlaylistAdd" OnClick="AddSectionAsync" />
+                            <MudExRibbonMenuItem Id="pp-section-rename" Text="@TryLocalize("Rename Section")" Icon="@Icons.Material.Filled.Edit" Disabled="@(CurrentSection == null || !_panelVisible)" OnClick="@(() => _panel?.StartRename(CurrentSection))" />
+                            <MudExRibbonMenuItem Id="pp-section-remove" Text="@TryLocalize("Remove Section")" Icon="@Icons.Material.Filled.PlaylistRemove" Disabled="@(CurrentSection == null)" OnClick="@(() => RunCommandAsync(new RemoveSectionCommand(CurrentSection, false)))" />
+                            <MudExRibbonMenuItem Id="pp-section-remove-all" Text="@TryLocalize("Remove All Sections")" Icon="@Icons.Material.Filled.ClearAll" Disabled="@(!HasSections)" OnClick="@(() => RunCommandAsync(new RemoveAllSectionsCommand()))" />
+                            <MudExRibbonSeparator />
+                            <MudExRibbonMenuItem Id="pp-section-collapse-all" Text="@TryLocalize("Collapse All")" Icon="@Icons.Material.Filled.UnfoldLess" Disabled="@(!HasSections || !_panelVisible)" OnClick="@(() => _panel?.SetCollapsed(true))" />
+                            <MudExRibbonMenuItem Id="pp-section-expand-all" Text="@TryLocalize("Expand All")" Icon="@Icons.Material.Filled.UnfoldMore" Disabled="@(!HasSections || !_panelVisible)" OnClick="@(() => _panel?.SetCollapsed(false))" />
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Font")" Icon="@Icons.Material.Filled.FormatSize" CollapsePriority="4">
+                        <MudExRibbonRow>
+                            <MudExRibbonSelect T="string" Text="@TryLocalize("Font")" Items="@Fonts" Value="@(CurrentFormat?.Font ?? Fonts[0])" ValueChanged="SetFontAsync" Editable="true" Width="140" Disabled="@(!HasShapeSelection)" />
+                            <MudExRibbonNumberBox Text="@TryLocalize("Font Size")" Value="@(CurrentFormat?.SizePt ?? 18)" ValueChanged="SetFontSizeAsync" Min="1" Max="4000" Step="1" Disabled="@(!HasShapeSelection)" />
+                        </MudExRibbonRow>
+                        <MudExRibbonRow>
+                            @foreach (var (id, text, icon, shortcut, key) in FontToggles)
+                            {
+                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)"
+                                                         Checked="@IsOn(key)" CheckedChanged="@(_ => FormatAsync(key, null))" />
+                            }
+                            <MudExRibbonColorPicker Id="pp-font-color" Text="@TryLocalize("Font Color")" Icon="@Icons.Material.Filled.FormatColorText" Size="MudExRibbonItemSize.Small" Palette="@Palette" Disabled="@(!HasShapeSelection)"
+                                                    ValueChanged="SetFontColorAsync" />
+                        </MudExRibbonRow>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Paragraph")" Icon="@Icons.Material.Filled.FormatAlignLeft" CollapsePriority="3">
+                        <MudExRibbonRow>
+                            <MudExRibbonToggleButton Id="pp-bullets" Text="@TryLocalize("Bullets")" Icon="@Icons.Material.Filled.FormatListBulleted" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)"
+                                                     Checked="@IsOn("bullet")" CheckedChanged="@(_ => FormatAsync("bullet", null))" />
+                        </MudExRibbonRow>
+                        <MudExRibbonRow>
+                            @foreach (var (id, text, icon, shortcut, align) in AlignToggles)
+                            {
+                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)"
+                                                         Checked="@(CurrentAlign == align)" CheckedChanged="@(_ => FormatAsync("align", align.ToString().ToLowerInvariant()))" />
+                            }
+                        </MudExRibbonRow>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Drawing")" Icon="@Icons.Material.Filled.Category" CollapsePriority="1">
+                        @ShapesButton("pp-shapes", TryLocalize("Shapes"), InsertShapeAsync, _current == null)
+                        <MudExRibbonMenuButton Id="pp-arrange" Text="@TryLocalize("Arrange")" Icon="@Icons.Material.Filled.FlipToFront" Size="MudExRibbonItemSize.Large" Disabled="@(!HasShapeSelection)">
+                            @foreach (var (id, text, icon, change) in ArrangeItems)
+                            {
+                                <MudExRibbonMenuItem Id="@id" Text="@TryLocalize(text)" Icon="@icon" Disabled="@(!HasShapeSelection)" OnClick="@(() => ArrangeAsync(change))" />
+                            }
+                            <MudExRibbonSeparator />
+                            <MudExRibbonMenuItem Id="pp-group" Text="@TryLocalize("Group")" Icon="@Icons.Material.Filled.GroupWork" Shortcut="Ctrl+G" Disabled="@(!CanGroup)" OnClick="GroupAsync" />
+                            <MudExRibbonMenuItem Id="pp-ungroup" Text="@TryLocalize("Ungroup")" Icon="@Icons.Material.Outlined.Workspaces" Shortcut="Ctrl+Shift+G" Disabled="@(!CanUngroup)" OnClick="UngroupAsync" />
+                            <MudExRibbonSeparator />
+                            <MudExRibbonMenuItem Id="pp-align" Text="@TryLocalize("Align")" Icon="@Icons.Material.Filled.AlignHorizontalLeft" Disabled="@(!HasShapeSelection)">
+                                @foreach (var (id, text, icon, alignment) in AlignItems)
+                                {
+                                    <MudExRibbonMenuItem Id="@id" Text="@TryLocalize(text)" Icon="@icon" Disabled="@(!HasShapeSelection)" OnClick="@(() => AlignAsync(alignment))" />
+                                }
+                                <MudExRibbonSeparator />
+                                <MudExRibbonMenuItem Id="pp-distribute-horizontal" Text="@TryLocalize("Distribute Horizontally")" Icon="@Icons.Material.Filled.HorizontalDistribute" Disabled="@(!CanDistribute)" OnClick="@(() => DistributeAsync(true))" />
+                                <MudExRibbonMenuItem Id="pp-distribute-vertical" Text="@TryLocalize("Distribute Vertically")" Icon="@Icons.Material.Filled.VerticalDistribute" Disabled="@(!CanDistribute)" OnClick="@(() => DistributeAsync(false))" />
+                                <MudExRibbonSeparator />
+                                <MudExRibbonMenuItem Id="pp-align-to-slide" Text="@TryLocalize("Align to Slide")" Checked="_alignToSlide" OnClick="@(() => _alignToSlide = true)" />
+                                <MudExRibbonMenuItem Id="pp-align-selected" Text="@TryLocalize("Align Selected Objects")" Checked="!_alignToSlide" OnClick="@(() => _alignToSlide = false)" />
+                            </MudExRibbonMenuItem>
+                            <MudExRibbonMenuItem Id="pp-rotate" Text="@TryLocalize("Rotate")" Icon="@Icons.Material.Filled.RotateRight" Disabled="@(!CanRotate)">
+                                <MudExRibbonMenuItem Id="pp-rotate-right" Text="@TryLocalize("Rotate Right 90°")" Icon="@Icons.Material.Filled.RotateRight" Disabled="@(!CanRotate)" OnClick="@(() => RotateAsync(90))" />
+                                <MudExRibbonMenuItem Id="pp-rotate-left" Text="@TryLocalize("Rotate Left 90°")" Icon="@Icons.Material.Filled.RotateLeft" Disabled="@(!CanRotate)" OnClick="@(() => RotateAsync(-90))" />
+                                <MudExRibbonMenuItem Id="pp-flip-vertical" Text="@TryLocalize("Flip Vertical")" Icon="@Icons.Material.Filled.Flip" Disabled="@(!CanRotate)" OnClick="@(() => FlipAsync(false))" />
+                                <MudExRibbonMenuItem Id="pp-flip-horizontal" Text="@TryLocalize("Flip Horizontal")" Icon="@Icons.Material.Filled.Flip" Disabled="@(!CanRotate)" OnClick="@(() => FlipAsync(true))" />
+                            </MudExRibbonMenuItem>
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonMenuButton Id="pp-shape-fill" Text="@TryLocalize("Shape Fill")" Icon="@Icons.Material.Filled.FormatColorFill" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)">
+                            <MudExRibbonColorPicker Id="pp-shape-fill-color" Text="@TryLocalize("Fill Color")" Icon="@Icons.Material.Filled.FormatColorFill" Palette="@Palette" Disabled="@(!HasShapeSelection)" ValueChanged="SetShapeFillAsync" />
+                            <MudExRibbonMenuItem Id="pp-shape-no-fill" Text="@TryLocalize("No Fill")" Icon="@Icons.Material.Filled.FormatColorReset" Disabled="@(!HasShapeSelection)" Checked="@HasNoFill"
+                                                 OnClick="@(() => FillAsync(new ShapeFill(ShapeFillKind.None)))" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonMenuButton Id="pp-shape-outline" Text="@TryLocalize("Shape Outline")" Icon="@Icons.Material.Filled.BorderColor" Size="MudExRibbonItemSize.Small" Disabled="@(!HasShapeSelection)">
+                            @{ var outline = CurrentOutline; }
+                            <MudExRibbonColorPicker Id="pp-shape-outline-color" Text="@TryLocalize("Outline Color")" Icon="@Icons.Material.Filled.BorderColor" Palette="@Palette" Disabled="@(!HasShapeSelection)" ValueChanged="SetShapeOutlineAsync" />
+                            <MudExRibbonMenuItem Id="pp-shape-no-outline" Text="@TryLocalize("No Outline")" Icon="@Icons.Material.Filled.BorderClear" Disabled="@(!HasShapeSelection)" Checked="@(HasShapeSelection && outline == null)"
+                                                 OnClick="@(() => OutlineAsync(l => l with { Color = null }))" />
+                            <MudExRibbonMenuItem Id="pp-shape-outline-weight" Text="@TryLocalize("Weight")" Icon="@Icons.Material.Filled.LineWeight" Disabled="@(!HasShapeSelection)">
+                                @foreach (var width in OutlineWeights)
+                                {
+                                    <MudExRibbonMenuItem Id="@($"pp-shape-outline-weight-{width}")" Text="@($"{width / 12700d:0.##} pt")" Checked="@(outline?.Width == width)" OnClick="@(() => SetOutlineWeightAsync(width))" />
+                                }
+                            </MudExRibbonMenuItem>
+                            <MudExRibbonMenuItem Id="pp-shape-outline-dash" Text="@TryLocalize("Dashes")" Icon="@Icons.Material.Filled.LineStyle" Disabled="@(!HasShapeSelection)">
+                                @foreach (var (dash, text) in OutlineDashes)
+                                {
+                                    <MudExRibbonMenuItem Id="@($"pp-shape-outline-dash-{dash}")" Text="@TryLocalize(text)" Checked="@(outline != null && (outline.Dash ?? "solid") == dash)" OnClick="@(() => SetOutlineDashAsync(dash))" />
+                                }
+                            </MudExRibbonMenuItem>
+                        </MudExRibbonMenuButton>
+                        @ShapesButton("pp-change-shape", TryLocalize("Change Shape"), ChangeShapeAsync, !HasShapeSelection, MudExRibbonItemSize.Small)
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Editing")" Icon="@Icons.Material.Filled.Search" CollapsePriority="0">
+                        <MudExRibbonButton Id="pp-find" Text="@TryLocalize("Find")" Icon="@Icons.Material.Filled.Search" Size="MudExRibbonItemSize.Small" Shortcut="Ctrl+F" OnClick="@(() => FindReplaceAsync(false))" />
+                        <MudExRibbonButton Id="pp-replace" Text="@TryLocalize("Replace")" Icon="@Icons.Material.Filled.FindReplace" Size="MudExRibbonItemSize.Small" Shortcut="Ctrl+H" OnClick="@(() => FindReplaceAsync(true))" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+
+                <MudExRibbonTab Text="@TryLocalize("Insert")" KeyTip="N" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Slides")" Icon="@Icons.Material.Filled.Slideshow">
+                        @NewSlideButton("pp-insert-new-slide")
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Tables")" Icon="@Icons.Material.Filled.TableChart" CollapsePriority="2">
+                        <MudExRibbonMenuButton Id="pp-insert-table" Text="@TryLocalize("Table")" Icon="@Icons.Material.Filled.TableChart" Size="MudExRibbonItemSize.Large" Disabled="@(_current == null)">
+                            <MudExRibbonContent>
+                                <MudExSlideTableGridPicker Chosen="InsertTableAsync" Localizer="@Localizer" />
+                            </MudExRibbonContent>
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Images")" Icon="@Icons.Material.Filled.Image" CollapsePriority="2">
+                        <MudExRibbonButton Id="pp-insert-picture" Text="@TryLocalize("Pictures")" Icon="@Icons.Material.Filled.Image" Size="MudExRibbonItemSize.Large" Disabled="@(_current == null)" OnClick="PickPictureAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Illustrations")" Icon="@Icons.Material.Filled.Category" CollapsePriority="1">
+                        @ShapesButton("pp-insert-shapes", TryLocalize("Shapes"), InsertShapeAsync, _current == null)
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Text")" Icon="@Icons.Material.Filled.TextFields" CollapsePriority="1">
+                        <MudExRibbonButton Id="pp-insert-text-box" Text="@TryLocalize("Text Box")" Icon="@Icons.Material.Filled.TextFields" Size="MudExRibbonItemSize.Large" Disabled="@(_current == null)" OnClick="InsertTextBoxAsync" />
+                        <MudExRibbonButton Id="pp-header-footer" Text="@TryLocalize("Header & Footer")" Icon="@Icons.Material.Filled.ShortText" Size="MudExRibbonItemSize.Large" Disabled="@(_current == null)" OnClick="HeaderFooterAsync" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+
+                <MudExRibbonTab Text="@TryLocalize("Design")" KeyTip="G" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Themes")" Icon="@Icons.Material.Filled.Palette" CollapsePriority="2">
+                        <MudExRibbonMenuButton Id="pp-design-themes" Text="@TryLocalize("Themes")" Icon="@Icons.Material.Filled.Palette" Size="MudExRibbonItemSize.Large">
+                            <MudExRibbonContent>
+                                <MudExSlideDesignGallery Presentation="_presentation" Slide="_current" Images="_images" Current="@CurrentDesign" DesignChosen="ApplyDesignAsync" Localizer="@Localizer" />
+                            </MudExRibbonContent>
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Variants")" Icon="@Icons.Material.Filled.ColorLens" CollapsePriority="1">
+                        <MudExRibbonGallery TItem="SlideDesign" Id="pp-design-colors" Text="@TryLocalize("Colors")" Icon="@Icons.Material.Filled.ColorLens" Size="MudExRibbonItemSize.Small" Columns="1"
+                                            Items="SlideDesigns.BuiltIn" ItemText="@(d => TryLocalize(d.Name))" SelectedItem="@CurrentColors" SelectedItemChanged="ApplyColorsAsync">
+                            <ItemTemplate>
+                                <span class="mud-ex-slide-design-swatches">
+                                    @foreach (var color in context.Colors)
+                                    {
+                                        <span class="mud-ex-slide-design-swatch" style="@($"background-color:{color}")"></span>
+                                    }
+                                </span>
+                                <span class="mud-ex-slide-design-name">@TryLocalize(context.Name)</span>
+                            </ItemTemplate>
+                        </MudExRibbonGallery>
+                        <MudExRibbonGallery TItem="SlideDesign" Id="pp-design-fonts" Text="@TryLocalize("Fonts")" Icon="@Icons.Material.Filled.FontDownload" Size="MudExRibbonItemSize.Small" Columns="1"
+                                            Items="SlideDesigns.BuiltIn" ItemText="@(d => TryLocalize(d.Name))" SelectedItem="@CurrentFonts" SelectedItemChanged="ApplyFontsAsync">
+                            <ItemTemplate>
+                                <span class="mud-ex-slide-design-fonts">
+                                    <span class="mud-ex-slide-design-font mud-ex-slide-design-major" style="@MudExSlideText.FontStyle(context.MajorFont)">@context.MajorFont</span>
+                                    <span class="mud-ex-slide-design-font" style="@MudExSlideText.FontStyle(context.MinorFont)">@context.MinorFont</span>
+                                </span>
+                            </ItemTemplate>
+                        </MudExRibbonGallery>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Customize")" Icon="@Icons.Material.Filled.AspectRatio" CollapsePriority="0">
+                        <MudExRibbonMenuButton Id="pp-slide-size" Text="@TryLocalize("Slide Size")" Icon="@Icons.Material.Filled.AspectRatio" Size="MudExRibbonItemSize.Large">
+                            @foreach (var (id, text, width, height) in SlideSizes)
+                            {
+                                <MudExRibbonMenuItem Id="@id" Text="@TryLocalize(text)" Checked="@(_presentation?.SlideWidth == width && _presentation.SlideHeight == height)" OnClick="@(() => SetSlideSizeAsync(width, height))" />
+                            }
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+
+                <MudExRibbonTab Text="@TryLocalize("Transitions")" KeyTip="K" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Preview")" Icon="@Icons.Material.Filled.PlayCircle" CollapsePriority="0">
+                        <MudExRibbonButton Id="pp-transition-preview" Text="@TryLocalize("Preview")" Icon="@Icons.Material.Filled.PlayCircle" Size="MudExRibbonItemSize.Large" Disabled="@(_current == null)" OnClick="PreviewAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Transition to This Slide")" Icon="@Icons.Material.Filled.Animation" CollapsePriority="2">
+                        <MudExRibbonGallery TItem="TransitionKind" Id="pp-transition-gallery" Text="@TryLocalize("Transitions")" Icon="@Icons.Material.Filled.Animation" Size="MudExRibbonItemSize.Large" Columns="6"
+                                            Items="TransitionKinds" ItemText="@(k => TryLocalize(TransitionName(k)))" SelectedItem="@CurrentTransition.Kind" SelectedItemChanged="SetTransitionKindAsync" Disabled="@(_current == null)" />
+                        <MudExRibbonMenuButton Id="pp-transition-effect-options" Text="@TryLocalize("Effect Options")" Icon="@Icons.Material.Filled.Tune" Size="MudExRibbonItemSize.Large" Disabled="@(_current == null || TransitionDirections.Length == 0)">
+                            @foreach (var direction in TransitionDirections)
+                            {
+                                <MudExRibbonMenuItem Id="@($"pp-transition-direction-{direction.ToString().ToLowerInvariant()}")" Text="@TryLocalize(direction.ToString())" Checked="@(CurrentTransition.Direction == direction)"
+                                                     OnClick="@(() => SetTransitionAsync(CurrentTransition with { Direction = direction }))" />
+                            }
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Timing")" Icon="@Icons.Material.Filled.Timer" CollapsePriority="1">
+                        <MudExRibbonNumberBox Id="pp-transition-duration" Text="@TryLocalize("Duration")" Value="@CurrentTransition.DurationSeconds" Min="0" Max="59" Step="0.25" Unit="s" Disabled="@(_current == null)"
+                                              ValueChanged="@(d => SetTransitionAsync(CurrentTransition with { DurationSeconds = d }))" />
+                        <MudExRibbonNumberBox Id="pp-transition-after" Text="@TryLocalize("After")" Value="@(CurrentTransition.AdvanceAfterSeconds ?? 0)" Min="0" Max="86399" Step="1" Unit="s" Disabled="@(_current == null)"
+                                              ValueChanged="@(s => SetTransitionAsync(CurrentTransition with { AdvanceAfterSeconds = s > 0 ? s : null }))" />
+                        <MudExRibbonToggleButton Id="pp-transition-on-click" Text="@TryLocalize("On Mouse Click")" Icon="@Icons.Material.Filled.Mouse" Size="MudExRibbonItemSize.Small" Disabled="@(_current == null)"
+                                                 Checked="@CurrentTransition.AdvanceOnClick" CheckedChanged="@(on => SetTransitionAsync(CurrentTransition with { AdvanceOnClick = on }))" />
+                        <MudExRibbonButton Id="pp-transition-apply-all" Text="@TryLocalize("Apply To All")" Icon="@Icons.Material.Filled.DoneAll" Size="MudExRibbonItemSize.Small"
+                                           Disabled="@(_current == null || CurrentTransition.Kind == TransitionKind.Other)" OnClick="ApplyTransitionToAllAsync" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+
+                <MudExRibbonTab @ref="_animationsTab" Text="@TryLocalize("Animations")" KeyTip="A" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Preview")" Icon="@Icons.Material.Filled.PlayCircle" CollapsePriority="0">
+                        <MudExRibbonButton Id="pp-animation-preview" Text="@TryLocalize("Preview")" Icon="@Icons.Material.Filled.PlayCircle" Size="MudExRibbonItemSize.Large" Disabled="@(_current == null)" OnClick="PreviewAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Animation")" Icon="@Icons.Material.Filled.AutoAwesome" CollapsePriority="3">
+                        <MudExRibbonGallery TItem="AnimationChoice" Id="pp-animation-gallery" Text="@TryLocalize("Animation Styles")" Icon="@Icons.Material.Filled.AutoAwesome" Size="MudExRibbonItemSize.Large" Columns="5"
+                                            Items="AnimationChoices" ItemText="@(c => TryLocalize(AnimationName(c.Class, c.Preset)))" SelectedItem="@CurrentAnimation" SelectedItemChanged="ApplyAnimationAsync" Disabled="@(!CanAnimate)" />
+                        <MudExRibbonMenuButton Id="pp-animation-effect-options" Text="@TryLocalize("Effect Options")" Icon="@Icons.Material.Filled.Tune" Size="MudExRibbonItemSize.Large" Disabled="@(!HasDirectionalEffect)">
+                            @foreach (var direction in AnimationDirections)
+                            {
+                                <MudExRibbonMenuItem Id="@($"pp-animation-direction-{DirectionId(direction)}")" Text="@TryLocalize(DirectionName(direction))" Checked="@(SelectedEffect?.Direction == direction)"
+                                                     OnClick="@(() => SetEffectDirectionAsync(direction))" />
+                            }
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Advanced Animation")" Icon="@Icons.Material.Filled.ViewList" CollapsePriority="1">
+                        <MudExRibbonToggleButton Id="pp-animation-pane" Text="@TryLocalize("Animation Pane")" Icon="@Icons.Material.Filled.ViewList" Size="MudExRibbonItemSize.Large" @bind-Checked="_animationPaneVisible" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Timing")" Icon="@Icons.Material.Filled.Timer" CollapsePriority="2">
+                        <MudExRibbonSelect T="AnimationTrigger" Id="pp-animation-start" Text="@TryLocalize("Start")" Items="Triggers" ItemText="@(t => TryLocalize(TriggerName(t)))" Width="130" Disabled="@(SelectedEffect == null)"
+                                           Value="@(SelectedEffect?.Trigger ?? AnimationTrigger.OnClick)" ValueChanged="@(t => ChangeEffectsAsync(e => e with { Trigger = t }))" />
+                        <MudExRibbonNumberBox Id="pp-animation-duration" Text="@TryLocalize("Duration")" Value="@(SelectedEffect?.DurationSeconds ?? 0.5)" Min="0" Max="59" Step="0.25" Unit="s" Disabled="@(SelectedEffect == null)"
+                                              ValueChanged="@(d => ChangeEffectsAsync(e => WithDuration(e, d)))" />
+                        <MudExRibbonNumberBox Id="pp-animation-delay" Text="@TryLocalize("Delay")" Value="@(SelectedEffect?.DelaySeconds ?? 0)" Min="0" Max="59" Step="0.25" Unit="s" Disabled="@(SelectedEffect == null)"
+                                              ValueChanged="@(d => ChangeEffectsAsync(e => e with { DelaySeconds = d }))" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+
+                <MudExRibbonTab Text="@TryLocalize("Slide Show")" KeyTip="S">
+                    <MudExRibbonGroup Text="@TryLocalize("Start Slide Show")" Icon="@Icons.Material.Filled.Slideshow" CollapsePriority="1">
+                        <MudExRibbonButton Id="pp-show-from-beginning" Text="@TryLocalize("From Beginning")" Icon="@Icons.Material.Filled.PlayArrow" Size="MudExRibbonItemSize.Large" Shortcut="F5" Disabled="@(!CanShow)" OnClick="@(() => StartShowAsync(false))" />
+                        <MudExRibbonButton Id="pp-show-from-current" Text="@TryLocalize("From Current Slide")" Icon="@Icons.Material.Filled.Slideshow" Size="MudExRibbonItemSize.Large" Shortcut="Shift+F5" Disabled="@(!CanShow)" OnClick="@(() => StartShowAsync(true))" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Set Up")" Icon="@Icons.Material.Filled.Settings" CollapsePriority="0">
+                        <MudExRibbonToggleButton Id="pp-show-presenter-view" Text="@TryLocalize("Presenter View")" Icon="@Icons.Material.Filled.CoPresent" Size="MudExRibbonItemSize.Small" @bind-Checked="_presenterView" />
+                        <MudExRibbonToggleButton Id="pp-show-hide-slide" Text="@TryLocalize("Hide Slide")" Icon="@Icons.Material.Filled.VisibilityOff" Size="MudExRibbonItemSize.Small" Disabled="@(_current == null || IsReadOnly)"
+                                                 Checked="@(_current?.Hidden == true)" CheckedChanged="SetHiddenAsync" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+
+                <MudExRibbonTab Text="@TryLocalize("Table")" KeyTip="JT" Contextual="true" ContextualTitle="@TryLocalize("Table Tools")" Visible="@(SelectedTable != null)">
+                    @{ var noCells = SelectedCells == null; }
+                    <MudExRibbonGroup Text="@TryLocalize("Rows & Columns")" Icon="@Icons.Material.Filled.TableRows" CollapsePriority="3">
+                        <MudExRibbonButton Id="pp-table-insert-above" Text="@TryLocalize("Insert Above")" Icon="@Icons.Material.Filled.VerticalAlignTop" Size="MudExRibbonItemSize.Small" Disabled="noCells" OnClick="@(() => InsertRowsAsync(false))" />
+                        <MudExRibbonButton Id="pp-table-insert-below" Text="@TryLocalize("Insert Below")" Icon="@Icons.Material.Filled.VerticalAlignBottom" Size="MudExRibbonItemSize.Small" Disabled="noCells" OnClick="@(() => InsertRowsAsync(true))" />
+                        <MudExRibbonButton Id="pp-table-insert-left" Text="@TryLocalize("Insert Left")" Icon="@Icons.Material.Filled.KeyboardTab" Size="MudExRibbonItemSize.Small" Disabled="noCells" OnClick="@(() => InsertColumnsAsync(false))" />
+                        <MudExRibbonButton Id="pp-table-insert-right" Text="@TryLocalize("Insert Right")" Icon="@Icons.Material.Filled.KeyboardTab" Size="MudExRibbonItemSize.Small" Disabled="noCells" OnClick="@(() => InsertColumnsAsync(true))" />
+                        <MudExRibbonMenuButton Id="pp-table-delete" Text="@TryLocalize("Delete")" Icon="@Icons.Material.Filled.DeleteSweep" Size="MudExRibbonItemSize.Large">
+                            <MudExRibbonMenuItem Id="pp-table-delete-rows" Text="@TryLocalize("Delete Rows")" Disabled="noCells" OnClick="DeleteRowsAsync" />
+                            <MudExRibbonMenuItem Id="pp-table-delete-columns" Text="@TryLocalize("Delete Columns")" Disabled="noCells" OnClick="DeleteColumnsAsync" />
+                            <MudExRibbonMenuItem Id="pp-table-delete-table" Text="@TryLocalize("Delete Table")" OnClick="DeleteTableAsync" />
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Merge")" Icon="@Icons.Material.Filled.CallMerge" CollapsePriority="2">
+                        <MudExRibbonButton Id="pp-table-merge" Text="@TryLocalize("Merge Cells")" Icon="@Icons.Material.Filled.CallMerge" Size="MudExRibbonItemSize.Large" Disabled="@(!CanMerge)" OnClick="MergeCellsAsync" />
+                        <MudExRibbonButton Id="pp-table-split" Text="@TryLocalize("Split Cell")" Icon="@Icons.Material.Filled.CallSplit" Size="MudExRibbonItemSize.Large" Disabled="@(!CanSplit)" OnClick="SplitCellAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Table Styles")" Icon="@Icons.Material.Filled.FormatColorFill" CollapsePriority="1">
+                        <MudExRibbonColorPicker Id="pp-table-shading" Text="@TryLocalize("Shading")" Icon="@Icons.Material.Filled.FormatColorFill" Size="MudExRibbonItemSize.Large" Palette="@Palette" ValueChanged="SetShadingAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Table Style Options")" Icon="@Icons.Material.Filled.CheckBox" CollapsePriority="0">
+                        @foreach (var (id, text, get, set) in TableOptions)
+                        {
+                            <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Size="MudExRibbonItemSize.Small" Checked="@(SelectedTable is { } table && get(table))"
+                                                     CheckedChanged="@(on => SetTableOptionAsync((slide, id) => set(slide, id, on)))" />
+                        }
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+
+                <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
+                    <MudExRibbonGroup Text="@TryLocalize("Show")" Icon="@Icons.Material.Filled.Visibility" CollapsePriority="1">
+                        <MudExRibbonToggleButton Id="pp-show-notes" Text="@TryLocalize("Notes")" Icon="@Icons.Material.Filled.Notes" Size="MudExRibbonItemSize.Large" @bind-Checked="_notesVisible" />
+                        <MudExRibbonToggleButton Id="pp-show-slide-panel" Text="@TryLocalize("Slide Panel")" Icon="@Icons.Material.Filled.ViewSidebar" Size="MudExRibbonItemSize.Large" @bind-Checked="_panelVisible" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Zoom")" Icon="@Icons.Material.Filled.ZoomIn" CollapsePriority="2">
+                        <MudExRibbonSelect T="double" Text="@TryLocalize("Zoom")" Items="@ZoomLevels" ItemText="@(z => $"{z * 100:0}%")" Value="@(_zoom ?? 1)" ValueChanged="@(z => SetZoom(z))" Width="80" />
+                        <MudExRibbonButton Id="pp-zoom-fit" Text="@TryLocalize("Fit to Window")" Icon="@Icons.Material.Filled.FitScreen" Size="MudExRibbonItemSize.Large" OnClick="@(() => SetZoom(null))" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+                @RibbonContent
+            </ChildContent>
+        </MudExRibbon>
+    }
+    <div class="mud-ex-slide-editor-body">
+        @if (_panelVisible && _presentation != null)
+        {
+            <MudExSlidePanel @ref="_panel" Presentation="_presentation" Images="_images" Current="_current" Selection="_selection" ShowThumbnails="@(_imagesReady.Count > 0)"
+                             LazyThumbnails="@(_js != null)" ReadOnly="IsReadOnly" SelectionChanged="OnSelectionChanged" KeyDown="_panelKeyDown"
+                             NewSlideRequested="@(() => AddSlideAsync(null))" DuplicateRequested="DuplicateSlidesAsync" DeleteRequested="DeleteSlidesAsync"
+                             HideRequested="SetHiddenAsync" AddSectionRequested="AddSectionAsync" CommandRequested="RunCommandAsync" Localizer="@Localizer" />
+        }
+        <div class="mud-ex-slide-editor-main">
+            <MudExSlideCanvas @ref="_canvas" Presentation="_presentation" Slide="@CanvasSlide" Images="_images" Zoom="@(_zoom ?? 0)" ReadOnly="IsReadOnly"
+                              SelectionChanged="@(_ => StateHasChanged())" KeyDown="CanvasKeyDown" ContextMenu="OpenShapeMenuAsync" ShowAnimationOrder="ShowAnimationOrder" TextInput="MarkDirtyAsync" ZoomChanged="@(z => SetZoom(z))" Localizer="@Localizer" />
+            @if (_notesVisible && _current != null)
+            {
+                <MudExSlideNotes @ref="_notes" Slide="_current" ReadOnly="IsReadOnly" CanHaveNotes="@_presentation.CanHaveNotes(_current)" NotesChanged="SetNotesAsync" NotesInput="MarkDirtyAsync" Localizer="@Localizer" />
+            }
+            @if (_previewing && _current != null)
+            {
+                <MudExSlideShow @key="_previewRun" Presentation="_presentation" StartIndex="_currentIndex" Images="_images" Preview="true" Closed="@(() => _previewing = false)" Localizer="@Localizer" />
+            }
+        </div>
+        @if (_animationPaneVisible && _current != null && !IsReadOnly)
+        {
+            <MudExSlideAnimationPane Presentation="_presentation" Slide="_current" SelectedIndex="SelectedEffectIndex" SelectedIndexChanged="SelectEffectAsync" CommandRequested="RunCommandAsync" Localizer="@Localizer" />
+        }
+    </div>
+    @if (!IsReadOnly)
+    {
+        <InputFile id="@_pictureInput" accept="@PictureAccept" OnChange="OnPictureChosenAsync" hidden />
+        <MudMenu @ref="_shapeMenu" Class="mud-ex-slide-panel-menu" PositionAtCursor="true" Dense="true">
+            <ActivatorContent><span></span></ActivatorContent>
+            <ChildContent>
+                <MudMenuItem Icon="@Icons.Material.Filled.ContentCut" Disabled="@(!HasShapeSelection)" OnClick="@(() => CopyShapesAsync(true))">@TryLocalize("Cut")</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.ContentCopy" Disabled="@(!HasShapeSelection)" OnClick="@(() => CopyShapesAsync(false))">@TryLocalize("Copy")</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.ContentPaste" OnClick="PasteFromRibbonAsync">@TryLocalize("Paste")</MudMenuItem>
+                <MudDivider />
+                <MudMenuItem Icon="@Icons.Material.Filled.GroupWork" Disabled="@(!CanGroup)" OnClick="GroupAsync">@TryLocalize("Group")</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Outlined.Workspaces" Disabled="@(!CanUngroup)" OnClick="UngroupAsync">@TryLocalize("Ungroup")</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.FlipToFront" Disabled="@(!HasShapeSelection)" OnClick="@(() => ArrangeAsync(ZOrderChange.BringToFront))">@TryLocalize("Bring to Front")</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.FlipToBack" Disabled="@(!HasShapeSelection)" OnClick="@(() => ArrangeAsync(ZOrderChange.SendToBack))">@TryLocalize("Send to Back")</MudMenuItem>
+            </ChildContent>
+        </MudMenu>
+    }
+    <MudExSlideStatusBar SlideNumber="@(_currentIndex + 1)" SlideCount="@(_presentation?.Slides.Count ?? 0)" Zoom="_zoom" ZoomChanged="SetZoom" SlideShowRequested="@(() => StartShowAsync(true))" Localizer="@Localizer" />
+    @if (_showing)
+    {
+        <MudExSlideShow Presentation="_presentation" StartIndex="_showStart" PresenterView="_presenterView" Images="_images" Closed="OnShowClosed" SlideChanged="ShowSlideChanged" Localizer="@Localizer" />
+    }
+</div>
+
+@code {
+    private RenderFragment ShapesButton(string id, string text, Func<string, Task> chosen, bool disabled, MudExRibbonItemSize size = MudExRibbonItemSize.Large) =>
+        @<MudExRibbonMenuButton Id="@id" Text="@text" Icon="@Icons.Material.Filled.Category" Size="size" Disabled="disabled">
+            <MudExRibbonContent>
+                <MudExSlideShapeGallery ShapeChosen="chosen" Localizer="@Localizer" />
+            </MudExRibbonContent>
+        </MudExRibbonMenuButton>;
+
+    private RenderFragment NewSlideButton(string id) =>
+        @<MudExRibbonMenuButton Id="@id" Text="@TryLocalize("New Slide")" Icon="@Icons.Material.Filled.AddBox" Split="true" Size="MudExRibbonItemSize.Large" Shortcut="Ctrl+M" OnClick="@(() => AddSlideAsync(null))">
+            <MudExRibbonContent>
+                <MudExSlideLayoutGallery Presentation="_presentation" Layouts="AvailableLayouts" Images="_images" LayoutChosen="AddSlideAsync" Localizer="@Localizer" />
+            </MudExRibbonContent>
+        </MudExRibbonMenuButton>;
+}

@@ -1,0 +1,34 @@
+@inherits MudExBaseComponent<MudExNotebookSearchPanel>
+@namespace MudBlazor.Extensions.Components
+
+<div @attributes="UserAttributes" class="@($"mud-ex-notebook-search-panel {Class}".TrimEnd())" style="@Style" role="search" aria-label="@TryLocalize("Search")">
+    <div class="mud-ex-notebook-search-header">
+        <MudTextField T="string" Class="mud-ex-notebook-search-input" Value="@Query" ValueChanged="SetQueryAsync" Immediate="true" AutoFocus="true" Margin="Margin.Dense"
+                      Placeholder="@TryLocalize("Search")" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+        <MudIconButton Class="mud-ex-notebook-search-close" Icon="@Icons.Material.Filled.Close" Size="Size.Small" aria-label="@TryLocalize("Close")" OnClick="Closed" />
+    </div>
+    <div class="mud-ex-notebook-search-scope" role="radiogroup">
+        <MudButton Class="mud-ex-notebook-search-scope-page" Size="Size.Small" Variant="@(WholeNotebook ? Variant.Text : Variant.Filled)" aria-checked="@(!WholeNotebook)"
+                   OnClick="@(() => SetScopeAsync(false))">@TryLocalize("This Page")</MudButton>
+        <MudButton Class="mud-ex-notebook-search-scope-notebook" Size="Size.Small" Variant="@(WholeNotebook ? Variant.Filled : Variant.Text)" aria-checked="@WholeNotebook"
+                   OnClick="@(() => SetScopeAsync(true))">@TryLocalize("Notebook")</MudButton>
+    </div>
+    <div class="mud-ex-notebook-search-results">
+        @if (_results.Count == 0 && !string.IsNullOrWhiteSpace(Query))
+        {
+            <div class="mud-ex-notebook-search-empty">@TryLocalize("No results")</div>
+        }
+        @foreach (var section in _results.GroupBy(r => r.Section))
+        {
+            <div class="mud-ex-notebook-search-section">@section.Key.Name</div>
+            @foreach (var page in section.GroupBy(r => r.Page))
+            {
+                <div class="mud-ex-notebook-search-page">@(string.IsNullOrEmpty(page.Key.Title) ? TryLocalize("Untitled page") : page.Key.Title)</div>
+                @foreach (var result in page)
+                {
+                    <button type="button" class="mud-ex-notebook-search-result" @onclick="@(() => ResultSelected.InvokeAsync(result))">@result.Text</button>
+                }
+            }
+        }
+    </div>
+</div>

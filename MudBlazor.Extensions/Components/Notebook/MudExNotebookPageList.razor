@@ -1,0 +1,50 @@
+@inherits MudExBaseComponent<MudExNotebookPageList>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Notebook
+
+<div @attributes="UserAttributes" class="@($"mud-ex-notebook-page-list {Class}".TrimEnd())" style="@Style">
+    @if (!ReadOnly)
+    {
+        <button type="button" class="mud-ex-notebook-page-list-add" @onclick="AddRequested">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" />@TryLocalize("Add Page")
+        </button>
+    }
+    <div class="mud-ex-notebook-page-list-items" role="listbox" aria-label="@TryLocalize("Pages")" tabindex="0" @onkeydown="KeyDown">
+        @if (Section != null)
+        {
+            @for (var i = 0; i < Section.Pages.Count; i++)
+            {
+                var page = Section.Pages[i];
+                var selected = ReferenceEquals(page, Current);
+                var untitled = string.IsNullOrWhiteSpace(page.Title);
+                <div @key="page" class="@ItemClass(page, selected, untitled)" role="option" aria-selected="@(selected ? "true" : "false")" data-page-index="@i"
+                     draggable="@(ReadOnly ? null : "true")" @onclick="@(() => CurrentChanged.InvokeAsync(page))"
+                     @oncontextmenu="@(e => MenuAsync(page, e))" @oncontextmenu:preventDefault="@(!ReadOnly)">
+                    @(untitled ? TryLocalize("Untitled page") : page.Title)
+                </div>
+            }
+        }
+    </div>
+</div>
+@if (!ReadOnly && Section != null)
+{
+    <MudMenu @ref="_menu" Class="mud-ex-notebook-menu" PositionAtCursor="true" Dense="true">
+        <ActivatorContent><span></span></ActivatorContent>
+        <ChildContent>
+            @{
+                var page = _menuPage;
+                var at = page == null ? -1 : Section.PageList.IndexOf(page);
+                var editable = page?.LoadError == null;
+            }
+            <MudMenuItem Icon="@Icons.Material.Filled.Edit" Disabled="@(!editable)" OnClick="@(() => RenameRequested.InvokeAsync(page))">@TryLocalize("Rename")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.Delete" OnClick="@(() => Request(new DeletePagesCommand([page])))">@TryLocalize("Delete")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.ContentCopy" Disabled="@(!editable)" OnClick="@(() => Request(new DuplicatePagesCommand([page])))">@TryLocalize("Duplicate")</MudMenuItem>
+            <MudDivider />
+            <MudMenuItem Icon="@Icons.Material.Filled.FormatIndentIncrease" Disabled="@(!editable || !CanIndent(at))" OnClick="@(() => Request(new SetPageLevelCommand([page], page.Level + 1)))">@TryLocalize("Make Subpage")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.FormatIndentDecrease" Disabled="@(!editable || page?.Level is null or 0)" OnClick="@(() => Request(new SetPageLevelCommand([page], page.Level - 1)))">@TryLocalize("Promote Subpage")</MudMenuItem>
+            <MudDivider />
+            <MudMenuItem Icon="@Icons.Material.Filled.ArrowUpward" Disabled="@(at <= 0)" OnClick="@(() => Request(new MovePagesCommand([page], Section, at - 1)))">@TryLocalize("Move Up")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.ArrowDownward" Disabled="@(at < 0 || at >= Section.Pages.Count - 1)" OnClick="@(() => Request(new MovePagesCommand([page], Section, at + 2)))">@TryLocalize("Move Down")</MudMenuItem>
+        </ChildContent>
+    </MudMenu>
+}

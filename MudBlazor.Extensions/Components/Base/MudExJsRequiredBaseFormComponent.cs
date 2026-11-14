@@ -61,11 +61,50 @@ public abstract class MudExJsRequiredBaseFormComponent<T, TData, U> : MudExBaseF
     /// </summary>
     public virtual async Task ImportModuleAndCreateJsAsync()
     {
-        await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
-        var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(GetJsArguments());
-        JsReference = references.jsObjectReference;
-        ModuleReference = references.moduleReference;
-        _jsReferenceCreatedCompletionSource.TrySetResult(JsReference);
+        if (IsDisposed)
+            return;
+        try
+        {
+            await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
+            if (IsDisposed)
+                return;
+            var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(GetJsArguments());
+            JsReference = references.jsObjectReference;
+            ModuleReference = references.moduleReference;
+            if (IsDisposed)
+            {
+                await AsJsComponent.DisposeModulesAsync();
+                return;
+            }
+
+            _jsReferenceCreatedCompletionSource.TrySetResult(JsReference);
+        }
+        catch (JSException) when (IsDisposed)
+        {
+        }
+        catch (JSException)
+        {
+            if (!IsDisposed && await IsElementAttachedAsync())
+                throw;
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+        catch (ObjectDisposedException)
+        {
+        }
+    }
+
+    private async Task<bool> IsElementAttachedAsync()
+    {
+        try
+        {
+            return await JsRuntime.InvokeAsync<bool>("document.contains", ElementReference);
+        }
+        catch (Exception e) when (e is JSException or JSDisconnectedException or ObjectDisposedException or InvalidOperationException)
+        {
+            return false;
+        }
     }
 
     /// <inheritdoc />
@@ -87,7 +126,7 @@ public abstract class MudExJsRequiredBaseFormComponent<T, TData, U> : MudExBaseF
 
     /// <inheritdoc/>
     public override ValueTask DisposeAsync()
-    {                
+    {
         AsJsComponent?.DisposeModulesAsync();
         return base.DisposeAsync();
     }

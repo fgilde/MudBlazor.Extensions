@@ -1,0 +1,22 @@
+@inherits MudExBaseComponent<MudExSlideShapeGallery>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Presentation
+
+<div @attributes="UserAttributes" class="@($"mud-ex-slide-gallery {Class}".TrimEnd())" style="@Style">
+    @foreach (var (group, shapes) in Groups)
+    {
+        <div class="mud-ex-slide-gallery-group" role="group" aria-label="@TryLocalize(group)">
+            <div class="mud-ex-slide-gallery-header">@TryLocalize(group)</div>
+            <div class="mud-ex-slide-gallery-grid">
+                @foreach (var (preset, name) in shapes)
+                {
+                    <MudMenuItem Class="mud-ex-slide-gallery-item" data-preset="@preset" title="@TryLocalize(name)" aria-label="@TryLocalize(name)" OnClick="@(() => ShapeChosen.InvokeAsync(preset))">
+                        <svg viewBox="-1 -1 22 22" class="@(IsLine(preset) ? "mud-ex-slide-gallery-line" : "mud-ex-slide-gallery-shape")" aria-hidden="true">
+                            <path d="@PresetGeometry.Path(preset, 20, IsLine(preset) ? 20 : 14)" transform="@(IsLine(preset) ? null : "translate(0 3)")" />
+                        </svg>
+                    </MudMenuItem>
+                }
+            </div>
+        </div>
+    }
+</div>

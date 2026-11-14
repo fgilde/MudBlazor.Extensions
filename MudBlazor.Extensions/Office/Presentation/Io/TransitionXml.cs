@@ -1,0 +1,135 @@
+using System.Globalization;
+using System.Xml.Linq;
+using static MudBlazor.Extensions.Office.Presentation.PptxReader;
+
+namespace MudBlazor.Extensions.Office.Presentation;
+
+internal static class TransitionXml
+{
+    internal static readonly XNamespace Mc = "http://schemas.openxmlformats.org/markup-compatibility/2006";
+
+    private static readonly (TransitionKind Kind, string Name, TransitionDirection[] Directions)[] Kinds =
+    [
+        (TransitionKind.Cut, "cut", []),
+        (TransitionKind.Fade, "fade", []),
+        (TransitionKind.Push, "push", Sides),
+        (TransitionKind.Wipe, "wipe", Sides),
+        (TransitionKind.Split, "split", Axes),
+        (TransitionKind.Cover, "cover", Sides),
+        (TransitionKind.Uncover, "pull", Sides),
+        (TransitionKind.Zoom, "zoom", [TransitionDirection.Out, TransitionDirection.In]),
+        (TransitionKind.Dissolve, "dissolve", []),
+        (TransitionKind.RandomBars, "randomBar", Axes)
+    ];
+
+    private static TransitionDirection[] Sides => [TransitionDirection.Left, TransitionDirection.Up, TransitionDirection.Right, TransitionDirection.Down];
+
+    private static TransitionDirection[] Axes => [TransitionDirection.Horizontal, TransitionDirection.Vertical];
+
+    internal static TransitionDirection[] Directions(TransitionKind kind) => Kinds.FirstOrDefault(k => k.Kind == kind).Directions ?? [];
+
+    internal static SlideTransition Read(XElement slide)
+    {
+        var (element, choice) = Find(slide);
+        if (element == null) return SlideTransition.None;
+        var effect = EffectOf(element);
+        var kind = effect == null ? TransitionKind.None
+            : effect.Name.Namespace == P ? Kinds.FirstOrDefault(k => k.Name == effect.Name.LocalName, (TransitionKind.Other, null, null)).Kind
+            : TransitionKind.Other;
+        var milliseconds = Long((string)(choice ?? element).Attribute(P14 + "dur"));
+        return new SlideTransition(kind, effect == null ? TransitionDirection.None : Direction(kind, effect),
+            milliseconds is { } ms ? ms / 1000.0 : (string)element.Attribute("spd") switch { "slow" => 1, "med" => 0.75, _ => 0.5 },
+            (string)element.Attribute("advClick") is not ("0" or "false"),
+            Long((string)element.Attribute("advTm")) / 1000.0);
+    }
+
+    internal static void Write(XElement slide, SlideTransition transition)
+    {
+        var loaded = Read(slide);
+        if (loaded == transition) return;
+        var (element, choice) = Find(slide);
+        var removed = transition is { Kind: TransitionKind.None, AdvanceOnClick: true, AdvanceAfterSeconds: null };
+        if (element != null && !removed && loaded.Kind == transition.Kind && loaded.Direction == transition.Direction)
+        {
+            foreach (var target in new[] { element, choice }.OfType<XElement>()) Patch(target, loaded, transition);
+            return;
+        }
+
+        var kept = element?.Elements().Where(e => e.Name == P + "sndAc" || e.Name == P + "extLst").Select(e => new XElement(e)).ToList();
+        slide.Elements(P + "transition").Remove();
+        Alternates(slide).Remove();
+        if (removed) return;
+        SlideXml.Place(slide, new XElement(P + "transition",
+            Speed(transition.DurationSeconds) is { } speed ? new XAttribute("spd", speed) : null,
+            transition.AdvanceOnClick ? null : new XAttribute("advClick", "0"),
+            AdvanceTime(transition) is { } after ? new XAttribute("advTm", after) : null,
+            Effect(transition), kept), "timing", "extLst");
+    }
+
+    private static void Patch(XElement element, SlideTransition loaded, SlideTransition transition)
+    {
+        if (loaded.DurationSeconds != transition.DurationSeconds)
+        {
+            element.SetAttributeValue("spd", Speed(transition.DurationSeconds));
+            element.SetAttributeValue(P14 + "dur", null);
+        }
+
+        if (loaded.AdvanceOnClick != transition.AdvanceOnClick) element.SetAttributeValue("advClick", transition.AdvanceOnClick ? null : "0");
+        if (loaded.AdvanceAfterSeconds != transition.AdvanceAfterSeconds) element.SetAttributeValue("advTm", AdvanceTime(transition));
+    }
+
+    private static string Speed(double seconds) => seconds <= 0.625 ? null : seconds <= 0.875 ? "med" : "slow";
+
+    private static string AdvanceTime(SlideTransition transition) =>
+        transition.AdvanceAfterSeconds is { } after ? ((long)Math.Round(after * 1000)).ToString(CultureInfo.InvariantCulture) : null;
+
+    private static XElement EffectOf(XElement transition) => transition?.Elements().FirstOrDefault(e => e.Name != P + "sndAc" && e.Name != P + "extLst");
+
+    private static XElement Effect(SlideTransition transition)
+    {
+        if (Kinds.FirstOrDefault(k => k.Kind == transition.Kind) is not { Name: { } name }) return null;
+        var effect = new XElement(P + name);
+        var direction = transition.Direction;
+        switch (transition.Kind)
+        {
+            case TransitionKind.Push or TransitionKind.Wipe or TransitionKind.Cover or TransitionKind.Uncover:
+                effect.SetAttributeValue("dir", direction switch { TransitionDirection.Up => "u", TransitionDirection.Right => "r", TransitionDirection.Down => "d", _ => "l" });
+                break;
+            case TransitionKind.Split:
+                effect.SetAttributeValue("orient", direction == TransitionDirection.Vertical ? "vert" : "horz");
+                break;
+            case TransitionKind.RandomBars:
+                effect.SetAttributeValue("dir", direction == TransitionDirection.Vertical ? "vert" : "horz");
+                break;
+            case TransitionKind.Zoom:
+                effect.SetAttributeValue("dir", direction == TransitionDirection.In ? "in" : "out");
+                break;
+        }
+
+        return effect;
+    }
+
+    private static TransitionDirection Direction(TransitionKind kind, XElement effect) => kind switch
+    {
+        TransitionKind.Push or TransitionKind.Wipe or TransitionKind.Cover or TransitionKind.Uncover => ((string)effect.Attribute("dir") is { Length: > 0 } dir ? dir[0] : 'l') switch
+        {
+            'u' => TransitionDirection.Up,
+            'r' => TransitionDirection.Right,
+            'd' => TransitionDirection.Down,
+            _ => TransitionDirection.Left
+        },
+        TransitionKind.Split => (string)effect.Attribute("orient") == "vert" ? TransitionDirection.Vertical : TransitionDirection.Horizontal,
+        TransitionKind.RandomBars => (string)effect.Attribute("dir") == "vert" ? TransitionDirection.Vertical : TransitionDirection.Horizontal,
+        TransitionKind.Zoom => (string)effect.Attribute("dir") == "in" ? TransitionDirection.In : TransitionDirection.Out,
+        _ => TransitionDirection.None
+    };
+
+    private static (XElement Transition, XElement Choice) Find(XElement slide)
+    {
+        if (slide.Element(P + "transition") is { } plain) return (plain, null);
+        if (Alternates(slide).FirstOrDefault() is not { } alternate) return (null, null);
+        return (alternate.Element(Mc + "Fallback")?.Element(P + "transition") ?? alternate.Descendants(P + "transition").First(), alternate.Element(Mc + "Choice")?.Element(P + "transition"));
+    }
+
+    private static IEnumerable<XElement> Alternates(XElement slide) => slide.Elements(Mc + "AlternateContent").Where(a => a.Descendants(P + "transition").Any()).ToList();
+}

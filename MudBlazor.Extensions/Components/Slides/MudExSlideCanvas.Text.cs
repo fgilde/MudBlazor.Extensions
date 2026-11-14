@@ -1,0 +1,232 @@
+using System.ComponentModel;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using MudBlazor.Extensions.Office.Presentation;
+
+namespace MudBlazor.Extensions.Components;
+
+public partial class MudExSlideCanvas
+{
+    internal const long TextBoxHeight = 369332;
+    private const long TextBoxWidth = 914400 * 3;
+
+    private TextSession _text;
+    private MudExSlideTextEditor _textEditor;
+
+    /// <summary>Raised on the first input of a text editing session, before the text is committed.</summary>
+    [Parameter] public EventCallback TextInput { get; set; }
+
+    /// <summary>True while the text of a shape is edited.</summary>
+    public bool IsEditingText => _text != null;
+
+    internal AutoShape TextSelection => _text?.Selection;
+
+    /// <summary>
+    /// Called by the browser when a shape was double-clicked: selects it and starts editing its text with the caret at the clicked point.
+    /// </summary>
+    /// <param name="id">The id of the shape.</param>
+    /// <param name="x">The horizontal client position in pixels.</param>
+    /// <param name="y">The vertical client position in pixels.</param>
+    /// <returns>A task that completes when editing started.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnShapeDoubleClickAsync(uint id, double x, double y) => InvokeAsync(() => BeginTextAsync(id, null, [x, y]));
+
+    /// <summary>Called by the browser when an input method starts composing on the canvas: starts editing the text of the selected shape.</summary>
+    /// <param name="id">The id of the shape.</param>
+    /// <returns>A task that completes when editing started.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnCompositionStartAsync(uint id) => InvokeAsync(() => _selection is [var selected] && selected == id ? BeginTextAsync(id) : Task.CompletedTask);
+
+    private Task InsertTextBoxAsync(double x, double y, double width)
+    {
+        var shape = AutoShape.CreateTextBox(new ShapeTransform(Math.Clamp((long)Math.Round(x), 0, Presentation.SlideWidth),
+            Math.Clamp((long)Math.Round(y), 0, Presentation.SlideHeight), width >= 1 ? (long)Math.Round(width) : TextBoxWidth, TextBoxHeight));
+        var insert = new InsertShapeCommand(Slide, shape);
+        insert.Apply(Presentation);
+        shape.Name = $"TextBox {shape.Id - 1}";
+        _text = new TextSession(Slide, shape, insert, null, null);
+        return SelectAsync([shape.Id]);
+    }
+
+    internal Task InsertTextBoxAsync()
+    {
+        if (ReadOnly || Slide == null)
+            return Task.CompletedTask;
+        _insert = TextBoxInsert;
+        return CommitTextAsync();
+    }
+
+    internal async Task CommitTextAsync()
+    {
+        if (_text is { } session && _textEditor != null && await _textEditor.ReadAsync() is { } live && ReferenceEquals(session, _text))
+            session.Draft = live;
+        CommitText();
+        StateHasChanged();
+        await RaiseSelectionAsync();
+    }
+
+    internal async Task BeginTextAsync(uint id, string text = null, double[] caret = null)
+    {
+        if (Find(id) is TableShape)
+        {
+            await BeginCellTextAsync(text, caret);
+            return;
+        }
+
+        if (ReadOnly || Find(id) is not AutoShape { IsConnector: false } shape || ReferenceEquals(_text?.Shape, shape))
+            return;
+        CommitText();
+        _text = new TextSession(Slide, shape, null, text, caret);
+        await SelectAsync([id]);
+    }
+
+    private void CommitText()
+    {
+        if (_text is not { } session)
+            return;
+        _text = null;
+        _raiseSelection |= session.Selection != null;
+        if (!SlideShape.Flatten(session.Slide.Shapes).Contains(session.Owner))
+            return;
+        var body = session.Draft == null ? session.Shape.Text : SlideTextDom.FromDom(session.Shape.Text, session.Draft);
+        if (session.Cell != null)
+        {
+            CommitCell(session, body);
+            return;
+        }
+
+        var empty = body?.Paragraphs.All(p => p.Runs.Count == 0) != false;
+        if (session.Insert != null)
+        {
+            if (empty)
+            {
+                session.Insert.Revert(Presentation);
+                Change(_selection.Where(i => i != session.Shape.Id));
+                return;
+            }
+
+            using (Presentation.Undo.BeginTransaction("Insert text box"))
+            {
+                Presentation.Undo.Record(session.Insert);
+                Presentation.Execute(new SetTextCommand(session.Slide, session.Shape.Id, body));
+            }
+        }
+        else if (!ReferenceEquals(body, session.Shape.Text) && !(session.Shape.Text == null && empty))
+            Presentation.Execute(new SetTextCommand(session.Slide, session.Shape.Id, body));
+    }
+
+    internal async Task FormatTextAsync(string key, string value)
+    {
+        if (ReadOnly || Slide == null)
+            return;
+        if (_text != null)
+        {
+            if (_textEditor != null)
+                await _textEditor.FormatAsync(key, value);
+            return;
+        }
+
+        var shapes = SelectedShapes.SelectMany(s => SlideShape.Flatten([s])).OfType<AutoShape>().Where(s => s.Text != null).ToList();
+        var cells = SelectedCellShapes;
+        if (shapes.Count == 0 && cells.Count == 0)
+            return;
+        value ??= SlideTextDom.All(shapes.Concat(cells.Select(c => c.Shape)), key) ? "0" : "1";
+        using (Presentation.Undo.BeginTransaction("Format text"))
+        {
+            foreach (var shape in shapes)
+            {
+                var body = SlideTextDom.Format(shape.Text, key, value);
+                if (!ReferenceEquals(body, shape.Text))
+                    Presentation.Execute(new SetTextCommand(Slide, shape.Id, body));
+            }
+
+            foreach (var (table, row, column, shape) in cells)
+            {
+                var body = SlideTextDom.Format(shape.Text, key, value);
+                if (!ReferenceEquals(body, shape.Text))
+                    Presentation.Execute(new SetTableCellTextCommand(Slide, table.Id, row, column, body));
+            }
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task OnTextChangedAsync(IReadOnlyList<SlideTextParagraphDto> paragraphs)
+    {
+        if (_text is not { } session)
+            return;
+        session.Draft = paragraphs;
+        if (session.Typed)
+            return;
+        session.Typed = true;
+        await TextInput.InvokeAsync();
+    }
+
+    private Task OnTextCommittedAsync(IReadOnlyList<SlideTextParagraphDto> paragraphs)
+    {
+        if (_text == null)
+            return Task.CompletedTask;
+        _text.Draft = paragraphs;
+        return CommitTextAsync();
+    }
+
+    private async Task OnTextSelectedAsync(IReadOnlyList<SlideTextParagraphDto> paragraphs)
+    {
+        if (_text is not { } session)
+            return;
+        session.Selection = SlideTextDom.Selection(session.Shape, paragraphs);
+        await SelectionChanged.InvokeAsync(_selection);
+    }
+
+    private async Task<bool> HandleTextKeyAsync(string key, bool ctrl)
+    {
+        var single = _selection.Count == 1 && Find(_selection[0]) is AutoShape;
+        var align = ctrl ? key.ToLowerInvariant() switch { "l" => "left", "e" => "center", "r" => "right", "j" => "justify", _ => null } : null;
+        switch (key)
+        {
+            case "Escape" when _insert != null:
+                _insert = null;
+                StateHasChanged();
+                return true;
+            case "b" or "B" or "i" or "I" or "u" or "U" when ctrl && _selection.Count > 0:
+                await FormatTextAsync(key.ToLowerInvariant(), null);
+                return true;
+            case not null when align != null && _selection.Count > 0:
+                await FormatTextAsync("align", align);
+                return true;
+            case "F2" when single:
+                await BeginTextAsync(_selection[0]);
+                return true;
+            case { Length: 1 } when !ctrl && single:
+                await BeginTextAsync(_selection[0], key);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private sealed class TextSession(Slide slide, AutoShape shape, InsertShapeCommand insert, string text, double[] caret)
+    {
+        public Slide Slide { get; } = slide;
+
+        public AutoShape Shape { get; } = shape;
+
+        public InsertShapeCommand Insert { get; } = insert;
+
+        public string Text { get; } = text;
+
+        public double[] Caret { get; } = caret;
+
+        public (TableShape Table, int Row, int Column)? Cell { get; init; }
+
+        public SlideShape Owner => (SlideShape)Cell?.Table ?? Shape;
+
+        public (int Row, int Column)? Position => Cell is { } cell ? (cell.Row, cell.Column) : null;
+
+        public IReadOnlyList<SlideTextParagraphDto> Draft { get; set; }
+
+        public bool Typed { get; set; }
+
+        public AutoShape Selection { get; set; }
+    }
+}

@@ -1,0 +1,74 @@
+@page "/slides-show"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Slides
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [DemoNew(Name = "Slide Show", Group = "Slide Editor", Order = 10, Icon = Icons.Material.Outlined.PlayCircleOutline, ForComponentTypes = new[] { typeof(MudExSlideEditor), typeof(MudExSlideShow) }, Documentation = "Play a deck full screen with transitions and build animations, with a presenter view, or use MudExSlideShow without the editor.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Slide Editor – Slide Show"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["The show follows the PowerPoint keys: Right, Space, Enter and N advance, Left, Backspace and P go back, a number and Enter jumps to a slide, B and W blank the screen, Esc ends the show. Hidden slides are skipped."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Show from the editor"
+                  NavTitle="Show from the editor"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "F5 starts from the beginning, Shift+F5 from the current slide – also when the editor is read-only",
+                                  "Transitions and animations tabs set what the show plays",
+                                  "Slide Show tab and status bar button start the show",
+                                  "Esc always ends the show"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SlidesShowExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Presenter view"
+                  NavTitle="Presenter view"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "The audience sees the show in a second browser window",
+                                  "This window shows the current and next slide, speaker notes, clock and stopwatch",
+                                  "If the browser blocks the window the show runs in this window"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SlidesPresenterExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. MudExSlideShow without the editor"
+                  NavTitle="Standalone slide show"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Parameters and events"
+                  Features="@(new[]
+                              {
+                                  "Presentation – the deck to play, StartIndex – the first slide",
+                                  "PresenterView – audience window plus presenter view",
+                                  "Closed – raised when the show ends; the host removes the component"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SlidesStandaloneShowExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

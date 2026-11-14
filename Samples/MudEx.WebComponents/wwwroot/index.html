@@ -6,16 +6,53 @@
     <title>MudEx Web Components</title>
     <style>
         body { font-family: Roboto, system-ui, sans-serif; margin: 0; padding: 24px; }
-        mudex-file-display { display: block; height: 70vh; border: 1px solid #ccc; border-radius: 8px; }
+        mudex-file-display,
+        mudex-spreadsheet-editor,
+        mudex-slide-editor,
+        mudex-notebook-editor { display: block; height: 70vh; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 24px; }
     </style>
 </head>
 <body>
     <h1>MudEx Web Components</h1>
     <p>This page is the smoke test of the bundle itself. The documented demo lives at
        <a href="https://www.mudex.org/webcomponents.html">mudex.org/webcomponents.html</a>.</p>
+    <p>Custom elements are inline by default. The editors fill the element, so give each one
+       <code>display: block</code> and a height in css, as done in the style block of this page.</p>
 
+    <h2>File display</h2>
     <mudex-file-display id="display"
                         url="sample-data/sample.pdf"
+                        content-type="application/pdf"
+                        file-name="sample.pdf"
+                        show-file-name="true"></mudex-file-display>
+
+    <h2>Spreadsheet editor</h2>
+    <mudex-spreadsheet-editor id="spreadsheet"></mudex-spreadsheet-editor>
+
+    <h2>Slide editor</h2>
+    <mudex-slide-editor id="slides"></mudex-slide-editor>
+
+    <h2>Notebook editor</h2>
+    <mudex-notebook-editor id="notebook"></mudex-notebook-editor>
+
+    <h2>Office files in the file display</h2>
+    <mudex-file-display id="display-xlsx"
+                        url="sample-data/ExcelSheet.xlsx"
+                        content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        file-name="ExcelSheet.xlsx"
+                        allow-edit="true"
+                        show-file-name="true"></mudex-file-display>
+    <mudex-file-display id="display-pptx"
+                        url="sample-data/sample.pptx"
+                        content-type="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                        file-name="sample.pptx"
+                        allow-edit="true"
+                        show-file-name="true"></mudex-file-display>
+    <mudex-file-display id="display-mxnb"
+                        url="sample-data/sample.mxnb"
+                        content-type="application/vnd.mudex.notebook+zip"
+                        file-name="sample.mxnb"
+                        allow-edit="true"
                         show-file-name="true"></mudex-file-display>
 
     <script src="mudex.js"></script>

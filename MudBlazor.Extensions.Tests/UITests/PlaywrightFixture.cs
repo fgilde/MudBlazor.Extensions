@@ -183,7 +183,7 @@ public class PlaywrightFixture : IAsyncLifetime
     /// Like "[Collection(PlaywrightFixture.PlaywrightCollection)]"
     /// </summary>
     public const string PlaywrightCollection = nameof(PlaywrightCollection);
-    [CollectionDefinition(PlaywrightCollection)]
+    [CollectionDefinition(PlaywrightCollection, DisableParallelization = true)]
     public class PlaywrightCollectionDefinition
         : ICollectionFixture<PlaywrightFixture>
     {

@@ -1,0 +1,56 @@
+@inherits MudExBaseComponent<MudExNotebookSectionTabs>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Notebook
+
+<div @attributes="UserAttributes" class="@($"mud-ex-notebook-section-tabs {Class}".TrimEnd())" style="@Style" role="tablist" aria-label="@TryLocalize("Sections")" @onkeydown="KeyDown">
+    @if (Notebook != null)
+    {
+        @for (var i = 0; i < Notebook.Sections.Count; i++)
+        {
+            var section = Notebook.Sections[i];
+            var selected = ReferenceEquals(section, Current);
+            var renaming = !ReadOnly && ReferenceEquals(section, _renaming);
+            <div @key="section" class="@($"mud-ex-notebook-section-tab{(selected ? " mud-ex-notebook-section-selected" : "")}")" role="tab" aria-selected="@(selected ? "true" : "false")"
+                 tabindex="@(selected ? "0" : "-1")" data-section-index="@i" draggable="@(ReadOnly || renaming ? null : "true")" style="@($"--mud-ex-notebook-section-color:{section.Color}")"
+                 @onclick="@(() => CurrentChanged.InvokeAsync(section))" @ondblclick="@(() => StartRename(section))"
+                 @oncontextmenu="@(e => MenuAsync(section, e))" @oncontextmenu:preventDefault="@(!ReadOnly)">
+                @if (renaming)
+                {
+                    <input @ref="_renameInput" class="mud-ex-notebook-section-rename" value="@section.Name" aria-label="@TryLocalize("Section name")"
+                           @onchange="@(e => RenameAsync(section, e.Value as string))" @onblur="@(() => EndRename(section))" @onkeydown="RenameKeyDown"
+                           @onkeydown:stopPropagation="true" @onclick:stopPropagation="true" @ondblclick:stopPropagation="true" />
+                }
+                else
+                {
+                    <span class="mud-ex-notebook-section-name">@section.Name</span>
+                }
+            </div>
+        }
+        @if (!ReadOnly)
+        {
+            <button type="button" class="mud-ex-notebook-section-add" aria-label="@TryLocalize("Add Section")" title="@TryLocalize("Add Section")" @onclick="AddRequested">+</button>
+        }
+    }
+</div>
+@if (!ReadOnly && Notebook != null)
+{
+    <MudMenu @ref="_menu" Class="mud-ex-notebook-menu" PositionAtCursor="true" Dense="true">
+        <ActivatorContent><span></span></ActivatorContent>
+        <ChildContent>
+            @{ var at = _menuSection == null ? -1 : Notebook.SectionList.IndexOf(_menuSection); }
+            <MudMenuItem Icon="@Icons.Material.Filled.Edit" OnClick="@(() => StartRename(_menuSection))">@TryLocalize("Rename")</MudMenuItem>
+            <MudMenu Label="@TryLocalize("Color")" StartIcon="@Icons.Material.Filled.Palette" Dense="true">
+                @foreach (var (name, color) in Colors)
+                {
+                    <MudMenuItem OnClick="@(() => CommandRequested.InvokeAsync(new SetSectionColorCommand(_menuSection, color)))">
+                        <span class="mud-ex-notebook-swatch" style="@($"background-color:{color}")"></span>@TryLocalize(name)
+                    </MudMenuItem>
+                }
+            </MudMenu>
+            <MudMenuItem Icon="@Icons.Material.Filled.Delete" Disabled="@(Notebook.Sections.Count < 2)" OnClick="@(() => CommandRequested.InvokeAsync(new DeleteSectionCommand(_menuSection)))">@TryLocalize("Delete")</MudMenuItem>
+            <MudDivider />
+            <MudMenuItem Icon="@Icons.Material.Filled.ChevronLeft" Disabled="@(at <= 0)" OnClick="@(() => CommandRequested.InvokeAsync(new MoveSectionCommand(_menuSection, at - 1)))">@TryLocalize("Move Left")</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.ChevronRight" Disabled="@(at < 0 || at >= Notebook.Sections.Count - 1)" OnClick="@(() => CommandRequested.InvokeAsync(new MoveSectionCommand(_menuSection, at + 2)))">@TryLocalize("Move Right")</MudMenuItem>
+        </ChildContent>
+    </MudMenu>
+}

@@ -1,0 +1,27 @@
+@inherits MudExJsRequiredBaseComponent<MudExRibbon>
+@namespace MudBlazor.Extensions.Components
+
+<div @ref="ElementReference"
+     @attributes="UserAttributes"
+     class="@($"mud-ex-ribbon mud-ex-ribbon-{Mode.ToString().ToLowerInvariant()}-mode {Class}".TrimEnd())"
+     style="@Style">
+    <CascadingValue Value="this" IsFixed="true">
+        @ChildContent
+        <CascadingValue Value="_quickAccess" IsFixed="true">@QuickAccess</CascadingValue>
+    </CascadingValue>
+    @switch (Mode)
+    {
+        case MudExRibbonMode.Simplified:
+            <MudExRibbonSimplifiedView Ribbon="this" />
+            break;
+        case MudExRibbonMode.Menu:
+            <MudExRibbonMenuView Ribbon="this" />
+            break;
+        case MudExRibbonMode.Toolbar:
+            <MudExRibbonToolbarView Ribbon="this" />
+            break;
+        default:
+            <MudExRibbonClassicView Ribbon="this" />
+            break;
+    }
+</div>

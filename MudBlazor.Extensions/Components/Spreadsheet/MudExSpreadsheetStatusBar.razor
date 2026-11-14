@@ -1,0 +1,25 @@
+@inherits MudExBaseComponent<MudExSpreadsheetStatusBar>
+@namespace MudBlazor.Extensions.Components
+
+<div @attributes="UserAttributes" class="@($"mud-ex-spreadsheet-status-bar {Class}".TrimEnd())" style="@Style" role="status">
+    <div class="mud-ex-sssb-summary">
+        @if (_summary.Count > 1)
+        {
+            @if (_summary.Numbers > 0)
+            {
+                <span class="mud-ex-sssb-average">@TryLocalize("Average"): @Format(_summary.Sum / _summary.Numbers)</span>
+            }
+            <span class="mud-ex-sssb-count">@TryLocalize("Count"): @_summary.Count.ToString(System.Globalization.CultureInfo.CurrentCulture)</span>
+            @if (_summary.Numbers > 0)
+            {
+                <span class="mud-ex-sssb-sum">@TryLocalize("Sum"): @Format(_summary.Sum)</span>
+            }
+        }
+    </div>
+    <div class="mud-ex-sssb-zoom">
+        <button type="button" class="mud-ex-sssb-zoom-button" aria-label="@TryLocalize("Zoom Out")" title="@TryLocalize("Zoom Out")" @onclick="@(() => SetZoomAsync(Zoom - 0.1))">−</button>
+        <input type="range" class="mud-ex-sssb-slider" min="10" max="400" step="10" value="@Percent" aria-label="@TryLocalize("Zoom")" @onchange="OnSliderChangedAsync" />
+        <button type="button" class="mud-ex-sssb-zoom-button" aria-label="@TryLocalize("Zoom In")" title="@TryLocalize("Zoom In")" @onclick="@(() => SetZoomAsync(Zoom + 0.1))">+</button>
+        <span class="mud-ex-sssb-percent">@Percent%</span>
+    </div>
+</div>

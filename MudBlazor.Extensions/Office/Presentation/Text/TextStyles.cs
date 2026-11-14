@@ -1,0 +1,192 @@
+using System.Globalization;
+using System.Xml.Linq;
+
+namespace MudBlazor.Extensions.Office.Presentation;
+
+internal static class TextStyles
+{
+    private static readonly RunFormat Defaults = new(false, false, false, false, 18, "scheme:tx1");
+    private static readonly TextParagraph NoBullet = new() { BulletKind = BulletKind.None };
+    private static readonly TextParagraph DefaultBullet = new() { BulletKind = BulletKind.Char, BulletChar = "•" };
+
+    private static readonly Dictionary<char, string> Wingdings = new()
+    {
+        ['l'] = "●", ['n'] = "■", ['o'] = "□", ['q'] = "❑", ['u'] = "◆", ['v'] = "❖", ['§'] = "▪", ['Ø'] = "➢",
+        ['ü'] = "✔"
+    };
+
+    private static readonly (int Value, string Digits)[] RomanDigits =
+        [(1000, "M"), (900, "CM"), (500, "D"), (400, "CD"), (100, "C"), (90, "XC"), (50, "L"), (40, "XL"), (10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I")];
+
+    internal static RunFormat EffectiveFormat(this AutoShape shape, TextRun run)
+    {
+        var level = shape.Text?.Paragraphs.FirstOrDefault(p => p.Runs.Any(r => ReferenceEquals(r, run)))?.Level ?? 0;
+        var chain = Chain(shape).ToList();
+        var format = chain.Select(s => PptxReader.ReadRunFormat(ListStyle(s)?.Element(Level(level))?.Element(PptxReader.A + "defRPr")))
+            .Concat(chain.Select(s => new RunFormat(Color: ColorResolver.FromXml(s.Source?.Element(PptxReader.P + "style")?.Element(PptxReader.A + "fontRef")?.Elements().FirstOrDefault()))))
+            .Append(PptxReader.ReadRunFormat(MasterLevel(shape, level)?.Element(PptxReader.A + "defRPr")))
+            .Append(Defaults)
+            .Aggregate(run.Format, Merge);
+        return format with { Color = ColorResolver.Resolve(format.Color, shape.Master, shape.ColorMap), Font = ThemeFont(format.Font, shape.Master) };
+    }
+
+    internal static TextParagraph EffectiveParagraph(this AutoShape shape, TextParagraph paragraph)
+    {
+        var levels = ListLevels(shape, paragraph.Level).Select(ShapeReader.ReadParagraphProperties).Prepend(paragraph).ToList();
+        T Pick<T>(Func<TextParagraph, T?> value, T fallback) where T : struct => levels.Select(value).FirstOrDefault(v => v != null) ?? fallback;
+        var bullet = paragraph.Bullet switch
+        {
+            false => NoBullet,
+            true when paragraph.BulletKind is not (BulletKind.Char or BulletKind.AutoNumber) => DefaultBullet,
+            _ => levels.FirstOrDefault(l => l.BulletKind != BulletKind.Inherited) ?? NoBullet
+        };
+        return paragraph with
+        {
+            Align = Pick(p => p.Align, TextAlign.Left),
+            MarginLeft = Pick(p => p.MarginLeft, 0L),
+            Indent = Pick(p => p.Indent, 0L),
+            LineSpacingPercent = Pick(p => p.LineSpacingPercent, 100d),
+            SpaceBeforePt = Pick(p => p.SpaceBeforePt, 0d),
+            SpaceAfterPt = Pick(p => p.SpaceAfterPt, 0d),
+            BulletKind = bullet.BulletKind,
+            BulletChar = bullet.BulletKind == BulletKind.Char ? bullet.BulletChar ?? DefaultBullet.BulletChar : null,
+            AutoNumberType = bullet.BulletKind == BulletKind.AutoNumber ? bullet.AutoNumberType ?? "arabicPeriod" : null,
+            AutoNumberStart = bullet.AutoNumberStart,
+            BulletFont = levels.Select(l => l.BulletFont).FirstOrDefault(f => f != null)
+        };
+    }
+
+    internal static IReadOnlyList<string> Markers(this AutoShape shape)
+    {
+        var numbers = new int?[9];
+        var types = new string[9];
+        var markers = new List<string>();
+        foreach (var paragraph in shape.Text?.Paragraphs ?? [])
+        {
+            if (paragraph.Runs.All(r => r.Text.Length == 0))
+            {
+                markers.Add(null);
+                continue;
+            }
+
+            var level = Math.Clamp(paragraph.Level, 0, 8);
+            Array.Fill(numbers, null, level + 1, 8 - level);
+            var effective = shape.EffectiveParagraph(paragraph);
+            if (effective.BulletKind != BulletKind.AutoNumber)
+            {
+                numbers[level] = null;
+                markers.Add(effective.BulletKind == BulletKind.Char ? Symbol(effective.BulletChar, effective.BulletFont) : null);
+                continue;
+            }
+
+            numbers[level] = numbers[level] is { } running && types[level] == effective.AutoNumberType ? running + 1 : effective.AutoNumberStart ?? 1;
+            types[level] = effective.AutoNumberType;
+            markers.Add(Number(effective.AutoNumberType, numbers[level].Value));
+        }
+
+        return markers;
+    }
+
+    internal static IEnumerable<XElement> ListLevels(SlideShape shape, int level) =>
+        Chain(shape).Select(s => ListStyle(s)?.Element(Level(level))).Append(MasterLevel(shape, level)).Where(e => e != null);
+
+    internal static TextBody EffectiveBody(this AutoShape shape)
+    {
+        var bodies = Chain(shape).Select(s => (s as AutoShape)?.Text).Where(b => b != null).ToList();
+        T Pick<T>(Func<TextBody, T?> value, T fallback) where T : struct => bodies.Select(value).FirstOrDefault(v => v != null) ?? fallback;
+        return (shape.Text ?? new TextBody()) with
+        {
+            Anchor = Pick(b => b.Anchor, TextAnchor.Top),
+            InsetLeft = Pick(b => b.InsetLeft, 91440L),
+            InsetTop = Pick(b => b.InsetTop, 45720L),
+            InsetRight = Pick(b => b.InsetRight, 91440L),
+            InsetBottom = Pick(b => b.InsetBottom, 45720L),
+            Wrap = Pick(b => b.Wrap, true)
+        };
+    }
+
+    internal static TextAlign EffectiveAlign(this AutoShape shape, TextParagraph paragraph) =>
+        paragraph.Align ?? ListLevels(shape, paragraph.Level).Select(l => ParseAlign((string)l.Attribute("algn"))).FirstOrDefault(a => a != null) ?? TextAlign.Left;
+
+    internal static TextAlign? ParseAlign(string value) => value switch
+    {
+        "l" => TextAlign.Left,
+        "ctr" => TextAlign.Center,
+        "r" => TextAlign.Right,
+        "just" or "justLow" or "dist" or "thaiDist" => TextAlign.Justify,
+        _ => null
+    };
+
+    internal static TextAnchor? ParseAnchor(string value) => value switch
+    {
+        "t" or "just" or "dist" => TextAnchor.Top,
+        "ctr" => TextAnchor.Middle,
+        "b" => TextAnchor.Bottom,
+        _ => null
+    };
+
+    private static string Symbol(string bullet, string font)
+    {
+        if (font == null || !(font.StartsWith("Wingdings", StringComparison.OrdinalIgnoreCase) || font.StartsWith("Webdings", StringComparison.OrdinalIgnoreCase) ||
+                              font.Equals("Symbol", StringComparison.OrdinalIgnoreCase)))
+            return bullet;
+        var c = bullet is { Length: 1 } ? bullet[0] is >= '\uF000' and <= '\uF0FF' ? (char)(bullet[0] - 0xF000) : bullet[0] : '\0';
+        return font.StartsWith("Wingdings", StringComparison.OrdinalIgnoreCase) && Wingdings.TryGetValue(c, out var mapped) ? mapped : DefaultBullet.BulletChar;
+    }
+
+    private static string Number(string type, int number)
+    {
+        var digits = type.StartsWith("roman", StringComparison.Ordinal) ? Roman(number)
+            : type.StartsWith("alpha", StringComparison.Ordinal) && number > 0 ? new string((char)('A' + (number - 1) % 26), (number - 1) / 26 + 1)
+            : number.ToString(CultureInfo.InvariantCulture);
+        if (type.StartsWith("romanLc", StringComparison.Ordinal) || type.StartsWith("alphaLc", StringComparison.Ordinal)) digits = digits.ToLowerInvariant();
+        return type switch
+        {
+            _ when type.EndsWith("ParenBoth", StringComparison.Ordinal) => $"({digits})",
+            _ when type.EndsWith("ParenR", StringComparison.Ordinal) => digits + ")",
+            _ when type.EndsWith("Plain", StringComparison.Ordinal) => digits,
+            _ when type.EndsWith("Minus", StringComparison.Ordinal) => digits + "-",
+            _ => digits + "."
+        };
+    }
+
+    private static string Roman(int number)
+    {
+        if (number is < 1 or > 3999) return number.ToString(CultureInfo.InvariantCulture);
+        var result = "";
+        foreach (var (value, digits) in RomanDigits)
+            for (; number >= value; number -= value) result += digits;
+        return result;
+    }
+
+    internal static IEnumerable<SlideShape> Chain(SlideShape shape)
+    {
+        for (var s = shape; s != null; s = s.InheritsFrom) yield return s;
+    }
+
+    private static XElement ListStyle(SlideShape shape) => shape.Source?.Element(PptxReader.P + "txBody")?.Element(PptxReader.A + "lstStyle");
+
+    private static XName Level(int level) => PptxReader.A + $"lvl{level + 1}pPr";
+
+    private static XElement MasterLevel(SlideShape shape, int level)
+    {
+        var styles = shape.Placeholder?.Type switch
+        {
+            null => shape.Master?.DefaultTextStyle,
+            "title" or "ctrTitle" => shape.Master?.TextStyles?.Element(PptxReader.P + "titleStyle"),
+            "dt" or "ftr" or "sldNum" or "hdr" => shape.Master?.TextStyles?.Element(PptxReader.P + "otherStyle"),
+            _ => shape.Master?.TextStyles?.Element(PptxReader.P + "bodyStyle")
+        };
+        return styles?.Element(Level(level));
+    }
+
+    private static RunFormat Merge(RunFormat a, RunFormat b) =>
+        new(a.Bold ?? b.Bold, a.Italic ?? b.Italic, a.Underline ?? b.Underline, a.Strike ?? b.Strike, a.SizePt ?? b.SizePt, a.Color ?? b.Color, a.Font ?? b.Font);
+
+    private static string ThemeFont(string font, SlideMaster master) => font switch
+    {
+        ['+', 'm', 'j', ..] => master?.Theme.MajorFont,
+        ['+', 'm', 'n', ..] => master?.Theme.MinorFont,
+        _ => font
+    };
+}

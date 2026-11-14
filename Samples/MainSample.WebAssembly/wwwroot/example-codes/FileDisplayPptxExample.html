@@ -1,0 +1,29 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Services
+@inject MudExFileService FileService
+
+@if (_stream != null)
+{
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 600px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;MudExFileDisplay @ref=&quot;ComponentRef&quot;
+                          FileName=&quot;sample.pptx&quot;
+                          ContentType=&quot;application/vnd.openxmlformats-officedocument.presentationml.presentation&quot;
+                          ContentStream=&quot;@_stream&quot;
+                          AllowEdit=&quot;true&quot;
+                          Dense=&quot;true&quot; /&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+}
+
+@code {
+    private Stream? _stream;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _stream = await FileService.ReadStreamAsync(NavigationManager.ToAbsoluteUri(&quot;sample-data/sample.pptx&quot;).AbsoluteUri);
+    }
+}
+
+</pre></div>

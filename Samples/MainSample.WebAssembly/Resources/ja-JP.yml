@@ -2204,7 +2204,6 @@ MudExEnumSelect<TEnum>: MudExEnumSelect (MudExEnumSelect <TEnum>)
 MudExFileDisplay: MudExファイル表示
 MudExFileDisplayCode: MudExファイル表示コード
 MudExFileDisplayDialog: MudExFileDisplayDialog (MudEx ファイル表示ダイアログ ボックス)
-MudExFileDisplayExcel: MudExファイル表示Excel
 MudExFileDisplayFont: MudExファイル表示フォント
 MudExFileDisplayHtml: MudExFileDisplayHtml (MudEx ファイル表示 HTML )
 MudExFileDisplayOfficeLive: MudExファイルディスプレイオフィスライブ

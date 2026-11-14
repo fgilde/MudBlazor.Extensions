@@ -1,0 +1,11 @@
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Presentation
+
+<MudText Typo="Typo.body2" Class="mb-2">@L["Switch on Presenter View in the Slide Show tab, then start the show. The audience window shows the slides, this window shows notes, the next slide, a clock and a stopwatch."]</MudText>
+<div style="width: 100%; height: 600px;">
+    <MudExSlideEditor @ref="ComponentRef" @bind-Presentation="_presentation" />
+</div>
+
+@code {
+    private Presentation _presentation = SlidesSamples.CreateDeck();
+}

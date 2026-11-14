@@ -1,4 +1,10 @@
 ﻿## Change Log    
+ - 9.13.0 > New MudExNotebookEditor: a OneNote style notebook editor with colored section tabs, a page list with subpages, editable page titles, drag and drop reordering, undo and save as .mxnb; MudExFileDisplay opens .mxnb files in it, read-only unless in edit mode (.ipynb stays in the Jupyter viewer)
+ - 9.13.0 > MudExNotebookEditor opens the text of OneNote sections (.one): pages with their titles and one text block per outline at its position, pictures, ink and tables are left out; saving writes a new .mxnb file. `Notebook.LoadOneNote` reads them in code
+ - 9.13.0 > MudExFileDisplay opens pptx in the new MudExSlideEditor, read-only unless in edit mode; MudExFileDisplayPresentation and its pptx reader are removed (see BREAKING_CHANGES.md)
+ - 9.13.0 > Breaking: MudExFileDisplayExcel, MudExFileDisplayExcelUniver, `IMudExFileService.ReadExcelFile` and `ExcelFile` are removed, MudExFileDisplay opens xlsx, xls, csv and tsv in MudExSpreadsheetEditor (see BREAKING_CHANGES.md)
+ - 9.13.0 > MudExSpreadsheetEditor, MudExSlideEditor and MudExNotebookEditor open their dialogs (find and replace, go to, links, format cells, ...) with `ShowExAsync` and the new `DialogOptions` parameter (`DialogOptionsEx`); unset, they use `DialogOptionsEx.DefaultDialogOptions` with a small, full width dialog and a close button
+ - 9.13.0 > Update Nextended to 10.1.65
  - 9.12.2 > Fix MudExBaseComponent `OnFinishedRenderAsync`: the render finished completion threw "An attempt was made to transition a task to a final state when it had already completed" as an unobserved exception on every re-render after the first (fgilde/MudExRichTextEditor#63)
  - 9.12.2 > Update NuGet packages (ASP.NET Core 10.0.14, Nextended 10.1.51, MudBlazor.Markdown 9.12.0, MsgReader 6.2, SharpCompress 0.50.8, FluentValidation 12.2.0, NUglify 1.23.6)
  - 9.12.1 > Update Nextended to 10.1.50 (CreateInstance for interfaces and constructor chains with ever growing generic types)

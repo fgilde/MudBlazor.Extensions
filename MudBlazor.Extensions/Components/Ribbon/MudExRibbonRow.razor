@@ -1,0 +1,11 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonItemBase
+
+<CascadingValue Value="this" IsFixed="true">@ChildContent</CascadingValue>
+
+@code {
+    /// <inheritdoc />
+    public override RenderFragment Render(MudExRibbonItemLayout layout) => layout == MudExRibbonItemLayout.MenuEntry
+        ? MenuEntries(Items)
+        : @<div class="mud-ex-ribbon-row">@Slots(Items, item => ChildLayout(item, layout))</div>;
+}

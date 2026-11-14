@@ -1,0 +1,21 @@
+<div class="html"><pre>
+@using Microsoft.Extensions.Localization
+
+@if (_shown)
+{
+    @ChildContent
+}
+else
+{
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudButton</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Outlined&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">StartIcon</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@Icons.Material.Filled.PlayArrow&quot;</span> <span class="htmlAttributeName">OnClick</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(() =&gt; _shown = true)&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Show demo&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+}
+
+@code {
+    private bool _shown;
+
+    [Inject] private IStringLocalizer<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ExampleBase</span><span class="htmlTagDelimiter">&gt;</span> L { get; set; } = null!;
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}
+
+</pre></div>

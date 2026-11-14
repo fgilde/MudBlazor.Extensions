@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "outputFileName": "wwwroot/js/mudBlazorExtensions.all.js",
     "inputFiles": [
@@ -47,6 +47,102 @@
     "outputFileName": "wwwroot/js/components/MudExGoogleFilePicker.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExGoogleFilePicker.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExRibbon.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExRibbon.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExSpreadsheetGrid.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSpreadsheetGrid.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExSlideEditor.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSlideEditor.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExNotebookEditor.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExNotebookEditor.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExNotebookCanvas.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExNotebookCanvas.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExNotebookInk.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExNotebookInk.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExOfficeClipboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExOfficeClipboard.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExNotebookText.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExNotebookText.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExOfficeInterop.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExOfficeInterop.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExRichText.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExRichText.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExSlideCanvas.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSlideCanvas.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExSlideText.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSlideText.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExSlideShow.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSlideShow.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExSpreadsheetClipboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSpreadsheetClipboard.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExSpreadsheetObjects.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSpreadsheetObjects.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExFileDisplayCode.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExFileDisplayCode.js"
     ]
   },
   {
@@ -125,12 +221,6 @@
     "outputFileName": "wwwroot/js/components/MudExModuleLoader.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExModuleLoader.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/components/MudExFileDisplayExcelUniver.min.js",
-    "inputFiles": [
-      "wwwroot/js/components/MudExFileDisplayExcelUniver.js"
     ]
   },
   {

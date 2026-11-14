@@ -1,0 +1,19 @@
+@inherits MudExBaseComponent<MudExSpreadsheetChart>
+@namespace MudBlazor.Extensions.Components
+
+@if (_snapshot == null)
+{
+    <div class="@($"mud-ex-sschart {Class}".TrimEnd())" style="@Style">
+        <div class="mud-ex-sschart-placeholder">
+            @if (!string.IsNullOrEmpty(Chart?.Title))
+            {
+                <div class="mud-ex-sschart-title">@Chart.Title</div>
+            }
+            <div>@TryLocalize("Chart not supported")</div>
+        </div>
+    </div>
+}
+else
+{
+    <MudExOfficeChart Snapshot="_snapshot" Width="Width" Height="Height" Class="@Class" Style="@Style" Localizer="@Localizer" />
+}

@@ -1,0 +1,58 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using Doc = MudBlazor.Extensions.Office.Notebook.Notebook
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Row</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">AlignItems</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;AlignItems.Center&quot;</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudButton</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Outlined&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">OnClick</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@(() =&gt; LoadAsync(&quot;sample.mxnb&quot;))&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Load sample.mxnb&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudButton</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Outlined&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">OnClick</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@NewNotebook&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;New blank notebook&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span><span class="htmlTagDelimiter">&gt;</span>@_name<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+@if (_error != null)
+{
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudAlert</span> <span class="htmlAttributeName">Severity</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Severity.Error&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>@_error<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudAlert</span><span class="htmlTagDelimiter">&gt;</span>
+}
+
+@if (_notebook != null)
+{
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 600px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;MudExNotebookEditor @ref=&quot;ComponentRef&quot; @bind-Notebook=&quot;_notebook&quot; /&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+}
+
+@code {
+    private Doc? _notebook;
+    private string _name = &quot;&quot;;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LoadAsync(&quot;sample.mxnb&quot;);
+    }
+
+    private void NewNotebook()
+    {
+        _notebook = Doc.Create();
+        _error = null;
+        _name = &quot;Notebook1.mxnb&quot;;
+    }
+
+    private async Task LoadAsync(string file)
+    {
+        try
+        {
+            var bytes = await Http.GetByteArrayAsync(NavigationManager.ToAbsoluteUri(&quot;sample-data/&quot; + file));
+            using var stream = new MemoryStream(bytes);
+            _notebook = Doc.Load(stream);
+            _error = null;
+            _name = file;
+        }
+        catch (Exception ex) when (ex is HttpRequestException or InvalidDataException)
+        {
+            _error = L[&quot;The sample file could not be loaded: {0}&quot;, ex.Message];
+        }
+    }
+}
+
+</pre></div>

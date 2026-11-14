@@ -1,0 +1,58 @@
+@page "/slides-design"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.Slides
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [DemoNew(Name = "Design and Tables", Group = "Slide Editor", Order = 15, Icon = Icons.Material.Outlined.TableChart, ForComponentTypes = new[] { typeof(MudExSlideEditor) }, Documentation = "Switch the design of a whole deck and edit tables with merged cells.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Slide Editor – Design and Tables"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["A design sets the colors, fonts and background of the masters. Tables support header rows, banding, merged cells and row and column editing."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Designs"
+                  NavTitle="Designs"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "SlideDesigns.BuiltIn – Paper, Slate, Ocean, Forest, Sunset and Mono",
+                                  "ApplyDesignCommand changes every master; the editor offers it as one undo step",
+                                  "Presentation.Create(design) starts a deck with a design",
+                                  "The Design tab of the editor offers the same designs with a live preview"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SlidesDesignExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Tables"
+                  NavTitle="Tables"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "Insert tab: insert a table of any size",
+                                  "Table Design and Layout tabs: styles, fills, insert and delete rows and columns",
+                                  "Merge and split cells; the last row of the sample is merged",
+                                  "Tabs and text editing work inside cells"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <SlidesTablesExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

@@ -12,9 +12,7 @@ using Nextended.Blazor.Extensions;
 using Microsoft.JSInterop;
 using Nextended.Core.Attributes;
 using BlazorJS;
-using ExcelDataReader;
 using Nextended.Core;
-using System.Data;
 using System.Text;
 
 namespace MudBlazor.Extensions.Services;
@@ -56,10 +54,10 @@ public class MudExFileService : IMudExFileService
     public async Task<Stream> ReadStreamAsync(IMudExFileDisplayInfos fileDisplayInfos, CancellationToken ct = default)
     {
         Stream ms = null;
-        if (fileDisplayInfos.ContentStream is { Length: > 0, CanRead: true })
+        if (ReadableContent(fileDisplayInfos) is { } content)
         {
             ms = new MemoryStream();
-            await fileDisplayInfos.ContentStream.CopyToAsync(ms, ct);
+            await content.CopyToAsync(ms, ct);
         }
         else if (Nextended.Core.Types.DataUrl.TryParse(fileDisplayInfos.Url, out var data))
         {
@@ -74,15 +72,25 @@ public class MudExFileService : IMudExFileService
         return ms;
     }
 
+    private static Stream ReadableContent(IMudExFileDisplayInfos fileDisplayInfos)
+    {
+        var stream = fileDisplayInfos.ContentStream;
+        if (stream is not { CanRead: true } || (stream.CanSeek && stream.Length == 0))
+            return null;
+        if (stream.CanSeek)
+            stream.Position = 0;
+        return stream;
+    }
+
     /// <summary>
     /// Returns the content of a file as string
     /// </summary>
     public async Task<string> ReadAsStringFromFileDisplayInfosAsync(IMudExFileDisplayInfos fileDisplayInfos, CancellationToken ct = default)
     {
         // Here we load the json string for given file
-        if (fileDisplayInfos.ContentStream is { Length: > 0, CanRead: true })
+        if (ReadableContent(fileDisplayInfos) is { } content)
         {
-            var copy = await CopyStreamAsync(fileDisplayInfos.ContentStream, ct);
+            var copy = await CopyStreamAsync(content, ct);
             return await ReadAsStringFromStream(copy, ct); // If we have already a valid stream we can use it
         }
         if (Nextended.Core.Types.DataUrl.TryParse(fileDisplayInfos.Url, out var data)) // If not but given url is a data url we can use the bytes from it
@@ -308,63 +316,68 @@ public class MudExFileService : IMudExFileService
         });
     }
 
-    /// <summary>
-    /// Reads a stream as excel file
-    /// </summary>
-    public ExcelFile ReadExcelFile(Stream stream, string contentType)
-    {
-        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-        var excelFile = new ExcelFile();
-
-        using var reader = CreateReader(stream, contentType);
-
-        // Configuration to use the first row as column headers
-        var conf = new ExcelDataSetConfiguration
-        {
-            ConfigureDataTable = (_) => new ExcelDataTableConfiguration
-            {
-                UseHeaderRow = true
-            }
-        };
-
-        var result = reader.AsDataSet(conf);
-
-        foreach (DataTable table in result.Tables)
-        {
-            var sheet = new ExcelSheet
-            {
-                Name = table.TableName
-            };
-
-            foreach (DataRow row in table.Rows)
-            {
-                var excelRow = new ExcelRow();
-
-                foreach (DataColumn col in table.Columns)
-                {
-                    excelRow.Cells[col.ColumnName] = row[col];
-                }
-
-                sheet.Rows.Add(excelRow);
-            }
-
-            excelFile.Sheets.Add(sheet);
-        }
-
-        return excelFile;
-    }
-
-    private IExcelDataReader CreateReader(Stream stream, string contentType)
-    {
-        if (MimeType.Matches(contentType, MimeType.Csv))
-            return ExcelReaderFactory.CreateCsvReader(stream);
-        return ExcelReaderFactory.CreateReader(stream);
-    }
-
     private async Task<Stream> CopyStreamAsync(Stream stream, CancellationToken ct = default)
     {
         var res = await stream.CopyStreamAsync(ct: ct);
         _streams.Add(res);
         return res;
+    }
+
+    /// <summary>
+    /// Saves a file to a local file via the File System Access API, or as a download when the browser lacks it.
+    /// </summary>
+    /// <param name="content">The content to save</param>
+    /// <param name="handleId">Handle id of an earlier save to overwrite the same file without asking again</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The save result, or null when the user cancelled</returns>
+    public async Task<MudExLocalFileSaveResult> SaveLocalFileAsync(MudExFileContent content, string handleId = null, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(content);
+        if (content.Stream.CanSeek)
+            content.Stream.Position = 0;
+        using var streamRef = new DotNetStreamReference(content.Stream, leaveOpen: true);
+        var dto = await _jsRuntime.InvokeAsync<MudExLocalFileSaveDto>(
+            "MudExFileSystemAccess.saveFile", cancellationToken, handleId, streamRef, content.FileName, content.ContentType);
+        return dto == null
+            ? null
+            : new MudExLocalFileSaveResult(dto.HandleId, dto.FileName, Enum.Parse<MudExFileSaveTarget>(dto.Target, true));
+    }
+
+    /// <summary>
+    /// Lets the user pick a local file via the File System Access API, or a file input when the browser lacks it.
+    /// Must be called before anything that loses the user activation of the triggering click.
+    /// </summary>
+    /// <param name="accept">Formats offered in the picker. Empty or null accepts any file.</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>The picked file with a handle for <see cref="SaveLocalFileAsync"/>, or null when the user cancelled</returns>
+    public async Task<MudExLocalFile> OpenLocalFileAsync(IReadOnlyList<MudExFileFormat> accept, CancellationToken ct = default)
+    {
+        var dto = await _jsRuntime.InvokeAsync<MudExLocalFileOpenDto>("MudExFileSystemAccess.openFile", ct, accept ?? []);
+        if (dto == null)
+            return null;
+        await using var reference = dto.Content;
+        try
+        {
+            await using var source = await reference.OpenReadStreamAsync(long.MaxValue, ct);
+            var content = new MemoryStream();
+            await source.CopyToAsync(content, ct);
+            content.Position = 0;
+            return new MudExLocalFile(dto.HandleId, dto.FileName, dto.ContentType, content);
+        }
+        catch
+        {
+            await ReleaseLocalFileAsync(dto.HandleId);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Releases a local file handle kept by <see cref="SaveLocalFileAsync"/> or <see cref="OpenLocalFileAsync"/>.
+    /// </summary>
+    /// <param name="handleId">The handle id to release</param>
+    public async Task ReleaseLocalFileAsync(string handleId)
+    {
+        if (handleId != null)
+            await _jsRuntime.InvokeVoidAsync("MudExFileSystemAccess.releaseFile", handleId);
     }
 }

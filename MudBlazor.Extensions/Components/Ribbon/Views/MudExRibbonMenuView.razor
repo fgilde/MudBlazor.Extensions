@@ -1,0 +1,29 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonViewBase
+@attribute [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+
+@Header(Bar)
+
+@code {
+    private RenderFragment Bar =>
+        @<div class="mud-ex-ribbon-menubar">
+            @foreach (var tab in Ribbon.VisibleTabs)
+            {
+                <MudMenu @key="tab"
+                         Class="@($"mud-ex-ribbon-menubar-menu {tab.ContextualClass}".TrimEnd())"
+                         Style="@tab.ContextualStyle"
+                         Label="@tab.Text"
+                         Color="Color.Inherit"
+                         Dense="true"
+                         @attributes="Ribbon.TabKeyTipAttributes(tab)">
+                    @GroupSections(tab.Groups, false, Section)
+                </MudMenu>
+            }
+        </div>;
+
+    private RenderFragment Section(MudExRibbonGroup group) =>
+        @<text>
+            <div class="mud-ex-ribbon-menu-subheader">@group.Text</div>
+            @MudExRibbonItemBase.MenuEntries(group.Items)
+        </text>;
+}

@@ -1,0 +1,128 @@
+namespace MudBlazor.Extensions.Office.Presentation;
+
+/// <summary>A presentation of slides with their layouts and masters, and an undo stack.</summary>
+public sealed class Presentation
+{
+    private readonly HashSet<Slide> _changedSlides = new();
+    private PresentationChangeKind _changeKind;
+    private int _notifications;
+
+    internal Presentation() => Undo = new DocumentUndoStack<Presentation>(this, p => p.RaiseChanged());
+
+    /// <summary>Slide width in EMU.</summary>
+    public long SlideWidth { get; internal set; } = 12192000;
+
+    /// <summary>Slide height in EMU.</summary>
+    public long SlideHeight { get; internal set; } = 6858000;
+
+    /// <summary>The slides in show order.</summary>
+    public IReadOnlyList<Slide> Slides => SlideList;
+
+    /// <summary>The slide masters.</summary>
+    public IReadOnlyList<SlideMaster> Masters => MasterList;
+
+    /// <summary>The layouts of all masters.</summary>
+    public IReadOnlyList<SlideLayout> Layouts => LayoutList;
+
+    /// <summary>The sections in show order; empty if the presentation has no sections. Every slide belongs to exactly one section when there are any.</summary>
+    public IReadOnlyList<PresentationSection> Sections => SectionList;
+
+    /// <summary>The undo and redo history.</summary>
+    public DocumentUndoStack<Presentation> Undo { get; }
+
+    /// <summary>True if a slide contains content the editor keeps but does not model, such as charts, SmartArt or media.</summary>
+    public bool HasOpaqueContent => SlideList.Any(s => SlideShape.Flatten(s.Shapes).Any(shape => shape is OpaqueShape));
+
+    /// <summary>Raised once after each command, transaction, undo or redo with everything that changed.</summary>
+    public event EventHandler<PresentationChangedEventArgs> Changed;
+
+    internal List<Slide> SlideList { get; } = [];
+
+    internal List<SlideMaster> MasterList { get; } = [];
+
+    internal List<SlideLayout> LayoutList { get; } = [];
+
+    internal List<PresentationSection> SectionList { get; } = [];
+
+    internal bool ShowSpecialPlaceholdersOnTitleSlide { get; set; } = true;
+
+    internal PptxPackage Package { get; set; }
+
+    internal int FirstSlideNumber { get; set; } = 1;
+
+    internal Dictionary<string, (byte[] Data, string ContentType)> PendingMedia { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Reads a .pptx file.</summary>
+    /// <param name="stream">The file content.</param>
+    /// <returns>The presentation.</returns>
+    public static Presentation Load(Stream stream) => PptxReader.Read(stream);
+
+    /// <summary>Creates a blank 16:9 presentation with one title slide.</summary>
+    /// <param name="design">The design of the new presentation, or null for the default theme.</param>
+    /// <returns>The presentation.</returns>
+    public static Presentation Create(SlideDesign design = null)
+    {
+        var presentation = PptxReader.Read(new MemoryStream(BlankPresentation.Build()));
+        if (design == null) return presentation;
+        new ApplyDesignCommand(design).Apply(presentation);
+        using var buffer = new MemoryStream();
+        presentation.Save(buffer);
+        buffer.Position = 0;
+        return PptxReader.Read(buffer);
+    }
+
+    /// <summary>Writes the presentation as a .pptx file. Unchanged parts are copied from the loaded file.</summary>
+    /// <param name="target">The stream that receives the file.</param>
+    public void Save(Stream target) => PptxWriter.Write(this, target);
+
+    /// <summary>Applies a command and records it as one undo step (or adds it to the open transaction). A command that changes nothing records nothing.</summary>
+    /// <param name="command">The command.</param>
+    public void Execute(IDocumentCommand<Presentation> command)
+    {
+        var notifications = _notifications;
+        command.Apply(this);
+        if (notifications == _notifications) return;
+        Undo.Record(command);
+        if (!Undo.InTransaction) RaiseChanged();
+    }
+
+    /// <summary>Gets the section a slide belongs to.</summary>
+    /// <param name="slide">The slide.</param>
+    /// <returns>The section, or null if the presentation has no sections or the slide is not part of it.</returns>
+    public PresentationSection SectionOf(Slide slide) => SlideList.IndexOf(slide) is var index and >= 0 ? SectionAt(index) : null;
+
+    internal PresentationSection SectionAt(int index)
+    {
+        var end = 0;
+        foreach (var section in SectionList)
+            if (index < (end += section.Count))
+                return section;
+        return null;
+    }
+
+    internal bool CanHaveNotes(Slide slide) => slide.HasNotesPart || Package?.NotesMasterPart != null;
+
+    internal string PartOf(Slide slide) => Package?.Slides.FirstOrDefault(p => p.Slide == (slide.CopyOf ?? slide))?.PartName;
+
+    internal void Notify(Slide slide, PresentationChangeKind kind)
+    {
+        _notifications++;
+        if (slide != null)
+        {
+            slide.Modified = true;
+            slide.Version++;
+            _changedSlides.Add(slide);
+        }
+
+        _changeKind |= kind;
+    }
+
+    private void RaiseChanged()
+    {
+        if (_changeKind == PresentationChangeKind.None && _changedSlides.Count == 0) return;
+        var args = new PresentationChangedEventArgs(_changedSlides.ToList(), _changeKind);
+        _changedSlides.Clear();
+        _changeKind = PresentationChangeKind.None;
+        Changed?.Invoke(this, args);
+    }
+}

@@ -113,6 +113,8 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         }
 
         await base.ImportModuleAndCreateJsAsync();
+        if (JsReference == null)
+            return;
 
         if (_pendingDocxBytes != null)
         {

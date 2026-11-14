@@ -1,0 +1,13 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Presentation
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 640px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExSlideEditor @ref=&quot;ComponentRef&quot; @bind-Presentation=&quot;_presentation&quot; /&gt;
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private Presentation _presentation = SlidesSamples.CreateDeck();
+}
+
+</pre></div>

@@ -1,0 +1,9 @@
+@namespace MudBlazor.Extensions.Components
+@inherits MudExRibbonItemBase
+
+@code {
+    /// <inheritdoc />
+    public override RenderFragment Render(MudExRibbonItemLayout layout) => layout == MudExRibbonItemLayout.MenuEntry
+        ? MenuEntry(ExecuteCommandAsync, Pressed)
+        : WithTooltip(layout, Face(layout, ExecuteCommandAsync, Pressed));
+}

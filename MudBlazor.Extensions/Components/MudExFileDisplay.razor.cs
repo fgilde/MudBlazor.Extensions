@@ -32,6 +32,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private DynamicComponent _currentFileDisplay;
     private bool _internalCall;
     private bool _isNativeRendered;
+    private bool _resolvingViewer;
     private string _id = Guid.NewGuid().ToString();
     private (string tag, Dictionary<string, object> attributes)? renderInfos;
     private BrowserInfo _info;
@@ -58,6 +59,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private ComponentForFileInfo _componentForFile;
     private Stream _contentStream;
     private bool _errorClosed;
+    private IMudExFileEditor _editor;
     private CancellationTokenSource _componentCts = new();
     private long? _fileMetaSize;
     private IDictionary<string, object> _fileMetaInformation;
@@ -202,6 +204,61 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     [Parameter]
     [SafeCategory("Behavior")]
     public bool AllowSaveAs { get; set; } = true;
+
+    /// <summary>
+    /// Set to true to allow the user to switch to edit mode if an editor is available for the file
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool AllowEdit { get; set; }
+
+    /// <summary>
+    /// True if the file is shown in an editor that accepts changes
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool EditMode { get; set; }
+
+    /// <summary>
+    /// Raised when the edit mode changes
+    /// </summary>
+    [Parameter]
+    public EventCallback<bool> EditModeChanged { get; set; }
+
+    /// <summary>
+    /// If true editors may save to a local file when the host does not handle SaveRequested
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool AllowLocalSave { get; set; } = true;
+
+    /// <summary>
+    /// Raised before an editor saves, so the host can take over saving
+    /// </summary>
+    [Parameter]
+    public EventCallback<MudExFileSaveRequest> SaveRequested { get; set; }
+
+    /// <summary>
+    /// Raised after an editor saved the file
+    /// </summary>
+    [Parameter]
+    public EventCallback<MudExFileSavedEventArgs> Saved { get; set; }
+
+    /// <summary>
+    /// Raised when the editor gets unsaved changes or loses them
+    /// </summary>
+    [Parameter]
+    public EventCallback<bool> IsDirtyChanged { get; set; }
+
+    /// <summary>
+    /// True if the active editor has unsaved changes
+    /// </summary>
+    public bool IsDirty { get; private set; }
+
+    /// <summary>
+    /// True if an editor is available that can edit the current file
+    /// </summary>
+    public bool CanEdit { get; private set; }
 
     /// <summary>
     /// Set to true to allow user to copy the file url to clipboard
@@ -431,6 +488,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         if (!updateRequired)
             return;
 
+        await SetDirtyAsync(false);
         _errorClosed = false;
         ErrorMessage = null;
         // the banner is made visible by inline js on the native object tag - resetting the flags
@@ -463,6 +521,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// <inheritdoc/>
     protected override async Task OnParametersSetAsync()
     {
+        _resolvingViewer = _componentForFile == null;
         var fs = Get<IMudExFileService>();
         var possibleRenderControls = GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType() && !Ignored(c)).ToList();
         _possibleRenderControls = new List<IMudExFileDisplay>();
@@ -472,10 +531,39 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
                 _possibleRenderControls.Add(possibleRenderControl);
         }
 
+        _editor = null;
+        foreach (var editor in _possibleRenderControls.OfType<IMudExFileEditor>().OrderByDescending(c => c.RenderPriority))
+        {
+            if (!await editor.CanEditFileAsync(this, fs))
+                continue;
+            _editor = editor;
+            break;
+        }
+        CanEdit = _editor != null;
+
         if (ViewDependsOnContentType && _componentForFile == null)
             _componentForFile = GetComponentForFile(_possibleRenderControls
                 .OrderByDescending(c => c.RenderPriority)
                 .FirstOrDefault(c => c.StartsActive && !ForceNativeRender));
+        _resolvingViewer = false;
+
+        if (EditMode && !CanEdit)
+        {
+            EditMode = false;
+            await EditModeChanged.InvokeAsync(false);
+            RebuildActiveComponent();
+        }
+        else if (EditMode && _componentForFile?.ControlType is { } active && !IsEditorType(active))
+        {
+            var editor = FindEditor();
+            if (editor != null)
+                _componentForFile = GetComponentForFile(editor);
+        }
+        else if (_componentForFile?.ControlType is { } current && IsEditorType(current)
+                 && _componentForFile.Parameters.TryGetValue(nameof(IMudExFileEditor.ReadOnly), out var readOnly) && (bool)readOnly == EditMode)
+        {
+            RebuildActiveComponent();
+        }
         if (!_internalOverwrite)
             renderInfos = GetRenderInfos();
         await base.OnParametersSetAsync();
@@ -488,6 +576,155 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         return IgnoredRenderControls.Any(t => t.IsInstanceOfType(mudExFileDisplay));
     }
 
+
+    private static bool IsEditorType(Type type) => typeof(IMudExFileEditor).IsAssignableFrom(type);
+
+    private IMudExFileDisplay FindEditor() => _editor;
+
+    private void RebuildActiveComponent()
+    {
+        var type = _componentForFile?.ControlType;
+        if (type == null)
+            return;
+        var control = _possibleRenderControls?.FirstOrDefault(c => c.GetType() == type);
+        if (control != null)
+            _componentForFile = GetComponentForFile(control);
+    }
+
+    private async Task OnEditorDirtyChangedAsync(bool dirty) => await SetDirtyAsync(dirty);
+
+    private async Task SetDirtyAsync(bool dirty)
+    {
+        if (IsDirty == dirty)
+            return;
+        IsDirty = dirty;
+        await IsDirtyChanged.InvokeAsync(dirty);
+        await NotifyJsDirtyAsync(dirty);
+        await OnDirtyStateChangedAsync(dirty);
+    }
+
+    private async Task NotifyJsDirtyAsync(bool dirty)
+    {
+        if (JsReference == null)
+            return;
+        try
+        {
+            await JsReference.InvokeVoidAsync("setDirty", dirty);
+        }
+        catch (Exception e) when (e is JSDisconnectedException or ObjectDisposedException or TaskCanceledException)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Called after <see cref="IsDirty"/> changed.
+    /// </summary>
+    /// <param name="dirty">The new dirty state</param>
+    protected virtual Task OnDirtyStateChangedAsync(bool dirty) => Task.CompletedTask;
+
+    /// <summary>
+    /// If true, closing the file or switching the renderer while <see cref="IsDirty"/> asks the user to save, discard or cancel.
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool ConfirmDiscardChanges { get; set; } = true;
+
+    /// <summary>
+    /// Asks the user what to do with unsaved changes. Returns immediately with true if there is nothing to protect.
+    /// </summary>
+    /// <returns>True if the caller may continue (nothing to protect, saved or discarded). False if the user cancelled or saving failed.</returns>
+    public async Task<bool> ConfirmDiscardChangesAsync()
+    {
+        if (!IsDirty || !ConfirmDiscardChanges || DialogService == null)
+            return true;
+
+        switch (await AskSaveChangesAsync(DialogService, s => TryLocalize(s)))
+        {
+            case null:
+                return false;
+            case true:
+                return await SaveAsync();
+            default:
+                await SetDirtyAsync(false);
+                return true;
+        }
+    }
+
+    internal void EditorDocumentChanged() => InvokeAsync(StateHasChanged);
+
+    private string HeaderFileName => _currentFileDisplay?.Instance is IMudExFileEditor { FileName.Length: > 0 } editor ? editor.FileName : FileName;
+
+    internal static async Task<bool?> AskSaveChangesAsync(IDialogService dialogService, Func<string, string> localize)
+    {
+        if (dialogService == null)
+            return false;
+
+        var buttons = new[]
+        {
+            new MudExDialogResultAction { Label = localize("Cancel"), Variant = Variant.Text, Result = DialogResult.Cancel() },
+            new MudExDialogResultAction { Label = localize("Discard"), Variant = Variant.Text, Color = Color.Error, Result = DialogResult.Ok("discard") },
+            new MudExDialogResultAction { Label = localize("Save"), Variant = Variant.Filled, Color = Color.Primary, Result = DialogResult.Ok("save") }
+        };
+        var parameters = new DialogParameters
+        {
+            { nameof(MudExMessageDialog.Message), localize("The file has unsaved changes. Do you want to save them?") },
+            { nameof(MudExMessageDialog.Icon), Icons.Material.Filled.Warning },
+            { nameof(MudExMessageDialog.Buttons), buttons }
+        };
+        var dialog = await dialogService.ShowExAsync<MudExMessageDialog>(localize("Unsaved changes"), parameters, DialogServiceExt.DefaultOptions());
+        var result = await dialog.Result;
+        if (result == null || result.Canceled)
+            return null;
+        return result.Data as string == "save";
+    }
+
+    /// <summary>
+    /// Called by the browser when the save shortcut is pressed.
+    /// </summary>
+    /// <returns>A task that completes when saving finished.</returns>
+    [JSInvokable]
+    public Task SaveFromShortcut() => SaveAsync();
+
+    private async Task CloseGuardedAsync()
+    {
+        if (await ConfirmDiscardChangesAsync())
+            await OnCloseClick.InvokeAsync();
+    }
+
+    private async Task RenderWithGuardedAsync(IMudExFileDisplay fileComponent)
+    {
+        if (await ConfirmDiscardChangesAsync())
+            await RenderWith(fileComponent);
+    }
+
+    /// <summary>
+    /// Switches between viewing and editing. Switching to edit mode picks an editor if the active renderer is none.
+    /// </summary>
+    /// <param name="editMode">True to edit, false to view</param>
+    public async Task SetEditModeAsync(bool editMode)
+    {
+        if (editMode && !CanEdit)
+            return;
+        if (editMode == EditMode)
+            return;
+
+        EditMode = editMode;
+        if (editMode && (_componentForFile?.ControlType == null || !IsEditorType(_componentForFile.ControlType)))
+            await RenderWith(FindEditor());
+        else
+            RebuildActiveComponent();
+
+        await EditModeChanged.InvokeAsync(editMode);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>
+    /// Saves the file through the active editor
+    /// </summary>
+    /// <param name="saveAs">If true the user is asked for a new target</param>
+    /// <returns>True if the content was saved. False if it was not saved or the active renderer is not an editor.</returns>
+    public async Task<bool> SaveAsync(bool saveAs = false)
+        => _currentFileDisplay is { Instance: IMudExFileEditor editor } && await editor.SaveAsync(saveAs);
 
     [UnconditionalSuppressMessage("Trimming", "IL2072",
         Justification = "IMudExFileDisplay implementations are Blazor components resolved from DI; their public members are kept by the Razor compiler + DI roots.")]
@@ -506,6 +743,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             {
                 parameters[param.Key] = param.Value;
             }
+        }
+
+        if (fileComponent is IMudExFileEditor)
+        {
+            parameters[nameof(IMudExFileEditor.ReadOnly)] = !EditMode;
+            parameters[nameof(IsDirtyChanged)] = EventCallback.Factory.Create<bool>(this, OnEditorDirtyChangedAsync);
         }
 
 
@@ -689,9 +932,16 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             "document.getElementById('content-type-display-error').classList.remove('visible')");
     }
 
-    private void RenderWith(IMudExFileDisplay fileComponent)
+    private async Task RenderWith(IMudExFileDisplay fileComponent)
     {
         CloseContentError();
+        if (_componentForFile?.ControlType != fileComponent?.GetType())
+            await SetDirtyAsync(false);
+        if (EditMode && fileComponent is not IMudExFileEditor)
+        {
+            EditMode = false;
+            await EditModeChanged.InvokeAsync(false);
+        }
         _componentForFile = GetComponentForFile(fileComponent);
         if (fileComponent == null)
         {

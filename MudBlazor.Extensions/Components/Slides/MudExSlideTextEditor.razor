@@ -1,0 +1,8 @@
+@inherits MudExBaseComponent<MudExSlideTextEditor>
+@namespace MudBlazor.Extensions.Components
+
+<div class="@($"mud-ex-slide-text-editor {Class}".TrimEnd())" style="@($"{MudExSlideShapeView.BoxStyle(Shape.ResolvedTransform, Presentation)}{Style}")">
+    <div class="mud-ex-slide-text" style="@MudExSlideText.BodyStyle(Shape, Presentation)">
+        <div @ref="_root" class="mud-ex-slide-text-editable" contenteditable="true" spellcheck="true" role="textbox" aria-multiline="true" aria-label="@TryLocalize("Text")"></div>
+    </div>
+</div>
