@@ -28,7 +28,7 @@ MudBlazor.Extensions is a convenient package that extends the capabilities of th
 
     Automatically generate UI for object editing with validation support
 
-    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/object-edit.md)
+    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/object-edit.md)
 
 -   :material-upload:{ .lg .middle } __File Upload & Display__
 
@@ -36,7 +36,7 @@ MudBlazor.Extensions is a convenient package that extends the capabilities of th
 
     Advanced file upload with preview, drag & drop, and cloud integration
 
-    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/upload-edit.md)
+    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/upload-edit.md)
 
 -   :material-resize:{ .lg .middle } __Dialog Extensions__
 
@@ -44,7 +44,7 @@ MudBlazor.Extensions is a convenient package that extends the capabilities of th
 
     Resizable, draggable dialogs with animations and custom buttons
 
-    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/extensions/dialog-extensions.md)
+    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/extensions/dialog-extensions.md)
 
 -   :material-tree:{ .lg .middle } __Tree View Components__
 
@@ -52,7 +52,7 @@ MudBlazor.Extensions is a convenient package that extends the capabilities of th
 
     Enhanced tree view components with breadcrumb navigation
 
-    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/tree-view.md)
+    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/tree-view.md)
 
 -   :material-palette:{ .lg .middle } __Styling Utilities__
 
@@ -60,7 +60,7 @@ MudBlazor.Extensions is a convenient package that extends the capabilities of th
 
     CSS and style builders for dynamic styling
 
-    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/utilities/css-builder.md)
+    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/css-builder.md)
 
 -   :material-cog:{ .lg .middle } __Rich Utilities__
 
@@ -68,7 +68,7 @@ MudBlazor.Extensions is a convenient package that extends the capabilities of th
 
     Color utilities, size helpers, and SVG components
 
-    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/utilities/index.md)
+    [:octicons-arrow-right-24: Learn more](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/index.md)
 
 </div>
 
@@ -112,7 +112,7 @@ builder.Services.AddMudExtensions();
 
 ### 3. Start Building
 
-You're ready to use MudBlazor.Extensions components and utilities! Check out the [Getting Started](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/getting-started/setup.md) guide for detailed setup instructions.
+You're ready to use MudBlazor.Extensions components and utilities! Check out the [Getting Started](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/getting-started/setup.md) guide for detailed setup instructions.
 
 ## Demo & Try Online
 
@@ -142,7 +142,7 @@ Robust component for automatic UI generation from your models with built-in vali
 <MudExObjectEditForm OnValidSubmit="@OnSubmit" Value="@MyModel" />
 ```
 
-[Learn more about Object Edit →](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/object-edit.md)
+[Learn more about Object Edit →](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/object-edit.md)
 
 ### MudExUploadEdit
 
@@ -152,7 +152,7 @@ Feature-rich file upload component with preview, drag & drop, cloud integration,
 <MudExUploadEdit @bind-Files="Files" />
 ```
 
-[Learn more about Upload Edit →](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/upload-edit.md)
+[Learn more about Upload Edit →](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/upload-edit.md)
 
 ### MudExFileDisplay
 
@@ -164,7 +164,7 @@ Display file contents with automatic handling for various file types:
                   Url="@fileUrl" />
 ```
 
-[Learn more about File Display →](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/file-display.md)
+[Learn more about File Display →](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/file-display.md)
 
 ## Extensions Highlights
 
@@ -182,7 +182,7 @@ var options = new DialogOptionsEx {
 await dialogService.ShowEx<MyDialog>("Title", parameters, options);
 ```
 
-[Explore Dialog Extensions →](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/extensions/dialog-extensions.md)
+[Explore Dialog Extensions →](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/extensions/dialog-extensions.md)
 
 ## Community & Support
 
@@ -194,19 +194,19 @@ await dialogService.ShowEx<MyDialog>("Title", parameters, options);
 
 <div class="grid cards" markdown>
 
--   [**Installation Guide**](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/getting-started/installation.md)
+-   [**Installation Guide**](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/getting-started/installation.md)
     
     Detailed installation and configuration instructions
 
--   [**Components**](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/index.md)
+-   [**Components**](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/index.md)
     
     Explore all available components with examples
 
--   [**Extensions**](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/extensions/index.md)
+-   [**Extensions**](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/extensions/index.md)
     
     Discover extension methods and utilities
 
--   [**API Reference**](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/api/index.md)
+-   [**API Reference**](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/api/index.md)
     
     Complete API documentation
 

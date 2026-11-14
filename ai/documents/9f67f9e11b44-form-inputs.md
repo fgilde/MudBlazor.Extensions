@@ -379,6 +379,6 @@ Validation wrapper component for custom validation logic.
 
 ## See Also
 
-- [Picker Components](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/pickers.md)
-- [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/object-edit.md)
-- [Other Components](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/other-components.md)
+- [Picker Components](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/pickers.md)
+- [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/object-edit.md)
+- [Other Components](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/other-components.md)

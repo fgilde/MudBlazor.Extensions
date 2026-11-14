@@ -239,6 +239,6 @@ Enhanced divider component with additional styling options.
 
 ## See Also
 
-- [Other Components](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/components/other-components.md)
-- [CSS Builder](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/utilities/css-builder.md)
-- [Size Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/utilities/size-utils.md)
+- [Other Components](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/other-components.md)
+- [CSS Builder](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/css-builder.md)
+- [Size Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/size-utils.md)

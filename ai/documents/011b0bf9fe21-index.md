@@ -4,8 +4,8 @@ MudBlazor.Extensions provides powerful extension methods that enhance the functi
 
 ## Available Extensions
 
-- **[Dialog Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/extensions/dialog-extensions.md)** - Resizable, draggable dialogs with animations
-- **[Browser Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/fd8e30adddf8877e69e672278398a2b95d86989e/docs/extensions/browser-extensions.md)** - Browser and file utilities
+- **[Dialog Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/extensions/dialog-extensions.md)** - Resizable, draggable dialogs with animations
+- **[Browser Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/extensions/browser-extensions.md)** - Browser and file utilities
 
 ## Quick Example
 
