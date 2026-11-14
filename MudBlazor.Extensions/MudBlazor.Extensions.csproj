@@ -15,6 +15,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/fgilde/MudBlazor.Extensions</RepositoryUrl>
     <Copyright>Copyright © $(Authors) 2020-$([System.DateTime]::Now.Year)</Copyright>
+    <Copyright>Copyright © $(Authors) 2020-$([System.DateTime]::Now.Year)</Copyright>
     <PackageIcon>MudExtension.png</PackageIcon>
     <PackageIconUrl />
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -25,8 +26,8 @@
   <!--Versioning-->
   <PropertyGroup>
     <MajorVersion>9</MajorVersion>
-    <MinorVersion>12</MinorVersion>
-    <PatchVersion>2</PatchVersion>
+    <MinorVersion>13</MinorVersion>
+    <PatchVersion>0</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
