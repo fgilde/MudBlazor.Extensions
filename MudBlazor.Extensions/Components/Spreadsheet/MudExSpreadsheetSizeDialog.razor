@@ -1,7 +1,7 @@
 @inherits MudExBaseComponent<MudExSpreadsheetSizeDialog>
 @namespace MudBlazor.Extensions.Components
 
-<MudDialog Class="mud-ex-sssize-dialog">
+<MudDialog Class="@MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial, "mud-ex-sssize-dialog")">
     <DialogContent>
         <MudNumericField T="double" Class="mud-ex-sssize-value" Label="@TryLocalize(Label)" @bind-Value="_value" Min="0" Max="@Max" Step="1" Format="0.##"
                          Immediate="true" Margin="Margin.Dense" />

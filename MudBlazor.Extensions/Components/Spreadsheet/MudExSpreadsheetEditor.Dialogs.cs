@@ -1,3 +1,4 @@
+using MudBlazor.Extensions.Options;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Office.Spreadsheet;
 
@@ -7,7 +8,7 @@ public partial class MudExSpreadsheetEditor
 {
     private SpreadsheetContextMenu _contextMenu;
 
-    private static DialogOptions DialogDefaults => new() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true };
+    private DialogOptionsEx DialogDefaults => DialogOptionsEx.EditorDialogOptions(DialogOptions);
 
     private Task OnDialogRequestedAsync(SpreadsheetDialog dialog) => dialog switch
     {
@@ -25,7 +26,7 @@ public partial class MudExSpreadsheetEditor
     private async Task FindReplaceAsync(bool replace)
     {
         if (ActiveSheet == null || !await CommitPendingEditAsync()) return;
-        await DialogService.ShowAsync<MudExSpreadsheetFindReplaceDialog>(TryLocalize("Find and Replace"), new DialogParameters
+        await DialogService.ShowExAsync<MudExSpreadsheetFindReplaceDialog>(TryLocalize("Find and Replace"), new DialogParameters
         {
             { nameof(MudExSpreadsheetFindReplaceDialog.Workbook), _workbook },
             { nameof(MudExSpreadsheetFindReplaceDialog.Sheet), ActiveSheet },
@@ -46,7 +47,7 @@ public partial class MudExSpreadsheetEditor
     private async Task GoToAsync()
     {
         if (ActiveSheet == null || !await CommitPendingEditAsync()) return;
-        var reference = await DialogService.ShowAsync<MudExSpreadsheetGoToDialog>(TryLocalize("Go To"), new DialogParameters
+        var reference = await DialogService.ShowExAsync<MudExSpreadsheetGoToDialog>(TryLocalize("Go To"), new DialogParameters
         {
             { nameof(MudExSpreadsheetGoToDialog.Names), _workbook.DefinedNames },
             { nameof(MudExSpreadsheetGoToDialog.Localizer), Localizer }
@@ -59,7 +60,7 @@ public partial class MudExSpreadsheetEditor
     private async Task InsertFunctionDialogAsync()
     {
         if (!CanEdit || !await CommitPendingEditAsync()) return;
-        var reference = await DialogService.ShowAsync<MudExSpreadsheetInsertFunctionDialog>(TryLocalize("Insert Function"), new DialogParameters
+        var reference = await DialogService.ShowExAsync<MudExSpreadsheetInsertFunctionDialog>(TryLocalize("Insert Function"), new DialogParameters
         {
             { nameof(MudExSpreadsheetInsertFunctionDialog.Functions), (_engine?.Functions ?? FunctionRegistry.Default).Functions.Select(f => f.Info).ToList() },
             { nameof(MudExSpreadsheetInsertFunctionDialog.Localizer), Localizer }
@@ -75,7 +76,7 @@ public partial class MudExSpreadsheetEditor
         if (!CanEdit || !await CommitPendingEditAsync()) return;
         var r = ActiveRange;
         var target = new CellRange(r.Start with { RowAbsolute = true, ColumnAbsolute = true }, r.End with { RowAbsolute = true, ColumnAbsolute = true });
-        var reference = await DialogService.ShowAsync<MudExSpreadsheetNameManagerDialog>(TryLocalize("Name Manager"), new DialogParameters
+        var reference = await DialogService.ShowExAsync<MudExSpreadsheetNameManagerDialog>(TryLocalize("Name Manager"), new DialogParameters
         {
             { nameof(MudExSpreadsheetNameManagerDialog.Workbook), _workbook },
             { nameof(MudExSpreadsheetNameManagerDialog.DefaultRefersTo), Office.Spreadsheet.Workbook.QuoteSheetName(ActiveSheet.Name) + "!" + target.ToA1() },

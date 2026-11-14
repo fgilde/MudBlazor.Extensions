@@ -214,11 +214,11 @@ public partial class MudExSpreadsheetEditor
 
     private Task ApplyCellStyleAsync(SpreadsheetCellStyle style) => ApplyStyleAsync(style.ApplyTo, "Cell style");
 
-    private async Task ShowCommandDialogAsync<TDialog>(string title, DialogParameters parameters) where TDialog : IComponent
+    private async Task ShowCommandDialogAsync<TDialog>(string title, DialogParameters parameters) where TDialog : ComponentBase
     {
         if (!await CommitPendingEditAsync()) return;
         parameters.Add(nameof(MudExSpreadsheetFormatCellsDialog.Localizer), Localizer);
-        var reference = await DialogService.ShowAsync<TDialog>(TryLocalize(title), parameters, DialogDefaults);
+        var reference = await DialogService.ShowExAsync<TDialog>(TryLocalize(title), parameters, DialogDefaults);
         var result = await reference.Result;
         if (result is { Canceled: false, Data: IWorkbookCommand command })
             await RunCommandAsync(command);

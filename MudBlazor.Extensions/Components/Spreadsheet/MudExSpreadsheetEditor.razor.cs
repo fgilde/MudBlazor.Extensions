@@ -1,3 +1,4 @@
+using MudBlazor.Extensions.Options;
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -66,6 +67,12 @@ public partial class MudExSpreadsheetEditor : IMudExFileEditor
 
     /// <summary>Raised after every change of the workbook and when the editor replaces it (New, Open).</summary>
     [Parameter] public EventCallback<Workbook> WorkbookChanged { get; set; }
+
+    /// <summary>
+    /// Options for every dialog the editor opens (find and replace, links, ...). Unset: <see cref="DialogOptionsEx.DefaultDialogOptions"/>
+    /// with a small, full width dialog and a close button.
+    /// </summary>
+    [Parameter] public DialogOptionsEx DialogOptions { get; set; }
 
     /// <summary>Layout of the ribbon.</summary>
     [Parameter] public MudExRibbonMode RibbonMode { get; set; } = MudExRibbonMode.Classic;

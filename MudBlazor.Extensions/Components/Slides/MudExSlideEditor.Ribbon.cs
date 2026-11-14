@@ -1,3 +1,4 @@
+using MudBlazor.Extensions.Options;
 using System.ComponentModel;
 using System.Globalization;
 using Microsoft.JSInterop;
@@ -123,11 +124,11 @@ public partial class MudExSlideEditor
             return;
         if (_canvas != null)
             await _canvas.CommitTextAsync();
-        var dialog = await DialogService.ShowAsync<MudExSlideHeaderFooterDialog>(TryLocalize("Header and Footer"), new DialogParameters
+        var dialog = await DialogService.ShowExAsync<MudExSlideHeaderFooterDialog>(TryLocalize("Header and Footer"), new DialogParameters
         {
             { nameof(MudExSlideHeaderFooterDialog.Options), HeaderFooterOptions.From(_current) },
             { nameof(MudExSlideHeaderFooterDialog.Localizer), Localizer }
-        }, new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true });
+        }, DialogOptionsEx.EditorDialogOptions(DialogOptions));
         if (await dialog.Result is { Canceled: false, Data: (HeaderFooterOptions options, bool all) })
             await RunCommandAsync(new SetHeaderFooterCommand(all ? _presentation.Slides : _selection, options));
     }

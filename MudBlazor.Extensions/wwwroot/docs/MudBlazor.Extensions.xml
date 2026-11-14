@@ -13265,6 +13265,12 @@
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.NotebookChanged">
             <summary>Raised after every change of the notebook and when the editor replaces it (New, Open).</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.DialogOptions">
+            <summary>
+            Options for every dialog the editor opens (find and replace, links, ...). Unset: <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.DefaultDialogOptions"/>
+            with a small, full width dialog and a close button.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExNotebookEditor.RibbonMode">
             <summary>Layout of the ribbon.</summary>
         </member>
@@ -20608,6 +20614,12 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.PresentationChanged">
             <summary>Raised after every change of the presentation and when the editor replaces it (New, Open).</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.DialogOptions">
+            <summary>
+            Options for every dialog the editor opens (find and replace, links, ...). Unset: <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.DefaultDialogOptions"/>
+            with a small, full width dialog and a close button.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideEditor.RibbonMode">
             <summary>Layout of the ribbon.</summary>
         </member>
@@ -21367,6 +21379,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.WorkbookChanged">
             <summary>Raised after every change of the workbook and when the editor replaces it (New, Open).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.DialogOptions">
+            <summary>
+            Options for every dialog the editor opens (find and replace, links, ...). Unset: <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.DefaultDialogOptions"/>
+            with a small, full width dialog and a close button.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpreadsheetEditor.RibbonMode">
             <summary>Layout of the ribbon.</summary>
@@ -41651,6 +41669,12 @@
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DefaultDialogOptions">
             <summary>
             The default dialog options object.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.DialogOptionsEx.EditorDialogOptions(MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            The options for the dialogs an office editor (spreadsheet, slides, notebook) opens: <paramref name="options"/> when set,
+            otherwise a copy of <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.DefaultDialogOptions"/> with a small, full width dialog and a close button.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.FileDisplayDialogOptions">

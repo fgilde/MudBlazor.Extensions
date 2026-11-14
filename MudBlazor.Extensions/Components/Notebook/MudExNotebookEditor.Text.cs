@@ -1,3 +1,4 @@
+using MudBlazor.Extensions.Options;
 using System.Globalization;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Office.Notebook;
@@ -91,12 +92,12 @@ public partial class MudExNotebookEditor
 
     private async Task OpenLinkDialogAsync((string Text, string Link) request)
     {
-        var reference = await DialogService.ShowAsync<MudExNotebookLinkDialog>(TryLocalize("Link"), new DialogParameters
+        var reference = await DialogService.ShowExAsync<MudExNotebookLinkDialog>(TryLocalize("Link"), new DialogParameters
         {
             { nameof(MudExNotebookLinkDialog.Text), request.Text },
             { nameof(MudExNotebookLinkDialog.Address), request.Link },
             { nameof(MudExNotebookLinkDialog.Localizer), Localizer }
-        }, new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true });
+        }, DialogOptionsEx.EditorDialogOptions(DialogOptions));
         if (await reference.Result is { Canceled: false, Data: (string text, string address) } && _canvas != null)
             await _canvas.SetLinkAsync(text, address);
     }

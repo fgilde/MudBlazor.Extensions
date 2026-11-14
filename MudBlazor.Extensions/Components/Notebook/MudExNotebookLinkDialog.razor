@@ -1,7 +1,7 @@
 @inherits MudExBaseComponent<MudExNotebookLinkDialog>
 @namespace MudBlazor.Extensions.Components
 
-<MudDialog Class="mud-ex-nblink-dialog">
+<MudDialog Class="@MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial, "mud-ex-nblink-dialog")">
     <DialogContent>
         <MudStack Spacing="2">
             <MudTextField T="string" Class="mud-ex-nblink-text" Label="@TryLocalize("Text to display:")" @bind-Value="_text" Immediate="true" Margin="Margin.Dense" />

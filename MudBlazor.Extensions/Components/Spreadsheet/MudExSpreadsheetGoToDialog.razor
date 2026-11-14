@@ -1,7 +1,7 @@
 @inherits MudExBaseComponent<MudExSpreadsheetGoToDialog>
 @namespace MudBlazor.Extensions.Components
 
-<MudDialog Class="mud-ex-ssgoto-dialog">
+<MudDialog Class="@MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial, "mud-ex-ssgoto-dialog")">
     <DialogContent>
         <MudStack Spacing="2">
             <MudText Typo="Typo.body2">@TryLocalize("Go to:")</MudText>

@@ -87,7 +87,7 @@ public partial class MudExSpreadsheetEditor
         var cell = _grid.ActiveCell;
         var existing = sheet.LinkAt(cell);
         var text = _grid.DisplayText(cell);
-        var reference = await DialogService.ShowAsync<MudExSpreadsheetLinkDialog>(TryLocalize("Insert Hyperlink"), new DialogParameters
+        var reference = await DialogService.ShowExAsync<MudExSpreadsheetLinkDialog>(TryLocalize("Insert Hyperlink"), new DialogParameters
         {
             { nameof(MudExSpreadsheetLinkDialog.Workbook), _workbook },
             { nameof(MudExSpreadsheetLinkDialog.Sheet), sheet },

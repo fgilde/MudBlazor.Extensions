@@ -1,3 +1,4 @@
+using MudBlazor.Extensions.Options;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
@@ -154,7 +155,7 @@ public partial class MudExSlideEditor
             await _notes.CommitAsync();
         if (_canvas != null)
             await _canvas.CommitTextAsync();
-        await DialogService.ShowAsync<MudExSlideFindReplaceDialog>(TryLocalize("Find and Replace"), new DialogParameters
+        await DialogService.ShowExAsync<MudExSlideFindReplaceDialog>(TryLocalize("Find and Replace"), new DialogParameters
         {
             { nameof(MudExSlideFindReplaceDialog.Presentation), _presentation },
             { nameof(MudExSlideFindReplaceDialog.Start), _current },
@@ -162,7 +163,7 @@ public partial class MudExSlideEditor
             { nameof(MudExSlideFindReplaceDialog.CanReplace), !IsReadOnly },
             { nameof(MudExSlideFindReplaceDialog.Select), (Func<Slide, uint?, Task>)SelectFoundAsync },
             { nameof(MudExSlideFindReplaceDialog.Localizer), Localizer }
-        }, new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true });
+        }, DialogOptionsEx.EditorDialogOptions(DialogOptions));
     }
 
     private async Task SelectFoundAsync(Slide slide, uint? shape)

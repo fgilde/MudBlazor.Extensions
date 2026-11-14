@@ -2,7 +2,7 @@
 @namespace MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Office.Spreadsheet
 
-<MudDialog Class="mud-ex-format-cells-dialog">
+<MudDialog Class="@MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial, "mud-ex-format-cells-dialog")">
     <DialogContent>
         <MudTabs Elevation="0" Rounded="true" TabPanelsClass="pt-4" @bind-ActivePanelIndex="_tab">
             <MudTabPanel Text="@TryLocalize("Number")">

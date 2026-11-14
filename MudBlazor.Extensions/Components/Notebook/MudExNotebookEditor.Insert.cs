@@ -1,3 +1,4 @@
+using MudBlazor.Extensions.Options;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -162,11 +163,11 @@ public partial class MudExNotebookEditor
         if (SelectedImage is not { } image)
             return;
         var page = _page;
-        var reference = await DialogService.ShowAsync<MudExNotebookAltTextDialog>(TryLocalize("Alt Text"), new DialogParameters
+        var reference = await DialogService.ShowExAsync<MudExNotebookAltTextDialog>(TryLocalize("Alt Text"), new DialogParameters
         {
             { nameof(MudExNotebookAltTextDialog.Text), image.AltText },
             { nameof(MudExNotebookAltTextDialog.Localizer), Localizer }
-        }, new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true });
+        }, DialogOptionsEx.EditorDialogOptions(DialogOptions));
         if (await reference.Result is { Canceled: false, Data: string text } && ReferenceEquals(page, _page))
             await RunCommandAsync(new SetImageAltTextCommand(page, image.Id, text));
     }

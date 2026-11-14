@@ -3,7 +3,7 @@
 @using MudBlazor.Extensions.Office
 @using MudBlazor.Extensions.Office.Spreadsheet
 
-<MudDialog Class="mud-ex-sschart-dialog">
+<MudDialog Class="@MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial, "mud-ex-sschart-dialog")">
     <DialogContent>
         <MudStack Spacing="2">
             <MudSelect T="ChartKind" Class="mud-ex-sschart-kind" Label="@TryLocalize("Chart type:")" @bind-Value="_kind" Dense="true" Margin="Margin.Dense">
