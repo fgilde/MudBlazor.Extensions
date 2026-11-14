@@ -6,14 +6,14 @@ MudBlazor.Extensions provides various utility classes to simplify common tasks, 
 
 ### Styling Utilities
 
-- **[Color Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/color-utils.md)** - Color manipulation, conversion, and generation
-- **[CSS Builder](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/css-builder.md)** - Dynamic CSS class building with conditional logic
-- **[Style Builder](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/style-builder.md)** - Dynamic inline style building
-- **[Size Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/size-utils.md)** - Size calculations, conversions, and parsing
+- **[Color Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/utilities/color-utils.md)** - Color manipulation, conversion, and generation
+- **[CSS Builder](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/utilities/css-builder.md)** - Dynamic CSS class building with conditional logic
+- **[Style Builder](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/utilities/style-builder.md)** - Dynamic inline style building
+- **[Size Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/utilities/size-utils.md)** - Size calculations, conversions, and parsing
 
 ### Helper Utilities
 
-- **[Helper Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/helpers.md)** - Collection of helper classes for various tasks:
+- **[Helper Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/utilities/helpers.md)** - Collection of helper classes for various tasks:
   - **MudExJsonHelper** - JSON serialization and manipulation
   - **MudExFonts** - Font management and loading
   - **MudExThemeHelper** - Theme creation and manipulation
@@ -36,7 +36,7 @@ var css = MudExCssBuilder.Default
     .Build();
 ```
 
-[Learn more about CSS Builder →](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/css-builder.md)
+[Learn more about CSS Builder →](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/utilities/css-builder.md)
 
 ### Style Builder
 
@@ -50,7 +50,7 @@ var style = MudExStyleBuilder.Default
     .Build();
 ```
 
-[Learn more about Style Builder →](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/style-builder.md)
+[Learn more about Style Builder →](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/utilities/style-builder.md)
 
 ### Color Utilities
 
@@ -66,7 +66,7 @@ var lighter = MudExColorUtils.Lighten(color, 0.2);
 var darker = MudExColorUtils.Darken(color, 0.2);
 ```
 
-[Learn more about Color Utilities →](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/color-utils.md)
+[Learn more about Color Utilities →](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/utilities/color-utils.md)
 
 ### JSON Helper
 
@@ -81,7 +81,7 @@ var obj = MudExJsonHelper.Deserialize<MyType>(json);
 var formatted = MudExJsonHelper.PrettyPrint(json);
 ```
 
-[Learn more about Helper Utilities →](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/helpers.md)
+[Learn more about Helper Utilities →](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/utilities/helpers.md)
 
 ### File Extensions
 
@@ -98,7 +98,7 @@ var sizeString = file.FormatSize(); // "2.5 MB"
 var dataUrl = await file.ToDataUrlAsync();
 ```
 
-[Learn more about Helper Utilities →](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/utilities/helpers.md)
+[Learn more about Helper Utilities →](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/utilities/helpers.md)
 
 ## Common Use Cases
 
@@ -154,6 +154,6 @@ if (file.IsImage())
 
 ## See Also
 
-- [Components](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/components/index.md) - Many components use these utilities internally
-- [Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/extensions/index.md) - Extension methods that leverage utilities
-- [API Reference](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/api/index.md) - Complete API documentation
+- [Components](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/components/index.md) - Many components use these utilities internally
+- [Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/extensions/index.md) - Extension methods that leverage utilities
+- [API Reference](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/api/index.md) - Complete API documentation

@@ -1,6 +1,6 @@
 # Playzor als Pakete
 
-Nachfolger von [2026-07-27-trymudex-codepen-redesign-status.md](https://github.com/fgilde/MudBlazor.Extensions/blob/8049d73067d2ecf87f61856b623bc55f608ea607/docs/superpowers/specs/2026-07-27-trymudex-codepen-redesign-status.md).
+Nachfolger von [2026-07-27-trymudex-codepen-redesign-status.md](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/superpowers/specs/2026-07-27-trymudex-codepen-redesign-status.md).
 Branch `feat/extract-source-edit-cmp`, **nicht gepusht**.
 
 ## Die Pakete liegen jetzt woanders
