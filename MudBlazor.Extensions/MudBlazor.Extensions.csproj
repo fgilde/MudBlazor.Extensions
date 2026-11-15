@@ -7,6 +7,7 @@
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
+    <WarningsAsErrors>$(WarningsAsErrors);RZ10012</WarningsAsErrors>
     <Authors>Florian Gilde</Authors>
     <Description>MudBlazor.Extensions is a small extension library for MudBlazor from https://mudblazor.com/ </Description>
     <PackageProjectUrl>https://www.mudex.org</PackageProjectUrl>
