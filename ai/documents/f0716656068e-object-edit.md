@@ -488,6 +488,6 @@ Check out live examples at:
 
 ## See Also
 
-- [Structured Data Editor](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/structured-data-editor.md) - Edit JSON/XML/YAML
-- [Dialog Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/extensions/dialog-extensions.md) - Enhanced dialogs
-- [Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/utilities/index.md) - Helper utilities
+- [Structured Data Editor](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/structured-data-editor.md) - Edit JSON/XML/YAML
+- [Dialog Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/extensions/dialog-extensions.md) - Enhanced dialogs
+- [Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/utilities/index.md) - Helper utilities

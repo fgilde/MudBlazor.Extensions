@@ -8,11 +8,11 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
 
 <div class="grid cards" markdown>
 
--   **[MudExObjectEdit](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/object-edit.md)**
+-   **[MudExObjectEdit](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/object-edit.md)**
     
     Automatically generate UI for object editing with built-in validation support. Supports DataAnnotations and Fluent validation.
 
--   **[MudExStructuredDataEditor](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/structured-data-editor.md)**
+-   **[MudExStructuredDataEditor](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/structured-data-editor.md)**
     
     Edit structured data like JSON, XML, or YAML with automatic UI generation and validation.
 
@@ -22,11 +22,11 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
 
 <div class="grid cards" markdown>
 
--   **[MudExFileDisplay](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/file-display.md)**
+-   **[MudExFileDisplay](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/file-display.md)**
     
     Display various file types with automatic format detection and preview capabilities.
 
--   **[MudExUploadEdit](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/upload-edit.md)**
+-   **[MudExUploadEdit](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/upload-edit.md)**
     
     Advanced file upload with drag & drop, cloud integration, and extensive customization options.
 
@@ -36,11 +36,11 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
 
 <div class="grid cards" markdown>
 
--   **[MudExTreeView](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/tree-view.md)**
+-   **[MudExTreeView](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/tree-view.md)**
     
     Enhanced tree view with breadcrumb navigation, search, and advanced selection modes.
 
--   **[MudExTreeViewBreadcrumb](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/tree-view.md#breadcrumb)**
+-   **[MudExTreeViewBreadcrumb](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/tree-view.md#breadcrumb)**
     
     Breadcrumb navigation component for tree structures.
 
@@ -50,19 +50,19 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
 
 <div class="grid cards" markdown>
 
--   **[MudExColorPicker](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/pickers.md#mudexcolorpicker)**
+-   **[MudExColorPicker](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/pickers.md#mudexcolorpicker)**
     
     Enhanced color picker with various formats and presets.
 
--   **[MudExIconPicker](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/pickers.md#mudexiconpicker)**
+-   **[MudExIconPicker](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/pickers.md#mudexiconpicker)**
     
     Icon selection from MudBlazor icons library with search.
 
--   **[MudExFontSelect](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/pickers.md#mudexfontselect)**
+-   **[MudExFontSelect](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/pickers.md#mudexfontselect)**
     
     Font selection with preview and Google Fonts integration.
 
--   **[MudExEnumSelect](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/pickers.md#mudexenumselect)**
+-   **[MudExEnumSelect](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/pickers.md#mudexenumselect)**
     
     Automatic enum selection with display name support.
 
@@ -72,15 +72,15 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
 
 <div class="grid cards" markdown>
 
--   **[MudExGrid](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/grid-layout.md#mudexgrid)**
+-   **[MudExGrid](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/grid-layout.md#mudexgrid)**
     
     Advanced grid with drag-drop, sorting, and filtering.
 
--   **[MudExDockLayout](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/grid-layout.md#mudexdocklayout)**
+-   **[MudExDockLayout](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/grid-layout.md#mudexdocklayout)**
     
     Flexible dock layout with resizable, dockable panels.
 
--   **[MudExSplitPanel](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/grid-layout.md#mudexsplitpanel)**
+-   **[MudExSplitPanel](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/grid-layout.md#mudexsplitpanel)**
     
     Split panel for creating resizable divided areas.
 
@@ -90,19 +90,19 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
 
 <div class="grid cards" markdown>
 
--   **[MudExImageViewer](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/display-media.md#mudeximageviewer)**
+-   **[MudExImageViewer](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/display-media.md#mudeximageviewer)**
     
     Advanced image viewer with zoom, pan, and rotation.
 
--   **[MudExCodeView](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/display-media.md#mudexcodeview)**
+-   **[MudExCodeView](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/display-media.md#mudexcodeview)**
     
     Code display with syntax highlighting.
 
--   **[MudExMarkdown](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/display-media.md#mudexmarkdown)**
+-   **[MudExMarkdown](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/display-media.md#mudexmarkdown)**
     
     Render GitHub-flavored markdown content.
 
--   **[MudExGravatarCard](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/display-media.md#mudexgravatarcard)**
+-   **[MudExGravatarCard](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/display-media.md#mudexgravatarcard)**
     
     User card with Gravatar integration.
 
@@ -112,19 +112,19 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
 
 <div class="grid cards" markdown>
 
--   **[MudExTextField](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/form-inputs.md#mudextextfield)**
+-   **[MudExTextField](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/form-inputs.md#mudextextfield)**
     
     Enhanced text field with advanced validation.
 
--   **[MudExSelect](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/form-inputs.md#mudexselect)**
+-   **[MudExSelect](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/form-inputs.md#mudexselect)**
     
     Enhanced select with search and grouping.
 
--   **[MudExChipSelect](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/form-inputs.md#mudexchipselect)**
+-   **[MudExChipSelect](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/form-inputs.md#mudexchipselect)**
     
     Chip-based multiple selection component.
 
--   **[MudExColorEdit](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/form-inputs.md#mudexcoloredit)**
+-   **[MudExColorEdit](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/form-inputs.md#mudexcoloredit)**
     
     Color editing with visual picker integration.
 
@@ -134,15 +134,15 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
 
 <div class="grid cards" markdown>
 
--   **[MudExAppLoader](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/app-loader.md)**
+-   **[MudExAppLoader](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/app-loader.md)**
     
     Application loading indicator with customizable appearance and behavior.
 
--   **[MudExSvg](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/svg.md)**
+-   **[MudExSvg](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/svg.md)**
     
     SVG component for rendering and manipulating SVG graphics.
 
--   **[Other Components](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/other-components.md)**
+-   **[Other Components](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/other-components.md)**
     
     Additional utility components like lists, cards, and more.
 
@@ -152,31 +152,31 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
 
 | Component | Description | Documentation |
 |-----------|-------------|---------------|
-| `MudExObjectEdit` | Auto-generate forms from objects | [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/object-edit.md) |
-| `MudExStructuredDataEditor` | Edit JSON/XML/YAML data | [Structured Data](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/structured-data-editor.md) |
-| `MudExFileDisplay` | Display file contents | [File Display](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/file-display.md) |
-| `MudExUploadEdit` | Advanced file upload | [Upload Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/upload-edit.md) |
-| `MudExTreeView` | Enhanced tree view | [Tree View](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/tree-view.md) |
-| `MudExColorPicker` | Color selection picker | [Pickers](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/pickers.md#mudexcolorpicker) |
-| `MudExIconPicker` | Icon selection picker | [Pickers](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/pickers.md#mudexiconpicker) |
-| `MudExFontSelect` | Font selection | [Pickers](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/pickers.md#mudexfontselect) |
-| `MudExEnumSelect` | Enum selection | [Pickers](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/pickers.md#mudexenumselect) |
-| `MudExGrid` | Advanced data grid | [Grid & Layout](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/grid-layout.md#mudexgrid) |
-| `MudExDockLayout` | Dockable layout system | [Grid & Layout](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/grid-layout.md#mudexdocklayout) |
-| `MudExSplitPanel` | Split panel layout | [Grid & Layout](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/grid-layout.md#mudexsplitpanel) |
-| `MudExImageViewer` | Image viewer with zoom | [Display & Media](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/display-media.md#mudeximageviewer) |
-| `MudExCodeView` | Code syntax highlighting | [Display & Media](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/display-media.md#mudexcodeview) |
-| `MudExMarkdown` | Markdown renderer | [Display & Media](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/display-media.md#mudexmarkdown) |
-| `MudExGravatarCard` | User card with Gravatar | [Display & Media](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/display-media.md#mudexgravatarcard) |
-| `MudExTextField` | Enhanced text field | [Form Inputs](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/form-inputs.md#mudextextfield) |
-| `MudExSelect` | Enhanced select | [Form Inputs](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/form-inputs.md#mudexselect) |
-| `MudExChipSelect` | Chip-based selection | [Form Inputs](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/form-inputs.md#mudexchipselect) |
-| `MudExHtmlEdit` | HTML editor | [Form Inputs](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/form-inputs.md#mudexhtmledit) |
-| `MudExList` | Enhanced list | [Other](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/other-components.md#mudexlist) |
-| `MudExCardList` | Card-based list | [Other](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/other-components.md#mudexcardlist) |
-| `MudExPopover` | Popover component | [Other](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/other-components.md#mudexpopover) |
-| `MudExAppLoader` | Application loader | [App Loader](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/app-loader.md) |
-| `MudExSvg` | SVG graphics | [SVG](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/svg.md) |
+| `MudExObjectEdit` | Auto-generate forms from objects | [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/object-edit.md) |
+| `MudExStructuredDataEditor` | Edit JSON/XML/YAML data | [Structured Data](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/structured-data-editor.md) |
+| `MudExFileDisplay` | Display file contents | [File Display](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/file-display.md) |
+| `MudExUploadEdit` | Advanced file upload | [Upload Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/upload-edit.md) |
+| `MudExTreeView` | Enhanced tree view | [Tree View](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/tree-view.md) |
+| `MudExColorPicker` | Color selection picker | [Pickers](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/pickers.md#mudexcolorpicker) |
+| `MudExIconPicker` | Icon selection picker | [Pickers](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/pickers.md#mudexiconpicker) |
+| `MudExFontSelect` | Font selection | [Pickers](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/pickers.md#mudexfontselect) |
+| `MudExEnumSelect` | Enum selection | [Pickers](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/pickers.md#mudexenumselect) |
+| `MudExGrid` | Advanced data grid | [Grid & Layout](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/grid-layout.md#mudexgrid) |
+| `MudExDockLayout` | Dockable layout system | [Grid & Layout](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/grid-layout.md#mudexdocklayout) |
+| `MudExSplitPanel` | Split panel layout | [Grid & Layout](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/grid-layout.md#mudexsplitpanel) |
+| `MudExImageViewer` | Image viewer with zoom | [Display & Media](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/display-media.md#mudeximageviewer) |
+| `MudExCodeView` | Code syntax highlighting | [Display & Media](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/display-media.md#mudexcodeview) |
+| `MudExMarkdown` | Markdown renderer | [Display & Media](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/display-media.md#mudexmarkdown) |
+| `MudExGravatarCard` | User card with Gravatar | [Display & Media](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/display-media.md#mudexgravatarcard) |
+| `MudExTextField` | Enhanced text field | [Form Inputs](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/form-inputs.md#mudextextfield) |
+| `MudExSelect` | Enhanced select | [Form Inputs](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/form-inputs.md#mudexselect) |
+| `MudExChipSelect` | Chip-based selection | [Form Inputs](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/form-inputs.md#mudexchipselect) |
+| `MudExHtmlEdit` | HTML editor | [Form Inputs](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/form-inputs.md#mudexhtmledit) |
+| `MudExList` | Enhanced list | [Other](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/other-components.md#mudexlist) |
+| `MudExCardList` | Card-based list | [Other](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/other-components.md#mudexcardlist) |
+| `MudExPopover` | Popover component | [Other](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/other-components.md#mudexpopover) |
+| `MudExAppLoader` | Application loader | [App Loader](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/app-loader.md) |
+| `MudExSvg` | SVG graphics | [SVG](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/svg.md) |
 
 ## Quick Start
 
@@ -286,9 +286,9 @@ Components are tested and supported on:
 
 Explore individual component documentation to learn more:
 
-1. Start with [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/object-edit.md) for form generation
-2. Try [Upload Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/upload-edit.md) for file handling
-3. Explore [Dialog Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/extensions/dialog-extensions.md) for enhanced dialogs
+1. Start with [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/object-edit.md) for form generation
+2. Try [Upload Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/upload-edit.md) for file handling
+3. Explore [Dialog Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/extensions/dialog-extensions.md) for enhanced dialogs
 
 ## Need Help?
 
