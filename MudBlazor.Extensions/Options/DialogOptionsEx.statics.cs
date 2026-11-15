@@ -81,7 +81,7 @@ public partial class DialogOptionsEx
     internal static DialogOptionsEx EditorDialogOptions(DialogOptionsEx options)
     {
         if (options != null)
-            return options;
+            return options; 
         var result = DefaultDialogOptions?.CloneOptions() ?? new DialogOptionsEx();
         result.MaxWidth = MudBlazor.MaxWidth.Small;
         result.FullWidth = true;

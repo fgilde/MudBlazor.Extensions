@@ -47,7 +47,7 @@
   <ItemGroup>
     <Content Remove="wwwroot\css\components\_mudextreeview.scss" />
   </ItemGroup>
-
+ 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
