@@ -196,6 +196,6 @@ Base picker component for creating custom pickers.
 
 ## See Also
 
-- [Form Components](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/other-components.md)
-- [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/object-edit.md) - Pickers are automatically used in object editing
-- [Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/utilities/index.md)
+- [Form Components](https://github.com/fgilde/MudBlazor.Extensions/blob/ddc7472ecb8674a8f151e94a1d334b204f4916c7/docs/components/other-components.md)
+- [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/ddc7472ecb8674a8f151e94a1d334b204f4916c7/docs/components/object-edit.md) - Pickers are automatically used in object editing
+- [Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/ddc7472ecb8674a8f151e94a1d334b204f4916c7/docs/utilities/index.md)

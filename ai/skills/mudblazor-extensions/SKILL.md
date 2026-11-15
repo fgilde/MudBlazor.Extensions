@@ -1,11 +1,11 @@
 ---
 name: mudblazor-extensions
-description: "Use MudBlazor.Extensions 9.13.1-source.1dd94b3c25a2 when implementing features with this library."
+description: "Use MudBlazor.Extensions 9.13.2-source.ddc7472ecb86 when implementing features with this library."
 ---
 
 # MudBlazor.Extensions
 
-Version: 9.13.1-source.1dd94b3c25a2
+Version: 9.13.2-source.ddc7472ecb86
 
 Read [complete context](references/llms-full.txt) and [API reference](references/api.md) before suggesting library APIs.
 

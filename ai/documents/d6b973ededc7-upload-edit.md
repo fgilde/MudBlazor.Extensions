@@ -445,6 +445,6 @@ Experience the component in action: [Upload Edit Demo](https://www.mudex.org/upl
 
 ## See Also
 
-- [File Display](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/file-display.md) - Display uploaded files
-- [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/components/object-edit.md) - Form generation
-- [Dialog Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/1dd94b3c25a20fe821e24e87fb47b22656c66ae3/docs/extensions/dialog-extensions.md) - Enhanced dialogs
+- [File Display](https://github.com/fgilde/MudBlazor.Extensions/blob/ddc7472ecb8674a8f151e94a1d334b204f4916c7/docs/components/file-display.md) - Display uploaded files
+- [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/ddc7472ecb8674a8f151e94a1d334b204f4916c7/docs/components/object-edit.md) - Form generation
+- [Dialog Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/ddc7472ecb8674a8f151e94a1d334b204f4916c7/docs/extensions/dialog-extensions.md) - Enhanced dialogs

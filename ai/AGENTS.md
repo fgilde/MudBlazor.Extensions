@@ -1,6 +1,6 @@
 # MudBlazor.Extensions consumer guidance
 
-Documentation version: 9.13.1-source.1dd94b3c25a2.
+Documentation version: 9.13.2-source.ddc7472ecb86.
 
 Read [llms.txt](llms.txt) and [api.md](api.md). Verify installed package versions before using the APIs.
 
