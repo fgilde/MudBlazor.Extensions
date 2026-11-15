@@ -1,6 +1,6 @@
 # TryMudEx → Playzor — Umsetzungsstand
 
-Ergänzt [2026-07-27-trymudex-codepen-redesign-design.md](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/superpowers/specs/2026-07-27-trymudex-codepen-redesign-design.md).
+Ergänzt [2026-07-27-trymudex-codepen-redesign-design.md](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/superpowers/specs/2026-07-27-trymudex-codepen-redesign-design.md).
 Branch `feat/try-adapt`, **nicht gepusht**.
 
 ## Alle vier Phasen umgesetzt

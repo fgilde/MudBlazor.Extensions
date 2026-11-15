@@ -337,6 +337,6 @@ Enhanced icon component with additional features.
 
 ## See Also
 
-- [File Display](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/components/file-display.md)
-- [Other Components](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/components/other-components.md)
-- [SVG Components](https://github.com/fgilde/MudBlazor.Extensions/blob/73117ddd6169a0e2f1cb0a987e95e4bfdbfbefab/docs/components/svg.md)
+- [File Display](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/file-display.md)
+- [Other Components](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/other-components.md)
+- [SVG Components](https://github.com/fgilde/MudBlazor.Extensions/blob/8a60bc364d83b878218ab765533bbece72053a92/docs/components/svg.md)
