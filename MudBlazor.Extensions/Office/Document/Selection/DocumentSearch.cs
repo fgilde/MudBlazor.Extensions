@@ -11,7 +11,7 @@ public sealed record FindOptions(bool MatchCase = false, bool WholeWord = false,
 
 /// <summary>
 /// Finds and replaces text in a <see cref="TextDocument"/>. Matches run over <see cref="Paragraph.Text"/> and never cross paragraphs or tokens such as
-/// images. Regular expressions run with a one second timeout; a timeout ends the search with the matches found so far.
+/// images; a match that would end inside a surrogate pair is widened to the whole character. Regular expressions run with a one second timeout; a timeout ends the search with the matches found so far.
 /// </summary>
 public static class DocumentSearch
 {
@@ -24,7 +24,10 @@ public static class DocumentSearch
     /// <returns>The ranges of the matches.</returns>
     /// <exception cref="ArgumentException">The query is not a valid regular expression.</exception>
     public static IReadOnlyList<DocumentRange> FindAll(TextDocument document, string query, FindOptions options = null) =>
-        Matches(document, query, options).Select(m => m.Range).ToList();
+        FindAll(document, query, options, MatchTimeout);
+
+    internal static IReadOnlyList<DocumentRange> FindAll(TextDocument document, string query, FindOptions options, TimeSpan timeout) =>
+        Matches(document, query, options, timeout).Select(m => m.Range).ToList();
 
     /// <summary>Finds the first match that starts at or after a position, wrapping around to the start of the document.</summary>
     /// <param name="document">The document.</param>
@@ -52,7 +55,7 @@ public static class DocumentSearch
     public static int ReplaceAll(TextDocument document, string query, string replacement, FindOptions options = null)
     {
         options ??= new FindOptions();
-        var matches = Matches(document, query, options);
+        var matches = Matches(document, query, options, MatchTimeout);
         if (matches.Count == 0) return 0;
         using (document.Undo.BeginTransaction("Replace all"))
             for (var i = matches.Count - 1; i >= 0; i--)
@@ -65,7 +68,7 @@ public static class DocumentSearch
         return matches.Count;
     }
 
-    private static List<(DocumentRange Range, Match Match, Paragraph Paragraph)> Matches(TextDocument document, string query, FindOptions options)
+    private static List<(DocumentRange Range, Match Match, Paragraph Paragraph)> Matches(TextDocument document, string query, FindOptions options, TimeSpan timeout)
     {
         ArgumentNullException.ThrowIfNull(document);
         options ??= new FindOptions();
@@ -73,19 +76,26 @@ public static class DocumentSearch
         if (string.IsNullOrEmpty(query)) return result;
         var pattern = options.Regex ? query : Regex.Escape(query);
         if (options.WholeWord) pattern = $@"(?<!\w)(?:{pattern})(?!\w)";
-        var regex = new Regex(pattern, (options.MatchCase ? RegexOptions.None : RegexOptions.IgnoreCase) | RegexOptions.CultureInvariant, MatchTimeout);
+        var regex = new Regex(pattern, (options.MatchCase ? RegexOptions.None : RegexOptions.IgnoreCase) | RegexOptions.CultureInvariant, timeout);
         try
         {
             foreach (var paragraph in document.AllParagraphs(options.IncludeHeadersFooters))
             {
                 var text = paragraph.Text;
+                var covered = 0;
                 for (var start = 0; start <= text.Length;)
                 {
-                    var stop = text.IndexOf('￼', start);
+                    var stop = text.IndexOf('\uFFFC', start);
                     if (stop < 0) stop = text.Length;
                     for (var match = regex.Match(text, start, stop - start); match.Success; match = match.NextMatch())
-                        if (match.Length > 0)
-                            result.Add((new DocumentRange(document.PositionOf(paragraph.Id, match.Index), document.PositionOf(paragraph.Id, match.Index + match.Length)), match, paragraph));
+                    {
+                        var from = TextDocument.SnapOffset(text, match.Index, true);
+                        var to = TextDocument.SnapOffset(text, match.Index + match.Length, false);
+                        if (match.Length == 0 || from < covered) continue;
+                        result.Add((new DocumentRange(document.PositionOf(paragraph.Id, from), document.PositionOf(paragraph.Id, to)), match, paragraph));
+                        covered = to;
+                    }
+
                     start = stop + 1;
                 }
             }

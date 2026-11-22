@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Xunit;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Document;
@@ -58,7 +57,7 @@ public class DocumentSearchTests
         ]);
 
         Assert.Empty(DocumentSearch.FindAll(document, "b.c", new FindOptions(Regex: true)));
-        Assert.Empty(DocumentSearch.FindAll(document, "￼"));
+        Assert.Empty(DocumentSearch.FindAll(document, "\uFFFC"));
         Assert.Empty(DocumentSearch.FindAll(document, "d\\s*e", new FindOptions(Regex: true)));
         Assert.Empty(DocumentSearch.FindAll(document, "x"));
         Assert.Empty(DocumentSearch.FindAll(document, ""));
@@ -134,13 +133,26 @@ public class DocumentSearchTests
     [Fact]
     public void Find_CatastrophicRegex_StopsQuietly()
     {
-        var document = TextDocument.FromBlocks([P("aa"), P(new string('a', 30) + "b")]);
-        var watch = Stopwatch.StartNew();
+        var document = TextDocument.FromBlocks([P("aa"), P(new string('a', 40) + "b"), P("aaa")]);
+        var first = document.Blocks[0].Id;
 
-        var matches = DocumentSearch.FindAll(document, "(a+)+$", new FindOptions(Regex: true));
+        var matches = DocumentSearch.FindAll(document, "(a+)+$", new FindOptions(Regex: true), TimeSpan.FromMilliseconds(1));
 
-        Assert.Single(matches);
-        Assert.True(watch.Elapsed < TimeSpan.FromSeconds(10), watch.Elapsed.ToString());
+        Assert.Equal([new DocumentRange(document.PositionOf(first, 0), document.PositionOf(first, 2))], matches);
+    }
+
+    [Fact]
+    public void ReplaceAll_MatchInsideSurrogatePair_ReplacesWholeCharacter()
+    {
+        var document = TextDocument.FromBlocks([P("\uD83D\uDE00 smile"), P("x\uD83D\uDE00")]);
+
+        var count = DocumentSearch.ReplaceAll(document, "^.", "X", new FindOptions(Regex: true));
+        var dots = DocumentSearch.FindAll(document, ".", new FindOptions(Regex: true));
+
+        Assert.Equal(2, count);
+        Assert.Equal(["X smile", "X\uD83D\uDE00"], document.AllParagraphs().Select(p => p.Text));
+        Assert.Equal("\uD83D\uDE00", document.TextOf(dots[^1]));
+        Assert.Equal(9, dots.Count);
     }
 
     private static Paragraph P(string text) => new() { Inlines = [new TextRun(text)] };

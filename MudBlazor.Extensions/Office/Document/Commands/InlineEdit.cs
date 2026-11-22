@@ -4,6 +4,8 @@ namespace MudBlazor.Extensions.Office.Document;
 
 internal static class InlineEdit
 {
+    private const string HyperlinkStyle = "Hyperlink";
+
     public static (List<Inline> Left, List<Inline> Right) Split(IReadOnlyList<Inline> inlines, int offset)
     {
         var left = new List<Inline>();
@@ -53,24 +55,25 @@ internal static class InlineEdit
         var before = offset > 0 ? At(paragraph, offset - 1) : null;
         var after = At(paragraph, offset);
         var link = before?.Link != null && ReferenceEquals(before.Link, after?.Link) ? before.Link : null;
-        return ((before ?? after)?.Format ?? paragraph.MarkFormat ?? new RunFormat(), link);
+        var source = before ?? after;
+        var format = source?.Format ?? paragraph.MarkFormat ?? new RunFormat();
+        return (source?.Link != null && link == null && format.StyleId == HyperlinkStyle ? format with { StyleId = null } : format, link);
     }
 
-    public static void Append(List<Inline> target, IEnumerable<Inline> items)
+    public static List<Inline> Normalize(IEnumerable<Inline> inlines)
     {
-        var first = true;
-        foreach (var item in items)
-        {
-            if (first && target.Count > 0 && target[^1] is TextRun left && item is TextRun right && left.Format == right.Format && ReferenceEquals(left.Link, right.Link))
-                target[^1] = (left.Source != null || right.Source == null ? left : right) with { Text = left.Text + right.Text };
+        var result = new List<Inline>();
+        foreach (var inline in inlines)
+            if (result.Count > 0 && result[^1] is TextRun left && inline is TextRun right && ReferenceEquals(left.Source, right.Source) && left.Format == right.Format &&
+                ReferenceEquals(left.Link, right.Link))
+                result[^1] = left with { Text = left.Text + right.Text };
             else
-                target.Add(item);
-            first = false;
-        }
+                result.Add(inline);
+        return result;
     }
 
     public static IReadOnlyList<IReadOnlyList<Inline>> Lines(string text, RunFormat format, Hyperlink link) =>
-        text.Replace("\r\n", "\n").Replace('\r', '\n').Replace("￼", "").Split('\n').Select(line => Line(line, format, link)).ToList();
+        text.Replace("\r\n", "\n").Replace('\r', '\n').Replace("\uFFFC", "").Split('\n').Select(line => Line(line, format, link)).ToList();
 
     private static IReadOnlyList<Inline> Line(string line, RunFormat format, Hyperlink link)
     {

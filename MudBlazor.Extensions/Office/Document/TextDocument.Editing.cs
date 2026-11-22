@@ -48,9 +48,9 @@ public sealed partial class TextDocument
 
     internal (IReadOnlyList<BlockEdit> Edits, Func<TextDocument, DocumentRange> After) MapInlines(DocumentRange range, bool includeMarkers, Func<Inline, Inline> map)
     {
-        var (start, end) = range.Normalize(this);
-        var first = Resolve(start);
-        var last = Resolve(end);
+        range = Snap(range);
+        var first = Resolve(range.Start);
+        var last = Resolve(range.End);
         var spans = ParagraphsIn(range).ToDictionary(p => p.Id, p => (From: p.Id == first.Paragraph.Id ? first.Offset : 0, To: p.Id == last.Paragraph.Id ? last.Offset : p.Length));
         var edits = MapParagraphs(spans.Keys, paragraph =>
         {
@@ -58,10 +58,23 @@ public sealed partial class TextDocument
             if (from >= to) return paragraph;
             var (left, middle, right) = InlineEdit.Split(paragraph.Inlines, from, to);
             var mapped = middle.Select(i => i is Marker && !includeMarkers ? i : map(i)).ToList();
-            return SameItems(mapped, middle) ? paragraph : paragraph with { Inlines = [.. left, .. mapped, .. right] };
+            return SameItems(mapped, middle) ? paragraph : paragraph with { Inlines = InlineEdit.Normalize([.. left, .. mapped, .. right]) };
         });
-        return (edits, _ => new DocumentRange(start, end));
+        return (edits, _ => range);
     }
+
+    internal DocumentRange Snap(DocumentRange range)
+    {
+        ArgumentNullException.ThrowIfNull(range.Start, nameof(range));
+        ArgumentNullException.ThrowIfNull(range.End, nameof(range));
+        var (start, end) = range.Normalize(this);
+        var empty = start.Equals(end);
+        start = start with { Offset = SnapOffset(Resolve(start).Paragraph.Text, start.Offset, true) };
+        return new DocumentRange(start, empty ? start : end with { Offset = SnapOffset(Resolve(end).Paragraph.Text, end.Offset, false) });
+    }
+
+    internal static int SnapOffset(string text, int offset, bool down) =>
+        offset > 0 && offset < text.Length && char.IsHighSurrogate(text[offset - 1]) && char.IsLowSurrogate(text[offset]) ? down ? offset - 1 : offset + 1 : offset;
 
     internal Block NextSibling(string blockId)
     {
@@ -99,10 +112,10 @@ public sealed partial class TextDocument
         }
 
         InvalidateIndex();
-        var removedIds = remove.SelectMany(Subtree).Select(b => b.Id).ToHashSet();
-        var structure = !removedIds.SetEquals(insert.SelectMany(Subtree).Select(b => b.Id));
-        _changedIds.UnionWith(removedIds);
-        _changedIds.UnionWith(insert.Select(b => b.Id));
+        var removed = remove.SelectMany(Subtree).ToHashSet<Block>(ReferenceEqualityComparer.Instance);
+        var inserted = insert.SelectMany(Subtree).ToHashSet<Block>(ReferenceEqualityComparer.Instance);
+        var structure = !removed.Select(b => b.Id).ToHashSet().SetEquals(inserted.Select(b => b.Id));
+        _changedIds.UnionWith(removed.Where(b => !inserted.Contains(b)).Concat(inserted.Where(b => !removed.Contains(b))).Select(b => b.Id));
         Track(null, (edit.Container < 0 ? DocumentChangeKind.Content : DocumentChangeKind.HeadersFooters) | (structure ? DocumentChangeKind.Structure : DocumentChangeKind.None));
         if ((forward ? edit.SectionsAfter : edit.SectionsBefore) is not { } sections) return;
         SectionList.Clear();

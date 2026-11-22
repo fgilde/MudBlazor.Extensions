@@ -5,9 +5,8 @@ public sealed partial class TextDocument
     internal (IReadOnlyList<BlockEdit> Edits, Func<TextDocument, DocumentRange> After) ReplaceRange(
         DocumentRange range, IReadOnlyList<IReadOnlyList<Inline>> lines, Func<Paragraph, Paragraph> adjustLast = null)
     {
-        ArgumentNullException.ThrowIfNull(range.Start, nameof(range));
-        ArgumentNullException.ThrowIfNull(range.End, nameof(range));
-        var (startPosition, endPosition) = range.Normalize(this);
+        var (startPosition, endPosition) = Snap(range);
+        if (startPosition.Equals(endPosition) && lines is [{ Count: 0 }]) return ([], _ => new DocumentRange(startPosition, startPosition));
         var (first, start) = Resolve(startPosition);
         var (last, end) = Resolve(endPosition);
         var from = Locate(startPosition.BlockId);
@@ -106,13 +105,14 @@ public sealed partial class TextDocument
             var paragraphs = new List<Paragraph>();
             for (var k = 0; k < lines.Count; k++)
             {
-                var inlines = k == 0 ? [.. InlineEdit.Split(first.Inlines, start).Left, .. markers] : new List<Inline>();
-                InlineEdit.Append(inlines, lines[k]);
+                var inlines = k == 0 ? [.. InlineEdit.Split(first.Inlines, start).Left, .. markers, .. lines[k]] : lines[k].ToList();
                 if (k == lines.Count - 1)
                 {
                     CaretOffset = inlines.Sum(i => i.Length);
-                    InlineEdit.Append(inlines, tail);
+                    inlines = InlineEdit.Normalize([.. inlines, .. tail]);
                 }
+                else
+                    inlines = InlineEdit.Normalize(inlines);
 
                 paragraphs.Add(k == 0
                     ? Truncated(first, inlines)

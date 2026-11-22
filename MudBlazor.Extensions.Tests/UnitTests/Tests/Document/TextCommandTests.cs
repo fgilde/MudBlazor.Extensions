@@ -137,7 +137,9 @@ public class TextCommandTests
 
         var paragraph = (Paragraph)document.Blocks[0];
         Assert.Equal("HelXrld", paragraph.Text);
-        Assert.Equal(["r Hel", "m bookmarkStart", "r Xrld", "m bookmarkEnd"], paragraph.Inlines.Select(Short));
+        Assert.Equal(["r Hel", "m bookmarkStart", "r X", "r rld", "m bookmarkEnd"], paragraph.Inlines.Select(Short));
+        Assert.Null(paragraph.Inlines[2].Source);
+        Assert.NotNull(paragraph.Inlines[3].Source);
         Assert.Equal("Mark", ((Marker)paragraph.Inlines[1]).Name);
     }
 
@@ -171,6 +173,7 @@ public class TextCommandTests
         Assert.Equal("See the exa-mple!", paragraph.Text);
         Assert.Equal([null, link, null], paragraph.Inlines.Select(i => i.Link));
         Assert.Equal(["See the ", "exa-mple", "!"], paragraph.Inlines.Select(i => ((TextRun)i).Text));
+        Assert.Equal(["Hyperlink", null], paragraph.Inlines.Skip(1).Select(i => i.Format.StyleId));
     }
 
     [Fact]
@@ -188,6 +191,65 @@ public class TextCommandTests
         var paragraph = (Paragraph)document.Blocks[0];
         Assert.Equal(["<Bb", "I", "x"], paragraph.Inlines.Select(i => ((TextRun)i).Text));
         Assert.Equal([bold, italic, new RunFormat { Underline = "single" }], paragraph.Inlines.Select(i => i.Format));
+    }
+
+    [Fact]
+    public void ReplaceText_MarkersExactlyAtStartAndEnd()
+    {
+        var document = TextDocument.FromBlocks(
+        [
+            new Paragraph { Inlines = [new TextRun("ab"), new Marker("bookmarkStart"), new TextRun("cd"), new Marker("bookmarkEnd"), new TextRun("ef")] },
+            new Paragraph { Inlines = [new TextRun("ab"), new Marker("proofErr"), new TextRun("cd"), new Marker("proofErr"), new TextRun("ef")] }
+        ]);
+        var (first, second) = (document.Blocks[0].Id, document.Blocks[1].Id);
+
+        document.Execute(new ReplaceTextCommand(Range(document, first, 2, first, 4), "X"));
+        document.Execute(new ReplaceTextCommand(Range(document, second, 2, second, 4), "X"));
+
+        Assert.Equal(["r ab", "m bookmarkStart", "r X", "m bookmarkEnd", "r ef"], ((Paragraph)document.Blocks[0]).Inlines.Select(Short));
+        Assert.Equal(["r abX", "m proofErr", "r ef"], ((Paragraph)document.Blocks[1]).Inlines.Select(Short));
+    }
+
+    [Fact]
+    public void ReplaceText_ReversedRange_SameAsForward()
+    {
+        var document = TextDocument.FromBlocks([P("Hello World")]);
+        var id = document.Blocks[0].Id;
+        var command = new ReplaceTextCommand(Range(document, id, 8, id, 2), "X");
+
+        document.Execute(command);
+
+        Assert.Equal("HeXrld", ((Paragraph)document.Blocks[0]).Text);
+        Assert.Equal(document.PositionOf(id, 3), command.After.Start);
+    }
+
+    [Fact]
+    public void ReplaceText_CarriageReturnsTrailingNewlineAndFormFeed()
+    {
+        var document = TextDocument.FromBlocks([P("")]);
+        var id = document.Blocks[0].Id;
+
+        document.Execute(new ReplaceTextCommand(Range(document, id, 0, id, 0), "a\r\nb\rc\fd\n"));
+
+        Assert.Equal(["a", "b", "c\fd", ""], document.Blocks.Cast<Paragraph>().Select(p => p.Text));
+        Assert.Equal(BreakKind.Page, ((Paragraph)document.Blocks[2]).Inlines.OfType<Break>().Single().Kind);
+        Assert.Equal(id, document.Blocks[0].Id);
+    }
+
+    [Fact]
+    public void ReplaceText_OffsetInsideSurrogatePair_SnapsOutward()
+    {
+        var document = TextDocument.FromBlocks([P("a\uD83D\uDE00b"), P("c\uD83D\uDE00d")]);
+        var (first, second) = (document.Blocks[0].Id, document.Blocks[1].Id);
+
+        document.Execute(new ReplaceTextCommand(Range(document, first, 2, first, 2), "X"));
+        document.Execute(new ReplaceTextCommand(Range(document, second, 2, second, 3), "Y"));
+        document.Execute(new SetRunFormatCommand(Range(document, first, 0, first, 3), f => f with { Bold = true }, "Bold"));
+
+        var bolded = (Paragraph)document.Blocks[0];
+        Assert.Equal("aX\uD83D\uDE00b", bolded.Text);
+        Assert.Equal("cYd", ((Paragraph)document.Blocks[1]).Text);
+        Assert.Equal(["aX\uD83D\uDE00", "b"], bolded.Inlines.Select(i => ((TextRun)i).Text));
     }
 
     [Fact]
@@ -210,8 +272,11 @@ public class TextCommandTests
         var d2 = document.AllParagraphs().Single(p => p.Text == "d2");
         var table = (Table)document.Blocks[1];
 
-        document.Execute(new ReplaceTextCommand(Range(document, document.Blocks[0].Id, 3, d2.Id, 1), "X"));
+        var command = new ReplaceTextCommand(Range(document, document.Blocks[0].Id, 3, d2.Id, 1), "X");
+        document.Execute(command);
 
+        Assert.Equal(document.PositionOf(document.Blocks[0].Id, 4), command.After.Start);
+        Assert.True(command.After.IsEmpty);
         Assert.Equal(["befX", "", "", "", "2", "after"], document.AllParagraphs().Select(p => p.Text));
         var edited = (Table)document.Blocks[1];
         Assert.Equal(table.Id, edited.Id);
@@ -274,6 +339,33 @@ public class TextCommandTests
     }
 
     [Fact]
+    public void SetRunFormat_BoldOnThenOff_SingleRunAgain()
+    {
+        var document = new DocxBuilder().Body("<w:p><w:r><w:t>one two three</w:t></w:r></w:p>").Load();
+        var id = document.Blocks[0].Id;
+        var original = ((Paragraph)document.Blocks[0]).Inlines[0];
+
+        document.Execute(new SetRunFormatCommand(Range(document, id, 4, id, 7), f => f with { Bold = true }, "Bold"));
+        document.Execute(new SetRunFormatCommand(Range(document, id, 4, id, 7), f => f with { Bold = null }, "Not bold"));
+
+        var run = Assert.Single(((Paragraph)document.Blocks[0]).Inlines);
+        Assert.Equal(original, run);
+        Assert.Same(original.Source, run.Source);
+    }
+
+    [Fact]
+    public void SetHyperlink_OnThenOff_NeverMergesRunsWithDifferentSource()
+    {
+        var document = new DocxBuilder().Body("<w:p><w:r><w:t>ab</w:t></w:r><w:r><w:t>cd</w:t></w:r></w:p>").Load();
+        var id = document.Blocks[0].Id;
+
+        document.Execute(new SetHyperlinkCommand(Range(document, id, 0, id, 4), "https://example.com"));
+        document.Execute(new SetHyperlinkCommand(Range(document, id, 0, id, 4), null));
+
+        Assert.Equal(["ab", "cd"], ((Paragraph)document.Blocks[0]).Inlines.Select(i => ((TextRun)i).Text));
+    }
+
+    [Fact]
     public void SetRunFormat_NothingChanges_NoUndoStep()
     {
         var document = TextDocument.FromBlocks([P("abc")]);
@@ -309,7 +401,8 @@ public class TextCommandTests
         document.Execute(new SplitParagraphCommand(document.PositionOf(document.Blocks[1].Id, 3)));
 
         Assert.Equal(["Ti", "tle", ""], document.Blocks.Cast<Paragraph>().Select(p => p.Text));
-        Assert.Equal(["Heading1", "Heading1", "Normal"], document.Blocks.Cast<Paragraph>().Select(p => p.Format.StyleId));
+        Assert.Equal(["Heading1", "Heading1", null], document.Blocks.Cast<Paragraph>().Select(p => p.Format.StyleId));
+        Assert.Equal("Normal", document.Styles.DefaultParagraphStyle.Id);
     }
 
     [Fact]
@@ -585,6 +678,23 @@ public class TextCommandTests
             Assert.Empty(e.RemovedBlockIds);
             Assert.Equal(DocumentChangeKind.Content, e.Kind);
         });
+    }
+
+    [Fact]
+    public void Changed_TypingInNestedCell_ReportsOnlyItsTable()
+    {
+        var document = Standard();
+        var table = document.Blocks[2];
+        var target = document.AllParagraphs().Single(p => p.Text == "inner b");
+        var events = new List<TextDocumentChangedEventArgs>();
+        document.Changed += (_, e) => events.Add(e);
+
+        Type(document, target.Id, "inner b!", T0);
+
+        var args = Assert.Single(events);
+        Assert.Equal([table.Id], args.ChangedBlockIds);
+        Assert.Empty(args.RemovedBlockIds);
+        Assert.Equal(DocumentChangeKind.Content, args.Kind);
     }
 
     private static void Type(TextDocument document, string paragraphId, string text, DateTimeOffset at) =>

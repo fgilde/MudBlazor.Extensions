@@ -29,7 +29,7 @@ public sealed class ReplaceTextCommand : TextDocumentCommand
 
     private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document)
     {
-        var (paragraph, offset) = document.Resolve(_range.Normalize(document).Start);
+        var (paragraph, offset) = document.Resolve(document.Snap(_range).Start);
         var (format, link) = InlineEdit.InsertionStyle(paragraph, offset);
         return document.ReplaceRange(_range, InlineEdit.Lines(_text, _format ?? format, link));
     }
@@ -45,9 +45,10 @@ public sealed class InsertBreakCommand(DocumentPosition at, BreakKind kind) : Te
 
     private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document)
     {
-        var (paragraph, offset) = document.Resolve(at);
+        var position = document.Snap(new DocumentRange(at, at)).Start;
+        var (paragraph, offset) = document.Resolve(position);
         var (format, link) = InlineEdit.InsertionStyle(paragraph, offset);
-        return document.ReplaceRange(new DocumentRange(at, at), [[new Break(kind) { Format = format, Link = link }]]);
+        return document.ReplaceRange(new DocumentRange(position, position), [[new Break(kind) { Format = format, Link = link }]]);
     }
 }
 

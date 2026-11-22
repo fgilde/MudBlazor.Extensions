@@ -33211,15 +33211,17 @@
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.SplitParagraphCommand">
             <summary>
-            Splits a paragraph at a position. The second half gets the same formatting, or the style's next style when the split is at the end, and takes
-            over the end of a section. On an empty list paragraph it removes the numbering instead.
+            Splits a paragraph at a position. The second half gets the same formatting, or the style's next style when the split is at the end (no style for
+            the default style), and takes over the end of a section. It continues a list only from a non-empty paragraph. On an empty list paragraph it
+            removes the numbering instead.
             </summary>
             <param name="at">Where to split.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.SplitParagraphCommand.#ctor(MudBlazor.Extensions.Office.Document.DocumentPosition)">
             <summary>
-            Splits a paragraph at a position. The second half gets the same formatting, or the style's next style when the split is at the end, and takes
-            over the end of a section. On an empty list paragraph it removes the numbering instead.
+            Splits a paragraph at a position. The second half gets the same formatting, or the style's next style when the split is at the end (no style for
+            the default style), and takes over the end of a section. It continues a list only from a non-empty paragraph. On an empty list paragraph it
+            removes the numbering instead.
             </summary>
             <param name="at">Where to split.</param>
         </member>
@@ -34428,7 +34430,7 @@
         <member name="T:MudBlazor.Extensions.Office.Document.DocumentSearch">
             <summary>
             Finds and replaces text in a <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/>. Matches run over <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/> and never cross paragraphs or tokens such as
-            images. Regular expressions run with a one second timeout; a timeout ends the search with the matches found so far.
+            images; a match that would end inside a surrogate pair is widened to the whole character. Regular expressions run with a one second timeout; a timeout ends the search with the matches found so far.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.DocumentSearch.FindAll(MudBlazor.Extensions.Office.Document.TextDocument,System.String,MudBlazor.Extensions.Office.Document.FindOptions)">
