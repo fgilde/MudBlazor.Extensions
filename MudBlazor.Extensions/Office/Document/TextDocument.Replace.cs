@@ -119,7 +119,7 @@ public sealed partial class TextDocument
                 var owner = k > 0 && inserted != null ? last : first;
                 var paragraph = k == 0
                     ? Truncated(first, inlines)
-                    : new Paragraph { Id = document.NewId(), Format = owner.Format, MarkFormat = owner.MarkFormat, Inlines = inlines, Source = owner.Source };
+                    : new Paragraph { Id = document.NewId(), Format = owner.Format, MarkFormat = owner.MarkFormat, Inlines = inlines, Source = owner.Source, Copy = true };
                 var formatFrom = k == 0 && leftEmpty && (lines.Count > 1 || tailEmpty) ? inserted?.First : k > 0 && k == lines.Count - 1 && tailEmpty ? inserted?.Last : null;
                 if (formatFrom != null) paragraph = paragraph with { Format = formatFrom.Format, MarkFormat = formatFrom.MarkFormat };
                 paragraphs.Add(paragraph);

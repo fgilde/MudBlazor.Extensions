@@ -174,6 +174,111 @@ public class InsertDocumentTests
         Assert.Single(body.Descendants(W + "pBdr"));
     }
 
+    [Fact]
+    public void InsertDocument_IntoTableCell_NestsTable()
+    {
+        var document = WithTable();
+        var cell = CellParagraph(document, 0);
+
+        var after = Apply(document, new DocumentRange(document.PositionOf(cell.Id, 4), document.PositionOf(cell.Id, 4)),
+            "<p>x</p><table><tr><td>inner</td></tr></table><p>y</p>");
+
+        var blocks = ((Table)after[1]).Rows[0].Cells[0].Blocks;
+        Assert.Equal(3, blocks.Count);
+        Assert.Equal(("cellx", "y one"), (((Paragraph)blocks[0]).Text, ((Paragraph)blocks[2]).Text));
+        Assert.Equal("inner", ((Paragraph)((Table)blocks[1]).Rows[0].Cells[0].Blocks[0]).Text);
+    }
+
+    [Fact]
+    public void InsertDocument_ReplacesSelectionAcrossBlocks()
+    {
+        var document = HtmlReader.Read("<p>alpha</p><p>beta</p><p>gamma</p>");
+        var (first, last) = (document.Blocks[0].Id, document.Blocks[2].Id);
+
+        var after = Apply(document, new DocumentRange(document.PositionOf(first, 2), document.PositionOf(last, 2)), "<p>X</p><p>Y</p>");
+
+        Assert.Equal(["alX", "Ymma"], after.Cast<Paragraph>().Select(p => p.Text));
+    }
+
+    [Fact]
+    public void InsertDocument_ReplacesSelectionAcrossCells()
+    {
+        var document = WithTable();
+        var (one, two) = (CellParagraph(document, 0), CellParagraph(document, 1));
+
+        var after = Apply(document, new DocumentRange(document.PositionOf(one.Id, 2), document.PositionOf(two.Id, 2)), "<p>X</p><p>Y</p>");
+
+        var cells = ((Table)after[1]).Rows[0].Cells;
+        Assert.Equal(["ceX", "Y"], cells[0].Blocks.Cast<Paragraph>().Select(p => p.Text));
+        Assert.Equal(["ll two"], cells[1].Blocks.Cast<Paragraph>().Select(p => p.Text));
+    }
+
+    [Fact]
+    public void InsertDocument_TableFirstAtStart_TableLastAtEnd()
+    {
+        var document = HtmlReader.Read("<p>text</p>");
+        var id = document.Blocks[0].Id;
+
+        var atStart = Apply(document, Caret(document, id, 0), "<table><tr><td>t1</td></tr></table><p>p1</p>");
+
+        Assert.Equal(["", "table", "p1text"], atStart.Select(b => b is Paragraph p ? p.Text : "table"));
+        var end = ((Paragraph)document.Blocks[^1]).Id;
+        var atEnd = Apply(document, Caret(document, end, ((Paragraph)document.Blocks[^1]).Length), "<p>p2</p><table><tr><td>t2</td></tr></table>");
+        Assert.Equal(["", "table", "p1textp2", "table", ""], atEnd.Select(b => b is Paragraph p ? p.Text : "table"));
+    }
+
+    [Fact]
+    public void InsertDocument_SingleParagraphMidParagraph_KeepsTargetFormat()
+    {
+        var document = HtmlReader.Read("<h1>Heading</h1>");
+        var id = document.Blocks[0].Id;
+
+        var after = Apply(document, Caret(document, id, 4), "<p style=\"text-align:center\"><b>bold</b></p>");
+
+        var paragraph = (Paragraph)Assert.Single(after);
+        Assert.Equal(("Headbolding", "Heading1", (ParagraphAlignment?)null), (paragraph.Text, paragraph.Format.StyleId, paragraph.Format.Alignment));
+        Assert.True(paragraph.Inlines[1].Format.Bold);
+    }
+
+    [Fact]
+    public void InsertDocument_Undo_LeavesNoMediaInTheFile()
+    {
+        var document = TextDocument.Create();
+        var png = ObjectCommandTests.Png(8, 8);
+
+        document.Execute(new InsertDocumentCommand(Caret(document, document.Blocks[0].Id, 0), HtmlReader.Read($"<p><img src=\"data:image/png;base64,{Convert.ToBase64String(png)}\"></p>")));
+        document.Undo.Undo();
+        var output = DocxWriterTests.Save(document);
+
+        DocxWriterTests.AssertConsistent(output);
+        var opc = OpcPackage.Open(output);
+        Assert.DoesNotContain(opc.PartNames, p => p.StartsWith("/word/media/", StringComparison.Ordinal));
+        Assert.DoesNotContain(opc.Relationships("/word/document.xml"), r => r.Type.EndsWith("/image", StringComparison.Ordinal));
+    }
+
+    private static IReadOnlyList<Block> Apply(TextDocument document, DocumentRange range, string html)
+    {
+        var before = document.Blocks.ToList();
+        var styles = document.Styles;
+        var numbering = document.Numbering;
+        document.Execute(new InsertDocumentCommand(range, HtmlReader.Read(html)));
+        var after = document.Blocks.ToList();
+        DocxWriterTests.AssertConsistent(DocxWriterTests.Save(document));
+
+        document.Undo.Undo();
+        Assert.Equal(before.Count, document.Blocks.Count);
+        Assert.All(before.Zip(document.Blocks), pair => Assert.Same(pair.First, pair.Second));
+        Assert.Same(styles, document.Styles);
+        Assert.Same(numbering, document.Numbering);
+        document.Undo.Redo();
+        Assert.All(after.Zip(document.Blocks), pair => Assert.Same(pair.First, pair.Second));
+        return after;
+    }
+
+    private static TextDocument WithTable() => HtmlReader.Read("<p>before</p><table><tr><td>cell one</td><td>cell two</td></tr></table><p>after</p>");
+
+    private static Paragraph CellParagraph(TextDocument document, int cell) => (Paragraph)((Table)document.Blocks[1]).Rows[0].Cells[cell].Blocks[0];
+
     private static TextDocument Text(string text)
     {
         var document = TextDocument.Create();
