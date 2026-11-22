@@ -349,6 +349,43 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         return result;
     }
 
+    // Same hand-over as MudExFileDisplayZip: the attachment viewer gets the settings of the surrounding display,
+    // and the shared ElementId lets it place its menu into that display's toolbar.
+    private Dictionary<string, object> AttachmentParameters()
+    {
+        var parameters = new Dictionary<string, object>
+        {
+            [nameof(MudExFileDisplay.FileName)] = _openAttachment.Name,
+            [nameof(MudExFileDisplay.ContentType)] = _openAttachment.ContentType,
+            [nameof(MudExFileDisplay.ContentStream)] = _openAttachmentStream,
+            [nameof(MudExFileDisplay.Localizer)] = Localizer,
+            [nameof(MudExFileDisplay.CanClose)] = true,
+            [nameof(MudExFileDisplay.OnCloseClick)] = EventCallback.Factory.Create(this, CloseAttachment)
+        };
+        if (MudExFileDisplay is not { } parent)
+            return parameters;
+
+        parameters[nameof(parent.ElementId)] = parent.ElementId;
+        parameters[nameof(parent.FallBackInIframe)] = parent.FallBackInIframe;
+        parameters[nameof(parent.ShowContentError)] = parent.ShowContentError;
+        parameters[nameof(parent.SandBoxIframes)] = parent.SandBoxIframes;
+        parameters[nameof(parent.ImageAsBackgroundImage)] = parent.ImageAsBackgroundImage;
+        parameters[nameof(parent.ViewDependsOnContentType)] = parent.ViewDependsOnContentType;
+        parameters[nameof(parent.HandleContentErrorFunc)] = parent.HandleContentErrorFunc;
+        parameters[nameof(parent.CustomContentErrorMessage)] = parent.CustomContentErrorMessage;
+        parameters[nameof(parent.StreamUrlHandling)] = parent.StreamUrlHandling;
+        parameters[nameof(parent.ColorizeIcons)] = parent.ColorizeIcons;
+        parameters[nameof(parent.IconColor)] = parent.IconColor;
+        parameters[nameof(parent.Dense)] = parent.Dense;
+        parameters[nameof(parent.ForceNativeRender)] = parent.ForceNativeRender;
+        parameters[nameof(parent.IgnoredRenderControls)] = parent.IgnoredRenderControls;
+        parameters[nameof(parent.ParametersForSubControls)] = parent.ParametersForSubControls;
+        parameters[nameof(parent.AllowDownload)] = parent.AllowDownload;
+        parameters[nameof(parent.ShowFileMeta)] = parent.ShowFileMeta;
+        parameters[nameof(parent.FileMetaPlacement)] = parent.FileMetaPlacement;
+        return parameters;
+    }
+
     private void OpenAttachment(MailAttachment attachment)
     {
         CloseAttachment();

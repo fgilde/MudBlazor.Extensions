@@ -3,12 +3,9 @@
 
 @if (_openAttachment != null)
 {
-    <MudExFileDisplay FileName="@_openAttachment.Name"
-                      ContentType="@_openAttachment.ContentType"
-                      ContentStream="@_openAttachmentStream"
-                      Localizer="@Localizer"
-                      CanClose="true"
-                      OnCloseClick="@CloseAttachment" />
+    <div class="mud-ex-file-display-attachment">
+        <DynamicComponent Type="typeof(MudExFileDisplay)" Parameters="@AttachmentParameters()" />
+    </div>
 }
 <div style="width: 100%; height: 100%; flex-direction: column; display: @(_openAttachment != null ? "none" : "flex");">
 <div @ref="ElementReference" style="width: 100%; flex: 1; min-height: 0; position: relative;">

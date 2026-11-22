@@ -242,6 +242,26 @@ public class FileDisplayViewerTests
     }
 
     [Fact]
+    public async Task Document_AttachmentViewer_TakesOverSettingsOfSurroundingDisplay()
+    {
+        await using var context = CreateContext();
+        var parent = new MudExFileDisplay { ElementId = "outer", Dense = true, ColorizeIcons = true, SandBoxIframes = false };
+        var cut = context.Render<MudExFileDisplayDocument>(p => p
+            .AddCascadingValue(parent)
+            .Add(c => c.FileDisplayInfos, FileInfos.Text("mail.eml", "message/rfc822", MailWithAttachment())));
+
+        cut.WaitForAssertion(() => Assert.Contains("notes.txt", cut.Markup));
+        cut.Find(".mud-chip").Click();
+
+        var inner = cut.FindComponent<MudExFileDisplay>().Instance;
+        Assert.Equal("outer", inner.ElementId);
+        Assert.True(inner.Dense);
+        Assert.True(inner.ColorizeIcons);
+        Assert.False(inner.SandBoxIframes);
+        Assert.True(inner.CanClose);
+    }
+
+    [Fact]
     public void CertificateReader_AgreesWithThePlatform()
     {
         // The viewer decodes certificates itself because the platform stack is unavailable on browser-wasm.

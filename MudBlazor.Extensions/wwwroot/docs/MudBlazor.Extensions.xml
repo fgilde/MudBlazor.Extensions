@@ -29058,6 +29058,11 @@
             (Content-ID referenced) attachments needed to render an email similarly to <c>MsgReader</c> for .msg files.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.MimeMessage.Attachments">
+            <summary>
+            Parts sent as files: everything with <c>Content-Disposition: attachment</c> and every attached message.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.Internal.MimeMessage.GetEncoding(System.String)">
             <summary>
             Resolves the charset named in a Content-Type header. Unknown or missing charsets fall back to UTF-8;

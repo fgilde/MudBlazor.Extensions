@@ -4,6 +4,9 @@ Cc: team@example.com
 Subject: Welcome to MudBlazor.Extensions
 Date: Mon, 01 Jul 2024 09:30:00 +0000
 MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="MIXED123"
+
+--MIXED123
 Content-Type: multipart/alternative; boundary="BOUNDARY123"
 
 --BOUNDARY123
@@ -13,6 +16,7 @@ Content-Transfer-Encoding: 7bit
 Hi John,
 
 This is a plain text sample e-mail used to demo MudExFileDisplayDocument's .eml support.
+Two files are attached.
 
 Best,
 Jane
@@ -20,5 +24,22 @@ Jane
 Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-<html><body><p>Hi John,</p><p>This is an <strong>HTML</strong> sample e-mail used to demo <code>MudExFileDisplayDocument</code>'s .eml support.</p><p>Best,<br/>Jane</p></body></html>
+<html><body><p>Hi John,</p><p>This is an <strong>HTML</strong> sample e-mail used to demo <code>MudExFileDisplayDocument</code>'s .eml support.</p><p>Two files are attached.</p><p>Best,<br/>Jane</p></body></html>
 --BOUNDARY123--
+--MIXED123
+Content-Type: text/plain; charset=UTF-8; name="notes.txt"
+Content-Disposition: attachment; filename="notes.txt"
+Content-Transfer-Encoding: 7bit
+
+Meeting notes
+- Attachments of .eml and .msg files open inside the viewer.
+- Close the attachment to get back to the message.
+--MIXED123
+Content-Type: text/csv; charset=UTF-8; name="contacts.csv"
+Content-Disposition: attachment; filename="contacts.csv"
+Content-Transfer-Encoding: 7bit
+
+Name,Email,Team
+Jane Doe,jane.doe@example.com,Design
+John Smith,john.smith@example.com,Engineering
+--MIXED123--
