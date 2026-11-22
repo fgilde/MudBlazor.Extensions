@@ -35,9 +35,12 @@ internal sealed class DocxBuilder
     private readonly List<string> _references = [];
     private readonly List<string> _rawRels = [];
     private string _body = "<w:p/>";
+    private string _rootRels = "";
     private int _paraId = 0x10000000;
 
     public string MainPart { get; set; } = "/word/document.xml";
+
+    public string SectionProperties { get; set; } = "";
 
     public bool Template { get; set; }
 
@@ -74,6 +77,16 @@ internal sealed class DocxBuilder
             $"<a:fontScheme name=\"Office\"><a:majorFont><a:latin typeface=\"{major}\"/></a:majorFont><a:minorFont><a:latin typeface=\"{minor}\"/></a:minorFont></a:fontScheme>" +
             "</a:themeElements></a:theme>");
 
+    public DocxBuilder CoreProperties(string xml)
+    {
+        _rootRels = "<Relationship Id=\"rId2\" Type=\"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties\" Target=\"docProps/core.xml\"/>";
+        _parts["/docProps/core.xml"] = (Encoding.UTF8.GetBytes(
+            "<cp:coreProperties xmlns:cp=\"http://schemas.openxmlformats.org/package/2006/metadata/core-properties\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" " +
+            $"xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">{xml}</cp:coreProperties>"),
+            "application/vnd.openxmlformats-package.core-properties+xml");
+        return this;
+    }
+
     public DocxBuilder Header(string body, string type = "default") => HeaderFooter("header", body, type);
 
     public DocxBuilder Footer(string body, string type = "default") => HeaderFooter("footer", body, type);
@@ -104,7 +117,7 @@ internal sealed class DocxBuilder
         var sectPr = _body.Contains("<w:sectPr", StringComparison.Ordinal)
             ? ""
             : $"<w:sectPr w:rsidR=\"00A1B2C3\">{string.Concat(_references)}<w:pgSz w:w=\"11906\" w:h=\"16838\"/>" +
-              "<w:pgMar w:top=\"1417\" w:right=\"1417\" w:bottom=\"1134\" w:left=\"1417\" w:header=\"708\" w:footer=\"708\" w:gutter=\"0\"/></w:sectPr>";
+              $"<w:pgMar w:top=\"1417\" w:right=\"1417\" w:bottom=\"1134\" w:left=\"1417\" w:header=\"708\" w:footer=\"708\" w:gutter=\"0\"/>{SectionProperties}</w:sectPr>";
         var document = RawDocument ?? $"<w:document {Root}><w:body>{WordShaped(_body)}{sectPr}</w:body></w:document>";
         using var stream = new MemoryStream();
         using (var zip = new ZipArchive(stream, ZipArchiveMode.Create, true))
@@ -115,7 +128,7 @@ internal sealed class DocxBuilder
                 "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\"><Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\"/>" +
                 $"<Default Extension=\"xml\" ContentType=\"application/xml\"/>{overrides}</Types>");
             Entry(zip, "_rels/.rels",
-                $"<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"{RelNs}/officeDocument\" Target=\"{main}\"/></Relationships>");
+                $"<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"{RelNs}/officeDocument\" Target=\"{main}\"/>{_rootRels}</Relationships>");
             Entry(zip, main, document);
             Entry(zip, folder + "_rels/" + main[folder.Length..] + ".rels",
                 "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" +

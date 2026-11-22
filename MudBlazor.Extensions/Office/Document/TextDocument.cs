@@ -144,9 +144,12 @@ public sealed partial class TextDocument
     internal Block Identify(Block block)
     {
         block = block with { Id = NewId() };
-        return block is Table table
-            ? table with { Rows = table.Rows.Select(r => r with { Cells = r.Cells.Select(c => c with { Blocks = c.Blocks.Select(Identify).ToList() }).ToList() }).ToList() }
-            : block;
+        return block switch
+        {
+            Table table => table with { Rows = table.Rows.Select(r => r with { Cells = r.Cells.Select(c => c with { Blocks = c.Blocks.Select(Identify).ToList() }).ToList() }).ToList() },
+            OpaqueBlock { Preview: not null } opaque => opaque with { Preview = opaque.Preview.Select(Identify).ToList() },
+            _ => block
+        };
     }
 
     internal Block EnsureIds(Block block)

@@ -259,7 +259,7 @@ internal sealed class InlineXml
 
     private static OpaqueInline Opaque(string kind, string text = "") => new(kind, text);
 
-    private static string Text(XElement node) => Text(node, W + "t");
+    internal static string Text(XElement node) => Text(node, W + "t");
 
     private static string Text(XElement node, XName text)
     {

@@ -98,7 +98,7 @@ internal static class FormatXml
     private static string Font(XElement fonts) =>
         fonts == null ? null : (string)fonts.Attribute(W + "asciiTheme") is { } theme ? "theme:" + theme : (string)fonts.Attribute(W + "ascii") ?? (string)fonts.Attribute(W + "hAnsi");
 
-    private static string Shading(XElement shading) => Color(shading, "fill", "themeFill", "themeFillShade", "themeFillTint");
+    internal static string Shading(XElement shading) => Color(shading, "fill", "themeFill", "themeFillShade", "themeFillTint");
 
     private static string Color(XElement element, string value, string theme, string shade, string tint)
     {
@@ -125,7 +125,7 @@ internal static class FormatXml
         return new TabStop(position, alignment, (string)tab.Attribute(W + "leader") is { } leader and not "none" ? leader : null);
     }
 
-    private static TableBorders Borders(XElement borders) => borders == null
+    internal static TableBorders Borders(XElement borders) => borders == null
         ? null
         : new TableBorders(
             Border(borders.Element(W + "top")),

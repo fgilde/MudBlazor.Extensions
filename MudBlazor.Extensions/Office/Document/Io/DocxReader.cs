@@ -4,7 +4,7 @@ using static MudBlazor.Extensions.Office.Document.FormatXml;
 
 namespace MudBlazor.Extensions.Office.Document;
 
-internal static class DocxReader
+internal static partial class DocxReader
 {
     private static readonly HashSet<string> TrackedChanges =
     [
@@ -30,7 +30,8 @@ internal static class DocxReader
     private static TextDocument ReadPackage(byte[] package)
     {
         var opc = OpcPackage.Open(package);
-        var main = Relationships(opc, "/").FirstOrDefault(r => r.Type.EndsWith("/officeDocument", StringComparison.Ordinal) && !IsExternal(r)) is { } officeDocument
+        var packageRels = Relationships(opc, "/");
+        var main = packageRels.FirstOrDefault(r => r.Type.EndsWith("/officeDocument", StringComparison.Ordinal) && !IsExternal(r)) is { } officeDocument
             ? opc.ResolveTarget("/", officeDocument.Target)
             : null;
         if (main == null || opc.Entry(main) == null) throw new InvalidDataException("The file contains no document part.");
@@ -48,19 +49,16 @@ internal static class DocxReader
         {
             IsTemplate = contentType?.Contains(".template.main+xml", StringComparison.Ordinal) == true,
             EvenAndOddHeaders = settings?.Root is { } root && OnOff(root, "evenAndOddHeaders") == true,
-            HasTrackedChanges = body.Descendants().Any(e => e.Name.Namespace == W && TrackedChanges.Contains(e.Name.LocalName)),
             Styles = StylesXml.Read(styles),
             Numbering = NumberingXml.Read(numbering),
-            Theme = DocumentTheme.Read(theme)
+            Theme = DocumentTheme.Read(theme),
+            Properties = ReadProperties(opc, packageRels)
         };
 
-        var inlines = new InlineXml(opc, main, rels, document);
-        foreach (var element in body.Elements())
-            if (element.Name == W + "sectPr")
-                document.SectionList.Add(new Section { Id = "s1", Page = Page(element), Source = element });
-            else
-                document.BlockList.Add(document.Identify(Block(element, inlines)));
-        if (document.SectionList.Count == 0) document.SectionList.Add(new Section { Id = "s1" });
+        ReadBody(body, new InlineXml(opc, main, rels, document), document);
+        ReadHeadersFooters(opc, main, rels, document);
+        ReadComments(opc, main, rels, xml, document);
+        document.HasTrackedChanges = HasTrackedChanges(body) || document.HeadersFooters.SelectMany(h => h.Blocks).Any(b => HasTrackedChanges(b.Source));
 
         document.Package = new DocxPackage
         {
@@ -71,38 +69,52 @@ internal static class DocxReader
         return document;
     }
 
+    private static void ReadBody(XElement body, InlineXml inlines, TextDocument document)
+    {
+        XElement final = null;
+        foreach (var element in body.Elements())
+            if (element.Name == W + "sectPr")
+                final = element;
+            else
+            {
+                var block = document.Identify(Block(element, inlines));
+                document.BlockList.Add(block);
+                if (element.Name == W + "p" && element.Element(W + "pPr")?.Element(W + "sectPr") is { } sectPr)
+                    document.SectionList.Add(SectionXml.Read(sectPr, SectionId(document), block.Id));
+            }
+
+        document.SectionList.Add(final == null ? new Section { Id = SectionId(document) } : SectionXml.Read(final, SectionId(document), null));
+    }
+
+    private static string SectionId(TextDocument document) => "s" + (document.SectionList.Count + 1);
+
+    private static List<Block> Blocks(IEnumerable<XElement> elements, InlineXml inlines) =>
+        elements.Where(e => e.Name != W + "sectPr").Select(e => Block(e, inlines)).ToList();
+
     private static Block Block(XElement element, InlineXml inlines)
     {
         if (element.Name == W + "p") return ParagraphXml.Read(element, inlines);
+        if (element.Name == W + "tbl") return TableXml.Read(element, e => Blocks(e, inlines));
         var name = element.Name.Namespace == W ? element.Name.LocalName : null;
-        return name != null && InlineXml.Markers.Contains(name)
-            ? new OpaqueBlock { Kind = "marker", Visible = false, Source = element }
-            : new OpaqueBlock
-            {
-                Kind = name switch { "sdt" => "contentControl", "customXml" => "customXml", "altChunk" => "altChunk", _ => "other" },
-                Source = element
-            };
+        if (name != null && InlineXml.Markers.Contains(name)) return new OpaqueBlock { Kind = "marker", Visible = false, Source = element };
+        if (name == "sdt")
+            return new OpaqueBlock { Kind = "contentControl", Preview = Blocks(element.Element(W + "sdtContent")?.Elements() ?? [], inlines), Source = element };
+        return new OpaqueBlock { Kind = name is "customXml" or "altChunk" ? name : "other", Source = element };
     }
 
-    private static (string Part, XDocument Xml) Part(OpcPackage opc, string main, IEnumerable<OpcRelationship> rels, string type)
+    private static bool HasTrackedChanges(XElement element) =>
+        element != null && element.DescendantsAndSelf().Any(e => e.Name.Namespace == W && TrackedChanges.Contains(e.Name.LocalName));
+
+    private static (string Part, XDocument Xml) Part(OpcPackage opc, string main, IEnumerable<OpcRelationship> rels, string type) =>
+        PartName(opc, main, rels, type) is { } part ? (part, opc.ReadXml(part)) : (null, null);
+
+    private static string PartName(OpcPackage opc, string source, IEnumerable<OpcRelationship> rels, string type)
     {
-        if (rels.FirstOrDefault(r => r.Type.EndsWith("/" + type, StringComparison.Ordinal) && !IsExternal(r)) is not { } rel) return (null, null);
-        var part = opc.ResolveTarget(main, rel.Target);
-        return opc.Entry(part) == null ? (null, null) : (part, opc.ReadXml(part));
+        if (rels.FirstOrDefault(r => r.Type.EndsWith("/" + type, StringComparison.Ordinal) && !IsExternal(r)) is not { } rel) return null;
+        var part = opc.ResolveTarget(source, rel.Target);
+        return opc.Entry(part) == null ? null : part;
     }
 
     private static List<OpcRelationship> Relationships(OpcPackage opc, string part) =>
         opc.Relationships(part).Where(r => r.Id != null && r.Type != null && r.Target != null).ToList();
-
-    private static PageSetup Page(XElement sectPr)
-    {
-        var size = sectPr.Element(W + "pgSz");
-        var margin = sectPr.Element(W + "pgMar");
-        var a4 = PageSetup.A4;
-        return new PageSetup(
-            Int(size, "w") ?? a4.Width, Int(size, "h") ?? a4.Height,
-            (string)size?.Attribute(W + "orient") == "landscape" ? PageOrientation.Landscape : PageOrientation.Portrait,
-            Int(margin, "top") ?? a4.MarginTop, Int(margin, "right") ?? a4.MarginRight, Int(margin, "bottom") ?? a4.MarginBottom, Int(margin, "left") ?? a4.MarginLeft,
-            Int(margin, "header") ?? a4.HeaderDistance, Int(margin, "footer") ?? a4.FooterDistance, Int(margin, "gutter") ?? a4.Gutter);
-    }
 }
