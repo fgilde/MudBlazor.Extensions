@@ -62,14 +62,13 @@ internal sealed class OpcPackage
 
     internal ZipArchiveEntry Entry(string part) => _entries.GetValueOrDefault(part);
 
-    /// <summary>Reads a part as XML; DTDs are rejected.</summary>
+    /// <summary>Reads a part as XML; DTDs and elements nested deeper than 256 levels are rejected with <see cref="InvalidDataException"/>.</summary>
     /// <param name="part">The part name.</param>
     /// <returns>The document.</returns>
     public XDocument ReadXml(string part)
     {
         using var stream = Open(part);
-        using var reader = XmlReader.Create(stream, XmlSettings);
-        return XDocument.Load(reader);
+        return BoundedXmlReader.Load(XmlReader.Create(stream, XmlSettings));
     }
 
     /// <summary>Reads a part's raw bytes.</summary>

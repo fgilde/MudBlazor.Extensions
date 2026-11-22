@@ -400,8 +400,7 @@ internal sealed class XlsxPackage
 
     internal static XDocument LoadXml(Stream stream)
     {
-        using var reader = XmlReader.Create(stream, XmlSettings);
-        return XDocument.Load(reader);
+        return BoundedXmlReader.Load(XmlReader.Create(stream, XmlSettings));
     }
 
     internal bool IsDateStyle(StyleTable styles, int styleId)

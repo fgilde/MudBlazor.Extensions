@@ -40,6 +40,25 @@ public class DocxReaderTests
     }
 
     [Fact]
+    public void Reader_DeeplyNestedXml_IsInvalidData_NestingBelowTheLimitLoads()
+    {
+        static string Nest(string open, string close, int depth, string inner) =>
+            string.Concat(Enumerable.Repeat(open, depth)) + inner + string.Concat(Enumerable.Repeat(close, depth));
+        const string paragraph = "<w:p><w:r><w:t>x</w:t></w:r></w:p>";
+
+        Assert.Throws<InvalidDataException>(() => new DocxBuilder().Body(Nest("<w:sdt><w:sdtContent>", "</w:sdtContent></w:sdt>", 100000, paragraph)).Load());
+        Assert.Throws<InvalidDataException>(() => new DocxBuilder().Body("<w:p>" + Nest("<w:smartTag w:element=\"x\">", "</w:smartTag>", 100000, "<w:r><w:t>x</w:t></w:r>") + "</w:p>").Load());
+        Assert.Throws<InvalidDataException>(() => new DocxBuilder().Body(Nest("<w:tbl><w:tr><w:tc>", "<w:p/></w:tc></w:tr></w:tbl>", 50000, paragraph)).Load());
+        Assert.NotEmpty(new DocxBuilder().Body(Nest("<w:sdt><w:sdtContent>", "</w:sdtContent></w:sdt>", 120, paragraph)).Load().Blocks);
+        Assert.NotEmpty(new DocxBuilder().Body("<w:p>" + Nest("<w:smartTag w:element=\"x\">", "</w:smartTag>", 240, "<w:r><w:t>x</w:t></w:r>") + "</w:p>").Load().Blocks);
+        var tables = new DocxBuilder().Body(Nest("<w:tbl><w:tblGrid><w:gridCol w:w=\"100\"/></w:tblGrid><w:tr><w:tc>", "<w:p/></w:tc></w:tr></w:tbl>", 80, paragraph) + "<w:p/>").Load();
+        Assert.IsType<Table>(tables.Blocks[0]);
+        Assert.Throws<InvalidDataException>(() => BoundedXmlReader.Load(System.Xml.XmlReader.Create(new StringReader(Nest("<a>", "</a>", 300, "")))));
+        Assert.Equal(256, BoundedXmlReader.Load(System.Xml.XmlReader.Create(new StringReader(Nest("<a>", "</a>", 256, "")))).Descendants().Count());
+        Assert.Throws<InvalidDataException>(() => BoundedXmlReader.Load(System.Xml.XmlReader.Create(new StringReader("<r>" + string.Concat(Enumerable.Repeat("<a/>", 11)) + "</r>")), 256, 10));
+    }
+
+    [Fact]
     public void Reader_SampleDocx_ReadsParagraphsAndText()
     {
         using var file = File.OpenRead(DataPath("sample.docx"));
