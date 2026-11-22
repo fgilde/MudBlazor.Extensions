@@ -218,6 +218,18 @@ public class HtmlPasteReaderTests
         Assert.Equal(720, ((PastedParagraph)blocks[1]).IndentLeft);
     }
 
+    [Fact]
+    public void ReadBlocks_CellAlignmentKeptOuterIndentAndAlignmentNot()
+    {
+        var blocks = HtmlPasteReader.ReadBlocks(
+            "<div style=\"margin-left:36pt;text-align:justify\"><table><tr><td align=\"right\">r</td>" +
+            "<td style=\"text-align:center;padding-left:10pt\"><p>c</p></td><td>n</td></tr></table></div>");
+
+        var cells = Assert.IsType<PastedTable>(blocks[0]).Rows[0].Select(c => (PastedParagraph)c.Blocks.Single()).ToList();
+        Assert.Equal(["right", "center", null], cells.Select(c => c.Align));
+        Assert.All(cells, c => Assert.Null(c.IndentLeft));
+    }
+
     private static string Describe(IEnumerable<PastedParagraph> paragraphs) =>
         string.Join(" / ", paragraphs.Select(p => $"{p.List}{p.Depth}:" + string.Concat(p.Runs.Select(r =>
             $"[{r.Text.Replace("\n", "\\n")}|{(r.Format.Bold ? "b" : "")}{(r.Format.Italic ? "i" : "")}{(r.Format.Underline ? "u" : "")}|{r.Format.Color}|{r.Format.Link}]"))));

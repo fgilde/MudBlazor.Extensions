@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Unicode;
 using System.Xml;
 using MudBlazor.Extensions.Office.Spreadsheet;
 
@@ -8,11 +9,13 @@ internal static class TextFormat
 {
     internal static TextDocument Read(Stream stream) => FromText(Decode(stream));
 
-    internal static string Decode(Stream stream)
+    internal static string Decode(Stream stream, int maxChars = HtmlReader.MaxLength)
     {
-        var bytes = HtmlEncoding.ReadLimited(stream, HtmlReader.MaxLength, b => HtmlEncoding.Bom(b)?.Encoding ?? Encoding.UTF8);
-        var text = CsvFormat.Decode(new MemoryStream(bytes));
-        return text.Length > HtmlReader.MaxLength ? throw new InvalidDataException("The text is too large to read.") : text;
+        var bytes = HtmlEncoding.ReadLimited(stream, maxChars, b => HtmlEncoding.Bom(b)?.Encoding ?? Encoding.UTF8);
+        HtmlEncoding.CheckChars(HtmlEncoding.Bom(bytes) is { } bom
+            ? bom.Encoding.GetCharCount(bytes, bom.Preamble, bytes.Length - bom.Preamble)
+            : Utf8.IsValid(bytes) ? Encoding.UTF8.GetCharCount(bytes) : bytes.Length, maxChars);
+        return CsvFormat.Decode(new MemoryStream(bytes));
     }
 
     internal static void Write(TextDocument document, Stream target)

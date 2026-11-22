@@ -45,6 +45,39 @@ public class TextMarkdownTests
     }
 
     [Fact]
+    public void Md_Read_TableColumnAlignment()
+    {
+        var document = Load(Encoding.UTF8.GetBytes("| a | b | c |\n| :-: | --: | --- |\n| x | y | z |\n"), DocumentFileFormat.Markdown);
+
+        var table = Assert.IsType<Table>(document.Blocks[0]);
+        Assert.All(table.Rows, r => Assert.Equal(new ParagraphAlignment?[] { ParagraphAlignment.Center, ParagraphAlignment.Right, null },
+            r.Cells.Select(c => ((Paragraph)c.Blocks[0]).Format.Alignment)));
+    }
+
+    [Fact]
+    public void Txt_Read_EmptyAndUtf16Boms()
+    {
+        Assert.Equal("", Single(Load([])).Text);
+        Assert.Equal(Gruesse, Single(Load(Encoding.Unicode.GetPreamble().Concat(Encoding.Unicode.GetBytes(Gruesse)).ToArray())).Text);
+        Assert.Equal(Gruesse, Single(Load(Encoding.BigEndianUnicode.GetPreamble().Concat(Encoding.BigEndianUnicode.GetBytes(Gruesse)).ToArray())).Text);
+    }
+
+    [Fact]
+    public void Txt_And_Html_Read_CharCapCheckedBeforeDecoding()
+    {
+        var cp1252 = System.Text.CodePagesEncodingProvider.Instance.GetEncoding(1252)!;
+
+        Assert.Equal(1000, TextFormat.Decode(new MemoryStream(Encoding.ASCII.GetBytes(new string('a', 1000))), 1000).Length);
+        Assert.Throws<InvalidDataException>(() => TextFormat.Decode(new MemoryStream(Encoding.ASCII.GetBytes(new string('a', 1001))), 1000));
+        Assert.Equal(1000, TextFormat.Decode(new MemoryStream(Encoding.UTF8.GetBytes(new string('\u00FC', 1000))), 1000).Length);
+        Assert.Throws<InvalidDataException>(() => TextFormat.Decode(new MemoryStream(Encoding.UTF8.GetBytes(new string('\u00FC', 1001))), 1000));
+        Assert.Equal(1000, TextFormat.Decode(new MemoryStream(cp1252.GetBytes(new string('\u00FC', 1000))), 1000).Length);
+        Assert.Throws<InvalidDataException>(() => TextFormat.Decode(new MemoryStream(cp1252.GetBytes(new string('\u00FC', 1001))), 1000));
+        Assert.Equal("a", ((Paragraph)HtmlReader.Read(new MemoryStream(Encoding.ASCII.GetBytes("<p>a</p>" + new string(' ', 992))), 1000).Blocks[0]).Text);
+        Assert.Throws<InvalidDataException>(() => HtmlReader.Read(new MemoryStream(Encoding.ASCII.GetBytes("<p>a</p>" + new string(' ', 993))), 1000));
+    }
+
+    [Fact]
     public void Txt_Write_ListLabelsTablesCrLf()
     {
         var document = HtmlReader.Read(

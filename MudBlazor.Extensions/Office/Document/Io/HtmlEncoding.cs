@@ -26,6 +26,11 @@ internal static class HtmlEncoding
         return buffer.ToArray();
     }
 
+    internal static void CheckChars(int count, int maxChars)
+    {
+        if (count > maxChars) throw new InvalidDataException("The file is too large to read.");
+    }
+
     internal static (Encoding Encoding, int Preamble) Detect(ReadOnlySpan<byte> bytes) =>
         Bom(bytes) ?? (Declared(Encoding.Latin1.GetString(bytes[..Math.Min(bytes.Length, Prescan)])) ?? new UTF8Encoding(false), 0);
 

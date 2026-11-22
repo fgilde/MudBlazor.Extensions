@@ -421,11 +421,12 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         var paragraph = Paragraph();
         if (paragraph.Runs.Count > 0) return paragraph;
         var scope = _structured ? _open.FindLastIndex(o => TableParts.Contains(o.Name)) : -1;
-        for (var k = _open.Count - 1; k > scope; k--)
+        for (var k = _open.Count - 1; k >= Math.Max(scope, 0); k--)
         {
+            paragraph.Align ??= _open[k].Align;
+            if (k == scope) break;
             var name = _open[k].Name;
             if (paragraph.Heading == 0 && name.Length == 2 && name[0] == 'h' && name[1] is >= '1' and <= '6') paragraph.Heading = name[1] - '0';
-            paragraph.Align ??= _open[k].Align;
             paragraph.IndentLeft ??= _open[k].Indent;
             paragraph.IndentFirstLine ??= _open[k].FirstLine;
         }

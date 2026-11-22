@@ -15,10 +15,11 @@ internal static class HtmlReader
         ["darkMagenta"] = "#800080", ["darkRed"] = "#800000", ["darkYellow"] = "#808000", ["darkGray"] = "#808080", ["lightGray"] = "#C0C0C0"
     };
 
-    internal static TextDocument Read(Stream stream)
+    internal static TextDocument Read(Stream stream, int maxChars = MaxLength)
     {
-        var bytes = HtmlEncoding.ReadLimited(stream, MaxLength, b => HtmlEncoding.Detect(b).Encoding);
+        var bytes = HtmlEncoding.ReadLimited(stream, maxChars, b => HtmlEncoding.Detect(b).Encoding);
         var (encoding, preamble) = HtmlEncoding.Detect(bytes);
+        HtmlEncoding.CheckChars(encoding.GetCharCount(bytes, preamble, bytes.Length - preamble), maxChars);
         return Read(encoding.GetString(bytes, preamble, bytes.Length - preamble));
     }
 
