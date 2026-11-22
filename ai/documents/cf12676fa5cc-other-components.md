@@ -329,8 +329,8 @@ Components for integrating cloud storage providers.
 
 ## See Also
 
-- [Picker Components](https://github.com/fgilde/MudBlazor.Extensions/blob/ddc7472ecb8674a8f151e94a1d334b204f4916c7/docs/components/pickers.md)
-- [Grid and Layout](https://github.com/fgilde/MudBlazor.Extensions/blob/ddc7472ecb8674a8f151e94a1d334b204f4916c7/docs/components/grid-layout.md)
-- [Display and Media](https://github.com/fgilde/MudBlazor.Extensions/blob/ddc7472ecb8674a8f151e94a1d334b204f4916c7/docs/components/display-media.md)
-- [Form Inputs](https://github.com/fgilde/MudBlazor.Extensions/blob/ddc7472ecb8674a8f151e94a1d334b204f4916c7/docs/components/form-inputs.md)
-- [Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/ddc7472ecb8674a8f151e94a1d334b204f4916c7/docs/extensions/index.md)
+- [Picker Components](https://github.com/fgilde/MudBlazor.Extensions/blob/6117a6f4c245736610c1e6a9a0ca320fea66c9c3/docs/components/pickers.md)
+- [Grid and Layout](https://github.com/fgilde/MudBlazor.Extensions/blob/6117a6f4c245736610c1e6a9a0ca320fea66c9c3/docs/components/grid-layout.md)
+- [Display and Media](https://github.com/fgilde/MudBlazor.Extensions/blob/6117a6f4c245736610c1e6a9a0ca320fea66c9c3/docs/components/display-media.md)
+- [Form Inputs](https://github.com/fgilde/MudBlazor.Extensions/blob/6117a6f4c245736610c1e6a9a0ca320fea66c9c3/docs/components/form-inputs.md)
+- [Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/6117a6f4c245736610c1e6a9a0ca320fea66c9c3/docs/extensions/index.md)
