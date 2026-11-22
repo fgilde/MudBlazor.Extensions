@@ -9,4 +9,6 @@ public abstract record Block
     public string Id { get; init; }
 
     internal XElement Source { get; init; }
+
+    internal bool Copy { get; init; }
 }

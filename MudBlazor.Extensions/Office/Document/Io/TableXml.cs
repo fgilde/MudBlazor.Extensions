@@ -73,7 +73,7 @@ internal static class TableXml
         var source = table.Source;
         var first = source == null || context.Claim(source, table);
         var element = new XElement(W + "tbl", source == null ? null : DocxWriteContext.Attributes(source, first),
-            Rewrite(first ? source : null, "tr", table.Rows, r => r.Source, r => Row(r, context),
+            Rewrite(first ? source : null, "tr", table.Rows, r => r.Source, context.IsOwner, r => Row(r, context),
                 e => e.Name == W + "tblPr" ? Properties(e, table.Format) : e.Name == W + "tblGrid" ? Grid(e, table.Grid) : e,
                 e => e.Element(W + "trPr")?.Element(W + "del") != null));
         if (element.Element(W + "tblPr") == null) element.AddFirst(Properties(first ? null : source?.Element(W + "tblPr"), table.Format));
@@ -87,9 +87,9 @@ internal static class TableXml
         var source = row.Source;
         var first = source == null || context.Claim(source, row);
         var element = new XElement(W + "tr", source == null ? null : DocxWriteContext.Attributes(source, first),
-            first ? null : source.Element(W + "tblPrEx") is { } copied ? new XElement(copied) : null,
-            Rewrite(first ? source : null, "tc", row.Cells, c => c.Source, c => Cell(c, context), e => e.Name == W + "trPr" ? Properties(e, row) : e, _ => false));
-        if ((first ? source : null)?.Element(W + "trPr") == null && Properties(first ? null : source.Element(W + "trPr"), row) is { } created)
+            first ? null : WithoutRevisions(source.Element(W + "tblPrEx")),
+            Rewrite(first ? source : null, "tc", row.Cells, c => c.Source, context.IsOwner, c => Cell(c, context), e => e.Name == W + "trPr" ? Properties(e, row) : e, _ => false));
+        if ((first ? source : null)?.Element(W + "trPr") == null && Properties(first ? null : WithoutRevisions(source.Element(W + "trPr")), row) is { } created)
         {
             if (element.Element(W + "tblPrEx") is { } exceptions) exceptions.AddAfterSelf(created);
             else element.AddFirst(created);
@@ -103,21 +103,33 @@ internal static class TableXml
         if (context.IsOriginal(cell) && context.Claim(cell.Source, cell)) return cell.Source;
         var source = cell.Source;
         var first = source == null || context.Claim(source, cell);
-        var element = new XElement(W + "tc", source == null ? null : DocxWriteContext.Attributes(source, first), Properties(source?.Element(W + "tcPr"), cell),
+        var element = new XElement(W + "tc", source == null ? null : DocxWriteContext.Attributes(source, first), Properties(first ? source?.Element(W + "tcPr") : WithoutRevisions(source.Element(W + "tcPr")), cell),
             cell.Blocks.Select(b => context.Block(b, false)));
         if (element.Elements().LastOrDefault()?.Name != W + "p") element.Add(new XElement(W + "p"));
         return element;
     }
 
-    private static List<object> Rewrite<T>(XElement original, string item, IReadOnlyList<T> models, Func<T, XElement> sourceOf, Func<T, XElement> write,
-        Func<XElement, XElement> other, Func<XElement, bool> keepUnmapped) where T : class
+    private static readonly HashSet<string> Revisions = ["ins", "del", "trPrChange", "tblPrExChange", "cellIns", "cellDel", "cellMerge", "tcPrChange"];
+
+    private static XElement WithoutRevisions(XElement properties)
+    {
+        if (properties == null) return null;
+        var copy = new XElement(properties);
+        copy.Elements().Where(e => e.Name.Namespace == W && Revisions.Contains(e.Name.LocalName)).Remove();
+        return copy;
+    }
+
+    private static List<object> Rewrite<T>(XElement original, string item, IReadOnlyList<T> models, Func<T, XElement> sourceOf, Func<XElement, object, bool> isOwner,
+        Func<T, XElement> write, Func<XElement, XElement> other, Func<XElement, bool> keepUnmapped) where T : class
     {
         if (original == null) return models.Select(write).ToList<object>();
         var order = Children(original, item).Select((e, i) => (e, i)).ToDictionary(p => p.e, p => p.i);
+        var preferred = models.Where(m => sourceOf(m) != null).GroupBy(sourceOf)
+            .ToDictionary(g => g.Key, g => g.FirstOrDefault(m => isOwner(g.Key, m)) ?? g.First());
         var anchors = new Dictionary<XElement, T>();
         var anchored = new List<(int Model, XElement Source)>();
         for (var k = 0; k < models.Count; k++)
-            if (sourceOf(models[k]) is { } s && order.TryGetValue(s, out var position) && !anchors.ContainsKey(s) &&
+            if (sourceOf(models[k]) is { } s && ReferenceEquals(preferred[s], models[k]) && order.TryGetValue(s, out var position) &&
                 (anchored.Count == 0 || position > order[anchored[^1].Source]))
             {
                 anchors[s] = models[k];

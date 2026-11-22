@@ -111,7 +111,12 @@ public sealed partial class TextDocument
     internal Section SectionOf(string topBlockId)
     {
         var index = BlockList.FindIndex(b => b.Id == topBlockId);
-        if (index < 0) return SectionList[0];
+        if (index < 0)
+        {
+            var part = HeaderFooterList.FirstOrDefault(h => h.Blocks.Any(b => b.Id == topBlockId));
+            return SectionList.FirstOrDefault(s => part != null && s.Headers.Values.Concat(s.Footers.Values).Contains(part.Id)) ?? SectionList[0];
+        }
+
         return SectionList.FirstOrDefault(s => s.LastBlockId != null && BlockList.FindIndex(b => b.Id == s.LastBlockId) >= index) ?? SectionList[^1];
     }
 

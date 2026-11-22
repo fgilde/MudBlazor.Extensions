@@ -350,11 +350,57 @@ public partial class ObjectCommandTests
         var core = OpcAssert.Xml(output, "/docProps/core.xml").Root!;
         Assert.Equal(["title", "creator", "revision", "keywords", "modified"], core.Elements().Select(e => e.Name.LocalName));
         Assert.Equal(changed, TextDocument.Load(new MemoryStream(output)).Properties);
+        DocxWriterTests.AssertConsistent(output);
 
         document.Undo.Undo();
 
         Assert.Same(original, document.Properties);
         Assert.False(document.Undo.CanUndo);
+    }
+
+    [Fact]
+    public void RemoveReference_SharedHeaderKept_LastReferenceDropsHeaderAndItsMedia()
+    {
+        var reference = "<w:headerReference w:type=\"default\" r:id=\"rIdheader1\"/>";
+        var built = new DocxBuilder().Header("<w:p><w:r><w:t>Head</w:t></w:r></w:p>").Body(
+            $"<w:p><w:pPr><w:sectPr>{reference}<w:pgSz w:w=\"11906\" w:h=\"16838\"/></w:sectPr></w:pPr><w:r><w:t>one</w:t></w:r></w:p><w:p><w:r><w:t>two</w:t></w:r></w:p>" +
+            $"<w:sectPr>{reference}<w:pgSz w:w=\"11906\" w:h=\"16838\"/></w:sectPr>").Load();
+        var head = built.HeadersFooters[0].Blocks[0].Id;
+        built.Execute(new InsertImageCommand(Caret(built, head, 0), Png(30, 30), "image/png"));
+        var source = DocxWriterTests.Save(built);
+        Assert.Contains("/word/media/image1.png", OpcPackage.Open(source).PartNames);
+        var document = TextDocument.Load(new MemoryStream(source));
+
+        document.Execute(new RemoveHeaderFooterCommand(document.Sections[0].Id, HeaderFooterKind.Header, HeaderFooterType.Default));
+        var shared = DocxWriterTests.Save(document);
+
+        DocxWriterTests.AssertConsistent(shared);
+        Assert.Single(document.HeadersFooters);
+        Assert.Contains("/word/header1.xml", OpcPackage.Open(shared).PartNames);
+        Assert.Contains("/word/media/image1.png", OpcPackage.Open(shared).PartNames);
+
+        document.Execute(new RemoveHeaderFooterCommand(document.Sections[1].Id, HeaderFooterKind.Header, HeaderFooterType.Default));
+        var output = DocxWriterTests.Save(document);
+
+        DocxWriterTests.AssertConsistent(output);
+        var opc = OpcPackage.Open(output);
+        Assert.DoesNotContain("/word/header1.xml", opc.PartNames);
+        Assert.DoesNotContain("/word/media/image1.png", opc.PartNames);
+        Assert.DoesNotContain("/word/media/image1.png", opc.OverrideContentTypes.Keys);
+    }
+
+    [Fact]
+    public void InsertImage_InHeaderOfLaterSection_ScaledToThatSectionsTextWidth()
+    {
+        var document = new DocxBuilder().Header("<w:p><w:r><w:t>Head</w:t></w:r></w:p>").Body(
+            "<w:p><w:pPr><w:sectPr><w:pgSz w:w=\"6000\" w:h=\"8000\"/><w:pgMar w:top=\"1000\" w:right=\"1000\" w:bottom=\"1000\" w:left=\"1000\" w:header=\"500\" w:footer=\"500\" w:gutter=\"0\"/></w:sectPr></w:pPr></w:p>" +
+            "<w:p/><w:sectPr><w:headerReference w:type=\"default\" r:id=\"rIdheader1\"/><w:pgSz w:w=\"11906\" w:h=\"16838\"/>" +
+            "<w:pgMar w:top=\"1440\" w:right=\"1440\" w:bottom=\"1440\" w:left=\"1440\" w:header=\"708\" w:footer=\"708\" w:gutter=\"0\"/></w:sectPr>").Load();
+        var head = document.HeadersFooters[0].Blocks[0].Id;
+
+        document.Execute(new InsertImageCommand(Caret(document, head, 0), Png(2000, 1000), "image/png"));
+
+        Assert.Equal(5731510, ((InlineImage)((Paragraph)document.HeadersFooters[0].Blocks[0]).Inlines[0]).WidthEmu);
     }
 
     private static DocumentRange Caret(TextDocument document, string paragraphId, int offset)

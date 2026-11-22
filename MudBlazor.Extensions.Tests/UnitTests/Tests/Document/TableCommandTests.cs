@@ -124,7 +124,7 @@ public class TableCommandTests
     }
 
     [Fact]
-    public void Writer_RowsInsertedDeletedReordered_KeepWrappersAndTrackedDeletedRows()
+    public void Writer_RowsInsertedAndDeleted_KeepWrappersAndTrackedDeletedRows()
     {
         static string Cell(string text) => $"<w:tc><w:p><w:r><w:t>{text}</w:t></w:r></w:p></w:tc>";
         var source = new DocxBuilder().Body(
@@ -325,6 +325,164 @@ public class TableCommandTests
         Assert.Equal("continue", Describe(rows[3].Elements(W + "tc").ElementAt(1)));
         Assert.Equal("00FF00", (string)rows[1].Elements(W + "tc").ElementAt(1).Element(W + "tcPr")!.Element(W + "shd")!.Attribute(W + "fill"));
         Assert.Equal(Describe(document), Describe(Load(output)));
+    }
+
+    [Fact]
+    public void InsertAtIndexZero_IntoWrappedFirstRowAndCell_OriginalsStayInWrappers()
+    {
+        static string Cell(string text) => $"<w:tc><w:p><w:r><w:t>{text}</w:t></w:r></w:p></w:tc>";
+        var document = new DocxBuilder().Body(
+            "<w:tbl><w:tblPr><w:tblW w:w=\"0\" w:type=\"auto\"/></w:tblPr><w:tblGrid><w:gridCol w:w=\"3000\"/><w:gridCol w:w=\"3000\"/></w:tblGrid>" +
+            $"<w:customXml w:element=\"row\"><w:tr>{Cell("r1a")}{Cell("r1b")}</w:tr></w:customXml>" +
+            $"<w:tr><w:sdt><w:sdtPr><w:id w:val=\"3\"/></w:sdtPr><w:sdtContent>{Cell("r2a")}</w:sdtContent></w:sdt>{Cell("r2b")}</w:tr>" +
+            "</w:tbl><w:p/>").Load();
+        var id = document.Blocks[0].Id;
+
+        document.Execute(new InsertTableRowsCommand(id, 0, 1));
+        document.Execute(new InsertTableColumnsCommand(id, 0, 1));
+        var output = DocxWriterTests.Save(document);
+
+        DocxWriterTests.AssertConsistent(output);
+        var table = Body(output).Element(W + "tbl")!;
+        Assert.Equal(["tblPr", "tblGrid", "tr", "customXml", "tr"], table.Elements().Select(e => e.Name.LocalName));
+        Assert.Equal("", table.Element(W + "tr")!.Value);
+        Assert.Equal(["tc", "tc", "tc"], table.Element(W + "customXml")!.Element(W + "tr")!.Elements().Select(e => e.Name.LocalName));
+        Assert.Equal("r1ar1b", table.Element(W + "customXml")!.Value);
+        var second = table.Elements(W + "tr").Last();
+        Assert.Equal(["tc", "sdt", "tc"], second.Elements().Select(e => e.Name.LocalName));
+        Assert.Equal("", second.Element(W + "tc")!.Value);
+        Assert.Equal("r2a", second.Element(W + "sdt")!.Element(W + "sdtContent")!.Value);
+    }
+
+    [Fact]
+    public void InsertTable_AtEndOfSectionEndingParagraph_StaysInThatSection()
+    {
+        var document = new DocxBuilder().Body(
+            "<w:p><w:pPr><w:sectPr><w:pgSz w:w=\"12240\" w:h=\"15840\"/><w:pgMar w:top=\"1440\" w:right=\"1440\" w:bottom=\"1440\" w:left=\"1440\" w:header=\"720\" w:footer=\"720\" w:gutter=\"0\"/></w:sectPr></w:pPr><w:r><w:t>First</w:t></w:r></w:p>" +
+            "<w:p><w:r><w:t>second</w:t></w:r></w:p>" +
+            "<w:sectPr><w:pgSz w:w=\"11906\" w:h=\"16838\"/><w:pgMar w:top=\"1417\" w:right=\"1417\" w:bottom=\"1134\" w:left=\"1417\" w:header=\"708\" w:footer=\"708\" w:gutter=\"0\"/></w:sectPr>").Load();
+        var first = document.Blocks[0];
+        var sections = document.Sections.ToList();
+
+        document.Execute(new InsertTableCommand(document.PositionOf(first.Id, 5), 1, 2));
+
+        Assert.Equal(["p", "t", "p", "p"], document.Blocks.Select(b => b is Table ? "t" : "p"));
+        Assert.Equal(document.Blocks[2].Id, document.Sections[0].LastBlockId);
+        Assert.Equal([4680, 4680], ((Table)document.Blocks[1]).Grid);
+        var output = DocxWriterTests.Save(document);
+        DocxWriterTests.AssertConsistent(output);
+        var body = Body(output).Elements().ToList();
+        Assert.Null(body[0].Element(W + "pPr")?.Element(W + "sectPr"));
+        Assert.NotNull(body[2].Element(W + "pPr")!.Element(W + "sectPr"));
+
+        document.Undo.Undo();
+
+        Assert.Same(first, document.Blocks[0]);
+        Assert.True(sections.SequenceEqual(document.Sections, ReferenceEqualityComparer.Instance));
+    }
+
+    [Fact]
+    public void Merge_RangeCuttingVerticalMerge_Throws_ExistingMergedCell_NoUndoStep()
+    {
+        var document = Load(Doc(Table([2000, 2000, 2000],
+            Row(Cell("a", merge: "restart"), Cell("b"), Cell("c")), Row(Cell("", merge: "continue"), Cell("e"), Cell("f")), Row(Cell("g"), Cell("hi", span: 2)))));
+        var id = document.Blocks[0].Id;
+
+        Assert.Throws<ArgumentException>(() => document.Execute(new MergeTableCellsCommand(id, 1, 0, 2, 0)));
+        Assert.Throws<ArgumentException>(() => document.Execute(new MergeTableCellsCommand(id, 0, 0, 0, 1)));
+        document.Execute(new MergeTableCellsCommand(id, 2, 1, 2, 2));
+        document.Execute(new MergeTableCellsCommand(id, 0, 0, 1, 0));
+
+        Assert.False(document.Undo.CanUndo);
+    }
+
+    [Fact]
+    public void InsertRows_CopyOfTrackedInsertedRow_DropsRevisionMarks()
+    {
+        var source = new DocxBuilder().Body(
+            "<w:tbl><w:tblPr><w:tblW w:w=\"0\" w:type=\"auto\"/></w:tblPr><w:tblGrid><w:gridCol w:w=\"3000\"/></w:tblGrid>" +
+            "<w:tr><w:tblPrEx><w:tblW w:w=\"0\" w:type=\"auto\"/><w:tblPrExChange w:id=\"6\" w:author=\"A\"><w:tblPrEx/></w:tblPrExChange></w:tblPrEx>" +
+            "<w:trPr><w:cantSplit/><w:ins w:id=\"7\" w:author=\"A\"/></w:trPr>" +
+            "<w:tc><w:tcPr><w:tcW w:w=\"3000\" w:type=\"dxa\"/><w:cellIns w:id=\"8\" w:author=\"A\"/></w:tcPr><w:p><w:r><w:t>x</w:t></w:r></w:p></w:tc></w:tr></w:tbl><w:p/>").Build();
+        var document = Load(source);
+
+        document.Execute(new InsertTableRowsCommand(document.Blocks[0].Id, 1, 1));
+        var output = DocxWriterTests.Save(document);
+
+        DocxWriterTests.AssertConsistent(output);
+        var rows = Body(output).Element(W + "tbl")!.Elements(W + "tr").ToList();
+        Assert.True(XNode.DeepEquals(Body(source).Element(W + "tbl")!.Element(W + "tr"), rows[0]));
+        Assert.NotNull(rows[1].Element(W + "trPr")!.Element(W + "cantSplit"));
+        Assert.Empty(rows[1].Descendants().Where(e => e.Name.LocalName is "ins" or "del" or "trPrChange" or "tblPrExChange" or "cellIns" or "cellDel" or "cellMerge" or "tcPrChange"));
+        Assert.NotNull(rows[1].Element(W + "tblPrEx")!.Element(W + "tblW"));
+    }
+
+    [Fact]
+    public void InsertRows_CopiedParagraphs_NoDuplicateParaIdOrTextId()
+    {
+        static string Cell(string text, int n) => $"<w:tc><w:p w14:paraId=\"1000000{n}\" w14:textId=\"2000000{n}\"><w:r><w:t>{text}</w:t></w:r></w:p></w:tc>";
+        var source = new DocxBuilder
+        {
+            RawDocument = $"<w:document {DocxBuilder.Ns}><w:body><w:tbl><w:tblPr><w:tblW w:w=\"0\" w:type=\"auto\"/></w:tblPr><w:tblGrid><w:gridCol w:w=\"3000\"/><w:gridCol w:w=\"3000\"/></w:tblGrid>" +
+                          $"<w:tr w14:paraId=\"30000001\" w14:textId=\"40000001\">{Cell("a", 1)}{Cell("b", 2)}</w:tr></w:tbl><w:p w14:paraId=\"10000009\" w14:textId=\"20000009\"/>" +
+                          "<w:sectPr><w:pgSz w:w=\"11906\" w:h=\"16838\"/></w:sectPr></w:body></w:document>"
+        }.Build();
+        var document = Load(source);
+        var id = document.Blocks[0].Id;
+
+        document.Execute(new InsertTableRowsCommand(id, 0, 1));
+        document.Execute(new InsertTableRowsCommand(id, 2, 1));
+        var output = DocxWriterTests.Save(document);
+
+        DocxWriterTests.AssertConsistent(output);
+        var rows = Body(output).Element(W + "tbl")!.Elements(W + "tr").ToList();
+        Assert.True(XNode.DeepEquals(Body(source).Element(W + "tbl")!.Element(W + "tr"), rows[1]));
+        foreach (var copy in new[] { rows[0], rows[2] })
+            Assert.Empty(copy.DescendantsAndSelf().Attributes().Where(a => a.Name == W14 + "paraId" || a.Name == W14 + "textId"));
+        Assert.Equal(["20000001", "20000002"], rows[1].Descendants(W + "p").Select(p => (string)p.Attribute(W14 + "textId")));
+        var textIds = Body(output).Descendants().Attributes(W14 + "textId").Select(a => a.Value).ToList();
+        Assert.Equal(textIds.Count, textIds.Distinct().Count());
+    }
+
+    [Fact]
+    public void DeleteColumns_RowWithoutCells_DoesNotThrow()
+    {
+        var document = Load(Doc(Table([2000, 2000], Row(Cell("a"), Cell("b")), "<w:tr><w:trPr><w:gridBefore w:val=\"2\"/></w:trPr></w:tr>")));
+
+        document.Execute(new DeleteTableColumnsCommand(document.Blocks[0].Id, 0, 1));
+
+        Assert.Equal(["b"], ((Table)document.Blocks[0]).Rows.Select(r => ((Paragraph)r.Cells[0].Blocks[0]).Text));
+    }
+
+    [Fact]
+    public void TableCommands_UndoRestoresOriginalTable()
+    {
+        var commands = new Func<string, TextDocumentCommand>[]
+        {
+            id => new InsertTableColumnsCommand(id, 1, 1),
+            id => new DeleteTableColumnsCommand(id, 1, 1),
+            id => new SplitTableCellCommand(id, 0, 0),
+            id => new SetTableColumnWidthsCommand(id, [1000, 2000, 3000]),
+            id => new SetTableCellFormatCommand(id, [(1, 1)], c => c with { Shading = "#FF0000" }, "Shade"),
+            id => new SetTableFormatCommand(id, f => f with { Alignment = TableAlignment.Right }, "Align"),
+            id => new SetTableHeaderRowsCommand(id, 2),
+            id => new DeleteTableRowsCommand(id, 1, 1),
+            id => new InsertTableRowsCommand(id, 1, 1),
+            id => new MergeTableCellsCommand(id, 1, 1, 2, 2)
+        };
+        foreach (var create in commands)
+        {
+            var document = Load(Doc(Table([2000, 2000, 2000], Row(Cell("ab", span: 2), Cell("c")), Row(Cell("d"), Cell("e"), Cell("f")), Row(Cell("g"), Cell("h"), Cell("i")))));
+            var original = document.Blocks[0];
+            var command = create(original.Id);
+
+            document.Execute(command);
+            Assert.NotSame(original, document.Blocks[0]);
+            document.Undo.Undo();
+
+            Assert.Same(original, document.Blocks[0]);
+            Assert.False(document.Undo.CanUndo, command.Description);
+        }
     }
 
     private static string Describe(XElement cell) => cell.Element(W + "tcPr")?.Element(W + "vMerge") is { } merge ? (string)merge.Attribute(W + "val") ?? "continue" : "none";

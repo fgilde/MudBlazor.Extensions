@@ -3,7 +3,8 @@ namespace MudBlazor.Extensions.Office.Document;
 /// <summary>
 /// Inserts a table of empty cells at a position: a paragraph is split if the position lies inside it, at its start the table goes before it, at its
 /// end after it. The grid divides the section's text width evenly and the table uses the built-in style <c>TableGrid</c>, added on demand. An empty
-/// paragraph follows the table when nothing else would. The caret moves into the first cell.
+/// paragraph follows the table when nothing else would, and when the paragraph ends a section the section then ends at that empty paragraph, so the
+/// table stays in the paragraph's section. The caret moves into the first cell.
 /// </summary>
 public sealed class InsertTableCommand : TextDocumentCommand
 {
@@ -41,8 +42,15 @@ public sealed class InsertTableCommand : TextDocumentCommand
         });
         List<Block> blocks;
         string movedEnd = null;
+        var endsSection = position.Path.Count == 0 && document.SectionList.Any(s => s.LastBlockId == paragraph.Id);
         if (offset == 0)
             blocks = [table, paragraph];
+        else if (offset == paragraph.Length && endsSection)
+        {
+            var empty = new Paragraph { Id = document.NewId(), Format = paragraph.Format with { Numbering = null }, MarkFormat = paragraph.MarkFormat, Source = paragraph.Source };
+            blocks = [paragraph, table, empty];
+            movedEnd = empty.Id;
+        }
         else if (offset == paragraph.Length)
             blocks = document.NextSibling(paragraph.Id) == null ? [paragraph, table, new Paragraph { Id = document.NewId() }] : [paragraph, table];
         else
@@ -84,6 +92,7 @@ public sealed class InsertTableRowsCommand(string tableId, int index, int count)
         var header = index < table.Rows.TakeWhile(r => r.IsHeader).Count();
         var rows = Enumerable.Range(0, count).Select(_ => neighbour with
         {
+            Copy = true,
             IsHeader = header,
             Cells = Tables.Layout(neighbour).Select(p => Tables.Emptied(p.Cell) with
             {
@@ -171,7 +180,7 @@ public sealed class DeleteTableColumnsCommand(string tableId, int gridIndex, int
         foreach (var row in table.Rows)
         {
             var layout = Tables.Layout(row);
-            var after = layout[^1].Column + layout[^1].Cell.GridSpan;
+            var after = layout.Count == 0 ? row.GridBefore : layout[^1].Column + layout[^1].Cell.GridSpan;
             var cells = new List<TableCell>();
             foreach (var (column, cell) in layout)
                 if (Overlap(column, cell.GridSpan) is var overlap && overlap < cell.GridSpan)
@@ -188,7 +197,8 @@ public sealed class DeleteTableColumnsCommand(string tableId, int gridIndex, int
 
 /// <summary>
 /// Merges a rectangle of grid cells: horizontal merges use <see cref="TableCell.GridSpan"/>, vertical merges <see cref="VerticalMerge.Restart"/> and
-/// <see cref="VerticalMerge.Continue"/>. The contents of non-empty cells are appended into the top-left cell in reading order.
+/// <see cref="VerticalMerge.Continue"/>. The contents of non-empty cells are appended into the top-left cell in reading order. A rectangle that cuts
+/// through a horizontally or vertically merged cell throws <see cref="ArgumentException"/>; one that already is a single merged cell changes nothing.
 /// </summary>
 /// <param name="tableId">The id of the table, at any depth.</param>
 /// <param name="firstRow">The first row.</param>
@@ -216,7 +226,13 @@ public sealed class MergeTableCellsCommand(string tableId, int firstRow, int fir
             ranges.Add((first, last));
         }
 
+        bool Inside(int column, TableCell cell) => column <= lastGridColumn && column + cell.GridSpan - 1 >= firstGridColumn;
+        if (Tables.Layout(table.Rows[firstRow]).Any(p => Inside(p.Column, p.Cell) && p.Cell.VMerge == VerticalMerge.Continue) ||
+            lastRow + 1 < table.Rows.Count && Tables.Layout(table.Rows[lastRow + 1]).Any(p => Inside(p.Column, p.Cell) && p.Cell.VMerge == VerticalMerge.Continue))
+            throw new ArgumentException("The range cuts through a vertically merged cell.", nameof(firstRow));
         var merged = ranges.SelectMany((range, k) => table.Rows[firstRow + k].Cells.Skip(range.First).Take(range.Last - range.First + 1)).ToList();
+        if (merged.Count == ranges.Count && (merged.Count == 1 || merged[0].VMerge == VerticalMerge.Restart && merged.Skip(1).All(c => c.VMerge == VerticalMerge.Continue && Tables.IsEmpty(c))))
+            return table;
         var content = merged.Where(c => !Tables.IsEmpty(c)).SelectMany(c => c.Blocks).ToList();
         var width = merged[0].Width == null ? null : (int?)table.Grid.Skip(firstGridColumn).Take(span).Sum();
         var rows = table.Rows.ToList();
@@ -412,7 +428,10 @@ internal static class Tables
     internal static TableCell Emptied(TableCell cell)
     {
         var paragraph = cell.Blocks.OfType<Paragraph>().FirstOrDefault();
-        return cell with { Blocks = [new Paragraph { Format = paragraph?.Format ?? new ParagraphFormat(), MarkFormat = paragraph?.MarkFormat, Source = paragraph?.Source }] };
+        return cell with
+        {
+            Copy = true, Blocks = [new Paragraph { Format = paragraph?.Format ?? new ParagraphFormat(), MarkFormat = paragraph?.MarkFormat, Source = paragraph?.Source, Copy = true }]
+        };
     }
 
     internal static IReadOnlyList<T> With<T>(IReadOnlyList<T> list, int index, T item)

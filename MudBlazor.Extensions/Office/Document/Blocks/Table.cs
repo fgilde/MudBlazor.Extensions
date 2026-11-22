@@ -80,6 +80,8 @@ public sealed record TableRow(IReadOnlyList<TableCell> Cells)
     public int GridAfter { get; init; }
 
     internal XElement Source { get; init; }
+
+    internal bool Copy { get; init; }
 }
 
 /// <summary>A cell of a <see cref="TableRow"/>.</summary>
@@ -107,4 +109,6 @@ public sealed record TableCell(IReadOnlyList<Block> Blocks)
     public CellVerticalAlignment? VerticalAlign { get; init; }
 
     internal XElement Source { get; init; }
+
+    internal bool Copy { get; init; }
 }

@@ -51,8 +51,10 @@ public static partial class DocxWriter
         {
             var referenced = document.SectionList.SelectMany(s => s.Headers.Values.Concat(s.Footers.Values)).ToHashSet();
             var before = package.Sections.SelectMany(s => s.Headers.Values.Concat(s.Footers.Values)).ToHashSet();
+            var droppedParts = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var dropped in package.HeadersFooters.Where(h => before.Contains(h.Id) && !referenced.Contains(h.Id)))
             {
+                droppedParts.Add(dropped.PartName);
                 _done.Add(dropped.PartName);
                 _done.Add(OpcPackage.RelsPartOf(dropped.PartName));
                 if (_mainRelationships.RemoveAll(r => r.TargetMode == null &&
@@ -61,6 +63,7 @@ public static partial class DocxWriter
                 if (_overrides.Remove(dropped.PartName)) _contentTypesChanged = true;
             }
 
+            DropUnusedTargets(droppedParts);
             var folder = package.MainPart[..(package.MainPart.LastIndexOf('/') + 1)];
             foreach (var added in document.HeaderFooterList.Where(h => h.PartName == null && referenced.Contains(h.Id)))
             {
@@ -70,6 +73,25 @@ public static partial class DocxWriter
                 _mainRelationships.Add(new OpcRelationship(added.Id, RelNs + "/" + kind, OpcPackageWriter.Relative(package.MainPart, part), null));
                 _mainRelationshipsChanged = true;
                 SetOverride(part, Wml + kind + "+xml");
+            }
+        }
+
+        private void DropUnusedTargets(HashSet<string> droppedParts)
+        {
+            if (droppedParts.Count == 0) return;
+            HashSet<string> Targets(string source, IEnumerable<OpcRelationship> rels) =>
+                rels.Where(r => r.TargetMode == null).Select(r => _opc.ResolveTarget(source, r.Target)).ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var candidates = droppedParts.SelectMany(p => Targets(p, _opc.Relationships(p))).Where(t => _opc.Entry(t) != null && !droppedParts.Contains(t)).ToList();
+            if (candidates.Count == 0) return;
+            var used = new HashSet<string>(document.AllParagraphs(true).SelectMany(p => p.Inlines).OfType<InlineImage>().Select(i => i.MediaPart), StringComparer.OrdinalIgnoreCase);
+            used.UnionWith(Targets(package.MainPart, _mainRelationships));
+            foreach (var part in _opc.PartNames.Where(p => !p.EndsWith(".rels", StringComparison.OrdinalIgnoreCase) && p != package.MainPart && !droppedParts.Contains(p)).Append("/"))
+                used.UnionWith(Targets(part, _opc.Relationships(part)));
+            foreach (var part in candidates.Where(c => !used.Contains(c)))
+            {
+                _done.Add(part);
+                _done.Add(OpcPackage.RelsPartOf(part));
+                if (_overrides.Remove(part)) _contentTypesChanged = true;
             }
         }
 

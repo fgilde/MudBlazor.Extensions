@@ -33526,7 +33526,8 @@
             <summary>
             Inserts a table of empty cells at a position: a paragraph is split if the position lies inside it, at its start the table goes before it, at its
             end after it. The grid divides the section's text width evenly and the table uses the built-in style <c>TableGrid</c>, added on demand. An empty
-            paragraph follows the table when nothing else would. The caret moves into the first cell.
+            paragraph follows the table when nothing else would, and when the paragraph ends a section the section then ends at that empty paragraph, so the
+            table stays in the paragraph's section. The caret moves into the first cell.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.InsertTableCommand.#ctor(MudBlazor.Extensions.Office.Document.DocumentPosition,System.Int32,System.Int32)">
@@ -33608,7 +33609,8 @@
         <member name="T:MudBlazor.Extensions.Office.Document.MergeTableCellsCommand">
             <summary>
             Merges a rectangle of grid cells: horizontal merges use <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/>, vertical merges <see cref="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Restart"/> and
-            <see cref="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Continue"/>. The contents of non-empty cells are appended into the top-left cell in reading order.
+            <see cref="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Continue"/>. The contents of non-empty cells are appended into the top-left cell in reading order. A rectangle that cuts
+            through a horizontally or vertically merged cell throws <see cref="T:System.ArgumentException"/>; one that already is a single merged cell changes nothing.
             </summary>
             <param name="tableId">The id of the table, at any depth.</param>
             <param name="firstRow">The first row.</param>
@@ -33619,7 +33621,8 @@
         <member name="M:MudBlazor.Extensions.Office.Document.MergeTableCellsCommand.#ctor(System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             Merges a rectangle of grid cells: horizontal merges use <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/>, vertical merges <see cref="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Restart"/> and
-            <see cref="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Continue"/>. The contents of non-empty cells are appended into the top-left cell in reading order.
+            <see cref="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Continue"/>. The contents of non-empty cells are appended into the top-left cell in reading order. A rectangle that cuts
+            through a horizontally or vertically merged cell throws <see cref="T:System.ArgumentException"/>; one that already is a single merged cell changes nothing.
             </summary>
             <param name="tableId">The id of the table, at any depth.</param>
             <param name="firstRow">The first row.</param>

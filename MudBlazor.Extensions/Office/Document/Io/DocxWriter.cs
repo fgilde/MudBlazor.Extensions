@@ -51,7 +51,7 @@ public static partial class DocxWriter
         {
             if (asTemplate is { } template && MainContentType(_opc.ContentType(package.MainPart), template) is { } type) SetOverride(package.MainPart, type);
             _mainRelationships = Relationships(package.MainPart);
-            _context.Reserve(document.BlockList.Concat(document.HeaderFooterList.SelectMany(h => h.Blocks)));
+            _context.Reserve([.. document.BlockList, .. document.HeaderFooterList.SelectMany(h => h.Blocks)]);
             _context.MediaPart = MediaPart;
             _context.DrawingId = MaxDrawingId();
             PrepareHeadersFooters();
@@ -248,26 +248,37 @@ internal sealed class DocxWriteContext
 
     internal bool Claim(XElement source) => _claimed.Add(source);
 
+    internal bool IsOwner(XElement source, object item) => _owners.TryGetValue(source, out var owner) && ReferenceEquals(owner, item);
+
     internal bool Claim(XElement source, object item) => _owners.TryGetValue(source, out var owner) ? ReferenceEquals(owner, item) : _claimed.Add(source);
 
-    internal void Reserve(IEnumerable<Block> blocks)
+    internal void Reserve(IReadOnlyList<Block> blocks)
     {
-        foreach (var block in blocks) Reserve(block);
+        Reserve(blocks, true);
+        Reserve(blocks, false);
     }
 
-    private void Reserve(Block block)
+    private void Reserve(IEnumerable<Block> blocks, bool originals)
     {
-        if (block.Source != null && IsOriginal(block)) _owners.TryAdd(block.Source, block);
-        if (block is not Table table) return;
-        foreach (var row in table.Rows)
+        foreach (var block in blocks)
         {
-            if (row.Source != null && IsOriginal(row)) _owners.TryAdd(row.Source, row);
-            foreach (var cell in row.Cells)
+            Own(block.Source, block, block.Copy, originals);
+            if (block is not Table table) continue;
+            foreach (var row in table.Rows)
             {
-                if (cell.Source != null && IsOriginal(cell)) _owners.TryAdd(cell.Source, cell);
-                Reserve(cell.Blocks);
+                Own(row.Source, row, row.Copy, originals);
+                foreach (var cell in row.Cells)
+                {
+                    Own(cell.Source, cell, cell.Copy, originals);
+                    Reserve(cell.Blocks, originals);
+                }
             }
         }
+    }
+
+    private void Own(XElement source, object item, bool copy, bool originals)
+    {
+        if (source != null && (originals ? IsOriginal(item) : !copy)) _owners.TryAdd(source, item);
     }
 
     internal (RunFormat Old, RunFormat New)? FormatChange(Inline inline) =>
