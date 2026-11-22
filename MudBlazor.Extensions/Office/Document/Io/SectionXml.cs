@@ -5,7 +5,7 @@ namespace MudBlazor.Extensions.Office.Document;
 
 internal static class SectionXml
 {
-    internal static Section Read(XElement sectPr, string id, string lastBlockId) => new()
+    internal static Section Read(XElement sectPr, string id, string lastBlockId, IReadOnlyDictionary<string, string> headerIds) => new()
     {
         Id = id,
         Page = Page(sectPr),
@@ -20,17 +20,17 @@ internal static class SectionXml
         },
         TitlePage = OnOff(sectPr, "titlePg") == true,
         Columns = Math.Max(1, Int(sectPr.Element(W + "cols"), "num") ?? 1),
-        Headers = References(sectPr, "headerReference"),
-        Footers = References(sectPr, "footerReference"),
+        Headers = References(sectPr, "headerReference", headerIds),
+        Footers = References(sectPr, "footerReference", headerIds),
         Source = sectPr
     };
 
-    private static Dictionary<HeaderFooterType, string> References(XElement sectPr, string name)
+    private static Dictionary<HeaderFooterType, string> References(XElement sectPr, string name, IReadOnlyDictionary<string, string> headerIds)
     {
         var result = new Dictionary<HeaderFooterType, string>();
         foreach (var reference in sectPr.Elements(W + name))
             if ((string)reference.Attribute(InlineXml.R + "id") is { } id)
-                result[(string)reference.Attribute(W + "type") switch { "first" => HeaderFooterType.First, "even" => HeaderFooterType.Even, _ => HeaderFooterType.Default }] = id;
+                result[(string)reference.Attribute(W + "type") switch { "first" => HeaderFooterType.First, "even" => HeaderFooterType.Even, _ => HeaderFooterType.Default }] = headerIds.GetValueOrDefault(id, id);
         return result;
     }
 

@@ -11,8 +11,10 @@ internal static partial class DocxReader
     private static readonly XNamespace Dc = "http://purl.org/dc/elements/1.1/";
     private static readonly XNamespace DcTerms = "http://purl.org/dc/terms/";
 
-    private static void ReadHeadersFooters(OpcPackage opc, string main, IEnumerable<OpcRelationship> rels, TextDocument document)
+    private static Dictionary<string, string> ReadHeadersFooters(OpcPackage opc, string main, IEnumerable<OpcRelationship> rels, TextDocument document)
     {
+        var ids = new Dictionary<string, string>();
+        var byPart = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         foreach (var rel in rels.Where(r => !IsExternal(r)))
         {
             HeaderFooterKind kind;
@@ -20,8 +22,16 @@ internal static partial class DocxReader
             else if (rel.Type.EndsWith("/footer", StringComparison.Ordinal)) kind = HeaderFooterKind.Footer;
             else continue;
             var part = opc.ResolveTarget(main, rel.Target);
-            if (Optional(() => HeaderFooter(opc, part, rel.Id, kind, document)) is { } headerFooter) document.HeaderFooterList.Add(headerFooter);
+            if (byPart.TryGetValue(part, out var shared))
+                ids[rel.Id] = shared;
+            else if (Optional(() => HeaderFooter(opc, part, rel.Id, kind, document)) is { } headerFooter)
+            {
+                document.HeaderFooterList.Add(headerFooter);
+                ids[rel.Id] = byPart[part] = headerFooter.Id;
+            }
         }
+
+        return ids;
     }
 
     private static HeaderFooter HeaderFooter(OpcPackage opc, string part, string id, HeaderFooterKind kind, TextDocument document)

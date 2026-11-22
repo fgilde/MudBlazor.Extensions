@@ -252,6 +252,107 @@ public class DocxReaderStructureTests
     }
 
     [Fact]
+    public void Reader_CellWithoutBlocks_GetsOneEmptyParagraph()
+    {
+        var document = Load("<w:tbl><w:tblGrid><w:gridCol w:w=\"1000\"/></w:tblGrid><w:tr><w:tc><w:tcPr/></w:tc></w:tr></w:tbl><w:p/>");
+
+        var table = (Table)document.Blocks[0];
+        var paragraph = Assert.IsType<Paragraph>(Assert.Single(table.Rows[0].Cells[0].Blocks));
+        Assert.Empty(paragraph.Inlines);
+        Assert.Null(paragraph.Source);
+        Assert.NotNull(paragraph.Id);
+        var ids = AllBlocks(document.Blocks).Select(b => b.Id).ToList();
+        Assert.Equal(ids.Count, ids.Distinct().Count());
+        Assert.Same(paragraph, document.Resolve(new DocumentPosition(table.Id, [new CellStep(0, 0, 0)], 0)).Paragraph);
+    }
+
+    [Fact]
+    public void Reader_GridBeforeAfter_ColumnOf()
+    {
+        var grid = "<w:tblGrid>" + string.Concat(Enumerable.Repeat("<w:gridCol w:w=\"500\"/>", 7)) + "</w:tblGrid>";
+        var table = (Table)Load("<w:tbl>" + grid + "<w:tr><w:trPr><w:gridBefore w:val=\"1\"/><w:gridAfter w:val=\"2\"/></w:trPr>" +
+                                Cell(P("a")) + Cell(P("b"), "<w:gridSpan w:val=\"2\"/>") + Cell(P("c")) + "</w:tr>" +
+                                "<w:tr>" + Cell(P("d"), "<w:gridSpan w:val=\"7\"/>") + "</w:tr></w:tbl><w:p/>").Blocks[0];
+
+        var (first, second) = (table.Rows[0], table.Rows[1]);
+        Assert.Equal((1, 2), (first.GridBefore, first.GridAfter));
+        Assert.Equal((0, 0), (second.GridBefore, second.GridAfter));
+        Assert.Equal([1, 2, 4], first.Cells.Select(c => table.ColumnOf(first, c)));
+        Assert.Equal(0, table.ColumnOf(second, second.Cells[0]));
+        Assert.Throws<ArgumentException>(() => table.ColumnOf(first, second.Cells[0]));
+        Assert.Throws<ArgumentException>(() => table.ColumnOf(first with { }, first.Cells[0]));
+    }
+
+    [Fact]
+    public void Reader_LaterSection_InheritsHeader_HeaderForNullWithoutOne()
+    {
+        var document = new DocxBuilder().Header(P("Header text"))
+            .Body("<w:p><w:pPr><w:sectPr><w:headerReference w:type=\"default\" r:id=\"rIdheader1\"/><w:pgSz w:w=\"11906\" w:h=\"16838\"/></w:sectPr></w:pPr></w:p>" +
+                  P("second") + "<w:sectPr><w:pgSz w:w=\"11906\" w:h=\"16838\"/></w:sectPr>").Load();
+
+        var (first, second) = (document.Sections[0], document.Sections[1]);
+        Assert.Empty(second.Headers);
+        var header = document.HeaderFor(second, HeaderFooterKind.Header, HeaderFooterType.Default);
+        Assert.Equal(first.Headers[HeaderFooterType.Default], header.Id);
+        Assert.Equal("Header text", ((Paragraph)header.Blocks[0]).Text);
+        Assert.Null(document.HeaderFor(second, HeaderFooterKind.Footer, HeaderFooterType.Default));
+        Assert.Null(document.HeaderFor(first, HeaderFooterKind.Header, HeaderFooterType.First));
+    }
+
+    [Fact]
+    public void Reader_TwoRelationshipsToOneHeaderPart_ShareOneHeaderFooter()
+    {
+        var document = new DocxBuilder().Header(P("Shared"))
+            .RawRelationship($"<Relationship Id=\"rIdAlias\" Type=\"{DocxBuilder.RelNs}/header\" Target=\"header1.xml\"/>")
+            .Body("<w:p><w:pPr><w:sectPr><w:headerReference w:type=\"default\" r:id=\"rIdheader1\"/><w:headerReference w:type=\"first\" r:id=\"rIdAlias\"/>" +
+                  "<w:pgSz w:w=\"11906\" w:h=\"16838\"/></w:sectPr></w:pPr></w:p>").Load();
+
+        var header = Assert.Single(document.HeadersFooters);
+        var section = document.Sections[0];
+        Assert.Equal([header.Id, header.Id], new[] { section.Headers[HeaderFooterType.Default], section.Headers[HeaderFooterType.First] });
+        Assert.Same(header, document.HeaderFor(section, HeaderFooterKind.Header, HeaderFooterType.First));
+    }
+
+    [Fact]
+    public void Reader_ParagraphSectPrOnLastBlock_EndsSectionBeforeDefaultFinalSection()
+    {
+        var document = Load(P("one") + "<w:p><w:pPr><w:sectPr><w:pgSz w:w=\"12240\" w:h=\"15840\"/></w:sectPr></w:pPr><w:r><w:t>last</w:t></w:r></w:p>");
+
+        Assert.Equal(2, document.Sections.Count);
+        Assert.Equal((document.Blocks[^1].Id, 12240), (document.Sections[0].LastBlockId, document.Sections[0].Page.Width));
+        Assert.Equal(((string)null, PageSetup.A4), (document.Sections[1].LastBlockId, document.Sections[1].Page));
+    }
+
+    [Fact]
+    public void Reader_CommentRangeStartAndReferenceInDifferentParagraphs_RangeStartWins()
+    {
+        var document = new DocxBuilder()
+            .Comments("<w:comment w:id=\"7\" w:author=\"A\">" + P("note") + "</w:comment>")
+            .Body("<w:p><w:commentRangeStart w:id=\"7\"/><w:r><w:t>start</w:t></w:r></w:p>" +
+                  "<w:p><w:r><w:t>end</w:t></w:r><w:commentRangeEnd w:id=\"7\"/><w:r><w:commentReference w:id=\"7\"/></w:r></w:p>").Load();
+
+        Assert.Equal(document.Blocks[0].Id, Assert.Single(document.Comments).ParagraphId);
+    }
+
+    [Fact]
+    public void Reader_CommentsPartMissing_NoComments()
+    {
+        const string body = "<w:p><w:r><w:t>x</w:t></w:r><w:r><w:commentReference w:id=\"0\"/></w:r></w:p>";
+
+        Assert.Empty(new DocxBuilder().Body(body).Load().Comments);
+        Assert.Empty(new DocxBuilder().RawRelationship($"<Relationship Id=\"rIdC\" Type=\"{DocxBuilder.RelNs}/comments\" Target=\"comments9.xml\"/>")
+            .Body(body).Load().Comments);
+    }
+
+    [Fact]
+    public void Reader_MalformedCoreDate_IsNull()
+    {
+        var properties = new DocxBuilder().CoreProperties("<dc:title>T</dc:title><dcterms:created>not a date</dcterms:created><dcterms:modified/>").Load().Properties;
+
+        Assert.Equal(("T", (DateTimeOffset?)null, (DateTimeOffset?)null), (properties.Title, properties.Created, properties.Modified));
+    }
+
+    [Fact]
     public void Reader_BodySdt_IsOpaqueBlockWithPreview()
     {
         var document = Load("<w:sdt><w:sdtPr><w:alias w:val=\"Box\"/></w:sdtPr><w:sdtContent>" + P("one") + P("two") + "</w:sdtContent></w:sdt><w:p/>");

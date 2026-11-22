@@ -22,6 +22,10 @@ public enum SectionStart
 }
 
 /// <summary>A section of the document body (<c>w:sectPr</c>).</summary>
+/// <remarks>
+/// A section ends at a body paragraph with <c>w:pPr/w:sectPr</c> or at the end of the body. A <c>w:sectPr</c> on a paragraph inside a body-level
+/// <c>w:sdt</c> or <c>w:customXml</c> does not start a new section.
+/// </remarks>
 public sealed record Section
 {
     /// <summary>An id that identifies the section while the document is in memory.</summary>

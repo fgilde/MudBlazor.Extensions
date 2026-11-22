@@ -33105,6 +33105,13 @@
         <member name="P:MudBlazor.Extensions.Office.Document.Table.Rows">
             <summary>The rows. The list is treated as immutable after assignment: replace the table instead of changing it.</summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.Table.ColumnOf(MudBlazor.Extensions.Office.Document.TableRow,MudBlazor.Extensions.Office.Document.TableCell)">
+            <summary>Gets the grid column a cell starts in, counting the row's <see cref="P:MudBlazor.Extensions.Office.Document.TableRow.GridBefore"/> and the spans of the cells before it.</summary>
+            <param name="row">A row of this table.</param>
+            <param name="cell">A cell of the row, compared by reference.</param>
+            <returns>The zero-based grid column.</returns>
+            <exception cref="T:System.ArgumentException">The row is not part of this table or the cell is not part of the row.</exception>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.TableRow">
             <summary>A row of a <see cref="T:MudBlazor.Extensions.Office.Document.Table"/>.</summary>
             <param name="Cells">
@@ -33130,6 +33137,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TableRow.IsHeader">
             <summary>True if the row repeats as header on every page.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableRow.GridBefore">
+            <summary>The number of grid columns left empty before the first cell (<c>w:gridBefore</c>).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableRow.GridAfter">
+            <summary>The number of grid columns left empty after the last cell (<c>w:gridAfter</c>).</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.TableCell">
             <summary>A cell of a <see cref="T:MudBlazor.Extensions.Office.Document.TableRow"/>.</summary>
@@ -34146,6 +34159,10 @@
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.Section">
             <summary>A section of the document body (<c>w:sectPr</c>).</summary>
+            <remarks>
+            A section ends at a body paragraph with <c>w:pPr/w:sectPr</c> or at the end of the body. A <c>w:sectPr</c> on a paragraph inside a body-level
+            <c>w:sdt</c> or <c>w:customXml</c> does not start a new section.
+            </remarks>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.Section.Id">
             <summary>An id that identifies the section while the document is in memory.</summary>

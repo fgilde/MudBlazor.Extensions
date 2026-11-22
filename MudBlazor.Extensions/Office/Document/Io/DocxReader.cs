@@ -55,8 +55,8 @@ internal static partial class DocxReader
             Properties = ReadProperties(opc, packageRels)
         };
 
-        ReadBody(body, new InlineXml(opc, main, rels, document), document);
-        ReadHeadersFooters(opc, main, rels, document);
+        var headerIds = ReadHeadersFooters(opc, main, rels, document);
+        ReadBody(body, new InlineXml(opc, main, rels, document), headerIds, document);
         ReadComments(opc, main, rels, xml, document);
         document.HasTrackedChanges = HasTrackedChanges(body) || document.HeadersFooters.SelectMany(h => h.Blocks).Any(b => HasTrackedChanges(b.Source));
 
@@ -69,7 +69,7 @@ internal static partial class DocxReader
         return document;
     }
 
-    private static void ReadBody(XElement body, InlineXml inlines, TextDocument document)
+    private static void ReadBody(XElement body, InlineXml inlines, IReadOnlyDictionary<string, string> headerIds, TextDocument document)
     {
         XElement final = null;
         foreach (var element in body.Elements())
@@ -80,10 +80,10 @@ internal static partial class DocxReader
                 var block = document.Identify(Block(element, inlines));
                 document.BlockList.Add(block);
                 if (element.Name == W + "p" && element.Element(W + "pPr")?.Element(W + "sectPr") is { } sectPr)
-                    document.SectionList.Add(SectionXml.Read(sectPr, SectionId(document), block.Id));
+                    document.SectionList.Add(SectionXml.Read(sectPr, SectionId(document), block.Id, headerIds));
             }
 
-        document.SectionList.Add(final == null ? new Section { Id = SectionId(document) } : SectionXml.Read(final, SectionId(document), null));
+        document.SectionList.Add(final == null ? new Section { Id = SectionId(document) } : SectionXml.Read(final, SectionId(document), null, headerIds));
     }
 
     private static string SectionId(TextDocument document) => "s" + (document.SectionList.Count + 1);

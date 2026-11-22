@@ -20,6 +20,8 @@ internal static class TableXml
         {
             Height = Int(properties?.Element(W + "trHeight"), "val"),
             IsHeader = properties != null && OnOff(properties, "tblHeader") == true,
+            GridBefore = Math.Max(0, Int(properties?.Element(W + "gridBefore"), "val") ?? 0),
+            GridAfter = Math.Max(0, Int(properties?.Element(W + "gridAfter"), "val") ?? 0),
             Source = row
         };
     }
@@ -28,7 +30,9 @@ internal static class TableXml
     {
         var properties = cell.Element(W + "tcPr");
         var merge = properties?.Element(W + "vMerge");
-        return new TableCell(blocks(cell.Elements().Where(e => e.Name != W + "tcPr")))
+        var content = blocks(cell.Elements().Where(e => e.Name != W + "tcPr"));
+        if (!content.OfType<Paragraph>().Any()) content.Add(new Paragraph());
+        return new TableCell(content)
         {
             GridSpan = Math.Max(1, Int(properties?.Element(W + "gridSpan"), "val") ?? 1),
             VMerge = merge == null ? VerticalMerge.None : (string)merge.Attribute(W + "val") == "restart" ? VerticalMerge.Restart : VerticalMerge.Continue,

@@ -39,6 +39,25 @@ public sealed record Table : Block
 
     /// <summary>The rows. The list is treated as immutable after assignment: replace the table instead of changing it.</summary>
     public IReadOnlyList<TableRow> Rows { get; init; } = [];
+
+    /// <summary>Gets the grid column a cell starts in, counting the row's <see cref="TableRow.GridBefore"/> and the spans of the cells before it.</summary>
+    /// <param name="row">A row of this table.</param>
+    /// <param name="cell">A cell of the row, compared by reference.</param>
+    /// <returns>The zero-based grid column.</returns>
+    /// <exception cref="ArgumentException">The row is not part of this table or the cell is not part of the row.</exception>
+    public int ColumnOf(TableRow row, TableCell cell)
+    {
+        ArgumentNullException.ThrowIfNull(row);
+        if (!Rows.Any(r => ReferenceEquals(r, row))) throw new ArgumentException("The row is not part of the table.", nameof(row));
+        var column = row.GridBefore;
+        foreach (var other in row.Cells)
+        {
+            if (ReferenceEquals(other, cell)) return column;
+            column += other.GridSpan;
+        }
+
+        throw new ArgumentException("The cell is not part of the row.", nameof(cell));
+    }
 }
 
 /// <summary>A row of a <see cref="Table"/>.</summary>
@@ -53,6 +72,12 @@ public sealed record TableRow(IReadOnlyList<TableCell> Cells)
 
     /// <summary>True if the row repeats as header on every page.</summary>
     public bool IsHeader { get; init; }
+
+    /// <summary>The number of grid columns left empty before the first cell (<c>w:gridBefore</c>).</summary>
+    public int GridBefore { get; init; }
+
+    /// <summary>The number of grid columns left empty after the last cell (<c>w:gridAfter</c>).</summary>
+    public int GridAfter { get; init; }
 
     internal XElement Source { get; init; }
 }
