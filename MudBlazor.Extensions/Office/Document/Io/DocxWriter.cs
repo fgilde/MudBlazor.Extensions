@@ -144,8 +144,10 @@ public static partial class DocxWriter
         private int MaxDrawingId()
         {
             XNamespace pic = "http://schemas.openxmlformats.org/drawingml/2006/picture";
-            var stories = _mainRelationships.Where(r => r.TargetMode == null).Select(r => _opc.ResolveTarget(package.MainPart, r.Target))
-                .Where(p => p.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) && _opc.Entry(p) != null)
+            string[] types = ["/header", "/footer", "/footnotes", "/endnotes", "/comments"];
+            var stories = _mainRelationships.Where(r => r.TargetMode == null && types.Any(t => r.Type.EndsWith(t, StringComparison.Ordinal)))
+                .Select(r => _opc.ResolveTarget(package.MainPart, r.Target))
+                .Where(p => _opc.Entry(p) != null)
                 .Select(_opc.ReadXml)
                 .Prepend(package.MainXml);
             return stories.SelectMany(x => x.Descendants(InlineXml.Wp + "docPr").Concat(x.Descendants(pic + "cNvPr")))
