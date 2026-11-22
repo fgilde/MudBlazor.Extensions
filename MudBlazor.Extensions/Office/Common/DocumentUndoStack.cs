@@ -87,6 +87,9 @@ public sealed class DocumentUndoStack<TDocument>
         return new Scope(this);
     }
 
+    internal bool TryAmendLast(Func<IDocumentCommand<TDocument>, bool> amend) =>
+        _transactionDepth == 0 && _redo.Count == 0 && _undo.Count > 0 && amend(_undo[^1]);
+
     internal void Record(IDocumentCommand<TDocument> command)
     {
         _redo.Clear();

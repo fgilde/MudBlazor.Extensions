@@ -96,6 +96,35 @@ public class DocumentUndoStackTests
     }
 
     [Fact]
+    public void UndoStack_TryAmendLast_RefusedWithRedoOrOpenTransaction()
+    {
+        var doc = new Doc();
+        var stack = new DocumentUndoStack<Doc>(doc);
+        var calls = 0;
+        bool Amend(IDocumentCommand<Doc> command)
+        {
+            calls++;
+            return command.Description == "Add b";
+        }
+
+        Assert.False(stack.TryAmendLast(Amend));
+        Run(stack, doc, "a");
+        Assert.False(stack.TryAmendLast(Amend));
+        Run(stack, doc, "b");
+        Assert.True(stack.TryAmendLast(Amend));
+        Assert.Equal(2, calls);
+
+        using (stack.BeginTransaction("open"))
+        {
+            Assert.False(stack.TryAmendLast(Amend));
+        }
+
+        stack.Undo();
+        Assert.False(stack.TryAmendLast(Amend));
+        Assert.Equal(2, calls);
+    }
+
+    [Fact]
     public void UndoStack_OnTransactionEnd_RunsOncePerOutermostScope()
     {
         var doc = new Doc();

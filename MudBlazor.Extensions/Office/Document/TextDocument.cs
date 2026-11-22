@@ -100,14 +100,7 @@ public sealed partial class TextDocument
 
     /// <summary>Applies a command and records it as one undo step (or adds it to the open transaction). A command that changes nothing records nothing.</summary>
     /// <param name="command">The command.</param>
-    public void Execute(IDocumentCommand<TextDocument> command)
-    {
-        var notifications = _notifications;
-        command.Apply(this);
-        if (notifications == _notifications) return;
-        Undo.Record(command);
-        if (!Undo.InTransaction) RaiseChanged();
-    }
+    public void Execute(IDocumentCommand<TextDocument> command) => Execute(command, null);
 
     /// <summary>Finds a block of the body, of a table cell at any depth or of a header or footer.</summary>
     /// <param name="id">The block id.</param>
