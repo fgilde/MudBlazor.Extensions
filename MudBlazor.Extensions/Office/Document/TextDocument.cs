@@ -120,7 +120,7 @@ public sealed partial class TextDocument
     /// byte order mark and with CRLF line ends: list items start with their label and a tab, table rows become tab-separated lines and fields their
     /// displayed text. <see cref="DocumentFileFormat.Markdown"/> writes UTF-8 CommonMark with GFM pipe tables (first row as header, merged cells
     /// empty except the first), headings by outline level, bold, italic, strikethrough, safe links, images as <c>data:</c> URIs, lists and
-    /// monospace paragraphs as fenced code.
+    /// monospace paragraphs as fenced code. <see cref="DocumentExport.Losses"/> lists what a format cannot keep.
     /// </summary>
     /// <param name="target">The stream that receives the file.</param>
     /// <param name="format">The file format.</param>
@@ -135,8 +135,7 @@ public sealed partial class TextDocument
             return;
         }
 
-        if (format is not (DocumentFileFormat.Html or DocumentFileFormat.Text or DocumentFileFormat.Markdown))
-            throw new NotSupportedException($"Writing {format} files is not supported.");
+        if (!DocumentFileFormats.CanWrite(format)) throw new NotSupportedException($"Writing {format} files is not supported.");
         ArgumentNullException.ThrowIfNull(target);
         if (!target.CanWrite) throw new ArgumentException("The stream is not writable.", nameof(target));
         if (format == DocumentFileFormat.Html) target.Write(new UTF8Encoding(false).GetBytes(HtmlWriter.Write(this)));

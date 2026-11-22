@@ -33820,6 +33820,65 @@
         <member name="P:MudBlazor.Extensions.Office.Document.Comment.ParagraphId">
             <summary>The id of the paragraph the comment is anchored in, or null.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DocumentFeature">
+            <summary>A feature of a document that an export format may not be able to keep.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.CharacterFormatting">
+            <summary>Character formatting such as fonts, sizes, colours, underline or highlighting.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.ParagraphFormatting">
+            <summary>Paragraph formatting such as alignment, indents, spacing or tab stops.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Styles">
+            <summary>Paragraph, character and table styles.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Lists">
+            <summary>Bulleted and numbered lists.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Tables">
+            <summary>Tables.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.MergedCells">
+            <summary>Merged table cells.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.NestedTables">
+            <summary>Tables inside table cells.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Images">
+            <summary>Pictures, their placement and formats other than PNG, JPEG, GIF and BMP.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Links">
+            <summary>Hyperlinks, link targets other than <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c>, and bookmarks.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.HeadersFooters">
+            <summary>Headers and footers.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Sections">
+            <summary>Several sections, landscape pages or text columns.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Comments">
+            <summary>Comments.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Fields">
+            <summary>Fields such as page numbers; only their displayed text is kept.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.OpaqueContent">
+            <summary>Content the editor does not model, such as content controls, equations, footnotes or embedded objects.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DocumentExport">
+            <summary>Tells what an export to a file format loses.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentExport.Losses(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentFileFormat)">
+            <summary>
+            Lists the features a document uses that <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.Save(System.IO.Stream,MudBlazor.Extensions.Office.Document.DocumentFileFormat)"/> cannot keep in a format. Formatting counts if a paragraph or inline
+            sets it directly; formatting that comes from styles counts as <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Styles"/>.
+            </summary>
+            <param name="document">The document.</param>
+            <param name="format">The target format.</param>
+            <returns>The lost features in enum order; empty for <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Docx"/> and <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Dotx"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">The document is null.</exception>
+            <exception cref="T:System.NotSupportedException">The format cannot be written (see <see cref="M:MudBlazor.Extensions.Office.Document.DocumentFileFormats.CanWrite(MudBlazor.Extensions.Office.Document.DocumentFileFormat)"/>).</exception>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.DocumentFileFormat">
             <summary>A file format a <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/> can be read from or written to.</summary>
         </member>
@@ -33846,6 +33905,50 @@
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Doc">
             <summary>Word 97-2003 document (.doc).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DocumentFileFormats">
+            <summary>File names, content types and capabilities of the <see cref="T:MudBlazor.Extensions.Office.Document.DocumentFileFormat"/> values.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentFileFormats.Detect(System.String,System.String)">
+            <summary>Detects a format from a file name and, if the extension is unknown, from a content type such as <c>text/markdown</c>.</summary>
+            <param name="fileName">The file name or path, or null; <c>.htm</c> counts as HTML, <c>.markdown</c> as Markdown and <c>.docm</c>/<c>.dotm</c> as
+            <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Docx"/>/<see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Dotx"/>.</param>
+            <param name="contentType">The MIME type, or null; parameters such as <c>charset</c> are ignored.</param>
+            <returns>The format, or null if neither is known.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentFileFormats.DetectContent(System.IO.Stream,System.String,System.String)">
+            <summary>
+            Detects a format from the content: a ZIP package by the main part type in <c>[Content_Types].xml</c> (.docx, .docm, .dotx, .dotm) or its
+            <c>mimetype</c> entry (.odt), <c>{\rtf</c>, the OLE compound file header (.doc) and HTML markup at the start. Text without such a signature is
+            Markdown, HTML or text by <paramref name="fileName"/> or <paramref name="contentType"/>, else plain text; binary content without a known
+            signature falls back to the name.
+            </summary>
+            <param name="content">The file content; it must be seekable and its position is restored.</param>
+            <param name="fileName">The file name, or null.</param>
+            <param name="contentType">The MIME type, or null.</param>
+            <returns>The format, or null for binary content of an unknown format.</returns>
+            <exception cref="T:System.ArgumentNullException">The stream is null.</exception>
+            <exception cref="T:System.ArgumentException">The stream is not seekable.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentFileFormats.CanRead(MudBlazor.Extensions.Office.Document.DocumentFileFormat)">
+            <summary>Gets whether <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.Load(System.IO.Stream,MudBlazor.Extensions.Office.Document.DocumentFileFormat)"/> can read a format.</summary>
+            <param name="format">The format.</param>
+            <returns>True if the format can be read.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentFileFormats.CanWrite(MudBlazor.Extensions.Office.Document.DocumentFileFormat)">
+            <summary>Gets whether <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.Save(System.IO.Stream,MudBlazor.Extensions.Office.Document.DocumentFileFormat)"/> can write a format.</summary>
+            <param name="format">The format.</param>
+            <returns>True if the format can be written.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentFileFormats.ContentType(MudBlazor.Extensions.Office.Document.DocumentFileFormat)">
+            <summary>Gets the MIME type of a format, for example <c>text/markdown</c>.</summary>
+            <param name="format">The format.</param>
+            <returns>The MIME type.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentFileFormats.Extension(MudBlazor.Extensions.Office.Document.DocumentFileFormat)">
+            <summary>Gets the usual file extension of a format with the leading dot, for example <c>.md</c>.</summary>
+            <param name="format">The format.</param>
+            <returns>The extension.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.DocumentProperties">
             <summary>The core properties of a document; null values are not set.</summary>
@@ -35016,7 +35119,7 @@
             byte order mark and with CRLF line ends: list items start with their label and a tab, table rows become tab-separated lines and fields their
             displayed text. <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Markdown"/> writes UTF-8 CommonMark with GFM pipe tables (first row as header, merged cells
             empty except the first), headings by outline level, bold, italic, strikethrough, safe links, images as <c>data:</c> URIs, lists and
-            monospace paragraphs as fenced code.
+            monospace paragraphs as fenced code. <see cref="M:MudBlazor.Extensions.Office.Document.DocumentExport.Losses(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentFileFormat)"/> lists what a format cannot keep.
             </summary>
             <param name="target">The stream that receives the file.</param>
             <param name="format">The file format.</param>
