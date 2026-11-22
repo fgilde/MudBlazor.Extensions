@@ -33,12 +33,21 @@ internal sealed class DocxBuilder
     private readonly List<(string Id, string Type, string Target, bool External)> _rels = [];
     private readonly Dictionary<string, (byte[] Content, string ContentType)> _parts = new();
     private readonly List<string> _references = [];
+    private readonly List<string> _rawRels = [];
     private string _body = "<w:p/>";
     private int _paraId = 0x10000000;
 
     public string MainPart { get; set; } = "/word/document.xml";
 
     public bool Template { get; set; }
+
+    public string RawDocument { get; set; }
+
+    public DocxBuilder RawRelationship(string xml)
+    {
+        _rawRels.Add(xml);
+        return this;
+    }
 
     public DocxBuilder Body(string xml)
     {
@@ -96,7 +105,7 @@ internal sealed class DocxBuilder
             ? ""
             : $"<w:sectPr w:rsidR=\"00A1B2C3\">{string.Concat(_references)}<w:pgSz w:w=\"11906\" w:h=\"16838\"/>" +
               "<w:pgMar w:top=\"1417\" w:right=\"1417\" w:bottom=\"1134\" w:left=\"1417\" w:header=\"708\" w:footer=\"708\" w:gutter=\"0\"/></w:sectPr>";
-        var document = $"<w:document {Root}><w:body>{WordShaped(_body)}{sectPr}</w:body></w:document>";
+        var document = RawDocument ?? $"<w:document {Root}><w:body>{WordShaped(_body)}{sectPr}</w:body></w:document>";
         using var stream = new MemoryStream();
         using (var zip = new ZipArchive(stream, ZipArchiveMode.Create, true))
         {
@@ -111,7 +120,7 @@ internal sealed class DocxBuilder
             Entry(zip, folder + "_rels/" + main[folder.Length..] + ".rels",
                 "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" +
                 string.Concat(_rels.Select(r => $"<Relationship Id=\"{r.Id}\" Type=\"{RelNs}/{r.Type}\" Target=\"{r.Target}\"{(r.External ? " TargetMode=\"External\"" : "")}/>")) +
-                "</Relationships>");
+                string.Concat(_rawRels) + "</Relationships>");
             foreach (var (part, (content, _)) in _parts)
                 using (var entry = zip.CreateEntry(part.TrimStart('/')).Open())
                     entry.Write(content);

@@ -276,7 +276,7 @@ public class DocxReaderTests
     {
         var paragraph = Para("<w:p><w:r><w:t>e</w:t><w:noBreakHyphen/><w:t>mail</w:t><w:softHyphen/><w:t>box</w:t><w:cr/></w:r></w:p>");
 
-        Assert.Equal("e‑mail­box\v", paragraph.Text);
+        Assert.Equal("e\u2011mail\u00ADbox\v", paragraph.Text);
         Assert.Equal(6, paragraph.Inlines.Count);
     }
 
@@ -300,6 +300,81 @@ public class DocxReaderTests
 
         Assert.True(document.IsTemplate);
         Assert.Equal("t", ((Paragraph)document.Blocks[0]).Text);
+    }
+
+    [Fact]
+    public void Reader_MalformedDocumentXml_ThrowsInvalidData()
+    {
+        var builder = new DocxBuilder { RawDocument = $"<w:document {DocxBuilder.Ns}><w:body><w:p><w:r><w:t>broken" };
+
+        var error = Assert.Throws<InvalidDataException>(() => builder.Load());
+
+        Assert.IsType<System.Xml.XmlException>(error.InnerException);
+    }
+
+    [Fact]
+    public void Reader_RelationshipsWithoutIdOrTarget_AreSkipped()
+    {
+        var document = new DocxBuilder()
+            .RawRelationship($"<Relationship Type=\"{DocxBuilder.RelNs}/hyperlink\" Target=\"https://example.com\" TargetMode=\"External\"/>")
+            .RawRelationship($"<Relationship Id=\"rIdStyles\" Type=\"{DocxBuilder.RelNs}/styles\"/>")
+            .Body("<w:p><w:r><w:t>still readable</w:t></w:r></w:p>").Load();
+
+        Assert.Equal("still readable", ((Paragraph)Assert.Single(document.Blocks)).Text);
+        Assert.Empty(document.Styles.All);
+    }
+
+    [Fact]
+    public void Reader_ImageRelationship_InternalTargetMode_IsInternal_BrokenEmbedIsOpaque()
+    {
+        static string Picture(string id) =>
+            "<w:r><w:drawing><wp:inline><wp:extent cx=\"10\" cy=\"20\"/><wp:docPr id=\"1\" name=\"Picture 1\"/><a:graphic>" +
+            $"<a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic><pic:blipFill><a:blip r:embed=\"{id}\"/></pic:blipFill></pic:pic>" +
+            "</a:graphicData></a:graphic></wp:inline></w:drawing></w:r>";
+        var document = new DocxBuilder()
+            .RawRelationship($"<Relationship Id=\"rId7\" Type=\"{DocxBuilder.RelNs}/image\" Target=\"media/image1.png\" TargetMode=\"Internal\"/>")
+            .Extra("/word/media/image1.png", [1, 2], "image/png")
+            .Body($"<w:p>{Picture("rId7")}{Picture("rId99")}</w:p>").Load();
+        var inlines = ((Paragraph)document.Blocks[0]).Inlines;
+
+        Assert.Equal("/word/media/image1.png", Assert.IsType<InlineImage>(inlines[0]).MediaPart);
+        Assert.Equal("drawing", Assert.IsType<OpaqueInline>(inlines[1]).Kind);
+    }
+
+    [Fact]
+    public void Reader_DirAndBdo_Descended_RubyShowsBaseText()
+    {
+        var paragraph = Para("<w:p><w:dir w:val=\"rtl\"><w:r><w:t>abc</w:t></w:r></w:dir><w:bdo w:val=\"ltr\"><w:r><w:t>de</w:t></w:r></w:bdo>" +
+                             "<w:ruby><w:rubyPr/><w:rt><w:r><w:t>top</w:t></w:r></w:rt><w:rubyBase><w:r><w:t>base</w:t></w:r></w:rubyBase></w:ruby></w:p>");
+
+        Assert.Equal("abcde" + (char)0xFFFC, paragraph.Text);
+        Assert.Equal(["dir", "bdo"], paragraph.Inlines.Take(2).Select(i => i.Source.Parent!.Name.LocalName));
+        var ruby = Assert.IsType<OpaqueInline>(paragraph.Inlines[2]);
+        Assert.Equal(("ruby", "base"), (ruby.Kind, ruby.DisplayText));
+    }
+
+    [Fact]
+    public void Reader_InlineSdtWithDeletedRun_DisplayTextSkipsDeletion()
+    {
+        var paragraph = Para("<w:p><w:sdt><w:sdtContent><w:r><w:t>keep</w:t></w:r><w:del w:id=\"1\" w:author=\"A\"><w:r><w:t>old</w:t></w:r></w:del>" +
+                             "<w:moveFrom w:id=\"2\" w:author=\"A\"><w:r><w:t>moved</w:t></w:r></w:moveFrom></w:sdtContent></w:sdt></w:p>");
+
+        Assert.Equal("keep", Assert.IsType<OpaqueInline>(Assert.Single(paragraph.Inlines)).DisplayText);
+    }
+
+    [Fact]
+    public void Reader_HyperlinkContainingComplexField_OneFieldTokenWithLink()
+    {
+        var paragraph = Para("<w:p><w:hyperlink w:anchor=\"_Toc1\" w:history=\"1\"><w:r><w:t>Intro</w:t></w:r><w:r><w:tab/></w:r>" +
+                             "<w:r><w:fldChar w:fldCharType=\"begin\"/></w:r><w:r><w:instrText xml:space=\"preserve\"> PAGEREF _Toc1 \\h </w:instrText></w:r>" +
+                             "<w:r><w:fldChar w:fldCharType=\"separate\"/></w:r><w:r><w:t>1</w:t></w:r><w:r><w:fldChar w:fldCharType=\"end\"/></w:r></w:hyperlink></w:p>");
+
+        Assert.Equal("Intro\t" + (char)0xFFFC, paragraph.Text);
+        var field = Assert.IsType<OpaqueInline>(paragraph.Inlines[2]);
+        Assert.Equal(("field", "PAGEREF _Toc1 \\h", "1"), (field.Kind, field.Instruction, field.DisplayText));
+        Assert.Equal(5, field.Sources.Count);
+        Assert.Equal("_Toc1", field.Link.Anchor);
+        Assert.All(paragraph.Inlines, i => Assert.Same(field.Link, i.Link));
     }
 
     [Fact]

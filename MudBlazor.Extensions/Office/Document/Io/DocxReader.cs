@@ -1,3 +1,4 @@
+using System.Xml;
 using System.Xml.Linq;
 using static MudBlazor.Extensions.Office.Document.FormatXml;
 
@@ -12,16 +13,24 @@ internal static class DocxReader
         "customXmlMoveFromRangeStart", "customXmlMoveToRangeStart"
     ];
 
-    private static readonly HashSet<string> BodyMarkers =
-    [
-        "bookmarkStart", "bookmarkEnd", "proofErr", "commentRangeStart", "commentRangeEnd", "permStart", "permEnd",
-        "moveFromRangeStart", "moveFromRangeEnd", "moveToRangeStart", "moveToRangeEnd"
-    ];
-
     internal static TextDocument Read(byte[] package)
     {
+        try
+        {
+            return ReadPackage(package);
+        }
+        catch (XmlException e)
+        {
+            throw new InvalidDataException("The file contains malformed XML.", e);
+        }
+    }
+
+    internal static bool IsExternal(OpcRelationship relationship) => relationship.TargetMode == "External";
+
+    private static TextDocument ReadPackage(byte[] package)
+    {
         var opc = OpcPackage.Open(package);
-        var main = opc.Relationships("/").FirstOrDefault(r => r.Type.EndsWith("/officeDocument", StringComparison.Ordinal) && r.TargetMode == null) is { } officeDocument
+        var main = Relationships(opc, "/").FirstOrDefault(r => r.Type.EndsWith("/officeDocument", StringComparison.Ordinal) && !IsExternal(r)) is { } officeDocument
             ? opc.ResolveTarget("/", officeDocument.Target)
             : null;
         if (main == null || opc.Entry(main) == null) throw new InvalidDataException("The file contains no document part.");
@@ -29,7 +38,7 @@ internal static class DocxReader
         if (xml.Root?.Name != W + "document" || xml.Root.Element(W + "body") is not { } body)
             throw new InvalidDataException("The file contains no WordprocessingML document; Strict Open XML documents are not supported.");
 
-        var rels = opc.Relationships(main);
+        var rels = Relationships(opc, main);
         var (stylesPart, styles) = Part(opc, main, rels, "styles");
         var (numberingPart, numbering) = Part(opc, main, rels, "numbering");
         var (settingsPart, settings) = Part(opc, main, rels, "settings");
@@ -66,7 +75,7 @@ internal static class DocxReader
     {
         if (element.Name == W + "p") return ParagraphXml.Read(element, inlines);
         var name = element.Name.Namespace == W ? element.Name.LocalName : null;
-        return name != null && BodyMarkers.Contains(name)
+        return name != null && InlineXml.Markers.Contains(name)
             ? new OpaqueBlock { Kind = "marker", Visible = false, Source = element }
             : new OpaqueBlock
             {
@@ -77,10 +86,13 @@ internal static class DocxReader
 
     private static (string Part, XDocument Xml) Part(OpcPackage opc, string main, IEnumerable<OpcRelationship> rels, string type)
     {
-        if (rels.FirstOrDefault(r => r.Type.EndsWith("/" + type, StringComparison.Ordinal) && r.TargetMode == null) is not { } rel) return (null, null);
+        if (rels.FirstOrDefault(r => r.Type.EndsWith("/" + type, StringComparison.Ordinal) && !IsExternal(r)) is not { } rel) return (null, null);
         var part = opc.ResolveTarget(main, rel.Target);
         return opc.Entry(part) == null ? (null, null) : (part, opc.ReadXml(part));
     }
+
+    private static List<OpcRelationship> Relationships(OpcPackage opc, string part) =>
+        opc.Relationships(part).Where(r => r.Id != null && r.Type != null && r.Target != null).ToList();
 
     private static PageSetup Page(XElement sectPr)
     {

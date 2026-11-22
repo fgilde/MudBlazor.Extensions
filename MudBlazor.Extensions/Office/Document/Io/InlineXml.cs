@@ -17,7 +17,7 @@ internal sealed class InlineXml
     private static readonly XNamespace Dgm = "http://schemas.openxmlformats.org/drawingml/2006/diagram";
     private static readonly XNamespace Wps = "http://schemas.microsoft.com/office/word/2010/wordprocessingShape";
 
-    private static readonly HashSet<string> Markers =
+    internal static readonly HashSet<string> Markers =
     [
         "bookmarkStart", "bookmarkEnd", "proofErr", "commentRangeStart", "commentRangeEnd", "permStart", "permEnd",
         "moveFromRangeStart", "moveFromRangeEnd", "moveToRangeStart", "moveToRangeEnd"
@@ -106,7 +106,7 @@ internal sealed class InlineXml
                     case "hyperlink":
                         Flatten(child, Link(child), items);
                         continue;
-                    case "ins" or "moveTo":
+                    case "ins" or "moveTo" or "dir" or "bdo":
                         Flatten(child, link, items);
                         continue;
                 }
@@ -194,8 +194,8 @@ internal sealed class InlineXml
             "tab" => new Tab(),
             "br" => new Break((string)node.Attribute(W + "type") switch { "page" => BreakKind.Page, "column" => BreakKind.Column, _ => BreakKind.Line }),
             "cr" => new Break(BreakKind.Line),
-            "noBreakHyphen" => new TextRun("‑"),
-            "softHyphen" => new TextRun("­"),
+            "noBreakHyphen" => new TextRun("\u2011"),
+            "softHyphen" => new TextRun("\u00AD"),
             "lastRenderedPageBreak" or "delText" or "delInstrText" => null,
             "commentReference" => new Marker("commentReference"),
             "footnoteReference" => Opaque("footnote"),
@@ -211,7 +211,7 @@ internal sealed class InlineXml
 
     private static Inline Element(XElement node)
     {
-        if (node.Name == M + "oMath" || node.Name == M + "oMathPara") return Opaque("equation", string.Concat(node.Descendants(M + "t").Select(t => t.Value)));
+        if (node.Name == M + "oMath" || node.Name == M + "oMathPara") return Opaque("equation", Text(node, M + "t"));
         if (node.Name.Namespace != W) return Opaque("other");
         var name = node.Name.LocalName;
         if (Markers.Contains(name)) return new Marker(name) { Name = (string)node.Attribute(W + "name") };
@@ -221,6 +221,7 @@ internal sealed class InlineXml
             "sdt" => Opaque("contentControl", Text(node)),
             "smartTag" => Opaque("smartTag", Text(node)),
             "customXml" => Opaque("customXml", Text(node)),
+            "ruby" => Opaque("ruby", node.Element(W + "rubyBase") is { } rubyBase ? Text(rubyBase) : ""),
             _ => Opaque("other")
         };
     }
@@ -246,7 +247,7 @@ internal sealed class InlineXml
 
     private string MediaPart(XElement picture)
     {
-        if ((string)picture.Descendants(A + "blip").FirstOrDefault()?.Attribute(R + "embed") is not { } id || !_rels.TryGetValue(id, out var rel) || rel.TargetMode != null) return null;
+        if ((string)picture.Descendants(A + "blip").FirstOrDefault()?.Attribute(R + "embed") is not { } id || !_rels.TryGetValue(id, out var rel) || DocxReader.IsExternal(rel)) return null;
         var part = _opc.ResolveTarget(_part, rel.Target);
         if (_opc.Entry(part) == null) return null;
         if (!_document.Media.ContainsKey(part)) _document.Media[part] = (_opc.ReadBytes(part), _opc.ContentType(part));
@@ -255,7 +256,16 @@ internal sealed class InlineXml
 
     private static OpaqueInline Opaque(string kind, string text = "") => new(kind, text);
 
-    private static string Text(XElement node) => string.Concat(node.Descendants(W + "t").Select(t => t.Value));
+    private static string Text(XElement node) => Text(node, W + "t");
+
+    private static string Text(XElement node, XName text)
+    {
+        var result = new StringBuilder();
+        foreach (var child in node.Elements())
+            if (child.Name == text) result.Append(child.Value);
+            else if (child.Name != W + "del" && child.Name != W + "moveFrom") result.Append(Text(child, text));
+        return result.ToString();
+    }
 
     private static long Long(XElement element, string attribute) =>
         long.TryParse((string)element?.Attribute(attribute), NumberStyles.Integer, CultureInfo.InvariantCulture, out var value) ? value : 0;
