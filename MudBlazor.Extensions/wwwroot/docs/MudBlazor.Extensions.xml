@@ -29058,6 +29058,11 @@
             (Content-ID referenced) attachments needed to render an email similarly to <c>MsgReader</c> for .msg files.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Helper.Internal.MimeMessage.Attachments">
+            <summary>
+            Parts sent as files: everything with <c>Content-Disposition: attachment</c> and every attached message.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.Internal.MimeMessage.GetEncoding(System.String)">
             <summary>
             Resolves the charset named in a Content-Type header. Unknown or missing charsets fall back to UTF-8;
@@ -33022,6 +33027,1110 @@
             <summary>Returns the next part name of the pattern that neither the source package nor this writer uses; each call returns a new name.</summary>
             <param name="pattern">A pattern with one number placeholder, for example <c>/ppt/slides/slide{0}.xml</c>.</param>
             <returns>The free part name.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Block">
+            <summary>A block of a document body, a table cell or a header or footer.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Block.Id">
+            <summary>An id that identifies the block while the document is in memory; it is not stored in the file.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.OpaqueBlock">
+            <summary>A block the editor keeps unchanged but does not model, such as a content control or a tracked deletion.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.OpaqueBlock.Kind">
+            <summary>
+            What the block is: <c>contentControl</c>, <c>customXml</c>, <c>altChunk</c>, <c>marker</c>, <c>trackedDeletion</c> or <c>other</c>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.OpaqueBlock.Visible">
+            <summary>True if the block is shown; false for markers and tracked deletions.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.OpaqueBlock.Preview">
+            <summary>Read-only content to display in place of the block, or null.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Paragraph">
+            <summary>A paragraph (<c>w:p</c>).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Paragraph.Format">
+            <summary>The paragraph's own formatting; properties not set are inherited from the style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Paragraph.MarkFormat">
+            <summary>Formatting of the paragraph mark (<c>w:pPr/w:rPr</c>), used for the caret in an empty paragraph; null if none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Paragraph.Inlines">
+            <summary>The inlines in order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Paragraph.Text">
+            <summary>
+            The text as the editor counts it: run text, <c>\t</c> for a tab, <c>\v</c> for a line break, <c>\f</c> for a page or column break,
+            <c>￼</c> for an image or other token and nothing for a marker.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Paragraph.Length">
+            <summary>The length of <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.VerticalMerge">
+            <summary>How a cell takes part in a vertical merge (<c>w:vMerge</c>).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.VerticalMerge.None">
+            <summary>Not merged.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Restart">
+            <summary>Starts a merged range that continues in the cells below.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Continue">
+            <summary>Continues the merged range of the cell above.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.CellVerticalAlignment">
+            <summary>Vertical alignment of the content of a cell.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.CellVerticalAlignment.Top">
+            <summary>At the top.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.CellVerticalAlignment.Center">
+            <summary>Centred.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.CellVerticalAlignment.Bottom">
+            <summary>At the bottom.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Table">
+            <summary>A table (<c>w:tbl</c>).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Table.Format">
+            <summary>The table's own formatting.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Table.Grid">
+            <summary>The widths of the grid columns in twips.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Table.Rows">
+            <summary>The rows.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TableRow">
+            <summary>A row of a <see cref="T:MudBlazor.Extensions.Office.Document.Table"/>.</summary>
+            <param name="Cells">The cells; a cell spans <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/> grid columns.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TableRow.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.TableCell})">
+            <summary>A row of a <see cref="T:MudBlazor.Extensions.Office.Document.Table"/>.</summary>
+            <param name="Cells">The cells; a cell spans <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/> grid columns.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableRow.Cells">
+            <summary>The cells; a cell spans <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/> grid columns.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableRow.Height">
+            <summary>The row height in twips, or null for automatic.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableRow.IsHeader">
+            <summary>True if the row repeats as header on every page.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TableCell">
+            <summary>A cell of a <see cref="T:MudBlazor.Extensions.Office.Document.TableRow"/>.</summary>
+            <param name="Blocks">The content; Word requires at least one paragraph.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TableCell.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.Block})">
+            <summary>A cell of a <see cref="T:MudBlazor.Extensions.Office.Document.TableRow"/>.</summary>
+            <param name="Blocks">The content; Word requires at least one paragraph.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableCell.Blocks">
+            <summary>The content; Word requires at least one paragraph.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan">
+            <summary>The number of grid columns the cell spans, at least 1.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableCell.VMerge">
+            <summary>How the cell takes part in a vertical merge.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableCell.Width">
+            <summary>The preferred width in twips, or null for automatic.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableCell.Shading">
+            <summary>The shading fill colour (<c>#RRGGBB</c>, <c>auto</c> or <c>theme:&lt;name&gt;</c>), or null to take it from the table style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableCell.Borders">
+            <summary>The cell's own borders, or null to take them from the table.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableCell.VerticalAlign">
+            <summary>The vertical alignment of the content, or null for the default (top).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Comment">
+            <summary>A comment of the document.</summary>
+            <param name="Id">The comment id as stored in the file.</param>
+            <param name="Author">The author.</param>
+            <param name="Initials">The author's initials.</param>
+            <param name="Date">When the comment was written, or null.</param>
+            <param name="Text">The comment text, paragraphs separated by newlines.</param>
+            <param name="ParagraphId">The id of the paragraph the comment is anchored in, or null.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.Comment.#ctor(System.String,System.String,System.String,System.Nullable{System.DateTimeOffset},System.String,System.String)">
+            <summary>A comment of the document.</summary>
+            <param name="Id">The comment id as stored in the file.</param>
+            <param name="Author">The author.</param>
+            <param name="Initials">The author's initials.</param>
+            <param name="Date">When the comment was written, or null.</param>
+            <param name="Text">The comment text, paragraphs separated by newlines.</param>
+            <param name="ParagraphId">The id of the paragraph the comment is anchored in, or null.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Comment.Id">
+            <summary>The comment id as stored in the file.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Comment.Author">
+            <summary>The author.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Comment.Initials">
+            <summary>The author's initials.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Comment.Date">
+            <summary>When the comment was written, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Comment.Text">
+            <summary>The comment text, paragraphs separated by newlines.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Comment.ParagraphId">
+            <summary>The id of the paragraph the comment is anchored in, or null.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DocumentFileFormat">
+            <summary>A file format a <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/> can be read from or written to.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Docx">
+            <summary>Word document (.docx).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Dotx">
+            <summary>Word template (.dotx).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Rtf">
+            <summary>Rich Text Format (.rtf).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Html">
+            <summary>HTML (.html).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Text">
+            <summary>Plain text (.txt).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Markdown">
+            <summary>Markdown (.md).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Odt">
+            <summary>OpenDocument text (.odt).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Doc">
+            <summary>Word 97-2003 document (.doc).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DocumentProperties">
+            <summary>The core properties of a document; null values are not set.</summary>
+            <param name="Title">The title.</param>
+            <param name="Subject">The subject.</param>
+            <param name="Author">The author.</param>
+            <param name="Keywords">The keywords.</param>
+            <param name="Description">The description.</param>
+            <param name="LastModifiedBy">Who saved the document last.</param>
+            <param name="Created">When the document was created.</param>
+            <param name="Modified">When the document was saved last.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentProperties.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset})">
+            <summary>The core properties of a document; null values are not set.</summary>
+            <param name="Title">The title.</param>
+            <param name="Subject">The subject.</param>
+            <param name="Author">The author.</param>
+            <param name="Keywords">The keywords.</param>
+            <param name="Description">The description.</param>
+            <param name="LastModifiedBy">Who saved the document last.</param>
+            <param name="Created">When the document was created.</param>
+            <param name="Modified">When the document was saved last.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentProperties.Title">
+            <summary>The title.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentProperties.Subject">
+            <summary>The subject.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentProperties.Author">
+            <summary>The author.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentProperties.Keywords">
+            <summary>The keywords.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentProperties.Description">
+            <summary>The description.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentProperties.LastModifiedBy">
+            <summary>Who saved the document last.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentProperties.Created">
+            <summary>When the document was created.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentProperties.Modified">
+            <summary>When the document was saved last.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.ParagraphAlignment">
+            <summary>Horizontal alignment of a paragraph.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.ParagraphAlignment.Left">
+            <summary>Left aligned.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.ParagraphAlignment.Center">
+            <summary>Centred.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.ParagraphAlignment.Right">
+            <summary>Right aligned.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.ParagraphAlignment.Justify">
+            <summary>Justified.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.LineRule">
+            <summary>How <see cref="P:MudBlazor.Extensions.Office.Document.LineSpacing.Value"/> is interpreted.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.LineRule.Auto">
+            <summary>A multiple of single spacing in 240ths (240 = single, 360 = 1.5 lines).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.LineRule.Exact">
+            <summary>Exactly the value in twips.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.LineRule.AtLeast">
+            <summary>At least the value in twips.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.LineSpacing">
+            <summary>The line spacing of a paragraph.</summary>
+            <param name="Value">The spacing in 240ths of a line for <see cref="F:MudBlazor.Extensions.Office.Document.LineRule.Auto"/>, otherwise in twips.</param>
+            <param name="Rule">How the value is interpreted.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.LineSpacing.#ctor(System.Int32,MudBlazor.Extensions.Office.Document.LineRule)">
+            <summary>The line spacing of a paragraph.</summary>
+            <param name="Value">The spacing in 240ths of a line for <see cref="F:MudBlazor.Extensions.Office.Document.LineRule.Auto"/>, otherwise in twips.</param>
+            <param name="Rule">How the value is interpreted.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.LineSpacing.Value">
+            <summary>The spacing in 240ths of a line for <see cref="F:MudBlazor.Extensions.Office.Document.LineRule.Auto"/>, otherwise in twips.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.LineSpacing.Rule">
+            <summary>How the value is interpreted.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.NumberingRef">
+            <summary>The list a paragraph belongs to (<c>w:numPr</c>).</summary>
+            <param name="NumId">The numbering instance id; 0 explicitly removes an inherited numbering.</param>
+            <param name="Level">The list level, 0 to 8.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.NumberingRef.#ctor(System.Int32,System.Int32)">
+            <summary>The list a paragraph belongs to (<c>w:numPr</c>).</summary>
+            <param name="NumId">The numbering instance id; 0 explicitly removes an inherited numbering.</param>
+            <param name="Level">The list level, 0 to 8.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingRef.NumId">
+            <summary>The numbering instance id; 0 explicitly removes an inherited numbering.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingRef.Level">
+            <summary>The list level, 0 to 8.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TabAlignment">
+            <summary>Alignment of a tab stop.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TabAlignment.Left">
+            <summary>Text starts at the stop.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TabAlignment.Center">
+            <summary>Text is centred on the stop.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TabAlignment.Right">
+            <summary>Text ends at the stop.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TabAlignment.Decimal">
+            <summary>The decimal separator sits on the stop.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TabAlignment.Bar">
+            <summary>A vertical bar is drawn at the stop.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TabAlignment.Clear">
+            <summary>Removes an inherited stop at this position.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TabStop">
+            <summary>A custom tab stop of a paragraph.</summary>
+            <param name="Position">The position from the left text margin in twips.</param>
+            <param name="Alignment">The alignment at the stop.</param>
+            <param name="Leader">The leader as the <c>w:leader</c> value, for example <c>dot</c>; null for none.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TabStop.#ctor(System.Int32,MudBlazor.Extensions.Office.Document.TabAlignment,System.String)">
+            <summary>A custom tab stop of a paragraph.</summary>
+            <param name="Position">The position from the left text margin in twips.</param>
+            <param name="Alignment">The alignment at the stop.</param>
+            <param name="Leader">The leader as the <c>w:leader</c> value, for example <c>dot</c>; null for none.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TabStop.Position">
+            <summary>The position from the left text margin in twips.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TabStop.Alignment">
+            <summary>The alignment at the stop.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TabStop.Leader">
+            <summary>The leader as the <c>w:leader</c> value, for example <c>dot</c>; null for none.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.ParagraphFormat">
+            <summary>Paragraph formatting of a paragraph or a style (<c>w:pPr</c>). Null properties are inherited. Lengths are in twips.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.StyleId">
+            <summary>The paragraph style id (<c>w:pStyle</c>); null for the default paragraph style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.Alignment">
+            <summary>The horizontal alignment; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.IndentLeft">
+            <summary>The left indent; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.IndentRight">
+            <summary>The right indent; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.IndentFirstLine">
+            <summary>The first line indent relative to <see cref="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.IndentLeft"/>, negative for a hanging indent; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.SpacingBefore">
+            <summary>The space above the paragraph; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.SpacingAfter">
+            <summary>The space below the paragraph; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.Line">
+            <summary>The line spacing; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.KeepWithNext">
+            <summary>Kept on the same page as the next paragraph; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.KeepLines">
+            <summary>All lines kept on one page; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.PageBreakBefore">
+            <summary>Starts on a new page; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.WidowControl">
+            <summary>Prevents single lines at the top or bottom of a page; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.OutlineLevel">
+            <summary>The outline level, 0 to 8 (9 is body text); null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.Numbering">
+            <summary>The list the paragraph belongs to; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.Tabs">
+            <summary>The custom tab stops; null inherits them.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.Shading">
+            <summary>The shading fill colour (<c>#RRGGBB</c>, <c>auto</c> or <c>theme:&lt;name&gt;</c>); null inherits it.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.ParagraphFormat.Over(MudBlazor.Extensions.Office.Document.ParagraphFormat)">
+            <summary>Combines this format with a basis: the own non-null values win, the others come from the basis.</summary>
+            <param name="basis">The inherited format, or null.</param>
+            <returns>The combined format.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.VerticalAlign">
+            <summary>Vertical position of a run relative to the baseline.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.VerticalAlign.Baseline">
+            <summary>On the baseline.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.VerticalAlign.Superscript">
+            <summary>Raised and smaller.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.VerticalAlign.Subscript">
+            <summary>Lowered and smaller.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.RunFormat">
+            <summary>Character formatting of a run, a paragraph mark or a style (<c>w:rPr</c>). Null properties are inherited.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Bold">
+            <summary>Bold; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Italic">
+            <summary>Italic; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Strike">
+            <summary>Struck through with a single line; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.DoubleStrike">
+            <summary>Struck through with a double line; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Caps">
+            <summary>Shown in capital letters; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.SmallCaps">
+            <summary>Lower case letters shown as small capitals; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Hidden">
+            <summary>Hidden text; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Underline">
+            <summary>The underline style as the <c>w:u</c> value, for example <c>single</c>, <c>double</c> or <c>none</c>; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.SizePt">
+            <summary>Font size in points; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Font">
+            <summary>The ASCII typeface name; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Color">
+            <summary>Text colour: <c>#RRGGBB</c>, <c>auto</c> or <c>theme:&lt;name&gt;</c> with optional <c>shade=XX</c>/<c>tint=XX</c>; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Highlight">
+            <summary>The highlight colour name as the <c>w:highlight</c> value, for example <c>yellow</c>; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Shading">
+            <summary>The shading fill colour in the same notation as <see cref="P:MudBlazor.Extensions.Office.Document.RunFormat.Color"/>; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.VerticalAlign">
+            <summary>Superscript or subscript; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.StyleId">
+            <summary>The character style id (<c>w:rStyle</c>); null for none.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.RunFormat.Over(MudBlazor.Extensions.Office.Document.RunFormat)">
+            <summary>Combines this format with a basis: the own non-null values win, the others come from the basis.</summary>
+            <param name="basis">The inherited format, or null.</param>
+            <returns>The combined format.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TableAlignment">
+            <summary>Horizontal alignment of a table between the page margins.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TableAlignment.Left">
+            <summary>Left aligned.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TableAlignment.Center">
+            <summary>Centred.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TableAlignment.Right">
+            <summary>Right aligned.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TableLook">
+            <summary>Which parts of the table style apply (<c>w:tblLook</c>).</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TableLook.None">
+            <summary>No conditional formatting.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TableLook.FirstRow">
+            <summary>The first row is formatted as header.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TableLook.LastRow">
+            <summary>The last row is formatted as total row.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TableLook.FirstColumn">
+            <summary>The first column is formatted specially.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TableLook.LastColumn">
+            <summary>The last column is formatted specially.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TableLook.BandedRows">
+            <summary>Rows are banded.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.TableLook.BandedColumns">
+            <summary>Columns are banded.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Border">
+            <summary>A border line.</summary>
+            <param name="Style">The line style as the <c>w:val</c> value, for example <c>single</c> or <c>nil</c>.</param>
+            <param name="WidthPt">The line width in points.</param>
+            <param name="Color">The colour (<c>#RRGGBB</c>, <c>auto</c> or <c>theme:&lt;name&gt;</c>).</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.Border.#ctor(System.String,System.Double,System.String)">
+            <summary>A border line.</summary>
+            <param name="Style">The line style as the <c>w:val</c> value, for example <c>single</c> or <c>nil</c>.</param>
+            <param name="WidthPt">The line width in points.</param>
+            <param name="Color">The colour (<c>#RRGGBB</c>, <c>auto</c> or <c>theme:&lt;name&gt;</c>).</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Border.Style">
+            <summary>The line style as the <c>w:val</c> value, for example <c>single</c> or <c>nil</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Border.WidthPt">
+            <summary>The line width in points.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Border.Color">
+            <summary>The colour (<c>#RRGGBB</c>, <c>auto</c> or <c>theme:&lt;name&gt;</c>).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TableBorders">
+            <summary>The borders of a table or a cell; a null side is inherited.</summary>
+            <param name="Top">The top border.</param>
+            <param name="Bottom">The bottom border.</param>
+            <param name="Left">The left border.</param>
+            <param name="Right">The right border.</param>
+            <param name="InsideH">The horizontal borders between rows.</param>
+            <param name="InsideV">The vertical borders between columns.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TableBorders.#ctor(MudBlazor.Extensions.Office.Document.Border,MudBlazor.Extensions.Office.Document.Border,MudBlazor.Extensions.Office.Document.Border,MudBlazor.Extensions.Office.Document.Border,MudBlazor.Extensions.Office.Document.Border,MudBlazor.Extensions.Office.Document.Border)">
+            <summary>The borders of a table or a cell; a null side is inherited.</summary>
+            <param name="Top">The top border.</param>
+            <param name="Bottom">The bottom border.</param>
+            <param name="Left">The left border.</param>
+            <param name="Right">The right border.</param>
+            <param name="InsideH">The horizontal borders between rows.</param>
+            <param name="InsideV">The vertical borders between columns.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableBorders.Top">
+            <summary>The top border.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableBorders.Bottom">
+            <summary>The bottom border.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableBorders.Left">
+            <summary>The left border.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableBorders.Right">
+            <summary>The right border.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableBorders.InsideH">
+            <summary>The horizontal borders between rows.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableBorders.InsideV">
+            <summary>The vertical borders between columns.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TableFormat">
+            <summary>Table formatting (<c>w:tblPr</c>). Null properties are inherited.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableFormat.StyleId">
+            <summary>The table style id; null for none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableFormat.Width">
+            <summary>The preferred table width in twips; null for automatic.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableFormat.Alignment">
+            <summary>The horizontal alignment; null inherits it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableFormat.Borders">
+            <summary>The table borders; null inherits them.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TableFormat.Look">
+            <summary>Which parts of the table style apply.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Inline">
+            <summary>An element of a paragraph's content.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Inline.Format">
+            <summary>The inline's own character formatting; properties not set are inherited.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Inline.Link">
+            <summary>The hyperlink the inline belongs to, or null; all inlines of one link share the same instance.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Inline.Length">
+            <summary>The number of characters the inline counts as in <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TextRun">
+            <summary>A run of uniformly formatted text (<c>w:t</c>).</summary>
+            <param name="Text">The text.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextRun.#ctor(System.String)">
+            <summary>A run of uniformly formatted text (<c>w:t</c>).</summary>
+            <param name="Text">The text.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextRun.Text">
+            <summary>The text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextRun.Length">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Tab">
+            <summary>A tab character (<c>w:tab</c>).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.BreakKind">
+            <summary>The kind of a <see cref="T:MudBlazor.Extensions.Office.Document.Break"/>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.BreakKind.Line">
+            <summary>A line break within the paragraph.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.BreakKind.Page">
+            <summary>A page break.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.BreakKind.Column">
+            <summary>A column break.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Break">
+            <summary>A line, page or column break (<c>w:br</c>).</summary>
+            <param name="Kind">The kind of break.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.Break.#ctor(MudBlazor.Extensions.Office.Document.BreakKind)">
+            <summary>A line, page or column break (<c>w:br</c>).</summary>
+            <param name="Kind">The kind of break.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Break.Kind">
+            <summary>The kind of break.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.ImagePlacement">
+            <summary>How an image is placed relative to the text.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.ImagePlacement.Inline">
+            <summary>In line with the text.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.ImagePlacement.Left">
+            <summary>Floating at the left, text wraps around it.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.ImagePlacement.Right">
+            <summary>Floating at the right, text wraps around it.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.ImagePlacement.Center">
+            <summary>Floating in the centre on its own lines.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.InlineImage">
+            <summary>A picture (<c>w:drawing</c> with a <c>pic:pic</c>).</summary>
+            <param name="MediaPart">The part name of the image, for <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.GetMedia(System.String)"/>.</param>
+            <param name="WidthEmu">The displayed width in EMU.</param>
+            <param name="HeightEmu">The displayed height in EMU.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.InlineImage.#ctor(System.String,System.Int64,System.Int64)">
+            <summary>A picture (<c>w:drawing</c> with a <c>pic:pic</c>).</summary>
+            <param name="MediaPart">The part name of the image, for <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.GetMedia(System.String)"/>.</param>
+            <param name="WidthEmu">The displayed width in EMU.</param>
+            <param name="HeightEmu">The displayed height in EMU.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InlineImage.MediaPart">
+            <summary>The part name of the image, for <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.GetMedia(System.String)"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InlineImage.WidthEmu">
+            <summary>The displayed width in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InlineImage.HeightEmu">
+            <summary>The displayed height in EMU.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InlineImage.AltText">
+            <summary>The alternative text, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InlineImage.Placement">
+            <summary>How the image is placed relative to the text.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.OpaqueInline">
+            <summary>Content the editor keeps unchanged but does not model, such as a field, a formula or a chart; it counts as one character.</summary>
+            <param name="Kind">What the inline is, for example <c>field</c>.</param>
+            <param name="DisplayText">The text to display in its place.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.OpaqueInline.#ctor(System.String,System.String)">
+            <summary>Content the editor keeps unchanged but does not model, such as a field, a formula or a chart; it counts as one character.</summary>
+            <param name="Kind">What the inline is, for example <c>field</c>.</param>
+            <param name="DisplayText">The text to display in its place.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.OpaqueInline.Kind">
+            <summary>What the inline is, for example <c>field</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.OpaqueInline.DisplayText">
+            <summary>The text to display in its place.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.OpaqueInline.Instruction">
+            <summary>The field instruction, for example <c>PAGE</c>; null for other kinds.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Marker">
+            <summary>A zero-length element such as a bookmark boundary or a proofing mark.</summary>
+            <param name="Kind">The element name, for example <c>bookmarkStart</c> or <c>proofErr</c>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.Marker.#ctor(System.String)">
+            <summary>A zero-length element such as a bookmark boundary or a proofing mark.</summary>
+            <param name="Kind">The element name, for example <c>bookmarkStart</c> or <c>proofErr</c>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Marker.Kind">
+            <summary>The element name, for example <c>bookmarkStart</c> or <c>proofErr</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Marker.Name">
+            <summary>The name, for example of a bookmark, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Marker.Length">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Hyperlink">
+            <summary>A hyperlink (<c>w:hyperlink</c>) shared by the inlines it contains.</summary>
+            <param name="Target">The external target as read, or null.</param>
+            <param name="Anchor">The bookmark the link jumps to, or null.</param>
+            <param name="Tooltip">The tooltip, or null.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.Hyperlink.#ctor(System.String,System.String,System.String)">
+            <summary>A hyperlink (<c>w:hyperlink</c>) shared by the inlines it contains.</summary>
+            <param name="Target">The external target as read, or null.</param>
+            <param name="Anchor">The bookmark the link jumps to, or null.</param>
+            <param name="Tooltip">The tooltip, or null.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Hyperlink.Target">
+            <summary>The external target as read, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Hyperlink.Anchor">
+            <summary>The bookmark the link jumps to, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Hyperlink.Tooltip">
+            <summary>The tooltip, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Hyperlink.SafeTarget">
+            <summary>The target if it is an <c>http</c>, <c>https</c>, <c>mailto</c> or <c>#anchor</c> link, otherwise null.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.HeaderFooterKind">
+            <summary>Whether a <see cref="T:MudBlazor.Extensions.Office.Document.HeaderFooter"/> is a header or a footer.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.HeaderFooterKind.Header">
+            <summary>A header.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.HeaderFooterKind.Footer">
+            <summary>A footer.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.HeaderFooterType">
+            <summary>The pages a header or footer reference applies to.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.HeaderFooterType.Default">
+            <summary>All pages without a more specific one.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.HeaderFooterType.First">
+            <summary>The first page of the section, if the section has a title page.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.HeaderFooterType.Even">
+            <summary>Even pages, if the document has different even and odd headers.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.HeaderFooter">
+            <summary>A header or footer part.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.HeaderFooter.Id">
+            <summary>The id sections use to reference it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.HeaderFooter.Kind">
+            <summary>Whether it is a header or a footer.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.HeaderFooter.Blocks">
+            <summary>The content.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.PageOrientation">
+            <summary>Orientation of a page.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.PageOrientation.Portrait">
+            <summary>Taller than wide.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.PageOrientation.Landscape">
+            <summary>Wider than tall.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.PageSetup">
+            <summary>Page size and margins of a section (<c>w:pgSz</c>, <c>w:pgMar</c>), all in twips.</summary>
+            <param name="Width">The page width.</param>
+            <param name="Height">The page height.</param>
+            <param name="Orientation">The orientation.</param>
+            <param name="MarginTop">The top margin.</param>
+            <param name="MarginRight">The right margin.</param>
+            <param name="MarginBottom">The bottom margin.</param>
+            <param name="MarginLeft">The left margin.</param>
+            <param name="HeaderDistance">The distance of the header from the top edge.</param>
+            <param name="FooterDistance">The distance of the footer from the bottom edge.</param>
+            <param name="Gutter">The extra binding margin.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.PageSetup.#ctor(System.Int32,System.Int32,MudBlazor.Extensions.Office.Document.PageOrientation,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Page size and margins of a section (<c>w:pgSz</c>, <c>w:pgMar</c>), all in twips.</summary>
+            <param name="Width">The page width.</param>
+            <param name="Height">The page height.</param>
+            <param name="Orientation">The orientation.</param>
+            <param name="MarginTop">The top margin.</param>
+            <param name="MarginRight">The right margin.</param>
+            <param name="MarginBottom">The bottom margin.</param>
+            <param name="MarginLeft">The left margin.</param>
+            <param name="HeaderDistance">The distance of the header from the top edge.</param>
+            <param name="FooterDistance">The distance of the footer from the bottom edge.</param>
+            <param name="Gutter">The extra binding margin.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.Width">
+            <summary>The page width.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.Height">
+            <summary>The page height.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.Orientation">
+            <summary>The orientation.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.MarginTop">
+            <summary>The top margin.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.MarginRight">
+            <summary>The right margin.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.MarginBottom">
+            <summary>The bottom margin.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.MarginLeft">
+            <summary>The left margin.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.HeaderDistance">
+            <summary>The distance of the header from the top edge.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.FooterDistance">
+            <summary>The distance of the footer from the bottom edge.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.Gutter">
+            <summary>The extra binding margin.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.A4">
+            <summary>A4 portrait with 2.54 cm margins.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.Letter">
+            <summary>US Letter portrait with 1 inch margins.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.PageSetup.TextWidth">
+            <summary>The width between the margins.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.SectionStart">
+            <summary>Where a section starts.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.SectionStart.NextPage">
+            <summary>On a new page.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.SectionStart.Continuous">
+            <summary>On the same page.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.SectionStart.EvenPage">
+            <summary>On the next even page.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.SectionStart.OddPage">
+            <summary>On the next odd page.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.SectionStart.NextColumn">
+            <summary>In the next column.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Section">
+            <summary>A section of the document body (<c>w:sectPr</c>).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Section.Id">
+            <summary>An id that identifies the section while the document is in memory.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Section.Page">
+            <summary>The page size and margins.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Section.LastBlockId">
+            <summary>The id of the paragraph that ends the section, or null for the final section.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Section.Start">
+            <summary>Where the section starts.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Section.TitlePage">
+            <summary>True if the first page has its own header and footer.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Section.Columns">
+            <summary>The number of text columns (read-only information).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Section.Headers">
+            <summary>The ids of the headers the section references itself; see <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.HeaderFor(MudBlazor.Extensions.Office.Document.Section,MudBlazor.Extensions.Office.Document.HeaderFooterKind,MudBlazor.Extensions.Office.Document.HeaderFooterType)"/> for the effective ones.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Section.Footers">
+            <summary>The ids of the footers the section references itself; see <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.HeaderFor(MudBlazor.Extensions.Office.Document.Section,MudBlazor.Extensions.Office.Document.HeaderFooterKind,MudBlazor.Extensions.Office.Document.HeaderFooterType)"/> for the effective ones.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.CellStep">
+            <summary>A step from a table into one of its cells.</summary>
+            <param name="Row">The row index.</param>
+            <param name="Cell">The cell index within the row.</param>
+            <param name="Block">The block index within the cell.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.CellStep.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>A step from a table into one of its cells.</summary>
+            <param name="Row">The row index.</param>
+            <param name="Cell">The cell index within the row.</param>
+            <param name="Block">The block index within the cell.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.CellStep.Row">
+            <summary>The row index.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.CellStep.Cell">
+            <summary>The cell index within the row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.CellStep.Block">
+            <summary>The block index within the cell.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DocumentPosition">
+            <summary>A caret position: a character offset in a paragraph.</summary>
+            <param name="BlockId">The id of the top-level block of the body or of a header or footer.</param>
+            <param name="Path">The steps from that block into nested table cells; empty outside tables.</param>
+            <param name="Offset">The character offset in the paragraph's <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentPosition.#ctor(System.String,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.CellStep},System.Int32)">
+            <summary>A caret position: a character offset in a paragraph.</summary>
+            <param name="BlockId">The id of the top-level block of the body or of a header or footer.</param>
+            <param name="Path">The steps from that block into nested table cells; empty outside tables.</param>
+            <param name="Offset">The character offset in the paragraph's <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentPosition.BlockId">
+            <summary>The id of the top-level block of the body or of a header or footer.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentPosition.Offset">
+            <summary>The character offset in the paragraph's <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentPosition.Path">
+            <summary>The steps from <see cref="P:MudBlazor.Extensions.Office.Document.DocumentPosition.BlockId"/> into nested table cells; empty outside tables.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentPosition.Equals(MudBlazor.Extensions.Office.Document.DocumentPosition)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentPosition.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DocumentRange">
+            <summary>A range between two positions; <see cref="P:MudBlazor.Extensions.Office.Document.DocumentRange.Start"/> may lie after <see cref="P:MudBlazor.Extensions.Office.Document.DocumentRange.End"/> for a backward selection.</summary>
+            <param name="Start">Where the range starts (the anchor of a selection).</param>
+            <param name="End">Where the range ends (the caret of a selection).</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentRange.#ctor(MudBlazor.Extensions.Office.Document.DocumentPosition,MudBlazor.Extensions.Office.Document.DocumentPosition)">
+            <summary>A range between two positions; <see cref="P:MudBlazor.Extensions.Office.Document.DocumentRange.Start"/> may lie after <see cref="P:MudBlazor.Extensions.Office.Document.DocumentRange.End"/> for a backward selection.</summary>
+            <param name="Start">Where the range starts (the anchor of a selection).</param>
+            <param name="End">Where the range ends (the caret of a selection).</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentRange.Start">
+            <summary>Where the range starts (the anchor of a selection).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentRange.End">
+            <summary>Where the range ends (the caret of a selection).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentRange.IsEmpty">
+            <summary>True if start and end are the same position.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentRange.Normalize(MudBlazor.Extensions.Office.Document.TextDocument)">
+            <summary>Returns the range with start before end in document order.</summary>
+            <param name="document">The document the positions belong to.</param>
+            <returns>The ordered range.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TextDocument">
+            <summary>A text document of paragraphs and tables in sections, with headers, footers and an undo stack.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Blocks">
+            <summary>The blocks of the body in order, flat across sections.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Sections">
+            <summary>The sections in order; the last one is the final section of the body.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.HeadersFooters">
+            <summary>All headers and footers.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Properties">
+            <summary>The core document properties.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Comments">
+            <summary>The comments in file order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.HasTrackedChanges">
+            <summary>True if the document contains tracked insertions, deletions or formatting changes; they are shown in their final state.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.IsTemplate">
+            <summary>True if the document is a template (.dotx).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.EvenAndOddHeaders">
+            <summary>True if even pages have their own headers and footers.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Undo">
+            <summary>The undo and redo history.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Modified">
+            <summary>True if the document changed since it was loaded.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Version">
+            <summary>Incremented by every change of the document; use it as render key.</summary>
+        </member>
+        <member name="E:MudBlazor.Extensions.Office.Document.TextDocument.Changed">
+            <summary>Raised once after each command, transaction, undo or redo with everything that changed.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Load(System.IO.Stream,MudBlazor.Extensions.Office.Document.DocumentFileFormat)">
+            <summary>Reads a document.</summary>
+            <param name="stream">The file content.</param>
+            <param name="format">The file format.</param>
+            <returns>The document.</returns>
+            <exception cref="T:System.NotSupportedException">The format cannot be read.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Save(System.IO.Stream,MudBlazor.Extensions.Office.Document.DocumentFileFormat)">
+            <summary>Writes the document.</summary>
+            <param name="target">The stream that receives the file.</param>
+            <param name="format">The file format.</param>
+            <exception cref="T:System.NotSupportedException">The format cannot be written.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.GetMedia(System.String)">
+            <summary>Gets the content of an image or other media part.</summary>
+            <param name="mediaPart">The part name, for example <see cref="P:MudBlazor.Extensions.Office.Document.InlineImage.MediaPart"/>.</param>
+            <returns>The bytes, or null if the document has no such part.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.MediaContentType(System.String)">
+            <summary>Gets the content type of a media part.</summary>
+            <param name="mediaPart">The part name.</param>
+            <returns>The content type, or null if the document has no such part.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Execute(MudBlazor.Extensions.Office.IDocumentCommand{MudBlazor.Extensions.Office.Document.TextDocument})">
+            <summary>Applies a command and records it as one undo step (or adds it to the open transaction). A command that changes nothing records nothing.</summary>
+            <param name="command">The command.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.FindBlock(System.String)">
+            <summary>Finds a block of the body, of a table cell at any depth or of a header or footer.</summary>
+            <param name="id">The block id.</param>
+            <returns>The block, or null if there is none with this id.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.HeaderFooter(System.String)">
+            <summary>Gets a header or footer.</summary>
+            <param name="id">Its id.</param>
+            <returns>The header or footer, or null if there is none with this id.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.HeaderFor(MudBlazor.Extensions.Office.Document.Section,MudBlazor.Extensions.Office.Document.HeaderFooterKind,MudBlazor.Extensions.Office.Document.HeaderFooterType)">
+            <summary>Gets the header or footer that applies to a section; a section without its own reference inherits the previous section's.</summary>
+            <param name="section">The section.</param>
+            <param name="kind">Header or footer.</param>
+            <param name="type">The pages it applies to.</param>
+            <returns>The header or footer, or null if neither the section nor a previous one references one.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Resolve(MudBlazor.Extensions.Office.Document.DocumentPosition)">
+            <summary>Finds the paragraph a position points into.</summary>
+            <param name="position">The position.</param>
+            <returns>The paragraph and the offset in its <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>.</returns>
+            <exception cref="T:System.ArgumentException">The position does not point into a paragraph of the document.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.PositionOf(System.String,System.Int32)">
+            <summary>Gets the position of an offset in a paragraph of the body, of a table cell or of a header or footer.</summary>
+            <param name="paragraphId">The paragraph id.</param>
+            <param name="offset">The offset in the paragraph's <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>.</param>
+            <returns>The position.</returns>
+            <exception cref="T:System.ArgumentException">The document has no paragraph with this id.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Compare(MudBlazor.Extensions.Office.Document.DocumentPosition,MudBlazor.Extensions.Office.Document.DocumentPosition)">
+            <summary>Compares two positions in document order: the body first, then the headers and footers.</summary>
+            <param name="a">The first position.</param>
+            <param name="b">The second position.</param>
+            <returns>Less than zero if <paramref name="a"/> comes first, zero if both are equal, greater than zero otherwise.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.ParagraphsIn(MudBlazor.Extensions.Office.Document.DocumentRange)">
+            <summary>Lists the paragraphs a range touches in document order, depth-first through tables.</summary>
+            <param name="range">The range, in either direction.</param>
+            <returns>The paragraphs.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.AllParagraphs(System.Boolean)">
+            <summary>Lists all paragraphs in document order, depth-first through tables.</summary>
+            <param name="includeHeadersFooters">True to list the paragraphs of the headers and footers after the body.</param>
+            <returns>The paragraphs.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.TextOf(MudBlazor.Extensions.Office.Document.DocumentRange)">
+            <summary>Gets the text of a range; paragraphs are joined by <c>\n</c>.</summary>
+            <param name="range">The range, in either direction.</param>
+            <returns>The text.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.WordAt(MudBlazor.Extensions.Office.Document.DocumentPosition)">
+            <summary>Gets the word at a position: the letters, digits and underscores around the character after it.</summary>
+            <param name="position">The position.</param>
+            <returns>The range of the word, or an empty range at the position if the character after it is not part of a word.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DocumentChangeKind">
+            <summary>What changed in a text document.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.None">
+            <summary>Nothing.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Content">
+            <summary>Text or formatting of blocks changed.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Structure">
+            <summary>Blocks were added, removed or moved.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Styles">
+            <summary>Styles changed; every block may be affected.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Numbering">
+            <summary>List definitions or numbering changed; list labels may be affected everywhere.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Sections">
+            <summary>Sections or page setup changed.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.HeadersFooters">
+            <summary>Headers or footers changed.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Properties">
+            <summary>Document properties changed.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs">
+            <summary>Describes everything that changed during one command, transaction, undo or redo.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.ChangedBlockIds">
+            <summary>The ids of the top-level blocks (of the body or of a header or footer) that changed, including added ones.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.RemovedBlockIds">
+            <summary>The ids of the top-level blocks that were removed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.Kind">
+            <summary>The kinds of change.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.AddTextCommand">
             <summary>Adds a text block on top of the other elements. Text without any character adds nothing.</summary>
