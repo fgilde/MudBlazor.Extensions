@@ -34,15 +34,18 @@ public sealed record Table : Block
     /// <summary>The table's own formatting.</summary>
     public TableFormat Format { get; init; } = new();
 
-    /// <summary>The widths of the grid columns in twips.</summary>
+    /// <summary>The widths of the grid columns in twips. The list is treated as immutable after assignment: replace the table instead of changing it.</summary>
     public IReadOnlyList<int> Grid { get; init; } = [];
 
-    /// <summary>The rows.</summary>
+    /// <summary>The rows. The list is treated as immutable after assignment: replace the table instead of changing it.</summary>
     public IReadOnlyList<TableRow> Rows { get; init; } = [];
 }
 
 /// <summary>A row of a <see cref="Table"/>.</summary>
-/// <param name="Cells">The cells; a cell spans <see cref="TableCell.GridSpan"/> grid columns.</param>
+/// <param name="Cells">
+/// The cells; a cell spans <see cref="TableCell.GridSpan"/> grid columns. The list is treated as immutable after assignment: replace the row instead
+/// of changing it.
+/// </param>
 public sealed record TableRow(IReadOnlyList<TableCell> Cells)
 {
     /// <summary>The row height in twips, or null for automatic.</summary>
@@ -55,7 +58,9 @@ public sealed record TableRow(IReadOnlyList<TableCell> Cells)
 }
 
 /// <summary>A cell of a <see cref="TableRow"/>.</summary>
-/// <param name="Blocks">The content; Word requires at least one paragraph.</param>
+/// <param name="Blocks">
+/// The content; Word requires at least one paragraph. The list is treated as immutable after assignment: replace the cell instead of changing it.
+/// </param>
 public sealed record TableCell(IReadOnlyList<Block> Blocks)
 {
     /// <summary>The number of grid columns the cell spans, at least 1.</summary>

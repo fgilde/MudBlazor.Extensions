@@ -42,7 +42,7 @@ public sealed class TextDocumentChangedEventArgs : EventArgs
     /// <summary>The ids of the top-level blocks (of the body or of a header or footer) that changed, including added ones.</summary>
     public IReadOnlyCollection<string> ChangedBlockIds { get; }
 
-    /// <summary>The ids of the top-level blocks that were removed.</summary>
+    /// <summary>The ids of the blocks that were removed: top-level blocks and blocks dropped from tables.</summary>
     public IReadOnlyCollection<string> RemovedBlockIds { get; }
 
     /// <summary>The kinds of change.</summary>

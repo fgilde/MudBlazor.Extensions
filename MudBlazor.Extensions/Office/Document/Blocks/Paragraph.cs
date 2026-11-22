@@ -12,7 +12,7 @@ public sealed record Paragraph : Block
     /// <summary>Formatting of the paragraph mark (<c>w:pPr/w:rPr</c>), used for the caret in an empty paragraph; null if none.</summary>
     public RunFormat MarkFormat { get; init; }
 
-    /// <summary>The inlines in order; null is stored as empty.</summary>
+    /// <summary>The inlines in order; null is stored as empty. The list is treated as immutable after assignment: replace the paragraph instead of changing it.</summary>
     public IReadOnlyList<Inline> Inlines
     {
         get => _inlines;

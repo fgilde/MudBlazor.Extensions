@@ -5,9 +5,11 @@ public sealed partial class TextDocument
     /// <summary>Finds the paragraph a position points into.</summary>
     /// <param name="position">The position.</param>
     /// <returns>The paragraph and the offset in its <see cref="Paragraph.Text"/>.</returns>
+    /// <exception cref="ArgumentNullException">The position is null.</exception>
     /// <exception cref="ArgumentException">The position does not point into a paragraph of the document.</exception>
     public (Paragraph Paragraph, int Offset) Resolve(DocumentPosition position)
     {
+        ArgumentNullException.ThrowIfNull(position);
         var location = Locate(position.BlockId);
         return Walk(Container(location.Container)[location.Index], position.Path) is Paragraph paragraph && position.Offset >= 0 && position.Offset <= paragraph.Length
             ? (paragraph, position.Offset)
@@ -18,10 +20,12 @@ public sealed partial class TextDocument
     /// <param name="paragraphId">The paragraph id.</param>
     /// <param name="offset">The offset in the paragraph's <see cref="Paragraph.Text"/>.</param>
     /// <returns>The position.</returns>
+    /// <exception cref="ArgumentNullException">The paragraph id is null.</exception>
     /// <exception cref="ArgumentException">The document has no paragraph with this id.</exception>
     /// <exception cref="ArgumentOutOfRangeException">The offset lies outside the paragraph.</exception>
     public DocumentPosition PositionOf(string paragraphId, int offset)
     {
+        ArgumentNullException.ThrowIfNull(paragraphId);
         if (!TryLocate(paragraphId, out var location) || location.Block is not Paragraph paragraph)
             throw new ArgumentException($"{paragraphId} is not a paragraph of the document.", nameof(paragraphId));
         if (offset < 0 || offset > paragraph.Length) throw new ArgumentOutOfRangeException(nameof(offset), offset, $"The paragraph has {paragraph.Length} characters.");
@@ -32,8 +36,11 @@ public sealed partial class TextDocument
     /// <param name="a">The first position.</param>
     /// <param name="b">The second position.</param>
     /// <returns>Less than zero if <paramref name="a"/> comes first, zero if both are equal, greater than zero otherwise.</returns>
+    /// <exception cref="ArgumentNullException">A position is null.</exception>
     public int Compare(DocumentPosition a, DocumentPosition b)
     {
+        ArgumentNullException.ThrowIfNull(a);
+        ArgumentNullException.ThrowIfNull(b);
         var la = Locate(a.BlockId);
         var lb = Locate(b.BlockId);
         var result = (la.Container, la.Index).CompareTo((lb.Container, lb.Index));
@@ -45,11 +52,17 @@ public sealed partial class TextDocument
     /// <summary>Lists the paragraphs a range touches in document order, depth-first through tables.</summary>
     /// <param name="range">The range, in either direction.</param>
     /// <returns>The paragraphs.</returns>
+    /// <exception cref="ArgumentNullException">A position of the range is null.</exception>
     public IEnumerable<Paragraph> ParagraphsIn(DocumentRange range)
     {
+        ArgumentNullException.ThrowIfNull(range.Start, nameof(range));
+        ArgumentNullException.ThrowIfNull(range.End, nameof(range));
         var (start, end) = range.Normalize(this);
-        var first = Resolve(start).Paragraph.Id;
-        var last = Resolve(end).Paragraph.Id;
+        return ParagraphsBetween(Resolve(start).Paragraph.Id, Resolve(end).Paragraph.Id);
+    }
+
+    private IEnumerable<Paragraph> ParagraphsBetween(string first, string last)
+    {
         var inRange = false;
         foreach (var paragraph in AllParagraphs(true))
         {

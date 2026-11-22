@@ -33058,7 +33058,7 @@
             <summary>Formatting of the paragraph mark (<c>w:pPr/w:rPr</c>), used for the caret in an empty paragraph; null if none.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.Paragraph.Inlines">
-            <summary>The inlines in order; null is stored as empty.</summary>
+            <summary>The inlines in order; null is stored as empty. The list is treated as immutable after assignment: replace the paragraph instead of changing it.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.Paragraph.Text">
             <summary>
@@ -33100,21 +33100,30 @@
             <summary>The table's own formatting.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.Table.Grid">
-            <summary>The widths of the grid columns in twips.</summary>
+            <summary>The widths of the grid columns in twips. The list is treated as immutable after assignment: replace the table instead of changing it.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.Table.Rows">
-            <summary>The rows.</summary>
+            <summary>The rows. The list is treated as immutable after assignment: replace the table instead of changing it.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.TableRow">
             <summary>A row of a <see cref="T:MudBlazor.Extensions.Office.Document.Table"/>.</summary>
-            <param name="Cells">The cells; a cell spans <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/> grid columns.</param>
+            <param name="Cells">
+            The cells; a cell spans <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/> grid columns. The list is treated as immutable after assignment: replace the row instead
+            of changing it.
+            </param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TableRow.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.TableCell})">
             <summary>A row of a <see cref="T:MudBlazor.Extensions.Office.Document.Table"/>.</summary>
-            <param name="Cells">The cells; a cell spans <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/> grid columns.</param>
+            <param name="Cells">
+            The cells; a cell spans <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/> grid columns. The list is treated as immutable after assignment: replace the row instead
+            of changing it.
+            </param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TableRow.Cells">
-            <summary>The cells; a cell spans <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/> grid columns.</summary>
+            <summary>
+            The cells; a cell spans <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/> grid columns. The list is treated as immutable after assignment: replace the row instead
+            of changing it.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TableRow.Height">
             <summary>The row height in twips, or null for automatic.</summary>
@@ -33124,14 +33133,20 @@
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.TableCell">
             <summary>A cell of a <see cref="T:MudBlazor.Extensions.Office.Document.TableRow"/>.</summary>
-            <param name="Blocks">The content; Word requires at least one paragraph.</param>
+            <param name="Blocks">
+            The content; Word requires at least one paragraph. The list is treated as immutable after assignment: replace the cell instead of changing it.
+            </param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TableCell.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.Block})">
             <summary>A cell of a <see cref="T:MudBlazor.Extensions.Office.Document.TableRow"/>.</summary>
-            <param name="Blocks">The content; Word requires at least one paragraph.</param>
+            <param name="Blocks">
+            The content; Word requires at least one paragraph. The list is treated as immutable after assignment: replace the cell instead of changing it.
+            </param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TableCell.Blocks">
-            <summary>The content; Word requires at least one paragraph.</summary>
+            <summary>
+            The content; Word requires at least one paragraph. The list is treated as immutable after assignment: replace the cell instead of changing it.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan">
             <summary>The number of grid columns the cell spans, at least 1.</summary>
@@ -34054,10 +34069,17 @@
             <param name="type">The pages it applies to.</param>
             <returns>The header or footer, or null if neither the section nor a previous one references one.</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.InvalidateIndex">
+            <summary>
+            Optional: drops the block index so the next lookup rebuilds it. Lookups detect stale and missing entries by themselves, so no caller needs
+            this for correctness; it only saves the staleness check after a bulk change.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Resolve(MudBlazor.Extensions.Office.Document.DocumentPosition)">
             <summary>Finds the paragraph a position points into.</summary>
             <param name="position">The position.</param>
             <returns>The paragraph and the offset in its <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">The position is null.</exception>
             <exception cref="T:System.ArgumentException">The position does not point into a paragraph of the document.</exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.PositionOf(System.String,System.Int32)">
@@ -34065,6 +34087,7 @@
             <param name="paragraphId">The paragraph id.</param>
             <param name="offset">The offset in the paragraph's <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>.</param>
             <returns>The position.</returns>
+            <exception cref="T:System.ArgumentNullException">The paragraph id is null.</exception>
             <exception cref="T:System.ArgumentException">The document has no paragraph with this id.</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">The offset lies outside the paragraph.</exception>
         </member>
@@ -34073,11 +34096,13 @@
             <param name="a">The first position.</param>
             <param name="b">The second position.</param>
             <returns>Less than zero if <paramref name="a"/> comes first, zero if both are equal, greater than zero otherwise.</returns>
+            <exception cref="T:System.ArgumentNullException">A position is null.</exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.ParagraphsIn(MudBlazor.Extensions.Office.Document.DocumentRange)">
             <summary>Lists the paragraphs a range touches in document order, depth-first through tables.</summary>
             <param name="range">The range, in either direction.</param>
             <returns>The paragraphs.</returns>
+            <exception cref="T:System.ArgumentNullException">A position of the range is null.</exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.AllParagraphs(System.Boolean)">
             <summary>Lists all paragraphs in document order, depth-first through tables.</summary>
@@ -34128,7 +34153,7 @@
             <summary>The ids of the top-level blocks (of the body or of a header or footer) that changed, including added ones.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.RemovedBlockIds">
-            <summary>The ids of the top-level blocks that were removed.</summary>
+            <summary>The ids of the blocks that were removed: top-level blocks and blocks dropped from tables.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.Kind">
             <summary>The kinds of change.</summary>

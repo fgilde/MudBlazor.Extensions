@@ -236,7 +236,6 @@ public class DocumentModelTests
         }, d =>
         {
             d.BlockList.Insert(1, removed);
-            d.InvalidateIndex();
             d.Notify(removed.Id, DocumentChangeKind.Structure);
         }));
 
@@ -285,6 +284,8 @@ public class DocumentModelTests
         Assert.Same(target, document.EnsureIds(target));
         Assert.Throws<ArgumentException>(() => document.ReplaceBlock(target, target with { Id = document.Blocks[0].Id }));
         Assert.Throws<ArgumentException>(() => document.ReplaceBlock(target, T(Row([target]), Row([document.Blocks[0]]))));
+        var twice = P("twice") with { Id = "twice" };
+        Assert.Throws<ArgumentException>(() => document.ReplaceBlock(target, T(Row([twice], [twice]))));
         Assert.Same(table, document.Blocks[1]);
         var events = new List<TextDocumentChangedEventArgs>();
         document.Changed += (_, e) => events.Add(e);
@@ -324,6 +325,83 @@ public class DocumentModelTests
         Assert.Throws<ArgumentOutOfRangeException>(() => document.PositionOf(paragraph, 6));
         Assert.Throws<ArgumentOutOfRangeException>(() => document.PositionOf(nested, -1));
         Assert.IsNotType<CellStep[]>(document.PositionOf(nested, 0).Path);
+        var valid = document.PositionOf(paragraph, 0);
+        Assert.Throws<ArgumentNullException>(() => document.Resolve(null!));
+        Assert.Throws<ArgumentNullException>(() => document.PositionOf(null!, 0));
+        Assert.Throws<ArgumentNullException>(() => document.Compare(null!, valid));
+        Assert.Throws<ArgumentNullException>(() => document.Compare(valid, null!));
+        Assert.Throws<ArgumentNullException>(() => document.ParagraphsIn(new DocumentRange(valid, null!)));
+        Assert.Throws<ArgumentNullException>(() => document.ParagraphsIn(default));
+    }
+
+    [Fact]
+    public void Notify_AfterBlockAddedByListMutation_ReportsChanged_FindBlockFinds()
+    {
+        var document = TextDocument.FromBlocks([P("a"), P("b")]);
+        Assert.Same(document.Blocks[1], document.FindBlock(document.Blocks[1].Id));
+        var added = document.Identify(NestedTable());
+        var events = new List<TextDocumentChangedEventArgs>();
+        document.Changed += (_, e) => events.Add(e);
+
+        document.Execute(new DelegateCommand(d =>
+        {
+            d.BlockList.Insert(1, added);
+            d.Notify(added.Id, DocumentChangeKind.Structure);
+        }, d =>
+        {
+            d.BlockList.RemoveAt(1);
+            d.Notify(added.Id, DocumentChangeKind.Structure);
+        }));
+
+        var args = Assert.Single(events);
+        Assert.Equal([added.Id], args.ChangedBlockIds);
+        Assert.Empty(args.RemovedBlockIds);
+        Assert.Same(added, document.FindBlock(added.Id));
+        var nested = AllBlocks([added]).Last();
+        Assert.Same(nested, document.FindBlock(nested.Id));
+        Assert.Equal(added.Id, document.PositionOf(nested.Id, 0).BlockId);
+    }
+
+    [Fact]
+    public void ReplaceBlock_ReturnsIdentifiedReplacement_UndoRestoresOriginal()
+    {
+        var document = TextDocument.FromBlocks([P("a"), NestedTable()]);
+        var old = document.Blocks[0];
+        var oldTable = document.Blocks[1];
+
+        var returned = document.ReplaceBlock(old, P("new"));
+
+        Assert.NotNull(returned.Id);
+        Assert.Same(returned, document.Blocks[0]);
+        Assert.Same(returned, document.FindBlock(returned.Id));
+
+        Assert.Same(old, document.ReplaceBlock(returned, old));
+        Assert.Same(old, document.Blocks[0]);
+        Assert.Same(old, document.FindBlock(old.Id));
+        Assert.Null(document.FindBlock(returned.Id));
+
+        var table = (Table)document.ReplaceBlock(oldTable, T(Row([P("x")])));
+        Assert.Same(oldTable, document.ReplaceBlock(table, oldTable));
+        Assert.Same(oldTable, document.Blocks[1]);
+    }
+
+    [Fact]
+    public void ReplaceBlock_TableLosesRow_DroppedNestedIdsRemoved()
+    {
+        var document = TextDocument.FromBlocks([P("a"), NestedTable()]);
+        var table = (Table)document.Blocks[1];
+        var dropped = AllBlocks(table.Rows[1].Cells.SelectMany(c => c.Blocks)).Select(b => b.Id).ToList();
+        var events = new List<TextDocumentChangedEventArgs>();
+        document.Changed += (_, e) => events.Add(e);
+
+        document.Execute(Replace(table, table with { Rows = [table.Rows[0]] }));
+
+        var args = Assert.Single(events);
+        Assert.Equal([table.Id], args.ChangedBlockIds);
+        Assert.Equal(dropped.Order(), args.RemovedBlockIds.Order());
+        Assert.Equal(5, dropped.Count);
+        Assert.All(dropped, id => Assert.Null(document.FindBlock(id)));
+        Assert.Same(table.Rows[0].Cells[0].Blocks[0], document.FindBlock(table.Rows[0].Cells[0].Blocks[0].Id));
     }
 
     [Fact]

@@ -142,19 +142,26 @@ public sealed partial class TextDocument
         return result is Table table ? table with { Rows = table.Rows.Select(EnsureIds).ToList() } : result;
     }
 
+    /// <summary>
+    /// Optional: drops the block index so the next lookup rebuilds it. Lookups detect stale and missing entries by themselves, so no caller needs
+    /// this for correctness; it only saves the staleness check after a bulk change.
+    /// </summary>
     internal void InvalidateIndex() => _index = null;
 
     internal void Notify(string blockId, DocumentChangeKind kind) =>
         Track(TryLocate(blockId, out var location) ? Container(location.Container)[location.Index].Id : blockId, kind);
 
-    internal void ReplaceBlock(Block old, Block replacement)
+    internal Block ReplaceBlock(Block old, Block replacement)
     {
-        if (ReferenceEquals(old, replacement)) return;
+        if (ReferenceEquals(old, replacement)) return replacement;
+        InvalidateIndex();
         if (!TryLocate(old.Id, out var location)) throw new ArgumentException($"Block {old.Id} is not part of the document.", nameof(old));
         replacement = EnsureIds(replacement);
         var ownIds = Subtree(location.Block).Select(b => b.Id).ToHashSet();
-        if (Subtree(replacement).FirstOrDefault(b => !ownIds.Contains(b.Id) && TryLocate(b.Id, out _)) is { } duplicate)
-            throw new ArgumentException($"Block {duplicate.Id} already exists elsewhere in the document.", nameof(replacement));
+        var seen = new HashSet<string>();
+        foreach (var block in Subtree(replacement))
+            if (!seen.Add(block.Id) || !ownIds.Contains(block.Id) && Index.ContainsKey(block.Id))
+                throw new ArgumentException($"Block {block.Id} occurs twice in the replacement or already exists elsewhere in the document.", nameof(replacement));
         var top = Container(location.Container)[location.Index];
         var newTop = Replace(top, location.Path, replacement);
         if (location.Container < 0)
@@ -164,8 +171,10 @@ public sealed partial class TextDocument
         InvalidateIndex();
         var kind = (location.Container < 0 ? DocumentChangeKind.Content : DocumentChangeKind.HeadersFooters) |
                    (replacement.Id != location.Block.Id ? DocumentChangeKind.Structure : DocumentChangeKind.None);
+        _changedIds.UnionWith(ownIds);
         Track(top.Id, kind);
         if (newTop.Id != top.Id) Track(newTop.Id, kind);
+        return replacement;
     }
 
     private TableRow EnsureIds(TableRow row) =>
@@ -181,8 +190,10 @@ public sealed partial class TextDocument
     private bool TryLocate(string id, out BlockLocation location)
     {
         location = default;
-        if (id == null || !Index.TryGetValue(id, out location)) return false;
-        if (ReferenceEquals(Walk(TopAt(location.Container, location.Index), location.Path), location.Block)) return true;
+        if (id == null) return false;
+        var fresh = _index == null;
+        if (Index.TryGetValue(id, out location) && ReferenceEquals(Walk(TopAt(location.Container, location.Index), location.Path), location.Block)) return true;
+        if (fresh) return false;
         InvalidateIndex();
         return Index.TryGetValue(id, out location);
     }
@@ -258,8 +269,15 @@ public sealed partial class TextDocument
     private void RaiseChanged()
     {
         if (_changeKind == DocumentChangeKind.None && _changedIds.Count == 0) return;
-        var present = _changedIds.ToLookup(id => TryLocate(id, out _));
-        var args = new TextDocumentChangedEventArgs(present[true].ToList(), present[false].ToList(), _changeKind);
+        InvalidateIndex();
+        var changed = new HashSet<string>();
+        var removed = new List<string>();
+        foreach (var id in _changedIds)
+            if (TryLocate(id, out var location))
+                changed.Add(Container(location.Container)[location.Index].Id);
+            else
+                removed.Add(id);
+        var args = new TextDocumentChangedEventArgs(changed, removed, _changeKind);
         _changedIds.Clear();
         _changeKind = DocumentChangeKind.None;
         Changed?.Invoke(this, args);
