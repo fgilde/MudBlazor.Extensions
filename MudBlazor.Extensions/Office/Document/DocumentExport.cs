@@ -24,7 +24,7 @@ public enum DocumentFeature
     /// <summary>Tables inside table cells.</summary>
     NestedTables,
 
-    /// <summary>Pictures, their placement and formats other than PNG, JPEG, GIF and BMP.</summary>
+    /// <summary>Pictures, their placement and formats the target cannot hold: HTML and Markdown keep PNG, JPEG, GIF and BMP, RTF keeps PNG and JPEG.</summary>
     Images,
 
     /// <summary>Hyperlinks, link targets other than <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c>, and bookmarks.</summary>
@@ -66,7 +66,8 @@ public static class DocumentExport
         var losses = new HashSet<DocumentFeature>();
         new Scan(document, format, losses).Blocks(document.Blocks, 0);
         if (document.HeadersFooters.Any(h => h.Blocks.Any(b => b is not Paragraph { Length: 0 }))) losses.Add(DocumentFeature.HeadersFooters);
-        if (document.Sections.Count > 1 || document.Sections.Any(s => s.Columns > 1 || s.Page.Orientation == PageOrientation.Landscape)) losses.Add(DocumentFeature.Sections);
+        if (document.Sections.Count > 1 || document.Sections.Any(s => s.Columns > 1 || s.Page.Orientation == PageOrientation.Landscape && format != DocumentFileFormat.Rtf))
+            losses.Add(DocumentFeature.Sections);
         if (document.Comments.Count > 0) losses.Add(DocumentFeature.Comments);
         return losses.Order().ToList();
     }
@@ -76,6 +77,7 @@ public static class DocumentExport
         private readonly bool _text = format == DocumentFileFormat.Text;
         private readonly bool _markdown = format == DocumentFileFormat.Markdown;
         private readonly bool _html = format == DocumentFileFormat.Html;
+        private readonly bool _rtf = format == DocumentFileFormat.Rtf;
 
         public void Blocks(IEnumerable<Block> blocks, int depth)
         {
@@ -88,7 +90,7 @@ public static class DocumentExport
                     case Table table:
                         Lost(DocumentFeature.Tables, _text);
                         Lost(DocumentFeature.NestedTables, depth > 0 && !_html);
-                        Lost(DocumentFeature.MergedCells, !_html && table.Rows.SelectMany(r => r.Cells).Any(c => c.GridSpan > 1 || c.VMerge != VerticalMerge.None));
+                        Lost(DocumentFeature.MergedCells, !_html && !_rtf && table.Rows.SelectMany(r => r.Cells).Any(c => c.GridSpan > 1 || c.VMerge != VerticalMerge.None));
                         Lost(DocumentFeature.Styles, table.Format.StyleId != null && (_text || table.Format.StyleId != Tables.GridStyle));
                         foreach (var cell in table.Rows.SelectMany(r => r.Cells)) Blocks(cell.Blocks, depth + 1);
                         break;
@@ -102,18 +104,18 @@ public static class DocumentExport
         private void Paragraph(Paragraph paragraph)
         {
             var own = paragraph.Format;
-            Lost(DocumentFeature.ParagraphFormatting,
+            Lost(DocumentFeature.ParagraphFormatting, !_rtf && (
                 own.IndentRight != null || own.SpacingBefore != null || own.SpacingAfter != null || own.Line != null || own.KeepWithNext != null ||
                 own.KeepLines != null || own.WidowControl != null || own.Tabs != null ||
                 !_html && (own.Alignment != null || own.IndentLeft != null || own.IndentFirstLine != null || own.Shading != null) ||
-                _markdown && own.PageBreakBefore != null || _text && own.OutlineLevel != null);
+                _markdown && own.PageBreakBefore != null || _text && own.OutlineLevel != null));
             Lost(DocumentFeature.Styles, own.StyleId != null && own.StyleId != document.Styles.DefaultParagraphStyle?.Id && (_text || !IsHeading(own.StyleId)));
-            Lost(DocumentFeature.Lists, _text && document.ListLabel(paragraph) != null);
+            Lost(DocumentFeature.Lists, (_text || _rtf) && document.ListLabel(paragraph) != null);
             var preformatted = _markdown && HtmlWriter.IsPreformatted(document, paragraph);
             foreach (var inline in paragraph.Inlines)
             {
                 var run = inline.Format;
-                Lost(DocumentFeature.CharacterFormatting, !_html && (
+                Lost(DocumentFeature.CharacterFormatting, !_html && !_rtf && (
                     run.Underline != null || run.Color != null || run.SizePt != null || run.Highlight != null || run.Shading != null || run.Caps != null ||
                     run.SmallCaps != null || run.VerticalAlign != null || run.DoubleStrike != null || run.Hidden != null ||
                     run.Font != null && !(preformatted && run.Font == HtmlReader.Monospace) ||
@@ -121,7 +123,7 @@ public static class DocumentExport
                 Lost(DocumentFeature.Styles, run.StyleId != null && (_text || run.StyleId != InlineEdit.HyperlinkStyle));
                 Lost(DocumentFeature.Links, inline.Link != null && (_text || inline.Link.SafeTarget == null) || inline is Marker { Kind: "bookmarkStart", Name: { } name } && name != "_GoBack");
                 Lost(DocumentFeature.Images, inline is InlineImage image && (_text || image.Placement != ImagePlacement.Inline ||
-                                                                             !HtmlWriter.ImageTypes.Contains(document.MediaContentType(image.MediaPart)?.ToLowerInvariant() ?? "")));
+                                                                             !(_rtf ? RtfWriter.ImageTypes : HtmlWriter.ImageTypes).Contains(document.MediaContentType(image.MediaPart)?.ToLowerInvariant() ?? "")));
                 Lost(DocumentFeature.Fields, inline is OpaqueInline { Kind: "field" or "fieldStart" or "fieldEnd" });
                 Lost(DocumentFeature.OpaqueContent, inline is OpaqueInline { Kind: not ("field" or "fieldStart" or "fieldEnd") });
             }

@@ -33845,7 +33845,7 @@
             <summary>Tables inside table cells.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Images">
-            <summary>Pictures, their placement and formats other than PNG, JPEG, GIF and BMP.</summary>
+            <summary>Pictures, their placement and formats the target cannot hold: HTML and Markdown keep PNG, JPEG, GIF and BMP, RTF keeps PNG and JPEG.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Links">
             <summary>Hyperlinks, link targets other than <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c>, and bookmarks.</summary>
@@ -34764,8 +34764,8 @@
             Explanation:<br/>
             <code>
             ○ Match '&lt;'.<br/>
-            ○ Match an ASCII letter.<br/>
-            ○ Match an ASCII letter or digit atomically any number of times.<br/>
+            ○ Match a character in the set [A-Za-z].<br/>
+            ○ Match a character in the set [0-9A-Za-z] atomically any number of times.<br/>
             ○ Match a whitespace character.<br/>
             ○ Match a character in the set [^&lt;&gt;] atomically any number of times.<br/>
             ○ Match '&gt;'.<br/>
@@ -45204,9 +45204,6 @@
         </member>
         <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_asciiLettersAndDigits">
             <summary>Supports searching for characters in or not in "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".</summary>
-        </member>
-        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_indexOfString_AA7BAE66291AA28A498C4B6A1F89C5C0B4CC12AFE048651D1FD5AC24026E3C27">
-            <summary>Supports searching for the string "margin:".</summary>
         </member>
     </members>
 </doc>

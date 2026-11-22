@@ -154,6 +154,27 @@ public class RtfFormatTests
         Assert.Throws<InvalidDataException>(() => Load(@"{\rtf1 " + Repeat(@"\b", 5_000_000) + "}"));
     }
 
+    [Fact]
+    public void Rtf_Losses_OnlyWhatTheWriterDrops()
+    {
+        var gif = Convert.ToBase64String("GIF89a\u0001\0\u0001\0\0\0\0;"u8.ToArray());
+        var rich = HtmlReader.Read(
+            "<h1>T</h1><p style=\"text-align:center\"><span style=\"color:#FF0000;font-size:20pt\">red</span> <a href=\"https://example.com/\">l</a></p>" +
+            "<table><tr><td colspan=\"2\">a</td></tr><tr><td rowspan=\"2\">b</td><td>c</td></tr><tr><td>d</td></tr></table>");
+
+        Assert.Empty(DocumentExport.Losses(rich, DocumentFileFormat.Rtf));
+        Assert.Equal([DocumentFeature.Lists], DocumentExport.Losses(HtmlReader.Read("<ol><li>a</li></ol>"), DocumentFileFormat.Rtf));
+        Assert.Equal([DocumentFeature.NestedTables],
+            DocumentExport.Losses(HtmlReader.Read("<table><tr><td><table><tr><td>x</td></tr></table></td></tr></table>"), DocumentFileFormat.Rtf));
+        Assert.Equal([DocumentFeature.Images], DocumentExport.Losses(HtmlReader.Read($"<p><img src=\"data:image/gif;base64,{gif}\"></p>"), DocumentFileFormat.Rtf));
+        Assert.Empty(DocumentExport.Losses(HtmlReader.Read($"<p><img src=\"data:image/png;base64,{Convert.ToBase64String(ObjectCommandTests.Png(2, 2))}\"></p>"),
+            DocumentFileFormat.Rtf));
+        var landscape = TextDocument.Create(PageSetup.A4 with { Width = 16838, Height = 11906, Orientation = PageOrientation.Landscape });
+        Assert.Empty(DocumentExport.Losses(landscape, DocumentFileFormat.Rtf));
+        Assert.Equal([DocumentFeature.Sections], DocumentExport.Losses(landscape, DocumentFileFormat.Html));
+        Assert.Contains(@"\paperw16838\paperh11906\margl1440\margr1440\margt1440\margb1440\landscape", Encoding.ASCII.GetString(Save(landscape)));
+    }
+
     private static string Repeat(string text, int count) => new StringBuilder(text.Length * count).Insert(0, text, count).ToString();
 
     private static TextRun Run(Paragraph paragraph, string text) => paragraph.Inlines.OfType<TextRun>().Single(r => r.Text == text);
