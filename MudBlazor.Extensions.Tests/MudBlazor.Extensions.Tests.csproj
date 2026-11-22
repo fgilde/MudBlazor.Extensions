@@ -41,6 +41,7 @@
     <None Include="TestData\**\*" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\Samples\MainSample.WebAssembly\wwwroot\sample-data\ExcelSheet.xlsx" Link="TestData\Spreadsheet\ExcelSheet.xlsx" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\Samples\MainSample.WebAssembly\wwwroot\sample-data\sample.docx" Link="TestData\Document\sample.docx" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Samples\MainSample.WebAssembly\wwwroot\sample-data\document-all-features.docx" Link="TestData\Document\document-all-features.docx" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\Samples\MainSample.WebAssembly\wwwroot\sample-data\sample.odt" Link="TestData\Document\sample.odt" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\Samples\MainSample.WebAssembly\wwwroot\sample-data\WordDokument.doc" Link="TestData\Document\WordDokument.doc" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\Samples\MainSample.WebAssembly\wwwroot\sample-data\sample.mxnb" Link="TestData\Samples\sample.mxnb" CopyToOutputDirectory="PreserveNewest" />
