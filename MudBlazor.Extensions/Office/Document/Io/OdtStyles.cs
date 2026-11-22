@@ -136,13 +136,16 @@ internal sealed class OdtStyles
     {
         int? Length(string name, bool positive = false) =>
             RoundTwips(paragraph.GetValueOrDefault(FoNs + name)) is { } twips ? positive ? Math.Max(0, twips) : twips : null;
+        var rightToLeft = paragraph.GetValueOrDefault(StyleNs + "writing-mode") is "rl-tb" or "rl";
         return new ParagraphFormat
         {
             Alignment = paragraph.GetValueOrDefault(FoNs + "text-align") switch
             {
-                "start" or "left" => ParagraphAlignment.Left,
+                "left" => ParagraphAlignment.Left,
+                "start" => rightToLeft ? ParagraphAlignment.Right : ParagraphAlignment.Left,
                 "center" => ParagraphAlignment.Center,
-                "end" or "right" => ParagraphAlignment.Right,
+                "right" => ParagraphAlignment.Right,
+                "end" => rightToLeft ? ParagraphAlignment.Left : ParagraphAlignment.Right,
                 "justify" => ParagraphAlignment.Justify,
                 _ => null
             },

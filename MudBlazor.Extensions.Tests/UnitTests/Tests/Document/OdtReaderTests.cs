@@ -60,6 +60,38 @@ public class OdtReaderTests
     }
 
     [Fact]
+    public void Odt_Read_BreakAfterSurvivesAFrameWithoutInlines()
+    {
+        const string after = "<style:style style:name=\"BA\" style:family=\"paragraph\"><style:paragraph-properties fo:break-after=\"page\"/></style:style>";
+
+        var boxed = new OdtBuilder().AutomaticStyles(after)
+            .Body("<text:p text:style-name=\"BA\">a</text:p><draw:frame text:anchor-type=\"page\"><draw:text-box><text:p>box</text:p></draw:text-box></draw:frame><text:p>next</text:p>")
+            .Load();
+        var empty = new OdtBuilder().AutomaticStyles(after).Body("<text:p text:style-name=\"BA\">a</text:p><draw:frame text:anchor-type=\"page\"/><text:p>next</text:p>").Load();
+
+        Assert.Equal([("a", null), ("box", true), ("next", null)], boxed.Blocks.Cast<Paragraph>().Select(p => (p.Text, p.Format.PageBreakBefore)));
+        Assert.Equal([("a", null), ("next", true)], empty.Blocks.Cast<Paragraph>().Select(p => (p.Text, p.Format.PageBreakBefore)));
+    }
+
+    [Fact]
+    public void Odt_Read_RightToLeftStartAndEnd_SupplementaryBullet()
+    {
+        var document = new OdtBuilder()
+            .AutomaticStyles("<style:style style:name=\"S\" style:family=\"paragraph\"><style:paragraph-properties fo:text-align=\"start\" style:writing-mode=\"rl-tb\"/></style:style>" +
+                             "<style:style style:name=\"E\" style:family=\"paragraph\" style:parent-style-name=\"Rtl\"><style:paragraph-properties fo:text-align=\"end\"/></style:style>" +
+                             "<style:style style:name=\"L\" style:family=\"paragraph\"><style:paragraph-properties fo:text-align=\"end\" style:writing-mode=\"lr-tb\"/></style:style>" +
+                             "<text:list-style style:name=\"B\"><text:list-level-style-bullet text:level=\"1\" text:bullet-char=\"\uD83D\uDE00\"/></text:list-style>")
+            .Styles("<style:style style:name=\"Rtl\" style:family=\"paragraph\"><style:paragraph-properties style:writing-mode=\"rl-tb\"/></style:style>")
+            .Body("<text:p text:style-name=\"S\">s</text:p><text:p text:style-name=\"E\">e</text:p><text:p text:style-name=\"L\">l</text:p>" +
+                  "<text:list text:style-name=\"B\"><text:list-item><text:p>smile</text:p></text:list-item></text:list>")
+            .Load();
+
+        var paragraphs = document.Blocks.Cast<Paragraph>().ToList();
+        Assert.Equal([ParagraphAlignment.Right, ParagraphAlignment.Left, ParagraphAlignment.Right], paragraphs.Take(3).Select(p => p.Format.Alignment));
+        Assert.Equal("\uD83D\uDE00", document.ListLabel(paragraphs[3]));
+    }
+
+    [Fact]
     public void Odt_Read_MasterPageStartsAPage_ButNotBeforeTheFirstBlock()
     {
         var document = new OdtBuilder()

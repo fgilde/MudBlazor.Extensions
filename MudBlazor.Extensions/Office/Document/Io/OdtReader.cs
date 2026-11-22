@@ -163,15 +163,38 @@ internal static class OdtReader
             else if (element.Name == TableNs + "table")
                 blocks.Add(TableOf(element));
             else if (element.Name == DrawNs + "frame" || element.Name == DrawNs + "a")
-                Add(blocks, ParagraphOf(null, [element], null, null), true);
+                Frame(element, blocks);
             else if (element.Name.Namespace == TextNs && Containers.Contains(element.Name.LocalName))
                 foreach (var child in element.Elements())
                     Nested(() => BlockOf(child, blocks));
         }
 
-        private void Add(List<Block> blocks, Paragraph paragraph, bool frame = false)
+        private void Frame(XElement element, List<Block> blocks)
         {
-            if (!frame || paragraph.Inlines.Count > 0) blocks.Add(paragraph);
+            var pending = _pageBreak;
+            var paragraph = ParagraphOf(null, [element], null, null);
+            if (paragraph.Inlines.Count > 0)
+            {
+                Add(blocks, paragraph);
+                return;
+            }
+
+            _pageBreak = pending;
+            foreach (var block in _floating)
+                if (_pageBreak && block is Paragraph first)
+                {
+                    blocks.Add(first with { Format = first.Format with { PageBreakBefore = true } });
+                    _pageBreak = false;
+                }
+                else
+                    blocks.Add(block);
+
+            _floating = [];
+        }
+
+        private void Add(List<Block> blocks, Paragraph paragraph)
+        {
+            blocks.Add(paragraph);
             blocks.AddRange(_floating);
             _floating = [];
         }
@@ -240,7 +263,8 @@ internal static class OdtReader
                 var bullet = Attr(odf, TextNs + "bullet-char");
                 return basis with
                 {
-                    Format = NumberFormat.Bullet, Text = string.IsNullOrEmpty(bullet) || bullet[0] is >= '\uE000' and <= '\uF8FF' ? "\u2022" : bullet[..1], Indent = indent,
+                    Format = NumberFormat.Bullet, Text = string.IsNullOrEmpty(bullet) || bullet[0] is >= '\uE000' and <= '\uF8FF' ? "\u2022" :
+                        bullet[..(char.IsSurrogatePair(bullet, 0) ? 2 : 1)], Indent = indent,
                     LabelFormat = new RunFormat()
                 };
             }

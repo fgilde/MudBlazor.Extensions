@@ -88,7 +88,7 @@ public sealed partial class TextDocument
     /// or when its table work exceeds 2^27: every cell end, row end and table paragraph costs 1500 plus the rows and paragraphs before it in its
     /// section (about 3600 rows of 10 cells, or 10000 rows of one cell, in one section). ODT is read from <c>content.xml</c>, <c>styles.xml</c> and
     /// <c>meta.xml</c>: automatic and named styles become direct formatting, and a named paragraph style whose name is that of a built-in style such as
-    /// <c>Heading 1</c> or <c>Title</c> also gets that style; headings get Heading 1 to 6 by their outline level; each list style becomes one list
+    /// <c>Heading 1</c> or <c>Title</c> also gets that style; start and end alignment follow a right-to-left writing mode, which itself is not kept; headings get Heading 1 to 6 by their outline level; each list style becomes one list
     /// definition and each top-level list restarts unless it continues another; PNG, JPEG, GIF and BMP pictures in the package are imported (as-char
     /// pictures inline, anchored ones floating at the left) and the text of text boxes follows their paragraph; footnotes and endnotes become tokens
     /// showing their citation, fields their displayed text, tracked changes their final state; comments are dropped; the first master page gives the
