@@ -5,13 +5,15 @@ using RtfPipe;
 
 namespace MudBlazor.Extensions.Office.Document;
 
-internal static partial class RtfFormat
+internal static class RtfFormat
 {
-    internal const int MaxDepth = 256;
-    internal const int MaxTokens = 1 << 22;
+    private const int MaxDepth = 256;
+    private const int MaxTokens = 1 << 22;
     private const long MaxRunWork = 1L << 33;
     private const long MaxTableWork = 1L << 29;
     private const char TabMark = '\uFDD0';
+    private static readonly Regex Tag = new(@"<[a-zA-Z][a-zA-Z0-9]*\s[^<>]*>", RegexOptions.CultureInvariant);
+    private static readonly Regex Margin = new(@"(?<=[""';])margin:([^;""']*)", RegexOptions.CultureInvariant);
 
     internal static TextDocument Read(Stream stream)
     {
@@ -36,7 +38,7 @@ internal static partial class RtfFormat
             CultureInfo.CurrentCulture = culture;
         }
 
-        return HtmlReader.Read(Tag().Replace(html, tag => Margin().Replace(tag.Value, m => LeftMargin(m.Groups[1].Value))), Text);
+        return HtmlReader.Read(Tag.Replace(html, tag => Margin.Replace(tag.Value, m => LeftMargin(m.Groups[1].Value))), Text);
     }
 
     private static string Prepare(string rtf)
@@ -147,10 +149,4 @@ internal static partial class RtfFormat
         var length = chars.Length > 1 && chars[^1] == '\u00A0' && chars[^2] == '\n' ? chars.Length - 1 : chars.Length;
         return new string(chars, 0, length);
     }
-
-    [GeneratedRegex(@"<[a-zA-Z][a-zA-Z0-9]*\s[^<>]*>")]
-    private static partial Regex Tag();
-
-    [GeneratedRegex(@"(?<=[""';])margin:([^;""']*)")]
-    private static partial Regex Margin();
 }

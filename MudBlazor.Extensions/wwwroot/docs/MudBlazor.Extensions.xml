@@ -34757,35 +34757,6 @@
             <exception cref="T:System.ArgumentException">The stream is not writable.</exception>
             <exception cref="T:System.InvalidOperationException">The document was not loaded or created by <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/>.</exception>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Document.RtfFormat.Tag">
-            <remarks>
-            Pattern:<br/>
-            <code>&lt;[a-zA-Z][a-zA-Z0-9]*\\s[^&lt;&gt;]*&gt;</code><br/>
-            Explanation:<br/>
-            <code>
-            ○ Match '&lt;'.<br/>
-            ○ Match a character in the set [A-Za-z].<br/>
-            ○ Match a character in the set [0-9A-Za-z] atomically any number of times.<br/>
-            ○ Match a whitespace character.<br/>
-            ○ Match a character in the set [^&lt;&gt;] atomically any number of times.<br/>
-            ○ Match '&gt;'.<br/>
-            </code>
-            </remarks>
-        </member>
-        <member name="M:MudBlazor.Extensions.Office.Document.RtfFormat.Margin">
-            <remarks>
-            Pattern:<br/>
-            <code>(?&lt;=["';])margin:([^;"']*)</code><br/>
-            Explanation:<br/>
-            <code>
-            ○ Zero-width positive lookbehind.<br/>
-                ○ Match a character in the set ["';] right-to-left.<br/>
-            ○ Match the string "margin:".<br/>
-            ○ 1st capture group.<br/>
-                ○ Match a character in the set [^"';] atomically any number of times.<br/>
-            </code>
-            </remarks>
-        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.HeaderFooterKind">
             <summary>Whether a <see cref="T:MudBlazor.Extensions.Office.Document.HeaderFooter"/> is a header or a footer.</summary>
         </member>
@@ -45128,82 +45099,6 @@
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExInMemoryFileStructureManager.UploadAsync(MudBlazor.Extensions.Core.FileManager.MudExFileStructureNode,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Threading.CancellationToken)">
             <inheritdoc />
-        </member>
-        <member name="T:System.Text.RegularExpressions.Generated.Tag_0">
-            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the Tag method.</summary>
-        </member>
-        <member name="F:System.Text.RegularExpressions.Generated.Tag_0.Instance">
-            <summary>Cached, thread-safe singleton instance.</summary>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.Tag_0.#ctor">
-            <summary>Initializes the instance.</summary>
-        </member>
-        <member name="T:System.Text.RegularExpressions.Generated.Tag_0.RunnerFactory">
-            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.Tag_0.RunnerFactory.CreateInstance">
-            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
-        </member>
-        <member name="T:System.Text.RegularExpressions.Generated.Tag_0.RunnerFactory.Runner">
-            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.Tag_0.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
-            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
-            <param name="inputSpan">The text being scanned by the regular expression.</param>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.Tag_0.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
-            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
-            <param name="inputSpan">The text being scanned by the regular expression.</param>
-            <returns>true if a possible match was found; false if no more matches are possible.</returns>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.Tag_0.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
-            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
-            <param name="inputSpan">The text being scanned by the regular expression.</param>
-            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
-        </member>
-        <member name="T:System.Text.RegularExpressions.Generated.Margin_1">
-            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the Margin method.</summary>
-        </member>
-        <member name="F:System.Text.RegularExpressions.Generated.Margin_1.Instance">
-            <summary>Cached, thread-safe singleton instance.</summary>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.Margin_1.#ctor">
-            <summary>Initializes the instance.</summary>
-        </member>
-        <member name="T:System.Text.RegularExpressions.Generated.Margin_1.RunnerFactory">
-            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.Margin_1.RunnerFactory.CreateInstance">
-            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
-        </member>
-        <member name="T:System.Text.RegularExpressions.Generated.Margin_1.RunnerFactory.Runner">
-            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.Margin_1.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
-            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
-            <param name="inputSpan">The text being scanned by the regular expression.</param>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.Margin_1.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
-            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
-            <param name="inputSpan">The text being scanned by the regular expression.</param>
-            <returns>true if a possible match was found; false if no more matches are possible.</returns>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.Margin_1.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
-            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
-            <param name="inputSpan">The text being scanned by the regular expression.</param>
-            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
-        </member>
-        <member name="T:System.Text.RegularExpressions.Generated.Utilities">
-            <summary>Helper methods used by generated <see cref="T:System.Text.RegularExpressions.Regex"/>-derived implementations.</summary>
-        </member>
-        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout">
-            <summary>Default timeout value set in <see cref="T:System.AppContext"/>, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout"/> if none was set.</summary>
-        </member>
-        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_hasTimeout">
-            <summary>Whether <see cref="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout"/> is non-infinite.</summary>
-        </member>
-        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_asciiLettersAndDigits">
-            <summary>Supports searching for characters in or not in "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".</summary>
         </member>
     </members>
 </doc>
