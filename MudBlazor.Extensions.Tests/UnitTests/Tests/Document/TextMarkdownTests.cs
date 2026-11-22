@@ -141,6 +141,7 @@ public class TextMarkdownTests
         Assert.DoesNotContain(paragraphs, p => p.Text.Contains("alert", StringComparison.Ordinal));
         Assert.DoesNotContain(paragraphs.SelectMany(p => p.Inlines), i => i is InlineImage || i.Link != null);
         Assert.Contains(paragraphs, p => p.Text == "t");
+        Assert.Contains(paragraphs, p => p.Text.Contains("remote", StringComparison.Ordinal));
     }
 
     [Fact]
@@ -162,10 +163,96 @@ public class TextMarkdownTests
 
         var documents = inputs.Select(input => Load(Encoding.UTF8.GetBytes(input), DocumentFileFormat.Markdown)).ToList();
 
-        Assert.All(documents, d => Assert.NotEmpty(d.Blocks));
-        Assert.Equal(new string('>', 100_000) + " x", ((Paragraph)documents[0].Blocks[0]).Text);
         Assert.True(watch.Elapsed < TimeSpan.FromSeconds(30), watch.Elapsed.ToString());
+        foreach (var plain in new[] { 0, 1, 3, 4, 6 })
+            Assert.Equal(inputs[plain], ((Paragraph)Assert.Single(documents[plain].Blocks)).Text);
+        Assert.Equal(1_001, documents[2].Blocks.Count);
+        Assert.Equal("- x", ((Paragraph)documents[2].Blocks[0]).Text);
+        Assert.Equal("  - x", ((Paragraph)documents[2].Blocks[1]).Text);
+        Assert.Equal("x", ((Paragraph)Assert.Single(documents[5].Blocks)).Text);
+        var table = Assert.IsType<Table>(documents[7].Blocks[0]);
+        Assert.Equal((2_001, 63), (table.Rows.Count, table.Grid.Count));
     }
+
+    [Fact]
+    public void Md_Read_FrontMatterTitleAndRemoteImageAlt()
+    {
+        const string markdown = "---\ntitle: \"Hello: World\"\nauthor: x\n---\n# Head\n\n![remote pic](https://example.com/y.png) after\n";
+
+        var document = Load(Encoding.UTF8.GetBytes(markdown), DocumentFileFormat.Markdown);
+
+        Assert.Equal("Hello: World", document.Properties.Title);
+        Assert.Equal(["Head", "remote pic after"], document.Blocks.Cast<Paragraph>().Select(p => p.Text));
+        Assert.Equal("Heading1", ((Paragraph)document.Blocks[0]).Format.StyleId);
+    }
+
+    [Theory]
+    [InlineData("<p><b>a </b>b</p>", "**a** b\n")]
+    [InlineData("<p><b>a</b><i>b</i></p>", "**a***b*\n")]
+    [InlineData("<p><b>x <a href=\"https://e.com/\">l</a> y</b></p>", "**x** [**l**](https://e.com/) **y**\n")]
+    [InlineData("<p><b>a<br>b</b></p>", "**a\\\nb**\n")]
+    [InlineData("<p><b>,</b>x</p>", "<strong>,</strong>x\n")]
+    [InlineData("<p>a<b>\"b\"</b></p>", "a<strong>\"b\"</strong>\n")]
+    [InlineData("<p><s><b><i>x</i></b></s> <b><code>c</code></b></p>", "~~***x***~~ <strong>`c`</strong>\n")]
+    public void Md_Write_EmphasisEdges_RoundTrip(string html, string expected)
+    {
+        var document = HtmlReader.Read(html);
+
+        var markdown = Encoding.UTF8.GetString(Save(document, DocumentFileFormat.Markdown));
+
+        Assert.Equal(expected, markdown);
+        Assert.Equal(Flags(document), Flags(Load(Encoding.UTF8.GetBytes(markdown), DocumentFileFormat.Markdown)));
+    }
+
+    [Fact]
+    public void Md_RoundTrip_InlineCode()
+    {
+        var document = HtmlReader.Read(
+            "<p>Use <code>x | y</code>, <code>a`b</code> and <code>``</code> here.</p><p><code>only code</code></p><pre>two\nlines</pre>" +
+            "<table><tr><td><code>p|q</code></td></tr></table>");
+
+        var markdown = Encoding.UTF8.GetString(Save(document, DocumentFileFormat.Markdown));
+
+        Assert.Contains("Use `x | y`, ``a`b`` and ``` `` ``` here.\n\n`only code`\n\n```\ntwo\nlines\n```", markdown);
+        Assert.Contains("| <code>p&#124;q</code> |", markdown);
+        Assert.Equal(Signature(document), Signature(Load(Encoding.UTF8.GetBytes(markdown), DocumentFileFormat.Markdown)));
+    }
+
+    [Fact]
+    public void Md_Write_ImageAltNewlineAndPageBreak()
+    {
+        var document = HtmlReader.Read($"<p>a<img src=\"data:image/png;base64,{Convert.ToBase64String(ObjectCommandTests.Png(4, 2))}\" alt=\"x\"></p>");
+        var paragraph = (Paragraph)document.Blocks[0];
+        document.BlockList[0] = paragraph with
+        {
+            Inlines = [paragraph.Inlines[0], ((InlineImage)paragraph.Inlines[1]) with { AltText = "line\nbreak" }, new Break(BreakKind.Page), new TextRun("b")]
+        };
+
+        var markdown = Encoding.UTF8.GetString(Save(document, DocumentFileFormat.Markdown));
+
+        Assert.StartsWith("a![line break](data:image/png;base64,", markdown);
+        Assert.EndsWith(")\\\nb\n", markdown);
+        Assert.Contains(DocumentFeature.ParagraphFormatting, DocumentExport.Losses(document, DocumentFileFormat.Markdown));
+        Assert.DoesNotContain(DocumentFeature.ParagraphFormatting, DocumentExport.Losses(document, DocumentFileFormat.Text));
+    }
+
+    [Fact]
+    public void TxtAndMd_Write_FieldsAsDisplayText()
+    {
+        var document = new DocxBuilder().Body("<w:p><w:r><w:t xml:space=\"preserve\">Page </w:t></w:r><w:fldSimple w:instr=\"PAGE\"><w:r><w:t>7</w:t></w:r></w:fldSimple></w:p>").Load();
+
+        var text = Encoding.UTF8.GetString(Save(document, DocumentFileFormat.Text));
+        var markdown = Encoding.UTF8.GetString(Save(document, DocumentFileFormat.Markdown));
+
+        Assert.Equal("Page 7", text);
+        Assert.Equal("Page 7\n", markdown);
+        Assert.DoesNotContain('\uFFFC', text + markdown);
+    }
+
+    private static string Flags(TextDocument document) =>
+        string.Join("|", document.AllParagraphs().Select(p => string.Concat(p.Inlines.SelectMany(i => (i is TextRun r ? r.Text : i is Break ? "/" : "")
+            .Where(c => !char.IsWhiteSpace(c))
+            .Select(c => $"{c}{(i.Format.Bold == true ? "b" : "")}{(i.Format.Italic == true ? "i" : "")}{(i.Format.Strike == true ? "s" : "")}{(i.Format.Font == "Consolas" ? "c" : "")}{i.Link?.SafeTarget};")))));
 
     [Fact]
     public void Md_Read_AboveCap_Throws()

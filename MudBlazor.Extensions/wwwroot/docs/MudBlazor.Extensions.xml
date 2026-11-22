@@ -33827,16 +33827,16 @@
             <summary>Character formatting such as fonts, sizes, colours, underline or highlighting.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.ParagraphFormatting">
-            <summary>Paragraph formatting such as alignment, indents, spacing or tab stops.</summary>
+            <summary>Paragraph formatting such as alignment, indents, spacing or tab stops, and in Markdown page and column breaks.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Styles">
-            <summary>Paragraph, character and table styles.</summary>
+            <summary>Paragraph, character and table styles whose effect the format cannot write; headings, list paragraphs and hyperlinks count as kept.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Lists">
-            <summary>Bulleted and numbered lists.</summary>
+            <summary>Bulleted and numbered lists, and in Markdown start numbers, number formats other than 1. 2. 3. and numbered headings.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Tables">
-            <summary>Tables.</summary>
+            <summary>Tables, and in Markdown cells with several paragraphs, list items or line breaks.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.MergedCells">
             <summary>Merged table cells.</summary>
@@ -33845,7 +33845,10 @@
             <summary>Tables inside table cells.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Images">
-            <summary>Pictures, their placement and formats the target cannot hold: HTML and Markdown keep PNG, JPEG, GIF and BMP, RTF keeps PNG and JPEG.</summary>
+            <summary>
+            Pictures, their placement and formats the target cannot hold: HTML and Markdown keep PNG, JPEG, GIF and BMP, RTF keeps PNG and JPEG; Markdown
+            also loses a size other than the natural one.
+            </summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFeature.Links">
             <summary>Hyperlinks, link targets other than <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c>, and bookmarks.</summary>
@@ -35100,7 +35103,9 @@
             imported and only <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c> links are kept. Plain text is decoded by its byte order mark,
             else as UTF-8 if it is valid UTF-8, else as Windows-1252, and may have at most 32 Mi characters; every line becomes a paragraph and a form feed
             a page break. Markdown is decoded like plain text and read as CommonMark with pipe tables, strikethrough and autolinks; raw HTML in it is
-            sanitised like HTML, and Markdown nested deeper than 128 levels is read as plain text. RTF must start with <c>{\rtf</c>, may have at most
+            sanitised like HTML, a YAML front matter block at the start is skipped (its <c>title:</c> becomes the document title), images that are not
+            <c>data:</c> URIs become their alternative text, and Markdown nested deeper than 128 levels is read as plain text. RTF must start with
+            <c>{\rtf</c> (after an optional UTF-8 byte order mark and white space), may have at most
             32 Mi characters, 256 nested groups and 4 Mi control words, and is converted with RtfPipe and read like HTML: only PNG and JPEG pictures are
             imported (metafiles and bitmaps are dropped), lists keep their structure only where RtfPipe recognises them, and RTF that would make the
             conversion take quadratic time (very many runs in one paragraph or table rows in one section) is rejected.
@@ -35124,8 +35129,9 @@
             <c>mailto</c> and <c>#anchor</c> links; headers, footers and comments are left out. <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Text"/> writes UTF-8 without
             byte order mark and with CRLF line ends: list items start with their label and a tab, table rows become tab-separated lines and fields their
             displayed text. <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Markdown"/> writes UTF-8 CommonMark with GFM pipe tables (first row as header, merged cells
-            empty except the first), headings by outline level, bold, italic, strikethrough, safe links, images as <c>data:</c> URIs, lists and
-            monospace paragraphs as fenced code. <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Rtf"/> writes pure ASCII RTF with the effective character and paragraph
+            empty except the first), headings by outline level, bold, italic and strikethrough (as <c>strong</c>, <c>em</c> and <c>del</c> tags where
+            Markdown delimiters cannot open or close), safe links, images as <c>data:</c> URIs, lists, monospace text as code spans and monospace
+            paragraphs with line breaks, tabs or significant spaces as fenced code. <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Rtf"/> writes pure ASCII RTF with the effective character and paragraph
             formatting of every run and paragraph, the page size and margins of the last section, list labels as text with a tab and a hanging indent,
             tables with merged cells and single borders, nested tables as tab-separated paragraphs, PNG and JPEG images and safe links; headers,
             footers, comments and other images are left out. <see cref="M:MudBlazor.Extensions.Office.Document.DocumentExport.Losses(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentFileFormat)"/> lists what a format cannot keep.

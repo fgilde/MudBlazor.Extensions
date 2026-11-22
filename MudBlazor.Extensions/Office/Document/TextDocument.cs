@@ -78,7 +78,9 @@ public sealed partial class TextDocument
     /// imported and only <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c> links are kept. Plain text is decoded by its byte order mark,
     /// else as UTF-8 if it is valid UTF-8, else as Windows-1252, and may have at most 32 Mi characters; every line becomes a paragraph and a form feed
     /// a page break. Markdown is decoded like plain text and read as CommonMark with pipe tables, strikethrough and autolinks; raw HTML in it is
-    /// sanitised like HTML, and Markdown nested deeper than 128 levels is read as plain text. RTF must start with <c>{\rtf</c>, may have at most
+    /// sanitised like HTML, a YAML front matter block at the start is skipped (its <c>title:</c> becomes the document title), images that are not
+    /// <c>data:</c> URIs become their alternative text, and Markdown nested deeper than 128 levels is read as plain text. RTF must start with
+    /// <c>{\rtf</c> (after an optional UTF-8 byte order mark and white space), may have at most
     /// 32 Mi characters, 256 nested groups and 4 Mi control words, and is converted with RtfPipe and read like HTML: only PNG and JPEG pictures are
     /// imported (metafiles and bitmaps are dropped), lists keep their structure only where RtfPipe recognises them, and RTF that would make the
     /// conversion take quadratic time (very many runs in one paragraph or table rows in one section) is rejected.
@@ -124,8 +126,9 @@ public sealed partial class TextDocument
     /// <c>mailto</c> and <c>#anchor</c> links; headers, footers and comments are left out. <see cref="DocumentFileFormat.Text"/> writes UTF-8 without
     /// byte order mark and with CRLF line ends: list items start with their label and a tab, table rows become tab-separated lines and fields their
     /// displayed text. <see cref="DocumentFileFormat.Markdown"/> writes UTF-8 CommonMark with GFM pipe tables (first row as header, merged cells
-    /// empty except the first), headings by outline level, bold, italic, strikethrough, safe links, images as <c>data:</c> URIs, lists and
-    /// monospace paragraphs as fenced code. <see cref="DocumentFileFormat.Rtf"/> writes pure ASCII RTF with the effective character and paragraph
+    /// empty except the first), headings by outline level, bold, italic and strikethrough (as <c>strong</c>, <c>em</c> and <c>del</c> tags where
+    /// Markdown delimiters cannot open or close), safe links, images as <c>data:</c> URIs, lists, monospace text as code spans and monospace
+    /// paragraphs with line breaks, tabs or significant spaces as fenced code. <see cref="DocumentFileFormat.Rtf"/> writes pure ASCII RTF with the effective character and paragraph
     /// formatting of every run and paragraph, the page size and margins of the last section, list labels as text with a tab and a hanging indent,
     /// tables with merged cells and single borders, nested tables as tab-separated paragraphs, PNG and JPEG images and safe links; headers,
     /// footers, comments and other images are left out. <see cref="DocumentExport.Losses"/> lists what a format cannot keep.

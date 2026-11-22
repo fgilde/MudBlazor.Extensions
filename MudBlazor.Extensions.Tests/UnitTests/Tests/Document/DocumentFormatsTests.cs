@@ -177,6 +177,60 @@ public class DocumentFormatsTests
     }
 
     [Fact]
+    public void Losses_StylesOnlyWhenTheirEffectIsLost()
+    {
+        const string styles =
+            "<w:style w:type=\"paragraph\" w:default=\"1\" w:styleId=\"Normal\"><w:name w:val=\"Normal\"/></w:style>" +
+            "<w:style w:type=\"paragraph\" w:styleId=\"ListParagraph\"><w:name w:val=\"List Paragraph\"/><w:basedOn w:val=\"Normal\"/><w:pPr><w:ind w:left=\"720\"/></w:pPr></w:style>" +
+            "<w:style w:type=\"character\" w:styleId=\"Strong\"><w:name w:val=\"Strong\"/><w:rPr><w:b/></w:rPr></w:style>" +
+            "<w:style w:type=\"paragraph\" w:styleId=\"Quote\"><w:name w:val=\"Quote\"/><w:basedOn w:val=\"Normal\"/><w:pPr><w:ind w:left=\"720\"/></w:pPr><w:rPr><w:i/></w:rPr></w:style>" +
+            "<w:style w:type=\"paragraph\" w:styleId=\"Spaced\"><w:name w:val=\"Spaced\"/><w:basedOn w:val=\"Normal\"/><w:pPr><w:spacing w:after=\"400\"/></w:pPr></w:style>";
+        TextDocument Doc(string body) => new DocxBuilder().Styles(styles).Body(body).Load();
+        var listAndStrong = Doc("<w:p><w:pPr><w:pStyle w:val=\"ListParagraph\"/></w:pPr><w:r><w:rPr><w:rStyle w:val=\"Strong\"/></w:rPr><w:t>a</w:t></w:r></w:p>");
+        var quote = Doc("<w:p><w:pPr><w:pStyle w:val=\"Quote\"/></w:pPr><w:r><w:t>q</w:t></w:r></w:p>");
+        var spaced = Doc("<w:p><w:pPr><w:pStyle w:val=\"Spaced\"/></w:pPr><w:r><w:t>s</w:t></w:r></w:p>");
+
+        Assert.Empty(DocumentExport.Losses(listAndStrong, DocumentFileFormat.Markdown));
+        Assert.Empty(DocumentExport.Losses(listAndStrong, DocumentFileFormat.Html));
+        Assert.Equal([DocumentFeature.Styles], DocumentExport.Losses(listAndStrong, DocumentFileFormat.Text));
+        Assert.Equal([DocumentFeature.Styles], DocumentExport.Losses(quote, DocumentFileFormat.Markdown));
+        Assert.Empty(DocumentExport.Losses(quote, DocumentFileFormat.Html));
+        Assert.Equal([DocumentFeature.Styles], DocumentExport.Losses(spaced, DocumentFileFormat.Html));
+        Assert.Empty(DocumentExport.Losses(spaced, DocumentFileFormat.Rtf));
+    }
+
+    [Theory]
+    [InlineData("<w:start w:val=\"3\"/><w:numFmt w:val=\"decimal\"/><w:lvlText w:val=\"%1.\"/>", "", true)]
+    [InlineData("<w:start w:val=\"1\"/><w:numFmt w:val=\"lowerRoman\"/><w:lvlText w:val=\"%1.\"/>", "", true)]
+    [InlineData("<w:start w:val=\"1\"/><w:numFmt w:val=\"decimal\"/><w:lvlText w:val=\"%1)\"/>", "", true)]
+    [InlineData("<w:start w:val=\"1\"/><w:numFmt w:val=\"decimal\"/><w:lvlText w:val=\"%1.\"/>", "<w:pStyle w:val=\"Heading1\"/>", true)]
+    [InlineData("<w:start w:val=\"1\"/><w:numFmt w:val=\"decimal\"/><w:lvlText w:val=\"%1.\"/>", "", false)]
+    public void Losses_Md_ListNumbering(string level, string paragraphProperties, bool lost)
+    {
+        var document = new DocxBuilder()
+            .Styles("<w:style w:type=\"paragraph\" w:styleId=\"Heading1\"><w:name w:val=\"heading 1\"/><w:pPr><w:outlineLvl w:val=\"0\"/></w:pPr></w:style>")
+            .Numbering($"<w:abstractNum w:abstractNumId=\"0\"><w:lvl w:ilvl=\"0\">{level}</w:lvl></w:abstractNum><w:num w:numId=\"1\"><w:abstractNumId w:val=\"0\"/></w:num>")
+            .Body($"<w:p><w:pPr>{paragraphProperties}<w:numPr><w:ilvl w:val=\"0\"/><w:numId w:val=\"1\"/></w:numPr></w:pPr><w:r><w:t>a</w:t></w:r></w:p>")
+            .Load();
+
+        Assert.Equal(lost, DocumentExport.Losses(document, DocumentFileFormat.Markdown).Contains(DocumentFeature.Lists));
+        Assert.DoesNotContain(DocumentFeature.Lists, DocumentExport.Losses(document, DocumentFileFormat.Html));
+    }
+
+    [Fact]
+    public void Losses_Md_CellBlocksImageSizeNestedOrderedLists()
+    {
+        var png = Convert.ToBase64String(ObjectCommandTests.Png(20, 10));
+
+        Assert.Empty(DocumentExport.Losses(HtmlReader.Read("<ol><li>a<ol><li>b</li></ol></li></ol><table><tr><td>x</td></tr></table>"), DocumentFileFormat.Markdown));
+        Assert.Equal([DocumentFeature.Tables], DocumentExport.Losses(HtmlReader.Read("<table><tr><td><p>x</p><p>y</p></td></tr></table>"), DocumentFileFormat.Markdown));
+        Assert.Equal([DocumentFeature.Tables], DocumentExport.Losses(HtmlReader.Read("<table><tr><td><ul><li>x</li></ul></td></tr></table>"), DocumentFileFormat.Markdown));
+        Assert.Empty(DocumentExport.Losses(HtmlReader.Read($"<p><img src=\"data:image/png;base64,{png}\"></p>"), DocumentFileFormat.Markdown));
+        Assert.Equal([DocumentFeature.Images], DocumentExport.Losses(HtmlReader.Read($"<p><img src=\"data:image/png;base64,{png}\" width=\"40\"></p>"), DocumentFileFormat.Markdown));
+        Assert.Empty(DocumentExport.Losses(HtmlReader.Read($"<p><img src=\"data:image/png;base64,{png}\" width=\"40\"></p>"), DocumentFileFormat.Html));
+    }
+
+    [Fact]
     public void Save_Odt_ThrowsNotSupported()
     {
         var document = TextDocument.Create();

@@ -6,16 +6,16 @@ public enum DocumentFeature
     /// <summary>Character formatting such as fonts, sizes, colours, underline or highlighting.</summary>
     CharacterFormatting,
 
-    /// <summary>Paragraph formatting such as alignment, indents, spacing or tab stops.</summary>
+    /// <summary>Paragraph formatting such as alignment, indents, spacing or tab stops, and in Markdown page and column breaks.</summary>
     ParagraphFormatting,
 
-    /// <summary>Paragraph, character and table styles.</summary>
+    /// <summary>Paragraph, character and table styles whose effect the format cannot write; headings, list paragraphs and hyperlinks count as kept.</summary>
     Styles,
 
-    /// <summary>Bulleted and numbered lists.</summary>
+    /// <summary>Bulleted and numbered lists, and in Markdown start numbers, number formats other than 1. 2. 3. and numbered headings.</summary>
     Lists,
 
-    /// <summary>Tables.</summary>
+    /// <summary>Tables, and in Markdown cells with several paragraphs, list items or line breaks.</summary>
     Tables,
 
     /// <summary>Merged table cells.</summary>
@@ -24,7 +24,10 @@ public enum DocumentFeature
     /// <summary>Tables inside table cells.</summary>
     NestedTables,
 
-    /// <summary>Pictures, their placement and formats the target cannot hold: HTML and Markdown keep PNG, JPEG, GIF and BMP, RTF keeps PNG and JPEG.</summary>
+    /// <summary>
+    /// Pictures, their placement and formats the target cannot hold: HTML and Markdown keep PNG, JPEG, GIF and BMP, RTF keeps PNG and JPEG; Markdown
+    /// also loses a size other than the natural one.
+    /// </summary>
     Images,
 
     /// <summary>Hyperlinks, link targets other than <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c>, and bookmarks.</summary>
@@ -77,7 +80,11 @@ public static class DocumentExport
         private readonly bool _text = format == DocumentFileFormat.Text;
         private readonly bool _markdown = format == DocumentFileFormat.Markdown;
         private readonly bool _html = format == DocumentFileFormat.Html;
+        private const string ListParagraphStyle = "ListParagraph";
+        private const long EmuPerTwip = 635;
+        private static readonly AbstractNumbering Decimal = ListTemplates.Create(ListTemplate.Decimal);
         private readonly bool _rtf = format == DocumentFileFormat.Rtf;
+        private readonly Dictionary<(string, bool), bool> _styles = [];
 
         public void Blocks(IEnumerable<Block> blocks, int depth)
         {
@@ -88,7 +95,9 @@ public static class DocumentExport
                         Paragraph(paragraph);
                         break;
                     case Table table:
-                        Lost(DocumentFeature.Tables, _text);
+                        Lost(DocumentFeature.Tables, _text || _markdown && table.Rows.SelectMany(r => r.Cells).Any(c =>
+                            c.Blocks.Count(b => b is not Paragraph { Length: 0 }) > 1 ||
+                            c.Blocks.OfType<Paragraph>().Any(p => document.ListLabel(p) != null || p.Inlines.Any(i => i is Break))));
                         Lost(DocumentFeature.NestedTables, depth > 0 && !_html);
                         Lost(DocumentFeature.MergedCells, !_html && !_rtf && table.Rows.SelectMany(r => r.Cells).Any(c => c.GridSpan > 1 || c.VMerge != VerticalMerge.None));
                         Lost(DocumentFeature.Styles, table.Format.StyleId != null && (_text || table.Format.StyleId != Tables.GridStyle));
@@ -104,30 +113,89 @@ public static class DocumentExport
         private void Paragraph(Paragraph paragraph)
         {
             var own = paragraph.Format;
-            Lost(DocumentFeature.ParagraphFormatting, !_rtf && (
-                own.IndentRight != null || own.SpacingBefore != null || own.SpacingAfter != null || own.Line != null || own.KeepWithNext != null ||
-                own.KeepLines != null || own.WidowControl != null || own.Tabs != null ||
-                !_html && (own.Alignment != null || own.IndentLeft != null || own.IndentFirstLine != null || own.Shading != null) ||
-                _markdown && own.PageBreakBefore != null || _text && own.OutlineLevel != null));
-            Lost(DocumentFeature.Styles, own.StyleId != null && own.StyleId != document.Styles.DefaultParagraphStyle?.Id && (_text || !IsHeading(own.StyleId)));
-            Lost(DocumentFeature.Lists, (_text || _rtf) && document.ListLabel(paragraph) != null);
-            var preformatted = _markdown && HtmlWriter.IsPreformatted(document, paragraph);
+            var effective = document.EffectiveParagraphFormat(paragraph);
+            Lost(DocumentFeature.ParagraphFormatting, LostParagraph(own) || _markdown && paragraph.Inlines.Any(i => i is Break { Kind: not BreakKind.Line }));
+            Lost(DocumentFeature.Styles, own.StyleId != null && own.StyleId != document.Styles.DefaultParagraphStyle?.Id && own.StyleId != ListParagraphStyle &&
+                                         (_text || !IsHeading(own.StyleId)) && StyleLost(own.StyleId, false));
+            Lost(DocumentFeature.Lists, document.ListLabel(paragraph) != null && (_text || _rtf || _markdown && NumberingLost(effective)));
             foreach (var inline in paragraph.Inlines)
             {
-                var run = inline.Format;
-                Lost(DocumentFeature.CharacterFormatting, !_html && !_rtf && (
-                    run.Underline != null || run.Color != null || run.SizePt != null || run.Highlight != null || run.Shading != null || run.Caps != null ||
-                    run.SmallCaps != null || run.VerticalAlign != null || run.DoubleStrike != null || run.Hidden != null ||
-                    run.Font != null && !(preformatted && run.Font == HtmlReader.Monospace) ||
-                    _text && (run.Bold != null || run.Italic != null || run.Strike != null)));
-                Lost(DocumentFeature.Styles, run.StyleId != null && (_text || run.StyleId != InlineEdit.HyperlinkStyle));
+                Lost(DocumentFeature.CharacterFormatting, LostRun(inline.Format));
+                Lost(DocumentFeature.Styles, inline.Format.StyleId is { } style && (_text || style != InlineEdit.HyperlinkStyle) && StyleLost(style, true));
                 Lost(DocumentFeature.Links, inline.Link != null && (_text || inline.Link.SafeTarget == null) || inline is Marker { Kind: "bookmarkStart", Name: { } name } && name != "_GoBack");
                 Lost(DocumentFeature.Images, inline is InlineImage image && (_text || image.Placement != ImagePlacement.Inline ||
-                                                                             !(_rtf ? RtfWriter.ImageTypes : HtmlWriter.ImageTypes).Contains(document.MediaContentType(image.MediaPart)?.ToLowerInvariant() ?? "")));
+                                                                             !(_rtf ? RtfWriter.ImageTypes : HtmlWriter.ImageTypes).Contains(document.MediaContentType(image.MediaPart)?.ToLowerInvariant() ?? "") ||
+                                                                             _markdown && !NaturalSize(image)));
                 Lost(DocumentFeature.Fields, inline is OpaqueInline { Kind: "field" or "fieldStart" or "fieldEnd" });
                 Lost(DocumentFeature.OpaqueContent, inline is OpaqueInline { Kind: not ("field" or "fieldStart" or "fieldEnd") });
             }
         }
+
+        private bool LostParagraph(ParagraphFormat format) =>
+            !_rtf && (format.IndentRight != null || format.SpacingBefore != null || format.SpacingAfter != null || format.Line != null || format.KeepWithNext != null ||
+                      format.KeepLines != null || format.WidowControl != null || format.Tabs != null ||
+                      !_html && (format.Alignment != null || format.IndentLeft != null || format.IndentFirstLine != null || format.Shading != null) ||
+                      _markdown && format.PageBreakBefore != null || _text && format.OutlineLevel != null);
+
+        private bool LostRun(RunFormat format) =>
+            !_html && !_rtf && (format.Underline != null || format.Color != null || format.SizePt != null || format.Highlight != null || format.Shading != null ||
+                                format.Caps != null || format.SmallCaps != null || format.VerticalAlign != null || format.DoubleStrike != null || format.Hidden != null ||
+                                format.Font != null && !(_markdown && format.Font == HtmlReader.Monospace) ||
+                                _text && (format.Bold != null || format.Italic != null || format.Strike != null));
+
+        private bool StyleLost(string id, bool character)
+        {
+            if (_styles.TryGetValue((id, character), out var lost)) return lost;
+            var plain = new Paragraph { Inlines = [new TextRun("x")] };
+            var styled = character
+                ? plain with { Inlines = [new TextRun("x") { Format = new RunFormat { StyleId = id } }] }
+                : plain with { Format = new ParagraphFormat { StyleId = id } };
+            lost = !character && LostParagraph(Diff(document.EffectiveParagraphFormat(styled), document.EffectiveParagraphFormat(plain))) ||
+                   LostRun(Diff(document.EffectiveRunFormat(styled, styled.Inlines[0]), document.EffectiveRunFormat(plain, plain.Inlines[0])));
+            return _styles[(id, character)] = lost;
+        }
+
+        private bool NumberingLost(ParagraphFormat effective)
+        {
+            if (effective.OutlineLevel is < 9) return true;
+            if (effective.Numbering is not { } numbering || document.Numbering.Level(numbering) is not { } level || level.Format is NumberFormat.Bullet or NumberFormat.None)
+                return false;
+            var expected = Decimal.Levels.FirstOrDefault(l => l.Level == level.Level);
+            return expected == null || level.Format != expected.Format || level.Text != expected.Text || level.Start != expected.Start ||
+                   document.Numbering.Instances.FirstOrDefault(i => i.Id == numbering.NumId)?.Overrides.Any(o => o.Level == numbering.Level && o.StartOverride != null) == true;
+        }
+
+        private bool NaturalSize(InlineImage image)
+        {
+            var data = document.GetMedia(image.MediaPart);
+            var type = document.MediaContentType(image.MediaPart);
+            return data == null || type == null ||
+                   InsertImageCommand.Size(data, type, document.Sections[^1].Page.TextWidth * EmuPerTwip) == (image.WidthEmu, image.HeightEmu);
+        }
+
+        private static T? Changed<T>(T? value, T? basis) where T : struct => Equals(value, basis) ? null : value;
+
+        private static string Changed(string value, string basis) => value == basis ? null : value;
+
+        private static ParagraphFormat Diff(ParagraphFormat value, ParagraphFormat basis) => new()
+        {
+            Alignment = Changed(value.Alignment, basis.Alignment), IndentLeft = Changed(value.IndentLeft, basis.IndentLeft),
+            IndentRight = Changed(value.IndentRight, basis.IndentRight), IndentFirstLine = Changed(value.IndentFirstLine, basis.IndentFirstLine),
+            SpacingBefore = Changed(value.SpacingBefore, basis.SpacingBefore), SpacingAfter = Changed(value.SpacingAfter, basis.SpacingAfter),
+            Line = Changed(value.Line, basis.Line), KeepWithNext = Changed(value.KeepWithNext, basis.KeepWithNext), KeepLines = Changed(value.KeepLines, basis.KeepLines),
+            PageBreakBefore = Changed(value.PageBreakBefore, basis.PageBreakBefore), WidowControl = Changed(value.WidowControl, basis.WidowControl),
+            OutlineLevel = Changed(value.OutlineLevel, basis.OutlineLevel), Tabs = Equals(value.Tabs, basis.Tabs) ? null : value.Tabs,
+            Shading = Changed(value.Shading, basis.Shading)
+        };
+
+        private static RunFormat Diff(RunFormat value, RunFormat basis) => new()
+        {
+            Bold = Changed(value.Bold, basis.Bold), Italic = Changed(value.Italic, basis.Italic), Strike = Changed(value.Strike, basis.Strike),
+            DoubleStrike = Changed(value.DoubleStrike, basis.DoubleStrike), Caps = Changed(value.Caps, basis.Caps), SmallCaps = Changed(value.SmallCaps, basis.SmallCaps),
+            Hidden = Changed(value.Hidden, basis.Hidden), Underline = Changed(value.Underline, basis.Underline), SizePt = Changed(value.SizePt, basis.SizePt),
+            Font = Changed(value.Font, basis.Font), Color = Changed(value.Color, basis.Color), Highlight = Changed(value.Highlight, basis.Highlight),
+            Shading = Changed(value.Shading, basis.Shading), VerticalAlign = Changed(value.VerticalAlign, basis.VerticalAlign)
+        };
 
         private static bool IsHeading(string styleId) => styleId.Length == 8 && styleId.StartsWith("Heading", StringComparison.Ordinal) && styleId[7] is >= '1' and <= '6';
 

@@ -1,33 +1,41 @@
 using System.Text;
 using Markdig;
+using Markdig.Extensions.Yaml;
+using Markdig.Syntax;
+using Markdig.Syntax.Inlines;
 
 namespace MudBlazor.Extensions.Office.Document;
 
 internal static class MarkdownFormat
 {
     private const string Escaped = "\\*_[]#|<>`~&";
-    private static readonly char[] Space = [' ', '\t', '\n'];
-    private static readonly MarkdownPipeline Pipeline = new MarkdownPipelineBuilder().UsePipeTables().UseEmphasisExtras().UseAutoLinks().Build();
+    private static readonly MarkdownPipeline Pipeline = new MarkdownPipelineBuilder().UsePipeTables().UseEmphasisExtras().UseAutoLinks().UseYamlFrontMatter().Build();
 
     internal static TextDocument Read(Stream stream)
     {
         var text = TextFormat.Decode(stream);
-        string html;
+        string html, title;
         try
         {
-            html = Markdig.Markdown.ToHtml(text, Pipeline);
+            var markdown = Markdig.Markdown.Parse(text, Pipeline);
+            title = Title(markdown.Descendants<YamlFrontMatterBlock>().FirstOrDefault());
+            foreach (var image in markdown.Descendants<LinkInline>().Where(l => l.IsImage && l.Url?.TrimStart().StartsWith("data:", StringComparison.OrdinalIgnoreCase) != true).ToList())
+                image.ReplaceBy(new LiteralInline(string.Concat(image.Descendants<LiteralInline>().Select(l => l.Content.ToString()))), false);
+            html = Markdig.Markdown.ToHtml(markdown, Pipeline);
         }
         catch (ArgumentException)
         {
             return TextFormat.FromText(text);
         }
 
-        return HtmlReader.Read(html);
+        var document = HtmlReader.Read(html);
+        if (title != null) document.Properties = document.Properties with { Title = title };
+        return document;
     }
 
     internal static void Write(TextDocument document, Stream target) => target.Write(new UTF8Encoding(false).GetBytes(new Writer(document).Run()));
 
-    private static string Escape(string text)
+    internal static string Escape(string text)
     {
         var sb = new StringBuilder(text.Length);
         foreach (var c in text)
@@ -39,15 +47,7 @@ internal static class MarkdownFormat
         return sb.ToString();
     }
 
-    private static string LineStart(string line)
-    {
-        if (line.Length > 0 && line[0] is '+' or '-' or '=') return "\\" + line;
-        var digits = 0;
-        while (digits < line.Length && char.IsAsciiDigit(line[digits])) digits++;
-        return digits is > 0 and < 10 && digits < line.Length && line[digits] is '.' or ')' ? line.Insert(digits, "\\") : line;
-    }
-
-    private static string Url(string url)
+    internal static string Url(string url)
     {
         var sb = new StringBuilder(url.Length);
         foreach (var c in url)
@@ -57,9 +57,33 @@ internal static class MarkdownFormat
         return sb.ToString();
     }
 
+    private static string Title(YamlFrontMatterBlock frontMatter)
+    {
+        if (frontMatter == null) return null;
+        var lines = frontMatter.Lines;
+        for (var i = 0; i < lines.Count; i++)
+        {
+            var text = lines.Lines[i].Slice.ToString();
+            if (!text.StartsWith("title:", StringComparison.Ordinal)) continue;
+            var title = HtmlPasteReader.Clean(text[6..].Trim().Trim('"', '\''));
+            return title.Length == 0 ? null : title.Length > 1024 ? title[..1024] : title;
+        }
+
+        return null;
+    }
+
+    private static string LineStart(string line)
+    {
+        if (line.Length > 0 && line[0] is '+' or '-' or '=') return "\\" + line;
+        var digits = 0;
+        while (digits < line.Length && char.IsAsciiDigit(line[digits])) digits++;
+        return digits is > 0 and < 10 && digits < line.Length && line[digits] is '.' or ')' ? line.Insert(digits, "\\") : line;
+    }
+
     private sealed class Writer(TextDocument document)
     {
         private readonly StringBuilder _md = new();
+        private readonly MarkdownInline _inline = new(document);
         private readonly List<int> _items = [];
         private bool _item;
 
@@ -89,7 +113,7 @@ internal static class MarkdownFormat
             var format = document.EffectiveParagraphFormat(paragraph);
             if (format.OutlineLevel is { } outline and < 9)
             {
-                var heading = Inline(paragraph, true).Trim(' ', '\t');
+                var heading = _inline.Write(paragraph, true).Trim(' ', '\t');
                 if (heading.Length == 0) return;
                 Start(false);
                 _md.Append('#', Math.Min(outline + 1, 6)).Append(' ').Append(heading);
@@ -97,13 +121,14 @@ internal static class MarkdownFormat
             }
 
             var level = format.Numbering is { } numbering ? document.Numbering.Level(numbering) : null;
-            if (level == null && HtmlWriter.IsPreformatted(document, paragraph))
+            if (level == null && HtmlWriter.IsPreformatted(document, paragraph) && (paragraph.Inlines.Any(i => i is Break or Tab) || paragraph.Text.StartsWith(' ') ||
+                                                                      paragraph.Text.EndsWith(' ') || paragraph.Text.Contains("  ", StringComparison.Ordinal)))
             {
                 Code(paragraph);
                 return;
             }
 
-            var lines = Lines(Inline(paragraph, false));
+            var lines = Lines(_inline.Write(paragraph, false));
             if (level == null)
             {
                 if (lines.Count == 0) return;
@@ -162,87 +187,10 @@ internal static class MarkdownFormat
         private string Cell(IEnumerable<Block> blocks) =>
             string.Join(' ', blocks.SelectMany(b => b switch
             {
-                Paragraph p => [Inline(p, true).Trim(' ', '\t')],
+                Paragraph p => [_inline.Write(p, true).Trim(' ', '\t')],
                 Table t => t.Rows.SelectMany(r => r.Cells).Select(c => Cell(c.Blocks)),
                 OpaqueBlock { Visible: true, Preview: { } preview } => [Cell(preview)],
                 _ => []
             }).Where(s => s.Length > 0));
-
-        private string Inline(Paragraph paragraph, bool single)
-        {
-            var baseline = document.EffectiveRunFormat(new Paragraph { Format = paragraph.Format }, null);
-            var sb = new StringBuilder();
-            var open = new List<string>();
-            var pending = "";
-            Hyperlink link = null;
-            foreach (var inline in paragraph.Inlines)
-            {
-                if (inline is Marker || TextFormat.Hidden(document, paragraph, inline)) continue;
-                var target = inline.Link?.SafeTarget != null ? inline.Link : null;
-                if (!ReferenceEquals(target, link))
-                {
-                    Close(sb, open, 0);
-                    if (link != null) sb.Append("](").Append(Url(link.SafeTarget)).Append(')');
-                    sb.Append(pending);
-                    pending = "";
-                    if (target != null) sb.Append('[');
-                    link = target;
-                }
-
-                var text = inline switch
-                {
-                    TextRun run => Escape(run.Text),
-                    Tab => single ? " " : "\t",
-                    Break => single ? " " : "\n",
-                    OpaqueInline token => Escape(token.DisplayText),
-                    InlineImage image => Image(image),
-                    _ => ""
-                };
-                var core = text.Trim(Space);
-                if (core.Length == 0)
-                {
-                    pending += text;
-                    continue;
-                }
-
-                var format = document.EffectiveRunFormat(paragraph, inline);
-                var wanted = new List<string>(3);
-                if ((format.Strike == true || format.DoubleStrike == true) && baseline.Strike != true) wanted.Add("~~");
-                if (format.Bold == true && baseline.Bold != true) wanted.Add("**");
-                if (format.Italic == true && baseline.Italic != true) wanted.Add("*");
-                var keep = 0;
-                while (keep < open.Count && keep < wanted.Count && open[keep] == wanted[keep]) keep++;
-                Close(sb, open, keep);
-                var lead = text.Length - text.TrimStart(Space).Length;
-                sb.Append(pending).Append(text, 0, lead);
-                pending = text[(lead + core.Length)..];
-                foreach (var delimiter in wanted.Skip(keep))
-                {
-                    sb.Append(delimiter);
-                    open.Add(delimiter);
-                }
-
-                sb.Append(core);
-            }
-
-            Close(sb, open, 0);
-            if (link != null) sb.Append("](").Append(Url(link.SafeTarget)).Append(')');
-            return sb.Append(pending).ToString();
-        }
-
-        private static void Close(StringBuilder sb, List<string> open, int keep)
-        {
-            for (var k = open.Count - 1; k >= keep; k--) sb.Append(open[k]);
-            open.RemoveRange(keep, open.Count - keep);
-        }
-
-        private string Image(InlineImage image)
-        {
-            var data = document.GetMedia(image.MediaPart);
-            var type = document.MediaContentType(image.MediaPart)?.ToLowerInvariant();
-            return data == null || type == null || !HtmlWriter.ImageTypes.Contains(type)
-                ? ""
-                : $"![{Escape(image.AltText ?? "")}](data:{type};base64,{Convert.ToBase64String(data)})";
-        }
     }
 }
