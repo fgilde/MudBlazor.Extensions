@@ -33919,9 +33919,12 @@
         <member name="M:MudBlazor.Extensions.Office.Document.DocumentFileFormats.DetectContent(System.IO.Stream,System.String,System.String)">
             <summary>
             Detects a format from the content: a ZIP package by the main part type in <c>[Content_Types].xml</c> (.docx, .docm, .dotx, .dotm) or its
-            <c>mimetype</c> entry (.odt), <c>{\rtf</c>, the OLE compound file header (.doc) and HTML markup at the start. Text without such a signature is
-            Markdown, HTML or text by <paramref name="fileName"/> or <paramref name="contentType"/>, else plain text; binary content without a known
-            signature falls back to the name.
+            <c>mimetype</c> entry (.odt), <c>{\rtf</c> after an optional UTF-8 byte order mark and white space, an OLE compound file with a
+            <c>WordDocument</c> stream (.doc) and HTML markup at the start. Another Office or OpenDocument package (.xlsx, .pptx, .ods) and an Excel,
+            PowerPoint or Outlook compound file give null whatever the name says; a ZIP without content types falls back to the name, and an unknown
+            compound file counts as .doc only if the name ends with .doc or .dot. Text without a signature is Markdown, HTML or text by
+            <paramref name="fileName"/> or <paramref name="contentType"/>, else HTML if it starts with markup, else plain text; other binary content
+            falls back to the name.
             </summary>
             <param name="content">The file content; it must be seekable and its position is restored.</param>
             <param name="fileName">The file name, or null.</param>

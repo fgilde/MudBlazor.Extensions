@@ -1,3 +1,4 @@
+using System.Buffers.Binary;
 using System.IO.Compression;
 using System.Text;
 using System.Xml;
@@ -9,6 +10,7 @@ namespace MudBlazor.Extensions.Office.Document;
 public static class DocumentFileFormats
 {
     private const int Head = 4096;
+    private const int MaxDirectorySectors = 64;
     private const string Wml = "application/vnd.openxmlformats-officedocument.wordprocessingml.";
 
     private static readonly Dictionary<string, DocumentFileFormat> Extensions = new(StringComparer.OrdinalIgnoreCase)
@@ -34,6 +36,8 @@ public static class DocumentFileFormats
         [Wml + "template.main+xml"] = DocumentFileFormat.Dotx, ["application/vnd.ms-word.template.macroEnabledTemplate.main+xml"] = DocumentFileFormat.Dotx
     };
 
+    private static readonly byte[] CompoundSignature = [0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1];
+
     private static readonly string[] HtmlTags = ["html", "head", "body", "meta", "title", "style", "script", "table", "div", "p", "h1", "h2", "h3", "h4", "h5", "h6", "b", "br", "font", "a"];
 
     /// <summary>Detects a format from a file name and, if the extension is unknown, from a content type such as <c>text/markdown</c>.</summary>
@@ -50,9 +54,12 @@ public static class DocumentFileFormats
 
     /// <summary>
     /// Detects a format from the content: a ZIP package by the main part type in <c>[Content_Types].xml</c> (.docx, .docm, .dotx, .dotm) or its
-    /// <c>mimetype</c> entry (.odt), <c>{\rtf</c>, the OLE compound file header (.doc) and HTML markup at the start. Text without such a signature is
-    /// Markdown, HTML or text by <paramref name="fileName"/> or <paramref name="contentType"/>, else plain text; binary content without a known
-    /// signature falls back to the name.
+    /// <c>mimetype</c> entry (.odt), <c>{\rtf</c> after an optional UTF-8 byte order mark and white space, an OLE compound file with a
+    /// <c>WordDocument</c> stream (.doc) and HTML markup at the start. Another Office or OpenDocument package (.xlsx, .pptx, .ods) and an Excel,
+    /// PowerPoint or Outlook compound file give null whatever the name says; a ZIP without content types falls back to the name, and an unknown
+    /// compound file counts as .doc only if the name ends with .doc or .dot. Text without a signature is Markdown, HTML or text by
+    /// <paramref name="fileName"/> or <paramref name="contentType"/>, else HTML if it starts with markup, else plain text; other binary content
+    /// falls back to the name.
     /// </summary>
     /// <param name="content">The file content; it must be seekable and its position is restored.</param>
     /// <param name="fileName">The file name, or null.</param>
@@ -70,7 +77,7 @@ public static class DocumentFileFormats
             var head = new byte[Head];
             var length = content.ReadAtLeast(head, Head, false);
             content.Position = start;
-            return Sniff(content, head.AsSpan(0, length), Detect(fileName, contentType));
+            return Sniff(content, start, head.AsSpan(0, length), fileName, Detect(fileName, contentType));
         }
         finally
         {
@@ -124,11 +131,11 @@ public static class DocumentFileFormats
         _ => throw new ArgumentOutOfRangeException(nameof(format))
     };
 
-    private static DocumentFileFormat? Sniff(Stream content, ReadOnlySpan<byte> head, DocumentFileFormat? named)
+    private static DocumentFileFormat? Sniff(Stream content, long start, ReadOnlySpan<byte> head, string fileName, DocumentFileFormat? named)
     {
-        if (head.StartsWith("PK\u0003\u0004"u8)) return Package(content) ?? named;
-        if (head.StartsWith(@"{\rtf"u8)) return DocumentFileFormat.Rtf;
-        if (head.StartsWith((ReadOnlySpan<byte>)[0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1])) return DocumentFileFormat.Doc;
+        if (head.StartsWith("PK\u0003\u0004"u8)) return Package(content, start) is var (format, known) && known ? format : named;
+        if (RtfFormat.Start(head) >= 0) return DocumentFileFormat.Rtf;
+        if (head.StartsWith(CompoundSignature)) return Compound(content, start, fileName);
         var bom = HtmlEncoding.Bom(head);
         if (bom == null && head.Contains((byte)0)) return named;
         if (named is DocumentFileFormat.Html or DocumentFileFormat.Markdown or DocumentFileFormat.Text) return named;
@@ -138,35 +145,96 @@ public static class DocumentFileFormats
 
     private static bool IsHtml(string text)
     {
-        if (text.StartsWith("<!doctype html", StringComparison.OrdinalIgnoreCase)) return true;
+        if (text.StartsWith("<?xml", StringComparison.OrdinalIgnoreCase))
+        {
+            var end = text.IndexOf("?>", StringComparison.Ordinal);
+            if (end < 0) return false;
+            text = text[(end + 2)..].TrimStart(' ', '\t', '\r', '\n');
+        }
+
+        if (text.StartsWith("<!--", StringComparison.Ordinal) || text.StartsWith("<!doctype html", StringComparison.OrdinalIgnoreCase)) return true;
         if (!text.StartsWith('<')) return false;
-        var end = 1;
-        while (end < text.Length && char.IsAsciiLetterOrDigit(text[end])) end++;
-        return end < text.Length && text[end] is ' ' or '>' or '/' or '\t' or '\r' or '\n' && HtmlTags.Contains(text[1..end].ToLowerInvariant());
+        var name = 1;
+        while (name < text.Length && char.IsAsciiLetterOrDigit(text[name])) name++;
+        return name < text.Length && text[name] is ' ' or '>' or '/' or '\t' or '\r' or '\n' && HtmlTags.Contains(text[1..name].ToLowerInvariant()) &&
+               text.IndexOf('>', name) >= 0;
     }
 
-    private static DocumentFileFormat? Package(Stream content)
+    private static (DocumentFileFormat? Format, bool Known) Package(Stream content, long start)
     {
         try
         {
-            using var zip = new ZipArchive(content, ZipArchiveMode.Read, true);
+            using var copy = start > 0 ? new MemoryStream() : null;
+            if (copy != null)
+            {
+                content.CopyTo(copy);
+                copy.Position = 0;
+            }
+
+            using var zip = new ZipArchive(copy ?? content, ZipArchiveMode.Read, true);
             if (zip.GetEntry("mimetype") is { Length: < 256 } mimetype)
             {
                 using var reader = new StreamReader(mimetype.Open(), Encoding.ASCII);
-                if (reader.ReadToEnd().Trim().StartsWith("application/vnd.oasis.opendocument.text", StringComparison.Ordinal)) return DocumentFileFormat.Odt;
+                return (reader.ReadToEnd().Trim().StartsWith("application/vnd.oasis.opendocument.text", StringComparison.Ordinal) ? DocumentFileFormat.Odt : null, true);
             }
 
-            if (zip.GetEntry("[Content_Types].xml") is not { Length: < 1024 * 1024 } types) return null;
+            if (zip.GetEntry("[Content_Types].xml") is not { Length: < 1024 * 1024 } types) return (null, false);
             using var stream = types.Open();
             using var xml = XmlReader.Create(stream, new XmlReaderSettings { DtdProcessing = DtdProcessing.Prohibit });
             foreach (var type in XDocument.Load(xml).Root?.Elements().Select(e => (string)e.Attribute("ContentType")) ?? [])
                 if (type != null && MainParts.TryGetValue(type, out var format))
-                    return format;
-            return null;
+                    return (format, true);
+            return (null, true);
         }
         catch (Exception e) when (e is InvalidDataException or XmlException or IOException)
         {
-            return null;
+            return (null, false);
         }
+    }
+
+    private static DocumentFileFormat? Compound(Stream content, long start, string fileName)
+    {
+        var names = CompoundNames(content, start);
+        if (names.Contains("WordDocument")) return DocumentFileFormat.Doc;
+        if (names.Any(n => n is "Workbook" or "Book" or "PowerPoint Document" or "__properties_version1.0" || n.StartsWith("__substg1.0_", StringComparison.Ordinal)))
+            return null;
+        return Path.GetExtension(fileName ?? "").ToLowerInvariant() is ".doc" or ".dot" ? DocumentFileFormat.Doc : null;
+    }
+
+    private static HashSet<string> CompoundNames(Stream content, long start)
+    {
+        var names = new HashSet<string>(StringComparer.Ordinal);
+        var header = new byte[512];
+        content.Position = start;
+        if (content.ReadAtLeast(header, header.Length, false) < header.Length) return names;
+        var shift = BinaryPrimitives.ReadUInt16LittleEndian(header.AsSpan(0x1E));
+        if (shift is not (9 or 12)) return names;
+        var size = 1 << shift;
+        var fat = Enumerable.Range(0, (int)Math.Min(BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x2C)), 109u))
+            .Select(i => BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x4C + 4 * i))).ToList();
+        var buffer = new byte[size];
+        var sector = BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x30));
+        for (var count = 0; count < MaxDirectorySectors && Sector(content, start, sector, buffer); count++)
+        {
+            for (var entry = 0; entry + 128 <= size; entry += 128)
+            {
+                var length = BinaryPrimitives.ReadUInt16LittleEndian(buffer.AsSpan(entry + 0x40));
+                if (length is >= 4 and <= 64 && length % 2 == 0 && buffer[entry + 0x42] is 1 or 2) names.Add(Encoding.Unicode.GetString(buffer, entry, length - 2));
+            }
+
+            var index = (int)(sector / (size / 4));
+            if (index >= fat.Count || !Sector(content, start, fat[index], buffer)) break;
+            sector = BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan((int)(sector % (size / 4)) * 4));
+        }
+
+        return names;
+    }
+
+    private static bool Sector(Stream content, long start, uint sector, byte[] buffer)
+    {
+        var offset = start + ((long)sector + 1) * buffer.Length;
+        if (sector >= 0xFFFFFFFA || offset + buffer.Length > content.Length) return false;
+        content.Position = offset;
+        return content.ReadAtLeast(buffer, buffer.Length, false) == buffer.Length;
     }
 }

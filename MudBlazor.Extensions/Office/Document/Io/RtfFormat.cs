@@ -18,10 +18,11 @@ internal static class RtfFormat
     internal static TextDocument Read(Stream stream)
     {
         var bytes = HtmlEncoding.ReadLimited(stream, HtmlReader.MaxLength, _ => Encoding.Latin1);
-        if (!bytes.AsSpan().StartsWith(@"{\rtf"u8)) throw new InvalidDataException("The file is not an RTF document.");
+        var start = Start(bytes);
+        if (start < 0) throw new InvalidDataException("The file is not an RTF document.");
         if (bytes.Length > HtmlReader.MaxLength) throw new InvalidDataException("The RTF is too large to read.");
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        var rtf = Prepare(Encoding.Latin1.GetString(bytes));
+        var rtf = Prepare(Encoding.Latin1.GetString(bytes, start, bytes.Length - start));
         var culture = CultureInfo.CurrentCulture;
         string html;
         try
@@ -39,6 +40,13 @@ internal static class RtfFormat
         }
 
         return HtmlReader.Read(Tag.Replace(html, tag => Margin.Replace(tag.Value, m => LeftMargin(m.Groups[1].Value))), Text);
+    }
+
+    internal static int Start(ReadOnlySpan<byte> bytes)
+    {
+        var at = bytes.StartsWith((ReadOnlySpan<byte>)[0xEF, 0xBB, 0xBF]) ? 3 : 0;
+        while (at < bytes.Length && bytes[at] is (byte)' ' or (byte)'\t' or (byte)'\r' or (byte)'\n') at++;
+        return bytes[at..].StartsWith(@"{\rtf"u8) ? at : -1;
     }
 
     private static string Prepare(string rtf)

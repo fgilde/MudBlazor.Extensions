@@ -47,7 +47,8 @@ public class DocumentFormatsTests
         Assert.Null(Detect(Zip(("a.txt", "hello"))));
         Assert.Equal(DocumentFileFormat.Docx, Detect(Zip(("a.txt", "hello")), "broken.docx"));
         Assert.Equal(DocumentFileFormat.Rtf, Detect(Encoding.ASCII.GetBytes("{\\rtf1\\ansi x}"), "x.doc"));
-        Assert.Equal(DocumentFileFormat.Doc, Detect(ole));
+        Assert.Equal(DocumentFileFormat.Doc, Detect(ole, "x.doc"));
+        Assert.Null(Detect(ole));
         Assert.Equal(DocumentFileFormat.Html, Detect(Encoding.UTF8.GetBytes("\uFEFF  <!DOCTYPE html><p>x")));
         Assert.Equal(DocumentFileFormat.Html, Detect(Encoding.UTF8.GetBytes("<html lang=\"de\"><body>x")));
         Assert.Equal(DocumentFileFormat.Markdown, Detect(Encoding.Unicode.GetPreamble().Concat(Encoding.Unicode.GetBytes("# Title")).ToArray(), "r.md"));
@@ -57,6 +58,57 @@ public class DocumentFormatsTests
         Assert.Equal(DocumentFileFormat.Text, Detect(Encoding.UTF8.GetBytes("hello"), "x.docx"));
         Assert.Equal(DocumentFileFormat.Text, Detect([]));
         Assert.Null(Detect(Enumerable.Range(0, 256).Select(i => (byte)i).ToArray(), "x.bin"));
+    }
+
+    [Fact]
+    public void DetectContent_OtherPackagesAreNotWordWhateverTheName()
+    {
+        var xlsx = File.ReadAllBytes(TestData("Spreadsheet", "ExcelSheet.xlsx"));
+        var pptx = File.ReadAllBytes(TestData("Presentation", "sample.pptx"));
+        var ods = Zip(("mimetype", "application/vnd.oasis.opendocument.spreadsheet"), ("content.xml", "<x/>"));
+        var types = Zip(("[Content_Types].xml", "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">" +
+                                                "<Override PartName=\"/x.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml\"/></Types>"));
+
+        Assert.Null(Detect(xlsx, "report.docx"));
+        Assert.Null(Detect(xlsx, "x.txt"));
+        Assert.Null(Detect(pptx, "deck.docx"));
+        Assert.Null(Detect(ods, "x.odt"));
+        Assert.Null(Detect(types, "x.docx"));
+    }
+
+    [Fact]
+    public void DetectContent_CompoundFilesByDirectory()
+    {
+        var xls = File.ReadAllBytes(TestData("Spreadsheet", "sample.xls"));
+
+        Assert.Equal(DocumentFileFormat.Doc, Detect(Ole("Root Entry", "WordDocument", "1Table"), "x.bin"));
+        Assert.Equal(DocumentFileFormat.Doc, Detect(Ole("Root Entry", "Data", "1Table", "x", "y", "WordDocument")));
+        Assert.Null(Detect(xls, "x.doc"));
+        Assert.Null(Detect(Ole("Root Entry", "Workbook"), "x.doc"));
+        Assert.Null(Detect(Ole("Root Entry", "__substg1.0_0037001F", "__properties_version1.0"), "mail.doc"));
+        Assert.Null(Detect(Ole("Root Entry", "PowerPoint Document"), "x.doc"));
+        Assert.Equal(DocumentFileFormat.Doc, Detect(Ole("Root Entry", "Unknown"), "x.DOT"));
+        Assert.Null(Detect(Ole("Root Entry", "Unknown"), "x.bin"));
+    }
+
+    [Fact]
+    public void DetectContent_RtfAfterBomAndWhitespace_HtmlNeedsATag_ZipAtOffset()
+    {
+        var rtf = new byte[] { 0xEF, 0xBB, 0xBF }.Concat(Encoding.ASCII.GetBytes(" \r\n\t{\\rtf1\\ansi x}")).ToArray();
+        var docx = Bytes(TextDocument.Create(), DocumentFileFormat.Docx);
+        var shifted = new MemoryStream([1, 2, 3, .. docx]) { Position = 3 };
+
+        Assert.Equal(DocumentFileFormat.Rtf, Detect(rtf));
+        Assert.Equal("x", ((Paragraph)TextDocument.Load(new MemoryStream(rtf), DocumentFileFormat.Rtf).Blocks[0]).Text);
+        Assert.Equal(DocumentFileFormat.Docx, DocumentFileFormats.DetectContent(shifted));
+        Assert.Equal(3, shifted.Position);
+        Assert.Equal(DocumentFileFormat.Html, Detect(Encoding.UTF8.GetBytes("<!-- saved --><html>")));
+        Assert.Equal(DocumentFileFormat.Html, Detect(Encoding.UTF8.GetBytes("<?xml version=\"1.0\"?>\n<!DOCTYPE html><html>")));
+        Assert.Equal(DocumentFileFormat.Html, Detect(Encoding.UTF8.GetBytes("<?xml version=\"1.0\"?><html xmlns=\"http://www.w3.org/1999/xhtml\">")));
+        Assert.Equal(DocumentFileFormat.Text, Detect(Encoding.UTF8.GetBytes("<?xml version=\"1.0\"?><w:document/>")));
+        Assert.Equal(DocumentFileFormat.Text, Detect(Encoding.UTF8.GetBytes("<p is the variable name")));
+        Assert.Equal(DocumentFileFormat.Text, Detect(Encoding.UTF8.GetBytes("<ab> is not a tag")));
+        Assert.Equal(DocumentFileFormat.Html, Detect(Encoding.UTF8.GetBytes("<p>x")));
     }
 
     [Fact]
@@ -140,6 +192,38 @@ public class DocumentFormatsTests
             "<w:tbl><w:tblPr><w:tblW w:w=\"0\" w:type=\"auto\"/></w:tblPr><w:tblGrid><w:gridCol w:w=\"2000\"/></w:tblGrid>" +
             "<w:tr><w:tc><w:p><w:r><w:t>cell</w:t></w:r></w:p></w:tc></w:tr></w:tbl><w:p/>")
         .Load();
+
+    private static string TestData(string folder, string name) => Path.Combine(AppContext.BaseDirectory, "TestData", folder, name);
+
+    private static byte[] Ole(params string[] names)
+    {
+        var directorySectors = (names.Length + 3) / 4;
+        var file = new byte[512 * (2 + directorySectors)];
+        byte[] signature = [0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1];
+        signature.CopyTo(file, 0);
+        BitConverter.GetBytes((ushort)0x3E).CopyTo(file, 0x18);
+        BitConverter.GetBytes((ushort)3).CopyTo(file, 0x1A);
+        BitConverter.GetBytes((ushort)0xFFFE).CopyTo(file, 0x1C);
+        BitConverter.GetBytes((ushort)9).CopyTo(file, 0x1E);
+        BitConverter.GetBytes((ushort)6).CopyTo(file, 0x20);
+        BitConverter.GetBytes(1u).CopyTo(file, 0x2C);
+        BitConverter.GetBytes(1u).CopyTo(file, 0x30);
+        BitConverter.GetBytes(4096u).CopyTo(file, 0x38);
+        BitConverter.GetBytes(0xFFFFFFFEu).CopyTo(file, 0x3C);
+        BitConverter.GetBytes(0xFFFFFFFEu).CopyTo(file, 0x44);
+        for (var i = 0; i < 109; i++) BitConverter.GetBytes(i == 0 ? 0u : 0xFFFFFFFFu).CopyTo(file, 0x4C + 4 * i);
+        for (var i = 0; i < 128; i++) BitConverter.GetBytes(i == 0 ? 0xFFFFFFFDu : i <= directorySectors ? (i == directorySectors ? 0xFFFFFFFEu : (uint)i + 1) : 0xFFFFFFFFu).CopyTo(file, 512 + 4 * i);
+        for (var i = 0; i < names.Length; i++)
+        {
+            var at = 1024 + 128 * i;
+            var name = Encoding.Unicode.GetBytes(names[i]);
+            name.CopyTo(file, at);
+            BitConverter.GetBytes((ushort)(name.Length + 2)).CopyTo(file, at + 0x40);
+            file[at + 0x42] = (byte)(i == 0 ? 5 : 2);
+        }
+
+        return file;
+    }
 
     private static DocumentFileFormat? Detect(byte[] bytes, string fileName = null, string contentType = null) =>
         DocumentFileFormats.DetectContent(new MemoryStream(bytes), fileName, contentType);
