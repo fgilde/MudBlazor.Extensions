@@ -33256,6 +33256,26 @@
         <member name="P:MudBlazor.Extensions.Office.Document.SetImageAltTextCommand.Description">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.InsertDocumentCommand">
+            <summary>
+            Replaces a range with the content of another document, for example one read from HTML. The first paragraph of the source merges into the paragraph
+            at the start of the range and the last into the paragraph at its end; the blocks in between are inserted. A merged paragraph takes the source
+            paragraph's formatting where the target paragraph has no text on that side, otherwise it keeps its own; properties the model does not cover stay
+            those of the target paragraph. One undo step restores the original blocks, styles and lists. Styles the document lacks are copied by id
+            (existing ids keep their definition), lists get new definitions and instances, pictures are copied once. Bookmarks and other markers are dropped,
+            fields and other unmodelled inline content become their displayed text, unmodelled blocks their preview, and pictures of other types than PNG,
+            JPEG, GIF and BMP are left out.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.InsertDocumentCommand.#ctor(MudBlazor.Extensions.Office.Document.DocumentRange,MudBlazor.Extensions.Office.Document.TextDocument)">
+            <summary>Creates the command.</summary>
+            <param name="range">The range to replace, in either direction; an empty range inserts at a position.</param>
+            <param name="source">The document to insert; it is read when the command is applied first and not changed.</param>
+            <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InsertDocumentCommand.Description">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.ApplyListCommand">
             <summary>
             Makes paragraphs list items, or removes the list if all of them already are items of a list of this kind. The list of the preceding paragraph in

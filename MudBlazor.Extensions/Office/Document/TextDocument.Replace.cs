@@ -3,7 +3,7 @@ namespace MudBlazor.Extensions.Office.Document;
 public sealed partial class TextDocument
 {
     internal (IReadOnlyList<BlockEdit> Edits, Func<TextDocument, DocumentRange> After) ReplaceRange(
-        DocumentRange range, IReadOnlyList<IReadOnlyList<Inline>> lines, Func<Paragraph, Paragraph> adjustLast = null)
+        DocumentRange range, IReadOnlyList<IReadOnlyList<Inline>> lines, Func<Paragraph, Paragraph> adjustLast = null, InsertedContent inserted = null)
     {
         var (startPosition, endPosition) = Snap(range);
         if (startPosition.Equals(endPosition) && lines is [{ Count: 0 }]) return ([], _ => new DocumentRange(startPosition, startPosition));
@@ -12,7 +12,7 @@ public sealed partial class TextDocument
         var from = Locate(startPosition.BlockId);
         var to = Locate(endPosition.BlockId);
         if (from.Container != to.Container) throw new ArgumentException("The range must not span the body and a header or footer.", nameof(range));
-        var cut = new RangeCut(this, first, start, last, end, DeletedMarkers(first, start, last, end), lines, adjustLast);
+        var cut = new RangeCut(this, first, start, last, end, DeletedMarkers(first, start, last, end), lines, adjustLast, inserted);
         var before = Container(from.Container).Skip(from.Index).Take(to.Index - from.Index + 1).ToList();
         var after = cut.List(before, [new CellStep(0, 0, 0), .. startPosition.Path], [new CellStep(0, 0, to.Index - from.Index), .. endPosition.Path]).ToList();
         var caret = cut.Caret.Id;
@@ -60,7 +60,7 @@ public sealed partial class TextDocument
 
     private sealed class RangeCut(
         TextDocument document, Paragraph first, int start, Paragraph last, int end, IReadOnlyList<Inline> markers,
-        IReadOnlyList<IReadOnlyList<Inline>> lines, Func<Paragraph, Paragraph> adjustLast)
+        IReadOnlyList<IReadOnlyList<Inline>> lines, Func<Paragraph, Paragraph> adjustLast, InsertedContent inserted)
     {
         public Paragraph Caret { get; private set; }
 
@@ -100,9 +100,11 @@ public sealed partial class TextDocument
                 ? blocks
                 : [blocks.OfType<Paragraph>().FirstOrDefault() is { } paragraph ? paragraph with { Inlines = [] } : new Paragraph { Id = document.NewId() }];
 
-        private List<Paragraph> StartParagraphs(IReadOnlyList<Inline> tail)
+        private List<Block> StartParagraphs(IReadOnlyList<Inline> tail)
         {
-            var paragraphs = new List<Paragraph>();
+            var paragraphs = new List<Block>();
+            var leftEmpty = InlineEdit.Split(first.Inlines, start).Left.Sum(i => i.Length) == 0;
+            var tailEmpty = tail.Sum(i => i.Length) == 0;
             for (var k = 0; k < lines.Count; k++)
             {
                 var inlines = k == 0 ? [.. InlineEdit.Split(first.Inlines, start).Left, .. markers, .. lines[k]] : lines[k].ToList();
@@ -114,13 +116,18 @@ public sealed partial class TextDocument
                 else
                     inlines = InlineEdit.Normalize(inlines);
 
-                paragraphs.Add(k == 0
+                var owner = k > 0 && inserted != null ? last : first;
+                var paragraph = k == 0
                     ? Truncated(first, inlines)
-                    : new Paragraph { Id = document.NewId(), Format = first.Format, MarkFormat = first.MarkFormat, Inlines = inlines, Source = first.Source });
+                    : new Paragraph { Id = document.NewId(), Format = owner.Format, MarkFormat = owner.MarkFormat, Inlines = inlines, Source = owner.Source };
+                var formatFrom = k == 0 && leftEmpty && (lines.Count > 1 || tailEmpty) ? inserted?.First : k > 0 && k == lines.Count - 1 && tailEmpty ? inserted?.Last : null;
+                if (formatFrom != null) paragraph = paragraph with { Format = formatFrom.Format, MarkFormat = formatFrom.MarkFormat };
+                paragraphs.Add(paragraph);
+                if (k == 0 && inserted != null) paragraphs.AddRange(inserted.Middle);
             }
 
-            if (adjustLast != null) paragraphs[^1] = adjustLast(paragraphs[^1]);
-            Caret = paragraphs[^1];
+            if (adjustLast != null) paragraphs[^1] = adjustLast((Paragraph)paragraphs[^1]);
+            Caret = (Paragraph)paragraphs[^1];
             return paragraphs;
         }
 
