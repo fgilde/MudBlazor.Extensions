@@ -32950,6 +32950,22 @@
         <member name="P:MudBlazor.Extensions.Office.OpcRelationship.TargetMode">
             <summary>The <c>TargetMode</c> attribute (<c>External</c>), or null for internal targets.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.OpcLimits">
+            <summary>Limits for reading a package: the total declared uncompressed size and the XML elements of all parts read while loading.</summary>
+            <param name="MaxTotalLength">The largest sum of the declared uncompressed entry sizes.</param>
+            <param name="MaxElements">The most XML elements in all parts read until <see cref="M:MudBlazor.Extensions.Office.OpcPackage.EndLoad"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcLimits.#ctor(System.Int64,System.Int64)">
+            <summary>Limits for reading a package: the total declared uncompressed size and the XML elements of all parts read while loading.</summary>
+            <param name="MaxTotalLength">The largest sum of the declared uncompressed entry sizes.</param>
+            <param name="MaxElements">The most XML elements in all parts read until <see cref="M:MudBlazor.Extensions.Office.OpcPackage.EndLoad"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.OpcLimits.MaxTotalLength">
+            <summary>The largest sum of the declared uncompressed entry sizes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.OpcLimits.MaxElements">
+            <summary>The most XML elements in all parts read until <see cref="M:MudBlazor.Extensions.Office.OpcPackage.EndLoad"/>.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.OpcPackage">
             <summary>A read-only view of an OPC (zip) package. Part names carry a leading slash and compare case-insensitively.</summary>
         </member>
@@ -32969,6 +32985,15 @@
             <summary>Opens a package.</summary>
             <param name="source">The zip bytes.</param>
             <returns>The package.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackage.Open(System.Byte[],MudBlazor.Extensions.Office.OpcLimits)">
+            <summary>Opens a package with limits: every entry must have its declared size, and the XML read until <see cref="M:MudBlazor.Extensions.Office.OpcPackage.EndLoad"/> shares an element budget.</summary>
+            <param name="source">The zip bytes.</param>
+            <param name="limits">The limits.</param>
+            <returns>The package.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.OpcPackage.EndLoad">
+            <summary>Ends the element budget; later reads (for example while saving) are not counted.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.OpcPackage.ReadXml(System.String)">
             <summary>Reads a part as XML; DTDs and elements nested deeper than 256 levels are rejected with <see cref="T:System.IO.InvalidDataException"/>.</summary>
@@ -35156,6 +35181,15 @@
             objects, headers, footers, the text of footnotes and comments and the properties are not read, and hidden text is shown. An encrypted .doc and a
             Word 6/95 file are not supported; a .doc is rejected when its compound file has an invalid header, a broken or cyclic sector chain or a stream above
             256 MiB, when its piece table or a formatting property list is broken or when its text has more than 32 Mi characters.
+            <para>
+            Limits for every format: a document may have at most 1,000,000 blocks (paragraphs, tables and blocks inside table cells, headers and footers)
+            and 8,000,000 inlines. DOCX and DOTX are rejected when their entries declare more than 1 GiB uncompressed in total, when an entry does not
+            have its declared size, when a part is larger than 256 MiB or nested deeper than 256 levels, or when the XML parts read while loading (document,
+            headers, footers, footnotes, comments, styles, numbering, settings and relationships) have more than 16 Mi elements. The character limits
+            above (32 Mi) apply to HTML, Markdown, text, RTF, .doc and the ODT reading budget. In the browser (WebAssembly) the limits are 250,000 blocks,
+            2,000,000 inlines, 8 Mi characters (4 Mi for RTF, whose conversion needs about 30 times the input in memory), 256 MiB uncompressed DOCX and
+            ODT packages and 4 Mi DOCX elements.
+            </para>
             </summary>
             <param name="stream">The file content.</param>
             <param name="format">The file format.</param>

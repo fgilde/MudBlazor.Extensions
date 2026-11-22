@@ -15,8 +15,9 @@ internal static class HtmlReader
         ["darkMagenta"] = "#800080", ["darkRed"] = "#800000", ["darkYellow"] = "#808000", ["darkGray"] = "#808080", ["lightGray"] = "#C0C0C0"
     };
 
-    internal static TextDocument Read(Stream stream, int maxChars = MaxLength)
+    internal static TextDocument Read(Stream stream, int? limit = null)
     {
+        var maxChars = limit ?? DocumentLoadLimits.Current.TextCharacters;
         var bytes = HtmlEncoding.ReadLimited(stream, maxChars, b => HtmlEncoding.Detect(b).Encoding);
         var (encoding, preamble) = HtmlEncoding.Detect(bytes);
         HtmlEncoding.CheckChars(encoding.GetCharCount(bytes, preamble, bytes.Length - preamble), maxChars);
@@ -57,6 +58,7 @@ internal static class HtmlReader
             var lists = new Dictionary<(PastedList, int), int>();
             foreach (var block in pasted)
             {
+                DocumentLoadLimits.CheckBlocks(result.Count + 1);
                 if (block is PastedTable table)
                 {
                     result.Add(TableOf(table, width));

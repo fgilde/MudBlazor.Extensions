@@ -9,8 +9,9 @@ internal static class TextFormat
 {
     internal static TextDocument Read(Stream stream) => FromText(Decode(stream));
 
-    internal static string Decode(Stream stream, int maxChars = HtmlReader.MaxLength)
+    internal static string Decode(Stream stream, int? limit = null)
     {
+        var maxChars = limit ?? DocumentLoadLimits.Current.TextCharacters;
         var bytes = HtmlEncoding.ReadLimited(stream, maxChars, b => HtmlEncoding.Bom(b)?.Encoding ?? Encoding.UTF8);
         HtmlEncoding.CheckChars(HtmlEncoding.Bom(bytes) is { } bom
             ? bom.Encoding.GetCharCount(bytes, bom.Preamble, bytes.Length - bom.Preamble)
@@ -35,7 +36,9 @@ internal static class TextFormat
     internal static TextDocument FromText(string text)
     {
         var document = TextDocument.Create();
-        var paragraphs = InlineEdit.Lines(Clean(text), new RunFormat(), null, null).Select(line => (Block)new Paragraph { Inlines = line }).ToList();
+        var lines = InlineEdit.Lines(Clean(text), new RunFormat(), null, null);
+        DocumentLoadLimits.CheckBlocks(lines.Count);
+        var paragraphs = lines.Select(line => (Block)new Paragraph { Inlines = line }).ToList();
         document.BlockList.Clear();
         document.BlockList.AddRange(paragraphs.Select(document.Identify));
         document.InvalidateIndex();

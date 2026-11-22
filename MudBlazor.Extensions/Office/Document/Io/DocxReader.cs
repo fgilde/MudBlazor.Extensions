@@ -29,7 +29,8 @@ internal static partial class DocxReader
 
     private static TextDocument ReadPackage(byte[] package)
     {
-        var opc = OpcPackage.Open(package);
+        var limits = DocumentLoadLimits.Current;
+        var opc = OpcPackage.Open(package, new OpcLimits(limits.PackageBytes, limits.DocxElements));
         var packageRels = Relationships(opc, "/");
         var main = packageRels.FirstOrDefault(r => r.Type.EndsWith("/officeDocument", StringComparison.Ordinal) && !IsExternal(r)) is { } officeDocument
             ? opc.ResolveTarget("/", officeDocument.Target)
@@ -70,6 +71,7 @@ internal static partial class DocxReader
             Sections = document.SectionList.ToList(), HeadersFooters = document.HeaderFooterList.ToList(), HeaderIds = headerIds, Properties = document.Properties
         };
         document.InvalidateIndex();
+        opc.EndLoad();
         return document;
     }
 

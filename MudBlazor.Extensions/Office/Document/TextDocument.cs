@@ -109,6 +109,15 @@ public sealed partial class TextDocument
     /// objects, headers, footers, the text of footnotes and comments and the properties are not read, and hidden text is shown. An encrypted .doc and a
     /// Word 6/95 file are not supported; a .doc is rejected when its compound file has an invalid header, a broken or cyclic sector chain or a stream above
     /// 256 MiB, when its piece table or a formatting property list is broken or when its text has more than 32 Mi characters.
+    /// <para>
+    /// Limits for every format: a document may have at most 1,000,000 blocks (paragraphs, tables and blocks inside table cells, headers and footers)
+    /// and 8,000,000 inlines. DOCX and DOTX are rejected when their entries declare more than 1 GiB uncompressed in total, when an entry does not
+    /// have its declared size, when a part is larger than 256 MiB or nested deeper than 256 levels, or when the XML parts read while loading (document,
+    /// headers, footers, footnotes, comments, styles, numbering, settings and relationships) have more than 16 Mi elements. The character limits
+    /// above (32 Mi) apply to HTML, Markdown, text, RTF, .doc and the ODT reading budget. In the browser (WebAssembly) the limits are 250,000 blocks,
+    /// 2,000,000 inlines, 8 Mi characters (4 Mi for RTF, whose conversion needs about 30 times the input in memory), 256 MiB uncompressed DOCX and
+    /// ODT packages and 4 Mi DOCX elements.
+    /// </para>
     /// </summary>
     /// <param name="stream">The file content.</param>
     /// <param name="format">The file format.</param>
@@ -118,6 +127,7 @@ public sealed partial class TextDocument
     public static TextDocument Load(Stream stream, DocumentFileFormat format = DocumentFileFormat.Docx)
     {
         ArgumentNullException.ThrowIfNull(stream);
+        using var budget = DocumentLoadLimits.BeginLoad();
         switch (format)
         {
             case DocumentFileFormat.Docx or DocumentFileFormat.Dotx or DocumentFileFormat.Odt or DocumentFileFormat.Doc:
@@ -147,7 +157,11 @@ public sealed partial class TextDocument
     /// <summary>Creates an empty document with one empty paragraph in the Normal style and one section.</summary>
     /// <param name="page">The page size and margins; null for <see cref="PageSetup.A4"/>.</param>
     /// <returns>The document.</returns>
-    public static TextDocument Create(PageSetup page = null) => DocxReader.Read(BlankDocument.Build(page ?? PageSetup.A4));
+    public static TextDocument Create(PageSetup page = null)
+    {
+        using var paused = DocumentLoadLimits.Pause();
+        return DocxReader.Read(BlankDocument.Build(page ?? PageSetup.A4));
+    }
 
     /// <summary>
     /// Writes the document. A macro-enabled source stays macro-enabled: <see cref="DocumentFileFormat.Docx"/> then writes a .docm and
@@ -251,6 +265,7 @@ public sealed partial class TextDocument
 
     internal Block Identify(Block block)
     {
+        DocumentLoadLimits.Charge(block);
         block = block with { Id = NewId() };
         return block switch
         {

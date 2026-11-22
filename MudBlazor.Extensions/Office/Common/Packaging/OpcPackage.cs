@@ -11,6 +11,11 @@ namespace MudBlazor.Extensions.Office;
 /// <param name="TargetMode">The <c>TargetMode</c> attribute (<c>External</c>), or null for internal targets.</param>
 internal sealed record OpcRelationship(string Id, string Type, string Target, string TargetMode);
 
+/// <summary>Limits for reading a package: the total declared uncompressed size and the XML elements of all parts read while loading.</summary>
+/// <param name="MaxTotalLength">The largest sum of the declared uncompressed entry sizes.</param>
+/// <param name="MaxElements">The most XML elements in all parts read until <see cref="OpcPackage.EndLoad"/>.</param>
+internal sealed record OpcLimits(long MaxTotalLength, long MaxElements);
+
 /// <summary>A read-only view of an OPC (zip) package. Part names carry a leading slash and compare case-insensitively.</summary>
 internal sealed class OpcPackage
 {
@@ -23,12 +28,22 @@ internal sealed class OpcPackage
     private readonly Dictionary<string, string> _defaults = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, string> _overrides = new(StringComparer.OrdinalIgnoreCase);
 
-    private OpcPackage(byte[] source)
+    private readonly bool _exact;
+    private long _elementBudget;
+
+    private OpcPackage(byte[] source, OpcLimits limits)
     {
         Source = source;
+        (_exact, _elementBudget) = (limits != null, limits?.MaxElements ?? long.MaxValue);
         _zip = new ZipArchive(new MemoryStream(source, false), ZipArchiveMode.Read);
+        long total = 0;
         foreach (var entry in _zip.Entries)
+        {
+            if (limits != null && (entry.Length < 0 || entry.Length > limits.MaxTotalLength - total))
+                throw new InvalidDataException($"The package is larger than {limits.MaxTotalLength} bytes uncompressed.");
+            total += entry.Length;
             if (!entry.FullName.EndsWith('/')) _entries["/" + entry.FullName] = entry;
+        }
 
         if (!_entries.ContainsKey(ContentTypesPart)) return;
         foreach (var e in ReadXml(ContentTypesPart).Root!.Elements())
@@ -58,7 +73,16 @@ internal sealed class OpcPackage
     /// <summary>Opens a package.</summary>
     /// <param name="source">The zip bytes.</param>
     /// <returns>The package.</returns>
-    public static OpcPackage Open(byte[] source) => new(source);
+    public static OpcPackage Open(byte[] source) => new(source, null);
+
+    /// <summary>Opens a package with limits: every entry must have its declared size, and the XML read until <see cref="EndLoad"/> shares an element budget.</summary>
+    /// <param name="source">The zip bytes.</param>
+    /// <param name="limits">The limits.</param>
+    /// <returns>The package.</returns>
+    public static OpcPackage Open(byte[] source, OpcLimits limits) => new(source, limits);
+
+    /// <summary>Ends the element budget; later reads (for example while saving) are not counted.</summary>
+    public void EndLoad() => _elementBudget = long.MaxValue;
 
     internal ZipArchiveEntry Entry(string part) => _entries.GetValueOrDefault(part);
 
@@ -68,7 +92,9 @@ internal sealed class OpcPackage
     public XDocument ReadXml(string part)
     {
         using var stream = Open(part);
-        return BoundedXmlReader.Load(XmlReader.Create(stream, XmlSettings));
+        var document = BoundedXmlReader.Load(XmlReader.Create(stream, XmlSettings), BoundedXmlReader.MaxDepth, _elementBudget, out var elements);
+        if (_elementBudget != long.MaxValue) _elementBudget -= elements;
+        return document;
     }
 
     /// <summary>Reads a part's raw bytes.</summary>
@@ -130,6 +156,12 @@ internal sealed class OpcPackage
     private Stream Open(string part)
     {
         var entry = _entries.GetValueOrDefault(part) ?? throw new FileNotFoundException("Package part not found.", part);
-        return entry.Length <= MaxPartLength ? entry.Open() : throw new InvalidDataException($"The package part {part} is larger than 256 MB.");
+        if (entry.Length > MaxPartLength) throw new InvalidDataException($"The package part {part} is larger than 256 MB.");
+        if (!_exact) return entry.Open();
+        using var source = entry.Open();
+        var data = new byte[entry.Length];
+        if (source.ReadAtLeast(data, data.Length, false) != data.Length || source.ReadByte() >= 0)
+            throw new InvalidDataException($"The package part {part} does not have its declared size.");
+        return new MemoryStream(data, false);
     }
 }

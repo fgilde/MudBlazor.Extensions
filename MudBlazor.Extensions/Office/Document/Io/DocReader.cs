@@ -35,7 +35,7 @@ internal static class DocReader
         var pairs = longs + 4 * U16(main, longs - 2) + 2;
         var count = U16(main, pairs - 2);
         var length = (int)U32(main, longs + 12);
-        if (length is < 0 or > HtmlReader.MaxLength) throw Invalid("The document text is longer than 32 Mi characters.");
+        if (length < 0 || length > DocumentLoadLimits.Current.TextCharacters) throw Invalid($"The document text is longer than {DocumentLoadLimits.Current.TextCharacters} characters.");
 
         var fonts = Fonts(Part(15));
         var builder = new Builder(Runs(main, Part(12), (page, i, n) => Chpx(page, i, n, fonts)), Runs(main, Part(13), Papx));
@@ -342,6 +342,7 @@ internal static class DocReader
             var (alignment, style, rowEnd) = index < 0 ? default : paragraphs[index].Value;
             if (rowEnd && _inlines.Count == 0) return;
             var styleId = AddStyle(style);
+            DocumentLoadLimits.CheckBlocks(_blocks.Count + 1);
             _blocks.Add(new Paragraph
             {
                 Format = new ParagraphFormat { Alignment = alignment, StyleId = styleId, OutlineLevel = style is >= 7 and <= 9 ? style - 1 : null },

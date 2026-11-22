@@ -12,7 +12,8 @@ internal static class OdtReader
     {
         try
         {
-            using var package = OpenDocumentFile.OpenPackage(bytes, limits);
+            var current = DocumentLoadLimits.Current;
+            using var package = OpenDocumentFile.OpenPackage(bytes, limits ?? PackageLimits.Default with { MaxTotalLength = current.PackageBytes, Budget = current.TextCharacters });
             return new Reader(package).Read();
         }
         catch (Exception e) when (e is not (InvalidDataException or OutOfMemoryException))

@@ -23,10 +23,11 @@ internal static class RtfFormat
 
     internal static TextDocument Read(Stream stream, RtfLimits limits)
     {
-        var bytes = HtmlEncoding.ReadLimited(stream, HtmlReader.MaxLength, _ => Encoding.Latin1);
+        var maxChars = DocumentLoadLimits.Current.RtfCharacters;
+        var bytes = HtmlEncoding.ReadLimited(stream, maxChars, _ => Encoding.Latin1);
         var start = Start(bytes);
         if (start < 0) throw new InvalidDataException("The file is not an RTF document.");
-        if (bytes.Length > HtmlReader.MaxLength) throw new InvalidDataException("The RTF is too large to read.");
+        if (bytes.Length > maxChars) throw new InvalidDataException("The RTF is too large to read.");
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         var culture = CultureInfo.CurrentCulture;
         try
