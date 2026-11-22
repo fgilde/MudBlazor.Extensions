@@ -7,7 +7,7 @@ namespace MudBlazor.Extensions.Office.Presentation;
 internal static class ThemeXml
 {
     internal static PresentationTheme Read(XDocument theme) =>
-        PresentationTheme.FromPalette((string)theme.Root?.Attribute("name"), ThemeColors.Read(theme), Typeface(theme, "majorFont"), Typeface(theme, "minorFont"));
+        PresentationTheme.FromPalette((string)theme.Root?.Attribute("name"), ThemeColors.Read(theme), ThemeColors.Typeface(theme, "majorFont"), ThemeColors.Typeface(theme, "minorFont"));
 
     internal static XDocument Patch(XDocument source, PresentationTheme theme)
     {
@@ -59,9 +59,6 @@ internal static class ThemeXml
     }
 
     private static string Fixed(double value) => ((long)Math.Round(value)).ToString(CultureInfo.InvariantCulture);
-
-    private static string Typeface(XDocument theme, string font) =>
-        (string)theme.Root?.Element(A + "themeElements")?.Element(A + "fontScheme")?.Element(A + font)?.Element(A + "latin")?.Attribute("typeface");
 
     private static void SetTypeface(XElement elements, string font, string typeface)
     {

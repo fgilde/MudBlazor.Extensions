@@ -5,6 +5,8 @@ namespace MudBlazor.Extensions.Office;
 
 internal static class ThemeColors
 {
+    private static readonly XNamespace A = "http://schemas.openxmlformats.org/drawingml/2006/main";
+
     internal static readonly string[] SchemeOrder = ["lt1", "dk1", "lt2", "dk2", "accent1", "accent2", "accent3", "accent4", "accent5", "accent6", "hlink", "folHlink"];
 
     internal static readonly string[] Office = ["FFFFFF", "000000", "E7E6E6", "44546A", "4472C4", "ED7D31", "A5A5A5", "FFC000", "5B9BD5", "70AD47", "0563C1", "954F72"];
@@ -40,6 +42,9 @@ internal static class ThemeColors
 
         return colors;
     }
+
+    internal static string Typeface(XDocument theme, string font) =>
+        (string)theme.Root?.Element(A + "themeElements")?.Element(A + "fontScheme")?.Element(A + font)?.Element(A + "latin")?.Attribute("typeface");
 
     internal static string Resolve(XElement color, string[] theme, string[] indexed)
     {

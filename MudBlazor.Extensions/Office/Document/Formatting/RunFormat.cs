@@ -43,7 +43,7 @@ public sealed record RunFormat
     /// <summary>Font size in points; null inherits it.</summary>
     public double? SizePt { get; init; }
 
-    /// <summary>The ASCII typeface name; null inherits it.</summary>
+    /// <summary>The ASCII typeface name, or <c>theme:</c> with the <c>w:asciiTheme</c> value, for example <c>theme:minorHAnsi</c>; null inherits it.</summary>
     public string Font { get; init; }
 
     /// <summary>Text colour: <c>#RRGGBB</c>, <c>auto</c> or <c>theme:&lt;name&gt;</c> with optional <c>shade=XX</c>/<c>tint=XX</c>; null inherits it.</summary>

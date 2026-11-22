@@ -33275,6 +33275,263 @@
         <member name="P:MudBlazor.Extensions.Office.Document.DocumentProperties.Modified">
             <summary>When the document was saved last.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.StyleType">
+            <summary>The kind of a <see cref="T:MudBlazor.Extensions.Office.Document.DocumentStyle"/>.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.StyleType.Paragraph">
+            <summary>A paragraph style; it may also carry character formatting.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.StyleType.Character">
+            <summary>A character style for runs.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.StyleType.Table">
+            <summary>A table style.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.StyleType.Numbering">
+            <summary>A numbering style.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DocumentStyle">
+            <summary>A style definition (<c>w:style</c>).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.Id">
+            <summary>The style id referenced by paragraphs, runs and tables.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.Name">
+            <summary>The display name; Word's built-in names are lower case, for example <c>heading 1</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.Type">
+            <summary>The kind of style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.BasedOn">
+            <summary>The id of the style this one inherits from, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.Next">
+            <summary>The id of the style for the paragraph that follows when Enter is pressed, or null for the same style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.Link">
+            <summary>The id of the linked paragraph or character style, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.QuickFormat">
+            <summary>True if the style is shown in the style gallery.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.IsDefault">
+            <summary>True if the style is the default for its type.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.BuiltIn">
+            <summary>True if this is a built-in definition that the file does not contain yet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.UiPriority">
+            <summary>The sort priority in the gallery, lower first; null sorts last.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.RunFormat">
+            <summary>The character formatting of the style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.ParagraphFormat">
+            <summary>The paragraph formatting of the style.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyle.TableFormat">
+            <summary>The table formatting of a table style.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DocumentStyles">
+            <summary>The styles of a document with the document defaults.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyles.All">
+            <summary>The styles defined in the file, in file order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyles.DefaultParagraphStyle">
+            <summary>The default paragraph style, or null if the file defines none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyles.DefaultTableStyle">
+            <summary>The default table style, or null if the file defines none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyles.DefaultRunFormat">
+            <summary>The document default character formatting (<c>w:rPrDefault</c>).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyles.DefaultParagraphFormat">
+            <summary>The document default paragraph formatting (<c>w:pPrDefault</c>).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DocumentStyles.Gallery">
+            <summary>
+            The styles for the style gallery: the quick paragraph and character styles of the file by <see cref="P:MudBlazor.Extensions.Office.Document.DocumentStyle.UiPriority"/>, then the
+            built-in quick styles the file does not define yet, without duplicate names.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentStyles.Find(System.String)">
+            <summary>Finds a style of the file by id.</summary>
+            <param name="id">The style id.</param>
+            <returns>The style, or null if the file defines none with this id.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentStyles.FindByName(System.String)">
+            <summary>Finds a style of the file by name, ignoring case.</summary>
+            <param name="name">The style name, for example <c>heading 1</c>.</param>
+            <returns>The style, or null if the file defines none with this name.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.ListTemplate">
+            <summary>A predefined list definition.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.ListTemplate.Bullet">
+            <summary>Bullets •, o and ▪, repeating over the levels.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.ListTemplate.Decimal">
+            <summary>Decimal numbers on every level.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.ListTemplate.Multilevel">
+            <summary>1., a. and i., repeating over the levels.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.NumberFormat">
+            <summary>How the counter of a list level is shown.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.NumberFormat.Decimal">
+            <summary>1, 2, 3.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.NumberFormat.DecimalZero">
+            <summary>01, 02, 03.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.NumberFormat.LowerLetter">
+            <summary>a, b, c, then aa, bb.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.NumberFormat.UpperLetter">
+            <summary>A, B, C, then AA, BB.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.NumberFormat.LowerRoman">
+            <summary>i, ii, iii.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.NumberFormat.UpperRoman">
+            <summary>I, II, III.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.NumberFormat.Bullet">
+            <summary>A bullet: the level text without a counter.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.NumberFormat.None">
+            <summary>No label.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.NumberFormat.Other">
+            <summary>Another format of the file; it is kept on write and shown as decimal.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.NumberingLevel">
+            <summary>A level of a list definition (<c>w:lvl</c>).</summary>
+            <param name="Level">The level, 0 to 8.</param>
+            <param name="Start">The first counter value.</param>
+            <param name="Format">How the counter is shown.</param>
+            <param name="Text">The label pattern; <c>%1</c> to <c>%9</c> stand for the counters of levels 0 to 8.</param>
+            <param name="Restart">
+            The one-based level whose occurrence restarts this level, 0 for never; null restarts it after any higher level.
+            </param>
+            <param name="Indent">The paragraph formatting the level applies, mainly indents and tab stops.</param>
+            <param name="LabelFormat">The character formatting of the label.</param>
+            <param name="Suffix">What follows the label as the <c>w:suff</c> value: <c>tab</c>, <c>space</c> or <c>nothing</c>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.NumberingLevel.#ctor(System.Int32,System.Int32,MudBlazor.Extensions.Office.Document.NumberFormat,System.String,System.Nullable{System.Int32},MudBlazor.Extensions.Office.Document.ParagraphFormat,MudBlazor.Extensions.Office.Document.RunFormat,System.String)">
+            <summary>A level of a list definition (<c>w:lvl</c>).</summary>
+            <param name="Level">The level, 0 to 8.</param>
+            <param name="Start">The first counter value.</param>
+            <param name="Format">How the counter is shown.</param>
+            <param name="Text">The label pattern; <c>%1</c> to <c>%9</c> stand for the counters of levels 0 to 8.</param>
+            <param name="Restart">
+            The one-based level whose occurrence restarts this level, 0 for never; null restarts it after any higher level.
+            </param>
+            <param name="Indent">The paragraph formatting the level applies, mainly indents and tab stops.</param>
+            <param name="LabelFormat">The character formatting of the label.</param>
+            <param name="Suffix">What follows the label as the <c>w:suff</c> value: <c>tab</c>, <c>space</c> or <c>nothing</c>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingLevel.Level">
+            <summary>The level, 0 to 8.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingLevel.Start">
+            <summary>The first counter value.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingLevel.Format">
+            <summary>How the counter is shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingLevel.Text">
+            <summary>The label pattern; <c>%1</c> to <c>%9</c> stand for the counters of levels 0 to 8.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingLevel.Restart">
+            <summary>
+            The one-based level whose occurrence restarts this level, 0 for never; null restarts it after any higher level.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingLevel.Indent">
+            <summary>The paragraph formatting the level applies, mainly indents and tab stops.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingLevel.LabelFormat">
+            <summary>The character formatting of the label.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingLevel.Suffix">
+            <summary>What follows the label as the <c>w:suff</c> value: <c>tab</c>, <c>space</c> or <c>nothing</c>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.AbstractNumbering">
+            <summary>A list definition (<c>w:abstractNum</c>).</summary>
+            <param name="Id">The abstract numbering id.</param>
+            <param name="Levels">The levels; the list is treated as immutable after assignment.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.AbstractNumbering.#ctor(System.Int32,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.NumberingLevel})">
+            <summary>A list definition (<c>w:abstractNum</c>).</summary>
+            <param name="Id">The abstract numbering id.</param>
+            <param name="Levels">The levels; the list is treated as immutable after assignment.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.AbstractNumbering.Id">
+            <summary>The abstract numbering id.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.AbstractNumbering.Levels">
+            <summary>The levels; the list is treated as immutable after assignment.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.LevelOverride">
+            <summary>A level override of a <see cref="T:MudBlazor.Extensions.Office.Document.NumberingInstance"/> (<c>w:lvlOverride</c>).</summary>
+            <param name="Level">The overridden level.</param>
+            <param name="StartOverride">The value the counter restarts at, or null.</param>
+            <param name="Definition">A replacement definition of the level, or null to keep the abstract one.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.LevelOverride.#ctor(System.Int32,System.Nullable{System.Int32},MudBlazor.Extensions.Office.Document.NumberingLevel)">
+            <summary>A level override of a <see cref="T:MudBlazor.Extensions.Office.Document.NumberingInstance"/> (<c>w:lvlOverride</c>).</summary>
+            <param name="Level">The overridden level.</param>
+            <param name="StartOverride">The value the counter restarts at, or null.</param>
+            <param name="Definition">A replacement definition of the level, or null to keep the abstract one.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.LevelOverride.Level">
+            <summary>The overridden level.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.LevelOverride.StartOverride">
+            <summary>The value the counter restarts at, or null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.LevelOverride.Definition">
+            <summary>A replacement definition of the level, or null to keep the abstract one.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.NumberingInstance">
+            <summary>A list instance paragraphs refer to (<c>w:num</c>).</summary>
+            <param name="Id">The numbering id used in <see cref="P:MudBlazor.Extensions.Office.Document.NumberingRef.NumId"/>.</param>
+            <param name="AbstractId">The id of the <see cref="T:MudBlazor.Extensions.Office.Document.AbstractNumbering"/> it uses.</param>
+            <param name="Overrides">The level overrides; the list is treated as immutable after assignment.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.NumberingInstance.#ctor(System.Int32,System.Int32,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.LevelOverride})">
+            <summary>A list instance paragraphs refer to (<c>w:num</c>).</summary>
+            <param name="Id">The numbering id used in <see cref="P:MudBlazor.Extensions.Office.Document.NumberingRef.NumId"/>.</param>
+            <param name="AbstractId">The id of the <see cref="T:MudBlazor.Extensions.Office.Document.AbstractNumbering"/> it uses.</param>
+            <param name="Overrides">The level overrides; the list is treated as immutable after assignment.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingInstance.Id">
+            <summary>The numbering id used in <see cref="P:MudBlazor.Extensions.Office.Document.NumberingRef.NumId"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingInstance.AbstractId">
+            <summary>The id of the <see cref="T:MudBlazor.Extensions.Office.Document.AbstractNumbering"/> it uses.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.NumberingInstance.Overrides">
+            <summary>The level overrides; the list is treated as immutable after assignment.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.Numbering">
+            <summary>The list definitions of a document.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Numbering.Abstracts">
+            <summary>The list definitions.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.Numbering.Instances">
+            <summary>The list instances.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.Numbering.Level(MudBlazor.Extensions.Office.Document.NumberingRef)">
+            <summary>Gets the definition of a list level with the overrides of its instance applied.</summary>
+            <param name="reference">The list and level.</param>
+            <returns>The level, or null if the instance or the level does not exist.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.ParagraphAlignment">
             <summary>Horizontal alignment of a paragraph.</summary>
         </member>
@@ -33475,7 +33732,7 @@
             <summary>Font size in points; null inherits it.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Font">
-            <summary>The ASCII typeface name; null inherits it.</summary>
+            <summary>The ASCII typeface name, or <c>theme:</c> with the <c>w:asciiTheme</c> value, for example <c>theme:minorHAnsi</c>; null inherits it.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.RunFormat.Color">
             <summary>Text colour: <c>#RRGGBB</c>, <c>auto</c> or <c>theme:&lt;name&gt;</c> with optional <c>shade=XX</c>/<c>tint=XX</c>; null inherits it.</summary>
@@ -34074,6 +34331,38 @@
             Optional: drops the block index so the next lookup rebuilds it. Lookups detect stale and missing entries by themselves, so no caller needs
             this for correctness; it only saves the staleness check after a bulk change.
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Styles">
+            <summary>The styles and document defaults.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Numbering">
+            <summary>The list definitions.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.EffectiveParagraphFormat(MudBlazor.Extensions.Office.Document.Paragraph)">
+            <summary>
+            Resolves the formatting of a paragraph from the document defaults, the table style, the list level, the paragraph style chain and the
+            paragraph's own formatting. Theme colours are resolved to <c>#RRGGBB</c>; inherited tab stops are merged.
+            </summary>
+            <param name="paragraph">A paragraph of the document.</param>
+            <returns>The effective formatting.</returns>
+            <exception cref="T:System.ArgumentNullException">The paragraph is null.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.EffectiveRunFormat(MudBlazor.Extensions.Office.Document.Paragraph,MudBlazor.Extensions.Office.Document.Inline)">
+            <summary>
+            Resolves the character formatting of an inline from the document defaults, the table style, the paragraph style chain, the character style
+            chain and its own formatting. Bold, italic, caps, small caps, strike, double strike and hidden toggle across style levels; theme fonts and
+            colours are resolved.
+            </summary>
+            <param name="paragraph">The paragraph that contains the inline.</param>
+            <param name="inline">The inline, or null for the paragraph mark.</param>
+            <returns>The effective formatting.</returns>
+            <exception cref="T:System.ArgumentNullException">The paragraph is null.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.ListLabel(MudBlazor.Extensions.Office.Document.Paragraph)">
+            <summary>Gets the list label of a paragraph of the body, for example <c>1.</c>, <c>a)</c> or <c>•</c>.</summary>
+            <param name="paragraph">A paragraph of the body or of a table cell.</param>
+            <returns>The label, or null if the paragraph is not a list item.</returns>
+            <exception cref="T:System.ArgumentNullException">The paragraph is null.</exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Resolve(MudBlazor.Extensions.Office.Document.DocumentPosition)">
             <summary>Finds the paragraph a position points into.</summary>
