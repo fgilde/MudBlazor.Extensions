@@ -181,7 +181,7 @@ internal sealed class OpenDocumentFile : IDisposable
         var entry = _archive.GetEntry(path);
         if (entry == null) return null;
         using var stream = entry.Open();
-        return XDocument.Load(stream, LoadOptions.None);
+        return BoundedXmlReader.Load(stream);
     }
 
     private string ReadText(string path)

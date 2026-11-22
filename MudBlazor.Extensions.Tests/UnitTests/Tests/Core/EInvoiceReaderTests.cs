@@ -141,6 +141,14 @@ public class EInvoiceReaderTests
     }
 
     [Fact]
+    public void DeeplyNestedXmlIsRefused()
+    {
+        var xml = "<Invoice>" + string.Concat(Enumerable.Repeat("<x>", 1000)) + string.Concat(Enumerable.Repeat("</x>", 1000)) + "</Invoice>";
+
+        Assert.Null(MudExEInvoiceReader.Read(System.Text.Encoding.UTF8.GetBytes(xml)));
+    }
+
+    [Fact]
     public void OnlyXmlAndPdfAreWorthReading()
     {
         Assert.True(MudExEInvoiceReader.LooksLikeEInvoice("invoice.xml", null));

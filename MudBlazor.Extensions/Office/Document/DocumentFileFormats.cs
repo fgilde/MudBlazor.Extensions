@@ -2,7 +2,6 @@ using System.Buffers.Binary;
 using System.IO.Compression;
 using System.Text;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace MudBlazor.Extensions.Office.Document;
 
@@ -173,8 +172,7 @@ public static class DocumentFileFormats
 
             if (zip.GetEntry("[Content_Types].xml") is not { Length: < 1024 * 1024 } types) return (null, false);
             using var stream = types.Open();
-            using var xml = XmlReader.Create(stream, new XmlReaderSettings { DtdProcessing = DtdProcessing.Prohibit });
-            foreach (var type in XDocument.Load(xml).Root?.Elements().Select(e => (string)e.Attribute("ContentType")) ?? [])
+            foreach (var type in BoundedXmlReader.Load(stream).Root?.Elements().Select(e => (string)e.Attribute("ContentType")) ?? [])
                 if (type != null && MainParts.TryGetValue(type, out var format))
                     return (format, true);
             return (null, true);

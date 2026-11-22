@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using MudBlazor.Extensions.Helper.Internal;
 using Xunit;
 
@@ -261,7 +262,6 @@ public class OdtReaderTests
         }.Build();
 
         using var sample = OpenDocumentFile.Open(File.ReadAllBytes(SamplePath));
-        using var withDtd = OpenDocumentFile.Open(dtd);
 
         var page = Assert.Single(sample.Pages);
         Assert.Equal(("MudEx OpenDocument sample", "MudBlazor.Extensions", "application/vnd.oasis.opendocument.text"), (sample.Title, sample.Creator, sample.MediaType));
@@ -269,7 +269,7 @@ public class OdtReaderTests
         Assert.Equal(
             "<h2>MudEx ODT</h2><p>OpenDocument text rendered directly in the browser.</p>" +
             "<table class=\"odf-table\"><tbody><tr><td>Feature</td><td>Status</td></tr><tr><td>ODT</td><td>Supported</td></tr></tbody></table>", page.Html);
-        Assert.Equal("<p>E</p>", Assert.Single(withDtd.Pages).Html);
+        Assert.Throws<XmlException>(() => OpenDocumentFile.Open(dtd));
     }
 
     private static string SamplePath => Path.Combine(AppContext.BaseDirectory, "TestData", "Document", "sample.odt");

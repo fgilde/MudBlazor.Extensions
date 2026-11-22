@@ -12,6 +12,14 @@ internal sealed class BoundedXmlReader(XmlReader inner, int maxDepth = BoundedXm
     internal static XDocument Load(XmlReader reader, int maxDepth = MaxDepth, long maxElements = long.MaxValue) =>
         Load(reader, maxDepth, maxElements, out _);
 
+    internal static XDocument Load(Stream stream) => Load(XmlReader.Create(stream, ReaderSettings(false, DtdProcessing.Prohibit)));
+
+    internal static XDocument Parse(string text, bool preserveWhitespace = false, DtdProcessing dtd = DtdProcessing.Prohibit) =>
+        Load(XmlReader.Create(new StringReader(text), ReaderSettings(preserveWhitespace, dtd)));
+
+    private static XmlReaderSettings ReaderSettings(bool preserveWhitespace, DtdProcessing dtd) =>
+        new() { DtdProcessing = dtd, XmlResolver = null, IgnoreWhitespace = !preserveWhitespace };
+
     internal static XDocument Load(XmlReader reader, int maxDepth, long maxElements, out long elements)
     {
         using var bounded = new BoundedXmlReader(reader, maxDepth, maxElements);

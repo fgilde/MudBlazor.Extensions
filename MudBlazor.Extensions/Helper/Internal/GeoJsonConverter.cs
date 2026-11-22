@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.Json.Nodes;
 using System.Xml.Linq;
+using MudBlazor.Extensions.Office;
 
 namespace MudBlazor.Extensions.Helper.Internal;
 
@@ -26,7 +27,7 @@ internal static class GeoJsonConverter
 
     private static JsonObject FromGpx(string content)
     {
-        var document = XDocument.Parse(content);
+        var document = BoundedXmlReader.Parse(content);
         var features = new JsonArray();
 
         foreach (var waypoint in Elements(document, "wpt"))
@@ -60,7 +61,7 @@ internal static class GeoJsonConverter
 
     private static JsonObject FromKml(string content)
     {
-        var document = XDocument.Parse(content);
+        var document = BoundedXmlReader.Parse(content);
         var features = new JsonArray();
 
         foreach (var placemark in Elements(document, "Placemark"))

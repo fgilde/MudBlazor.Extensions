@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text;
 using System.Xml.Linq;
+using MudBlazor.Extensions.Office;
 
 namespace MudBlazor.Extensions.Core.EInvoice;
 
@@ -46,7 +47,7 @@ public static class MudExEInvoiceReader
         XDocument document;
         try
         {
-            document = XDocument.Parse(xml, LoadOptions.PreserveWhitespace);
+            document = BoundedXmlReader.Parse(xml, preserveWhitespace: true);
         }
         catch (Exception)
         {

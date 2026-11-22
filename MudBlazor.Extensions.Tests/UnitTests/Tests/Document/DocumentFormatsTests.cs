@@ -298,6 +298,14 @@ public class DocumentFormatsTests
         Assert.Throws<NotSupportedException>(() => DocumentExport.Losses(document, DocumentFileFormat.Odt));
     }
 
+    [Fact]
+    public void DetectContent_DeeplyNestedContentTypes_FallsBackToTheName()
+    {
+        var deep = Zip(("[Content_Types].xml", "<Types>" + string.Concat(Enumerable.Repeat("<x>", 1000)) + string.Concat(Enumerable.Repeat("</x>", 1000)) + "</Types>"));
+
+        Assert.Equal(DocumentFileFormat.Docx, Detect(deep, "deep.docx"));
+    }
+
     private static TextDocument Formatted() => new DocxBuilder().Body(
             "<w:p><w:pPr><w:jc w:val=\"center\"/></w:pPr><w:r><w:rPr><w:u w:val=\"single\"/></w:rPr><w:t>under</w:t></w:r></w:p>" +
             "<w:tbl><w:tblPr><w:tblW w:w=\"0\" w:type=\"auto\"/></w:tblPr><w:tblGrid><w:gridCol w:w=\"2000\"/></w:tblGrid>" +
