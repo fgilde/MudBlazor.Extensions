@@ -2,7 +2,7 @@
 
 > Blazor components, dialogs, file viewers and extensions for MudBlazor.
 
-Version: 9.13.2-source.6117a6f4c245
+Version: 9.13.2-source.5392d730d478
 
 ## Documentation
 
