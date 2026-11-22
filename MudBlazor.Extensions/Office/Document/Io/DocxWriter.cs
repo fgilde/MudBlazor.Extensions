@@ -40,6 +40,7 @@ public static partial class DocxWriter
         private readonly DocxWriteContext _context = new(package);
         private readonly Dictionary<string, string> _defaults = new(package.Opc.DefaultContentTypes, StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, string> _media = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, string> _newParts = new();
         private readonly HashSet<string> _done = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, string> _overrides = new(package.Opc.OverrideContentTypes, StringComparer.OrdinalIgnoreCase);
         private List<OpcRelationship> _mainRelationships;
@@ -53,8 +54,10 @@ public static partial class DocxWriter
             _context.Reserve(document.BlockList.Concat(document.HeaderFooterList.SelectMany(h => h.Blocks)));
             _context.MediaPart = MediaPart;
             _context.DrawingId = MaxDrawingId();
+            PrepareHeadersFooters();
             WriteStyles();
             WriteNumbering();
+            WriteSettings();
             WriteBody();
             WriteHeadersFooters();
             WriteProperties();
@@ -97,6 +100,12 @@ public static partial class DocxWriter
         {
             foreach (var part in document.HeaderFooterList)
             {
+                if (part.PartName == null)
+                {
+                    if (_newParts.TryGetValue(part.Id, out var name)) WriteNewHeaderFooter(part, name);
+                    continue;
+                }
+
                 var original = package.HeadersFooters.FirstOrDefault(h => string.Equals(h.PartName, part.PartName, StringComparison.OrdinalIgnoreCase));
                 if (original == null || TextDocument.SameItems(original.Blocks, part.Blocks) || _done.Contains(part.PartName)) continue;
                 var rels = Relationships(part.PartName);

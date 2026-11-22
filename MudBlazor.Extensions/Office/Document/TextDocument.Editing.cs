@@ -13,6 +13,18 @@ internal sealed record BlockEdit(int Container, int Index, IReadOnlyList<Block> 
     public Numbering NumberingBefore { get; init; }
 
     public Numbering NumberingAfter { get; init; }
+
+    public IReadOnlyList<HeaderFooter> HeadersFootersBefore { get; init; }
+
+    public IReadOnlyList<HeaderFooter> HeadersFootersAfter { get; init; }
+
+    public bool? EvenAndOddBefore { get; init; }
+
+    public bool? EvenAndOddAfter { get; init; }
+
+    public DocumentProperties PropertiesBefore { get; init; }
+
+    public DocumentProperties PropertiesAfter { get; init; }
 }
 
 public sealed partial class TextDocument
@@ -171,25 +183,49 @@ public sealed partial class TextDocument
             Track(null, DocumentChangeKind.Numbering);
         }
 
-        var (remove, insert) = forward ? (edit.Before, edit.After) : (edit.After, edit.Before);
-        if (remove.Count == 0 && insert.Count == 0 && (edit.StylesAfter ?? (object)edit.NumberingAfter) != null) return;
-        if (edit.Container < 0)
+        if ((forward ? edit.HeadersFootersAfter : edit.HeadersFootersBefore) is { } parts)
         {
-            BlockList.RemoveRange(edit.Index, remove.Count);
-            BlockList.InsertRange(edit.Index, insert);
-        }
-        else
-        {
-            var part = HeaderFooterList[edit.Container];
-            HeaderFooterList[edit.Container] = part with { Blocks = [.. part.Blocks.Take(edit.Index), .. insert, .. part.Blocks.Skip(edit.Index + remove.Count)] };
+            _changedIds.UnionWith(HeaderFooterList.Except(parts).Concat(parts.Except(HeaderFooterList)).SelectMany(h => h.Blocks).Select(b => b.Id));
+            HeaderFooterList.Clear();
+            HeaderFooterList.AddRange(parts);
+            InvalidateIndex();
+            Track(null, DocumentChangeKind.HeadersFooters | DocumentChangeKind.Structure);
         }
 
-        InvalidateIndex();
-        var removed = remove.SelectMany(Subtree).ToHashSet<Block>(ReferenceEqualityComparer.Instance);
-        var inserted = insert.SelectMany(Subtree).ToHashSet<Block>(ReferenceEqualityComparer.Instance);
-        var structure = !removed.Select(b => b.Id).ToHashSet().SetEquals(inserted.Select(b => b.Id));
-        _changedIds.UnionWith(removed.Where(b => !inserted.Contains(b)).Concat(inserted.Where(b => !removed.Contains(b))).Select(b => b.Id));
-        Track(null, (edit.Container < 0 ? DocumentChangeKind.Content : DocumentChangeKind.HeadersFooters) | (structure ? DocumentChangeKind.Structure : DocumentChangeKind.None));
+        if ((forward ? edit.EvenAndOddAfter : edit.EvenAndOddBefore) is { } evenAndOdd)
+        {
+            EvenAndOddHeaders = evenAndOdd;
+            Track(null, DocumentChangeKind.Sections);
+        }
+
+        if ((forward ? edit.PropertiesAfter : edit.PropertiesBefore) is { } properties)
+        {
+            Properties = properties;
+            Track(null, DocumentChangeKind.Properties);
+        }
+
+        var (remove, insert) = forward ? (edit.Before, edit.After) : (edit.After, edit.Before);
+        if (remove.Count > 0 || insert.Count > 0)
+        {
+            if (edit.Container < 0)
+            {
+                BlockList.RemoveRange(edit.Index, remove.Count);
+                BlockList.InsertRange(edit.Index, insert);
+            }
+            else
+            {
+                var part = HeaderFooterList[edit.Container];
+                HeaderFooterList[edit.Container] = part with { Blocks = [.. part.Blocks.Take(edit.Index), .. insert, .. part.Blocks.Skip(edit.Index + remove.Count)] };
+            }
+
+            InvalidateIndex();
+            var removed = remove.SelectMany(Subtree).ToHashSet<Block>(ReferenceEqualityComparer.Instance);
+            var inserted = insert.SelectMany(Subtree).ToHashSet<Block>(ReferenceEqualityComparer.Instance);
+            var structure = !removed.Select(b => b.Id).ToHashSet().SetEquals(inserted.Select(b => b.Id));
+            _changedIds.UnionWith(removed.Where(b => !inserted.Contains(b)).Concat(inserted.Where(b => !removed.Contains(b))).Select(b => b.Id));
+            Track(null, (edit.Container < 0 ? DocumentChangeKind.Content : DocumentChangeKind.HeadersFooters) | (structure ? DocumentChangeKind.Structure : DocumentChangeKind.None));
+        }
+
         if ((forward ? edit.SectionsAfter : edit.SectionsBefore) is not { } sections) return;
         SectionList.Clear();
         SectionList.AddRange(sections);

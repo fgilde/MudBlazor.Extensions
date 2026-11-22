@@ -190,6 +190,173 @@ public partial class ObjectCommandTests
         "<pic:blipFill><a:blip r:embed=\"rId7\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"95250\" cy=\"95250\"/></a:xfrm>" +
         "<a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p><w:p><w:r><w:t>text</w:t></w:r></w:p>");
 
+    [Fact]
+    public void SetPageSetup_LandscapeA4_WritesOrientAndSize()
+    {
+        var document = TextDocument.Create();
+        var section = document.Sections[0];
+        var landscape = new PageSetup(16838, 11906, PageOrientation.Landscape, 1440, 1440, 1440, 1440, 708, 708, 0);
+
+        document.Execute(new SetPageSetupCommand(section.Id, landscape));
+
+        Assert.Equal(landscape, document.Sections[0].Page);
+        var output = DocxWriterTests.Save(document);
+        DocxWriterTests.AssertConsistent(output);
+        var size = Body(output).Element(W + "sectPr")!.Element(W + "pgSz")!;
+        Assert.Equal(("16838", "11906", "landscape"), ((string)size.Attribute(W + "w"), (string)size.Attribute(W + "h"), (string)size.Attribute(W + "orient")));
+        Assert.Equal(landscape, TextDocument.Load(new MemoryStream(output)).Sections[0].Page);
+        Assert.Throws<ArgumentException>(() => new SetPageSetupCommand(section.Id, landscape with { MarginLeft = 9000, MarginRight = 9000 }));
+        Assert.Throws<ArgumentException>(() => document.Execute(new SetPageSetupCommand("nope", landscape)));
+
+        document.Undo.Undo();
+
+        Assert.Same(section, document.Sections[0]);
+    }
+
+    [Fact]
+    public void SetPageSetup_SectionEndParagraph_OnlySectPrPatched_InlineXmlIdentical()
+    {
+        var source = new DocxBuilder().Body(
+            "<w:p><w:pPr><w:jc w:val=\"center\"/><w:sectPr><w:pgSz w:w=\"12240\" w:h=\"15840\"/><w:pgMar w:top=\"1440\" w:right=\"1440\" w:bottom=\"1440\" w:left=\"1440\" w:header=\"720\" w:footer=\"720\" w:gutter=\"0\"/></w:sectPr></w:pPr>" +
+            "<w:r><w:t xml:space=\"preserve\">Keep </w:t></w:r><w:proofErr w:type=\"spellStart\"/><w:ins w:id=\"1\" w:author=\"A\"><w:r><w:t>new</w:t></w:r></w:ins><w:proofErr w:type=\"spellEnd\"/>" +
+            "<w:del w:id=\"2\" w:author=\"A\"><w:r><w:delText>old</w:delText></w:r></w:del></w:p><w:p><w:r><w:t>next</w:t></w:r></w:p>" +
+            "<w:sectPr><w:pgSz w:w=\"11906\" w:h=\"16838\"/></w:sectPr>").Build();
+        var document = TextDocument.Load(new MemoryStream(source));
+
+        document.Execute(new SetPageSetupCommand(document.Sections[0].Id, PageSetup.A4));
+        var output = DocxWriterTests.Save(document);
+
+        var before = Body(source).Element(W + "p")!;
+        var after = Body(output).Element(W + "p")!;
+        Assert.Equal(before.Attributes().Select(a => a.ToString()), after.Attributes().Select(a => a.ToString()));
+        Assert.Equal(before.Elements().Count(), after.Elements().Count());
+        foreach (var (b, a) in before.Elements().Zip(after.Elements()).Skip(1)) Assert.True(XNode.DeepEquals(b, a), b.Name.LocalName);
+        Assert.Equal("11906", (string)after.Element(W + "pPr")!.Element(W + "sectPr")!.Element(W + "pgSz")!.Attribute(W + "w"));
+        Assert.NotNull(after.Element(W + "pPr")!.Element(W + "jc"));
+        DocxWriterTests.AssertConsistent(output);
+    }
+
+    [Fact]
+    public void AddHeader_First_SetsTitlePage_WritesPartRelReference()
+    {
+        var document = TextDocument.Create();
+        var section = document.Sections[0];
+        var styles = document.Styles;
+
+        var command = new AddHeaderFooterCommand(section.Id, HeaderFooterKind.Header, HeaderFooterType.First);
+        document.Execute(command);
+        document.Execute(new ReplaceTextCommand(command.After, "First page"));
+        var paragraph = document.HeadersFooters[0].Blocks[0];
+        document.Execute(new InsertImageCommand(new DocumentRange(document.PositionOf(paragraph.Id, 0), document.PositionOf(paragraph.Id, 0)), Png(30, 30), "image/png"));
+
+        Assert.True(document.Sections[0].TitlePage);
+        var header = document.HeaderFor(document.Sections[0], HeaderFooterKind.Header, HeaderFooterType.First);
+        Assert.Equal("Header", ((Paragraph)header.Blocks[0]).Format.StyleId);
+        Assert.Null(document.HeaderFor(document.Sections[0], HeaderFooterKind.Header, HeaderFooterType.Default));
+        var output = DocxWriterTests.Save(document);
+
+        DocxWriterTests.AssertConsistent(output);
+        var opc = OpcPackage.Open(output);
+        Assert.Equal("application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml", opc.ContentType("/word/header1.xml"));
+        var rel = Assert.Single(opc.Relationships(MainPart), r => r.Type == DocxBuilder.RelNs + "/header");
+        Assert.Equal("header1.xml", rel.Target);
+        var sectPr = Body(output).Element(W + "sectPr")!;
+        var reference = sectPr.Elements().First();
+        Assert.Equal((W + "headerReference", "first", rel.Id), (reference.Name, (string)reference.Attribute(W + "type"), (string)reference.Attribute(R + "id")));
+        Assert.NotNull(sectPr.Element(W + "titlePg"));
+        Assert.Single(opc.Relationships("/word/header1.xml"), r => r.Type == ImageType);
+        Assert.Contains("Header", OpcAssert.Xml(output, "/word/styles.xml").Root!.Elements(W + "style").Select(e => (string)e.Attribute(W + "styleId")));
+        var reloaded = TextDocument.Load(new MemoryStream(output));
+        Assert.Equal(11, ((Paragraph)reloaded.HeaderFor(reloaded.Sections[0], HeaderFooterKind.Header, HeaderFooterType.First).Blocks[0]).Length);
+
+        document.Undo.Undo();
+        document.Undo.Undo();
+        document.Undo.Undo();
+
+        Assert.Same(section, document.Sections[0]);
+        Assert.Same(styles, document.Styles);
+        Assert.Empty(document.HeadersFooters);
+    }
+
+    [Fact]
+    public void AddHeader_Even_WritesEvenAndOddHeaders()
+    {
+        var source = DocxWriterTests.Save(TextDocument.Create());
+        var document = TextDocument.Load(new MemoryStream(source));
+
+        document.Execute(new AddHeaderFooterCommand(document.Sections[0].Id, HeaderFooterKind.Footer, HeaderFooterType.Even));
+
+        Assert.True(document.EvenAndOddHeaders);
+        var output = DocxWriterTests.Save(document);
+        DocxWriterTests.AssertConsistent(output);
+        var settings = OpcAssert.Xml(output, "/word/settings.xml").Root!;
+        Assert.Equal(["defaultTabStop", "evenAndOddHeaders", "characterSpacingControl", "compat"], settings.Elements().Select(e => e.Name.LocalName));
+        Assert.Equal("even", (string)Body(output).Element(W + "sectPr")!.Element(W + "footerReference")!.Attribute(W + "type"));
+        Assert.True(TextDocument.Load(new MemoryStream(output)).EvenAndOddHeaders);
+
+        document.Undo.Undo();
+
+        Assert.False(document.EvenAndOddHeaders);
+        var parts = OpcAssert.Parts(DocxWriterTests.Save(document));
+        foreach (var (part, bytes) in OpcAssert.Parts(source)) Assert.True(bytes.AsSpan().SequenceEqual(parts[part]), part);
+    }
+
+    [Fact]
+    public void RemoveLastReference_DropsHeaderPart()
+    {
+        var source = new DocxBuilder().Header("<w:p><w:r><w:t>Head</w:t></w:r></w:p>").Footer("<w:p><w:r><w:t>Foot</w:t></w:r></w:p>").Body("<w:p/>").Build();
+        var document = TextDocument.Load(new MemoryStream(source));
+        var parts = document.HeadersFooters.ToList();
+
+        document.Execute(new RemoveHeaderFooterCommand(document.Sections[0].Id, HeaderFooterKind.Header, HeaderFooterType.Default));
+
+        Assert.Equal([parts[1]], document.HeadersFooters);
+        var output = DocxWriterTests.Save(document);
+        DocxWriterTests.AssertConsistent(output);
+        var opc = OpcPackage.Open(output);
+        Assert.DoesNotContain("/word/header1.xml", opc.PartNames);
+        Assert.DoesNotContain(opc.Relationships(MainPart), r => r.Type == DocxBuilder.RelNs + "/header");
+        Assert.DoesNotContain("/word/header1.xml", opc.OverrideContentTypes.Keys);
+        Assert.Equal(["footerReference", "pgSz", "pgMar"], Body(output).Element(W + "sectPr")!.Elements().Select(e => e.Name.LocalName));
+        Assert.True(OpcAssert.Parts(source)["/word/footer2.xml"].AsSpan().SequenceEqual(OpcAssert.Parts(output)["/word/footer2.xml"]));
+
+        document.Undo.Undo();
+
+        Assert.True(parts.SequenceEqual(document.HeadersFooters, ReferenceEqualityComparer.Instance));
+        var restored = OpcAssert.Parts(DocxWriterTests.Save(document));
+        foreach (var (part, bytes) in OpcAssert.Parts(source)) Assert.True(bytes.AsSpan().SequenceEqual(restored[part]), part);
+    }
+
+    [Fact]
+    public void SetProperties_PatchesCoreXmlOnly()
+    {
+        var source = new DocxBuilder()
+            .CoreProperties("<dc:title>Old</dc:title><dc:creator>Me</dc:creator><cp:revision>3</cp:revision>")
+            .Body("<w:p><w:r><w:t>text</w:t></w:r></w:p>").Build();
+        var document = TextDocument.Load(new MemoryStream(source));
+        var original = document.Properties;
+        var changed = original with { Title = "New", Keywords = "a, b", Modified = new DateTimeOffset(2026, 11, 22, 10, 0, 0, TimeSpan.Zero) };
+
+        document.Execute(new SetDocumentPropertiesCommand(changed));
+        document.Execute(new SetDocumentPropertiesCommand(changed));
+
+        Assert.Equal(changed, document.Properties);
+        var output = DocxWriterTests.Save(document);
+        var before = OpcAssert.Parts(source);
+        var after = OpcAssert.Parts(output);
+        Assert.Equal(before.Keys.Order(), after.Keys.Order());
+        foreach (var (part, bytes) in before)
+            Assert.Equal(part != "/docProps/core.xml", bytes.AsSpan().SequenceEqual(after[part]));
+        var core = OpcAssert.Xml(output, "/docProps/core.xml").Root!;
+        Assert.Equal(["title", "creator", "revision", "keywords", "modified"], core.Elements().Select(e => e.Name.LocalName));
+        Assert.Equal(changed, TextDocument.Load(new MemoryStream(output)).Properties);
+
+        document.Undo.Undo();
+
+        Assert.Same(original, document.Properties);
+        Assert.False(document.Undo.CanUndo);
+    }
+
     private static DocumentRange Caret(TextDocument document, string paragraphId, int offset)
     {
         var position = document.PositionOf(paragraphId, offset);

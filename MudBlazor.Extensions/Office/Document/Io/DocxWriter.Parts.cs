@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Xml.Linq;
+using static MudBlazor.Extensions.Office.Document.FormatXml;
 
 namespace MudBlazor.Extensions.Office.Document;
 
@@ -44,6 +45,74 @@ public static partial class DocxWriter
             }
 
             Put(part, xml);
+        }
+
+        private void PrepareHeadersFooters()
+        {
+            var referenced = document.SectionList.SelectMany(s => s.Headers.Values.Concat(s.Footers.Values)).ToHashSet();
+            var before = package.Sections.SelectMany(s => s.Headers.Values.Concat(s.Footers.Values)).ToHashSet();
+            foreach (var dropped in package.HeadersFooters.Where(h => before.Contains(h.Id) && !referenced.Contains(h.Id)))
+            {
+                _done.Add(dropped.PartName);
+                _done.Add(OpcPackage.RelsPartOf(dropped.PartName));
+                if (_mainRelationships.RemoveAll(r => r.TargetMode == null &&
+                                                      string.Equals(_opc.ResolveTarget(package.MainPart, r.Target), dropped.PartName, StringComparison.OrdinalIgnoreCase)) > 0)
+                    _mainRelationshipsChanged = true;
+                if (_overrides.Remove(dropped.PartName)) _contentTypesChanged = true;
+            }
+
+            var folder = package.MainPart[..(package.MainPart.LastIndexOf('/') + 1)];
+            foreach (var added in document.HeaderFooterList.Where(h => h.PartName == null && referenced.Contains(h.Id)))
+            {
+                var kind = added.Kind == HeaderFooterKind.Header ? "header" : "footer";
+                var part = writer.NextPartName(folder + kind + "{0}.xml");
+                _newParts[added.Id] = part;
+                _mainRelationships.Add(new OpcRelationship(added.Id, RelNs + "/" + kind, OpcPackageWriter.Relative(package.MainPart, part), null));
+                _mainRelationshipsChanged = true;
+                SetOverride(part, Wml + kind + "+xml");
+            }
+        }
+
+        private void WriteNewHeaderFooter(HeaderFooter headerFooter, string part)
+        {
+            var rels = new List<OpcRelationship>();
+            _context.Begin(part, rels, null);
+            var root = new XElement(W + (headerFooter.Kind == HeaderFooterKind.Header ? "hdr" : "ftr"),
+                new XAttribute(XNamespace.Xmlns + "w", W.NamespaceName), new XAttribute(XNamespace.Xmlns + "r", RelNs),
+                headerFooter.Blocks.Select(b => _context.Block(b, false)));
+            if (!root.HasElements) root.Add(new XElement(W + "p"));
+            Put(part, new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), root));
+            if (rels.Count > 0) PutRelationships(part, rels);
+        }
+
+        private static readonly HashSet<string> BeforeEvenAndOddHeaders =
+        [
+            "writeProtection", "view", "zoom", "removePersonalInformation", "removeDateAndTime", "doNotDisplayPageBoundaries", "displayBackgroundShape",
+            "printPostScriptOverText", "printFractionalCharacterWidth", "printFormsData", "embedTrueTypeFonts", "embedSystemFonts", "saveSubsetFonts",
+            "saveFormsData", "mirrorMargins", "alignBordersAndEdges", "bordersDoNotSurroundHeader", "bordersDoNotSurroundFooter", "gutterAtTop",
+            "hideSpellingErrors", "hideGrammaticalErrors", "activeWritingStyle", "proofState", "formsDesign", "attachedTemplate", "linkStyles",
+            "stylePaneFormatFilter", "stylePaneSortMethod", "documentType", "mailMerge", "revisionView", "trackRevisions", "doNotTrackMoves",
+            "doNotTrackFormatting", "documentProtection", "autoFormatOverride", "styleLockTheme", "styleLockQFSet", "defaultTabStop", "autoHyphenation",
+            "consecutiveHyphenLimit", "hyphenationZone", "doNotHyphenateCaps", "showEnvelope", "summaryLength", "clickAndTypeStyle", "defaultTableStyle"
+        ];
+
+        private void WriteSettings()
+        {
+            var original = package.SettingsXml?.Root is { } source && FormatXml.OnOff(source, "evenAndOddHeaders") == true;
+            if (document.EvenAndOddHeaders == original) return;
+            var xml = package.SettingsXml != null
+                ? new XDocument(package.SettingsXml)
+                : new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), new XElement(W + "settings", new XAttribute(XNamespace.Xmlns + "w", W.NamespaceName)));
+            var root = xml.Root!;
+            root.Elements(W + "evenAndOddHeaders").Remove();
+            if (document.EvenAndOddHeaders)
+            {
+                var element = new XElement(W + "evenAndOddHeaders");
+                if (root.Elements().LastOrDefault(e => e.Name.Namespace == W && BeforeEvenAndOddHeaders.Contains(e.Name.LocalName)) is { } previous) previous.AddAfterSelf(element);
+                else root.AddFirst(element);
+            }
+
+            PutDefinitions(package.SettingsPart, package.SettingsXml, xml, "settings");
         }
 
         private void WriteProperties()
