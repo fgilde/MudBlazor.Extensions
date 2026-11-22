@@ -98,12 +98,14 @@ public sealed partial class TextDocument
     /// deeper than 100 levels, or when reading it costs more than 32 Mi units: an XML element 8, a text character, inline element or <c>text:s</c>
     /// space 1, a paragraph 8, a table cell 32 and every 16 bytes of a distinct picture 1, with repeated rows and cells counted once per repetition.
     /// Word 97-2003 (.doc) is read from the main text of its piece table: paragraphs, tabs, line and page breaks (a section break becomes a page
-    /// break), the displayed result of fields, table cells as separate paragraphs and footnote and endnote references as numbered footnote tokens;
-    /// bold, italic, strike, underline, size, colour and font come from the direct formatting of each run and the alignment from that of each
+    /// break), the displayed result of fields (a field code without an end ends with its paragraph), symbol characters with their font, table cells
+    /// as separate paragraphs and footnote and endnote references as numbered footnote tokens; bold, italic, strike, underline, size, colour and
+    /// font come from the direct formatting of each run (a toggle set to the opposite of the style is resolved against the built-in style of the
+    /// paragraph) and the alignment from that of each
     /// paragraph, the built-in headings 1 to 6 get their style and headings 7 to 9 their outline level. Style formatting, lists, pictures, drawn
     /// objects, headers, footers, the text of footnotes and comments and the properties are not read, and hidden text is shown. An encrypted .doc and a
-    /// Word 6/95 file are not supported; a .doc is rejected when its compound file has a broken or cyclic sector chain or a stream above 256 MiB,
-    /// when its piece table is broken or when its text has more than 32 Mi characters.
+    /// Word 6/95 file are not supported; a .doc is rejected when its compound file has an invalid header, a broken or cyclic sector chain or a stream above
+    /// 256 MiB, when its piece table or a formatting property list is broken or when its text has more than 32 Mi characters.
     /// </summary>
     /// <param name="stream">The file content.</param>
     /// <param name="format">The file format.</param>

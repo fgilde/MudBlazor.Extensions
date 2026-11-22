@@ -88,14 +88,18 @@ internal static class DocReader
         return runs;
     }
 
-    private static RunFormat Chpx(byte[] page, int index, int count, List<string> fonts)
+    private static CharacterRun Chpx(byte[] page, int index, int count, List<string> fonts)
     {
         var offset = 2 * B(page, 4 * (count + 1) + index);
-        var format = new RunFormat();
-        if (offset == 0) return format;
+        var run = new CharacterRun(new RunFormat(), null, '\0', 0);
+        if (offset == 0) return run;
         var end = offset + 1 + B(page, offset);
         if (end > 511) throw Invalid("The document has a broken character format.");
+        var format = run.Format;
         foreach (var (sprm, at) in Sprms(page, offset + 1, end))
+        {
+            if (sprm is >= 0x0835 and <= 0x0837 && page[at] == 0x81) run = run with { Opposite = run.Opposite | 1 << (sprm - 0x0835) };
+            if (sprm == 0x6A09) run = run with { SymbolFont = U16(page, at) < fonts.Count ? fonts[U16(page, at)] : null, Symbol = (char)U16(page, at + 2) };
             format = sprm switch
             {
                 0x0835 => format with { Bold = Toggle(page[at]) },
@@ -108,7 +112,9 @@ internal static class DocReader
                 0x4A4F when U16(page, at) < fonts.Count => format with { Font = fonts[U16(page, at)] },
                 _ => format
             };
-        return format;
+        }
+
+        return run with { Format = format };
     }
 
     private static (ParagraphAlignment? Alignment, int Style, bool RowEnd) Papx(byte[] page, int index, int count)
@@ -140,7 +146,7 @@ internal static class DocReader
                 _ when sprm == 0xC615 && operand < end && data[operand] == 255 => -1,
                 _ => operand < end ? data[operand] + 1 : -1
             };
-            if (size < 0 || operand + size > end) yield break;
+            if (size < 0 || operand + size > end) throw Invalid("The document has a broken property list.");
             yield return (sprm, operand);
             start = operand + size;
         }
@@ -178,7 +184,7 @@ internal static class DocReader
         return -1;
     }
 
-    private static bool? Toggle(byte value) => value switch { 0 => false, 1 or 0x81 => true, _ => null };
+    private static bool? Toggle(byte value) => value switch { 0 => false, 1 => true, _ => null };
 
     private static byte[] Slice(byte[] data, long offset, long length) =>
         offset >= 0 && length >= 0 && offset + length <= data.Length ? data.AsSpan((int)offset, (int)length).ToArray() : throw Invalid("The document refers to data beyond its end.");
@@ -191,9 +197,16 @@ internal static class DocReader
 
     private static InvalidDataException Invalid(string message) => new(message);
 
-    private sealed class Builder(List<(uint Start, uint End, RunFormat Value)> characters, List<(uint Start, uint End, (ParagraphAlignment? Alignment, int Style, bool RowEnd) Value)> paragraphs)
+    private static string StyleId(int istd) => istd is >= 1 and <= 6 ? "Heading" + istd : null;
+
+    private readonly record struct CharacterRun(RunFormat Format, string SymbolFont, char Symbol, int Opposite);
+
+    private sealed class Builder(
+        List<(uint Start, uint End, CharacterRun Value)> characters,
+        List<(uint Start, uint End, (ParagraphAlignment? Alignment, int Style, bool RowEnd) Value)> paragraphs)
     {
         private readonly TextDocument _document = TextDocument.Create();
+        private readonly Dictionary<(int Run, int Style), RunFormat> _resolved = new();
         private readonly List<Block> _blocks = [];
         private readonly List<Inline> _inlines = [];
         private readonly StringBuilder _run = new();
@@ -228,7 +241,14 @@ internal static class DocReader
 
             if (_code > 0) return;
             var index = Find(characters, fc);
-            var format = index < 0 ? new RunFormat() : characters[index].Value;
+            var run = index < 0 ? new CharacterRun(new RunFormat(), null, '\0', 0) : characters[index].Value;
+            var format = run.Opposite == 0 ? run.Format : Resolve(index, run, fc);
+            if (c == '(' && run.Symbol != '\0')
+            {
+                if (run.Symbol >= ' ' && XmlConvert.IsXmlChar(run.Symbol)) Append(run.Symbol, run.SymbolFont != null ? format with { Font = run.SymbolFont } : format);
+                return;
+            }
+
             switch (c)
             {
                 case '\f':
@@ -271,6 +291,27 @@ internal static class DocReader
             return _document;
         }
 
+        private RunFormat Resolve(int index, CharacterRun run, long fc)
+        {
+            var paragraph = Find(paragraphs, fc);
+            var style = paragraph < 0 ? 0 : paragraphs[paragraph].Value.Style;
+            if (_resolved.TryGetValue((index, style), out var format)) return format;
+            var styleId = AddStyle(style);
+            var basis = EffectiveFormat.Run(_document.Styles, _document.Theme, null, new Paragraph { Format = new ParagraphFormat { StyleId = styleId } }, null);
+            format = run.Format;
+            if ((run.Opposite & 1) != 0) format = format with { Bold = basis.Bold != true };
+            if ((run.Opposite & 2) != 0) format = format with { Italic = basis.Italic != true };
+            if ((run.Opposite & 4) != 0) format = format with { Strike = basis.Strike != true };
+            return _resolved[(index, style)] = format;
+        }
+
+        private string AddStyle(int istd)
+        {
+            var styleId = StyleId(istd);
+            if (styleId != null) _document.Styles = StyleDefinitions.With(_document.Styles, styleId, StyleType.Paragraph);
+            return styleId;
+        }
+
         private void Append(char c, RunFormat format)
         {
             if (_run.Length > 0 && format != _format) Flush();
@@ -286,12 +327,14 @@ internal static class DocReader
 
         private void End(long fc)
         {
+            while (_code > 0 && _fields.TryPop(out var code))
+                if (code)
+                    _code--;
             Flush();
             var index = Find(paragraphs, fc);
             var (alignment, style, rowEnd) = index < 0 ? default : paragraphs[index].Value;
             if (rowEnd && _inlines.Count == 0) return;
-            var styleId = style is >= 1 and <= 6 ? "Heading" + style : null;
-            if (styleId != null) _document.Styles = StyleDefinitions.With(_document.Styles, styleId, StyleType.Paragraph);
+            var styleId = AddStyle(style);
             _blocks.Add(new Paragraph
             {
                 Format = new ParagraphFormat { Alignment = alignment, StyleId = styleId, OutlineLevel = style is >= 7 and <= 9 ? style - 1 : null },

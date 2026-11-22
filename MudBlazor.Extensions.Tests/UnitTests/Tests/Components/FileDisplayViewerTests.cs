@@ -599,6 +599,15 @@ public class FileDisplayViewerTests
         Assert.Throws<FormatException>(() => EpubBook.Open(epub));
     }
 
+    [Fact]
+    public void DeeplyNestedKml_FailsCleanly()
+    {
+        var deep = string.Concat(Enumerable.Repeat("<Folder>", 1000)) + string.Concat(Enumerable.Repeat("</Folder>", 1000));
+
+        Assert.Throws<InvalidDataException>(() => GeoJsonConverter.ToGeoJson("deep.kml", "<kml><Document>" + deep + "</Document></kml>"));
+        Assert.Contains("FeatureCollection", GeoJsonConverter.ToGeoJson("flat.kml", "<kml><Document><Folder></Folder></Document></kml>"));
+    }
+
     [Theory]
     [InlineData("art.ai", "application/octet-stream")]
     [InlineData("template.ait", "application/octet-stream")]

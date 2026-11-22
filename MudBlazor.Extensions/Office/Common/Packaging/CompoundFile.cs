@@ -18,14 +18,14 @@ internal sealed class CompoundFile
     private readonly uint[] _fat;
     private readonly Dictionary<string, (uint Start, long Length)> _streams = new(StringComparer.Ordinal);
     private readonly (uint Start, long Length) _miniStream;
-    private uint[] _miniFat;
-    private byte[] _miniData;
+    private (byte[] Data, uint[] Fat) _mini;
 
     private CompoundFile(byte[] data)
     {
         _data = data;
         var shift = U16(0x1E);
-        if (shift is not (9 or 12)) throw Invalid("The compound file has an unsupported sector size.");
+        if (shift is not (9 or 12) || U16(0x1A) != (shift == 9 ? 3 : 4)) throw Invalid("The compound file has an unsupported version or sector size.");
+        if (U16(0x1C) != 0xFFFE || U16(0x20) != 6 || U32(0x38) != MiniStreamCutoff) throw Invalid("The compound file has an invalid header.");
         _sectorSize = 1 << shift;
         var fatCount = U32(0x2C);
         if (fatCount > (ulong)data.Length / (ulong)_sectorSize) throw Invalid("The compound file has more FAT sectors than it is long.");
@@ -39,9 +39,8 @@ internal sealed class CompoundFile
             for (var i = 0; i < _sectorSize / 4 - 1 && fatSectors.Count < fatCount; i++) fatSectors.Add(U32(offset + 4 * i));
         }
 
-        _fat = Uints(fatSectors.SelectMany(s => Sector(s)).ToArray());
-        var directory = Chain(U32(0x30)).SelectMany(s => Sector(s)).ToArray();
-        if (directory.Length / 128 > MaxEntries) throw Invalid("The compound file has too many directory entries.");
+        _fat = Uints(Sectors(fatSectors));
+        var directory = Sectors(Chain(U32(0x30), MaxEntries * 128 / _sectorSize));
         if (directory.Length < 128 || directory[0x42] != 5) throw Invalid("The compound file has no root entry.");
         _miniStream = (BinaryPrimitives.ReadUInt32LittleEndian(directory.AsSpan(0x74)), Length(directory, 0, shift));
         var pending = new Stack<uint>([BinaryPrimitives.ReadUInt32LittleEndian(directory.AsSpan(0x4C))]);
@@ -72,13 +71,13 @@ internal sealed class CompoundFile
     {
         if (!_streams.TryGetValue(name, out var stream)) throw Invalid($"The compound file has no stream {name}.");
         if (stream.Length >= MiniStreamCutoff) return Read(stream.Start, stream.Length, _fat, _sectorSize, _data, _sectorSize);
-        if (_miniData == null)
+        if (_mini.Data == null)
         {
-            _miniData = Read(_miniStream.Start, _miniStream.Length, _fat, _sectorSize, _data, _sectorSize);
-            _miniFat = Uints(Chain(U32(0x3C)).SelectMany(s => Sector(s)).ToArray());
+            var data = Read(_miniStream.Start, _miniStream.Length, _fat, _sectorSize, _data, _sectorSize);
+            _mini = (data, Uints(Sectors(Chain(U32(0x3C), _fat.Length))));
         }
 
-        return Read(stream.Start, stream.Length, _miniFat, MiniSectorSize, _miniData, 0);
+        return Read(stream.Start, stream.Length, _mini.Fat, MiniSectorSize, _mini.Data, 0);
     }
 
     private static byte[] Read(uint start, long length, uint[] fat, int sectorSize, byte[] source, int origin)
@@ -100,23 +99,34 @@ internal sealed class CompoundFile
         return result;
     }
 
-    private List<uint> Chain(uint start)
+    private List<uint> Chain(uint start, int maxSectors)
     {
         var chain = new List<uint>();
         var seen = new HashSet<uint>();
         for (var sector = start; sector != EndOfChain; sector = _fat[sector])
         {
             if (sector >= _fat.Length || !seen.Add(sector)) throw Invalid("The compound file has a broken or cyclic sector chain.");
+            if (chain.Count == maxSectors) throw Invalid("The compound file has a chain with too many sectors.");
+            Offset(sector);
             chain.Add(sector);
         }
 
         return chain;
     }
 
-    private byte[] Sector(uint sector)
+    private byte[] Sectors(List<uint> sectors)
     {
-        var offset = Offset(sector);
-        return _data.AsSpan(offset, Math.Min(_sectorSize, _data.Length - offset)).ToArray();
+        var result = new byte[(long)sectors.Count * _sectorSize];
+        var length = 0;
+        foreach (var sector in sectors)
+        {
+            var offset = Offset(sector);
+            var count = Math.Min(_sectorSize, _data.Length - offset);
+            Array.Copy(_data, offset, result, length, count);
+            length += count;
+        }
+
+        return length == result.Length ? result : result[..length];
     }
 
     private int Offset(uint sector)

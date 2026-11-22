@@ -141,6 +141,76 @@ public class DocReaderTests
         Assert.Equal(["bca"], Paragraphs(Load(Doc("abc", pieces: [(0, 0x802), (2, 0x800)]))).Select(p => p.Text));
     }
 
+    [Fact(Timeout = 5000)]
+    public async Task Doc_HostileFormattingTables_ThrowInvalidData()
+    {
+        await Task.Run(() =>
+        {
+            Assert.Throws<InvalidDataException>(() => Load(Doc("abc", chpx: Fkp(3, [2, 0x35, 0x08], crun: 255))));
+            Assert.Throws<InvalidDataException>(() => Load(Doc("abc", papx: Fkp(3, [2, 0, 0, 0x03, 0x24, 1], crun: 255))));
+            Assert.Throws<InvalidDataException>(() => Load(Doc("abc", chpx: SetByte(Fkp(3, [], offset: 255), 510, 5))));
+            Assert.Throws<InvalidDataException>(() => Load(Doc("abc", papx: SetByte(Fkp(3, [], offset: 255), 510, 3))));
+            Assert.Throws<InvalidDataException>(() => Load(Doc("abc", chpx: Fkp(3, [3, 0x01, 0xC6, 0x40]))));
+            Assert.Throws<InvalidDataException>(() => Load(Doc("abc", papx: Fkp(3, [4, 0, 0, 0x08, 0xD6, 0xFF, 0x00]))));
+            Assert.Throws<InvalidDataException>(() => Load(Doc("abc", fonts: [0xFE, 0xFF, 0, 0, 5, 0])));
+            var valid = Load(Doc("abc\r", chpx: Fkp(4, [3, 0x35, 0x08, 1]), papx: Fkp(4, [3, 0, 0, 0x03, 0x24, 1]), fonts: FontTable("Arial")));
+            var paragraph = Assert.Single(Paragraphs(valid));
+            Assert.Equal(("abc", true, ParagraphAlignment.Center), (paragraph.Text, paragraph.Inlines[0].Format.Bold, paragraph.Format.Alignment));
+        });
+    }
+
+    [Fact(Timeout = 5000)]
+    public async Task CompoundFile_HostileChainsAndHeaders_ThrowInvalidData()
+    {
+        await Task.Run(() =>
+        {
+            var padding = new byte[300 * 512];
+            Array.Fill(padding, (byte)0xAB);
+            var valid = Cfb(9, ("small", Enumerable.Range(0, 200).Select(i => (byte)i).ToArray()), ("large", new byte[70000]), ("padding", padding));
+            Assert.Equal(200, CompoundFile.Open(valid).ReadStream("small").Length);
+            Assert.Equal(70000, CompoundFile.Open(valid).ReadStream("large").Length);
+            var last = (uint)(valid.Length / 512 - 2);
+            var broken = new List<byte[]>();
+            foreach (var fatCount in new[] { 110, 300 })
+            {
+                var difatCycle = (byte[])valid.Clone();
+                BinaryPrimitives.WriteInt32LittleEndian(difatCycle.AsSpan(0x2C), fatCount);
+                BinaryPrimitives.WriteUInt32LittleEndian(difatCycle.AsSpan(0x44), last);
+                BinaryPrimitives.WriteUInt32LittleEndian(difatCycle.AsSpan((int)(last + 1) * 512 + 508), last);
+                broken.Add(difatCycle);
+            }
+
+            var tooLong = (byte[])valid.Clone();
+            SetLength(tooLong, "large", 70000 + 2048);
+            broken.Add(tooLong);
+            foreach (var (at, value) in new[] { (0x1C, 0xFEFF), (0x20, 7), (0x38, 2048), (0x1A, 4) })
+                broken.Add(SetUInt16((byte[])valid.Clone(), at, value));
+            var miniCycle = (byte[])valid.Clone();
+            BinaryPrimitives.WriteUInt32LittleEndian(miniCycle.AsSpan((int)(BinaryPrimitives.ReadUInt32LittleEndian(valid.AsSpan(0x3C)) + 1) * 512 + 4), 0);
+
+            foreach (var bytes in broken) Assert.Throws<InvalidDataException>(() => CompoundFile.Open(bytes).ReadStream("large"));
+            Assert.Throws<InvalidDataException>(() => CompoundFile.Open(miniCycle).ReadStream("small"));
+        });
+    }
+
+    [Fact]
+    public void Doc_Read_SymbolTogglesAndUnbalancedField()
+    {
+        var symbol = Doc("a(b", chpx: Fkp(3, [6, 0x09, 0x6A, 0x01, 0x00, 0xFC, 0xF0]), fonts: FontTable("Times New Roman", "Wingdings"));
+        var toggles = Doc("x", chpx: Fkp(1, [9, 0x35, 0x08, 0x81, 0x36, 0x08, 0x80, 0x37, 0x08, 0x01]));
+
+        var paragraph = Assert.Single(Paragraphs(Load(symbol)));
+        Assert.Equal("ab", paragraph.Text);
+        Assert.Equal("Wingdings", paragraph.Inlines.OfType<TextRun>().Single(r => r.Text == "").Format.Font);
+        Assert.Null(paragraph.Inlines.OfType<TextRun>().Single(r => r.Text == "a").Format.Font);
+        var format = Assert.Single(Assert.Single(Paragraphs(Load(toggles))).Inlines).Format;
+        Assert.Equal((true, null, true), (format.Bold, format.Italic, format.Strike));
+        var italicHeading = Doc("x\r", chpx: Fkp(2, [3, 0x36, 0x08, 0x81]), papx: Fkp(2, [3, 4, 0, 0x03, 0x24, 0]));
+        var heading = Assert.Single(Paragraphs(Load(italicHeading)));
+        Assert.Equal(("Heading4", false), (heading.Format.StyleId, heading.Inlines[0].Format.Italic));
+        Assert.Equal(["a", "next", "c"], Paragraphs(Load(Doc("a\u0013 CODE without end\rnext\r\u0013 X \u0014c\u0015\r"))).Select(p => p.Text));
+    }
+
     [Fact]
     public void CompoundFile_ReadsMiniAndRegularStreams_512And4096ByteSectors()
     {
@@ -190,7 +260,8 @@ public class DocReaderTests
         throw new InvalidOperationException("No stream " + name);
     }
 
-    private static byte[] Doc(string text, bool compressed = false, ushort flags = 0x0200, (int Cp, int Fc)[] pieces = null, int? end = null, Action<byte[]> fib = null)
+    private static byte[] Doc(string text, bool compressed = false, ushort flags = 0x0200, (int Cp, int Fc)[] pieces = null, int? end = null, Action<byte[]> fib = null,
+        byte[] chpx = null, byte[] papx = null, byte[] fonts = null)
     {
         var main = new byte[Math.Max(4096, 0x800 + text.Length * 2)];
         BinaryPrimitives.WriteUInt16LittleEndian(main, 0xA5EC);
@@ -214,8 +285,77 @@ public class DocReaderTests
 
         BinaryPrimitives.WriteInt32LittleEndian(table.AsSpan(5 + 4 * pieces.Length), end ?? text.Length);
         BinaryPrimitives.WriteInt32LittleEndian(main.AsSpan(0x9A + 33 * 8 + 4), table.Length);
+        foreach (var (part, page, data) in new[] { (12, 2, chpx), (13, 3, papx), (15, -1, fonts) })
+        {
+            if (data == null) continue;
+            var content = data;
+            if (page >= 0)
+            {
+                data.CopyTo(main, 512 * page);
+                content = new byte[12];
+                BinaryPrimitives.WriteInt32LittleEndian(content, 0x800);
+                BinaryPrimitives.WriteInt32LittleEndian(content.AsSpan(4), 0x800 + 2 * text.Length);
+                BinaryPrimitives.WriteInt32LittleEndian(content.AsSpan(8), page);
+            }
+
+            BinaryPrimitives.WriteInt32LittleEndian(main.AsSpan(0x9A + 8 * part), table.Length);
+            BinaryPrimitives.WriteInt32LittleEndian(main.AsSpan(0x9A + 8 * part + 4), content.Length);
+            table = [.. table, .. content];
+        }
+
         fib?.Invoke(main);
         return Cfb(9, ("WordDocument", main), ((flags & 0x0200) != 0 ? "1Table" : "0Table", table));
+    }
+
+    private static byte[] Fkp(int length, byte[] property, byte crun = 1, byte offset = 0x80)
+    {
+        var page = new byte[512];
+        BinaryPrimitives.WriteInt32LittleEndian(page, 0x800);
+        BinaryPrimitives.WriteInt32LittleEndian(page.AsSpan(4), 0x800 + 2 * length);
+        property.CopyTo(page, 0x100);
+        page[8] = offset;
+        page[511] = crun;
+        return page;
+    }
+
+    private static byte[] FontTable(params string[] names)
+    {
+        var table = new List<byte>();
+        table.AddRange(BitConverter.GetBytes((ushort)names.Length));
+        table.AddRange(new byte[2]);
+        foreach (var name in names)
+        {
+            byte[] font = [.. new byte[39], .. Encoding.Unicode.GetBytes(name), 0, 0];
+            table.Add((byte)font.Length);
+            table.AddRange(font);
+        }
+
+        return table.ToArray();
+    }
+
+    private static byte[] SetByte(byte[] data, int at, byte value)
+    {
+        data[at] = value;
+        return data;
+    }
+
+    private static byte[] SetUInt16(byte[] data, int at, int value)
+    {
+        BinaryPrimitives.WriteUInt16LittleEndian(data.AsSpan(at), (ushort)value);
+        return data;
+    }
+
+    private static void SetLength(byte[] file, string name, long length)
+    {
+        var directory = (int)(BinaryPrimitives.ReadUInt32LittleEndian(file.AsSpan(0x30)) + 1) * 512;
+        for (var at = directory; at < directory + 512; at += 128)
+            if (Encoding.Unicode.GetString(file, at, Math.Max(0, BinaryPrimitives.ReadUInt16LittleEndian(file.AsSpan(at + 0x40)) - 2)) == name)
+            {
+                BinaryPrimitives.WriteInt64LittleEndian(file.AsSpan(at + 0x78), length);
+                return;
+            }
+
+        throw new InvalidOperationException("No stream " + name);
     }
 
     internal static byte[] Cfb(int shift, params (string Name, byte[] Data)[] streams)
