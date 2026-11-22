@@ -136,11 +136,34 @@ public class DocumentSearchTests
         var document = TextDocument.FromBlocks([P("aa"), P(new string('a', 40) + "b"), P("aaa")]);
         var first = document.Blocks[0].Id;
 
-        var matches = DocumentSearch.FindAll(document, "(a+)+$", new FindOptions(Regex: true), TimeSpan.FromMilliseconds(200));
-        var stopped = DocumentSearch.FindAll(document, "a", new FindOptions(), TimeSpan.FromSeconds(1), TimeSpan.FromTicks(-1));
+        var matches = DocumentSearch.Find(document, "(a+)+$", new FindOptions(Regex: true), TimeSpan.FromMilliseconds(200), TimeSpan.FromSeconds(5));
+        var stopped = DocumentSearch.Find(document, "a", new FindOptions(), TimeSpan.FromSeconds(1), TimeSpan.FromTicks(-1));
+        var complete = DocumentSearch.Find(document, "a");
 
-        Assert.Equal([new DocumentRange(document.PositionOf(first, 0), document.PositionOf(first, 2))], matches);
-        Assert.Empty(stopped);
+        Assert.Equal([new DocumentRange(document.PositionOf(first, 0), document.PositionOf(first, 2))], matches.Ranges);
+        Assert.True(matches.Truncated);
+        Assert.Empty(stopped.Ranges);
+        Assert.True(stopped.Truncated);
+        Assert.Equal((45, false), (complete.Ranges.Count, complete.Truncated));
+        Assert.Equal(complete.Ranges, DocumentSearch.FindAll(document, "a"));
+        Assert.Equal(complete.Ranges[2], DocumentSearch.FindNext(document, complete.Ranges[1].End, "a", null, out var truncated));
+        Assert.False(truncated);
+    }
+
+    [Fact]
+    public void ReplaceAll_CutShortBySearchDeadlineOrRegexTimeout_ChangesNothingAndThrows()
+    {
+        var document = TextDocument.FromBlocks([P("aa"), P(new string('a', 40) + "b"), P("aaa")]);
+        var before = document.AllParagraphs().Select(p => p.Text).ToList();
+
+        Assert.Throws<TimeoutException>(() => DocumentSearch.ReplaceAll(document, "a", "x", null, TimeSpan.FromSeconds(1), TimeSpan.FromTicks(-1)));
+        Assert.ThrowsAny<TimeoutException>(() =>
+            DocumentSearch.ReplaceAll(document, "(a+)+$", "x", new FindOptions(Regex: true), TimeSpan.FromMilliseconds(200), TimeSpan.FromSeconds(5)));
+
+        Assert.Equal(before, document.AllParagraphs().Select(p => p.Text));
+        Assert.False(document.Undo.CanUndo);
+        Assert.Equal(45, DocumentSearch.ReplaceAll(document, "a", "x"));
+        Assert.True(document.Undo.CanUndo);
     }
 
     [Fact]

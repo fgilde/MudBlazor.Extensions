@@ -9,10 +9,18 @@ namespace MudBlazor.Extensions.Office.Document;
 /// <param name="IncludeHeadersFooters">True to search the headers and footers after the body.</param>
 public sealed record FindOptions(bool MatchCase = false, bool WholeWord = false, bool Regex = false, bool IncludeHeadersFooters = true);
 
+/// <summary>The matches of a search.</summary>
+/// <param name="Ranges">The ranges of the matches in document order.</param>
+/// <param name="Truncated">True if the search deadline or the timeout of a regular expression ended the search early; <paramref name="Ranges"/> then
+/// holds only the matches found until then.</param>
+public sealed record FindResult(IReadOnlyList<DocumentRange> Ranges, bool Truncated);
+
 /// <summary>
 /// Finds and replaces text in a <see cref="TextDocument"/>. Matches run over <see cref="Paragraph.Text"/> and never cross paragraphs or tokens such as
 /// images; a match that would end inside a surrogate pair is widened to the whole character. Regular expressions run with a one second timeout per
-/// match and the whole search with a five second deadline; either ends the search with the matches found so far.
+/// match and the whole search with a five second deadline; either ends the search with the matches found so far, which
+/// <see cref="Find(TextDocument, string, FindOptions)"/> and <see cref="FindNext(TextDocument, DocumentPosition, string, FindOptions, out bool)"/>
+/// report as truncated and <see cref="ReplaceAll(TextDocument, string, string, FindOptions)"/> rejects.
 /// </summary>
 public static class DocumentSearch
 {
@@ -20,17 +28,27 @@ public static class DocumentSearch
     private static readonly TimeSpan SearchDeadline = TimeSpan.FromSeconds(5);
     private static readonly Regex Substitution = new(@"\$(?:[$`'_+&]|\{([^}]*)\}|(\d+))", RegexOptions.CultureInvariant, MatchTimeout);
 
-    /// <summary>Finds all matches in document order.</summary>
+    /// <summary>Finds all matches in document order; a search cut short returns the matches found until then (see <see cref="Find(TextDocument, string, FindOptions)"/>).</summary>
     /// <param name="document">The document.</param>
     /// <param name="query">The text or regular expression; null or empty finds nothing.</param>
     /// <param name="options">The options; null for the defaults.</param>
     /// <returns>The ranges of the matches.</returns>
     /// <exception cref="ArgumentException">The query is not a valid regular expression.</exception>
-    public static IReadOnlyList<DocumentRange> FindAll(TextDocument document, string query, FindOptions options = null) =>
-        FindAll(document, query, options, MatchTimeout);
+    public static IReadOnlyList<DocumentRange> FindAll(TextDocument document, string query, FindOptions options = null) => Find(document, query, options).Ranges;
 
-    internal static IReadOnlyList<DocumentRange> FindAll(TextDocument document, string query, FindOptions options, TimeSpan timeout, TimeSpan? deadline = null) =>
-        Matches(document, query, options, timeout, deadline ?? SearchDeadline).Select(m => m.Range).ToList();
+    /// <summary>Finds all matches in document order and tells whether the search ended early.</summary>
+    /// <param name="document">The document.</param>
+    /// <param name="query">The text or regular expression; null or empty finds nothing.</param>
+    /// <param name="options">The options; null for the defaults.</param>
+    /// <returns>The matches, and whether the deadline or a regular expression timeout cut the search short.</returns>
+    /// <exception cref="ArgumentException">The query is not a valid regular expression.</exception>
+    public static FindResult Find(TextDocument document, string query, FindOptions options = null) => Find(document, query, options, MatchTimeout, SearchDeadline);
+
+    internal static FindResult Find(TextDocument document, string query, FindOptions options, TimeSpan timeout, TimeSpan deadline)
+    {
+        var matches = Matches(document, query, options, timeout, deadline, out var truncated);
+        return new FindResult(matches.Select(m => m.Range).ToList(), truncated);
+    }
 
     /// <summary>Finds the first match that starts at or after a position, wrapping around to the start of the document.</summary>
     /// <param name="document">The document.</param>
@@ -39,15 +57,28 @@ public static class DocumentSearch
     /// <param name="options">The options; null for the defaults.</param>
     /// <returns>The range of the match, or null if there is none.</returns>
     /// <exception cref="ArgumentException">The query is not a valid regular expression.</exception>
-    public static DocumentRange? FindNext(TextDocument document, DocumentPosition from, string query, FindOptions options = null)
+    public static DocumentRange? FindNext(TextDocument document, DocumentPosition from, string query, FindOptions options = null) =>
+        FindNext(document, from, query, options, out _);
+
+    /// <summary>Finds the first match that starts at or after a position, wrapping around, and tells whether the search ended early.</summary>
+    /// <param name="document">The document.</param>
+    /// <param name="from">The position to search from, usually the end of the selection.</param>
+    /// <param name="query">The text or regular expression.</param>
+    /// <param name="options">The options; null for the defaults.</param>
+    /// <param name="truncated">True if the deadline or a regular expression timeout cut the search short; the result may then not be the next match.</param>
+    /// <returns>The range of the match, or null if none was found.</returns>
+    /// <exception cref="ArgumentException">The query is not a valid regular expression.</exception>
+    public static DocumentRange? FindNext(TextDocument document, DocumentPosition from, string query, FindOptions options, out bool truncated)
     {
         ArgumentNullException.ThrowIfNull(from);
-        var all = FindAll(document, query, options);
+        var (all, cut) = Find(document, query, options);
+        truncated = cut;
         return all.Count == 0 ? null : all.FirstOrDefault(r => document.Compare(r.Start, from) >= 0, all[0]);
     }
 
     /// <summary>
-    /// Replaces all matches as one undo step, back to front. Each replacement takes the format of the first matched character.
+    /// Replaces all matches as one undo step, back to front. Each replacement takes the format of the first matched character. The replacement is
+    /// all or nothing: when the search deadline or a regular expression timeout cuts the search short, nothing is changed and no undo step is recorded.
     /// </summary>
     /// <param name="document">The document.</param>
     /// <param name="query">The text or regular expression.</param>
@@ -55,10 +86,15 @@ public static class DocumentSearch
     /// <param name="options">The options; null for the defaults.</param>
     /// <returns>The number of replaced matches.</returns>
     /// <exception cref="ArgumentException">The query is not a valid regular expression.</exception>
-    public static int ReplaceAll(TextDocument document, string query, string replacement, FindOptions options = null)
+    /// <exception cref="TimeoutException">The search was cut short; the document is unchanged.</exception>
+    public static int ReplaceAll(TextDocument document, string query, string replacement, FindOptions options = null) =>
+        ReplaceAll(document, query, replacement, options, MatchTimeout, SearchDeadline);
+
+    internal static int ReplaceAll(TextDocument document, string query, string replacement, FindOptions options, TimeSpan timeout, TimeSpan deadline)
     {
         options ??= new FindOptions();
-        var matches = Matches(document, query, options, MatchTimeout, SearchDeadline);
+        var matches = Matches(document, query, options, timeout, deadline, out var truncated);
+        if (truncated) throw new TimeoutException("The search did not finish in time; nothing was replaced.");
         if (matches.Count == 0) return 0;
         using (document.Undo.BeginTransaction("Replace all"))
             for (var i = matches.Count - 1; i >= 0; i--)
@@ -102,9 +138,10 @@ public static class DocumentSearch
         (TextDocument.SnapOffset(text, capture.Index, true), TextDocument.SnapOffset(text, capture.Index + capture.Length, false));
 
     private static List<(DocumentRange Range, Match Match, Paragraph Paragraph)> Matches(TextDocument document, string query, FindOptions options, TimeSpan timeout,
-        TimeSpan deadline)
+        TimeSpan deadline, out bool truncated)
     {
         ArgumentNullException.ThrowIfNull(document);
+        truncated = false;
         options ??= new FindOptions();
         var result = new List<(DocumentRange, Match, Paragraph)>();
         if (string.IsNullOrEmpty(query)) return result;
@@ -116,7 +153,12 @@ public static class DocumentSearch
         {
             foreach (var paragraph in document.AllParagraphs(options.IncludeHeadersFooters))
             {
-                if (watch.Elapsed > deadline) break;
+                if (watch.Elapsed > deadline)
+                {
+                    truncated = true;
+                    break;
+                }
+
                 var text = paragraph.Text;
                 var covered = 0;
                 for (var start = 0; start <= text.Length;)
@@ -138,6 +180,7 @@ public static class DocumentSearch
         }
         catch (RegexMatchTimeoutException)
         {
+            truncated = true;
         }
 
         return result;

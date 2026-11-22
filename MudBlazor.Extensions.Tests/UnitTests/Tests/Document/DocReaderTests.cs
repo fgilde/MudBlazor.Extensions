@@ -219,8 +219,10 @@ public class DocReaderTests
 
         foreach (var shift in new[] { 9, 12 })
         {
-            var file = CompoundFile.Open(Cfb(shift, ("small", [1, 2, 3]), ("large", large), ("empty", [])));
+            var bytes = Cfb(shift, ("small", [1, 2, 3]), ("large", large), ("empty", []));
+            var file = CompoundFile.Open(bytes);
             Assert.Equal(["empty", "large", "small"], file.StreamNames.Order());
+            Assert.Equal(file.StreamNames.Order(), CompoundFile.RootEntryNames(new MemoryStream(bytes), 0).Order());
             Assert.Equal((byte[])[1, 2, 3], file.ReadStream("small"));
             Assert.Equal(large, file.ReadStream("large"));
             Assert.Empty(file.ReadStream("empty"));
@@ -232,6 +234,7 @@ public class DocReaderTests
 
         Assert.Contains("WordDocument", streams.Keys);
         Assert.Contains("1Table", streams.Keys);
+        Assert.Superset(sample.StreamNames.ToHashSet(), CompoundFile.RootEntryNames(new MemoryStream(File.ReadAllBytes(Data("WordDokument.doc"))), 0));
     }
 
     private static string Data(string name) => Path.Combine(AppContext.BaseDirectory, "TestData", "Document", name);

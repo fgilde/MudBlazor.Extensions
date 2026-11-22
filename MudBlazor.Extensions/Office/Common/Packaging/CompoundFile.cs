@@ -42,21 +42,10 @@ internal sealed class CompoundFile
 
         _fat = Uints(Sectors(fatSectors));
         var directory = Sectors(Chain(U32(0x30), MaxEntries * 128 / _sectorSize));
-        if (directory.Length < 128 || directory[0x42] != 5) throw Invalid("The compound file has no root entry.");
+        if (!HasRoot(directory)) throw Invalid("The compound file has no root entry.");
         _miniStream = (BinaryPrimitives.ReadUInt32LittleEndian(directory.AsSpan(0x74)), Length(directory, 0, shift));
-        var pending = new Stack<uint>([BinaryPrimitives.ReadUInt32LittleEndian(directory.AsSpan(0x4C))]);
-        var visited = new HashSet<uint>();
-        while (pending.TryPop(out var id))
-        {
-            if (id >= directory.Length / 128 || !visited.Add(id)) continue;
-            var at = (int)id * 128;
-            var nameLength = BinaryPrimitives.ReadUInt16LittleEndian(directory.AsSpan(at + 0x40));
-            if (directory[at + 0x42] == 2 && nameLength is >= 2 and <= 64 && nameLength % 2 == 0)
-                _streams.TryAdd(Encoding.Unicode.GetString(directory, at, nameLength - 2),
-                    (BinaryPrimitives.ReadUInt32LittleEndian(directory.AsSpan(at + 0x74)), Length(directory, at, shift)));
-            pending.Push(BinaryPrimitives.ReadUInt32LittleEndian(directory.AsSpan(at + 0x44)));
-            pending.Push(BinaryPrimitives.ReadUInt32LittleEndian(directory.AsSpan(at + 0x48)));
-        }
+        foreach (var (name, type, at) in RootEntries(directory))
+            if (type == 2) _streams.TryAdd(name, (BinaryPrimitives.ReadUInt32LittleEndian(directory.AsSpan(at + 0x74)), Length(directory, at, shift)));
     }
 
     public IReadOnlyCollection<string> StreamNames => _streams.Keys;
@@ -73,36 +62,38 @@ internal sealed class CompoundFile
         var fat = Enumerable.Range(0, (int)Math.Min(BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x2C)), 109u))
             .Select(i => BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x4C + 4 * i))).ToList();
         var buffer = new byte[size];
-        var entries = new List<(string Name, int Type, uint Left, uint Right, uint Child)>();
+        using var directory = new MemoryStream();
         var sector = BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x30));
         for (var count = 0; count < MaxDirectorySectors && Sector(content, start, sector, buffer); count++)
         {
-            for (var entry = 0; entry + 128 <= size; entry += 128)
-            {
-                var length = BinaryPrimitives.ReadUInt16LittleEndian(buffer.AsSpan(entry + 0x40));
-                var name = length is >= 4 and <= 64 && length % 2 == 0 ? Encoding.Unicode.GetString(buffer, entry, length - 2) : null;
-                entries.Add((name, buffer[entry + 0x42], BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan(entry + 0x44)),
-                    BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan(entry + 0x48)), BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan(entry + 0x4C))));
-            }
-
+            directory.Write(buffer);
             var index = (int)(sector / (size / 4));
             if (index >= fat.Count || !Sector(content, start, fat[index], buffer)) break;
             sector = BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan((int)(sector % (size / 4)) * 4));
         }
 
-        if (entries.Count == 0 || entries[0].Type != 5) return names;
-        var pending = new Stack<uint>([entries[0].Child]);
-        var seen = new HashSet<uint>();
+        var entries = directory.ToArray();
+        if (HasRoot(entries))
+            foreach (var (name, type, _) in RootEntries(entries))
+                if (type is 1 or 2) names.Add(name);
+        return names;
+    }
+
+    private static bool HasRoot(byte[] directory) => directory.Length >= 128 && directory[0x42] == 5;
+
+    private static IEnumerable<(string Name, int Type, int At)> RootEntries(byte[] directory)
+    {
+        var pending = new Stack<uint>([BinaryPrimitives.ReadUInt32LittleEndian(directory.AsSpan(0x4C))]);
+        var visited = new HashSet<uint>();
         while (pending.TryPop(out var id))
         {
-            if (id >= entries.Count || !seen.Add(id)) continue;
-            var (name, type, left, right, _) = entries[(int)id];
-            if (name != null && type is 1 or 2) names.Add(name);
-            pending.Push(left);
-            pending.Push(right);
+            if (id >= directory.Length / 128 || !visited.Add(id)) continue;
+            var at = (int)id * 128;
+            var nameLength = BinaryPrimitives.ReadUInt16LittleEndian(directory.AsSpan(at + 0x40));
+            if (nameLength is >= 2 and <= 64 && nameLength % 2 == 0) yield return (Encoding.Unicode.GetString(directory, at, nameLength - 2), directory[at + 0x42], at);
+            pending.Push(BinaryPrimitives.ReadUInt32LittleEndian(directory.AsSpan(at + 0x44)));
+            pending.Push(BinaryPrimitives.ReadUInt32LittleEndian(directory.AsSpan(at + 0x48)));
         }
-
-        return names;
     }
 
     private static bool Sector(Stream content, long start, uint sector, byte[] buffer)

@@ -35063,19 +35063,48 @@
         <member name="P:MudBlazor.Extensions.Office.Document.FindOptions.IncludeHeadersFooters">
             <summary>True to search the headers and footers after the body.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.FindResult">
+            <summary>The matches of a search.</summary>
+            <param name="Ranges">The ranges of the matches in document order.</param>
+            <param name="Truncated">True if the search deadline or the timeout of a regular expression ended the search early; <paramref name="Ranges"/> then
+            holds only the matches found until then.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.FindResult.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.DocumentRange},System.Boolean)">
+            <summary>The matches of a search.</summary>
+            <param name="Ranges">The ranges of the matches in document order.</param>
+            <param name="Truncated">True if the search deadline or the timeout of a regular expression ended the search early; <paramref name="Ranges"/> then
+            holds only the matches found until then.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.FindResult.Ranges">
+            <summary>The ranges of the matches in document order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.FindResult.Truncated">
+            <summary>True if the search deadline or the timeout of a regular expression ended the search early; <paramref name="Ranges"/> then
+            holds only the matches found until then.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.DocumentSearch">
             <summary>
             Finds and replaces text in a <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/>. Matches run over <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/> and never cross paragraphs or tokens such as
             images; a match that would end inside a surrogate pair is widened to the whole character. Regular expressions run with a one second timeout per
-            match and the whole search with a five second deadline; either ends the search with the matches found so far.
+            match and the whole search with a five second deadline; either ends the search with the matches found so far, which
+            <see cref="M:MudBlazor.Extensions.Office.Document.DocumentSearch.Find(MudBlazor.Extensions.Office.Document.TextDocument,System.String,MudBlazor.Extensions.Office.Document.FindOptions)"/> and <see cref="M:MudBlazor.Extensions.Office.Document.DocumentSearch.FindNext(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentPosition,System.String,MudBlazor.Extensions.Office.Document.FindOptions,System.Boolean@)"/>
+            report as truncated and <see cref="M:MudBlazor.Extensions.Office.Document.DocumentSearch.ReplaceAll(MudBlazor.Extensions.Office.Document.TextDocument,System.String,System.String,MudBlazor.Extensions.Office.Document.FindOptions)"/> rejects.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.DocumentSearch.FindAll(MudBlazor.Extensions.Office.Document.TextDocument,System.String,MudBlazor.Extensions.Office.Document.FindOptions)">
-            <summary>Finds all matches in document order.</summary>
+            <summary>Finds all matches in document order; a search cut short returns the matches found until then (see <see cref="M:MudBlazor.Extensions.Office.Document.DocumentSearch.Find(MudBlazor.Extensions.Office.Document.TextDocument,System.String,MudBlazor.Extensions.Office.Document.FindOptions)"/>).</summary>
             <param name="document">The document.</param>
             <param name="query">The text or regular expression; null or empty finds nothing.</param>
             <param name="options">The options; null for the defaults.</param>
             <returns>The ranges of the matches.</returns>
+            <exception cref="T:System.ArgumentException">The query is not a valid regular expression.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentSearch.Find(MudBlazor.Extensions.Office.Document.TextDocument,System.String,MudBlazor.Extensions.Office.Document.FindOptions)">
+            <summary>Finds all matches in document order and tells whether the search ended early.</summary>
+            <param name="document">The document.</param>
+            <param name="query">The text or regular expression; null or empty finds nothing.</param>
+            <param name="options">The options; null for the defaults.</param>
+            <returns>The matches, and whether the deadline or a regular expression timeout cut the search short.</returns>
             <exception cref="T:System.ArgumentException">The query is not a valid regular expression.</exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.DocumentSearch.FindNext(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentPosition,System.String,MudBlazor.Extensions.Office.Document.FindOptions)">
@@ -35087,9 +35116,20 @@
             <returns>The range of the match, or null if there is none.</returns>
             <exception cref="T:System.ArgumentException">The query is not a valid regular expression.</exception>
         </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentSearch.FindNext(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentPosition,System.String,MudBlazor.Extensions.Office.Document.FindOptions,System.Boolean@)">
+            <summary>Finds the first match that starts at or after a position, wrapping around, and tells whether the search ended early.</summary>
+            <param name="document">The document.</param>
+            <param name="from">The position to search from, usually the end of the selection.</param>
+            <param name="query">The text or regular expression.</param>
+            <param name="options">The options; null for the defaults.</param>
+            <param name="truncated">True if the deadline or a regular expression timeout cut the search short; the result may then not be the next match.</param>
+            <returns>The range of the match, or null if none was found.</returns>
+            <exception cref="T:System.ArgumentException">The query is not a valid regular expression.</exception>
+        </member>
         <member name="M:MudBlazor.Extensions.Office.Document.DocumentSearch.ReplaceAll(MudBlazor.Extensions.Office.Document.TextDocument,System.String,System.String,MudBlazor.Extensions.Office.Document.FindOptions)">
             <summary>
-            Replaces all matches as one undo step, back to front. Each replacement takes the format of the first matched character.
+            Replaces all matches as one undo step, back to front. Each replacement takes the format of the first matched character. The replacement is
+            all or nothing: when the search deadline or a regular expression timeout cuts the search short, nothing is changed and no undo step is recorded.
             </summary>
             <param name="document">The document.</param>
             <param name="query">The text or regular expression.</param>
@@ -35097,6 +35137,7 @@
             <param name="options">The options; null for the defaults.</param>
             <returns>The number of replaced matches.</returns>
             <exception cref="T:System.ArgumentException">The query is not a valid regular expression.</exception>
+            <exception cref="T:System.TimeoutException">The search was cut short; the document is unchanged.</exception>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.TextDocument">
             <summary>A text document of paragraphs and tables in sections, with headers, footers and an undo stack.</summary>
