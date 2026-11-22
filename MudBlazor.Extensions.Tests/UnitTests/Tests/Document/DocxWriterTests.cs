@@ -465,7 +465,7 @@ public partial class DocxWriterTests
         Assert.Throws<ArgumentNullException>(() => DocxWriter.Write(null!, new MemoryStream()));
         Assert.Throws<ArgumentNullException>(() => DocxWriter.Write(document, null!));
         Assert.Throws<ArgumentException>(() => DocxWriter.Write(document, new MemoryStream([], false)));
-        Assert.Throws<NotSupportedException>(() => document.Save(new MemoryStream(), DocumentFileFormat.Rtf));
+        Assert.Throws<NotSupportedException>(() => document.Save(new MemoryStream(), DocumentFileFormat.Odt));
     }
 
     internal static byte[] Save(TextDocument document, bool? asTemplate = null)

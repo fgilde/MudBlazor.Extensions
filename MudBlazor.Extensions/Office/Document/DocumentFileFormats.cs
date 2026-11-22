@@ -88,8 +88,7 @@ public static class DocumentFileFormats
     /// <summary>Gets whether <see cref="TextDocument.Save"/> can write a format.</summary>
     /// <param name="format">The format.</param>
     /// <returns>True if the format can be written.</returns>
-    public static bool CanWrite(DocumentFileFormat format) =>
-        format is DocumentFileFormat.Docx or DocumentFileFormat.Dotx or DocumentFileFormat.Html or DocumentFileFormat.Text or DocumentFileFormat.Markdown;
+    public static bool CanWrite(DocumentFileFormat format) => CanRead(format);
 
     /// <summary>Gets the MIME type of a format, for example <c>text/markdown</c>.</summary>
     /// <param name="format">The format.</param>

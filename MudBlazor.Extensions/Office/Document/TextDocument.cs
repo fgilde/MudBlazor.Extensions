@@ -125,7 +125,10 @@ public sealed partial class TextDocument
     /// byte order mark and with CRLF line ends: list items start with their label and a tab, table rows become tab-separated lines and fields their
     /// displayed text. <see cref="DocumentFileFormat.Markdown"/> writes UTF-8 CommonMark with GFM pipe tables (first row as header, merged cells
     /// empty except the first), headings by outline level, bold, italic, strikethrough, safe links, images as <c>data:</c> URIs, lists and
-    /// monospace paragraphs as fenced code. <see cref="DocumentExport.Losses"/> lists what a format cannot keep.
+    /// monospace paragraphs as fenced code. <see cref="DocumentFileFormat.Rtf"/> writes pure ASCII RTF with the effective character and paragraph
+    /// formatting of every run and paragraph, the page size and margins of the last section, list labels as text with a tab and a hanging indent,
+    /// tables with merged cells and single borders, nested tables as tab-separated paragraphs, PNG and JPEG images and safe links; headers,
+    /// footers, comments and other images are left out. <see cref="DocumentExport.Losses"/> lists what a format cannot keep.
     /// </summary>
     /// <param name="target">The stream that receives the file.</param>
     /// <param name="format">The file format.</param>
@@ -145,6 +148,7 @@ public sealed partial class TextDocument
         if (!target.CanWrite) throw new ArgumentException("The stream is not writable.", nameof(target));
         if (format == DocumentFileFormat.Html) target.Write(new UTF8Encoding(false).GetBytes(HtmlWriter.Write(this)));
         else if (format == DocumentFileFormat.Text) TextFormat.Write(this, target);
+        else if (format == DocumentFileFormat.Rtf) RtfWriter.Write(this, target);
         else MarkdownFormat.Write(this, target);
     }
 

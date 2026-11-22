@@ -69,7 +69,7 @@ internal static class TextFormat
             }
     }
 
-    private static string CellText(TextDocument document, IEnumerable<Block> blocks) =>
+    internal static string CellText(TextDocument document, IEnumerable<Block> blocks) =>
         string.Join(' ', blocks.SelectMany(b => b switch
         {
             Paragraph p => [Line(document, p, true)],

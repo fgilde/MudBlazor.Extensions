@@ -60,6 +60,79 @@ public class RtfFormatTests
     }
 
     [Fact]
+    public void Rtf_Write_EscapesBracesBackslashUnicode()
+    {
+        var text = "{a}\\\u00FC \U0001F600\uFB01";
+        var bytes = Save(TextFormat.FromText(text));
+
+        Assert.All(bytes, b => Assert.True(b is >= 0x20 and < 0x7F or (byte)'\r' or (byte)'\n', $"byte {b}"));
+        var rtf = Encoding.ASCII.GetString(bytes);
+        Assert.StartsWith(@"{\rtf1\ansi\ansicpg1252\deff0", rtf);
+        Assert.Contains(@"\{a\}\\\u252?", rtf);
+        Assert.Contains(@"\u-10179?\u-8704?\u-1279?", rtf);
+        Assert.Equal(text, Single(Load(bytes)).Text);
+    }
+
+    [Fact]
+    public void Rtf_WriteThenRead_KeepsFormatsTableImageLink()
+    {
+        var png = ObjectCommandTests.Png(40, 20);
+        var source = HtmlReader.Read(
+            "<h1>Title</h1>" +
+            "<p style=\"text-align:center\"><b>bold</b> <i>italic</i> <u>under</u> <s>strike</s> <span style=\"color:#FF0000\">red</span> " +
+            "<span style=\"font-family:'Courier New';font-size:16pt\">mono</span> <sup>up</sup> <span style=\"background-color:yellow\">mark</span></p>" +
+            "<table><tr><td colspan=\"2\">A</td></tr><tr><td>B</td><td><b>C</b></td></tr></table>" +
+            $"<p><a href=\"https://example.com/?a=1&amp;b={{x}}\">link</a> <img src=\"data:image/png;base64,{Convert.ToBase64String(png)}\" width=\"40\" height=\"20\"></p>");
+
+        var bytes = Save(source);
+        var document = Load(bytes);
+
+        var heading = Assert.IsType<Paragraph>(document.Blocks[0]);
+        Assert.Equal(("Title", "Heading1"), (heading.Text, heading.Format.StyleId));
+        var formatted = Assert.IsType<Paragraph>(document.Blocks[1]);
+        Assert.Equal("bold italic under strike red mono up mark", formatted.Text);
+        Assert.Equal(ParagraphAlignment.Center, formatted.Format.Alignment);
+        Assert.True(Run(formatted, "bold").Format.Bold);
+        Assert.True(Run(formatted, "italic").Format.Italic);
+        Assert.Equal("single", Run(formatted, "under").Format.Underline);
+        Assert.True(Run(formatted, "strike").Format.Strike);
+        Assert.Equal("#FF0000", Run(formatted, "red").Format.Color);
+        Assert.Equal(("Courier New", 16.0), (Run(formatted, "mono").Format.Font, Run(formatted, "mono").Format.SizePt));
+        Assert.Equal(VerticalAlign.Superscript, Run(formatted, "up").Format.VerticalAlign);
+        Assert.Equal("yellow", Run(formatted, "mark").Format.Highlight);
+
+        var table = Assert.IsType<Table>(document.Blocks[2]);
+        Assert.Equal(2, table.Rows.Count);
+        var merged = Assert.Single(table.Rows[0].Cells);
+        Assert.Equal((2, "A"), (merged.GridSpan, ((Paragraph)merged.Blocks[0]).Text));
+        Assert.Equal(["B", "C"], table.Rows[1].Cells.Select(c => ((Paragraph)c.Blocks[0]).Text));
+        Assert.True(((Paragraph)table.Rows[1].Cells[1].Blocks[0]).Inlines[0].Format.Bold);
+
+        var last = Assert.IsType<Paragraph>(document.Blocks[3]);
+        var link = Run(last, "link");
+        Assert.Equal("https://example.com/?a=1&b={x}", link.Link?.SafeTarget);
+        var image = Assert.Single(last.Inlines.OfType<InlineImage>());
+        Assert.Equal(png, document.GetMedia(image.MediaPart));
+        Assert.Equal((40 * 9525L, 20 * 9525L), (image.WidthEmu, image.HeightEmu));
+        Assert.Contains(@"{\pict\pngblip\picw40\pich20\picwgoal600\pichgoal300 ", Encoding.ASCII.GetString(bytes));
+        DocxWriterTests.AssertConsistent(DocxWriterTests.Save(document));
+    }
+
+    [Fact]
+    public void Rtf_Write_ListAsTextLabel()
+    {
+        var bytes = Save(HtmlReader.Read("<ol><li>one</li><li>two</li></ol><p>after</p>"));
+
+        var rtf = Encoding.ASCII.GetString(bytes);
+        Assert.Contains(@"\li720\fi-360", rtf);
+        Assert.DoesNotContain(@"\ls", rtf);
+        var paragraphs = Load(bytes).Blocks.Cast<Paragraph>().ToList();
+        Assert.Equal(["1.\tone", "2.\ttwo", "after"], paragraphs.Select(p => p.Text));
+        Assert.All(paragraphs, p => Assert.Null(p.Format.Numbering));
+        Assert.Equal((720, -360), (paragraphs[0].Format.IndentLeft, paragraphs[0].Format.IndentFirstLine));
+    }
+
+    [Fact]
     public void Rtf_NotRtf_ThrowsInvalidData()
     {
         Assert.Throws<InvalidDataException>(() => Load("hello"));
@@ -88,6 +161,13 @@ public class RtfFormatTests
     private static TextDocument Load(string rtf) => Load(Encoding.Latin1.GetBytes(rtf));
 
     private static TextDocument Load(byte[] bytes) => TextDocument.Load(new MemoryStream(bytes), DocumentFileFormat.Rtf);
+
+    private static byte[] Save(TextDocument document)
+    {
+        using var stream = new MemoryStream();
+        document.Save(stream, DocumentFileFormat.Rtf);
+        return stream.ToArray();
+    }
 
     private static Paragraph Single(TextDocument document) => Assert.IsType<Paragraph>(Assert.Single(document.Blocks));
 }
