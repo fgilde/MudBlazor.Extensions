@@ -67,7 +67,10 @@ public sealed partial class TextDocument
 
     private Dictionary<string, BlockLocation> Index => _index ??= BuildIndex();
 
-    /// <summary>Reads a document.</summary>
+    /// <summary>
+    /// Reads a document. HTML is read as UTF-8 unless it starts with a byte order mark; scripts, event attributes and remote images are dropped, only
+    /// <c>data:</c> images are imported and only <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c> links are kept.
+    /// </summary>
     /// <param name="stream">The file content.</param>
     /// <param name="format">The file format.</param>
     /// <returns>The document.</returns>
@@ -76,6 +79,7 @@ public sealed partial class TextDocument
     public static TextDocument Load(Stream stream, DocumentFileFormat format = DocumentFileFormat.Docx)
     {
         ArgumentNullException.ThrowIfNull(stream);
+        if (format == DocumentFileFormat.Html) return HtmlReader.Read(stream);
         if (format is not (DocumentFileFormat.Docx or DocumentFileFormat.Dotx)) throw new NotSupportedException($"Reading {format} files is not supported.");
         using var buffer = new MemoryStream();
         stream.CopyTo(buffer);

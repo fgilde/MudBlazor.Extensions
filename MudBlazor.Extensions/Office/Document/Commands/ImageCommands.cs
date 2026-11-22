@@ -49,24 +49,33 @@ public sealed class InsertImageCommand : TextDocumentCommand
     {
         var start = document.Snap(_at).Start;
         var (paragraph, offset) = document.Resolve(start);
-        var media = document.Media.FirstOrDefault(m => m.Value.ContentType == _contentType && m.Value.Data.AsSpan().SequenceEqual(_data)).Key;
-        if (media == null)
-        {
-            media = $"{PendingPrefix}{Convert.ToHexString(SHA256.HashData(_data))}.{Extensions[_contentType]}";
-            document.Media[media] = (_data, _contentType);
-        }
-
-        var (width, height) = Size(document.SectionOf(start.BlockId).Page.TextWidth * EmuPerTwip);
+        var media = AddMedia(document, _data, _contentType);
+        var (width, height) = Size(_data, _contentType, document.SectionOf(start.BlockId).Page.TextWidth * EmuPerTwip);
         var format = InlineEdit.InsertionStyle(paragraph, offset).Format;
         var image = new InlineImage(media, width, height) { Format = format with { StyleId = format.StyleId == InlineEdit.HyperlinkStyle ? null : format.StyleId } };
         return document.ReplaceRange(_at, [[image]]);
     }
 
-    private (long Width, long Height) Size(long maxWidth)
+    internal static string AddMedia(TextDocument document, byte[] data, string contentType)
     {
-        if (OfficeImageSize.Read(_data, _contentType) is not ({ } w and > 0, { } h and > 0)) return (DefaultSize, DefaultSize);
-        var width = (long)Math.Round(w) * EmuPerPixel;
-        var height = (long)Math.Round(h) * EmuPerPixel;
+        var media = document.Media.FirstOrDefault(m => m.Value.ContentType == contentType && m.Value.Data.AsSpan().SequenceEqual(data)).Key;
+        if (media != null) return media;
+        media = $"{PendingPrefix}{Convert.ToHexString(SHA256.HashData(data))}.{Extensions[contentType]}";
+        document.Media[media] = (data, contentType);
+        return media;
+    }
+
+    internal static (long Width, long Height) Size(byte[] data, string contentType, long maxWidth, int? widthPx = null, int? heightPx = null)
+    {
+        var intrinsic = OfficeImageSize.Read(data, contentType) is ({ } iw and > 0, { } ih and > 0) ? (iw, ih) : default;
+        double w, h;
+        if (widthPx is { } fixedWidth && heightPx is { } fixedHeight) (w, h) = (fixedWidth, fixedHeight);
+        else if (intrinsic == default) return (DefaultSize, DefaultSize);
+        else if (widthPx is { } onlyWidth) (w, h) = (onlyWidth, onlyWidth * intrinsic.ih / intrinsic.iw);
+        else if (heightPx is { } onlyHeight) (w, h) = (onlyHeight * intrinsic.iw / intrinsic.ih, onlyHeight);
+        else (w, h) = intrinsic;
+        var width = Math.Max(1, (long)Math.Round(w)) * EmuPerPixel;
+        var height = Math.Max(1, (long)Math.Round(h)) * EmuPerPixel;
         return width <= maxWidth || maxWidth <= 0 ? (width, height) : (maxWidth, Math.Max(1, (long)Math.Round(height * (double)maxWidth / width)));
     }
 }

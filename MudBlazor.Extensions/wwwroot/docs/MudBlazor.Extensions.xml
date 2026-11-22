@@ -34965,7 +34965,10 @@
             <summary>Raised once after each command, transaction, undo or redo with everything that changed.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Load(System.IO.Stream,MudBlazor.Extensions.Office.Document.DocumentFileFormat)">
-            <summary>Reads a document.</summary>
+            <summary>
+            Reads a document. HTML is read as UTF-8 unless it starts with a byte order mark; scripts, event attributes and remote images are dropped, only
+            <c>data:</c> images are imported and only <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c> links are kept.
+            </summary>
             <param name="stream">The file content.</param>
             <param name="format">The file format.</param>
             <returns>The document.</returns>
