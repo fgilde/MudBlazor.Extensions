@@ -23,7 +23,7 @@ internal static class OfficeImageSize
                 _ => null
             };
         }
-        catch (Exception e) when (e is ArgumentException or IndexOutOfRangeException or XmlException)
+        catch (Exception e) when (e is ArgumentException or IndexOutOfRangeException or OverflowException or XmlException)
         {
             return null;
         }

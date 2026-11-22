@@ -55,7 +55,7 @@ public static class DocumentFileFormats
     /// <summary>
     /// Detects a format from the content: a ZIP package by the main part type in <c>[Content_Types].xml</c> (.docx, .docm, .dotx, .dotm) or its
     /// <c>mimetype</c> entry (.odt), <c>{\rtf</c> after an optional UTF-8 byte order mark and white space, an OLE compound file with a
-    /// <c>WordDocument</c> stream (.doc) and HTML markup at the start. Another Office or OpenDocument package (.xlsx, .pptx, .ods) and an Excel,
+    /// <c>WordDocument</c> stream at its root (.doc; one in an embedded object does not count) and HTML markup at the start. Another Office or OpenDocument package (.xlsx, .pptx, .ods) and an Excel,
     /// PowerPoint or Outlook compound file give null whatever the name says; a ZIP without content types falls back to the name, and an unknown
     /// compound file counts as .doc only if the name ends with .doc or .dot. Text without a signature is Markdown, HTML or text by
     /// <paramref name="fileName"/> or <paramref name="contentType"/>, else HTML if it starts with markup, else plain text; other binary content
@@ -164,14 +164,7 @@ public static class DocumentFileFormats
     {
         try
         {
-            using var copy = start > 0 ? new MemoryStream() : null;
-            if (copy != null)
-            {
-                content.CopyTo(copy);
-                copy.Position = 0;
-            }
-
-            using var zip = new ZipArchive(copy ?? content, ZipArchiveMode.Read, true);
+            using var zip = new ZipArchive(new OffsetStream(content, start), ZipArchiveMode.Read);
             if (zip.GetEntry("mimetype") is { Length: < 256 } mimetype)
             {
                 using var reader = new StreamReader(mimetype.Open(), Encoding.ASCII);
@@ -194,14 +187,23 @@ public static class DocumentFileFormats
 
     private static DocumentFileFormat? Compound(Stream content, long start, string fileName)
     {
-        var names = CompoundNames(content, start);
+        HashSet<string> names;
+        try
+        {
+            names = RootNames(content, start);
+        }
+        catch (IOException)
+        {
+            return null;
+        }
+
         if (names.Contains("WordDocument")) return DocumentFileFormat.Doc;
         if (names.Any(n => n is "Workbook" or "Book" or "PowerPoint Document" or "__properties_version1.0" || n.StartsWith("__substg1.0_", StringComparison.Ordinal)))
             return null;
         return Path.GetExtension(fileName ?? "").ToLowerInvariant() is ".doc" or ".dot" ? DocumentFileFormat.Doc : null;
     }
 
-    private static HashSet<string> CompoundNames(Stream content, long start)
+    private static HashSet<string> RootNames(Stream content, long start)
     {
         var names = new HashSet<string>(StringComparer.Ordinal);
         var header = new byte[512];
@@ -213,18 +215,33 @@ public static class DocumentFileFormats
         var fat = Enumerable.Range(0, (int)Math.Min(BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x2C)), 109u))
             .Select(i => BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x4C + 4 * i))).ToList();
         var buffer = new byte[size];
+        var entries = new List<(string Name, int Type, uint Left, uint Right, uint Child)>();
         var sector = BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x30));
         for (var count = 0; count < MaxDirectorySectors && Sector(content, start, sector, buffer); count++)
         {
             for (var entry = 0; entry + 128 <= size; entry += 128)
             {
                 var length = BinaryPrimitives.ReadUInt16LittleEndian(buffer.AsSpan(entry + 0x40));
-                if (length is >= 4 and <= 64 && length % 2 == 0 && buffer[entry + 0x42] is 1 or 2) names.Add(Encoding.Unicode.GetString(buffer, entry, length - 2));
+                var name = length is >= 4 and <= 64 && length % 2 == 0 ? Encoding.Unicode.GetString(buffer, entry, length - 2) : null;
+                entries.Add((name, buffer[entry + 0x42], BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan(entry + 0x44)),
+                    BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan(entry + 0x48)), BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan(entry + 0x4C))));
             }
 
             var index = (int)(sector / (size / 4));
             if (index >= fat.Count || !Sector(content, start, fat[index], buffer)) break;
             sector = BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan((int)(sector % (size / 4)) * 4));
+        }
+
+        if (entries.Count == 0 || entries[0].Type != 5) return names;
+        var pending = new Stack<uint>([entries[0].Child]);
+        var seen = new HashSet<uint>();
+        while (pending.TryPop(out var id))
+        {
+            if (id >= entries.Count || !seen.Add(id)) continue;
+            var (name, type, left, right, _) = entries[(int)id];
+            if (name != null && type is 1 or 2) names.Add(name);
+            pending.Push(left);
+            pending.Push(right);
         }
 
         return names;

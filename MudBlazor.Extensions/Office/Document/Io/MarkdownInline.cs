@@ -7,6 +7,7 @@ internal sealed class MarkdownInline(TextDocument document)
 {
     private static readonly char[] Space = [' ', '\t', '\n'];
     private static readonly (string Markdown, string Tag)[] Kinds = [("~~", "del"), ("**", "strong"), ("*", "em")];
+    private static readonly HashSet<char> RawCodeEscapes = ['*', '_', '`', '[', ']', '\\', '~', '|'];
 
     private readonly List<object> _tokens = [];
     private readonly List<Pair> _open = [];
@@ -38,10 +39,10 @@ internal sealed class MarkdownInline(TextDocument document)
             string text, core;
             if (IsCode(inline, format))
             {
-                var code = new StringBuilder(inline is Tab ? "\t" : ((TextRun)inline).Text);
+                var code = new StringBuilder(CodeText(inline, single));
                 while (n + 1 < inlines.Count && IsCode(inlines[n + 1].Inline, inlines[n + 1].Format) && ReferenceEquals(Target(inlines[n + 1].Inline), link) &&
                        Wanted(inlines[n + 1].Format, baseline) == kinds)
-                    code.Append(inlines[++n].Inline is Tab ? "\t" : ((TextRun)inlines[n].Inline).Text);
+                    code.Append(CodeText(inlines[++n].Inline, single));
                 text = core = CodeSpan(code.ToString(), single);
             }
             else
@@ -73,7 +74,7 @@ internal sealed class MarkdownInline(TextDocument document)
             pending = text[(lead + core.Length)..];
             foreach (var kind in wanted.Skip(keep))
             {
-                var pair = new Pair(kind);
+                var pair = new Pair(kind, _tokens.Count);
                 _open.Add(pair);
                 _tokens.Add(new Mark(pair, true));
             }
@@ -102,9 +103,12 @@ internal sealed class MarkdownInline(TextDocument document)
 
     private static bool IsCode(Inline inline, RunFormat format) => inline is TextRun or Tab && format.Font == HtmlReader.Monospace;
 
+    private static string CodeText(Inline inline, bool single) => inline is Tab ? single ? " " : "\t" : ((TextRun)inline).Text;
+
     private static string CodeSpan(string code, bool single)
     {
-        if (single && code.Contains('|')) return "<code>" + WebUtility.HtmlEncode(code).Replace("|", "&#124;") + "</code>";
+        if (code.Length == 0) return "";
+        if (single && code.Contains('|')) return "<code>" + string.Concat(WebUtility.HtmlEncode(code).Select(c => RawCodeEscapes.Contains(c) ? $"&#{(int)c};" : c.ToString())) + "</code>";
         int longest = 0, run = 0;
         foreach (var c in code) longest = Math.Max(longest, run = c == '`' ? run + 1 : 0);
         var fence = new string('`', longest + 1);
@@ -125,7 +129,7 @@ internal sealed class MarkdownInline(TextDocument document)
 
     private void Decide(Pair pair)
     {
-        var start = _tokens.FindIndex(t => t is Mark mark && mark.Pair == pair && mark.Open);
+        var start = pair.Start;
         char? first = null, last = null;
         for (var i = start + 1; i < _tokens.Count - 1 && first == null; i++) first = Edge(_tokens[i], true);
         for (var i = _tokens.Count - 2; i > start && last == null; i--) last = Edge(_tokens[i], false);
@@ -149,9 +153,11 @@ internal sealed class MarkdownInline(TextDocument document)
             : $"![{MarkdownFormat.Escape((image.AltText ?? "").ReplaceLineEndings(" "))}](data:{type};base64,{Convert.ToBase64String(data)})";
     }
 
-    private sealed class Pair(int kind)
+    private sealed class Pair(int kind, int start)
     {
         public int Kind { get; } = kind;
+
+        public int Start { get; } = start;
 
         public bool Raw { get; set; }
 

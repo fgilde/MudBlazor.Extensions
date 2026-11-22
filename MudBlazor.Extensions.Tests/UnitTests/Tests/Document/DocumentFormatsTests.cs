@@ -92,6 +92,63 @@ public class DocumentFormatsTests
     }
 
     [Fact]
+    public void DetectContent_CompoundFiles_OnlyRootEntriesCount()
+    {
+        var cycle = Ole("Root Entry", "Data", "WordDocument");
+        BitConverter.GetBytes(1u).CopyTo(cycle, 1024 + 128 * 2 + 0x44);
+
+        Assert.Null(Detect(Ole("Root Entry", "Workbook", "MBD0001", "/WordDocument", "/1Table"), "x.xls"));
+        Assert.Null(Detect(Ole("Root Entry", "ObjectPool", "/WordDocument"), "x.bin"));
+        Assert.Equal(DocumentFileFormat.Doc, Detect(Ole("Root Entry", "ObjectPool", "/_1", "WordDocument"), "x.bin"));
+        Assert.Equal(DocumentFileFormat.Doc, Detect(cycle));
+        Assert.Null(DocumentFileFormats.DetectContent(new FailingStream(Ole("Root Entry", "WordDocument"), 512), "x.doc"));
+    }
+
+    [Fact]
+    public void DetectContent_ZipAtOffset_ReadsThroughAWindowWithoutCopy()
+    {
+        using var zip = new MemoryStream();
+        using (var archive = new ZipArchive(zip, ZipArchiveMode.Create, true))
+        {
+            using (var mimetype = archive.CreateEntry("mimetype", CompressionLevel.NoCompression).Open()) mimetype.Write("application/vnd.oasis.opendocument.text"u8);
+            using var padding = archive.CreateEntry("padding.bin", CompressionLevel.NoCompression).Open();
+            padding.Write(new byte[8 * 1024 * 1024]);
+        }
+
+        var stream = new CountingStream([1, 2, 3, .. zip.ToArray()]) { Position = 3 };
+
+        Assert.Equal(DocumentFileFormat.Odt, DocumentFileFormats.DetectContent(stream));
+        Assert.Equal(3, stream.Position);
+        Assert.True(stream.BytesRead < 256 * 1024, $"{stream.BytesRead} bytes read");
+    }
+
+    [Fact]
+    public void Losses_CorruptImageSize_IsAnImageLoss()
+    {
+        var bmp = new byte[64];
+        "BM"u8.CopyTo(bmp);
+        BitConverter.GetBytes(10).CopyTo(bmp, 18);
+        BitConverter.GetBytes(int.MinValue).CopyTo(bmp, 22);
+        var document = HtmlReader.Read("<p>x</p>");
+        var paragraph = (Paragraph)document.Blocks[0];
+        document.BlockList[0] = paragraph with { Inlines = [new InlineImage(InsertImageCommand.AddMedia(document, bmp, "image/bmp"), 914400, 914400)] };
+
+        Assert.Equal([DocumentFeature.Images], DocumentExport.Losses(document, DocumentFileFormat.Markdown));
+    }
+
+    [Fact]
+    public void Losses_StyleOverNormalWithTabStops_ComparesTabsByValue()
+    {
+        var document = new DocxBuilder()
+            .Styles("<w:style w:type=\"paragraph\" w:default=\"1\" w:styleId=\"Normal\"><w:name w:val=\"Normal\"/><w:pPr><w:tabs><w:tab w:val=\"left\" w:pos=\"720\"/></w:tabs></w:pPr></w:style>" +
+                    "<w:style w:type=\"paragraph\" w:styleId=\"Centred\"><w:name w:val=\"Centred\"/><w:basedOn w:val=\"Normal\"/><w:pPr><w:jc w:val=\"center\"/></w:pPr></w:style>")
+            .Body("<w:p><w:pPr><w:pStyle w:val=\"Centred\"/></w:pPr><w:r><w:t>c</w:t></w:r></w:p>")
+            .Load();
+
+        Assert.Empty(DocumentExport.Losses(document, DocumentFileFormat.Html));
+    }
+
+    [Fact]
     public void DetectContent_RtfAfterBomAndWhitespace_HtmlNeedsATag_ZipAtOffset()
     {
         var rtf = new byte[] { 0xEF, 0xBB, 0xBF }.Concat(Encoding.ASCII.GetBytes(" \r\n\t{\\rtf1\\ansi x}")).ToArray();
@@ -267,16 +324,60 @@ public class DocumentFormatsTests
         BitConverter.GetBytes(0xFFFFFFFEu).CopyTo(file, 0x44);
         for (var i = 0; i < 109; i++) BitConverter.GetBytes(i == 0 ? 0u : 0xFFFFFFFFu).CopyTo(file, 0x4C + 4 * i);
         for (var i = 0; i < 128; i++) BitConverter.GetBytes(i == 0 ? 0xFFFFFFFDu : i <= directorySectors ? (i == directorySectors ? 0xFFFFFFFEu : (uint)i + 1) : 0xFFFFFFFFu).CopyTo(file, 512 + 4 * i);
+        var top = -1;
+        int? previousTop = null, previousChild = null;
         for (var i = 0; i < names.Length; i++)
         {
             var at = 1024 + 128 * i;
-            var name = Encoding.Unicode.GetBytes(names[i]);
+            var child = names[i].StartsWith('/');
+            var name = Encoding.Unicode.GetBytes(names[i].TrimStart('/'));
             name.CopyTo(file, at);
             BitConverter.GetBytes((ushort)(name.Length + 2)).CopyTo(file, at + 0x40);
             file[at + 0x42] = (byte)(i == 0 ? 5 : 2);
+            for (var link = 0x44; link <= 0x4C; link += 4) BitConverter.GetBytes(0xFFFFFFFFu).CopyTo(file, at + link);
+            if (i == 0) continue;
+            if (child)
+            {
+                file[1024 + 128 * top + 0x42] = 1;
+                Link(previousChild ?? top, previousChild == null ? 0x4C : 0x48, i);
+                previousChild = i;
+            }
+            else
+            {
+                Link(previousTop ?? 0, previousTop == null ? 0x4C : 0x48, i);
+                (previousTop, previousChild, top) = (i, null, i);
+            }
         }
 
         return file;
+
+        void Link(int entry, int field, int target) => BitConverter.GetBytes((uint)target).CopyTo(file, 1024 + 128 * entry + field);
+    }
+
+    private sealed class CountingStream(byte[] data) : MemoryStream(data)
+    {
+        public long BytesRead { get; private set; }
+
+        public override int Read(byte[] buffer, int offset, int count) => Count(base.Read(buffer, offset, count));
+
+        public override int ReadByte()
+        {
+            var value = base.ReadByte();
+            if (value >= 0) BytesRead++;
+            return value;
+        }
+
+        private int Count(int read)
+        {
+            BytesRead += read;
+            return read;
+        }
+    }
+
+    private sealed class FailingStream(byte[] data, long failFrom) : MemoryStream(data)
+    {
+        public override int Read(byte[] buffer, int offset, int count) =>
+            Position >= failFrom && Position < Length ? throw new IOException("disk") : base.Read(buffer, offset, count);
     }
 
     private static DocumentFileFormat? Detect(byte[] bytes, string fileName = null, string contentType = null) =>

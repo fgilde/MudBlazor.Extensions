@@ -85,6 +85,7 @@ public static class DocumentExport
         private static readonly AbstractNumbering Decimal = ListTemplates.Create(ListTemplate.Decimal);
         private readonly bool _rtf = format == DocumentFileFormat.Rtf;
         private readonly Dictionary<(string, bool), bool> _styles = [];
+        private Dictionary<int, NumberingInstance> _instances;
 
         public void Blocks(IEnumerable<Block> blocks, int depth)
         {
@@ -117,7 +118,7 @@ public static class DocumentExport
             Lost(DocumentFeature.ParagraphFormatting, LostParagraph(own) || _markdown && paragraph.Inlines.Any(i => i is Break { Kind: not BreakKind.Line }));
             Lost(DocumentFeature.Styles, own.StyleId != null && own.StyleId != document.Styles.DefaultParagraphStyle?.Id && own.StyleId != ListParagraphStyle &&
                                          (_text || !IsHeading(own.StyleId)) && StyleLost(own.StyleId, false));
-            Lost(DocumentFeature.Lists, document.ListLabel(paragraph) != null && (_text || _rtf || _markdown && NumberingLost(effective)));
+            Lost(DocumentFeature.Lists, (_text || _rtf || _markdown && NumberingLost(effective)) && document.ListLabel(paragraph) != null);
             foreach (var inline in paragraph.Inlines)
             {
                 Lost(DocumentFeature.CharacterFormatting, LostRun(inline.Format));
@@ -163,7 +164,8 @@ public static class DocumentExport
                 return false;
             var expected = Decimal.Levels.FirstOrDefault(l => l.Level == level.Level);
             return expected == null || level.Format != expected.Format || level.Text != expected.Text || level.Start != expected.Start ||
-                   document.Numbering.Instances.FirstOrDefault(i => i.Id == numbering.NumId)?.Overrides.Any(o => o.Level == numbering.Level && o.StartOverride != null) == true;
+                   (_instances ??= document.Numbering.Instances.GroupBy(i => i.Id).ToDictionary(g => g.Key, g => g.First())).GetValueOrDefault(numbering.NumId)?.Overrides
+                   .Any(o => o.Level == numbering.Level && o.StartOverride != null) == true;
         }
 
         private bool NaturalSize(InlineImage image)
@@ -171,7 +173,7 @@ public static class DocumentExport
             var data = document.GetMedia(image.MediaPart);
             var type = document.MediaContentType(image.MediaPart);
             return data == null || type == null ||
-                   InsertImageCommand.Size(data, type, document.Sections[^1].Page.TextWidth * EmuPerTwip) == (image.WidthEmu, image.HeightEmu);
+                   OfficeImageSize.Read(data, type) != null && InsertImageCommand.Size(data, type, document.Sections[^1].Page.TextWidth * EmuPerTwip) == (image.WidthEmu, image.HeightEmu);
         }
 
         private static T? Changed<T>(T? value, T? basis) where T : struct => Equals(value, basis) ? null : value;

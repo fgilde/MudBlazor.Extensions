@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text;
 using Xunit;
 
@@ -194,6 +195,8 @@ public class TextMarkdownTests
     [InlineData("<p><b>,</b>x</p>", "<strong>,</strong>x\n")]
     [InlineData("<p>a<b>\"b\"</b></p>", "a<strong>\"b\"</strong>\n")]
     [InlineData("<p><s><b><i>x</i></b></s> <b><code>c</code></b></p>", "~~***x***~~ <strong>`c`</strong>\n")]
+    [InlineData("<p><i>,</i>x</p>", "<em>,</em>x\n")]
+    [InlineData("<p>a<s>\"b\"</s></p>", "a<del>\"b\"</del>\n")]
     public void Md_Write_EmphasisEdges_RoundTrip(string html, string expected)
     {
         var document = HtmlReader.Read(html);
@@ -216,6 +219,44 @@ public class TextMarkdownTests
         Assert.Contains("Use `x | y`, ``a`b`` and ``` `` ``` here.\n\n`only code`\n\n```\ntwo\nlines\n```", markdown);
         Assert.Contains("| <code>p&#124;q</code> |", markdown);
         Assert.Equal(Signature(document), Signature(Load(Encoding.UTF8.GetBytes(markdown), DocumentFileFormat.Markdown)));
+    }
+
+    [Fact]
+    public void Md_RoundTrip_CodeWithMarkdownCharactersInCellAndHeading()
+    {
+        const string code = "x*y|z*_a_[b]\\~`&<";
+        var document = HtmlReader.Read($"<h2><code>{WebUtility.HtmlEncode(code)}</code></h2><table><tr><td><code>{WebUtility.HtmlEncode(code)}</code></td></tr></table>");
+
+        var markdown = Encoding.UTF8.GetString(Save(document, DocumentFileFormat.Markdown));
+        var reread = Load(Encoding.UTF8.GetBytes(markdown), DocumentFileFormat.Markdown);
+
+        Assert.Equal(Signature(document), Signature(reread));
+        Assert.Contains($"[{code}||Consolas|]", Signature(reread));
+    }
+
+    [Fact]
+    public void Md_Write_EmptyCodeRunWritesNothing_TabInSingleLineCodeIsSpace()
+    {
+        var document = HtmlReader.Read("<p>a<code>c</code>b</p><h1><code>x</code></h1>");
+        var paragraph = (Paragraph)document.Blocks[0];
+        var heading = (Paragraph)document.Blocks[1];
+        var code = paragraph.Inlines[1];
+        document.BlockList[0] = paragraph with { Inlines = [paragraph.Inlines[0], ((TextRun)code) with { Text = "" }, paragraph.Inlines[2]] };
+        document.BlockList[1] = heading with { Inlines = [heading.Inlines[0], new Tab { Format = heading.Inlines[0].Format }, heading.Inlines[0]] };
+
+        var markdown = Encoding.UTF8.GetString(Save(document, DocumentFileFormat.Markdown));
+
+        Assert.Equal("ab\n\n# `x x`\n", markdown);
+    }
+
+    [Fact]
+    public void Md_Write_ManyAlternatingBoldRuns()
+    {
+        var document = HtmlReader.Read("<p>" + string.Concat(Enumerable.Repeat("<b>x</b>y", 10000)) + "</p>");
+
+        var markdown = Encoding.UTF8.GetString(Save(document, DocumentFileFormat.Markdown));
+
+        Assert.Equal(string.Concat(Enumerable.Repeat("**x**y", 10000)) + "\n", markdown);
     }
 
     [Fact]

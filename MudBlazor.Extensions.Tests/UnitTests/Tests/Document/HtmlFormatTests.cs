@@ -63,6 +63,16 @@ public class HtmlFormatTests
     }
 
     [Fact]
+    public void HtmlRead_TableAlignCentresTheTableNotItsCells()
+    {
+        var document = HtmlReader.Read("<table align=center><tr><td>a</td><td align=right>b</td></tr></table>");
+
+        var cells = ((Table)document.Blocks[0]).Rows[0].Cells.Select(c => ((Paragraph)c.Blocks[0]).Format.Alignment).ToList();
+
+        Assert.Equal([null, ParagraphAlignment.Right], cells);
+    }
+
+    [Fact]
     public void HtmlRead_ScriptAndEventAttributesIgnored()
     {
         var document = HtmlReader.Read("<script>alert(1)</script><p onclick=\"x\">t</p><style>p{}</style><iframe src=\"https://example.com\">frame</iframe>");
