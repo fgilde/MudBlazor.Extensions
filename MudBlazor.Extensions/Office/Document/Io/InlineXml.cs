@@ -258,7 +258,7 @@ internal sealed class InlineXml
         if ((string)picture.Descendants(A + "blip").FirstOrDefault()?.Attribute(R + "embed") is not { } id || !_rels.TryGetValue(id, out var rel) || DocxReader.IsExternal(rel)) return null;
         var part = _opc.ResolveTarget(_part, rel.Target);
         if (_opc.Entry(part) == null) return null;
-        if (!_document.Media.ContainsKey(part)) _document.Media[part] = (_opc.ReadBytes(part), _opc.ContentType(part));
+        if (!_document.Media.ContainsKey(part)) _document.PutMedia(part, _opc.ReadBytes(part), _opc.ContentType(part));
         return part;
     }
 

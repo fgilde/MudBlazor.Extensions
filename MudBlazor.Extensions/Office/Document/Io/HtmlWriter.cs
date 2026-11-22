@@ -53,19 +53,19 @@ internal static class HtmlWriter
                 _html.Append("<div style=\"break-after:page\"></div>");
             }
 
-            string tag;
-            if (format.Numbering is { } numbering && document.Numbering.Level(numbering) is { } level)
+            var level = format.Numbering is { } numbering ? document.Numbering.Level(numbering) : null;
+            var heading = format.OutlineLevel is { } outline and < 9 ? "h" + Math.Min(outline + 1, 6) : null;
+            var tag = heading ?? (level != null ? null : IsPreformatted(paragraph) ? "pre" : "p");
+            var css = ParagraphCss(format, level != null, tag != "pre" && NeedsPreWrap(paragraph.Text));
+            if (level != null)
             {
-                Item(lists, numbering, level.Format);
-                tag = "li";
+                Item(lists, format.Numbering!.Value, level.Format);
+                _html.Append(tag == null ? Open("li", css) : "<li>");
             }
             else
-            {
                 CloseLists(lists);
-                tag = format.OutlineLevel is { } outline and < 9 ? "h" + Math.Min(outline + 1, 6) : IsPreformatted(paragraph) ? "pre" : "p";
-            }
 
-            var open = Open(tag, ParagraphCss(format, tag == "li"));
+            var open = tag == null ? "" : Open(tag, css);
             _html.Append(open);
             var empty = true;
             for (var i = 0; i < paragraph.Inlines.Count;)
@@ -75,11 +75,11 @@ internal static class HtmlWriter
                 while (j < paragraph.Inlines.Count && ReferenceEquals(paragraph.Inlines[j].Link, link) && paragraph.Inlines[j] is not Break { Kind: BreakKind.Page }) j++;
                 var href = link?.SafeTarget;
                 if (href != null && j > i) _html.Append("<a href=\"").Append(Encode(href)).Append("\">");
-                for (var k = i; k < j; k++) empty &= !Inline(paragraph, paragraph.Inlines[k], tag == "pre");
+                for (var k = i; k < j; k++) empty &= !Inline(paragraph, paragraph.Inlines[k]);
                 if (href != null && j > i) _html.Append("</a>");
                 if (j < paragraph.Inlines.Count && paragraph.Inlines[j] is Break { Kind: BreakKind.Page })
                 {
-                    if (tag == "li")
+                    if (tag == null)
                         _html.Append("<div style=\"break-after:page\"></div>");
                     else
                         _html.Append("</").Append(tag).Append("><div style=\"break-after:page\"></div>").Append(open);
@@ -90,8 +90,12 @@ internal static class HtmlWriter
             }
 
             if (empty) _html.Append("<br>");
-            if (tag != "li") _html.Append("</").Append(tag).Append(">\n");
+            if (tag != null) _html.Append("</").Append(tag).Append(level != null ? ">" : ">\n");
         }
+
+        private static bool NeedsPreWrap(string text) =>
+            text.Contains("  ", StringComparison.Ordinal) || text.Contains('\t') || text.StartsWith(' ') || text.EndsWith(' ') ||
+            text.Contains(" \v", StringComparison.Ordinal) || text.Contains("\v ", StringComparison.Ordinal);
 
         private bool IsPreformatted(Paragraph paragraph) =>
             paragraph.Inlines.Any(i => i is TextRun) &&
@@ -130,9 +134,9 @@ internal static class HtmlWriter
             while (lists.Count > 0) CloseList(lists);
         }
 
-        private string ParagraphCss(ParagraphFormat format, bool listItem)
+        private string ParagraphCss(ParagraphFormat format, bool listItem, bool preWrap)
         {
-            var css = new StringBuilder();
+            var css = new StringBuilder(preWrap ? "white-space:pre-wrap;" : "");
             if (format.Alignment is { } alignment and not ParagraphAlignment.Left && alignment != _paragraphDefaults.Alignment)
                 css.Append("text-align:").Append(alignment.ToString().ToLowerInvariant()).Append(';');
             if (!listItem && (format.IndentLeft ?? 0) != (_paragraphDefaults.IndentLeft ?? 0)) css.Append("margin-left:").Append(Number((format.IndentLeft ?? 0) / 20.0)).Append("pt;");
@@ -142,7 +146,7 @@ internal static class HtmlWriter
             return css.ToString();
         }
 
-        private bool Inline(Paragraph paragraph, Inline inline, bool preformatted)
+        private bool Inline(Paragraph paragraph, Inline inline)
         {
             switch (inline)
             {
@@ -157,21 +161,21 @@ internal static class HtmlWriter
                 case InlineImage image:
                     return Image(image);
                 case TextRun run:
-                    return Span(paragraph, inline, Encode(run.Text), false);
+                    return Span(paragraph, inline, Encode(run.Text));
                 case Tab:
-                    return Span(paragraph, inline, "\t", !preformatted);
+                    return Span(paragraph, inline, "\t");
                 case OpaqueInline token:
-                    return Span(paragraph, inline, Encode(token.DisplayText), false);
+                    return Span(paragraph, inline, Encode(token.DisplayText));
                 default:
                     return false;
             }
         }
 
-        private bool Span(Paragraph paragraph, Inline inline, string content, bool keepSpace)
+        private bool Span(Paragraph paragraph, Inline inline, string content)
         {
             var format = document.EffectiveRunFormat(paragraph, inline);
             if (format.Hidden == true || content.Length == 0) return false;
-            var css = RunCss(format) + (keepSpace ? "white-space:pre;" : "");
+            var css = RunCss(format);
             if (css.Length == 0) _html.Append(content);
             else _html.Append("<span style=\"").Append(css).Append("\">").Append(content).Append("</span>");
             return true;

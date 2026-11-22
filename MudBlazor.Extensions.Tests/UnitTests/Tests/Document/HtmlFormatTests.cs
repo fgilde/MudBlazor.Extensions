@@ -97,7 +97,7 @@ public class HtmlFormatTests
     public void HtmlRead_ManyImages_DedupedByContent()
     {
         var html = new StringBuilder("<p>");
-        for (var i = 0; i < 20000; i++) html.Append("<img src=\"data:image/gif;base64,").Append(Convert.ToBase64String(BitConverter.GetBytes(i % 15000))).Append("\">");
+        for (var i = 0; i < 20000; i++) html.Append("<img src=\"data:image/gif;base64,").Append(Convert.ToBase64String((byte[])[.. "GIF89a"u8, .. BitConverter.GetBytes(i % 15000)])).Append("\">");
 
         var document = HtmlReader.Read(html.Append("</p>").ToString());
 
@@ -225,6 +225,97 @@ public class HtmlFormatTests
         Assert.Throws<ArgumentNullException>(() => document.Save(null!, DocumentFileFormat.Html));
         Assert.Throws<ArgumentException>(() => document.Save(new MemoryStream([], false), DocumentFileFormat.Html));
     }
+
+    [Fact]
+    public void HtmlWriteThenRead_TwoListsStayTwo()
+    {
+        var original = HtmlReader.Read("<ol><li>a</li><li>b</li></ol><ol><li>c</li></ol><ul><li>d</li></ul><ul><li>e</li></ul>");
+
+        var reread = HtmlReader.Read(HtmlWriter.Write(original));
+
+        Assert.Equal(["1.", "2.", "1."], original.AllParagraphs().Take(3).Select(original.ListLabel));
+        Assert.Equal(["1.", "2.", "1."], reread.AllParagraphs().Take(3).Select(reread.ListLabel));
+        var ids = reread.AllParagraphs().Select(p => p.Format.Numbering!.Value.NumId).ToList();
+        Assert.Equal(4, ids.Distinct().Count());
+        Assert.Equal(Signature(original), Signature(reread));
+    }
+
+    [Fact]
+    public void HtmlWriteThenRead_KeepsSpacesAndTabs()
+    {
+        var document = TextDocument.Create();
+        document.Execute(new ReplaceTextCommand(Caret(document, document.Blocks[0].Id, 0), "  two  spaces\ttab \nplain text"));
+
+        var html = HtmlWriter.Write(document);
+        var reread = HtmlReader.Read(html);
+
+        Assert.Contains("<p style=\"white-space:pre-wrap;\">", html);
+        Assert.Contains("<p>plain text</p>", html);
+        Assert.Equal(["  two  spaces\ttab ", "plain text"], reread.AllParagraphs().Select(p => p.Text));
+        Assert.IsType<Tab>(((Paragraph)reread.Blocks[0]).Inlines[1]);
+    }
+
+    [Fact]
+    public void HtmlWrite_ThemeColoursResolved()
+    {
+        var document = TextDocument.Create();
+        var id = document.Blocks[0].Id;
+        document.Execute(new ReplaceTextCommand(Caret(document, id, 0), "Head\nbody"));
+        document.Execute(new ApplyParagraphStyleCommand([id], "Heading1"));
+        var body = document.Blocks[1].Id;
+        document.Execute(new SetRunFormatCommand(new DocumentRange(document.PositionOf(body, 0), document.PositionOf(body, 4)), f => f with { Color = "theme:accent2", Shading = "theme:accent6 tint=66" }, "Colour"));
+        document.Execute(new SetParagraphFormatCommand([body], f => f with { Shading = "theme:accent1" }, "Shading"));
+
+        var html = HtmlWriter.Write(document);
+
+        var heading = document.EffectiveRunFormat((Paragraph)document.Blocks[0], ((Paragraph)document.Blocks[0]).Inlines[0]).Color;
+        var run = document.EffectiveRunFormat((Paragraph)document.Blocks[1], ((Paragraph)document.Blocks[1]).Inlines[0]);
+        Assert.Matches("^#[0-9A-F]{6}$", heading);
+        Assert.Contains($"color:{heading};", html);
+        Assert.Contains($"color:{run.Color};", html);
+        Assert.Contains($"background-color:{run.Shading};", html);
+        Assert.Contains($"background-color:{document.EffectiveParagraphFormat((Paragraph)document.Blocks[1]).Shading};", html);
+        Assert.DoesNotContain("theme", html);
+    }
+
+    [Fact]
+    public void HtmlWriteThenRead_NumberedHeadingPageBreakAndIndents()
+    {
+        var original = HtmlReader.Read(
+            "<ol><li><h2>Numbered heading</h2></li><li>item</li></ol>" +
+            "<p style=\"margin-left:36pt;text-indent:-18pt\">indented</p><p style=\"break-before:page\">after break</p>");
+
+        var html = HtmlWriter.Write(original);
+        var reread = HtmlReader.Read(html);
+
+        var heading = (Paragraph)original.Blocks[0];
+        Assert.Equal(("Heading2", "1."), (heading.Format.StyleId, original.ListLabel(heading)));
+        Assert.Contains("<li><h2>", html);
+        Assert.Contains("<div style=\"break-after:page\"></div>", html);
+        Assert.Equal((720, -360), (((Paragraph)reread.Blocks[2]).Format.IndentLeft!.Value, ((Paragraph)reread.Blocks[2]).Format.IndentFirstLine!.Value));
+        Assert.True(((Paragraph)reread.Blocks[3]).Format.PageBreakBefore);
+        Assert.Equal(Signature(original), Signature(reread));
+        Assert.Equal(Describe(original), Describe(reread));
+    }
+
+    [Theory]
+    [InlineData("windows-1252", "<meta charset=\"windows-1252\">", false)]
+    [InlineData("windows-1252", "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1252\">", false)]
+    [InlineData("utf-8", "<meta charset=\"windows-1252\">", true)]
+    [InlineData("iso-8859-1", "<META CHARSET=iso-8859-1>", false)]
+    public void Load_Html_HonoursBomThenMetaCharset(string encodingName, string meta, bool bom)
+    {
+        var encoding = encodingName == "utf-8" ? new UTF8Encoding(bom) : System.Text.CodePagesEncodingProvider.Instance.GetEncoding(encodingName) ?? Encoding.GetEncoding(encodingName);
+        var text = "<html><head>" + meta + "</head><body><p>gr" + (char)0xFC + (char)0xDF + "e " + (char)0xE9 + "</p></body></html>";
+        var bytes = (bom ? encoding.GetPreamble() : []).Concat(encoding.GetBytes(text)).ToArray();
+
+        var document = TextDocument.Load(new MemoryStream(bytes), DocumentFileFormat.Html);
+
+        Assert.Equal("gr" + (char)0xFC + (char)0xDF + "e " + (char)0xE9, ((Paragraph)document.Blocks[0]).Text);
+    }
+
+    private static string Describe(TextDocument document) =>
+        string.Join("\n", document.AllParagraphs().Select(p => $"{p.Text}|{p.Format.StyleId}|{p.Format.IndentLeft}|{p.Format.IndentFirstLine}|{p.Format.PageBreakBefore}|{p.Format.Numbering?.Level}"));
 
     private static DocumentRange Caret(TextDocument document, string paragraphId, int offset)
     {

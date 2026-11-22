@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-
 namespace MudBlazor.Extensions.Office.Document;
 
 /// <summary>
@@ -56,16 +54,8 @@ public sealed class InsertImageCommand : TextDocumentCommand
         return document.ReplaceRange(_at, [[image]]);
     }
 
-    internal static string AddMedia(TextDocument document, byte[] data, string contentType)
-    {
-        document.MediaByContent ??= document.Media.GroupBy(m => Convert.ToHexString(SHA256.HashData(m.Value.Data)) + " " + m.Value.ContentType)
-            .ToDictionary(g => g.Key, g => g.First().Key);
-        var hash = Convert.ToHexString(SHA256.HashData(data));
-        if (document.MediaByContent.TryGetValue(hash + " " + contentType, out var media)) return media;
-        media = $"{PendingPrefix}{hash}.{Extensions[contentType]}";
-        document.Media[media] = (data, contentType);
-        return document.MediaByContent[hash + " " + contentType] = media;
-    }
+    internal static string AddMedia(TextDocument document, byte[] data, string contentType) =>
+        document.AddMedia(data, contentType, hash => $"{PendingPrefix}{hash}.{Extensions[contentType]}");
 
     internal static (long Width, long Height) Size(byte[] data, string contentType, long maxWidth, int? widthPx = null, int? heightPx = null)
     {

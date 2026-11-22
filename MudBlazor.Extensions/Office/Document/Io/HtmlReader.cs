@@ -1,11 +1,10 @@
-using System.Text;
-using MudBlazor.Extensions.Office.Spreadsheet;
 
 namespace MudBlazor.Extensions.Office.Document;
 
 internal static class HtmlReader
 {
     internal const string Monospace = "Consolas";
+    internal const int MaxLength = 32 * 1024 * 1024;
     private const int MaxColumns = 63;
     private const long EmuPerTwip = 635;
 
@@ -18,21 +17,22 @@ internal static class HtmlReader
 
     internal static TextDocument Read(Stream stream)
     {
-        using var reader = new StreamReader(stream, Encoding.UTF8, true);
-        var html = new StringBuilder();
-        var buffer = new char[81920];
-        for (int read; (read = reader.Read(buffer, 0, buffer.Length)) > 0;)
+        using var buffer = new MemoryStream();
+        var chunk = new byte[81920];
+        for (int read; (read = stream.Read(chunk, 0, chunk.Length)) > 0;)
         {
-            if (html.Length + read > HtmlTableFormat.MaxLength) throw new InvalidDataException("The HTML is too large to read.");
-            html.Append(buffer, 0, read);
+            if (buffer.Length + read > 4L * MaxLength) throw new InvalidDataException("The HTML is too large to read.");
+            buffer.Write(chunk, 0, read);
         }
 
-        return Read(html.ToString());
+        var bytes = buffer.GetBuffer().AsSpan(0, (int)buffer.Length);
+        var (encoding, preamble) = HtmlEncoding.Detect(bytes);
+        return Read(encoding.GetString(bytes[preamble..]));
     }
 
     internal static TextDocument Read(string html)
     {
-        if (html?.Length > HtmlTableFormat.MaxLength) throw new InvalidDataException("The HTML is too large to read.");
+        if (html?.Length > MaxLength) throw new InvalidDataException("The HTML is too large to read.");
         var pasted = HtmlPasteReader.ReadBlocks(html, out var title);
         var document = TextDocument.Create();
         var builder = new Builder(document);
@@ -61,30 +61,27 @@ internal static class HtmlReader
         public List<Block> Blocks(IEnumerable<PastedBlock> pasted, int width)
         {
             var result = new List<Block>();
-            var lists = new Dictionary<PastedList, int>();
+            var lists = new Dictionary<(PastedList, int), int>();
             foreach (var block in pasted)
             {
                 if (block is PastedTable table)
                 {
-                    lists.Clear();
                     result.Add(TableOf(table, width));
                     continue;
                 }
 
                 var paragraph = (PastedParagraph)block;
-                NumberingRef? numbering = null;
-                if (paragraph.List == PastedList.None) lists.Clear();
-                else numbering = new NumberingRef(List(paragraph.List, lists), Math.Clamp(paragraph.Depth, 0, 8));
+                NumberingRef? numbering = paragraph.List == PastedList.None ? null : new NumberingRef(List((paragraph.List, paragraph.ListRun), lists), Math.Clamp(paragraph.Depth, 0, 8));
                 result.Add(ParagraphOf(paragraph, numbering, width));
             }
 
             return result;
         }
 
-        private int List(PastedList kind, Dictionary<PastedList, int> lists)
+        private int List((PastedList Kind, int Run) kind, Dictionary<(PastedList, int), int> lists)
         {
             if (lists.TryGetValue(kind, out var id)) return id;
-            var definition = ListTemplates.Create(kind == PastedList.Bullet ? ListTemplate.Bullet : ListTemplate.Decimal) with { Id = _nextAbstract++ };
+            var definition = ListTemplates.Create(kind.Kind == PastedList.Bullet ? ListTemplate.Bullet : ListTemplate.Decimal) with { Id = _nextAbstract++ };
             Abstracts.Add(definition);
             Instances.Add(new NumberingInstance(_nextInstance, definition.Id, []));
             return lists[kind] = _nextInstance++;
@@ -108,6 +105,9 @@ internal static class HtmlReader
                     "justify" => ParagraphAlignment.Justify,
                     _ => null
                 },
+                IndentLeft = numbering == null ? source.IndentLeft : null,
+                IndentFirstLine = numbering == null ? source.IndentFirstLine : null,
+                PageBreakBefore = source.PageBreakBefore ? true : null,
                 Numbering = numbering
             };
             var inlines = new List<Inline>();

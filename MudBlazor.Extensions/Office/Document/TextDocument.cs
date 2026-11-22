@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 
 namespace MudBlazor.Extensions.Office.Document;
@@ -10,6 +11,7 @@ public sealed partial class TextDocument
     private int _notifications;
     private int _lastId;
     private Dictionary<string, BlockLocation> _index;
+    private Dictionary<string, string> _mediaByContent;
 
     internal TextDocument() => Undo = new DocumentUndoStack<TextDocument>(this, d => d.RaiseChanged());
 
@@ -65,15 +67,15 @@ public sealed partial class TextDocument
 
     internal Dictionary<string, (byte[] Data, string ContentType)> Media { get; } = new(StringComparer.OrdinalIgnoreCase);
 
-    internal Dictionary<string, string> MediaByContent { get; set; }
 
     internal DocxPackage Package { get; set; }
 
     private Dictionary<string, BlockLocation> Index => _index ??= BuildIndex();
 
     /// <summary>
-    /// Reads a document. HTML is read as UTF-8 unless it starts with a byte order mark; scripts, event attributes and remote images are dropped, only
-    /// <c>data:</c> images are imported and only <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c> links are kept.
+    /// Reads a document. HTML is decoded by its byte order mark, else by the charset of a <c>meta</c> element in its first 4 KB, else as UTF-8, and may
+    /// have at most 32 Mi characters; scripts, event attributes and remote images are dropped, only PNG, JPEG, GIF and BMP <c>data:</c> images are
+    /// imported and only <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c> links are kept.
     /// </summary>
     /// <param name="stream">The file content.</param>
     /// <param name="format">The file format.</param>
@@ -165,6 +167,23 @@ public sealed partial class TextDocument
     }
 
     internal string NewId() => $"b{++_lastId}";
+
+    internal string AddMedia(byte[] data, string contentType, Func<string, string> newPart)
+    {
+        _mediaByContent ??= Media.GroupBy(m => MediaKey(m.Value.Data, m.Value.ContentType)).ToDictionary(g => g.Key, g => g.First().Key);
+        var hash = Convert.ToHexString(SHA256.HashData(data));
+        if (_mediaByContent.TryGetValue(hash + " " + contentType, out var part)) return part;
+        part = newPart(hash);
+        if (Media.TryAdd(part, (data, contentType))) _mediaByContent.TryAdd(hash + " " + contentType, part);
+        return part;
+    }
+
+    internal void PutMedia(string part, byte[] data, string contentType)
+    {
+        if (Media.TryAdd(part, (data, contentType))) _mediaByContent?.TryAdd(MediaKey(data, contentType), part);
+    }
+
+    private static string MediaKey(byte[] data, string contentType) => Convert.ToHexString(SHA256.HashData(data)) + " " + contentType;
 
     internal Block Identify(Block block)
     {
