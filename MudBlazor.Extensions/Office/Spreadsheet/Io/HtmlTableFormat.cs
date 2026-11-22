@@ -44,6 +44,8 @@ public static class HtmlTableFormat
     private static readonly HashSet<string> RawText = new(StringComparer.Ordinal)
         { "script", "style", "textarea", "title", "noscript", "iframe", "noembed", "noframes", "template", "xmp", "svg", "math", "object" };
 
+    private static readonly HashSet<string> SelfClosingForeign = new(StringComparer.Ordinal) { "svg", "math", "object" };
+
     private static readonly Regex SheetsType = new("\"1\"\\s*:\\s*(\\d+)", RegexOptions.CultureInvariant);
     private static readonly Regex SheetsNumber = new("\"3\"\\s*:\\s*(-?\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?)", RegexOptions.CultureInvariant);
     private static readonly Regex CssComment = new(@"/\*.*?\*/", RegexOptions.Singleline | RegexOptions.CultureInvariant);
@@ -176,6 +178,12 @@ public static class HtmlTableFormat
             return end < 0 ? html.Length : end + 3;
         }
 
+        if (string.CompareOrdinal(html, at, "<![CDATA[", 0, 9) == 0)
+        {
+            var end = html.IndexOf("]]>", at + 9, StringComparison.Ordinal);
+            return end < 0 ? html.Length : end + 3;
+        }
+
         if (at + 1 < html.Length && html[at + 1] is '!' or '?')
         {
             var gt = html.IndexOf('>', at);
@@ -201,9 +209,9 @@ public static class HtmlTableFormat
             return next;
         }
 
-        if (RawText.Contains(name) && !selfClosing)
+        if (RawText.Contains(name) && (!selfClosing || !SelfClosingForeign.Contains(name)))
         {
-            var end = html.IndexOf("</" + name, next, StringComparison.OrdinalIgnoreCase);
+            var end = ClosingTag(html, name, next);
             if (name == "style") reader.StyleSheet(end < 0 ? html[next..] : html[next..end]);
             if (name == "title") reader.Title(end < 0 ? html[next..] : html[next..end]);
             if (end < 0) return html.Length;
@@ -213,6 +221,17 @@ public static class HtmlTableFormat
 
         reader.Start(name, attributes);
         return next;
+    }
+
+    private static int ClosingTag(string html, string name, int from)
+    {
+        for (var end = html.IndexOf("</" + name, from, StringComparison.OrdinalIgnoreCase); end >= 0; end = html.IndexOf("</" + name, end + 2, StringComparison.OrdinalIgnoreCase))
+        {
+            var after = end + 2 + name.Length;
+            if (after >= html.Length || !(char.IsAsciiLetterOrDigit(html[after]) || html[after] is ':' or '-' or '_')) return end;
+        }
+
+        return -1;
     }
 
     private static int ReadAttributes(string html, int i, Dictionary<string, string> attributes, out bool selfClosing)
@@ -414,7 +433,7 @@ public static class HtmlTableFormat
             }
 
             var code = int.Parse(s[j..hexEnd], NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-            sb.Append(code is > 0 and < 0xD800 or > 0xDFFF ? (char)code : '�');
+            sb.Append(code is > 0 and < 0xD800 or > 0xDFFF ? (char)code : '\uFFFD');
             i = hexEnd < s.Length && s[hexEnd] == ' ' ? hexEnd : hexEnd - 1;
         }
 
@@ -648,7 +667,7 @@ public static class HtmlTableFormat
         }
 
         public string Finish() =>
-            string.Join('\n', Text.ToString().Split('\n').Select(line => line.Trim(' '))).Trim('\n').Replace(' ', ' ');
+            string.Join('\n', Text.ToString().Split('\n').Select(line => line.Trim(' '))).Trim('\n').Replace('\u00A0', ' ');
     }
 }
 

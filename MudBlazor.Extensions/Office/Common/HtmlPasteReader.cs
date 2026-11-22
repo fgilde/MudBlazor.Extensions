@@ -12,16 +12,20 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
     internal const int MaxTableDepth = 32;
     private const int MaxOpen = 256;
     private const int MaxSpan = 1000;
+    private const string Monospace = "Consolas";
 
     private static readonly HashSet<string> Blocks =
         ["p", "div", "li", "ul", "ol", "h1", "h2", "h3", "h4", "h5", "h6", "tr", "table", "blockquote", "pre", "section", "article", "header", "footer", "dt", "dd"];
 
     private static readonly HashSet<string> Empty = ["br", "img", "hr", "meta", "link", "input", "col", "wbr", "area", "base", "source", "param", "embed"];
 
-    private static readonly Dictionary<string, string> ImageTypes = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ["image/png"] = "image/png", ["image/jpeg"] = "image/jpeg", ["image/jpg"] = "image/jpeg", ["image/gif"] = "image/gif", ["image/bmp"] = "image/bmp"
-    };
+    private static readonly HashSet<string> TableParts = ["table", "tr", "td", "th", "caption"];
+
+    private static readonly HashSet<string> Explicit = ["p", "li", "h1", "h2", "h3", "h4", "h5", "h6"];
+
+    private static readonly HashSet<string> HeadContent = ["html", "head", "meta", "link", "base", "xml"];
+
+    private static readonly HashSet<string> ImageTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/bmp"];
 
     private readonly bool _structured;
     private readonly List<PastedBlock> _root = [];
@@ -34,7 +38,10 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
     private int _flatTables;
     private int _skip;
     private int _labels;
-    private int _pre;
+    private int _head;
+    private int _listRun;
+    private string _wordList;
+    private bool _pageBreak;
     private bool _preStart;
     private bool _space = true;
     private string _title;
@@ -50,7 +57,9 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
 
     public bool Done => false;
 
-    private PastedFormat Current => _open.Count == 0 ? default : _open[^1].Format;
+    private Open Top => _open.Count == 0 ? default : _open[^1];
+
+    private PastedFormat Current => Top.Format;
 
     public static IReadOnlyList<PastedParagraph> Read(string html)
     {
@@ -101,6 +110,7 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
     public void Start(string name, Dictionary<string, string> attributes)
     {
         _preStart = name == "pre";
+        if (_head > 0 && !HeadContent.Contains(name) && !name.Contains(':')) Pop(_open.FindLastIndex(o => o.Name == "head"));
         if (name == "br")
         {
             Add("\n");
@@ -114,48 +124,55 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
             return;
         }
 
-        if (_structured && name is "table" or "tr" or "td" or "th") StartTable(name, attributes);
-        else if (Blocks.Contains(name)) Break();
-        if (name is "ul" or "ol") _lists.Add(name == "ul" ? PastedList.Bullet : PastedList.Number);
-        if (name == "li" && Paragraph() is var item)
-            (item.List, item.Depth) = (_lists.Count == 0 ? PastedList.Bullet : _lists[^1], Math.Max(0, _lists.Count - 1));
-
-        if (Empty.Contains(name) || _open.Count >= MaxOpen) return;
-        var format = name switch
+        if (_structured && TableParts.Contains(name)) StartTable(name, attributes);
+        else if (Blocks.Contains(name) || _structured && name == "center") Break();
+        if (name is "ul" or "ol")
         {
-            "b" or "strong" => Current with { Bold = true },
-            "i" or "em" => Current with { Italic = true },
-            "u" or "ins" => Current with { Underline = true },
-            "s" or "strike" or "del" => Current with { Strike = true },
-            "sup" => Current with { VerticalAlign = "super" },
-            "sub" => Current with { VerticalAlign = "sub" },
-            "a" when attributes.TryGetValue("href", out var href) => Current with { Link = Clean(href.Trim()) },
-            _ => Current
-        };
-        var align = attributes.TryGetValue("align", out var alignment) ? Align(alignment.Trim().ToLowerInvariant()) : null;
-        var kind = _structured && name is "head" or "o:p" ? OpenKind.Skip : OpenKind.Normal;
-        if (attributes.TryGetValue("style", out var css))
-        {
-            var style = Css(format, css);
-            (format, align) = (_structured && name is "td" or "th" ? style.Format with { Highlight = format.Highlight } : style.Format, style.Align ?? align);
-            if (_structured && style.Label) kind = OpenKind.Label;
-            else if (_structured && style.Level is { } level && Paragraph() is var paragraph) (paragraph.List, paragraph.Depth) = (PastedList.Bullet, level);
+            if (_lists.Count == 0) _listRun++;
+            _lists.Add(name == "ul" ? PastedList.Bullet : PastedList.Number);
         }
 
-        _open.Add(new Open(name, format, align, kind));
+        if (name == "li" && Paragraph() is var item)
+            (item.List, item.Depth, item.ListRun) = (_lists.Count == 0 ? PastedList.Bullet : _lists[^1], Math.Max(0, _lists.Count - 1), _listRun);
+        if (_structured && Explicit.Contains(name)) Paragraph().Explicit = true;
+
+        if (Empty.Contains(name) || _open.Count >= MaxOpen) return;
+        var format = Format(name, attributes);
+        var align = name != "table" && attributes.TryGetValue("align", out var alignment) ? HtmlPasteStyle.Align(alignment.Trim().ToLowerInvariant()) : null;
+        if (_structured && name == "center") align = "center";
+        var kind = _structured && name is "head" or "o:p" ? OpenKind.Skip : OpenKind.Normal;
+        var keep = name == "pre" || Top.Keep;
+        int? indent = null, firstLine = null;
+        var breakAfter = false;
+        if (attributes.TryGetValue("style", out var css))
+        {
+            var style = HtmlPasteStyle.Css(format, css);
+            (format, align) = (_structured && name is "td" or "th" or "tr" or "table" ? style.Format with { Highlight = format.Highlight } : style.Format, style.Align ?? align);
+            (keep, indent, firstLine, breakAfter) = (style.KeepSpace ?? keep, style.Indent, style.FirstLine, _structured && style.BreakAfter);
+            _pageBreak |= _structured && style.BreakBefore;
+            if (_structured && style.Label) kind = OpenKind.Label;
+            else if (_structured && style.Level is { } level && Paragraph() is var paragraph)
+            {
+                if (style.ListId != _wordList) (_wordList, _listRun) = (style.ListId, _listRun + 1);
+                (paragraph.List, paragraph.Depth, paragraph.ListRun) = (PastedList.Bullet, level, _listRun);
+            }
+        }
+
+        _open.Add(new Open(name, format, align, kind, keep, name == "pre" || Top.Pre, indent, firstLine, breakAfter));
         if (kind == OpenKind.Skip) _skip++;
+        if (kind == OpenKind.Skip && name == "head") _head++;
         if (kind == OpenKind.Label) _labels++;
-        if (name == "pre") _pre++;
     }
 
     public void End(string name)
     {
         _preStart = false;
-        var at = _open.FindLastIndex(o => o.Name == name);
+        var at = _open.Count > 0 && _open[^1].Name == name ? _open.Count - 1 : _open.FindLastIndex(o => o.Name == name);
         if (at >= 0) Pop(at);
         if (name is "ul" or "ol" && _lists.Count > 0) _lists.RemoveAt(_lists.Count - 1);
-        if (_structured && name is "table" or "tr" or "td" or "th") EndTable(name);
-        else if (Blocks.Contains(name)) Break();
+        if (_structured && Explicit.Contains(name) && _paragraph != null) _paragraph.Ended = true;
+        if (_structured && TableParts.Contains(name)) EndTable(name);
+        else if (Blocks.Contains(name) || _structured && name == "center") Break();
     }
 
     public void Text(string text)
@@ -168,8 +185,8 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
             return;
         }
 
-        var pre = _structured && _pre > 0;
-        if (pre)
+        var keep = _structured && Top.Keep;
+        if (keep)
         {
             decoded = decoded.Replace("\r\n", "\n").Replace('\r', '\n');
             if (_preStart && decoded.StartsWith('\n')) decoded = decoded[1..];
@@ -185,7 +202,7 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
                 sb.Append(decoded, i++, 2);
                 _space = false;
             }
-            else if (pre && c is ' ' or '\t' or '\n')
+            else if (keep && c is ' ' or '\t' or '\n')
             {
                 sb.Append(c);
                 _space = false;
@@ -206,6 +223,37 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
     }
 
     private static bool Valid(char c) => !char.IsControl(c) && !char.IsSurrogate(c) && c != '\uFFFC' && XmlConvert.IsXmlChar(c);
+
+    private PastedFormat Format(string name, Dictionary<string, string> attributes)
+    {
+        var current = Current;
+        var format = name switch
+        {
+            "b" or "strong" => current with { Bold = true },
+            "i" or "em" => current with { Italic = true },
+            "u" or "ins" => current with { Underline = true },
+            "s" or "strike" or "del" => current with { Strike = true },
+            "sup" => current with { VerticalAlign = "super" },
+            "sub" => current with { VerticalAlign = "sub" },
+            "a" when attributes.TryGetValue("href", out var href) => current with { Link = Clean(href.Trim()) },
+            _ => current
+        };
+        if (!_structured) return format;
+        return name switch
+        {
+            "mark" => format with { Highlight = "#FFFF00" },
+            "code" or "kbd" or "samp" or "tt" => format with { Font = Monospace },
+            "big" => format with { SizePt = Math.Round((format.SizePt ?? 11) * 1.2 * 2) / 2 },
+            "small" => format with { SizePt = Math.Max(1, Math.Round((format.SizePt ?? 11) / 1.2 * 2) / 2) },
+            "font" => format with
+            {
+                Color = attributes.TryGetValue("color", out var color) ? HtmlTableFormat.Color(color.Trim().ToLowerInvariant()) ?? format.Color : format.Color,
+                Font = attributes.TryGetValue("face", out var face) ? HtmlPasteStyle.FontName(face) ?? format.Font : format.Font,
+                SizePt = attributes.TryGetValue("size", out var size) ? HtmlPasteStyle.FontTagSize(size) ?? format.SizePt : format.SizePt
+            },
+            _ => format
+        };
+    }
 
     private static void Project(PastedParagraph paragraph)
     {
@@ -230,33 +278,41 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
             if (block is PastedParagraph { Runs.Count: > 0 } paragraph && paragraph.Runs[^1] is { ImageData: null } last)
             {
                 var text = last.Text;
-                var trimmed = paragraph.Preformatted ? text : text.TrimEnd(' ');
+                var trimmed = paragraph.Preformatted || paragraph.KeepSpace ? text : text.TrimEnd(' ');
                 if ((structured || paragraph.Preformatted) && trimmed.EndsWith('\n')) trimmed = trimmed[..^1];
                 if (trimmed.Length == 0) paragraph.Runs.RemoveAt(paragraph.Runs.Count - 1);
                 else if (trimmed.Length != text.Length) last.Text = trimmed;
-                if (structured) kept.Add(paragraph);
+                if (structured || paragraph.Runs.Count > 0) kept.Add(paragraph);
             }
+            else if (block is PastedParagraph { Runs.Count: > 0 })
+                kept.Add(block);
             else if (block is PastedTable table)
             {
                 foreach (var cell in table.Rows.SelectMany(r => r)) Finish(cell.Blocks, structured);
                 table.Rows.RemoveAll(r => r.Count == 0);
+                if (table.Rows.Count > 0) kept.Add(table);
             }
 
-        blocks.RemoveAll(b => b is PastedParagraph { Runs.Count: 0 } && !kept.Contains(b) || b is PastedTable { Rows.Count: 0 });
+        var first = blocks.FindIndex(kept.Contains);
+        var final = blocks.FindLastIndex(kept.Contains);
+        for (var k = first + 1; structured && first >= 0 && k < final; k++)
+            if (blocks[k] is PastedParagraph { Explicit: true }) kept.Add(blocks[k]);
+        blocks.RemoveAll(b => !kept.Contains(b));
     }
 
     private void Pop(int at)
     {
+        var label = false;
         for (var k = at; k < _open.Count; k++)
         {
             if (_open[k].Kind == OpenKind.Skip) _skip--;
-            if (_open[k].Kind == OpenKind.Label) _labels--;
-            if (_open[k].Name == "pre") _pre--;
+            if (_open[k].Kind == OpenKind.Skip && _open[k].Name == "head") _head--;
+            if (_open[k].Kind == OpenKind.Label) (_labels, label) = (_labels - 1, true);
+            _pageBreak |= _open[k].BreakAfter;
         }
 
-        var label = _open.Skip(at).Any(o => o.Kind == OpenKind.Label) && _labels == 0;
         _open.RemoveRange(at, _open.Count - at);
-        if (!label) return;
+        if (!label || _labels > 0) return;
         var text = _label.ToString().Trim();
         _label.Clear();
         if (_paragraph is { List: not PastedList.None } paragraph)
@@ -288,7 +344,16 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
             return;
         }
 
-        var rows = _tables[^1].Table.Rows;
+        var (current, outer) = _tables[^1];
+        var rows = current.Rows;
+        if (name == "caption")
+        {
+            _container = outer;
+            outer.Insert(outer.LastIndexOf(current), _paragraph = new PastedParagraph { Align = "center" });
+            _space = true;
+            return;
+        }
+
         if (name == "tr")
         {
             rows.Add([]);
@@ -297,7 +362,7 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         }
 
         if (rows.Count == 0) rows.Add([]);
-        var shading = attributes.TryGetValue("style", out var css) ? Css(default, css).Format.Highlight : null;
+        var shading = attributes.TryGetValue("style", out var css) ? HtmlPasteStyle.Css(default, css).Format.Highlight : null;
         if (shading == null && attributes.TryGetValue("bgcolor", out var color)) shading = HtmlTableFormat.Color(color.Trim().ToLowerInvariant());
         var cell = new PastedCell { ColSpan = Span(attributes, "colspan"), RowSpan = Span(attributes, "rowspan"), Shading = shading };
         rows[^1].Add(cell);
@@ -351,15 +416,20 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
             var name = _open[k].Name;
             if (paragraph.Heading == 0 && name.Length == 2 && name[0] == 'h' && name[1] is >= '1' and <= '6') paragraph.Heading = name[1] - '0';
             paragraph.Align ??= _open[k].Align;
+            paragraph.IndentLeft ??= _open[k].Indent;
+            paragraph.IndentFirstLine ??= _open[k].FirstLine;
         }
 
-        paragraph.Preformatted = _structured && _pre > 0;
+        paragraph.Preformatted = _structured && Top.Pre;
+        paragraph.KeepSpace = _structured && Top.Keep;
+        paragraph.PageBreakBefore |= _structured && _pageBreak;
+        _pageBreak = false;
         return paragraph;
     }
 
     private void Break()
     {
-        if (_paragraph is { Runs.Count: > 0 }) _container.Add(_paragraph = new PastedParagraph());
+        if (_paragraph is { Runs.Count: > 0 } or { Explicit: true, Ended: true }) _container.Add(_paragraph = new PastedParagraph());
         _space = true;
     }
 
@@ -388,19 +458,28 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
     {
         var uri = src.Trim();
         var comma = uri.IndexOf(',');
-        if (!uri.StartsWith("data:", StringComparison.OrdinalIgnoreCase) || comma < 0 || comma > 256 || uri.Length - comma > 2L * MaxImageBytes) return default;
+        if (!uri.StartsWith("data:", StringComparison.OrdinalIgnoreCase) || comma < 0 || comma > 256 || (uri.Length - comma - 1L) * 3 / 4 > MaxImageBytes) return default;
         var header = uri[5..comma].Split(';');
-        if (!ImageTypes.TryGetValue(header[0].Trim(), out var type) || !header.Skip(1).Any(p => p.Trim().Equals("base64", StringComparison.OrdinalIgnoreCase))) return default;
+        if (!ImageTypes.Contains(header[0].Trim().ToLowerInvariant()) || !header.Skip(1).Any(p => p.Trim().Equals("base64", StringComparison.OrdinalIgnoreCase))) return default;
         try
         {
             var data = Convert.FromBase64String(uri[(comma + 1)..]);
-            return data.Length is > 0 and <= MaxImageBytes ? (data, type) : default;
+            return data.Length is > 0 and <= MaxImageBytes && Sniff(data) is { } type ? (data, type) : default;
         }
         catch (FormatException)
         {
             return default;
         }
     }
+
+    private static string Sniff(byte[] data) => data switch
+    {
+        [0x89, 0x50, 0x4E, 0x47, ..] => "image/png",
+        [0xFF, 0xD8, 0xFF, ..] => "image/jpeg",
+        [0x47, 0x49, 0x46, 0x38, ..] => "image/gif",
+        [0x42, 0x4D, ..] => "image/bmp",
+        _ => null
+    };
 
     private static int? Pixels(Dictionary<string, string> attributes, string name)
     {
@@ -410,82 +489,5 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         return int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var pixels) && pixels is > 0 and <= 32767 ? pixels : null;
     }
 
-    private static (PastedFormat Format, string Align, int? Level, bool Label) Css(PastedFormat format, string css)
-    {
-        string align = null;
-        int? level = null;
-        var label = false;
-        foreach (var declaration in HtmlTableFormat.Split(css, ';'))
-        {
-            var colon = declaration.IndexOf(':');
-            if (colon <= 0) continue;
-            var raw = declaration[(colon + 1)..].Replace("!important", "", StringComparison.OrdinalIgnoreCase).Trim();
-            var value = raw.ToLowerInvariant();
-            switch (declaration[..colon].Trim().ToLowerInvariant())
-            {
-                case "font-weight":
-                    format = format with { Bold = value is "bold" or "bolder" || int.TryParse(value, out var weight) && weight >= 600 };
-                    break;
-                case "font-style":
-                    format = format with { Italic = value is "italic" or "oblique" };
-                    break;
-                case "text-decoration" or "text-decoration-line":
-                    format = format with { Underline = value.Contains("underline"), Strike = value.Contains("line-through") };
-                    break;
-                case "color":
-                    format = format with { Color = HtmlTableFormat.Color(value) ?? format.Color };
-                    break;
-                case "font-size":
-                    format = format with { SizePt = FontSize(value) ?? format.SizePt };
-                    break;
-                case "font-family":
-                    format = format with { Font = FontName(raw) ?? format.Font };
-                    break;
-                case "background" or "background-color":
-                    format = format with { Highlight = HtmlTableFormat.Split(value, ' ').Select(HtmlTableFormat.Color).FirstOrDefault(c => c != null) ?? format.Highlight };
-                    break;
-                case "vertical-align":
-                    format = format with { VerticalAlign = value switch { "super" => "super", "sub" => "sub", "baseline" => null, _ => format.VerticalAlign } };
-                    break;
-                case "text-align":
-                    align = Align(value) ?? align;
-                    break;
-                case "mso-list":
-                    label |= value == "ignore";
-                    foreach (var token in value.Split(' ', StringSplitOptions.RemoveEmptyEntries))
-                        if (token.StartsWith("level", StringComparison.Ordinal) && int.TryParse(token[5..], NumberStyles.None, CultureInfo.InvariantCulture, out var n) && n >= 1)
-                            level = Math.Min(n - 1, 8);
-                    break;
-            }
-        }
-
-        return (format, align, level, label);
-    }
-
-    private static string Align(string value) => value switch
-    {
-        "left" or "start" => "left",
-        "center" => "center",
-        "right" or "end" => "right",
-        "justify" => "justify",
-        _ => null
-    };
-
-    private static double? FontSize(string value)
-    {
-        var factor = value.EndsWith("pt", StringComparison.Ordinal) ? 1 : value.EndsWith("px", StringComparison.Ordinal) ? 0.75 : 0;
-        if (factor == 0 || !double.TryParse(value[..^2], NumberStyles.Float, CultureInfo.InvariantCulture, out var size) || !(size > 0)) return null;
-        return Math.Clamp(Math.Round(size * factor * 2) / 2, 1, 1638);
-    }
-
-    private static string FontName(string value)
-    {
-        var first = HtmlTableFormat.Split(value, ',').FirstOrDefault()?.Trim().Trim('"', '\'') ?? "";
-        var name = new string(first.Where(c => char.IsLetterOrDigit(c) || c is ' ' or '-').ToArray()).Trim();
-        return name.Length is > 0 and <= 31 && !(name.ToLowerInvariant() is "serif" or "sans-serif" or "monospace" or "cursive" or "fantasy" or "inherit" or "initial")
-            ? name
-            : null;
-    }
-
-    private readonly record struct Open(string Name, PastedFormat Format, string Align, OpenKind Kind);
+    private readonly record struct Open(string Name, PastedFormat Format, string Align, OpenKind Kind, bool Keep, bool Pre, int? Indent, int? FirstLine, bool BreakAfter);
 }

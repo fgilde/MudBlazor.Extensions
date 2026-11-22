@@ -59,6 +59,20 @@ internal sealed class PastedParagraph : PastedBlock
     public string Align { get; set; }
 
     public bool Preformatted { get; set; }
+
+    public bool KeepSpace { get; set; }
+
+    public int ListRun { get; set; }
+
+    public int? IndentLeft { get; set; }
+
+    public int? IndentFirstLine { get; set; }
+
+    public bool PageBreakBefore { get; set; }
+
+    internal bool Explicit { get; set; }
+
+    internal bool Ended { get; set; }
 }
 
 internal sealed class PastedTable : PastedBlock

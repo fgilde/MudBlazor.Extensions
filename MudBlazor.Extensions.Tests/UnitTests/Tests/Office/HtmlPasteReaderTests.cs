@@ -102,6 +102,75 @@ public class HtmlPasteReaderTests
         Assert.Equal(HtmlPasteReader.MaxTableDepth, depth);
     }
 
+    [Theory]
+    [InlineData("<p>a&#xFFFE;\uFFFCb<a href=\"x\u0001y\">l</a></p>", "None0:[ab|||][l|||xy]")]
+    [InlineData("<script/>alert(1)</script><style/>p{}</style><iframe/>f</iframe><noscript/>n</noscript><script>x</scripty>y</script><![CDATA[c>d]]><p>z</p>", "None0:[z|||]")]
+    public void PasteReader_Read_NewFilteringPinned(string html, string expected)
+    {
+        Assert.Equal(expected, Describe(HtmlPasteReader.Read(html)));
+    }
+
+    [Fact]
+    public void ReadBlocks_ListRuns_SeparateListsAndWordListIds()
+    {
+        var blocks = HtmlPasteReader.ReadBlocks(
+            "<ol><li>a<ul><li>a1</li></ul></li></ol><ol><li>b</li></ol>" +
+            "<p style='mso-list:l0 level1 lfo1'><span style='mso-list:Ignore'>1.</span>w1</p><p>between</p>" +
+            "<p style='mso-list:l0 level1 lfo1'><span style='mso-list:Ignore'>2.</span>w2</p><p style='mso-list:l1 level1 lfo2'><span style='mso-list:Ignore'>1.</span>v1</p>");
+
+        var runs = blocks.Cast<PastedParagraph>().Select(p => (string.Concat(p.Runs.Select(r => r.Text)), p.ListRun)).ToList();
+        Assert.Equal(runs[0].ListRun, runs[1].ListRun);
+        Assert.NotEqual(runs[0].ListRun, runs[2].ListRun);
+        Assert.NotEqual(runs[2].ListRun, runs[3].ListRun);
+        Assert.Equal(("w2", runs[3].ListRun), runs[5]);
+        Assert.NotEqual(runs[5].ListRun, runs[6].ListRun);
+    }
+
+    [Fact]
+    public void ReadBlocks_LegacyTagsTablesCaptionsHeadAndEmptyParagraphs()
+    {
+        var blocks = HtmlPasteReader.ReadBlocks(
+            "<html><head><title>T</title><meta charset=utf-8>" +
+            "<p>first</p><font color=red face=Georgia size=5>f</font><center>c</center><mark>m</mark><code>k</code><big>B</big><small>s</small>" +
+            "<p></p><ul><li>x</li><li></li><li>y</li></ul>" +
+            "<table align=center style=\"background:#ff0000\"><caption>Cap</caption><tr bgcolor=\"#00ff00\"><td>cell</td></tr></table><p></p>");
+
+        var paragraphs = blocks.OfType<PastedParagraph>().ToList();
+        Assert.Equal("first", paragraphs[0].Runs[0].Text);
+        var font = paragraphs[1].Runs[0].Format;
+        Assert.Equal(("#FF0000", "Georgia", 18.0), (font.Color, font.Font, font.SizePt!.Value));
+        Assert.Equal(("c", "center"), (paragraphs[2].Runs[0].Text, paragraphs[2].Align));
+        var inline = paragraphs[3].Runs.ToDictionary(r => r.Text, r => r.Format);
+        Assert.Equal("#FFFF00", inline["m"].Highlight);
+        Assert.Equal("Consolas", inline["k"].Font);
+        Assert.Equal(13.0, inline["B"].SizePt);
+        Assert.Equal(9.0, inline["s"].SizePt);
+        Assert.Empty(paragraphs[4].Runs);
+        Assert.Equal(["x", "", "y"], paragraphs.Skip(5).Take(3).Select(p => string.Concat(p.Runs.Select(r => r.Text))));
+        Assert.All(paragraphs.Skip(5).Take(3), p => Assert.Equal(PastedList.Bullet, p.List));
+        Assert.Equal(("Cap", "center"), (paragraphs[8].Runs[0].Text, paragraphs[8].Align));
+        var table = Assert.IsType<PastedTable>(blocks[^1]);
+        var cell = (PastedParagraph)Assert.Single(Assert.Single(table.Rows)).Blocks.Single();
+        Assert.Equal(("cell", null, null), (cell.Runs[0].Text, cell.Align, cell.Runs[0].Format.Highlight));
+    }
+
+    [Fact]
+    public void ReadBlocks_IndentsPageBreaksWhiteSpaceAndSniffedImages()
+    {
+        var blocks = HtmlPasteReader.ReadBlocks(
+            "<p style=\"margin-left:36pt;text-indent:-18pt\">a</p><p style=\"margin-left:.5in;padding-left:20px\">b</p><p style=\"margin-left:1cm\">c</p>" +
+            "<div style=\"break-after:page\"></div><p>d</p><p style=\"page-break-before:always\">e</p>" +
+            "<p style=\"white-space:pre-wrap\">  f  g\t</p>" +
+            "<p><img src=\"data:image/png;base64,R0lGODlhAQABAAAAACw=\"><img src=\"data:image/png;base64,AAAAAAAA\"></p>");
+
+        var p = blocks.Cast<PastedParagraph>().ToList();
+        Assert.Equal([(720, -360), (1020, null), (567, null)], p.Take(3).Select(x => (x.IndentLeft, x.IndentFirstLine)).Select(t => (t.IndentLeft!.Value, t.IndentFirstLine)));
+        Assert.Equal([false, false, false, true, true, false], p.Take(6).Select(x => x.PageBreakBefore));
+        Assert.Equal("  f  g\t", p[5].Runs[0].Text);
+        Assert.True(p[5].KeepSpace);
+        Assert.Equal("image/gif", Assert.Single(p[6].Runs).ImageType);
+    }
+
     private static string Describe(IEnumerable<PastedParagraph> paragraphs) =>
         string.Join(" / ", paragraphs.Select(p => $"{p.List}{p.Depth}:" + string.Concat(p.Runs.Select(r =>
             $"[{r.Text.Replace("\n", "\\n")}|{(r.Format.Bold ? "b" : "")}{(r.Format.Italic ? "i" : "")}{(r.Format.Underline ? "u" : "")}|{r.Format.Color}|{r.Format.Link}]"))));
