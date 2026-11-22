@@ -190,6 +190,57 @@ public class FileDisplayViewerTests
         Assert.Contains("Grüße", message.HtmlBody);
     }
 
+    private static string MailWithAttachment() => string.Join("\r\n",
+        "From: jane@example.com",
+        "Subject: Invoice",
+        "MIME-Version: 1.0",
+        "Content-Type: multipart/mixed; boundary=\"bnd\"",
+        "",
+        "--bnd",
+        "Content-Type: text/html; charset=\"utf-8\"",
+        "",
+        "<p>See <img src=\"cid:logo\"> attached</p>",
+        "--bnd",
+        "Content-Type: image/png",
+        "Content-ID: <logo>",
+        "Content-Transfer-Encoding: base64",
+        "",
+        Convert.ToBase64String(new byte[] { 1, 2, 3 }),
+        "--bnd",
+        "Content-Type: text/plain; name=\"notes.txt\"",
+        "Content-Disposition: attachment; filename=\"notes.txt\"",
+        "Content-Transfer-Encoding: base64",
+        "",
+        Convert.ToBase64String(Encoding.UTF8.GetBytes("hello attachment")),
+        "--bnd--");
+
+    [Fact]
+    public void MimeMessage_SeparatesAttachmentsFromInlineParts()
+    {
+        var message = MimeMessage.Parse(MailWithAttachment());
+
+        var attachment = Assert.Single(message.Attachments);
+        Assert.Equal("notes.txt", attachment.Name);
+        Assert.Equal("hello attachment", Encoding.UTF8.GetString(attachment.Data));
+        Assert.Single(message.InlineParts);
+        Assert.Contains("attached", message.HtmlBody);
+    }
+
+    [Fact]
+    public async Task Document_ListsMailAttachmentsAndOpensThem()
+    {
+        await using var context = CreateContext();
+        var cut = context.Render<MudExFileDisplayDocument>(p => p
+            .Add(c => c.FileDisplayInfos, FileInfos.Text("mail.eml", "message/rfc822", MailWithAttachment())));
+
+        cut.WaitForAssertion(() => Assert.Contains("notes.txt", cut.Markup));
+        Assert.Empty(cut.FindComponents<MudExFileDisplay>());
+
+        cut.Find(".mud-chip").Click();
+
+        Assert.Equal("notes.txt", cut.FindComponent<MudExFileDisplay>().Instance.FileName);
+    }
+
     [Fact]
     public void CertificateReader_AgreesWithThePlatform()
     {

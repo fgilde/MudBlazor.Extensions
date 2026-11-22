@@ -33,6 +33,11 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
     private bool _isUnsupported;
     private byte[] _pendingDocxBytes;
     private string _pendingHtmlContent;
+    private List<MailAttachment> _attachments = new();
+    private MailAttachment _openAttachment;
+    private Stream _openAttachmentStream;
+
+    private sealed record MailAttachment(string Name, string ContentType, byte[] Data);
 
     [Inject] private MudExFileService FileService { get; set; }
 
@@ -140,6 +145,8 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
             {
                 _errorMessage = null;
                 _isUnsupported = false;
+                _attachments = new();
+                CloseAttachment();
                 _isLoading = true;
                 StateHasChanged();
 
@@ -270,6 +277,7 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         var html = message.HtmlBody ?? (message.TextBody != null ? $"<pre>{System.Net.WebUtility.HtmlEncode(message.TextBody)}</pre>" : "<p>No message body available.</p>");
         html = message.ResolveCidImages(html);
         html = message.PrependHeaders(html);
+        _attachments = message.Attachments.Select(a => new MailAttachment(a.Name, a.MimeType, a.Data)).ToList();
 
         if (JsReference != null)
         {
@@ -303,6 +311,7 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         using var msg = new MsgReader.Outlook.Storage.Message(stream);
 
         var html = ExtractMsgHtml(msg);
+        _attachments = ReadMsgAttachments(msg, html);
         html = ResolveCidImages(html, msg);
         html = PrependEmailHeaders(html, msg);
 
@@ -314,6 +323,44 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         {
             _pendingHtmlContent = html;
         }
+    }
+
+    // Outlook gives every attachment a content id, so only the ones the body really references count as inline images.
+    private static List<MailAttachment> ReadMsgAttachments(MsgReader.Outlook.Storage.Message msg, string html)
+    {
+        var result = new List<MailAttachment>();
+        foreach (var attachment in msg.Attachments ?? new List<object>())
+        {
+            if (attachment is MsgReader.Outlook.Storage.Attachment file)
+            {
+                var inline = !string.IsNullOrEmpty(file.ContentId) && html?.Contains($"cid:{file.ContentId}", StringComparison.OrdinalIgnoreCase) == true;
+                if (file.Data != null && !file.Hidden && !inline)
+                    result.Add(new MailAttachment(file.FileName, file.MimeType ?? MimeType.GetMimeType(file.FileName), file.Data));
+            }
+            else if (attachment is MsgReader.Outlook.Storage.Message mail)
+            {
+                using var stream = new MemoryStream();
+                mail.Save(stream);
+                var name = string.IsNullOrWhiteSpace(mail.FileName) ? $"{mail.Subject}.msg" : mail.FileName;
+                result.Add(new MailAttachment(name.EndsWith(".msg", StringComparison.OrdinalIgnoreCase) ? name : name + ".msg", "application/vnd.ms-outlook", stream.ToArray()));
+            }
+        }
+
+        return result;
+    }
+
+    private void OpenAttachment(MailAttachment attachment)
+    {
+        CloseAttachment();
+        _openAttachmentStream = new MemoryStream(attachment.Data);
+        _openAttachment = attachment;
+    }
+
+    private void CloseAttachment()
+    {
+        _openAttachment = null;
+        _openAttachmentStream?.Dispose();
+        _openAttachmentStream = null;
     }
 
     private static string ExtractMsgHtml(MsgReader.Outlook.Storage.Message msg)

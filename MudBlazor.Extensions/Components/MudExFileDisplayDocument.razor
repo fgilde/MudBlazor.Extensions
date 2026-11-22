@@ -1,7 +1,17 @@
-@inherits MudExJsRequiredBaseComponent<MudExFileDisplayDocument>
+﻿@inherits MudExJsRequiredBaseComponent<MudExFileDisplayDocument>
 @namespace MudBlazor.Extensions.Components
 
-<div @ref="ElementReference" style="width: 100%; height: 100%; position: relative;">
+@if (_openAttachment != null)
+{
+    <MudExFileDisplay FileName="@_openAttachment.Name"
+                      ContentType="@_openAttachment.ContentType"
+                      ContentStream="@_openAttachmentStream"
+                      Localizer="@Localizer"
+                      CanClose="true"
+                      OnCloseClick="@CloseAttachment" />
+}
+<div style="width: 100%; height: 100%; flex-direction: column; display: @(_openAttachment != null ? "none" : "flex");">
+<div @ref="ElementReference" style="width: 100%; flex: 1; min-height: 0; position: relative;">
     @if (_isLoading)
     {
         <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
@@ -24,4 +34,16 @@
         </div>
     }
     <div id="@_containerId" style="width: 100%; height: 100%; @(_isUnsupported ? "display:none;" : "")"></div>
+</div>
+@if (_attachments.Count > 0)
+{
+    <div style="display: flex; flex-wrap: wrap; gap: 4px; padding: 6px 8px; max-height: 30%; overflow: auto; border-top: 1px solid var(--mud-palette-lines-default);">
+        @foreach (var attachment in _attachments)
+        {
+            <MudChip T="string" Icon="@Icons.Material.Filled.AttachFile" Size="Size.Small" OnClick="@(() => OpenAttachment(attachment))">
+                @attachment.Name (@Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(attachment.Data.LongLength, LocalizerToUse, true))
+            </MudChip>
+        }
+    </div>
+}
 </div>

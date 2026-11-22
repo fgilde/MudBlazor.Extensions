@@ -18,6 +18,11 @@ internal class MimeMessage
     public string HtmlBody { get; private set; }
     public List<(string ContentId, string ContentLocation, string MimeType, byte[] Data)> InlineParts { get; } = new();
 
+    /// <summary>
+    /// Parts sent as files: everything with <c>Content-Disposition: attachment</c> and every attached message.
+    /// </summary>
+    public List<(string Name, string MimeType, byte[] Data)> Attachments { get; } = new();
+
     public static MimeMessage Parse(string rawText)
     {
         var message = new MimeMessage();
@@ -74,6 +79,16 @@ internal class MimeMessage
         var contentLocation = GetHeader(headers, "Content-Location")?.Trim();
 
         var decodedBytes = DecodeBody(body, encoding);
+
+        var disposition = GetHeader(headers, "Content-Disposition");
+        if (disposition?.TrimStart().StartsWith("attachment", StringComparison.OrdinalIgnoreCase) == true || contentType == "message/rfc822")
+        {
+            var name = DecodeHeaderValue(ExtractParameter(disposition ?? string.Empty, "filename") ?? ExtractParameter(contentTypeHeader, "name"));
+            if (string.IsNullOrWhiteSpace(name))
+                name = contentType == "message/rfc822" ? $"message{Attachments.Count + 1}.eml" : $"attachment{Attachments.Count + 1}";
+            Attachments.Add((name, contentType, decodedBytes));
+            return;
+        }
 
         if ((contentId != null || contentLocation != null) && contentType is not ("text/html" or "text/plain"))
         {
