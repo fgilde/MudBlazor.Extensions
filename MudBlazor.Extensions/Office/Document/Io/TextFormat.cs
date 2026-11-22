@@ -61,11 +61,7 @@ internal static class TextFormat
                     text.Append(Line(document, paragraph, false)).Append("\r\n");
                     break;
                 case Table table:
-                    foreach (var row in table.Rows)
-                    {
-                        text.Append(string.Join('\t', Cells(row, c => CellText(document, c.Blocks)))).Append("\r\n");
-                    }
-
+                    foreach (var row in table.Rows) text.Append(string.Join('\t', Cells(row, c => CellText(document, c.Blocks)))).Append("\r\n");
                     break;
                 case OpaqueBlock { Visible: true, Preview: { } preview }:
                     Blocks(document, preview, text);
