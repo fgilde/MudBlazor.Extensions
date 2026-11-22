@@ -34173,6 +34173,21 @@
         <member name="P:MudBlazor.Extensions.Office.Document.Hyperlink.SafeTarget">
             <summary>The target if it is an <c>http</c>, <c>https</c>, <c>mailto</c> or <c>#anchor</c> link, otherwise null.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DocxWriter">
+            <summary>
+            Writes a <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/> as a .docx or .dotx file. Unchanged parts are copied from the loaded file and unchanged blocks keep their original
+            XML; changed blocks are patched in their original XML, so content the editor does not model stays as it was.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DocxWriter.Write(MudBlazor.Extensions.Office.Document.TextDocument,System.IO.Stream,System.Nullable{System.Boolean})">
+            <summary>Writes a document. Nothing is written to the stream if writing fails.</summary>
+            <param name="document">The document.</param>
+            <param name="target">The stream that receives the file.</param>
+            <param name="asTemplate">True to write a template (.dotx), false to write a document (.docx), null to keep the type of the loaded file.</param>
+            <exception cref="T:System.ArgumentNullException">The document or the stream is null.</exception>
+            <exception cref="T:System.ArgumentException">The stream is not writable.</exception>
+            <exception cref="T:System.InvalidOperationException">The document was not loaded or created by <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/>.</exception>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.HeaderFooterKind">
             <summary>Whether a <see cref="T:MudBlazor.Extensions.Office.Document.HeaderFooter"/> is a header or a footer.</summary>
         </member>
@@ -34517,6 +34532,8 @@
             <summary>Writes the document.</summary>
             <param name="target">The stream that receives the file.</param>
             <param name="format">The file format.</param>
+            <exception cref="T:System.ArgumentNullException">The stream is null.</exception>
+            <exception cref="T:System.ArgumentException">The stream is not writable.</exception>
             <exception cref="T:System.NotSupportedException">The format cannot be written.</exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.GetMedia(System.String)">

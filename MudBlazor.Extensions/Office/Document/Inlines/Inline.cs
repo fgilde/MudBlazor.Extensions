@@ -15,6 +15,8 @@ public abstract record Inline
     public virtual int Length => 1;
 
     internal XElement Source { get; init; }
+
+    internal XElement Node { get; init; }
 }
 
 /// <summary>A run of uniformly formatted text (<c>w:t</c>).</summary>

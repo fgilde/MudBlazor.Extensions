@@ -84,9 +84,14 @@ public sealed partial class TextDocument
     /// <summary>Writes the document.</summary>
     /// <param name="target">The stream that receives the file.</param>
     /// <param name="format">The file format.</param>
+    /// <exception cref="ArgumentNullException">The stream is null.</exception>
+    /// <exception cref="ArgumentException">The stream is not writable.</exception>
     /// <exception cref="NotSupportedException">The format cannot be written.</exception>
-    public void Save(Stream target, DocumentFileFormat format = DocumentFileFormat.Docx) =>
-        throw new NotSupportedException($"Writing {format} files is not supported.");
+    public void Save(Stream target, DocumentFileFormat format = DocumentFileFormat.Docx)
+    {
+        if (format is not (DocumentFileFormat.Docx or DocumentFileFormat.Dotx)) throw new NotSupportedException($"Writing {format} files is not supported.");
+        DocxWriter.Write(this, target, format == DocumentFileFormat.Dotx);
+    }
 
     /// <summary>Gets the content of an image or other media part.</summary>
     /// <param name="mediaPart">The part name, for example <see cref="InlineImage.MediaPart"/>.</param>

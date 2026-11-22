@@ -64,7 +64,8 @@ internal static partial class DocxReader
         {
             Opc = opc, MainPart = main, MainContentType = contentType, MainXml = xml, MainRelationships = rels,
             StylesPart = stylesPart, StylesXml = styles, NumberingPart = numberingPart, NumberingXml = numbering,
-            SettingsPart = settingsPart, SettingsXml = settings, ThemePart = themePart, Blocks = document.BlockList.ToList()
+            SettingsPart = settingsPart, SettingsXml = settings, ThemePart = themePart, Blocks = document.BlockList.ToList(),
+            Sections = document.SectionList.ToList(), HeadersFooters = document.HeaderFooterList.ToList(), HeaderIds = headerIds, Properties = document.Properties
         };
         return document;
     }

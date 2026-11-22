@@ -29,4 +29,12 @@ internal sealed class DocxPackage
     public string ThemePart { get; init; }
 
     public IReadOnlyList<Block> Blocks { get; init; }
+
+    public IReadOnlyList<Section> Sections { get; init; }
+
+    public IReadOnlyList<HeaderFooter> HeadersFooters { get; init; }
+
+    public IReadOnlyDictionary<string, string> HeaderIds { get; init; }
+
+    public DocumentProperties Properties { get; init; }
 }

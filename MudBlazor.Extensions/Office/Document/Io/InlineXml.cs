@@ -177,7 +177,7 @@ internal sealed class InlineXml
         else if (inline is OpaqueInline { Kind: "endnote" })
             inline = ((OpaqueInline)inline) with { DisplayText = NumberingLabels.Roman(++_endnotes).ToLowerInvariant() };
 
-        return inline with { Source = item.Run ?? node, Format = item.Format ?? inline.Format, Link = item.Link };
+        return inline with { Source = item.Run ?? node, Node = item.Run != null ? node : null, Format = item.Format ?? inline.Format, Link = item.Link };
     }
 
     private Inline RunChild(XElement node)

@@ -1,0 +1,204 @@
+using System.Xml.Linq;
+using static MudBlazor.Extensions.Office.Document.FormatXml;
+
+namespace MudBlazor.Extensions.Office.Document;
+
+/// <summary>
+/// Writes a <see cref="TextDocument"/> as a .docx or .dotx file. Unchanged parts are copied from the loaded file and unchanged blocks keep their original
+/// XML; changed blocks are patched in their original XML, so content the editor does not model stays as it was.
+/// </summary>
+public static partial class DocxWriter
+{
+    internal const string RelNs = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+    private const string Wml = "application/vnd.openxmlformats-officedocument.wordprocessingml.";
+
+    /// <summary>Writes a document. Nothing is written to the stream if writing fails.</summary>
+    /// <param name="document">The document.</param>
+    /// <param name="target">The stream that receives the file.</param>
+    /// <param name="asTemplate">True to write a template (.dotx), false to write a document (.docx), null to keep the type of the loaded file.</param>
+    /// <exception cref="ArgumentNullException">The document or the stream is null.</exception>
+    /// <exception cref="ArgumentException">The stream is not writable.</exception>
+    /// <exception cref="InvalidOperationException">The document was not loaded or created by <see cref="TextDocument"/>.</exception>
+    public static void Write(TextDocument document, Stream target, bool? asTemplate = null)
+    {
+        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(target);
+        if (!target.CanWrite) throw new ArgumentException("The stream is not writable.", nameof(target));
+        var package = document.Package ?? throw new InvalidOperationException("The document was not loaded from a package.");
+        using var buffer = new MemoryStream();
+        using (var writer = new OpcPackageWriter(package.Opc, buffer))
+            new Job(document, package, writer, asTemplate).Run();
+        buffer.Position = 0;
+        buffer.CopyTo(target);
+    }
+
+    private sealed partial class Job(TextDocument document, DocxPackage package, OpcPackageWriter writer, bool? asTemplate)
+    {
+        private readonly OpcPackage _opc = package.Opc;
+        private readonly DocxWriteContext _context = new(package);
+        private readonly HashSet<string> _done = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, string> _overrides = new(package.Opc.OverrideContentTypes, StringComparer.OrdinalIgnoreCase);
+        private bool _contentTypesChanged;
+
+        internal void Run()
+        {
+            if (asTemplate is { } template && _opc.ContentType(package.MainPart) != Wml + (template ? "template" : "document") + ".main+xml")
+                SetOverride(package.MainPart, Wml + (template ? "template" : "document") + ".main+xml");
+            WriteBody();
+            WriteHeadersFooters();
+            WriteProperties();
+            if (_contentTypesChanged)
+            {
+                writer.PutContentTypes(_opc.DefaultContentTypes, _overrides);
+                _done.Add("/[Content_Types].xml");
+            }
+
+            foreach (var part in _opc.PartNames.Where(p => !_done.Contains(p))) writer.Copy(part);
+        }
+
+        private void WriteBody()
+        {
+            var final = document.SectionList.LastOrDefault();
+            var ends = new Dictionary<string, Section>();
+            foreach (var section in document.SectionList.Where(s => s != final && s.LastBlockId != null)) ends.TryAdd(section.LastBlockId, section);
+            var rels = Relationships(package.MainPart);
+            _context.Begin(rels, ends);
+            var blocks = document.BlockList.Select(b => _context.Block(b, true)).Where(e => e != null).ToList();
+            if (final != null && (final.Source != null || !package.Sections.Contains(final, ReferenceEqualityComparer.Instance)))
+                blocks.Add(SectionXml.Write(final, package.HeaderIds));
+            var original = package.MainXml.Root!.Element(W + "body")!;
+            if (!_context.RelationshipsChanged && blocks.SequenceEqual(original.Elements(), ReferenceEqualityComparer.Instance)) return;
+            var xml = new XDocument(package.MainXml);
+            xml.Root!.Element(W + "body")!.ReplaceNodes(blocks);
+            if (!_context.RelationshipsChanged && XNode.DeepEquals(xml, package.MainXml)) return;
+            Put(package.MainPart, xml);
+            if (_context.RelationshipsChanged) PutRelationships(package.MainPart, rels);
+        }
+
+        private void WriteHeadersFooters()
+        {
+            foreach (var part in document.HeaderFooterList)
+            {
+                var original = package.HeadersFooters.FirstOrDefault(h => string.Equals(h.PartName, part.PartName, StringComparison.OrdinalIgnoreCase));
+                if (original == null || TextDocument.SameItems(original.Blocks, part.Blocks) || _done.Contains(part.PartName)) continue;
+                var rels = Relationships(part.PartName);
+                _context.Begin(rels, null);
+                var xml = _opc.ReadXml(part.PartName);
+                var blocks = part.Blocks.Select(b => _context.Block(b, false)).Where(e => e != null).ToList();
+                if (blocks.Count == 0) blocks.Add(new XElement(W + "p"));
+                xml.Root!.ReplaceNodes(blocks);
+                if (!_context.RelationshipsChanged && XNode.DeepEquals(xml, _opc.ReadXml(part.PartName))) continue;
+                Put(part.PartName, xml);
+                if (_context.RelationshipsChanged) PutRelationships(part.PartName, rels);
+            }
+        }
+
+        private List<OpcRelationship> Relationships(string part) =>
+            _opc.Relationships(part).Where(r => r.Id != null && r.Type != null && r.Target != null).ToList();
+
+        private void Put(string part, XDocument xml)
+        {
+            writer.Put(part, xml);
+            _done.Add(part);
+        }
+
+        private void PutRelationships(string part, IEnumerable<OpcRelationship> rels)
+        {
+            writer.PutRelationships(part, rels);
+            _done.Add(OpcPackage.RelsPartOf(part));
+        }
+
+        private void SetOverride(string part, string contentType)
+        {
+            _overrides[part] = contentType;
+            _contentTypesChanged = true;
+        }
+    }
+}
+
+internal sealed class DocxWriteContext
+{
+    private const string HyperlinkType = DocxWriter.RelNs + "/hyperlink";
+    private readonly DocxPackage _package;
+    private readonly HashSet<object> _originals = new(ReferenceEqualityComparer.Instance);
+    private readonly Dictionary<XElement, List<Inline>> _groups = new();
+    private List<OpcRelationship> _relationships;
+    private IReadOnlyDictionary<string, Section> _sectionEnds;
+
+    internal DocxWriteContext(DocxPackage package)
+    {
+        _package = package;
+        foreach (var block in package.Blocks.Concat(package.HeadersFooters.SelectMany(h => h.Blocks))) Collect(block);
+    }
+
+    internal bool RelationshipsChanged { get; private set; }
+
+    internal static XElement Key(Inline inline) => inline is OpaqueInline { Sources: [var first, ..] } ? first : inline.Source;
+
+    internal static IEnumerable<XElement> Sources(Inline inline) =>
+        inline is OpaqueInline { Sources: not null } opaque ? opaque.Sources : inline.Source == null ? [] : [inline.Source];
+
+    internal void Begin(List<OpcRelationship> relationships, IReadOnlyDictionary<string, Section> sectionEnds)
+    {
+        _relationships = relationships;
+        _sectionEnds = sectionEnds;
+        RelationshipsChanged = false;
+    }
+
+    internal bool IsOriginal(object item) => _originals.Contains(item);
+
+    internal bool IsOriginalGroup(XElement key, IReadOnlyList<Inline> group) => _groups.TryGetValue(key, out var original) && original.SequenceEqual(group);
+
+    internal XElement Block(Block block, bool topLevel) => block switch
+    {
+        Paragraph paragraph => ParagraphXml.Write(paragraph, this, topLevel),
+        Table table => IsOriginal(table) ? table.Source : TableXml.Write(table, this),
+        _ => block.Source
+    };
+
+    internal XElement SectionEnd(string paragraphId) =>
+        paragraphId != null && _sectionEnds != null && _sectionEnds.TryGetValue(paragraphId, out var section) ? SectionXml.Write(section, _package.HeaderIds) : null;
+
+    internal XElement Hyperlink(Hyperlink link, IEnumerable<XElement> content)
+    {
+        if (link.Source != null) return new XElement(link.Source.Name, link.Source.Attributes(), content);
+        return new XElement(W + "hyperlink",
+            link.Target == null ? null : new XAttribute(InlineXml.R + "id", External(link.Target)),
+            link.Anchor == null ? null : new XAttribute(W + "anchor", link.Anchor),
+            link.Tooltip == null ? null : new XAttribute(W + "tooltip", link.Tooltip),
+            new XAttribute(W + "history", "1"),
+            content);
+    }
+
+    private string External(string target)
+    {
+        if (_relationships.FirstOrDefault(r => r.Type == HyperlinkType && r.Target == target && r.TargetMode == "External") is { } existing) return existing.Id;
+        var relationship = new OpcRelationship(OpcPackageWriter.NextId(_relationships), HyperlinkType, target, "External");
+        _relationships.Add(relationship);
+        RelationshipsChanged = true;
+        return relationship.Id;
+    }
+
+    private void Collect(Block block)
+    {
+        _originals.Add(block);
+        if (block is Paragraph paragraph)
+            foreach (var inline in paragraph.Inlines)
+                if (Key(inline) is { } key)
+                {
+                    if (!_groups.TryGetValue(key, out var group)) _groups[key] = group = [];
+                    group.Add(inline);
+                }
+
+        if (block is not Table table) return;
+        foreach (var row in table.Rows)
+        {
+            _originals.Add(row);
+            foreach (var cell in row.Cells)
+            {
+                _originals.Add(cell);
+                foreach (var child in cell.Blocks) Collect(child);
+            }
+        }
+    }
+}

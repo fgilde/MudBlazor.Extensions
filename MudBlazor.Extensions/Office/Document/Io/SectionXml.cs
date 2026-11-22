@@ -25,6 +25,60 @@ internal static class SectionXml
         Source = sectPr
     };
 
+    private static readonly string[] Order =
+    [
+        "headerReference", "footerReference", "footnotePr", "endnotePr", "type", "pgSz", "pgMar", "paperSrc", "pgBorders", "lnNumType", "pgNumType", "cols",
+        "formProt", "vAlign", "noEndnote", "titlePg", "textDirection", "bidi", "rtlGutter", "docGrid", "printerSettings", "sectPrChange"
+    ];
+
+    internal static XElement Write(Section section, IReadOnlyDictionary<string, string> headerIds)
+    {
+        var source = section.Source;
+        var sectPr = source != null ? new XElement(source) : new XElement(W + "sectPr");
+        var current = Read(sectPr, null, null, headerIds);
+        if (source == null || current.Page != section.Page) SetPage(sectPr, section.Page);
+        if (current.Start != section.Start)
+            SetVal(sectPr, "type", section.Start switch
+            {
+                SectionStart.Continuous => "continuous",
+                SectionStart.EvenPage => "evenPage",
+                SectionStart.OddPage => "oddPage",
+                SectionStart.NextColumn => "nextColumn",
+                _ => null
+            }, Order);
+        if (current.TitlePage != section.TitlePage) SetOnOff(sectPr, "titlePg", section.TitlePage ? true : null, Order);
+        if (!Same(current.Headers, section.Headers) || !Same(current.Footers, section.Footers))
+        {
+            sectPr.Elements().Where(e => e.Name == W + "headerReference" || e.Name == W + "footerReference").Remove();
+            sectPr.AddFirst(References("headerReference", section.Headers).Concat(References("footerReference", section.Footers)));
+        }
+
+        return source != null && XNode.DeepEquals(sectPr, source) ? source : sectPr;
+    }
+
+    private static IEnumerable<XElement> References(string name, IReadOnlyDictionary<HeaderFooterType, string> references) =>
+        references.OrderBy(r => r.Key).Select(r => new XElement(W + name,
+            new XAttribute(W + "type", r.Key switch { HeaderFooterType.First => "first", HeaderFooterType.Even => "even", _ => "default" }),
+            new XAttribute(InlineXml.R + "id", r.Value)));
+
+    private static bool Same(IReadOnlyDictionary<HeaderFooterType, string> a, IReadOnlyDictionary<HeaderFooterType, string> b) =>
+        a.Count == b.Count && a.All(r => b.TryGetValue(r.Key, out var id) && id == r.Value);
+
+    private static void SetPage(XElement sectPr, PageSetup page)
+    {
+        var size = Ensure(sectPr, "pgSz", Order);
+        size.SetAttributeValue(W + "w", Number(page.Width));
+        size.SetAttributeValue(W + "h", Number(page.Height));
+        size.SetAttributeValue(W + "orient", page.Orientation == PageOrientation.Landscape ? "landscape" : null);
+        var margin = Ensure(sectPr, "pgMar", Order);
+        foreach (var (name, value) in new[]
+                 {
+                     ("top", page.MarginTop), ("right", page.MarginRight), ("bottom", page.MarginBottom), ("left", page.MarginLeft),
+                     ("header", page.HeaderDistance), ("footer", page.FooterDistance), ("gutter", page.Gutter)
+                 })
+            margin.SetAttributeValue(W + name, Number(value));
+    }
+
     private static Dictionary<HeaderFooterType, string> References(XElement sectPr, string name, IReadOnlyDictionary<string, string> headerIds)
     {
         var result = new Dictionary<HeaderFooterType, string>();

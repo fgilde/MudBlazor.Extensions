@@ -1,7 +1,7 @@
-using System.IO.Compression;
 using System.Text;
 using System.Xml.Linq;
 using MudBlazor.Extensions.Office;
+using MudBlazor.Extensions.Tests.UnitTests.Tests.Office;
 using Xunit;
 using static MudBlazor.Extensions.Tests.UnitTests.Tests.Presentation.PptxBuilder;
 
@@ -416,19 +416,9 @@ public partial class PptxWriterTests
 
     private static Presentation Load(byte[] bytes) => Presentation.Load(new MemoryStream(bytes));
 
-    private static Dictionary<string, byte[]> Parts(byte[] package)
-    {
-        using var zip = new ZipArchive(new MemoryStream(package), ZipArchiveMode.Read);
-        return zip.Entries.ToDictionary(e => "/" + e.FullName, e =>
-        {
-            using var stream = e.Open();
-            using var ms = new MemoryStream();
-            stream.CopyTo(ms);
-            return ms.ToArray();
-        });
-    }
+    private static Dictionary<string, byte[]> Parts(byte[] package) => OpcAssert.Parts(package);
 
-    internal static XDocument Xml(byte[] package, string part) => XDocument.Parse(Encoding.UTF8.GetString(Parts(package)[part]).TrimStart('﻿'));
+    internal static XDocument Xml(byte[] package, string part) => OpcAssert.Xml(package, part);
 
     private static List<OpcRelationship> Rels(byte[] package, string relsPart) =>
         Xml(package, relsPart).Root!.Elements(PackageRels + "Relationship")
@@ -437,25 +427,7 @@ public partial class PptxWriterTests
     private static Dictionary<string, string> Overrides(byte[] package) =>
         Xml(package, "/[Content_Types].xml").Root!.Elements(ContentTypes + "Override").ToDictionary(o => (string)o.Attribute("PartName"), o => (string)o.Attribute("ContentType"));
 
-    private static void AssertNoDanglingRelationships(byte[] package)
-    {
-        var opc = OpcPackage.Open(package);
-        var parts = opc.PartNames.ToHashSet(StringComparer.OrdinalIgnoreCase);
-        foreach (var rels in parts.Where(p => p.EndsWith(".rels", StringComparison.Ordinal)))
-        {
-            var source = rels.Replace("/_rels/", "/", StringComparison.Ordinal)[..^5];
-            Assert.True(source == "/" || parts.Contains(source), $"Rels without source {rels}");
-            foreach (var rel in opc.Relationships(source).Where(r => r.TargetMode == null))
-                Assert.True(parts.Contains(opc.ResolveTarget(source, rel.Target)), $"{rels}: {rel.Id} -> {rel.Target}");
-        }
-
-        foreach (var part in parts.Where(p => p.EndsWith(".xml", StringComparison.Ordinal) && p != "/[Content_Types].xml"))
-        {
-            var ids = opc.Relationships(part).Select(r => r.Id).ToHashSet();
-            foreach (var reference in opc.ReadXml(part).Descendants().Attributes().Where(a => a.Name.Namespace == R && a.Value.Length > 0))
-                Assert.True(ids.Contains(reference.Value), $"{part}: {reference.Name.LocalName}={reference.Value} has no relationship");
-        }
-    }
+    private static void AssertNoDanglingRelationships(byte[] package) => OpcAssert.AssertNoDanglingRelationships(package);
 
     internal static void AssertConsistent(byte[] package)
     {
