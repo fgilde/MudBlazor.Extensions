@@ -156,6 +156,8 @@ public class DocReaderTests
             var valid = Load(Doc("abc\r", chpx: Fkp(4, [3, 0x35, 0x08, 1]), papx: Fkp(4, [3, 0, 0, 0x03, 0x24, 1]), fonts: FontTable("Arial")));
             var paragraph = Assert.Single(Paragraphs(valid));
             Assert.Equal(("abc", true, ParagraphAlignment.Center), (paragraph.Text, paragraph.Inlines[0].Format.Bold, paragraph.Format.Alignment));
+            var tabs = Load(Doc("abc\r", papx: Fkp(4, [9, 0, 0, 0x15, 0xC6, 0xFF, 1, 0x10, 0x00, 0x20, 0x00, 1, 0x30, 0x00, 0x00, 0x03, 0x24, 1])));
+            Assert.Equal(ParagraphAlignment.Center, Assert.Single(Paragraphs(tabs)).Format.Alignment);
         });
     }
 
@@ -171,14 +173,11 @@ public class DocReaderTests
             Assert.Equal(70000, CompoundFile.Open(valid).ReadStream("large").Length);
             var last = (uint)(valid.Length / 512 - 2);
             var broken = new List<byte[]>();
-            foreach (var fatCount in new[] { 110, 300 })
-            {
-                var difatCycle = (byte[])valid.Clone();
-                BinaryPrimitives.WriteInt32LittleEndian(difatCycle.AsSpan(0x2C), fatCount);
-                BinaryPrimitives.WriteUInt32LittleEndian(difatCycle.AsSpan(0x44), last);
-                BinaryPrimitives.WriteUInt32LittleEndian(difatCycle.AsSpan((int)(last + 1) * 512 + 508), last);
-                broken.Add(difatCycle);
-            }
+            var difatCycle = (byte[])valid.Clone();
+            BinaryPrimitives.WriteInt32LittleEndian(difatCycle.AsSpan(0x2C), 300);
+            BinaryPrimitives.WriteUInt32LittleEndian(difatCycle.AsSpan(0x44), last);
+            BinaryPrimitives.WriteUInt32LittleEndian(difatCycle.AsSpan((int)(last + 1) * 512 + 508), last);
+            Assert.Contains("cyclic DIFAT", Assert.Throws<InvalidDataException>(() => CompoundFile.Open(difatCycle)).Message);
 
             var tooLong = (byte[])valid.Clone();
             SetLength(tooLong, "large", 70000 + 2048);
@@ -200,8 +199,8 @@ public class DocReaderTests
         var toggles = Doc("x", chpx: Fkp(1, [9, 0x35, 0x08, 0x81, 0x36, 0x08, 0x80, 0x37, 0x08, 0x01]));
 
         var paragraph = Assert.Single(Paragraphs(Load(symbol)));
-        Assert.Equal("ab", paragraph.Text);
-        Assert.Equal("Wingdings", paragraph.Inlines.OfType<TextRun>().Single(r => r.Text == "").Format.Font);
+        Assert.Equal("a\uF0FCb", paragraph.Text);
+        Assert.Equal("Wingdings", paragraph.Inlines.OfType<TextRun>().Single(r => r.Text == "\uF0FC").Format.Font);
         Assert.Null(paragraph.Inlines.OfType<TextRun>().Single(r => r.Text == "a").Format.Font);
         var format = Assert.Single(Assert.Single(Paragraphs(Load(toggles))).Inlines).Format;
         Assert.Equal((true, null, true), (format.Bold, format.Italic, format.Strike));

@@ -61,7 +61,7 @@ internal static class RtfFormat
         return bytes[at..].StartsWith(@"{\rtf"u8) ? at : -1;
     }
 
-    private static string Prepare(string rtf, RtfLimits limits)
+    internal static string Prepare(string rtf, RtfLimits limits)
     {
         StringBuilder output = null;
         var copied = 0;
@@ -73,7 +73,12 @@ internal static class RtfFormat
         for (var i = 0; i < rtf.Length; i++)
         {
             var c = rtf[i];
-            if (c == '{')
+            if (c == '{' && UnicodeGroupEnd(i) is var close and >= 0)
+            {
+                Replace(i, close + 1, "");
+                i = close;
+            }
+            else if (c == '{')
             {
                 if (++depth > limits.Depth) throw new InvalidDataException("The RTF is nested too deeply.");
                 groups[depth] = groups[depth - 1] with { Fresh = true };
@@ -141,6 +146,12 @@ internal static class RtfFormat
             }
 
             if (end < rtf.Length && rtf[end] == ' ') end++;
+            if (word is "upr")
+            {
+                Replace(at, end, "");
+                return end;
+            }
+
             if (word is "emdash" or "endash" or "bullet" or "lquote" or "rquote" or "ldblquote" or "rdblquote" or "emspace" or "enspace" or "qmspace" or
                 "zwj" or "zwnj" or "zwbo" or "zwnbo" or "ltrmark" or "rtlmark")
             {
@@ -168,6 +179,8 @@ internal static class RtfFormat
             else if (word is "pard") groups[depth].InTable = false;
             else if (word is "uc") groups[depth].Uc = number ?? 0;
             else if (word is "bin" && number > 0) throw new InvalidDataException("The RTF contains binary data, which is not supported.");
+            else if (word is "itap" && number > RtfLimits.TableNesting) throw new InvalidDataException("The RTF nests tables too deeply.");
+            else if (word is "ilvl" && number > RtfLimits.ListLevel) Replace(at, end, $"\\ilvl{RtfLimits.ListLevel} ");
             else if (word is "ansicpg" or "cpg" && number is { } codePage && !Available(codePage))
                 Replace(at, end, "\\" + word.ToString() + CodePageFallback + " ");
             return end;
@@ -182,6 +195,25 @@ internal static class RtfFormat
             }
 
             return Math.Min(at, rtf.Length);
+        }
+
+        int UnicodeGroupEnd(int at)
+        {
+            var k = Skip(at + 1);
+            if (!rtf.AsSpan(k).StartsWith(@"\*")) return -1;
+            k = Skip(k + 2);
+            if (!rtf.AsSpan(k).StartsWith(@"\ud") || k + 3 < rtf.Length && char.IsAsciiLetterOrDigit(rtf[k + 3])) return -1;
+            for (var open = 1; k < rtf.Length; k++)
+                if (rtf[k] == '\\') k++;
+                else if (rtf[k] == '{') open++;
+                else if (rtf[k] == '}' && --open == 0) return k;
+            return rtf.Length - 1;
+        }
+
+        int Skip(int at)
+        {
+            while (at < rtf.Length && rtf[at] is ' ' or '\r' or '\n') at++;
+            return at;
         }
 
         bool Hex(int at) => at + 1 < rtf.Length && char.IsAsciiHexDigit(rtf[at]) && char.IsAsciiHexDigit(rtf[at + 1]);
@@ -299,6 +331,10 @@ internal readonly record struct RtfLimits(int Depth, int Tokens, int Paragraphs,
     internal const long CellWork = 1500;
 
     internal const int DateLength = 32;
+
+    internal const int TableNesting = 32;
+
+    internal const int ListLevel = 8;
 
     internal static RtfLimits Default { get; } = new(256, 1 << 22, 1 << 17, 1L << 33, 1L << 27, HtmlReader.MaxLength);
 }

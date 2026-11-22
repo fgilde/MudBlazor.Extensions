@@ -143,7 +143,7 @@ public class RtfFormatTests
         var bytes = Save(document);
 
         Assert.DoesNotContain("Symbol", Encoding.ASCII.GetString(bytes));
-        var run = Single(Load(bytes)).Inlines.OfType<TextRun>().First(r => r.Text.StartsWith('•'));
+        var run = Single(Load(bytes)).Inlines.OfType<TextRun>().First(r => r.Text.StartsWith('\u2022'));
         Assert.NotEqual("Symbol", run.Format.Font);
     }
 
@@ -261,6 +261,75 @@ public class RtfFormatTests
     }
 
     [Fact]
+    public void Rtf_Read_UprKeepsTheAnsiTextAndNeverReachesRtfPipe()
+    {
+        var paragraph = Single(Load(@"{\rtf1\ansi {\upr{\b alpha}{\*\ud{\b \u945\'e1}}} x\par}"));
+
+        Assert.Equal("alpha x", paragraph.Text);
+        Assert.True(paragraph.Inlines.OfType<TextRun>().First().Format.Bold);
+        Assert.Equal(@"{\rtf1 {{a}}{x}y}", RtfFormat.Prepare(@"{\rtf1 {\upr{a}{\*\ud{b}}}{\upr x}\upr y}", RtfLimits.Default));
+        Assert.Equal(@"{\rtf1 {{a}", RtfFormat.Prepare(@"{\rtf1 {\upr{a}{\*\ud{b}", RtfLimits.Default));
+    }
+
+    [Theory]
+    [InlineData("footnote")]
+    [InlineData("upr-unicode")]
+    [InlineData("closing")]
+    [InlineData("uc2")]
+    [InlineData("uc0")]
+    [InlineData("uc1")]
+    [InlineData("upr-ud")]
+    public void Rtf_Read_RewrittenTextNeverNestsDeeperThanTheCap(string kind)
+    {
+        const int n = 2000;
+        var rtf = kind switch
+        {
+            "footnote" => @"{\rtf1{\footnote " + Repeat(@"{\upr{}}", n) + "}}",
+            "upr-unicode" => @"{\rtf1{\upr{" + Repeat(@"\u65{", n) + "}}",
+            "closing" => @"{\rtf1 " + Repeat("}", n) + "x}",
+            "uc2" => @"{\rtf1\uc2 " + Repeat(@"{\u65}}", n) + "}",
+            "uc0" => @"{\rtf1\uc0 " + Repeat(@"{\u65{", n) + "}",
+            "uc1" => @"{\rtf1\uc1 " + Repeat(@"\u65{", n) + "}",
+            _ => @"{\rtf1 " + Repeat(@"{\upr{a}{\*\ud{\u65 b}}}", n) + "}"
+        };
+
+        string prepared = null;
+        try
+        {
+            prepared = RtfFormat.Prepare(rtf, RtfLimits.Default);
+        }
+        catch (InvalidDataException)
+        {
+        }
+
+        if (prepared != null) Assert.InRange(RtfPipeDepth(prepared), 0, RtfLimits.Default.Depth);
+        try
+        {
+            Load(rtf);
+        }
+        catch (InvalidDataException)
+        {
+        }
+    }
+
+    [Fact]
+    public void Rtf_Read_TableNestingAndListLevelsAreBounded()
+    {
+        static string Nested(int depth) => @"{\rtf1\ansi " +
+            string.Concat(Enumerable.Range(2, depth - 1).Reverse().Select(k => $@"\pard\intbl\itap{k} x\nestcell{{\*\nesttableprops\trowd\cellx1000\nestrow}}")) +
+            @"\pard\intbl\itap1 y\cell\trowd\cellx1000\row}";
+        var levels = string.Concat(Enumerable.Range(0, 2000).Select(_ => @"{\listlevel\levelnfc23{\leveltext\'01-;}\li720}"));
+        var lists = @"{\rtf1{\*\listtable{\list\listid1" + levels + @"}}{\*\listoverridetable{\listoverride\listid1\ls1}}" +
+                    string.Concat(Enumerable.Range(0, 2000).Select(k => $@"\pard\ls1\ilvl{k} item\par ")) + "}";
+
+        Assert.Contains(Load(Nested(RtfLimits.TableNesting)).AllParagraphs(), p => p.Text == "y");
+        Assert.Contains("tables", Assert.Throws<InvalidDataException>(() => Load(Nested(RtfLimits.TableNesting + 1))).Message);
+        Assert.Throws<InvalidDataException>(() => RtfFormat.Prepare(Nested(2000), RtfLimits.Default));
+        Assert.DoesNotMatch(@"\\ilvl(9|[1-9]\d)", RtfFormat.Prepare(lists, RtfLimits.Default));
+        Assert.NotEmpty(Load(lists).AllParagraphs());
+    }
+
+    [Fact]
     public void Rtf_Read_UnicodeFallbackSkipsCharactersLikeRtfPipe()
     {
         Assert.Equal("Ax", Single(Read(RtfLimits.Default with { Depth = 2 }, @"{\rtf1\uc1 \u65\{x}")).Text);
@@ -280,7 +349,11 @@ public class RtfFormatTests
         Assert.Equal("Aar", Read(RtfLimits.Default with { Paragraphs = 10 }, rtf).Blocks.Cast<Paragraph>().First().Text);
         Reject(RtfLimits.Default with { Paragraphs = 9 }, rtf);
         Reject(RtfLimits.Default with { Paragraphs = 9 }, @"{\rtf1 " + Repeat(@"{\page }", 10) + "}");
+        Accept(RtfLimits.Default with { Paragraphs = 10 }, @"{\rtf1 " + Repeat(@"{\page }", 10) + "}");
         Reject(RtfLimits.Default with { Paragraphs = 9 }, @"{\rtf1 " + Repeat(@"{\sect }", 10) + "}");
+        Accept(RtfLimits.Default with { Paragraphs = 10 }, @"{\rtf1 " + Repeat(@"{\sect }", 10) + "}");
+        Accept(RtfLimits.Default with { RunWork = RtfLimits.DateLength }, @"{\rtf1 \chdate }");
+        Reject(RtfLimits.Default with { RunWork = RtfLimits.DateLength - 1 }, @"{\rtf1 \chdate }");
     }
 
     [Fact]
@@ -436,6 +509,50 @@ public class RtfFormatTests
     private static void Reject(RtfLimits limits, string rtf) => Assert.Throws<InvalidDataException>(() => Read(limits, rtf));
 
     private static TextDocument Read(RtfLimits limits, string rtf) => RtfFormat.Read(new MemoryStream(Encoding.Latin1.GetBytes(rtf)), limits);
+
+    private static int RtfPipeDepth(string rtf)
+    {
+        var uc = new List<int> { 1 };
+        var (depth, max) = (0, 0);
+        for (var i = 0; i < rtf.Length; i++)
+        {
+            if (rtf[i] == '{')
+            {
+                max = Math.Max(max, ++depth);
+                uc.Add(uc[^1]);
+            }
+            else if (rtf[i] == '}' && depth > 0)
+            {
+                depth--;
+                uc.RemoveAt(uc.Count - 1);
+            }
+            else if (rtf[i] == '\\' && i + 1 < rtf.Length && rtf[i + 1] == '\'') i += 3;
+            else if (rtf[i] == '\\' && i + 1 < rtf.Length && !char.IsAsciiLetter(rtf[i + 1])) i++;
+            else if (rtf[i] == '\\' && i + 1 < rtf.Length)
+            {
+                var start = ++i;
+                while (i < rtf.Length && char.IsAsciiLetter(rtf[i])) i++;
+                var word = rtf[start..i];
+                var digits = i;
+                if (i < rtf.Length && rtf[i] == '-') i++;
+                while (i < rtf.Length && char.IsAsciiDigit(rtf[i])) i++;
+                _ = int.TryParse(rtf[digits..i], out var number);
+                Assert.NotEqual("upr", word);
+                if (word == "uc") uc[^1] = number;
+                if (word == "u")
+                    for (var k = 0; k < uc[^1] && i < rtf.Length; k++)
+                    {
+                        var skipped = rtf[i++];
+                        if (skipped == ' ' && k == 0 && i < rtf.Length) skipped = rtf[i++];
+                        if (skipped == '\\' && i < rtf.Length && rtf[i] == '\'') i += 3;
+                    }
+                else if (i < rtf.Length && rtf[i] == ' ') i++;
+                i--;
+            }
+        }
+
+        return max;
+    }
 
     private static string Repeat(string text, int count) => new StringBuilder(text.Length * count).Insert(0, text, count).ToString();
 

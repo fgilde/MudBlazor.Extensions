@@ -43,7 +43,7 @@ public class RealFileRoundTripTests
         Assert.Equal("https://example.com/", inlines.Single(i => i.Link != null).Link.SafeTarget);
         Assert.Contains(inlines, i => i is Break { Kind: BreakKind.Page });
         var labels = loaded.AllParagraphs().Select(loaded.ListLabel).Where(l => l != null).ToList();
-        Assert.Equal(["•", "•", "•", "1.", "2.", "a.", "b.", "3.", "1.", "2."], labels);
+        Assert.Equal(["\u2022", "\u2022", "\u2022", "1.", "2.", "a.", "b.", "3.", "1.", "2."], labels);
         Assert.Equal((DocumentAllFeatures.Author, DocumentAllFeatures.Author), (loaded.Properties.Author, loaded.Properties.LastModifiedBy));
 
         if (Environment.GetEnvironmentVariable("MUDEX_WRITE_FIXTURES") == "1")
@@ -84,6 +84,22 @@ public class RealFileRoundTripTests
         for (var i = 0; i < sourceBody.Count; i++)
             if (!XNode.DeepEquals(sourceBody[i], outputBody[i]))
                 Assert.True(marks.Any(m => Text(outputBody[i]).Contains(m, StringComparison.Ordinal)), $"{file}: body child {i} ({outputBody[i].Name.LocalName}) changed without an edit");
+    }
+
+    [Fact]
+    public void DocumentSources_AreAsciiOnly()
+    {
+        var root = Root();
+        var files = new[] { Path.Combine(root, "MudBlazor.Extensions", "Office", "Document"), Path.Combine(root, "MudBlazor.Extensions.Tests", "UnitTests", "Tests", "Document") }
+            .SelectMany(d => Directory.GetFiles(d, "*.cs", SearchOption.AllDirectories)).ToList();
+
+        Assert.NotEmpty(files);
+        foreach (var file in files)
+        {
+            var bytes = File.ReadAllBytes(file);
+            var start = bytes.AsSpan().StartsWith((byte[])[0xEF, 0xBB, 0xBF]) ? 3 : 0;
+            Assert.True(bytes.Skip(start).All(b => b < 0x80), file);
+        }
     }
 
     [Fact]

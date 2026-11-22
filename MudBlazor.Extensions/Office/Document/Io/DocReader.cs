@@ -130,6 +130,13 @@ internal static class DocReader
         return result;
     }
 
+    private static int ChangedTabsLength(byte[] data, int operand, int end)
+    {
+        if (operand + 1 >= end) return -1;
+        var added = operand + 2 + 4 * data[operand + 1];
+        return added < end ? 1 + 1 + 4 * data[operand + 1] + 1 + 3 * data[added] : -1;
+    }
+
     private static IEnumerable<(int Sprm, int Operand)> Sprms(byte[] data, int start, int end)
     {
         while (start + 2 <= end)
@@ -143,7 +150,7 @@ internal static class DocReader
                 3 => 4,
                 7 => 3,
                 _ when sprm == 0xD608 && operand + 2 <= end => U16(data, operand) + 1,
-                _ when sprm == 0xC615 && operand < end && data[operand] == 255 => -1,
+                _ when sprm == 0xC615 && operand < end && data[operand] == 255 => ChangedTabsLength(data, operand, end),
                 _ => operand < end ? data[operand] + 1 : -1
             };
             if (size < 0 || operand + size > end) throw Invalid("The document has a broken property list.");
