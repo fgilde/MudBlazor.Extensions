@@ -33444,6 +33444,27 @@
         <member name="P:MudBlazor.Extensions.Office.Document.RemoveHeaderFooterCommand.Description">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.InsertSectionBreakCommand">
+            <summary>
+            Inserts a section break into a body paragraph: the paragraph is split at the position, its first half ends a new section with the page setup,
+            headers and footers of the section it was part of, and the second half stays in that section, which then starts as given. The caret moves to
+            the start of the second half.
+            </summary>
+            <param name="at">Where to break; a position in a paragraph of the body, not in a table, header or footer.</param>
+            <param name="start">Where the section after the break starts.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.InsertSectionBreakCommand.#ctor(MudBlazor.Extensions.Office.Document.DocumentPosition,MudBlazor.Extensions.Office.Document.SectionStart)">
+            <summary>
+            Inserts a section break into a body paragraph: the paragraph is split at the position, its first half ends a new section with the page setup,
+            headers and footers of the section it was part of, and the second half stays in that section, which then starts as given. The caret moves to
+            the start of the second half.
+            </summary>
+            <param name="at">Where to break; a position in a paragraph of the body, not in a table, header or footer.</param>
+            <param name="start">Where the section after the break starts.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InsertSectionBreakCommand.Description">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.SetDocumentPropertiesCommand">
             <summary>Sets the core document properties.</summary>
             <param name="properties">The properties.</param>

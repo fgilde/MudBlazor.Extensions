@@ -133,6 +133,21 @@ public class RtfFormatTests
     }
 
     [Fact]
+    public void Rtf_Write_SymbolBulletLabel_WithoutTheSymbolFont()
+    {
+        var document = TextDocument.Create();
+        var id = document.Blocks[0].Id;
+        document.Execute(new ReplaceTextCommand(new DocumentRange(document.PositionOf(id, 0), document.PositionOf(id, 0)), "item"));
+        document.Execute(new ApplyListCommand([id], ListTemplate.Bullet));
+
+        var bytes = Save(document);
+
+        Assert.DoesNotContain("Symbol", Encoding.ASCII.GetString(bytes));
+        var run = Single(Load(bytes)).Inlines.OfType<TextRun>().First(r => r.Text.StartsWith('•'));
+        Assert.NotEqual("Symbol", run.Format.Font);
+    }
+
+    [Fact]
     public void Rtf_NotRtf_ThrowsInvalidData()
     {
         Assert.Throws<InvalidDataException>(() => Load("hello"));

@@ -83,7 +83,8 @@ internal static class RtfWriter
             if (document.ListLabel(paragraph) is { Length: > 0 } label)
             {
                 var level = format.Numbering is { } numbering ? document.Numbering.Level(numbering) : null;
-                Run(level?.LabelFormat?.Over(mark) ?? mark, Escape(label) + (level?.Suffix switch { "space" => " ", "nothing" => "", _ => @"\tab" }));
+                var labelFormat = level?.LabelFormat is { Font: "Symbol" or "Wingdings" or "Wingdings 2" or "Wingdings 3" or "Webdings" } symbol ? symbol with { Font = null } : level?.LabelFormat;
+                Run(labelFormat?.Over(mark) ?? mark, Escape(label) + (level?.Suffix switch { "space" => " ", "nothing" => "", _ => @"\tab" }));
             }
 
             for (var i = 0; i < paragraph.Inlines.Count;)

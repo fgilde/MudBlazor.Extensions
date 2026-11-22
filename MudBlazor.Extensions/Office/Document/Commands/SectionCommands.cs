@@ -85,6 +85,36 @@ public sealed class RemoveHeaderFooterCommand(string sectionId, HeaderFooterKind
     }
 }
 
+/// <summary>
+/// Inserts a section break into a body paragraph: the paragraph is split at the position, its first half ends a new section with the page setup,
+/// headers and footers of the section it was part of, and the second half stays in that section, which then starts as given. The caret moves to
+/// the start of the second half.
+/// </summary>
+/// <param name="at">Where to break; a position in a paragraph of the body, not in a table, header or footer.</param>
+/// <param name="start">Where the section after the break starts.</param>
+public sealed class InsertSectionBreakCommand(DocumentPosition at, SectionStart start) : TextDocumentCommand
+{
+    /// <inheritdoc />
+    public override string Description => "Insert section break";
+
+    private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document)
+    {
+        ArgumentNullException.ThrowIfNull(at);
+        var position = document.Snap(new DocumentRange(at, at)).Start;
+        if (position.Path.Count > 0 || document.BlockList.All(b => b.Id != position.BlockId))
+            throw new ArgumentException("A section break can only be inserted into a paragraph of the body.", nameof(at));
+        var (edits, after) = document.ReplaceRange(new DocumentRange(position, position), [[], []]);
+        var edit = edits[0];
+        var sections = (edit.SectionsAfter ?? document.SectionList).ToList();
+        var sectionId = document.SectionOf(position.BlockId).Id;
+        var index = sections.FindIndex(s => s.Id == sectionId);
+        var number = document.SectionList.Max(s => int.TryParse(s.Id.AsSpan(1), out var n) ? n : 0) + 1;
+        sections.Insert(index, sections[index] with { Id = "s" + number, LastBlockId = position.BlockId });
+        sections[index + 1] = sections[index + 1] with { Start = start };
+        return ([edit with { SectionsBefore = document.SectionList.ToList(), SectionsAfter = sections }], after);
+    }
+}
+
 /// <summary>Sets the core document properties.</summary>
 /// <param name="properties">The properties.</param>
 public sealed class SetDocumentPropertiesCommand(DocumentProperties properties) : TextDocumentCommand

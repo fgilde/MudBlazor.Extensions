@@ -390,6 +390,34 @@ public partial class ObjectCommandTests
     }
 
     [Fact]
+    public void InsertSectionBreak_FirstHalfEndsANewSection_UndoRestores()
+    {
+        var document = TextDocument.Create();
+        var id = document.Blocks[0].Id;
+        document.Execute(new ReplaceTextCommand(Caret(document, id, 0), "before after"));
+        document.Execute(new AddHeaderFooterCommand(document.Sections[0].Id, HeaderFooterKind.Header, HeaderFooterType.Default));
+        var sections = document.Sections.ToList();
+
+        document.Execute(new InsertSectionBreakCommand(document.PositionOf(id, 7), SectionStart.Continuous));
+
+        Assert.Equal(["before ", "after"], document.Blocks.Cast<Paragraph>().Select(p => p.Text));
+        Assert.Equal((id, SectionStart.NextPage), (document.Sections[0].LastBlockId, document.Sections[0].Start));
+        Assert.Equal((null, SectionStart.Continuous, sections[0].Id), (document.Sections[1].LastBlockId, document.Sections[1].Start, document.Sections[1].Id));
+        Assert.NotEqual(sections[0].Id, document.Sections[0].Id);
+        Assert.Equal(document.Sections[0].Headers, document.Sections[1].Headers);
+        var output = DocxWriterTests.Save(document);
+        DocxWriterTests.AssertConsistent(output);
+        Assert.Equal([SectionStart.NextPage, SectionStart.Continuous], TextDocument.Load(new MemoryStream(output)).Sections.Select(s => s.Start));
+        var header = document.HeadersFooters[0].Blocks[0].Id;
+        Assert.Throws<ArgumentException>(() => document.Execute(new InsertSectionBreakCommand(document.PositionOf(header, 0), SectionStart.NextPage)));
+
+        document.Undo.Undo();
+
+        Assert.True(sections.SequenceEqual(document.Sections, ReferenceEqualityComparer.Instance));
+        Assert.Equal("before after", ((Paragraph)Assert.Single(document.Blocks)).Text);
+    }
+
+    [Fact]
     public void Writer_NewFloatingImages_WrittenAnchored_ReadBackWithTheirPlacement()
     {
         var document = TextDocument.Create();
