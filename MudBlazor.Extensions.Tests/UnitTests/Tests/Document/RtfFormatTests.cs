@@ -219,15 +219,85 @@ public class RtfFormatTests
     }
 
     [Fact]
-    public void Rtf_Read_BinaryDataFallbackCharsAndCodePages()
+    public void Rtf_Read_FallbackCharsAndCodePages()
     {
-        var limits = RtfLimits.Default with { Depth = 2 };
-        Assert.Equal("x", Single(Read(limits, @"{\rtf1{\pict\pngblip\bin6 a{{{{{}x}")).Text);
         Assert.Equal("\u00FCx", Single(Load(@"{\rtf1\uc2 \u252??x}")).Text);
         Assert.Equal("\u00FC", Single(Load(@"{\rtf1\ansi\ansicpg99999 \'fc}")).Text);
         Assert.Equal("\u00FC", Single(Load(@"{\rtf1\ansi\ansicpg65000 \'fc}")).Text);
         Assert.Equal("\u00FC", Single(Load(@"{\rtf1\ansi{\cpg-5 \'fc}}")).Text);
         Assert.Throws<InvalidDataException>(() => Load(@"{\rtf1 a\par-b}"));
+    }
+
+    [Fact]
+    public void Rtf_Read_BinaryDataIsRejected()
+    {
+        Assert.Single(Load(@"{\rtf1 a\bin0 b}").Blocks);
+        Assert.Contains("binary", Assert.Throws<InvalidDataException>(() => Load(@"{\rtf1 \bin2 xy}")).Message);
+        Assert.Contains("binary", Assert.Throws<InvalidDataException>(() => Load(@"{\rtf1{\pict\pngblip\bin2 xy}}")).Message);
+    }
+
+    [Fact]
+    public void Rtf_Read_HexEscapeHidesNoBraces()
+    {
+        var limits = RtfLimits.Default with { Depth = 2 };
+        Assert.Contains("nested", Assert.Throws<InvalidDataException>(() => Read(limits, @"{\rtf1{\'{{x}}}")).Message);
+        Assert.Contains("damaged", Assert.Throws<InvalidDataException>(() => Read(limits, @"{\rtf1{\'4}{\'4}{\'4}x}")).Message);
+        Assert.Equal("\u00FCx", Single(Read(limits, @"{\rtf1{\'fc}x}")).Text);
+    }
+
+    [Fact]
+    public void Rtf_Read_UnicodeFallbackStopsAtGroupDelimiters()
+    {
+        Assert.Equal("Ax", Single(Read(RtfLimits.Default with { Depth = 1 }, @"{\rtf1\uc1 \u65\{x}")).Text);
+        Assert.Equal("AAAx", Single(Read(RtfLimits.Default with { Depth = 2 }, @"{\rtf1\uc1{\u65}{\u65}{\u65}x}")).Text);
+        Assert.Equal("Ax", Single(Load(@"{\rtf1\uc1 \u65\'e9x}")).Text);
+    }
+
+    [Fact]
+    public void Rtf_Read_TextWordsAndUnicodeRunsCountAsText()
+    {
+        Assert.Throws<InvalidDataException>(() => Load(@"{\rtf1 " + Repeat(@"{\emdash }", 200_000) + "}"));
+        Assert.Equal(new string('\u2014', 200_000), Single(Load(@"{\rtf1 " + Repeat(@"\emdash ", 200_000) + "}")).Text);
+        Assert.Equal(100_000, Single(Load(@"{\rtf1\uc1 " + Repeat(@"\u20013?", 100_000) + @"\par}")).Text.Length);
+        Assert.Equal("\u2013\u2022\u2018\u2019\u201C\u201Dx", Single(Load(@"{\rtf1 \endash\bullet\lquote\rquote\ldblquote\rdblquote x}")).Text);
+    }
+
+    [Fact]
+    public void Rtf_Read_InTableIsGroupScoped()
+    {
+        var limits = RtfLimits.Default with { TableWork = 1 };
+        Assert.Equal(["a", "b"], Read(limits, @"{\rtf1{\intbl}a\par b\par}").Blocks.Cast<Paragraph>().Select(p => p.Text));
+    }
+
+    [Fact]
+    public void Rtf_Read_RawTabBlankParagraphsAndInputMarker()
+    {
+        var tabbed = Single(Load("{\\rtf1 a\tb}"));
+        Assert.Equal("a\tb", tabbed.Text);
+        Assert.Single(tabbed.Inlines.OfType<Tab>());
+
+        Assert.Equal(["a", "", "b"], Load(@"{\rtf1 a\par\par b\par}").Blocks.Cast<Paragraph>().Select(p => p.Text));
+        Assert.Equal("\u00A0", Single(Load(@"{\rtf1 \~\par}")).Text);
+
+        var png = Convert.ToHexString(ObjectCommandTests.Png(2, 2));
+        var marked = Single(Load(@"{\rtf1 a\u-4?b\u65532?c\u-4?\tab d{\pict\pngblip\picw2\pich2 " + png + "}}"));
+        Assert.Equal("abc\td\uFFFC", marked.Text);
+        Assert.Null(Assert.Single(marked.Inlines.OfType<InlineImage>()).AltText);
+        Assert.DoesNotContain(marked.Inlines.OfType<TextRun>(), r => r.Text.Contains('\uFFFC'));
+    }
+
+    [Fact]
+    public void Rtf_Write_FontTableKeyedByStrippedName()
+    {
+        var document = new DocxBuilder().Body(
+            "<w:p><w:r><w:rPr><w:rFonts w:ascii=\"Bad;Font\" w:hAnsi=\"Bad;Font\"/></w:rPr><w:t>a</w:t></w:r>" +
+            "<w:r><w:rPr><w:rFonts w:ascii=\"BadFont\" w:hAnsi=\"BadFont\"/></w:rPr><w:t>b</w:t></w:r></w:p>").Load();
+
+        var rtf = Encoding.ASCII.GetString(Save(document));
+
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(rtf, "BadFont;"));
+        Assert.Matches(@"\{\\f1(\\fs\d+)? a\}", rtf);
+        Assert.Matches(@"\{\\f1(\\fs\d+)? b\}", rtf);
     }
 
     [Fact]

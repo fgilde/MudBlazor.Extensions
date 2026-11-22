@@ -66,17 +66,17 @@ internal static class RtfFormat
         StringBuilder output = null;
         var copied = 0;
         var groups = new Group[limits.Depth + 2];
-        groups[0] = new Group(1, false, false, 0);
+        groups[0] = new Group(1, false, false, false);
         int depth = 0, tokens = 0, paragraphs = 0;
         long segments = 0, runWork = 0, tableWork = 0, elements = 0;
-        bool text = false, inTable = false;
+        var text = false;
         for (var i = 0; i < rtf.Length; i++)
         {
             var c = rtf[i];
             if (c == '{')
             {
                 if (++depth > limits.Depth) throw new InvalidDataException("The RTF is nested too deeply.");
-                groups[depth] = groups[depth - 1] with { Fresh = true, Bin = 0 };
+                groups[depth] = groups[depth - 1] with { Fresh = true };
                 Token();
             }
             else if (c == '}')
@@ -97,15 +97,18 @@ internal static class RtfFormat
                 if (symbol == '*' && groups[depth].Fresh) groups[depth].Skip = true;
                 groups[depth].Fresh = false;
                 if (symbol is '\r' or '\n') End("par");
-                else if (symbol is '\'' or '\\' or '{' or '}' or '~' or '-' or '_') Text();
+                else if (symbol == '\'' && Hex(i + 1))
+                {
+                    Text();
+                    i += 2;
+                }
+                else if (symbol is '\\' or '{' or '}' or '~' or '-' or '_') Text();
                 else Token();
-                if (symbol == '\'') i += 2;
             }
             else if (c is not ('\r' or '\n'))
             {
                 groups[depth].Fresh = false;
                 Text();
-                if (groups[depth].Bin > 0) i = (int)Math.Min(rtf.Length, (long)i + groups[depth].Bin) - 1;
             }
 
             if (tokens > limits.Tokens) throw new InvalidDataException("The RTF has too many control words.");
@@ -126,23 +129,33 @@ internal static class RtfFormat
             var number = end == digits ? (int?)null : long.TryParse(rtf.AsSpan(digits, end - digits), NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var n)
                 ? (int)Math.Clamp(n, int.MinValue, int.MaxValue)
                 : rtf[digits] == '-' ? int.MinValue : int.MaxValue;
-            Token();
+            tokens++;
             if (groups[depth].Fresh && Destinations.Contains(word.ToString())) groups[depth].Skip = true;
             groups[depth].Fresh = false;
             if (word is "u")
             {
-                Text();
-                return Fallback(end, groups[depth].Uc);
+                var fallback = Fallback(end, groups[depth].Uc);
+                if ((number ?? 0) is 0xFFFC or -4) Replace(at, fallback, "");
+                else Text();
+                return fallback;
             }
 
             if (end < rtf.Length && rtf[end] == ' ') end++;
+            if (word is "emdash" or "endash" or "bullet" or "lquote" or "rquote" or "ldblquote" or "rdblquote" or "emspace" or "enspace" or "qmspace" or
+                "zwj" or "zwnj" or "zwbo" or "zwnbo" or "ltrmark" or "rtlmark")
+            {
+                Text();
+                return end;
+            }
+
+            text = false;
             if (word is "tab") Tab(at);
             else if (word is "line") segments++;
             else if (word is "par" or "sect" or "cell" or "nestcell" or "row" or "nestrow") End(word.ToString());
-            else if (word is "intbl") inTable = true;
-            else if (word is "pard") inTable = false;
+            else if (word is "intbl") groups[depth].InTable = true;
+            else if (word is "pard") groups[depth].InTable = false;
             else if (word is "uc") groups[depth].Uc = number ?? 0;
-            else if (word is "bin") groups[depth].Bin = Math.Max(1, number ?? 1);
+            else if (word is "bin" && number > 0) throw new InvalidDataException("The RTF contains binary data, which is not supported.");
             else if (word is "ansicpg" or "cpg" && number is { } codePage && !Available(codePage))
                 Replace(at, end, "\\" + word.ToString() + CodePageFallback + " ");
             return end;
@@ -150,15 +163,24 @@ internal static class RtfFormat
 
         int Fallback(int at, int count)
         {
-            for (var k = 0; k < count && at < rtf.Length; k++)
-            {
-                var ch = rtf[at++];
-                if (ch == ' ' && k == 0 && at < rtf.Length) ch = rtf[at++];
-                if (ch == '\\' && at < rtf.Length && rtf[at] == '\'') at += 3;
-            }
+            if (at < rtf.Length && rtf[at] == ' ') at++;
+            for (var k = 0; k < count && at < rtf.Length && rtf[at] is not ('{' or '}'); k++)
+                if (rtf[at] != '\\' || at + 1 == rtf.Length) at++;
+                else if (rtf[at + 1] == '\'' && Hex(at + 2)) at += 4;
+                else if (!char.IsAsciiLetter(rtf[at + 1])) at += 2;
+                else
+                {
+                    at++;
+                    while (at < rtf.Length && char.IsAsciiLetter(rtf[at])) at++;
+                    if (at + 1 < rtf.Length && rtf[at] == '-' && char.IsAsciiDigit(rtf[at + 1])) at++;
+                    while (at < rtf.Length && char.IsAsciiDigit(rtf[at])) at++;
+                    if (at < rtf.Length && rtf[at] == ' ') at++;
+                }
 
             return Math.Min(at, rtf.Length);
         }
+
+        bool Hex(int at) => at + 1 < rtf.Length && char.IsAsciiHexDigit(rtf[at]) && char.IsAsciiHexDigit(rtf[at + 1]);
 
         void Tab(int at)
         {
@@ -189,6 +211,7 @@ internal static class RtfFormat
         {
             runWork += segments * segments;
             (segments, text) = (0, false);
+            var inTable = groups[depth].InTable;
             if (word is not ("par" or "sect") || word is "par" && inTable) tableWork += elements + RtfLimits.CellWork;
             if (word is "row" or "nestrow" || word is "par" && !inTable) elements++;
             if (word is not "sect") paragraphs++;
@@ -231,7 +254,7 @@ internal static class RtfFormat
         return new string(chars, 0, length);
     }
 
-    private record struct Group(int Uc, bool Skip, bool Fresh, int Bin);
+    private record struct Group(int Uc, bool Skip, bool Fresh, bool InTable);
 
     private sealed class LimitedWriter(int limit) : StringWriter(CultureInfo.InvariantCulture)
     {

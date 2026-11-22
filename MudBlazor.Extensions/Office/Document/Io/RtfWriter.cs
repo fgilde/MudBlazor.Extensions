@@ -23,14 +23,14 @@ internal static class RtfWriter
     {
         private readonly List<(StringBuilder Text, byte[] Image)> _parts = [];
         private StringBuilder _body = new();
-        private readonly List<string> _fonts = [document.EffectiveRunFormat(new Paragraph(), null).Font ?? "Calibri"];
+        private readonly List<string> _fonts = [document.EffectiveRunFormat(new Paragraph(), null).Font?.Replace(";", "") is { Length: > 0 } font ? font : "Calibri"];
         private readonly List<string> _colors = [];
 
         public void Run(TextWriter output)
         {
             Blocks(document.Blocks, false);
             var rtf = new StringBuilder(@"{\rtf1\ansi\ansicpg1252\deff0{\fonttbl");
-            for (var i = 0; i < _fonts.Count; i++) rtf.Append(@"{\f").Append(N(i)).Append(@"\fnil ").Append(Escape(_fonts[i].Replace(";", ""))).Append(";}");
+            for (var i = 0; i < _fonts.Count; i++) rtf.Append(@"{\f").Append(N(i)).Append(@"\fnil ").Append(Escape(_fonts[i])).Append(";}");
             rtf.Append(@"}{\colortbl;");
             foreach (var color in _colors)
                 rtf.Append(@"\red").Append(N(Convert.ToInt32(color[1..3], 16))).Append(@"\green").Append(N(Convert.ToInt32(color[3..5], 16)))
@@ -238,6 +238,7 @@ internal static class RtfWriter
 
         private int Font(string font)
         {
+            font = font?.Replace(";", "");
             if (string.IsNullOrEmpty(font)) return 0;
             var index = _fonts.IndexOf(font);
             if (index >= 0) return index;

@@ -83,7 +83,7 @@ public sealed partial class TextDocument
     /// <c>{\rtf</c> (after an optional UTF-8 byte order mark and white space) and is converted with RtfPipe and read like HTML: only PNG and JPEG
     /// pictures are imported (metafiles and bitmaps are dropped), nested list levels become separate lists, vertically merged cells become
     /// separate cells, section breaks become page breaks, headers, footers and the title are dropped, and an unknown code page is read as
-    /// Windows-1252. RTF is rejected when it has more than 32 Mi characters, 256 nested groups, 4 Mi control words, braces and tabs, or 128 Ki
+    /// Windows-1252. RTF is rejected when it contains binary data (<c>\binN</c> with N above 0) or has more than 32 Mi characters, 256 nested groups, 4 Mi control words, braces and tabs, or 128 Ki
     /// paragraphs, cells and rows, when its HTML would exceed 32 Mi characters, when the squares of the runs per paragraph sum to more than 2^33,
     /// or when its table work exceeds 2^27: every cell end, row end and table paragraph costs 1500 plus the rows and paragraphs before it in its
     /// section (about 3600 rows of 10 cells, or 10000 rows of one cell, in one section). ODT is read from <c>content.xml</c>, <c>styles.xml</c> and
