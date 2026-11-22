@@ -75,7 +75,9 @@ public sealed partial class TextDocument
     /// <summary>
     /// Reads a document. HTML is decoded by its byte order mark, else by the charset of a <c>meta</c> element in its first 4 KB, else as UTF-8, and may
     /// have at most 32 Mi characters; scripts, event attributes and remote images are dropped, only PNG, JPEG, GIF and BMP <c>data:</c> images are
-    /// imported and only <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c> links are kept.
+    /// imported and only <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c> links are kept. Plain text is decoded by its byte order mark,
+    /// else as UTF-8 if it is valid UTF-8, else as Windows-1252, and may have at most 32 Mi characters; every line becomes a paragraph and a form feed
+    /// a page break.
     /// </summary>
     /// <param name="stream">The file content.</param>
     /// <param name="format">The file format.</param>
@@ -85,11 +87,21 @@ public sealed partial class TextDocument
     public static TextDocument Load(Stream stream, DocumentFileFormat format = DocumentFileFormat.Docx)
     {
         ArgumentNullException.ThrowIfNull(stream);
-        if (format == DocumentFileFormat.Html) return HtmlReader.Read(stream);
-        if (format is not (DocumentFileFormat.Docx or DocumentFileFormat.Dotx)) throw new NotSupportedException($"Reading {format} files is not supported.");
-        using var buffer = new MemoryStream();
-        stream.CopyTo(buffer);
-        return DocxReader.Read(buffer.ToArray());
+        switch (format)
+        {
+            case DocumentFileFormat.Docx or DocumentFileFormat.Dotx:
+                using (var buffer = new MemoryStream())
+                {
+                    stream.CopyTo(buffer);
+                    return DocxReader.Read(buffer.ToArray());
+                }
+            case DocumentFileFormat.Html:
+                return HtmlReader.Read(stream);
+            case DocumentFileFormat.Text:
+                return TextFormat.Read(stream);
+            default:
+                throw new NotSupportedException($"Reading {format} files is not supported.");
+        }
     }
 
     /// <summary>Creates an empty document with one empty paragraph in the Normal style and one section.</summary>
@@ -101,7 +113,9 @@ public sealed partial class TextDocument
     /// Writes the document. A macro-enabled source stays macro-enabled: <see cref="DocumentFileFormat.Docx"/> then writes a .docm and
     /// <see cref="DocumentFileFormat.Dotx"/> a .dotm file, and the caller chooses the matching file extension (see <see cref="HasMacros"/>).
     /// <see cref="DocumentFileFormat.Html"/> writes a standalone UTF-8 page with images as <c>data:</c> URIs and only <c>http</c>, <c>https</c>,
-    /// <c>mailto</c> and <c>#anchor</c> links; headers, footers and comments are left out.
+    /// <c>mailto</c> and <c>#anchor</c> links; headers, footers and comments are left out. <see cref="DocumentFileFormat.Text"/> writes UTF-8 without
+    /// byte order mark and with CRLF line ends: list items start with their label and a tab, table rows become tab-separated lines and fields their
+    /// displayed text.
     /// </summary>
     /// <param name="target">The stream that receives the file.</param>
     /// <param name="format">The file format.</param>
@@ -110,16 +124,17 @@ public sealed partial class TextDocument
     /// <exception cref="NotSupportedException">The format cannot be written.</exception>
     public void Save(Stream target, DocumentFileFormat format = DocumentFileFormat.Docx)
     {
-        if (format == DocumentFileFormat.Html)
+        if (format is DocumentFileFormat.Docx or DocumentFileFormat.Dotx)
         {
-            ArgumentNullException.ThrowIfNull(target);
-            if (!target.CanWrite) throw new ArgumentException("The stream is not writable.", nameof(target));
-            target.Write(new UTF8Encoding(false).GetBytes(HtmlWriter.Write(this)));
+            DocxWriter.Write(this, target, format == DocumentFileFormat.Dotx);
             return;
         }
 
-        if (format is not (DocumentFileFormat.Docx or DocumentFileFormat.Dotx)) throw new NotSupportedException($"Writing {format} files is not supported.");
-        DocxWriter.Write(this, target, format == DocumentFileFormat.Dotx);
+        if (format is not (DocumentFileFormat.Html or DocumentFileFormat.Text)) throw new NotSupportedException($"Writing {format} files is not supported.");
+        ArgumentNullException.ThrowIfNull(target);
+        if (!target.CanWrite) throw new ArgumentException("The stream is not writable.", nameof(target));
+        if (format == DocumentFileFormat.Html) target.Write(new UTF8Encoding(false).GetBytes(HtmlWriter.Write(this)));
+        else TextFormat.Write(this, target);
     }
 
     /// <summary>Gets the content of an image or other media part.</summary>

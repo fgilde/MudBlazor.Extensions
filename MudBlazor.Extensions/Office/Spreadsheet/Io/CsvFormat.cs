@@ -158,7 +158,7 @@ public static class CsvFormat
         return i > expStart && i == s.Length;
     }
 
-    private static string Decode(Stream stream)
+    internal static string Decode(Stream stream)
     {
         using var copy = new MemoryStream();
         stream.CopyTo(copy);

@@ -26,14 +26,17 @@ internal static class HtmlEncoding
         return buffer.ToArray();
     }
 
-    internal static (Encoding Encoding, int Preamble) Detect(ReadOnlySpan<byte> bytes)
+    internal static (Encoding Encoding, int Preamble) Detect(ReadOnlySpan<byte> bytes) =>
+        Bom(bytes) ?? (Declared(Encoding.Latin1.GetString(bytes[..Math.Min(bytes.Length, Prescan)])) ?? new UTF8Encoding(false), 0);
+
+    internal static (Encoding Encoding, int Preamble)? Bom(ReadOnlySpan<byte> bytes)
     {
         if (bytes.StartsWith((ReadOnlySpan<byte>)[0xEF, 0xBB, 0xBF])) return (new UTF8Encoding(false), 3);
         if (bytes.StartsWith((ReadOnlySpan<byte>)[0xFF, 0xFE, 0, 0])) return (new UTF32Encoding(false, false), 4);
         if (bytes.StartsWith((ReadOnlySpan<byte>)[0xFF, 0xFE])) return (Encoding.Unicode, 2);
         if (bytes.StartsWith((ReadOnlySpan<byte>)[0xFE, 0xFF])) return (Encoding.BigEndianUnicode, 2);
         if (bytes.StartsWith((ReadOnlySpan<byte>)[0, 0, 0xFE, 0xFF])) return (new UTF32Encoding(true, false), 4);
-        return (Declared(Encoding.Latin1.GetString(bytes[..Math.Min(bytes.Length, Prescan)])) ?? new UTF8Encoding(false), 0);
+        return null;
     }
 
     private static Encoding Declared(string head)
