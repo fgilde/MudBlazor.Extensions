@@ -205,6 +205,7 @@ internal sealed class InlineXml
             "pict" => Opaque("vml"),
             "object" => Opaque("ole"),
             "drawing" => Drawing(node),
+            "ruby" => Ruby(node),
             _ => Opaque("other")
         };
     }
@@ -221,10 +222,12 @@ internal sealed class InlineXml
             "sdt" => Opaque("contentControl", Text(node)),
             "smartTag" => Opaque("smartTag", Text(node)),
             "customXml" => Opaque("customXml", Text(node)),
-            "ruby" => Opaque("ruby", node.Element(W + "rubyBase") is { } rubyBase ? Text(rubyBase) : ""),
+            "ruby" => Ruby(node),
             _ => Opaque("other")
         };
     }
+
+    private static OpaqueInline Ruby(XElement ruby) => Opaque("ruby", ruby.Element(W + "rubyBase") is { } rubyBase ? Text(rubyBase) : "");
 
     private Inline Drawing(XElement drawing)
     {

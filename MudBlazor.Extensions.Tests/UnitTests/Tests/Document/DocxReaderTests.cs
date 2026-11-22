@@ -135,7 +135,7 @@ public class DocxReaderTests
         Assert.Equal("PAGE", field.Instruction);
         Assert.Equal("3", field.DisplayText);
         Assert.Equal(5, field.Sources.Count);
-        Assert.Equal("Page ￼ of", paragraph.Text);
+        Assert.Equal("Page \uFFFC of", paragraph.Text);
 
         var simple = Assert.IsType<OpaqueInline>(Assert.Single(Para("<w:p><w:fldSimple w:instr=\" NUMPAGES \"><w:r><w:t>7</w:t></w:r></w:fldSimple></w:p>").Inlines));
         Assert.Equal(("field", "NUMPAGES", "7"), (simple.Kind, simple.Instruction, simple.DisplayText));
@@ -157,10 +157,10 @@ public class DocxReaderTests
         Assert.Equal("fieldStart", start.Kind);
         Assert.Equal("TOC \\o \"1-3\" \\h", start.Instruction);
         Assert.Equal(3, start.Sources.Count);
-        Assert.Equal("￼Intro", paragraphs[0].Text);
-        Assert.Equal("Body￼", paragraphs[1].Text);
+        Assert.Equal("\uFFFCIntro", paragraphs[0].Text);
+        Assert.Equal("Body\uFFFC", paragraphs[1].Text);
         Assert.Equal("field", ((OpaqueInline)paragraphs[1].Inlines[1]).Kind);
-        Assert.Equal("End￼", paragraphs[2].Text);
+        Assert.Equal("End\uFFFC", paragraphs[2].Text);
         Assert.Equal("fieldEnd", ((OpaqueInline)paragraphs[2].Inlines[1]).Kind);
         Assert.Equal("After", paragraphs[3].Text);
     }
@@ -237,7 +237,7 @@ public class DocxReaderTests
 
         Assert.Equal(["chart", "shape", "diagram", "vml", "ole", "symbol", "other"], paragraph.Inlines.Cast<OpaqueInline>().Select(o => o.Kind));
         Assert.Equal("", ((OpaqueInline)paragraph.Inlines[5]).DisplayText);
-        Assert.Equal("￼￼￼￼￼￼￼", paragraph.Text);
+        Assert.Equal("\uFFFC\uFFFC\uFFFC\uFFFC\uFFFC\uFFFC\uFFFC", paragraph.Text);
     }
 
     [Fact]
@@ -250,7 +250,7 @@ public class DocxReaderTests
         var first = (Paragraph)document.Blocks[0];
         var second = (Paragraph)document.Blocks[1];
 
-        Assert.Equal("a￼￼￼", first.Text);
+        Assert.Equal("a\uFFFC\uFFFC\uFFFC", first.Text);
         Assert.Equal([("footnote", "1"), ("endnote", "i"), ("footnote", "*")], first.Inlines.Skip(1).Cast<OpaqueInline>().Select(o => (o.Kind, o.DisplayText)));
         Assert.Equal("FootnoteReference", first.Inlines[1].Format.StyleId);
         Assert.Equal([("footnote", "2"), ("endnote", "ii")], second.Inlines.Cast<OpaqueInline>().Select(o => (o.Kind, o.DisplayText)));
@@ -268,7 +268,7 @@ public class DocxReaderTests
         Assert.Equal([("contentControl", "Jane"), ("smartTag", "Berlin"), ("customXml", "Data"), ("equation", "a=b+1")],
             paragraph.Inlines.OfType<OpaqueInline>().Select(o => (o.Kind, o.DisplayText)));
         Assert.Equal(["permStart", "permEnd"], paragraph.Inlines.OfType<Marker>().Select(m => m.Kind));
-        Assert.Equal("x￼￼￼￼", paragraph.Text);
+        Assert.Equal("x\uFFFC\uFFFC\uFFFC\uFFFC", paragraph.Text);
     }
 
     [Fact]
@@ -345,7 +345,7 @@ public class DocxReaderTests
     public void Reader_DirAndBdo_Descended_RubyShowsBaseText()
     {
         var paragraph = Para("<w:p><w:dir w:val=\"rtl\"><w:r><w:t>abc</w:t></w:r></w:dir><w:bdo w:val=\"ltr\"><w:r><w:t>de</w:t></w:r></w:bdo>" +
-                             "<w:ruby><w:rubyPr/><w:rt><w:r><w:t>top</w:t></w:r></w:rt><w:rubyBase><w:r><w:t>base</w:t></w:r></w:rubyBase></w:ruby></w:p>");
+                             "<w:r><w:ruby><w:rubyPr/><w:rt><w:r><w:t>top</w:t></w:r></w:rt><w:rubyBase><w:r><w:t>base</w:t></w:r></w:rubyBase></w:ruby></w:r></w:p>");
 
         Assert.Equal("abcde" + (char)0xFFFC, paragraph.Text);
         Assert.Equal(["dir", "bdo"], paragraph.Inlines.Take(2).Select(i => i.Source.Parent!.Name.LocalName));
