@@ -44,6 +44,8 @@ internal sealed class DocxBuilder
 
     public bool Template { get; set; }
 
+    public string MainContentType { get; set; }
+
     public string RawDocument { get; set; }
 
     public DocxBuilder RawRelationship(string xml)
@@ -74,8 +76,16 @@ internal sealed class DocxBuilder
                 "<a:accent2><a:srgbClr val=\"ED7D31\"/></a:accent2><a:accent3><a:srgbClr val=\"A5A5A5\"/></a:accent3><a:accent4><a:srgbClr val=\"FFC000\"/></a:accent4>" +
                 "<a:accent5><a:srgbClr val=\"5B9BD5\"/></a:accent5><a:accent6><a:srgbClr val=\"70AD47\"/></a:accent6><a:hlink><a:srgbClr val=\"0563C1\"/></a:hlink>" +
                 "<a:folHlink><a:srgbClr val=\"954F72\"/></a:folHlink></a:clrScheme>") +
-            $"<a:fontScheme name=\"Office\"><a:majorFont><a:latin typeface=\"{major}\"/></a:majorFont><a:minorFont><a:latin typeface=\"{minor}\"/></a:minorFont></a:fontScheme>" +
-            "</a:themeElements></a:theme>");
+            $"<a:fontScheme name=\"Office\"><a:majorFont><a:latin typeface=\"{major}\"/><a:ea typeface=\"\"/><a:cs typeface=\"\"/></a:majorFont>" +
+            $"<a:minorFont><a:latin typeface=\"{minor}\"/><a:ea typeface=\"\"/><a:cs typeface=\"\"/></a:minorFont></a:fontScheme>" +
+            "<a:fmtScheme name=\"Office\">" +
+            $"<a:fillStyleLst>{Repeat(Fill)}</a:fillStyleLst><a:lnStyleLst>{Repeat($"<a:ln w=\"6350\">{Fill}</a:ln>")}</a:lnStyleLst>" +
+            $"<a:effectStyleLst>{Repeat("<a:effectStyle><a:effectLst/></a:effectStyle>")}</a:effectStyleLst><a:bgFillStyleLst>{Repeat(Fill)}</a:bgFillStyleLst>" +
+            "</a:fmtScheme></a:themeElements></a:theme>");
+
+    private const string Fill = "<a:solidFill><a:schemeClr val=\"phClr\"/></a:solidFill>";
+
+    private static string Repeat(string xml) => xml + xml + xml;
 
     public DocxBuilder CoreProperties(string xml)
     {
@@ -122,7 +132,7 @@ internal sealed class DocxBuilder
         using var stream = new MemoryStream();
         using (var zip = new ZipArchive(stream, ZipArchiveMode.Create, true))
         {
-            var overrides = new StringBuilder($"<Override PartName=\"{MainPart}\" ContentType=\"{Wml}{(Template ? "template" : "document")}.main+xml\"/>");
+            var overrides = new StringBuilder($"<Override PartName=\"{MainPart}\" ContentType=\"{MainContentType ?? Wml + (Template ? "template" : "document") + ".main+xml"}\"/>");
             foreach (var (part, (_, contentType)) in _parts) overrides.Append($"<Override PartName=\"{part}\" ContentType=\"{contentType}\"/>");
             Entry(zip, "[Content_Types].xml",
                 "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\"><Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\"/>" +

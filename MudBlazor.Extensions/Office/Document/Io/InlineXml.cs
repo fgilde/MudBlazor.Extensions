@@ -95,7 +95,11 @@ internal sealed class InlineXml
             if (child.Name.Namespace == W)
                 switch (child.Name.LocalName)
                 {
-                    case "pPr" or "del" or "moveFrom":
+                    case "pPr":
+                        continue;
+                    case "del" or "moveFrom":
+                        foreach (var marker in child.Descendants().Where(e => e.Name.Namespace == W && e.Name.LocalName is "bookmarkStart" or "bookmarkEnd" or "commentRangeStart" or "commentRangeEnd"))
+                            items.Add(new Item(marker, null, null, link));
                         continue;
                     case "r":
                         var format = Run(child.Element(W + "rPr")) ?? new RunFormat();
@@ -155,6 +159,7 @@ internal sealed class InlineXml
         {
             Instruction = instruction.ToString().Trim(),
             Sources = items.Skip(from).Take(to - from + 1).Select(i => i.Run ?? i.Node).Distinct().ToList(),
+            Nodes = items.Skip(from).Take(to - from + 1).Select(i => i.Node).ToList(),
             Source = first.Run ?? first.Node,
             Format = format ?? first.Format ?? new RunFormat(),
             Link = first.Link
@@ -170,7 +175,12 @@ internal sealed class InlineXml
         if (inline is OpaqueInline { Kind: "footnote" or "endnote" } note && IsOn(node.Attribute(W + "customMarkFollows")))
         {
             var mark = index + 1 < items.Count && items[index + 1] is { Run: not null } next && next.Node.Name == W + "t" ? items[++index] : (Item?)null;
-            inline = note with { DisplayText = mark?.Node.Value ?? "", Sources = new[] { item.Run, mark?.Run }.Where(r => r != null).Distinct().ToList() };
+            inline = note with
+            {
+                DisplayText = mark?.Node.Value ?? "",
+                Sources = new[] { item.Run, mark?.Run }.Where(r => r != null).Distinct().ToList(),
+                Nodes = new[] { node, mark?.Node }.Where(n => n != null).ToList()
+            };
         }
         else if (inline is OpaqueInline { Kind: "footnote" })
             inline = ((OpaqueInline)inline) with { DisplayText = (++_footnotes).ToString(CultureInfo.InvariantCulture) };
@@ -218,7 +228,7 @@ internal sealed class InlineXml
         if (Markers.Contains(name)) return new Marker(name) { Name = (string)node.Attribute(W + "name") };
         return name switch
         {
-            "fldSimple" => Opaque("field", Text(node)) with { Instruction = ((string)node.Attribute(W + "instr"))?.Trim(), Sources = [node] },
+            "fldSimple" => Opaque("field", Text(node)) with { Instruction = ((string)node.Attribute(W + "instr"))?.Trim(), Sources = [node], Nodes = [node] },
             "sdt" => Opaque("contentControl", Text(node)),
             "smartTag" => Opaque("smartTag", Text(node)),
             "customXml" => Opaque("customXml", Text(node)),

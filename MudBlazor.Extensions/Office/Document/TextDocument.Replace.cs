@@ -116,7 +116,7 @@ public sealed partial class TextDocument
 
                 paragraphs.Add(k == 0
                     ? Truncated(first, inlines)
-                    : new Paragraph { Id = document.NewId(), Format = first.Format, MarkFormat = first.MarkFormat, Inlines = inlines });
+                    : new Paragraph { Id = document.NewId(), Format = first.Format, MarkFormat = first.MarkFormat, Inlines = inlines, Source = first.Source });
             }
 
             if (adjustLast != null) paragraphs[^1] = adjustLast(paragraphs[^1]);

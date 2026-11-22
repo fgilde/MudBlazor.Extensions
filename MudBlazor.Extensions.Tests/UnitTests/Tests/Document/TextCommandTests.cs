@@ -138,7 +138,7 @@ public class TextCommandTests
         var paragraph = (Paragraph)document.Blocks[0];
         Assert.Equal("HelXrld", paragraph.Text);
         Assert.Equal(["r Hel", "m bookmarkStart", "r X", "r rld", "m bookmarkEnd"], paragraph.Inlines.Select(Short));
-        Assert.Null(paragraph.Inlines[2].Source);
+        Assert.Same(paragraph.Inlines[0].Source, paragraph.Inlines[2].Source);
         Assert.NotNull(paragraph.Inlines[3].Source);
         Assert.Equal("Mark", ((Marker)paragraph.Inlines[1]).Name);
     }
@@ -439,7 +439,7 @@ public class TextCommandTests
     }
 
     [Fact]
-    public void Split_SecondHalfHasNoSource()
+    public void Split_SecondHalfInheritsSource()
     {
         var document = new DocxBuilder().Body("<w:p><w:pPr><w:jc w:val=\"center\"/></w:pPr><w:r><w:t>abcd</w:t></w:r></w:p>").Load();
         var original = (Paragraph)document.Blocks[0];
@@ -449,7 +449,7 @@ public class TextCommandTests
 
         var (first, second) = ((Paragraph)document.Blocks[0], (Paragraph)document.Blocks[1]);
         Assert.Same(original.Source, first.Source);
-        Assert.Null(second.Source);
+        Assert.Same(original.Source, second.Source);
         Assert.Equal(original.Format, second.Format);
         Assert.Equal(["ab", "cd"], new[] { first.Text, second.Text });
         Assert.Same(original.Inlines[0].Source, second.Inlines[0].Source);

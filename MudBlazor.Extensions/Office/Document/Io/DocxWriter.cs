@@ -15,7 +15,9 @@ public static partial class DocxWriter
     /// <summary>Writes a document. Nothing is written to the stream if writing fails.</summary>
     /// <param name="document">The document.</param>
     /// <param name="target">The stream that receives the file.</param>
-    /// <param name="asTemplate">True to write a template (.dotx), false to write a document (.docx), null to keep the type of the loaded file.</param>
+    /// <param name="asTemplate">
+    /// True to write a template, false to write a document, null to keep the type of the loaded file. A macro-enabled file stays macro-enabled (.docm/.dotm).
+    /// </param>
     /// <exception cref="ArgumentNullException">The document or the stream is null.</exception>
     /// <exception cref="ArgumentException">The stream is not writable.</exception>
     /// <exception cref="InvalidOperationException">The document was not loaded or created by <see cref="TextDocument"/>.</exception>
@@ -42,8 +44,7 @@ public static partial class DocxWriter
 
         internal void Run()
         {
-            if (asTemplate is { } template && _opc.ContentType(package.MainPart) != Wml + (template ? "template" : "document") + ".main+xml")
-                SetOverride(package.MainPart, Wml + (template ? "template" : "document") + ".main+xml");
+            if (asTemplate is { } template && MainContentType(_opc.ContentType(package.MainPart), template) is { } type) SetOverride(package.MainPart, type);
             WriteBody();
             WriteHeadersFooters();
             WriteProperties();
@@ -54,6 +55,13 @@ public static partial class DocxWriter
             }
 
             foreach (var part in _opc.PartNames.Where(p => !_done.Contains(p))) writer.Copy(part);
+        }
+
+        private static string MainContentType(string current, bool template)
+        {
+            if (current != null && current.Contains(".template", StringComparison.Ordinal) == template) return null;
+            if (current?.Contains("macroEnabled", StringComparison.Ordinal) != true) return Wml + (template ? "template" : "document") + ".main+xml";
+            return template ? "application/vnd.ms-word.template.macroEnabledTemplate.main+xml" : "application/vnd.ms-word.document.macroEnabled.main+xml";
         }
 
         private void WriteBody()
@@ -119,9 +127,12 @@ public static partial class DocxWriter
 internal sealed class DocxWriteContext
 {
     private const string HyperlinkType = DocxWriter.RelNs + "/hyperlink";
+    private static readonly XNamespace W14 = "http://schemas.microsoft.com/office/word/2010/wordml";
     private readonly DocxPackage _package;
     private readonly HashSet<object> _originals = new(ReferenceEqualityComparer.Instance);
-    private readonly Dictionary<XElement, List<Inline>> _groups = new();
+    private readonly Dictionary<XElement, List<Inline>> _owned = new();
+    private readonly Dictionary<object, Inline> _tokens = new();
+    private readonly HashSet<XElement> _claimed = new();
     private List<OpcRelationship> _relationships;
     private IReadOnlyDictionary<string, Section> _sectionEnds;
 
@@ -133,10 +144,16 @@ internal sealed class DocxWriteContext
 
     internal bool RelationshipsChanged { get; private set; }
 
-    internal static XElement Key(Inline inline) => inline is OpaqueInline { Sources: [var first, ..] } ? first : inline.Source;
+    internal static IEnumerable<(XElement Owner, XElement Node)> Parts(Inline inline)
+    {
+        if (inline is OpaqueInline { Nodes: { } nodes }) return nodes.Select(n => (n.Parent is { } run && run.Name == W + "r" ? run : n, n));
+        return inline.Source == null ? [] : [(inline.Source, inline.Node)];
+    }
 
-    internal static IEnumerable<XElement> Sources(Inline inline) =>
-        inline is OpaqueInline { Sources: not null } opaque ? opaque.Sources : inline.Source == null ? [] : [inline.Source];
+    internal static IEnumerable<XAttribute> Attributes(XElement source, bool first) =>
+        first
+            ? source.Attributes()
+            : source.Attributes().Where(a => a.Name != W14 + "paraId" && a.Name != W14 + "textId" && !(a.Name.Namespace == W && a.Name.LocalName.StartsWith("rsid", StringComparison.Ordinal)));
 
     internal void Begin(List<OpcRelationship> relationships, IReadOnlyDictionary<string, Section> sectionEnds)
     {
@@ -147,7 +164,14 @@ internal sealed class DocxWriteContext
 
     internal bool IsOriginal(object item) => _originals.Contains(item);
 
-    internal bool IsOriginalGroup(XElement key, IReadOnlyList<Inline> group) => _groups.TryGetValue(key, out var original) && original.SequenceEqual(group);
+    internal bool IsIntact(XElement owner, IReadOnlyList<Inline> inlines) => _owned.TryGetValue(owner, out var original) && original.SequenceEqual(inlines);
+
+    internal bool Claim(XElement source) => _claimed.Add(source);
+
+    internal (RunFormat Old, RunFormat New)? FormatChange(Inline inline) =>
+        inline is not (TextRun or Tab or Break) && _tokens.TryGetValue(TokenKey(inline), out var original) && original.Format != inline.Format
+            ? (original.Format ?? new RunFormat(), inline.Format ?? new RunFormat())
+            : null;
 
     internal XElement Block(Block block, bool topLevel) => block switch
     {
@@ -161,14 +185,16 @@ internal sealed class DocxWriteContext
 
     internal XElement Hyperlink(Hyperlink link, IEnumerable<XElement> content)
     {
-        if (link.Source != null) return new XElement(link.Source.Name, link.Source.Attributes(), content);
-        return new XElement(W + "hyperlink",
-            link.Target == null ? null : new XAttribute(InlineXml.R + "id", External(link.Target)),
-            link.Anchor == null ? null : new XAttribute(W + "anchor", link.Anchor),
-            link.Tooltip == null ? null : new XAttribute(W + "tooltip", link.Tooltip),
-            new XAttribute(W + "history", "1"),
-            content);
+        var element = link.Source != null ? new XElement(link.Source.Name, link.Source.Attributes()) : new XElement(W + "hyperlink", new XAttribute(W + "history", "1"));
+        var target = (string)element.Attribute(InlineXml.R + "id") is { } id ? _relationships.FirstOrDefault(r => r.Id == id)?.Target : null;
+        if (link.Source == null || target != link.Target) element.SetAttributeValue(InlineXml.R + "id", link.Target == null ? null : External(link.Target));
+        if ((string)element.Attribute(W + "anchor") != link.Anchor) element.SetAttributeValue(W + "anchor", link.Anchor);
+        if ((string)element.Attribute(W + "tooltip") != link.Tooltip) element.SetAttributeValue(W + "tooltip", link.Tooltip);
+        element.Add(content);
+        return element;
     }
+
+    private static object TokenKey(Inline inline) => inline is OpaqueInline { Nodes: { } nodes } ? nodes : (inline.Source, inline.Node);
 
     private string External(string target)
     {
@@ -184,11 +210,14 @@ internal sealed class DocxWriteContext
         _originals.Add(block);
         if (block is Paragraph paragraph)
             foreach (var inline in paragraph.Inlines)
-                if (Key(inline) is { } key)
+            {
+                if (inline is not (TextRun or Tab or Break)) _tokens.TryAdd(TokenKey(inline), inline);
+                foreach (var owner in Parts(inline).Select(p => p.Owner).Distinct())
                 {
-                    if (!_groups.TryGetValue(key, out var group)) _groups[key] = group = [];
-                    group.Add(inline);
+                    if (!_owned.TryGetValue(owner, out var list)) _owned[owner] = list = [];
+                    list.Add(inline);
                 }
+            }
 
         if (block is not Table table) return;
         foreach (var row in table.Rows)

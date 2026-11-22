@@ -36,6 +36,9 @@ public partial class DocxWriterTests
         var after = Body(output).Element(W + "tbl")!;
         Assert.Equal(before.Elements().Select(e => e.Name), after.Elements().Select(e => e.Name));
         Assert.Equal("r1aX1b", after.Element(W + "customXml")!.Value);
+        Assert.Equal("row", (string)after.Element(W + "customXml")!.Attribute(W + "element"));
+        Assert.True(XNode.DeepEquals(before.Element(W + "tr")!.Element(W + "sdt")!.Element(W + "sdtPr"), after.Element(W + "tr")!.Element(W + "sdt")!.Element(W + "sdtPr")));
+        Assert.True(XNode.DeepEquals(before.Element(W + "sdt")!.Element(W + "sdtPr"), after.Element(W + "sdt")!.Element(W + "sdtPr")));
         Assert.Equal("X2a", after.Element(W + "tr")!.Element(W + "sdt")!.Value);
         Assert.Equal("X3ar3b", after.Element(W + "sdt")!.Value);
         Assert.True(XNode.DeepEquals(before.Elements(W + "tr").Last(), after.Elements(W + "tr").Last()));

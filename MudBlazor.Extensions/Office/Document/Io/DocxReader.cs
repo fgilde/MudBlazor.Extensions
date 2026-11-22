@@ -47,7 +47,7 @@ internal static partial class DocxReader
         var contentType = opc.ContentType(main);
         var document = new TextDocument
         {
-            IsTemplate = contentType?.Contains(".template.main+xml", StringComparison.Ordinal) == true,
+            IsTemplate = contentType?.Contains(".template.", StringComparison.Ordinal) == true,
             EvenAndOddHeaders = settings?.Root is { } root && OnOff(root, "evenAndOddHeaders") == true,
             Styles = StylesXml.Read(styles),
             Numbering = NumberingXml.Read(numbering),

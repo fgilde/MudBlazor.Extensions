@@ -34183,7 +34183,9 @@
             <summary>Writes a document. Nothing is written to the stream if writing fails.</summary>
             <param name="document">The document.</param>
             <param name="target">The stream that receives the file.</param>
-            <param name="asTemplate">True to write a template (.dotx), false to write a document (.docx), null to keep the type of the loaded file.</param>
+            <param name="asTemplate">
+            True to write a template, false to write a document, null to keep the type of the loaded file. A macro-enabled file stays macro-enabled (.docm/.dotm).
+            </param>
             <exception cref="T:System.ArgumentNullException">The document or the stream is null.</exception>
             <exception cref="T:System.ArgumentException">The stream is not writable.</exception>
             <exception cref="T:System.InvalidOperationException">The document was not loaded or created by <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/>.</exception>

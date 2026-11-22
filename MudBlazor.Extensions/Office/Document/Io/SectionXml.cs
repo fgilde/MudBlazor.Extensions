@@ -36,7 +36,7 @@ internal static class SectionXml
         var source = section.Source;
         var sectPr = source != null ? new XElement(source) : new XElement(W + "sectPr");
         var current = Read(sectPr, null, null, headerIds);
-        if (source == null || current.Page != section.Page) SetPage(sectPr, section.Page);
+        if (source == null || current.Page != section.Page) SetPage(sectPr, section.Page, current.Page.Width != section.Page.Width || current.Page.Height != section.Page.Height);
         if (current.Start != section.Start)
             SetVal(sectPr, "type", section.Start switch
             {
@@ -64,9 +64,10 @@ internal static class SectionXml
     private static bool Same(IReadOnlyDictionary<HeaderFooterType, string> a, IReadOnlyDictionary<HeaderFooterType, string> b) =>
         a.Count == b.Count && a.All(r => b.TryGetValue(r.Key, out var id) && id == r.Value);
 
-    private static void SetPage(XElement sectPr, PageSetup page)
+    private static void SetPage(XElement sectPr, PageSetup page, bool resized)
     {
         var size = Ensure(sectPr, "pgSz", Order);
+        if (resized) size.SetAttributeValue(W + "code", null);
         size.SetAttributeValue(W + "w", Number(page.Width));
         size.SetAttributeValue(W + "h", Number(page.Height));
         size.SetAttributeValue(W + "orient", page.Orientation == PageOrientation.Landscape ? "landscape" : null);

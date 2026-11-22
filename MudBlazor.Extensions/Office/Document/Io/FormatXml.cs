@@ -169,9 +169,10 @@ internal static class FormatXml
         "divId", "cnfStyle", "rPr", "sectPr", "pPrChange"
     ];
 
-    internal static void PatchRun(XElement rPr, RunFormat format)
+    internal static void PatchRun(XElement rPr, RunFormat format) => PatchRun(rPr, Run(rPr), format);
+
+    internal static void PatchRun(XElement rPr, RunFormat current, RunFormat format)
     {
-        var current = Run(rPr);
         if (current.StyleId != format.StyleId) SetVal(rPr, "rStyle", format.StyleId, RunOrder);
         if (current.Font != format.Font) SetFont(rPr, format.Font);
         if (current.Bold != format.Bold) SetOnOff(rPr, "b", format.Bold, RunOrder);

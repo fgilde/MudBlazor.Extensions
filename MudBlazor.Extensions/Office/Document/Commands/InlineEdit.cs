@@ -1,4 +1,5 @@
 using System.Text;
+using System.Xml.Linq;
 
 namespace MudBlazor.Extensions.Office.Document;
 
@@ -50,14 +51,16 @@ internal static class InlineEdit
         return null;
     }
 
-    public static (RunFormat Format, Hyperlink Link) InsertionStyle(Paragraph paragraph, int offset)
+    public static (RunFormat Format, Hyperlink Link, XElement Source) InsertionStyle(Paragraph paragraph, int offset)
     {
         var before = offset > 0 ? At(paragraph, offset - 1) : null;
         var after = At(paragraph, offset);
         var link = before?.Link != null && ReferenceEquals(before.Link, after?.Link) ? before.Link : null;
         var source = before ?? after;
-        return (Unlinked(source?.Format ?? paragraph.MarkFormat ?? new RunFormat(), link, source), link);
+        return (Unlinked(source?.Format ?? paragraph.MarkFormat ?? new RunFormat(), link, source), link, RunOf(source));
     }
+
+    public static XElement RunOf(Inline inline) => inline?.Source is { } source && source.Name == FormatXml.W + "r" ? source : null;
 
     public static RunFormat Unlinked(RunFormat format, Hyperlink link, Inline origin) =>
         origin?.Link != null && link == null && format.StyleId == HyperlinkStyle ? format with { StyleId = null } : format;
@@ -74,10 +77,10 @@ internal static class InlineEdit
         return result;
     }
 
-    public static IReadOnlyList<IReadOnlyList<Inline>> Lines(string text, RunFormat format, Hyperlink link) =>
-        text.Replace("\r\n", "\n").Replace('\r', '\n').Replace("\uFFFC", "").Split('\n').Select(line => Line(line, format, link)).ToList();
+    public static IReadOnlyList<IReadOnlyList<Inline>> Lines(string text, RunFormat format, Hyperlink link, XElement source) =>
+        text.Replace("\r\n", "\n").Replace('\r', '\n').Replace("\uFFFC", "").Split('\n').Select(line => Line(line, format, link, source)).ToList();
 
-    private static IReadOnlyList<Inline> Line(string line, RunFormat format, Hyperlink link)
+    private static IReadOnlyList<Inline> Line(string line, RunFormat format, Hyperlink link, XElement source)
     {
         var inlines = new List<Inline>();
         var run = new StringBuilder();
@@ -90,7 +93,9 @@ internal static class InlineEdit
             }
 
             Flush();
-            inlines.Add(c == '\t' ? new Tab { Format = format, Link = link } : new Break(c == '\v' ? BreakKind.Line : BreakKind.Page) { Format = format, Link = link });
+            inlines.Add(c == '\t'
+                ? new Tab { Format = format, Link = link, Source = source }
+                : new Break(c == '\v' ? BreakKind.Line : BreakKind.Page) { Format = format, Link = link, Source = source });
         }
 
         Flush();
@@ -98,7 +103,7 @@ internal static class InlineEdit
 
         void Flush()
         {
-            if (run.Length > 0) inlines.Add(new TextRun(run.ToString()) { Format = format, Link = link });
+            if (run.Length > 0) inlines.Add(new TextRun(run.ToString()) { Format = format, Link = link, Source = source });
             run.Clear();
         }
     }

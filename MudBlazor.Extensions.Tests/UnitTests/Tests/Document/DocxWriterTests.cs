@@ -87,6 +87,7 @@ public partial class DocxWriterTests
 
         Assert.Contains("ONner", Body(edited).Value);
         Assert.True(XNode.DeepEquals(OpcAssert.Xml(source, MainPart), OpcAssert.Xml(output, MainPart)));
+        AssertConsistent(output);
         AssertConsistent(edited);
     }
 
@@ -138,6 +139,7 @@ public partial class DocxWriterTests
         Assert.True(XNode.DeepEquals(Body(source).Descendants(W + "rPr").Single(), written.Element(W + "rPr")));
         Assert.Equal("Hello there", written.Element(W + "t")!.Value);
         Assert.Equal("00D4E5F6", (string)written.Attribute(W + "rsidRPr"));
+        AssertConsistent(output);
     }
 
     [Fact]
@@ -172,7 +174,10 @@ public partial class DocxWriterTests
 
         document.Execute(new ReplaceTextCommand(Range(document, id, 4, id, 7), ""));
 
-        Assert.Equal("one  three", Body(Save(document)).Descendants(W + "t").Single().Value);
+        var output = Save(document);
+
+        Assert.Equal("one  three", Body(output).Descendants(W + "t").Single().Value);
+        AssertConsistent(output);
     }
 
     [Fact]
@@ -312,10 +317,12 @@ public partial class DocxWriterTests
         var id = document.Blocks[0].Id;
 
         document.Execute(new ReplaceTextCommand(Range(document, id, 0, id, 0), " lead\na  b\nplain\ntrail "));
-        var texts = Body(Save(document)).Descendants(W + "t").ToList();
+        var output = Save(document);
+        var texts = Body(output).Descendants(W + "t").ToList();
 
         Assert.Equal([" lead", "a  b", "plain", "trail "], texts.Select(t => t.Value));
         Assert.Equal(["preserve", "preserve", null, "preserve"], texts.Select(t => (string)t.Attribute(XNamespace.Xml + "space")));
+        AssertConsistent(output);
     }
 
     [Fact]
@@ -384,12 +391,14 @@ public partial class DocxWriterTests
         var id = document.Blocks[0].Id;
 
         document.Execute(new SetRunFormatCommand(Range(document, id, 0, id, 1), f => f with { Font = "theme:minorHAnsi" }, "Font"));
-        var fonts = Body(Save(document)).Descendants(W + "rFonts").Single();
+        var output = Save(document);
+        var fonts = Body(output).Descendants(W + "rFonts").Single();
 
         Assert.Equal("minorHAnsi", (string)fonts.Attribute(W + "asciiTheme"));
         Assert.Equal("minorHAnsi", (string)fonts.Attribute(W + "hAnsiTheme"));
         Assert.Equal("Arial", (string)fonts.Attribute(W + "cs"));
         Assert.DoesNotContain(fonts.Attributes(), a => a.Value.StartsWith("theme:", StringComparison.Ordinal));
+        AssertConsistent(output);
     }
 
     [Fact]
@@ -404,6 +413,7 @@ public partial class DocxWriterTests
 
         Assert.True(XNode.DeepEquals(Body(source).Descendants(W + "pPr").Single(), Body(output).Descendants(W + "pPr").Single()));
         Assert.Equal("Item", Text(Body(output).Element(W + "p")!));
+        AssertConsistent(output);
     }
 
     [Fact]

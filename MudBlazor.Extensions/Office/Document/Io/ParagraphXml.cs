@@ -7,6 +7,8 @@ namespace MudBlazor.Extensions.Office.Document;
 
 internal static class ParagraphXml
 {
+    private const char ObjectReplacement = (char)0xFFFC;
+
     internal static Block Read(XElement paragraph, InlineXml inlines)
     {
         var properties = paragraph.Element(W + "pPr");
@@ -20,11 +22,13 @@ internal static class ParagraphXml
     internal static XElement Write(Paragraph paragraph, DocxWriteContext context, bool topLevel)
     {
         var source = paragraph.Source;
+        var first = source == null || context.Claim(source);
         var sectPr = topLevel ? context.SectionEnd(paragraph.Id) : null;
         if (context.IsOriginal(paragraph))
         {
-            if (!topLevel || XNode.DeepEquals(source.Element(W + "pPr")?.Element(W + "sectPr"), sectPr)) return source;
-            var copy = new XElement(source);
+            if (first && (!topLevel || XNode.DeepEquals(source.Element(W + "pPr")?.Element(W + "sectPr"), sectPr))) return source;
+            var copy = new XElement(source.Name, DocxWriteContext.Attributes(source, first), source.Nodes());
+            if (!topLevel) return copy;
             var properties = copy.Element(W + "pPr");
             if (properties == null) copy.AddFirst(properties = new XElement(W + "pPr"));
             SetSectionEnd(properties, sectPr);
@@ -32,7 +36,7 @@ internal static class ParagraphXml
             return copy;
         }
 
-        var element = new XElement(W + "p", source?.Attributes());
+        var element = new XElement(W + "p", source == null ? null : DocxWriteContext.Attributes(source, first));
         var pPr = source?.Element(W + "pPr") is { } original ? new XElement(original) : new XElement(W + "pPr");
         pPr.Element(W + "pPrChange")?.Remove();
         pPr.Element(W + "rPr")?.Elements().Where(e => e.Name.Namespace == W && e.Name.LocalName is "ins" or "del" or "moveFrom" or "moveTo" or "rPrChange").Remove();
@@ -53,13 +57,26 @@ internal static class ParagraphXml
 
     private static IEnumerable<XElement> Content(IReadOnlyList<Inline> inlines, DocxWriteContext context)
     {
-        var items = inlines.Where(i => i is not Marker { Kind: "proofErr" }).ToList();
+        var items = inlines.Where(i => i is not Marker
+        {
+            Kind: "proofErr" or "moveFromRangeStart" or "moveFromRangeEnd" or "moveToRangeStart" or "moveToRangeEnd"
+        }).ToList();
+        var owners = new Dictionary<XElement, List<Inline>>();
+        foreach (var inline in items)
+        foreach (var owner in DocxWriteContext.Parts(inline).Select(p => p.Owner).Distinct())
+        {
+            if (!owners.TryGetValue(owner, out var list)) owners[owner] = list = [];
+            list.Add(inline);
+        }
+
+        var written = new HashSet<XElement>();
         for (var i = 0; i < items.Count;)
         {
             var link = items[i].Link;
             var j = i + 1;
             while (j < items.Count && ReferenceEquals(items[j].Link, link)) j++;
-            var content = Wrap(Runs(items.GetRange(i, j - i), context).Select(r => (r.Element, Wrappers(r.Origin))).ToList(), 0);
+            var pieces = items.GetRange(i, j - i).SelectMany(inline => Pieces(inline, owners, written, context));
+            var content = Wrap(pieces.Select(p => (p.Element, Wrappers(p.Origin))).ToList(), 0);
             if (link == null)
                 foreach (var element in content) yield return element;
             else
@@ -68,52 +85,46 @@ internal static class ParagraphXml
         }
     }
 
-    private static IEnumerable<(XElement Element, XElement Origin)> Runs(List<Inline> inlines, DocxWriteContext context)
+    private static IEnumerable<(XElement Element, XElement Origin)> Pieces(Inline inline, Dictionary<XElement, List<Inline>> owners, HashSet<XElement> written,
+        DocxWriteContext context)
     {
-        for (var i = 0; i < inlines.Count;)
+        var parts = DocxWriteContext.Parts(inline).ToList();
+        if (parts.Count == 0)
         {
-            var key = DocxWriteContext.Key(inlines[i]);
-            var j = i + 1;
-            while (key != null && j < inlines.Count && DocxWriteContext.Key(inlines[j]) == key) j++;
-            var group = inlines.GetRange(i, j - i);
-            if (key != null && context.IsOriginalGroup(key, group))
-                foreach (var source in group.SelectMany(DocxWriteContext.Sources).Distinct())
-                    yield return (Final(source), source);
-            else
-                foreach (var inline in group)
-                foreach (var item in Inline(inline))
-                    yield return item;
-            i = j;
-        }
-    }
-
-    private static IEnumerable<(XElement Element, XElement Origin)> Inline(Inline inline)
-    {
-        if (inline is OpaqueInline { Sources: not null } opaque)
-        {
-            foreach (var source in opaque.Sources) yield return (Final(source), source);
+            if (Content(inline, null) is { Count: > 0 } content) yield return (new XElement(W + "r", RunProperties(null, inline.Format), content), null);
             yield break;
         }
 
-        var run = inline.Source;
-        if (run != null && run.Name != W + "r")
+        var change = context.FormatChange(inline);
+        foreach (var (owner, node) in parts)
         {
-            yield return (run, run);
-            yield break;
+            if (context.IsIntact(owner, owners[owner]))
+            {
+                if (written.Add(owner)) yield return (Final(owner, context.Claim(owner)), owner);
+            }
+            else if (owner.Name != W + "r")
+            {
+                if (written.Add(owner)) yield return (Patched(owner, change, context.Claim(owner)), owner);
+            }
+            else if (Content(inline, node) is { Count: > 0 } content)
+            {
+                var first = context.Claim(owner);
+                var rPr = change is { } c ? Delta(owner.Element(W + "rPr"), c.Old, c.New) : RunProperties(owner.Element(W + "rPr"), inline.Format);
+                yield return (new XElement(W + "r", DocxWriteContext.Attributes(owner, first), rPr, content), owner);
+            }
         }
-
-        var content = inline switch
-        {
-            TextRun text => Text(text.Text),
-            _ when inline.Node != null => inline.Node,
-            Tab => new XElement(W + "tab"),
-            Break { Kind: BreakKind.Line } => new XElement(W + "br"),
-            Break other => new XElement(W + "br", new XAttribute(W + "type", other.Kind == BreakKind.Page ? "page" : "column")),
-            OpaqueInline token => Text(token.DisplayText),
-            _ => null
-        };
-        if (content != null) yield return (new XElement(W + "r", run?.Attributes(), RunProperties(run?.Element(W + "rPr"), inline.Format), content), run);
     }
+
+    private static List<XElement> Content(Inline inline, XElement node) => inline switch
+    {
+        TextRun text => Text(text.Text),
+        _ when node != null => [node],
+        Tab => [new XElement(W + "tab")],
+        Break { Kind: BreakKind.Line } => [new XElement(W + "br")],
+        Break other => [new XElement(W + "br", new XAttribute(W + "type", other.Kind == BreakKind.Page ? "page" : "column"))],
+        OpaqueInline token => Text(token.DisplayText),
+        _ => []
+    };
 
     private static XElement RunProperties(XElement original, RunFormat format)
     {
@@ -123,25 +134,77 @@ internal static class ParagraphXml
         return rPr.HasElements || rPr.HasAttributes ? rPr : null;
     }
 
-    private static XElement Final(XElement source)
+    private static XElement Delta(XElement original, RunFormat old, RunFormat format)
     {
-        if (source.Name != W + "r" || source.Element(W + "rPr")?.Element(W + "rPrChange") == null) return source;
-        var copy = new XElement(source);
-        copy.Element(W + "rPr")!.Element(W + "rPrChange")!.Remove();
+        var rPr = original != null ? new XElement(original) : new XElement(W + "rPr");
+        rPr.Element(W + "rPrChange")?.Remove();
+        PatchRun(rPr, old, format);
+        return rPr.HasElements || rPr.HasAttributes ? rPr : null;
+    }
+
+    private static XElement Patched(XElement element, (RunFormat Old, RunFormat New)? change, bool first)
+    {
+        if (change is not { } c) return Final(element, first);
+        var copy = new XElement(element.Name, DocxWriteContext.Attributes(element, first), element.Nodes());
+        foreach (var run in copy.DescendantsAndSelf().Where(e => e.Name == W + "r" || e.Name == InlineXml.M + "r").ToList())
+        {
+            if (Delta(run.Element(W + "rPr"), c.Old, c.New) is not { } rPr)
+            {
+                run.Element(W + "rPr")?.Remove();
+                continue;
+            }
+
+            if (run.Element(W + "rPr") is { } existing) existing.ReplaceWith(rPr);
+            else if (run.Element(InlineXml.M + "rPr") is { } math) math.AddAfterSelf(rPr);
+            else run.AddFirst(rPr);
+        }
+
         return copy;
     }
 
-    private static XElement Text(string text)
+    private static XElement Final(XElement source, bool first)
     {
+        var tracked = source.Name == W + "r" && source.Element(W + "rPr")?.Element(W + "rPrChange") != null;
+        if (first && !tracked) return source;
+        var copy = new XElement(source.Name, DocxWriteContext.Attributes(source, first), source.Nodes());
+        copy.Element(W + "rPr")?.Element(W + "rPrChange")?.Remove();
+        return copy;
+    }
+
+    private static List<XElement> Text(string text)
+    {
+        var result = new List<XElement>();
+        var run = new StringBuilder();
         text ??= "";
-        var valid = new StringBuilder(text.Length);
         for (var i = 0; i < text.Length; i++)
-            if (XmlConvert.IsXmlChar(text[i])) valid.Append(text[i]);
-            else if (i + 1 < text.Length && XmlConvert.IsXmlSurrogatePair(text[i + 1], text[i])) valid.Append(text, i++, 2);
-        if (valid.Length == 0) return null;
-        var value = valid.ToString();
-        var preserve = value != value.Trim() || value.Contains("  ", StringComparison.Ordinal);
-        return new XElement(W + "t", preserve ? new XAttribute(XNamespace.Xml + "space", "preserve") : null, value);
+        {
+            var c = text[i];
+            if (c is '\t' or '\n' or '\r' or '\v' or '\f')
+            {
+                Flush();
+                if (c == '\r' && i + 1 < text.Length && text[i + 1] == '\n') i++;
+                result.Add(c switch
+                {
+                    '\t' => new XElement(W + "tab"),
+                    '\f' => new XElement(W + "br", new XAttribute(W + "type", "page")),
+                    _ => new XElement(W + "br")
+                });
+            }
+            else if (c != ObjectReplacement && XmlConvert.IsXmlChar(c)) run.Append(c);
+            else if (i + 1 < text.Length && XmlConvert.IsXmlSurrogatePair(text[i + 1], c)) run.Append(text, i++, 2);
+        }
+
+        Flush();
+        return result;
+
+        void Flush()
+        {
+            if (run.Length == 0) return;
+            var value = run.ToString();
+            var preserve = value != value.Trim() || value.Contains("  ", StringComparison.Ordinal);
+            result.Add(new XElement(W + "t", preserve ? new XAttribute(XNamespace.Xml + "space", "preserve") : null, value));
+            run.Clear();
+        }
     }
 
     private static XElement[] Wrappers(XElement origin) =>

@@ -85,6 +85,8 @@ public sealed record OpaqueInline(string Kind, string DisplayText) : Inline
     public string Instruction { get; init; }
 
     internal IReadOnlyList<XElement> Sources { get; init; }
+
+    internal IReadOnlyList<XElement> Nodes { get; init; }
 }
 
 /// <summary>A zero-length element such as a bookmark boundary or a proofing mark.</summary>
