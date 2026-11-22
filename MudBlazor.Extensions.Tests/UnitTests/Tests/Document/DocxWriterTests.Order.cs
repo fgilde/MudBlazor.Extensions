@@ -14,7 +14,7 @@ public partial class DocxWriterTests
     private const char ObjectReplacement = (char)0xFFFC;
 
     private static readonly HashSet<string> DroppedMarkers =
-        ["proofErr", "moveFromRangeStart", "moveFromRangeEnd", "moveToRangeStart", "moveToRangeEnd", "commentRangeStart", "commentRangeEnd"];
+        ["proofErr", "moveFromRangeStart", "moveFromRangeEnd", "moveToRangeStart", "moveToRangeEnd"];
 
     [Fact]
     public void Writer_InsertRightAfterFieldSharingRun_TextInModelOrder()
@@ -157,7 +157,31 @@ public partial class DocxWriterTests
         Assert.False(Load(output).IsTemplate);
     }
 
-    private static string Signature(Paragraph paragraph)
+    [Fact]
+    public void Writer_EditedParagraphWithLiveComment_KeepsCommentRange()
+    {
+        var document = new DocxBuilder()
+            .Comments("<w:comment w:id=\"1\" w:author=\"A\"><w:p><w:r><w:t>note</w:t></w:r></w:p></w:comment>")
+            .Body("<w:p><w:commentRangeStart w:id=\"1\"/><w:r><w:t>hello</w:t></w:r><w:commentRangeEnd w:id=\"1\"/><w:r><w:commentReference w:id=\"1\"/></w:r></w:p>")
+            .Load();
+        var id = document.Blocks[0].Id;
+
+        document.Execute(new ReplaceTextCommand(Range(document, id, 0, id, 1), "J"));
+        var output = Save(document);
+
+        var paragraph = Body(output).Element(W + "p")!;
+        Assert.Equal(["commentRangeStart", "r", "commentRangeEnd", "r"], paragraph.Elements().Select(e => e.Name.LocalName));
+        AssertConsistent(output);
+    }
+
+    private static HashSet<string> CommentReferences(byte[] package)
+    {
+        var opc = OpcPackage.Open(package);
+        return opc.PartNames.Where(p => p.StartsWith("/word/", StringComparison.Ordinal) && p.EndsWith(".xml", StringComparison.Ordinal))
+            .SelectMany(p => opc.ReadXml(p).Descendants(W + "commentReference")).Select(r => (string)r.Attribute(W + "id")).ToHashSet();
+    }
+
+    private static string Signature(Paragraph paragraph, HashSet<string> comments)
     {
         var result = new StringBuilder();
         foreach (var inline in paragraph.Inlines)
@@ -179,9 +203,9 @@ public partial class DocxWriterTests
                     result.Append('\f');
                     break;
                 case Marker marker:
-                    if (marker.Source != null && !DroppedMarkers.Contains(marker.Kind)) result.Append($"<{marker.Kind}>");
-                    break;
-                case InlineImage { Source: null }:
+                    if (marker.Source != null && !DroppedMarkers.Contains(marker.Kind) &&
+                        (marker.Kind is not ("commentRangeStart" or "commentRangeEnd") || comments.Contains((string)marker.Source.Attribute(W + "id"))))
+                        result.Append($"<{marker.Kind}>");
                     break;
                 case OpaqueInline token:
                     result.Append($"[{token.Kind}]");

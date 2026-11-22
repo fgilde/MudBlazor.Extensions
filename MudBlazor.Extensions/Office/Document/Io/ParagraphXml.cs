@@ -107,13 +107,19 @@ internal static class ParagraphXml
         }
     }
 
-    private static bool Silent(Inline inline) => inline.Source == null && inline is Marker or InlineImage;
+    private static bool Silent(Inline inline) => inline.Source == null && inline is Marker;
 
     private static IEnumerable<(XElement Element, XElement Origin)> Pieces(Inline inline, RunState state, DocxWriteContext context)
     {
         var parts = DocxWriteContext.Parts(inline).ToList();
         if (parts.Count == 0)
         {
+            if (inline is InlineImage image)
+            {
+                yield return (new XElement(W + "r", RunProperties(null, inline.Format), context.Drawing(image, null)), null);
+                yield break;
+            }
+
             if (Content(inline, null) is { Count: > 0 } content) yield return (new XElement(W + "r", RunProperties(null, inline.Format), content), null);
             yield break;
         }
@@ -129,7 +135,7 @@ internal static class ParagraphXml
             {
                 if (state.Written.Add(owner)) yield return (Patched(owner, change, context.Claim(owner)), owner);
             }
-            else if (Content(inline, node) is { Count: > 0 } content)
+            else if ((inline is InlineImage picture ? [context.Drawing(picture, node)] : Content(inline, node)) is { Count: > 0 } content)
             {
                 var first = context.Claim(owner);
                 var rPr = inline is TextRun or Tab or Break ? RunProperties(owner.Element(W + "rPr"), inline.Format)

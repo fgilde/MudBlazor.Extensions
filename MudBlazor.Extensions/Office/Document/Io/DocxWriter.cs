@@ -38,6 +38,8 @@ public static partial class DocxWriter
     {
         private readonly OpcPackage _opc = package.Opc;
         private readonly DocxWriteContext _context = new(package);
+        private readonly Dictionary<string, string> _defaults = new(package.Opc.DefaultContentTypes, StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, string> _media = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> _done = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, string> _overrides = new(package.Opc.OverrideContentTypes, StringComparer.OrdinalIgnoreCase);
         private List<OpcRelationship> _mainRelationships;
@@ -49,6 +51,8 @@ public static partial class DocxWriter
             if (asTemplate is { } template && MainContentType(_opc.ContentType(package.MainPart), template) is { } type) SetOverride(package.MainPart, type);
             _mainRelationships = Relationships(package.MainPart);
             _context.Reserve(document.BlockList.Concat(document.HeaderFooterList.SelectMany(h => h.Blocks)));
+            _context.MediaPart = MediaPart;
+            _context.DrawingId = MaxDrawingId();
             WriteStyles();
             WriteNumbering();
             WriteBody();
@@ -57,7 +61,7 @@ public static partial class DocxWriter
             if (_mainRelationshipsChanged) PutRelationships(package.MainPart, _mainRelationships);
             if (_contentTypesChanged)
             {
-                writer.PutContentTypes(_opc.DefaultContentTypes, _overrides);
+                writer.PutContentTypes(_defaults, _overrides);
                 _done.Add("/[Content_Types].xml");
             }
 
@@ -76,7 +80,7 @@ public static partial class DocxWriter
             var final = document.SectionList.LastOrDefault();
             var ends = new Dictionary<string, Section>();
             foreach (var section in document.SectionList.Where(s => s != final && s.LastBlockId != null)) ends.TryAdd(section.LastBlockId, section);
-            _context.Begin(_mainRelationships, ends);
+            _context.Begin(package.MainPart, _mainRelationships, ends);
             var blocks = document.BlockList.Select(b => _context.Block(b, true)).Where(e => e != null).ToList();
             if (final != null && (final.Source != null || !package.Sections.Contains(final, ReferenceEqualityComparer.Instance)))
                 blocks.Add(SectionXml.Write(final, package.HeaderIds));
@@ -96,7 +100,7 @@ public static partial class DocxWriter
                 var original = package.HeadersFooters.FirstOrDefault(h => string.Equals(h.PartName, part.PartName, StringComparison.OrdinalIgnoreCase));
                 if (original == null || TextDocument.SameItems(original.Blocks, part.Blocks) || _done.Contains(part.PartName)) continue;
                 var rels = Relationships(part.PartName);
-                _context.Begin(rels, null);
+                _context.Begin(part.PartName, rels, null);
                 var xml = _opc.ReadXml(part.PartName);
                 var blocks = part.Blocks.Select(b => _context.Block(b, false)).Where(e => e != null).ToList();
                 if (blocks.Count == 0) blocks.Add(new XElement(W + "p"));
@@ -106,6 +110,38 @@ public static partial class DocxWriter
                 Put(part.PartName, xml);
                 if (_context.RelationshipsChanged) PutRelationships(part.PartName, rels);
             }
+        }
+
+        private string MediaPart(string key)
+        {
+            if (!InsertImageCommand.IsPending(key)) return key;
+            if (_media.TryGetValue(key, out var part)) return part;
+            var (data, contentType) = document.Media[key];
+            var extension = InsertImageCommand.Extension(contentType);
+            part = writer.NextPartName(package.MainPart[..(package.MainPart.LastIndexOf('/') + 1)] + "media/image{0}." + extension);
+            writer.Put(part, data);
+            _done.Add(part);
+            if (!_defaults.TryGetValue(extension, out var existing))
+            {
+                _defaults[extension] = contentType;
+                _contentTypesChanged = true;
+            }
+            else if (!string.Equals(existing, contentType, StringComparison.OrdinalIgnoreCase))
+                SetOverride(part, contentType);
+
+            return _media[key] = part;
+        }
+
+        private int MaxDrawingId()
+        {
+            XNamespace pic = "http://schemas.openxmlformats.org/drawingml/2006/picture";
+            var stories = _mainRelationships.Where(r => r.TargetMode == null).Select(r => _opc.ResolveTarget(package.MainPart, r.Target))
+                .Where(p => p.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) && _opc.Entry(p) != null)
+                .Select(_opc.ReadXml)
+                .Prepend(package.MainXml);
+            return stories.SelectMany(x => x.Descendants(InlineXml.Wp + "docPr").Concat(x.Descendants(pic + "cNvPr")))
+                .Select(e => int.TryParse((string)e.Attribute("id"), out var id) ? id : 0)
+                .DefaultIfEmpty(0).Max();
         }
 
         private List<OpcRelationship> Relationships(string part) =>
@@ -134,6 +170,8 @@ public static partial class DocxWriter
 internal sealed class DocxWriteContext
 {
     private const string HyperlinkType = DocxWriter.RelNs + "/hyperlink";
+    private const string ImageType = DocxWriter.RelNs + "/image";
+    private static readonly XNamespace Pic = "http://schemas.openxmlformats.org/drawingml/2006/picture";
     private static readonly XNamespace W14 = "http://schemas.microsoft.com/office/word/2010/wordml";
     private readonly DocxPackage _package;
     private readonly HashSet<object> _originals = new(ReferenceEqualityComparer.Instance);
@@ -145,6 +183,7 @@ internal sealed class DocxWriteContext
     private readonly HashSet<string> _droppedMoves = [];
     private readonly HashSet<string> _droppedComments = [];
     private List<OpcRelationship> _relationships;
+    private string _part;
     private IReadOnlyDictionary<string, Section> _sectionEnds;
 
     internal DocxWriteContext(DocxPackage package)
@@ -154,6 +193,10 @@ internal sealed class DocxWriteContext
     }
 
     internal bool RelationshipsChanged { get; private set; }
+
+    internal Func<string, string> MediaPart { get; set; }
+
+    internal int DrawingId { get; set; }
 
     internal static IEnumerable<(XElement Owner, XElement Node)> Parts(Inline inline)
     {
@@ -166,8 +209,9 @@ internal sealed class DocxWriteContext
             ? source.Attributes()
             : source.Attributes().Where(a => a.Name != W14 + "paraId" && a.Name != W14 + "textId" && !(a.Name.Namespace == W && a.Name.LocalName.StartsWith("rsid", StringComparison.Ordinal)));
 
-    internal void Begin(List<OpcRelationship> relationships, IReadOnlyDictionary<string, Section> sectionEnds)
+    internal void Begin(string part, List<OpcRelationship> relationships, IReadOnlyDictionary<string, Section> sectionEnds)
     {
+        _part = part;
         _relationships = relationships;
         _sectionEnds = sectionEnds;
         RelationshipsChanged = false;
@@ -239,6 +283,61 @@ internal sealed class DocxWriteContext
         if (original?.Tooltip != link.Tooltip) element.SetAttributeValue(W + "tooltip", link.Tooltip);
         element.Add(content);
         return element;
+    }
+
+    internal XElement Drawing(InlineImage image, XElement node)
+    {
+        if (node == null) return NewDrawing(image);
+        if (!_tokens.TryGetValue(TokenKey(image), out var token) || token is not InlineImage original ||
+            (original.WidthEmu, original.HeightEmu, original.AltText) == (image.WidthEmu, image.HeightEmu, image.AltText))
+            return node;
+        var copy = new XElement(node);
+        var frame = copy.Element(InlineXml.Wp + "inline") ?? copy.Element(InlineXml.Wp + "anchor");
+        if (frame == null) return node;
+        if ((original.WidthEmu, original.HeightEmu) != (image.WidthEmu, image.HeightEmu))
+            foreach (var extent in frame.Elements(InlineXml.Wp + "extent").Concat(frame.Descendants(Pic + "spPr").Elements(InlineXml.A + "xfrm").Elements(InlineXml.A + "ext")))
+            {
+                extent.SetAttributeValue("cx", image.WidthEmu);
+                extent.SetAttributeValue("cy", image.HeightEmu);
+            }
+
+        if (original.AltText != image.AltText) frame.Element(InlineXml.Wp + "docPr")?.SetAttributeValue("descr", image.AltText);
+        return copy;
+    }
+
+    private XElement NewDrawing(InlineImage image)
+    {
+        XNamespace wp = InlineXml.Wp, a = InlineXml.A;
+        var part = MediaPart(image.MediaPart);
+        var relationship = _relationships.FirstOrDefault(r => r.Type == ImageType && r.TargetMode == null &&
+                                                              string.Equals(_package.Opc.ResolveTarget(_part, r.Target), part, StringComparison.OrdinalIgnoreCase));
+        if (relationship == null)
+        {
+            relationship = new OpcRelationship(OpcPackageWriter.NextId(_relationships), ImageType, OpcPackageWriter.Relative(_part, part), null);
+            _relationships.Add(relationship);
+            RelationshipsChanged = true;
+        }
+
+        var id = ++DrawingId;
+        var name = "Picture " + id;
+        return new XElement(W + "drawing",
+            new XElement(wp + "inline", new XAttribute(XNamespace.Xmlns + "wp", wp), new XAttribute("distT", 0), new XAttribute("distB", 0), new XAttribute("distL", 0),
+                new XAttribute("distR", 0),
+                new XElement(wp + "extent", new XAttribute("cx", image.WidthEmu), new XAttribute("cy", image.HeightEmu)),
+                new XElement(wp + "effectExtent", new XAttribute("l", 0), new XAttribute("t", 0), new XAttribute("r", 0), new XAttribute("b", 0)),
+                new XElement(wp + "docPr", new XAttribute("id", id), new XAttribute("name", name), image.AltText == null ? null : new XAttribute("descr", image.AltText)),
+                new XElement(wp + "cNvGraphicFramePr",
+                    new XElement(a + "graphicFrameLocks", new XAttribute(XNamespace.Xmlns + "a", a), new XAttribute("noChangeAspect", 1))),
+                new XElement(a + "graphic", new XAttribute(XNamespace.Xmlns + "a", a),
+                    new XElement(a + "graphicData", new XAttribute("uri", Pic.NamespaceName),
+                        new XElement(Pic + "pic", new XAttribute(XNamespace.Xmlns + "pic", Pic),
+                            new XElement(Pic + "nvPicPr", new XElement(Pic + "cNvPr", new XAttribute("id", id), new XAttribute("name", name)), new XElement(Pic + "cNvPicPr")),
+                            new XElement(Pic + "blipFill", new XElement(a + "blip", new XAttribute(InlineXml.R + "embed", relationship.Id)),
+                                new XElement(a + "stretch", new XElement(a + "fillRect"))),
+                            new XElement(Pic + "spPr",
+                                new XElement(a + "xfrm", new XElement(a + "off", new XAttribute("x", 0), new XAttribute("y", 0)),
+                                    new XElement(a + "ext", new XAttribute("cx", image.WidthEmu), new XAttribute("cy", image.HeightEmu))),
+                                new XElement(a + "prstGeom", new XAttribute("prst", "rect"), new XElement(a + "avLst"))))))));
     }
 
     private static object TokenKey(Inline inline) => inline is OpaqueInline { Nodes: { } nodes } ? nodes : (inline.Source, inline.Node);

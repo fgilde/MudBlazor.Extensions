@@ -33209,6 +33209,53 @@
         <member name="P:MudBlazor.Extensions.Office.Document.SetParagraphFormatCommand.Description">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.InsertImageCommand">
+            <summary>
+            Replaces a range with an inline picture. The size comes from the image at 96 dpi, scaled down to the section's text width with the aspect ratio
+            kept; an image whose size cannot be read gets one inch square. The picture is kept in memory until the document is saved; the same picture
+            inserted twice, or one the document already contains, is stored once.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.InsertImageCommand.#ctor(MudBlazor.Extensions.Office.Document.DocumentRange,System.Byte[],System.String)">
+            <summary>Creates the command.</summary>
+            <param name="at">The range to replace, in either direction; an empty range inserts at a position.</param>
+            <param name="data">The image file content.</param>
+            <param name="contentType"><c>image/png</c>, <c>image/jpeg</c>, <c>image/gif</c> or <c>image/bmp</c>.</param>
+            <exception cref="T:System.ArgumentNullException">The data is null.</exception>
+            <exception cref="T:System.ArgumentException">The data is empty or the content type is not supported.</exception>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InsertImageCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.ResizeImageCommand">
+            <summary>Changes the displayed size of a picture.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.ResizeImageCommand.#ctor(System.String,System.Int32,System.Int64,System.Int64)">
+            <summary>Creates the command.</summary>
+            <param name="paragraphId">The id of the paragraph that holds the picture.</param>
+            <param name="offset">The offset of the picture in the paragraph's text.</param>
+            <param name="widthEmu">The width in EMU, positive.</param>
+            <param name="heightEmu">The height in EMU, positive.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">A size is not positive.</exception>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ResizeImageCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.SetImageAltTextCommand">
+            <summary>Sets the alternative text of a picture.</summary>
+            <param name="paragraphId">The id of the paragraph that holds the picture.</param>
+            <param name="offset">The offset of the picture in the paragraph's text.</param>
+            <param name="altText">The text; null or empty removes it.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.SetImageAltTextCommand.#ctor(System.String,System.Int32,System.String)">
+            <summary>Sets the alternative text of a picture.</summary>
+            <param name="paragraphId">The id of the paragraph that holds the picture.</param>
+            <param name="offset">The offset of the picture in the paragraph's text.</param>
+            <param name="altText">The text; null or empty removes it.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SetImageAltTextCommand.Description">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.ApplyListCommand">
             <summary>
             Makes paragraphs list items, or removes the list if all of them already are items of a list of this kind. The list of the preceding paragraph in

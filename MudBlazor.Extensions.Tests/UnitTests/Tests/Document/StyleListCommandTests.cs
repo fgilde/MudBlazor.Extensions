@@ -446,7 +446,7 @@ public class StyleListCommandTests
 
         Assert.Null(definitions[1].Element(W + "lvl")!.Element(W + "rPr"));
         var reloaded = Load(output);
-        Assert.Equal("•", reloaded.ListLabel((Paragraph)reloaded.Blocks[0]));
+        Assert.Equal("\u2022", reloaded.ListLabel((Paragraph)reloaded.Blocks[0]));
         DocxWriterTests.AssertConsistent(output);
     }
 

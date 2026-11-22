@@ -473,7 +473,8 @@ public partial class DocxWriterTests
         using var stream = new MemoryStream();
         DocxWriter.Write(document, stream, asTemplate);
         var output = stream.ToArray();
-        Assert.Equal(document.AllParagraphs(true).Select(Signature), Load(output).AllParagraphs(true).Select(Signature));
+        var comments = CommentReferences(output);
+        Assert.Equal(document.AllParagraphs(true).Select(p => Signature(p, comments)), Load(output).AllParagraphs(true).Select(p => Signature(p, comments)));
         return output;
     }
 
