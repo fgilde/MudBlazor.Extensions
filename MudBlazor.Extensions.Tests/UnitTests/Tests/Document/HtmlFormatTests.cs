@@ -94,6 +94,18 @@ public class HtmlFormatTests
     }
 
     [Fact]
+    public void HtmlRead_ManyImages_DedupedByContent()
+    {
+        var html = new StringBuilder("<p>");
+        for (var i = 0; i < 20000; i++) html.Append("<img src=\"data:image/gif;base64,").Append(Convert.ToBase64String(BitConverter.GetBytes(i % 15000))).Append("\">");
+
+        var document = HtmlReader.Read(html.Append("</p>").ToString());
+
+        Assert.Equal(20000, ((Paragraph)document.Blocks[0]).Inlines.Count);
+        Assert.Equal(15000, document.Media.Count);
+    }
+
+    [Fact]
     public void HtmlRead_PreformattedRowspanBeyondTableAndEmptyInput()
     {
         var document = HtmlReader.Read("<pre>a\tb\nc</pre><table><tr><td rowspan=5>x</td><td>y</td></tr><tr><td>z</td></tr></table>");
@@ -172,7 +184,7 @@ public class HtmlFormatTests
             "<p style=\"text-align:justify\"><b>b</b><i>i</i><u>u</u><s>s</s><span style=\"color:#336699;font-size:14pt;font-family:Georgia\">styled</span>" +
             "<span style=\"background:yellow\">hl</span><span style=\"background:#123456\">sh</span><sup>sup</sup><sub>sub</sub>line<br>two</p>" +
             "<ul><li>one<ol><li>nested</li><li>more</li></ol></li><li>back</li></ul>" +
-            "<table><tr><td colspan=2>wide</td><td rowspan=2>tall</td></tr><tr><td>c</td><td><table><tr><td>inner</td></tr></table></td></tr></table>" +
+            "<table><tr><td colspan=2 style=\"background:#ff0000\">wide</td><td rowspan=2>tall</td></tr><tr><td bgcolor=\"#00ff00\">c</td><td><table><tr><td>inner</td></tr></table></td></tr></table>" +
             $"<p><a href=\"https://example.com/?a=1&amp;b=2\">link</a> <a href=\"#Top\">anchor</a> <img src=\"data:image/png;base64,{Convert.ToBase64String(png)}\" alt=\"Alt\" width=\"30\" height=\"15\"></p>" +
             "<pre>code  with\tspaces\nnext</pre><p></p><p><br></p>";
         var original = HtmlReader.Read(html);
@@ -183,6 +195,9 @@ public class HtmlFormatTests
         Assert.Equal(Signature(original), Signature(reread));
         Assert.Contains("p ''", Signature(original));
         Assert.Contains("img 285750x142875 Alt", Signature(original));
+        Assert.Contains("tc 2 None #FF0000", Signature(original));
+        Assert.Contains("tc 1 None #00FF00", Signature(original));
+        Assert.Contains("<td colspan=\"2\" style=\"background-color:#FF0000\">", written);
     }
 
     [Fact]
@@ -253,7 +268,7 @@ public class HtmlFormatTests
                     sb.AppendLine($"{indent}  tr after={row.GridAfter}");
                     foreach (var cell in row.Cells)
                     {
-                        sb.AppendLine($"{indent}    tc {cell.GridSpan} {cell.VMerge}");
+                        sb.AppendLine($"{indent}    tc {cell.GridSpan} {cell.VMerge} {cell.Shading}");
                         Blocks(document, cell.Blocks, sb, indent + "      ");
                     }
                 }

@@ -54,6 +54,7 @@ public sealed class InsertDocumentCommand : TextDocumentCommand
         private readonly Dictionary<string, DocumentStyle> _styles = new();
         private readonly Dictionary<int, int?> _numIds = new();
         private readonly Dictionary<Hyperlink, Hyperlink> _links = new(ReferenceEqualityComparer.Instance);
+        private readonly Dictionary<string, string> _media = new(StringComparer.OrdinalIgnoreCase);
         private readonly List<AbstractNumbering> _abstracts = [];
         private readonly List<NumberingInstance> _instances = [];
         private int _nextAbstract = target.Numbering.Abstracts.Select(a => a.Id + 1).DefaultIfEmpty(0).Max();
@@ -116,18 +117,19 @@ public sealed class InsertDocumentCommand : TextDocumentCommand
             var link = Link(inline.Link);
             switch (inline)
             {
-                case Marker:
+                case Marker or InlineImage { MediaPart: null }:
                     return null;
                 case OpaqueInline token:
                     return string.IsNullOrEmpty(token.DisplayText) ? null : new TextRun(token.DisplayText) { Format = format, Link = link };
                 case InlineImage image:
-                    var data = source.GetMedia(image.MediaPart);
-                    var type = source.MediaContentType(image.MediaPart);
-                    if (data == null || type == null || InsertImageCommand.Extension(type) == null) return null;
-                    return image with
+                    if (!_media.TryGetValue(image.MediaPart, out var media))
                     {
-                        MediaPart = InsertImageCommand.AddMedia(target, data, type), Placement = ImagePlacement.Inline, Format = format, Link = link, Source = null, Node = null
-                    };
+                        var data = source.GetMedia(image.MediaPart);
+                        var type = source.MediaContentType(image.MediaPart);
+                        _media[image.MediaPart] = media = data == null || type == null || InsertImageCommand.Extension(type) == null ? null : InsertImageCommand.AddMedia(target, data, type);
+                    }
+
+                    return media == null ? null : image with { MediaPart = media, Placement = ImagePlacement.Inline, Format = format, Link = link, Source = null, Node = null };
                 default:
                     return inline with { Format = format, Link = link };
             }

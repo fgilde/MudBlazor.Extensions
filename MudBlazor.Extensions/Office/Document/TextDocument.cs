@@ -65,6 +65,8 @@ public sealed partial class TextDocument
 
     internal Dictionary<string, (byte[] Data, string ContentType)> Media { get; } = new(StringComparer.OrdinalIgnoreCase);
 
+    internal Dictionary<string, string> MediaByContent { get; set; }
+
     internal DocxPackage Package { get; set; }
 
     private Dictionary<string, BlockLocation> Index => _index ??= BuildIndex();

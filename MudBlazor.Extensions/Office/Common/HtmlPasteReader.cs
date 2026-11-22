@@ -137,7 +137,7 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         if (attributes.TryGetValue("style", out var css))
         {
             var style = Css(format, css);
-            (format, align) = (style.Format, style.Align ?? align);
+            (format, align) = (_structured && name is "td" or "th" ? style.Format with { Highlight = format.Highlight } : style.Format, style.Align ?? align);
             if (_structured && style.Label) kind = OpenKind.Label;
             else if (_structured && style.Level is { } level && Paragraph() is var paragraph) (paragraph.List, paragraph.Depth) = (PastedList.Bullet, level);
         }
@@ -297,7 +297,9 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         }
 
         if (rows.Count == 0) rows.Add([]);
-        var cell = new PastedCell { ColSpan = Span(attributes, "colspan"), RowSpan = Span(attributes, "rowspan") };
+        var shading = attributes.TryGetValue("style", out var css) ? Css(default, css).Format.Highlight : null;
+        if (shading == null && attributes.TryGetValue("bgcolor", out var color)) shading = HtmlTableFormat.Color(color.Trim().ToLowerInvariant());
+        var cell = new PastedCell { ColSpan = Span(attributes, "colspan"), RowSpan = Span(attributes, "rowspan"), Shading = shading };
         rows[^1].Add(cell);
         _container = cell.Blocks;
         _container.Add(_paragraph = new PastedParagraph());
@@ -363,7 +365,7 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
 
     private void Add(string text)
     {
-        if (text.Length == 0) return;
+        if (text.Length == 0 || _skip > 0 || _labels > 0) return;
         var runs = Content().Runs;
         if (runs.Count > 0 && runs[^1].ImageData == null && runs[^1].Format == Current)
             runs[^1].Append(text);
@@ -373,7 +375,7 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
 
     private void Image(Dictionary<string, string> attributes)
     {
-        if (!attributes.TryGetValue("src", out var src) || DataUri(src) is not ({ } data, { } type)) return;
+        if (_skip > 0 || _labels > 0 || !attributes.TryGetValue("src", out var src) || DataUri(src) is not ({ } data, { } type)) return;
         Content().Runs.Add(new PastedRun("", Current)
         {
             ImageData = data, ImageType = type, Alt = attributes.TryGetValue("alt", out var alt) ? Clean(alt) : null,

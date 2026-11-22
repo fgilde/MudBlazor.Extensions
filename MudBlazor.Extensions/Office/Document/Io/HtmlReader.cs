@@ -170,7 +170,7 @@ internal static class HtmlReader
             var column = Math.Max(1, width / columns);
             var rows = layout.Select(row => new TableRow(row.Select(slot => new TableCell(slot.Source == null ? [new Paragraph()] : CellBlocks(slot.Source, column * slot.Span))
             {
-                GridSpan = slot.Span, VMerge = slot.Merge, Width = column * slot.Span
+                GridSpan = slot.Span, VMerge = slot.Merge, Width = column * slot.Span, Shading = slot.Source?.Shading
             }).ToList()) { GridAfter = columns - row.Sum(c => c.Span) }).ToList();
             return new Table
             {

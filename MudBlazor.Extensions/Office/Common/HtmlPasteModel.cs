@@ -73,4 +73,6 @@ internal sealed class PastedCell
     public int ColSpan { get; init; } = 1;
 
     public int RowSpan { get; init; } = 1;
+
+    public string Shading { get; init; }
 }
