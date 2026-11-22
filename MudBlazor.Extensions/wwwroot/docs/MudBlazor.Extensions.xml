@@ -34993,7 +34993,8 @@
             have at most 32 Mi characters; scripts, event attributes and remote images are dropped, only PNG, JPEG, GIF and BMP <c>data:</c> images are
             imported and only <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c> links are kept. Plain text is decoded by its byte order mark,
             else as UTF-8 if it is valid UTF-8, else as Windows-1252, and may have at most 32 Mi characters; every line becomes a paragraph and a form feed
-            a page break.
+            a page break. Markdown is decoded like plain text and read as CommonMark with pipe tables, strikethrough and autolinks; raw HTML in it is
+            sanitised like HTML, and Markdown nested deeper than 128 levels is read as plain text.
             </summary>
             <param name="stream">The file content.</param>
             <param name="format">The file format.</param>

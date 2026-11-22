@@ -6,7 +6,7 @@ namespace MudBlazor.Extensions.Office.Document;
 
 internal static class TextFormat
 {
-    internal static TextDocument Read(Stream stream) => FromLines(Decode(stream));
+    internal static TextDocument Read(Stream stream) => FromText(Decode(stream));
 
     internal static string Decode(Stream stream)
     {
@@ -25,7 +25,7 @@ internal static class TextFormat
 
     internal static bool Hidden(TextDocument document, Paragraph paragraph, Inline inline) => document.EffectiveRunFormat(paragraph, inline).Hidden == true;
 
-    private static TextDocument FromLines(string text)
+    internal static TextDocument FromText(string text)
     {
         var document = TextDocument.Create();
         var paragraphs = InlineEdit.Lines(Clean(text), new RunFormat(), null, null).Select(line => (Block)new Paragraph { Inlines = line }).ToList();
