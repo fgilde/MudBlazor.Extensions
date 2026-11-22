@@ -63,7 +63,8 @@ internal static partial class DocxReader
         document.Package = new DocxPackage
         {
             Opc = opc, MainPart = main, MainContentType = contentType, MainXml = xml, MainRelationships = rels,
-            StylesPart = stylesPart, StylesXml = styles, NumberingPart = numberingPart, NumberingXml = numbering,
+            StylesPart = stylesPart, StylesXml = styles, Styles = document.Styles, NumberingPart = numberingPart, NumberingXml = numbering,
+            Numbering = document.Numbering,
             SettingsPart = settingsPart, SettingsXml = settings, ThemePart = themePart, Blocks = document.BlockList.ToList(),
             Sections = document.SectionList.ToList(), HeadersFooters = document.HeaderFooterList.ToList(), HeaderIds = headerIds, Properties = document.Properties
         };

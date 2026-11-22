@@ -40,14 +40,20 @@ public static partial class DocxWriter
         private readonly DocxWriteContext _context = new(package);
         private readonly HashSet<string> _done = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, string> _overrides = new(package.Opc.OverrideContentTypes, StringComparer.OrdinalIgnoreCase);
+        private List<OpcRelationship> _mainRelationships;
         private bool _contentTypesChanged;
+        private bool _mainRelationshipsChanged;
 
         internal void Run()
         {
             if (asTemplate is { } template && MainContentType(_opc.ContentType(package.MainPart), template) is { } type) SetOverride(package.MainPart, type);
+            _mainRelationships = Relationships(package.MainPart);
+            WriteStyles();
+            WriteNumbering();
             WriteBody();
             WriteHeadersFooters();
             WriteProperties();
+            if (_mainRelationshipsChanged) PutRelationships(package.MainPart, _mainRelationships);
             if (_contentTypesChanged)
             {
                 writer.PutContentTypes(_opc.DefaultContentTypes, _overrides);
@@ -69,18 +75,16 @@ public static partial class DocxWriter
             var final = document.SectionList.LastOrDefault();
             var ends = new Dictionary<string, Section>();
             foreach (var section in document.SectionList.Where(s => s != final && s.LastBlockId != null)) ends.TryAdd(section.LastBlockId, section);
-            var rels = Relationships(package.MainPart);
-            _context.Begin(rels, ends);
+            _context.Begin(_mainRelationships, ends);
             var blocks = document.BlockList.Select(b => _context.Block(b, true)).Where(e => e != null).ToList();
             if (final != null && (final.Source != null || !package.Sections.Contains(final, ReferenceEqualityComparer.Instance)))
                 blocks.Add(SectionXml.Write(final, package.HeaderIds));
+            _mainRelationshipsChanged |= _context.RelationshipsChanged;
             var original = package.MainXml.Root!.Element(W + "body")!;
-            if (!_context.RelationshipsChanged && blocks.SequenceEqual(original.Elements(), ReferenceEqualityComparer.Instance)) return;
+            if (blocks.SequenceEqual(original.Elements(), ReferenceEqualityComparer.Instance)) return;
             var xml = new XDocument(package.MainXml);
             xml.Root!.Element(W + "body")!.ReplaceNodes(blocks);
-            if (!_context.RelationshipsChanged && XNode.DeepEquals(xml, package.MainXml)) return;
-            Put(package.MainPart, xml);
-            if (_context.RelationshipsChanged) PutRelationships(package.MainPart, rels);
+            if (!XNode.DeepEquals(xml, package.MainXml)) Put(package.MainPart, xml);
         }
 
         private void WriteHeadersFooters()

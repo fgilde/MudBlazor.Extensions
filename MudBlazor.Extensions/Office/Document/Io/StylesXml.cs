@@ -5,6 +5,69 @@ namespace MudBlazor.Extensions.Office.Document;
 
 internal static class StylesXml
 {
+    private static readonly string[] StyleOrder =
+    [
+        "name", "aliases", "basedOn", "next", "link", "autoRedefine", "hidden", "uiPriority", "semiHidden", "unhideWhenUsed", "qFormat", "locked", "personal",
+        "personalCompose", "personalReply", "rsid", "pPr", "rPr", "tblPr", "trPr", "tcPr", "tblStylePr"
+    ];
+
+    private static readonly string[] DefaultsOrder = ["rPrDefault", "pPrDefault"];
+
+    internal static XDocument Write(XDocument original, DocumentStyles read, DocumentStyles styles)
+    {
+        var xml = original != null ? new XDocument(original) : new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), new XElement(W + "styles", new XAttribute(XNamespace.Xmlns + "w", W)));
+        var root = xml.Root!;
+        var copies = original == null ? new Dictionary<XElement, XElement>() : original.Root!.Elements().Zip(root.Elements()).ToDictionary(p => p.First, p => p.Second);
+        var unchanged = read.All.ToHashSet(ReferenceEqualityComparer.Instance);
+        var current = new Dictionary<XElement, DocumentStyle>();
+        foreach (var style in styles.All.Where(s => s.Source != null)) current.TryAdd(style.Source, style);
+        foreach (var style in read.All.Where(s => s.Source != null && copies.ContainsKey(s.Source)))
+            if (!current.TryGetValue(style.Source, out var now)) copies[style.Source].Remove();
+            else if (!unchanged.Contains(now)) Patch(copies[style.Source], now);
+        root.Add(styles.All.Where(s => s.Source == null).Select(New));
+
+        if (styles.DefaultRunFormat != read.DefaultRunFormat) PatchRun(Default(root, "rPrDefault", "rPr"), styles.DefaultRunFormat);
+        if (styles.DefaultParagraphFormat != read.DefaultParagraphFormat) PatchParagraph(Default(root, "pPrDefault", "pPr"), styles.DefaultParagraphFormat);
+        return xml;
+    }
+
+    private static XElement Default(XElement root, string name, string properties)
+    {
+        var defaults = root.Element(W + "docDefaults");
+        if (defaults == null) root.AddFirst(defaults = new XElement(W + "docDefaults"));
+        return Ensure(Ensure(defaults, name, DefaultsOrder), properties, [properties]);
+    }
+
+    private static void Patch(XElement element, DocumentStyle style)
+    {
+        Patch(element, "pPr", properties => PatchParagraph(properties, style.ParagraphFormat));
+        Patch(element, "rPr", properties => PatchRun(properties, style.RunFormat));
+    }
+
+    private static void Patch(XElement parent, string name, Action<XElement> patch)
+    {
+        var existing = parent.Element(W + name);
+        var properties = existing ?? new XElement(W + name);
+        patch(properties);
+        if (existing == null && (properties.HasElements || properties.HasAttributes)) Place(parent, properties, StyleOrder);
+    }
+
+    private static XElement New(DocumentStyle style)
+    {
+        var element = new XElement(W + "style",
+            new XAttribute(W + "type", style.Type.ToString().ToLowerInvariant()),
+            style.IsDefault ? new XAttribute(W + "default", "1") : null,
+            new XAttribute(W + "styleId", style.Id),
+            Value("name", style.Name ?? style.Id), Value("basedOn", style.BasedOn), Value("next", style.Next), Value("link", style.Link),
+            Value("uiPriority", Optional(style.UiPriority)),
+            style.QuickFormat ? new XElement(W + "qFormat") : null);
+        Patch(element, style);
+        if (style.Type == StyleType.Table && TableXml.Properties(null, style.TableFormat) is { HasElements: true } tblPr) element.Add(tblPr);
+        return element;
+    }
+
+    private static XElement Value(string name, string value) => value == null ? null : new XElement(W + name, new XAttribute(W + "val", value));
+
     internal static DocumentStyles Read(XDocument styles)
     {
         var root = styles?.Root;

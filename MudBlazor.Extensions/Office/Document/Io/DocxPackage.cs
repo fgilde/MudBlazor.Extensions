@@ -18,9 +18,13 @@ internal sealed class DocxPackage
 
     public XDocument StylesXml { get; init; }
 
+    public DocumentStyles Styles { get; init; }
+
     public string NumberingPart { get; init; }
 
     public XDocument NumberingXml { get; init; }
+
+    public Numbering Numbering { get; init; }
 
     public string SettingsPart { get; init; }
 

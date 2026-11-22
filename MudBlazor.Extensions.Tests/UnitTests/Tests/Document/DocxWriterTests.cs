@@ -433,8 +433,9 @@ public partial class DocxWriterTests
         Assert.Single(OpcPackage.Open(output).Relationships(part), r => r.Target == "https://example.org");
         var before = OpcAssert.Parts(source);
         var after = OpcAssert.Parts(output);
-        foreach (var name in before.Keys.Where(p => p != part && p != "/word/_rels/header1.xml.rels"))
+        foreach (var name in before.Keys.Where(p => p != part && p != "/word/_rels/header1.xml.rels" && p != "/word/styles.xml"))
             Assert.True(before[name].AsSpan().SequenceEqual(after[name]), name);
+        Assert.Single(OpcAssert.Xml(output, "/word/styles.xml").Root!.Elements(W + "style"), s => (string)s.Attribute(W + "styleId") == "Hyperlink");
         AssertConsistent(output);
         Assert.Equal(DocumentDescriber.Describe(document), DocumentDescriber.Describe(Load(output)));
     }

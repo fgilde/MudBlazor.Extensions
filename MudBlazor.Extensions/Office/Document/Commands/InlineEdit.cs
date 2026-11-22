@@ -5,7 +5,7 @@ namespace MudBlazor.Extensions.Office.Document;
 
 internal static class InlineEdit
 {
-    private const string HyperlinkStyle = "Hyperlink";
+    internal const string HyperlinkStyle = "Hyperlink";
 
     public static (List<Inline> Left, List<Inline> Right) Split(IReadOnlyList<Inline> inlines, int offset)
     {

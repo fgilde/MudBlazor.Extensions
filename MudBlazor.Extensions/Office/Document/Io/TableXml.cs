@@ -149,7 +149,7 @@ internal static class TableXml
             ? new XElement(wrapper.Name, wrapper.Attributes(), wrapper.Nodes().Select(n => n is XElement e && e.Name == W + "sdtContent" ? new XElement(e.Name, e.Attributes(), content) : n))
             : new XElement(wrapper.Name, wrapper.Attributes(), content);
 
-    private static XElement Properties(XElement original, TableFormat format)
+    internal static XElement Properties(XElement original, TableFormat format)
     {
         var tblPr = original != null ? new XElement(original) : new XElement(W + "tblPr");
         var current = FormatXml.Table(tblPr);

@@ -33209,6 +33209,74 @@
         <member name="P:MudBlazor.Extensions.Office.Document.SetParagraphFormatCommand.Description">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.ApplyListCommand">
+            <summary>
+            Makes paragraphs list items, or removes the list if all of them already are items of a list of this kind. The list of the preceding paragraph in
+            the same container is continued if it is of this kind; otherwise a new list definition and instance are added. Items keep their level.
+            </summary>
+            <param name="paragraphIds">The ids of the paragraphs, in the body, in table cells or in headers and footers.</param>
+            <param name="template">The kind of list.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.ApplyListCommand.#ctor(System.Collections.Generic.IReadOnlyList{System.String},MudBlazor.Extensions.Office.Document.ListTemplate)">
+            <summary>
+            Makes paragraphs list items, or removes the list if all of them already are items of a list of this kind. The list of the preceding paragraph in
+            the same container is continued if it is of this kind; otherwise a new list definition and instance are added. Items keep their level.
+            </summary>
+            <param name="paragraphIds">The ids of the paragraphs, in the body, in table cells or in headers and footers.</param>
+            <param name="template">The kind of list.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ApplyListCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.ChangeListLevelCommand">
+            <summary>
+            Moves list items up or down by levels, clamped to 0 to 8. Paragraphs that are not list items change their left indent by 720 twips (half an inch)
+            per level instead, not below 0.
+            </summary>
+            <param name="paragraphIds">The ids of the paragraphs.</param>
+            <param name="delta">The number of levels; positive moves deeper.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.ChangeListLevelCommand.#ctor(System.Collections.Generic.IReadOnlyList{System.String},System.Int32)">
+            <summary>
+            Moves list items up or down by levels, clamped to 0 to 8. Paragraphs that are not list items change their left indent by 720 twips (half an inch)
+            per level instead, not below 0.
+            </summary>
+            <param name="paragraphIds">The ids of the paragraphs.</param>
+            <param name="delta">The number of levels; positive moves deeper.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ChangeListLevelCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.RestartNumberingCommand">
+            <summary>
+            Restarts the numbering at a list item: a new list instance of the same definition with a start override for the item's level is assigned to the
+            item and to every following paragraph of the old instance.
+            </summary>
+            <param name="paragraphId">The id of the list item.</param>
+            <param name="startAt">The value the item gets.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.RestartNumberingCommand.#ctor(System.String,System.Int32)">
+            <summary>
+            Restarts the numbering at a list item: a new list instance of the same definition with a start override for the item's level is assigned to the
+            item and to every following paragraph of the old instance.
+            </summary>
+            <param name="paragraphId">The id of the list item.</param>
+            <param name="startAt">The value the item gets.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RestartNumberingCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.RemoveListCommand">
+            <summary>Removes paragraphs from their lists; numbering that comes from the paragraph style is cancelled with list id 0.</summary>
+            <param name="paragraphIds">The ids of the paragraphs.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.RemoveListCommand.#ctor(System.Collections.Generic.IReadOnlyList{System.String})">
+            <summary>Removes paragraphs from their lists; numbering that comes from the paragraph style is cancelled with list id 0.</summary>
+            <param name="paragraphIds">The ids of the paragraphs.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.RemoveListCommand.Description">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.SplitParagraphCommand">
             <summary>
             Splits a paragraph at a position. The second half gets the same formatting, or the style's next style when the split is at the end (no style for
@@ -33256,6 +33324,70 @@
         <member name="P:MudBlazor.Extensions.Office.Document.ReplaceParagraphContentCommand.Description">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.ApplyParagraphStyleCommand">
+            <summary>
+            Applies a paragraph style; only the style id of the paragraphs changes, the default paragraph style is stored as no style. A built-in style the file
+            does not define yet is added together with the styles it is based on and its linked character style.
+            </summary>
+            <param name="paragraphIds">The ids of the paragraphs, in the body, in table cells or in headers and footers.</param>
+            <param name="styleId">The id of a paragraph style of the file or of a built-in paragraph style.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.ApplyParagraphStyleCommand.#ctor(System.Collections.Generic.IReadOnlyList{System.String},System.String)">
+            <summary>
+            Applies a paragraph style; only the style id of the paragraphs changes, the default paragraph style is stored as no style. A built-in style the file
+            does not define yet is added together with the styles it is based on and its linked character style.
+            </summary>
+            <param name="paragraphIds">The ids of the paragraphs, in the body, in table cells or in headers and footers.</param>
+            <param name="styleId">The id of a paragraph style of the file or of a built-in paragraph style.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ApplyParagraphStyleCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.ApplyCharacterStyleCommand">
+            <summary>Applies a character style to a range or removes the character style from it. A built-in style the file does not define yet is added.</summary>
+            <param name="range">The range, in either direction.</param>
+            <param name="styleId">The id of a character style of the file or of a built-in character style; null removes the character style.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.ApplyCharacterStyleCommand.#ctor(MudBlazor.Extensions.Office.Document.DocumentRange,System.String)">
+            <summary>Applies a character style to a range or removes the character style from it. A built-in style the file does not define yet is added.</summary>
+            <param name="range">The range, in either direction.</param>
+            <param name="styleId">The id of a character style of the file or of a built-in character style; null removes the character style.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.ApplyCharacterStyleCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.UpdateStyleFromSelectionCommand">
+            <summary>
+            Updates a paragraph style to match a paragraph: the paragraph's own formatting (without style and list) and the own formatting of its first text run
+            move into the style. The paragraph gets the style and loses that formatting; other paragraphs keep theirs.
+            </summary>
+            <param name="styleId">The id of a paragraph style of the file or of a built-in paragraph style.</param>
+            <param name="paragraphId">The id of the paragraph.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.UpdateStyleFromSelectionCommand.#ctor(System.String,System.String)">
+            <summary>
+            Updates a paragraph style to match a paragraph: the paragraph's own formatting (without style and list) and the own formatting of its first text run
+            move into the style. The paragraph gets the style and loses that formatting; other paragraphs keep theirs.
+            </summary>
+            <param name="styleId">The id of a paragraph style of the file or of a built-in paragraph style.</param>
+            <param name="paragraphId">The id of the paragraph.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.UpdateStyleFromSelectionCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.SetDefaultFontCommand">
+            <summary>Sets the document default font and size (<c>w:docDefaults/w:rPrDefault</c>); a theme font is replaced by the named font.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.SetDefaultFontCommand.#ctor(System.String,System.Double)">
+            <summary>Creates the command.</summary>
+            <param name="font">The typeface name, for example <c>Arial</c>.</param>
+            <param name="sizePt">The size in points.</param>
+            <exception cref="T:System.ArgumentException">The font is null or empty.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">The size is not positive.</exception>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SetDefaultFontCommand.Description">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.ReplaceTextCommand">
             <summary>
             Replaces a range with text. Paragraphs in the range merge and keep the first paragraph's formatting; blocks fully inside the range are removed;
@@ -33288,7 +33420,7 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.SetHyperlinkCommand">
-            <summary>Links a range to a target or removes the links in it.</summary>
+            <summary>Links a range to a target with the <c>Hyperlink</c> character style, or removes the links and that style from it.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.SetHyperlinkCommand.#ctor(MudBlazor.Extensions.Office.Document.DocumentRange,System.String)">
             <summary>Creates the command.</summary>

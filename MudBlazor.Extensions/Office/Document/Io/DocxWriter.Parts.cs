@@ -13,6 +13,39 @@ public static partial class DocxWriter
 
     private sealed partial class Job
     {
+        private void WriteStyles()
+        {
+            if (!ReferenceEquals(document.Styles, package.Styles))
+                PutDefinitions(package.StylesPart, package.StylesXml, StylesXml.Write(package.StylesXml, package.Styles, document.Styles), "styles");
+        }
+
+        private void WriteNumbering()
+        {
+            if (!ReferenceEquals(document.Numbering, package.Numbering))
+                PutDefinitions(package.NumberingPart, package.NumberingXml, NumberingXml.Write(package.NumberingXml, document.Numbering), "numbering");
+        }
+
+        private void PutDefinitions(string part, XDocument original, XDocument xml, string type)
+        {
+            if (original != null && XNode.DeepEquals(original, xml)) return;
+            if (part == null)
+            {
+                if (_mainRelationships.FirstOrDefault(r => r.Type.EndsWith("/" + type, StringComparison.Ordinal) && r.TargetMode == null) is { } rel)
+                    part = _opc.ResolveTarget(package.MainPart, rel.Target);
+                else
+                {
+                    var folder = package.MainPart[..(package.MainPart.LastIndexOf('/') + 1)];
+                    part = _opc.Entry(folder + type + ".xml") == null ? folder + type + ".xml" : writer.NextPartName(folder + type + "{0}.xml");
+                    _mainRelationships.Add(new OpcRelationship(OpcPackageWriter.NextId(_mainRelationships), RelNs + "/" + type, OpcPackageWriter.Relative(package.MainPart, part), null));
+                    _mainRelationshipsChanged = true;
+                }
+
+                if (!_overrides.ContainsKey(part)) SetOverride(part, Wml + type + "+xml");
+            }
+
+            Put(part, xml);
+        }
+
         private void WriteProperties()
         {
             var properties = document.Properties;

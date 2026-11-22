@@ -59,7 +59,7 @@ public sealed class InsertBreakCommand(DocumentPosition at, BreakKind kind) : Te
     }
 }
 
-/// <summary>Links a range to a target or removes the links in it.</summary>
+/// <summary>Links a range to a target with the <c>Hyperlink</c> character style, or removes the links and that style from it.</summary>
 public sealed class SetHyperlinkCommand : TextDocumentCommand
 {
     private readonly DocumentRange _range;
@@ -80,6 +80,19 @@ public sealed class SetHyperlinkCommand : TextDocumentCommand
     /// <inheritdoc />
     public override string Description => _link == null ? "Remove link" : "Insert link";
 
-    private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document) =>
-        document.MapInlines(_range, true, inline => ReferenceEquals(inline.Link, _link) ? inline : inline with { Link = _link });
+    private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document)
+    {
+        var styles = _link == null ? null : StyleDefinitions.With(document.Styles, InlineEdit.HyperlinkStyle, StyleType.Character);
+        var (edits, after) = document.MapInlines(_range, true, Link);
+        return (document.WithDefinitions(edits, styles, null), after);
+    }
+
+    private Inline Link(Inline inline)
+    {
+        var format = inline is Marker ? inline.Format
+            : _link != null ? inline.Format with { StyleId = InlineEdit.HyperlinkStyle }
+            : inline.Format.StyleId == InlineEdit.HyperlinkStyle ? inline.Format with { StyleId = null }
+            : inline.Format;
+        return ReferenceEquals(inline.Link, _link) && format == inline.Format ? inline : inline with { Link = _link, Format = format };
+    }
 }

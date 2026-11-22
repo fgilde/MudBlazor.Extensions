@@ -14,14 +14,8 @@ public sealed class SplitParagraphCommand(DocumentPosition at) : TextDocumentCom
     private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document)
     {
         var (paragraph, offset) = document.Resolve(at);
-        if (paragraph.Length == 0 && EffectiveFormat.NumberingOf(document.Styles, paragraph) is { NumId: not 0 })
-        {
-            var own = paragraph.Format with { Numbering = null };
-            var format = EffectiveFormat.NumberingOf(document.Styles, paragraph with { Format = own }) is { NumId: not 0 }
-                ? paragraph.Format with { Numbering = new NumberingRef(0, 0) }
-                : own;
-            return (document.MapParagraphs([paragraph.Id], p => p with { Format = format }), d => Caret(d, paragraph.Id, 0));
-        }
+        if (paragraph.Length == 0 && Lists.Of(document, paragraph) != null)
+            return (document.MapParagraphs([paragraph.Id], p => Lists.Unnumbered(document, p)), d => Caret(d, paragraph.Id, 0));
 
         var style = document.Styles.Find(paragraph.Format.StyleId) ?? document.Styles.DefaultParagraphStyle;
         var nextStyle = offset == paragraph.Length && style?.Next is { } id && id != style.Id ? id : null;
