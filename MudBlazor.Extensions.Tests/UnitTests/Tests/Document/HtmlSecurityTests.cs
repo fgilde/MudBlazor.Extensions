@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using MudBlazor.Extensions.Office;
+using MudBlazor.Extensions.Office.Spreadsheet;
 using Xunit;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Document;
@@ -46,6 +47,18 @@ public class HtmlSecurityTests
         Assert.Equal(["first", "second"], xhtml.AllParagraphs().Select(p => p.Text));
         Assert.Null(xhtml.Properties.Title);
         Assert.Equal(["after"], closed.AllParagraphs().Select(p => p.Text));
+    }
+
+    [Fact]
+    public void HtmlRead_ManySelfClosingRawTextTagsWithoutClosingTag_ScanForEachNameOnce()
+    {
+        var html = new StringBuilder().Insert(0, "<xmp/><title/>", 100_000).Append("<p>end</p><xmp/>").ToString();
+
+        HtmlTableFormat.ClosingTagScans = 0;
+        var document = HtmlReader.Read(html);
+
+        Assert.Equal(["end"], document.AllParagraphs().Select(p => p.Text));
+        Assert.Equal(2, HtmlTableFormat.ClosingTagScans);
     }
 
     [Theory]

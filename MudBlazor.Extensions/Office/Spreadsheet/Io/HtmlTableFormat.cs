@@ -44,6 +44,8 @@ public static class HtmlTableFormat
     private const int MaxColumnSpan = 1000;
     private const int MaxRowSpan = 65534;
 
+    [ThreadStatic] internal static int ClosingTagScans;
+
     private static readonly HashSet<string> RawText = new(StringComparer.Ordinal)
         { "script", "style", "textarea", "title", "noscript", "iframe", "noembed", "noframes", "template", "xmp", "svg", "math", "object" };
 
@@ -73,6 +75,7 @@ public static class HtmlTableFormat
     internal static void Tokenize(string html, IHtmlTokenSink sink)
     {
         var i = 0;
+        var unclosed = new Dictionary<string, int>(StringComparer.Ordinal);
         while (i < html.Length && !sink.Done)
         {
             var lt = html.IndexOf('<', i);
@@ -83,7 +86,7 @@ public static class HtmlTableFormat
             }
 
             if (lt > i) sink.Text(html[i..lt]);
-            i = ReadTag(html, lt, sink);
+            i = ReadTag(html, lt, sink, unclosed);
         }
     }
 
@@ -173,7 +176,7 @@ public static class HtmlTableFormat
         return css.ToString();
     }
 
-    private static int ReadTag(string html, int at, IHtmlTokenSink reader)
+    private static int ReadTag(string html, int at, IHtmlTokenSink reader, Dictionary<string, int> unclosed)
     {
         if (string.CompareOrdinal(html, at, "<!--", 0, 4) == 0)
         {
@@ -214,7 +217,7 @@ public static class HtmlTableFormat
 
         if (RawText.Contains(name) && (!selfClosing || !SelfClosingForeign.Contains(name)))
         {
-            var end = ClosingTag(html, name, next);
+            var end = ClosingTag(html, name, next, unclosed);
             if (selfClosing && end < 0) return next;
             if (name == "style") reader.StyleSheet(end < 0 ? html[next..] : html[next..end]);
             if (name == "title") reader.Title(end < 0 ? html[next..] : html[next..end]);
@@ -227,14 +230,17 @@ public static class HtmlTableFormat
         return next;
     }
 
-    private static int ClosingTag(string html, string name, int from)
+    private static int ClosingTag(string html, string name, int from, Dictionary<string, int> unclosed)
     {
+        if (unclosed.TryGetValue(name, out var none) && from >= none) return -1;
+        ClosingTagScans++;
         for (var end = html.IndexOf("</" + name, from, StringComparison.OrdinalIgnoreCase); end >= 0; end = html.IndexOf("</" + name, end + 2, StringComparison.OrdinalIgnoreCase))
         {
             var after = end + 2 + name.Length;
             if (after >= html.Length || !(char.IsAsciiLetterOrDigit(html[after]) || html[after] is ':' or '-' or '_')) return end;
         }
 
+        unclosed[name] = from;
         return -1;
     }
 
