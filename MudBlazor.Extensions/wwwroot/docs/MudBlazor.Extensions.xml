@@ -33387,6 +33387,201 @@
         <member name="P:MudBlazor.Extensions.Office.Document.SetDefaultFontCommand.Description">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.InsertTableCommand">
+            <summary>
+            Inserts a table of empty cells at a position: a paragraph is split if the position lies inside it, at its start the table goes before it, at its
+            end after it. The grid divides the section's text width evenly and the table uses the built-in style <c>TableGrid</c>, added on demand. An empty
+            paragraph follows the table when nothing else would. The caret moves into the first cell.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.InsertTableCommand.#ctor(MudBlazor.Extensions.Office.Document.DocumentPosition,System.Int32,System.Int32)">
+            <summary>Creates the command.</summary>
+            <param name="at">Where to insert the table.</param>
+            <param name="rows">The number of rows, at least 1.</param>
+            <param name="columns">The number of columns, 1 to 63.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">The number of rows or columns is out of range.</exception>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InsertTableCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.InsertTableRowsCommand">
+            <summary>Inserts rows with the cell structure and formats of the neighbour row (the row above, or the first row when inserting at the top), each cell holding one empty paragraph of the same format.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="index">The index of the first new row, 0 to the number of rows.</param>
+            <param name="count">The number of rows, at least 1.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.InsertTableRowsCommand.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>Inserts rows with the cell structure and formats of the neighbour row (the row above, or the first row when inserting at the top), each cell holding one empty paragraph of the same format.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="index">The index of the first new row, 0 to the number of rows.</param>
+            <param name="count">The number of rows, at least 1.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InsertTableRowsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DeleteTableRowsCommand">
+            <summary>Deletes rows; deleting all rows removes the table. Vertical merges cut by the deletion restart in the first remaining row.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="index">The index of the first row to delete.</param>
+            <param name="count">The number of rows, at least 1.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DeleteTableRowsCommand.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>Deletes rows; deleting all rows removes the table. Vertical merges cut by the deletion restart in the first remaining row.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="index">The index of the first row to delete.</param>
+            <param name="count">The number of rows, at least 1.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DeleteTableRowsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.InsertTableColumnsCommand">
+            <summary>
+            Inserts grid columns with the width of the neighbour column (the one before, or the first when inserting at the start). Cells whose span covers the
+            insertion point widen; elsewhere new cells with the format of the neighbour cell are added.
+            </summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="gridIndex">The grid index of the first new column, 0 to the number of grid columns.</param>
+            <param name="count">The number of columns, at least 1.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.InsertTableColumnsCommand.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>
+            Inserts grid columns with the width of the neighbour column (the one before, or the first when inserting at the start). Cells whose span covers the
+            insertion point widen; elsewhere new cells with the format of the neighbour cell are added.
+            </summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="gridIndex">The grid index of the first new column, 0 to the number of grid columns.</param>
+            <param name="count">The number of columns, at least 1.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InsertTableColumnsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DeleteTableColumnsCommand">
+            <summary>Deletes grid columns; cells inside them are removed, cells partly inside them narrow. Deleting all columns removes the table.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="gridIndex">The grid index of the first column to delete.</param>
+            <param name="count">The number of columns, at least 1.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DeleteTableColumnsCommand.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>Deletes grid columns; cells inside them are removed, cells partly inside them narrow. Deleting all columns removes the table.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="gridIndex">The grid index of the first column to delete.</param>
+            <param name="count">The number of columns, at least 1.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DeleteTableColumnsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.MergeTableCellsCommand">
+            <summary>
+            Merges a rectangle of grid cells: horizontal merges use <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/>, vertical merges <see cref="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Restart"/> and
+            <see cref="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Continue"/>. The contents of non-empty cells are appended into the top-left cell in reading order.
+            </summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="firstRow">The first row.</param>
+            <param name="firstGridColumn">The first grid column.</param>
+            <param name="lastRow">The last row.</param>
+            <param name="lastGridColumn">The last grid column.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.MergeTableCellsCommand.#ctor(System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Merges a rectangle of grid cells: horizontal merges use <see cref="P:MudBlazor.Extensions.Office.Document.TableCell.GridSpan"/>, vertical merges <see cref="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Restart"/> and
+            <see cref="F:MudBlazor.Extensions.Office.Document.VerticalMerge.Continue"/>. The contents of non-empty cells are appended into the top-left cell in reading order.
+            </summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="firstRow">The first row.</param>
+            <param name="firstGridColumn">The first grid column.</param>
+            <param name="lastRow">The last row.</param>
+            <param name="lastGridColumn">The last grid column.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.MergeTableCellsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.SplitTableCellCommand">
+            <summary>Splits a merged cell back into its grid cells: every row of a vertical merge gets its own cells again and the content stays in the top-left cell.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="row">The row of the merged cell.</param>
+            <param name="gridColumn">A grid column the merged cell covers.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.SplitTableCellCommand.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>Splits a merged cell back into its grid cells: every row of a vertical merge gets its own cells again and the content stays in the top-left cell.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="row">The row of the merged cell.</param>
+            <param name="gridColumn">A grid column the merged cell covers.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SplitTableCellCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.SetTableColumnWidthsCommand">
+            <summary>Sets the widths of the grid columns; cells with a preferred width get the sum of the columns they span.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="grid">The widths in twips, one positive value per grid column.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.SetTableColumnWidthsCommand.#ctor(System.String,System.Collections.Generic.IReadOnlyList{System.Int32})">
+            <summary>Sets the widths of the grid columns; cells with a preferred width get the sum of the columns they span.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="grid">The widths in twips, one positive value per grid column.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SetTableColumnWidthsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.SetTableCellFormatCommand">
+            <summary>Changes the format of cells: width, shading, borders and vertical alignment. Content, spans and merges stay as they are.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="cells">The cells as row index and cell index within the row.</param>
+            <param name="change">Returns the changed cell.</param>
+            <param name="description">The undo description.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.SetTableCellFormatCommand.#ctor(System.String,System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Int32,System.Int32}},System.Func{MudBlazor.Extensions.Office.Document.TableCell,MudBlazor.Extensions.Office.Document.TableCell},System.String)">
+            <summary>Changes the format of cells: width, shading, borders and vertical alignment. Content, spans and merges stay as they are.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="cells">The cells as row index and cell index within the row.</param>
+            <param name="change">Returns the changed cell.</param>
+            <param name="description">The undo description.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SetTableCellFormatCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.SetTableFormatCommand">
+            <summary>Changes the table format (<c>w:tblPr</c>).</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="change">Returns the changed format.</param>
+            <param name="description">The undo description.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.SetTableFormatCommand.#ctor(System.String,System.Func{MudBlazor.Extensions.Office.Document.TableFormat,MudBlazor.Extensions.Office.Document.TableFormat},System.String)">
+            <summary>Changes the table format (<c>w:tblPr</c>).</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="change">Returns the changed format.</param>
+            <param name="description">The undo description.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SetTableFormatCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.SetTableHeaderRowsCommand">
+            <summary>Makes the first rows repeat as header rows on every page and the others not.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="count">The number of header rows, 0 to the number of rows.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.SetTableHeaderRowsCommand.#ctor(System.String,System.Int32)">
+            <summary>Makes the first rows repeat as header rows on every page and the others not.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+            <param name="count">The number of header rows, 0 to the number of rows.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SetTableHeaderRowsCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.DeleteTableCommand">
+            <summary>Deletes a table; a table cell or a document left without a paragraph gets an empty one.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.DeleteTableCommand.#ctor(System.String)">
+            <summary>Deletes a table; a table cell or a document left without a paragraph gets an empty one.</summary>
+            <param name="tableId">The id of the table, at any depth.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.DeleteTableCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TableCommand">
+            <summary>Base of the commands that change one table. A cell is never left without a paragraph and vertical merges stay consistent.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.ReplaceTextCommand">
             <summary>
             Replaces a range with text. Paragraphs in the range merge and keep the first paragraph's formatting; blocks fully inside the range are removed;

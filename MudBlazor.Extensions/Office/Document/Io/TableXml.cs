@@ -71,22 +71,25 @@ internal static class TableXml
     internal static XElement Write(Table table, DocxWriteContext context)
     {
         var source = table.Source;
-        var element = new XElement(W + "tbl", source?.Attributes(),
-            Rewrite(source, "tr", table.Rows, r => r.Source, r => Row(r, context),
+        var first = source == null || context.Claim(source, table);
+        var element = new XElement(W + "tbl", source == null ? null : DocxWriteContext.Attributes(source, first),
+            Rewrite(first ? source : null, "tr", table.Rows, r => r.Source, r => Row(r, context),
                 e => e.Name == W + "tblPr" ? Properties(e, table.Format) : e.Name == W + "tblGrid" ? Grid(e, table.Grid) : e,
                 e => e.Element(W + "trPr")?.Element(W + "del") != null));
-        if (element.Element(W + "tblPr") == null) element.AddFirst(Properties(null, table.Format));
+        if (element.Element(W + "tblPr") == null) element.AddFirst(Properties(first ? null : source?.Element(W + "tblPr"), table.Format));
         if (element.Element(W + "tblGrid") == null) element.Element(W + "tblPr")!.AddAfterSelf(Grid(null, table.Grid));
         return element;
     }
 
     private static XElement Row(TableRow row, DocxWriteContext context)
     {
-        if (context.IsOriginal(row)) return row.Source;
+        if (context.IsOriginal(row) && context.Claim(row.Source, row)) return row.Source;
         var source = row.Source;
-        var element = new XElement(W + "tr", source?.Attributes(),
-            Rewrite(source, "tc", row.Cells, c => c.Source, c => Cell(c, context), e => e.Name == W + "trPr" ? Properties(e, row) : e, _ => false));
-        if (source?.Element(W + "trPr") == null && Properties(null, row) is { } created)
+        var first = source == null || context.Claim(source, row);
+        var element = new XElement(W + "tr", source == null ? null : DocxWriteContext.Attributes(source, first),
+            first ? null : source.Element(W + "tblPrEx") is { } copied ? new XElement(copied) : null,
+            Rewrite(first ? source : null, "tc", row.Cells, c => c.Source, c => Cell(c, context), e => e.Name == W + "trPr" ? Properties(e, row) : e, _ => false));
+        if ((first ? source : null)?.Element(W + "trPr") == null && Properties(first ? null : source.Element(W + "trPr"), row) is { } created)
         {
             if (element.Element(W + "tblPrEx") is { } exceptions) exceptions.AddAfterSelf(created);
             else element.AddFirst(created);
@@ -97,38 +100,67 @@ internal static class TableXml
 
     private static XElement Cell(TableCell cell, DocxWriteContext context)
     {
-        if (context.IsOriginal(cell)) return cell.Source;
-        var element = new XElement(W + "tc", cell.Source?.Attributes(), Properties(cell.Source?.Element(W + "tcPr"), cell),
+        if (context.IsOriginal(cell) && context.Claim(cell.Source, cell)) return cell.Source;
+        var source = cell.Source;
+        var first = source == null || context.Claim(source, cell);
+        var element = new XElement(W + "tc", source == null ? null : DocxWriteContext.Attributes(source, first), Properties(source?.Element(W + "tcPr"), cell),
             cell.Blocks.Select(b => context.Block(b, false)));
         if (element.Elements().LastOrDefault()?.Name != W + "p") element.Add(new XElement(W + "p"));
         return element;
     }
 
     private static List<object> Rewrite<T>(XElement original, string item, IReadOnlyList<T> models, Func<T, XElement> sourceOf, Func<T, XElement> write,
-        Func<XElement, XElement> other, Func<XElement, bool> keepUnmapped)
+        Func<XElement, XElement> other, Func<XElement, bool> keepUnmapped) where T : class
     {
-        var sources = models.Select(sourceOf).ToList();
-        List<XElement> order = original == null ? [] : Children(original, item).ToList();
-        var positions = sources.Where(s => s != null).Select(s => order.IndexOf(s)).ToList();
-        if (positions.Count == 0 || positions.Any(p => p < 0) || positions.Zip(positions.Skip(1)).Any(p => p.First >= p.Second))
-            return [.. (original?.Elements().Where(e => e.Name != W + item && ContentOf(e) == null) ?? []).Select(other), .. models.Select(write)];
-
-        var emitted = new Dictionary<XElement, List<XElement>>();
-        var current = new List<XElement>();
+        if (original == null) return models.Select(write).ToList<object>();
+        var order = Children(original, item).Select((e, i) => (e, i)).ToDictionary(p => p.e, p => p.i);
+        var anchors = new Dictionary<XElement, T>();
+        var anchored = new List<(int Model, XElement Source)>();
         for (var k = 0; k < models.Count; k++)
-            if (sources[k] == null) current.Add(write(models[k]));
-            else emitted[sources[k]] = current = [.. emitted.Count == 0 ? current : [], write(models[k])];
-        return Walk(original).ToList();
+            if (sourceOf(models[k]) is { } s && order.TryGetValue(s, out var position) && !anchors.ContainsKey(s) &&
+                (anchored.Count == 0 || position > order[anchored[^1].Source]))
+            {
+                anchors[s] = models[k];
+                anchored.Add((k, s));
+            }
+
+        var before = new Dictionary<XElement, List<T>>();
+        var after = new Dictionary<XElement, List<T>>();
+        var tail = new List<T>();
+        var firstItem = original.Elements().FirstOrDefault(e => e.Name == W + item || ContentOf(e) is { } c && Children(c, item).Any());
+        for (int k = 0, next = 0; k < models.Count; k++)
+        {
+            if (next < anchored.Count && anchored[next].Model == k)
+            {
+                next++;
+                continue;
+            }
+
+            var previous = next > 0 ? anchored[next - 1].Source : null;
+            var following = next < anchored.Count ? anchored[next].Source : null;
+            if (previous != null) Add(after, Below(Common(previous, following, original), previous), models[k]);
+            else if (following != null) Add(before, Below(original, following), models[k]);
+            else if (firstItem != null) Add(before, firstItem, models[k]);
+            else tail.Add(models[k]);
+        }
+
+        return [.. Walk(original), .. tail.Select(write)];
 
         IEnumerable<object> Walk(XElement parent)
         {
             foreach (var node in parent.Nodes())
+            {
                 if (node is not XElement element)
-                    yield return node;
-                else if (element.Name == W + item)
                 {
-                    if (emitted.TryGetValue(element, out var replacement))
-                        foreach (var written in replacement) yield return written;
+                    yield return node;
+                    continue;
+                }
+
+                if (before.TryGetValue(element, out var leading))
+                    foreach (var model in leading) yield return write(model);
+                if (element.Name == W + item)
+                {
+                    if (anchors.TryGetValue(element, out var model)) yield return write(model);
                     else if (keepUnmapped(element)) yield return element;
                 }
                 else if (ContentOf(element) is { } content && Children(content, item).Any())
@@ -138,8 +170,23 @@ internal static class TableXml
                 }
                 else
                     yield return other(element);
+
+                if (after.TryGetValue(element, out var trailing))
+                    foreach (var model in trailing) yield return write(model);
+            }
+        }
+
+        static void Add(Dictionary<XElement, List<T>> map, XElement key, T model)
+        {
+            if (!map.TryGetValue(key, out var list)) map[key] = list = [];
+            list.Add(model);
         }
     }
+
+    private static XElement Common(XElement a, XElement b, XElement root) =>
+        b == null ? root : a.Ancestors().TakeWhile(e => e != root).Append(root).First(e => e == root || b.Ancestors().Contains(e));
+
+    private static XElement Below(XElement ancestor, XElement element) => element.AncestorsAndSelf().First(e => e.Parent == ancestor);
 
     private static XElement ContentOf(XElement element) =>
         element.Name == W + "customXml" ? element : element.Name == W + "sdt" ? element.Element(W + "sdtContent") : null;

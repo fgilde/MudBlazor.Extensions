@@ -22,7 +22,7 @@ internal static class ParagraphXml
     internal static XElement Write(Paragraph paragraph, DocxWriteContext context, bool topLevel)
     {
         var source = paragraph.Source;
-        var first = source == null || context.Claim(source);
+        var first = source == null || context.Claim(source, paragraph);
         var sectPr = topLevel ? context.SectionEnd(paragraph.Id) : null;
         if (context.IsOriginal(paragraph))
         {
@@ -45,7 +45,7 @@ internal static class ParagraphXml
         if (pPr.Element(W + "rPr") is { HasElements: false, HasAttributes: false } empty) empty.Remove();
         SetSectionEnd(pPr, sectPr);
         if (pPr.HasElements || pPr.HasAttributes) element.Add(pPr);
-        if (source != null) DropDeletedComments(source, context);
+        if (source != null && first) DropDeletedComments(source, context);
         element.Add(Content(paragraph.Inlines, context));
         return element;
     }

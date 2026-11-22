@@ -48,6 +48,7 @@ public static partial class DocxWriter
         {
             if (asTemplate is { } template && MainContentType(_opc.ContentType(package.MainPart), template) is { } type) SetOverride(package.MainPart, type);
             _mainRelationships = Relationships(package.MainPart);
+            _context.Reserve(document.BlockList.Concat(document.HeaderFooterList.SelectMany(h => h.Blocks)));
             WriteStyles();
             WriteNumbering();
             WriteBody();
@@ -139,6 +140,7 @@ internal sealed class DocxWriteContext
     private readonly Dictionary<XElement, List<Inline>> _owned = new();
     private readonly Dictionary<object, Inline> _tokens = new();
     private readonly HashSet<XElement> _claimed = new();
+    private readonly Dictionary<XElement, object> _owners = new();
     private readonly Dictionary<XElement, Hyperlink> _links = new();
     private readonly HashSet<string> _droppedMoves = [];
     private readonly HashSet<string> _droppedComments = [];
@@ -190,6 +192,28 @@ internal sealed class DocxWriteContext
     internal bool IsIntact(XElement owner, IReadOnlyList<Inline> inlines) => _owned.TryGetValue(owner, out var original) && original.SequenceEqual(inlines);
 
     internal bool Claim(XElement source) => _claimed.Add(source);
+
+    internal bool Claim(XElement source, object item) => _owners.TryGetValue(source, out var owner) ? ReferenceEquals(owner, item) : _claimed.Add(source);
+
+    internal void Reserve(IEnumerable<Block> blocks)
+    {
+        foreach (var block in blocks) Reserve(block);
+    }
+
+    private void Reserve(Block block)
+    {
+        if (block.Source != null && IsOriginal(block)) _owners.TryAdd(block.Source, block);
+        if (block is not Table table) return;
+        foreach (var row in table.Rows)
+        {
+            if (row.Source != null && IsOriginal(row)) _owners.TryAdd(row.Source, row);
+            foreach (var cell in row.Cells)
+            {
+                if (cell.Source != null && IsOriginal(cell)) _owners.TryAdd(cell.Source, cell);
+                Reserve(cell.Blocks);
+            }
+        }
+    }
 
     internal (RunFormat Old, RunFormat New)? FormatChange(Inline inline) =>
         inline is not (TextRun or Tab or Break) && _tokens.TryGetValue(TokenKey(inline), out var original) && original.Format != inline.Format

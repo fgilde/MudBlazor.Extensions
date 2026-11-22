@@ -86,6 +86,36 @@ public sealed partial class TextDocument
     internal static int SnapOffset(string text, int offset, bool down) =>
         offset > 0 && offset < text.Length && char.IsHighSurrogate(text[offset - 1]) && char.IsLowSurrogate(text[offset]) ? down ? offset - 1 : offset + 1 : offset;
 
+    internal List<BlockEdit> EditBlock(string blockId, IReadOnlyList<Block> replacement)
+    {
+        if (blockId == null || !TryLocate(blockId, out var location)) throw new ArgumentException($"{blockId} is not a block of the document.", nameof(blockId));
+        var top = Container(location.Container)[location.Index];
+        if (location.Path.Length > 0) return [new BlockEdit(location.Container, location.Index, [top], [EnsureIds(Splice(top, location.Path, replacement))])];
+        var blocks = replacement.Select(EnsureIds).ToList();
+        if (Container(location.Container).Count == 1 && !blocks.OfType<Paragraph>().Any()) blocks.Add(new Paragraph { Id = NewId() });
+        return [new BlockEdit(location.Container, location.Index, [top], blocks)];
+    }
+
+    internal Section SectionOf(string topBlockId)
+    {
+        var index = BlockList.FindIndex(b => b.Id == topBlockId);
+        if (index < 0) return SectionList[0];
+        return SectionList.FirstOrDefault(s => s.LastBlockId != null && BlockList.FindIndex(b => b.Id == s.LastBlockId) >= index) ?? SectionList[^1];
+    }
+
+    private static Block Splice(Block block, ReadOnlySpan<CellStep> path, IReadOnlyList<Block> replacement)
+    {
+        var (r, c, b) = path[0];
+        var table = (Table)block;
+        var row = table.Rows[r];
+        var cell = row.Cells[c];
+        IReadOnlyList<Block> blocks = path.Length == 1
+            ? [.. cell.Blocks.Take(b), .. replacement, .. cell.Blocks.Skip(b + 1)]
+            : With(cell.Blocks, b, Splice(cell.Blocks[b], path[1..], replacement));
+        if (blocks.LastOrDefault() is not Paragraph) blocks = [.. blocks, new Paragraph()];
+        return table with { Rows = With(table.Rows, r, row with { Cells = With(row.Cells, c, cell with { Blocks = blocks }) }) };
+    }
+
     internal Block NextSibling(string blockId) => Sibling(blockId, 1);
 
     internal Block PreviousSibling(string blockId) => Sibling(blockId, -1);
