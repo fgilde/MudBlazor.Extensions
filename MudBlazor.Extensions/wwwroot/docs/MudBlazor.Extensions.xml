@@ -35111,7 +35111,15 @@
             Windows-1252. RTF is rejected when it has more than 32 Mi characters, 256 nested groups, 4 Mi control words, braces and tabs, or 128 Ki
             paragraphs, cells and rows, when its HTML would exceed 32 Mi characters, when the squares of the runs per paragraph sum to more than 2^33,
             or when its table work exceeds 2^27: every cell end, row end and table paragraph costs 1500 plus the rows and paragraphs before it in its
-            section (about 3600 rows of 10 cells, or 10000 rows of one cell, in one section).
+            section (about 3600 rows of 10 cells, or 10000 rows of one cell, in one section). ODT is read from <c>content.xml</c>, <c>styles.xml</c> and
+            <c>meta.xml</c>: automatic and named styles become direct formatting, and a named paragraph style whose name is that of a built-in style such as
+            <c>Heading 1</c> or <c>Title</c> also gets that style; headings get Heading 1 to 6 by their outline level; each list style becomes one list
+            definition and each top-level list restarts unless it continues another; PNG, JPEG, GIF and BMP pictures in the package are imported (as-char
+            pictures inline, anchored ones floating at the left) and the text of text boxes follows their paragraph; footnotes and endnotes become tokens
+            showing their citation, fields their displayed text, tracked changes their final state; comments are dropped; the first master page gives the
+            page size, margins, headers and footers, and <c>meta.xml</c> the title. ODT is rejected when it is encrypted, has a DTD, more than 10000
+            entries, more than 1 GiB uncompressed, an entry above 256 MiB, content nested deeper than 100 levels, or when repeated table rows and cells
+            and <c>text:s</c> spaces add up to more than 32 Mi spaces, counting a table cell as 32.
             </summary>
             <param name="stream">The file content.</param>
             <param name="format">The file format.</param>

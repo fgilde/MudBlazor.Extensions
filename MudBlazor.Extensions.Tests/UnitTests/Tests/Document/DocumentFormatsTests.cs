@@ -26,9 +26,8 @@ public class DocumentFormatsTests
         {
             Assert.Equal(format, DocumentFileFormats.Detect("file" + DocumentFileFormats.Extension(format)));
             Assert.Equal(format, DocumentFileFormats.Detect(null, DocumentFileFormats.ContentType(format)));
-            var supported = format is not (DocumentFileFormat.Odt or DocumentFileFormat.Doc);
-            Assert.Equal(supported, DocumentFileFormats.CanRead(format));
-            Assert.Equal(supported, DocumentFileFormats.CanWrite(format));
+            Assert.Equal(format != DocumentFileFormat.Doc, DocumentFileFormats.CanRead(format));
+            Assert.Equal(format is not (DocumentFileFormat.Odt or DocumentFileFormat.Doc), DocumentFileFormats.CanWrite(format));
         }
     }
 
@@ -294,7 +293,8 @@ public class DocumentFormatsTests
 
         Assert.Throws<NotSupportedException>(() => document.Save(new MemoryStream(), DocumentFileFormat.Odt));
         Assert.Throws<NotSupportedException>(() => document.Save(new MemoryStream(), DocumentFileFormat.Doc));
-        Assert.Throws<NotSupportedException>(() => TextDocument.Load(new MemoryStream([1]), DocumentFileFormat.Odt));
+        Assert.Throws<InvalidDataException>(() => TextDocument.Load(new MemoryStream([1]), DocumentFileFormat.Odt));
+        Assert.Throws<NotSupportedException>(() => TextDocument.Load(new MemoryStream([1]), DocumentFileFormat.Doc));
         Assert.Throws<NotSupportedException>(() => DocumentExport.Losses(document, DocumentFileFormat.Odt));
     }
 

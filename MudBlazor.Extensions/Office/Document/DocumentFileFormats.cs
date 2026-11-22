@@ -90,7 +90,7 @@ public static class DocumentFileFormats
     /// <returns>True if the format can be read.</returns>
     public static bool CanRead(DocumentFileFormat format) =>
         format is DocumentFileFormat.Docx or DocumentFileFormat.Dotx or DocumentFileFormat.Rtf or DocumentFileFormat.Html or DocumentFileFormat.Text or
-            DocumentFileFormat.Markdown;
+            DocumentFileFormat.Markdown or DocumentFileFormat.Odt;
 
     /// <summary>Gets whether <see cref="TextDocument.Save"/> can write a format.</summary>
     /// <param name="format">The format.</param>

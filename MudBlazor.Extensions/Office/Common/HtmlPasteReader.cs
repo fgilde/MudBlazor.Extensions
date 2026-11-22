@@ -486,7 +486,7 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         }
     }
 
-    private static string Sniff(byte[] data) => data switch
+    internal static string Sniff(byte[] data) => data switch
     {
         [0x89, 0x50, 0x4E, 0x47, ..] => "image/png",
         [0xFF, 0xD8, 0xFF, ..] => "image/jpeg",

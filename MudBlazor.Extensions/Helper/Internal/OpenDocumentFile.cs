@@ -1,23 +1,32 @@
 using System.IO.Compression;
 using System.Net;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace MudBlazor.Extensions.Helper.Internal;
 
 internal sealed class OpenDocumentFile : IDisposable
 {
+    internal const long MaxEntryLength = 256L * 1024 * 1024;
+    internal const long MaxTotalLength = 1024L * 1024 * 1024;
+    internal const int MaxEntries = 10000;
+
+    private static readonly XmlReaderSettings PackageXml = new() { DtdProcessing = DtdProcessing.Prohibit, XmlResolver = null };
+
     private readonly MemoryStream _stream;
     private readonly ZipArchive _archive;
+    private readonly bool _package;
 
     public string MediaType { get; private set; }
     public string Title { get; private set; }
     public string Creator { get; private set; }
     public List<OpenDocumentPage> Pages { get; } = new();
 
-    private OpenDocumentFile(MemoryStream stream)
+    private OpenDocumentFile(MemoryStream stream, bool package = false)
     {
         _stream = stream;
+        _package = package;
         _archive = new ZipArchive(stream, ZipArchiveMode.Read, leaveOpen: true);
     }
 
@@ -26,6 +35,23 @@ internal sealed class OpenDocumentFile : IDisposable
         var document = new OpenDocumentFile(new MemoryStream(bytes, writable: false));
         document.Read();
         return document;
+    }
+
+    internal static OpenDocumentFile OpenPackage(byte[] bytes)
+    {
+        var document = new OpenDocumentFile(new MemoryStream(bytes, writable: false), true);
+        try
+        {
+            if (document._archive.Entries.Count > MaxEntries || document._archive.Entries.Sum(e => e.Length) > MaxTotalLength)
+                throw new InvalidDataException("The package has too many or too large entries.");
+            document.MediaType = document.ReadText("mimetype")?.Trim();
+            return document;
+        }
+        catch
+        {
+            document.Dispose();
+            throw;
+        }
     }
 
     private void Read()
@@ -119,8 +145,16 @@ internal sealed class OpenDocumentFile : IDisposable
         return html.Append("</tbody></table>").ToString();
     }
 
-    private XDocument ReadXml(string path)
+    internal XDocument ReadXml(string path)
     {
+        if (_package)
+        {
+            var bytes = ReadEntry(path);
+            if (bytes == null) return null;
+            using var reader = XmlReader.Create(new MemoryStream(bytes, false), PackageXml);
+            return XDocument.Load(reader);
+        }
+
         var entry = _archive.GetEntry(path);
         if (entry == null) return null;
         using var stream = entry.Open();
@@ -129,21 +163,31 @@ internal sealed class OpenDocumentFile : IDisposable
 
     private string ReadText(string path)
     {
+        if (_package) return ReadEntry(path) is { } bytes ? Encoding.UTF8.GetString(bytes) : null;
         var entry = _archive.GetEntry(path);
         if (entry == null) return null;
         using var reader = new StreamReader(entry.Open(), Encoding.UTF8);
         return reader.ReadToEnd();
     }
 
-    private byte[] ReadEntry(string path)
+    internal byte[] ReadEntry(string path)
     {
         if (string.IsNullOrWhiteSpace(path)) return null;
         var entry = _archive.GetEntry(path.Replace('\\', '/'));
         if (entry == null) return null;
+        if (_package && entry.Length > MaxEntryLength) throw new InvalidDataException($"The package entry {path} is larger than 256 MB.");
         using var source = entry.Open();
-        using var destination = new MemoryStream();
-        source.CopyTo(destination);
-        return destination.ToArray();
+        if (!_package)
+        {
+            using var destination = new MemoryStream();
+            source.CopyTo(destination);
+            return destination.ToArray();
+        }
+
+        var data = new byte[entry.Length];
+        if (source.ReadAtLeast(data, data.Length, false) != data.Length || source.ReadByte() >= 0)
+            throw new InvalidDataException($"The package entry {path} does not have its declared size.");
+        return data;
     }
 
     private static string Attribute(XElement element, string localName)
