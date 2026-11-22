@@ -8,14 +8,14 @@ namespace MudBlazor.Extensions.Office.Document;
 
 internal static class OdtReader
 {
-    internal static TextDocument Read(byte[] bytes)
+    internal static TextDocument Read(byte[] bytes, PackageLimits limits = null)
     {
         try
         {
-            using var package = OpenDocumentFile.OpenPackage(bytes);
+            using var package = OpenDocumentFile.OpenPackage(bytes, limits);
             return new Reader(package).Read();
         }
-        catch (Exception e) when (e is XmlException or IOException or NotSupportedException)
+        catch (Exception e) when (e is not (InvalidDataException or OutOfMemoryException))
         {
             throw new InvalidDataException("The file is not a readable OpenDocument text document.", e);
         }
@@ -28,8 +28,9 @@ internal static class OdtReader
         private const int MaxRows = 32767;
         private const int MaxSpaces = 1000;
         private const int MaxDepth = 100;
-        private const long MaxExpansion = 32 * 1024 * 1024;
         private const int CellCost = 32;
+        private const int ParagraphCost = 8;
+        private const int PictureBytesPerUnit = 16;
         private const long EmuPerTwip = 635;
         private const long MaxEmu = 20116800;
 
@@ -62,7 +63,7 @@ internal static class OdtReader
         private int _nextInstance;
         private int _width;
         private int _depth;
-        private long _expansion;
+        private readonly Dictionary<string, (string Part, byte[] Data, string Type)> _pictures = new();
         private bool _header;
         private bool _pageBreak;
 
@@ -274,6 +275,7 @@ internal static class OdtReader
 
         private Paragraph ParagraphOf(XElement element, IEnumerable<XNode> content, NumberingRef? numbering, NumberingRef? continued)
         {
+            package.Spend(ParagraphCost);
             var style = _styles.ParagraphStyle(_header, Attr(element, TextNs + "style-name"));
             var styleId = element?.Name == TextNs + "h" ? "Heading" + Math.Clamp(Int(element, TextNs + "outline-level") ?? 1, 1, 6) : style.BuiltIn;
             if (styleId != null) _definitions = StyleDefinitions.With(_definitions, styleId, StyleType.Paragraph);
@@ -299,11 +301,13 @@ internal static class OdtReader
             {
                 if (node is XText value)
                 {
+                    package.Spend(value.Value.Length);
                     runs.Text(value.Value, Format(text, link), link);
                     continue;
                 }
 
                 if (node is not XElement element) continue;
+                package.Spend(1);
                 if (element.Name.Namespace == TextNs)
                     switch (element.Name.LocalName)
                     {
@@ -315,7 +319,7 @@ internal static class OdtReader
                             break;
                         case "s":
                             var spaces = Math.Clamp(Int(element, TextNs + "c") ?? 1, 1, MaxSpaces);
-                            Spend(spaces);
+                            package.Spend(spaces);
                             runs.Spaces(spaces, Format(text, link), link);
                             break;
                         case "tab":
@@ -344,12 +348,12 @@ internal static class OdtReader
         {
             foreach (var image in frame.Elements(DrawNs + "image"))
             {
-                if (Picture(Attr(image, XLinkNs + "href")) is not ({ } data, { } type)) continue;
+                if (Picture(Attr(image, XLinkNs + "href")) is not ({ } part, { } data, { } type)) continue;
                 var (width, height) = Twips(Attr(frame, SvgNs + "width")) is { } w and > 0 && Twips(Attr(frame, SvgNs + "height")) is { } h and > 0
                     ? (Math.Clamp((long)Math.Round(w * EmuPerTwip), 1, MaxEmu), Math.Clamp((long)Math.Round(h * EmuPerTwip), 1, MaxEmu))
                     : InsertImageCommand.Size(data, type, _width * EmuPerTwip);
                 var alt = frame.Element(SvgNs + "title")?.Value ?? frame.Element(SvgNs + "desc")?.Value;
-                runs.Add(new InlineImage(InsertImageCommand.AddMedia(_document, data, type), width, height)
+                runs.Add(new InlineImage(part, width, height)
                 {
                     AltText = string.IsNullOrWhiteSpace(alt) ? null : alt,
                     Placement = Attr(frame, TextNs + "anchor-type") == "as-char" ? ImagePlacement.Inline : ImagePlacement.Left,
@@ -368,11 +372,16 @@ internal static class OdtReader
             }
         }
 
-        private (byte[] Data, string Type) Picture(string href)
+        private (string Part, byte[] Data, string Type) Picture(string href)
         {
             if (string.IsNullOrEmpty(href) || href.Contains(':') || href.Contains("..", StringComparison.Ordinal)) return default;
-            var data = package.ReadEntry(href.StartsWith("./", StringComparison.Ordinal) ? href[2..] : href.TrimStart('/'));
-            return data is { Length: > 0 } && HtmlPasteReader.Sniff(data) is { } type ? (data, type) : default;
+            var path = href.StartsWith("./", StringComparison.Ordinal) ? href[2..] : href.TrimStart('/');
+            if (_pictures.TryGetValue(path, out var cached)) return cached;
+            var data = package.ReadEntry(path);
+            package.Spend(1 + (data?.Length ?? 0) / PictureBytesPerUnit);
+            return _pictures[path] = data is { Length: > 0 } && HtmlPasteReader.Sniff(data) is { } type
+                ? (InsertImageCommand.AddMedia(_document, data, type), data, type)
+                : default;
         }
 
         private Hyperlink Link(string href)
@@ -401,12 +410,12 @@ internal static class OdtReader
             foreach (var row in Descend(table, TableNs + "table-row", ["table-header-rows", "table-rows", "table-row-group"]))
             {
                 var header = row.Parent?.Name == TableNs + "table-header-rows";
-                (List<TableCell> Cells, Dictionary<int, (int Rows, int Span)> Below)? built = null;
-                for (var i = Math.Clamp(Int(row, TableNs + "number-rows-repeated") ?? 1, 1, MaxRepeat); i > 0 && rows.Count < MaxRows; i--)
+                var repeat = Math.Min(Math.Clamp(Int(row, TableNs + "number-rows-repeated") ?? 1, 1, MaxRepeat), MaxRows - rows.Count);
+                for (var i = 0; i < repeat; i++)
                 {
-                    var (cells, next) = built is { Below.Count: 0 } same && below.Count == 0 ? same : Row(row, below);
-                    built = (cells, next);
-                    Spend((long)cells.Count * CellCost);
+                    var before = package.Budget;
+                    var (cells, next) = Row(row, below);
+                    if (i == 0) package.Reserve((before - package.Budget) * (repeat - 1));
                     rows.Add(new TableRow(cells) { IsHeader = header });
                     below = next;
                 }
@@ -447,8 +456,8 @@ internal static class OdtReader
             {
                 var covered = cell.Name == TableNs + "covered-table-cell";
                 if (!covered && cell.Name != TableNs + "table-cell") continue;
-                List<Block> blocks = null;
-                for (var i = Math.Clamp(Int(cell, TableNs + "number-columns-repeated") ?? 1, 1, MaxColumns); i > 0 && column < MaxColumns; i--)
+                var repeat = Math.Clamp(Int(cell, TableNs + "number-columns-repeated") ?? 1, 1, MaxColumns);
+                for (var i = 0; i < repeat && column < MaxColumns; i++)
                 {
                     if (covered && skip > 0)
                     {
@@ -456,6 +465,7 @@ internal static class OdtReader
                         continue;
                     }
 
+                    package.Spend(CellCost);
                     if (covered)
                     {
                         var merge = below.Remove(column, out var m) ? m : (Rows: 0, Span: 1);
@@ -467,7 +477,9 @@ internal static class OdtReader
 
                     var span = Math.Clamp(Int(cell, TableNs + "number-columns-spanned") ?? 1, 1, MaxColumns - column);
                     var spannedRows = Math.Clamp(Int(cell, TableNs + "number-rows-spanned") ?? 1, 1, MaxRows);
-                    blocks ??= CellBlocks(cell);
+                    var before = package.Budget;
+                    var blocks = CellBlocks(cell);
+                    if (i == 0) package.Reserve((before - package.Budget) * (Math.Min(repeat, MaxColumns - column) - 1));
                     cells.Add(new TableCell(blocks)
                     {
                         GridSpan = span, VMerge = spannedRows > 1 ? VerticalMerge.Restart : VerticalMerge.None,
@@ -497,11 +509,6 @@ internal static class OdtReader
                 else if (child.Name.Namespace == TableNs && groups.Contains(child.Name.LocalName))
                     foreach (var nested in Descend(child, name, groups, depth + 1))
                         yield return nested;
-        }
-
-        private void Spend(long units)
-        {
-            if ((_expansion += units) > MaxExpansion) throw new InvalidDataException("The document expands to too much content.");
         }
 
         private T Nest<T>(Func<T> action)

@@ -178,7 +178,7 @@ public class OdtReaderTests
                                 "<manifest:encryption-data manifest:checksum-type=\"SHA1/1K\"/></manifest:file-entry></manifest:manifest>";
         var bomb = new MemoryStream();
         using (var zip = new ZipArchive(bomb, ZipArchiveMode.Create, true))
-            for (var i = 0; i <= OpenDocumentFile.MaxEntries; i++)
+            for (var i = 0; i <= PackageLimits.Default.MaxEntries; i++)
                 zip.CreateEntry("e" + i);
 
         Assert.Throws<InvalidDataException>(() => Load([1, 2, 3]));

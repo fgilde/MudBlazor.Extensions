@@ -93,8 +93,9 @@ public sealed partial class TextDocument
     /// pictures inline, anchored ones floating at the left) and the text of text boxes follows their paragraph; footnotes and endnotes become tokens
     /// showing their citation, fields their displayed text, tracked changes their final state; comments are dropped; the first master page gives the
     /// page size, margins, headers and footers, and <c>meta.xml</c> the title. ODT is rejected when it is encrypted, has a DTD, more than 10000
-    /// entries, more than 1 GiB uncompressed, an entry above 256 MiB, content nested deeper than 100 levels, or when repeated table rows and cells
-    /// and <c>text:s</c> spaces add up to more than 32 Mi spaces, counting a table cell as 32.
+    /// entries, more than 1 GiB uncompressed, an entry above 256 MiB or an XML part above 64 MiB, XML nested deeper than 256 levels, content nested
+    /// deeper than 100 levels, or when reading it costs more than 32 Mi units: an XML element 8, a text character, inline element or <c>text:s</c>
+    /// space 1, a paragraph 8, a table cell 32 and every 16 bytes of a distinct picture 1, with repeated rows and cells counted once per repetition.
     /// </summary>
     /// <param name="stream">The file content.</param>
     /// <param name="format">The file format.</param>
