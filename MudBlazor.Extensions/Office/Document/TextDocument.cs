@@ -98,7 +98,7 @@ public sealed partial class TextDocument
     /// <summary>Finds a block of the body, of a table cell at any depth or of a header or footer.</summary>
     /// <param name="id">The block id.</param>
     /// <returns>The block, or null if there is none with this id.</returns>
-    public Block FindBlock(string id) => id != null && Index.TryGetValue(id, out var location) ? location.Block : null;
+    public Block FindBlock(string id) => TryLocate(id, out var location) ? location.Block : null;
 
     /// <summary>Gets a header or footer.</summary>
     /// <param name="id">Its id.</param>
@@ -135,23 +135,71 @@ public sealed partial class TextDocument
             : block;
     }
 
+    internal Block EnsureIds(Block block)
+    {
+        if (Identified([block])) return block;
+        var result = block.Id == null ? block with { Id = NewId() } : block;
+        return result is Table table ? table with { Rows = table.Rows.Select(EnsureIds).ToList() } : result;
+    }
+
+    internal void InvalidateIndex() => _index = null;
+
     internal void Notify(string blockId, DocumentChangeKind kind) =>
-        Track(blockId != null && Index.TryGetValue(blockId, out var location) ? Container(location.Container)[location.Index].Id : blockId, kind);
+        Track(TryLocate(blockId, out var location) ? Container(location.Container)[location.Index].Id : blockId, kind);
 
     internal void ReplaceBlock(Block old, Block replacement)
     {
         if (ReferenceEquals(old, replacement)) return;
-        var location = old.Id != null && Index.TryGetValue(old.Id, out var found) ? found : throw new ArgumentException($"Block {old.Id} is not part of the document.", nameof(old));
+        if (!TryLocate(old.Id, out var location)) throw new ArgumentException($"Block {old.Id} is not part of the document.", nameof(old));
+        replacement = EnsureIds(replacement);
+        var ownIds = Subtree(location.Block).Select(b => b.Id).ToHashSet();
+        if (Subtree(replacement).FirstOrDefault(b => !ownIds.Contains(b.Id) && TryLocate(b.Id, out _)) is { } duplicate)
+            throw new ArgumentException($"Block {duplicate.Id} already exists elsewhere in the document.", nameof(replacement));
         var top = Container(location.Container)[location.Index];
         var newTop = Replace(top, location.Path, replacement);
         if (location.Container < 0)
             BlockList[location.Index] = newTop;
         else
             HeaderFooterList[location.Container] = HeaderFooterList[location.Container] with { Blocks = With(Container(location.Container), location.Index, newTop) };
-        _index = null;
-        var kind = location.Container < 0 ? DocumentChangeKind.Content : DocumentChangeKind.HeadersFooters;
+        InvalidateIndex();
+        var kind = (location.Container < 0 ? DocumentChangeKind.Content : DocumentChangeKind.HeadersFooters) |
+                   (replacement.Id != location.Block.Id ? DocumentChangeKind.Structure : DocumentChangeKind.None);
         Track(top.Id, kind);
-        if (newTop.Id != top.Id) Track(newTop.Id, kind | DocumentChangeKind.Structure);
+        if (newTop.Id != top.Id) Track(newTop.Id, kind);
+    }
+
+    private TableRow EnsureIds(TableRow row) =>
+        Identified(row.Cells.SelectMany(c => c.Blocks))
+            ? row
+            : row with { Cells = row.Cells.Select(c => Identified(c.Blocks) ? c : c with { Blocks = c.Blocks.Select(EnsureIds).ToList() }).ToList() };
+
+    private static bool Identified(IEnumerable<Block> blocks) => blocks.SelectMany(Subtree).All(b => b.Id != null);
+
+    private static IEnumerable<Block> Subtree(Block block) =>
+        block is Table table ? table.Rows.SelectMany(r => r.Cells).SelectMany(c => c.Blocks).SelectMany(Subtree).Prepend(block) : [block];
+
+    private bool TryLocate(string id, out BlockLocation location)
+    {
+        location = default;
+        if (id == null || !Index.TryGetValue(id, out location)) return false;
+        if (ReferenceEquals(Walk(TopAt(location.Container, location.Index), location.Path), location.Block)) return true;
+        InvalidateIndex();
+        return Index.TryGetValue(id, out location);
+    }
+
+    private Block TopAt(int container, int index) =>
+        container < HeaderFooterList.Count && index < Container(container).Count ? Container(container)[index] : null;
+
+    private static Block Walk(Block block, IEnumerable<CellStep> path)
+    {
+        foreach (var (r, c, b) in path)
+        {
+            if (block is not Table table || r < 0 || r >= table.Rows.Count || c < 0 || c >= table.Rows[r].Cells.Count || b < 0 || b >= table.Rows[r].Cells[c].Blocks.Count)
+                return null;
+            block = table.Rows[r].Cells[c].Blocks[b];
+        }
+
+        return block;
     }
 
     private IReadOnlyList<Block> Container(int container) => container < 0 ? BlockList : HeaderFooterList[container].Blocks;
@@ -210,7 +258,7 @@ public sealed partial class TextDocument
     private void RaiseChanged()
     {
         if (_changeKind == DocumentChangeKind.None && _changedIds.Count == 0) return;
-        var present = _changedIds.ToLookup(Index.ContainsKey);
+        var present = _changedIds.ToLookup(id => TryLocate(id, out _));
         var args = new TextDocumentChangedEventArgs(present[true].ToList(), present[false].ToList(), _changeKind);
         _changedIds.Clear();
         _changeKind = DocumentChangeKind.None;

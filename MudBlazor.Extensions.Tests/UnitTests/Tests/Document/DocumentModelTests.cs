@@ -138,7 +138,7 @@ public class DocumentModelTests
     [InlineData("http://example.com/a?b=c", "http://example.com/a?b=c")]
     [InlineData("mailto:a@b.c", "mailto:a@b.c")]
     [InlineData("#_Toc1", "#_Toc1")]
-    public void Hyperlink_SafeTarget(string target, string expected)
+    public void Hyperlink_SafeTarget(string target, string? expected)
     {
         Assert.Equal(expected, new Hyperlink(target, null, null).SafeTarget);
         Assert.Equal("#_Toc2", new Hyperlink(null, "_Toc2", null).SafeTarget);
@@ -217,6 +217,151 @@ public class DocumentModelTests
         Assert.Equal(before, DocumentDescriber.Describe(document));
         Assert.Same(cellParagraph, document.FindBlock(cellParagraph.Id));
         Assert.Null(document.FindBlock("replacement"));
+    }
+
+    [Fact]
+    public void Notify_AfterBlockRemoved_ReportsRemovedId_IndexNotStale()
+    {
+        var document = TextDocument.FromBlocks([P("a"), P("b"), P("c")]);
+        var removed = document.Blocks[1];
+        var last = document.Blocks[2];
+        Assert.Same(last, document.FindBlock(last.Id));
+        var events = new List<TextDocumentChangedEventArgs>();
+        document.Changed += (_, e) => events.Add(e);
+
+        document.Execute(new DelegateCommand(d =>
+        {
+            d.BlockList.RemoveAt(1);
+            d.Notify(removed.Id, DocumentChangeKind.Structure);
+        }, d =>
+        {
+            d.BlockList.Insert(1, removed);
+            d.InvalidateIndex();
+            d.Notify(removed.Id, DocumentChangeKind.Structure);
+        }));
+
+        var args = Assert.Single(events);
+        Assert.Equal([removed.Id], args.RemovedBlockIds);
+        Assert.Empty(args.ChangedBlockIds);
+        Assert.Null(document.FindBlock(removed.Id));
+        Assert.Same(last, document.FindBlock(last.Id));
+        Assert.Equal(new DocumentPosition(last.Id, [], 1), document.PositionOf(last.Id, 1));
+
+        document.Undo.Undo();
+
+        Assert.Equal([removed.Id], events[1].ChangedBlockIds);
+        Assert.Same(removed, document.FindBlock(removed.Id));
+    }
+
+    [Fact]
+    public void ReplaceBlock_InHeader_ReplacesHeaderPart_ReportsHeadersFooters()
+    {
+        var document = TextDocument.FromBlocks([P("body")]);
+        document.HeaderFooterList.Add(new HeaderFooter { Id = "h1", Kind = HeaderFooterKind.Header, Blocks = [document.Identify(NestedTable())] });
+        var header = document.HeadersFooters[0];
+        var body = document.Blocks[0];
+        var target = document.AllParagraphs(true).Single(p => p.Text == "inner a");
+        var events = new List<TextDocumentChangedEventArgs>();
+        document.Changed += (_, e) => events.Add(e);
+
+        document.Execute(Replace(target, target with { Inlines = [new TextRun("header edit")] }));
+
+        var args = Assert.Single(events);
+        Assert.Equal(DocumentChangeKind.HeadersFooters, args.Kind);
+        Assert.Equal([header.Blocks[0].Id], args.ChangedBlockIds);
+        Assert.NotSame(header, document.HeadersFooters[0]);
+        Assert.Equal("h1", document.HeadersFooters[0].Id);
+        Assert.Same(body, document.Blocks[0]);
+        Assert.Equal("header edit", ((Paragraph)document.FindBlock(target.Id)).Text);
+        Assert.Equal(new DocumentPosition(header.Blocks[0].Id, [new(1, 0, 1), new(0, 0, 0)], 0), document.PositionOf(target.Id, 0));
+    }
+
+    [Fact]
+    public void ReplaceBlock_AssignsMissingIds_RejectsForeignIds_NestedIdChangeIsStructure()
+    {
+        var document = TextDocument.FromBlocks([P("first"), NestedTable()]);
+        var table = document.Blocks[1];
+        var target = document.AllParagraphs().Single(p => p.Text == "inner b");
+        Assert.Same(target, document.EnsureIds(target));
+        Assert.Throws<ArgumentException>(() => document.ReplaceBlock(target, target with { Id = document.Blocks[0].Id }));
+        Assert.Throws<ArgumentException>(() => document.ReplaceBlock(target, T(Row([target]), Row([document.Blocks[0]]))));
+        Assert.Same(table, document.Blocks[1]);
+        var events = new List<TextDocumentChangedEventArgs>();
+        document.Changed += (_, e) => events.Add(e);
+
+        document.Execute(Replace(target, T(Row([P("x")], [target]))));
+
+        var args = Assert.Single(events);
+        Assert.Equal(DocumentChangeKind.Content | DocumentChangeKind.Structure, args.Kind);
+        Assert.Equal([table.Id], args.ChangedBlockIds);
+        Assert.Empty(args.RemovedBlockIds);
+        var inserted = (Table)((Table)((Table)document.Blocks[1]).Rows[1].Cells[0].Blocks[1]).Rows[0].Cells[1].Blocks[0];
+        Assert.NotNull(inserted.Id);
+        Assert.Same(inserted, document.FindBlock(inserted.Id));
+        Assert.All(document.AllParagraphs(), p => Assert.Same(p, document.FindBlock(p.Id)));
+        Assert.Same(target, document.FindBlock(target.Id));
+    }
+
+    [Fact]
+    public void Resolve_InvalidPositions_Throw()
+    {
+        var document = TextDocument.FromBlocks([P("Hello"), NestedTable()]);
+        var paragraph = document.Blocks[0].Id;
+        var table = document.Blocks[1].Id;
+        var nested = document.AllParagraphs().Single(p => p.Text == "inner a").Id;
+
+        Assert.Throws<ArgumentException>(() => document.Resolve(new DocumentPosition(table, [new(5, 0, 0)], 0)));
+        Assert.Throws<ArgumentException>(() => document.Resolve(new DocumentPosition(table, [new(1, 3, 0)], 0)));
+        Assert.Throws<ArgumentException>(() => document.Resolve(new DocumentPosition(table, [new(1, 0, 2)], 0)));
+        Assert.Throws<ArgumentException>(() => document.Resolve(new DocumentPosition(table, [new(-1, 0, 0)], 0)));
+        Assert.Throws<ArgumentException>(() => document.Resolve(new DocumentPosition(table, [], 0)));
+        Assert.Throws<ArgumentException>(() => document.Resolve(new DocumentPosition(paragraph, [new(0, 0, 0)], 0)));
+        Assert.Throws<ArgumentException>(() => document.Resolve(new DocumentPosition(paragraph, [], 6)));
+        Assert.Throws<ArgumentException>(() => document.Resolve(new DocumentPosition(paragraph, [], -1)));
+        Assert.Throws<ArgumentException>(() => document.Resolve(new DocumentPosition("missing", [], 0)));
+        Assert.Throws<ArgumentException>(() => document.Resolve(new DocumentPosition(nested, [], 0)));
+        Assert.Throws<ArgumentException>(() => document.PositionOf(table, 0));
+        Assert.Throws<ArgumentOutOfRangeException>(() => document.PositionOf(paragraph, 6));
+        Assert.Throws<ArgumentOutOfRangeException>(() => document.PositionOf(nested, -1));
+        Assert.IsNotType<CellStep[]>(document.PositionOf(nested, 0).Path);
+    }
+
+    [Fact]
+    public void ParagraphsIn_AcrossTable_DepthFirst()
+    {
+        var document = TextDocument.FromBlocks([P("before"), NestedTable(), P("after")]);
+        var range = new DocumentRange(document.PositionOf(document.Blocks[2].Id, 3), document.PositionOf(document.Blocks[0].Id, 2));
+        var fromCell = new DocumentRange(document.PositionOf(document.AllParagraphs().Single(p => p.Text == "outer").Id, 1), document.PositionOf(document.Blocks[2].Id, 2));
+
+        Assert.Equal(["before", "a", "b", "outer", "inner a", "inner b", "c", "after"], document.ParagraphsIn(range).Select(p => p.Text));
+        Assert.Equal("fore\na\nb\nouter\ninner a\ninner b\nc\naft", document.TextOf(range));
+        Assert.Equal(["outer", "inner a", "inner b", "c", "after"], document.ParagraphsIn(fromCell).Select(p => p.Text));
+    }
+
+    [Fact]
+    public void ValueSemantics_NullPathsTabsAndTextCache()
+    {
+        var position = new DocumentPosition("b1", [new(0, 0, 0)], 0) with { Path = null };
+        Assert.NotNull(position.Path);
+        Assert.Empty(position.Path);
+        Assert.Empty(new DocumentPosition("b1", null, 0).Path);
+        Assert.Equal(default, default(DocumentRange).Normalize(TextDocument.FromBlocks([P("a")])));
+        Assert.True(default(DocumentRange).IsEmpty);
+
+        var tabs = new ParagraphFormat { Tabs = [new TabStop(720, TabAlignment.Left, null), new TabStop(1440, TabAlignment.Decimal, "dot")] };
+        var same = new ParagraphFormat { Tabs = [new TabStop(720, TabAlignment.Left, null), new TabStop(1440, TabAlignment.Decimal, "dot")] };
+        Assert.Equal(tabs, same);
+        Assert.Equal(tabs.GetHashCode(), same.GetHashCode());
+        Assert.NotEqual(tabs, same with { Tabs = [new TabStop(720, TabAlignment.Left, null)] });
+
+        IReadOnlyList<Inline> inlines = [new TextRun(null), new TextRun("ab")];
+        var paragraph = new Paragraph { Inlines = inlines };
+        var fresh = new Paragraph { Inlines = inlines };
+        Assert.Equal("ab", paragraph.Text);
+        Assert.Equal(2, paragraph.Length);
+        Assert.Equal(fresh, paragraph);
+        Assert.Equal("xyz", (paragraph with { Inlines = [new TextRun("xyz")] }).Text);
+        Assert.Equal(3, (paragraph with { Inlines = [new TextRun("xyz")] }).Length);
     }
 
     private static IDocumentCommand<TextDocument> Replace(Block old, Block replacement) =>

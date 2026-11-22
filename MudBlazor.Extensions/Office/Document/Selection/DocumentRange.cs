@@ -8,8 +8,8 @@ public readonly record struct DocumentRange(DocumentPosition Start, DocumentPosi
     /// <summary>True if start and end are the same position.</summary>
     public bool IsEmpty => Equals(Start, End);
 
-    /// <summary>Returns the range with start before end in document order.</summary>
+    /// <summary>Returns the range with start before end in document order. A range with a missing position, such as <c>default</c>, is returned unchanged.</summary>
     /// <param name="document">The document the positions belong to.</param>
     /// <returns>The ordered range.</returns>
-    public DocumentRange Normalize(TextDocument document) => document.Compare(Start, End) <= 0 ? this : new DocumentRange(End, Start);
+    public DocumentRange Normalize(TextDocument document) => Start == null || End == null || document.Compare(Start, End) <= 0 ? this : new DocumentRange(End, Start);
 }

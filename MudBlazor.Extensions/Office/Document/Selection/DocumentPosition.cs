@@ -12,8 +12,10 @@ public readonly record struct CellStep(int Row, int Cell, int Block);
 /// <param name="Offset">The character offset in the paragraph's <see cref="Paragraph.Text"/>.</param>
 public sealed record DocumentPosition(string BlockId, IReadOnlyList<CellStep> Path, int Offset)
 {
-    /// <summary>The steps from <see cref="BlockId"/> into nested table cells; empty outside tables.</summary>
-    public IReadOnlyList<CellStep> Path { get; init; } = Path ?? [];
+    private readonly IReadOnlyList<CellStep> _path = Path ?? [];
+
+    /// <summary>The steps from <see cref="BlockId"/> into nested table cells; empty outside tables. Null is stored as empty.</summary>
+    public IReadOnlyList<CellStep> Path { get => _path; init => _path = value ?? []; }
 
     /// <inheritdoc />
     public bool Equals(DocumentPosition other) =>

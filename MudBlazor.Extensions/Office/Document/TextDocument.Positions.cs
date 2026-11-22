@@ -9,10 +9,9 @@ public sealed partial class TextDocument
     public (Paragraph Paragraph, int Offset) Resolve(DocumentPosition position)
     {
         var location = Locate(position.BlockId);
-        var block = Container(location.Container)[location.Index];
-        foreach (var (row, cell, index) in position.Path)
-            block = block is Table table ? table.Rows[row].Cells[cell].Blocks[index] : throw Invalid(position);
-        return block is Paragraph paragraph && position.Offset >= 0 && position.Offset <= paragraph.Length ? (paragraph, position.Offset) : throw Invalid(position);
+        return Walk(Container(location.Container)[location.Index], position.Path) is Paragraph paragraph && position.Offset >= 0 && position.Offset <= paragraph.Length
+            ? (paragraph, position.Offset)
+            : throw Invalid(position);
     }
 
     /// <summary>Gets the position of an offset in a paragraph of the body, of a table cell or of a header or footer.</summary>
@@ -20,10 +19,14 @@ public sealed partial class TextDocument
     /// <param name="offset">The offset in the paragraph's <see cref="Paragraph.Text"/>.</param>
     /// <returns>The position.</returns>
     /// <exception cref="ArgumentException">The document has no paragraph with this id.</exception>
-    public DocumentPosition PositionOf(string paragraphId, int offset) =>
-        paragraphId != null && Index.TryGetValue(paragraphId, out var location) && location.Block is Paragraph
-            ? new DocumentPosition(Container(location.Container)[location.Index].Id, location.Path, offset)
-            : throw new ArgumentException($"{paragraphId} is not a paragraph of the document.", nameof(paragraphId));
+    /// <exception cref="ArgumentOutOfRangeException">The offset lies outside the paragraph.</exception>
+    public DocumentPosition PositionOf(string paragraphId, int offset)
+    {
+        if (!TryLocate(paragraphId, out var location) || location.Block is not Paragraph paragraph)
+            throw new ArgumentException($"{paragraphId} is not a paragraph of the document.", nameof(paragraphId));
+        if (offset < 0 || offset > paragraph.Length) throw new ArgumentOutOfRangeException(nameof(offset), offset, $"The paragraph has {paragraph.Length} characters.");
+        return new DocumentPosition(Container(location.Container)[location.Index].Id, Array.AsReadOnly(location.Path), offset);
+    }
 
     /// <summary>Compares two positions in document order: the body first, then the headers and footers.</summary>
     /// <param name="a">The first position.</param>
@@ -106,7 +109,7 @@ public sealed partial class TextDocument
     }
 
     private BlockLocation Locate(string topBlockId) =>
-        topBlockId != null && Index.TryGetValue(topBlockId, out var location) && location.Path.Length == 0
+        TryLocate(topBlockId, out var location) && location.Path.Length == 0
             ? location
             : throw new ArgumentException($"{topBlockId} is not a top-level block of the document.");
 

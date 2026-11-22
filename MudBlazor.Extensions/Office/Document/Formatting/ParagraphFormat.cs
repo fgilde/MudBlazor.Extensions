@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace MudBlazor.Extensions.Office.Document;
 
 /// <summary>Horizontal alignment of a paragraph.</summary>
@@ -112,8 +114,10 @@ public sealed record ParagraphFormat
     /// <summary>The list the paragraph belongs to; null inherits it.</summary>
     public NumberingRef? Numbering { get; init; }
 
-    /// <summary>The custom tab stops; null inherits them.</summary>
-    public IReadOnlyList<TabStop> Tabs { get; init; }
+    private readonly TabStopList _tabs;
+
+    /// <summary>The custom tab stops; null inherits them. Formats with the same stops in the same order are equal.</summary>
+    public IReadOnlyList<TabStop> Tabs { get => _tabs; init => _tabs = value == null ? null : new TabStopList(value.ToArray()); }
 
     /// <summary>The shading fill colour (<c>#RRGGBB</c>, <c>auto</c> or <c>theme:&lt;name&gt;</c>); null inherits it.</summary>
     public string Shading { get; init; }
@@ -142,4 +146,11 @@ public sealed record ParagraphFormat
             Tabs = Tabs ?? basis.Tabs,
             Shading = Shading ?? basis.Shading
         };
+
+    private sealed class TabStopList(TabStop[] stops) : ReadOnlyCollection<TabStop>(stops)
+    {
+        public override bool Equals(object obj) => obj is TabStopList other && this.SequenceEqual(other);
+
+        public override int GetHashCode() => this.Aggregate(0, (hash, stop) => HashCode.Combine(hash, stop));
+    }
 }

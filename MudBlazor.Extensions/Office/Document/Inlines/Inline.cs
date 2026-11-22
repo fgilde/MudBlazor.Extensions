@@ -22,7 +22,7 @@ public abstract record Inline
 public sealed record TextRun(string Text) : Inline
 {
     /// <inheritdoc />
-    public override int Length => Text.Length;
+    public override int Length => Text?.Length ?? 0;
 }
 
 /// <summary>A tab character (<c>w:tab</c>).</summary>

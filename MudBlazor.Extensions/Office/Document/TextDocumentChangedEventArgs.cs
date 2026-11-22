@@ -7,10 +7,10 @@ public enum DocumentChangeKind
     /// <summary>Nothing.</summary>
     None = 0,
 
-    /// <summary>Text or formatting of blocks changed.</summary>
+    /// <summary>Text or formatting of body blocks changed. Edits in headers and footers report <see cref="HeadersFooters"/> instead, without <see cref="Content"/>.</summary>
     Content = 1,
 
-    /// <summary>Blocks were added, removed or moved.</summary>
+    /// <summary>Blocks were added, removed or moved, or a block was replaced by one with a different id (at any depth, also inside table cells).</summary>
     Structure = 2,
 
     /// <summary>Styles changed; every block may be affected.</summary>

@@ -33058,12 +33058,12 @@
             <summary>Formatting of the paragraph mark (<c>w:pPr/w:rPr</c>), used for the caret in an empty paragraph; null if none.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.Paragraph.Inlines">
-            <summary>The inlines in order.</summary>
+            <summary>The inlines in order; null is stored as empty.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.Paragraph.Text">
             <summary>
             The text as the editor counts it: run text, <c>\t</c> for a tab, <c>\v</c> for a line break, <c>\f</c> for a page or column break,
-            <c>￼</c> for an image or other token and nothing for a marker.
+            U+FFFC for an image or other token and nothing for a marker.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.Paragraph.Length">
@@ -33407,7 +33407,7 @@
             <summary>The list the paragraph belongs to; null inherits it.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.Tabs">
-            <summary>The custom tab stops; null inherits them.</summary>
+            <summary>The custom tab stops; null inherits them. Formats with the same stops in the same order are equal.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.ParagraphFormat.Shading">
             <summary>The shading fill colour (<c>#RRGGBB</c>, <c>auto</c> or <c>theme:&lt;name&gt;</c>); null inherits it.</summary>
@@ -33939,7 +33939,7 @@
             <summary>The character offset in the paragraph's <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.DocumentPosition.Path">
-            <summary>The steps from <see cref="P:MudBlazor.Extensions.Office.Document.DocumentPosition.BlockId"/> into nested table cells; empty outside tables.</summary>
+            <summary>The steps from <see cref="P:MudBlazor.Extensions.Office.Document.DocumentPosition.BlockId"/> into nested table cells; empty outside tables. Null is stored as empty.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.DocumentPosition.Equals(MudBlazor.Extensions.Office.Document.DocumentPosition)">
             <inheritdoc />
@@ -33967,7 +33967,7 @@
             <summary>True if start and end are the same position.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.DocumentRange.Normalize(MudBlazor.Extensions.Office.Document.TextDocument)">
-            <summary>Returns the range with start before end in document order.</summary>
+            <summary>Returns the range with start before end in document order. A range with a missing position, such as <c>default</c>, is returned unchanged.</summary>
             <param name="document">The document the positions belong to.</param>
             <returns>The ordered range.</returns>
         </member>
@@ -34066,6 +34066,7 @@
             <param name="offset">The offset in the paragraph's <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>.</param>
             <returns>The position.</returns>
             <exception cref="T:System.ArgumentException">The document has no paragraph with this id.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">The offset lies outside the paragraph.</exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Compare(MudBlazor.Extensions.Office.Document.DocumentPosition,MudBlazor.Extensions.Office.Document.DocumentPosition)">
             <summary>Compares two positions in document order: the body first, then the headers and footers.</summary>
@@ -34100,10 +34101,10 @@
             <summary>Nothing.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Content">
-            <summary>Text or formatting of blocks changed.</summary>
+            <summary>Text or formatting of body blocks changed. Edits in headers and footers report <see cref="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.HeadersFooters"/> instead, without <see cref="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Content"/>.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Structure">
-            <summary>Blocks were added, removed or moved.</summary>
+            <summary>Blocks were added, removed or moved, or a block was replaced by one with a different id (at any depth, also inside table cells).</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Styles">
             <summary>Styles changed; every block may be affected.</summary>
