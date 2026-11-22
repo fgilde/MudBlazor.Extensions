@@ -57,6 +57,8 @@ public sealed partial class TextDocument
 
     internal Dictionary<string, (byte[] Data, string ContentType)> Media { get; } = new(StringComparer.OrdinalIgnoreCase);
 
+    internal DocxPackage Package { get; set; }
+
     private Dictionary<string, BlockLocation> Index => _index ??= BuildIndex();
 
     /// <summary>Reads a document.</summary>
@@ -64,8 +66,20 @@ public sealed partial class TextDocument
     /// <param name="format">The file format.</param>
     /// <returns>The document.</returns>
     /// <exception cref="NotSupportedException">The format cannot be read.</exception>
-    public static TextDocument Load(Stream stream, DocumentFileFormat format = DocumentFileFormat.Docx) =>
-        throw new NotSupportedException($"Reading {format} files is not supported.");
+    /// <exception cref="InvalidDataException">The file is not a valid document of the format.</exception>
+    public static TextDocument Load(Stream stream, DocumentFileFormat format = DocumentFileFormat.Docx)
+    {
+        ArgumentNullException.ThrowIfNull(stream);
+        if (format is not (DocumentFileFormat.Docx or DocumentFileFormat.Dotx)) throw new NotSupportedException($"Reading {format} files is not supported.");
+        using var buffer = new MemoryStream();
+        stream.CopyTo(buffer);
+        return DocxReader.Read(buffer.ToArray());
+    }
+
+    /// <summary>Creates an empty document with one empty paragraph in the Normal style and one section.</summary>
+    /// <param name="page">The page size and margins; null for <see cref="PageSetup.A4"/>.</param>
+    /// <returns>The document.</returns>
+    public static TextDocument Create(PageSetup page = null) => DocxReader.Read(BlankDocument.Build(page ?? PageSetup.A4));
 
     /// <summary>Writes the document.</summary>
     /// <param name="target">The stream that receives the file.</param>

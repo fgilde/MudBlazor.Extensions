@@ -34288,6 +34288,12 @@
             <param name="format">The file format.</param>
             <returns>The document.</returns>
             <exception cref="T:System.NotSupportedException">The format cannot be read.</exception>
+            <exception cref="T:System.IO.InvalidDataException">The file is not a valid document of the format.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Create(MudBlazor.Extensions.Office.Document.PageSetup)">
+            <summary>Creates an empty document with one empty paragraph in the Normal style and one section.</summary>
+            <param name="page">The page size and margins; null for <see cref="P:MudBlazor.Extensions.Office.Document.PageSetup.A4"/>.</param>
+            <returns>The document.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Save(System.IO.Stream,MudBlazor.Extensions.Office.Document.DocumentFileFormat)">
             <summary>Writes the document.</summary>

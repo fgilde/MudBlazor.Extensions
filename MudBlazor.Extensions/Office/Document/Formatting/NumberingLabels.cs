@@ -64,7 +64,7 @@ internal static class NumberingLabels
     private static string Letters(int value) =>
         value < 1 ? value.ToString(CultureInfo.InvariantCulture) : new string((char)('A' + (value - 1) % 26), (value - 1) / 26 + 1);
 
-    private static string Roman(int value)
+    internal static string Roman(int value)
     {
         if (value is < 1 or > 3999) return value.ToString(CultureInfo.InvariantCulture);
         var roman = new StringBuilder();
