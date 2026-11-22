@@ -42,7 +42,15 @@ public sealed partial class TextDocument
                 throw new InvalidOperationException("The document changed since the command was applied.");
         }
 
-        foreach (var edit in ordered) Splice(edit, forward);
+        _beforeEdits = ordered.SelectMany(e => forward ? e.Before : e.After).SelectMany(Subtree).Select(b => b.Id).ToHashSet();
+        try
+        {
+            foreach (var edit in ordered) Splice(edit, forward);
+        }
+        finally
+        {
+            _beforeEdits = null;
+        }
     }
 
     internal List<BlockEdit> MapParagraphs(IEnumerable<string> paragraphIds, Func<Paragraph, Paragraph> map)
@@ -190,7 +198,10 @@ public sealed partial class TextDocument
 
         if ((forward ? edit.HeadersFootersAfter : edit.HeadersFootersBefore) is { } parts)
         {
-            _changedIds.UnionWith(HeaderFooterList.Except(parts).Concat(parts.Except(HeaderFooterList)).SelectMany(h => h.Blocks).Select(b => b.Id));
+            var (removedParts, addedParts) = (HeaderFooterList.Except(parts).ToList(), parts.Except(HeaderFooterList).ToList());
+            _beforeEdits?.UnionWith(HeaderFooterList.SelectMany(h => h.Blocks).SelectMany(Subtree).Select(b => b.Id));
+            TrackBlocks(removedParts.SelectMany(h => h.Blocks), addedParts.SelectMany(h => h.Blocks));
+            _changedIds.UnionWith(removedParts.Concat(addedParts).SelectMany(h => h.Blocks).Select(b => b.Id));
             HeaderFooterList.Clear();
             HeaderFooterList.AddRange(parts);
             InvalidateIndex();
@@ -224,10 +235,7 @@ public sealed partial class TextDocument
             }
 
             InvalidateIndex();
-            var removed = remove.SelectMany(Subtree).ToHashSet<Block>(ReferenceEqualityComparer.Instance);
-            var inserted = insert.SelectMany(Subtree).ToHashSet<Block>(ReferenceEqualityComparer.Instance);
-            var structure = !removed.Select(b => b.Id).ToHashSet().SetEquals(inserted.Select(b => b.Id));
-            _changedIds.UnionWith(removed.Where(b => !inserted.Contains(b)).Concat(inserted.Where(b => !removed.Contains(b))).Select(b => b.Id));
+            var structure = TrackBlocks(remove, insert);
             Track(null, (edit.Container < 0 ? DocumentChangeKind.Content : DocumentChangeKind.HeadersFooters) | (structure ? DocumentChangeKind.Structure : DocumentChangeKind.None));
         }
 

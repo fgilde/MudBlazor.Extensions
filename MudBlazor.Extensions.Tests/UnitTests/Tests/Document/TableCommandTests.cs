@@ -518,6 +518,40 @@ public class TableCommandTests
     }
 
     [Fact]
+    public void Changed_ReportsNestedBlockIds()
+    {
+        static IEnumerable<string> Ids(Block block) =>
+            block is Table t ? t.Rows.SelectMany(r => r.Cells).SelectMany(c => c.Blocks).SelectMany(Ids).Prepend(t.Id) : [block.Id];
+        var document = Load(Nested());
+        var table = (Table)document.Blocks[0];
+        var inner = (Table)table.Rows[1].Cells[0].Blocks[1];
+        var typedIn = inner.Rows[0].Cells[0].Blocks[0].Id;
+        var events = new List<TextDocumentChangedEventArgs>();
+        document.Changed += (_, e) => events.Add(e);
+
+        var at = document.PositionOf(typedIn, 5);
+        document.Execute(new ReplaceTextCommand(new DocumentRange(at, at), "!"));
+
+        var typed = Assert.Single(events);
+        Assert.Equal([table.Id], typed.ChangedBlockIds);
+        Assert.Equal(new[] { table.Id, inner.Id, typedIn }.Order(), typed.ChangedNestedBlockIds.Order());
+        Assert.Empty(typed.AddedNestedBlockIds);
+        Assert.Empty(typed.RemovedNestedBlockIds);
+        Assert.False(typed.Kind.HasFlag(DocumentChangeKind.Structure));
+
+        var row = table.Rows[1].Cells.SelectMany(c => c.Blocks).SelectMany(Ids).Order().ToList();
+        events.Clear();
+        document.Execute(new DeleteTableRowsCommand(table.Id, 1, 1));
+        document.Undo.Undo();
+
+        Assert.Equal(row, events[0].RemovedNestedBlockIds.Order());
+        Assert.True(events[0].Kind.HasFlag(DocumentChangeKind.Structure));
+        Assert.Equal([table.Id], events[0].ChangedNestedBlockIds);
+        Assert.Equal(row, events[1].AddedNestedBlockIds.Order());
+        Assert.Empty(events[1].RemovedNestedBlockIds);
+    }
+
+    [Fact]
     public void DeleteColumns_RowWithoutCells_DoesNotThrow()
     {
         var document = Load(Doc(Table([2000, 2000], Row(Cell("a"), Cell("b")), "<w:tr><w:trPr><w:gridBefore w:val=\"2\"/></w:trPr></w:tr>")));

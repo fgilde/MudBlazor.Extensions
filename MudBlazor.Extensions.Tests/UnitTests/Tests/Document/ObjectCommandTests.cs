@@ -390,6 +390,26 @@ public partial class ObjectCommandTests
     }
 
     [Fact]
+    public void Writer_NewFloatingImages_WrittenAnchored_ReadBackWithTheirPlacement()
+    {
+        var document = TextDocument.Create();
+        var id = document.Blocks[0].Id;
+        for (var i = 0; i < 4; i++) document.Execute(new InsertImageCommand(Caret(document, id, 0), Png(20, 10), "image/png"));
+        var paragraph = (Paragraph)document.Blocks[0];
+        ImagePlacement[] placements = [ImagePlacement.Inline, ImagePlacement.Left, ImagePlacement.Right, ImagePlacement.Center];
+        var next = 0;
+        document.ReplaceBlock(paragraph, paragraph with { Inlines = paragraph.Inlines.Select(i => i is InlineImage image ? image with { Placement = placements[next++] } : i).ToList() });
+
+        var output = DocxWriterTests.Save(document);
+
+        DocxWriterTests.AssertConsistent(output);
+        Assert.Equal(placements, ((Paragraph)TextDocument.Load(new MemoryStream(output)).Blocks[0]).Inlines.OfType<InlineImage>().Select(i => i.Placement));
+        var frames = Body(output).Descendants(W + "drawing").Select(d => d.Elements().Single()).ToList();
+        Assert.Equal(["inline", "anchor", "anchor", "anchor"], frames.Select(f => f.Name.LocalName));
+        Assert.Equal(["wrapSquare", "wrapSquare", "wrapTopAndBottom"], frames.Skip(1).Select(f => f.Elements().Single(e => e.Name.LocalName.StartsWith("wrap", StringComparison.Ordinal)).Name.LocalName));
+    }
+
+    [Fact]
     public void RemoveHeader_MediaSharedWithTheBody_IsKept()
     {
         var built = new DocxBuilder().Header("<w:p><w:r><w:t>Head</w:t></w:r></w:p>").Body("<w:p><w:r><w:t>body</w:t></w:r></w:p>").Load();

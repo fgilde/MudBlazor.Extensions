@@ -15,7 +15,7 @@ internal static class EffectiveFormat
         (f => f.Hidden, (f, v) => f with { Hidden = v })
     ];
 
-    internal static ParagraphFormat Paragraph(DocumentStyles styles, Numbering numbering, DocumentTheme theme, Table table, Paragraph paragraph)
+    internal static ParagraphFormat Paragraph(DocumentStyles styles, Numbering numbering, DocumentTheme theme, TableCellRef? cell, Paragraph paragraph)
     {
         var style = ParagraphStyle(styles, paragraph);
         var chain = Chain(styles, style);
@@ -25,7 +25,7 @@ internal static class EffectiveFormat
         ParagraphFormat[] layers =
         [
             styles.DefaultParagraphFormat,
-            .. TableLayers(styles, table, paragraph).Select(l => l.Paragraph),
+            .. TableLayers(styles, cell).Select(l => l.Paragraph),
             direct.Numbering == null ? level : null,
             .. chain.Select(s => s.ParagraphFormat),
             direct.Numbering != null ? level : null,
@@ -41,13 +41,13 @@ internal static class EffectiveFormat
         };
     }
 
-    internal static RunFormat Run(DocumentStyles styles, DocumentTheme theme, Table table, Paragraph paragraph, Inline inline)
+    internal static RunFormat Run(DocumentStyles styles, DocumentTheme theme, TableCellRef? cell, Paragraph paragraph, Inline inline)
     {
         var direct = inline == null ? paragraph.MarkFormat ?? new RunFormat() : inline.Format ?? new RunFormat();
         var characterStyle = styles.Find(direct.StyleId);
         RunFormat[] levels =
         [
-            TableLayers(styles, table, paragraph).Select(l => l.Run).Aggregate(new RunFormat(), (basis, format) => format.Over(basis)),
+            TableLayers(styles, cell).Select(l => l.Run).Aggregate(new RunFormat(), (basis, format) => format.Over(basis)),
             Chain(styles, ParagraphStyle(styles, paragraph)).Aggregate(new RunFormat(), (basis, style) => style.RunFormat.Over(basis)),
             Chain(styles, characterStyle).Aggregate(new RunFormat(), (basis, style) => style.RunFormat.Over(basis))
         ];
@@ -86,21 +86,20 @@ internal static class EffectiveFormat
             ? basis
             : format.Over(basis) with { Tabs = basis.Tabs == null || format.Tabs == null ? format.Tabs ?? basis.Tabs : [.. basis.Tabs.Where(b => format.Tabs.All(t => t.Position != b.Position)), .. format.Tabs] };
 
-    private static IEnumerable<(ParagraphFormat Paragraph, RunFormat Run)> TableLayers(DocumentStyles styles, Table table, Paragraph paragraph)
+    private static IEnumerable<(ParagraphFormat Paragraph, RunFormat Run)> TableLayers(DocumentStyles styles, TableCellRef? cell)
     {
-        if (table == null) yield break;
-        var chain = Chain(styles, styles.Find(table.Format.StyleId) ?? styles.DefaultTableStyle);
+        if (cell is not { } at) yield break;
+        var chain = Chain(styles, styles.Find(at.Table.Format.StyleId) ?? styles.DefaultTableStyle);
         foreach (var style in chain) yield return (style.ParagraphFormat, style.RunFormat);
-        foreach (var condition in Conditions(table, paragraph))
+        foreach (var condition in Conditions(at))
         foreach (var style in chain)
             if (style.Conditions.TryGetValue(condition, out var format))
                 yield return format;
     }
 
-    private static IEnumerable<string> Conditions(Table table, Paragraph paragraph)
+    private static IEnumerable<string> Conditions(TableCellRef at)
     {
-        var (row, cell) = CellOf(table, paragraph);
-        if (row < 0) yield break;
+        var (table, row, cell) = at;
         var look = table.Format.Look;
         var cells = table.Rows[row].Cells.Count;
         var firstRow = look.HasFlag(TableLook.FirstRow) && row == 0;
@@ -120,13 +119,6 @@ internal static class EffectiveFormat
         if (lastRow && firstColumn) yield return "swCell";
         if (lastRow && lastColumn) yield return "seCell";
     }
-
-    private static (int Row, int Cell) CellOf(Table table, Paragraph paragraph)
-    {
-        for (var r = 0; r < table.Rows.Count; r++)
-        for (var c = 0; c < table.Rows[r].Cells.Count; c++)
-            if (table.Rows[r].Cells[c].Blocks.Any(b => ReferenceEquals(b, paragraph) || b.Id != null && b.Id == paragraph.Id))
-                return (r, c);
-        return (-1, -1);
-    }
 }
+
+internal readonly record struct TableCellRef(Table Table, int Row, int Cell);

@@ -34684,7 +34684,10 @@
             <summary>The alternative text, or null.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.InlineImage.Placement">
-            <summary>How the image is placed relative to the text.</summary>
+            <summary>
+            How the image is placed relative to the text. A new floating image is written to .docx anchored to its paragraph: aligned left, right or
+            centred in the column, with square wrapping (top and bottom for centred). Changing the placement of an image read from a file is not written.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.OpaqueInline">
             <summary>Content the editor keeps unchanged but does not model, such as a field, a formula or a chart; it counts as one character.</summary>
@@ -35304,7 +35307,10 @@
             <summary>Text or formatting of body blocks changed. Edits in headers and footers report <see cref="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.HeadersFooters"/> instead, without <see cref="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Content"/>.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Structure">
-            <summary>Blocks were added, removed or moved, or a block was replaced by one with a different id (at any depth, also inside table cells).</summary>
+            <summary>
+            Blocks were added, removed or moved, or a block was replaced by one with a different id (at any depth, also inside table cells; see
+            <see cref="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.AddedNestedBlockIds"/> and <see cref="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.RemovedNestedBlockIds"/>).
+            </summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentChangeKind.Styles">
             <summary>Styles changed; every block may be affected.</summary>
@@ -35323,6 +35329,18 @@
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs">
             <summary>Describes everything that changed during one command, transaction, undo or redo.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.ChangedNestedBlockIds">
+            <summary>
+            The ids of the blocks at any depth (top-level blocks, blocks in table cells, blocks of headers and footers) that were replaced by a changed
+            instance with the same id. A table is included when a block inside it changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.AddedNestedBlockIds">
+            <summary>The ids of the blocks at any depth that were added.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.RemovedNestedBlockIds">
+            <summary>The ids of the blocks at any depth that were removed, including the blocks inside a removed table.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.ChangedBlockIds">
             <summary>The ids of the top-level blocks (of the body or of a header or footer) that changed, including added ones.</summary>

@@ -342,11 +342,24 @@ internal sealed class DocxWriteContext
 
         var id = ++DrawingId;
         var name = "Picture " + id;
+        var floating = image.Placement != ImagePlacement.Inline;
+        var gap = floating ? 114300 : 0;
+        object[] position = floating
+            ?
+            [
+                new XAttribute("simplePos", 0), new XAttribute("relativeHeight", 251659264 + id), new XAttribute("behindDoc", 0), new XAttribute("locked", 0),
+                new XAttribute("layoutInCell", 1), new XAttribute("allowOverlap", 1),
+                new XElement(wp + "simplePos", new XAttribute("x", 0), new XAttribute("y", 0)),
+                new XElement(wp + "positionH", new XAttribute("relativeFrom", "column"), new XElement(wp + "align", image.Placement.ToString().ToLowerInvariant())),
+                new XElement(wp + "positionV", new XAttribute("relativeFrom", "paragraph"), new XElement(wp + "posOffset", 0))
+            ]
+            : [];
         return new XElement(W + "drawing",
-            new XElement(wp + "inline", new XAttribute(XNamespace.Xmlns + "wp", wp), new XAttribute("distT", 0), new XAttribute("distB", 0), new XAttribute("distL", 0),
-                new XAttribute("distR", 0),
+            new XElement(wp + (floating ? "anchor" : "inline"), new XAttribute(XNamespace.Xmlns + "wp", wp), new XAttribute("distT", 0), new XAttribute("distB", 0),
+                new XAttribute("distL", gap), new XAttribute("distR", gap), position,
                 new XElement(wp + "extent", new XAttribute("cx", image.WidthEmu), new XAttribute("cy", image.HeightEmu)),
                 new XElement(wp + "effectExtent", new XAttribute("l", 0), new XAttribute("t", 0), new XAttribute("r", 0), new XAttribute("b", 0)),
+                !floating ? null : image.Placement == ImagePlacement.Center ? new XElement(wp + "wrapTopAndBottom") : new XElement(wp + "wrapSquare", new XAttribute("wrapText", "bothSides")),
                 new XElement(wp + "docPr", new XAttribute("id", id), new XAttribute("name", name), image.AltText == null ? null : new XAttribute("descr", image.AltText)),
                 new XElement(wp + "cNvGraphicFramePr",
                     new XElement(a + "graphicFrameLocks", new XAttribute(XNamespace.Xmlns + "a", a), new XAttribute("noChangeAspect", 1))),

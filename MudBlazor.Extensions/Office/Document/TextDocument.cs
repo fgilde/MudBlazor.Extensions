@@ -7,6 +7,8 @@ namespace MudBlazor.Extensions.Office.Document;
 public sealed partial class TextDocument
 {
     private readonly HashSet<string> _changedIds = new();
+    private readonly Dictionary<string, bool> _existedBefore = new();
+    private HashSet<string> _beforeEdits;
     private DocumentChangeKind _changeKind;
     private int _notifications;
     private int _lastId;
@@ -290,8 +292,9 @@ public sealed partial class TextDocument
         else
             HeaderFooterList[location.Container] = HeaderFooterList[location.Container] with { Blocks = With(Container(location.Container), location.Index, newTop) };
         InvalidateIndex();
+        var structure = TrackBlocks([location.Block], [replacement]);
         var kind = (location.Container < 0 ? DocumentChangeKind.Content : DocumentChangeKind.HeadersFooters) |
-                   (replacement.Id != location.Block.Id ? DocumentChangeKind.Structure : DocumentChangeKind.None);
+                   (structure || replacement.Id != location.Block.Id ? DocumentChangeKind.Structure : DocumentChangeKind.None);
         _changedIds.UnionWith(ownIds);
         Track(top.Id, kind);
         if (newTop.Id != top.Id) Track(newTop.Id, kind);
@@ -354,8 +357,11 @@ public sealed partial class TextDocument
         return copy;
     }
 
+    internal int IndexBuilds { get; private set; }
+
     private Dictionary<string, BlockLocation> BuildIndex()
     {
+        IndexBuilds++;
         var index = new Dictionary<string, BlockLocation>();
         for (var container = -1; container < HeaderFooterList.Count; container++)
         {
@@ -398,10 +404,33 @@ public sealed partial class TextDocument
                 changed.Add(Container(location.Container)[location.Index].Id);
             else
                 removed.Add(id);
-        var args = new TextDocumentChangedEventArgs(changed, removed, _changeKind);
+        var (changedNested, addedNested, removedNested) = (new List<string>(), new List<string>(), new List<string>());
+        foreach (var (id, existed) in _existedBefore)
+            (TryLocate(id, out _) ? existed ? changedNested : addedNested : existed ? removedNested : null)?.Add(id);
+        if (addedNested.Count > 0 || removedNested.Count > 0) _changeKind |= DocumentChangeKind.Structure;
+        var args = new TextDocumentChangedEventArgs(changed, removed, _changeKind)
+        {
+            ChangedNestedBlockIds = changedNested, AddedNestedBlockIds = addedNested, RemovedNestedBlockIds = removedNested
+        };
         _changedIds.Clear();
+        _existedBefore.Clear();
         _changeKind = DocumentChangeKind.None;
         Changed?.Invoke(this, args);
+    }
+
+    private bool TrackBlocks(IEnumerable<Block> removed, IEnumerable<Block> inserted)
+    {
+        var before = removed.SelectMany(Subtree).ToHashSet<Block>(ReferenceEqualityComparer.Instance);
+        var after = inserted.SelectMany(Subtree).ToHashSet<Block>(ReferenceEqualityComparer.Instance);
+        var beforeIds = before.Select(b => b.Id).ToHashSet();
+        foreach (var block in before.Where(b => !after.Contains(b)).Concat(after.Where(b => !before.Contains(b))))
+            if (block.Id != null)
+            {
+                _changedIds.Add(block.Id);
+                _existedBefore.TryAdd(block.Id, beforeIds.Contains(block.Id) || _beforeEdits?.Contains(block.Id) == true);
+            }
+
+        return !beforeIds.SetEquals(after.Select(b => b.Id));
     }
 
     private readonly record struct BlockLocation(int Container, int Index, CellStep[] Path, Block Block);

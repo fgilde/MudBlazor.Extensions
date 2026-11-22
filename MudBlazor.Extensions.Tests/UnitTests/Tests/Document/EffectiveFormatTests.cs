@@ -10,6 +10,34 @@ public class EffectiveFormatTests
     private const string Ns = "xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"";
 
     [Fact]
+    public void Effective_LargeTable_ResolvedOncePerParagraphAndRun_CachedUntilTheNextChange()
+    {
+        var document = TextDocument.Create();
+        document.Execute(new InsertTableCommand(document.PositionOf(document.Blocks[0].Id, 0), 200, 20));
+        var corner = ((Table)document.Blocks[0]).Rows[0].Cells[0].Blocks[0].Id;
+        document.Execute(new ReplaceTextCommand(new DocumentRange(document.PositionOf(corner, 0), document.PositionOf(corner, 0)), "x"));
+        var cells = ((Table)document.Blocks[0]).Rows.SelectMany(r => r.Cells).Select(c => (Paragraph)c.Blocks[0]).ToList();
+        var (resolutions, builds) = (document.FormatResolutions, document.IndexBuilds);
+
+        for (var pass = 0; pass < 2; pass++)
+            foreach (var paragraph in cells)
+            {
+                document.EffectiveParagraphFormat(paragraph);
+                document.EffectiveRunFormat(paragraph, null);
+                foreach (var inline in paragraph.Inlines) document.EffectiveRunFormat(paragraph, inline);
+            }
+
+        Assert.Equal(4000 * 2 + 1, document.FormatResolutions - resolutions);
+        Assert.True(document.IndexBuilds - builds <= 1);
+
+        document.Execute(new ReplaceTextCommand(new DocumentRange(document.PositionOf(corner, 1), document.PositionOf(corner, 1)), "y"));
+        resolutions = document.FormatResolutions;
+        document.EffectiveRunFormat(cells[21], null);
+        document.EffectiveRunFormat(cells[21], null);
+        Assert.Equal(resolutions + 1, document.FormatResolutions);
+    }
+
+    [Fact]
     public void Effective_DocDefaultsThenStyleChainThenDirect()
     {
         var document = Doc(Styles("""

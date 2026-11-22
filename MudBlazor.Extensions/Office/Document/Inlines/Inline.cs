@@ -72,7 +72,10 @@ public sealed record InlineImage(string MediaPart, long WidthEmu, long HeightEmu
     /// <summary>The alternative text, or null.</summary>
     public string AltText { get; init; }
 
-    /// <summary>How the image is placed relative to the text.</summary>
+    /// <summary>
+    /// How the image is placed relative to the text. A new floating image is written to .docx anchored to its paragraph: aligned left, right or
+    /// centred in the column, with square wrapping (top and bottom for centred). Changing the placement of an image read from a file is not written.
+    /// </summary>
     public ImagePlacement Placement { get; init; }
 }
 

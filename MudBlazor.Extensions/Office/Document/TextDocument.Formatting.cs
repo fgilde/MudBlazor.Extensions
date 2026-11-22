@@ -1,8 +1,11 @@
+using System.Runtime.CompilerServices;
+
 namespace MudBlazor.Extensions.Office.Document;
 
 public sealed partial class TextDocument
 {
     private readonly Dictionary<Paragraph, ParagraphFormat> _paragraphFormats = new(ReferenceEqualityComparer.Instance);
+    private readonly Dictionary<(Paragraph Paragraph, Inline Inline), RunFormat> _runFormats = new(RunKey.Comparer);
     private (int Version, DocumentStyles Styles, Numbering Numbering, DocumentTheme Theme) _formatKey;
     private IReadOnlyDictionary<string, string> _labels;
 
@@ -26,7 +29,11 @@ public sealed partial class TextDocument
         ArgumentNullException.ThrowIfNull(paragraph);
         RefreshFormats();
         if (!_paragraphFormats.TryGetValue(paragraph, out var format))
-            _paragraphFormats[paragraph] = format = EffectiveFormat.Paragraph(Styles, Numbering, Theme, TableOf(paragraph), paragraph);
+        {
+            FormatResolutions++;
+            _paragraphFormats[paragraph] = format = EffectiveFormat.Paragraph(Styles, Numbering, Theme, CellOf(paragraph), paragraph);
+        }
+
         return format;
     }
 
@@ -42,8 +49,17 @@ public sealed partial class TextDocument
     public RunFormat EffectiveRunFormat(Paragraph paragraph, Inline inline)
     {
         ArgumentNullException.ThrowIfNull(paragraph);
-        return EffectiveFormat.Run(Styles, Theme, TableOf(paragraph), paragraph, inline);
+        RefreshFormats();
+        if (!_runFormats.TryGetValue((paragraph, inline), out var format))
+        {
+            FormatResolutions++;
+            _runFormats[(paragraph, inline)] = format = EffectiveFormat.Run(Styles, Theme, CellOf(paragraph), paragraph, inline);
+        }
+
+        return format;
     }
+
+    internal long FormatResolutions { get; private set; }
 
     /// <summary>Gets the list label of a paragraph of the body, for example <c>1.</c>, <c>a)</c> or <c>&#x2022;</c>.</summary>
     /// <param name="paragraph">A paragraph of the body or of a table cell.</param>
@@ -62,9 +78,9 @@ public sealed partial class TextDocument
             ? paragraph with { Format = paragraph.Format with { Numbering = numbering } }
             : paragraph;
 
-    private Table TableOf(Paragraph paragraph) =>
-        TryLocate(paragraph.Id, out var location) && location.Path.Length > 0
-            ? Walk(Container(location.Container)[location.Index], location.Path[..^1]) as Table
+    private TableCellRef? CellOf(Paragraph paragraph) =>
+        TryLocate(paragraph.Id, out var location) && location.Path.Length > 0 && Walk(Container(location.Container)[location.Index], location.Path[..^1]) is Table table
+            ? new TableCellRef(table, location.Path[^1].Row, location.Path[^1].Cell)
             : null;
 
     private void RefreshFormats()
@@ -74,5 +90,17 @@ public sealed partial class TextDocument
         _formatKey = key;
         _labels = null;
         _paragraphFormats.Clear();
+        _runFormats.Clear();
+    }
+
+    private sealed class RunKey : IEqualityComparer<(Paragraph Paragraph, Inline Inline)>
+    {
+        public static readonly RunKey Comparer = new();
+
+        public bool Equals((Paragraph Paragraph, Inline Inline) x, (Paragraph Paragraph, Inline Inline) y) =>
+            ReferenceEquals(x.Paragraph, y.Paragraph) && ReferenceEquals(x.Inline, y.Inline);
+
+        public int GetHashCode((Paragraph Paragraph, Inline Inline) key) =>
+            HashCode.Combine(RuntimeHelpers.GetHashCode(key.Paragraph), key.Inline == null ? 0 : RuntimeHelpers.GetHashCode(key.Inline));
     }
 }
