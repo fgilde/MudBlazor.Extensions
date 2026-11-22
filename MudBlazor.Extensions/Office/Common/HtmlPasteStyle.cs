@@ -4,7 +4,7 @@ using MudBlazor.Extensions.Office.Spreadsheet;
 namespace MudBlazor.Extensions.Office;
 
 internal readonly record struct PastedStyle(
-    PastedFormat Format, string Align, int? Level, string ListId, bool Label, bool? KeepSpace, int? Indent, int? FirstLine, bool BreakBefore, bool BreakAfter);
+    PastedFormat Format, string Align, int? Level, string ListId, bool Label, bool? KeepSpace, bool? KeepLines, int? Indent, int? FirstLine, bool BreakBefore, bool BreakAfter);
 
 internal static class HtmlPasteStyle
 {
@@ -18,7 +18,7 @@ internal static class HtmlPasteStyle
     {
         string align = null, listId = null;
         int? level = null, margin = null, padding = null, firstLine = null;
-        bool? keep = null;
+        bool? keep = null, lines = null;
         bool label = false, before = false, after = false;
         foreach (var declaration in HtmlTableFormat.Split(css, ';'))
         {
@@ -56,7 +56,13 @@ internal static class HtmlPasteStyle
                     align = Align(value) ?? align;
                     break;
                 case "white-space":
-                    keep = value is "pre" or "pre-wrap" or "pre-line" or "break-spaces" ? true : value is "normal" or "nowrap" ? false : keep;
+                    (keep, lines) = value switch
+                    {
+                        "pre" or "pre-wrap" or "break-spaces" => (true, true),
+                        "pre-line" => (false, true),
+                        "normal" or "nowrap" => (false, false),
+                        _ => (keep, lines)
+                    };
                     break;
                 case "margin-left":
                     margin = Twips(value) ?? margin;
@@ -85,7 +91,7 @@ internal static class HtmlPasteStyle
         }
 
         int? indent = margin == null && padding == null ? null : Math.Clamp((margin ?? 0) + (padding ?? 0), -MaxIndent, MaxIndent);
-        return new PastedStyle(format, align, level, listId, label, keep, indent, firstLine, before, after);
+        return new PastedStyle(format, align, level, listId, label, keep, lines, indent, firstLine, before, after);
     }
 
     internal static string Align(string value) => value switch

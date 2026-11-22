@@ -64,6 +64,8 @@ internal sealed class PastedParagraph : PastedBlock
 
     public int ListRun { get; set; }
 
+    public bool Continuation { get; set; }
+
     public int? IndentLeft { get; set; }
 
     public int? IndentFirstLine { get; set; }

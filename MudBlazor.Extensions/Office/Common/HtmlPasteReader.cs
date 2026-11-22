@@ -129,12 +129,13 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         if (name is "ul" or "ol")
         {
             if (_lists.Count == 0) _listRun++;
+            _wordList = null;
             _lists.Add(name == "ul" ? PastedList.Bullet : PastedList.Number);
         }
 
         if (name == "li" && Paragraph() is var item)
-            (item.List, item.Depth, item.ListRun) = (_lists.Count == 0 ? PastedList.Bullet : _lists[^1], Math.Max(0, _lists.Count - 1), _listRun);
-        if (_structured && Explicit.Contains(name)) Paragraph().Explicit = true;
+            (item.List, item.Depth, item.ListRun, item.Continuation) = (_lists.Count == 0 ? PastedList.Bullet : _lists[^1], Math.Max(0, _lists.Count - 1), _listRun, false);
+        if (_structured && Explicit.Contains(name) && Paragraph() is var opened) (opened.Explicit, opened.Ended) = (true, false);
 
         if (Empty.Contains(name) || _open.Count >= MaxOpen) return;
         var format = Format(name, attributes);
@@ -142,13 +143,14 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         if (_structured && name == "center") align = "center";
         var kind = _structured && name is "head" or "o:p" ? OpenKind.Skip : OpenKind.Normal;
         var keep = name == "pre" || Top.Keep;
+        var lines = name == "pre" || Top.Lines;
         int? indent = null, firstLine = null;
         var breakAfter = false;
         if (attributes.TryGetValue("style", out var css))
         {
             var style = HtmlPasteStyle.Css(format, css);
             (format, align) = (_structured && name is "td" or "th" or "tr" or "table" ? style.Format with { Highlight = format.Highlight } : style.Format, style.Align ?? align);
-            (keep, indent, firstLine, breakAfter) = (style.KeepSpace ?? keep, style.Indent, style.FirstLine, _structured && style.BreakAfter);
+            (keep, lines, indent, firstLine, breakAfter) = (style.KeepSpace ?? keep, style.KeepLines ?? lines, style.Indent, style.FirstLine, _structured && style.BreakAfter);
             _pageBreak |= _structured && style.BreakBefore;
             if (_structured && style.Label) kind = OpenKind.Label;
             else if (_structured && style.Level is { } level && Paragraph() is var paragraph)
@@ -158,7 +160,7 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
             }
         }
 
-        _open.Add(new Open(name, format, align, kind, keep, name == "pre" || Top.Pre, indent, firstLine, breakAfter));
+        _open.Add(new Open(name, format, align, kind, keep, lines, name == "pre" || Top.Pre, indent, firstLine, breakAfter));
         if (kind == OpenKind.Skip) _skip++;
         if (kind == OpenKind.Skip && name == "head") _head++;
         if (kind == OpenKind.Label) _labels++;
@@ -186,9 +188,10 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         }
 
         var keep = _structured && Top.Keep;
+        var lines = _structured && Top.Lines;
+        if (lines) decoded = decoded.Replace("\r\n", "\n").Replace('\r', '\n');
         if (keep)
         {
-            decoded = decoded.Replace("\r\n", "\n").Replace('\r', '\n');
             if (_preStart && decoded.StartsWith('\n')) decoded = decoded[1..];
             _preStart = false;
         }
@@ -206,6 +209,12 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
             {
                 sb.Append(c);
                 _space = false;
+            }
+            else if (lines && c == '\n')
+            {
+                if (sb.Length > 0 && sb[^1] == ' ') sb.Length--;
+                sb.Append(c);
+                _space = true;
             }
             else if (c is ' ' or '\t' or '\n' or '\r' or '\f')
             {
@@ -411,7 +420,8 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
     {
         var paragraph = Paragraph();
         if (paragraph.Runs.Count > 0) return paragraph;
-        for (var k = _open.Count - 1; k >= 0; k--)
+        var scope = _structured ? _open.FindLastIndex(o => TableParts.Contains(o.Name)) : -1;
+        for (var k = _open.Count - 1; k > scope; k--)
         {
             var name = _open[k].Name;
             if (paragraph.Heading == 0 && name.Length == 2 && name[0] == 'h' && name[1] is >= '1' and <= '6') paragraph.Heading = name[1] - '0';
@@ -420,6 +430,9 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
             paragraph.IndentFirstLine ??= _open[k].FirstLine;
         }
 
+        var item = _open.FindLastIndex(o => o.Name == "li");
+        if (_structured && paragraph.List == PastedList.None && _lists.Count > 0 && item > scope && item > _open.FindLastIndex(o => o.Name is "ul" or "ol"))
+            (paragraph.List, paragraph.Depth, paragraph.ListRun, paragraph.Continuation) = (_lists[^1], _lists.Count - 1, _listRun, true);
         paragraph.Preformatted = _structured && Top.Pre;
         paragraph.KeepSpace = _structured && Top.Keep;
         paragraph.PageBreakBefore |= _structured && _pageBreak;
@@ -489,5 +502,5 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         return int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var pixels) && pixels is > 0 and <= 32767 ? pixels : null;
     }
 
-    private readonly record struct Open(string Name, PastedFormat Format, string Align, OpenKind Kind, bool Keep, bool Pre, int? Indent, int? FirstLine, bool BreakAfter);
+    private readonly record struct Open(string Name, PastedFormat Format, string Align, OpenKind Kind, bool Keep, bool Lines, bool Pre, int? Indent, int? FirstLine, bool BreakAfter);
 }

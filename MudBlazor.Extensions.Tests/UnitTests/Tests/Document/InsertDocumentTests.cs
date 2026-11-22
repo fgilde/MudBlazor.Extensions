@@ -228,6 +228,20 @@ public class InsertDocumentTests
     }
 
     [Fact]
+    public void InsertDocument_TableLastAtStart_TableFirstAtEnd()
+    {
+        var document = HtmlReader.Read("<p>text</p>");
+        var id = document.Blocks[0].Id;
+
+        var atStart = Apply(document, Caret(document, id, 0), "<p>p1</p><table><tr><td>t1</td></tr></table>");
+
+        Assert.Equal(["p1", "table", "text"], atStart.Select(b => b is Paragraph p ? p.Text : "table"));
+        var last = (Paragraph)document.Blocks[^1];
+        var atEnd = Apply(document, Caret(document, last.Id, last.Length), "<table><tr><td>t2</td></tr></table><p>p2</p>");
+        Assert.Equal(["p1", "table", "text", "table", "p2"], atEnd.Select(b => b is Paragraph p ? p.Text : "table"));
+    }
+
+    [Fact]
     public void InsertDocument_SingleParagraphMidParagraph_KeepsTargetFormat()
     {
         var document = HtmlReader.Read("<h1>Heading</h1>");

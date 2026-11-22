@@ -17,17 +17,9 @@ internal static class HtmlReader
 
     internal static TextDocument Read(Stream stream)
     {
-        using var buffer = new MemoryStream();
-        var chunk = new byte[81920];
-        for (int read; (read = stream.Read(chunk, 0, chunk.Length)) > 0;)
-        {
-            if (buffer.Length + read > 4L * MaxLength) throw new InvalidDataException("The HTML is too large to read.");
-            buffer.Write(chunk, 0, read);
-        }
-
-        var bytes = buffer.GetBuffer().AsSpan(0, (int)buffer.Length);
+        var bytes = HtmlEncoding.ReadLimited(stream, MaxLength, b => HtmlEncoding.Detect(b).Encoding);
         var (encoding, preamble) = HtmlEncoding.Detect(bytes);
-        return Read(encoding.GetString(bytes[preamble..]));
+        return Read(encoding.GetString(bytes, preamble, bytes.Length - preamble));
     }
 
     internal static TextDocument Read(string html)
@@ -105,10 +97,10 @@ internal static class HtmlReader
                     "justify" => ParagraphAlignment.Justify,
                     _ => null
                 },
-                IndentLeft = numbering == null ? source.IndentLeft : null,
+                IndentLeft = source.Continuation && numbering is { } item ? IndentOf(item) : numbering == null ? source.IndentLeft : null,
                 IndentFirstLine = numbering == null ? source.IndentFirstLine : null,
                 PageBreakBefore = source.PageBreakBefore ? true : null,
-                Numbering = numbering
+                Numbering = source.Continuation ? null : numbering
             };
             var inlines = new List<Inline>();
             string href = null;
@@ -124,6 +116,12 @@ internal static class HtmlReader
             }
 
             return new Paragraph { Format = format, Inlines = InlineEdit.Normalize(inlines) };
+        }
+
+        private int? IndentOf(NumberingRef item)
+        {
+            var abstractId = Instances.First(i => i.Id == item.NumId).AbstractId;
+            return Abstracts.First(a => a.Id == abstractId).Levels.FirstOrDefault(l => l.Level == item.Level)?.Indent?.IndentLeft;
         }
 
         private Hyperlink Link(string href)

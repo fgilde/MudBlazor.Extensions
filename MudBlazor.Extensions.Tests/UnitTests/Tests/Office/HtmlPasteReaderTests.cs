@@ -171,6 +171,53 @@ public class HtmlPasteReaderTests
         Assert.Equal("image/gif", Assert.Single(p[6].Runs).ImageType);
     }
 
+    [Theory]
+    [InlineData("<ul><li><p>a</p></li><li><p>b</p></li></ul>", "Bullet0:[a|||] / Bullet0:[b|||]")]
+    [InlineData("<ol><li><h2>x</h2></li><li><h2>y</h2></li></ol>", "Number0:[x|||] / Number0:[y|||]")]
+    public void ReadBlocks_BlocksInsideListItems_StayItems(string html, string expected)
+    {
+        Assert.Equal(expected, Describe(HtmlPasteReader.ReadBlocks(html).Cast<PastedParagraph>()));
+    }
+
+    [Fact]
+    public void ReadBlocks_SecondParagraphOfItem_ContinuesItWithoutLabel()
+    {
+        var blocks = HtmlPasteReader.ReadBlocks("<ol><li><p>a</p><p>b</p></li><li>c</li></ol>").Cast<PastedParagraph>().ToList();
+
+        Assert.Equal("Number0:[a|||] / Number0:[b|||] / Number0:[c|||]", Describe(blocks));
+        Assert.Equal([false, true, false], blocks.Select(b => b.Continuation));
+        Assert.Single(blocks.Select(b => b.ListRun).Distinct());
+    }
+
+    [Fact]
+    public void ReadBlocks_PreLine_CollapsesSpacesKeepsNewlines()
+    {
+        var paragraph = (PastedParagraph)Assert.Single(HtmlPasteReader.ReadBlocks("<p style=\"white-space:pre-line\">  a   b  \n  c </p>"));
+
+        Assert.Equal("a b\nc", string.Concat(paragraph.Runs.Select(r => r.Text)));
+        Assert.False(paragraph.KeepSpace);
+    }
+
+    [Fact]
+    public void ReadBlocks_WordListAfterHtmlList_StartsNewRun()
+    {
+        var blocks = HtmlPasteReader.ReadBlocks(
+            "<p style=\"mso-list:l0 level1 lfo1\">a</p><ul><li>b</li></ul><p style=\"mso-list:l0 level1 lfo1\">c</p>").Cast<PastedParagraph>().ToList();
+
+        Assert.Equal(3, blocks.Select(b => b.ListRun).Distinct().Count());
+    }
+
+    [Fact]
+    public void ReadBlocks_IndentStopsAtTableBoundary()
+    {
+        var blocks = HtmlPasteReader.ReadBlocks(
+            "<div style=\"margin-left:36pt\"><table><tr><td style=\"padding-left:10pt\"><p>x</p></td></tr></table><p>y</p></div>");
+
+        var cell = (PastedParagraph)Assert.IsType<PastedTable>(blocks[0]).Rows[0][0].Blocks.Single();
+        Assert.Null(cell.IndentLeft);
+        Assert.Equal(720, ((PastedParagraph)blocks[1]).IndentLeft);
+    }
+
     private static string Describe(IEnumerable<PastedParagraph> paragraphs) =>
         string.Join(" / ", paragraphs.Select(p => $"{p.List}{p.Depth}:" + string.Concat(p.Runs.Select(r =>
             $"[{r.Text.Replace("\n", "\\n")}|{(r.Format.Bold ? "b" : "")}{(r.Format.Italic ? "i" : "")}{(r.Format.Underline ? "u" : "")}|{r.Format.Color}|{r.Format.Link}]"))));

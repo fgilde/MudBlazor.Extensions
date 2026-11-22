@@ -78,6 +78,7 @@ public class HtmlSecurityTests
         Assert.Equal("image/gif", images.MediaContentType(paragraph.Inlines.OfType<InlineImage>().Single().MediaPart));
         Assert.Equal("styled", ((Paragraph)styled.Blocks[0]).Text);
         Assert.Equal("xy", string.Concat(((PastedParagraph)Assert.Single(big)).Runs.Select(r => r.Text)));
+        Assert.All(((PastedParagraph)big[0]).Runs, r => Assert.Null(r.ImageData));
     }
 
     [Fact]
@@ -87,21 +88,42 @@ public class HtmlSecurityTests
         Assert.Throws<InvalidDataException>(() => TextDocument.Load(new EndlessStream(), DocumentFileFormat.Html));
     }
 
-    private sealed class EndlessStream : Stream
+    [Theory]
+    [InlineData(new byte[0], 3)]
+    [InlineData(new byte[] { 0xFF, 0xFE }, 2)]
+    [InlineData(new byte[] { 0xFF, 0xFE, 0, 0 }, 4)]
+    public void HtmlRead_Stream_RejectedBeforeDecodingWithinEncodingBound(byte[] bom, int bytesPerChar)
     {
+        var endless = new EndlessStream(bom);
+        var seekable = new EndlessStream(bom, seekable: true);
+
+        Assert.Throws<InvalidDataException>(() => TextDocument.Load(endless, DocumentFileFormat.Html));
+        Assert.Throws<InvalidDataException>(() => TextDocument.Load(seekable, DocumentFileFormat.Html));
+
+        Assert.InRange(endless.BytesRead, (long)bytesPerChar * HtmlReader.MaxLength, (long)bytesPerChar * (HtmlReader.MaxLength + 1) + 4 + 81920);
+        Assert.Equal(0, seekable.BytesRead);
+    }
+
+    internal sealed class EndlessStream(byte[] prefix = null, bool seekable = false) : Stream
+    {
+        public long BytesRead { get; private set; }
+
         public override bool CanRead => true;
 
-        public override bool CanSeek => false;
+        public override bool CanSeek => seekable;
 
         public override bool CanWrite => false;
 
-        public override long Length => throw new NotSupportedException();
+        public override long Length => seekable ? 1L << 40 : throw new NotSupportedException();
 
-        public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+        public override long Position { get => seekable ? BytesRead : throw new NotSupportedException(); set => throw new NotSupportedException(); }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            buffer.AsSpan(offset, count).Fill((byte)'a');
+            var span = buffer.AsSpan(offset, count);
+            span.Fill((byte)'a');
+            for (var i = 0; i < count && BytesRead + i < (prefix?.Length ?? 0); i++) span[i] = prefix![BytesRead + i];
+            BytesRead += count;
             return count;
         }
 

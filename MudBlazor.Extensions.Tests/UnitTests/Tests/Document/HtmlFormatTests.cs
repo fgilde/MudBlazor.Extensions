@@ -314,6 +314,65 @@ public class HtmlFormatTests
         Assert.Equal("gr" + (char)0xFC + (char)0xDF + "e " + (char)0xE9, ((Paragraph)document.Blocks[0]).Text);
     }
 
+    [Fact]
+    public void HtmlRead_ParagraphsInsideListItem_ContinueTheItem()
+    {
+        var document = HtmlReader.Read("<ol><li><p>a</p><p>b</p></li><li>c</li></ol>");
+
+        var p = document.Blocks.Cast<Paragraph>().ToList();
+        Assert.Equal(["a", "b", "c"], p.Select(x => x.Text));
+        Assert.Null(p[1].Format.Numbering);
+        Assert.NotNull(p[1].Format.IndentLeft);
+        Assert.Equal(document.Numbering.Level(p[0].Format.Numbering!.Value)!.Indent.IndentLeft, p[1].Format.IndentLeft);
+        Assert.Equal(p[0].Format.Numbering, p[2].Format.Numbering);
+        Assert.Equal(["1.", null, "2."], p.Select(document.ListLabel));
+    }
+
+    [Theory]
+    [InlineData("<meta charset=\"x-unknown-zz\">")]
+    [InlineData("<meta charset=\"utf-7\">")]
+    [InlineData("<meta charset=\"unicode-1-1-utf-7\">")]
+    [InlineData("<meta charset=\"ucs-2\">")]
+    public void Load_Html_UnknownUtf7OrUtf16Charset_DecodesAsUtf8(string meta)
+    {
+        var bytes = Encoding.UTF8.GetBytes("<html><head>" + meta + "</head><body><p>a+ADw-b " + (char)0xFC + "</p></body></html>");
+
+        var document = TextDocument.Load(new MemoryStream(bytes), DocumentFileFormat.Html);
+
+        Assert.Equal("a+ADw-b " + (char)0xFC, ((Paragraph)document.Blocks[0]).Text);
+    }
+
+    [Theory]
+    [InlineData("utf-16LE")]
+    [InlineData("utf-16BE")]
+    [InlineData("utf-32LE")]
+    [InlineData("utf-32BE")]
+    public void Load_Html_UnicodeBoms(string name)
+    {
+        Encoding encoding = name switch
+        {
+            "utf-16LE" => new UnicodeEncoding(false, true),
+            "utf-16BE" => new UnicodeEncoding(true, true),
+            "utf-32LE" => new UTF32Encoding(false, true),
+            _ => new UTF32Encoding(true, true)
+        };
+        var bytes = encoding.GetPreamble().Concat(encoding.GetBytes("<p>gr" + (char)0xFC + "\U0001F600</p>")).ToArray();
+
+        var document = TextDocument.Load(new MemoryStream(bytes), DocumentFileFormat.Html);
+
+        Assert.Equal("gr" + (char)0xFC + "\U0001F600", ((Paragraph)document.Blocks[0]).Text);
+    }
+
+    [Fact]
+    public void Load_Html_Latin1MetaMeansWindows1252()
+    {
+        var bytes = Encoding.ASCII.GetBytes("<meta charset=\"iso-8859-1\"><p>").Append((byte)0x80).Concat(Encoding.ASCII.GetBytes("</p>")).ToArray();
+
+        var document = TextDocument.Load(new MemoryStream(bytes), DocumentFileFormat.Html);
+
+        Assert.Equal("\u20AC", ((Paragraph)document.Blocks[0]).Text);
+    }
+
     private static string Describe(TextDocument document) =>
         string.Join("\n", document.AllParagraphs().Select(p => $"{p.Text}|{p.Format.StyleId}|{p.Format.IndentLeft}|{p.Format.IndentFirstLine}|{p.Format.PageBreakBefore}|{p.Format.Numbering?.Level}"));
 
