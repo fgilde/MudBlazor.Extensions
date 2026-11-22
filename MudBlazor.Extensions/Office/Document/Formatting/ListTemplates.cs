@@ -3,7 +3,7 @@ namespace MudBlazor.Extensions.Office.Document;
 /// <summary>A predefined list definition.</summary>
 public enum ListTemplate
 {
-    /// <summary>Bullets •, o and ▪, repeating over the levels.</summary>
+    /// <summary>Bullets &#x2022;, o and &#x25AA;, repeating over the levels.</summary>
     Bullet,
 
     /// <summary>Decimal numbers on every level.</summary>

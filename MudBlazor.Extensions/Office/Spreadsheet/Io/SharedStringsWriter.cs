@@ -15,7 +15,7 @@ internal sealed class SharedStringsWriter
 
     internal SharedStringsWriter(Stream source)
     {
-        using var reader = XmlReader.Create(source, SheetXmlReader.Settings);
+        using var reader = new BoundedXmlReader(XmlReader.Create(source, SheetXmlReader.Settings));
         while (!reader.EOF)
         {
             if (reader.NodeType != XmlNodeType.Element || reader.LocalName != "si")

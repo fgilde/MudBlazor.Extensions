@@ -78,6 +78,17 @@ public class XlsxReadTests(ITestOutputHelper output)
     private static Workbook Read(byte[] package) => XlsxReader.Read(new MemoryStream(package));
 
     [Fact]
+    public void Read_DeeplyNestedStreamedXml_IsInvalidData()
+    {
+        var deep = string.Concat(Enumerable.Repeat("<x>", 100_000)) + string.Concat(Enumerable.Repeat("</x>", 100_000));
+
+        Assert.Throws<InvalidDataException>(() => Read(Package([Sheet("")], sharedStrings: "<si><t>" + deep + "</t></si>")));
+        Assert.Throws<InvalidDataException>(() => Read(Package([Sheet("<row r=\"1\"><c r=\"A1\" t=\"inlineStr\"><is><t>" + deep + "</t></is></c></row>")])));
+        Assert.Throws<InvalidDataException>(() => Read(Package([Sheet("", after: "<extLst>" + deep + "</extLst>")])));
+        Assert.Equal("x", At(Read(Package([Sheet("<row r=\"1\"><c r=\"A1\" t=\"s\"><v>0</v></c></row>")], sharedStrings: "<si><t>x</t></si>")).Sheets[0], "A1").Value.TextValue);
+    }
+
+    [Fact]
     public void Reads_ValuesFormulasStyles_FromSample()
     {
         using var file = File.OpenRead(DataPath("ExcelSheet.xlsx"));

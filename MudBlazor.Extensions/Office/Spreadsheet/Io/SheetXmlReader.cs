@@ -58,7 +58,7 @@ internal static class SheetXmlReader
 
     internal static void Read(Stream stream, long partLength, Worksheet ws, XlsxSheetPart part, string[] strings, XlsxPackage package, string[] theme)
     {
-        using var reader = XmlReader.Create(stream, Settings);
+        using var reader = new BoundedXmlReader(XmlReader.Create(stream, Settings));
         reader.MoveToContent();
         part.Root = ReadRoot(reader);
         if (reader.IsEmptyElement) return;

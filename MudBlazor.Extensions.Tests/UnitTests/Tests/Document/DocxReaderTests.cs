@@ -255,7 +255,7 @@ public class DocxReaderTests
             "<w:r><w:pict><v:shape/></w:pict><w:object><v:shape/></w:object><w:sym w:font=\"Wingdings\" w:char=\"F04A\"/><w:unknownThing/></w:r></w:p>");
 
         Assert.Equal(["chart", "shape", "diagram", "vml", "ole", "symbol", "other"], paragraph.Inlines.Cast<OpaqueInline>().Select(o => o.Kind));
-        Assert.Equal("", ((OpaqueInline)paragraph.Inlines[5]).DisplayText);
+        Assert.Equal("\uF04A", ((OpaqueInline)paragraph.Inlines[5]).DisplayText);
         Assert.Equal("\uFFFC\uFFFC\uFFFC\uFFFC\uFFFC\uFFFC\uFFFC", paragraph.Text);
     }
 

@@ -445,6 +445,79 @@ public class TableCommandTests
     }
 
     [Fact]
+    public void CopyOfCopy_IdsStayUnique_OriginKeepsItsWrapper()
+    {
+        static string Cell(string text, int n) => $"<w:tc><w:p w14:paraId=\"1000000{n}\" w14:textId=\"2000000{n}\"><w:r><w:t>{text}</w:t></w:r></w:p></w:tc>";
+        var source = new DocxBuilder
+        {
+            RawDocument = $"<w:document {DocxBuilder.Ns}><w:body><w:tbl><w:tblPr><w:tblW w:w=\"0\" w:type=\"auto\"/></w:tblPr><w:tblGrid><w:gridCol w:w=\"3000\"/><w:gridCol w:w=\"3000\"/></w:tblGrid>" +
+                          $"<w:tr w14:paraId=\"30000001\" w14:textId=\"40000001\">{Cell("a", 1)}{Cell("b", 2)}</w:tr></w:tbl><w:p w14:paraId=\"10000009\" w14:textId=\"20000009\"/>" +
+                          "<w:sectPr><w:pgSz w:w=\"11906\" w:h=\"16838\"/></w:sectPr></w:body></w:document>"
+        }.Build();
+        var document = Load(source);
+        var id = document.Blocks[0].Id;
+
+        document.Execute(new InsertTableRowsCommand(id, 1, 1));
+        document.Execute(new InsertTableRowsCommand(id, 2, 1));
+        document.Execute(new InsertTableColumnsCommand(id, 2, 1));
+        document.Execute(new MergeTableCellsCommand(id, 1, 1, 2, 2));
+        var ids = document.AllParagraphs(true).Select(p => p.Id).ToList();
+        var output = DocxWriterTests.Save(document);
+
+        Assert.Equal(ids.Count, ids.Distinct().Count());
+        DocxWriterTests.AssertConsistent(output);
+        var rows = Body(output).Element(W + "tbl")!.Elements(W + "tr").ToList();
+        Assert.Equal(("30000001", "40000001"), ((string)rows[0].Attribute(W14 + "paraId"), (string)rows[0].Attribute(W14 + "textId")));
+        Assert.Equal(["10000001", "10000002", null], rows[0].Elements(W + "tc").Select(c => (string)c.Element(W + "p")!.Attribute(W14 + "paraId")));
+        Assert.All(rows.Skip(1), row => Assert.DoesNotContain(row.DescendantsAndSelf().Attributes(), a => a.Name == W14 + "paraId" || a.Name == W14 + "textId"));
+    }
+
+    [Fact]
+    public void Merge_DirectlyAboveAndBelowAnUnrelatedVerticalMerge_LeavesItIntact()
+    {
+        var document = Load(Doc(Table([2000, 2000, 2000],
+            Row(Cell("a"), Cell("b"), Cell("c")), Row(Cell("d", merge: "restart"), Cell("e"), Cell("f")), Row(Cell("", merge: "continue"), Cell("h"), Cell("i")),
+            Row(Cell("j"), Cell("k"), Cell("l")), Row(Cell("m"), Cell("n"), Cell("o")))));
+        var id = document.Blocks[0].Id;
+
+        document.Execute(new MergeTableCellsCommand(id, 0, 0, 0, 1));
+        document.Execute(new MergeTableCellsCommand(id, 3, 0, 4, 0));
+        var output = DocxWriterTests.Save(document);
+
+        DocxWriterTests.AssertConsistent(output);
+        var first = Body(output).Element(W + "tbl")!.Elements(W + "tr").Select(r => r.Elements(W + "tc").First()).ToList();
+        Assert.Equal(["none", "restart", "continue", "restart", "continue"], first.Select(Describe));
+        Assert.Equal([2, 1, 1, 1, 1], first.Select(c => (int?)c.Element(W + "tcPr")?.Element(W + "gridSpan")?.Attribute(W + "val") ?? 1));
+        Assert.Equal(Describe(document), Describe(Load(output)));
+    }
+
+    [Fact]
+    public void Merge_RectangleContainingAVerticalMerge_BecomesOneCell()
+    {
+        string Body3x4() => Table([2000, 2000, 2000],
+            Row(Cell("a"), Cell("b"), Cell("c")), Row(Cell("d", merge: "restart"), Cell("e"), Cell("f")), Row(Cell("", merge: "continue"), Cell("h"), Cell("i")),
+            Row(Cell("j"), Cell("k"), Cell("l")));
+        var block = Load(Doc(Body3x4()));
+        var column = Load(Doc(Body3x4()));
+
+        block.Execute(new MergeTableCellsCommand(block.Blocks[0].Id, 1, 0, 2, 1));
+        column.Execute(new MergeTableCellsCommand(column.Blocks[0].Id, 0, 0, 3, 0));
+
+        var table = (Table)block.Blocks[0];
+        Assert.Equal([(2, VerticalMerge.Restart), (2, VerticalMerge.Continue)], table.Rows.Skip(1).Take(2).Select(r => (r.Cells[0].GridSpan, r.Cells[0].VMerge)));
+        Assert.Equal(["d", "e", "h"], table.Rows[1].Cells[0].Blocks.Cast<Paragraph>().Select(p => p.Text));
+        var merged = (Table)column.Blocks[0];
+        Assert.Equal([VerticalMerge.Restart, VerticalMerge.Continue, VerticalMerge.Continue, VerticalMerge.Continue], merged.Rows.Select(r => r.Cells[0].VMerge));
+        Assert.Equal(["a", "d", "j"], merged.Rows[0].Cells[0].Blocks.Cast<Paragraph>().Select(p => p.Text));
+        foreach (var document in new[] { block, column })
+        {
+            var output = DocxWriterTests.Save(document);
+            DocxWriterTests.AssertConsistent(output);
+            Assert.Equal(Describe(document), Describe(Load(output)));
+        }
+    }
+
+    [Fact]
     public void DeleteColumns_RowWithoutCells_DoesNotThrow()
     {
         var document = Load(Doc(Table([2000, 2000], Row(Cell("a"), Cell("b")), "<w:tr><w:trPr><w:gridBefore w:val=\"2\"/></w:trPr></w:tr>")));

@@ -45,7 +45,7 @@ public sealed partial class TextDocument
         return EffectiveFormat.Run(Styles, Theme, TableOf(paragraph), paragraph, inline);
     }
 
-    /// <summary>Gets the list label of a paragraph of the body, for example <c>1.</c>, <c>a)</c> or <c>•</c>.</summary>
+    /// <summary>Gets the list label of a paragraph of the body, for example <c>1.</c>, <c>a)</c> or <c>&#x2022;</c>.</summary>
     /// <param name="paragraph">A paragraph of the body or of a table cell.</param>
     /// <returns>The label, or null if the paragraph is not a list item.</returns>
     /// <exception cref="ArgumentNullException">The paragraph is null.</exception>

@@ -81,7 +81,7 @@ public class NumberingLabelTests
     {
         var document = Doc(Abstract(1, Lvl(0, "bullet", "&#xF0B7;"), Lvl(1, "bullet", "&#xF0A7;")) + Num1, Item(0), Item(1));
 
-        Assert.Equal(["•", "▪"], Labels(document));
+        Assert.Equal(["\u2022", "\u25AA"], Labels(document));
     }
 
     [Fact]

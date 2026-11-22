@@ -76,12 +76,12 @@ internal static class NumberingLabels
 
     private static string Symbol(char c) => c switch
     {
-        '' => "•",
-        '' => "▪",
-        '' => "➢",
-        '' => "✓",
-        '' => "❖",
-        >= '' and <= '' => "•",
+        '\uF0B7' => "\u2022",
+        '\uF0A7' => "\u25AA",
+        '\uF0D8' => "\u27A2",
+        '\uF0FC' => "\u2713",
+        '\uF076' => "\u2756",
+        >= '\uF000' and <= '\uF0FF' => "\u2022",
         _ => c.ToString()
     };
 }

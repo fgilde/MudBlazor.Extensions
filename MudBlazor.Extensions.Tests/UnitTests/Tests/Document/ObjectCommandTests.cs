@@ -390,6 +390,27 @@ public partial class ObjectCommandTests
     }
 
     [Fact]
+    public void RemoveHeader_MediaSharedWithTheBody_IsKept()
+    {
+        var built = new DocxBuilder().Header("<w:p><w:r><w:t>Head</w:t></w:r></w:p>").Body("<w:p><w:r><w:t>body</w:t></w:r></w:p>").Load();
+        var png = Png(30, 30);
+        built.Execute(new InsertImageCommand(Caret(built, built.HeadersFooters[0].Blocks[0].Id, 0), png, "image/png"));
+        built.Execute(new InsertImageCommand(Caret(built, built.Blocks[0].Id, 0), png, "image/png"));
+        var source = DocxWriterTests.Save(built);
+        var part = Assert.Single(OpcPackage.Open(source).PartNames, p => p.StartsWith("/word/media/", StringComparison.Ordinal));
+        var document = TextDocument.Load(new MemoryStream(source));
+
+        document.Execute(new RemoveHeaderFooterCommand(document.Sections[0].Id, HeaderFooterKind.Header, HeaderFooterType.Default));
+        var output = DocxWriterTests.Save(document);
+
+        DocxWriterTests.AssertConsistent(output);
+        var opc = OpcPackage.Open(output);
+        Assert.DoesNotContain("/word/header1.xml", opc.PartNames);
+        Assert.Equal(png, OpcAssert.Parts(output)[part]);
+        Assert.Equal(png, TextDocument.Load(new MemoryStream(output)).GetMedia(part));
+    }
+
+    [Fact]
     public void InsertImage_InHeaderOfLaterSection_ScaledToThatSectionsTextWidth()
     {
         var document = new DocxBuilder().Header("<w:p><w:r><w:t>Head</w:t></w:r></w:p>").Body(

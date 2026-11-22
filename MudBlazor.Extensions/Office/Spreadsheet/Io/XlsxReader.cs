@@ -141,7 +141,7 @@ public static class XlsxReader
     private static string[] ReadSharedStrings(Stream stream, XlsxPackage package)
     {
         var list = new List<string>();
-        using var reader = XmlReader.Create(stream, SheetXmlReader.Settings);
+        using var reader = new BoundedXmlReader(XmlReader.Create(stream, SheetXmlReader.Settings));
         reader.MoveToContent();
         reader.Read();
         while (!reader.EOF)

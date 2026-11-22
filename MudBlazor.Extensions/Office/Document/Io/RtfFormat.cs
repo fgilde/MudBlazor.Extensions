@@ -68,7 +68,7 @@ internal static class RtfFormat
         var groups = new Group[limits.Depth + 2];
         groups[0] = new Group(1, false, false, false);
         int depth = 0, tokens = 0, paragraphs = 0;
-        long segments = 0, runWork = 0, tableWork = 0, elements = 0;
+        long segments = 0, characters = 0, runWork = 0, tableWork = 0, elements = 0;
         var text = false;
         for (var i = 0; i < rtf.Length; i++)
         {
@@ -135,7 +135,7 @@ internal static class RtfFormat
             if (word is "u")
             {
                 var fallback = Fallback(end, groups[depth].Uc);
-                if ((number ?? 0) is 0xFFFC or -4) Replace(at, fallback, "");
+                if (((number ?? 0) & 0xFFFF) == 0xFFFC) Replace(at, fallback, "");
                 else Text();
                 return fallback;
             }
@@ -148,10 +148,22 @@ internal static class RtfFormat
                 return end;
             }
 
+            if (word is "chdate" or "chdpl" or "chdpa" or "chtime")
+            {
+                Text(RtfLimits.DateLength);
+                return end;
+            }
+
             text = false;
             if (word is "tab") Tab(at);
             else if (word is "line") segments++;
-            else if (word is "par" or "sect" or "cell" or "nestcell" or "row" or "nestrow") End(word.ToString());
+            else if (word is "page") End("par");
+            else if (word is "sect")
+            {
+                paragraphs++;
+                End("sect");
+            }
+            else if (word is "par" or "cell" or "nestcell" or "row" or "nestrow") End(word.ToString());
             else if (word is "intbl") groups[depth].InTable = true;
             else if (word is "pard") groups[depth].InTable = false;
             else if (word is "uc") groups[depth].Uc = number ?? 0;
@@ -163,19 +175,11 @@ internal static class RtfFormat
 
         int Fallback(int at, int count)
         {
-            if (at < rtf.Length && rtf[at] == ' ') at++;
-            for (var k = 0; k < count && at < rtf.Length && rtf[at] is not ('{' or '}'); k++)
-                if (rtf[at] != '\\' || at + 1 == rtf.Length) at++;
-                else if (rtf[at + 1] == '\'' && Hex(at + 2)) at += 4;
-                else if (!char.IsAsciiLetter(rtf[at + 1])) at += 2;
-                else
-                {
-                    at++;
-                    while (at < rtf.Length && char.IsAsciiLetter(rtf[at])) at++;
-                    if (at + 1 < rtf.Length && rtf[at] == '-' && char.IsAsciiDigit(rtf[at + 1])) at++;
-                    while (at < rtf.Length && char.IsAsciiDigit(rtf[at])) at++;
-                    if (at < rtf.Length && rtf[at] == ' ') at++;
-                }
+            for (var k = 0; k < count && at < rtf.Length; k++)
+            {
+                if (k == 0 && rtf[at] == ' ') at++;
+                if (at < rtf.Length) at += rtf[at] == '\\' && at + 1 < rtf.Length && rtf[at + 1] == '\'' ? 4 : 1;
+            }
 
             return Math.Min(at, rtf.Length);
         }
@@ -201,16 +205,17 @@ internal static class RtfFormat
             text = false;
         }
 
-        void Text()
+        void Text(int length = 1)
         {
             if (!text) segments++;
+            characters += length;
             text = true;
         }
 
         void End(string word)
         {
-            runWork += segments * segments;
-            (segments, text) = (0, false);
+            runWork += segments * Math.Max(segments, characters);
+            (segments, characters, text) = (0, 0, false);
             var inTable = groups[depth].InTable;
             if (word is not ("par" or "sect") || word is "par" && inTable) tableWork += elements + RtfLimits.CellWork;
             if (word is "row" or "nestrow" || word is "par" && !inTable) elements++;
@@ -292,6 +297,8 @@ internal static class RtfFormat
 internal readonly record struct RtfLimits(int Depth, int Tokens, int Paragraphs, long RunWork, long TableWork, int Html)
 {
     internal const long CellWork = 1500;
+
+    internal const int DateLength = 32;
 
     internal static RtfLimits Default { get; } = new(256, 1 << 22, 1 << 17, 1L << 33, 1L << 27, HtmlReader.MaxLength);
 }

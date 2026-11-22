@@ -246,11 +246,53 @@ public class RtfFormatTests
     }
 
     [Fact]
-    public void Rtf_Read_UnicodeFallbackStopsAtGroupDelimiters()
+    public void Rtf_Read_UnicodeFallbackSkipsCharactersLikeRtfPipe()
     {
-        Assert.Equal("Ax", Single(Read(RtfLimits.Default with { Depth = 1 }, @"{\rtf1\uc1 \u65\{x}")).Text);
-        Assert.Equal("AAAx", Single(Read(RtfLimits.Default with { Depth = 2 }, @"{\rtf1\uc1{\u65}{\u65}{\u65}x}")).Text);
+        Assert.Equal("Ax", Single(Read(RtfLimits.Default with { Depth = 2 }, @"{\rtf1\uc1 \u65\{x}")).Text);
+        Reject(RtfLimits.Default with { Depth = 1 }, @"{\rtf1\uc1 \u65\{x}");
+        Assert.Equal("AAAx", Single(Read(RtfLimits.Default with { Depth = 4 }, @"{\rtf1\uc1{\u65}{\u65}{\u65}x}")).Text);
+        Reject(RtfLimits.Default with { Depth = 3 }, @"{\rtf1\uc1{\u65}{\u65}{\u65}x}");
         Assert.Equal("Ax", Single(Load(@"{\rtf1\uc1 \u65\'e9x}")).Text);
+        Assert.Equal("Apar x", Single(Load(@"{\rtf1\uc1 \u65\par x}")).Text);
+        Assert.Equal("Ax", Single(Load("{\\rtf1\\uc1 \\u65\tx}")).Text);
+    }
+
+    [Fact]
+    public void Rtf_Read_FallbackNeverHidesParagraphsFromTheLimits()
+    {
+        var rtf = @"{\rtf1\uc2 " + Repeat(@"\u65\par\par ", 10) + "}";
+
+        Assert.Equal("Aar", Read(RtfLimits.Default with { Paragraphs = 10 }, rtf).Blocks.Cast<Paragraph>().First().Text);
+        Reject(RtfLimits.Default with { Paragraphs = 9 }, rtf);
+        Reject(RtfLimits.Default with { Paragraphs = 9 }, @"{\rtf1 " + Repeat(@"{\page }", 10) + "}");
+        Reject(RtfLimits.Default with { Paragraphs = 9 }, @"{\rtf1 " + Repeat(@"{\sect }", 10) + "}");
+    }
+
+    [Fact]
+    public void Rtf_Read_RunWorkCountsTheCharactersOfEveryRun()
+    {
+        Reject(RtfLimits.Default, @"{\rtf1 " + Repeat(@"{\chdate }", 200_000) + "}");
+        Reject(RtfLimits.Default, @"{\rtf1 " + Repeat(@"{\chtime }", 200_000) + "}");
+        Reject(RtfLimits.Default, @"{\rtf1 " + Repeat("{aaaaaaaaaa}", 90_000) + "}");
+        Reject(RtfLimits.Default, @"{\rtf1 " + Repeat(@"\b aaaaaaaaaa\b0 ", 90_000) + "}");
+        Accept(RtfLimits.Default with { RunWork = 27 },@"{\rtf1 " + Repeat("{xxx}", 3) + "}");
+        Reject(RtfLimits.Default with { RunWork = 26 }, @"{\rtf1 " + Repeat("{xxx}", 3) + "}");
+        Assert.Equal("a", Single(Load(@"{\rtf1 a" + Repeat(@"{\chpgn }{\column }{\softline }", 50_000) + "}")).Text);
+        Assert.Equal(20_000 * 10, Single(Load(@"{\rtf1 " + Repeat(@"\chdate ", 20_000) + "}")).Text.Length);
+    }
+
+    [Fact]
+    public void Rtf_Read_ObjectMarkAliasesBinVariantsAndShortInput()
+    {
+        foreach (var marker in new[] { @"\u-4?", @"\u65532?", @"\u131068?", @"\u-65540?" })
+            Assert.Equal("ax", Single(Load(@"{\rtf1 a" + marker + "x}")).Text);
+        Assert.Equal("ax", Single(Load(@"{\rtf1\uc2 a\u-4??x}")).Text);
+        Assert.DoesNotContain('\uFFFC', Single(Load(@"{\rtf1\uc0 a\u-4 x}")).Text);
+        foreach (var bin in new[] { @"\BIN2", @"\Bin2", @"\bin-2", @"\bin" })
+            Assert.Equal("axy b", Single(Load(@"{\rtf1 a" + bin + " xy b}")).Text);
+        Assert.Throws<InvalidDataException>(() => Load(@"{\rtf1 a\'"));
+        Assert.Equal("aA", Single(Load(@"{\rtf1 a\uc5 \u65 b}")).Text);
+        Assert.Equal("aA", Single(Load(@"{\rtf1 a\uc5 \u65")).Text);
     }
 
     [Fact]
