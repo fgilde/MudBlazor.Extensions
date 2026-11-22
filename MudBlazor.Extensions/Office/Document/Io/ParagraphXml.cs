@@ -45,8 +45,17 @@ internal static class ParagraphXml
         if (pPr.Element(W + "rPr") is { HasElements: false, HasAttributes: false } empty) empty.Remove();
         SetSectionEnd(pPr, sectPr);
         if (pPr.HasElements || pPr.HasAttributes) element.Add(pPr);
+        if (source != null) DropDeletedComments(source, context);
         element.Add(Content(paragraph.Inlines, context));
         return element;
+    }
+
+    private static void DropDeletedComments(XElement paragraph, DocxWriteContext context)
+    {
+        foreach (var deleted in paragraph.Descendants().Where(e => (e.Name == W + "del" || e.Name == W + "moveFrom") &&
+                                                                   e.Ancestors().TakeWhile(a => a != paragraph).All(a => a.Name.LocalName is "hyperlink" or "ins" or "moveTo" or "dir" or "bdo" or "del" or "moveFrom")))
+        foreach (var reference in deleted.Descendants(W + "commentReference"))
+            context.DropComment((string)reference.Attribute(W + "id"));
     }
 
     private static void SetSectionEnd(XElement pPr, XElement sectPr)
@@ -57,25 +66,38 @@ internal static class ParagraphXml
 
     private static IEnumerable<XElement> Content(IReadOnlyList<Inline> inlines, DocxWriteContext context)
     {
-        var items = inlines.Where(i => i is not Marker
+        var items = new List<Inline>();
+        foreach (var inline in inlines)
+            if (inline is Marker { Kind: "moveFromRangeStart" or "moveFromRangeEnd" or "moveToRangeStart" or "moveToRangeEnd", Source: { } marker })
+                context.DropMoveRange((string)marker.Attribute(W + "id"));
+            else if (inline is not Marker { Kind: "proofErr" or "moveFromRangeStart" or "moveFromRangeEnd" or "moveToRangeStart" or "moveToRangeEnd" })
+                items.Add(inline);
+
+        var owners = new Dictionary<XElement, List<int>>();
+        for (var k = 0; k < items.Count; k++)
+            foreach (var owner in DocxWriteContext.Parts(items[k]).Select(p => p.Owner).Distinct())
+            {
+                if (!owners.TryGetValue(owner, out var list)) owners[owner] = list = [];
+                list.Add(k);
+            }
+
+        var intact = owners.Where(o => context.IsIntact(o.Key, o.Value.Select(k => items[k]).ToList()) &&
+                                       Enumerable.Range(o.Value[0], o.Value[^1] - o.Value[0] + 1).All(k => o.Value.Contains(k) || Silent(items[k])))
+            .Select(o => o.Key).ToHashSet();
+        var present = new Dictionary<XElement, HashSet<XElement>>();
+        foreach (var (owner, node) in items.SelectMany(DocxWriteContext.Parts))
         {
-            Kind: "proofErr" or "moveFromRangeStart" or "moveFromRangeEnd" or "moveToRangeStart" or "moveToRangeEnd"
-        }).ToList();
-        var owners = new Dictionary<XElement, List<Inline>>();
-        foreach (var inline in items)
-        foreach (var owner in DocxWriteContext.Parts(inline).Select(p => p.Owner).Distinct())
-        {
-            if (!owners.TryGetValue(owner, out var list)) owners[owner] = list = [];
-            list.Add(inline);
+            if (!present.TryGetValue(owner, out var nodes)) present[owner] = nodes = [];
+            if (node != null) nodes.Add(node);
         }
 
-        var written = new HashSet<XElement>();
+        var state = new RunState(intact, present, [], [], []);
         for (var i = 0; i < items.Count;)
         {
             var link = items[i].Link;
             var j = i + 1;
             while (j < items.Count && ReferenceEquals(items[j].Link, link)) j++;
-            var pieces = items.GetRange(i, j - i).SelectMany(inline => Pieces(inline, owners, written, context));
+            var pieces = items.GetRange(i, j - i).SelectMany(inline => Pieces(inline, state, context));
             var content = Wrap(pieces.Select(p => (p.Element, Wrappers(p.Origin))).ToList(), 0);
             if (link == null)
                 foreach (var element in content) yield return element;
@@ -85,8 +107,9 @@ internal static class ParagraphXml
         }
     }
 
-    private static IEnumerable<(XElement Element, XElement Origin)> Pieces(Inline inline, Dictionary<XElement, List<Inline>> owners, HashSet<XElement> written,
-        DocxWriteContext context)
+    private static bool Silent(Inline inline) => inline.Source == null && inline is Marker or InlineImage;
+
+    private static IEnumerable<(XElement Element, XElement Origin)> Pieces(Inline inline, RunState state, DocxWriteContext context)
     {
         var parts = DocxWriteContext.Parts(inline).ToList();
         if (parts.Count == 0)
@@ -98,21 +121,33 @@ internal static class ParagraphXml
         var change = context.FormatChange(inline);
         foreach (var (owner, node) in parts)
         {
-            if (context.IsIntact(owner, owners[owner]))
+            if (state.Intact.Contains(owner))
             {
-                if (written.Add(owner)) yield return (Final(owner, context.Claim(owner)), owner);
+                if (state.Written.Add(owner)) yield return (Final(owner, context.Claim(owner)), owner);
             }
             else if (owner.Name != W + "r")
             {
-                if (written.Add(owner)) yield return (Patched(owner, change, context.Claim(owner)), owner);
+                if (state.Written.Add(owner)) yield return (Patched(owner, change, context.Claim(owner)), owner);
             }
             else if (Content(inline, node) is { Count: > 0 } content)
             {
                 var first = context.Claim(owner);
-                var rPr = change is { } c ? Delta(owner.Element(W + "rPr"), c.Old, c.New) : RunProperties(owner.Element(W + "rPr"), inline.Format);
-                yield return (new XElement(W + "r", DocxWriteContext.Attributes(owner, first), rPr, content), owner);
+                var rPr = inline is TextRun or Tab or Break ? RunProperties(owner.Element(W + "rPr"), inline.Format)
+                    : change is { } c ? Delta(owner.Element(W + "rPr"), c.Old, c.New)
+                    : Delta(owner.Element(W + "rPr"), inline.Format, inline.Format);
+                var leading = state.Started.Add(owner) ? Kept(owner, a => a == null || !state.Present[owner].Contains(a), state.Attached) : [];
+                var trailing = node == null ? [] : Kept(owner, a => a == node, state.Attached);
+                yield return (new XElement(W + "r", DocxWriteContext.Attributes(owner, first), rPr, leading, content, trailing), owner);
             }
         }
+    }
+
+    private static List<XElement> Kept(XElement run, Func<XElement, bool> anchored, HashSet<XElement> attached)
+    {
+        return run.Elements().Where(e => e.Name == W + "delText" || e.Name == W + "delInstrText")
+            .Where(e => anchored(e.ElementsBeforeSelf().LastOrDefault(Mapped)) && attached.Add(e)).ToList();
+
+        static bool Mapped(XElement e) => e.Name != W + "rPr" && e.Name != W + "lastRenderedPageBreak" && e.Name != W + "delText" && e.Name != W + "delInstrText";
     }
 
     private static List<XElement> Content(Inline inline, XElement node) => inline switch
@@ -146,7 +181,9 @@ internal static class ParagraphXml
     {
         if (change is not { } c) return Final(element, first);
         var copy = new XElement(element.Name, DocxWriteContext.Attributes(element, first), element.Nodes());
-        foreach (var run in copy.DescendantsAndSelf().Where(e => e.Name == W + "r" || e.Name == InlineXml.M + "r").ToList())
+        var own = copy.DescendantsAndSelf().Where(e => (e.Name == W + "r" || e.Name == InlineXml.M + "r") &&
+                                                      !e.Ancestors().TakeWhile(a => a != copy).Any(a => a.Name == W + "txbxContent" || a.Name == W + "p"));
+        foreach (var run in own.ToList())
         {
             if (Delta(run.Element(W + "rPr"), c.Old, c.New) is not { } rPr)
             {
@@ -226,4 +263,7 @@ internal static class ParagraphXml
     }
 
     private static XElement At(XElement[] path, int depth) => depth < path.Length ? path[depth] : null;
+
+    private sealed record RunState(
+        HashSet<XElement> Intact, Dictionary<XElement, HashSet<XElement>> Present, HashSet<XElement> Written, HashSet<XElement> Started, HashSet<XElement> Attached);
 }

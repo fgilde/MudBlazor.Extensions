@@ -84,9 +84,11 @@ public sealed record OpaqueInline(string Kind, string DisplayText) : Inline
     /// <summary>The field instruction, for example <c>PAGE</c>; null for other kinds.</summary>
     public string Instruction { get; init; }
 
-    internal IReadOnlyList<XElement> Sources { get; init; }
-
     internal IReadOnlyList<XElement> Nodes { get; init; }
+
+    internal IReadOnlyList<XElement> Sources => Nodes?.Select(Owner).Distinct().ToList();
+
+    internal static XElement Owner(XElement node) => node.Parent is { } run && run.Name == FormatXml.W + "r" ? run : node;
 }
 
 /// <summary>A zero-length element such as a bookmark boundary or a proofing mark.</summary>

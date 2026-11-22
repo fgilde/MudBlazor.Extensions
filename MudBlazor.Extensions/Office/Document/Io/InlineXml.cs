@@ -158,7 +158,6 @@ internal sealed class InlineXml
         return new OpaqueInline(kind, text.ToString())
         {
             Instruction = instruction.ToString().Trim(),
-            Sources = items.Skip(from).Take(to - from + 1).Select(i => i.Run ?? i.Node).Distinct().ToList(),
             Nodes = items.Skip(from).Take(to - from + 1).Select(i => i.Node).ToList(),
             Source = first.Run ?? first.Node,
             Format = format ?? first.Format ?? new RunFormat(),
@@ -178,7 +177,6 @@ internal sealed class InlineXml
             inline = note with
             {
                 DisplayText = mark?.Node.Value ?? "",
-                Sources = new[] { item.Run, mark?.Run }.Where(r => r != null).Distinct().ToList(),
                 Nodes = new[] { node, mark?.Node }.Where(n => n != null).ToList()
             };
         }
@@ -228,7 +226,7 @@ internal sealed class InlineXml
         if (Markers.Contains(name)) return new Marker(name) { Name = (string)node.Attribute(W + "name") };
         return name switch
         {
-            "fldSimple" => Opaque("field", Text(node)) with { Instruction = ((string)node.Attribute(W + "instr"))?.Trim(), Sources = [node], Nodes = [node] },
+            "fldSimple" => Opaque("field", Text(node)) with { Instruction = ((string)node.Attribute(W + "instr"))?.Trim(), Nodes = [node] },
             "sdt" => Opaque("contentControl", Text(node)),
             "smartTag" => Opaque("smartTag", Text(node)),
             "customXml" => Opaque("customXml", Text(node)),

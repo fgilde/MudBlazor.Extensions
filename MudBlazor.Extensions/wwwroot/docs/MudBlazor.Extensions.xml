@@ -33492,10 +33492,10 @@
             <summary>A file format a <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/> can be read from or written to.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Docx">
-            <summary>Word document (.docx).</summary>
+            <summary>Word document (.docx); a macro-enabled source is written as a macro-enabled document (.docm), see <see cref="P:MudBlazor.Extensions.Office.Document.TextDocument.HasMacros"/>.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Dotx">
-            <summary>Word template (.dotx).</summary>
+            <summary>Word template (.dotx); a macro-enabled source is written as a macro-enabled template (.dotm), see <see cref="P:MudBlazor.Extensions.Office.Document.TextDocument.HasMacros"/>.</summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Rtf">
             <summary>Rich Text Format (.rtf).</summary>
@@ -34632,7 +34632,13 @@
             <summary>True if the document contains tracked insertions, deletions or formatting changes; they are shown in their final state.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.IsTemplate">
-            <summary>True if the document is a template (.dotx).</summary>
+            <summary>True if the document is a template (.dotx or .dotm).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.HasMacros">
+            <summary>
+            True if the loaded file is macro-enabled (.docm or .dotm). <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.Save(System.IO.Stream,MudBlazor.Extensions.Office.Document.DocumentFileFormat)"/> keeps it macro-enabled, so the file must be saved with a .docm or
+            .dotm extension.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.EvenAndOddHeaders">
             <summary>True if even pages have their own headers and footers.</summary>
@@ -34663,7 +34669,10 @@
             <returns>The document.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Save(System.IO.Stream,MudBlazor.Extensions.Office.Document.DocumentFileFormat)">
-            <summary>Writes the document.</summary>
+            <summary>
+            Writes the document. A macro-enabled source stays macro-enabled: <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Docx"/> then writes a .docm and
+            <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Dotx"/> a .dotm file, and the caller chooses the matching file extension (see <see cref="P:MudBlazor.Extensions.Office.Document.TextDocument.HasMacros"/>).
+            </summary>
             <param name="target">The stream that receives the file.</param>
             <param name="format">The file format.</param>
             <exception cref="T:System.ArgumentNullException">The stream is null.</exception>

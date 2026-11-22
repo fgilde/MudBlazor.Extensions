@@ -29,8 +29,14 @@ public sealed partial class TextDocument
     /// <summary>True if the document contains tracked insertions, deletions or formatting changes; they are shown in their final state.</summary>
     public bool HasTrackedChanges { get; internal set; }
 
-    /// <summary>True if the document is a template (.dotx).</summary>
+    /// <summary>True if the document is a template (.dotx or .dotm).</summary>
     public bool IsTemplate { get; internal set; }
+
+    /// <summary>
+    /// True if the loaded file is macro-enabled (.docm or .dotm). <see cref="Save"/> keeps it macro-enabled, so the file must be saved with a .docm or
+    /// .dotm extension.
+    /// </summary>
+    public bool HasMacros { get; internal set; }
 
     /// <summary>True if even pages have their own headers and footers.</summary>
     public bool EvenAndOddHeaders { get; internal set; }
@@ -81,7 +87,10 @@ public sealed partial class TextDocument
     /// <returns>The document.</returns>
     public static TextDocument Create(PageSetup page = null) => DocxReader.Read(BlankDocument.Build(page ?? PageSetup.A4));
 
-    /// <summary>Writes the document.</summary>
+    /// <summary>
+    /// Writes the document. A macro-enabled source stays macro-enabled: <see cref="DocumentFileFormat.Docx"/> then writes a .docm and
+    /// <see cref="DocumentFileFormat.Dotx"/> a .dotm file, and the caller chooses the matching file extension (see <see cref="HasMacros"/>).
+    /// </summary>
     /// <param name="target">The stream that receives the file.</param>
     /// <param name="format">The file format.</param>
     /// <exception cref="ArgumentNullException">The stream is null.</exception>

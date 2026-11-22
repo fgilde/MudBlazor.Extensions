@@ -472,7 +472,9 @@ public partial class DocxWriterTests
     {
         using var stream = new MemoryStream();
         DocxWriter.Write(document, stream, asTemplate);
-        return stream.ToArray();
+        var output = stream.ToArray();
+        Assert.Equal(document.AllParagraphs(true).Select(Signature), Load(output).AllParagraphs(true).Select(Signature));
+        return output;
     }
 
     private static TextDocument Load(byte[] bytes) => TextDocument.Load(new MemoryStream(bytes));

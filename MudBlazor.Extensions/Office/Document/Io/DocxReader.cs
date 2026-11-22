@@ -48,6 +48,7 @@ internal static partial class DocxReader
         var document = new TextDocument
         {
             IsTemplate = contentType?.Contains(".template.", StringComparison.Ordinal) == true,
+            HasMacros = contentType?.Contains("macroEnabled", StringComparison.Ordinal) == true,
             EvenAndOddHeaders = settings?.Root is { } root && OnOff(root, "evenAndOddHeaders") == true,
             Styles = StylesXml.Read(styles),
             Numbering = NumberingXml.Read(numbering),

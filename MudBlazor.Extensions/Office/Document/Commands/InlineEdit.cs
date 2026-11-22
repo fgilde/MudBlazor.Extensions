@@ -57,10 +57,14 @@ internal static class InlineEdit
         var after = At(paragraph, offset);
         var link = before?.Link != null && ReferenceEquals(before.Link, after?.Link) ? before.Link : null;
         var source = before ?? after;
-        return (Unlinked(source?.Format ?? paragraph.MarkFormat ?? new RunFormat(), link, source), link, RunOf(source));
+        return (Unlinked(source?.Format ?? paragraph.MarkFormat ?? new RunFormat(), link, source), link, before != null ? RunOf(before, true) : RunOf(after, false));
     }
 
-    public static XElement RunOf(Inline inline) => inline?.Source is { } source && source.Name == FormatXml.W + "r" ? source : null;
+    public static XElement RunOf(Inline inline, bool last)
+    {
+        var runs = inline is OpaqueInline { Sources: { } sources } ? sources : inline?.Source == null ? [] : [inline.Source];
+        return (last ? runs.Reverse() : runs).FirstOrDefault(r => r.Name == FormatXml.W + "r");
+    }
 
     public static RunFormat Unlinked(RunFormat format, Hyperlink link, Inline origin) =>
         origin?.Link != null && link == null && format.StyleId == HyperlinkStyle ? format with { StyleId = null } : format;

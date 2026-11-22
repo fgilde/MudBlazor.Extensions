@@ -84,6 +84,7 @@ public static partial class DocxWriter
             if (blocks.SequenceEqual(original.Elements(), ReferenceEqualityComparer.Instance)) return;
             var xml = new XDocument(package.MainXml);
             xml.Root!.Element(W + "body")!.ReplaceNodes(blocks);
+            _context.RemoveOrphans(xml.Root);
             if (!XNode.DeepEquals(xml, package.MainXml)) Put(package.MainPart, xml);
         }
 
@@ -99,6 +100,7 @@ public static partial class DocxWriter
                 var blocks = part.Blocks.Select(b => _context.Block(b, false)).Where(e => e != null).ToList();
                 if (blocks.Count == 0) blocks.Add(new XElement(W + "p"));
                 xml.Root!.ReplaceNodes(blocks);
+                _context.RemoveOrphans(xml.Root);
                 if (!_context.RelationshipsChanged && XNode.DeepEquals(xml, _opc.ReadXml(part.PartName))) continue;
                 Put(part.PartName, xml);
                 if (_context.RelationshipsChanged) PutRelationships(part.PartName, rels);
@@ -137,6 +139,9 @@ internal sealed class DocxWriteContext
     private readonly Dictionary<XElement, List<Inline>> _owned = new();
     private readonly Dictionary<object, Inline> _tokens = new();
     private readonly HashSet<XElement> _claimed = new();
+    private readonly Dictionary<XElement, Hyperlink> _links = new();
+    private readonly HashSet<string> _droppedMoves = [];
+    private readonly HashSet<string> _droppedComments = [];
     private List<OpcRelationship> _relationships;
     private IReadOnlyDictionary<string, Section> _sectionEnds;
 
@@ -150,7 +155,7 @@ internal sealed class DocxWriteContext
 
     internal static IEnumerable<(XElement Owner, XElement Node)> Parts(Inline inline)
     {
-        if (inline is OpaqueInline { Nodes: { } nodes }) return nodes.Select(n => (n.Parent is { } run && run.Name == W + "r" ? run : n, n));
+        if (inline is OpaqueInline { Nodes: { } nodes }) return nodes.Select(n => (OpaqueInline.Owner(n), n));
         return inline.Source == null ? [] : [(inline.Source, inline.Node)];
     }
 
@@ -164,6 +169,20 @@ internal sealed class DocxWriteContext
         _relationships = relationships;
         _sectionEnds = sectionEnds;
         RelationshipsChanged = false;
+        _droppedMoves.Clear();
+        _droppedComments.Clear();
+    }
+
+    internal void DropMoveRange(string id) => _droppedMoves.Add(id);
+
+    internal void DropComment(string id) => _droppedComments.Add(id);
+
+    internal void RemoveOrphans(XElement root)
+    {
+        if (_droppedMoves.Count == 0 && _droppedComments.Count == 0) return;
+        root.Descendants().Where(e => e.Name.Namespace == W && (string)e.Attribute(W + "id") is { } id &&
+                                      (e.Name.LocalName is "moveFromRangeStart" or "moveFromRangeEnd" or "moveToRangeStart" or "moveToRangeEnd" && _droppedMoves.Contains(id) ||
+                                       e.Name.LocalName is "commentRangeStart" or "commentRangeEnd" && _droppedComments.Contains(id))).Remove();
     }
 
     internal bool IsOriginal(object item) => _originals.Contains(item);
@@ -189,11 +208,11 @@ internal sealed class DocxWriteContext
 
     internal XElement Hyperlink(Hyperlink link, IEnumerable<XElement> content)
     {
+        var original = link.Source != null ? _links.GetValueOrDefault(link.Source) : null;
         var element = link.Source != null ? new XElement(link.Source.Name, link.Source.Attributes()) : new XElement(W + "hyperlink", new XAttribute(W + "history", "1"));
-        var target = (string)element.Attribute(InlineXml.R + "id") is { } id ? _relationships.FirstOrDefault(r => r.Id == id)?.Target : null;
-        if (link.Source == null || target != link.Target) element.SetAttributeValue(InlineXml.R + "id", link.Target == null ? null : External(link.Target));
-        if ((string)element.Attribute(W + "anchor") != link.Anchor) element.SetAttributeValue(W + "anchor", link.Anchor);
-        if ((string)element.Attribute(W + "tooltip") != link.Tooltip) element.SetAttributeValue(W + "tooltip", link.Tooltip);
+        if (original?.Target != link.Target || link.Source == null) element.SetAttributeValue(InlineXml.R + "id", link.Target == null ? null : External(link.Target));
+        if (original?.Anchor != link.Anchor) element.SetAttributeValue(W + "anchor", link.Anchor);
+        if (original?.Tooltip != link.Tooltip) element.SetAttributeValue(W + "tooltip", link.Tooltip);
         element.Add(content);
         return element;
     }
@@ -216,6 +235,7 @@ internal sealed class DocxWriteContext
             foreach (var inline in paragraph.Inlines)
             {
                 if (inline is not (TextRun or Tab or Break)) _tokens.TryAdd(TokenKey(inline), inline);
+                if (inline.Link?.Source is { } link) _links.TryAdd(link, inline.Link);
                 foreach (var owner in Parts(inline).Select(p => p.Owner).Distinct())
                 {
                     if (!_owned.TryGetValue(owner, out var list)) _owned[owner] = list = [];
