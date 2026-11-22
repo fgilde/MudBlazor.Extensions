@@ -31,7 +31,8 @@ public sealed class ReplaceTextCommand : TextDocumentCommand
     {
         var (paragraph, offset) = document.Resolve(document.Snap(_range).Start);
         var (format, link) = InlineEdit.InsertionStyle(paragraph, offset);
-        return document.ReplaceRange(_range, InlineEdit.Lines(_text, _format ?? format, link));
+        if (_format != null) format = InlineEdit.Unlinked(_format, link, InlineEdit.At(paragraph, offset));
+        return document.ReplaceRange(_range, InlineEdit.Lines(_text, format, link));
     }
 }
 

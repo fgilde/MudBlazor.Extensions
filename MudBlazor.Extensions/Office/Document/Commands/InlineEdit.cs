@@ -56,9 +56,11 @@ internal static class InlineEdit
         var after = At(paragraph, offset);
         var link = before?.Link != null && ReferenceEquals(before.Link, after?.Link) ? before.Link : null;
         var source = before ?? after;
-        var format = source?.Format ?? paragraph.MarkFormat ?? new RunFormat();
-        return (source?.Link != null && link == null && format.StyleId == HyperlinkStyle ? format with { StyleId = null } : format, link);
+        return (Unlinked(source?.Format ?? paragraph.MarkFormat ?? new RunFormat(), link, source), link);
     }
+
+    public static RunFormat Unlinked(RunFormat format, Hyperlink link, Inline origin) =>
+        origin?.Link != null && link == null && format.StyleId == HyperlinkStyle ? format with { StyleId = null } : format;
 
     public static List<Inline> Normalize(IEnumerable<Inline> inlines)
     {

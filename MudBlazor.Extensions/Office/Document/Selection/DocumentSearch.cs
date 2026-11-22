@@ -16,6 +16,7 @@ public sealed record FindOptions(bool MatchCase = false, bool WholeWord = false,
 public static class DocumentSearch
 {
     private static readonly TimeSpan MatchTimeout = TimeSpan.FromSeconds(1);
+    private static readonly Regex Substitution = new(@"\$(?:[$`'_+&]|\{([^}]*)\}|(\d+))", RegexOptions.CultureInvariant, MatchTimeout);
 
     /// <summary>Finds all matches in document order.</summary>
     /// <param name="document">The document.</param>
@@ -61,12 +62,42 @@ public static class DocumentSearch
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var (range, match, paragraph) = matches[i];
-                var text = options.Regex ? match.Result(replacement ?? "") : replacement;
+                var text = options.Regex ? Result(match, replacement ?? "", paragraph.Text) : replacement;
                 document.Execute(new ReplaceTextCommand(range, text, InlineEdit.At(paragraph, range.Start.Offset)?.Format));
             }
 
         return matches.Count;
     }
+
+    private static string Result(Match match, string replacement, string text)
+    {
+        if (match.Groups.Values.All(g => !g.Success || Widen(g, text) == (g.Index, g.Index + g.Length))) return match.Result(replacement);
+        return Substitution.Replace(replacement, token => token.Value switch
+        {
+            "$$" => "$",
+            "$`" => text[..Widen(match, text).From],
+            "$'" => text[Widen(match, text).To..],
+            "$_" => text,
+            "$+" => Value(match.Groups.Count > 1 ? match.Groups[^1] : match.Groups[0], text),
+            "$&" => Value(match.Groups[0], text),
+            _ => Reference(match, token, text)
+        });
+    }
+
+    private static string Reference(Match match, Match token, string text)
+    {
+        if (token.Groups[1].Success) return match.Groups.TryGetValue(token.Groups[1].Value, out var named) ? Value(named, text) : token.Value;
+        var digits = token.Groups[2].Value;
+        for (var length = digits.Length; length > 0; length--)
+            if (match.Groups.TryGetValue(digits[..length], out var group))
+                return Value(group, text) + digits[length..];
+        return token.Value;
+    }
+
+    private static string Value(Group group, string text) => group.Success ? text[Widen(group, text).From..Widen(group, text).To] : "";
+
+    private static (int From, int To) Widen(Capture capture, string text) =>
+        (TextDocument.SnapOffset(text, capture.Index, true), TextDocument.SnapOffset(text, capture.Index + capture.Length, false));
 
     private static List<(DocumentRange Range, Match Match, Paragraph Paragraph)> Matches(TextDocument document, string query, FindOptions options, TimeSpan timeout)
     {

@@ -155,6 +155,30 @@ public class DocumentSearchTests
         Assert.Equal(9, dots.Count);
     }
 
+    [Fact]
+    public void ReplaceAll_GroupInsideSurrogatePair_WidenedToWholeCharacter()
+    {
+        var document = TextDocument.FromBlocks([P("\uD83D\uDE00")]);
+
+        DocumentSearch.ReplaceAll(document, ".", "<$0>", new FindOptions(Regex: true));
+
+        Assert.Equal("<\uD83D\uDE00>", ((Paragraph)document.Blocks[0]).Text);
+    }
+
+    [Fact]
+    public void ReplaceAll_WholeLink_ClearsHyperlinkStyle()
+    {
+        var link = new Hyperlink("https://example.org", null, null);
+        var style = new RunFormat { StyleId = "Hyperlink", Bold = true };
+        var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new TextRun("a "), new TextRun("link") { Link = link, Format = style }, new TextRun(" b")] }]);
+
+        DocumentSearch.ReplaceAll(document, "link", "x");
+
+        var replaced = ((Paragraph)document.Blocks[0]).Inlines.OfType<TextRun>().Single(r => r.Text.Contains('x'));
+        Assert.Null(replaced.Link);
+        Assert.Equal(style with { StyleId = null }, replaced.Format);
+    }
+
     private static Paragraph P(string text) => new() { Inlines = [new TextRun(text)] };
 
     private static Table T(params TableRow[] rows) => new() { Grid = [2000, 2000], Rows = rows };

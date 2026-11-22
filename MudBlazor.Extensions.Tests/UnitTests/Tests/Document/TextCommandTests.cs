@@ -314,11 +314,16 @@ public class TextCommandTests
     {
         var document = Standard();
         var id = document.Blocks[0].Id;
+        var changed = 0;
+        document.Changed += (_, _) => changed++;
+        var version = document.Version;
 
         document.Execute(new ReplaceTextCommand(Range(document, id, 2, id, 2), ""));
 
         Assert.False(document.Undo.CanUndo);
         Assert.False(document.Modified);
+        Assert.Equal(0, changed);
+        Assert.Equal(version, document.Version);
     }
 
     [Fact]
