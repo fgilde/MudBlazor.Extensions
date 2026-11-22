@@ -23,6 +23,10 @@ internal static class TextFormat
         target.Write(new UTF8Encoding(false).GetBytes(text.ToString()));
     }
 
+    internal static IEnumerable<string> Cells(TableRow row, Func<TableCell, string> text) =>
+        Enumerable.Repeat("", row.GridBefore)
+            .Concat(row.Cells.SelectMany(c => Enumerable.Repeat("", c.GridSpan - 1).Prepend(c.VMerge == VerticalMerge.Continue ? "" : text(c))));
+
     internal static bool Hidden(TextDocument document, Paragraph paragraph, Inline inline) => document.EffectiveRunFormat(paragraph, inline).Hidden == true;
 
     internal static TextDocument FromText(string text)
@@ -59,9 +63,7 @@ internal static class TextFormat
                 case Table table:
                     foreach (var row in table.Rows)
                     {
-                        var cells = Enumerable.Repeat("", row.GridBefore)
-                            .Concat(row.Cells.SelectMany(c => Enumerable.Repeat("", c.GridSpan - 1).Prepend(c.VMerge == VerticalMerge.Continue ? "" : CellText(document, c.Blocks))));
-                        text.Append(string.Join('\t', cells)).Append("\r\n");
+                        text.Append(string.Join('\t', Cells(row, c => CellText(document, c.Blocks)))).Append("\r\n");
                     }
 
                     break;

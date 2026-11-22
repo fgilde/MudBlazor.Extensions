@@ -140,6 +140,80 @@ public class TextMarkdownTests
         Assert.Throws<InvalidDataException>(() => TextDocument.Load(new HtmlSecurityTests.EndlessStream(), DocumentFileFormat.Markdown));
     }
 
+    [Fact]
+    public void Md_Write_Escapes()
+    {
+        const string text = "a*b_c\n# x\n- y\n1. z\n+ w\n  2) v\n<b>&amp;</b> [l](u) `c` ~~s~~ |p| ===\\";
+        var document = Load(Encoding.UTF8.GetBytes(text));
+
+        var markdown = Encoding.UTF8.GetString(Save(document, DocumentFileFormat.Markdown));
+
+        Assert.Equal("a\\*b\\_c\n\n\\# x\n\n\\- y\n\n1\\. z\n\n\\+ w\n\n2\\) v\n\n\\<b\\>\\&amp;\\</b\\> \\[l\\](u) \\`c\\` \\~\\~s\\~\\~ \\|p\\| ===\\\\\n", markdown);
+        var reread = Load(Encoding.UTF8.GetBytes(markdown), DocumentFileFormat.Markdown);
+        Assert.Equal(text.Replace("  2)", "2)").Split('\n'), reread.Blocks.Cast<Paragraph>().Select(p => p.Text));
+    }
+
+    [Fact]
+    public void Md_Write_ListsTablesCodeAndBreaks()
+    {
+        var document = HtmlReader.Read(
+            "<h2>Head <b>bold</b></h2><ul><li>a<ol><li>b<ul><li>c</li></ul></li></ol></li><li>d</li></ul><p>after</p>" +
+            "<table><tr><td colspan=\"2\">m</td><td rowspan=\"2\">r</td></tr><tr><td>x</td><td><p>y1</p><p>y2 <i>it</i></p></td></tr></table>" +
+            "<pre>code ```\n  *raw*</pre><p>one<br>two <a href=\"https://example.com/a(b) c\">link</a> <a href=\"javascript:x\">bad</a></p>");
+
+        var markdown = Encoding.UTF8.GetString(Save(document, DocumentFileFormat.Markdown));
+
+        Assert.Equal(
+            "## Head **bold**\n\n" +
+            "- a\n  1. b\n     - c\n- d\n\n" +
+            "after\n\n" +
+            "| m |  | r |\n| --- | --- | --- |\n| x | y1 y2 *it* |  |\n\n" +
+            "````\ncode ```\n  *raw*\n````\n\n" +
+            "one\\\ntwo [link](https://example.com/a\\(b\\)%20c) bad\n", markdown);
+    }
+
+    [Fact]
+    public void Md_RoundTrip_Features()
+    {
+        var png = Convert.ToBase64String(ObjectCommandTests.Png(20, 10));
+        var source = "# Title\n\n" +
+                     $"Some **bold**, *italic*, ***both*** and ~~gone~~ with [a link](https://example.com/a_(b)) and ![pic](data:image/png;base64,{png}).\n\n" +
+                     "Line one\\\nline two\n\n" +
+                     "- one\n  - nested\n    1. deep\n- two\n\n" +
+                     "1. first\n2. second\n\n" +
+                     "| H1 | H2 | H3 |\n| --- | --- | --- |\n| a | **b** | c |\n\n" +
+                     "```\ncode *x*\n  indented\n```\n\n" +
+                     "### Sub *it*\n";
+        var original = Load(Encoding.UTF8.GetBytes(source), DocumentFileFormat.Markdown);
+
+        var markdown = Save(original, DocumentFileFormat.Markdown);
+        var reread = Load(markdown, DocumentFileFormat.Markdown);
+
+        Assert.Equal(Signature(original), Signature(reread));
+        Assert.Equal(Encoding.UTF8.GetString(markdown), Encoding.UTF8.GetString(Save(reread, DocumentFileFormat.Markdown)));
+        Assert.Contains("[img pic ", Signature(reread));
+        Assert.Contains("Heading3", Signature(reread));
+        Assert.Contains("table ", Signature(reread));
+    }
+
+    private static string Signature(TextDocument document) =>
+        string.Join("\n", document.Blocks.Select(b => b switch
+        {
+            Paragraph p => Signature(document, p),
+            Table t => "table " + string.Join(" / ", t.Rows.Select(r => string.Join(" | ", r.Cells.Select(c =>
+                $"{c.GridSpan}{c.VMerge}:" + string.Join(" ", c.Blocks.OfType<Paragraph>().Select(p => Signature(document, p))))))),
+            _ => b.GetType().Name
+        }));
+
+    private static string Signature(TextDocument document, Paragraph paragraph) =>
+        $"{paragraph.Format.StyleId}|{document.ListLabel(paragraph)}|{paragraph.Format.Numbering?.Level}|" + string.Concat(paragraph.Inlines.Select(i => i switch
+        {
+            TextRun r => $"[{r.Text}|{(r.Format.Bold == true ? "b" : "")}{(r.Format.Italic == true ? "i" : "")}{(r.Format.Strike == true ? "s" : "")}|{r.Format.Font}|{r.Link?.SafeTarget}]",
+            InlineImage image => $"[img {image.AltText} {Convert.ToBase64String(document.GetMedia(image.MediaPart)!)}]",
+            Break b => $"[{b.Kind}]",
+            _ => $"[{i.GetType().Name}]"
+        }));
+
     private static TextDocument Load(byte[] bytes, DocumentFileFormat format = DocumentFileFormat.Text) => TextDocument.Load(new MemoryStream(bytes), format);
 
     private static byte[] Save(TextDocument document, DocumentFileFormat format)

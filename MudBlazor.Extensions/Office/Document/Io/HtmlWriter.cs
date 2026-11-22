@@ -7,9 +7,13 @@ namespace MudBlazor.Extensions.Office.Document;
 internal static class HtmlWriter
 {
     private const long EmuPerPixel = 9525;
-    private static readonly HashSet<string> ImageTypes = ["image/png", "image/jpeg", "image/gif", "image/bmp"];
+    internal static readonly HashSet<string> ImageTypes = ["image/png", "image/jpeg", "image/gif", "image/bmp"];
 
     internal static string Write(TextDocument document) => new Writer(document).Run();
+
+    internal static bool IsPreformatted(TextDocument document, Paragraph paragraph) =>
+        paragraph.Inlines.Any(i => i is TextRun) &&
+        paragraph.Inlines.Where(i => i is TextRun or Tab).All(i => document.EffectiveRunFormat(paragraph, i).Font == HtmlReader.Monospace);
 
     private sealed class Writer(TextDocument document)
     {
@@ -55,7 +59,7 @@ internal static class HtmlWriter
 
             var level = format.Numbering is { } numbering ? document.Numbering.Level(numbering) : null;
             var heading = format.OutlineLevel is { } outline and < 9 ? "h" + Math.Min(outline + 1, 6) : null;
-            var tag = heading ?? (level != null ? null : IsPreformatted(paragraph) ? "pre" : "p");
+            var tag = heading ?? (level != null ? null : IsPreformatted(document, paragraph) ? "pre" : "p");
             var css = ParagraphCss(format, level != null, tag != "pre" && NeedsPreWrap(paragraph.Text));
             if (level != null)
             {
@@ -96,10 +100,6 @@ internal static class HtmlWriter
         private static bool NeedsPreWrap(string text) =>
             text.Contains("  ", StringComparison.Ordinal) || text.Contains('\t') || text.StartsWith(' ') || text.EndsWith(' ') ||
             text.Contains(" \v", StringComparison.Ordinal) || text.Contains("\v ", StringComparison.Ordinal);
-
-        private bool IsPreformatted(Paragraph paragraph) =>
-            paragraph.Inlines.Any(i => i is TextRun) &&
-            paragraph.Inlines.Where(i => i is TextRun or Tab).All(i => document.EffectiveRunFormat(paragraph, i).Font == HtmlReader.Monospace);
 
         private void Item(List<(string Tag, string Type, int NumId)> lists, NumberingRef numbering, NumberFormat numberFormat)
         {

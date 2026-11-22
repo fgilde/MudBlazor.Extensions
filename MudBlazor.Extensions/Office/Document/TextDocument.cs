@@ -118,7 +118,9 @@ public sealed partial class TextDocument
     /// <see cref="DocumentFileFormat.Html"/> writes a standalone UTF-8 page with images as <c>data:</c> URIs and only <c>http</c>, <c>https</c>,
     /// <c>mailto</c> and <c>#anchor</c> links; headers, footers and comments are left out. <see cref="DocumentFileFormat.Text"/> writes UTF-8 without
     /// byte order mark and with CRLF line ends: list items start with their label and a tab, table rows become tab-separated lines and fields their
-    /// displayed text.
+    /// displayed text. <see cref="DocumentFileFormat.Markdown"/> writes UTF-8 CommonMark with GFM pipe tables (first row as header, merged cells
+    /// empty except the first), headings by outline level, bold, italic, strikethrough, safe links, images as <c>data:</c> URIs, lists and
+    /// monospace paragraphs as fenced code.
     /// </summary>
     /// <param name="target">The stream that receives the file.</param>
     /// <param name="format">The file format.</param>
@@ -133,11 +135,13 @@ public sealed partial class TextDocument
             return;
         }
 
-        if (format is not (DocumentFileFormat.Html or DocumentFileFormat.Text)) throw new NotSupportedException($"Writing {format} files is not supported.");
+        if (format is not (DocumentFileFormat.Html or DocumentFileFormat.Text or DocumentFileFormat.Markdown))
+            throw new NotSupportedException($"Writing {format} files is not supported.");
         ArgumentNullException.ThrowIfNull(target);
         if (!target.CanWrite) throw new ArgumentException("The stream is not writable.", nameof(target));
         if (format == DocumentFileFormat.Html) target.Write(new UTF8Encoding(false).GetBytes(HtmlWriter.Write(this)));
-        else TextFormat.Write(this, target);
+        else if (format == DocumentFileFormat.Text) TextFormat.Write(this, target);
+        else MarkdownFormat.Write(this, target);
     }
 
     /// <summary>Gets the content of an image or other media part.</summary>
