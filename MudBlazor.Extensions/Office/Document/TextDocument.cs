@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace MudBlazor.Extensions.Office.Document;
 
 /// <summary>A text document of paragraphs and tables in sections, with headers, footers and an undo stack.</summary>
@@ -94,6 +96,8 @@ public sealed partial class TextDocument
     /// <summary>
     /// Writes the document. A macro-enabled source stays macro-enabled: <see cref="DocumentFileFormat.Docx"/> then writes a .docm and
     /// <see cref="DocumentFileFormat.Dotx"/> a .dotm file, and the caller chooses the matching file extension (see <see cref="HasMacros"/>).
+    /// <see cref="DocumentFileFormat.Html"/> writes a standalone UTF-8 page with images as <c>data:</c> URIs and only <c>http</c>, <c>https</c>,
+    /// <c>mailto</c> and <c>#anchor</c> links; headers, footers and comments are left out.
     /// </summary>
     /// <param name="target">The stream that receives the file.</param>
     /// <param name="format">The file format.</param>
@@ -102,6 +106,14 @@ public sealed partial class TextDocument
     /// <exception cref="NotSupportedException">The format cannot be written.</exception>
     public void Save(Stream target, DocumentFileFormat format = DocumentFileFormat.Docx)
     {
+        if (format == DocumentFileFormat.Html)
+        {
+            ArgumentNullException.ThrowIfNull(target);
+            if (!target.CanWrite) throw new ArgumentException("The stream is not writable.", nameof(target));
+            target.Write(new UTF8Encoding(false).GetBytes(HtmlWriter.Write(this)));
+            return;
+        }
+
         if (format is not (DocumentFileFormat.Docx or DocumentFileFormat.Dotx)) throw new NotSupportedException($"Writing {format} files is not supported.");
         DocxWriter.Write(this, target, format == DocumentFileFormat.Dotx);
     }

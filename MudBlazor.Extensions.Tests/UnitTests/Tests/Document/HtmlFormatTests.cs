@@ -110,6 +110,156 @@ public class HtmlFormatTests
         Assert.Equal("", Assert.IsType<Paragraph>(Assert.Single(empty.Blocks)).Text);
     }
 
+    [Fact]
+    public void HtmlWrite_TextEncoded()
+    {
+        var document = TextDocument.Create();
+        var id = document.Blocks[0].Id;
+        document.Execute(new ReplaceTextCommand(Caret(document, id, 0), "<b>&\"x\" <script>"));
+        document.Execute(new SetDocumentPropertiesCommand(document.Properties with { Title = "</title><script>alert(1)</script>" }));
+
+        var html = HtmlWriter.Write(document);
+
+        Assert.StartsWith("<!DOCTYPE html>", html);
+        Assert.Contains("<meta charset=\"utf-8\">", html);
+        Assert.Contains("<p>&lt;b&gt;&amp;&quot;x&quot; &lt;script&gt;</p>", html);
+        Assert.Contains("<title>&lt;/title&gt;&lt;script&gt;alert(1)&lt;/script&gt;</title>", html);
+        Assert.DoesNotContain("<b>", html);
+        Assert.DoesNotContain("<script>", html);
+    }
+
+    [Fact]
+    public void HtmlWrite_ImagesAsDataUri()
+    {
+        var png = ObjectCommandTests.Png(20, 10);
+        var document = TextDocument.Create();
+        var id = document.Blocks[0].Id;
+        document.Execute(new InsertImageCommand(Caret(document, id, 0), png, "image/png"));
+        document.Execute(new SetImageAltTextCommand(id, 0, "A&B \"q\""));
+        document.Execute(new InsertImageCommand(Caret(document, id, 1), [1, 2, 3], "image/gif"));
+        document.Execute(new ResizeImageCommand(id, 1, 9525 * 30, 9525 * 15));
+
+        var html = HtmlWriter.Write(document);
+
+        Assert.Contains($"<img src=\"data:image/png;base64,{Convert.ToBase64String(png)}\" alt=\"A&amp;B &quot;q&quot;\" width=\"20\" height=\"10\">", html);
+        Assert.Contains("<img src=\"data:image/gif;base64,AQID\" alt=\"\" width=\"30\" height=\"15\">", html);
+    }
+
+    [Fact]
+    public void HtmlWrite_ListsTablesLinksAndPageBreaks()
+    {
+        var document = HtmlReader.Read(
+            "<ol><li>a<ul><li>b</li></ul></li><li>c</li></ol><p>x<a href=\"javascript:alert(1)\">bad</a><a href=\"mailto:a@b.c\">mail</a></p>" +
+            "<table><tr><td rowspan=2>r</td><td>s</td></tr><tr><td>t</td></tr></table>");
+        var id = document.Blocks[3].Id;
+        document.Execute(new InsertBreakCommand(document.PositionOf(id, 1), BreakKind.Page));
+
+        var html = HtmlWriter.Write(document);
+
+        Assert.Contains("<ol style=\"list-style-type:decimal\"><li>a<ul><li>b</li></ul></li><li>c</li></ol>", html);
+        Assert.Contains("<p>x</p><div style=\"break-after:page\"></div><p>bad<a href=\"mailto:a@b.c\">", html);
+        Assert.DoesNotContain("javascript", html);
+        Assert.Contains("<td rowspan=\"2\">", html);
+        Assert.Equal(3, html.Split("<td").Length - 1);
+    }
+
+    [Fact]
+    public void HtmlWriteThenRead_KeepsFeatures()
+    {
+        var png = ObjectCommandTests.Png(40, 20);
+        var html =
+            "<title>Features</title><h1>Head</h1><h2 style=\"text-align:right\">Second</h2>" +
+            "<p style=\"text-align:justify\"><b>b</b><i>i</i><u>u</u><s>s</s><span style=\"color:#336699;font-size:14pt;font-family:Georgia\">styled</span>" +
+            "<span style=\"background:yellow\">hl</span><span style=\"background:#123456\">sh</span><sup>sup</sup><sub>sub</sub>line<br>two</p>" +
+            "<ul><li>one<ol><li>nested</li><li>more</li></ol></li><li>back</li></ul>" +
+            "<table><tr><td colspan=2>wide</td><td rowspan=2>tall</td></tr><tr><td>c</td><td><table><tr><td>inner</td></tr></table></td></tr></table>" +
+            $"<p><a href=\"https://example.com/?a=1&amp;b=2\">link</a> <a href=\"#Top\">anchor</a> <img src=\"data:image/png;base64,{Convert.ToBase64String(png)}\" alt=\"Alt\" width=\"30\" height=\"15\"></p>" +
+            "<pre>code  with\tspaces\nnext</pre><p></p><p><br></p>";
+        var original = HtmlReader.Read(html);
+
+        var written = HtmlWriter.Write(original);
+        var reread = HtmlReader.Read(written);
+
+        Assert.Equal(Signature(original), Signature(reread));
+        Assert.Contains("p ''", Signature(original));
+        Assert.Contains("img 285750x142875 Alt", Signature(original));
+    }
+
+    [Fact]
+    public void Save_HtmlThenLoad_RoundTrips()
+    {
+        var document = TextDocument.Create();
+        var id = document.Blocks[0].Id;
+        var text = "Title\nBody " + (char)0xE4 + (char)0x20AC + char.ConvertFromUtf32(0x1F600) + " text";
+        document.Execute(new ReplaceTextCommand(Caret(document, id, 0), text));
+        document.Execute(new ApplyParagraphStyleCommand([document.Blocks[0].Id], "Heading1"));
+        var body = document.Blocks[1].Id;
+        document.Execute(new SetRunFormatCommand(new DocumentRange(document.PositionOf(body, 0), document.PositionOf(body, 4)), f => f with { Bold = true }, "Bold"));
+        document.Execute(new ApplyListCommand([body], ListTemplate.Decimal));
+        document.Execute(new InsertTableCommand(document.PositionOf(body, ((Paragraph)document.Blocks[1]).Length), 2, 2));
+        document.Execute(new SetDocumentPropertiesCommand(document.Properties with { Title = "Saved" }));
+        using var stream = new MemoryStream();
+
+        document.Save(stream, DocumentFileFormat.Html);
+        var bytes = stream.ToArray();
+        var loaded = TextDocument.Load(new MemoryStream(bytes), DocumentFileFormat.Html);
+
+        Assert.NotEqual(0xEF, bytes[0]);
+        Assert.Equal(Signature(document), Signature(loaded));
+        Assert.Equal("Saved", loaded.Properties.Title);
+        Assert.Throws<ArgumentNullException>(() => document.Save(null!, DocumentFileFormat.Html));
+        Assert.Throws<ArgumentException>(() => document.Save(new MemoryStream([], false), DocumentFileFormat.Html));
+    }
+
+    private static DocumentRange Caret(TextDocument document, string paragraphId, int offset)
+    {
+        var position = document.PositionOf(paragraphId, offset);
+        return new DocumentRange(position, position);
+    }
+
+    private static string Signature(TextDocument document)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("title " + document.Properties.Title);
+        Blocks(document, document.Blocks, sb, "");
+        return sb.ToString();
+    }
+
+    private static void Blocks(TextDocument document, IEnumerable<Block> blocks, StringBuilder sb, string indent)
+    {
+        foreach (var block in blocks)
+            if (block is Paragraph p)
+            {
+                var format = document.EffectiveParagraphFormat(p);
+                var list = format.Numbering is { } n ? $"{document.Numbering.Level(n)!.Format}{n.Level}" : "-";
+                sb.AppendLine($"{indent}p '{p.Text}' {format.Alignment} outline={format.OutlineLevel} list={list} label={document.ListLabel(p)}");
+                foreach (var inline in p.Inlines)
+                {
+                    var f = document.EffectiveRunFormat(p, inline) with { StyleId = null };
+                    var what = inline switch
+                    {
+                        TextRun r => $"r '{r.Text}'",
+                        InlineImage i => $"img {i.WidthEmu}x{i.HeightEmu} {i.AltText} {Convert.ToBase64String(document.GetMedia(i.MediaPart))}",
+                        _ => inline.GetType().Name
+                    };
+                    sb.AppendLine($"{indent}  {what} {f} link={inline.Link?.SafeTarget}");
+                }
+            }
+            else if (block is Table t)
+            {
+                sb.AppendLine($"{indent}table cols={t.Grid.Count}");
+                foreach (var row in t.Rows)
+                {
+                    sb.AppendLine($"{indent}  tr after={row.GridAfter}");
+                    foreach (var cell in row.Cells)
+                    {
+                        sb.AppendLine($"{indent}    tc {cell.GridSpan} {cell.VMerge}");
+                        Blocks(document, cell.Blocks, sb, indent + "      ");
+                    }
+                }
+            }
+    }
+
     private static List<(int, VerticalMerge, string, int?)> Cells(TableRow row) =>
         row.Cells.Select(c => (c.GridSpan, c.VMerge, string.Concat(c.Blocks.OfType<Paragraph>().Select(p => p.Text)), c.Width)).ToList();
 }

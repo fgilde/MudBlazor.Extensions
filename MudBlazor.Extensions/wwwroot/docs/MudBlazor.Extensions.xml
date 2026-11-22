@@ -34984,6 +34984,8 @@
             <summary>
             Writes the document. A macro-enabled source stays macro-enabled: <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Docx"/> then writes a .docm and
             <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Dotx"/> a .dotm file, and the caller chooses the matching file extension (see <see cref="P:MudBlazor.Extensions.Office.Document.TextDocument.HasMacros"/>).
+            <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Html"/> writes a standalone UTF-8 page with images as <c>data:</c> URIs and only <c>http</c>, <c>https</c>,
+            <c>mailto</c> and <c>#anchor</c> links; headers, footers and comments are left out.
             </summary>
             <param name="target">The stream that receives the file.</param>
             <param name="format">The file format.</param>

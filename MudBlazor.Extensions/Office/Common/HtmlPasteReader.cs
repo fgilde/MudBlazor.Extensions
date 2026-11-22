@@ -58,7 +58,7 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         var reader = new HtmlPasteReader(false);
         HtmlTableFormat.Tokenize(html, reader);
         foreach (var paragraph in reader._root.OfType<PastedParagraph>()) Project(paragraph);
-        Finish(reader._root);
+        Finish(reader._root, false);
         return reader._root.OfType<PastedParagraph>().ToList();
     }
 
@@ -70,7 +70,7 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         if (string.IsNullOrEmpty(html) || html.Length > HtmlTableFormat.MaxLength) return [];
         var reader = new HtmlPasteReader(true);
         HtmlTableFormat.Tokenize(html, reader);
-        Finish(reader._root);
+        Finish(reader._root, true);
         title = reader._title;
         return reader._root;
     }
@@ -223,23 +223,26 @@ internal sealed class HtmlPasteReader : IHtmlTokenSink
         paragraph.Runs.AddRange(runs);
     }
 
-    private static void Finish(List<PastedBlock> blocks)
+    private static void Finish(List<PastedBlock> blocks, bool structured)
     {
+        var kept = new HashSet<PastedBlock>();
         foreach (var block in blocks)
             if (block is PastedParagraph { Runs.Count: > 0 } paragraph && paragraph.Runs[^1] is { ImageData: null } last)
             {
                 var text = last.Text;
-                var trimmed = paragraph.Preformatted ? text.EndsWith('\n') ? text[..^1] : text : text.TrimEnd(' ');
+                var trimmed = paragraph.Preformatted ? text : text.TrimEnd(' ');
+                if ((structured || paragraph.Preformatted) && trimmed.EndsWith('\n')) trimmed = trimmed[..^1];
                 if (trimmed.Length == 0) paragraph.Runs.RemoveAt(paragraph.Runs.Count - 1);
                 else if (trimmed.Length != text.Length) last.Text = trimmed;
+                if (structured) kept.Add(paragraph);
             }
             else if (block is PastedTable table)
             {
-                foreach (var cell in table.Rows.SelectMany(r => r)) Finish(cell.Blocks);
+                foreach (var cell in table.Rows.SelectMany(r => r)) Finish(cell.Blocks, structured);
                 table.Rows.RemoveAll(r => r.Count == 0);
             }
 
-        blocks.RemoveAll(b => b is PastedParagraph { Runs.Count: 0 } or PastedTable { Rows.Count: 0 });
+        blocks.RemoveAll(b => b is PastedParagraph { Runs.Count: 0 } && !kept.Contains(b) || b is PastedTable { Rows.Count: 0 });
     }
 
     private void Pop(int at)
