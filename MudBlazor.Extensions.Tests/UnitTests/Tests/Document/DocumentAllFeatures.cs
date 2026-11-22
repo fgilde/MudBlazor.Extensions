@@ -64,7 +64,7 @@ internal static class DocumentAllFeatures
         Add(d, "3 Objects", "Heading1");
         var picture = Add(d, "Picture: ");
         d.Execute(new InsertImageCommand(new DocumentRange(End(d, picture), End(d, picture)), ObjectCommandTests.Png(160, 80, 0x50), "image/png"));
-        d.Execute(new SetImageAltTextCommand(picture, Length(d, picture) - 1, "A grey test picture"));
+        d.Execute(new SetImageAltTextCommand(d.PositionOf(picture, Length(d, picture) - 1), "A grey test picture"));
         var link = Add(d, "Visit example.com for more.");
         Format(d, link, "example.com", null, link: "https://example.com/");
         var paging = Add(d, "Text before a page break.");

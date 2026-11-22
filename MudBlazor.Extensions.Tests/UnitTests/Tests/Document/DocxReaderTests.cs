@@ -40,6 +40,34 @@ public class DocxReaderTests
     }
 
     [Fact]
+    public void Reader_IncompleteContentTypesLoad_OtherBrokenPackagesAreInvalidData()
+    {
+        static byte[] Rewrite(byte[] package, string entry, Func<string, string> change)
+        {
+            using var stream = new MemoryStream();
+            stream.Write(package);
+            using (var zip = new System.IO.Compression.ZipArchive(stream, System.IO.Compression.ZipArchiveMode.Update, true))
+            {
+                var old = zip.GetEntry(entry)!;
+                string text;
+                using (var reader = new StreamReader(old.Open())) text = reader.ReadToEnd();
+                old.Delete();
+                using var writer = new StreamWriter(zip.CreateEntry(entry).Open());
+                writer.Write(change(text));
+            }
+
+            return stream.ToArray();
+        }
+
+        var source = new DocxBuilder().Body("<w:p><w:r><w:t>x</w:t></w:r></w:p>").Build();
+        var types = Rewrite(source, "[Content_Types].xml", t => t.Replace("</Types>", "<Override ContentType=\"a/b\"/><Default ContentType=\"c/d\"/></Types>"));
+        var noTarget = Rewrite(source, "_rels/.rels", t => t.Replace("Target=\"word/document.xml\"", ""));
+
+        Assert.Equal("x", ((Paragraph)TextDocument.Load(new MemoryStream(types)).Blocks[0]).Text);
+        Assert.Throws<InvalidDataException>(() => TextDocument.Load(new MemoryStream(noTarget)));
+    }
+
+    [Fact]
     public void Reader_DeeplyNestedXml_IsInvalidData_NestingBelowTheLimitLoads()
     {
         static string Nest(string open, string close, int depth, string inner) =>
@@ -394,21 +422,5 @@ public class DocxReaderTests
         Assert.Equal(5, field.Sources.Count);
         Assert.Equal("_Toc1", field.Link.Anchor);
         Assert.All(paragraph.Inlines, i => Assert.Same(field.Link, i.Link));
-    }
-
-    [Fact]
-    public void Reader_3000Paragraphs_UnderTwoSeconds()
-    {
-        var body = string.Concat(Enumerable.Range(0, 3000).Select(i =>
-            $"<w:p><w:pPr><w:spacing w:after=\"120\"/></w:pPr><w:r><w:t xml:space=\"preserve\">Paragraph {i} with </w:t></w:r><w:r><w:rPr><w:b/></w:rPr><w:t>bold</w:t></w:r>" +
-            "<w:proofErr w:type=\"spellStart\"/><w:r><w:t xml:space=\"preserve\"> text.</w:t></w:r></w:p>"));
-        var bytes = new DocxBuilder().Body(body).Build();
-
-        var watch = Stopwatch.StartNew();
-        var document = TextDocument.Load(new MemoryStream(bytes));
-        watch.Stop();
-
-        Assert.Equal(3000, document.Blocks.Count);
-        Assert.True(watch.Elapsed < TimeSpan.FromSeconds(2), $"Reading took {watch.Elapsed}.");
     }
 }

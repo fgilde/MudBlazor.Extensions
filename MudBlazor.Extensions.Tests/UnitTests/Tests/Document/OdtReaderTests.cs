@@ -187,11 +187,11 @@ public class OdtReaderTests
         Assert.Equal(new PageSetup(16838, 11906, PageOrientation.Landscape, 992, 1417, 850, 1134, 567, 850, 0), section.Page);
         Assert.True(section.TitlePage);
         Assert.Equal(ParagraphAlignment.Right, ((Paragraph)document.Blocks[0]).Format.Alignment);
-        var header = (Paragraph)Assert.Single(document.HeaderFor(section, HeaderFooterKind.Header, HeaderFooterType.Default)!.Blocks);
+        var header = (Paragraph)Assert.Single(document.HeaderFor(section, HeaderFooterType.Default)!.Blocks);
         Assert.Equal(("Head", ParagraphAlignment.Center), (header.Text, header.Format.Alignment));
-        Assert.Equal("Foot 1", ((Paragraph)document.HeaderFor(section, HeaderFooterKind.Footer, HeaderFooterType.Default)!.Blocks[0]).Text);
-        Assert.Equal("First head", ((Paragraph)document.HeaderFor(section, HeaderFooterKind.Header, HeaderFooterType.First)!.Blocks[0]).Text);
-        Assert.Null(document.HeaderFor(section, HeaderFooterKind.Header, HeaderFooterType.Even));
+        Assert.Equal("Foot 1", ((Paragraph)document.FooterFor(section, HeaderFooterType.Default)!.Blocks[0]).Text);
+        Assert.Equal("First head", ((Paragraph)document.HeaderFor(section, HeaderFooterType.First)!.Blocks[0]).Text);
+        Assert.Null(document.HeaderFor(section, HeaderFooterType.Even));
     }
 
     [Fact]

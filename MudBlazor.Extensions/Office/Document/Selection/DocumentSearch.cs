@@ -11,11 +11,13 @@ public sealed record FindOptions(bool MatchCase = false, bool WholeWord = false,
 
 /// <summary>
 /// Finds and replaces text in a <see cref="TextDocument"/>. Matches run over <see cref="Paragraph.Text"/> and never cross paragraphs or tokens such as
-/// images; a match that would end inside a surrogate pair is widened to the whole character. Regular expressions run with a one second timeout; a timeout ends the search with the matches found so far.
+/// images; a match that would end inside a surrogate pair is widened to the whole character. Regular expressions run with a one second timeout per
+/// match and the whole search with a five second deadline; either ends the search with the matches found so far.
 /// </summary>
 public static class DocumentSearch
 {
     private static readonly TimeSpan MatchTimeout = TimeSpan.FromSeconds(1);
+    private static readonly TimeSpan SearchDeadline = TimeSpan.FromSeconds(5);
     private static readonly Regex Substitution = new(@"\$(?:[$`'_+&]|\{([^}]*)\}|(\d+))", RegexOptions.CultureInvariant, MatchTimeout);
 
     /// <summary>Finds all matches in document order.</summary>
@@ -27,8 +29,8 @@ public static class DocumentSearch
     public static IReadOnlyList<DocumentRange> FindAll(TextDocument document, string query, FindOptions options = null) =>
         FindAll(document, query, options, MatchTimeout);
 
-    internal static IReadOnlyList<DocumentRange> FindAll(TextDocument document, string query, FindOptions options, TimeSpan timeout) =>
-        Matches(document, query, options, timeout).Select(m => m.Range).ToList();
+    internal static IReadOnlyList<DocumentRange> FindAll(TextDocument document, string query, FindOptions options, TimeSpan timeout, TimeSpan? deadline = null) =>
+        Matches(document, query, options, timeout, deadline ?? SearchDeadline).Select(m => m.Range).ToList();
 
     /// <summary>Finds the first match that starts at or after a position, wrapping around to the start of the document.</summary>
     /// <param name="document">The document.</param>
@@ -56,7 +58,7 @@ public static class DocumentSearch
     public static int ReplaceAll(TextDocument document, string query, string replacement, FindOptions options = null)
     {
         options ??= new FindOptions();
-        var matches = Matches(document, query, options, MatchTimeout);
+        var matches = Matches(document, query, options, MatchTimeout, SearchDeadline);
         if (matches.Count == 0) return 0;
         using (document.Undo.BeginTransaction("Replace all"))
             for (var i = matches.Count - 1; i >= 0; i--)
@@ -99,7 +101,8 @@ public static class DocumentSearch
     private static (int From, int To) Widen(Capture capture, string text) =>
         (TextDocument.SnapOffset(text, capture.Index, true), TextDocument.SnapOffset(text, capture.Index + capture.Length, false));
 
-    private static List<(DocumentRange Range, Match Match, Paragraph Paragraph)> Matches(TextDocument document, string query, FindOptions options, TimeSpan timeout)
+    private static List<(DocumentRange Range, Match Match, Paragraph Paragraph)> Matches(TextDocument document, string query, FindOptions options, TimeSpan timeout,
+        TimeSpan deadline)
     {
         ArgumentNullException.ThrowIfNull(document);
         options ??= new FindOptions();
@@ -108,10 +111,12 @@ public static class DocumentSearch
         var pattern = options.Regex ? query : Regex.Escape(query);
         if (options.WholeWord) pattern = $@"(?<!\w)(?:{pattern})(?!\w)";
         var regex = new Regex(pattern, (options.MatchCase ? RegexOptions.None : RegexOptions.IgnoreCase) | RegexOptions.CultureInvariant, timeout);
+        var watch = System.Diagnostics.Stopwatch.StartNew();
         try
         {
             foreach (var paragraph in document.AllParagraphs(options.IncludeHeadersFooters))
             {
+                if (watch.Elapsed > deadline) break;
                 var text = paragraph.Text;
                 var covered = 0;
                 for (var start = 0; start <= text.Length;)

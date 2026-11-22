@@ -31,7 +31,10 @@ public sealed record HtmlTable(IReadOnlyList<HtmlTableCell> Cells, int RowCount,
 /// <summary>
 /// Reads and writes the HTML tables that Excel, Google Sheets and browsers put on the clipboard. The reader is a tolerant tokenizer for
 /// the not well-formed HTML of Excel: it never runs or renders anything, drops scripts, styles, frames and every attribute or CSS
-/// property outside a short list of formatting properties.
+/// property outside a short list of formatting properties. The content of raw-text elements (<c>script</c>, <c>style</c>, <c>textarea</c>,
+/// <c>title</c>, <c>noscript</c>, <c>iframe</c>, <c>noembed</c>, <c>noframes</c>, <c>template</c>, <c>xmp</c>, and <c>svg</c>, <c>math</c> and
+/// <c>object</c> unless written self-closing) is skipped up to the matching closing tag, or to the end of the input if there is none; a
+/// self-closing raw-text tag without a closing tag later in the input is an empty element. Comments and CDATA sections are skipped.
 /// </summary>
 public static class HtmlTableFormat
 {
@@ -212,6 +215,7 @@ public static class HtmlTableFormat
         if (RawText.Contains(name) && (!selfClosing || !SelfClosingForeign.Contains(name)))
         {
             var end = ClosingTag(html, name, next);
+            if (selfClosing && end < 0) return next;
             if (name == "style") reader.StyleSheet(end < 0 ? html[next..] : html[next..end]);
             if (name == "title") reader.Title(end < 0 ? html[next..] : html[next..end]);
             if (end < 0) return html.Length;

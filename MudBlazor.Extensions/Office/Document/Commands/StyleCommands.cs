@@ -42,9 +42,9 @@ public sealed class ApplyCharacterStyleCommand(DocumentRange range, string style
 /// Updates a paragraph style to match a paragraph: the paragraph's own formatting (without style and list) and the own formatting of its first text run
 /// move into the style. The paragraph gets the style and loses that formatting; other paragraphs keep theirs.
 /// </summary>
-/// <param name="styleId">The id of a paragraph style of the file or of a built-in paragraph style.</param>
 /// <param name="paragraphId">The id of the paragraph.</param>
-public sealed class UpdateStyleFromSelectionCommand(string styleId, string paragraphId) : TextDocumentCommand
+/// <param name="styleId">The id of a paragraph style of the file or of a built-in paragraph style.</param>
+public sealed class UpdateStyleFromSelectionCommand(string paragraphId, string styleId) : TextDocumentCommand
 {
     /// <inheritdoc />
     public override string Description => "Update style";

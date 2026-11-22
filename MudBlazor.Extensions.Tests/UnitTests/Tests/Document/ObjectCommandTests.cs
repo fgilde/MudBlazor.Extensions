@@ -66,7 +66,7 @@ public partial class ObjectCommandTests
         var id = document.Blocks[1].Id;
 
         document.Execute(new InsertImageCommand(Caret(document, id, 0), Png(400, 200), "image/png"));
-        document.Execute(new SetImageAltTextCommand(id, 0, "New"));
+        document.Execute(new SetImageAltTextCommand(document.PositionOf(id, 0), "New"));
         var output = DocxWriterTests.Save(document);
 
         DocxWriterTests.AssertConsistent(output);
@@ -164,8 +164,8 @@ public partial class ObjectCommandTests
         var id = document.Blocks[0].Id;
         var original = document.Blocks[0];
 
-        document.Execute(new ResizeImageCommand(id, 0, 952500, 476250));
-        document.Execute(new SetImageAltTextCommand(id, 0, null));
+        document.Execute(new ResizeImageCommand(document.PositionOf(id, 0), 952500, 476250));
+        document.Execute(new SetImageAltTextCommand(document.PositionOf(id, 0), null));
         var output = DocxWriterTests.Save(document);
 
         var drawing = Body(output).Element(W + "p")!.Descendants(W + "drawing").Single();
@@ -174,8 +174,8 @@ public partial class ObjectCommandTests
         Assert.Null(drawing.Descendants(Wp + "docPr").Single().Attribute("descr"));
         Assert.Equal("5", (string)drawing.Descendants(Wp + "docPr").Single().Attribute("id"));
         DocxWriterTests.AssertConsistent(output);
-        Assert.Throws<ArgumentException>(() => document.Execute(new ResizeImageCommand(document.Blocks[1].Id, 0, 1, 1)));
-        Assert.Throws<ArgumentOutOfRangeException>(() => new ResizeImageCommand(id, 0, 0, 1));
+        Assert.Throws<ArgumentException>(() => document.Execute(new ResizeImageCommand(document.PositionOf(document.Blocks[1].Id, 0), 1, 1)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new ResizeImageCommand(document.PositionOf(id, 0), 0, 1));
 
         document.Undo.Undo();
         document.Undo.Undo();
@@ -250,9 +250,9 @@ public partial class ObjectCommandTests
         document.Execute(new InsertImageCommand(new DocumentRange(document.PositionOf(paragraph.Id, 0), document.PositionOf(paragraph.Id, 0)), Png(30, 30), "image/png"));
 
         Assert.True(document.Sections[0].TitlePage);
-        var header = document.HeaderFor(document.Sections[0], HeaderFooterKind.Header, HeaderFooterType.First);
+        var header = document.HeaderFor(document.Sections[0], HeaderFooterType.First);
         Assert.Equal("Header", ((Paragraph)header.Blocks[0]).Format.StyleId);
-        Assert.Null(document.HeaderFor(document.Sections[0], HeaderFooterKind.Header, HeaderFooterType.Default));
+        Assert.Null(document.HeaderFor(document.Sections[0], HeaderFooterType.Default));
         var output = DocxWriterTests.Save(document);
 
         DocxWriterTests.AssertConsistent(output);
@@ -267,7 +267,7 @@ public partial class ObjectCommandTests
         Assert.Single(opc.Relationships("/word/header1.xml"), r => r.Type == ImageType);
         Assert.Contains("Header", OpcAssert.Xml(output, "/word/styles.xml").Root!.Elements(W + "style").Select(e => (string)e.Attribute(W + "styleId")));
         var reloaded = TextDocument.Load(new MemoryStream(output));
-        Assert.Equal(11, ((Paragraph)reloaded.HeaderFor(reloaded.Sections[0], HeaderFooterKind.Header, HeaderFooterType.First).Blocks[0]).Length);
+        Assert.Equal(11, ((Paragraph)reloaded.HeaderFor(reloaded.Sections[0], HeaderFooterType.First).Blocks[0]).Length);
 
         document.Undo.Undo();
         document.Undo.Undo();
@@ -426,7 +426,7 @@ public partial class ObjectCommandTests
         var paragraph = (Paragraph)document.Blocks[0];
         ImagePlacement[] placements = [ImagePlacement.Inline, ImagePlacement.Left, ImagePlacement.Right, ImagePlacement.Center];
         var next = 0;
-        document.ReplaceBlock(paragraph, paragraph with { Inlines = paragraph.Inlines.Select(i => i is InlineImage image ? image with { Placement = placements[next++] } : i).ToList() });
+        document.ApplyEdits(document.EditBlock(paragraph.Id, [paragraph with { Inlines = paragraph.Inlines.Select(i => i is InlineImage image ? image with { Placement = placements[next++] } : i).ToList() }]), true);
 
         var output = DocxWriterTests.Save(document);
 

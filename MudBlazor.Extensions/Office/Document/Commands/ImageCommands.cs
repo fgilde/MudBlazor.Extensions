@@ -75,53 +75,51 @@ public sealed class InsertImageCommand : TextDocumentCommand
 /// <summary>Changes the displayed size of a picture.</summary>
 public sealed class ResizeImageCommand : TextDocumentCommand
 {
-    private readonly string _paragraphId;
-    private readonly int _offset;
+    private readonly DocumentPosition _at;
     private readonly long _width;
     private readonly long _height;
 
     /// <summary>Creates the command.</summary>
-    /// <param name="paragraphId">The id of the paragraph that holds the picture.</param>
-    /// <param name="offset">The offset of the picture in the paragraph's text.</param>
+    /// <param name="at">The position of the picture (the position before it).</param>
     /// <param name="widthEmu">The width in EMU, positive.</param>
     /// <param name="heightEmu">The height in EMU, positive.</param>
     /// <exception cref="ArgumentOutOfRangeException">A size is not positive.</exception>
-    public ResizeImageCommand(string paragraphId, int offset, long widthEmu, long heightEmu)
+    public ResizeImageCommand(DocumentPosition at, long widthEmu, long heightEmu)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(widthEmu, 1);
         ArgumentOutOfRangeException.ThrowIfLessThan(heightEmu, 1);
-        (_paragraphId, _offset, _width, _height) = (paragraphId, offset, widthEmu, heightEmu);
+        (_at, _width, _height) = (at, widthEmu, heightEmu);
     }
 
     /// <inheritdoc />
     public override string Description => "Resize picture";
 
     private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document) =>
-        (Images.Map(document, _paragraphId, _offset, i => i with { WidthEmu = _width, HeightEmu = _height }), null);
+        (Images.Map(document, _at, i => i with { WidthEmu = _width, HeightEmu = _height }), null);
 }
 
 /// <summary>Sets the alternative text of a picture.</summary>
-/// <param name="paragraphId">The id of the paragraph that holds the picture.</param>
-/// <param name="offset">The offset of the picture in the paragraph's text.</param>
+/// <param name="at">The position of the picture (the position before it).</param>
 /// <param name="altText">The text; null or empty removes it.</param>
-public sealed class SetImageAltTextCommand(string paragraphId, int offset, string altText) : TextDocumentCommand
+public sealed class SetImageAltTextCommand(DocumentPosition at, string altText) : TextDocumentCommand
 {
     /// <inheritdoc />
     public override string Description => "Alternative text";
 
     private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document) =>
-        (Images.Map(document, paragraphId, offset, i => i with { AltText = string.IsNullOrEmpty(altText) ? null : altText }), null);
+        (Images.Map(document, at, i => i with { AltText = string.IsNullOrEmpty(altText) ? null : altText }), null);
 }
 
 internal static class Images
 {
-    internal static List<BlockEdit> Map(TextDocument document, string paragraphId, int offset, Func<InlineImage, InlineImage> change)
+    internal static List<BlockEdit> Map(TextDocument document, DocumentPosition at, Func<InlineImage, InlineImage> change)
     {
-        if (paragraphId == null || document.FindBlock(paragraphId) is not Paragraph paragraph || offset < 0 || InlineEdit.At(paragraph, offset) is not InlineImage image)
-            throw new ArgumentException($"There is no picture at offset {offset} of {paragraphId}.", nameof(paragraphId));
+        ArgumentNullException.ThrowIfNull(at);
+        var (paragraph, offset) = document.Resolve(at);
+        if (InlineEdit.At(paragraph, offset) is not InlineImage image) throw new ArgumentException($"There is no picture at offset {offset} of {paragraph.Id}.", nameof(at));
         var changed = change(image);
         return changed == image
             ? []
-            : document.MapParagraphs([paragraphId], p => p with { Inlines = p.Inlines.Select(i => ReferenceEquals(i, image) ? changed : i).ToList() });
+            : document.MapParagraphs([paragraph.Id], p => p with { Inlines = p.Inlines.Select(i => ReferenceEquals(i, image) ? changed : i).ToList() });
     }
 }

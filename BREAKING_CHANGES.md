@@ -163,6 +163,40 @@ edit mode (the display sets `ReadOnly` from its edit mode). The speaker notes pa
 
 ---
 
+## XML Nested Deeper Than 256 Levels Is Rejected
+
+Files whose XML is nested deeper than 256 elements are no longer read. `XlsxReader.Read` and the pptx reader throw
+`InvalidDataException`, the OpenDocument, XPS, GPX and KML viewers fail with `InvalidDataException`, the e-invoice reader returns
+`null` and EPUB books fail with `FormatException` (no package found).
+
+**Reason:** recursive processing of such XML could overflow the stack and end the process, which no `catch` can prevent.
+
+---
+
+## DTDs Are Prohibited in Viewer XML
+
+The OpenDocument viewer, XPS, GPX/KML and the e-invoice reader now reject XML with a document type declaration
+(`XmlException` or `InvalidDataException`, the e-invoice reader returns `null`); before, internal entities were expanded. EPUB
+ignores DTDs (valid books carry `<!DOCTYPE html>`), so entities in EPUB files are no longer expanded.
+
+**Reason:** DTD processing allows entity expansion attacks and is not needed by any of these formats.
+
+---
+
+## `HtmlTableFormat` Raw-Text Elements, Closing Tags and CDATA
+
+The clipboard HTML tokenizer behind `HtmlTableFormat.Read` skips the content of `script`, `style`, `textarea`, `title`, `noscript`,
+`iframe`, `noembed`, `noframes`, `template` and `xmp` up to the matching closing tag (a closing tag must be followed by a character that
+cannot continue the tag name, so `</scripty>` does not end a `script`), or to the end of the input when there is none. `svg`, `math` and
+`object` are skipped the same way unless written self-closing. Any other self-closing raw-text tag without a closing tag later in the
+input (`<title/>` in an XHTML head, `<script src="x"/>`) is an empty element and the rest of the input is read. Comments and CDATA
+sections are skipped and never produce text.
+
+**Reason:** the previous tokenizer could take text inside such elements for table content, and an XHTML `<title/>` swallowed the whole
+document.
+
+---
+
 ## Previously Deprecated Methods (Reminder)
 
 The following methods were already deprecated in earlier versions and continue to point to their async replacements:

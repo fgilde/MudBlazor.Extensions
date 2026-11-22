@@ -518,6 +518,26 @@ public class TableCommandTests
     }
 
     [Fact]
+    public void SetCellFormat_AddressesGridColumns_MergedCellChangesOnce()
+    {
+        var document = Load(Doc(Table([2000, 2000, 2000], Row(Cell("ab", span: 2), Cell("c")), Row(Cell("d"), Cell("e"), Cell("f")))));
+        var id = document.Blocks[0].Id;
+        var calls = 0;
+
+        document.Execute(new SetTableCellFormatCommand(id, [(0, 1), (0, 0), (1, 2)], c =>
+        {
+            calls++;
+            return c with { Shading = "#ABCDEF" };
+        }, "Shade"));
+
+        var table = (Table)document.Blocks[0];
+        Assert.Equal(2, calls);
+        Assert.Equal(["#ABCDEF", null], table.Rows[0].Cells.Select(c => c.Shading));
+        Assert.Equal([null, null, "#ABCDEF"], table.Rows[1].Cells.Select(c => c.Shading));
+        Assert.Throws<ArgumentOutOfRangeException>(() => document.Execute(new SetTableCellFormatCommand(id, [(0, 3)], c => c, "x")));
+    }
+
+    [Fact]
     public void Changed_ReportsNestedBlockIds()
     {
         static IEnumerable<string> Ids(Block block) =>

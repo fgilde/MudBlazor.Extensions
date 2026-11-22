@@ -136,9 +136,11 @@ public class DocumentSearchTests
         var document = TextDocument.FromBlocks([P("aa"), P(new string('a', 40) + "b"), P("aaa")]);
         var first = document.Blocks[0].Id;
 
-        var matches = DocumentSearch.FindAll(document, "(a+)+$", new FindOptions(Regex: true), TimeSpan.FromMilliseconds(1));
+        var matches = DocumentSearch.FindAll(document, "(a+)+$", new FindOptions(Regex: true), TimeSpan.FromMilliseconds(200));
+        var stopped = DocumentSearch.FindAll(document, "a", new FindOptions(), TimeSpan.FromSeconds(1), TimeSpan.FromTicks(-1));
 
         Assert.Equal([new DocumentRange(document.PositionOf(first, 0), document.PositionOf(first, 2))], matches);
+        Assert.Empty(stopped);
     }
 
     [Fact]

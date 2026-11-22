@@ -157,9 +157,9 @@ public class HtmlFormatTests
         var document = TextDocument.Create();
         var id = document.Blocks[0].Id;
         document.Execute(new InsertImageCommand(Caret(document, id, 0), png, "image/png"));
-        document.Execute(new SetImageAltTextCommand(id, 0, "A&B \"q\""));
+        document.Execute(new SetImageAltTextCommand(document.PositionOf(id, 0), "A&B \"q\""));
         document.Execute(new InsertImageCommand(Caret(document, id, 1), [1, 2, 3], "image/gif"));
-        document.Execute(new ResizeImageCommand(id, 1, 9525 * 30, 9525 * 15));
+        document.Execute(new ResizeImageCommand(document.PositionOf(id, 1), 9525 * 30, 9525 * 15));
 
         var html = HtmlWriter.Write(document);
 

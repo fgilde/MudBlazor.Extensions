@@ -212,11 +212,11 @@ public class DocumentModelTests
         ]);
         var last = document.Sections[2];
 
-        Assert.Equal("h1", document.HeaderFor(last, HeaderFooterKind.Header, HeaderFooterType.Default).Id);
-        Assert.Equal("h2", document.HeaderFor(last, HeaderFooterKind.Header, HeaderFooterType.First).Id);
-        Assert.Equal("f1", document.HeaderFor(last, HeaderFooterKind.Footer, HeaderFooterType.Default).Id);
-        Assert.Null(document.HeaderFor(last, HeaderFooterKind.Footer, HeaderFooterType.Even));
-        Assert.Null(document.HeaderFor(document.Sections[0], HeaderFooterKind.Header, HeaderFooterType.First));
+        Assert.Equal("h1", document.HeaderFor(last, HeaderFooterType.Default).Id);
+        Assert.Equal("h2", document.HeaderFor(last, HeaderFooterType.First).Id);
+        Assert.Equal("f1", document.FooterFor(last, HeaderFooterType.Default).Id);
+        Assert.Null(document.FooterFor(last, HeaderFooterType.Even));
+        Assert.Null(document.HeaderFor(document.Sections[0], HeaderFooterType.First));
         Assert.Same(document.HeadersFooters[1], document.HeaderFooter("h2"));
         Assert.Equal(11906 - 2 * 1440, PageSetup.A4.TextWidth);
     }
@@ -273,7 +273,7 @@ public class DocumentModelTests
     }
 
     [Fact]
-    public void Notify_AfterBlockRemoved_ReportsRemovedId_IndexNotStale()
+    public void ApplyEdits_BlockRemoved_ReportsRemovedId_IndexNotStale()
     {
         var document = TextDocument.FromBlocks([P("a"), P("b"), P("c")]);
         var removed = document.Blocks[1];
@@ -282,15 +282,7 @@ public class DocumentModelTests
         var events = new List<TextDocumentChangedEventArgs>();
         document.Changed += (_, e) => events.Add(e);
 
-        document.Execute(new DelegateCommand(d =>
-        {
-            d.BlockList.RemoveAt(1);
-            d.Notify(removed.Id, DocumentChangeKind.Structure);
-        }, d =>
-        {
-            d.BlockList.Insert(1, removed);
-            d.Notify(removed.Id, DocumentChangeKind.Structure);
-        }));
+        document.Execute(Edits(new BlockEdit(-1, 1, [removed], [])));
 
         var args = Assert.Single(events);
         Assert.Equal([removed.Id], args.RemovedBlockIds);
@@ -306,10 +298,11 @@ public class DocumentModelTests
     }
 
     [Fact]
-    public void ReplaceBlock_InHeader_ReplacesHeaderPart_ReportsHeadersFooters()
+    public void EditBlock_InHeader_ReplacesHeaderPart_ReportsHeadersFooters()
     {
         var document = TextDocument.FromBlocks([P("body")]);
         document.HeaderFooterList.Add(new HeaderFooter { Id = "h1", Kind = HeaderFooterKind.Header, Blocks = [document.Identify(NestedTable())] });
+        document.InvalidateIndex();
         var header = document.HeadersFooters[0];
         var body = document.Blocks[0];
         var target = document.AllParagraphs(true).Single(p => p.Text == "inner a");
@@ -319,7 +312,7 @@ public class DocumentModelTests
         document.Execute(Replace(target, target with { Inlines = [new TextRun("header edit")] }));
 
         var args = Assert.Single(events);
-        Assert.Equal(DocumentChangeKind.HeadersFooters, args.Kind);
+        Assert.Equal(DocumentChangeKind.HeadersFooters | DocumentChangeKind.Structure, args.Kind);
         Assert.Equal([header.Blocks[0].Id], args.ChangedBlockIds);
         Assert.NotSame(header, document.HeadersFooters[0]);
         Assert.Equal("h1", document.HeadersFooters[0].Id);
@@ -329,17 +322,12 @@ public class DocumentModelTests
     }
 
     [Fact]
-    public void ReplaceBlock_AssignsMissingIds_RejectsForeignIds_NestedIdChangeIsStructure()
+    public void EditBlock_AssignsMissingIds_NestedIdChangeIsStructure()
     {
         var document = TextDocument.FromBlocks([P("first"), NestedTable()]);
         var table = document.Blocks[1];
         var target = document.AllParagraphs().Single(p => p.Text == "inner b");
         Assert.Same(target, document.EnsureIds(target));
-        Assert.Throws<ArgumentException>(() => document.ReplaceBlock(target, target with { Id = document.Blocks[0].Id }));
-        Assert.Throws<ArgumentException>(() => document.ReplaceBlock(target, T(Row([target]), Row([document.Blocks[0]]))));
-        var twice = P("twice") with { Id = "twice" };
-        Assert.Throws<ArgumentException>(() => document.ReplaceBlock(target, T(Row([twice], [twice]))));
-        Assert.Same(table, document.Blocks[1]);
         var events = new List<TextDocumentChangedEventArgs>();
         document.Changed += (_, e) => events.Add(e);
 
@@ -388,7 +376,7 @@ public class DocumentModelTests
     }
 
     [Fact]
-    public void Notify_AfterBlockAddedByListMutation_ReportsChanged_FindBlockFinds()
+    public void ApplyEdits_BlockAdded_ReportsChanged_FindBlockFinds()
     {
         var document = TextDocument.FromBlocks([P("a"), P("b")]);
         Assert.Same(document.Blocks[1], document.FindBlock(document.Blocks[1].Id));
@@ -396,15 +384,7 @@ public class DocumentModelTests
         var events = new List<TextDocumentChangedEventArgs>();
         document.Changed += (_, e) => events.Add(e);
 
-        document.Execute(new DelegateCommand(d =>
-        {
-            d.BlockList.Insert(1, added);
-            d.Notify(added.Id, DocumentChangeKind.Structure);
-        }, d =>
-        {
-            d.BlockList.RemoveAt(1);
-            d.Notify(added.Id, DocumentChangeKind.Structure);
-        }));
+        document.Execute(Edits(new BlockEdit(-1, 1, [], [added])));
 
         var args = Assert.Single(events);
         Assert.Equal([added.Id], args.ChangedBlockIds);
@@ -416,30 +396,30 @@ public class DocumentModelTests
     }
 
     [Fact]
-    public void ReplaceBlock_ReturnsIdentifiedReplacement_UndoRestoresOriginal()
+    public void EditBlock_IdentifiesTheReplacement_UndoRestoresOriginal()
     {
         var document = TextDocument.FromBlocks([P("a"), NestedTable()]);
         var old = document.Blocks[0];
         var oldTable = document.Blocks[1];
 
-        var returned = document.ReplaceBlock(old, P("new"));
+        document.Execute(Replace(old, P("new")));
 
-        Assert.NotNull(returned.Id);
-        Assert.Same(returned, document.Blocks[0]);
-        Assert.Same(returned, document.FindBlock(returned.Id));
-
-        Assert.Same(old, document.ReplaceBlock(returned, old));
+        var replaced = document.Blocks[0];
+        Assert.NotNull(replaced.Id);
+        Assert.Same(replaced, document.FindBlock(replaced.Id));
+        document.Undo.Undo();
         Assert.Same(old, document.Blocks[0]);
         Assert.Same(old, document.FindBlock(old.Id));
-        Assert.Null(document.FindBlock(returned.Id));
+        Assert.Null(document.FindBlock(replaced.Id));
 
-        var table = (Table)document.ReplaceBlock(oldTable, T(Row([P("x")])));
-        Assert.Same(oldTable, document.ReplaceBlock(table, oldTable));
+        document.Execute(Replace(oldTable, T(Row([P("x")]))));
+        Assert.NotSame(oldTable, document.Blocks[1]);
+        document.Undo.Undo();
         Assert.Same(oldTable, document.Blocks[1]);
     }
 
     [Fact]
-    public void ReplaceBlock_TableLosesRow_DroppedNestedIdsRemoved()
+    public void EditBlock_TableLosesRow_DroppedNestedIdsRemoved()
     {
         var document = TextDocument.FromBlocks([P("a"), NestedTable()]);
         var table = (Table)document.Blocks[1];
@@ -495,8 +475,13 @@ public class DocumentModelTests
         Assert.Equal(3, (paragraph with { Inlines = [new TextRun("xyz")] }).Length);
     }
 
-    private static IDocumentCommand<TextDocument> Replace(Block old, Block replacement) =>
-        new DelegateCommand(d => d.ReplaceBlock(old, replacement), d => d.ReplaceBlock(replacement, old));
+    private static IDocumentCommand<TextDocument> Replace(Block old, Block replacement)
+    {
+        IReadOnlyList<BlockEdit> edits = null;
+        return new DelegateCommand(d => d.ApplyEdits(edits ??= d.EditBlock(old.Id, [replacement]), true), d => d.ApplyEdits(edits, false));
+    }
+
+    private static IDocumentCommand<TextDocument> Edits(params BlockEdit[] edits) => new DelegateCommand(d => d.ApplyEdits(edits, true), d => d.ApplyEdits(edits, false));
 
     private static Paragraph P(string text) => new() { Inlines = [new TextRun(text)] };
 

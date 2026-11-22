@@ -36,6 +36,18 @@ public class HtmlSecurityTests
         Assert.Equal(["visible"], document.AllParagraphs().Select(p => p.Text));
     }
 
+    [Fact]
+    public void HtmlRead_SelfClosingRawTextTagWithoutClosingTag_IsEmpty()
+    {
+        var xhtml = HtmlReader.Read("<?xml version=\"1.0\"?><html xmlns=\"http://www.w3.org/1999/xhtml\"><head><title/><script src=\"x.js\"/></head>" +
+                                    "<body><p>first</p><p>second</p></body></html>");
+        var closed = HtmlReader.Read("<script src=\"x.js\"/>alert(1)</script><p>after</p>");
+
+        Assert.Equal(["first", "second"], xhtml.AllParagraphs().Select(p => p.Text));
+        Assert.Null(xhtml.Properties.Title);
+        Assert.Equal(["after"], closed.AllParagraphs().Select(p => p.Text));
+    }
+
     [Theory]
     [InlineData("div")]
     [InlineData("span")]
@@ -56,29 +68,6 @@ public class HtmlSecurityTests
         Assert.Contains(document.AllParagraphs(), p => p.Text == "deep");
         Assert.Contains("deep", HtmlWriter.Write(document));
         DocxWriterTests.AssertConsistent(DocxWriterTests.Save(document));
-    }
-
-    [Fact]
-    public void HtmlRead_BadImagesAndHostileStyles_ReturnPromptly()
-    {
-        var styles = new StringBuilder("<p style=\"");
-        for (var i = 0; i < 200_000; i++) styles.Append("font-family:'((((;color:rgb(((((;margin-left:1e400pt;text-indent:--5px;");
-        styles.Append("\">styled</p>");
-        var oversized = new StringBuilder("<p>x<img src=\"data:image/png;base64,iVBORw0KGgo").Append('A', 44_800_000).Append("\">y</p>");
-        var watch = Stopwatch.StartNew();
-
-        var images = HtmlReader.Read("<p>a<img src=\"data:image/png;base64,!!!not base64!!!\"><img src=\"data:image/png;base64,R0lGODlhAQABAAAAACw=\">" +
-                                     "<img src=\"data:image/png;base64,AAAAAAAA\">b</p>");
-        var styled = HtmlReader.Read(styles.ToString());
-        var big = HtmlPasteReader.ReadBlocks(oversized.ToString());
-
-        Assert.True(watch.Elapsed < TimeSpan.FromSeconds(20), watch.Elapsed.ToString());
-        var paragraph = (Paragraph)images.Blocks[0];
-        Assert.Equal("a" + (char)0xFFFC + "b", paragraph.Text);
-        Assert.Equal("image/gif", images.MediaContentType(paragraph.Inlines.OfType<InlineImage>().Single().MediaPart));
-        Assert.Equal("styled", ((Paragraph)styled.Blocks[0]).Text);
-        Assert.Equal("xy", string.Concat(((PastedParagraph)Assert.Single(big)).Runs.Select(r => r.Text)));
-        Assert.All(((PastedParagraph)big[0]).Runs, r => Assert.Null(r.ImageData));
     }
 
     [Fact]

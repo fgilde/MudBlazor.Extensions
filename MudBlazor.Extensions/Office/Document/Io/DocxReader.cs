@@ -23,6 +23,10 @@ internal static partial class DocxReader
         {
             throw new InvalidDataException("The file contains malformed XML.", e);
         }
+        catch (Exception e) when (e is not (InvalidDataException or OutOfMemoryException))
+        {
+            throw new InvalidDataException("The file is not a readable Word document.", e);
+        }
     }
 
     internal static bool IsExternal(OpcRelationship relationship) => relationship.TargetMode == "External";

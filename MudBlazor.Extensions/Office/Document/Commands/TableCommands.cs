@@ -317,13 +317,13 @@ public sealed class SetTableColumnWidthsCommand(string tableId, IReadOnlyList<in
 
 /// <summary>Changes the format of cells: width, shading, borders and vertical alignment. Content, spans and merges stay as they are.</summary>
 /// <param name="tableId">The id of the table, at any depth.</param>
-/// <param name="cells">The cells as row index and cell index within the row.</param>
+/// <param name="cells">The cells as row index and a grid column the cell covers; a merged cell covered by several of them changes once.</param>
 /// <param name="change">Returns the changed cell.</param>
 /// <param name="description">The undo description.</param>
-public sealed class SetTableCellFormatCommand(string tableId, IReadOnlyList<(int Row, int Cell)> cells, Func<TableCell, TableCell> change, string description)
+public sealed class SetTableCellFormatCommand(string tableId, IReadOnlyList<(int Row, int GridColumn)> cells, Func<TableCell, TableCell> change, string description)
     : TableCommand(tableId)
 {
-    private readonly IReadOnlyList<(int Row, int Cell)> _cells = cells?.ToArray() ?? throw new ArgumentNullException(nameof(cells));
+    private readonly IReadOnlyList<(int Row, int GridColumn)> _cells = cells?.ToArray() ?? throw new ArgumentNullException(nameof(cells));
     private readonly Func<TableCell, TableCell> _change = change ?? throw new ArgumentNullException(nameof(change));
 
     /// <inheritdoc />
@@ -332,9 +332,13 @@ public sealed class SetTableCellFormatCommand(string tableId, IReadOnlyList<(int
     private protected override Table Change(TextDocument document, Table table)
     {
         var rows = table.Rows.ToList();
-        foreach (var (r, c) in _cells.Distinct())
+        var targets = _cells.Select(p => (Row: p.Row, Cell: p.Row < 0 || p.Row >= rows.Count
+            ? -1
+            : Tables.Layout(rows[p.Row]).FindIndex(l => l.Column <= p.GridColumn && p.GridColumn < l.Column + l.Cell.GridSpan), p.GridColumn)).ToList();
+        if (targets.FirstOrDefault(t => t.Cell < 0) is { Cell: < 0 } missing)
+            throw new ArgumentOutOfRangeException(nameof(cells), $"There is no cell at row {missing.Row}, grid column {missing.GridColumn}.");
+        foreach (var (r, c) in targets.Select(t => (t.Row, t.Cell)).Distinct())
         {
-            if (r < 0 || r >= rows.Count || c < 0 || c >= rows[r].Cells.Count) throw new ArgumentOutOfRangeException(nameof(cells), $"There is no cell ({r}, {c}).");
             var cell = rows[r].Cells[c];
             var changed = _change(cell) is { } result ? result with { Blocks = cell.Blocks, GridSpan = cell.GridSpan, VMerge = cell.VMerge, Source = cell.Source } : cell;
             if (changed != cell) rows[r] = rows[r] with { Cells = Tables.With(rows[r].Cells, c, changed) };

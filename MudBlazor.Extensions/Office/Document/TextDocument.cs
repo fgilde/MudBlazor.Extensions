@@ -223,12 +223,19 @@ public sealed partial class TextDocument
     /// <returns>The header or footer, or null if there is none with this id.</returns>
     public HeaderFooter HeaderFooter(string id) => HeaderFooterList.FirstOrDefault(h => h.Id == id);
 
-    /// <summary>Gets the header or footer that applies to a section; a section without its own reference inherits the previous section's.</summary>
+    /// <summary>Gets the header that applies to a section; a section without its own reference inherits the previous section's.</summary>
     /// <param name="section">The section.</param>
-    /// <param name="kind">Header or footer.</param>
     /// <param name="type">The pages it applies to.</param>
-    /// <returns>The header or footer, or null if neither the section nor a previous one references one.</returns>
-    public HeaderFooter HeaderFor(Section section, HeaderFooterKind kind, HeaderFooterType type)
+    /// <returns>The header, or null if neither the section nor a previous one references one.</returns>
+    public HeaderFooter HeaderFor(Section section, HeaderFooterType type) => Effective(section, HeaderFooterKind.Header, type);
+
+    /// <summary>Gets the footer that applies to a section; a section without its own reference inherits the previous section's.</summary>
+    /// <param name="section">The section.</param>
+    /// <param name="type">The pages it applies to.</param>
+    /// <returns>The footer, or null if neither the section nor a previous one references one.</returns>
+    public HeaderFooter FooterFor(Section section, HeaderFooterType type) => Effective(section, HeaderFooterKind.Footer, type);
+
+    private HeaderFooter Effective(Section section, HeaderFooterKind kind, HeaderFooterType type)
     {
         for (var i = SectionList.IndexOf(section); i >= 0; i--)
             if ((kind == HeaderFooterKind.Header ? SectionList[i].Headers : SectionList[i].Footers).TryGetValue(type, out var id))
@@ -287,36 +294,6 @@ public sealed partial class TextDocument
     /// </summary>
     internal void InvalidateIndex() => _index = null;
 
-    internal void Notify(string blockId, DocumentChangeKind kind) =>
-        Track(TryLocate(blockId, out var location) ? Container(location.Container)[location.Index].Id : blockId, kind);
-
-    internal Block ReplaceBlock(Block old, Block replacement)
-    {
-        if (ReferenceEquals(old, replacement)) return replacement;
-        InvalidateIndex();
-        if (!TryLocate(old.Id, out var location)) throw new ArgumentException($"Block {old.Id} is not part of the document.", nameof(old));
-        replacement = EnsureIds(replacement);
-        var ownIds = Subtree(location.Block).Select(b => b.Id).ToHashSet();
-        var seen = new HashSet<string>();
-        foreach (var block in Subtree(replacement))
-            if (!seen.Add(block.Id) || !ownIds.Contains(block.Id) && Index.ContainsKey(block.Id))
-                throw new ArgumentException($"Block {block.Id} occurs twice in the replacement or already exists elsewhere in the document.", nameof(replacement));
-        var top = Container(location.Container)[location.Index];
-        var newTop = Replace(top, location.Path, replacement);
-        if (location.Container < 0)
-            BlockList[location.Index] = newTop;
-        else
-            HeaderFooterList[location.Container] = HeaderFooterList[location.Container] with { Blocks = With(Container(location.Container), location.Index, newTop) };
-        InvalidateIndex();
-        var structure = TrackBlocks([location.Block], [replacement]);
-        var kind = (location.Container < 0 ? DocumentChangeKind.Content : DocumentChangeKind.HeadersFooters) |
-                   (structure || replacement.Id != location.Block.Id ? DocumentChangeKind.Structure : DocumentChangeKind.None);
-        _changedIds.UnionWith(ownIds);
-        Track(top.Id, kind);
-        if (newTop.Id != top.Id) Track(newTop.Id, kind);
-        return replacement;
-    }
-
     private TableRow EnsureIds(TableRow row) =>
         Identified(row.Cells.SelectMany(c => c.Blocks))
             ? row
@@ -352,17 +329,6 @@ public sealed partial class TextDocument
     }
 
     private IReadOnlyList<Block> Container(int container) => container < 0 ? BlockList : HeaderFooterList[container].Blocks;
-
-    private static Block Replace(Block block, ReadOnlySpan<CellStep> path, Block replacement)
-    {
-        if (path.IsEmpty) return replacement;
-        var (r, c, b) = path[0];
-        var table = (Table)block;
-        var row = table.Rows[r];
-        var cell = row.Cells[c];
-        var newCell = cell with { Blocks = With(cell.Blocks, b, Replace(cell.Blocks[b], path[1..], replacement)) };
-        return table with { Rows = With(table.Rows, r, row with { Cells = With(row.Cells, c, newCell) }) };
-    }
 
     private static IReadOnlyList<T> With<T>(IReadOnlyList<T> list, int index, T item)
     {

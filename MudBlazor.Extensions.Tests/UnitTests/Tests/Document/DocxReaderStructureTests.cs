@@ -154,10 +154,10 @@ public class DocxReaderStructureTests
         Assert.Equal(HeaderFooterType.Default, Assert.Single(section.Footers).Key);
         Assert.Equal(4, document.HeadersFooters.Count);
         string TextOf(HeaderFooter part) => ((Paragraph)part.Blocks[0]).Text;
-        Assert.Equal("Header text", TextOf(document.HeaderFor(section, HeaderFooterKind.Header, HeaderFooterType.Default)));
-        Assert.Equal("First header", TextOf(document.HeaderFor(section, HeaderFooterKind.Header, HeaderFooterType.First)));
-        Assert.Equal("Even header", TextOf(document.HeaderFor(section, HeaderFooterKind.Header, HeaderFooterType.Even)));
-        var footer = document.HeaderFor(section, HeaderFooterKind.Footer, HeaderFooterType.Default);
+        Assert.Equal("Header text", TextOf(document.HeaderFor(section, HeaderFooterType.Default)));
+        Assert.Equal("First header", TextOf(document.HeaderFor(section, HeaderFooterType.First)));
+        Assert.Equal("Even header", TextOf(document.HeaderFor(section, HeaderFooterType.Even)));
+        var footer = document.FooterFor(section, HeaderFooterType.Default);
         Assert.Equal((HeaderFooterKind.Footer, "Footer text", "/word/footer4.xml"), (footer.Kind, TextOf(footer), footer.PartName));
         Assert.Equal(HeaderFooterKind.Header, document.HeaderFooter(section.Headers[HeaderFooterType.First]).Kind);
     }
@@ -292,11 +292,11 @@ public class DocxReaderStructureTests
 
         var (first, second) = (document.Sections[0], document.Sections[1]);
         Assert.Empty(second.Headers);
-        var header = document.HeaderFor(second, HeaderFooterKind.Header, HeaderFooterType.Default);
+        var header = document.HeaderFor(second, HeaderFooterType.Default);
         Assert.Equal(first.Headers[HeaderFooterType.Default], header.Id);
         Assert.Equal("Header text", ((Paragraph)header.Blocks[0]).Text);
-        Assert.Null(document.HeaderFor(second, HeaderFooterKind.Footer, HeaderFooterType.Default));
-        Assert.Null(document.HeaderFor(first, HeaderFooterKind.Header, HeaderFooterType.First));
+        Assert.Null(document.FooterFor(second, HeaderFooterType.Default));
+        Assert.Null(document.HeaderFor(first, HeaderFooterType.First));
     }
 
     [Fact]
@@ -310,7 +310,7 @@ public class DocxReaderStructureTests
         var header = Assert.Single(document.HeadersFooters);
         var section = document.Sections[0];
         Assert.Equal([header.Id, header.Id], new[] { section.Headers[HeaderFooterType.Default], section.Headers[HeaderFooterType.First] });
-        Assert.Same(header, document.HeaderFor(section, HeaderFooterKind.Header, HeaderFooterType.First));
+        Assert.Same(header, document.HeaderFor(section, HeaderFooterType.First));
     }
 
     [Fact]

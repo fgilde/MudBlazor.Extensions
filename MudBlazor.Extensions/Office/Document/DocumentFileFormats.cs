@@ -9,7 +9,6 @@ namespace MudBlazor.Extensions.Office.Document;
 public static class DocumentFileFormats
 {
     private const int Head = 4096;
-    private const int MaxDirectorySectors = 64;
     private const string Wml = "application/vnd.openxmlformats-officedocument.wordprocessingml.";
 
     private static readonly Dictionary<string, DocumentFileFormat> Extensions = new(StringComparer.OrdinalIgnoreCase)
@@ -188,7 +187,7 @@ public static class DocumentFileFormats
         HashSet<string> names;
         try
         {
-            names = RootNames(content, start);
+            names = CompoundFile.RootEntryNames(content, start);
         }
         catch (IOException)
         {
@@ -199,57 +198,5 @@ public static class DocumentFileFormats
         if (names.Any(n => n is "Workbook" or "Book" or "PowerPoint Document" or "__properties_version1.0" || n.StartsWith("__substg1.0_", StringComparison.Ordinal)))
             return null;
         return Path.GetExtension(fileName ?? "").ToLowerInvariant() is ".doc" or ".dot" ? DocumentFileFormat.Doc : null;
-    }
-
-    private static HashSet<string> RootNames(Stream content, long start)
-    {
-        var names = new HashSet<string>(StringComparer.Ordinal);
-        var header = new byte[512];
-        content.Position = start;
-        if (content.ReadAtLeast(header, header.Length, false) < header.Length) return names;
-        var shift = BinaryPrimitives.ReadUInt16LittleEndian(header.AsSpan(0x1E));
-        if (shift is not (9 or 12)) return names;
-        var size = 1 << shift;
-        var fat = Enumerable.Range(0, (int)Math.Min(BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x2C)), 109u))
-            .Select(i => BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x4C + 4 * i))).ToList();
-        var buffer = new byte[size];
-        var entries = new List<(string Name, int Type, uint Left, uint Right, uint Child)>();
-        var sector = BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(0x30));
-        for (var count = 0; count < MaxDirectorySectors && Sector(content, start, sector, buffer); count++)
-        {
-            for (var entry = 0; entry + 128 <= size; entry += 128)
-            {
-                var length = BinaryPrimitives.ReadUInt16LittleEndian(buffer.AsSpan(entry + 0x40));
-                var name = length is >= 4 and <= 64 && length % 2 == 0 ? Encoding.Unicode.GetString(buffer, entry, length - 2) : null;
-                entries.Add((name, buffer[entry + 0x42], BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan(entry + 0x44)),
-                    BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan(entry + 0x48)), BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan(entry + 0x4C))));
-            }
-
-            var index = (int)(sector / (size / 4));
-            if (index >= fat.Count || !Sector(content, start, fat[index], buffer)) break;
-            sector = BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan((int)(sector % (size / 4)) * 4));
-        }
-
-        if (entries.Count == 0 || entries[0].Type != 5) return names;
-        var pending = new Stack<uint>([entries[0].Child]);
-        var seen = new HashSet<uint>();
-        while (pending.TryPop(out var id))
-        {
-            if (id >= entries.Count || !seen.Add(id)) continue;
-            var (name, type, left, right, _) = entries[(int)id];
-            if (name != null && type is 1 or 2) names.Add(name);
-            pending.Push(left);
-            pending.Push(right);
-        }
-
-        return names;
-    }
-
-    private static bool Sector(Stream content, long start, uint sector, byte[] buffer)
-    {
-        var offset = start + ((long)sector + 1) * buffer.Length;
-        if (sector >= 0xFFFFFFFA || offset + buffer.Length > content.Length) return false;
-        content.Position = offset;
-        return content.ReadAtLeast(buffer, buffer.Length, false) == buffer.Length;
     }
 }

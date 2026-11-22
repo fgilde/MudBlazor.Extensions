@@ -49,11 +49,11 @@ internal sealed class OpcPackage
         foreach (var e in ReadXml(ContentTypesPart).Root!.Elements())
             switch (e.Name.LocalName)
             {
-                case "Default":
-                    _defaults[(string)e.Attribute("Extension")] = (string)e.Attribute("ContentType");
+                case "Default" when (string)e.Attribute("Extension") is { } extension:
+                    _defaults[extension] = (string)e.Attribute("ContentType");
                     break;
-                case "Override":
-                    _overrides[(string)e.Attribute("PartName")] = (string)e.Attribute("ContentType");
+                case "Override" when (string)e.Attribute("PartName") is { } partName:
+                    _overrides[partName] = (string)e.Attribute("ContentType");
                     break;
             }
     }

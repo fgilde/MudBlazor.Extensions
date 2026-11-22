@@ -135,7 +135,7 @@ public class StyleListCommandTests
         var styles = document.Styles;
         var other = document.Blocks[1];
 
-        document.Execute(new UpdateStyleFromSelectionCommand("Heading1", document.Blocks[0].Id));
+        document.Execute(new UpdateStyleFromSelectionCommand(document.Blocks[0].Id, "Heading1"));
 
         var style = document.Styles.Find("Heading1");
         Assert.Equal(new ParagraphFormat { Alignment = ParagraphAlignment.Center, SpacingBefore = 240, SpacingAfter = 100 }, style.ParagraphFormat);

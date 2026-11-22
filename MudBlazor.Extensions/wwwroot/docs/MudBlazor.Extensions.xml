@@ -33255,10 +33255,9 @@
         <member name="T:MudBlazor.Extensions.Office.Document.ResizeImageCommand">
             <summary>Changes the displayed size of a picture.</summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Document.ResizeImageCommand.#ctor(System.String,System.Int32,System.Int64,System.Int64)">
+        <member name="M:MudBlazor.Extensions.Office.Document.ResizeImageCommand.#ctor(MudBlazor.Extensions.Office.Document.DocumentPosition,System.Int64,System.Int64)">
             <summary>Creates the command.</summary>
-            <param name="paragraphId">The id of the paragraph that holds the picture.</param>
-            <param name="offset">The offset of the picture in the paragraph's text.</param>
+            <param name="at">The position of the picture (the position before it).</param>
             <param name="widthEmu">The width in EMU, positive.</param>
             <param name="heightEmu">The height in EMU, positive.</param>
             <exception cref="T:System.ArgumentOutOfRangeException">A size is not positive.</exception>
@@ -33268,14 +33267,12 @@
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.SetImageAltTextCommand">
             <summary>Sets the alternative text of a picture.</summary>
-            <param name="paragraphId">The id of the paragraph that holds the picture.</param>
-            <param name="offset">The offset of the picture in the paragraph's text.</param>
+            <param name="at">The position of the picture (the position before it).</param>
             <param name="altText">The text; null or empty removes it.</param>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Document.SetImageAltTextCommand.#ctor(System.String,System.Int32,System.String)">
+        <member name="M:MudBlazor.Extensions.Office.Document.SetImageAltTextCommand.#ctor(MudBlazor.Extensions.Office.Document.DocumentPosition,System.String)">
             <summary>Sets the alternative text of a picture.</summary>
-            <param name="paragraphId">The id of the paragraph that holds the picture.</param>
-            <param name="offset">The offset of the picture in the paragraph's text.</param>
+            <param name="at">The position of the picture (the position before it).</param>
             <param name="altText">The text; null or empty removes it.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.SetImageAltTextCommand.Description">
@@ -33538,16 +33535,16 @@
             Updates a paragraph style to match a paragraph: the paragraph's own formatting (without style and list) and the own formatting of its first text run
             move into the style. The paragraph gets the style and loses that formatting; other paragraphs keep theirs.
             </summary>
-            <param name="styleId">The id of a paragraph style of the file or of a built-in paragraph style.</param>
             <param name="paragraphId">The id of the paragraph.</param>
+            <param name="styleId">The id of a paragraph style of the file or of a built-in paragraph style.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.UpdateStyleFromSelectionCommand.#ctor(System.String,System.String)">
             <summary>
             Updates a paragraph style to match a paragraph: the paragraph's own formatting (without style and list) and the own formatting of its first text run
             move into the style. The paragraph gets the style and loses that formatting; other paragraphs keep theirs.
             </summary>
-            <param name="styleId">The id of a paragraph style of the file or of a built-in paragraph style.</param>
             <param name="paragraphId">The id of the paragraph.</param>
+            <param name="styleId">The id of a paragraph style of the file or of a built-in paragraph style.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.UpdateStyleFromSelectionCommand.Description">
             <inheritdoc />
@@ -33710,14 +33707,14 @@
         <member name="T:MudBlazor.Extensions.Office.Document.SetTableCellFormatCommand">
             <summary>Changes the format of cells: width, shading, borders and vertical alignment. Content, spans and merges stay as they are.</summary>
             <param name="tableId">The id of the table, at any depth.</param>
-            <param name="cells">The cells as row index and cell index within the row.</param>
+            <param name="cells">The cells as row index and a grid column the cell covers; a merged cell covered by several of them changes once.</param>
             <param name="change">Returns the changed cell.</param>
             <param name="description">The undo description.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.SetTableCellFormatCommand.#ctor(System.String,System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Int32,System.Int32}},System.Func{MudBlazor.Extensions.Office.Document.TableCell,MudBlazor.Extensions.Office.Document.TableCell},System.String)">
             <summary>Changes the format of cells: width, shading, borders and vertical alignment. Content, spans and merges stay as they are.</summary>
             <param name="tableId">The id of the table, at any depth.</param>
-            <param name="cells">The cells as row index and cell index within the row.</param>
+            <param name="cells">The cells as row index and a grid column the cell covers; a merged cell covered by several of them changes once.</param>
             <param name="change">Returns the changed cell.</param>
             <param name="description">The undo description.</param>
         </member>
@@ -34963,10 +34960,10 @@
             <summary>The number of text columns (read-only information).</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.Section.Headers">
-            <summary>The ids of the headers the section references itself; see <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.HeaderFor(MudBlazor.Extensions.Office.Document.Section,MudBlazor.Extensions.Office.Document.HeaderFooterKind,MudBlazor.Extensions.Office.Document.HeaderFooterType)"/> for the effective ones.</summary>
+            <summary>The ids of the headers the section references itself; see <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.HeaderFor(MudBlazor.Extensions.Office.Document.Section,MudBlazor.Extensions.Office.Document.HeaderFooterType)"/> for the effective ones.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.Section.Footers">
-            <summary>The ids of the footers the section references itself; see <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.HeaderFor(MudBlazor.Extensions.Office.Document.Section,MudBlazor.Extensions.Office.Document.HeaderFooterKind,MudBlazor.Extensions.Office.Document.HeaderFooterType)"/> for the effective ones.</summary>
+            <summary>The ids of the footers the section references itself; see <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.HeaderFor(MudBlazor.Extensions.Office.Document.Section,MudBlazor.Extensions.Office.Document.HeaderFooterType)"/> for the effective ones.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.CellStep">
             <summary>A step from a table into one of its cells.</summary>
@@ -35069,7 +35066,8 @@
         <member name="T:MudBlazor.Extensions.Office.Document.DocumentSearch">
             <summary>
             Finds and replaces text in a <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/>. Matches run over <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/> and never cross paragraphs or tokens such as
-            images; a match that would end inside a surrogate pair is widened to the whole character. Regular expressions run with a one second timeout; a timeout ends the search with the matches found so far.
+            images; a match that would end inside a surrogate pair is widened to the whole character. Regular expressions run with a one second timeout per
+            match and the whole search with a five second deadline; either ends the search with the matches found so far.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.DocumentSearch.FindAll(MudBlazor.Extensions.Office.Document.TextDocument,System.String,MudBlazor.Extensions.Office.Document.FindOptions)">
@@ -35247,12 +35245,17 @@
             <param name="id">Its id.</param>
             <returns>The header or footer, or null if there is none with this id.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.HeaderFor(MudBlazor.Extensions.Office.Document.Section,MudBlazor.Extensions.Office.Document.HeaderFooterKind,MudBlazor.Extensions.Office.Document.HeaderFooterType)">
-            <summary>Gets the header or footer that applies to a section; a section without its own reference inherits the previous section's.</summary>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.HeaderFor(MudBlazor.Extensions.Office.Document.Section,MudBlazor.Extensions.Office.Document.HeaderFooterType)">
+            <summary>Gets the header that applies to a section; a section without its own reference inherits the previous section's.</summary>
             <param name="section">The section.</param>
-            <param name="kind">Header or footer.</param>
             <param name="type">The pages it applies to.</param>
-            <returns>The header or footer, or null if neither the section nor a previous one references one.</returns>
+            <returns>The header, or null if neither the section nor a previous one references one.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.FooterFor(MudBlazor.Extensions.Office.Document.Section,MudBlazor.Extensions.Office.Document.HeaderFooterType)">
+            <summary>Gets the footer that applies to a section; a section without its own reference inherits the previous section's.</summary>
+            <param name="section">The section.</param>
+            <param name="type">The pages it applies to.</param>
+            <returns>The footer, or null if neither the section nor a previous one references one.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.InvalidateIndex">
             <summary>
@@ -42783,7 +42786,10 @@
             <summary>
             Reads and writes the HTML tables that Excel, Google Sheets and browsers put on the clipboard. The reader is a tolerant tokenizer for
             the not well-formed HTML of Excel: it never runs or renders anything, drops scripts, styles, frames and every attribute or CSS
-            property outside a short list of formatting properties.
+            property outside a short list of formatting properties. The content of raw-text elements (<c>script</c>, <c>style</c>, <c>textarea</c>,
+            <c>title</c>, <c>noscript</c>, <c>iframe</c>, <c>noembed</c>, <c>noframes</c>, <c>template</c>, <c>xmp</c>, and <c>svg</c>, <c>math</c> and
+            <c>object</c> unless written self-closing) is skipped up to the matching closing tag, or to the end of the input if there is none; a
+            self-closing raw-text tag without a closing tag later in the input is an empty element. Comments and CDATA sections are skipped.
             </summary>
         </member>
         <member name="F:MudBlazor.Extensions.Office.Spreadsheet.HtmlTableFormat.MaxLength">
