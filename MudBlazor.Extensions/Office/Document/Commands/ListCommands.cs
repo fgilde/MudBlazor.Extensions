@@ -17,6 +17,8 @@ public sealed class ApplyListCommand(IReadOnlyList<string> paragraphIds, ListTem
     {
         var paragraphs = _paragraphIds.Select(id => (id == null ? null : document.FindBlock(id)) as Paragraph ??
                                                     throw new ArgumentException($"{id} is not a paragraph of the document.", nameof(paragraphIds))).ToList();
+        var order = document.AllParagraphs(true).Select((p, i) => (p.Id, i)).ToDictionary(p => p.Id, p => p.i);
+        paragraphs = paragraphs.OrderBy(p => order[p.Id]).ToList();
         if (paragraphs.Count == 0) return ([], null);
         var numbering = document.Numbering;
         if (paragraphs.All(p => Lists.Of(document, p) is { } reference && Lists.KindOf(numbering, reference) == template))
@@ -32,7 +34,7 @@ public sealed class ApplyListCommand(IReadOnlyList<string> paragraphIds, ListTem
             numbering = new Numbering([.. numbering.Abstracts, definition], [.. numbering.Instances, new NumberingInstance(numId, definition.Id, [])]);
         }
 
-        var edits = document.MapParagraphs(_paragraphIds, p => Lists.WithNumbering(p, new NumberingRef(numId, Lists.Of(document, p)?.Level ?? 0)));
+        var edits = document.MapParagraphs(_paragraphIds, p => Lists.WithNumbering(p, new NumberingRef(numId, Lists.Of(document, p)?.Level ?? Lists.DirectLevel(p))));
         return (document.WithDefinitions(edits, null, numbering), null);
     }
 }
@@ -66,22 +68,33 @@ public sealed class ChangeListLevelCommand(IReadOnlyList<string> paragraphIds, i
 /// Restarts the numbering at a list item: a new list instance of the same definition with a start override for the item's level is assigned to the
 /// item and to every following paragraph of the old instance.
 /// </summary>
-/// <param name="paragraphId">The id of the list item.</param>
-/// <param name="startAt">The value the item gets.</param>
-public sealed class RestartNumberingCommand(string paragraphId, int startAt = 1) : TextDocumentCommand
+public sealed class RestartNumberingCommand : TextDocumentCommand
 {
+    private readonly string _paragraphId;
+    private readonly int _startAt;
+
+    /// <summary>Creates the command.</summary>
+    /// <param name="paragraphId">The id of the list item.</param>
+    /// <param name="startAt">The value the item gets.</param>
+    /// <exception cref="ArgumentOutOfRangeException">The start value is negative.</exception>
+    public RestartNumberingCommand(string paragraphId, int startAt = 1)
+    {
+        if (startAt < 0) throw new ArgumentOutOfRangeException(nameof(startAt), startAt, "The start value must not be negative.");
+        (_paragraphId, _startAt) = (paragraphId, startAt);
+    }
+
     /// <inheritdoc />
     public override string Description => "Restart numbering";
 
     private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document)
     {
-        if (startAt < 0) throw new ArgumentOutOfRangeException(nameof(startAt), startAt, "The start value must not be negative.");
+        var paragraphId = _paragraphId;
         if (paragraphId == null || document.FindBlock(paragraphId) is not Paragraph paragraph || Lists.Of(document, paragraph) is not { } reference ||
             document.Numbering.Instances.FirstOrDefault(i => i.Id == reference.NumId) is not { } instance)
             throw new ArgumentException($"{paragraphId} is not a list item of the document.", nameof(paragraphId));
         var numId = Lists.NextId(document.Numbering);
         var overrides = instance.Overrides.Where(o => o.Level != reference.Level)
-            .Append(new LevelOverride(reference.Level, startAt, instance.Overrides.FirstOrDefault(o => o.Level == reference.Level)?.Definition))
+            .Append(new LevelOverride(reference.Level, _startAt, instance.Overrides.FirstOrDefault(o => o.Level == reference.Level)?.Definition))
             .OrderBy(o => o.Level)
             .ToList();
         var numbering = new Numbering(document.Numbering.Abstracts, [.. document.Numbering.Instances, new NumberingInstance(numId, instance.AbstractId, overrides)]);
@@ -118,6 +131,11 @@ internal static class Lists
         if (level.Format == NumberFormat.Bullet) return ListTemplate.Bullet;
         return numbering.Level(reference with { Level = 1 }) is not { } second || second.Format == NumberFormat.Decimal ? ListTemplate.Decimal : ListTemplate.Multilevel;
     }
+
+    internal static int DirectLevel(Paragraph paragraph) =>
+        paragraph.Format.Numbering == null && paragraph.Source?.Element(FormatXml.W + "pPr")?.Element(FormatXml.W + "numPr") is { } numPr && numPr.Element(FormatXml.W + "numId") == null
+            ? Math.Clamp(FormatXml.Int(numPr.Element(FormatXml.W + "ilvl"), "val") ?? 0, 0, 8)
+            : 0;
 
     internal static int NextId(Numbering numbering) => Math.Max(0, numbering.Instances.Select(i => i.Id).DefaultIfEmpty(0).Max()) + 1;
 

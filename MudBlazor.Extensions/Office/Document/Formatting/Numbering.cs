@@ -54,6 +54,8 @@ public sealed record NumberingLevel(int Level, int Start, NumberFormat Format, s
 /// <param name="Levels">The levels; the list is treated as immutable after assignment.</param>
 public sealed record AbstractNumbering(int Id, IReadOnlyList<NumberingLevel> Levels)
 {
+    internal bool Multilevel { get; init; }
+
     internal XElement Source { get; init; }
 }
 

@@ -71,7 +71,10 @@ public sealed class UpdateStyleFromSelectionCommand(string styleId, string parag
     }
 }
 
-/// <summary>Sets the document default font and size (<c>w:docDefaults/w:rPrDefault</c>); a theme font is replaced by the named font.</summary>
+/// <summary>
+/// Sets the document default font and size (<c>w:docDefaults/w:rPrDefault</c>); a theme font is replaced by the named font unless the theme font
+/// already resolves to it.
+/// </summary>
 public sealed class SetDefaultFontCommand : TextDocumentCommand
 {
     private readonly string _font;
@@ -95,7 +98,8 @@ public sealed class SetDefaultFontCommand : TextDocumentCommand
     private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document)
     {
         var styles = document.Styles;
-        var run = styles.DefaultRunFormat with { Font = _font, SizePt = _sizePt };
+        var current = styles.DefaultRunFormat.Font;
+        var run = styles.DefaultRunFormat with { Font = current != null && document.Theme.Font(current) == _font ? current : _font, SizePt = _sizePt };
         return (document.WithDefinitions([], run == styles.DefaultRunFormat ? null : new DocumentStyles(styles.All, run, styles.DefaultParagraphFormat), null, true), null);
     }
 }

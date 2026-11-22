@@ -33252,16 +33252,12 @@
             Restarts the numbering at a list item: a new list instance of the same definition with a start override for the item's level is assigned to the
             item and to every following paragraph of the old instance.
             </summary>
-            <param name="paragraphId">The id of the list item.</param>
-            <param name="startAt">The value the item gets.</param>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.RestartNumberingCommand.#ctor(System.String,System.Int32)">
-            <summary>
-            Restarts the numbering at a list item: a new list instance of the same definition with a start override for the item's level is assigned to the
-            item and to every following paragraph of the old instance.
-            </summary>
+            <summary>Creates the command.</summary>
             <param name="paragraphId">The id of the list item.</param>
             <param name="startAt">The value the item gets.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">The start value is negative.</exception>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.RestartNumberingCommand.Description">
             <inheritdoc />
@@ -33376,7 +33372,10 @@
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.SetDefaultFontCommand">
-            <summary>Sets the document default font and size (<c>w:docDefaults/w:rPrDefault</c>); a theme font is replaced by the named font.</summary>
+            <summary>
+            Sets the document default font and size (<c>w:docDefaults/w:rPrDefault</c>); a theme font is replaced by the named font unless the theme font
+            already resolves to it.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.SetDefaultFontCommand.#ctor(System.String,System.Double)">
             <summary>Creates the command.</summary>

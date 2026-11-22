@@ -19,7 +19,7 @@ internal static class NumberingXml
                 if ((source.Name == W + "abstractNum" || source.Name == W + "num") && !kept.Contains(source))
                     copy.Remove();
         foreach (var definition in numbering.Abstracts.Where(a => a.Source == null))
-            Place(root, new XElement(W + "abstractNum", new XAttribute(W + "abstractNumId", definition.Id), Value("multiLevelType", "hybridMultilevel"),
+            Place(root, new XElement(W + "abstractNum", new XAttribute(W + "abstractNumId", definition.Id), Value("multiLevelType", definition.Multilevel ? "multilevel" : "hybridMultilevel"),
                 definition.Levels.Select(Level)), Order);
         foreach (var instance in numbering.Instances.Where(i => i.Source == null))
             Place(root, new XElement(W + "num", new XAttribute(W + "numId", instance.Id), Value("abstractNumId", Number(instance.AbstractId)),
@@ -52,6 +52,7 @@ internal static class NumberingXml
         PatchParagraph(pPr, level.Indent ?? new ParagraphFormat());
         var rPr = new XElement(W + "rPr");
         PatchRun(rPr, level.LabelFormat ?? new RunFormat());
+        rPr.Element(W + "rFonts")?.SetAttributeValue(W + "hint", "default");
         element.Add(pPr.HasElements ? pPr : null, rPr.HasElements ? rPr : null);
         return element;
     }

@@ -420,6 +420,146 @@ public class StyleListCommandTests
         Assert.Equal(["1.", null], Labels(document));
     }
 
+    [Fact]
+    public void Writer_BulletTemplate_LabelFontsLikeWord_MultilevelType()
+    {
+        var document = Load(Doc(Para("a") + Para("b")));
+
+        document.Execute(new ApplyListCommand([document.Blocks[0].Id], ListTemplate.Bullet));
+        document.Execute(new ApplyListCommand([document.Blocks[1].Id], ListTemplate.Multilevel));
+        var output = DocxWriterTests.Save(document);
+
+        var definitions = OpcAssert.Xml(output, NumberingPart).Root!.Elements(W + "abstractNum").ToList();
+        Assert.Equal(["hybridMultilevel", "multilevel"], definitions.Select(d => (string)d.Element(W + "multiLevelType")!.Attribute(W + "val")));
+        var levels = definitions[0].Elements(W + "lvl").ToList();
+        Assert.Equal(9, levels.Count);
+        string[] fonts = ["Symbol", "Courier New", "Wingdings"];
+        string[] texts = ["\uF0B7", "o", "\uF0A7"];
+        for (var i = 0; i < levels.Count; i++)
+        {
+            var rFonts = levels[i].Element(W + "rPr")!.Element(W + "rFonts")!;
+            Assert.Equal(fonts[i % 3], (string)rFonts.Attribute(W + "ascii"));
+            Assert.Equal(fonts[i % 3], (string)rFonts.Attribute(W + "hAnsi"));
+            Assert.Equal("default", (string)rFonts.Attribute(W + "hint"));
+            Assert.Equal(texts[i % 3], (string)levels[i].Element(W + "lvlText")!.Attribute(W + "val"));
+        }
+
+        Assert.Null(definitions[1].Element(W + "lvl")!.Element(W + "rPr"));
+        var reloaded = Load(output);
+        Assert.Equal("•", reloaded.ListLabel((Paragraph)reloaded.Blocks[0]));
+        DocxWriterTests.AssertConsistent(output);
+    }
+
+    [Fact]
+    public void ApplyList_DirectLevelWithoutNumId_KeepsLevel()
+    {
+        var document = Load(Doc(Para("a", "<w:numPr><w:ilvl w:val=\"2\"/></w:numPr>")));
+
+        document.Execute(new ApplyListCommand([document.Blocks[0].Id], ListTemplate.Decimal));
+
+        Assert.Equal(2, ((Paragraph)document.Blocks[0]).Format.Numbering!.Value.Level);
+    }
+
+    [Fact]
+    public void ApplyList_IdsOutOfOrder_ContinuesListBeforeFirstParagraph()
+    {
+        var document = Load(Doc(Item(1) + Para("b") + Para("c"), Decimal + Num(1, 0)));
+        var numbering = document.Numbering;
+
+        document.Execute(new ApplyListCommand([document.Blocks[2].Id, document.Blocks[1].Id], ListTemplate.Decimal));
+
+        Assert.Same(numbering, document.Numbering);
+        Assert.Equal(["1.", "2.", "3."], Labels(document));
+    }
+
+    [Fact]
+    public void ApplyList_SelectionIntoTableCells_NumbersAllParagraphs()
+    {
+        var table = "<w:tbl><w:tblGrid><w:gridCol w:w=\"3000\"/><w:gridCol w:w=\"3000\"/></w:tblGrid><w:tr><w:tc>" + Para("c1") + "</w:tc><w:tc>" + Para("c2") +
+                    "</w:tc></w:tr></w:tbl>";
+        var document = Load(Doc(Para("a") + table + Para("b")));
+        var ids = document.ParagraphsIn(new DocumentRange(document.PositionOf(document.Blocks[0].Id, 0), document.PositionOf(document.Blocks[2].Id, 1)))
+            .Select(p => p.Id).ToList();
+
+        document.Execute(new ApplyListCommand(ids, ListTemplate.Decimal));
+
+        Assert.Equal(4, ids.Count);
+        Assert.All(document.AllParagraphs(), p => Assert.Equal(new NumberingRef(1, 0), p.Format.Numbering));
+        Assert.Equal(["1.", "2.", "3.", "4."], document.AllParagraphs().Select(document.ListLabel));
+        var output = DocxWriterTests.Save(document);
+        DocxWriterTests.AssertConsistent(output);
+        Assert.Equal(4, Body(output).Descendants(W + "numId").Count());
+    }
+
+    [Fact]
+    public void RestartNumbering_NegativeStart_ThrowsInConstructor() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() => new RestartNumberingCommand("b1", -1));
+
+    [Fact]
+    public void RestartNumbering_PlainParagraphInRange_LeftAlone()
+    {
+        var document = Load(Doc(Item(1) + Item(1) + Para("plain") + Item(1) + Item(1), Decimal + Num(1, 0)));
+        var plain = document.Blocks[2];
+
+        document.Execute(new RestartNumberingCommand(document.Blocks[1].Id));
+
+        Assert.Same(plain, document.Blocks[2]);
+        Assert.Equal(["1.", "1.", null, "2.", "3."], Labels(document));
+    }
+
+    [Fact]
+    public void Split_EmptyListItem_OneUndoStep_UndoRestoresInstances()
+    {
+        var document = Load(Doc(Item(1) + Para("", "<w:numPr><w:ilvl w:val=\"0\"/><w:numId w:val=\"1\"/></w:numPr>"), Decimal + Num(1, 0)));
+        var blocks = document.Blocks.ToList();
+        var numbering = document.Numbering;
+
+        document.Execute(new SplitParagraphCommand(document.PositionOf(blocks[1].Id, 0)));
+        Assert.Null(((Paragraph)document.Blocks[1]).Format.Numbering);
+
+        document.Undo.Undo();
+
+        Assert.False(document.Undo.CanUndo);
+        Assert.Same(numbering, document.Numbering);
+        Assert.True(blocks.SequenceEqual(document.Blocks, ReferenceEqualityComparer.Instance));
+    }
+
+    [Fact]
+    public void Unlink_RunWithOtherCharacterStyle_KeepsStyle()
+    {
+        var document = TextDocument.Create();
+        var id = document.Blocks[0].Id;
+        document.Execute(new ReplaceTextCommand(Range(document, id, 0, id, 0), "one two"));
+        document.Execute(new SetHyperlinkCommand(Range(document, id, 0, id, 7), "https://example.com"));
+        document.Execute(new ApplyCharacterStyleCommand(Range(document, id, 0, id, 3), "Strong"));
+
+        document.Execute(new SetHyperlinkCommand(Range(document, id, 0, id, 7), null));
+
+        var paragraph = (Paragraph)document.Blocks[0];
+        Assert.All(paragraph.Inlines, i => Assert.Null(i.Link));
+        Assert.Equal(["Strong", null], paragraph.Inlines.Select(i => i.Format.StyleId));
+    }
+
+    [Fact]
+    public void SetDefaultFont_SizeOnlyOnThemeFont_KeepsThemeAttributes()
+    {
+        var source = new DocxBuilder()
+            .Styles("<w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:asciiTheme=\"minorHAnsi\" w:hAnsiTheme=\"minorHAnsi\"/><w:sz w:val=\"22\"/></w:rPr></w:rPrDefault></w:docDefaults>" +
+                    "<w:style w:type=\"paragraph\" w:default=\"1\" w:styleId=\"Normal\"><w:name w:val=\"Normal\"/></w:style>")
+            .Theme(minor: "Calibri")
+            .Body(Para("text"))
+            .Build();
+        var document = Load(source);
+
+        document.Execute(new SetDefaultFontCommand("Calibri", 12));
+
+        Assert.Equal("theme:minorHAnsi", document.Styles.DefaultRunFormat.Font);
+        var rPr = OpcAssert.Xml(DocxWriterTests.Save(document), StylesPart).Root!.Element(W + "docDefaults")!.Element(W + "rPrDefault")!.Element(W + "rPr")!;
+        Assert.Equal("minorHAnsi", (string)rPr.Element(W + "rFonts")!.Attribute(W + "asciiTheme"));
+        Assert.Null(rPr.Element(W + "rFonts")!.Attribute(W + "ascii"));
+        Assert.Equal("24", (string)rPr.Element(W + "sz")!.Attribute(W + "val"));
+    }
+
     private static TextDocument Load(byte[] bytes) => TextDocument.Load(new MemoryStream(bytes));
 
     private static XElement Body(byte[] package) => OpcAssert.Xml(package, "/word/document.xml").Root!.Element(W + "body")!;

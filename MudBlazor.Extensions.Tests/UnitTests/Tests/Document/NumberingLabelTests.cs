@@ -104,7 +104,8 @@ public class NumberingLabelTests
         Assert.Equal(9, levels.Count);
         Assert.Equal([NumberFormat.Decimal, NumberFormat.LowerLetter, NumberFormat.LowerRoman, NumberFormat.Decimal], levels.Take(4).Select(l => l.Format));
         Assert.Equal("%2.", levels[1].Text);
-        Assert.Equal(["•", "o", "▪", "•"], bullets.Take(4).Select(l => l.Text));
+        Assert.Equal(["\uF0B7", "o", "\uF0A7", "\uF0B7"], bullets.Take(4).Select(l => l.Text));
+        Assert.Equal(["Symbol", "Courier New", "Wingdings", "Symbol"], bullets.Take(4).Select(l => l.LabelFormat.Font));
     }
 
     private static TextDocument Doc(string numbering, params Paragraph[] paragraphs)
