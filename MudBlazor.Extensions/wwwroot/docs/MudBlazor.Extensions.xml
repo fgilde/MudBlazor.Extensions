@@ -35105,10 +35105,13 @@
             a page break. Markdown is decoded like plain text and read as CommonMark with pipe tables, strikethrough and autolinks; raw HTML in it is
             sanitised like HTML, a YAML front matter block at the start is skipped (its <c>title:</c> becomes the document title), images that are not
             <c>data:</c> URIs become their alternative text, and Markdown nested deeper than 128 levels is read as plain text. RTF must start with
-            <c>{\rtf</c> (after an optional UTF-8 byte order mark and white space), may have at most
-            32 Mi characters, 256 nested groups and 4 Mi control words, and is converted with RtfPipe and read like HTML: only PNG and JPEG pictures are
-            imported (metafiles and bitmaps are dropped), lists keep their structure only where RtfPipe recognises them, and RTF that would make the
-            conversion take quadratic time (very many runs in one paragraph or table rows in one section) is rejected.
+            <c>{\rtf</c> (after an optional UTF-8 byte order mark and white space) and is converted with RtfPipe and read like HTML: only PNG and JPEG
+            pictures are imported (metafiles and bitmaps are dropped), nested list levels become separate lists, vertically merged cells become
+            separate cells, section breaks become page breaks, headers, footers and the title are dropped, and an unknown code page is read as
+            Windows-1252. RTF is rejected when it has more than 32 Mi characters, 256 nested groups, 4 Mi control words, braces and tabs, or 128 Ki
+            paragraphs, cells and rows, when its HTML would exceed 32 Mi characters, when the squares of the runs per paragraph sum to more than 2^33,
+            or when its table work exceeds 2^27: every cell end, row end and table paragraph costs 1500 plus the rows and paragraphs before it in its
+            section (about 3600 rows of 10 cells, or 10000 rows of one cell, in one section).
             </summary>
             <param name="stream">The file content.</param>
             <param name="format">The file format.</param>
@@ -35133,7 +35136,7 @@
             Markdown delimiters cannot open or close), safe links, images as <c>data:</c> URIs, lists, monospace text as code spans and monospace
             paragraphs with line breaks, tabs or significant spaces as fenced code. <see cref="F:MudBlazor.Extensions.Office.Document.DocumentFileFormat.Rtf"/> writes pure ASCII RTF with the effective character and paragraph
             formatting of every run and paragraph, the page size and margins of the last section, list labels as text with a tab and a hanging indent,
-            tables with merged cells and single borders, nested tables as tab-separated paragraphs, PNG and JPEG images and safe links; headers,
+            tables with merged cells and single borders, nested tables as tab-separated paragraphs, PNG and JPEG images up to 16 MiB and safe links; headers,
             footers, comments and other images are left out. <see cref="M:MudBlazor.Extensions.Office.Document.DocumentExport.Losses(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentFileFormat)"/> lists what a format cannot keep.
             </summary>
             <param name="target">The stream that receives the file.</param>

@@ -125,7 +125,8 @@ public static class DocumentExport
                 Lost(DocumentFeature.Links, inline.Link != null && (_text || inline.Link.SafeTarget == null) || inline is Marker { Kind: "bookmarkStart", Name: { } name } && name != "_GoBack");
                 Lost(DocumentFeature.Images, inline is InlineImage image && (_text || image.Placement != ImagePlacement.Inline ||
                                                                              !(_rtf ? RtfWriter.ImageTypes : HtmlWriter.ImageTypes).Contains(document.MediaContentType(image.MediaPart)?.ToLowerInvariant() ?? "") ||
-                                                                             _markdown && !NaturalSize(image)));
+                                                                             _markdown && !NaturalSize(image) ||
+                                                                             _rtf && document.GetMedia(image.MediaPart)?.Length > RtfWriter.MaxImageBytes));
                 Lost(DocumentFeature.Fields, inline is OpaqueInline { Kind: "field" or "fieldStart" or "fieldEnd" });
                 Lost(DocumentFeature.OpaqueContent, inline is OpaqueInline { Kind: not ("field" or "fieldStart" or "fieldEnd") });
             }

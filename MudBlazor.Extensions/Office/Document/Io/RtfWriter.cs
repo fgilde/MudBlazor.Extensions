@@ -8,21 +8,29 @@ internal static class RtfWriter
     private const long EmuPerTwip = 635;
     private const double EmuPerPixel = 9525;
     private const string Border = @"\brdrs\brdrw10";
+    private const int MaxColumns = 64;
+    private const int HexChunk = 32768;
+    internal const int MaxImageBytes = 16 * 1024 * 1024;
     internal static readonly HashSet<string> ImageTypes = ["image/png", "image/jpeg"];
 
-    internal static void Write(TextDocument document, Stream target) => target.Write(Encoding.ASCII.GetBytes(new Writer(document).Run()));
+    internal static void Write(TextDocument document, Stream target)
+    {
+        using var writer = new StreamWriter(target, Encoding.ASCII, 65536, true);
+        new Writer(document).Run(writer);
+    }
 
     private sealed class Writer(TextDocument document)
     {
-        private readonly StringBuilder _body = new();
+        private readonly List<(StringBuilder Text, byte[] Image)> _parts = [];
+        private StringBuilder _body = new();
         private readonly List<string> _fonts = [document.EffectiveRunFormat(new Paragraph(), null).Font ?? "Calibri"];
         private readonly List<string> _colors = [];
 
-        public string Run()
+        public void Run(TextWriter output)
         {
             Blocks(document.Blocks, false);
             var rtf = new StringBuilder(@"{\rtf1\ansi\ansicpg1252\deff0{\fonttbl");
-            for (var i = 0; i < _fonts.Count; i++) rtf.Append(@"{\f").Append(N(i)).Append(@"\fnil ").Append(Escape(_fonts[i])).Append(";}");
+            for (var i = 0; i < _fonts.Count; i++) rtf.Append(@"{\f").Append(N(i)).Append(@"\fnil ").Append(Escape(_fonts[i].Replace(";", ""))).Append(";}");
             rtf.Append(@"}{\colortbl;");
             foreach (var color in _colors)
                 rtf.Append(@"\red").Append(N(Convert.ToInt32(color[1..3], 16))).Append(@"\green").Append(N(Convert.ToInt32(color[3..5], 16)))
@@ -33,7 +41,15 @@ internal static class RtfWriter
             rtf.Append(@"\paperw").Append(N(page.Width)).Append(@"\paperh").Append(N(page.Height)).Append(@"\margl").Append(N(page.MarginLeft))
                 .Append(@"\margr").Append(N(page.MarginRight)).Append(@"\margt").Append(N(page.MarginTop)).Append(@"\margb").Append(N(page.MarginBottom));
             if (page.Orientation == PageOrientation.Landscape) rtf.Append(@"\landscape");
-            return rtf.Append('\n').Append(_body).Append("}\n").ToString();
+            output.Write(rtf.Append('\n'));
+            foreach (var (text, image) in _parts)
+            {
+                output.Write(text);
+                for (var at = 0; at < image.Length; at += HexChunk) output.Write(Convert.ToHexString(image.AsSpan(at, Math.Min(HexChunk, image.Length - at))));
+                output.Write('}');
+            }
+
+            output.Write(_body.Append("}\n"));
         }
 
         private void Blocks(IEnumerable<Block> blocks, bool inTable)
@@ -77,7 +93,7 @@ internal static class RtfWriter
                 while (j < paragraph.Inlines.Count && ReferenceEquals(paragraph.Inlines[j].Link, link)) j++;
                 var href = link?.SafeTarget;
                 if (href != null)
-                    _body.Append(@"{\field{\*\fldinst{HYPERLINK ").Append(href[0] == '#' ? @"\\l """ + Escape(href[1..]) : "\"" + Escape(href.Replace("\"", "%22")))
+                    _body.Append(@"{\field{\*\fldinst{HYPERLINK ").Append(href[0] == '#' ? @"\\l """ + Escape(Field(href[1..])) : "\"" + Escape(Field(href)))
                         .Append(@"""}}{\fldrslt{");
                 for (var k = i; k < j; k++) Inline(paragraph, paragraph.Inlines[k]);
                 if (href != null) _body.Append("}}}");
@@ -180,28 +196,31 @@ internal static class RtfWriter
         {
             var data = document.GetMedia(image.MediaPart);
             var type = document.MediaContentType(image.MediaPart)?.ToLowerInvariant();
-            if (data == null || type == null || !ImageTypes.Contains(type)) return;
+            if (data == null || type == null || !ImageTypes.Contains(type) || data.Length > MaxImageBytes) return;
             var (width, height) = OfficeImageSize.Read(data, type) ?? (image.WidthEmu / EmuPerPixel, image.HeightEmu / EmuPerPixel);
             _body.Append(@"{\pict").Append(type == "image/png" ? @"\pngblip" : @"\jpegblip")
                 .Append(@"\picw").Append(N(Math.Max(1, (long)Math.Round(width)))).Append(@"\pich").Append(N(Math.Max(1, (long)Math.Round(height))))
-                .Append(@"\picwgoal").Append(N(image.WidthEmu / EmuPerTwip)).Append(@"\pichgoal").Append(N(image.HeightEmu / EmuPerTwip))
-                .Append(' ').Append(Convert.ToHexString(data)).Append('}');
+                .Append(@"\picwgoal").Append(N(image.WidthEmu / EmuPerTwip)).Append(@"\pichgoal").Append(N(image.HeightEmu / EmuPerTwip)).Append(' ');
+            _parts.Add((_body, data));
+            _body = new StringBuilder();
         }
 
         private void Table(Table table)
         {
+            var edges = new long[table.Grid.Count + MaxColumns + 1];
+            for (var i = 1; i < edges.Length; i++) edges[i] = edges[i - 1] + (i <= table.Grid.Count && table.Grid[i - 1] > 0 ? table.Grid[i - 1] : 1440);
             foreach (var row in table.Rows)
             {
                 var layout = Tables.Layout(row);
                 _body.Append(@"\trowd\trgaph108");
-                if (row.GridBefore > 0) _body.Append(@"\trleft").Append(N(Edge(table, row.GridBefore)));
+                if (row.GridBefore > 0) _body.Append(@"\trleft").Append(N(edges[Math.Clamp(row.GridBefore, 0, edges.Length - 1)]));
                 foreach (var (column, cell) in layout)
                 {
                     if (cell.VMerge == VerticalMerge.Restart) _body.Append(@"\clvmgf");
                     else if (cell.VMerge == VerticalMerge.Continue) _body.Append(@"\clvmrg");
+                    _body.Append(@"\clbrdrt").Append(Border).Append(@"\clbrdrl").Append(Border).Append(@"\clbrdrb").Append(Border).Append(@"\clbrdrr").Append(Border);
                     if (Color(document.Theme.Color(cell.Shading)) is { } shading) _body.Append(@"\clcbpat").Append(N(shading));
-                    _body.Append(@"\clbrdrt").Append(Border).Append(@"\clbrdrl").Append(Border).Append(@"\clbrdrb").Append(Border).Append(@"\clbrdrr").Append(Border)
-                        .Append(@"\cellx").Append(N(Edge(table, column + cell.GridSpan)));
+                    _body.Append(@"\cellx").Append(N(edges[(int)Math.Clamp((long)column + cell.GridSpan, 1, edges.Length - 1)]));
                 }
 
                 _body.Append('\n');
@@ -216,8 +235,6 @@ internal static class RtfWriter
                 _body.Append(@"\row").Append('\n');
             }
         }
-
-        private static long Edge(Table table, int columns) => Enumerable.Range(0, columns).Sum(i => i < table.Grid.Count && table.Grid[i] > 0 ? table.Grid[i] : 1440L);
 
         private int Font(string font)
         {
@@ -238,6 +255,8 @@ internal static class RtfWriter
         }
 
         private static string N(long value) => value.ToString(CultureInfo.InvariantCulture);
+
+        private static string Field(string argument) => argument.Replace(@"\", @"\\").Replace("\"", "%22");
 
         private static string Escape(string text)
         {

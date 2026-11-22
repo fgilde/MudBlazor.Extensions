@@ -175,6 +175,141 @@ public class RtfFormatTests
         Assert.Contains(@"\paperw16838\paperh11906\margl1440\margr1440\margt1440\margb1440\landscape", Encoding.ASCII.GetString(Save(landscape)));
     }
 
+    [Fact]
+    public void Rtf_Read_UnicodeRunsCountTowardsTheWorkLimit()
+    {
+        Assert.Throws<InvalidDataException>(() => Load(@"{\rtf1\uc0 " + Repeat(@"{\u65 }", 200_000) + "}"));
+        Assert.Throws<InvalidDataException>(() => Load(@"{\rtf1\uc1 " + Repeat(@"{\u65?}", 200_000) + "}"));
+        Assert.Equal(new string('A', 1000), Single(Load(@"{\rtf1\uc1 " + Repeat(@"\u65?", 1000) + "}")).Text);
+    }
+
+    [Fact]
+    public void Rtf_Read_TabMarkerCannotBeForgedOrLeak()
+    {
+        var forged = Single(Load(@"{\rtf1 a\u-560?b\u-4?c\u-4?\tab d}"));
+        Assert.Equal("a\uFDD0bc\td", forged.Text);
+        Assert.Single(forged.Inlines.OfType<Tab>());
+
+        var document = Load(
+            @"{\rtf1{\fonttbl{\f0 Ari\tab al;}}{\info{\title T\tab itle}}\f0 " +
+            @"{\field{\*\fldinst{HYPERLINK ""https://example.com/a\tab b""}}{\fldrslt{link}}} x\tab y}");
+        var paragraph = Single(document);
+        Assert.Equal("link x\ty", paragraph.Text);
+        Assert.All(paragraph.Inlines, i => Assert.DoesNotContain('\uFFFC', (i.Link?.Target ?? "") + i.Format.Font));
+        Assert.DoesNotContain('\uFFFC', document.Properties.Title ?? "");
+    }
+
+    [Fact]
+    public void Rtf_Read_LimitsAcceptAtAndRejectAboveTheBoundary()
+    {
+        var limits = RtfLimits.Default;
+        Accept(limits with { Depth = 3 }, @"{\rtf1{{x}}}");
+        Reject(limits with { Depth = 3 }, @"{\rtf1{{{x}}}}");
+        Accept(limits with { Tokens = 13 }, @"{\rtf1 " + Repeat("\t", 10) + "}");
+        Reject(limits with { Tokens = 12 }, @"{\rtf1 " + Repeat("\t", 10) + "}");
+        Accept(limits with { Paragraphs = 5 }, @"{\rtf1 " + Repeat(@"x\par ", 5) + "}");
+        Reject(limits with { Paragraphs = 4 }, @"{\rtf1 " + Repeat(@"x\par ", 5) + "}");
+        Accept(limits with { RunWork = 100 }, @"{\rtf1 " + Repeat("{x}", 10) + "}");
+        Reject(limits with { RunWork = 99 }, @"{\rtf1 " + Repeat("{x}", 10) + "}");
+        var rows = @"{\rtf1 " + Repeat(@"\trowd\cellx1000\pard\intbl a\cell\row ", 2) + "}";
+        Accept(limits with { TableWork = 4 * RtfLimits.CellWork + 2 }, rows);
+        Reject(limits with { TableWork = 4 * RtfLimits.CellWork + 1 }, rows);
+        Accept(limits with { Html = 10_000 }, @"{\rtf1 " + Repeat("x", 1000) + "}");
+        Reject(limits with { Html = 1000 }, @"{\rtf1 " + Repeat("x", 1000) + "}");
+    }
+
+    [Fact]
+    public void Rtf_Read_BinaryDataFallbackCharsAndCodePages()
+    {
+        var limits = RtfLimits.Default with { Depth = 2 };
+        Assert.Equal("x", Single(Read(limits, @"{\rtf1{\pict\pngblip\bin6 a{{{{{}x}")).Text);
+        Assert.Equal("\u00FCx", Single(Load(@"{\rtf1\uc2 \u252??x}")).Text);
+        Assert.Equal("\u00FC", Single(Load(@"{\rtf1\ansi\ansicpg99999 \'fc}")).Text);
+        Assert.Equal("\u00FC", Single(Load(@"{\rtf1\ansi\ansicpg65000 \'fc}")).Text);
+        Assert.Equal("\u00FC", Single(Load(@"{\rtf1\ansi{\cpg-5 \'fc}}")).Text);
+        Assert.Throws<InvalidDataException>(() => Load(@"{\rtf1 a\par-b}"));
+    }
+
+    [Fact]
+    public void Rtf_Read_NonBreakingSpaceRunIsKept()
+    {
+        Assert.Equal("a\u00A0b", Single(Load(@"{\rtf1 a{\b\~}b}")).Text);
+        Assert.Equal("\u00A0", Single(Load(@"{\rtf1 \~}")).Text);
+    }
+
+    [Fact]
+    public void Rtf_Write_FontNamesCellShadingAndThemeColors()
+    {
+        var document = new DocxBuilder().Body(
+            "<w:p><w:r><w:rPr><w:rFonts w:ascii=\"Bad;Font\" w:hAnsi=\"Bad;Font\"/><w:color w:val=\"4472C4\" w:themeColor=\"accent1\" w:themeShade=\"BF\"/></w:rPr><w:t>a</w:t></w:r>" +
+            "<w:r><w:rPr><w:color w:val=\"auto\"/></w:rPr><w:t>b</w:t></w:r></w:p>").Load();
+        document.Theme = DocumentTheme.Read(System.Xml.Linq.XDocument.Parse("""
+            <a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="Test"><a:themeElements>
+              <a:clrScheme name="Test"><a:accent1><a:srgbClr val="808080"/></a:accent1></a:clrScheme>
+              <a:fontScheme name="Test"><a:majorFont><a:latin typeface="A"/></a:majorFont><a:minorFont><a:latin typeface="B"/></a:minorFont></a:fontScheme>
+            </a:themeElements></a:theme>
+            """));
+
+        var rtf = Encoding.ASCII.GetString(Save(document));
+
+        Assert.Contains(@"\fnil BadFont;}", rtf);
+        Assert.Contains(@"{\colortbl;\red96\green96\blue96;}", rtf);
+        Assert.Contains(@"\cf1 a}", rtf);
+        Assert.Matches(@"\{\\f0(\\fs\d+)? b\}", rtf);
+
+        var shaded = Encoding.ASCII.GetString(Save(HtmlReader.Read("<table><tr><td style=\"background-color:#FF0000\">x</td></tr></table>")));
+        Assert.Contains(@"\clbrdrr\brdrs\brdrw10\clcbpat1\cellx", shaded);
+    }
+
+    [Fact]
+    public void Rtf_Write_ImageAboveCapIsDroppedAndReported()
+    {
+        var big = new byte[RtfWriter.MaxImageBytes + 1];
+        ObjectCommandTests.Png(4, 2).CopyTo(big, 0);
+        var document = TextDocument.Create();
+        var position = document.PositionOf(document.Blocks[0].Id, 0);
+        document.Execute(new InsertImageCommand(new DocumentRange(position, position), big, "image/png"));
+
+        Assert.Equal([DocumentFeature.Images], DocumentExport.Losses(document, DocumentFileFormat.Rtf));
+        Assert.DoesNotContain(@"\pict", Encoding.ASCII.GetString(Save(document)));
+    }
+
+    [Fact]
+    public void Rtf_WriteThenRead_LinkEscapesDelimitersAndMergedCells()
+    {
+        var source = HtmlReader.Read(
+            "<p><a href=\"https://example.com/a&quot;b\\c\">q</a> <b>1</b>2 a<i> b</i></p>" +
+            "<table><tr><td colspan=\"2\">A</td><td rowspan=\"2\">R</td></tr><tr><td>B</td><td>C</td></tr></table><p>between</p>" +
+            "<table><tr><td>o<table><tr><td>x</td><td>y</td></tr></table></td></tr></table>");
+        Assert.Equal("https://example.com/a\"b\\c", ((Paragraph)source.Blocks[0]).Inlines[0].Link?.SafeTarget);
+        Assert.Equal([DocumentFeature.NestedTables], DocumentExport.Losses(source, DocumentFileFormat.Rtf));
+
+        var bytes = Save(source);
+        var rtf = Encoding.ASCII.GetString(bytes);
+        Assert.Contains(@"HYPERLINK ""https://example.com/a%22b\\\\c""", rtf);
+        Assert.Contains(@"\clvmgf", rtf);
+        Assert.Contains(@"\clvmrg", rtf);
+        Assert.Contains(@"\pard\plain\intbl x\tab y\par", rtf);
+
+        var document = Load(bytes);
+        var first = (Paragraph)document.Blocks[0];
+        Assert.Equal("q 12 a b", first.Text);
+        Assert.Equal("https://example.com/a%22b\\c", Run(first, "q").Link?.SafeTarget);
+        Assert.True(Run(first, "1").Format.Bold);
+        Assert.Null(Run(first, "2 a").Format.Bold);
+        var table = Assert.IsType<Table>(document.Blocks[1]);
+        Assert.Equal([(2, "A"), (1, "R")], table.Rows[0].Cells.Select(c => (c.GridSpan, ((Paragraph)c.Blocks[0]).Text)));
+        Assert.Equal(["B", "C", ""], table.Rows[1].Cells.Select(c => ((Paragraph)c.Blocks[0]).Text));
+        var nested = Assert.IsType<Table>(document.Blocks[3]);
+        Assert.Equal(["o", "x\ty", ""], Assert.Single(Assert.Single(nested.Rows).Cells).Blocks.Cast<Paragraph>().Select(p => p.Text));
+    }
+
+    private static void Accept(RtfLimits limits, string rtf) => Read(limits, rtf);
+
+    private static void Reject(RtfLimits limits, string rtf) => Assert.Throws<InvalidDataException>(() => Read(limits, rtf));
+
+    private static TextDocument Read(RtfLimits limits, string rtf) => RtfFormat.Read(new MemoryStream(Encoding.Latin1.GetBytes(rtf)), limits);
+
     private static string Repeat(string text, int count) => new StringBuilder(text.Length * count).Insert(0, text, count).ToString();
 
     private static TextRun Run(Paragraph paragraph, string text) => paragraph.Inlines.OfType<TextRun>().Single(r => r.Text == text);
