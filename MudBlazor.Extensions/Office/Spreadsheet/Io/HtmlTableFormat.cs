@@ -205,6 +205,7 @@ public static class HtmlTableFormat
         {
             var end = html.IndexOf("</" + name, next, StringComparison.OrdinalIgnoreCase);
             if (name == "style") reader.StyleSheet(end < 0 ? html[next..] : html[next..end]);
+            if (name == "title") reader.Title(end < 0 ? html[next..] : html[next..end]);
             if (end < 0) return html.Length;
             var gt = html.IndexOf('>', end);
             return gt < 0 ? html.Length : gt + 1;
@@ -662,4 +663,8 @@ internal interface IHtmlTokenSink
     void End(string name);
 
     void StyleSheet(string css);
+
+    void Title(string text)
+    {
+    }
 }
