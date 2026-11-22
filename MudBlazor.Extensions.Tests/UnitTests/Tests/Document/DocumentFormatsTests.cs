@@ -26,9 +26,9 @@ public class DocumentFormatsTests
         {
             Assert.Equal(format, DocumentFileFormats.Detect("file" + DocumentFileFormats.Extension(format)));
             Assert.Equal(format, DocumentFileFormats.Detect(null, DocumentFileFormats.ContentType(format)));
-            var supported = format is DocumentFileFormat.Docx or DocumentFileFormat.Dotx or DocumentFileFormat.Html or DocumentFileFormat.Text or DocumentFileFormat.Markdown;
+            var supported = format is not (DocumentFileFormat.Odt or DocumentFileFormat.Doc);
             Assert.Equal(supported, DocumentFileFormats.CanRead(format));
-            Assert.Equal(supported, DocumentFileFormats.CanWrite(format));
+            Assert.Equal(supported && format != DocumentFileFormat.Rtf, DocumentFileFormats.CanWrite(format));
         }
     }
 

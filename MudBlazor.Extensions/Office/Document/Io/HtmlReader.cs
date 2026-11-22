@@ -22,12 +22,12 @@ internal static class HtmlReader
         return Read(encoding.GetString(bytes, preamble, bytes.Length - preamble));
     }
 
-    internal static TextDocument Read(string html)
+    internal static TextDocument Read(string html, Func<string, string> text = null)
     {
         if (html?.Length > MaxLength) throw new InvalidDataException("The HTML is too large to read.");
         var pasted = HtmlPasteReader.ReadBlocks(html, out var title);
         var document = TextDocument.Create();
-        var builder = new Builder(document);
+        var builder = new Builder(document, text ?? (t => t));
         var blocks = builder.Blocks(pasted, document.Sections[^1].Page.TextWidth);
         if (blocks.LastOrDefault() is not Paragraph) blocks.Add(new Paragraph());
         document.BlockList.Clear();
@@ -39,7 +39,7 @@ internal static class HtmlReader
         return document;
     }
 
-    private sealed class Builder(TextDocument document)
+    private sealed class Builder(TextDocument document, Func<string, string> text)
     {
         private int _nextAbstract = document.Numbering.Abstracts.Select(a => a.Id + 1).DefaultIfEmpty(0).Max();
         private int _nextInstance = Lists.NextId(document.Numbering);
@@ -112,7 +112,7 @@ internal static class HtmlReader
                 if (run.ImageData != null)
                     inlines.Add(Image(run, runFormat with { StyleId = null }, link, width));
                 else
-                    inlines.AddRange(InlineEdit.Lines(run.Text.Replace('\n', '\v'), runFormat, link, null)[0]);
+                    inlines.AddRange(InlineEdit.Lines(text(run.Text).Replace('\n', '\v'), runFormat, link, null)[0]);
             }
 
             return new Paragraph { Format = format, Inlines = InlineEdit.Normalize(inlines) };

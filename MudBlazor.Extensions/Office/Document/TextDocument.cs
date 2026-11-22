@@ -78,7 +78,10 @@ public sealed partial class TextDocument
     /// imported and only <c>http</c>, <c>https</c>, <c>mailto</c> and <c>#anchor</c> links are kept. Plain text is decoded by its byte order mark,
     /// else as UTF-8 if it is valid UTF-8, else as Windows-1252, and may have at most 32 Mi characters; every line becomes a paragraph and a form feed
     /// a page break. Markdown is decoded like plain text and read as CommonMark with pipe tables, strikethrough and autolinks; raw HTML in it is
-    /// sanitised like HTML, and Markdown nested deeper than 128 levels is read as plain text.
+    /// sanitised like HTML, and Markdown nested deeper than 128 levels is read as plain text. RTF must start with <c>{\rtf</c>, may have at most
+    /// 32 Mi characters, 256 nested groups and 4 Mi control words, and is converted with RtfPipe and read like HTML: only PNG and JPEG pictures are
+    /// imported (metafiles and bitmaps are dropped), lists keep their structure only where RtfPipe recognises them, and RTF that would make the
+    /// conversion take quadratic time (very many runs in one paragraph or table rows in one section) is rejected.
     /// </summary>
     /// <param name="stream">The file content.</param>
     /// <param name="format">The file format.</param>
@@ -102,6 +105,8 @@ public sealed partial class TextDocument
                 return TextFormat.Read(stream);
             case DocumentFileFormat.Markdown:
                 return MarkdownFormat.Read(stream);
+            case DocumentFileFormat.Rtf:
+                return RtfFormat.Read(stream);
             default:
                 throw new NotSupportedException($"Reading {format} files is not supported.");
         }
