@@ -69,6 +69,7 @@ internal static partial class DocxReader
             SettingsPart = settingsPart, SettingsXml = settings, ThemePart = themePart, Blocks = document.BlockList.ToList(),
             Sections = document.SectionList.ToList(), HeadersFooters = document.HeaderFooterList.ToList(), HeaderIds = headerIds, Properties = document.Properties
         };
+        document.InvalidateIndex();
         return document;
     }
 

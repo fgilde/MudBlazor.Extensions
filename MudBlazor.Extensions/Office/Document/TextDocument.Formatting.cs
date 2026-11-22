@@ -8,6 +8,7 @@ public sealed partial class TextDocument
     private readonly Dictionary<(Paragraph Paragraph, Inline Inline), RunFormat> _runFormats = new(RunKey.Comparer);
     private (int Version, DocumentStyles Styles, Numbering Numbering, DocumentTheme Theme) _formatKey;
     private IReadOnlyDictionary<string, string> _labels;
+    private bool _labelsStale;
 
     /// <summary>The styles and document defaults.</summary>
     public DocumentStyles Styles { get; internal set; } = new([], null, null);
@@ -61,6 +62,8 @@ public sealed partial class TextDocument
 
     internal long FormatResolutions { get; private set; }
 
+    internal int LabelComputations { get; private set; }
+
     /// <summary>Gets the list label of a paragraph of the body, for example <c>1.</c>, <c>a)</c> or <c>&#x2022;</c>.</summary>
     /// <param name="paragraph">A paragraph of the body or of a table cell.</param>
     /// <returns>The label, or null if the paragraph is not a list item.</returns>
@@ -69,7 +72,12 @@ public sealed partial class TextDocument
     {
         ArgumentNullException.ThrowIfNull(paragraph);
         RefreshFormats();
-        _labels ??= NumberingLabels.Compute(Numbering, AllParagraphs().Select(WithStyleNumbering));
+        if (_labels == null)
+        {
+            LabelComputations++;
+            _labels = NumberingLabels.Compute(Numbering, AllParagraphs().Select(WithStyleNumbering));
+        }
+
         return paragraph.Id != null && _labels.TryGetValue(paragraph.Id, out var label) ? label : null;
     }
 
@@ -87,8 +95,9 @@ public sealed partial class TextDocument
     {
         var key = (Version, Styles, Numbering, Theme);
         if (key == _formatKey) return;
+        if (_labelsStale || !ReferenceEquals(key.Styles, _formatKey.Styles) || !ReferenceEquals(key.Numbering, _formatKey.Numbering)) _labels = null;
+        _labelsStale = false;
         _formatKey = key;
-        _labels = null;
         _paragraphFormats.Clear();
         _runFormats.Clear();
     }

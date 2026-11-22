@@ -17,7 +17,7 @@ internal static class NumberingLabels
         foreach (var paragraph in inDocumentOrder)
         {
             if (paragraph.Id == null || paragraph.Format.Numbering is not { NumId: not 0, Level: >= 0 and < Levels } reference || numbering.Level(reference) is not { } level) continue;
-            var instance = numbering.Instances.First(i => i.Id == reference.NumId);
+            var instance = numbering.Instance(reference.NumId);
             var key = (instance.AbstractId, instance.Overrides.Count == 0 ? 0 : instance.Id);
             if (!counters.TryGetValue(key, out var values)) counters[key] = values = new int?[Levels];
             for (var lower = reference.Level + 1; lower < Levels; lower++)

@@ -35222,8 +35222,7 @@
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.InvalidateIndex">
             <summary>
-            Optional: drops the block index so the next lookup rebuilds it. Lookups detect stale and missing entries by themselves, so no caller needs
-            this for correctness; it only saves the staleness check after a bulk change.
+            Drops the block index so the next lookup rebuilds it. Every change of the block lists must call it: a lookup that misses a fresh index is final.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Styles">

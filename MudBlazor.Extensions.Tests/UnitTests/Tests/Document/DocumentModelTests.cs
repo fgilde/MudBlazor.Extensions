@@ -8,6 +8,59 @@ using MudBlazor.Extensions.Office.Document;
 public class DocumentModelTests
 {
     [Fact]
+    public void ListLabels_KeptWhileTyping_RecomputedAfterFormatOrStructureChanges()
+    {
+        var document = TextFormat.FromText("a\nb\nc");
+        var ids = document.Blocks.Select(b => b.Id).ToList();
+        document.Execute(new ApplyListCommand(ids, ListTemplate.Decimal));
+        Assert.Equal("2.", document.ListLabel((Paragraph)document.Blocks[1]));
+        var computed = document.LabelComputations;
+
+        for (var i = 0; i < 20; i++)
+        {
+            var at = document.PositionOf(ids[1], 1);
+            document.Execute(new ReplaceTextCommand(new DocumentRange(at, at), "x"));
+            Assert.Equal("2.", document.ListLabel((Paragraph)document.Blocks[1]));
+        }
+
+        Assert.Equal(computed, document.LabelComputations);
+        document.Execute(new SplitParagraphCommand(document.PositionOf(ids[0], 1)));
+        Assert.Equal("3.", document.ListLabel((Paragraph)document.Blocks[2]));
+        Assert.Equal(computed + 1, document.LabelComputations);
+        document.Execute(new RemoveListCommand([ids[0]]));
+        Assert.Equal("1.", document.ListLabel((Paragraph)document.Blocks[1]));
+        Assert.Equal(computed + 2, document.LabelComputations);
+    }
+
+    [Fact]
+    public void LargeDeletionsPastesAndTables_BuildTheBlockIndexAConstantNumberOfTimes()
+    {
+        var document = TextFormat.FromText(string.Join("\n", Enumerable.Range(0, 10_000).Select(i => "line " + i)));
+        DocumentPosition At(int block, int offset = 0) => document.PositionOf(document.Blocks[block].Id, offset);
+        int Builds(Action action)
+        {
+            var before = document.IndexBuilds;
+            action();
+            return document.IndexBuilds - before;
+        }
+
+        Assert.InRange(Builds(() => document.Execute(new ReplaceTextCommand(new DocumentRange(At(1000), At(6000)), ""))), 0, 6);
+        Assert.Equal(5000, document.Blocks.Count);
+        Assert.InRange(Builds(() => document.Undo.Undo()), 0, 6);
+        Assert.Equal(10_000, document.Blocks.Count);
+
+        var paste = TextFormat.FromText(string.Join("\n", Enumerable.Range(0, 5_000).Select(i => "pasted " + i)));
+        Assert.InRange(Builds(() => document.Execute(new InsertDocumentCommand(new DocumentRange(At(10), At(10)), paste))), 0, 6);
+        Assert.Equal(14_999, document.Blocks.Count);
+        Assert.InRange(Builds(() => document.Undo.Undo()), 0, 6);
+
+        document.Execute(new InsertTableCommand(At(0), 200, 20));
+        var table = document.Blocks.OfType<Table>().Single();
+        Assert.InRange(Builds(() => document.Execute(new DeleteTableCommand(table.Id))), 0, 6);
+        Assert.Empty(document.Blocks.OfType<Table>());
+    }
+
+    [Fact]
     public void Paragraph_Text_MapsTabsBreaksTokensAndSkipsMarkers()
     {
         var paragraph = new Paragraph

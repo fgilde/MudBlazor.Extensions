@@ -93,15 +93,28 @@ public sealed class Numbering
 
     internal List<NumberingInstance> InstanceList { get; }
 
+    private Dictionary<int, NumberingInstance> _instances;
+    private Dictionary<int, AbstractNumbering> _abstracts;
+
     /// <summary>Gets the definition of a list level with the overrides of its instance applied.</summary>
     /// <param name="reference">The list and level.</param>
     /// <returns>The level, or null if the instance or the level does not exist.</returns>
     public NumberingLevel Level(NumberingRef reference)
     {
-        var instance = InstanceList.FirstOrDefault(i => i.Id == reference.NumId);
+        var instance = Instance(reference.NumId);
         if (instance == null || reference.NumId == 0) return null;
         var levelOverride = instance.Overrides.FirstOrDefault(o => o.Level == reference.Level);
-        var level = levelOverride?.Definition ?? AbstractList.FirstOrDefault(a => a.Id == instance.AbstractId)?.Levels.FirstOrDefault(l => l.Level == reference.Level);
+        _abstracts ??= First(AbstractList, a => a.Id);
+        var level = levelOverride?.Definition ?? _abstracts.GetValueOrDefault(instance.AbstractId)?.Levels.FirstOrDefault(l => l.Level == reference.Level);
         return level != null && levelOverride?.StartOverride is { } start ? level with { Start = start } : level;
+    }
+
+    internal NumberingInstance Instance(int numId) => (_instances ??= First(InstanceList, i => i.Id)).GetValueOrDefault(numId);
+
+    private static Dictionary<int, T> First<T>(IEnumerable<T> items, Func<T, int> key)
+    {
+        var result = new Dictionary<int, T>();
+        foreach (var item in items) result.TryAdd(key(item), item);
+        return result;
     }
 }

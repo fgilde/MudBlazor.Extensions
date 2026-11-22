@@ -226,6 +226,7 @@ public sealed partial class TextDocument
     {
         var document = new TextDocument();
         document.BlockList.AddRange(blocks.Select(document.Identify));
+        document.InvalidateIndex();
         return document;
     }
 
@@ -267,8 +268,7 @@ public sealed partial class TextDocument
     }
 
     /// <summary>
-    /// Optional: drops the block index so the next lookup rebuilds it. Lookups detect stale and missing entries by themselves, so no caller needs
-    /// this for correctness; it only saves the staleness check after a bulk change.
+    /// Drops the block index so the next lookup rebuilds it. Every change of the block lists must call it: a lookup that misses a fresh index is final.
     /// </summary>
     internal void InvalidateIndex() => _index = null;
 
@@ -315,10 +315,8 @@ public sealed partial class TextDocument
     private bool TryLocate(string id, out BlockLocation location)
     {
         location = default;
-        if (id == null) return false;
-        var fresh = _index == null;
-        if (Index.TryGetValue(id, out location) && ReferenceEquals(Walk(TopAt(location.Container, location.Index), location.Path), location.Block)) return true;
-        if (fresh) return false;
+        if (id == null || !Index.TryGetValue(id, out location)) return false;
+        if (ReferenceEquals(Walk(TopAt(location.Container, location.Index), location.Path), location.Block)) return true;
         InvalidateIndex();
         return Index.TryGetValue(id, out location);
     }
@@ -431,7 +429,16 @@ public sealed partial class TextDocument
                 _existedBefore.TryAdd(block.Id, beforeIds.Contains(block.Id) || _beforeEdits?.Contains(block.Id) == true);
             }
 
-        return !beforeIds.SetEquals(after.Select(b => b.Id));
+        var structure = !beforeIds.SetEquals(after.Select(b => b.Id));
+        if (structure) _labelsStale = true;
+        else
+        {
+            var formats = new Dictionary<string, ParagraphFormat>();
+            foreach (var paragraph in before.OfType<Paragraph>().Where(p => p.Id != null)) formats.TryAdd(paragraph.Id, paragraph.Format);
+            if (after.OfType<Paragraph>().Any(p => !before.Contains(p) && (p.Id == null || !formats.TryGetValue(p.Id, out var format) || format != p.Format))) _labelsStale = true;
+        }
+
+        return structure;
     }
 
     private readonly record struct BlockLocation(int Container, int Index, CellStep[] Path, Block Block);

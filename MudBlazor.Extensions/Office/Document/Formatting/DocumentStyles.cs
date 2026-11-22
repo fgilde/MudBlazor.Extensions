@@ -103,15 +103,29 @@ public sealed class DocumentStyles
 
     internal List<DocumentStyle> StyleList { get; }
 
+    private Dictionary<string, DocumentStyle> _byId;
+    private Dictionary<StyleType, DocumentStyle> _defaults;
+
     /// <summary>Finds a style of the file by id.</summary>
     /// <param name="id">The style id.</param>
     /// <returns>The style, or null if the file defines none with this id.</returns>
-    public DocumentStyle Find(string id) => id == null ? null : StyleList.FirstOrDefault(s => s.Id == id);
+    public DocumentStyle Find(string id)
+    {
+        if (id == null) return null;
+        if (_byId == null)
+        {
+            _byId = new Dictionary<string, DocumentStyle>();
+            foreach (var style in StyleList.Where(s => s.Id != null)) _byId.TryAdd(style.Id, style);
+        }
+
+        return _byId.GetValueOrDefault(id);
+    }
 
     /// <summary>Finds a style of the file by name, ignoring case.</summary>
     /// <param name="name">The style name, for example <c>heading 1</c>.</param>
     /// <returns>The style, or null if the file defines none with this name.</returns>
     public DocumentStyle FindByName(string name) => StyleList.FirstOrDefault(s => string.Equals(s.Name, name, StringComparison.OrdinalIgnoreCase));
 
-    private DocumentStyle DefaultOf(StyleType type) => StyleList.FirstOrDefault(s => s.IsDefault && s.Type == type);
+    private DocumentStyle DefaultOf(StyleType type) =>
+        (_defaults ??= StyleList.Where(s => s.IsDefault).GroupBy(s => s.Type).ToDictionary(g => g.Key, g => g.First())).GetValueOrDefault(type);
 }
