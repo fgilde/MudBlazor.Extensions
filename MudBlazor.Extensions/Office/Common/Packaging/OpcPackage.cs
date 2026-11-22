@@ -21,6 +21,13 @@ internal sealed class OpcPackage
 {
     private const string ContentTypesPart = "/[Content_Types].xml";
     private const long MaxPartLength = 256L * 1024 * 1024;
+    private static readonly uint[] CrcTable = Enumerable.Range(0, 256).Select(n =>
+    {
+        var c = (uint)n;
+        for (var k = 0; k < 8; k++) c = (c & 1) != 0 ? 0xEDB88320 ^ (c >> 1) : c >> 1;
+        return c;
+    }).ToArray();
+
     private static readonly XmlReaderSettings XmlSettings = new() { DtdProcessing = DtdProcessing.Prohibit, CloseInput = false };
 
     private readonly ZipArchive _zip;
@@ -40,7 +47,7 @@ internal sealed class OpcPackage
         foreach (var entry in _zip.Entries)
         {
             if (limits != null && (entry.Length < 0 || entry.Length > limits.MaxTotalLength - total))
-                throw new InvalidDataException($"The package is larger than {limits.MaxTotalLength} bytes uncompressed.");
+                throw LoadLimit.Exceeded($"The package is larger than {limits.MaxTotalLength} bytes uncompressed.");
             total += entry.Length;
             if (!entry.FullName.EndsWith('/')) _entries["/" + entry.FullName] = entry;
         }
@@ -75,7 +82,7 @@ internal sealed class OpcPackage
     /// <returns>The package.</returns>
     public static OpcPackage Open(byte[] source) => new(source, null);
 
-    /// <summary>Opens a package with limits: every entry must have its declared size, and the XML read until <see cref="EndLoad"/> shares an element budget.</summary>
+    /// <summary>Opens a package with limits: every entry read must have its declared size and CRC-32, and the XML read until <see cref="EndLoad"/> shares an element budget.</summary>
     /// <param name="source">The zip bytes.</param>
     /// <param name="limits">The limits.</param>
     /// <returns>The package.</returns>
@@ -156,12 +163,28 @@ internal sealed class OpcPackage
     private Stream Open(string part)
     {
         var entry = _entries.GetValueOrDefault(part) ?? throw new FileNotFoundException("Package part not found.", part);
-        if (entry.Length > MaxPartLength) throw new InvalidDataException($"The package part {part} is larger than 256 MB.");
-        if (!_exact) return entry.Open();
+        if (entry.Length > MaxPartLength) throw LoadLimit.Exceeded($"The package part {part} is larger than 256 MB.");
+        return _exact ? new MemoryStream(ReadDeclared(entry, "package part " + part), false) : entry.Open();
+    }
+
+    internal static byte[] ReadDeclared(ZipArchiveEntry entry, string name)
+    {
+        const int Chunk = 81920;
         using var source = entry.Open();
-        var data = new byte[entry.Length];
-        if (source.ReadAtLeast(data, data.Length, false) != data.Length || source.ReadByte() >= 0)
-            throw new InvalidDataException($"The package part {part} does not have its declared size.");
-        return new MemoryStream(data, false);
+        using var data = new MemoryStream((int)Math.Min(entry.Length, 4L * 1024 * 1024));
+        var buffer = new byte[Chunk];
+        int read;
+        while (data.Length <= entry.Length && (read = source.Read(buffer, 0, (int)Math.Min(Chunk, entry.Length - data.Length + 1))) > 0)
+            data.Write(buffer, 0, read);
+        var bytes = data.Capacity == data.Length ? data.GetBuffer() : data.ToArray();
+        if (bytes.Length != entry.Length || Crc32(bytes) != entry.Crc32) throw LoadLimit.Exceeded($"The {name} does not have its declared size or checksum.");
+        return bytes;
+    }
+
+    private static uint Crc32(byte[] data)
+    {
+        var crc = uint.MaxValue;
+        foreach (var b in data) crc = CrcTable[(byte)(crc ^ b)] ^ (crc >> 8);
+        return ~crc;
     }
 }

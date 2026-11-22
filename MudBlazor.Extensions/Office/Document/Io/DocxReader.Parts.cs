@@ -80,7 +80,7 @@ internal static partial class DocxReader
         {
             return read();
         }
-        catch (Exception e) when (e is XmlException or InvalidDataException)
+        catch (Exception e) when (e is XmlException || e is InvalidDataException && !LoadLimit.IsExceeded(e))
         {
             return null;
         }

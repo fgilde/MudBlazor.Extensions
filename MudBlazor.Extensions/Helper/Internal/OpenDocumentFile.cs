@@ -49,9 +49,9 @@ internal sealed class OpenDocumentFile : IDisposable
             var (count, total) = (0, 0L);
             foreach (var entry in document._archive.Entries)
             {
-                if (++count > limits.MaxEntries) throw new InvalidDataException($"The package has more than {limits.MaxEntries} entries.");
+                if (++count > limits.MaxEntries) throw LoadLimit.Exceeded($"The package has more than {limits.MaxEntries} entries.");
                 if (entry.Length < 0 || entry.Length > limits.MaxTotalLength - total)
-                    throw new InvalidDataException("The package entries are larger than allowed in total.");
+                    throw LoadLimit.Exceeded("The package entries are larger than allowed in total.");
                 total += entry.Length;
             }
 
@@ -164,7 +164,7 @@ internal sealed class OpenDocumentFile : IDisposable
 
     internal void Reserve(long units)
     {
-        if (units > Budget) throw new InvalidDataException("The document expands to too much content.");
+        if (units > Budget) throw LoadLimit.Exceeded("The document expands to too much content.");
     }
 
     internal XDocument ReadXml(string path)
@@ -201,19 +201,12 @@ internal sealed class OpenDocumentFile : IDisposable
         var entry = _archive.GetEntry(path.Replace('\\', '/'));
         if (entry == null) return null;
         if (_limits != null && entry.Length > Math.Min(maxLength, _limits.MaxEntryLength))
-            throw new InvalidDataException($"The package entry {path} is larger than {Math.Min(maxLength, _limits.MaxEntryLength)} bytes.");
+            throw LoadLimit.Exceeded($"The package entry {path} is larger than {Math.Min(maxLength, _limits.MaxEntryLength)} bytes.");
+        if (_limits != null) return OpcPackage.ReadDeclared(entry, "package entry " + path);
         using var source = entry.Open();
-        if (_limits == null)
-        {
-            using var destination = new MemoryStream();
-            source.CopyTo(destination);
-            return destination.ToArray();
-        }
-
-        var data = new byte[entry.Length];
-        if (source.ReadAtLeast(data, data.Length, false) != data.Length || source.ReadByte() >= 0)
-            throw new InvalidDataException($"The package entry {path} does not have its declared size.");
-        return data;
+        using var destination = new MemoryStream();
+        source.CopyTo(destination);
+        return destination.ToArray();
     }
 
     private static string Attribute(XElement element, string localName)

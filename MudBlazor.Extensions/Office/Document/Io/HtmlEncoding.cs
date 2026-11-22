@@ -12,7 +12,7 @@ internal static class HtmlEncoding
 
     internal static byte[] ReadLimited(Stream stream, int maxChars, Func<byte[], Encoding> encodingOf)
     {
-        if (stream.CanSeek && stream.Length - stream.Position > 4L * (maxChars + 1) + 4) throw new InvalidDataException("The file is too large to read.");
+        if (stream.CanSeek && stream.Length - stream.Position > 4L * (maxChars + 1) + 4) throw LoadLimit.Exceeded("The file is too large to read.");
         using var buffer = new MemoryStream();
         var chunk = new byte[81920];
         long limit = -1;
@@ -20,7 +20,7 @@ internal static class HtmlEncoding
         {
             buffer.Write(chunk, 0, read);
             if (limit < 0 && buffer.Length >= Prescan) limit = encodingOf(buffer.GetBuffer()[..Prescan]).GetMaxByteCount(maxChars) + 4L;
-            if (limit >= 0 && buffer.Length > limit) throw new InvalidDataException("The file is too large to read.");
+            if (limit >= 0 && buffer.Length > limit) throw LoadLimit.Exceeded("The file is too large to read.");
         }
 
         return buffer.ToArray();
@@ -28,7 +28,7 @@ internal static class HtmlEncoding
 
     internal static void CheckChars(int count, int maxChars)
     {
-        if (count > maxChars) throw new InvalidDataException("The file is too large to read.");
+        if (count > maxChars) throw LoadLimit.Exceeded("The file is too large to read.");
     }
 
     internal static (Encoding Encoding, int Preamble) Detect(ReadOnlySpan<byte> bytes) =>

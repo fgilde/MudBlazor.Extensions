@@ -151,7 +151,7 @@ internal static class RtfTokenizer
 
         void Count()
         {
-            if (++tokens > maxTokens) throw new InvalidDataException("The RTF has too many control words.");
+            if (++tokens > maxTokens) throw LoadLimit.Exceeded("The RTF has too many control words.");
         }
 
         RtfToken Flush()

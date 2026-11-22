@@ -527,7 +527,7 @@ internal static class OdtReader
 
         private static IEnumerable<XElement> Descend(XElement parent, XName name, string[] groups, int depth = 0)
         {
-            if (depth > MaxDepth) throw new InvalidDataException("The document is nested too deeply.");
+            if (depth > MaxDepth) throw LoadLimit.Exceeded("The document is nested too deeply.");
             foreach (var child in parent.Elements())
                 if (child.Name == name)
                     yield return child;
@@ -538,7 +538,7 @@ internal static class OdtReader
 
         private T Nest<T>(Func<T> action)
         {
-            if (++_depth > MaxDepth) throw new InvalidDataException("The document is nested too deeply.");
+            if (++_depth > MaxDepth) throw LoadLimit.Exceeded("The document is nested too deeply.");
             try
             {
                 return action();

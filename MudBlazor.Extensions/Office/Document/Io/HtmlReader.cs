@@ -26,7 +26,7 @@ internal static class HtmlReader
 
     internal static TextDocument Read(string html, Func<string, string> text = null)
     {
-        if (html?.Length > MaxLength) throw new InvalidDataException("The HTML is too large to read.");
+        if (html?.Length > MaxLength) throw LoadLimit.Exceeded("The HTML is too large to read.");
         var pasted = HtmlPasteReader.ReadBlocks(html, out var title);
         var document = TextDocument.Create();
         var builder = new Builder(document, text ?? (t => t));

@@ -32987,7 +32987,7 @@
             <returns>The package.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.OpcPackage.Open(System.Byte[],MudBlazor.Extensions.Office.OpcLimits)">
-            <summary>Opens a package with limits: every entry must have its declared size, and the XML read until <see cref="M:MudBlazor.Extensions.Office.OpcPackage.EndLoad"/> shares an element budget.</summary>
+            <summary>Opens a package with limits: every entry read must have its declared size and CRC-32, and the XML read until <see cref="M:MudBlazor.Extensions.Office.OpcPackage.EndLoad"/> shares an element budget.</summary>
             <param name="source">The zip bytes.</param>
             <param name="limits">The limits.</param>
             <returns>The package.</returns>
@@ -35171,7 +35171,7 @@
             pictures inline, anchored ones floating at the left) and the text of text boxes follows their paragraph; footnotes and endnotes become tokens
             showing their citation, fields their displayed text, tracked changes their final state; comments are dropped; the first master page gives the
             page size, margins, headers and footers, and <c>meta.xml</c> the title. ODT is rejected when it is encrypted, has a DTD, more than 10000
-            entries, more than 1 GiB uncompressed, an entry above 256 MiB or an XML part above 64 MiB, XML nested deeper than 256 levels, content nested
+            entries, more than 1 GiB uncompressed, an entry above 256 MiB or without its declared size and CRC-32, an XML part above 64 MiB, XML nested deeper than 256 levels, content nested
             deeper than 100 levels, or when reading it costs more than 32 Mi units: an XML element 8, a text character, inline element or <c>text:s</c>
             space 1, a paragraph 8, a table cell 32 and every 16 bytes of a distinct picture 1, with repeated rows and cells counted once per repetition.
             Word 97-2003 (.doc) is read from the main text of its piece table: paragraphs, tabs, line and page breaks (a section break becomes a page
@@ -35186,8 +35186,9 @@
             <para>
             Limits for every format: a document may have at most 1,000,000 blocks (paragraphs, tables and blocks inside table cells, headers and footers)
             and 8,000,000 inlines. DOCX and DOTX are rejected when their entries declare more than 1 GiB uncompressed in total, when an entry does not
-            have its declared size, when a part is larger than 256 MiB or nested deeper than 256 levels, or when the XML parts read while loading (document,
-            headers, footers, footnotes, comments, styles, numbering, settings and relationships) have more than 16 Mi elements. The character limits
+            have its declared size and CRC-32, when a part is larger than 256 MiB or nested deeper than 256 levels, or when the XML parts read while loading (document,
+            headers, footers, footnotes, comments, styles, numbering, settings and relationships) have more than 16 Mi elements. A malformed header,
+            footer, comments or core properties part is skipped, but a limit exceeded in any of them rejects the file. The character limits
             above (32 Mi) apply to HTML, Markdown, text, RTF, .doc and the ODT reading budget. In the browser (WebAssembly) the limits are 250,000 blocks,
             2,000,000 inlines, 8 Mi characters (4 Mi for RTF, whose conversion needs about 30 times the input in memory), 256 MiB uncompressed DOCX and
             ODT packages and 4 Mi DOCX elements.

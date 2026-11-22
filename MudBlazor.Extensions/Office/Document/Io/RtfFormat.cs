@@ -21,7 +21,7 @@ internal static class RtfFormat
         var bytes = HtmlEncoding.ReadLimited(stream, maxChars, _ => Encoding.Latin1);
         var start = Start(bytes);
         if (start < 0) throw new InvalidDataException("The file is not an RTF document.");
-        if (bytes.Length > maxChars) throw new InvalidDataException("The RTF is too large to read.");
+        if (bytes.Length > maxChars) throw LoadLimit.Exceeded("The RTF is too large to read.");
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         var culture = CultureInfo.CurrentCulture;
         try
@@ -135,7 +135,7 @@ internal static class RtfFormat
 
         private void Check(int count)
         {
-            if ((long)GetStringBuilder().Length + count > limit) throw new InvalidDataException("The RTF converts to too much HTML.");
+            if ((long)GetStringBuilder().Length + count > limit) throw LoadLimit.Exceeded("The RTF converts to too much HTML.");
         }
     }
 }

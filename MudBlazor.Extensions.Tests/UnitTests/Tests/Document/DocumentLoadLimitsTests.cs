@@ -1,6 +1,7 @@
 using System.Buffers.Binary;
 using System.IO.Compression;
 using System.Text;
+using MudBlazor.Extensions.Office;
 using Xunit;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Document;
@@ -64,6 +65,43 @@ public class DocumentLoadLimitsTests
         Assert.True(DocumentLoadLimits.Browser.RtfCharacters < DocumentLoadLimits.Browser.TextCharacters);
     }
 
+    [Fact]
+    public void OptionalParts_LimitErrorsThrow_MalformedPartsAreSkipped()
+    {
+        const string body = "<w:p><w:r><w:t>body</w:t></w:r></w:p>";
+        var docx = new DocxBuilder().Body(body).Header(string.Concat(Enumerable.Repeat("<w:p><w:r><w:t>h</w:t></w:r></w:p>", 1000)))
+            .CoreProperties("<dc:title>T</dc:title>").Build();
+        Assert.Single(TextDocument.Load(new MemoryStream(docx)).HeadersFooters);
+
+        Assert.Contains("elements", Limit(() => Load(docx, DocumentFileFormat.Docx, DocumentLoadLimits.Desktop with { DocxElements = 1000 })).Message);
+        Limit(() => Load(Lying(docx, "word/header1.xml"), DocumentFileFormat.Docx, DocumentLoadLimits.Desktop));
+        Limit(() => Load(Lying(docx, "docProps/core.xml"), DocumentFileFormat.Docx, DocumentLoadLimits.Desktop));
+
+        var malformed = TextDocument.Load(new MemoryStream(new DocxBuilder().Body(body).Header("<w:p><w:r><w:t>broken</w:p>").Build()));
+        Assert.Empty(malformed.HeadersFooters);
+        Assert.Equal("body", Assert.IsType<Paragraph>(Assert.Single(malformed.Blocks)).Text);
+    }
+
+    [Fact]
+    public void Packages_EntryDeclaringAHugeSize_IsRejectedWithoutAllocatingIt()
+    {
+        var docx = Lying(Bytes("document-all-features.docx"), "word/document.xml", 200u << 20);
+        var odt = Lying(Bytes("sample.odt"), "content.xml", 60u << 20);
+        foreach (var (bytes, format) in new[] { (docx, DocumentFileFormat.Docx), (odt, DocumentFileFormat.Odt) })
+        {
+            var before = GC.GetAllocatedBytesForCurrentThread();
+            Assert.Contains("declared size", Limit(() => Load(bytes, format, DocumentLoadLimits.Desktop)).Message);
+            Assert.InRange(GC.GetAllocatedBytesForCurrentThread() - before, 0, 32L << 20);
+        }
+    }
+
+    private static InvalidDataException Limit(Action load)
+    {
+        var exception = Assert.Throws<InvalidDataException>(load);
+        Assert.True(LoadLimit.IsExceeded(exception), exception.Message);
+        return exception;
+    }
+
     private static IEnumerable<Block> Identified(TextDocument document) =>
         document.Blocks.Concat(document.HeadersFooters.SelectMany(h => h.Blocks)).SelectMany(Subtree);
 
@@ -90,7 +128,7 @@ public class DocumentLoadLimitsTests
 
     private static byte[] WordDocument(byte[] doc) => MudBlazor.Extensions.Office.CompoundFile.Open(doc).ReadStream("WordDocument");
 
-    private static byte[] Lying(byte[] package, string entryName)
+    private static byte[] Lying(byte[] package, string entryName, uint? declared = null)
     {
         var bytes = (byte[])package.Clone();
         var name = Encoding.ASCII.GetBytes(entryName);
@@ -99,7 +137,7 @@ public class DocumentLoadLimitsTests
                 bytes.AsSpan(at + 46, Math.Min(name.Length, bytes.Length - at - 46)).SequenceEqual(name))
             {
                 var size = BinaryPrimitives.ReadUInt32LittleEndian(bytes.AsSpan(at + 24));
-                BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(at + 24), size - 10);
+                BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(at + 24), declared ?? size - 10);
                 return bytes;
             }
 

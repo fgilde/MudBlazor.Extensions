@@ -40,7 +40,7 @@ internal sealed record DocumentLoadLimits(int Blocks, long Inlines, int TextChar
         if (Active.Value is { } budget && count > budget.Limits.Blocks) throw TooManyBlocks(budget.Limits);
     }
 
-    private static InvalidDataException TooManyBlocks(DocumentLoadLimits limits) => new($"The document has more than {limits.Blocks} blocks.");
+    private static InvalidDataException TooManyBlocks(DocumentLoadLimits limits) => LoadLimit.Exceeded($"The document has more than {limits.Blocks} blocks.");
 
     private sealed class Budget(DocumentLoadLimits limits)
     {
@@ -53,7 +53,7 @@ internal sealed record DocumentLoadLimits(int Blocks, long Inlines, int TextChar
         {
             if (++_blocks > limits.Blocks) throw TooManyBlocks(limits);
             if (block is Paragraph paragraph && (_inlines += paragraph.Inlines.Count) > limits.Inlines)
-                throw new InvalidDataException($"The document has more than {limits.Inlines} inlines.");
+                throw LoadLimit.Exceeded($"The document has more than {limits.Inlines} inlines.");
         }
     }
 

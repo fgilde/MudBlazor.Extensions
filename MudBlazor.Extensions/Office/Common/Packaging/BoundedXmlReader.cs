@@ -32,8 +32,8 @@ internal sealed class BoundedXmlReader(XmlReader inner, int maxDepth = BoundedXm
     {
         if (!inner.Read()) return false;
         if (inner.NodeType != XmlNodeType.Element) return true;
-        if (inner.Depth >= maxDepth) throw new InvalidDataException($"The XML is nested deeper than {maxDepth} levels.");
-        if (++Elements > maxElements) throw new InvalidDataException("The XML has too many elements.");
+        if (inner.Depth >= maxDepth) throw LoadLimit.Exceeded($"The XML is nested deeper than {maxDepth} levels.");
+        if (++Elements > maxElements) throw LoadLimit.Exceeded("The XML has too many elements.");
         return true;
     }
 

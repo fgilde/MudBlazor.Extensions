@@ -41,7 +41,7 @@ internal sealed class RtfPolicy
         {
             if (_ended) throw RtfTokenizer.Damaged();
             _started = true;
-            if (++_depth > _limits.Depth) throw new InvalidDataException("The RTF is nested too deeply.");
+            if (++_depth > _limits.Depth) throw LoadLimit.Exceeded("The RTF is nested too deeply.");
             _groups[_depth] = _groups[_depth - 1] with { Fresh = true };
             if (_skipFrom > 0) return;
             FlushOpen();
@@ -111,7 +111,7 @@ internal sealed class RtfPolicy
         var name = token.Name;
         if (fresh && Destinations.Contains(name)) _groups[_depth].Skip = true;
         if (name is "upr" or "ud" or "uc" or "bin") return;
-        if (name == "itap" && token.Value > RtfLimits.TableNesting) throw new InvalidDataException("The RTF nests tables too deeply.");
+        if (name == "itap" && token.Value > RtfLimits.TableNesting) throw LoadLimit.Exceeded("The RTF nests tables too deeply.");
         if (name == "ilvl") token = RtfToken.Word(name, Math.Clamp(token.Value, 0, RtfLimits.ListLevel));
         else if (name is "ansicpg" or "cpg" && token.HasValue && !Available(token.Value)) token = RtfToken.Word(name, CodePageFallback);
         else if (name == "tab" && !_groups[_depth].Skip) Write(RtfToken.Unicode(TabMark));
@@ -247,7 +247,7 @@ internal sealed class RtfPolicy
         if (word is "row" or "nestrow" || word is "par" && !inTable) _elements++;
         if (word is not "sect") _paragraphs++;
         if (_runWork > _limits.RunWork || _tableWork > _limits.TableWork || _paragraphs > _limits.Paragraphs)
-            throw new InvalidDataException("The RTF is too complex to read.");
+            throw LoadLimit.Exceeded("The RTF is too complex to read.");
         if (word is "sect") _elements = 0;
     }
 
