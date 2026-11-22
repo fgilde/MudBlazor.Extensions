@@ -255,7 +255,7 @@ public class RtfFormatTests
     public void Rtf_Read_HexEscapeHidesNoBraces()
     {
         var limits = RtfLimits.Default with { Depth = 2 };
-        Assert.Contains("nested", Assert.Throws<InvalidDataException>(() => Read(limits, @"{\rtf1{\'{{x}}}")).Message);
+        Assert.Contains("damaged", Assert.Throws<InvalidDataException>(() => Read(limits, @"{\rtf1{\'{{x}}}")).Message);
         Assert.Contains("damaged", Assert.Throws<InvalidDataException>(() => Read(limits, @"{\rtf1{\'4}{\'4}{\'4}x}")).Message);
         Assert.Equal("\u00FCx", Single(Read(limits, @"{\rtf1{\'fc}x}")).Text);
     }
@@ -267,42 +267,51 @@ public class RtfFormatTests
 
         Assert.Equal("alpha x", paragraph.Text);
         Assert.True(paragraph.Inlines.OfType<TextRun>().First().Format.Bold);
-        Assert.Equal(@"{\rtf1 {{a}}{x}y}", RtfFormat.Prepare(@"{\rtf1 {\upr{a}{\*\ud{b}}}{\upr x}\upr y}", RtfLimits.Default));
-        Assert.Equal(@"{\rtf1 {{a}", RtfFormat.Prepare(@"{\rtf1 {\upr{a}{\*\ud{b}", RtfLimits.Default));
+        Assert.Equal(@"{\rtf1 \uc1 {{a}}{x}y}", RtfFormat.Prepare(@"{\rtf1 {\upr{a}{\*\ud{b}}}{\upr x}\upr y}", RtfLimits.Default));
+        Assert.Equal(@"{\rtf1 \uc1 {{a}}}", RtfFormat.Prepare(@"{\rtf1 {\upr{a}{\*\ud{b}", RtfLimits.Default));
     }
 
     [Theory]
+    [InlineData(@"\up\upr r")]
+    [InlineData(@"\uc0\upr 1")]
+    [InlineData(@"\bi\upr n5")]
+    [InlineData(@"\it\upr ap2000")]
+    [InlineData(@"\il\upr vl5000")]
+    [InlineData(@"\up{\*\ud x}r")]
+    [InlineData(@"\uc1\u65532 X5")]
+    [InlineData(@"\uc1\u65 \upr")]
+    [InlineData(@"\upr\upr r")]
     [InlineData("footnote")]
     [InlineData("upr-unicode")]
+    [InlineData("emdash")]
+    [InlineData("uc0-unicode")]
+    [InlineData("itap")]
+    [InlineData("ilvl")]
     [InlineData("closing")]
     [InlineData("uc2")]
     [InlineData("uc0")]
     [InlineData("uc1")]
     [InlineData("upr-ud")]
-    public void Rtf_Read_RewrittenTextNeverNestsDeeperThanTheCap(string kind)
+    public void Rtf_Prepare_CanonicalFormTokenisesOnlyAsEmitted(string kind)
     {
         const int n = 2000;
         var rtf = kind switch
         {
             "footnote" => @"{\rtf1{\footnote " + Repeat(@"{\upr{}}", n) + "}}",
             "upr-unicode" => @"{\rtf1{\upr{" + Repeat(@"\u65{", n) + "}}",
+            "emdash" => @"{\rtf1 " + Repeat(@"{\emdash }", 200_000) + "}",
+            "uc0-unicode" => @"{\rtf1\uc0 " + Repeat(@"{\u65 }", 200_000) + "}",
+            "itap" => NestedTables(n),
+            "ilvl" => ListLevels(n),
             "closing" => @"{\rtf1 " + Repeat("}", n) + "x}",
             "uc2" => @"{\rtf1\uc2 " + Repeat(@"{\u65}}", n) + "}",
             "uc0" => @"{\rtf1\uc0 " + Repeat(@"{\u65{", n) + "}",
             "uc1" => @"{\rtf1\uc1 " + Repeat(@"\u65{", n) + "}",
-            _ => @"{\rtf1 " + Repeat(@"{\upr{a}{\*\ud{\u65 b}}}", n) + "}"
+            "upr-ud" => @"{\rtf1 " + Repeat(@"{\upr{a}{\*\ud{\u65 b}}}", n) + "}",
+            _ => @"{\rtf1{\footnote " + Repeat("{" + kind + "{}}", n) + "}}"
         };
 
-        string prepared = null;
-        try
-        {
-            prepared = RtfFormat.Prepare(rtf, RtfLimits.Default);
-        }
-        catch (InvalidDataException)
-        {
-        }
-
-        if (prepared != null) Assert.InRange(RtfPipeDepth(prepared), 0, RtfLimits.Default.Depth);
+        AssertCanonical(rtf);
         try
         {
             Load(rtf);
@@ -313,31 +322,104 @@ public class RtfFormatTests
     }
 
     [Fact]
+    public void Rtf_Prepare_DroppedWordsJoinNothingAndLoneSurrogatesAreDropped()
+    {
+        Assert.Equal(@"{\rtf1 \uc1 \it ap2000}", RtfFormat.Prepare(@"{\rtf1 \it\upr ap2000}", RtfLimits.Default));
+        Assert.Equal(@"{\rtf1 \uc1 \bi n5}", RtfFormat.Prepare(@"{\rtf1 \bi\upr n5}", RtfLimits.Default));
+        Assert.Equal(@"{\rtf1 \uc1 1}", RtfFormat.Prepare(@"{\rtf1 \uc0\upr 1}", RtfLimits.Default));
+        Assert.Equal(@"{\rtf1 \uc1 \up r}", RtfFormat.Prepare(@"{\rtf1 \up{\*\ud x}r}", RtfLimits.Default));
+        Assert.Equal(@"{\rtf1 \uc1 5}", RtfFormat.Prepare(@"{\rtf1 \uc1\u65532 X5}", RtfLimits.Default));
+        Assert.Equal(@"{\rtf1 \uc1 \u-10179?\u-8704?\u252?\{\}\\\'e9}", RtfFormat.Prepare("{\\rtf1 \\u-10179?\\u-8704?\u00FC\\{\\}\\\\\\'E9}", RtfLimits.Default));
+        Assert.Equal("abc", Single(Load(@"{\rtf1 a\u-10179?b\u-8704?c}")).Text);
+        Assert.Equal("x", Single(Load("{\\rtf1 x}\0\r\n }")).Text);
+        Assert.Throws<InvalidDataException>(() => Load(@"{\rtf1 x}{\b y}"));
+    }
+
+    [Fact]
+    public void Rtf_Prepare_RandomInputKeepsTheCanonicalInvariants()
+    {
+        string[] alphabet =
+        [
+            "{", "}", "\\", "\\", "\\", "'", "a", "b", "f", "x", "0", "1", "5", "9", " ", "-", "\r",
+            "upr", "ud", "uc", "u", "bin", "itap", "ilvl", "par", "cell", "row"
+        ];
+        var random = new Random(20261122);
+        var rejected = 0;
+        for (var k = 0; k < 2000; k++)
+        {
+            var rtf = new StringBuilder(@"{\rtf1 ");
+            for (var count = random.Next(1, 120); count > 0; count--) rtf.Append(alphabet[random.Next(alphabet.Length)]);
+            if (!AssertCanonical(rtf.ToString())) rejected++;
+        }
+
+        Assert.InRange(rejected, 1, 1500);
+    }
+
+    private static bool AssertCanonical(string rtf)
+    {
+        List<RtfToken> tokens;
+        try
+        {
+            tokens = RtfFormat.Canonical(rtf, RtfLimits.Default);
+        }
+        catch (InvalidDataException)
+        {
+            return false;
+        }
+
+        var text = RtfFormat.Emit(tokens);
+        Assert.Equal(text, RtfFormat.Prepare(rtf, RtfLimits.Default));
+        Assert.Equal(tokens, RtfTokenizer.Tokenize(text, int.MaxValue).ToList());
+        var (depth, max) = (0, 0);
+        foreach (var token in tokens)
+        {
+            if (token.Kind == RtfTokenKind.GroupOpen) max = Math.Max(max, ++depth);
+            if (token.Kind == RtfTokenKind.GroupClose) depth--;
+            Assert.True(depth >= 0, rtf);
+        }
+
+        Assert.Equal(0, depth);
+        Assert.InRange(max, 1, RtfLimits.Default.Depth);
+        Assert.InRange(RtfPipeDepth(text), 1, RtfLimits.Default.Depth);
+        Assert.Equal(RtfToken.Word("uc", 1), tokens[2]);
+        var words = tokens.Skip(3).Where(t => t.Kind == RtfTokenKind.Word).ToList();
+        Assert.DoesNotContain(words, w => w.Name is "upr" or "ud" or "bin" or "uc" or "u");
+        Assert.DoesNotContain(words, w => w.Name == "itap" && w.Value > RtfLimits.TableNesting);
+        Assert.DoesNotContain(words, w => w.Name == "ilvl" && (w.Value > RtfLimits.ListLevel || w.Value < 0));
+        return true;
+    }
+
+    private static string NestedTables(int depth) => @"{\rtf1\ansi " +
+        string.Concat(Enumerable.Range(2, depth - 1).Reverse().Select(k => $@"\pard\intbl\itap{k} x\nestcell{{\*\nesttableprops\trowd\cellx1000\nestrow}}")) +
+        @"\pard\intbl\itap1 y\cell\trowd\cellx1000\row}";
+
+    private static string ListLevels(int count)
+    {
+        var levels = string.Concat(Enumerable.Range(0, count).Select(_ => @"{\listlevel\levelnfc23{\leveltext\'01-;}\li720}"));
+        return @"{\rtf1{\*\listtable{\list\listid1" + levels + @"}}{\*\listoverridetable{\listoverride\listid1\ls1}}" +
+               string.Concat(Enumerable.Range(0, count).Select(k => $@"\pard\ls1\ilvl{k} item\par ")) + "}";
+    }
+
+    [Fact]
     public void Rtf_Read_TableNestingAndListLevelsAreBounded()
     {
-        static string Nested(int depth) => @"{\rtf1\ansi " +
-            string.Concat(Enumerable.Range(2, depth - 1).Reverse().Select(k => $@"\pard\intbl\itap{k} x\nestcell{{\*\nesttableprops\trowd\cellx1000\nestrow}}")) +
-            @"\pard\intbl\itap1 y\cell\trowd\cellx1000\row}";
-        var levels = string.Concat(Enumerable.Range(0, 2000).Select(_ => @"{\listlevel\levelnfc23{\leveltext\'01-;}\li720}"));
-        var lists = @"{\rtf1{\*\listtable{\list\listid1" + levels + @"}}{\*\listoverridetable{\listoverride\listid1\ls1}}" +
-                    string.Concat(Enumerable.Range(0, 2000).Select(k => $@"\pard\ls1\ilvl{k} item\par ")) + "}";
+        var lists = ListLevels(2000);
 
-        Assert.Contains(Load(Nested(RtfLimits.TableNesting)).AllParagraphs(), p => p.Text == "y");
-        Assert.Contains("tables", Assert.Throws<InvalidDataException>(() => Load(Nested(RtfLimits.TableNesting + 1))).Message);
-        Assert.Throws<InvalidDataException>(() => RtfFormat.Prepare(Nested(2000), RtfLimits.Default));
+        Assert.Contains(Load(NestedTables(RtfLimits.TableNesting)).AllParagraphs(), p => p.Text == "y");
+        Assert.Contains("tables", Assert.Throws<InvalidDataException>(() => Load(NestedTables(RtfLimits.TableNesting + 1))).Message);
+        Assert.Throws<InvalidDataException>(() => RtfFormat.Prepare(NestedTables(2000), RtfLimits.Default));
         Assert.DoesNotMatch(@"\\ilvl(9|[1-9]\d)", RtfFormat.Prepare(lists, RtfLimits.Default));
         Assert.NotEmpty(Load(lists).AllParagraphs());
     }
 
     [Fact]
-    public void Rtf_Read_UnicodeFallbackSkipsCharactersLikeRtfPipe()
+    public void Rtf_Read_UnicodeFallbackSkipsUnitsAsTheSpecificationDefines()
     {
-        Assert.Equal("Ax", Single(Read(RtfLimits.Default with { Depth = 2 }, @"{\rtf1\uc1 \u65\{x}")).Text);
-        Reject(RtfLimits.Default with { Depth = 1 }, @"{\rtf1\uc1 \u65\{x}");
-        Assert.Equal("AAAx", Single(Read(RtfLimits.Default with { Depth = 4 }, @"{\rtf1\uc1{\u65}{\u65}{\u65}x}")).Text);
-        Reject(RtfLimits.Default with { Depth = 3 }, @"{\rtf1\uc1{\u65}{\u65}{\u65}x}");
+        Assert.Equal("Ax", Single(Read(RtfLimits.Default with { Depth = 1 }, @"{\rtf1\uc1 \u65\{x}")).Text);
+        Assert.Equal("AAAx", Single(Read(RtfLimits.Default with { Depth = 2 }, @"{\rtf1\uc1{\u65}{\u65}{\u65}x}")).Text);
+        Reject(RtfLimits.Default with { Depth = 1 }, @"{\rtf1\uc1{\u65}{\u65}{\u65}x}");
         Assert.Equal("Ax", Single(Load(@"{\rtf1\uc1 \u65\'e9x}")).Text);
-        Assert.Equal("Apar x", Single(Load(@"{\rtf1\uc1 \u65\par x}")).Text);
+        Assert.Equal("Ax", Single(Load(@"{\rtf1\uc1 \u65\par x}")).Text);
         Assert.Equal("Ax", Single(Load("{\\rtf1\\uc1 \\u65\tx}")).Text);
     }
 
@@ -346,8 +428,8 @@ public class RtfFormatTests
     {
         var rtf = @"{\rtf1\uc2 " + Repeat(@"\u65\par\par ", 10) + "}";
 
-        Assert.Equal("Aar", Read(RtfLimits.Default with { Paragraphs = 10 }, rtf).Blocks.Cast<Paragraph>().First().Text);
-        Reject(RtfLimits.Default with { Paragraphs = 9 }, rtf);
+        Assert.Equal(new string('A', 10), Single(Read(RtfLimits.Default with { Paragraphs = 0 }, rtf)).Text);
+        Assert.DoesNotContain(@"\par", RtfFormat.Prepare(rtf, RtfLimits.Default));
         Reject(RtfLimits.Default with { Paragraphs = 9 }, @"{\rtf1 " + Repeat(@"{\page }", 10) + "}");
         Accept(RtfLimits.Default with { Paragraphs = 10 }, @"{\rtf1 " + Repeat(@"{\page }", 10) + "}");
         Reject(RtfLimits.Default with { Paragraphs = 9 }, @"{\rtf1 " + Repeat(@"{\sect }", 10) + "}");
@@ -366,6 +448,11 @@ public class RtfFormatTests
         Accept(RtfLimits.Default with { RunWork = 27 },@"{\rtf1 " + Repeat("{xxx}", 3) + "}");
         Reject(RtfLimits.Default with { RunWork = 26 }, @"{\rtf1 " + Repeat("{xxx}", 3) + "}");
         Assert.Equal("a", Single(Load(@"{\rtf1 a" + Repeat(@"{\chpgn }{\column }{\softline }", 50_000) + "}")).Text);
+        var hexWork = 256 + Enumerable.Range(1, 256).Sum(k => k >> 7);
+        Accept(RtfLimits.Default with { RunWork = hexWork }, @"{\rtf1 " + Repeat(@"\'e9", 256) + "}");
+        Reject(RtfLimits.Default with { RunWork = hexWork - 1 }, @"{\rtf1 " + Repeat(@"\'e9", 256) + "}");
+        Reject(RtfLimits.Default, @"{\rtf1 " + Repeat(@"\'e9", 2_000_000) + "}");
+        Assert.Equal(800_000, Single(Load(@"{\rtf1 " + Repeat(@"\'e9\'e9 ", 400_000) + "}")).Text.Count(c => c == '\u00E9'));
         Assert.Equal(20_000 * 10, Single(Load(@"{\rtf1 " + Repeat(@"\chdate ", 20_000) + "}")).Text.Length);
     }
 
