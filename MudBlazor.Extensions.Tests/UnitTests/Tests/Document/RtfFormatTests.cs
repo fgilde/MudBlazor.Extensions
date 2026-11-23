@@ -261,6 +261,14 @@ public class RtfFormatTests
     }
 
     [Fact]
+    public void Rtf_Read_DroppedWordsDoNotHideTheGroupStart()
+    {
+        Assert.Equal("a", Single(Load(@"{\rtf1 {\upr{a}{\uc0\*\ud{b}}}}")).Text);
+        var prepared = RtfFormat.Prepare(@"{\rtf1 {\uc1\fonttbl{\f0 Ari\tab al;}}}", RtfLimits.Default);
+        Assert.DoesNotContain("\\u-4?", prepared);
+    }
+
+    [Fact]
     public void Rtf_Read_UprKeepsTheAnsiTextAndNeverReachesRtfPipe()
     {
         var paragraph = Single(Load(@"{\rtf1\ansi {\upr{\b alpha}{\*\ud{\b \u945\'e1}}} x\par}"));

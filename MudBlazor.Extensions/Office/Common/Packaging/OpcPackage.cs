@@ -171,11 +171,16 @@ internal sealed class OpcPackage
     {
         const int Chunk = 81920;
         using var source = entry.Open();
-        using var data = new MemoryStream((int)Math.Min(entry.Length, 4L * 1024 * 1024));
+        using var data = new MemoryStream((int)Math.Min(entry.Length + 1, 4L * 1024 * 1024));
         var buffer = new byte[Chunk];
         int read;
         while (data.Length <= entry.Length && (read = source.Read(buffer, 0, (int)Math.Min(Chunk, entry.Length - data.Length + 1))) > 0)
+        {
+            var needed = (int)data.Length + read;
+            if (needed > data.Capacity) data.Capacity = (int)Math.Max(needed, Math.Min(2L * data.Capacity, entry.Length + 1));
             data.Write(buffer, 0, read);
+        }
+
         var bytes = data.Capacity == data.Length ? data.GetBuffer() : data.ToArray();
         if (bytes.Length != entry.Length || Crc32(bytes) != entry.Crc32) throw LoadLimit.Exceeded($"The {name} does not have its declared size or checksum.");
         return bytes;

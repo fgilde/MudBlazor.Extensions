@@ -146,8 +146,7 @@ public class DocumentSearchTests
         Assert.True(stopped.Truncated);
         Assert.Equal((45, false), (complete.Ranges.Count, complete.Truncated));
         Assert.Equal(complete.Ranges, DocumentSearch.FindAll(document, "a"));
-        Assert.Equal(complete.Ranges[2], DocumentSearch.FindNext(document, complete.Ranges[1].End, "a", null, out var truncated));
-        Assert.False(truncated);
+        Assert.Equal(new FindNextResult(complete.Ranges[2], false), DocumentSearch.FindNextWithStatus(document, complete.Ranges[1].End, "a"));
     }
 
     [Fact]

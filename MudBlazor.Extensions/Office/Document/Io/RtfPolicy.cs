@@ -85,8 +85,9 @@ internal sealed class RtfPolicy
             return;
         }
 
+        if (token is { Kind: RtfTokenKind.Word, Name: "upr" or "ud" or "uc" or "bin" }) return; // dropped words leave the group-start state alone
         FlushOpen();
-        var fresh = _groups[_depth].Fresh;
+        var fresh =_groups[_depth].Fresh;
         _groups[_depth].Fresh = false;
         switch (token.Kind)
         {
@@ -110,7 +111,6 @@ internal sealed class RtfPolicy
     {
         var name = token.Name;
         if (fresh && Destinations.Contains(name)) _groups[_depth].Skip = true;
-        if (name is "upr" or "ud" or "uc" or "bin") return;
         if (name == "itap" && token.Value > RtfLimits.TableNesting) throw LoadLimit.Exceeded("The RTF nests tables too deeply.");
         if (name == "ilvl") token = RtfToken.Word(name, Math.Clamp(token.Value, 0, RtfLimits.ListLevel));
         else if (name is "ansicpg" or "cpg" && token.HasValue && !Available(token.Value)) token = RtfToken.Word(name, CodePageFallback);

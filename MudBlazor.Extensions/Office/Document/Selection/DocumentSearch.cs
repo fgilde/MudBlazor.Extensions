@@ -15,11 +15,17 @@ public sealed record FindOptions(bool MatchCase = false, bool WholeWord = false,
 /// holds only the matches found until then.</param>
 public sealed record FindResult(IReadOnlyList<DocumentRange> Ranges, bool Truncated);
 
+/// <summary>The next match of a search.</summary>
+/// <param name="Match">The range of the match, or null if none was found.</param>
+/// <param name="Truncated">True if the search deadline or the timeout of a regular expression ended the search early; <paramref name="Match"/> may then
+/// not be the next match.</param>
+public sealed record FindNextResult(DocumentRange? Match, bool Truncated);
+
 /// <summary>
 /// Finds and replaces text in a <see cref="TextDocument"/>. Matches run over <see cref="Paragraph.Text"/> and never cross paragraphs or tokens such as
 /// images; a match that would end inside a surrogate pair is widened to the whole character. Regular expressions run with a one second timeout per
 /// match and the whole search with a five second deadline; either ends the search with the matches found so far, which
-/// <see cref="Find(TextDocument, string, FindOptions)"/> and <see cref="FindNext(TextDocument, DocumentPosition, string, FindOptions, out bool)"/>
+/// <see cref="Find(TextDocument, string, FindOptions)"/> and <see cref="FindNextWithStatus(TextDocument, DocumentPosition, string, FindOptions)"/>
 /// report as truncated and <see cref="ReplaceAll(TextDocument, string, string, FindOptions)"/> rejects.
 /// </summary>
 public static class DocumentSearch
@@ -58,22 +64,20 @@ public static class DocumentSearch
     /// <returns>The range of the match, or null if there is none.</returns>
     /// <exception cref="ArgumentException">The query is not a valid regular expression.</exception>
     public static DocumentRange? FindNext(TextDocument document, DocumentPosition from, string query, FindOptions options = null) =>
-        FindNext(document, from, query, options, out _);
+        FindNextWithStatus(document, from, query, options).Match;
 
     /// <summary>Finds the first match that starts at or after a position, wrapping around, and tells whether the search ended early.</summary>
     /// <param name="document">The document.</param>
     /// <param name="from">The position to search from, usually the end of the selection.</param>
     /// <param name="query">The text or regular expression.</param>
     /// <param name="options">The options; null for the defaults.</param>
-    /// <param name="truncated">True if the deadline or a regular expression timeout cut the search short; the result may then not be the next match.</param>
-    /// <returns>The range of the match, or null if none was found.</returns>
+    /// <returns>The match, or null if none was found, and whether the deadline or a regular expression timeout cut the search short.</returns>
     /// <exception cref="ArgumentException">The query is not a valid regular expression.</exception>
-    public static DocumentRange? FindNext(TextDocument document, DocumentPosition from, string query, FindOptions options, out bool truncated)
+    public static FindNextResult FindNextWithStatus(TextDocument document, DocumentPosition from, string query, FindOptions options = null)
     {
         ArgumentNullException.ThrowIfNull(from);
-        var (all, cut) = Find(document, query, options);
-        truncated = cut;
-        return all.Count == 0 ? null : all.FirstOrDefault(r => document.Compare(r.Start, from) >= 0, all[0]);
+        var (all, truncated) = Find(document, query, options);
+        return new FindNextResult(all.Count == 0 ? null : all.FirstOrDefault(r => document.Compare(r.Start, from) >= 0, all[0]), truncated);
     }
 
     /// <summary>
