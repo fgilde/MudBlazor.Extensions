@@ -109,8 +109,9 @@ public class DocumentSurfaceRenderTests
         var paragraph = render.Render(document.Blocks[0]);
         var table = render.Render(document.Blocks[3]);
 
-        Assert.Contains("margin-left:1584pt", paragraph.Css);
+        Assert.Contains("padding-left:1584pt", paragraph.Css);
         Assert.Contains("text-indent:-1584pt", paragraph.Css);
+        Assert.DoesNotContain("margin-left:", paragraph.Css);
         Assert.Contains("margin-right:-1584pt", paragraph.Css);
         Assert.Contains("margin-top:0pt", paragraph.Css);
         Assert.Contains("margin-bottom:1584pt", paragraph.Css);
@@ -249,9 +250,35 @@ public class DocumentSurfaceRenderTests
         var block = new DocumentSurfaceRender(document).Render(document.Blocks[0]);
 
         Assert.Equal("1.", block.Label);
+        Assert.Contains("padding-left:18pt", block.Css);
+        Assert.Contains("margin-left:18pt", block.Css);
         Assert.Contains("text-indent:-18pt", block.Css);
-        Assert.Contains("margin-left:36pt", block.Css);
+        Assert.DoesNotContain("margin-left:36pt", block.Css);
         Assert.Contains("min-width:18pt", block.LabelCss);
+    }
+
+    [Fact]
+    public void HangingIndent_StaysInsideTheBlock_HtmlExportUnchanged()
+    {
+        var document = TextDocument.FromBlocks(
+        [
+            new Paragraph { Format = new ParagraphFormat { IndentLeft = 720, IndentFirstLine = -1440 }, Inlines = [new TextRun("outdented")] },
+            new Paragraph { Format = new ParagraphFormat { IndentLeft = 1440, IndentFirstLine = 360 }, Inlines = [new TextRun("indented")] }
+        ]);
+        var render = new DocumentSurfaceRender(document);
+
+        var hanging = render.Render(document.Blocks[0]).Css;
+        var positive = render.Render(document.Blocks[1]).Css;
+
+        Assert.Contains("padding-left:36pt", hanging);
+        Assert.Contains("text-indent:-36pt", hanging);
+        Assert.DoesNotContain("margin-left:", hanging);
+        Assert.Contains("margin-left:72pt", positive);
+        Assert.Contains("text-indent:18pt", positive);
+        Assert.DoesNotContain("padding-left:", positive);
+        var html = Html(document);
+        Assert.Contains("margin-left:36pt;text-indent:-72pt", html);
+        Assert.DoesNotContain("padding-left", html);
     }
 
     [Fact]

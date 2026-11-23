@@ -42,11 +42,22 @@ internal static class DocumentCss
         return css.ToString();
     }
 
-    internal static string Paragraph(ParagraphFormat format, ParagraphFormat basis, bool listItem, bool preWrap)
+    internal static string Paragraph(ParagraphFormat format, ParagraphFormat basis, bool listItem, bool preWrap, bool padHanging = false)
     {
         var css = new StringBuilder(preWrap ? "white-space:pre-wrap;" : "");
         if (format.Alignment is { } alignment and not ParagraphAlignment.Left && alignment != basis.Alignment)
             css.Append("text-align:").Append(alignment switch { ParagraphAlignment.Center => "center", ParagraphAlignment.Right => "right", _ => "justify" }).Append(';');
+        if (padHanging && !listItem && (format.IndentFirstLine ?? 0) < 0)
+        {
+            var left = Math.Clamp(format.IndentLeft ?? 0, -MaxTwips, MaxTwips);
+            var hanging = Math.Min(-(long)format.IndentFirstLine.Value, MaxTwips);
+            var (margin, padding) = left >= hanging ? (left - hanging, hanging) : (0, Math.Max(left, 0));
+            if (margin != 0) css.Append("margin-left:").Append(Twips(margin, 0)).Append("pt;");
+            if (padding != 0) css.Append("padding-left:").Append(Twips(padding, 0)).Append("pt;text-indent:-").Append(Twips(padding, 0)).Append("pt;");
+            if (Color(format.Shading) is { } fill) css.Append("background-color:").Append(fill).Append(';');
+            return css.ToString();
+        }
+
         if (!listItem && (format.IndentLeft ?? 0) != (basis.IndentLeft ?? 0)) css.Append("margin-left:").Append(Twips(format.IndentLeft, -MaxTwips)).Append("pt;");
         if (!listItem && (format.IndentFirstLine ?? 0) != (basis.IndentFirstLine ?? 0))
             css.Append("text-indent:").Append(Twips(format.IndentFirstLine, -MaxTwips)).Append("pt;");

@@ -72,7 +72,7 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         var runs = Formats(paragraph);
         var basis = Basis(paragraph, mark, runs);
         var label = document.ListLabel(paragraph);
-        var css = DocumentCss.Paragraph(format, NoParagraph, false, false) + DocumentCss.Spacing(format) + DocumentCss.Run(basis, defaults, true);
+        var css = DocumentCss.Paragraph(format, NoParagraph, false, false, true) + DocumentCss.Spacing(format) + DocumentCss.Run(basis, defaults, true);
         return new SurfaceBlock(paragraph.Id, "p", css, paragraph.Text, label, label == null ? null : LabelCss(format, mark, basis), Runs(runs, basis), null, null, null);
     }
 
