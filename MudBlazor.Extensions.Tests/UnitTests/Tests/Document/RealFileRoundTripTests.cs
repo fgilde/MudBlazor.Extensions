@@ -90,8 +90,16 @@ public class RealFileRoundTripTests
     public void DocumentSources_AreAsciiOnly()
     {
         var root = Root();
-        var files = new[] { Path.Combine(root, "MudBlazor.Extensions", "Office", "Document"), Path.Combine(root, "MudBlazor.Extensions.Tests", "UnitTests", "Tests", "Document") }
-            .SelectMany(d => Directory.GetFiles(d, "*.cs", SearchOption.AllDirectories)).ToList();
+        var library = Path.Combine(root, "MudBlazor.Extensions");
+        var tests = Path.Combine(root, "MudBlazor.Extensions.Tests", "UnitTests", "Tests");
+        var surface = Path.Combine(library, "Components", "Document");
+        var files = new[] { Path.Combine(library, "Office", "Document"), Path.Combine(tests, "Document") }
+            .SelectMany(d => Directory.GetFiles(d, "*.cs", SearchOption.AllDirectories))
+            .Concat(Directory.Exists(surface) ? Directory.GetFiles(surface, "*", SearchOption.AllDirectories) : [])
+            .Concat(Directory.GetFiles(Path.Combine(library, "wwwroot", "js", "components"), "MudExDocument*.js"))
+            .Concat(Directory.GetFiles(Path.Combine(library, "wwwroot", "css", "components"), "_mudexdocument.scss"))
+            .Concat(Directory.GetFiles(Path.Combine(tests, "Components"), "Document*.cs"))
+            .ToList();
 
         Assert.NotEmpty(files);
         foreach (var file in files)

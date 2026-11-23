@@ -424,6 +424,18 @@ internal static class Tables
         return result;
     }
 
+    internal static IEnumerable<(int Column, TableCell Cell, int RowSpan)> Visible(Table table, int row)
+    {
+        foreach (var (column, cell) in Layout(table.Rows[row]).Where(c => c.Cell.VMerge != VerticalMerge.Continue))
+        {
+            var rows = 1;
+            if (cell.VMerge == VerticalMerge.Restart)
+                while (row + rows < table.Rows.Count && Layout(table.Rows[row + rows]).Any(c => c.Column == column && c.Cell.VMerge == VerticalMerge.Continue))
+                    rows++;
+            yield return (column, cell, rows);
+        }
+    }
+
     internal static TableCell At(TableRow row, int column, int span) =>
         Layout(row).FirstOrDefault(p => p.Column == column && p.Cell.GridSpan == span).Cell;
 

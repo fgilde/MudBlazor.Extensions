@@ -940,6 +940,192 @@
             Component to display information about the current recording
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceBlock">
+            <summary>A block of the document editor surface as sent to the browser. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Id">The block id.</param>
+            <param name="K">The kind: <c>p</c> paragraph, <c>t</c> table, <c>o</c> visible opaque block (read-only preview in <paramref name="Blocks"/>), <c>h</c> hidden block.</param>
+            <param name="Css">The inline style of the element.</param>
+            <param name="Text">The model text of a paragraph (<see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>); null for other kinds.</param>
+            <param name="Label">The list label of a paragraph, shown as text; null if none.</param>
+            <param name="LabelCss">The inline style of the list label; null if none.</param>
+            <param name="Runs">The runs of a paragraph; null for other kinds.</param>
+            <param name="Grid">The widths of the grid columns of a table in pixels; null for other kinds.</param>
+            <param name="Rows">The rows of a table; null for other kinds.</param>
+            <param name="Blocks">The preview of an opaque block; null for other kinds.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceBlock.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfaceRun},System.Collections.Generic.IReadOnlyList{System.Int32},System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfaceRow},System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfaceBlock})">
+            <summary>A block of the document editor surface as sent to the browser. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Id">The block id.</param>
+            <param name="K">The kind: <c>p</c> paragraph, <c>t</c> table, <c>o</c> visible opaque block (read-only preview in <paramref name="Blocks"/>), <c>h</c> hidden block.</param>
+            <param name="Css">The inline style of the element.</param>
+            <param name="Text">The model text of a paragraph (<see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>); null for other kinds.</param>
+            <param name="Label">The list label of a paragraph, shown as text; null if none.</param>
+            <param name="LabelCss">The inline style of the list label; null if none.</param>
+            <param name="Runs">The runs of a paragraph; null for other kinds.</param>
+            <param name="Grid">The widths of the grid columns of a table in pixels; null for other kinds.</param>
+            <param name="Rows">The rows of a table; null for other kinds.</param>
+            <param name="Blocks">The preview of an opaque block; null for other kinds.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceBlock.Id">
+            <summary>The block id.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceBlock.K">
+            <summary>The kind: <c>p</c> paragraph, <c>t</c> table, <c>o</c> visible opaque block (read-only preview in <paramref name="Blocks"/>), <c>h</c> hidden block.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceBlock.Css">
+            <summary>The inline style of the element.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceBlock.Text">
+            <summary>The model text of a paragraph (<see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/>); null for other kinds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceBlock.Label">
+            <summary>The list label of a paragraph, shown as text; null if none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceBlock.LabelCss">
+            <summary>The inline style of the list label; null if none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceBlock.Runs">
+            <summary>The runs of a paragraph; null for other kinds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceBlock.Grid">
+            <summary>The widths of the grid columns of a table in pixels; null for other kinds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceBlock.Rows">
+            <summary>The rows of a table; null for other kinds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceBlock.Blocks">
+            <summary>The preview of an opaque block; null for other kinds.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceRun">
+            <summary>A run of a surface paragraph. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="K">The kind: <c>t</c> text (tabs inside), <c>v</c> line break, <c>f</c> page or column break, <c>o</c> token, <c>i</c> image.</param>
+            <param name="T">The text of a text run or the display text of a token; null for other kinds.</param>
+            <param name="Css">The inline style of the run.</param>
+            <param name="Media">The media part of an image; null for other kinds.</param>
+            <param name="W">The width of an image in pixels; 0 for other kinds.</param>
+            <param name="H">The height of an image in pixels; 0 for other kinds.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceRun.#ctor(System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>A run of a surface paragraph. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="K">The kind: <c>t</c> text (tabs inside), <c>v</c> line break, <c>f</c> page or column break, <c>o</c> token, <c>i</c> image.</param>
+            <param name="T">The text of a text run or the display text of a token; null for other kinds.</param>
+            <param name="Css">The inline style of the run.</param>
+            <param name="Media">The media part of an image; null for other kinds.</param>
+            <param name="W">The width of an image in pixels; 0 for other kinds.</param>
+            <param name="H">The height of an image in pixels; 0 for other kinds.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceRun.K">
+            <summary>The kind: <c>t</c> text (tabs inside), <c>v</c> line break, <c>f</c> page or column break, <c>o</c> token, <c>i</c> image.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceRun.T">
+            <summary>The text of a text run or the display text of a token; null for other kinds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceRun.Css">
+            <summary>The inline style of the run.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceRun.Media">
+            <summary>The media part of an image; null for other kinds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceRun.W">
+            <summary>The width of an image in pixels; 0 for other kinds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceRun.H">
+            <summary>The height of an image in pixels; 0 for other kinds.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceRow">
+            <summary>A row of a surface table. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Css">The inline style of the row.</param>
+            <param name="Cells">The visible cells; cells continuing a vertical merge are left out.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceRow.#ctor(System.String,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfaceCell})">
+            <summary>A row of a surface table. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Css">The inline style of the row.</param>
+            <param name="Cells">The visible cells; cells continuing a vertical merge are left out.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceRow.Css">
+            <summary>The inline style of the row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceRow.Cells">
+            <summary>The visible cells; cells continuing a vertical merge are left out.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceCell">
+            <summary>A cell of a surface table row. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="ColSpan">The number of grid columns the cell spans.</param>
+            <param name="RowSpan">The number of rows the cell spans.</param>
+            <param name="Css">The inline style of the cell.</param>
+            <param name="Blocks">The content.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceCell.#ctor(System.Int32,System.Int32,System.String,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfaceBlock})">
+            <summary>A cell of a surface table row. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="ColSpan">The number of grid columns the cell spans.</param>
+            <param name="RowSpan">The number of rows the cell spans.</param>
+            <param name="Css">The inline style of the cell.</param>
+            <param name="Blocks">The content.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceCell.ColSpan">
+            <summary>The number of grid columns the cell spans.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceCell.RowSpan">
+            <summary>The number of rows the cell spans.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceCell.Css">
+            <summary>The inline style of the cell.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceCell.Blocks">
+            <summary>The content.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceUpsert">
+            <summary>Inserts or replaces a block of the surface. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Block">The rendered block.</param>
+            <param name="After">The id of the top-level block the block goes after, or null for the first position.</param>
+            <param name="InPlace">True to replace the element with the same id wherever it is; false to place the block after <paramref name="After"/>.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceUpsert.#ctor(MudBlazor.Extensions.Components.SurfaceBlock,System.String,System.Boolean)">
+            <summary>Inserts or replaces a block of the surface. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Block">The rendered block.</param>
+            <param name="After">The id of the top-level block the block goes after, or null for the first position.</param>
+            <param name="InPlace">True to replace the element with the same id wherever it is; false to place the block after <paramref name="After"/>.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceUpsert.Block">
+            <summary>The rendered block.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceUpsert.After">
+            <summary>The id of the top-level block the block goes after, or null for the first position.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceUpsert.InPlace">
+            <summary>True to replace the element with the same id wherever it is; false to place the block after <paramref name="After"/>.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfacePatch">
+            <summary>A change of the surface. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Seq">The sequence number; patches are applied in this order.</param>
+            <param name="Reset">True to clear the surface before applying the patch.</param>
+            <param name="SheetCss">The new inline style of the sheet, or null to keep it.</param>
+            <param name="Remove">The ids of the elements to remove.</param>
+            <param name="Upsert">The blocks to insert or replace, in order.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfacePatch.#ctor(System.Int32,System.Boolean,System.String,System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfaceUpsert})">
+            <summary>A change of the surface. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Seq">The sequence number; patches are applied in this order.</param>
+            <param name="Reset">True to clear the surface before applying the patch.</param>
+            <param name="SheetCss">The new inline style of the sheet, or null to keep it.</param>
+            <param name="Remove">The ids of the elements to remove.</param>
+            <param name="Upsert">The blocks to insert or replace, in order.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfacePatch.Seq">
+            <summary>The sequence number; patches are applied in this order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfacePatch.Reset">
+            <summary>True to clear the surface before applying the patch.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfacePatch.SheetCss">
+            <summary>The new inline style of the sheet, or null to keep it.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfacePatch.Remove">
+            <summary>The ids of the elements to remove.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfacePatch.Upsert">
+            <summary>The blocks to insert or replace, in order.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.IMudExFileEditor">
             <summary>
             A file display that can edit and save the file it shows.
