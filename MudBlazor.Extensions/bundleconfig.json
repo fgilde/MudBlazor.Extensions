@@ -264,5 +264,11 @@
     "inputFiles": [
       "wwwroot/js/components/MudExDocumentInput.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentComposition.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentComposition.js"
+    ]
   }
 ]

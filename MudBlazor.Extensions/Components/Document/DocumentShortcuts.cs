@@ -36,15 +36,7 @@ internal static class DocumentShortcuts
         ["Ctrl+H"] = "replace"
     };
 
-    public static readonly IReadOnlyDictionary<string, string> Aliases = new Dictionary<string, string>
-    {
-        ["Ctrl+ "] = "Ctrl+Space",
-        ["Ctrl+Shift++"] = "Ctrl+Shift+=",
-        ["Ctrl+Shift+>"] = "Ctrl+Shift+.",
-        ["Ctrl+Shift+<"] = "Ctrl+Shift+,"
-    };
+    public static string ActionOf(string key) => key == null ? null : Map.GetValueOrDefault(key);
 
-    public static string ActionOf(string key) => key == null ? null : Map.GetValueOrDefault(Aliases.GetValueOrDefault(key, key));
-
-    public static string[] Keys(params string[] without) => [.. Map.Keys.Concat(Aliases.Keys).Where(k => !without.Contains(ActionOf(k)))];
+    public static string[] Keys(params string[] without) => [.. Map.Keys.Where(k => !without.Contains(ActionOf(k)))];
 }

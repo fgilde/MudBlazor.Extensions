@@ -1,19 +1,36 @@
+import { ZWSP } from './MudExRichText.js';
 import { offsetOf, pointAt, pointOf, length, strip, units } from './MudExDocumentDom.js';
 
 const LOCAL = new Set(['insertText', 'insertReplacementText', 'deleteContentBackward', 'deleteContentForward', 'deleteWordBackward', 'deleteWordForward']);
-const QUEUED = /^(insertText|insertReplacementText|insertParagraph|insertLineBreak|delete(Content|Word|Soft|Hard|Entire))/;
+const QUEUED = /^(insertText|insertReplacementText|insertParagraph|insertLineBreak|delete(Content|Word)(Backward|Forward))$/;
+const COMPOSITION = new Set(['insertCompositionText', 'deleteCompositionText', 'insertFromComposition', 'deleteByComposition']);
 const NAVIGATION = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown']);
-const BLOCKED = /^(insertFromPaste|insertFromDrop|insertFromYank|deleteByCut|deleteByDrag|format|history)/;
+const STRUCTURAL = new Set(['Enter', 'Backspace', 'Delete']);
+const CODES = {
+    Space: 'Space', Equal: '=', Minus: '-', BracketLeft: '[', BracketRight: ']', Comma: ',', Period: '.', Slash: '/', Backslash: '\\',
+    Semicolon: ';', Quote: '\'', Backquote: '`'
+};
 
 const stop = e => {
     e.preventDefault();
     e.stopPropagation();
 };
 
-const shortcutOf = e => {
-    const name = e.key?.length === 1 ? e.key.toUpperCase() : e.key;
-    return `${e.ctrlKey || e.metaKey ? 'Ctrl+' : ''}${e.altKey ? 'Alt+' : ''}${e.shiftKey ? 'Shift+' : ''}${name}`;
+const keyName = e => {
+    const code = e.code ?? '';
+    if (/^Key[A-Z]$/.test(code)) {
+        return /^[a-z]$/i.test(e.key ?? '') ? e.key.toUpperCase() : code.slice(3);
+    }
+    if (/^(Digit|Numpad)[0-9]$/.test(code)) {
+        return code.slice(-1);
+    }
+    if (CODES[code]) {
+        return CODES[code];
+    }
+    return e.key?.length === 1 ? e.key.toUpperCase() : e.key;
 };
+
+export const shortcutOf = e => `${e.ctrlKey || e.metaKey ? 'Ctrl+' : ''}${e.altKey ? 'Alt+' : ''}${e.shiftKey ? 'Shift+' : ''}${keyName(e)}`;
 
 const dataOf = e => e.data ?? e.dataTransfer?.getData('text/plain') ?? '';
 
@@ -56,7 +73,7 @@ export const inputMethods = {
             e.preventDefault();
             return;
         }
-        if (type === 'insertCompositionText' || type === 'deleteCompositionText' || type === 'insertFromComposition' || type === 'deleteByComposition') {
+        if (COMPOSITION.has(type)) {
             return;
         }
         if (this.blocked) {
@@ -69,20 +86,27 @@ export const inputMethods = {
         this.perform({ type, data: dataOf(e) }, e);
     },
 
+    targetSelection(e) {
+        const range = e?.getTargetRanges?.()[0];
+        const anchor = range && pointOf(this.sheet, range.startContainer, range.startOffset);
+        const focus = range && pointOf(this.sheet, range.endContainer, range.endOffset);
+        return anchor && focus ? { selection: { anchor, focus } } : undefined;
+    },
+
     perform(item, e) {
         if (item.name) {
-            this.command(item.name, item.text);
+            this.command(item.name, item.text, item.extra);
             return;
         }
         const type = item.type;
-        const backward = type.endsWith('Backward');
-        const forward = type.endsWith('Forward');
+        const backward = /(Backward)$/.test(type);
+        const forward = /(Forward)$/.test(type);
         if (e && LOCAL.has(type) && this.localParagraph(e.getTargetRanges?.() ?? [], backward, forward)) {
             this.typingIn = this.paragraphOf(document.getSelection().focusNode);
             return;
         }
         e?.preventDefault();
-        if (BLOCKED.test(type)) {
+        if (!QUEUED.test(type)) {
             return;
         }
         if (type === 'insertParagraph') {
@@ -91,12 +115,10 @@ export const inputMethods = {
             this.lineBreak();
         } else if (type === 'insertText' || type === 'insertReplacementText') {
             if (e || !this.typeText(item.data ?? '')) {
-                this.command('replace', item.data ?? '');
+                this.command('replace', item.data ?? '', type === 'insertReplacementText' ? this.targetSelection(e) : undefined);
             }
-        } else if (backward || forward) {
-            if (e || !this.deleteLocal(type, backward)) {
-                this.command(backward ? 'deleteBackward' : 'deleteForward');
-            }
+        } else if (e || !this.deleteLocal(type, backward)) {
+            this.command(backward ? 'deleteBackward' : 'deleteForward');
         }
     },
 
@@ -136,16 +158,16 @@ export const inputMethods = {
         if (!selection?.rangeCount) {
             return false;
         }
+        const origin = [selection.anchorNode, selection.anchorOffset, selection.focusNode, selection.focusOffset];
         if (selection.isCollapsed) {
-            const p = this.localParagraph([], backward, !backward);
-            if (!p) {
+            if (!this.localParagraph([], backward, !backward)) {
                 return false;
             }
             selection.modify('extend', backward ? 'backward' : 'forward', type.includes('Word') ? 'word' : 'character');
         }
         const p = this.localParagraph([], false, false);
         if (!p) {
-            selection.collapseToStart();
+            selection.setBaseAndExtent(...origin);
             return false;
         }
         selection.getRangeAt(0).deleteContents();
@@ -212,58 +234,88 @@ export const inputMethods = {
         } else if (e.key === 'Tab' && !e.ctrlKey && !e.metaKey && !e.altKey && !this.readOnly) {
             stop(e);
             this.command(e.shiftKey ? 'untab' : 'tab');
+        } else if (STRUCTURAL.has(e.key)) {
+            e.stopPropagation();
         } else if (NAVIGATION.has(e.key)) {
             this.jumped();
         }
     },
 
+    takeCaretFormat(format) {
+        if (this.composing) {
+            this.deferred = { ...this.deferred, format };
+            return;
+        }
+        const old = this.caretFormat;
+        this.caretFormat = format?.token ? format : null;
+        if (old && old.token !== this.caretFormat?.token) {
+            this.dropCaretSpan(true);
+        }
+        if (this.caretFormat && old?.token !== this.caretFormat.token) {
+            this.insertCaretSpan();
+        }
+    },
+
+    dropCaretSpan(always) {
+        const span = this.caretSpan;
+        if (!span || this.composing) {
+            return;
+        }
+        if (!span.isConnected) {
+            this.caretSpan = null;
+            return;
+        }
+        const selection = document.getSelection();
+        if (strip(span.textContent) || !always && span.contains(selection.focusNode)) {
+            return;
+        }
+        this.caretSpan = null;
+        const restore = selection.rangeCount && span.contains(selection.focusNode) ? pointOf(this.sheet, span, 0) : null;
+        span.remove();
+        if (restore) {
+            this.select({ anchor: restore, focus: restore }, false);
+        }
+    },
+
+    insertCaretSpan() {
+        const selection = document.getSelection();
+        if (!selection?.rangeCount || !selection.isCollapsed) {
+            return;
+        }
+        const p = this.paragraphOf(selection.focusNode);
+        const keyed = selection.focusNode.parentElement?.closest('[data-k]');
+        if (!p || keyed && p.contains(keyed)) {
+            return;
+        }
+        const span = document.createElement('span');
+        span.dataset.p = this.caretFormat.token;
+        span.dataset.c = this.caretFormat.css ?? '';
+        if (this.caretFormat.css) {
+            span.setAttribute('style', this.caretFormat.css);
+        }
+        span.textContent = ZWSP;
+        const range = selection.getRangeAt(0);
+        const text = range.startContainer;
+        const run = text.nodeType === Node.TEXT_NODE ? text.parentElement : null;
+        if (run && run !== p && run.parentElement === p && !run.dataset.k && !run.dataset.p) {
+            const right = text.splitText(range.startOffset);
+            const tail = run.cloneNode(false);
+            for (let node = right; node;) {
+                const next = node.nextSibling;
+                tail.append(node);
+                node = next;
+            }
+            run.after(span, tail);
+        } else {
+            range.insertNode(span);
+        }
+        this.caretSpan = span;
+        selection.collapse(span.firstChild, 1);
+    },
+
     editorKeyDown(e) {
         if (!this.sheet.contains(e.target) && (e.ctrlKey || e.metaKey) && !e.altKey && e.key?.toLowerCase() === 's') {
             e.preventDefault();
-        }
-    },
-
-    compositionStart() {
-        this.composing = this.paragraphOf(document.getSelection()?.focusNode);
-    },
-
-    compositionEnd(e) {
-        const p = this.composing;
-        this.composing = null;
-        if (!p) {
-            return;
-        }
-        const id = p.dataset.b;
-        const held = this.held;
-        this.held = new Map();
-        const data = e.data ?? '';
-        let typed = false;
-        held.forEach((hold, holdId) => {
-            if (hold.remove) {
-                this.removeBlock(holdId, true);
-                return;
-            }
-            if (holdId !== id || hold.upsert.block.k !== 'p') {
-                this.upsert(hold.upsert, null, true);
-                return;
-            }
-            if (hold.upsert.block.text === this.sentText.get(id)) {
-                return;
-            }
-            const caret = pointOf(this.sheet, document.getSelection().focusNode, document.getSelection().focusOffset);
-            const start = caret?.p === id ? Math.max(0, caret.o - strip(data).length) : null;
-            this.upsert(hold.upsert, null, true);
-            const fresh = this.blocks.get(id);
-            if (fresh && start != null && data) {
-                this.select({ anchor: { p: id, o: start }, focus: { p: id, o: start } }, false);
-                typed = this.typeText(data);
-            }
-        });
-        if (!typed) {
-            this.touch(this.blocks.get(id));
-        }
-        if (!this.blocked) {
-            this.schedule();
         }
     }
 };

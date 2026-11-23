@@ -266,7 +266,8 @@ public class DocumentEditorFormattingTests : DocumentEditorTestBase
 
         Assert.All(keys, k => Assert.Contains(k, DocumentShortcuts.Map.Keys));
         Assert.Equal(keys.Length, DocumentShortcuts.Map.Count);
-        Assert.Equal("superscript", DocumentShortcuts.ActionOf("Ctrl+Shift++"));
+        Assert.Equal("superscript", DocumentShortcuts.ActionOf("Ctrl+Shift+="));
+        Assert.Null(DocumentShortcuts.ActionOf("Ctrl+Shift++"));
         var surface = Surface(Render(TextDocument.Create()));
         Assert.Contains("Ctrl+B", surface.Shortcuts!);
         Assert.Contains("Ctrl+S", surface.Shortcuts!);

@@ -56,11 +56,16 @@ export function run(dto, media) {
         node = marker('span', 'o', dto.css);
         node.textContent = dto.t ?? '';
     }
+    if (dto.k === 'i') {
+        node.dataset.m = dto.media ?? '';
+        node.dataset.w = String(dto.w);
+        node.dataset.h = String(dto.h);
+    }
     node.dataset.c = dto.css ?? '';
     return node;
 }
 
-const ends = dto => !dto.text || dto.runs?.[dto.runs.length - 1]?.k === 'v';
+const ends = dto => !dto.text || ATOMIC.has(dto.runs?.[dto.runs.length - 1]?.k);
 
 export function paragraph(dto, media) {
     const p = element('p', dto.css, dto.id);
@@ -259,8 +264,12 @@ const same = (node, dto) => {
         return false;
     }
     if (dto.k === 't') {
-        return node.tagName === 'SPAN' && !node.dataset.k && !node.dataset.p && node.childNodes.length === 1
-            && node.firstChild.nodeType === Node.TEXT_NODE && node.firstChild.data === dto.t;
+        const text = node.firstChild;
+        return node.tagName === 'SPAN' && !node.dataset.k && !node.dataset.p && node.childNodes.length <= 1
+            && (text ? text.nodeType === Node.TEXT_NODE && text.data === (dto.t ?? '') : !dto.t);
+    }
+    if (dto.k === 'i') {
+        return node.dataset.k === 'i' && node.dataset.m === (dto.media ?? '') && node.dataset.w === String(dto.w) && node.dataset.h === String(dto.h);
     }
     return node.dataset.k === dto.k && (dto.k !== 'o' || node.textContent === (dto.t ?? ''));
 };
@@ -285,9 +294,38 @@ export function sameRuns(p, dto) {
     return nodes.length === runs.length && runs.every((r, i) => same(nodes[i], r));
 }
 
-const editable = list => list.filter(p => !p.parentElement.closest(OPAQUE));
+const editable = p => !p.parentElement.closest(OPAQUE) && !p.closest('[hidden]');
 
-const within = node => node.matches(PARAGRAPH) ? [node] : [...node.querySelectorAll(PARAGRAPH)];
+const following = (sheet, node) => {
+    for (let current = node; current && current !== sheet; current = current.parentNode) {
+        if (current.nextSibling) {
+            return current.nextSibling;
+        }
+    }
+    return null;
+};
+
+function nearest(sheet, node, offset) {
+    const walker = document.createTreeWalker(sheet, NodeFilter.SHOW_ELEMENT, {
+        acceptNode: n => n.matches(PARAGRAPH) && editable(n) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
+    });
+    const next = node.childNodes?.[offset] ?? following(sheet, node);
+    if (next) {
+        walker.currentNode = next;
+        const found = next.nodeType === Node.ELEMENT_NODE && next.matches(PARAGRAPH) && editable(next) ? next : walker.nextNode();
+        if (found) {
+            return { p: found.dataset.b, o: 0 };
+        }
+    }
+    let last = offset > 0 ? node.childNodes?.[offset - 1] : node;
+    while (last?.lastChild && offset > 0) {
+        last = last.lastChild;
+    }
+    walker.currentNode = last ?? node;
+    const current = walker.currentNode;
+    const found = current.nodeType === Node.ELEMENT_NODE && current.matches(PARAGRAPH) && editable(current) && current !== node ? current : walker.previousNode();
+    return found ? { p: found.dataset.b, o: length(found) } : null;
+}
 
 export function pointOf(sheet, node, offset) {
     if (!node || !sheet.contains(node)) {
@@ -299,15 +337,8 @@ export function pointOf(sheet, node, offset) {
         const o = offsetOf(p, node, offset);
         return o == null ? null : { p: p.dataset.b, o };
     }
-    if (start.closest(OPAQUE) || start.closest('[hidden]')) {
+    if (start.closest(OPAQUE)) {
         return null;
     }
-    const next = node.childNodes?.[offset];
-    const first = next?.nodeType === Node.ELEMENT_NODE ? editable(within(next))[0] : null;
-    if (first) {
-        return { p: first.dataset.b, o: 0 };
-    }
-    const previous = node.childNodes?.[offset - 1];
-    const last = previous?.nodeType === Node.ELEMENT_NODE ? editable(within(previous)).pop() : null;
-    return last ? { p: last.dataset.b, o: length(last) } : null;
+    return nearest(sheet, node, offset);
 }
