@@ -342,6 +342,45 @@ public class DocumentSurfaceTests : DocumentSurfaceTestBase
     }
 
     [Fact]
+    public async Task Command_Resync_AppliesTypingAndReturnsAFullReset_OlderMessagesAreDropped()
+    {
+        var document = Doc("Hello", "World");
+        var (a, b) = (document.Blocks[0].Id, document.Blocks[1].Id);
+        var cut = Surface(document, p => p.Add(c => c.ReadOnly, false));
+        var old = _seen;
+
+        var result = await Command(cut, new SurfaceSync(_seen, [new SurfaceTyped(a, "HelloX", 6, null)], Sel(a, 6), false), "resync");
+
+        Assert.Equal("HelloX", Text(document));
+        var reset = Assert.Single(result.Patches, p => p.Reset);
+        Assert.NotNull(reset.SheetCss);
+        var rendered = result.Patches.SkipWhile(p => !p.Reset).SelectMany(p => p.Upsert).ToList();
+        Assert.Equal([a, b], rendered.Select(u => u.Block.Id));
+        Assert.Equal(["HelloX", "World"], rendered.Select(u => u.Block.Text));
+        Assert.True(result.Patches.Select(p => p.Seq).SequenceEqual(result.Patches.Select(p => p.Seq).Order()));
+
+        SurfaceResult stale = null!;
+        await cut.InvokeAsync(async () => stale = await cut.Instance.OnSyncAsync(new SurfaceSync(old, [new SurfaceTyped(b, "Stale", 5, null)], Sel(b, 5), false), null));
+        Assert.Empty(stale.Patches);
+        Assert.Equal("World", Text(document, 1));
+
+        await Type(cut, b, "World!");
+        Assert.Equal("World!", Text(document, 1));
+    }
+
+    [Fact]
+    public async Task Command_Resync_WorksReadOnly()
+    {
+        var document = Doc("Hello");
+        var cut = Surface(document, p => p.Add(c => c.ReadOnly, true));
+
+        var result = await Command(cut, Idle(document.Blocks[0].Id, 0), "resync");
+
+        Assert.Single(result.Patches, p => p.Reset);
+        Assert.Equal("Hello", Text(document));
+    }
+
+    [Fact]
     public async Task Command_TextOverLimit_IsIgnored()
     {
         var document = Doc("Hello");

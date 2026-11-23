@@ -158,7 +158,7 @@ public partial class MudExDocumentSurface
     /// <summary>Called by the browser for a structural edit, undo, redo or a shortcut, with the typing and the selection before it.</summary>
     /// <param name="sync">The state of the browser, or null if it comes as <paramref name="stream"/>.</param>
     /// <param name="stream">The state as JSON when it is too large for one message.</param>
-    /// <param name="name">The edit: an edit action name, <c>undo</c>, <c>redo</c> or <c>shortcut</c>.</param>
+    /// <param name="name">The edit: an edit action name, <c>undo</c>, <c>redo</c>, <c>shortcut</c>, or <c>resync</c> to render the whole document again.</param>
     /// <param name="text">The text of a <c>replace</c> or the key of a <c>shortcut</c>; ignored if longer than 8000 characters.</param>
     /// <returns>The patches to apply and the selection to set.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
@@ -167,13 +167,13 @@ public partial class MudExDocumentSurface
         var (read, rejected, unreadable) = await ReadAsync(sync, stream);
         if (unreadable) return Unreadable;
         if (!Current(read)) return Empty;
-        var result = await HandleAsync(read, rejected, rejected || text?.Length > MaxText || ReadOnly ? null : name switch
+        var result = await HandleAsync(read, rejected, name == "resync" ? Resync : rejected || text?.Length > MaxText || ReadOnly ? null : name switch
         {
             "undo" => () => Step(true),
             "redo" => () => Step(false),
             "shortcut" => null,
             _ => () => Execute(name, text)
-        }, name is not ("undo" or "redo" or "shortcut"));
+        }, name is not ("undo" or "redo" or "shortcut" or "resync"));
         if (!rejected && name == "shortcut" && text?.Length <= MaxText && ShortcutPressed != null && Shortcuts?.Contains(text) == true) _ = ShortcutAsync(text);
         return result;
     }
@@ -454,6 +454,15 @@ public partial class MudExDocumentSurface
         _document.EndTyping();
         if (undo && _document.Undo.CanUndo) _document.Undo.Undo();
         else if (!undo && _document.Undo.CanRedo) _document.Undo.Redo();
+    }
+
+    private void Resync()
+    {
+        (_generation, _chunking, _restart) = (_generation + 1, false, false);
+        _changedAt.Clear();
+        var patches = DocumentSurfacePatches.Initial(_document, _render, () => ++_seq);
+        _attachedAt = patches[0].Seq;
+        foreach (var patch in patches) _collecting.Add(Track(patch));
     }
 
     private void Execute(string name, string text)

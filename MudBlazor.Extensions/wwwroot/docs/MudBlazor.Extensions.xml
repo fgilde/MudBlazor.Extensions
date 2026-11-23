@@ -1448,7 +1448,7 @@
             <summary>Called by the browser for a structural edit, undo, redo or a shortcut, with the typing and the selection before it.</summary>
             <param name="sync">The state of the browser, or null if it comes as <paramref name="stream"/>.</param>
             <param name="stream">The state as JSON when it is too large for one message.</param>
-            <param name="name">The edit: an edit action name, <c>undo</c>, <c>redo</c> or <c>shortcut</c>.</param>
+            <param name="name">The edit: an edit action name, <c>undo</c>, <c>redo</c>, <c>shortcut</c>, or <c>resync</c> to render the whole document again.</param>
             <param name="text">The text of a <c>replace</c> or the key of a <c>shortcut</c>; ignored if longer than 8000 characters.</param>
             <returns>The patches to apply and the selection to set.</returns>
         </member>
