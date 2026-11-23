@@ -19,6 +19,9 @@ public abstract class TextDocumentCommand : IDocumentCommand<TextDocument>
     /// <summary>The caret or selection after the command was applied; <c>default</c> before that and for commands that leave the selection as it is.</summary>
     public DocumentRange After { get; private set; }
 
+    /// <summary>The caret or selection before the command was first applied; <c>default</c> if unknown.</summary>
+    public DocumentRange Before { get; internal set; }
+
     /// <inheritdoc />
     /// <exception cref="ArgumentException">A position, range or id of the command does not belong to the document.</exception>
     /// <exception cref="InvalidOperationException">The document changed since the command was applied before.</exception>

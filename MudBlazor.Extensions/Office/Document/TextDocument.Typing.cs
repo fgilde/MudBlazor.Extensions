@@ -58,7 +58,7 @@ public sealed partial class TextDocument
         command.Apply(this);
         if (notifications == _notifications) return false;
         if (amend == null || !Undo.TryAmendLast(amend)) Undo.Record(command);
-        if (!Undo.InTransaction) RaiseChanged();
+        if (!Undo.InTransaction) RaiseChanged(command is TextDocumentCommand { After.Start: not null } c ? c.After : null);
         return true;
     }
 }

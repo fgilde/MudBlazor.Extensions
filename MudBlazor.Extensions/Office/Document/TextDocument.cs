@@ -15,7 +15,7 @@ public sealed partial class TextDocument
     private Dictionary<string, BlockLocation> _index;
     private Dictionary<string, string> _mediaByContent;
 
-    internal TextDocument() => Undo = new DocumentUndoStack<TextDocument>(this, d => d.RaiseChanged());
+    internal TextDocument() => Undo = new DocumentUndoStack<TextDocument>(this, d => d.RaiseChanged(SelectionOf(d.Undo.LastStep, d.Undo.LastStepReverted)));
 
     /// <summary>The blocks of the body in order, flat across sections.</summary>
     public IReadOnlyList<Block> Blocks => BlockList;
@@ -218,6 +218,19 @@ public sealed partial class TextDocument
     /// <param name="command">The command.</param>
     public void Execute(IDocumentCommand<TextDocument> command) => Execute(command, null);
 
+    /// <summary>
+    /// Applies a command like <see cref="Execute(IDocumentCommand{TextDocument})"/> and remembers the selection it was given at, so undoing the step
+    /// reports it in <see cref="TextDocumentChangedEventArgs.Selection"/>. A <see cref="TextDocumentCommand"/> that already has a
+    /// <see cref="TextDocumentCommand.Before"/> keeps it.
+    /// </summary>
+    /// <param name="command">The command.</param>
+    /// <param name="selection">The caret or selection before the command.</param>
+    public void Execute(IDocumentCommand<TextDocument> command, DocumentRange selection)
+    {
+        if (command is TextDocumentCommand { Before.Start: null } text) text.Before = selection;
+        Execute(command, null);
+    }
+
     /// <summary>Finds a block of the body, of a table cell at any depth or of a header or footer.</summary>
     /// <param name="id">The block id.</param>
     /// <returns>The block, or null if there is none with this id.</returns>
@@ -402,7 +415,14 @@ public sealed partial class TextDocument
         _changeKind |= kind;
     }
 
-    private void RaiseChanged()
+    private static DocumentRange? SelectionOf(IDocumentCommand<TextDocument> step, bool reverted)
+    {
+        IEnumerable<TextDocumentCommand> commands = step == null ? [] : DocumentUndoStack<TextDocument>.Flatten(step).OfType<TextDocumentCommand>();
+        var selections = reverted ? commands.Select(c => c.Before) : commands.Select(c => c.After).Reverse();
+        return selections.Where(s => s.Start != null).Cast<DocumentRange?>().FirstOrDefault();
+    }
+
+    private void RaiseChanged(DocumentRange? selection)
     {
         if (_changeKind == DocumentChangeKind.None && _changedIds.Count == 0) return;
         var changed = new HashSet<string>();
@@ -418,7 +438,7 @@ public sealed partial class TextDocument
         if (addedNested.Count > 0 || removedNested.Count > 0) _changeKind |= DocumentChangeKind.Structure;
         var args = new TextDocumentChangedEventArgs(changed, removed, _changeKind)
         {
-            ChangedNestedBlockIds = changedNested, AddedNestedBlockIds = addedNested, RemovedNestedBlockIds = removedNested
+            ChangedNestedBlockIds = changedNested, AddedNestedBlockIds = addedNested, RemovedNestedBlockIds = removedNested, Selection = selection
         };
         _changedIds.Clear();
         _existedBefore.Clear();

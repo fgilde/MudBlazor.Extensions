@@ -24,6 +24,12 @@ internal sealed class TypeTextCommand : TextDocumentCommand
         var entries = new Dictionary<string, TypedParagraph>();
         foreach (var entry in _paragraphs) entries[entry.ParagraphId ?? ""] = entry;
         var edits = document.MapParagraphs(_paragraphs.Select(p => p.ParagraphId), paragraph => Type(paragraph, entries[paragraph.Id]));
+        if (Before.Start == null && _paragraphs.Count > 0)
+        {
+            var first = entries[_paragraphs[0].ParagraphId];
+            var start = TextDiff.Compute(((Paragraph)document.FindBlock(first.ParagraphId)).Text, first.Text, first.Caret).Start;
+            Before = Caret(document, first.ParagraphId, start);
+        }
         var caret = _paragraphs.LastOrDefault(p => p.Caret != null);
         return (edits, caret == null ? null : d => Caret(d, caret.ParagraphId, CaretOffset(d, caret)));
     }

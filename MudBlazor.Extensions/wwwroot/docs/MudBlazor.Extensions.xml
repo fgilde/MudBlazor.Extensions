@@ -33818,6 +33818,9 @@
         <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentCommand.After">
             <summary>The caret or selection after the command was applied; <c>default</c> before that and for commands that leave the selection as it is.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentCommand.Before">
+            <summary>The caret or selection before the command was first applied; <c>default</c> if unknown.</summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocumentCommand.Apply(MudBlazor.Extensions.Office.Document.TextDocument)">
             <inheritdoc />
             <exception cref="T:System.ArgumentException">A position, range or id of the command does not belong to the document.</exception>
@@ -35325,6 +35328,15 @@
             <summary>Applies a command and records it as one undo step (or adds it to the open transaction). A command that changes nothing records nothing.</summary>
             <param name="command">The command.</param>
         </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Execute(MudBlazor.Extensions.Office.IDocumentCommand{MudBlazor.Extensions.Office.Document.TextDocument},MudBlazor.Extensions.Office.Document.DocumentRange)">
+            <summary>
+            Applies a command like <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.Execute(MudBlazor.Extensions.Office.IDocumentCommand{MudBlazor.Extensions.Office.Document.TextDocument})"/> and remembers the selection it was given at, so undoing the step
+            reports it in <see cref="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.Selection"/>. A <see cref="T:MudBlazor.Extensions.Office.Document.TextDocumentCommand"/> that already has a
+            <see cref="P:MudBlazor.Extensions.Office.Document.TextDocumentCommand.Before"/> keeps it.
+            </summary>
+            <param name="command">The command.</param>
+            <param name="selection">The caret or selection before the command.</param>
+        </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.FindBlock(System.String)">
             <summary>Finds a block of the body, of a table cell at any depth or of a header or footer.</summary>
             <param name="id">The block id.</param>
@@ -35517,6 +35529,13 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.Kind">
             <summary>The kinds of change.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.Selection">
+            <summary>
+            The caret or selection that belongs to the change: after a command, a redo or the end of a transaction the
+            <see cref="P:MudBlazor.Extensions.Office.Document.TextDocumentCommand.After"/> of the (last) command; after an undo the <see cref="P:MudBlazor.Extensions.Office.Document.TextDocumentCommand.Before"/> of the step (of the
+            first command of a transaction); null when unknown.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.AddTextCommand">
             <summary>Adds a text block on top of the other elements. Text without any character adds nothing.</summary>

@@ -41,6 +41,10 @@ public sealed class DocumentUndoStack<TDocument>
 
     internal bool InTransaction => _transaction != null;
 
+    internal IDocumentCommand<TDocument> LastStep { get; private set; }
+
+    internal bool LastStepReverted { get; private set; }
+
     /// <summary>Undoes the latest step.</summary>
     public void Undo()
     {
@@ -49,6 +53,7 @@ public sealed class DocumentUndoStack<TDocument>
         command.Revert(_document);
         _undo.RemoveAt(_undo.Count - 1);
         _redo.Add(command);
+        (LastStep, LastStepReverted) = (command, true);
         _onStepEnd?.Invoke(_document);
     }
 
@@ -60,6 +65,7 @@ public sealed class DocumentUndoStack<TDocument>
         command.Apply(_document);
         _redo.RemoveAt(_redo.Count - 1);
         _undo.Add(command);
+        (LastStep, LastStepReverted) = (command, false);
         _onStepEnd?.Invoke(_document);
     }
 
@@ -68,6 +74,7 @@ public sealed class DocumentUndoStack<TDocument>
     {
         _undo.Clear();
         _redo.Clear();
+        LastStep = null;
     }
 
     /// <summary>
@@ -87,6 +94,9 @@ public sealed class DocumentUndoStack<TDocument>
         return new Scope(this);
     }
 
+    internal static IEnumerable<IDocumentCommand<TDocument>> Flatten(IDocumentCommand<TDocument> step) =>
+        step is CompositeCommand composite ? composite.Commands : [step];
+
     internal bool TryAmendLast(Func<IDocumentCommand<TDocument>, bool> amend) =>
         _transactionDepth == 0 && _redo.Count == 0 && _undo.Count > 0 && amend(_undo[^1]);
 
@@ -100,6 +110,7 @@ public sealed class DocumentUndoStack<TDocument>
         }
 
         _undo.Add(command);
+        (LastStep, LastStepReverted) = (command, false);
         if (_undo.Count > MaxDepth) _undo.RemoveRange(0, _undo.Count - MaxDepth);
     }
 
@@ -128,6 +139,8 @@ public sealed class DocumentUndoStack<TDocument>
     private sealed class CompositeCommand(string description, IReadOnlyList<IDocumentCommand<TDocument>> commands) : IDocumentCommand<TDocument>
     {
         public string Description => description;
+
+        public IReadOnlyList<IDocumentCommand<TDocument>> Commands => commands;
 
         public void Apply(TDocument document)
         {

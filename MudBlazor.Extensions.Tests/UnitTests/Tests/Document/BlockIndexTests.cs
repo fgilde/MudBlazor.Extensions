@@ -106,6 +106,43 @@ public class BlockIndexTests
         Assert.Equal(1, document.BlockIndex(document.HeadersFooters[0].Blocks[1].Id));
     }
 
+    [Fact]
+    public void TypingInHeader_UpdatesEntry_NoRebuild()
+    {
+        var document = TextDocument.FromBlocks([P("body")]);
+        document.HeaderFooterList.Add(new HeaderFooter { Id = "h1", Kind = HeaderFooterKind.Header, Blocks = [document.Identify(P("head"))] });
+        document.InvalidateIndex();
+        var id = document.HeadersFooters[0].Blocks[0].Id;
+        document.FindBlock(id);
+        var builds = document.IndexBuilds;
+
+        document.ApplyTyping([new TypedParagraph(id, "header", 6)], T0);
+
+        Assert.Equal(builds, document.IndexBuilds);
+        Assert.Same(document.HeadersFooters[0].Blocks[0], document.FindBlock(id));
+        Assert.Equal("header", ((Paragraph)document.FindBlock(id)).Text);
+    }
+
+    [Fact]
+    public void TypingUndoRedo_KeepsIndex_NoRebuild()
+    {
+        var document = TextDocument.FromBlocks([P("a"), P("b"), P("c")]);
+        var id = document.Blocks[1].Id;
+        document.FindBlock(id);
+        var builds = document.IndexBuilds;
+
+        document.ApplyTyping([new TypedParagraph(id, "bx", 2)], T0);
+        Assert.Same(document.Blocks[1], document.FindBlock(id));
+        document.Undo.Undo();
+        Assert.Equal("b", ((Paragraph)document.FindBlock(id)).Text);
+        Assert.Same(document.Blocks[1], document.FindBlock(id));
+        document.Undo.Redo();
+        Assert.Equal("bx", ((Paragraph)document.FindBlock(id)).Text);
+        Assert.Same(document.Blocks[1], document.FindBlock(id));
+
+        Assert.Equal(builds, document.IndexBuilds);
+    }
+
     private static Paragraph P(string text) => new() { Inlines = [new TextRun(text)] };
 
     private static Table T(params TableRow[] rows) => new() { Grid = [2000, 2000], Rows = rows };

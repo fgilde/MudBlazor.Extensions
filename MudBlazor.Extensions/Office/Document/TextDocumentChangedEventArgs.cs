@@ -62,4 +62,11 @@ public sealed class TextDocumentChangedEventArgs : EventArgs
 
     /// <summary>The kinds of change.</summary>
     public DocumentChangeKind Kind { get; }
+
+    /// <summary>
+    /// The caret or selection that belongs to the change: after a command, a redo or the end of a transaction the
+    /// <see cref="TextDocumentCommand.After"/> of the (last) command; after an undo the <see cref="TextDocumentCommand.Before"/> of the step (of the
+    /// first command of a transaction); null when unknown.
+    /// </summary>
+    public DocumentRange? Selection { get; internal init; }
 }
