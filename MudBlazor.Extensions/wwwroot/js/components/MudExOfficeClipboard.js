@@ -13,13 +13,15 @@ function clipHtml(text, clip) {
 
 export function eventClipboardData(e) {
     const data = e.clipboardData;
-    return { text: data ? data.getData('text/plain') : null, image: [...(data?.files ?? [])].find(f => f.type.startsWith('image/')), clip: clipOf(data?.getData('text/html')) };
+    const html = data ? data.getData('text/html') : null;
+    return { text: data ? data.getData('text/plain') : null, image: [...(data?.files ?? [])].find(f => f.type.startsWith('image/')), clip: clipOf(html), html };
 }
 
 export async function readClipboardData() {
     let text = null;
     let image = null;
     let clip = null;
+    let html = null;
     try {
         for (const item of await navigator.clipboard.read()) {
             const type = item.types.find(t => t.startsWith('image/'));
@@ -29,8 +31,9 @@ export async function readClipboardData() {
             if (text === null && item.types.includes('text/plain')) {
                 text = await (await item.getType('text/plain')).text();
             }
-            if (clip === null && item.types.includes('text/html')) {
-                clip = clipOf(await (await item.getType('text/html')).text());
+            if (html === null && item.types.includes('text/html')) {
+                html = await (await item.getType('text/html')).text();
+                clip = clipOf(html);
             }
         }
     } catch {
@@ -40,7 +43,7 @@ export async function readClipboardData() {
             text = null;
         }
     }
-    return { text, image, clip };
+    return { text, image, clip, html };
 }
 
 export function sendPaste(dotnet, { text, image, clip }) {

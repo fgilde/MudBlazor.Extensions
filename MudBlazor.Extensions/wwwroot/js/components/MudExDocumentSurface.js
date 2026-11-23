@@ -2,6 +2,7 @@ import { payload } from './MudExOfficeInterop.js';
 import { render, pointAt, pointOf, serialise, sameRuns, length, strip, PARAGRAPH, OPAQUE } from './MudExDocumentDom.js';
 import { inputMethods } from './MudExDocumentInput.js';
 import { compositionMethods } from './MudExDocumentComposition.js';
+import { clipboardMethods, CLIPBOARD } from './MudExDocumentClipboard.js';
 
 const TYPING_DELAY = 150;
 const RETRY_DELAY = 1000;
@@ -79,7 +80,8 @@ class MudExDocumentSurface {
             [this.sheet, 'keydown', e => this.keyDown(e)], [this.sheet, 'compositionstart', () => this.compositionStart()],
             [this.sheet, 'compositionend', e => this.compositionEnd(e)], [this.sheet, 'mousedown', () => this.jumped()],
             [this.sheet, 'touchstart', () => this.jumped(), { passive: true }], [this.sheet, 'dragstart', e => e.preventDefault()],
-            [this.sheet, 'drop', e => e.preventDefault()], [document, 'selectionchange', () => this.selectionChange()]
+            [this.sheet, 'drop', e => e.preventDefault()], [document, 'selectionchange', () => this.selectionChange()],
+            [this.sheet, 'copy', e => this.copyEvent(e, false)], [this.sheet, 'cut', e => this.copyEvent(e, true)], [this.sheet, 'paste', e => this.pasteEvent(e)]
         ];
         if (this.editor) {
             this.events.push([this.editor, 'keydown', e => this.editorKeyDown(e)]);
@@ -413,20 +415,26 @@ class MudExDocumentSurface {
     async exchange(op) {
         clearTimeout(this.typingTimer);
         this.typingTimer = 0;
-        const message = this.collect(op);
+        let message = this.collect(op);
+        if (CLIPBOARD.has(op?.name) && JSON.stringify(message.sync).length > INLINE_CHARS) {
+            message = await this.flushed(message);
+        }
         message.resync = op?.name === 'resync';
-        const result = await this.send(message, op?.name, op?.text);
+        const result = await this.send(message, op?.name, op?.text, op?.paste);
         if (!this.disposed) {
             await this.take(result, message, op?.name != null);
         }
     }
 
-    async send(message, name, text) {
+    async send(message, name, text, paste) {
         if (this.disposed || !this.dotnet) {
             return null;
         }
         try {
             const [sync, stream] = payload(message.sync);
+            if (CLIPBOARD.has(name)) {
+                return await this.clipboardCall(sync, name, text, paste);
+            }
             return name == null
                 ? await this.dotnet.invokeMethodAsync('OnSyncAsync', sync, stream)
                 : await this.dotnet.invokeMethodAsync('OnCommandAsync', sync, stream, name, text ?? null);
@@ -493,7 +501,7 @@ class MudExDocumentSurface {
             return;
         }
         this.commands++;
-        const op = { name, text, selection: extra && 'selection' in extra ? extra.selection : this.readSelection(), typed: extra?.typed };
+        const op = { name, text, selection: extra && 'selection' in extra ? extra.selection : this.readSelection(), typed: extra?.typed, paste: extra?.paste };
         this.enqueue(async () => {
             try {
                 await this.exchange(op);
@@ -665,7 +673,7 @@ class MudExDocumentSurface {
     }
 }
 
-Object.assign(MudExDocumentSurface.prototype, inputMethods, compositionMethods);
+Object.assign(MudExDocumentSurface.prototype, inputMethods, compositionMethods, clipboardMethods);
 
 export function initializeMudExDocumentSurface(root, dotnet, options) {
     return new MudExDocumentSurface(root, dotnet, options);

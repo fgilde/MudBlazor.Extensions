@@ -26,6 +26,7 @@ public partial class MudExDocumentSurface
     private readonly Dictionary<string, int> _changedAt = new();
     private readonly HashSet<string> _registered = [];
     private readonly SemaphoreSlim _gate = new(1, 1);
+    private readonly DocumentClipboard _clipboard = new();
     private ElementReference _root;
     private TextDocument _document;
     private DocumentSurfaceRender _render;
@@ -143,6 +144,10 @@ public partial class MudExDocumentSurface
 
     internal Task FocusAsync() => CallAsync("focus");
 
+    internal Task CopyAsync(bool cut) => CallAsync("copy", cut);
+
+    internal Task PasteAsync() => CallAsync("paste");
+
     /// <summary>Called by the browser with the typing and the selection since the last message.</summary>
     /// <param name="sync">The state of the browser, or null if it comes as <paramref name="stream"/>.</param>
     /// <param name="stream">The state as JSON when it is too large for one message.</param>
@@ -176,6 +181,75 @@ public partial class MudExDocumentSurface
         }, name is not ("undo" or "redo" or "shortcut" or "resync"));
         if (!rejected && name == "shortcut" && text?.Length <= MaxText && ShortcutPressed != null && Shortcuts?.Contains(text) == true) _ = ShortcutAsync(text);
         return result;
+    }
+
+    /// <summary>Called by the browser after a copy or cut with the typing and the selection before it; the clip is remembered for pasting inside the editor.</summary>
+    /// <param name="sync">The state of the browser.</param>
+    /// <param name="clip">The marker the browser put into the clipboard.</param>
+    /// <param name="cut">True to delete the selection as well.</param>
+    /// <returns>The patches to apply and the selection to set.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public async Task<SurfaceResult> OnCopyAsync(SurfaceSync sync, string clip, bool cut)
+    {
+        var (read, rejected, unreadable) = await ReadAsync(sync, null);
+        if (unreadable) return Unreadable;
+        if (!Current(read)) return Empty;
+        return await HandleAsync(read, rejected, rejected || cut && ReadOnly ? null : () => Copy(clip, cut), true);
+    }
+
+    /// <summary>Called by the browser on paste with the typing and the selection before it and the clipboard content.</summary>
+    /// <param name="sync">The state of the browser.</param>
+    /// <param name="html">The <c>text/html</c> part as UTF-8, or null.</param>
+    /// <param name="text">The <c>text/plain</c> part as UTF-8, or null.</param>
+    /// <param name="image">The first image of the clipboard, or null.</param>
+    /// <param name="imageType">The content type of <paramref name="image"/>.</param>
+    /// <param name="clip">The marker found in the <c>text/html</c> part, or null.</param>
+    /// <returns>The patches to apply and the selection to set.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public async Task<SurfaceResult> OnPasteAsync(SurfaceSync sync, IJSStreamReference html, IJSStreamReference text, IJSStreamReference image, string imageType, string clip)
+    {
+        var (read, rejected, unreadable) = await ReadAsync(sync, null);
+        if (unreadable || !Current(read) || rejected || ReadOnly)
+        {
+            foreach (var stream in new[] { html, text, image }) await DisposeQuietlyAsync(stream);
+            return unreadable ? Unreadable : !Current(read) ? Empty : await HandleAsync(read, rejected, null, true);
+        }
+
+        (string Html, string Text, byte[] Image) data = default;
+        Exception failure = null;
+        try
+        {
+            data = (_clipboard.Holds(clip) ? null : await DocumentClipboard.ReadTextAsync(html), await DocumentClipboard.ReadTextAsync(text), await DocumentClipboard.ReadBytesAsync(image));
+        }
+        catch (Exception e)
+        {
+            failure = e is InvalidDataException ? e : new InvalidDataException(DocumentClipboard.Unreadable);
+            foreach (var stream in new[] { html, text, image }) await DisposeQuietlyAsync(stream);
+        }
+
+        return await HandleAsync(read, false, () => PasteInto(failure, data.Html, data.Text, data.Image, imageType, clip), true);
+    }
+
+    private void Copy(string clip, bool cut)
+    {
+        if (_selection.Start == null || _selection.IsEmpty) return;
+        _clipboard.Store(clip, _document.Extract(_selection));
+        if (cut) _document.Execute(new ReplaceTextCommand(_selection, ""), _selection);
+    }
+
+    private void PasteInto(Exception failure, string html, string text, byte[] image, string imageType, string clip)
+    {
+        if (failure != null) throw failure;
+        if (_selection.Start != null && _clipboard.Paste(_document, _selection, html, text, image, imageType, clip) is { } command) _document.Execute(command, _selection);
+    }
+
+    private static async Task DisposeQuietlyAsync(IJSStreamReference stream)
+    {
+        try
+        {
+            if (stream != null) await stream.DisposeAsync();
+        }
+        catch (Exception) { }
     }
 
     /// <inheritdoc />

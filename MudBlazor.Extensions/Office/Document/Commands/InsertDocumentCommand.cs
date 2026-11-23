@@ -38,9 +38,11 @@ public sealed class InsertDocumentCommand : TextDocumentCommand
         var blocks = copier.Blocks(_source.Blocks);
         if (blocks.Count == 0) return document.ReplaceRange(_range, [[]]);
         var first = blocks[0] as Paragraph;
-        var last = blocks.Count > 1 ? blocks[^1] as Paragraph : null;
-        var middle = blocks.Skip(first != null ? 1 : 0).Take(blocks.Count - (first != null ? 1 : 0) - (last != null ? 1 : 0)).Select(document.Identify).ToList();
-        IReadOnlyList<IReadOnlyList<Inline>> lines = blocks.Count == 1 && first != null ? [first.Inlines] : [first?.Inlines ?? [], last?.Inlines ?? []];
+        var mark = _source.EndsWithParagraphMark && blocks[^1] is Paragraph;
+        var last = blocks.Count > 1 && !mark ? blocks[^1] as Paragraph : null;
+        var skip = first != null ? 1 : 0;
+        var middle = blocks.Skip(skip).Take(blocks.Count - skip - (last != null ? 1 : 0)).Select(document.Identify).ToList();
+        IReadOnlyList<IReadOnlyList<Inline>> lines = mark ? [first?.Inlines ?? [], []] : blocks.Count == 1 && first != null ? [first.Inlines] : [first?.Inlines ?? [], last?.Inlines ?? []];
         var (edits, after) = document.ReplaceRange(_range, lines, null, new InsertedContent(middle, first, last));
         return (document.WithDefinitions(edits, copier.Styles, copier.Numbering), after);
     }
@@ -85,6 +87,8 @@ public sealed class InsertDocumentCommand : TextDocumentCommand
 
             return result;
         }
+
+        private bool Shared => ReferenceEquals(source.Numbering, target.Numbering);
 
         private Paragraph CopyParagraph(Paragraph paragraph) => new()
         {
@@ -165,7 +169,7 @@ public sealed class InsertDocumentCommand : TextDocumentCommand
 
         private NumberingRef? List(NumberingRef? reference)
         {
-            if (reference is not { } r || r.NumId == 0) return reference;
+            if (reference is not { } r || r.NumId == 0 || Shared) return reference;
             if (!_numIds.TryGetValue(r.NumId, out var numId))
             {
                 var instance = source.Numbering.Instances.FirstOrDefault(i => i.Id == r.NumId);

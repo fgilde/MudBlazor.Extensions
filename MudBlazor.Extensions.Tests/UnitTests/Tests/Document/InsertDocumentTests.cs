@@ -270,6 +270,42 @@ public class InsertDocumentTests
         Assert.DoesNotContain(opc.Relationships("/word/document.xml"), r => r.Type.EndsWith("/image", StringComparison.Ordinal));
     }
 
+    [Fact]
+    public void InsertDocument_ExtractWithParagraphMark_SplitsTheTargetParagraph()
+    {
+        var document = Text("XY");
+        document.Execute(new ReplaceTextCommand(Caret(document, document.Blocks[0].Id, 2), "\nA\nB"));
+        var a = document.Blocks[1].Id;
+        var extract = document.Extract(new DocumentRange(document.PositionOf(a, 0), document.PositionOf(document.Blocks[2].Id, 0)));
+        Assert.True(extract.EndsWithParagraphMark);
+        var target = Text("XY");
+
+        target.Execute(new InsertDocumentCommand(Caret(target, target.Blocks[0].Id, 1), extract));
+
+        Assert.Equal(["XA", "Y"], target.Blocks.Cast<Paragraph>().Select(p => p.Text));
+        target.Undo.Undo();
+        Assert.Equal(["XY"], target.Blocks.Cast<Paragraph>().Select(p => p.Text));
+    }
+
+    [Fact]
+    public void InsertDocument_ExtractFromSameDocument_KeepsTheListInstance()
+    {
+        var document = Text("one");
+        document.Execute(new ReplaceTextCommand(Caret(document, document.Blocks[0].Id, 3), "\nrest"));
+        document.Execute(new ApplyListCommand([document.Blocks[0].Id], ListTemplate.Decimal));
+        var item = (Paragraph)document.Blocks[0];
+        var extract = document.Extract(new DocumentRange(document.PositionOf(item.Id, 0), document.PositionOf(document.Blocks[1].Id, 0)));
+        var (abstracts, instances) = (document.Numbering.Abstracts.Count, document.Numbering.Instances.Count);
+
+        document.Execute(new InsertDocumentCommand(Caret(document, document.Blocks[1].Id, 0), extract));
+
+        var paragraphs = document.Blocks.Cast<Paragraph>().ToList();
+        Assert.Equal(["one", "one", "rest"], paragraphs.Select(p => p.Text));
+        Assert.Equal(item.Format.Numbering, paragraphs[1].Format.Numbering);
+        Assert.Equal((abstracts, instances), (document.Numbering.Abstracts.Count, document.Numbering.Instances.Count));
+        Assert.Equal(["1.", "2."], paragraphs.Take(2).Select(document.ListLabel));
+    }
+
     private static IReadOnlyList<Block> Apply(TextDocument document, DocumentRange range, string html)
     {
         var before = document.Blocks.ToList();

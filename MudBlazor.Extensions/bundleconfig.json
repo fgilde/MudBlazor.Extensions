@@ -270,5 +270,11 @@
     "inputFiles": [
       "wwwroot/js/components/MudExDocumentComposition.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentClipboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentClipboard.js"
+    ]
   }
 ]

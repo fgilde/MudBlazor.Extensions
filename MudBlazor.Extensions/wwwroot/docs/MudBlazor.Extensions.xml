@@ -1480,6 +1480,23 @@
             <param name="text">The text of a <c>replace</c> or the key of a <c>shortcut</c>; ignored if longer than 8000 characters.</param>
             <returns>The patches to apply and the selection to set.</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnCopyAsync(MudBlazor.Extensions.Components.SurfaceSync,System.String,System.Boolean)">
+            <summary>Called by the browser after a copy or cut with the typing and the selection before it; the clip is remembered for pasting inside the editor.</summary>
+            <param name="sync">The state of the browser.</param>
+            <param name="clip">The marker the browser put into the clipboard.</param>
+            <param name="cut">True to delete the selection as well.</param>
+            <returns>The patches to apply and the selection to set.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnPasteAsync(MudBlazor.Extensions.Components.SurfaceSync,Microsoft.JSInterop.IJSStreamReference,Microsoft.JSInterop.IJSStreamReference,Microsoft.JSInterop.IJSStreamReference,System.String,System.String)">
+            <summary>Called by the browser on paste with the typing and the selection before it and the clipboard content.</summary>
+            <param name="sync">The state of the browser.</param>
+            <param name="html">The <c>text/html</c> part as UTF-8, or null.</param>
+            <param name="text">The <c>text/plain</c> part as UTF-8, or null.</param>
+            <param name="image">The first image of the clipboard, or null.</param>
+            <param name="imageType">The content type of <paramref name="image"/>.</param>
+            <param name="clip">The marker found in the <c>text/html</c> part, or null.</param>
+            <returns>The patches to apply and the selection to set.</returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.DisposeAsync">
             <inheritdoc />
         </member>

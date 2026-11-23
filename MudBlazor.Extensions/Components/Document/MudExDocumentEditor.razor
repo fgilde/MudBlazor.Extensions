@@ -19,6 +19,14 @@
             </QuickAccess>
             <ChildContent>
                 <MudExRibbonTab Text="@TryLocalize("Home")" KeyTip="H" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Clipboard")" Icon="@Icons.Material.Filled.ContentPaste" CollapsePriority="4">
+                        <MudExRibbonButton Id="wd-paste" Text="@TryLocalize("Paste")" Icon="@Icons.Material.Filled.ContentPaste" Shortcut="Ctrl+V" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly"
+                                           OnClick="@(() => ClipboardPasteAsync())" />
+                        <MudExRibbonButton Id="wd-cut" Text="@TryLocalize("Cut")" Icon="@Icons.Material.Filled.ContentCut" Shortcut="Ctrl+X" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly"
+                                           OnClick="@(() => ClipboardCopyAsync(true))" />
+                        <MudExRibbonButton Id="wd-copy" Text="@TryLocalize("Copy")" Icon="@Icons.Material.Filled.ContentCopy" Shortcut="Ctrl+C" Size="MudExRibbonItemSize.Small"
+                                           OnClick="@(() => ClipboardCopyAsync(false))" />
+                    </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Font")" Icon="@Icons.Material.Filled.FormatSize" CollapsePriority="2" OnDialogLauncherClick="OpenFontDialogAsync">
                         <MudExRibbonRow>
                             <MudExRibbonSelect T="string" Id="wd-font" Text="@TryLocalize("Font")" Items="@FontItems" Value="@(Format?.Run.Font ?? "")" ValueChanged="SetFontAsync" Editable="true" Width="140"
