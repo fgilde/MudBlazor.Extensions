@@ -9,13 +9,15 @@
 <DemoComponent PageType="@GetType()">
     <SplitContainer>
         <Left>
-            <MudStack Row="true" Spacing="2" Class="mb-2">
-                <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => _document = TextDocument.Create())">Blank</MudButton>
-                <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => _document = DocumentSamples.Showcase())">Showcase</MudButton>
-                <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => _document = DocumentSamples.Large())">Large (300 pages)</MudButton>
-            </MudStack>
-            <div style="width: 100%; height: 560px;">
-                <MudExDocumentEditor @ref="ComponentRef" TextDocument="_document" />
+            <div style="width: 100%;">
+                <MudStack Row="true" Spacing="2" Class="mb-2">
+                    <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => _document = TextDocument.Create())">Blank</MudButton>
+                    <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => _document = DocumentSamples.Showcase())">Showcase</MudButton>
+                    <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => _document = DocumentSamples.Large())">Large (300 pages)</MudButton>
+                </MudStack>
+                <div style="width: 100%; height: 560px;">
+                    <MudExDocumentEditor @ref="ComponentRef" TextDocument="_document" />
+                </div>
             </div>
         </Left>
         <Right>

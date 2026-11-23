@@ -246,5 +246,23 @@
     "inputFiles": [
       "wwwroot/js/components/MudExFileDisplayMap.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentDom.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentDom.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentSurface.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentSurface.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentInput.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentInput.js"
+    ]
   }
 ]

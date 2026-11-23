@@ -10390,10 +10390,36 @@ textarea.mud-ex-ssg-note-text {
   overflow-wrap: break-word;
   cursor: text;
   outline: none;
+  tab-size: 48px;
 }
 .mud-ex-doc-sheet td {
   padding: 0 5.4pt;
   vertical-align: top;
+}
+.mud-ex-doc-sheet > [data-b] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1.5em;
+}
+.mud-ex-doc-sheet p.mud-ex-doc-p {
+  margin: 0;
+}
+.mud-ex-doc-sheet [data-k="f"] {
+  display: block;
+  height: 0;
+  margin: 4px 0;
+  border-top: 1px dashed #bfbfbf;
+}
+.mud-ex-doc-sheet [data-k="o"] {
+  cursor: default;
+}
+.mud-ex-doc-sheet span[data-k="i"] {
+  vertical-align: baseline;
+  outline: 1px dashed #bfbfbf;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+.mud-ex-doc-sheet .mud-ex-doc-opaque {
+  cursor: default;
+  opacity: 0.6;
 }
 .mud-ex-doc-status-bar {
   display: flex;
