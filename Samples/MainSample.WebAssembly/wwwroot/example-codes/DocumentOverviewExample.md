@@ -1,0 +1,13 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Document
+
+<div style="width: 100%; height: 640px;">
+    <MudExDocumentEditor @ref="ComponentRef" @bind-TextDocument="_document" />
+</div>
+
+@code {
+    private TextDocument _document = DocumentSamples.Showcase();
+}
+
+```

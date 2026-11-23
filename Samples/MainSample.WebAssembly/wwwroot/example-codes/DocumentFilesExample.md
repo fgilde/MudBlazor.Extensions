@@ -1,0 +1,54 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Document
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mb-3" Style="flex-wrap: wrap;">
+    @foreach (var file in _files)
+    {
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(() => LoadAsync(file))">@file</MudButton>
+    }
+    <MudText Typo="Typo.body2">@_name</MudText>
+</MudStack>
+
+@if (_error != null)
+{
+    <MudAlert Severity="Severity.Error" Class="mb-3">@_error</MudAlert>
+}
+
+@if (_document != null)
+{
+    <div style="width: 100%; height: 600px;">
+        <MudExDocumentEditor @ref="ComponentRef" @bind-TextDocument="_document" />
+    </div>
+}
+
+@code {
+    private static readonly string[] _files = ["sample.docx", "document-all-features.docx", "WordDokument.doc", "sample.odt", "readme.md"];
+    private TextDocument? _document;
+    private string _name = "";
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LoadAsync(_files[0]);
+    }
+
+    private async Task LoadAsync(string file)
+    {
+        try
+        {
+            var bytes = await Http.GetByteArrayAsync(NavigationManager.ToAbsoluteUri("sample-data/" + file));
+            using var stream = new MemoryStream(bytes);
+            _document = TextDocument.Load(stream, DocumentFileFormats.Detect(file) ?? DocumentFileFormat.Docx);
+            _error = null;
+            _name = file;
+        }
+        catch (Exception ex) when (ex is HttpRequestException or InvalidDataException or NotSupportedException)
+        {
+            _error = L["The sample file could not be loaded: {0}", ex.Message];
+        }
+    }
+}
+
+```

@@ -22,7 +22,7 @@ public class OfficeDemoConventionsTests
         "MainSample.WebAssembly.Examples.DocumentEditor"
     ];
 
-    private static readonly string[] NeedsInteraction = ["SpreadsheetLargeExample"];
+    private static readonly string[] NeedsInteraction = ["SpreadsheetLargeExample", "DocumentLargeExample"];
     private static readonly string[] StartsOnClick = ["SlidesStandaloneShowExample"];
     private static readonly string[] Helpers = ["SpreadsheetLazyDemo"];
 

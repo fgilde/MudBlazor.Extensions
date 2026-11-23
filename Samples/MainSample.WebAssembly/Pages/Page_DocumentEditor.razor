@@ -1,0 +1,82 @@
+@page "/document-editor"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.DocumentEditor
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [DemoNew(Name = "Overview", Group = "Document Editor", Order = 0, Icon = Icons.Material.Outlined.Description, ForComponentTypes = new[] { typeof(MudExDocumentEditor) }, Documentation = "MudExDocumentEditor - a Word-like editor with ribbon, styles, lists, tables, find and replace, undo and docx, doc, rtf, odt and markdown files.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Document Editor"]
+    </MudText>
+    <MudText Typo="Typo.body1" Class="mb-4">
+        @L["Write and format documents like in Word: type, style paragraphs, build lists and tables, find and replace, undo and save as docx. The editor fills its container, so give the host element a height."]
+    </MudText>
+    <MudGrid>
+        @foreach (var (title, text) in _tiles)
+        {
+            <MudItem xs="12" sm="6" md="3">
+                <MudPaper Outlined="true" Class="pa-3 fill-height">
+                    <MudText Typo="Typo.subtitle2">@title</MudText>
+                    <MudText Typo="Typo.body2">@text</MudText>
+                </MudPaper>
+            </MudItem>
+        }
+    </MudGrid>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. A document built in code"
+                  NavTitle="Document built in code"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Used in this document"
+                  Features="@(new[]
+                              {
+                                  "Title and heading styles",
+                                  "Bold, italic, underlined, colored and highlighted text",
+                                  "Bulleted and numbered lists",
+                                  "A table",
+                                  "@bind-TextDocument - the document follows every edit"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <DocumentOverviewExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. Read-only viewer"
+                  NavTitle="Read-only viewer"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "ReadOnly - no editing",
+                                  "Zoom, find and the status bar still work"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <DocumentViewerExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />
+
+@code {
+    private static readonly (string Title, string Text)[] _tiles =
+    [
+        ("Ribbon", "Home, Insert, Layout and View tabs with the usual Word groups."),
+        ("Styles", "Paragraph and character styles, fonts, sizes, colors and highlights."),
+        ("Lists and tables", "Bulleted and numbered lists, tables with merged cells."),
+        ("Find and replace", "A find panel with match case and replace all."),
+        ("Clipboard", "Cut, copy and paste text, HTML and pictures."),
+        ("Undo and redo", "Every action is one undo step."),
+        ("Many formats", "docx, doc, rtf and odt in; docx, rtf, html, markdown and text out."),
+        ("Large documents", "Only the visible part is rendered.")
+    ];
+}
