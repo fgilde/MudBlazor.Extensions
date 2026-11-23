@@ -26,7 +26,7 @@ public class SelectionFormatTests
         var d = TextDocument.FromBlocks([P(R("ab", Bold), R("cd"))]);
         Assert.True(d.FormatOf(At(d, 0, 1, 0, 1)).Run.Bold);
         Assert.True(d.FormatOf(At(d, 0, 2, 0, 2)).Run.Bold);
-        Assert.False(d.FormatOf(At(d, 0, 3, 0, 3)).Run.Bold ?? false);
+        Assert.False(d.FormatOf(At(d, 0, 3, 0, 3)).Run.Bold);
     }
 
     [Fact]
@@ -94,11 +94,94 @@ public class SelectionFormatTests
     }
 
     [Fact]
-    public void Range_OverImageOnly_UsesNoImageFormat()
+    public void Range_OverImageOnly_FallsBackToCaretRuleAtStart()
     {
-        var d = TextDocument.FromBlocks([P(new InlineImage("media/a.png", 10, 10), R("a", Bold))]);
+        var italic = new RunFormat { Italic = true };
+        var d = TextDocument.FromBlocks([P(R("x", new RunFormat { Underline = "single" }), new InlineImage("media/a.png", 10, 10) { Format = italic }, R("a", Bold))]);
+        var format = d.FormatOf(At(d, 0, 1, 0, 2)).Run;
+        Assert.Equal("single", format.Underline);
+        Assert.False(format.Italic);
+        Assert.False(format.Bold);
+        var text = d.FormatOf(At(d, 0, 0, 0, 3)).Run;
+        Assert.Null(text.Underline);
+        Assert.False(text.Italic);
+    }
+
+    [Fact]
+    public void Range_ImageBetweenText_IgnoredInMerge()
+    {
+        var d = TextDocument.FromBlocks([P(R("a", Bold), new InlineImage("media/a.png", 10, 10) { Format = new RunFormat { Italic = true } }, R("b", Bold))]);
+        var format = d.FormatOf(At(d, 0, 0, 0, 3)).Run;
+        Assert.True(format.Bold);
+        Assert.False(format.Italic);
+    }
+
+    [Fact]
+    public void Caret_RightAfterImage_TakesImageFormat()
+    {
+        var d = TextDocument.FromBlocks([P(R("a"), new InlineImage("media/a.png", 10, 10) { Format = new RunFormat { Italic = true } }, R("b", Bold))]);
+        var format = d.FormatOf(At(d, 0, 2, 0, 2)).Run;
+        Assert.True(format.Italic);
+        Assert.False(format.Bold);
+    }
+
+    [Fact]
+    public void Range_ZeroLengthOverlapAtEnds_NotCounted()
+    {
+        var d = TextDocument.FromBlocks([P(R("ab", Bold), R("cd"))]);
+        Assert.False(d.FormatOf(At(d, 0, 2, 0, 4)).Run.Bold);
         Assert.True(d.FormatOf(At(d, 0, 0, 0, 2)).Run.Bold);
-        Assert.False(d.FormatOf(At(d, 0, 0, 0, 1)).Run.Bold ?? false);
+    }
+
+    [Fact]
+    public void Range_Tab_Counts()
+    {
+        var d = TextDocument.FromBlocks([P(R("a", Bold), new Tab { Format = new RunFormat { Bold = false } }, R("b", Bold))]);
+        Assert.Null(d.FormatOf(At(d, 0, 0, 0, 3)).Run.Bold);
+        Assert.False(d.FormatOf(At(d, 0, 1, 0, 2)).Run.Bold);
+    }
+
+    [Fact]
+    public void Range_EndingAtStartOfNextParagraph_IgnoresThatParagraph()
+    {
+        var d = Styled().Body("<w:p><w:pPr><w:pStyle w:val=\"Heading1\"/><w:jc w:val=\"center\"/></w:pPr><w:r><w:t>a</w:t></w:r></w:p><w:p><w:pPr><w:jc w:val=\"left\"/></w:pPr><w:r><w:t>b</w:t></w:r></w:p>").Load();
+        d.Execute(new ApplyListCommand([d.Blocks[0].Id], ListTemplate.Bullet));
+        var format = d.FormatOf(At(d, 0, 0, 1, 0));
+        Assert.Equal("Heading1", format.StyleId);
+        Assert.Equal(ParagraphAlignment.Center, format.Paragraph.Alignment);
+        Assert.Equal(ListTemplate.Bullet, format.List);
+        Assert.Equal(format, d.FormatOf(At(d, 1, 0, 0, 0)));
+    }
+
+    [Fact]
+    public void Caret_InTableCell_TakesCellFormat()
+    {
+        var table = new Table { Grid = [2000], Rows = [new TableRow([new TableCell([P(R("a", Bold))])])] };
+        var d = TextDocument.FromBlocks([P(R("x")), table]);
+        var cell = d.AllParagraphs().Single(p => p.Text == "a");
+        Assert.True(d.FormatOf(new DocumentRange(d.PositionOf(cell.Id, 1), d.PositionOf(cell.Id, 1))).Run.Bold);
+    }
+
+    [Fact]
+    public void Range_AcrossNestedTable_Merges()
+    {
+        var inner = new Table { Grid = [2000], Rows = [new TableRow([new TableCell([P(R("in", Bold))])])] };
+        var outer = new Table { Grid = [2000], Rows = [new TableRow([new TableCell([P(R("out", Bold)), inner])])] };
+        var d = TextDocument.FromBlocks([P(R("x", Bold)), outer, P(R("y", Bold))]);
+        var all = d.AllParagraphs().ToList();
+        var range = new DocumentRange(d.PositionOf(all[0].Id, 0), d.PositionOf(all[^1].Id, 1));
+        Assert.True(d.FormatOf(range).Run.Bold);
+        var cells = new DocumentRange(d.PositionOf(all[1].Id, 0), d.PositionOf(all[2].Id, 2));
+        Assert.True(d.FormatOf(cells).Run.Bold);
+    }
+
+    [Fact]
+    public void CaretLateInLargeDocument_VisitsFewParagraphs()
+    {
+        var d = TextDocument.FromBlocks(Enumerable.Range(0, 10000).Select(i => (Block)P(R("p" + i))));
+        var before = d.ParagraphVisits;
+        d.FormatOf(At(d, 9990, 1, 9990, 1));
+        Assert.InRange(d.ParagraphVisits - before, 1, 99);
     }
 
     [Fact]

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace MudBlazor.Extensions.Office.Document;
@@ -9,16 +10,18 @@ namespace MudBlazor.Extensions.Office.Document;
 /// <param name="List">The kind of list if all paragraphs are items of lists of one kind; otherwise null.</param>
 public sealed record SelectionFormat(RunFormat Run, ParagraphFormat Paragraph, string StyleId, ListTemplate? List);
 
-internal sealed class FormatMerge<T> where T : class, new()
+internal sealed class FormatMerge<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T> where T : class, new()
 {
     private static readonly PropertyInfo[] Properties =
         [.. typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.CanRead && p.CanWrite && p.GetIndexParameters().Length == 0)];
 
+    static FormatMerge()
+    {
+        if (Properties.Length == 0) throw new InvalidOperationException($"The properties of {typeof(T).Name} are not available.");
+    }
+
     private readonly bool[] _mixed = new bool[Properties.Length];
     private T _first;
-    private int _mixedCount;
-
-    public bool AllMixed => _mixedCount == Properties.Length;
 
     public void Add(T format)
     {
@@ -28,12 +31,10 @@ internal sealed class FormatMerge<T> where T : class, new()
             return;
         }
 
+        if (ReferenceEquals(_first, format) || _first.Equals(format)) return;
         for (var i = 0; i < Properties.Length; i++)
             if (!_mixed[i] && !Equals(Properties[i].GetValue(_first), Properties[i].GetValue(format)))
-            {
                 _mixed[i] = true;
-                _mixedCount++;
-            }
     }
 
     public T Result()

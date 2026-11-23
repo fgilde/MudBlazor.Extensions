@@ -79,9 +79,10 @@ public sealed partial class TextDocument
         var counted = false;
         foreach (var paragraph in ParagraphsIn(range))
         {
+            if (!range.IsEmpty && to == 0 && paragraph.Id == last.Id && paragraph.Id != first.Id) break;
             paragraphs.Add(EffectiveParagraphFormat(paragraph));
             kinds.Add(Lists.Of(this, paragraph) is { } reference ? Lists.KindOf(Numbering, reference) : null);
-            if (range.IsEmpty || run.AllMixed) continue;
+            if (range.IsEmpty) continue;
             var start = paragraph.Id == first.Id ? from : 0;
             var end = paragraph.Id == last.Id ? to : paragraph.Length;
             var position = 0;

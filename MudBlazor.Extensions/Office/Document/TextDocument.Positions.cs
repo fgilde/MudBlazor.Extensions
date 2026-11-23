@@ -66,16 +66,21 @@ public sealed partial class TextDocument
         return ParagraphsBetween(Resolve(start).Paragraph.Id, Resolve(end).Paragraph.Id);
     }
 
+    internal long ParagraphVisits { get; private set; }
+
     private IEnumerable<Paragraph> ParagraphsBetween(string first, string last)
     {
+        var at = TryLocate(first, out var found) ? found : throw new ArgumentException($"{first} is not a paragraph of the document.", nameof(first));
         var inRange = false;
-        foreach (var paragraph in AllParagraphs(true))
-        {
-            inRange |= paragraph.Id == first;
-            if (!inRange) continue;
-            yield return paragraph;
-            if (paragraph.Id == last) yield break;
-        }
+        for (var container = at.Container; container < HeaderFooterList.Count; container++)
+            foreach (var paragraph in ParagraphsOf(Container(container).Skip(container == at.Container ? at.Index : 0)))
+            {
+                ParagraphVisits++;
+                inRange |= paragraph.Id == first;
+                if (!inRange) continue;
+                yield return paragraph;
+                if (paragraph.Id == last) yield break;
+            }
     }
 
     /// <summary>Lists all paragraphs in document order, depth-first through tables.</summary>
