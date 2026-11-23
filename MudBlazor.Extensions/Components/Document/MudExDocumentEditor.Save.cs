@@ -6,17 +6,17 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExDocumentEditor
 {
-    private static readonly MudExFileFormat Docx = Format("Word Document", DocumentFileFormat.Docx);
+    private static readonly MudExFileFormat Docx = FileFormat("Word Document", DocumentFileFormat.Docx);
     private static readonly MudExFileFormat Docm = new("Word Macro-Enabled Document", "docm", "application/vnd.ms-word.document.macroEnabled.12");
-    private static readonly MudExFileFormat Dotx = Format("Word Template", DocumentFileFormat.Dotx);
+    private static readonly MudExFileFormat Dotx = FileFormat("Word Template", DocumentFileFormat.Dotx);
     private static readonly MudExFileFormat Dotm = new("Word Macro-Enabled Template", "dotm", "application/vnd.ms-word.template.macroEnabled.12");
-    private static readonly MudExFileFormat Rtf = Format("Rich Text Format", DocumentFileFormat.Rtf);
-    private static readonly MudExFileFormat Html = Format("Web Page", DocumentFileFormat.Html);
-    private static readonly MudExFileFormat Markdown = Format("Markdown", DocumentFileFormat.Markdown);
-    private static readonly MudExFileFormat Text = Format("Plain Text", DocumentFileFormat.Text);
+    private static readonly MudExFileFormat Rtf = FileFormat("Rich Text Format", DocumentFileFormat.Rtf);
+    private static readonly MudExFileFormat Html = FileFormat("Web Page", DocumentFileFormat.Html);
+    private static readonly MudExFileFormat Markdown = FileFormat("Markdown", DocumentFileFormat.Markdown);
+    private static readonly MudExFileFormat Text = FileFormat("Plain Text", DocumentFileFormat.Text);
     private static readonly MudExFileFormat[] Writable = [Docx, Docm, Dotx, Dotm, Rtf, Html, Html with { Extension = "htm" }, Markdown, Markdown with { Extension = "markdown" }, Text];
     private static readonly MudExFileFormat[] Readable =
-        [Docx, Docm, Dotx, Dotm, Format("Word 97-2003 Document", DocumentFileFormat.Doc), Rtf, Format("OpenDocument Text", DocumentFileFormat.Odt), .. Writable[5..]];
+        [Docx, Docm, Dotx, Dotm, FileFormat("Word 97-2003 Document", DocumentFileFormat.Doc), Rtf, FileFormat("OpenDocument Text", DocumentFileFormat.Odt), .. Writable[5..]];
 
     private readonly HashSet<DocumentFileFormat> _kept = [];
     private (TextDocument Document, DocumentFileFormat Format)? _pendingKeep;
@@ -149,7 +149,7 @@ public partial class MudExDocumentEditor
         return (format, target);
     }
 
-    private static MudExFileFormat Format(string name, DocumentFileFormat format) =>
+    private static MudExFileFormat FileFormat(string name, DocumentFileFormat format) =>
         new(name, DocumentFileFormats.Extension(format).TrimStart('.'), DocumentFileFormats.ContentType(format));
 
     private static DocumentFileFormat Kind(MudExFileFormat format) => DocumentFileFormats.Detect("." + format.Extension) ?? DocumentFileFormat.Docx;

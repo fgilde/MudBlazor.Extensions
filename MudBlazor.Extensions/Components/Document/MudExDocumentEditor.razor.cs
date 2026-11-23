@@ -15,16 +15,16 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExDocumentEditor : IMudExFileEditor
 {
     private static readonly double[] ZoomLevels = [0.5, 0.75, 1, 1.25, 1.5, 2];
-    private static readonly string[] SaveShortcuts = ["Ctrl+S"];
 
     private readonly EventCallback<KeyboardEventArgs> _keyDown;
+    private readonly EventCallback<DocumentRange> _selectionChanged;
     private TextDocument _document;
     private TextDocument _documentParameter;
     private DocumentWordCount _words;
     private Task _changeNotification = Task.CompletedTask;
     private MudExDocumentSurface _surface;
     private Exception _reported;
-    private (bool CanUndo, bool CanRedo, bool Dirty, int Words) _rendered;
+    private (bool CanUndo, bool CanRedo, bool Dirty, int Words, SelectionFormat Format) _rendered;
     private bool _trackedNoticeShown;
     private double _zoom = 1;
     private bool _collapsed;
@@ -34,7 +34,11 @@ public partial class MudExDocumentEditor : IMudExFileEditor
     private int _tabIndex;
 
     /// <summary>Creates the editor.</summary>
-    public MudExDocumentEditor() => _keyDown = new EventCallback<KeyboardEventArgs>(WithoutRender.Instance, (Func<KeyboardEventArgs, Task>)OnKeyDownAsync);
+    public MudExDocumentEditor()
+    {
+        _keyDown = new EventCallback<KeyboardEventArgs>(WithoutRender.Instance, (Func<KeyboardEventArgs, Task>)OnKeyDownAsync);
+        _selectionChanged = new EventCallback<DocumentRange>(WithoutRender.Instance, (Action<DocumentRange>)(_ => RenderIfChanged()));
+    }
 
     /// <summary>
     /// The document to edit when no file is given; it is edited in place, so edits do not change this parameter (see <see cref="DocumentEdited"/>).
@@ -90,7 +94,8 @@ public partial class MudExDocumentEditor : IMudExFileEditor
 
     private int Words => _words?.Total ?? 0;
 
-    private (bool CanUndo, bool CanRedo, bool Dirty, int Words) RenderState => (_document?.Undo.CanUndo == true, _document?.Undo.CanRedo == true, IsDirty, Words);
+    private (bool CanUndo, bool CanRedo, bool Dirty, int Words, SelectionFormat Format) RenderState =>
+        (_document?.Undo.CanUndo == true, _document?.Undo.CanRedo == true, IsDirty, Words, Format);
 
     private IReadOnlyList<double> ZoomItems => ZoomLevels.Contains(_zoom) ? ZoomLevels : [.. ZoomLevels.Append(_zoom).Order()];
 
@@ -180,8 +185,7 @@ public partial class MudExDocumentEditor : IMudExFileEditor
             }
 
             ShowTrackedChangesNotice();
-            if (RenderState != _rendered)
-                StateHasChanged();
+            RenderIfChanged();
         });
     }
 
@@ -232,6 +236,14 @@ public partial class MudExDocumentEditor : IMudExFileEditor
         catch (Exception e) when (ReferenceEquals(e, _reported))
         {
         }
+
+        RenderIfChanged();
+    }
+
+    private void RenderIfChanged()
+    {
+        if (RenderState != _rendered)
+            StateHasChanged();
     }
 
     private Task UndoAsync(bool redo) => RunAsync(_ =>
@@ -250,8 +262,6 @@ public partial class MudExDocumentEditor : IMudExFileEditor
     }
 
     private void SetZoom(double zoom) => _zoom = MudExDocumentStatusBar.ClampZoom(zoom);
-
-    private Task OnShortcutAsync(string key) => key == SaveShortcuts[0] ? InvokeAsync(SaveFromKeyAsync) : Task.CompletedTask;
 
     private async Task OnKeyDownAsync(KeyboardEventArgs e)
     {
