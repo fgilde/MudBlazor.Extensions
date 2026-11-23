@@ -166,6 +166,31 @@ public class DocumentSurfaceRenderTests
     }
 
     [Fact]
+    public void Paragraph_HiddenRuns_DoNotLowerTheStrut()
+    {
+        var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new TextRun("h") { Format = new RunFormat { SizePt = 6, Hidden = true } }, new TextRun("v") { Format = new RunFormat { SizePt = 10 } }] }]);
+        document.Styles = new DocumentStyles([], new RunFormat { SizePt = 11 }, null);
+
+        var block = new DocumentSurfaceRender(document).Render(document.Blocks[0]);
+
+        Assert.Contains("font-size:10pt", block.Css);
+        Assert.Contains("font-size:6pt", block.Runs[0].Css);
+        Assert.DoesNotContain("font-size", block.Runs[1].Css);
+    }
+
+    [Fact]
+    public void ImageClamp_KeepsTheAspectRatio()
+    {
+        var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new InlineImage("p", 9525L * 20000, 9525L * 5000)] }]);
+        document.PutMedia("p", [1], "image/png");
+
+        var run = new DocumentSurfaceRender(document).Render(document.Blocks[0]).Runs[0];
+
+        Assert.Equal((10000, 2500), (run.W, run.H));
+        Assert.Contains("width=\"10000\" height=\"2500\"", Html(document));
+    }
+
+    [Fact]
     public void Html_ImageSizeAndDefaultFontSize_AreClamped()
     {
         var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new InlineImage("p", long.MaxValue, 0)] }]);

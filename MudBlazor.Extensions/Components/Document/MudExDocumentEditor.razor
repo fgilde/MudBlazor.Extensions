@@ -19,7 +19,7 @@
             <ChildContent>
                 <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
                     <MudExRibbonGroup Text="@TryLocalize("Zoom")" Icon="@Icons.Material.Filled.ZoomIn" CollapsePriority="2">
-                        <MudExRibbonSelect T="double" Id="wd-zoom" Text="@TryLocalize("Zoom")" Items="@ZoomLevels" ItemText="@(z => $"{z * 100:0}%")" Value="@_zoom" ValueChanged="SetZoom" Width="80" />
+                        <MudExRibbonSelect T="double" Id="wd-zoom" Text="@TryLocalize("Zoom")" Items="@ZoomItems" ItemText="@(z => $"{z * 100:0}%")" Value="@_zoom" ValueChanged="SetZoom" Width="80" />
                         <MudExRibbonButton Id="wd-zoom-100" Text="@TryLocalize("100%")" Icon="@Icons.Material.Filled.ZoomOutMap" Size="MudExRibbonItemSize.Large" OnClick="@(() => SetZoom(1))" />
                         <MudExRibbonButton Id="wd-zoom-in" Text="@TryLocalize("Zoom In")" Icon="@Icons.Material.Filled.ZoomIn" Size="MudExRibbonItemSize.Small" OnClick="@(() => SetZoom(_zoom + 0.1))" />
                         <MudExRibbonButton Id="wd-zoom-out" Text="@TryLocalize("Zoom Out")" Icon="@Icons.Material.Filled.ZoomOut" Size="MudExRibbonItemSize.Small" OnClick="@(() => SetZoom(_zoom - 0.1))" />
@@ -30,7 +30,8 @@
         </MudExRibbon>
     }
     <div class="mud-ex-doc-editor-body">
-        <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" OnError="OnSurfaceErrorAsync" Localizer="@Localizer" />
+        <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" Shortcuts="SaveShortcuts" ShortcutPressed="OnShortcutAsync" OnError="OnSurfaceErrorAsync"
+                              Localizer="@Localizer" />
     </div>
     @if (ShowStatusBar)
     {

@@ -5,7 +5,6 @@ namespace MudBlazor.Extensions.Office.Document;
 
 internal static class HtmlWriter
 {
-    private const long EmuPerPixel = 9525;
     internal static readonly HashSet<string> ImageTypes = ["image/png", "image/jpeg", "image/gif", "image/bmp"];
 
     internal static string Write(TextDocument document) => new Writer(document).Run();
@@ -173,9 +172,9 @@ internal static class HtmlWriter
             var data = document.GetMedia(image.MediaPart);
             var type = document.MediaContentType(image.MediaPart)?.ToLowerInvariant();
             if (data == null || type == null || !ImageTypes.Contains(type)) return false;
+            var (width, height) = DocumentCss.ImageSize(image.WidthEmu, image.HeightEmu);
             _html.Append("<img src=\"data:").Append(type).Append(";base64,").Append(Convert.ToBase64String(data)).Append("\" alt=\"").Append(Encode(image.AltText ?? ""))
-                .Append("\" width=\"").Append(DocumentCss.Pixels(image.WidthEmu / (double)EmuPerPixel))
-                .Append("\" height=\"").Append(DocumentCss.Pixels(image.HeightEmu / (double)EmuPerPixel)).Append("\">");
+                .Append("\" width=\"").Append(width).Append("\" height=\"").Append(height).Append("\">");
             return true;
         }
 

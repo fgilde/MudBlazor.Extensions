@@ -7,7 +7,6 @@ using Block = MudBlazor.Extensions.Office.Document.Block;
 
 internal sealed class DocumentSurfaceRender(TextDocument document)
 {
-    private const double EmuPerPixel = 9525;
     private const double TwipsPerPixel = 15;
     private const int MaxStyleChain = 20;
     private static readonly HashSet<string> SymbolFonts = new(StringComparer.OrdinalIgnoreCase) { "Symbol", "Wingdings", "Wingdings 2", "Wingdings 3", "Webdings" };
@@ -50,7 +49,7 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
     private RunFormat Basis(Paragraph paragraph, RunFormat mark, List<(Inline Inline, RunFormat Format)> runs)
     {
         if (paragraph.Length == 0) return Defaults() with { Bold = mark.Bold, Italic = mark.Italic, SizePt = mark.SizePt, Font = mark.Font };
-        var sizes = runs.Select(r => r.Format.SizePt).ToList();
+        var sizes = runs.Where(r => r.Format.Hidden != true).Select(r => r.Format.SizePt).ToList();
         return sizes.Count == 0 || sizes.Contains(null) ? Defaults() : Defaults() with { SizePt = sizes.Min() };
     }
 
@@ -132,7 +131,8 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
     {
         if (image.MediaPart == null || document.GetMedia(image.MediaPart) == null) return new SurfaceRun("o", image.AltText ?? "", css, null, 0, 0);
         _media.Add(image.MediaPart);
-        return new SurfaceRun("i", null, css, image.MediaPart, DocumentCss.Pixels(image.WidthEmu / EmuPerPixel), DocumentCss.Pixels(image.HeightEmu / EmuPerPixel));
+        var (width, height) = DocumentCss.ImageSize(image.WidthEmu, image.HeightEmu);
+        return new SurfaceRun("i", null, css, image.MediaPart, width, height);
     }
 
     private SurfaceBlock TableBlock(Table table)

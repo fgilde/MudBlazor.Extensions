@@ -274,6 +274,25 @@ public class FileEditorBaseTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task Save_HostHandlerTimesOut_ShowsErrorInFileDisplay()
+    {
+        var context = new TestContext();
+        _contexts.Add(context);
+        context.Services.AddMudServicesWithExtensions();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
+        var display = context.Render<MudExFileDisplay>();
+        var cut = context.Render<TestTextEditor>(p => p
+            .AddCascadingValue(display.Instance)
+            .Add(c => c.FileDisplayInfos, new Infos("a.txt", "x"))
+            .Add(c => c.SaveRequested, EventCallback.Factory.Create<MudExFileSaveRequest>(this, _ => throw new TaskCanceledException("timed out"))));
+        await cut.InvokeAsync(() => cut.Instance.Edit("a"));
+
+        Assert.False(await cut.InvokeAsync(() => cut.Instance.SaveAsync()));
+        Assert.True(cut.Instance.IsDirty);
+        Assert.Equal("timed out", display.Instance.ErrorMessage);
+    }
+
+    [Fact]
     public async Task Save_LocalNotAllowed_AndUnhandled_ReturnsFalse()
     {
         var (cut, js) = Create(p => p.Add(c => c.AllowLocalSave, false));

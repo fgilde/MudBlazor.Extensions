@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using MudBlazor.Extensions.Options;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -15,28 +14,17 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExDocumentEditor : IMudExFileEditor
 {
-    private static readonly MudExFileFormat Docx = Format("Word Document", DocumentFileFormat.Docx);
-    private static readonly MudExFileFormat Docm = new("Word Macro-Enabled Document", "docm", "application/vnd.ms-word.document.macroEnabled.12");
-    private static readonly MudExFileFormat Dotx = Format("Word Template", DocumentFileFormat.Dotx);
-    private static readonly MudExFileFormat Dotm = new("Word Macro-Enabled Template", "dotm", "application/vnd.ms-word.template.macroEnabled.12");
-    private static readonly MudExFileFormat Rtf = Format("Rich Text Format", DocumentFileFormat.Rtf);
-    private static readonly MudExFileFormat Html = Format("Web Page", DocumentFileFormat.Html);
-    private static readonly MudExFileFormat Markdown = Format("Markdown", DocumentFileFormat.Markdown);
-    private static readonly MudExFileFormat Text = Format("Plain Text", DocumentFileFormat.Text);
-    private static readonly MudExFileFormat[] Writable = [Docx, Docm, Dotx, Dotm, Rtf, Html, Html with { Extension = "htm" }, Markdown, Markdown with { Extension = "markdown" }, Text];
-    private static readonly MudExFileFormat[] Readable =
-        [Docx, Docm, Dotx, Dotm, Format("Word 97-2003 Document", DocumentFileFormat.Doc), Rtf, Format("OpenDocument Text", DocumentFileFormat.Odt), .. Writable[5..]];
     private static readonly double[] ZoomLevels = [0.5, 0.75, 1, 1.25, 1.5, 2];
-    private static readonly ConditionalWeakTable<Paragraph, StrongBox<int>> WordCounts = new();
+    private static readonly string[] SaveShortcuts = ["Ctrl+S"];
 
     private readonly EventCallback<KeyboardEventArgs> _keyDown;
-    private readonly HashSet<DocumentFileFormat> _kept = [];
     private TextDocument _document;
     private TextDocument _documentParameter;
-    private DocumentFileFormat? _loaded;
-    private string _loadedExtension;
+    private DocumentWordCount _words;
     private Task _changeNotification = Task.CompletedTask;
     private MudExDocumentSurface _surface;
+    private Exception _reported;
+    private (bool CanUndo, bool CanRedo, bool Dirty, int Words) _rendered;
     private bool _trackedNoticeShown;
     private double _zoom = 1;
     private bool _collapsed;
@@ -48,11 +36,16 @@ public partial class MudExDocumentEditor : IMudExFileEditor
     /// <summary>Creates the editor.</summary>
     public MudExDocumentEditor() => _keyDown = new EventCallback<KeyboardEventArgs>(WithoutRender.Instance, (Func<KeyboardEventArgs, Task>)OnKeyDownAsync);
 
-    /// <summary>The document to edit when no file is given; it is edited in place. Changes by the user raise <see cref="TextDocumentChanged"/>.</summary>
+    /// <summary>
+    /// The document to edit when no file is given; it is edited in place, so edits do not change this parameter (see <see cref="DocumentEdited"/>).
+    /// </summary>
     [Parameter] public TextDocument TextDocument { get; set; }
 
-    /// <summary>Raised after every change of the document and when the editor replaces it (New, Open).</summary>
+    /// <summary>Raised when the editor shows another document instance: after loading a file, New and Open. Edits raise <see cref="DocumentEdited"/>.</summary>
     [Parameter] public EventCallback<TextDocument> TextDocumentChanged { get; set; }
+
+    /// <summary>Raised after every change of the shown document, with what changed.</summary>
+    [Parameter] public EventCallback<TextDocumentChangedEventArgs> DocumentEdited { get; set; }
 
     /// <summary>
     /// Options for every dialog the editor opens. Unset: <see cref="DialogOptionsEx.DefaultDialogOptions"/> with a small, full width dialog and a
@@ -93,33 +86,13 @@ public partial class MudExDocumentEditor : IMudExFileEditor
     /// <summary>Priority among the file displays for Word, RTF and OpenDocument text files.</summary>
     public int RenderPriority => 10;
 
-    /// <summary>
-    /// The formats the document can be saved in: the format it was loaded from if it can be written (a macro-enabled document or template keeps its
-    /// type), else Word Document; then the remaining of Word Document, Rich Text Format, Web Page, Markdown and Plain Text.
-    /// </summary>
-    public override IReadOnlyList<MudExFileFormat> SaveFormats
-    {
-        get
-        {
-            var word = _document?.HasMacros == true ? Docm : Docx;
-            var first = Original ?? word;
-            return [first, .. new[] { word, Rtf, Html, Markdown, Text }.Where(f => Kind(f) != Kind(first))];
-        }
-    }
-
-    /// <inheritdoc />
-    protected override IReadOnlyList<MudExFileFormat> OpenFormats => Readable;
-
-    private MudExFileFormat Original => _loaded switch
-    {
-        null or DocumentFileFormat.Docx or DocumentFileFormat.Doc or DocumentFileFormat.Odt => null,
-        DocumentFileFormat.Dotx => _document?.HasMacros == true ? Dotm : Dotx,
-        var format => Writable.FirstOrDefault(f => f.Extension == _loadedExtension && Kind(f) == format) ?? Writable.First(f => Kind(f) == format)
-    };
-
     private bool IsReadOnly => ReadOnly || LoadFailed || _document == null;
 
-    private int Words => _document?.AllParagraphs().Sum(p => WordCounts.GetValue(p, paragraph => new StrongBox<int>(CountWords(paragraph.Text))).Value) ?? 0;
+    private int Words => _words?.Total ?? 0;
+
+    private (bool CanUndo, bool CanRedo, bool Dirty, int Words) RenderState => (_document?.Undo.CanUndo == true, _document?.Undo.CanRedo == true, IsDirty, Words);
+
+    private IReadOnlyList<double> ZoomItems => ZoomLevels.Contains(_zoom) ? ZoomLevels : [.. ZoomLevels.Append(_zoom).Order()];
 
     private string RootStyle => $"--mud-ex-doc-accent:{MudExRibbonColors.BackgroundFor(RibbonColor)};{Style}";
 
@@ -154,91 +127,11 @@ public partial class MudExDocumentEditor : IMudExFileEditor
     }
 
     /// <inheritdoc />
-    protected override MudExFileContent CreateNew()
+    protected override void OnAfterRender(bool firstRender)
     {
-        var stream = new MemoryStream();
-        Office.Document.TextDocument.Create().Save(stream);
-        stream.Position = 0;
-        return new() { FileName = "Document1.docx", ContentType = Docx.ContentType, Stream = stream };
+        base.OnAfterRender(firstRender);
+        _rendered = RenderState;
     }
-
-    /// <inheritdoc />
-    protected override async Task LoadContentAsync(MudExFileContent content)
-    {
-        Attach(null, null, null);
-        using var buffer = new MemoryStream();
-        await content.Stream.CopyToAsync(buffer);
-        buffer.Position = 0;
-        var format = DocumentFileFormats.DetectContent(buffer, content.FileName, content.ContentType)
-                     ?? throw new InvalidDataException(TryLocalize("The file is not a supported document."));
-        var document = Office.Document.TextDocument.Load(buffer, format);
-        Attach(document, format, Path.GetExtension(content.FileName ?? "").TrimStart('.').ToLowerInvariant());
-        await TextDocumentChanged.InvokeAsync(document);
-    }
-
-    /// <inheritdoc />
-    protected override async Task FlushPendingEditsAsync()
-    {
-        if (_surface != null)
-            await _surface.FlushAsync();
-        await _changeNotification;
-    }
-
-    /// <inheritdoc />
-    public override async Task<MudExFileContent> ExportAsync(MudExFileFormat format = null, CancellationToken cancellationToken = default)
-    {
-        await FlushPendingEditsAsync();
-        format ??= SaveFormats[0];
-        var target = Kind(format);
-        if (target is not (DocumentFileFormat.Docx or DocumentFileFormat.Dotx) && !_kept.Contains(target) && DialogService != null &&
-            DocumentExport.Losses(_document, target) is { Count: > 0 } losses)
-        {
-            var word = _document.HasMacros ? Docm : Docx;
-            var answer = await DialogService.ShowMessageBoxAsync(TryLocalize("Save as {0}", format.Name),
-                TryLocalize("{0} cannot keep everything in this document: {1}. Save it as a Word document to keep them?", format.Name,
-                    string.Join(", ", losses.Select(f => TryLocalize(FeatureName(f))))),
-                TryLocalize("Save as {0}", "." + word.Extension), TryLocalize("Keep {0}", format.Name), TryLocalize("Cancel"));
-            if (answer == null)
-                throw new OperationCanceledException();
-            if (answer == true)
-                (format, target) = (word, DocumentFileFormat.Docx);
-            else
-                _kept.Add(target);
-        }
-
-        var stream = new MemoryStream();
-        _document.Save(stream, target);
-        stream.Position = 0;
-        return new MudExFileContent
-        {
-            FileName = Path.ChangeExtension(string.IsNullOrEmpty(FileName) ? "Document1.docx" : FileName, format.Extension),
-            ContentType = format.ContentType,
-            Stream = stream
-        };
-    }
-
-    private static MudExFileFormat Format(string name, DocumentFileFormat format) =>
-        new(name, DocumentFileFormats.Extension(format).TrimStart('.'), DocumentFileFormats.ContentType(format));
-
-    private static DocumentFileFormat Kind(MudExFileFormat format) => DocumentFileFormats.Detect("." + format.Extension) ?? DocumentFileFormat.Docx;
-
-    private static string FeatureName(DocumentFeature feature) => feature switch
-    {
-        DocumentFeature.CharacterFormatting => "character formatting",
-        DocumentFeature.ParagraphFormatting => "paragraph formatting",
-        DocumentFeature.Styles => "styles",
-        DocumentFeature.Lists => "lists",
-        DocumentFeature.Tables => "tables",
-        DocumentFeature.MergedCells => "merged cells",
-        DocumentFeature.NestedTables => "nested tables",
-        DocumentFeature.Images => "pictures",
-        DocumentFeature.Links => "links and bookmarks",
-        DocumentFeature.HeadersFooters => "headers and footers",
-        DocumentFeature.Sections => "sections",
-        DocumentFeature.Comments => "comments",
-        DocumentFeature.Fields => "fields",
-        _ => "other content"
-    };
 
     internal static int CountWords(string text)
     {
@@ -257,13 +150,14 @@ public partial class MudExDocumentEditor : IMudExFileEditor
 
     private void Attach(TextDocument document, DocumentFileFormat? loaded, string extension)
     {
-        (_loaded, _loadedExtension) = (loaded, extension);
         if (ReferenceEquals(document, _document))
             return;
         if (_document != null)
             _document.Changed -= OnDocumentChanged;
-        _document = document;
+        (_document, _loaded, _loadedExtension) = (document, loaded, extension);
+        _words = document == null ? null : new DocumentWordCount(document);
         _kept.Clear();
+        _pendingKeep = null;
         _trackedNoticeShown = false;
         if (document != null)
             document.Changed += OnDocumentChanged;
@@ -273,39 +167,57 @@ public partial class MudExDocumentEditor : IMudExFileEditor
     {
         if (!ReferenceEquals(sender, _document))
             return;
+        _words.Apply(e);
         _changeNotification = InvokeAsync(async () =>
         {
             try
             {
-                await NotifyChangedAsync();
-                if (_document.HasTrackedChanges && !_trackedNoticeShown && !IsReadOnly && DialogService != null)
-                {
-                    _trackedNoticeShown = true;
-                    await DialogService.ShowInformationAsync(TryLocalize("Note"),
-                        TryLocalize("This document contains tracked changes. They are shown accepted; paragraphs you edit are saved without their marks."),
-                        Icons.Material.Filled.Info);
-                }
+                await NotifyEditedAsync(e);
             }
             catch (Exception ex)
             {
                 await ShowErrorAsync(ex.Message);
             }
 
-            StateHasChanged();
+            ShowTrackedChangesNotice();
+            if (RenderState != _rendered)
+                StateHasChanged();
         });
     }
 
-    private async Task NotifyChangedAsync()
+    private async Task NotifyEditedAsync(TextDocumentChangedEventArgs e)
     {
         SupressStateChange = true;
         try
         {
-            await MarkDirtyAsync();
-            await TextDocumentChanged.InvokeAsync(_document);
+            if (!IsDirty || IsSaving)
+                await MarkDirtyAsync();
+            else
+                await ContentChanged.InvokeAsync();
+            await DocumentEdited.InvokeAsync(e);
         }
         finally
         {
             SupressStateChange = false;
+        }
+    }
+
+    private void ShowTrackedChangesNotice()
+    {
+        if (_document?.HasTrackedChanges != true || _trackedNoticeShown || IsReadOnly || DialogService == null)
+            return;
+        _trackedNoticeShown = true;
+        _ = ShowNoticeAsync(TryLocalize("This document contains tracked changes. They are shown accepted; paragraphs you edit are saved without their marks."));
+    }
+
+    private async Task ShowNoticeAsync(string message)
+    {
+        try
+        {
+            await DialogService.ShowInformationAsync(TryLocalize("Note"), message, Icons.Material.Filled.Info);
+        }
+        catch (Exception)
+        {
         }
     }
 
@@ -317,7 +229,7 @@ public partial class MudExDocumentEditor : IMudExFileEditor
         {
             await _surface.RunAsync(action);
         }
-        catch (Exception)
+        catch (Exception e) when (ReferenceEquals(e, _reported))
         {
         }
     }
@@ -331,17 +243,28 @@ public partial class MudExDocumentEditor : IMudExFileEditor
             _document.Undo.Undo();
     });
 
-    private Task OnSurfaceErrorAsync(Exception e) => ShowErrorAsync(e.Message);
+    private Task OnSurfaceErrorAsync(Exception e)
+    {
+        _reported = e;
+        return ShowErrorAsync(e.Message);
+    }
 
-    private void SetZoom(double zoom) => _zoom = Math.Clamp(Math.Round(zoom, 2), 0.1, 5);
+    private void SetZoom(double zoom) => _zoom = MudExDocumentStatusBar.ClampZoom(zoom);
+
+    private Task OnShortcutAsync(string key) => key == SaveShortcuts[0] ? InvokeAsync(SaveFromKeyAsync) : Task.CompletedTask;
 
     private async Task OnKeyDownAsync(KeyboardEventArgs e)
     {
-        if ((e.CtrlKey || e.MetaKey) && !e.AltKey && e.Key is "s" or "S" && !IsReadOnly)
-        {
-            await SaveAsync();
-            StateHasChanged();
-        }
+        if ((e.CtrlKey || e.MetaKey) && !e.AltKey && e.Key is "s" or "S")
+            await SaveFromKeyAsync();
+    }
+
+    private async Task SaveFromKeyAsync()
+    {
+        if (IsReadOnly)
+            return;
+        await SaveAsync();
+        StateHasChanged();
     }
 
     /// <inheritdoc />

@@ -658,6 +658,16 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SaveCopyAsync(MudBlazor.Extensions.Core.MudExFileFormat)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.OnSaveSucceeded">
+            <summary>
+            Called after the content was saved or a copy of it was written, before <see cref="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SaveAsync(System.Boolean)"/> or <see cref="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.SaveCopyAsync(MudBlazor.Extensions.Core.MudExFileFormat)"/> returns true
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.IsSaving">
+            <summary>
+            True while a save is running, from flushing the pending edits until the save returns
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExFileEditorBase`1.MarkDirtyAsync">
             <summary>
             Marks the content as changed
@@ -1258,10 +1268,15 @@
             <summary>Creates the editor.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.TextDocument">
-            <summary>The document to edit when no file is given; it is edited in place. Changes by the user raise <see cref="P:MudBlazor.Extensions.Components.MudExDocumentEditor.TextDocumentChanged"/>.</summary>
+            <summary>
+            The document to edit when no file is given; it is edited in place, so edits do not change this parameter (see <see cref="P:MudBlazor.Extensions.Components.MudExDocumentEditor.DocumentEdited"/>).
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.TextDocumentChanged">
-            <summary>Raised after every change of the document and when the editor replaces it (New, Open).</summary>
+            <summary>Raised when the editor shows another document instance: after loading a file, New and Open. Edits raise <see cref="P:MudBlazor.Extensions.Components.MudExDocumentEditor.DocumentEdited"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.DocumentEdited">
+            <summary>Raised after every change of the shown document, with what changed.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.DialogOptions">
             <summary>
@@ -1302,15 +1317,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.RenderPriority">
             <summary>Priority among the file displays for Word, RTF and OpenDocument text files.</summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.SaveFormats">
-            <summary>
-            The formats the document can be saved in: the format it was loaded from if it can be written (a macro-enabled document or template keeps its
-            type), else Word Document; then the remaining of Word Document, Rich Text Format, Web Page, Markdown and Plain Text.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.OpenFormats">
-            <inheritdoc />
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <inheritdoc />
         </member>
@@ -1318,6 +1324,21 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.OnAfterRender(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.SaveFormats">
+            <summary>
+            The formats the document can be saved in: the format it was loaded from if it can be written (a macro-enabled document or template keeps its
+            type), else Word Document; then the remaining of Word Document, Rich Text Format, Web Page, Markdown and Plain Text.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.OpenFormats">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.CreateNew">
@@ -1330,9 +1351,17 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">
-            <inheritdoc />
+            <summary>
+            Exports the document. A format that cannot keep everything the document uses (see <see cref="M:MudBlazor.Extensions.Office.Document.DocumentExport.Losses(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentFileFormat)"/>) asks once per format
+            and document whether to save as a Word document instead; the choice to keep the format is remembered after the save succeeded.
+            </summary>
+            <param name="format">Target format, or null for the first of <see cref="P:MudBlazor.Extensions.Components.MudExDocumentEditor.SaveFormats"/></param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>The exported content</returns>
+            <exception cref="T:System.InvalidOperationException">No document is loaded.</exception>
+            <exception cref="T:System.OperationCanceledException">The token was cancelled.</exception>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.DisposeAsync">
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.OnSaveSucceeded">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentStatusBar">

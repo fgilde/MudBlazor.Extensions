@@ -342,7 +342,7 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
             if (request.Handled)
             {
                 if (copy)
-                    return true;
+                    return Succeeded();
                 fileName = content.FileName;
                 target = MudExFileSaveTarget.Host;
             }
@@ -355,7 +355,7 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
                 {
                     if (result.HandleId != _handleId)
                         await TryReleaseAsync(result.HandleId);
-                    return copy;
+                    return copy && Succeeded();
                 }
 
                 if (handle != null && result.HandleId != handle)
@@ -376,9 +376,9 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
             await Saved.InvokeAsync(new MudExFileSavedEventArgs(fileName, target));
             if (oldHandle != null)
                 await TryReleaseAsync(oldHandle);
-            return true;
+            return Succeeded();
         }
-        catch (OperationCanceledException)
+        catch (SaveCancelledException)
         {
             return false;
         }
@@ -392,6 +392,24 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
             _saving = false;
         }
     }
+
+    private bool Succeeded()
+    {
+        OnSaveSucceeded();
+        return true;
+    }
+
+    /// <summary>
+    /// Called after the content was saved or a copy of it was written, before <see cref="SaveAsync"/> or <see cref="SaveCopyAsync"/> returns true
+    /// </summary>
+    protected virtual void OnSaveSucceeded()
+    {
+    }
+
+    /// <summary>
+    /// True while a save is running, from flushing the pending edits until the save returns
+    /// </summary>
+    protected bool IsSaving => _saving;
 
     /// <summary>
     /// Marks the content as changed

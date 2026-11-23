@@ -9,14 +9,14 @@ namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
 using MudBlazor.Extensions.Office.Document;
 
-public class DocumentEditorTests : IAsyncLifetime
+public abstract class DocumentEditorTestBase : IAsyncLifetime
 {
-    private const string DocxType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-    private const string Notice = "This document contains tracked changes. They are shown accepted; paragraphs you edit are saved without their marks.";
-    private static readonly string Fixture = Path.Combine(AppContext.BaseDirectory, "TestData", "Document", "document-all-features.docx");
+    protected const string DocxType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    protected const string Notice = "This document contains tracked changes. They are shown accepted; paragraphs you edit are saved without their marks.";
+    protected static readonly string Fixture = Path.Combine(AppContext.BaseDirectory, "TestData", "Document", "document-all-features.docx");
     private readonly List<BunitContext> _contexts = [];
-    private BunitContext _context = null!;
-    private IRenderedComponent<MudDialogProvider> _dialogs = null!;
+    protected BunitContext _context = null!;
+    protected IRenderedComponent<MudDialogProvider> _dialogs = null!;
 
     public Task InitializeAsync() => Task.CompletedTask;
 
@@ -26,20 +26,22 @@ public class DocumentEditorTests : IAsyncLifetime
             await context.DisposeAsync();
     }
 
-    private sealed record Infos(string FileName, string? ContentType, byte[] Bytes) : IMudExFileDisplayInfos
+    protected sealed record Infos(string FileName, string? ContentType, byte[] Bytes) : IMudExFileDisplayInfos
     {
         public string? Url => null;
         public Stream ContentStream { get; } = new MemoryStream(Bytes);
     }
 
-    private static byte[] Bytes(TextDocument document, DocumentFileFormat format = DocumentFileFormat.Docx)
+    protected static byte[] Bytes(TextDocument document, DocumentFileFormat format = DocumentFileFormat.Docx)
     {
         var stream = new MemoryStream();
         document.Save(stream, format);
         return stream.ToArray();
     }
 
-    private IRenderedComponent<MudExDocumentEditor> Render(Action<ComponentParameterCollectionBuilder<MudExDocumentEditor>> configure)
+    protected IRenderedComponent<MudExDocumentEditor> Render(Action<ComponentParameterCollectionBuilder<MudExDocumentEditor>> configure) => RenderEditor(configure);
+
+    protected IRenderedComponent<T> RenderEditor<T>(Action<ComponentParameterCollectionBuilder<T>> configure) where T : MudExDocumentEditor
     {
         _context = new BunitContext();
         _contexts.Add(_context);
@@ -53,26 +55,29 @@ public class DocumentEditorTests : IAsyncLifetime
         return cut;
     }
 
-    private IRenderedComponent<MudExDocumentEditor> Render(TextDocument document, bool readOnly = false)
+    protected IRenderedComponent<MudExDocumentEditor> Render(TextDocument document, bool readOnly = false)
         => Render(p => p.Add(x => x.TextDocument, document).Add(x => x.ReadOnly, readOnly));
 
-    private void Answer(string button) =>
+    protected void Answer(string button) =>
         _dialogs.WaitForAssertion(() => _dialogs.FindAll("button").Single(b => b.TextContent.Trim() == button).Click());
 
-    private static TextDocument Merged()
+    protected static TextDocument Merged()
     {
         var document = DocumentSurfaceRenderTests.WithTable();
         document.Execute(new MergeTableCellsCommand(document.Blocks.OfType<Table>().Single().Id, 0, 0, 0, 1));
         return document;
     }
 
-    private static Task Edit(IRenderedComponent<MudExDocumentEditor> cut, string text) => cut.InvokeAsync(() =>
+    protected static Task Edit(IRenderedComponent<MudExDocumentEditor> cut, string text) => cut.InvokeAsync(() =>
     {
         var document = cut.Instance.CurrentDocument;
         var at = document.PositionOf(document.Blocks[^1].Id, ((Paragraph)document.Blocks[^1]).Length);
         document.Execute(new ReplaceTextCommand(new DocumentRange(at, at), text));
     });
+}
 
+public class DocumentEditorTests : DocumentEditorTestBase
+{
     [Fact]
     public void Standalone_WithoutFile_EditsABlankDocument()
     {
@@ -89,15 +94,17 @@ public class DocumentEditorTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task TextDocumentParameter_EditedInPlace_RaisesTextDocumentChanged()
+    public async Task TextDocumentParameter_EditedInPlace_RaisesDocumentEdited()
     {
-        TextDocument? raised = null;
+        TextDocumentChangedEventArgs? edited = null;
+        var replaced = 0;
         var document = TextDocument.Create();
-        var cut = Render(p => p.Add(x => x.TextDocument, document).Add(x => x.TextDocumentChanged, d => raised = d));
+        var cut = Render(p => p.Add(x => x.TextDocument, document).Add(x => x.TextDocumentChanged, _ => replaced++).Add(x => x.DocumentEdited, e => edited = e));
 
         await Edit(cut, "Hello");
 
-        cut.WaitForAssertion(() => Assert.Same(document, raised));
+        cut.WaitForAssertion(() => Assert.Contains(document.Blocks[0].Id, edited!.ChangedBlockIds));
+        Assert.Equal(0, replaced);
         Assert.Same(document, cut.Instance.CurrentDocument);
         Assert.Equal("Hello", ((Paragraph)document.Blocks[0]).Text);
         Assert.True(cut.Instance.IsDirty);

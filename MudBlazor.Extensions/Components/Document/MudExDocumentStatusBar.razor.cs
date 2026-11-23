@@ -20,5 +20,7 @@ public partial class MudExDocumentStatusBar
     private Task OnSliderChangedAsync(ChangeEventArgs e)
         => double.TryParse(e.Value?.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out var percent) ? SetZoomAsync(percent / 100) : Task.CompletedTask;
 
-    private Task SetZoomAsync(double zoom) => ZoomChanged.InvokeAsync(Math.Clamp(Math.Round(zoom, 2), 0.1, 5));
+    private Task SetZoomAsync(double zoom) => ZoomChanged.InvokeAsync(ClampZoom(zoom));
+
+    internal static double ClampZoom(double zoom) => double.IsFinite(zoom) ? Math.Clamp(Math.Round(zoom, 2), 0.1, 5) : 1;
 }
