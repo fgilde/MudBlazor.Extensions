@@ -121,6 +121,21 @@ public class DocumentEditorRibbonStateTests : DocumentEditorFormattingTestBase
     }
 
     [Fact]
+    public async Task CollapsedRibbon_TheFlyoutShowsTheCurrentState()
+    {
+        var document = DocumentSurfaceRenderTests.Created("Hello world");
+        Bold(document, 0, 6, 11);
+        var cut = Render(p => p.Add(x => x.TextDocument, document).Add(x => x.RibbonCollapsed, true));
+        Assert.False(Checked(cut, "wd-bold"));
+
+        await Select(cut, 0, 8, 8);
+        await cut.InvokeAsync(() => Task.Delay(20));
+        cut.FindAll(".mud-ex-ribbon-tab").Single(t => t.TextContent.Contains("Home")).Click();
+
+        cut.WaitForAssertion(() => Assert.True(Checked(cut, "wd-bold")));
+    }
+
+    [Fact]
     public async Task RibbonState_IgnoresFormatsTheRibbonDoesNotShow()
     {
         var document = DocumentSurfaceRenderTests.Created("Hello world");

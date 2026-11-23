@@ -221,13 +221,22 @@ public partial class MudExDocumentSurface
             if (from == 0 && !restarted) _attachedAt = patch.Seq;
             from += InitialChunk;
             _chunking = from < _document.Blocks.Count;
-            await RegisterAsync(_render.TakeMedia());
+            await RegisterQuietlyAsync(_render.TakeMedia());
             await SendPatchesAsync([patch]);
             if (generation != _generation || !_chunking && !_restart) return;
             await Pause();
             if (generation != _generation) return;
-            if (_restart) (from, restarted) = (0, true);
+            if (!_restart) continue;
+            await FlushQuietlyAsync();
+            if (generation != _generation) return;
+            (from, restarted) = (0, true);
         }
+    }
+
+    private async Task FlushQuietlyAsync()
+    {
+        try { await FlushAsync(); }
+        catch (Exception) { }
     }
 
     private static async Task YieldAsync()
@@ -246,10 +255,18 @@ public partial class MudExDocumentSurface
     private void OnChanged(object sender, TextDocumentChangedEventArgs change)
     {
         if (!_live || !ReferenceEquals(sender, _document)) return;
-        _restart |= _chunking && (change.Kind & (DocumentChangeKind.Structure | DocumentChangeKind.Styles | DocumentChangeKind.Sections)) != 0;
+        if (_acting && change.Selection != null) _resultSelection = change.Selection;
+        var kind = change.Kind;
+        _restart |= _chunking && ((kind & (DocumentChangeKind.Styles | DocumentChangeKind.Sections)) != 0 || kind.HasFlag(DocumentChangeKind.Structure | DocumentChangeKind.Content));
+        if (_chunking && kind.HasFlag(DocumentChangeKind.Styles))
+        {
+            foreach (var id in change.RemovedBlockIds.Concat(change.RemovedNestedBlockIds)) _render.Forget(id);
+            foreach (var id in change.ChangedBlockIds.Concat(change.ChangedNestedBlockIds).Concat(change.RemovedBlockIds).Concat(change.RemovedNestedBlockIds)) _changedAt.Remove(id);
+            return;
+        }
+
         var patches = DocumentSurfacePatches.Changes(_document, _render, change, () => ++_seq);
         foreach (var patch in patches) Track(patch, change);
-        if (_acting && change.Selection != null) _resultSelection = change.Selection;
         if (_collecting != null)
             _collecting.AddRange(patches);
         else

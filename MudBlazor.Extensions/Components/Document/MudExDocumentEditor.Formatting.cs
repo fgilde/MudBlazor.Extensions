@@ -60,7 +60,7 @@ public partial class MudExDocumentEditor
     {
         get
         {
-            if (!ShowRibbon || _collapsed || IsReadOnly || _surface == null || Selection.Start == null)
+            if (!ShowRibbon || IsReadOnly || _surface == null || Selection.Start == null)
                 return null;
             var key = (_document, _document.Version, Selection, _surface.CaretFormat);
             if (key != _formatKey)
@@ -69,7 +69,7 @@ public partial class MudExDocumentEditor
         }
     }
 
-    private RibbonView View => Format is { Run: var r, Paragraph: var p } f
+    private RibbonView View => !_collapsed && Format is { Run: var r, Paragraph: var p } f
         ? new(r.Bold, r.Italic, r.Underline, r.Strike, r.VerticalAlign, r.Font, r.SizePt, r.Color, r.Highlight, p.Alignment, f.List, p.Line, f.StyleId, p.SpacingBefore, p.SpacingAfter)
         : default;
 

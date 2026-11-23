@@ -287,6 +287,12 @@ public partial class MudExRibbon
 
     internal void NotifyCommandExecuted() => _view?.CommandExecuted();
 
+    internal void RefreshContent()
+    {
+        if (!IsDisposed)
+            StateHasChanged();
+    }
+
     internal IReadOnlyList<MudExRibbonItemBase> SearchCommands(string text)
         => string.IsNullOrWhiteSpace(text)
             ? []

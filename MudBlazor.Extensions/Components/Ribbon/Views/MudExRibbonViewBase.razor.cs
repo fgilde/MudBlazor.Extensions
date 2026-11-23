@@ -129,7 +129,11 @@ public abstract partial class MudExRibbonViewBase : IMudExRibbonView, IDisposabl
     {
         await Ribbon.SetFileMenuOpenAsync(false);
         if (Ribbon.IsCollapsed)
+        {
             _overlayOpen = !_overlayOpen || tab != Ribbon.ActiveTab;
+            if (_overlayOpen)
+                Ribbon.RefreshContent();
+        }
         await Ribbon.SelectTabAsync(tab);
     }
 
