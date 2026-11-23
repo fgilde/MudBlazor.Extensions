@@ -24,7 +24,7 @@ internal static class HtmlWriter
         {
             _html.Append("<!DOCTYPE html>\n<html><head><meta charset=\"utf-8\"><title>").Append(Encode(document.Properties.Title ?? "")).Append("</title>\n<style>body{");
             if (DocumentCss.FontName(_defaults.Font) is { } font) _html.Append("font-family:'").Append(font).Append("';");
-            if (_defaults.SizePt is { } size) _html.Append("font-size:").Append(DocumentCss.Number(size)).Append("pt;");
+            if (DocumentCss.Size(_defaults.SizePt) is { } size) _html.Append("font-size:").Append(DocumentCss.Number(size)).Append("pt;");
             _html.Append("}h1,h2,h3,h4,h5,h6{font-size:1em;font-weight:normal}table{border-collapse:collapse}td{border:1px solid #000;padding:0 5.4pt;vertical-align:top}")
                 .Append("</style>\n</head><body>\n");
             Blocks(document.Blocks);
@@ -174,8 +174,8 @@ internal static class HtmlWriter
             var type = document.MediaContentType(image.MediaPart)?.ToLowerInvariant();
             if (data == null || type == null || !ImageTypes.Contains(type)) return false;
             _html.Append("<img src=\"data:").Append(type).Append(";base64,").Append(Convert.ToBase64String(data)).Append("\" alt=\"").Append(Encode(image.AltText ?? ""))
-                .Append("\" width=\"").Append(Math.Max(1, (long)Math.Round(image.WidthEmu / (double)EmuPerPixel)))
-                .Append("\" height=\"").Append(Math.Max(1, (long)Math.Round(image.HeightEmu / (double)EmuPerPixel))).Append("\">");
+                .Append("\" width=\"").Append(DocumentCss.Pixels(image.WidthEmu / (double)EmuPerPixel))
+                .Append("\" height=\"").Append(DocumentCss.Pixels(image.HeightEmu / (double)EmuPerPixel)).Append("\">");
             return true;
         }
 

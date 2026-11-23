@@ -10,7 +10,6 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
     private const double EmuPerPixel = 9525;
     private const double TwipsPerPixel = 15;
     private const int MaxStyleChain = 20;
-    private const int MaxImagePixels = 10000;
     private static readonly HashSet<string> SymbolFonts = new(StringComparer.OrdinalIgnoreCase) { "Symbol", "Wingdings", "Wingdings 2", "Wingdings 3", "Webdings" };
     private static readonly ParagraphFormat NoParagraph = new();
     private readonly HashSet<string> _media = [];
@@ -46,10 +45,19 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
     }
 
     public string RunCss(Paragraph paragraph, RunFormat own) =>
-        DocumentCss.Run(document.EffectiveRunFormat(paragraph, new TextRun("") { Format = own }), Basis(paragraph, document.EffectiveRunFormat(paragraph, null)), true);
+        DocumentCss.Run(Sized(document.EffectiveRunFormat(paragraph, new TextRun("") { Format = own })), Basis(paragraph, document.EffectiveRunFormat(paragraph, null), Formats(paragraph)), true);
 
-    private RunFormat Basis(Paragraph paragraph, RunFormat mark) =>
-        paragraph.Length > 0 ? Defaults() : Defaults() with { Bold = mark.Bold, Italic = mark.Italic, SizePt = mark.SizePt, Font = mark.Font };
+    private RunFormat Basis(Paragraph paragraph, RunFormat mark, List<(Inline Inline, RunFormat Format)> runs)
+    {
+        if (paragraph.Length == 0) return Defaults() with { Bold = mark.Bold, Italic = mark.Italic, SizePt = mark.SizePt, Font = mark.Font };
+        var sizes = runs.Select(r => r.Format.SizePt).ToList();
+        return sizes.Count == 0 || sizes.Contains(null) ? Defaults() : Defaults() with { SizePt = sizes.Min() };
+    }
+
+    private List<(Inline Inline, RunFormat Format)> Formats(Paragraph paragraph) =>
+        paragraph.Inlines.Where(i => i is not (Marker or TextRun { Length: 0 })).Select(i => (i, Sized(document.EffectiveRunFormat(paragraph, i)))).ToList();
+
+    private RunFormat Sized(RunFormat format) => format with { SizePt = DocumentCss.Size(format.SizePt) ?? DocumentCss.Size(Defaults().SizePt) };
 
     private RunFormat Defaults()
     {
@@ -62,10 +70,11 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         var format = document.EffectiveParagraphFormat(paragraph);
         var defaults = Defaults();
         var mark = document.EffectiveRunFormat(paragraph, null);
-        var basis = Basis(paragraph, mark);
+        var runs = Formats(paragraph);
+        var basis = Basis(paragraph, mark, runs);
         var label = document.ListLabel(paragraph);
-        var css = DocumentCss.Paragraph(format, NoParagraph, false, false) + DocumentCss.Spacing(format) + (paragraph.Length > 0 ? "" : DocumentCss.Run(basis, defaults, true));
-        return new SurfaceBlock(paragraph.Id, "p", css, paragraph.Text, label, label == null ? null : LabelCss(format, mark, basis), Runs(paragraph, basis), null, null, null);
+        var css = DocumentCss.Paragraph(format, NoParagraph, false, false) + DocumentCss.Spacing(format) + DocumentCss.Run(basis, defaults, true);
+        return new SurfaceBlock(paragraph.Id, "p", css, paragraph.Text, label, label == null ? null : LabelCss(format, mark, basis), Runs(runs, basis), null, null, null);
     }
 
     private string LabelCss(ParagraphFormat format, RunFormat mark, RunFormat basis)
@@ -78,18 +87,16 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         var css = new StringBuilder("display:inline-block;text-indent:0;");
         if (hanging > 0 && level?.Suffix is null or "tab") css.Append("min-width:").Append(Pt(hanging)).Append("pt;");
         if (level?.Suffix == "space") css.Append("padding-right:0.25em;");
-        return css.Append(DocumentCss.Run(label, basis, true)).ToString();
+        return css.Append(DocumentCss.Run(Sized(label), basis, true)).ToString();
     }
 
-    private List<SurfaceRun> Runs(Paragraph paragraph, RunFormat basis)
+    private List<SurfaceRun> Runs(List<(Inline Inline, RunFormat Format)> inlines, RunFormat basis)
     {
         var runs = new List<SurfaceRun>();
         var text = new StringBuilder();
         string textCss = null;
-        foreach (var inline in paragraph.Inlines)
+        foreach (var (inline, format) in inlines)
         {
-            if (inline is Marker or TextRun { Length: 0 }) continue;
-            var format = document.EffectiveRunFormat(paragraph, inline);
             var css = (format.Hidden == true ? "display:none;" : "") + DocumentCss.Run(format, basis, true);
             if (inline is TextRun or Tab)
             {
@@ -125,7 +132,7 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
     {
         if (image.MediaPart == null || document.GetMedia(image.MediaPart) == null) return new SurfaceRun("o", image.AltText ?? "", css, null, 0, 0);
         _media.Add(image.MediaPart);
-        return new SurfaceRun("i", null, css, image.MediaPart, Pixels(image.WidthEmu / EmuPerPixel), Pixels(image.HeightEmu / EmuPerPixel));
+        return new SurfaceRun("i", null, css, image.MediaPart, DocumentCss.Pixels(image.WidthEmu / EmuPerPixel), DocumentCss.Pixels(image.HeightEmu / EmuPerPixel));
     }
 
     private SurfaceBlock TableBlock(Table table)
@@ -175,6 +182,4 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         borders == null ? new Border[6] : [borders.Top, borders.Bottom, borders.Left, borders.Right, borders.InsideH, borders.InsideV];
 
     private static string Pt(long twips) => DocumentCss.Twips(twips, 0);
-
-    private static int Pixels(double value) => (int)Math.Clamp(Math.Round(value), 1, MaxImagePixels);
 }

@@ -15,6 +15,7 @@ internal static class DocumentCss
     };
 
     internal const int MaxTwips = 31680;
+    internal const int MaxPixels = 10000;
     private const double MinSizePt = 1;
     private const double MaxSizePt = 1638;
     private const double MinLineMultiple = 0.06;
@@ -30,7 +31,7 @@ internal static class DocumentCss
         if ((format.Caps == true) != (basis.Caps == true)) css.Append(format.Caps == true ? "text-transform:uppercase;" : "text-transform:none;");
         if ((format.SmallCaps == true) != (basis.SmallCaps == true)) css.Append(format.SmallCaps == true ? "font-variant:small-caps;" : "font-variant:normal;");
         if (format.Color != basis.Color && (Color(format.Color) ?? (Color(basis.Color) != null ? "#000000" : null)) is { } color) css.Append("color:").Append(color).Append(';');
-        if (format.SizePt is { } size && size != basis.SizePt) css.Append("font-size:").Append(Number(Math.Clamp(size, MinSizePt, MaxSizePt))).Append("pt;");
+        if (Size(format.SizePt) is { } size && size != Size(basis.SizePt)) css.Append("font-size:").Append(Number(size)).Append("pt;");
         if (format.Font != basis.Font && (fallbacks ? FontStack(format.Font) : FontName(format.Font) is { } name ? "'" + name + "'" : null) is { } font)
             css.Append("font-family:").Append(font).Append(';');
         if (Background(format) is { } background) css.Append("background-color:").Append(background).Append(';');
@@ -62,6 +63,10 @@ internal static class DocumentCss
             css.Append("line-height:").Append(line.Rule == LineRule.Auto ? Number(Math.Clamp(line.Value / 240.0 * 1.15, MinLineMultiple, MaxLineMultiple)) : Twips(line.Value, 0) + "pt").Append(';');
         return css.ToString();
     }
+
+    internal static double? Size(double? sizePt) => sizePt is { } size && double.IsFinite(size) && size > 0 ? Math.Clamp(size, MinSizePt, MaxSizePt) : null;
+
+    internal static int Pixels(double value) => double.IsFinite(value) ? (int)Math.Clamp(Math.Round(value), 1, MaxPixels) : 1;
 
     internal static string Twips(long? twips, int min) => Number(Math.Clamp(twips ?? 0, min, MaxTwips) / 20.0);
 

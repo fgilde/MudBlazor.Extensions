@@ -418,7 +418,7 @@ internal static class Tables
         foreach (var cell in row.Cells)
         {
             result.Add((column, cell));
-            column += cell.GridSpan;
+            column += Math.Max(1, cell.GridSpan);
         }
 
         return result;

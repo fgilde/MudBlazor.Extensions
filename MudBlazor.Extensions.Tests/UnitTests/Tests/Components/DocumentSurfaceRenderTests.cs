@@ -63,9 +63,9 @@ public class DocumentSurfaceRenderTests
         var empty = render.Render(document.Blocks[1]);
 
         Assert.DoesNotContain("font-weight", filled.Css);
-        Assert.DoesNotContain("font-size", filled.Css);
+        Assert.Contains("font-size:8pt", filled.Css);
         Assert.DoesNotContain("font-weight", filled.Runs[0].Css);
-        Assert.Contains("font-size:8pt", filled.Runs[0].Css);
+        Assert.DoesNotContain("font-size", filled.Runs[0].Css);
         Assert.Contains("font-weight:bold", empty.Css);
         Assert.Contains("font-size:16pt", empty.Css);
         Assert.DoesNotContain("text-decoration", empty.Css);
@@ -97,7 +97,7 @@ public class DocumentSurfaceRenderTests
             new Paragraph
             {
                 Format = new ParagraphFormat { IndentLeft = int.MaxValue, IndentFirstLine = int.MinValue, IndentRight = -int.MaxValue, SpacingBefore = -500, SpacingAfter = int.MaxValue, Line = new LineSpacing(int.MaxValue, LineRule.Exact) },
-                Inlines = [new TextRun("x") { Format = new RunFormat { SizePt = 1e9 } }, new TextRun("y") { Format = new RunFormat { SizePt = 0 } }, new InlineImage("p", long.MaxValue, 0)]
+                Inlines = [new TextRun("x") { Format = new RunFormat { SizePt = 1e9 } }, new TextRun("y") { Format = new RunFormat { SizePt = 0.25 } }, new InlineImage("p", long.MaxValue, 0)]
             },
             new Paragraph { Format = new ParagraphFormat { Line = new LineSpacing(int.MaxValue, LineRule.Auto) } },
             new Paragraph { Format = new ParagraphFormat { Line = new LineSpacing(1, LineRule.Auto) } },
@@ -122,6 +122,84 @@ public class DocumentSurfaceRenderTests
         Assert.Contains("line-height:0.06;", render.Render(document.Blocks[2]).Css);
         Assert.Equal([2112, 0], table.Grid);
         Assert.Equal("height:1584pt;", table.Rows[0].Css);
+    }
+
+    [Fact]
+    public void Paragraph_FontSize_IsTheSmallestRunSize()
+    {
+        static TextRun Run(string text, double? size) => new(text) { Format = new RunFormat { SizePt = size } };
+        var document = TextDocument.FromBlocks(
+        [
+            new Paragraph { Inlines = [Run("a", 8), Run("b", 8)] },
+            new Paragraph { Inlines = [Run("a", 12), Run("b", 8), Run("c", 0)] }
+        ]);
+        document.Styles = new DocumentStyles([], new RunFormat { SizePt = 11 }, null);
+        var render = new DocumentSurfaceRender(document);
+
+        var small = render.Render(document.Blocks[0]);
+        var mixed = render.Render(document.Blocks[1]);
+
+        Assert.Contains("font-size:8pt", small.Css);
+        Assert.DoesNotContain("font-size", small.Runs[0].Css);
+        Assert.Contains("font-size:8pt", mixed.Css);
+        Assert.Equal(["font-size:12pt;", "", "font-size:11pt;"], mixed.Runs.Select(r => r.Css));
+        Assert.Equal("", render.RunCss((Paragraph)document.Blocks[1], new RunFormat { SizePt = 8 }));
+        Assert.Equal("font-size:12pt;", render.RunCss((Paragraph)document.Blocks[1], new RunFormat { SizePt = 12 }));
+    }
+
+    [Theory]
+    [InlineData(0d)]
+    [InlineData(-3d)]
+    [InlineData(double.NaN)]
+    [InlineData(double.PositiveInfinity)]
+    public void Css_InvalidFontSize_IsUnset(double size)
+    {
+        var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new TextRun("x") { Format = new RunFormat { SizePt = size } }] }, new Paragraph()]);
+        document.Styles = new DocumentStyles([], new RunFormat { SizePt = size }, null);
+        var render = new DocumentSurfaceRender(document);
+
+        Assert.Equal("", DocumentCss.Run(new RunFormat { SizePt = size }, new RunFormat { SizePt = 11 }));
+        Assert.DoesNotContain("font-size", render.SheetCss());
+        Assert.DoesNotContain("font-size", render.Render(document.Blocks[0]).Css);
+        Assert.DoesNotContain("font-size", render.Render(document.Blocks[0]).Runs[0].Css);
+        Assert.Contains("body{}", Html(document));
+    }
+
+    [Fact]
+    public void Html_ImageSizeAndDefaultFontSize_AreClamped()
+    {
+        var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new InlineImage("p", long.MaxValue, 0)] }]);
+        document.PutMedia("p", [1], "image/png");
+        document.Styles = new DocumentStyles([], new RunFormat { SizePt = 1e9 }, null);
+
+        var html = Html(document);
+
+        Assert.Contains("width=\"10000\" height=\"1\"", html);
+        Assert.Contains("body{font-size:1638pt;}", html);
+    }
+
+    [Fact]
+    public void Table_ZeroSpanCell_TakesOneGridColumn()
+    {
+        var document = TextDocument.FromBlocks(
+        [
+            new Table
+            {
+                Grid = [1500, 1500],
+                Rows =
+                [
+                    new TableRow([new TableCell([new Paragraph { Inlines = [new TextRun("a")] }]) { GridSpan = 0 }, new TableCell([new Paragraph { Inlines = [new TextRun("b")] }]) { VMerge = VerticalMerge.Restart }]),
+                    new TableRow([new TableCell([new Paragraph { Inlines = [new TextRun("c")] }]), new TableCell([new Paragraph()]) { VMerge = VerticalMerge.Continue }])
+                ]
+            }
+        ]);
+        var table = (Table)document.Blocks[0];
+
+        var block = new DocumentSurfaceRender(document).Render(table);
+
+        Assert.Equal([0, 1], Tables.Layout(table.Rows[0]).Select(p => p.Column));
+        Assert.Equal(2, block.Rows[0].Cells[1].RowSpan);
+        Assert.Equal(["c"], block.Rows[1].Cells.Select(c => c.Blocks[0].Text));
     }
 
     [Fact]
@@ -241,7 +319,7 @@ public class DocumentSurfaceRenderTests
 
             var block = new DocumentSurfaceRender(document).Render(document.Blocks[0]);
 
-            Assert.Contains("font-size:10.5pt", block.Runs[0].Css);
+            Assert.Contains("font-size:10.5pt", block.Css);
             Assert.Contains("margin-top:1.5pt", block.Css);
             Assert.Contains("line-height:2.3;", block.Css);
         }
