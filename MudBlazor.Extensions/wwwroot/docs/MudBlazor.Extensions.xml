@@ -33827,6 +33827,32 @@
             <inheritdoc />
             <exception cref="T:System.InvalidOperationException">The command was not applied or the document changed since.</exception>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.TypedParagraph">
+            <summary>The typed state of one paragraph in a typing batch, see <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.ApplyTyping(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.TypedParagraph},System.DateTimeOffset)"/>.</summary>
+            <param name="ParagraphId">The id of the paragraph.</param>
+            <param name="Text">The full new <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/> of the paragraph.</param>
+            <param name="Caret">The caret offset in <paramref name="Text"/> when the caret is in this paragraph, otherwise null.</param>
+            <param name="Format">The own format of the inserted text (a pending caret format), or null for the format of the text around it.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TypedParagraph.#ctor(System.String,System.String,System.Nullable{System.Int32},MudBlazor.Extensions.Office.Document.RunFormat)">
+            <summary>The typed state of one paragraph in a typing batch, see <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.ApplyTyping(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.TypedParagraph},System.DateTimeOffset)"/>.</summary>
+            <param name="ParagraphId">The id of the paragraph.</param>
+            <param name="Text">The full new <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/> of the paragraph.</param>
+            <param name="Caret">The caret offset in <paramref name="Text"/> when the caret is in this paragraph, otherwise null.</param>
+            <param name="Format">The own format of the inserted text (a pending caret format), or null for the format of the text around it.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TypedParagraph.ParagraphId">
+            <summary>The id of the paragraph.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TypedParagraph.Text">
+            <summary>The full new <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/> of the paragraph.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TypedParagraph.Caret">
+            <summary>The caret offset in <paramref name="Text"/> when the caret is in this paragraph, otherwise null.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TypedParagraph.Format">
+            <summary>The own format of the inserted text (a pending caret format), or null for the format of the text around it.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.Comment">
             <summary>A comment of the document.</summary>
             <param name="Id">The comment id as stored in the file.</param>
@@ -35421,6 +35447,19 @@
             <param name="inlines">The new inlines; instances passed back unchanged keep their origin in the file.</param>
             <param name="at">When the batch was typed.</param>
             <exception cref="T:System.ArgumentException">The document has no paragraph with this id.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.ApplyTyping(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.TypedParagraph},System.DateTimeOffset)">
+            <summary>
+            Applies a batch of typing given as the new text of paragraphs: only the changed span of each paragraph is replaced (found from the old text,
+            the new text and the caret), so every untouched inline keeps its instance and origin in the file. Line feeds, carriage returns and U+FFFC are
+            dropped from the inserted text; tabs and vertical tabs become <see cref="T:MudBlazor.Extensions.Office.Document.Tab"/> and line <see cref="T:MudBlazor.Extensions.Office.Document.Break"/> inlines. The whole batch is one
+            undo step and raises one <see cref="E:MudBlazor.Extensions.Office.Document.TextDocument.Changed"/> event, and merges with the previous typing step like
+            <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.ApplyTyping(System.String,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.Inline},System.DateTimeOffset)"/>.
+            </summary>
+            <param name="paragraphs">The typed paragraphs.</param>
+            <param name="at">When the batch was typed.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="paragraphs"/>, an entry or its text is null.</exception>
+            <exception cref="T:System.ArgumentException">An id is not a paragraph of the document; nothing is changed.</exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.EndTyping">
             <summary>Ends the current typing step: the next typing batch starts a new undo step.</summary>

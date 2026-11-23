@@ -2,7 +2,7 @@ namespace MudBlazor.Extensions.Office.Document;
 
 public sealed partial class TextDocument
 {
-    private (ReplaceParagraphContentCommand Step, int Version, DateTimeOffset At)? _typing;
+    private (TextDocumentCommand Step, int Version, DateTimeOffset At)? _typing;
 
     /// <summary>The longest pause between two typing batches that still merge into one undo step; one second by default.</summary>
     public TimeSpan TypingMergeWindow { get; set; } = TimeSpan.FromSeconds(1);
@@ -16,9 +16,27 @@ public sealed partial class TextDocument
     /// <param name="inlines">The new inlines; instances passed back unchanged keep their origin in the file.</param>
     /// <param name="at">When the batch was typed.</param>
     /// <exception cref="ArgumentException">The document has no paragraph with this id.</exception>
-    public void ApplyTyping(string paragraphId, IReadOnlyList<Inline> inlines, DateTimeOffset at)
+    public void ApplyTyping(string paragraphId, IReadOnlyList<Inline> inlines, DateTimeOffset at) =>
+        Type(new ReplaceParagraphContentCommand(paragraphId, inlines) { Typing = true }, at);
+
+    /// <summary>
+    /// Applies a batch of typing given as the new text of paragraphs: only the changed span of each paragraph is replaced (found from the old text,
+    /// the new text and the caret), so every untouched inline keeps its instance and origin in the file. Line feeds, carriage returns and U+FFFC are
+    /// dropped from the inserted text; tabs and vertical tabs become <see cref="Tab"/> and line <see cref="Break"/> inlines. The whole batch is one
+    /// undo step and raises one <see cref="Changed"/> event, and merges with the previous typing step like
+    /// <see cref="ApplyTyping(string, IReadOnlyList{Inline}, DateTimeOffset)"/>.
+    /// </summary>
+    /// <param name="paragraphs">The typed paragraphs.</param>
+    /// <param name="at">When the batch was typed.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="paragraphs"/>, an entry or its text is null.</exception>
+    /// <exception cref="ArgumentException">An id is not a paragraph of the document; nothing is changed.</exception>
+    public void ApplyTyping(IReadOnlyList<TypedParagraph> paragraphs, DateTimeOffset at) => Type(new TypeTextCommand(paragraphs), at);
+
+    /// <summary>Ends the current typing step: the next typing batch starts a new undo step.</summary>
+    public void EndTyping() => _typing = null;
+
+    private void Type(TextDocumentCommand command, DateTimeOffset at)
     {
-        var command = new ReplaceParagraphContentCommand(paragraphId, inlines) { Typing = true };
         var previous = _typing is { } typing && typing.Version == Version && at - typing.At <= TypingMergeWindow ? typing.Step : null;
         var step = command;
         if (!Execute(command, previous == null ? null : Amend)) return;
@@ -32,9 +50,6 @@ public sealed partial class TextDocument
             return true;
         }
     }
-
-    /// <summary>Ends the current typing step: the next typing batch starts a new undo step.</summary>
-    public void EndTyping() => _typing = null;
 
     private bool Execute(IDocumentCommand<TextDocument> command, Func<IDocumentCommand<TextDocument>, bool> amend)
     {
