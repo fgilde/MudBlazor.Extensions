@@ -35400,6 +35400,25 @@
             that misses a fresh index is final.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.EndsWithParagraphMark">
+            <summary>
+            True if this document was made by <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.Extract(MudBlazor.Extensions.Office.Document.DocumentRange)"/> from a range that ended at the start of a later paragraph: its last paragraph is
+            whole, paragraph mark included.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Extract(MudBlazor.Extensions.Office.Document.DocumentRange)">
+            <summary>
+            Copies a range into a new document, for the clipboard only; never written as .docx (its <c>Source</c> elements belong to another package).
+            The first and last paragraphs are cut at the range and keep their formats, every block in between is copied whole; when both ends lie in the
+            same table cell only that cell's blocks are taken by the same rule, any other table the range touches is copied whole. A range ending at
+            offset 0 of a later paragraph leaves that paragraph out and sets <see cref="P:MudBlazor.Extensions.Office.Document.TextDocument.EndsWithParagraphMark"/>. Bookmark, comment, permission and move
+            ranges cut in half by the range are dropped, complete ones kept. The result shares <see cref="P:MudBlazor.Extensions.Office.Document.TextDocument.Styles"/>, <see cref="P:MudBlazor.Extensions.Office.Document.TextDocument.Numbering"/> and the
+            theme with this document, holds copies of the media its images use and has its own block ids; an empty range gives a document without blocks.
+            </summary>
+            <param name="range">The range, in either direction.</param>
+            <returns>The new document.</returns>
+            <exception cref="T:System.ArgumentException">The range spans the body and a header or footer.</exception>
+        </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Styles">
             <summary>The styles and document defaults.</summary>
         </member>
