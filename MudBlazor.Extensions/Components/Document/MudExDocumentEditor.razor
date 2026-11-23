@@ -103,8 +103,8 @@
                         </MudExRibbonMenuButton>
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Editing")" Icon="@Icons.Material.Filled.Search" CollapsePriority="0">
-                        <MudExRibbonButton Id="wd-find" Text="@TryLocalize("Find")" Icon="@Icons.Material.Filled.Search" Shortcut="Ctrl+F" Size="MudExRibbonItemSize.Small" Disabled="true" />
-                        <MudExRibbonButton Id="wd-replace" Text="@TryLocalize("Replace")" Icon="@Icons.Material.Filled.FindReplace" Shortcut="Ctrl+H" Size="MudExRibbonItemSize.Small" Disabled="true" />
+                        <MudExRibbonButton Id="wd-find" Text="@TryLocalize("Find")" Icon="@Icons.Material.Filled.Search" Shortcut="Ctrl+F" Size="MudExRibbonItemSize.Small" OnClick="@(() => OpenFind(false))" />
+                        <MudExRibbonButton Id="wd-replace" Text="@TryLocalize("Replace")" Icon="@Icons.Material.Filled.FindReplace" Shortcut="Ctrl+H" Size="MudExRibbonItemSize.Small" OnClick="@(() => OpenFind(true))" />
                     </MudExRibbonGroup>
                 </MudExRibbonTab>
                 <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
@@ -114,10 +114,20 @@
                         <MudExRibbonButton Id="wd-zoom-in" Text="@TryLocalize("Zoom In")" Icon="@Icons.Material.Filled.ZoomIn" Size="MudExRibbonItemSize.Small" OnClick="@(() => SetZoom(_zoom + 0.1))" />
                         <MudExRibbonButton Id="wd-zoom-out" Text="@TryLocalize("Zoom Out")" Icon="@Icons.Material.Filled.ZoomOut" Size="MudExRibbonItemSize.Small" OnClick="@(() => SetZoom(_zoom - 0.1))" />
                     </MudExRibbonGroup>
+                    @if (IsReadOnly)
+                    {
+                        <MudExRibbonGroup Text="@TryLocalize("Find")" Icon="@Icons.Material.Filled.Search" CollapsePriority="0">
+                            <MudExRibbonButton Id="wd-view-find" Text="@TryLocalize("Find")" Icon="@Icons.Material.Filled.Search" Shortcut="Ctrl+F" Size="MudExRibbonItemSize.Large" OnClick="@(() => OpenFind(false))" />
+                        </MudExRibbonGroup>
+                    }
                 </MudExRibbonTab>
                 @RibbonContent
             </ChildContent>
         </MudExRibbon>
+    }
+    @if (_findOpen)
+    {
+        <MudExDocumentFindPanel Editor="this" Replace="_findReplace" Closed="CloseFind" Localizer="@Localizer" />
     }
     <div class="mud-ex-doc-editor-body">
         <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" Shortcuts="SurfaceShortcuts" ShortcutPressed="OnShortcutAsync" SelectionChanged="_selectionChanged" OnError="OnSurfaceErrorAsync"

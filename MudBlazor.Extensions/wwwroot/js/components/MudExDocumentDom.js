@@ -342,3 +342,37 @@ export function pointOf(sheet, node, offset) {
     }
     return nearest(sheet, node, offset);
 }
+
+const FIND = 'mud-ex-doc-find';
+const MAX_HIGHLIGHTS = 1000;
+
+export function clearHighlight() {
+    if (typeof CSS !== 'undefined' && CSS.highlights) {
+        CSS.highlights.delete(FIND);
+    }
+}
+
+export function highlight(blocks, selections) {
+    if (typeof CSS === 'undefined' || !CSS.highlights || typeof Highlight === 'undefined') {
+        return;
+    }
+    const ranges = [];
+    for (const s of (selections ?? []).slice(0, MAX_HIGHLIGHTS)) {
+        const a = blocks.get(s?.anchor?.p);
+        const f = blocks.get(s?.focus?.p);
+        if (!a?.isConnected || !f?.isConnected || a.tagName !== 'P' || f.tagName !== 'P') {
+            continue;
+        }
+        const from = pointAt(a, Math.max(0, Math.min(s.anchor.o ?? 0, length(a))));
+        const to = pointAt(f, Math.max(0, Math.min(s.focus.o ?? 0, length(f))));
+        const range = document.createRange();
+        range.setStart(from.node, from.offset);
+        range.setEnd(to.node, to.offset);
+        ranges.push(range);
+    }
+    if (ranges.length) {
+        CSS.highlights.set(FIND, new Highlight(...ranges));
+    } else {
+        CSS.highlights.delete(FIND);
+    }
+}

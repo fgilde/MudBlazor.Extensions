@@ -111,6 +111,40 @@ public static class DocumentSearch
         return matches.Count;
     }
 
+    internal static string ReplacementFor(TextDocument document, DocumentRange match, string query, string replacement, FindOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(document);
+        options ??= new FindOptions();
+        if (string.IsNullOrEmpty(query) || match.Start == null || match.End == null || match.Start.BlockId != match.End.BlockId) return null;
+        Paragraph paragraph;
+        try { paragraph = document.Resolve(match.Start with { Offset = 0 }).Paragraph; }
+        catch (ArgumentException) { return null; }
+        var text = paragraph.Text;
+        var (from, to) = (match.Start.Offset, match.End.Offset);
+        if (from < 0 || to < from || to > text.Length) return null;
+        var segmentStart = from == 0 ? 0 : text.LastIndexOf('\uFFFC', from - 1) + 1;
+        var stop = text.IndexOf('\uFFFC', from);
+        var regex = Build(query, options, MatchTimeout);
+        try
+        {
+            for (var found = regex.Match(text, segmentStart, (stop < 0 ? text.Length : stop) - segmentStart); found.Success && found.Index <= from; found = found.NextMatch())
+                if (found.Index == from && found.Length == to - from && found.Length > 0)
+                    return options.Regex ? Result(found, replacement ?? "", text) : replacement;
+        }
+        catch (RegexMatchTimeoutException)
+        {
+        }
+
+        return null;
+    }
+
+    private static Regex Build(string query, FindOptions options, TimeSpan timeout)
+    {
+        var pattern = options.Regex ? query : Regex.Escape(query);
+        if (options.WholeWord) pattern = $@"(?<!\w)(?:{pattern})(?!\w)";
+        return new Regex(pattern, (options.MatchCase ? RegexOptions.None : RegexOptions.IgnoreCase) | RegexOptions.CultureInvariant, timeout);
+    }
+
     private static string Result(Match match, string replacement, string text)
     {
         if (match.Groups.Values.All(g => !g.Success || Widen(g, text) == (g.Index, g.Index + g.Length))) return match.Result(replacement);
@@ -149,9 +183,7 @@ public static class DocumentSearch
         options ??= new FindOptions();
         var result = new List<(DocumentRange, Match, Paragraph)>();
         if (string.IsNullOrEmpty(query)) return result;
-        var pattern = options.Regex ? query : Regex.Escape(query);
-        if (options.WholeWord) pattern = $@"(?<!\w)(?:{pattern})(?!\w)";
-        var regex = new Regex(pattern, (options.MatchCase ? RegexOptions.None : RegexOptions.IgnoreCase) | RegexOptions.CultureInvariant, timeout);
+        var regex = Build(query, options, timeout);
         var watch = System.Diagnostics.Stopwatch.StartNew();
         try
         {

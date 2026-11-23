@@ -10438,6 +10438,54 @@ textarea.mud-ex-ssg-note-text {
 .mud-ex-doc-status-bar .mud-ex-sssb-slider {
   accent-color: var(--mud-ex-doc-accent, var(--mud-palette-primary));
 }
+.mud-ex-doc-find {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  gap: 4px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--mud-palette-lines-default);
+  background-color: var(--mud-palette-background-gray);
+  font-size: 0.8125rem;
+}
+.mud-ex-doc-find-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.mud-ex-doc-find-input {
+  flex: 0 1 280px;
+  min-width: 80px;
+  padding: 3px 6px;
+  border: 1px solid var(--mud-palette-lines-inputs);
+  border-radius: 3px;
+  background-color: var(--mud-palette-surface);
+  color: var(--mud-palette-text-primary);
+}
+.mud-ex-doc-find-button {
+  min-width: 26px;
+  padding: 2px 6px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: none;
+  color: var(--mud-palette-text-primary);
+  cursor: pointer;
+}
+.mud-ex-doc-find-button:hover {
+  background-color: var(--mud-palette-action-default-hover);
+}
+.mud-ex-doc-find-button[aria-pressed=true] {
+  border-color: var(--mud-ex-doc-accent, var(--mud-palette-primary));
+  background-color: var(--mud-palette-action-default-hover);
+}
+.mud-ex-doc-find-status {
+  min-width: 90px;
+  color: var(--mud-palette-text-secondary);
+}
+::highlight(mud-ex-doc-find) {
+  background-color: #ffe08a;
+  color: #000;
+}
 .mud-ex-doc-style-preview {
   display: block;
   width: 64px;

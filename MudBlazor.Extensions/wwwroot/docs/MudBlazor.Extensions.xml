@@ -1369,6 +1369,27 @@
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.OnSaveSucceeded">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentFindPanel">
+            <summary>Find and replace panel of the <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentFindPanel.Editor">
+            <summary>The editor whose document is searched.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentFindPanel.Replace">
+            <summary>True to show the replace row (not for a read-only editor).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentFindPanel.Closed">
+            <summary>Raised when the user closes the panel.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentFindPanel.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentFindPanel.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentFindPanel.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentFontDialog">
             <summary>
             The font dialog of <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>: font, size, underline style, colour and the character effects. A property that differs

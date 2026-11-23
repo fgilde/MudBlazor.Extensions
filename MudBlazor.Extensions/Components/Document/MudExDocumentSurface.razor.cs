@@ -142,6 +142,9 @@ public partial class MudExDocumentSurface
         return OperateAsync(() => _resultSelection = range, scroll);
     }
 
+    internal Task HighlightAsync(IReadOnlyList<DocumentRange> ranges) =>
+        _document == null ? Task.CompletedTask : CallAsync("highlight", ranges.Take(1000).Select(ToSurface).Where(r => r != null).ToList());
+
     internal Task FocusAsync() => CallAsync("focus");
 
     internal Task CopyAsync(bool cut) => CallAsync("copy", cut);

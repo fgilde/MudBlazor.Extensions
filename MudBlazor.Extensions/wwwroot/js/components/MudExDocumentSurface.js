@@ -1,5 +1,5 @@
 import { payload } from './MudExOfficeInterop.js';
-import { render, pointAt, pointOf, serialise, sameRuns, length, strip, PARAGRAPH, OPAQUE } from './MudExDocumentDom.js';
+import { render, highlight, clearHighlight, pointAt, pointOf, serialise, sameRuns, length, strip, PARAGRAPH, OPAQUE } from './MudExDocumentDom.js';
 import { inputMethods } from './MudExDocumentInput.js';
 import { compositionMethods } from './MudExDocumentComposition.js';
 import { clipboardMethods, CLIPBOARD } from './MudExDocumentClipboard.js';
@@ -350,6 +350,12 @@ class MudExDocumentSurface {
         }
     }
 
+    highlight(selections) {
+        if (!this.disposed) {
+            highlight(this.blocks, selections);
+        }
+    }
+
     touch(p) {
         if (!p?.dataset.b) {
             return;
@@ -654,6 +660,7 @@ class MudExDocumentSurface {
             return;
         }
         this.disposed = true;
+        clearHighlight();
         this.events.forEach(([target, type, handler, flags]) => target.removeEventListener(type, handler, flags));
         this.observer.disconnect();
         [this.typingTimer, this.selectionTimer, this.gap, this.suspension?.timer].forEach(timer => clearTimeout(timer));

@@ -274,7 +274,7 @@ public class DocumentEditorFormattingTests : DocumentEditorFormattingTestBase
         var surface = Surface(Render(TextDocument.Create()));
         Assert.Contains("Ctrl+B", surface.Shortcuts!);
         Assert.Contains("Ctrl+S", surface.Shortcuts!);
-        Assert.DoesNotContain("Ctrl+F", surface.Shortcuts!);
+        Assert.Contains("Ctrl+F", surface.Shortcuts!);
     }
 
     [Fact]

@@ -12,7 +12,7 @@ public partial class MudExDocumentEditor
     private static readonly Regex ThemeColor = new("^theme:[A-Za-z0-9]+( shade=[0-9A-Fa-f]{2})?( tint=[0-9A-Fa-f]{2})?$", RegexOptions.CultureInvariant);
     private static readonly double[] FontSteps = [8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72];
     private static readonly IReadOnlyList<MudExColor> HighlightPalette = [.. HtmlReader.Highlights.Values.Select(v => (MudExColor)v)];
-    private static readonly string[] SurfaceShortcuts = DocumentShortcuts.Keys("find", "replace");
+    private static readonly string[] SurfaceShortcuts = DocumentShortcuts.Keys();
 
     private static readonly Dictionary<string, (string Text, Func<RunFormat, bool> IsOn, Func<RunFormat, bool, RunFormat> Set)> Toggles = new()
     {
@@ -316,6 +316,7 @@ public partial class MudExDocumentEditor
     private Task RunShortcutAsync(string action) => action switch
     {
         "save" => SaveFromKeyAsync(),
+        "find" or "replace" => OpenFindAsync(action == "replace"),
         "clearCharacter" => ClearFormattingAsync(false),
         "sizeUp" => ResizeAsync(size => size + 1, "Font size"),
         "sizeDown" => ResizeAsync(size => size - 1, "Font size"),

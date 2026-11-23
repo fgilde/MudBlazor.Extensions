@@ -32,6 +32,8 @@ public partial class MudExDocumentEditor : IMudExFileEditor
     private MudExRibbonMode _mode;
     private MudExRibbonMode _modeParameter;
     private int _tabIndex;
+    private bool _findOpen;
+    private bool _findReplace;
 
     /// <summary>Creates the editor.</summary>
     public MudExDocumentEditor()
@@ -89,6 +91,21 @@ public partial class MudExDocumentEditor : IMudExFileEditor
 
     /// <summary>Priority among the file displays for Word, RTF and OpenDocument text files.</summary>
     public int RenderPriority => 10;
+
+    internal MudExDocumentSurface SurfaceRef => _surface;
+
+    internal bool Locked => IsReadOnly;
+
+    private void OpenFind(bool replace) => (_findOpen, _findReplace) = (true, replace && !IsReadOnly);
+
+    private Task OpenFindAsync(bool replace)
+    {
+        OpenFind(replace);
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private void CloseFind() => _findOpen = false;
 
     private bool IsReadOnly => ReadOnly || LoadFailed || _document == null;
 

@@ -65,7 +65,8 @@ public class DocumentEditorShortcutTests : DocumentEditorFormattingTestBase
             "Ctrl+F" or "Ctrl+H" => () =>
             {
                 Assert.Equal(version, document.Version);
-                Assert.DoesNotContain(key, Surface(cut).Shortcuts!);
+                Assert.Contains(key, Surface(cut).Shortcuts!);
+                Assert.NotEmpty(cut.FindAll(".mud-ex-doc-find"));
             },
             _ => throw new InvalidOperationException($"No expectation for {key}.")
         };
