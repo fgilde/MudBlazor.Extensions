@@ -309,7 +309,7 @@ public class DocumentEditActionsTests
 
         Assert.IsType<ReplaceTextCommand>(Run(document, "tab", R(document, id, 0, 2)));
 
-        Assert.Equal(["	llo"], Texts(document));
+        Assert.Equal(["\tllo"], Texts(document));
     }
 
     [Fact]

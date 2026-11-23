@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components;
+using MudBlazor.Extensions.Helper.Internal;
 using Xunit;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
@@ -214,17 +215,118 @@ public class DocumentSurfaceOperationTests : DocumentSurfaceTestBase
     public async Task Sync_TooManyEntriesInTheStream_RejectedWithBoundedMaterialisation()
     {
         var document = Doc("Hello");
+        var id = document.Blocks[0].Id;
         var cut = Surface(document);
-        var json = "{\"seen\":1,\"typed\":[" + string.Join(",", Enumerable.Repeat("{}", 20_000)) + "],\"selection\":null,\"endTyping\":false}";
-        var before = SurfaceTypedListConverter.Materialized;
+        var entry = $$"""{"p":"{{id}}","t":"Hallo","c":2}""";
+        var json = "{\"seen\":1,\"typed\":[" + string.Join(",", Enumerable.Repeat(entry, 20_000)) + "],\"selection\":null,\"endTyping\":false}";
 
         SurfaceResult result = null!;
         await cut.InvokeAsync(async () => result = await cut.Instance.OnSyncAsync(null!, new TestStreamReference(json)));
-        var materialised = SurfaceTypedListConverter.Materialized - before;
+        var read = await JsPayload.ReadAsync<SurfaceSync>(null!, new TestStreamReference(json));
 
-        Assert.Empty(result.Patches);
-        Assert.InRange(materialised, 1, 10_001);
+        Assert.Equal("Hello", Text(document));
+        Assert.Equal("Hello", Upsert(result, id).Block.Text);
+        Assert.Equal(10_001, read.Typed.Count);
         Assert.Equal(10_001, JsonSerializer.Deserialize<SurfaceSync>(json, JsonSerializerOptions.Web)!.Typed.Count);
+    }
+
+    [Fact]
+    public async Task Message_FromBeforeTheCurrentDocument_IsIgnored()
+    {
+        var keys = new List<string>();
+        var cut = Surface(Doc("Hello"), p => p.Add(c => c.Shortcuts, ["Ctrl+F"]).Add(c => c.ShortcutPressed, k =>
+        {
+            keys.Add(k);
+            return Task.CompletedTask;
+        }));
+        var other = Doc("Other");
+        var id = other.Blocks[0].Id;
+        other.Execute(new ReplaceTextCommand(Range(other, id, 5, 5), "!"));
+        cut.Render(p => p.Add(c => c.Document, other));
+
+        var split = await Command(cut, new SurfaceSync(1, [new SurfaceTyped(id, "Hallo", 2, null)], Sel(id, 2), false), "split");
+        var undo = await Command(cut, new SurfaceSync(1, [], Sel(id, 3), false), "undo");
+        var shortcut = await Command(cut, new SurfaceSync(1, [], Sel(id, 3), false), "shortcut", "Ctrl+F");
+        var sync = await Sync(cut, new SurfaceSync(1, [new SurfaceTyped(id, "Hallo", 2, null)], Sel(id, 4), true));
+
+        Assert.Equal(["Other!"], other.Blocks.OfType<Paragraph>().Select(p => p.Text));
+        Assert.True(other.Undo.CanUndo);
+        Assert.False(other.Undo.CanRedo);
+        Assert.Empty(keys);
+        Assert.All(new[] { split, undo, shortcut, sync }, r => Assert.Equal((0, null), (r.Patches.Count, r.Selection)));
+        Assert.Equal(other.PositionOf(id, 0), cut.Instance.Selection.End);
+    }
+
+    [Fact]
+    public async Task Sync_AfterTheEchoOfTheLastBatch_IsAccepted()
+    {
+        var document = Doc("a");
+        var id = document.Blocks[0].Id;
+        var cut = Surface(document);
+
+        var first = await Sync(cut, new SurfaceSync(1, [new SurfaceTyped(id, "ab", 2, null)], Sel(id, 2), false));
+        var echo = Assert.Single(first.Patches).Seq;
+        var second = await Sync(cut, new SurfaceSync(echo, [new SurfaceTyped(id, "abc", 3, null)], Sel(id, 3), false));
+
+        Assert.Equal("abc", Text(document));
+        Assert.Equal("abc", Upsert(second, id).Block.Text);
+    }
+
+    [Fact]
+    public async Task Command_CaretParagraphRemovedByTheHost_IsNotExecuted()
+    {
+        var document = Doc("one", "two");
+        var (first, second) = (document.Blocks[0].Id, document.Blocks[1].Id);
+        var errors = new List<Exception>();
+        var cut = Surface(document, p => p.Add(c => c.OnError, e => errors.Add(e)));
+        await cut.InvokeAsync(() => document.Execute(new MergeParagraphsCommand(first)));
+
+        var removed = await Command(cut, new SurfaceSync(1, [], Sel(second, 1), false), "split");
+        var unknown = await Command(cut, new SurfaceSync(int.MaxValue, [], Sel("nope", 1), false), "split");
+
+        Assert.Equal(["onetwo"], document.Blocks.OfType<Paragraph>().Select(p => p.Text));
+        Assert.Empty(errors);
+        Assert.All(new[] { removed, unknown }, r => Assert.Null(r.Selection));
+    }
+
+    [Fact]
+    public async Task RunAsync_FailedSuspend_PushesThePatchesWithoutResume()
+    {
+        var document = Doc("Hello");
+        var id = document.Blocks[0].Id;
+        var errors = new List<Exception>();
+        var cut = Surface(document, p => p.Add(c => c.OnError, e => errors.Add(e)));
+        _context.JSInterop.Setup<SurfaceSync>("suspend", _ => true).SetException(new JSException("gone"));
+
+        await cut.InvokeAsync(() => cut.Instance.RunAsync(_ => Insert(document, id, 5, "!")));
+        await cut.InvokeAsync(() => cut.Instance.FlushAsync());
+
+        Assert.DoesNotContain(_context.JSInterop.Invocations, i => i.Identifier == "resume");
+        var pushed = Assert.Single(Patches().Last());
+        Assert.Equal((2, "Hello!"), (pushed.Seq, Assert.Single(pushed.Upsert).Block.Text));
+        Assert.All(errors, e => Assert.IsType<JSException>(e));
+        Assert.Equal(2, errors.Count);
+    }
+
+    [Fact]
+    public async Task RunAsync_FromAChangedSubscriberDuringAJsCommand_IsQueued()
+    {
+        var document = Doc("Hello");
+        var id = document.Blocks[0].Id;
+        var cut = Surface(document);
+        Task run = null!;
+        var ran = false;
+        document.Changed += (_, _) => run ??= cut.Instance.RunAsync(_ => ran = true);
+
+        var result = await Command(cut, Idle(id, 2), "split");
+
+        Assert.NotNull(run);
+        Assert.Same(run, await Task.WhenAny(run, Task.Delay(5000)));
+        await run;
+        Assert.True(ran);
+        Assert.Equal(["He", "llo"], document.Blocks.OfType<Paragraph>().Select(p => p.Text));
+        Assert.NotNull(result.Selection);
+        Assert.Single(_context.JSInterop.Invocations["resume"]);
     }
 
     [Fact]

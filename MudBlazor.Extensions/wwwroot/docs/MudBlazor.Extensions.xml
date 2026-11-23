@@ -1376,7 +1376,10 @@
             <summary>Raised when an edit could not be applied to the document. Without a handler the error is shown in a dialog.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.Selection">
-            <summary>The selection, or the caret as an empty range. It always points into paragraphs of the body.</summary>
+            <summary>
+            The selection, or the caret as an empty range: the last selection the surface reported or a command set. It points into paragraphs of the
+            body when it is set, but may name a block that a later direct edit of the host removed.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnParametersSetAsync">
             <inheritdoc />

@@ -62,7 +62,10 @@ public partial class MudExDocumentSurface
     /// <summary>Raised when an edit could not be applied to the document. Without a handler the error is shown in a dialog.</summary>
     [Parameter] public EventCallback<Exception> OnError { get; set; }
 
-    /// <summary>The selection, or the caret as an empty range. It always points into paragraphs of the body.</summary>
+    /// <summary>
+    /// The selection, or the caret as an empty range: the last selection the surface reported or a command set. It points into paragraphs of the
+    /// body when it is set, but may name a block that a later direct edit of the host removed.
+    /// </summary>
     public DocumentRange Selection => _selection;
 
     internal RunFormat CaretFormat => _caretFormat?.Format;
@@ -141,7 +144,7 @@ public partial class MudExDocumentSurface
     public async Task<SurfaceResult> OnSyncAsync(SurfaceSync sync, IJSStreamReference stream)
     {
         var (read, rejected) = await ReadAsync(sync, stream);
-        return read == null ? Empty : await HandleAsync(read, rejected, null, false);
+        return Current(read) ? await HandleAsync(read, rejected, null, false) : Empty;
     }
 
     /// <summary>Called by the browser for a structural edit, undo, redo or a shortcut, with the typing and the selection before it.</summary>
@@ -154,7 +157,7 @@ public partial class MudExDocumentSurface
     public async Task<SurfaceResult> OnCommandAsync(SurfaceSync sync, IJSStreamReference stream, string name, string text)
     {
         var (read, rejected) = await ReadAsync(sync, stream);
-        if (read == null) return Empty;
+        if (!Current(read)) return Empty;
         var result = await HandleAsync(read, rejected, rejected || text?.Length > MaxText || ReadOnly ? null : name switch
         {
             "undo" => () => Step(true),
@@ -190,7 +193,9 @@ public partial class MudExDocumentSurface
     {
         if (_document == null)
         {
-            await CallAsync("patch", (object)new[] { new SurfacePatch(++_seq, true, null, [], []) });
+            var reset = new SurfacePatch(++_seq, true, null, [], []);
+            _attachedAt = reset.Seq;
+            await SendPatchesAsync([reset]);
             return;
         }
 
@@ -198,7 +203,7 @@ public partial class MudExDocumentSurface
         (_live, _attachedAt) = (true, patches[0].Seq);
         foreach (var patch in patches) Track(patch);
         await RegisterAsync(_render.TakeMedia());
-        foreach (var patch in patches) await CallAsync("patch", (object)new[] { patch });
+        await SendPatchesAsync(patches);
     }
 
     private async Task SendOptionsAsync()
@@ -222,8 +227,20 @@ public partial class MudExDocumentSurface
 
     private async Task PushAsync(IReadOnlyCollection<string> media, IReadOnlyList<SurfacePatch> patches)
     {
-        await RegisterAsync(media);
+        await RegisterQuietlyAsync(media);
+        try { await SendPatchesAsync(patches); }
+        catch (Exception e) { await ReportAsync(e); }
+    }
+
+    private async Task SendPatchesAsync(IEnumerable<SurfacePatch> patches)
+    {
         foreach (var patch in patches) await CallAsync("patch", (object)new[] { patch });
+    }
+
+    private async Task RegisterQuietlyAsync(IReadOnlyCollection<string> media)
+    {
+        try { await RegisterAsync(media); }
+        catch (Exception e) { _ = ReportAsync(e); }
     }
 
     private Task RegisterAsync(IEnumerable<string> media) =>
@@ -242,6 +259,8 @@ public partial class MudExDocumentSurface
         return (sync, !WithinCaps(sync));
     }
 
+    private bool Current(SurfaceSync sync) => sync != null && sync.Seen >= _attachedAt;
+
     private static bool WithinCaps(SurfaceSync sync) =>
         sync?.Typed is not { } typed || typed.Count <= MaxTyped && typed.Sum(t => (long)(t?.T?.Length ?? 0)) <= MaxTypedChars;
 
@@ -252,26 +271,43 @@ public partial class MudExDocumentSurface
 
     private async Task OperateAsync(Action action, bool scroll)
     {
+        if (_collecting != null) await Task.Yield();
         await _gate.WaitAsync();
         (SurfaceResult Result, Exception Error, bool Moved) outcome = (Empty, null, false);
+        Exception failed = null;
         try
         {
             var document = _document;
+            var suspended = false;
             SurfaceSync sync = null;
             if (_module.Js is { } js)
-                try { sync = await js.InvokeAsync<SurfaceSync>("suspend"); }
-                catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException or ObjectDisposedException or InvalidOperationException) { }
+            {
+                try
+                {
+                    sync = await js.InvokeAsync<SurfaceSync>("suspend");
+                    suspended = true;
+                }
+                catch (Exception e)
+                {
+                    failed = e;
+                }
+            }
+
             try
             {
                 if (ReferenceEquals(document, _document))
                 {
-                    outcome = Operate(sync, !WithinCaps(sync), action, false);
-                    if (_render != null) await RegisterAsync(_render.TakeMedia());
+                    sync = Current(sync) ? sync : null;
+                    outcome = Operate(sync, !WithinCaps(sync), action, false, true);
+                    await RegisterQuietlyAsync(_render?.TakeMedia() ?? []);
                 }
             }
             finally
             {
-                await CallAsync("resume", outcome.Result, scroll);
+                if (suspended)
+                    await CallAsync("resume", outcome.Result, scroll);
+                else
+                    await SendPatchesAsync(outcome.Result.Patches);
             }
         }
         finally
@@ -280,6 +316,7 @@ public partial class MudExDocumentSurface
         }
 
         if (outcome.Moved) _ = SelectionChangedAsync(_selection);
+        if (failed != null) _ = ReportAsync(failed);
         if (outcome.Error == null) return;
         _ = ReportAsync(outcome.Error);
         ExceptionDispatchInfo.Capture(outcome.Error).Throw();
@@ -287,14 +324,14 @@ public partial class MudExDocumentSurface
 
     private async Task<SurfaceResult> HandleAsync(SurfaceSync sync, bool rejected, Action action, bool guarded)
     {
-        var (result, error, moved) = Operate(sync, rejected, action, guarded);
-        if (_render != null) await RegisterAsync(_render.TakeMedia());
+        var (result, error, moved) = Operate(sync, rejected, action, guarded, false);
+        await RegisterQuietlyAsync(_render?.TakeMedia() ?? []);
         if (error != null) _ = ReportAsync(error);
         if (moved) _ = SelectionChangedAsync(_selection);
         return result;
     }
 
-    private (SurfaceResult Result, Exception Error, bool Moved) Operate(SurfaceSync sync, bool rejected, Action action, bool guarded)
+    private (SurfaceResult Result, Exception Error, bool Moved) Operate(SurfaceSync sync, bool rejected, Action action, bool guarded, bool gated)
     {
         if (_document == null) return (Empty, null, false);
         var before = _selection;
@@ -309,7 +346,7 @@ public partial class MudExDocumentSurface
                 proceed = Apply(sync, guarded, out error);
             if (proceed && action != null)
             {
-                (_acting, _inAction) = (true, true);
+                (_acting, _inAction) = (true, gated);
                 action();
             }
         }
@@ -361,13 +398,14 @@ public partial class MudExDocumentSurface
         }
 
         Refresh([.. refresh, .. stale]);
-        if (error != null || stale.Count > 0) return false;
-        if (sync.Seen >= _attachedAt && ToRange(sync.Selection) is { } selection) Select(selection);
+        var selection = ToRange(sync.Selection);
+        if (error != null || stale.Count > 0 || guarded && sync.Selection != null && selection == null) return false;
+        if (selection != null) Select(selection.Value);
         if (sync.EndTyping) _document.EndTyping();
         return true;
     }
 
-    private bool Changed(string id, int seen) => id != null && BodyParagraph(id) != null && _changedAt.TryGetValue(id, out var at) && at > seen;
+    private bool Changed(string id, int seen) => id != null && _changedAt.TryGetValue(id, out var at) && at > seen;
 
     private void Refresh(List<string> ids)
     {

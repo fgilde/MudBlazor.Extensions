@@ -104,9 +104,6 @@ public sealed record SurfaceResult(IReadOnlyList<SurfacePatch> Patches, SurfaceS
 internal sealed class SurfaceTypedListConverter : JsonConverter<IReadOnlyList<SurfaceTyped>>
 {
     internal const int MaxTyped = 10_000;
-    private static long _materialized;
-
-    internal static long Materialized => Interlocked.Read(ref _materialized);
 
     public override IReadOnlyList<SurfaceTyped> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -122,7 +119,6 @@ internal sealed class SurfaceTypedListConverter : JsonConverter<IReadOnlyList<Su
             }
 
             list.Add(JsonSerializer.Deserialize<SurfaceTyped>(ref reader, options));
-            Interlocked.Increment(ref _materialized);
         }
 
         return list;
