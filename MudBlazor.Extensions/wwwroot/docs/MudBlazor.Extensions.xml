@@ -1247,6 +1247,106 @@
         <member name="P:MudBlazor.Extensions.Components.SurfaceResult.CaretFormat">
             <summary>The pending format for the next typed text, or null if there is none.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentEditor">
+            <summary>
+            Word processor in the style of Word with ribbon, a web view of the document and status bar. Opens .docx, .docm, .dotx, .dotm, .doc, .rtf,
+            .odt, .html, .md and .txt files, saves the writable ones in their format and the others as .docx, and is the viewer and editor for Word,
+            RTF and OpenDocument text files in <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/>. Without a file it edits the <see cref="P:MudBlazor.Extensions.Components.MudExDocumentEditor.TextDocument"/> parameter.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.#ctor">
+            <summary>Creates the editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.TextDocument">
+            <summary>The document to edit when no file is given; it is edited in place. Changes by the user raise <see cref="P:MudBlazor.Extensions.Components.MudExDocumentEditor.TextDocumentChanged"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.TextDocumentChanged">
+            <summary>Raised after every change of the document and when the editor replaces it (New, Open).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.DialogOptions">
+            <summary>
+            Options for every dialog the editor opens. Unset: <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.DefaultDialogOptions"/> with a small, full width dialog and a
+            close button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.RibbonMode">
+            <summary>Layout of the ribbon.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.ShowRibbon">
+            <summary>Whether the ribbon is shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.RibbonColor">
+            <summary>Color of the ribbon header. Defaults to the Word blue.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.RibbonCollapsed">
+            <summary>Whether the ribbon starts collapsed to its tab row.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.RibbonContent">
+            <summary>Additional ribbon tabs rendered after the built-in tabs.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.ShowStatusBar">
+            <summary>Whether the status bar with the word count and the zoom is shown.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.CurrentDocument">
+            <summary>The document currently shown, loaded from a file, created by New or given by <see cref="P:MudBlazor.Extensions.Components.MudExDocumentEditor.TextDocument"/>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.Selection">
+            <summary>The selection, or the caret as an empty range.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.Zoom">
+            <summary>The zoom factor from 0.1 to 5; 1 is 100 %.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.RenderPriority">
+            <summary>Priority among the file displays for Word, RTF and OpenDocument text files.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.SaveFormats">
+            <summary>
+            The formats the document can be saved in: the format it was loaded from if it can be written (a macro-enabled document or template keeps its
+            type), else Word Document; then the remaining of Word Document, Rich Text Format, Web Page, Markdown and Plain Text.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.OpenFormats">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.CreateNew">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.LoadContentAsync(MudBlazor.Extensions.Core.MudExFileContent)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.FlushPendingEditsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.ExportAsync(MudBlazor.Extensions.Core.MudExFileFormat,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentStatusBar">
+            <summary>Status bar of the document editor: the word count and a zoom slider.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentStatusBar.Words">
+            <summary>The number of words in the document.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentStatusBar.Zoom">
+            <summary>Zoom factor, 1 is 100%.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentStatusBar.ZoomChanged">
+            <summary>Raised when the user changes the zoom.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentSurface">
             <summary>
             The editing surface of the document editor: a content editable sheet that the browser renders from the <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/> and keeps in

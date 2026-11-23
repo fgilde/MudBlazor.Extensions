@@ -1,0 +1,39 @@
+@inherits MudBlazor.Extensions.Components.Base.MudExFileEditorBase<MudExDocumentEditor>
+@namespace MudBlazor.Extensions.Components
+
+<div @attributes="UserAttributes" class="@($"mud-ex-doc-editor {Class}".TrimEnd())" style="@RootStyle" data-readonly="@(IsReadOnly ? "true" : "false")" @onkeydown="_keyDown">
+    @if (ShowRibbon)
+    {
+        <MudExRibbon Class="mud-ex-doc-ribbon" Color="@RibbonColor" @bind-ActiveTabIndex="_tabIndex" @bind-Mode="_mode" @bind-Collapsed="_collapsed" FileMenuText="@TryLocalize("File")">
+            <FileMenu>
+                <MudExFileEditorBackstage Editor="this" Localizer="@Localizer" />
+            </FileMenu>
+            <QuickAccess>
+                @if (!IsReadOnly)
+                {
+                    <MudExRibbonButton Id="wd-save" Text="@TryLocalize("Save")" Icon="@Icons.Material.Filled.Save" Shortcut="Ctrl+S" OnClick="@(() => SaveAsync())" />
+                    <MudExRibbonButton Id="wd-undo" Text="@TryLocalize("Undo")" Icon="@Icons.Material.Filled.Undo" Shortcut="Ctrl+Z" Disabled="@(!_document.Undo.CanUndo)" OnClick="@(() => UndoAsync(false))" />
+                    <MudExRibbonButton Id="wd-redo" Text="@TryLocalize("Redo")" Icon="@Icons.Material.Filled.Redo" Shortcut="Ctrl+Y" Disabled="@(!_document.Undo.CanRedo)" OnClick="@(() => UndoAsync(true))" />
+                }
+            </QuickAccess>
+            <ChildContent>
+                <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
+                    <MudExRibbonGroup Text="@TryLocalize("Zoom")" Icon="@Icons.Material.Filled.ZoomIn" CollapsePriority="2">
+                        <MudExRibbonSelect T="double" Id="wd-zoom" Text="@TryLocalize("Zoom")" Items="@ZoomLevels" ItemText="@(z => $"{z * 100:0}%")" Value="@_zoom" ValueChanged="SetZoom" Width="80" />
+                        <MudExRibbonButton Id="wd-zoom-100" Text="@TryLocalize("100%")" Icon="@Icons.Material.Filled.ZoomOutMap" Size="MudExRibbonItemSize.Large" OnClick="@(() => SetZoom(1))" />
+                        <MudExRibbonButton Id="wd-zoom-in" Text="@TryLocalize("Zoom In")" Icon="@Icons.Material.Filled.ZoomIn" Size="MudExRibbonItemSize.Small" OnClick="@(() => SetZoom(_zoom + 0.1))" />
+                        <MudExRibbonButton Id="wd-zoom-out" Text="@TryLocalize("Zoom Out")" Icon="@Icons.Material.Filled.ZoomOut" Size="MudExRibbonItemSize.Small" OnClick="@(() => SetZoom(_zoom - 0.1))" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+                @RibbonContent
+            </ChildContent>
+        </MudExRibbon>
+    }
+    <div class="mud-ex-doc-editor-body">
+        <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" OnError="OnSurfaceErrorAsync" Localizer="@Localizer" />
+    </div>
+    @if (ShowStatusBar)
+    {
+        <MudExDocumentStatusBar Words="Words" Zoom="_zoom" ZoomChanged="SetZoom" Localizer="@Localizer" />
+    }
+</div>

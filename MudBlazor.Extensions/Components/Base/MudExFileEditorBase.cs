@@ -378,6 +378,10 @@ public abstract class MudExFileEditorBase<T> : MudExBaseComponent<T>, IMudExFile
                 await TryReleaseAsync(oldHandle);
             return true;
         }
+        catch (OperationCanceledException)
+        {
+            return false;
+        }
         catch (Exception e) when (CanShowError)
         {
             await ShowErrorAsync(e.Message);

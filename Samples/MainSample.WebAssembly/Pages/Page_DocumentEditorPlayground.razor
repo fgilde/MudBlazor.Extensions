@@ -1,0 +1,30 @@
+@page "/document-editor-playground"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.DocumentEditor
+@using MudBlazor.Extensions.Office.Document
+
+@attribute [DemoNew(IsPlaygroundDemo = true, Name = "Playground", Order = 100, Group = "Document Editor", Icon = Icons.Material.Outlined.Description, ForComponentTypes = new[] { typeof(MudExDocumentEditor) })]
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudStack Row="true" Spacing="2" Class="mb-2">
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => _document = TextDocument.Create())">Blank</MudButton>
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => _document = DocumentSamples.Showcase())">Showcase</MudButton>
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => _document = DocumentSamples.Large())">Large (300 pages)</MudButton>
+            </MudStack>
+            <div style="width: 100%; height: 560px;">
+                <MudExDocumentEditor @ref="ComponentRef" TextDocument="_document" />
+            </div>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@ComponentRef"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    MudExDocumentEditor? ComponentRef;
+    private TextDocument _document = DocumentSamples.Showcase();
+}

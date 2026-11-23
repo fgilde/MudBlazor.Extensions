@@ -10347,3 +10347,68 @@ textarea.mud-ex-ssg-note-text {
     overflow: visible;
   }
 }
+.mud-ex-doc-editor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--mud-palette-surface);
+  color: var(--mud-palette-text-primary);
+}
+.mud-ex-doc-ribbon {
+  flex: 0 0 auto;
+}
+.mud-ex-doc-editor-body {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+.mud-ex-doc-scroll {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  width: 0;
+  min-width: 100%;
+  min-height: 0;
+  padding: 24px 16px;
+  overflow: auto;
+  background-color: var(--mud-palette-background-gray);
+}
+.mud-ex-doc-sheet {
+  box-sizing: border-box;
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  cursor: text;
+  outline: none;
+}
+.mud-ex-doc-sheet td {
+  padding: 0 5.4pt;
+  vertical-align: top;
+}
+.mud-ex-doc-status-bar {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 16px;
+  min-height: 24px;
+  padding: 0 8px;
+  border-top: 1px solid var(--mud-palette-lines-default);
+  background-color: var(--mud-palette-background-gray);
+  font-size: 0.75rem;
+}
+.mud-ex-doc-status-bar .mud-ex-sssb-zoom {
+  margin-left: auto;
+}
+.mud-ex-doc-status-bar .mud-ex-sssb-slider {
+  accent-color: var(--mud-ex-doc-accent, var(--mud-palette-primary));
+}
