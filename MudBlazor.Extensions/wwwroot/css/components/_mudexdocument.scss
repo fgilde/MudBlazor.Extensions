@@ -89,3 +89,40 @@
 .mud-ex-doc-status-bar .mud-ex-sssb-slider {
   accent-color: var(--mud-ex-doc-accent, var(--mud-palette-primary));
 }
+.mud-ex-doc-style-preview {
+  display: block;
+  width: 64px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.3;
+  text-align: left;
+}
+.mud-ex-docdialog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  column-gap: 16px;
+}
+.mud-ex-docdialog-checks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+.mud-ex-docdialog-grid,
+.mud-ex-docdialog-checks {
+  min-width: min(440px, calc(100vw - 96px));
+}
+.mud-ex-docdialog-color {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 0.875rem;
+}
+.mud-ex-docdialog-color input {
+  width: 48px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--mud-palette-lines-default);
+  background: none;
+  cursor: pointer;
+}

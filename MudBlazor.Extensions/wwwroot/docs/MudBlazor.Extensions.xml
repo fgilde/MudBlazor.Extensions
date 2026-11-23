@@ -1369,6 +1369,34 @@
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.OnSaveSucceeded">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentFontDialog">
+            <summary>
+            The font dialog of <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>: font, size, underline style, colour and the character effects. A property that differs
+            across the selection starts empty. Closes with a <c>Func&lt;RunFormat, RunFormat&gt;</c> that changes only the properties the user changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentFontDialog.Format">
+            <summary>The merged character formatting of the selection; a null property differs across the selection.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentFontDialog.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentParagraphDialog">
+            <summary>
+            The paragraph dialog of <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>: alignment, indents, spacing, line spacing and the line and page break options.
+            Indents are shown in centimetres or inches, spacing in points. A property that differs across the selection starts empty. Closes with a
+            <c>Func&lt;ParagraphFormat, ParagraphFormat&gt;</c> that changes only the properties the user changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentParagraphDialog.Format">
+            <summary>The merged paragraph formatting of the selection; a null property differs across the selection.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentParagraphDialog.Metric">
+            <summary>True to show lengths in centimetres, false for inches.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentParagraphDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentStatusBar">
             <summary>Status bar of the document editor: the word count and a zoom slider.</summary>
         </member>

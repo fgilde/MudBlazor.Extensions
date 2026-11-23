@@ -56,7 +56,13 @@ public class DocumentEditorShortcutTests : DocumentEditorFormattingTestBase
             "Ctrl+Alt+1" or "Ctrl+Alt+2" or "Ctrl+Alt+3" => () => Assert.Equal("Heading" + key[^1], Paragraph().StyleId),
             "Ctrl+Shift+N" => () => Assert.Null(Paragraph().StyleId),
             "Ctrl+S" => () => Assert.Equal(1, saved),
-            "Ctrl+D" or "Ctrl+F" or "Ctrl+H" => () =>
+            "Ctrl+D" => () =>
+            {
+                Assert.Equal(version, document.Version);
+                Assert.Contains(key, Surface(cut).Shortcuts!);
+                Assert.NotEmpty(_dialogs.FindAll(".mud-ex-docfont-dialog"));
+            },
+            "Ctrl+F" or "Ctrl+H" => () =>
             {
                 Assert.Equal(version, document.Version);
                 Assert.DoesNotContain(key, Surface(cut).Shortcuts!);

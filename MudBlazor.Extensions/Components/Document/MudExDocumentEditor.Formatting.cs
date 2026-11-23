@@ -1,6 +1,8 @@
+using System.Globalization;
 using System.Text.RegularExpressions;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Office.Document;
+using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -10,7 +12,7 @@ public partial class MudExDocumentEditor
     private static readonly Regex ThemeColor = new("^theme:[A-Za-z0-9]+( shade=[0-9A-Fa-f]{2})?( tint=[0-9A-Fa-f]{2})?$", RegexOptions.CultureInvariant);
     private static readonly double[] FontSteps = [8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72];
     private static readonly IReadOnlyList<MudExColor> HighlightPalette = [.. HtmlReader.Highlights.Values.Select(v => (MudExColor)v)];
-    private static readonly string[] SurfaceShortcuts = DocumentShortcuts.Keys("fontDialog", "find", "replace");
+    private static readonly string[] SurfaceShortcuts = DocumentShortcuts.Keys("find", "replace");
 
     private static readonly Dictionary<string, (string Text, Func<RunFormat, bool> IsOn, Func<RunFormat, bool, RunFormat> Set)> Toggles = new()
     {
@@ -51,8 +53,20 @@ public partial class MudExDocumentEditor
     private static readonly (string Id, double Lines)[] LineSpacings =
         [("wd-line-spacing-100", 1), ("wd-line-spacing-115", 1.15), ("wd-line-spacing-150", 1.5), ("wd-line-spacing-200", 2), ("wd-line-spacing-250", 2.5), ("wd-line-spacing-300", 3)];
 
+    private static readonly RunFormat RunDefaults = new()
+    {
+        Bold = false, Italic = false, Strike = false, DoubleStrike = false, Caps = false, SmallCaps = false, Hidden = false, Underline = "none", VerticalAlign = VerticalAlign.Baseline
+    };
+
+    private static readonly ParagraphFormat ParagraphDefaults = new()
+    {
+        Alignment = ParagraphAlignment.Left, IndentLeft = 0, IndentRight = 0, IndentFirstLine = 0, SpacingBefore = 0, SpacingAfter = 0, Line = new LineSpacing(240, LineRule.Auto),
+        KeepWithNext = false, KeepLines = false, PageBreakBefore = false, WidowControl = false
+    };
+
     private (TextDocument Document, int Version, DocumentRange Selection, RunFormat Caret) _formatKey;
     private SelectionFormat _format;
+    private (DocumentStyles Styles, DocumentTheme Theme, IReadOnlyList<StyleItem> Items) _gallery;
     private MudExColor _fontColor = "#FF0000";
     private string _highlight = "yellow";
 
@@ -70,7 +84,8 @@ public partial class MudExDocumentEditor
     }
 
     private RibbonView View => !_collapsed && Format is { Run: var r, Paragraph: var p } f
-        ? new(r.Bold, r.Italic, r.Underline, r.Strike, r.VerticalAlign, r.Font, r.SizePt, r.Color, r.Highlight, p.Alignment, f.List, p.Line, f.StyleId, p.SpacingBefore, p.SpacingAfter)
+        ? new(r.Bold, r.Italic, r.Underline, r.Strike, r.VerticalAlign, r.Font, r.SizePt, r.Color, r.Highlight, p.Alignment, f.List, p.Line, f.StyleId, r.StyleId, p.SpacingBefore,
+            p.SpacingAfter, _document.Styles)
         : default;
 
     private IReadOnlyList<string> FontItems => Format?.Run.Font is { } font && !MudExNotebookEditor.Fonts.Contains(font) ? [font, .. MudExNotebookEditor.Fonts] : MudExNotebookEditor.Fonts;
@@ -125,6 +140,135 @@ public partial class MudExDocumentEditor
     internal Task IndentAsync(int delta) => ParagraphCommandAsync(ids => new ChangeListLevelCommand(ids, delta));
 
     internal Task ApplyStyleAsync(string styleId) => ParagraphCommandAsync(ids => new ApplyParagraphStyleCommand(ids, styleId));
+
+    internal IReadOnlyList<StyleItem> GalleryItems
+    {
+        get
+        {
+            if (_document == null)
+                return [];
+            if (!ReferenceEquals(_document.Styles, _gallery.Styles) || !ReferenceEquals(_document.Theme, _gallery.Theme))
+                _gallery = (_document.Styles, _document.Theme, [.. _document.Styles.Gallery.Select(s => new StyleItem(s.Id, DisplayName(s), s.Type, PreviewCss(s)))]);
+            return _gallery.Items;
+        }
+    }
+
+    private StyleItem SelectedStyle => Format is { } format
+        ? GalleryItems.FirstOrDefault(i => i.Id == format.Run.StyleId) ?? GalleryItems.FirstOrDefault(i => i.Id == format.StyleId)
+        : null;
+
+    private string UpdateStyleText => TryLocalize("Update {0} to Match Selection", Format?.StyleId is { } id ? GalleryItems.FirstOrDefault(i => i.Id == id)?.Name ?? id : TryLocalize("Style"));
+
+    internal Task PickStyleAsync(StyleItem item) => item?.Type switch
+    {
+        StyleType.Paragraph => ApplyStyleAsync(item.Id),
+        StyleType.Character => ApplyCharacterStyleAsync(item.Id),
+        _ => Task.CompletedTask
+    };
+
+    internal Task ApplyCharacterStyleAsync(string styleId) => RunAsync(range =>
+    {
+        if (!Live(range))
+            return;
+        _document.Execute(new ApplyCharacterStyleCommand(range, styleId), range);
+        if (range.IsEmpty)
+            _surface.SetCaretFormat(InsertionFormat(range) with { StyleId = styleId });
+    });
+
+    internal Task UpdateStyleFromSelectionAsync() => RunAsync(range =>
+    {
+        if (Live(range) && FormatAt(range)?.StyleId is { } styleId)
+            _document.Execute(new UpdateStyleFromSelectionCommand(ParagraphIds(range)[0], styleId), range);
+    });
+
+    internal async Task OpenFontDialogAsync()
+    {
+        var (range, format) = await SelectionFormatAsync();
+        if (format == null)
+            return;
+        var reference = await DialogService.ShowExAsync<MudExDocumentFontDialog>(TryLocalize("Font"), new DialogParameters
+        {
+            { nameof(MudExDocumentFontDialog.Format), format.Run },
+            { nameof(MudExDocumentFontDialog.Localizer), Localizer }
+        }, DialogOptionsEx.EditorDialogOptions(DialogOptions));
+        var result = await reference.Result;
+        if (await ReselectAsync(range) && result is { Canceled: false, Data: Func<RunFormat, RunFormat> change })
+            await SetRunAsync(change, "Font");
+        await FocusSurfaceAsync();
+    }
+
+    internal async Task OpenParagraphDialogAsync()
+    {
+        var (range, format) = await SelectionFormatAsync();
+        if (format == null)
+            return;
+        var reference = await DialogService.ShowExAsync<MudExDocumentParagraphDialog>(TryLocalize("Paragraph"), new DialogParameters
+        {
+            { nameof(MudExDocumentParagraphDialog.Format), format.Paragraph },
+            { nameof(MudExDocumentParagraphDialog.Metric), DocumentUnits.Metric(CultureInfo.CurrentCulture) },
+            { nameof(MudExDocumentParagraphDialog.Localizer), Localizer }
+        }, DialogOptionsEx.EditorDialogOptions(DialogOptions));
+        var result = await reference.Result;
+        if (await ReselectAsync(range) && result is { Canceled: false, Data: Func<ParagraphFormat, ParagraphFormat> change })
+            await SetParagraphAsync(change, "Paragraph");
+        await FocusSurfaceAsync();
+    }
+
+    private async Task<(DocumentRange Range, SelectionFormat Format)> SelectionFormatAsync()
+    {
+        (DocumentRange, SelectionFormat) selection = default;
+        await RunAsync(range => selection = Live(range) && FormatAt(range) is { } format ? (range, DialogFormat(range, format)) : default);
+        return selection;
+    }
+
+    private SelectionFormat DialogFormat(DocumentRange range, SelectionFormat format)
+    {
+        var paragraphs = new FormatMerge<ParagraphFormat>();
+        foreach (var id in ParagraphIds(range))
+            paragraphs.Add(_document.EffectiveParagraphFormat((Paragraph)_document.FindBlock(id)).Over(ParagraphDefaults));
+        var runs = new FormatMerge<RunFormat>();
+        var (start, end) = range.Normalize(_document);
+        var (first, from) = _document.Resolve(start);
+        var (last, to) = _document.Resolve(end);
+        var counted = false;
+        foreach (var paragraph in range.IsEmpty ? Enumerable.Empty<Paragraph>() : _document.ParagraphsIn(range))
+            foreach (var inline in InlineEdit.Split(paragraph.Inlines, paragraph.Id == first.Id ? from : 0, paragraph.Id == last.Id ? to : paragraph.Length).Middle.Where(i => i is TextRun or Tab))
+            {
+                runs.Add(_document.EffectiveRunFormat(paragraph, inline).Over(RunDefaults));
+                counted = true;
+            }
+
+        return format with { Run = counted ? runs.Result() : format.Run.Over(RunDefaults), Paragraph = paragraphs.Result() };
+    }
+
+    private async Task<bool> ReselectAsync(DocumentRange range)
+    {
+        if (IsReadOnly || _surface == null || _document == null || !Live(range))
+            return false;
+        await _surface.SelectAsync(range, false);
+        return true;
+    }
+
+    private Task FocusSurfaceAsync() => _surface?.FocusAsync() ?? Task.CompletedTask;
+
+    private static string DisplayName(DocumentStyle style) =>
+        string.Join(' ', (style.Name ?? style.Id ?? "").Split(' ').Select(w => w.Length > 0 ? char.ToUpperInvariant(w[0]) + w[1..] : w));
+
+    private string PreviewCss(DocumentStyle style)
+    {
+        try
+        {
+            var styles = StyleDefinitions.With(_document.Styles, style.Id, style.Type);
+            var paragraph = new Paragraph { Format = new ParagraphFormat { StyleId = style.Type == StyleType.Paragraph ? style.Id : null } };
+            var run = new TextRun("") { Format = new RunFormat { StyleId = style.Type == StyleType.Character ? style.Id : null } };
+            var format = EffectiveFormat.Run(styles, _document.Theme, null, paragraph, run);
+            return DocumentCss.Run(format with { SizePt = Math.Min(format.SizePt ?? 11, 16) }, new RunFormat(), true);
+        }
+        catch (ArgumentException)
+        {
+            return "";
+        }
+    }
 
     private Task AlignAsync(ParagraphAlignment alignment) => FormatParagraphsAsync(range =>
     {
@@ -190,6 +334,7 @@ public partial class MudExDocumentEditor
         "spaceBefore" => ToggleSpaceAsync(true),
         "heading1" or "heading2" or "heading3" => ApplyStyleAsync("Heading" + action[^1]),
         "normal" => ApplyStyleAsync("Normal"),
+        "fontDialog" => OpenFontDialogAsync(),
         _ => ToggleRunAsync(action)
     };
 
@@ -272,5 +417,8 @@ public partial class MudExDocumentEditor
     private static double ClampSize(double size) => Math.Clamp(Math.Round(size * 2) / 2, 1, 1638);
 
     private readonly record struct RibbonView(bool? Bold, bool? Italic, string Underline, bool? Strike, VerticalAlign? VerticalAlign, string Font, double? Size, string Color,
-        string Highlight, ParagraphAlignment? Alignment, ListTemplate? List, LineSpacing? Line, string StyleId, int? SpacingBefore, int? SpacingAfter);
+        string Highlight, ParagraphAlignment? Alignment, ListTemplate? List, LineSpacing? Line, string StyleId, string CharacterStyle, int? SpacingBefore, int? SpacingAfter,
+        DocumentStyles Styles);
+
+    internal sealed record StyleItem(string Id, string Name, StyleType Type, string Css);
 }

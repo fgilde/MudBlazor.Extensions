@@ -1,0 +1,58 @@
+@inherits MudExBaseComponent<MudExDocumentParagraphDialog>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Document
+
+<MudDialog Class="@MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial, "mud-ex-docpara-dialog")">
+    <DialogContent>
+        <MudText Typo="Typo.subtitle2">@TryLocalize("General")</MudText>
+        <div class="mud-ex-docdialog-grid">
+            <MudSelect T="ParagraphAlignment?" Class="mud-ex-docpara-alignment" Label="@TryLocalize("Alignment")" @bind-Value="_alignment" Margin="Margin.Dense" Dense="true">
+                @foreach (var alignment in Enum.GetValues<ParagraphAlignment>())
+                {
+                    <MudSelectItem T="ParagraphAlignment?" Value="@alignment">@TryLocalize(alignment == ParagraphAlignment.Center ? "Centered" : alignment.ToString())</MudSelectItem>
+                }
+            </MudSelect>
+        </div>
+        <MudText Typo="Typo.subtitle2" Class="mt-2">@TryLocalize("Indentation")</MudText>
+        <div class="mud-ex-docdialog-grid">
+            <MudNumericField T="double?" Class="mud-ex-docpara-indent-left" Label="@TryLocalize("Left")" @bind-Value="_left" Step="@LengthStep" Min="@(-MaxLength)" Max="MaxLength"
+                             Adornment="Adornment.End" AdornmentText="@Unit" Margin="Margin.Dense" />
+            <MudNumericField T="double?" Class="mud-ex-docpara-indent-right" Label="@TryLocalize("Right")" @bind-Value="_right" Step="@LengthStep" Min="@(-MaxLength)" Max="MaxLength"
+                             Adornment="Adornment.End" AdornmentText="@Unit" Margin="Margin.Dense" />
+            <MudSelect T="string" Class="mud-ex-docpara-special" Label="@TryLocalize("Special")" @bind-Value="_special" Margin="Margin.Dense" Dense="true">
+                @foreach (var (value, text) in Specials)
+                {
+                    <MudSelectItem Value="@value">@TryLocalize(text)</MudSelectItem>
+                }
+            </MudSelect>
+            <MudNumericField T="double?" Class="mud-ex-docpara-by" Label="@TryLocalize("By")" @bind-Value="_by" Step="@LengthStep" Min="0" Max="MaxLength"
+                             Adornment="Adornment.End" AdornmentText="@Unit" Disabled="@(_special is null or "none")" Margin="Margin.Dense" />
+        </div>
+        <MudText Typo="Typo.subtitle2" Class="mt-2">@TryLocalize("Spacing")</MudText>
+        <div class="mud-ex-docdialog-grid">
+            <MudNumericField T="double?" Class="mud-ex-docpara-before" Label="@TryLocalize("Before")" @bind-Value="_spaceBefore" Step="6" Min="0" Max="MaxPoints"
+                             Adornment="Adornment.End" AdornmentText="pt" Margin="Margin.Dense" />
+            <MudNumericField T="double?" Class="mud-ex-docpara-after" Label="@TryLocalize("After")" @bind-Value="_spaceAfter" Step="6" Min="0" Max="MaxPoints"
+                             Adornment="Adornment.End" AdornmentText="pt" Margin="Margin.Dense" />
+            <MudSelect T="string" Class="mud-ex-docpara-line" Label="@TryLocalize("Line spacing")" @bind-Value="_line" Margin="Margin.Dense" Dense="true">
+                @foreach (var (value, text) in Lines)
+                {
+                    <MudSelectItem Value="@value">@TryLocalize(text)</MudSelectItem>
+                }
+            </MudSelect>
+            <MudNumericField T="double?" Class="mud-ex-docpara-at" Label="@TryLocalize("At")" @bind-Value="_at" Step="@(_line == "multiple" ? 0.25 : 1)" Min="0" Max="MaxPoints"
+                             Adornment="Adornment.End" AdornmentText="@(_line == "multiple" ? "" : "pt")" Disabled="@(_line is not ("atLeast" or "exactly" or "multiple"))" Margin="Margin.Dense" />
+        </div>
+        <MudText Typo="Typo.subtitle2" Class="mt-2">@TryLocalize("Line and page breaks")</MudText>
+        <div class="mud-ex-docdialog-checks">
+            <MudCheckBox T="bool?" Class="mud-ex-docpara-widow" Label="@TryLocalize("Widow/Orphan control")" @bind-Value="_widow" TriState="@(Format?.WidowControl is null)" Dense="true" />
+            <MudCheckBox T="bool?" Class="mud-ex-docpara-keep-next" Label="@TryLocalize("Keep with next")" @bind-Value="_keepNext" TriState="@(Format?.KeepWithNext is null)" Dense="true" />
+            <MudCheckBox T="bool?" Class="mud-ex-docpara-keep-lines" Label="@TryLocalize("Keep lines together")" @bind-Value="_keepLines" TriState="@(Format?.KeepLines is null)" Dense="true" />
+            <MudCheckBox T="bool?" Class="mud-ex-docpara-page-break" Label="@TryLocalize("Page break before")" @bind-Value="_pageBreak" TriState="@(Format?.PageBreakBefore is null)" Dense="true" />
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Class="mud-ex-docpara-cancel" OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-docpara-ok" Color="Color.Primary" Variant="Variant.Filled" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

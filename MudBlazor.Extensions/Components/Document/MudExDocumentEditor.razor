@@ -19,7 +19,7 @@
             </QuickAccess>
             <ChildContent>
                 <MudExRibbonTab Text="@TryLocalize("Home")" KeyTip="H" Visible="@(!IsReadOnly)">
-                    <MudExRibbonGroup Text="@TryLocalize("Font")" Icon="@Icons.Material.Filled.FormatSize" CollapsePriority="2">
+                    <MudExRibbonGroup Text="@TryLocalize("Font")" Icon="@Icons.Material.Filled.FormatSize" CollapsePriority="2" OnDialogLauncherClick="OpenFontDialogAsync">
                         <MudExRibbonRow>
                             <MudExRibbonSelect T="string" Id="wd-font" Text="@TryLocalize("Font")" Items="@FontItems" Value="@(Format?.Run.Font ?? "")" ValueChanged="SetFontAsync" Editable="true" Width="140"
                                                Disabled="@IsReadOnly" />
@@ -48,7 +48,7 @@
                                                     Palette="@MudExNotebookEditor.Palette" Value="@_fontColor" ValueChanged="PickColorAsync" Disabled="@IsReadOnly" />
                         </MudExRibbonRow>
                     </MudExRibbonGroup>
-                    <MudExRibbonGroup Text="@TryLocalize("Paragraph")" Icon="@Icons.Material.Filled.FormatListBulleted" CollapsePriority="3">
+                    <MudExRibbonGroup Text="@TryLocalize("Paragraph")" Icon="@Icons.Material.Filled.FormatListBulleted" CollapsePriority="3" OnDialogLauncherClick="OpenParagraphDialogAsync">
                         <MudExRibbonRow>
                             @foreach (var (id, text, icon, shortcut, list) in ListToggles)
                             {
@@ -79,6 +79,20 @@
                                                      OnClick="@(() => ToggleSpaceAsync(false))" />
                             </MudExRibbonMenuButton>
                         </MudExRibbonRow>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Styles")" Icon="@Icons.Material.Filled.Style" CollapsePriority="1">
+                        <MudExRibbonGallery TItem="StyleItem" Id="wd-styles" Text="@TryLocalize("Styles")" Icon="@Icons.Material.Filled.Style" Size="MudExRibbonItemSize.Large" Columns="4"
+                                            Items="@GalleryItems" SelectedItem="@SelectedStyle" SelectedItemChanged="PickStyleAsync" ItemText="@(s => s.Name)" Disabled="@IsReadOnly">
+                            <ItemTemplate>
+                                <span class="mud-ex-doc-style-preview" style="@context.Css">@context.Name</span>
+                            </ItemTemplate>
+                        </MudExRibbonGallery>
+                        <MudExRibbonMenuButton Id="wd-styles-menu" Text="@TryLocalize("Style Options")" Icon="@Icons.Material.Filled.MoreVert" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly">
+                            <MudExRibbonMenuItem Id="wd-style-update" Text="@UpdateStyleText" Icon="@Icons.Material.Filled.Sync" Disabled="@(IsReadOnly || Format?.StyleId == null)"
+                                                 OnClick="UpdateStyleFromSelectionAsync" />
+                            <MudExRibbonMenuItem Id="wd-style-clear" Text="@TryLocalize("Clear Formatting")" Icon="@Icons.Material.Filled.FormatClear" Disabled="@IsReadOnly"
+                                                 OnClick="@(() => ClearFormattingAsync(true))" />
+                        </MudExRibbonMenuButton>
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Editing")" Icon="@Icons.Material.Filled.Search" CollapsePriority="0">
                         <MudExRibbonButton Id="wd-find" Text="@TryLocalize("Find")" Icon="@Icons.Material.Filled.Search" Shortcut="Ctrl+F" Size="MudExRibbonItemSize.Small" Disabled="true" />
