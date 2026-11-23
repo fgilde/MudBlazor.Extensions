@@ -19,6 +19,7 @@ public partial class MudExDocumentSurface
     private const long MaxTypedChars = 8L * 1024 * 1024;
     private const long MaxSyncBytes = MaxTypedChars * 4 + 1024 * 1024;
     private static readonly SurfaceResult Empty = new([], null, null);
+    private static readonly SurfaceResult Unreadable = new([], null, null, true);
 
     private readonly JsModule<MudExDocumentSurface> _module = new();
     private readonly Dictionary<string, int> _changedAt = new();
@@ -143,7 +144,8 @@ public partial class MudExDocumentSurface
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public async Task<SurfaceResult> OnSyncAsync(SurfaceSync sync, IJSStreamReference stream)
     {
-        var (read, rejected) = await ReadAsync(sync, stream);
+        var (read, rejected, unreadable) = await ReadAsync(sync, stream);
+        if (unreadable) return Unreadable;
         return Current(read) ? await HandleAsync(read, rejected, null, false) : Empty;
     }
 
@@ -156,7 +158,8 @@ public partial class MudExDocumentSurface
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public async Task<SurfaceResult> OnCommandAsync(SurfaceSync sync, IJSStreamReference stream, string name, string text)
     {
-        var (read, rejected) = await ReadAsync(sync, stream);
+        var (read, rejected, unreadable) = await ReadAsync(sync, stream);
+        if (unreadable) return Unreadable;
         if (!Current(read)) return Empty;
         var result = await HandleAsync(read, rejected, rejected || text?.Length > MaxText || ReadOnly ? null : name switch
         {
@@ -252,11 +255,11 @@ public partial class MudExDocumentSurface
         return patch;
     }
 
-    private static async Task<(SurfaceSync Sync, bool Rejected)> ReadAsync(SurfaceSync sync, IJSStreamReference stream)
+    private static async Task<(SurfaceSync Sync, bool Rejected, bool Unreadable)> ReadAsync(SurfaceSync sync, IJSStreamReference stream)
     {
         try { sync = await JsPayload.ReadAsync(sync, stream, MaxSyncBytes); }
-        catch (Exception) { return (null, true); }
-        return (sync, !WithinCaps(sync));
+        catch (Exception) { return (null, true, true); }
+        return (sync, !WithinCaps(sync), false);
     }
 
     private bool Current(SurfaceSync sync) => sync != null && sync.Seen >= _attachedAt;
@@ -304,9 +307,7 @@ public partial class MudExDocumentSurface
             }
             finally
             {
-                if (suspended)
-                    await CallAsync("resume", outcome.Result, scroll);
-                else
+                if (!suspended || !await CallAsync("resume", outcome.Result, scroll))
                     await SendPatchesAsync(outcome.Result.Patches);
             }
         }
@@ -398,11 +399,12 @@ public partial class MudExDocumentSurface
         }
 
         Refresh([.. refresh, .. stale]);
+        if (error != null) return false;
         var selection = ToRange(sync.Selection);
-        if (error != null || stale.Count > 0 || guarded && sync.Selection != null && selection == null) return false;
-        if (selection != null) Select(selection.Value);
+        var refused = guarded && (stale.Count > 0 || selection == null);
+        if (!refused && selection != null) Select(selection.Value);
         if (sync.EndTyping) _document.EndTyping();
-        return true;
+        return !refused;
     }
 
     private bool Changed(string id, int seen) => id != null && _changedAt.TryGetValue(id, out var at) && at > seen;
@@ -486,10 +488,17 @@ public partial class MudExDocumentSurface
 
     private static DocumentRange Caret(DocumentPosition position) => new(position, position);
 
-    private async Task CallAsync(string method, params object[] arguments)
+    private async Task<bool> CallAsync(string method, params object[] arguments)
     {
-        if (_module.Js is not { } js) return;
-        try { await js.InvokeVoidAsync(method, arguments); }
-        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException or ObjectDisposedException or InvalidOperationException) { }
+        if (_module.Js is not { } js) return false;
+        try
+        {
+            await js.InvokeVoidAsync(method, arguments);
+            return true;
+        }
+        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException or ObjectDisposedException or InvalidOperationException)
+        {
+            return false;
+        }
     }
 }

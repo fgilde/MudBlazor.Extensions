@@ -98,8 +98,9 @@ public sealed record SurfaceCaretFormat(string Token, string Css);
 /// <param name="Patches">The patches created while the message was handled.</param>
 /// <param name="Selection">The selection to set, or null to keep the selection.</param>
 /// <param name="CaretFormat">The pending format for the next typed text, or null if there is none.</param>
+/// <param name="Retry">True if the message could not be read; the browser keeps its typing and sends it again with the next message.</param>
 [EditorBrowsable(EditorBrowsableState.Never)]
-public sealed record SurfaceResult(IReadOnlyList<SurfacePatch> Patches, SurfaceSelection Selection, SurfaceCaretFormat CaretFormat);
+public sealed record SurfaceResult(IReadOnlyList<SurfacePatch> Patches, SurfaceSelection Selection, SurfaceCaretFormat CaretFormat, bool Retry = false);
 
 internal sealed class SurfaceTypedListConverter : JsonConverter<IReadOnlyList<SurfaceTyped>>
 {

@@ -1241,12 +1241,14 @@
             <param name="Patches">The patches created while the message was handled.</param>
             <param name="Selection">The selection to set, or null to keep the selection.</param>
             <param name="CaretFormat">The pending format for the next typed text, or null if there is none.</param>
+            <param name="Retry">True if the message could not be read; the browser keeps its typing and sends it again with the next message.</param>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.SurfaceResult.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfacePatch},MudBlazor.Extensions.Components.SurfaceSelection,MudBlazor.Extensions.Components.SurfaceCaretFormat)">
+        <member name="M:MudBlazor.Extensions.Components.SurfaceResult.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfacePatch},MudBlazor.Extensions.Components.SurfaceSelection,MudBlazor.Extensions.Components.SurfaceCaretFormat,System.Boolean)">
             <summary>The answer to a message of the browser. Infrastructure of the document editor, not meant to be used directly.</summary>
             <param name="Patches">The patches created while the message was handled.</param>
             <param name="Selection">The selection to set, or null to keep the selection.</param>
             <param name="CaretFormat">The pending format for the next typed text, or null if there is none.</param>
+            <param name="Retry">True if the message could not be read; the browser keeps its typing and sends it again with the next message.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Components.SurfaceResult.Patches">
             <summary>The patches created while the message was handled.</summary>
@@ -1256,6 +1258,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.SurfaceResult.CaretFormat">
             <summary>The pending format for the next typed text, or null if there is none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceResult.Retry">
+            <summary>True if the message could not be read; the browser keeps its typing and sends it again with the next message.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentEditor">
             <summary>

@@ -396,4 +396,78 @@ public class DocumentSurfaceOperationTests : DocumentSurfaceTestBase
         Assert.Empty(command.Patches);
         Assert.Equal("Hello", Text(document));
     }
+
+    private sealed class FailingStream : IJSStreamReference
+    {
+        public long Length => 10;
+
+        public ValueTask<Stream> OpenReadStreamAsync(long maxAllowedSize = 512000, CancellationToken cancellationToken = default) => throw new IOException("lost");
+
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
+    }
+
+    [Fact]
+    public async Task RunAsync_ResumeNotDelivered_PushesThePatchesOnce()
+    {
+        var document = Doc("Hello");
+        var id = document.Blocks[0].Id;
+        var cut = Surface(document);
+        _context.JSInterop.Setup<SurfaceSync>("suspend", _ => true).SetResult(Idle(id, 0));
+        _context.JSInterop.SetupVoid("resume", _ => true).SetException(new JSException("lost"));
+
+        await cut.InvokeAsync(() => cut.Instance.RunAsync(r => Insert(document, id, 5, "!")));
+
+        Assert.Single(_context.JSInterop.Invocations["resume"]);
+        Assert.Equal(2, Patches().Count);
+        var pushed = Assert.Single(Patches().Last());
+        Assert.Equal((2, "Hello!"), (pushed.Seq, Assert.Single(pushed.Upsert).Block.Text));
+    }
+
+    [Fact]
+    public async Task Command_WithoutSelection_IsNotExecuted()
+    {
+        var document = Doc("Hello");
+        var cut = Surface(document);
+
+        var result = await Command(cut, new SurfaceSync(1, [], null, false), "split");
+
+        Assert.Equal(["Hello"], document.Blocks.OfType<Paragraph>().Select(p => p.Text));
+        Assert.Empty(result.Patches);
+        Assert.Null(result.Selection);
+    }
+
+    [Fact]
+    public async Task Command_Refused_StillAppliesTypingAndEndTyping()
+    {
+        var document = Doc("Hello");
+        var id = document.Blocks[0].Id;
+        var cut = Surface(document);
+        await Type(cut, id, "Hello a");
+
+        var refused = await Command(cut, new SurfaceSync(_seen, [new SurfaceTyped(id, "Hello ab", 8, null)], null, true), "split");
+        await Type(cut, id, "Hello abc");
+        await Command(cut, Idle(id, 9), "undo");
+
+        Assert.Equal("Hello ab", Upsert(refused, id).Block.Text);
+        Assert.Null(refused.Selection);
+        Assert.Equal(["Hello ab"], document.Blocks.OfType<Paragraph>().Select(p => p.Text));
+    }
+
+    [Fact]
+    public async Task Sync_Unreadable_AsksForARetry()
+    {
+        var document = Doc("Hello");
+        var id = document.Blocks[0].Id;
+        var cut = Surface(document);
+
+        SurfaceResult json = null!, stream = null!;
+        await cut.InvokeAsync(async () => json = await cut.Instance.OnSyncAsync(null!, new TestStreamReference("{not json")));
+        await cut.InvokeAsync(async () => stream = await cut.Instance.OnCommandAsync(null!, new FailingStream(), "split", null!));
+        var capped = await Sync(cut, new SurfaceSync(1, Enumerable.Range(0, 10_001).Select(_ => new SurfaceTyped(id, "Hallo", 2, null)).ToList(), Sel(id, 2), false));
+
+        Assert.All(new[] { json, stream }, r => Assert.Equal((true, 0), (r.Retry, r.Patches.Count)));
+        Assert.False(capped.Retry);
+        Assert.Equal("Hello", Upsert(capped, id).Block.Text);
+        Assert.Equal(["Hello"], document.Blocks.OfType<Paragraph>().Select(p => p.Text));
+    }
 }
