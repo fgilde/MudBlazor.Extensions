@@ -37,6 +37,11 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         return media;
     }
 
+    public string RunCss(Paragraph paragraph, RunFormat own) =>
+        DocumentCss.Run(document.EffectiveRunFormat(paragraph, new TextRun("") { Format = own }), Basis(document.EffectiveRunFormat(paragraph, null)), true);
+
+    private RunFormat Basis(RunFormat mark) => Defaults() with { Bold = mark.Bold, Italic = mark.Italic, SizePt = mark.SizePt, Font = mark.Font };
+
     private RunFormat Defaults()
     {
         if (_defaults is not { } defaults || defaults.Version != document.Version) _defaults = defaults = (document.Version, document.EffectiveRunFormat(new Paragraph(), null));
@@ -48,7 +53,7 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         var format = document.EffectiveParagraphFormat(paragraph);
         var defaults = Defaults();
         var mark = document.EffectiveRunFormat(paragraph, null);
-        var basis = defaults with { Bold = mark.Bold, Italic = mark.Italic, SizePt = mark.SizePt, Font = mark.Font };
+        var basis = Basis(mark);
         var label = document.ListLabel(paragraph);
         var css = DocumentCss.Paragraph(format, NoParagraph, false, false) + DocumentCss.Spacing(format) + DocumentCss.Run(basis, defaults, true);
         return new SurfaceBlock(paragraph.Id, "p", css, paragraph.Text, label, label == null ? null : LabelCss(format, mark, basis), Runs(paragraph, basis), null, null, null);

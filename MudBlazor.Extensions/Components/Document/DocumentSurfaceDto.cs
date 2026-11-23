@@ -56,3 +56,44 @@ public sealed record SurfaceUpsert(SurfaceBlock Block, string After, bool InPlac
 /// <param name="Upsert">The blocks to insert or replace, in order.</param>
 [EditorBrowsable(EditorBrowsableState.Never)]
 public sealed record SurfacePatch(int Seq, bool Reset, string SheetCss, IReadOnlyList<string> Remove, IReadOnlyList<SurfaceUpsert> Upsert);
+
+/// <summary>A caret position on the surface. Infrastructure of the document editor, not meant to be used directly.</summary>
+/// <param name="P">The paragraph id.</param>
+/// <param name="O">The offset in the model text of the paragraph.</param>
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed record SurfacePoint(string P, int O);
+
+/// <summary>A selection on the surface. Infrastructure of the document editor, not meant to be used directly.</summary>
+/// <param name="Anchor">Where the selection starts.</param>
+/// <param name="Focus">Where the caret is.</param>
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed record SurfaceSelection(SurfacePoint Anchor, SurfacePoint Focus);
+
+/// <summary>A paragraph typed in the browser. Infrastructure of the document editor, not meant to be used directly.</summary>
+/// <param name="P">The paragraph id.</param>
+/// <param name="T">The full new model text of the paragraph.</param>
+/// <param name="C">The caret offset in <paramref name="T"/>, or null if the caret is not in this paragraph.</param>
+/// <param name="F">The caret format token of the typed text, or null.</param>
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed record SurfaceTyped(string P, string T, int? C, string F);
+
+/// <summary>The state the browser reports with every message. Infrastructure of the document editor, not meant to be used directly.</summary>
+/// <param name="Seen">The sequence number of the last patch the browser applied.</param>
+/// <param name="Typed">The paragraphs typed since the last message.</param>
+/// <param name="Selection">The selection, or null if it is not in the document.</param>
+/// <param name="EndTyping">True to start a new undo step with the next typing.</param>
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed record SurfaceSync(int Seen, IReadOnlyList<SurfaceTyped> Typed, SurfaceSelection Selection, bool EndTyping);
+
+/// <summary>A pending format for the next typed text. Infrastructure of the document editor, not meant to be used directly.</summary>
+/// <param name="Token">The token to send with the typed text.</param>
+/// <param name="Css">The inline style of the typed text.</param>
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed record SurfaceCaretFormat(string Token, string Css);
+
+/// <summary>The answer to a message of the browser. Infrastructure of the document editor, not meant to be used directly.</summary>
+/// <param name="Patches">The patches created while the message was handled.</param>
+/// <param name="Selection">The selection to set, or null to keep the selection.</param>
+/// <param name="CaretFormat">The pending format for the next typed text, or null if there is none.</param>
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed record SurfaceResult(IReadOnlyList<SurfacePatch> Patches, SurfaceSelection Selection, SurfaceCaretFormat CaretFormat);

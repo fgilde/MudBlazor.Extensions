@@ -1126,6 +1126,184 @@
         <member name="P:MudBlazor.Extensions.Components.SurfacePatch.Upsert">
             <summary>The blocks to insert or replace, in order.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfacePoint">
+            <summary>A caret position on the surface. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="P">The paragraph id.</param>
+            <param name="O">The offset in the model text of the paragraph.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfacePoint.#ctor(System.String,System.Int32)">
+            <summary>A caret position on the surface. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="P">The paragraph id.</param>
+            <param name="O">The offset in the model text of the paragraph.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfacePoint.P">
+            <summary>The paragraph id.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfacePoint.O">
+            <summary>The offset in the model text of the paragraph.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceSelection">
+            <summary>A selection on the surface. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Anchor">Where the selection starts.</param>
+            <param name="Focus">Where the caret is.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceSelection.#ctor(MudBlazor.Extensions.Components.SurfacePoint,MudBlazor.Extensions.Components.SurfacePoint)">
+            <summary>A selection on the surface. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Anchor">Where the selection starts.</param>
+            <param name="Focus">Where the caret is.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceSelection.Anchor">
+            <summary>Where the selection starts.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceSelection.Focus">
+            <summary>Where the caret is.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceTyped">
+            <summary>A paragraph typed in the browser. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="P">The paragraph id.</param>
+            <param name="T">The full new model text of the paragraph.</param>
+            <param name="C">The caret offset in <paramref name="T"/>, or null if the caret is not in this paragraph.</param>
+            <param name="F">The caret format token of the typed text, or null.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceTyped.#ctor(System.String,System.String,System.Nullable{System.Int32},System.String)">
+            <summary>A paragraph typed in the browser. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="P">The paragraph id.</param>
+            <param name="T">The full new model text of the paragraph.</param>
+            <param name="C">The caret offset in <paramref name="T"/>, or null if the caret is not in this paragraph.</param>
+            <param name="F">The caret format token of the typed text, or null.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceTyped.P">
+            <summary>The paragraph id.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceTyped.T">
+            <summary>The full new model text of the paragraph.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceTyped.C">
+            <summary>The caret offset in <paramref name="T"/>, or null if the caret is not in this paragraph.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceTyped.F">
+            <summary>The caret format token of the typed text, or null.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceSync">
+            <summary>The state the browser reports with every message. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Seen">The sequence number of the last patch the browser applied.</param>
+            <param name="Typed">The paragraphs typed since the last message.</param>
+            <param name="Selection">The selection, or null if it is not in the document.</param>
+            <param name="EndTyping">True to start a new undo step with the next typing.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceSync.#ctor(System.Int32,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfaceTyped},MudBlazor.Extensions.Components.SurfaceSelection,System.Boolean)">
+            <summary>The state the browser reports with every message. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Seen">The sequence number of the last patch the browser applied.</param>
+            <param name="Typed">The paragraphs typed since the last message.</param>
+            <param name="Selection">The selection, or null if it is not in the document.</param>
+            <param name="EndTyping">True to start a new undo step with the next typing.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceSync.Seen">
+            <summary>The sequence number of the last patch the browser applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceSync.Typed">
+            <summary>The paragraphs typed since the last message.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceSync.Selection">
+            <summary>The selection, or null if it is not in the document.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceSync.EndTyping">
+            <summary>True to start a new undo step with the next typing.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceCaretFormat">
+            <summary>A pending format for the next typed text. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Token">The token to send with the typed text.</param>
+            <param name="Css">The inline style of the typed text.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceCaretFormat.#ctor(System.String,System.String)">
+            <summary>A pending format for the next typed text. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Token">The token to send with the typed text.</param>
+            <param name="Css">The inline style of the typed text.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceCaretFormat.Token">
+            <summary>The token to send with the typed text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceCaretFormat.Css">
+            <summary>The inline style of the typed text.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceResult">
+            <summary>The answer to a message of the browser. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Patches">The patches created while the message was handled.</param>
+            <param name="Selection">The selection to set, or null to keep the selection.</param>
+            <param name="CaretFormat">The pending format for the next typed text, or null if there is none.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceResult.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfacePatch},MudBlazor.Extensions.Components.SurfaceSelection,MudBlazor.Extensions.Components.SurfaceCaretFormat)">
+            <summary>The answer to a message of the browser. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Patches">The patches created while the message was handled.</param>
+            <param name="Selection">The selection to set, or null to keep the selection.</param>
+            <param name="CaretFormat">The pending format for the next typed text, or null if there is none.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceResult.Patches">
+            <summary>The patches created while the message was handled.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceResult.Selection">
+            <summary>The selection to set, or null to keep the selection.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceResult.CaretFormat">
+            <summary>The pending format for the next typed text, or null if there is none.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentSurface">
+            <summary>
+            The editing surface of the document editor: a content editable sheet that the browser renders from the <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/> and keeps in
+            sync with it. Typing inside a paragraph is applied by the browser and reported in batches; everything structural (Enter, Backspace at a paragraph
+            start, Tab, undo, shortcuts) is executed as a command on the document. Changes made to the document by other code are shown as they happen.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.Document">
+            <summary>The document to show and edit.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.ReadOnly">
+            <summary>If true the document cannot be changed; selecting, copying and shortcuts stay available.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.Zoom">
+            <summary>The zoom factor; 1 is 100 %.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.SelectionChanged">
+            <summary>Raised when <see cref="P:MudBlazor.Extensions.Components.MudExDocumentSurface.Selection"/> changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.Shortcuts">
+            <summary>The keys the surface hands to <see cref="P:MudBlazor.Extensions.Components.MudExDocumentSurface.ShortcutPressed"/> instead of the browser, for example <c>Ctrl+B</c>.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.ShortcutPressed">
+            <summary>Called with the key after one of the <see cref="P:MudBlazor.Extensions.Components.MudExDocumentSurface.Shortcuts"/> was pressed and the typing before it was applied.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.OnError">
+            <summary>Raised when an edit could not be applied to the document. Without a handler the error is shown in a dialog.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.Selection">
+            <summary>The selection, or the caret as an empty range. It always points into paragraphs of the body.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.ShouldRender">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnSyncAsync(MudBlazor.Extensions.Components.SurfaceSync,Microsoft.JSInterop.IJSStreamReference)">
+            <summary>Called by the browser with the typing and the selection since the last message.</summary>
+            <param name="sync">The state of the browser, or null if it comes as <paramref name="stream"/>.</param>
+            <param name="stream">The state as JSON when it is too large for one message.</param>
+            <returns>The patches to apply.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnCommandAsync(MudBlazor.Extensions.Components.SurfaceSync,Microsoft.JSInterop.IJSStreamReference,System.String,System.String)">
+            <summary>Called by the browser for a structural edit, undo, redo or a shortcut, with the typing and the selection before it.</summary>
+            <param name="sync">The state of the browser, or null if it comes as <paramref name="stream"/>.</param>
+            <param name="stream">The state as JSON when it is too large for one message.</param>
+            <param name="name">The edit: an edit action name, <c>undo</c>, <c>redo</c> or <c>shortcut</c>.</param>
+            <param name="text">The text of a <c>replace</c> or the key of a <c>shortcut</c>; ignored if longer than 8000 characters.</param>
+            <returns>The patches to apply and the selection to set.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.IMudExFileEditor">
             <summary>
             A file display that can edit and save the file it shows.
