@@ -32,7 +32,7 @@ public sealed record Paragraph : Block
     /// <summary>The length of <see cref="Text"/>.</summary>
     public int Length => _cache.Length ??= Inlines.Sum(i => i.Length);
 
-    private static string TextOf(Inline inline) => inline switch
+    internal static string TextOf(Inline inline) => inline switch
     {
         TextRun run => run.Text ?? "",
         Tab => "\t",

@@ -65,7 +65,7 @@ public class TypingBatchTests
         document.ApplyTyping([new TypedParagraph(document.Blocks[0].Id, "Helo", 3)], T0);
 
         var paragraph = (Paragraph)document.Blocks[0];
-        Assert.Contains(marker, paragraph.Inlines);
+        Assert.Same(marker, Assert.Single(paragraph.Inlines, i => i is Marker));
         Assert.Equal("Helo", paragraph.Text);
     }
 
@@ -159,6 +159,128 @@ public class TypingBatchTests
 
         Assert.Equal(0, events);
         Assert.False(document.Undo.CanUndo);
+    }
+
+    [Fact]
+    public void Diff_CaretAfterTheChange_NeverGrowsTheSpan()
+    {
+        var bold = new TextRun("b") { Format = new RunFormat { Bold = true } };
+        var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new TextRun("a"), bold] }]);
+
+        Assert.Equal((0, 0, 1), TextDiff.Compute("ab", "Xab", 3));
+        document.ApplyTyping([new TypedParagraph(document.Blocks[0].Id, "Xab", 3)], T0);
+
+        var paragraph = (Paragraph)document.Blocks[0];
+        Assert.Equal("Xab", paragraph.Text);
+        Assert.Same(bold, paragraph.Inlines[^1]);
+        Assert.Equal((0, 1, 0), TextDiff.Compute("abc", "bc", 2));
+    }
+
+    [Fact]
+    public void Diff_CaretAfterTheChange_KeepsImage()
+    {
+        var image = new InlineImage("media/image1.png", 100, 100);
+        var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new TextRun("a"), image, new TextRun("b")] }]);
+
+        Assert.Equal((0, 0, 1), TextDiff.Compute("a\uFFFCb", "Xa\uFFFCb", 4));
+        document.ApplyTyping([new TypedParagraph(document.Blocks[0].Id, "Xa\uFFFCb", 4)], T0);
+
+        Assert.Same(image, ((Paragraph)document.Blocks[0]).Inlines.Single(i => i is InlineImage));
+    }
+
+    [Fact]
+    public void Diff_Exhaustive_ValidMinimalSplits()
+    {
+        var alphabet = "ab\uD83D\uDE00\uFFFC";
+        var strings = new List<string> { "" };
+        for (var length = 1; length <= 3; length++)
+            strings.AddRange(strings.Where(s => s.Length == length - 1).SelectMany(s => alphabet.Select(c => s + c)).ToList());
+
+        foreach (var before in strings)
+        foreach (var after in strings)
+        foreach (var caret in Enumerable.Range(-1, after.Length + 3).Select(c => (int?)c).Append(null))
+        {
+            var (start, oldEnd, newEnd) = TextDiff.Compute(before, after, caret);
+            Assert.True(start <= oldEnd && start <= newEnd && oldEnd <= before.Length && newEnd <= after.Length, $"{before}|{after}|{caret}");
+            Assert.Equal(after, before[..start] + after[start..newEnd] + before[oldEnd..]);
+            Assert.False(Splits(before, start) || Splits(after, start) || Splits(before, oldEnd) || Splits(after, newEnd), $"{before}|{after}|{caret}");
+        }
+
+        static bool Splits(string text, int offset) => offset > 0 && offset < text.Length && char.IsHighSurrogate(text[offset - 1]) && char.IsLowSurrogate(text[offset]);
+    }
+
+    [Fact]
+    public void Typing_ObjectInsideReplacedSpan_KeepsInstance()
+    {
+        var image = new InlineImage("media/image1.png", 100, 100);
+        var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new TextRun("a"), image, new TextRun("b")] }]);
+
+        var rerender = document.ApplyTyping([new TypedParagraph(document.Blocks[0].Id, "Xa\uFFFCbY", 5)], T0);
+
+        var paragraph = (Paragraph)document.Blocks[0];
+        Assert.Equal("Xa\uFFFCbY", paragraph.Text);
+        Assert.Same(image, paragraph.Inlines.Single(i => i is InlineImage));
+        Assert.Empty(rerender);
+    }
+
+    [Fact]
+    public void Typing_ColumnBreakInsideReplacedSpan_KeepsInstance()
+    {
+        var column = new Break(BreakKind.Column);
+        var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new TextRun("a"), column, new TextRun("b")] }]);
+
+        document.ApplyTyping([new TypedParagraph(document.Blocks[0].Id, "Xa\fbY", 5)], T0);
+
+        var paragraph = (Paragraph)document.Blocks[0];
+        Assert.Equal("Xa\fbY", paragraph.Text);
+        Assert.Same(column, paragraph.Inlines.Single(i => i is Break));
+        Assert.Equal(BreakKind.Column, column.Kind);
+    }
+
+    [Fact]
+    public void Typing_FilteredCharacters_ReportedForRerenderWithoutStep()
+    {
+        var document = TextDocument.FromBlocks([P("ab")]);
+        var id = document.Blocks[0].Id;
+        var events = 0;
+        document.Changed += (_, _) => events++;
+
+        var rerender = document.ApplyTyping([new TypedParagraph(id, "\uFFFCab", 1)], T0);
+
+        Assert.Equal([id], rerender);
+        Assert.Equal(0, events);
+        Assert.False(document.Undo.CanUndo);
+        Assert.Empty(document.ApplyTyping([new TypedParagraph(id, "abc", 3)], T0));
+    }
+
+    [Fact]
+    public void Typing_DuplicateParagraph_ThrowsAndChangesNothing()
+    {
+        var document = TextDocument.FromBlocks([P("a")]);
+        var id = document.Blocks[0].Id;
+        var before = DocumentDescriber.Describe(document);
+
+        Assert.Throws<ArgumentException>(() => document.ApplyTyping([new TypedParagraph(id, "ab", 2), new TypedParagraph(id, "abc", 3)], T0));
+
+        Assert.Equal(before, DocumentDescriber.Describe(document));
+        Assert.False(document.Undo.CanUndo);
+    }
+
+    [Fact]
+    public void Typing_After_IsTheCaretMappedThroughFiltering()
+    {
+        var document = TextDocument.FromBlocks([P("")]);
+        var id = document.Blocks[0].Id;
+        var events = new List<TextDocumentChangedEventArgs>();
+        document.Changed += (_, e) => events.Add(e);
+
+        document.ApplyTyping([new TypedParagraph(id, "X\uFFFCY", 2)], T0);
+        document.EndTyping();
+        document.ApplyTyping([new TypedParagraph(id, "XYZ", 3)], T0);
+
+        Assert.Equal("XYZ", ((Paragraph)document.Blocks[0]).Text);
+        Assert.Equal(document.PositionOf(id, 1), events[0].Selection?.Start);
+        Assert.Equal(new DocumentRange(document.PositionOf(id, 3), document.PositionOf(id, 3)), events[1].Selection);
     }
 
     private static Paragraph P(string text) => new() { Inlines = [new TextRun(text)] };

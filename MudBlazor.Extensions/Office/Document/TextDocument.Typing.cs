@@ -21,16 +21,25 @@ public sealed partial class TextDocument
 
     /// <summary>
     /// Applies a batch of typing given as the new text of paragraphs: only the changed span of each paragraph is replaced (found from the old text,
-    /// the new text and the caret), so every untouched inline keeps its instance and origin in the file. Line feeds, carriage returns and U+FFFC are
-    /// dropped from the inserted text; tabs and vertical tabs become <see cref="Tab"/> and line <see cref="Break"/> inlines. The whole batch is one
+    /// the new text and the caret), so every untouched inline keeps its instance and origin in the file. Inside the changed span, a tab, break or
+    /// U+FFFC that matches one of the replaced objects keeps that object; otherwise line feeds, carriage returns and U+FFFC are dropped and tabs and
+    /// vertical tabs become <see cref="Tab"/> and line <see cref="Break"/> inlines. The whole batch is one
     /// undo step and raises one <see cref="Changed"/> event, and merges with the previous typing step like
     /// <see cref="ApplyTyping(string, IReadOnlyList{Inline}, DateTimeOffset)"/>.
     /// </summary>
     /// <param name="paragraphs">The typed paragraphs.</param>
     /// <param name="at">When the batch was typed.</param>
+    /// <returns>
+    /// The ids of the paragraphs whose resulting <see cref="Paragraph.Text"/> differs from the reported <see cref="TypedParagraph.Text"/>, because
+    /// characters were dropped; the caller must render them again. Empty when every paragraph matches; also returned when nothing changed.
+    /// </returns>
     /// <exception cref="ArgumentNullException"><paramref name="paragraphs"/>, an entry or its text is null.</exception>
-    /// <exception cref="ArgumentException">An id is not a paragraph of the document; nothing is changed.</exception>
-    public void ApplyTyping(IReadOnlyList<TypedParagraph> paragraphs, DateTimeOffset at) => Type(new TypeTextCommand(paragraphs), at);
+    /// <exception cref="ArgumentException">An id is not a paragraph of the document or appears twice in the batch; nothing is changed.</exception>
+    public IReadOnlyCollection<string> ApplyTyping(IReadOnlyList<TypedParagraph> paragraphs, DateTimeOffset at)
+    {
+        Type(new TypeTextCommand(paragraphs), at);
+        return paragraphs.Where(p => ((Paragraph)FindBlock(p.ParagraphId)).Text != p.Text).Select(p => p.ParagraphId).ToList();
+    }
 
     /// <summary>Ends the current typing step: the next typing batch starts a new undo step.</summary>
     public void EndTyping() => _typing = null;

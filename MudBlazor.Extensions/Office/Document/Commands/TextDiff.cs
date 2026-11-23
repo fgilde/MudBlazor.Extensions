@@ -5,9 +5,15 @@ internal static class TextDiff
     internal static (int Start, int OldEnd, int NewEnd) Compute(string before, string after, int? caret)
     {
         var max = Math.Min(before.Length, after.Length);
-        var suffix = caret is { } c ? Suffix(Math.Min(max, after.Length - Math.Clamp(c, 0, after.Length))) : 0;
-        var prefix = Prefix(max - suffix);
-        if (caret == null) suffix = Suffix(max - prefix);
+        var prefix = Prefix(max);
+        var suffix = Suffix(max - prefix);
+        if (caret is { } c)
+        {
+            var inserted = after.Length - suffix - prefix;
+            var shifted = Math.Clamp(c - inserted, Math.Min(prefix, Prefix(max - Suffix(max))), prefix);
+            suffix = Math.Min(suffix + prefix - shifted, max - shifted);
+            prefix = shifted;
+        }
 
         prefix = Math.Min(TextDocument.SnapOffset(before, prefix, true), TextDocument.SnapOffset(after, prefix, true));
         var oldEnd = TextDocument.SnapOffset(before, before.Length - suffix, false);
