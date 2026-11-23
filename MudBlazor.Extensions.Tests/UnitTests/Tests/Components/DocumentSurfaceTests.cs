@@ -496,4 +496,78 @@ public class DocumentSurfaceTests : DocumentSurfaceTestBase
         Assert.Equal(true, _context.JSInterop.Invocations["setReadOnly"].Single().Arguments[0]);
         Assert.Equal(other.PositionOf(other.Blocks[0].Id, 0), cut.Instance.Selection.End);
     }
+
+    [Fact]
+    public void Initial_LargeDocument_IsSentChunkByChunk_WithAPauseBetween()
+    {
+        var cut = Surface(null!);
+        var pauses = new List<int>();
+        cut.Instance.Pause = () =>
+        {
+            pauses.Add(Patches().Count);
+            return Task.CompletedTask;
+        };
+
+        cut.Render(p => p.Add(c => c.Document, Numbered(1200)));
+
+        cut.WaitForAssertion(() => Assert.Equal(4, Patches().Count));
+        var patches = Patches().Skip(1).Select(Assert.Single).ToList();
+        Assert.Equal([2, 3, 4], patches.Select(p => p.Seq));
+        Assert.Equal([true, false, false], patches.Select(p => p.Reset));
+        Assert.Equal([500, 500, 200], patches.Select(p => p.Upsert.Count));
+        Assert.Equal([2, 3], pauses);
+    }
+
+    [Fact]
+    public async Task Initial_HostChangeBetweenChunks_RestartsWithAFreshReset()
+    {
+        var document = Numbered(1200);
+        var cut = Surface(null!);
+        var changed = false;
+        cut.Instance.Pause = () =>
+        {
+            if (!changed)
+            {
+                changed = true;
+                document.Execute(new SplitParagraphCommand(document.PositionOf(document.Blocks[0].Id, 1)));
+            }
+
+            return Task.CompletedTask;
+        };
+
+        cut.Render(p => p.Add(c => c.Document, document));
+
+        cut.WaitForAssertion(() => Assert.Equal(document.Blocks.Select(b => b.Id), Dom(Patches().Select(Assert.Single))));
+        var patches = Patches().Select(Assert.Single).ToList();
+        Assert.Equal(Enumerable.Range(1, patches.Count), patches.Select(p => p.Seq));
+        Assert.Equal([1, 2, 4], patches.Where(p => p.Reset).Select(p => p.Seq));
+        Assert.Equal(6, patches.Count);
+        var id = document.Blocks[0].Id;
+        var stale = await Sync(cut, new SurfaceSync(3, [new SurfaceTyped(id, "stale", 5, null)], Sel(id, 5), false));
+        Assert.Empty(stale.Patches);
+        Assert.Equal("0", Text(document));
+        await Sync(cut, new SurfaceSync(6, [new SurfaceTyped(id, "0x", 2, null)], Sel(id, 2), false));
+        Assert.Equal("0x", Text(document));
+    }
+
+    private static TextDocument Numbered(int count) =>
+        TextDocument.FromBlocks(Enumerable.Range(0, count).Select(i => new Paragraph { Inlines = [new TextRun(i.ToString(System.Globalization.CultureInfo.InvariantCulture))] }));
+
+    private static List<string> Dom(IEnumerable<SurfacePatch> patches)
+    {
+        var dom = new List<string>();
+        foreach (var patch in patches)
+        {
+            if (patch.Reset) dom.Clear();
+            dom.RemoveAll(patch.Remove.Contains);
+            foreach (var upsert in patch.Upsert)
+            {
+                if (upsert.InPlace && dom.Contains(upsert.Block.Id)) continue;
+                dom.Remove(upsert.Block.Id);
+                dom.Insert(upsert.After == null ? 0 : dom.IndexOf(upsert.After) + 1, upsert.Block.Id);
+            }
+        }
+
+        return dom;
+    }
 }

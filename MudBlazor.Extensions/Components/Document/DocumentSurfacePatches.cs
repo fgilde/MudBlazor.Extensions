@@ -45,13 +45,17 @@ internal static class DocumentSurfacePatches
     public static IEnumerable<string> Ids(SurfacePatch patch, TextDocumentChangedEventArgs change) =>
         Ids(patch).Concat(change.RemovedBlockIds).Concat(change.RemovedNestedBlockIds).Where(id => id != null).Distinct();
 
+    public static SurfacePatch Chunk(TextDocument document, DocumentSurfaceRender render, int from, int seq, int chunk = 500) =>
+        new(seq, from == 0, from == 0 ? render.SheetCss() : null, [],
+            Enumerable.Range(from, Math.Max(0, Math.Min(chunk, document.Blocks.Count - from)))
+                .Select(i => new SurfaceUpsert(render.Render(document.Blocks[i]), i == 0 ? null : document.Blocks[i - 1].Id, false)).ToList());
+
     private static List<SurfacePatch> Reset(TextDocument document, DocumentSurfaceRender render, Func<int> nextSeq, int chunk)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(chunk, 1);
-        var upserts = document.Blocks.Select((block, i) => new SurfaceUpsert(render.Render(block), i == 0 ? null : document.Blocks[i - 1].Id, false)).ToList();
         var patches = new List<SurfacePatch>();
-        for (var i = 0; i == 0 || i < upserts.Count; i += chunk)
-            patches.Add(new SurfacePatch(nextSeq(), i == 0, i == 0 ? render.SheetCss() : null, [], upserts.GetRange(i, Math.Min(chunk, upserts.Count - i))));
+        for (var i = 0; i == 0 || i < document.Blocks.Count; i += chunk)
+            patches.Add(Chunk(document, render, i, nextSeq(), chunk));
         return patches;
     }
 

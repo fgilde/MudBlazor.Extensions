@@ -124,6 +124,56 @@ public class DocumentEditorStateTests : DocumentEditorTestBase
     }
 
     [Fact]
+    public void WordCount_StaysRightAfterMergingTableCells()
+    {
+        var document = DocumentSurfaceRenderTests.WithTable();
+        var count = new DocumentWordCount(document);
+        document.Changed += (_, e) => count.Apply(e);
+        void Check() => Assert.Equal(document.AllParagraphs().Sum(p => MudExDocumentEditor.CountWords(p.Text)), count.Total);
+        document.ApplyTyping([new TypedParagraph(DocumentSurfaceRenderTests.Cell(document, 0, 0), "left words")], T0);
+        document.ApplyTyping([new TypedParagraph(DocumentSurfaceRenderTests.Cell(document, 0, 1), "right side words")], T0.AddSeconds(5));
+        Check();
+
+        document.Execute(new MergeTableCellsCommand(document.Blocks.OfType<Table>().Single().Id, 0, 0, 0, 1));
+
+        Check();
+        Assert.Equal(6, count.Total);
+        document.Undo.Undo();
+        Check();
+        document.Undo.Redo();
+        Check();
+    }
+
+    [Fact]
+    public async Task EditDuringSave_LeavesTheEditorDirty()
+    {
+        var release = new TaskCompletionSource();
+        var saving = false;
+        var edits = 0;
+        var cut = Render(p => p.Add(x => x.TextDocument, TextDocument.Create()).Add(x => x.DocumentEdited, _ => edits++).Add(x => x.SaveRequested, async (MudExFileSaveRequest r) =>
+        {
+            saving = true;
+            await release.Task;
+            r.Handled = true;
+        }));
+        await Edit(cut, "a");
+        cut.WaitForAssertion(() => Assert.True(cut.Instance.IsDirty));
+
+        var save = cut.InvokeAsync(() => cut.Instance.SaveAsync());
+        cut.WaitForAssertion(() => Assert.True(saving));
+        await Edit(cut, "b");
+        cut.WaitForAssertion(() => Assert.Equal(2, edits));
+        release.SetResult();
+
+        Assert.True(await save);
+        Assert.True(cut.Instance.IsDirty);
+    }
+
+    [Fact]
+    public void SaveCancelled_IsAnOperationCanceledException() =>
+        Assert.IsAssignableFrom<OperationCanceledException>(new MudBlazor.Extensions.Components.Base.SaveCancelledException());
+
+    [Fact]
     public async Task TrackedChangesNotice_DoesNotBlockSaving()
     {
         var document = DocumentSurfaceRenderTests.Created("x");

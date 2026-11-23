@@ -18,6 +18,7 @@ public partial class MudExDocumentSurface
     private const int MaxTyped = SurfaceTypedListConverter.MaxTyped;
     private const long MaxTypedChars = 8L * 1024 * 1024;
     private const long MaxSyncBytes = MaxTypedChars * 4 + 1024 * 1024;
+    private const int InitialChunk = 500;
     private static readonly SurfaceResult Empty = new([], null, null);
     private static readonly SurfaceResult Unreadable = new([], null, null, true);
 
@@ -32,6 +33,9 @@ public partial class MudExDocumentSurface
     private bool _live;
     private int _seq;
     private int _attachedAt;
+    private int _generation;
+    private bool _chunking;
+    private bool _restart;
     private List<SurfacePatch> _collecting;
     private bool _acting;
     private bool _inAction;
@@ -72,6 +76,8 @@ public partial class MudExDocumentSurface
     internal RunFormat CaretFormat => _caretFormat?.Format;
 
     internal TimeProvider Clock { get; set; } = TimeProvider.System;
+
+    internal Func<Task> Pause { get; set; } = YieldAsync;
 
     private double ZoomFactor => double.IsFinite(Zoom) && Zoom > 0 ? Zoom : 1;
 
@@ -194,6 +200,8 @@ public partial class MudExDocumentSurface
 
     private async Task SendInitialAsync()
     {
+        var generation = ++_generation;
+        _chunking = false;
         if (_document == null)
         {
             var reset = new SurfacePatch(++_seq, true, null, [], []);
@@ -202,11 +210,27 @@ public partial class MudExDocumentSurface
             return;
         }
 
-        var patches = DocumentSurfacePatches.Initial(_document, _render, () => ++_seq);
-        (_live, _attachedAt) = (true, patches[0].Seq);
-        foreach (var patch in patches) Track(patch);
-        await RegisterAsync(_render.TakeMedia());
-        await SendPatchesAsync(patches);
+        _live = true;
+        for (var from = 0; ;)
+        {
+            if (from == 0) _restart = false;
+            var patch = Track(DocumentSurfacePatches.Chunk(_document, _render, from, ++_seq, InitialChunk));
+            if (from == 0) _attachedAt = patch.Seq;
+            from += InitialChunk;
+            _chunking = from < _document.Blocks.Count;
+            await RegisterAsync(_render.TakeMedia());
+            await SendPatchesAsync([patch]);
+            if (generation != _generation || !_chunking && !_restart) return;
+            await Pause();
+            if (generation != _generation) return;
+            if (_restart) from = 0;
+        }
+    }
+
+    private static async Task YieldAsync()
+    {
+        if (OperatingSystem.IsBrowser()) await Task.Delay(1);
+        else await Task.Yield();
     }
 
     private async Task SendOptionsAsync()
@@ -219,6 +243,7 @@ public partial class MudExDocumentSurface
     private void OnChanged(object sender, TextDocumentChangedEventArgs change)
     {
         if (!_live || !ReferenceEquals(sender, _document)) return;
+        _restart |= _chunking;
         var patches = DocumentSurfacePatches.Changes(_document, _render, change, () => ++_seq);
         foreach (var patch in patches) Track(patch, change);
         if (_acting && change.Selection != null) _resultSelection = change.Selection;
