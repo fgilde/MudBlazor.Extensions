@@ -138,10 +138,10 @@ public sealed partial class TextDocument
     private IReadOnlyCollection<string> ChangedListLabels()
     {
         var before = _labelsBefore ?? _labels;
-        _labelsBefore = null;
         if (before == null || ReferenceEquals(before, _labels) && !_labelsStale && ReferenceEquals(Styles, _formatKey.Styles) && ReferenceEquals(Numbering, _formatKey.Numbering))
             return [];
         var after = Labels();
+        _labelsBefore = null;
         return before.Keys.Union(after.Keys)
             .Where(id => before.GetValueOrDefault(id) != after.GetValueOrDefault(id) && TryLocate(id, out var location) && location.Container < 0)
             .ToList();

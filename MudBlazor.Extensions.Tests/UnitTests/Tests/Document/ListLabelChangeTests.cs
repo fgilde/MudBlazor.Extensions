@@ -109,6 +109,108 @@ public class ListLabelChangeTests
         Assert.Equal(Ids(document, 1, 2, 3, 4), Assert.Single(events).ListLabelChangedIds.Order());
     }
 
+    [Fact]
+    public void Split_ThenTyping_TypingReportsNothingAndComputesNothing()
+    {
+        var document = CreateList();
+        ReadLabels(document);
+        var events = Record(document);
+
+        document.Execute(new SplitParagraphCommand(document.PositionOf(document.Blocks[1].Id, 1)));
+        var computations = document.LabelComputations;
+        document.ApplyTyping([new TypedParagraph(document.Blocks[0].Id, "1x", 2)], T0);
+
+        Assert.Equal(2, events.Count);
+        Assert.Equal(4, events[0].ListLabelChangedIds.Count);
+        Assert.Empty(events[1].ListLabelChangedIds);
+        Assert.Equal(computations, document.LabelComputations);
+    }
+
+    [Fact]
+    public void ChangeThenRevert_WithoutReadBetween_ReportsTheRevertedItems()
+    {
+        foreach (var revert in new Action<TextDocument>[]
+                 {
+                     d => d.Undo.Undo(),
+                     d => d.Execute(new ApplyListCommand([d.Blocks[1].Id], ListTemplate.Decimal))
+                 })
+        {
+            var document = CreateList();
+            var before = ReadLabels(document);
+            var events = Record(document);
+
+            document.Execute(new RemoveListCommand([document.Blocks[1].Id]));
+            revert(document);
+
+            Assert.Equal(2, events.Count);
+            Assert.Equal(Ids(document, 1, 2, 3, 4), events[0].ListLabelChangedIds.Order());
+            Assert.Equal(Ids(document, 1, 2, 3, 4), events[1].ListLabelChangedIds.Order());
+            Assert.Equal(before, ReadLabels(document));
+        }
+    }
+
+    [Fact]
+    public void Read_Change_Read_Change_ReportsAgainstTheStateAfterTheFirst()
+    {
+        var document = CreateList();
+        ReadLabels(document);
+        var events = Record(document);
+
+        document.Execute(new RemoveListCommand([document.Blocks[1].Id]));
+        ReadLabels(document);
+        document.Execute(new RemoveListCommand([document.Blocks[4].Id]));
+
+        Assert.Equal(Ids(document, 4), events[1].ListLabelChangedIds);
+    }
+
+    [Fact]
+    public void TransactionWithTwoListCommands_OneEventWithAllChangedIds()
+    {
+        var document = CreateList();
+        ReadLabels(document);
+        var events = Record(document);
+
+        using (document.Undo.BeginTransaction("Both"))
+        {
+            document.Execute(new RemoveListCommand([document.Blocks[1].Id]));
+            document.Execute(new RestartNumberingCommand(document.Blocks[3].Id));
+        }
+
+        Assert.Equal(["1.", null, "2.", "1.", "2."], ReadLabels(document));
+        Assert.Equal(Ids(document, 1, 2, 3, 4), Assert.Single(events).ListLabelChangedIds.Order());
+    }
+
+    [Fact]
+    public void ReplacingNumberingOrStyles_ReportsAffectedParagraphs()
+    {
+        const string decimalList =
+            "<w:abstractNum w:abstractNumId=\"0\"><w:lvl w:ilvl=\"0\"><w:start w:val=\"1\"/><w:numFmt w:val=\"decimal\"/><w:lvlText w:val=\"%1.\"/></w:lvl></w:abstractNum>" +
+            "<w:num w:numId=\"1\"><w:abstractNumId w:val=\"0\"/></w:num>";
+        const string listStyle = "<w:pPr><w:pStyle w:val=\"ListNum\"/></w:pPr>";
+        var source = new DocxBuilder()
+            .Styles("<w:style w:type=\"paragraph\" w:default=\"1\" w:styleId=\"Normal\"><w:name w:val=\"Normal\"/></w:style>" +
+                    "<w:style w:type=\"paragraph\" w:styleId=\"ListNum\"><w:name w:val=\"List Num\"/><w:pPr><w:numPr><w:numId w:val=\"1\"/></w:numPr></w:pPr></w:style>")
+            .Numbering(decimalList)
+            .Body($"<w:p>{listStyle}<w:r><w:t>a</w:t></w:r></w:p><w:p>{listStyle}<w:r><w:t>b</w:t></w:r></w:p><w:p>{listStyle}<w:r><w:t>c</w:t></w:r></w:p>" +
+                  "<w:p><w:r><w:t>d</w:t></w:r></w:p><w:p><w:r><w:t>e</w:t></w:r></w:p>")
+            .Build();
+        var document = TextDocument.Load(new MemoryStream(source));
+        Assert.Equal(["1.", "2.", "3.", null, null], ReadLabels(document));
+        var events = Record(document);
+        var numbering = document.Numbering;
+
+        document.Execute(new ApplyListCommand([document.Blocks[3].Id, document.Blocks[4].Id], ListTemplate.Bullet));
+
+        Assert.NotSame(numbering, document.Numbering);
+        Assert.True(events[0].Kind.HasFlag(DocumentChangeKind.Numbering));
+        Assert.Equal(Ids(document, 3, 4), events[0].ListLabelChangedIds.Order());
+
+        document.Execute(new ApplyParagraphStyleCommand([document.Blocks[0].Id], "Normal"));
+
+        Assert.Equal([null, "1.", "2."], ReadLabels(document).Take(3));
+        Assert.Equal(Ids(document, 0, 1, 2), events[1].ListLabelChangedIds.Order());
+    }
+
     private static TextDocument CreateList()
     {
         var document = TextDocument.FromBlocks(Enumerable.Range(1, 5).Select(i => new Paragraph { Inlines = [new TextRun(i.ToString())] }));
