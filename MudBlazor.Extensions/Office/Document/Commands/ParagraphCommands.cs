@@ -53,6 +53,16 @@ public sealed class MergeParagraphsCommand(string paragraphId) : TextDocumentCom
     }
 }
 
+internal sealed class RemoveEmptyParagraphCommand(string paragraphId, string caretParagraphId) : TextDocumentCommand
+{
+    public override string Description => "Delete";
+
+    private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document) =>
+        document.FindBlock(paragraphId) is Paragraph { Inlines.Count: 0 }
+            ? (document.EditBlock(paragraphId, []), d => Caret(d, caretParagraphId, 0))
+            : throw new ArgumentException($"{paragraphId} is not an empty paragraph of the document.", nameof(paragraphId));
+}
+
 /// <summary>Replaces the inlines of a paragraph; the typing primitive. Inline instances passed back unchanged keep their origin in the file.</summary>
 public sealed class ReplaceParagraphContentCommand : TextDocumentCommand
 {

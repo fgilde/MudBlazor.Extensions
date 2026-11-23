@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Runtime.ExceptionServices;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Helper.Internal;
@@ -14,13 +15,15 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExDocumentSurface
 {
     private const int MaxText = 8000;
-    private const int MaxTyped = 10_000;
+    private const int MaxTyped = SurfaceTypedListConverter.MaxTyped;
     private const long MaxTypedChars = 8L * 1024 * 1024;
+    private const long MaxSyncBytes = MaxTypedChars * 4 + 1024 * 1024;
     private static readonly SurfaceResult Empty = new([], null, null);
 
     private readonly JsModule<MudExDocumentSurface> _module = new();
     private readonly Dictionary<string, int> _changedAt = new();
     private readonly HashSet<string> _registered = [];
+    private readonly SemaphoreSlim _gate = new(1, 1);
     private ElementReference _root;
     private TextDocument _document;
     private DocumentSurfaceRender _render;
@@ -30,6 +33,7 @@ public partial class MudExDocumentSurface
     private int _attachedAt;
     private List<SurfacePatch> _collecting;
     private bool _acting;
+    private bool _inAction;
     private DocumentRange? _resultSelection;
     private (string Token, RunFormat Format, string Css)? _caretFormat;
     private int _tokens;
@@ -77,10 +81,7 @@ public partial class MudExDocumentSurface
             if (_module.Js != null) await SendInitialAsync();
         }
 
-        if (_module.Js == null) return;
-        if (ReadOnly != _readOnly) await CallAsync("setReadOnly", _readOnly = ReadOnly);
-        if (ZoomFactor != _zoom) await CallAsync("setZoom", _zoom = ZoomFactor);
-        if (!ReferenceEquals(Shortcuts, _shortcuts)) await CallAsync("setShortcuts", (_shortcuts = Shortcuts) ?? []);
+        if (_module.Js != null) await SendOptionsAsync();
     }
 
     /// <inheritdoc />
@@ -93,18 +94,28 @@ public partial class MudExDocumentSurface
         if (!firstRender) return;
         (_readOnly, _zoom, _shortcuts) = (ReadOnly, ZoomFactor, Shortcuts);
         var options = new { ReadOnly = _readOnly, Zoom = _zoom, Shortcuts = _shortcuts ?? [] };
-        if (await _module.StartAsync(JsRuntime, this, "MudExDocumentSurface", dotnet => [_root, dotnet, options]) != null) await SendInitialAsync();
+        if (await _module.StartAsync(JsRuntime, this, "MudExDocumentSurface", dotnet => [_root, dotnet, options]) == null) return;
+        await SendInitialAsync();
+        await SendOptionsAsync();
     }
 
-    internal async Task RunAsync(Action<DocumentRange> action)
+    /// <summary>
+    /// Runs an edit of the host (ribbon, dialog, find panel) on the document: suspends the browser, applies its pending typing and selection, runs
+    /// <paramref name="action"/> with the selection and resumes the browser with the resulting patches and selection. Calls are serialised; calling
+    /// this from inside an <paramref name="action"/> throws. The caller is responsible for honouring <see cref="ReadOnly"/>. If <see cref="Document"/>
+    /// is replaced while the browser is being suspended, the action is not run and the browser is resumed with an empty result.
+    /// </summary>
+    /// <param name="action">The edit; it gets the current selection.</param>
+    /// <returns>
+    /// A task that completes when the browser was resumed; it fails with the exception of the action, which is also reported through
+    /// <see cref="OnError"/>.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">Called from inside an action.</exception>
+    internal Task RunAsync(Action<DocumentRange> action)
     {
         ArgumentNullException.ThrowIfNull(action);
-        SurfaceSync sync = null;
-        if (_module.Js is { } js)
-            try { sync = await js.InvokeAsync<SurfaceSync>("suspend"); }
-            catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException or ObjectDisposedException) { }
-        var result = await HandleAsync(WithinCaps(sync) ? sync : null, () => action(_selection));
-        await CallAsync("resume", result);
+        ThrowIfInAction();
+        return OperateAsync(() => action(_selection), true);
     }
 
     internal void SetCaretFormat(RunFormat format) =>
@@ -114,12 +125,10 @@ public partial class MudExDocumentSurface
 
     internal Task FlushAsync() => RunAsync(_ => { });
 
-    internal async Task SelectAsync(DocumentRange range, bool scroll = true)
+    internal Task SelectAsync(DocumentRange range, bool scroll = true)
     {
-        if (_document == null || ToSurface(range) is not { } selection) return;
-        var changed = Select(ToRange(selection).Value);
-        await CallAsync("select", selection, scroll);
-        if (changed) await SelectionChanged.InvokeAsync(_selection);
+        ThrowIfInAction();
+        return OperateAsync(() => _resultSelection = range, scroll);
     }
 
     internal Task FocusAsync() => CallAsync("focus");
@@ -129,8 +138,11 @@ public partial class MudExDocumentSurface
     /// <param name="stream">The state as JSON when it is too large for one message.</param>
     /// <returns>The patches to apply.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
-    public async Task<SurfaceResult> OnSyncAsync(SurfaceSync sync, IJSStreamReference stream) =>
-        await ReadAsync(sync, stream) is { } read ? await HandleAsync(read, null) : Empty;
+    public async Task<SurfaceResult> OnSyncAsync(SurfaceSync sync, IJSStreamReference stream)
+    {
+        var (read, rejected) = await ReadAsync(sync, stream);
+        return read == null ? Empty : await HandleAsync(read, rejected, null, false);
+    }
 
     /// <summary>Called by the browser for a structural edit, undo, redo or a shortcut, with the typing and the selection before it.</summary>
     /// <param name="sync">The state of the browser, or null if it comes as <paramref name="stream"/>.</param>
@@ -141,15 +153,16 @@ public partial class MudExDocumentSurface
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public async Task<SurfaceResult> OnCommandAsync(SurfaceSync sync, IJSStreamReference stream, string name, string text)
     {
-        if (await ReadAsync(sync, stream) is not { } read) return Empty;
-        var result = await HandleAsync(read, text?.Length > MaxText || ReadOnly ? null : name switch
+        var (read, rejected) = await ReadAsync(sync, stream);
+        if (read == null) return Empty;
+        var result = await HandleAsync(read, rejected, rejected || text?.Length > MaxText || ReadOnly ? null : name switch
         {
             "undo" => () => Step(true),
             "redo" => () => Step(false),
             "shortcut" => null,
             _ => () => Execute(name, text)
-        });
-        if (name == "shortcut" && text?.Length <= MaxText && ShortcutPressed != null && Shortcuts?.Contains(text) == true) _ = ShortcutAsync(text);
+        }, name is not ("undo" or "redo" or "shortcut"));
+        if (!rejected && name == "shortcut" && text?.Length <= MaxText && ShortcutPressed != null && Shortcuts?.Contains(text) == true) _ = ShortcutAsync(text);
         return result;
     }
 
@@ -175,12 +188,24 @@ public partial class MudExDocumentSurface
 
     private async Task SendInitialAsync()
     {
-        if (_document == null) return;
+        if (_document == null)
+        {
+            await CallAsync("patch", (object)new[] { new SurfacePatch(++_seq, true, null, [], []) });
+            return;
+        }
+
         var patches = DocumentSurfacePatches.Initial(_document, _render, () => ++_seq);
         (_live, _attachedAt) = (true, patches[0].Seq);
         foreach (var patch in patches) Track(patch);
         await RegisterAsync(_render.TakeMedia());
         foreach (var patch in patches) await CallAsync("patch", (object)new[] { patch });
+    }
+
+    private async Task SendOptionsAsync()
+    {
+        if (ReadOnly != _readOnly) await CallAsync("setReadOnly", _readOnly = ReadOnly);
+        if (ZoomFactor != _zoom) await CallAsync("setZoom", _zoom = ZoomFactor);
+        if (!ReferenceEquals(Shortcuts, _shortcuts)) await CallAsync("setShortcuts", (_shortcuts = Shortcuts) ?? []);
     }
 
     private void OnChanged(object sender, TextDocumentChangedEventArgs change)
@@ -210,50 +235,112 @@ public partial class MudExDocumentSurface
         return patch;
     }
 
-    private static async Task<SurfaceSync> ReadAsync(SurfaceSync sync, IJSStreamReference stream)
+    private static async Task<(SurfaceSync Sync, bool Rejected)> ReadAsync(SurfaceSync sync, IJSStreamReference stream)
     {
-        try { sync = await JsPayload.ReadAsync(sync, stream); }
-        catch (Exception) { return null; }
-        return WithinCaps(sync) ? sync : null;
+        try { sync = await JsPayload.ReadAsync(sync, stream, MaxSyncBytes); }
+        catch (Exception) { return (null, true); }
+        return (sync, !WithinCaps(sync));
     }
 
     private static bool WithinCaps(SurfaceSync sync) =>
         sync?.Typed is not { } typed || typed.Count <= MaxTyped && typed.Sum(t => (long)(t?.T?.Length ?? 0)) <= MaxTypedChars;
 
-    private async Task<SurfaceResult> HandleAsync(SurfaceSync sync, Action action)
+    private void ThrowIfInAction()
     {
-        if (_document == null) return Empty;
-        var before = _selection;
-        Exception error = null;
-        _collecting = [];
+        if (_inAction) throw new InvalidOperationException("The document surface cannot start an operation from inside another operation.");
+    }
+
+    private async Task OperateAsync(Action action, bool scroll)
+    {
+        await _gate.WaitAsync();
+        (SurfaceResult Result, Exception Error, bool Moved) outcome = (Empty, null, false);
         try
         {
-            if (sync != null) Apply(sync);
-            _acting = true;
-            action?.Invoke();
+            var document = _document;
+            SurfaceSync sync = null;
+            if (_module.Js is { } js)
+                try { sync = await js.InvokeAsync<SurfaceSync>("suspend"); }
+                catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException or ObjectDisposedException or InvalidOperationException) { }
+            try
+            {
+                if (ReferenceEquals(document, _document))
+                {
+                    outcome = Operate(sync, !WithinCaps(sync), action, false);
+                    if (_render != null) await RegisterAsync(_render.TakeMedia());
+                }
+            }
+            finally
+            {
+                await CallAsync("resume", outcome.Result, scroll);
+            }
+        }
+        finally
+        {
+            _gate.Release();
+        }
+
+        if (outcome.Moved) _ = SelectionChangedAsync(_selection);
+        if (outcome.Error == null) return;
+        _ = ReportAsync(outcome.Error);
+        ExceptionDispatchInfo.Capture(outcome.Error).Throw();
+    }
+
+    private async Task<SurfaceResult> HandleAsync(SurfaceSync sync, bool rejected, Action action, bool guarded)
+    {
+        var (result, error, moved) = Operate(sync, rejected, action, guarded);
+        if (_render != null) await RegisterAsync(_render.TakeMedia());
+        if (error != null) _ = ReportAsync(error);
+        if (moved) _ = SelectionChangedAsync(_selection);
+        return result;
+    }
+
+    private (SurfaceResult Result, Exception Error, bool Moved) Operate(SurfaceSync sync, bool rejected, Action action, bool guarded)
+    {
+        if (_document == null) return (Empty, null, false);
+        var before = _selection;
+        Exception error = null;
+        (_collecting, _resultSelection) = ([], null);
+        try
+        {
+            var proceed = true;
+            if (sync != null && rejected)
+                Resend(sync);
+            else if (sync != null)
+                proceed = Apply(sync, guarded, out error);
+            if (proceed && action != null)
+            {
+                (_acting, _inAction) = (true, true);
+                action();
+            }
         }
         catch (Exception e)
         {
             error = e;
         }
+        finally
+        {
+            (_acting, _inAction) = (false, false);
+        }
 
         var patches = _collecting;
         var selection = _resultSelection is { } moved ? ToSurface(moved) : null;
-        (_collecting, _acting, _resultSelection) = (null, false, null);
+        (_collecting, _resultSelection) = (null, null);
         if (selection != null) Select(ToRange(selection).Value);
-        var result = new SurfaceResult(patches, selection, _caretFormat is { } caret ? new SurfaceCaretFormat(caret.Token, caret.Css) : null);
-        await RegisterAsync(_render.TakeMedia());
-        if (error != null) _ = ReportAsync(error);
-        if (!Equals(before, _selection)) await SelectionChanged.InvokeAsync(_selection);
-        return result;
+        var caretFormat = _caretFormat is { } caret ? new SurfaceCaretFormat(caret.Token, caret.Css) : null;
+        return (new SurfaceResult(patches, selection, caretFormat), error, !Equals(before, _selection));
     }
 
-    private void Apply(SurfaceSync sync)
+    private void Resend(SurfaceSync sync) =>
+        Refresh((sync.Typed ?? []).Select(t => t?.P).Where(id => id != null).Distinct().Where(id => BodyParagraph(id) != null).Take(MaxTyped).ToList());
+
+    private bool Apply(SurfaceSync sync, bool guarded, out Exception error)
     {
+        error = null;
         var typed = sync.Typed ?? [];
         var last = new Dictionary<string, int>();
         for (var i = 0; i < typed.Count; i++)
             if (typed[i] is { P: not null, T: not null } entry) last[entry.P] = i;
+        List<string> stale = guarded ? new[] { sync.Selection?.Anchor?.P, sync.Selection?.Focus?.P }.Where(id => Changed(id, sync.Seen)).Distinct().ToList() : [];
         var accepted = new List<TypedParagraph>();
         var refresh = new List<string>();
         for (var i = 0; i < typed.Count; i++)
@@ -266,12 +353,33 @@ public partial class MudExDocumentSurface
                 accepted.Add(new TypedParagraph(entry.P, entry.T, entry.C is { } c ? Math.Clamp(c, 0, entry.T.Length) : null, Token(entry.F)));
         }
 
-        if (accepted.Count > 0) refresh.AddRange(_document.ApplyTyping(accepted, Clock.GetUtcNow()));
-        var rendered = _collecting.SelectMany(DocumentSurfacePatches.Ids).ToHashSet();
-        refresh.RemoveAll(rendered.Contains);
-        if (refresh.Count > 0 && _live) _collecting.Add(Track(DocumentSurfacePatches.Refresh(_document, _render, refresh, ++_seq)));
+        if (accepted.Count > 0)
+        {
+            try { _document.ApplyTyping(accepted, Clock.GetUtcNow()); }
+            catch (Exception e) { error = e; }
+            refresh.AddRange(accepted.Select(p => p.ParagraphId));
+        }
+
+        Refresh([.. refresh, .. stale]);
+        if (error != null || stale.Count > 0) return false;
         if (sync.Seen >= _attachedAt && ToRange(sync.Selection) is { } selection) Select(selection);
         if (sync.EndTyping) _document.EndTyping();
+        return true;
+    }
+
+    private bool Changed(string id, int seen) => id != null && BodyParagraph(id) != null && _changedAt.TryGetValue(id, out var at) && at > seen;
+
+    private void Refresh(List<string> ids)
+    {
+        var rendered = _collecting.SelectMany(DocumentSurfacePatches.Ids).ToHashSet();
+        ids.RemoveAll(rendered.Contains);
+        if (ids.Count > 0 && _live) _collecting.Add(Track(DocumentSurfacePatches.Refresh(_document, _render, ids, ++_seq)));
+    }
+
+    private async Task SelectionChangedAsync(DocumentRange selection)
+    {
+        try { await SelectionChanged.InvokeAsync(selection); }
+        catch (Exception e) { await ReportAsync(e); }
     }
 
     private RunFormat Token(string token) => token != null && _caretFormat is { } caret && caret.Token == token ? caret.Format : null;
@@ -344,6 +452,6 @@ public partial class MudExDocumentSurface
     {
         if (_module.Js is not { } js) return;
         try { await js.InvokeVoidAsync(method, arguments); }
-        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException or ObjectDisposedException) { }
+        catch (Exception e) when (e is JSException or JSDisconnectedException or TaskCanceledException or ObjectDisposedException or InvalidOperationException) { }
     }
 }

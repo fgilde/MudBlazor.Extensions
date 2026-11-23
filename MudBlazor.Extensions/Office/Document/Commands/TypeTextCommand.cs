@@ -30,9 +30,10 @@ internal sealed class TypeTextCommand : TextDocumentCommand
     {
         var caret = _paragraphs.LastOrDefault(p => p.Caret != null);
         var dropped = 0;
+        var entries = _paragraphs.Where(p => p.ParagraphId != null).ToDictionary(p => p.ParagraphId);
         var edits = document.MapParagraphs(_paragraphs.Select(p => p.ParagraphId), paragraph =>
         {
-            var entry = _paragraphs.First(p => p.ParagraphId == paragraph.Id);
+            var entry = entries[paragraph.Id];
             var (typed, removed) = Type(paragraph, entry);
             if (ReferenceEquals(entry, caret)) dropped = removed;
             return typed;

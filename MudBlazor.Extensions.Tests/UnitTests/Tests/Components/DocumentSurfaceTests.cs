@@ -9,13 +9,13 @@ namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
 using MudBlazor.Extensions.Office.Document;
 
-public class DocumentSurfaceTests : IAsyncLifetime
+public abstract class DocumentSurfaceTestBase : IAsyncLifetime
 {
-    private static readonly DateTimeOffset T0 = new(2026, 11, 23, 10, 0, 0, TimeSpan.Zero);
-    private readonly BunitContext _context = new();
-    private int _seen = 1;
+    protected static readonly DateTimeOffset T0 = new(2026, 11, 23, 10, 0, 0, TimeSpan.Zero);
+    protected readonly BunitContext _context = new();
+    protected int _seen = 1;
 
-    public DocumentSurfaceTests()
+    protected DocumentSurfaceTestBase()
     {
         _context.Services.AddMudServicesWithExtensions();
         _context.JSInterop.Mode = JSRuntimeMode.Loose;
@@ -26,18 +26,18 @@ public class DocumentSurfaceTests : IAsyncLifetime
 
     public async Task DisposeAsync() => await _context.DisposeAsync();
 
-    private sealed class FixedClock(DateTimeOffset now) : TimeProvider
+    protected sealed class FixedClock(DateTimeOffset now) : TimeProvider
     {
         public override DateTimeOffset GetUtcNow() => now;
     }
 
-    private static TextDocument Doc(params string[] texts) => TextDocument.FromBlocks(texts.Select(t => new Paragraph { Inlines = t.Length == 0 ? [] : [new TextRun(t)] }));
+    protected static TextDocument Doc(params string[] texts) => TextDocument.FromBlocks(texts.Select(t => new Paragraph { Inlines = t.Length == 0 ? [] : [new TextRun(t)] }));
 
-    private static string Text(TextDocument document, int index = 0) => ((Paragraph)document.Blocks[index]).Text;
+    protected static string Text(TextDocument document, int index = 0) => ((Paragraph)document.Blocks[index]).Text;
 
-    private static SurfaceSelection Sel(string id, int offset) => new(new SurfacePoint(id, offset), new SurfacePoint(id, offset));
+    protected static SurfaceSelection Sel(string id, int offset) => new(new SurfacePoint(id, offset), new SurfacePoint(id, offset));
 
-    private IRenderedComponent<MudExDocumentSurface> Surface(TextDocument document, Action<ComponentParameterCollectionBuilder<MudExDocumentSurface>> configure = null)
+    protected IRenderedComponent<MudExDocumentSurface> Surface(TextDocument document, Action<ComponentParameterCollectionBuilder<MudExDocumentSurface>>? configure = null)
     {
         var cut = _context.Render<MudExDocumentSurface>(p =>
         {
@@ -49,36 +49,39 @@ public class DocumentSurfaceTests : IAsyncLifetime
         return cut;
     }
 
-    private List<IReadOnlyList<SurfacePatch>> Patches() =>
+    protected List<IReadOnlyList<SurfacePatch>> Patches() =>
         _context.JSInterop.Invocations.Where(i => i.Identifier == "patch").Select(i => (IReadOnlyList<SurfacePatch>)i.Arguments[0]!).ToList();
 
-    private SurfaceResult Seen(SurfaceResult result)
+    protected SurfaceResult Seen(SurfaceResult result)
     {
         _seen = result.Patches.Select(p => p.Seq).DefaultIfEmpty(_seen).Max();
         return result;
     }
 
-    private async Task<SurfaceResult> Sync(IRenderedComponent<MudExDocumentSurface> cut, SurfaceSync sync)
+    protected async Task<SurfaceResult> Sync(IRenderedComponent<MudExDocumentSurface> cut, SurfaceSync sync)
     {
         SurfaceResult result = null!;
         await cut.InvokeAsync(async () => result = await cut.Instance.OnSyncAsync(sync, null));
         return Seen(result);
     }
 
-    private Task<SurfaceResult> Type(IRenderedComponent<MudExDocumentSurface> cut, string id, string text, bool endTyping = false) =>
+    protected Task<SurfaceResult> Type(IRenderedComponent<MudExDocumentSurface> cut, string id, string text, bool endTyping = false) =>
         Sync(cut, new SurfaceSync(_seen, [new SurfaceTyped(id, text, text.Length, null)], Sel(id, text.Length), endTyping));
 
-    private async Task<SurfaceResult> Command(IRenderedComponent<MudExDocumentSurface> cut, SurfaceSync sync, string name, string text = null)
+    protected async Task<SurfaceResult> Command(IRenderedComponent<MudExDocumentSurface> cut, SurfaceSync sync, string name, string? text = null)
     {
         SurfaceResult result = null!;
         await cut.InvokeAsync(async () => result = await cut.Instance.OnCommandAsync(sync, null, name, text));
         return Seen(result);
     }
 
-    private SurfaceSync Idle(string id, int offset) => new(_seen, [], Sel(id, offset), false);
+    protected SurfaceSync Idle(string id, int offset) => new(_seen, [], Sel(id, offset), false);
 
-    private static SurfaceUpsert Upsert(SurfaceResult result, string id) => result.Patches.SelectMany(p => p.Upsert).Last(u => u.Block.Id == id);
+    protected static SurfaceUpsert Upsert(SurfaceResult result, string id) => result.Patches.SelectMany(p => p.Upsert).Last(u => u.Block.Id == id);
+}
 
+public class DocumentSurfaceTests : DocumentSurfaceTestBase
+{
     [Fact]
     public async Task Sync_AppliesTyping_ReturnsEchoPatchWithSeq()
     {
@@ -202,20 +205,21 @@ public class DocumentSurfaceTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task Sync_OverCaps_IsRejectedWhole()
+    public async Task Sync_OverCaps_IsRejectedAndTheReportedParagraphsAreResent()
     {
-        var document = Doc("Hello");
-        var id = document.Blocks[0].Id;
+        var document = Doc("Hello", "World");
+        var (id, other) = (document.Blocks[0].Id, document.Blocks[1].Id);
         var cut = Surface(document);
-        var many = Enumerable.Range(0, 10_001).Select(_ => new SurfaceTyped(id, "Hallo", 2, null)).ToList();
+        var many = Enumerable.Range(0, 10_001).Select(i => new SurfaceTyped(i == 0 ? other : id, "Hallo", 2, null)).ToList();
         var huge = new SurfaceTyped(id, new string('x', 8 * 1024 * 1024 + 1), 0, null);
 
         var tooMany = await Sync(cut, new SurfaceSync(1, many, Sel(id, 3), false));
-        var tooLong = await Command(cut, new SurfaceSync(1, [huge], Sel(id, 3), false), "split");
+        var tooLong = await Command(cut, new SurfaceSync(1, [huge, new SurfaceTyped("nope", "x", 0, null)], Sel(id, 3), false), "split");
 
-        foreach (var result in new[] { tooMany, tooLong })
-            Assert.Equal((0, null, null), (result.Patches.Count, result.Selection, result.CaretFormat));
-        Assert.Equal(["Hello"], document.Blocks.OfType<Paragraph>().Select(p => p.Text));
+        Assert.Equal([other, id], Assert.Single(tooMany.Patches).Upsert.Select(u => u.Block.Id));
+        Assert.Equal([id], Assert.Single(tooLong.Patches).Upsert.Select(u => u.Block.Id));
+        Assert.All(new[] { tooMany, tooLong }, r => Assert.Equal((null, null), (r.Selection, r.CaretFormat)));
+        Assert.Equal(["Hello", "World"], document.Blocks.OfType<Paragraph>().Select(p => p.Text));
         Assert.Equal(document.PositionOf(id, 0), cut.Instance.Selection.End);
     }
 
@@ -370,20 +374,20 @@ public class DocumentSurfaceTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task RunAsync_FailingAction_ReportsTheErrorAndKeepsThePatches()
+    public async Task RunAsync_FailingAction_IsResumedReportedAndRethrown()
     {
         var document = Doc("Hello");
         var id = document.Blocks[0].Id;
         var errors = new List<Exception>();
         var cut = Surface(document, p => p.Add(c => c.OnError, e => errors.Add(e)));
 
-        await cut.InvokeAsync(() => cut.Instance.RunAsync(r =>
+        var thrown = await Assert.ThrowsAsync<InvalidOperationException>(() => cut.InvokeAsync(() => cut.Instance.RunAsync(r =>
         {
             document.Execute(new ReplaceTextCommand(new DocumentRange(document.PositionOf(id, 5), document.PositionOf(id, 5)), "!"), r);
             throw new InvalidOperationException("boom");
-        }));
+        })));
 
-        Assert.Equal("boom", Assert.Single(errors).Message);
+        Assert.Same(thrown, Assert.Single(errors));
         var result = (SurfaceResult)Assert.Single(_context.JSInterop.Invocations["resume"]).Arguments[0]!;
         Assert.Equal("Hello!", Upsert(result, id).Block.Text);
     }

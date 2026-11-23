@@ -1287,6 +1287,20 @@
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.RunAsync(System.Action{MudBlazor.Extensions.Office.Document.DocumentRange})">
+            <summary>
+            Runs an edit of the host (ribbon, dialog, find panel) on the document: suspends the browser, applies its pending typing and selection, runs
+            <paramref name="action"/> with the selection and resumes the browser with the resulting patches and selection. Calls are serialised; calling
+            this from inside an <paramref name="action"/> throws. The caller is responsible for honouring <see cref="P:MudBlazor.Extensions.Components.MudExDocumentSurface.ReadOnly"/>. If <see cref="P:MudBlazor.Extensions.Components.MudExDocumentSurface.Document"/>
+            is replaced while the browser is being suspended, the action is not run and the browser is resumed with an empty result.
+            </summary>
+            <param name="action">The edit; it gets the current selection.</param>
+            <returns>
+            A task that completes when the browser was resumed; it fails with the exception of the action, which is also reported through
+            <see cref="P:MudBlazor.Extensions.Components.MudExDocumentSurface.OnError"/>.
+            </returns>
+            <exception cref="T:System.InvalidOperationException">Called from inside an action.</exception>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnSyncAsync(MudBlazor.Extensions.Components.SurfaceSync,Microsoft.JSInterop.IJSStreamReference)">
             <summary>Called by the browser with the typing and the selection since the last message.</summary>
             <param name="sync">The state of the browser, or null if it comes as <paramref name="stream"/>.</param>

@@ -18,7 +18,7 @@ public class DocumentEditActionsTests
 
     private static string[] Texts(TextDocument document) => document.Blocks.OfType<Paragraph>().Select(p => p.Text).ToArray();
 
-    private static IDocumentCommand<TextDocument> Run(TextDocument document, string name, DocumentRange range, string text = null)
+    private static IDocumentCommand<TextDocument> Run(TextDocument document, string name, DocumentRange range, string? text = null)
     {
         var command = DocumentEditActions.For(document, name, range, text);
         Assert.NotNull(command);
@@ -139,6 +139,21 @@ public class DocumentEditActionsTests
         Assert.IsType<MergeParagraphsCommand>(Run(document, "deleteBackward", At(document, id, 0)));
 
         Assert.Equal(["onetwo"], Texts(document));
+    }
+
+    [Fact]
+    public void DeleteBackward_AtStartAfterEmptyParagraph_DeletesTheEmptyParagraph()
+    {
+        var heading = new Paragraph { Format = new ParagraphFormat { StyleId = "Heading1", Alignment = ParagraphAlignment.Center }, Inlines = [new TextRun("Title")] };
+        var document = Doc(new Paragraph { Format = new ParagraphFormat { StyleId = "Normal" } }, heading);
+        var id = document.Blocks[1].Id;
+
+        Run(document, "deleteBackward", At(document, id, 0));
+
+        var paragraph = Assert.IsType<Paragraph>(Assert.Single(document.Blocks));
+        Assert.Equal((id, "Title", "Heading1", ParagraphAlignment.Center), (paragraph.Id, paragraph.Text, paragraph.Format.StyleId, paragraph.Format.Alignment));
+        document.Undo.Undo();
+        Assert.Equal(["", "Title"], Texts(document));
     }
 
     [Fact]
@@ -276,13 +291,25 @@ public class DocumentEditActionsTests
     }
 
     [Fact]
-    public void Tab_RangeOverPlainParagraphs_ReplacesWithTab()
+    public void Tab_RangeOverPlainParagraphs_Indents()
     {
         var document = Doc(P("one"), P("two"));
 
-        Run(document, "tab", new DocumentRange(document.PositionOf(document.Blocks[0].Id, 2), document.PositionOf(document.Blocks[1].Id, 1)));
+        Assert.IsType<ChangeListLevelCommand>(Run(document, "tab", new DocumentRange(document.PositionOf(document.Blocks[0].Id, 2), document.PositionOf(document.Blocks[1].Id, 1))));
 
-        Assert.Equal(["on\two"], Texts(document));
+        Assert.Equal(["one", "two"], Texts(document));
+        Assert.All(document.Blocks.OfType<Paragraph>(), p => Assert.Equal(720, document.EffectiveParagraphFormat(p).IndentLeft));
+    }
+
+    [Fact]
+    public void Tab_RangeInsideOnePlainParagraph_ReplacesWithTab()
+    {
+        var document = Doc(P("Hello"));
+        var id = document.Blocks[0].Id;
+
+        Assert.IsType<ReplaceTextCommand>(Run(document, "tab", R(document, id, 0, 2)));
+
+        Assert.Equal(["	llo"], Texts(document));
     }
 
     [Fact]

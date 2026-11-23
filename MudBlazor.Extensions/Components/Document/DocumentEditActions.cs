@@ -28,7 +28,12 @@ internal static class DocumentEditActions
         if (offset > 0)
             return Delete(caret, offset - (offset > 1 && char.IsLowSurrogate(text[offset - 1]) && char.IsHighSurrogate(text[offset - 2]) ? 2 : 1), offset);
         if (Lists.Of(document, paragraph) != null) return new RemoveListCommand([paragraph.Id]);
-        return document.PreviousSibling(paragraph.Id) is Paragraph previous ? new MergeParagraphsCommand(previous.Id) : null;
+        return document.PreviousSibling(paragraph.Id) switch
+        {
+            Paragraph { Inlines.Count: 0 } empty when document.Sections.All(s => s.LastBlockId != empty.Id) => new RemoveEmptyParagraphCommand(empty.Id, paragraph.Id),
+            Paragraph previous => new MergeParagraphsCommand(previous.Id),
+            _ => null
+        };
     }
 
     private static IDocumentCommand<TextDocument> Forward(TextDocument document, DocumentPosition caret)
@@ -46,7 +51,7 @@ internal static class DocumentEditActions
     {
         var paragraphs = document.ParagraphsIn(range).ToList();
         var start = range.Normalize(document).Start;
-        var indent = paragraphs.Count > 0 && paragraphs.All(p => Lists.Of(document, p) != null) && (paragraphs.Count > 1 || start.Offset == 0);
+        var indent = paragraphs.Count > 1 || paragraphs.Count == 1 && start.Offset == 0 && Lists.Of(document, paragraphs[0]) != null;
         return indent ? new ChangeListLevelCommand(paragraphs.Select(p => p.Id).ToList(), 1) : new ReplaceTextCommand(range, "\t");
     }
 

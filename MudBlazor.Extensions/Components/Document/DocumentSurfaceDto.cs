@@ -1,4 +1,6 @@
 using System.ComponentModel;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -83,7 +85,8 @@ public sealed record SurfaceTyped(string P, string T, int? C, string F);
 /// <param name="Selection">The selection, or null if it is not in the document.</param>
 /// <param name="EndTyping">True to start a new undo step with the next typing.</param>
 [EditorBrowsable(EditorBrowsableState.Never)]
-public sealed record SurfaceSync(int Seen, IReadOnlyList<SurfaceTyped> Typed, SurfaceSelection Selection, bool EndTyping);
+public sealed record SurfaceSync(
+    int Seen, [property: JsonConverter(typeof(SurfaceTypedListConverter))] IReadOnlyList<SurfaceTyped> Typed, SurfaceSelection Selection, bool EndTyping);
 
 /// <summary>A pending format for the next typed text. Infrastructure of the document editor, not meant to be used directly.</summary>
 /// <param name="Token">The token to send with the typed text.</param>
@@ -97,3 +100,38 @@ public sealed record SurfaceCaretFormat(string Token, string Css);
 /// <param name="CaretFormat">The pending format for the next typed text, or null if there is none.</param>
 [EditorBrowsable(EditorBrowsableState.Never)]
 public sealed record SurfaceResult(IReadOnlyList<SurfacePatch> Patches, SurfaceSelection Selection, SurfaceCaretFormat CaretFormat);
+
+internal sealed class SurfaceTypedListConverter : JsonConverter<IReadOnlyList<SurfaceTyped>>
+{
+    internal const int MaxTyped = 10_000;
+    private static long _materialized;
+
+    internal static long Materialized => Interlocked.Read(ref _materialized);
+
+    public override IReadOnlyList<SurfaceTyped> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType == JsonTokenType.Null) return null;
+        if (reader.TokenType != JsonTokenType.StartArray) throw new JsonException();
+        var list = new List<SurfaceTyped>();
+        while (reader.Read() && reader.TokenType != JsonTokenType.EndArray)
+        {
+            if (list.Count > MaxTyped)
+            {
+                reader.Skip();
+                continue;
+            }
+
+            list.Add(JsonSerializer.Deserialize<SurfaceTyped>(ref reader, options));
+            Interlocked.Increment(ref _materialized);
+        }
+
+        return list;
+    }
+
+    public override void Write(Utf8JsonWriter writer, IReadOnlyList<SurfaceTyped> value, JsonSerializerOptions options)
+    {
+        writer.WriteStartArray();
+        foreach (var item in value) JsonSerializer.Serialize(writer, item, options);
+        writer.WriteEndArray();
+    }
+}
