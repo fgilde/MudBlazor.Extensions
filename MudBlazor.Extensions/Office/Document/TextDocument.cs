@@ -438,7 +438,8 @@ public sealed partial class TextDocument
         if (addedNested.Count > 0 || removedNested.Count > 0) _changeKind |= DocumentChangeKind.Structure;
         var args = new TextDocumentChangedEventArgs(changed, removed, _changeKind)
         {
-            ChangedNestedBlockIds = changedNested, AddedNestedBlockIds = addedNested, RemovedNestedBlockIds = removedNested, Selection = selection
+            ChangedNestedBlockIds = changedNested, AddedNestedBlockIds = addedNested, RemovedNestedBlockIds = removedNested, Selection = selection,
+            ListLabelChangedIds = ChangedListLabels()
         };
         _changedIds.Clear();
         _existedBefore.Clear();

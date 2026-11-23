@@ -8,6 +8,7 @@ public sealed partial class TextDocument
     private readonly Dictionary<(Paragraph Paragraph, Inline Inline), RunFormat> _runFormats = new(RunKey.Comparer);
     private (int Version, DocumentStyles Styles, Numbering Numbering, DocumentTheme Theme) _formatKey;
     private IReadOnlyDictionary<string, string> _labels;
+    private IReadOnlyDictionary<string, string> _labelsBefore;
     private bool _labelsStale;
 
     /// <summary>The styles and document defaults.</summary>
@@ -71,6 +72,11 @@ public sealed partial class TextDocument
     public string ListLabel(Paragraph paragraph)
     {
         ArgumentNullException.ThrowIfNull(paragraph);
+        return paragraph.Id != null && Labels().TryGetValue(paragraph.Id, out var label) ? label : null;
+    }
+
+    private IReadOnlyDictionary<string, string> Labels()
+    {
         RefreshFormats();
         if (_labels == null)
         {
@@ -78,7 +84,19 @@ public sealed partial class TextDocument
             _labels = NumberingLabels.Compute(Numbering, AllParagraphs().Select(WithStyleNumbering));
         }
 
-        return paragraph.Id != null && _labels.TryGetValue(paragraph.Id, out var label) ? label : null;
+        return _labels;
+    }
+
+    private IReadOnlyCollection<string> ChangedListLabels()
+    {
+        var before = _labelsBefore ?? _labels;
+        _labelsBefore = null;
+        if (before == null || ReferenceEquals(before, _labels) && !_labelsStale && ReferenceEquals(Styles, _formatKey.Styles) && ReferenceEquals(Numbering, _formatKey.Numbering))
+            return [];
+        var after = Labels();
+        return before.Keys.Union(after.Keys)
+            .Where(id => before.GetValueOrDefault(id) != after.GetValueOrDefault(id) && TryLocate(id, out var location) && location.Container < 0)
+            .ToList();
     }
 
     private Paragraph WithStyleNumbering(Paragraph paragraph) =>
@@ -95,7 +113,12 @@ public sealed partial class TextDocument
     {
         var key = (Version, Styles, Numbering, Theme);
         if (key == _formatKey) return;
-        if (_labelsStale || !ReferenceEquals(key.Styles, _formatKey.Styles) || !ReferenceEquals(key.Numbering, _formatKey.Numbering)) _labels = null;
+        if (_labelsStale || !ReferenceEquals(key.Styles, _formatKey.Styles) || !ReferenceEquals(key.Numbering, _formatKey.Numbering))
+        {
+            _labelsBefore ??= _labels;
+            _labels = null;
+        }
+
         _labelsStale = false;
         _formatKey = key;
         _paragraphFormats.Clear();

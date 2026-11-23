@@ -35548,7 +35548,14 @@
             <summary>
             The caret or selection that belongs to the change: after a command, a redo or the end of a transaction the
             <see cref="P:MudBlazor.Extensions.Office.Document.TextDocumentCommand.After"/> of the (last) command; after an undo the <see cref="P:MudBlazor.Extensions.Office.Document.TextDocumentCommand.Before"/> of the step (of the
-            first command of a transaction); null when unknown.
+            first command of a transaction); null when unknown. The positions are not checked against the document; a consumer must validate them.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.TextDocumentChangedEventArgs.ListLabelChangedIds">
+            <summary>
+            The ids of the body paragraphs (also in table cells) that still exist and whose <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.ListLabel(MudBlazor.Extensions.Office.Document.Paragraph)"/> differs from before the
+            change, including paragraphs that gained or lost a label. Only computed when list labels were read since the previous change; empty otherwise
+            and after typing.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Office.Notebook.AddTextCommand">

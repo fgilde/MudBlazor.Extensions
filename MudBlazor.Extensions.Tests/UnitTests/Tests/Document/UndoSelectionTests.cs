@@ -83,6 +83,25 @@ public class UndoSelectionTests
         Assert.False(document.Undo.CanUndo);
         Assert.Equal("Hello", ((Paragraph)document.FindBlock(p1)).Text);
         Assert.Equal(Caret(document, p1, 5), Assert.Single(events).Selection);
+
+        document.Undo.Redo();
+
+        Assert.Equal("HelloABC", ((Paragraph)document.FindBlock(p1)).Text);
+        Assert.Equal(Caret(document, p1, 8), events[1].Selection);
+    }
+
+    [Fact]
+    public void ExecuteAfterUndo_ReportsTheNewCommandsAfter()
+    {
+        var (document, p1, p2) = Create();
+        document.Execute(new ReplaceTextCommand(Caret(document, p1, 2), "X"), Caret(document, p1, 2));
+        document.Undo.Undo();
+        var events = Record(document);
+
+        document.Execute(new ReplaceTextCommand(Caret(document, p2, 1), "YZ"), Caret(document, p2, 1));
+
+        Assert.False(document.Undo.CanRedo);
+        Assert.Equal(Caret(document, p2, 3), Assert.Single(events).Selection);
     }
 
     [Fact]

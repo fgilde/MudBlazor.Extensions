@@ -66,7 +66,14 @@ public sealed class TextDocumentChangedEventArgs : EventArgs
     /// <summary>
     /// The caret or selection that belongs to the change: after a command, a redo or the end of a transaction the
     /// <see cref="TextDocumentCommand.After"/> of the (last) command; after an undo the <see cref="TextDocumentCommand.Before"/> of the step (of the
-    /// first command of a transaction); null when unknown.
+    /// first command of a transaction); null when unknown. The positions are not checked against the document; a consumer must validate them.
     /// </summary>
     public DocumentRange? Selection { get; internal init; }
+
+    /// <summary>
+    /// The ids of the body paragraphs (also in table cells) that still exist and whose <see cref="TextDocument.ListLabel"/> differs from before the
+    /// change, including paragraphs that gained or lost a label. Only computed when list labels were read since the previous change; empty otherwise
+    /// and after typing.
+    /// </summary>
+    public IReadOnlyCollection<string> ListLabelChangedIds { get; internal init; } = [];
 }
