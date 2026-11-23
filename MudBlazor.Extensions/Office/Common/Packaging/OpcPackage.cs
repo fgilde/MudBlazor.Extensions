@@ -171,17 +171,20 @@ internal sealed class OpcPackage
     {
         const int Chunk = 81920;
         using var source = entry.Open();
-        using var data = new MemoryStream((int)Math.Min(entry.Length + 1, 4L * 1024 * 1024));
+        using var data = new MemoryStream((int)Math.Min(entry.Length, 4L * 1024 * 1024));
         var buffer = new byte[Chunk];
         int read;
-        while (data.Length <= entry.Length && (read = source.Read(buffer, 0, (int)Math.Min(Chunk, entry.Length - data.Length + 1))) > 0)
+        while (data.Length < entry.Length && (read = source.Read(buffer, 0, (int)Math.Min(Chunk, entry.Length - data.Length))) > 0)
         {
             var needed = (int)data.Length + read;
-            if (needed > data.Capacity) data.Capacity = (int)Math.Max(needed, Math.Min(2L * data.Capacity, entry.Length + 1));
+            if (needed > data.Capacity) data.Capacity = (int)Math.Max(needed, Math.Min(2L * data.Capacity, entry.Length));
             data.Write(buffer, 0, read);
         }
 
+        // The capacity never exceeds the declared length, so an honest entry is handed out without a copy.
+        var longer = data.Length == entry.Length && source.ReadByte() >= 0;
         var bytes = data.Capacity == data.Length ? data.GetBuffer() : data.ToArray();
+        if (longer) throw LoadLimit.Exceeded($"The {name} does not have its declared size or checksum.");
         if (bytes.Length != entry.Length || Crc32(bytes) != entry.Crc32) throw LoadLimit.Exceeded($"The {name} does not have its declared size or checksum.");
         return bytes;
     }
