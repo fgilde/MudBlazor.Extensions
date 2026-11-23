@@ -35195,6 +35195,32 @@
             <exception cref="T:System.ArgumentException">The query is not a valid regular expression.</exception>
             <exception cref="T:System.TimeoutException">The search was cut short; the document is unchanged.</exception>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.SelectionFormat">
+            <summary>The merged formatting of a selection; every property that differs across the selection is null.</summary>
+            <param name="Run">The effective character formatting.</param>
+            <param name="Paragraph">The effective paragraph formatting.</param>
+            <param name="StyleId">The paragraph style id, with the default style resolved to its id; null if the paragraphs use different styles.</param>
+            <param name="List">The kind of list if all paragraphs are items of lists of one kind; otherwise null.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.SelectionFormat.#ctor(MudBlazor.Extensions.Office.Document.RunFormat,MudBlazor.Extensions.Office.Document.ParagraphFormat,System.String,System.Nullable{MudBlazor.Extensions.Office.Document.ListTemplate})">
+            <summary>The merged formatting of a selection; every property that differs across the selection is null.</summary>
+            <param name="Run">The effective character formatting.</param>
+            <param name="Paragraph">The effective paragraph formatting.</param>
+            <param name="StyleId">The paragraph style id, with the default style resolved to its id; null if the paragraphs use different styles.</param>
+            <param name="List">The kind of list if all paragraphs are items of lists of one kind; otherwise null.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SelectionFormat.Run">
+            <summary>The effective character formatting.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SelectionFormat.Paragraph">
+            <summary>The effective paragraph formatting.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SelectionFormat.StyleId">
+            <summary>The paragraph style id, with the default style resolved to its id; null if the paragraphs use different styles.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SelectionFormat.List">
+            <summary>The kind of list if all paragraphs are items of lists of one kind; otherwise null.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.TextDocument">
             <summary>A text document of paragraphs and tables in sections, with headers, footers and an undo stack.</summary>
         </member>
@@ -35399,6 +35425,15 @@
             <param name="inline">The inline, or null for the paragraph mark.</param>
             <returns>The effective formatting.</returns>
             <exception cref="T:System.ArgumentNullException">The paragraph is null.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.FormatOf(MudBlazor.Extensions.Office.Document.DocumentRange)">
+            <summary>
+            Merges the effective formatting of a selection. An empty range takes the run before the caret (at a paragraph start the run after it, in an
+            empty paragraph the paragraph mark); otherwise every text run and tab with characters in the range counts. Properties that differ are null.
+            </summary>
+            <param name="range">The range, in either direction.</param>
+            <returns>The merged formatting.</returns>
+            <exception cref="T:System.ArgumentNullException">A position of the range is null.</exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.ListLabel(MudBlazor.Extensions.Office.Document.Paragraph)">
             <summary>Gets the list label of a paragraph of the body, for example <c>1.</c>, <c>a)</c> or <c>&#x2022;</c>.</summary>

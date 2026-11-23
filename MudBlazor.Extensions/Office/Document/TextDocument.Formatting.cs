@@ -61,6 +61,54 @@ public sealed partial class TextDocument
         return format;
     }
 
+    /// <summary>
+    /// Merges the effective formatting of a selection. An empty range takes the run before the caret (at a paragraph start the run after it, in an
+    /// empty paragraph the paragraph mark); otherwise every text run and tab with characters in the range counts. Properties that differ are null.
+    /// </summary>
+    /// <param name="range">The range, in either direction.</param>
+    /// <returns>The merged formatting.</returns>
+    /// <exception cref="ArgumentNullException">A position of the range is null.</exception>
+    public SelectionFormat FormatOf(DocumentRange range)
+    {
+        range = Snap(range);
+        var (first, from) = Resolve(range.Start);
+        var (last, to) = Resolve(range.End);
+        var run = new FormatMerge<RunFormat>();
+        var paragraphs = new FormatMerge<ParagraphFormat>();
+        var kinds = new HashSet<ListTemplate?>();
+        var counted = false;
+        foreach (var paragraph in ParagraphsIn(range))
+        {
+            paragraphs.Add(EffectiveParagraphFormat(paragraph));
+            kinds.Add(Lists.Of(this, paragraph) is { } reference ? Lists.KindOf(Numbering, reference) : null);
+            if (range.IsEmpty || run.AllMixed) continue;
+            var start = paragraph.Id == first.Id ? from : 0;
+            var end = paragraph.Id == last.Id ? to : paragraph.Length;
+            var position = 0;
+            foreach (var inline in paragraph.Inlines)
+            {
+                var length = inline.Length;
+                if (inline is TextRun or Tab && Math.Min(position + length, end) > Math.Max(position, start))
+                {
+                    run.Add(EffectiveRunFormat(paragraph, inline));
+                    counted = true;
+                }
+
+                position += length;
+                if (position >= end) break;
+            }
+        }
+
+        if (!counted)
+        {
+            var inline = from > 0 ? InlineEdit.At(first, from - 1) : null;
+            run.Add(EffectiveRunFormat(first, inline ?? InlineEdit.At(first, from)));
+        }
+
+        var merged = paragraphs.Result();
+        return new SelectionFormat(run.Result(), merged, merged.StyleId, kinds.Count == 1 ? kinds.Single() : null);
+    }
+
     internal long FormatResolutions { get; private set; }
 
     internal int LabelComputations { get; private set; }
