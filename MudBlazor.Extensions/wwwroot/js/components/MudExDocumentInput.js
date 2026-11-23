@@ -30,7 +30,7 @@ const keyName = e => {
     return e.key?.length === 1 ? e.key.toUpperCase() : e.key;
 };
 
-const typesCharacter = e => e.getModifierState?.('AltGraph') || e.altKey && [...(e.key ?? '')].length === 1 && e.key.toUpperCase() !== keyName(e).toUpperCase();
+const typesCharacter = e => e.getModifierState?.('AltGraph') || !e.metaKey && e.altKey && [...(e.key ?? '')].length === 1 && e.key.toUpperCase() !== keyName(e).toUpperCase();
 
 export const shortcutOf = e => `${e.ctrlKey || e.metaKey ? 'Ctrl+' : ''}${e.altKey ? 'Alt+' : ''}${e.shiftKey ? 'Shift+' : ''}${keyName(e)}`;
 
