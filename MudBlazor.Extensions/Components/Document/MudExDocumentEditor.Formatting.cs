@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Office.Document;
 
@@ -6,6 +7,7 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExDocumentEditor
 {
     private const int SpaceTwips = 240;
+    private static readonly Regex ThemeColor = new("^theme:[A-Za-z0-9]+( shade=[0-9A-Fa-f]{2})?( tint=[0-9A-Fa-f]{2})?$", RegexOptions.CultureInvariant);
     private static readonly double[] FontSteps = [8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72];
     private static readonly IReadOnlyList<MudExColor> HighlightPalette = [.. HtmlReader.Highlights.Values.Select(v => (MudExColor)v)];
     private static readonly string[] SurfaceShortcuts = DocumentShortcuts.Keys("fontDialog", "find", "replace");
@@ -58,7 +60,7 @@ public partial class MudExDocumentEditor
     {
         get
         {
-            if (_surface == null || _document == null || Selection.Start == null)
+            if (!ShowRibbon || _collapsed || IsReadOnly || _surface == null || Selection.Start == null)
                 return null;
             var key = (_document, _document.Version, Selection, _surface.CaretFormat);
             if (key != _formatKey)
@@ -66,6 +68,10 @@ public partial class MudExDocumentEditor
             return _format;
         }
     }
+
+    private RibbonView View => Format is { Run: var r, Paragraph: var p } f
+        ? new(r.Bold, r.Italic, r.Underline, r.Strike, r.VerticalAlign, r.Font, r.SizePt, r.Color, r.Highlight, p.Alignment, f.List, p.Line, f.StyleId, p.SpacingBefore, p.SpacingAfter)
+        : default;
 
     private IReadOnlyList<string> FontItems => Format?.Run.Font is { } font && !MudExNotebookEditor.Fonts.Contains(font) ? [font, .. MudExNotebookEditor.Fonts] : MudExNotebookEditor.Fonts;
 
@@ -85,14 +91,15 @@ public partial class MudExDocumentEditor
         ? FontSteps.Where(s => s > size).DefaultIfEmpty(Math.Floor(size / 10) * 10 + 10).First()
         : FontSteps.Where(s => s < size).DefaultIfEmpty(Math.Ceiling(size) - 1).Last(), direction >= 0 ? "Grow font" : "Shrink font");
 
-    internal Task SetColorAsync(string color) => string.IsNullOrEmpty(color) ? Task.CompletedTask : SetRunAsync(f => f with { Color = color }, "Font color");
+    internal Task SetColorAsync(string color) =>
+        (color == "auto" || ThemeColor.IsMatch(color ?? "") ? color : DocumentCss.Color(color)) is { } valid ? SetRunAsync(f => f with { Color = valid }, "Font color") : Task.CompletedTask;
 
     internal Task SetHighlightAsync(string name) =>
         name == "none" || HtmlReader.Highlights.ContainsKey(name ?? "") ? SetRunAsync(f => f with { Highlight = name }, "Highlight") : Task.CompletedTask;
 
     internal Task ClearFormattingAsync(bool paragraphToo) => RunAsync(range =>
     {
-        if (range.Start == null)
+        if (!Live(range))
             return;
         Func<RunFormat, RunFormat> clear = paragraphToo ? f => new RunFormat { StyleId = f.StyleId == InlineEdit.HyperlinkStyle ? f.StyleId : null } : f => new RunFormat { StyleId = f.StyleId };
         using (_document.Undo.BeginTransaction("Clear formatting"))
@@ -106,6 +113,8 @@ public partial class MudExDocumentEditor
             {
                 Alignment = null, IndentLeft = null, IndentRight = null, IndentFirstLine = null, SpacingBefore = null, SpacingAfter = null, Line = null
             }, "Clear formatting"), range);
+            if (ids.Where(id => _document.FindBlock(id) is Paragraph { Length: 0 }).ToList() is { Count: > 0 } empty)
+                _document.Execute(new SetMarkFormatCommand(empty, clear, "Clear formatting"), range);
         }
     });
 
@@ -154,6 +163,8 @@ public partial class MudExDocumentEditor
 
     private bool IsOn(string property) => Format is { } format && Toggles[property].IsOn(format.Run);
 
+    private bool IsAligned(ParagraphAlignment alignment) => Format is { } format && (format.Paragraph.Alignment ?? ParagraphAlignment.Left) == alignment;
+
     private bool SpaceIsSet(bool before) => (before ? Format?.Paragraph.SpacingBefore : Format?.Paragraph.SpacingAfter) is not (null or 0);
 
     private Task OnShortcutAsync(string key) => DocumentShortcuts.ActionOf(key) is { } action ? InvokeAsync(() => RunShortcutAsync(action)) : Task.CompletedTask;
@@ -184,7 +195,7 @@ public partial class MudExDocumentEditor
 
     private Task FormatRunAsync(Func<DocumentRange, Func<RunFormat, RunFormat>> changeAt, string description) => RunAsync(range =>
     {
-        if (range.Start != null && changeAt(range) is { } change)
+        if (Live(range) && changeAt(range) is { } change)
             ChangeRuns(range, change, description);
     });
 
@@ -203,23 +214,39 @@ public partial class MudExDocumentEditor
 
     private Task ParagraphCommandAsync(Func<IReadOnlyList<string>, DocumentRange, TextDocumentCommand> command) => RunAsync(range =>
     {
-        if (range.Start != null)
+        if (Live(range))
             _document.Execute(command(ParagraphIds(range), range), range);
     });
 
     private SelectionFormat FormatAt(DocumentRange range)
     {
-        SelectionFormat format;
         try
         {
-            format = _document.FormatOf(range);
+            var format = _document.FormatOf(range);
+            return range.IsEmpty && _surface?.CaretFormat is { } caret
+                ? format with { Run = _document.EffectiveRunFormat(_document.Resolve(range.End).Paragraph, new TextRun("") { Format = caret }) }
+                : format;
         }
         catch (ArgumentException)
         {
             return null;
         }
+    }
 
-        return range.IsEmpty && _surface?.CaretFormat is { } caret ? format with { Run = caret.Over(format.Run) } : format;
+    private bool Live(DocumentRange range)
+    {
+        if (range.Start == null || range.End == null)
+            return false;
+        try
+        {
+            _document.Resolve(range.Start);
+            _document.Resolve(range.End);
+            return true;
+        }
+        catch (ArgumentException)
+        {
+            return false;
+        }
     }
 
     private RunFormat InsertionFormat(DocumentRange range)
@@ -243,4 +270,7 @@ public partial class MudExDocumentEditor
     }
 
     private static double ClampSize(double size) => Math.Clamp(Math.Round(size * 2) / 2, 1, 1638);
+
+    private readonly record struct RibbonView(bool? Bold, bool? Italic, string Underline, bool? Strike, VerticalAlign? VerticalAlign, string Font, double? Size, string Color,
+        string Highlight, ParagraphAlignment? Alignment, ListTemplate? List, LineSpacing? Line, string StyleId, int? SpacingBefore, int? SpacingAfter);
 }

@@ -64,7 +64,7 @@
                             @foreach (var (id, text, icon, shortcut, align) in AlignToggles)
                             {
                                 <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly"
-                                                         Checked="@(Format?.Paragraph.Alignment == align)" CheckedChanged="@(_ => AlignAsync(align))" />
+                                                         Checked="@IsAligned(align)" CheckedChanged="@(_ => AlignAsync(align))" />
                             }
                             <MudExRibbonMenuButton Id="wd-line-spacing" Text="@TryLocalize("Line and Paragraph Spacing")" Icon="@Icons.Material.Filled.FormatLineSpacing" Size="MudExRibbonItemSize.Small"
                                                    Disabled="@IsReadOnly">

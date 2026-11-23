@@ -30,3 +30,13 @@ public sealed class SetParagraphFormatCommand(IReadOnlyList<string> paragraphIds
     private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document) =>
         (document.MapParagraphs(_paragraphIds, p => _change(p.Format) is var format && format == p.Format ? p : p with { Format = format }), null);
 }
+
+internal sealed class SetMarkFormatCommand(IReadOnlyList<string> paragraphIds, Func<RunFormat, RunFormat> change, string description) : TextDocumentCommand
+{
+    private readonly IReadOnlyList<string> _paragraphIds = paragraphIds?.ToArray() ?? throw new ArgumentNullException(nameof(paragraphIds));
+
+    public override string Description => description;
+
+    private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document) =>
+        (document.MapParagraphs(_paragraphIds, p => change(p.MarkFormat ?? new RunFormat()) is var format && format != (p.MarkFormat ?? new RunFormat()) ? p with { MarkFormat = format } : p), null);
+}

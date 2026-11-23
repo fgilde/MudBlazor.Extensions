@@ -24,7 +24,7 @@ public partial class MudExDocumentEditor : IMudExFileEditor
     private Task _changeNotification = Task.CompletedTask;
     private MudExDocumentSurface _surface;
     private Exception _reported;
-    private (bool CanUndo, bool CanRedo, bool Dirty, int Words, SelectionFormat Format) _rendered;
+    private (bool CanUndo, bool CanRedo, bool Dirty, int Words, RibbonView View) _rendered;
     private bool _trackedNoticeShown;
     private double _zoom = 1;
     private bool _collapsed;
@@ -94,8 +94,8 @@ public partial class MudExDocumentEditor : IMudExFileEditor
 
     private int Words => _words?.Total ?? 0;
 
-    private (bool CanUndo, bool CanRedo, bool Dirty, int Words, SelectionFormat Format) RenderState =>
-        (_document?.Undo.CanUndo == true, _document?.Undo.CanRedo == true, IsDirty, Words, Format);
+    private (bool CanUndo, bool CanRedo, bool Dirty, int Words, RibbonView View) RenderState =>
+        (_document?.Undo.CanUndo == true, _document?.Undo.CanRedo == true, IsDirty, Words, View);
 
     private IReadOnlyList<double> ZoomItems => ZoomLevels.Contains(_zoom) ? ZoomLevels : [.. ZoomLevels.Append(_zoom).Order()];
 

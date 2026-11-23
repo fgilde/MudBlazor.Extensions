@@ -181,6 +181,7 @@ public partial class MudExDocumentSurface
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        (_generation, _chunking) = (_generation + 1, false);
         if (_document != null) _document.Changed -= OnChanged;
         await _module.DisposeAsync();
         await base.DisposeAsync();
@@ -211,11 +212,13 @@ public partial class MudExDocumentSurface
         }
 
         _live = true;
-        for (var from = 0; ;)
+        for (var (from, restarted) = (0, false); ;)
         {
             if (from == 0) _restart = false;
-            var patch = Track(DocumentSurfacePatches.Chunk(_document, _render, from, ++_seq, InitialChunk));
-            if (from == 0) _attachedAt = patch.Seq;
+            var patch = DocumentSurfacePatches.Chunk(_document, _render, from, ++_seq, InitialChunk);
+            foreach (var id in DocumentSurfacePatches.Ids(patch))
+                if (!restarted || !_changedAt.ContainsKey(id)) _changedAt[id] = patch.Seq;
+            if (from == 0 && !restarted) _attachedAt = patch.Seq;
             from += InitialChunk;
             _chunking = from < _document.Blocks.Count;
             await RegisterAsync(_render.TakeMedia());
@@ -223,7 +226,7 @@ public partial class MudExDocumentSurface
             if (generation != _generation || !_chunking && !_restart) return;
             await Pause();
             if (generation != _generation) return;
-            if (_restart) from = 0;
+            if (_restart) (from, restarted) = (0, true);
         }
     }
 
@@ -243,7 +246,7 @@ public partial class MudExDocumentSurface
     private void OnChanged(object sender, TextDocumentChangedEventArgs change)
     {
         if (!_live || !ReferenceEquals(sender, _document)) return;
-        _restart |= _chunking;
+        _restart |= _chunking && (change.Kind & (DocumentChangeKind.Structure | DocumentChangeKind.Styles | DocumentChangeKind.Sections)) != 0;
         var patches = DocumentSurfacePatches.Changes(_document, _render, change, () => ++_seq);
         foreach (var patch in patches) Track(patch, change);
         if (_acting && change.Selection != null) _resultSelection = change.Selection;

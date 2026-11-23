@@ -7,45 +7,48 @@ namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Components;
 
 using MudBlazor.Extensions.Office.Document;
 
-public class DocumentEditorFormattingTests : DocumentEditorTestBase
+public abstract class DocumentEditorFormattingTestBase : DocumentEditorTestBase
 {
-    private const int Seen = 1_000_000;
-    private static readonly string Bullet = ((char)0x2022).ToString();
+    protected const int Seen = 1_000_000;
+    protected static readonly string Bullet = ((char)0x2022).ToString();
 
-    private static MudExRibbonItemBase Command(IRenderedComponent<MudExDocumentEditor> cut, string id) =>
+    protected static MudExRibbonItemBase Command(IRenderedComponent<MudExDocumentEditor> cut, string id) =>
         cut.FindComponent<MudExRibbon>().Instance.Commands.SingleOrDefault(c => c.Id == id) ?? cut.FindComponents<MudExRibbonButton>().Select(b => b.Instance).Single(b => b.Id == id);
 
-    private static Task Run(IRenderedComponent<MudExDocumentEditor> cut, string id) => cut.InvokeAsync(() => Command(cut, id).ExecuteAsync());
+    protected static Task Run(IRenderedComponent<MudExDocumentEditor> cut, string id) => cut.InvokeAsync(() => Command(cut, id).ExecuteAsync());
 
-    private static bool Checked(IRenderedComponent<MudExDocumentEditor> cut, string id) => Command(cut, id) switch
+    protected static bool Checked(IRenderedComponent<MudExDocumentEditor> cut, string id) => Command(cut, id) switch
     {
         MudExRibbonToggleButton toggle => toggle.Checked,
         MudExRibbonMenuItem item => item.Checked == true,
         _ => throw new InvalidOperationException(id)
     };
 
-    private static MudExDocumentSurface Surface<T>(IRenderedComponent<T> cut) where T : MudExDocumentEditor => cut.FindComponent<MudExDocumentSurface>().Instance;
+    protected static MudExDocumentSurface Surface<T>(IRenderedComponent<T> cut) where T : MudExDocumentEditor => cut.FindComponent<MudExDocumentSurface>().Instance;
 
-    private static Task Select<T>(IRenderedComponent<T> cut, string anchorId, int anchor, string focusId, int focus) where T : MudExDocumentEditor =>
+    protected static Task Select<T>(IRenderedComponent<T> cut, string anchorId, int anchor, string focusId, int focus) where T : MudExDocumentEditor =>
         cut.InvokeAsync(() => Surface(cut).OnSyncAsync(new SurfaceSync(Seen, [], new SurfaceSelection(new SurfacePoint(anchorId, anchor), new SurfacePoint(focusId, focus)), false), null));
 
-    private static Task Select<T>(IRenderedComponent<T> cut, int paragraph, int from, int to) where T : MudExDocumentEditor
+    protected static Task Select<T>(IRenderedComponent<T> cut, int paragraph, int from, int to) where T : MudExDocumentEditor
     {
         var id = cut.Instance.CurrentDocument.Blocks[paragraph].Id;
         return Select(cut, id, from, id, to);
     }
 
-    private static Paragraph P(TextDocument document, int index = 0) => (Paragraph)document.Blocks[index];
+    protected static Paragraph P(TextDocument document, int index = 0) => (Paragraph)document.Blocks[index];
 
-    private static RunFormat Run(TextDocument document, int paragraph, int offset) =>
+    protected static RunFormat Run(TextDocument document, int paragraph, int offset) =>
         document.EffectiveRunFormat(P(document, paragraph), InlineEdit.At(P(document, paragraph), offset));
 
-    private static void Bold(TextDocument document, int paragraph, int from, int to)
+    protected static void Bold(TextDocument document, int paragraph, int from, int to)
     {
         var id = document.Blocks[paragraph].Id;
         document.Execute(new SetRunFormatCommand(new DocumentRange(document.PositionOf(id, from), document.PositionOf(id, to)), f => f with { Bold = true }, "Bold"));
     }
+}
 
+public class DocumentEditorFormattingTests : DocumentEditorFormattingTestBase
+{
     [Fact]
     public async Task Bold_OnSelection_TogglesOnThenOff()
     {
