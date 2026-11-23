@@ -295,9 +295,33 @@ public sealed partial class TextDocument
     }
 
     /// <summary>
-    /// Drops the block index so the next lookup rebuilds it. Every change of the block lists must call it: a lookup that misses a fresh index is final.
+    /// Drops the block index so the next lookup rebuilds it. Every change of the block lists must call it or <see cref="TryUpdateIndex"/>: a lookup
+    /// that misses a fresh index is final.
     /// </summary>
     internal void InvalidateIndex() => _index = null;
+
+    internal bool TryUpdateIndex(int container, int index, IReadOnlyList<Block> removed, IReadOnlyList<Block> inserted)
+    {
+        if (_index == null) return true;
+        if (removed.Count != inserted.Count) return false;
+        // ponytail: O(changed top-level subtree), a cell edit in a 200 x 20 table walks the table; narrow to the edited path if typing in huge tables lags.
+        var updates = new List<KeyValuePair<string, BlockLocation>>();
+        for (var k = 0; k < removed.Count; k++)
+        {
+            var (old, now) = (removed[k], inserted[k]);
+            if (old.Id == null || old.Id != now.Id) return false;
+            var entries = new Dictionary<string, BlockLocation>();
+            AddToIndex(entries, container, index + k, [], now);
+            if (entries.Count != Subtree(old).Count(b => b.Id != null)) return false;
+            foreach (var (id, location) in entries)
+                if (!_index.TryGetValue(id, out var was) || was.Container != container || was.Index != index + k || !was.Path.SequenceEqual(location.Path))
+                    return false;
+            updates.AddRange(entries);
+        }
+
+        foreach (var (id, location) in updates) _index[id] = location;
+        return true;
+    }
 
     private TableRow EnsureIds(TableRow row) =>
         Identified(row.Cells.SelectMany(c => c.Blocks))
@@ -381,7 +405,6 @@ public sealed partial class TextDocument
     private void RaiseChanged()
     {
         if (_changeKind == DocumentChangeKind.None && _changedIds.Count == 0) return;
-        InvalidateIndex();
         var changed = new HashSet<string>();
         var removed = new List<string>();
         foreach (var id in _changedIds)

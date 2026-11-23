@@ -35082,12 +35082,31 @@
             <summary>True if the search deadline or the timeout of a regular expression ended the search early; <paramref name="Ranges"/> then
             holds only the matches found until then.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.FindNextResult">
+            <summary>The next match of a search.</summary>
+            <param name="Match">The range of the match, or null if none was found.</param>
+            <param name="Truncated">True if the search deadline or the timeout of a regular expression ended the search early; <paramref name="Match"/> may then
+            not be the next match.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.FindNextResult.#ctor(System.Nullable{MudBlazor.Extensions.Office.Document.DocumentRange},System.Boolean)">
+            <summary>The next match of a search.</summary>
+            <param name="Match">The range of the match, or null if none was found.</param>
+            <param name="Truncated">True if the search deadline or the timeout of a regular expression ended the search early; <paramref name="Match"/> may then
+            not be the next match.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.FindNextResult.Match">
+            <summary>The range of the match, or null if none was found.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.FindNextResult.Truncated">
+            <summary>True if the search deadline or the timeout of a regular expression ended the search early; <paramref name="Match"/> may then
+            not be the next match.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Office.Document.DocumentSearch">
             <summary>
             Finds and replaces text in a <see cref="T:MudBlazor.Extensions.Office.Document.TextDocument"/>. Matches run over <see cref="P:MudBlazor.Extensions.Office.Document.Paragraph.Text"/> and never cross paragraphs or tokens such as
             images; a match that would end inside a surrogate pair is widened to the whole character. Regular expressions run with a one second timeout per
             match and the whole search with a five second deadline; either ends the search with the matches found so far, which
-            <see cref="M:MudBlazor.Extensions.Office.Document.DocumentSearch.Find(MudBlazor.Extensions.Office.Document.TextDocument,System.String,MudBlazor.Extensions.Office.Document.FindOptions)"/> and <see cref="M:MudBlazor.Extensions.Office.Document.DocumentSearch.FindNext(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentPosition,System.String,MudBlazor.Extensions.Office.Document.FindOptions,System.Boolean@)"/>
+            <see cref="M:MudBlazor.Extensions.Office.Document.DocumentSearch.Find(MudBlazor.Extensions.Office.Document.TextDocument,System.String,MudBlazor.Extensions.Office.Document.FindOptions)"/> and <see cref="M:MudBlazor.Extensions.Office.Document.DocumentSearch.FindNextWithStatus(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentPosition,System.String,MudBlazor.Extensions.Office.Document.FindOptions)"/>
             report as truncated and <see cref="M:MudBlazor.Extensions.Office.Document.DocumentSearch.ReplaceAll(MudBlazor.Extensions.Office.Document.TextDocument,System.String,System.String,MudBlazor.Extensions.Office.Document.FindOptions)"/> rejects.
             </summary>
         </member>
@@ -35116,14 +35135,13 @@
             <returns>The range of the match, or null if there is none.</returns>
             <exception cref="T:System.ArgumentException">The query is not a valid regular expression.</exception>
         </member>
-        <member name="M:MudBlazor.Extensions.Office.Document.DocumentSearch.FindNext(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentPosition,System.String,MudBlazor.Extensions.Office.Document.FindOptions,System.Boolean@)">
+        <member name="M:MudBlazor.Extensions.Office.Document.DocumentSearch.FindNextWithStatus(MudBlazor.Extensions.Office.Document.TextDocument,MudBlazor.Extensions.Office.Document.DocumentPosition,System.String,MudBlazor.Extensions.Office.Document.FindOptions)">
             <summary>Finds the first match that starts at or after a position, wrapping around, and tells whether the search ended early.</summary>
             <param name="document">The document.</param>
             <param name="from">The position to search from, usually the end of the selection.</param>
             <param name="query">The text or regular expression.</param>
             <param name="options">The options; null for the defaults.</param>
-            <param name="truncated">True if the deadline or a regular expression timeout cut the search short; the result may then not be the next match.</param>
-            <returns>The range of the match, or null if none was found.</returns>
+            <returns>The match, or null if none was found, and whether the deadline or a regular expression timeout cut the search short.</returns>
             <exception cref="T:System.ArgumentException">The query is not a valid regular expression.</exception>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.DocumentSearch.ReplaceAll(MudBlazor.Extensions.Office.Document.TextDocument,System.String,System.String,MudBlazor.Extensions.Office.Document.FindOptions)">
@@ -35305,7 +35323,8 @@
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.InvalidateIndex">
             <summary>
-            Drops the block index so the next lookup rebuilds it. Every change of the block lists must call it: a lookup that misses a fresh index is final.
+            Drops the block index so the next lookup rebuilds it. Every change of the block lists must call it or <see cref="M:MudBlazor.Extensions.Office.Document.TextDocument.TryUpdateIndex(System.Int32,System.Int32,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.Block},System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.Block})"/>: a lookup
+            that misses a fresh index is final.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TextDocument.Styles">
@@ -35355,6 +35374,11 @@
             <exception cref="T:System.ArgumentNullException">The paragraph id is null.</exception>
             <exception cref="T:System.ArgumentException">The document has no paragraph with this id.</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">The offset lies outside the paragraph.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.BlockIndex(System.String)">
+            <summary>Gets the index of a top-level block in its container: the body, or the header or footer it belongs to.</summary>
+            <param name="blockId">The block id.</param>
+            <returns>The index, or -1 if the document has no top-level block with this id (for example a block inside a table).</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Office.Document.TextDocument.Compare(MudBlazor.Extensions.Office.Document.DocumentPosition,MudBlazor.Extensions.Office.Document.DocumentPosition)">
             <summary>Compares two positions in document order: the body first, then the headers and footers.</summary>

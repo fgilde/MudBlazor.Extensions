@@ -32,6 +32,11 @@ public sealed partial class TextDocument
         return new DocumentPosition(Container(location.Container)[location.Index].Id, Array.AsReadOnly(location.Path), offset);
     }
 
+    /// <summary>Gets the index of a top-level block in its container: the body, or the header or footer it belongs to.</summary>
+    /// <param name="blockId">The block id.</param>
+    /// <returns>The index, or -1 if the document has no top-level block with this id (for example a block inside a table).</returns>
+    public int BlockIndex(string blockId) => TryLocate(blockId, out var location) && location.Path.Length == 0 ? location.Index : -1;
+
     /// <summary>Compares two positions in document order: the body first, then the headers and footers.</summary>
     /// <param name="a">The first position.</param>
     /// <param name="b">The second position.</param>

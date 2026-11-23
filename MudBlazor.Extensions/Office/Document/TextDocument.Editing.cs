@@ -234,7 +234,7 @@ public sealed partial class TextDocument
                 HeaderFooterList[edit.Container] = part with { Blocks = [.. part.Blocks.Take(edit.Index), .. insert, .. part.Blocks.Skip(edit.Index + remove.Count)] };
             }
 
-            InvalidateIndex();
+            if (!TryUpdateIndex(edit.Container, edit.Index, remove, insert)) InvalidateIndex();
             var structure = TrackBlocks(remove, insert);
             Track(null, (edit.Container < 0 ? DocumentChangeKind.Content : DocumentChangeKind.HeadersFooters) | (structure ? DocumentChangeKind.Structure : DocumentChangeKind.None));
         }
