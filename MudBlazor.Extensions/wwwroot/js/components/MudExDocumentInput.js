@@ -30,6 +30,8 @@ const keyName = e => {
     return e.key?.length === 1 ? e.key.toUpperCase() : e.key;
 };
 
+const typesCharacter = e => e.getModifierState?.('AltGraph') || e.altKey && [...(e.key ?? '')].length === 1 && e.key.toUpperCase() !== keyName(e).toUpperCase();
+
 export const shortcutOf = e => `${e.ctrlKey || e.metaKey ? 'Ctrl+' : ''}${e.altKey ? 'Alt+' : ''}${e.shiftKey ? 'Shift+' : ''}${keyName(e)}`;
 
 const dataOf = e => e.data ?? e.dataTransfer?.getData('text/plain') ?? '';
@@ -76,7 +78,7 @@ export const inputMethods = {
         if (COMPOSITION.has(type)) {
             return;
         }
-        if (this.blocked) {
+        if (this.blocked || this.inAwaiting()) {
             if (QUEUED.test(type)) {
                 this.queue.push({ type, data: dataOf(e) });
             }
@@ -84,6 +86,11 @@ export const inputMethods = {
             return;
         }
         this.perform({ type, data: dataOf(e) }, e);
+    },
+
+    inAwaiting() {
+        const selection = document.getSelection();
+        return this.awaiting.size > 0 && [selection?.anchorNode, selection?.focusNode].some(node => this.awaiting.has(this.paragraphOf(node)?.dataset.b));
     },
 
     targetSelection(e) {
@@ -94,6 +101,10 @@ export const inputMethods = {
     },
 
     perform(item, e) {
+        if (this.inert) {
+            e?.preventDefault();
+            return;
+        }
         if (item.name) {
             this.command(item.name, item.text, item.extra);
             return;
@@ -123,6 +134,9 @@ export const inputMethods = {
     },
 
     typeText(text) {
+        if (this.inert) {
+            return true;
+        }
         const p = this.localParagraph([], false, false);
         if (!p) {
             return false;
@@ -213,6 +227,9 @@ export const inputMethods = {
 
     keyDown(e) {
         if (e.isComposing || e.keyCode === 229 || this.disposed) {
+            return;
+        }
+        if (typesCharacter(e)) {
             return;
         }
         const shortcut = shortcutOf(e);

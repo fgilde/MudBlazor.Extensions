@@ -1,4 +1,4 @@
-import { pointAt, pointOf, serialise, strip, PARAGRAPH } from './MudExDocumentDom.js';
+import { pointAt, pointOf, serialise, strip, PARAGRAPH, OPAQUE } from './MudExDocumentDom.js';
 
 const removeText = (p, from, to) => {
     const start = pointAt(p, from);
@@ -19,8 +19,11 @@ export const compositionMethods = {
             return;
         }
         const range = selection.getRangeAt(0);
-        const ids = [...this.sheet.querySelectorAll(PARAGRAPH)].filter(p => this.blocks.get(p.dataset.b) === p && range.intersectsNode(p)).map(p => p.dataset.b);
-        const typed = ids.filter(id => this.dirty.has(id)).map(id => ({ p: id, t: serialise(this.blocks.get(id)), c: null, f: null }));
+        const elements = [...this.sheet.querySelectorAll('[data-b]')].filter(e => this.blocks.get(e.dataset.b) === e && range.intersectsNode(e));
+        const paragraphs = elements.filter(e => e.matches(PARAGRAPH) && !e.parentElement.closest(OPAQUE));
+        const ids = elements.map(e => e.dataset.b);
+        const typed = paragraphs.filter(p => this.dirty.has(p.dataset.b)).map(p => ({ p: p.dataset.b, t: serialise(p), c: null, f: null }));
+        this.composing = this.paragraphOf(range.startContainer) ?? paragraphs[0] ?? this.composing;
         ids.forEach(id => {
             this.awaiting.set(id, true);
             this.dirty.delete(id);
@@ -53,28 +56,32 @@ export const compositionMethods = {
                 return;
             }
             const id = p.dataset.b;
+            const queued = this.blocked || this.queue.length > 0 || this.awaiting.has(id);
             const selection = document.getSelection();
             const caret = selection?.rangeCount ? pointOf(this.sheet, selection.focusNode, selection.focusOffset) : null;
             const start = caret?.p === id && data ? Math.max(0, caret.o - strip(data).length) : null;
-            let reinsert = false;
-            if (deferred?.selection && start != null && p.isConnected) {
+            let removed = false;
+            if (start != null && p.isConnected && (queued || deferred?.selection)) {
                 removeText(p, start, caret.o);
-                reinsert = true;
+                removed = true;
             }
+            let rendered = false;
             held.forEach((hold, holdId) => {
                 if (hold.remove) {
                     this.removeBlock(holdId, true);
                     return;
                 }
-                if (holdId === id && hold.upsert.block.k === 'p' && !reinsert && hold.upsert.block.text === this.sentText.get(id)) {
+                if (holdId === id && hold.upsert.block.k === 'p' && !removed && hold.upsert.block.text === this.echoed(this.sentText.get(id))) {
                     return;
                 }
                 this.upsert(hold.upsert, null, true);
-                reinsert = reinsert || start != null;
+                rendered = true;
             });
-            if (reinsert) {
+            if (removed || rendered && start != null) {
                 this.select(deferred?.selection?.selection ?? { anchor: { p: id, o: start }, focus: { p: id, o: start } }, false);
-                if (!this.typeText(data)) {
+                if (queued) {
+                    this.queue.push({ type: 'insertText', data });
+                } else if (!this.typeText(data)) {
                     this.command('replace', data);
                 }
             } else {
@@ -89,7 +96,7 @@ export const compositionMethods = {
         } finally {
             this.observer.takeRecords();
             if (!this.blocked) {
-                this.schedule();
+                this.replay();
             }
         }
     }

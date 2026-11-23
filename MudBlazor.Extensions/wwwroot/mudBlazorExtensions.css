@@ -10396,7 +10396,7 @@ textarea.mud-ex-ssg-note-text {
   padding: 0 5.4pt;
   vertical-align: top;
 }
-.mud-ex-doc-sheet > [data-b]:not([style*="text-indent:-"]):not([style*="margin-left:-"]) {
+.mud-ex-doc-sheet > [data-b] {
   content-visibility: auto;
   contain-intrinsic-size: auto 1.5em;
 }

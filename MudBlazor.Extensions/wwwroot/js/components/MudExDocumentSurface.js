@@ -11,6 +11,10 @@ const SUSPEND_TIMEOUT = 10000;
 const INLINE_CHARS = 8000;
 const RASTER = new Set(['image/png', 'image/jpeg', 'image/gif', 'image/bmp', 'image/webp']);
 
+const FILTERED = [String.fromCharCode(10), String.fromCharCode(13)];
+
+const echoed = text => [...(text ?? '')].filter(c => !FILTERED.includes(c)).join('');
+
 const key = selection => selection ? `${selection.anchor.p}:${selection.anchor.o}:${selection.focus.p}:${selection.focus.o}` : '';
 
 const base64 = bytes => {
@@ -89,6 +93,14 @@ class MudExDocumentSurface {
         return this.commands > 0 || this.suspension != null;
     }
 
+    get inert() {
+        return this.disposed || this.broken || this.readOnly;
+    }
+
+    echoed(text) {
+        return echoed(text);
+    }
+
     patch(patches) {
         (patches ?? []).forEach(patch => this.receive(patch, null));
     }
@@ -153,7 +165,10 @@ class MudExDocumentSurface {
         if (patch.reset) {
             this.sheet.replaceChildren();
             [this.blocks, this.dirty, this.held, this.sentText, this.awaiting].forEach(map => map.clear());
-            this.queue = [];
+            if (!message?.resync) {
+                this.queue = [];
+            }
+            this.resyncing = false;
             this.composing = null;
             this.structural = null;
             this.deferred = null;
@@ -200,7 +215,7 @@ class MudExDocumentSurface {
             this.held.set(dto.id, { upsert, message });
             return;
         }
-        if (!force && message && !this.awaiting.has(dto.id) && this.redirtied(dto.id, message) && dto.text === this.sentText.get(dto.id)) {
+        if (!force && message && !this.awaiting.has(dto.id) && this.redirtied(dto.id, message) && dto.text === echoed(this.sentText.get(dto.id))) {
             return;
         }
         const after = upsert.after != null ? this.blocks.get(upsert.after) : null;
@@ -214,7 +229,7 @@ class MudExDocumentSurface {
         }
         const keep = new Map();
         if (!force && message && old && dto.k !== 'p') {
-            nested(dto, []).filter(p => this.redirtied(p.id, message) && p.text === this.sentText.get(p.id) && this.blocks.get(p.id)?.isConnected)
+            nested(dto, []).filter(p => this.redirtied(p.id, message) && p.text === echoed(this.sentText.get(p.id)) && this.blocks.get(p.id)?.isConnected)
                 .forEach(p => keep.set(p.id, this.blocks.get(p.id)));
         }
         const element = render(dto, this.media);
@@ -399,6 +414,7 @@ class MudExDocumentSurface {
         clearTimeout(this.typingTimer);
         this.typingTimer = 0;
         const message = this.collect(op);
+        message.resync = op?.name === 'resync';
         const result = await this.send(message, op?.name, op?.text);
         if (!this.disposed) {
             await this.take(result, message, op?.name != null);
@@ -497,7 +513,7 @@ class MudExDocumentSurface {
 
     replay() {
         try {
-            while (!this.blocked && !this.disposed && this.queue.length) {
+            while (!this.blocked && !this.inert && !this.composing && this.queue.length) {
                 this.perform(this.queue.shift(), null);
             }
         } finally {
