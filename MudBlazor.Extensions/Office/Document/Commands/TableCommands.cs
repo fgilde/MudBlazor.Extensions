@@ -426,10 +426,12 @@ internal static class Tables
 
     internal static IEnumerable<(int Column, TableCell Cell, int RowSpan)> Visible(Table table, int row)
     {
-        foreach (var (column, cell) in Layout(table.Rows[row]).Where(c => c.Cell.VMerge != VerticalMerge.Continue))
+        var above = row > 0 ? Layout(table.Rows[row - 1]) : [];
+        foreach (var (column, cell) in Layout(table.Rows[row]))
         {
+            if (cell.VMerge == VerticalMerge.Continue && above.Any(c => c.Column == column && c.Cell.VMerge != VerticalMerge.None)) continue;
             var rows = 1;
-            if (cell.VMerge == VerticalMerge.Restart)
+            if (cell.VMerge != VerticalMerge.None)
                 while (row + rows < table.Rows.Count && Layout(table.Rows[row + rows]).Any(c => c.Column == column && c.Cell.VMerge == VerticalMerge.Continue))
                     rows++;
             yield return (column, cell, rows);

@@ -10,23 +10,31 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
     private const double EmuPerPixel = 9525;
     private const double TwipsPerPixel = 15;
     private const int MaxStyleChain = 20;
+    private const int MaxImagePixels = 10000;
     private static readonly HashSet<string> SymbolFonts = new(StringComparer.OrdinalIgnoreCase) { "Symbol", "Wingdings", "Wingdings 2", "Wingdings 3", "Webdings" };
     private static readonly ParagraphFormat NoParagraph = new();
     private readonly HashSet<string> _media = [];
+    private readonly HashSet<string> _rendered = [];
     private (int Version, RunFormat Format)? _defaults;
 
-    public SurfaceBlock Render(Block block) => block switch
+    public SurfaceBlock Render(Block block)
     {
-        Paragraph paragraph => ParagraphBlock(paragraph),
-        Table table => TableBlock(table),
-        OpaqueBlock { Visible: true } opaque => new SurfaceBlock(opaque.Id, "o", "", null, null, null, null, null, null, (opaque.Preview ?? []).Select(Render).ToList()),
-        _ => new SurfaceBlock(block.Id, "h", "", null, null, null, null, null, null, null)
-    };
+        if (block.Id != null) _rendered.Add(block.Id);
+        return block switch
+        {
+            Paragraph paragraph => ParagraphBlock(paragraph),
+            Table table => TableBlock(table),
+            OpaqueBlock { Visible: true } opaque => new SurfaceBlock(opaque.Id, "o", "", null, null, null, null, null, null, (opaque.Preview ?? []).Select(Render).ToList()),
+            _ => new SurfaceBlock(block.Id, "h", "", null, null, null, null, null, null, null)
+        };
+    }
+
+    public bool Forget(string id) => id != null && _rendered.Remove(id);
 
     public string SheetCss()
     {
         var page = document.Sections.Count > 0 ? document.Sections[0].Page : PageSetup.A4;
-        return $"box-sizing:border-box;width:{Pt(page.Width)}pt;padding:{Pt(page.MarginTop)}pt {Pt(page.MarginRight)}pt {Pt(page.MarginBottom)}pt {Pt(page.MarginLeft + page.Gutter)}pt;" +
+        return $"box-sizing:border-box;width:{Pt(page.Width)}pt;padding:{Pt(page.MarginTop)}pt {Pt(page.MarginRight)}pt {Pt(page.MarginBottom)}pt {Pt((long)page.MarginLeft + page.Gutter)}pt;" +
                DocumentCss.Run(Defaults(), new RunFormat(), true);
     }
 
@@ -38,9 +46,10 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
     }
 
     public string RunCss(Paragraph paragraph, RunFormat own) =>
-        DocumentCss.Run(document.EffectiveRunFormat(paragraph, new TextRun("") { Format = own }), Basis(document.EffectiveRunFormat(paragraph, null)), true);
+        DocumentCss.Run(document.EffectiveRunFormat(paragraph, new TextRun("") { Format = own }), Basis(paragraph, document.EffectiveRunFormat(paragraph, null)), true);
 
-    private RunFormat Basis(RunFormat mark) => Defaults() with { Bold = mark.Bold, Italic = mark.Italic, SizePt = mark.SizePt, Font = mark.Font };
+    private RunFormat Basis(Paragraph paragraph, RunFormat mark) =>
+        paragraph.Length > 0 ? Defaults() : Defaults() with { Bold = mark.Bold, Italic = mark.Italic, SizePt = mark.SizePt, Font = mark.Font };
 
     private RunFormat Defaults()
     {
@@ -53,9 +62,9 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         var format = document.EffectiveParagraphFormat(paragraph);
         var defaults = Defaults();
         var mark = document.EffectiveRunFormat(paragraph, null);
-        var basis = Basis(mark);
+        var basis = Basis(paragraph, mark);
         var label = document.ListLabel(paragraph);
-        var css = DocumentCss.Paragraph(format, NoParagraph, false, false) + DocumentCss.Spacing(format) + DocumentCss.Run(basis, defaults, true);
+        var css = DocumentCss.Paragraph(format, NoParagraph, false, false) + DocumentCss.Spacing(format) + (paragraph.Length > 0 ? "" : DocumentCss.Run(basis, defaults, true));
         return new SurfaceBlock(paragraph.Id, "p", css, paragraph.Text, label, label == null ? null : LabelCss(format, mark, basis), Runs(paragraph, basis), null, null, null);
     }
 
@@ -65,7 +74,7 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         var own = level?.LabelFormat ?? new RunFormat();
         var label = (own with { Font = document.Theme.Font(own.Font), Color = document.Theme.Color(own.Color), Shading = document.Theme.Color(own.Shading) }).Over(mark);
         if (label.Font != null && SymbolFonts.Contains(label.Font)) label = label with { Font = mark.Font };
-        var hanging = -(format.IndentFirstLine ?? 0);
+        var hanging = -(long)(format.IndentFirstLine ?? 0);
         var css = new StringBuilder("display:inline-block;text-indent:0;");
         if (hanging > 0 && level?.Suffix is null or "tab") css.Append("min-width:").Append(Pt(hanging)).Append("pt;");
         if (level?.Suffix == "space") css.Append("padding-right:0.25em;");
@@ -114,26 +123,26 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
 
     private SurfaceRun ImageRun(InlineImage image, string css)
     {
-        if (image.MediaPart != null && document.GetMedia(image.MediaPart) != null) _media.Add(image.MediaPart);
+        if (image.MediaPart == null || document.GetMedia(image.MediaPart) == null) return new SurfaceRun("o", image.AltText ?? "", css, null, 0, 0);
+        _media.Add(image.MediaPart);
         return new SurfaceRun("i", null, css, image.MediaPart, Pixels(image.WidthEmu / EmuPerPixel), Pixels(image.HeightEmu / EmuPerPixel));
     }
 
     private SurfaceBlock TableBlock(Table table)
     {
         var styles = TableStyles(table).ToList();
-        var bordered = Bordered(table.Format.Borders) || styles.Any(s => Bordered(s.TableFormat.Borders));
-        var border = bordered ? "border:0.5pt solid #000000;" : "border:1px dotted #BFBFBF;";
+        var border = Bordered(table.Format.Borders, styles.Select(s => s.TableFormat.Borders).ToList()) ? "border:0.5pt solid #000000;" : "border:1px dotted #BFBFBF;";
         var rows = new List<SurfaceRow>();
         for (var r = 0; r < table.Rows.Count; r++)
         {
             var row = table.Rows[r];
-            var cells = Tables.Visible(table, r).Select(c => new SurfaceCell(c.Cell.GridSpan, c.RowSpan, CellCss(c.Cell, border), c.Cell.Blocks.Select(Render).ToList())).ToList();
+            var cells = Tables.Visible(table, r).Select(c => new SurfaceCell(Math.Max(1, c.Cell.GridSpan), c.RowSpan, CellCss(c.Cell, border), c.Cell.Blocks.Select(Render).ToList())).ToList();
             if (row.GridBefore > 0) cells.Insert(0, new SurfaceCell(row.GridBefore, 1, "border:none;", []));
             if (row.GridAfter > 0) cells.Add(new SurfaceCell(row.GridAfter, 1, "border:none;", []));
             rows.Add(new SurfaceRow(row.Height is { } height ? $"height:{Pt(height)}pt;" : "", cells));
         }
 
-        var grid = table.Grid.Select(w => Pixels(w / TwipsPerPixel)).ToList();
+        var grid = table.Grid.Select(w => (int)Math.Round(Math.Clamp(w, 0, DocumentCss.MaxTwips) / TwipsPerPixel)).ToList();
         var css = new StringBuilder("border-collapse:collapse;");
         if (grid.Count > 0) css.Append("table-layout:fixed;width:").Append(grid.Sum(w => (long)w)).Append("px;");
         var alignment = table.Format.Alignment ?? styles.Select(s => s.TableFormat.Alignment).FirstOrDefault(a => a != null);
@@ -159,10 +168,13 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
             yield return style;
     }
 
-    private static bool Bordered(TableBorders borders) =>
-        borders != null && new[] { borders.Top, borders.Bottom, borders.Left, borders.Right, borders.InsideH, borders.InsideV }.Any(b => b != null && b.Style is not ("nil" or "none"));
+    private static bool Bordered(TableBorders direct, List<TableBorders> styles) =>
+        Sides(direct).Select((side, i) => side ?? styles.Select(s => Sides(s)[i]).FirstOrDefault(b => b != null)).Any(b => b != null && b.Style is not ("nil" or "none"));
 
-    private static string Pt(int twips) => DocumentCss.Number(twips / 20.0);
+    private static Border[] Sides(TableBorders borders) =>
+        borders == null ? new Border[6] : [borders.Top, borders.Bottom, borders.Left, borders.Right, borders.InsideH, borders.InsideV];
 
-    private static int Pixels(double value) => (int)Math.Clamp(Math.Round(value), 1, int.MaxValue);
+    private static string Pt(long twips) => DocumentCss.Twips(twips, 0);
+
+    private static int Pixels(double value) => (int)Math.Clamp(Math.Round(value), 1, MaxImagePixels);
 }

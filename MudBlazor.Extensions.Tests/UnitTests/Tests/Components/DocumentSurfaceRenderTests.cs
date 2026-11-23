@@ -10,7 +10,7 @@ using MudBlazor.Extensions.Office.Document;
 public class DocumentSurfaceRenderTests
 {
     private const string Injection = "x';}body{background:url(evil)}";
-    private static readonly DateTimeOffset T0 = new(2026, 11, 23, 10, 0, 0, TimeSpan.Zero);
+    internal static readonly DateTimeOffset T0 = new(2026, 11, 23, 10, 0, 0, TimeSpan.Zero);
 
     [Fact]
     public void Paragraph_RunsCarryKindsAndCss()
@@ -55,13 +55,85 @@ public class DocumentSurfaceRenderTests
     [Fact]
     public void Paragraph_NonBoldRunInBoldMark_ResetsWeight()
     {
-        var document = TextDocument.FromBlocks([new Paragraph { MarkFormat = new RunFormat { Bold = true, Underline = "single" }, Inlines = [new TextRun("x")] }]);
+        var mark = new RunFormat { Bold = true, Underline = "single", SizePt = 16 };
+        var document = TextDocument.FromBlocks([new Paragraph { MarkFormat = mark, Inlines = [new TextRun("x") { Format = new RunFormat { SizePt = 8 } }] }, new Paragraph { MarkFormat = mark }]);
+        var render = new DocumentSurfaceRender(document);
 
-        var block = new DocumentSurfaceRender(document).Render(document.Blocks[0]);
+        var filled = render.Render(document.Blocks[0]);
+        var empty = render.Render(document.Blocks[1]);
 
-        Assert.Contains("font-weight:bold", block.Css);
-        Assert.DoesNotContain("text-decoration", block.Css);
-        Assert.Contains("font-weight:normal", block.Runs[0].Css);
+        Assert.DoesNotContain("font-weight", filled.Css);
+        Assert.DoesNotContain("font-size", filled.Css);
+        Assert.DoesNotContain("font-weight", filled.Runs[0].Css);
+        Assert.Contains("font-size:8pt", filled.Runs[0].Css);
+        Assert.Contains("font-weight:bold", empty.Css);
+        Assert.Contains("font-size:16pt", empty.Css);
+        Assert.DoesNotContain("text-decoration", empty.Css);
+    }
+
+    [Fact]
+    public void Css_InheritedFormats_AreResetExplicitly()
+    {
+        var basis = new RunFormat { Caps = true, SmallCaps = true, Color = "#FF0000", Underline = "single", Strike = true, Highlight = "yellow", VerticalAlign = VerticalAlign.Superscript };
+        var off = new RunFormat { Caps = false, SmallCaps = false, Color = "auto", Underline = "none", Strike = false, VerticalAlign = VerticalAlign.Baseline };
+
+        var css = DocumentCss.Run(off, basis);
+        var same = DocumentCss.Run(basis, basis);
+
+        foreach (var reset in new[] { "text-transform:none;", "font-variant:normal;", "color:#000000;", "text-decoration:none;", "background:none;", "vertical-align:baseline;" })
+        {
+            Assert.Contains(reset, css);
+            Assert.DoesNotContain(reset, same);
+        }
+
+        Assert.DoesNotContain("color:#000000", DocumentCss.Run(off, off with { Color = "auto" }));
+    }
+
+    [Fact]
+    public void Css_HostileNumbers_AreClamped()
+    {
+        var document = TextDocument.FromBlocks(
+        [
+            new Paragraph
+            {
+                Format = new ParagraphFormat { IndentLeft = int.MaxValue, IndentFirstLine = int.MinValue, IndentRight = -int.MaxValue, SpacingBefore = -500, SpacingAfter = int.MaxValue, Line = new LineSpacing(int.MaxValue, LineRule.Exact) },
+                Inlines = [new TextRun("x") { Format = new RunFormat { SizePt = 1e9 } }, new TextRun("y") { Format = new RunFormat { SizePt = 0 } }, new InlineImage("p", long.MaxValue, 0)]
+            },
+            new Paragraph { Format = new ParagraphFormat { Line = new LineSpacing(int.MaxValue, LineRule.Auto) } },
+            new Paragraph { Format = new ParagraphFormat { Line = new LineSpacing(1, LineRule.Auto) } },
+            new Table { Grid = [int.MaxValue, -5], Rows = [new TableRow([new TableCell([new Paragraph()]) { GridSpan = 2 }]) { Height = int.MaxValue }] }
+        ]);
+        document.PutMedia("p", [1], "image/png");
+        var render = new DocumentSurfaceRender(document);
+
+        var paragraph = render.Render(document.Blocks[0]);
+        var table = render.Render(document.Blocks[3]);
+
+        Assert.Contains("margin-left:1584pt", paragraph.Css);
+        Assert.Contains("text-indent:-1584pt", paragraph.Css);
+        Assert.Contains("margin-right:-1584pt", paragraph.Css);
+        Assert.Contains("margin-top:0pt", paragraph.Css);
+        Assert.Contains("margin-bottom:1584pt", paragraph.Css);
+        Assert.Contains("line-height:1584pt", paragraph.Css);
+        Assert.Contains("font-size:1638pt", paragraph.Runs[0].Css);
+        Assert.Contains("font-size:1pt", paragraph.Runs[1].Css);
+        Assert.Equal((10000, 1), (paragraph.Runs[2].W, paragraph.Runs[2].H));
+        Assert.Contains("line-height:132;", render.Render(document.Blocks[1]).Css);
+        Assert.Contains("line-height:0.06;", render.Render(document.Blocks[2]).Css);
+        Assert.Equal([2112, 0], table.Grid);
+        Assert.Equal("height:1584pt;", table.Rows[0].Css);
+    }
+
+    [Fact]
+    public void Image_WithoutMedia_IsAPlaceholderToken()
+    {
+        var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new InlineImage("missing", 9525, 9525) { AltText = "logo" }, new InlineImage("gone", 9525, 9525)] }]);
+        var render = new DocumentSurfaceRender(document);
+
+        var block = render.Render(document.Blocks[0]);
+
+        Assert.Equal([("o", "logo", null), ("o", "", null)], block.Runs.Select(r => (r.K, r.T, r.Media)));
+        Assert.Empty(render.TakeMedia());
     }
 
     [Fact]
@@ -82,11 +154,13 @@ public class DocumentSurfaceRenderTests
     [Fact]
     public void Css_FontNameInjection_IsSanitised()
     {
-        var document = TextDocument.FromBlocks([new Paragraph { MarkFormat = new RunFormat { Font = Injection }, Inlines = [new TextRun("x") { Format = new RunFormat { Font = "Arial" + Injection } }] }]);
+        var document = TextDocument.FromBlocks([new Paragraph { Inlines = [new TextRun("x") { Format = new RunFormat { Font = "Arial" + Injection } }] }, new Paragraph { MarkFormat = new RunFormat { Font = Injection } }]);
+        var render = new DocumentSurfaceRender(document);
 
-        var block = new DocumentSurfaceRender(document).Render(document.Blocks[0]);
+        var block = render.Render(document.Blocks[0]);
+        var empty = render.Render(document.Blocks[1]);
 
-        foreach (var css in new[] { block.Css, block.Runs[0].Css })
+        foreach (var css in new[] { empty.Css, block.Runs[0].Css })
         {
             Assert.Contains("font-family:", css);
             Assert.DoesNotContain(";}", css);
@@ -229,6 +303,46 @@ public class DocumentSurfaceRenderTests
     }
 
     [Fact]
+    public void Table_DirectNilBorders_WinOverTheStyle()
+    {
+        var document = WithTable();
+        var table = document.Blocks.OfType<Table>().Single();
+        var render = new DocumentSurfaceRender(document);
+        Assert.Contains("border:0.5pt solid", render.Render(table).Rows[0].Cells[0].Css);
+        var nil = new Border("nil", 0, "auto");
+
+        document.Execute(new SetTableFormatCommand(table.Id, f => f with { Borders = new TableBorders(nil, nil, nil, nil, nil, nil) }, "Borders"));
+        var block = render.Render(document.Blocks.OfType<Table>().Single());
+
+        Assert.All(block.Rows.SelectMany(r => r.Cells), c => Assert.Contains("dotted", c.Css));
+    }
+
+    [Fact]
+    public void Table_OrphanContinuationAndZeroSpan_RenderAsNormalCells()
+    {
+        static TableCell Cell(string text, int span = 1, VerticalMerge merge = VerticalMerge.None) =>
+            new([new Paragraph { Inlines = [new TextRun(text)] }]) { GridSpan = span, VMerge = merge };
+        var document = TextDocument.FromBlocks(
+        [
+            new Table
+            {
+                Grid = [1500, 1500],
+                Rows =
+                [
+                    new TableRow([Cell("a", 1, VerticalMerge.Continue), Cell("b", 0)]),
+                    new TableRow([Cell("c"), Cell("d", 1, VerticalMerge.Continue)])
+                ]
+            }
+        ]);
+
+        var block = new DocumentSurfaceRender(document).Render(document.Blocks[0]);
+
+        Assert.Equal([("a", 1, 1), ("b", 1, 1)], block.Rows[0].Cells.Select(c => (c.Blocks[0].Text, c.ColSpan, c.RowSpan)));
+        Assert.Equal(["c", "d"], block.Rows[1].Cells.Select(c => c.Blocks[0].Text));
+        Assert.Equal(4, Html(document).Split("<td").Length - 1);
+    }
+
+    [Fact]
     public void OpaqueBlocks_VisibleWithPreview_HiddenAsH()
     {
         var document = TextDocument.FromBlocks(
@@ -247,206 +361,40 @@ public class DocumentSurfaceRenderTests
         Assert.Equal(document.Blocks[1].Id, hidden.Id);
     }
 
-    [Fact]
-    public void Patch_Typing_InPlaceUpsertOfThatParagraphOnly()
+    internal static List<string> AppliedOrder(IEnumerable<string> before, SurfacePatch patch)
     {
-        var document = Paragraphs("a", "b", "c");
-        var render = new DocumentSurfaceRender(document);
-        var events = Record(document);
-        var id = document.Blocks[1].Id;
+        var order = before.Except(patch.Remove).ToList();
+        foreach (var upsert in patch.Upsert.Where(u => !u.InPlace))
+        {
+            order.Remove(upsert.Block.Id);
+            Assert.True(upsert.After == null || order.Contains(upsert.After), $"{upsert.After} missing for {upsert.Block.Id}");
+            order.Insert(upsert.After == null ? 0 : order.IndexOf(upsert.After) + 1, upsert.Block.Id);
+        }
 
-        document.ApplyTyping([new TypedParagraph(id, "bx", 2)], T0);
-        var patch = DocumentSurfacePatches.Change(document, render, Assert.Single(events), 5);
-
-        Assert.Equal(5, patch.Seq);
-        Assert.False(patch.Reset);
-        Assert.Null(patch.SheetCss);
-        Assert.Empty(patch.Remove);
-        var upsert = Assert.Single(patch.Upsert);
-        Assert.True(upsert.InPlace);
-        Assert.Equal((id, "bx"), (upsert.Block.Id, upsert.Block.Text));
+        return order;
     }
 
-    [Fact]
-    public void Patch_Split_InsertsAfterThePreviousBlock()
+    internal static string Html(TextDocument document)
     {
-        var document = Paragraphs("a", "bc", "d");
-        var render = new DocumentSurfaceRender(document);
-        var events = Record(document);
-        var (first, second) = (document.Blocks[0].Id, document.Blocks[1].Id);
-
-        document.Execute(new SplitParagraphCommand(document.PositionOf(second, 1)));
-        var patch = DocumentSurfacePatches.Change(document, render, Assert.Single(events), 1);
-
-        Assert.Equal(2, patch.Upsert.Count);
-        Assert.All(patch.Upsert, u => Assert.False(u.InPlace));
-        Assert.Equal((second, first), (patch.Upsert[0].Block.Id, patch.Upsert[0].After));
-        Assert.Equal((document.Blocks[2].Id, second), (patch.Upsert[1].Block.Id, patch.Upsert[1].After));
-        Assert.Equal("c", patch.Upsert[1].Block.Text);
+        using var stream = new MemoryStream();
+        document.Save(stream, DocumentFileFormat.Html);
+        return System.Text.Encoding.UTF8.GetString(stream.ToArray());
     }
 
-    [Fact]
-    public void Patch_TypingInCell_UpsertsTheNestedParagraphOnly()
-    {
-        var document = WithTable();
-        var render = new DocumentSurfaceRender(document);
-        var events = Record(document);
-        var cellParagraph = Cell(document, 0, 1);
-
-        document.ApplyTyping([new TypedParagraph(cellParagraph, "x", 1)], T0);
-        var patch = DocumentSurfacePatches.Change(document, render, Assert.Single(events), 1);
-
-        var upsert = Assert.Single(patch.Upsert);
-        Assert.True(upsert.InPlace);
-        Assert.Equal(("p", cellParagraph, "x"), (upsert.Block.K, upsert.Block.Id, upsert.Block.Text));
-    }
-
-    [Fact]
-    public void Patch_CellShadingChanged_UpsertsTheWholeTable()
-    {
-        var document = WithTable();
-        var render = new DocumentSurfaceRender(document);
-        var events = Record(document);
-        var table = document.Blocks.OfType<Table>().Single();
-
-        document.Execute(new SetTableCellFormatCommand(table.Id, [(0, 0)], c => c with { Shading = "#FFFF00" }, "Shading"));
-        var patch = DocumentSurfacePatches.Change(document, render, Assert.Single(events), 1);
-
-        var upsert = Assert.Single(patch.Upsert);
-        Assert.Equal(("t", table.Id), (upsert.Block.K, upsert.Block.Id));
-        Assert.Contains("background-color:#FFFF00", upsert.Block.Rows[0].Cells[0].Css);
-    }
-
-    [Fact]
-    public void Patch_RowInserted_UpsertsTheWholeTable()
-    {
-        var document = WithTable();
-        var render = new DocumentSurfaceRender(document);
-        var events = Record(document);
-        var table = document.Blocks.OfType<Table>().Single();
-        var index = document.BlockIndex(table.Id);
-
-        document.Execute(new InsertTableRowsCommand(table.Id, 1, 1));
-        var patch = DocumentSurfacePatches.Change(document, render, Assert.Single(events), 1);
-
-        var upsert = Assert.Single(patch.Upsert);
-        Assert.Equal(("t", table.Id, document.Blocks[index - 1].Id), (upsert.Block.K, upsert.Block.Id, upsert.After));
-        Assert.Equal(3, upsert.Block.Rows.Count);
-        var ids = DocumentSurfacePatches.Ids(patch).ToList();
-        Assert.Contains(table.Id, ids);
-        Assert.Contains(Cell(document, 1, 0), ids);
-        Assert.Equal(1 + 6, ids.Count);
-    }
-
-    [Fact]
-    public void Patch_ListItemInserted_RefreshesFollowingLabels()
-    {
-        var document = Paragraphs("1", "2", "3", "4", "5");
-        document.Execute(new ApplyListCommand(document.Blocks.Select(b => b.Id).ToList(), ListTemplate.Decimal));
-        var render = new DocumentSurfaceRender(document);
-        var seq = 0;
-        DocumentSurfacePatches.Initial(document, render, () => ++seq);
-        var events = Record(document);
-
-        document.Execute(new SplitParagraphCommand(document.PositionOf(document.Blocks[1].Id, 1)));
-        var patch = DocumentSurfacePatches.Change(document, render, events[0], ++seq);
-
-        var inserted = Assert.Single(patch.Upsert, u => !u.InPlace);
-        Assert.Equal((document.Blocks[2].Id, document.Blocks[1].Id, "3."), (inserted.Block.Id, inserted.After, inserted.Block.Label));
-        Assert.Equal(["4.", "5.", "6."], patch.Upsert.Where(u => u.InPlace).Select(u => u.Block.Label));
-
-        document.Execute(new SplitParagraphCommand(document.PositionOf(document.Blocks[0].Id, 1)));
-        var next = DocumentSurfacePatches.Change(document, render, events[1], ++seq);
-
-        Assert.Equal(["3.", "4.", "5.", "6.", "7."], next.Upsert.Where(u => u.InPlace).Select(u => u.Block.Label));
-    }
-
-    [Fact]
-    public void Patch_StyleChanged_IsReset()
-    {
-        var document = Paragraphs("a", "b");
-        var render = new DocumentSurfaceRender(document);
-        var events = Record(document);
-
-        document.Execute(new SetDefaultFontCommand("Arial", 12));
-        var patch = DocumentSurfacePatches.Change(document, render, Assert.Single(events), 3);
-
-        Assert.True(patch.Reset);
-        Assert.Contains("'Arial','Liberation Sans',sans-serif", patch.SheetCss);
-        Assert.Equal(document.Blocks.Select(b => b.Id), patch.Upsert.Select(u => u.Block.Id));
-        Assert.Null(patch.Upsert[0].After);
-        Assert.Equal(document.Blocks[0].Id, patch.Upsert[1].After);
-    }
-
-    [Fact]
-    public void Patch_PageSetup_SendsSheetCssOnly()
+    internal static TextDocument Created(params string[] texts)
     {
         var document = TextDocument.Create();
-        var render = new DocumentSurfaceRender(document);
-        var events = Record(document);
-
-        document.Execute(new SetPageSetupCommand(document.Sections[0].Id, PageSetup.Letter));
-        var patch = DocumentSurfacePatches.Change(document, render, Assert.Single(events), 1);
-
-        Assert.Contains("width:612pt", patch.SheetCss);
-        Assert.False(patch.Reset);
-        Assert.Empty(patch.Upsert);
+        var id = document.Blocks[0].Id;
+        document.Execute(new ReplaceTextCommand(new DocumentRange(document.PositionOf(id, 0), document.PositionOf(id, 0)), string.Concat(texts)));
+        foreach (var text in texts.SkipLast(1)) document.Execute(new SplitParagraphCommand(document.PositionOf(document.Blocks[^1].Id, text.Length)));
+        document.Styles = StyleDefinitions.With(document.Styles, Tables.GridStyle, StyleType.Table);
+        return document;
     }
 
-    [Fact]
-    public void Patch_HeaderChanged_ProducesNothing()
-    {
-        var document = TextDocument.Create();
-        document.Execute(new AddHeaderFooterCommand(document.Sections[0].Id, HeaderFooterKind.Header, HeaderFooterType.Default));
-        var header = document.HeadersFooters[0].Blocks[0].Id;
-        var render = new DocumentSurfaceRender(document);
-        var events = Record(document);
-
-        document.Execute(new ReplaceTextCommand(new DocumentRange(document.PositionOf(header, 0), document.PositionOf(header, 0)), "head"));
-        var patch = DocumentSurfacePatches.Change(document, render, Assert.Single(events), 1);
-
-        Assert.Empty(patch.Upsert);
-        Assert.Empty(patch.Remove);
-        Assert.Null(patch.SheetCss);
-    }
-
-    [Fact]
-    public void Refresh_UpsertsKnownParagraphsInPlace()
-    {
-        var document = WithTable();
-        var render = new DocumentSurfaceRender(document);
-        var cellParagraph = Cell(document, 1, 1);
-
-        var patch = DocumentSurfacePatches.Refresh(document, render, [cellParagraph, "unknown", document.Blocks.OfType<Table>().Single().Id], 4);
-
-        Assert.Equal(4, patch.Seq);
-        var upsert = Assert.Single(patch.Upsert);
-        Assert.True(upsert.InPlace);
-        Assert.Equal(cellParagraph, upsert.Block.Id);
-    }
-
-    [Fact]
-    public void Initial_ChunksOf500_FirstIsReset()
-    {
-        var document = TextDocument.FromBlocks(Enumerable.Range(0, 1200).Select(i => new Paragraph { Inlines = [new TextRun(i.ToString(CultureInfo.InvariantCulture))] }));
-        var seq = 0;
-
-        var patches = DocumentSurfacePatches.Initial(document, new DocumentSurfaceRender(document), () => ++seq);
-
-        Assert.Equal([1, 2, 3], patches.Select(p => p.Seq));
-        Assert.Equal([true, false, false], patches.Select(p => p.Reset));
-        Assert.NotNull(patches[0].SheetCss);
-        Assert.Null(patches[1].SheetCss);
-        Assert.Equal([500, 500, 200], patches.Select(p => p.Upsert.Count));
-        Assert.Null(patches[0].Upsert[0].After);
-        Assert.Equal(patches[0].Upsert[^1].Block.Id, patches[1].Upsert[0].After);
-        Assert.Equal(document.Blocks.Select(b => b.Id), patches.SelectMany(p => p.Upsert).Select(u => u.Block.Id));
-    }
-
-    private static TextDocument Paragraphs(params string[] texts) =>
+    internal static TextDocument Paragraphs(params string[] texts) =>
         TextDocument.FromBlocks(texts.Select(t => new Paragraph { Inlines = [new TextRun(t)] }));
 
-    private static TextDocument WithTable()
+    internal static TextDocument WithTable()
     {
         var document = TextDocument.Create();
         var id = document.Blocks[0].Id;
@@ -455,10 +403,10 @@ public class DocumentSurfaceRenderTests
         return document;
     }
 
-    private static string Cell(TextDocument document, int row, int cell) =>
+    internal static string Cell(TextDocument document, int row, int cell) =>
         document.Blocks.OfType<Table>().Single().Rows[row].Cells[cell].Blocks[0].Id;
 
-    private static List<TextDocumentChangedEventArgs> Record(TextDocument document)
+    internal static List<TextDocumentChangedEventArgs> Record(TextDocument document)
     {
         var events = new List<TextDocumentChangedEventArgs>();
         document.Changed += (_, e) => events.Add(e);

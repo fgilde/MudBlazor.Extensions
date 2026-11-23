@@ -186,26 +186,27 @@ public partial class MudExDocumentSurface
     private void OnChanged(object sender, TextDocumentChangedEventArgs change)
     {
         if (!_live || !ReferenceEquals(sender, _document)) return;
-        var patch = Track(DocumentSurfacePatches.Change(_document, _render, change, ++_seq));
+        var patches = DocumentSurfacePatches.Changes(_document, _render, change, () => ++_seq);
+        foreach (var patch in patches) Track(patch, change);
         if (_acting && change.Selection != null) _resultSelection = change.Selection;
         if (_collecting != null)
-            _collecting.Add(patch);
+            _collecting.AddRange(patches);
         else
-            _ = PushAsync(_render.TakeMedia(), patch);
+            _ = PushAsync(_render.TakeMedia(), patches);
     }
 
-    private async Task PushAsync(IReadOnlyCollection<string> media, SurfacePatch patch)
+    private async Task PushAsync(IReadOnlyCollection<string> media, IReadOnlyList<SurfacePatch> patches)
     {
         await RegisterAsync(media);
-        await CallAsync("patch", (object)new[] { patch });
+        foreach (var patch in patches) await CallAsync("patch", (object)new[] { patch });
     }
 
     private Task RegisterAsync(IEnumerable<string> media) =>
         Task.WhenAll(media.Where(_registered.Add).ToList().Select(part => CallAsync("registerMedia", part, _document.GetMedia(part), _document.MediaContentType(part))));
 
-    private SurfacePatch Track(SurfacePatch patch)
+    private SurfacePatch Track(SurfacePatch patch, TextDocumentChangedEventArgs change = null)
     {
-        foreach (var id in DocumentSurfacePatches.Ids(patch)) _changedAt[id] = patch.Seq;
+        foreach (var id in change == null ? DocumentSurfacePatches.Ids(patch) : DocumentSurfacePatches.Ids(patch, change)) _changedAt[id] = patch.Seq;
         return patch;
     }
 

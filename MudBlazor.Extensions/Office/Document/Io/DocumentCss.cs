@@ -14,6 +14,12 @@ internal static class DocumentCss
         ["Courier New"] = "'Liberation Mono',monospace"
     };
 
+    internal const int MaxTwips = 31680;
+    private const double MinSizePt = 1;
+    private const double MaxSizePt = 1638;
+    private const double MinLineMultiple = 0.06;
+    private const double MaxLineMultiple = 132;
+
     internal static string Run(RunFormat format, RunFormat basis, bool fallbacks = false)
     {
         var css = new StringBuilder();
@@ -21,15 +27,16 @@ internal static class DocumentCss
         if ((format.Italic ?? false) != (basis.Italic ?? false)) css.Append("font-style:").Append(format.Italic == true ? "italic" : "normal").Append(';');
         var decoration = Decoration(format);
         if (decoration != Decoration(basis)) css.Append("text-decoration:").Append(decoration).Append(';');
-        if (format.Caps == true && basis.Caps != true) css.Append("text-transform:uppercase;");
-        if (format.SmallCaps == true && basis.SmallCaps != true) css.Append("font-variant:small-caps;");
-        if (format.Color != basis.Color && Color(format.Color) is { } color) css.Append("color:").Append(color).Append(';');
-        if (format.SizePt is { } size && size != basis.SizePt) css.Append("font-size:").Append(Number(size)).Append("pt;");
+        if ((format.Caps == true) != (basis.Caps == true)) css.Append(format.Caps == true ? "text-transform:uppercase;" : "text-transform:none;");
+        if ((format.SmallCaps == true) != (basis.SmallCaps == true)) css.Append(format.SmallCaps == true ? "font-variant:small-caps;" : "font-variant:normal;");
+        if (format.Color != basis.Color && (Color(format.Color) ?? (Color(basis.Color) != null ? "#000000" : null)) is { } color) css.Append("color:").Append(color).Append(';');
+        if (format.SizePt is { } size && size != basis.SizePt) css.Append("font-size:").Append(Number(Math.Clamp(size, MinSizePt, MaxSizePt))).Append("pt;");
         if (format.Font != basis.Font && (fallbacks ? FontStack(format.Font) : FontName(format.Font) is { } name ? "'" + name + "'" : null) is { } font)
             css.Append("font-family:").Append(font).Append(';');
-        var background = format.Highlight != null && HtmlReader.Highlights.TryGetValue(format.Highlight, out var highlight) ? highlight : Color(format.Shading);
-        if (background != null) css.Append("background-color:").Append(background).Append(';');
+        if (Background(format) is { } background) css.Append("background-color:").Append(background).Append(';');
+        else if (Background(basis) != null) css.Append("background:none;");
         if (format.VerticalAlign is { } align and not VerticalAlign.Baseline) css.Append("vertical-align:").Append(align == VerticalAlign.Superscript ? "super" : "sub").Append(';');
+        else if (basis.VerticalAlign is VerticalAlign.Superscript or VerticalAlign.Subscript) css.Append("vertical-align:baseline;");
         return css.ToString();
     }
 
@@ -38,9 +45,9 @@ internal static class DocumentCss
         var css = new StringBuilder(preWrap ? "white-space:pre-wrap;" : "");
         if (format.Alignment is { } alignment and not ParagraphAlignment.Left && alignment != basis.Alignment)
             css.Append("text-align:").Append(alignment switch { ParagraphAlignment.Center => "center", ParagraphAlignment.Right => "right", _ => "justify" }).Append(';');
-        if (!listItem && (format.IndentLeft ?? 0) != (basis.IndentLeft ?? 0)) css.Append("margin-left:").Append(Number((format.IndentLeft ?? 0) / 20.0)).Append("pt;");
+        if (!listItem && (format.IndentLeft ?? 0) != (basis.IndentLeft ?? 0)) css.Append("margin-left:").Append(Twips(format.IndentLeft, -MaxTwips)).Append("pt;");
         if (!listItem && (format.IndentFirstLine ?? 0) != (basis.IndentFirstLine ?? 0))
-            css.Append("text-indent:").Append(Number((format.IndentFirstLine ?? 0) / 20.0)).Append("pt;");
+            css.Append("text-indent:").Append(Twips(format.IndentFirstLine, -MaxTwips)).Append("pt;");
         if (Color(format.Shading) is { } shading) css.Append("background-color:").Append(shading).Append(';');
         return css.ToString();
     }
@@ -48,13 +55,15 @@ internal static class DocumentCss
     internal static string Spacing(ParagraphFormat format)
     {
         var css = new StringBuilder();
-        css.Append("margin-top:").Append(Number((format.SpacingBefore ?? 0) / 20.0)).Append("pt;");
-        css.Append("margin-bottom:").Append(Number((format.SpacingAfter ?? 0) / 20.0)).Append("pt;");
-        if ((format.IndentRight ?? 0) != 0) css.Append("margin-right:").Append(Number(format.IndentRight.Value / 20.0)).Append("pt;");
+        css.Append("margin-top:").Append(Twips(format.SpacingBefore, 0)).Append("pt;");
+        css.Append("margin-bottom:").Append(Twips(format.SpacingAfter, 0)).Append("pt;");
+        if ((format.IndentRight ?? 0) != 0) css.Append("margin-right:").Append(Twips(format.IndentRight, -MaxTwips)).Append("pt;");
         if (format.Line is { } line)
-            css.Append("line-height:").Append(line.Rule == LineRule.Auto ? Number(line.Value / 240.0 * 1.15) : Number(line.Value / 20.0) + "pt").Append(';');
+            css.Append("line-height:").Append(line.Rule == LineRule.Auto ? Number(Math.Clamp(line.Value / 240.0 * 1.15, MinLineMultiple, MaxLineMultiple)) : Twips(line.Value, 0) + "pt").Append(';');
         return css.ToString();
     }
+
+    internal static string Twips(long? twips, int min) => Number(Math.Clamp(twips ?? 0, min, MaxTwips) / 20.0);
 
     internal static string Color(string color) =>
         color is { Length: 7 } && color[0] == '#' && color.Skip(1).All(char.IsAsciiHexDigit) ? color.ToUpperInvariant() : null;
@@ -69,6 +78,9 @@ internal static class DocumentCss
         FontName(font) is { } name ? "'" + name + "'," + (Fallbacks.TryGetValue(name, out var fallback) ? fallback : "sans-serif") : null;
 
     internal static string Number(double value) => double.IsFinite(value) ? value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
+
+    private static string Background(RunFormat format) =>
+        format.Highlight != null && HtmlReader.Highlights.TryGetValue(format.Highlight, out var highlight) ? highlight : Color(format.Shading);
 
     private static string Decoration(RunFormat format)
     {
