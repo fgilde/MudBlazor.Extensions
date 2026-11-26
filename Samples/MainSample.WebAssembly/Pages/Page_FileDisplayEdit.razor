@@ -1,18 +1,11 @@
-@page "/file-display-edit"
+﻿@page "/file-display-edit"
 @inherits BasePage
 
 @using MainSample.WebAssembly.Examples.FileDisplay
 
-@attribute [DemoNew(Group = "File Handling", Name = "File Display Edit Mode", Order = 3, Icon = Icons.Material.Outlined.EditNote, ForComponentTypes = new[] { typeof(MudExFileDisplay), typeof(MudExFileDisplayCode) }, Documentation = "Edit text and code files in MudExFileDisplay, save them locally or hand the save over to your own server code.")]
+@attribute [DemoNew(Group = "File Handling", Name = "File Display Edit Mode", Order = 2, Icon = Icons.Material.Outlined.EditNote, ForComponentTypes = new[] { typeof(MudExFileDisplay), typeof(MudExFileDisplayCode) }, Documentation = "Edit text and code files in MudExFileDisplay, save them locally or hand the save over to your own server code.")]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx File Display – Edit mode"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["With AllowEdit the file display gets an edit toggle for files that have an editor. Changes mark the file as dirty, Ctrl+S saves, and leaving edit mode or loading another file asks before discarding unsaved changes."]
-    </MudText>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="File Display - Edit mode" Description="With AllowEdit the file display gets an edit toggle for files that have an editor. Changes mark the file as dirty, Ctrl+S saves, and leaving edit mode or loading another file asks before discarding unsaved changes." />
 
 <MudExDemoPage>
 

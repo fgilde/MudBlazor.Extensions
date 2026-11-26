@@ -1,499 +1,361 @@
 ﻿@page "/"
 @inherits BasePage
 
-@using Microsoft.Extensions.Localization
 @using MudBlazor.Extensions.Helper
-@using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Options
 
 <style>
-    .wc-promo {
+    .mx-home { max-width: 1400px; margin: 0 auto; }
+
+    .mx-home-hero {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+        gap: 40px;
+        align-items: center;
+        padding: 56px 48px;
+        border-radius: 28px;
+        border: 1px solid rgba(var(--mud-palette-primary-rgb), .25);
+        background:
+            radial-gradient(900px 420px at 0% 0%, rgba(var(--mud-palette-primary-rgb), .22), transparent 60%),
+            radial-gradient(800px 420px at 100% 100%, rgba(var(--mud-palette-tertiary-rgb), .18), transparent 60%),
+            var(--mud-palette-surface);
+        overflow: hidden;
+    }
+
+    .mx-home-title {
+        margin: 10px 0 0;
+        font-size: clamp(2.1rem, 4.4vw, 3.6rem);
+        font-weight: 800;
+        line-height: 1.08;
+        letter-spacing: -.02em;
+    }
+
+    .mx-home-title em {
+        font-style: normal;
+        background: linear-gradient(100deg, var(--mud-palette-primary), var(--mud-palette-tertiary), var(--mud-palette-secondary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .mx-home-lead {
+        margin: 18px 0 0;
+        max-width: 60ch;
+        font-size: 1.12rem;
+        line-height: 1.65;
+        color: var(--mud-palette-text-secondary);
+    }
+
+    .mx-home-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+    .mx-install {
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-top: 22px;
+        max-width: 460px;
+        padding: 6px 6px 6px 16px;
+        border-radius: 12px;
+        font-family: Consolas, "Cascadia Code", monospace;
+        font-size: .88rem;
+        color: #e6edf3;
+        background: #0d1117;
+        border: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .mx-install code { flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .mx-install code::before { content: "$ "; opacity: .5; }
+    .mx-install .mud-icon-button { color: #e6edf3; }
+
+    .mx-home-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+
+    .mx-fact {
+        padding: 20px;
+        border-radius: 18px;
+        border: 1px solid var(--mud-palette-lines-default);
+        background: rgba(var(--mud-palette-surface-rgb), .7);
+        backdrop-filter: blur(8px);
+        cursor: pointer;
+        transition: transform .18s ease, border-color .18s ease;
+    }
+
+    .mx-fact:hover { transform: translateY(-3px); border-color: rgba(var(--mud-palette-primary-rgb), .6); }
+    .mx-fact-number { font-size: 2.2rem; font-weight: 800; line-height: 1; color: var(--mud-palette-primary); }
+    .mx-fact-label { margin-top: 6px; font-weight: 600; }
+    .mx-fact-text { margin-top: 2px; font-size: .84rem; color: var(--mud-palette-text-secondary); }
+
+    .mx-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+
+    .mx-formats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+
+    .mx-format {
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: .82rem;
+        text-decoration: none;
+        color: var(--mud-palette-text-primary);
+        border: 1px solid var(--mud-palette-lines-default);
+        background: var(--mud-palette-surface);
+        transition: border-color .15s ease, color .15s ease;
+    }
+
+    .mx-format:hover { color: var(--mud-palette-primary); border-color: var(--mud-palette-primary); }
+
+    .mx-card-big { padding: 22px; }
+    .mx-card-big .mx-card-title { font-size: 1.08rem; white-space: normal; }
+    .mx-card-big .mx-card-head .mud-icon-root { font-size: 30px; }
+
+    .mx-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-bottom: 8px; }
+    .mx-toolbar .mud-input-control { flex: 1 1 280px; max-width: 420px; }
+
+    .mx-group-title {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin: 30px 0 12px;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .mx-group-title a { color: inherit; text-decoration: none; }
+    .mx-group-title a:hover { color: var(--mud-palette-primary); }
+    .mx-group-title span { font-size: .8rem; font-weight: 500; color: var(--mud-palette-text-secondary); }
+
+    .mx-wc {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 32px;
         align-items: center;
-        justify-content: space-between;
         padding: 32px;
         border-radius: 24px;
-        border: 1px solid rgba(var(--mud-palette-primary-rgb), .35);
+        border: 1px solid rgba(var(--mud-palette-primary-rgb), .3);
         background: linear-gradient(135deg, rgba(var(--mud-palette-primary-rgb), .10), rgba(var(--mud-palette-tertiary-rgb), .10));
     }
 
-    .wc-promo-text { flex: 1 1 320px; }
-
-    .wc-promo-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
-
-    .wc-promo-code {
-        flex: 1 1 360px;
-        margin: 0;
-        padding: 20px;
-        border-radius: 14px;
-        overflow-x: auto;
-        font-size: .82rem;
-        line-height: 1.6;
-        background: rgba(0,0,0,.35);
-        border: 1px solid rgba(var(--mud-palette-primary-rgb), .25);
-    }
-
-    .hero-section {
-        position: relative;
-        padding: 60px 0;
-        overflow: hidden;
-        border-radius: 50px;
-        border-bottom: 3px solid purple;
-    }
-
-    .hero-gradient {
-        background: linear-gradient(135deg, rgba(var(--mud-palette-primary-rgb), 0.1) 0%, rgba(var(--mud-palette-secondary-rgb), 0.1) 50%, rgba(var(--mud-palette-tertiary-rgb), 0.1) 100%);
-        animation: gradientShift 15s ease infinite;
-        background-size: 200% 200%;
-    }
-
-    @@keyframes gradientShift {
-        0%, 100% {
-            background-position: 0% 50%;
-        }
-
-        50% {
-            background-position: 100% 50%;
-        }
-    }
-
-    .stats-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 24px;
-        margin: 40px 0;
-    }
-
-    .stat-card {
-        background: rgba(var(--mud-palette-surface-rgb), 0.6);
-        backdrop-filter: blur(10px);
-        border-radius: 16px;
-        padding: 24px;
-        text-align: center;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(var(--mud-palette-primary-rgb), 0.2);
-    }
-
-        .stat-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-            border-color: var(--mud-palette-primary);
-        }
-
-    .stat-number {
-        font-size: 3rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, var(--mud-palette-primary), var(--mud-palette-secondary));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .feature-highlight {
-        position: relative;
-        padding: 40px 0;
-        margin: 60px 0;
-    }
-
-    .feature-card-special {
-        background: linear-gradient(135deg, rgba(var(--mud-palette-primary-rgb), 0.1), rgba(var(--mud-palette-secondary-rgb), 0.1));
-        border: 2px solid transparent;
-        background-clip: padding-box;
-        position: relative;
-        overflow: hidden;
-    }
-
-        .feature-card-special::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(45deg, var(--mud-palette-primary), var(--mud-palette-secondary), var(--mud-palette-tertiary), var(--mud-palette-primary));
-            background-size: 400% 400%;
-            z-index: -1;
-            animation: borderGlow 8s ease infinite;
-            border-radius: inherit;
-        }
-
-    @@keyframes borderGlow {
-        0%, 100% {
-            background-position: 0% 50%;
-        }
-
-        50% {
-            background-position: 100% 50%;
-        }
-    }
-
-    .section-header {
-        margin: 60px 0 30px 0;
-        text-align: center;
-    }
-
-    .section-divider {
-        height: 4px;
-        width: 100px;
-        background: linear-gradient(90deg, var(--mud-palette-primary), var(--mud-palette-secondary));
-        margin: 20px auto;
-        border-radius: 2px;
-    }
-
-    .index-card {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        cursor: pointer;
-        background: rgba(var(--mud-palette-surface-rgb), 0.8);
-        backdrop-filter: blur(8px);
-    }
-
-        .index-card:hover {
-            transform: translateY(-4px) scale(1.02);
-        }
-
-    .filter-section {
+    .mx-star {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 40px 0;
-        padding: 20px;
-        background: rgba(var(--mud-palette-surface-rgb), 0.4);
-        backdrop-filter: blur(10px);
-        border-radius: 16px;
-    }
-
-    .pulse-animation {
-        animation: pulse 2s ease-in-out infinite;
-    }
-
-    @@keyframes pulse {
-        0%, 100% {
-            opacity: 1;
-        }
-
-        50% {
-            opacity: 0.6;
-        }
-    }
-
-
-    .mud-ex-object-edit-group-flat .mud-expand-panel-text:after {
-        background-color: var( @Color.Secondary.CssVarName() );
-    }
-
-    .hero-badges {
-        display: flex;
-        justify-content: center;
-        gap: 16px;
         flex-wrap: wrap;
-        margin-top: 30px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 22px 28px;
+        border-radius: 18px;
+        border: 1px solid var(--mud-palette-lines-default);
+        background: var(--mud-palette-surface);
     }
 
-    .badge-item {
-        background: rgba(var(--mud-palette-primary-rgb), 0.1);
-        border: 1px solid rgba(var(--mud-palette-primary-rgb), 0.3);
-        padding: 8px 16px;
-        display: flex;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        cursor: pointer;
+    @@media (max-width: 1000px) {
+        .mx-home-hero, .mx-split, .mx-wc { grid-template-columns: minmax(0, 1fr); }
+        .mx-home-hero { padding: 32px 22px; }
     }
-
-        .badge-item:hover {
-            background: rgba(var(--mud-palette-primary-rgb), 0.2);
-            transform: scale(1.05);
-        }
 </style>
 
-<div class="hero-section hero-gradient">
-    <MudContainer MaxWidth="MaxWidth.Large">
-        <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudExGradientText Animate="true"
-                               Style="margin-bottom: 20px;" Align="Align.Center" Typo="Typo.h1">
-                @($"{MudExResource.PackageName} v{MudExResource.MudExVersion().Major}.{MudExResource.MudExVersion().Minor}")
-            </MudExGradientText>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-            <MudExGradientText Animate="true"
-                               Style="margin-bottom: 20px;" Align="Align.Center" Typo="Typo.h3">
-                @($"{MudExResource.PackageName} v{MudExResource.MudExVersion().Major}.{MudExResource.MudExVersion().Minor}")
-            </MudExGradientText>
-        </MudHidden>
+<PageTitle>MudBlazor.Extensions</PageTitle>
 
-        <MudText Align="Align.Center" Typo="Typo.h5" Style="margin-bottom: 20px; opacity: 0.9;">
-            @L["Supercharge your MudBlazor applications with powerful extensions"]
-        </MudText>
+<div class="mx-home">
 
-        <div class="hero-badges">
-            <div class="badge-item" @onclick="ScrollToComponents">
-                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Extension" Size="Size.Small" /> @L["More than {0} Components", _components.Count]
+    <section class="mx-home-hero">
+        <div>
+            <div class="mx-eyebrow">
+                <span>@($"{MudExResource.PackageName} {MudExResource.MudExVersion().ToString(3)}")</span>
+                <span class="mx-badge mx-badge-new">@L["MIT licensed"]</span>
             </div>
-            <div class="badge-item" @onclick="ScrollToDemos">
-                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Science" Size="Size.Small" /> @L["{0} Demos", Demos.Count]
+            <h1 class="mx-home-title">@L["The components MudBlazor"] <em>@L["leaves to you."]</em></h1>
+            <p class="mx-home-lead">
+                @L["Office editors, a viewer for more than 70 file formats, generated forms for any object, dockable and resizable dialogs, and dozens of inputs and layout helpers. Built on MudBlazor, written in C#, free to use."]
+            </p>
+            <div class="mx-home-cta">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Material.Filled.Explore"
+                           OnClick="@(() => ScrollTo("demos-section"))">@L["Browse the demos"]</MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Material.Outlined.MenuBook"
+                           Href="/readme">@L["Get started"]</MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Inherit" Size="Size.Large" StartIcon="@Icons.Custom.Brands.GitHub"
+                           Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank">GitHub</MudButton>
             </div>
-            <div class="badge-item" @onclick="@(() => NavigationManager.NavigateTo("/dialogs"))">
-                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Layers" Size="Size.Small" /> @L["Dialog Extensions"]
-            </div>
-            <div class="badge-item" @onclick="@(() => NavigationManager.NavigateTo("/theme-edit"))">
-                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Palette" Size="Size.Small" /> @L["Theme Editor"]
-            </div>
-            <div class="badge-item" @onclick="@(() => NavigationManager.NavigateTo("/web-components"))">
-                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Code" Size="Size.Small" /> @L["Web Components"]
+            <div class="mx-install">
+                <code>@InstallCommand</code>
+                <MudTooltip Text="@(_copied ? L["Copied"] : L["Copy"])">
+                    <MudIconButton Size="Size.Small" Icon="@(_copied ? Icons.Material.Filled.Check : Icons.Material.Outlined.ContentCopy)" OnClick="@CopyInstall" />
+                </MudTooltip>
             </div>
         </div>
-
-        <div class="stats-container">
-            <div class="stat-card">
-                <div class="stat-number">@_components.Count</div>
-                <MudText Typo="Typo.h6">@L["Components"]</MudText>
-                <MudText Typo="Typo.body2" Style="opacity: 0.7;">@L["Ready to use"]</MudText>
+        <div class="mx-home-facts">
+            <div class="mx-fact" @onclick="@(() => ScrollTo("components-section"))">
+                <div class="mx-fact-number">@_components.Count</div>
+                <div class="mx-fact-label">@L["Components"]</div>
+                <div class="mx-fact-text">@L["Each with a live property editor"]</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number">@Demos.Count</div>
-                <MudText Typo="Typo.h6">@L["Demos"]</MudText>
-                <MudText Typo="Typo.body2" Style="opacity: 0.7;">@L["Live examples"]</MudText>
+            <div class="mx-fact" @onclick="@(() => ScrollTo("demos-section"))">
+                <div class="mx-fact-number">@Demos.Count</div>
+                <div class="mx-fact-label">@L["Demos"]</div>
+                <div class="mx-fact-text">@L["With source code and API docs"]</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number">∞</div>
-                <MudText Typo="Typo.h6">@L["Possibilities"]</MudText>
-                <MudText Typo="Typo.body2" Style="opacity: 0.7;">@L["Build amazing UIs"]</MudText>
+            <div class="mx-fact" @onclick="@(() => ScrollTo("office-section"))">
+                <div class="mx-fact-number">4</div>
+                <div class="mx-fact-label">@L["Office editors"]</div>
+                <div class="mx-fact-text">@L["Documents, sheets, slides, notebooks"]</div>
             </div>
-        </div>
-    </MudContainer>
-</div>
-
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-8">
-    <MudPaper Class="wc-promo" Elevation="0">
-        <div class="wc-promo-text">
-            <MudText Typo="Typo.h4" GutterBottom="true">@L["MudEx without Blazor"]</MudText>
-            <MudText Typo="Typo.body1" Style="opacity: .85;">
-                @L["Every non generic component also ships as a browser custom element. One script tag and the components work in plain html, WordPress, React, Vue or Angular."]
-            </MudText>
-            <div class="wc-promo-actions">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Code"
-                           Href="/web-components">@L["How it works"]</MudButton>
-                <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.OpenInNew"
-                           Href="/webcomponents.html" Target="_blank">@L["Live demo in plain html"]</MudButton>
+            <div class="mx-fact" @onclick="@(() => ScrollTo("files-section"))">
+                <div class="mx-fact-number">70+</div>
+                <div class="mx-fact-label">@L["File formats"]</div>
+                <div class="mx-fact-text">@L["Shown by one component"]</div>
             </div>
         </div>
-        <pre class="wc-promo-code"><code>&lt;script src="https://www.mudex.org/wc/mudex.js"&gt;&lt;/script&gt;
+    </section>
+
+    <section class="mx-section" id="office-section">
+        <div class="mx-section-head">
+            <div class="mx-eyebrow"><span>@L["Office editors"]</span><span class="mx-badge mx-badge-new">@L["New"]</span></div>
+            <h2 class="mx-section-title">@L["Word, Excel, PowerPoint and OneNote style editors as Blazor components"]</h2>
+            <p class="mx-section-lead">
+                @L["Four editors that share one ribbon, run entirely in the browser and read and write the real file formats. No server round trips, no iframes, no third party viewer. This is the running component, not a screenshot: pick an editor and type."]
+            </p>
+        </div>
+        <OfficeShowcase />
+        <div class="mx-home-cta">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/office" EndIcon="@Icons.Material.Filled.ArrowForward">@L["Office editors overview"]</MudButton>
+            <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/ribbon">@L["The ribbon on its own"]</MudButton>
+        </div>
+    </section>
+
+    <section class="mx-section" id="files-section">
+        <div class="mx-split">
+            <div>
+                <div class="mx-section-head">
+                    <div class="mx-eyebrow"><span>@L["File handling"]</span></div>
+                    <h2 class="mx-section-title">@L["One component for every file"]</h2>
+                    <p class="mx-section-lead">
+                        @L["MudExFileDisplay picks the right viewer from the content type: documents, images, archives, mail, 3D models, databases, certificates and many more. Formats it does not know fall back to the browser, and your own viewer is a single interface away."]
+                    </p>
+                </div>
+                <div class="mx-formats">
+                    @foreach (var (label, file) in Formats)
+                    {
+                        <a class="mx-format" href="@($"/file-display?file={Uri.EscapeDataString(file)}")">@label</a>
+                    }
+                    <a class="mx-format" href="/file-display">@L["and many more"] &rarr;</a>
+                </div>
+            </div>
+            <div class="mx-cards" style="grid-template-columns: minmax(0, 1fr);">
+                @foreach (var card in FileCards)
+                {
+                    <a class="mx-card" href="@card.Href">
+                        <div class="mx-card-head"><MudIcon Icon="@card.Icon" /><span class="mx-card-title">@L[card.Title]</span></div>
+                        <div class="mx-card-text">@L[card.Text]</div>
+                    </a>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="mx-section">
+        <div class="mx-section-head">
+            <div class="mx-eyebrow"><span>@L["Highlights"]</span></div>
+            <h2 class="mx-section-title">@L["What people use it for"]</h2>
+        </div>
+        <div class="mx-cards" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+            @foreach (var card in Highlights)
+            {
+                <a class="mx-card mx-card-big" href="@card.Href" target="@(card.Href.StartsWith("http") ? "_blank" : null)">
+                    <div class="mx-card-head"><MudIcon Icon="@card.Icon" /><span class="mx-card-title">@L[card.Title]</span></div>
+                    <div class="mx-card-text">@L[card.Text]</div>
+                </a>
+            }
+            <a class="mx-card mx-card-big" href="@AppConstants.Urls.GetTryOnline(MainLayout.Instance?.IsDark ?? true)" target="_blank">
+                <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Rounded.PlayArrow" /><span class="mx-card-title">@L["Try it online"]</span></div>
+                <div class="mx-card-text">@L["An online code editor with MudBlazor and MudBlazor.Extensions preinstalled. Write a component and see it run, without a local setup."]</div>
+            </a>
+        </div>
+    </section>
+
+    <section class="mx-section">
+        <div class="mx-wc">
+            <div>
+                <div class="mx-eyebrow"><span>@L["Web components"]</span></div>
+                <h2 class="mx-section-title">@L["MudEx without Blazor"]</h2>
+                <p class="mx-section-lead">
+                    @L["Every non generic component also ships as a browser custom element. One script tag and the components work in plain html, WordPress, React, Vue or Angular."]
+                </p>
+                <div class="mx-home-cta">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Code" Href="/web-components">@L["How it works"]</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.OpenInNew" Href="/webcomponents.html" Target="_blank">@L["Live demo in plain html"]</MudButton>
+                </div>
+            </div>
+            <pre class="mx-code"><code>&lt;script src="https://www.mudex.org/wc/mudex.js"&gt;&lt;/script&gt;
 
 &lt;mudex-file-display url="report.pdf"
                     content-type="application/pdf"&gt;
-&lt;/mudex-file-display&gt;</code></pre>
-    </MudPaper>
-</MudContainer>
+&lt;/mudex-file-display&gt;
 
-<Support />
-
-<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Style="margin-top: 40px;">
-    <div class="section-header">
-        <MudText Typo="Typo.h3">@L["Featured Components"]</MudText>
-        <div class="section-divider"></div>
-        <MudText Typo="Typo.body1" Style="opacity: 0.8;">@L["Explore our most powerful tools"]</MudText>
-    </div>
-    
-    <!-- Features -->
-    <MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.CardEffect3d | MudExCardHoverMode.LightBulb)"
-                   HoverColor="Color.Warning" TData="object">
-        <MudCard Class="index-card" Elevation="3" @onclick="@(() => { NavigationManager.NavigateTo("/structured-data-edit"); })">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <div style="display: flex; align-items: center;">
-                        <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@Icons.Custom.FileFormats.FileCode" />
-                        <MudText Class="ml-5" Typo="Typo.h6">MudExStructuredDataEditor</MudText>
-                    </div>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["You don't need an extra JsonEditor anymore"]</MudText>
-                <MudText Typo="Typo.body2" Style="margin-top: 8px;">@L["Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay"]</MudText>
-            </MudCardContent>
-        </MudCard>
-
-        <MudCard Class="index-card" Elevation="3" @onclick="@(() => { NavigationManager.NavigateTo(AppConstants.Urls.GetTryOnline(MainLayout.Instance.IsDark)); })">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <div style="display: flex; align-items: center;">
-                        <MudIcon Color="Color.Primary" Size="Size.Large" Icon="@Icons.Custom.Brands.MicrosoftVisualStudio" />
-                        <MudText Class="ml-5" Typo="Typo.h6">@L["Try MudEx online CodeEditor"]</MudText>
-                    </div>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor"]</MudText>
-                <MudText Typo="Typo.body2" Style="margin-top: 8px;">@L["Test and use components live without required environment"]</MudText>
-            </MudCardContent>
-        </MudCard>
-
-        <MudCard Class="index-card" Elevation="3" @onclick="@(() => { NavigationManager.NavigateTo("/theme-edit"); })">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <div style="display: flex; align-items: center;">
-                        @((MarkupString)MudExSvg.ApplicationImage(ClientTheme.CurrentTheme, new MudExDimension(70, 50)))
-                        <MudText Class="ml-5" Typo="Typo.h6">@L["Check out the MudExThemeEdit Component"]</MudText>
-                    </div>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["Change or edit your theme"]</MudText>
-                <MudText Typo="Typo.body2" Style="margin-top: 8px;">@L["Test the powerful MudExThemeEdit and change theme colors fonts and more"]</MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudExCardList>
-
-    <!-- Feature 2 -->
-    <MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.LightBulb)"
-                   HoverColor="MudExColor.Transparent" TData="object">
-        <MudCard Class="index-card feature-card-special" Elevation="6"
-                 Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, ["var(--mud-palette-background)"], ["#3300aa", "#0066aa", MudExColor.Info, MudExColor.Success, "purple"], TimeSpan.FromSeconds(8)).Style"
-                 @onclick="@(() => { NavigationManager.NavigateTo("/dialog-snap"); })">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <div style="display: flex; align-items: center;">
-                        <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@MaterialDesignIcons.Normal.DockWindow" />
-                        <div class="ml-5">
-                            <MudText Typo="Typo.h5">@L["Dialog Drag & Drop"]</MudText>
-                            <MudChip T="string" Size="Size.Small" Color="Color.Warning" Class="pulse-animation">@L["NEW"]</MudChip>
-                        </div>
-                    </div>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["NEW Dialog Drag Drop Mode"]</MudText>
-                <MudText Typo="Typo.body2" Style="margin-top: 8px;">@L["New dialog Feature - SnapDrag"]</MudText>
-            </MudCardContent>
-        </MudCard>
-        
-        <MudCard Class="index-card feature-card-special" Elevation="6"
-                 Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, ["var(--mud-palette-background)"], ["#3300aa", "#0066aa", MudExColor.Secondary, MudExColor.Primary, "purple"], TimeSpan.FromSeconds(5)).Style"
-                 @onclick="@(() => { NavigationManager.NavigateTo("/dock-layout"); })">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <div style="display: flex; align-items: center;">
-                        <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@MaterialDesignIcons.Normal.DockWindow" />
-                        <div class="ml-5">
-                            <MudText Typo="Typo.h5">@L["Dock Control"]</MudText>
-                            <MudChip T="string" Size="Size.Small" Color="Color.Warning" Class="pulse-animation">@L["NEW"]</MudChip>
-                        </div>
-                    </div>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["Introducing MudExDockControl"]</MudText>
-                <MudText Typo="Typo.body2" Style="margin-top: 8px;">
-                    @L["Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly."]
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-
-        <MudCard Class="index-card feature-card-special" Elevation="6"
-                 Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, ["var(--mud-palette-background)"], ["#3300aa", "#0066aa", MudExColor.Tertiary, MudExColor.Info, "purple"], TimeSpan.FromSeconds(2)).Style"
-                 @onclick="@(() => { NavigationManager.NavigateTo("/mud-ex-grid-enhanced"); })">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <div style="display: flex; align-items: center;">
-                        <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@MaterialDesignIcons.Normal.GridLarge" />
-                        <div class="ml-5">
-                            <MudText Typo="Typo.h5">@L["MudExGrid Layout"]</MudText>
-                            <MudChip T="string" Size="Size.Small" Color="Color.Warning" Class="pulse-animation">@L["NEW"]</MudChip>
-                        </div>
-                    </div>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["MudExGrid — Now with Layout Editing"]</MudText>
-                <MudText Typo="Typo.body2" Style="margin-top: 8px;">
-                    @L["Move and resize grid items directly with drag & drop — design your layout dynamically at runtime."]
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-
-
-    </MudExCardList>
-    
-    <!-- Filter -->
-    <MudExVirtualItem IntersectingStyle="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Scale, TimeSpan.FromMilliseconds(800)).Style">
-        <div class="mb-3 mt-5" style="">
-            <MudToggleGroup Class="m-5" T="Type" SelectionMode="SelectionMode.MultiSelection" @bind-Values="_selectedAttributeTypes">
-                <MudToggleItem Value="@(typeof(DemoAttribute))">
-                    <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Color="Color.Default" />
-                    <MudText Class="ml-2">@L["Other"]</MudText>
-                </MudToggleItem>
-                <MudToggleItem Value="@(typeof(DemoNewAttribute))">
-                    <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Color="Color.Warning" />
-                    <MudText Class="ml-2">@L["New"]</MudText>
-                </MudToggleItem>
-                <MudToggleItem Value="@(typeof(DemoUpdatedAttribute))">
-                    <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Circle" Color="Color.Info" />
-                    <MudText Class="ml-2">@L["Updated"]</MudText>
-                </MudToggleItem>
-            </MudToggleGroup>
+&lt;mudex-document-editor&gt;&lt;/mudex-document-editor&gt;</code></pre>
         </div>
-    </MudExVirtualItem>
-    
-    <!-- Demos -->
-    <MudExpansionPanels Style="background: transparent" MultiExpansion="true">
-        <MudExpansionPanel Style="background: transparent" Expanded="true" Class="@($"mt-3 mud-ex-object-edit-group-flat scroll-fade-in")" Text="@L["DEMOS"]" id="demos-section">
-            <MudExCardList TData="object">
-                @foreach (var nav in Demos.Where(n => !_selectedAttributeTypes.Any() || _selectedAttributeTypes.Contains(n?.Demo?.GetType())))
+    </section>
+
+    <section class="mx-section" id="demos-section">
+        <div class="mx-section-head">
+            <div class="mx-eyebrow"><span>@L["Demos"]</span></div>
+            <h2 class="mx-section-title">@L["All {0} demos", Demos.Count]</h2>
+            <p class="mx-section-lead">@L["Every demo shows the component, its source code and the API documentation. Most have a property editor to change parameters while it runs."]</p>
+        </div>
+        <div class="mx-toolbar">
+            <MudTextField T="string" @bind-Value="_search" Immediate="true" Clearable="true" Variant="Variant.Outlined" Margin="Margin.Dense"
+                          Placeholder="@L["Search demos and components"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+            <MudChipSet T="string" @bind-SelectedValue="_status" SelectionMode="SelectionMode.SingleSelection" Color="Color.Primary" Variant="Variant.Text">
+                <MudChip T="string" Value="@("all")">@L["All"]</MudChip>
+                <MudChip T="string" Value="@("new")">@L["New"] (@Demos.Count(d => d.Demo is DemoNewAttribute))</MudChip>
+                <MudChip T="string" Value="@("updated")">@L["Updated"] (@Demos.Count(d => d.Demo is DemoUpdatedAttribute))</MudChip>
+            </MudChipSet>
+        </div>
+
+        @foreach (var group in GroupedDemos())
+        {
+            <div class="mx-group-title">
+                <a href="@($"/demos/{Uri.EscapeDataString(group.Key)}")">@L[group.Key]</a>
+                <span>@group.Count()</span>
+            </div>
+            <div class="mx-cards">
+                @foreach (var nav in group)
                 {
-                    <MudExVirtualItem>
-                        <MudCard Style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Back, TimeSpan.FromMilliseconds(700)).Style" Class="index-card" Elevation="2" @onclick="@(() => { Open(nav); })">
-                            <MudCardHeader>
-                                <CardHeaderContent>
-                                    @RenderNavEntry(nav, L)
-                                </CardHeaderContent>
-                                <CardHeaderActions>
-                                    <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
-                                </CardHeaderActions>
-                            </MudCardHeader>
-                            <MudCardContent>
-                                <MudText>@L[nav.Text]</MudText>
-                                @if (!string.IsNullOrEmpty(nav.Documentation))
-                                {
-                                    <MudText Typo="Typo.body2" Style="margin-top: 8px; opacity: 0.8;">@L[nav.Documentation]</MudText>
-                                }
-                            </MudCardContent>
-                        </MudCard>
-                    </MudExVirtualItem>
+                    <DemoCard Entry="@nav" ShowGroup="@(nav.Demo?.Group?.Contains('/') == true)" />
                 }
-            </MudExCardList>
-        </MudExpansionPanel>
-        
-        <!-- Components-->
-        <MudExpansionPanel Style="background: transparent" Expanded="true" Class="@($"mt-3 mud-ex-object-edit-group-flat scroll-fade-in")" Text="@L["ALL COMPONENTS"]" id="components-section">
-            <MudExCardList HoverColor="Color.Info" TData="object">
-                @foreach (var nav in _components)
-                {
-                    <MudExVirtualItem>
-                        <MudCard Style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Fade, TimeSpan.FromMilliseconds(700)).Style" Class="index-card" Elevation="2" @onclick="@(() => { Open(nav); })">
-                            <MudCardHeader>
-                                <CardHeaderContent>
-                                    @RenderNavEntry(nav, L)
-                                </CardHeaderContent>
-                                <CardHeaderActions>
-                                    <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
-                                </CardHeaderActions>
-                            </MudCardHeader>
-                            <MudCardContent>
-                                <MudText>@nav.Text</MudText>
-                                @if (!string.IsNullOrEmpty(nav.Documentation))
-                                {
-                                    <MudText Typo="Typo.body2" Style="margin-top: 8px; opacity: 0.8;">@L[nav.Documentation]</MudText>
-                                }
-                            </MudCardContent>
-                        </MudCard>
-                    </MudExVirtualItem>
-                }
-            </MudExCardList>
-        </MudExpansionPanel>
-    </MudExpansionPanels>
-</MudContainer>
+            </div>
+        }
+        @if (!GroupedDemos().Any())
+        {
+            <MudText Class="mt-6" Color="Color.Secondary">@L["No demo matches the search."]</MudText>
+        }
+    </section>
+
+    <section class="mx-section" id="components-section">
+        <div class="mx-section-head">
+            <div class="mx-eyebrow"><span>@L["Reference"]</span></div>
+            <h2 class="mx-section-title">@L["All {0} components", _components.Count]</h2>
+            <p class="mx-section-lead">@L["Each entry opens the component with generated sample values and a property editor, also for the components that have no hand-written demo."]</p>
+        </div>
+        <div class="mx-cards">
+            @foreach (var nav in FilteredComponents())
+            {
+                <MudExVirtualItem>
+                    <DemoCard Entry="@nav" />
+                </MudExVirtualItem>
+            }
+        </div>
+    </section>
+
+    <section class="mx-section mb-8">
+        <div class="mx-star">
+            <div>
+                <div class="mx-tile-title">@L["MudBlazor.Extensions is free and open source"]</div>
+                <div class="mx-tile-text">@L["A star on GitHub helps other people find it. Issues and ideas are welcome there too."]</div>
+            </div>
+            <MudButton Variant="Variant.Filled" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Star" EndIcon="@Icons.Custom.Brands.GitHub"
+                       Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank">@L["Star on GitHub"]</MudButton>
+        </div>
+    </section>
+</div>
 
 <script>
-    window.scrollToElement = function(elementId) {
+    window.scrollToElement = function (elementId) {
         const element = document.getElementById(elementId);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -502,55 +364,77 @@
 </script>
 
 @code {
+    private const string InstallCommand = "dotnet add package MudBlazor.Extensions";
+
+    private static readonly string[] GroupOrder = ["Office Editors", "File Handling", "MudExObjectEdit", "Dialog Samples"];
+
+    private static readonly (string Label, string File)[] Formats =
+    [
+        ("PDF", "sample.pdf"), ("Word", "sample.docx"), ("Excel", "ExcelSheet.xlsx"), ("PowerPoint", "sample.pptx"),
+        ("Photoshop", "sample.psd"), ("HEIC", "sample.heic"), ("Zip, Rar, 7z", "Archive.zip"), ("E-Mail", "sample.eml"),
+        ("EPUB", "sample.epub"), ("Markdown", "readme.md"), ("Code", "sample.cs"), ("CSV", "sample.csv"),
+        ("Parquet", "sample.parquet"), ("SQLite", "sample.sqlite3"), ("glTF 3D", "sample.glb"), ("GPX maps", "sample.gpx"),
+        ("DICOM", "sample.dcm"), ("Jupyter", "sample.ipynb"), ("Certificates", "sample.pem"), ("ZUGFeRD", "sample-zugferd.pdf")
+    ];
+
+    private static readonly (string Title, string Text, string Icon, string Href)[] FileCards =
+    [
+        ("File handling overview", "Which component fits which job: viewing, editing, uploading and managing files.", Icons.Material.Outlined.Folder, "/file-handling"),
+        ("Build your own viewer", "Implement one interface and MudExFileDisplay uses your component for the file types you choose.", Icons.Material.Outlined.Extension, "/file-display-custom-viewer"),
+        ("File manager", "Browse, upload, rename and preview files in a folder tree, against memory or your own server API.", Icons.Material.Outlined.FolderCopy, "/file-manager")
+    ];
+
+    private static readonly (string Title, string Text, string Icon, string Href)[] Highlights =
+    [
+        ("Forms for any object", "MudExObjectEdit builds a complete, validated edit form from a model type. Configure groups, order, conditions and custom editors in code.", Icons.Material.Outlined.DynamicForm, "/object-edit"),
+        ("Dialogs that behave like windows", "Drag, resize, maximize, snap to screen edges, animate and keep dialogs open without a modal overlay.", MaterialDesignIcons.Normal.DockWindow, "/dialogs"),
+        ("Dock layout", "Panels the user can drag, dock, tab and float, like in an IDE.", Icons.Material.Outlined.SpaceDashboard, "/dock-layout"),
+        ("Grid with layout editing", "A CSS grid whose items can be moved and resized at runtime.", MaterialDesignIcons.Normal.GridLarge, "/mud-ex-grid-enhanced"),
+        ("Json, xml and yaml editor", "MudExStructuredDataEditor edits structured data as a form, without a text editor.", Icons.Custom.FileFormats.FileCode, "/structured-data-edit"),
+        ("Theme editor", "Change colors, fonts and layout settings of a MudBlazor theme while the app runs. The button in the app bar of this site uses it.", Icons.Material.Outlined.Palette, "/theme-edit"),
+        ("Tree view with six view modes", "One tree component that renders as tree, horizontal columns, breadcrumb, list, flat list or card grid, with filtering. The navigation of this site is one.", Icons.Material.Outlined.AccountTree, "/tree-view")
+    ];
 
     private readonly HashSet<NavigationEntry> _components = Navigations.ReflectMudExComponents();
+    private string? _search;
+    private string _status = "all";
+    private bool _copied;
 
-    private async Task ScrollToSection(string sectionId)
+    private bool Matches(NavigationEntry nav)
     {
-        await JsRuntime.InvokeVoidAsync("scrollToElement", sectionId);
+        if (_status == "new" && nav.Demo is not DemoNewAttribute)
+            return false;
+        if (_status == "updated" && nav.Demo is not DemoUpdatedAttribute)
+            return false;
+        if (string.IsNullOrWhiteSpace(_search))
+            return true;
+        return Contains(nav.Text) || Contains(nav.Documentation) || Contains(nav.Demo?.Group)
+               || nav.Demo?.RelatedComponents.Any(t => Contains(t.Name)) == true;
     }
 
-    private async Task ScrollToDemos()
+    private bool Contains(string? value) => value?.Contains(_search!.Trim(), StringComparison.OrdinalIgnoreCase) == true;
+
+    private static string TopGroup(NavigationEntry nav)
+        => string.IsNullOrWhiteSpace(nav.Demo?.Group) ? AppConstants.UngroupedNavCategory : nav.Demo.Group.Split('/')[0].Trim();
+
+    private IEnumerable<IGrouping<string, NavigationEntry>> GroupedDemos()
+        => Demos.Where(Matches)
+            .OrderBy(n => n.Demo?.Group?.Contains('/') == true ? n.Demo.Group : string.Empty)
+            .GroupBy(TopGroup)
+            .OrderBy(g => Array.IndexOf(GroupOrder, g.Key) is var i and >= 0 ? i : g.Key == AppConstants.UngroupedNavCategory ? 999 : 100)
+            .ThenBy(g => g.Key);
+
+    private IEnumerable<NavigationEntry> FilteredComponents()
+        => string.IsNullOrWhiteSpace(_search) ? _components : _components.Where(c => Contains(c.Text) || Contains(c.Documentation));
+
+    private async Task ScrollTo(string sectionId) => await JsRuntime.InvokeVoidAsync("scrollToElement", sectionId);
+
+    private async Task CopyInstall()
     {
-        await ScrollToSection("demos-section");
+        await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", InstallCommand);
+        _copied = true;
+        StateHasChanged();
+        await Task.Delay(1500);
+        _copied = false;
     }
-
-    private async Task ScrollToComponents()
-    {
-        await ScrollToSection("components-section");
-    }
-
-    internal static RenderFragment RenderNavEntry(NavigationEntry nav, IStringLocalizer<BasePage> l)
-    {
-        return @<div>
-            <MudAlert Icon="@nav?.Demo?.GetIconStatusIcon()"
-                      Style="margin-top: -15px;padding: 0;background: transparent;"
-                      Variant="Variant.Text"
-                      Severity="@(nav?.Demo?.Severity ?? Severity.Normal)">
-                <MudText Typo="Typo.subtitle1">
-                    @l[($"{(nav.Demo?.RelatedComponents?.FirstOrDefault()?.Name?.Split('`')?.FirstOrDefault() ?? nav.Text)}")]
-                </MudText>
-            </MudAlert>
-        @if (nav?.Demo is DemoNewAttribute or DemoUpdatedAttribute)
-        {
-                <MudChip T="NavigationEntry"
-                         Style="float: right; margin-right: -27px;"
-                         Size="Size.Small"
-                         Variant="Variant.Text"
-                         Color="@nav.Demo.IconColor">
-                    @l[(nav?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))]
-                </MudChip>
-        }
-        </div>
-    ;
-    }
-
-
-    private IEnumerable<Type> _selectedAttributeTypes = Type.EmptyTypes;
-
-    private void Open(NavigationEntry nav)
-    {
-        NavigationManager.NavigateTo(nav.Href);
-    }
-    
 }

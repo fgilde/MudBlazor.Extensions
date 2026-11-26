@@ -5,7 +5,7 @@
 @using MudBlazor.Extensions.Core.Enums
 @inject SampleDataService sampleDataService
 
-@attribute [DemoUpdated(IsPlaygroundDemo = true, Group = "File Handling", Name = "File Display", Order = 0, Documentation = "See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
+@attribute [DemoUpdated(IsPlaygroundDemo = true, Group = "File Handling", Name = "File Display", Order = 0, Documentation = "MudExFileDisplay shows any file from a url or a stream. It picks a viewer from the content type, falls back to the browser, and uses your own viewers for types it does not know.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
 
 <style>
     .mud-ex-fd-kinds {
@@ -58,14 +58,12 @@
     }
 </style>
 
-<MudPaper Class="pa-4 mb-4" Outlined="true">
-    <div class="d-flex align-center flex-wrap gap-2 mb-1">
-        <MudText Typo="Typo.h5">@L["MudEx File Display"]</MudText>
-        <MudChip T="string" Size="Size.Small" Variant="Variant.Text" Color="Color.Primary">@_samples.Count @L["samples"]</MudChip>
+<div class="mb-4">
+    <div class="d-flex align-center flex-wrap gap-2 mb-2">
+        <MudText Typo="Typo.subtitle2">@L["Pick a format to open a sample"] (@_samples.Count)</MudText>
+        <MudSpacer />
+        <MudButton Href="file-display-custom-viewer" Variant="Variant.Outlined" Size="Size.Small" StartIcon="@Icons.Material.Outlined.Extension">@L["Build your own viewer"]</MudButton>
     </div>
-    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-3">
-        @L["One component for every file: it resolves the viewer from the content type, falls back to an iframe for the rest, and takes your own viewer for anything it does not know yet. Pick a format to open a sample."]
-    </MudText>
 
     <div class="mud-ex-fd-kinds">
         @foreach (var kind in ViewerKinds)
@@ -81,7 +79,7 @@
             </MudTooltip>
         }
     </div>
-</MudPaper>
+</div>
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor", "SampleDataService.cs"})">
 

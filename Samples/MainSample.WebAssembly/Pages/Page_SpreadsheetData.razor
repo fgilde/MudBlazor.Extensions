@@ -3,16 +3,10 @@
 
 @using MainSample.WebAssembly.Examples.Spreadsheet
 
-@attribute [DemoNew(Name = "Data", Group = "Spreadsheet", Order = 20, Icon = Icons.Material.Outlined.FilterAlt, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) }, Documentation = "Tables, sorting, filtering, data validation, conditional formatting, links and notes in MudExSpreadsheetEditor.")]
+@attribute [DemoNew(Name = "Data", Group = "Office Editors/Spreadsheet", Order = 20, Icon = Icons.Material.Outlined.FilterAlt, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) }, Documentation = "Tables, sorting, filtering, data validation, conditional formatting, links and notes in MudExSpreadsheetEditor.")]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Spreadsheet – Data"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["Tables, sorting, filters, validation rules and conditional formatting are stored in the xlsx file like Excel does, and they move with the cells when rows or columns are inserted or deleted."]
-    </MudText>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="MudEx Spreadsheet - Data" Description="Tables, sorting, filters, validation rules and conditional formatting are stored in the xlsx file like Excel does, and they move with the cells when rows or columns are inserted or deleted.">
+</DemoHero>
 
 <MudExDemoPage>
 

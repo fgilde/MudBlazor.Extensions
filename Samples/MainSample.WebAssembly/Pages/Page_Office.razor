@@ -1,0 +1,112 @@
+@page "/office"
+@inherits BasePage
+
+@attribute [DemoNew(Name = "Overview", Group = "Office Editors", Order = -10, Icon = Icons.Material.Outlined.Workspaces, ForComponentTypes = new[] { typeof(MudExDocumentEditor), typeof(MudExSpreadsheetEditor), typeof(MudExSlideEditor), typeof(MudExNotebookEditor), typeof(MudExRibbon) }, Documentation = "Four office editors as Blazor components: documents, spreadsheets, slides and notebooks. They share one ribbon, run in the browser and read and write the real file formats.")]
+
+<DemoHero PageType="@GetType()" Title="MudEx Office Editors">
+    <div class="mx-tiles">
+        @foreach (var (title, text) in Tiles)
+        {
+            <div class="mx-tile">
+                <div class="mx-tile-title">@L[title]</div>
+                <div class="mx-tile-text">@L[text]</div>
+            </div>
+        }
+    </div>
+</DemoHero>
+
+<section>
+    <div class="mx-section-head">
+        <div class="mx-eyebrow"><span>@L["Live"]</span></div>
+        <h2 class="mx-section-title">@L["Try all four"]</h2>
+        <p class="mx-section-lead">@L["These are the running components. Type, format, insert a table or a chart, undo it again."]</p>
+    </div>
+    <OfficeShowcase />
+</section>
+
+<section class="mx-section">
+    <div class="mx-section-head">
+        <div class="mx-eyebrow"><span>@L["Usage"]</span></div>
+        <h2 class="mx-section-title">@L["Three ways to use an editor"]</h2>
+    </div>
+    <div class="mx-steps">
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Bind a model"]</h3>
+            <p>@L["Build the document in code or load it yourself and bind it. The model follows every edit, so you decide when and where it is stored."]</p>
+            <pre class="mx-code"><code>&lt;div style="height: 640px"&gt;
+    &lt;MudExDocumentEditor @@bind-TextDocument="_document" /&gt;
+&lt;/div&gt;
+
+@@code {
+    private TextDocument _document = new();
+}</code></pre>
+        </div>
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Open a file through MudExFileDisplay"]</h3>
+            <p>@L["MudExFileDisplay chooses the editor from the content type. The same line shows a pdf, an image or an archive, and opens docx, xlsx, pptx and notebooks in their editor."]</p>
+            <pre class="mx-code"><code>&lt;MudExFileDisplay Url="files/report.xlsx"
+                  FileName="report.xlsx"
+                  ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" /&gt;</code></pre>
+        </div>
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Use it outside of Blazor"]</h3>
+            <p>@L["Every editor is also a custom element. One script tag is enough in plain html, React, Vue or Angular."]</p>
+            <pre class="mx-code"><code>&lt;script src="https://www.mudex.org/wc/mudex.js"&gt;&lt;/script&gt;
+&lt;mudex-document-editor style="display: block; height: 70vh"&gt;&lt;/mudex-document-editor&gt;</code></pre>
+        </div>
+    </div>
+</section>
+
+@foreach (var app in OfficeShowcase.Apps)
+{
+    var group = GroupOf(app.Key);
+    <section class="mx-section">
+        <div class="mx-section-head">
+            <div class="mx-eyebrow"><span>@app.Component</span></div>
+            <h2 class="mx-section-title">@L[app.Name]</h2>
+            <p class="mx-section-lead">@L[app.Text]</p>
+        </div>
+        <div class="mx-cards">
+            @foreach (var nav in Demos.Where(d => d.Demo?.Group == group))
+            {
+                <DemoCard Entry="@nav" />
+            }
+        </div>
+    </section>
+}
+
+<section class="mx-section mb-8">
+    <div class="mx-section-head">
+        <div class="mx-eyebrow"><span>MudExRibbon</span></div>
+        <h2 class="mx-section-title">@L["The ribbon"]</h2>
+        <p class="mx-section-lead">@L["The editors' toolbar is a component of its own. Use it for your own application: tabs, groups, galleries, split buttons, context tabs, and classic, simplified, menu and toolbar modes."]</p>
+    </div>
+    <div class="mx-cards">
+        @foreach (var nav in Demos.Where(d => d.Demo?.Group == "Office Editors/Ribbon"))
+        {
+            <DemoCard Entry="@nav" />
+        }
+    </div>
+</section>
+
+<DemoNavigation CurrentPage="@this" />
+
+@code {
+    private static readonly (string Title, string Text)[] Tiles =
+    [
+        ("Real file formats", "docx, xlsx and pptx are read and written in C#, without a server and without Office."),
+        ("One ribbon", "All editors use MudExRibbon, with the tabs and groups people know."),
+        ("Undo for everything", "Each action is one undo step, in every editor."),
+        ("Viewer included", "ReadOnly turns every editor into a viewer with zoom and search."),
+        ("Built for large files", "Only the visible part of a document or sheet is rendered."),
+        ("Themed", "Follows the MudBlazor theme, light and dark.")
+    ];
+
+    private static string GroupOf(string key) => key switch
+    {
+        "doc" => "Office Editors/Document",
+        "sheet" => "Office Editors/Spreadsheet",
+        "slides" => "Office Editors/Slides",
+        _ => "Office Editors/Notebook"
+    };
+}

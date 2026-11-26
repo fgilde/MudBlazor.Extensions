@@ -1,0 +1,181 @@
+@page "/file-handling"
+@inherits BasePage
+
+@attribute [DemoNew(Group = "File Handling", Name = "Overview", Order = -10, Icon = Icons.Material.Outlined.Folder, Documentation = "Which component to use for which file job: view, edit, browse, upload and play. Start here and follow the links to the demos.", ForComponentTypes = new[] { typeof(MudExFileDisplay), typeof(MudExFileManager), typeof(MudExUploadEdit<>) })]
+
+<DemoHero PageType="@GetType()" Title="@L["File Handling"]" Description="@L["Show a file, edit it, browse a file tree, upload files or play audio. Each job has one component; MudExFileDisplay is the one most others build on."]">
+    <div class="mx-tiles">
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["View"]</div>
+            <div class="mx-tile-text">@L["MudExFileDisplay picks a viewer from the content type."]</div>
+        </div>
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Edit"]</div>
+            <div class="mx-tile-text">@L["Viewers that implement IMudExFileEditor can change and save the file."]</div>
+        </div>
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Browse"]</div>
+            <div class="mx-tile-text">@L["MudExFileManager shows a tree of files with preview and metadata."]</div>
+        </div>
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Upload"]</div>
+            <div class="mx-tile-text">@L["MudExUploadEdit collects files and previews them with the same viewers."]</div>
+        </div>
+    </div>
+</DemoHero>
+
+<section class="mx-section">
+    <div class="mx-section-head">
+        <div class="mx-eyebrow">@L["Viewing"]</div>
+        <h2 class="mx-section-title">@L["Show a file"]</h2>
+        <p class="mx-section-lead">@L["Give MudExFileDisplay a url or a stream plus the file name and content type. Images, pdf, office files, code, tables, archives, audio and many more render without further code."]</p>
+    </div>
+    <div class="mx-cards">
+        <a class="mx-card" href="file-display">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.FolderZip" /><span class="mx-card-title">@L["File Display"]</span></div>
+            <div class="mx-card-sub">MudExFileDisplay</div>
+            <div class="mx-card-text">@L["Open one sample per format and see which viewer renders it."]</div>
+        </a>
+        <a class="mx-card" href="file-display-custom-viewer">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.Extension" /><span class="mx-card-title">@L["Build your own viewer"]</span></div>
+            <div class="mx-card-sub">IMudExFileDisplay</div>
+            <div class="mx-card-text">@L["Write a component for a file type of your app and have it picked up automatically."]</div>
+        </a>
+        <a class="mx-card" href="file-display-edit">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.EditNote" /><span class="mx-card-title">@L["Edit mode"]</span></div>
+            <div class="mx-card-sub">AllowEdit, IMudExFileEditor</div>
+            <div class="mx-card-text">@L["Edit code, text and structured data in place and save locally or through your own code."]</div>
+        </a>
+        <a class="mx-card" href="handle-file-as-streams">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.FolderZip" /><span class="mx-card-title">@L["Streams"]</span></div>
+            <div class="mx-card-sub">ContentStream</div>
+            <div class="mx-card-text">@L["Files from a database or an api have no url. Hand over a Stream instead."]</div>
+        </a>
+        <a class="mx-card" href="file-display-zip">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.FolderZip" /><span class="mx-card-title">@L["Archives"]</span></div>
+            <div class="mx-card-sub">MudExFileDisplayZip</div>
+            <div class="mx-card-text">@L["Browse the content of a zip file and preview single entries."]</div>
+        </a>
+        <a class="mx-card" href="image-view">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.Image" /><span class="mx-card-title">@L["Image viewer"]</span></div>
+            <div class="mx-card-sub">MudExImageViewer</div>
+            <div class="mx-card-text">@L["Use the image viewer on its own, with zoom and pan."]</div>
+        </a>
+    </div>
+</section>
+
+<section class="mx-section">
+    <div class="mx-section-head">
+        <div class="mx-eyebrow">@L["Browsing and uploading"]</div>
+        <h2 class="mx-section-title">@L["Manage files"]</h2>
+        <p class="mx-section-lead">@L["Use the file manager when users need a tree of folders and files, the upload editor when a form needs files."]</p>
+    </div>
+    <div class="mx-cards">
+        <a class="mx-card" href="file-manager">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.FolderCopy" /><span class="mx-card-title">@L["File Manager"]</span></div>
+            <div class="mx-card-sub">MudExFileManager</div>
+            <div class="mx-card-text">@L["Explorer style tree, breadcrumbs, preview and metadata in dockable panels."]</div>
+        </a>
+        <a class="mx-card" href="file-manager-server-api">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.Api" /><span class="mx-card-title">@L["File Manager Server API"]</span></div>
+            <div class="mx-card-sub">MudExFileManagerServer</div>
+            <div class="mx-card-text">@L["The http routes behind a server backed file manager and a controller to copy."]</div>
+        </a>
+        <a class="mx-card" href="upload-edit">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.Upload" /><span class="mx-card-title">@L["Upload Edit"]</span></div>
+            <div class="mx-card-sub">MudExUploadEdit</div>
+            <div class="mx-card-text">@L["Pick, drop and preview files, bound to a model property."]</div>
+        </a>
+        <a class="mx-card" href="upload-edit-form">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.Rule" /><span class="mx-card-title">@L["Upload in MudForm"]</span></div>
+            <div class="mx-card-sub">MudForm, FluentValidation</div>
+            <div class="mx-card-text">@L["Validate uploaded files like any other form field."]</div>
+        </a>
+    </div>
+</section>
+
+<section class="mx-section">
+    <div class="mx-section-head">
+        <div class="mx-eyebrow">@L["Media"]</div>
+        <h2 class="mx-section-title">@L["Play audio"]</h2>
+        <p class="mx-section-lead">@L["MudExFileDisplay already plays audio files. These two components give you the player itself."]</p>
+    </div>
+    <div class="mx-cards">
+        <a class="mx-card" href="audio-player">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.AudioFile" /><span class="mx-card-title">@L["Audio player"]</span></div>
+            <div class="mx-card-sub">MudExAudioPlayer</div>
+            <div class="mx-card-text">@L["Plays a track list, the same player the file display uses for audio files."]</div>
+        </a>
+        <a class="mx-card" href="turntable">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.Album" /><span class="mx-card-title">@L["Turntable"]</span></div>
+            <div class="mx-card-sub">MudExTurntable</div>
+            <div class="mx-card-text">@L["A DJ style deck with scratching and a mixer."]</div>
+        </a>
+    </div>
+</section>
+
+<section class="mx-section">
+    <div class="mx-section-head">
+        <div class="mx-eyebrow">@L["Office"]</div>
+        <h2 class="mx-section-title">@L["Office editors"]</h2>
+        <p class="mx-section-lead">@L["These editors are standalone components. The file display uses them as viewer and editor for the matching file types."]</p>
+    </div>
+    <div class="mx-cards">
+        <a class="mx-card" href="spreadsheet">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.TableChart" /><span class="mx-card-title">@L["Spreadsheet"]</span></div>
+            <div class="mx-card-text">@L["Spreadsheet editor with formulas and charts."]</div>
+        </a>
+        <a class="mx-card" href="document-editor">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.Description" /><span class="mx-card-title">@L["Document editor"]</span></div>
+            <div class="mx-card-text">@L["Word processor style editor for docx and rtf."]</div>
+        </a>
+        <a class="mx-card" href="slides">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.Slideshow" /><span class="mx-card-title">@L["Slides"]</span></div>
+            <div class="mx-card-text">@L["Presentation editor with a slide show mode."]</div>
+        </a>
+        <a class="mx-card" href="notebook">
+            <div class="mx-card-head"><MudIcon Icon="@Icons.Material.Outlined.Book" /><span class="mx-card-title">@L["Notebook"]</span></div>
+            <div class="mx-card-text">@L["Notebooks made of text and code cells."]</div>
+        </a>
+    </div>
+</section>
+
+<section class="mx-section">
+    <div class="mx-section-head">
+        <div class="mx-eyebrow">@L["How it works"]</div>
+        <h2 class="mx-section-title">@L["How MudExFileDisplay picks a viewer"]</h2>
+    </div>
+    <div class="mx-steps">
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Collect candidates"]</h3>
+            <p>@L["Every class that implements IMudExFileDisplay is registered as a scoped service by AddMudExtensions. It scans the library, the app assembly and any assembly you pass in. Types listed in IgnoredRenderControls are skipped."]</p>
+        </div>
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Ask each one"]</h3>
+            <p>@L["MudExFileDisplay calls CanHandleFileAsync on each candidate with the file name, content type, url and stream. Those that answer true stay in the list."]</p>
+        </div>
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Take the best"]</h3>
+            <p>@L["Among the candidates with StartsActive = true, the highest RenderPriority is rendered. Equal priorities keep the registration order. The others are offered in the Render with menu of the toolbar."]</p>
+        </div>
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Fall back to the browser"]</h3>
+            <p>@L["Without a candidate the file is rendered natively: img, audio and video by media type, otherwise an object tag, or an iframe if FallBackInIframe is set. If the browser cannot show it, HandleContentErrorFunc can redirect to another url or stream or set a message."]</p>
+        </div>
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Forward parameters"]</h3>
+            <p>@L["Parameters of MudExFileDisplay with the same name as a parameter of the viewer are passed on. Use ParametersForSubControls for everything else, for example the code theme."]</p>
+        </div>
+    </div>
+</section>
+
+<section class="mx-section">
+    <div class="mx-section-head">
+        <div class="mx-eyebrow">@L["Usage"]</div>
+        <h2 class="mx-section-title">@L["Minimal usage"]</h2>
+    </div>
+    <pre class="mx-code"><code>&lt;MudExFileDisplay Url="@@url" FileName="report.pdf" ContentType="application/pdf" /&gt;
+
+&lt;MudExFileDisplay ContentStream="@@stream" FileName="data.csv" ContentType="text/csv"
+                  AllowEdit="true" ShowFileMeta="true" /&gt;</code></pre>
+</section>

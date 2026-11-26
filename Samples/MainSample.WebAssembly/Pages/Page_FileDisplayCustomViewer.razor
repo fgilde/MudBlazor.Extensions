@@ -1,0 +1,167 @@
+@page "/file-display-custom-viewer"
+@inherits BasePage
+@using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Core.Enums
+@inject HttpClient Http
+
+@attribute [DemoNew(Group = "File Handling", Name = "Build your own viewer", Order = 1, Icon = Icons.Material.Outlined.Extension, Documentation = "Write a component for your own file type, implement IMudExFileDisplay and MudExFileDisplay uses it without any registration code.", ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
+
+<DemoHero PageType="@GetType()">
+    <Actions>
+        <MudButton Href="file-display" Variant="Variant.Outlined" Size="Size.Small" StartIcon="@Icons.Material.Outlined.FolderZip">@L["File Display demo"]</MudButton>
+    </Actions>
+</DemoHero>
+
+<section class="mx-section">
+    <div class="mx-section-head">
+        <div class="mx-eyebrow">@L["Live demo"]</div>
+        <h2 class="mx-section-title">@L["weather.json, rendered by your own code"]</h2>
+        <p class="mx-section-lead">@L["The library has its own json viewers. This sample app adds MySimpleJsonDisplay with a higher RenderPriority, so it wins for this file. Open the menu in the toolbar of the file display and pick Render with ... to switch to another viewer."]</p>
+    </div>
+
+    <MudPaper Outlined="true" Class="pa-2">
+        <MudExFileDisplay FileName="weather.json"
+                          ContentType="text/plain"
+                          Url="@_url"
+                          ShowRenderer="true"
+                          ShowFileMeta="true"
+                          FileMetaPlacement="MudExFileMetaPlacement.Below"
+                          ParametersForSubControls="@GetParams()" />
+    </MudPaper>
+
+    <div class="mt-3">
+        <MudButton Variant="Variant.Outlined" Size="Size.Small" StartIcon="@Icons.Material.Outlined.Code" OnClick="@ToggleSource">
+            @(_showSource ? L["Hide the viewer source"] : L["Show the viewer source"])
+        </MudButton>
+    </div>
+    @if (_showSource && _source != null)
+    {
+        <div class="mt-3">
+            <DemoMarkdown Value="@_source" />
+        </div>
+    }
+</section>
+
+<section class="mx-section">
+    <div class="mx-section-head">
+        <div class="mx-eyebrow">@L["Guide"]</div>
+        <h2 class="mx-section-title">@L["Six steps to your own viewer"]</h2>
+        <p class="mx-section-lead">@L["A viewer is a normal Blazor component. It only has to say which files it handles and to load the content it is given."]</p>
+    </div>
+
+    <div class="mx-steps">
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Implement IMudExFileDisplay"]</h3>
+            <p>@L["Create a Razor component and implement the interface. Members without a default must be written, the others are optional:"]</p>
+            <ul>
+                <li>@L["Name: shown in the Render with ... menu when the user can choose between several viewers."]</li>
+                <li>@L["FileDisplayInfos: file name, url, content type and stream of the current file. It must carry the [Parameter] attribute, because MudExFileDisplay sets it when it renders your component."]</li>
+                <li>@L["CanHandleFileAsync: return true only for files you can really show. It also receives the file service, in case you need to look into the content."]</li>
+                <li>@L["FileMetaInformationAsync: extra key and value pairs for the info dialog and the metadata view, for example a line count. Return an empty dictionary if you have none."]</li>
+                <li>@L["StartsActive (default true): false offers the viewer in the menu only and never renders it first."]</li>
+                <li>@L["RenderPriority (default 0): the highest value wins when several viewers match."]</li>
+                <li>@L["WrapInMudExFileDisplayDiv (default true): wraps the viewer in a div of the file display."]</li>
+            </ul>
+            <pre class="mx-code"><code>@@implements IMudExFileDisplay
+
+&lt;pre&gt;@@_text&lt;/pre&gt;
+
+@@code {
+    public string Name =&gt; "My format viewer";
+    public int RenderPriority =&gt; 10;
+
+    [Parameter] // required
+    public IMudExFileDisplayInfos FileDisplayInfos { get; set; }
+
+    public Task&lt;bool&gt; CanHandleFileAsync(IMudExFileDisplayInfos infos, IMudExFileService fileService)
+        =&gt; Task.FromResult(infos.FileName.EndsWith(".myformat", StringComparison.OrdinalIgnoreCase));
+
+    public Task&lt;IDictionary&lt;string, object&gt;&gt; FileMetaInformationAsync(IMudExFileDisplayInfos infos)
+        =&gt; Task.FromResult&lt;IDictionary&lt;string, object&gt;&gt;(new Dictionary&lt;string, object&gt;());
+}</code></pre>
+            <p>@L["To let users change and save the file, implement IMudExFileEditor instead. It extends IMudExFileDisplay with ReadOnly, IsDirty, SaveFormats, CanEditFileAsync, ExportAsync, SaveAsync, SaveCopyAsync, OpenAsync, NewAsync and a few more members. See the edit mode demo."]</p>
+        </div>
+
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Registration"]</h3>
+            <p>@L["There is nothing to register by hand. AddMudExtensions (also called by AddMudServicesWithExtensions) scans the MudBlazor.Extensions assembly, the entry assembly and the calling assembly, and adds every implementation of IMudExFileDisplay as a scoped service. A viewer in your app project is found as it is. A viewer in another class library needs that assembly as an argument:"]</p>
+            <pre class="mx-code"><code>builder.Services.AddMudServicesWithExtensions(typeof(MyViewer).Assembly);</code></pre>
+            <p>@L["The sample app calls AddMudServicesWithExtensions in Program.cs without arguments. MySimpleJsonDisplay is found because it lives in the app assembly."]</p>
+        </div>
+
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Read the content"]</h3>
+            <p>@L["Inject MudExFileService (or take the IMudExFileService that CanHandleFileAsync receives). It reads from the url or the stream, whichever the file display was given:"]</p>
+            <pre class="mx-code"><code>@@inject MudExFileService fileService
+
+string text = await fileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos);
+Stream stream = await fileService.ReadStreamAsync(FileDisplayInfos);
+byte[] bytes = await fileService.ReadBytesAsync(FileDisplayInfos.Url);</code></pre>
+            <p>@L["The same instance of your component is reused when the user opens another file of the same kind, so load again when the file changed. SourceChanged compares file name, url and stream for you, and NotifyMetaChangedAsync tells the file display that your meta information is ready:"]</p>
+            <pre class="mx-code"><code>private object _loaded;
+
+protected override async Task OnParametersSetAsync()
+{
+    if (!FileDisplayInfos.SourceChanged(ref _loaded))
+        return;
+    _text = await fileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos);
+    await FileDisplayInfos.NotifyMetaChangedAsync();
+}</code></pre>
+            <p>@L["Do not close or dispose the ContentStream, it belongs to the file display."]</p>
+        </div>
+
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Several viewers for one file"]</h3>
+            <p>@L["Every registered viewer whose CanHandleFileAsync returns true is a candidate. The one with the highest RenderPriority and StartsActive = true is shown first. The other candidates appear in the toolbar menu as Render with ..., using their Name, and the user can switch at any time. If the current viewer is an editor with unsaved changes, the user is asked first. To remove a viewer for one place of your app, pass its type:"]</p>
+            <pre class="mx-code"><code>&lt;MudExFileDisplay IgnoredRenderControls="@@(new[] { typeof(MudExFileDisplayCode) })" ... /&gt;</code></pre>
+            <p>@L["ForceNativeRender starts with the browser's own rendering instead of a viewer."]</p>
+        </div>
+
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Pass parameters"]</h3>
+            <p>@L["Parameters that MudExFileDisplay and your viewer both declare with the same name are forwarded automatically. For anything else, use ParametersForSubControls. Entries that are no [Parameter] of the chosen viewer are ignored, so one dictionary can serve all viewers:"]</p>
+            <pre class="mx-code"><code>&lt;MudExFileDisplay Url="@@url" FileName="@@name" ContentType="@@type"
+                  ParametersForSubControls="@@(new Dictionary&lt;string, object&gt; { { "Theme", CodeTheme } })" /&gt;</code></pre>
+        </div>
+
+        <div class="mx-step">
+            <h3 class="mx-step-title">@L["Handle errors"]</h3>
+            <p>@L["HandleContentErrorFunc is called when the browser cannot render a file natively (object or iframe). Return Unhandled to show the default message, DisplayMessage for your own text, or RedirectTo a url or stream with another content type to show something else:"]</p>
+            <pre class="mx-code"><code>private Task&lt;MudExFileDisplayContentErrorResult&gt; OnError(IMudExFileDisplayInfos file)
+{
+    if (file.ContentType.Contains("word"))
+        return Task.FromResult(MudExFileDisplayContentErrorResult
+            .RedirectTo("sample-data/logo.png", "image/png")
+            .WithMessage("No word plugin found, showing an image instead"));
+    return Task.FromResult(MudExFileDisplayContentErrorResult.Unhandled);
+}</code></pre>
+            <p>@L["This does not catch exceptions inside your viewer. Catch those yourself, show a message in your markup and return a sensible CanHandleFileAsync result for files you cannot parse. The file display also has a public ShowError method for the host's error banner."]</p>
+        </div>
+    </div>
+</section>
+
+@code {
+    private string _url;
+    private string _source;
+    private bool _showSource;
+
+    protected override void OnInitialized()
+    {
+        _url = NavigationManager.ToAbsoluteUri("sample-data/weather.json").AbsoluteUri;
+    }
+
+    private async Task ToggleSource()
+    {
+        _showSource = !_showSource;
+        if (_showSource && _source == null)
+        {
+            var code = await Http.GetStringAsync(GH.Path("Shared/MySimpleJsonDisplay.razor"));
+            _source = MudExCodeView.CodeAsMarkup(code);
+        }
+    }
+
+    private IDictionary<string, object> GetParams() => new Dictionary<string, object>
+    {
+        { nameof(MudExFileDisplayCode.Theme), MainLayout.GetCodeBlockTheme() }
+    };
+}

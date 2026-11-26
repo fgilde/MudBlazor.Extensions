@@ -6,8 +6,7 @@
 @inject IStringLocalizer<HeaderForDemo> L
 <div class="doc-header">
     
-    <PageHeader>@L[(DemoAttribute?.Name ?? Type.Name)]</PageHeader>
-    <MudAlert>@(Documentation != null ? L[Documentation] : "Documentation")</MudAlert>
+    <DemoHero Compact="true" PageType="@Type" Demo="@DemoAttribute" Description="@Documentation" />
     @if (DemoAttribute != null)
     {
         @foreach (var info in DemoAttribute?.RelatedComponents?.Select(t => new {Type = t, BetaInfos = t.GetCustomAttributes<BetaAttribute>()}).Where(arg => arg?.BetaInfos?.Any() == true)!)

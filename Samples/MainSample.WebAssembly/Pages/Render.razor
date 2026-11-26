@@ -40,30 +40,12 @@
 }
 else
 {
-    <MudExCardList HoverColor="Color.Info" TData="object">
-
+    <div class="mx-cards">
         @foreach (var nav in Navigations.ReflectMudExComponents().Concat(Navigations.ReflectMudBlazorComponents()))
         {
-            <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        @Index.RenderNavEntry(nav,L)       
-                    </CardHeaderContent>
-                    <CardHeaderActions>
-                        @*<MudIconButton Icon="@nav.Icon" Color="Color.Default" />*@
-                        <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
-                    </CardHeaderActions>
-                </MudCardHeader>
-                <MudCardContent>
-                    <MudText>@L[nav.Text]</MudText>
-                    @if (!string.IsNullOrEmpty(nav.Documentation))
-                    {
-                        <MudText Typo="Typo.body2">@L[nav.Documentation]</MudText>
-                    }
-                </MudCardContent>
-            </MudCard>
+            <DemoCard Entry="@nav" />
         }
-    </MudExCardList>
+    </div>
 }
 
 @code {

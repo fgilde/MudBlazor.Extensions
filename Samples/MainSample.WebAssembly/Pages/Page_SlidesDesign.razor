@@ -4,16 +4,10 @@
 @using MainSample.WebAssembly.Examples.Slides
 @using MainSample.WebAssembly.Examples.Spreadsheet
 
-@attribute [DemoNew(Name = "Design and Tables", Group = "Slide Editor", Order = 15, Icon = Icons.Material.Outlined.TableChart, ForComponentTypes = new[] { typeof(MudExSlideEditor) }, Documentation = "Switch the design of a whole deck and edit tables with merged cells.")]
+@attribute [DemoNew(Name = "Design and Tables", Group = "Office Editors/Slides", Order = 15, Icon = Icons.Material.Outlined.TableChart, ForComponentTypes = new[] { typeof(MudExSlideEditor) }, Documentation = "Switch the design of a whole deck and edit tables with merged cells.")]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Slide Editor – Design and Tables"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["A design sets the colors, fonts and background of the masters. Tables support header rows, banding, merged cells and row and column editing."]
-    </MudText>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="MudEx Slide Editor - Design and Tables" Description="A design sets the colors, fonts and background of the masters. Tables support header rows, banding, merged cells and row and column editing.">
+</DemoHero>
 
 <MudExDemoPage>
 

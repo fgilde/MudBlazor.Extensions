@@ -5,14 +5,10 @@
 @using MudBlazor.Extensions.Core.Enums
 @inject SampleDataService sampleDataService
 
-@attribute [Demo(IsPlaygroundDemo = true, Group = "File Handling", Name = "File Display with Stream", Order = 0, Documentation = "The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
+@attribute [Demo(IsPlaygroundDemo = true, Group = "File Handling", Name = "File Display with Stream", Order = 3, Documentation = "The same file display as before, but the content is handed over as a Stream instead of a url, as it comes from a database or an api.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
 
 <!-- Header / Intro -->
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx File Display from a stream"]
-    </MudText>
-
+<MudPaper Class="pa-4 mb-6" Outlined="true">
     <MudText Typo="Typo.body1">
         @L["The same component, without a url. The content arrives as a Stream, which is what a file from a database, an archive or an api actually is - StreamUrlHandling decides whether it becomes a blob url or a data url."]
     </MudText>

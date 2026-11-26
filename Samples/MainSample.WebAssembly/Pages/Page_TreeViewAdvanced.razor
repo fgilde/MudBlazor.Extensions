@@ -3,63 +3,29 @@
 
 @using MainSample.WebAssembly.Examples.Tree
 
-@attribute [Demo(Name = "Advanced Examples", Documentation="MudEx Tree View – Advanced scenarios and use cases", Order = 10, Group = "TreeView", ForComponentTypes = new[] { typeof(MudExTreeView<>) })]
+@attribute [Demo(Name = "Advanced Examples", Documentation = "This demo shows advanced scenarios of MudExTreeView with larger data and custom behavior.", Order = 10, Group = "TreeView", ForComponentTypes = new[] { typeof(MudExTreeView<>) })]
 
 
-<!-- Header / Intro -->
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Tree View – Advanced Examples"]
-    </MudText>
-
-    <MudText Typo="Typo.body1">
-        @L["This page demonstrates advanced use cases and practical scenarios for the MudExTreeView component, including multi-selection, search/filtering, lazy loading, and custom icons."]
-    </MudText>
-</MudPaper>
-
-<!-- Quick overview (Key Features) -->
-<MudGrid Class="mb-6">
-    <MudItem xs="12" md="3">
-        <MudPaper Class="pa-4 h-100">
-            <MudText Typo="Typo.subtitle1">
-                @L["Multi-selection"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @L["Enable users to select multiple nodes with checkboxes for batch operations."]
-            </MudText>
-        </MudPaper>
-    </MudItem>
-    <MudItem xs="12" md="3">
-        <MudPaper Class="pa-4 h-100">
-            <MudText Typo="Typo.subtitle1">
-                @L["Search & Filter"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @L["Filter tree nodes dynamically based on search criteria."]
-            </MudText>
-        </MudPaper>
-    </MudItem>
-    <MudItem xs="12" md="3">
-        <MudPaper Class="pa-4 h-100">
-            <MudText Typo="Typo.subtitle1">
-                @L["Lazy Loading"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @L["Load child nodes asynchronously on demand for performance."]
-            </MudText>
-        </MudPaper>
-    </MudItem>
-    <MudItem xs="12" md="3">
-        <MudPaper Class="pa-4 h-100">
-            <MudText Typo="Typo.subtitle1">
-                @L["Custom Icons"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @L["Display contextual icons based on node type or content."]
-            </MudText>
-        </MudPaper>
-    </MudItem>
-</MudGrid>
+<DemoHero PageType="@GetType()" Title="MudEx Tree View - Advanced Examples" Description="This page demonstrates advanced use cases and practical scenarios for the MudExTreeView component, including multi-selection, search/filtering, lazy loading, and custom icons.">
+    <div class="mx-tiles">
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Multi-selection"]</div>
+            <div class="mx-tile-text">@L["Enable users to select multiple nodes with checkboxes for batch operations."]</div>
+        </div>
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Search & Filter"]</div>
+            <div class="mx-tile-text">@L["Filter tree nodes dynamically based on search criteria."]</div>
+        </div>
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Lazy Loading"]</div>
+            <div class="mx-tile-text">@L["Load child nodes asynchronously on demand for performance."]</div>
+        </div>
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Custom Icons"]</div>
+            <div class="mx-tile-text">@L["Display contextual icons based on node type or content."]</div>
+        </div>
+    </div>
+</DemoHero>
 
 <MudDivider Class="mb-6" />
 

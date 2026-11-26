@@ -5,57 +5,29 @@
 @using MudBlazor.Extensions.Helper
 @using Nextended.Core.Contracts
 
-@attribute [Demo(Name = "Overview", Documentation="MudEx Range Slider – Interactive range selection", Order = 0, Group = "RangeSlider", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
+@attribute [Demo(Name = "Overview", Documentation = "MudExRangeSlider selects a range of values with two handles. This demo shows its basic use and options.", Order = 0, Group = "RangeSlider", ForComponentTypes = new[] { typeof(MudExRangeSlider<>) })]
 
 
-<!-- Header / Intro -->
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Range Slider – Interactive range selection"]
-    </MudText>
+<DemoHero PageType="@GetType()" Title="MudEx Range Slider" Description="On this page you can see several usage examples for the MudExRangeSlider: numeric ranges, date ranges and a vertical layout. Each example comes with a short explanation and can be tried out interactively.">
+    <div class="mx-tiles">
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Flexible data types"]</div>
+            <div class="mx-tile-text">@L["Supports int and DateTime (other types via generics are possible)."]</div>
+        </div>
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Min/max length & step size"]</div>
+            <div class="mx-tile-text">@L["Define minimum and maximum duration for ranges as well as custom step sizes."]</div>
+        </div>
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Horizontal & vertical orientation"]</div>
+            <div class="mx-tile-text">@L["Use the slider horizontally or vertically - ideal for filters, dashboards and reports."]</div>
+        </div>
+    </div>
+</DemoHero>
 
-    <MudText Typo="Typo.body1">
-        @L["On this page you can see several usage examples for the MudExRangeSlider: numeric ranges, date ranges and a vertical layout. Each example comes with a short explanation and can be tried out interactively."]
-    </MudText>
-
-    <MudAlert Severity="Severity.Info" Class="mt-4">
-        @L["You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply."]
-    </MudAlert>
-</MudPaper>
-
-<!-- Quick overview (Key Features) -->
-<MudGrid Class="mb-6">
-    <MudItem xs="12" md="4">
-        <MudPaper Class="pa-4 h-100">
-            <MudText Typo="Typo.subtitle1">
-                @L["Flexible data types"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @L["Supports int and DateTime (other types via generics are possible)."]
-            </MudText>
-        </MudPaper>
-    </MudItem>
-    <MudItem xs="12" md="4">
-        <MudPaper Class="pa-4 h-100">
-            <MudText Typo="Typo.subtitle1">
-                @L["Min/max length & step size"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @L["Define minimum and maximum duration for ranges as well as custom step sizes."]
-            </MudText>
-        </MudPaper>
-    </MudItem>
-    <MudItem xs="12" md="4">
-        <MudPaper Class="pa-4 h-100">
-            <MudText Typo="Typo.subtitle1">
-                @L["Horizontal & vertical orientation"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @L["Use the slider horizontally or vertically – ideal for filters, dashboards and reports."]
-            </MudText>
-        </MudPaper>
-    </MudItem>
-</MudGrid>
+<MudAlert Severity="Severity.Info" Class="mb-6">
+    @L["You can move the individual thumbs or the entire selected range to adjust start and end values. Depending on the configuration, minimum and maximum duration as well as different step sizes apply."]
+</MudAlert>
 
 <MudDivider Class="mb-6" />
 

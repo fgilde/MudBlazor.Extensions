@@ -7,15 +7,14 @@
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="p-4">
 
-    <MudText Typo="Typo.h4" GutterBottom="true">@L["MudEx as Web Components"]</MudText>
-    <MudText Typo="Typo.subtitle1" GutterBottom="true">
-        @L["Every non generic MudEx component is also published as a browser custom element. One script tag is enough to use them in a plain html page, in WordPress, in React, Vue, Angular or anywhere else."]
-    </MudText>
-
-    <MudButton Class="mb-6" Href="/webcomponents.html" Target="_blank" Variant="Variant.Filled" Color="Color.Primary"
-               StartIcon="@Icons.Material.Filled.OpenInNew">
-        @L["Open the plain html demo page"]
-    </MudButton>
+    <DemoHero PageType="@GetType()" Title="MudEx as Web Components" Description="Every non generic MudEx component is also published as a browser custom element. One script tag is enough to use them in a plain html page, in WordPress, in React, Vue, Angular or anywhere else.">
+        <Actions>
+            <MudButton Href="/webcomponents.html" Target="_blank" Variant="Variant.Filled" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.OpenInNew">
+                @L["Open the plain html demo page"]
+            </MudButton>
+        </Actions>
+    </DemoHero>
 
     <MudDivider Class="mb-6" />
 

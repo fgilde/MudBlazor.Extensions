@@ -1,0 +1,34 @@
+@using Microsoft.Extensions.Localization
+@using MainSample.WebAssembly.Pages
+@inject IStringLocalizer<BasePage> L
+
+<a class="mx-card" href="@Entry.Href" target="@(string.IsNullOrEmpty(Entry.Target) ? null : Entry.Target)">
+    <div class="mx-card-head">
+        @if (!string.IsNullOrEmpty(Entry.Icon))
+        {
+            <MudIcon Icon="@Entry.Icon" Size="Size.Small" />
+        }
+        <span class="mx-card-title">@L[Entry.Text]</span>
+        @if (Entry.Demo is DemoNewAttribute)
+        {
+            <span class="mx-badge mx-badge-new">@L["New"]</span>
+        }
+        else if (Entry.Demo is DemoUpdatedAttribute)
+        {
+            <span class="mx-badge mx-badge-updated">@L["Updated"]</span>
+        }
+    </div>
+    @if (ShowGroup && !string.IsNullOrEmpty(Entry.Demo?.Group))
+    {
+        <div class="mx-card-sub">@L[Entry.Demo.Group.Replace("/", " / ")]</div>
+    }
+    @if (!string.IsNullOrEmpty(Entry.Documentation))
+    {
+        <div class="mx-card-text">@L[Entry.Documentation]</div>
+    }
+</a>
+
+@code {
+    [Parameter, EditorRequired] public NavigationEntry Entry { get; set; } = default!;
+    [Parameter] public bool ShowGroup { get; set; }
+}

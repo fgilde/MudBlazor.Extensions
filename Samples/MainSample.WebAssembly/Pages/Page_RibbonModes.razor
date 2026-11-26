@@ -3,16 +3,10 @@
 
 @using MainSample.WebAssembly.Examples.Ribbon
 
-@attribute [DemoNew(Name = "Modes", Documentation = "MudEx Ribbon – Classic, Simplified, Menu and Toolbar", Order = 10, Group = "Ribbon", Icon = Icons.Material.Outlined.ViewDay, ForComponentTypes = new[] { typeof(MudExRibbon) })]
+@attribute [DemoNew(Name = "Modes", Documentation = "MudExRibbon can be shown as Classic, Simplified, Menu or Toolbar. This demo switches between the modes.", Order = 10, Group = "Office Editors/Ribbon", Icon = Icons.Material.Outlined.ViewDay, ForComponentTypes = new[] { typeof(MudExRibbon) })]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Ribbon – Modes"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["The Mode parameter switches the presentation without touching the content. Users can switch themselves with the mode switch in the header unless ShowModeSwitch is false."]
-    </MudText>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="MudEx Ribbon - Modes" Description="The Mode parameter switches the presentation without touching the content. Users can switch themselves with the mode switch in the header unless ShowModeSwitch is false.">
+</DemoHero>
 
 <MudExDemoPage>
 

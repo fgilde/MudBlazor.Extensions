@@ -4,16 +4,10 @@
 @using MainSample.WebAssembly.Examples.Slides
 @using MainSample.WebAssembly.Examples.Spreadsheet
 
-@attribute [DemoNew(Name = "Slide Show", Group = "Slide Editor", Order = 10, Icon = Icons.Material.Outlined.PlayCircleOutline, ForComponentTypes = new[] { typeof(MudExSlideEditor), typeof(MudExSlideShow) }, Documentation = "Play a deck full screen with transitions and build animations, with a presenter view, or use MudExSlideShow without the editor.")]
+@attribute [DemoNew(Name = "Slide Show", Group = "Office Editors/Slides", Order = 10, Icon = Icons.Material.Outlined.PlayCircleOutline, ForComponentTypes = new[] { typeof(MudExSlideEditor), typeof(MudExSlideShow) }, Documentation = "Play a deck full screen with transitions and build animations, with a presenter view, or use MudExSlideShow without the editor.")]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Slide Editor – Slide Show"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["The show follows the PowerPoint keys: Right, Space, Enter and N advance, Left, Backspace and P go back, a number and Enter jumps to a slide, B and W blank the screen, Esc ends the show. Hidden slides are skipped."]
-    </MudText>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="MudEx Slide Editor - Slide Show" Description="The show follows the PowerPoint keys: Right, Space, Enter and N advance, Left, Backspace and P go back, a number and Enter jumps to a slide, B and W blank the screen, Esc ends the show. Hidden slides are skipped.">
+</DemoHero>
 
 <MudExDemoPage>
 

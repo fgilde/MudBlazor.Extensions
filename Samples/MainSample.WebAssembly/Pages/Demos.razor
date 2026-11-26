@@ -1,42 +1,58 @@
 ﻿@page "/demos/{**Group}"
 @inherits BasePage
 
-<MudExCardList TData="object">
+<DemoHero Compact="true" Icon="@Icons.Material.Outlined.Apps" Eyebrow="Demos"
+          Title="@(DecodedGroup?.Replace("/", " / ") ?? "All demos")"
+          Description="@Description" />
 
-    @foreach (var nav in GetFilteredDemos())
+@foreach (var section in GetSections())
+{
+    @if (!string.IsNullOrEmpty(section.Key))
     {
-        <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
-            <MudCardHeader Style="z-index: 5">
-                <CardHeaderContent>
-                    @Index.RenderNavEntry(nav, L)
-                </CardHeaderContent>
-                <CardHeaderActions>
-                    <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
-                </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardContent Style="z-index: 5">
-                <MudText>@nav.Text</MudText>
-                @if (!string.IsNullOrEmpty(nav.Documentation))
-                {
-                    <MudText Typo="Typo.body2">@L[nav.Documentation]</MudText>
-                }
-            </MudCardContent>
-        </MudCard>
+        <div class="mx-eyebrow mt-6 mb-3"><span>@L[section.Key]</span></div>
     }
-</MudExCardList>
+    <div class="mx-cards mb-4">
+        @foreach (var nav in section)
+        {
+            <DemoCard Entry="@nav" />
+        }
+    </div>
+}
 
 @code
 {
     [Parameter] public string? Group { get; set; }
 
+    private string? DecodedGroup => string.IsNullOrEmpty(Group) ? null : Uri.UnescapeDataString(Group);
+
+    private string Description => DecodedGroup switch
+    {
+        "Office Editors" => "Document, spreadsheet, slide and notebook editors with a shared ribbon. They read and write the real file formats in the browser.",
+        "File Handling" => "View, edit, upload and manage files. Start with the overview to see which component fits which job.",
+        "MudExObjectEdit" => "Generated edit forms for any object, with configuration, conditions, validation and custom editors.",
+        "Dialog Samples" => "Dialogs that can be dragged, resized, snapped, animated and shown without a modal overlay.",
+        _ => "Pick a demo. Each one shows the component, its source code and the API documentation."
+    };
+
+    private IEnumerable<IGrouping<string, NavigationEntry>> GetSections()
+    {
+        var group = DecodedGroup;
+        return GetFilteredDemos().GroupBy(n =>
+        {
+            var g = n.Demo?.Group ?? string.Empty;
+            return group != null && g.Length > group.Length && g.StartsWith(group + "/", StringComparison.OrdinalIgnoreCase)
+                ? g[(group.Length + 1)..]
+                : string.Empty;
+        });
+    }
+
     private IEnumerable<NavigationEntry> GetFilteredDemos()
     {
         var allEntries = DemoAttribute.AllEntries(true);
+        var decodedGroup = DecodedGroup;
 
-        if (string.IsNullOrEmpty(Group))
+        if (decodedGroup == null)
             return allEntries;
-
-        var decodedGroup = Uri.UnescapeDataString(Group);
 
         if (decodedGroup == AppConstants.UngroupedNavCategory)
             return allEntries.Where(n => string.IsNullOrEmpty(n?.Demo?.Group));
@@ -44,10 +60,5 @@
         return allEntries.Where(n =>
             n?.Demo?.Group == decodedGroup ||
             n?.Demo?.Group?.StartsWith(decodedGroup + "/", StringComparison.OrdinalIgnoreCase) == true);
-    }
-
-    private void Open(NavigationEntry nav)
-    {
-        NavigationManager.NavigateTo(nav.Href);
     }
 }

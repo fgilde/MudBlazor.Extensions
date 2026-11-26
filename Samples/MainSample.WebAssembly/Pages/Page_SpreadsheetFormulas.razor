@@ -3,16 +3,10 @@
 
 @using MainSample.WebAssembly.Examples.Spreadsheet
 
-@attribute [DemoNew(Name = "Formulas", Group = "Spreadsheet", Order = 10, Icon = Icons.Material.Outlined.Functions, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) }, Documentation = "Formulas, functions and dynamic array spills in MudExSpreadsheetEditor.")]
+@attribute [DemoNew(Name = "Formulas", Group = "Office Editors/Spreadsheet", Order = 10, Icon = Icons.Material.Outlined.Functions, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) }, Documentation = "Formulas, functions and dynamic array spills in MudExSpreadsheetEditor.")]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Spreadsheet – Formulas"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["Formulas use English function names. Both , and ; are accepted as argument separators, and the file stores the Excel form with a comma. Only affected cells are recalculated."]
-    </MudText>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="MudEx Spreadsheet - Formulas" Description="Formulas use English function names. Both , and ; are accepted as argument separators, and the file stores the Excel form with a comma. Only affected cells are recalculated.">
+</DemoHero>
 
 <MudExDemoPage>
 

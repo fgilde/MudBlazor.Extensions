@@ -1,0 +1,111 @@
+@using Microsoft.Extensions.Localization
+@using MainSample.WebAssembly.Pages
+@using MainSample.WebAssembly.Examples.DocumentEditor
+@using MainSample.WebAssembly.Examples.Spreadsheet
+@using MainSample.WebAssembly.Examples.Slides
+@using MainSample.WebAssembly.Examples.Notebook
+@inject IStringLocalizer<BasePage> L
+
+<div class="mx-office">
+    <div class="mx-office-tabs" role="tablist">
+        @foreach (var app in Apps)
+        {
+            <button type="button" role="tab" aria-selected="@(app == _current ? "true" : "false")"
+                    class="mx-office-tab @(app == _current ? "active" : null)" style="--mx-app: @app.Color"
+                    @onclick="@(() => Select(app))">
+                <MudIcon Icon="@app.Icon" />
+                <span>
+                    <span class="mx-office-tab-name">@L[app.Name]</span>
+                    <span class="mx-office-tab-type">@app.Component</span>
+                </span>
+            </button>
+        }
+    </div>
+
+    <div class="mx-office-info" style="--mx-app: @_current.Color">
+        <div>
+            <div class="mx-office-info-title">@L[_current.Headline]</div>
+            <div class="mx-office-info-text">@L[_current.Text]</div>
+        </div>
+        <div class="mx-office-formats">
+            @foreach (var format in _current.Formats)
+            {
+                <span>@format</span>
+            }
+        </div>
+        <MudButton Href="@_current.Href" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small"
+                   EndIcon="@Icons.Material.Filled.ArrowForward">@L["All demos"]</MudButton>
+    </div>
+
+    <div class="mx-stage">
+        <div class="mx-stage-bar">
+            <i></i><i></i><i></i>
+            <span>@_current.File</span>
+        </div>
+        <div class="mx-stage-body">
+            @if (!_ready)
+            {
+                <div class="mx-stage-wait"><MudProgressCircular Indeterminate="true" Color="Color.Primary" /></div>
+            }
+            else if (_current.Key == "doc")
+            {
+                <DocumentOverviewExample />
+            }
+            else if (_current.Key == "sheet")
+            {
+                <SpreadsheetOverviewExample />
+            }
+            else if (_current.Key == "slides")
+            {
+                <SlidesOverviewExample />
+            }
+            else
+            {
+                <NotebookOverviewExample />
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    /// <summary>Editor shown first: doc, sheet, slides or notebook.</summary>
+    [Parameter] public string Start { get; set; } = "doc";
+
+    public record OfficeApp(string Key, string Name, string Component, string Icon, string Color, string Href, string File, string Headline, string Text, string[] Formats);
+
+    public static readonly OfficeApp[] Apps =
+    [
+        new("doc", "Document", "MudExDocumentEditor", Icons.Material.Outlined.Description, "#2b7cd3", "/document-editor", "Document.docx",
+            "Word processing in the browser",
+            "Ribbon, styles, lists, tables, pictures, headers and footers, pages view, find and replace. Opens and saves real docx files.",
+            ["docx", "doc", "rtf", "odt", "html", "md", "txt"]),
+        new("sheet", "Spreadsheet", "MudExSpreadsheetEditor", Icons.Material.Outlined.GridOn, "#21a366", "/spreadsheet", "Workbook.xlsx",
+            "Spreadsheets with formulas and charts",
+            "A formula engine, number formats, sorting and filtering, charts, frozen panes and several sheets. Large sheets stay fast because only visible cells are rendered.",
+            ["xlsx", "xlsm", "xls", "csv", "tsv"]),
+        new("slides", "Slides", "MudExSlideEditor", Icons.Material.Outlined.Slideshow, "#d35230", "/slides", "Presentation.pptx",
+            "Presentations and slide shows",
+            "Edit shapes, text, tables and pictures on slides, pick a design and run the slide show with presenter view.",
+            ["pptx"]),
+        new("notebook", "Notebook", "MudExNotebookEditor", Icons.Material.Outlined.Book, "#7719aa", "/notebook", "Notebook.mxnb",
+            "Notes in sections and pages",
+            "A notebook with sections, pages and free containers for text, lists, tables and pictures.",
+            ["mxnb", "one"])
+    ];
+
+    private OfficeApp _current = Apps[0];
+    private bool _ready;
+
+    protected override void OnInitialized() => _current = Apps.FirstOrDefault(a => a.Key == Start) ?? Apps[0];
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+        await Task.Delay(150);
+        _ready = true;
+        StateHasChanged();
+    }
+
+    private void Select(OfficeApp app) => _current = app;
+}

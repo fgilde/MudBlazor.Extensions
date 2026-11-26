@@ -1,87 +1,102 @@
-﻿@using Microsoft.Extensions.Localization
+﻿@using System.Text.Json
+@using Microsoft.Extensions.Localization
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Services
 @using Nextended.Core.Extensions
-@inject IDialogService dialogService;
-@inject MudExFileService fileService;
+@inject IDialogService dialogService
+@inject MudExFileService fileService
+@inject HttpClient http
 @implements IMudExFileDisplay
 @inject IStringLocalizer<MySimpleJsonDisplay> L
 
-<span @onclick="@ShowCode" style="cursor: pointer; font-size: 10pt;text-decoration: underline; position: absolute; margin-top: -10px;">@L["This is a self registered control for json files. Just implement IMudExFileDisplay. Click to see code"]</span>
+@* Reference implementation of a custom viewer. MudExFileDisplay finds every class that implements
+   IMudExFileDisplay in the app assembly, so no registration code is needed. *@
 
-<MudTextField ReadOnly="true" Value="@jsonValue" Variant="Variant.Outlined" T="string" Lines="16" Style="margin-top: 3px;"></MudTextField>
+<div class="d-flex align-center gap-2 mb-1">
+    <MudIcon Icon="@Icons.Material.Outlined.DataObject" Size="Size.Small" />
+    <MudText Typo="Typo.subtitle2">@Name</MudText>
+    <MudText Typo="Typo.caption" Color="Color.Secondary">@L["{0} lines", _lineCount]</MudText>
+    <MudSpacer />
+    <MudLink Typo="Typo.caption" OnClick="@ShowCode">@L["Show the source of this viewer"]</MudLink>
+</div>
+
+<MudTextField ReadOnly="true" Value="@_text" Variant="Variant.Outlined" T="string" Lines="16" />
 
 @code {
-    private string jsonValue;
+    private string _text;
+    private int _lineCount;
+    private object _loadedSource;
 
-    [Inject] HttpClient http { get; set; }
-    public string Name => "Most stupid json display"; // Name of your component. (Is displayed in menu if user wants to switch between multiple components for one file type)
+    // Shown in the "Render with ..." menu when the user can choose between several viewers for one file
+    public string Name => "Simple JSON display";
 
-    public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService) // Here you need to check if your component can handle the file. Please do this as accurate as possible to prevent using the wrong component for a file.
+    // Wins against viewers with the same claim (default is 0), so this one is used first for json
+    public int RenderPriority => 10;
+
+    // Be as exact as possible here, otherwise the viewer is offered for files it cannot show
+    public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService)
+        => Task.FromResult(fileDisplayInfos.ContentType == "application/json"
+                           || (fileDisplayInfos.ContentType == "text/plain" && fileDisplayInfos.FileName.EndsWith(".json", StringComparison.OrdinalIgnoreCase)));
+
+    // Must be a [Parameter]: MudExFileDisplay sets it when it renders this component
+    [Parameter]
+    public IMudExFileDisplayInfos FileDisplayInfos { get; set; }
+
+    // Extra rows for the info dialog and the metadata view
+    public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)
+        => Task.FromResult<IDictionary<string, object>>(new Dictionary<string, object> { { "Lines", _lineCount } });
+
+    protected override async Task OnParametersSetAsync()
     {
-        return Task.FromResult(fileDisplayInfos.ContentType == "application/json" || (fileDisplayInfos.ContentType == "text/plain" && fileDisplayInfos.FileName.EndsWith(".json")));
+        // The same component instance is reused for the next file of this kind, so reload when the source changed
+        if (!FileDisplayInfos.SourceChanged(ref _loadedSource))
+            return;
+
+        var raw = await fileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos);
+        _text = Format(raw);
+        _lineCount = _text.GetLines().Count();
+        await FileDisplayInfos.NotifyMetaChangedAsync(); // the line count exists now
     }
 
-    private IMudExFileDisplayInfos _fileDisplayInfos;
-    [Parameter] // Important. The property for FileDisplayInfos from interface IMudExFileDisplayInfos needs to have the [Parameter] attribute
-    public IMudExFileDisplayInfos FileDisplayInfos
+    private static string Format(string json)
     {
-        get => _fileDisplayInfos;
-        set
+        try
         {
-            if (_fileDisplayInfos != value || string.IsNullOrEmpty(jsonValue))
-            {
-                _fileDisplayInfos = value;
-                fileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos).ContinueWith(jsonTask =>
-                {
-                    jsonValue = jsonTask.Result;
-                    StateHasChanged();
-                }); // Here we load the json string for given file
-            }
+            using var doc = JsonDocument.Parse(json);
+            return JsonSerializer.Serialize(doc.RootElement, new JsonSerializerOptions { WriteIndented = true });
+        }
+        catch (JsonException)
+        {
+            return json; // not valid json, show as is
         }
     }
 
-    public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)
-    {
-        return Task.FromResult<IDictionary<string, object>>(new Dictionary<string, object>()
-        {
-            {"Lines", jsonValue.GetLines().Count()}
-        });
-    }
-
-    // That's all you need to implement from Interface. All other code depends on your component and on what you want to archive
     protected override void OnInitialized()
     {
-        base.OnInitialized();
         if (MainLayout.Instance != null)
             MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
     }
+
     private async Task ShowCode()
     {
         var file = GH.Path($"Shared/{GetType().Name}.razor");
         string code = await http.GetStringAsync(file);
         await dialogService.ShowComponentInDialogAsync<DemoMarkdown>(L["Code for this component"], L["Like this you can implement your own components that is responsible for a File"],
-            md =>
-            {
-                md.Value = MudExCodeView.CodeAsMarkup(code);
-            },
+            md => { md.Value = MudExCodeView.CodeAsMarkup(code); },
             dialog =>
             {
                 dialog.Icon = Icons.Material.Filled.Code;
                 dialog.Buttons = MudExDialogResultAction.Ok();
-
-            },new DialogOptionsEx()
-            {   
+            }, new DialogOptionsEx
+            {
                 DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
-                DragMode =MudDialogDragMode.Simple,
+                DragMode = MudDialogDragMode.Simple,
                 MaxWidth = MaxWidth.Large,
                 FullWidth = true,
                 CloseButton = true,
                 Resizeable = true,
             });
     }
-
 }
-

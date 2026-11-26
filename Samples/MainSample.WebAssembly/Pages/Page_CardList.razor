@@ -2,7 +2,7 @@
 @inherits BasePage
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExCardList", Icon = Icons.Material.Outlined.HorizontalSplit, Documentation = "This Demo demonstrate using for the MudExCardList", ForComponentType = typeof(MudExCardList<>))]
+@attribute [Demo(IsPlaygroundDemo = true, Name = "MudExCardList", Icon = Icons.Material.Outlined.HorizontalSplit, Documentation = "MudExCardList renders a list of items as cards. This demo shows its basic use with a property editor for its options.", ForComponentType = typeof(MudExCardList<>))]
 
 <DemoComponent PageType="@GetType()" Title="MudExCardList">
     <MudSlider @bind-Value="itemCount" Min="0" Max="40" Color="Color.Info" Class="mb-6">@L["Items"]: @itemCount.ToString()</MudSlider>

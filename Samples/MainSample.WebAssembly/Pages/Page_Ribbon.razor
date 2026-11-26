@@ -3,40 +3,28 @@
 
 @using MainSample.WebAssembly.Examples.Ribbon
 
-@attribute [DemoNew(Name = "Overview", Documentation = "MudEx Ribbon – Office style command ribbon", Order = 0, Group = "Ribbon", Icon = Icons.Material.Outlined.ViewDay, ForComponentTypes = new[] { typeof(MudExRibbon) })]
+@attribute [DemoNew(Name = "Overview", Documentation = "MudExRibbon is an Office style command ribbon. This demo builds a ribbon with tabs, groups and commands.", Order = 0, Group = "Office Editors/Ribbon", Icon = Icons.Material.Outlined.ViewDay, ForComponentTypes = new[] { typeof(MudExRibbon) })]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Ribbon – Office style command ribbon"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["MudExRibbon renders tabs, groups and commands in four presentations from one declaration: Classic, Simplified, Menu and Toolbar. It adapts to the available width, offers a file menu, a quick access toolbar, command search and keyboard access."]
-    </MudText>
-    <MudAlert Severity="Severity.Info" Class="mt-4">
-        @L["Press Alt while the ribbon has focus to show the key tips, then type the shown letters. Use the search box to run any command by name and pin commands to the quick access toolbar. Every click is reported below the ribbon."]
-    </MudAlert>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="MudEx Ribbon" Description="MudExRibbon renders tabs, groups and commands in four presentations from one declaration: Classic, Simplified, Menu and Toolbar. It adapts to the available width, offers a file menu, a quick access toolbar, command search and keyboard access.">
+    <div class="mx-tiles">
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Four modes, one definition"]</div>
+            <div class="mx-tile-text">@L["Classic, Simplified, Menu and Toolbar all render the same tabs, groups and items."]</div>
+        </div>
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Rich items"]</div>
+            <div class="mx-tile-text">@L["Buttons, toggles, split and menu buttons, galleries, number boxes, selects, color pickers and custom content."]</div>
+        </div>
+        <div class="mx-tile">
+            <div class="mx-tile-title">@L["Adaptive and accessible"]</div>
+            <div class="mx-tile-text">@L["Groups collapse by priority when space runs out. Key tips, keyboard navigation and ARIA roles are built in."]</div>
+        </div>
+    </div>
+</DemoHero>
 
-<MudGrid Class="mb-6">
-    <MudItem xs="12" md="4">
-        <MudPaper Class="pa-4 h-100">
-            <MudText Typo="Typo.subtitle1">@L["Four modes, one definition"]</MudText>
-            <MudText Typo="Typo.body2">@L["Classic, Simplified, Menu and Toolbar all render the same tabs, groups and items."]</MudText>
-        </MudPaper>
-    </MudItem>
-    <MudItem xs="12" md="4">
-        <MudPaper Class="pa-4 h-100">
-            <MudText Typo="Typo.subtitle1">@L["Rich items"]</MudText>
-            <MudText Typo="Typo.body2">@L["Buttons, toggles, split and menu buttons, galleries, number boxes, selects, color pickers and custom content."]</MudText>
-        </MudPaper>
-    </MudItem>
-    <MudItem xs="12" md="4">
-        <MudPaper Class="pa-4 h-100">
-            <MudText Typo="Typo.subtitle1">@L["Adaptive and accessible"]</MudText>
-            <MudText Typo="Typo.body2">@L["Groups collapse by priority when space runs out. Key tips, keyboard navigation and ARIA roles are built in."]</MudText>
-        </MudPaper>
-    </MudItem>
-</MudGrid>
+<MudAlert Severity="Severity.Info" Class="mb-6">
+    @L["Press Alt while the ribbon has focus to show the key tips, then type the shown letters. Use the search box to run any command by name and pin commands to the quick access toolbar. Every click is reported below the ribbon."]
+</MudAlert>
 
 <MudDivider Class="mb-6" />
 

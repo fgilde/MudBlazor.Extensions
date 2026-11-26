@@ -3,16 +3,10 @@
 
 @using MainSample.WebAssembly.Examples.Spreadsheet
 
-@attribute [DemoNew(Name = "Files", Group = "Spreadsheet", Order = 20, Icon = Icons.Material.Outlined.FolderOpen, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor), typeof(MudExFileDisplay) }, Documentation = "Open and save xlsx and csv files locally, save to a server with SaveRequested, or edit them inside MudExFileDisplay.")]
+@attribute [DemoNew(Name = "Files", Group = "Office Editors/Spreadsheet", Order = 20, Icon = Icons.Material.Outlined.FolderOpen, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor), typeof(MudExFileDisplay) }, Documentation = "Open and save xlsx and csv files locally, save to a server with SaveRequested, or edit them inside MudExFileDisplay.")]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Spreadsheet – Files"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["The File menu opens and creates workbooks and saves them locally. Saving as csv exports the active sheet."]
-    </MudText>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="MudEx Spreadsheet - Files" Description="The File menu opens and creates workbooks and saves them locally. Saving as csv exports the active sheet.">
+</DemoHero>
 
 <MudExDemoPage>
 

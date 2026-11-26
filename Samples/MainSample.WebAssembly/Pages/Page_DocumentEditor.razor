@@ -4,27 +4,19 @@
 @using MainSample.WebAssembly.Examples.DocumentEditor
 @using MainSample.WebAssembly.Examples.Spreadsheet
 
-@attribute [DemoNew(Name = "Overview", Group = "Document Editor", Order = 0, Icon = Icons.Material.Outlined.Description, ForComponentTypes = new[] { typeof(MudExDocumentEditor) }, Documentation = "MudExDocumentEditor - a Word-like editor with ribbon, styles, lists, tables, find and replace, undo and docx, doc, rtf, odt and markdown files.")]
+@attribute [DemoNew(Name = "Overview", Group = "Office Editors/Document", Order = 0, Icon = Icons.Material.Outlined.Description, ForComponentTypes = new[] { typeof(MudExDocumentEditor) }, Documentation = "MudExDocumentEditor - a Word-like editor with ribbon, styles, lists, tables, find and replace, undo and docx, doc, rtf, odt and markdown files.")]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Document Editor"]
-    </MudText>
-    <MudText Typo="Typo.body1" Class="mb-4">
-        @L["Write and format documents like in Word: type, style paragraphs, build lists and tables, find and replace, undo and save as docx. The editor fills its container, so give the host element a height."]
-    </MudText>
-    <MudGrid>
+<DemoHero PageType="@GetType()" Title="MudEx Document Editor" Description="Write and format documents like in Word: type, style paragraphs, build lists and tables, find and replace, undo and save as docx. The editor fills its container, so give the host element a height.">
+    <div class="mx-tiles">
         @foreach (var (title, text) in _tiles)
         {
-            <MudItem xs="12" sm="6" md="3">
-                <MudPaper Outlined="true" Class="pa-3 fill-height">
-                    <MudText Typo="Typo.subtitle2">@title</MudText>
-                    <MudText Typo="Typo.body2">@text</MudText>
-                </MudPaper>
-            </MudItem>
+            <div class="mx-tile">
+                <div class="mx-tile-title">@L[title]</div>
+                <div class="mx-tile-text">@L[text]</div>
+            </div>
         }
-    </MudGrid>
-</MudPaper>
+    </div>
+</DemoHero>
 
 <MudExDemoPage>
 

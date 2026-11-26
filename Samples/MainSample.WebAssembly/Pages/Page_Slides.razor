@@ -4,27 +4,19 @@
 @using MainSample.WebAssembly.Examples.Slides
 @using MainSample.WebAssembly.Examples.Spreadsheet
 
-@attribute [DemoNew(Name = "Overview", Group = "Slide Editor", Order = 0, Icon = Icons.Material.Outlined.Slideshow, ForComponentTypes = new[] { typeof(MudExSlideEditor) }, Documentation = "MudExSlideEditor – a PowerPoint-like editor with ribbon, slide panel, canvas, notes and status bar.")]
+@attribute [DemoNew(Name = "Overview", Group = "Office Editors/Slides", Order = 0, Icon = Icons.Material.Outlined.Slideshow, ForComponentTypes = new[] { typeof(MudExSlideEditor) }, Documentation = "MudExSlideEditor – a PowerPoint-like editor with ribbon, slide panel, canvas, notes and status bar.")]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Slide Editor"]
-    </MudText>
-    <MudText Typo="Typo.body1" Class="mb-4">
-        @L["Edit pptx presentations with text, shapes and pictures, a slide panel with drag and drop, speaker notes and undo. The editor fills its container, so give the host element a height."]
-    </MudText>
-    <MudGrid>
+<DemoHero PageType="@GetType()" Title="MudEx Slide Editor" Description="Edit pptx presentations with text, shapes and pictures, a slide panel with drag and drop, speaker notes and undo. The editor fills its container, so give the host element a height.">
+    <div class="mx-tiles">
         @foreach (var (title, text) in _tiles)
         {
-            <MudItem xs="12" sm="6" md="3">
-                <MudPaper Outlined="true" Class="pa-3 fill-height">
-                    <MudText Typo="Typo.subtitle2">@title</MudText>
-                    <MudText Typo="Typo.body2">@text</MudText>
-                </MudPaper>
-            </MudItem>
+            <div class="mx-tile">
+                <div class="mx-tile-title">@L[title]</div>
+                <div class="mx-tile-text">@L[text]</div>
+            </div>
         }
-    </MudGrid>
-</MudPaper>
+    </div>
+</DemoHero>
 
 <MudExDemoPage>
 

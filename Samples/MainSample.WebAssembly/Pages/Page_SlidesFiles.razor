@@ -3,16 +3,10 @@
 
 @using MainSample.WebAssembly.Examples.Slides
 
-@attribute [DemoNew(Name = "Files", Group = "Slide Editor", Order = 20, Icon = Icons.Material.Outlined.FolderOpen, ForComponentTypes = new[] { typeof(MudExSlideEditor) }, Documentation = "Open and save pptx files locally or save to a server with SaveRequested.")]
+@attribute [DemoNew(Name = "Files", Group = "Office Editors/Slides", Order = 20, Icon = Icons.Material.Outlined.FolderOpen, ForComponentTypes = new[] { typeof(MudExSlideEditor) }, Documentation = "Open and save pptx files locally or save to a server with SaveRequested.")]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Slide Editor – Files"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["The File menu opens and creates presentations and saves them locally. Content the editor does not model is written back unchanged."]
-    </MudText>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="MudEx Slide Editor - Files" Description="The File menu opens and creates presentations and saves them locally. Content the editor does not model is written back unchanged.">
+</DemoHero>
 
 <MudExDemoPage>
 

@@ -3,16 +3,10 @@
 
 @using MainSample.WebAssembly.Examples.Notebook
 
-@attribute [DemoNew(Name = "Files", Group = "Notebook Editor", Order = 20, Icon = Icons.Material.Outlined.FolderOpen, ForComponentTypes = new[] { typeof(MudExNotebookEditor) }, Documentation = "Open and save mxnb files locally or save to a server with SaveRequested.")]
+@attribute [DemoNew(Name = "Files", Group = "Office Editors/Notebook", Order = 20, Icon = Icons.Material.Outlined.FolderOpen, ForComponentTypes = new[] { typeof(MudExNotebookEditor) }, Documentation = "Open and save mxnb files locally or save to a server with SaveRequested.")]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Notebook Editor – Files"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["The File menu opens and creates notebooks and saves them locally. Pages you did not change and media that are still in use are written back unchanged."]
-    </MudText>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="MudEx Notebook Editor - Files" Description="The File menu opens and creates notebooks and saves them locally. Pages you did not change and media that are still in use are written back unchanged.">
+</DemoHero>
 
 <MudExDemoPage>
 

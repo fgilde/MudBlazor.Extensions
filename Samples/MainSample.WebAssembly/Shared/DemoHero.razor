@@ -1,0 +1,89 @@
+@using System.Reflection
+@using Microsoft.Extensions.Localization
+@using MudBlazor.Extensions.Api
+@inject IStringLocalizer<DemoHero> L
+
+@if (!string.IsNullOrEmpty(Title))
+{
+    <PageTitle>@L[Title]</PageTitle>
+}
+<section class="mx-hero @(Compact ? "mx-hero-compact" : null) @Class">
+    <div class="mx-hero-main">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <div class="mx-hero-icon"><MudIcon Icon="@Icon" /></div>
+        }
+        <div class="mx-hero-text">
+            <div class="mx-eyebrow">
+                @if (!string.IsNullOrEmpty(Eyebrow))
+                {
+                    <span>@L[Eyebrow]</span>
+                }
+                @if (Demo is DemoNewAttribute)
+                {
+                    <span class="mx-badge mx-badge-new">@L["New"]</span>
+                }
+                else if (Demo is DemoUpdatedAttribute)
+                {
+                    <span class="mx-badge mx-badge-updated">@L["Updated"]</span>
+                }
+            </div>
+            <h1 class="mx-hero-title">@L[Title ?? string.Empty]</h1>
+            @if (!string.IsNullOrEmpty(Description))
+            {
+                <p class="mx-hero-lead">@L[Description]</p>
+            }
+            @if (_types.Length > 0 || Actions != null)
+            {
+                <div class="mx-hero-meta">
+                    @foreach (var type in _types)
+                    {
+                        <a class="mx-type-chip" href="@($"/api/{type.Name}")" title="@L["Open the API documentation"]">@ApiMemberInfo.GetGenericFriendlyTypeName(type)</a>
+                    }
+                    @Actions
+                </div>
+            }
+        </div>
+    </div>
+    @ChildContent
+</section>
+
+@code {
+    /// <summary>Headline. Falls back to the demo attribute's name.</summary>
+    [Parameter] public string? Title { get; set; }
+    /// <summary>Lead text. Falls back to the demo attribute's documentation.</summary>
+    [Parameter] public string? Description { get; set; }
+    /// <summary>Small line above the headline. Falls back to the demo group.</summary>
+    [Parameter] public string? Eyebrow { get; set; }
+    [Parameter] public string? Icon { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public bool Compact { get; set; }
+    /// <summary>Page type carrying a Demo attribute; fills everything not set explicitly.</summary>
+    [Parameter] public Type? PageType { get; set; }
+    [Parameter] public DemoAttribute? Demo { get; set; }
+    /// <summary>Buttons or links shown beside the component chips.</summary>
+    [Parameter] public RenderFragment? Actions { get; set; }
+    /// <summary>Extra content below the headline, for example a mx-tiles grid.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private Type[] _types = [];
+
+    protected override void OnParametersSet()
+    {
+        Demo ??= PageType?.GetCustomAttributes<DemoAttribute>().FirstOrDefault();
+        if (Demo != null)
+        {
+            Title ??= Demo.Name ?? PageType?.Name;
+            Description ??= Demo.Documentation;
+            Icon ??= Demo.Icon;
+            Eyebrow ??= Demo.Group?.Replace("/", " / ");
+            _types = Demo.RelatedComponents.Distinct().ToArray();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+    }
+}

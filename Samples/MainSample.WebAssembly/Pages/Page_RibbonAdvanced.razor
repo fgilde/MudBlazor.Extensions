@@ -3,16 +3,10 @@
 
 @using MainSample.WebAssembly.Examples.Ribbon
 
-@attribute [DemoNew(Name = "Advanced", Documentation = "MudEx Ribbon – contextual tabs, galleries, search, quick access and key tips", Order = 20, Group = "Ribbon", Icon = Icons.Material.Outlined.ViewDay, ForComponentTypes = new[] { typeof(MudExRibbon) })]
+@attribute [DemoNew(Name = "Advanced", Documentation = "This demo shows contextual tabs, galleries, search, quick access and key tips of MudExRibbon.", Order = 20, Group = "Office Editors/Ribbon", Icon = Icons.Material.Outlined.ViewDay, ForComponentTypes = new[] { typeof(MudExRibbon) })]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Ribbon – Advanced"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["Contextual tabs, galleries with custom templates, command search, quick access with pinning, collapsing, the file menu backstage and key tips."]
-    </MudText>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="MudEx Ribbon - Advanced" Description="Contextual tabs, galleries with custom templates, command search, quick access with pinning, collapsing, the file menu backstage and key tips.">
+</DemoHero>
 
 <MudExDemoPage>
 

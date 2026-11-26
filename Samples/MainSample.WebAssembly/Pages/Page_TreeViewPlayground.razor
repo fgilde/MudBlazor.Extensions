@@ -2,7 +2,7 @@
 @using MudBlazor.Extensions.Core.Enums
 @inherits BasePage
 
-@attribute [Demo(IsPlaygroundDemo = true, Name = "Playground", Order = 100, Group = "TreeView", ForComponentTypes = new[] { typeof(MudExTreeView<>) })]
+@attribute [Demo(IsPlaygroundDemo = true, Name = "Playground", Documentation = "MudExTreeView shows hierarchical data as a tree. This playground lets you change its properties and see the result.", Order = 100, Group = "TreeView", ForComponentTypes = new[] { typeof(MudExTreeView<>) })]
 
 
 <DemoComponent DocFiles="@(new [] {"Docs/MudExTreeView.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">

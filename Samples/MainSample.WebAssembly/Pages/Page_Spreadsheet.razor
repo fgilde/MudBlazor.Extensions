@@ -3,16 +3,10 @@
 
 @using MainSample.WebAssembly.Examples.Spreadsheet
 
-@attribute [DemoNew(Name = "Overview", Group = "Spreadsheet", Order = 0, Icon = Icons.Material.Outlined.TableChart, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) }, Documentation = "MudExSpreadsheetEditor – an Excel-like editor with ribbon, formula bar, sheet tabs and status bar.")]
+@attribute [DemoNew(Name = "Overview", Group = "Office Editors/Spreadsheet", Order = 0, Icon = Icons.Material.Outlined.TableChart, ForComponentTypes = new[] { typeof(MudExSpreadsheetEditor) }, Documentation = "MudExSpreadsheetEditor – an Excel-like editor with ribbon, formula bar, sheet tabs and status bar.")]
 
-<MudPaper Class="pa-6 mb-6">
-    <MudText Typo="Typo.h4" GutterBottom="true">
-        @L["MudEx Spreadsheet Editor"]
-    </MudText>
-    <MudText Typo="Typo.body1">
-        @L["Edit xlsx and csv workbooks with formulas, number formats, merges, frozen panes and undo. The editor fills its container, so give the host element a height."]
-    </MudText>
-</MudPaper>
+<DemoHero PageType="@GetType()" Title="MudEx Spreadsheet Editor" Description="Edit xlsx and csv workbooks with formulas, number formats, merges, frozen panes and undo. The editor fills its container, so give the host element a height.">
+</DemoHero>
 
 <MudExDemoPage>
 
