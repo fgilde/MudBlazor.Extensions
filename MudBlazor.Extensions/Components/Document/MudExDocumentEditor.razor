@@ -147,7 +147,50 @@
                                            OnClick="@(() => InsertFieldAsync(TocInstruction, TryLocalize("Table of Contents")))" />
                     </MudExRibbonGroup>
                 </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("Layout")" KeyTip="P" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Page Setup")" Icon="@Icons.Material.Filled.Article" CollapsePriority="2" OnDialogLauncherClick="OpenPageSetupAsync">
+                        <MudExRibbonMenuButton Id="wd-margins" Text="@TryLocalize("Margins")" Icon="@Icons.Material.Filled.BorderOuter" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly">
+                            @foreach (var preset in MarginPresets)
+                            {
+                                var (name, top, side) = preset;
+                                <MudExRibbonMenuItem Id="@($"wd-margins-{name.ToLowerInvariant()}")" Text="@TryLocalize(name)" Checked="@IsMargin(name)" OnClick="@(() => SetMarginsAsync(top, side))" />
+                            }
+                            <MudExRibbonMenuItem Id="wd-margins-custom" Text="@TryLocalize("Custom Margins...")" OnClick="OpenPageSetupAsync" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonMenuButton Id="wd-orientation" Text="@TryLocalize("Orientation")" Icon="@Icons.Material.Filled.ScreenRotation" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly">
+                            <MudExRibbonMenuItem Id="wd-orientation-portrait" Text="@TryLocalize("Portrait")" Checked="@(CurrentPage?.Orientation == PageOrientation.Portrait)"
+                                                 OnClick="@(() => SetOrientationAsync(PageOrientation.Portrait))" />
+                            <MudExRibbonMenuItem Id="wd-orientation-landscape" Text="@TryLocalize("Landscape")" Checked="@(CurrentPage?.Orientation == PageOrientation.Landscape)"
+                                                 OnClick="@(() => SetOrientationAsync(PageOrientation.Landscape))" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonMenuButton Id="wd-size" Text="@TryLocalize("Size")" Icon="@Icons.Material.Filled.CropPortrait" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly">
+                            @foreach (var size in MudExDocumentPageSetupDialog.Sizes.Keys)
+                            {
+                                var name = size;
+                                <MudExRibbonMenuItem Id="@($"wd-size-{name.ToLowerInvariant()}")" Text="@name" Checked="@IsPaperSize(name)" OnClick="@(() => SetPaperSizeAsync(name))" />
+                            }
+                            <MudExRibbonMenuItem Id="wd-size-more" Text="@TryLocalize("More Paper Sizes...")" OnClick="OpenPageSetupAsync" />
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Paragraph")" Icon="@Icons.Material.Filled.FormatIndentIncrease" CollapsePriority="1">
+                        <MudExRibbonNumberBox Id="wd-layout-indent-left" Text="@($"{TryLocalize("Indent Left")} ({DocumentUnits.Unit(Metric)})")" Value="@IndentUnit(Format?.Paragraph.IndentLeft)"
+                                              ValueChanged="@(v => SetIndentAsync(true, v))" Min="0" Max="50" Step="@(Metric ? 0.25 : 0.1)" Disabled="@IsReadOnly" />
+                        <MudExRibbonNumberBox Id="wd-layout-indent-right" Text="@($"{TryLocalize("Indent Right")} ({DocumentUnits.Unit(Metric)})")" Value="@IndentUnit(Format?.Paragraph.IndentRight)"
+                                              ValueChanged="@(v => SetIndentAsync(false, v))" Min="0" Max="50" Step="@(Metric ? 0.25 : 0.1)" Disabled="@IsReadOnly" />
+                        <MudExRibbonNumberBox Id="wd-layout-space-before" Text="@($"{TryLocalize("Spacing Before")} (pt)")" Value="@((Format?.Paragraph.SpacingBefore ?? 0) / 20.0)"
+                                              ValueChanged="@(v => SetSpacingAsync(true, v))" Min="0" Max="1584" Step="6" Disabled="@IsReadOnly" />
+                        <MudExRibbonNumberBox Id="wd-layout-space-after" Text="@($"{TryLocalize("Spacing After")} (pt)")" Value="@((Format?.Paragraph.SpacingAfter ?? 0) / 20.0)"
+                                              ValueChanged="@(v => SetSpacingAsync(false, v))" Min="0" Max="1584" Step="6" Disabled="@IsReadOnly" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
                 <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
+                    <MudExRibbonGroup Text="@TryLocalize("Document Views")" Icon="@Icons.Material.Filled.AutoStories" CollapsePriority="3">
+                        <MudExRibbonToggleButton Id="wd-view-pages" Text="@TryLocalize("Print Layout")" Icon="@Icons.Material.Filled.Article" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@(CurrentView == MudExDocumentView.Pages)" CheckedChanged="@(_ => SetView(MudExDocumentView.Pages))" />
+                        <MudExRibbonToggleButton Id="wd-view-web" Text="@TryLocalize("Web Layout")" Icon="@Icons.Material.Filled.Language" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@(CurrentView == MudExDocumentView.Web)" CheckedChanged="@(_ => SetView(MudExDocumentView.Web))" />
+                        <MudExRibbonButton Id="wd-print" Text="@TryLocalize("Print")" Icon="@Icons.Material.Filled.Print" Size="MudExRibbonItemSize.Large" OnClick="PrintAsync" />
+                    </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Zoom")" Icon="@Icons.Material.Filled.ZoomIn" CollapsePriority="2">
                         <MudExRibbonSelect T="double" Id="wd-zoom" Text="@TryLocalize("Zoom")" Items="@ZoomItems" ItemText="@(z => $"{z * 100:0}%")" Value="@_zoom" ValueChanged="SetZoom" Width="80" />
                         <MudExRibbonButton Id="wd-zoom-100" Text="@TryLocalize("100%")" Icon="@Icons.Material.Filled.ZoomOutMap" Size="MudExRibbonItemSize.Large" OnClick="@(() => SetZoom(1))" />
@@ -217,7 +260,7 @@
         <InputFile id="@_pictureInput" accept="@PictureAccept" OnChange="OnPictureChosenAsync" hidden />
     }
     <div class="mud-ex-doc-editor-body">
-        <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" Shortcuts="SurfaceShortcuts" ShortcutPressed="OnShortcutAsync" SelectionChanged="_selectionChanged" OnError="OnSurfaceErrorAsync"
+        <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" View="CurrentView" PagesChanged="OnPagesChanged" Shortcuts="SurfaceShortcuts" ShortcutPressed="OnShortcutAsync" SelectionChanged="_selectionChanged" OnError="OnSurfaceErrorAsync"
                               ContextMenuRequested="OnContextMenuAsync" MiniToolbarRequested="OnMiniToolbarAsync"
                               Localizer="@Localizer" />
     </div>
@@ -265,6 +308,6 @@
     }
     @if (ShowStatusBar)
     {
-        <MudExDocumentStatusBar Words="Words" Zoom="_zoom" ZoomChanged="SetZoom" Localizer="@Localizer" />
+        <MudExDocumentStatusBar Words="Words" Pages="@(CurrentView == MudExDocumentView.Pages ? _pages : default)" Zoom="_zoom" ZoomChanged="SetZoom" Localizer="@Localizer" />
     }
 </div>

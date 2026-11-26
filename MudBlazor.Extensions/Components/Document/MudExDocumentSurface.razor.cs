@@ -45,6 +45,7 @@ public partial class MudExDocumentSurface
     private int _tokens;
     private bool _readOnly;
     private double _zoom;
+    private MudExDocumentView _view = MudExDocumentView.Pages;
     private IReadOnlyCollection<string> _shortcuts;
 
     /// <summary>The document to show and edit.</summary>
@@ -58,6 +59,12 @@ public partial class MudExDocumentSurface
 
     /// <summary>Raised when <see cref="Selection"/> changes.</summary>
     [Parameter] public EventCallback<DocumentRange> SelectionChanged { get; set; }
+
+    /// <summary>Whether the document is laid out as pages or as one continuous sheet.</summary>
+    [Parameter] public MudExDocumentView View { get; set; } = MudExDocumentView.Pages;
+
+    /// <summary>Raised with the page the caret or the scroll position is on and the number of pages; only in the <see cref="MudExDocumentView.Pages"/> view.</summary>
+    [Parameter] public EventCallback<(int Current, int Total)> PagesChanged { get; set; }
 
     /// <summary>The keys the surface hands to <see cref="ShortcutPressed"/> instead of the browser, for example <c>Ctrl+B</c>.</summary>
     [Parameter] public IReadOnlyCollection<string> Shortcuts { get; set; }
@@ -109,8 +116,8 @@ public partial class MudExDocumentSurface
     {
         await base.OnAfterRenderAsync(firstRender);
         if (!firstRender) return;
-        (_readOnly, _zoom, _shortcuts) = (ReadOnly, ZoomFactor, Shortcuts);
-        var options = new { ReadOnly = _readOnly, Zoom = _zoom, Shortcuts = _shortcuts ?? [] };
+        (_readOnly, _zoom, _shortcuts, _view) = (ReadOnly, ZoomFactor, Shortcuts, View);
+        var options = new { ReadOnly = _readOnly, Zoom = _zoom, View = _view == MudExDocumentView.Web ? "web" : "pages", Shortcuts = _shortcuts ?? [] };
         if (await _module.StartAsync(JsRuntime, this, "MudExDocumentSurface", dotnet => [_root, dotnet, options]) == null) return;
         await SendInitialAsync();
         await SendOptionsAsync();
@@ -157,12 +164,21 @@ public partial class MudExDocumentSurface
 
     internal Task PasteAsync() => CallAsync("paste");
 
+    internal Task PrintAsync() => CallAsync("print");
+
     /// <summary>Called by the browser after a right click with the position in the viewport; not raised while read-only.</summary>
     /// <param name="x">The horizontal position in pixels.</param>
     /// <param name="y">The vertical position in pixels.</param>
     /// <returns>A task that completes when the host handled the request.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task OnContextMenuAsync(double x, double y) => ReadOnly || !double.IsFinite(x) || !double.IsFinite(y) ? Task.CompletedTask : ContextMenuRequested.InvokeAsync((x, y));
+
+    /// <summary>Called by the browser after the pages were laid out or the current page changed.</summary>
+    /// <param name="current">The current page, counted from 1.</param>
+    /// <param name="total">The number of pages.</param>
+    /// <returns>A task that completes when the host handled the change.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnPagesAsync(int current, int total) => total >= 1 && current >= 1 && current <= total ? PagesChanged.InvokeAsync((current, total)) : Task.CompletedTask;
 
     /// <summary>Called by the browser to show the mini toolbar above a selection or to hide it.</summary>
     /// <param name="show">True to show it.</param>
@@ -348,6 +364,7 @@ public partial class MudExDocumentSurface
     {
         if (ReadOnly != _readOnly) await CallAsync("setReadOnly", _readOnly = ReadOnly);
         if (ZoomFactor != _zoom) await CallAsync("setZoom", _zoom = ZoomFactor);
+        if (View != _view) await CallAsync("setView", (_view = View) == MudExDocumentView.Web ? "web" : "pages");
         if (!ReferenceEquals(Shortcuts, _shortcuts)) await CallAsync("setShortcuts", (_shortcuts = Shortcuts) ?? []);
     }
 

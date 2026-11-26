@@ -10650,3 +10650,43 @@ textarea.mud-ex-ssg-note-text {
 .mud-ex-doc-menu {
   transform: translate(min(0px, calc(100vw - 100% - 8px - var(--mud-ex-doc-x, 0px))), min(0px, calc(100vh - 100% - 8px - var(--mud-ex-doc-y, 0px))));
 }
+.mud-ex-doc-sheet.mud-ex-doc-pages {
+  background-color: transparent;
+  background-image: repeating-linear-gradient(to bottom, #fff 0, #fff var(--mx-ph, 1123px), transparent var(--mx-ph, 1123px), transparent calc(var(--mx-ph, 1123px) + 16px));
+  box-shadow: none;
+}
+.mud-ex-doc-sheet.mud-ex-doc-pages > [data-b] {
+  content-visibility: visible;
+}
+.mud-ex-doc-print-root {
+  display: none;
+}
+@media print {
+  html.mud-ex-doc-printing {
+    height: auto;
+    overflow: visible;
+  }
+  html.mud-ex-doc-printing body {
+    height: auto;
+    overflow: visible;
+  }
+  html.mud-ex-doc-printing body > *:not(.mud-ex-doc-print-root) {
+    display: none !important;
+  }
+  html.mud-ex-doc-printing .mud-ex-doc-print-root {
+    display: block;
+  }
+  html.mud-ex-doc-printing .mud-ex-doc-print-root .mud-ex-doc-sheet {
+    width: auto !important;
+    max-width: none;
+    min-height: 0 !important;
+    margin: 0;
+    padding: 0 !important;
+    zoom: 1 !important;
+    background: none !important;
+    box-shadow: none;
+  }
+  html.mud-ex-doc-printing .mud-ex-doc-print-root .mud-ex-doc-sheet > [data-b] {
+    content-visibility: visible;
+  }
+}

@@ -32,7 +32,9 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
     public string SheetCss()
     {
         var page = document.Sections.Count > 0 ? document.Sections[0].Page : PageSetup.A4;
-        return $"box-sizing:border-box;width:{Pt(page.Width)}pt;padding:{Pt(page.MarginTop)}pt {Pt(page.MarginRight)}pt {Pt(page.MarginBottom)}pt {Pt((long)page.MarginLeft + page.Gutter)}pt;" +
+        var left = (long)page.MarginLeft + page.Gutter;
+        return $"--mx-pw:{Px(page.Width)};--mx-ph:{Px(page.Height)};--mx-mt:{Px(page.MarginTop)};--mx-mr:{Px(page.MarginRight)};--mx-mb:{Px(page.MarginBottom)};--mx-ml:{Px(left)};" +
+               $"box-sizing:border-box;width:{Pt(page.Width)}pt;padding:{Pt(page.MarginTop)}pt {Pt(page.MarginRight)}pt {Pt(page.MarginBottom)}pt {Pt(left)}pt;" +
                DocumentCss.Run(Defaults(), new RunFormat(), true);
     }
 
@@ -72,7 +74,7 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         var runs = Formats(paragraph);
         var basis = Basis(paragraph, mark, runs);
         var label = document.ListLabel(paragraph);
-        var css = DocumentCss.Paragraph(format, NoParagraph, false, false, true) + DocumentCss.Spacing(format) + DocumentCss.Run(basis, defaults, true);
+        var css = DocumentCss.Paragraph(format, NoParagraph, false, false, true) + DocumentCss.Spacing(format) + DocumentCss.Run(basis, defaults, true) + (format.PageBreakBefore == true ? "break-before:page;" : "");
         return new SurfaceBlock(paragraph.Id, "p", css, paragraph.Text, label, label == null ? null : LabelCss(format, mark, basis), Runs(runs, basis), null, null, null);
     }
 
@@ -185,4 +187,6 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         borders == null ? new Border[6] : [borders.Top, borders.Bottom, borders.Left, borders.Right, borders.InsideH, borders.InsideV];
 
     private static string Pt(long twips) => DocumentCss.Twips(twips, 0);
+
+    private static string Px(long twips) => (twips / TwipsPerPixel).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + "px";
 }

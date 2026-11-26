@@ -254,6 +254,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExDocumentPages.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentPages.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExDocumentObjects.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExDocumentObjects.js"

@@ -6,6 +6,9 @@ namespace MudBlazor.Extensions.Components;
 /// <summary>Status bar of the document editor: the word count and a zoom slider.</summary>
 public partial class MudExDocumentStatusBar
 {
+    /// <summary>The current page and the number of pages; shown when the total is above zero.</summary>
+    [Parameter] public (int Current, int Total) Pages { get; set; }
+
     /// <summary>The number of words in the document.</summary>
     [Parameter] public int Words { get; set; }
 

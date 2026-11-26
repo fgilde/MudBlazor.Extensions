@@ -1274,6 +1274,15 @@
             RTF and OpenDocument text files in <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/>. Without a file it edits the <see cref="P:MudBlazor.Extensions.Components.MudExDocumentEditor.TextDocument"/> parameter.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.DocumentView">
+            <summary>
+            How the document is laid out: as pages or as one continuous sheet. Unset: pages for Word, RTF and OpenDocument files and new documents, the
+            continuous sheet for web pages, Markdown and plain text. A choice made in the View tab is kept for the lifetime of the editor instance.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentEditor.CurrentView">
+            <summary>The layout currently shown.</summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentEditor.#ctor">
             <summary>Creates the editor.</summary>
         </member>
@@ -1407,6 +1416,21 @@
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentFontDialog.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentPageSetupDialog">
+            <summary>
+            The page setup dialog of <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>: orientation, paper size and margins in centimetres or inches. Closes with the new
+            <see cref="T:MudBlazor.Extensions.Office.Document.PageSetup"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentPageSetupDialog.Page">
+            <summary>The current page setup.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentPageSetupDialog.Metric">
+            <summary>True to show lengths in centimetres, false for inches.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentPageSetupDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentParagraphDialog">
             <summary>
             The paragraph dialog of <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>: alignment, indents, spacing, line spacing and the line and page break options.
@@ -1425,6 +1449,9 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentStatusBar">
             <summary>Status bar of the document editor: the word count and a zoom slider.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentStatusBar.Pages">
+            <summary>The current page and the number of pages; shown when the total is above zero.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentStatusBar.Words">
             <summary>The number of words in the document.</summary>
@@ -1453,6 +1480,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.SelectionChanged">
             <summary>Raised when <see cref="P:MudBlazor.Extensions.Components.MudExDocumentSurface.Selection"/> changes.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.View">
+            <summary>Whether the document is laid out as pages or as one continuous sheet.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.PagesChanged">
+            <summary>Raised with the page the caret or the scroll position is on and the number of pages; only in the <see cref="F:MudBlazor.Extensions.Components.MudExDocumentView.Pages"/> view.</summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.Shortcuts">
             <summary>The keys the surface hands to <see cref="P:MudBlazor.Extensions.Components.MudExDocumentSurface.ShortcutPressed"/> instead of the browser, for example <c>Ctrl+B</c>.</summary>
@@ -1503,6 +1536,12 @@
             <param name="x">The horizontal position in pixels.</param>
             <param name="y">The vertical position in pixels.</param>
             <returns>A task that completes when the host handled the request.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnPagesAsync(System.Int32,System.Int32)">
+            <summary>Called by the browser after the pages were laid out or the current page changed.</summary>
+            <param name="current">The current page, counted from 1.</param>
+            <param name="total">The number of pages.</param>
+            <returns>A task that completes when the host handled the change.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnMiniToolbarAsync(System.Boolean,System.Double,System.Double)">
             <summary>Called by the browser to show the mini toolbar above a selection or to hide it.</summary>
@@ -1565,6 +1604,15 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentTablePropertiesDialog.OnInitialized">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentView">
+            <summary>How <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/> lays out the document.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExDocumentView.Pages">
+            <summary>Sheets of the section's page size with approximate page breaks and "Page x of y".</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExDocumentView.Web">
+            <summary>One continuous sheet.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.IMudExFileEditor">
             <summary>

@@ -4,6 +4,7 @@ import { inputMethods } from './MudExDocumentInput.js';
 import { compositionMethods } from './MudExDocumentComposition.js';
 import { clipboardMethods, CLIPBOARD } from './MudExDocumentClipboard.js';
 import { objectMethods } from './MudExDocumentObjects.js';
+import { pageMethods } from './MudExDocumentPages.js';
 
 const TYPING_DELAY = 150;
 const RETRY_DELAY = 1000;
@@ -74,6 +75,12 @@ class MudExDocumentSurface {
         this.typingTimer = 0;
         this.selectionTimer = 0;
         this.typingIn = null;
+        this.view = options?.view === 'web' ? 'web' : 'pages';
+        this.pageTotal = 0;
+        this.lastPage = '';
+        this.pagesTimer = 0;
+        this.reportTimer = 0;
+        this.printing = false;
         this.observer = new MutationObserver(records => this.inspect(records));
         this.observer.observe(this.sheet, { childList: true, subtree: true });
         this.events = [
@@ -82,7 +89,8 @@ class MudExDocumentSurface {
             [this.sheet, 'compositionend', e => this.compositionEnd(e)], [this.sheet, 'mousedown', () => this.jumped()], [this.sheet, 'click', e => activate(e)],
             [this.sheet, 'touchstart', () => this.jumped(), { passive: true }], [this.sheet, 'dragstart', e => e.preventDefault()],
             [this.sheet, 'drop', e => e.preventDefault()], [document, 'selectionchange', () => this.selectionChange()],
-            [this.sheet, 'copy', e => this.copyEvent(e, false)], [this.sheet, 'cut', e => this.copyEvent(e, true)], [this.sheet, 'paste', e => this.pasteEvent(e)]
+            [this.sheet, 'copy', e => this.copyEvent(e, false)], [this.sheet, 'cut', e => this.copyEvent(e, true)], [this.sheet, 'paste', e => this.pasteEvent(e)],
+            [this.root, 'scroll', () => this.scheduleReport(), { passive: true }], [document, 'selectionchange', () => this.scheduleReport()]
         ];
         if (this.editor) {
             this.events.push([this.editor, 'keydown', e => this.editorKeyDown(e)]);
@@ -91,6 +99,7 @@ class MudExDocumentSurface {
         this.events.forEach(([target, type, handler, flags]) => target.addEventListener(type, handler, flags));
         this.setReadOnly(!!options?.readOnly);
         this.setZoom(options?.zoom);
+        this.sheet.classList.toggle('mud-ex-doc-pages', this.view === 'pages');
     }
 
     get blocked() {
@@ -186,6 +195,7 @@ class MudExDocumentSurface {
         }
         (patch.remove ?? []).forEach(id => this.removeBlock(id));
         (patch.upsert ?? []).forEach(upsert => this.upsert(upsert, message));
+        this.schedulePages();
     }
 
     holds(element) {
@@ -629,6 +639,7 @@ class MudExDocumentSurface {
     setZoom(zoom) {
         this.zoom = Number.isFinite(zoom) && zoom > 0 ? zoom : 1;
         this.sheet.style.zoom = String(this.zoom);
+        this.schedulePages();
     }
 
     setShortcuts(shortcuts) {
@@ -667,7 +678,7 @@ class MudExDocumentSurface {
         this.objectsDispose();
         this.events.forEach(([target, type, handler, flags]) => target.removeEventListener(type, handler, flags));
         this.observer.disconnect();
-        [this.typingTimer, this.selectionTimer, this.gap, this.suspension?.timer].forEach(timer => clearTimeout(timer));
+        [this.typingTimer, this.selectionTimer, this.pagesTimer, this.reportTimer, this.gap, this.suspension?.timer].forEach(timer => clearTimeout(timer));
         this.blobs.forEach(url => URL.revokeObjectURL(url));
         this.blobs.clear();
         this.media.clear();
@@ -684,7 +695,7 @@ class MudExDocumentSurface {
     }
 }
 
-Object.assign(MudExDocumentSurface.prototype, inputMethods, compositionMethods, clipboardMethods, objectMethods);
+Object.assign(MudExDocumentSurface.prototype, inputMethods, compositionMethods, clipboardMethods, objectMethods, pageMethods);
 
 export function initializeMudExDocumentSurface(root, dotnet, options) {
     return new MudExDocumentSurface(root, dotnet, options);

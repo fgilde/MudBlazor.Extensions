@@ -1,0 +1,36 @@
+@inherits MudExBaseComponent<MudExDocumentPageSetupDialog>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Document
+
+<MudDialog Class="@MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial, "mud-ex-docpagesetup-dialog")">
+    <DialogContent>
+        <div class="mud-ex-docdialog-grid">
+            <MudSelect T="PageOrientation" Class="mud-ex-docpagesetup-orientation" Label="@TryLocalize("Orientation")" Value="_orientation" ValueChanged="SetOrientation" Margin="Margin.Dense" Dense="true">
+                @foreach (var orientation in Enum.GetValues<PageOrientation>())
+                {
+                    <MudSelectItem T="PageOrientation" Value="@orientation">@TryLocalize(orientation.ToString())</MudSelectItem>
+                }
+            </MudSelect>
+            <MudSelect T="string" Class="mud-ex-docpagesetup-size" Label="@TryLocalize("Paper size")" Value="SizeName" ValueChanged="SetSize" Margin="Margin.Dense" Dense="true">
+                @foreach (var size in Sizes.Keys)
+                {
+                    <MudSelectItem T="string" Value="@size">@size</MudSelectItem>
+                }
+            </MudSelect>
+            <MudNumericField T="double" Class="mud-ex-docpagesetup-width" Label="@TryLocalize("Width")" @bind-Value="_values[0]" Step="@Step" Min="1" Max="@MaxLength" Adornment="Adornment.End" AdornmentText="@Unit" Margin="Margin.Dense" />
+            <MudNumericField T="double" Class="mud-ex-docpagesetup-height" Label="@TryLocalize("Height")" @bind-Value="_values[1]" Step="@Step" Min="1" Max="@MaxLength" Adornment="Adornment.End" AdornmentText="@Unit" Margin="Margin.Dense" />
+            <MudNumericField T="double" Class="mud-ex-docpagesetup-top" Label="@TryLocalize("Top")" @bind-Value="_values[2]" Step="@Step" Min="0" Max="@MaxLength" Adornment="Adornment.End" AdornmentText="@Unit" Margin="Margin.Dense" />
+            <MudNumericField T="double" Class="mud-ex-docpagesetup-bottom" Label="@TryLocalize("Bottom")" @bind-Value="_values[3]" Step="@Step" Min="0" Max="@MaxLength" Adornment="Adornment.End" AdornmentText="@Unit" Margin="Margin.Dense" />
+            <MudNumericField T="double" Class="mud-ex-docpagesetup-left" Label="@TryLocalize("Left")" @bind-Value="_values[4]" Step="@Step" Min="0" Max="@MaxLength" Adornment="Adornment.End" AdornmentText="@Unit" Margin="Margin.Dense" />
+            <MudNumericField T="double" Class="mud-ex-docpagesetup-right" Label="@TryLocalize("Right")" @bind-Value="_values[5]" Step="@Step" Min="0" Max="@MaxLength" Adornment="Adornment.End" AdornmentText="@Unit" Margin="Margin.Dense" />
+        </div>
+        @if (!Valid)
+        {
+            <MudText Color="Color.Error" Typo="Typo.caption">@TryLocalize("The margins leave no room for text.")</MudText>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton Class="mud-ex-docpagesetup-cancel" OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-docpagesetup-ok" Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!Valid)" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>
