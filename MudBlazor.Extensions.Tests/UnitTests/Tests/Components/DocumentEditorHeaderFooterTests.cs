@@ -84,6 +84,27 @@ public class DocumentEditorHeaderFooterTests : DocumentEditorFormattingTestBase
     }
 
     [Fact]
+    public async Task HeaderWithDirectFormatting_AsksFirst_AndCancelLeavesItUntouched()
+    {
+        var document = DocumentSurfaceRenderTests.Created("Hello");
+        document.Execute(new SetHeaderFooterTextCommand(document.Sections[0].Id, HeaderFooterKind.Header, HeaderFooterType.Default, ["Bold"], ParagraphAlignment.Left));
+        var paragraph = (Paragraph)document.HeadersFooters.Single().Blocks.Single();
+        var inlines = (IList<Inline>)paragraph.Inlines;
+        inlines[0] = inlines[0] with { Format = new RunFormat { Bold = true } };
+        var cut = Render(document);
+        await Select(cut, 0, 0, 0);
+
+        _ = cut.InvokeAsync(() => cut.Instance.OpenHeaderFooterAsync(HeaderFooterKind.Header));
+        _dialogs.WaitForAssertion(() => Assert.Contains("replaced by plain text", _dialogs.Markup));
+        Assert.Empty(_dialogs.FindAll(".mud-ex-dochf-dialog"));
+        _dialogs.FindAll("button").Single(b => b.TextContent.Trim() == "Cancel").Click();
+
+        _dialogs.WaitForAssertion(() => Assert.DoesNotContain("replaced by plain text", _dialogs.Markup));
+        Assert.Empty(_dialogs.FindAll(".mud-ex-dochf-dialog"));
+        Assert.True(((Paragraph)document.HeadersFooters.Single().Blocks.Single()).Inlines[0].Format.Bold);
+    }
+
+    [Fact]
     public async Task FormattingMarksToggle_TellsTheSurface_AndInsertTabHasHeaderFooterButtons()
     {
         var cut = Render(DocumentSurfaceRenderTests.Created("Hello"));

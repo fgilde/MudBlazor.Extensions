@@ -14,10 +14,21 @@ public partial class MudExDocumentEditor
     {
         if (IsReadOnly)
             return;
-        (DocumentRange Range, string Text, ParagraphAlignment Alignment, bool Exists) info = default;
+        (DocumentRange Range, string Text, ParagraphAlignment Alignment, bool Exists, bool Lossy) info = default;
         await RunAsync(range => info = Live(range) && _document.Sections.Count > 0 ? HeaderFooterInfo(range, kind) : default);
         if (info.Range.Start == null)
             return;
+        if (info.Lossy)
+        {
+            var proceed = await DialogService.ShowMessageBoxAsync(TryLocalize(kind == HeaderFooterKind.Header ? "Edit Header" : "Edit Footer"),
+                TryLocalize(kind == HeaderFooterKind.Header ? "This header contains formatting or objects that will be replaced by plain text. Continue?" : "This footer contains formatting or objects that will be replaced by plain text. Continue?"),
+                TryLocalize("Continue"), cancelText: TryLocalize("Cancel"));
+            if (proceed != true)
+            {
+                await FocusSurfaceAsync();
+                return;
+            }
+        }
         var title = TryLocalize(kind == HeaderFooterKind.Header ? "Edit Header" : "Edit Footer");
         var reference = await DialogService.ShowExAsync<MudExDocumentHeaderFooterDialog>(title, new DialogParameters
         {
@@ -33,7 +44,7 @@ public partial class MudExDocumentEditor
         await FocusSurfaceAsync();
     }
 
-    private (DocumentRange, string, ParagraphAlignment, bool) HeaderFooterInfo(DocumentRange range, HeaderFooterKind kind)
+    private (DocumentRange, string, ParagraphAlignment, bool, bool) HeaderFooterInfo(DocumentRange range, HeaderFooterKind kind)
     {
         var section = _document.Sections[0];
         var part = kind == HeaderFooterKind.Header ? _document.HeaderFor(section, HeaderFooterType.Default) : _document.FooterFor(section, HeaderFooterType.Default);
@@ -45,8 +56,16 @@ public partial class MudExDocumentEditor
             _ => Paragraph.TextOf(i)
         }))));
         var alignment = paragraphs.Count > 0 ? _document.EffectiveParagraphFormat(paragraphs[0]).Alignment ?? ParagraphAlignment.Left : ParagraphAlignment.Left;
-        return (range, text, alignment is ParagraphAlignment.Center or ParagraphAlignment.Right ? alignment : ParagraphAlignment.Left, part != null);
+        return (range, text, alignment is ParagraphAlignment.Center or ParagraphAlignment.Right ? alignment : ParagraphAlignment.Left, part != null, Lossy(part));
     }
+
+    private static bool Lossy(HeaderFooter part) => part != null && (part.Blocks.Any(b => b is not Paragraph) || part.Blocks.OfType<Paragraph>().SelectMany(p => p.Inlines).Any(i => i switch
+    {
+        Marker => false,
+        TextRun => i.Link != null || i.Format != new RunFormat(),
+        OpaqueInline token => DocumentSurfaceRender.FieldOf(token) == null || i.Format != new RunFormat(),
+        _ => true
+    }));
 
     private Task ApplyHeaderFooterAsync(HeaderFooterKind kind, string text, ParagraphAlignment alignment, bool remove) => RunAsync(range =>
     {
