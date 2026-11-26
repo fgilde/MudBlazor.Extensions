@@ -1463,6 +1463,12 @@
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.OnError">
             <summary>Raised when an edit could not be applied to the document. Without a handler the error is shown in a dialog.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.ContextMenuRequested">
+            <summary>Raised with the viewport position after a right click on the sheet; the browser's own menu is suppressed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.MiniToolbarRequested">
+            <summary>Raised with the viewport position above a non-empty selection, or null when the mini toolbar should hide.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.Selection">
             <summary>
             The selection, or the caret as an empty range: the last selection the surface reported or a command set. It points into paragraphs of the
@@ -1491,6 +1497,19 @@
             <see cref="P:MudBlazor.Extensions.Components.MudExDocumentSurface.OnError"/>.
             </returns>
             <exception cref="T:System.InvalidOperationException">Called from inside an action.</exception>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnContextMenuAsync(System.Double,System.Double)">
+            <summary>Called by the browser after a right click with the position in the viewport; not raised while read-only.</summary>
+            <param name="x">The horizontal position in pixels.</param>
+            <param name="y">The vertical position in pixels.</param>
+            <returns>A task that completes when the host handled the request.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnMiniToolbarAsync(System.Boolean,System.Double,System.Double)">
+            <summary>Called by the browser to show the mini toolbar above a selection or to hide it.</summary>
+            <param name="show">True to show it.</param>
+            <param name="x">The horizontal centre of the selection in pixels.</param>
+            <param name="y">The top of the selection in pixels.</param>
+            <returns>A task that completes when the host handled the request.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnSyncAsync(MudBlazor.Extensions.Components.SurfaceSync,Microsoft.JSInterop.IJSStreamReference)">
             <summary>Called by the browser with the typing and the selection since the last message.</summary>
@@ -1528,6 +1547,24 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentTableDialog">
             <summary>The Insert Table dialog of <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>: number of columns and rows. Closes with a <c>(int Rows, int Columns)</c> tuple.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentTablePropertiesDialog">
+            <summary>
+            The table properties dialog of <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>: alignment and the width of every column in centimetres or inches. Closes with a
+            <c>(TableAlignment? Alignment, List&lt;int&gt; Widths)</c> tuple, the widths in twips.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentTablePropertiesDialog.Alignment">
+            <summary>The current alignment of the table.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentTablePropertiesDialog.Widths">
+            <summary>The current widths of the grid columns in twips.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentTablePropertiesDialog.Metric">
+            <summary>True to show lengths in centimetres, false for inches.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentTablePropertiesDialog.OnInitialized">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.IMudExFileEditor">
             <summary>

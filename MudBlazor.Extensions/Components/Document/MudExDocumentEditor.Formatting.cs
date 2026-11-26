@@ -85,7 +85,7 @@ public partial class MudExDocumentEditor
 
     private RibbonView View => !_collapsed && Format is { Run: var r, Paragraph: var p } f
         ? new(r.Bold, r.Italic, r.Underline, r.Strike, r.VerticalAlign, r.Font, r.SizePt, r.Color, r.Highlight, p.Alignment, f.List, p.Line, f.StyleId, r.StyleId, p.SpacingBefore,
-            p.SpacingAfter, _document.Styles)
+            p.SpacingAfter, _document.Styles, ObjectsOf(Selection))
         : default;
 
     private IReadOnlyList<string> FontItems => Format?.Run.Font is { } font && !MudExNotebookEditor.Fonts.Contains(font) ? [font, .. MudExNotebookEditor.Fonts] : MudExNotebookEditor.Fonts;
@@ -420,7 +420,7 @@ public partial class MudExDocumentEditor
 
     private readonly record struct RibbonView(bool? Bold, bool? Italic, string Underline, bool? Strike, VerticalAlign? VerticalAlign, string Font, double? Size, string Color,
         string Highlight, ParagraphAlignment? Alignment, ListTemplate? List, LineSpacing? Line, string StyleId, string CharacterStyle, int? SpacingBefore, int? SpacingAfter,
-        DocumentStyles Styles);
+        DocumentStyles Styles, ObjectState Objects);
 
     internal sealed record StyleItem(string Id, string Name, StyleType Type, string Css);
 }

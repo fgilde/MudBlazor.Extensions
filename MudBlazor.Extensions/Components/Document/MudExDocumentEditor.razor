@@ -1,5 +1,6 @@
 @inherits MudBlazor.Extensions.Components.Base.MudExFileEditorBase<MudExDocumentEditor>
 @namespace MudBlazor.Extensions.Components
+@using System.Globalization
 @using MudBlazor.Extensions.Office.Document
 
 <div @attributes="UserAttributes" class="@($"mud-ex-doc-editor {Class}".TrimEnd())" style="@RootStyle" data-readonly="@(IsReadOnly ? "true" : "false")" @onkeydown="_keyDown">
@@ -160,6 +161,49 @@
                         </MudExRibbonGroup>
                     }
                 </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("Table")" KeyTip="JT" Contextual="true" ContextualTitle="@TryLocalize("Table Tools")" Visible="@(!IsReadOnly && Objects.Table)">
+                    <MudExRibbonGroup Text="@TryLocalize("Rows & Columns")" Icon="@Icons.Material.Filled.TableRows" CollapsePriority="3">
+                        <MudExRibbonButton Id="wd-table-row-above" Text="@TryLocalize("Insert Above")" Icon="@Icons.Material.Filled.VerticalAlignTop" Size="MudExRibbonItemSize.Small" OnClick="@(() => InsertRowAsync(false))" />
+                        <MudExRibbonButton Id="wd-table-row-below" Text="@TryLocalize("Insert Below")" Icon="@Icons.Material.Filled.VerticalAlignBottom" Size="MudExRibbonItemSize.Small" OnClick="@(() => InsertRowAsync(true))" />
+                        <MudExRibbonButton Id="wd-table-col-left" Text="@TryLocalize("Insert Left")" Icon="@Icons.Material.Filled.AlignHorizontalLeft" Size="MudExRibbonItemSize.Small" OnClick="@(() => InsertColumnAsync(false))" />
+                        <MudExRibbonButton Id="wd-table-col-right" Text="@TryLocalize("Insert Right")" Icon="@Icons.Material.Filled.AlignHorizontalRight" Size="MudExRibbonItemSize.Small" OnClick="@(() => InsertColumnAsync(true))" />
+                        <MudExRibbonMenuButton Id="wd-table-delete" Text="@TryLocalize("Delete")" Icon="@Icons.Material.Filled.Delete" Size="MudExRibbonItemSize.Large">
+                            <MudExRibbonMenuItem Id="wd-table-delete-row" Text="@TryLocalize("Delete Rows")" OnClick="DeleteRowsAsync" />
+                            <MudExRibbonMenuItem Id="wd-table-delete-column" Text="@TryLocalize("Delete Columns")" OnClick="DeleteColumnsAsync" />
+                            <MudExRibbonMenuItem Id="wd-table-delete-table" Text="@TryLocalize("Delete Table")" OnClick="DeleteTableAsync" />
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Merge")" Icon="@Icons.Material.Filled.CallMerge" CollapsePriority="2">
+                        <MudExRibbonButton Id="wd-table-merge" Text="@TryLocalize("Merge Cells")" Icon="@Icons.Material.Filled.CallMerge" Size="MudExRibbonItemSize.Small" Disabled="@(!Objects.Spans)" OnClick="MergeCellsAsync" />
+                        <MudExRibbonButton Id="wd-table-split" Text="@TryLocalize("Split Cell")" Icon="@Icons.Material.Filled.CallSplit" Size="MudExRibbonItemSize.Small" OnClick="SplitCellAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Table Style")" Icon="@Icons.Material.Filled.BorderAll" CollapsePriority="1">
+                        <MudExRibbonColorPicker Id="wd-table-shading" Text="@TryLocalize("Shading")" Icon="@Icons.Material.Filled.FormatColorFill" Size="MudExRibbonItemSize.Small"
+                                                Palette="@MudExNotebookEditor.Palette" Value="@_shading" ValueChanged="PickShadingAsync" />
+                        <MudExRibbonMenuButton Id="wd-table-borders" Text="@TryLocalize("Borders")" Icon="@Icons.Material.Filled.BorderAll" Size="MudExRibbonItemSize.Small">
+                            <MudExRibbonMenuItem Id="wd-table-borders-all" Text="@TryLocalize("All Borders")" Icon="@Icons.Material.Filled.BorderAll" OnClick="@(() => SetBordersAsync("all"))" />
+                            <MudExRibbonMenuItem Id="wd-table-borders-outside" Text="@TryLocalize("Outside Borders")" Icon="@Icons.Material.Filled.BorderOuter" OnClick="@(() => SetBordersAsync("outside"))" />
+                            <MudExRibbonMenuItem Id="wd-table-borders-none" Text="@TryLocalize("No Border")" Icon="@Icons.Material.Filled.BorderClear" OnClick="@(() => SetBordersAsync("none"))" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonToggleButton Id="wd-table-header" Text="@TryLocalize("Header Row")" Icon="@Icons.Material.Filled.ViewHeadline" Size="MudExRibbonItemSize.Small"
+                                                 Checked="@Objects.HeaderRow" CheckedChanged="@(_ => ToggleHeaderRowAsync())" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Table")" Icon="@Icons.Material.Filled.TableChart" CollapsePriority="0">
+                        <MudExRibbonButton Id="wd-table-properties" Text="@TryLocalize("Properties...")" Icon="@Icons.Material.Filled.Settings" Size="MudExRibbonItemSize.Large" OnClick="OpenTablePropertiesAsync" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("Picture")" KeyTip="JP" Contextual="true" ContextualTitle="@TryLocalize("Picture Tools")" Visible="@(!IsReadOnly && Objects.Picture)">
+                    <MudExRibbonGroup Text="@TryLocalize("Size")" Icon="@Icons.Material.Filled.PhotoSizeSelectLarge" CollapsePriority="1">
+                        <MudExRibbonNumberBox Id="wd-picture-width" Text="@TryLocalize("Width")" Value="@ToUnit(Objects.Width)" ValueChanged="@(v => SetPictureSizeAsync(v, null))" Min="0.1" Max="500" Step="@UnitStep" />
+                        <MudExRibbonNumberBox Id="wd-picture-height" Text="@TryLocalize("Height")" Value="@ToUnit(Objects.Height)" ValueChanged="@(v => SetPictureSizeAsync(null, v))" Min="0.1" Max="500" Step="@UnitStep" />
+                        <MudExRibbonToggleButton Id="wd-picture-lock" Text="@TryLocalize("Lock Aspect Ratio")" Icon="@Icons.Material.Filled.Lock" Size="MudExRibbonItemSize.Small"
+                                                 Checked="@_pictureLock" CheckedChanged="@(v => _pictureLock = v)" />
+                        <MudExRibbonButton Id="wd-picture-reset" Text="@TryLocalize("Reset Size")" Icon="@Icons.Material.Filled.RestartAlt" Size="MudExRibbonItemSize.Small" OnClick="ResetPictureSizeAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Accessibility")" Icon="@Icons.Material.Filled.Accessibility" CollapsePriority="0">
+                        <MudExRibbonButton Id="wd-picture-alt" Text="@TryLocalize("Alt Text...")" Icon="@Icons.Material.Filled.Accessibility" Size="MudExRibbonItemSize.Large" OnClick="OpenAltTextDialogAsync" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
                 @RibbonContent
             </ChildContent>
         </MudExRibbon>
@@ -174,8 +218,51 @@
     }
     <div class="mud-ex-doc-editor-body">
         <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" Shortcuts="SurfaceShortcuts" ShortcutPressed="OnShortcutAsync" SelectionChanged="_selectionChanged" OnError="OnSurfaceErrorAsync"
+                              ContextMenuRequested="OnContextMenuAsync" MiniToolbarRequested="OnMiniToolbarAsync"
                               Localizer="@Localizer" />
     </div>
+    @if (_mini is { } mini && !IsReadOnly)
+    {
+        <div class="mud-ex-doc-mini" style="@($"left:{mini.X.ToString("0.#", CultureInfo.InvariantCulture)}px;top:{mini.Y.ToString("0.#", CultureInfo.InvariantCulture)}px")" role="toolbar" @onmousedown:preventDefault>
+            @foreach (var (id, text, icon, _, property) in FontToggles.Take(3))
+            {
+                <button type="button" id="@($"{id}-mini")" class="@($"mud-ex-doc-mini-button{(IsOn(property) ? " mud-ex-doc-active" : "")}")" title="@TryLocalize(text)" @onclick="@(() => ToggleRunAsync(property))"><MudIcon Icon="@icon" Size="Size.Small" /></button>
+            }
+            <button type="button" id="wd-grow-font-mini" class="mud-ex-doc-mini-button" title="@TryLocalize("Increase Font Size")" @onclick="@(() => GrowFontAsync(1))"><MudIcon Icon="@Icons.Material.Filled.TextIncrease" Size="Size.Small" /></button>
+            <button type="button" id="wd-shrink-font-mini" class="mud-ex-doc-mini-button" title="@TryLocalize("Decrease Font Size")" @onclick="@(() => GrowFontAsync(-1))"><MudIcon Icon="@Icons.Material.Filled.TextDecrease" Size="Size.Small" /></button>
+            @foreach (var color in MiniColors)
+            {
+                <button type="button" class="mud-ex-doc-mini-button mud-ex-doc-mini-color" title="@TryLocalize("Font Color")" style="@($"background-color:{color}")" @onclick="@(() => SetColorAsync(color))"></button>
+            }
+        </div>
+    }
+    @if (_menu is { } menu && !IsReadOnly)
+    {
+        <div class="mud-ex-doc-menu-backdrop" @onclick="CloseMenu" @oncontextmenu="CloseMenu" @oncontextmenu:preventDefault="true"></div>
+        <div class="mud-ex-doc-menu" style="@($"left:{menu.X.ToString("0.#", CultureInfo.InvariantCulture)}px;top:{menu.Y.ToString("0.#", CultureInfo.InvariantCulture)}px;--mud-ex-doc-x:{menu.X.ToString("0.#", CultureInfo.InvariantCulture)}px;--mud-ex-doc-y:{menu.Y.ToString("0.#", CultureInfo.InvariantCulture)}px")" role="menu" @onmousedown:preventDefault>
+            <button type="button" role="menuitem" id="wd-menu-cut" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => ClipboardCopyAsync(true)))">@TryLocalize("Cut")</button>
+            <button type="button" role="menuitem" id="wd-menu-copy" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => ClipboardCopyAsync(false)))">@TryLocalize("Copy")</button>
+            <button type="button" role="menuitem" id="wd-menu-paste" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => ClipboardPasteAsync()))">@TryLocalize("Paste")</button>
+            <hr class="mud-ex-doc-menu-separator" />
+            <button type="button" role="menuitem" id="wd-menu-font" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(OpenFontDialogAsync))">@TryLocalize("Font...")</button>
+            <button type="button" role="menuitem" id="wd-menu-paragraph" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(OpenParagraphDialogAsync))">@TryLocalize("Paragraph...")</button>
+            <button type="button" role="menuitem" id="wd-menu-link" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(OpenLinkDialogAsync))">@TryLocalize("Link...")</button>
+            @if (Objects.Table)
+            {
+                <hr class="mud-ex-doc-menu-separator" />
+                <button type="button" role="menuitem" id="wd-menu-row-above" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => InsertRowAsync(false)))">@TryLocalize("Insert Row Above")</button>
+                <button type="button" role="menuitem" id="wd-menu-row-below" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => InsertRowAsync(true)))">@TryLocalize("Insert Row Below")</button>
+                <button type="button" role="menuitem" id="wd-menu-col-left" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => InsertColumnAsync(false)))">@TryLocalize("Insert Column Left")</button>
+                <button type="button" role="menuitem" id="wd-menu-col-right" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => InsertColumnAsync(true)))">@TryLocalize("Insert Column Right")</button>
+                <button type="button" role="menuitem" id="wd-menu-delete-row" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(DeleteRowsAsync))">@TryLocalize("Delete Rows")</button>
+                <button type="button" role="menuitem" id="wd-menu-delete-column" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(DeleteColumnsAsync))">@TryLocalize("Delete Columns")</button>
+                <button type="button" role="menuitem" id="wd-menu-delete-table" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(DeleteTableAsync))">@TryLocalize("Delete Table")</button>
+                <button type="button" role="menuitem" id="wd-menu-merge" class="mud-ex-doc-menu-item" disabled="@(!Objects.Spans)" @onclick="@(() => MenuAsync(MergeCellsAsync))">@TryLocalize("Merge Cells")</button>
+                <button type="button" role="menuitem" id="wd-menu-split" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(SplitCellAsync))">@TryLocalize("Split Cell")</button>
+                <button type="button" role="menuitem" id="wd-menu-table-properties" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(OpenTablePropertiesAsync))">@TryLocalize("Table Properties...")</button>
+            }
+        </div>
+    }
     @if (ShowStatusBar)
     {
         <MudExDocumentStatusBar Words="Words" Zoom="_zoom" ZoomChanged="SetZoom" Localizer="@Localizer" />

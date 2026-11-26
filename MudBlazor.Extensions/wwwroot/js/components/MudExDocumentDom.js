@@ -399,7 +399,7 @@ export function activate(e) {
         }
         return;
     }
-    const token = target?.closest('[data-k="o"]');
+    const token = target?.closest('[data-k="o"], [data-k="i"]');
     if (token && !target.closest(OPAQUE)) {
         const range = document.createRange();
         range.selectNode(token);

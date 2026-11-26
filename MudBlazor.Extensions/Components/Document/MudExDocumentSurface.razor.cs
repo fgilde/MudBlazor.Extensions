@@ -68,6 +68,12 @@ public partial class MudExDocumentSurface
     /// <summary>Raised when an edit could not be applied to the document. Without a handler the error is shown in a dialog.</summary>
     [Parameter] public EventCallback<Exception> OnError { get; set; }
 
+    /// <summary>Raised with the viewport position after a right click on the sheet; the browser's own menu is suppressed.</summary>
+    [Parameter] public EventCallback<(double X, double Y)> ContextMenuRequested { get; set; }
+
+    /// <summary>Raised with the viewport position above a non-empty selection, or null when the mini toolbar should hide.</summary>
+    [Parameter] public EventCallback<(double X, double Y)?> MiniToolbarRequested { get; set; }
+
     /// <summary>
     /// The selection, or the caret as an empty range: the last selection the surface reported or a command set. It points into paragraphs of the
     /// body when it is set, but may name a block that a later direct edit of the host removed.
@@ -150,6 +156,22 @@ public partial class MudExDocumentSurface
     internal Task CopyAsync(bool cut) => CallAsync("copy", cut);
 
     internal Task PasteAsync() => CallAsync("paste");
+
+    /// <summary>Called by the browser after a right click with the position in the viewport; not raised while read-only.</summary>
+    /// <param name="x">The horizontal position in pixels.</param>
+    /// <param name="y">The vertical position in pixels.</param>
+    /// <returns>A task that completes when the host handled the request.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnContextMenuAsync(double x, double y) => ReadOnly || !double.IsFinite(x) || !double.IsFinite(y) ? Task.CompletedTask : ContextMenuRequested.InvokeAsync((x, y));
+
+    /// <summary>Called by the browser to show the mini toolbar above a selection or to hide it.</summary>
+    /// <param name="show">True to show it.</param>
+    /// <param name="x">The horizontal centre of the selection in pixels.</param>
+    /// <param name="y">The top of the selection in pixels.</param>
+    /// <returns>A task that completes when the host handled the request.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnMiniToolbarAsync(bool show, double x, double y) =>
+        MiniToolbarRequested.InvokeAsync(show && !ReadOnly && double.IsFinite(x) && double.IsFinite(y) ? (x, y) : null);
 
     /// <summary>Called by the browser with the typing and the selection since the last message.</summary>
     /// <param name="sync">The state of the browser, or null if it comes as <paramref name="stream"/>.</param>
@@ -562,8 +584,27 @@ public partial class MudExDocumentSurface
         foreach (var patch in patches) _collecting.Add(Track(patch));
     }
 
+    private bool MoveCell(bool forward)
+    {
+        if (DocumentTableContext.At(_document, _selection) is not { } at || Lists.Of(_document, _document.Resolve(_selection.Normalize(_document).Start).Paragraph) != null)
+            return false;
+        var table = at.Table;
+        var next = DocumentTableContext.Neighbour(table, at.StartRow, at.StartCell, forward);
+        if (next == null && forward)
+        {
+            _document.Execute(new InsertTableRowsCommand(table.Id, table.Rows.Count, 1), _selection);
+            table = (Table)_document.FindBlock(table.Id);
+            next = (table.Rows.Count - 1, 0);
+        }
+        if (next is { } cell && table.Rows[cell.Row].Cells[cell.Cell].Blocks.OfType<Paragraph>().FirstOrDefault() is { } paragraph)
+            _resultSelection = new DocumentRange(_document.PositionOf(paragraph.Id, 0), _document.PositionOf(paragraph.Id, paragraph.Length));
+        return true;
+    }
+
     private void Execute(string name, string text)
     {
+        if (_selection.Start != null && name is "tab" or "untab" && MoveCell(name == "tab"))
+            return;
         if (_selection.Start != null && DocumentEditActions.For(_document, name, _selection, text) is { } command) _document.Execute(command, _selection);
     }
 

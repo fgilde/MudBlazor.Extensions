@@ -3,6 +3,7 @@ import { render, highlight, clearHighlight, pointAt, pointOf, serialise, sameRun
 import { inputMethods } from './MudExDocumentInput.js';
 import { compositionMethods } from './MudExDocumentComposition.js';
 import { clipboardMethods, CLIPBOARD } from './MudExDocumentClipboard.js';
+import { objectMethods } from './MudExDocumentObjects.js';
 
 const TYPING_DELAY = 150;
 const RETRY_DELAY = 1000;
@@ -86,6 +87,7 @@ class MudExDocumentSurface {
         if (this.editor) {
             this.events.push([this.editor, 'keydown', e => this.editorKeyDown(e)]);
         }
+        this.events.push(...this.objectEvents());
         this.events.forEach(([target, type, handler, flags]) => target.addEventListener(type, handler, flags));
         this.setReadOnly(!!options?.readOnly);
         this.setZoom(options?.zoom);
@@ -484,6 +486,7 @@ class MudExDocumentSurface {
                 return;
             }
             this.dropCaretSpan(false);
+            this.objectsUpdate();
             const selection = this.readSelection();
             if (selection && key(selection) !== this.lastSelection) {
                 this.sync();
@@ -661,6 +664,7 @@ class MudExDocumentSurface {
         }
         this.disposed = true;
         clearHighlight();
+        this.objectsDispose();
         this.events.forEach(([target, type, handler, flags]) => target.removeEventListener(type, handler, flags));
         this.observer.disconnect();
         [this.typingTimer, this.selectionTimer, this.gap, this.suspension?.timer].forEach(timer => clearTimeout(timer));
@@ -680,7 +684,7 @@ class MudExDocumentSurface {
     }
 }
 
-Object.assign(MudExDocumentSurface.prototype, inputMethods, compositionMethods, clipboardMethods);
+Object.assign(MudExDocumentSurface.prototype, inputMethods, compositionMethods, clipboardMethods, objectMethods);
 
 export function initializeMudExDocumentSurface(root, dotnet, options) {
     return new MudExDocumentSurface(root, dotnet, options);

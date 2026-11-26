@@ -282,6 +282,8 @@ public partial class MudExDocumentEditor : IMudExFileEditor
 
     private async Task OnKeyDownAsync(KeyboardEventArgs e)
     {
+        if (e.Key == "Escape")
+            (_menu, _mini) = (null, null);
         if ((e.CtrlKey || e.MetaKey) && !e.AltKey && e.Key is "s" or "S")
             await SaveFromKeyAsync();
     }
