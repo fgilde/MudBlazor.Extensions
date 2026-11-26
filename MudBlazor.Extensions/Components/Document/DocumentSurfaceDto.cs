@@ -27,8 +27,24 @@ public sealed record SurfaceBlock(string Id, string K, string Css, string Text, 
 /// <param name="W">The width of an image in pixels; 0 for other kinds.</param>
 /// <param name="H">The height of an image in pixels; 0 for other kinds.</param>
 /// <param name="Link">The validated target (<c>http</c>, <c>https</c> or <c>mailto</c>) of a link run; null if the run is not a link or the target is not safe to open.</param>
+/// <param name="Field">The field kind of a token, <c>PAGE</c> or <c>NUMPAGES</c>; null for other runs.</param>
 [EditorBrowsable(EditorBrowsableState.Never)]
-public sealed record SurfaceRun(string K, string T, string Css, string Media, int W, int H, string Link = null);
+public sealed record SurfaceRun(string K, string T, string Css, string Media, int W, int H, string Link = null, string Field = null);
+
+/// <summary>The header or footer variants of the first section. Infrastructure of the document editor, not meant to be used directly.</summary>
+/// <param name="Default">The blocks for pages without a more specific variant; null if there are none.</param>
+/// <param name="First">The blocks of the first page; null if there are none.</param>
+/// <param name="Even">The blocks of even pages; null if there are none.</param>
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed record SurfaceHeaderFooterParts(IReadOnlyList<SurfaceBlock> Default, IReadOnlyList<SurfaceBlock> First, IReadOnlyList<SurfaceBlock> Even);
+
+/// <summary>The read-only headers and footers shown on every page. Infrastructure of the document editor, not meant to be used directly.</summary>
+/// <param name="Header">The header variants.</param>
+/// <param name="Footer">The footer variants.</param>
+/// <param name="TitlePage">True if the first page uses the first-page variants.</param>
+/// <param name="EvenOdd">True if even pages use the even variants.</param>
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed record SurfaceHeaderFooter(SurfaceHeaderFooterParts Header, SurfaceHeaderFooterParts Footer, bool TitlePage, bool EvenOdd);
 
 /// <summary>A row of a surface table. Infrastructure of the document editor, not meant to be used directly.</summary>
 /// <param name="Css">The inline style of the row.</param>

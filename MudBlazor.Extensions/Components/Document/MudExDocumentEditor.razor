@@ -124,6 +124,12 @@
                     <MudExRibbonGroup Text="@TryLocalize("Illustrations")" Icon="@Icons.Material.Filled.Image" CollapsePriority="2">
                         <MudExRibbonButton Id="wd-insert-picture" Text="@TryLocalize("Picture")" Icon="@Icons.Material.Filled.Image" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly" OnClick="PickPictureAsync" />
                     </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Header & Footer")" Icon="@Icons.Material.Filled.VerticalAlignTop" CollapsePriority="1">
+                        <MudExRibbonButton Id="wd-insert-header" Text="@TryLocalize("Header")" Icon="@Icons.Material.Filled.VerticalAlignTop" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly"
+                                           OnClick="@(() => OpenHeaderFooterAsync(HeaderFooterKind.Header))" />
+                        <MudExRibbonButton Id="wd-insert-footer" Text="@TryLocalize("Footer")" Icon="@Icons.Material.Filled.VerticalAlignBottom" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly"
+                                           OnClick="@(() => OpenHeaderFooterAsync(HeaderFooterKind.Footer))" />
+                    </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Links")" Icon="@Icons.Material.Filled.Link" CollapsePriority="1">
                         <MudExRibbonButton Id="wd-insert-link" Text="@TryLocalize("Link")" Icon="@Icons.Material.Filled.Link" Shortcut="Ctrl+K" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly"
                                            OnClick="OpenLinkDialogAsync" />
@@ -190,6 +196,10 @@
                         <MudExRibbonToggleButton Id="wd-view-web" Text="@TryLocalize("Web Layout")" Icon="@Icons.Material.Filled.Language" Size="MudExRibbonItemSize.Large"
                                                  Checked="@(CurrentView == MudExDocumentView.Web)" CheckedChanged="@(_ => SetView(MudExDocumentView.Web))" />
                         <MudExRibbonButton Id="wd-print" Text="@TryLocalize("Print")" Icon="@Icons.Material.Filled.Print" Size="MudExRibbonItemSize.Large" OnClick="PrintAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Show")" Icon="@Icons.Material.Filled.FormatListNumbered" CollapsePriority="1">
+                        <MudExRibbonToggleButton Id="wd-view-marks" Text="@TryLocalize("Formatting Marks")" Icon="@Icons.Material.Filled.FormatAlignJustify" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@_marks" CheckedChanged="@(on => _marks = on)" />
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Zoom")" Icon="@Icons.Material.Filled.ZoomIn" CollapsePriority="2">
                         <MudExRibbonSelect T="double" Id="wd-zoom" Text="@TryLocalize("Zoom")" Items="@ZoomItems" ItemText="@(z => $"{z * 100:0}%")" Value="@_zoom" ValueChanged="SetZoom" Width="80" />
@@ -260,7 +270,7 @@
         <InputFile id="@_pictureInput" accept="@PictureAccept" OnChange="OnPictureChosenAsync" hidden />
     }
     <div class="mud-ex-doc-editor-body">
-        <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" View="CurrentView" PagesChanged="OnPagesChanged" Shortcuts="SurfaceShortcuts" ShortcutPressed="OnShortcutAsync" SelectionChanged="_selectionChanged" OnError="OnSurfaceErrorAsync"
+        <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" View="CurrentView" FormattingMarks="_marks" HeaderFooterRequested="OnHeaderFooterRequestedAsync" PagesChanged="OnPagesChanged" Shortcuts="SurfaceShortcuts" ShortcutPressed="OnShortcutAsync" SelectionChanged="_selectionChanged" OnError="OnSurfaceErrorAsync"
                               ContextMenuRequested="OnContextMenuAsync" MiniToolbarRequested="OnMiniToolbarAsync"
                               Localizer="@Localizer" />
     </div>

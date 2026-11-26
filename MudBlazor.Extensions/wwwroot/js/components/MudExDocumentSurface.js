@@ -5,6 +5,7 @@ import { compositionMethods } from './MudExDocumentComposition.js';
 import { clipboardMethods, CLIPBOARD } from './MudExDocumentClipboard.js';
 import { objectMethods } from './MudExDocumentObjects.js';
 import { pageMethods } from './MudExDocumentPages.js';
+import { headerMethods } from './MudExDocumentHeaders.js';
 
 const TYPING_DELAY = 150;
 const RETRY_DELAY = 1000;
@@ -177,6 +178,9 @@ class MudExDocumentSurface {
     apply(patch, message) {
         if (patch.reset) {
             this.sheet.replaceChildren();
+            if (this.layer) {
+                this.sheet.append(this.layer);
+            }
             [this.blocks, this.dirty, this.held, this.sentText, this.awaiting].forEach(map => map.clear());
             if (!message?.resync) {
                 this.queue = [];
@@ -297,7 +301,7 @@ class MudExDocumentSurface {
         }
         const indexed = node => node.nodeType === Node.ELEMENT_NODE && [node, ...node.querySelectorAll('[data-b]')]
             .some(e => this.blocks.get(e.dataset.b) === e && !e.isConnected && !this.awaiting.has(e.dataset.b));
-        const foreign = node => node.parentNode === this.sheet && !(node.nodeType === Node.ELEMENT_NODE && this.blocks.get(node.dataset.b) === node);
+        const foreign = node => node.parentNode === this.sheet && node !== this.layer && !(node.nodeType === Node.ELEMENT_NODE && this.blocks.get(node.dataset.b) === node);
         if (records.some(r => [...r.removedNodes].some(indexed) || r.target === this.sheet && [...r.addedNodes].some(foreign))) {
             this.resync();
         }
@@ -695,7 +699,7 @@ class MudExDocumentSurface {
     }
 }
 
-Object.assign(MudExDocumentSurface.prototype, inputMethods, compositionMethods, clipboardMethods, objectMethods, pageMethods);
+Object.assign(MudExDocumentSurface.prototype, inputMethods, compositionMethods, clipboardMethods, objectMethods, pageMethods, headerMethods);
 
 export function initializeMudExDocumentSurface(root, dotnet, options) {
     return new MudExDocumentSurface(root, dotnet, options);

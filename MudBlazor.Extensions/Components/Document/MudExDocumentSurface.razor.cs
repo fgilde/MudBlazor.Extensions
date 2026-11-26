@@ -46,6 +46,7 @@ public partial class MudExDocumentSurface
     private bool _readOnly;
     private double _zoom;
     private MudExDocumentView _view = MudExDocumentView.Pages;
+    private bool _marks;
     private IReadOnlyCollection<string> _shortcuts;
 
     /// <summary>The document to show and edit.</summary>
@@ -62,6 +63,12 @@ public partial class MudExDocumentSurface
 
     /// <summary>Whether the document is laid out as pages or as one continuous sheet.</summary>
     [Parameter] public MudExDocumentView View { get; set; } = MudExDocumentView.Pages;
+
+    /// <summary>True to show formatting marks such as paragraph marks; only a display option, the text is not changed.</summary>
+    [Parameter] public bool FormattingMarks { get; set; }
+
+    /// <summary>Raised with <c>header</c> or <c>footer</c> when the header or footer area of a page is double-clicked and the surface is not read-only.</summary>
+    [Parameter] public EventCallback<string> HeaderFooterRequested { get; set; }
 
     /// <summary>Raised with the page the caret or the scroll position is on and the number of pages; only in the <see cref="MudExDocumentView.Pages"/> view.</summary>
     [Parameter] public EventCallback<(int Current, int Total)> PagesChanged { get; set; }
@@ -179,6 +186,12 @@ public partial class MudExDocumentSurface
     /// <returns>A task that completes when the host handled the change.</returns>
     [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
     public Task OnPagesAsync(int current, int total) => total >= 1 && current >= 1 && current <= total ? PagesChanged.InvokeAsync((current, total)) : Task.CompletedTask;
+
+    /// <summary>Called by the browser when the header or footer area of a page is double-clicked.</summary>
+    /// <param name="kind"><c>header</c> or <c>footer</c>.</param>
+    /// <returns>A task that completes when the host handled the request.</returns>
+    [JSInvokable, EditorBrowsable(EditorBrowsableState.Never)]
+    public Task OnHeaderFooterAsync(string kind) => ReadOnly || kind is not ("header" or "footer") ? Task.CompletedTask : HeaderFooterRequested.InvokeAsync(kind);
 
     /// <summary>Called by the browser to show the mini toolbar above a selection or to hide it.</summary>
     /// <param name="show">True to show it.</param>
@@ -323,10 +336,12 @@ public partial class MudExDocumentSurface
             var reset = new SurfacePatch(++_seq, true, null, [], []);
             _attachedAt = reset.Seq;
             await SendPatchesAsync([reset]);
+            await CallAsync("setHeaderFooter", (object)null);
             return;
         }
 
         _live = true;
+        await SendHeaderFooterAsync();
         for (var (from, restarted) = (0, false); ;)
         {
             if (from == 0) _restart = false;
@@ -364,6 +379,7 @@ public partial class MudExDocumentSurface
     {
         if (ReadOnly != _readOnly) await CallAsync("setReadOnly", _readOnly = ReadOnly);
         if (ZoomFactor != _zoom) await CallAsync("setZoom", _zoom = ZoomFactor);
+        if (FormattingMarks != _marks) await CallAsync("setMarks", _marks = FormattingMarks);
         if (View != _view) await CallAsync("setView", (_view = View) == MudExDocumentView.Web ? "web" : "pages");
         if (!ReferenceEquals(Shortcuts, _shortcuts)) await CallAsync("setShortcuts", (_shortcuts = Shortcuts) ?? []);
     }
@@ -373,6 +389,7 @@ public partial class MudExDocumentSurface
         if (!_live || !ReferenceEquals(sender, _document)) return;
         if (_acting && change.Selection != null) _resultSelection = change.Selection;
         var kind = change.Kind;
+        if ((kind & (DocumentChangeKind.HeadersFooters | DocumentChangeKind.Sections | DocumentChangeKind.Styles)) != 0) _ = SendHeaderFooterAsync();
         _restart |= _chunking && ((kind & (DocumentChangeKind.Styles | DocumentChangeKind.Sections)) != 0 || kind.HasFlag(DocumentChangeKind.Structure | DocumentChangeKind.Content));
         if (_chunking && kind.HasFlag(DocumentChangeKind.Styles))
         {
@@ -387,6 +404,14 @@ public partial class MudExDocumentSurface
             _collecting.AddRange(patches);
         else
             _ = PushAsync(_render.TakeMedia(), patches);
+    }
+
+    private async Task SendHeaderFooterAsync()
+    {
+        if (_document == null || _render == null) return;
+        var payload = _render.HeaderFooters();
+        await RegisterQuietlyAsync(_render.TakeMedia());
+        await CallAsync("setHeaderFooter", (object)payload);
     }
 
     private async Task PushAsync(IReadOnlyCollection<string> media, IReadOnlyList<SurfacePatch> patches)

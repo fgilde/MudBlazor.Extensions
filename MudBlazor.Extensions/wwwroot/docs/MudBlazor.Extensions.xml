@@ -1015,8 +1015,9 @@
             <param name="W">The width of an image in pixels; 0 for other kinds.</param>
             <param name="H">The height of an image in pixels; 0 for other kinds.</param>
             <param name="Link">The validated target (<c>http</c>, <c>https</c> or <c>mailto</c>) of a link run; null if the run is not a link or the target is not safe to open.</param>
+            <param name="Field">The field kind of a token, <c>PAGE</c> or <c>NUMPAGES</c>; null for other runs.</param>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.SurfaceRun.#ctor(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String)">
+        <member name="M:MudBlazor.Extensions.Components.SurfaceRun.#ctor(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String,System.String)">
             <summary>A run of a surface paragraph. Infrastructure of the document editor, not meant to be used directly.</summary>
             <param name="K">The kind: <c>t</c> text (tabs inside), <c>v</c> line break, <c>f</c> page or column break, <c>o</c> token, <c>i</c> image.</param>
             <param name="T">The text of a text run or the display text of a token; null for other kinds.</param>
@@ -1025,6 +1026,7 @@
             <param name="W">The width of an image in pixels; 0 for other kinds.</param>
             <param name="H">The height of an image in pixels; 0 for other kinds.</param>
             <param name="Link">The validated target (<c>http</c>, <c>https</c> or <c>mailto</c>) of a link run; null if the run is not a link or the target is not safe to open.</param>
+            <param name="Field">The field kind of a token, <c>PAGE</c> or <c>NUMPAGES</c>; null for other runs.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Components.SurfaceRun.K">
             <summary>The kind: <c>t</c> text (tabs inside), <c>v</c> line break, <c>f</c> page or column break, <c>o</c> token, <c>i</c> image.</summary>
@@ -1046,6 +1048,56 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.SurfaceRun.Link">
             <summary>The validated target (<c>http</c>, <c>https</c> or <c>mailto</c>) of a link run; null if the run is not a link or the target is not safe to open.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceRun.Field">
+            <summary>The field kind of a token, <c>PAGE</c> or <c>NUMPAGES</c>; null for other runs.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceHeaderFooterParts">
+            <summary>The header or footer variants of the first section. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Default">The blocks for pages without a more specific variant; null if there are none.</param>
+            <param name="First">The blocks of the first page; null if there are none.</param>
+            <param name="Even">The blocks of even pages; null if there are none.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceHeaderFooterParts.#ctor(System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfaceBlock},System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfaceBlock},System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Components.SurfaceBlock})">
+            <summary>The header or footer variants of the first section. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Default">The blocks for pages without a more specific variant; null if there are none.</param>
+            <param name="First">The blocks of the first page; null if there are none.</param>
+            <param name="Even">The blocks of even pages; null if there are none.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceHeaderFooterParts.Default">
+            <summary>The blocks for pages without a more specific variant; null if there are none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceHeaderFooterParts.First">
+            <summary>The blocks of the first page; null if there are none.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceHeaderFooterParts.Even">
+            <summary>The blocks of even pages; null if there are none.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SurfaceHeaderFooter">
+            <summary>The read-only headers and footers shown on every page. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Header">The header variants.</param>
+            <param name="Footer">The footer variants.</param>
+            <param name="TitlePage">True if the first page uses the first-page variants.</param>
+            <param name="EvenOdd">True if even pages use the even variants.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.SurfaceHeaderFooter.#ctor(MudBlazor.Extensions.Components.SurfaceHeaderFooterParts,MudBlazor.Extensions.Components.SurfaceHeaderFooterParts,System.Boolean,System.Boolean)">
+            <summary>The read-only headers and footers shown on every page. Infrastructure of the document editor, not meant to be used directly.</summary>
+            <param name="Header">The header variants.</param>
+            <param name="Footer">The footer variants.</param>
+            <param name="TitlePage">True if the first page uses the first-page variants.</param>
+            <param name="EvenOdd">True if even pages use the even variants.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceHeaderFooter.Header">
+            <summary>The header variants.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceHeaderFooter.Footer">
+            <summary>The footer variants.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceHeaderFooter.TitlePage">
+            <summary>True if the first page uses the first-page variants.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceHeaderFooter.EvenOdd">
+            <summary>True if even pages use the even variants.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.SurfaceRow">
             <summary>A row of a surface table. Infrastructure of the document editor, not meant to be used directly.</summary>
@@ -1416,6 +1468,27 @@
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentFontDialog.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentHeaderFooterDialog">
+            <summary>
+            The header and footer dialog of <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>: a plain text editor with one paragraph per line, an alignment and a button that inserts a
+            page number placeholder. Closes with <c>(Text, Alignment, Remove)</c>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentHeaderFooterDialog.Kind">
+            <summary>Whether a header or a footer is edited.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentHeaderFooterDialog.Text">
+            <summary>The current text, one paragraph per line; <c>{PAGE}</c> and <c>{NUMPAGES}</c> stand for page number fields.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentHeaderFooterDialog.Alignment">
+            <summary>The current alignment.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentHeaderFooterDialog.Exists">
+            <summary>True if the header or footer exists and can be removed.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentHeaderFooterDialog.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentPageSetupDialog">
             <summary>
             The page setup dialog of <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>: orientation, paper size and margins in centimetres or inches. Closes with the new
@@ -1484,6 +1557,12 @@
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.View">
             <summary>Whether the document is laid out as pages or as one continuous sheet.</summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.FormattingMarks">
+            <summary>True to show formatting marks such as paragraph marks; only a display option, the text is not changed.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.HeaderFooterRequested">
+            <summary>Raised with <c>header</c> or <c>footer</c> when the header or footer area of a page is double-clicked and the surface is not read-only.</summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDocumentSurface.PagesChanged">
             <summary>Raised with the page the caret or the scroll position is on and the number of pages; only in the <see cref="F:MudBlazor.Extensions.Components.MudExDocumentView.Pages"/> view.</summary>
         </member>
@@ -1542,6 +1621,11 @@
             <param name="current">The current page, counted from 1.</param>
             <param name="total">The number of pages.</param>
             <returns>A task that completes when the host handled the change.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnHeaderFooterAsync(System.String)">
+            <summary>Called by the browser when the header or footer area of a page is double-clicked.</summary>
+            <param name="kind"><c>header</c> or <c>footer</c>.</param>
+            <returns>A task that completes when the host handled the request.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.OnMiniToolbarAsync(System.Boolean,System.Double,System.Double)">
             <summary>Called by the browser to show the mini toolbar above a selection or to hide it.</summary>
@@ -34130,6 +34214,39 @@
             <param name="type">The pages it applies to.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.AddHeaderFooterCommand.Description">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.SetHeaderFooterTextCommand">
+            <summary>
+            Sets the content of a section's own header or footer to plain paragraphs of the style <c>Header</c> or <c>Footer</c>, one per line, all with the same alignment,
+            and creates the header or footer if the section has none. <c>{PAGE}</c> and <c>{NUMPAGES}</c> in a line become page number fields. Formatting inside
+            the old content is replaced. One undo step.
+            </summary>
+            <param name="sectionId">The id of the section.</param>
+            <param name="kind">Header or footer.</param>
+            <param name="type">The pages it applies to.</param>
+            <param name="lines">The text of the paragraphs; none means one empty paragraph.</param>
+            <param name="alignment">The alignment of the paragraphs.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.SetHeaderFooterTextCommand.#ctor(System.String,MudBlazor.Extensions.Office.Document.HeaderFooterKind,MudBlazor.Extensions.Office.Document.HeaderFooterType,System.Collections.Generic.IReadOnlyList{System.String},MudBlazor.Extensions.Office.Document.ParagraphAlignment)">
+            <summary>
+            Sets the content of a section's own header or footer to plain paragraphs of the style <c>Header</c> or <c>Footer</c>, one per line, all with the same alignment,
+            and creates the header or footer if the section has none. <c>{PAGE}</c> and <c>{NUMPAGES}</c> in a line become page number fields. Formatting inside
+            the old content is replaced. One undo step.
+            </summary>
+            <param name="sectionId">The id of the section.</param>
+            <param name="kind">Header or footer.</param>
+            <param name="type">The pages it applies to.</param>
+            <param name="lines">The text of the paragraphs; none means one empty paragraph.</param>
+            <param name="alignment">The alignment of the paragraphs.</param>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.SetHeaderFooterTextCommand.PageToken">
+            <summary>The placeholder of the current page number.</summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Office.Document.SetHeaderFooterTextCommand.PagesToken">
+            <summary>The placeholder of the number of pages.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.SetHeaderFooterTextCommand.Description">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.RemoveHeaderFooterCommand">

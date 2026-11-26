@@ -48,15 +48,63 @@ public sealed class AddHeaderFooterCommand(string sectionId, HeaderFooterKind ki
         if (Sections.References(section, kind).ContainsKey(type)) return ([], null);
         var style = kind == HeaderFooterKind.Header ? "Header" : "Footer";
         var styles = StyleDefinitions.With(document.Styles, style, StyleType.Paragraph);
-        var existing = (document.Package?.MainRelationships ?? []).Concat(document.HeaderFooterList.Select(h => new OpcRelationship(h.Id, "", "", null)));
         var paragraph = new Paragraph { Id = document.NewId(), Format = new ParagraphFormat { StyleId = StyleDefinitions.Reference(styles, style) } };
-        var part = new HeaderFooter { Id = OpcPackageWriter.NextId(existing), Kind = kind, Blocks = [paragraph] };
-        var references = new Dictionary<HeaderFooterType, string>(Sections.References(section, kind)) { [type] = part.Id };
-        var changed = kind == HeaderFooterKind.Header ? section with { Headers = references } : section with { Footers = references };
-        if (type == HeaderFooterType.First) changed = changed with { TitlePage = true };
-        var edit = Sections.Replace(document, section, changed) with { HeadersFootersBefore = document.HeaderFooterList.ToList(), HeadersFootersAfter = [.. document.HeaderFooterList, part] };
-        if (type == HeaderFooterType.Even && !document.EvenAndOddHeaders) edit = edit with { EvenAndOddBefore = false, EvenAndOddAfter = true };
+        var edit = Sections.Create(document, section, kind, type, [paragraph]);
         return (document.WithDefinitions([edit], styles, null), d => Caret(d, paragraph.Id, 0));
+    }
+}
+
+/// <summary>
+/// Sets the content of a section's own header or footer to plain paragraphs of the style <c>Header</c> or <c>Footer</c>, one per line, all with the same alignment,
+/// and creates the header or footer if the section has none. <c>{PAGE}</c> and <c>{NUMPAGES}</c> in a line become page number fields. Formatting inside
+/// the old content is replaced. One undo step.
+/// </summary>
+/// <param name="sectionId">The id of the section.</param>
+/// <param name="kind">Header or footer.</param>
+/// <param name="type">The pages it applies to.</param>
+/// <param name="lines">The text of the paragraphs; none means one empty paragraph.</param>
+/// <param name="alignment">The alignment of the paragraphs.</param>
+public sealed class SetHeaderFooterTextCommand(string sectionId, HeaderFooterKind kind, HeaderFooterType type, IReadOnlyList<string> lines, ParagraphAlignment alignment) : TextDocumentCommand
+{
+    /// <summary>The placeholder of the current page number.</summary>
+    public const string PageToken = "{PAGE}";
+
+    /// <summary>The placeholder of the number of pages.</summary>
+    public const string PagesToken = "{NUMPAGES}";
+
+    private static readonly System.Text.RegularExpressions.Regex Fields = new(@"\{(PAGE|NUMPAGES)\}", System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+    /// <inheritdoc />
+    public override string Description => kind == HeaderFooterKind.Header ? "Edit header" : "Edit footer";
+
+    private protected override (IReadOnlyList<BlockEdit>, Func<TextDocument, DocumentRange>) Compute(TextDocument document)
+    {
+        ArgumentNullException.ThrowIfNull(lines);
+        var section = Sections.Find(document, sectionId);
+        var style = kind == HeaderFooterKind.Header ? "Header" : "Footer";
+        var styles = StyleDefinitions.With(document.Styles, style, StyleType.Paragraph);
+        var format = new ParagraphFormat { StyleId = StyleDefinitions.Reference(styles, style), Alignment = alignment };
+        var blocks = (lines.Count == 0 ? [""] : lines).Select(line => (Block)new Paragraph { Id = document.NewId(), Format = format, Inlines = Inlines(line ?? "") }).ToList();
+        if (!Sections.References(section, kind).TryGetValue(type, out var id)) return (document.WithDefinitions([Sections.Create(document, section, kind, type, blocks)], styles, null), null);
+        var index = document.HeaderFooterList.FindIndex(h => h.Id == id);
+        return (document.WithDefinitions([new BlockEdit(index, 0, document.HeaderFooterList[index].Blocks, blocks)], styles, null), null);
+    }
+
+    private static List<Inline> Inlines(string line)
+    {
+        var inlines = new List<Inline>();
+        var at = 0;
+        foreach (System.Text.RegularExpressions.Match match in Fields.Matches(line))
+        {
+            if (match.Index > at) inlines.Add(new TextRun(line[at..match.Index]));
+            var node = new System.Xml.Linq.XElement(FormatXml.W + "fldSimple", new System.Xml.Linq.XAttribute(FormatXml.W + "instr", match.Groups[1].Value),
+                new System.Xml.Linq.XElement(FormatXml.W + "r", new System.Xml.Linq.XElement(FormatXml.W + "t", "1")));
+            inlines.Add(new OpaqueInline("field", "1") { Instruction = match.Groups[1].Value, Nodes = [node] });
+            at = match.Index + match.Length;
+        }
+
+        if (at < line.Length) inlines.Add(new TextRun(line[at..]));
+        return inlines;
     }
 }
 
@@ -135,6 +183,18 @@ internal static class Sections
 
     internal static IReadOnlyDictionary<HeaderFooterType, string> References(Section section, HeaderFooterKind kind) =>
         kind == HeaderFooterKind.Header ? section.Headers : section.Footers;
+
+    internal static BlockEdit Create(TextDocument document, Section section, HeaderFooterKind kind, HeaderFooterType type, IReadOnlyList<Block> blocks)
+    {
+        var existing = (document.Package?.MainRelationships ?? []).Concat(document.HeaderFooterList.Select(h => new OpcRelationship(h.Id, "", "", null)));
+        var part = new HeaderFooter { Id = OpcPackageWriter.NextId(existing), Kind = kind, Blocks = blocks };
+        var references = new Dictionary<HeaderFooterType, string>(References(section, kind)) { [type] = part.Id };
+        var changed = kind == HeaderFooterKind.Header ? section with { Headers = references } : section with { Footers = references };
+        if (type == HeaderFooterType.First) changed = changed with { TitlePage = true };
+        var edit = Replace(document, section, changed) with { HeadersFootersBefore = document.HeaderFooterList.ToList(), HeadersFootersAfter = [.. document.HeaderFooterList, part] };
+        if (type == HeaderFooterType.Even && !document.EvenAndOddHeaders) edit = edit with { EvenAndOddBefore = false, EvenAndOddAfter = true };
+        return edit;
+    }
 
     internal static BlockEdit Replace(TextDocument document, Section section, Section changed) =>
         new(-1, 0, [], [])

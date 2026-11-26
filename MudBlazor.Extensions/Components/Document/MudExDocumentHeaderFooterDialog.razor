@@ -1,0 +1,25 @@
+@inherits MudExBaseComponent<MudExDocumentHeaderFooterDialog>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Document
+
+<MudDialog Class="@MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial, "mud-ex-dochf-dialog")">
+    <DialogContent>
+        <MudTextField T="string" Class="mud-ex-dochf-text" @bind-Value="_text" Lines="4" AutoGrow="true" MaxLines="12" Label="@TryLocalize("Text")" Margin="Margin.Dense" Variant="Variant.Outlined" Immediate="true" />
+        <div class="mud-ex-docdialog-grid">
+            <MudSelect T="ParagraphAlignment" Class="mud-ex-dochf-alignment" Label="@TryLocalize("Alignment")" @bind-Value="_alignment" Margin="Margin.Dense" Dense="true">
+                <MudSelectItem T="ParagraphAlignment" Value="ParagraphAlignment.Left">@TryLocalize("Left")</MudSelectItem>
+                <MudSelectItem T="ParagraphAlignment" Value="ParagraphAlignment.Center">@TryLocalize("Center")</MudSelectItem>
+                <MudSelectItem T="ParagraphAlignment" Value="ParagraphAlignment.Right">@TryLocalize("Right")</MudSelectItem>
+            </MudSelect>
+            <MudButton Class="mud-ex-dochf-page" Variant="Variant.Outlined" OnClick="InsertPageNumber">@TryLocalize("Insert Page Number")</MudButton>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        @if (Exists)
+        {
+            <MudButton Class="mud-ex-dochf-remove" Color="Color.Error" OnClick="Remove">@TryLocalize(Kind == HeaderFooterKind.Header ? "Remove Header" : "Remove Footer")</MudButton>
+        }
+        <MudButton Class="mud-ex-dochf-cancel" OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-dochf-ok" Color="Color.Primary" Variant="Variant.Filled" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

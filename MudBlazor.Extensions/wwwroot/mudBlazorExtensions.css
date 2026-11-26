@@ -10658,6 +10658,39 @@ textarea.mud-ex-ssg-note-text {
 .mud-ex-doc-sheet.mud-ex-doc-pages > [data-b] {
   content-visibility: visible;
 }
+.mud-ex-doc-sheet {
+  position: relative;
+}
+.mud-ex-doc-hf {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  user-select: none;
+}
+.mud-ex-doc-hf .mud-ex-doc-hf-box {
+  position: absolute;
+  box-sizing: border-box;
+  min-height: 1.2em;
+  pointer-events: auto;
+  cursor: default;
+}
+.mud-ex-doc-hf .mud-ex-doc-hf-footer {
+  transform: translateY(-100%);
+}
+.mud-ex-doc-sheet.mud-ex-doc-marks p.mud-ex-doc-p::after {
+  content: "\00B6";
+  color: #4f81bd;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+}
+.mud-ex-doc-sheet.mud-ex-doc-marks p.mud-ex-doc-p:has(> br[data-k="e"]:last-child)::after {
+  position: absolute;
+  margin-top: -1lh;
+}
 .mud-ex-doc-print-root {
   display: none;
 }
@@ -10688,5 +10721,16 @@ textarea.mud-ex-ssg-note-text {
   }
   html.mud-ex-doc-printing .mud-ex-doc-print-root .mud-ex-doc-sheet > [data-b] {
     content-visibility: visible;
+  }
+}
+@media print {
+  .mud-ex-doc-print-root .mud-ex-doc-hf-print {
+    position: fixed;
+    left: 0;
+    right: 0;
+    opacity: 0.6;
+  }
+  .mud-ex-doc-print-root [data-fld="PAGE"]::after {
+    content: counter(page);
   }
 }

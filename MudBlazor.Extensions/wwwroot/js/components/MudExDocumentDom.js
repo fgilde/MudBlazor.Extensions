@@ -59,6 +59,9 @@ export function run(dto, media) {
     } else {
         node = marker('span', 'o', dto.css);
         node.textContent = dto.t ?? '';
+        if (dto.field) {
+            node.dataset.fld = dto.field;
+        }
     }
     if (dto.k === 'i') {
         node.dataset.m = dto.media ?? '';

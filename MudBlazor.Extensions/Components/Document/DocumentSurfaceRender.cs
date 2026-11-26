@@ -27,13 +27,28 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         };
     }
 
+    public SurfaceHeaderFooter HeaderFooters()
+    {
+        if (document.Sections.Count == 0) return null;
+        var section = document.Sections[0];
+        SurfaceHeaderFooterParts Parts(Func<HeaderFooterType, HeaderFooter> find)
+        {
+            List<SurfaceBlock> Blocks(HeaderFooterType type) => find(type)?.Blocks.Select(Render).ToList();
+            return new SurfaceHeaderFooterParts(Blocks(HeaderFooterType.Default), Blocks(HeaderFooterType.First), Blocks(HeaderFooterType.Even));
+        }
+
+        var header = Parts(t => document.HeaderFor(section, t));
+        var footer = Parts(t => document.FooterFor(section, t));
+        return new SurfaceHeaderFooter(header, footer, section.TitlePage, document.EvenAndOddHeaders);
+    }
+
     public bool Forget(string id) => id != null && _rendered.Remove(id);
 
     public string SheetCss()
     {
         var page = document.Sections.Count > 0 ? document.Sections[0].Page : PageSetup.A4;
         var left = (long)page.MarginLeft + page.Gutter;
-        return $"--mx-pw:{Px(page.Width)};--mx-ph:{Px(page.Height)};--mx-mt:{Px(page.MarginTop)};--mx-mr:{Px(page.MarginRight)};--mx-mb:{Px(page.MarginBottom)};--mx-ml:{Px(left)};" +
+        return $"--mx-pw:{Px(page.Width)};--mx-ph:{Px(page.Height)};--mx-mt:{Px(page.MarginTop)};--mx-mr:{Px(page.MarginRight)};--mx-mb:{Px(page.MarginBottom)};--mx-ml:{Px(left)};--mx-hd:{Px(page.HeaderDistance)};--mx-fd:{Px(page.FooterDistance)};" +
                $"box-sizing:border-box;width:{Pt(page.Width)}pt;padding:{Pt(page.MarginTop)}pt {Pt(page.MarginRight)}pt {Pt(page.MarginBottom)}pt {Pt(left)}pt;" +
                DocumentCss.Run(Defaults(), new RunFormat(), true);
     }
@@ -114,13 +129,19 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
                 Break { Kind: BreakKind.Line } => new SurfaceRun("v", null, css, null, 0, 0),
                 Break => new SurfaceRun("f", null, css, null, 0, 0),
                 InlineImage image => ImageRun(image, css),
-                OpaqueInline token => new SurfaceRun("o", token.DisplayText ?? "", css, null, 0, 0),
+                OpaqueInline token => new SurfaceRun("o", token.DisplayText ?? "", css, null, 0, 0, null, FieldOf(token)),
                 _ => new SurfaceRun("o", "", css, null, 0, 0)
             });
         }
 
         Flush(runs, text, textCss, textLink);
         return runs;
+    }
+
+    internal static string FieldOf(OpaqueInline token)
+    {
+        var name = token.Instruction?.Trim().Split(' ', 2)[0].ToUpperInvariant();
+        return name is "PAGE" or "NUMPAGES" ? name : null;
     }
 
     private static string LinkOf(Inline inline) => inline.Link?.SafeTarget is { } target && !target.StartsWith('#') ? target : null;

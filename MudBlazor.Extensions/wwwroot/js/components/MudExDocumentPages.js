@@ -48,6 +48,7 @@ export const pageMethods = {
         if (this.view !== 'pages' || this.printing) {
             sheet.style.minHeight = '';
             this.pageTotal = 0;
+            this.layHeaders();
             return;
         }
         const style = getComputedStyle(sheet);
@@ -97,6 +98,7 @@ export const pageMethods = {
         });
         this.pageTotal = Math.max(1, Math.floor((end - 1) / period) + 1);
         sheet.style.minHeight = `${this.pageTotal * period - GAP}px`;
+        this.layHeaders();
         this.reportPage();
     },
 
@@ -144,6 +146,7 @@ export const pageMethods = {
         const copy = this.sheet.cloneNode(true);
         copy.removeAttribute('contenteditable');
         copy.removeAttribute('role');
+        this.printHeaders(copy);
         const holder = document.createElement('div');
         holder.className = 'mud-ex-doc-print-root';
         holder.append(copy);
