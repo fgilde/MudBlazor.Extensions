@@ -3,6 +3,7 @@
 
 @using MainSample.WebAssembly.Examples.DocumentEditor
 @using MainSample.WebAssembly.Examples.FileDisplay
+@using MainSample.WebAssembly.Examples.Spreadsheet
 
 @attribute [DemoNew(Name = "Advanced", Group = "Document Editor", Order = 10, Icon = Icons.Material.Outlined.FolderOpen, ForComponentTypes = new[] { typeof(MudExDocumentEditor) }, Documentation = "Open Word, RTF, OpenDocument and markdown files, edit them in the file display, save to a server with SaveRequested and work with large documents.")]
 
@@ -75,6 +76,23 @@
                               })">
         <DemoContent>
             <DocumentLargeExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="5. Navigation pane"
+                  NavTitle="Navigation pane"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "View > Navigation Pane lists the headings",
+                                  "Click jumps to the heading, the current heading is highlighted",
+                                  "Ruler and Comments pane in the same View tab"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <DocumentNavigationExample />
+            </SpreadsheetLazyDemo>
         </DemoContent>
     </MudExDemoBox>
 

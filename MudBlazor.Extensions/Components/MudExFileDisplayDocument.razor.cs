@@ -12,8 +12,8 @@ using Nextended.Core.Extensions;
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
-/// Document file viewer for DOCX, RTF, MSG, EML and MHTML files.
-/// Uses docx-preview for DOCX, RtfPipe for RTF, MsgReader for MSG (Outlook) and a lightweight MIME parser for EML/MHTML files.
+/// Document file viewer for MSG, EML and MHTML files (DOCX and RTF are opened by <see cref="MudExDocumentEditor"/>).
+/// Uses MsgReader for MSG (Outlook) and a lightweight MIME parser for EML/MHTML files.
 /// </summary>
 public partial class MudExFileDisplayDocument : IMudExFileDisplay
 {
@@ -69,17 +69,12 @@ public partial class MudExFileDisplayDocument : IMudExFileDisplay
         var fileName = fileDisplayInfos?.FileName;
 
         var mimeMatch = MimeType.Matches(contentType,
-            "application/vnd.openxmlformats-officedocument.wordprocessingml*",
-            "text/rtf",
-            "application/rtf",
             "application/vnd.ms-outlook",
             "message/rfc822",
             "application/x-mimearchive",
             "multipart/related");
 
         var extensionMatch = !string.IsNullOrEmpty(fileName) && (
-            fileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase) ||
-            fileName.EndsWith(".rtf", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".msg", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".eml", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".mht", StringComparison.OrdinalIgnoreCase) ||

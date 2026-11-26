@@ -9,7 +9,8 @@
         mudex-file-display,
         mudex-spreadsheet-editor,
         mudex-slide-editor,
-        mudex-notebook-editor { display: block; height: 70vh; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 24px; }
+        mudex-notebook-editor,
+        mudex-document-editor { display: block; height: 70vh; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 24px; }
     </style>
 </head>
 <body>
@@ -35,6 +36,9 @@
     <h2>Notebook editor</h2>
     <mudex-notebook-editor id="notebook"></mudex-notebook-editor>
 
+    <h2>Document editor</h2>
+    <mudex-document-editor id="document"></mudex-document-editor>
+
     <h2>Office files in the file display</h2>
     <mudex-file-display id="display-xlsx"
                         url="sample-data/ExcelSheet.xlsx"
@@ -52,6 +56,13 @@
                         url="sample-data/sample.mxnb"
                         content-type="application/vnd.mudex.notebook+zip"
                         file-name="sample.mxnb"
+                        allow-edit="true"
+                        show-file-name="true"></mudex-file-display>
+
+    <mudex-file-display id="display-docx"
+                        url="sample-data/sample.docx"
+                        content-type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        file-name="sample.docx"
                         allow-edit="true"
                         show-file-name="true"></mudex-file-display>
 

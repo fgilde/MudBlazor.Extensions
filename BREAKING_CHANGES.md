@@ -143,6 +143,26 @@ var workbook = XlsxReader.Read(stream);
 
 ---
 
+## Word Documents Open in `MudExDocumentEditor`
+
+`MudExFileDisplayDocument` no longer claims docx and rtf files (it keeps msg, eml and mhtml). `MudExFileDisplay` opens docx, docm, dotx, dotm, doc
+and rtf in `MudExDocumentEditor`, read-only unless the display is in edit mode.
+
+**Reason:** one document component that views, edits and saves Word files without losing content it does not model.
+
+**Before:**
+```razor
+<MudExFileDisplayDocument FileDisplayInfos="@docxInfos" />
+```
+
+**After:**
+```razor
+<MudExFileDisplay Url="@url" />
+<MudExDocumentEditor FileDisplayInfos="@docxInfos" ReadOnly="true" />
+```
+
+---
+
 ## Presentation Viewer Replaced by `MudExSlideEditor`
 
 `MudExFileDisplayPresentation` is removed. `MudExFileDisplay` now opens pptx in `MudExSlideEditor`, read-only unless the display is in

@@ -63,6 +63,40 @@
         </DemoContent>
     </MudExDemoBox>
 
+    <MudExDemoBox Title="3. Tables and pictures"
+                  NavTitle="Tables and pictures"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "Table Design and Layout tabs for the table under the caret",
+                                  "Picture Format tab, resize and context menu for pictures",
+                                  "Mini toolbar next to the selection"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <DocumentTablesExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="4. Pages view and print"
+                  NavTitle="Pages view and print"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "DocumentView Pages with page breaks and Page x of y",
+                                  "Layout tab and headers and footers",
+                                  "File > Print"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <DocumentPagesExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
 </MudExDemoPage>
 
 <DemoNavigation CurrentPage="@this" />

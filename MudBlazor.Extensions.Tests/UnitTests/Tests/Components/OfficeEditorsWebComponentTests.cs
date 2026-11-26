@@ -12,10 +12,11 @@ public class OfficeEditorsWebComponentTests
     {
         { typeof(MudExSpreadsheetEditor), "mudex-spreadsheet-editor" },
         { typeof(MudExSlideEditor), "mudex-slide-editor" },
-        { typeof(MudExNotebookEditor), "mudex-notebook-editor" }
+        { typeof(MudExNotebookEditor), "mudex-notebook-editor" },
+        { typeof(MudExDocumentEditor), "mudex-document-editor" }
     };
 
-    public static TheoryData<Type> EditorTypes => new(typeof(MudExSpreadsheetEditor), typeof(MudExSlideEditor), typeof(MudExNotebookEditor));
+    public static TheoryData<Type> EditorTypes => new(typeof(MudExSpreadsheetEditor), typeof(MudExSlideEditor), typeof(MudExNotebookEditor), typeof(MudExDocumentEditor));
 
     private static BunitContext NewContext()
     {
