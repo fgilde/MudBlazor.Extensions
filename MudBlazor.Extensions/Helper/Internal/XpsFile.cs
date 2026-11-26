@@ -3,6 +3,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
+using MudBlazor.Extensions.Office;
 
 namespace MudBlazor.Extensions.Helper.Internal;
 
@@ -33,7 +34,7 @@ internal sealed class XpsFile : IDisposable
         foreach (var entry in pageEntries)
         {
             using var source = entry.Open();
-            var xml = XDocument.Load(source, LoadOptions.None);
+            var xml = BoundedXmlReader.Load(source);
             var page = xml.Root;
             var width = Number(Attribute(page, "Width"), 816);
             var height = Number(Attribute(page, "Height"), 1056);

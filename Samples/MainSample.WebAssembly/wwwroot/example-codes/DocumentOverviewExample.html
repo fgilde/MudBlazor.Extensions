@@ -1,0 +1,13 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Document
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 640px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    &lt;MudExDocumentEditor @ref=&quot;ComponentRef&quot; @bind-TextDocument=&quot;_document&quot; /&gt;
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+
+@code {
+    private TextDocument _document = DocumentSamples.Showcase();
+}
+
+</pre></div>

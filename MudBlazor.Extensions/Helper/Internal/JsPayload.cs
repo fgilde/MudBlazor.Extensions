@@ -10,13 +10,13 @@ internal static class JsPayload
 
     private static readonly JsonSerializerOptions Options = new(JsonSerializerDefaults.Web);
 
-    public static async Task<T> ReadAsync<T>(T value, IJSStreamReference stream)
+    public static async Task<T> ReadAsync<T>(T value, IJSStreamReference stream, long maxBytes = MaxBytes)
     {
         if (stream == null)
             return value;
         await using (stream)
         {
-            await using var data = await stream.OpenReadStreamAsync(MaxBytes);
+            await using var data = await stream.OpenReadStreamAsync(maxBytes);
             return await JsonSerializer.DeserializeAsync<T>(data, Options);
         }
     }

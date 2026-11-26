@@ -54,7 +54,7 @@ public class ObjectEditMetaConfigurationTests
             .Add(c => c.Value, null)
             .Add(c => c.MetaConfiguration, meta => meta.Property(m => m.FirstName).WithLabel("Given name")));
 
-        Assert.Contains("Given name", cut.Markup);
+        cut.WaitForAssertion(() => Assert.Contains("Given name", cut.Markup));
     }
 
     [Fact]

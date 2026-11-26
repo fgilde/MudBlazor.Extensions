@@ -1,0 +1,27 @@
+@inherits MudExBaseComponent<MudExDocumentTablePropertiesDialog>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Office.Document
+
+<MudDialog Class="@MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial, "mud-ex-doctableprops-dialog")">
+    <DialogContent>
+        <MudSelect T="TableAlignment?" Class="mud-ex-doctableprops-alignment" Label="@TryLocalize("Alignment")" @bind-Value="_alignment" Margin="Margin.Dense" Dense="true">
+            @foreach (var alignment in Enum.GetValues<TableAlignment>())
+            {
+                <MudSelectItem T="TableAlignment?" Value="@alignment">@TryLocalize(alignment == TableAlignment.Center ? "Centered" : alignment.ToString())</MudSelectItem>
+            }
+        </MudSelect>
+        <MudText Typo="Typo.subtitle2" Class="mt-2">@TryLocalize("Column widths")</MudText>
+        <div class="mud-ex-docdialog-grid">
+            @for (var i = 0; i < _widths.Length; i++)
+            {
+                var index = i;
+                <MudNumericField T="double" Class="mud-ex-doctableprops-width" Label="@($"{TryLocalize("Column")} {index + 1}")" Value="_widths[index]" ValueChanged="@(v => _widths[index] = v)"
+                                 Step="@(Metric ? 0.1 : 0.05)" Min="0.1" Max="@MaxLength" Adornment="Adornment.End" AdornmentText="@DocumentUnits.Unit(Metric)" Margin="Margin.Dense" />
+            }
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-doctableprops-ok" Color="Color.Primary" Variant="Variant.Filled" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

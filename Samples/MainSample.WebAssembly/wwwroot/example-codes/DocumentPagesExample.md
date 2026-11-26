@@ -1,0 +1,16 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Document
+
+<MudAlert Severity="Severity.Info" Dense="true" Class="mb-2">
+    @L["Pages view shows sheets with page breaks and Page x of y. Layout sets size, margins and orientation, Insert adds header and footer, File > Print prints the sheets."]
+</MudAlert>
+<div style="width: 100%; height: 560px;">
+    <MudExDocumentEditor @ref="ComponentRef" @bind-TextDocument="_document" DocumentView="MudExDocumentView.Pages" />
+</div>
+
+@code {
+    private TextDocument _document = DocumentSamples.Large(40);
+}
+
+```

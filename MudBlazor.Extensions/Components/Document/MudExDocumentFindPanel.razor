@@ -1,0 +1,28 @@
+@inherits MudExBaseComponent<MudExDocumentFindPanel>
+@namespace MudBlazor.Extensions.Components
+
+<div @attributes="UserAttributes" class="@($"mud-ex-doc-find {Class}".TrimEnd())" style="@Style" role="search" @onkeydown="OnKeyDownAsync">
+    <div class="mud-ex-doc-find-row">
+        <input @ref="_input" type="text" class="mud-ex-doc-find-input mud-ex-doc-find-query" value="@_find" placeholder="@TryLocalize("Find")" aria-label="@TryLocalize("Find")"
+               @oninput="OnFindInputAsync" />
+        <span class="mud-ex-doc-find-status" role="status">@Status</span>
+        <button type="button" class="mud-ex-doc-find-button mud-ex-doc-find-previous" title="@TryLocalize("Previous")" aria-label="@TryLocalize("Previous")" @onclick="@(() => StepAsync(false))">&#x25B2;</button>
+        <button type="button" class="mud-ex-doc-find-button mud-ex-doc-find-next" title="@TryLocalize("Next")" aria-label="@TryLocalize("Next")" @onclick="@(() => StepAsync(true))">&#x25BC;</button>
+        <button type="button" class="mud-ex-doc-find-button mud-ex-doc-find-case" title="@TryLocalize("Match case")" aria-label="@TryLocalize("Match case")" aria-pressed="@(_matchCase ? "true" : "false")"
+                @onclick="@(() => ToggleAsync(() => _matchCase = !_matchCase))">Aa</button>
+        <button type="button" class="mud-ex-doc-find-button mud-ex-doc-find-word" title="@TryLocalize("Whole word")" aria-label="@TryLocalize("Whole word")" aria-pressed="@(_wholeWord ? "true" : "false")"
+                @onclick="@(() => ToggleAsync(() => _wholeWord = !_wholeWord))">[ab]</button>
+        <button type="button" class="mud-ex-doc-find-button mud-ex-doc-find-regex" title="@TryLocalize("Regular expression")" aria-label="@TryLocalize("Regular expression")" aria-pressed="@(_regex ? "true" : "false")"
+                @onclick="@(() => ToggleAsync(() => _regex = !_regex))">.*</button>
+        <button type="button" class="mud-ex-doc-find-button mud-ex-doc-find-close" title="@TryLocalize("Close")" aria-label="@TryLocalize("Close")" @onclick="Closed">&#x2715;</button>
+    </div>
+    @if (ShowReplace)
+    {
+        <div class="mud-ex-doc-find-row">
+            <input type="text" class="mud-ex-doc-find-input mud-ex-doc-find-with" value="@_with" placeholder="@TryLocalize("Replace")" aria-label="@TryLocalize("Replace")"
+                   @oninput="@(e => _with = e.Value?.ToString() ?? "")" />
+            <button type="button" class="mud-ex-doc-find-button mud-ex-doc-find-replace" @onclick="ReplaceAsync">@TryLocalize("Replace")</button>
+            <button type="button" class="mud-ex-doc-find-button mud-ex-doc-find-replace-all" @onclick="ReplaceAllAsync">@TryLocalize("Replace All")</button>
+        </div>
+    }
+</div>

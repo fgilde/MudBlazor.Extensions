@@ -1,4 +1,9 @@
 ﻿## Change Log    
+ - 9.13.0 > New MudExDocumentEditor: a Word style document editor with ribbon, paragraph and character styles, lists, tables, find and replace, clipboard, undo and redo; opens docx, doc, rtf, odt and markdown and saves docx, rtf, html, markdown and text
+ - 9.13.0 > MudExFileDisplay opens docx, docm, dotx, dotm, doc and rtf in the new MudExDocumentEditor, read-only unless in edit mode, and offers Edit for odt (the OpenDocument viewer stays selectable; MudExFileDisplayDocument keeps msg, eml and mhtml only, see BREAKING_CHANGES)
+ - 9.13.0 > MudExDocumentEditor: tables and pictures context tabs, pages view with print, navigation pane, ruler, comments and a mudex-document-editor web component
+ - 9.13.0 > MudExOfficeClipboard reads HTML
+ - 9.13.0 > Fix the Office editors: an export cancelled by the user no longer shows an error
  - 9.13.0 > New MudExNotebookEditor: a OneNote style notebook editor with colored section tabs, a page list with subpages, editable page titles, drag and drop reordering, undo and save as .mxnb; MudExFileDisplay opens .mxnb files in it, read-only unless in edit mode (.ipynb stays in the Jupyter viewer)
  - 9.13.0 > MudExNotebookEditor opens the text of OneNote sections (.one): pages with their titles and one text block per outline at its position, pictures, ink and tables are left out; saving writes a new .mxnb file. `Notebook.LoadOneNote` reads them in code
  - 9.13.0 > MudExFileDisplay opens pptx in the new MudExSlideEditor, read-only unless in edit mode; MudExFileDisplayPresentation and its pptx reader are removed (see BREAKING_CHANGES.md)

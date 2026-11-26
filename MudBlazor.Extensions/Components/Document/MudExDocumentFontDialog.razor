@@ -1,0 +1,38 @@
+@inherits MudExBaseComponent<MudExDocumentFontDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="@MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial, "mud-ex-docfont-dialog")">
+    <DialogContent>
+        <div class="mud-ex-docdialog-grid">
+            <MudAutocomplete T="string" Class="mud-ex-docfont-font" Label="@TryLocalize("Font")" @bind-Value="_font" SearchFunc="SearchFontsAsync" CoerceValue="true" CoerceText="false"
+                             MaxItems="null" Margin="Margin.Dense" Dense="true" />
+            <MudNumericField T="double?" Class="mud-ex-docfont-size" Label="@TryLocalize("Size")" @bind-Value="_size" Min="1" Max="1638" Step="0.5" Margin="Margin.Dense" />
+            <MudSelect T="string" Class="mud-ex-docfont-underline" Label="@TryLocalize("Underline style")" @bind-Value="_underline" Margin="Margin.Dense" Dense="true">
+                @foreach (var (value, text) in Underlines)
+                {
+                    <MudSelectItem Value="@value">@TryLocalize(text)</MudSelectItem>
+                }
+            </MudSelect>
+            <label class="mud-ex-docfont-color mud-ex-docdialog-color">
+                <span>@TryLocalize("Font color")</span>
+                <input type="color" value="@(_color ?? "#000000")" @onchange="SetColor" />
+            </label>
+        </div>
+        <MudText Typo="Typo.subtitle2" Class="mt-2">@TryLocalize("Effects")</MudText>
+        <div class="mud-ex-docdialog-checks">
+            <MudCheckBox T="bool?" Class="mud-ex-docfont-bold" Label="@TryLocalize("Bold")" @bind-Value="_bold" TriState="@(Format?.Bold is null)" Dense="true" />
+            <MudCheckBox T="bool?" Class="mud-ex-docfont-italic" Label="@TryLocalize("Italic")" @bind-Value="_italic" TriState="@(Format?.Italic is null)" Dense="true" />
+            <MudCheckBox T="bool?" Class="mud-ex-docfont-strike" Label="@TryLocalize("Strikethrough")" @bind-Value="_strike" TriState="@(Format?.Strike is null)" Dense="true" />
+            <MudCheckBox T="bool?" Class="mud-ex-docfont-double-strike" Label="@TryLocalize("Double strikethrough")" @bind-Value="_doubleStrike" TriState="@(Format?.DoubleStrike is null)" Dense="true" />
+            <MudCheckBox T="bool?" Class="mud-ex-docfont-superscript" Label="@TryLocalize("Superscript")" Value="_superscript" ValueChanged="SetSuperscript" TriState="@(Format?.VerticalAlign is null)" Dense="true" />
+            <MudCheckBox T="bool?" Class="mud-ex-docfont-subscript" Label="@TryLocalize("Subscript")" Value="_subscript" ValueChanged="SetSubscript" TriState="@(Format?.VerticalAlign is null)" Dense="true" />
+            <MudCheckBox T="bool?" Class="mud-ex-docfont-small-caps" Label="@TryLocalize("Small caps")" @bind-Value="_smallCaps" TriState="@(Format?.SmallCaps is null)" Dense="true" />
+            <MudCheckBox T="bool?" Class="mud-ex-docfont-caps" Label="@TryLocalize("All caps")" @bind-Value="_caps" TriState="@(Format?.Caps is null)" Dense="true" />
+            <MudCheckBox T="bool?" Class="mud-ex-docfont-hidden" Label="@TryLocalize("Hidden")" @bind-Value="_hidden" TriState="@(Format?.Hidden is null)" Dense="true" />
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Class="mud-ex-docfont-cancel" OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-docfont-ok" Color="Color.Primary" Variant="Variant.Filled" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

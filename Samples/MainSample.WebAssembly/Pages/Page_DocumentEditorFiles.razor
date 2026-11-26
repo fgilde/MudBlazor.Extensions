@@ -1,0 +1,101 @@
+@page "/document-editor-files"
+@inherits BasePage
+
+@using MainSample.WebAssembly.Examples.DocumentEditor
+@using MainSample.WebAssembly.Examples.FileDisplay
+@using MainSample.WebAssembly.Examples.Spreadsheet
+
+@attribute [DemoNew(Name = "Advanced", Group = "Document Editor", Order = 10, Icon = Icons.Material.Outlined.FolderOpen, ForComponentTypes = new[] { typeof(MudExDocumentEditor) }, Documentation = "Open Word, RTF, OpenDocument and markdown files, edit them in the file display, save to a server with SaveRequested and work with large documents.")]
+
+<MudPaper Class="pa-6 mb-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">
+        @L["MudEx Document Editor - Files"]
+    </MudText>
+    <MudText Typo="Typo.body1">
+        @L["The File menu opens and creates documents and saves them locally. Open a sample file below, edit it in the file display or save it to a server."]
+    </MudText>
+</MudPaper>
+
+<MudExDemoPage>
+
+    <MudExDemoBox Title="1. Open sample files"
+                  NavTitle="Open sample files"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "sample.docx, document-all-features.docx, WordDokument.doc, sample.odt and readme.md are loaded through TextDocument.Load",
+                                  "File menu: Open, New, Save, Save As",
+                                  "A file that cannot be read shows an alert"
+                              })">
+        <DemoContent>
+            <DocumentFilesExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="2. In the file display"
+                  NavTitle="In the file display"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "docx, docm, dotx, dotm, doc and rtf open read-only in the document editor",
+                                  "AllowEdit adds the Edit menu, odt gets it too and keeps its own viewer"
+                              })">
+        <DemoContent>
+            <FileDisplayDocumentExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="3. Save to a server (simulated)"
+                  NavTitle="Save to a server"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Parameters and events"
+                  Features="@(new[]
+                              {
+                                  "SaveRequested - receives the exported file as MudExFileSaveRequest",
+                                  "Handled = true - tells the editor that your code stored the file",
+                                  "The content stream is only valid during the handler, so copy it"
+                              })">
+        <DemoContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                @L["Change something and press Ctrl+S. The handler reports the file name and size with a snackbar."]
+            </MudText>
+            <DocumentServerSaveExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="4. A large document"
+                  NavTitle="Large document"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "300 pages of text generated in code",
+                                  "Only the visible part is rendered"
+                              })">
+        <DemoContent>
+            <DocumentLargeExample />
+        </DemoContent>
+    </MudExDemoBox>
+
+    <MudExDemoBox Title="5. Navigation pane"
+                  NavTitle="Navigation pane"
+                  FeaturesPlacement="DemoFeaturesPlacement.Below"
+                  FeaturesTitle="Highlights"
+                  Features="@(new[]
+                              {
+                                  "View > Navigation Pane lists the headings",
+                                  "Click jumps to the heading, the current heading is highlighted",
+                                  "Ruler and Comments pane in the same View tab"
+                              })">
+        <DemoContent>
+            <SpreadsheetLazyDemo>
+                <DocumentNavigationExample />
+            </SpreadsheetLazyDemo>
+        </DemoContent>
+    </MudExDemoBox>
+
+</MudExDemoPage>
+
+<DemoNavigation CurrentPage="@this" />

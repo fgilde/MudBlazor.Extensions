@@ -1,7 +1,9 @@
 using System.IO.Compression;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Linq;
+using MudBlazor.Extensions.Office;
 
 namespace MudBlazor.Extensions.Helper.Internal;
 
@@ -277,7 +279,7 @@ internal sealed class EpubBook : IDisposable
         var text = ReadText(path);
         try
         {
-            return text == null ? null : XDocument.Parse(text);
+            return text == null ? null : BoundedXmlReader.Parse(text, dtd: DtdProcessing.Ignore);
         }
         catch (Exception)
         {

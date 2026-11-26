@@ -1,0 +1,34 @@
+<div class="html"><pre>
+@inherits ExampleBase
+@using System.Diagnostics
+@using MudBlazor.Extensions.Office.Document
+
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudStack</span> <span class="htmlAttributeName">Row</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;true&quot;</span> <span class="htmlAttributeName">AlignItems</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;AlignItems.Center&quot;</span> <span class="htmlAttributeName">Spacing</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;4&quot;</span> <span class="htmlAttributeName">Class</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;mb-3&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudButton</span> <span class="htmlAttributeName">Variant</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Variant.Filled&quot;</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Color.Primary&quot;</span> <span class="htmlAttributeName">OnClick</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;@Generate&quot;</span><span class="htmlTagDelimiter">&gt;</span>@L[&quot;Generate a large document&quot;]<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudButton</span><span class="htmlTagDelimiter">&gt;</span>
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">MudText</span> <span class="htmlAttributeName">Typo</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;Typo.body2&quot;</span><span class="htmlTagDelimiter">&gt;</span>@_info<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudText</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">MudStack</span><span class="htmlTagDelimiter">&gt;</span>
+
+@if (_document != null)
+{
+    <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">div</span> <span class="htmlAttributeName">style</span><span class="htmlOperator">=</span><span class="htmlAttributeValue">&quot;width: 100%; height: 520px;&quot;</span><span class="htmlTagDelimiter">&gt;</span>
+        &lt;MudExDocumentEditor @ref=&quot;ComponentRef&quot; @bind-TextDocument=&quot;_document&quot; /&gt;
+    <span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">div</span><span class="htmlTagDelimiter">&gt;</span>
+}
+
+@code {
+    private TextDocument? _document;
+    private string _info = &quot;&quot;;
+
+    private async Task Generate()
+    {
+        _document = null;
+        _info = L[&quot;Generating...&quot;];
+        await Task.Yield();
+        var watch = Stopwatch.StartNew();
+        _document = DocumentSamples.Large();
+        watch.Stop();
+        _info = L[&quot;{0} paragraphs in {1:N0} ms&quot;, _document.AllParagraphs().Count(), watch.ElapsedMilliseconds];
+    }
+}
+
+</pre></div>

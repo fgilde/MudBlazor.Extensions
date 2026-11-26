@@ -11,11 +11,23 @@ namespace MudBlazor.Extensions.Office;
 /// <param name="TargetMode">The <c>TargetMode</c> attribute (<c>External</c>), or null for internal targets.</param>
 internal sealed record OpcRelationship(string Id, string Type, string Target, string TargetMode);
 
+/// <summary>Limits for reading a package: the total declared uncompressed size and the XML elements of all parts read while loading.</summary>
+/// <param name="MaxTotalLength">The largest sum of the declared uncompressed entry sizes.</param>
+/// <param name="MaxElements">The most XML elements in all parts read until <see cref="OpcPackage.EndLoad"/>.</param>
+internal sealed record OpcLimits(long MaxTotalLength, long MaxElements);
+
 /// <summary>A read-only view of an OPC (zip) package. Part names carry a leading slash and compare case-insensitively.</summary>
 internal sealed class OpcPackage
 {
     private const string ContentTypesPart = "/[Content_Types].xml";
     private const long MaxPartLength = 256L * 1024 * 1024;
+    private static readonly uint[] CrcTable = Enumerable.Range(0, 256).Select(n =>
+    {
+        var c = (uint)n;
+        for (var k = 0; k < 8; k++) c = (c & 1) != 0 ? 0xEDB88320 ^ (c >> 1) : c >> 1;
+        return c;
+    }).ToArray();
+
     private static readonly XmlReaderSettings XmlSettings = new() { DtdProcessing = DtdProcessing.Prohibit, CloseInput = false };
 
     private readonly ZipArchive _zip;
@@ -23,22 +35,32 @@ internal sealed class OpcPackage
     private readonly Dictionary<string, string> _defaults = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, string> _overrides = new(StringComparer.OrdinalIgnoreCase);
 
-    private OpcPackage(byte[] source)
+    private readonly bool _exact;
+    private long _elementBudget;
+
+    private OpcPackage(byte[] source, OpcLimits limits)
     {
         Source = source;
+        (_exact, _elementBudget) = (limits != null, limits?.MaxElements ?? long.MaxValue);
         _zip = new ZipArchive(new MemoryStream(source, false), ZipArchiveMode.Read);
+        long total = 0;
         foreach (var entry in _zip.Entries)
+        {
+            if (limits != null && (entry.Length < 0 || entry.Length > limits.MaxTotalLength - total))
+                throw LoadLimit.Exceeded($"The package is larger than {limits.MaxTotalLength} bytes uncompressed.");
+            total += entry.Length;
             if (!entry.FullName.EndsWith('/')) _entries["/" + entry.FullName] = entry;
+        }
 
         if (!_entries.ContainsKey(ContentTypesPart)) return;
         foreach (var e in ReadXml(ContentTypesPart).Root!.Elements())
             switch (e.Name.LocalName)
             {
-                case "Default":
-                    _defaults[(string)e.Attribute("Extension")] = (string)e.Attribute("ContentType");
+                case "Default" when (string)e.Attribute("Extension") is { } extension:
+                    _defaults[extension] = (string)e.Attribute("ContentType");
                     break;
-                case "Override":
-                    _overrides[(string)e.Attribute("PartName")] = (string)e.Attribute("ContentType");
+                case "Override" when (string)e.Attribute("PartName") is { } partName:
+                    _overrides[partName] = (string)e.Attribute("ContentType");
                     break;
             }
     }
@@ -58,18 +80,28 @@ internal sealed class OpcPackage
     /// <summary>Opens a package.</summary>
     /// <param name="source">The zip bytes.</param>
     /// <returns>The package.</returns>
-    public static OpcPackage Open(byte[] source) => new(source);
+    public static OpcPackage Open(byte[] source) => new(source, null);
+
+    /// <summary>Opens a package with limits: every entry read must have its declared size and CRC-32, and the XML read until <see cref="EndLoad"/> shares an element budget.</summary>
+    /// <param name="source">The zip bytes.</param>
+    /// <param name="limits">The limits.</param>
+    /// <returns>The package.</returns>
+    public static OpcPackage Open(byte[] source, OpcLimits limits) => new(source, limits);
+
+    /// <summary>Ends the element budget; later reads (for example while saving) are not counted.</summary>
+    public void EndLoad() => _elementBudget = long.MaxValue;
 
     internal ZipArchiveEntry Entry(string part) => _entries.GetValueOrDefault(part);
 
-    /// <summary>Reads a part as XML; DTDs are rejected.</summary>
+    /// <summary>Reads a part as XML; DTDs and elements nested deeper than 256 levels are rejected with <see cref="InvalidDataException"/>.</summary>
     /// <param name="part">The part name.</param>
     /// <returns>The document.</returns>
     public XDocument ReadXml(string part)
     {
         using var stream = Open(part);
-        using var reader = XmlReader.Create(stream, XmlSettings);
-        return XDocument.Load(reader);
+        var document = BoundedXmlReader.Load(XmlReader.Create(stream, XmlSettings), BoundedXmlReader.MaxDepth, _elementBudget, out var elements);
+        if (_elementBudget != long.MaxValue) _elementBudget -= elements;
+        return document;
     }
 
     /// <summary>Reads a part's raw bytes.</summary>
@@ -131,6 +163,36 @@ internal sealed class OpcPackage
     private Stream Open(string part)
     {
         var entry = _entries.GetValueOrDefault(part) ?? throw new FileNotFoundException("Package part not found.", part);
-        return entry.Length <= MaxPartLength ? entry.Open() : throw new InvalidDataException($"The package part {part} is larger than 256 MB.");
+        if (entry.Length > MaxPartLength) throw LoadLimit.Exceeded($"The package part {part} is larger than 256 MB.");
+        return _exact ? new MemoryStream(ReadDeclared(entry, "package part " + part), false) : entry.Open();
+    }
+
+    internal static byte[] ReadDeclared(ZipArchiveEntry entry, string name)
+    {
+        const int Chunk = 81920;
+        using var source = entry.Open();
+        using var data = new MemoryStream((int)Math.Min(entry.Length, 4L * 1024 * 1024));
+        var buffer = new byte[Chunk];
+        int read;
+        while (data.Length < entry.Length && (read = source.Read(buffer, 0, (int)Math.Min(Chunk, entry.Length - data.Length))) > 0)
+        {
+            var needed = (int)data.Length + read;
+            if (needed > data.Capacity) data.Capacity = (int)Math.Max(needed, Math.Min(2L * data.Capacity, entry.Length));
+            data.Write(buffer, 0, read);
+        }
+
+        // The capacity never exceeds the declared length, so an honest entry is handed out without a copy.
+        var longer = data.Length == entry.Length && source.ReadByte() >= 0;
+        var bytes = data.Capacity == data.Length ? data.GetBuffer() : data.ToArray();
+        if (longer) throw LoadLimit.Exceeded($"The {name} does not have its declared size or checksum.");
+        if (bytes.Length != entry.Length || Crc32(bytes) != entry.Crc32) throw LoadLimit.Exceeded($"The {name} does not have its declared size or checksum.");
+        return bytes;
+    }
+
+    private static uint Crc32(byte[] data)
+    {
+        var crc = uint.MaxValue;
+        foreach (var b in data) crc = CrcTable[(byte)(crc ^ b)] ^ (crc >> 8);
+        return ~crc;
     }
 }

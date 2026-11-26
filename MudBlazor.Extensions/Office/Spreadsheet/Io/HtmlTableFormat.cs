@@ -31,7 +31,10 @@ public sealed record HtmlTable(IReadOnlyList<HtmlTableCell> Cells, int RowCount,
 /// <summary>
 /// Reads and writes the HTML tables that Excel, Google Sheets and browsers put on the clipboard. The reader is a tolerant tokenizer for
 /// the not well-formed HTML of Excel: it never runs or renders anything, drops scripts, styles, frames and every attribute or CSS
-/// property outside a short list of formatting properties.
+/// property outside a short list of formatting properties. The content of raw-text elements (<c>script</c>, <c>style</c>, <c>textarea</c>,
+/// <c>title</c>, <c>noscript</c>, <c>iframe</c>, <c>noembed</c>, <c>noframes</c>, <c>template</c>, <c>xmp</c>, and <c>svg</c>, <c>math</c> and
+/// <c>object</c> unless written self-closing) is skipped up to the matching closing tag, or to the end of the input if there is none; a
+/// self-closing raw-text tag without a closing tag later in the input is an empty element. Comments and CDATA sections are skipped.
 /// </summary>
 public static class HtmlTableFormat
 {
@@ -41,8 +44,12 @@ public static class HtmlTableFormat
     private const int MaxColumnSpan = 1000;
     private const int MaxRowSpan = 65534;
 
+    [ThreadStatic] internal static int ClosingTagScans;
+
     private static readonly HashSet<string> RawText = new(StringComparer.Ordinal)
         { "script", "style", "textarea", "title", "noscript", "iframe", "noembed", "noframes", "template", "xmp", "svg", "math", "object" };
+
+    private static readonly HashSet<string> SelfClosingForeign = new(StringComparer.Ordinal) { "svg", "math", "object" };
 
     private static readonly Regex SheetsType = new("\"1\"\\s*:\\s*(\\d+)", RegexOptions.CultureInvariant);
     private static readonly Regex SheetsNumber = new("\"3\"\\s*:\\s*(-?\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?)", RegexOptions.CultureInvariant);
@@ -68,6 +75,7 @@ public static class HtmlTableFormat
     internal static void Tokenize(string html, IHtmlTokenSink sink)
     {
         var i = 0;
+        var unclosed = new Dictionary<string, int>(StringComparer.Ordinal);
         while (i < html.Length && !sink.Done)
         {
             var lt = html.IndexOf('<', i);
@@ -78,7 +86,7 @@ public static class HtmlTableFormat
             }
 
             if (lt > i) sink.Text(html[i..lt]);
-            i = ReadTag(html, lt, sink);
+            i = ReadTag(html, lt, sink, unclosed);
         }
     }
 
@@ -168,11 +176,17 @@ public static class HtmlTableFormat
         return css.ToString();
     }
 
-    private static int ReadTag(string html, int at, IHtmlTokenSink reader)
+    private static int ReadTag(string html, int at, IHtmlTokenSink reader, Dictionary<string, int> unclosed)
     {
         if (string.CompareOrdinal(html, at, "<!--", 0, 4) == 0)
         {
             var end = html.IndexOf("-->", at + 4, StringComparison.Ordinal);
+            return end < 0 ? html.Length : end + 3;
+        }
+
+        if (string.CompareOrdinal(html, at, "<![CDATA[", 0, 9) == 0)
+        {
+            var end = html.IndexOf("]]>", at + 9, StringComparison.Ordinal);
             return end < 0 ? html.Length : end + 3;
         }
 
@@ -201,10 +215,12 @@ public static class HtmlTableFormat
             return next;
         }
 
-        if (RawText.Contains(name) && !selfClosing)
+        if (RawText.Contains(name) && (!selfClosing || !SelfClosingForeign.Contains(name)))
         {
-            var end = html.IndexOf("</" + name, next, StringComparison.OrdinalIgnoreCase);
+            var end = ClosingTag(html, name, next, unclosed);
+            if (selfClosing && end < 0) return next;
             if (name == "style") reader.StyleSheet(end < 0 ? html[next..] : html[next..end]);
+            if (name == "title") reader.Title(end < 0 ? html[next..] : html[next..end]);
             if (end < 0) return html.Length;
             var gt = html.IndexOf('>', end);
             return gt < 0 ? html.Length : gt + 1;
@@ -212,6 +228,20 @@ public static class HtmlTableFormat
 
         reader.Start(name, attributes);
         return next;
+    }
+
+    private static int ClosingTag(string html, string name, int from, Dictionary<string, int> unclosed)
+    {
+        if (unclosed.TryGetValue(name, out var none) && from >= none) return -1;
+        ClosingTagScans++;
+        for (var end = html.IndexOf("</" + name, from, StringComparison.OrdinalIgnoreCase); end >= 0; end = html.IndexOf("</" + name, end + 2, StringComparison.OrdinalIgnoreCase))
+        {
+            var after = end + 2 + name.Length;
+            if (after >= html.Length || !(char.IsAsciiLetterOrDigit(html[after]) || html[after] is ':' or '-' or '_')) return end;
+        }
+
+        unclosed[name] = from;
+        return -1;
     }
 
     private static int ReadAttributes(string html, int i, Dictionary<string, string> attributes, out bool selfClosing)
@@ -413,7 +443,7 @@ public static class HtmlTableFormat
             }
 
             var code = int.Parse(s[j..hexEnd], NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-            sb.Append(code is > 0 and < 0xD800 or > 0xDFFF ? (char)code : '�');
+            sb.Append(code is > 0 and < 0xD800 or > 0xDFFF ? (char)code : '\uFFFD');
             i = hexEnd < s.Length && s[hexEnd] == ' ' ? hexEnd : hexEnd - 1;
         }
 
@@ -647,7 +677,7 @@ public static class HtmlTableFormat
         }
 
         public string Finish() =>
-            string.Join('\n', Text.ToString().Split('\n').Select(line => line.Trim(' '))).Trim('\n').Replace(' ', ' ');
+            string.Join('\n', Text.ToString().Split('\n').Select(line => line.Trim(' '))).Trim('\n').Replace('\u00A0', ' ');
     }
 }
 
@@ -662,4 +692,8 @@ internal interface IHtmlTokenSink
     void End(string name);
 
     void StyleSheet(string css);
+
+    void Title(string text)
+    {
+    }
 }

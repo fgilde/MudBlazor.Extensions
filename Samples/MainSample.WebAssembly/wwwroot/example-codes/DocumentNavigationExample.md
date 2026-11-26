@@ -1,0 +1,16 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Document
+
+<MudAlert Severity="Severity.Info" Dense="true" Class="mb-2">
+    @L["View > Navigation Pane lists the headings. A click jumps to the heading and the current one is highlighted."]
+</MudAlert>
+<div style="width: 100%; height: 560px;">
+    <MudExDocumentEditor @ref="ComponentRef" @bind-TextDocument="_document" />
+</div>
+
+@code {
+    private TextDocument _document = DocumentSamples.Showcase();
+}
+
+```

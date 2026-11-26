@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using static MudBlazor.Extensions.Office.OpcPackageWriter;
 using static MudBlazor.Extensions.Office.Presentation.PptxReader;
 
 namespace MudBlazor.Extensions.Office.Presentation;

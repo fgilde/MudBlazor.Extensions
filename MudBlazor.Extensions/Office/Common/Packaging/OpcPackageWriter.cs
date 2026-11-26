@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.IO.Compression;
 using System.Text;
 using System.Xml;
@@ -92,6 +93,19 @@ internal sealed class OpcPackageWriter : IDisposable
             return name;
         }
     }
+
+    internal static string Relative(string source, string target)
+    {
+        var from = source.Split('/')[1..^1];
+        var to = target.Split('/')[1..];
+        var common = 0;
+        while (common < from.Length && common < to.Length - 1 && string.Equals(from[common], to[common], StringComparison.OrdinalIgnoreCase)) common++;
+        return string.Concat(Enumerable.Repeat("../", from.Length - common)) + string.Join('/', to[common..]);
+    }
+
+    internal static string NextId(IEnumerable<OpcRelationship> relationships) =>
+        "rId" + (relationships.Select(r => r.Id.StartsWith("rId", StringComparison.Ordinal) && int.TryParse(r.Id.AsSpan(3), NumberStyles.None, CultureInfo.InvariantCulture, out var n) ? n : 0)
+            .DefaultIfEmpty().Max() + 1);
 
     public void Dispose() => _zip.Dispose();
 

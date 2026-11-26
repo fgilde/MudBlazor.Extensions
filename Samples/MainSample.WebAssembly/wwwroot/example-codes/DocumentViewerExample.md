@@ -1,0 +1,13 @@
+```razor
+@inherits ExampleBase
+@using MudBlazor.Extensions.Office.Document
+
+<div style="width: 100%; height: 520px;">
+    <MudExDocumentEditor @ref="ComponentRef" TextDocument="_document" ReadOnly="true" />
+</div>
+
+@code {
+    private readonly TextDocument _document = DocumentSamples.Showcase();
+}
+
+```

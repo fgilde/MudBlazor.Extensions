@@ -539,6 +539,7 @@ public class MudExRibbonTests : IAsyncLifetime
         while (cut.FindAll("[aria-haspopup=menu]").Concat(popovers.FindAll("[aria-haspopup=menu]"))
                    .FirstOrDefault(e => e.Closest(".mud-ex-ribbon-mode-switch") == null && opened.Add(e.Closest(".mud-menu")!.Id!)) is { } activator)
         {
+            var open = popovers.FindAll(".mud-popover-open").Count;
             try
             {
                 activator.Click();
@@ -546,6 +547,13 @@ public class MudExRibbonTests : IAsyncLifetime
             catch (MissingEventHandlerException)
             {
                 activator.QuerySelectorAll("button").Last().Click();
+            }
+            try
+            {
+                popovers.WaitForAssertion(() => Assert.True(popovers.FindAll(".mud-popover-open").Count > open), TimeSpan.FromMilliseconds(500));
+            }
+            catch (Bunit.Extensions.WaitForHelpers.WaitForFailedException)
+            {
             }
             found.UnionWith(Labels(cut, popovers));
         }

@@ -96,6 +96,35 @@ public class DocumentUndoStackTests
     }
 
     [Fact]
+    public void UndoStack_TryAmendLast_RefusedWithRedoOrOpenTransaction()
+    {
+        var doc = new Doc();
+        var stack = new DocumentUndoStack<Doc>(doc);
+        var calls = 0;
+        bool Amend(IDocumentCommand<Doc> command)
+        {
+            calls++;
+            return command.Description == "Add b";
+        }
+
+        Assert.False(stack.TryAmendLast(Amend));
+        Run(stack, doc, "a");
+        Assert.False(stack.TryAmendLast(Amend));
+        Run(stack, doc, "b");
+        Assert.True(stack.TryAmendLast(Amend));
+        Assert.Equal(2, calls);
+
+        using (stack.BeginTransaction("open"))
+        {
+            Assert.False(stack.TryAmendLast(Amend));
+        }
+
+        stack.Undo();
+        Assert.False(stack.TryAmendLast(Amend));
+        Assert.Equal(2, calls);
+    }
+
+    [Fact]
     public void UndoStack_OnTransactionEnd_RunsOncePerOutermostScope()
     {
         var doc = new Doc();
@@ -109,5 +138,54 @@ public class DocumentUndoStackTests
         }
 
         Assert.Equal(1, ends);
+    }
+
+    [Fact]
+    public void UndoStack_LastStep_TracksUndoRedoAndTransactions()
+    {
+        var doc = new Doc();
+        var seen = new List<(IDocumentCommand<Doc> Step, bool Reverted)>();
+        DocumentUndoStack<Doc> stack = null;
+        stack = new DocumentUndoStack<Doc>(doc, _ => seen.Add((stack.LastStep, stack.LastStepReverted)));
+        Assert.Null(stack.LastStep);
+
+        var a = new Add("a");
+        a.Apply(doc);
+        stack.Record(a);
+        Assert.Same(a, stack.LastStep);
+        Assert.False(stack.LastStepReverted);
+        Assert.Equal([a], DocumentUndoStack<Doc>.Flatten(a));
+
+        stack.Undo();
+        Assert.Same(a, seen[^1].Step);
+        Assert.True(seen[^1].Reverted);
+        stack.Redo();
+        Assert.Same(a, seen[^1].Step);
+        Assert.False(seen[^1].Reverted);
+
+        var (b, c) = (new Add("b"), new Add("c"));
+        using (stack.BeginTransaction("bc"))
+        {
+            b.Apply(doc);
+            stack.Record(b);
+            using (stack.BeginTransaction("inner"))
+            {
+                c.Apply(doc);
+                stack.Record(c);
+            }
+
+            Assert.Same(a, stack.LastStep);
+        }
+
+        var (step, reverted) = seen[^1];
+        Assert.Equal(3, seen.Count);
+        Assert.Equal("bc", step.Description);
+        Assert.False(reverted);
+        Assert.Equal([b, c], DocumentUndoStack<Doc>.Flatten(step));
+
+        stack.Undo();
+        Assert.Same(step, seen[^1].Step);
+        Assert.True(seen[^1].Reverted);
+        Assert.Equal(["a"], doc.Items);
     }
 }

@@ -1,0 +1,343 @@
+@inherits MudBlazor.Extensions.Components.Base.MudExFileEditorBase<MudExDocumentEditor>
+@namespace MudBlazor.Extensions.Components
+@using System.Globalization
+@using MudBlazor.Extensions.Office.Document
+
+<div @attributes="UserAttributes" class="@($"mud-ex-doc-editor {Class}".TrimEnd())" style="@RootStyle" data-readonly="@(IsReadOnly ? "true" : "false")" @onkeydown="_keyDown">
+    @if (ShowRibbon)
+    {
+        <MudExRibbon Class="mud-ex-doc-ribbon" Color="@RibbonColor" @bind-ActiveTabIndex="_tabIndex" @bind-Mode="_mode" @bind-Collapsed="_collapsed" FileMenuText="@TryLocalize("File")">
+            <FileMenu>
+                <MudExFileEditorBackstage Editor="this" Localizer="@Localizer" />
+            </FileMenu>
+            <QuickAccess>
+                @if (!IsReadOnly)
+                {
+                    <MudExRibbonButton Id="wd-save" Text="@TryLocalize("Save")" Icon="@Icons.Material.Filled.Save" Shortcut="Ctrl+S" OnClick="@(() => SaveAsync())" />
+                    <MudExRibbonButton Id="wd-undo" Text="@TryLocalize("Undo")" Icon="@Icons.Material.Filled.Undo" Shortcut="Ctrl+Z" Disabled="@(!_document.Undo.CanUndo)" OnClick="@(() => UndoAsync(false))" />
+                    <MudExRibbonButton Id="wd-redo" Text="@TryLocalize("Redo")" Icon="@Icons.Material.Filled.Redo" Shortcut="Ctrl+Y" Disabled="@(!_document.Undo.CanRedo)" OnClick="@(() => UndoAsync(true))" />
+                }
+            </QuickAccess>
+            <ChildContent>
+                <MudExRibbonTab Text="@TryLocalize("Home")" KeyTip="H" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Clipboard")" Icon="@Icons.Material.Filled.ContentPaste" CollapsePriority="4">
+                        <MudExRibbonButton Id="wd-paste" Text="@TryLocalize("Paste")" Icon="@Icons.Material.Filled.ContentPaste" Shortcut="Ctrl+V" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly"
+                                           OnClick="@(() => ClipboardPasteAsync())" />
+                        <MudExRibbonButton Id="wd-cut" Text="@TryLocalize("Cut")" Icon="@Icons.Material.Filled.ContentCut" Shortcut="Ctrl+X" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly"
+                                           OnClick="@(() => ClipboardCopyAsync(true))" />
+                        <MudExRibbonButton Id="wd-copy" Text="@TryLocalize("Copy")" Icon="@Icons.Material.Filled.ContentCopy" Shortcut="Ctrl+C" Size="MudExRibbonItemSize.Small"
+                                           OnClick="@(() => ClipboardCopyAsync(false))" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Font")" Icon="@Icons.Material.Filled.FormatSize" CollapsePriority="2" OnDialogLauncherClick="OpenFontDialogAsync">
+                        <MudExRibbonRow>
+                            <MudExRibbonSelect T="string" Id="wd-font" Text="@TryLocalize("Font")" Items="@FontItems" Value="@(Format?.Run.Font ?? "")" ValueChanged="SetFontAsync" Editable="true" Width="140"
+                                               Disabled="@IsReadOnly" />
+                            <MudExRibbonNumberBox Id="wd-font-size" Text="@TryLocalize("Font Size")" Value="@(Format?.Run.SizePt ?? 11)" ValueChanged="SetSizeAsync" Min="1" Max="1638" Step="0.5" Disabled="@IsReadOnly" />
+                            <MudExRibbonButton Id="wd-grow-font" Text="@TryLocalize("Increase Font Size")" Icon="@Icons.Material.Filled.TextIncrease" Shortcut="Ctrl+Shift+." Size="MudExRibbonItemSize.Small"
+                                               Disabled="@IsReadOnly" OnClick="@(() => GrowFontAsync(1))" />
+                            <MudExRibbonButton Id="wd-shrink-font" Text="@TryLocalize("Decrease Font Size")" Icon="@Icons.Material.Filled.TextDecrease" Shortcut="Ctrl+Shift+," Size="MudExRibbonItemSize.Small"
+                                               Disabled="@IsReadOnly" OnClick="@(() => GrowFontAsync(-1))" />
+                            <MudExRibbonButton Id="wd-clear-formatting" Text="@TryLocalize("Clear All Formatting")" Icon="@Icons.Material.Filled.FormatClear" Size="MudExRibbonItemSize.Small"
+                                               Disabled="@IsReadOnly" OnClick="@(() => ClearFormattingAsync(true))" />
+                        </MudExRibbonRow>
+                        <MudExRibbonRow>
+                            @foreach (var (id, text, icon, shortcut, property) in FontToggles)
+                            {
+                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly"
+                                                         Checked="@IsOn(property)" CheckedChanged="@(_ => ToggleRunAsync(property))" />
+                            }
+                            <MudExRibbonMenuButton Id="wd-highlight" Text="@TryLocalize("Text Highlight Color")" Icon="@Icons.Material.Filled.BorderColor" Size="MudExRibbonItemSize.Small" Split="true"
+                                                   Disabled="@IsReadOnly" OnClick="@(() => SetHighlightAsync(_highlight))">
+                                <MudExRibbonColorPicker Id="wd-highlight-color" Text="@TryLocalize("Highlight Color")" Icon="@Icons.Material.Filled.BorderColor" Palette="@HighlightPalette"
+                                                        Value="@HtmlReader.Highlights[_highlight]" ValueChanged="PickHighlightAsync" Disabled="@IsReadOnly" />
+                                <MudExRibbonMenuItem Id="wd-highlight-none" Text="@TryLocalize("No Color")" Icon="@Icons.Material.Filled.FormatColorReset" Disabled="@IsReadOnly"
+                                                     Checked="@(Format?.Run.Highlight is "none" or null)" OnClick="@(() => SetHighlightAsync("none"))" />
+                            </MudExRibbonMenuButton>
+                            <MudExRibbonColorPicker Id="wd-font-color" Text="@TryLocalize("Font Color")" Icon="@Icons.Material.Filled.FormatColorText" Size="MudExRibbonItemSize.Small"
+                                                    Palette="@MudExNotebookEditor.Palette" Value="@_fontColor" ValueChanged="PickColorAsync" Disabled="@IsReadOnly" />
+                        </MudExRibbonRow>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Paragraph")" Icon="@Icons.Material.Filled.FormatListBulleted" CollapsePriority="3" OnDialogLauncherClick="OpenParagraphDialogAsync">
+                        <MudExRibbonRow>
+                            @foreach (var (id, text, icon, shortcut, list) in ListToggles)
+                            {
+                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly"
+                                                         Checked="@(Format?.List == list)" CheckedChanged="@(_ => ToggleListAsync(list))" />
+                            }
+                            <MudExRibbonButton Id="wd-outdent" Text="@TryLocalize("Decrease Indent")" Icon="@Icons.Material.Filled.FormatIndentDecrease" Shortcut="Ctrl+Shift+M" Size="MudExRibbonItemSize.Small"
+                                               Disabled="@IsReadOnly" OnClick="@(() => IndentAsync(-1))" />
+                            <MudExRibbonButton Id="wd-indent" Text="@TryLocalize("Increase Indent")" Icon="@Icons.Material.Filled.FormatIndentIncrease" Shortcut="Ctrl+M" Size="MudExRibbonItemSize.Small"
+                                               Disabled="@IsReadOnly" OnClick="@(() => IndentAsync(1))" />
+                        </MudExRibbonRow>
+                        <MudExRibbonRow>
+                            @foreach (var (id, text, icon, shortcut, align) in AlignToggles)
+                            {
+                                <MudExRibbonToggleButton Id="@id" Text="@TryLocalize(text)" Icon="@icon" Shortcut="@shortcut" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly"
+                                                         Checked="@IsAligned(align)" CheckedChanged="@(_ => AlignAsync(align))" />
+                            }
+                            <MudExRibbonMenuButton Id="wd-line-spacing" Text="@TryLocalize("Line and Paragraph Spacing")" Icon="@Icons.Material.Filled.FormatLineSpacing" Size="MudExRibbonItemSize.Small"
+                                                   Disabled="@IsReadOnly">
+                                @foreach (var (id, lines) in LineSpacings)
+                                {
+                                    <MudExRibbonMenuItem Id="@id" Text="@lines.ToString("0.0#", System.Globalization.CultureInfo.CurrentCulture)" Disabled="@IsReadOnly"
+                                                         Checked="@(Format?.Paragraph.Line == Spacing(lines))" OnClick="@(() => SetLineSpacingAsync(lines))" />
+                                }
+                                <MudExRibbonMenuItem Id="wd-space-before" Text="@TryLocalize(SpaceIsSet(true) ? "Remove Space Before Paragraph" : "Add Space Before Paragraph")" Disabled="@IsReadOnly"
+                                                     OnClick="@(() => ToggleSpaceAsync(true))" />
+                                <MudExRibbonMenuItem Id="wd-space-after" Text="@TryLocalize(SpaceIsSet(false) ? "Remove Space After Paragraph" : "Add Space After Paragraph")" Disabled="@IsReadOnly"
+                                                     OnClick="@(() => ToggleSpaceAsync(false))" />
+                            </MudExRibbonMenuButton>
+                        </MudExRibbonRow>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Styles")" Icon="@Icons.Material.Filled.Style" CollapsePriority="1">
+                        <MudExRibbonGallery TItem="StyleItem" Id="wd-styles" Text="@TryLocalize("Styles")" Icon="@Icons.Material.Filled.Style" Size="MudExRibbonItemSize.Large" Columns="4"
+                                            Items="@GalleryItems" SelectedItem="@SelectedStyle" SelectedItemChanged="PickStyleAsync" ItemText="@(s => s.Name)" Disabled="@IsReadOnly">
+                            <ItemTemplate>
+                                <span class="mud-ex-doc-style-preview" style="@context.Css">@context.Name</span>
+                            </ItemTemplate>
+                        </MudExRibbonGallery>
+                        <MudExRibbonMenuButton Id="wd-styles-menu" Text="@TryLocalize("Style Options")" Icon="@Icons.Material.Filled.MoreVert" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly">
+                            <MudExRibbonMenuItem Id="wd-style-update" Text="@UpdateStyleText" Icon="@Icons.Material.Filled.Sync" Disabled="@(IsReadOnly || Format?.StyleId == null)"
+                                                 OnClick="UpdateStyleFromSelectionAsync" />
+                            <MudExRibbonMenuItem Id="wd-style-clear" Text="@TryLocalize("Clear Formatting")" Icon="@Icons.Material.Filled.FormatClear" Disabled="@IsReadOnly"
+                                                 OnClick="@(() => ClearFormattingAsync(true))" />
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Editing")" Icon="@Icons.Material.Filled.Search" CollapsePriority="0">
+                        <MudExRibbonButton Id="wd-find" Text="@TryLocalize("Find")" Icon="@Icons.Material.Filled.Search" Shortcut="Ctrl+F" Size="MudExRibbonItemSize.Small" OnClick="@(() => OpenFind(false))" />
+                        <MudExRibbonButton Id="wd-replace" Text="@TryLocalize("Replace")" Icon="@Icons.Material.Filled.FindReplace" Shortcut="Ctrl+H" Size="MudExRibbonItemSize.Small" OnClick="@(() => OpenFind(true))" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("Insert")" KeyTip="N" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Pages")" Icon="@Icons.Material.Filled.InsertPageBreak" CollapsePriority="3">
+                        <MudExRibbonButton Id="wd-page-break" Text="@TryLocalize("Page Break")" Icon="@Icons.Material.Filled.InsertPageBreak" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly"
+                                           OnClick="InsertPageBreakAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Tables")" Icon="@Icons.Material.Filled.TableChart" CollapsePriority="3">
+                        <MudExRibbonMenuButton Id="wd-insert-table" Text="@TryLocalize("Table")" Icon="@Icons.Material.Filled.TableChart" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly">
+                            <MudExRibbonContent>
+                                <MudExSlideTableGridPicker Chosen="InsertTableAsync" Localizer="@Localizer" />
+                            </MudExRibbonContent>
+                            <MudExRibbonMenuItem Id="wd-insert-table-dialog" Text="@TryLocalize("Insert Table...")" Icon="@Icons.Material.Filled.GridOn" Disabled="@IsReadOnly" OnClick="OpenTableDialogAsync" />
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Illustrations")" Icon="@Icons.Material.Filled.Image" CollapsePriority="2">
+                        <MudExRibbonButton Id="wd-insert-picture" Text="@TryLocalize("Picture")" Icon="@Icons.Material.Filled.Image" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly" OnClick="PickPictureAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Header & Footer")" Icon="@Icons.Material.Filled.VerticalAlignTop" CollapsePriority="1">
+                        <MudExRibbonButton Id="wd-insert-header" Text="@TryLocalize("Header")" Icon="@Icons.Material.Filled.VerticalAlignTop" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly"
+                                           OnClick="@(() => OpenHeaderFooterAsync(HeaderFooterKind.Header))" />
+                        <MudExRibbonButton Id="wd-insert-footer" Text="@TryLocalize("Footer")" Icon="@Icons.Material.Filled.VerticalAlignBottom" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly"
+                                           OnClick="@(() => OpenHeaderFooterAsync(HeaderFooterKind.Footer))" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Links")" Icon="@Icons.Material.Filled.Link" CollapsePriority="1">
+                        <MudExRibbonButton Id="wd-insert-link" Text="@TryLocalize("Link")" Icon="@Icons.Material.Filled.Link" Shortcut="Ctrl+K" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly"
+                                           OnClick="OpenLinkDialogAsync" />
+                        <MudExRibbonButton Id="wd-remove-link" Text="@TryLocalize("Remove Link")" Icon="@Icons.Material.Filled.LinkOff" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly" OnClick="RemoveLinkAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Text")" Icon="@Icons.Material.Filled.Today" CollapsePriority="0">
+                        <MudExRibbonButton Id="wd-insert-date" Text="@TryLocalize("Date")" Icon="@Icons.Material.Filled.Today" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly" OnClick="InsertDateAsync" />
+                        <MudExRibbonMenuButton Id="wd-insert-symbol" Text="@TryLocalize("Symbol")" Icon="@Icons.Material.Filled.EmojiSymbols" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly">
+                            <MudExRibbonContent>
+                                <div class="mud-ex-doc-symbols">
+                                    @foreach (var symbol in Symbols)
+                                    {
+                                        <MudMenuItem Class="mud-ex-doc-symbol" OnClick="@(() => InsertTextAsync(symbol))">@symbol</MudMenuItem>
+                                    }
+                                </div>
+                            </MudExRibbonContent>
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonButton Id="wd-insert-page-number" Text="@TryLocalize("Page Number")" Icon="@Icons.Material.Filled.Tag" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly"
+                                           OnClick="@(() => InsertFieldAsync("PAGE", "1"))" />
+                        <MudExRibbonButton Id="wd-insert-toc" Text="@TryLocalize("Table of Contents")" Icon="@Icons.Material.Filled.Toc" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly"
+                                           OnClick="@(() => InsertFieldAsync(TocInstruction, TryLocalize("Table of Contents")))" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("Layout")" KeyTip="P" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Page Setup")" Icon="@Icons.Material.Filled.Article" CollapsePriority="2" OnDialogLauncherClick="OpenPageSetupAsync">
+                        <MudExRibbonMenuButton Id="wd-margins" Text="@TryLocalize("Margins")" Icon="@Icons.Material.Filled.BorderOuter" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly">
+                            @foreach (var preset in MarginPresets)
+                            {
+                                var (name, top, side) = preset;
+                                <MudExRibbonMenuItem Id="@($"wd-margins-{name.ToLowerInvariant()}")" Text="@TryLocalize(name)" Checked="@IsMargin(name)" OnClick="@(() => SetMarginsAsync(top, side))" />
+                            }
+                            <MudExRibbonMenuItem Id="wd-margins-custom" Text="@TryLocalize("Custom Margins...")" OnClick="OpenPageSetupAsync" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonMenuButton Id="wd-orientation" Text="@TryLocalize("Orientation")" Icon="@Icons.Material.Filled.ScreenRotation" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly">
+                            <MudExRibbonMenuItem Id="wd-orientation-portrait" Text="@TryLocalize("Portrait")" Checked="@(CurrentPage?.Orientation == PageOrientation.Portrait)"
+                                                 OnClick="@(() => SetOrientationAsync(PageOrientation.Portrait))" />
+                            <MudExRibbonMenuItem Id="wd-orientation-landscape" Text="@TryLocalize("Landscape")" Checked="@(CurrentPage?.Orientation == PageOrientation.Landscape)"
+                                                 OnClick="@(() => SetOrientationAsync(PageOrientation.Landscape))" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonMenuButton Id="wd-size" Text="@TryLocalize("Size")" Icon="@Icons.Material.Filled.CropPortrait" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly">
+                            @foreach (var size in MudExDocumentPageSetupDialog.Sizes.Keys)
+                            {
+                                var name = size;
+                                <MudExRibbonMenuItem Id="@($"wd-size-{name.ToLowerInvariant()}")" Text="@name" Checked="@IsPaperSize(name)" OnClick="@(() => SetPaperSizeAsync(name))" />
+                            }
+                            <MudExRibbonMenuItem Id="wd-size-more" Text="@TryLocalize("More Paper Sizes...")" OnClick="OpenPageSetupAsync" />
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Paragraph")" Icon="@Icons.Material.Filled.FormatIndentIncrease" CollapsePriority="1">
+                        <MudExRibbonNumberBox Id="wd-layout-indent-left" Text="@($"{TryLocalize("Indent Left")} ({DocumentUnits.Unit(Metric)})")" Value="@IndentUnit(Format?.Paragraph.IndentLeft)"
+                                              ValueChanged="@(v => SetIndentAsync(true, v))" Min="0" Max="50" Step="@(Metric ? 0.25 : 0.1)" Disabled="@IsReadOnly" />
+                        <MudExRibbonNumberBox Id="wd-layout-indent-right" Text="@($"{TryLocalize("Indent Right")} ({DocumentUnits.Unit(Metric)})")" Value="@IndentUnit(Format?.Paragraph.IndentRight)"
+                                              ValueChanged="@(v => SetIndentAsync(false, v))" Min="0" Max="50" Step="@(Metric ? 0.25 : 0.1)" Disabled="@IsReadOnly" />
+                        <MudExRibbonNumberBox Id="wd-layout-space-before" Text="@($"{TryLocalize("Spacing Before")} (pt)")" Value="@((Format?.Paragraph.SpacingBefore ?? 0) / 20.0)"
+                                              ValueChanged="@(v => SetSpacingAsync(true, v))" Min="0" Max="1584" Step="6" Disabled="@IsReadOnly" />
+                        <MudExRibbonNumberBox Id="wd-layout-space-after" Text="@($"{TryLocalize("Spacing After")} (pt)")" Value="@((Format?.Paragraph.SpacingAfter ?? 0) / 20.0)"
+                                              ValueChanged="@(v => SetSpacingAsync(false, v))" Min="0" Max="1584" Step="6" Disabled="@IsReadOnly" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
+                    <MudExRibbonGroup Text="@TryLocalize("Document Views")" Icon="@Icons.Material.Filled.AutoStories" CollapsePriority="3">
+                        <MudExRibbonToggleButton Id="wd-view-pages" Text="@TryLocalize("Print Layout")" Icon="@Icons.Material.Filled.Article" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@(CurrentView == MudExDocumentView.Pages)" CheckedChanged="@(_ => SetView(MudExDocumentView.Pages))" />
+                        <MudExRibbonToggleButton Id="wd-view-web" Text="@TryLocalize("Web Layout")" Icon="@Icons.Material.Filled.Language" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@(CurrentView == MudExDocumentView.Web)" CheckedChanged="@(_ => SetView(MudExDocumentView.Web))" />
+                        <MudExRibbonButton Id="wd-print" Text="@TryLocalize("Print")" Icon="@Icons.Material.Filled.Print" Size="MudExRibbonItemSize.Large" OnClick="PrintAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Show")" Icon="@Icons.Material.Filled.FormatListNumbered" CollapsePriority="1">
+                        <MudExRibbonToggleButton Id="wd-view-marks" Text="@TryLocalize("Formatting Marks")" Icon="@Icons.Material.Filled.FormatAlignJustify" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@_marks" CheckedChanged="@(on => _marks = on)" />
+                        <MudExRibbonToggleButton Id="wd-view-ruler" Text="@TryLocalize("Ruler")" Icon="@Icons.Material.Filled.Straighten" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@_showRuler" CheckedChanged="@(on => _showRuler = on)" />
+                        <MudExRibbonToggleButton Id="wd-view-nav" Text="@TryLocalize("Navigation Pane")" Icon="@Icons.Material.Filled.Toc" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@_showNav" CheckedChanged="@(on => _showNav = on)" />
+                        <MudExRibbonToggleButton Id="wd-view-comments" Text="@TryLocalize("Comments")" Icon="@Icons.Material.Filled.Comment" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@_showComments" CheckedChanged="@(on => _showComments = on)" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Zoom")" Icon="@Icons.Material.Filled.ZoomIn" CollapsePriority="2">
+                        <MudExRibbonSelect T="double" Id="wd-zoom" Text="@TryLocalize("Zoom")" Items="@ZoomItems" ItemText="@(z => $"{z * 100:0}%")" Value="@_zoom" ValueChanged="SetZoom" Width="80" />
+                        <MudExRibbonButton Id="wd-zoom-100" Text="@TryLocalize("100%")" Icon="@Icons.Material.Filled.ZoomOutMap" Size="MudExRibbonItemSize.Large" OnClick="@(() => SetZoom(1))" />
+                        <MudExRibbonButton Id="wd-zoom-in" Text="@TryLocalize("Zoom In")" Icon="@Icons.Material.Filled.ZoomIn" Size="MudExRibbonItemSize.Small" OnClick="@(() => SetZoom(_zoom + 0.1))" />
+                        <MudExRibbonButton Id="wd-zoom-out" Text="@TryLocalize("Zoom Out")" Icon="@Icons.Material.Filled.ZoomOut" Size="MudExRibbonItemSize.Small" OnClick="@(() => SetZoom(_zoom - 0.1))" />
+                    </MudExRibbonGroup>
+                    @if (IsReadOnly)
+                    {
+                        <MudExRibbonGroup Text="@TryLocalize("Find")" Icon="@Icons.Material.Filled.Search" CollapsePriority="0">
+                            <MudExRibbonButton Id="wd-view-find" Text="@TryLocalize("Find")" Icon="@Icons.Material.Filled.Search" Shortcut="Ctrl+F" Size="MudExRibbonItemSize.Large" OnClick="@(() => OpenFind(false))" />
+                        </MudExRibbonGroup>
+                    }
+                </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("Table")" KeyTip="JT" Contextual="true" ContextualTitle="@TryLocalize("Table Tools")" Visible="@(!IsReadOnly && Objects.Table)">
+                    <MudExRibbonGroup Text="@TryLocalize("Rows & Columns")" Icon="@Icons.Material.Filled.TableRows" CollapsePriority="3">
+                        <MudExRibbonButton Id="wd-table-row-above" Text="@TryLocalize("Insert Above")" Icon="@Icons.Material.Filled.VerticalAlignTop" Size="MudExRibbonItemSize.Small" OnClick="@(() => InsertRowAsync(false))" />
+                        <MudExRibbonButton Id="wd-table-row-below" Text="@TryLocalize("Insert Below")" Icon="@Icons.Material.Filled.VerticalAlignBottom" Size="MudExRibbonItemSize.Small" OnClick="@(() => InsertRowAsync(true))" />
+                        <MudExRibbonButton Id="wd-table-col-left" Text="@TryLocalize("Insert Left")" Icon="@Icons.Material.Filled.AlignHorizontalLeft" Size="MudExRibbonItemSize.Small" OnClick="@(() => InsertColumnAsync(false))" />
+                        <MudExRibbonButton Id="wd-table-col-right" Text="@TryLocalize("Insert Right")" Icon="@Icons.Material.Filled.AlignHorizontalRight" Size="MudExRibbonItemSize.Small" OnClick="@(() => InsertColumnAsync(true))" />
+                        <MudExRibbonMenuButton Id="wd-table-delete" Text="@TryLocalize("Delete")" Icon="@Icons.Material.Filled.Delete" Size="MudExRibbonItemSize.Large">
+                            <MudExRibbonMenuItem Id="wd-table-delete-row" Text="@TryLocalize("Delete Rows")" OnClick="DeleteRowsAsync" />
+                            <MudExRibbonMenuItem Id="wd-table-delete-column" Text="@TryLocalize("Delete Columns")" OnClick="DeleteColumnsAsync" />
+                            <MudExRibbonMenuItem Id="wd-table-delete-table" Text="@TryLocalize("Delete Table")" OnClick="DeleteTableAsync" />
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Merge")" Icon="@Icons.Material.Filled.CallMerge" CollapsePriority="2">
+                        <MudExRibbonButton Id="wd-table-merge" Text="@TryLocalize("Merge Cells")" Icon="@Icons.Material.Filled.CallMerge" Size="MudExRibbonItemSize.Small" Disabled="@(!Objects.Spans)" OnClick="MergeCellsAsync" />
+                        <MudExRibbonButton Id="wd-table-split" Text="@TryLocalize("Split Cell")" Icon="@Icons.Material.Filled.CallSplit" Size="MudExRibbonItemSize.Small" OnClick="SplitCellAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Table Style")" Icon="@Icons.Material.Filled.BorderAll" CollapsePriority="1">
+                        <MudExRibbonColorPicker Id="wd-table-shading" Text="@TryLocalize("Shading")" Icon="@Icons.Material.Filled.FormatColorFill" Size="MudExRibbonItemSize.Small"
+                                                Palette="@MudExNotebookEditor.Palette" Value="@_shading" ValueChanged="PickShadingAsync" />
+                        <MudExRibbonMenuButton Id="wd-table-borders" Text="@TryLocalize("Borders")" Icon="@Icons.Material.Filled.BorderAll" Size="MudExRibbonItemSize.Small">
+                            <MudExRibbonMenuItem Id="wd-table-borders-all" Text="@TryLocalize("All Borders")" Icon="@Icons.Material.Filled.BorderAll" OnClick="@(() => SetBordersAsync("all"))" />
+                            <MudExRibbonMenuItem Id="wd-table-borders-outside" Text="@TryLocalize("Outside Borders")" Icon="@Icons.Material.Filled.BorderOuter" OnClick="@(() => SetBordersAsync("outside"))" />
+                            <MudExRibbonMenuItem Id="wd-table-borders-none" Text="@TryLocalize("No Border")" Icon="@Icons.Material.Filled.BorderClear" OnClick="@(() => SetBordersAsync("none"))" />
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonToggleButton Id="wd-table-header" Text="@TryLocalize("Header Row")" Icon="@Icons.Material.Filled.ViewHeadline" Size="MudExRibbonItemSize.Small"
+                                                 Checked="@Objects.HeaderRow" CheckedChanged="@(_ => ToggleHeaderRowAsync())" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Table")" Icon="@Icons.Material.Filled.TableChart" CollapsePriority="0">
+                        <MudExRibbonButton Id="wd-table-properties" Text="@TryLocalize("Properties...")" Icon="@Icons.Material.Filled.Settings" Size="MudExRibbonItemSize.Large" OnClick="OpenTablePropertiesAsync" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("Picture")" KeyTip="JP" Contextual="true" ContextualTitle="@TryLocalize("Picture Tools")" Visible="@(!IsReadOnly && Objects.Picture)">
+                    <MudExRibbonGroup Text="@TryLocalize("Size")" Icon="@Icons.Material.Filled.PhotoSizeSelectLarge" CollapsePriority="1">
+                        <MudExRibbonNumberBox Id="wd-picture-width" Text="@TryLocalize("Width")" Value="@ToUnit(Objects.Width)" ValueChanged="@(v => SetPictureSizeAsync(v, null))" Min="0.1" Max="500" Step="@UnitStep" />
+                        <MudExRibbonNumberBox Id="wd-picture-height" Text="@TryLocalize("Height")" Value="@ToUnit(Objects.Height)" ValueChanged="@(v => SetPictureSizeAsync(null, v))" Min="0.1" Max="500" Step="@UnitStep" />
+                        <MudExRibbonToggleButton Id="wd-picture-lock" Text="@TryLocalize("Lock Aspect Ratio")" Icon="@Icons.Material.Filled.Lock" Size="MudExRibbonItemSize.Small"
+                                                 Checked="@_pictureLock" CheckedChanged="@(v => _pictureLock = v)" />
+                        <MudExRibbonButton Id="wd-picture-reset" Text="@TryLocalize("Reset Size")" Icon="@Icons.Material.Filled.RestartAlt" Size="MudExRibbonItemSize.Small" OnClick="ResetPictureSizeAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Accessibility")" Icon="@Icons.Material.Filled.Accessibility" CollapsePriority="0">
+                        <MudExRibbonButton Id="wd-picture-alt" Text="@TryLocalize("Alt Text...")" Icon="@Icons.Material.Filled.Accessibility" Size="MudExRibbonItemSize.Large" OnClick="OpenAltTextDialogAsync" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
+                @RibbonContent
+            </ChildContent>
+        </MudExRibbon>
+    }
+    @if (_findOpen)
+    {
+        <MudExDocumentFindPanel Editor="this" Replace="_findReplace" Closed="CloseFind" Localizer="@Localizer" />
+    }
+    @if (!IsReadOnly)
+    {
+        <InputFile id="@_pictureInput" accept="@PictureAccept" OnChange="OnPictureChosenAsync" hidden />
+    }
+    <div class="mud-ex-doc-editor-body">
+        @if (_showNav)
+        {
+            <MudExDocumentNavigation Items="Headings" CurrentId="@CurrentHeadingId" Selected="GoToParagraphAsync" Localizer="@Localizer" />
+        }
+        <div class="mud-ex-doc-center">
+        @if (_showRuler && CurrentPage is { } rulerPage)
+        {
+            <MudExDocumentRuler Page="rulerPage" Paragraph="RulerParagraph" Metric="Metric" Editable="!IsReadOnly" Edited="OnRulerEditedAsync" Localizer="@Localizer" />
+        }
+        <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" View="CurrentView" FormattingMarks="_marks" HeaderFooterRequested="OnHeaderFooterRequestedAsync" PagesChanged="OnPagesChanged" Shortcuts="SurfaceShortcuts" ShortcutPressed="OnShortcutAsync" SelectionChanged="_selectionChanged" OnError="OnSurfaceErrorAsync"
+                              ContextMenuRequested="OnContextMenuAsync" MiniToolbarRequested="OnMiniToolbarAsync"
+                              Localizer="@Localizer" />
+        </div>
+        @if (_showComments)
+        {
+            <MudExDocumentCommentsPane Items="_document?.Comments ?? []" Selected="GoToParagraphAsync" Localizer="@Localizer" />
+        }
+    </div>
+    @if (_mini is { } mini && !IsReadOnly)
+    {
+        <div class="mud-ex-doc-mini" style="@($"left:{mini.X.ToString("0.#", CultureInfo.InvariantCulture)}px;top:{mini.Y.ToString("0.#", CultureInfo.InvariantCulture)}px")" role="toolbar" @onmousedown:preventDefault>
+            @foreach (var (id, text, icon, _, property) in FontToggles.Take(3))
+            {
+                <button type="button" id="@($"{id}-mini")" class="@($"mud-ex-doc-mini-button{(IsOn(property) ? " mud-ex-doc-active" : "")}")" title="@TryLocalize(text)" @onclick="@(() => ToggleRunAsync(property))"><MudIcon Icon="@icon" Size="Size.Small" /></button>
+            }
+            <button type="button" id="wd-grow-font-mini" class="mud-ex-doc-mini-button" title="@TryLocalize("Increase Font Size")" @onclick="@(() => GrowFontAsync(1))"><MudIcon Icon="@Icons.Material.Filled.TextIncrease" Size="Size.Small" /></button>
+            <button type="button" id="wd-shrink-font-mini" class="mud-ex-doc-mini-button" title="@TryLocalize("Decrease Font Size")" @onclick="@(() => GrowFontAsync(-1))"><MudIcon Icon="@Icons.Material.Filled.TextDecrease" Size="Size.Small" /></button>
+            @foreach (var color in MiniColors)
+            {
+                <button type="button" class="mud-ex-doc-mini-button mud-ex-doc-mini-color" title="@TryLocalize("Font Color")" style="@($"background-color:{color}")" @onclick="@(() => SetColorAsync(color))"></button>
+            }
+        </div>
+    }
+    @if (_menu is { } menu && !IsReadOnly)
+    {
+        <div class="mud-ex-doc-menu-backdrop" @onclick="CloseMenu" @oncontextmenu="CloseMenu" @oncontextmenu:preventDefault="true"></div>
+        <div class="mud-ex-doc-menu" style="@($"left:{menu.X.ToString("0.#", CultureInfo.InvariantCulture)}px;top:{menu.Y.ToString("0.#", CultureInfo.InvariantCulture)}px;--mud-ex-doc-x:{menu.X.ToString("0.#", CultureInfo.InvariantCulture)}px;--mud-ex-doc-y:{menu.Y.ToString("0.#", CultureInfo.InvariantCulture)}px")" role="menu" @onmousedown:preventDefault>
+            <button type="button" role="menuitem" id="wd-menu-cut" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => ClipboardCopyAsync(true)))">@TryLocalize("Cut")</button>
+            <button type="button" role="menuitem" id="wd-menu-copy" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => ClipboardCopyAsync(false)))">@TryLocalize("Copy")</button>
+            <button type="button" role="menuitem" id="wd-menu-paste" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => ClipboardPasteAsync()))">@TryLocalize("Paste")</button>
+            <hr class="mud-ex-doc-menu-separator" />
+            <button type="button" role="menuitem" id="wd-menu-font" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(OpenFontDialogAsync))">@TryLocalize("Font...")</button>
+            <button type="button" role="menuitem" id="wd-menu-paragraph" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(OpenParagraphDialogAsync))">@TryLocalize("Paragraph...")</button>
+            <button type="button" role="menuitem" id="wd-menu-link" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(OpenLinkDialogAsync))">@TryLocalize("Link...")</button>
+            @if (Objects.Table)
+            {
+                <hr class="mud-ex-doc-menu-separator" />
+                <button type="button" role="menuitem" id="wd-menu-row-above" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => InsertRowAsync(false)))">@TryLocalize("Insert Row Above")</button>
+                <button type="button" role="menuitem" id="wd-menu-row-below" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => InsertRowAsync(true)))">@TryLocalize("Insert Row Below")</button>
+                <button type="button" role="menuitem" id="wd-menu-col-left" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => InsertColumnAsync(false)))">@TryLocalize("Insert Column Left")</button>
+                <button type="button" role="menuitem" id="wd-menu-col-right" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(() => InsertColumnAsync(true)))">@TryLocalize("Insert Column Right")</button>
+                <button type="button" role="menuitem" id="wd-menu-delete-row" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(DeleteRowsAsync))">@TryLocalize("Delete Rows")</button>
+                <button type="button" role="menuitem" id="wd-menu-delete-column" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(DeleteColumnsAsync))">@TryLocalize("Delete Columns")</button>
+                <button type="button" role="menuitem" id="wd-menu-delete-table" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(DeleteTableAsync))">@TryLocalize("Delete Table")</button>
+                <button type="button" role="menuitem" id="wd-menu-merge" class="mud-ex-doc-menu-item" disabled="@(!Objects.Spans)" @onclick="@(() => MenuAsync(MergeCellsAsync))">@TryLocalize("Merge Cells")</button>
+                <button type="button" role="menuitem" id="wd-menu-split" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(SplitCellAsync))">@TryLocalize("Split Cell")</button>
+                <button type="button" role="menuitem" id="wd-menu-table-properties" class="mud-ex-doc-menu-item" @onclick="@(() => MenuAsync(OpenTablePropertiesAsync))">@TryLocalize("Table Properties...")</button>
+            }
+        </div>
+    }
+    @if (ShowStatusBar)
+    {
+        <MudExDocumentStatusBar Words="Words" Pages="@(CurrentView == MudExDocumentView.Pages ? _pages : default)" Zoom="_zoom" ZoomChanged="SetZoom" Localizer="@Localizer" />
+    }
+</div>

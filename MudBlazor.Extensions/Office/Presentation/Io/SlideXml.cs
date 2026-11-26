@@ -129,9 +129,9 @@ internal sealed class SlideXml(string part, string basis, List<OpcRelationship> 
     private string Import(OpcRelationship rel, string origin)
     {
         if (rel.TargetMode == null && PptxWriter.Owned(rel.Type)) return Clone(rel, origin);
-        var target = rel.TargetMode == null ? PptxWriter.Relative(part, opc.ResolveTarget(origin, rel.Target)) : rel.Target;
+        var target = rel.TargetMode == null ? OpcPackageWriter.Relative(part, opc.ResolveTarget(origin, rel.Target)) : rel.Target;
         var existing = relationships.Find(r => r.Type == rel.Type && r.TargetMode == rel.TargetMode && r.Target == target);
-        if (existing == null) relationships.Add(existing = new OpcRelationship(PptxWriter.NextId(relationships), rel.Type, target, rel.TargetMode));
+        if (existing == null) relationships.Add(existing = new OpcRelationship(OpcPackageWriter.NextId(relationships), rel.Type, target, rel.TargetMode));
         return existing.Id;
     }
 
@@ -139,7 +139,7 @@ internal sealed class SlideXml(string part, string basis, List<OpcRelationship> 
     {
         from ??= part;
         var target = cloneTarget(opc.ResolveTarget(from, rel.Target), rel.Type.EndsWith("/diagramData", StringComparison.Ordinal) ? data => CloneDrawing(data, from) : null);
-        var copy = new OpcRelationship(PptxWriter.NextId(relationships), rel.Type, target, null);
+        var copy = new OpcRelationship(OpcPackageWriter.NextId(relationships), rel.Type, target, null);
         relationships.Add(copy);
         _used.Add(copy.Id);
         return copy.Id;
@@ -186,9 +186,9 @@ internal sealed class SlideXml(string part, string basis, List<OpcRelationship> 
 
     private string ImageRelationship(string image)
     {
-        var target = PptxWriter.Relative(part, image);
+        var target = OpcPackageWriter.Relative(part, image);
         var rel = relationships.Find(r => r.Type == PptxWriter.ImageRel && r.TargetMode == null && r.Target == target);
-        if (rel == null) relationships.Add(rel = new OpcRelationship(PptxWriter.NextId(relationships), PptxWriter.ImageRel, target, null));
+        if (rel == null) relationships.Add(rel = new OpcRelationship(OpcPackageWriter.NextId(relationships), PptxWriter.ImageRel, target, null));
         return rel.Id;
     }
 

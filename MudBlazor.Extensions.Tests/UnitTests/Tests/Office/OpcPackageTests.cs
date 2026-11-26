@@ -36,6 +36,22 @@ public class OpcPackageTests
     }
 
     [Fact]
+    public void ReadDeclared_HonestEntryLargerThanInitialCapacity_LoadsByteIdentical()
+    {
+        var content = new byte[4 * 1024 * 1024 + 12345];
+        new Random(7).NextBytes(content);
+        using var ms = new MemoryStream();
+        using (var zip = new ZipArchive(ms, ZipArchiveMode.Create, true))
+        {
+            using var s = zip.CreateEntry("big.bin").Open();
+            s.Write(content);
+        }
+
+        using var read = new ZipArchive(new MemoryStream(ms.ToArray()), ZipArchiveMode.Read);
+        Assert.Equal(content, OpcPackage.ReadDeclared(read.GetEntry("big.bin")!, "test"));
+    }
+
+    [Fact]
     public void OpcPackage_ResolvesRelativeTargets()
     {
         var package = OpcPackage.Open(Build());

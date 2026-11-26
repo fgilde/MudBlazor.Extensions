@@ -246,5 +246,59 @@
     "inputFiles": [
       "wwwroot/js/components/MudExFileDisplayMap.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentDom.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentDom.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentHeaders.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentHeaders.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentPages.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentPages.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentObjects.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentObjects.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentRuler.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentRuler.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentSurface.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentSurface.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentInput.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentInput.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentComposition.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentComposition.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDocumentClipboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentClipboard.js"
+    ]
   }
 ]

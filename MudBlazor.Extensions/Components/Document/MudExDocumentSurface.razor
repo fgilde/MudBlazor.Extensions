@@ -1,0 +1,4 @@
+@inherits MudExBaseComponent<MudExDocumentSurface>
+@namespace MudBlazor.Extensions.Components
+
+<div @ref="_root" class="@($"mud-ex-doc-scroll {Class}".TrimEnd())" style="@Style"><div class="mud-ex-doc-sheet" role="textbox" aria-multiline="true" aria-label="@TryLocalize("Document")" aria-readonly="@(ReadOnly ? "true" : "false")"></div></div>

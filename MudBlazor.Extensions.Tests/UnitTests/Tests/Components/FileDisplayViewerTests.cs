@@ -597,6 +597,37 @@ public class FileDisplayViewerTests
         Assert.DoesNotContain("../styles/book.css", html);
     }
 
+    [Fact]
+    public void DeeplyNestedXml_FailsCleanly()
+    {
+        var deep = string.Concat(Enumerable.Repeat("<x>", 1000)) + string.Concat(Enumerable.Repeat("</x>", 1000));
+        var epub = BuildZip(zip =>
+        {
+            zip["META-INF/container.xml"] = "<container><rootfiles><rootfile full-path=\"content.opf\"/></rootfiles></container>";
+            zip["content.opf"] = "<package>" + deep + "</package>";
+        });
+        var odt = BuildZip(zip =>
+        {
+            zip["mimetype"] = "application/vnd.oasis.opendocument.text";
+            zip["content.xml"] = "<document-content><body><text><p>" + deep + "</p></text></body></document-content>";
+        }).ToArray();
+        var xps = BuildZip(zip => zip["Documents/1/Pages/1.fpage"] = "<FixedPage Width=\"10\" Height=\"10\">" + deep + "</FixedPage>").ToArray();
+
+        Assert.Throws<InvalidDataException>(() => GeoJsonConverter.ToGeoJson("deep.gpx", "<gpx>" + deep + "</gpx>"));
+        Assert.Throws<InvalidDataException>(() => OpenDocumentFile.Open(odt));
+        Assert.Throws<InvalidDataException>(() => XpsFile.Open(xps));
+        Assert.Throws<FormatException>(() => EpubBook.Open(epub));
+    }
+
+    [Fact]
+    public void DeeplyNestedKml_FailsCleanly()
+    {
+        var deep = string.Concat(Enumerable.Repeat("<Folder>", 1000)) + string.Concat(Enumerable.Repeat("</Folder>", 1000));
+
+        Assert.Throws<InvalidDataException>(() => GeoJsonConverter.ToGeoJson("deep.kml", "<kml><Document>" + deep + "</Document></kml>"));
+        Assert.Contains("FeatureCollection", GeoJsonConverter.ToGeoJson("flat.kml", "<kml><Document><Folder></Folder></Document></kml>"));
+    }
+
     [Theory]
     [InlineData("art.ai", "application/octet-stream")]
     [InlineData("template.ait", "application/octet-stream")]

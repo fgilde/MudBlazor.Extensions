@@ -1,0 +1,29 @@
+@inherits MudExBaseComponent<MudExDocumentRuler>
+@namespace MudBlazor.Extensions.Components
+
+<div @ref="_root" @attributes="UserAttributes" class="@($"mud-ex-doc-ruler {Class}".TrimEnd())" style="@Style" role="presentation">
+    @if (Page != null)
+    {
+        <div class="mud-ex-doc-ruler-track" data-w="@Page.Width" data-l="@Left" data-t="@Page.TextWidth" data-edit="@(Editable ? "1" : "0")">
+            <div class="mud-ex-doc-ruler-margin" style="@($"left:0;width:{Pct(Left)}")"></div>
+            <div class="mud-ex-doc-ruler-margin" style="@($"right:0;width:{Pct(Page.MarginRight)}")"></div>
+            <div class="mud-ex-doc-ruler-ticks" style="@($"left:{Pct(Left)};width:{Pct(Page.TextWidth)};--mud-ex-doc-tick:{Pct(Metric ? 567 : 1440)}")"></div>
+            @if (Paragraph != null)
+            {
+                <span @key="@("first" + _nonce)" class="mud-ex-doc-ruler-marker mud-ex-doc-ruler-first" data-k="first" style="@($"left:{Pct(Left + Paragraph.Left + Paragraph.FirstLine)}")" title="@TryLocalize("First Line Indent")"></span>
+                <span @key="@("left" + _nonce)" class="mud-ex-doc-ruler-marker mud-ex-doc-ruler-left" data-k="left" style="@($"left:{Pct(Left + Paragraph.Left)}")" title="@TryLocalize("Left Indent")"></span>
+                <span @key="@("right" + _nonce)" class="mud-ex-doc-ruler-marker mud-ex-doc-ruler-right" data-k="right" style="@($"left:{Pct(Page.Width - Page.MarginRight - Paragraph.Right)}")" title="@TryLocalize("Right Indent")"></span>
+                @for (var i = 0; i < Paragraph.Tabs.Count; i++)
+                {
+                    var tab = Paragraph.Tabs[i];
+                    if (tab.Alignment is MudBlazor.Extensions.Office.Document.TabAlignment.Clear or MudBlazor.Extensions.Office.Document.TabAlignment.Bar)
+                    {
+                        continue;
+                    }
+
+                    <span @key="@("tab" + i + _nonce)" class="mud-ex-doc-ruler-marker mud-ex-doc-ruler-tab" data-k="tab" data-i="@i" style="@($"left:{Pct(Left + tab.Position)}")" title="@TryLocalize("Tab Stop")"></span>
+                }
+            }
+        </div>
+    }
+</div>
