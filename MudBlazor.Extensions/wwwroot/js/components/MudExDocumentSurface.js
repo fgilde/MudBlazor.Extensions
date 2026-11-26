@@ -635,6 +635,11 @@ class MudExDocumentSurface {
 
     setReadOnly(readOnly) {
         this.readOnly = !!readOnly;
+        if (this.readOnly) {
+            this.queue = [];
+        } else if (this.queue.length) {
+            this.replay();
+        }
         this.sheet.contentEditable = this.readOnly || this.broken ? 'false' : 'true';
         this.sheet.tabIndex = 0;
         this.sheet.setAttribute('aria-readonly', this.readOnly ? 'true' : 'false');

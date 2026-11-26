@@ -99,7 +99,7 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
         var own = level?.LabelFormat ?? new RunFormat();
         var label = (own with { Font = document.Theme.Font(own.Font), Color = document.Theme.Color(own.Color), Shading = document.Theme.Color(own.Shading) }).Over(mark);
         if (label.Font != null && SymbolFonts.Contains(label.Font)) label = label with { Font = mark.Font };
-        var hanging = -(long)(format.IndentFirstLine ?? 0);
+        var hanging = Math.Min(-(long)(format.IndentFirstLine ?? 0), Math.Max(0, (long)(format.IndentLeft ?? 0)));
         var css = new StringBuilder("display:inline-block;text-indent:0;");
         if (hanging > 0 && level?.Suffix is null or "tab") css.Append("min-width:").Append(Pt(hanging)).Append("pt;");
         if (level?.Suffix == "space") css.Append("padding-right:0.25em;");
@@ -164,12 +164,13 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
     private SurfaceBlock TableBlock(Table table)
     {
         var styles = TableStyles(table).ToList();
-        var border = Bordered(table.Format.Borders, styles.Select(s => s.TableFormat.Borders).ToList()) ? "border:0.5pt solid #000000;" : "border:1px dotted #BFBFBF;";
+        var sides = ResolveSides(table.Format.Borders, styles.Select(s => s.TableFormat.Borders).ToList());
+        var bordered = sides.Any(b => b != null);
         var rows = new List<SurfaceRow>();
         for (var r = 0; r < table.Rows.Count; r++)
         {
             var row = table.Rows[r];
-            var cells = Tables.Visible(table, r).Select(c => new SurfaceCell(Math.Max(1, c.Cell.GridSpan), c.RowSpan, CellCss(c.Cell, border), c.Cell.Blocks.Select(Render).ToList())).ToList();
+            var cells = Tables.Visible(table, r).Select(c => new SurfaceCell(Math.Max(1, c.Cell.GridSpan), c.RowSpan, CellCss(c.Cell, bordered ? CellBorder(sides, r == 0, r + c.RowSpan >= table.Rows.Count, c.Column == 0, c.Column + Math.Max(1, c.Cell.GridSpan) >= table.Grid.Count) : "border:1px dotted #BFBFBF;"), c.Cell.Blocks.Select(Render).ToList())).ToList();
             if (row.GridBefore > 0) cells.Insert(0, new SurfaceCell(row.GridBefore, 1, "border:none;", []));
             if (row.GridAfter > 0) cells.Add(new SurfaceCell(row.GridAfter, 1, "border:none;", []));
             rows.Add(new SurfaceRow(row.Height is { } height ? $"height:{Pt(height)}pt;" : "", cells));
@@ -201,8 +202,17 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
             yield return style;
     }
 
-    private static bool Bordered(TableBorders direct, List<TableBorders> styles) =>
-        Sides(direct).Select((side, i) => side ?? styles.Select(s => Sides(s)[i]).FirstOrDefault(b => b != null)).Any(b => b != null && b.Style is not ("nil" or "none"));
+    private static Border[] ResolveSides(TableBorders direct, List<TableBorders> styles) =>
+        Sides(direct).Select((side, i) => side ?? styles.Select(s => Sides(s)[i]).FirstOrDefault(b => b != null))
+            .Select(b => b != null && b.Style is not ("nil" or "none") ? b : null).ToArray();
+
+    private static string CellBorder(Border[] sides, bool first, bool last, bool left, bool right)
+    {
+        var (top, bottom, start, end) = (sides[first ? 0 : 4], sides[last ? 1 : 4], sides[left ? 2 : 5], sides[right ? 3 : 5]);
+        if (top != null && bottom != null && start != null && end != null) return "border:0.5pt solid #000000;";
+        static string Side(string name, Border b) => b == null ? $"border-{name}:none;" : $"border-{name}:0.5pt solid #000000;";
+        return Side("top", top) + Side("right", end) + Side("bottom", bottom) + Side("left", start);
+    }
 
     private static Border[] Sides(TableBorders borders) =>
         borders == null ? new Border[6] : [borders.Top, borders.Bottom, borders.Left, borders.Right, borders.InsideH, borders.InsideV];

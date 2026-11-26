@@ -5132,8 +5132,8 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDocument">
             <summary>
-            Document file viewer for DOCX, RTF, MSG, EML and MHTML files.
-            Uses docx-preview for DOCX, RtfPipe for RTF, MsgReader for MSG (Outlook) and a lightweight MIME parser for EML/MHTML files.
+            Document file viewer for MSG, EML and MHTML files (DOCX and RTF are opened by <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>).
+            Uses MsgReader for MSG (Outlook) and a lightweight MIME parser for EML/MHTML files.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDocument.Name">

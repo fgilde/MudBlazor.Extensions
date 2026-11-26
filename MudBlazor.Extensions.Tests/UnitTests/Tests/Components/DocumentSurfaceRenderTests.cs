@@ -410,7 +410,7 @@ public class DocumentSurfaceRenderTests
             new Table
             {
                 Grid = [1500, 1500, 3000],
-                Format = new TableFormat { Borders = new TableBorders(new Border("single", 0.5, "auto"), null, null, null, null, null) },
+                Format = new TableFormat { Borders = new TableBorders(new Border("single", 0.5, "auto"), new Border("single", 0.5, "auto"), new Border("single", 0.5, "auto"), new Border("single", 0.5, "auto"), new Border("single", 0.5, "auto"), new Border("single", 0.5, "auto")) },
                 Rows =
                 [
                     new TableRow([Cell("a", 2), Cell("m", 1, VerticalMerge.Restart)]),
@@ -430,6 +430,25 @@ public class DocumentSurfaceRenderTests
         Assert.Equal(2, block.Rows[2].Cells.Count);
         Assert.Equal("m", block.Rows[0].Cells[1].Blocks[0].Text);
         Assert.All(block.Rows.SelectMany(r => r.Cells), c => Assert.Contains("border:0.5pt solid", c.Css));
+    }
+
+    [Fact]
+    public void Table_OutsideBordersOnly_DrawOnlyTheOutsideSides()
+    {
+        var document = WithTable();
+        var table = document.Blocks.OfType<Table>().Single();
+        var line = new Border("single", 0.5, "auto");
+        var nil = new Border("nil", 0, "auto");
+        document.Execute(new SetTableFormatCommand(table.Id, f => f with { Borders = new TableBorders(line, line, line, line, nil, nil) }, "Borders"));
+
+        var rows = new DocumentSurfaceRender(document).Render(document.Blocks.OfType<Table>().Single()).Rows;
+
+        var first = rows[0].Cells[0].Css;
+        Assert.Contains("border-top:0.5pt solid", first);
+        Assert.Contains("border-left:0.5pt solid", first);
+        Assert.Contains("border-bottom:none", first);
+        Assert.Contains("border-right:none", first);
+        Assert.Contains("border-bottom:0.5pt solid", rows[^1].Cells[0].Css);
     }
 
     [Fact]

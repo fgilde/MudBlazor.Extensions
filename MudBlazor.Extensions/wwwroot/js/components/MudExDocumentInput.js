@@ -331,7 +331,11 @@ export const inputMethods = {
     },
 
     editorKeyDown(e) {
-        if (!this.sheet.contains(e.target) && (e.ctrlKey || e.metaKey) && !e.altKey && e.key?.toLowerCase() === 's') {
+        if (this.sheet.contains(e.target) || !(e.ctrlKey || e.metaKey) || e.altKey) {
+            return;
+        }
+        const key = e.key?.toLowerCase();
+        if (key === 's' || (key === 'f' || key === 'h') && e.target.closest?.('.mud-ex-doc-find')) {
             e.preventDefault();
         }
     }
