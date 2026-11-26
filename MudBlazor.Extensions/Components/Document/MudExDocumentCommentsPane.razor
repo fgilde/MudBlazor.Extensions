@@ -1,0 +1,17 @@
+@inherits MudExBaseComponent<MudExDocumentCommentsPane>
+@namespace MudBlazor.Extensions.Components
+
+<aside @attributes="UserAttributes" class="@($"mud-ex-doc-comments {Class}".TrimEnd())" style="@Style" aria-label="@TryLocalize("Comments")">
+    <div class="mud-ex-doc-pane-title">@TryLocalize("Comments")</div>
+    @if (Items.Count == 0)
+    {
+        <div class="mud-ex-doc-pane-empty">@TryLocalize("No comments")</div>
+    }
+    @foreach (var comment in Items)
+    {
+        <button type="button" class="mud-ex-doc-comment" disabled="@(comment.ParagraphId == null)" @onclick="@(() => Selected.InvokeAsync(comment.ParagraphId))">
+            <span class="mud-ex-doc-comment-head"><b>@comment.Author</b> @(comment.Date?.ToString("g"))</span>
+            <span class="mud-ex-doc-comment-text">@comment.Text</span>
+        </button>
+    }
+</aside>

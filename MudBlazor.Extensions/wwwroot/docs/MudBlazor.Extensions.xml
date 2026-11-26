@@ -1319,6 +1319,15 @@
         <member name="P:MudBlazor.Extensions.Components.SurfaceResult.Retry">
             <summary>True if the message could not be read; the browser keeps its typing and sends it again with the next message.</summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentCommentsPane">
+            <summary>The read-only comments pane of the document editor.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentCommentsPane.Items">
+            <summary>The comments of the document.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentCommentsPane.Selected">
+            <summary>Raised with the id of the anchor paragraph when a comment is clicked.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentEditor">
             <summary>
             Word processor in the style of Word with ribbon, a web view of the document and status bar. Opens .docx, .docm, .dotx, .dotm, .doc, .rtf,
@@ -1489,6 +1498,39 @@
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentHeaderFooterDialog.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentHeading">
+            <summary>A heading of the document.</summary>
+            <param name="Id">The id of the paragraph.</param>
+            <param name="Text">The heading text.</param>
+            <param name="Level">The outline level, 0 for the top level.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentHeading.#ctor(System.String,System.String,System.Int32)">
+            <summary>A heading of the document.</summary>
+            <param name="Id">The id of the paragraph.</param>
+            <param name="Text">The heading text.</param>
+            <param name="Level">The outline level, 0 for the top level.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentHeading.Id">
+            <summary>The id of the paragraph.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentHeading.Text">
+            <summary>The heading text.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentHeading.Level">
+            <summary>The outline level, 0 for the top level.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentNavigation">
+            <summary>The navigation pane of the document editor: the headings as an indented list.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentNavigation.Items">
+            <summary>The headings in document order.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentNavigation.CurrentId">
+            <summary>The id of the heading the caret is under.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentNavigation.Selected">
+            <summary>Raised with the paragraph id when a heading is clicked.</summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentPageSetupDialog">
             <summary>
             The page setup dialog of <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>: orientation, paper size and margins in centimetres or inches. Closes with the new
@@ -1518,6 +1560,90 @@
             <summary>True to show lengths in centimetres, false for inches.</summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentParagraphDialog.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentRulerParagraph">
+            <summary>The indents and tab stops of the paragraph under the caret, in twips.</summary>
+            <param name="Left">Left indent.</param>
+            <param name="Right">Right indent.</param>
+            <param name="FirstLine">First line indent relative to the left indent, negative for hanging.</param>
+            <param name="Tabs">The tab stops.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentRulerParagraph.#ctor(System.Int32,System.Int32,System.Int32,System.Collections.Generic.IReadOnlyList{MudBlazor.Extensions.Office.Document.TabStop})">
+            <summary>The indents and tab stops of the paragraph under the caret, in twips.</summary>
+            <param name="Left">Left indent.</param>
+            <param name="Right">Right indent.</param>
+            <param name="FirstLine">First line indent relative to the left indent, negative for hanging.</param>
+            <param name="Tabs">The tab stops.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRulerParagraph.Left">
+            <summary>Left indent.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRulerParagraph.Right">
+            <summary>Right indent.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRulerParagraph.FirstLine">
+            <summary>First line indent relative to the left indent, negative for hanging.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRulerParagraph.Tabs">
+            <summary>The tab stops.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentRulerEdit">
+            <summary>A change the user made on the ruler; the position is relative to the left edge of the text area.</summary>
+            <param name="Kind">first, left, right, tab (move or remove a tab stop) or add (a new left tab stop).</param>
+            <param name="Index">The index of the tab stop for tab.</param>
+            <param name="Twips">The new position.</param>
+            <param name="Remove">True when a tab stop was dragged off the ruler.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentRulerEdit.#ctor(System.String,System.Int32,System.Int32,System.Boolean)">
+            <summary>A change the user made on the ruler; the position is relative to the left edge of the text area.</summary>
+            <param name="Kind">first, left, right, tab (move or remove a tab stop) or add (a new left tab stop).</param>
+            <param name="Index">The index of the tab stop for tab.</param>
+            <param name="Twips">The new position.</param>
+            <param name="Remove">True when a tab stop was dragged off the ruler.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRulerEdit.Kind">
+            <summary>first, left, right, tab (move or remove a tab stop) or add (a new left tab stop).</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRulerEdit.Index">
+            <summary>The index of the tab stop for tab.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRulerEdit.Twips">
+            <summary>The new position.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRulerEdit.Remove">
+            <summary>True when a tab stop was dragged off the ruler.</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentRuler">
+            <summary>The ruler above the sheet of the document editor: page margins, indent markers and tab stops of the current paragraph.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRuler.Page">
+            <summary>The page geometry of the section under the caret.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRuler.Paragraph">
+            <summary>The paragraph under the caret, or null to show no markers.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRuler.Metric">
+            <summary>True for centimetre ticks, false for inch ticks.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRuler.Editable">
+            <summary>False shows the markers but does not let the user change them.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDocumentRuler.Edited">
+            <summary>Raised when the user dropped a marker or clicked to add a tab stop.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentRuler.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentRuler.OnEdit(System.String,System.Int32,System.Int32,System.Boolean)">
+            <summary>Called by the browser when a marker was dropped.</summary>
+            <param name="kind">The marker kind.</param>
+            <param name="index">The tab stop index.</param>
+            <param name="twips">The position relative to the text area.</param>
+            <param name="remove">True when dragged off.</param>
+            <returns>A task that completes when the edit was applied.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDocumentRuler.DisposeAsync">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDocumentStatusBar">

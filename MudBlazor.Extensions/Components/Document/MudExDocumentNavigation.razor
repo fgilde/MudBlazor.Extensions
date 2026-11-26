@@ -1,0 +1,15 @@
+@inherits MudExBaseComponent<MudExDocumentNavigation>
+@namespace MudBlazor.Extensions.Components
+
+<nav @attributes="UserAttributes" class="@($"mud-ex-doc-nav {Class}".TrimEnd())" style="@Style" aria-label="@TryLocalize("Navigation")">
+    <div class="mud-ex-doc-pane-title">@TryLocalize("Navigation")</div>
+    @if (Items.Count == 0)
+    {
+        <div class="mud-ex-doc-pane-empty">@TryLocalize("No headings")</div>
+    }
+    @foreach (var item in Items)
+    {
+        <button type="button" class="@($"mud-ex-doc-nav-item{(item.Id == CurrentId ? " mud-ex-doc-nav-current" : "")}")" style="@($"padding-left:{8 + item.Level * 14}px")" aria-current="@(item.Id == CurrentId ? "true" : null)"
+                @onclick="@(() => Selected.InvokeAsync(item.Id))">@item.Text</button>
+    }
+</nav>

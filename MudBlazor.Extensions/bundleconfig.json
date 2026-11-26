@@ -272,6 +272,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExDocumentRuler.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDocumentRuler.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExDocumentSurface.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExDocumentSurface.js"

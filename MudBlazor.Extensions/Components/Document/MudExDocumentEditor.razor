@@ -200,6 +200,12 @@
                     <MudExRibbonGroup Text="@TryLocalize("Show")" Icon="@Icons.Material.Filled.FormatListNumbered" CollapsePriority="1">
                         <MudExRibbonToggleButton Id="wd-view-marks" Text="@TryLocalize("Formatting Marks")" Icon="@Icons.Material.Filled.FormatAlignJustify" Size="MudExRibbonItemSize.Large"
                                                  Checked="@_marks" CheckedChanged="@(on => _marks = on)" />
+                        <MudExRibbonToggleButton Id="wd-view-ruler" Text="@TryLocalize("Ruler")" Icon="@Icons.Material.Filled.Straighten" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@_showRuler" CheckedChanged="@(on => _showRuler = on)" />
+                        <MudExRibbonToggleButton Id="wd-view-nav" Text="@TryLocalize("Navigation Pane")" Icon="@Icons.Material.Filled.Toc" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@_showNav" CheckedChanged="@(on => _showNav = on)" />
+                        <MudExRibbonToggleButton Id="wd-view-comments" Text="@TryLocalize("Comments")" Icon="@Icons.Material.Filled.Comment" Size="MudExRibbonItemSize.Large"
+                                                 Checked="@_showComments" CheckedChanged="@(on => _showComments = on)" />
                     </MudExRibbonGroup>
                     <MudExRibbonGroup Text="@TryLocalize("Zoom")" Icon="@Icons.Material.Filled.ZoomIn" CollapsePriority="2">
                         <MudExRibbonSelect T="double" Id="wd-zoom" Text="@TryLocalize("Zoom")" Items="@ZoomItems" ItemText="@(z => $"{z * 100:0}%")" Value="@_zoom" ValueChanged="SetZoom" Width="80" />
@@ -270,9 +276,23 @@
         <InputFile id="@_pictureInput" accept="@PictureAccept" OnChange="OnPictureChosenAsync" hidden />
     }
     <div class="mud-ex-doc-editor-body">
+        @if (_showNav)
+        {
+            <MudExDocumentNavigation Items="Headings" CurrentId="@CurrentHeadingId" Selected="GoToParagraphAsync" Localizer="@Localizer" />
+        }
+        <div class="mud-ex-doc-center">
+        @if (_showRuler && CurrentPage is { } rulerPage)
+        {
+            <MudExDocumentRuler Page="rulerPage" Paragraph="RulerParagraph" Metric="Metric" Editable="!IsReadOnly" Edited="OnRulerEditedAsync" Localizer="@Localizer" />
+        }
         <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" View="CurrentView" FormattingMarks="_marks" HeaderFooterRequested="OnHeaderFooterRequestedAsync" PagesChanged="OnPagesChanged" Shortcuts="SurfaceShortcuts" ShortcutPressed="OnShortcutAsync" SelectionChanged="_selectionChanged" OnError="OnSurfaceErrorAsync"
                               ContextMenuRequested="OnContextMenuAsync" MiniToolbarRequested="OnMiniToolbarAsync"
                               Localizer="@Localizer" />
+        </div>
+        @if (_showComments)
+        {
+            <MudExDocumentCommentsPane Items="_document?.Comments ?? []" Selected="GoToParagraphAsync" Localizer="@Localizer" />
+        }
     </div>
     @if (_mini is { } mini && !IsReadOnly)
     {
