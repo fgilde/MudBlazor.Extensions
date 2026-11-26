@@ -264,7 +264,7 @@ public class DocumentEditorFormattingTests : DocumentEditorFormattingTestBase
         [
             "Ctrl+B", "Ctrl+I", "Ctrl+U", "Ctrl+Shift+D", "Ctrl+=", "Ctrl+Shift+=", "Ctrl+Space", "Ctrl+]", "Ctrl+[", "Ctrl+Shift+.", "Ctrl+Shift+,", "Ctrl+L", "Ctrl+E",
             "Ctrl+R", "Ctrl+J", "Ctrl+M", "Ctrl+Shift+M", "Ctrl+Shift+L", "Ctrl+1", "Ctrl+5", "Ctrl+2", "Ctrl+0", "Ctrl+Alt+1", "Ctrl+Alt+2", "Ctrl+Alt+3", "Ctrl+Shift+N",
-            "Ctrl+D", "Ctrl+S", "Ctrl+F", "Ctrl+H"
+            "Ctrl+D", "Ctrl+S", "Ctrl+F", "Ctrl+H", "Ctrl+K"
         ];
 
         Assert.All(keys, k => Assert.Contains(k, DocumentShortcuts.Map.Keys));

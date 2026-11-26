@@ -1,5 +1,5 @@
 import { payload } from './MudExOfficeInterop.js';
-import { render, highlight, clearHighlight, pointAt, pointOf, serialise, sameRuns, length, strip, PARAGRAPH, OPAQUE } from './MudExDocumentDom.js';
+import { render, highlight, clearHighlight, pointAt, pointOf, serialise, sameRuns, length, strip, activate, PARAGRAPH, OPAQUE } from './MudExDocumentDom.js';
 import { inputMethods } from './MudExDocumentInput.js';
 import { compositionMethods } from './MudExDocumentComposition.js';
 import { clipboardMethods, CLIPBOARD } from './MudExDocumentClipboard.js';
@@ -78,7 +78,7 @@ class MudExDocumentSurface {
         this.events = [
             [this.sheet, 'beforeinput', e => this.beforeInput(e)], [this.sheet, 'input', e => this.input(e)],
             [this.sheet, 'keydown', e => this.keyDown(e)], [this.sheet, 'compositionstart', () => this.compositionStart()],
-            [this.sheet, 'compositionend', e => this.compositionEnd(e)], [this.sheet, 'mousedown', () => this.jumped()],
+            [this.sheet, 'compositionend', e => this.compositionEnd(e)], [this.sheet, 'mousedown', () => this.jumped()], [this.sheet, 'click', e => activate(e)],
             [this.sheet, 'touchstart', () => this.jumped(), { passive: true }], [this.sheet, 'dragstart', e => e.preventDefault()],
             [this.sheet, 'drop', e => e.preventDefault()], [document, 'selectionchange', () => this.selectionChange()],
             [this.sheet, 'copy', e => this.copyEvent(e, false)], [this.sheet, 'cut', e => this.copyEvent(e, true)], [this.sheet, 'paste', e => this.pasteEvent(e)]

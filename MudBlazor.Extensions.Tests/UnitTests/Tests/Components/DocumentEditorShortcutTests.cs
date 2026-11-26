@@ -62,6 +62,11 @@ public class DocumentEditorShortcutTests : DocumentEditorFormattingTestBase
                 Assert.Contains(key, Surface(cut).Shortcuts!);
                 Assert.NotEmpty(_dialogs.FindAll(".mud-ex-docfont-dialog"));
             },
+            "Ctrl+K" => () =>
+            {
+                Assert.Equal(version, document.Version);
+                Assert.NotEmpty(_dialogs.FindAll(".mud-ex-nblink-dialog"));
+            },
             "Ctrl+F" or "Ctrl+H" => () =>
             {
                 Assert.Equal(version, document.Version);
@@ -75,7 +80,7 @@ public class DocumentEditorShortcutTests : DocumentEditorFormattingTestBase
         await cut.InvokeAsync(() => Task.Delay(20));
 
         cut.WaitForAssertion(check);
-        if (key is not ("Ctrl+D" or "Ctrl+F" or "Ctrl+H" or "Ctrl+S"))
+        if (key is not ("Ctrl+D" or "Ctrl+K" or "Ctrl+F" or "Ctrl+H" or "Ctrl+S"))
             Assert.Equal("Second", P(document, 1).Text);
     }
 }

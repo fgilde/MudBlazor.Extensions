@@ -26,8 +26,9 @@ public sealed record SurfaceBlock(string Id, string K, string Css, string Text, 
 /// <param name="Media">The media part of an image; null for other kinds.</param>
 /// <param name="W">The width of an image in pixels; 0 for other kinds.</param>
 /// <param name="H">The height of an image in pixels; 0 for other kinds.</param>
+/// <param name="Link">The validated target (<c>http</c>, <c>https</c> or <c>mailto</c>) of a link run; null if the run is not a link or the target is not safe to open.</param>
 [EditorBrowsable(EditorBrowsableState.Never)]
-public sealed record SurfaceRun(string K, string T, string Css, string Media, int W, int H);
+public sealed record SurfaceRun(string K, string T, string Css, string Media, int W, int H, string Link = null);
 
 /// <summary>A row of a surface table. Infrastructure of the document editor, not meant to be used directly.</summary>
 /// <param name="Css">The inline style of the row.</param>

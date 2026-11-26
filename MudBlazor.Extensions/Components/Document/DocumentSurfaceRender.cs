@@ -93,19 +93,20 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
     {
         var runs = new List<SurfaceRun>();
         var text = new StringBuilder();
-        string textCss = null;
+        string textCss = null, textLink = null;
         foreach (var (inline, format) in inlines)
         {
+            var link = LinkOf(inline);
             var css = (format.Hidden == true ? "display:none;" : "") + DocumentCss.Run(format, basis, true);
             if (inline is TextRun or Tab)
             {
-                if (css != textCss) Flush(runs, text, textCss);
-                textCss = css;
+                if (css != textCss || link != textLink) Flush(runs, text, textCss, textLink);
+                (textCss, textLink) = (css, link);
                 text.Append(Paragraph.TextOf(inline));
                 continue;
             }
 
-            Flush(runs, text, textCss);
+            Flush(runs, text, textCss, textLink);
             runs.Add(inline switch
             {
                 Break { Kind: BreakKind.Line } => new SurfaceRun("v", null, css, null, 0, 0),
@@ -116,14 +117,16 @@ internal sealed class DocumentSurfaceRender(TextDocument document)
             });
         }
 
-        Flush(runs, text, textCss);
+        Flush(runs, text, textCss, textLink);
         return runs;
     }
 
-    private static void Flush(List<SurfaceRun> runs, StringBuilder text, string css)
+    private static string LinkOf(Inline inline) => inline.Link?.SafeTarget is { } target && !target.StartsWith('#') ? target : null;
+
+    private static void Flush(List<SurfaceRun> runs, StringBuilder text, string css, string link)
     {
         if (text.Length == 0) return;
-        runs.Add(new SurfaceRun("t", text.ToString(), css, null, 0, 0));
+        runs.Add(new SurfaceRun("t", text.ToString(), css, null, 0, 0, link));
         text.Clear();
     }
 

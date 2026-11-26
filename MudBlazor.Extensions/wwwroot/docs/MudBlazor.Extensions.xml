@@ -1014,8 +1014,9 @@
             <param name="Media">The media part of an image; null for other kinds.</param>
             <param name="W">The width of an image in pixels; 0 for other kinds.</param>
             <param name="H">The height of an image in pixels; 0 for other kinds.</param>
+            <param name="Link">The validated target (<c>http</c>, <c>https</c> or <c>mailto</c>) of a link run; null if the run is not a link or the target is not safe to open.</param>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.SurfaceRun.#ctor(System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+        <member name="M:MudBlazor.Extensions.Components.SurfaceRun.#ctor(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String)">
             <summary>A run of a surface paragraph. Infrastructure of the document editor, not meant to be used directly.</summary>
             <param name="K">The kind: <c>t</c> text (tabs inside), <c>v</c> line break, <c>f</c> page or column break, <c>o</c> token, <c>i</c> image.</param>
             <param name="T">The text of a text run or the display text of a token; null for other kinds.</param>
@@ -1023,6 +1024,7 @@
             <param name="Media">The media part of an image; null for other kinds.</param>
             <param name="W">The width of an image in pixels; 0 for other kinds.</param>
             <param name="H">The height of an image in pixels; 0 for other kinds.</param>
+            <param name="Link">The validated target (<c>http</c>, <c>https</c> or <c>mailto</c>) of a link run; null if the run is not a link or the target is not safe to open.</param>
         </member>
         <member name="P:MudBlazor.Extensions.Components.SurfaceRun.K">
             <summary>The kind: <c>t</c> text (tabs inside), <c>v</c> line break, <c>f</c> page or column break, <c>o</c> token, <c>i</c> image.</summary>
@@ -1041,6 +1043,9 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.SurfaceRun.H">
             <summary>The height of an image in pixels; 0 for other kinds.</summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.SurfaceRun.Link">
+            <summary>The validated target (<c>http</c>, <c>https</c> or <c>mailto</c>) of a link run; null if the run is not a link or the target is not safe to open.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.SurfaceRow">
             <summary>A row of a surface table. Infrastructure of the document editor, not meant to be used directly.</summary>
@@ -1520,6 +1525,9 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDocumentSurface.DisposeAsync">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDocumentTableDialog">
+            <summary>The Insert Table dialog of <see cref="T:MudBlazor.Extensions.Components.MudExDocumentEditor"/>: number of columns and rows. Closes with a <c>(int Rows, int Columns)</c> tuple.</summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.IMudExFileEditor">
             <summary>
@@ -33784,6 +33792,19 @@
         </member>
         <member name="P:MudBlazor.Extensions.Office.Document.TableCell.VerticalAlign">
             <summary>The vertical alignment of the content, or null for the default (top).</summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Office.Document.InsertFieldCommand">
+            <summary>Replaces a range with a field such as <c>PAGE</c> or <c>TOC</c>. The field is kept as one token and written to .docx as a simple field; Word updates it when the document is opened or the field is updated.</summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Office.Document.InsertFieldCommand.#ctor(MudBlazor.Extensions.Office.Document.DocumentRange,System.String,System.String)">
+            <summary>Creates the command.</summary>
+            <param name="at">The range to replace, in either direction; an empty range inserts at a position.</param>
+            <param name="instruction">The field instruction, for example <c>PAGE</c>.</param>
+            <param name="display">The text shown until the field is updated.</param>
+            <exception cref="T:System.ArgumentException">The instruction is empty.</exception>
+        </member>
+        <member name="P:MudBlazor.Extensions.Office.Document.InsertFieldCommand.Description">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Office.Document.SetRunFormatCommand">
             <summary>Changes the character formatting of a range; runs are split at the range edges and both parts keep their origin in the file.</summary>

@@ -107,6 +107,45 @@
                         <MudExRibbonButton Id="wd-replace" Text="@TryLocalize("Replace")" Icon="@Icons.Material.Filled.FindReplace" Shortcut="Ctrl+H" Size="MudExRibbonItemSize.Small" OnClick="@(() => OpenFind(true))" />
                     </MudExRibbonGroup>
                 </MudExRibbonTab>
+                <MudExRibbonTab Text="@TryLocalize("Insert")" KeyTip="N" Visible="@(!IsReadOnly)">
+                    <MudExRibbonGroup Text="@TryLocalize("Pages")" Icon="@Icons.Material.Filled.InsertPageBreak" CollapsePriority="3">
+                        <MudExRibbonButton Id="wd-page-break" Text="@TryLocalize("Page Break")" Icon="@Icons.Material.Filled.InsertPageBreak" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly"
+                                           OnClick="InsertPageBreakAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Tables")" Icon="@Icons.Material.Filled.TableChart" CollapsePriority="3">
+                        <MudExRibbonMenuButton Id="wd-insert-table" Text="@TryLocalize("Table")" Icon="@Icons.Material.Filled.TableChart" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly">
+                            <MudExRibbonContent>
+                                <MudExSlideTableGridPicker Chosen="InsertTableAsync" Localizer="@Localizer" />
+                            </MudExRibbonContent>
+                            <MudExRibbonMenuItem Id="wd-insert-table-dialog" Text="@TryLocalize("Insert Table...")" Icon="@Icons.Material.Filled.GridOn" Disabled="@IsReadOnly" OnClick="OpenTableDialogAsync" />
+                        </MudExRibbonMenuButton>
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Illustrations")" Icon="@Icons.Material.Filled.Image" CollapsePriority="2">
+                        <MudExRibbonButton Id="wd-insert-picture" Text="@TryLocalize("Picture")" Icon="@Icons.Material.Filled.Image" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly" OnClick="PickPictureAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Links")" Icon="@Icons.Material.Filled.Link" CollapsePriority="1">
+                        <MudExRibbonButton Id="wd-insert-link" Text="@TryLocalize("Link")" Icon="@Icons.Material.Filled.Link" Shortcut="Ctrl+K" Size="MudExRibbonItemSize.Large" Disabled="@IsReadOnly"
+                                           OnClick="OpenLinkDialogAsync" />
+                        <MudExRibbonButton Id="wd-remove-link" Text="@TryLocalize("Remove Link")" Icon="@Icons.Material.Filled.LinkOff" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly" OnClick="RemoveLinkAsync" />
+                    </MudExRibbonGroup>
+                    <MudExRibbonGroup Text="@TryLocalize("Text")" Icon="@Icons.Material.Filled.Today" CollapsePriority="0">
+                        <MudExRibbonButton Id="wd-insert-date" Text="@TryLocalize("Date")" Icon="@Icons.Material.Filled.Today" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly" OnClick="InsertDateAsync" />
+                        <MudExRibbonMenuButton Id="wd-insert-symbol" Text="@TryLocalize("Symbol")" Icon="@Icons.Material.Filled.EmojiSymbols" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly">
+                            <MudExRibbonContent>
+                                <div class="mud-ex-doc-symbols">
+                                    @foreach (var symbol in Symbols)
+                                    {
+                                        <MudMenuItem Class="mud-ex-doc-symbol" OnClick="@(() => InsertTextAsync(symbol))">@symbol</MudMenuItem>
+                                    }
+                                </div>
+                            </MudExRibbonContent>
+                        </MudExRibbonMenuButton>
+                        <MudExRibbonButton Id="wd-insert-page-number" Text="@TryLocalize("Page Number")" Icon="@Icons.Material.Filled.Tag" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly"
+                                           OnClick="@(() => InsertFieldAsync("PAGE", "1"))" />
+                        <MudExRibbonButton Id="wd-insert-toc" Text="@TryLocalize("Table of Contents")" Icon="@Icons.Material.Filled.Toc" Size="MudExRibbonItemSize.Small" Disabled="@IsReadOnly"
+                                           OnClick="@(() => InsertFieldAsync(TocInstruction, TryLocalize("Table of Contents")))" />
+                    </MudExRibbonGroup>
+                </MudExRibbonTab>
                 <MudExRibbonTab Text="@TryLocalize("View")" KeyTip="W">
                     <MudExRibbonGroup Text="@TryLocalize("Zoom")" Icon="@Icons.Material.Filled.ZoomIn" CollapsePriority="2">
                         <MudExRibbonSelect T="double" Id="wd-zoom" Text="@TryLocalize("Zoom")" Items="@ZoomItems" ItemText="@(z => $"{z * 100:0}%")" Value="@_zoom" ValueChanged="SetZoom" Width="80" />
@@ -128,6 +167,10 @@
     @if (_findOpen)
     {
         <MudExDocumentFindPanel Editor="this" Replace="_findReplace" Closed="CloseFind" Localizer="@Localizer" />
+    }
+    @if (!IsReadOnly)
+    {
+        <InputFile id="@_pictureInput" accept="@PictureAccept" OnChange="OnPictureChosenAsync" hidden />
     }
     <div class="mud-ex-doc-editor-body">
         <MudExDocumentSurface @ref="_surface" Document="_document" ReadOnly="IsReadOnly" Zoom="_zoom" Shortcuts="SurfaceShortcuts" ShortcutPressed="OnShortcutAsync" SelectionChanged="_selectionChanged" OnError="OnSurfaceErrorAsync"

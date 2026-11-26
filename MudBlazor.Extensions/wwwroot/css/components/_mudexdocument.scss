@@ -174,3 +174,13 @@
   background: none;
   cursor: pointer;
 }
+.mud-ex-doc-symbols {
+  display: grid;
+  grid-template-columns: repeat(7, 36px);
+  padding: 4px;
+}
+.mud-ex-doc-symbol {
+  justify-content: center;
+  min-height: 36px;
+  padding: 0;
+}

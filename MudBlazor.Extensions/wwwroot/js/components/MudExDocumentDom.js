@@ -33,6 +33,10 @@ export function run(dto, media) {
         const span = element('span', dto.css);
         span.dataset.c = dto.css ?? '';
         span.textContent = dto.t ?? '';
+        if (dto.link) {
+            span.dataset.link = dto.link;
+            span.title = dto.link;
+        }
         return span;
     }
     let node;
@@ -265,7 +269,7 @@ const same = (node, dto) => {
     }
     if (dto.k === 't') {
         const text = node.firstChild;
-        return node.tagName === 'SPAN' && !node.dataset.k && !node.dataset.p && node.childNodes.length <= 1
+        return node.tagName === 'SPAN' && !node.dataset.k && !node.dataset.p && node.childNodes.length <= 1 && (node.dataset.link ?? '') === (dto.link ?? '')
             && (text ? text.nodeType === Node.TEXT_NODE && text.data === (dto.t ?? '') : !dto.t);
     }
     if (dto.k === 'i') {
@@ -374,5 +378,33 @@ export function highlight(blocks, selections) {
         CSS.highlights.set(FIND, new Highlight(...ranges));
     } else {
         CSS.highlights.delete(FIND);
+    }
+}
+
+const OPENABLE = new Set(['http:', 'https:', 'mailto:']);
+
+export function activate(e) {
+    const target = e.target instanceof Element ? e.target : e.target?.parentElement;
+    const link = target?.closest('span[data-link]');
+    if (link && (e.ctrlKey || e.metaKey)) {
+        let url = null;
+        try {
+            url = new URL(link.dataset.link);
+        } catch {
+            return;
+        }
+        if (OPENABLE.has(url.protocol)) {
+            window.open(url.href, '_blank', 'noopener,noreferrer');
+            e.preventDefault();
+        }
+        return;
+    }
+    const token = target?.closest('[data-k="o"]');
+    if (token && !target.closest(OPAQUE)) {
+        const range = document.createRange();
+        range.selectNode(token);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
     }
 }

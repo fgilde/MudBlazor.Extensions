@@ -33,7 +33,8 @@ internal static class DocumentShortcuts
         ["Ctrl+D"] = "fontDialog",
         ["Ctrl+S"] = "save",
         ["Ctrl+F"] = "find",
-        ["Ctrl+H"] = "replace"
+        ["Ctrl+H"] = "replace",
+        ["Ctrl+K"] = "link"
     };
 
     public static string ActionOf(string key) => key == null ? null : Map.GetValueOrDefault(key);

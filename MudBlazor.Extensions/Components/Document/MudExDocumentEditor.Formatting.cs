@@ -336,6 +336,7 @@ public partial class MudExDocumentEditor
         "heading1" or "heading2" or "heading3" => ApplyStyleAsync("Heading" + action[^1]),
         "normal" => ApplyStyleAsync("Normal"),
         "fontDialog" => OpenFontDialogAsync(),
+        "link" => OpenLinkDialogAsync(),
         _ => ToggleRunAsync(action)
     };
 

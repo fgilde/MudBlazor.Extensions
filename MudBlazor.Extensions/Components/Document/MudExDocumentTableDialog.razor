@@ -1,0 +1,15 @@
+@inherits MudExBaseComponent<MudExDocumentTableDialog>
+@namespace MudBlazor.Extensions.Components
+
+<MudDialog Class="@MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Initial, "mud-ex-doctable-dialog")">
+    <DialogContent>
+        <div class="mud-ex-docdialog-grid">
+            <MudNumericField T="int" Class="mud-ex-doctable-columns" Label="@TryLocalize("Number of columns:")" @bind-Value="_columns" Min="1" Max="MaxColumns" Margin="Margin.Dense" />
+            <MudNumericField T="int" Class="mud-ex-doctable-rows" Label="@TryLocalize("Number of rows:")" @bind-Value="_rows" Min="1" Max="MaxRows" Margin="Margin.Dense" />
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Class="mud-ex-doctable-cancel" OnClick="Cancel">@TryLocalize("Cancel")</MudButton>
+        <MudButton Class="mud-ex-doctable-ok" Color="Color.Primary" Variant="Variant.Filled" OnClick="Ok">@TryLocalize("OK")</MudButton>
+    </DialogActions>
+</MudDialog>

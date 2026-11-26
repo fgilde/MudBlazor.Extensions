@@ -521,3 +521,24 @@ public partial class ObjectCommandTests
         stream.Write(check);
     }
 }
+
+public partial class ObjectCommandTests
+{
+    [Fact]
+    public void InsertField_IsOneTokenAndSurvivesDocx()
+    {
+        var document = TextDocument.Create();
+        var id = document.Blocks[0].Id;
+
+        document.Execute(new InsertFieldCommand(Caret(document, id, 0), "PAGE", "1"));
+
+        var field = Assert.IsType<OpaqueInline>(Assert.Single(((Paragraph)document.Blocks[0]).Inlines));
+        Assert.Equal("PAGE", field.Instruction);
+        var loaded = TextDocument.Load(new MemoryStream(DocxWriterTests.Save(document)));
+        var reloaded = Assert.IsType<OpaqueInline>(Assert.Single(((Paragraph)loaded.Blocks[0]).Inlines));
+        Assert.Equal("PAGE", reloaded.Instruction);
+
+        document.Undo.Undo();
+        Assert.Empty(((Paragraph)document.Blocks[0]).Inlines);
+    }
+}
