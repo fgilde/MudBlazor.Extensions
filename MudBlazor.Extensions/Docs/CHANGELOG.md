@@ -1,4 +1,6 @@
 ﻿## Change Log    
+ - 9.14.0 > Update to MudBlazor 9.14.0 and Nextended 10.1.71
+ - 9.14.0 > Fix MudExObjectEdit: a type with an indexer (`this[int]`) no longer throws when its properties are read, e.g. in the instance editor of MudExSpreadsheetEditor
  - 9.13.0 > New MudExDocumentEditor: a Word style document editor with ribbon, paragraph and character styles, lists, tables, find and replace, clipboard, undo and redo; opens docx, doc, rtf, odt and markdown and saves docx, rtf, html, markdown and text
  - 9.13.0 > MudExFileDisplay opens docx, docm, dotx, dotm, doc and rtf in the new MudExDocumentEditor, read-only unless in edit mode, and offers Edit for odt (the OpenDocument viewer stays selectable; MudExFileDisplayDocument keeps msg, eml and mhtml only, see BREAKING_CHANGES)
  - 9.13.0 > MudExDocumentEditor: tables and pictures context tabs, pages view with print, navigation pane, ruler, comments and a mudex-document-editor web component

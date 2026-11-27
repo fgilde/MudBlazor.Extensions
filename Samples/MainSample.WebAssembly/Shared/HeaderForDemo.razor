@@ -30,7 +30,7 @@
     {
         if (string.IsNullOrEmpty(DemoAttribute?.Documentation))
         {
-            doc = await MudExResource.GetSummaryDocumentationAsync(DemoAttribute?.RelatedComponents?.FirstOrDefault());
+            doc = (await MudExResource.GetSummaryDocumentationAsync(DemoAttribute?.RelatedComponents?.FirstOrDefault())).WithoutDocLinks();
         }
         if (MainLayout.Instance != null)
             MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);

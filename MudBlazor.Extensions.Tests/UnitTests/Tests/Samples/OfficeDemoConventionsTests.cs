@@ -13,7 +13,7 @@ namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Samples;
 
 public class OfficeDemoConventionsTests
 {
-    private static readonly string[] PageGroups = ["Spreadsheet", "Ribbon", "Slide Editor", "Notebook Editor", "Document Editor"];
+    private static readonly string[] PageGroups = ["Office Editors", "Office Editors/Spreadsheet", "Office Editors/Ribbon", "Office Editors/Slides", "Office Editors/Notebook", "Office Editors/Document"];
     private static readonly string[] PagePrefixes = ["Page_Spreadsheet", "Page_Ribbon", "Page_Slides", "Page_Notebook", "Page_FileDisplayEdit", "Page_DocumentEditor"];
     private static readonly string[] ExampleNamespaces =
     [
@@ -43,9 +43,9 @@ public class OfficeDemoConventionsTests
 
         Assert.True(pages.Count >= 17);
         Assert.All(pages, p => Assert.IsType<DemoNewAttribute>(p.Demo));
-        Assert.Contains(pages, p => p.Demo.Group == "Slide Editor");
-        Assert.Contains(pages, p => p.Demo.Group == "Notebook Editor");
-        Assert.Contains(pages, p => p.Demo.Group == "Document Editor" && p.Demo.RelatedComponents.Contains(typeof(MudExDocumentEditor)));
+        Assert.Contains(pages, p => p.Demo.Group == "Office Editors/Slides");
+        Assert.Contains(pages, p => p.Demo.Group == "Office Editors/Notebook");
+        Assert.Contains(pages, p => p.Demo.Group == "Office Editors/Document" && p.Demo.RelatedComponents.Contains(typeof(MudExDocumentEditor)));
     }
 
     [Theory]

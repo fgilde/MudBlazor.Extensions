@@ -35,7 +35,7 @@
     {
         if (parameters.TryGetValue<Type>(nameof(Type), out var type) && Type != type)
         {
-            Documentation = await MudExResource.GetSummaryDocumentationAsync(type);
+            Documentation = (await MudExResource.GetSummaryDocumentationAsync(type)).WithoutDocLinks();
             betaInfos = type.GetCustomAttributes<BetaAttribute>()?.ToList();
         }
 

@@ -95,7 +95,7 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
     
     private PropertyInfo[] GetCachedPropertyInfos(Type type)
     {
-        return _propertyInfoCache.GetOrAdd((type, BindingFlags), key => key.Item1.GetProperties(key.Item2));
+        return _propertyInfoCache.GetOrAdd((type, BindingFlags), key => key.Item1.GetProperties(key.Item2).Where(p => p.GetIndexParameters().Length == 0).ToArray()); // an indexer has no value to read without an index
     }
 
     private IEnumerable<ObjectEditPropertyMeta> GetProperties(Type type, object value, ObjectEditMeta owner = null, IReadOnlyCollection<Type> ancestors = null)
