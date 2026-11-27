@@ -295,7 +295,7 @@ var message = LocalizationStringHelper.Pluralize("item", count);
 
 ## See Also
 
-- [Color Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/0ceb7f3a4cd928b003ae41cb95070ce9b32395f6/docs/utilities/color-utils.md)
-- [CSS Builder](https://github.com/fgilde/MudBlazor.Extensions/blob/0ceb7f3a4cd928b003ae41cb95070ce9b32395f6/docs/utilities/css-builder.md)
-- [Style Builder](https://github.com/fgilde/MudBlazor.Extensions/blob/0ceb7f3a4cd928b003ae41cb95070ce9b32395f6/docs/utilities/style-builder.md)
-- [Size Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/0ceb7f3a4cd928b003ae41cb95070ce9b32395f6/docs/utilities/size-utils.md)
+- [Color Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/7d3de9b125ae372c9442aa7e0622a885a34f7718/docs/utilities/color-utils.md)
+- [CSS Builder](https://github.com/fgilde/MudBlazor.Extensions/blob/7d3de9b125ae372c9442aa7e0622a885a34f7718/docs/utilities/css-builder.md)
+- [Style Builder](https://github.com/fgilde/MudBlazor.Extensions/blob/7d3de9b125ae372c9442aa7e0622a885a34f7718/docs/utilities/style-builder.md)
+- [Size Utilities](https://github.com/fgilde/MudBlazor.Extensions/blob/7d3de9b125ae372c9442aa7e0622a885a34f7718/docs/utilities/size-utils.md)

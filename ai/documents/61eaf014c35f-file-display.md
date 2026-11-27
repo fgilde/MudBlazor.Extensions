@@ -240,6 +240,6 @@ Experience the component: [File Display Demo](https://www.mudex.org/file-display
 
 ## See Also
 
-- [Upload Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/0ceb7f3a4cd928b003ae41cb95070ce9b32395f6/docs/components/upload-edit.md) - File upload component
-- [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/0ceb7f3a4cd928b003ae41cb95070ce9b32395f6/docs/components/object-edit.md) - Form generation
-- [Dialog Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/0ceb7f3a4cd928b003ae41cb95070ce9b32395f6/docs/extensions/dialog-extensions.md) - Enhanced dialogs
+- [Upload Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/7d3de9b125ae372c9442aa7e0622a885a34f7718/docs/components/upload-edit.md) - File upload component
+- [Object Edit](https://github.com/fgilde/MudBlazor.Extensions/blob/7d3de9b125ae372c9442aa7e0622a885a34f7718/docs/components/object-edit.md) - Form generation
+- [Dialog Extensions](https://github.com/fgilde/MudBlazor.Extensions/blob/7d3de9b125ae372c9442aa7e0622a885a34f7718/docs/extensions/dialog-extensions.md) - Enhanced dialogs

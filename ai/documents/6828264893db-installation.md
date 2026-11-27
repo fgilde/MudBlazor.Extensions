@@ -71,7 +71,7 @@ No additional steps required. The package works out of the box.
 
 ### Blazor Server
 
-For Blazor Server applications, you may need to add middleware (see [Setup](https://github.com/fgilde/MudBlazor.Extensions/blob/0ceb7f3a4cd928b003ae41cb95070ce9b32395f6/docs/getting-started/setup.md) page).
+For Blazor Server applications, you may need to add middleware (see [Setup](https://github.com/fgilde/MudBlazor.Extensions/blob/7d3de9b125ae372c9442aa7e0622a885a34f7718/docs/getting-started/setup.md) page).
 
 ### MAUI Blazor Hybrid
 
@@ -101,7 +101,7 @@ dotnet restore
 If you encounter version conflicts with MudBlazor:
 
 1. Ensure you're using compatible versions
-2. Check the [changelog](https://github.com/fgilde/MudBlazor.Extensions/blob/0ceb7f3a4cd928b003ae41cb95070ce9b32395f6/docs/changelog.md) for compatibility information
+2. Check the [changelog](https://github.com/fgilde/MudBlazor.Extensions/blob/7d3de9b125ae372c9442aa7e0622a885a34f7718/docs/changelog.md) for compatibility information
 3. Update MudBlazor to the latest version if needed
 
 ### Build Errors After Installation
@@ -124,7 +124,7 @@ dotnet build
 
 ## Next Steps
 
-Now that you have MudBlazor.Extensions installed, proceed to the [Setup](https://github.com/fgilde/MudBlazor.Extensions/blob/0ceb7f3a4cd928b003ae41cb95070ce9b32395f6/docs/getting-started/setup.md) guide to configure it in your application.
+Now that you have MudBlazor.Extensions installed, proceed to the [Setup](https://github.com/fgilde/MudBlazor.Extensions/blob/7d3de9b125ae372c9442aa7e0622a885a34f7718/docs/getting-started/setup.md) guide to configure it in your application.
 
 ## Getting Help
 
